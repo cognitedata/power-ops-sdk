@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "cognite-power-ops"
+version = "0.1.0"
+description = "SDK for power markets operations on Cognite Data Fusion"
+authors = ["Cognite <support@cognite.com>"]
+license = "Apache 2.0"
+packages = [{include = "cognite", from = "."}]
+
+[tool.black]
+line-length = 120
+target_version = ['py39']
+include = '\.py$'
+
+[tool.isort]
+line_length=120                # corresponds to -w  flag
+multi_line_output=3            # corresponds to -m  flag
+include_trailing_comma=true    # corresponds to -tc flag
+skip_glob = '^((?!py$).)*$'    # this makes sort all Python files
+
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.3.1"
+pre-commit = "^3.2.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
