@@ -17,6 +17,9 @@ multi_line_output=3            # corresponds to -m  flag
 include_trailing_comma=true    # corresponds to -tc flag
 skip_glob = '^((?!py$).)*$'    # this makes sort all Python files
 
+[tool.ruff]
+line_length = 120
+target_version = ['py39']
 
 [tool.poetry.dependencies]
 python = "^3.9"
