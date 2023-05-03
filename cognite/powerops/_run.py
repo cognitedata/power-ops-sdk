@@ -95,13 +95,13 @@ def _run(
         watercourse_configs=config.watercourses, time_series_mappings=time_series_mappings
     )
 
-    # Create DM resources
-    bootstrap_resources += create_dm_model_templates(
-        config.watercourses,
-        list(bootstrap_resources.shop_file_configs.values()),
-        time_series_mappings,
-        config.constants.shop_version,
-    )
+    # # Create DM resources
+    # bootstrap_resources += create_dm_model_templates(
+    #     config.watercourses,
+    #     list(bootstrap_resources.shop_file_configs.values()),
+    #     time_series_mappings,
+    #     config.constants.shop_version,
+    # )
 
     # PowerOps configuration resources
     bootstrap_resources.add(config.market.cdf_asset)
@@ -190,94 +190,94 @@ def create_watercourse_timeseries_mappings(
     return cdf_resources
 
 
-def create_dm_model_templates(
-    watercourse_configs: list[WatercourseConfig],
-    shop_files: list[ShopFileConfig],
-    time_series_mappings: list[TimeSeriesMapping],
-    shop_version: str,
-) -> BootstrapResourceCollection:
-    cdf_resources = BootstrapResourceCollection()
-    for watercourse_config, time_series_mapping in zip(watercourse_configs, time_series_mappings):
-        # Create DM resources
-        model_templates = create_dm_model_template(
-            watercourse_config.name, watercourse_config.version, shop_files, time_series_mapping, shop_version
-        )
-        cdf_resources.add(model_templates)
+# def create_dm_model_templates(
+#     watercourse_configs: list[WatercourseConfig],
+#     shop_files: list[ShopFileConfig],
+#     time_series_mappings: list[TimeSeriesMapping],
+#     shop_version: str,
+# ) -> BootstrapResourceCollection:
+#     cdf_resources = BootstrapResourceCollection()
+#     for watercourse_config, time_series_mapping in zip(watercourse_configs, time_series_mappings):
+#         # Create DM resources
+#         model_templates = create_dm_model_template(
+#             watercourse_config.name, watercourse_config.version, shop_files, time_series_mapping, shop_version
+#         )
+#         cdf_resources.add(model_templates)
+#
+#     return cdf_resources
 
-    return cdf_resources
 
-
-def create_dm_model_template(
-    watercourse_name: str,
-    watercourse_version: str,
-    config_files: List[ShopFileConfig],
-    base_mapping: TimeSeriesMapping,
-    shop_version: str,
-) -> List[ModelTemplate]:
-    """
-    Create ModelTemplate and nested FileRef, Mapping and Transformation instances in memory.
-
-    Note: We take care to create external_id values for all instances to avoid unnecessary deletion and creation when
-    calling client.dm.model_template.apply(...) later.
-    """
-    model_files = [file for file in config_files if file.cogshop_file_type == "model"]
-    if len(model_files) != 1:
-        print_warning(  # TODO why not use logging?
-            f"Expected exactly 1 model file,"
-            f" got {len(model_files)}: {', '.join(mf.external_id for mf in model_files)}."
-            f"Skipping DM ModelTemplate for watercourse {watercourse_name}.",
-        )
-        return []
-    model_file = model_files[0]
-    model_template = ModelTemplate(
-        externalId=f"ModelTemplate_{watercourse_name}",
-        version=watercourse_version,
-        shop_version=shop_version,
-        watercourse=watercourse_name,
-        model=FileRef(
-            externalId=f"ModelTemplate_{watercourse_name}__FileRef_model",
-            type=model_file.cogshop_file_type,
-            file_external_id=model_file.external_id,
-        ),
-        base_mappings=[
-            Mapping(
-                externalId=f"BM__{watercourse_name}__{row.shop_model_path}",
-                path=row.shop_model_path,
-                timeseries_external_id=row.time_series_external_id,
-                transformations=[
-                    Transformation(
-                        externalId=Transformation.make_ext_id(
-                            watercourse_name,
-                            row.shop_model_path,
-                            transformation.transformation.name,
-                            json.dumps(transformation.kwargs or {}),
-                        ),
-                        method=transformation.transformation.name,
-                        arguments=json.dumps(transformation.kwargs or {}),
-                    )
-                    for transformation in row.transformations or []
-                ],
-                retrieve=row.retrieve.name if row.retrieve else None,
-                aggregation=row.aggregation.name if row.aggregation else None,
-            )
-            for row in base_mapping.rows
-        ],
-    )
-
-    # We can get duplicate mappings (same path). Only keep the last one:
-    visited_ext_ids = set()
-    duplicate_is = []
-    base_mappings = cast(List[Mapping], model_template.base_mappings or [])
-    # ^ FDM requires 2 "Optional" here, like Optional[List[Optional[Mapping]]] but in fact is it Optional[List[Mapping]]
-    for i, mapping in reversed(list(enumerate(base_mappings))):
-        if mapping.externalId in visited_ext_ids:
-            duplicate_is.append(i)
-        visited_ext_ids.add(mapping.externalId)
-    for duplicate_i in duplicate_is:
-        print_warning(f"Duplicate base mapping: {base_mappings[duplicate_i].externalId}")
-        del base_mappings[duplicate_i]
-
-    return [model_template]
+# def create_dm_model_template(
+#     watercourse_name: str,
+#     watercourse_version: str,
+#     config_files: List[ShopFileConfig],
+#     base_mapping: TimeSeriesMapping,
+#     shop_version: str,
+# ) -> List[ModelTemplate]:
+#     """
+#     Create ModelTemplate and nested FileRef, Mapping and Transformation instances in memory.
+#
+#     Note: We take care to create external_id values for all instances to avoid unnecessary deletion and creation when
+#     calling client.dm.model_template.apply(...) later.
+#     """
+#     model_files = [file for file in config_files if file.cogshop_file_type == "model"]
+#     if len(model_files) != 1:
+#         print_warning(  # TODO why not use logging?
+#             f"Expected exactly 1 model file,"
+#             f" got {len(model_files)}: {', '.join(mf.external_id for mf in model_files)}."
+#             f"Skipping DM ModelTemplate for watercourse {watercourse_name}.",
+#         )
+#         return []
+#     model_file = model_files[0]
+#     model_template = ModelTemplate(
+#         externalId=f"ModelTemplate_{watercourse_name}",
+#         version=watercourse_version,
+#         shop_version=shop_version,
+#         watercourse=watercourse_name,
+#         model=FileRef(
+#             externalId=f"ModelTemplate_{watercourse_name}__FileRef_model",
+#             type=model_file.cogshop_file_type,
+#             file_external_id=model_file.external_id,
+#         ),
+#         base_mappings=[
+#             Mapping(
+#                 externalId=f"BM__{watercourse_name}__{row.shop_model_path}",
+#                 path=row.shop_model_path,
+#                 timeseries_external_id=row.time_series_external_id,
+#                 transformations=[
+#                     Transformation(
+#                         externalId=Transformation.make_ext_id(
+#                             watercourse_name,
+#                             row.shop_model_path,
+#                             transformation.transformation.name,
+#                             json.dumps(transformation.kwargs or {}),
+#                         ),
+#                         method=transformation.transformation.name,
+#                         arguments=json.dumps(transformation.kwargs or {}),
+#                     )
+#                     for transformation in row.transformations or []
+#                 ],
+#                 retrieve=row.retrieve.name if row.retrieve else None,
+#                 aggregation=row.aggregation.name if row.aggregation else None,
+#             )
+#             for row in base_mapping.rows
+#         ],
+#     )
+#
+#     # We can get duplicate mappings (same path). Only keep the last one:
+#     visited_ext_ids = set()
+#     duplicate_is = []
+#     base_mappings = cast(List[Mapping], model_template.base_mappings or [])
+#     # ^ FDM requires 2 "Optional" here, like Optional[List[Optional[Mapping]]] but in fact is it Optional[List[Mapping]]
+#     for i, mapping in reversed(list(enumerate(base_mappings))):
+#         if mapping.externalId in visited_ext_ids:
+#             duplicate_is.append(i)
+#         visited_ext_ids.add(mapping.externalId)
+#     for duplicate_i in duplicate_is:
+#         print_warning(f"Duplicate base mapping: {base_mappings[duplicate_i].externalId}")
+#         del base_mappings[duplicate_i]
+#
+#     return [model_template]
 
 
 def create_watercourse_processed_shop_files(
