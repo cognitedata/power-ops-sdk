@@ -23,6 +23,10 @@ target-version = 'py39'
 
 [tool.poetry.dependencies]
 python = "^3.9"
+typer = "^0.9.0"
+
+[tool.poetry.scripts]
+powerops = "cognite.powerops.main:main"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.3.1"
