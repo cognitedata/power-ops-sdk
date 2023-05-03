@@ -1,0 +1,249 @@
+shop_model_path,time_series_external_id,transformations,transformations1,transformations2,transformations3,retrieve,aggregation
+gate.b_Harpefossen-dam_HARP-KP(2248).max_flow,/RRS.S83.WTR.b_Harpefossen-dam_HARP-K.QMA,[],,,,RANGE,min
+gate.b_Harpefossen-dam_HARP-KP(2248).min_flow,/RRS.S83.WTR.b_Harpefossen-dam_HARP-K.QMI,[],,,,RANGE,max
+gate.b_Harpefossen-dam_HARP-KP(2248).schedule_flag,/Lågen/Magasin/Harpefossen_HARP-KP-tappeluke-planflagg,"[{""transformation"": ""GATE_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+gate.b_Harpefossen-dam_HARP-KP(2248).schedule_m3s,/Lågen/Magasin/Harpefossen_HARP-KP-tappeluke-m3s,[],,,,RANGE,first
+gate.b_Hinogla-dam_Olstappen(390527).max_flow,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 1000}}]",,,,,min
+gate.b_Hunderfossen-dam_HUND-KP(2249).max_flow,/RRS.S83.WTR.b_Hunderfossen-dam_HUND-.QMA,[],,,,RANGE,min
+gate.b_Hunderfossen-dam_HUND-KP(2249).min_flow,/RRS.S83.WTR.b_Hunderfossen-dam_HUND-.QMI,[],,,,RANGE,max
+gate.b_Hunderfossen-dam_HUND-KP(2249).schedule_flag,/Lågen/Magasin/HunderfossenHUND-KP-tappeluke-planflagg,"[{""transformation"": ""GATE_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+gate.b_Hunderfossen-dam_HUND-KP(2249).schedule_m3s,/Lågen/Magasin/Hunderfossen_HUND-KP-tappeluke-m3s,[],,,,RANGE,first
+gate.b_Kaldfjorden_ØVIN-KP(2250).max_flow,/RRS.S83.WTR.b_Kaldfjorden_ØVIN-KP.QMA,[],,,,RANGE,min
+gate.b_Kaldfjorden_ØVIN-KP(2250).min_flow,/RRS.S83.WTR.b_Kaldfjorden_ØVIN-KP.QMI,[],,,,RANGE,max
+gate.b_Kaldfjorden_ØVIN-KP(2250).schedule_flag,/Lågen/Magasin/Kaldfjorden_ØVIN-KP-tappeluke-planflagg,"[{""transformation"": ""GATE_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+gate.b_Kaldfjorden_ØVIN-KP(2250).schedule_m3s,/Lågen/Magasin/Kaldfjorden_ØVIN-KP-tappeluke-m3s,[],,,,RANGE,first
+gate.b_Olstappen_NVIN-KP(2247).max_flow,/RRS.S83.WTR.b_Olstappen_NVIN-KP.QMA,[],,,,RANGE,min
+gate.b_Olstappen_NVIN-KP(2247).min_flow,/RRS.S83.WTR.b_Olstappen_NVIN-KP.QMI,[],,,,RANGE,max
+gate.b_Olstappen_NVIN-KP(2247).schedule_flag,/Lågen/Magasin/Olstappen_NVIN-KP-tappeluke-planflagg,"[{""transformation"": ""GATE_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+gate.b_Olstappen_NVIN-KP(2247).schedule_m3s,/Lågen/Magasin/Olstappen_NVIN-KP-tappeluke-m3s,[],,,,RANGE,first
+gate.f_Heimdalsvatn_Hinogla-dam(390175).max_flow,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 1000}}]",,,,,min
+gate.f_Kaldfjorden_ØVIN-KP(3016).max_flow,/RRS.S83.WTR.f_Kaldfjorden_ØVIN-KP.QMA,[],,,,RANGE,min
+gate.f_Kaldfjorden_ØVIN-KP(3016).min_flow,/RRS.S83.WTR.f_Kaldfjorden_ØVIN-KP.QMI,[],,,,RANGE,max
+gate.f_Olstappen_NVIN-KP(3015).max_flow,/RRS.S83.WTR.f_Olstappen_NVIN-KP.QMA,[],,,,RANGE,min
+gate.f_Olstappen_NVIN-KP(3015).min_flow,/RRS.S83.WTR.f_Olstappen_NVIN-KP.QMI,[],,,,RANGE,max
+gate.f_Øyangen_Olstappen(2246).max_flow,/RRS.S83.WTR.f_Øyangen_Olstappen.QMA,[],,,,RANGE,min
+gate.f_Øyangen_Olstappen(2246).min_flow,/RRS.S83.WTR.f_Øyangen_Olstappen.QMI,[],,,,RANGE,max
+gate.w_Bygdin_Vinstern(2216).max_flow,/RRS.S83.WTR.w_Bygdin_Vinstern.QMA,[],,,,RANGE,min
+gate.w_Bygdin_Vinstern(2216).min_flow,/RRS.S83.WTR.w_Bygdin_Vinstern.QMI,[],,,,RANGE,max
+gate.w_Bygdin_Vinstern(2216).schedule_flag,/Lågen/Magasin/Bygdin-tappeluke-planflagg,"[{""transformation"": ""GATE_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+gate.w_Bygdin_Vinstern(2216).schedule_m3s,/Lågen/Magasin/Bygdin-tappeluke-prog-m3s-1d,[],,,,RANGE,first
+gate.w_Heimdalsvatn_Kaldfjorden(2223).max_flow,/RRS.S83.WTR.w_Heimdalsvatn_Kaldfjord.QMA,[],,,,RANGE,min
+gate.w_Heimdalsvatn_Kaldfjorden(2223).min_flow,/RRS.S83.WTR.w_Heimdalsvatn_Kaldfjord.QMI,[],,,,RANGE,max
+gate.w_Heimdalsvatn_Kaldfjorden(2223).schedule_flag,/Lågen/Magasin/Heimdalsvatn-tappeluke-planflagg,"[{""transformation"": ""GATE_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+gate.w_Heimdalsvatn_Kaldfjorden(2223).schedule_m3s,/Lågen/Magasin/Heimdalsvatn-tappeluke-prog-m3s-d,[],,,,RANGE,first
+gate.w_Kaldfjorden_Øyangen(2218).max_flow,/RRS.S83.WTR.w_Kaldfjorden_Øyangen.QMA,[],,,,RANGE,min
+gate.w_Kaldfjorden_Øyangen(2218).min_flow,/RRS.S83.WTR.w_Kaldfjorden_Øyangen.QMI,[],,,,RANGE,max
+gate.w_Kaldfjorden_Øyangen(2218).schedule_flag,/Lågen/Magasin/Kaldfjorden-tappeluke-planflagg,"[{""transformation"": ""GATE_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+gate.w_Kaldfjorden_Øyangen(2218).schedule_m3s,/Lågen/Magasin/Kaldfjorden-tappeluke-prog-m3s-d,[],,,,RANGE,first
+gate.w_Vinstern_Kaldfjorden(2217).max_flow,/RRS.S83.WTR.w_Vinstern_Kaldfjorden.QMA,[],,,,RANGE,min
+gate.w_Vinstern_Kaldfjorden(2217).min_flow,/RRS.S83.WTR.w_Vinstern_Kaldfjorden.QMI,[],,,,RANGE,max
+gate.w_Vinstern_Kaldfjorden(2217).schedule_flag,/Lågen/Magasin/Vinstern-tappeluke-planflagg,"[{""transformation"": ""GATE_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+gate.w_Vinstern_Kaldfjorden(2217).schedule_m3s,/Lågen/Magasin/Vinstern-tappeluke-prog-m3s-1d,[],,,,RANGE,first
+generator.HARP(2232)_G1.committed_flag,/Lågen/Kraftverk/HARP-G1-flagg-commit-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,first
+generator.HARP(2232)_G1.committed_in,/Lågen/Kraftverk/HARP-G1-flagg-commit-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,
+generator.HARP(2232)_G1.initial_state,/Scenario/CPS.HARP.G1.MW,"[{""transformation"": ""TO_BOOL"", ""kwargs"": null}]",,,,START,
+generator.HARP(2232)_G1.maintenance_flag,/RRS.S83.Gunit.HARP G1.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+generator.HARP(2232)_G1.max_p_constr,/RRS.S83.Gunit.HARP G1.PMA,[],,,,RANGE,min
+generator.HARP(2232)_G1.min_p_constr,/RRS.S83.Gunit.HARP G1.PMI,[],,,,RANGE,max
+generator.HARP(2232)_G1.production_schedule_flag,/Lågen/Kraftverk/HARP-G1-flagg-commit-bp,"[{""transformation"": ""GENERATOR_PRODUCTION_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+generator.HARP(2232)_G1.startcost,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 547}}]",,,,,
+generator.HARP(2232)_G2.committed_flag,/Lågen/Kraftverk/HARP-G2-flagg-commit-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,first
+generator.HARP(2232)_G2.committed_in,/Lågen/Kraftverk/HARP-G2-flagg-commit-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,
+generator.HARP(2232)_G2.initial_state,/Scenario/CPS.HARP.G2.MW,"[{""transformation"": ""TO_BOOL"", ""kwargs"": null}]",,,,START,
+generator.HARP(2232)_G2.maintenance_flag,/RRS.S83.Gunit.HARP G2.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+generator.HARP(2232)_G2.max_p_constr,/RRS.S83.Gunit.HARP G2.PMA,[],,,,RANGE,min
+generator.HARP(2232)_G2.min_p_constr,/RRS.S83.Gunit.HARP G2.PMI,[],,,,RANGE,max
+generator.HARP(2232)_G2.production_schedule_flag,/Lågen/Kraftverk/HARP-G2-flagg-commit-bp,"[{""transformation"": ""GENERATOR_PRODUCTION_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+generator.HARP(2232)_G2.startcost,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 547}}]",,,,,
+generator.HINO(390171)_G1.maintenance_flag,/RRS.S83.Gunit.HINO G1.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+generator.HINO(390171)_G1.max_p_constr,/RRS.S83.Gunit.HINO G1.PMA,[],,,,RANGE,min
+generator.HINO(390171)_G1.startcost,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 142}}]",,,,,
+generator.HUND(2238)_G1.committed_flag,/Lågen/Kraftverk/HUND-G1-flagg-commit-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,first
+generator.HUND(2238)_G1.committed_in,/Lågen/Kraftverk/HUND-G1-flagg-commit-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,
+generator.HUND(2238)_G1.initial_state,/Scenario/CPS.HUND.G1.MW,"[{""transformation"": ""TO_BOOL"", ""kwargs"": null}]",,,,START,
+generator.HUND(2238)_G1.maintenance_flag,/RRS.S83.Gunit.HUND G1.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+generator.HUND(2238)_G1.max_p_constr,/RRS.S83.Gunit.HUND G1.PMA,[],,,,RANGE,min
+generator.HUND(2238)_G1.min_p_constr,/RRS.S83.Gunit.HUND G1.PMI,[],,,,RANGE,max
+generator.HUND(2238)_G1.production_schedule_flag,/Lågen/Kraftverk/HUND-G1-flagg-commit-bp,"[{""transformation"": ""GENERATOR_PRODUCTION_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+generator.HUND(2238)_G1.startcost,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 579}}]",,,,,
+generator.HUND(2238)_G2.committed_flag,/Lågen/Kraftverk/HUND-G2-flagg-commit-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,first
+generator.HUND(2238)_G2.committed_in,/Lågen/Kraftverk/HUND-G2-flagg-commit-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,
+generator.HUND(2238)_G2.initial_state,/Scenario/CPS.HUND.G2.MW,"[{""transformation"": ""TO_BOOL"", ""kwargs"": null}]",,,,START,
+generator.HUND(2238)_G2.maintenance_flag,/RRS.S83.Gunit.HUND G2.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+generator.HUND(2238)_G2.max_p_constr,/RRS.S83.Gunit.HUND G2.PMA,[],,,,RANGE,min
+generator.HUND(2238)_G2.min_p_constr,/RRS.S83.Gunit.HUND G2.PMI,[],,,,RANGE,max
+generator.HUND(2238)_G2.production_schedule_flag,/Lågen/Kraftverk/HUND-G2-flagg-commit-bp,"[{""transformation"": ""GENERATOR_PRODUCTION_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+generator.HUND(2238)_G2.startcost,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 579}}]",,,,,
+generator.NVIN(2225)_G1.committed_flag,/Lågen/Kraftverk/NVIN-G1-flagg-commit-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,first
+generator.NVIN(2225)_G1.committed_in,/Lågen/Kraftverk/NVIN-G1-flagg-commit-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,
+generator.NVIN(2225)_G1.initial_state,/Scenario/CPS.NVIN.G1.MW,"[{""transformation"": ""TO_BOOL"", ""kwargs"": null}]",,,,START,
+generator.NVIN(2225)_G1.maintenance_flag,/RRS.S83.Gunit.NVIN G1.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+generator.NVIN(2225)_G1.max_p_constr,/RRS.S83.Gunit.NVIN G1.PMA,[],,,,RANGE,min
+generator.NVIN(2225)_G1.min_p_constr,/RRS.S83.Gunit.NVIN G1.PMI,[],,,,RANGE,max
+generator.NVIN(2225)_G1.production_schedule_flag,/Lågen/Kraftverk/NVIN-G1-flagg-commit-bp,"[{""transformation"": ""GENERATOR_PRODUCTION_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+generator.NVIN(2225)_G1.startcost,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 470}}]",,,,,
+generator.NVIN(2225)_G2.committed_flag,/Lågen/Kraftverk/NVIN-G2-flagg-commit-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,first
+generator.NVIN(2225)_G2.committed_in,/Lågen/Kraftverk/NVIN-G2-flagg-commit-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,
+generator.NVIN(2225)_G2.initial_state,/Scenario/CPS.NVIN.G2.MW,"[{""transformation"": ""TO_BOOL"", ""kwargs"": null}]",,,,START,
+generator.NVIN(2225)_G2.maintenance_flag,/RRS.S83.Gunit.NVIN G2.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+generator.NVIN(2225)_G2.max_p_constr,/RRS.S83.Gunit.NVIN G2.PMA,[],,,,RANGE,min
+generator.NVIN(2225)_G2.min_p_constr,/RRS.S83.Gunit.NVIN G2.PMI,[],,,,RANGE,max
+generator.NVIN(2225)_G2.production_schedule_flag,/Lågen/Kraftverk/NVIN-G2-flagg-commit-bp,"[{""transformation"": ""GENERATOR_PRODUCTION_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+generator.NVIN(2225)_G2.startcost,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 470}}]",,,,,
+generator.NVIN(2225)_G3.committed_flag,/Lågen/Kraftverk/NVIN-G3-flagg-commit-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,first
+generator.NVIN(2225)_G3.committed_in,/Lågen/Kraftverk/NVIN-G3-flagg-commit-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,
+generator.NVIN(2225)_G3.initial_state,/Scenario/CPS.NVIN.G3.MW,"[{""transformation"": ""TO_BOOL"", ""kwargs"": null}]",,,,START,
+generator.NVIN(2225)_G3.maintenance_flag,/RRS.S83.Gunit.NVIN G3.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+generator.NVIN(2225)_G3.max_p_constr,/RRS.S83.Gunit.NVIN G3.PMA,[],,,,RANGE,min
+generator.NVIN(2225)_G3.min_p_constr,/RRS.S83.Gunit.NVIN G3.PMI,[],,,,RANGE,max
+generator.NVIN(2225)_G3.production_schedule_flag,/Lågen/Kraftverk/NVIN-G3-flagg-commit-bp,"[{""transformation"": ""GENERATOR_PRODUCTION_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+generator.NVIN(2225)_G3.startcost,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 416}}]",,,,,
+generator.NVIN(2225)_G4.committed_flag,/Lågen/Kraftverk/NVIN-G4-flagg-commit-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,first
+generator.NVIN(2225)_G4.committed_in,/Lågen/Kraftverk/NVIN-G4-flagg-commit-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,
+generator.NVIN(2225)_G4.initial_state,/Scenario/CPS.NVIN.G4.MW,"[{""transformation"": ""TO_BOOL"", ""kwargs"": null}]",,,,START,
+generator.NVIN(2225)_G4.maintenance_flag,/RRS.S83.Gunit.NVIN G4.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+generator.NVIN(2225)_G4.max_p_constr,/RRS.S83.Gunit.NVIN G4.PMA,[],,,,RANGE,min
+generator.NVIN(2225)_G4.min_p_constr,/RRS.S83.Gunit.NVIN G4.PMI,[],,,,RANGE,max
+generator.NVIN(2225)_G4.production_schedule_flag,/Lågen/Kraftverk/NVIN-G4-flagg-commit-bp,"[{""transformation"": ""GENERATOR_PRODUCTION_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+generator.NVIN(2225)_G4.startcost,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 470}}]",,,,,
+generator.NVIN(2225)_G5.committed_flag,/Lågen/Kraftverk/NVIN-G5-flagg-commit-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,first
+generator.NVIN(2225)_G5.committed_in,/Lågen/Kraftverk/NVIN-G5-flagg-commit-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,
+generator.NVIN(2225)_G5.initial_state,/Scenario/CPS.NVIN.G5.MW,"[{""transformation"": ""TO_BOOL"", ""kwargs"": null}]",,,,START,
+generator.NVIN(2225)_G5.maintenance_flag,/RRS.S83.Gunit.NVIN G5.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+generator.NVIN(2225)_G5.max_p_constr,/RRS.S83.Gunit.NVIN G5.PMA,[],,,,RANGE,min
+generator.NVIN(2225)_G5.min_p_constr,/RRS.S83.Gunit.NVIN G5.PMI,[],,,,RANGE,max
+generator.NVIN(2225)_G5.production_schedule_flag,/Lågen/Kraftverk/NVIN-G5-flagg-commit-bp,"[{""transformation"": ""GENERATOR_PRODUCTION_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+generator.NVIN(2225)_G5.startcost,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 430}}]",,,,,
+generator.ØVIN(2214)_G1.committed_flag,/Lågen/Kraftverk/ØVIN-G1-flagg-commit-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,first
+generator.ØVIN(2214)_G1.committed_in,/Lågen/Kraftverk/ØVIN-G1-flagg-commit-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,
+generator.ØVIN(2214)_G1.initial_state,/Scenario/CPS.ØVIN.G1.MW,"[{""transformation"": ""TO_BOOL"", ""kwargs"": null}]",,,,START,
+generator.ØVIN(2214)_G1.maintenance_flag,/RRS.S83.Gunit.ØVIN G1.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+generator.ØVIN(2214)_G1.max_p_constr,/RRS.S83.Gunit.ØVIN G1.PMA,[],,,,RANGE,min
+generator.ØVIN(2214)_G1.min_p_constr,/RRS.S83.Gunit.ØVIN G1.PMI,[],,,,RANGE,max
+generator.ØVIN(2214)_G1.production_schedule_flag,/Lågen/Kraftverk/ØVIN-G1-flagg-commit-bp,"[{""transformation"": ""GENERATOR_PRODUCTION_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+generator.ØVIN(2214)_G1.startcost,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 596}}]",,,,,
+generator.ØVIN(2214)_G2.committed_flag,/Lågen/Kraftverk/ØVIN-G2-flagg-commit-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,first
+generator.ØVIN(2214)_G2.committed_in,/Lågen/Kraftverk/ØVIN-G2-flagg-commit-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,
+generator.ØVIN(2214)_G2.initial_state,/Scenario/CPS.ØVIN.G2.MW,"[{""transformation"": ""TO_BOOL"", ""kwargs"": null}]",,,,START,
+generator.ØVIN(2214)_G2.maintenance_flag,/RRS.S83.Gunit.ØVIN G2.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+generator.ØVIN(2214)_G2.max_p_constr,/RRS.S83.Gunit.ØVIN G2.PMA,[],,,,RANGE,min
+generator.ØVIN(2214)_G2.min_p_constr,/RRS.S83.Gunit.ØVIN G2.PMI,[],,,,RANGE,max
+generator.ØVIN(2214)_G2.production_schedule_flag,/Lågen/Kraftverk/ØVIN-G2-flagg-commit-bp,"[{""transformation"": ""GENERATOR_PRODUCTION_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+generator.ØVIN(2214)_G2.startcost,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 655}}]",,,,,
+market.1.buy_price,/Priser/P-Pris-Mix-NO1-1h,"[{""transformation"": ""ADD"", ""kwargs"": {""value"": 0.01}}]",,,,RANGE,mean
+market.1.load,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 0}}]",,,,,
+market.1.max_buy,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 1000}}]",,,,,
+market.1.max_sale,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 1000}}]",,,,,
+market.1.sale_price,/Priser/P-Pris-Mix-NO1-1h,[],,,,RANGE,mean
+plant.HARP(2232).feeding_fee,/Lågen/Kraftverk/Marginaltap-Harpefossen,[],,,,RANGE,mean
+plant.HARP(2232).maintenance_flag,/RRS.S83.Plant.HARP.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+plant.HARP(2232).max_p_constr,/RRS.S83.Plant.HARP.PMA,[],,,,RANGE,min
+plant.HARP(2232).max_q_constr,/RRS.S83.Plant.HARP.QMA,[],,,,RANGE,min
+plant.HARP(2232).min_p_constr,/RRS.S83.Plant.HARP.PMI,[],,,,RANGE,max
+plant.HARP(2232).mip_flag,/Lågen/Kraftverk/HARP-MIPflagg-bp,[],,,,RANGE,first
+plant.HARP(2232).prod_area,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 1}}]",,,,,
+plant.HINO(390171).maintenance_flag,/RRS.S83.Plant.HINO.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+plant.HINO(390171).max_p_constr,/RRS.S83.Plant.HINO.PMA,[],,,,RANGE,min
+plant.HINO(390171).max_q_constr,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 1000}}]",,,,,min
+plant.HINO(390171).prod_area,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 1}}]",,,,,
+plant.HUND(2238).feeding_fee,/Lågen/Kraftverk/Marginaltap-Hunderfossen,[],,,,RANGE,mean
+plant.HUND(2238).maintenance_flag,/RRS.S83.Plant.HUND.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+plant.HUND(2238).max_p_constr,/RRS.S83.Plant.HUND.PMA,[],,,,RANGE,min
+plant.HUND(2238).max_q_constr,/RRS.S83.Plant.HUND.QMA,[],,,,RANGE,min
+plant.HUND(2238).min_p_constr,/RRS.S83.Plant.HUND.PMI,[],,,,RANGE,max
+plant.HUND(2238).mip_flag,/Lågen/Kraftverk/HUND-MIPflagg-bp,[],,,,RANGE,first
+plant.HUND(2238).prod_area,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 1}}]",,,,,
+plant.NVIN(2225).feeding_fee,/Lågen/Kraftverk/Marginaltap-NedreVinstra,[],,,,RANGE,mean
+plant.NVIN(2225).maintenance_flag,/RRS.S83.Plant.NVIN.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+plant.NVIN(2225).max_p_constr,/RRS.S83.Plant.NVIN.PMA,[],,,,RANGE,min
+plant.NVIN(2225).max_q_constr,/RRS.S83.Plant.NVIN.QMA,[],,,,RANGE,min
+plant.NVIN(2225).min_p_constr,/RRS.S83.Plant.NVIN.PMI,[],,,,RANGE,max
+plant.NVIN(2225).mip_flag,/Lågen/Kraftverk/NVIN-MIPflagg-bp,[],,,,RANGE,first
+plant.NVIN(2225).prod_area,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 1}}]",,,,,
+plant.NVIN(2225).production_schedule,/Lågen/Kraftverk/NVIN-Plan-MW-bp,[],,,,RANGE,first
+plant.NVIN(2225).production_schedule_flag,/Lågen/Kraftverk/NVIN-Planflagg-bp,"[{""transformation"": ""PLANT_PRODUCTION_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+plant.ØVIN(2214).feeding_fee,/Lågen/Kraftverk/Marginaltap-ØvreVinstra,[],,,,RANGE,mean
+plant.ØVIN(2214).maintenance_flag,/RRS.S83.Plant.ØVIN.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+plant.ØVIN(2214).max_p_constr,/RRS.S83.Plant.ØVIN.PMA,[],,,,RANGE,min
+plant.ØVIN(2214).max_q_constr,/RRS.S83.Plant.ØVIN.QMA,[],,,,RANGE,min
+plant.ØVIN(2214).min_p_constr,/RRS.S83.Plant.ØVIN.PMI,[],,,,RANGE,max
+plant.ØVIN(2214).mip_flag,/Lågen/Kraftverk/ØVIN-MIPflagg-bp,[],,,,RANGE,first
+plant.ØVIN(2214).prod_area,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 1}}]",,,,,
+plant.ØVIN(2214).production_schedule,/Lågen/Kraftverk/ØVIN-Plan-MW-bp,[],,,,RANGE,first
+plant.ØVIN(2214).production_schedule_flag,/Lågen/Kraftverk/ØVIN-Planflagg-bp,"[{""transformation"": ""PLANT_PRODUCTION_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+reserve_group.1.rr_up_obligation,/Spottilslag/RKOM-tilslag-NVIN-NOB-MWh,[],,,,RANGE,max
+reserve_group.2.rr_down_obligation,/Spottilslag/RKOM-NED-tilslag-HARP-NO1-MWh,[],,,,RANGE,max
+reserve_group.3.fcr_n_down_obligation,/Spottilslag/HUND-FNR-førspot-MW,[],,,,RANGE,
+reserve_group.3.fcr_n_up_obligation,/Spottilslag/HUND-FNR-førspot-MW,[],,,,RANGE,
+reserve_group.4.frr_down_obligation,/Spottilslag/aFRR-ned-tilslag-ØVIN-MW,[],,,,RANGE,
+reserve_group.4.frr_up_obligation,/Spottilslag/aFRR-opp-tilslag-ØVIN-MW,[],,,,RANGE,
+reservoir.Bygdin.inflow,/Lågen/Hydmet/Bygdin-tilsig-prog-m3s-1h-v,[],,,,RANGE,mean
+reservoir.Bygdin.max_vol_constr,/RRS.S83.RSV.Bygdin.VMA,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,min
+reservoir.Bygdin.min_vol_constr,/RRS.S83.RSV.Bygdin.VMI,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,max
+reservoir.Bygdin.start_head,/Scenario/CPS.Bygdin.RMOH,[],,,,START,
+reservoir.Bygdin.tactical_cost_max,/Lågen/Magasin/Bygdin-taktisk-max-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Bygdin.tactical_cost_min,/Lågen/Magasin/Bygdin-taktisk-min-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Bygdin.tactical_limit_max,/Lågen/Magasin/Bygdin-taktisk-max-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Bygdin.tactical_limit_min,/Lågen/Magasin/Bygdin-taktisk-min-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Harpefossen-dam.inflow,/PROD/Lågen/Eide/Q-Tilsig-prog-1h,[],,,,RANGE,mean
+reservoir.Harpefossen-dam.max_vol_constr,/RRS.S83.RSV.Harpefossen-dam.VMA,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,min
+reservoir.Harpefossen-dam.min_vol_constr,/RRS.S83.RSV.Harpefossen-dam.VMI,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,max
+reservoir.Harpefossen-dam.start_head,/Lågen/Magasin/Harpefossen-vst-styrekurve-moh,[],,,,START,
+reservoir.Harpefossen-dam.tactical_cost_max,/Lågen/Magasin/Harpefossen-taktisk-max-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Harpefossen-dam.tactical_cost_min,/Lågen/Magasin/Harpefossen-taktisk-min-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Harpefossen-dam.tactical_limit_max,/Lågen/Magasin/Harpefossen-taktisk-max-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Harpefossen-dam.tactical_limit_min,/Lågen/Magasin/Harpefossen-taktisk-min-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Heimdalsvatn.inflow,/Lågen/Hydmet/Heimdalsvatnet-tilsig-prog-m3s-1h-v,[],,,,RANGE,mean
+reservoir.Heimdalsvatn.max_vol_constr,/RRS.S83.RSV.Heimdalsvatn.VMA,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,min
+reservoir.Heimdalsvatn.min_vol_constr,/RRS.S83.RSV.Heimdalsvatn.VMI,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,max
+reservoir.Heimdalsvatn.start_head,/Scenario/CPS.Heimdalsvatn.RMOH,[],,,,START,
+reservoir.Heimdalsvatn.tactical_cost_max,/Lågen/Magasin/Heimdalsvatn-taktisk-max-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Heimdalsvatn.tactical_cost_min,/Lågen/Magasin/Heimdalsvatn-taktisk-min-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Heimdalsvatn.tactical_limit_max,/Lågen/Magasin/Heimdalsvatn-taktisk-max-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Heimdalsvatn.tactical_limit_min,/Lågen/Magasin/Heimdalsvatn-taktisk-min-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Hinogla-dam.inflow,/Lågen/Hydmet/Hinøgla-tilsig-prog-m3s-1d,[],,,,RANGE,mean
+reservoir.Hinogla-dam.start_head,/Lågen/Magasin/Hinøgla-vst-styrekurve-moh,[],,,,START,
+reservoir.Hinogla-dam.tactical_cost_max,/Lågen/Magasin/Hinøgla-taktisk-max-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Hinogla-dam.tactical_cost_min,/Lågen/Magasin/Hinøgla-taktisk-max-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Hinogla-dam.tactical_limit_max,/Lågen/Magasin/Hinøgla-taktisk-max-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Hinogla-dam.tactical_limit_min,/Lågen/Magasin/Hinøgla-taktisk-min-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Hunderfossen-dam.inflow,/PROD/Lågen/Hunderfossen/Q-Tilsig-prog-1h,"[{""transformation"": ""ADD_WATER_IN_TRANSIT"", ""kwargs"": {""external_id"": ""/Lågen/Magasin/Harpefoss-Stasjons-Summålt-m3s-1h-v"", ""plant_name"": ""HARP(2232)""}}]",,,,RANGE,mean
+reservoir.Hunderfossen-dam.max_vol_constr,/RRS.S83.RSV.Hunderfossen-dam.VMA,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,min
+reservoir.Hunderfossen-dam.min_vol_constr,/RRS.S83.RSV.Hunderfossen-dam.VMI,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,max
+reservoir.Hunderfossen-dam.start_head,/Lågen/Magasin/Hunderfossen-vst-styrekurve-moh,[],,,,START,
+reservoir.Hunderfossen-dam.tactical_cost_max,/Lågen/Magasin/Hunderfossen-taktisk-max-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Hunderfossen-dam.tactical_cost_min,/Lågen/Magasin/Hunderfossen-taktisk-min-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Hunderfossen-dam.tactical_limit_max,/Lågen/Magasin/Hunderfossen-taktisk-max-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Hunderfossen-dam.tactical_limit_min,/Lågen/Magasin/Hunderfossen-taktisk-min-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Kaldfjorden.inflow,/Lågen/Hydmet/Kaldfjorden-tilsig-prog-m3s-1h-v,[],,,,RANGE,mean
+reservoir.Kaldfjorden.max_vol_constr,/RRS.S83.RSV.Kaldfjorden.VMA,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,min
+reservoir.Kaldfjorden.min_vol_constr,/RRS.S83.RSV.Kaldfjorden.VMI,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,max
+reservoir.Kaldfjorden.start_head,/Scenario/CPS.Kaldfjorden.RMOH,[],,,,START,
+reservoir.Kaldfjorden.tactical_cost_max,/Lågen/Magasin/Kaldfjorden-taktisk-max-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Kaldfjorden.tactical_cost_min,/Lågen/Magasin/Kaldfjorden-taktisk-min-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Kaldfjorden.tactical_limit_max,/Lågen/Magasin/Kaldfjorden-taktisk-max-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Kaldfjorden.tactical_limit_min,/Lågen/Magasin/Kaldfjorden-taktisk-min-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Olstappen.inflow,/PROD/Lågen/Olstappen/Q-Tilsig-prog-1h,"[{""transformation"": ""ADD_WATER_IN_TRANSIT"", ""kwargs"": {""external_id"": ""/Lågen/Magasin/ØVIN-StartMag-tot-driftsvf-m3s-1h-v"", ""plant_name"": ""ØVIN(2214)""}}, {""transformation"": ""ADD_WATER_IN_TRANSIT"", ""kwargs"": {""external_id"": ""/Lågen/Magasin/Kaldfjorden-flom","luke-m3s-1h-korr-v"", ""gate_name"": ""b_Kaldfjorden_ØVIN-KP(2250)""}}]",,,RANGE,mean
+reservoir.Olstappen.max_vol_constr,/RRS.S83.RSV.Olstappen.VMA,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,min
+reservoir.Olstappen.min_vol_constr,/RRS.S83.RSV.Olstappen.VMI,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,max
+reservoir.Olstappen.start_head,/Scenario/CPS.Olstappen.RMOH,[],,,,START,
+reservoir.Olstappen.tactical_cost_max,/Lågen/Magasin/Olstappen-taktisk-max-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Olstappen.tactical_cost_min,/Lågen/Magasin/Olstappen-taktisk-min-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Olstappen.tactical_limit_max,/Lågen/Magasin/Olstappen-taktisk-max-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Olstappen.tactical_limit_min,/Lågen/Magasin/Olstappen-taktisk-min-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Vinstern.inflow,/Lågen/Hydmet/Vinstern-tilsig-prog-m3s-1h-v,[],,,,RANGE,mean
+reservoir.Vinstern.max_vol_constr,/RRS.S83.RSV.Vinstern.VMA,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,min
+reservoir.Vinstern.min_vol_constr,/RRS.S83.RSV.Vinstern.VMI,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,max
+reservoir.Vinstern.start_head,/Scenario/CPS.Vinstern.RMOH,[],,,,START,
+reservoir.Vinstern.tactical_cost_max,/Lågen/Magasin/Vinstern-taktisk-max-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Vinstern.tactical_cost_min,/Lågen/Magasin/Vinstern-taktisk-min-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Vinstern.tactical_limit_max,/Lågen/Magasin/Vinstern-taktisk-max-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Vinstern.tactical_limit_min,/Lågen/Magasin/Vinstern-taktisk-min-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Øyangen.inflow,/Lågen/Hydmet/Øyangen-tilsig-prog-m3s-1h-v,[],,,,RANGE,mean
+reservoir.Øyangen.max_vol_constr,/RRS.S83.RSV.Øyangen.VMA,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,min
+reservoir.Øyangen.min_vol_constr,/RRS.S83.RSV.Øyangen.VMI,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,max
+reservoir.Øyangen.start_head,/Scenario/CPS.Øyangen.RMOH,[],,,,START,
+reservoir.Øyangen.tactical_cost_max,/Lågen/Magasin/Øyangen-taktisk-max-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Øyangen.tactical_cost_min,/Lågen/Magasin/Øyangen-taktisk-min-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Øyangen.tactical_limit_max,/Lågen/Magasin/Øyangen-taktisk-max-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Øyangen.tactical_limit_min,/Lågen/Magasin/Øyangen-taktisk-min-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean

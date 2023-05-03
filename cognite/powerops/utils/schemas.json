@@ -1,0 +1,300 @@
+[
+    // Labels: all PowerOps Labels used
+    {
+        "externalId": "string",
+        "name": "string"
+    },
+    // Asset: PowerOps hierarchy levels
+    {
+        "externalId": "string", // e.g. "watercourses"
+        "name": "string", // e.g. "Watercourses"
+        "description": "string",
+        "parentExternalId": "string" // "power_ops"
+    },
+    // Asset: GlobalConfiguration
+    {
+        "externalId": "string",
+        "name": "string",
+        "description": "string",
+        "parentExternalId": "string",
+        "metadata": {
+            "shop_service_url": "string",
+            "organization_subdomain": "string",
+            "customer": "string",
+            "tenant_id": "string"
+        }
+    },
+    // Asset: PriceArea
+    {
+        "externalId": "string", // "price_area_<name>"
+        "name": "string", // "name"
+        "parentExternalId": "string", // "price_areas"
+        "labels": "Label" // "price_area"
+    },
+    // Asset: Watercourse
+    {
+        "externalId": "string", // "watercourse_<name>"
+        "name": "string", // "name"
+        "parentExternalId": "string", // "watercourses"
+        "labels": "Label" // "watercourse"
+    },
+    // Asset: Plant
+    {
+        "externalId": "string", // "plant_<name>"
+        "name": "string", // "name"
+        "parentExternalId": "string", // "plants"
+        "labels": "Label", // "plant"
+        "metadata": {
+            "display_name": "string",
+            "ordering": "int"
+        }
+    },
+    // Relationship: PriceArea to Plant
+    {
+        "externalId": "string", // "<source externalId>.<target externalId>"
+        "sourceType": "Asset", // PriceArea
+        "targetType": "Asset", // Plant
+        "sourceExternalId": "string",
+        "targetExternalId": "string",
+        "labels": "Label" // "relationship_to.plant"
+    },
+    // Relationship: PriceArea to Watercourse
+    {
+        "externalId": "string", // "<source externalId>.<target externalId>"
+        "sourceType": "Asset", // PriceArea
+        "targetType": "Asset", // Watercourse
+        "sourceExternalId": "string",
+        "targetExternalId": "string",
+        "labels": "Label" // "relationship_to.watercourse"
+    },
+    // Relationship: Watercourse to Plant
+    {
+        "externalId": "string", // "<source externalId>.<target externalId>"
+        "sourceType": "Asset", // Watercourse
+        "targetType": "Asset", // Plant
+        "sourceExternalId": "string",
+        "targetExternalId": "string",
+        "labels": "Label" // "relationship_to.plant"
+    },
+    // Relationship: Watercourse to Production Obligation
+    {
+        "externalId": "string", // "<source externalId>.<target externalId>"
+        "sourceType": "Asset", // Watercourse
+        "targetType": "TimeSeries",
+        "sourceExternalId": "string",
+        "targetExternalId": "string",
+        "labels": "Label" // "relationship_to.production_obligation_time_series"
+    },
+    // Relationship: PriceArea to DayaheadPrice
+    {
+        "externalId": "string", // "<source externalId>.<target externalId>"
+        "sourceType": "Asset", // PriceArea
+        "targetType": "TimeSeries",
+        "sourceExternalId": "string",
+        "targetExternalId": "string",
+        "labels": "Label" // "relationship_to.dayahead_price_time_series"
+    },
+    // File: Model
+    {
+        "externalId": "string", // "SHOP_<watercourse>_model"
+        "mimeType": "string", // "text/plain"
+        "owerwrite": "bool",
+        "metadata": {
+            "shop:type": "string", // "case"
+            "shop:watercourse": "string" // "<watercourse name>"
+        }
+    },
+    // File: Commands
+    {
+        "externalId": "string", // "SHOP_<watercourse>_commands"
+        "mimeType": "string", // "text/plain"
+        "owerwrite": "bool",
+        "metadata": {
+            "shop:type": "string", // "case"
+            "shop:watercourse": "string" // "<watercourse name>"
+        }
+    },
+    // File: Extra data
+    {
+        "externalId": "string", // "SHOP_<watercourse>_extra_data"
+        "mimeType": "string", // "text/plain"
+        "owerwrite": "bool",
+        "metadata": {
+            "shop:type": "string", // "extra_data"
+            "shop:watercourse": "string" // "<watercourse name>"
+        }
+    },
+    // File: Water value cut file reservoir mapping
+    {
+        "externalId": "string", // "SHOP_<watercourse>_water_value_cut_file"
+        "mimeType": "string", // "text/plain"
+        "owerwrite": "bool",
+        "metadata": {
+            "shop:type": "string", // "water_value_cut_file"
+            "shop:watercourse": "string" // "<watercourse name>"
+        }
+    },
+    // Sequence: ShopOutputDefinition
+    {
+        "externalId": "string", // "SHOP_<watercourse>_output_definition"
+        "name": "string", // "SHOP <watercourse> output definition"
+        "description": "string", // "Defining which SHOP results to output to CDF (as time series)"
+        "metadata": {
+            "shop:type": "string", // "output_definition"
+            "shop:watercourse": "string" // "<watercourse name>"
+        },
+        "columnDefinition": [
+            {
+                "valueType": "STRING",
+                "externalId": "shop_object_type"
+            },
+            {
+                "valueType": "STRING",
+                "externalId": "shop_attribute_name"
+            },
+            {
+                "valueType": "STRING",
+                "externalId": "cdf_attribute_name"
+            },
+            {
+                "valueType": "STRING",
+                "externalId": "unit"
+            },
+            {
+                "valueType": "STRING",
+                "externalId": "is_step"
+            }
+        ]
+    },
+    // Sequence: TimeSeriesMapping (SHOP time series mapping (base, incrementa, and rkom incremental))
+    {
+        "externalId": "string", // "SHOP_<watercourse>_base_mapping"
+        "name": "string", // "SHOP <watercourse> base mapping"
+        "description": "string", // "Mapping between SHOP paths and CDF TimeSeries"
+        "metadata": {
+            "shop:type": "string", // "base_mapping" OR "incremental_mapping" OR "rkom_incremental_mapping"
+            "shop:watercourse": "string", // "<watercourse name>"
+            "bid:scenario_name": "string", // "<price scenario name>" (if incremental_mapping or rkom_incremental_mapping)
+            "bid:reserve_volume": "string" // "<reserve volume>" (if rkom_incremental_mapping)
+        },
+        "columnDefinition": [
+            {
+                "valueType": "STRING",
+                "externalId": "shop_model_path"
+            },
+            {
+                "valueType": "STRING",
+                "externalId": "time_series_external_id"
+            },
+            {
+                "valueType": "STRING",
+                "externalId": "transformations"
+            },
+            {
+                "valueType": "STRING",
+                "externalId": "transformations1"
+            },
+            {
+                "valueType": "STRING",
+                "externalId": "transformations2"
+            },
+            {
+                "valueType": "STRING",
+                "externalId": "transformations3"
+            },
+            {
+                "valueType": "STRING",
+                "externalId": "retrieve"
+            },
+            {
+                "valueType": "STRING",
+                "externalId": "aggregation"
+            }
+        ]
+    },
+    // Asset: MarketConfig (DayAhead)
+    {
+        "externalId": "string",
+        "name": "string",
+        "parentExternalId": "string", // "market_configurations"
+        "metadata": {
+            "min_price": "float",
+            "max_price": "float",
+            "timezone": "string",
+            "time_unit": "string",
+            "tick_size": "float",
+            "trade_lot": "float",
+            "price_steps": "int"
+        },
+        "labels": "Label" // "market"
+    },
+    // Asset: BenchmarkingConfig
+    {
+        "externalId": "string", // "POWEROPS_dayahead_bidding_benchmarking_config"
+        "name": "string", // "Benchmarking config DA"
+        "description": "string", // "Configuration for benchmarking of day-ahead bidding"
+        "parentExternalId": "string", // "benchmarking_configurations"
+        "metadata": {
+            "bid:date": "string", // RelativeTime
+            "shop:starttime": "string", // RelativeTime
+            "shop:endtime": "string", // RelativeTime
+            "bid:market_config_external_id": "string", // MarketConfig
+            "benchmark:production_plan_time_series": "string" // Dict[str, List[str]] {"<watercourse>": ["<TimeSeries externalId>"]}
+        },
+        "labels": "Label" // "dayahead_bidding_benchmarking_config"
+    },
+    // Asset: BidProcessConfig
+    {
+        "externalId": "string", // "POWEROPS_bid_process_configuration_<config name>"
+        "name": "string", // "Bid process configuration <config name>"
+        "description": "string", // "Bid process configuration defining how to run a bid matrix generation process"
+        "parentExternalId": "string", // "bid_process_configurations"
+        "metadata": {
+            "bid:bid_process_configuration_name": "string", // "<config name>"
+            "bid:bid_matrix_generator_config_external_id": "string", // "POWEROPS_bid_matrix_generator_config_<config name>",
+            "bid:market_config_external_id": "string",
+            "bid:price_scenarios": "Dict", // {"<scenario name>": "<scenario time series external id>"}
+            "bid:main_scenario": "string", // "<scenario time series external id>",
+            "bid:date": "string", // RelativeTime
+            "shop:starttime": "string", // RelativeTime
+            "shop:endtime": "string", // RelativeTime
+            "bid:price_area": "string" // "<price area external id>",
+        },
+        "labels": "Label" // "bid_process_configuration"
+    },
+    // Asset: RkomMarketConfig
+    {
+        "externalId": "string", // "market_configuration_statnett_rkom_weekly"
+        "name": "string", // "RKOM weekly (Statnett)"
+        "parentExternalId": "string", // "market_configurations"
+        "metadata": {
+            "timezone": "string", // "Europe/Oslo"
+            "start_of_week": "int" // 1 = Monday
+        },
+        "labels": "Label" // "market"
+    },
+    // Asset: RkomProcessConfig
+    {
+        "externalId": "string", // "POWEROPS_<config name>"
+        "name": "string", // "<config name>"
+        "description": "string", // "RKOM bid generation config for <watercourse>"
+        "parentExternalId": "string", // "rkom_bid_process_configurations"
+        "metadata": {
+            "bid:watercourse": "string", // self.watercourse
+            "bid:auction": "string", // "week", "weekend"
+            "bid:block": "string", // "day", "night"
+            "bid:product": "string", // "up", "down"
+            "bid:method": "string", // "<method name>"
+            "bid:date": "string", // RelativeTime
+            "bid:price_scenarios": "List[string]", // List[<scenario name>] - how is this used?
+            "bid:reserve_scenarios": "List[string]", // e.g. [0MW, 10MW, 20MW, 30MW]
+            "bid:minimum_price": "float",
+            "bid:price_premium": "float",
+            "rkom:plants": "List[str]", // List[<Plant Asset externalId>]
+            "shop:starttime": "string", // RelativeTime
+            "shop:endtime": "string", // RelativeTime
+            "timezone": "string" // "Europe/Oslo"
+        },
+        "labels": "Label" // "rkom_bid_configuration"
+    }
+]

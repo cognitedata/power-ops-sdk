@@ -1,0 +1,326 @@
+shop_model_path,time_series_external_id,transformations,transformations1,transformations2,transformations3,retrieve,aggregation
+gate.b_Beito-Øyangen_Volbufjord(97).max_flow,/RRS.S5.WTR.b_Beito-Øyangen_Volbufjor.QMA,[],,,,RANGE,min
+gate.b_Beito-Øyangen_Volbufjord(97).min_flow,/RRS.S5.WTR.b_Beito-Øyangen_Volbufjor.QMI,[],,,,RANGE,max
+gate.b_Beito-Øyangen_Volbufjord(97).schedule_flag,/Begna/Magasin/Beitoøyangen-tappeflagg-bp,"[{""transformation"": ""GATE_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+gate.b_Beito-Øyangen_Volbufjord(97).schedule_m3s,/Begna/Magasin/Beitoøyangen-tappeluke-m3s,[],,,,RANGE,first
+gate.b_Dokkfløy_TORP-KP(45).max_flow,/RRS.S4.WTR.b_Dokkfløy_TORP-KP.QMA,[],,,,RANGE,min
+gate.b_Dokkfløy_TORP-KP(45).min_flow,/RRS.S4.WTR.b_Dokkfløy_TORP-KP.QMI,[],,,,RANGE,max
+gate.b_Ferisfjorden_Strandefjord-KP(101).max_flow,/RRS.S5.WTR.b_Ferisfjorden_Strandefjo.QMA,[],,,,RANGE,min
+gate.b_Ferisfjorden_Strandefjord-KP(101).min_flow,/RRS.S5.WTR.b_Ferisfjorden_Strandefjo.QMI,[],,,,RANGE,max
+gate.b_Fleinsendin_Raudøla-KP(142).max_flow,/RRS.S5.WTR.b_Fleinsendin_Raudøla-KP.QMA,[],,,,RANGE,min
+gate.b_Fleinsendin_Raudøla-KP(142).min_flow,/RRS.S5.WTR.b_Fleinsendin_Raudøla-KP.QMI,[],,,,RANGE,max
+gate.b_Fleinsendin_Raudøla-KP(142).schedule_flag,/Begna/Magasin/Fleinsendin-tappeflagg-bp,"[{""transformation"": ""GATE_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+gate.b_Fleinsendin_Raudøla-KP(142).schedule_m3s,/Begna/Magasin/Fleinsendin-tappeluke-m3s,[],,,,RANGE,first
+gate.b_Kjøljua_DOKK-KP(1004).max_flow,/RRS.S4.WTR.b_Kjøljua_DOKK-KP.QMA,[],,,,RANGE,min
+gate.b_Kjøljua_DOKK-KP(1004).min_flow,/RRS.S4.WTR.b_Kjøljua_DOKK-KP.QMI,[],,,,RANGE,max
+gate.b_Kjøljua_DOKK-KP(1004).schedule_flag,/Dokka/Magasin/Kjøljua-L1-tappeluke-planflagg,"[{""transformation"": ""GATE_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+gate.b_Kjøljua_DOKK-KP(1004).schedule_m3s,/Dokka/Magasin/Kjøljua-L1-tappeluke-m3s,[],,,,RANGE,first
+gate.b_Kjøljua_DOKK-KP(1004)_L2.max_flow,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 20}}]",,,,,min
+gate.b_Kjøljua_DOKK-KP(1004)_L2.schedule_flag,/Dokka/Magasin/Kjøljua-L2-tappeluke-planflagg,"[{""transformation"": ""GATE_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+gate.b_Kjøljua_DOKK-KP(1004)_L2.schedule_m3s,/Dokka/Magasin/Kjøljua-L2-tappeluke-m3s,[],,,,RANGE,first
+gate.b_Strandefjord_Fløafjord-KP(104).max_flow,/RRS.S5.WTR.b_Strandefjord_Fløafjord-.QMA,[],,,,RANGE,min
+gate.b_Strandefjord_Fløafjord-KP(104).min_flow,/RRS.S5.WTR.b_Strandefjord_Fløafjord-.QMI,[],,,,RANGE,max
+gate.b_Strandefjord_Fløafjord-KP(104).schedule_flag,/Begna/Magasin/Strandefjord-tappeflagg-bp,"[{""transformation"": ""GATE_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+gate.b_Strandefjord_Fløafjord-KP(104).schedule_m3s,/Begna/Magasin/Strandefjord-tappeluke-m3s,[],,,,RANGE,first
+gate.f_Beito-Øyangen_Volbufjord(211).max_flow,/RRS.S5.WTR.f_Beito-Øyangen_Volbufjor.QMA,[],,,,RANGE,min
+gate.f_Beito-Øyangen_Volbufjord(211).min_flow,/RRS.S5.WTR.f_Beito-Øyangen_Volbufjor.QMI,[],,,,RANGE,max
+gate.f_Dokkfløy_TORP-KP(39).max_flow,/RRS.S4.WTR.f_Dokkfløy_TORP-KP.QMA,[],,,,RANGE,min
+gate.f_Dokkfløy_TORP-KP(39).min_flow,/RRS.S4.WTR.f_Dokkfløy_TORP-KP.QMI,[],,,,RANGE,max
+gate.f_Fleinsendin_Raudøla-KP(210).max_flow,/RRS.S5.WTR.f_Fleinsendin_Raudøla-KP.QMA,[],,,,RANGE,min
+gate.f_Fleinsendin_Raudøla-KP(210).min_flow,/RRS.S5.WTR.f_Fleinsendin_Raudøla-KP.QMI,[],,,,RANGE,max
+gate.f_Kjøljua_DOKK-KP(1005).max_flow,/RRS.S4.WTR.f_Kjøljua_DOKK-KP.QMA,[],,,,RANGE,min
+gate.f_Kjøljua_DOKK-KP(1005).min_flow,/RRS.S4.WTR.f_Kjøljua_DOKK-KP.QMI,[],,,,RANGE,max
+gate.f_Olevatn_Fleinsendin(208).max_flow,/RRS.S5.WTR.f_Olevatn_Fleinsendin.QMA,[],,,,RANGE,min
+gate.f_Olevatn_Fleinsendin(208).min_flow,/RRS.S5.WTR.f_Olevatn_Fleinsendin.QMI,[],,,,RANGE,max
+gate.f_Rysntjern_Slidrefjord(105).max_flow,/RRS.S5.WTR.f_Rysntjern_Slidrefjord.QMA,[],,,,RANGE,min
+gate.f_Rysntjern_Slidrefjord(105).min_flow,/RRS.S5.WTR.f_Rysntjern_Slidrefjord.QMI,[],,,,RANGE,max
+gate.f_Sendebotntjern_Fleinsendin(209).max_flow,/RRS.S5.WTR.f_Sendebotntjern_Fleinsen.QMA,[],,,,RANGE,min
+gate.f_Sendebotntjern_Fleinsendin(209).min_flow,/RRS.S5.WTR.f_Sendebotntjern_Fleinsen.QMI,[],,,,RANGE,max
+gate.f_Slidrefjord_Ferisfjorden(215).max_flow,/RRS.S5.WTR.f_Slidrefjord_Ferisfjorde.QMA,[],,,,RANGE,min
+gate.f_Slidrefjord_Ferisfjorden(215).min_flow,/RRS.S5.WTR.f_Slidrefjord_Ferisfjorde.QMI,[],,,,RANGE,max
+gate.f_Steinbusjøen_Strandavatn-KP(213).max_flow,/RRS.S5.WTR.f_Steinbusjøen_Strandavat.QMA,[],,,,RANGE,min
+gate.f_Steinbusjøen_Strandavatn-KP(213).min_flow,/RRS.S5.WTR.f_Steinbusjøen_Strandavat.QMI,[],,,,RANGE,max
+gate.f_Strandefjord_Fløafjord-KP(216).max_flow,/RRS.S5.WTR.f_Strandefjord_Fløafjord-.QMA,[],,,,RANGE,min
+gate.f_Strandefjord_Fløafjord-KP(216).min_flow,/RRS.S5.WTR.f_Strandefjord_Fløafjord-.QMI,[],,,,RANGE,max
+gate.f_Utrovatn_Strandavatn-KP(214).max_flow,/RRS.S5.WTR.f_Utrovatn_Strandavatn-KP.QMA,[],,,,RANGE,min
+gate.f_Utrovatn_Strandavatn-KP(214).min_flow,/RRS.S5.WTR.f_Utrovatn_Strandavatn-KP.QMI,[],,,,RANGE,max
+gate.f_Vangsmjøsa_Slidrefjord(217).max_flow,/RRS.S5.WTR.f_Vangsmjøsa_Slidrefjord.QMA,[],,,,RANGE,min
+gate.f_Vangsmjøsa_Slidrefjord(217).min_flow,/RRS.S5.WTR.f_Vangsmjøsa_Slidrefjord.QMI,[],,,,RANGE,max
+gate.f_Volbufjord_Strandefjord(212).max_flow,/RRS.S5.WTR.f_Volbufjord_Strandefjord.QMA,[],,,,RANGE,min
+gate.f_Volbufjord_Strandefjord(212).min_flow,/RRS.S5.WTR.f_Volbufjord_Strandefjord.QMI,[],,,,RANGE,max
+gate.w_Olevatn_Fleinsendin(90).max_flow,/RRS.S5.WTR.w_Olevatn_Fleinsendin.QMA,[],,,,RANGE,min
+gate.w_Olevatn_Fleinsendin(90).min_flow,/RRS.S5.WTR.w_Olevatn_Fleinsendin.QMI,[],,,,RANGE,max
+gate.w_Olevatn_Fleinsendin(90).schedule_flag,/Begna/Magasin/Olevatn-tappeflagg-bp,"[{""transformation"": ""GATE_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+gate.w_Olevatn_Fleinsendin(90).schedule_m3s,/Begna/Magasin/Olevatn-tappeluke-m3s,[],,,,RANGE,first
+gate.w_Rysntjern_Olevatn(89).max_flow,/RRS.S5.WTR.w_Rysntjern_Olevatn.QMA,[],,,,RANGE,min
+gate.w_Rysntjern_Olevatn(89).min_flow,/RRS.S5.WTR.w_Rysntjern_Olevatn.QMI,[],,,,RANGE,max
+gate.w_Rysntjern_Olevatn(89).schedule_flag,/Begna/Magasin/Rysntjern-tappeflagg-bp,"[{""transformation"": ""GATE_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+gate.w_Rysntjern_Olevatn(89).schedule_m3s,/Begna/Magasin/Rysntjern-tappeluke-m3s,[],,,,RANGE,first
+gate.w_Sendebotntjern_Fleinsendin(91).max_flow,/RRS.S5.WTR.w_Sendebotntjern_Fleinsen.QMA,[],,,,RANGE,min
+gate.w_Sendebotntjern_Fleinsendin(91).min_flow,/RRS.S5.WTR.w_Sendebotntjern_Fleinsen.QMI,[],,,,RANGE,max
+gate.w_Sendebotntjern_Fleinsendin(91).schedule_flag,/Begna/Magasin/Sendebotntjern-tappeflagg-bp,"[{""transformation"": ""GATE_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+gate.w_Sendebotntjern_Fleinsendin(91).schedule_m3s,/Begna/Magasin/Sendebotntjern-tappeluke-m3s,[],,,,RANGE,first
+gate.w_Slidrefjord_Ferisfjorden(69).max_flow,/RRS.S5.WTR.w_Slidrefjord_Ferisfjorde.QMA,[],,,,RANGE,min
+gate.w_Slidrefjord_Ferisfjorden(69).min_flow,/RRS.S5.WTR.w_Slidrefjord_Ferisfjorde.QMI,[],,,,RANGE,max
+gate.w_Slidrefjord_Ferisfjorden(69).schedule_flag,/Begna/Magasin/Slidrefjord-tappeflagg-bp,"[{""transformation"": ""GATE_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+gate.w_Slidrefjord_Ferisfjorden(69).schedule_m3s,/Begna/Magasin/Slidrefjord-tappeluke-m3s,[],,,,RANGE,first
+gate.w_Utrovatn_Stranavatn-KP(61).max_flow,/RRS.S5.WTR.w_Utrovatn_Stranavatn-KP.QMA,[],,,,RANGE,min
+gate.w_Utrovatn_Stranavatn-KP(61).min_flow,/RRS.S5.WTR.w_Utrovatn_Stranavatn-KP.QMI,[],,,,RANGE,max
+gate.w_Utrovatn_Stranavatn-KP(61).schedule_flag,/Begna/Magasin/Utrovatn-tappeflagg-bp,"[{""transformation"": ""GATE_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+gate.w_Utrovatn_Stranavatn-KP(61).schedule_m3s,/Begna/Magasin/Utrovatn-tappeluke-m3s,[],,,,RANGE,first
+gate.w_Vangsmjøsa_Slidrefjord(68).max_flow,/RRS.S5.WTR.w_Vangsmjøsa_Slidrefjord.QMA,[],,,,RANGE,min
+gate.w_Vangsmjøsa_Slidrefjord(68).min_flow,/RRS.S5.WTR.w_Vangsmjøsa_Slidrefjord.QMI,[],,,,RANGE,max
+gate.w_Vangsmjøsa_Slidrefjord(68).schedule_flag,/Begna/Magasin/Vangsmjøsa-tappeflagg-bp,"[{""transformation"": ""GATE_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+gate.w_Vangsmjøsa_Slidrefjord(68).schedule_m3s,/Begna/Magasin/Vangsmjøsa-tappeluke-m3s,[],,,,RANGE,first
+gate.w_Volbufjord_Strandefjord(98).max_flow,/RRS.S5.WTR.w_Volbufjord_Strandefjord.QMA,[],,,,RANGE,min
+gate.w_Volbufjord_Strandefjord(98).min_flow,/RRS.S5.WTR.w_Volbufjord_Strandefjord.QMI,[],,,,RANGE,max
+gate.w_Volbufjord_Strandefjord(98).schedule_flag,/Begna/Magasin/Volbufjord-tappeflagg-bp,"[{""transformation"": ""GATE_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+gate.w_Volbufjord_Strandefjord(98).schedule_m3s,/Begna/Magasin/Volbufjord-tappeluke-m3s,[],,,,RANGE,first
+generator.DOKK(28)_G1.committed_flag,/Dokka/Kraftverk/Dokk-G1-flagg-commit-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,first
+generator.DOKK(28)_G1.committed_in,/Dokka/Kraftverk/Dokk-G1-flagg-commit-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,
+generator.DOKK(28)_G1.initial_state,/Scenario/CPS.DOKK.G1.MW,"[{""transformation"": ""TO_BOOL"", ""kwargs"": null}]",,,,START,
+generator.DOKK(28)_G1.maintenance_flag,/RRS.S4.Gunit.DOKK G1.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+generator.DOKK(28)_G1.max_p_constr,/RRS.S4.Gunit.DOKK G1.PMA,[],,,,RANGE,min
+generator.DOKK(28)_G1.min_p_constr,/RRS.S4.Gunit.DOKK G1.PMI,[],,,,RANGE,max
+generator.DOKK(28)_G1.production_schedule_flag,/Dokka/Kraftverk/Dokk-G1-flagg-commit-bp,"[{""transformation"": ""GENERATOR_PRODUCTION_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+generator.DOKK(28)_G1.startcost,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 332}}]",,,,,
+generator.DOKK(28)_G2.committed_flag,/Dokka/Kraftverk/Dokk-G2-flagg-commit-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,first
+generator.DOKK(28)_G2.committed_in,/Dokka/Kraftverk/Dokk-G2-flagg-commit-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,
+generator.DOKK(28)_G2.initial_state,/Scenario/CPS.DOKK.G2.MW,"[{""transformation"": ""TO_BOOL"", ""kwargs"": null}]",,,,START,
+generator.DOKK(28)_G2.maintenance_flag,/RRS.S4.Gunit.DOKK G2.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+generator.DOKK(28)_G2.max_p_constr,/RRS.S4.Gunit.DOKK G2.PMA,[],,,,RANGE,min
+generator.DOKK(28)_G2.min_p_constr,/RRS.S4.Gunit.DOKK G2.PMI,[],,,,RANGE,max
+generator.DOKK(28)_G2.production_schedule_flag,/Dokka/Kraftverk/Dokk-G2-flagg-commit-bp,"[{""transformation"": ""GENERATOR_PRODUCTION_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+generator.DOKK(28)_G2.startcost,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 324}}]",,,,,
+generator.FASL(73)_G1.committed_flag,/Begna/Kraftverk/FASL-flagg-commit-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,first
+generator.FASL(73)_G1.committed_in,/Begna/Kraftverk/FASL-flagg-commit-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,
+generator.FASL(73)_G1.initial_state,/Scenario/CPS.FASL.G1.MW,"[{""transformation"": ""TO_BOOL"", ""kwargs"": null}]",,,,START,
+generator.FASL(73)_G1.maintenance_flag,/RRS.S5.Gunit.FASL G1.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+generator.FASL(73)_G1.max_p_constr,/RRS.S5.Gunit.FASL G1.PMA,[],,,,RANGE,min
+generator.FASL(73)_G1.min_p_constr,/RRS.S5.Gunit.FASL G1.PMI,[],,,,RANGE,max
+generator.FASL(73)_G1.production_schedule_flag,/Begna/Kraftverk/FASL-flagg-commit-bp,"[{""transformation"": ""GENERATOR_PRODUCTION_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+generator.FASL(73)_G1.startcost,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 491}}]",,,,,
+generator.FOSS(65)_G1.initial_state,/Scenario/CPS.FOSS.G1.MW,"[{""transformation"": ""TO_BOOL"", ""kwargs"": null}]",,,,START,
+generator.FOSS(65)_G1.maintenance_flag,/RRS.S5.Gunit.FOSS G1.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+generator.FOSS(65)_G1.max_p_constr,/RRS.S5.Gunit.FOSS G1.PMA,[],,,,RANGE,min
+generator.FOSS(65)_G1.min_p_constr,/RRS.S5.Gunit.FOSS G1.PMI,[],,,,RANGE,max
+generator.FOSS(65)_G1.startcost,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 458}}]",,,,,
+generator.KALV(83)_G1.committed_flag,/Begna/Kraftverk/KALV-flagg-commit-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,first
+generator.KALV(83)_G1.committed_in,/Begna/Kraftverk/KALV-flagg-commit-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,
+generator.KALV(83)_G1.initial_state,/Scenario/CPS.KALV.G1.MW,"[{""transformation"": ""TO_BOOL"", ""kwargs"": null}]",,,,START,
+generator.KALV(83)_G1.maintenance_flag,/RRS.S5.Gunit.KALV G1.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+generator.KALV(83)_G1.max_p_constr,/RRS.S5.Gunit.KALV G1.PMA,[],,,,RANGE,min
+generator.KALV(83)_G1.min_p_constr,/RRS.S5.Gunit.KALV G1.PMI,[],,,,RANGE,max
+generator.KALV(83)_G1.production_schedule_flag,/Begna/Kraftverk/KALV-flagg-commit-bp,"[{""transformation"": ""GENERATOR_PRODUCTION_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+generator.KALV(83)_G1.startcost,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 491}}]",,,,,
+generator.LOME(86)_G1.committed_flag,/Begna/Kraftverk/LOME-flagg-commit-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,first
+generator.LOME(86)_G1.committed_in,/Begna/Kraftverk/LOME-flagg-commit-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,
+generator.LOME(86)_G1.initial_state,/Scenario/CPS.LOME.G1.MW,"[{""transformation"": ""TO_BOOL"", ""kwargs"": null}]",,,,START,
+generator.LOME(86)_G1.maintenance_flag,/RRS.S5.Gunit.LOME G1.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+generator.LOME(86)_G1.max_p_constr,/RRS.S5.Gunit.LOME G1.PMA,[],,,,RANGE,min
+generator.LOME(86)_G1.min_p_constr,/RRS.S5.Gunit.LOME G1.PMI,[],,,,RANGE,max
+generator.LOME(86)_G1.production_schedule_flag,/Begna/Kraftverk/LOME-flagg-commit-bp,"[{""transformation"": ""GENERATOR_PRODUCTION_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+generator.LOME(86)_G1.startcost,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 394}}]",,,,,
+generator.TORP(24)_G1.committed_flag,/Dokka/Kraftverk/TORP-G1-Planflagg-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,first
+generator.TORP(24)_G1.committed_in,/Dokka/Kraftverk/TORP-G1-Planflagg-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,
+generator.TORP(24)_G1.initial_state,/Scenario/CPS.TORP.G1.MW,"[{""transformation"": ""TO_BOOL"", ""kwargs"": null}]",,,,START,
+generator.TORP(24)_G1.maintenance_flag,/RRS.S4.Gunit.TORP G1.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+generator.TORP(24)_G1.max_p_constr,/RRS.S4.Gunit.TORP G1.PMA,[],,,,RANGE,min
+generator.TORP(24)_G1.min_p_constr,/RRS.S4.Gunit.TORP G1.PMI,[],,,,RANGE,max
+generator.TORP(24)_G1.production_schedule,/Dokka/Kraftverk/TORP-G1-Plan-MW-bp,[],,,,RANGE,
+generator.TORP(24)_G1.production_schedule_flag,/Dokka/Kraftverk/TORP-G1-Planflagg-bp,"[{""transformation"": ""GENERATOR_PRODUCTION_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+generator.TORP(24)_G1.startcost,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 430}}]",,,,,
+generator.TORP(24)_G2.committed_flag,/Dokka/Kraftverk/TORP-G2-Planflagg-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,first
+generator.TORP(24)_G2.committed_in,/Dokka/Kraftverk/TORP-G2-Planflagg-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,
+generator.TORP(24)_G2.initial_state,/Scenario/CPS.TORP.G2.MW,"[{""transformation"": ""TO_BOOL"", ""kwargs"": null}]",,,,START,
+generator.TORP(24)_G2.maintenance_flag,/RRS.S4.Gunit.TORP G2.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+generator.TORP(24)_G2.max_p_constr,/RRS.S4.Gunit.TORP G2.PMA,[],,,,RANGE,min
+generator.TORP(24)_G2.min_p_constr,/RRS.S4.Gunit.TORP G2.PMI,[],,,,RANGE,max
+generator.TORP(24)_G2.production_schedule,/Dokka/Kraftverk/TORP-G2-Plan-MW-bp,[],,,,RANGE,
+generator.TORP(24)_G2.production_schedule_flag,/Dokka/Kraftverk/TORP-G2-Planflagg-bp,"[{""transformation"": ""GENERATOR_PRODUCTION_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+generator.TORP(24)_G2.startcost,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 440}}]",,,,,
+generator.YLJA(54)_G1.committed_flag,/Begna/Kraftverk/YLJA-G1-Planflagg-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,first
+generator.YLJA(54)_G1.committed_in,/Begna/Kraftverk/YLJA-G1-Planflagg-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,
+generator.YLJA(54)_G1.initial_state,/Scenario/CPS.YLJA.G1.MW,"[{""transformation"": ""TO_BOOL"", ""kwargs"": null}]",,,,START,
+generator.YLJA(54)_G1.maintenance_flag,/RRS.S5.Gunit.YLJA G1.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+generator.YLJA(54)_G1.max_p_constr,/RRS.S5.Gunit.YLJA G1.PMA,[],,,,RANGE,min
+generator.YLJA(54)_G1.min_p_constr,/RRS.S5.Gunit.YLJA G1.PMI,[],,,,RANGE,max
+generator.YLJA(54)_G1.production_schedule_flag,/Begna/Kraftverk/YLJA-G1-Planflagg-bp,"[{""transformation"": ""GENERATOR_PRODUCTION_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+generator.YLJA(54)_G1.startcost,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 586}}]",,,,,
+market.1.buy_price,/Priser/P-Pris-Mix-NO1-1h,"[{""transformation"": ""ADD"", ""kwargs"": {""value"": 0.01}}]",,,,RANGE,mean
+market.1.load,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 0}}]",,,,,
+market.1.max_buy,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 1000}}]",,,,,
+market.1.max_sale,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 1000}}]",,,,,
+market.1.sale_price,/Priser/P-Pris-Mix-NO1-1h,[],,,,RANGE,mean
+plant.DOKK(28).feeding_fee,/Dokka/Kraftverk/Marginaltap-Dokka,[],,,,RANGE,mean
+plant.DOKK(28).maintenance_flag,/RRS.S4.Plant.DOKK.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+plant.DOKK(28).max_p_constr,/RRS.S4.Plant.DOKK.PMA,[],,,,RANGE,min
+plant.DOKK(28).max_q_constr,/RRS.S4.Plant.DOKK.QMA,[],,,,RANGE,min
+plant.DOKK(28).min_p_constr,/RRS.S4.Plant.DOKK.PMI,[],,,,RANGE,max
+plant.DOKK(28).mip_flag,/Dokka/Kraftverk/DOKK-MIPflagg-bp,[],,,,RANGE,first
+plant.DOKK(28).prod_area,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 1}}]",,,,,
+plant.FASL(73).feeding_fee,/Begna/Kraftverk/Marginaltap-Faslefoss,[],,,,RANGE,mean
+plant.FASL(73).maintenance_flag,/RRS.S5.Plant.FASL.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+plant.FASL(73).max_p_constr,/RRS.S5.Plant.FASL.PMA,[],,,,RANGE,min
+plant.FASL(73).max_q_constr,/RRS.S5.Plant.FASL.QMA,[],,,,RANGE,min
+plant.FASL(73).min_p_constr,/RRS.S5.Plant.FASL.PMI,[],,,,RANGE,max
+plant.FASL(73).mip_flag,/Begna/Kraftverk/FASL-MIPflagg-bp,[],,,,RANGE,first
+plant.FASL(73).prod_area,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 1}}]",,,,,
+plant.FASL(73).production_schedule,/Begna/Kraftverk/FASL-Plan-MW-bp,[],,,,RANGE,first
+plant.FASL(73).production_schedule_flag,/Begna/Kraftverk/FASL-Planflagg-FS-bp,"[{""transformation"": ""PLANT_PRODUCTION_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+plant.FOSS(65).maintenance_flag,/RRS.S5.Plant.FOSS.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+plant.FOSS(65).max_p_constr,/RRS.S5.Plant.FOSS.PMA,[],,,,RANGE,min
+plant.FOSS(65).max_q_constr,/RRS.S5.Plant.FOSS.QMA,[],,,,RANGE,min
+plant.FOSS(65).min_p_constr,/RRS.S5.Plant.FOSS.PMI,[],,,,RANGE,max
+plant.FOSS(65).mip_flag,/Begna/Kraftverk/FOSS-MIPflagg-bp,[],,,,RANGE,first
+plant.FOSS(65).prod_area,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 1}}]",,,,,
+plant.KALV(83).feeding_fee,/Begna/Kraftverk/Marginaltap-Kalvedalen,[],,,,RANGE,mean
+plant.KALV(83).maintenance_flag,/RRS.S5.Plant.KALV.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+plant.KALV(83).max_p_constr,/RRS.S5.Plant.KALV.PMA,[],,,,RANGE,min
+plant.KALV(83).max_q_constr,/RRS.S5.Plant.KALV.QMA,[],,,,RANGE,min
+plant.KALV(83).min_p_constr,/RRS.S5.Plant.KALV.PMI,[],,,,RANGE,max
+plant.KALV(83).mip_flag,/Begna/Kraftverk/KALV-MIPflagg-bp,[],,,,RANGE,first
+plant.KALV(83).prod_area,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 1}}]",,,,,
+plant.KALV(83).production_schedule,/Begna/Kraftverk/KALV-Plan-MW-bp,[],,,,RANGE,first
+plant.KALV(83).production_schedule_flag,/Begna/Kraftverk/KALV-Planflagg-FS-bp,"[{""transformation"": ""PLANT_PRODUCTION_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+plant.LOME(86).feeding_fee,/Begna/Kraftverk/Marginaltap-Lomen,[],,,,RANGE,mean
+plant.LOME(86).maintenance_flag,/RRS.S5.Plant.LOME.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+plant.LOME(86).max_p_constr,/RRS.S5.Plant.LOME.PMA,[],,,,RANGE,min
+plant.LOME(86).max_q_constr,/RRS.S5.Plant.LOME.QMA,[],,,,RANGE,min
+plant.LOME(86).min_p_constr,/RRS.S5.Plant.LOME.PMI,[],,,,RANGE,max
+plant.LOME(86).mip_flag,/Begna/Kraftverk/LOME-MIPflagg-bp,[],,,,RANGE,first
+plant.LOME(86).prod_area,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 1}}]",,,,,
+plant.LOME(86).production_schedule,/Begna/Kraftverk/LOME-Plan-MW-bp,[],,,,RANGE,first
+plant.LOME(86).production_schedule_flag,/Begna/Kraftverk/LOME-Planflagg-FS-bp,"[{""transformation"": ""PLANT_PRODUCTION_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+plant.TORP(24).feeding_fee,/Dokka/Kraftverk/Marginaltap-Torpa,[],,,,RANGE,mean
+plant.TORP(24).maintenance_flag,/RRS.S4.Plant.TORP.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+plant.TORP(24).max_p_constr,/RRS.S4.Plant.TORP.PMA,[],,,,RANGE,min
+plant.TORP(24).max_q_constr,/RRS.S4.Plant.TORP.QMA,[],,,,RANGE,min
+plant.TORP(24).min_p_constr,/RRS.S4.Plant.TORP.PMI,[],,,,RANGE,max
+plant.TORP(24).mip_flag,/Dokka/Kraftverk/TORP-MIPflagg-bp,[],,,,RANGE,first
+plant.TORP(24).prod_area,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 1}}]",,,,,
+plant.TORP(24).production_schedule_flag,/Dokka/Kraftverk/TORP-Planflagg-bp,"[{""transformation"": ""PLANT_PRODUCTION_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+plant.YLJA(54).feeding_fee,/Begna/Kraftverk/Marginaltap-Ylja,[],,,,RANGE,mean
+plant.YLJA(54).maintenance_flag,/RRS.S5.Plant.YLJA.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+plant.YLJA(54).max_p_constr,/RRS.S5.Plant.YLJA.PMA,[],,,,RANGE,min
+plant.YLJA(54).max_q_constr,/RRS.S5.Plant.YLJA.QMA,[],,,,RANGE,min
+plant.YLJA(54).min_p_constr,/RRS.S5.Plant.YLJA.PMI,[],,,,RANGE,max
+plant.YLJA(54).mip_flag,/Begna/Kraftverk/YLJA-MIPflagg-bp,[],,,,RANGE,first
+plant.YLJA(54).prod_area,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 1}}]",,,,,
+plant.YLJA(54).production_schedule,/Begna/Kraftverk/YLJA-Plan-MW-bp,[],,,,RANGE,first
+plant.YLJA(54).production_schedule_flag,/Begna/Kraftverk/YLJA-prespot-Planflagg-bp,"[{""transformation"": ""PLANT_PRODUCTION_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+reserve_group.2.rr_up_obligation,/Spottilslag/RKOM-tilslag-OE-NOB-MWh,[],,,,RANGE,max
+reserve_group.3.fcr_n_down_obligation,/Spottilslag/LOME-FNR-førspot-MW,[],,,,RANGE,
+reserve_group.3.fcr_n_up_obligation,/Spottilslag/LOME-FNR-førspot-MW,[],,,,RANGE,
+reserve_group.4.frr_down_obligation,/Spottilslag/aFRR-ned-tilslag-YLJA-MWh,[],,,,RANGE,
+reserve_group.4.frr_up_obligation,/Spottilslag/aFRR-opp-tilslag-YLJA-MWh,[],,,,RANGE,
+reservoir.Beito-Øyangen.inflow,/PROD/Begna/Beito-Øyangen/Q-Tilsig-prog-1h,"[{""transformation"": ""ADD_WATER_IN_TRANSIT"", ""kwargs"": {""external_id"": ""/Begna/Magasin/Fleinsendin-tappeluke-m3s"", ""gate_name"": ""b_Fleinsendin_Raudøla-KP(142)""}}]",,,,RANGE,mean
+reservoir.Beito-Øyangen.start_head,/Scenario/CPS.Beito-Øyangen.RMOH,[],,,,START,
+reservoir.Beito-Øyangen.tactical_cost_max,/Begna/Magasin/BeitoØyangen-taktisk-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Beito-Øyangen.tactical_cost_min,/Begna/Magasin/BeitoØyangen-taktisk-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Beito-Øyangen.tactical_limit_max,/Begna/Magasin/BeitoØyangen-taktisk-max-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Beito-Øyangen.tactical_limit_min,/Begna/Magasin/BeitoØyangen-taktisk-min-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Dokkfløy.inflow,/PROD/Dokka/Dokkfløy/Q-Tilsig-prog-1h,[],,,,RANGE,mean
+reservoir.Dokkfløy.max_vol_constr,/RRS.S4.RSV.Dokkfløy.VMA,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,min
+reservoir.Dokkfløy.min_vol_constr,/RRS.S4.RSV.Dokkfløy.VMI,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,max
+reservoir.Dokkfløy.start_head,/Scenario/CPS.Dokkfløy.RMOH,[],,,,START,
+reservoir.Dokkfløy.tactical_cost_max,/Dokka/Magasin/Dokkfløy-taktisk-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Dokkfløy.tactical_cost_min,/Dokka/Magasin/Dokkfløy-taktisk-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Dokkfløy.tactical_limit_max,/Dokka/Magasin/Dokkfløy-taktisk-max-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Dokkfløy.tactical_limit_min,/Dokka/Magasin/Dokkfløy-taktisk-min-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Ferisfjorden.inflow,/PROD/Begna/Ferisfjorden/Q-Tilsig-prog-1d,[],,,,RANGE,mean
+reservoir.Ferisfjorden.max_vol_constr,/RRS.S5.RSV.Ferisfjorden.VMA,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,min
+reservoir.Ferisfjorden.min_vol_constr,/RRS.S5.RSV.Ferisfjorden.VMI,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,max
+reservoir.Ferisfjorden.start_head,/Scenario/CPS.Ferisfjorden.RMOH,[],,,,START,
+reservoir.Ferisfjorden.tactical_cost_max,/Begna/Magasin/Ferisfjorden-taktisk-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Ferisfjorden.tactical_cost_min,/Begna/Magasin/Ferisfjorden-taktisk-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Ferisfjorden.tactical_limit_max,/Begna/Magasin/Ferisfjorden-taktisk-max-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Ferisfjorden.tactical_limit_min,/Begna/Magasin/Ferisfjorden-taktisk-min-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Fleinsendin.inflow,/PROD/Begna/Fleinsendin/Q-Tilsig-prog-1h,[],,,,RANGE,mean
+reservoir.Fleinsendin.max_vol_constr,/RRS.S5.RSV.Fleinsendin.VMA,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,min
+reservoir.Fleinsendin.min_vol_constr,/RRS.S5.RSV.Fleinsendin.VMI,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,max
+reservoir.Fleinsendin.start_head,/Scenario/CPS.Fleinsendin.RMOH,[],,,,START,
+reservoir.Fleinsendin.tactical_cost_max,/Begna/Magasin/Fleinsendin-taktisk-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Fleinsendin.tactical_cost_min,/Begna/Magasin/Fleinsendin-taktisk-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Fleinsendin.tactical_limit_max,/Begna/Magasin/Fleinsendin-taktisk-max-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Fleinsendin.tactical_limit_min,/Begna/Magasin/Fleinsendin-taktisk-min-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Kjøljua.inflow,/PROD/Dokka/Kjøljua/Q-Tilsig-prog-1h,[],,,,RANGE,mean
+reservoir.Kjøljua.max_vol_constr,/RRS.S4.RSV.Kjøljua.VMA,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,min
+reservoir.Kjøljua.min_vol_constr,/RRS.S4.RSV.Kjøljua.VMI,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,max
+reservoir.Kjøljua.start_head,/Scenario/CPS.Kjøljua.RMOH,[],,,,START,
+reservoir.Kjøljua.tactical_cost_max,/Dokka/Magasin/Kjøljua-taktisk-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Kjøljua.tactical_cost_min,/Dokka/Magasin/Kjøljua-taktisk-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Kjøljua.tactical_limit_max,/Dokka/Magasin/Kjøljua-taktisk-max-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Kjøljua.tactical_limit_min,/Dokka/Magasin/Kjøljua-taktisk-min-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Olevatn.inflow,/PROD/Begna/Olevatn/Q-Tilsig-prog-1h,[],,,,RANGE,mean
+reservoir.Olevatn.max_vol_constr,/RRS.S5.RSV.Olevatn.VMA,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,min
+reservoir.Olevatn.min_vol_constr,/RRS.S5.RSV.Olevatn.VMI,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,max
+reservoir.Olevatn.start_head,/Scenario/CPS.Olevatn.RMOH,[],,,,START,
+reservoir.Olevatn.tactical_cost_max,/Begna/Magasin/Olevatn-taktisk-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Olevatn.tactical_cost_min,/Begna/Magasin/Olevatn-taktisk-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Olevatn.tactical_limit_max,/Begna/Magasin/Olevatn-taktisk-max-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Olevatn.tactical_limit_min,/Begna/Magasin/Olevatn-taktisk-min-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Rysntjern.inflow,/PROD/Begna/Rysntjern/Q-Tilsig-prog-1h,[],,,,RANGE,mean
+reservoir.Rysntjern.max_vol_constr,/RRS.S5.RSV.Rysntjern.VMA,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,min
+reservoir.Rysntjern.min_vol_constr,/RRS.S5.RSV.Rysntjern.VMI,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,max
+reservoir.Rysntjern.start_head,/Scenario/CPS.Rysntjern.RMOH,[],,,,START,
+reservoir.Rysntjern.tactical_cost_max,/Begna/Magasin/Rysntjern-taktisk-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Rysntjern.tactical_cost_min,/Begna/Magasin/Rysntjern-taktisk-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Rysntjern.tactical_limit_max,/Begna/Magasin/Rysntjern-taktisk-max-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Rysntjern.tactical_limit_min,/Begna/Magasin/Rysntjern-taktisk-min-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Sendebotntjern.inflow,/PROD/Begna/Sendebotntjern/Q-Tilsig-prog-1h,[],,,,RANGE,mean
+reservoir.Sendebotntjern.max_vol_constr,/RRS.S5.RSV.Sendebotntjern.VMA,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,min
+reservoir.Sendebotntjern.min_vol_constr,/RRS.S5.RSV.Sendebotntjern.VMI,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,max
+reservoir.Sendebotntjern.start_head,/Scenario/CPS.Sendebotntjern.RMOH,[],,,,START,
+reservoir.Sendebotntjern.tactical_cost_max,/Begna/Magasin/Sendebotntjern-taktisk-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Sendebotntjern.tactical_cost_min,/Begna/Magasin/Sendebotntjern-taktisk-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Sendebotntjern.tactical_limit_max,/Begna/Magasin/Sendebotntjern-taktisk-max-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Sendebotntjern.tactical_limit_min,/Begna/Magasin/Sendebotntjern-taktisk-min-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Slidrefjord.inflow,/PROD/Begna/Slidrefjord/Q-Tilsig-prog-1h,"[{""transformation"": ""ADD_WATER_IN_TRANSIT"", ""kwargs"": {""external_id"": ""/Begna/Magasin/Vangsmjøsa-lukesum-MIXmålt-m3s-1h-v"", ""gate_name"": ""w_Vangsmjøsa_Slidrefjord(68)""}}]",,,,RANGE,mean
+reservoir.Slidrefjord.max_vol_constr,/RRS.S5.RSV.Slidrefjord.VMA,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,min
+reservoir.Slidrefjord.min_vol_constr,/RRS.S5.RSV.Slidrefjord.VMI,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,max
+reservoir.Slidrefjord.start_head,/Scenario/CPS.Slidrefjord.RMOH,[],,,,START,
+reservoir.Slidrefjord.tactical_cost_max,/Begna/Magasin/Slidrefjord-taktisk-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Slidrefjord.tactical_cost_min,/Begna/Magasin/Slidrefjord-taktisk-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Slidrefjord.tactical_limit_max,/Begna/Magasin/Slidrefjord-taktisk-max-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Slidrefjord.tactical_limit_min,/Begna/Magasin/Slidrefjord-taktisk-min-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Steinbusjøen.inflow,/PROD/Begna/Steinbusjøen/Q-Tilsig-prog-1h,[],,,,RANGE,mean
+reservoir.Steinbusjøen.max_vol_constr,/RRS.S5.RSV.Steinbusjøen.VMA,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,min
+reservoir.Steinbusjøen.min_vol_constr,/RRS.S5.RSV.Steinbusjøen.VMI,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,max
+reservoir.Steinbusjøen.start_head,/Scenario/CPS.Steinbusjøen.RMOH,[],,,,START,
+reservoir.Steinbusjøen.tactical_cost_max,/Begna/Magasin/Steinbusjøen-taktisk-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Steinbusjøen.tactical_cost_min,/Begna/Magasin/Steinbusjøen-taktisk-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Steinbusjøen.tactical_limit_max,/Begna/Magasin/Steinbusjøen-taktisk-max-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Steinbusjøen.tactical_limit_min,/Begna/Magasin/Steinbusjøen-taktisk-min-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Strandefjord.inflow,/PROD/Begna/Strandefjord/Q-Tilsig-prog-1h,"[{""transformation"": ""ADD_WATER_IN_TRANSIT"", ""kwargs"": {""external_id"": ""/Begna/Magasin/Volbufjord-lukesum-MIXmålt-m3s-1h-v"", ""gate_name"": ""w_Volbufjord_Strandefjord(98)""}}]",,,,RANGE,mean
+reservoir.Strandefjord.max_vol_constr,/RRS.S5.RSV.Strandefjord.VMA,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,min
+reservoir.Strandefjord.min_vol_constr,/RRS.S5.RSV.Strandefjord.VMI,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,max
+reservoir.Strandefjord.start_head,/Scenario/CPS.Strandefjord.RMOH,[],,,,START,
+reservoir.Strandefjord.tactical_cost_max,/Begna/Magasin/Strandefjord-taktisk-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Strandefjord.tactical_cost_min,/Begna/Magasin/Strandefjord-taktisk-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Strandefjord.tactical_limit_max,/Begna/Magasin/Strandefjord-taktisk-max-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Strandefjord.tactical_limit_min,/Begna/Magasin/Strandefjord-taktisk-min-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Utrovatn.inflow,/PROD/Begna/Utrovatn/Q-Tilsig-prog-1h,[],,,,RANGE,mean
+reservoir.Utrovatn.max_vol_constr,/RRS.S5.RSV.Utrovatn.VMA,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,min
+reservoir.Utrovatn.min_vol_constr,/RRS.S5.RSV.Utrovatn.VMI,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,max
+reservoir.Utrovatn.start_head,/Scenario/CPS.Utrovatn.RMOH,[],,,,START,
+reservoir.Utrovatn.tactical_cost_max,/Begna/Magasin/Utrovatn-taktisk-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Utrovatn.tactical_cost_min,/Begna/Magasin/Utrovatn-taktisk-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Utrovatn.tactical_limit_max,/Begna/Magasin/Utrovatn-taktisk-max-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Utrovatn.tactical_limit_min,/Begna/Magasin/Utrovatn-taktisk-min-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Vangsmjøsa.inflow,/PROD/Begna/Vangsmjøsa/Q-Tilsig-prog-1h,[],,,,RANGE,mean
+reservoir.Vangsmjøsa.max_vol_constr,/RRS.S5.RSV.Vangsmjøsa.VMA,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,min
+reservoir.Vangsmjøsa.min_vol_constr,/RRS.S5.RSV.Vangsmjøsa.VMI,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,max
+reservoir.Vangsmjøsa.start_head,/Scenario/CPS.Vangsmjøsa.RMOH,[],,,,START,
+reservoir.Vangsmjøsa.tactical_cost_max,/Begna/Magasin/Vangsmjøsa-taktisk-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Vangsmjøsa.tactical_cost_min,/Begna/Magasin/Vangsmjøsa-taktisk-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Vangsmjøsa.tactical_limit_max,/Begna/Magasin/Vangsmjøsa-taktisk-max-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Vangsmjøsa.tactical_limit_min,/Begna/Magasin/Vangsmjøsa-taktisk-min-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Volbufjord.inflow,/PROD/Begna/Volbufjord/Q-Tilsig-prog-1h,"[{""transformation"": ""ADD_WATER_IN_TRANSIT"", ""kwargs"": {""external_id"": ""/Begna/Magasin/Beitoøyangen-lukesum-MIXmålt-m3s-1h-v"", ""gate_name"": ""b_Beito-Øyangen_Volbufjord(97)""}}]",,,,RANGE,mean
+reservoir.Volbufjord.max_vol_constr,/RRS.S5.RSV.Volbufjord.VMA,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,min
+reservoir.Volbufjord.min_vol_constr,/RRS.S5.RSV.Volbufjord.VMI,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,max
+reservoir.Volbufjord.start_head,/Scenario/CPS.Volbufjord.RMOH,[],,,,START,
+reservoir.Volbufjord.tactical_cost_max,/Begna/Magasin/Volbufjord-taktisk-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Volbufjord.tactical_cost_min,/Begna/Magasin/Volbufjord-taktisk-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Volbufjord.tactical_limit_max,/Begna/Magasin/Volbufjord-taktisk-max-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Volbufjord.tactical_limit_min,/Begna/Magasin/Volbufjord-taktisk-min-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean

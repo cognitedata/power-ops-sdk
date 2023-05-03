@@ -1,0 +1,189 @@
+shop_model_path,time_series_external_id,transformations,transformations1,transformations2,transformations3,retrieve,aggregation
+gate.b_Aursjøen_SKJÅ-KP(2994).max_flow,/RRS.S100.WTR.b_Aursjøen_SKJÅ-KP.QMA,[],,,,RANGE,min
+gate.b_Aursjøen_SKJÅ-KP(2994).min_flow,/RRS.S100.WTR.b_Aursjøen_SKJÅ-KP.QMI,[],,,,RANGE,max
+gate.b_Aursjøen_SKJÅ-KP(2994).schedule_flag,/Otta/Magasin/Aursjøen-tappeluke-planflagg,"[{""transformation"": ""GATE_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+gate.b_Aursjøen_SKJÅ-KP(2994).schedule_m3s,/Otta/Magasin/Aursjøen-tappeluke-m3s,[],,,,RANGE,first
+gate.b_Breidalsvatn_FRAM-KP(2977).max_flow,/RRS.S100.WTR.b_Breidalsvatn_FRAM-KP.QMA,[],,,,RANGE,min
+gate.b_Breidalsvatn_FRAM-KP(2977).min_flow,/RRS.S100.WTR.b_Breidalsvatn_FRAM-KP.QMI,[],,,,RANGE,max
+gate.b_Breidalsvatn_FRAM-KP(2977).schedule_flag,/Otta/Magasin/Breidalsvatn-FRAM-tappeluke-planflagg,"[{""transformation"": ""GATE_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+gate.b_Breidalsvatn_FRAM-KP(2977).schedule_m3s,/Otta/Magasin/Breidalsvatn-FRAM-tappeluke-m3s,[],,,,RANGE,first
+gate.b_Eidefossen-dam_NOTT-KP(251237).max_flow,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 1500}}]",,,,,min
+gate.b_Eidefossen-dam_NOTT-KP(251237).min_flow,/RRS.S100.WTR.b_Eidefossen-dam_NOTT-K.QMI,[],,,,RANGE,max
+gate.b_Heggebotnvatn_ØYBE-KP(2991).max_flow,/RRS.S100.WTR.b_Heggebotnvatn_ØYBE-KP.QMA,[],,,,RANGE,min
+gate.b_Heggebotnvatn_ØYBE-KP(2991).min_flow,/RRS.S100.WTR.b_Heggebotnvatn_ØYBE-KP.QMI,[],,,,RANGE,max
+gate.b_Heggebotnvatn_ØYBE-KP(2991).schedule_flag,/Otta/Magasin/Heggebotnvatn-L1-tappeluke-planflagg,"[{""transformation"": ""GATE_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+gate.b_Heggebotnvatn_ØYBE-KP(2991).schedule_m3s,/Otta/Magasin/Heggebotnvatn-L1-tappeluke-m3s,[],,,,RANGE,first
+gate.b_Raudalsvatn_FRAM-KP(2990).max_flow,/RRS.S100.WTR.b_Raudalsvatn_FRAM-KP.QMA,[],,,,RANGE,min
+gate.b_Raudalsvatn_FRAM-KP(2990).min_flow,/RRS.S100.WTR.b_Raudalsvatn_FRAM-KP.QMI,[],,,,RANGE,max
+gate.b_Raudalsvatn_FRAM-KP(2990).schedule_flag,/Otta/Magasin/Raudalsvatn-tappeluke-planflagg,"[{""transformation"": ""GATE_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+gate.b_Raudalsvatn_FRAM-KP(2990).schedule_m3s,/Otta/Magasin/Raudalsvatn-tappeluke-m3s,[],,,,RANGE,first
+gate.f_Aursjøen_SKJÅ-KP(2995).max_flow,/RRS.S100.WTR.f_Aursjøen_SKJÅ-KP.QMA,[],,,,RANGE,min
+gate.f_Aursjøen_SKJÅ-KP(2995).min_flow,/RRS.S100.WTR.f_Aursjøen_SKJÅ-KP.QMI,[],,,,RANGE,max
+gate.f_Breidalsvatn_FRAM-KP(2997).max_flow,/RRS.S100.WTR.f_Breidalsvatn_FRAM-KP.QMA,[],,,,RANGE,min
+gate.f_Breidalsvatn_FRAM-KP(2997).min_flow,/RRS.S100.WTR.f_Breidalsvatn_FRAM-KP.QMI,[],,,,RANGE,max
+gate.f_Eidefossen-dam_NOTT-KP(251238).max_flow,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 1000}}]",,,,,min
+gate.f_Raudalsvatn_FRAM-KP(2996).max_flow,/RRS.S100.WTR.f_Raudalsvatn_FRAM-KP.QMA,[],,,,RANGE,min
+gate.f_Raudalsvatn_FRAM-KP(2996).min_flow,/RRS.S100.WTR.f_Raudalsvatn_FRAM-KP.QMI,[],,,,RANGE,max
+gate.f_Vaagaavatn_Eidefossen-dam(251234).max_flow,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 1000}}]",,,,,min
+gate.w_Breidalsvatn_Raudalsvatn(2975).max_flow,/RRS.S100.WTR.w_Breidalsvatn_Raudalsv.QMA,[],,,,RANGE,min
+gate.w_Breidalsvatn_Raudalsvatn(2975).min_flow,/RRS.S100.WTR.w_Breidalsvatn_Raudalsv.QMI,[],,,,RANGE,max
+gate.w_Breidalsvatn_Raudalsvatn(2975).schedule_flag,/Otta/Magasin/Breidalsvatn-tappeluke-planflagg,"[{""transformation"": ""GATE_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+gate.w_Breidalsvatn_Raudalsvatn(2975).schedule_m3s,/Otta/Magasin/Breidalsvatn-selvfall-prog-m3s-1d,[],,,,RANGE,first
+gate.w_Vaagaavatn_Eidefossen-dam(251233).max_flow,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 1500}}]",,,,,min
+gate.w_Vaagaavatn_Eidefossen-dam(251233).schedule_flag,/Otta/Magasin/Vågåvatn-tappeluke-planflagg,"[{""transformation"": ""GATE_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+gate.w_Vaagaavatn_Eidefossen-dam(251233).schedule_m3s,/Otta/Magasin/Vågåvatn-tappeplan-m3s-bp,[],,,,RANGE,first
+generator.FRAM(2965)_G1.committed_flag,/Otta/Kraftverk/FRAM-G1-prespot-Planflagg-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,first
+generator.FRAM(2965)_G1.committed_in,/Otta/Kraftverk/FRAM-G1-prespot-Planflagg-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,
+generator.FRAM(2965)_G1.initial_state,/Scenario/CPS.FRAM.G1.MW,"[{""transformation"": ""TO_BOOL"", ""kwargs"": null}]",,,,START,
+generator.FRAM(2965)_G1.maintenance_flag,/RRS.S100.Gunit.FRAM G1.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+generator.FRAM(2965)_G1.max_p_constr,/RRS.S100.Gunit.FRAM G1.PMA,[],,,,RANGE,min
+generator.FRAM(2965)_G1.min_p_constr,/RRS.S100.Gunit.FRAM G1.PMI,[],,,,RANGE,max
+generator.FRAM(2965)_G1.production_schedule,/Otta/Kraftverk/FRAM-G1-prespot-Plan-MW-bp,[],,,,RANGE,
+generator.FRAM(2965)_G1.production_schedule_flag,/Otta/Kraftverk/FRAM-G1-prespot-Planflagg-bp,"[{""transformation"": ""GENERATOR_PRODUCTION_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+generator.FRAM(2965)_G1.startcost,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 438}}]",,,,,
+generator.NOTT(251230)_G1.maintenance_flag,/RRS.S100.Gunit.NOTT G1.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+generator.NOTT(251230)_G1.max_p_constr,/RRS.S100.Gunit.NOTT G1.PMA,[],,,,RANGE,min
+generator.NOTT(251230)_G1.production_schedule,/Otta/Kraftverk/NOTT-G1-prespot-Plan-MW-bp,[],,,,RANGE,
+generator.NOTT(251230)_G1.production_schedule_flag,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 0}}]",,,,,first
+generator.NOTT(251230)_G1.startcost,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 0}}]",,,,,
+generator.NOTT(251230)_G2.maintenance_flag,/RRS.S100.Gunit.NOTT G2.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+generator.NOTT(251230)_G2.max_p_constr,/RRS.S100.Gunit.NOTT G2.PMA,[],,,,RANGE,min
+generator.NOTT(251230)_G2.production_schedule,/Otta/Kraftverk/NOTT-G2-prespot-Plan-MW-bp,[],,,,RANGE,
+generator.NOTT(251230)_G2.production_schedule_flag,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 0}}]",,,,,first
+generator.NOTT(251230)_G2.startcost,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 0}}]",,,,,
+generator.SKJÅ(2986)_G1.committed_flag,/Otta/Kraftverk/SKJÅ-G1-prespot-Planflagg-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,first
+generator.SKJÅ(2986)_G1.committed_in,/Otta/Kraftverk/SKJÅ-G1-prespot-Planflagg-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,
+generator.SKJÅ(2986)_G1.initial_state,/Scenario/CPS.SKJÅ.G1.MW,"[{""transformation"": ""TO_BOOL"", ""kwargs"": null}]",,,,START,
+generator.SKJÅ(2986)_G1.maintenance_flag,/RRS.S100.Gunit.SKJÅ G1.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+generator.SKJÅ(2986)_G1.max_p_constr,/RRS.S100.Gunit.SKJÅ G1.PMA,[],,,,RANGE,min
+generator.SKJÅ(2986)_G1.min_p_constr,/RRS.S100.Gunit.SKJÅ G1.PMI,[],,,,RANGE,max
+generator.SKJÅ(2986)_G1.production_schedule,/Otta/Kraftverk/SKJÅ-G1-prespot-Plan-MW-bp,[],,,,RANGE,
+generator.SKJÅ(2986)_G1.production_schedule_flag,/Otta/Kraftverk/SKJÅ-G1-prespot-Planflagg-bp,"[{""transformation"": ""GENERATOR_PRODUCTION_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+generator.SKJÅ(2986)_G1.startcost,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 436}}]",,,,,
+generator.ØYBE(2968)_G1.committed_flag,/Otta/Kraftverk/ØYBE-G1-prespot-Planflagg-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,first
+generator.ØYBE(2968)_G1.committed_in,/Otta/Kraftverk/ØYBE-G1-prespot-Planflagg-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,
+generator.ØYBE(2968)_G1.initial_state,/Scenario/CPS.ØYBE.G1.MW,"[{""transformation"": ""TO_BOOL"", ""kwargs"": null}]",,,,START,
+generator.ØYBE(2968)_G1.maintenance_flag,/RRS.S100.Gunit.ØYBE G1.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+generator.ØYBE(2968)_G1.max_p_constr,/RRS.S100.Gunit.ØYBE G1.PMA,[],,,,RANGE,min
+generator.ØYBE(2968)_G1.min_p_constr,/RRS.S100.Gunit.ØYBE G1.PMI,[],,,,RANGE,max
+generator.ØYBE(2968)_G1.production_schedule_flag,/Otta/Kraftverk/ØYBE-G1-prespot-Planflagg-bp,"[{""transformation"": ""GENERATOR_PRODUCTION_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+generator.ØYBE(2968)_G1.startcost,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 411}}]",,,,,
+generator.ØYBE(2968)_G2.initial_state,/Scenario/CPS.ØYBE.G2.MW,"[{""transformation"": ""TO_BOOL"", ""kwargs"": null}]",,,,START,
+generator.ØYBE(2968)_G2.maintenance_flag,/RRS.S100.Gunit.ØYBE G2.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+generator.ØYBE(2968)_G2.max_p_constr,/RRS.S100.Gunit.ØYBE G2.PMA,[],,,,RANGE,min
+generator.ØYBE(2968)_G2.min_p_constr,/RRS.S100.Gunit.ØYBE G2.PMI,[],,,,RANGE,max
+generator.ØYBE(2968)_G2.startcost,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 340}}]",,,,,
+generator.ØYBE(2968)_G3.initial_state,/Scenario/CPS.ØYBE.G3.MW,"[{""transformation"": ""TO_BOOL"", ""kwargs"": null}]",,,,START,
+generator.ØYBE(2968)_G3.maintenance_flag,/RRS.S100.Gunit.ØYBE G3.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+generator.ØYBE(2968)_G3.max_p_constr,/RRS.S100.Gunit.ØYBE G3.PMA,[],,,,RANGE,min
+generator.ØYBE(2968)_G3.min_p_constr,/RRS.S100.Gunit.ØYBE G3.PMI,[],,,,RANGE,max
+generator.ØYBE(2968)_G3.startcost,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 302}}]",,,,,
+market.1.buy_price,/Priser/P-Pris-Mix-NO3-1h,"[{""transformation"": ""ADD"", ""kwargs"": {""value"": 0.01}}]",,,,RANGE,mean
+market.1.load,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 0}}]",,,,,
+market.1.max_buy,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 1000}}]",,,,,
+market.1.max_sale,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 1000}}]",,,,,
+market.1.sale_price,/Priser/P-Pris-Mix-NO3-1h,[],,,,RANGE,mean
+plant.FRAM(2965).feeding_fee,/Otta/Kraftverk/Marginaltap-Framruste,[],,,,RANGE,mean
+plant.FRAM(2965).maintenance_flag,/RRS.S100.Plant.FRAM.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+plant.FRAM(2965).max_p_constr,/RRS.S100.Plant.FRAM.PMA,[],,,,RANGE,min
+plant.FRAM(2965).max_q_constr,/RRS.S100.Plant.FRAM.QMA,[],,,,RANGE,min
+plant.FRAM(2965).min_p_constr,/RRS.S100.Plant.FRAM.PMI,[],,,,RANGE,max
+plant.FRAM(2965).mip_flag,/Otta/Kraftverk/FRAM-MIPflagg-bp,[],,,,RANGE,first
+plant.FRAM(2965).prod_area,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 1}}]",,,,,
+plant.FRAM(2965).production_schedule,/Otta/Kraftverk/FRAM-prespot-Plan-MW-bp,[],,,,RANGE,first
+plant.FRAM(2965).production_schedule_flag,/Otta/Kraftverk/FRAM-prespot-Planflagg-bp,"[{""transformation"": ""PLANT_PRODUCTION_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+plant.NOTT(251230).feeding_fee,/Otta/Kraftverk/Marginaltap-NedreOtta,[],,,,RANGE,mean
+plant.NOTT(251230).maintenance_flag,/RRS.S100.Plant.NOTT.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+plant.NOTT(251230).max_p_constr,/RRS.S100.Plant.NOTT.PMA,[],,,,RANGE,min
+plant.NOTT(251230).max_q_constr,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 1000}}]",,,,,min
+plant.NOTT(251230).mip_flag,/Otta/Kraftverk/NOTT-MIPflagg-bp,[],,,,RANGE,first
+plant.NOTT(251230).prod_area,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 1}}]",,,,,
+plant.NOTT(251230).production_schedule,/Otta/Kraftverk/NOTT-prespot-Plan-MW-bp,[],,,,RANGE,first
+plant.NOTT(251230).production_schedule_flag,/Otta/Kraftverk/NOTT-prespot-Planflagg-bp,"[{""transformation"": ""PLANT_PRODUCTION_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+plant.RAUD(2978).maintenance_flag,/RRS.S100.Plant.RAUD.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+plant.RAUD(2978).max_p_constr,/RRS.S100.Plant.RAUD.PMA,[],,,,RANGE,min
+plant.RAUD(2978).max_q_constr,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 2000}}]",,,,,min
+plant.RAUD(2978).min_p_constr,/RRS.S100.Plant.RAUD.PMI,[],,,,RANGE,max
+plant.RAUD(2978).mip_flag,/Otta/Kraftverk/RAUD-MIPflagg-bp,[],,,,RANGE,first
+plant.RAUD(2978).prod_area,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 1}}]",,,,,
+plant.RAUD(2978).production_schedule,/Otta/Kraftverk/RAUD-Plan-MW-bp,[],,,,RANGE,first
+plant.RAUD(2978).production_schedule_flag,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 0}}]",,,,,first
+plant.SKJÅ(2986).feeding_fee,/Otta/Kraftverk/Marginaltap-Skjåk,[],,,,RANGE,mean
+plant.SKJÅ(2986).maintenance_flag,/RRS.S100.Plant.SKJÅ.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+plant.SKJÅ(2986).max_p_constr,/RRS.S100.Plant.SKJÅ.PMA,[],,,,RANGE,min
+plant.SKJÅ(2986).max_q_constr,/RRS.S100.Plant.SKJÅ.QMA,[],,,,RANGE,min
+plant.SKJÅ(2986).min_p_constr,/RRS.S100.Plant.SKJÅ.PMI,[],,,,RANGE,max
+plant.SKJÅ(2986).mip_flag,/Otta/Kraftverk/SKJÅ-MIPflagg-bp,[],,,,RANGE,first
+plant.SKJÅ(2986).prod_area,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 1}}]",,,,,
+plant.SKJÅ(2986).production_schedule,/Otta/Kraftverk/SKJÅ-prespot-Plan-MW-bp,[],,,,RANGE,first
+plant.SKJÅ(2986).production_schedule_flag,/Otta/Kraftverk/SKJÅ-prespot-Planflagg-bp,"[{""transformation"": ""PLANT_PRODUCTION_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+plant.ØYBE(2968).feeding_fee,/Otta/Kraftverk/Marginaltap-Øyberget,[],,,,RANGE,mean
+plant.ØYBE(2968).maintenance_flag,/RRS.S100.Plant.ØYBE.AVL,"[{""transformation"": ""MULTIPLY"", ""kwargs"": {""value"": -1}}, {""transformation"": ""ADD"", ""kwargs"": {""value"": 1}}, {""transformation"": ""ZERO_IF_NOT_ONE"", ""kwargs"": null}]",,,,RANGE,max
+plant.ØYBE(2968).max_p_constr,/RRS.S100.Plant.ØYBE.PMA,[],,,,RANGE,min
+plant.ØYBE(2968).max_q_constr,/RRS.S100.Plant.ØYBE.QMA,[],,,,RANGE,min
+plant.ØYBE(2968).min_p_constr,/RRS.S100.Plant.ØYBE.PMI,[],,,,RANGE,max
+plant.ØYBE(2968).mip_flag,/Otta/Kraftverk/ØYBE-MIPflagg-bp,[],,,,RANGE,first
+plant.ØYBE(2968).power_ramping_down,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 1}}]",,,,,
+plant.ØYBE(2968).power_ramping_up,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 1}}]",,,,,
+plant.ØYBE(2968).prod_area,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 1}}]",,,,,
+plant.ØYBE(2968).production_schedule,/Otta/Kraftverk/ØYBE-prespot-Plan-MW-bp,[],,,,RANGE,first
+plant.ØYBE(2968).production_schedule_flag,/Otta/Kraftverk/ØYBE-prespot-Planflagg-bp,"[{""transformation"": ""PLANT_PRODUCTION_SCHEDULE_FLAG_VALUE_MAPPING"", ""kwargs"": null}]",,,,RANGE,first
+pump.RAUD(2978)_P1.committed_flag,/Otta/Kraftverk/RAUD-P1-Planflagg-bp,"[{""transformation"": ""TO_BOOL"", ""kwargs"": null}]",,,,RANGE,
+pump.RAUD(2978)_P1.committed_in,/Otta/Kraftverk/RAUD-P1-Planflagg-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,
+pump.RAUD(2978)_P1.committed_out,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 0}}]",,,,,
+pump.RAUD(2978)_P1.maintenance_flag,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 0}}]",,,,,
+pump.RAUD(2978)_P1.startcost,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 0}}]",,,,,
+pump.RAUD(2978)_P2.committed_flag,/Otta/Kraftverk/RAUD-P2-Planflagg-bp,"[{""transformation"": ""TO_BOOL"", ""kwargs"": null}]",,,,RANGE,
+pump.RAUD(2978)_P2.committed_in,/Otta/Kraftverk/RAUD-P2-Planflagg-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,
+pump.RAUD(2978)_P2.committed_out,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 0}}]",,,,,
+pump.RAUD(2978)_P2.maintenance_flag,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 0}}]",,,,,
+pump.RAUD(2978)_P2.startcost,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 0}}]",,,,,
+pump.RAUD(2978)_P3.committed_flag,/Otta/Kraftverk/RAUD-P3-Planflagg-bp,"[{""transformation"": ""TO_BOOL"", ""kwargs"": null}]",,,,RANGE,
+pump.RAUD(2978)_P3.committed_in,/Otta/Kraftverk/RAUD-P3-Planflagg-bp,"[{""transformation"": ""ONE_IF_TWO"", ""kwargs"": null}]",,,,RANGE,
+pump.RAUD(2978)_P3.committed_out,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 0}}]",,,,,
+pump.RAUD(2978)_P3.maintenance_flag,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 0}}]",,,,,
+pump.RAUD(2978)_P3.startcost,,"[{""transformation"": ""STATIC"", ""kwargs"": {""0"": 0}}]",,,,,
+reserve_group.1.fcr_n_down_obligation,/Spottilslag/EVK/FNR-uke-EVK-NO3-MW-h-korr-v,[],,,,RANGE,
+reserve_group.1.fcr_n_up_obligation,/Spottilslag/EVK/FNR-uke-EVK-NO3-MW-h-korr-v,[],,,,RANGE,
+reserve_group.2.frr_down_obligation,/Spottilslag/aFRR-ned-tilslag-SKJÅ-MWh,[],,,,RANGE,
+reserve_group.2.frr_up_obligation,/Spottilslag/aFRR-opp-tilslag-SKJÅ-MWh,[],,,,RANGE,
+reservoir.Aursjøen.inflow,/Otta/Hydmet/Aursjø-tilsig-prog-m3s-1d,[],,,,RANGE,mean
+reservoir.Aursjøen.max_vol_constr,/RRS.S100.RSV.Aursjøen.VMA,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,min
+reservoir.Aursjøen.min_vol_constr,/RRS.S100.RSV.Aursjøen.VMI,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,max
+reservoir.Aursjøen.start_head,/Scenario/CPS.Aursjøen.RMOH,[],,,,START,
+reservoir.Aursjøen.tactical_cost_max,/Otta/Magasin/Aursjøen-taktisk-maks-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Aursjøen.tactical_cost_min,/Otta/Magasin/Aursjøen-taktisk-min-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Aursjøen.tactical_limit_max,/Otta/Magasin/Aursjøen-taktisk-max-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Aursjøen.tactical_limit_min,/Otta/Magasin/Aursjøen-taktisk-min-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Breidalsvatn.inflow,/Otta/Hydmet/Breidalsvatnet-tilsig-prog-m3s-1d,[],,,,RANGE,mean
+reservoir.Breidalsvatn.max_vol_constr,/RRS.S100.RSV.Breidalsvatn.VMA,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,min
+reservoir.Breidalsvatn.min_vol_constr,/RRS.S100.RSV.Breidalsvatn.VMI,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,max
+reservoir.Breidalsvatn.start_head,/Scenario/CPS.Breidalsvatn.RMOH,[],,,,START,
+reservoir.Breidalsvatn.tactical_cost_max,/Otta/Magasin/Breidalsvatn-taktisk-maks-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Breidalsvatn.tactical_cost_min,/Otta/Magasin/Breidalsvatn-taktisk-min-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Breidalsvatn.tactical_limit_max,/Otta/Magasin/Breidalsvatn-taktisk-max-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Breidalsvatn.tactical_limit_min,/Otta/Magasin/Breidalsvatn-taktisk-min-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Eidefossen-dam.inflow,/Otta/Tilsigsvelger/NedreOtta/Tilsig-m3s-cps,[],,,,RANGE,mean
+reservoir.Eidefossen-dam.start_head,/Otta/Magasin/Eidefossendam-vst-MIXmålt-moh-1h-v,[],,,,START,
+reservoir.Eidefossen-dam.tactical_cost_max,/Otta/Magasin/Eidefossendam-taktisk-maks-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Eidefossen-dam.tactical_cost_min,/Otta/Magasin/Eidefossendam-taktisk-min-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Eidefossen-dam.tactical_limit_max,/Otta/Magasin/Eidefossendam-taktisk-max-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Eidefossen-dam.tactical_limit_min,/Otta/Magasin/Eidefossendam-taktisk-min-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Heggebotnvatn.inflow,/PROD/Lågen/Øyberget/Q-Tilsig-prog-1h,"[{""transformation"": ""ADD_WATER_IN_TRANSIT"", ""kwargs"": {""external_id"": ""/Otta/Magasin/Framruste-Stasjons-Summålt-m3s-1h-v"", ""plant_name"": ""FRAM(2965)""}}, {""transformation"": ""ADD_WATER_IN_TRANSIT"", ""kwargs"": {""external_id"": ""/Otta/Magasin/Breidalsvatn-lukes","um-MIXmålt-m3s-1h-v"", ""gate_name"": ""b_Breidalsvatn_FRAM-KP(2977)""}}, {""transformation"": ""ADD_WATER_IN_TRANSIT"", ""kwargs"": {""external_id"": ""/Otta/Magasin/Breidalsvatn-overflow-m3s-v"", ""gate_name"": ""f_Breidalsvatn_FRAM-KP(2997)""}}]",,,RANGE,mean
+reservoir.Heggebotnvatn.max_vol_constr,/RRS.S100.RSV.Heggebotnvatn.VMA,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,min
+reservoir.Heggebotnvatn.min_vol_constr,/RRS.S100.RSV.Heggebotnvatn.VMI,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,max
+reservoir.Heggebotnvatn.start_head,/Scenario/CPS.Heggebotnvatn.RMOH,[],,,,START,
+reservoir.Heggebotnvatn.tactical_cost_max,/Otta/Magasin/Heggebotnvatn-taktisk-maks-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Heggebotnvatn.tactical_cost_min,/Otta/Magasin/Heggebotnvatn-taktisk-min-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Heggebotnvatn.tactical_limit_max,/Otta/Magasin/Heggebotnvatn-taktisk-max-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Heggebotnvatn.tactical_limit_min,/Otta/Magasin/Heggebotnvatn-taktisk-min-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Raudalsvatn.inflow,/Otta/Hydmet/Raudalsvatnet-tilsig-prog-m3s-1d,[],,,,RANGE,mean
+reservoir.Raudalsvatn.max_vol_constr,/RRS.S100.RSV.Raudalsvatn.VMA,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,min
+reservoir.Raudalsvatn.min_vol_constr,/RRS.S100.RSV.Raudalsvatn.VMI,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,max
+reservoir.Raudalsvatn.start_head,/Scenario/CPS.Raudalsvatn.RMOH,[],,,,START,
+reservoir.Raudalsvatn.tactical_cost_max,/Otta/Magasin/Raudalsvatn-taktisk-maks-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Raudalsvatn.tactical_cost_min,/Otta/Magasin/Raudalsvatn-taktisk-min-straff-EUR-bp,[],,,,RANGE,mean
+reservoir.Raudalsvatn.tactical_limit_max,/Otta/Magasin/Raudalsvatn-taktisk-max-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Raudalsvatn.tactical_limit_min,/Otta/Magasin/Raudalsvatn-taktisk-min-moh-bp,"[{""transformation"": ""RESERVOIR_LEVEL_TO_VOLUME"", ""kwargs"": null}]",,,,RANGE,mean
+reservoir.Vaagaavatn.inflow,/Otta/Magasin/Vågåvatn-sum_inn-m3s-1h-v,"[{""transformation"": ""ADD_WATER_IN_TRANSIT"", ""kwargs"": {""external_id"": ""/Otta/Magasin/Øyberget-Stasjons-Summålt-m3s-1h-v"", ""plant_name"": ""ØYBE(2968)""}}]",,,,RANGE,mean
+reservoir.Vaagaavatn.start_head,/Scenario/CPS.Vaagaavatn.RMOH,[],,,,START,

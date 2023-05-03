@@ -1,0 +1,187 @@
+import pytest
+
+from typing import Generator
+
+from bootstrap.config import WatercourseConfig
+from bootstrap.utils.resource_generation import generate_resources_and_data
+from tests.test_bootstrap.data.test_config import watercourse_configs
+
+
+assets = {
+    "watercourse_Fornebu",
+    "reservoir_Hagen",
+    "reservoir_Hovden",
+    "reservoir_Frosta",
+    "reservoir_Varhaug",
+    "reservoir_Tangvall",
+    "reservoir_Sirefelt",
+    "reservoir_Lundvann",
+    "reservoir_Danielsen",
+    "reservoir_Dalbysvatn",
+    "reservoir_Nielsen",
+    "reservoir_Rullsvatn",
+    "reservoir_Ranemsletta_1183",
+    "reservoir_Lensvik",
+    "reservoir_Strand",
+    "reservoir_Strand_tunnel",
+    "reservoir_Livincovs",
+    "generator_Holen_G1",
+    "generator_Lund_G1",
+    "generator_Lien_krv_G1",
+    "generator_Landet_G1",
+    "generator_Dalby_G1",
+    "generator_Dalby_G2",
+    "generator_Rull1_G1",
+    "generator_Rull1_G2",
+    "generator_Rull2_G1",
+    "generator_Rull2_G2",
+    "generator_Scott_G1",
+    "generator_Strand_krv_G1",
+    "plant_Holen",
+    "price_area_NO2",
+    "plant_Lund",
+    "plant_Lien_krv",
+    "plant_Landet",
+    "plant_Dalby",
+    "plant_Rull1",
+    "plant_Rull2",
+    "plant_Scott",
+    "plant_Strand_krv",
+}
+
+sequences = {
+    "generator_Holen_G1_generator_efficiency_curve",
+    "generator_Holen_G1_turbine_efficiency_curve",
+    "generator_Lund_G1_generator_efficiency_curve",
+    "generator_Lund_G1_turbine_efficiency_curve",
+    "generator_Lien_krv_G1_generator_efficiency_curve",
+    "generator_Lien_krv_G1_turbine_efficiency_curve",
+    "generator_Landet_G1_generator_efficiency_curve",
+    "generator_Landet_G1_turbine_efficiency_curve",
+    "generator_Dalby_G1_generator_efficiency_curve",
+    "generator_Dalby_G1_turbine_efficiency_curve",
+    "generator_Dalby_G2_generator_efficiency_curve",
+    "generator_Dalby_G2_turbine_efficiency_curve",
+    "generator_Rull1_G1_generator_efficiency_curve",
+    "generator_Rull1_G1_turbine_efficiency_curve",
+    "generator_Rull1_G2_generator_efficiency_curve",
+    "generator_Rull1_G2_turbine_efficiency_curve",
+    "generator_Rull2_G1_generator_efficiency_curve",
+    "generator_Rull2_G1_turbine_efficiency_curve",
+    "generator_Rull2_G2_generator_efficiency_curve",
+    "generator_Rull2_G2_turbine_efficiency_curve",
+    "generator_Scott_G1_generator_efficiency_curve",
+    "generator_Scott_G1_turbine_efficiency_curve",
+    "generator_Strand_krv_G1_generator_efficiency_curve",
+    "generator_Strand_krv_G1_turbine_efficiency_curve",
+}
+
+relationships = {
+    "generator_Holen_G1.generator_Holen_G1_generator_efficiency_curve",
+    "generator_Holen_G1.generator_Holen_G1_turbine_efficiency_curve",
+    "generator_Lund_G1.generator_Lund_G1_generator_efficiency_curve",
+    "generator_Lund_G1.generator_Lund_G1_turbine_efficiency_curve",
+    "generator_Lien_krv_G1.generator_Lien_krv_G1_generator_efficiency_curve",
+    "generator_Lien_krv_G1.generator_Lien_krv_G1_turbine_efficiency_curve",
+    "generator_Landet_G1.generator_Landet_G1_generator_efficiency_curve",
+    "generator_Landet_G1.generator_Landet_G1_turbine_efficiency_curve",
+    "generator_Dalby_G1.generator_Dalby_G1_generator_efficiency_curve",
+    "generator_Dalby_G1.generator_Dalby_G1_turbine_efficiency_curve",
+    "generator_Dalby_G2.generator_Dalby_G2_generator_efficiency_curve",
+    "generator_Dalby_G2.generator_Dalby_G2_turbine_efficiency_curve",
+    "generator_Rull1_G1.generator_Rull1_G1_generator_efficiency_curve",
+    "generator_Rull1_G1.generator_Rull1_G1_turbine_efficiency_curve",
+    "generator_Rull1_G2.generator_Rull1_G2_generator_efficiency_curve",
+    "generator_Rull1_G2.generator_Rull1_G2_turbine_efficiency_curve",
+    "generator_Rull2_G1.generator_Rull2_G1_generator_efficiency_curve",
+    "generator_Rull2_G1.generator_Rull2_G1_turbine_efficiency_curve",
+    "generator_Rull2_G2.generator_Rull2_G2_generator_efficiency_curve",
+    "generator_Rull2_G2.generator_Rull2_G2_turbine_efficiency_curve",
+    "generator_Scott_G1.generator_Scott_G1_generator_efficiency_curve",
+    "generator_Scott_G1.generator_Scott_G1_turbine_efficiency_curve",
+    "generator_Strand_krv_G1.generator_Strand_krv_G1_generator_efficiency_curve",
+    "generator_Strand_krv_G1.generator_Strand_krv_G1_turbine_efficiency_curve",
+    "watercourse_Fornebu.plant_Holen",
+    "price_area_NO2.plant_Holen",
+    "price_area_NO2.watercourse_Fornebu",
+    "watercourse_Fornebu.plant_Lund",
+    "price_area_NO2.plant_Lund",
+    "watercourse_Fornebu.plant_Lien_krv",
+    "price_area_NO2.plant_Lien_krv",
+    "watercourse_Fornebu.plant_Landet",
+    "price_area_NO2.plant_Landet",
+    "watercourse_Fornebu.plant_Dalby",
+    "price_area_NO2.plant_Dalby",
+    "watercourse_Fornebu.plant_Rull1",
+    "price_area_NO2.plant_Rull1",
+    "watercourse_Fornebu.plant_Rull2",
+    "price_area_NO2.plant_Rull2",
+    "watercourse_Fornebu.plant_Scott",
+    "price_area_NO2.plant_Scott",
+    "watercourse_Fornebu.plant_Strand_krv",
+    "price_area_NO2.plant_Strand_krv",
+    "plant_Holen.generator_Holen_G1",
+    "plant_Lund.generator_Lund_G1",
+    "plant_Lien_krv.generator_Lien_krv_G1",
+    "plant_Landet.generator_Landet_G1",
+    "plant_Dalby.generator_Dalby_G1",
+    "plant_Dalby.generator_Dalby_G2",
+    "plant_Rull1.generator_Rull1_G1",
+    "plant_Rull1.generator_Rull1_G2",
+    "plant_Rull2.generator_Rull2_G1",
+    "plant_Rull2.generator_Rull2_G2",
+    "plant_Scott.generator_Scott_G1",
+    "plant_Strand_krv.generator_Strand_krv_G1",
+    "plant_Holen.reservoir_Nielsen",
+    "plant_Lund.reservoir_Danielsen",
+    "plant_Lien_krv.reservoir_Ranemsletta_1183",
+    "plant_Landet.reservoir_Livincovs",
+    "plant_Dalby.reservoir_Lensvik",
+    "plant_Rull1.reservoir_Dalbysvatn",
+    "plant_Rull2.reservoir_Sirefelt",
+    "plant_Scott.reservoir_Lundvann",
+    "plant_Strand_krv.reservoir_Hagen",
+}
+sequence_data = {
+    "generator_Holen_G1_generator_efficiency_curve",
+    "generator_Holen_G1_turbine_efficiency_curve",
+    "generator_Lund_G1_generator_efficiency_curve",
+    "generator_Lund_G1_turbine_efficiency_curve",
+    "generator_Lien_krv_G1_generator_efficiency_curve",
+    "generator_Lien_krv_G1_turbine_efficiency_curve",
+    "generator_Landet_G1_generator_efficiency_curve",
+    "generator_Landet_G1_turbine_efficiency_curve",
+    "generator_Dalby_G1_generator_efficiency_curve",
+    "generator_Dalby_G1_turbine_efficiency_curve",
+    "generator_Dalby_G2_generator_efficiency_curve",
+    "generator_Dalby_G2_turbine_efficiency_curve",
+    "generator_Rull1_G1_generator_efficiency_curve",
+    "generator_Rull1_G1_turbine_efficiency_curve",
+    "generator_Rull1_G2_generator_efficiency_curve",
+    "generator_Rull1_G2_turbine_efficiency_curve",
+    "generator_Rull2_G1_generator_efficiency_curve",
+    "generator_Rull2_G1_turbine_efficiency_curve",
+    "generator_Rull2_G2_generator_efficiency_curve",
+    "generator_Rull2_G2_turbine_efficiency_curve",
+    "generator_Scott_G1_generator_efficiency_curve",
+    "generator_Scott_G1_turbine_efficiency_curve",
+    "generator_Strand_krv_G1_generator_efficiency_curve",
+    "generator_Strand_krv_G1_turbine_efficiency_curve",
+}
+
+
+def load_watercourse_configs() -> Generator:
+    yield pytest.param(watercourse_configs, id="test_configs")
+
+
+@pytest.mark.parametrize("configs", load_watercourse_configs())
+def test_generate_resources(configs: list[WatercourseConfig]) -> None:
+    resources = generate_resources_and_data(watercourse_configs=configs)
+    # Assert that the external id of the assets are the ones we expect
+    assert set(resources.assets.keys()) == assets
+    # Assert that the external id of the sequences are the ones we expect
+    assert set(resources.sequences.keys()) == sequence_data
+    # Assert that the external id of the relationships are the ones we expect
+    assert set(resources.relationships.keys()) == relationships
+    # Asset that the sequence data
+    assert set(resources.sequence_content.keys()) == sequence_data
