@@ -8,18 +8,17 @@ app = typer.Typer()
 
 @app.command(
     "plan",
-    help="Compare CDF resource creation between desired state (configuration files)"
-    " and remote state (resources in CDF) and print differences",
+    help="Preview the changes from the configuration files that `powerops apply` would make to the data model in CDF",
 )
 def plan(
     path: Annotated[Path, typer.Argument(help="Path to configuration files")],
 ):
-    typer.echo(f"Running plan on configuration files located at {path}")
+    typer.echo(f"Running plan on configuration files located in {path}")
 
 
-@app.command("apply", help="Apply differences between desired and actual state. Writes desired state to CDF")
+@app.command("apply", help="Apply the changes from the configuration files to the data model in CDF")
 def apply(path: Annotated[Path, typer.Argument(help="Path to configuration files")]):
-    typer.echo(f"Running apply on configuration files located at {path}")
+    typer.echo(f"Running apply on configuration files located in {path}")
 
 
 def main():
