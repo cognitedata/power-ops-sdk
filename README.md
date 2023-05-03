@@ -7,5 +7,5 @@ Cognite PowerOps SDK
 
 To install this package:
 ```bash
-$ pip install cognite-powerops
+$ pip install cognite-power-ops
 ```
