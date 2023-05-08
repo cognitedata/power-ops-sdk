@@ -1,0 +1,1869 @@
+- rows:
+  - attribute_name: overflow_cost
+    object_name: Fjerdingby_intake
+    object_type: creek_intake
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 100000
+      transformation: STATIC
+  - attribute_name: inflow
+    object_name: Sandvika
+    object_type: creek_intake
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 0
+      transformation: STATIC
+  - attribute_name: overflow_cost
+    object_name: Golebiowski_intake
+    object_type: creek_intake
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 100000
+      transformation: STATIC
+  - attribute_name: overflow_cost
+    object_name: Lont_intake
+    object_type: creek_intake
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 100000
+      transformation: STATIC
+  - attribute_name: overflow_cost
+    object_name: Narvhus
+    object_type: creek_intake
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 100000
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_flow
+    object_name: b_Hagen_Strand
+    object_type: gate
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 0
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_flow
+    object_name: b_Sirefelt_Knute_Rullsvatn
+    object_type: gate
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 0
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_flow
+    object_name: b_Danielsen_Lundvann
+    object_type: gate
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1000
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_flow
+    object_name: b_Dalbysvatn_Knute_Rullsvatn
+    object_type: gate
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 0
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_flow
+    object_name: b_Nielsen_Blakstadana
+    object_type: gate
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 10
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_flow
+    object_name: b_Lensvik_Dalbysvatn
+    object_type: gate
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1000
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_flow
+    object_name: b_Livincovs_Dalbysvatn
+    object_type: gate
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 0
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_flow
+    object_name: f_Blakstadana_Knute_Rullsvatn
+    object_type: gate
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1000
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_flow
+    object_name: f_Hagen_Strand
+    object_type: gate
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 100
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_flow
+    object_name: f_Finnvasstol_Dalbysvatn
+    object_type: gate
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 10
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_flow
+    object_name: f_Hovden_Hagen
+    object_type: gate
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1000
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_flow
+    object_name: f_Fjerdingby_Dalbysvatn
+    object_type: gate
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1000
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_flow
+    object_name: f_Frosta
+    object_type: gate
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1000
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_flow
+    object_name: f_Varhaug
+    object_type: gate
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1000
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_flow
+    object_name: f_Tangvall
+    object_type: gate
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1000
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_flow
+    object_name: f_Sirefelt_Knute_Rullsvatn
+    object_type: gate
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1000
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_flow
+    object_name: f_Lundvann_Lensvik
+    object_type: gate
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1000
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_flow
+    object_name: f_Nupstj
+    object_type: gate
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1000
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_flow
+    object_name: f_Golebiowski_Dalbysvatn
+    object_type: gate
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1000
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_flow
+    object_name: f_Lont_Dalbysvatn
+    object_type: gate
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1000
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_flow
+    object_name: f_Dalbysvatn_Knute_Rullsvatn
+    object_type: gate
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1000
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_flow
+    object_name: f_Nielsen
+    object_type: gate
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 10
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_flow
+    object_name: f_Narvhus_Rullsvatn
+    object_type: gate
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1000
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_flow
+    object_name: f_Rullsvatn_Rullslaagen
+    object_type: gate
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1000
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_flow
+    object_name: f_Ranemsletta_1183_Livincovs
+    object_type: gate
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1000
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_flow
+    object_name: f_Lensvik
+    object_type: gate
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 0
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_flow
+    object_name: f_Livincovs
+    object_type: gate
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1000
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_flow
+    object_name: w_Finnvasstol_Strand_tunnel
+    object_type: gate
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 6
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_flow
+    object_name: w_Hovden_Livincovs
+    object_type: gate
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 10
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_flow
+    object_name: w_Frosta
+    object_type: gate
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1000
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_flow
+    object_name: w_Varhaug
+    object_type: gate
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 30
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_flow
+    object_name: w_Tangvall
+    object_type: gate
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1000
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_flow
+    object_name: w_Rullsvatn_Rullslaagen
+    object_type: gate
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 0
+      transformation: STATIC
+  - attribute_name: startcost
+    object_name: Holen_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 200
+      transformation: STATIC
+  - aggregation: max
+    attribute_name: min_p_constr
+    object_name: Holen_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 28
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_p_constr
+    object_name: Holen_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 38
+      transformation: STATIC
+  - attribute_name: p_fcr_min
+    object_name: Holen_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 27
+      transformation: STATIC
+  - attribute_name: p_fcr_max
+    object_name: Holen_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 45
+      transformation: STATIC
+  - attribute_name: p_rr_min
+    object_name: Holen_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 0
+      transformation: STATIC
+  - attribute_name: droop_min
+    object_name: Holen_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 6
+      transformation: STATIC
+  - attribute_name: droop_max
+    object_name: Holen_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 6
+      transformation: STATIC
+  - attribute_name: startcost
+    object_name: Lund_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 100
+      transformation: STATIC
+  - attribute_name: p_fcr_min
+    object_name: Lund_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 0.6
+      transformation: STATIC
+  - attribute_name: p_fcr_max
+    object_name: Lund_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1
+      transformation: STATIC
+  - attribute_name: p_rr_min
+    object_name: Lund_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 0
+      transformation: STATIC
+  - attribute_name: droop_min
+    object_name: Lund_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 4
+      transformation: STATIC
+  - attribute_name: droop_max
+    object_name: Lund_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 12
+      transformation: STATIC
+  - attribute_name: startcost
+    object_name: Lien_krv_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 150
+      transformation: STATIC
+  - aggregation: max
+    attribute_name: min_p_constr
+    object_name: Lien_krv_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 2.5
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_p_constr
+    object_name: Lien_krv_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 3.1
+      transformation: STATIC
+  - attribute_name: p_fcr_min
+    object_name: Lien_krv_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 0
+      transformation: STATIC
+  - attribute_name: p_fcr_max
+    object_name: Lien_krv_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 0
+      transformation: STATIC
+  - attribute_name: p_rr_min
+    object_name: Lien_krv_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 0
+      transformation: STATIC
+  - attribute_name: droop_min
+    object_name: Lien_krv_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 4
+      transformation: STATIC
+  - attribute_name: droop_max
+    object_name: Lien_krv_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 8
+      transformation: STATIC
+  - attribute_name: startcost
+    object_name: Landet_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 200
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_p_constr
+    object_name: Landet_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 48
+      transformation: STATIC
+  - attribute_name: p_fcr_min
+    object_name: Landet_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 25
+      transformation: STATIC
+  - attribute_name: p_fcr_max
+    object_name: Landet_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 50
+      transformation: STATIC
+  - attribute_name: p_rr_min
+    object_name: Landet_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 0
+      transformation: STATIC
+  - attribute_name: droop_min
+    object_name: Landet_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 6
+      transformation: STATIC
+  - attribute_name: droop_max
+    object_name: Landet_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 6
+      transformation: STATIC
+  - attribute_name: startcost
+    object_name: Dalby_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 500
+      transformation: STATIC
+  - attribute_name: p_fcr_min
+    object_name: Dalby_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 38
+      transformation: STATIC
+  - attribute_name: p_fcr_max
+    object_name: Dalby_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 85
+      transformation: STATIC
+  - attribute_name: p_rr_min
+    object_name: Dalby_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 0
+      transformation: STATIC
+  - attribute_name: droop_cost
+    object_name: Dalby_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 50000
+      transformation: STATIC
+  - attribute_name: droop_min
+    object_name: Dalby_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 2
+      transformation: STATIC
+  - attribute_name: droop_max
+    object_name: Dalby_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 12
+      transformation: STATIC
+  - attribute_name: startcost
+    object_name: Dalby_G2
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 250
+      transformation: STATIC
+  - attribute_name: p_fcr_min
+    object_name: Dalby_G2
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 38
+      transformation: STATIC
+  - attribute_name: p_fcr_max
+    object_name: Dalby_G2
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 85
+      transformation: STATIC
+  - attribute_name: p_rr_min
+    object_name: Dalby_G2
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 0
+      transformation: STATIC
+  - attribute_name: droop_cost
+    object_name: Dalby_G2
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 50000
+      transformation: STATIC
+  - attribute_name: droop_min
+    object_name: Dalby_G2
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 2
+      transformation: STATIC
+  - attribute_name: droop_max
+    object_name: Dalby_G2
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 12
+      transformation: STATIC
+  - attribute_name: startcost
+    object_name: Rull1_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 250
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_p_constr
+    object_name: Rull1_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 90
+      transformation: STATIC
+  - attribute_name: p_fcr_min
+    object_name: Rull1_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 38
+      transformation: STATIC
+  - attribute_name: p_fcr_max
+    object_name: Rull1_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 95
+      transformation: STATIC
+  - attribute_name: p_rr_min
+    object_name: Rull1_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 0
+      transformation: STATIC
+  - attribute_name: droop_cost
+    object_name: Rull1_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 50000
+      transformation: STATIC
+  - attribute_name: droop_min
+    object_name: Rull1_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 2
+      transformation: STATIC
+  - attribute_name: droop_max
+    object_name: Rull1_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 12
+      transformation: STATIC
+  - attribute_name: startcost
+    object_name: Rull1_G2
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 250
+      transformation: STATIC
+  - aggregation: max
+    attribute_name: min_p_constr
+    object_name: Rull1_G2
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 43
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_p_constr
+    object_name: Rull1_G2
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 95
+      transformation: STATIC
+  - attribute_name: p_fcr_min
+    object_name: Rull1_G2
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 38
+      transformation: STATIC
+  - attribute_name: p_fcr_max
+    object_name: Rull1_G2
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 85
+      transformation: STATIC
+  - attribute_name: p_rr_min
+    object_name: Rull1_G2
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 0
+      transformation: STATIC
+  - attribute_name: droop_cost
+    object_name: Rull1_G2
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 50000
+      transformation: STATIC
+  - attribute_name: droop_min
+    object_name: Rull1_G2
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 2
+      transformation: STATIC
+  - attribute_name: droop_max
+    object_name: Rull1_G2
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 12
+      transformation: STATIC
+  - attribute_name: startcost
+    object_name: Rull2_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 250
+      transformation: STATIC
+  - attribute_name: p_fcr_min
+    object_name: Rull2_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 32
+      transformation: STATIC
+  - attribute_name: p_fcr_max
+    object_name: Rull2_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 74
+      transformation: STATIC
+  - attribute_name: p_rr_min
+    object_name: Rull2_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 0
+      transformation: STATIC
+  - attribute_name: droop_cost
+    object_name: Rull2_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 50000
+      transformation: STATIC
+  - attribute_name: droop_min
+    object_name: Rull2_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 4
+      transformation: STATIC
+  - attribute_name: droop_max
+    object_name: Rull2_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 12
+      transformation: STATIC
+  - attribute_name: startcost
+    object_name: Rull2_G2
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 250
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_p_constr
+    object_name: Rull2_G2
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 74
+      transformation: STATIC
+  - attribute_name: p_fcr_min
+    object_name: Rull2_G2
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 32
+      transformation: STATIC
+  - attribute_name: p_fcr_max
+    object_name: Rull2_G2
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 76
+      transformation: STATIC
+  - attribute_name: p_rr_min
+    object_name: Rull2_G2
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 0
+      transformation: STATIC
+  - attribute_name: droop_cost
+    object_name: Rull2_G2
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 50000
+      transformation: STATIC
+  - attribute_name: droop_min
+    object_name: Rull2_G2
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 4
+      transformation: STATIC
+  - attribute_name: droop_max
+    object_name: Rull2_G2
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 12
+      transformation: STATIC
+  - attribute_name: startcost
+    object_name: Scott_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 150
+      transformation: STATIC
+  - attribute_name: p_fcr_min
+    object_name: Scott_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 7
+      transformation: STATIC
+  - attribute_name: p_fcr_max
+    object_name: Scott_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 19
+      transformation: STATIC
+  - attribute_name: p_rr_min
+    object_name: Scott_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 0
+      transformation: STATIC
+  - attribute_name: droop_min
+    object_name: Scott_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 6
+      transformation: STATIC
+  - attribute_name: droop_max
+    object_name: Scott_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 6
+      transformation: STATIC
+  - attribute_name: startcost
+    object_name: Strand_krv_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 150
+      transformation: STATIC
+  - attribute_name: p_fcr_min
+    object_name: Strand_krv_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 4.2
+      transformation: STATIC
+  - attribute_name: p_fcr_max
+    object_name: Strand_krv_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 4.9
+      transformation: STATIC
+  - attribute_name: p_rr_min
+    object_name: Strand_krv_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 0
+      transformation: STATIC
+  - attribute_name: droop_min
+    object_name: Strand_krv_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 4
+      transformation: STATIC
+  - attribute_name: droop_max
+    object_name: Strand_krv_G1
+    object_type: generator
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 12
+      transformation: STATIC
+  - attribute_name: min_pressure
+    object_name: Sandvika
+    object_type: junction
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 672
+      transformation: STATIC
+  - attribute_name: load
+    object_name: Dayahead
+    object_type: market
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 0
+      transformation: STATIC
+  - attribute_name: max_buy
+    object_name: Dayahead
+    object_type: market
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 10000
+      transformation: STATIC
+  - attribute_name: max_sale
+    object_name: Dayahead
+    object_type: market
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 10000
+      transformation: STATIC
+  - attribute_name: prod_area
+    object_name: Holen
+    object_type: plant
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1
+      transformation: STATIC
+  - aggregation: first
+    attribute_name: mip_flag
+    object_name: Holen
+    object_type: plant
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_p_constr
+    object_name: Holen
+    object_type: plant
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 42
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_q_constr
+    object_name: Holen
+    object_type: plant
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1000
+      transformation: STATIC
+  - attribute_name: prod_area
+    object_name: Lund
+    object_type: plant
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1
+      transformation: STATIC
+  - aggregation: first
+    attribute_name: mip_flag
+    object_name: Lund
+    object_type: plant
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 0
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_q_constr
+    object_name: Lund
+    object_type: plant
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1000
+      transformation: STATIC
+  - attribute_name: prod_area
+    object_name: Lien_krv
+    object_type: plant
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1
+      transformation: STATIC
+  - aggregation: first
+    attribute_name: mip_flag
+    object_name: Lien_krv
+    object_type: plant
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_q_constr
+    object_name: Lien_krv
+    object_type: plant
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 2.7
+      transformation: STATIC
+  - attribute_name: prod_area
+    object_name: Landet
+    object_type: plant
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1
+      transformation: STATIC
+  - aggregation: first
+    attribute_name: mip_flag
+    object_name: Landet
+    object_type: plant
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_p_constr
+    object_name: Landet
+    object_type: plant
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 48
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_q_constr
+    object_name: Landet
+    object_type: plant
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1000
+      transformation: STATIC
+  - attribute_name: prod_area
+    object_name: Dalby
+    object_type: plant
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1
+      transformation: STATIC
+  - aggregation: first
+    attribute_name: mip_flag
+    object_name: Dalby
+    object_type: plant
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_q_constr
+    object_name: Dalby
+    object_type: plant
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1000
+      transformation: STATIC
+  - attribute_name: prod_area
+    object_name: Rull1
+    object_type: plant
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1
+      transformation: STATIC
+  - aggregation: first
+    attribute_name: mip_flag
+    object_name: Rull1
+    object_type: plant
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_p_constr
+    object_name: Rull1
+    object_type: plant
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 184.999
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_q_constr
+    object_name: Rull1
+    object_type: plant
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1000
+      transformation: STATIC
+  - attribute_name: prod_area
+    object_name: Rull2
+    object_type: plant
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1
+      transformation: STATIC
+  - aggregation: first
+    attribute_name: mip_flag
+    object_name: Rull2
+    object_type: plant
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_q_constr
+    object_name: Rull2
+    object_type: plant
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1000
+      transformation: STATIC
+  - attribute_name: prod_area
+    object_name: Scott
+    object_type: plant
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1
+      transformation: STATIC
+  - aggregation: first
+    attribute_name: mip_flag
+    object_name: Scott
+    object_type: plant
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_q_constr
+    object_name: Scott
+    object_type: plant
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1000
+      transformation: STATIC
+  - attribute_name: prod_area
+    object_name: Strand_krv
+    object_type: plant
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1
+      transformation: STATIC
+  - aggregation: first
+    attribute_name: mip_flag
+    object_name: Strand_krv
+    object_type: plant
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 0
+      transformation: STATIC
+  - aggregation: min
+    attribute_name: max_q_constr
+    object_name: Strand_krv
+    object_type: plant
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1000
+      transformation: STATIC
+  - aggregation: mean
+    attribute_name: tactical_limit_max
+    object_name: Sirefelt
+    object_type: reservoir
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 1.42
+      transformation: STATIC
+  - aggregation: mean
+    attribute_name: tactical_limit_max
+    object_name: Danielsen
+    object_type: reservoir
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 9.2
+      transformation: STATIC
+  - aggregation: mean
+    attribute_name: tactical_limit_max
+    object_name: Dalbysvatn
+    object_type: reservoir
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 109
+      transformation: STATIC
+  - attribute_name: max_p_limit
+    object_name: T2Landet
+    object_type: production_group
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 48.6
+      transformation: STATIC
+  - aggregation: max
+    attribute_name: rr_up_obligation
+    object_name: rkom_up
+    object_type: reserve_group
+    time_series_external_id: null
+    transformations:
+    - kwargs:
+        0: 0
+      transformation: STATIC
+  - attribute_name: inflow
+    object_name: Blakstad
+    object_type: creek_intake
+    retrieve: RANGE
+    time_series_external_id: '649835'
+    transformations:
+    - kwargs:
+        value: 0.53
+      transformation: MULTIPLY
+    - kwargs:
+        value: 0
+      transformation: ADD
+  - attribute_name: inflow
+    object_name: Fjerdingby_intake
+    object_type: creek_intake
+    retrieve: RANGE
+    time_series_external_id: '649792'
+    transformations:
+    - kwargs:
+        value: 0.151
+      transformation: MULTIPLY
+    - kwargs:
+        value: 0
+      transformation: ADD
+  - attribute_name: inflow
+    object_name: Vigrestad
+    object_type: creek_intake
+    retrieve: RANGE
+    time_series_external_id: '649835'
+    transformations:
+    - kwargs:
+        value: 0.08
+      transformation: MULTIPLY
+    - kwargs:
+        value: 0
+      transformation: ADD
+  - attribute_name: inflow
+    object_name: Golebiowski_intake
+    object_type: creek_intake
+    retrieve: RANGE
+    time_series_external_id: '649792'
+    transformations:
+    - kwargs:
+        value: 0.042
+      transformation: MULTIPLY
+    - kwargs:
+        value: 0
+      transformation: ADD
+  - attribute_name: inflow
+    object_name: Lont_intake
+    object_type: creek_intake
+    retrieve: RANGE
+    time_series_external_id: '649792'
+    transformations:
+    - kwargs:
+        value: 0.069
+      transformation: MULTIPLY
+    - kwargs:
+        value: 0
+      transformation: ADD
+  - attribute_name: inflow
+    object_name: Narvhus
+    object_type: creek_intake
+    retrieve: RANGE
+    time_series_external_id: '624330'
+    transformations:
+    - kwargs:
+        value: 0.078
+      transformation: MULTIPLY
+    - kwargs:
+        value: 0
+      transformation: ADD
+  - attribute_name: inflow
+    object_name: Gustad
+    object_type: creek_intake
+    retrieve: RANGE
+    time_series_external_id: '649835'
+    transformations:
+    - kwargs:
+        value: 0.14
+      transformation: MULTIPLY
+    - kwargs:
+        value: 0
+      transformation: ADD
+  - aggregation: max
+    attribute_name: maintenance_flag
+    object_name: Holen_G1
+    object_type: generator
+    retrieve: RANGE
+    time_series_external_id: '582079'
+    transformations:
+    - kwargs:
+        value: -1
+      transformation: MULTIPLY
+    - kwargs:
+        value: 1
+      transformation: ADD
+  - aggregation: max
+    attribute_name: maintenance_flag
+    object_name: Lund_G1
+    object_type: generator
+    retrieve: RANGE
+    time_series_external_id: '582091'
+    transformations:
+    - kwargs:
+        value: -1
+      transformation: MULTIPLY
+    - kwargs:
+        value: 1
+      transformation: ADD
+  - aggregation: max
+    attribute_name: maintenance_flag
+    object_name: Lien_krv_G1
+    object_type: generator
+    retrieve: RANGE
+    time_series_external_id: '829157'
+    transformations:
+    - kwargs:
+        value: -1
+      transformation: MULTIPLY
+    - kwargs:
+        value: 1
+      transformation: ADD
+  - aggregation: max
+    attribute_name: maintenance_flag
+    object_name: Landet_G1
+    object_type: generator
+    retrieve: RANGE
+    time_series_external_id: '582085'
+    transformations:
+    - kwargs:
+        value: -1
+      transformation: MULTIPLY
+    - kwargs:
+        value: 1
+      transformation: ADD
+  - aggregation: max
+    attribute_name: maintenance_flag
+    object_name: Dalby_G1
+    object_type: generator
+    retrieve: RANGE
+    time_series_external_id: '582055'
+    transformations:
+    - kwargs:
+        value: -1
+      transformation: MULTIPLY
+    - kwargs:
+        value: 1
+      transformation: ADD
+  - aggregation: max
+    attribute_name: maintenance_flag
+    object_name: Dalby_G2
+    object_type: generator
+    retrieve: RANGE
+    time_series_external_id: '582059'
+    transformations:
+    - kwargs:
+        value: -1
+      transformation: MULTIPLY
+    - kwargs:
+        value: 1
+      transformation: ADD
+  - aggregation: max
+    attribute_name: maintenance_flag
+    object_name: Rull1_G1
+    object_type: generator
+    retrieve: RANGE
+    time_series_external_id: '582111'
+    transformations:
+    - kwargs:
+        value: -1
+      transformation: MULTIPLY
+    - kwargs:
+        value: 1
+      transformation: ADD
+  - aggregation: max
+    attribute_name: maintenance_flag
+    object_name: Rull1_G2
+    object_type: generator
+    retrieve: RANGE
+    time_series_external_id: '582113'
+    transformations:
+    - kwargs:
+        value: -1
+      transformation: MULTIPLY
+    - kwargs:
+        value: 1
+      transformation: ADD
+  - aggregation: max
+    attribute_name: maintenance_flag
+    object_name: Rull2_G1
+    object_type: generator
+    retrieve: RANGE
+    time_series_external_id: '582093'
+    transformations:
+    - kwargs:
+        value: -1
+      transformation: MULTIPLY
+    - kwargs:
+        value: 1
+      transformation: ADD
+  - aggregation: max
+    attribute_name: maintenance_flag
+    object_name: Rull2_G2
+    object_type: generator
+    retrieve: RANGE
+    time_series_external_id: '601608'
+    transformations:
+    - kwargs:
+        value: -1
+      transformation: MULTIPLY
+    - kwargs:
+        value: 1
+      transformation: ADD
+  - aggregation: max
+    attribute_name: maintenance_flag
+    object_name: Scott_G1
+    object_type: generator
+    retrieve: RANGE
+    time_series_external_id: '601610'
+    transformations:
+    - kwargs:
+        value: -1
+      transformation: MULTIPLY
+    - kwargs:
+        value: 1
+      transformation: ADD
+  - aggregation: max
+    attribute_name: maintenance_flag
+    object_name: Strand_krv_G1
+    object_type: generator
+    retrieve: RANGE
+    time_series_external_id: '627753'
+    transformations:
+    - kwargs:
+        value: -1
+      transformation: MULTIPLY
+    - kwargs:
+        value: 1
+      transformation: ADD
+  - aggregation: first
+    attribute_name: production_schedule
+    object_name: Holen
+    object_type: plant
+    retrieve: RANGE
+    time_series_external_id: '136445'
+  - aggregation: first
+    attribute_name: production_schedule
+    object_name: Lund
+    object_type: plant
+    retrieve: RANGE
+    time_series_external_id: '136450'
+  - aggregation: first
+    attribute_name: production_schedule
+    object_name: Lien_krv
+    object_type: plant
+    retrieve: RANGE
+    time_series_external_id: '136449'
+  - aggregation: first
+    attribute_name: production_schedule
+    object_name: Landet
+    object_type: plant
+    retrieve: RANGE
+    time_series_external_id: '136446'
+  - aggregation: first
+    attribute_name: production_schedule
+    object_name: Dalby
+    object_type: plant
+    retrieve: RANGE
+    time_series_external_id: '136442'
+  - aggregation: first
+    attribute_name: production_schedule
+    object_name: Rull1
+    object_type: plant
+    retrieve: RANGE
+    time_series_external_id: '136443'
+  - aggregation: first
+    attribute_name: production_schedule
+    object_name: Rull2
+    object_type: plant
+    retrieve: RANGE
+    time_series_external_id: '136444'
+  - aggregation: first
+    attribute_name: production_schedule
+    object_name: Scott
+    object_type: plant
+    retrieve: RANGE
+    time_series_external_id: '136447'
+  - aggregation: first
+    attribute_name: production_schedule
+    object_name: Strand_krv
+    object_type: plant
+    retrieve: RANGE
+    time_series_external_id: '136448'
+  - attribute_name: start_head
+    object_name: Hagen
+    object_type: reservoir
+    retrieve: START
+    time_series_external_id: '501436'
+  - aggregation: mean
+    attribute_name: inflow
+    object_name: Hagen
+    object_type: reservoir
+    retrieve: RANGE
+    time_series_external_id: '649827'
+  - attribute_name: start_vol
+    object_name: Hovden
+    object_type: reservoir
+    retrieve: START
+    time_series_external_id: '601729'
+  - aggregation: mean
+    attribute_name: inflow
+    object_name: Hovden
+    object_type: reservoir
+    retrieve: RANGE
+    time_series_external_id: '649831'
+  - attribute_name: start_head
+    object_name: Frosta
+    object_type: reservoir
+    retrieve: START
+    time_series_external_id: '501437'
+  - aggregation: mean
+    attribute_name: inflow
+    object_name: Frosta
+    object_type: reservoir
+    retrieve: RANGE
+    time_series_external_id: '649837'
+  - attribute_name: start_head
+    object_name: Varhaug
+    object_type: reservoir
+    retrieve: START
+    time_series_external_id: '740791'
+  - aggregation: mean
+    attribute_name: inflow
+    object_name: Varhaug
+    object_type: reservoir
+    retrieve: RANGE
+    time_series_external_id: '649838'
+  - attribute_name: start_head
+    object_name: Tangvall
+    object_type: reservoir
+    retrieve: START
+    time_series_external_id: '501441'
+  - aggregation: mean
+    attribute_name: inflow
+    object_name: Tangvall
+    object_type: reservoir
+    retrieve: RANGE
+    time_series_external_id: '649830'
+  - attribute_name: start_head
+    object_name: Sirefelt
+    object_type: reservoir
+    retrieve: START
+    time_series_external_id: '501433'
+  - aggregation: mean
+    attribute_name: inflow
+    object_name: Sirefelt
+    object_type: reservoir
+    retrieve: RANGE
+    time_series_external_id: '649835'
+  - attribute_name: start_vol
+    object_name: Lundvann
+    object_type: reservoir
+    retrieve: START
+    time_series_external_id: '601728'
+  - aggregation: mean
+    attribute_name: inflow
+    object_name: Lundvann
+    object_type: reservoir
+    retrieve: RANGE
+    time_series_external_id: '649832'
+  - attribute_name: start_head
+    object_name: Danielsen
+    object_type: reservoir
+    retrieve: START
+    time_series_external_id: '501439'
+  - aggregation: mean
+    attribute_name: inflow
+    object_name: Danielsen
+    object_type: reservoir
+    retrieve: RANGE
+    time_series_external_id: '649828'
+  - attribute_name: start_head
+    object_name: Dalbysvatn
+    object_type: reservoir
+    retrieve: START
+    time_series_external_id: '501440'
+  - aggregation: mean
+    attribute_name: inflow
+    object_name: Dalbysvatn
+    object_type: reservoir
+    retrieve: RANGE
+    time_series_external_id: '624330'
+  - attribute_name: min_head_constr
+    object_name: Dalbysvatn
+    object_type: reservoir
+    retrieve: RANGE
+    time_series_external_id: '582116'
+  - attribute_name: max_head_constr
+    object_name: Dalbysvatn
+    object_type: reservoir
+    retrieve: RANGE
+    time_series_external_id: '603779'
+  - attribute_name: start_head
+    object_name: Nielsen
+    object_type: reservoir
+    retrieve: START
+    time_series_external_id: '501431'
+  - aggregation: mean
+    attribute_name: inflow
+    object_name: Nielsen
+    object_type: reservoir
+    retrieve: RANGE
+    time_series_external_id: '649836'
+  - attribute_name: start_head
+    object_name: Ranemsletta_1183
+    object_type: reservoir
+    retrieve: START
+    time_series_external_id: '770346'
+  - aggregation: mean
+    attribute_name: inflow
+    object_name: Ranemsletta_1183
+    object_type: reservoir
+    retrieve: RANGE
+    time_series_external_id: '769827'
+  - attribute_name: start_head
+    object_name: Lensvik
+    object_type: reservoir
+    retrieve: START
+    time_series_external_id: '501428'
+  - aggregation: mean
+    attribute_name: inflow
+    object_name: Lensvik
+    object_type: reservoir
+    retrieve: RANGE
+    time_series_external_id: '649792'
+  - attribute_name: start_head
+    object_name: Strand
+    object_type: reservoir
+    retrieve: START
+    time_series_external_id: '501430'
+  - aggregation: mean
+    attribute_name: inflow
+    object_name: Strand
+    object_type: reservoir
+    retrieve: RANGE
+    time_series_external_id: '649826'
+  - attribute_name: start_head
+    object_name: Strand_tunnel
+    object_type: reservoir
+    retrieve: START
+    time_series_external_id: '501428'
+  - attribute_name: start_head
+    object_name: Livincovs
+    object_type: reservoir
+    retrieve: START
+    time_series_external_id: '501438'
+  - aggregation: mean
+    attribute_name: inflow
+    object_name: Livincovs
+    object_type: reservoir
+    retrieve: RANGE
+    time_series_external_id: '649829'
+    transformations:
+    - kwargs:
+        value: 0.16
+      transformation: MULTIPLY
+    - kwargs:
+        value: 0
+      transformation: ADD
+  - aggregation: mean
+    attribute_name: buy_price
+    object_name: Dayahead
+    object_type: market
+    retrieve: RANGE
+    time_series_external_id: '6694'
+    transformations:
+    - kwargs:
+        value: 1
+      transformation: MULTIPLY
+    - kwargs:
+        value: 0
+      transformation: ADD
+  - aggregation: mean
+    attribute_name: sale_price
+    object_name: Dayahead
+    object_type: market
+    retrieve: RANGE
+    time_series_external_id: '6694'

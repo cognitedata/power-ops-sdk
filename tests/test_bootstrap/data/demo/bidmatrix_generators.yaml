@@ -1,0 +1,9 @@
+- name: price_independent
+  default_method: price_independent
+  default_function_external_id: generate_bid_matrix
+- name: multi_scenario
+  default_method: multi_scenario
+  default_function_external_id: generate_bid_matrix
+- name: water_value_based
+  default_method: simple
+  default_function_external_id: generate_water_value_based_bid_matrix

@@ -1,0 +1,633 @@
+connections:
+  - connection_type: connection_bypass
+    from: Hagen
+    from_type: reservoir
+    to: b_Hagen_Strand
+    to_type: gate
+  - connection_type: connection_bypass
+    from: Sirefelt
+    from_type: reservoir
+    to: b_Sirefelt_Knute_Rullsvatn
+    to_type: gate
+  - connection_type: connection_bypass
+    from: Danielsen
+    from_type: reservoir
+    to: b_Danielsen_Lundvann
+    to_type: gate
+  - connection_type: connection_bypass
+    from: Dalbysvatn
+    from_type: reservoir
+    to: b_Dalbysvatn_Knute_Rullsvatn
+    to_type: gate
+  - connection_type: connection_bypass
+    from: Nielsen
+    from_type: reservoir
+    to: b_Nielsen_Blakstadana
+    to_type: gate
+  - connection_type: connection_bypass
+    from: Lensvik
+    from_type: reservoir
+    to: b_Lensvik_Dalbysvatn
+    to_type: gate
+  - connection_type: connection_bypass
+    from: Livincovs
+    from_type: reservoir
+    to: b_Livincovs_Dalbysvatn
+    to_type: gate
+  - connection_type: connection_spill
+    from: Blakstad
+    from_type: creek_intake
+    to: f_Blakstadana_Knute_Rullsvatn
+    to_type: gate
+  - connection_type: connection_spill
+    from: Hagen
+    from_type: reservoir
+    to: f_Hagen_Strand
+    to_type: gate
+  - connection_type: connection_spill
+    from: Strand
+    from_type: reservoir
+    to: f_Finnvasstol_Dalbysvatn
+    to_type: gate
+  - connection_type: connection_spill
+    from: Hovden
+    from_type: reservoir
+    to: f_Hovden_Hagen
+    to_type: gate
+  - connection_type: connection_spill
+    from: Fjerdingby_intake
+    from_type: creek_intake
+    to: f_Fjerdingby_Dalbysvatn
+    to_type: gate
+  - connection_type: connection_spill
+    from: Frosta
+    from_type: reservoir
+    to: f_Frosta
+    to_type: gate
+  - connection_type: connection_spill
+    from: Varhaug
+    from_type: reservoir
+    to: f_Varhaug
+    to_type: gate
+  - connection_type: connection_spill
+    from: Tangvall
+    from_type: reservoir
+    to: f_Tangvall
+    to_type: gate
+  - connection_type: connection_spill
+    from: Sirefelt
+    from_type: reservoir
+    to: f_Sirefelt_Knute_Rullsvatn
+    to_type: gate
+  - connection_type: connection_spill
+    from: Lundvann
+    from_type: reservoir
+    to: f_Lundvann_Lensvik
+    to_type: gate
+  - connection_type: connection_spill
+    from: Danielsen
+    from_type: reservoir
+    to: f_Nupstj
+    to_type: gate
+  - connection_type: connection_spill
+    from: Golebiowski_intake
+    from_type: creek_intake
+    to: f_Golebiowski_Dalbysvatn
+    to_type: gate
+  - connection_type: connection_spill
+    from: Lont_intake
+    from_type: creek_intake
+    to: f_Lont_Dalbysvatn
+    to_type: gate
+  - connection_type: connection_spill
+    from: Dalbysvatn
+    from_type: reservoir
+    to: f_Dalbysvatn_Knute_Rullsvatn
+    to_type: gate
+  - connection_type: connection_spill
+    from: Nielsen
+    from_type: reservoir
+    to: f_Nielsen
+    to_type: gate
+  - connection_type: connection_spill
+    from: Narvhus
+    from_type: creek_intake
+    to: f_Narvhus_Rullsvatn
+    to_type: gate
+  - connection_type: connection_spill
+    from: Rullsvatn
+    from_type: reservoir
+    to: f_Rullsvatn_Rullslaagen
+    to_type: gate
+  - connection_type: connection_spill
+    from: Ranemsletta_1183
+    from_type: reservoir
+    to: f_Ranemsletta_1183_Livincovs
+    to_type: gate
+  - connection_type: connection_spill
+    from: Lensvik
+    from_type: reservoir
+    to: f_Lensvik
+    to_type: gate
+  - connection_type: connection_spill
+    from: Livincovs
+    from_type: reservoir
+    to: f_Livincovs
+    to_type: gate
+  - connection_type: connection_standard
+    from: Strand
+    from_type: reservoir
+    to: w_Finnvasstol_Strand_tunnel
+    to_type: gate
+  - connection_type: connection_standard
+    from: Hovden
+    from_type: reservoir
+    to: w_Hovden_Livincovs
+    to_type: gate
+  - connection_type: connection_standard
+    from: Frosta
+    from_type: reservoir
+    to: w_Frosta
+    to_type: gate
+  - connection_type: connection_standard
+    from: Varhaug
+    from_type: reservoir
+    to: w_Varhaug
+    to_type: gate
+  - connection_type: connection_standard
+    from: Tangvall
+    from_type: reservoir
+    to: w_Tangvall
+    to_type: gate
+  - connection_type: connection_standard
+    from: Rullsvatn
+    from_type: reservoir
+    to: w_Rullsvatn_Rullslaagen
+    to_type: gate
+  - connection_type: generator_of_plant
+    from: Holen
+    from_type: plant
+    to: Holen_G1
+    to_type: generator
+  - connection_type: generator_of_plant
+    from: Lund
+    from_type: plant
+    to: Lund_G1
+    to_type: generator
+  - connection_type: generator_of_plant
+    from: Lien_krv
+    from_type: plant
+    to: Lien_krv_G1
+    to_type: generator
+  - connection_type: generator_of_plant
+    from: Landet
+    from_type: plant
+    to: Landet_G1
+    to_type: generator
+  - connection_type: generator_of_plant
+    from: Dalby
+    from_type: plant
+    to: Dalby_G1
+    to_type: generator
+  - connection_type: generator_of_plant
+    from: Dalby
+    from_type: plant
+    to: Dalby_G2
+    to_type: generator
+  - connection_type: generator_of_plant
+    from: Rull1
+    from_type: plant
+    to: Rull1_G1
+    to_type: generator
+  - connection_type: generator_of_plant
+    from: Rull1
+    from_type: plant
+    to: Rull1_G2
+    to_type: generator
+  - connection_type: generator_of_plant
+    from: Rull2
+    from_type: plant
+    to: Rull2_G1
+    to_type: generator
+  - connection_type: generator_of_plant
+    from: Rull2
+    from_type: plant
+    to: Rull2_G2
+    to_type: generator
+  - connection_type: generator_of_plant
+    from: Scott
+    from_type: plant
+    to: Scott_G1
+    to_type: generator
+  - connection_type: generator_of_plant
+    from: Strand_krv
+    from_type: plant
+    to: Strand_krv_G1
+    to_type: generator
+  - connection_type: connection_standard
+    from: Holen
+    from_type: plant
+    order: 0
+    to: Blakstad
+    to_type: junction
+  - connection_type: connection_standard
+    from: Blakstad
+    from_type: creek_intake
+    order: 1
+    to: Blakstad
+    to_type: junction
+  - connection_type: connection_standard
+    from: Golebiowski_intake
+    from_type: junction
+    order: 0
+    to: Fjerdingby_intake
+    to_type: junction
+  - connection_type: connection_standard
+    from: Fjerdingby_intake
+    from_type: creek_intake
+    order: 1
+    to: Fjerdingby_intake
+    to_type: junction
+  - connection_type: connection_standard
+    from: Blakstad
+    from_type: junction
+    order: 0
+    to: Vigrestad
+    to_type: junction
+  - connection_type: connection_standard
+    from: Vigrestad
+    from_type: creek_intake
+    order: 1
+    to: Vigrestad
+    to_type: junction
+  - connection_type: connection_standard
+    from: Sirefelt
+    from_type: reservoir
+    order: 0
+    to: Holensfoss_junc
+    to_type: junction
+  - connection_type: connection_standard
+    from: Vigrestad
+    from_type: junction
+    order: 1
+    to: Holensfoss_junc
+    to_type: junction
+  - connection_type: connection_standard
+    from: w_k_Strand
+    from_type: junction
+    order: 0
+    to: Sandvika
+    to_type: junction
+  - connection_type: connection_standard
+    from: Sandvika
+    from_type: creek_intake
+    order: 1
+    to: Sandvika
+    to_type: junction
+  - connection_type: connection_standard
+    from: Lont_intake
+    from_type: junction
+    order: 0
+    to: Landet_intake
+    to_type: junction
+  - connection_type: connection_standard
+    from: Landet
+    from_type: plant
+    order: 1
+    to: Landet_intake
+    to_type: junction
+  - connection_type: connection_standard
+    from: Strand_tunnel
+    from_type: reservoir
+    order: 0
+    to: Golebiowski_intake
+    to_type: junction
+  - connection_type: connection_standard
+    from: Golebiowski_intake
+    from_type: creek_intake
+    order: 1
+    to: Golebiowski_intake
+    to_type: junction
+  - connection_type: connection_standard
+    from: Lensvik
+    from_type: reservoir
+    order: 0
+    to: Lont_intake
+    to_type: junction
+  - connection_type: connection_standard
+    from: Lont_intake
+    from_type: creek_intake
+    order: 1
+    to: Lont_intake
+    to_type: junction
+  - connection_type: connection_standard
+    from: Dalbysvatn
+    from_type: reservoir
+    order: 0
+    to: Narvhus
+    to_type: junction
+  - connection_type: connection_standard
+    from: Narvhus
+    from_type: creek_intake
+    order: 1
+    to: Narvhus
+    to_type: junction
+  - connection_type: connection_standard
+    from: Holensfoss_junc
+    from_type: junction
+    order: 0
+    to: Gustad
+    to_type: junction
+  - connection_type: connection_standard
+    from: Gustad
+    from_type: creek_intake
+    order: 1
+    to: Gustad
+    to_type: junction
+  - connection_type: connection_standard
+    from: Landet_intake
+    from_type: junction
+    order: 0
+    to: w_k_Strand
+    to_type: junction
+  - connection_type: connection_standard
+    from: Fjerdingby_intake
+    from_type: junction
+    order: 1
+    to: w_k_Strand
+    to_type: junction
+  - connection_type: connection_standard
+    from: Nielsen
+    from_type: reservoir
+    to: Holen
+    to_type: plant
+  - connection_type: connection_standard
+    from: Danielsen
+    from_type: reservoir
+    to: Lund
+    to_type: plant
+  - connection_type: connection_standard
+    from: Ranemsletta_1183
+    from_type: reservoir
+    to: Lien_krv
+    to_type: plant
+  - connection_type: connection_standard
+    from: Livincovs
+    from_type: reservoir
+    to: Landet
+    to_type: plant
+  - connection_type: connection_standard
+    from: Sandvika
+    from_type: junction
+    to: Dalby
+    to_type: plant
+  - connection_type: connection_standard
+    from: Narvhus
+    from_type: junction
+    to: Rull1
+    to_type: plant
+  - connection_type: connection_standard
+    from: Gustad
+    from_type: junction
+    to: Rull2
+    to_type: plant
+  - connection_type: connection_standard
+    from: Lundvann
+    from_type: reservoir
+    to: Scott
+    to_type: plant
+  - connection_type: connection_standard
+    from: Hagen
+    from_type: reservoir
+    to: Strand_krv
+    to_type: plant
+  - connection_type: connection_standard
+    from: f_Hovden_Hagen
+    from_type: gate
+    to: Hagen
+    to_type: reservoir
+  - connection_type: connection_standard
+    from: b_Nielsen_Blakstadana
+    from_type: gate
+    to: Sirefelt
+    to_type: reservoir
+  - connection_type: connection_standard
+    from: f_Nielsen
+    from_type: gate
+    to: Sirefelt
+    to_type: reservoir
+  - connection_type: connection_standard
+    from: Lund
+    from_type: plant
+    to: Lundvann
+    to_type: reservoir
+  - connection_type: connection_standard
+    from: b_Danielsen_Lundvann
+    from_type: gate
+    to: Lundvann
+    to_type: reservoir
+  - connection_type: connection_standard
+    from: Dalby
+    from_type: plant
+    to: Dalbysvatn
+    to_type: reservoir
+  - connection_type: connection_standard
+    from: f_Livincovs
+    from_type: gate
+    to: Dalbysvatn
+    to_type: reservoir
+  - connection_type: connection_standard
+    from: f_Lensvik
+    from_type: gate
+    to: Dalbysvatn
+    to_type: reservoir
+  - connection_type: connection_standard
+    from: b_Lensvik_Dalbysvatn
+    from_type: gate
+    to: Dalbysvatn
+    to_type: reservoir
+  - connection_type: connection_standard
+    from: b_Livincovs_Dalbysvatn
+    from_type: gate
+    to: Dalbysvatn
+    to_type: reservoir
+  - connection_type: connection_standard
+    from: f_Finnvasstol_Dalbysvatn
+    from_type: gate
+    to: Dalbysvatn
+    to_type: reservoir
+  - connection_type: connection_standard
+    from: f_Lont_Dalbysvatn
+    from_type: gate
+    to: Dalbysvatn
+    to_type: reservoir
+  - connection_type: connection_standard
+    from: f_Golebiowski_Dalbysvatn
+    from_type: gate
+    to: Dalbysvatn
+    to_type: reservoir
+  - connection_type: connection_standard
+    from: f_Fjerdingby_Dalbysvatn
+    from_type: gate
+    to: Dalbysvatn
+    to_type: reservoir
+  - connection_type: connection_standard
+    from: f_Frosta
+    from_type: gate
+    to: Nielsen
+    to_type: reservoir
+  - connection_type: connection_standard
+    from: w_Varhaug
+    from_type: gate
+    to: Nielsen
+    to_type: reservoir
+  - connection_type: connection_standard
+    from: w_Frosta
+    from_type: gate
+    to: Nielsen
+    to_type: reservoir
+  - connection_type: connection_standard
+    from: f_Varhaug
+    from_type: gate
+    to: Nielsen
+    to_type: reservoir
+  - connection_type: connection_standard
+    from: Rull1
+    from_type: plant
+    to: Rullsvatn
+    to_type: reservoir
+  - connection_type: connection_standard
+    from: Rull2
+    from_type: plant
+    to: Rullsvatn
+    to_type: reservoir
+  - connection_type: connection_standard
+    from: f_Dalbysvatn_Knute_Rullsvatn
+    from_type: gate
+    to: Rullsvatn
+    to_type: reservoir
+  - connection_type: connection_standard
+    from: b_Dalbysvatn_Knute_Rullsvatn
+    from_type: gate
+    to: Rullsvatn
+    to_type: reservoir
+  - connection_type: connection_standard
+    from: f_Sirefelt_Knute_Rullsvatn
+    from_type: gate
+    to: Rullsvatn
+    to_type: reservoir
+  - connection_type: connection_standard
+    from: b_Sirefelt_Knute_Rullsvatn
+    from_type: gate
+    to: Rullsvatn
+    to_type: reservoir
+  - connection_type: connection_standard
+    from: f_Blakstadana_Knute_Rullsvatn
+    from_type: gate
+    to: Rullsvatn
+    to_type: reservoir
+  - connection_type: connection_standard
+    from: f_Narvhus_Rullsvatn
+    from_type: gate
+    to: Rullsvatn
+    to_type: reservoir
+  - connection_type: connection_standard
+    from: w_Tangvall
+    from_type: gate
+    to: Ranemsletta_1183
+    to_type: reservoir
+  - connection_type: connection_standard
+    from: f_Tangvall
+    from_type: gate
+    to: Ranemsletta_1183
+    to_type: reservoir
+  - connection_type: connection_standard
+    from: f_Nupstj
+    from_type: gate
+    to: Lensvik
+    to_type: reservoir
+  - connection_type: connection_standard
+    from: f_Lundvann_Lensvik
+    from_type: gate
+    to: Lensvik
+    to_type: reservoir
+  - connection_type: connection_standard
+    from: Strand_krv
+    from_type: plant
+    to: Strand
+    to_type: reservoir
+  - connection_type: connection_standard
+    from: f_Hagen_Strand
+    from_type: gate
+    to: Strand
+    to_type: reservoir
+  - connection_type: connection_standard
+    from: b_Hagen_Strand
+    from_type: gate
+    to: Strand
+    to_type: reservoir
+  - connection_type: connection_standard
+    from: w_Finnvasstol_Strand_tunnel
+    from_type: gate
+    to: Strand_tunnel
+    to_type: reservoir
+  - connection_type: connection_standard
+    from: Scott
+    from_type: plant
+    to: Livincovs
+    to_type: reservoir
+  - connection_type: connection_standard
+    from: Lien_krv
+    from_type: plant
+    to: Livincovs
+    to_type: reservoir
+  - connection_type: connection_standard
+    from: w_Hovden_Livincovs
+    from_type: gate
+    to: Livincovs
+    to_type: reservoir
+  - connection_type: connection_standard
+    from: f_Ranemsletta_1183_Livincovs
+    from_type: gate
+    to: Livincovs
+    to_type: reservoir
+  - connection_type: connection_standard
+    from: Lund
+    from_type: plant
+    to: sum_restriction_LandetT2
+    to_type: production_group
+  - connection_type: connection_standard
+    from: Scott
+    from_type: plant
+    to: sum_restriction_LandetT2
+    to_type: production_group
+  - connection_type: connection_standard
+    from: Landet
+    from_type: plant
+    to: sum_restriction_LandetT2
+    to_type: production_group
+  #- connection_type: connection_standard
+  #  from: Rull1
+  #  from_type: plant
+  #  to: sum_flow_restriction_Rullsvann
+  #  to_type: discharge_group
+  #- connection_type: connection_standard
+  #  from: Rull2
+  #  from_type: plant
+  #  to: sum_flow_restriction_Rullsvann
+  #  to_type: discharge_group
+  #- connection_type: connection_standard
+  #  from: b_Sirefelt_Knute_Rullsvatn
+  #  from_type: gate
+  #  to: sum_flow_restriction_Rullsvann
+  #  to_type: discharge_group
+  #- connection_type: connection_standard
+  #  from: f_Sirefelt_Knute_Rullsvatn
+  #  from_type: gate
+  #  to: sum_flow_restriction_Rullsvann
+  #  to_type: discharge_group
+  #- connection_type: connection_standard
+  #  from: b_Dalbysvatn_Knute_Rullsvatn
+  #  from_type: gate
+  #  to: sum_flow_restriction_Rullsvann
+  #  to_type: discharge_group

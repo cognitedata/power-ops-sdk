@@ -1,0 +1,8 @@
+- name: Fornebu
+  version: "1"
+  market_to_price_area:
+    '1': NO2
+  directory: fornebu
+  model_raw: model_raw.yaml
+  model_mapping: model_mapping.yaml
+  model_processed: model_processed.yaml

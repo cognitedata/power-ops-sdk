@@ -1,0 +1,38 @@
+NAMELIST
+
+# {reservoir name in SHOP} {corresponding module number in ProdRisk}
+
+Danielsen 201
+
+Lundvann 203
+
+Tangvall 203
+
+Hovden 205
+
+Livincovs 206
+
+Lensvik 209
+
+Dalbysvatn 210
+
+Rullsvatn 211
+
+Hagen 212
+
+Strand 213
+
+Strand_tunnel 213
+
+Ranemsletta_1183 214
+
+Varhaug 301
+
+Frosta 302
+
+Nielsen 303
+
+Sirefelt 304
+
+-1
+

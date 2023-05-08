@@ -1,0 +1,10 @@
+external_id: "market_configuration_nordpool_dayahead"
+name: "Nord Pool Day-ahead"
+max_price: 4000
+min_price: -500
+time_unit: "1h"
+timezone: "Europe/Oslo"
+tick_size: 0.1
+trade_lot: 0.1
+price_steps: 200
+price_unit: "EUR/MWh"

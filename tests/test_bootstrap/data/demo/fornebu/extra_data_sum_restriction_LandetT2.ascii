@@ -1,0 +1,39 @@
+
+#---------Max inmatning foer stationsgrupp T2 Landet-----------
+
+
+#Stasjoner som leverer paa Landet-trafo
+
+PLANT_GROUP plant_list T2Landet
+
+# Number of plants
+
+4
+
+# List of plants
+
+Lund
+
+Scott
+
+Landet
+
+Lien_krv
+
+
+#Definer maksprod over Landet-trafo
+
+PLANT_GROUP power_upper_limit T2Landet
+
+# id number starttime time_unit period data_type y_unit npkt
+
+0 1 MIDNIGHT hour 800 -1 MW 1
+
+# limit gir maksproduksjon
+
+# time limit
+
+0 48.6000000
+
+
+#---------SLUT Max inmatning foer stationsgrupp T2 Landet-------
