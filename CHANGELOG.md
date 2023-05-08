@@ -14,6 +14,7 @@ Changes are grouped as follows
 - `Security` in case of vulnerabilities.
 
 ## [0.2.0]
+### Added
 
 Added bootstrap module with CLI support for running bootstrap with "plan" and "apply".
 
