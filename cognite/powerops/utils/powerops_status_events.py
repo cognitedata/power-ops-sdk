@@ -1,7 +1,6 @@
 from uuid import uuid4
 
 import arrow
-
 from cognite.client.data_classes import Event
 
 

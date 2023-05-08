@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import List, Optional
 
 from cognite.client import CogniteClient
-from typing import List, Optional
 
 from cognite.powerops.config import (
     BidMatrixGeneratorConfig,
@@ -14,6 +14,7 @@ from cognite.powerops.config import (
     WatercourseConfig,
 )
 from cognite.powerops.data_classes.benchmarking_config import BenchmarkingConfig
+from cognite.powerops.data_classes.cdf_resource_collection import BootstrapResourceCollection
 from cognite.powerops.data_classes.rkom_bid_combination_config import RKOMBidCombinationConfig
 from cognite.powerops.data_classes.rkom_market_config import RkomMarketConfig
 from cognite.powerops.data_classes.shop_file_config import ShopFileConfig, ShopFileConfigs
@@ -29,8 +30,6 @@ from cognite.powerops.utils.resource_generation import (
     generate_resources_and_data,
 )
 
-from cognite.powerops.data_classes.cdf_resource_collection import BootstrapResourceCollection
-
 
 def validate_config(
     config: BootstrapConfig,
@@ -38,7 +37,6 @@ def validate_config(
     errors: str = "fix",
 ) -> BootstrapConfig:
     return config
-
 
 
 def create_watercourse_timeseries_mappings(
@@ -156,7 +154,6 @@ def get_shop_service_url(cognite_project: str):
     )
 
 
-
 def _load_config(path: Path) -> BootstrapConfig:
     return BootstrapConfig.from_yamls(path)
 
@@ -172,9 +169,7 @@ def _transform(
 
     constants = config.constants
     _ = [w.set_shop_yaml_paths(path) for w in config.watercourses]
-    watercourse_directories = {
-        w.name: "/".join((path / w.directory).parts) for w in config.watercourses
-    }
+    watercourse_directories = {w.name: "/".join((path / w.directory).parts) for w in config.watercourses}
 
     shop_files_config_list = ShopFileConfigs.from_yaml(path).watercourses_shop
 
@@ -208,7 +203,6 @@ def _transform(
     bootstrap_resources += create_watercourse_timeseries_mappings(
         watercourse_configs=config.watercourses, time_series_mappings=config.time_series_mappings
     )
-
 
     # PowerOps configuration resources
     bootstrap_resources.add(config.market.cdf_asset)

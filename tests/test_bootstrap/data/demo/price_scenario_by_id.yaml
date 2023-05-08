@@ -170,19 +170,19 @@ scenario_23:
   name: -20pct
   time_series_external_id: '907748'
   transformations:
-  - kwargs: 
+  - kwargs:
       value: 0.8
     transformation: MULTIPLY
 scenario_24:
   name: +20pct
   time_series_external_id: '907748'
   transformations:
-  - kwargs: 
+  - kwargs:
       value: 1.2
     transformation: MULTIPLY
 scenario_26:
   name: -20pct
   time_series_external_id: '907748'
   transformations:
-  - kwargs: 
+  - kwargs:
     transformation: MULTIPLY

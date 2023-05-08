@@ -1,8 +1,8 @@
 from dataclasses import dataclass
+from typing import List, Optional
 
 from cognite.client.data_classes import Sequence
 from pandas import DataFrame
-from typing import List, Optional
 
 from cognite.powerops.data_classes.cdf_resource_collection import BootstrapResourceCollection, SequenceContent
 

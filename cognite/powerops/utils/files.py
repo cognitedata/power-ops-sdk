@@ -1,10 +1,9 @@
+from datetime import datetime
 from pathlib import Path
+from typing import Optional
 
 import yaml
-
 from cognite.client import CogniteClient
-from datetime import datetime
-from typing import Optional
 
 from cognite.powerops.data_classes.shop_file_config import ShopFileConfig
 from cognite.powerops.utils.serializer import load_yaml

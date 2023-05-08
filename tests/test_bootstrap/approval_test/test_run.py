@@ -4,7 +4,6 @@ from pathlib import Path
 from cognite.client.testing import monkeypatch_cognite_client
 
 from cognite.powerops.main import apply
-
 from tests.test_bootstrap.approval_test.mock_resource_create_classes import (
     MockAssetsCreate,
     MockEventsCreate,
@@ -33,7 +32,6 @@ def test_run(data_regression):
             api.create = mock_resource
 
         apply(path=DATA / "demo", market="Dayahead")
-
 
     dump = {resource_type: mock_resource.serialize() for resource_type, mock_resource in mock_resources.items()}
 

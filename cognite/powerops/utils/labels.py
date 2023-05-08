@@ -1,5 +1,6 @@
-from cognite.client.data_classes import LabelDefinition
 from typing import Callable
+
+from cognite.client.data_classes import LabelDefinition
 
 
 # All Labels used by PowerOps

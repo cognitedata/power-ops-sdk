@@ -1,7 +1,7 @@
 import re
+from typing import Optional
 
 from cognite.client.data_classes import Asset, Label
-from typing import Optional
 
 from cognite.powerops.utils.labels import AssetLabels
 

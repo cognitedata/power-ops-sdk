@@ -1,13 +1,12 @@
 from __future__ import annotations
 
-from pathlib import Path
-
 import json
-import pandas as pd
+from pathlib import Path
+from typing import List, NamedTuple, Optional, Tuple
 
+import pandas as pd
 from cognite.client.data_classes import Asset, Label, Relationship
 from pydantic import BaseModel
-from typing import List, NamedTuple, Optional, Tuple
 
 from cognite.powerops.data_classes.cdf_resource_collection import BootstrapResourceCollection
 from cognite.powerops.data_classes.time_series_mapping import TimeSeriesMapping
@@ -16,7 +15,6 @@ from cognite.powerops.utils.labels import AssetLabels as al
 from cognite.powerops.utils.labels import RelationshipLabels as rl
 from cognite.powerops.utils.relationship_types import asset_to_time_series, plant_to_generator, plant_to_inlet_reservoir
 from cognite.powerops.utils.serializer import load_yaml
-
 
 p_min_fallback = 0
 p_max_fallback = 1e20

@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 import logging
+from typing import Union
 
-from cognite.client import ClientConfig, CogniteClient
 from cognite.client._api.assets import AssetsAPI
 from cognite.client._api.events import EventsAPI
 from cognite.client._api.files import FilesAPI
@@ -11,8 +11,6 @@ from cognite.client._api.relationships import RelationshipsAPI
 from cognite.client._api.sequences import SequencesAPI
 from cognite.client.data_classes import Asset, Event, FileMetadata, LabelDefinition, Relationship, Sequence, TimeSeries
 from cognite.client.exceptions import CogniteDuplicatedError
-from typing import Union
-
 
 logger = logging.getLogger(__name__)
 

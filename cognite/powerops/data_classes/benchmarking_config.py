@@ -1,8 +1,8 @@
 import json
+from typing import Dict, List, Optional
 
 from cognite.client.data_classes import Asset
 from pydantic import BaseModel
-from typing import Dict, List, Optional
 
 from cognite.powerops.data_classes.common import RelativeTime
 
@@ -31,8 +31,10 @@ class BenchmarkingConfig(BaseModel):
         "gate_discharge_cost": "Gate Discharge Cost",
         "reserve_violation_penalty": "Reserve Violation Penalty",
         "load_penalty": "Load Penalty",
-    }  # Pydantic handles mutable defaults such that this is OK: https://stackoverflow.com/questions/63793662/how-to-give-a-pydantic-list-field-a-default-value/63808835#63808835
-    # TODO: Consider adding relationships to bid process config assets (or remove the optional part that uses those relationships in power-ops-functions)
+    }  # Pydantic handles mutable defaults such that this is OK:
+    # https://stackoverflow.com/questions/63793662/how-to-give-a-pydantic-list-field-a-default-value/63808835#63808835
+    # TODO: Consider adding relationships to bid process config
+    #  assets (or remove the optional part that uses those relationships in power-ops-functions)
 
     @property
     def metadata(self) -> dict:

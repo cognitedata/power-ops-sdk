@@ -1,6 +1,7 @@
 from enum import Enum, auto
-from pydantic import BaseModel, validator
 from typing import Optional
+
+from pydantic import BaseModel, validator
 
 
 class TransformationType(Enum):

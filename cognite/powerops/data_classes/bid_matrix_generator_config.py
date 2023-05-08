@@ -1,8 +1,13 @@
-from cognite.client.data_classes import Asset, Sequence
-from pydantic import BaseModel
 from typing import ClassVar, List
 
-from cognite.powerops.data_classes.cdf_resource_collection import BootstrapResourceCollection, SequenceContent, SequenceRows
+from cognite.client.data_classes import Asset, Sequence
+from pydantic import BaseModel
+
+from cognite.powerops.data_classes.cdf_resource_collection import (
+    BootstrapResourceCollection,
+    SequenceContent,
+    SequenceRows,
+)
 from cognite.powerops.utils.cdf_utils import simple_relationship
 from cognite.powerops.utils.labels import RelationshipLabels
 

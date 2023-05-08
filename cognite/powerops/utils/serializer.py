@@ -1,12 +1,10 @@
 from __future__ import annotations
 
+import re
 import warnings
-
 from functools import lru_cache
 from io import StringIO
 from pathlib import Path
-
-import re
 
 from yaml import safe_dump, safe_load
 

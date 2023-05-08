@@ -1,4 +1,5 @@
 import json
+from typing import List, Union
 
 from cognite.client.data_classes import (
     Asset,
@@ -14,7 +15,6 @@ from cognite.client.data_classes import (
     TimeSeries,
     TimeSeriesList,
 )
-from typing import List, Union
 
 
 class MockAssetsCreate:

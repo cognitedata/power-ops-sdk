@@ -1,17 +1,20 @@
 from __future__ import annotations
 
-from collections import defaultdict
-from pathlib import Path
-
 import json
 import typing
+from collections import defaultdict
+from pathlib import Path
+from typing import ClassVar, Dict, Generator, List, Optional, Tuple, Union
 
 from cognite.client.data_classes import Asset, Label, Sequence
 from pydantic import BaseModel, validator
-from typing import ClassVar, Dict, Generator, List, Optional, Tuple, Union
 
 from cognite.powerops.data_classes.benchmarking_config import BenchmarkingConfig
-from cognite.powerops.data_classes.cdf_resource_collection import BootstrapResourceCollection, SequenceContent, SequenceRows
+from cognite.powerops.data_classes.cdf_resource_collection import (
+    BootstrapResourceCollection,
+    SequenceContent,
+    SequenceRows,
+)
 from cognite.powerops.data_classes.common import AggregationMethod, CommonConstants, RelativeTime, RetrievalType
 from cognite.powerops.data_classes.market_config import MarketConfig
 from cognite.powerops.data_classes.reserve_scenario import Auction, Block, Product, ReserveScenario
@@ -97,7 +100,6 @@ class WatercourseConfig(BaseModel):
         self.yaml_raw_path = f"{path}/{self.directory}/{self.model_raw}"  # TODO: create these as properties
         self.yaml_processed_path = f"{path}/{self.directory}/{self.model_processed}"
         self.yaml_mapping_path = f"{path}/{self.directory}/{self.model_mapping}"
-
 
 
 class PriceScenarioID(BaseModel):
@@ -266,7 +268,8 @@ class BidProcessConfig(BaseModel):
                 }
             except KeyError as e:
                 raise KeyError(
-                    f"Watercourse {watercourse_name} not defined in price_scenarios_per_watercourse for BidProcessConfig {self.name}"
+                    f"Watercourse {watercourse_name} not defined in price_scenarios_per_watercourse "
+                    f"for BidProcessConfig {self.name}"
                 ) from e
         return price_scenarios
 
@@ -576,7 +579,9 @@ class BootstrapConfig(BaseModel):
         if duplicated := [s for s in scenarios_by_hash.values() if len(s) > 1]:
             sep = ") |\n\t\t\t ("
             raise ValueError(
-                f"Scenarios  ({sep.join([', '.join([id_ for id_, _ in duplicate_set]) for duplicate_set in duplicated])}) \nare duplicated."
+                f"Scenarios  "
+                f"({sep.join([', '.join([id_ for id_, _ in duplicate_set]) for duplicate_set in duplicated])}) "
+                f"\nare duplicated."
             )
         return value
 

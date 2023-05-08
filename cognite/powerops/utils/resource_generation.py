@@ -1,11 +1,10 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import TypedDict
 
 import pandas as pd
-
 from cognite.client.data_classes import Asset, Relationship, Sequence
-from typing import TypedDict
 
 from cognite.powerops.config import WatercourseConfig
 from cognite.powerops.data_classes.cdf_resource_collection import BootstrapResourceCollection, SequenceContent

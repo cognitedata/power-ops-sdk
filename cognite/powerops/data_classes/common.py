@@ -1,8 +1,8 @@
 import json
-
 from enum import Enum, auto
-from pydantic import BaseModel, validator
 from typing import Dict, List, Optional, Tuple, Union
+
+from pydantic import BaseModel, validator
 
 from cognite.powerops.logger import LoggingLevelT
 

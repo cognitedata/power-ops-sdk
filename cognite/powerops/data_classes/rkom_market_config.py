@@ -1,6 +1,7 @@
+from typing import ClassVar
+
 from cognite.client.data_classes import Asset
 from pydantic import BaseModel
-from typing import ClassVar
 
 
 class RkomMarketConfig(BaseModel):

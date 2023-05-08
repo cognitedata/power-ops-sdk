@@ -1,6 +1,5 @@
 import string
 
-
 # � character is used to represent unrecognizable characters in utf-8.
 UNRECOGNIZABLE_CHARACTER = "�"
 VALID_CHARACTERS = set(

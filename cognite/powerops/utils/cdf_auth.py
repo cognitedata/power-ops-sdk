@@ -1,6 +1,6 @@
 import os
 
-from cognite.client import config, CogniteClient
+from cognite.client import CogniteClient, config
 from cognite.client.credentials import OAuthClientCredentials, OAuthDeviceCode
 
 
@@ -13,10 +13,6 @@ def get_client(parameters: dict) -> CogniteClient:
     tenant_id = parameters.get("TENANT_ID")
     client_secret_env = parameters.get("CLIENT_SECRET_ENV")
 
-    space_id = parameters["SPACE_ID"]
-    data_model = parameters["DATA_MODEL"]
-    schema_version = int(parameters["SCHEMA_VERSION"])
-
     base_url = f"https://{cluster}.cognitedata.com"
     scopes = [f"https://{cluster}.cognitedata.com/.default"]
 
@@ -24,7 +20,6 @@ def get_client(parameters: dict) -> CogniteClient:
 
     if client_secret:
         token_url = f"https://login.microsoftonline.com/{tenant_id}/oauth2/v2.0/token"
-        # create creds from secret
         creds = OAuthClientCredentials(
             token_url=token_url,
             client_id=client_id,

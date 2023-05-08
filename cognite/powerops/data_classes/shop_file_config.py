@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from hashlib import md5
 from pathlib import Path
+from typing import Literal, Optional
 
 from cognite.client.data_classes import FileMetadata
 from pydantic import BaseModel
-from typing import Literal, Optional
 
 from cognite.powerops.utils.serializer import load_yaml
 

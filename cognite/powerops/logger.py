@@ -1,9 +1,8 @@
 import logging
 import sys
-
-from loguru import logger
 from typing import Union
 
+from loguru import logger
 
 __all__ = [
     "configure_debug_logging",

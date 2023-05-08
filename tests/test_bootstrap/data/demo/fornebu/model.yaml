@@ -1908,7 +1908,7 @@ model:
       load: 0
       max_buy: 10000
       max_sale: 10000
-      buy_price: # should be 1 TS 
+      buy_price: # should be 1 TS
           scenario:
               Nena:
                   source:

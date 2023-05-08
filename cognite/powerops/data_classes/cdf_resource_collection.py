@@ -1,29 +1,25 @@
 from __future__ import annotations
 
-import pandas as pd
+from typing import Union
 
+import pandas as pd
 from cognite.client import CogniteClient
 from cognite.client.data_classes import Asset, Event, LabelDefinition, Relationship, Sequence
 from cognite.client.data_classes._base import CogniteResource, CogniteResourceList
 from deepdiff import DeepDiff
 from pydantic import BaseModel, Extra
-from typing import Union
 
 import cognite.powerops.logger as logger
-
 from cognite.powerops.data_classes.shop_file_config import ShopFileConfig
 from cognite.powerops.utils.cdf_utils import upsert_cognite_resources
 from cognite.powerops.utils.files import upload_shop_config_file
-
 
 custom_logger = logger.get_logger(__name__)
 
 
 ExternalId = str
 
-AddableResourceT = Union[
-    "CogniteResource", list["CogniteResource"], "SequenceContent", list[ShopFileConfig]
-]
+AddableResourceT = Union["CogniteResource", list["CogniteResource"], "SequenceContent", list[ShopFileConfig]]
 
 
 class SequenceRows(BaseModel):

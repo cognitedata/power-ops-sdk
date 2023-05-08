@@ -1,17 +1,16 @@
 from __future__ import annotations
 
 import json
-import pandas as pd
+from typing import Any, ClassVar, Iterator, Literal, Optional
 
+import pandas as pd
 from cognite.client.data_classes import Sequence
 from pydantic import BaseModel, validator
-from typing import Any, ClassVar, Iterator, Literal, Optional
 
 from cognite.powerops.data_classes.cdf_resource_collection import BootstrapResourceCollection, SequenceContent
 from cognite.powerops.data_classes.common import AggregationMethod, RetrievalType
 from cognite.powerops.data_classes.transformation import Transformation
 from cognite.powerops.utils.common import print_warning
-
 
 ATTRIBUTE_DEFAULT_AGGREGATION: dict[str, AggregationMethod | None] = {
     "gate.max_flow": AggregationMethod.min,

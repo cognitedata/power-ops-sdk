@@ -1,8 +1,8 @@
 import json
+from typing import ClassVar, List
 
 from cognite.client.data_classes import Asset
 from pydantic import BaseModel, validator
-from typing import ClassVar, List
 
 from cognite.powerops.data_classes.reserve_scenario import Auction
 
