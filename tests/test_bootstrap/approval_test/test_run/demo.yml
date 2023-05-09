@@ -361,7 +361,7 @@ assets:
   name: Benchmarking config DA
   parent_external_id: benchmarking_configurations
 - description: RKOM bid generation config for Fornebu
-  external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW
+  external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW
   labels:
   - externalId: rkom_bid_configuration
   metadata:
@@ -381,10 +381,10 @@ assets:
     shop:endtime: '[["floor", "week"], ["shift", {"weeks": 2}]]'
     shop:starttime: '[["shift", {"days": 1}], ["floor", "day"]]'
     timezone: Europe/Oslo
-  name: Fornebu_Auction.week_down_day_3-prices_20MW-200MW
+  name: Fornebu_week_down_day_3-prices_20MW-200MW
   parent_external_id: rkom_bid_process_configurations
 - description: RKOM bid generation config for Fornebu
-  external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW
+  external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW
   labels:
   - externalId: rkom_bid_configuration
   metadata:
@@ -404,10 +404,10 @@ assets:
     shop:endtime: '[["floor", "week"], ["shift", {"weeks": 2}]]'
     shop:starttime: '[["shift", {"days": 1}], ["floor", "day"]]'
     timezone: Europe/Oslo
-  name: Fornebu_Auction.week_up_day_3-prices_20MW-200MW
+  name: Fornebu_week_up_day_3-prices_20MW-200MW
   parent_external_id: rkom_bid_process_configurations
 - description: RKOM bid generation config for Fornebu
-  external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW
+  external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW
   labels:
   - externalId: rkom_bid_configuration
   metadata:
@@ -427,10 +427,10 @@ assets:
     shop:endtime: '[["floor", "week"], ["shift", {"weeks": 2}]]'
     shop:starttime: '[["shift", {"days": 1}], ["floor", "day"]]'
     timezone: Europe/Oslo
-  name: Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW
+  name: Fornebu_weekend_down_day_3-prices_20MW-200MW
   parent_external_id: rkom_bid_process_configurations
 - description: RKOM bid generation config for Fornebu
-  external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW
+  external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW
   labels:
   - externalId: rkom_bid_configuration
   metadata:
@@ -450,7 +450,7 @@ assets:
     shop:endtime: '[["floor", "week"], ["shift", {"weeks": 2}]]'
     shop:starttime: '[["shift", {"days": 1}], ["floor", "day"]]'
     timezone: Europe/Oslo
-  name: Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW
+  name: Fornebu_weekend_up_day_3-prices_20MW-200MW
   parent_external_id: rkom_bid_process_configurations
 - external_id: price_area_NO2
   labels:
@@ -593,21 +593,21 @@ assets:
   parent_external_id: power_ops
 - description: Defining which RKOM bid methods should be combined (into the total
     bid form)
-  external_id: RKOM_bid_combination_configuration_Auction.week_default
+  external_id: RKOM_bid_combination_configuration_week_default
   metadata:
     bid:auction: week
     bid:combination_name: default
     bid:rkom_bid_configs: '["POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW"]'
-  name: RKOM bid combination configuration Auction.week default
+  name: RKOM bid combination configuration week default
   parent_external_id: rkom_bid_combination_configurations
 - description: Defining which RKOM bid methods should be combined (into the total
     bid form)
-  external_id: RKOM_bid_combination_configuration_Auction.weekend_default
+  external_id: RKOM_bid_combination_configuration_weekend_default
   metadata:
     bid:auction: weekend
     bid:combination_name: default
     bid:rkom_bid_configs: '["POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW"]'
-  name: RKOM bid combination configuration Auction.weekend default
+  name: RKOM bid combination configuration weekend default
   parent_external_id: rkom_bid_combination_configurations
 - description: Configurations for which bids should be combined into a total RKOM
     bid form
@@ -1212,797 +1212,797 @@ relationships:
   source_type: Asset
   target_external_id: SHOP_Fornebu_incremental_mapping_water_value_based_with_dummy_SHOP_runNO2_Main
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_+20pct_0MW
+- external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_+20pct_0MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_+20pct_0MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_+20pct_0MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_+20pct_100MW
+- external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_+20pct_100MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_+20pct_100MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_+20pct_100MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_+20pct_120MW
+- external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_+20pct_120MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_+20pct_120MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_+20pct_120MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_+20pct_140MW
+- external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_+20pct_140MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_+20pct_140MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_+20pct_140MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_+20pct_160MW
+- external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_+20pct_160MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_+20pct_160MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_+20pct_160MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_+20pct_180MW
+- external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_+20pct_180MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_+20pct_180MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_+20pct_180MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_+20pct_200MW
+- external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_+20pct_200MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_+20pct_200MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_+20pct_200MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_+20pct_20MW
+- external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_+20pct_20MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_+20pct_20MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_+20pct_20MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_+20pct_40MW
+- external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_+20pct_40MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_+20pct_40MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_+20pct_40MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_+20pct_60MW
+- external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_+20pct_60MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_+20pct_60MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_+20pct_60MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_+20pct_80MW
+- external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_+20pct_80MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_+20pct_80MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_+20pct_80MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_-20pct_0MW
+- external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_-20pct_0MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_-20pct_0MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_-20pct_0MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_-20pct_100MW
+- external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_-20pct_100MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_-20pct_100MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_-20pct_100MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_-20pct_120MW
+- external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_-20pct_120MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_-20pct_120MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_-20pct_120MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_-20pct_140MW
+- external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_-20pct_140MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_-20pct_140MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_-20pct_140MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_-20pct_160MW
+- external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_-20pct_160MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_-20pct_160MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_-20pct_160MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_-20pct_180MW
+- external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_-20pct_180MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_-20pct_180MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_-20pct_180MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_-20pct_200MW
+- external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_-20pct_200MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_-20pct_200MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_-20pct_200MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_-20pct_20MW
+- external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_-20pct_20MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_-20pct_20MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_-20pct_20MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_-20pct_40MW
+- external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_-20pct_40MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_-20pct_40MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_-20pct_40MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_-20pct_60MW
+- external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_-20pct_60MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_-20pct_60MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_-20pct_60MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_-20pct_80MW
+- external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_-20pct_80MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_-20pct_80MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_-20pct_80MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_Cognite_0MW
+- external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_Cognite_0MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_Cognite_0MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_Cognite_0MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_Cognite_100MW
+- external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_Cognite_100MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_Cognite_100MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_Cognite_100MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_Cognite_120MW
+- external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_Cognite_120MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_Cognite_120MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_Cognite_120MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_Cognite_140MW
+- external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_Cognite_140MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_Cognite_140MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_Cognite_140MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_Cognite_160MW
+- external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_Cognite_160MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_Cognite_160MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_Cognite_160MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_Cognite_180MW
+- external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_Cognite_180MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_Cognite_180MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_Cognite_180MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_Cognite_200MW
+- external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_Cognite_200MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_Cognite_200MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_Cognite_200MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_Cognite_20MW
+- external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_Cognite_20MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_Cognite_20MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_Cognite_20MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_Cognite_40MW
+- external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_Cognite_40MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_Cognite_40MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_Cognite_40MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_Cognite_60MW
+- external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_Cognite_60MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_Cognite_60MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_Cognite_60MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_Cognite_80MW
+- external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_Cognite_80MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_Cognite_80MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_Cognite_80MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_+20pct_0MW
+- external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_+20pct_0MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_+20pct_0MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_+20pct_0MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_+20pct_100MW
+- external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_+20pct_100MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_+20pct_100MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_+20pct_100MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_+20pct_120MW
+- external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_+20pct_120MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_+20pct_120MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_+20pct_120MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_+20pct_140MW
+- external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_+20pct_140MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_+20pct_140MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_+20pct_140MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_+20pct_160MW
+- external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_+20pct_160MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_+20pct_160MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_+20pct_160MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_+20pct_180MW
+- external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_+20pct_180MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_+20pct_180MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_+20pct_180MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_+20pct_200MW
+- external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_+20pct_200MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_+20pct_200MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_+20pct_200MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_+20pct_20MW
+- external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_+20pct_20MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_+20pct_20MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_+20pct_20MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_+20pct_40MW
+- external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_+20pct_40MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_+20pct_40MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_+20pct_40MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_+20pct_60MW
+- external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_+20pct_60MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_+20pct_60MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_+20pct_60MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_+20pct_80MW
+- external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_+20pct_80MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_+20pct_80MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_+20pct_80MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_-20pct_0MW
+- external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_-20pct_0MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_-20pct_0MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_-20pct_0MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_-20pct_100MW
+- external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_-20pct_100MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_-20pct_100MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_-20pct_100MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_-20pct_120MW
+- external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_-20pct_120MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_-20pct_120MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_-20pct_120MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_-20pct_140MW
+- external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_-20pct_140MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_-20pct_140MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_-20pct_140MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_-20pct_160MW
+- external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_-20pct_160MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_-20pct_160MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_-20pct_160MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_-20pct_180MW
+- external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_-20pct_180MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_-20pct_180MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_-20pct_180MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_-20pct_200MW
+- external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_-20pct_200MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_-20pct_200MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_-20pct_200MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_-20pct_20MW
+- external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_-20pct_20MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_-20pct_20MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_-20pct_20MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_-20pct_40MW
+- external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_-20pct_40MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_-20pct_40MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_-20pct_40MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_-20pct_60MW
+- external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_-20pct_60MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_-20pct_60MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_-20pct_60MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_-20pct_80MW
+- external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_-20pct_80MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_-20pct_80MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_-20pct_80MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_Cognite_0MW
+- external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_Cognite_0MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_Cognite_0MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_Cognite_0MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_Cognite_100MW
+- external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_Cognite_100MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_Cognite_100MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_Cognite_100MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_Cognite_120MW
+- external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_Cognite_120MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_Cognite_120MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_Cognite_120MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_Cognite_140MW
+- external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_Cognite_140MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_Cognite_140MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_Cognite_140MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_Cognite_160MW
+- external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_Cognite_160MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_Cognite_160MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_Cognite_160MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_Cognite_180MW
+- external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_Cognite_180MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_Cognite_180MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_Cognite_180MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_Cognite_200MW
+- external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_Cognite_200MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_Cognite_200MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_Cognite_200MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_Cognite_20MW
+- external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_Cognite_20MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_Cognite_20MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_Cognite_20MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_Cognite_40MW
+- external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_Cognite_40MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_Cognite_40MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_Cognite_40MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_Cognite_60MW
+- external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_Cognite_60MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_Cognite_60MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_Cognite_60MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_Cognite_80MW
+- external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_Cognite_80MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.week_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_Cognite_80MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_Cognite_80MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_+20pct_0MW
+- external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_+20pct_0MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_+20pct_0MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_+20pct_0MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_+20pct_100MW
+- external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_+20pct_100MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_+20pct_100MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_+20pct_100MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_+20pct_120MW
+- external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_+20pct_120MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_+20pct_120MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_+20pct_120MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_+20pct_140MW
+- external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_+20pct_140MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_+20pct_140MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_+20pct_140MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_+20pct_160MW
+- external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_+20pct_160MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_+20pct_160MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_+20pct_160MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_+20pct_180MW
+- external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_+20pct_180MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_+20pct_180MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_+20pct_180MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_+20pct_200MW
+- external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_+20pct_200MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_+20pct_200MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_+20pct_200MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_+20pct_20MW
+- external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_+20pct_20MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_+20pct_20MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_+20pct_20MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_+20pct_40MW
+- external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_+20pct_40MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_+20pct_40MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_+20pct_40MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_+20pct_60MW
+- external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_+20pct_60MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_+20pct_60MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_+20pct_60MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_+20pct_80MW
+- external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_+20pct_80MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_+20pct_80MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_+20pct_80MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_-20pct_0MW
+- external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_-20pct_0MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_-20pct_0MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_-20pct_0MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_-20pct_100MW
+- external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_-20pct_100MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_-20pct_100MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_-20pct_100MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_-20pct_120MW
+- external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_-20pct_120MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_-20pct_120MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_-20pct_120MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_-20pct_140MW
+- external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_-20pct_140MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_-20pct_140MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_-20pct_140MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_-20pct_160MW
+- external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_-20pct_160MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_-20pct_160MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_-20pct_160MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_-20pct_180MW
+- external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_-20pct_180MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_-20pct_180MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_-20pct_180MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_-20pct_200MW
+- external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_-20pct_200MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_-20pct_200MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_-20pct_200MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_-20pct_20MW
+- external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_-20pct_20MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_-20pct_20MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_-20pct_20MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_-20pct_40MW
+- external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_-20pct_40MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_-20pct_40MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_-20pct_40MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_-20pct_60MW
+- external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_-20pct_60MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_-20pct_60MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_-20pct_60MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_-20pct_80MW
+- external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_-20pct_80MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_-20pct_80MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_-20pct_80MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_Cognite_0MW
+- external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_Cognite_0MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_Cognite_0MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_Cognite_0MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_Cognite_100MW
+- external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_Cognite_100MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_Cognite_100MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_Cognite_100MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_Cognite_120MW
+- external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_Cognite_120MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_Cognite_120MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_Cognite_120MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_Cognite_140MW
+- external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_Cognite_140MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_Cognite_140MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_Cognite_140MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_Cognite_160MW
+- external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_Cognite_160MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_Cognite_160MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_Cognite_160MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_Cognite_180MW
+- external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_Cognite_180MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_Cognite_180MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_Cognite_180MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_Cognite_200MW
+- external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_Cognite_200MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_Cognite_200MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_Cognite_200MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_Cognite_20MW
+- external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_Cognite_20MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_Cognite_20MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_Cognite_20MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_Cognite_40MW
+- external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_Cognite_40MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_Cognite_40MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_Cognite_40MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_Cognite_60MW
+- external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_Cognite_60MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_Cognite_60MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_Cognite_60MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_Cognite_80MW
+- external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_Cognite_80MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_Cognite_80MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_Cognite_80MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_+20pct_0MW
+- external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_+20pct_0MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_+20pct_0MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_+20pct_0MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_+20pct_100MW
+- external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_+20pct_100MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_+20pct_100MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_+20pct_100MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_+20pct_120MW
+- external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_+20pct_120MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_+20pct_120MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_+20pct_120MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_+20pct_140MW
+- external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_+20pct_140MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_+20pct_140MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_+20pct_140MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_+20pct_160MW
+- external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_+20pct_160MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_+20pct_160MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_+20pct_160MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_+20pct_180MW
+- external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_+20pct_180MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_+20pct_180MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_+20pct_180MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_+20pct_200MW
+- external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_+20pct_200MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_+20pct_200MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_+20pct_200MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_+20pct_20MW
+- external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_+20pct_20MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_+20pct_20MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_+20pct_20MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_+20pct_40MW
+- external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_+20pct_40MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_+20pct_40MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_+20pct_40MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_+20pct_60MW
+- external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_+20pct_60MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_+20pct_60MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_+20pct_60MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_+20pct_80MW
+- external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_+20pct_80MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_+20pct_80MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_+20pct_80MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_-20pct_0MW
+- external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_-20pct_0MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_-20pct_0MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_-20pct_0MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_-20pct_100MW
+- external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_-20pct_100MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_-20pct_100MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_-20pct_100MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_-20pct_120MW
+- external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_-20pct_120MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_-20pct_120MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_-20pct_120MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_-20pct_140MW
+- external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_-20pct_140MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_-20pct_140MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_-20pct_140MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_-20pct_160MW
+- external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_-20pct_160MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_-20pct_160MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_-20pct_160MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_-20pct_180MW
+- external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_-20pct_180MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_-20pct_180MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_-20pct_180MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_-20pct_200MW
+- external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_-20pct_200MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_-20pct_200MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_-20pct_200MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_-20pct_20MW
+- external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_-20pct_20MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_-20pct_20MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_-20pct_20MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_-20pct_40MW
+- external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_-20pct_40MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_-20pct_40MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_-20pct_40MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_-20pct_60MW
+- external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_-20pct_60MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_-20pct_60MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_-20pct_60MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_-20pct_80MW
+- external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_-20pct_80MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_-20pct_80MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_-20pct_80MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_Cognite_0MW
+- external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_Cognite_0MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_Cognite_0MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_Cognite_0MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_Cognite_100MW
+- external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_Cognite_100MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_Cognite_100MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_Cognite_100MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_Cognite_120MW
+- external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_Cognite_120MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_Cognite_120MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_Cognite_120MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_Cognite_140MW
+- external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_Cognite_140MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_Cognite_140MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_Cognite_140MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_Cognite_160MW
+- external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_Cognite_160MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_Cognite_160MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_Cognite_160MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_Cognite_180MW
+- external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_Cognite_180MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_Cognite_180MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_Cognite_180MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_Cognite_200MW
+- external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_Cognite_200MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_Cognite_200MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_Cognite_200MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_Cognite_20MW
+- external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_Cognite_20MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_Cognite_20MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_Cognite_20MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_Cognite_40MW
+- external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_Cognite_40MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_Cognite_40MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_Cognite_40MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_Cognite_60MW
+- external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_Cognite_60MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_Cognite_60MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_Cognite_60MW
   target_type: Sequence
-- external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_Cognite_80MW
+- external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_Cognite_80MW
   labels: '[{''externalId'': ''relationship_to.incremental_mapping_sequence''}]'
-  source_external_id: POWEROPS_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW
+  source_external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW
   source_type: Asset
-  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_Cognite_80MW
+  target_external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_Cognite_80MW
   target_type: Sequence
 - external_id: price_area_NO2.6694
   labels: '[{''externalId'': ''relationship_to.dayahead_price_time_series''}]'
@@ -2418,7 +2418,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_+20pct_0MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_+20pct_0MW
   metadata:
     bid:reserve_volume: '0'
     bid:scenario_name: +20pct
@@ -2443,7 +2443,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_+20pct_100MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_+20pct_100MW
   metadata:
     bid:reserve_volume: '100'
     bid:scenario_name: +20pct
@@ -2468,7 +2468,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_+20pct_120MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_+20pct_120MW
   metadata:
     bid:reserve_volume: '120'
     bid:scenario_name: +20pct
@@ -2493,7 +2493,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_+20pct_140MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_+20pct_140MW
   metadata:
     bid:reserve_volume: '140'
     bid:scenario_name: +20pct
@@ -2518,7 +2518,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_+20pct_160MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_+20pct_160MW
   metadata:
     bid:reserve_volume: '160'
     bid:scenario_name: +20pct
@@ -2543,7 +2543,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_+20pct_180MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_+20pct_180MW
   metadata:
     bid:reserve_volume: '180'
     bid:scenario_name: +20pct
@@ -2568,7 +2568,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_+20pct_200MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_+20pct_200MW
   metadata:
     bid:reserve_volume: '200'
     bid:scenario_name: +20pct
@@ -2593,7 +2593,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_+20pct_20MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_+20pct_20MW
   metadata:
     bid:reserve_volume: '20'
     bid:scenario_name: +20pct
@@ -2618,7 +2618,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_+20pct_40MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_+20pct_40MW
   metadata:
     bid:reserve_volume: '40'
     bid:scenario_name: +20pct
@@ -2643,7 +2643,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_+20pct_60MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_+20pct_60MW
   metadata:
     bid:reserve_volume: '60'
     bid:scenario_name: +20pct
@@ -2668,7 +2668,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_+20pct_80MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_+20pct_80MW
   metadata:
     bid:reserve_volume: '80'
     bid:scenario_name: +20pct
@@ -2693,7 +2693,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_-20pct_0MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_-20pct_0MW
   metadata:
     bid:reserve_volume: '0'
     bid:scenario_name: -20pct
@@ -2718,7 +2718,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_-20pct_100MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_-20pct_100MW
   metadata:
     bid:reserve_volume: '100'
     bid:scenario_name: -20pct
@@ -2743,7 +2743,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_-20pct_120MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_-20pct_120MW
   metadata:
     bid:reserve_volume: '120'
     bid:scenario_name: -20pct
@@ -2768,7 +2768,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_-20pct_140MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_-20pct_140MW
   metadata:
     bid:reserve_volume: '140'
     bid:scenario_name: -20pct
@@ -2793,7 +2793,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_-20pct_160MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_-20pct_160MW
   metadata:
     bid:reserve_volume: '160'
     bid:scenario_name: -20pct
@@ -2818,7 +2818,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_-20pct_180MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_-20pct_180MW
   metadata:
     bid:reserve_volume: '180'
     bid:scenario_name: -20pct
@@ -2843,7 +2843,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_-20pct_200MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_-20pct_200MW
   metadata:
     bid:reserve_volume: '200'
     bid:scenario_name: -20pct
@@ -2868,7 +2868,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_-20pct_20MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_-20pct_20MW
   metadata:
     bid:reserve_volume: '20'
     bid:scenario_name: -20pct
@@ -2893,7 +2893,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_-20pct_40MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_-20pct_40MW
   metadata:
     bid:reserve_volume: '40'
     bid:scenario_name: -20pct
@@ -2918,7 +2918,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_-20pct_60MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_-20pct_60MW
   metadata:
     bid:reserve_volume: '60'
     bid:scenario_name: -20pct
@@ -2943,7 +2943,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_-20pct_80MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_-20pct_80MW
   metadata:
     bid:reserve_volume: '80'
     bid:scenario_name: -20pct
@@ -2968,7 +2968,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_Cognite_0MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_Cognite_0MW
   metadata:
     bid:reserve_volume: '0'
     bid:scenario_name: Cognite
@@ -2993,7 +2993,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_Cognite_100MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_Cognite_100MW
   metadata:
     bid:reserve_volume: '100'
     bid:scenario_name: Cognite
@@ -3018,7 +3018,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_Cognite_120MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_Cognite_120MW
   metadata:
     bid:reserve_volume: '120'
     bid:scenario_name: Cognite
@@ -3043,7 +3043,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_Cognite_140MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_Cognite_140MW
   metadata:
     bid:reserve_volume: '140'
     bid:scenario_name: Cognite
@@ -3068,7 +3068,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_Cognite_160MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_Cognite_160MW
   metadata:
     bid:reserve_volume: '160'
     bid:scenario_name: Cognite
@@ -3093,7 +3093,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_Cognite_180MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_Cognite_180MW
   metadata:
     bid:reserve_volume: '180'
     bid:scenario_name: Cognite
@@ -3118,7 +3118,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_Cognite_200MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_Cognite_200MW
   metadata:
     bid:reserve_volume: '200'
     bid:scenario_name: Cognite
@@ -3143,7 +3143,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_Cognite_20MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_Cognite_20MW
   metadata:
     bid:reserve_volume: '20'
     bid:scenario_name: Cognite
@@ -3168,7 +3168,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_Cognite_40MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_Cognite_40MW
   metadata:
     bid:reserve_volume: '40'
     bid:scenario_name: Cognite
@@ -3193,7 +3193,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_Cognite_60MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_Cognite_60MW
   metadata:
     bid:reserve_volume: '60'
     bid:scenario_name: Cognite
@@ -3218,7 +3218,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_down_day_3-prices_20MW-200MW_Cognite_80MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_Cognite_80MW
   metadata:
     bid:reserve_volume: '80'
     bid:scenario_name: Cognite
@@ -3243,7 +3243,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_+20pct_0MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_+20pct_0MW
   metadata:
     bid:reserve_volume: '0'
     bid:scenario_name: +20pct
@@ -3268,7 +3268,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_+20pct_100MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_+20pct_100MW
   metadata:
     bid:reserve_volume: '100'
     bid:scenario_name: +20pct
@@ -3293,7 +3293,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_+20pct_120MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_+20pct_120MW
   metadata:
     bid:reserve_volume: '120'
     bid:scenario_name: +20pct
@@ -3318,7 +3318,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_+20pct_140MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_+20pct_140MW
   metadata:
     bid:reserve_volume: '140'
     bid:scenario_name: +20pct
@@ -3343,7 +3343,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_+20pct_160MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_+20pct_160MW
   metadata:
     bid:reserve_volume: '160'
     bid:scenario_name: +20pct
@@ -3368,7 +3368,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_+20pct_180MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_+20pct_180MW
   metadata:
     bid:reserve_volume: '180'
     bid:scenario_name: +20pct
@@ -3393,7 +3393,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_+20pct_200MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_+20pct_200MW
   metadata:
     bid:reserve_volume: '200'
     bid:scenario_name: +20pct
@@ -3418,7 +3418,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_+20pct_20MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_+20pct_20MW
   metadata:
     bid:reserve_volume: '20'
     bid:scenario_name: +20pct
@@ -3443,7 +3443,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_+20pct_40MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_+20pct_40MW
   metadata:
     bid:reserve_volume: '40'
     bid:scenario_name: +20pct
@@ -3468,7 +3468,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_+20pct_60MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_+20pct_60MW
   metadata:
     bid:reserve_volume: '60'
     bid:scenario_name: +20pct
@@ -3493,7 +3493,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_+20pct_80MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_+20pct_80MW
   metadata:
     bid:reserve_volume: '80'
     bid:scenario_name: +20pct
@@ -3518,7 +3518,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_-20pct_0MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_-20pct_0MW
   metadata:
     bid:reserve_volume: '0'
     bid:scenario_name: -20pct
@@ -3543,7 +3543,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_-20pct_100MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_-20pct_100MW
   metadata:
     bid:reserve_volume: '100'
     bid:scenario_name: -20pct
@@ -3568,7 +3568,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_-20pct_120MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_-20pct_120MW
   metadata:
     bid:reserve_volume: '120'
     bid:scenario_name: -20pct
@@ -3593,7 +3593,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_-20pct_140MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_-20pct_140MW
   metadata:
     bid:reserve_volume: '140'
     bid:scenario_name: -20pct
@@ -3618,7 +3618,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_-20pct_160MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_-20pct_160MW
   metadata:
     bid:reserve_volume: '160'
     bid:scenario_name: -20pct
@@ -3643,7 +3643,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_-20pct_180MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_-20pct_180MW
   metadata:
     bid:reserve_volume: '180'
     bid:scenario_name: -20pct
@@ -3668,7 +3668,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_-20pct_200MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_-20pct_200MW
   metadata:
     bid:reserve_volume: '200'
     bid:scenario_name: -20pct
@@ -3693,7 +3693,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_-20pct_20MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_-20pct_20MW
   metadata:
     bid:reserve_volume: '20'
     bid:scenario_name: -20pct
@@ -3718,7 +3718,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_-20pct_40MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_-20pct_40MW
   metadata:
     bid:reserve_volume: '40'
     bid:scenario_name: -20pct
@@ -3743,7 +3743,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_-20pct_60MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_-20pct_60MW
   metadata:
     bid:reserve_volume: '60'
     bid:scenario_name: -20pct
@@ -3768,7 +3768,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_-20pct_80MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_-20pct_80MW
   metadata:
     bid:reserve_volume: '80'
     bid:scenario_name: -20pct
@@ -3793,7 +3793,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_Cognite_0MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_Cognite_0MW
   metadata:
     bid:reserve_volume: '0'
     bid:scenario_name: Cognite
@@ -3818,7 +3818,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_Cognite_100MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_Cognite_100MW
   metadata:
     bid:reserve_volume: '100'
     bid:scenario_name: Cognite
@@ -3843,7 +3843,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_Cognite_120MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_Cognite_120MW
   metadata:
     bid:reserve_volume: '120'
     bid:scenario_name: Cognite
@@ -3868,7 +3868,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_Cognite_140MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_Cognite_140MW
   metadata:
     bid:reserve_volume: '140'
     bid:scenario_name: Cognite
@@ -3893,7 +3893,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_Cognite_160MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_Cognite_160MW
   metadata:
     bid:reserve_volume: '160'
     bid:scenario_name: Cognite
@@ -3918,7 +3918,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_Cognite_180MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_Cognite_180MW
   metadata:
     bid:reserve_volume: '180'
     bid:scenario_name: Cognite
@@ -3943,7 +3943,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_Cognite_200MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_Cognite_200MW
   metadata:
     bid:reserve_volume: '200'
     bid:scenario_name: Cognite
@@ -3968,7 +3968,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_Cognite_20MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_Cognite_20MW
   metadata:
     bid:reserve_volume: '20'
     bid:scenario_name: Cognite
@@ -3993,7 +3993,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_Cognite_40MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_Cognite_40MW
   metadata:
     bid:reserve_volume: '40'
     bid:scenario_name: Cognite
@@ -4018,7 +4018,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_Cognite_60MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_Cognite_60MW
   metadata:
     bid:reserve_volume: '60'
     bid:scenario_name: Cognite
@@ -4043,7 +4043,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.week_up_day_3-prices_20MW-200MW_Cognite_80MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_week_up_day_3-prices_20MW-200MW_Cognite_80MW
   metadata:
     bid:reserve_volume: '80'
     bid:scenario_name: Cognite
@@ -4068,7 +4068,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_+20pct_0MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_+20pct_0MW
   metadata:
     bid:reserve_volume: '0'
     bid:scenario_name: +20pct
@@ -4093,7 +4093,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_+20pct_100MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_+20pct_100MW
   metadata:
     bid:reserve_volume: '100'
     bid:scenario_name: +20pct
@@ -4118,7 +4118,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_+20pct_120MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_+20pct_120MW
   metadata:
     bid:reserve_volume: '120'
     bid:scenario_name: +20pct
@@ -4143,7 +4143,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_+20pct_140MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_+20pct_140MW
   metadata:
     bid:reserve_volume: '140'
     bid:scenario_name: +20pct
@@ -4168,7 +4168,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_+20pct_160MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_+20pct_160MW
   metadata:
     bid:reserve_volume: '160'
     bid:scenario_name: +20pct
@@ -4193,7 +4193,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_+20pct_180MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_+20pct_180MW
   metadata:
     bid:reserve_volume: '180'
     bid:scenario_name: +20pct
@@ -4218,7 +4218,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_+20pct_200MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_+20pct_200MW
   metadata:
     bid:reserve_volume: '200'
     bid:scenario_name: +20pct
@@ -4243,7 +4243,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_+20pct_20MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_+20pct_20MW
   metadata:
     bid:reserve_volume: '20'
     bid:scenario_name: +20pct
@@ -4268,7 +4268,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_+20pct_40MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_+20pct_40MW
   metadata:
     bid:reserve_volume: '40'
     bid:scenario_name: +20pct
@@ -4293,7 +4293,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_+20pct_60MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_+20pct_60MW
   metadata:
     bid:reserve_volume: '60'
     bid:scenario_name: +20pct
@@ -4318,7 +4318,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_+20pct_80MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_+20pct_80MW
   metadata:
     bid:reserve_volume: '80'
     bid:scenario_name: +20pct
@@ -4343,7 +4343,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_-20pct_0MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_-20pct_0MW
   metadata:
     bid:reserve_volume: '0'
     bid:scenario_name: -20pct
@@ -4368,7 +4368,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_-20pct_100MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_-20pct_100MW
   metadata:
     bid:reserve_volume: '100'
     bid:scenario_name: -20pct
@@ -4393,7 +4393,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_-20pct_120MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_-20pct_120MW
   metadata:
     bid:reserve_volume: '120'
     bid:scenario_name: -20pct
@@ -4418,7 +4418,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_-20pct_140MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_-20pct_140MW
   metadata:
     bid:reserve_volume: '140'
     bid:scenario_name: -20pct
@@ -4443,7 +4443,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_-20pct_160MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_-20pct_160MW
   metadata:
     bid:reserve_volume: '160'
     bid:scenario_name: -20pct
@@ -4468,7 +4468,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_-20pct_180MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_-20pct_180MW
   metadata:
     bid:reserve_volume: '180'
     bid:scenario_name: -20pct
@@ -4493,7 +4493,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_-20pct_200MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_-20pct_200MW
   metadata:
     bid:reserve_volume: '200'
     bid:scenario_name: -20pct
@@ -4518,7 +4518,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_-20pct_20MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_-20pct_20MW
   metadata:
     bid:reserve_volume: '20'
     bid:scenario_name: -20pct
@@ -4543,7 +4543,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_-20pct_40MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_-20pct_40MW
   metadata:
     bid:reserve_volume: '40'
     bid:scenario_name: -20pct
@@ -4568,7 +4568,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_-20pct_60MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_-20pct_60MW
   metadata:
     bid:reserve_volume: '60'
     bid:scenario_name: -20pct
@@ -4593,7 +4593,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_-20pct_80MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_-20pct_80MW
   metadata:
     bid:reserve_volume: '80'
     bid:scenario_name: -20pct
@@ -4618,7 +4618,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_Cognite_0MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_Cognite_0MW
   metadata:
     bid:reserve_volume: '0'
     bid:scenario_name: Cognite
@@ -4643,7 +4643,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_Cognite_100MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_Cognite_100MW
   metadata:
     bid:reserve_volume: '100'
     bid:scenario_name: Cognite
@@ -4668,7 +4668,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_Cognite_120MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_Cognite_120MW
   metadata:
     bid:reserve_volume: '120'
     bid:scenario_name: Cognite
@@ -4693,7 +4693,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_Cognite_140MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_Cognite_140MW
   metadata:
     bid:reserve_volume: '140'
     bid:scenario_name: Cognite
@@ -4718,7 +4718,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_Cognite_160MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_Cognite_160MW
   metadata:
     bid:reserve_volume: '160'
     bid:scenario_name: Cognite
@@ -4743,7 +4743,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_Cognite_180MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_Cognite_180MW
   metadata:
     bid:reserve_volume: '180'
     bid:scenario_name: Cognite
@@ -4768,7 +4768,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_Cognite_200MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_Cognite_200MW
   metadata:
     bid:reserve_volume: '200'
     bid:scenario_name: Cognite
@@ -4793,7 +4793,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_Cognite_20MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_Cognite_20MW
   metadata:
     bid:reserve_volume: '20'
     bid:scenario_name: Cognite
@@ -4818,7 +4818,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_Cognite_40MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_Cognite_40MW
   metadata:
     bid:reserve_volume: '40'
     bid:scenario_name: Cognite
@@ -4843,7 +4843,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_Cognite_60MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_Cognite_60MW
   metadata:
     bid:reserve_volume: '60'
     bid:scenario_name: Cognite
@@ -4868,7 +4868,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_down_day_3-prices_20MW-200MW_Cognite_80MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_down_day_3-prices_20MW-200MW_Cognite_80MW
   metadata:
     bid:reserve_volume: '80'
     bid:scenario_name: Cognite
@@ -4893,7 +4893,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_+20pct_0MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_+20pct_0MW
   metadata:
     bid:reserve_volume: '0'
     bid:scenario_name: +20pct
@@ -4918,7 +4918,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_+20pct_100MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_+20pct_100MW
   metadata:
     bid:reserve_volume: '100'
     bid:scenario_name: +20pct
@@ -4943,7 +4943,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_+20pct_120MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_+20pct_120MW
   metadata:
     bid:reserve_volume: '120'
     bid:scenario_name: +20pct
@@ -4968,7 +4968,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_+20pct_140MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_+20pct_140MW
   metadata:
     bid:reserve_volume: '140'
     bid:scenario_name: +20pct
@@ -4993,7 +4993,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_+20pct_160MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_+20pct_160MW
   metadata:
     bid:reserve_volume: '160'
     bid:scenario_name: +20pct
@@ -5018,7 +5018,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_+20pct_180MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_+20pct_180MW
   metadata:
     bid:reserve_volume: '180'
     bid:scenario_name: +20pct
@@ -5043,7 +5043,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_+20pct_200MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_+20pct_200MW
   metadata:
     bid:reserve_volume: '200'
     bid:scenario_name: +20pct
@@ -5068,7 +5068,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_+20pct_20MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_+20pct_20MW
   metadata:
     bid:reserve_volume: '20'
     bid:scenario_name: +20pct
@@ -5093,7 +5093,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_+20pct_40MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_+20pct_40MW
   metadata:
     bid:reserve_volume: '40'
     bid:scenario_name: +20pct
@@ -5118,7 +5118,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_+20pct_60MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_+20pct_60MW
   metadata:
     bid:reserve_volume: '60'
     bid:scenario_name: +20pct
@@ -5143,7 +5143,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_+20pct_80MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_+20pct_80MW
   metadata:
     bid:reserve_volume: '80'
     bid:scenario_name: +20pct
@@ -5168,7 +5168,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_-20pct_0MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_-20pct_0MW
   metadata:
     bid:reserve_volume: '0'
     bid:scenario_name: -20pct
@@ -5193,7 +5193,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_-20pct_100MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_-20pct_100MW
   metadata:
     bid:reserve_volume: '100'
     bid:scenario_name: -20pct
@@ -5218,7 +5218,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_-20pct_120MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_-20pct_120MW
   metadata:
     bid:reserve_volume: '120'
     bid:scenario_name: -20pct
@@ -5243,7 +5243,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_-20pct_140MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_-20pct_140MW
   metadata:
     bid:reserve_volume: '140'
     bid:scenario_name: -20pct
@@ -5268,7 +5268,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_-20pct_160MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_-20pct_160MW
   metadata:
     bid:reserve_volume: '160'
     bid:scenario_name: -20pct
@@ -5293,7 +5293,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_-20pct_180MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_-20pct_180MW
   metadata:
     bid:reserve_volume: '180'
     bid:scenario_name: -20pct
@@ -5318,7 +5318,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_-20pct_200MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_-20pct_200MW
   metadata:
     bid:reserve_volume: '200'
     bid:scenario_name: -20pct
@@ -5343,7 +5343,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_-20pct_20MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_-20pct_20MW
   metadata:
     bid:reserve_volume: '20'
     bid:scenario_name: -20pct
@@ -5368,7 +5368,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_-20pct_40MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_-20pct_40MW
   metadata:
     bid:reserve_volume: '40'
     bid:scenario_name: -20pct
@@ -5393,7 +5393,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_-20pct_60MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_-20pct_60MW
   metadata:
     bid:reserve_volume: '60'
     bid:scenario_name: -20pct
@@ -5418,7 +5418,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_-20pct_80MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_-20pct_80MW
   metadata:
     bid:reserve_volume: '80'
     bid:scenario_name: -20pct
@@ -5443,7 +5443,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_Cognite_0MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_Cognite_0MW
   metadata:
     bid:reserve_volume: '0'
     bid:scenario_name: Cognite
@@ -5468,7 +5468,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_Cognite_100MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_Cognite_100MW
   metadata:
     bid:reserve_volume: '100'
     bid:scenario_name: Cognite
@@ -5493,7 +5493,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_Cognite_120MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_Cognite_120MW
   metadata:
     bid:reserve_volume: '120'
     bid:scenario_name: Cognite
@@ -5518,7 +5518,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_Cognite_140MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_Cognite_140MW
   metadata:
     bid:reserve_volume: '140'
     bid:scenario_name: Cognite
@@ -5543,7 +5543,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_Cognite_160MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_Cognite_160MW
   metadata:
     bid:reserve_volume: '160'
     bid:scenario_name: Cognite
@@ -5568,7 +5568,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_Cognite_180MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_Cognite_180MW
   metadata:
     bid:reserve_volume: '180'
     bid:scenario_name: Cognite
@@ -5593,7 +5593,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_Cognite_200MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_Cognite_200MW
   metadata:
     bid:reserve_volume: '200'
     bid:scenario_name: Cognite
@@ -5618,7 +5618,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_Cognite_20MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_Cognite_20MW
   metadata:
     bid:reserve_volume: '20'
     bid:scenario_name: Cognite
@@ -5643,7 +5643,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_Cognite_40MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_Cognite_40MW
   metadata:
     bid:reserve_volume: '40'
     bid:scenario_name: Cognite
@@ -5668,7 +5668,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_Cognite_60MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_Cognite_60MW
   metadata:
     bid:reserve_volume: '60'
     bid:scenario_name: Cognite
@@ -5693,7 +5693,7 @@ sequences:
   - externalId: aggregation
     valueType: STRING
   description: Mapping between SHOP paths and CDF TimeSeries
-  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_Auction.weekend_up_day_3-prices_20MW-200MW_Cognite_80MW
+  external_id: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_Cognite_80MW
   metadata:
     bid:reserve_volume: '80'
     bid:scenario_name: Cognite
