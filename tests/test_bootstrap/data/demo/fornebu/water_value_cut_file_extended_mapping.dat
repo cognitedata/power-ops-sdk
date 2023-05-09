@@ -1,0 +1,18 @@
+#Oversikt over koblinger mellom internnummerering av moduler, modulnummer og tilsigsserie brukt til regulert og uregulert tilsig.
+#Modellen inneholder totalt 15 moduler, med kutt for 13 av dem. Moduler uten kutt har indeks 0.
+CUTORDER
+   1     201   1   1
+   2     202   1   1
+   3     203   1   1
+   0     214   1   1
+   4     205   1   1
+   5     206   1   1
+   6     212   3   3
+   7     213   3   3
+   8     209   2   2
+   9     210   2   2
+  10     302   4   4
+  11     301   4   4
+  12     303   4   4
+  13     304   3   3
+   0     211   2   2

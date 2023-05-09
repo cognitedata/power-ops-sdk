@@ -1,0 +1,9 @@
+- watercourse_name: Fornebu
+  path: commands.yaml
+  cogshop_file_type: commands
+- watercourse_name: Fornebu
+  path: water_value_cut_file.dat
+  cogshop_file_type: water_value_cut_file
+- watercourse_name: Fornebu
+  path: water_value_cut_file_reservoir_mapping.txt
+  cogshop_file_type: water_value_cut_file_reservoir_mapping

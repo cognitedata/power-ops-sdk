@@ -1,0 +1,18 @@
+- bid_date:
+    operations:
+      - shift:
+          days: -400
+      - floor: day
+  shop_start:
+    operations:
+      - shift:
+          days: -400
+      - floor: day
+  shop_end:
+    operations:
+      - shift:
+          days: -400
+      - floor: week
+      - shift:
+          weeks: 2
+  market_config_external_id: market_configuration_nordpool_dayahead

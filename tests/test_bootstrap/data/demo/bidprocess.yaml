@@ -1,0 +1,55 @@
+- bid_matrix_generator: multi_scenario
+  main_scenario: scenario_10
+  name: multi_scenario_20_NO2
+  price_area_name: NO2
+  price_scenarios:
+    - id: scenario_1
+    - id: scenario_2
+    - id: scenario_3
+    - id: scenario_4
+    - id: scenario_5
+    - id: scenario_6
+    - id: scenario_7
+    - id: scenario_8
+    - id: scenario_9
+    - id: scenario_10
+    - id: scenario_11
+    - id: scenario_12
+    - id: scenario_13
+    - id: scenario_14
+    - id: scenario_15
+    - id: scenario_16
+    - id: scenario_17
+    - id: scenario_18
+    - id: scenario_19
+    - id: scenario_20
+- bid_matrix_generator: multi_scenario
+  main_scenario: scenario_1
+  name: multi_scenario_2_NO2
+  price_area_name: NO2
+  price_scenarios:
+    - rename: scenario_1
+      id: scenario_10
+    - rename: scenario_2
+      id: scenario_21
+- bid_matrix_generator: price_independent
+  main_scenario: scenario_1
+  name: price_independent_NO2
+  price_area_name: NO2
+  price_scenarios:
+    - rename: scenario_1
+      id: scenario_10
+- bid_matrix_generator: water_value_based
+  main_scenario: Main
+  name: water_value_based_with_dummy_SHOP_runNO2
+  price_area_name: NO2
+  price_scenarios:
+    - rename: Main
+      id: scenario_10
+  shop_end:
+    operations:
+    - shift:
+        days: 2
+    - floor: day
+  shop_start:
+    relative_time_string: tomorrow
