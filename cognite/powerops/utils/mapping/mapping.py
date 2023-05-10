@@ -17,7 +17,7 @@ def filter_time_series_mappings(mapping: TimeSeriesMapping, client: CogniteClien
     external_ids_in_cdf = {
         time_series.external_id
         for time_series in client.time_series.retrieve_multiple(
-                external_ids=list(external_ids_in_mapping), ignore_unknown_ids=True
+            external_ids=list(external_ids_in_mapping), ignore_unknown_ids=True
         )
     }
 
