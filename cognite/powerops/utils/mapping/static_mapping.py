@@ -3,7 +3,7 @@ from typing import Any
 from cognite.powerops.data_classes.time_series_mapping import TimeSeriesMapping, TimeSeriesMappingEntry
 from cognite.powerops.data_classes.transformation import Transformation, TransformationType
 
-IGNORED_ATTRIBUTES = [
+ignored_attributes = [
     "gate.schedule_flag",
     "gate.schedule_m3s",
     "gate.schedule_percent",
@@ -48,7 +48,7 @@ def get_static_mapping(shop_model: dict) -> TimeSeriesMapping:
         for object_name, object_attributes in objects.items():
             # e.g. max_vol: 42 or maintenance_flag: {<date>: 1, <other_date>: 0}
             for attribute_name, attribute_value in object_attributes.items():
-                if f"{object_type}.{attribute_name}" in IGNORED_ATTRIBUTES:
+                if f"{object_type}.{attribute_name}" in ignored_attributes:
                     continue
 
                 if is_constant_valued_dict(attribute_value):

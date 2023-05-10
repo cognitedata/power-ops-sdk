@@ -13,10 +13,13 @@ def filter_time_series_mappings(mapping: TimeSeriesMapping, client: CogniteClien
     external_ids_in_mapping = {
         mapping.time_series_external_id for mapping in mapping if mapping.time_series_external_id is not None
     }
-    time_series_in_cdf = client.time_series.retrieve_multiple(
-        external_ids=list(external_ids_in_mapping), ignore_unknown_ids=True
-    )
-    external_ids_in_cdf = {time_series.external_id for time_series in time_series_in_cdf}
+
+    external_ids_in_cdf = {
+        time_series.external_id
+        for time_series in client.time_series.retrieve_multiple(
+                external_ids=list(external_ids_in_mapping), ignore_unknown_ids=True
+        )
+    }
 
     if missing_from_cdf := external_ids_in_mapping - external_ids_in_cdf:
         print_warning(f"Time series found in mapping but missing from CDF: {missing_from_cdf}")
