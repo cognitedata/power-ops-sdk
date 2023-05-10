@@ -13,6 +13,13 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+
+## [0.2.1]
+### Added
+
+Added some mapping functionality for creating time series mappings in utils module.
+
+
 ## [0.2.0]
 ### Added
 
