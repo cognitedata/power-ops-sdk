@@ -61,7 +61,7 @@ class AssetResourceList(UserList):
         Returns:
             List[Dict[str, Any]]: A list of dicts representing the instance.
         """
-        return [resource.dict() for resource in self.data]
+        return [resource.dict(exclude_unset=True) for resource in self.data]
 
     def get(self, id: int = None, external_id: str = None) -> Optional[T_AssetResource]:
         """Get an item from this list by id or exernal_id.

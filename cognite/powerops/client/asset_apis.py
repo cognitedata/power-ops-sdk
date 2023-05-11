@@ -7,8 +7,9 @@ from cognite.client.data_classes import Asset
 from pydantic import BaseModel
 
 from cognite.powerops.config import Watercourse
-from cognite.powerops.data_classes.asset_lists import WatercourseList
+from cognite.powerops.data_classes.asset_lists import PlantList, WatercourseList
 from cognite.powerops.data_classes.core import T_AssetResourceList
+from cognite.powerops.data_classes.plant import Plant
 
 
 def unpack_asset(asset: Asset) -> dict:
@@ -72,3 +73,8 @@ class WatercourseAPI(AssetAPI):
     #
     # def copy(self, watercourse: Watercourse, name: str) -> Watercourse:
     #     """Create a copy of an existing watercourse, with a new name."""
+
+
+class PlantAPI(AssetAPI):
+    def __init__(self, client: CogniteClient, read_dataset: str, write_dataset: str):
+        super().__init__(client, read_dataset, write_dataset, "plants", "plant_", Plant, PlantList)

@@ -2,10 +2,10 @@ from typing import Optional
 
 from cognite.client import ClientConfig, CogniteClient
 
+from cognite.powerops.client.asset_apis import PlantAPI, WatercourseAPI
 from cognite.powerops.client.config_client import ConfigurationClient
 from cognite.powerops.client.mapping_client import MappingClient
 from cognite.powerops.client.transformation_client import TransformationClient
-from cognite.powerops.client.watercourse_api import WatercourseAPI
 from cognite.powerops.config import BootstrapConfig
 
 
@@ -24,7 +24,8 @@ class PowerOpsClient:
         self.core = CogniteClient(config)
         self.configurations = ConfigurationClient()
 
-        self.watercourses = WatercourseAPI(self.core, read_dataset, write_dataset)  # ...
+        self.plants = PlantAPI(self.core, read_dataset, write_dataset)
+        self.watercourses = WatercourseAPI(self.core, read_dataset, write_dataset)
         self.shop = SHOPAPI()
 
         self.mappings = MappingClient()
