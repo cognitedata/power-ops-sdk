@@ -7,12 +7,24 @@ from cognite.client._constants import LIST_LIMIT_DEFAULT
 from cognite.client.data_classes import Asset
 from pydantic import BaseModel
 
-from cognite.powerops.config import Watercourse
+from cognite.powerops.config import (
+    BenchmarkingConfig,
+    BidProcessConfig,
+    MarketConfig,
+    RKOMBidCombinationConfig,
+    RKOMBidProcessConfig,
+    Watercourse,
+)
 from cognite.powerops.data_classes.asset_lists import (
+    BenchmarkingList,
+    BidProcessList,
     GeneratorList,
+    MarketConfigsList,
     PlantList,
     PriceAreaList,
     ReservoirList,
+    RKOMBidCombinationList,
+    RKOMBidList,
     WatercourseList,
 )
 from cognite.powerops.data_classes.core import T_AssetResourceList
@@ -104,3 +116,68 @@ class GeneratorsAPI(AssetAPI):
 class PriceAreasAPI(AssetAPI):
     def __init__(self, client: CogniteClient, read_dataset: str, write_dataset: str):
         super().__init__(client, read_dataset, write_dataset, "price_areas", "price_area_", PriceArea, PriceAreaList)
+
+
+class BidConfigurationsAPI(AssetAPI):
+    def __init__(self, client: CogniteClient, read_dataset: str, write_dataset: str):
+        super().__init__(
+            client,
+            read_dataset,
+            write_dataset,
+            "bid_process_configurations",
+            "POWEROPS_bid_process_configuration_",
+            BidProcessConfig,
+            BidProcessList,
+        )
+
+
+class ROOMBidConfigurationsAPI(AssetAPI):
+    def __init__(self, client: CogniteClient, read_dataset: str, write_dataset: str):
+        super().__init__(
+            client,
+            read_dataset,
+            write_dataset,
+            "rkom_bid_process_configurations",
+            "POWEROPS_",
+            RKOMBidProcessConfig,
+            RKOMBidList,
+        )
+
+
+class BenchmarkingConfigurationsAPI(AssetAPI):
+    def __init__(self, client: CogniteClient, read_dataset: str, write_dataset: str):
+        super().__init__(
+            client,
+            read_dataset,
+            write_dataset,
+            "benchmarking_configurations",
+            "POWEROPS_",
+            BenchmarkingConfig,
+            BenchmarkingList,
+        )
+
+
+class MarketConfigurationsAPI(AssetAPI):
+    def __init__(self, client: CogniteClient, read_dataset: str, write_dataset: str):
+        super().__init__(
+            client,
+            read_dataset,
+            write_dataset,
+            "market_configurations",
+            "market_configuration_",
+            MarketConfig,
+            MarketConfigsList,
+        )
+
+
+class RKOMBidCombinationConfiguration(AssetAPI):
+    def __init__(self, client: CogniteClient, read_dataset: str, write_dataset: str):
+        super().__init__(
+            client,
+            read_dataset,
+            write_dataset,
+            "rkom_bid_combination_configurations",
+            "RKOM_bid_combination_configuration_",
+            RKOMBidCombinationConfig,
+            RKOMBidCombinationList,
+        )

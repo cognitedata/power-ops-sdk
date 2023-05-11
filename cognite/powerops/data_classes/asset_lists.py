@@ -1,4 +1,11 @@
-from cognite.powerops.config import Watercourse
+from cognite.powerops.config import (
+    BenchmarkingConfig,
+    BidProcessConfig,
+    MarketConfig,
+    RKOMBidCombinationConfig,
+    RKOMBidProcessConfig,
+    Watercourse,
+)
 from cognite.powerops.data_classes.core import AssetResourceList
 from cognite.powerops.data_classes.generators import Generator
 from cognite.powerops.data_classes.plant import Plant
@@ -24,3 +31,23 @@ class GeneratorList(AssetResourceList):
 
 class PriceAreaList(AssetResourceList):
     _RESOURCE = PriceArea
+
+
+class BidProcessList(AssetResourceList):
+    _RESOURCE = BidProcessConfig
+
+
+class RKOMBidList(AssetResourceList):
+    _RESOURCE = RKOMBidProcessConfig
+
+
+class BenchmarkingList(AssetResourceList):
+    _RESOURCE = BenchmarkingConfig
+
+
+class MarketConfigsList(AssetResourceList):
+    _RESOURCE = MarketConfig
+
+
+class RKOMBidCombinationList(AssetResourceList):
+    _RESOURCE = RKOMBidCombinationConfig
