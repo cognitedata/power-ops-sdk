@@ -19,7 +19,7 @@ class RKOMBidCombinationConfig(BaseModel):
 
     @property
     def cdf_asset(self) -> Asset:
-        sequence_external_id = f"RKOM_bid_combination_configuration_{self.auction}_{self.name}"
+        sequence_external_id = f"RKOM_bid_combination_configuration_{self.auction.value}_{self.name}"
 
         return Asset(
             name=sequence_external_id.replace("_", " "),
