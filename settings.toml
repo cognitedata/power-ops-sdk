@@ -1,0 +1,17 @@
+[cognite]
+  project = "power-ops-dev"
+  tenant_id = "431fcc8b-74b8-4171-b7c9-e6fab253913b"
+  cdf_cluster = "azure-dev"
+  client_id = "d985b4fe-275e-4df3-9e49-b6b18a77778a"
+  client_secret = "..."  # in .secrets.toml
+
+[dm_clients]
+  space = "CogShop2"
+  datamodel = "CogShop2"
+  schema_version = 1
+  max_tries = 5
+
+[local]
+  name = "PowerOpsDm"
+  graphql_schema = "cognite/powerops/client/dm/schema.graphql"
+  schema_module = "cognite.powerops.client.dm.schema"

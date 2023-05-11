@@ -1,0 +1,54 @@
+# THIS FILE IS AUTO-GENERATED!
+# Use `dm togql` to update it, see `dm --help` for more information.
+
+
+type Case {
+  scenario: Scenario
+  start_time: String!
+  end_time: String!
+  processing_log: [ProcessingLog]
+}
+
+type CommandsConfig {
+  commands: [String!]!
+}
+
+type FileRef {
+  type: String!
+  file_external_id: String!
+}
+
+type Mapping {
+  path: String!
+  timeseries_external_id: String
+  transformations: [Transformation]
+  retrieve: String
+  aggregation: String
+}
+
+type ModelTemplate {
+  version: String!
+  shop_version: String!
+  watercourse: String!
+  model: FileRef
+  base_mappings: [Mapping]
+}
+
+type ProcessingLog {
+  state: String
+  timestamp: String
+  error_msg: String
+}
+
+type Scenario {
+  name: String!
+  model_template: ModelTemplate
+  mappings_override: [Mapping]
+  commands: CommandsConfig
+  extra_files: [FileRef]
+}
+
+type Transformation {
+  method: String!
+  arguments: String!
+}
