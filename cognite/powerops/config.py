@@ -469,7 +469,7 @@ class RKOMBidProcessConfig(BaseModel):
     def name(self) -> str:
         return (
             f"{self.watercourse}_"
-            f"{self.reserve_scenarios.auction}_"
+            f"{self.reserve_scenarios.auction.value}_"
             f"{self.reserve_scenarios.product}_"
             f"{self.reserve_scenarios.block}_"
             f"{len(self.price_scenarios)}-prices_"

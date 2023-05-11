@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.2.2]
+### Fixed
+
+Fixed name for RKOM bid configuration assets and sequences with correct auction name.
 
 ## [0.2.1]
 ### Added
