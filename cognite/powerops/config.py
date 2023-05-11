@@ -32,8 +32,12 @@ from cognite.powerops.utils.labels import AssetLabels, RelationshipLabels
 from cognite.powerops.utils.serializer import load_yaml
 
 
-class WatercourseConfig(BaseModel):
+class Watercourse(BaseModel):
     name: str
+    shop_penalty_limit: int = 42000
+
+
+class WatercourseConfig(Watercourse):
     version: str
     market_to_price_area: Dict[str, str]
     directory: str
@@ -52,7 +56,6 @@ class WatercourseConfig(BaseModel):
     production_obligation_ts_ext_ids: Optional[List[str]] = None
     plant_display_names_and_order: Optional[Dict[str, tuple[str, int]]] = None
     reservoir_display_names_and_order: Optional[Dict[str, tuple[str, int]]] = None
-    shop_penalty_limit: int = 42000
     water_value_based_method_time_series_csv_filename: Optional[str] = None
 
     @classmethod
