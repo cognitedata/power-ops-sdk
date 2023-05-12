@@ -18,15 +18,14 @@ class SHOPAPI:
 
 class PowerOpsClient:
     def __init__(self):
+        # low-level clients:
+        self._dm = get_power_ops_dm_client()  # manage DM items (instances) directly
+        self._cdf = self._dm._client  # CogniteClient plus DM v3 client (Nodes, Edges, Spaces, etc.)
+
         self.configurations = ConfigurationClient()
 
         self.watercourses = WatercourseClient(self)  # ...
         self.shop = SHOPAPI()
 
         self.mappings = MappingClient()
-        self.transformations = TransformationClient()
-        ...
-
-        # low-level clients:
-        self._dm = get_power_ops_dm_client()  # manage DM items (instances) directly
-        self._cdf = self._dm._client  # CogniteClient plus DM v3 client (Nodes, Edges, Spaces, etc.)
+        self.transformations = TransformationClient(self._dm)
