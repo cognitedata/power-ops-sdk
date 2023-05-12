@@ -11,7 +11,7 @@ from cognite.powerops.client.asset_apis import (
     PriceAreasAPI,
     ReservoirsAPI,
     RKOMBidCombinationConfiguration,
-    ROOMBidConfigurationsAPI,
+    RKOMBidConfigurationsAPI,
     WatercourseAPI,
 )
 from cognite.powerops.client.config_client import ConfigurationClient
@@ -20,9 +20,9 @@ from cognite.powerops.client.dm_apis import CaseAPI, CommandsAPI, MappingAPI, Sc
 from cognite.powerops.config import BootstrapConfig
 
 
-class SHOPAPI:
-    def __init__(self):
-        ...
+class ShopAPI:
+    def __init__(self, po_client: "PowerOpsClient"):
+        self._po_client = po_client
 
     def run(
         self, external_id: str, configuration: BootstrapConfig, shop_version: str
@@ -33,7 +33,7 @@ class SHOPAPI:
 class ConfigurationsClient:
     def __init__(self, read_dataset: str, write_dataset: str, client: CogniteClient):
         self.bids = BidConfigurationsAPI(client, read_dataset, write_dataset)
-        self.rkom_bids = ROOMBidConfigurationsAPI(client, read_dataset, write_dataset)
+        self.rkom_bids = RKOMBidConfigurationsAPI(client, read_dataset, write_dataset)
         self.bechmarkings = BenchmarkingConfigurationsAPI(client, read_dataset, write_dataset)
         self.markets = MarketConfigurationsAPI(client, read_dataset, write_dataset)
         self.rkom_bid_combinations = RKOMBidCombinationConfiguration(client, read_dataset, write_dataset)
@@ -46,7 +46,7 @@ class PowerOpsClient:
 
         self.configurations = ConfigurationClient()
 
-        self.shop = SHOPAPI()
+        self.shop = ShopAPI(po_client=self)
 
         self.configurations = ConfigurationsClient(read_dataset, write_dataset, self.core)
         self.generators = GeneratorsAPI(self.core, read_dataset, write_dataset)
@@ -60,4 +60,3 @@ class PowerOpsClient:
         self.scenarios = ScenarioAPI(self.dm)
         self.mappings = MappingAPI(self.dm)
         self.transformations = TransformationAPI(self.dm)
-        ...
