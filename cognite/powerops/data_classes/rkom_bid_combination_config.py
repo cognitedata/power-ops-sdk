@@ -1,21 +1,27 @@
+import ast
 import json
 from typing import ClassVar, List
 
 from cognite.client.data_classes import Asset
-from pydantic import BaseModel, validator
+from pydantic import Field, validator
 
+from cognite.powerops.data_classes.config_model import Configuration
 from cognite.powerops.data_classes.reserve_scenario import Auction
 
 
-class RKOMBidCombinationConfig(BaseModel):
-    auction: Auction
-    name: str = "default"
-    rkom_bid_config_external_ids: List[str]
+class RKOMBidCombinationConfig(Configuration):
+    auction: Auction = Field(alias="bid_auction")
+    name: str = Field("default", alias="bid_combination_name")
+    rkom_bid_config_external_ids: List[str] = Field(alias="bid_rkom_bid_configs")
     parent_external_id: ClassVar[str] = "rkom_bid_combination_configurations"
 
     @validator("auction", pre=True)
     def to_enum(cls, value):
         return Auction[value] if isinstance(value, str) else value
+
+    @validator("rkom_bid_config_external_ids", pre=True)
+    def parse_string(cls, value):
+        return [external_id for external_id in ast.literal_eval(value)] if isinstance(value, str) else value
 
     @property
     def cdf_asset(self) -> Asset:
