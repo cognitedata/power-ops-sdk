@@ -52,5 +52,6 @@ test-report.xml
 
 # DM client
 .secrets.toml
+playground
 
 playground
