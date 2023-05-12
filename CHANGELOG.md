@@ -13,6 +13,12 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.4.0] - 12-05-23
+### Added
+
+* Scaffolding for a `SHOPApi` implementation.
+
+
 ## [0.3.1] - 12-05-23
 ### Fixed
 
