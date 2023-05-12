@@ -2,17 +2,18 @@ import json
 from typing import Dict, List, Optional
 
 from cognite.client.data_classes import Asset
-from pydantic import BaseModel
+from pydantic import Field, validator
 
 from cognite.powerops.data_classes.common import RelativeTime
+from cognite.powerops.data_classes.config_model import Configuration
 
 
-class BenchmarkingConfig(BaseModel):
+class BenchmarkingConfig(Configuration):
     bid_date: RelativeTime
-    shop_start: RelativeTime
-    shop_end: RelativeTime
+    shop_start: RelativeTime = Field(alias="shop_starttime")
+    shop_end: RelativeTime = Field(alias="shop_endtime")
     production_plan_time_series: Optional[Dict[str, List[str]]]
-    market_config_external_id: str
+    market_config_external_id: str = Field(alias="bid_market_config_external_id")
     relevant_shop_objective_metrics: Dict[str, str] = {
         "grand_total": "Grand Total",
         "total": "Total",
@@ -35,6 +36,10 @@ class BenchmarkingConfig(BaseModel):
     # https://stackoverflow.com/questions/63793662/how-to-give-a-pydantic-list-field-a-default-value/63808835#63808835
     # TODO: Consider adding relationships to bid process config
     #  assets (or remove the optional part that uses those relationships in power-ops-functions)
+
+    @validator("shop_start", "shop_end", "bid_date", pre=True)
+    def json_loads(cls, value):
+        return {"operations": json.loads(value)} if isinstance(value, str) else value
 
     @property
     def metadata(self) -> dict:

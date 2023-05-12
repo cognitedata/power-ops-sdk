@@ -17,6 +17,7 @@ from cognite.powerops.data_classes.cdf_resource_collection import (
     SequenceRows,
 )
 from cognite.powerops.data_classes.common import AggregationMethod, CommonConstants, RelativeTime, RetrievalType
+from cognite.powerops.data_classes.config_model import Configuration
 from cognite.powerops.data_classes.market_config import MarketConfig
 from cognite.powerops.data_classes.reserve_scenario import Auction, Block, Product, ReserveScenario
 from cognite.powerops.data_classes.rkom_bid_combination_config import RKOMBidCombinationConfig
@@ -31,11 +32,6 @@ from cognite.powerops.utils.cdf_utils import simple_relationship
 from cognite.powerops.utils.common import print_warning
 from cognite.powerops.utils.labels import AssetLabels, RelationshipLabels
 from cognite.powerops.utils.serializer import load_yaml
-
-
-class Configuration(BaseModel):
-    class Config:
-        allow_population_by_field_name = True
 
 
 class Watercourse(BaseModel):
