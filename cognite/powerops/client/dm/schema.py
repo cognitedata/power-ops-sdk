@@ -22,7 +22,7 @@ class ProcessingLog(DomainModel):
     error_msg: Optional[str] = None
 
 
-@power_ops_dm_schema.register_type
+@power_ops_dm_schema.register_type(lowercase_type_name="commands")
 class CommandsConfig(DomainModel):
     commands: List[str]
 
