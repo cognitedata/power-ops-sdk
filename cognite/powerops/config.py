@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import ast
 import json
 import typing
 from collections import defaultdict
@@ -7,7 +8,7 @@ from pathlib import Path
 from typing import ClassVar, Dict, Generator, List, Optional, Tuple, Union
 
 from cognite.client.data_classes import Asset, Label, Sequence
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, Field, root_validator, validator
 
 from cognite.powerops.data_classes.benchmarking_config import BenchmarkingConfig
 from cognite.powerops.data_classes.cdf_resource_collection import (
@@ -401,6 +402,11 @@ class CDFConfig(BaseModel):
         return cls(**load_yaml(yaml_path))
 
 
+class Configuration(BaseModel):
+    class Config:
+        allow_population_by_field_name = True
+
+
 class ReserveScenarios(BaseModel):
     volumes: list[int]
     auction: Auction
@@ -446,14 +452,14 @@ class ReserveScenarios(BaseModel):
         ]
 
 
-class RKOMBidProcessConfig(BaseModel):
-    watercourse: str
+class RKOMBidProcessConfig(Configuration):
+    watercourse: str = Field(alias="bid_watercourse")
 
-    price_scenarios: List[PriceScenarioID]
-    reserve_scenarios: ReserveScenarios
+    price_scenarios: List[PriceScenarioID] = Field(alias="bid_price_scenarios")
+    reserve_scenarios: ReserveScenarios = Field(alias="bid_reserve_scenarios")
 
-    shop_start: RelativeTime
-    shop_end: RelativeTime
+    shop_start: RelativeTime = Field(alias="shop_starttime")
+    shop_end: RelativeTime = Field(alias="shop_endtime")
 
     timezone: str = "Europe/Oslo"
     method: str = "simple"
@@ -463,6 +469,30 @@ class RKOMBidProcessConfig(BaseModel):
 
     parent_external_id: typing.ClassVar[str] = "rkom_bid_process_configurations"
     mapping_type: ClassVar[str] = "rkom_incremental_mapping"
+
+    @root_validator(pre=True)
+    def create_reserve_scenarios(cls, values):
+        if not isinstance(volumes := values.get("bid_reserve_scenarios"), str):
+            return values
+        volumes = [int(volume.removesuffix("MW")) for volume in volumes[1:-1].split(",")]
+
+        values["bid_reserve_scenarios"] = dict(
+            volumes=volumes,
+            auction=values["bid_auction"],
+            product=values["bid_product"],
+            block=values["bid_block"],
+            reserve_group=values["labels"][0]["externalId"],
+            mip_plant_time_series=[],
+        )
+        return values
+
+    @validator("shop_start", "shop_end", pre=True)
+    def json_loads(cls, value):
+        return {"operations": json.loads(value)} if isinstance(value, str) else value
+
+    @validator("price_scenarios", pre=True)
+    def literal_eval(cls, value):
+        return [{"id": id_} for id_ in ast.literal_eval(value)] if isinstance(value, str) else value
 
     @property
     def sorted_volumes(self) -> List[int]:
