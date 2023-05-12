@@ -16,18 +16,10 @@ from cognite.powerops.client.asset_apis import (
 )
 from cognite.powerops.client.config_client import ConfigurationClient
 from cognite.powerops.client.dm.client import get_power_ops_dm_client
+from cognite.powerops.client.shop_api import ShopAPI
 from cognite.powerops.client.dm_apis import CaseAPI, CommandsAPI, MappingAPI, ScenarioAPI, TransformationAPI
 from cognite.powerops.config import BootstrapConfig
 
-
-class ShopAPI:
-    def __init__(self, po_client: "PowerOpsClient"):
-        self._po_client = po_client
-
-    def run(
-        self, external_id: str, configuration: BootstrapConfig, shop_version: str
-    ) -> dict:  # TODO is BootstrapConfig correct?
-        """Create a ShopRun event and a DM Case"""
 
 
 class ConfigurationsClient:
