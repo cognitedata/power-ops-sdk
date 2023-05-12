@@ -18,6 +18,12 @@ Changes are grouped as follows
 
 Fixed name for RKOM bid configuration assets and sequences with correct auction name.
 
+## [0.3.0]
+### Added
+
+* Added a `PowerOpsClient` with support for `list` and `retrieve` of `asset` resources
+
+
 ## [0.2.1]
 ### Added
 
