@@ -1,21 +1,22 @@
 from typing import ClassVar
 
 from cognite.client.data_classes import Asset
-from pydantic import BaseModel
+
+from cognite.powerops.data_classes.config_model import Configuration
 
 
-class MarketConfig(BaseModel):
+class MarketConfig(Configuration):
     external_id: str
     name: str
-    max_price: float
-    min_price: float
-    time_unit: str
+    max_price: float = None
+    min_price: float = None
+    time_unit: str = None
     timezone: str
-    tick_size: float
-    trade_lot: float
-    price_steps: int
+    tick_size: float = None
+    trade_lot: float = None
+    price_steps: int = None
     parent_external_id: ClassVar = "market_configurations"
-    price_unit: str
+    price_unit: str = None
 
     @property
     def metadata(self) -> dict:
