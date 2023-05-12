@@ -131,7 +131,7 @@ class BidConfigurationsAPI(AssetAPI):
         )
 
 
-class ROOMBidConfigurationsAPI(AssetAPI):
+class RKOMBidConfigurationsAPI(AssetAPI):
     def __init__(self, client: CogniteClient, read_dataset: str, write_dataset: str):
         super().__init__(
             client,
