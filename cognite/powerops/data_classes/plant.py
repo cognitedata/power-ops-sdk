@@ -6,7 +6,7 @@ from typing import List, NamedTuple, Optional, Tuple
 
 import pandas as pd
 from cognite.client.data_classes import Asset, Label, Relationship
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 
 from cognite.powerops.data_classes.cdf_resource_collection import BootstrapResourceCollection
 from cognite.powerops.data_classes.time_series_mapping import TimeSeriesMapping
@@ -46,6 +46,12 @@ class Plant(BaseModel):
     p_min_time_series: Optional[ExternalId] = None  # external ID of time series with values in MW
     p_max_time_series: Optional[ExternalId] = None  # external ID of time series with values in MW
     startcost_split_hours_time_series: Optional[ExternalId] = None  # external ID of time series with values in h
+
+    @validator("penstock_head_loss_factors", pre=True)
+    def parse_dict(cls, value):
+        if isinstance(value, str):
+            value = json.loads(value)
+        return value
 
     def asset(self) -> Asset:
         """Returns the Asset representation of this Plant (without relationships)"""
