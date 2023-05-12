@@ -1,5 +1,3 @@
-from typing import Optional
-
 from cognite.powerops.client.powerops_client import PowerOpsClient
 
 powerops = PowerOpsClient()
@@ -24,7 +22,7 @@ results = powerops.shop.run(external_id="???", configuration=config, shop_versio
 
 # TODO inspect results
 
-models = powerops.shop.models.list() # list[ShopModelTemplate]
+models = powerops.shop.models.list()  # list[ShopModelTemplate]
 sample_model = models[0]
 
 sample_model = powerops.shop.models.retrieve(external_id="123")

@@ -1,7 +1,10 @@
-from typing import Optional
 import random
 import time
+from typing import Optional
+
 from cognite.client.data_classes import FileMetadata
+
+from cognite.powerops.client.powerops_client import PowerOpsClient
 
 
 class ShopRunLog:
@@ -116,7 +119,7 @@ class ShopRunsApi:
 
 
 class ShopAPI:
-    def __init__(self, po_client: "PowerOpsClient"):
+    def __init__(self, po_client: PowerOpsClient):
         self._po_client = po_client
         self.models = ShopModelsAPI(shop_api=self)
         self.runs = ShopRunsApi(shop_api=self)

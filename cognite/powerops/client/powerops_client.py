@@ -16,10 +16,8 @@ from cognite.powerops.client.asset_apis import (
 )
 from cognite.powerops.client.config_client import ConfigurationClient
 from cognite.powerops.client.dm.client import get_power_ops_dm_client
-from cognite.powerops.client.shop_api import ShopAPI
 from cognite.powerops.client.dm_apis import CaseAPI, CommandsAPI, MappingAPI, ScenarioAPI, TransformationAPI
-from cognite.powerops.config import BootstrapConfig
-
+from cognite.powerops.client.shop_api import ShopAPI
 
 
 class ConfigurationsClient:

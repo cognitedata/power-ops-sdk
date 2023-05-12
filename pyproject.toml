@@ -22,6 +22,9 @@ skip_glob = '^((?!py$).)*$'    # this makes sort all Python files
 line-length = 120
 target-version = 'py39'
 
+[tool.ruff.per-file-ignores]
+"__init__.py" = ["F401"]  # unused import
+
 [tool.poetry.dependencies]
 python = "^3.9"
 typer = "^0.9.0"
