@@ -33,6 +33,11 @@ from cognite.powerops.utils.labels import AssetLabels, RelationshipLabels
 from cognite.powerops.utils.serializer import load_yaml
 
 
+class Configuration(BaseModel):
+    class Config:
+        allow_population_by_field_name = True
+
+
 class Watercourse(BaseModel):
     name: str
     shop_penalty_limit: int = 42000
@@ -214,16 +219,24 @@ class BidMatrixGeneratorConfig(BaseModel):
         return bootstrap_resource_collection
 
 
-class BidProcessConfig(BaseModel):
+class BidProcessConfig(Configuration):
     name: str
-    price_area_name: str
-    price_scenarios: List[PriceScenarioID]
-    main_scenario: str
+    price_area_name: str = Field(alias="bid_price_area")
+    price_scenarios: List[PriceScenarioID] = Field(alias="bid_price_scenarios")
+    main_scenario: str = Field(alias="bid_main_scenario")
     bid_date: Optional[RelativeTime] = None
-    shop_start: Optional[RelativeTime] = None
-    shop_end: Optional[RelativeTime] = None
-    bid_matrix_generator: str
+    shop_start: Optional[RelativeTime] = Field(None, alias="shop_starttime")
+    shop_end: Optional[RelativeTime] = Field(None, alias="shop_endtime")
+    bid_matrix_generator: str = Field(alias="bid_bid_matrix_generator_config_external_id")
     price_scenarios_per_watercourse: Optional[Dict[str, typing.Set[str]]] = None
+
+    @validator("shop_start", "shop_end", "bid_date", pre=True)
+    def json_loads(cls, value):
+        return {"operations": json.loads(value)} if isinstance(value, str) else value
+
+    @validator("price_scenarios", pre=True)
+    def literal_eval(cls, value):
+        return [{"id": id_} for id_ in ast.literal_eval(value)] if isinstance(value, str) else value
 
     def to_cdf_asset(
         self,
@@ -400,11 +413,6 @@ class CDFConfig(BaseModel):
     @classmethod
     def from_yaml(cls, yaml_path: Path) -> "CDFConfig":
         return cls(**load_yaml(yaml_path))
-
-
-class Configuration(BaseModel):
-    class Config:
-        allow_population_by_field_name = True
 
 
 class ReserveScenarios(BaseModel):
