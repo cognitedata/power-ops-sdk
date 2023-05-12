@@ -1,13 +1,16 @@
+from __future__ import annotations
+
 from typing import Generic, TypeVar
 
 from dm_clients.domain_modeling import DomainModel, DomainModelAPI
 
 from cognite.powerops.client.dm.client import PowerOpsDmClient
+from cognite.powerops.client.dm.schema import Case, CommandsConfig, Mapping, Scenario, Transformation
 
 DomainModelT = TypeVar("DomainModelT", bound=DomainModel)
 
 
-class DMClientBase(Generic[DomainModelT]):
+class DMAPIBase(Generic[DomainModelT]):
     model_class: DomainModelT
     dm_attr: str
 
@@ -35,3 +38,28 @@ class DMClientBase(Generic[DomainModelT]):
 
     def delete(self, transformation: DomainModelT) -> None:
         self.model_api.delete([transformation])
+
+
+class CaseAPI(DMAPIBase[Case]):
+    model_class = Case
+    dm_attr = "case"
+
+
+class CommandsAPI(DMAPIBase[CommandsConfig]):
+    model_class = CommandsConfig
+    dm_attr = "commands"
+
+
+class MappingAPI(DMAPIBase[Mapping]):
+    model_class = Mapping
+    dm_attr = "mapping"
+
+
+class ScenarioAPI(DMAPIBase[Scenario]):
+    model_class = Scenario
+    dm_attr = "scenario"
+
+
+class TransformationAPI(DMAPIBase[Transformation]):
+    model_class = Transformation
+    dm_attr = "transformation"

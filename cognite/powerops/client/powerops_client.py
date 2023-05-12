@@ -14,13 +14,9 @@ from cognite.powerops.client.asset_apis import (
     ROOMBidConfigurationsAPI,
     WatercourseAPI,
 )
-from cognite.powerops.client.case_client import CaseClient
-from cognite.powerops.client.commands_client import CommandsClient
 from cognite.powerops.client.config_client import ConfigurationClient
 from cognite.powerops.client.dm.client import get_power_ops_dm_client
-from cognite.powerops.client.mapping_client import MappingClient
-from cognite.powerops.client.scenario_client import ScenarioClient
-from cognite.powerops.client.transformation_client import TransformationClient
+from cognite.powerops.client.dm_apis import CaseAPI, CommandsAPI, MappingAPI, ScenarioAPI, TransformationAPI
 from cognite.powerops.config import BootstrapConfig
 
 
@@ -59,9 +55,9 @@ class PowerOpsClient:
         self.reservoirs = ReservoirsAPI(self.core, read_dataset, write_dataset)
         self.watercourses = WatercourseAPI(self.core, read_dataset, write_dataset)
 
-        self.cases = CaseClient(self.dm)
-        self.commands = CommandsClient(self.dm)
-        self.scenarios = ScenarioClient(self.dm)
-        self.mappings = MappingClient(self.dm)
-        self.transformations = TransformationClient(self.dm)
+        self.cases = CaseAPI(self.dm)
+        self.commands = CommandsAPI(self.dm)
+        self.scenarios = ScenarioAPI(self.dm)
+        self.mappings = MappingAPI(self.dm)
+        self.transformations = TransformationAPI(self.dm)
         ...
