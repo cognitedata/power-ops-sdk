@@ -13,16 +13,21 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## [0.2.2]
+## [0.3.1] - 12-05-23
 ### Fixed
 
-Fixed name for RKOM bid configuration assets and sequences with correct auction name.
+* Fixed missing `README.md` in package metadata.
 
-## [0.3.0]
+
+## [0.3.0] - 12-05-23
 ### Added
 
 * Added a `PowerOpsClient` with support for `list` and `retrieve` of `asset` resources
 
+## [0.2.2]
+### Fixed
+
+Fixed name for RKOM bid configuration assets and sequences with correct auction name.
 
 ## [0.2.1]
 ### Added
