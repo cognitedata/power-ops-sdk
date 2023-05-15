@@ -346,7 +346,7 @@ class MarketConfig(Configuration):
     tick_size: float = None
     trade_lot: float = None
     price_steps: int = None
-    parent_external_id: ClassVar = "market_configurations"
+    parent_external_id: ClassVar[str] = "market_configurations"
     price_unit: str = None
 
     @property
