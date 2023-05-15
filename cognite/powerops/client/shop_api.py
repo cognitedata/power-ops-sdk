@@ -4,8 +4,6 @@ from typing import Optional
 
 from cognite.client.data_classes import FileMetadata
 
-from cognite.powerops.client.powerops_client import PowerOpsClient
-
 
 class ShopRunLog:
     def __init__(self, shop_run_logs: "ShopRunLogs") -> None:
@@ -119,7 +117,7 @@ class ShopRunsApi:
 
 
 class ShopAPI:
-    def __init__(self, po_client: PowerOpsClient):
+    def __init__(self, po_client):
         self._po_client = po_client
         self.models = ShopModelsAPI(shop_api=self)
         self.runs = ShopRunsApi(shop_api=self)
