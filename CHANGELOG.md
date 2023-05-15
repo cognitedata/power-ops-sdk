@@ -13,6 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.4.2] - 15-05-23
+### Fixed
+
+* Shop files external ID suffix to get correct preview print with bootstrap "plan"
+
 ## [0.4.1] - 15-05-23
 ### Fixed
 
