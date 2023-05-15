@@ -52,7 +52,7 @@ class ShopFileConfig(BaseModel):
         return cls(
             path=None,
             watercourse_name=file_meta.metadata["shop:watercourse"],
-            cogshop_file_type=file_meta.metadata["shop:type"],
+            cogshop_file_type=file_meta.metadata["shop:type"] if file_meta.metadata["shop:type"] != "case" else "model",
             md5_hash=file_meta.metadata.get("md5_hash"),
         )
 
