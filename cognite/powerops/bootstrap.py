@@ -6,17 +6,17 @@ from typing import List, Optional
 from cognite.client import CogniteClient
 
 from cognite.powerops.config import (
+    BenchmarkingConfig,
     BidMatrixGeneratorConfig,
     BidProcessConfig,
     BootstrapConfig,
     PriceScenario,
+    RKOMBidCombinationConfig,
     RKOMBidProcessConfig,
+    RkomMarketConfig,
     WatercourseConfig,
 )
-from cognite.powerops.data_classes.benchmarking_config import BenchmarkingConfig
 from cognite.powerops.data_classes.cdf_resource_collection import BootstrapResourceCollection
-from cognite.powerops.data_classes.rkom_bid_combination_config import RKOMBidCombinationConfig
-from cognite.powerops.data_classes.rkom_market_config import RkomMarketConfig
 from cognite.powerops.data_classes.shop_file_config import ShopFileConfig, ShopFileConfigs
 from cognite.powerops.data_classes.shop_output_definition import ShopOutputConfig
 from cognite.powerops.data_classes.time_series_mapping import TimeSeriesMapping, write_mapping_to_sequence
