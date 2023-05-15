@@ -216,7 +216,7 @@ class RkomMarketConfig(BaseModel):
     name: str
     timezone: str
     start_of_week: int
-    parent_external_id: ClassVar = "market_configurations"
+    parent_external_id: ClassVar[str] = "market_configurations"
 
     @property
     def metadata(self) -> dict:
