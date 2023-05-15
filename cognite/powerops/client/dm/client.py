@@ -8,7 +8,6 @@ from typing import Optional
 
 from cachelib import BaseCache, SimpleCache
 from cognite.client import ClientConfig
-from cognite.dm_clients.cdf.get_client import get_client_config
 from cognite.dm_clients.config import settings
 from cognite.dm_clients.domain_modeling import DomainClient, DomainModelAPI
 
@@ -43,11 +42,10 @@ def get_power_ops_dm_client(
     space_id: Optional[str] = None,
     data_model: Optional[str] = None,
     schema_version: Optional[int] = None,
-    config: Optional[ClientConfig] = None,
+    config: ClientConfig = None,
 ) -> PowerOpsDmClient:
     """Quick way of instantiating a PowerOpsDmClient with sensible defaults for development."""
     cache = cache if cache is not None else SimpleCache()
-    config = config if config is not None else get_client_config()
     space_external_id = space_id or settings.dm_clients.space
     data_model = data_model or settings.dm_clients.datamodel
     schema_version = schema_version or settings.dm_clients.schema_version

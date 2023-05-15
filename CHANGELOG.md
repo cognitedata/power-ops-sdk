@@ -13,11 +13,18 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## [0.4.1] - 15-05-23
+## [0.4.2] - 15-05-23
 ### Changed
 
 * Changed location of config class definitions that were located in dataclasses module
-to config.py module.
+to config.py module
+
+
+## [0.4.1] - 15-05-23
+### Fixed
+
+* Import errors in `PowerOpsClient`
+
 
 ## [0.4.0] - 12-05-23
 ### Added

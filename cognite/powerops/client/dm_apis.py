@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Generic, TypeVar
 
-from dm_clients.domain_modeling import DomainModel, DomainModelAPI
+from cognite.dm_clients.domain_modeling import DomainModel, DomainModelAPI
 
 from cognite.powerops.client.dm.client import PowerOpsDmClient
 from cognite.powerops.client.dm.schema import Case, CommandsConfig, Mapping, Scenario, Transformation
