@@ -13,6 +13,12 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.4.1] - 15-05-23
+### Fixed
+
+* Import errors in `PowerOpsClient`
+
+
 ## [0.4.0] - 12-05-23
 ### Added
 

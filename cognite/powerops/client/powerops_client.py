@@ -31,8 +31,8 @@ class ConfigurationsClient:
 
 class PowerOpsClient:
     def __init__(self, read_dataset: str, write_dataset: str, config: Optional[ClientConfig] = None):
-        self.dm = get_power_ops_dm_client()
-        self.core = self.dm._client
+        self.dm = get_power_ops_dm_client(config=config)
+        self.core = CogniteClient(config)
 
         self.configurations = ConfigurationClient()
 
