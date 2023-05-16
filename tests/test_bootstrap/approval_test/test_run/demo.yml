@@ -691,6 +691,8 @@ labels:
   name: relationship_to.generator_efficiency_curve
 - external_id: relationship_to.generator_production_time_series
   name: relationship_to.generator_production_time_series
+- external_id: relationship_to.head_direct_time_series
+  name: relationship_to.head_direct_time_series
 - external_id: relationship_to.incremental_mapping_sequence
   name: relationship_to.incremental_mapping_sequence
 - external_id: relationship_to.inlet_level_time_series

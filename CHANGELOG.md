@@ -13,6 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.5.0] - 16-05-23
+### Added
+
+* Support adding direct head values to water value based bid generation (WVBBG) time series contextualization.
+
 ## [0.4.2] - 15-05-23
 ### Fixed
 
