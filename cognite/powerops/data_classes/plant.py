@@ -45,7 +45,7 @@ class Plant(BaseModel):
     feeding_fee_time_series: Optional[ExternalId] = None  # external ID of time series with values in percent
     p_min_time_series: Optional[ExternalId] = None  # external ID of time series with values in MW
     p_max_time_series: Optional[ExternalId] = None  # external ID of time series with values in MW
-    startcost_split_hours_time_series: Optional[ExternalId] = None  # external ID of time series with values in h
+    head_direct: Optional[ExternalId] = None  # external ID of time series with values in m
 
     @validator("penstock_head_loss_factors", pre=True)
     def parse_dict(cls, value):
@@ -141,8 +141,8 @@ class Plant(BaseModel):
                 plant.p_min_time_series = ts_ext_id
             elif rl.P_MAX_TIME_SERIES in labels:
                 plant.p_max_time_series = ts_ext_id
-            elif rl.STARTCOST_SPLIT_HOURS_TIME_SERIES in labels:
-                plant.startcost_split_hours_time_series = ts_ext_id
+            elif rl.HEAD_DIRECT in labels:
+                plant.head_direct = ts_ext_id
 
         # Find generators based on relationships
         plant.generator_ext_ids = [
@@ -232,7 +232,7 @@ class Plant(BaseModel):
             plants[plant].feeding_fee_time_series = time_series.get("Feeding_fee")
             plants[plant].p_min_time_series = time_series.get("P_min")
             plants[plant].p_max_time_series = time_series.get("P_max")
-            plants[plant].startcost_split_hours_time_series = time_series.get("Startcost_split_hours")
+            plants[plant].head_direct = time_series.get("Head_direct")
 
 
 def label_in_labels(label_external_id: str, labels: list[Label]) -> bool:
