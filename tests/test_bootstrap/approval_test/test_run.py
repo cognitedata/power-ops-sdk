@@ -1,4 +1,5 @@
 import contextlib
+import os
 from pathlib import Path
 
 from cognite.client.testing import monkeypatch_cognite_client
@@ -14,6 +15,8 @@ from tests.test_bootstrap.approval_test.mock_resource_create_classes import (
 )
 
 DATA = Path(__file__).resolve().parent.parent / "data"
+
+os.environ["PYTEST"] = "yes"
 
 
 def test_run(data_regression):

@@ -398,7 +398,9 @@ MARKET_BY_PRICE_AREA = {"NO2": "Dayahead", "NO1": "1", "NO3": "1", "NO5": "1"}
 
 class CDFConfig(BaseModel):
     TENANT_ID: str
+    CLIENT_ID: Optional[str]
     CDF_CLUSTER: str
+    COGNITE_PROJECT: Optional[str]
     SPACE_ID: str
     DATA_MODEL: str
     SCHEMA_VERSION: str
