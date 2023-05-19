@@ -4,21 +4,34 @@ from cognite.client import CogniteClient, config
 from cognite.client.credentials import OAuthClientCredentials, OAuthDeviceCode
 
 
+class BootstrapConfigError(Exception):
+    """Exception raised for config validation
+
+    Attributes:
+        message -- explanation of the error
+    """
+
+    def __init__(self, message: str):
+        self.message = message
+        super().__init__(self.message)
+
+
 def get_client(parameters: dict) -> CogniteClient:
     client_name = "power-ops-bootstrap"
 
-    client_id = parameters.get("CLIENT_ID")
     cluster = parameters.get("CDF_CLUSTER")
-    project = parameters.get("COGNITE_PROJECT")
     tenant_id = parameters.get("TENANT_ID")
-    client_secret_env = parameters.get("CLIENT_SECRET_ENV")
+
+    project = os.getenv("COGNITE_PROJECT")
+    client_id = os.getenv("CLIENT_ID")
 
     base_url = f"https://{cluster}.cognitedata.com"
     scopes = [f"https://{cluster}.cognitedata.com/.default"]
 
-    client_secret = os.getenv(client_secret_env) if client_secret_env else None
+    if not project or not client_id:
+        raise BootstrapConfigError("Environment variables for Cognite project and/or Client ID need to be set.")
 
-    if client_secret:
+    if client_secret := os.getenv("CLIENT_SECRET"):
         token_url = f"https://login.microsoftonline.com/{tenant_id}/oauth2/v2.0/token"
         creds = OAuthClientCredentials(
             token_url=token_url,

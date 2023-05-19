@@ -5,7 +5,7 @@ import json
 import typing
 from collections import defaultdict
 from pathlib import Path
-from typing import ClassVar, Dict, Generator, List, Optional, Tuple, Union
+from typing import ClassVar, Dict, Generator, List, Optional, Tuple
 
 from cognite.client.data_classes import Asset, Label, Sequence
 from pydantic import BaseModel, Field, root_validator, validator
@@ -398,10 +398,7 @@ MARKET_BY_PRICE_AREA = {"NO2": "Dayahead", "NO1": "1", "NO3": "1", "NO5": "1"}
 
 class CDFConfig(BaseModel):
     TENANT_ID: str
-    CLIENT_ID: str
-    CLIENT_SECRET_ENV: Union[str, None] = None
     CDF_CLUSTER: str
-    COGNITE_PROJECT: str
     SPACE_ID: str
     DATA_MODEL: str
     SCHEMA_VERSION: str
