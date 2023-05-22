@@ -593,6 +593,22 @@ class RKOMBidProcessConfig(Configuration):
         return bootstrap_resources
 
 
+class PlantTimeSeriesMapping(BaseModel):
+    plant: str
+    water_value: Optional[int]
+    inlet_reservoir_level: Optional[int]
+    outlet_reservoir_level: Optional[int]
+    p_min: Optional[int]
+    p_max: Optional[int]
+    feeding_fee: Optional[int]
+    head_direct: Optional[int]
+
+
+class GeneratorTimeSeriesMapping(BaseModel):
+    generator: str
+    start_stop_cost: Optional[int]
+
+
 class BootstrapConfig(BaseModel):
     constants: CommonConstants
     cdf: CDFConfig
@@ -607,6 +623,8 @@ class BootstrapConfig(BaseModel):
     rkom_bid_combination: Optional[list[RKOMBidCombinationConfig]] = None
     rkom_bid_process: list[RKOMBidProcessConfig]
     rkom_market: Optional[RkomMarketConfig] = None
+    plant_time_series_mappings: list[PlantTimeSeriesMapping] = None
+    generator_time_series_mappings: list[GeneratorTimeSeriesMapping] = None
 
     @validator("price_scenario_by_id")
     def no_duplicated_scenarios(cls, value: dict[str, PriceScenario]):

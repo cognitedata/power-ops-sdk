@@ -1,12 +1,12 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import TypedDict
+from typing import Optional, TypedDict
 
 import pandas as pd
 from cognite.client.data_classes import Asset, Relationship, Sequence
 
-from cognite.powerops.config import WatercourseConfig
+from cognite.powerops.config import PlantTimeSeriesMapping, WatercourseConfig
 from cognite.powerops.data_classes.cdf_resource_collection import BootstrapResourceCollection, SequenceContent
 from cognite.powerops.data_classes.plant import Plant
 from cognite.powerops.utils.asset_types import generator_asset, price_area_asset, reservoir_asset, watercourse_asset
@@ -31,6 +31,7 @@ class ShopEfficiencyCurve(TypedDict):
 
 def generate_resources_and_data(
     watercourse_configs: list[WatercourseConfig],
+    plant_time_series_mappings: Optional[list[PlantTimeSeriesMapping]],
 ) -> BootstrapResourceCollection:
     """
     Create Assets for:
@@ -62,6 +63,8 @@ def generate_resources_and_data(
     ----------
     watercourse_configs : List[WatercourseConfig]
         List of watercourse configs
+    plant_time_series_mappings : List[PlantTimeSeriesMapping]
+        List of plant time series mappings
 
     Returns
     -------
@@ -87,9 +90,9 @@ def generate_resources_and_data(
         resources += add_generators_and_efficiency_curves(generators)
 
         plants = Plant.from_shop_case(shop_case=shop_case)
-        if watercourse_config.water_value_based_method_time_series_csv_filename:
-            Plant.add_time_series_from_csv(
-                water_value_based_method_time_series_csv_filename=watercourse_config.water_value_based_method_time_series_csv_filename,
+        if plant_time_series_mappings:
+            Plant.add_time_series_mapping(
+                plant_time_series_mappings=plant_time_series_mappings,
                 plants=plants,
             )
         # Add display name and ordering key.

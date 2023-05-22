@@ -193,7 +193,10 @@ def _transform(
         )
     )
     # PowerOps asset data model
-    bootstrap_resources += generate_resources_and_data(watercourse_configs=config.watercourses)
+    bootstrap_resources += generate_resources_and_data(
+        watercourse_configs=config.watercourses, plant_time_series_mappings=config.plant_time_series_mappings
+    )
+
     bootstrap_resources.add(generate_relationships_from_price_area_to_price(config.dayahead_price_timeseries))
     # SHOP files (model, commands, cut mapping++) and configs (base mapping, output definition)
 

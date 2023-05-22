@@ -77,7 +77,7 @@ class RelationshipLabels:
     FEEDING_FEE_TIME_SERIES = "relationship_to.feeding_fee_time_series"
     INLET_LEVEL_TIME_SERIES = "relationship_to.inlet_level_time_series"
     OUTLET_LEVEL_TIME_SERIES = "relationship_to.outlet_level_time_series"
-    HEAD_DIRECT = "relationship_to.head_direct_time_series"
+    HEAD_DIRECT_TIME_SERIES = "relationship_to.head_direct_time_series"
     STARTCOST_SPLIT_HOURS_TIME_SERIES = "relationship_to.startcost_split_hours_time_series"
 
 
