@@ -13,6 +13,19 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.7.0] - 22-05-23
+### Added
+
+* Basic handling for YAML case files.
+
+### Improved
+
+* Shorter imports for commonly used files
+
+### Changed
+
+* Renamed `powerops.core` attribute to `powerops.cdf`
+
 ## [0.6.0] - 22-05-23
 ### Added
 
