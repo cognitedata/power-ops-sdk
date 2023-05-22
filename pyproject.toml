@@ -58,3 +58,6 @@ toml = "*"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+addopts = "--doctest-modules --ignore-glob=examples/*"

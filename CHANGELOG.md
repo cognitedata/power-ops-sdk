@@ -17,6 +17,7 @@ Changes are grouped as follows
 ### Added
 
 * Basic handling for YAML case files.
+* pytest now runs doctests.
 
 ### Improved
 
