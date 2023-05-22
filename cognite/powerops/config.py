@@ -2,10 +2,11 @@ from __future__ import annotations
 
 import ast
 import json
+import os
 import typing
 from collections import defaultdict
 from pathlib import Path
-from typing import ClassVar, Dict, Generator, List, Optional, Tuple, Union
+from typing import ClassVar, Dict, Generator, List, Optional, Tuple
 
 from cognite.client.data_classes import Asset, Label, Sequence
 from pydantic import BaseModel, Field, root_validator, validator
@@ -399,7 +400,6 @@ MARKET_BY_PRICE_AREA = {"NO2": "Dayahead", "NO1": "1", "NO3": "1", "NO5": "1"}
 class CDFConfig(BaseModel):
     TENANT_ID: str
     CLIENT_ID: str
-    CLIENT_SECRET_ENV: Union[str, None] = None
     CDF_CLUSTER: str
     COGNITE_PROJECT: str
     SPACE_ID: str
@@ -407,8 +407,19 @@ class CDFConfig(BaseModel):
     SCHEMA_VERSION: str
 
     @classmethod
-    def from_yaml(cls, yaml_path: Path) -> "CDFConfig":
-        return cls(**load_yaml(yaml_path))
+    def from_env(cls) -> "CDFConfig":
+        return cls(
+            **{
+                "TENANT_ID": os.environ.get("TENANT_ID"),
+                "CLIENT_ID": os.environ.get("CLIENT_ID"),
+                "CLIENT_SECRET_ENV": os.environ.get("CLIENT_SECRET_ENV"),
+                "CDF_CLUSTER": os.environ.get("CDF_CLUSTER"),
+                "COGNITE_PROJECT": os.environ.get("COGNITE_PROJECT"),
+                "SPACE_ID": os.environ.get("SPACE_ID"),
+                "DATA_MODEL": os.environ.get("DATA_MODEL"),
+                "SCHEMA_VERSION": os.environ.get("SCHEMA_VERSION"),
+            }
+        )
 
 
 class ReserveScenarios(BaseModel):
