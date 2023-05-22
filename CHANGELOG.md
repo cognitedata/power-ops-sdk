@@ -13,6 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.6.0] - 22-05-23
+### Added
+
+* Added support for reading configuration parameters for Cognite Client from env variables in addition to yaml file.
+
 ## [0.5.0] - 16-05-23
 ### Added
 

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 from pathlib import Path
 from typing import List, Optional
 
@@ -155,7 +156,10 @@ def get_shop_service_url(cognite_project: str):
 
 
 def _load_config(path: Path) -> BootstrapConfig:
-    return BootstrapConfig.from_yamls(path)
+    config = BootstrapConfig.from_yamls(path)
+    if os.environ.get("COGNITE_PROJECT"):
+        config.cdf.from_env()
+    return config
 
 
 def _transform(

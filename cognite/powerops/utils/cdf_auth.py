@@ -11,14 +11,11 @@ def get_client(parameters: dict) -> CogniteClient:
     cluster = parameters.get("CDF_CLUSTER")
     project = parameters.get("COGNITE_PROJECT")
     tenant_id = parameters.get("TENANT_ID")
-    client_secret_env = parameters.get("CLIENT_SECRET_ENV")
 
     base_url = f"https://{cluster}.cognitedata.com"
     scopes = [f"https://{cluster}.cognitedata.com/.default"]
 
-    client_secret = os.getenv(client_secret_env) if client_secret_env else None
-
-    if client_secret:
+    if client_secret := os.getenv("POWER_OPS_CLIENT_SECRET"):
         token_url = f"https://login.microsoftonline.com/{tenant_id}/oauth2/v2.0/token"
         creds = OAuthClientCredentials(
             token_url=token_url,
