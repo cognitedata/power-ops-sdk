@@ -10,11 +10,12 @@ from cognite.powerops.utils.labels import RelationshipLabels as rl
 from cognite.powerops.utils.relationship_types import asset_to_time_series
 
 ExternalId = str
+GeneratorName = str
 
 
 class Generator(AssetModel):
-    external_id: str
-    name: str
+    external_id: ExternalId
+    name: GeneratorName
     penstock: str
     startcost: float
 
@@ -24,15 +25,15 @@ class Generator(AssetModel):
     def add_time_series_mapping(
         cls,
         generator_time_series_mappings: list[GeneratorTimeSeriesMapping],
-        generators: dict[str, "Generator"],
+        generators: dict[GeneratorName, "Generator"],
     ):
         for mapping in generator_time_series_mappings:
-            generator = mapping.generator
+            generator_name = mapping.generator_name
             # check if the generator is in the given watercourse (defined by the plants dict)
-            if generator not in generators:
+            if generator_name not in generators:
                 continue
 
-            generators[generator].start_stop_cost_time_series = mapping.start_stop_cost
+            generators[generator_name].start_stop_cost_time_series = mapping.start_stop_cost
 
     def to_bootstrap_resources(self) -> BootstrapResourceCollection:
         asset = self.asset()

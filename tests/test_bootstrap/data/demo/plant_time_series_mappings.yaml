@@ -1,4 +1,4 @@
-- plant: Lund
+- plant_name: Lund
   water_value: 1
   inlet_reservoir_level:
   outlet_reservoir_level:

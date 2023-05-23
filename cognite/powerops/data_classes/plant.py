@@ -22,10 +22,11 @@ p_max_fallback = 1e20
 head_loss_factor_fallback = 0.0
 
 ExternalId = str
+PlantName = str
 
 
 class Plant(BaseModel):
-    name: str
+    name: PlantName
     external_id: ExternalId
     outlet_level: float  # meters above sea level
     p_min: float = p_min_fallback
@@ -206,21 +207,21 @@ class Plant(BaseModel):
     def add_time_series_mapping(
         cls,
         plant_time_series_mappings: list[PlantTimeSeriesMapping],
-        plants: dict[str, "Plant"],
+        plants: dict[PlantName, "Plant"],
     ) -> None:
         for mapping in plant_time_series_mappings:
-            plant = mapping.plant
+            plant_name = mapping.plant_name
             # check if the plant is in the given watercourse (defined by the plants dict)
-            if plant not in plants:
+            if plant_name not in plants:
                 continue
 
-            plants[plant].water_value_time_series = mapping.water_value
-            plants[plant].inlet_level_time_series = mapping.inlet_reservoir_level
-            plants[plant].outlet_level_time_series = mapping.outlet_reservoir_level
-            plants[plant].feeding_fee_time_series = mapping.feeding_fee
-            plants[plant].p_min_time_series = mapping.p_min
-            plants[plant].p_max_time_series = mapping.p_max
-            plants[plant].head_direct_time_series = mapping.head_direct
+            plants[plant_name].water_value_time_series = mapping.water_value
+            plants[plant_name].inlet_level_time_series = mapping.inlet_reservoir_level
+            plants[plant_name].outlet_level_time_series = mapping.outlet_reservoir_level
+            plants[plant_name].feeding_fee_time_series = mapping.feeding_fee
+            plants[plant_name].p_min_time_series = mapping.p_min
+            plants[plant_name].p_max_time_series = mapping.p_max
+            plants[plant_name].head_direct_time_series = mapping.head_direct
 
 
 def label_in_labels(label_external_id: str, labels: list[Label]) -> bool:

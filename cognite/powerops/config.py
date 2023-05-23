@@ -605,7 +605,7 @@ class RKOMBidProcessConfig(Configuration):
 
 
 class PlantTimeSeriesMapping(BaseModel):
-    plant: str
+    plant_name: str
     water_value: Optional[int]
     inlet_reservoir_level: Optional[int]
     outlet_reservoir_level: Optional[int]
@@ -616,7 +616,7 @@ class PlantTimeSeriesMapping(BaseModel):
 
 
 class GeneratorTimeSeriesMapping(BaseModel):
-    generator: str
+    generator_name: str
     start_stop_cost: Optional[int]
 
 
