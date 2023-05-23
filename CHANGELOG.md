@@ -12,8 +12,8 @@ Changes are grouped as follows
 - `Removed` for now removed features.
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
-
-## [0.7.0] - 22-05-23
+-
+## [0.8.0] - 23-05-23
 ### Added
 
 * Basic handling for YAML case files.
@@ -26,6 +26,13 @@ Changes are grouped as follows
 ### Changed
 
 * Renamed `powerops.core` attribute to `powerops.cdf`
+
+## [0.7.0] - 22-05-23
+### Added
+
+* Added test for the water value based bid generation (WVBBG) time series contextualization
+* Changed the mapping format for wvbbg from csv to yaml.
+* Added time series contextualization for generators as well
 
 ## [0.6.0] - 22-05-23
 ### Added

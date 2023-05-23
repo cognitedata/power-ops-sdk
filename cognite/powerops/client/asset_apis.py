@@ -28,7 +28,7 @@ from cognite.powerops.data_classes.asset_lists import (
     WatercourseList,
 )
 from cognite.powerops.data_classes.core import T_AssetResourceList
-from cognite.powerops.data_classes.generators import Generator
+from cognite.powerops.data_classes.generator import Generator
 from cognite.powerops.data_classes.plant import Plant
 from cognite.powerops.data_classes.price_area import PriceArea
 from cognite.powerops.data_classes.reservoirs import Reservoir

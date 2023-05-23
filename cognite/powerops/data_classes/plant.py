@@ -4,10 +4,10 @@ import json
 from pathlib import Path
 from typing import List, NamedTuple, Optional, Tuple
 
-import pandas as pd
 from cognite.client.data_classes import Asset, Label, Relationship
 from pydantic import BaseModel, validator
 
+from cognite.powerops.config import PlantTimeSeriesMapping
 from cognite.powerops.data_classes.cdf_resource_collection import BootstrapResourceCollection
 from cognite.powerops.data_classes.time_series_mapping import TimeSeriesMapping
 from cognite.powerops.utils.common import print_warning
@@ -22,10 +22,11 @@ p_max_fallback = 1e20
 head_loss_factor_fallback = 0.0
 
 ExternalId = str
+PlantName = str
 
 
 class Plant(BaseModel):
-    name: str
+    name: PlantName
     external_id: ExternalId
     outlet_level: float  # meters above sea level
     p_min: float = p_min_fallback
@@ -45,7 +46,7 @@ class Plant(BaseModel):
     feeding_fee_time_series: Optional[ExternalId] = None  # external ID of time series with values in percent
     p_min_time_series: Optional[ExternalId] = None  # external ID of time series with values in MW
     p_max_time_series: Optional[ExternalId] = None  # external ID of time series with values in MW
-    head_direct: Optional[ExternalId] = None  # external ID of time series with values in m
+    head_direct_time_series: Optional[ExternalId] = None  # external ID of time series with values in m
 
     @validator("penstock_head_loss_factors", pre=True)
     def parse_dict(cls, value):
@@ -79,6 +80,7 @@ class Plant(BaseModel):
             self.feeding_fee_time_series: rl.FEEDING_FEE_TIME_SERIES,
             self.p_min_time_series: rl.P_MIN_TIME_SERIES,
             self.p_max_time_series: rl.P_MAX_TIME_SERIES,
+            self.head_direct_time_series: rl.HEAD_DIRECT_TIME_SERIES,
         }
         relationships: list[Relationship] = [
             asset_to_time_series(self.external_id, time_series, label)
@@ -141,8 +143,8 @@ class Plant(BaseModel):
                 plant.p_min_time_series = ts_ext_id
             elif rl.P_MAX_TIME_SERIES in labels:
                 plant.p_max_time_series = ts_ext_id
-            elif rl.HEAD_DIRECT in labels:
-                plant.head_direct = ts_ext_id
+            elif rl.HEAD_DIRECT_TIME_SERIES in labels:
+                plant.head_direct_time_series = ts_ext_id
 
         # Find generators based on relationships
         plant.generator_ext_ids = [
@@ -202,37 +204,24 @@ class Plant(BaseModel):
         return plants
 
     @classmethod
-    def add_time_series_from_csv(
+    def add_time_series_mapping(
         cls,
-        water_value_based_method_time_series_csv_filename: str,
-        plants: dict[str, "Plant"],
-        sep: str = ";",
+        plant_time_series_mappings: list[PlantTimeSeriesMapping],
+        plants: dict[PlantName, "Plant"],
     ) -> None:
-        for plant, time_series in (
-            pd.read_csv(
-                filepath_or_buffer=water_value_based_method_time_series_csv_filename,
-                index_col=0,
-                header=0,
-                sep=sep,
-                dtype=str,
-            )
-            .to_dict(orient="index")
-            .items()
-        ):
+        for mapping in plant_time_series_mappings:
+            plant_name = mapping.plant_name
             # check if the plant is in the given watercourse (defined by the plants dict)
-            if plant not in plants:
+            if plant_name not in plants:
                 continue
 
-            # remove dict entries with nan values
-            time_series = {key: value for key, value in time_series.items() if pd.notna(value)}
-            # insert the time series given in the csv file, or None if no time series is specified
-            plants[plant].water_value_time_series = time_series.get("Water_value")
-            plants[plant].inlet_level_time_series = time_series.get("Inlet_reservoir_level")
-            plants[plant].outlet_level_time_series = time_series.get("Outlet_reservoir_level")
-            plants[plant].feeding_fee_time_series = time_series.get("Feeding_fee")
-            plants[plant].p_min_time_series = time_series.get("P_min")
-            plants[plant].p_max_time_series = time_series.get("P_max")
-            plants[plant].head_direct = time_series.get("Head_direct")
+            plants[plant_name].water_value_time_series = mapping.water_value
+            plants[plant_name].inlet_level_time_series = mapping.inlet_reservoir_level
+            plants[plant_name].outlet_level_time_series = mapping.outlet_reservoir_level
+            plants[plant_name].feeding_fee_time_series = mapping.feeding_fee
+            plants[plant_name].p_min_time_series = mapping.p_min
+            plants[plant_name].p_max_time_series = mapping.p_max
+            plants[plant_name].head_direct_time_series = mapping.head_direct
 
 
 def label_in_labels(label_external_id: str, labels: list[Label]) -> bool:
