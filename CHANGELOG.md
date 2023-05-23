@@ -13,6 +13,13 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.7.0] - 22-05-23
+### Added
+
+* Added test for the water value based bid generation (WVBBG) time series contextualization
+* Changed the mapping format for wvbbg from csv to yaml.
+* Added time series contextualization for generators as well
+
 ## [0.6.0] - 22-05-23
 ### Added
 
