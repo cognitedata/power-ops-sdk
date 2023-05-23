@@ -22,29 +22,39 @@ class Case:
      * Saving to yaml (with `case.save_yaml(path_to_file)`).
 
     Examples:
-       >>> case = Case('''
-       ... foo:
-       ...   bar1: 11
-       ...   bar2: 22
-       ... ''')
-       >>> case["foo"]["bar2"] = 202
-       >>> case.yaml
-       'foo:\n  bar1: 11\n  bar2: 202\n'
-       >>> case["foo.bar1"] = 101
-       >>> case["foo.bar1"]
-       101
+      * load a case from string
+          >>> case = Case('''
+          ... foo:
+          ...   bar1: 11
+          ...   bar2: 22
+          ... ''')
+          >>> case.data
+          {'foo': {'bar1': 11, 'bar2': 22}}
 
+      * edit a value and show updated data
+          >>> case["foo"]["bar2"] = 202
+          >>> case.yaml
+          'foo:\n  bar1: 11\n  bar2: 202\n'
+
+      * dot-notation, just for convenience
+          >>> case["foo.bar1"] = 101
+          >>> case["foo.bar1"]
+          101
+
+      * load from and save to a file:
+          case = Case.load_yaml("path/to/my_case.yaml")
+          case[...] = ...  # edit data
+          case.save_yaml("path/to/same_or_different.yaml")
     """
 
     def __init__(self, data: str = "") -> None:
         self._data = {}
         self._extra_files = []
 
-        yaml_docs = yaml.safe_load_all(data)
-        for i, yaml_doc in enumerate(yaml_docs):
-            if not i:
-                self._data = yaml_doc
-            else:
+        yaml_docs = list(yaml.safe_load_all(data))
+        if yaml_docs:
+            self._data = yaml_docs[0]
+            for yaml_doc in yaml_docs[1:]:
                 tmp_file = tempfile.NamedTemporaryFile(
                     mode="w",
                     delete=False,
@@ -58,8 +68,8 @@ class Case:
     @classmethod
     def load_yaml(cls, yaml_path: str) -> Case:
         logger.info(f"loading case file: {yaml_path}")
-        with open(yaml_path, "r") as fh:
-            return cls(fh.read())
+        with open(yaml_path, "r") as yaml_file:
+            return cls(yaml_file.read())
 
     def add_extra_file(self, file_path: str) -> None:
         logger.info(f"adding extra file: {file_path}")
@@ -107,5 +117,5 @@ class Case:
 
     def save_yaml(self, path: str) -> None:
         logger.info(f"Saving case file to: {path}")
-        with open(path, "w") as fh:
-            fh.write(yaml.dump(self._data))
+        with open(path, "w") as output_file:
+            output_file.write(yaml.dump(self._data))
