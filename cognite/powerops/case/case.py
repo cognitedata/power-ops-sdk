@@ -113,9 +113,9 @@ class Case:
 
     @property
     def yaml(self) -> str:
-        return yaml.dump(self._data)
+        return yaml.dump(self._data, sort_keys=False)
 
     def save_yaml(self, path: str) -> None:
         logger.info(f"Saving case file to: {path}")
         with open(path, "w") as output_file:
-            output_file.write(yaml.dump(self._data))
+            output_file.write(yaml.dump(self._data, sort_keys=False))
