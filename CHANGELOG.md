@@ -18,6 +18,7 @@ Changes are grouped as follows
 
 * Added test for the water value based bid generation (WVBBG) time series contextualization
 * Changed the mapping format for wvbbg from csv to yaml.
+* Added time series contextualization for generators as well
 
 ## [0.6.0] - 22-05-23
 ### Added
