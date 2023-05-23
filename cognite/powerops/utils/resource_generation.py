@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import List, Optional, TypedDict
+from typing import Optional, TypedDict
 
 import pandas as pd
 from cognite.client.data_classes import Asset, Relationship, Sequence
@@ -10,7 +10,7 @@ from cognite.powerops.config import GeneratorTimeSeriesMapping, PlantTimeSeriesM
 from cognite.powerops.data_classes.cdf_resource_collection import BootstrapResourceCollection, SequenceContent
 from cognite.powerops.data_classes.generator import Generator
 from cognite.powerops.data_classes.plant import Plant
-from cognite.powerops.utils.asset_types import generator_asset, price_area_asset, reservoir_asset, watercourse_asset
+from cognite.powerops.utils.asset_types import price_area_asset, reservoir_asset, watercourse_asset
 from cognite.powerops.utils.common import replace_nordic_letters
 from cognite.powerops.utils.relationship_types import (
     generator_to_generator_efficiency_curve,
