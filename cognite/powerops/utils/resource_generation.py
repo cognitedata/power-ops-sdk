@@ -278,7 +278,7 @@ def get_single_value(value_or_time_series: float | dict) -> float:
 
 def add_generators_and_efficiency_curves(
     shop_generator_dict: dict,
-    generator_time_series_mappings: list[GeneratorTimeSeriesMapping],
+    generator_time_series_mappings: Optional[list[GeneratorTimeSeriesMapping]],
 ) -> BootstrapResourceCollection:
     """Create the cognite resource for the generator (Asset) and the generator- and turbine efficiencies (sequences), as
         well as the connection (Relationship) between the generator and the efficiency curves.
