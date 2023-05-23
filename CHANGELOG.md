@@ -13,6 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.7.1] - 23-05-23
+### Fixed
+
+* Fixed bug with external id being stored as int in bootstrap resources
+
 ## [0.7.0] - 22-05-23
 ### Added
 
