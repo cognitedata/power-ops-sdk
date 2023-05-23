@@ -1,13 +1,14 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Optional, TypedDict
+from typing import List, Optional, TypedDict
 
 import pandas as pd
 from cognite.client.data_classes import Asset, Relationship, Sequence
 
-from cognite.powerops.config import PlantTimeSeriesMapping, WatercourseConfig
+from cognite.powerops.config import GeneratorTimeSeriesMapping, PlantTimeSeriesMapping, WatercourseConfig
 from cognite.powerops.data_classes.cdf_resource_collection import BootstrapResourceCollection, SequenceContent
+from cognite.powerops.data_classes.generator import Generator
 from cognite.powerops.data_classes.plant import Plant
 from cognite.powerops.utils.asset_types import generator_asset, price_area_asset, reservoir_asset, watercourse_asset
 from cognite.powerops.utils.common import replace_nordic_letters
@@ -32,6 +33,7 @@ class ShopEfficiencyCurve(TypedDict):
 def generate_resources_and_data(
     watercourse_configs: list[WatercourseConfig],
     plant_time_series_mappings: Optional[list[PlantTimeSeriesMapping]],
+    generator_time_series_mappings: Optional[list[GeneratorTimeSeriesMapping]],
 ) -> BootstrapResourceCollection:
     """
     Create Assets for:
@@ -65,6 +67,8 @@ def generate_resources_and_data(
         List of watercourse configs
     plant_time_series_mappings : List[PlantTimeSeriesMapping]
         List of plant time series mappings
+    generator_time_series_mappings : List[GeneratorTimeSeriesMapping]
+        List of generator time series mappings
 
     Returns
     -------
@@ -87,7 +91,7 @@ def generate_resources_and_data(
         resources += create_reservoirs(reservoirs, watercourse_config)
 
         generators = shop_case["model"]["generator"]
-        resources += add_generators_and_efficiency_curves(generators)
+        resources += add_generators_and_efficiency_curves(generators, generator_time_series_mappings)
 
         plants = Plant.from_shop_case(shop_case=shop_case)
         if plant_time_series_mappings:
@@ -272,41 +276,56 @@ def get_single_value(value_or_time_series: float | dict) -> float:
     return value_or_time_series
 
 
-def add_generators_and_efficiency_curves(generators: dict) -> BootstrapResourceCollection:
+def add_generators_and_efficiency_curves(
+    shop_generator_dict: dict,
+    generator_time_series_mappings: list[GeneratorTimeSeriesMapping],
+) -> BootstrapResourceCollection:
     """Create the cognite resource for the generator (Asset) and the generator- and turbine efficiencies (sequences), as
         well as the connection (Relationship) between the generator and the efficiency curves.
 
     Parameters
     ----------
-    generators : dict
-        Dictionary of generators objects from the shop case
+    shop_generator_dict : dict
+        Dictionary of generators objects from the shop case file
+    generator_time_series_mappings : GeneratorTimeSeriesMapping
+        Mapping of generator time series
 
     Returns
     -------
     BootstrapResourceCollection
         Collection of assets, sequences, relationships and sequence data
     """
+    generators: {str: Generator} = {}
     resources = BootstrapResourceCollection()
-    for generator_name, generator_information in generators.items():
+    for generator_name, generator_information in shop_generator_dict.items():
         generator_name = replace_nordic_letters(generator_name)
 
-        generator = generator_asset(
+        generator = Generator(
+            external_id=generator_name,
             name=generator_name,
             penstock=str(generator_information.get("penstock", "1")),
             startcost=get_single_value(generator_information.get("startcost", 0.0)),
         )
-        resources.add(generator)
+        generators[generator_name] = generator
+        generator_asset = generator.asset()
 
-        generator_efficiency_curve = generator_information["gen_eff_curve"]
         resources += create_generator_efficiency_curve_sequence(
-            generator_efficiency_curve,
-            generator,
+            generator_information["gen_eff_curve"],
+            generator_asset,
         )
 
         resources += create_turbine_efficiency_curve_sequence(
             generator_information["turb_eff_curves"],
-            generator,
+            generator_asset,
         )
+
+    if generator_time_series_mappings:
+        Generator.add_time_series_mapping(
+            generator_time_series_mappings=generator_time_series_mappings, generators=generators
+        )
+
+    for generator in generators.values():
+        resources += generator.to_bootstrap_resources()
 
     return resources
 
