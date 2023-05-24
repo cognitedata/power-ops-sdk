@@ -1,3 +1,4 @@
+from functools import cached_property
 from typing import Optional
 
 from cognite.client import ClientConfig, CogniteClient
@@ -18,6 +19,7 @@ from cognite.powerops.client.config_client import ConfigurationClient
 from cognite.powerops.client.dm.client import get_power_ops_dm_client
 from cognite.powerops.client.dm_apis import CaseAPI, CommandsAPI, MappingAPI, ScenarioAPI, TransformationAPI
 from cognite.powerops.client.shop_api import ShopAPI
+from cognite.powerops.utils.cdf_utils import retrieve_dataset
 
 
 class ConfigurationsClient:
@@ -31,6 +33,9 @@ class ConfigurationsClient:
 
 class PowerOpsClient:
     def __init__(self, read_dataset: str, write_dataset: str, config: Optional[ClientConfig] = None):
+        self._read_dataset = read_dataset
+        self._write_dataset = write_dataset
+
         self.dm = get_power_ops_dm_client(config=config)
         self.cdf = self.dm._client
 
@@ -50,3 +55,11 @@ class PowerOpsClient:
         self.scenarios = ScenarioAPI(self.dm)
         self.mappings = MappingAPI(self.dm)
         self.transformations = TransformationAPI(self.dm)
+
+    @cached_property
+    def read_dataset_id(self) -> int:
+        return retrieve_dataset(self.cdf, external_id=self._read_dataset).id
+
+    @cached_property
+    def write_dataset_id(self) -> int:
+        return retrieve_dataset(self.cdf, external_id=self._write_dataset).id

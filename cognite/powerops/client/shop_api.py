@@ -1,8 +1,18 @@
+from __future__ import annotations
+
 import random
 import time
-from typing import Optional
+from enum import Enum
+from typing import TYPE_CHECKING, Optional
 
-from cognite.client.data_classes import FileMetadata
+from cognite.client.data_classes import Event, FileMetadata
+
+from cognite.powerops.case.shop_run_event import ShopRunEvent
+from cognite.powerops.utils.cdf_utils import simple_relationship
+from cognite.powerops.utils.labels import RelationshipLabels
+
+if TYPE_CHECKING:
+    from cognite.powerops import Case, PowerOpsClient
 
 
 class ShopRunLog:
@@ -59,17 +69,46 @@ class ShopRunResult:
 
 
 class ShopRun:
-    def __init__(self, *, case=None, run_id=None) -> None:
-        self.case = case
-        self.run_id = run_id
+    class Status(Enum):
+        IN_PROGRESS = "IN_PROGRESS"
+        SUCCEEDED = "SUCCEEDED"
+        FAILED = "FAILED"
+
+    def __init__(
+        self,
+        po_client: PowerOpsClient,
+        *,
+        shop_run_event: ShopRunEvent,
+    ) -> None:
+        self._po_client = po_client
+        self.shop_run_event = shop_run_event
+
+    def _retrieve_event(self) -> Event:
+        return self._po_client.cdf.events.retrieve(self.shop_run_event.external_id)
 
     def is_complete(self) -> bool:
         """
-        Query CDF and fetch the status of the run.
+        Query CDF and fetch the "processed" metadata value.
+        "false" while still working, "true" when it succeeds or fails.
         """
-        if random.random() > 0.7:
-            return True
-        return False
+        return self.status() != ShopRun.Status.IN_PROGRESS
+
+    def status(self) -> ShopRun.Status:
+        event = self._retrieve_event()
+        if not event.metadata.get("processed", False):
+            return ShopRun.Status.IN_PROGRESS
+
+        relationships = self._po_client.cdf.relationships.list(
+            source_external_ids=self.shop_run_event.external_id,
+            target_types="Event",
+        )
+        related_events = self._po_client.cdf.events.retrieve_multiple(
+            external_ids=[rel.target_external_id for rel in relationships],
+        )
+        if any(ev.type == "POWEROPS_PROCESS_FINISHED" for ev in related_events):
+            return ShopRun.Status.SUCCEEDED
+        else:
+            return ShopRun.Status.FAILED
 
     def wait_until_complete(self) -> ShopRunResult:
         while not self.is_complete():
@@ -90,11 +129,11 @@ class ShopModel:
 
 
 class ShopModelsAPI:
-    def __init__(self, shop_api: "ShopAPI"):
-        self._shop_api = shop_api
+    def __init__(self, po_client: PowerOpsClient):
+        self._po_client = po_client
 
     def list(self) -> list[ShopModel]:
-        return ShopModel()
+        return [ShopModel()]
 
     def retrieve(self, model_id):
         m = ShopModel()
@@ -102,22 +141,54 @@ class ShopModelsAPI:
         return m
 
 
-class ShopRunsApi:
-    def __init__(self, shop_api: "ShopAPI"):
-        self._shop_api = shop_api
+class ShopRunsAPI:
+    def __init__(self, po_client: PowerOpsClient):
+        self._po_client = po_client
 
-    def trigger(self, case) -> ShopRun:
-        return ShopRun(case=case)
+    def trigger(self, watercourse_name: str, case: Case) -> ShopRun:
+        shop_run_event = ShopRunEvent(
+            watercourse=watercourse_name,
+            starttime=case["time.starttime"],
+            endtime=case["time.endtime"],
+            timeresolution=case["time.timeresolution"],
+        )
+        event = self._po_client.cdf.events.create(
+            shop_run_event.to_event(self._po_client.write_dataset_id),
+        )
+        file_meta = self._po_client.cdf.files.upload_bytes(
+            external_id=f"{event.external_id}_CASE_FILE",
+            content=case.yaml.encode(),
+            data_set_id=self._po_client.write_dataset_id,
+            name=f"{watercourse_name}_case.yaml",
+            mime_type="application/yaml",
+            metadata={
+                "shop:run_event_id": shop_run_event.external_id,
+                "shop:type": "cog_shop_case",
+            },
+            overwrite=True,
+        )
+        self._po_client.cdf.relationships.create(
+            simple_relationship(
+                source=event,
+                target=file_meta,
+                label_external_id=RelationshipLabels.CASE_FILE,
+            )
+        )
+        return ShopRun(self._po_client, shop_run_event=shop_run_event)
 
     def list(self) -> list[ShopRun]:
         raise NotImplementedError
 
-    def retrieve(self, run_id):
-        return ShopRun(run_id=run_id)
+    def retrieve(self, external_id: str) -> ShopRun:
+        event = self._po_client.cdf.events.retrieve(external_id=external_id)
+        return ShopRun(
+            self._po_client,
+            shop_run_event=ShopRunEvent.from_event(event),
+        )
 
 
 class ShopAPI:
-    def __init__(self, po_client):
+    def __init__(self, po_client: PowerOpsClient):
         self._po_client = po_client
-        self.models = ShopModelsAPI(shop_api=self)
-        self.runs = ShopRunsApi(shop_api=self)
+        self.models = ShopModelsAPI(po_client=po_client)
+        self.runs = ShopRunsAPI(po_client=po_client)

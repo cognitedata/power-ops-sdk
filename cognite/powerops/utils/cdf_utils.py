@@ -3,13 +3,23 @@ from __future__ import annotations
 import logging
 from typing import Union
 
+from cognite.client import CogniteClient
 from cognite.client._api.assets import AssetsAPI
 from cognite.client._api.events import EventsAPI
 from cognite.client._api.files import FilesAPI
 from cognite.client._api.labels import LabelsAPI
 from cognite.client._api.relationships import RelationshipsAPI
 from cognite.client._api.sequences import SequencesAPI
-from cognite.client.data_classes import Asset, Event, FileMetadata, LabelDefinition, Relationship, Sequence, TimeSeries
+from cognite.client.data_classes import (
+    Asset,
+    DataSet,
+    Event,
+    FileMetadata,
+    LabelDefinition,
+    Relationship,
+    Sequence,
+    TimeSeries,
+)
 from cognite.client.exceptions import CogniteDuplicatedError
 
 logger = logging.getLogger(__name__)
@@ -69,3 +79,10 @@ def upsert_cognite_resources(
             api.delete(external_id=duplicated_ids)
             logger.debug("Creating new label definitions")
             api.create(resources_to_update)
+
+
+def retrieve_dataset(client: CogniteClient, external_id: str) -> DataSet:
+    dataset = client.data_sets.retrieve(external_id=external_id)
+    if dataset is None:
+        raise ValueError(f"DataSet not found: {external_id}")
+    return dataset
