@@ -12,7 +12,12 @@ Changes are grouped as follows
 - `Removed` for now removed features.
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
--
+
+## [0.8.1] - 24-05-23
+### Added
+
+* Ability to trigger SHOP runs via CogShop.
+
 ## [0.8.0] - 23-05-23
 ### Added
 
