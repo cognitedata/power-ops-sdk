@@ -675,6 +675,8 @@ labels:
   name: relationship_to.bid_process_event
 - external_id: relationship_to.calculate_total_bid_matrix_event
   name: relationship_to.calculate_total_bid_matrix_event
+- external_id: relationship_to.case_file
+  name: relationship_to.case_file
 - external_id: relationship_to.consumption_schedule
   name: relationship_to.consumption_schedule
 - external_id: relationship_to.dayahead_price_time_series

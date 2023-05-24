@@ -5,6 +5,6 @@ configure_debug_logging("DEBUG")
 
 p = PowerOpsClient(read_dataset="uc:001:sandbox", write_dataset="uc:001:sandbox")
 
-case = Case.load_yaml("/Users/fran/Downloads/case1.yaml")
+case = Case.load_yaml("/path/to/my/case.yaml")
 
 p.shop.runs.trigger("Test_case_1", case)
