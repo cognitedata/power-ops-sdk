@@ -1,10 +1,13 @@
 from __future__ import annotations
 
+import json
+import logging
 import random
 import time
 from enum import Enum
 from typing import TYPE_CHECKING, Optional
 
+import requests
 from cognite.client.data_classes import Event, FileMetadata
 
 from cognite.powerops.case.shop_run_event import ShopRunEvent
@@ -13,6 +16,8 @@ from cognite.powerops.utils.labels import RelationshipLabels
 
 if TYPE_CHECKING:
     from cognite.powerops import Case, PowerOpsClient
+
+logger = logging.getLogger(__name__)
 
 
 class ShopRunLog:
@@ -95,6 +100,7 @@ class ShopRun:
 
     def status(self) -> ShopRun.Status:
         event = self._retrieve_event()
+        logger.debug(f"Reading status from event {event.external_id}.")
         if not event.metadata.get("processed", False):
             return ShopRun.Status.IN_PROGRESS
 
@@ -112,7 +118,7 @@ class ShopRun:
 
     def wait_until_complete(self) -> ShopRunResult:
         while not self.is_complete():
-            print("SHOP is still running...")
+            logger.info("SHOP is still running...")
             time.sleep(3)
         return ShopRunResult(shop_run=self)
 
@@ -146,17 +152,22 @@ class ShopRunsAPI:
         self._po_client = po_client
 
     def trigger(self, watercourse_name: str, case: Case) -> ShopRun:
+        logger.info(f"Triggering SHOP run with watercourse name {watercourse_name}")
         shop_run_event = ShopRunEvent(
             watercourse=watercourse_name,
             starttime=case["time.starttime"],
             endtime=case["time.endtime"],
             timeresolution=case["time.timeresolution"],
         )
-        event = self._po_client.cdf.events.create(
-            shop_run_event.to_event(self._po_client.write_dataset_id),
-        )
+        shop_run = self._upload_to_cdf(watercourse_name, shop_run_event, case)
+        self._post_shop_run(shop_run_event)
+        return shop_run
+
+    def _upload_to_cdf(self, watercourse_name: str, shop_run_event: ShopRunEvent, case: Case) -> ShopRun:
+        file_ext_id = f"{shop_run_event.external_id}_CASE_FILE"
+        logger.debug(f"Uploading case file '{file_ext_id}'.")
         file_meta = self._po_client.cdf.files.upload_bytes(
-            external_id=f"{event.external_id}_CASE_FILE",
+            external_id=file_ext_id,
             content=case.yaml.encode(),
             data_set_id=self._po_client.write_dataset_id,
             name=f"{watercourse_name}_case.yaml",
@@ -167,6 +178,10 @@ class ShopRunsAPI:
             },
             overwrite=True,
         )
+        logger.debug(f"Uploading event '{shop_run_event.external_id}'.")
+        event = shop_run_event.to_event(self._po_client.write_dataset_id)
+        event.metadata["shop:preprocessor_data"] = json.dumps({"cog_shop_case_file": file_ext_id})
+        self._po_client.cdf.events.create(event)
         self._po_client.cdf.relationships.create(
             simple_relationship(
                 source=event,
@@ -176,10 +191,27 @@ class ShopRunsAPI:
         )
         return ShopRun(self._po_client, shop_run_event=shop_run_event)
 
+    def _post_shop_run(self, shop_run_event: ShopRunEvent):
+        logger.debug("Triggering run-shop endpoint.")
+        cdf_config = self._po_client.cdf.config
+        project = cdf_config.project
+        cluster = cdf_config.base_url.split("//")[1].split(".")[0]
+        url = f"https://power-ops-api.staging.{cluster}.cognite.ai/{project}" f"/run-shop"
+        auth_header = dict([cdf_config.credentials.authorization_header()])
+
+        response = requests.post(
+            url,
+            json={"shopEventExternalId": shop_run_event.external_id, "cogShopVersion": "TEST123"},  # image version
+            headers=auth_header,
+        )
+        response.raise_for_status()
+        logger.debug(response.json())
+
     def list(self) -> list[ShopRun]:
         raise NotImplementedError
 
     def retrieve(self, external_id: str) -> ShopRun:
+        logger.debug(f"Retrieving event '{external_id}'.")
         event = self._po_client.cdf.events.retrieve(external_id=external_id)
         return ShopRun(
             self._po_client,
