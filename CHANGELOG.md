@@ -12,6 +12,20 @@ Changes are grouped as follows
 - `Removed` for now removed features.
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
+-
+## [0.8.0] - 23-05-23
+### Added
+
+* Basic handling for YAML case files.
+* pytest now runs doctests.
+
+### Improved
+
+* Shorter imports for commonly used files
+
+### Changed
+
+* Renamed `powerops.core` attribute to `powerops.cdf`
 
 ## [0.7.1] - 23-05-23
 ### Fixed
