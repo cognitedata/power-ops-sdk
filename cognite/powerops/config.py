@@ -604,20 +604,23 @@ class RKOMBidProcessConfig(Configuration):
         return bootstrap_resources
 
 
+ExternalId = str
+
+
 class PlantTimeSeriesMapping(BaseModel):
     plant_name: str
-    water_value: Optional[int]
-    inlet_reservoir_level: Optional[int]
-    outlet_reservoir_level: Optional[int]
-    p_min: Optional[int]
-    p_max: Optional[int]
-    feeding_fee: Optional[int]
-    head_direct: Optional[int]
+    water_value: Optional[ExternalId]
+    inlet_reservoir_level: Optional[ExternalId]
+    outlet_reservoir_level: Optional[ExternalId]
+    p_min: Optional[ExternalId]
+    p_max: Optional[ExternalId]
+    feeding_fee: Optional[ExternalId]
+    head_direct: Optional[ExternalId]
 
 
 class GeneratorTimeSeriesMapping(BaseModel):
     generator_name: str
-    start_stop_cost: Optional[int]
+    start_stop_cost: Optional[ExternalId]
 
 
 class BootstrapConfig(BaseModel):

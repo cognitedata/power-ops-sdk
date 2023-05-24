@@ -27,6 +27,11 @@ Changes are grouped as follows
 
 * Renamed `powerops.core` attribute to `powerops.cdf`
 
+## [0.7.1] - 23-05-23
+### Fixed
+
+* Fixed bug with external id being stored as int in bootstrap resources
+
 ## [0.7.0] - 22-05-23
 ### Added
 
