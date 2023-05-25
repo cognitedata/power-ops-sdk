@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 from pathlib import Path
 from typing import List, Optional
 
@@ -155,7 +156,10 @@ def get_shop_service_url(cognite_project: str):
 
 
 def _load_config(path: Path) -> BootstrapConfig:
-    return BootstrapConfig.from_yamls(path)
+    config = BootstrapConfig.from_yamls(path)
+    if os.environ.get("COGNITE_PROJECT"):
+        config.cdf.from_env()
+    return config
 
 
 def _transform(
@@ -193,7 +197,12 @@ def _transform(
         )
     )
     # PowerOps asset data model
-    bootstrap_resources += generate_resources_and_data(watercourse_configs=config.watercourses)
+    bootstrap_resources += generate_resources_and_data(
+        watercourse_configs=config.watercourses,
+        plant_time_series_mappings=config.plant_time_series_mappings,
+        generator_time_series_mappings=config.generator_time_series_mappings,
+    )
+
     bootstrap_resources.add(generate_relationships_from_price_area_to_price(config.dayahead_price_timeseries))
     # SHOP files (model, commands, cut mapping++) and configs (base mapping, output definition)
 

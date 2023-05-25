@@ -13,11 +13,53 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## [0.4.2] - 15-05-23
+## [0.9.0] - 25-05-23
 ### Changed
 
-* Changed location of config class definitions that were located in dataclasses module
+* Changed location of all config related class definitions located in dataclasses module
 to config.py module
+* Deleted unused modules
+
+## [0.8.0] - 23-05-23
+### Added
+
+* Basic handling for YAML case files.
+* pytest now runs doctests.
+
+### Improved
+
+* Shorter imports for commonly used files
+
+### Changed
+
+* Renamed `powerops.core` attribute to `powerops.cdf`
+
+## [0.7.1] - 23-05-23
+### Fixed
+
+* Fixed bug with external id being stored as int in bootstrap resources
+
+## [0.7.0] - 22-05-23
+### Added
+
+* Added test for the water value based bid generation (WVBBG) time series contextualization
+* Changed the mapping format for wvbbg from csv to yaml.
+* Added time series contextualization for generators as well
+
+## [0.6.0] - 22-05-23
+### Added
+
+* Added support for reading configuration parameters for Cognite Client from env variables in addition to yaml file.
+
+## [0.5.0] - 16-05-23
+### Added
+
+* Support adding direct head values to water value based bid generation (WVBBG) time series contextualization.
+
+## [0.4.2] - 15-05-23
+### Fixed
+
+* Shop files external ID suffix to get correct preview print with bootstrap "plan"
 
 
 ## [0.4.1] - 15-05-23

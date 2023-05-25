@@ -32,18 +32,18 @@ class ConfigurationsClient:
 class PowerOpsClient:
     def __init__(self, read_dataset: str, write_dataset: str, config: Optional[ClientConfig] = None):
         self.dm = get_power_ops_dm_client(config=config)
-        self.core = CogniteClient(config)
+        self.cdf = self.dm._client
 
         self.configurations = ConfigurationClient()
 
         self.shop = ShopAPI(po_client=self)
 
-        self.configurations = ConfigurationsClient(read_dataset, write_dataset, self.core)
-        self.generators = GeneratorsAPI(self.core, read_dataset, write_dataset)
-        self.plants = PlantAPI(self.core, read_dataset, write_dataset)
-        self.price_areas = PriceAreasAPI(self.core, read_dataset, write_dataset)
-        self.reservoirs = ReservoirsAPI(self.core, read_dataset, write_dataset)
-        self.watercourses = WatercourseAPI(self.core, read_dataset, write_dataset)
+        self.configurations = ConfigurationsClient(read_dataset, write_dataset, self.cdf)
+        self.generators = GeneratorsAPI(self.cdf, read_dataset, write_dataset)
+        self.plants = PlantAPI(self.cdf, read_dataset, write_dataset)
+        self.price_areas = PriceAreasAPI(self.cdf, read_dataset, write_dataset)
+        self.reservoirs = ReservoirsAPI(self.cdf, read_dataset, write_dataset)
+        self.watercourses = WatercourseAPI(self.cdf, read_dataset, write_dataset)
 
         self.cases = CaseAPI(self.dm)
         self.commands = CommandsAPI(self.dm)

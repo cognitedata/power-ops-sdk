@@ -1,0 +1,8 @@
+- plant_name: Lund
+  water_value: 1
+  inlet_reservoir_level:
+  outlet_reservoir_level:
+  p_min:
+  p_max:
+  feeding_fee:
+  head_direct: 2
