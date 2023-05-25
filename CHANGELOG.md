@@ -13,10 +13,17 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## [0.8.1] - 24-05-23
+## [0.9.1] - 25-05-23
 ### Added
 
 * Ability to trigger SHOP runs via CogShop.
+
+## [0.9.0] - 25-05-23
+### Changed
+
+* Changed location of all config related class definitions located in dataclasses module
+to config.py module
+* Deleted unused modules
 
 ## [0.8.0] - 23-05-23
 ### Added
@@ -58,6 +65,7 @@ Changes are grouped as follows
 ### Fixed
 
 * Shop files external ID suffix to get correct preview print with bootstrap "plan"
+
 
 ## [0.4.1] - 15-05-23
 ### Fixed

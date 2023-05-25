@@ -11,7 +11,6 @@ from typing import ClassVar, Dict, Generator, List, Optional, Tuple
 from cognite.client.data_classes import Asset, Label, Sequence
 from pydantic import BaseModel, Field, root_validator, validator
 
-from cognite.powerops.data_classes.benchmarking_config import BenchmarkingConfig
 from cognite.powerops.data_classes.cdf_resource_collection import (
     BootstrapResourceCollection,
     SequenceContent,
@@ -19,10 +18,7 @@ from cognite.powerops.data_classes.cdf_resource_collection import (
 )
 from cognite.powerops.data_classes.common import AggregationMethod, CommonConstants, RelativeTime, RetrievalType
 from cognite.powerops.data_classes.config_model import Configuration
-from cognite.powerops.data_classes.market_config import MarketConfig
 from cognite.powerops.data_classes.reserve_scenario import Auction, Block, Product, ReserveScenario
-from cognite.powerops.data_classes.rkom_bid_combination_config import RKOMBidCombinationConfig
-from cognite.powerops.data_classes.rkom_market_config import RkomMarketConfig
 from cognite.powerops.data_classes.time_series_mapping import (
     TimeSeriesMapping,
     TimeSeriesMappingEntry,
@@ -214,6 +210,182 @@ class BidMatrixGeneratorConfig(BaseModel):
         bootstrap_resource_collection.add(relationship)
 
         return bootstrap_resource_collection
+
+
+class RkomMarketConfig(BaseModel):
+    external_id: str
+    name: str
+    timezone: str
+    start_of_week: int
+    parent_external_id: ClassVar[str] = "market_configurations"
+
+    @property
+    def metadata(self) -> dict:
+        return {
+            "timezone": self.timezone,
+            "start_of_week": self.start_of_week,
+        }
+
+    @property
+    def cdf_asset(self) -> Asset:
+        return Asset(
+            external_id=self.external_id,
+            name=self.name,
+            metadata=self.metadata,
+            parent_external_id=self.parent_external_id,
+            labels=["market"],
+        )
+
+    @staticmethod
+    def default() -> "RkomMarketConfig":
+        return RkomMarketConfig(
+            external_id="market_configuration_statnett_rkom_weekly",
+            name="RKOM weekly (Statnett)",
+            timezone="Europe/Oslo",
+            start_of_week=1,
+        )
+
+
+class RKOMBidCombinationConfig(Configuration):
+    auction: Auction = Field(alias="bid_auction")
+    name: str = Field("default", alias="bid_combination_name")
+    rkom_bid_config_external_ids: List[str] = Field(alias="bid_rkom_bid_configs")
+    parent_external_id: ClassVar[str] = "rkom_bid_combination_configurations"
+
+    @validator("auction", pre=True)
+    def to_enum(cls, value):
+        return Auction[value] if isinstance(value, str) else value
+
+    @validator("rkom_bid_config_external_ids", pre=True)
+    def parse_string(cls, value):
+        return [external_id for external_id in ast.literal_eval(value)] if isinstance(value, str) else value
+
+    @property
+    def cdf_asset(self) -> Asset:
+        sequence_external_id = f"RKOM_bid_combination_configuration_{self.auction.value}_{self.name}"
+
+        return Asset(
+            name=sequence_external_id.replace("_", " "),
+            description="Defining which RKOM bid methods should be combined (into the total bid form)",
+            external_id=sequence_external_id,
+            metadata={
+                "bid:auction": self.auction.value,
+                "bid:combination_name": self.name,
+                "bid:rkom_bid_configs": json.dumps(self.rkom_bid_config_external_ids),
+            },
+            parent_external_id=self.parent_external_id,
+        )
+
+
+class BenchmarkingConfig(Configuration):
+    bid_date: RelativeTime
+    shop_start: RelativeTime = Field(alias="shop_starttime")
+    shop_end: RelativeTime = Field(alias="shop_endtime")
+    production_plan_time_series: Optional[Dict[str, List[str]]]
+    market_config_external_id: str = Field(alias="bid_market_config_external_id")
+    relevant_shop_objective_metrics: Dict[str, str] = {
+        "grand_total": "Grand Total",
+        "total": "Total",
+        "sum_penalties": "Sum Penalties",
+        "major_penalties": "Major Penalties",
+        "minor_penalties": "Minor Penalties",
+        "load_value": "Load Value",
+        "market_sale_buy": "Market Sale Buy",
+        "rsv_end_value_relative": "RSV End Value Relative",
+        "startup_costs": "Startup Costs",
+        "vow_in_transit": "Vow in Transit",
+        "sum_feeding_fee": "Sum Feeding Fee",
+        "rsv_tactical_penalty": "RSV Tactical Penalty",
+        "rsv_end_value": "RSV End Value",
+        "bypass_cost": "Bypass Cost",
+        "gate_discharge_cost": "Gate Discharge Cost",
+        "reserve_violation_penalty": "Reserve Violation Penalty",
+        "load_penalty": "Load Penalty",
+    }  # Pydantic handles mutable defaults such that this is OK:
+    # https://stackoverflow.com/questions/63793662/how-to-give-a-pydantic-list-field-a-default-value/63808835#63808835
+    # TODO: Consider adding relationships to bid process config
+    #  assets (or remove the optional part that uses those relationships in power-ops-functions)
+
+    @validator("shop_start", "shop_end", "bid_date", pre=True)
+    def json_loads(cls, value):
+        return {"operations": json.loads(value)} if isinstance(value, str) else value
+
+    @property
+    def metadata(self) -> dict:
+        metadata = {
+            "bid:date": str(self.bid_date),
+            "shop:starttime": str(self.shop_start),
+            "shop:endtime": str(self.shop_end),
+            "bid:market_config_external_id": self.market_config_external_id,
+            "benchmarking_metrics": json.dumps(self.relevant_shop_objective_metrics),
+        }
+        if self.production_plan_time_series:
+            metadata["benchmark:production_plan_time_series"] = json.dumps(
+                self.production_plan_time_series, ensure_ascii=False
+            )  # ensure_ascii=False to treat Nordic letters properly
+        return metadata
+
+    @property
+    def cdf_asset(self) -> Asset:
+        return Asset(
+            external_id="POWEROPS_dayahead_bidding_benchmarking_config",
+            name="Benchmarking config DA",
+            description="Configuration for benchmarking of day-ahead bidding",
+            metadata=self.metadata,
+            parent_external_id="benchmarking_configurations",
+            labels=["dayahead_bidding_benchmarking_config"],
+        )
+
+
+class MarketConfig(Configuration):
+    external_id: str
+    name: str
+    max_price: float = None
+    min_price: float = None
+    time_unit: str = None
+    timezone: str
+    tick_size: float = None
+    trade_lot: float = None
+    price_steps: int = None
+    parent_external_id: ClassVar[str] = "market_configurations"
+    price_unit: str = None
+
+    @property
+    def metadata(self) -> dict:
+        return {
+            "min_price": self.min_price,
+            "max_price": self.max_price,
+            "timezone": self.timezone,
+            "time_unit": self.time_unit,
+            "tick_size": self.tick_size,
+            "trade_lot": self.trade_lot,
+            "price_steps": self.price_steps,
+            "price_unit": self.price_unit,
+        }
+
+    @property
+    def cdf_asset(self) -> Asset:
+        return Asset(
+            external_id=self.external_id,
+            name=self.name,
+            metadata=self.metadata,
+            parent_external_id=self.parent_external_id,
+            labels=["market"],
+        )
+
+
+MARKET_CONFIG_NORDPOOL_DAYAHEAD = MarketConfig(
+    external_id="market_configuration_nordpool_dayahead",
+    name="Nord Pool Day-ahead",
+    max_price=4000,
+    min_price=-500,
+    time_unit="1h",
+    timezone="Europe/Oslo",
+    tick_size=0.1,
+    trade_lot=0.1,
+    price_steps=200,
+    price_unit="EUR/MWh",
+)
 
 
 class BidProcessConfig(Configuration):
