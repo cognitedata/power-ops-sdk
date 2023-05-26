@@ -13,6 +13,12 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.9.1] - 26-05-23
+### Fixed
+
+* Typo in warning message for plant display name
+* Removed redundant warning message for reservoir display name and order
+
 ## [0.9.0] - 25-05-23
 ### Changed
 
