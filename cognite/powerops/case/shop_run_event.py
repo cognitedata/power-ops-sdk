@@ -23,7 +23,7 @@ class ShopRunEvent:
     watercourse: str
     starttime: str
     endtime: str
-    timeresolution: Optional[Dict[str, int]] = None
+    timeresolution: Optional[dict[str, int]] = None
     dynamic_minute_offset: Optional[int] = None
 
     @cached_property
