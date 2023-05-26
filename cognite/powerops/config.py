@@ -74,7 +74,7 @@ class WatercourseConfig(Watercourse):
         try:
             return self.plant_display_names_and_order[plant][0]  # type: ignore
         except (KeyError, TypeError):
-            print(f"[WARNING] No ordering key for plant: {plant}")
+            print(f"[WARNING] No display name for plant: {plant}")
             return None
 
     def plant_ordering_key(self, plant: str) -> Optional[int]:
@@ -85,18 +85,10 @@ class WatercourseConfig(Watercourse):
             return None
 
     def reservoir_display_name(self, reservoir: str) -> Optional[str]:
-        try:
-            return self.reservoir_display_names_and_order[reservoir][0]  # type: ignore
-        except (KeyError, TypeError):
-            print(f"[WARNING] No ordering key for plant: {reservoir}")
-            return None
+        return self.reservoir_display_names_and_order[reservoir][0] if self.reservoir_display_names_and_order else None
 
     def reservoir_ordering_key(self, reservoir: str) -> Optional[int]:
-        try:
-            return self.reservoir_display_names_and_order[reservoir][1]  # type: ignore
-        except (KeyError, TypeError):
-            print(f"[WARNING] No ordering key for plant: {reservoir}")
-            return None
+        return self.reservoir_display_names_and_order[reservoir][1]  if self.reservoir_display_names_and_order else None
 
     def set_shop_yaml_paths(self, path):
         self.yaml_raw_path = f"{path}/{self.directory}/{self.model_raw}"  # TODO: create these as properties
