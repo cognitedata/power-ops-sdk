@@ -88,7 +88,7 @@ class WatercourseConfig(Watercourse):
         return self.reservoir_display_names_and_order[reservoir][0] if self.reservoir_display_names_and_order else None
 
     def reservoir_ordering_key(self, reservoir: str) -> Optional[int]:
-        return self.reservoir_display_names_and_order[reservoir][1]  if self.reservoir_display_names_and_order else None
+        return self.reservoir_display_names_and_order[reservoir][1] if self.reservoir_display_names_and_order else None
 
     def set_shop_yaml_paths(self, path):
         self.yaml_raw_path = f"{path}/{self.directory}/{self.model_raw}"  # TODO: create these as properties
