@@ -182,13 +182,13 @@ class ShopRunsAPI:
         event = shop_run_event.to_event(self._po_client.write_dataset_id)
         event.metadata["shop:preprocessor_data"] = json.dumps({"cog_shop_case_file": file_ext_id})
         self._po_client.cdf.events.create(event)
-        self._po_client.cdf.relationships.create(
-            simple_relationship(
-                source=event,
-                target=file_meta,
-                label_external_id=RelationshipLabels.CASE_FILE,
-            )
+        relationship = simple_relationship(
+            source=event,
+            target=file_meta,
+            label_external_id=RelationshipLabels.CASE_FILE,
         )
+        relationship.data_set_id = self._po_client.write_dataset_id
+        self._po_client.cdf.relationships.create(relationship)
         return ShopRun(self._po_client, shop_run_event=shop_run_event)
 
     def _post_shop_run(self, shop_run_event: ShopRunEvent):
@@ -201,7 +201,10 @@ class ShopRunsAPI:
 
         response = requests.post(
             url,
-            json={"shopEventExternalId": shop_run_event.external_id, "cogShopVersion": "TEST123"},  # image version
+            json={
+                "shopEventExternalId": shop_run_event.external_id,
+                "cogShopVersion": "CogShop2-20230525T103734Z",  # image version
+            },
             headers=auth_header,
         )
         response.raise_for_status()
