@@ -2,6 +2,7 @@ from functools import cached_property
 from typing import Optional
 
 from cognite.client import ClientConfig, CogniteClient
+from cognite.dm_clients.config import settings
 
 from cognite.powerops.client.asset_apis import (
     BenchmarkingConfigurationsAPI,
@@ -32,9 +33,16 @@ class ConfigurationsClient:
 
 
 class PowerOpsClient:
-    def __init__(self, read_dataset: str, write_dataset: str, config: Optional[ClientConfig] = None):
-        self._read_dataset = read_dataset
-        self._write_dataset = write_dataset
+    def __init__(
+        self,
+        read_dataset: Optional[str] = None,
+        write_dataset: Optional[str] = None,
+        cogshop_version: Optional[str] = None,
+        config: Optional[ClientConfig] = None,
+    ):
+        self._read_dataset = read_dataset or settings.powerops.read_dataset
+        self._write_dataset = write_dataset or settings.powerops.write_dataset
+        self._cogshop_version = cogshop_version or settings.powerops.cogshop_version
 
         self.dm = get_power_ops_dm_client(config=config)
         self.cdf = self.dm._client
