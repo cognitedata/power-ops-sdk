@@ -158,7 +158,7 @@ def get_shop_service_url(cognite_project: str):
 def _load_config(path: Path) -> BootstrapConfig:
     config = BootstrapConfig.from_yamls(path)
     if os.environ.get("COGNITE_PROJECT"):
-        config.cdf.from_env()
+        config.cdf = config.cdf.from_env()
     return config
 
 
