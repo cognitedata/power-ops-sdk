@@ -13,7 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## [0.9.2] - 30-05-23
+## [0.10.0] - 30-05-23
+### Feature
+
+* Allow customers to specify default bid config per price area
+
 ### Fixed
 
 * Fixed bug for overriding CDF parameters from env variables
