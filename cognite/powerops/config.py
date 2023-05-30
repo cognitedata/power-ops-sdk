@@ -827,3 +827,19 @@ class BootstrapConfig(BaseModel):
             if (config_file_path := config_dir_path / f"{field_name}.yaml").exists():
                 configs[field_name] = load_yaml(config_file_path, encoding="utf-8")
         return cls(**configs)
+
+    def validate_bid_configs(self):
+        """Validate the bid configs in the bootstrap config. Per now only ensure there is at most one default config
+        per price area"""
+
+        default_configs = defaultdict(int)
+        for bid_config in self.bidprocess:
+            if bid_config.is_default_config_for_price_area:
+                default_configs[bid_config.price_area_name] += 1
+
+        if price_areas_with_multiple_default_configs := [
+            price_area for price_area, count in default_configs.items() if count > 1
+        ]:
+            raise ValueError(
+                f"Multiple default bid configs for price areas: {price_areas_with_multiple_default_configs}"
+            )
