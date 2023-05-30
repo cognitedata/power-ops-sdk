@@ -44,7 +44,7 @@ baz: zzz
     assert case.data == {"foo": "bar"}
 
     assert len(case.extra_files) == 1
-    with open(case.extra_files[0]) as fh:
+    with open(case.extra_files[0]["file"]) as fh:
         extra = fh.read()
     assert extra == "baz: zzz\n"
 
