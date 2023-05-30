@@ -80,6 +80,9 @@ class RelationshipLabels:
     HEAD_DIRECT_TIME_SERIES = "relationship_to.head_direct_time_series"
     START_STOP_COST_TIME_SERIES = "relationship_to.start_stop_cost_time_series"
     CASE_FILE = "relationship_to.case_file"
+    CUT_FILE = "relationship_to.cut_file"
+    MAPPING_FILE = "relationship_to.mapping_file"
+    EXTRA_FILE = "relationship_to.extra_file"
 
 
 def label_external_ids(labels_class: Callable) -> list:
