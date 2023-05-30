@@ -2,11 +2,16 @@ from __future__ import annotations
 
 import logging
 import tempfile
-from typing import Any
+from typing import Any, Optional, TypedDict
 
 import yaml
 
 logger = logging.getLogger(__name__)
+
+
+class FileRefT(TypedDict):
+    file: str
+    encoding: str
 
 
 class Case:
@@ -49,7 +54,9 @@ class Case:
 
     def __init__(self, data: str = "") -> None:
         self._data = {}
-        self._extra_files = []
+        self._cut_file: Optional[FileRefT] = None
+        self._extra_files: list[FileRefT] = []
+        self._mapping_files: list[FileRefT] = []
 
         yaml_docs = list(yaml.safe_load_all(data))
         if yaml_docs:
@@ -66,18 +73,34 @@ class Case:
                 self.add_extra_file(tmp_file.name)
 
     @classmethod
-    def load_yaml(cls, yaml_path: str) -> Case:
+    def load_yaml(cls, yaml_path: str, encoding: str = "utf-8") -> Case:
         logger.info(f"loading case file: {yaml_path}")
-        with open(yaml_path, "r") as yaml_file:
+        with open(yaml_path, "r", encoding=encoding) as yaml_file:
             return cls(yaml_file.read())
 
-    def add_extra_file(self, file_path: str) -> None:
-        logger.info(f"adding extra file: {file_path}")
-        self._extra_files.append(file_path)
+    def add_extra_file(self, file_path: str, encoding: str = "utf-8") -> None:
+        logger.info(f"adding extra file: '{file_path}'")
+        self._extra_files.append({"file": file_path, "encoding": encoding})
+
+    def add_mapping_file(self, file_path: str, encoding: str = "utf-8") -> None:
+        logger.info(f"adding mapping file: '{file_path}'")
+        self._mapping_files.append({"file": file_path, "encoding": encoding})
+
+    def add_cut_file(self, file_path: str, encoding: str = "utf-8") -> None:
+        logger.info(f"adding cut file: '{file_path}'")
+        self._cut_file = {"file": file_path, "encoding": encoding}
 
     @property
-    def extra_files(self):
-        return self._extra_files.copy()
+    def extra_files(self) -> list[FileRefT]:
+        return self._extra_files
+
+    @property
+    def mapping_files(self) -> list[FileRefT]:
+        return self._mapping_files
+
+    @property
+    def cut_file(self) -> FileRefT:
+        return self._cut_file
 
     @property
     def data(self) -> dict:
@@ -115,7 +138,7 @@ class Case:
     def yaml(self) -> str:
         return yaml.dump(self._data, sort_keys=False)
 
-    def save_yaml(self, path: str) -> None:
+    def save_yaml(self, path: str, encoding: str = "utf-8") -> None:
         logger.info(f"Saving case file to: {path}")
-        with open(path, "w") as output_file:
+        with open(path, "w", encoding=encoding) as output_file:
             output_file.write(yaml.dump(self._data, sort_keys=False))

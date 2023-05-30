@@ -5,7 +5,7 @@ import logging
 import random
 import time
 from enum import Enum
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, BinaryIO, Literal, Optional, TextIO, Union
 
 import requests
 from cognite.client.data_classes import Event, FileMetadata
@@ -18,6 +18,9 @@ if TYPE_CHECKING:
     from cognite.powerops import Case, PowerOpsClient
 
 logger = logging.getLogger(__name__)
+
+
+FileTypeT = Literal["case", "cut", "mapping", "extra"]
 
 
 class ShopRunLog:
@@ -92,17 +95,11 @@ class ShopRun:
         return self._po_client.cdf.events.retrieve(self.shop_run_event.external_id)
 
     def is_complete(self) -> bool:
-        """
-        Query CDF and fetch the "processed" metadata value.
-        "false" while still working, "true" when it succeeds or fails.
-        """
         return self.status() != ShopRun.Status.IN_PROGRESS
 
     def status(self) -> ShopRun.Status:
         event = self._retrieve_event()
         logger.debug(f"Reading status from event {event.external_id}.")
-        if not event.metadata.get("processed", False):
-            return ShopRun.Status.IN_PROGRESS
 
         relationships = self._po_client.cdf.relationships.list(
             source_external_ids=self.shop_run_event.external_id,
@@ -111,7 +108,9 @@ class ShopRun:
         related_events = self._po_client.cdf.events.retrieve_multiple(
             external_ids=[rel.target_external_id for rel in relationships],
         )
-        if any(ev.type == "POWEROPS_PROCESS_FINISHED" for ev in related_events):
+        if not len(related_events):
+            return ShopRun.Status.IN_PROGRESS
+        elif any(ev.type == "POWEROPS_PROCESS_FINISHED" for ev in related_events):
             return ShopRun.Status.SUCCEEDED
         else:
             return ShopRun.Status.FAILED
@@ -151,48 +150,89 @@ class ShopRunsAPI:
     def __init__(self, po_client: PowerOpsClient):
         self._po_client = po_client
 
-    def trigger(self, watercourse_name: str, case: Case) -> ShopRun:
-        logger.info(f"Triggering SHOP run with watercourse name {watercourse_name}")
+    def trigger(self, case: Case) -> ShopRun:
         shop_run_event = ShopRunEvent(
-            watercourse=watercourse_name,
+            watercourse="",
             starttime=case["time.starttime"],
             endtime=case["time.endtime"],
             timeresolution=case["time.timeresolution"],
         )
-        shop_run = self._upload_to_cdf(watercourse_name, shop_run_event, case)
+        logger.info(f"Triggering SHOP run for case {shop_run_event.external_id}")
+        shop_run = self._upload_to_cdf(shop_run_event, case)
         self._post_shop_run(shop_run_event)
         return shop_run
 
-    def _upload_to_cdf(self, watercourse_name: str, shop_run_event: ShopRunEvent, case: Case) -> ShopRun:
-        file_ext_id = f"{shop_run_event.external_id}_CASE_FILE"
-        logger.debug(f"Uploading case file '{file_ext_id}'.")
+    def _upload_to_cdf(self, shop_run_event: ShopRunEvent, case: Case) -> ShopRun:
+        logger.debug(f"Uploading event '{shop_run_event.external_id}'.")
+        case_file_meta = self._upload_bytes(case.yaml.encode(), shop_run_event, file_type="case")
+        event = shop_run_event.to_event(self._po_client.write_dataset_id)
+        self._connect_file_to_event(case_file_meta, event, RelationshipLabels.CASE_FILE)
+        preprocessor_metadata = {"cog_shop_case_file": case_file_meta.external_id}
+
+        if case.cut_file:
+            cut_file_meta = self._upload_file(**case.cut_file, shop_run_event=shop_run_event, file_type="cut")
+            self._connect_file_to_event(cut_file_meta, event, RelationshipLabels.CUT_FILE)
+            preprocessor_metadata["cut_file"] = {"external_id": cut_file_meta.external_id}
+
+        if case.mapping_files:
+            preprocessor_metadata["mapping_files"] = []
+        for mapping_file in case.mapping_files or []:
+            mapping_file_meta = self._upload_file(**mapping_file, shop_run_event=shop_run_event, file_type="mapping")
+            self._connect_file_to_event(mapping_file_meta, event, RelationshipLabels.MAPPING_FILE)
+            preprocessor_metadata["mapping_files"].append({"external_id": mapping_file_meta.external_id})
+
+        if case.extra_files:
+            preprocessor_metadata["extra_files"] = []
+        for extra_file in case.extra_files or []:
+            extra_file_meta = self._upload_file(**extra_file, shop_run_event=shop_run_event, file_type="extra")
+            self._connect_file_to_event(extra_file_meta, event, RelationshipLabels.EXTRA_FILE)
+            preprocessor_metadata["extra_files"].append({"external_id": extra_file_meta.external_id})
+
+        event.metadata["shop:preprocessor_data"] = json.dumps(preprocessor_metadata)
+        event.metadata["shop:manual_run"] = "yes"
+        event.metadata["processed"] = "yes"  # avoid event being picked up by sniffer
+        self._po_client.cdf.events.create(event)
+        return ShopRun(self._po_client, shop_run_event=shop_run_event)
+
+    def _upload_file(
+        self, file: str, encoding: str, shop_run_event: ShopRunEvent, file_type: FileTypeT
+    ) -> FileMetadata:
+        with open(file, encoding=encoding) as file_stream:
+            return self._upload_bytes(file_stream.read(), shop_run_event, file_type)
+
+    def _upload_bytes(
+        self,
+        content: Union[str, bytes, TextIO, BinaryIO],
+        shop_run_event: ShopRunEvent,
+        file_type: FileTypeT,
+    ) -> FileMetadata:
+        file_ext_id = f"{shop_run_event.external_id}_{file_type.upper()}"
+        logger.debug(f"Uploading file: '{file_ext_id}'.")
         file_meta = self._po_client.cdf.files.upload_bytes(
             external_id=file_ext_id,
-            content=case.yaml.encode(),
+            content=content,
             data_set_id=self._po_client.write_dataset_id,
-            name=f"{watercourse_name}_case.yaml",
+            name=f"{shop_run_event.external_id}_{file_type}.yaml",
             mime_type="application/yaml",
             metadata={
                 "shop:run_event_id": shop_run_event.external_id,
-                "shop:type": "cog_shop_case",
+                "shop:type": f"cog_shop_{file_type}",
             },
             overwrite=True,
         )
-        logger.debug(f"Uploading event '{shop_run_event.external_id}'.")
-        event = shop_run_event.to_event(self._po_client.write_dataset_id)
-        event.metadata["shop:preprocessor_data"] = json.dumps({"cog_shop_case_file": file_ext_id})
-        self._po_client.cdf.events.create(event)
+        return file_meta
+
+    def _connect_file_to_event(self, file_meta: FileMetadata, event: Event, relationship_label: str):
         relationship = simple_relationship(
             source=event,
             target=file_meta,
-            label_external_id=RelationshipLabels.CASE_FILE,
+            label_external_id=relationship_label,
         )
         relationship.data_set_id = self._po_client.write_dataset_id
         self._po_client.cdf.relationships.create(relationship)
-        return ShopRun(self._po_client, shop_run_event=shop_run_event)
 
     def _post_shop_run(self, shop_run_event: ShopRunEvent):
-        logger.debug("Triggering run-shop endpoint.")
+        logger.info(f"Triggering run-shop endpoint, cogShopVersion: '{self._po_client._cogshop_version}'.")
         cdf_config = self._po_client.cdf.config
         project = cdf_config.project
         cluster = cdf_config.base_url.split("//")[1].split(".")[0]
@@ -203,7 +243,7 @@ class ShopRunsAPI:
             url,
             json={
                 "shopEventExternalId": shop_run_event.external_id,
-                "cogShopVersion": "CogShop2-20230525T103734Z",  # image version
+                "cogShopVersion": self._po_client._cogshop_version,
             },
             headers=auth_header,
         )
