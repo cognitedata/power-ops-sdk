@@ -26,6 +26,14 @@ class ShopRunEvent:
     timeresolution: Optional[dict[str, int]] = None
     dynamic_minute_offset: Optional[int] = None
 
+    def __post_init__(self):
+        if self.starttime:
+            self.starttime = str(self.starttime)
+        if self.endtime:
+            self.endtime = str(self.endtime)
+        if self.timeresolution:
+            self.timeresolution = {str(k): v for k, v in self.timeresolution.items()}
+
     @cached_property
     def external_id(self) -> str:
         return f"{self.process_type}_{unique_str()}"
