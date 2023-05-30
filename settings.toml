@@ -1,4 +1,16 @@
-# configure [cognite] sectino in .secrets.toml
+# configure [cognite] and [powerops] sections in .secrets.toml
+
+#[cognite]
+#  project = ""
+#  cdf_cluster = ""
+#  tenant_id = ""
+#  client_id = ""
+#  client_secret = ""
+
+#[powerops]
+#read_dataset = ""
+#write_dataset = ""
+#cogshop_version = ""
 
 [dm_clients]
   space = "CogShop2"
