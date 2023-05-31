@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 import random
 import time
 from enum import Enum
@@ -92,7 +93,7 @@ class ShopRun:
         self.shop_run_event = shop_run_event
 
     def _retrieve_event(self) -> Event:
-        return self._po_client.cdf.events.retrieve(self.shop_run_event.external_id)
+        return self._po_client.cdf.events.retrieve(external_id=self.shop_run_event.external_id)
 
     def is_complete(self) -> bool:
         return self.status() != ShopRun.Status.IN_PROGRESS
@@ -102,11 +103,17 @@ class ShopRun:
         logger.debug(f"Reading status from event {event.external_id}.")
 
         relationships = self._po_client.cdf.relationships.list(
-            source_external_ids=self.shop_run_event.external_id,
-            target_types="Event",
+            data_set_ids=[self._po_client.write_dataset_id],
+            source_external_ids=[self.shop_run_event.external_id],
+            target_types=["event"],
         )
-        related_events = self._po_client.cdf.events.retrieve_multiple(
-            external_ids=[rel.target_external_id for rel in relationships],
+        related_events = (
+            self._po_client.cdf.events.retrieve_multiple(
+                external_ids=[rel.target_external_id for rel in relationships],
+                ignore_unknown_ids=True,
+            )
+            if relationships
+            else []
         )
         if not len(related_events):
             return ShopRun.Status.IN_PROGRESS
@@ -117,7 +124,7 @@ class ShopRun:
 
     def wait_until_complete(self) -> ShopRunResult:
         while not self.is_complete():
-            logger.info("SHOP is still running...")
+            logger.debug(f"{self.shop_run_event.external_id} is still running...")
             time.sleep(3)
         return ShopRunResult(shop_run=self)
 
@@ -197,14 +204,16 @@ class ShopRunsAPI:
     def _upload_file(
         self, file: str, encoding: str, shop_run_event: ShopRunEvent, file_type: FileTypeT
     ) -> FileMetadata:
+        _, file_ext = os.path.splitext(file)
         with open(file, encoding=encoding) as file_stream:
-            return self._upload_bytes(file_stream.read(), shop_run_event, file_type)
+            return self._upload_bytes(file_stream.read().encode(encoding), shop_run_event, file_type, file_ext)
 
     def _upload_bytes(
         self,
         content: Union[str, bytes, TextIO, BinaryIO],
         shop_run_event: ShopRunEvent,
         file_type: FileTypeT,
+        file_ext: str = ".yaml",
     ) -> FileMetadata:
         file_ext_id = f"{shop_run_event.external_id}_{file_type.upper()}"
         logger.debug(f"Uploading file: '{file_ext_id}'.")
@@ -212,7 +221,7 @@ class ShopRunsAPI:
             external_id=file_ext_id,
             content=content,
             data_set_id=self._po_client.write_dataset_id,
-            name=f"{shop_run_event.external_id}_{file_type}.yaml",
+            name=f"{shop_run_event.external_id}_{file_type}{file_ext}",
             mime_type="application/yaml",
             metadata={
                 "shop:run_event_id": shop_run_event.external_id,
