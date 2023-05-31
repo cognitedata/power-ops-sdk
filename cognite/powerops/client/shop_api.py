@@ -158,18 +158,18 @@ class ShopRunsAPI:
         self._po_client = po_client
 
     def trigger(self, case: Case) -> ShopRun:
+        logger.info("Triggering SHOP run...")
+        shop_run = self._upload_to_cdf(case)
+        self._post_shop_run(shop_run.shop_run_event.external_id)
+        return shop_run
+
+    def _upload_to_cdf(self, case: Case) -> ShopRun:
         shop_run_event = ShopRunEvent(
             watercourse="",
             starttime=case["time.starttime"],
             endtime=case["time.endtime"],
             timeresolution=case["time.timeresolution"],
         )
-        logger.info(f"Triggering SHOP run for case {shop_run_event.external_id}")
-        shop_run = self._upload_to_cdf(shop_run_event, case)
-        self._post_shop_run(shop_run_event)
-        return shop_run
-
-    def _upload_to_cdf(self, shop_run_event: ShopRunEvent, case: Case) -> ShopRun:
         logger.debug(f"Uploading event '{shop_run_event.external_id}'.")
         case_file_meta = self._upload_bytes(case.yaml.encode(), shop_run_event, file_type="case")
         event = shop_run_event.to_event(self._po_client.write_dataset_id)
@@ -240,7 +240,7 @@ class ShopRunsAPI:
         relationship.data_set_id = self._po_client.write_dataset_id
         self._po_client.cdf.relationships.create(relationship)
 
-    def _post_shop_run(self, shop_run_event: ShopRunEvent):
+    def _post_shop_run(self, shop_run_external_id: str):
         logger.info(f"Triggering run-shop endpoint, cogShopVersion: '{self._po_client._cogshop_version}'.")
         cdf_config = self._po_client.cdf.config
         project = cdf_config.project
@@ -251,7 +251,7 @@ class ShopRunsAPI:
         response = requests.post(
             url,
             json={
-                "shopEventExternalId": shop_run_event.external_id,
+                "shopEventExternalId": shop_run_external_id,
                 "cogShopVersion": self._po_client._cogshop_version,
             },
             headers=auth_header,

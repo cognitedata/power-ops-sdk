@@ -13,4 +13,9 @@ case.add_mapping_file(
 )
 case.add_extra_file("/path/to/cogshop/test_cogshopsession/test_inputs/commands.yaml")
 
-p.shop.runs.trigger(case)
+run = p.shop.runs.trigger(case)
+# run = p.shop.runs._upload_to_cdf(case)  # upload but don't trigger
+
+print(run.is_complete())
+run.wait_until_complete()
+print(run.is_complete())
