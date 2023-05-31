@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 import random
 import time
 from enum import Enum
@@ -92,7 +93,7 @@ class ShopRun:
         self.shop_run_event = shop_run_event
 
     def _retrieve_event(self) -> Event:
-        return self._po_client.cdf.events.retrieve(self.shop_run_event.external_id)
+        return self._po_client.cdf.events.retrieve(external_id=self.shop_run_event.external_id)
 
     def is_complete(self) -> bool:
         return self.status() != ShopRun.Status.IN_PROGRESS
@@ -102,11 +103,17 @@ class ShopRun:
         logger.debug(f"Reading status from event {event.external_id}.")
 
         relationships = self._po_client.cdf.relationships.list(
-            source_external_ids=self.shop_run_event.external_id,
-            target_types="Event",
+            data_set_ids=[self._po_client.write_dataset_id],
+            source_external_ids=[self.shop_run_event.external_id],
+            target_types=["event"],
         )
-        related_events = self._po_client.cdf.events.retrieve_multiple(
-            external_ids=[rel.target_external_id for rel in relationships],
+        related_events = (
+            self._po_client.cdf.events.retrieve_multiple(
+                external_ids=[rel.target_external_id for rel in relationships],
+                ignore_unknown_ids=True,
+            )
+            if relationships
+            else []
         )
         if not len(related_events):
             return ShopRun.Status.IN_PROGRESS
@@ -117,7 +124,7 @@ class ShopRun:
 
     def wait_until_complete(self) -> ShopRunResult:
         while not self.is_complete():
-            logger.info("SHOP is still running...")
+            logger.debug(f"{self.shop_run_event.external_id} is still running...")
             time.sleep(3)
         return ShopRunResult(shop_run=self)
 
@@ -151,18 +158,18 @@ class ShopRunsAPI:
         self._po_client = po_client
 
     def trigger(self, case: Case) -> ShopRun:
+        logger.info("Triggering SHOP run...")
+        shop_run = self._upload_to_cdf(case)
+        self._post_shop_run(shop_run.shop_run_event.external_id)
+        return shop_run
+
+    def _upload_to_cdf(self, case: Case) -> ShopRun:
         shop_run_event = ShopRunEvent(
             watercourse="",
             starttime=case["time.starttime"],
             endtime=case["time.endtime"],
             timeresolution=case["time.timeresolution"],
         )
-        logger.info(f"Triggering SHOP run for case {shop_run_event.external_id}")
-        shop_run = self._upload_to_cdf(shop_run_event, case)
-        self._post_shop_run(shop_run_event)
-        return shop_run
-
-    def _upload_to_cdf(self, shop_run_event: ShopRunEvent, case: Case) -> ShopRun:
         logger.debug(f"Uploading event '{shop_run_event.external_id}'.")
         case_file_meta = self._upload_bytes(case.yaml.encode(), shop_run_event, file_type="case")
         event = shop_run_event.to_event(self._po_client.write_dataset_id)
@@ -197,14 +204,16 @@ class ShopRunsAPI:
     def _upload_file(
         self, file: str, encoding: str, shop_run_event: ShopRunEvent, file_type: FileTypeT
     ) -> FileMetadata:
+        _, file_ext = os.path.splitext(file)
         with open(file, encoding=encoding) as file_stream:
-            return self._upload_bytes(file_stream.read(), shop_run_event, file_type)
+            return self._upload_bytes(file_stream.read().encode(encoding), shop_run_event, file_type, file_ext)
 
     def _upload_bytes(
         self,
         content: Union[str, bytes, TextIO, BinaryIO],
         shop_run_event: ShopRunEvent,
         file_type: FileTypeT,
+        file_ext: str = ".yaml",
     ) -> FileMetadata:
         file_ext_id = f"{shop_run_event.external_id}_{file_type.upper()}"
         logger.debug(f"Uploading file: '{file_ext_id}'.")
@@ -212,7 +221,7 @@ class ShopRunsAPI:
             external_id=file_ext_id,
             content=content,
             data_set_id=self._po_client.write_dataset_id,
-            name=f"{shop_run_event.external_id}_{file_type}.yaml",
+            name=f"{shop_run_event.external_id}_{file_type}{file_ext}",
             mime_type="application/yaml",
             metadata={
                 "shop:run_event_id": shop_run_event.external_id,
@@ -231,7 +240,7 @@ class ShopRunsAPI:
         relationship.data_set_id = self._po_client.write_dataset_id
         self._po_client.cdf.relationships.create(relationship)
 
-    def _post_shop_run(self, shop_run_event: ShopRunEvent):
+    def _post_shop_run(self, shop_run_external_id: str):
         logger.info(f"Triggering run-shop endpoint, cogShopVersion: '{self._po_client._cogshop_version}'.")
         cdf_config = self._po_client.cdf.config
         project = cdf_config.project
@@ -242,7 +251,7 @@ class ShopRunsAPI:
         response = requests.post(
             url,
             json={
-                "shopEventExternalId": shop_run_event.external_id,
+                "shopEventExternalId": shop_run_external_id,
                 "cogShopVersion": self._po_client._cogshop_version,
             },
             headers=auth_header,
