@@ -257,21 +257,23 @@ class ShopRunsAPI:
         preprocessor_metadata = {"cog_shop_case_file": case_file_meta.external_id}
 
         if case.cut_file:
-            cut_file_meta = self._upload_file(**case.cut_file, shop_run_event=shop_run_event, file_type="cut")
+            cut_file_meta = self._upload_file(case.cut_file["file"], shop_run_event=shop_run_event, file_type="cut")
             self._connect_file_to_event(cut_file_meta, event, RelationshipLabels.CUT_FILE)
             preprocessor_metadata["cut_file"] = {"external_id": cut_file_meta.external_id}
 
         if case.mapping_files:
             preprocessor_metadata["mapping_files"] = []
         for mapping_file in case.mapping_files or []:
-            mapping_file_meta = self._upload_file(**mapping_file, shop_run_event=shop_run_event, file_type="mapping")
+            mapping_file_meta = self._upload_file(
+                mapping_file["file"], shop_run_event=shop_run_event, file_type="mapping"
+            )
             self._connect_file_to_event(mapping_file_meta, event, RelationshipLabels.MAPPING_FILE)
             preprocessor_metadata["mapping_files"].append({"external_id": mapping_file_meta.external_id})
 
         if case.extra_files:
             preprocessor_metadata["extra_files"] = []
         for extra_file in case.extra_files or []:
-            extra_file_meta = self._upload_file(**extra_file, shop_run_event=shop_run_event, file_type="extra")
+            extra_file_meta = self._upload_file(extra_file["file"], shop_run_event=shop_run_event, file_type="extra")
             self._connect_file_to_event(extra_file_meta, event, RelationshipLabels.EXTRA_FILE)
             preprocessor_metadata["extra_files"].append({"external_id": extra_file_meta.external_id})
 
@@ -282,12 +284,10 @@ class ShopRunsAPI:
         self._po_client.cdf.events.create(event)
         return ShopRun(self._po_client, shop_run_event=shop_run_event)
 
-    def _upload_file(
-        self, file: str, encoding: str, shop_run_event: ShopRunEvent, file_type: FileTypeT
-    ) -> FileMetadata:
+    def _upload_file(self, file: str, shop_run_event: ShopRunEvent, file_type: FileTypeT) -> FileMetadata:
         _, file_ext = os.path.splitext(file)
-        with open(file, encoding=encoding) as file_stream:
-            return self._upload_bytes(file_stream.read().encode(encoding), shop_run_event, file_type, file_ext)
+        with open(file, "rb") as file_stream:
+            return self._upload_bytes(file_stream.read(), shop_run_event, file_type, file_ext)
 
     def _upload_bytes(
         self,
@@ -326,13 +326,14 @@ class ShopRunsAPI:
         cdf_config = self._po_client.cdf.config
         project = cdf_config.project
         cluster = cdf_config.base_url.split("//")[1].split(".")[0]
-        url = f"https://power-ops-api.staging.{cluster}.cognite.ai/{project}" f"/run-shop"
+        url = f"https://power-ops-api.staging.{cluster}.cognite.ai/{project}/run-shop"
         auth_header = dict([cdf_config.credentials.authorization_header()])
 
         response = requests.post(
             url,
             json={
                 "shopEventExternalId": shop_run_external_id,
+                "datasetId": self._po_client.write_dataset_id,
                 "cogShopVersion": self._po_client._cogshop_version,
             },
             headers=auth_header,
@@ -341,7 +342,7 @@ class ShopRunsAPI:
         logger.debug(response.json())
 
     def list(self) -> list[ShopRun]:
-        raise NotImplementedError
+        raise NotImplementedError()
 
     def retrieve(self, external_id: str) -> ShopRun:
         logger.info(f"Retrieving event '{external_id}'.")

@@ -69,7 +69,7 @@ class ShopRunEvent:
             watercourse=event.metadata["shop:watercourse"],
             starttime=event.metadata["shop:starttime"],
             endtime=event.metadata["shop:endtime"],
-            timeresolution=event.metadata.get("shop:timeresolution"),
+            timeresolution=json.loads(event.metadata.get("shop:timeresolution", "null")),
             dynamic_minute_offset=event.metadata.get("shop:dynamic_minute_offset"),
         )
         if event.external_id:
