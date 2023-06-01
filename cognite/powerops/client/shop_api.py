@@ -97,15 +97,15 @@ class ShopRunLogs:
         self._shop = ShopRunLog(self, shop_metadata, encoding="latin-1")
 
     @property
-    def cplex(self) -> Optional[ShopRunLog]:
+    def cplex(self) -> ShopRunLog:
         return self._cplex
 
     @property
-    def post_run(self) -> Optional[ShopRunYaml]:
+    def post_run(self) -> ShopRunYaml:
         return self._post_run
 
     @property
-    def shop(self) -> Optional[ShopRunLog]:
+    def shop(self) -> ShopRunLog:
         return self._shop
 
 
