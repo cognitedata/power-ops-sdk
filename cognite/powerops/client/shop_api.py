@@ -4,15 +4,19 @@ import json
 import logging
 import os
 import random
+import tempfile
 import time
 from enum import Enum
+from functools import cached_property
 from typing import TYPE_CHECKING, BinaryIO, Literal, Optional, TextIO, Union
 
 import requests
+import yaml
+from cognite.client import CogniteClient
 from cognite.client.data_classes import Event, FileMetadata
 
 from cognite.powerops.case.shop_run_event import ShopRunEvent
-from cognite.powerops.utils.cdf_utils import simple_relationship
+from cognite.powerops.utils.cdf_utils import retrieve_relationships_from_source_ext_id, simple_relationship
 from cognite.powerops.utils.labels import RelationshipLabels
 
 if TYPE_CHECKING:
@@ -25,31 +29,94 @@ FileTypeT = Literal["case", "cut", "mapping", "extra"]
 
 
 class ShopRunLog:
-    def __init__(self, shop_run_logs: "ShopRunLogs") -> None:
+    def __init__(self, shop_run_logs: "ShopRunLogs", file_metadata: FileMetadata = None, encoding="utf-8") -> None:
         self._shop_run_logs = shop_run_logs
+        self._file_metadata = file_metadata
+        self.encoding = encoding
 
-    def file(self) -> FileMetadata:
-        return FileMetadata(external_id="log-123", name="shop_123.log")
+    @cached_property
+    def file_content(self) -> str:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            tmp_path = os.path.join(tmp_dir, self.file_metadata.external_id)
+            self._shop_run_logs._shop_run_result._shop_run._po_client.cdf.files.download_to_path(
+                path=tmp_path, external_id=self.file_metadata.external_id
+            )
+            with open(tmp_path, "r", encoding=self.encoding) as f:
+                return f.read()
 
     def read(self) -> str:
-        return "\n".join(f"log line {i}" for i in range(10))
+        return self.file_content
 
     def print(self) -> None:
         print(self.read())
+
+    @property
+    def file_metadata(self) -> FileMetadata:
+        return self._file_metadata
+
+
+class ShopRunYaml(ShopRunLog):
+    def __init__(self, shop_run_logs: "ShopRunLogs", file_metadata: FileMetadata = None) -> None:
+        super().__init__(shop_run_logs, file_metadata, encoding="utf-8")
+
+    @cached_property
+    def file_content(self) -> str:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            tmp_path = os.path.join(tmp_dir, self.file_metadata.external_id)
+            self._shop_run_logs._shop_run_result._shop_run._po_client.cdf.files.download_to_path(
+                path=tmp_path, external_id=self.file_metadata.external_id
+            )
+            with open(tmp_path, "r", encoding=self.encoding) as f:
+                return yaml.safe_load(f)
 
 
 class ShopRunLogs:
     def __init__(self, shop_run_result: "ShopRunResult") -> None:
         self._shop_run_result = shop_run_result
+        self._cplex = None
+        self._post_run = None
+        self._shop = None
 
-    def cplex(self) -> ShopRunLog:
-        return ShopRunLog(self)
+    @property
+    def cplex(self) -> Optional[ShopRunLog]:
+        return self._cplex
 
-    def post_run(self) -> ShopRunLog:
-        return ShopRunLog(self)
+    @cplex.setter
+    def cplex(self, _cplex: ShopRunLog) -> None:
+        self._cplex = _cplex
 
-    def shop(self) -> ShopRunLog:
-        return ShopRunLog(self)
+    @property
+    def post_run(self) -> Optional[ShopRunLog]:
+        return self._post_run
+
+    @post_run.setter
+    def post_run(self, _post_run: ShopRunYaml) -> None:
+        self._post_run = _post_run
+
+    @property
+    def shop(self) -> Optional[ShopRunLog]:
+        return self._shop
+
+    @shop.setter
+    def shop(self, _shop: ShopRunLog) -> None:
+        self._shop = _shop
+
+
+# class ShopRunLogs:
+
+#     def __init__(self, shop_run_result: "ShopRunResult") -> None:
+#         self._shop_run_result = shop_run_result
+
+# def _find_files_from_cdf(self):
+
+# def cplex(self) -> ShopRunLog:
+#     return ShopRunLog(self)
+
+# def post_run(self) -> ShopRunLog:
+#     return ShopRunLog(self)
+
+# def shop(self) -> ShopRunLog:
+#     return ShopRunLog(self)
 
 
 class ShopRunResult:
@@ -68,9 +135,36 @@ class ShopRunResult:
             return "(sample) Error: invalid configuration"
         return None
 
-    @property
+    @cached_property
     def logs(self) -> Optional[ShopRunLogs]:
-        return ShopRunLogs(shop_run_result=self)
+        cdf: CogniteClient = self._shop_run._po_client.cdf
+        shop_run_files = ShopRunLogs(shop_run_result=self)
+        relationships = retrieve_relationships_from_source_ext_id(
+            cdf,
+            self._shop_run.shop_run_event.external_id,
+            RelationshipLabels.LOG_FILE,
+        )
+        for r in relationships:
+            if r.target_type != "file":
+                continue
+            ext_id: str = r.target_external_id
+            metadata = cdf.files.retrieve(external_id=ext_id)
+            # print("metadata, ", metadata)
+
+            if ext_id.endswith(".log") and "cplex" in ext_id:
+                shop_run_files.cplex = ShopRunLog(shop_run_logs=shop_run_files, file_metadata=metadata)
+
+            elif ext_id.endswith(".log") and "shop_messages" in ext_id:
+                shop_run_files.shop = ShopRunLog(shop_run_logs=shop_run_files, file_metadata=metadata)
+
+            elif ext_id.endswith(".yaml"):
+                shop_run_files.post_run = ShopRunYaml(shop_run_logs=shop_run_files, file_metadata=metadata)
+
+            else:
+                # potentially add support for "more" files
+                logger.error("Unknown file type")
+
+        return shop_run_files
 
     @property
     def objective(self) -> Optional[list]:
@@ -197,7 +291,8 @@ class ShopRunsAPI:
 
         event.metadata["shop:preprocessor_data"] = json.dumps(preprocessor_metadata)
         event.metadata["shop:manual_run"] = "yes"
-        event.metadata["processed"] = "yes"  # avoid event being picked up by sniffer
+        # avoid event being picked up by sniffer
+        event.metadata["processed"] = "yes"
         self._po_client.cdf.events.create(event)
         return ShopRun(self._po_client, shop_run_event=shop_run_event)
 
@@ -263,7 +358,7 @@ class ShopRunsAPI:
         raise NotImplementedError
 
     def retrieve(self, external_id: str) -> ShopRun:
-        logger.debug(f"Retrieving event '{external_id}'.")
+        logger.info(f"Retrieving event '{external_id}'.")
         event = self._po_client.cdf.events.retrieve(external_id=external_id)
         return ShopRun(
             self._po_client,

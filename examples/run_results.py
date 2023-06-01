@@ -1,43 +1,42 @@
+import logging
+
 from cognite.powerops.client.powerops_client import PowerOpsClient
+from cognite.powerops.client.shop_api import ShopRun, ShopRunResult
+
+# root_logger = logging.getLogger()
+# root_logger.setLevel(logging.INFO)
+
+logger = logging.getLogger(__name__)
+
 
 powerops = PowerOpsClient()
-
-# glomma = powerops.watercourses.retrieve("Glomma")
-# config = powerops.configurations.retrieve("default?")
-
-# results = powerops.shop.run(external_id="???", configuration=config, shop_version=None)
-# print(glomma)
-# # edit model_raw.yaml
-# # glomma_copy = powerops.watercourses.update(glomma_copy)
-
-
-# config = powerops.configurations.retrieve("default?")
-
-# config_42 = powerops.configurations.copy("testing_42")  # not needed [if] don't keep config in CDF
-
-# results = powerops.shop.run(external_id="???", configuration=config, shop_version=None)
-
-# print("RESULTS", results)
 # # TODO inspect results
 
+SAMPLE_SHOP_RUN_EVENT = "POWEROPS_SHOP_RUN_6336e7ae-722a-4c3a-a9bb-d719922e727f"
 
-models = powerops.shop.models.list()  # list[ShopModelTemplate]
-sample_model = models[0]
+# sample_cdf_shop_run_event = powerops.cdf.events.retrieve(
+#     external_id=SAMPLE_SHOP_RUN_EVENT)
 
-sample_model = powerops.shop.models.retrieve(model_id="123")
+# sample_shop_event = ShopRunEvent.from_event(sample_cdf_shop_run_event)
+# sample_shop_run = ShopRun(po_client=powerops, shop_run_event=sample_shop_event)
+sample_shop_run: ShopRun = powerops.shop.runs.retrieve(SAMPLE_SHOP_RUN_EVENT)
 
-sample_model.clone().with_overrides({})
-sample_model.clone(overrides={})
+print(f"sample_shop_run: {sample_shop_run}")
 
-sample_case = powerops.shop.cases.create(model_template=sample_model, commands=[])
+sample_run_results: ShopRunResult = sample_shop_run.wait_until_complete()
 
-sample_run = powerops.shop.runs.trigger(case=sample_case)
+print("-------")
+print(sample_run_results.logs.cplex.read())
+print("-------")
+print(sample_run_results.logs.shop.file_metadata.external_id)
+print("-------")
+print(sample_run_results.logs.post_run.read())
 
-print(sample_run.is_complete())
+# print(sample_run_results.logs.cplex())
+
+# sample_run_results = powerops.shop.runs.trigger(
+#     case=sample_case).wait_until_complete()
 
 
-sample_run_results = powerops.shop.runs.trigger(case=sample_case).wait_until_complete()
-
-
-sample_run_results.logs.cplex.print()
-sample_run_results.logs.shop.print()
+# sample_run_results.logs.cplex.print()
+# sample_run_results.logs.shop.print()
