@@ -252,6 +252,7 @@ class ShopRunsAPI:
             url,
             json={
                 "shopEventExternalId": shop_run_external_id,
+                "datasetId": self._po_client.write_dataset_id,
                 "cogShopVersion": self._po_client._cogshop_version,
             },
             headers=auth_header,
