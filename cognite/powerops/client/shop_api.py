@@ -44,7 +44,7 @@ class ShopRunLog:
             with open(tmp_path, "r", encoding=self.encoding) as f:
                 return f.read()
 
-    def read(self) -> str:
+    def read(self):
         return self.file_content
 
     def print(self) -> None:
@@ -60,7 +60,7 @@ class ShopRunYaml(ShopRunLog):
         super().__init__(shop_run_logs, file_metadata, encoding="utf-8")
 
     @cached_property
-    def file_content(self) -> str:
+    def file_content(self) -> dict:
         with tempfile.TemporaryDirectory() as tmp_dir:
             tmp_path = os.path.join(tmp_dir, self.file_metadata.external_id)
             self._shop_run_logs._shop_run_result._shop_run._po_client.cdf.files.download_to_path(
@@ -71,35 +71,29 @@ class ShopRunYaml(ShopRunLog):
 
 
 class ShopRunLogs:
-    def __init__(self, shop_run_result: "ShopRunResult") -> None:
+    def __init__(
+        self,
+        shop_run_result: "ShopRunResult",
+        cplex_metadata: ShopRunLog = None,
+        post_run_metadata: ShopRunYaml = None,
+        shop_metadata: ShopRunLog = None,
+    ) -> None:
         self._shop_run_result = shop_run_result
-        self._cplex = None
-        self._post_run = None
-        self._shop = None
+        self._cplex = ShopRunLog(self, cplex_metadata)
+        self._post_run = ShopRunYaml(self, post_run_metadata)
+        self._shop = ShopRunLog(self, shop_metadata)
 
     @property
     def cplex(self) -> Optional[ShopRunLog]:
         return self._cplex
 
-    @cplex.setter
-    def cplex(self, _cplex: ShopRunLog) -> None:
-        self._cplex = _cplex
-
     @property
-    def post_run(self) -> Optional[ShopRunLog]:
+    def post_run(self) -> Optional[ShopRunYaml]:
         return self._post_run
-
-    @post_run.setter
-    def post_run(self, _post_run: ShopRunYaml) -> None:
-        self._post_run = _post_run
 
     @property
     def shop(self) -> Optional[ShopRunLog]:
         return self._shop
-
-    @shop.setter
-    def shop(self, _shop: ShopRunLog) -> None:
-        self._shop = _shop
 
 
 # class ShopRunLogs:
@@ -138,33 +132,31 @@ class ShopRunResult:
     @cached_property
     def logs(self) -> Optional[ShopRunLogs]:
         cdf: CogniteClient = self._shop_run._po_client.cdf
-        shop_run_files = ShopRunLogs(shop_run_result=self)
         relationships = retrieve_relationships_from_source_ext_id(
             cdf,
             self._shop_run.shop_run_event.external_id,
             RelationshipLabels.LOG_FILE,
         )
+        cplex, shop, post_run = None, None, None
         for r in relationships:
             if r.target_type != "file":
                 continue
             ext_id: str = r.target_external_id
             metadata = cdf.files.retrieve(external_id=ext_id)
-            # print("metadata, ", metadata)
 
             if ext_id.endswith(".log") and "cplex" in ext_id:
-                shop_run_files.cplex = ShopRunLog(shop_run_logs=shop_run_files, file_metadata=metadata)
+                cplex = metadata
 
             elif ext_id.endswith(".log") and "shop_messages" in ext_id:
-                shop_run_files.shop = ShopRunLog(shop_run_logs=shop_run_files, file_metadata=metadata)
+                shop = metadata
 
             elif ext_id.endswith(".yaml"):
-                shop_run_files.post_run = ShopRunYaml(shop_run_logs=shop_run_files, file_metadata=metadata)
+                post_run = metadata
 
             else:
-                # potentially add support for "more" files
                 logger.error("Unknown file type")
 
-        return shop_run_files
+        return ShopRunLogs(shop_run_result=self, cplex_metadata=cplex, post_run_metadata=post_run, shop_metadata=shop)
 
     @property
     def objective(self) -> Optional[list]:

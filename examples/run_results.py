@@ -30,7 +30,7 @@ print(sample_run_results.logs.cplex.read())
 print("-------")
 print(sample_run_results.logs.shop.file_metadata.external_id)
 print("-------")
-print(sample_run_results.logs.post_run.read())
+print(sample_run_results.logs.post_run.read().popitem())
 
 # print(sample_run_results.logs.cplex())
 
