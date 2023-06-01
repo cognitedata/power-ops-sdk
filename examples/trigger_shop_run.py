@@ -19,3 +19,8 @@ run = p.shop.runs.trigger(case)
 print(run.is_complete())
 run.wait_until_complete()
 print(run.is_complete())
+
+
+# results = run.results()
+# print(results.success)
+# print(results.logs.post_run.data["commands"])
