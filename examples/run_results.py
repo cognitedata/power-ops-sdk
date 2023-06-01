@@ -25,12 +25,17 @@ print(f"sample_shop_run: {sample_shop_run}")
 
 sample_run_results: ShopRunResult = sample_shop_run.wait_until_complete()
 
+print(f"sample_run_results: {sample_run_results.success}")
 print("-------")
-print(sample_run_results.logs.cplex.read())
-print("-------")
-print(sample_run_results.logs.shop.file_metadata.external_id)
-print("-------")
-print(sample_run_results.logs.post_run.read().popitem())
+# print(sample_run_results.logs.cplex.read())
+
+_path = sample_run_results.logs.shop.save_to_path()
+
+print(f"_path: {_path}")
+# print("-------")
+# print(sample_run_results.logs.shop.file_metadata.external_id)
+# print("-------")
+# print(sample_run_results.logs.post_run.read().popitem())
 
 # print(sample_run_results.logs.cplex())
 

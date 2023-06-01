@@ -47,6 +47,12 @@ class ShopRunLog:
     def read(self):
         return self.file_content
 
+    def save_to_path(self, path: str = "") -> str:
+        path = path or os.path.join(os.getcwd(), self.file_metadata.external_id)
+        with open(path, "w", encoding=self.encoding) as f:
+            f.write(self.file_content)
+        return path
+
     def print(self) -> None:
         print(self.read())
 
@@ -69,6 +75,12 @@ class ShopRunYaml(ShopRunLog):
             with open(tmp_path, "r", encoding=self.encoding) as f:
                 return yaml.safe_load(f)
 
+    def save_to_path(self, path: str = "") -> str:
+        path = path or os.path.join(os.getcwd(), self.file_metadata.external_id)
+        with open(path, "w", encoding=self.encoding) as f:
+            f.write(yaml.safe_dump(self.file_content))
+        return path
+
 
 class ShopRunLogs:
     def __init__(
@@ -81,7 +93,8 @@ class ShopRunLogs:
         self._shop_run_result = shop_run_result
         self._cplex = ShopRunLog(self, cplex_metadata)
         self._post_run = ShopRunYaml(self, post_run_metadata)
-        self._shop = ShopRunLog(self, shop_metadata)
+        # Not sure why the encoding is different for shop logs
+        self._shop = ShopRunLog(self, shop_metadata, encoding="latin-1")
 
     @property
     def cplex(self) -> Optional[ShopRunLog]:
@@ -96,32 +109,13 @@ class ShopRunLogs:
         return self._shop
 
 
-# class ShopRunLogs:
-
-#     def __init__(self, shop_run_result: "ShopRunResult") -> None:
-#         self._shop_run_result = shop_run_result
-
-# def _find_files_from_cdf(self):
-
-# def cplex(self) -> ShopRunLog:
-#     return ShopRunLog(self)
-
-# def post_run(self) -> ShopRunLog:
-#     return ShopRunLog(self)
-
-# def shop(self) -> ShopRunLog:
-#     return ShopRunLog(self)
-
-
 class ShopRunResult:
     def __init__(self, shop_run: "ShopRun") -> None:
         self._shop_run = shop_run
 
     @property
     def success(self) -> bool:
-        if random.random() > 0.5:
-            return True
-        return False
+        return self._shop_run.status() == ShopRun.Status.SUCCEEDED
 
     @property
     def error_message(self) -> Optional[str]:
