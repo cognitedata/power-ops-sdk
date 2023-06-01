@@ -1,10 +1,6 @@
 import logging
 
 from cognite.powerops.client.powerops_client import PowerOpsClient
-from cognite.powerops.client.shop_api import ShopRun, ShopRunResult
-
-# root_logger = logging.getLogger()
-# root_logger.setLevel(logging.INFO)
 
 logger = logging.getLogger(__name__)
 
@@ -14,28 +10,24 @@ powerops = PowerOpsClient()
 
 SAMPLE_SHOP_RUN_EVENT = "POWEROPS_SHOP_RUN_6336e7ae-722a-4c3a-a9bb-d719922e727f"
 
-# sample_cdf_shop_run_event = powerops.cdf.events.retrieve(
-#     external_id=SAMPLE_SHOP_RUN_EVENT)
-
-# sample_shop_event = ShopRunEvent.from_event(sample_cdf_shop_run_event)
-# sample_shop_run = ShopRun(po_client=powerops, shop_run_event=sample_shop_event)
-sample_shop_run: ShopRun = powerops.shop.runs.retrieve(SAMPLE_SHOP_RUN_EVENT)
+sample_shop_run = powerops.shop.runs.retrieve(SAMPLE_SHOP_RUN_EVENT)
 
 print(f"sample_shop_run: {sample_shop_run}")
 
-sample_run_results: ShopRunResult = sample_shop_run.wait_until_complete()
+sample_shop_run.wait_until_complete()
+sample_run_results = sample_shop_run.results()
 
 print(f"sample_run_results: {sample_run_results.success}")
 print("-------")
-# print(sample_run_results.logs.cplex.read())
 
 _path = sample_run_results.logs.shop.save_to_path()
 
 print(f"_path: {_path}")
+
 # print("-------")
 # print(sample_run_results.logs.shop.file_metadata.external_id)
-# print("-------")
-# print(sample_run_results.logs.post_run.read().popitem())
+print("-------")
+print(sample_run_results.logs.post_run.data["commands"])
 
 # print(sample_run_results.logs.cplex())
 

@@ -17,6 +17,7 @@ from cognite.client.data_classes import (
     FileMetadata,
     LabelDefinition,
     Relationship,
+    RelationshipList,
     Sequence,
     TimeSeries,
 )
@@ -92,7 +93,8 @@ def retrieve_relationships_from_source_ext_id(
     client: CogniteClient,
     source_ext_id: str,
     label_ext_id: Union[str, list[str]],
-) -> str:
+    target_types: Sequence[str] = (),
+) -> RelationshipList:
     """
     Retrieve relationships between source and target using the source ext id.
     Using the `containsAny` filter, we can retrieve all relationships with  given label.
@@ -101,4 +103,9 @@ def retrieve_relationships_from_source_ext_id(
         label_ext_id = [label_ext_id]
 
     _labels = {"containsAny": [{"externalId": ext_id} for ext_id in label_ext_id]}
-    return client.relationships.list(source_external_ids=[source_ext_id], labels=_labels, limit=-1)
+    return client.relationships.list(
+        source_external_ids=[source_ext_id],
+        labels=_labels,
+        limit=-1,
+        target_types=target_types or None,
+    )

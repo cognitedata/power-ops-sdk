@@ -8,7 +8,7 @@ import tempfile
 import time
 from enum import Enum
 from functools import cached_property
-from typing import TYPE_CHECKING, BinaryIO, Literal, Optional, TextIO, Union
+from typing import TYPE_CHECKING, BinaryIO, Generic, Literal, Optional, TextIO, TypeVar, Union
 
 import requests
 import yaml
@@ -28,92 +28,102 @@ logger = logging.getLogger(__name__)
 FileTypeT = Literal["case", "cut", "mapping", "extra"]
 
 
-class ShopRunLog:
-    def __init__(self, shop_run_logs: "ShopRunLogs", file_metadata: FileMetadata = None, encoding="utf-8") -> None:
+ContentTypeT = TypeVar("ContentTypeT", bound=Union[str, dict])
+
+
+class ShopRunResultFile(Generic[ContentTypeT]):
+    def __init__(self, shop_run_logs: ShopRunLogs, file_metadata: FileMetadata = None, encoding="utf-8") -> None:
         self._shop_run_logs = shop_run_logs
         self._file_metadata = file_metadata
         self.encoding = encoding
 
     @cached_property
-    def file_content(self) -> str:
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            tmp_path = os.path.join(tmp_dir, self.file_metadata.external_id)
-            self._shop_run_logs._shop_run_result._shop_run._po_client.cdf.files.download_to_path(
-                path=tmp_path, external_id=self.file_metadata.external_id
-            )
-            with open(tmp_path, "r", encoding=self.encoding) as f:
-                return f.read()
+    def data(self) -> ContentTypeT:
+        raise NotImplementedError()
 
-    def read(self):
-        return self.file_content
+    def print(self) -> None:
+        print(self.file_content())
 
-    def save_to_path(self, path: str = "") -> str:
-        path = path or os.path.join(os.getcwd(), self.file_metadata.external_id)
+    def save_to_path(self, dir_path: str = "") -> str:
+        path = os.path.join(dir_path or os.getcwd(), self._file_metadata.external_id)
         with open(path, "w", encoding=self.encoding) as f:
             f.write(self.file_content)
         return path
 
-    def print(self) -> None:
-        print(self.read())
+    @property
+    def file_content(self) -> str:
+        raise NotImplementedError()
+
+
+class ShopRunLog(ShopRunResultFile[str]):
+    @cached_property
+    def data(self) -> str:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            tmp_path = os.path.join(tmp_dir, self._file_metadata.external_id)
+            self._shop_run_logs._shop_run_result._shop_run._po_client.cdf.files.download_to_path(
+                path=tmp_path, external_id=self._file_metadata.external_id
+            )
+            with open(tmp_path, "r", encoding=self.encoding) as f:
+                return f.read()
 
     @property
-    def file_metadata(self) -> FileMetadata:
-        return self._file_metadata
+    def file_content(self) -> str:
+        return self.data
 
 
-class ShopRunYaml(ShopRunLog):
-    def __init__(self, shop_run_logs: "ShopRunLogs", file_metadata: FileMetadata = None) -> None:
-        super().__init__(shop_run_logs, file_metadata, encoding="utf-8")
-
+class ShopRunYaml(ShopRunResultFile[dict]):
     @cached_property
-    def file_content(self) -> dict:
+    def data(self) -> dict:
         with tempfile.TemporaryDirectory() as tmp_dir:
-            tmp_path = os.path.join(tmp_dir, self.file_metadata.external_id)
+            tmp_path = os.path.join(tmp_dir, self._file_metadata.external_id)
             self._shop_run_logs._shop_run_result._shop_run._po_client.cdf.files.download_to_path(
-                path=tmp_path, external_id=self.file_metadata.external_id
+                path=tmp_path, external_id=self._file_metadata.external_id
             )
             with open(tmp_path, "r", encoding=self.encoding) as f:
                 return yaml.safe_load(f)
 
-    def save_to_path(self, path: str = "") -> str:
-        path = path or os.path.join(os.getcwd(), self.file_metadata.external_id)
-        with open(path, "w", encoding=self.encoding) as f:
-            f.write(yaml.safe_dump(self.file_content))
-        return path
+    @property
+    def file_content(self) -> str:
+        return yaml.safe_dump(self.data, sort_keys=False)
 
 
 class ShopRunLogs:
     def __init__(
         self,
-        shop_run_result: "ShopRunResult",
-        cplex_metadata: ShopRunLog = None,
-        post_run_metadata: ShopRunYaml = None,
-        shop_metadata: ShopRunLog = None,
+        shop_run_result: ShopRunResult,
+        cplex_metadata: Optional[FileMetadata] = None,
+        post_run_metadata: Optional[FileMetadata] = None,
+        shop_metadata: Optional[FileMetadata] = None,
     ) -> None:
         self._shop_run_result = shop_run_result
-        self._cplex = ShopRunLog(self, cplex_metadata)
-        self._post_run = ShopRunYaml(self, post_run_metadata)
-        # Not sure why the encoding is different for shop logs
-        self._shop = ShopRunLog(self, shop_metadata, encoding="latin-1")
+        if cplex_metadata is not None:
+            self._cplex = ShopRunLog(self, cplex_metadata)
+        if post_run_metadata is not None:
+            self._post_run = ShopRunYaml(self, post_run_metadata)
+        if shop_metadata is not None:
+            # Not sure why the encoding is different for shop logs
+            self._shop = ShopRunLog(self, shop_metadata, encoding="latin-1")
 
     @property
-    def cplex(self) -> ShopRunLog:
+    def cplex(self) -> Optional[ShopRunLog]:
         return self._cplex
 
     @property
-    def post_run(self) -> ShopRunYaml:
+    def post_run(self) -> Optional[ShopRunYaml]:
         return self._post_run
 
     @property
-    def shop(self) -> ShopRunLog:
+    def shop(self) -> Optional[ShopRunLog]:
         return self._shop
 
 
 class ShopRunResult:
-    def __init__(self, shop_run: "ShopRun") -> None:
+    def __init__(self, shop_run: ShopRun) -> None:
+        if not shop_run.is_complete():
+            raise ValueError("ShopRun not completed.")
         self._shop_run = shop_run
 
-    @property
+    @cached_property
     def success(self) -> bool:
         return self._shop_run.status() == ShopRun.Status.SUCCEEDED
 
@@ -124,17 +134,16 @@ class ShopRunResult:
         return None
 
     @cached_property
-    def logs(self) -> Optional[ShopRunLogs]:
+    def logs(self) -> ShopRunLogs:
         cdf: CogniteClient = self._shop_run._po_client.cdf
         relationships = retrieve_relationships_from_source_ext_id(
             cdf,
             self._shop_run.shop_run_event.external_id,
             RelationshipLabels.LOG_FILE,
+            target_types=["file"],
         )
         cplex, shop, post_run = None, None, None
         for r in relationships:
-            if r.target_type != "file":
-                continue
             ext_id: str = r.target_external_id
             metadata = cdf.files.retrieve(external_id=ext_id)
 
@@ -202,11 +211,22 @@ class ShopRun:
         else:
             return ShopRun.Status.FAILED
 
-    def wait_until_complete(self) -> ShopRunResult:
+    def wait_until_complete(self) -> None:
         while not self.is_complete():
             logger.debug(f"{self.shop_run_event.external_id} is still running...")
             time.sleep(3)
+        logger.debug(f"{self.shop_run_event.external_id} finished.")
+
+    def results(self, wait: bool = True) -> ShopRunResult:
+        if wait:
+            self.wait_until_complete()
         return ShopRunResult(shop_run=self)
+
+    def __repr__(self) -> str:
+        return f'<ShopRun event_external_id="{self.shop_run_event.external_id}">'
+
+    def __str__(self) -> str:
+        return self.__repr__()
 
 
 class ShopModel:
