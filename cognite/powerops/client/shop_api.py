@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import contextlib
 import json
 import logging
 import os
@@ -10,6 +11,7 @@ from enum import Enum
 from functools import cached_property
 from typing import TYPE_CHECKING, BinaryIO, Generic, Literal, Optional, TextIO, TypeVar, Union
 
+import pandas as pd
 import requests
 import yaml
 from cognite.client import CogniteClient
@@ -117,6 +119,91 @@ class ShopRunLogs:
         return self._shop
 
 
+class ObjectiveFunction:
+    def __init__(
+        self,
+        shop_run_result: ShopRunResult,
+        external_id: str,
+        data: dict,
+        watercourse: str,
+        penalty_breakdown: dict,
+        field_definitions_df: pd.DataFrame = None,
+    ) -> None:
+        self._shop_run_result = shop_run_result
+        self._external_id = external_id
+        self._data = data
+        self._watercourse = watercourse
+        self._penalty_breakdown = penalty_breakdown
+        if field_definitions_df is not None:
+            self._field_definitions_df = field_definitions_df
+
+    def __repr__(self) -> str:
+        return f"<OBJECTIVE sequence_external_id={self._external_id}>"
+
+    def __str__(self) -> str:
+        return self.__repr__()
+
+    @property
+    def watercourse(self) -> str:
+        return self._watercourse
+
+    @property
+    def data(self) -> dict:
+        return self._data
+
+    @property
+    def penalty_breakdown(self) -> dict:
+        return self._penalty_breakdown
+
+    @property
+    def field_definitions_df(self) -> pd.DataFrame:
+        return self._field_definitions_df
+
+    def data_as_str(self) -> str:
+        return "\n".join([f"{k}= {v}" for k, v in self.data.items()])
+
+    def penalty_breakdown_as_str(self) -> str:
+        # return the penalty breakdown as markdown string some time in future?
+        SEPARATOR = "--------------------------\n"
+
+        def breakdown_inner_dict(key):
+            if inner_dict := self.penalty_breakdown.get(key):
+                title = f"Breakdown of {key} penalties\n{SEPARATOR}"
+                return title + _inner_string_builder(inner_dict)
+            else:
+                return ""
+
+        def _inner_string_builder(dictionary: dict[str, Union[str, dict]]) -> str:
+            _base = ""
+            for key, value in dictionary.items():
+                # Assumes only one level of nesting
+                if isinstance(value, dict):
+                    _base += f" - {key.capitalize()}\n"
+                    _base += _inner_string_builder(value)
+                else:
+                    _base += f"  * {format_dict_key(key)}: {value}\n"
+            return _base
+
+        def format_dict_key(key: str) -> str:
+            return key.replace("_", " ").replace(".", " ").replace("-", " ").capitalize()
+
+        print(*self.penalty_breakdown.items(), sep="\n")
+        sum_penalties = self.penalty_breakdown.get("sum_penalties")
+        major_penalties = self.penalty_breakdown.get("major_penalties")
+        minor_penalties = self.penalty_breakdown.get("minor_penalties")
+
+        penalty_as_string = f"Sum penalties: {sum_penalties} |"
+        penalty_as_string += f"Major penalties: {major_penalties} |"
+        penalty_as_string += f"Minor penalties: {minor_penalties}\n"
+        penalty_as_string += SEPARATOR.replace("-", "=")
+
+        penalty_as_string += breakdown_inner_dict("minor")
+        penalty_as_string += breakdown_inner_dict("major")
+        penalty_as_string += breakdown_inner_dict("unknown")
+
+        return penalty_as_string
+
+
 class ShopRunResult:
     def __init__(self, shop_run: ShopRun) -> None:
         if not shop_run.is_complete():
@@ -161,9 +248,43 @@ class ShopRunResult:
 
         return ShopRunLogs(shop_run_result=self, cplex_metadata=cplex, post_run_metadata=post_run, shop_metadata=shop)
 
-    @property
-    def objective(self) -> Optional[list]:
-        raise NotImplementedError
+    @cached_property
+    def objective_function(self) -> Optional[ObjectiveFunction]:
+        cdf: CogniteClient = self._shop_run._po_client.cdf
+        relationships = retrieve_relationships_from_source_ext_id(
+            cdf,
+            self._shop_run.shop_run_event.external_id,
+            RelationshipLabels.OBJECTIVE_SEQUENCE,
+            target_types=["sequence"],
+        )
+        for r in relationships:
+            seq = cdf.sequences.retrieve(external_id=r.target_external_id)
+            # sometimes the label is given to the non-objective sequence too
+            if seq.name.lower().find("objective") != -1:
+                # Data is inserted as a single row DataFrame
+                seq_data = cdf.sequences.data.retrieve_dataframe(
+                    external_id=r.target_external_id, start=0, end=-1
+                ).to_dict("records")[0]
+                # This shape will always be (72, 7) 72 fields and 7 properties of each field
+                column_definitions_df = pd.DataFrame(seq.columns)
+
+                penalty_breakdown = {}
+                with contextlib.suppress(Exception):
+                    penalty_breakdown = json.loads(seq.metadata.get("shop:penalty_breakdown", {}))
+                    if type(penalty_breakdown) != dict:
+                        penalty_breakdown = {}
+
+                return ObjectiveFunction(
+                    self,
+                    external_id=seq.external_id,
+                    data=seq_data,
+                    watercourse=seq.metadata.get("shop:watercourse", ""),
+                    penalty_breakdown=penalty_breakdown,
+                    field_definitions_df=column_definitions_df,
+                )
+
+        logger.error("Objective function sequence not found")
+        return None
 
 
 class ShopRun:
