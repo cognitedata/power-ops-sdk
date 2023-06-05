@@ -23,21 +23,20 @@ sample_run_results = sample_shop_run.results()
 
 print(f"sample_run_results: {sample_run_results.success}")
 
+# # LOGS
+# logs = sample_run_results.logs
 # _path = sample_run_results.logs.shop.save_to_path()
-
 # print(f"_path: {_path}")
-
 # print("-------")
-# print(sample_run_results.logs.shop.file_metadata.external_id)
+# print(logs.shop.file_metadata.external_id)
 # print("-------")
-# print(sample_run_results.logs.post_run.data["commands"])
+# print(logs.post_run.data["commands"])
+# print(logs.cplex())
 
-# print(sample_run_results.logs.cplex())
 
-
+# OBJECTIVE
 objective = sample_run_results.objective_function
 print(f"objective_function: {objective}")
-
 
 print(objective.data)
 print(objective.data_as_str())
