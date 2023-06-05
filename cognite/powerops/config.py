@@ -798,8 +798,8 @@ class BootstrapConfig(BaseModel):
     market: MarketConfig
     watercourses: list[WatercourseConfig]
     time_series_mappings: list[TimeSeriesMapping]
-    rkom_bid_process: list[RKOMBidProcessConfig]
     rkom_bid_combination: Optional[list[RKOMBidCombinationConfig]] = None
+    rkom_bid_process: list[RKOMBidProcessConfig]
     rkom_market: Optional[RkomMarketConfig] = None
     plant_time_series_mappings: list[PlantTimeSeriesMapping] = None
     generator_time_series_mappings: list[GeneratorTimeSeriesMapping] = None
