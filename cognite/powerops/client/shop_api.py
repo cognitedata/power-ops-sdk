@@ -187,7 +187,6 @@ class ObjectiveFunction:
         def format_dict_key(key: str) -> str:
             return key.replace("_", " ").replace(".", " ").replace("-", " ").capitalize()
 
-        print(*self.penalty_breakdown.items(), sep="\n")
         sum_penalties = self.penalty_breakdown.get("sum_penalties")
         major_penalties = self.penalty_breakdown.get("major_penalties")
         minor_penalties = self.penalty_breakdown.get("minor_penalties")
