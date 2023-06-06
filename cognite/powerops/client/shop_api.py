@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import abc
 import json
 import logging
 import os
@@ -8,15 +9,19 @@ import tempfile
 import time
 from enum import Enum
 from functools import cached_property
-from typing import TYPE_CHECKING, BinaryIO, Generic, Literal, Optional, TextIO, TypeVar, Union
+from pathlib import Path
+from typing import TYPE_CHECKING, BinaryIO, Generic, Literal, Optional, Sequence, TextIO, TypeVar, Union
 
 import requests
 import yaml
-from cognite.client import CogniteClient
 from cognite.client.data_classes import Event, FileMetadata
 
 from cognite.powerops.case.shop_run_event import ShopRunEvent
-from cognite.powerops.utils.cdf_utils import retrieve_relationships_from_source_ext_id, simple_relationship
+from cognite.powerops.utils.cdf_utils import (
+    retrieve_event,
+    retrieve_relationships_from_source_ext_id,
+    simple_relationship,
+)
 from cognite.powerops.utils.labels import RelationshipLabels
 
 if TYPE_CHECKING:
@@ -25,107 +30,115 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
-FileTypeT = Literal["case", "cut", "mapping", "extra"]
+InputFileTypeT = Literal["case", "cut", "mapping", "extra"]
 
 
 ContentTypeT = TypeVar("ContentTypeT", bound=Union[str, dict])
 
 
-class ShopRunResultFile(Generic[ContentTypeT]):
-    def __init__(self, shop_run_logs: ShopRunLogs, file_metadata: FileMetadata = None, encoding="utf-8") -> None:
-        self._shop_run_logs = shop_run_logs
+class ShopResultFile(abc.ABC, Generic[ContentTypeT]):
+    """Base class for handling a results file from Shop."""
+
+    def __init__(self, po_client: PowerOpsClient, file_metadata: FileMetadata = None, encoding="utf-8") -> None:
+        self._po_client = po_client
         self._file_metadata = file_metadata
-        self.encoding = encoding
+        self._encoding = encoding
+
+    @property
+    def encoding(self) -> str:
+        return self._encoding
+
+    @property
+    def external_id(self):
+        return self._file_metadata.external_id
+
+    @property
+    def name(self):
+        return self._file_metadata.name
 
     @cached_property
     def data(self) -> ContentTypeT:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            tmp_path = self._po_client.shop.files.download(self, tmp_dir)
+            with open(tmp_path, "r", encoding=self.encoding) as downloaded_file:
+                return self._parse_file(downloaded_file)
+
+    def _parse_file(self, file: TextIO) -> ContentTypeT:
+        """Read downloaded file and return data."""
         raise NotImplementedError()
 
-    def print(self) -> None:
-        print(self.file_content())
-
-    def save_to_path(self, dir_path: str = "") -> str:
-        path = os.path.join(dir_path or os.getcwd(), self._file_metadata.external_id)
-        with open(path, "w", encoding=self.encoding) as f:
-            f.write(self.file_content)
-        return path
+    def save(self, dir_path: str = "") -> str:
+        """Save file to local filesystem."""
+        file_path = os.path.join(dir_path or os.getcwd(), self._file_metadata.external_id)
+        Path(dir_path).mkdir(parents=True, exist_ok=True)
+        with open(file_path, "w", encoding=self.encoding) as out_file:
+            out_file.write(self.file_content)
+        return file_path
 
     @property
     def file_content(self) -> str:
+        """Data encoded for writing to local filesystem."""
         raise NotImplementedError()
 
 
-class ShopRunLog(ShopRunResultFile[str]):
-    @cached_property
-    def data(self) -> str:
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            tmp_path = os.path.join(tmp_dir, self._file_metadata.external_id)
-            self._shop_run_logs._shop_run_result._shop_run._po_client.cdf.files.download_to_path(
-                path=tmp_path, external_id=self._file_metadata.external_id
-            )
-            with open(tmp_path, "r", encoding=self.encoding) as f:
-                return f.read()
+class ShopLogFile(ShopResultFile[str]):
+    """Plain text result file (for SHOP messages and CPlex logs)."""
+
+    def _parse_file(self, file: TextIO) -> str:
+        return file.read()
 
     @property
     def file_content(self) -> str:
         return self.data
 
 
-class ShopRunYaml(ShopRunResultFile[dict]):
-    @cached_property
-    def data(self) -> dict:
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            tmp_path = os.path.join(tmp_dir, self._file_metadata.external_id)
-            self._shop_run_logs._shop_run_result._shop_run._po_client.cdf.files.download_to_path(
-                path=tmp_path, external_id=self._file_metadata.external_id
-            )
-            with open(tmp_path, "r", encoding=self.encoding) as f:
-                return yaml.safe_load(f)
+class ShopYamlFile(ShopResultFile[dict]):
+    """Yaml-formatted results file (for post_run.yaml file created by SHOP)."""
+
+    def _parse_file(self, file: TextIO) -> dict:
+        return yaml.safe_load(file)
 
     @property
     def file_content(self) -> str:
         return yaml.safe_dump(self.data, sort_keys=False)
 
 
-class ShopRunLogs:
-    def __init__(
-        self,
-        shop_run_result: ShopRunResult,
-        cplex_metadata: Optional[FileMetadata] = None,
-        post_run_metadata: Optional[FileMetadata] = None,
-        shop_metadata: Optional[FileMetadata] = None,
-    ) -> None:
-        self._shop_run_result = shop_run_result
-        if cplex_metadata is not None:
-            self._cplex = ShopRunLog(self, cplex_metadata)
-        if post_run_metadata is not None:
-            self._post_run = ShopRunYaml(self, post_run_metadata)
-        if shop_metadata is not None:
-            # Not sure why the encoding is different for shop logs
-            self._shop = ShopRunLog(self, shop_metadata, encoding="latin-1")
-
-    @property
-    def cplex(self) -> Optional[ShopRunLog]:
-        return self._cplex
-
-    @property
-    def post_run(self) -> Optional[ShopRunYaml]:
-        return self._post_run
-
-    @property
-    def shop(self) -> Optional[ShopRunLog]:
-        return self._shop
-
-
 class ShopRunResult:
-    def __init__(self, shop_run: ShopRun) -> None:
-        if not shop_run.is_complete():
+    def __init__(self, po_client: PowerOpsClient, shop_run: ShopRun) -> None:
+        if not shop_run.is_complete:
             raise ValueError("ShopRun not completed.")
+
+        self._po_client = po_client
         self._shop_run = shop_run
+        self._post_run = None
+        self._cplex = None
+        self._shop_messages = None
+        related_log_files = self._po_client.shop.files.retrieve_related(
+            source_external_id=self._shop_run.shop_run_event.external_id,
+            label_ext_ids=RelationshipLabels.LOG_FILE,
+        )
+        for metadata in related_log_files:
+            ext_id = metadata.external_id
+            if ext_id.endswith(".log") and "cplex" in ext_id:
+                self._cplex = ShopLogFile(self._shop_run, metadata)
+            elif ext_id.endswith(".log") and "shop_messages" in ext_id:
+                self._shop_messages = ShopLogFile(self._shop_run, metadata)
+            elif ext_id.endswith(".yaml"):
+                self._post_run = ShopYamlFile(self._shop_run, metadata)
+            else:
+                logger.error("Unknown file type")
+
+    @property
+    def files(self) -> dict[str, Optional[ShopResultFile]]:
+        return {
+            "post_run": self._post_run,
+            "shop_messages": self._shop_messages,
+            "cplex": self._cplex,
+        }
 
     @cached_property
     def success(self) -> bool:
-        return self._shop_run.status() == ShopRun.Status.SUCCEEDED
+        return self._shop_run.status == ShopRun.Status.SUCCEEDED
 
     @property
     def error_message(self) -> Optional[str]:
@@ -133,37 +146,24 @@ class ShopRunResult:
             return "(sample) Error: invalid configuration"
         return None
 
-    @cached_property
-    def logs(self) -> ShopRunLogs:
-        cdf: CogniteClient = self._shop_run._po_client.cdf
-        relationships = retrieve_relationships_from_source_ext_id(
-            cdf,
-            self._shop_run.shop_run_event.external_id,
-            RelationshipLabels.LOG_FILE,
-            target_types=["file"],
-        )
-        cplex, shop, post_run = None, None, None
-        for r in relationships:
-            ext_id: str = r.target_external_id
-            metadata = cdf.files.retrieve(external_id=ext_id)
+    @property
+    def post_run(self) -> Optional[ShopYamlFile]:
+        return self._post_run
 
-            if ext_id.endswith(".log") and "cplex" in ext_id:
-                cplex = metadata
+    @property
+    def cplex(self) -> Optional[ShopLogFile]:
+        return self._cplex
 
-            elif ext_id.endswith(".log") and "shop_messages" in ext_id:
-                shop = metadata
-
-            elif ext_id.endswith(".yaml"):
-                post_run = metadata
-
-            else:
-                logger.error("Unknown file type")
-
-        return ShopRunLogs(shop_run_result=self, cplex_metadata=cplex, post_run_metadata=post_run, shop_metadata=shop)
+    @property
+    def shop(self) -> Optional[ShopLogFile]:
+        return self._shop_messages
 
     @property
     def objective(self) -> Optional[list]:
         raise NotImplementedError
+
+    def __repr__(self):
+        return f"<ShopRunResult success={self.success}>"
 
 
 class ShopRun:
@@ -181,49 +181,37 @@ class ShopRun:
         self._po_client = po_client
         self.shop_run_event = shop_run_event
 
-    def _retrieve_event(self) -> Event:
-        return self._po_client.cdf.events.retrieve(external_id=self.shop_run_event.external_id)
-
+    @property
     def is_complete(self) -> bool:
-        return self.status() != ShopRun.Status.IN_PROGRESS
+        return self.status != ShopRun.Status.IN_PROGRESS
 
+    @property
+    def is_success(self) -> bool:
+        return self.status != ShopRun.Status.SUCCEEDED
+
+    @property
+    def is_failed(self) -> bool:
+        return self.status == ShopRun.Status.FAILED
+
+    @property
     def status(self) -> ShopRun.Status:
-        event = self._retrieve_event()
-        logger.debug(f"Reading status from event {event.external_id}.")
-
-        relationships = self._po_client.cdf.relationships.list(
-            data_set_ids=[self._po_client.write_dataset_id],
-            source_external_ids=[self.shop_run_event.external_id],
-            target_types=["event"],
-        )
-        related_events = (
-            self._po_client.cdf.events.retrieve_multiple(
-                external_ids=[rel.target_external_id for rel in relationships],
-                ignore_unknown_ids=True,
-            )
-            if relationships
-            else []
-        )
-        if not len(related_events):
-            return ShopRun.Status.IN_PROGRESS
-        elif any(ev.type == "POWEROPS_PROCESS_FINISHED" for ev in related_events):
-            return ShopRun.Status.SUCCEEDED
-        else:
-            return ShopRun.Status.FAILED
+        return self._po_client.shop.runs.get_status_for(self.shop_run_event.external_id)
 
     def wait_until_complete(self) -> None:
-        while not self.is_complete():
+        while not self.is_complete:
             logger.debug(f"{self.shop_run_event.external_id} is still running...")
             time.sleep(3)
         logger.debug(f"{self.shop_run_event.external_id} finished.")
 
-    def results(self, wait: bool = True) -> ShopRunResult:
+    def get_results(self, wait: bool = True) -> ShopRunResult:
         if wait:
+            if not self.is_complete:
+                logger.warning(f"{self.shop_run_event.external_id} is still running, waiting for results...")
             self.wait_until_complete()
         return ShopRunResult(shop_run=self)
 
     def __repr__(self) -> str:
-        return f'<ShopRun event_external_id="{self.shop_run_event.external_id}">'
+        return f'<ShopRun status="{self.status}" event_external_id="{self.shop_run_event.external_id}">'
 
     def __str__(self) -> str:
         return self.__repr__()
@@ -271,21 +259,23 @@ class ShopRunsAPI:
             timeresolution=case["time.timeresolution"],
         )
         logger.debug(f"Uploading event '{shop_run_event.external_id}'.")
-        case_file_meta = self._upload_bytes(case.yaml.encode(), shop_run_event, file_type="case")
+        case_file_meta = self._upload_input_file_bytes(case.yaml.encode(), shop_run_event, file_type="case")
         event = shop_run_event.to_event(self._po_client.write_dataset_id)
         self._connect_file_to_event(case_file_meta, event, RelationshipLabels.CASE_FILE)
         preprocessor_metadata = {"cog_shop_case_file": case_file_meta.external_id}
 
         if case.cut_file:
-            cut_file_meta = self._upload_file(case.cut_file["file"], shop_run_event=shop_run_event, file_type="cut")
+            cut_file_meta = self._upload_input_file(
+                case.cut_file["file"], shop_run_event=shop_run_event, input_file_type="cut"
+            )
             self._connect_file_to_event(cut_file_meta, event, RelationshipLabels.CUT_FILE)
             preprocessor_metadata["cut_file"] = {"external_id": cut_file_meta.external_id}
 
         if case.mapping_files:
             preprocessor_metadata["mapping_files"] = []
         for mapping_file in case.mapping_files or []:
-            mapping_file_meta = self._upload_file(
-                mapping_file["file"], shop_run_event=shop_run_event, file_type="mapping"
+            mapping_file_meta = self._upload_input_file(
+                mapping_file["file"], shop_run_event=shop_run_event, input_file_type="mapping"
             )
             self._connect_file_to_event(mapping_file_meta, event, RelationshipLabels.MAPPING_FILE)
             preprocessor_metadata["mapping_files"].append({"external_id": mapping_file_meta.external_id})
@@ -293,27 +283,30 @@ class ShopRunsAPI:
         if case.extra_files:
             preprocessor_metadata["extra_files"] = []
         for extra_file in case.extra_files or []:
-            extra_file_meta = self._upload_file(extra_file["file"], shop_run_event=shop_run_event, file_type="extra")
+            extra_file_meta = self._upload_input_file(
+                extra_file["file"], shop_run_event=shop_run_event, input_file_type="extra"
+            )
             self._connect_file_to_event(extra_file_meta, event, RelationshipLabels.EXTRA_FILE)
             preprocessor_metadata["extra_files"].append({"external_id": extra_file_meta.external_id})
 
         event.metadata["shop:preprocessor_data"] = json.dumps(preprocessor_metadata)
         event.metadata["shop:manual_run"] = "yes"
-        # avoid event being picked up by sniffer
-        event.metadata["processed"] = "yes"
+        event.metadata["processed"] = "yes"  # avoid event being picked up by sniffer
         self._po_client.cdf.events.create(event)
         return ShopRun(self._po_client, shop_run_event=shop_run_event)
 
-    def _upload_file(self, file: str, shop_run_event: ShopRunEvent, file_type: FileTypeT) -> FileMetadata:
-        _, file_ext = os.path.splitext(file)
+    def _upload_input_file(
+        self, file: str, shop_run_event: ShopRunEvent, input_file_type: InputFileTypeT
+    ) -> FileMetadata:
+        _, input_file_ext = os.path.splitext(file)
         with open(file, "rb") as file_stream:
-            return self._upload_bytes(file_stream.read(), shop_run_event, file_type, file_ext)
+            return self._upload_input_file_bytes(file_stream.read(), shop_run_event, input_file_type, input_file_ext)
 
-    def _upload_bytes(
+    def _upload_input_file_bytes(
         self,
         content: Union[str, bytes, TextIO, BinaryIO],
         shop_run_event: ShopRunEvent,
-        file_type: FileTypeT,
+        file_type: InputFileTypeT,
         file_ext: str = ".yaml",
     ) -> FileMetadata:
         file_ext_id = f"{shop_run_event.external_id}_{file_type.upper()}"
@@ -372,9 +365,56 @@ class ShopRunsAPI:
             shop_run_event=ShopRunEvent.from_event(event),
         )
 
+    def get_status_for(self, shop_run_external_id: str) -> ShopRun.Status:
+        event = retrieve_event(self._po_client.cdf, shop_run_external_id)
+        logger.debug(f"Reading status from event {event.external_id}.")
+
+        relationships = self._po_client.cdf.relationships.list(
+            data_set_ids=[self._po_client.write_dataset_id],
+            source_external_ids=[shop_run_external_id],
+            target_types=["event"],
+        )
+        related_events = []
+        if relationships:
+            related_events = self._po_client.cdf.events.retrieve_multiple(
+                external_ids=[rel.target_external_id for rel in relationships],
+                ignore_unknown_ids=True,
+            )
+        if not len(related_events) or all(ev.type == "POWEROPS_PROCESS_STARTED" for ev in related_events):
+            return ShopRun.Status.IN_PROGRESS
+        elif any(ev.type == "POWEROPS_PROCESS_FINISHED" for ev in related_events):
+            return ShopRun.Status.SUCCEEDED
+        else:
+            return ShopRun.Status.FAILED
+
+
+class ShopFilesAPI:
+    def __init__(self, po_client: PowerOpsClient) -> None:
+        self._po_client = po_client
+
+    def retrieve_related(
+        self, source_external_id: str, label_ext_id: Optional[Union[str, Sequence[str]]] = None
+    ) -> Sequence[FileMetadata]:
+        relationships = retrieve_relationships_from_source_ext_id(
+            self._po_client.cdf,
+            source_ext_id=source_external_id,
+            label_ext_id=label_ext_id,
+            target_types=["file"],
+        )
+        return self._po_client.cdf.files.retrieve_multiple(
+            external_ids=[rel.target_external_id for rel in relationships],
+            ignore_unknown_ids=True,
+        )
+
+    def download(self, shop_file: ShopResultFile, dir_path: str) -> str:
+        file_path = os.path.join(dir_path, shop_file.external_id)
+        self._po_client.cdf.files.download_to_path(path=file_path, external_id=shop_file.external_id)
+        return file_path
+
 
 class ShopAPI:
     def __init__(self, po_client: PowerOpsClient):
         self._po_client = po_client
         self.models = ShopModelsAPI(po_client=po_client)
         self.runs = ShopRunsAPI(po_client=po_client)
+        self.files = ShopFilesAPI(po_client=po_client)

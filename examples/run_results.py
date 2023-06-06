@@ -20,7 +20,7 @@ sample_run_results = sample_shop_run.results()
 print(f"sample_run_results: {sample_run_results.success}")
 print("-------")
 
-_path = sample_run_results.logs.shop.save_to_path()
+_path = sample_run_results.logs.shop.save()
 
 print(f"_path: {_path}")
 

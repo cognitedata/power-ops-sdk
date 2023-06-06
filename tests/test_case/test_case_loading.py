@@ -72,12 +72,12 @@ def test_itemgetter_dots():
 
 def test_setitem_1(case):
     case["foo.zzz"] = 123
-    assert case._data["foo"]["zzz"] == 123
+    assert case.data["foo"]["zzz"] == 123
 
 
 def test_setitem_list(case):
     case["foo.bar.0"] = "baz0"
-    assert case._data["foo"]["bar"] == ["baz0", "baz2"]
+    assert case.data["foo"]["bar"] == ["baz0", "baz2"]
 
 
 def test_yaml(case):
@@ -95,7 +95,7 @@ def test_save_yaml(case, tmp_dir):
     case.save_yaml(tmp_file)
     with open(tmp_file) as fh:
         value = fh.read()
-    assert yaml.safe_load(value) == case._data
+    assert yaml.safe_load(value) == case.data
 
 
 def test_load_yaml(tmp_dir):
@@ -103,4 +103,4 @@ def test_load_yaml(tmp_dir):
         fh.write("foo:\n  bar")
         fh.flush()
         case = Case.load_yaml(fh.name)
-    assert case._data == {"foo": "bar"}
+    assert case.data == {"foo": "bar"}

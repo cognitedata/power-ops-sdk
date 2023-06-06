@@ -2,9 +2,11 @@ from __future__ import annotations
 
 import logging
 import tempfile
-from typing import Any, Optional, TypedDict
+from typing import List, Optional, TypedDict
 
 import yaml
+
+from cognite.powerops.utils.dotget import DotDict
 
 logger = logging.getLogger(__name__)
 
@@ -14,7 +16,7 @@ class FileRefT(TypedDict):
     encoding: str
 
 
-class Case:
+class Case(DotDict):
     r"""
     Wrapper around YAML file for SHOP, describing a case.
 
@@ -53,24 +55,32 @@ class Case:
     """
 
     def __init__(self, data: str = "") -> None:
-        self._data = {}
         self._cut_file: Optional[FileRefT] = None
         self._extra_files: list[FileRefT] = []
         self._mapping_files: list[FileRefT] = []
 
         yaml_docs = list(yaml.safe_load_all(data))
         if yaml_docs:
-            self._data = yaml_docs[0]
-            for yaml_doc in yaml_docs[1:]:
-                tmp_file = tempfile.NamedTemporaryFile(
-                    mode="w",
-                    delete=False,
-                    prefix="powerops-sdk-tmp-",
-                    suffix=".yaml",
-                )
-                tmp_file.write(yaml.dump(yaml_doc))
-                tmp_file.close()
-                self.add_extra_file(tmp_file.name)
+            self.data = yaml_docs[0]
+            self._handle_additional_yaml_documents(yaml_docs[1:])
+
+    def _handle_additional_yaml_documents(self, extra_yaml_docs: List[str]) -> None:
+        """
+        This probably happens never, but just in case...
+        If `Case.__init__` gets a yaml string which has multiple documents (separated by "---"),
+        only the first document is parsed and set to `self.data`. Any subsequent documents are stored
+        as "extra files". They are not part of `self.data`, but are not lost either.
+        """
+        for yaml_doc in extra_yaml_docs:
+            tmp_file = tempfile.NamedTemporaryFile(
+                mode="w",
+                delete=False,
+                prefix="powerops-sdk-tmp-",
+                suffix=".yaml",
+            )
+            tmp_file.write(yaml.dump(yaml_doc))
+            tmp_file.close()
+            self.add_extra_file(tmp_file.name)
 
     @classmethod
     def load_yaml(cls, yaml_path: str, encoding: str = "utf-8") -> Case:
@@ -103,42 +113,10 @@ class Case:
         return self._cut_file
 
     @property
-    def data(self) -> dict:
-        return self._data.copy()
-
-    def __getitem__(self, path: str) -> Any:
-        """Get item from `self._data` dict, supporting "." as separator"""
-        if path in self._data:  # edge case: key actually contains a dot
-            return self._data[path]
-        part_data = self.data
-        for part in path.split("."):
-            if isinstance(part_data, list):
-                part = int(part)
-            part_data = part_data[part]
-        return part_data
-
-    def __setitem__(self, path: str, value: Any) -> None:
-        """Set item from `self._data` dict, supporting "." as separator"""
-        if path in self._data:  # edge case: key actually contains a dot
-            self._data[path] = value
-        else:
-            part_data = self.data
-            parts = path.split(".")
-            while parts:
-                part = parts.pop(0)
-                if isinstance(part_data, list):
-                    part = int(part)
-                if parts:
-                    part_data = part_data[part]
-                else:
-                    # last loop:
-                    part_data[part] = value
-
-    @property
     def yaml(self) -> str:
-        return yaml.dump(self._data, sort_keys=False)
+        return yaml.dump(self.data, sort_keys=False)
 
     def save_yaml(self, path: str, encoding: str = "utf-8") -> None:
         logger.info(f"Saving case file to: {path}")
         with open(path, "w", encoding=encoding) as output_file:
-            output_file.write(yaml.dump(self._data, sort_keys=False))
+            output_file.write(yaml.dump(self.data, sort_keys=False))
