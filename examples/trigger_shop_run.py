@@ -21,6 +21,6 @@ run.wait_until_complete()
 print(run.is_complete())
 
 
-# results = run.results()
-# print(results.success)
-# print(results.logs.post_run.data["commands"])
+results = run.results()
+print(results.success)
+print(results.logs.post_run.data["commands"])
