@@ -13,10 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## [0.10.0] - 25-05-23
+## [0.10.0] - 06-06-23
 ### Added
 
 * Ability to trigger SHOP runs via CogShop.
+* Retrieval of ShopRun results.
 
 ## [0.9.2] - 30-05-23
 ### Fixed
