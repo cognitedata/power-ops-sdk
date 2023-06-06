@@ -17,7 +17,7 @@ res = run.get_results()
 tmp_dir = tempfile.mkdtemp(prefix="power-ops-sdk-usage")
 print(res.post_run.save(tmp_dir))
 
-# data = res["model.creek_intake.Golebiowski_intake.net_head"]
+print(res.post_run["model.objective.average_objective.solver_status"])
 # res.plot(
 #     "model.creek_intake.Golebiowski_intake.net_head",
 # )

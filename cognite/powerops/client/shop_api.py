@@ -25,6 +25,7 @@ from cognite.powerops.utils.cdf_utils import (
     retrieve_relationships_from_source_ext_id,
     simple_relationship,
 )
+from cognite.powerops.utils.dotget import DotDict
 from cognite.powerops.utils.labels import RelationshipLabels
 
 if TYPE_CHECKING:
@@ -46,6 +47,8 @@ class ShopResultFile(abc.ABC, Generic[ContentTypeT]):
         self._po_client = po_client
         self._file_metadata = file_metadata
         self._encoding = encoding
+        super().__init__()
+        self.data: ContentTypeT = self._download()
 
     @property
     def encoding(self) -> str:
@@ -59,8 +62,7 @@ class ShopResultFile(abc.ABC, Generic[ContentTypeT]):
     def name(self):
         return self._file_metadata.name
 
-    @cached_property
-    def data(self) -> ContentTypeT:
+    def _download(self) -> ContentTypeT:
         with tempfile.TemporaryDirectory() as tmp_dir:
             tmp_path = self._po_client.shop.files.download(self, tmp_dir)
             with open(tmp_path, "r", encoding=self.encoding) as downloaded_file:
@@ -95,7 +97,7 @@ class ShopLogFile(ShopResultFile[str]):
         return self.data
 
 
-class ShopYamlFile(ShopResultFile[dict]):
+class ShopYamlFile(ShopResultFile[dict], DotDict):
     """Yaml-formatted results file (for post_run.yaml file created by SHOP)."""
 
     def _parse_file(self, file: TextIO) -> dict:
@@ -200,18 +202,18 @@ class ShopRunResult:
         self._post_run = None
         self._cplex = None
         self._shop_messages = None
-        related_log_files = self._po_client.shop.files.retrieve_related(
+        related_log_files = self._po_client.shop.files.retrieve_related_meta(
             source_external_id=self._shop_run.shop_run_event.external_id,
             label_ext_id=RelationshipLabels.LOG_FILE,
         )
         for metadata in related_log_files:
             ext_id = metadata.external_id
             if ext_id.endswith(".log") and "cplex" in ext_id:
-                self._cplex = ShopLogFile(self._po_client, metadata)
+                self._cplex: Optional[ShopLogFile] = self._po_client.shop.files.retrieve(metadata, ShopLogFile)
             elif ext_id.endswith(".log") and "shop_messages" in ext_id:
-                self._shop_messages = ShopLogFile(self._po_client, metadata)
+                self._shop_messages: Optional[ShopLogFile] = self._po_client.shop.files.retrieve(metadata, ShopLogFile)
             elif ext_id.endswith(".yaml"):
-                self._post_run = ShopYamlFile(self._po_client, metadata)
+                self._post_run: Optional[ShopYamlFile] = self._po_client.shop.files.retrieve(metadata, ShopYamlFile)
             else:
                 logger.error("Unknown file type")
 
@@ -515,7 +517,7 @@ class ShopFilesAPI:
     def __init__(self, po_client: PowerOpsClient) -> None:
         self._po_client = po_client
 
-    def retrieve_related(
+    def retrieve_related_meta(
         self, source_external_id: str, label_ext_id: Optional[Union[str, Sequence[str]]] = None
     ) -> Sequence[FileMetadata]:
         relationships = retrieve_relationships_from_source_ext_id(
@@ -530,6 +532,14 @@ class ShopFilesAPI:
             external_ids=[rel.target_external_id for rel in relationships],
             ignore_unknown_ids=True,
         )
+
+    def retrieve(self, file_metadata: FileMetadata, shop_file_type: ShopResultFile) -> Optional[ShopResultFile]:
+        try:
+            shop_file = shop_file_type(self._po_client, file_metadata)  # TODO add encoding to metametadata!
+        except Exception as exc:
+            logger.error(f"Cannot retrieve result file: {file_metadata.external_id}\n{exc}")
+            shop_file = None
+        return shop_file
 
     def download(self, shop_file: ShopResultFile, dir_path: str) -> str:
         file_path = os.path.join(dir_path, shop_file.external_id)
