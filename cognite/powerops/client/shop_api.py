@@ -395,7 +395,7 @@ class ShopRunsAPI:
         case_file_meta = self._upload_bytes(case.yaml.encode(), shop_run_event, file_type="case")
         event = shop_run_event.to_event(self._po_client.write_dataset_id)
         self._connect_file_to_event(case_file_meta, event, RelationshipLabels.CASE_FILE)
-        preprocessor_metadata = {"cog_shop_case_file": case_file_meta.external_id}
+        preprocessor_metadata = {"cog_shop_case_file": {"external_id": case_file_meta.external_id}}
 
         if case.cut_file:
             cut_file_meta = self._upload_file(case.cut_file["file"], shop_run_event=shop_run_event, file_type="cut")
