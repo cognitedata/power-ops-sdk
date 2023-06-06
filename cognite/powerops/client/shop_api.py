@@ -248,7 +248,8 @@ class ShopRunResult:
         return ShopRunLogs(shop_run_result=self, cplex_metadata=cplex, post_run_metadata=post_run, shop_metadata=shop)
 
     @cached_property
-    def objective_function(self) -> Optional[ObjectiveFunction]:
+    def objective_function(self) -> ObjectiveFunction:
+        # TODO: ability to retrieve the objective function from the post run yaml file
         cdf: CogniteClient = self._shop_run._po_client.cdf
         relationships = retrieve_relationships_from_source_ext_id(
             cdf,
@@ -283,7 +284,7 @@ class ShopRunResult:
                 )
 
         logger.error("Objective function sequence not found")
-        return None
+        raise ValueError("Objective function sequence not found")
 
 
 class ShopRun:
