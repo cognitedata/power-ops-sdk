@@ -798,8 +798,8 @@ class BootstrapConfig(BaseModel):
     market: MarketConfig
     watercourses: list[WatercourseConfig]
     time_series_mappings: list[TimeSeriesMapping]
-    rkom_bid_combination: Optional[list[RKOMBidCombinationConfig]] = None
     rkom_bid_process: list[RKOMBidProcessConfig]
+    rkom_bid_combination: Optional[list[RKOMBidCombinationConfig]] = None
     rkom_market: Optional[RkomMarketConfig] = None
     plant_time_series_mappings: list[PlantTimeSeriesMapping] = None
     generator_time_series_mappings: list[GeneratorTimeSeriesMapping] = None
@@ -818,22 +818,17 @@ class BootstrapConfig(BaseModel):
             )
         return value
 
-    @root_validator(pre=False)
-    def rkom_process_ext_ids(cls, values):
-        for rkom_bid_config in values["rkom_bid_combination"]:
-            for external_id_to_validate in rkom_bid_config.rkom_bid_config_external_ids:
-                is_valid = any(
-                    external_id_to_validate == process_config.external_id
-                    for process_config in values["rkom_bid_process"]
+    @validator("rkom_bid_combination", each_item=True)
+    def valid_process_external_id(cls, value, values: dict):
+        valid_ids = {process_config.external_id for process_config in values["rkom_bid_process"]}
+        for external_id_to_validate in value.rkom_bid_config_external_ids:
+            if external_id_to_validate not in valid_ids:
+                raise ValueError(
+                    f"Reference to rkom bid process config in rkom_bid_combination yaml is wrong for "
+                    f"{external_id_to_validate}. "
+                    f"Possible references are: {[config.external_id for config in values['rkom_bid_process']]}"
                 )
-                if not is_valid:
-                    raise ValueError(
-                        f"Reference to rkom bid process config in rkom_bid_combination yaml is wrong for "
-                        f"{external_id_to_validate}. "
-                        f"Possible references are: {[config.external_id for config in values['rkom_bid_process']]}"
-                    )
-        return values
-
+        return value
 
     @classmethod
     def from_yamls(cls, config_dir_path: Path) -> "BootstrapConfig":
