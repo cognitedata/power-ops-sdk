@@ -1,3 +1,5 @@
+import tempfile
+
 from cognite.powerops import PowerOpsClient
 from cognite.powerops.logger import configure_debug_logging
 
@@ -5,18 +7,17 @@ configure_debug_logging("DEBUG")
 
 p = PowerOpsClient()
 
-run = p.shop.runs.retrieve(external_id="POWEROPS_SHOP_RUN_dd32b39b-556a-4680-8649-3263bdf85544")
+run = p.shop.runs.retrieve(external_id="POWEROPS_SHOP_RUN_ede8c4c0-18b1-41b1-ae40-ea20e037645c")
 
-print(run.is_complete())
+print(run.is_complete)
+print(run.status)
 
-#
-# path = run.download_from_cdf()
-# res = Results.load_yaml(path)
-#
-# res = run.get_results()
-#
+res = run.get_results()
+
+tmp_dir = tempfile.mkdtemp(prefix="power-ops-sdk-usage")
+print(res.post_run.save(tmp_dir))
+
 # data = res["model.creek_intake.Golebiowski_intake.net_head"]
 # res.plot(
 #     "model.creek_intake.Golebiowski_intake.net_head",
 # )
-#

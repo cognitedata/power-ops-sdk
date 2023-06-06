@@ -45,7 +45,7 @@ class PowerOpsClient:
     ):
         self._read_dataset = read_dataset or settings.powerops.read_dataset
         self._write_dataset = write_dataset or settings.powerops.write_dataset
-        self._cogshop_version = cogshop_version or settings.powerops.cogshop_version
+        self._cogshop_version = cogshop_version or settings.powerops.get("cogshop_version", "")
 
         self.dm = get_power_ops_dm_client(
             config=config, space_id=space_id, data_model=data_model, schema_version=schema_version
