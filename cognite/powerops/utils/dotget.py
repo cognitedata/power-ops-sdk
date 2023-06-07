@@ -1,35 +1,26 @@
 from __future__ import annotations
 
 from collections import UserDict, UserList
-from contextlib import suppress
-from typing import Any
+from typing import Any, Generic, TypeVar, Union
 
 _undefined = object()
 
 
-class DotGet:
-    def _get(self, item):
-        value = _undefined
-        try:
-            value = super().__getitem__(item)
-        except (TypeError, KeyError, IndexError):
-            for key_type in (int, float, bool):
-                with suppress(TypeError):
-                    try:
-                        value = super().__getitem__(key_type(item))
-                    except (TypeError, KeyError, IndexError):
-                        pass
-                    else:
-                        break
-            if value is _undefined:
-                raise KeyError()
-        return self._wrap(value)
+DotTypeT = TypeVar("DotTypeT", bound=Union[dict, list])
 
-    def __repr__(self):
+
+class DotGet(Generic[DotTypeT]):
+    data: DotTypeT
+
+    def __repr__(self) -> str:
         return repr(self.data)
-        # return f"<{type(self).__name__} {repr(self.data)}>"
 
-    def _wrap(self, value):
+    def _wrap(self, value: Any) -> Any:
+        """
+        When returning a value, if it is a dict or a list, wrap it in a new DotGet.
+        Otherwise just return it as-is.
+        Note: self.data should always remain "pure" dict or list.
+        """
         if isinstance(value, dict):
             dot_item = DotDict()
             dot_item.data = value
@@ -40,14 +31,10 @@ class DotGet:
             return dot_item
         return value
 
-    @staticmethod
-    def _possible_types(part):
-        first_type = type(part)
-        all_types = {str, int, float}
-        return [first_type, *(all_types - {first_type})]
-
     def __getitem__(self, item: str) -> Any:
-        """Just a dict but with support for "." as separator on nested dict structures."""
+        """
+        Itemgetter with support for "." as separator on nested dict/list structures.
+        """
         try:
             value = super().__getitem__(item)
         except (ValueError, TypeError, KeyError, IndexError):
@@ -75,6 +62,19 @@ class DotGet:
         return self._wrap(value)
 
     def __setitem__(self, key, value) -> Any:
+        """
+        Itemsetter with support for "." as a separator for nested dict/list structures.
+
+        Caution: this creates ambiguity: foo["a.b.c"] = 123 could mean foo["a"]["b"]["c"] = 123, but
+        it could also mean to literally set value 123 for key "a.b.c". Or any combination with "a.b" and "b.c".
+
+        This class will always split the keys at ".". If any of the parent keys are missing a KeyError will be
+        raised. It is up to the user to ensure the structure exists before assigning values to it.
+
+        To assign keys that actually contain a dot, use foo.data["a.b.c"] = 123.
+        """
+        if isinstance(value, DotGet):
+            value = value.data
         key = str(key)
         if "." in key:
             subpath, _, leaf_key = str(key).rpartition(".")
@@ -97,10 +97,22 @@ class DotGet:
     def __eq__(self, other):
         return self.data == other
 
+    @staticmethod
+    def _possible_types(part):
+        """
+        Helper for dealing with type ambiguity in keys / indexes,
+        e.g: foo["a.1"] could mean foo["a"][1] or foo["a"]["1"].
+        """
+        first_type = type(part)
+        all_types = {str, int, float}
+        return [first_type, *(all_types - {first_type})]
 
-class DotList(DotGet, UserList):
-    pass
+
+class DotList(DotGet[list], UserList, list):
+    def list(self) -> list:
+        return self.data
 
 
-class DotDict(DotGet, UserDict):
-    pass
+class DotDict(DotGet[dict], UserDict, dict):
+    def dict(self) -> dict:
+        return self.data

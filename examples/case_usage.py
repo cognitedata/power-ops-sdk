@@ -1,6 +1,7 @@
 import logging
 import os
 import tempfile
+from pprint import pprint
 
 from cognite.powerops import Case, PowerOpsClient
 from cognite.powerops.logger import configure_debug_logging
@@ -49,4 +50,4 @@ case.save_yaml(edited_case_file)
 
 # (just for show) load that exported yaml and check the edited curve:
 case2 = Case.load_yaml(edited_case_file)
-print(case2["model.generator.Holen_G1.gen_eff_curve.y"])
+pprint(case2["model.generator.Holen_G1.gen_eff_curve"])

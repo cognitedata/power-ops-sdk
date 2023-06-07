@@ -182,3 +182,28 @@ def test_assignment_4(data_dict):
             "4": [11, 22, 33],
         },
     }
+
+
+def test_assignment_5(data_dict):
+    with pytest.raises(KeyError, match=_exactly("'c.d'")):
+        data_dict["c.d.e"] = 123
+
+
+def test_assignment_6(data_dict):
+    data_dict["c"] = {"d": {}}
+    data_dict["c.d.e"] = 123
+    assert data_dict == {
+        "a": "11",
+        "b": {
+            "c": "22",
+            3: {"d": 4},
+        },
+        "c": {"d": {"e": 123}},
+    }
+
+
+def test_assignment_types(data_dict, data_list):
+    data_dict["foo"] = data_list
+    assert data_dict["foo"] == data_list
+    assert type(data_dict["foo"]) is DotList
+    assert type(data_dict.data["foo"]) is list

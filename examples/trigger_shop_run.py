@@ -15,14 +15,14 @@ case.add_mapping_file(
 )
 case.add_extra_file("/path/to/cogshop/test_cogshopsession/test_inputs/commands.yaml")
 
-# run = p.shop.runs.trigger(case)
-run = p.shop.runs._upload_to_cdf(case)  # upload but don't trigger
+run = p.shop.runs.trigger(case)
+# run = p.shop.runs._upload_to_cdf(case)  # upload but don't trigger
 
-print(run.is_complete)
+print(run.in_progress)
 run.wait_until_complete()
-print(run.is_complete)
+print(run.in_progress)
 
 
 results = run.get_results()
-print(results.success)
-pprint(results.post_run.data["commands"])
+print(results)
+pprint(results.post_run["commands"])

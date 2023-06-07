@@ -76,3 +76,7 @@ class PowerOpsClient:
     @cached_property
     def write_dataset_id(self) -> int:
         return retrieve_dataset(self.cdf, external_id=self._write_dataset).id
+
+    @property
+    def cogshop_version(self) -> str:
+        return self._cogshop_version
