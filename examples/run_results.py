@@ -19,19 +19,12 @@ sample_shop_run = powerops.shop.runs.retrieve(SAMPLE_SHOP_RUN_EVENT)
 print(f"sample_shop_run: {sample_shop_run}")
 
 sample_shop_run.wait_until_complete()
-sample_run_results = sample_shop_run.results()
+sample_run_results = sample_shop_run.get_results()
 
 print(f"sample_run_results: {sample_run_results.success}")
-
-# # LOGS
-# logs = sample_run_results.logs
-# _path = sample_run_results.logs.shop.save_to_path()
-# print(f"_path: {_path}")
-# print("-------")
-# print(logs.shop.file_metadata.external_id)
-# print("-------")
-# print(logs.post_run.data["commands"])
-# print(logs.cplex())
+print("-------")
+_path = sample_run_results.post_run.save()
+print(f"_path: {_path}")
 
 
 # OBJECTIVE

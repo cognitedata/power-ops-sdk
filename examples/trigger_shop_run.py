@@ -1,3 +1,5 @@
+from pprint import pprint
+
 from cognite.powerops import Case, PowerOpsClient
 from cognite.powerops.logger import configure_debug_logging
 
@@ -16,11 +18,11 @@ case.add_extra_file("/path/to/cogshop/test_cogshopsession/test_inputs/commands.y
 run = p.shop.runs.trigger(case)
 # run = p.shop.runs._upload_to_cdf(case)  # upload but don't trigger
 
-print(run.is_complete())
+print(run.in_progress)
 run.wait_until_complete()
-print(run.is_complete())
+print(run.in_progress)
 
 
-results = run.results()
-print(results.success)
-print(results.logs.post_run.data["commands"])
+results = run.get_results()
+print(results)
+pprint(results.post_run["commands"])

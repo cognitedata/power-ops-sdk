@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import logging
-from typing import Union
+from typing import Optional, Union
 
 from cognite.client import CogniteClient
 from cognite.client._api.assets import AssetsAPI
@@ -89,10 +89,17 @@ def retrieve_dataset(client: CogniteClient, external_id: str) -> DataSet:
     return dataset
 
 
+def retrieve_event(client: CogniteClient, external_id: str) -> Event:
+    event = client.events.retrieve(external_id=external_id)
+    if event is None:
+        raise ValueError(f"Event not found: {external_id}")
+    return event
+
+
 def retrieve_relationships_from_source_ext_id(
     client: CogniteClient,
     source_ext_id: str,
-    label_ext_id: Union[str, list[str]],
+    label_ext_id: Optional[Union[str, list[str]]],
     target_types: Sequence[str] = (),
 ) -> RelationshipList:
     """
@@ -101,8 +108,9 @@ def retrieve_relationships_from_source_ext_id(
     """
     if isinstance(label_ext_id, str):
         label_ext_id = [label_ext_id]
-
-    _labels = {"containsAny": [{"externalId": ext_id} for ext_id in label_ext_id]}
+    _labels = None
+    if label_ext_id is not None:
+        _labels = {"containsAny": [{"externalId": ext_id} for ext_id in label_ext_id]}
     return client.relationships.list(
         source_external_ids=[source_ext_id],
         labels=_labels,
