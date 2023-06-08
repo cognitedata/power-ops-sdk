@@ -155,9 +155,9 @@ class ShopRunResultsAPI:
         if shop_run.in_progress:
             raise ValueError("ShopRun not completed.")
 
-        post_run = None
-        cplex = None
-        shop = None
+        post_run_yaml = None
+        cplex_log = None
+        shop_log = None
 
         related_log_files = self._po_client.shop.files.retrieve_related_meta(
             source_external_id=shop_run.shop_run_event.external_id,
@@ -166,18 +166,18 @@ class ShopRunResultsAPI:
         for metadata in related_log_files:
             ext_id = metadata.external_id
             if ext_id.endswith(".log") and "cplex" in ext_id:
-                cplex: Optional[ShopLogFile] = self._po_client.shop.files.retrieve(metadata, ShopLogFile)
+                cplex_log: Optional[ShopLogFile] = self._po_client.shop.files.retrieve(metadata, ShopLogFile)
             elif ext_id.endswith(".log") and "shop_messages" in ext_id:
                 # todo: encoding should be set in the metadata when creating/uploading the file
                 # existing files will not have this set
                 if not metadata.metadata.get("encoding", False):
                     metadata.metadata["encoding"] = "latin-1"
-                shop: Optional[ShopLogFile] = self._po_client.shop.files.retrieve(metadata, ShopLogFile)
+                shop_log: Optional[ShopLogFile] = self._po_client.shop.files.retrieve(metadata, ShopLogFile)
             elif ext_id.endswith(".yaml"):
-                post_run: Optional[ShopYamlFile] = self._po_client.shop.files.retrieve(metadata, ShopYamlFile)
+                post_run_yaml: Optional[ShopYamlFile] = self._po_client.shop.files.retrieve(metadata, ShopYamlFile)
             else:
                 logger.error("Unknown file type")
-        return ShopRunResult(self._po_client, shop_run, cplex, shop, post_run)
+        return ShopRunResult(self._po_client, shop_run, cplex_log, shop_log, post_run_yaml)
 
     def get_objective_function(self, shop_run: ShopRun) -> ObjectiveFunction:
         # TODO: ability to retrieve the objective function from the post run yaml file

@@ -98,30 +98,33 @@ class ShopYamlFile(ShopResultFile[dict], DotDict):
             keys = [keys]
         return {key: self._retrieve_time_series_dict(key) for key in keys}
 
-    def _retrieve_time_series_dict(self, keys: str) -> dict[datetime, float]:
+    def _retrieve_time_series_dict(self, key: str) -> dict[datetime, float]:
         try:
-            data = self[keys]
-            assert isinstance(data, dict)
-            assert all(isinstance(key, datetime) for key in data.keys())
-            assert all(isinstance(value, (float, int)) for value in data.values())
+            data = self[key]
+            if not (
+                isinstance(data, dict)
+                and all(isinstance(k, datetime) for k in data.keys())
+                and all(isinstance(v, (float, int)) for v in data.values())
+            ):
+                raise ValueError
             return data
-
         except KeyError:
-            logger.error(f'Key "{keys}" not found in {self.name}')
-        except AssertionError:
+            logger.error(f'Key "{key}" not found in {self.name}')
+        except ValueError:
             logger.error("Data cannot be plotted as a a time series")
         return {}
 
-    def list_model_time_series_keys(
+    def find_time_series(
         self,
         matches_object_type="",
         matches_object_name="",
         matches_attribute_name="",
     ) -> list[str]:
+        """Find time series in the results file. Some keys are parsed as numbers"""
         keys = []
         model = self["model"]
         for key1 in model:
-            if matches_object_type and matches_object_type.lower() != key1.lower():
+            if matches_object_type and matches_object_type.lower() != str(key1).lower():
                 continue
             object_type = model[key1]
             for key2, object_name in object_type.items():
@@ -139,8 +142,8 @@ class ShopYamlFile(ShopResultFile[dict], DotDict):
         ax.plot(time_series.keys(), time_series.values(), linestyle="-", marker=".", label=label)
         ax.xaxis.set_major_formatter(mdates.DateFormatter("%d. %b %y %H:%M"))
 
-    def plot(self, dot_keys=Union[str, Sequence[str]]):
-        if time_series := self._prepare_plot_time_series(dot_keys):
+    def plot(self, keys=Union[str, Sequence[str]]):
+        if time_series := self._prepare_plot_time_series(keys):
             fig, ax = plt.subplots(figsize=(10, 10))
             fig.autofmt_xdate()
 

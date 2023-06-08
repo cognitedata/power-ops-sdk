@@ -26,7 +26,7 @@ print("-------")
 
 post_run = sample_run_results.post_run
 # post_run.plot("model.generator.BRAS(3210)_G1.eff_head")
-keys = post_run.list_model_time_series_keys(
+keys = post_run.find_time_series(
     matches_object_type="generator",
     # matches_object_name="BRAS(3210)_G1",
     # matches_object_name="FRAM(2965)_G1",
@@ -37,7 +37,7 @@ print("potential keys:", keys)
 # post_run.plot(dot_key=keys[2])
 
 # post_run.plot(dot_keys=(keys[4], keys[5]))
-post_run.plot(dot_keys=keys)
+post_run.plot(keys=keys)
 
 
 # _path = sample_run_results.post_run.save()
