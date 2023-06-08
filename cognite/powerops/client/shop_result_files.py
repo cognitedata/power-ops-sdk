@@ -12,6 +12,7 @@ import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 import yaml
 from cognite.client.data_classes import FileMetadata
+from matplotlib.axes import Axes
 
 from cognite.powerops.utils.cdf_utils import retrieve_relationships_from_source_ext_id
 from cognite.powerops.utils.dotget import DotDict
@@ -92,7 +93,12 @@ class ShopYamlFile(ShopResultFile[dict], DotDict):
     def file_content(self) -> str:
         return yaml.safe_dump(self.data, sort_keys=False)
 
-    def _prepare_plot_time_series(self, keys: str) -> dict[datetime, float]:
+    def _prepare_plot_time_series(self, keys: Union[str, Sequence[str]]) -> dict:
+        if isinstance(keys, str):
+            keys = [keys]
+        return {key: self._retrieve_time_series_dict(key) for key in keys}
+
+    def _retrieve_time_series_dict(self, keys: str) -> dict[datetime, float]:
         try:
             data = self[keys]
             assert isinstance(data, dict)
@@ -108,35 +114,41 @@ class ShopYamlFile(ShopResultFile[dict], DotDict):
 
     def list_model_time_series_keys(
         self,
-        filter_object_type="",
-        filter_object_name="",
-        filter_attribute_name="",
+        matches_object_type="",
+        matches_object_name="",
+        matches_attribute_name="",
     ) -> list[str]:
         keys = []
         model = self["model"]
         for key1 in model:
-            if filter_object_type and filter_object_type.lower() != key1.lower():
+            if matches_object_type.lower() != key1.lower():
                 continue
-            object_type: DotDict = model[key1]
+            object_type = model[key1]
             for key2, object_name in object_type.items():
-                if filter_object_name and filter_object_name.lower() != key2.lower():
+                if matches_object_name.lower() != key2.lower():
                     continue
                 for key3 in object_name:
-                    if filter_attribute_name and filter_attribute_name.lower() != key3.lower():
+                    if matches_attribute_name.lower() != key3.lower():
                         continue
                     attribute = object_name[key3]
                     if isinstance(attribute, dict) and all(isinstance(x, datetime) for x in attribute.keys()):
                         keys.append(f"model.{key1}.{key2}.{key3}")
         return keys
 
-    def plot(self, dot_key=str):
-        if time_series := self._prepare_plot_time_series(dot_key):
-            fig, ax = plt.subplots(figsize=(10, 10))
-            ax.set_title(" ".join([k.capitalize() for k in dot_key.split(".")]), fontsize=12)
-            fig.autofmt_xdate()
-            ax.xaxis.set_major_formatter(mdates.DateFormatter("%d. %b %y kl %H:%M"))
+    def _ax_plot(self, ax: Axes, time_series: dict, label: str):
+        ax.plot(time_series.keys(), time_series.values(), linestyle="-", marker=".", label=label)
+        ax.xaxis.set_major_formatter(mdates.DateFormatter("%d. %b %y %H:%M"))
 
-            ax.plot(time_series.keys(), time_series.values(), linestyle="-", marker="o", color="k")
+    def plot(self, dot_keys=Union[str, Sequence[str]]):
+        if time_series := self._prepare_plot_time_series(dot_keys):
+            fig, ax = plt.subplots(figsize=(10, 10))
+            fig.autofmt_xdate()
+
+            for dot_key, ts in time_series.items():
+                label = " ".join(dot_key.split(".")).capitalize()
+                self._ax_plot(ax, ts, label)
+
+            ax.legend()
             plt.show()
 
 

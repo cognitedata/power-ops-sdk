@@ -165,18 +165,15 @@ class ShopRunResultsAPI:
         )
         for metadata in related_log_files:
             ext_id = metadata.external_id
-            # if ext_id.endswith(".log") and "cplex" in ext_id:
-            #     cplex: Optional[ShopLogFile] = self._po_client.shop.files.retrieve(
-            #         metadata, ShopLogFile)
-            # elif ext_id.endswith(".log") and "shop_messages" in ext_id:
-            #     # todo: encoding should be set in the metadata when creating/uploading the file
-            #     # existing files will not have this set
-            #     if not metadata.metadata.get("encoding", False):
-            #         metadata.metadata["encoding"] = "latin-1"
-            #     shop: Optional[ShopLogFile] = self._po_client.shop.files.retrieve(
-            #         metadata, ShopLogFile)
-            # el
-            if ext_id.endswith(".yaml"):
+            if ext_id.endswith(".log") and "cplex" in ext_id:
+                cplex: Optional[ShopLogFile] = self._po_client.shop.files.retrieve(metadata, ShopLogFile)
+            elif ext_id.endswith(".log") and "shop_messages" in ext_id:
+                # todo: encoding should be set in the metadata when creating/uploading the file
+                # existing files will not have this set
+                if not metadata.metadata.get("encoding", False):
+                    metadata.metadata["encoding"] = "latin-1"
+                shop: Optional[ShopLogFile] = self._po_client.shop.files.retrieve(metadata, ShopLogFile)
+            elif ext_id.endswith(".yaml"):
                 post_run: Optional[ShopYamlFile] = self._po_client.shop.files.retrieve(metadata, ShopYamlFile)
             else:
                 logger.error("Unknown file type")
