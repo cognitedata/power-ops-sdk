@@ -21,18 +21,24 @@ print(f"sample_shop_run: {sample_shop_run}")
 sample_shop_run.wait_until_complete()
 sample_run_results = sample_shop_run.get_results()
 
-print(f"sample_run_results: {sample_run_results.success}")
+print(f"sample_run_results: {sample_run_results}")
 print("-------")
-_path = sample_run_results.post_run.save()
-print(f"_path: {_path}")
+
+post_run = sample_run_results.post_run
+post_run.plot("model.generator.BRAS(3210)_G1.eff_head")
+
+# ["model.generator.BRAS(3210)_G1.eff_head"]
+
+# _path = sample_run_results.post_run.save()
+# print(f"_path: {_path}")
 
 
-# OBJECTIVE
-objective = sample_run_results.objective_function
-print(f"objective_function: {objective}")
+# # OBJECTIVE
+# objective = sample_run_results.objective_function
+# print(f"objective_function: {objective}")
 
-print(objective.data)
-print(objective.data_as_str())
-print(objective.watercourse)
-print(objective.penalty_breakdown)
-print(objective.penalty_breakdown_as_str())
+# print(objective.data)
+# print(objective.data_as_str())
+# print(objective.watercourse)
+# print(objective.penalty_breakdown)
+# print(objective.penalty_breakdown_as_str())

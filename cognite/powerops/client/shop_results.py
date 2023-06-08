@@ -26,22 +26,22 @@ class ShopRunResult:
         self,
         po_client: PowerOpsClient,
         shop_run: ShopRun,
-        cplex: ShopLogFile,
-        shop_messages: ShopLogFile,
+        cplex_logs: ShopLogFile,
+        shop_logs: ShopLogFile,
         post_run: ShopYamlFile,
     ) -> None:
         self._po_client = po_client
         self._shop_run = shop_run
-        self._cplex = cplex
-        self._shop_messages = shop_messages
+        self._cplex_logs = cplex_logs
+        self._shop_logs = shop_logs
         self._post_run = post_run
 
     @cached_property
     def files(self) -> dict[str, Optional[ShopResultFile]]:
         return {
             "post_run": self._post_run,
-            "shop_messages": self._shop_messages,
-            "cplex": self._cplex,
+            "shop_logs": self._shop_logs,
+            "cplex_logs": self._cplex_logs,
         }
 
     @cached_property
@@ -58,12 +58,12 @@ class ShopRunResult:
         return self._post_run
 
     @property
-    def cplex(self) -> Optional[ShopLogFile]:  # TODO rename to cplex_messages? _logs?
-        return self._cplex
+    def cplex_logs(self) -> Optional[ShopLogFile]:
+        return self._cplex_logs
 
     @property
-    def shop_messages(self) -> Optional[ShopLogFile]:  # TODO rename to _logs?
-        return self._shop_messages
+    def shop_logs(self) -> Optional[ShopLogFile]:
+        return self._shop_logs
 
     def __repr__(self):
         return f"<ShopRunResult status={self._shop_run.status}>"
@@ -157,7 +157,7 @@ class ShopRunResultsAPI:
 
         post_run = None
         cplex = None
-        shop_messages = None
+        shop = None
 
         related_log_files = self._po_client.shop.files.retrieve_related_meta(
             source_external_id=shop_run.shop_run_event.external_id,
@@ -165,15 +165,22 @@ class ShopRunResultsAPI:
         )
         for metadata in related_log_files:
             ext_id = metadata.external_id
-            if ext_id.endswith(".log") and "cplex" in ext_id:
-                cplex: Optional[ShopLogFile] = self._po_client.shop.files.retrieve(metadata, ShopLogFile)
-            elif ext_id.endswith(".log") and "shop_messages" in ext_id:
-                shop_messages: Optional[ShopLogFile] = self._po_client.shop.files.retrieve(metadata, ShopLogFile)
-            elif ext_id.endswith(".yaml"):
+            # if ext_id.endswith(".log") and "cplex" in ext_id:
+            #     cplex: Optional[ShopLogFile] = self._po_client.shop.files.retrieve(
+            #         metadata, ShopLogFile)
+            # elif ext_id.endswith(".log") and "shop_messages" in ext_id:
+            #     # todo: encoding should be set in the metadata when creating/uploading the file
+            #     # existing files will not have this set
+            #     if not metadata.metadata.get("encoding", False):
+            #         metadata.metadata["encoding"] = "latin-1"
+            #     shop: Optional[ShopLogFile] = self._po_client.shop.files.retrieve(
+            #         metadata, ShopLogFile)
+            # el
+            if ext_id.endswith(".yaml"):
                 post_run: Optional[ShopYamlFile] = self._po_client.shop.files.retrieve(metadata, ShopYamlFile)
             else:
                 logger.error("Unknown file type")
-        return ShopRunResult(self._po_client, shop_run, cplex, shop_messages, post_run)
+        return ShopRunResult(self._po_client, shop_run, cplex, shop, post_run)
 
     def get_objective_function(self, shop_run: ShopRun) -> ObjectiveFunction:
         # TODO: ability to retrieve the objective function from the post run yaml file

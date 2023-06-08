@@ -4,9 +4,12 @@ import abc
 import logging
 import os
 import tempfile
+from datetime import datetime
 from pathlib import Path
 from typing import TYPE_CHECKING, Generic, Optional, Sequence, TextIO, TypeVar, Union
 
+import matplotlib.dates as mdates
+import matplotlib.pyplot as plt
 import yaml
 from cognite.client.data_classes import FileMetadata
 
@@ -89,6 +92,31 @@ class ShopYamlFile(ShopResultFile[dict], DotDict):
     def file_content(self) -> str:
         return yaml.safe_dump(self.data, sort_keys=False)
 
+    def _prepare_plot_time_series(self, keys: str) -> dict[datetime, float]:
+        data = {}
+        try:
+            data = self[keys]
+        except KeyError:
+            logger.error(f'Key "{keys}" not found in {self.name}')
+        try:
+            assert isinstance(data, dict)
+            assert all(isinstance(key, datetime) for key in data.keys())
+            assert all(isinstance(value, (float, int)) for value in data.values())
+
+        except AssertionError:
+            logger.error("Data cannot be plotted as a a time series")
+            data = {}
+        return data
+
+    def plot(self, keys=str):
+        if time_series := self._prepare_plot_time_series(keys):
+            fig, ax = plt.subplots(figsize=(10, 10))
+            ax.set_title(" ".join([k.capitalize() for k in keys.split(".")]), fontsize=12)
+            fig.autofmt_xdate()
+            ax.xaxis.set_major_formatter(mdates.DateFormatter("%d. %b %y kl %H:%M"))
+            ax.plot(time_series.keys(), time_series.values())
+            plt.show()
+
 
 class ShopFilesAPI:
     def __init__(self, po_client: PowerOpsClient) -> None:
@@ -112,7 +140,8 @@ class ShopFilesAPI:
 
     def retrieve(self, file_metadata: FileMetadata, shop_file_type: ShopResultFile) -> Optional[ShopResultFile]:
         try:
-            shop_file = shop_file_type(self._po_client, file_metadata)  # TODO add encoding to metametadata!
+            encoding = file_metadata.metadata.get("encoding")
+            shop_file = shop_file_type(self._po_client, file_metadata, encoding)
         except Exception as exc:
             logger.error(f"Cannot retrieve result file: {file_metadata.external_id}\n{exc}")
             shop_file = None
