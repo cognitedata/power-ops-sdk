@@ -390,6 +390,7 @@ class BidProcessConfig(Configuration):
     shop_end: Optional[RelativeTime] = Field(None, alias="shop_endtime")
     bid_matrix_generator: str = Field(alias="bid_bid_matrix_generator_config_external_id")
     price_scenarios_per_watercourse: Optional[Dict[str, typing.Set[str]]] = None
+    is_default_config_for_price_area: bool = False
 
     @validator("shop_start", "shop_end", "bid_date", pre=True)
     def json_loads(cls, value):
@@ -422,6 +423,7 @@ class BidProcessConfig(Configuration):
                 "shop:starttime": str(self.shop_start or benchmark.shop_start),
                 "shop:endtime": str(self.shop_end or benchmark.shop_end),
                 "bid:price_area": f"price_area_{self.price_area_name}",
+                "bid:is_default_config_for_price_area": self.is_default_config_for_price_area,
             }
 
         return Asset(
@@ -837,3 +839,19 @@ class BootstrapConfig(BaseModel):
             if (config_file_path := config_dir_path / f"{field_name}.yaml").exists():
                 configs[field_name] = load_yaml(config_file_path, encoding="utf-8")
         return cls(**configs)
+
+    def validate_bid_configs(self):
+        """Validate the bid configs in the bootstrap config. Per now only ensure there is at most one default config
+        per price area"""
+
+        default_configs = defaultdict(int)
+        for bid_config in self.bidprocess:
+            if bid_config.is_default_config_for_price_area:
+                default_configs[bid_config.price_area_name] += 1
+
+        if price_areas_with_multiple_default_configs := [
+            price_area for price_area, count in default_configs.items() if count > 1
+        ]:
+            raise ValueError(
+                f"Multiple default bid configs for price areas: {price_areas_with_multiple_default_configs}"
+            )
