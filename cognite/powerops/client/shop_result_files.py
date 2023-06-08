@@ -93,28 +93,50 @@ class ShopYamlFile(ShopResultFile[dict], DotDict):
         return yaml.safe_dump(self.data, sort_keys=False)
 
     def _prepare_plot_time_series(self, keys: str) -> dict[datetime, float]:
-        data = {}
         try:
             data = self[keys]
-        except KeyError:
-            logger.error(f'Key "{keys}" not found in {self.name}')
-        try:
             assert isinstance(data, dict)
             assert all(isinstance(key, datetime) for key in data.keys())
             assert all(isinstance(value, (float, int)) for value in data.values())
+            return data
 
+        except KeyError:
+            logger.error(f'Key "{keys}" not found in {self.name}')
         except AssertionError:
             logger.error("Data cannot be plotted as a a time series")
-            data = {}
-        return data
+        return {}
 
-    def plot(self, keys=str):
-        if time_series := self._prepare_plot_time_series(keys):
+    def list_model_time_series_keys(
+        self,
+        filter_object_type="",
+        filter_object_name="",
+        filter_attribute_name="",
+    ) -> list[str]:
+        keys = []
+        model = self["model"]
+        for key1 in model:
+            if filter_object_type and filter_object_type.lower() != key1.lower():
+                continue
+            object_type: DotDict = model[key1]
+            for key2, object_name in object_type.items():
+                if filter_object_name and filter_object_name.lower() != key2.lower():
+                    continue
+                for key3 in object_name:
+                    if filter_attribute_name and filter_attribute_name.lower() != key3.lower():
+                        continue
+                    attribute = object_name[key3]
+                    if isinstance(attribute, dict) and all(isinstance(x, datetime) for x in attribute.keys()):
+                        keys.append(f"model.{key1}.{key2}.{key3}")
+        return keys
+
+    def plot(self, dot_key=str):
+        if time_series := self._prepare_plot_time_series(dot_key):
             fig, ax = plt.subplots(figsize=(10, 10))
-            ax.set_title(" ".join([k.capitalize() for k in keys.split(".")]), fontsize=12)
+            ax.set_title(" ".join([k.capitalize() for k in dot_key.split(".")]), fontsize=12)
             fig.autofmt_xdate()
             ax.xaxis.set_major_formatter(mdates.DateFormatter("%d. %b %y kl %H:%M"))
-            ax.plot(time_series.keys(), time_series.values())
+
+            ax.plot(time_series.keys(), time_series.values(), linestyle="-", marker="o", color="k")
             plt.show()
 
 
