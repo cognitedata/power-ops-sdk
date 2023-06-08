@@ -5,8 +5,13 @@ from typing import Annotated
 
 import typer
 
-from cognite.powerops.bootstrap import _create_cdf_resources, _load_config, _preview_resources_diff, _transform, \
-    validate_config
+from cognite.powerops.bootstrap import (
+    _create_cdf_resources,
+    _load_config,
+    _preview_resources_diff,
+    _transform,
+    validate_config,
+)
 from cognite.powerops.logger import configure_debug_logging
 
 app = typer.Typer()
