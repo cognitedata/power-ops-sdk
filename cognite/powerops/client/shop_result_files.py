@@ -125,10 +125,10 @@ class ShopYamlFile(ShopResultFile[dict], DotDict):
                 continue
             object_type = model[key1]
             for key2, object_name in object_type.items():
-                if matches_object_name and matches_object_name.lower() != key2.lower():
+                if matches_object_name and matches_object_name.lower() != str(key2).lower():
                     continue
                 for key3 in object_name:
-                    if matches_attribute_name and matches_attribute_name.lower() != key3.lower():
+                    if matches_attribute_name and matches_attribute_name.lower() != str(key3).lower():
                         continue
                     attribute = object_name[key3]
                     if isinstance(attribute, dict) and all(isinstance(x, datetime) for x in attribute.keys()):

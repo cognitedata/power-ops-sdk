@@ -27,10 +27,10 @@ print("-------")
 post_run = sample_run_results.post_run
 # post_run.plot("model.generator.BRAS(3210)_G1.eff_head")
 keys = post_run.list_model_time_series_keys(
-    matches_object_type="plant",
+    matches_object_type="generator",
     # matches_object_name="BRAS(3210)_G1",
-    # matches_object_name="KVER(3237)",
-    matches_attribute_name="production",
+    # matches_object_name="FRAM(2965)_G1",
+    matches_attribute_name="market_income",
 )
 
 print("potential keys:", keys)
