@@ -19,7 +19,6 @@ sample_shop_run = powerops.shop.runs.retrieve(SAMPLE_SHOP_RUN_EVENT)
 # print(f"sample_shop_run: {sample_shop_run}")
 
 sample_shop_run.wait_until_complete()
-print("Waiting ")
 sample_run_results = sample_shop_run.get_results()
 
 print(f"sample_run_results: {sample_run_results}")
@@ -28,16 +27,17 @@ print("-------")
 post_run = sample_run_results.post_run
 # post_run.plot("model.generator.BRAS(3210)_G1.eff_head")
 keys = post_run.list_model_time_series_keys(
-    filter_object_type="generator",
-    # filter_object_name="BRAS(3210)_G1",KVER(3237)
-    # filter_object_name="KVER(3237)",
-    filter_attribute_name="eff_head",
+    matches_object_type="plant",
+    # matches_object_name="BRAS(3210)_G1",
+    # matches_object_name="KVER(3237)",
+    matches_attribute_name="production",
 )
 
 print("potential keys:", keys)
 # post_run.plot(dot_key=keys[2])
 
-post_run.plot(dot_keys=(keys[4], keys[5]))
+# post_run.plot(dot_keys=(keys[4], keys[5]))
+post_run.plot(dot_keys=keys)
 
 
 # _path = sample_run_results.post_run.save()

@@ -121,14 +121,14 @@ class ShopYamlFile(ShopResultFile[dict], DotDict):
         keys = []
         model = self["model"]
         for key1 in model:
-            if matches_object_type.lower() != key1.lower():
+            if matches_object_type and matches_object_type.lower() != key1.lower():
                 continue
             object_type = model[key1]
             for key2, object_name in object_type.items():
-                if matches_object_name.lower() != key2.lower():
+                if matches_object_name and matches_object_name.lower() != key2.lower():
                     continue
                 for key3 in object_name:
-                    if matches_attribute_name.lower() != key3.lower():
+                    if matches_attribute_name and matches_attribute_name.lower() != key3.lower():
                         continue
                     attribute = object_name[key3]
                     if isinstance(attribute, dict) and all(isinstance(x, datetime) for x in attribute.keys()):
@@ -145,7 +145,7 @@ class ShopYamlFile(ShopResultFile[dict], DotDict):
             fig.autofmt_xdate()
 
             for dot_key, ts in time_series.items():
-                label = " ".join(dot_key.split(".")).capitalize()
+                label = " ".join(dot_key.split(".")[1:]).capitalize()
                 self._ax_plot(ax, ts, label)
 
             ax.legend()
