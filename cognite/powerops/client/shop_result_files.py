@@ -93,11 +93,6 @@ class ShopYamlFile(ShopResultFile[dict], DotDict):
     def file_content(self) -> str:
         return yaml.safe_dump(self.data, sort_keys=False)
 
-    def _prepare_plot_time_series(self, keys: Union[str, Sequence[str]]) -> dict:
-        if isinstance(keys, str):
-            keys = [keys]
-        return {key: self._retrieve_time_series_dict(key) for key in keys}
-
     def _retrieve_time_series_dict(self, key: str) -> dict[datetime, float]:
         try:
             data = self[key]
@@ -111,8 +106,13 @@ class ShopYamlFile(ShopResultFile[dict], DotDict):
         except KeyError:
             logger.error(f'Key "{key}" not found in {self.name}')
         except ValueError:
-            logger.error("Data cannot be plotted as a a time series")
+            logger.error(f'Data at with key "{key}" cannot be plotted as a time series')
         return {}
+
+    def _prepare_plot_time_series(self, keys: Union[str, Sequence[str]]) -> dict:
+        if isinstance(keys, str):
+            keys = [keys]
+        return {key: self._retrieve_time_series_dict(key) for key in keys}
 
     def find_time_series(
         self,
@@ -147,9 +147,9 @@ class ShopYamlFile(ShopResultFile[dict], DotDict):
             fig, ax = plt.subplots(figsize=(10, 10))
             fig.autofmt_xdate()
 
-            for dot_key, ts in time_series.items():
-                label = " ".join(dot_key.split(".")[1:]).capitalize()
-                self._ax_plot(ax, ts, label)
+            for key, ts_data in time_series.items():
+                label = " ".join(key.split(".")[1:]).capitalize()
+                self._ax_plot(ax, ts_data, label)
 
             ax.legend()
             plt.show()
