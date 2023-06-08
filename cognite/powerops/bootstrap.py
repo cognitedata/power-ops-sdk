@@ -166,7 +166,6 @@ def _transform(
     market: str = "Dayahead",
 ) -> BootstrapResourceCollection:
     cognite_project = config.cdf.dict()["COGNITE_PROJECT"]
-    config = validate_config(config)
 
     constants = config.constants
     _ = [w.set_shop_yaml_paths(path) for w in config.watercourses]

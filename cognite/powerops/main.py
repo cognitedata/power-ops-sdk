@@ -5,7 +5,8 @@ from typing import Annotated
 
 import typer
 
-from cognite.powerops.bootstrap import _create_cdf_resources, _load_config, _preview_resources_diff, _transform
+from cognite.powerops.bootstrap import _create_cdf_resources, _load_config, _preview_resources_diff, _transform, \
+    validate_config
 from cognite.powerops.logger import configure_debug_logging
 
 app = typer.Typer()
@@ -21,8 +22,9 @@ def plan(
 ):
     typer.echo(f"Running plan on configuration files located in {path}")
 
-    # Step 1 - configure
+    # Step 1 - configure and validate config
     config = _load_config(path)
+    config = validate_config(config)
     configure_debug_logging(config.constants.debug_level)
 
     # Step 2 - transform from config to CDF resources and preview diffs
@@ -48,8 +50,9 @@ def apply(
 ):
     typer.echo(f"Running apply on configuration files located in {path}")
 
-    # Step 1 - configure
+    # Step 1 - configure and validate config
     config = _load_config(path)
+    config = validate_config(config)
     configure_debug_logging(config.constants.debug_level)
 
     # Step 2 - transform from config to CDF resources and preview diffs
