@@ -12,6 +12,7 @@ import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 import yaml
 from cognite.client.data_classes import FileMetadata
+from matplotlib.axes import Axes
 
 from cognite.powerops.utils.cdf_utils import retrieve_relationships_from_source_ext_id
 from cognite.powerops.utils.dotget import DotDict
@@ -92,7 +93,12 @@ class ShopYamlFile(ShopResultFile[dict], DotDict):
     def file_content(self) -> str:
         return yaml.safe_dump(self.data, sort_keys=False)
 
-    def _prepare_plot_time_series(self, keys: str) -> dict[datetime, float]:
+    def _prepare_plot_time_series(self, keys: Union[str, Sequence[str]]) -> dict:
+        if isinstance(keys, str):
+            keys = [keys]
+        return {key: self._retrieve_time_series_dict(key) for key in keys}
+
+    def _retrieve_time_series_dict(self, keys: str) -> dict[datetime, float]:
         try:
             data = self[keys]
             assert isinstance(data, dict)
@@ -129,14 +135,20 @@ class ShopYamlFile(ShopResultFile[dict], DotDict):
                         keys.append(f"model.{key1}.{key2}.{key3}")
         return keys
 
-    def plot(self, dot_key=str):
-        if time_series := self._prepare_plot_time_series(dot_key):
-            fig, ax = plt.subplots(figsize=(10, 10))
-            ax.set_title(" ".join([k.capitalize() for k in dot_key.split(".")]), fontsize=12)
-            fig.autofmt_xdate()
-            ax.xaxis.set_major_formatter(mdates.DateFormatter("%d. %b %y kl %H:%M"))
+    def _ax_plot(self, ax: Axes, time_series: dict, label: str):
+        ax.plot(time_series.keys(), time_series.values(), linestyle="-", marker=".", label=label)
+        ax.xaxis.set_major_formatter(mdates.DateFormatter("%d. %b %y %H:%M"))
 
-            ax.plot(time_series.keys(), time_series.values(), linestyle="-", marker="o", color="k")
+    def plot(self, dot_keys=Union[str, Sequence[str]]):
+        if time_series := self._prepare_plot_time_series(dot_keys):
+            fig, ax = plt.subplots(figsize=(10, 10))
+            fig.autofmt_xdate()
+
+            for dot_key, ts in time_series.items():
+                label = " ".join(dot_key.split(".")).capitalize()
+                self._ax_plot(ax, ts, label)
+
+            ax.legend()
             plt.show()
 
 
