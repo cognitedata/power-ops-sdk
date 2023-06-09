@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING
 from cognite.powerops.client.shop_result_files import ShopFilesAPI
 from cognite.powerops.client.shop_results import ShopRunResultsAPI
 from cognite.powerops.client.shop_run import ShopRunsAPI
+from cognite.powerops.client.shop_run_compare import ShopRunCompareAPI
 
 if TYPE_CHECKING:
     from cognite.powerops import PowerOpsClient
@@ -44,4 +45,5 @@ class ShopAPI:
         self.models = ShopModelsAPI(po_client)
         self.runs = ShopRunsAPI(po_client)
         self.results = ShopRunResultsAPI(po_client)
+        self.compare = ShopRunCompareAPI(po_client)
         self.files = ShopFilesAPI(po_client)

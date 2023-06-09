@@ -121,6 +121,7 @@ class ShopYamlFile(ShopResultFile[dict], DotDict):
         matches_attribute_name="",
     ) -> list[str]:
         """Find time series in the results file. Some keys are parsed as numbers"""
+        # TODO: accept either a single string or a list of strings
         keys = []
         model = self["model"]
         for key1 in model:
