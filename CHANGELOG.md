@@ -13,11 +13,16 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## [0.11.0] - 08-06-23
+## [0.12.0] - 08-06-23
 ### Added
 
 * Ability to trigger SHOP runs via CogShop.
 * Retrieval of ShopRun results.
+
+## [0.11.0] - 08-06-23
+### Feature
+
+* Allow customers to specify default bid config per price area
 
 ## [0.10.0] - 05-06-23
 ### Added

@@ -2,9 +2,7 @@ from __future__ import annotations
 
 import os
 from pathlib import Path
-from typing import List, Optional
-
-from cognite.client import CogniteClient
+from typing import List, Literal, Optional
 
 from cognite.powerops.config import (
     BenchmarkingConfig,
@@ -34,9 +32,9 @@ from cognite.powerops.utils.resource_generation import (
 
 def validate_config(
     config: BootstrapConfig,
-    client: CogniteClient,
-    errors: str = "fix",
+    errors: Literal["keep", "fix"] = "keep",
 ) -> BootstrapConfig:
+    config.validate_bid_configs()
     return config
 
 
@@ -167,9 +165,7 @@ def _transform(
     path: Path,
     market: str = "Dayahead",
 ) -> BootstrapResourceCollection:
-    cdf_parameters = config.cdf.dict()
-    client = get_client(cdf_parameters)
-    config = validate_config(config, client)
+    cognite_project = config.cdf.dict()["COGNITE_PROJECT"]
 
     constants = config.constants
     _ = [w.set_shop_yaml_paths(path) for w in config.watercourses]
@@ -177,12 +173,9 @@ def _transform(
 
     shop_files_config_list = ShopFileConfigs.from_yaml(path).watercourses_shop
 
-    print(
-        f"Running bootstrap for data set {constants.data_set_external_id} in CDF project"
-        + f"{cdf_parameters['COGNITE_PROJECT']}"
-    )
+    print(f"Running bootstrap for data set {constants.data_set_external_id} in CDF project" + f"{cognite_project}")
 
-    shop_service_url = get_shop_service_url(cdf_parameters["COGNITE_PROJECT"])
+    shop_service_url = get_shop_service_url(cognite_project)
 
     # TODO: split code below to three main functions(?) when having figured out function signature
 
