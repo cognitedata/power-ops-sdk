@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Optional, Sequence
 import matplotlib.pyplot as plt
 
 from cognite.powerops.client.shop_result_files import ShopYamlFile
-from cognite.powerops.utils.plotting import ax_plot_time_time_series
+from cognite.powerops.utils.plotting import ax_plot_time_series, create_time_series_plot
 
 if TYPE_CHECKING:
     from cognite.powerops import PowerOpsClient
@@ -19,13 +19,16 @@ class ShopResultsCompareAPI:
     def __init__(self, po_client: PowerOpsClient):
         self._po_client = po_client
 
-    def time_series_plots(
-        self, post_run_list: Sequence[ShopYamlFile], comparison_key: str, labels: Optional[Sequence[str]] = ()
+    def plot_time_series(
+        self,
+        post_run_list: Sequence[ShopYamlFile],
+        comparison_key: str,
+        labels: Optional[Sequence[str]] = (),
     ):
         """Stacked line charts of the given post runs at the same key.
         Labels must be in the same order as the post runs."""
         if labels and (len(labels) != len(set(labels)) or len(labels) != len(post_run_list)):
-            logger.error("Titles mus be unique and match the number of provided post runs")
+            logger.error("Titles must be unique and match the number of provided post runs")
             return
 
         plots: dict[str, dict[datetime, float]] = {}
@@ -35,12 +38,15 @@ class ShopResultsCompareAPI:
                 plot_label = labels[i] if labels else shop_yaml.name
                 plots[plot_label] = time_series
 
-        fig, ax = plt.subplots(figsize=(10, 10))
-        fig.autofmt_xdate()
+        ax = create_time_series_plot()
         for label, time_series in plots.items():
-            ax_plot_time_time_series(ax, time_series, label)
+            ax_plot_time_series(ax, time_series, label)
         ax.legend()
         plt.show()
 
-    def yaml_difference(self, yaml_1: ShopYamlFile, yaml_2: ShopYamlFile):
+    def yaml_difference(
+        self,
+        yaml_1: ShopYamlFile,
+        yaml_2: ShopYamlFile,
+    ):
         raise NotImplementedError()

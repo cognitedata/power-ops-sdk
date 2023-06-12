@@ -14,7 +14,7 @@ from cognite.client.data_classes import FileMetadata
 
 from cognite.powerops.utils.cdf_utils import retrieve_relationships_from_source_ext_id
 from cognite.powerops.utils.dotget import DotDict
-from cognite.powerops.utils.plotting import ax_plot_time_time_series
+from cognite.powerops.utils.plotting import ax_plot_time_series, create_time_series_plot
 
 if TYPE_CHECKING:
     from cognite.powerops import PowerOpsClient
@@ -140,12 +140,10 @@ class ShopYamlFile(ShopResultFile[dict], DotDict):
 
     def plot(self, keys=Union[str, Sequence[str]]):
         if time_series := self._prepare_plot_time_series(keys):
-            fig, ax = plt.subplots(figsize=(10, 10))
-            fig.autofmt_xdate()
-
+            ax = create_time_series_plot()
             for key, ts_data in time_series.items():
                 label = " ".join(key.split(".")[1:]).capitalize()
-                ax_plot_time_time_series(ax, ts_data, label)
+                ax_plot_time_series(ax, ts_data, label)
 
             ax.legend()
             plt.show()
@@ -156,7 +154,9 @@ class ShopFilesAPI:
         self._po_client = po_client
 
     def retrieve_related_meta(
-        self, source_external_id: str, label_ext_id: Optional[Union[str, Sequence[str]]] = None
+        self,
+        source_external_id: str,
+        label_ext_id: Optional[Union[str, Sequence[str]]] = None,
     ) -> Sequence[FileMetadata]:
         relationships = retrieve_relationships_from_source_ext_id(
             self._po_client.cdf,
@@ -182,5 +182,8 @@ class ShopFilesAPI:
 
     def download(self, shop_file: ShopResultFile, dir_path: str) -> str:
         file_path = os.path.join(dir_path, shop_file.external_id)
-        self._po_client.cdf.files.download_to_path(path=file_path, external_id=shop_file.external_id)
+        self._po_client.cdf.files.download_to_path(
+            path=file_path,
+            external_id=shop_file.external_id,
+        )
         return file_path

@@ -42,8 +42,10 @@ runs = (
     post_run_2,
 )
 
-powerops.shop.results.compare.time_series_plots(
-    post_run_list=runs, comparison_key=COMPARISON_KEY, labels=["Example 1", "Example 2"]  # optional labels
+powerops.shop.results.compare.plot_time_series(
+    post_run_list=runs,
+    comparison_key=COMPARISON_KEY,
+    labels=["Example 1", "Example 2"],  # optional labels
 )
 
 # _path = sample_run_results.post_run.save()
