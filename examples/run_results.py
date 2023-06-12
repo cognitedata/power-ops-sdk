@@ -8,37 +8,46 @@ logger = logging.getLogger(__name__)
 powerops = PowerOpsClient()
 
 
-SAMPLE_SHOP_RUN_EVENT = "POWEROPS_SHOP_RUN_ede8c4c0-18b1-41b1-ae40-ea20e037645c"
-# SAMPLE_SHOP_RUN_EVENT = "POWEROPS_SHOP_RUN_6336e7ae-722a-4c3a-a9bb-d719922e727f"
-# SAMPLE_SHOP_RUN_EVENT = "POWEROPS_SHOP_RUN_5fd00d38-5782-4bff-8fea-fa4d8fe57f0a"
+# PLOTTING A TIME SERIES
 
-# SAMPLE_SHOP_RUN_EVENT = "POWEROPS_SHOP_RUN_da57af5b-d8fe-4986-bfcb-a51b8bdf00b7_cloned_1684923299.8"
+SAMPLE_SHOP_RUN_EVENT_1 = "POWEROPS_SHOP_RUN_ede8c4c0-18b1-41b1-ae40-ea20e037645c"
 
-sample_shop_run = powerops.shop.runs.retrieve(SAMPLE_SHOP_RUN_EVENT)
+sample_run_results_1 = powerops.shop.runs.retrieve(SAMPLE_SHOP_RUN_EVENT_1).get_results()
 
-# print(f"sample_shop_run: {sample_shop_run}")
+print(f"{sample_run_results_1=}")
 
-sample_shop_run.wait_until_complete()
-sample_run_results = sample_shop_run.get_results()
+post_run_1 = sample_run_results_1.post_run
 
-print(f"sample_run_results: {sample_run_results}")
-print("-------")
-
-post_run = sample_run_results.post_run
-# post_run.plot("model.generator.BRAS(3210)_G1.eff_head")
-keys = post_run.find_time_series(
-    matches_object_type="generator",
-    # matches_object_name="BRAS(3210)_G1",
-    # matches_object_name="FRAM(2965)_G1",
-    matches_attribute_name="market_income",
+found_keys = post_run_1.find_time_series(
+    matches_object_types=["generator", "plant"],
+    matches_object_names=["KVER(3237)", "REND(3192)", "BRAS(3210)_G1"],
+    # matches_attribute_names="production",
 )
+print(found_keys)
+# post_run_1.plot((found_keys[5], found_keys[6], found_keys[-1]))
 
-print("potential keys:", keys)
-# post_run.plot(dot_key=keys[2])
 
-# post_run.plot(dot_keys=(keys[4], keys[5]))
-post_run.plot(keys=keys)
+# # COMPARING TWO SHOP RUN RESULTS
+# # This is an arbitrary second run, so the difference is not meaningful
+# SAMPLE_SHOP_RUN_EVENT_2 = "POWEROPS_SHOP_RUN_6336e7ae-722a-4c3a-a9bb-d719922e727f"
 
+# COMPARISON_KEY = "model.market.1.buy_price"
+
+# sample_run_results_2 = powerops.shop.runs.retrieve(SAMPLE_SHOP_RUN_EVENT_2).get_results()
+
+# print(f"{sample_run_results_2=}")
+
+# post_run_2 = sample_run_results_2.post_run
+# runs = (
+#     post_run_1,
+#     post_run_2,
+# )
+
+# powerops.shop.results.compare.plot_time_series(
+#     post_run_list=runs,
+#     comparison_key=COMPARISON_KEY,
+#     labels=["Example 1", "Example 2"],  # optional labels
+# )
 
 # _path = sample_run_results.post_run.save()
 # print(f"_path: {_path}")

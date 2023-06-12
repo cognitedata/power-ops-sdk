@@ -10,6 +10,7 @@ import pandas as pd
 from cognite.client import CogniteClient
 
 from cognite.powerops.client.shop_result_files import ShopLogFile, ShopResultFile, ShopYamlFile
+from cognite.powerops.client.shop_results_compare import ShopResultsCompareAPI
 from cognite.powerops.utils.cdf_utils import retrieve_relationships_from_source_ext_id
 from cognite.powerops.utils.labels import RelationshipLabels
 
@@ -150,6 +151,7 @@ class ObjectiveFunction:
 class ShopRunResultsAPI:
     def __init__(self, po_client: PowerOpsClient):
         self._po_client = po_client
+        self.compare = ShopResultsCompareAPI(po_client)
 
     def get_for_run(self, shop_run: ShopRun) -> ShopRunResult:
         if shop_run.in_progress:

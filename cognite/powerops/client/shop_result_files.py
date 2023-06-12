@@ -8,14 +8,13 @@ from datetime import datetime
 from pathlib import Path
 from typing import TYPE_CHECKING, Generic, Optional, Sequence, TextIO, TypeVar, Union
 
-import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 import yaml
 from cognite.client.data_classes import FileMetadata
-from matplotlib.axes import Axes
 
 from cognite.powerops.utils.cdf_utils import retrieve_relationships_from_source_ext_id
 from cognite.powerops.utils.dotget import DotDict
+from cognite.powerops.utils.plotting import ax_plot_time_series, create_time_series_plot
 
 if TYPE_CHECKING:
     from cognite.powerops import PowerOpsClient
@@ -114,42 +113,55 @@ class ShopYamlFile(ShopResultFile[dict], DotDict):
             keys = [keys]
         return {key: self._retrieve_time_series_dict(key) for key in keys}
 
+    def _case_insensitive_filter_out(self, str_list: list[str], to_match: Union[str, int]) -> bool:
+        """Some keys are parsed as numbers by the yaml parser"""
+        return all(str(to_match).lower() != str_in_list.lower() for str_in_list in str_list)
+
     def find_time_series(
         self,
-        matches_object_type="",
-        matches_object_name="",
-        matches_attribute_name="",
+        matches_object_types: Union[Sequence[str], str] = "",
+        matches_object_names: Union[Sequence[str], str] = "",
+        matches_attribute_names: Union[Sequence[str], str] = "",
     ) -> list[str]:
-        """Find time series in the results file. Some keys are parsed as numbers"""
+        """Find time series in the results file"""
+        if matches_object_types and isinstance(matches_object_types, str):
+            matches_object_types = [matches_object_types]
+
+        if matches_object_names and isinstance(matches_object_names, str):
+            matches_object_names = [matches_object_names]
+
+        if matches_attribute_names and isinstance(matches_attribute_names, str):
+            matches_attribute_names = [matches_attribute_names]
+
         keys = []
         model = self["model"]
         for key1 in model:
-            if matches_object_type and matches_object_type.lower() != str(key1).lower():
+            if matches_object_types and self._case_insensitive_filter_out(matches_object_types, key1):
                 continue
             object_type = model[key1]
             for key2, object_name in object_type.items():
-                if matches_object_name and matches_object_name.lower() != str(key2).lower():
+                if matches_object_names and self._case_insensitive_filter_out(
+                    matches_object_names,
+                    key2,
+                ):
                     continue
                 for key3 in object_name:
-                    if matches_attribute_name and matches_attribute_name.lower() != str(key3).lower():
+                    if matches_attribute_names and self._case_insensitive_filter_out(
+                        matches_attribute_names,
+                        key3,
+                    ):
                         continue
                     attribute = object_name[key3]
                     if isinstance(attribute, dict) and all(isinstance(x, datetime) for x in attribute.keys()):
                         keys.append(f"model.{key1}.{key2}.{key3}")
         return keys
 
-    def _ax_plot(self, ax: Axes, time_series: dict, label: str):
-        ax.plot(time_series.keys(), time_series.values(), linestyle="-", marker=".", label=label)
-        ax.xaxis.set_major_formatter(mdates.DateFormatter("%d. %b %y %H:%M"))
-
     def plot(self, keys=Union[str, Sequence[str]]):
         if time_series := self._prepare_plot_time_series(keys):
-            fig, ax = plt.subplots(figsize=(10, 10))
-            fig.autofmt_xdate()
-
+            ax = create_time_series_plot()
             for key, ts_data in time_series.items():
                 label = " ".join(key.split(".")[1:]).capitalize()
-                self._ax_plot(ax, ts_data, label)
+                ax_plot_time_series(ax, ts_data, label)
 
             ax.legend()
             plt.show()
@@ -160,7 +172,9 @@ class ShopFilesAPI:
         self._po_client = po_client
 
     def retrieve_related_meta(
-        self, source_external_id: str, label_ext_id: Optional[Union[str, Sequence[str]]] = None
+        self,
+        source_external_id: str,
+        label_ext_id: Optional[Union[str, Sequence[str]]] = None,
     ) -> Sequence[FileMetadata]:
         relationships = retrieve_relationships_from_source_ext_id(
             self._po_client.cdf,
@@ -186,5 +200,8 @@ class ShopFilesAPI:
 
     def download(self, shop_file: ShopResultFile, dir_path: str) -> str:
         file_path = os.path.join(dir_path, shop_file.external_id)
-        self._po_client.cdf.files.download_to_path(path=file_path, external_id=shop_file.external_id)
+        self._po_client.cdf.files.download_to_path(
+            path=file_path,
+            external_id=shop_file.external_id,
+        )
         return file_path
