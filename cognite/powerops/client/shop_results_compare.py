@@ -4,11 +4,10 @@ import logging
 from datetime import datetime
 from typing import TYPE_CHECKING, Optional, Sequence
 
-import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
-from matplotlib.axes import Axes
 
 from cognite.powerops.client.shop_result_files import ShopYamlFile
+from cognite.powerops.utils.plotting import ax_plot_time_time_series
 
 if TYPE_CHECKING:
     from cognite.powerops import PowerOpsClient
@@ -16,13 +15,9 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
-class ShopRunCompareAPI:
+class ShopResultsCompareAPI:
     def __init__(self, po_client: PowerOpsClient):
         self._po_client = po_client
-
-    def _ax_plot(self, ax: Axes, time_series: dict, label: str):
-        ax.plot(time_series.keys(), time_series.values(), linestyle="-", marker=".", label=label)
-        ax.xaxis.set_major_formatter(mdates.DateFormatter("%d. %b %y %H:%M"))
 
     def time_series_plots(
         self, post_run_list: Sequence[ShopYamlFile], comparison_key: str, labels: Optional[Sequence[str]] = ()
@@ -32,7 +27,6 @@ class ShopRunCompareAPI:
         if labels and (len(labels) != len(set(labels)) or len(labels) != len(post_run_list)):
             logger.error("Titles mus be unique and match the number of provided post runs")
             return
-        print("post_run_list")
 
         plots: dict[str, dict[datetime, float]] = {}
 
@@ -44,6 +38,9 @@ class ShopRunCompareAPI:
         fig, ax = plt.subplots(figsize=(10, 10))
         fig.autofmt_xdate()
         for label, time_series in plots.items():
-            self._ax_plot(ax, time_series, label)
+            ax_plot_time_time_series(ax, time_series, label)
         ax.legend()
         plt.show()
+
+    def yaml_difference(self, yaml_1: ShopYamlFile, yaml_2: ShopYamlFile):
+        raise NotImplementedError()

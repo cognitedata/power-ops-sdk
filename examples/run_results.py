@@ -23,14 +23,14 @@ found_keys = post_run_1.find_time_series(
     # matches_object_name="KVER(3237)",
     matches_attribute_name="production",
 )
-# post_run_1.plot((found_keys[5], found_keys[6], found_keys[-1]))
+post_run_1.plot((found_keys[5], found_keys[6], found_keys[-1]))
+
 
 # COMPARING TWO SHOP RUN RESULTS
-
+# This is an arbitrary second run, so the difference is not meaningful
 SAMPLE_SHOP_RUN_EVENT_2 = "POWEROPS_SHOP_RUN_6336e7ae-722a-4c3a-a9bb-d719922e727f"
 
 COMPARISON_KEY = "model.market.1.buy_price"
-
 
 sample_run_results_2 = powerops.shop.runs.retrieve(SAMPLE_SHOP_RUN_EVENT_2).get_results()
 
@@ -42,8 +42,8 @@ runs = (
     post_run_2,
 )
 
-powerops.shop.compare.time_series_plots(
-    post_run_list=runs, comparison_key=COMPARISON_KEY, labels=["Example 1", "Example 2"]  # optional
+powerops.shop.results.compare.time_series_plots(
+    post_run_list=runs, comparison_key=COMPARISON_KEY, labels=["Example 1", "Example 2"]  # optional labels
 )
 
 # _path = sample_run_results.post_run.save()

@@ -8,14 +8,13 @@ from datetime import datetime
 from pathlib import Path
 from typing import TYPE_CHECKING, Generic, Optional, Sequence, TextIO, TypeVar, Union
 
-import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 import yaml
 from cognite.client.data_classes import FileMetadata
-from matplotlib.axes import Axes
 
 from cognite.powerops.utils.cdf_utils import retrieve_relationships_from_source_ext_id
 from cognite.powerops.utils.dotget import DotDict
+from cognite.powerops.utils.plotting import ax_plot_time_time_series
 
 if TYPE_CHECKING:
     from cognite.powerops import PowerOpsClient
@@ -139,10 +138,6 @@ class ShopYamlFile(ShopResultFile[dict], DotDict):
                         keys.append(f"model.{key1}.{key2}.{key3}")
         return keys
 
-    def _ax_plot(self, ax: Axes, time_series: dict, label: str):
-        ax.plot(time_series.keys(), time_series.values(), linestyle="-", marker=".", label=label)
-        ax.xaxis.set_major_formatter(mdates.DateFormatter("%d. %b %y %H:%M"))
-
     def plot(self, keys=Union[str, Sequence[str]]):
         if time_series := self._prepare_plot_time_series(keys):
             fig, ax = plt.subplots(figsize=(10, 10))
@@ -150,7 +145,7 @@ class ShopYamlFile(ShopResultFile[dict], DotDict):
 
             for key, ts_data in time_series.items():
                 label = " ".join(key.split(".")[1:]).capitalize()
-                self._ax_plot(ax, ts_data, label)
+                ax_plot_time_time_series(ax, ts_data, label)
 
             ax.legend()
             plt.show()
