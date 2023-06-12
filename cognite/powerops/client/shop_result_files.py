@@ -113,9 +113,9 @@ class ShopYamlFile(ShopResultFile[dict], DotDict):
             keys = [keys]
         return {key: self._retrieve_time_series_dict(key) for key in keys}
 
-    def _case_insensitive_str_in_list(self, str_list: list[str], to_match: Union[str, int]) -> bool:
+    def _case_insensitive_filter_out(self, str_list: list[str], to_match: Union[str, int]) -> bool:
         """Some keys are parsed as numbers by the yaml parser"""
-        return any(str(to_match).lower() == str_in_list.lower() for str_in_list in str_list)
+        return all(str(to_match).lower() != str_in_list.lower() for str_in_list in str_list)
 
     def find_time_series(
         self,
@@ -136,20 +136,17 @@ class ShopYamlFile(ShopResultFile[dict], DotDict):
         keys = []
         model = self["model"]
         for key1 in model:
-            if matches_object_types and self._case_insensitive_str_in_list(
-                matches_object_types,
-                key1,
-            ):
+            if matches_object_types and self._case_insensitive_filter_out(matches_object_types, key1):
                 continue
             object_type = model[key1]
             for key2, object_name in object_type.items():
-                if matches_object_names and self._case_insensitive_str_in_list(
+                if matches_object_names and self._case_insensitive_filter_out(
                     matches_object_names,
                     key2,
                 ):
                     continue
                 for key3 in object_name:
-                    if matches_attribute_names and self._case_insensitive_str_in_list(
+                    if matches_attribute_names and self._case_insensitive_filter_out(
                         matches_attribute_names,
                         key3,
                     ):
