@@ -13,12 +13,6 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## [0.10.1] - 12-06-23
-### Added
-
-* Ability to plot shop run results from the generated shop run report.
-
-
 ## [0.10.0] - 06-06-23
 ### Added
 
