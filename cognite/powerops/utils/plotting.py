@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 from matplotlib.axes import Axes
@@ -11,7 +13,7 @@ def create_time_series_plot() -> Axes:
 
 def ax_plot_time_series(
     ax: Axes,
-    time_series: dict,
+    time_series: dict[datetime, float],
     label: str,
 ):
     ax.plot(

@@ -23,7 +23,7 @@ class ShopResultsCompareAPI:
         self,
         post_run_list: Sequence[ShopYamlFile],
         comparison_key: str,
-        labels: Optional[Sequence[str]] = (),
+        labels: Optional[Sequence[str]] = None,
     ):
         """Stacked line charts of the given post runs at the same key.
         Labels must be in the same order as the post runs."""

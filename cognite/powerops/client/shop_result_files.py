@@ -115,9 +115,9 @@ class ShopYamlFile(ShopResultFile[dict], DotDict):
 
     def find_time_series(
         self,
-        matches_object_type="",
-        matches_object_name="",
-        matches_attribute_name="",
+        matches_object_type: str = "",
+        matches_object_name: str = "",
+        matches_attribute_name: str = "",
     ) -> list[str]:
         """Find time series in the results file. Some keys are parsed as numbers"""
         # TODO: accept either a single string or a list of strings
