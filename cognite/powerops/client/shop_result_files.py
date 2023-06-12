@@ -113,25 +113,46 @@ class ShopYamlFile(ShopResultFile[dict], DotDict):
             keys = [keys]
         return {key: self._retrieve_time_series_dict(key) for key in keys}
 
+    def _case_insensitive_str_in_list(self, str_list: list[str], to_match: Union[str, int]) -> bool:
+        """Some keys are parsed as numbers by the yaml parser"""
+        return any(str(to_match).lower() == str_in_list.lower() for str_in_list in str_list)
+
     def find_time_series(
         self,
-        matches_object_type: str = "",
-        matches_object_name: str = "",
-        matches_attribute_name: str = "",
+        matches_object_types: Union[Sequence[str], str] = "",
+        matches_object_names: Union[Sequence[str], str] = "",
+        matches_attribute_names: Union[Sequence[str], str] = "",
     ) -> list[str]:
-        """Find time series in the results file. Some keys are parsed as numbers"""
-        # TODO: accept either a single string or a list of strings
+        """Find time series in the results file"""
+        if matches_object_types and isinstance(matches_object_types, str):
+            matches_object_types = [matches_object_types]
+
+        if matches_object_names and isinstance(matches_object_names, str):
+            matches_object_names = [matches_object_names]
+
+        if matches_attribute_names and isinstance(matches_attribute_names, str):
+            matches_attribute_names = [matches_attribute_names]
+
         keys = []
         model = self["model"]
         for key1 in model:
-            if matches_object_type and matches_object_type.lower() != str(key1).lower():
+            if matches_object_types and self._case_insensitive_str_in_list(
+                matches_object_types,
+                key1,
+            ):
                 continue
             object_type = model[key1]
             for key2, object_name in object_type.items():
-                if matches_object_name and matches_object_name.lower() != str(key2).lower():
+                if matches_object_names and self._case_insensitive_str_in_list(
+                    matches_object_names,
+                    key2,
+                ):
                     continue
                 for key3 in object_name:
-                    if matches_attribute_name and matches_attribute_name.lower() != str(key3).lower():
+                    if matches_attribute_names and self._case_insensitive_str_in_list(
+                        matches_attribute_names,
+                        key3,
+                    ):
                         continue
                     attribute = object_name[key3]
                     if isinstance(attribute, dict) and all(isinstance(x, datetime) for x in attribute.keys()):
