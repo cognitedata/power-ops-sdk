@@ -11,7 +11,6 @@ import yaml
 from cognite.client.data_classes import FileMetadata
 
 from cognite.powerops.utils.cdf_utils import retrieve_relationships_from_source_ext_id
-from cognite.powerops.utils.dotget import DotDict
 
 if TYPE_CHECKING:
     from cognite.powerops import PowerOpsClient
@@ -79,7 +78,7 @@ class ShopLogFile(ShopResultFile[str]):
         return self.data
 
 
-class ShopYamlFile(ShopResultFile[dict], DotDict):
+class ShopYamlFile(ShopResultFile[dict]):
     """Yaml-formatted results file (for post_run.yaml file created by SHOP)."""
 
     def _parse_file(self, file: TextIO) -> dict:

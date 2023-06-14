@@ -33,14 +33,14 @@ case = Case.load_yaml(case_file)
 
 
 # get a value:
-print(case["model.creek_intake.Golebiowski_intake.net_head"])
+print(case.data["model"]["creek_intake"]["Golebiowski_intake"]["net_head"])
 
 # get a list:
-print(case["model.generator.Holen_G1.gen_eff_curve.y"])
+print(case.data["model"]["generator"]["Holen_G1"]["gen_eff_curve"]["y"])
 
 # modify a list: a gen_eff_curve, add +10 to Y:
-case["model.generator.Holen_G1.gen_eff_curve.y"] = [
-    val + 10 for val in case["model.generator.Holen_G1.gen_eff_curve.y"]
+case.data["model"]["generator"]["Holen_G1"]["gen_eff_curve.y"] = [
+    val + 10 for val in case.data["model"]["generator"]["Holen_G1"]["gen_eff_curve"]["y"]
 ]
 # TODO ^ Cast lists to pd.Series automatically? Then need to handle setter, too.
 
@@ -50,4 +50,4 @@ case.save_yaml(edited_case_file)
 
 # (just for show) load that exported yaml and check the edited curve:
 case2 = Case.load_yaml(edited_case_file)
-pprint(case2["model.generator.Holen_G1.gen_eff_curve"])
+pprint(case2.data["model"]["generator"]["Holen_G1"]["gen_eff_curve"])
