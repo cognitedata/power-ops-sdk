@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-import contextlib
 import json
 import logging
 from functools import cached_property
+from json import JSONDecodeError
 from typing import TYPE_CHECKING, Optional, Union
 
 import pandas as pd
@@ -196,11 +196,12 @@ class ShopRunResultsAPI:
             # This shape will always be (72, 7) 72 fields and 7 properties of each field
             column_definitions_df = pd.DataFrame(seq.columns)
 
-            penalty_breakdown = {}
-            with contextlib.suppress(Exception):
+            try:
                 penalty_breakdown = json.loads(seq.metadata.get("shop:penalty_breakdown", {}))
                 if type(penalty_breakdown) != dict:
                     penalty_breakdown = {}
+            except JSONDecodeError:
+                penalty_breakdown = {}
 
             return ObjectiveFunction(
                 external_id=seq.external_id,
