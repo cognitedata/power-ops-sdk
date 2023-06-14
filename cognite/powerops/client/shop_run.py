@@ -24,6 +24,9 @@ logger = logging.getLogger(__name__)
 InputFileTypeT = Literal["case", "cut", "mapping", "extra"]
 
 
+RUN_SHOP_URL = "https://power-ops-api.staging.{cluster}.cognite.ai/{project}/run-shop"
+
+
 class ShopRun:
     class Status(Enum):
         IN_PROGRESS = "IN_PROGRESS"
@@ -174,11 +177,10 @@ class ShopRunsAPI:
         cdf_config = self._po_client.cdf.config
         project = cdf_config.project
         cluster = cdf_config.base_url.split("//")[1].split(".")[0]
-        url = f"https://power-ops-api.staging.{cluster}.cognite.ai/{project}/run-shop"
         auth_header = dict([cdf_config.credentials.authorization_header()])
 
         response = requests.post(
-            url,
+            RUN_SHOP_URL.format(cluster=cluster, project=project),
             json={
                 "shopEventExternalId": shop_run_external_id,
                 "datasetId": self._po_client.write_dataset_id,
