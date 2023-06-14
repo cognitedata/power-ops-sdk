@@ -166,11 +166,11 @@ class ShopRunResultsAPI:
         for metadata in related_log_files:
             ext_id = metadata.external_id
             if ext_id.endswith(".log") and "cplex" in ext_id:
-                cplex: Optional[ShopLogFile] = self._po_client.shop.files.retrieve(metadata, ShopLogFile)
+                cplex: Optional[ShopLogFile] = ShopLogFile(self._po_client, metadata)
             elif ext_id.endswith(".log") and "shop_messages" in ext_id:
-                shop_messages: Optional[ShopLogFile] = self._po_client.shop.files.retrieve(metadata, ShopLogFile)
+                shop_messages: Optional[ShopLogFile] = ShopLogFile(self._po_client, metadata)
             elif ext_id.endswith(".yaml"):
-                post_run: Optional[ShopYamlFile] = self._po_client.shop.files.retrieve(metadata, ShopYamlFile)
+                post_run: Optional[ShopYamlFile] = ShopYamlFile(self._po_client, metadata)
             else:
                 logger.error("Unknown file type")
         return ShopRunResult(self._po_client, shop_run, cplex, shop_messages, post_run)
