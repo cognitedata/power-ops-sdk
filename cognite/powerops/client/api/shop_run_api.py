@@ -3,15 +3,13 @@ from __future__ import annotations
 import json
 import logging
 import os
-import time
-from enum import Enum
 from typing import TYPE_CHECKING, BinaryIO, Literal, TextIO, Union
 
 import requests
 from cognite.client.data_classes import Event, FileMetadata
 
 from cognite.powerops.case.shop_run_event import ShopRunEvent
-from cognite.powerops.client.shop_results import ShopRunResult
+from cognite.powerops.client.data_classes.shop_run import ShopRun
 from cognite.powerops.utils.cdf_utils import retrieve_event, simple_relationship
 from cognite.powerops.utils.labels import RelationshipLabels
 
@@ -25,57 +23,6 @@ InputFileTypeT = Literal["case", "cut", "mapping", "extra"]
 
 
 RUN_SHOP_URL = "https://power-ops-api.staging.{cluster}.cognite.ai/{project}/run-shop"
-
-
-class ShopRun:
-    class Status(Enum):
-        IN_PROGRESS = "IN_PROGRESS"
-        SUCCEEDED = "SUCCEEDED"
-        FAILED = "FAILED"
-
-    def __init__(
-        self,
-        po_client: PowerOpsClient,
-        *,
-        shop_run_event: ShopRunEvent,
-    ) -> None:
-        self._po_client = po_client
-        self.shop_run_event = shop_run_event
-
-    @property
-    def in_progress(self) -> bool:
-        return self.status == ShopRun.Status.IN_PROGRESS
-
-    @property
-    def succeeded(self) -> bool:
-        return self.status == ShopRun.Status.SUCCEEDED
-
-    @property
-    def failed(self) -> bool:
-        return self.status == ShopRun.Status.FAILED
-
-    @property
-    def status(self) -> ShopRun.Status:
-        return self._po_client.shop.runs.retrieve_status(self.shop_run_event.external_id)
-
-    def wait_until_complete(self) -> None:
-        while self.in_progress:
-            logger.debug(f"{self.shop_run_event.external_id} is still running...")
-            time.sleep(3)
-        logger.debug(f"{self.shop_run_event.external_id} finished.")
-
-    def get_results(self, wait: bool = True) -> ShopRunResult:
-        if wait:
-            if self.in_progress:
-                logger.warning(f"{self.shop_run_event.external_id} is still running, waiting for results...")
-            self.wait_until_complete()
-        return self._po_client.shop.results.retrieve(self)
-
-    def __repr__(self) -> str:
-        return f'<ShopRun status="{self.status}" event_external_id="{self.shop_run_event.external_id}">'
-
-    def __str__(self) -> str:
-        return self.__repr__()
 
 
 class ShopRunsAPI:
