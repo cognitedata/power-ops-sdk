@@ -46,7 +46,7 @@ class ShopRunResult:
 
     @cached_property
     def objective_function(self) -> ObjectiveFunction:
-        return self._po_client.shop.results.get_objective_function(self._shop_run)
+        return self._po_client.shop.results.retrieve_objective_function(self._shop_run)
 
     def error_message(self) -> Optional[str]:
         if not self._shop_run.succeeded:
@@ -175,7 +175,7 @@ class ShopRunResultsAPI:
                 logger.error("Unknown file type")
         return ShopRunResult(self._po_client, shop_run, cplex, shop_messages, post_run)
 
-    def get_objective_function(self, shop_run: ShopRun) -> ObjectiveFunction:
+    def retrieve_objective_function(self, shop_run: ShopRun) -> ObjectiveFunction:
         # TODO: ability to retrieve the objective function from the post run yaml file
         cdf: CogniteClient = self._po_client.cdf
         relationships = retrieve_relationships_from_source_ext_id(
