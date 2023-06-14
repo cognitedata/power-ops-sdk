@@ -53,7 +53,7 @@ class ShopRun:
 
     @property
     def status(self) -> ShopRun.Status:
-        return self._po_client.shop.runs.get_status_for(self.shop_run_event.external_id)
+        return self._po_client.shop.runs.retrieve_status(self.shop_run_event.external_id)
 
     def wait_until_complete(self) -> None:
         while self.in_progress:
@@ -200,7 +200,7 @@ class ShopRunsAPI:
             shop_run_event=ShopRunEvent.from_event(event),
         )
 
-    def get_status_for(self, shop_run_external_id: str) -> ShopRun.Status:
+    def retrieve_status(self, shop_run_external_id: str) -> ShopRun.Status:
         event = retrieve_event(self._po_client.cdf, shop_run_external_id)
         logger.debug(f"Reading status from event {event.external_id}.")
 
