@@ -159,7 +159,7 @@ class ShopRunResultsAPI:
         cplex = None
         shop_messages = None
 
-        related_log_files = self._po_client.shop.files.retrieve_related_meta(
+        related_log_files = self._po_client.shop.files.retrieve_related_files_metadata(
             source_external_id=shop_run.shop_run_event.external_id,
             label_ext_id=RelationshipLabels.LOG_FILE,
         )
