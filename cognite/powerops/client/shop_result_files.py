@@ -125,7 +125,5 @@ class ShopFilesAPI:
             ignore_unknown_ids=True,
         )
 
-    def download(self, shop_file: ShopResultFile, dir_path: str) -> str:
-        file_path = os.path.join(dir_path, shop_file.external_id)
-        self._po_client.cdf.files.download_to_path(path=file_path, external_id=shop_file.external_id)
-        return file_path
+    def download_to_disk(self, shop_file_id: str, dir_path: Path) -> None:
+        self._po_client.cdf.files.download_to_path(path=dir_path / shop_file_id, external_id=shop_file_id)
