@@ -195,7 +195,6 @@ class ShopRunsAPI:
         raise NotImplementedError()
 
     def retrieve(self, external_id: str) -> ShopRun:
-        logger.info(f"Retrieving event '{external_id}'.")
         event = self._po_client.cdf.events.retrieve(external_id=external_id)
         return ShopRun(
             self._po_client,
