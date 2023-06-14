@@ -46,7 +46,7 @@ class ShopResultFile(abc.ABC, Generic[FileContentTypeT]):
 
     def _download(self) -> FileContentTypeT:
         with tempfile.TemporaryDirectory() as tmp_dir:
-            tmp_path = self._po_client.shop.files.download(self, tmp_dir)
+            tmp_path = self._po_client.shop.files.download_to_disk(self.external_id, Path(tmp_dir))
             try:
                 with open(tmp_path, "r", encoding=self.encoding) as downloaded_file:
                     return self._parse_file(downloaded_file)
@@ -126,4 +126,5 @@ class ShopFilesAPI:
         )
 
     def download_to_disk(self, shop_file_id: str, dir_path: Path) -> None:
+        """Download a file from CDF to local filesystem."""
         self._po_client.cdf.files.download_to_path(path=dir_path / shop_file_id, external_id=shop_file_id)
