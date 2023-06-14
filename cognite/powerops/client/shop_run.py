@@ -66,7 +66,7 @@ class ShopRun:
             if self.in_progress:
                 logger.warning(f"{self.shop_run_event.external_id} is still running, waiting for results...")
             self.wait_until_complete()
-        return self._po_client.shop.results.get_for_run(self)
+        return self._po_client.shop.results.retrieve(self)
 
     def __repr__(self) -> str:
         return f'<ShopRun status="{self.status}" event_external_id="{self.shop_run_event.external_id}">'

@@ -151,7 +151,7 @@ class ShopRunResultsAPI:
     def __init__(self, po_client: PowerOpsClient):
         self._po_client = po_client
 
-    def get_for_run(self, shop_run: ShopRun) -> ShopRunResult:
+    def retrieve(self, shop_run: ShopRun) -> ShopRunResult:
         if shop_run.in_progress:
             raise ValueError("ShopRun not completed.")
 
