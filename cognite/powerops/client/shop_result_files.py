@@ -46,7 +46,8 @@ class ShopResultFile(abc.ABC, Generic[FileContentTypeT]):
 
     def _download(self) -> FileContentTypeT:
         with tempfile.TemporaryDirectory() as tmp_dir:
-            tmp_path = self._po_client.shop.files.download_to_disk(self.external_id, Path(tmp_dir))
+            self._po_client.shop.files.download_to_disk(self.external_id, Path(tmp_dir))
+            tmp_path = Path(tmp_dir) / self.external_id
             try:
                 with open(tmp_path, "r", encoding=self.encoding) as downloaded_file:
                     return self._parse_file(downloaded_file)
