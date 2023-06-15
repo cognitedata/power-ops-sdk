@@ -41,6 +41,8 @@ retry = "^0.9.2"
 loguru = "^0.6.0"
 deepdiff = "^6.3.0"
 cognite-gql-pygen = "0.4.4"
+dacite = "^1.8.1"
+python-dotenv = "^1.0.0"
 
 [tool.poetry.scripts]
 powerops = "cognite.powerops.main:main"
@@ -60,4 +62,4 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.pytest.ini_options]
-addopts = "--doctest-modules --ignore-glob=examples/*"
+addopts = "--doctest-modules --ignore-glob=examples/* --ignore-glob=cognite/powerops/preprocessor/test_data/otta_base.py"
