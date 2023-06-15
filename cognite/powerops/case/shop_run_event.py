@@ -25,6 +25,9 @@ class ShopRunEvent:
     endtime: str
     timeresolution: Optional[dict[str, int]] = None
     dynamic_minute_offset: Optional[int] = None
+    dm_case: Optional[str] = None
+    dm_space: Optional[str] = None
+    manual_run: bool = False
 
     def __post_init__(self):
         if self.starttime:
@@ -45,7 +48,12 @@ class ShopRunEvent:
             "shop:starttime": self.starttime,
             "shop:endtime": self.endtime,
             "process_type": self.process_type,
+            "shop:manual_run": self.manual_run,
         }
+        if self.dm_case is not None:
+            specific_metadata["dm:case"] = self.dm_case
+        if self.dm_space is not None:
+            specific_metadata["dm:space"] = self.dm_space
         if self.timeresolution is not None:
             specific_metadata["shop:timeresolution"] = json.dumps(self.timeresolution)
         if self.dynamic_minute_offset is not None:
@@ -71,6 +79,7 @@ class ShopRunEvent:
             endtime=event.metadata["shop:endtime"],
             timeresolution=json.loads(event.metadata.get("shop:timeresolution", "null")),
             dynamic_minute_offset=event.metadata.get("shop:dynamic_minute_offset"),
+            manual_run=event.metadata.get("manual_run", False),
         )
         if event.external_id:
             instance.external_id = event.external_id

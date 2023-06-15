@@ -41,6 +41,7 @@ class ShopRunsAPI:
             starttime=case["time.starttime"],
             endtime=case["time.endtime"],
             timeresolution=case["time.timeresolution"],
+            manual_run=True,
         )
         logger.debug(f"Uploading event '{shop_run_event.external_id}'.")
         case_file_meta = self._upload_input_file_bytes(case.yaml.encode(), shop_run_event, file_type="case")
@@ -74,9 +75,7 @@ class ShopRunsAPI:
             preprocessor_metadata["extra_files"].append({"external_id": extra_file_meta.external_id})
 
         event.metadata["shop:preprocessor_data"] = json.dumps(preprocessor_metadata)
-        event.metadata["shop:manual_run"] = "yes"
-        # avoid event being picked up by sniffer
-        event.metadata["processed"] = "yes"
+        event.metadata["processed"] = "yes"  # avoid event being picked up by sniffer
         self._po_client.cdf.events.create(event)
         return ShopRun(self._po_client, shop_run_event=shop_run_event)
 
