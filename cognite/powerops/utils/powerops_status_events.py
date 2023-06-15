@@ -1,12 +1,12 @@
+import datetime
 from uuid import uuid4
 
-import arrow
 from cognite.client.data_classes import Event
 
 
 def create_bootstrap_finished_event() -> Event:
     """Creating a POWEROPS_BOOTSTRAP_FINISHED Event in CDF to signal that bootstrap scripts have been ran"""
-    current_time = arrow.utcnow().int_timestamp * 1000  # timestamp in millis
+    current_time = int(datetime.datetime.utcnow().timestamp() * 1000)  # in milliseconds
     event = Event(
         start_time=current_time,
         end_time=current_time,
