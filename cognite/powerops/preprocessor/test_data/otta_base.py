@@ -4,7 +4,7 @@ import pandas as pd
 from dotenv import dotenv_values
 from yaml import safe_load
 
-from ..utils import get_cdf_client
+from cognite.powerops.preprocessor.utils import get_cdf_client
 
 
 def make_base_mapping(row) -> dict:
