@@ -71,5 +71,5 @@ def test_load_yaml(tmp_dir):
     with tempfile.NamedTemporaryFile("w", dir=tmp_dir) as fh:
         fh.write("foo:\n  bar")
         fh.flush()
-        case = Case.load_yaml(fh.name)
+        case = Case.from_yaml_file(fh.name)
     assert case.data == {"foo": "bar"}

@@ -5,12 +5,10 @@ import logging
 import os
 import tempfile
 from pathlib import Path
-from typing import TYPE_CHECKING, Generic, Optional, Sequence, TextIO, TypeVar, Union
+from typing import TYPE_CHECKING, Generic, TextIO, TypeVar, Union
 
 import yaml
 from cognite.client.data_classes import FileMetadata
-
-from cognite.powerops.utils.cdf_utils import retrieve_relationships_from_source_ext_id
 
 if TYPE_CHECKING:
     from cognite.powerops import PowerOpsClient
@@ -45,9 +43,25 @@ class ShopResultFile(abc.ABC, Generic[FileContentTypeT]):
 
     def _download(self) -> FileContentTypeT:
         with tempfile.TemporaryDirectory() as tmp_dir:
-            tmp_path = self._po_client.shop.files.download(self, tmp_dir)
-            with open(tmp_path, "r", encoding=self.encoding) as downloaded_file:
-                return self._parse_file(downloaded_file)
+            self._po_client.shop.files.download_to_disk(self.external_id, Path(tmp_dir))
+            tmp_path = Path(tmp_dir) / self.external_id
+            try:
+                with open(tmp_path, "r", encoding=self.encoding) as downloaded_file:
+                    return self._parse_file(downloaded_file)
+            except UnicodeDecodeError:
+                return self._download_w_wrong_encoding(tmp_path)
+
+    def _download_w_wrong_encoding(self, tmp_path: str) -> FileContentTypeT:
+        """
+        Some files are uploaded to CDF with latin-1 encoding, most with utf-8.
+        When utf-8 fails, we try latin-1.
+        """
+        if self._encoding != "latin1":
+            encoding = "latin-1"
+            with open(tmp_path, "r", encoding=encoding) as downloaded_file:
+                value = self._parse_file(downloaded_file)
+            self._encoding = encoding
+        return value
 
     def _parse_file(self, file: TextIO) -> FileContentTypeT:
         """Read downloaded file and return data."""
@@ -87,37 +101,3 @@ class ShopYamlFile(ShopResultFile[dict]):
     @property
     def file_content(self) -> str:
         return yaml.safe_dump(self.data, sort_keys=False)
-
-
-class ShopFilesAPI:
-    def __init__(self, po_client: PowerOpsClient) -> None:
-        self._po_client = po_client
-
-    def retrieve_related_meta(
-        self, source_external_id: str, label_ext_id: Optional[Union[str, Sequence[str]]] = None
-    ) -> Sequence[FileMetadata]:
-        relationships = retrieve_relationships_from_source_ext_id(
-            self._po_client.cdf,
-            source_ext_id=source_external_id,
-            label_ext_id=label_ext_id,
-            target_types=["file"],
-        )
-        if not relationships:
-            return []
-        return self._po_client.cdf.files.retrieve_multiple(
-            external_ids=[rel.target_external_id for rel in relationships],
-            ignore_unknown_ids=True,
-        )
-
-    def retrieve(self, file_metadata: FileMetadata, shop_file_type: ShopResultFile) -> Optional[ShopResultFile]:
-        try:
-            shop_file = shop_file_type(self._po_client, file_metadata)  # TODO add encoding to metametadata!
-        except Exception as exc:
-            logger.error(f"Cannot retrieve result file: {file_metadata.external_id}\n{exc}")
-            shop_file = None
-        return shop_file
-
-    def download(self, shop_file: ShopResultFile, dir_path: str) -> str:
-        file_path = os.path.join(dir_path, shop_file.external_id)
-        self._po_client.cdf.files.download_to_path(path=file_path, external_id=shop_file.external_id)
-        return file_path
