@@ -13,8 +13,13 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.12.0] - 15-06-23
+### Added
+
+* CogShop preprocessor, moved from dedicated repo.
+
 ## [0.11.0] - 08-06-23
-### Feature
+### Added
 
 * Allow customers to specify default bid config per price area
 
