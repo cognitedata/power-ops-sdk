@@ -25,7 +25,7 @@ class Case(DotDict):
         * Dot syntax is also supported.
      * Can hold references to additional files ("extra files").
         * These are just paths to files, their content is not accessed here.
-     * Loading from string or file (with `Case.load_yaml(path_to_yaml)`).
+     * Loading from string or file (with `Case.from_yaml_file(path_to_yaml)`).
      * Saving to yaml (with `case.save_yaml(path_to_file)`).
 
     Examples:
@@ -49,7 +49,7 @@ class Case(DotDict):
           101
 
       * load from and save to a file:
-          case = Case.load_yaml("path/to/my_case.yaml")
+          case = Case.from_yaml_file("path/to/my_case.yaml")
           case[...] = ...  # edit data
           case.save_yaml("path/to/same_or_different.yaml")
     """
@@ -83,7 +83,7 @@ class Case(DotDict):
             self.add_extra_file(tmp_file.name)
 
     @classmethod
-    def load_yaml(cls, yaml_path: str, encoding: str = "utf-8") -> Case:
+    def from_yaml_file(cls, yaml_path: str, encoding: str = "utf-8") -> Case:
         logger.info(f"loading case file: {yaml_path}")
         with open(yaml_path, "r", encoding=encoding) as yaml_file:
             return cls(yaml_file.read())

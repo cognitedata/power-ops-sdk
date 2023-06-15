@@ -29,7 +29,7 @@ case_file = os.path.join(tmp_dir, file_meta.name)
 
 
 # load the file:
-case = Case.load_yaml(case_file)
+case = Case.from_yaml_file(case_file)
 
 
 # get a value:
@@ -49,5 +49,5 @@ edited_case_file = os.path.join(tmp_dir, "edited_case.yaml")
 case.save_yaml(edited_case_file)
 
 # (just for show) load that exported yaml and check the edited curve:
-case2 = Case.load_yaml(edited_case_file)
+case2 = Case.from_yaml_file(edited_case_file)
 pprint(case2["model.generator.Holen_G1.gen_eff_curve"])
