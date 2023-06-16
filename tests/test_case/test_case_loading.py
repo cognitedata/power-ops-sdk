@@ -5,7 +5,7 @@ import tempfile
 import pytest
 import yaml
 
-from cognite.powerops.case import Case
+from cognite.powerops.client.data_classes import Case
 
 
 @pytest.fixture

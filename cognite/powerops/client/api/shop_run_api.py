@@ -8,13 +8,13 @@ from typing import TYPE_CHECKING, BinaryIO, Literal, TextIO, Union
 import requests
 from cognite.client.data_classes import Event, FileMetadata
 
-from cognite.powerops.case.shop_run_event import ShopRunEvent
-from cognite.powerops.client.data_classes.shop_run import ShopRun
+from cognite.powerops.client.data_classes import ShopRun, ShopRunEvent
 from cognite.powerops.utils.cdf_utils import retrieve_event, simple_relationship
 from cognite.powerops.utils.labels import RelationshipLabels
 
 if TYPE_CHECKING:
-    from cognite.powerops import Case, PowerOpsClient
+    from cognite.powerops.client import PowerOpsClient
+    from cognite.powerops.client.data_classes import Case
 
 logger = logging.getLogger(__name__)
 
