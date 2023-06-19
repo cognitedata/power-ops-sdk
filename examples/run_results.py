@@ -23,7 +23,7 @@ sample_run_results = sample_shop_run.get_results()
 
 print(f"sample_run_results: {sample_run_results}")
 print("-------")
-_path = sample_run_results.post_run.save()
+_path = sample_run_results.post_run.save_to_disk()
 print(f"_path: {_path}")
 
 
