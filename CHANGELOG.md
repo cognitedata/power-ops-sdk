@@ -12,7 +12,16 @@ Changes are grouped as follows
 - `Removed` for now removed features.
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
--
+
+
+## [0.15.0] - 19-06-23
+### Added
+
+* Ability to find time series keys in the shop generated YAML files, including some filtering.
+* Ability to plot several time series from one shop generated YAML file using matplotlib.
+* Ability to compare a time series from different shop runs in a plot view if they are accessible by the same keys.
+
+
 ## [0.14.0] - 19-06-23
 ### Added
 
@@ -22,6 +31,7 @@ Changes are grouped as follows
 ### Changed
 
 * Removed unnecessary dependencies
+
 
 ## [0.12.0] - 08-06-23
 ### Added

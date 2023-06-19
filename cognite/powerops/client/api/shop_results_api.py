@@ -10,6 +10,7 @@ from cognite.client import CogniteClient
 
 from cognite.powerops.client.data_classes.shop_result_files import ShopLogFile, ShopYamlFile
 from cognite.powerops.client.data_classes.shop_results import ObjectiveFunction, ShopRunResult
+from cognite.powerops.client.data_classes.shop_results_compare import ShopResultsCompare
 from cognite.powerops.utils.cdf_utils import retrieve_relationships_from_source_ext_id
 from cognite.powerops.utils.labels import RelationshipLabels
 
@@ -24,6 +25,7 @@ logger = logging.getLogger(__name__)
 class ShopRunResultsAPI:
     def __init__(self, po_client: PowerOpsClient):
         self._po_client = po_client
+        self.compare = ShopResultsCompare()
 
     def retrieve(self, shop_run: ShopRun) -> ShopRunResult:
         if shop_run.in_progress:

@@ -100,7 +100,7 @@ def retrieve_relationships_from_source_ext_id(
     client: CogniteClient,
     source_ext_id: str,
     label_ext_id: Optional[Union[str, list[str]]],
-    target_types: Sequence[str] = (),
+    target_types: Sequence[str] = None,
 ) -> RelationshipList:
     """
     Retrieve relationships between source and target using the source ext id.
@@ -115,5 +115,5 @@ def retrieve_relationships_from_source_ext_id(
         source_external_ids=[source_ext_id],
         labels=_labels,
         limit=-1,
-        target_types=target_types or None,
+        target_types=target_types,
     )

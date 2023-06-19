@@ -2,12 +2,18 @@ from __future__ import annotations
 
 import abc
 import logging
+import operator
 import os
+from datetime import datetime
+from functools import reduce
 from pathlib import Path
-from typing import Generic, TypeVar, Union
+from typing import Generic, Sequence, TypeVar, Union
 
 import yaml
 from cognite.client.data_classes import FileMetadata
+from matplotlib import pyplot as plt
+
+from cognite.powerops.utils.plotting import ax_plot_time_series, create_time_series_plot
 
 logger = logging.getLogger(__name__)
 
@@ -64,3 +70,81 @@ class ShopYamlFile(ShopResultFile[dict]):
     @property
     def file_content(self) -> str:
         return yaml.safe_dump(self.data, sort_keys=False)
+
+    def _retrieve_time_series_dict(self, key: str) -> dict[datetime, float]:
+        # key is a dot separated string of nested keys
+        try:
+            # FIXME? This is a workaround for the nested keys without dot get and
+            # the fact that the yaml parser parses numeric keys as numbers
+            keys = [int(k) if k.isdigit() else k for k in key.split(".")]
+            data = reduce(operator.getitem, keys, self.data)
+            if not (
+                isinstance(data, dict)
+                and all(isinstance(k, datetime) for k in data.keys())
+                and all(isinstance(v, (float, int)) for v in data.values())
+            ):
+                raise ValueError
+            return data
+        except KeyError:
+            logger.error(f'Key "{key}" not found in {self.name}')
+        except ValueError:
+            logger.error(f'Data at with key "{key}" cannot be plotted as a time series')
+        return {}
+
+    def _prepare_plot_time_series(self, keys: Union[str, Sequence[str]]) -> dict:
+        if isinstance(keys, str):
+            keys = [keys]
+        return {key: self._retrieve_time_series_dict(key) for key in keys}
+
+    def _case_insensitive_filter_out(self, str_list: list[str], to_match: Union[str, int]) -> bool:
+        """Some keys are parsed as numbers by the yaml parser"""
+        return all(str(to_match).lower() != str_in_list.lower() for str_in_list in str_list)
+
+    def find_time_series(
+        self,
+        matches_object_types: Sequence[str] | str = "",
+        matches_object_names: Sequence[str] | str = "",
+        matches_attribute_names: Sequence[str] | str = "",
+    ) -> list[str]:
+        """Find time series in the results file"""
+        if matches_object_types and isinstance(matches_object_types, str):
+            matches_object_types = [matches_object_types]
+
+        if matches_object_names and isinstance(matches_object_names, str):
+            matches_object_names = [matches_object_names]
+
+        if matches_attribute_names and isinstance(matches_attribute_names, str):
+            matches_attribute_names = [matches_attribute_names]
+
+        keys = []
+        model = self.data["model"]
+        for key1 in model:
+            if matches_object_types and self._case_insensitive_filter_out(matches_object_types, key1):
+                continue
+            object_type: dict[str, dict] = model[key1]
+            for key2, object_name in object_type.items():
+                if matches_object_names and self._case_insensitive_filter_out(
+                    matches_object_names,
+                    key2,
+                ):
+                    continue
+                for key3 in object_name:
+                    if matches_attribute_names and self._case_insensitive_filter_out(
+                        matches_attribute_names,
+                        key3,
+                    ):
+                        continue
+                    attribute = object_name[key3]
+                    if isinstance(attribute, dict) and all(isinstance(x, datetime) for x in attribute.keys()):
+                        keys.append(f"model.{key1}.{key2}.{key3}")
+        return keys
+
+    def plot(self, keys=Union[str, Sequence[str]]):
+        if time_series := self._prepare_plot_time_series(keys):
+            ax = create_time_series_plot()
+            for key, ts_data in time_series.items():
+                label = " ".join(key.split(".")[1:]).capitalize()
+                ax_plot_time_series(ax, ts_data, label)
+
+            ax.legend()
+            plt.show()
