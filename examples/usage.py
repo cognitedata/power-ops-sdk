@@ -34,11 +34,11 @@ sample_case = powerops.shop.cases.create(model_template=sample_model, commands=[
 
 sample_run = powerops.shop.runs.trigger(case=sample_case)
 
-print(sample_run.is_complete())
+print(sample_run.in_progress)
 
 
-sample_run_results = powerops.shop.runs.trigger(case=sample_case).wait_until_complete()
+sample_run_results = powerops.shop.runs.trigger(case=sample_case).get_results()
 
 
-sample_run_results.logs.cplex.print()
-sample_run_results.logs.shop.print()
+print(sample_run_results.cplex)
+print(sample_run_results.shop)
