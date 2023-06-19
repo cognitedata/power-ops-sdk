@@ -38,9 +38,9 @@ class ShopRunsAPI:
     def _upload_to_cdf(self, case: Case) -> ShopRun:
         shop_run_event = ShopRunEvent(
             watercourse="",
-            starttime=case["time.starttime"],
-            endtime=case["time.endtime"],
-            timeresolution=case["time.timeresolution"],
+            starttime=case.data["time"]["starttime"],
+            endtime=case.data["time"]["endtime"],
+            timeresolution=case.data["time"]["timeresolution"],
             manual_run=True,
         )
         logger.debug(f"Uploading event '{shop_run_event.external_id}'.")

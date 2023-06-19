@@ -25,4 +25,4 @@ print(run.in_progress)
 
 results = run.get_results()
 print(results)
-pprint(results.post_run["commands"])
+pprint(results.post_run.data["commands"])
