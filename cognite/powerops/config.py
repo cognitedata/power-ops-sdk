@@ -37,6 +37,14 @@ class Watercourse(BaseModel):
 
 
 class WatercourseConfig(Watercourse):
+    """
+    Represents the configuration for a Watercourse
+
+    Attributes:
+        version: The version of the watercourse configuration.
+
+    """
+
     version: str
     market_to_price_area: Dict[str, str]
     directory: str
