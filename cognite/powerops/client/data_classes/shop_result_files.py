@@ -102,9 +102,9 @@ class ShopYamlFile(ShopResultFile[dict]):
 
     def find_time_series(
         self,
-        matches_object_types: Union[Sequence[str], str] = "",
-        matches_object_names: Union[Sequence[str], str] = "",
-        matches_attribute_names: Union[Sequence[str], str] = "",
+        matches_object_types: Sequence[str] | str = "",
+        matches_object_names: Sequence[str] | str = "",
+        matches_attribute_names: Sequence[str] | str = "",
     ) -> list[str]:
         """Find time series in the results file"""
         if matches_object_types and isinstance(matches_object_types, str):
