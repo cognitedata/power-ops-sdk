@@ -49,37 +49,6 @@ baz: zzz
     assert extra == "baz: zzz\n"
 
 
-def test_getitem(case):
-    assert case["foo.zzz"] == 42
-    assert case["foo.bar"] == ["baz1", "baz2"]
-    assert case["foo.bar.1"] == "baz2"
-    with pytest.raises(KeyError):
-        _ = case["doesntexist"]
-
-
-def test_itemgetter_dots():
-    case = Case(
-        """
-    foo.bar:
-      zzz: 42
-    """
-    )
-    assert case["foo.bar"] == {"zzz": 42}
-    with pytest.raises(KeyError):
-        _ = case["foo.bar.zzz"]
-    # TODO this ^ could be implemented with a smarter lookup
-
-
-def test_setitem_1(case):
-    case["foo.zzz"] = 123
-    assert case.data["foo"]["zzz"] == 123
-
-
-def test_setitem_list(case):
-    case["foo.bar.0"] = "baz0"
-    assert case.data["foo"]["bar"] == ["baz0", "baz2"]
-
-
 def test_yaml(case):
     expected = """foo:
   bar:

@@ -6,8 +6,6 @@ from typing import List, Optional, TypedDict
 
 import yaml
 
-from cognite.powerops.utils.dotget import DotDict
-
 logger = logging.getLogger(__name__)
 
 
@@ -16,13 +14,12 @@ class FileRefT(TypedDict):
     encoding: str
 
 
-class Case(DotDict):
+class Case:
     r"""
     Wrapper around YAML file for SHOP, describing a case.
 
     Main features:
      * Values can be retrieved or set / changed like with a dict.
-        * Dot syntax is also supported.
      * Can hold references to additional files ("extra files").
         * These are just paths to files, their content is not accessed here.
      * Loading from string or file (with `Case.from_yaml_file(path_to_yaml)`).
@@ -39,14 +36,9 @@ class Case(DotDict):
           {'foo': {'bar1': 11, 'bar2': 22}}
 
       * edit a value and show updated data
-          >>> case["foo"]["bar2"] = 202
+          >>> case.data["foo"]["bar2"] = 202
           >>> case.yaml
           'foo:\n  bar1: 11\n  bar2: 202\n'
-
-      * dot-notation, just for convenience
-          >>> case["foo.bar1"] = 101
-          >>> case["foo.bar1"]
-          101
 
       * load from and save to a file:
           case = Case.from_yaml_file("path/to/my_case.yaml")
