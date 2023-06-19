@@ -14,6 +14,14 @@ Changes are grouped as follows
 - `Security` in case of vulnerabilities.
 
 
+## [0.13.0] - 06-06-23
+### Added
+
+* Ability to find time series keys in the shop generated YAML files, including some filtering.
+* Ability to plot several time series from one shop generated YAML file.
+* Ability to compare a time series from different shop runs in a plot view if they are accessible by the same keys.
+
+
 ## [0.12.0] - 08-06-23
 ### Added
 

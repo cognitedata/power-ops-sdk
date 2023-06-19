@@ -14,27 +14,27 @@ sample_run_results_1 = powerops.shop.runs.retrieve(SAMPLE_SHOP_RUN_EVENT_1).get_
 
 print(f"{sample_run_results_1=}")
 
-# OBJECTIVE
-objective = sample_run_results_1.objective_function
-print(f"objective_function: {objective}")
+# # OBJECTIVE
+# objective = sample_run_results_1.objective_function
+# print(f"objective_function: {objective}")
 
 # print(objective.data)
-print(objective.data_as_str())
-print(objective.watercourse)
+# print(objective.data_as_str())
+# print(objective.watercourse)
 # print(objective.penalty_breakdown)
-print(objective.penalty_breakdown_as_str())
+# print(objective.penalty_breakdown_as_str())
 
 
 # PLOTTING A POST RUN TIME SERIES
 
 post_run_1 = sample_run_results_1.post_run
 
-found_keys = post_run_1.find_time_series(
-    matches_object_types=["generator", "plant"],
-    matches_object_names=["KVER(3237)", "REND(3192)", "BRAS(3210)_G1"],
-    matches_attribute_names="production",
-)
-print(found_keys)
+# found_keys = post_run_1.find_time_series(
+#     matches_object_types=["generator", "plant"],
+#     matches_object_names=["KVER(3237)", "REND(3192)", "BRAS(3210)_G1"],
+#     matches_attribute_names="production",
+# )
+# print(found_keys)
 # post_run_1.plot(found_keys)
 
 

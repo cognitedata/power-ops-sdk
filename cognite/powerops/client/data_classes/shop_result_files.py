@@ -72,10 +72,12 @@ class ShopYamlFile(ShopResultFile[dict]):
         return yaml.safe_dump(self.data, sort_keys=False)
 
     def _retrieve_time_series_dict(self, key: str) -> dict[datetime, float]:
+        # key is a dot separated string of nested keys
         try:
-            # TODO: After merge, fix this work without dot-get
-            data = reduce(operator.getitem, key.split("."), self.data)
-            #  = self.data
+            # FIXME? This is a workaround for the nested keys without dot get and
+            # the fact that the yaml parser parses numeric keys as numbers
+            keys = [int(k) if k.isdigit() else k for k in key.split(".")]
+            data = reduce(operator.getitem, keys, self.data)
             if not (
                 isinstance(data, dict)
                 and all(isinstance(k, datetime) for k in data.keys())
