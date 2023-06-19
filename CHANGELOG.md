@@ -13,6 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.13.0] - 19-06-23
+### Changed
+
+* Removed unnecessary dependencies
+
 ## [0.12.0] - 08-06-23
 ### Added
 
