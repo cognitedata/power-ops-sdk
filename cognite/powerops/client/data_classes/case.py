@@ -58,11 +58,15 @@ class Case:
 
     def _handle_additional_yaml_documents(self, extra_yaml_docs: List[str]) -> None:
         """
-        This probably happens never, but just in case...
         If `Case.__init__` gets a yaml string which has multiple documents (separated by "---"),
         only the first document is parsed and set to `self.data`. Any subsequent documents are stored
         as "extra files". They are not part of `self.data`, but are not lost either.
         """
+        if extra_yaml_docs:
+            logger.warning(
+                f"Case file contains {len(extra_yaml_docs) + 1} YAML documents. Only the first document is parsed,"
+                f' additional documents will be passed to SHOP verbatim as "extra files".',
+            )
         for yaml_doc in extra_yaml_docs:
             tmp_file = tempfile.NamedTemporaryFile(
                 mode="w",
