@@ -12,11 +12,22 @@ Changes are grouped as follows
 - `Removed` for now removed features.
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
-
-## [0.12.0] - 15-06-23
+-
+## [0.14.0] - 19-06-23
 ### Added
 
 * CogShop preprocessor, moved from dedicated repo.
+
+## [0.13.0] - 19-06-23
+### Changed
+
+* Removed unnecessary dependencies
+
+## [0.12.0] - 08-06-23
+### Added
+
+* Ability to trigger SHOP runs via CogShop.
+* Retrieval of ShopRun results.
 
 ## [0.11.0] - 08-06-23
 ### Added

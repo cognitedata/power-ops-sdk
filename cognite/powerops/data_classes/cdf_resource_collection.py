@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 from typing import Union
 
 import pandas as pd
@@ -9,12 +10,11 @@ from cognite.client.data_classes._base import CogniteResource, CogniteResourceLi
 from deepdiff import DeepDiff
 from pydantic import BaseModel, Extra
 
-import cognite.powerops.logger as logger
 from cognite.powerops.data_classes.shop_file_config import ShopFileConfig
 from cognite.powerops.utils.cdf_utils import upsert_cognite_resources
 from cognite.powerops.utils.files import upload_shop_config_file
 
-custom_logger = logger.get_logger(__name__)
+logger = logging.getLogger(__name__)
 
 
 ExternalId = str
@@ -155,10 +155,10 @@ class BootstrapResourceCollection(BaseModel):
         }
         for resource_type, api in api_by_type.items():
             resources = list(getattr(self, resource_type).values())
-            custom_logger.debug(f"Processing {len(resources)} {resource_type}...")
+            logger.debug(f"Processing {len(resources)} {resource_type}...")
             upsert_cognite_resources(api, resource_type, resources)
 
-        custom_logger.debug(f"Processing {len(self.sequence_content)} sequences...")
+        logger.debug(f"Processing {len(self.sequence_content)} sequences...")
         for sequence_external_id, sequence_data in self.sequence_content.items():
             if isinstance(sequence_data.data, pd.DataFrame):
                 try:
@@ -166,7 +166,7 @@ class BootstrapResourceCollection(BaseModel):
                         dataframe=sequence_data.data, external_id=sequence_external_id
                     )
                 except Exception as e:
-                    custom_logger.warning(f"Failed to insert sequence dataframe for {sequence_external_id}: {e}")
+                    logger.warning(f"Failed to insert sequence dataframe for {sequence_external_id}: {e}")
             else:
                 try:
                     client.sequences.data.insert(
@@ -175,9 +175,9 @@ class BootstrapResourceCollection(BaseModel):
                         column_external_ids=sequence_data.data.columns_external_ids,
                     )
                 except Exception as e:
-                    custom_logger.warning(f"Failed to insert sequence rows for {sequence_external_id}: {e}")
+                    logger.warning(f"Failed to insert sequence rows for {sequence_external_id}: {e}")
 
-        custom_logger.debug(f"Processing {len(self.shop_file_configs)} files...")
+        logger.debug(f"Processing {len(self.shop_file_configs)} files...")
         for shop_config in self.shop_file_configs.values():
             upload_shop_config_file(client=client, config=shop_config, overwrite=overwrite, data_set_id=data_set_id)
 
