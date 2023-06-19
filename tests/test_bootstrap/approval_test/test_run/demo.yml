@@ -679,10 +679,16 @@ labels:
   name: relationship_to.bid_process_event
 - external_id: relationship_to.calculate_total_bid_matrix_event
   name: relationship_to.calculate_total_bid_matrix_event
+- external_id: relationship_to.case_file
+  name: relationship_to.case_file
 - external_id: relationship_to.consumption_schedule
   name: relationship_to.consumption_schedule
+- external_id: relationship_to.cut_file
+  name: relationship_to.cut_file
 - external_id: relationship_to.dayahead_price_time_series
   name: relationship_to.dayahead_price_time_series
+- external_id: relationship_to.extra_file
+  name: relationship_to.extra_file
 - external_id: relationship_to.feeding_fee_time_series
   name: relationship_to.feeding_fee_time_series
 - external_id: relationship_to.gate_discharge_time_series
@@ -705,6 +711,8 @@ labels:
   name: relationship_to.inlet_reservoir
 - external_id: relationship_to.log_file
   name: relationship_to.log_file
+- external_id: relationship_to.mapping_file
+  name: relationship_to.mapping_file
 - external_id: relationship_to.market_asset
   name: relationship_to.market_asset
 - external_id: relationship_to.market_price_time_series

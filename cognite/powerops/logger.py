@@ -1,3 +1,17 @@
+"""
+# How to do logging in this project
+
+## Local development
+1. Call `configure_debug_logging()` once, right after config is loaded.
+2. Use vanilla Python logging:
+   ```
+   import logging
+   logger = logging.getLogger(__name__)
+   ```
+
+## Production
+1. Just use vanilla Python logging.
+"""
 import logging
 import sys
 from typing import Union
@@ -6,15 +20,10 @@ from loguru import logger
 
 __all__ = [
     "configure_debug_logging",
-    "get_logger",
 ]
 
 
 LoggingLevelT = Union[int, str]
-
-
-def get_logger(name: str) -> logging.Logger:
-    return logger
 
 
 # https://github.com/Delgan/loguru#entirely-compatible-with-standard-logging
