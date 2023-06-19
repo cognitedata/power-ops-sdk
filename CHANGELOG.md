@@ -14,7 +14,7 @@ Changes are grouped as follows
 - `Security` in case of vulnerabilities.
 
 
-## [0.13.0] - 06-06-23
+## [0.13.0] - 19-06-23
 ### Added
 
 * Ability to find time series keys in the shop generated YAML files, including some filtering.
