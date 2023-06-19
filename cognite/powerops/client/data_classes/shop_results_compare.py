@@ -2,23 +2,17 @@ from __future__ import annotations
 
 import logging
 from datetime import datetime
-from typing import TYPE_CHECKING, Optional, Sequence
+from typing import Optional, Sequence
 
 import matplotlib.pyplot as plt
 
-from cognite.powerops.client.shop_result_files import ShopYamlFile
+from cognite.powerops.client.data_classes.shop_result_files import ShopYamlFile
 from cognite.powerops.utils.plotting import ax_plot_time_series, create_time_series_plot
-
-if TYPE_CHECKING:
-    from cognite.powerops import PowerOpsClient
 
 logger = logging.getLogger(__name__)
 
 
-class ShopResultsCompareAPI:
-    def __init__(self, po_client: PowerOpsClient):
-        self._po_client = po_client
-
+class ShopResultsCompare:
     def plot_time_series(
         self,
         post_run_list: Sequence[ShopYamlFile],

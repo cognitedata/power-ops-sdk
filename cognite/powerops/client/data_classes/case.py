@@ -6,8 +6,6 @@ from typing import List, Optional, TypedDict
 
 import yaml
 
-from cognite.powerops.utils.dotget import DotDict
-
 logger = logging.getLogger(__name__)
 
 
@@ -16,16 +14,15 @@ class FileRefT(TypedDict):
     encoding: str
 
 
-class Case(DotDict):
+class Case:
     r"""
     Wrapper around YAML file for SHOP, describing a case.
 
     Main features:
      * Values can be retrieved or set / changed like with a dict.
-        * Dot syntax is also supported.
      * Can hold references to additional files ("extra files").
         * These are just paths to files, their content is not accessed here.
-     * Loading from string or file (with `Case.load_yaml(path_to_yaml)`).
+     * Loading from string or file (with `Case.from_yaml_file(path_to_yaml)`).
      * Saving to yaml (with `case.save_yaml(path_to_file)`).
 
     Examples:
@@ -39,17 +36,12 @@ class Case(DotDict):
           {'foo': {'bar1': 11, 'bar2': 22}}
 
       * edit a value and show updated data
-          >>> case["foo"]["bar2"] = 202
+          >>> case.data["foo"]["bar2"] = 202
           >>> case.yaml
           'foo:\n  bar1: 11\n  bar2: 202\n'
 
-      * dot-notation, just for convenience
-          >>> case["foo.bar1"] = 101
-          >>> case["foo.bar1"]
-          101
-
       * load from and save to a file:
-          case = Case.load_yaml("path/to/my_case.yaml")
+          case = Case.from_yaml_file("path/to/my_case.yaml")
           case[...] = ...  # edit data
           case.save_yaml("path/to/same_or_different.yaml")
     """
@@ -66,11 +58,15 @@ class Case(DotDict):
 
     def _handle_additional_yaml_documents(self, extra_yaml_docs: List[str]) -> None:
         """
-        This probably happens never, but just in case...
         If `Case.__init__` gets a yaml string which has multiple documents (separated by "---"),
         only the first document is parsed and set to `self.data`. Any subsequent documents are stored
         as "extra files". They are not part of `self.data`, but are not lost either.
         """
+        if extra_yaml_docs:
+            logger.warning(
+                f"Case file contains {len(extra_yaml_docs) + 1} YAML documents. Only the first document is parsed,"
+                f' additional documents will be passed to SHOP verbatim as "extra files".',
+            )
         for yaml_doc in extra_yaml_docs:
             tmp_file = tempfile.NamedTemporaryFile(
                 mode="w",
@@ -83,7 +79,7 @@ class Case(DotDict):
             self.add_extra_file(tmp_file.name)
 
     @classmethod
-    def load_yaml(cls, yaml_path: str, encoding: str = "utf-8") -> Case:
+    def from_yaml_file(cls, yaml_path: str, encoding: str = "utf-8") -> Case:
         logger.info(f"loading case file: {yaml_path}")
         with open(yaml_path, "r", encoding=encoding) as yaml_file:
             return cls(yaml_file.read())

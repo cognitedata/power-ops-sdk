@@ -8,13 +8,24 @@ logger = logging.getLogger(__name__)
 powerops = PowerOpsClient()
 
 
-# PLOTTING A TIME SERIES
-
 SAMPLE_SHOP_RUN_EVENT_1 = "POWEROPS_SHOP_RUN_ede8c4c0-18b1-41b1-ae40-ea20e037645c"
 
 sample_run_results_1 = powerops.shop.runs.retrieve(SAMPLE_SHOP_RUN_EVENT_1).get_results()
 
 print(f"{sample_run_results_1=}")
+
+# OBJECTIVE
+objective = sample_run_results_1.objective_function
+print(f"objective_function: {objective}")
+
+# print(objective.data)
+print(objective.data_as_str())
+print(objective.watercourse)
+# print(objective.penalty_breakdown)
+print(objective.penalty_breakdown_as_str())
+
+
+# PLOTTING A POST RUN TIME SERIES
 
 post_run_1 = sample_run_results_1.post_run
 
@@ -48,17 +59,3 @@ powerops.shop.results.compare.plot_time_series(
     comparison_key=COMPARISON_KEY,
     labels=["Example 1", "Example 2"],  # optional labels
 )
-
-# _path = sample_run_results.post_run.save()
-# print(f"_path: {_path}")
-
-
-# # OBJECTIVE
-# objective = sample_run_results.objective_function
-# print(f"objective_function: {objective}")
-
-# print(objective.data)
-# print(objective.data_as_str())
-# print(objective.watercourse)
-# print(objective.penalty_breakdown)
-# print(objective.penalty_breakdown_as_str())

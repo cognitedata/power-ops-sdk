@@ -390,6 +390,7 @@ class BidProcessConfig(Configuration):
     shop_end: Optional[RelativeTime] = Field(None, alias="shop_endtime")
     bid_matrix_generator: str = Field(alias="bid_bid_matrix_generator_config_external_id")
     price_scenarios_per_watercourse: Optional[Dict[str, typing.Set[str]]] = None
+    is_default_config_for_price_area: bool = False
 
     @validator("shop_start", "shop_end", "bid_date", pre=True)
     def json_loads(cls, value):
@@ -422,6 +423,7 @@ class BidProcessConfig(Configuration):
                 "shop:starttime": str(self.shop_start or benchmark.shop_start),
                 "shop:endtime": str(self.shop_end or benchmark.shop_end),
                 "bid:price_area": f"price_area_{self.price_area_name}",
+                "bid:is_default_config_for_price_area": self.is_default_config_for_price_area,
             }
 
         return Asset(
@@ -798,8 +800,8 @@ class BootstrapConfig(BaseModel):
     market: MarketConfig
     watercourses: list[WatercourseConfig]
     time_series_mappings: list[TimeSeriesMapping]
-    rkom_bid_combination: Optional[list[RKOMBidCombinationConfig]] = None
     rkom_bid_process: list[RKOMBidProcessConfig]
+    rkom_bid_combination: Optional[list[RKOMBidCombinationConfig]] = None
     rkom_market: Optional[RkomMarketConfig] = None
     plant_time_series_mappings: list[PlantTimeSeriesMapping] = None
     generator_time_series_mappings: list[GeneratorTimeSeriesMapping] = None
@@ -818,6 +820,18 @@ class BootstrapConfig(BaseModel):
             )
         return value
 
+    @validator("rkom_bid_combination", each_item=True)
+    def valid_process_external_id(cls, value, values: dict):
+        valid_ids = {process_config.external_id for process_config in values["rkom_bid_process"]}
+        for external_id_to_validate in value.rkom_bid_config_external_ids:
+            if external_id_to_validate not in valid_ids:
+                raise ValueError(
+                    f"Reference to rkom bid process config in rkom_bid_combination yaml is wrong for "
+                    f"{external_id_to_validate}. "
+                    f"Possible references are: {[config.external_id for config in values['rkom_bid_process']]}"
+                )
+        return value
+
     @classmethod
     def from_yamls(cls, config_dir_path: Path) -> "BootstrapConfig":
         configs = {}
@@ -825,3 +839,19 @@ class BootstrapConfig(BaseModel):
             if (config_file_path := config_dir_path / f"{field_name}.yaml").exists():
                 configs[field_name] = load_yaml(config_file_path, encoding="utf-8")
         return cls(**configs)
+
+    def validate_bid_configs(self):
+        """Validate the bid configs in the bootstrap config. Per now only ensure there is at most one default config
+        per price area"""
+
+        default_configs = defaultdict(int)
+        for bid_config in self.bidprocess:
+            if bid_config.is_default_config_for_price_area:
+                default_configs[bid_config.price_area_name] += 1
+
+        if price_areas_with_multiple_default_configs := [
+            price_area for price_area, count in default_configs.items() if count > 1
+        ]:
+            raise ValueError(
+                f"Multiple default bid configs for price areas: {price_areas_with_multiple_default_configs}"
+            )

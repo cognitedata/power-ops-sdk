@@ -13,19 +13,22 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## [0.13.0] - 06-06-23
-### Added
 
-* Ability to find time series keys in the shop generated YAML files, including some filtering.
-* Ability to plot several time series from one shop generated YAML file.
-* Ability to compare a time series from different shop runs in a plot view if they are accessible by the same keys.
-
-
-## [0.10.0] - 06-06-23
+## [0.12.0] - 08-06-23
 ### Added
 
 * Ability to trigger SHOP runs via CogShop.
 * Retrieval of ShopRun results.
+
+## [0.11.0] - 08-06-23
+### Feature
+
+* Allow customers to specify default bid config per price area
+
+## [0.10.0] - 05-06-23
+### Added
+
+* Added validation to rkom_bid_combination config for reference to rkom_bid_process external IDs.
 
 ## [0.9.2] - 30-05-23
 ### Fixed

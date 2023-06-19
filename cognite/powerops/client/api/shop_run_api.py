@@ -3,20 +3,18 @@ from __future__ import annotations
 import json
 import logging
 import os
-import time
-from enum import Enum
 from typing import TYPE_CHECKING, BinaryIO, Literal, TextIO, Union
 
 import requests
 from cognite.client.data_classes import Event, FileMetadata
 
-from cognite.powerops.case.shop_run_event import ShopRunEvent
-from cognite.powerops.client.shop_results import ShopRunResult
+from cognite.powerops.client.data_classes import ShopRun, ShopRunEvent
 from cognite.powerops.utils.cdf_utils import retrieve_event, simple_relationship
 from cognite.powerops.utils.labels import RelationshipLabels
 
 if TYPE_CHECKING:
-    from cognite.powerops import Case, PowerOpsClient
+    from cognite.powerops.client import PowerOpsClient
+    from cognite.powerops.client.data_classes import Case
 
 logger = logging.getLogger(__name__)
 
@@ -24,55 +22,7 @@ logger = logging.getLogger(__name__)
 InputFileTypeT = Literal["case", "cut", "mapping", "extra"]
 
 
-class ShopRun:
-    class Status(Enum):
-        IN_PROGRESS = "IN_PROGRESS"
-        SUCCEEDED = "SUCCEEDED"
-        FAILED = "FAILED"
-
-    def __init__(
-        self,
-        po_client: PowerOpsClient,
-        *,
-        shop_run_event: ShopRunEvent,
-    ) -> None:
-        self._po_client = po_client
-        self.shop_run_event = shop_run_event
-
-    @property
-    def in_progress(self) -> bool:
-        return self.status == ShopRun.Status.IN_PROGRESS
-
-    @property
-    def succeeded(self) -> bool:
-        return self.status == ShopRun.Status.SUCCEEDED
-
-    @property
-    def failed(self) -> bool:
-        return self.status == ShopRun.Status.FAILED
-
-    @property
-    def status(self) -> ShopRun.Status:
-        return self._po_client.shop.runs.get_status_for(self.shop_run_event.external_id)
-
-    def wait_until_complete(self) -> None:
-        while self.in_progress:
-            logger.debug(f"{self.shop_run_event.external_id} is still running...")
-            time.sleep(3)
-        logger.debug(f"{self.shop_run_event.external_id} finished.")
-
-    def get_results(self, wait: bool = True) -> ShopRunResult:
-        if wait:
-            if self.in_progress:
-                logger.warning(f"{self.shop_run_event.external_id} is still running, waiting for results...")
-            self.wait_until_complete()
-        return self._po_client.shop.results.get_for_run(self)
-
-    def __repr__(self) -> str:
-        return f'<ShopRun status="{self.status}" event_external_id="{self.shop_run_event.external_id}">'
-
-    def __str__(self) -> str:
-        return self.__repr__()
+RUN_SHOP_URL = "https://power-ops-api.staging.{cluster}.cognite.ai/{project}/run-shop"
 
 
 class ShopRunsAPI:
@@ -88,9 +38,10 @@ class ShopRunsAPI:
     def _upload_to_cdf(self, case: Case) -> ShopRun:
         shop_run_event = ShopRunEvent(
             watercourse="",
-            starttime=case["time.starttime"],
-            endtime=case["time.endtime"],
-            timeresolution=case["time.timeresolution"],
+            starttime=case.data["time"]["starttime"],
+            endtime=case.data["time"]["endtime"],
+            timeresolution=case.data["time"]["timeresolution"],
+            manual_run=True,
         )
         logger.debug(f"Uploading event '{shop_run_event.external_id}'.")
         case_file_meta = self._upload_input_file_bytes(case.yaml.encode(), shop_run_event, file_type="case")
@@ -124,9 +75,7 @@ class ShopRunsAPI:
             preprocessor_metadata["extra_files"].append({"external_id": extra_file_meta.external_id})
 
         event.metadata["shop:preprocessor_data"] = json.dumps(preprocessor_metadata)
-        event.metadata["shop:manual_run"] = "yes"
-        # avoid event being picked up by sniffer
-        event.metadata["processed"] = "yes"
+        event.metadata["processed"] = "yes"  # avoid event being picked up by sniffer
         self._po_client.cdf.events.create(event)
         return ShopRun(self._po_client, shop_run_event=shop_run_event)
 
@@ -174,11 +123,10 @@ class ShopRunsAPI:
         cdf_config = self._po_client.cdf.config
         project = cdf_config.project
         cluster = cdf_config.base_url.split("//")[1].split(".")[0]
-        url = f"https://power-ops-api.staging.{cluster}.cognite.ai/{project}/run-shop"
         auth_header = dict([cdf_config.credentials.authorization_header()])
 
         response = requests.post(
-            url,
+            RUN_SHOP_URL.format(cluster=cluster, project=project),
             json={
                 "shopEventExternalId": shop_run_external_id,
                 "datasetId": self._po_client.write_dataset_id,
@@ -193,14 +141,13 @@ class ShopRunsAPI:
         raise NotImplementedError()
 
     def retrieve(self, external_id: str) -> ShopRun:
-        logger.info(f"Retrieving event '{external_id}'.")
         event = self._po_client.cdf.events.retrieve(external_id=external_id)
         return ShopRun(
             self._po_client,
             shop_run_event=ShopRunEvent.from_event(event),
         )
 
-    def get_status_for(self, shop_run_external_id: str) -> ShopRun.Status:
+    def retrieve_status(self, shop_run_external_id: str) -> ShopRun.Status:
         event = retrieve_event(self._po_client.cdf, shop_run_external_id)
         logger.debug(f"Reading status from event {event.external_id}.")
 

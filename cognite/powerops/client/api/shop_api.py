@@ -4,9 +4,9 @@ import logging
 import random
 from typing import TYPE_CHECKING
 
-from cognite.powerops.client.shop_result_files import ShopFilesAPI
-from cognite.powerops.client.shop_results import ShopRunResultsAPI
-from cognite.powerops.client.shop_run import ShopRunsAPI
+from cognite.powerops.client.api.shop_result_files_api import ShopFilesAPI
+from cognite.powerops.client.api.shop_results_api import ShopRunResultsAPI
+from cognite.powerops.client.api.shop_run_api import ShopRunsAPI
 
 if TYPE_CHECKING:
     from cognite.powerops import PowerOpsClient
