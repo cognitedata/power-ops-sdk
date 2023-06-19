@@ -9,6 +9,7 @@ theme:
 
 nav:
     - Home: index.md
+    - API: reference.md
 
 markdown_extensions:
   - pymdownx.superfences
@@ -32,3 +33,9 @@ plugins:
   - glightbox:
        width: 100%
        height: auto
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          options:
+            show_source: false
