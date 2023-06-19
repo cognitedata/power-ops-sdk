@@ -7,7 +7,7 @@ import os
 from datetime import datetime
 from functools import reduce
 from pathlib import Path
-from typing import Generic, Sequence, TypeVar
+from typing import Generic, Sequence, TypeVar, Union
 
 import yaml
 from cognite.client.data_classes import FileMetadata
