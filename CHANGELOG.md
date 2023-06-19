@@ -14,12 +14,23 @@ Changes are grouped as follows
 - `Security` in case of vulnerabilities.
 
 
-## [0.13.0] - 19-06-23
+## [0.15.0] - 19-06-23
 ### Added
 
 * Ability to find time series keys in the shop generated YAML files, including some filtering.
-* Ability to plot several time series from one shop generated YAML file.
+* Ability to plot several time series from one shop generated YAML file using matplotlib.
 * Ability to compare a time series from different shop runs in a plot view if they are accessible by the same keys.
+
+
+## [0.14.0] - 19-06-23
+### Added
+
+* CogShop preprocessor, moved from dedicated repo.
+
+## [0.13.0] - 19-06-23
+### Changed
+
+* Removed unnecessary dependencies
 
 
 ## [0.12.0] - 08-06-23
@@ -29,7 +40,7 @@ Changes are grouped as follows
 * Retrieval of ShopRun results.
 
 ## [0.11.0] - 08-06-23
-### Feature
+### Added
 
 * Allow customers to specify default bid config per price area
 
