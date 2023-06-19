@@ -96,6 +96,7 @@ class CogReader:
     @cached_property
     def incremental_mapping(self) -> Optional[List[TimeSeriesMapping]]:
         return []
+        # TODO uncomment, SHOP needs this:
         # relationships = self.client.relationships.list(
         #     source_external_ids=[self.shop_event.external_id],  # BROKEN
         #     data_set_ids=self.shop_event.data_set_id,           # BROKEN
