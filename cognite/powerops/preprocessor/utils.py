@@ -1,5 +1,6 @@
 import os
 import time
+from collections import defaultdict
 from datetime import datetime
 from functools import wraps
 from typing import Callable, Dict, Iterable, List, Optional, Type, Union
@@ -41,34 +42,6 @@ def shift_datetime_str(dt: str, days: int) -> str:
     return arrow.get(dt).shift(days=days).format("YYYY-MM-DD HH:mm:ss")
 
 
-def get_cdf_client(
-    project: str,
-    tenant_id: str,
-    client_id: str,
-    client_secret: str,
-    cluster: str,
-) -> CogniteClient:
-    """
-    Return authenticated CogniteClient.
-    """
-    base_url = f"https://{cluster}.cognitedata.com"
-    creds = OAuthClientCredentials(
-        token_url=f"https://login.microsoftonline.com/{tenant_id}/oauth2/v2.0/token",
-        client_id=client_id,
-        client_secret=client_secret,
-        scopes=[f"{base_url}/.default"],
-    )
-
-    return CogniteClient(
-        config=ClientConfig(
-            client_name="python-dd-local",
-            base_url=base_url,
-            project=project,
-            credentials=creds,
-        )
-    )
-
-
 def initialize_cognite_client() -> CogniteClient:
     logger.info("Setting up CogniteClient...")
     os.environ["COGNITE_DISABLE_PYPI_VERSION_CHECK"] = "true"
@@ -102,15 +75,12 @@ def save_dict_as_yaml(file_path: str, d: dict) -> None:
         yaml.dump(d, file, allow_unicode=True)
 
 
-def dict_to_yaml_string(d: dict) -> str:
-    return yaml.dump(d, allow_unicode=True)
-
-
 def rename_dict_keys(d: Dict, key_mapping: Dict) -> None:
     for old_key, new_key in key_mapping.items():
         d[new_key] = d.pop(old_key)
 
 
+# TODO: get rid of this
 def log_and_reraise(exception_to_raise: Type[Exception]):
     """Wrapper that logs any exceptions and reraising the specified exception to raise"""
 
@@ -363,3 +333,46 @@ def retrieve_time_series_datapoints(
     logger.debug(f"Not retrieving datapoints for {_time_series_none}")
 
     return merge_dicts(time_series_start, time_series_end, time_series_range)
+
+
+def group_files_by_metadata(
+    files: list[FileMetadata], metadata_group_key: str = "shop:file_group"
+) -> dict[str, list[FileMetadata]]:
+    cut_files_by_group: dict[str, list[FileMetadata]] = defaultdict(list)
+    for file in files:
+        if file_group := file.metadata.get(metadata_group_key):
+            cut_files_by_group[file_group].append(file)
+    return cut_files_by_group or {"default": files}
+
+
+def find_closest_file(files: list[FileMetadata], starttime_ms: float) -> Optional[FileMetadata]:
+    # Select file that is closest in time before starttime
+    valid_files = []
+
+    best_diff = float("inf")
+    closest_file = None
+    for this_file in files:
+        try:
+            # Assume datetime string after last "_"
+            updated_at = this_file.metadata.get("update_datetime", this_file.external_id.split("_")[-1])
+            updated_at_ms = arrow_to_ms(arrow.get(updated_at))  # parse ISO 8601 compliant string
+            this_diff = starttime_ms - updated_at_ms
+
+            if this_diff >= 0:
+                valid_files.append(this_file)
+                if this_diff < best_diff:
+                    logger.debug(f"Cutfile {this_file.external_id} is closer to starttime.")
+                    best_diff = this_diff
+                    closest_file = this_file
+
+        except (arrow.parser.ParserError, TypeError) as e:
+            logger.warning(f"Failed to parse date for '{this_file.external_id}': {e}")
+    if not closest_file and valid_files:
+        logger.warning(
+            f"Could not find a cut file with a valid datetime - using {valid_files[0].external_id} (which may be outdated)"
+        )
+        return valid_files[0]
+    elif not valid_files:
+        return None
+
+    return closest_file
