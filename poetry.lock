@@ -299,45 +299,43 @@ colorama = {version = "*", markers = "platform_system == \"Windows\""}
 
 [[package]]
 name = "cognite-gql-pygen"
-version = "0.4.4"
-description = "Cognite graphQL Python generation SDK"
+version = "0.8.1"
+description = "Cognite GraphQL Python Generation SDK"
 category = "main"
 optional = false
 python-versions = ">=3.9,<4.0"
 files = [
-    {file = "cognite_gql_pygen-0.4.4-py3-none-any.whl", hash = "sha256:ec0f9b763b9a61b6f67f770c868cfdec04696121158f0ef43cc6c152e933c363"},
-    {file = "cognite_gql_pygen-0.4.4.tar.gz", hash = "sha256:346616afce505869dd5276212b07bf30917ac9869921286988ccdad3ab93f787"},
+    {file = "cognite_gql_pygen-0.8.1-py3-none-any.whl", hash = "sha256:ada7e63c8429179889f9ef735ae13a3546aa45872a69e8c781458590a200a3bc"},
+    {file = "cognite_gql_pygen-0.8.1.tar.gz", hash = "sha256:6ac6aa0306ad54979ec3c78ddf8a11afeaf2a88dd463d92e304a1207214e89e4"},
 ]
 
 [package.dependencies]
-arrow = ">=1.2.2,<2.0.0"
-cachelib = ">=0.10.2,<0.11.0"
-cognite-sdk = {version = ">5.9.0", extras = ["pandas"]}
-docopt = ">=0.6.2,<0.7.0"
-dynaconf = ">=3.1.12,<4.0.0"
+cachelib = ">=0.10.2"
+cognite-sdk = ">5.9.0"
+dynaconf = ">=3.1.12"
 graphql-core = ">=3.2"
 Jinja2 = ">=3.1"
-loguru = ">=0.6.0,<0.7.0"
-msal = ">=1.16.0,<2.0.0"
-numpy = ">=1.23.2,<2.0.0"
-packaging = ">=23.1,<24.0"
+msal = ">=1.16.0"
 pydantic = ">=1.10"
-PyYAML = ">=6.0,<7.0"
-retry = ">=0.9.2,<0.10.0"
+retry = ">=0.9.2"
 strawberry-graphql = ">=0.156.4,<0.157.0"
-typer = {version = "*", extras = ["all"]}
-typing-extensions = ">=4.5.0,<5.0.0"
+toml = ">=0.10"
+typing-extensions = ">=4.4.0"
+
+[package.extras]
+all = ["packaging (>=21.3)", "typer[rich] (>=0.9)"]
+cli = ["packaging (>=21.3)", "typer[rich] (>=0.9)"]
 
 [[package]]
 name = "cognite-sdk"
-version = "5.12.0"
+version = "6.4.3"
 description = "Cognite Python SDK"
 category = "main"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "cognite_sdk-5.12.0-py3-none-any.whl", hash = "sha256:587dd1c1d98d33a1fead9ff9c388e6c841ab68e0b02952af8193ca5250fbd92e"},
-    {file = "cognite_sdk-5.12.0.tar.gz", hash = "sha256:db972e875e17f4ce0f7f3ca3d945293e670133d18854debad44de8d312f696b6"},
+    {file = "cognite_sdk-6.4.3-py3-none-any.whl", hash = "sha256:eccbf46590d4554982f39c2321d01b4e433781d0dd9b2397df941d490620e1dd"},
+    {file = "cognite_sdk-6.4.3.tar.gz", hash = "sha256:ff6ae08ca15915ec2cbb9ef84e84dce496d539fe1a04bad0b217f18ebeab8a9c"},
 ]
 
 [package.dependencies]
@@ -629,17 +627,6 @@ files = [
 ]
 
 [[package]]
-name = "docopt"
-version = "0.6.2"
-description = "Pythonic argument parser, that will make you smile"
-category = "main"
-optional = false
-python-versions = "*"
-files = [
-    {file = "docopt-0.6.2.tar.gz", hash = "sha256:49b3a825280bd66b3aa83585ef59c4a8c82f2c8a522dbe754a8bc8d08c85c491"},
-]
-
-[[package]]
 name = "docutils"
 version = "0.20.1"
 description = "Docutils -- Python Documentation Utilities"
@@ -851,14 +838,14 @@ files = [
 
 [[package]]
 name = "griffe"
-version = "0.29.0"
+version = "0.29.1"
 description = "Signatures for entire Python programs. Extract the structure, the frame, the skeleton of your project, to generate API documentation or find breaking changes in your API."
 category = "main"
 optional = true
 python-versions = ">=3.7"
 files = [
-    {file = "griffe-0.29.0-py3-none-any.whl", hash = "sha256:e62ff34b04630c2382e2e277301cb2c29221fb09c04028e62ef35afccc64344b"},
-    {file = "griffe-0.29.0.tar.gz", hash = "sha256:6fc892aaa251b3761e3a8d2f5893758e1850ec5d81d4605c4557be0666202a0b"},
+    {file = "griffe-0.29.1-py3-none-any.whl", hash = "sha256:f9edae6b9bb2eb205bebbdd0512a162713b9342ff6e32dc596d95ff64aa71c1f"},
+    {file = "griffe-0.29.1.tar.gz", hash = "sha256:460188b719e363019d0d0f4bf2d9f05cf2df24960b42a4138a1524a17b100d9b"},
 ]
 
 [package.dependencies]
@@ -1074,14 +1061,14 @@ files = [
 
 [[package]]
 name = "keyring"
-version = "23.13.1"
+version = "24.0.0"
 description = "Store and access your passwords safely."
 category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "keyring-23.13.1-py3-none-any.whl", hash = "sha256:771ed2a91909389ed6148631de678f82ddc73737d85a927f382a8a1b157898cd"},
-    {file = "keyring-23.13.1.tar.gz", hash = "sha256:ba2e15a9b35e21908d0aaf4e0a47acc52d6ae33444df0da2b49d41a46ef6d678"},
+    {file = "keyring-24.0.0-py3-none-any.whl", hash = "sha256:770f609eed2a16c65a6349f3ba1545d00c73f9fed4254c13766c674fe6d0d22b"},
+    {file = "keyring-24.0.0.tar.gz", hash = "sha256:4e87665a19c514c7edada8b15015cf89bd99b8d7edabc5c43cca77166fa8dfad"},
 ]
 
 [package.dependencies]
@@ -1093,8 +1080,8 @@ SecretStorage = {version = ">=3.2", markers = "sys_platform == \"linux\""}
 
 [package.extras]
 completion = ["shtab"]
-docs = ["furo", "jaraco.packaging (>=9)", "jaraco.tidelift (>=1.4)", "rst.linker (>=1.9)", "sphinx (>=3.5)"]
-testing = ["flake8 (<5)", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=1.3)", "pytest-flake8", "pytest-mypy (>=0.9.1)"]
+docs = ["furo", "jaraco.packaging (>=9)", "jaraco.tidelift (>=1.4)", "rst.linker (>=1.9)", "sphinx (>=3.5)", "sphinx-lint"]
+testing = ["pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=1.3)", "pytest-mypy (>=0.9.1)", "pytest-ruff"]
 
 [[package]]
 name = "kiwisolver"
@@ -1308,7 +1295,7 @@ testing = ["coverage", "pyyaml"]
 name = "markdown-it-py"
 version = "3.0.0"
 description = "Python port of markdown-it. Markdown parsing, done right!"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.8"
 files = [
@@ -1456,7 +1443,7 @@ python-dateutil = ">=2.7"
 name = "mdurl"
 version = "0.1.2"
 description = "Markdown URL utilities"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -2090,14 +2077,14 @@ test = ["appdirs (==1.4.4)", "covdefaults (>=2.3)", "pytest (>=7.3.1)", "pytest-
 
 [[package]]
 name = "pluggy"
-version = "1.1.0"
+version = "1.0.0"
 description = "plugin and hook calling mechanisms for python"
 category = "dev"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.6"
 files = [
-    {file = "pluggy-1.1.0-py3-none-any.whl", hash = "sha256:d81d19a3a88d82ed06998353ce5d5c02587ef07ee2d808ae63904ab0ccef0087"},
-    {file = "pluggy-1.1.0.tar.gz", hash = "sha256:c500b592c5512df35622e4faf2135aa0b7e989c7d31344194b4afb9d5e47b1bf"},
+    {file = "pluggy-1.0.0-py2.py3-none-any.whl", hash = "sha256:74134bbf457f031a36d68416e1509f34bd5ccc019f0bcc952c7b909d06b37bd3"},
+    {file = "pluggy-1.0.0.tar.gz", hash = "sha256:4224373bacce55f955a878bf9cfa763c1e360858e330072059e10bad68531159"},
 ]
 
 [package.extras]
@@ -2879,7 +2866,7 @@ idna2008 = ["idna"]
 name = "rich"
 version = "13.4.2"
 description = "Render rich text, tables, progress bars, syntax highlighting, markdown and more to the terminal"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7.0"
 files = [
@@ -2912,32 +2899,20 @@ jeepney = ">=0.6"
 
 [[package]]
 name = "setuptools"
-version = "67.8.0"
+version = "68.0.0"
 description = "Easily download, build, install, upgrade, and uninstall Python packages"
 category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "setuptools-67.8.0-py3-none-any.whl", hash = "sha256:5df61bf30bb10c6f756eb19e7c9f3b473051f48db77fddbe06ff2ca307df9a6f"},
-    {file = "setuptools-67.8.0.tar.gz", hash = "sha256:62642358adc77ffa87233bc4d2354c4b2682d214048f500964dbe760ccedf102"},
+    {file = "setuptools-68.0.0-py3-none-any.whl", hash = "sha256:11e52c67415a381d10d6b462ced9cfb97066179f0e871399e006c4ab101fc85f"},
+    {file = "setuptools-68.0.0.tar.gz", hash = "sha256:baf1fdb41c6da4cd2eae722e135500da913332ab3f2f5c7d33af9b492acb5235"},
 ]
 
 [package.extras]
 docs = ["furo", "jaraco.packaging (>=9)", "jaraco.tidelift (>=1.4)", "pygments-github-lexers (==0.0.5)", "rst.linker (>=1.9)", "sphinx (>=3.5)", "sphinx-favicon", "sphinx-hoverxref (<2)", "sphinx-inline-tabs", "sphinx-lint", "sphinx-notfound-page (==0.8.3)", "sphinx-reredirects", "sphinxcontrib-towncrier"]
 testing = ["build[virtualenv]", "filelock (>=3.4.0)", "flake8-2020", "ini2toml[lite] (>=0.9)", "jaraco.envs (>=2.2)", "jaraco.path (>=3.2.0)", "pip (>=19.1)", "pip-run (>=8.8)", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=1.3)", "pytest-mypy (>=0.9.1)", "pytest-perf", "pytest-ruff", "pytest-timeout", "pytest-xdist", "tomli-w (>=1.0.0)", "virtualenv (>=13.0.0)", "wheel"]
 testing-integration = ["build[virtualenv]", "filelock (>=3.4.0)", "jaraco.envs (>=2.2)", "jaraco.path (>=3.2.0)", "pytest", "pytest-enabler", "pytest-xdist", "tomli", "virtualenv (>=13.0.0)", "wheel"]
-
-[[package]]
-name = "shellingham"
-version = "1.5.0.post1"
-description = "Tool to Detect Surrounding Shell"
-category = "main"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "shellingham-1.5.0.post1-py2.py3-none-any.whl", hash = "sha256:368bf8c00754fd4f55afb7bbb86e272df77e4dc76ac29dbcbb81a59e9fc15744"},
-    {file = "shellingham-1.5.0.post1.tar.gz", hash = "sha256:823bc5fb5c34d60f285b624e7264f4dda254bc803a3774a147bf99c0e3004a28"},
-]
 
 [[package]]
 name = "six"
@@ -3042,7 +3017,7 @@ test = ["flake8", "isort", "pytest"]
 name = "toml"
 version = "0.10.2"
 description = "Python Library for Tom's Obvious, Minimal Language"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
 files = [
@@ -3136,9 +3111,6 @@ files = [
 
 [package.dependencies]
 click = ">=7.1.1,<9.0.0"
-colorama = {version = ">=0.4.3,<0.5.0", optional = true, markers = "extra == \"all\""}
-rich = {version = ">=10.11.0,<14.0.0", optional = true, markers = "extra == \"all\""}
-shellingham = {version = ">=1.3.0,<2.0.0", optional = true, markers = "extra == \"all\""}
 typing-extensions = ">=3.7.4.3"
 
 [package.extras]
@@ -3299,4 +3271,4 @@ docs = ["mkdocs", "mkdocs-jupyter", "mkdocs-material", "mkdocs-material-extensio
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "b59fecd199599a5f5f45e0f5427cb2e89fb981038bbc38eda7859f3d36745d90"
+content-hash = "5045f9e22e3ecc3ca1ab9e28115b9073661c3a603263c21d9181e32744005dd7"

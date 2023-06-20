@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cognite-power-ops"
-version = "0.15.0"
+version = "0.15.1"
 description = "SDK for power markets operations on Cognite Data Fusion"
 readme = "README.md"
 authors = ["Cognite <support@cognite.com>"]
@@ -29,15 +29,16 @@ target-version = 'py39'
 python = "^3.9"
 typer = "^0.9.0"
 PyYAML = "^6.0"
-cognite-sdk = {version = "^5.9.0", extras = ["pandas"]}
+cognite-sdk = {version = ">= 5.0.0, < 7.0", extras = ["pandas"]}
 pydantic = "^1.9.0"
 cachelib = "^0.10.2"
 loguru = "^0.6.0"
 deepdiff = "^6.3.0"
-cognite-gql-pygen = "0.4.4"
+cognite-gql-pygen = ">= 0.4.4"
 matplotlib = "^3.7.1"
 dacite = "^1.8.1"
 python-dotenv = "^1.0.0"
+arrow = "^1.2.0"
 
 mkdocs =  {version="*", optional=true}
 mkdocs-jupyter = {version="*", optional=true}
