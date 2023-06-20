@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 import yaml
 from cognite.client import ClientConfig, CogniteClient
-from cognite.client.credentials import OAuthClientCredentials, Token
+from cognite.client.credentials import Token
 from cognite.client.data_classes import Asset, Event, FileMetadata, LabelDefinition, Relationship, Sequence, TimeSeries
 from cognite.client.exceptions import CogniteDuplicatedError, CogniteException
 
@@ -233,7 +233,9 @@ def retrieve_latest(client: CogniteClient, external_ids: List[Optional[str]], be
         return {}
     external_ids = remove_duplicates(external_ids)
     logger.debug(f"Retrieving {external_ids} before '{ms_to_datetime(before)}'")
-    time_series = client.datapoints.retrieve_latest(external_id=external_ids, before=before, ignore_unknown_ids=True)
+    time_series = client.time_series.data.retrieve_latest(
+        external_id=external_ids, before=before, ignore_unknown_ids=True
+    )
 
     # For (Cog)Datapoints in (Cog)DatapointsList
     for datapoints in time_series:
@@ -256,16 +258,15 @@ def _retrieve_range(client: CogniteClient, external_ids: List[str], start: int, 
     # (I do not remember if this is an issue only for some aggregates like average, or for all).
     # And maybe we need to parametrise the "minimum resolution"
     # (seems to assume 1 hour, but we should support sub-hourly resolutuon)
-
     # Retrieve raw datapoints
     external_ids = remove_duplicates(external_ids)
     logger.debug(f"Retrieving {external_ids} between '{ms_to_datetime(start)}' and '{ms_to_datetime(end)}'")
-    df_range = client.datapoints.retrieve(
+    df_range = client.time_series.data.retrieve(
         external_id=external_ids, start=start, end=end, ignore_unknown_ids=True
     ).to_pandas()
 
     # Retrieve latest datapoints before start
-    df_latest = client.datapoints.retrieve_latest(
+    df_latest = client.time_series.data.retrieve_latest(
         external_id=external_ids, before=start, ignore_unknown_ids=True
     ).to_pandas()
 
@@ -274,6 +275,7 @@ def _retrieve_range(client: CogniteClient, external_ids: List[str], start: int, 
         df_range = pd.DataFrame(
             columns=df_latest.columns,
             index=pd.DatetimeIndex(data=np.array([start], dtype="datetime64[ms]")),
+            dtype=float,
         )
 
     # Add the latest datapoints to the DataFrame
@@ -299,7 +301,7 @@ def _retrieve_range(client: CogniteClient, external_ids: List[str], start: int, 
     df_combined = df_step.combine_first(df_linear)
 
     # Only return datapoints within the range
-    df_filtered = df_combined[ms_to_datetime(start) : ms_to_datetime(end + 1)]
+    df_filtered = df_combined[ms_to_datetime(start) : ms_to_datetime(end + 1)]  # type: ignore[misc]
 
     log_missing(expected=external_ids, actual=df_filtered.columns)
     return df_filtered
@@ -325,7 +327,7 @@ def retrieve_time_series_datapoints(
     )
     time_series_range = retrieve_range(
         client=client,
-        external_ids=[mapping.time_series_external_id for mapping in mappings if mapping.retrieve == "RANGE"],
+        external_ids=[mapping.time_series_external_id for mapping in mappings if mapping.retrieve == "RANGE"],  # type: ignore # TODO: avoid type: ignore
         start=start,
         end=end,
     )
