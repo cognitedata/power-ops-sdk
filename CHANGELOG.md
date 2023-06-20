@@ -13,6 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.15.0] - 19-06-23
+### Changed
+
+* Upd required versions for cognite-sdk and cognite-gql-pygen.
+
 
 ## [0.15.0] - 19-06-23
 ### Added
