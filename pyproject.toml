@@ -38,6 +38,7 @@ cognite-gql-pygen = ">= 0.4.4"
 matplotlib = "^3.7.1"
 dacite = "^1.8.1"
 python-dotenv = "^1.0.0"
+arrow = "^1.2.0"
 
 mkdocs =  {version="*", optional=true}
 mkdocs-jupyter = {version="*", optional=true}
