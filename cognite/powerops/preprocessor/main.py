@@ -1,4 +1,3 @@
-import os
 from typing import Optional
 from uuid import uuid4
 
@@ -7,7 +6,7 @@ from cognite.client import CogniteClient
 
 from cognite.powerops.preprocessor import knockoff_logging as logging
 from cognite.powerops.preprocessor.cogreader import CogReader
-from cognite.powerops.preprocessor.utils import initialize_cognite_client
+
 
 logger = logging.getLogger(__name__)
 
