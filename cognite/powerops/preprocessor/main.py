@@ -31,7 +31,7 @@ def main(
 
     extra_files_md = cog_reader.get_extra_files_metadata()
     mapping_files_md = cog_reader.get_mapping_files_metadata()
-    cut_file_md = cog_reader.get_cut_file_metadata()
+    cut_files_md = cog_reader.get_cut_files_metadata()
 
     xid = f"cog_shop_preprocessor/{fdm_space_external_id}/{fdm_case_external_id}/{str(uuid4())}"
 
@@ -50,7 +50,7 @@ def main(
 
     return {
         "cog_shop_case_file": cog_reader.file_metadata_to_dict(cog_shop_case_file_md),
-        "cut_file": cut_file_md,
+        "cut_files": cut_files_md,
         "mapping_files": mapping_files_md,
         "extra_files": extra_files_md,
     }

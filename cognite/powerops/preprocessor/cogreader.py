@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import tempfile
 from functools import cached_property
-from typing import List, Optional
+from typing import List, Optional, Union
 
 import arrow
 from cognite.client import CogniteClient
@@ -20,6 +20,8 @@ from cognite.powerops.preprocessor.utils import (
 )
 
 from .get_fdm_data import Case, get_case
+from .utils import group_files_by_metadata, find_closest_file
+
 
 logger = logging.getLogger(__name__)
 
@@ -130,7 +132,7 @@ class CogReader:
             return []
 
     @staticmethod
-    def file_metadata_to_dict(file_metadata):
+    def file_metadata_to_dict(file_metadata) -> dict[str, Union[str, int]]:
         md = {"id": file_metadata.id}
         if (xid := file_metadata.external_id) is not None:
             md["external_id"] = xid
@@ -139,19 +141,6 @@ class CogReader:
         if (dsid := file_metadata.data_set_id) is not None:
             md["data_set_id"] = dsid
         return md
-
-    @cached_property
-    def extra_file_paths(self) -> Optional[List[str]]:
-        logger.debug("Looking for 'extra' file.")
-        files = self.client.files.list(
-            external_id_prefix=self.file_external_id_prefix,
-            metadata=ShopMetadata(type="extra_data"),
-        )
-        if not files:
-            logger.debug(f"No 'extra' file found with and prefix '{self.file_external_id_prefix}'.")
-            return None
-        logger.debug(f"Found {len(files)} 'extra' files: {[file.external_id for file in files]}.")
-        return [download_file(client=self.client, file=file, download_directory=self._tmp_dir.name) for file in files]
 
     def get_mapping_files_metadata(self):
         files = self.client.files.list(
@@ -163,98 +152,22 @@ class CogReader:
         else:
             return []
 
-    @cached_property
-    def mapping_file_paths(self) -> Optional[List[str]]:
-        logger.debug("Looking for 'reservoir mapping' file.")
+    def get_cut_files_metadata(self) -> list[dict]:
         files = self.client.files.list(
             external_id_prefix=self.file_external_id_prefix,
-            metadata=ShopMetadata(type="water_value_cut_file_reservoir_mapping"),
-        )
-        if not files:
-            logger.debug(f"No 'reservoir mapping' file found with and prefix '{self.file_external_id_prefix}'.")
-            return None
-        logger.debug(f"Found {len(files)} 'reservoir mapping' files: {[file.external_id for file in files]}.")
-        return [download_file(client=self.client, file=file, download_directory=self._tmp_dir.name) for file in files]
-
-    def get_cut_file_metadata(self):
-        files = self.client.files.list(
-            external_id_prefix=self.file_external_id_prefix,
-            metadata=ShopMetadata(type="water_value_cut_file", watercourse=self.cog_shop_config.watercourse),
+            metadata={"shop:type": "water_value_cut_file", "shop:watercourse": self.cog_shop_config.watercourse,},
             limit=None,
         )
         if not files:
-            logger.debug(f"No 'cut' file found with prefix '{self.file_external_id_prefix}'.")
-            return None
+            return []
 
-        # Select file that is closest in time before starttime
-        best_diff = float("inf")
-        closest_file = None
-        for this_file in files:
-            try:
-                # Assume datetime string after last "_"
-                updated_at = this_file.metadata.get("update_datetime", this_file.external_id.split("_")[-1])
-                updated_at_ms = arrow_to_ms(arrow.get(updated_at))  # parse ISO 8601 compliant string
-                this_diff = self.cog_shop_config.starttime_ms - updated_at_ms
+        files_by_groups = group_files_by_metadata(files)
 
-                if this_diff >= 0 and this_diff < best_diff:
-                    logger.debug(f"Cutfile {this_file.external_id} is closer to starttime.")
-                    best_diff = this_diff
-                    closest_file = this_file
-
-            except arrow.parser.ParserError as e:
-                logger.warning(f"Failed to parse '{this_file.external_id}': {e}")
-        if not closest_file:
-            if len(files) > 0:
-                logger.warning(
-                    f"Could not find a cut file with a valid datetime - using {files[0].external_id}"
-                    f" (which may be outdated)"
-                )
-                return self.file_metadata_to_dict(files[0])
-            raise CogReaderError("Could not find any cut file!")
-
-        return self.file_metadata_to_dict(closest_file)
-
-    @cached_property
-    def cut_file_path(self) -> Optional[str]:
-        # TODO: logic for selecting cut file might need to be revised
-        #   if getting additonal metadata about which date/time period the file is valid for.
-        logger.debug("Looking for 'cut' file.")
-        files = self.client.files.list(
-            external_id_prefix=self.file_external_id_prefix,
-            metadata=ShopMetadata(type="water_value_cut_file", watercourse=self.cog_shop_config.watercourse),
-            limit=None,
-        )
-        if not files:
-            logger.debug(f"No 'cut' file found with prefix '{self.file_external_id_prefix}'.")
-            return None
-
-        # Select file that is closest in time before starttime
-        best_diff = float("inf")
-        closest_file = None
-        for this_file in files:
-            try:
-                # Assume datetime string after last "_"
-                updated_at = this_file.metadata.get("update_datetime", this_file.external_id.split("_")[-1])
-                updated_at_ms = arrow_to_ms(arrow.get(updated_at))  # parse ISO 8601 compliant string
-                this_diff = self.cog_shop_config.starttime_ms - updated_at_ms
-
-                if this_diff >= 0 and this_diff < best_diff:
-                    logger.debug(f"Cutfile {this_file.external_id} is closer to starttime.")
-                    best_diff = this_diff
-                    closest_file = this_file
-
-            except arrow.parser.ParserError as e:
-                logger.warning(f"Failed to parse '{this_file.external_id}': {e}")
-        if not closest_file:
-            if len(files) > 0:
-                logger.warning(
-                    f"Could not find a cut file with a valid datetime - using {files[0].external_id}"
-                    f" (which may be outdated)"
-                )
-                return download_file(client=self.client, file=files[0], download_directory=self._tmp_dir.name)
-            raise CogReaderError("Could not find any cut file!")
-
-        return download_file(client=self.client, file=closest_file, download_directory=self._tmp_dir.name)
+        return [
+            self.file_metadata_to_dict(f)
+            for file_group in files_by_groups
+            if (f := find_closest_file(files_by_groups[file_group], self.cog_shop_config.starttime_ms) is not None)
+        ]
 
     @cached_property
     def license_file_path(self) -> Optional[str]:
