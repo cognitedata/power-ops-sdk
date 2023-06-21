@@ -13,6 +13,12 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.15.2] - 21-06-23
+### Added
+
+* Documentation metadata to package, and a minimum introduction to the package in the documentation.
+
+
 ## [0.15.1] - 19-06-23
 ### Changed
 
