@@ -125,8 +125,8 @@ def query_fdm(
 
 def get_case(
     client: CogniteClient,
-    space: Optional[str] = None,
-    case_external_id: Optional[str] = None,
+    space: str,
+    case_external_id: str,
     model_extenal_id: Optional[str] = None,
     model_version: Optional[int] = None,
 ) -> Case:
