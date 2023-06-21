@@ -9,7 +9,8 @@ def format_deep_diff_path(path: str) -> str:
 
 
 def get_dict_dot_keys(data_dict: dict, dot_keys: str):
-    # FIXME? Workaround for the nested keys without dot get and
+    # FIXME?
+    # Workaround for the nested keys without dot get and
     # the fact that the yaml parser parses numeric keys as numbers
     # and datetime keys as strings
     # Not a complete solution:
