@@ -11,7 +11,7 @@ import yaml
 from cognite.client.data_classes import FileMetadata
 from matplotlib import pyplot as plt
 
-from cognite.powerops.client.data_classes.helpers import get_dict_dot_keys
+from cognite.powerops.client.data_classes.helpers import get_dict_dot_keys, is_time_series_dict
 from cognite.powerops.utils.plotting import ax_plot_time_series, create_time_series_plot
 
 logger = logging.getLogger(__name__)
@@ -74,11 +74,7 @@ class ShopYamlFile(ShopResultFile[dict]):
         # key is a dot separated string of nested keys
         try:
             data = get_dict_dot_keys(self.data, key)
-            if not (
-                isinstance(data, dict)
-                and all(isinstance(k, datetime) for k in data.keys())
-                and all(isinstance(v, (float, int)) for v in data.values())
-            ):
+            if not (is_time_series_dict(data)):
                 raise ValueError
             return data
         except KeyError:

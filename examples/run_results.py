@@ -7,8 +7,10 @@ logger = logging.getLogger(__name__)
 
 powerops = PowerOpsClient()
 
+# POWEROPS_DAY_AHEAD_BID_MATRIX_CALCULATION_06877a8c-8acf-4adf-9618-00ec98de84bd
 
-SAMPLE_SHOP_RUN_EVENT_1 = "POWEROPS_SHOP_RUN_ede8c4c0-18b1-41b1-ae40-ea20e037645c"
+
+SAMPLE_SHOP_RUN_EVENT_1 = "POWEROPS_SHOP_RUN_47d45ac8-391a-4a60-8153-335784ffbc48"
 
 sample_run_results_1 = powerops.shop.runs.retrieve(SAMPLE_SHOP_RUN_EVENT_1).get_results()
 
@@ -29,37 +31,37 @@ print(f"{sample_run_results_1=}")
 
 post_run_1 = sample_run_results_1.post_run
 
-found_keys = post_run_1.find_time_series(
-    matches_object_types=["generator", "plant"],
-    matches_object_names=["KVER(3237)", "REND(3192)", "BRAS(3210)_G1"],
-    matches_attribute_names="production",
-)
+# found_keys = post_run_1.find_time_series(
+#     matches_object_types=["generator", "plant"],
+#     matches_object_names=["HARP(2232)_G2", "HINO(390171)_G1", "NVIN(2225)", "HUND(2238)"],
+#     matches_attribute_names=["production"],
+# )
 # print(found_keys)
 # post_run_1.plot(found_keys)
 
 
-# # COMPARING TWO SHOP RUN RESULTS
-# # This is an arbitrary second run, so the difference is not meaningful
-SAMPLE_SHOP_RUN_EVENT_2 = "POWEROPS_SHOP_RUN_6336e7ae-722a-4c3a-a9bb-d719922e727f"
-SAMPLE_SHOP_RUN_EVENT_2 = SAMPLE_SHOP_RUN_EVENT_1
+# # # COMPARING TWO SHOP RUN RESULTS
+# Second run from same AHEAD_BID_MATRIX_CALCULATION event
+SAMPLE_SHOP_RUN_EVENT_2 = "POWEROPS_SHOP_RUN_71010201-3cd9-4df5-8193-aca3e5d323af"
+
 
 COMPARISON_KEY = "model.market.1.buy_price"
-
 sample_run_results_2 = powerops.shop.runs.retrieve(SAMPLE_SHOP_RUN_EVENT_2).get_results()
 
-# print(f"{sample_run_results_2=}")
 
 post_run_2 = sample_run_results_2.post_run
+
 runs = (
     post_run_1,
     post_run_2,
 )
 
-deep_diff_md = powerops.shop.results.compare.yaml_difference_md(*runs)
-
-print(deep_diff_md)
 # powerops.shop.results.compare.plot_time_series(
 #     post_run_list=runs,
 #     comparison_key=COMPARISON_KEY,
-#     labels=["Example 1", "Example 2"],  # optional labels
+#     # labels=["Example 1", "Example 2"],  # optional labels
 # )
+
+deep_diff_md = powerops.shop.results.compare.yaml_difference_md(*runs, ("Run 1", "Run 2"))
+print("------")
+print(deep_diff_md)

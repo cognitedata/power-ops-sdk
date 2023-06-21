@@ -8,7 +8,11 @@ from typing import Optional, Sequence
 import matplotlib.pyplot as plt
 from deepdiff import DeepDiff
 
-from cognite.powerops.client.data_classes.helpers import format_deep_diff_path, get_data_from_nested_dict
+from cognite.powerops.client.data_classes.helpers import (
+    format_deep_diff_path,
+    get_data_from_nested_dict,
+    is_time_series_dict,
+)
 from cognite.powerops.client.data_classes.shop_result_files import ShopYamlFile
 from cognite.powerops.utils.plotting import ax_plot_time_series, create_time_series_plot
 
@@ -52,9 +56,10 @@ class ShopResultsCompare:
 
     def yaml_difference_md(
         self,
-        post_run_yaml_1: Optional[ShopYamlFile] = None,
-        post_run_yaml_2: Optional[ShopYamlFile] = None,
-        names: Optional[Sequence[str]] = None,
+        post_run_yaml_a: Optional[ShopYamlFile] = None,
+        post_run_yaml_b: Optional[ShopYamlFile] = None,
+        name_a: str = "Result A",
+        name_b: str = "Result B",
     ):
         """
         Returns a markdown string of the difference between two post run yaml files
@@ -65,29 +70,20 @@ class ShopResultsCompare:
         Markdown(yaml_difference_md(...))
         ```
         """
-        if post_run_yaml_1 is None or post_run_yaml_2 is None:
+        if post_run_yaml_a is None or post_run_yaml_b is None:
             logger.error("Must provide two post run yaml files ")
             return ""
-        if names and len(names) != 2:
-            logger.error("Please provide two names")
-            return ""
 
-        if not names:
-            # The file names are of the form "post-run-<uuid>.yaml"
-            # We use the first section of the uuid as the name
-            names = (
-                post_run_yaml_1.name.split("-")[2],
-                post_run_yaml_2.name.split("-")[2],
-            )
-        yaml_deep_diff = self.yaml_deep_diff(post_run_yaml_1, post_run_yaml_2)
+        yaml_deep_diff = self.yaml_deep_diff(post_run_yaml_a, post_run_yaml_b)
         builder = YamlDiffMDBuilder(
             yaml_deep_diff,
-            post_run_yaml_1.data,
-            post_run_yaml_2.data,
-            *names,
+            post_run_yaml_a.data,
+            post_run_yaml_b.data,
+            name_a,
+            name_b,
         )
 
-        output_string = f"# Changes from {names[0]} to {names[1]}"
+        output_string = f"# Changes from {name_a} to {name_b}"
         output_string += "\n\n"
         output_string += builder.build_md()
         return output_string
@@ -97,32 +93,32 @@ class YamlDiffMDBuilder:
     def __init__(
         self,
         deep_diff: DeepDiff,
-        yaml_dict_1: dict,
-        yaml_dict_2: dict,
-        name_1: str,
-        name_2: str,
+        yaml_dict_a: dict,
+        yaml_dict_b: dict,
+        name_a: str,
+        name_b: str,
     ):
         self.deep_diff = deep_diff
-        self.yaml_dict_1 = yaml_dict_1
-        self.yaml_dict_2 = yaml_dict_2
-        self.name_1 = name_1
-        self.name_2 = name_2
+        self.yaml_dict_a = yaml_dict_a
+        self.yaml_dict_b = yaml_dict_b
+        self.name_a = name_a
+        self.name_b = name_b
         self.md_string = None
 
     def _add_modification(self, modifications):
-        self.md_string += f"\n### Items in {self.name_2} which are not in {self.name_1}:"
+        self.md_string += f"\n### Items in {self.name_b} which are not in {self.name_a}:"
         for location in modifications:
-            data = get_data_from_nested_dict(self.yaml_dict_2, location)
+            data = get_data_from_nested_dict(self.yaml_dict_b, location)
             self.md_string += format_deep_diff_path(location) + "\n" + pformat(data) + "\n"
 
     def _remove_modification(self, modifications):
-        self.md_string += f"\n### Items in {self.name_1} which are not in {self.name_2}:"
+        self.md_string += f"\n### Items in {self.name_a} which are not in {self.name_b}:"
         for location in modifications:
-            data = get_data_from_nested_dict(self.yaml_dict_1, location)
+            data = get_data_from_nested_dict(self.yaml_dict_a, location)
             self.md_string += format_deep_diff_path(location) + "\n" + pformat(data) + "\n"
 
     def _changed_modifications(self, modifications):
-        self.md_string += f"\n### {self.name_1}(top) and {self.name_2}(bottom)\n"
+        self.md_string += f"\n### {self.name_a}(top) and {self.name_b}(bottom)\n"
         self.md_string += "have different values for the following keys:"
         seen_parents = set()
 
@@ -132,7 +128,7 @@ class YamlDiffMDBuilder:
                 continue
 
             try:
-                parent_data = get_data_from_nested_dict(self.yaml_dict_1, parent_location)
+                parent_data = get_data_from_nested_dict(self.yaml_dict_a, parent_location)
             except KeyError:
                 parent_data = None
 
@@ -140,10 +136,18 @@ class YamlDiffMDBuilder:
                 seen_parents.add(parent_location)
                 self.md_string += f"\n{parent_location.replace('root', '')}:\n"
                 try:
-                    self.md_string += get_data_from_nested_dict(self.yaml_dict_1, parent_location)
-                    self.md_string += get_data_from_nested_dict(self.yaml_dict_2, parent_location)
+                    self.md_string += pformat(get_data_from_nested_dict(self.yaml_dict_a, parent_location))
+                    self.md_string += "\n"
+                    self.md_string += pformat(get_data_from_nested_dict(self.yaml_dict_b, parent_location))
+                    self.md_string += "\n\n"
                 except KeyError:
                     continue
+            elif is_time_series_dict(parent_data):
+                seen_parents.add(parent_location)
+                self.md_string += f"\n{parent_location.replace('root', '')}:\n"
+                self.md_string += "Difference is a *time series*\n"
+                self.md_string += f"Plot them with comparison_key={format_deep_diff_path(parent_location)}\n"
+
             else:
                 self.md_string += f"{format_deep_diff_path(location)}:"
                 self.md_string += pformat(changes["old_value"]) + "\n" + pformat(changes["new_value"]) + "\n"
