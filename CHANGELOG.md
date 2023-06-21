@@ -13,6 +13,12 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.16.0] - 21-06-23
+### Added
+
+* Add metadata field "no_shop" to bid process config.
+
+
 ## [0.15.2] - 21-06-23
 ### Added
 
