@@ -76,7 +76,7 @@ class ShopRunsAPI:
 
         event.metadata["shop:preprocessor_data"] = json.dumps(preprocessor_metadata)
         event.metadata["processed"] = "yes"  # avoid event being picked up by sniffer
-        self._po_client.cdf.events.create(event)
+        self._po_client.client.events.create(event)
         return ShopRun(self._po_client, shop_run_event=shop_run_event)
 
     def _upload_input_file(
@@ -95,7 +95,7 @@ class ShopRunsAPI:
     ) -> FileMetadata:
         file_ext_id = f"{shop_run_event.external_id}_{file_type.upper()}"
         logger.debug(f"Uploading file: '{file_ext_id}'.")
-        file_meta = self._po_client.cdf.files.upload_bytes(
+        file_meta = self._po_client.client.files.upload_bytes(
             external_id=file_ext_id,
             content=content,
             data_set_id=self._po_client.write_dataset_id,
@@ -116,11 +116,11 @@ class ShopRunsAPI:
             label_external_id=relationship_label,
         )
         relationship.data_set_id = self._po_client.write_dataset_id
-        self._po_client.cdf.relationships.create(relationship)
+        self._po_client.client.relationships.create(relationship)
 
     def _post_shop_run(self, shop_run_external_id: str):
         logger.info(f"Triggering run-shop endpoint, cogShopVersion: '{self._po_client.cogshop_version}'.")
-        cdf_config = self._po_client.cdf.config
+        cdf_config = self._po_client.client.config
         project = cdf_config.project
         cluster = cdf_config.base_url.split("//")[1].split(".")[0]
         auth_header = dict([cdf_config.credentials.authorization_header()])
@@ -141,24 +141,24 @@ class ShopRunsAPI:
         raise NotImplementedError()
 
     def retrieve(self, external_id: str) -> ShopRun:
-        event = self._po_client.cdf.events.retrieve(external_id=external_id)
+        event = self._po_client.client.events.retrieve(external_id=external_id)
         return ShopRun(
             self._po_client,
             shop_run_event=ShopRunEvent.from_event(event),
         )
 
     def retrieve_status(self, shop_run_external_id: str) -> ShopRun.Status:
-        event = retrieve_event(self._po_client.cdf, shop_run_external_id)
+        event = retrieve_event(self._po_client.client, shop_run_external_id)
         logger.debug(f"Reading status from event {event.external_id}.")
 
-        relationships = self._po_client.cdf.relationships.list(
+        relationships = self._po_client.client.relationships.list(
             data_set_ids=[self._po_client.write_dataset_id],
             source_external_ids=[shop_run_external_id],
             target_types=["event"],
         )
         related_events = []
         if relationships:
-            related_events = self._po_client.cdf.events.retrieve_multiple(
+            related_events = self._po_client.client.events.retrieve_multiple(
                 external_ids=[rel.target_external_id for rel in relationships],
                 ignore_unknown_ids=True,
             )

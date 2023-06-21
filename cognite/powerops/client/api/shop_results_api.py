@@ -53,7 +53,7 @@ class ShopRunResultsAPI:
 
     def retrieve_objective_function(self, shop_run: ShopRun) -> ObjectiveFunction:
         # TODO: ability to retrieve the objective function from the post run yaml file
-        cdf: CogniteClient = self._po_client.cdf
+        cdf: CogniteClient = self._po_client.client
         relationships = retrieve_relationships_from_source_ext_id(
             cdf,
             shop_run.shop_run_event.external_id,

@@ -20,8 +20,8 @@ powerops = PowerOpsClient(
 tmp_dir = tempfile.mkdtemp(prefix="power-ops-sdk-usage")
 
 # get a file:
-file_meta = powerops.cdf.files.retrieve(external_id="SHOP_Fornebu_model")
-powerops.cdf.files.download(
+file_meta = powerops.client.files.retrieve(external_id="SHOP_Fornebu_model")
+powerops.client.files.download(
     directory=tmp_dir,
     external_id="SHOP_Fornebu_model",
 )
