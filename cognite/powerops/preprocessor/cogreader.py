@@ -3,8 +3,6 @@ from __future__ import annotations
 import tempfile
 from functools import cached_property
 from typing import List, Optional, Union
-
-import arrow
 from cognite.client import CogniteClient
 
 from cognite.powerops.preprocessor import knockoff_logging as logging
@@ -13,7 +11,6 @@ from cognite.powerops.preprocessor.data_classes.time_series_mapping import TimeS
 from cognite.powerops.preprocessor.exceptions import CogReaderError
 from cognite.powerops.preprocessor.utils import (
     ShopMetadata,
-    arrow_to_ms,
     download_file,
     log_and_reraise,
     retrieve_yaml_file,
@@ -160,13 +157,10 @@ class CogReader:
         )
         if not files:
             return []
-
-        files_by_groups = group_files_by_metadata(files)
-
         return [
             self.file_metadata_to_dict(f)
-            for file_group in files_by_groups
-            if (f := find_closest_file(files_by_groups[file_group], self.cog_shop_config.starttime_ms) is not None)
+            for group in group_files_by_metadata(files).values()
+            if (f := find_closest_file(group, self.cog_shop_config.starttime_ms) is not None)
         ]
 
     @cached_property
