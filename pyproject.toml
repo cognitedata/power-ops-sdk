@@ -5,6 +5,9 @@ description = "SDK for power markets operations on Cognite Data Fusion"
 readme = "README.md"
 authors = ["Cognite <support@cognite.com>"]
 license = "Apache 2.0"
+documentation = "https://cognite-power-ops-sdk.readthedocs-hosted.com/en/latest/"
+homepage = "https://cognite-power-ops-sdk.readthedocs-hosted.com/en/latest/"
+repository = "https://github.com/cognitedata/power-ops-sdk"
 packages = [{include = "cognite", from = "."}]
 
 [tool.black]
@@ -32,7 +35,7 @@ PyYAML = "^6.0"
 cognite-sdk = {version = ">= 5.0.0, < 7.0", extras = ["pandas"]}
 pydantic = "^1.9.0"
 cachelib = "^0.10.2"
-loguru = "^0.6.0"
+loguru = "^0.7.0"
 deepdiff = "^6.3.0"
 cognite-gql-pygen = ">= 0.4.4"
 matplotlib = "^3.7.1"
