@@ -29,24 +29,25 @@ print(f"{sample_run_results_1=}")
 
 post_run_1 = sample_run_results_1.post_run
 
-# found_keys = post_run_1.find_time_series(
-#     matches_object_types=["generator", "plant"],
-#     matches_object_names=["KVER(3237)", "REND(3192)", "BRAS(3210)_G1"],
-#     matches_attribute_names="production",
-# )
+found_keys = post_run_1.find_time_series(
+    matches_object_types=["generator", "plant"],
+    matches_object_names=["KVER(3237)", "REND(3192)", "BRAS(3210)_G1"],
+    matches_attribute_names="production",
+)
 # print(found_keys)
 # post_run_1.plot(found_keys)
 
 
-# COMPARING TWO SHOP RUN RESULTS
-# This is an arbitrary second run, so the difference is not meaningful
+# # COMPARING TWO SHOP RUN RESULTS
+# # This is an arbitrary second run, so the difference is not meaningful
 SAMPLE_SHOP_RUN_EVENT_2 = "POWEROPS_SHOP_RUN_6336e7ae-722a-4c3a-a9bb-d719922e727f"
+SAMPLE_SHOP_RUN_EVENT_2 = SAMPLE_SHOP_RUN_EVENT_1
 
 COMPARISON_KEY = "model.market.1.buy_price"
 
 sample_run_results_2 = powerops.shop.runs.retrieve(SAMPLE_SHOP_RUN_EVENT_2).get_results()
 
-print(f"{sample_run_results_2=}")
+# print(f"{sample_run_results_2=}")
 
 post_run_2 = sample_run_results_2.post_run
 runs = (
@@ -54,8 +55,11 @@ runs = (
     post_run_2,
 )
 
-powerops.shop.results.compare.plot_time_series(
-    post_run_list=runs,
-    comparison_key=COMPARISON_KEY,
-    labels=["Example 1", "Example 2"],  # optional labels
-)
+deep_diff_md = powerops.shop.results.compare.yaml_difference_md(*runs)
+
+print(deep_diff_md)
+# powerops.shop.results.compare.plot_time_series(
+#     post_run_list=runs,
+#     comparison_key=COMPARISON_KEY,
+#     labels=["Example 1", "Example 2"],  # optional labels
+# )
