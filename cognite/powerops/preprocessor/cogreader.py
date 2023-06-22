@@ -51,7 +51,7 @@ class CogReader:
         try:
             return self._fdm_case
         except AttributeError:
-            raise RuntimeError("Expected to to run `retrieve_case()` method first.") from None
+            raise RuntimeError("Expected to run `retrieve_case()` method first.") from None
 
     def retrieve_case(self) -> None:
         self._fdm_case = get_case(
