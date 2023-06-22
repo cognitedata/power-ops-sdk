@@ -94,29 +94,9 @@ class CogReader:
 
     @cached_property
     def incremental_mapping(self) -> Optional[List[TimeSeriesMapping]]:
+        if mo := self.fdm_case.scenario.mappings_override is not None:
+            return [TimeSeriesMapping.from_mapping_model(m) for m in mo.items]
         return []
-        # TODO uncomment, SHOP needs this:
-        # relationships = self.client.relationships.list(
-        #     source_external_ids=[self.shop_event.external_id],  # BROKEN
-        #     data_set_ids=self.shop_event.data_set_id,           # BROKEN
-        #     target_types=["sequence"],
-        #     labels=LabelFilter(contains_all=[RelationshipsConfig.INCREMENTAL_MAPPING_LABEL]),
-        # )
-        # if not relationships:
-        #     logger.info("No relationships to 'incremental mapping'.")
-        #     return None
-
-        # if len(relationships) > 1:
-        #     raise CogReaderError(
-        #         f"Expected only one incremental mapping. Found {len(relationships)} relationships:"
-        #         f" {[rel.external_id for rel in relationships]}"
-        #     )
-        # sequence_external_id = relationships[0].target_external_id
-        # # shop_type = "incremental_mapping"  # TODO: assert?
-        # sequence_rows = retrieve_sequence_rows_as_dicts(
-        #     client=self.client, external_id=sequence_external_id
-        # )
-        # return [TimeSeriesMapping.from_dict(row) for row in sequence_rows]
 
     def get_extra_files_metadata(self) -> List[dict[str, str]]:
         files = self.client.files.list(
