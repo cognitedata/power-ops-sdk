@@ -33,6 +33,6 @@ def get_data_from_nested_dict(data_dict: dict, deep_diff_path: str):
 def is_time_series_dict(data: Any) -> bool:
     return (
         isinstance(data, dict)
-        and all(isinstance(k, datetime) for k in data.keys())
+        and all(isinstance(k, datetime.datetime) for k in data.keys())
         and all(isinstance(v, (float, int)) for v in data.values())
     )
