@@ -24,7 +24,6 @@ def test_static_values():
 
 
 def test_height_to_volume():
-
     heights = [2, 4, 6, 8, 10]
     volumes = [10, 20, 40, 80, 160]
 

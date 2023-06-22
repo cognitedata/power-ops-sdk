@@ -3,7 +3,8 @@ from typing import Optional
 from cognite.client import CogniteClient
 from cognite.client.exceptions import CogniteReadTimeout
 from pydantic import BaseModel
-from retry import retry
+
+from cognite.powerops.utils.retry import retry
 
 
 class Transformation(BaseModel):

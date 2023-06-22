@@ -7,7 +7,6 @@ from cognite.client import CogniteClient
 from cognite.powerops.preprocessor import knockoff_logging as logging
 from cognite.powerops.preprocessor.cogreader import CogReader
 
-
 logger = logging.getLogger(__name__)
 
 

@@ -3,22 +3,17 @@ from __future__ import annotations
 import tempfile
 from functools import cached_property
 from typing import List, Optional, Union
+
 from cognite.client import CogniteClient
 
 from cognite.powerops.preprocessor import knockoff_logging as logging
 from cognite.powerops.preprocessor.data_classes import CogShopCase, CogShopConfig
 from cognite.powerops.preprocessor.data_classes.time_series_mapping import TimeSeriesMapping
 from cognite.powerops.preprocessor.exceptions import CogReaderError
-from cognite.powerops.preprocessor.utils import (
-    ShopMetadata,
-    download_file,
-    log_and_reraise,
-    retrieve_yaml_file,
-)
+from cognite.powerops.preprocessor.utils import ShopMetadata, download_file, log_and_reraise, retrieve_yaml_file
 
 from .get_fdm_data import Case, get_case
-from .utils import group_files_by_metadata, find_closest_file
-
+from .utils import find_closest_file, group_files_by_metadata
 
 logger = logging.getLogger(__name__)
 
@@ -132,7 +127,10 @@ class CogReader:
     def get_cut_files_metadata(self) -> list[dict]:
         files = self.client.files.list(
             external_id_prefix=self.file_external_id_prefix,
-            metadata={"shop:type": "water_value_cut_file", "shop:watercourse": self.cog_shop_config.watercourse,},
+            metadata={
+                "shop:type": "water_value_cut_file",
+                "shop:watercourse": self.cog_shop_config.watercourse,
+            },
             limit=None,
         )
         if not files:
