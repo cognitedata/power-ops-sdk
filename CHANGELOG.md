@@ -13,6 +13,12 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.18.0] - 23-06-23
+### Added
+
+* Added ability to compare the yamls of shop runs and view it in a notebook.
+* Example Notebook for showing results and comparing shop runs.
+
 
 ## [0.17.0] - 21-06-23
 ### Added

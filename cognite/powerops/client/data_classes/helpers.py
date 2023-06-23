@@ -9,10 +9,10 @@ def format_deep_diff_path(path: str) -> str:
     """
     Formats from deepdiff path to dot separated path
     ```
-    >>> format_deep_diff_path("root['object_type']['object_name']['attribute']['name']")
-    "object_type.object_name.attribute.name"
-    ```
+    >>> format_deep_diff_path(path="root['object_type']['object_name']['attribute']['name']")
+    'object_type.object_name.attribute.name'
 
+    ```
     """
     return re.sub(r"['\[\]]", "", path.replace("][", ".").replace("root", ""))
 
@@ -28,8 +28,9 @@ def get_dict_dot_keys(data_dict: dict, dot_keys: str):
 
     Example:
     ```
-    >>> get_dict_dot_keys(my_dict={"my_key": {"my_nested_key": 42,}}, dot_keys="myKey.myNestedKey")
+    >>> get_dict_dot_keys(data_dict={"my_key": {"my_nested_key": 42,}}, dot_keys="my_key.my_nested_key")
     42
+
     ```
     """
 
