@@ -47,5 +47,4 @@ jobs:
           TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
         shell: bash
         run:
-          set -e
           twine upload --skip-existing --verbose dist/*
