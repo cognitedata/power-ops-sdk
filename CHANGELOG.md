@@ -13,6 +13,12 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.17.0] - 21-06-23
+### Added
+
+* Support for multiple cut files on the preprocessor subpackage.
+
+
 ## [0.16.0] - 21-06-23
 ### Added
 
