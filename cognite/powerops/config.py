@@ -37,6 +37,14 @@ class Watercourse(BaseModel):
 
 
 class WatercourseConfig(Watercourse):
+    """
+    Represents the configuration for a Watercourse
+
+    Attributes:
+        version: The version of the watercourse configuration.
+
+    """
+
     version: str
     market_to_price_area: Dict[str, str]
     directory: str
@@ -391,6 +399,7 @@ class BidProcessConfig(Configuration):
     bid_matrix_generator: str = Field(alias="bid_bid_matrix_generator_config_external_id")
     price_scenarios_per_watercourse: Optional[Dict[str, typing.Set[str]]] = None
     is_default_config_for_price_area: bool = False
+    no_shop: bool = Field(False, alias="no_shop")
 
     @validator("shop_start", "shop_end", "bid_date", pre=True)
     def json_loads(cls, value):
@@ -424,6 +433,7 @@ class BidProcessConfig(Configuration):
                 "shop:endtime": str(self.shop_end or benchmark.shop_end),
                 "bid:price_area": f"price_area_{self.price_area_name}",
                 "bid:is_default_config_for_price_area": self.is_default_config_for_price_area,
+                "bid:no_shop": self.no_shop,
             }
 
         return Asset(

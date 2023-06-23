@@ -1,10 +1,13 @@
 [tool.poetry]
 name = "cognite-power-ops"
-version = "0.15.0"
+version = "0.17.0"
 description = "SDK for power markets operations on Cognite Data Fusion"
 readme = "README.md"
 authors = ["Cognite <support@cognite.com>"]
 license = "Apache 2.0"
+documentation = "https://cognite-power-ops-sdk.readthedocs-hosted.com/en/latest/"
+homepage = "https://cognite-power-ops-sdk.readthedocs-hosted.com/en/latest/"
+repository = "https://github.com/cognitedata/power-ops-sdk"
 packages = [{include = "cognite", from = "."}]
 
 [tool.black]
@@ -29,29 +32,45 @@ target-version = 'py39'
 python = "^3.9"
 typer = "^0.9.0"
 PyYAML = "^6.0"
-cognite-sdk = {version = "^5.9.0", extras = ["pandas"]}
+cognite-sdk = {version = ">= 5.0.0, < 7.0", extras = ["pandas"]}
 pydantic = "^1.9.0"
 cachelib = "^0.10.2"
-loguru = "^0.6.0"
+loguru = "^0.7.0"
 deepdiff = "^6.3.0"
-cognite-gql-pygen = "0.4.4"
+cognite-gql-pygen = ">= 0.4.4"
 matplotlib = "^3.7.1"
 dacite = "^1.8.1"
 python-dotenv = "^1.0.0"
+arrow = "^1.2.0"
+
+mkdocs =  {version="*", optional=true}
+mkdocs-jupyter = {version="*", optional=true}
+mkdocs-material = {version="*", optional=true}
+mkdocs-material-extensions = {version="*", optional=true}
+mkdocs-git-revision-date-localized-plugin = {version="*", optional=true}
+mkdocs-git-authors-plugin = {version="*", optional=true}
+mkdocs-gitbook = {version="*", optional=true}
+mkdocs-glightbox = {version="*", optional=true}
+pymdown-extensions = {version="*", optional=true}
+mkdocstrings = {version="*", optional=true, extras=["python"]}
+
+[tool.poetry.extras]
+docs = ["mkdocs", "mkdocs-jupyter", "mkdocs-material", "mkdocs-material-extensions", "mkdocs-git-revision-date-localized-plugin",
+    "mkdocs-git-authors-plugin", "mkdocs-gitbook", "mkdocs-glightbox", "pymdown-extensions", "mkdocstrings"]
 
 [tool.poetry.scripts]
 powerops = "cognite.powerops.main:main"
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^7.3.1"
-pytest-regressions = "^2.4.2"
 pre-commit = "^3.2.2"
-twine = "^4.0.2"
-pytest-cov = "^4.0.0"
 profilehooks = "^1.12.0"
+pytest = "^7.3.1"
+pytest-cov = "^4.0.0"
 pytest-mock = "^3.10.0"
+pytest-regressions = "^2.4.2"
 toml = "*"
 ipykernel="6.23.3"
+twine = "^4.0.2"
 
 [build-system]
 requires = ["poetry-core"]

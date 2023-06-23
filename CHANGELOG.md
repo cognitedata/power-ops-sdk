@@ -14,6 +14,30 @@ Changes are grouped as follows
 - `Security` in case of vulnerabilities.
 
 
+## [0.17.0] - 21-06-23
+### Added
+
+* Support for multiple cut files on the preprocessor subpackage.
+
+
+## [0.16.0] - 21-06-23
+### Added
+
+* Add metadata field "no_shop" to bid process config.
+
+
+## [0.15.2] - 21-06-23
+### Added
+
+* Documentation metadata to package, and a minimum introduction to the package in the documentation.
+
+
+## [0.15.1] - 19-06-23
+### Changed
+
+* Upd required versions for cognite-sdk and cognite-gql-pygen.
+
+
 ## [0.15.0] - 19-06-23
 ### Added
 
