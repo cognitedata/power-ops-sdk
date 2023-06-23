@@ -3,7 +3,8 @@ from typing import Optional
 from cognite.client import CogniteClient
 from cognite.client.exceptions import CogniteReadTimeout
 from pydantic import BaseModel
-from retry import retry
+
+from cognite.powerops.utils.retry import retry
 
 
 class Transformation(BaseModel):
@@ -125,31 +126,17 @@ def query_fdm(
 
 def get_case(
     client: CogniteClient,
-    space: Optional[str] = None,
-    case_external_id: Optional[str] = None,
+    space: str,
+    case_external_id: str,
     model_extenal_id: Optional[str] = None,
     model_version: Optional[int] = None,
 ) -> Case:
-    if space is None and case_external_id is None:
-        from .test_data.otta_base import case
-
-        class Response:
-            def __init__(self, data):
-                self._data = data
-
-            def json(self):
-                return self._data
-
-        cases = {"data": {"getCaseById": {"items": [case]}}}
-
-        response = Response(cases)
-    else:
-        response = query_fdm(
-            client=client,
-            space=space,  # type: ignore[arg-type]
-            case_external_id=case_external_id,  # type: ignore[arg-type]
-            model_extenal_id=model_extenal_id,  # type: ignore[arg-type]
-            model_version=model_version,  # type: ignore[arg-type]
-        )
+    response = query_fdm(
+        client=client,
+        space=space,  # type: ignore[arg-type]
+        case_external_id=case_external_id,  # type: ignore[arg-type]
+        model_extenal_id=model_extenal_id,  # type: ignore[arg-type]
+        model_version=model_version,  # type: ignore[arg-type]
+    )
 
     return parse_response(response)[0]
