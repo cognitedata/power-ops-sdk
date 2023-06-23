@@ -2,10 +2,8 @@ from __future__ import annotations
 
 import abc
 import logging
-import operator
 import os
 from datetime import datetime
-from functools import reduce
 from pathlib import Path
 from typing import Generic, Sequence, TypeVar, Union
 
@@ -13,6 +11,7 @@ import yaml
 from cognite.client.data_classes import FileMetadata
 from matplotlib import pyplot as plt
 
+from cognite.powerops.client.data_classes.helpers import get_dict_dot_keys, is_time_series_dict
 from cognite.powerops.utils.plotting import ax_plot_time_series, create_time_series_plot
 
 logger = logging.getLogger(__name__)
@@ -74,15 +73,8 @@ class ShopYamlFile(ShopResultFile[dict]):
     def _retrieve_time_series_dict(self, key: str) -> dict[datetime, float]:
         # key is a dot separated string of nested keys
         try:
-            # FIXME? This is a workaround for the nested keys without dot get and
-            # the fact that the yaml parser parses numeric keys as numbers
-            keys = [int(k) if k.isdigit() else k for k in key.split(".")]
-            data = reduce(operator.getitem, keys, self.data)
-            if not (
-                isinstance(data, dict)
-                and all(isinstance(k, datetime) for k in data.keys())
-                and all(isinstance(v, (float, int)) for v in data.values())
-            ):
+            data = get_dict_dot_keys(self.data, key)
+            if not is_time_series_dict(data):
                 raise ValueError
             return data
         except KeyError:
