@@ -32,6 +32,7 @@ from cognite.powerops.utils.serializer import load_yaml
 
 
 class Watercourse(BaseModel):
+    # det som skrives til cdf
     name: str
     shop_penalty_limit: int = 42000
 
@@ -800,6 +801,9 @@ class GeneratorTimeSeriesMapping(BaseModel):
 
 
 class BootstrapConfig(BaseModel):
+    # denne forteller hva som er bootstrap
+    # leses fra en yaml fil 
+    # config srkives til cdf (les kode)
     constants: CommonConstants
     cdf: CDFConfig
     benchmarks: list[BenchmarkingConfig]
