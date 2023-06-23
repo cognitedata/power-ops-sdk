@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import contextlib
 import logging
 from datetime import datetime
 from pprint import pformat
@@ -51,7 +52,7 @@ class ShopResultsCompare:
         post_run_yaml_1: ShopYamlFile,
         post_run_yaml_2: ShopYamlFile,
         **deepdiff_kwargs,
-    ) -> str:
+    ) -> DeepDiff:
         """DeepDiff wrapper for ShopYamlFile objects."""
         return DeepDiff(
             post_run_yaml_1.data,
@@ -108,9 +109,9 @@ class YamlDiffMDBuilder:
         self.name_b = name_b
         self.md_string = None
 
-    def _loop_add_remove_modifications(
+    def _loop_ordered_set_diff(
         self,
-        modifications: PrettyOrderedSet,
+        diffs: PrettyOrderedSet,
         yaml_lookup: dict,
         yaml_name: str,
     ):
@@ -119,7 +120,7 @@ class YamlDiffMDBuilder:
         list_keys = set()
         other_value_keys = set()
 
-        for location in modifications:
+        for location in diffs:
             parent_location = f'{"][".join(location.split("][")[:-1])}]'
             if parent_location in seen_parents:
                 continue
@@ -127,6 +128,7 @@ class YamlDiffMDBuilder:
                 parent_data = get_data_from_nested_dict(yaml_lookup, parent_location)
             except KeyError:
                 parent_data = None
+
             if isinstance(parent_data, list):
                 seen_parents.add(parent_location)
                 list_keys.add(format_deep_diff_path(parent_location))
@@ -138,7 +140,7 @@ class YamlDiffMDBuilder:
                 other_value_keys.add(format_deep_diff_path(location))
 
         if other_value_keys:
-            self.md_string += "#### The following are **values**: \n"
+            self.md_string += "#### Value Items: \n"
             for key in other_value_keys:
                 self.md_string += f" * `{key}`\n"
                 self.md_string += pformat(get_data_from_nested_dict(yaml_lookup, location))
@@ -146,35 +148,37 @@ class YamlDiffMDBuilder:
             self.md_string += "\n"
 
         if list_keys:
-            self.md_string += "#### The following are **lists**: \n"
+            self.md_string += "#### Lists: \n"
             for key in list_keys:
                 self.md_string += f" - `{key}`\n"
-                self.md_string += "\n    - ".join(get_data_from_nested_dict(self.yaml_dict_b, key))
-                self.md_string += "\n"
-                self.md_string += pformat(get_data_from_nested_dict(yaml_lookup, location))
+                self.md_string += "\n    - ".join(get_data_from_nested_dict(yaml_lookup, key))
                 self.md_string += "\n"
             self.md_string += "\n"
 
         if time_series_keys:
-            self.md_string += "#### The following are **time series** which can be plotted. \n"
+            self.md_string += "#### Time series:  \n"
             self.md_string += f"Use `post_run.plot(key)` on {yaml_name} with one of the following keys \n"
             for key in time_series_keys:
                 self.md_string += f" - `{format_deep_diff_path(key)}`"
                 self.md_string += "\n"
             self.md_string += "\n"
 
-    def _loop_changed_modifications(
+    def _loop_dict_diff(
         self,
-        modifications: dict,
+        diff: dict,
         yaml_dict_lookup: dict,
         yaml_names: tuple[str, str],
     ):
         seen_parents = set()
         time_series_keys = set()
         list_keys = set()
-        other_value_keys = {}
+        other_values = {}
 
-        for location, changes in modifications.items():
+        for location, changes in diff.items():
+            with contextlib.suppress(TypeError):
+                # Ignore changes to temporary file paths. Not all changes are iterable
+                if "/tmp/" in changes["old_value"] and "/tmp/" in changes["new_value"]:
+                    continue
             parent_location = f'{"][".join(location.split("][")[:-1])}]'
             if parent_location in seen_parents:
                 continue
@@ -192,18 +196,18 @@ class YamlDiffMDBuilder:
                 time_series_keys.add(format_deep_diff_path(parent_location))
 
             else:
-                other_value_keys[format_deep_diff_path(location)] = changes
+                other_values[format_deep_diff_path(location)] = changes
 
-        if other_value_keys:
-            self.md_string += "#### The following **values** have changed: \n"
-            for key, changes in other_value_keys.items():
+        if other_values:
+            self.md_string += "#### Values: \n"
+            for key, changes in other_values.items():
                 self.md_string += f" - `{key}`\n"
                 self.md_string += f"    - {pformat(changes['old_value'])}\n"
                 self.md_string += f"    - {pformat(changes['new_value'])}\n"
             self.md_string += "\n"
 
         if list_keys:
-            self.md_string += "#### The following are **lists** which changed: \n"
+            self.md_string += "#### Lists: \n"
             for key in list_keys:
                 self.md_string += f" - `{key}`\n"
 
@@ -217,7 +221,7 @@ class YamlDiffMDBuilder:
             self.md_string += "\n"
 
         if time_series_keys:
-            self.md_string += "#### The following are **time series** which changed.\n"
+            self.md_string += "#### Time series:\n"
             self.md_string += f"Use `powerops.shop.results.compare.plot_time_series({yaml_names}, key)` "
             self.md_string += " on with one of the following keys \n"
             for key in time_series_keys:
@@ -240,20 +244,20 @@ class YamlDiffMDBuilder:
                 self.md_string += f"\n## Items in {self.name_b} which are not in {self.name_a}:\n"
                 yaml_dict_lookup = self.yaml_dict_b
                 yaml_name = self.name_b
-                loop_modifications = self._loop_add_remove_modifications
+                loop_modifications = self._loop_ordered_set_diff
 
             elif "remove" in modification_type:
                 self.md_string += f"\n## Items in {self.name_a} which are not in {self.name_b}:\n"
                 yaml_dict_lookup = self.yaml_dict_a
                 yaml_name = self.name_a
-                loop_modifications = self._loop_add_remove_modifications
+                loop_modifications = self._loop_ordered_set_diff
 
             elif "change" in modification_type:
                 self.md_string += f"\n## Items that are both in {self.name_a} (top) and {self.name_b} (bottom) "
                 self.md_string += "but are different: \n"
                 yaml_dict_lookup = self.yaml_dict_a
                 yaml_name = self.name_a, self.name_b
-                loop_modifications = self._loop_changed_modifications
+                loop_modifications = self._loop_dict_diff
 
             else:
                 logger.error(f"Could not handle modification_type {modification_type}")
