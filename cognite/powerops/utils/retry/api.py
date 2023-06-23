@@ -108,8 +108,8 @@ def retry(exceptions=Exception, tries=-1, delay=0, max_delay=None, backoff=1, ji
 
     @decorator
     def retry_decorator(f, *fargs, **fkwargs):
-        args = fargs if fargs else list()
-        kwargs = fkwargs if fkwargs else dict()
+        args = fargs or []
+        kwargs = fkwargs or {}
         return __retry_internal(
             partial(f, *args, **kwargs), exceptions, tries, delay, max_delay, backoff, jitter, logger
         )
@@ -162,6 +162,6 @@ def retry_call(
     result : object
         The result of the `f` function.
     """
-    args = fargs if fargs else list()
-    kwargs = fkwargs if fkwargs else dict()
+    args = fargs or []
+    kwargs = fkwargs or {}
     return __retry_internal(partial(f, *args, **kwargs), exceptions, tries, delay, max_delay, backoff, jitter, logger)

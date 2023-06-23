@@ -327,7 +327,7 @@ def retrieve_time_series_datapoints(
     )
     time_series_range = retrieve_range(
         client=client,
-        external_ids=[mapping.time_series_external_id for mapping in mappings if mapping.retrieve == "RANGE"],  # type: ignore # TODO: avoid type: ignore
+        external_ids=[mapping.time_series_external_id for mapping in mappings if mapping.retrieve == "RANGE"],  # type: ignore # TODO: avoid type: ignore # noqa: E501
         start=start,
         end=end,
     )
@@ -370,9 +370,7 @@ def find_closest_file(files: list[FileMetadata], starttime_ms: float) -> Optiona
         except (arrow.parser.ParserError, TypeError) as e:
             logger.warning(f"Failed to parse date for '{this_file.external_id}': {e}")
     if not closest_file and valid_files:
-        logger.warning(
-            f"Could not find a cut file with a valid datetime - using {valid_files[0].external_id} (which may be outdated)"
-        )
+        logger.warning(f"Could not find a cut file with a valid datetime - using {valid_files[0].external_id}")
         return valid_files[0]
     elif not valid_files:
         return None

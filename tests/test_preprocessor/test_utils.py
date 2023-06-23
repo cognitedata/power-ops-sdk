@@ -1,14 +1,14 @@
 import tempfile
 from datetime import datetime
 from itertools import chain
-from typing import List, Union
+from typing import Union
 
 import arrow
 import numpy as np
 import pandas as pd
 import pytest
 import yaml
-from cognite.client.data_classes import Asset, Event, FileMetadata, Relationship, TimeSeries
+from cognite.client.data_classes import Asset, Event, FileMetadata, TimeSeries
 from cognite.client.exceptions import CogniteException
 
 from cognite.powerops.preprocessor.exceptions import CogShopConfigError, CogShopError

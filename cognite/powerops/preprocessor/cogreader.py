@@ -88,12 +88,12 @@ class CogReader:
         return [TimeSeriesMapping.from_mapping_model(m) for m in mappings]
 
     @cached_property
-    def incremental_mapping(self) -> Optional[List[TimeSeriesMapping]]:
-        if mo := self.fdm_case.scenario.mappings_override is not None:
+    def incremental_mapping(self) -> List[TimeSeriesMapping]:
+        if (mo := self.fdm_case.scenario.mappings_override) is not None:
             return [TimeSeriesMapping.from_mapping_model(m) for m in mo.items]
         return []
 
-    def get_extra_files_metadata(self) -> List[dict[str, str]]:
+    def get_extra_files_metadata(self) -> List[dict[str, Union[str, int]]]:
         files = self.client.files.list(
             external_id_prefix=self.file_external_id_prefix,
             metadata=ShopMetadata(type="extra_data"),
