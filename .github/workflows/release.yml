@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: pre-commit/action@v3.0.0
 
-  tests:
+  test_and_release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -45,4 +45,6 @@ jobs:
         env:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-        run: twine upload --verbose dist/* || echo 'Version exists'
+        shell: bash
+        run:
+          twine upload --skip-existing --verbose dist/*
