@@ -51,23 +51,20 @@ class ShopResultsCompare:
         self,
         post_run_yaml_1: ShopYamlFile,
         post_run_yaml_2: ShopYamlFile,
-        **deepdiff_kwargs,
     ) -> DeepDiff:
         """DeepDiff wrapper for ShopYamlFile objects."""
         return DeepDiff(
             post_run_yaml_1.data,
             post_run_yaml_2.data,
             ignore_type_in_groups=[(int, float)],
-            **deepdiff_kwargs,
         )
 
     def yaml_difference_md(
         self,
-        post_run_yaml_a: Optional[ShopYamlFile] = None,
-        post_run_yaml_b: Optional[ShopYamlFile] = None,
+        post_run_yaml_a: ShopYamlFile = None,
+        post_run_yaml_b: ShopYamlFile = None,
         name_a: str = "Result A",
         name_b: str = "Result B",
-        **deepdiff_kwargs,
     ):
         """
         Returns a markdown string of the difference between two post run yaml files
@@ -79,13 +76,10 @@ class ShopResultsCompare:
         ```
         """
         if post_run_yaml_a is None or post_run_yaml_b is None:
-            logger.error("Must provide two post run yaml files ")
-            return ""
+            raise ValueError("Must provide two post run yaml files")
 
         yaml_deep_diff = self.yaml_deep_diff(post_run_yaml_a, post_run_yaml_b)
-        builder = YamlDiffMDBuilder(
-            yaml_deep_diff, post_run_yaml_a.data, post_run_yaml_b.data, name_a, name_b, **deepdiff_kwargs
-        )
+        builder = _YamlDiffMDBuilder(yaml_deep_diff, post_run_yaml_a.data, post_run_yaml_b.data, name_a, name_b)
 
         output_string = f"# Changes from {name_a} to {name_b}"
         output_string += "\n\n"
@@ -93,7 +87,7 @@ class ShopResultsCompare:
         return output_string
 
 
-class YamlDiffMDBuilder:
+class _YamlDiffMDBuilder:
     def __init__(
         self,
         deep_diff: DeepDiff,
@@ -107,7 +101,7 @@ class YamlDiffMDBuilder:
         self.yaml_dict_b = yaml_dict_b
         self.name_a = name_a
         self.name_b = name_b
-        self.md_string = None
+        self.md_string_builder: list = None
 
     def _loop_ordered_set_diff(
         self,
@@ -140,28 +134,28 @@ class YamlDiffMDBuilder:
                 other_value_keys.add(format_deep_diff_path(location))
 
         if other_value_keys:
-            self.md_string += "#### Value Items: \n"
+            self.md_string_builder.append("#### Value Items: \n")
             for key in other_value_keys:
-                self.md_string += f" * `{key}`\n"
-                self.md_string += pformat(get_data_from_nested_dict(yaml_lookup, location))
-                self.md_string += "\n"
-            self.md_string += "\n"
+                self.md_string_builder.append(f" * `{key}`\n")
+                self.md_string_builder.append(pformat(get_data_from_nested_dict(yaml_lookup, location)))
+                self.md_string_builder.append("\n")
+            self.md_string_builder.append("\n")
 
         if list_keys:
-            self.md_string += "#### Lists: \n"
+            self.md_string_builder.append("#### Lists: \n")
             for key in list_keys:
-                self.md_string += f" - `{key}`\n"
-                self.md_string += "\n    - ".join(get_data_from_nested_dict(yaml_lookup, key))
-                self.md_string += "\n"
-            self.md_string += "\n"
+                self.md_string_builder.append(f" - `{key}`\n")
+                self.md_string_builder.append("\n    - ".join(get_data_from_nested_dict(yaml_lookup, key)))
+                self.md_string_builder.append("\n")
+            self.md_string_builder.append("\n")
 
         if time_series_keys:
-            self.md_string += "#### Time series:  \n"
-            self.md_string += f"Use `post_run.plot(key)` on {yaml_name} with one of the following keys \n"
+            self.md_string_builder.append("#### Time series:  \n")
+            self.md_string_builder.append(f"Use `post_run.plot(key)` on {yaml_name} with one of the following keys \n")
             for key in time_series_keys:
-                self.md_string += f" - `{format_deep_diff_path(key)}`"
-                self.md_string += "\n"
-            self.md_string += "\n"
+                self.md_string_builder.append(f" - `{format_deep_diff_path(key)}`")
+                self.md_string_builder.append("\n")
+            self.md_string_builder.append("\n")
 
     def _loop_dict_diff(
         self,
@@ -199,39 +193,40 @@ class YamlDiffMDBuilder:
                 other_values[format_deep_diff_path(location)] = changes
 
         if other_values:
-            self.md_string += "#### Values: \n"
+            self.md_string_builder.append("#### Values: \n")
             for key, changes in other_values.items():
-                self.md_string += f" - `{key}`\n"
-                self.md_string += f"    - {pformat(changes['old_value'])}\n"
-                self.md_string += f"    - {pformat(changes['new_value'])}\n"
-            self.md_string += "\n"
+                self.md_string_builder.append(f" - `{key}`\n")
+                self.md_string_builder.append(f"    - {pformat(changes['old_value'])}\n")
+                self.md_string_builder.append(f"    - {pformat(changes['new_value'])}\n")
+            self.md_string_builder.append("\n")
 
         if list_keys:
-            self.md_string += "#### Lists: \n"
+            self.md_string_builder.append("#### Lists: \n")
             for key in list_keys:
-                self.md_string += f" - `{key}`\n"
+                self.md_string_builder.append(f" - `{key}`\n")
 
-                self.md_string += f"    - **{yaml_names[0]}** \n"
-                self.md_string += "\n      - ".join(get_data_from_nested_dict(self.yaml_dict_a, key))
-                self.md_string += "\n"
+                self.md_string_builder.append(f"    - **{yaml_names[0]}** \n")
+                self.md_string_builder.append("\n      - ".join(get_data_from_nested_dict(self.yaml_dict_a, key)))
+                self.md_string_builder.append("\n")
 
-                self.md_string += f"    - **{yaml_names[1]}** \n"
-                self.md_string += "\n      - ".join(get_data_from_nested_dict(self.yaml_dict_b, key))
-                self.md_string += "\n"
-            self.md_string += "\n"
+                self.md_string_builder.append(f"    - **{yaml_names[1]}** \n")
+                self.md_string_builder.append("\n      - ".join(get_data_from_nested_dict(self.yaml_dict_b, key)))
+                self.md_string_builder.append("\n")
+
+            self.md_string_builder += "\n"
 
         if time_series_keys:
-            self.md_string += "#### Time series:\n"
-            self.md_string += f"Use `powerops.shop.results.compare.plot_time_series({yaml_names}, key)` "
-            self.md_string += " on with one of the following keys \n"
+            self.md_string_builder.append("#### Time series:\n")
+            self.md_string_builder.append(f"Use `powerops.shop.results.compare.plot_time_series({yaml_names}, key)` ")
+            self.md_string_builder.append(" on with one of the following keys \n")
             for key in time_series_keys:
-                self.md_string += f" * `{format_deep_diff_path(key)}`"
-                self.md_string += "\n"
+                self.md_string_builder.append(f" * `{format_deep_diff_path(key)}`")
+                self.md_string_builder.append("\n")
 
-            self.md_string += "\n"
+            self.md_string_builder.append("\n")
 
     def build_md(self) -> str:
-        self.md_string = ""
+        self.md_string_builder = []
         loop_modifications: Callable[[str, PrettyOrderedSet | dict], None] = None
 
         for modification_type, modifications in self.deep_diff.items():
@@ -241,20 +236,22 @@ class YamlDiffMDBuilder:
                 continue
 
             elif "add" in modification_type:
-                self.md_string += f"\n## Items in {self.name_b} which are not in {self.name_a}:\n"
+                self.md_string_builder.append(f"\n## Items in {self.name_b} which are not in {self.name_a}:\n")
                 yaml_dict_lookup = self.yaml_dict_b
                 yaml_name = self.name_b
                 loop_modifications = self._loop_ordered_set_diff
 
             elif "remove" in modification_type:
-                self.md_string += f"\n## Items in {self.name_a} which are not in {self.name_b}:\n"
+                self.md_string_builder.append(f"\n## Items in {self.name_a} which are not in {self.name_b}:\n")
                 yaml_dict_lookup = self.yaml_dict_a
                 yaml_name = self.name_a
                 loop_modifications = self._loop_ordered_set_diff
 
             elif "change" in modification_type:
-                self.md_string += f"\n## Items that are both in {self.name_a} (top) and {self.name_b} (bottom) "
-                self.md_string += "but are different: \n"
+                self.md_string_builder.append(
+                    f"\n## Items that are both in {self.name_a} (top) and {self.name_b} (bottom) "
+                )
+                self.md_string_builder.append("but are different: \n")
                 yaml_dict_lookup = self.yaml_dict_a
                 yaml_name = self.name_a, self.name_b
                 loop_modifications = self._loop_dict_diff
@@ -264,4 +261,4 @@ class YamlDiffMDBuilder:
                 continue
 
             loop_modifications(modifications, yaml_dict_lookup, yaml_name)
-        return self.md_string
+        return "".join(self.md_string_builder)

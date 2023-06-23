@@ -74,7 +74,7 @@ class ShopYamlFile(ShopResultFile[dict]):
         # key is a dot separated string of nested keys
         try:
             data = get_dict_dot_keys(self.data, key)
-            if not (is_time_series_dict(data)):
+            if not is_time_series_dict(data):
                 raise ValueError
             return data
         except KeyError:
