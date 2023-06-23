@@ -21,7 +21,7 @@ def decorator(caller):
     return decor
 
 
-def __retry_internal(
+def _retry_internal(
     f, exceptions=Exception, tries=-1, delay=0, max_delay=None, backoff=1, jitter=0, logger=logging_logger
 ):
     """
@@ -110,7 +110,7 @@ def retry(exceptions=Exception, tries=-1, delay=0, max_delay=None, backoff=1, ji
     def retry_decorator(f, *fargs, **fkwargs):
         args = fargs or []
         kwargs = fkwargs or {}
-        return __retry_internal(
+        return _retry_internal(
             partial(f, *args, **kwargs), exceptions, tries, delay, max_delay, backoff, jitter, logger
         )
 
@@ -164,4 +164,4 @@ def retry_call(
     """
     args = fargs or []
     kwargs = fkwargs or {}
-    return __retry_internal(partial(f, *args, **kwargs), exceptions, tries, delay, max_delay, backoff, jitter, logger)
+    return _retry_internal(partial(f, *args, **kwargs), exceptions, tries, delay, max_delay, backoff, jitter, logger)
