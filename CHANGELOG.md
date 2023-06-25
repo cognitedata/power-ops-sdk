@@ -13,6 +13,12 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.19.0] - 25-06-23
+### Added
+
+* Added file type for shop files of type "modulserie"
+* Added option to provide additional string in file names and external ID for files uploaded to CDF
+
 ## [0.18.0] - 23-06-23
 ### Added
 
