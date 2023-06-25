@@ -2,7 +2,9 @@ from __future__ import annotations
 
 import tempfile
 from functools import cached_property
-from typing import List, Optional, Union
+from pathlib import Path
+from typing import List, Optional, Union, Literal
+from pydantic import BaseModel, validator
 
 from cognite.client import CogniteClient
 
@@ -13,9 +15,34 @@ from cognite.powerops.preprocessor.exceptions import CogReaderError
 from cognite.powerops.preprocessor.utils import ShopMetadata, download_file, log_and_reraise, retrieve_yaml_file
 
 from .get_fdm_data import Case, get_case
-from .utils import find_closest_file, group_files_by_metadata
+from .utils import find_closest_file, group_files_by_metadata, load_yaml
 
 logger = logging.getLogger(__name__)
+
+
+
+class CogShopFile(BaseModel):
+    label: Optional[str]
+    pick: Optional[Literal["closest", "latest", "all"]]
+    sort_by: Optional[str]
+    external_id_prefix: Optional[str]
+    external_id: str = ""
+    file_type: Literal["ascii", "yaml"]
+
+    @validator("external_id")
+    def external_id_or_prefix_set(cls, value, values: dict):
+        if not values.get("external_id_prefix") and value == "":
+            raise ValueError("Either external_id or external_id_prefix must be set")
+
+
+class CogShopFileLoader(BaseModel):
+    file_load_sequence: list[CogShopFile]
+
+    @classmethod
+    def from_yaml(cls, path: Path) -> "CogShopFileLoader":
+        configs = load_yaml(path, encoding="utf-8")
+        return cls(**configs)
+
 
 
 class CogReader:
@@ -35,11 +62,24 @@ class CogReader:
         self.fdm_model_version = fdm_model_version
 
         self._tmp_dir = tempfile.TemporaryDirectory()
+        self.cogshop_file_loader: None | CogShopFileLoader = None
         logger.info(f"{self.__class__.__name__} initialized.")
 
     @property
     def file_external_id_prefix(self) -> str:
         return f"SHOP_{self.cog_shop_config.watercourse}_"
+
+    @property
+    def cogshop_files_config_path(self) -> Path:
+        return Path(f"{self._tmp_dir}/cogshop_files_config.yaml")
+
+    def retrieve_file_loader_config(self) -> None:
+        self.client.files.download_to_path(self.cogshop_files_config_path,
+                                               external_id=f"SHOP_{self.cog_shop_config.watercourse}_cogshop_files_config")
+
+    def set_cogshop_file_loader(self) -> None:
+        self.retrieve_file_loader_config()
+        self.cogshop_file_loader = CogShopFileLoader.from_yaml(self.cogshop_files_config_path)
 
     @property
     def fdm_case(self) -> Case:
@@ -102,6 +142,23 @@ class CogReader:
             return [self.file_metadata_to_dict(fmd) for fmd in files]
         else:
             return []
+
+    def get_file_loader_sequence(self) -> list[dict]:
+        file_loader_sequence = []
+
+        for file in self.cogshop_file_loader.file_load_sequence:
+            if file.external_id and file.pick == "latest":
+                file_loader_sequence.append({"external_id": file.external_id,
+                                               "file_type": file.file_type})
+            elif file.external_id_prefix and file.pick == "closest":
+                files = self.client.files.list(external_id_prefix=file.external_id_prefix, limit=None)
+                closest_file = find_closest_file(files, self.cog_shop_config.starttime_ms)
+                file_loader_sequence.append({"external_id": closest_file.external_id,
+                                               "file_type": file.file_type})
+
+        if not file_loader_sequence:
+            raise ValueError("No file loader sequence obtained from CDF")
+        return file_loader_sequence
 
     @staticmethod
     def file_metadata_to_dict(file_metadata) -> dict[str, Union[str, int]]:
@@ -195,4 +252,8 @@ class CogReader:
             self.cog_shop_case._set_some_commands()
 
         self._replace_model_time_series()
+
+        if not self.cogshop_file_loader:
+            self.set_cogshop_file_loader()
+
         return self

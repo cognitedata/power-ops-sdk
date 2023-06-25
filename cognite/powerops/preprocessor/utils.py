@@ -3,6 +3,8 @@ import time
 from collections import defaultdict
 from datetime import datetime
 from functools import wraps
+from io import StringIO
+from pathlib import Path
 from typing import Callable, Dict, Iterable, List, Optional, Type, Union
 
 import arrow
@@ -73,6 +75,10 @@ def retrieve_yaml_file(client: CogniteClient, file_external_id: str) -> dict:
 def save_dict_as_yaml(file_path: str, d: dict) -> None:
     with open(file_path, "w") as file:
         yaml.dump(d, file, allow_unicode=True)
+
+def load_yaml(yaml_path: Path, encoding="utf-8") -> dict:
+    data = Path(yaml_path).read_text(encoding=encoding)
+    return yaml.safe_load(StringIO(data))
 
 
 def rename_dict_keys(d: Dict, key_mapping: Dict) -> None:
