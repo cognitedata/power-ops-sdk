@@ -22,7 +22,7 @@ class ShopFileConfig(BaseModel):
         "extra_data",
         "water_value_cut_file_reservoir_mapping",
         "water_value_cut_file",
-        "modulserie"
+        "modulserie",
     ]
     md5_hash: Optional[str] = None
 
