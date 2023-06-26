@@ -804,6 +804,12 @@ labels:
 - external_id: watercourse
   name: watercourse
 relationships:
+- external_id: generator_Dalby_G1.112233
+  labels: '[{''externalId'': ''relationship_to.start_stop_cost_time_series''}]'
+  source_external_id: generator_Dalby_G1
+  source_type: ASSET
+  target_external_id: '112233'
+  target_type: TIMESERIES
 - external_id: generator_Dalby_G1.generator_Dalby_G1_generator_efficiency_curve
   labels: '[{''externalId'': ''relationship_to.generator_efficiency_curve''}]'
   source_external_id: generator_Dalby_G1
@@ -828,6 +834,12 @@ relationships:
   source_type: ASSET
   target_external_id: generator_Dalby_G2_turbine_efficiency_curve
   target_type: SEQUENCE
+- external_id: generator_Holen_G1.112233
+  labels: '[{''externalId'': ''relationship_to.start_stop_cost_time_series''}]'
+  source_external_id: generator_Holen_G1
+  source_type: ASSET
+  target_external_id: '112233'
+  target_type: TIMESERIES
 - external_id: generator_Holen_G1.generator_Holen_G1_generator_efficiency_curve
   labels: '[{''externalId'': ''relationship_to.generator_efficiency_curve''}]'
   source_external_id: generator_Holen_G1
@@ -864,6 +876,12 @@ relationships:
   source_type: ASSET
   target_external_id: generator_Lien_krv_G1_turbine_efficiency_curve
   target_type: SEQUENCE
+- external_id: generator_Lund_G1.112233
+  labels: '[{''externalId'': ''relationship_to.start_stop_cost_time_series''}]'
+  source_external_id: generator_Lund_G1
+  source_type: ASSET
+  target_external_id: '112233'
+  target_type: TIMESERIES
 - external_id: generator_Lund_G1.generator_Lund_G1_generator_efficiency_curve
   labels: '[{''externalId'': ''relationship_to.generator_efficiency_curve''}]'
   source_external_id: generator_Lund_G1
