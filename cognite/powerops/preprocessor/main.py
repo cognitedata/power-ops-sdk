@@ -28,7 +28,7 @@ def main(
     cog_shop_case = cog_reader.cog_shop_case.to_dict()
     cog_shop_case_yaml = yaml.dump(cog_shop_case, allow_unicode=True, encoding="utf-8")
 
-    cog_shop_files_sequence = cog_reader.get_cog_shop_files()
+    cog_shop_file_list = cog_reader.get_cog_shop_file_list()
 
     xid = f"cog_shop_preprocessor/{fdm_space_external_id}/{fdm_case_external_id}/{str(uuid4())}"
 
@@ -47,7 +47,7 @@ def main(
 
     return {
         "cog_shop_case_file": cog_reader.file_metadata_to_dict(cog_shop_case_file_md),
-        "cog_shop_files_sequence":  cog_shop_files_sequence
+        "cog_shop_file_list":  cog_shop_file_list
     }
 
 

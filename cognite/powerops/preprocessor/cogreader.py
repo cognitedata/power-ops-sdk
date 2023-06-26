@@ -35,9 +35,9 @@ class CogShopFile(BaseModel):
     @validator("external_id")
     def external_id_or_prefix_set(cls, value, values: dict):
         if not values.get("external_id_prefix"):
-            print(value, values.get(""))
             if value == "":
                 raise ValueError("Either external_id or external_id_prefix must be set")
+        return value
 
 
 class CogShopFileLoader(BaseModel):
@@ -75,15 +75,15 @@ class CogReader:
         return f"SHOP_{self.cog_shop_config.watercourse}_"
 
     @property
-    def cog_shop_files_config_path(self) -> Path:
+    def cog_shop_file_list_config_path(self) -> Path:
         return Path(f"{self._tmp_dir.name}/cog_shop_files_config.yaml")
 
     @log_and_reraise(CogReaderError)
-    def set_cog_shop_file_loader(self) -> None:
-        self.client.files.download_to_path(self.cog_shop_files_config_path,
+    def _set_cog_shop_file_loader(self) -> None:
+        self.client.files.download_to_path(self.cog_shop_file_list_config_path,
                                            external_id=f"SHOP_{self.cog_shop_config.watercourse}_cog_shop_files_config")
         logger.info("Successfully downloaded cog shop files config from CDF. Loading to CogReader...")
-        self.cog_shop_file_loader = CogShopFileLoader.from_yaml(self.cog_shop_files_config_path)
+        self.cog_shop_file_loader = CogShopFileLoader.from_yaml(self.cog_shop_file_list_config_path)
 
     @property
     def fdm_case(self) -> Case:
@@ -147,22 +147,19 @@ class CogReader:
         else:
             return []
 
-    def get_cog_shop_files(self) -> list[dict]:
-        file_loader_sequence = []
+    def get_cog_shop_file_list(self) -> list[dict]:
+        cog_shop_files = []
 
         for file in self.cog_shop_file_loader.file_load_sequence:
             if file.external_id and file.pick == "latest":
-                file_loader_sequence.append({"external_id": file.external_id,
+                cog_shop_files.append({"external_id": file.external_id,
                                                "file_type": file.file_type})
             elif file.external_id_prefix and file.pick == "closest":
                 files = self.client.files.list(external_id_prefix=file.external_id_prefix, limit=None)
                 closest_file = find_closest_file(files, self.cog_shop_config.starttime_ms)
-                file_loader_sequence.append({"external_id": closest_file.external_id,
+                cog_shop_files.append({"external_id": closest_file.external_id,
                                                "file_type": file.file_type})
-
-        if not file_loader_sequence:
-            raise ValueError("No file loader sequence obtained from CDF")
-        return file_loader_sequence
+        return cog_shop_files
 
     @staticmethod
     def file_metadata_to_dict(file_metadata) -> dict[str, Union[str, int]]:
@@ -257,7 +254,7 @@ class CogReader:
 
         self._replace_model_time_series()
 
-        self.set_cog_shop_file_loader()
+        self._set_cog_shop_file_loader()
 
         return self
 
