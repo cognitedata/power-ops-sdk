@@ -13,6 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.19.0] - 26-06-23
+### Added
+
+* Add p-min to cdf generator object
+
 ## [0.18.0] - 23-06-23
 ### Added
 

@@ -304,6 +304,7 @@ def add_generators_and_efficiency_curves(
             external_id=generator_name,
             name=generator_name,
             penstock=str(generator_information.get("penstock", "1")),
+            p_min=generator_information.get("p_min", 0.0),
             startcost=get_single_value(generator_information.get("startcost", 0.0)),
         )
         generators[generator_name] = generator

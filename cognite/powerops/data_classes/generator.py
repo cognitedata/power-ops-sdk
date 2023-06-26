@@ -18,6 +18,7 @@ class Generator(AssetModel):
     name: GeneratorName
     penstock: str
     startcost: float
+    p_min: float
 
     start_stop_cost_time_series: Optional[ExternalId] = None  # external ID of time series with values in m
 
@@ -48,7 +49,11 @@ class Generator(AssetModel):
             name=self.name,
             parent_external_id="generators",
             labels=[Label(AssetLabels.GENERATOR)],
-            metadata={"penstock": self.penstock, "startcost": self.startcost},
+            metadata={
+                "penstock": self.penstock,
+                "startcost": self.startcost,
+                "p_min": self.p_min,
+            },
         )
 
     def relationships(self) -> list[Relationship]:

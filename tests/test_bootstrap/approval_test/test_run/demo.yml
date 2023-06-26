@@ -20,6 +20,7 @@ assets:
   labels:
   - externalId: generator
   metadata:
+    p_min: 40.0
     penstock: '1'
     startcost: 500.0
   name: Dalby_G1
@@ -28,6 +29,7 @@ assets:
   labels:
   - externalId: generator
   metadata:
+    p_min: 40.0
     penstock: '1'
     startcost: 250.0
   name: Dalby_G2
@@ -36,6 +38,7 @@ assets:
   labels:
   - externalId: generator
   metadata:
+    p_min: 27.0
     penstock: '1'
     startcost: 200.0
   name: Holen_G1
@@ -44,6 +47,7 @@ assets:
   labels:
   - externalId: generator
   metadata:
+    p_min: 25.0
     penstock: '1'
     startcost: 200.0
   name: Landet_G1
@@ -52,6 +56,7 @@ assets:
   labels:
   - externalId: generator
   metadata:
+    p_min: 0.0
     penstock: '1'
     startcost: 150.0
   name: Lien_krv_G1
@@ -60,6 +65,7 @@ assets:
   labels:
   - externalId: generator
   metadata:
+    p_min: 0.6
     penstock: '1'
     startcost: 100.0
   name: Lund_G1
@@ -68,6 +74,7 @@ assets:
   labels:
   - externalId: generator
   metadata:
+    p_min: 40.0
     penstock: '1'
     startcost: 250.0
   name: Rull1_G1
@@ -76,6 +83,7 @@ assets:
   labels:
   - externalId: generator
   metadata:
+    p_min: 40.0
     penstock: '2'
     startcost: 250.0
   name: Rull1_G2
@@ -84,6 +92,7 @@ assets:
   labels:
   - externalId: generator
   metadata:
+    p_min: 32.0
     penstock: '1'
     startcost: 250.0
   name: Rull2_G1
@@ -92,6 +101,7 @@ assets:
   labels:
   - externalId: generator
   metadata:
+    p_min: 32.0
     penstock: '2'
     startcost: 250.0
   name: Rull2_G2
@@ -100,6 +110,7 @@ assets:
   labels:
   - externalId: generator
   metadata:
+    p_min: 8.0
     penstock: '1'
     startcost: 150.0
   name: Scott_G1
@@ -108,6 +119,7 @@ assets:
   labels:
   - externalId: generator
   metadata:
+    p_min: 4.2
     penstock: '1'
     startcost: 150.0
   name: Strand_krv_G1
