@@ -21,7 +21,7 @@ class ShopFileConfig(BaseModel):
         "extra_data",
         "water_value_cut_file_reservoir_mapping",
         "water_value_cut_file",
-        "modul_series",
+        "module_series",
     ]
     md5_hash: Optional[str] = None
 
@@ -39,7 +39,7 @@ class ShopFileConfig(BaseModel):
         return {
             "shop:type": shop_type,
             "shop:watercourse": self.watercourse_name,
-            "shop:file_name": str(self.path.stem),
+            "shop:file_name": self.path.stem,
             "md5_hash": self.md5_hash,
         }
 

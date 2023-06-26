@@ -13,11 +13,21 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## [0.19.0] - 25-06-23
+## [0.20.0] - 25-06-23
 ### Added
 
-* Added file type for shop files of type "modulserie"
+* Added file type for shop files of type "module_series"
 * Added option to provide additional string in file names and external ID for files uploaded to CDF
+
+## [0.19.1] - 26-06-23
+### Fixed
+
+* Adding "generator_" prefix to the external_id of generators
+
+## [0.19.0] - 26-06-23
+### Added
+
+* Add p-min to cdf generator object
 
 ## [0.18.0] - 23-06-23
 ### Added

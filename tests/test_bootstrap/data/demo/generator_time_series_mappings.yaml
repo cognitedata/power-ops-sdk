@@ -1,2 +1,8 @@
-- generator_name: Lund
+- generator_name: Lund_G1
+  start_stop_cost: 112233
+- generator_name: Holen_G1
+  start_stop_cost: 112233
+- generator_name: Rull_G1
+  start_stop_cost:
+- generator_name: Dalby_G1
   start_stop_cost: 112233

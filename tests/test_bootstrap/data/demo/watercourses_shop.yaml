@@ -9,7 +9,7 @@
   cogshop_file_type: water_value_cut_file_reservoir_mapping
 - watercourse_name: Fornebu
   path: shop-fornebu1-modul_series.dat
-  cogshop_file_type: modul_series
+  cogshop_file_type: module_series
 - watercourse_name: Fornebu
   path: shop-fornebu2-modul_series.dat
-  cogshop_file_type: modul_series
+  cogshop_file_type: module_series

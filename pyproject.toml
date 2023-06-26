@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cognite-power-ops"
-version = "0.19.0"
+version = "0.20.0"
 description = "SDK for power markets operations on Cognite Data Fusion"
 readme = "README.md"
 authors = ["Cognite <support@cognite.com>"]
