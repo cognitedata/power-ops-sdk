@@ -1,329 +1,72 @@
 model:
   creek_intake:
     Blakstad:
-      net_head: 641.0
-      max_inflow: 12.0
-      inflow:
-        source:
-          name: PowelBiConnector
-          smg:
-            key: 649835 # HER.-Sirefelt.Mix-Real-Prg-Tilsig-0108
-          scaling:
-            intercept: 0
-            slope: 0.53
+      net_head: 641
+      max_inflow: 12
     Fjerdingby_intake:
       net_head: 752.7
-      max_inflow: 10.0
-      inflow:
-        source:
-          name: PowelBiConnector
-          smg:
-            key: 649792 # HER.-Lensvik.Mix-Real-Prg-Tilsig-0108
-          scaling:
-            intercept: 0
-            slope: 0.151
-      overflow_cost: 100000.0
+      max_inflow: 10
     Vigrestad:
-      net_head: 762.0
-      max_inflow: 10.0
-      inflow:
-        source:
-          name: PowelBiConnector
-          smg:
-            key: 649835 # HER.-Sirefelt.Mix-Real-Prg-Tilsig-0108
-          scaling:
-            intercept: 0
-            slope: 0.08
+      net_head: 762
+      max_inflow: 10
     Sandvika:
-      net_head: 1000.0
-      max_inflow: 0.0
+      net_head: 1000
     Golebiowski_intake:
-      net_head: 753.0
-      max_inflow: 10.0
-      inflow:
-        source:
-          name: PowelBiConnector
-          smg:
-            key: 649792 # HER.-Lensvik.Mix-Real-Prg-Tilsig-0108
-          scaling:
-            intercept: 0
-            slope: 0.042
-      overflow_cost: 100000.0
+      net_head: 753
+      max_inflow: 10
     Lont_intake:
-      net_head: 753.0
-      max_inflow: 10.0
-      inflow:
-        source:
-          name: PowelBiConnector
-          smg:
-            key: 649792 # HER.-Lensvik.Mix-Real-Prg-Tilsig-0108
-          scaling:
-            intercept: 0
-            slope: 0.069
-      overflow_cost: 100000.0
+      net_head: 753
+      max_inflow: 10
     Narvhus:
       net_head: 380.77
-      max_inflow: 5.0
-      inflow:
-        source:
-          name: PowelBiConnector
-          smg:
-            key: 624330 # HER.-Dalbysvatn.HBV-Valgt-Tilsig-0108
-          scaling:
-            intercept: 0
-            slope: 0.078
-      overflow_cost: 100000.0
+      max_inflow: 5
     Gustad:
-      net_head: 762.0
-      max_inflow: 10.0
-      inflow:
-        source:
-          name: PowelBiConnector
-          smg:
-            key: 649835 # HER.-Sirefelt.Mix-Real-Prg-Tilsig-0108
-          scaling:
-            intercept: 0
-            slope: 0.14
+      net_head: 762
+      max_inflow: 10
   gate:
-    b_Hagen_Strand:
-      time_delay: 0
-      add_slack: 1
-      max_discharge: 100000.0
-      max_flow: 0.0
-      lin_rel_a: 0.0
-      lin_rel_b: 0.0
-    b_Sirefelt_Knute_Rullsvatn:
-      time_delay: 0
-      add_slack: 1
-      max_discharge: 100000.0
-      max_flow: 0.0
-      lin_rel_a: 0.0
-      lin_rel_b: 0.0
-    b_Danielsen_Lundvann:
-      time_delay: 0
-      add_slack: 1
-      max_discharge: 100000.0
-      max_flow: 1000.0
-      lin_rel_a: 0.0
-      lin_rel_b: 0.0
-    b_Dalbysvatn_Knute_Rullsvatn:
-      time_delay: 0
-      add_slack: 1
-      max_discharge: 100000.0
-      max_flow: 0.0
-      lin_rel_a: 0.0
-      lin_rel_b: 0.0
-    b_Nielsen_Blakstadana:
-      time_delay: 0
-      add_slack: 1
-      max_discharge: 100000.0
-      max_flow: 10.0
-      lin_rel_a: 0.0
-      lin_rel_b: 0.0
-    b_Lensvik_Dalbysvatn:
-      time_delay: 0
-      add_slack: 1
-      max_discharge: 100000.0
-      max_flow: 1000.0
-      lin_rel_a: 0.0
-      lin_rel_b: 0.0
-    b_Livincovs_Dalbysvatn:
-      time_delay: 0
-      add_slack: 1
-      max_discharge: 100000.0
-      max_flow: 0.0
-      lin_rel_a: 0.0
-      lin_rel_b: 0.0
-    f_Blakstadana_Knute_Rullsvatn:
-      time_delay: 0
-      add_slack: 1
-      max_discharge: 100000.0
-      max_flow: 1000.0
-      lin_rel_a: 0.0
-      lin_rel_b: 0.0
-    f_Hagen_Strand:
-      time_delay: 0
-      add_slack: 1
-      max_discharge: 100000.0
-      max_flow: 100.0
-      lin_rel_a: 0.0
-      lin_rel_b: 0.0
-    f_Finnvasstol_Dalbysvatn:
-      time_delay: 0
-      add_slack: 1
-      max_discharge: 100000.0
-      max_flow: 10.0
-      lin_rel_a: 0.0
-      lin_rel_b: 0.0
-    f_Hovden_Hagen:
-      time_delay: 0
-      add_slack: 1
-      max_discharge: 100000.0
-      max_flow: 1000.0
-      lin_rel_a: 0.0
-      lin_rel_b: 0.0
-    f_Fjerdingby_Dalbysvatn:
-      time_delay: 0
-      add_slack: 1
-      max_discharge: 100000.0
-      lin_rel_a: 0.0
-      lin_rel_b: 0.0
-    f_Frosta:
-      time_delay: 0
-      add_slack: 1
-      max_discharge: 100000.0
-      max_flow: 1000.0
-      lin_rel_a: 0.0
-      lin_rel_b: 0.0
-    f_Varhaug:
-      time_delay: 0
-      add_slack: 1
-      max_discharge: 100000.0
-      max_flow: 1000.0
-      lin_rel_a: 0.0
-      lin_rel_b: 0.0
-    f_Tangvall:
-      time_delay: 0
-      add_slack: 1
-      max_discharge: 100000.0
-      max_flow: 1000.0
-      lin_rel_a: 0.0
-      lin_rel_b: 0.0
-    f_Sirefelt_Knute_Rullsvatn:
-      time_delay: 0
-      add_slack: 1
-      max_discharge: 100000.0
-      max_flow: 1000.0
-      lin_rel_a: 0.0
-      lin_rel_b: 0.0
-    f_Lundvann_Lensvik:
-      time_delay: 0
-      add_slack: 1
-      max_discharge: 100000.0
-      max_flow: 1000.0
-      lin_rel_a: 0.0
-      lin_rel_b: 0.0
-    f_Nupstj:
-      time_delay: 0
-      add_slack: 1
-      max_discharge: 100000.0
-      max_flow: 1000.0
-      lin_rel_a: 0.0
-      lin_rel_b: 0.0
-    f_Golebiowski_Dalbysvatn:
-      time_delay: 0
-      add_slack: 1
-      max_discharge: 100000.0
-      lin_rel_a: 0.0
-      lin_rel_b: 0.0
-    f_Lont_Dalbysvatn:
-      time_delay: 0
-      add_slack: 1
-      max_discharge: 100000.0
-      lin_rel_a: 0.0
-      lin_rel_b: 0.0
-    f_Dalbysvatn_Knute_Rullsvatn:
-      time_delay: 0
-      add_slack: 1
-      max_discharge: 100000.0
-      max_flow: 1000.0
-      lin_rel_a: 0.0
-      lin_rel_b: 0.0
-    f_Nielsen:
-      time_delay: 0
-      add_slack: 1
-      max_discharge: 100000.0
-      max_flow: 10.0
-      lin_rel_a: 0.0
-      lin_rel_b: 0.0
-    f_Narvhus_Rullsvatn:
-      time_delay: 0
-      add_slack: 1
-      max_discharge: 100000.0
-      lin_rel_a: 0.0
-      lin_rel_b: 0.0
-    f_Rullsvatn_Rullslaagen:
-      time_delay: 0
-      add_slack: 1
-      max_discharge: 100000.0
-      max_flow: 1000.0
-      lin_rel_a: 0.0
-      lin_rel_b: 0.0
-    f_Ranemsletta_1183_Livincovs:
-      time_delay: 0
-      add_slack: 1
-      max_discharge: 100000.0
-      max_flow: 1000.0
-      lin_rel_a: 0.0
-      lin_rel_b: 0.0
-    f_Lensvik:
-      time_delay: 0
-      add_slack: 1
-      max_discharge: 100000.0
-      max_flow: 0.0
-      lin_rel_a: 0.0
-      lin_rel_b: 0.0
-    f_Livincovs:
-      time_delay: 0
-      add_slack: 1
-      max_discharge: 100000.0
-      max_flow: 1000.0
-      lin_rel_a: 0.0
-      lin_rel_b: 0.0
-    w_Finnvasstol_Strand_tunnel:
-      time_delay: 0
-      add_slack: 1
-      max_discharge: 100000.0
-      max_flow: 6.0
-      lin_rel_a: 0.0
-      lin_rel_b: 0.0
-    w_Hovden_Livincovs:
-      time_delay: 0
-      add_slack: 1
-      max_discharge: 100000.0
-      max_flow: 10.0
-      lin_rel_a: 0.0
-      lin_rel_b: 0.0
-    w_Frosta:
-      time_delay: 0
-      add_slack: 1
-      max_discharge: 100000.0
-      max_flow: 1000.0
-      lin_rel_a: 0.0
-      lin_rel_b: 0.0
-    w_Varhaug:
-      time_delay: 0
-      add_slack: 1
-      max_discharge: 100000.0
-      max_flow: 30.0
-      schedule_m3s: 0.001
-      schedule_flag: 1.0
-      lin_rel_a: 0.0
-      lin_rel_b: 0.0
-    w_Tangvall:
-      time_delay: 0
-      add_slack: 1
-      max_discharge: 100000.0
-      max_flow: 1000.0
-      lin_rel_a: 0.0
-      lin_rel_b: 0.0
-    w_Rullsvatn_Rullslaagen:
-      time_delay: 0
-      add_slack: 1
-      max_discharge: 100000.0
-      max_flow: 0.0
-      lin_rel_a: 0.0
-      lin_rel_b: 0.0
+    b_Hagen_Strand: {}
+    b_Sirefelt_Knute_Rullsvatn: {}
+    b_Danielsen_Lundvann: {}
+    b_Dalbysvatn_Knute_Rullsvatn: {}
+    b_Nielsen_Blakstadana: {}
+    b_Lensvik_Dalbysvatn: {}
+    b_Livincovs_Dalbysvatn: {}
+    f_Blakstadana_Knute_Rullsvatn: {}
+    f_Hagen_Strand: {}
+    f_Finnvasstol_Dalbysvatn: {}
+    f_Hovden_Hagen: {}
+    f_Fjerdingby_Dalbysvatn: {}
+    f_Frosta: {}
+    f_Varhaug: {}
+    f_Tangvall: {}
+    f_Sirefelt_Knute_Rullsvatn: {}
+    f_Lundvann_Lensvik: {}
+    f_Nupstj: {}
+    f_Golebiowski_Dalbysvatn: {}
+    f_Lont_Dalbysvatn: {}
+    f_Dalbysvatn_Knute_Rullsvatn: {}
+    f_Nielsen: {}
+    f_Narvhus_Rullsvatn: {}
+    f_Rullsvatn_Rullslaagen: {}
+    f_Ranemsletta_1183_Livincovs: {}
+    f_Lensvik: {}
+    f_Livincovs: {}
+    w_Finnvasstol_Strand_tunnel: {}
+    w_Hovden_Livincovs: {}
+    w_Frosta: {}
+    w_Varhaug: {}
+    w_Tangvall: {}
+    w_Rullsvatn_Rullslaagen: {}
   generator:
     Holen_G1:
-      initial_state: 0
       penstock: 1
-      p_min: 27.0
-      p_max: 42.0
-      p_nom: 45.0
+      p_min: 27
+      p_max: 42
+      p_nom: 45
       gen_eff_curve:
+        ref: 0
         x:
-        - 15.0
+        - 15
         - 16.9
         - 21.8
         - 25.8
@@ -331,10 +74,10 @@ model:
         - 32.5
         - 38.5
         - 41.5
-        - 43.0
-        - 44.0
+        - 43
+        - 44
         y:
-        - 97.0
+        - 97
         - 97.5
         - 97.9
         - 98.2
@@ -344,9 +87,9 @@ model:
         - 98.64
         - 98.65
         - 98.63
-        ref: '0.0'
       turb_eff_curves:
-      - x:
+      - ref: 300
+        x:
         - 5.9
         - 6.2367
         - 6.5733
@@ -377,7 +120,7 @@ model:
         - 14.99
         - 15.3267
         - 15.6633
-        - 16.0
+        - 16
         y:
         - 85.4957
         - 86.1996
@@ -410,50 +153,23 @@ model:
         - 92.8093
         - 92.4183
         - 91.9692
-        ref: 300.0
-      maintenance_flag:
-          source:
-              name: PowelBiConnector
-              smg:
-                  key: 582079 # RRS.S16.Gunit.Holen G1.AVL
-              scaling:
-                  intercept: 1
-                  slope: -1
-      min_p_constr: 28
-      #    source:
-      #        name: PowelBiConnector
-      #        smg:
-      #            key: 731395 # RRS.S95.Gunit.Holen G1.PMI
-      max_p_constr: 38
-      #    source:
-      #        name: PowelBiConnector
-      #        smg:
-      #            key: 799807 # RRS.S95.Gunit.Holen G1.PMA
-      startcost: 200.0
-      stopcost: 200.0
-      p_fcr_min: 27.0
-      p_fcr_max: 45.0
-      p_rr_min: 0.0
-      droop_min: 6.0
-      droop_max: 6.0
-      affinity_eq_flag: 0
     Lund_G1:
-      initial_state: 0
       penstock: 1
       p_min: 0.6
-      p_max: 1.0
-      p_nom: 1.0
+      p_max: 1
+      p_nom: 1
       gen_eff_curve:
+        ref: 0
         x:
         - 0
         - 100
         y:
         - 98.5
         - 98.5
-        ref: '0.0'
       turb_eff_curves:
-      - x:
-        - 1.0
+      - ref: 56
+        x:
+        - 1
         - 1.0467
         - 1.0933
         - 1.14
@@ -516,9 +232,9 @@ model:
         - 89.2715
         - 88.7759
         - 88.1826
-        ref: 56.0
-      - x:
-        - 1.0
+      - ref: 60
+        x:
+        - 1
         - 1.0467
         - 1.0933
         - 1.14
@@ -581,108 +297,53 @@ model:
         - 90.5094
         - 90.1069
         - 89.6058
-        ref: 60.0
-      maintenance_flag:
-          source:
-              name: PowelBiConnector
-              smg:
-                  key: 582091 # RRS.S16.Gunit.Lund G1.AVL
-              scaling:
-                  intercept: 1
-                  slope: -1
-      #min_p_constr:
-      #    source:
-      #        name: PowelBiConnector
-      #        smg:
-      #            key: 801254 # RRS.S95.Gunit.Lund G1.PMI
-      #max_p_constr:
-      #    source:
-      #        name: PowelBiConnector
-      #        smg:
-      #            key: 801250 # RRS.S95.Gunit.Lund G1.PMA
-      startcost: 100.0
-      stopcost: 100.0
-      p_fcr_min: 0.6
-      p_fcr_max: 1.0
-      p_rr_min: 0.0
-      droop_min: 4.0
-      droop_max: 12.0
-      affinity_eq_flag: 0
     Lien_krv_G1:
-      initial_state: 0
       penstock: 1
-      p_min: 0.0
       p_max: 3.4
       p_nom: 3.4
       gen_eff_curve:
+        ref: 0
         x:
-        - 1.0
-        - 2.0
-        - 3.0
+        - 1
+        - 2
+        - 3
         - 3.4
         y:
         - 93.3
         - 96.2
         - 97.2
         - 97.4
-        ref: '0.0'
       turb_eff_curves:
-      - x:
+      - ref: 154
+        x:
         - 0.5
-        - 1.0
-        - 2.0
+        - 1
+        - 2
         - 2.4
         - 2.6
         y:
-        - 91.0
+        - 91
         - 92.7
         - 93.7
-        - 94.0
+        - 94
         - 93.9
-        ref: 154.0
-      maintenance_flag:
-          source:
-              name: PowelBiConnector
-              smg:
-                  key: 829157 # RRS.S95.Gunit.Midtlæger_krv G1.AVL
-              scaling:
-                  intercept: 1
-                  slope: -1
-      min_p_constr: 2.5
-      #    source:
-      #        name: PowelBiConnector
-      #        smg:
-      #            key: 801246 # RRS.S95.Gunit.Midtlæger_krv G1.PMI
-      max_p_constr: 3.1
-      #    source:
-      #        name: PowelBiConnector
-      #        smg:
-      #            key: 801242 # RRS.S95.Gunit.Midtlæger_krv G1.PMA
-      startcost: 150.0
-      stopcost: 150.0
-      p_fcr_min: 0.0
-      p_fcr_max: 0.0
-      p_rr_min: 0.0
-      droop_min: 4.0
-      droop_max: 8.0
-      affinity_eq_flag: 0
     Landet_G1:
-      initial_state: 0
       penstock: 1
-      p_min: 25.0
-      p_max: 50.0
-      p_nom: 50.0
+      p_min: 25
+      p_max: 50
+      p_nom: 50
       gen_eff_curve:
+        ref: 0
         x:
-        - 17.0
+        - 17
         - 20.5
         - 23.8
         - 27.3
-        - 31.0
+        - 31
         - 34.3
         - 41.2
         - 44.8
-        - 50.0
+        - 50
         y:
         - 96.6
         - 97.4
@@ -693,9 +354,9 @@ model:
         - 98.7
         - 98.72
         - 98.69
-        ref: '0.0'
       turb_eff_curves:
-      - x:
+      - ref: 260
+        x:
         - 7.24
         - 8.16
         - 9.46
@@ -719,8 +380,8 @@ model:
         - 93.35
         - 92.9
         - 92.69
-        ref: 260.0
-      - x:
+      - ref: 280
+        x:
         - 7.26
         - 8.59
         - 9.8
@@ -744,8 +405,8 @@ model:
         - 93.67
         - 93.26
         - 92.69
-        ref: 280.0
-      - x:
+      - ref: 300
+        x:
         - 7.75
         - 8.63
         - 9.94
@@ -769,47 +430,20 @@ model:
         - 93.6
         - 93.25
         - 92.69
-        ref: 300.0
-      maintenance_flag:
-          source:
-              name: PowelBiConnector
-              smg:
-                  key: 582085 # RRS.S16.Gunit.Landet G1.AVL
-              scaling:
-                  intercept: 1
-                  slope: -1
-      #min_p_constr:
-      #    source:
-      #        name: PowelBiConnector
-      #        smg:
-      #            key: 799817 # RRS.S95.Gunit.Landet G1.PMI
-      max_p_constr: 48
-      #    source:
-      #        name: PowelBiConnector
-      #        smg:
-      #            key: 826909 # RRS.S95.Gunit.Landet G1.PMA
-      startcost: 200.0
-      stopcost: 200.0
-      p_fcr_min: 25.0
-      p_fcr_max: 50.0
-      p_rr_min: 0.0
-      droop_min: 6.0
-      droop_max: 6.0
-      affinity_eq_flag: 0
     Dalby_G1:
-      initial_state: 0
       penstock: 1
-      p_min: 40.0
-      p_max: 85.0
-      p_nom: 93.0
+      p_min: 40
+      p_max: 85
+      p_nom: 93
       gen_eff_curve:
+        ref: 0
         x:
-        - 20.0
-        - 30.0
-        - 50.0
-        - 65.0
-        - 85.0
-        - 88.0
+        - 20
+        - 30
+        - 50
+        - 65
+        - 85
+        - 88
         y:
         - 96.2
         - 97.45
@@ -817,9 +451,9 @@ model:
         - 98.29
         - 98.31
         - 98.3
-        ref: '0.0'
       turb_eff_curves:
-      - x:
+      - ref: 340
+        x:
         - 10.77
         - 11.411
         - 12.052
@@ -850,7 +484,7 @@ model:
         - 28.077
         - 28.718
         - 29.359
-        - 30.0
+        - 30
         y:
         - 86.4359
         - 87.1856
@@ -883,48 +517,20 @@ model:
         - 94.9341
         - 94.9335
         - 94.925
-        ref: 340.0
-      maintenance_flag:
-          source:
-              name: PowelBiConnector
-              smg:
-                  key: 582055 # RRS.S16.Gunit.Dalby G1.AVL
-              scaling:
-                  intercept: 1
-                  slope: -1
-      #min_p_constr:
-      #    source:
-      #        name: PowelBiConnector
-      #        smg:
-      #            key: 650036 # RRS.S95.Gunit.Dalby G1.PMI
-      #max_p_constr:
-      #    source:
-      #        name: PowelBiConnector
-      #        smg:
-      #            key: 627996 # RRS.S95.Gunit.Dalby G1.PMA
-      startcost: 500.0
-      stopcost: 500.0
-      p_fcr_min: 38.0
-      p_fcr_max: 85.0
-      p_rr_min: 0.0
-      droop_cost: 50000.0
-      droop_min: 2.0
-      droop_max: 12.0
-      affinity_eq_flag: 0
     Dalby_G2:
-      initial_state: 0
       penstock: 1
-      p_min: 40.0
-      p_max: 85.0
-      p_nom: 85.0
+      p_min: 40
+      p_max: 85
+      p_nom: 85
       gen_eff_curve:
+        ref: 0
         x:
-        - 20.0
-        - 30.0
-        - 50.0
-        - 65.0
-        - 80.0
-        - 85.0
+        - 20
+        - 30
+        - 50
+        - 65
+        - 80
+        - 85
         y:
         - 96.2
         - 97.45
@@ -932,9 +538,9 @@ model:
         - 98.29
         - 98.31
         - 98.31
-        ref: '0.0'
       turb_eff_curves:
-      - x:
+      - ref: 300
+        x:
         - 6.23
         - 7.1557
         - 8.0813
@@ -965,7 +571,7 @@ model:
         - 31.223
         - 32.1487
         - 33.0743
-        - 34.0
+        - 34
         y:
         - 82.1863
         - 84.0332
@@ -998,8 +604,8 @@ model:
         - 90.8781
         - 90.3772
         - 89.87
-        ref: 300.0
-      - x:
+      - ref: 350
+        x:
         - 7.16
         - 10.7387
         - 11.6333
@@ -1051,49 +657,21 @@ model:
         - 91.7557
         - 91.2852
         - 90.8001
-        ref: 350.0
-      maintenance_flag:
-          source:
-              name: PowelBiConnector
-              smg:
-                  key: 582059 # RRS.S16.Gunit.Dalby G2.AVL
-              scaling:
-                  intercept: 1
-                  slope: -1
-      #min_p_constr:
-      #    source:
-      #        name: PowelBiConnector
-      #        smg:
-      #            key: 650037 # RRS.S95.Gunit.Dalby G2.PMI
-      #max_p_constr:
-      #    source:
-      #        name: PowelBiConnector
-      #        smg:
-      #            key: 627998 # RRS.S95.Gunit.Dalby G2.PMA
-      startcost: 250.0
-      stopcost: 250.0
-      p_fcr_min: 38.0
-      p_fcr_max: 85.0
-      p_rr_min: 0.0
-      droop_cost: 50000.0
-      droop_min: 2.0
-      droop_max: 12.0
-      affinity_eq_flag: 0
     Rull1_G1:
-      initial_state: 0
       penstock: 1
-      p_min: 40.0
-      p_max: 100.0
-      p_nom: 90.0
+      p_min: 40
+      p_max: 100
+      p_nom: 90
       gen_eff_curve:
+        ref: 0
         x:
         - 37.9
-        - 50.0
-        - 65.0
-        - 75.0
-        - 85.0
-        - 95.0
-        - 100.0
+        - 50
+        - 65
+        - 75
+        - 85
+        - 95
+        - 100
         y:
         - 97.6
         - 98.11
@@ -1102,60 +680,60 @@ model:
         - 98.51
         - 98.5
         - 98.49
-        ref: '0.0'
       turb_eff_curves:
-      - x:
+      - ref: 305
+        x:
         - 13.5
-        - 14.0
+        - 14
         - 14.5
-        - 15.0
+        - 15
         - 15.5
-        - 16.0
+        - 16
         - 16.5
-        - 17.0
+        - 17
         - 17.5
-        - 18.0
+        - 18
         - 18.5
-        - 19.0
+        - 19
         - 19.5
-        - 20.0
+        - 20
         - 20.5
-        - 21.0
+        - 21
         - 21.5
-        - 22.0
+        - 22
         - 22.5
-        - 23.0
+        - 23
         - 23.5
-        - 24.0
+        - 24
         - 24.5
-        - 25.0
+        - 25
         - 25.5
-        - 26.0
+        - 26
         - 26.5
-        - 27.0
+        - 27
         - 27.5
-        - 28.0
+        - 28
         - 28.5
-        - 29.0
+        - 29
         - 29.5
-        - 30.0
+        - 30
         - 30.5
-        - 31.0
+        - 31
         - 31.5
-        - 32.0
+        - 32
         - 32.5
-        - 33.0
+        - 33
         - 33.5
-        - 34.0
+        - 34
         - 34.5
-        - 35.0
-        - 36.0
+        - 35
+        - 36
         - 36.5
-        - 37.0
+        - 37
         - 37.5
-        - 38.0
+        - 38
         - 38.5
-        - 39.0
+        - 39
         - 39.5
         y:
         - 89.31992
@@ -1210,48 +788,20 @@ model:
         - 93.3851
         - 93.21929
         - 93.0468
-        ref: 305.0
-      maintenance_flag:
-          source:
-              name: PowelBiConnector
-              smg:
-                  key: 582111 # RRS.S16.Gunit.Rull1 G1.AVL
-              scaling:
-                  intercept: 1
-                  slope: -1
-      #min_p_constr:
-      #    source:
-      #        name: PowelBiConnector
-      #        smg:
-      #            key: 651500 # RRS.S95.Gunit.Rull1 G1.PMI
-      max_p_constr: 90
-      #    source:
-      #        name: PowelBiConnector
-      #        smg:
-      #            key: 731424 # RRS.S95.Gunit.Rull1 G1.PMA
-      startcost: 250.0
-      stopcost: 250.0
-      p_fcr_min: 38.0
-      p_fcr_max: 95.0
-      p_rr_min: 0.0
-      droop_cost: 50000.0
-      droop_min: 2.0
-      droop_max: 12.0
-      affinity_eq_flag: 0
     Rull1_G2:
-      initial_state: 0
       penstock: 2
-      p_min: 40.0
-      p_max: 105.0
-      p_nom: 95.0
+      p_min: 40
+      p_max: 105
+      p_nom: 95
       gen_eff_curve:
+        ref: 0
         x:
         - 37.9
-        - 50.0
-        - 65.0
-        - 75.0
-        - 80.0
-        - 95.0
+        - 50
+        - 65
+        - 75
+        - 80
+        - 95
         y:
         - 97.6
         - 98.11
@@ -1259,62 +809,62 @@ model:
         - 98.53
         - 98.525
         - 98.51
-        ref: '0.0'
       turb_eff_curves:
-      - x:
-        - 13.0
+      - ref: 305
+        x:
+        - 13
         - 13.5
-        - 14.0
+        - 14
         - 14.5
-        - 15.0
+        - 15
         - 15.5
-        - 16.0
+        - 16
         - 16.5
-        - 17.0
+        - 17
         - 17.5
-        - 18.0
+        - 18
         - 18.5
-        - 19.0
+        - 19
         - 19.5
-        - 20.0
+        - 20
         - 20.5
-        - 21.0
+        - 21
         - 21.5
-        - 22.0
+        - 22
         - 22.5
-        - 23.0
+        - 23
         - 23.5
-        - 24.0
+        - 24
         - 24.5
-        - 25.0
+        - 25
         - 25.5
-        - 26.0
+        - 26
         - 26.5
-        - 27.0
+        - 27
         - 27.5
-        - 28.0
+        - 28
         - 28.5
-        - 29.0
+        - 29
         - 29.5
-        - 30.0
+        - 30
         - 30.5
-        - 31.0
+        - 31
         - 31.5
-        - 32.0
+        - 32
         - 32.5
-        - 33.0
+        - 33
         - 33.5
-        - 34.0
+        - 34
         - 34.5
-        - 35.0
+        - 35
         - 35.5
-        - 36.0
+        - 36
         - 36.5
-        - 37.0
+        - 37
         - 37.5
-        - 38.0
+        - 38
         - 38.5
-        - 39.0
+        - 39
         - 39.5
         y:
         - 87.70424
@@ -1371,56 +921,28 @@ model:
         - 94.48756
         - 94.42845
         - 94.37242
-        ref: 305.0
-      maintenance_flag:
-          source:
-              name: PowelBiConnector
-              smg:
-                  key: 582113 # RRS.S16.Gunit.Rull1 G2.AVL
-              scaling:
-                  intercept: 1
-                  slope: -1
-      min_p_constr: 43
-      #    source:
-      #        name: PowelBiConnector
-      #        smg:
-      #            key: 651502 # RRS.S95.Gunit.Rull1 G2.PMI
-      max_p_constr: 95
-      #    source:
-      #        name: PowelBiConnector
-      #        smg:
-      #            key: 731428 # RRS.S95.Gunit.Rull1 G2.PMA
-      startcost: 250.0
-      stopcost: 250.0
-      p_fcr_min: 38.0
-      p_fcr_max: 85.0
-      p_rr_min: 0.0
-      droop_cost: 50000.0
-      droop_min: 2.0
-      droop_max: 12.0
-      affinity_eq_flag: 0
     Rull2_G1:
-      initial_state: 0
       penstock: 1
-      p_min: 32.0
-      p_max: 72.0
-      p_nom: 70.0
+      p_min: 32
+      p_max: 72
+      p_nom: 70
       gen_eff_curve:
+        ref: 0
         x:
-        - 30.0
-        - 45.0
-        - 55.0
-        - 65.0
-        - 80.0
+        - 30
+        - 45
+        - 55
+        - 65
+        - 80
         y:
         - 97.68
         - 98.3
         - 98.46
         - 98.55
         - 98.6
-        ref: '0.0'
       turb_eff_curves:
-      - x:
+      - ref: 545
+        x:
         - 6.53
         - 6.8623
         - 7.1947
@@ -1484,56 +1006,28 @@ model:
         - 91.3487
         - 90.9115
         - 90.4263
-        ref: 545.0
-      maintenance_flag:
-          source:
-              name: PowelBiConnector
-              smg:
-                  key: 582093 # RRS.S16.Gunit.Rull2 G1.AVL
-              scaling:
-                  intercept: 1
-                  slope: -1
-      #min_p_constr:
-      #    source:
-      #        name: PowelBiConnector
-      #        smg:
-      #            key: 652582 # RRS.S95.Gunit.Rull2 G1.PMI
-      #max_p_constr:
-      #    source:
-      #        name: PowelBiConnector
-      #        smg:
-      #            key: 741264 # RRS.S95.Gunit.Rull2 G1.PMA
-      startcost: 250.0
-      stopcost: 250.0
-      p_fcr_min: 32.0
-      p_fcr_max: 74.0
-      p_rr_min: 0.0
-      droop_cost: 50000.0
-      droop_min: 4.0
-      droop_max: 12.0
-      affinity_eq_flag: 0
     Rull2_G2:
-      initial_state: 0
       penstock: 2
-      p_min: 32.0
-      p_max: 76.0
-      p_nom: 80.0
+      p_min: 32
+      p_max: 76
+      p_nom: 80
       gen_eff_curve:
+        ref: 0
         x:
-        - 20.0
-        - 35.0
-        - 50.0
-        - 65.0
-        - 80.0
+        - 20
+        - 35
+        - 50
+        - 65
+        - 80
         y:
         - 96.91
         - 97.88
         - 98.33
         - 98.52
         - 98.6
-        ref: '0.0'
       turb_eff_curves:
-      - x:
+      - ref: 545
+        x:
         - 6.53
         - 6.8623
         - 7.1947
@@ -1597,57 +1091,29 @@ model:
         - 91.7961
         - 91.5123
         - 91.2023
-        ref: 545.0
-      maintenance_flag:
-          source:
-              name: PowelBiConnector
-              smg:
-                  key: 601608 # RRS.S16.Gunit.Rull2 G2.AVL
-              scaling:
-                  intercept: 1
-                  slope: -1
-      #min_p_constr:
-      #    source:
-      #        name: PowelBiConnector
-      #        smg:
-      #            key: 652584 # RRS.S95.Gunit.Rull2 G2.PMI
-      max_p_constr: 74
-      #    source:
-      #        name: PowelBiConnector
-      #        smg:
-      #            key: 759211 # RRS.S95.Gunit.Rull2 G2.PMA
-      startcost: 250.0
-      stopcost: 250.0
-      p_fcr_min: 32.0
-      p_fcr_max: 76.0
-      p_rr_min: 0.0
-      droop_cost: 50000.0
-      droop_min: 4.0
-      droop_max: 12.0
-      affinity_eq_flag: 0
     Scott_G1:
-      initial_state: 0
       penstock: 1
-      p_min: 8.0
-      p_max: 18.0
-      p_nom: 20.0
+      p_min: 8
+      p_max: 18
+      p_nom: 20
       gen_eff_curve:
+        ref: 0
         x:
-        - 4.0
+        - 4
         - 11.6
         - 15.2
         - 19.2
-        - 20.0
+        - 20
         y:
-        - 97.0
+        - 97
         - 98.2
         - 98.4
         - 98.5
         - 98.5
-        ref: '0.0'
       turb_eff_curves:
-      - x:
-        - 4.0
+      - ref: 200
+        x:
+        - 4
         - 4.2633
         - 4.5267
         - 4.79
@@ -1710,53 +1176,26 @@ model:
         - 91.7708
         - 91.388
         - 90.9833
-        ref: 200.0
-      maintenance_flag:
-          source:
-              name: PowelBiConnector
-              smg:
-                  key: 601610 # RRS.S16.Gunit.Scott G1.AVL
-              scaling:
-                  intercept: 1
-                  slope: -1
-      #min_p_constr:
-      #    source:
-      #        name: PowelBiConnector
-      #        smg:
-      #            key: 759030 # RRS.S95.Gunit.Scott G1.PMI
-      #max_p_constr:
-      #    source:
-      #        name: PowelBiConnector
-      #        smg:
-      #            key: 799821 # RRS.S95.Gunit.Scott G1.PMA
-      startcost: 150.0
-      stopcost: 150.0
-      p_fcr_min: 7.0
-      p_fcr_max: 19.0
-      p_rr_min: 0.0
-      droop_min: 6.0
-      droop_max: 6.0
-      affinity_eq_flag: 0
     Strand_krv_G1:
-      initial_state: 0
       penstock: 1
       p_min: 4.2
       p_max: 4.9
       p_nom: 5.1
       gen_eff_curve:
+        ref: 0
         x:
-        - 1.0
-        - 4.0
+        - 1
+        - 4
         - 5.1
         y:
         - 97.24
         - 97.41
         - 97.4
-        ref: '0.0'
       turb_eff_curves:
-      - x:
+      - ref: 150
+        x:
         - 0.5
-        - 2.0
+        - 2
         - 2.0667
         - 2.3333
         - 2.4
@@ -1768,7 +1207,7 @@ model:
         - 2.8
         - 2.8667
         - 2.9333
-        - 3.0
+        - 3
         - 3.0667
         - 3.1333
         - 3.2
@@ -1783,7 +1222,7 @@ model:
         - 3.8
         - 3.8667
         - 3.9333
-        - 4.0
+        - 4
         - 4.5
         y:
         - 91.4
@@ -1814,492 +1253,168 @@ model:
         - 93.116
         - 93.0838
         - 93.0452
-        - 93.0
+        - 93
         - 92.5
-        ref: 150.0
-      maintenance_flag:
-          source:
-              name: PowelBiConnector
-              smg:
-                  key: 627753 # RRS.S16.Gunit.Strand_krv G1.AVL
-              scaling:
-                  intercept: 1
-                  slope: -1
-      #min_p_constr:
-      #    source:
-      #        name: PowelBiConnector
-      #        smg:
-      #            key: 799825 # RRS.S95.Gunit.Strand_krv G1.PMI
-      #max_p_constr:
-      #    source:
-      #        name: PowelBiConnector
-      #        smg:
-      #            key: 759034 # RRS.S95.Gunit.Strand_krv G1.PMA
-      startcost: 150.0
-      stopcost: 150.0
-      p_fcr_min: 4.2
-      p_fcr_max: 4.9
-      p_rr_min: 0.0
-      droop_min: 4.0
-      droop_max: 12.0
-      affinity_eq_flag: 0
   junction:
     Blakstad:
-      junc_slack: 0
-      altitude: 0.0
       loss_factor_1: 0.068
       loss_factor_2: 0.06817
     Fjerdingby_intake:
-      junc_slack: 0
-      altitude: 0.0
       loss_factor_1: 0.05
       loss_factor_2: 0.05
     Vigrestad:
-      junc_slack: 0
-      altitude: 0.0
       loss_factor_1: 0.017
       loss_factor_2: 0.001
     Holensfoss_junc:
       junc_slack: 1
-      altitude: 0.0
       loss_factor_1: 0.002
       loss_factor_2: 0.018
     Sandvika:
-      junc_slack: 0
-      altitude: 0.0
       loss_factor_1: 0.00044
       loss_factor_2: 0.0001
-      min_pressure: 672.0
     Landet_intake:
       junc_slack: 1
-      altitude: 0.0
       loss_factor_1: 0.00208
       loss_factor_2: 0.0001
     Golebiowski_intake:
-      junc_slack: 0
-      altitude: 0.0
       loss_factor_1: 0.05
       loss_factor_2: 0.05
     Lont_intake:
-      junc_slack: 0
-      altitude: 0.0
       loss_factor_1: 0.00416
       loss_factor_2: 0.008
     Narvhus:
-      junc_slack: 0
-      altitude: 0.0
       loss_factor_1: 0.00231
-      loss_factor_2: 1.0e-05
+      loss_factor_2: 1e-05
     Gustad:
-      junc_slack: 0
-      altitude: 0.0
       loss_factor_1: 0.0032
       loss_factor_2: 0.002
     w_k_Strand:
       junc_slack: 1
-      altitude: 0.0
       loss_factor_1: 0.00224
       loss_factor_2: 0.0022
   market:
     Dayahead:
-      prod_area: 1
-      reserve_group: 0
       market_type: ENERGY
-      load: 0
-      max_buy: 10000
-      max_sale: 10000
-      buy_price: # should be 1 TS
-          scenario:
-              Nena:
-                  source:
-                      name: PowelBiConnector
-                      smg:
-                          key: 907678 # SHOP_price_scenario_Nena
-                  scaling:
-                      intercept: 0.01
-                      slope: 1
-              Volue_Merged:
-                  source:
-                      name: PowelBiConnector
-                      smg:
-                          key: 907677 # SHOP_price_scenario_Volue_merged
-                  scaling:
-                      intercept: 0.01
-                      slope: 1
-              Volue_EC00EnsAvg:
-                  source:
-                      name: PowelBiConnector
-                      smg:
-                          key: 907680 # SHOP_price_scenario_Volue_EC00EnsAvg
-                  scaling:
-                      intercept: 0.01
-                      slope: 1
-              Volue_EC12EnsAvg:
-                  source:
-                      name: PowelBiConnector
-                      smg:
-                          key: 907681 # SHOP_price_scenario_Volue_EC12EnsAvg
-                  scaling:
-                      intercept: 0.01
-                      slope: 1
-      sale_price: # should be 1 TS
-          scenario:
-              Nena:
-                  source:
-                      name: PowelBiConnector
-                      smg:
-                          key: 907678 # SHOP_price_scenario_Nena
-              Volue_Merged:
-                  source:
-                      name: PowelBiConnector
-                      smg:
-                          key: 907677 # SHOP_price_scenario_Volue_Merged
-              Volue_EC00EnsAvg:
-                  source:
-                      name: PowelBiConnector
-                      smg:
-                          key: 907680 # SHOP_price_scenario_Volue_EC00EnsAvg
-              Volue_EC12EnsAvg:
-                  source:
-                      name: PowelBiConnector
-                      smg:
-                          key: 907681 # SHOP_price_scenario_Volue_EC12EnsAvg
   plant:
     Holen:
-      time_delay: 0
-      outlet_line: 628.0
+      outlet_line: 628
       main_loss:
       - 0.0339
       penstock_loss:
       - 0.0113
-      mip_flag: 1
-      max_p_constr: 42.0
-      max_q_constr: 1000.0
-      prod_area: 1.0
-      production_schedule:
-        source:
-            name: PowelBiConnector
-            smg:
-                key: 136445 # Prod_Plan_Holen_INTRA_Kladd
-      # production_schedule_flag:
-      #    source:
-      #        name: PowelBiConnector
-      #        smg:
-      #            key: 787491 # HER-Holen.PlanFlagg_ny
-      latitude: 0.0
-      longitude: 0.0
-      equal_distribution: -1
-      less_distribution_eps: 0.001
-      # ownership: 95.21
-      sched_penalty_cost_down: 1.0e+40
-      sched_penalty_cost_up: 1.0e+40
     Lund:
-      time_delay: 0
-      outlet_line: 1240.0
+      outlet_line: 1240
       main_loss:
       - 0.002
       penstock_loss:
       - 0.022
-      mip_flag: 0
-      max_q_constr: 1000.0
-      prod_area: 1.0
-      production_schedule:
-        source:
-            name: PowelBiConnector
-            smg:
-                key: 136450 # Prod_Plan_Lund_INTRA_Kladd
-      # production_schedule_flag:
-      #    source:
-      #        name: PowelBiConnector
-      #        smg:
-      #            key: 626265 # HER-Lund.PlanFlagg_vs
-      latitude: 0.0
-      longitude: 0.0
-      equal_distribution: -1
-      less_distribution_eps: 0.001
-      # ownership: 95.21
-      sched_penalty_cost_down: 1.0e+40
-      sched_penalty_cost_up: 1.0e+40
     Lien_krv:
-      time_delay: 0
-      outlet_line: 1030.0
+      outlet_line: 1030
       main_loss:
       - 0.8
       penstock_loss:
-      - 0.0
-      mip_flag: 1
-      max_q_constr: 2.7
-      prod_area: 1.0
-      production_schedule:
-        source:
-            name: PowelBiConnector
-            smg:
-                key: 136449 # Prod_Plan_Midtlæger_INTRA_Kladd
-      # production_schedule_flag:
-      #    source:
-      #        name: PowelBiConnector
-      #        smg:
-      #            key: 775721 # HER-Midtlæger.PlanFlagg_vs
-      latitude: 0.0
-      longitude: 0.0
-      equal_distribution: -1
-      less_distribution_eps: 0.001
-      # ownership: 95.21
-      sched_penalty_cost_down: 1.0e+40
-      sched_penalty_cost_up: 1.0e+40
+      - 0
     Landet:
-      time_delay: 0
-      outlet_line: 670.0
+      outlet_line: 670
       main_loss:
       - 0.02007
       penstock_loss:
-      - 0.0
-      mip_flag: 1
-      max_p_constr: 48.0
-      max_q_constr: 1000.0
-      prod_area: 1.0
-      production_schedule:
-        source:
-            name: PowelBiConnector
-            smg:
-                key: 136446 # Prod_Plan_Landet_INTRA_Kladd
-      # production_schedule_flag:
-      #    source:
-      #        name: PowelBiConnector
-      #        smg:
-      #            key: 626270 # HER-Landet.PlanFlagg_vs
-      latitude: 0.0
-      longitude: 0.0
-      equal_distribution: -1
-      less_distribution_eps: 0.001
-      # ownership: 95.21
-      sched_penalty_cost_down: 1.0e+40
-      sched_penalty_cost_up: 1.0e+40
+      - 0
     Dalby:
-      time_delay: 0
-      outlet_line: 365.0
+      outlet_line: 365
       main_loss:
       - 0.002105
       penstock_loss:
       - 0.0006
-      mip_flag: 1
-      max_q_constr: 1000.0
-      prod_area: 1.0
-      production_schedule:
-        source:
-            name: PowelBiConnector
-            smg:
-                key: 136442 # Prod_Plan_Røldal_INTRA_Kladd
-      # production_schedule_flag:
-      #    source:
-      #        name: PowelBiConnector
-      #        smg:
-      #            key: 626269 # HER-Røldal.PlanFlagg_vs
-      latitude: 0.0
-      longitude: 0.0
-      equal_distribution: -1
-      less_distribution_eps: 0.001
-      # ownership: 95.21
-      sched_penalty_cost_down: 1.0e+40
-      sched_penalty_cost_up: 1.0e+40
     Rull1:
-      time_delay: 0
-      outlet_line: 68.0
+      outlet_line: 68
       main_loss:
       - 0.00107
       penstock_loss:
       - 0.0007
       - 0.0005
-      mip_flag: 1
-      max_p_constr: 184.999
-      max_q_constr: 1000.0
-      prod_area: 1.0
-      production_schedule:
-        source:
-            name: PowelBiConnector
-            smg:
-                key: 136443 # Prod_Plan_Rull1_INTRA_Kladd
-      # production_schedule_flag:
-      #    source:
-      #        name: PowelBiConnector
-      #        smg:
-      #            key: 626266 # HER-Rull1.PlanFlagg_vs
-      latitude: 0.0
-      longitude: 0.0
-      equal_distribution: -1
-      less_distribution_eps: 0.001
-      # ownership: 95.21
-      sched_penalty_cost_down: 1.0e+40
-      sched_penalty_cost_up: 1.0e+40
     Rull2:
-      time_delay: 0
-      outlet_line: 68.0
+      outlet_line: 68
       main_loss:
       - 0.0225
       penstock_loss:
       - 0.0018
       - 0.0041
-      mip_flag: 1
-      max_q_constr: 1000.0
-      prod_area: 1.0
-      production_schedule:
-        source:
-            name: PowelBiConnector
-            smg:
-                key: 136444 # Prod_Plan_Rull2_INTRA_Kladd
-      # production_schedule_flag:
-      #    source:
-      #        name: PowelBiConnector
-      #        smg:
-      #            key: 790072 # HER-Rull2.PlanFlagg_ny
-      latitude: 0.0
-      longitude: 0.0
-      equal_distribution: -1
-      less_distribution_eps: 0.001
-      # ownership: 95.21
-      sched_penalty_cost_down: 1.0e+40
-      sched_penalty_cost_up: 1.0e+40
     Scott:
-      time_delay: 0
-      outlet_line: 1013.0
+      outlet_line: 1013
       main_loss:
       - 0.003399
       penstock_loss:
       - 0.022
-      mip_flag: 1
-      max_q_constr: 1000.0
-      prod_area: 1.0
-      production_schedule:
-        source:
-            name: PowelBiConnector
-            smg:
-                key: 136447 # Prod_Plan_Svandalsfl_INTRA_Kladd
-      # production_schedule_flag:
-      #    source:
-      #        name: PowelBiConnector
-      #        smg:
-      #            key: 626271 # HER-Scott.PlanFlagg_vs
-      latitude: 0.0
-      longitude: 0.0
-      equal_distribution: -1
-      less_distribution_eps: 0.001
-      # ownership: 95.21
-      sched_penalty_cost_down: 1.0e+40
-      sched_penalty_cost_up: 1.0e+40
     Strand_krv:
-      time_delay: 0
       outlet_line: 753.06
       main_loss:
-      - 0.0
+      - 0
       penstock_loss:
       - 0.3125
-      mip_flag: 0
-      max_q_constr: 1000.0
-      prod_area: 1.0
-      production_schedule:
-        source:
-            name: PowelBiConnector
-            smg:
-                key: 136448 # Prod_Plan_Vasstøl_INTRA_Kladd
-      # production_schedule_flag:
-      #    source:
-      #        name: PowelBiConnector
-      #        smg:
-      #            key: 627861 # HER-Strand_krv.PlanFlagg_vs
-      latitude: 0.0
-      longitude: 0.0
-      equal_distribution: -1
-      less_distribution_eps: 0.001
-      # ownership: 95.21
-      sched_penalty_cost_down: 1.0e+40
-      sched_penalty_cost_up: 1.0e+40
   reservoir:
     Hagen:
-      cut_time: 0
-      start_head:
-          source:
-              name: PowelBiConnector
-              smg:
-                  key: 501436 # HER.-Hagen.......-T1000A0A-0102
-              last:
-              query_time_padding:
-                  start_time: "7d"
       max_vol: 25.7
-      lrl: 893.0
-      hrl: 908.0
+      lrl: 893
+      hrl: 908
       vol_head:
+        ref: 0
         x:
-        - 0.0
+        - 0
         - 0.7
         - 1.6
         - 2.5
         - 3.7
-        - 5.0
+        - 5
         - 6.6
         - 8.3
-        - 10.0
-        - 12.0
-        - 14.0
+        - 10
+        - 12
+        - 14
         - 16.2
         - 18.5
         - 20.8
         - 25.7
-        - 31.0
+        - 31
         y:
-        - 893.0
-        - 894.0
-        - 895.0
-        - 896.0
-        - 897.0
-        - 898.0
-        - 899.0
-        - 900.0
-        - 901.0
-        - 902.0
-        - 903.0
-        - 904.0
-        - 905.0
-        - 906.0
-        - 908.0
-        - 910.0
-        ref: '0.0'
+        - 893
+        - 894
+        - 895
+        - 896
+        - 897
+        - 898
+        - 899
+        - 900
+        - 901
+        - 902
+        - 903
+        - 904
+        - 905
+        - 906
+        - 908
+        - 910
+      start_head: 894.19006347656
       flow_descr:
+        ref: 0
         x:
-        - 908.0
+        - 908
         - 908.304
         - 908.76
         - 909.52
         y:
-        - 0.0
+        - 0
         - 8.833
         - 33.319
-        - 100.0
-        ref: '0.0'
-      # endpoint_desc_nok_mwh: 'source::sme|func::lambda x: pd.Series(x.iloc[-1], [0])|key::/HER.-Hagen.vannverdi.Aktuell'
-      inflow:
-        source:
-          name: PowelBiConnector
-          smg:
-            key: 649827 # HER.-Hagen.Mix-Real-Prg-Tilsig-0108
-      latitude: 0.0
-      longitude: 0.0
-      head_opt: -1
+        - 100
+      energy_value_input: 160
     Hovden:
-      cut_time: 0
-      start_vol:
-          source:
-              name: PowelBiConnector
-              smg:
-                  key: 601729 # HER.-Hovden....-T1000A0A-0102
-              last:
-              query_time_padding:
-                  start_time: "7d"
       max_vol: 16.4
-      lrl: 1045.0
+      lrl: 1045
       hrl: 1100.8
       vol_head:
+        ref: 0
         x:
-        - 0.0
+        - 0
         - 0.333
         - 0.666
         - 1.333
@@ -2314,12 +1429,12 @@ model:
         - 16.84
         - 17.54
         y:
-        - 1045.0
-        - 1047.0
-        - 1049.0
-        - 1053.0
-        - 1055.0
-        - 1057.0
+        - 1045
+        - 1047
+        - 1049
+        - 1053
+        - 1055
+        - 1057
         - 1085.1
         - 1087.6
         - 1089.1
@@ -2328,42 +1443,25 @@ model:
         - 1100.8
         - 1101.5
         - 1102.1
-        ref: '0.0'
       flow_descr:
+        ref: 0
         x:
         - 1100.8
         - 1101.5
         - 1102.1
         y:
-        - 0.0
-        - 7.0
-        - 23.0
-        ref: '0.0'
-      # endpoint_desc_nok_mwh: 'source::sme|func::lambda x: pd.Series(x.iloc[-1], [0])|key::/HER.-Hovden.vannverdi.Vansimtap'
-      inflow:
-        source:
-          name: PowelBiConnector
-          smg:
-            key: 649831 # HER.-Hovden.Mix-Real-Prg-Tilsig-0108
-      latitude: 0.0
-      longitude: 0.0
-      head_opt: -1
+        - 0
+        - 7
+        - 23
+      energy_value_input: 160
     Frosta:
-      cut_time: 0
-      start_head:
-          source:
-              name: PowelBiConnector
-              smg:
-                  key: 501437 # HER.-Frosta.....-T1000A0A-0102
-              last:
-              query_time_padding:
-                  start_time: "7d"
-      max_vol: 96.0
-      lrl: 1048.0
-      hrl: 1058.0
+      max_vol: 96
+      lrl: 1048
+      hrl: 1058
       vol_head:
+        ref: 0
         x:
-        - 0.0
+        - 0
         - 4.1
         - 8.4
         - 12.8
@@ -2376,30 +1474,31 @@ model:
         - 54.4
         - 64.5
         - 74.7
-        - 85.0
-        - 96.0
+        - 85
+        - 96
         - 119.9
         y:
-        - 1048.0
+        - 1048
         - 1048.5
-        - 1049.0
+        - 1049
         - 1049.5
-        - 1050.0
+        - 1050
         - 1050.5
-        - 1051.0
+        - 1051
         - 1051.5
-        - 1052.0
-        - 1053.0
-        - 1054.0
-        - 1055.0
-        - 1056.0
-        - 1057.0
-        - 1058.0
+        - 1052
+        - 1053
+        - 1054
+        - 1055
+        - 1056
+        - 1057
+        - 1058
         - 1059.98999
-        ref: '0.0'
+      start_head: 1048.7287109375
       flow_descr:
+        ref: 0
         x:
-        - 1058.0
+        - 1058
         - 1058.0802
         - 1058.2005
         - 1058.401
@@ -2408,32 +1507,15 @@ model:
         - 5.416
         - 21.748
         - 58.5
-        ref: '0.0'
-      # endpoint_desc_nok_mwh: 'source::sme|func::lambda x: pd.Series(x.iloc[-1], [0])|key::/HER.-Frosta.vannverdi.Aktuell'
-      inflow:
-        source:
-          name: PowelBiConnector
-          smg:
-            key: 649837 # HER.-Frosta.Mix-Real-Prg-Tilsig-0108
-      latitude: 0.0
-      longitude: 0.0
-      head_opt: -1
+      energy_value_input: 160
     Varhaug:
-      cut_time: 0
-      start_head:
-          source:
-              name: PowelBiConnector
-              smg:
-                  key: 740791 # HER.-Varhaug...-T1000A0B--0102
-              last:
-              query_time_padding:
-                  start_time: "7d"
-      max_vol: 16.0
-      lrl: 1285.0
-      hrl: 1295.0
+      max_vol: 16
+      lrl: 1285
+      hrl: 1295
       vol_head:
+        ref: 0
         x:
-        - 0.0
+        - 0
         - 0.7
         - 1.4
         - 2.1
@@ -2447,63 +1529,47 @@ model:
         - 10.9
         - 12.5
         - 14.1
-        - 16.0
+        - 16
         - 17.9
         y:
-        - 1285.0
+        - 1285
         - 1285.5
-        - 1286.0
+        - 1286
         - 1286.5
-        - 1287.0
+        - 1287
         - 1287.5
-        - 1288.0
+        - 1288
         - 1288.5
-        - 1289.0
-        - 1290.0
-        - 1291.0
-        - 1292.0
-        - 1293.0
-        - 1294.0
-        - 1295.0
-        - 1296.0
-        ref: '0.0'
+        - 1289
+        - 1290
+        - 1291
+        - 1292
+        - 1293
+        - 1294
+        - 1295
+        - 1296
+      start_head: 1288.0076237227
       flow_descr:
+        ref: 0
         x:
-        - 1295.0
+        - 1295
         - 1295.2
         - 1295.5
-        - 1296.0
+        - 1296
         y:
         - 0.001
         - 0.567
         - 1.85
         - 4.85
-        ref: '0.0'
-      # endpoint_desc_nok_mwh: 'source::sme|func::lambda x: pd.Series(x.iloc[-1], [0])|key::/HER.-Varhaug.vannverdi.Aktuell'
-      inflow:
-        source:
-          name: PowelBiConnector
-          smg:
-            key: 649838 # HER.-Varhaug.Mix-Real-Prg-Tilsig-0108
-      latitude: 0.0
-      longitude: 0.0
-      head_opt: -1
+      energy_value_input: 160
     Tangvall:
-      cut_time: 0
-      start_head:
-          source:
-              name: PowelBiConnector
-              smg:
-                  key: 501441 # HER.-Tangvall.....-T1000A0A-0102
-              last:
-              query_time_padding:
-                  start_time: "7d"
       max_vol: 36.5
-      lrl: 1183.0
-      hrl: 1205.0
+      lrl: 1183
+      hrl: 1205
       vol_head:
+        ref: 0
         x:
-        - 0.0
+        - 0
         - 0.5
         - 1.5
         - 1.9
@@ -2520,60 +1586,44 @@ model:
         - 36.3
         - 41.8
         y:
-        - 1183.0
-        - 1184.0
+        - 1183
+        - 1184
         - 1185.5
-        - 1186.0
+        - 1186
         - 1187.5
-        - 1189.0
+        - 1189
         - 1190.5
-        - 1193.0
+        - 1193
         - 1194.5
-        - 1196.0
+        - 1196
         - 1197.5
-        - 1199.0
-        - 1201.0
-        - 1203.0
-        - 1205.0
+        - 1199
+        - 1201
+        - 1203
+        - 1205
         - 1206.99
-        ref: '0.0'
+      start_head: 1184.7624511719
       flow_descr:
+        ref: 0
         x:
-        - 1205.0
+        - 1205
         - 1205.198
         - 1205.495
         - 1205.98999
         y:
-        - 0.0
+        - 0
         - 4.435
         - 16.443
-        - 50.0
-        ref: '0.0'
-      # endpoint_desc_nok_mwh: 'source::sme|func::lambda x: pd.Series(x.iloc[-1], [0])|key::/HER.-Tangvall.vannverdi.Aktuell'
-      inflow:
-        source:
-          name: PowelBiConnector
-          smg:
-            key: 649830 # HER.-Tangvall.Mix-Real-Prg-Tilsig-0108
-      latitude: 0.0
-      longitude: 0.0
-      head_opt: -1
+        - 50
+      energy_value_input: 160
     Sirefelt:
-      cut_time: 0
-      start_head:
-          source:
-              name: PowelBiConnector
-              smg:
-                  key: 501433 # HER.-Holensfoss.-T1000A0A-0102
-              last:
-              query_time_padding:
-                  start_time: "7d"
       max_vol: 1.6
-      lrl: 620.0
-      hrl: 630.0
+      lrl: 620
+      hrl: 630
       vol_head:
+        ref: 0
         x:
-        - 0.0
+        - 0
         - 0.01
         - 0.0338
         - 0.0838
@@ -2586,68 +1636,40 @@ model:
         - 1.984
         - 2.368
         y:
-        - 620.0
+        - 620
         - 620.59998
-        - 622.0
+        - 622
         - 623.09998
         - 624.40002
-        - 625.0
-        - 627.0
-        - 628.0
+        - 625
+        - 627
+        - 628
         - 629.1
-        - 630.0
-        - 631.0
-        - 632.0
-        ref: '0.0'
+        - 630
+        - 631
+        - 632
+      start_head: 625.2109375
       flow_descr:
+        ref: 0
         x:
-        - 630.0
+        - 630
         - 630.5
-        - 631.0
-        - 632.0
+        - 631
+        - 632
         y:
-        - 0.0
-        - 50.0
-        - 110.0
-        - 246.0
-        ref: '0.0'
-      # endpoint_desc_nok_mwh: 'source::sme|func::lambda x: pd.Series(x.iloc[-1], [0])|key::/HER.-Sirefelt.vannverdi.Aktuell'
-      inflow:
-        source:
-          name: PowelBiConnector
-          smg:
-            key: 649835 # HER.-Sirefelt.Mix-Real-Prg-Tilsig-0108
-      tactical_cost_min: 10000
-      #    source:
-      #        name: PowelBiConnector
-      #        smg:
-      #            key: 604224 # RSK.shop.Sirefelt.taktisk min.
-      tactical_limit_min: 0.30 # Mm3, equals 625.0 masl.
-      tactical_cost_max: 100
-      #    source:
-      #        name: PowelBiConnector
-      #        smg:
-      #            key: 604223 # RSK.shop.Sirefelt.taktisk max.
-      tactical_limit_max: 1.42 # Mm3, equals 629.5 masl.
-      latitude: 0.0
-      longitude: 0.0
-      head_opt: -1
+        - 0
+        - 50
+        - 110
+        - 246
+      energy_value_input: 160
     Lundvann:
-      cut_time: 0
-      start_vol:
-          source:
-              name: PowelBiConnector
-              smg:
-                  key: 601728 # HER.-Lundvatn....-T1000A0A-0102
-              last:
-              query_time_padding:
-                  start_time: "7d"
-      max_vol: 30.0
-      lrl: 1190.0
+      max_vol: 30
+      lrl: 1190
       hrl: 1230.5
       vol_head:
+        ref: 0
         x:
-        - 0.0
+        - 0
         - 0.8
         - 1.7
         - 3.3
@@ -2656,60 +1678,43 @@ model:
         - 9.3
         - 26.9
         - 29.5
-        - 30.0
+        - 30
         - 32.7
         y:
-        - 1190.0
-        - 1192.0
-        - 1194.0
-        - 1197.0
-        - 1200.0
-        - 1203.0
-        - 1206.0
-        - 1227.0
-        - 1230.0
+        - 1190
+        - 1192
+        - 1194
+        - 1197
+        - 1200
+        - 1203
+        - 1206
+        - 1227
+        - 1230
         - 1230.5
-        - 1233.0
-        ref: '0.0'
+        - 1233
       flow_descr:
+        ref: 0
         x:
         - 1230.5
         - 1230.7
         - 1231.4
         - 1231.5
         y:
-        - 0.0
+        - 0
         - 2.8
         - 26.8
-        - 31.0
-        ref: '0.0'
-      # endpoint_desc_nok_mwh: 'source::sme|func::lambda x: pd.Series(x.iloc[-1], [0])|key::/HER.-Lundvatn.vannverdi.Aktuell'
-      inflow:
-        source:
-          name: PowelBiConnector
-          smg:
-            key: 649832 # HER.-Scott.Mix-Real-Prg-Tilsig-0108
-      latitude: 0.0
-      longitude: 0.0
-      head_opt: -1
+        - 31
+      energy_value_input: 160
     Danielsen:
-      cut_time: 0
-      start_head:
-          source:
-              name: PowelBiConnector
-              smg:
-                  key: 501439 # HER.-Nupstjorn.....-T1000A0A-0102
-              last:
-              query_time_padding:
-                  start_time: "7d"
       max_vol: 9.65
-      lrl: 1282.0
-      hrl: 1302.0
+      lrl: 1282
+      hrl: 1302
       vol_head:
+        ref: 0
         x:
-        - 0.0
+        - 0
         - 0.5
-        - 1.0
+        - 1
         - 1.5
         - 2.1
         - 2.7
@@ -2725,65 +1730,43 @@ model:
         - 10.55
         - 11.45
         y:
-        - 1282.0
+        - 1282
         - 1283.5
-        - 1285.0
+        - 1285
         - 1286.5
-        - 1288.0
+        - 1288
         - 1289.5
-        - 1291.0
+        - 1291
         - 1292.5
-        - 1294.0
+        - 1294
         - 1295.5
-        - 1297.0
+        - 1297
         - 1298.5
-        - 1300.0
+        - 1300
         - 1301.5
-        - 1302.0
-        - 1303.0
-        - 1304.0
-        ref: '0.0'
+        - 1302
+        - 1303
+        - 1304
+      start_head: 1286.6818880208
       flow_descr:
+        ref: 0
         x:
-        - 1302.0
+        - 1302
         - 1302.5
-        - 1303.0
+        - 1303
         y:
-        - 0.0
-        - 5.0
-        - 20.0
-        ref: '0.0'
-      # endpoint_desc_nok_mwh: 'source::sme|func::lambda x: pd.Series(x.iloc[-1], [0])|key::/HER.-Danielsen.vannverdi.Aktuell'
-      inflow:
-        source:
-          name: PowelBiConnector
-          smg:
-            key: 649828 # HER.-Danielsen.Mix-Real-Prg-Tilsig-0108
-      tactical_cost_max: 500
-      #    source:
-      #        name: PowelBiConnector
-      #        smg:
-      #            key: 752602 # RSK.shop.Danielsen.taktisk max.
-      tactical_limit_max: 9.20 # Mm3, equals 1301.50 masl.
-      latitude: 0.0
-      longitude: 0.0
-      head_opt: -1
+        - 0
+        - 5
+        - 20
+      energy_value_input: 160
     Dalbysvatn:
-      cut_time: 0
-      start_head:
-          source:
-              name: PowelBiConnector
-              smg:
-                  key: 501440 # HER.-Dalbysvatn...-T1000A0A-0102
-              last:
-              query_time_padding:
-                  start_time: "7d"
-      max_vol: 115.0
-      lrl: 363.0
-      hrl: 380.0
+      max_vol: 115
+      lrl: 363
+      hrl: 380
       vol_head:
+        ref: 0
         x:
-        - 0.0
+        - 0
         - 6.23
         - 12.46
         - 18.7
@@ -2797,78 +1780,49 @@ model:
         - 78.76
         - 92.82
         - 107.57
-        - 115.0
+        - 115
         - 123.02
         - 139.32
         y:
-        - 363.0
-        - 364.0
-        - 365.0
-        - 366.0
-        - 367.0
-        - 368.0
-        - 369.0
-        - 370.0
-        - 371.0
-        - 372.0
-        - 373.0
-        - 375.0
-        - 377.0
-        - 379.0
-        - 380.0
-        - 381.0
-        - 383.0
-        ref: '0.0'
+        - 363
+        - 364
+        - 365
+        - 366
+        - 367
+        - 368
+        - 369
+        - 370
+        - 371
+        - 372
+        - 373
+        - 375
+        - 377
+        - 379
+        - 380
+        - 381
+        - 383
+      start_head: 367.69541422526
       flow_descr:
+        ref: 0
         x:
-        - 380.0
+        - 380
         - 380.582
         - 381.455
         - 382.91
         y:
         - 0.001
         - 20.1
-        - 84.0
-        - 250.0
-        ref: '0.0'
-      # endpoint_desc_nok_mwh: 'source::sme|func::lambda x: pd.Series(x.iloc[-1], [0])|key::/HER.-Dalbysvatn.vannverdi.Aktuell'
-      inflow:
-        source:
-          name: PowelBiConnector
-          smg:
-            key: 624330 # HER.-Dalbysvatn.HBV-Valgt-Tilsig-0108
-      min_vol_constr: 0
-      #tactical_cost_min: 500
-      #tactical_limit_min: 100 # Mm3, equals 378 masl.
-      #  source:
-      #    name: PowelBiConnector
-      #    smg:
-      #      key: 850247 # HEF.-Dalbysvatn.Taktisk.Min
-      tactical_cost_max: 500
-      tactical_limit_max: 109 # Mm3, equals 379.2 masl.
-      #  source:
-      #    name: PowelBiConnector
-      #    smg:
-      #      key: 731413 # HEF.-Dalbysvatn.Taktisk.Max
-      latitude: 0.0
-      longitude: 0.0
-      head_opt: -1
+        - 84
+        - 250
+      energy_value_input: 160
     Nielsen:
-      cut_time: 0
-      start_head:
-          source:
-              name: PowelBiConnector
-              smg:
-                  key: 501431 # HER.-Nielsen......-T1000A0A-0102
-              last:
-              query_time_padding:
-                  start_time: "7d"
-      max_vol: 66.0
-      lrl: 924.0
-      hrl: 950.0
+      max_vol: 66
+      lrl: 924
+      hrl: 950
       vol_head:
+        ref: 0
         x:
-        - 0.0
+        - 0
         - 0.8
         - 1.6
         - 3.4
@@ -2883,30 +1837,31 @@ model:
         - 47.8
         - 53.8
         - 59.9
-        - 66.0
+        - 66
         - 68.8
         y:
-        - 924.0
+        - 924
         - 924.5
-        - 925.0
-        - 926.0
-        - 928.0
-        - 930.0
-        - 932.0
-        - 934.0
-        - 936.0
-        - 938.0
-        - 940.0
-        - 942.0
-        - 944.0
-        - 946.0
-        - 948.0
-        - 950.0
+        - 925
+        - 926
+        - 928
+        - 930
+        - 932
+        - 934
+        - 936
+        - 938
+        - 940
+        - 942
+        - 944
+        - 946
+        - 948
+        - 950
         - 950.90002
-        ref: '0.0'
+      start_head: 941.33984375
       flow_descr:
+        ref: 0
         x:
-        - 950.0
+        - 950
         - 950.1202
         - 950.3005
         - 950.601
@@ -2914,178 +1869,121 @@ model:
         - 0.001
         - 9.628
         - 36.105
-        - 106.0
-        ref: '0.0'
-      # endpoint_desc_nok_mwh: 'source::sme|func::lambda x: pd.Series(x.iloc[-1], [0])|key::/HER.-Nielsen.vannverdi.Aktuell'
-      inflow:
-        source:
-          name: PowelBiConnector
-          smg:
-            key: 649836 # HER.-Nielsen.Mix-Real-Prg-Tilsig-0108
-      max_vol_constr: 66.0
-      latitude: 0.0
-      longitude: 0.0
-      head_opt: -1
+        - 106
+      energy_value_input: 160
     Rullsvatn:
-      cut_time: 0
-      start_vol: 0.0
-      max_vol: 1000.0
-      lrl: 67.0
+      max_vol: 1000
+      lrl: 67
       hrl: 68.5
       vol_head:
+        ref: 0
         x:
-        - 0.0
-        - 1000.0
-        - 2000.0
+        - 0
+        - 1000
+        - 2000
         y:
-        - 67.0
+        - 67
         - 68.5
-        - 70.0
-        ref: '0.0'
+        - 70
       flow_descr:
+        ref: 0
         x:
         - 68.5
-        - 70.0
+        - 70
         y:
-        - 0.0
-        - 100.0
-        ref: '0.0'
-      # endpoint_desc_nok_mwh: 'source::sme|func::lambda x: pd.Series(x.iloc[-1], [0])|key::/0'
-      inflow: 0.0
-      min_vol_constr: 0.0
-      latitude: 0.0
-      longitude: 0.0
-      head_opt: -1
+        - 0
+        - 100
+      energy_value_input: 160
     Ranemsletta_1183:
-      cut_time: 0
-      start_head:
-          source:
-              name: PowelBiConnector
-              smg:
-                  key: 770346 # HER.-Tjørn_1183.....-T1000A0B-0102
-              last:
-              query_time_padding:
-                  start_time: "7d"
       max_vol: 0.047
       lrl: 1182.5
-      hrl: 1183.0
+      hrl: 1183
       vol_head:
+        ref: 0
         x:
-        - 0.0
+        - 0
         - 0.127
         y:
         - 1182.5
         - 1184.35
-        ref: '0.0'
+      start_head: 1182.697582688
       flow_descr:
+        ref: 0
         x:
-        - 1183.0
+        - 1183
         - 1183.2
         - 1183.5
-        - 1184.0
+        - 1184
         y:
-        - 0.0
+        - 0
         - 2.76
         - 10.9
         - 30.84
-        ref: '0.0'
-      # endpoint_desc_nok_mwh: 'source::sme|func::lambda x: pd.Series(x.iloc[-1], [0])|key::/0'
-      inflow:
-        source:
-          name: PowelBiConnector
-          smg:
-            key: 769827 # HER.-Tjørn_1183.HBV-Valgt-Tilsig-0108
-      latitude: 0.0
-      longitude: 0.0
-      head_opt: -1
+      energy_value_input: 160
     Lensvik:
-      cut_time: 0
-      start_head:
-          source:
-              name: PowelBiConnector
-              smg:
-                  key: 501428 # HER.-Lensvik.....-T1000A0A-0102
-              last:
-              query_time_padding:
-                  start_time: "7d"
-      max_vol: 290.0
-      lrl: 675.0
-      hrl: 745.0
+      max_vol: 290
+      lrl: 675
+      hrl: 745
       vol_head:
+        ref: 0
         x:
-        - 0.0
+        - 0
         - 1.1
         - 3.2
         - 7.1
         - 13.7
         - 23.1
         - 36.2
-        - 54.0
+        - 54
         - 75.8
         - 99.4
         - 124.7
         - 151.8
-        - 181.0
+        - 181
         - 212.39999
         - 254.10001
-        - 290.0
+        - 290
         - 303.70001
         y:
-        - 675.0
-        - 677.0
-        - 680.0
-        - 684.0
-        - 689.0
-        - 694.0
-        - 699.0
-        - 704.0
-        - 709.0
-        - 714.0
-        - 719.0
-        - 724.0
-        - 729.0
-        - 734.0
-        - 740.0
-        - 745.0
+        - 675
+        - 677
+        - 680
+        - 684
+        - 689
+        - 694
+        - 699
+        - 704
+        - 709
+        - 714
+        - 719
+        - 724
+        - 729
+        - 734
+        - 740
+        - 745
         - 746.66252
-        ref: '0.0'
+      start_head: 692.92805175781
       flow_descr:
+        ref: 0
         x:
-        - 745.0
+        - 745
         - 745.2275
         - 745.56874
         - 746.13749
         y:
-        - 0.0
+        - 0
         - 24.469
         - 101.116
         - 297.554
-        ref: '0.0'
-      # endpoint_desc_nok_mwh: 'source::sme|func::lambda x: pd.Series(x.iloc[-1], [0])|key::/HER.-Lensvik.vannverdi.Aktuell'
-      inflow:
-        source:
-          name: PowelBiConnector
-          smg:
-            key: 649792 # HER.-Lensvik.Mix-Real-Prg-Tilsig-0108
-      latitude: 0.0
-      longitude: 0.0
-      head_opt: -1
+      energy_value_input: 160
     Strand:
-      cut_time: 0
-      start_head:
-          source:
-              name: PowelBiConnector
-              smg:
-                  key: 501430 # HER.-Strandvatn...-T1000A0A-0102
-              last:
-              query_time_padding:
-                  start_time: "7d"
-      max_vol: 11.0
+      max_vol: 11
       lrl: 732.5
-      hrl: 753.0
+      hrl: 753
       vol_head:
+        ref: 0
         x:
-        - 0.0
+        - 0
         - 0.12
         - 0.4
         - 0.73
@@ -3102,92 +2000,64 @@ model:
         - 7.18
         - 8.13
         - 9.55
-        - 11.0
+        - 11
         - 13.5
         y:
         - 732.5
-        - 733.0
-        - 734.0
-        - 735.0
-        - 736.0
-        - 737.0
-        - 738.0
-        - 740.0
-        - 741.0
-        - 742.0
-        - 743.0
-        - 744.0
-        - 745.0
+        - 733
+        - 734
+        - 735
+        - 736
+        - 737
+        - 738
+        - 740
+        - 741
+        - 742
+        - 743
+        - 744
+        - 745
         - 746.5
         - 747.5
-        - 749.0
-        - 751.0
-        - 753.0
-        - 756.0
-        ref: '0.0'
+        - 749
+        - 751
+        - 753
+        - 756
+      start_head: 734.91708984375
       flow_descr:
+        ref: 0
         x:
-        - 753.0
+        - 753
         - 753.132
         - 753.33
         - 753.66
         y:
-        - 0.0
+        - 0
         - 10.386
         - 41.167
-        - 120.0
-        ref: '0.0'
-      # endpoint_desc_nok_mwh: 'source::sme|func::lambda x: pd.Series(x.iloc[-1], [0])|key::/HER.-Lensvik.vannverdi.Aktuell'
-      inflow:
-        source:
-          name: PowelBiConnector
-          smg:
-            key: 649826 # HER.-Strand.Mix-Real-Prg-Tilsig-0108
-      latitude: 0.0
-      longitude: 0.0
-      head_opt: -1
+        - 120
+      energy_value_input: 160
     Strand_tunnel:
-      cut_time: 0
-      start_head:
-          source:
-              name: PowelBiConnector
-              smg:
-                  key: 501428 # HER.-Lensvik.....-T1000A0A-0102
-              last:
-              query_time_padding:
-                  start_time: "7d"
       max_vol: 0.5
-      lrl: 675.0
-      hrl: 745.0
+      lrl: 675
+      hrl: 745
       vol_head:
+        ref: 0
         x:
-        - 0.0
+        - 0
         - 0.5
         y:
-        - 675.0
-        - 745.0
-        ref: '0.0'
-      # endpoint_desc_nok_mwh: 'source::sme|func::lambda x: pd.Series(x.iloc[-1], [0])|key::/HER.-Lensvik.vannverdi.Aktuell'
-      inflow: 0.0
-      latitude: 0.0
-      longitude: 0.0
-      head_opt: -1
+        - 675
+        - 745
+      start_head: 692.92805175781
+      energy_value_input: 160
     Livincovs:
-      cut_time: 0
-      start_head:
-          source:
-              name: PowelBiConnector
-              smg:
-                  key: 501438 # HER.-Livincovs.........-T1000A0A-0102
-              last:
-              query_time_padding:
-                  start_time: "7d"
-      max_vol: 119.0
-      lrl: 975.0
-      hrl: 1020.0
+      max_vol: 119
+      lrl: 975
+      hrl: 1020
       vol_head:
+        ref: 0
         x:
-        - 0.0
+        - 0
         - 1.5
         - 3.5
         - 6.3
@@ -3196,57 +2066,685 @@ model:
         - 22.8
         - 29.3
         - 36.3
-        - 44.0
+        - 44
         - 52.4
         - 64.5
         - 78.2
         - 93.5
         - 110.3
-        - 119.0
-        - 132.0
+        - 119
+        - 132
         y:
-        - 975.0
-        - 977.0
-        - 979.0
-        - 981.0
-        - 984.0
-        - 987.0
-        - 990.0
-        - 993.0
-        - 996.0
-        - 999.0
-        - 1002.0
-        - 1006.0
-        - 1010.0
-        - 1014.0
-        - 1018.0
-        - 1020.0
+        - 975
+        - 977
+        - 979
+        - 981
+        - 984
+        - 987
+        - 990
+        - 993
+        - 996
+        - 999
+        - 1002
+        - 1006
+        - 1010
+        - 1014
+        - 1018
+        - 1020
         - 1022.90002
-        ref: '0.0'
+      start_head: 977.72619628906
       flow_descr:
+        ref: 0
         x:
-        - 1020.0
+        - 1020
         - 1020.19
         - 1020.47501
         - 1020.95001
         y:
-        - 0.0
+        - 0
         - 6.668
         - 27.344
-        - 82.0
-        ref: '0.0'
-      # endpoint_desc_nok_mwh: 'source::sme|func::lambda x: pd.Series(x.iloc[-1], [0])|key::/HER.-Livincovs.vannverdi.Aktuell'
-      inflow:
-        source:
-          name: PowelBiConnector
-          smg:
-            key: 649829 # HER.-Livincovs.Mix-Real-Prg-Tilsig-0108
-          scaling:
-            intercept: 0
-            slope: 0.16
-      latitude: 0.0
-      longitude: 0.0
-      head_opt: -1
-  scenario:
-    S1:
-      scenario_id: 1
+        - 82
+      energy_value_input: 160
+  production_group:
+    T2Landet: {}
+  reserve_group:
+    rkom_up: {}
+connections:
+- connection_type: connection_bypass
+  from: Hagen
+  from_type: reservoir
+  to: b_Hagen_Strand
+  to_type: gate
+- connection_type: connection_bypass
+  from: Sirefelt
+  from_type: reservoir
+  to: b_Sirefelt_Knute_Rullsvatn
+  to_type: gate
+- connection_type: connection_bypass
+  from: Danielsen
+  from_type: reservoir
+  to: b_Danielsen_Lundvann
+  to_type: gate
+- connection_type: connection_bypass
+  from: Dalbysvatn
+  from_type: reservoir
+  to: b_Dalbysvatn_Knute_Rullsvatn
+  to_type: gate
+- connection_type: connection_bypass
+  from: Nielsen
+  from_type: reservoir
+  to: b_Nielsen_Blakstadana
+  to_type: gate
+- connection_type: connection_bypass
+  from: Lensvik
+  from_type: reservoir
+  to: b_Lensvik_Dalbysvatn
+  to_type: gate
+- connection_type: connection_bypass
+  from: Livincovs
+  from_type: reservoir
+  to: b_Livincovs_Dalbysvatn
+  to_type: gate
+- connection_type: connection_spill
+  from: Blakstad
+  from_type: creek_intake
+  to: f_Blakstadana_Knute_Rullsvatn
+  to_type: gate
+- connection_type: connection_spill
+  from: Hagen
+  from_type: reservoir
+  to: f_Hagen_Strand
+  to_type: gate
+- connection_type: connection_spill
+  from: Strand
+  from_type: reservoir
+  to: f_Finnvasstol_Dalbysvatn
+  to_type: gate
+- connection_type: connection_spill
+  from: Hovden
+  from_type: reservoir
+  to: f_Hovden_Hagen
+  to_type: gate
+- connection_type: connection_spill
+  from: Fjerdingby_intake
+  from_type: creek_intake
+  to: f_Fjerdingby_Dalbysvatn
+  to_type: gate
+- connection_type: connection_spill
+  from: Frosta
+  from_type: reservoir
+  to: f_Frosta
+  to_type: gate
+- connection_type: connection_spill
+  from: Varhaug
+  from_type: reservoir
+  to: f_Varhaug
+  to_type: gate
+- connection_type: connection_spill
+  from: Tangvall
+  from_type: reservoir
+  to: f_Tangvall
+  to_type: gate
+- connection_type: connection_spill
+  from: Sirefelt
+  from_type: reservoir
+  to: f_Sirefelt_Knute_Rullsvatn
+  to_type: gate
+- connection_type: connection_spill
+  from: Lundvann
+  from_type: reservoir
+  to: f_Lundvann_Lensvik
+  to_type: gate
+- connection_type: connection_spill
+  from: Danielsen
+  from_type: reservoir
+  to: f_Nupstj
+  to_type: gate
+- connection_type: connection_spill
+  from: Golebiowski_intake
+  from_type: creek_intake
+  to: f_Golebiowski_Dalbysvatn
+  to_type: gate
+- connection_type: connection_spill
+  from: Lont_intake
+  from_type: creek_intake
+  to: f_Lont_Dalbysvatn
+  to_type: gate
+- connection_type: connection_spill
+  from: Dalbysvatn
+  from_type: reservoir
+  to: f_Dalbysvatn_Knute_Rullsvatn
+  to_type: gate
+- connection_type: connection_spill
+  from: Nielsen
+  from_type: reservoir
+  to: f_Nielsen
+  to_type: gate
+- connection_type: connection_spill
+  from: Narvhus
+  from_type: creek_intake
+  to: f_Narvhus_Rullsvatn
+  to_type: gate
+- connection_type: connection_spill
+  from: Rullsvatn
+  from_type: reservoir
+  to: f_Rullsvatn_Rullslaagen
+  to_type: gate
+- connection_type: connection_spill
+  from: Ranemsletta_1183
+  from_type: reservoir
+  to: f_Ranemsletta_1183_Livincovs
+  to_type: gate
+- connection_type: connection_spill
+  from: Lensvik
+  from_type: reservoir
+  to: f_Lensvik
+  to_type: gate
+- connection_type: connection_spill
+  from: Livincovs
+  from_type: reservoir
+  to: f_Livincovs
+  to_type: gate
+- connection_type: connection_standard
+  from: Strand
+  from_type: reservoir
+  to: w_Finnvasstol_Strand_tunnel
+  to_type: gate
+- connection_type: connection_standard
+  from: Hovden
+  from_type: reservoir
+  to: w_Hovden_Livincovs
+  to_type: gate
+- connection_type: connection_standard
+  from: Frosta
+  from_type: reservoir
+  to: w_Frosta
+  to_type: gate
+- connection_type: connection_standard
+  from: Varhaug
+  from_type: reservoir
+  to: w_Varhaug
+  to_type: gate
+- connection_type: connection_standard
+  from: Tangvall
+  from_type: reservoir
+  to: w_Tangvall
+  to_type: gate
+- connection_type: connection_standard
+  from: Rullsvatn
+  from_type: reservoir
+  to: w_Rullsvatn_Rullslaagen
+  to_type: gate
+- connection_type: generator_of_plant
+  from: Holen
+  from_type: plant
+  to: Holen_G1
+  to_type: generator
+- connection_type: generator_of_plant
+  from: Lund
+  from_type: plant
+  to: Lund_G1
+  to_type: generator
+- connection_type: generator_of_plant
+  from: Lien_krv
+  from_type: plant
+  to: Lien_krv_G1
+  to_type: generator
+- connection_type: generator_of_plant
+  from: Landet
+  from_type: plant
+  to: Landet_G1
+  to_type: generator
+- connection_type: generator_of_plant
+  from: Dalby
+  from_type: plant
+  to: Dalby_G1
+  to_type: generator
+- connection_type: generator_of_plant
+  from: Dalby
+  from_type: plant
+  to: Dalby_G2
+  to_type: generator
+- connection_type: generator_of_plant
+  from: Rull1
+  from_type: plant
+  to: Rull1_G1
+  to_type: generator
+- connection_type: generator_of_plant
+  from: Rull1
+  from_type: plant
+  to: Rull1_G2
+  to_type: generator
+- connection_type: generator_of_plant
+  from: Rull2
+  from_type: plant
+  to: Rull2_G1
+  to_type: generator
+- connection_type: generator_of_plant
+  from: Rull2
+  from_type: plant
+  to: Rull2_G2
+  to_type: generator
+- connection_type: generator_of_plant
+  from: Scott
+  from_type: plant
+  to: Scott_G1
+  to_type: generator
+- connection_type: generator_of_plant
+  from: Strand_krv
+  from_type: plant
+  to: Strand_krv_G1
+  to_type: generator
+- connection_type: connection_standard
+  from: Holen
+  from_type: plant
+  order: 0
+  to: Blakstad
+  to_type: junction
+- connection_type: connection_standard
+  from: Blakstad
+  from_type: creek_intake
+  order: 1
+  to: Blakstad
+  to_type: junction
+- connection_type: connection_standard
+  from: Golebiowski_intake
+  from_type: junction
+  order: 0
+  to: Fjerdingby_intake
+  to_type: junction
+- connection_type: connection_standard
+  from: Fjerdingby_intake
+  from_type: creek_intake
+  order: 1
+  to: Fjerdingby_intake
+  to_type: junction
+- connection_type: connection_standard
+  from: Blakstad
+  from_type: junction
+  order: 0
+  to: Vigrestad
+  to_type: junction
+- connection_type: connection_standard
+  from: Vigrestad
+  from_type: creek_intake
+  order: 1
+  to: Vigrestad
+  to_type: junction
+- connection_type: connection_standard
+  from: Sirefelt
+  from_type: reservoir
+  order: 0
+  to: Holensfoss_junc
+  to_type: junction
+- connection_type: connection_standard
+  from: Vigrestad
+  from_type: junction
+  order: 1
+  to: Holensfoss_junc
+  to_type: junction
+- connection_type: connection_standard
+  from: w_k_Strand
+  from_type: junction
+  order: 0
+  to: Sandvika
+  to_type: junction
+- connection_type: connection_standard
+  from: Sandvika
+  from_type: creek_intake
+  order: 1
+  to: Sandvika
+  to_type: junction
+- connection_type: connection_standard
+  from: Lont_intake
+  from_type: junction
+  order: 0
+  to: Landet_intake
+  to_type: junction
+- connection_type: connection_standard
+  from: Landet
+  from_type: plant
+  order: 1
+  to: Landet_intake
+  to_type: junction
+- connection_type: connection_standard
+  from: Strand_tunnel
+  from_type: reservoir
+  order: 0
+  to: Golebiowski_intake
+  to_type: junction
+- connection_type: connection_standard
+  from: Golebiowski_intake
+  from_type: creek_intake
+  order: 1
+  to: Golebiowski_intake
+  to_type: junction
+- connection_type: connection_standard
+  from: Lensvik
+  from_type: reservoir
+  order: 0
+  to: Lont_intake
+  to_type: junction
+- connection_type: connection_standard
+  from: Lont_intake
+  from_type: creek_intake
+  order: 1
+  to: Lont_intake
+  to_type: junction
+- connection_type: connection_standard
+  from: Dalbysvatn
+  from_type: reservoir
+  order: 0
+  to: Narvhus
+  to_type: junction
+- connection_type: connection_standard
+  from: Narvhus
+  from_type: creek_intake
+  order: 1
+  to: Narvhus
+  to_type: junction
+- connection_type: connection_standard
+  from: Holensfoss_junc
+  from_type: junction
+  order: 0
+  to: Gustad
+  to_type: junction
+- connection_type: connection_standard
+  from: Gustad
+  from_type: creek_intake
+  order: 1
+  to: Gustad
+  to_type: junction
+- connection_type: connection_standard
+  from: Landet_intake
+  from_type: junction
+  order: 0
+  to: w_k_Strand
+  to_type: junction
+- connection_type: connection_standard
+  from: Fjerdingby_intake
+  from_type: junction
+  order: 1
+  to: w_k_Strand
+  to_type: junction
+- connection_type: connection_standard
+  from: Nielsen
+  from_type: reservoir
+  to: Holen
+  to_type: plant
+- connection_type: connection_standard
+  from: Danielsen
+  from_type: reservoir
+  to: Lund
+  to_type: plant
+- connection_type: connection_standard
+  from: Ranemsletta_1183
+  from_type: reservoir
+  to: Lien_krv
+  to_type: plant
+- connection_type: connection_standard
+  from: Livincovs
+  from_type: reservoir
+  to: Landet
+  to_type: plant
+- connection_type: connection_standard
+  from: Sandvika
+  from_type: junction
+  to: Dalby
+  to_type: plant
+- connection_type: connection_standard
+  from: Narvhus
+  from_type: junction
+  to: Rull1
+  to_type: plant
+- connection_type: connection_standard
+  from: Gustad
+  from_type: junction
+  to: Rull2
+  to_type: plant
+- connection_type: connection_standard
+  from: Lundvann
+  from_type: reservoir
+  to: Scott
+  to_type: plant
+- connection_type: connection_standard
+  from: Hagen
+  from_type: reservoir
+  to: Strand_krv
+  to_type: plant
+- connection_type: connection_standard
+  from: f_Hovden_Hagen
+  from_type: gate
+  to: Hagen
+  to_type: reservoir
+- connection_type: connection_standard
+  from: b_Nielsen_Blakstadana
+  from_type: gate
+  to: Sirefelt
+  to_type: reservoir
+- connection_type: connection_standard
+  from: f_Nielsen
+  from_type: gate
+  to: Sirefelt
+  to_type: reservoir
+- connection_type: connection_standard
+  from: Lund
+  from_type: plant
+  to: Lundvann
+  to_type: reservoir
+- connection_type: connection_standard
+  from: b_Danielsen_Lundvann
+  from_type: gate
+  to: Lundvann
+  to_type: reservoir
+- connection_type: connection_standard
+  from: Dalby
+  from_type: plant
+  to: Dalbysvatn
+  to_type: reservoir
+- connection_type: connection_standard
+  from: f_Livincovs
+  from_type: gate
+  to: Dalbysvatn
+  to_type: reservoir
+- connection_type: connection_standard
+  from: f_Lensvik
+  from_type: gate
+  to: Dalbysvatn
+  to_type: reservoir
+- connection_type: connection_standard
+  from: b_Lensvik_Dalbysvatn
+  from_type: gate
+  to: Dalbysvatn
+  to_type: reservoir
+- connection_type: connection_standard
+  from: b_Livincovs_Dalbysvatn
+  from_type: gate
+  to: Dalbysvatn
+  to_type: reservoir
+- connection_type: connection_standard
+  from: f_Finnvasstol_Dalbysvatn
+  from_type: gate
+  to: Dalbysvatn
+  to_type: reservoir
+- connection_type: connection_standard
+  from: f_Lont_Dalbysvatn
+  from_type: gate
+  to: Dalbysvatn
+  to_type: reservoir
+- connection_type: connection_standard
+  from: f_Golebiowski_Dalbysvatn
+  from_type: gate
+  to: Dalbysvatn
+  to_type: reservoir
+- connection_type: connection_standard
+  from: f_Fjerdingby_Dalbysvatn
+  from_type: gate
+  to: Dalbysvatn
+  to_type: reservoir
+- connection_type: connection_standard
+  from: f_Frosta
+  from_type: gate
+  to: Nielsen
+  to_type: reservoir
+- connection_type: connection_standard
+  from: w_Varhaug
+  from_type: gate
+  to: Nielsen
+  to_type: reservoir
+- connection_type: connection_standard
+  from: w_Frosta
+  from_type: gate
+  to: Nielsen
+  to_type: reservoir
+- connection_type: connection_standard
+  from: f_Varhaug
+  from_type: gate
+  to: Nielsen
+  to_type: reservoir
+- connection_type: connection_standard
+  from: Rull1
+  from_type: plant
+  to: Rullsvatn
+  to_type: reservoir
+- connection_type: connection_standard
+  from: Rull2
+  from_type: plant
+  to: Rullsvatn
+  to_type: reservoir
+- connection_type: connection_standard
+  from: f_Dalbysvatn_Knute_Rullsvatn
+  from_type: gate
+  to: Rullsvatn
+  to_type: reservoir
+- connection_type: connection_standard
+  from: b_Dalbysvatn_Knute_Rullsvatn
+  from_type: gate
+  to: Rullsvatn
+  to_type: reservoir
+- connection_type: connection_standard
+  from: f_Sirefelt_Knute_Rullsvatn
+  from_type: gate
+  to: Rullsvatn
+  to_type: reservoir
+- connection_type: connection_standard
+  from: b_Sirefelt_Knute_Rullsvatn
+  from_type: gate
+  to: Rullsvatn
+  to_type: reservoir
+- connection_type: connection_standard
+  from: f_Blakstadana_Knute_Rullsvatn
+  from_type: gate
+  to: Rullsvatn
+  to_type: reservoir
+- connection_type: connection_standard
+  from: f_Narvhus_Rullsvatn
+  from_type: gate
+  to: Rullsvatn
+  to_type: reservoir
+- connection_type: connection_standard
+  from: w_Tangvall
+  from_type: gate
+  to: Ranemsletta_1183
+  to_type: reservoir
+- connection_type: connection_standard
+  from: f_Tangvall
+  from_type: gate
+  to: Ranemsletta_1183
+  to_type: reservoir
+- connection_type: connection_standard
+  from: f_Nupstj
+  from_type: gate
+  to: Lensvik
+  to_type: reservoir
+- connection_type: connection_standard
+  from: f_Lundvann_Lensvik
+  from_type: gate
+  to: Lensvik
+  to_type: reservoir
+- connection_type: connection_standard
+  from: Strand_krv
+  from_type: plant
+  to: Strand
+  to_type: reservoir
+- connection_type: connection_standard
+  from: f_Hagen_Strand
+  from_type: gate
+  to: Strand
+  to_type: reservoir
+- connection_type: connection_standard
+  from: b_Hagen_Strand
+  from_type: gate
+  to: Strand
+  to_type: reservoir
+- connection_type: connection_standard
+  from: w_Finnvasstol_Strand_tunnel
+  from_type: gate
+  to: Strand_tunnel
+  to_type: reservoir
+- connection_type: connection_standard
+  from: Scott
+  from_type: plant
+  to: Livincovs
+  to_type: reservoir
+- connection_type: connection_standard
+  from: Lien_krv
+  from_type: plant
+  to: Livincovs
+  to_type: reservoir
+- connection_type: connection_standard
+  from: w_Hovden_Livincovs
+  from_type: gate
+  to: Livincovs
+  to_type: reservoir
+- connection_type: connection_standard
+  from: f_Ranemsletta_1183_Livincovs
+  from_type: gate
+  to: Livincovs
+  to_type: reservoir
+- connection_type: connection_standard
+  from: rkom_up
+  from_type: reserve_group
+  to: Rull1_G1
+  to_type: generator
+- connection_type: connection_standard
+  from: rkom_up
+  from_type: reserve_group
+  to: Rull1_G2
+  to_type: generator
+- connection_type: connection_standard
+  from: rkom_up
+  from_type: reserve_group
+  to: Rull2_G1
+  to_type: generator
+- connection_type: connection_standard
+  from: rkom_up
+  from_type: reserve_group
+  to: Rull2_G2
+  to_type: generator
+- connection_type: connection_standard
+  from: rkom_up
+  from_type: reserve_group
+  to: Dalby_G1
+  to_type: generator
+- connection_type: connection_standard
+  from: rkom_up
+  from_type: reserve_group
+  to: Dalby_G2
+  to_type: generator
+- connection_type: connection_standard
+  from: rkom_up
+  from_type: reserve_group
+  to: Landet_G1
+  to_type: generator
+- connection_type: connection_standard
+  from: rkom_up
+  from_type: reserve_group
+  to: Holen_G1
+  to_type: generator
+- connection_type: connection_standard
+  from: rkom_up
+  from_type: reserve_group
+  to: Scott_G1
+  to_type: generator

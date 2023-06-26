@@ -12,8 +12,7 @@ from cognite.powerops.utils.serializer import load_yaml
 
 class ShopFileConfig(BaseModel):
     watercourse_name: str
-    path: Optional[str] = None
-    extra_name: Optional[str]
+    path: Path
     cogshop_file_type: Literal[
         "case",
         "model",
@@ -22,17 +21,13 @@ class ShopFileConfig(BaseModel):
         "extra_data",
         "water_value_cut_file_reservoir_mapping",
         "water_value_cut_file",
-        "modulserie",
+        "modul_series",
     ]
     md5_hash: Optional[str] = None
 
     @property
     def external_id(self) -> str:
-        return (
-            f"SHOP_{self.watercourse_name}_{self.extra_name}_{self.cogshop_file_type}"
-            if self.extra_name
-            else f"SHOP_{self.watercourse_name}_{self.cogshop_file_type}"
-        )
+        return f"SHOP_{self.watercourse_name}_{self.path.stem}"
 
     @property
     def metadata(self) -> dict[str, str]:
@@ -44,6 +39,7 @@ class ShopFileConfig(BaseModel):
         return {
             "shop:type": shop_type,
             "shop:watercourse": self.watercourse_name,
+            "shop:file_name": str(self.path.stem),
             "md5_hash": self.md5_hash,
         }
 
@@ -51,14 +47,15 @@ class ShopFileConfig(BaseModel):
         self.md5_hash = md5(file_content).hexdigest()
 
     def set_full_path(self, directory: str) -> None:
-        self.path = f"{directory}/{self.path}"
+        self.path = Path(directory) / self.path
 
     @classmethod
     def from_file_meta(cls, file_meta: FileMetadata) -> "ShopFileConfig":
+        cogshop_file_type = file_meta.metadata["shop:type"] if file_meta.metadata["shop:type"] != "case" else "model"
         return cls(
-            path=None,
+            path=Path(file_meta.metadata.get("shop:file_name") or cogshop_file_type),
             watercourse_name=file_meta.metadata["shop:watercourse"],
-            cogshop_file_type=file_meta.metadata["shop:type"] if file_meta.metadata["shop:type"] != "case" else "model",
+            cogshop_file_type=cogshop_file_type,
             md5_hash=file_meta.metadata.get("md5_hash"),
         )
 
