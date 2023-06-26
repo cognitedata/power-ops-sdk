@@ -76,13 +76,14 @@ class CogReader:
 
     @property
     def cog_shop_files_config_path(self) -> Path:
-        return Path(f"{self._tmp_dir}/cog_shop_files_config.yaml")
+        return Path(f"{self._tmp_dir.name}/cog_shop_files_config.yaml")
 
-    @property
-    def cog_shop_file_loader(self) -> CogShopFileLoader:
+    @log_and_reraise(CogReaderError)
+    def set_cog_shop_file_loader(self) -> None:
         self.client.files.download_to_path(self.cog_shop_files_config_path,
                                            external_id=f"SHOP_{self.cog_shop_config.watercourse}_cog_shop_files_config")
-        return CogShopFileLoader.from_yaml(self.cog_shop_files_config_path)
+        logger.info("Successfully downloaded cog shop files config from CDF. Loading to CogReader...")
+        self.cog_shop_file_loader = CogShopFileLoader.from_yaml(self.cog_shop_files_config_path)
 
     @property
     def fdm_case(self) -> Case:
@@ -256,11 +257,7 @@ class CogReader:
 
         self._replace_model_time_series()
 
-        if not self.cogshop_file_loader:
-            self.set_cogshop_file_loader()
+        self.set_cog_shop_file_loader()
 
         return self
 
-    @cog_shop_file_loader.setter
-    def cog_shop_file_loader(self, value):
-        self._cog_shop_file_loader = value

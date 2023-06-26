@@ -12,7 +12,7 @@ import numpy as np
 import pandas as pd
 import yaml
 from cognite.client import ClientConfig, CogniteClient
-from cognite.client.credentials import Token
+from cognite.client.credentials import Token, OAuthClientCredentials
 from cognite.client.data_classes import Asset, Event, FileMetadata, LabelDefinition, Relationship, Sequence, TimeSeries
 from cognite.client.exceptions import CogniteDuplicatedError, CogniteException
 
@@ -45,22 +45,40 @@ def shift_datetime_str(dt: str, days: int) -> str:
 
 
 def initialize_cognite_client() -> CogniteClient:
-    logger.info("Setting up CogniteClient...")
     os.environ["COGNITE_DISABLE_PYPI_VERSION_CHECK"] = "true"
 
-    token = os.getenv("TOKEN")
     project = os.getenv("PROJECT")
     base_url = os.getenv("BASE_URL") or "https://api.cognitedata.com"
 
-    client = CogniteClient(
-        config=ClientConfig(
-            client_name="CogShop-local-debug",
-            base_url=base_url,
-            project=project,
-            credentials=Token(token),
-            timeout=90,
+    logger.info(f"Setting up CogniteClient towards project {project}...")
+
+    if token := os.getenv("TOKEN"):
+
+        client = CogniteClient(
+                config=ClientConfig(
+                client_name="CogShop-local-debug",
+                base_url=base_url,
+                project=project,
+                credentials=Token(token),
+                timeout=90,
+            )
         )
-    )
+    elif client_secret := os.getenv("CLIENT_SECRET"):
+        client_id = os.getenv("CLIENT_ID")
+        tenant_id = os.getenv('TENANT_ID')
+        scopes = [os.getenv('SCOPES')]
+        creds = OAuthClientCredentials(
+                token_url=f"https://login.microsoftonline.com/{tenant_id}/oauth2/v2.0/token",
+                client_id=client_id,
+                client_secret=client_secret,
+                scopes=scopes,
+        )
+        cnf = ClientConfig(client_name="local-testing",
+                           project=project,
+                           credentials=creds,
+                           base_url=base_url
+                           )
+        client = CogniteClient(cnf)
 
     logger.info(f"Client successfully set up towards '{project}'.")
     return client

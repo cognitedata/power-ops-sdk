@@ -46,12 +46,14 @@ def main(
     )
 
     return {
-        "cog_shop_case_file": "", #cog_reader.file_metadata_to_dict(cog_shop_case_file_md),
+        "cog_shop_case_file": cog_reader.file_metadata_to_dict(cog_shop_case_file_md),
         "cog_shop_files_sequence":  cog_shop_files_sequence
     }
 
 
 if __name__ == "__main__":
     client = initialize_cognite_client()
-
-
+    main(client=client,
+         fdm_space_external_id="CogShop2",
+         fdm_case_external_id="Case_06ae86cf-3022-4b88-ae64-f45f040d512c",
+         output_data_set_id=3065916339847684)
