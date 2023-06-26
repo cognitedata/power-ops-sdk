@@ -29,10 +29,15 @@ class CogShopFile(BaseModel):
     external_id: str = ""
     file_type: Literal["ascii", "yaml"]
 
+    class Config:
+        validate_all = True
+
     @validator("external_id")
     def external_id_or_prefix_set(cls, value, values: dict):
-        if not values.get("external_id_prefix") and value == "":
-            raise ValueError("Either external_id or external_id_prefix must be set")
+        if not values.get("external_id_prefix"):
+            print(value, values.get(""))
+            if value == "":
+                raise ValueError("Either external_id or external_id_prefix must be set")
 
 
 class CogShopFileLoader(BaseModel):
@@ -62,7 +67,7 @@ class CogReader:
         self.fdm_model_version = fdm_model_version
 
         self._tmp_dir = tempfile.TemporaryDirectory()
-        self.cogshop_file_loader: None | CogShopFileLoader = None
+        self.cog_shop_file_loader: None | CogShopFileLoader = None
         logger.info(f"{self.__class__.__name__} initialized.")
 
     @property
@@ -70,16 +75,14 @@ class CogReader:
         return f"SHOP_{self.cog_shop_config.watercourse}_"
 
     @property
-    def cogshop_files_config_path(self) -> Path:
-        return Path(f"{self._tmp_dir}/cogshop_files_config.yaml")
+    def cog_shop_files_config_path(self) -> Path:
+        return Path(f"{self._tmp_dir}/cog_shop_files_config.yaml")
 
-    def retrieve_file_loader_config(self) -> None:
-        self.client.files.download_to_path(self.cogshop_files_config_path,
-                                               external_id=f"SHOP_{self.cog_shop_config.watercourse}_cogshop_files_config")
-
-    def set_cogshop_file_loader(self) -> None:
-        self.retrieve_file_loader_config()
-        self.cogshop_file_loader = CogShopFileLoader.from_yaml(self.cogshop_files_config_path)
+    @property
+    def cog_shop_file_loader(self) -> CogShopFileLoader:
+        self.client.files.download_to_path(self.cog_shop_files_config_path,
+                                           external_id=f"SHOP_{self.cog_shop_config.watercourse}_cog_shop_files_config")
+        return CogShopFileLoader.from_yaml(self.cog_shop_files_config_path)
 
     @property
     def fdm_case(self) -> Case:
@@ -143,10 +146,10 @@ class CogReader:
         else:
             return []
 
-    def get_file_loader_sequence(self) -> list[dict]:
+    def get_cog_shop_files(self) -> list[dict]:
         file_loader_sequence = []
 
-        for file in self.cogshop_file_loader.file_load_sequence:
+        for file in self.cog_shop_file_loader.file_load_sequence:
             if file.external_id and file.pick == "latest":
                 file_loader_sequence.append({"external_id": file.external_id,
                                                "file_type": file.file_type})
@@ -257,3 +260,7 @@ class CogReader:
             self.set_cogshop_file_loader()
 
         return self
+
+    @cog_shop_file_loader.setter
+    def cog_shop_file_loader(self, value):
+        self._cog_shop_file_loader = value
