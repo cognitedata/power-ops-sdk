@@ -43,7 +43,6 @@ def plan(
     # 2.b - preview diff
     _preview_resources_diff(
         bootstrap_resources,
-        config.cdf.dict(),
         config.constants.data_set_external_id,
     )
 
@@ -70,7 +69,6 @@ def apply(
     # Step 3 - write bootstrap resources from diffs to CDF
     _create_cdf_resources(
         bootstrap_resources,
-        config.cdf.dict(),
         config.constants.data_set_external_id,
         config.constants.overwrite_data,
         config.constants.skip_dm,

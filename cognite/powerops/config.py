@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import ast
 import json
-import os
 import typing
 from collections import defaultdict
 from pathlib import Path
@@ -573,31 +572,6 @@ def map_price_scenarios_by_name(
 MARKET_BY_PRICE_AREA = {"NO2": "Dayahead", "NO1": "1", "NO3": "1", "NO5": "1"}
 
 
-class CDFConfig(BaseModel):
-    TENANT_ID: str
-    CLIENT_ID: str
-    CDF_CLUSTER: str
-    COGNITE_PROJECT: str
-    SPACE_ID: str
-    DATA_MODEL: str
-    SCHEMA_VERSION: str
-
-    @classmethod
-    def from_env(cls) -> "CDFConfig":
-        return cls(
-            **{
-                "TENANT_ID": os.environ.get("TENANT_ID"),
-                "CLIENT_ID": os.environ.get("CLIENT_ID"),
-                "CLIENT_SECRET_ENV": os.environ.get("CLIENT_SECRET_ENV"),
-                "CDF_CLUSTER": os.environ.get("CDF_CLUSTER"),
-                "COGNITE_PROJECT": os.environ.get("COGNITE_PROJECT"),
-                "SPACE_ID": os.environ.get("SPACE_ID"),
-                "DATA_MODEL": os.environ.get("DATA_MODEL"),
-                "SCHEMA_VERSION": os.environ.get("SCHEMA_VERSION"),
-            }
-        )
-
-
 class ReserveScenarios(BaseModel):
     volumes: list[int]
     auction: Auction
@@ -801,7 +775,6 @@ class GeneratorTimeSeriesMapping(BaseModel):
 
 class BootstrapConfig(BaseModel):
     constants: CommonConstants
-    cdf: CDFConfig
     benchmarks: list[BenchmarkingConfig]
     price_scenario_by_id: dict[str, PriceScenario]
     bidprocess: list[BidProcessConfig]
