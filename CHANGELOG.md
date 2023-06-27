@@ -13,6 +13,17 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.21.0] - 27-06-23
+### Removed
+
+* Dependency on cognite-gql-pygen
+* Temporary removed DM code which needs to be rewritten for new DM client.
+
+### Added
+
+* Settings validation.
+
+
 ## [0.20.0] - 25-06-23
 ### Added
 
