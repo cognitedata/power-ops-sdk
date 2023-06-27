@@ -1,14 +1,14 @@
 import re
 
-import toml
+import tomli
 
 from cognite.powerops import version
 from tests.constants import REPO_ROOT
 
 
 def test_matching_versions():
-    with (REPO_ROOT / "pyproject.toml").open() as fh:
-        pyproject_toml = toml.load(fh)
+    with (REPO_ROOT / "pyproject.toml").open("rb") as fh:
+        pyproject_toml = tomli.load(fh)
     version_in_pyproject_toml = pyproject_toml["tool"]["poetry"]["version"]
 
     changelog = (REPO_ROOT / "CHANGELOG.md").read_text()
