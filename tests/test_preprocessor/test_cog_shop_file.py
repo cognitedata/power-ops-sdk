@@ -5,7 +5,7 @@ import pytest_mock  # noqa: provides `mocker` fixture
 from pytest_regressions import plugin  # noqa: provides `data_regression` fixture
 
 from cognite.powerops.preprocessor.cogreader import CogShopFile
-from cognite.powerops.preprocessor.utils import arrow_to_ms, now
+from cognite.powerops.preprocessor.utils import arrow_to_ms
 
 
 class TestCogShopFile:
@@ -25,7 +25,7 @@ class TestCogShopFile:
         )
         expected = {"external_id": "water_value_cut_file_2", "file_type": "ascii"}
 
-        starttime_ms = arrow_to_ms(arrow.get("2023-02-01T06:20:42.000069"))
+        starttime_ms = arrow_to_ms(arrow.get("2023-02-01T06:00:00"))
         actual = config.get_file_dict(cog_shop_file_config_cognite_client, starttime_ms)
 
         assert actual == expected
@@ -42,8 +42,8 @@ class TestCogShopFile:
         )
         expected = {"external_id": "water_value_cut_file_3", "file_type": "ascii"}
 
-        starttime_ms = now()
-        actual = config.get_file_dict(cog_shop_file_config_cognite_client, starttime_ms)
+        starttime_latest = arrow_to_ms(arrow.get("2023-06-01T06:00:00"))
+        actual = config.get_file_dict(cog_shop_file_config_cognite_client, starttime_latest)
 
         assert actual == expected
 
@@ -51,14 +51,13 @@ class TestCogShopFile:
         config = CogShopFile(
             **{
                 "label": "module_series",
-                "pick": "latest",
                 "external_id": "SHOP_Fornebu_module_series",
                 "file_type": "ascii",
             }
         )
         expected = {"external_id": "SHOP_Fornebu_module_series", "file_type": "ascii"}
 
-        starttime_ms = now()
-        actual = config.get_file_dict(cog_shop_file_config_cognite_client, starttime_ms)
+        starttime_latest = arrow_to_ms(arrow.get("2023-06-01T06:00:00"))
+        actual = config.get_file_dict(cog_shop_file_config_cognite_client, starttime_latest)
 
         assert actual == expected

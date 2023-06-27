@@ -5,7 +5,7 @@ from functools import cached_property
 from typing import List, Literal, Optional, Union
 
 from cognite.client import CogniteClient
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, root_validator
 
 from cognite.powerops.preprocessor import knockoff_logging as logging
 from cognite.powerops.preprocessor.data_classes import CogShopCase, CogShopConfig
@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 
 class CogShopFile(BaseModel):
     label: Optional[str]
-    pick: Literal["closest", "latest"]
+    pick: Optional[Literal["closest", "exact", "latest"]]
     sort_by: Optional[str]
     external_id_prefix: Optional[str]
     external_id: Optional[str]
@@ -30,14 +30,14 @@ class CogShopFile(BaseModel):
     class Config:
         validate_all = True
 
-    @validator("external_id")
-    def external_id_or_prefix_set(cls, value, values: dict):
-        if not values.get("external_id_prefix") and value is None:
+    @root_validator
+    def external_id_or_prefix_set(cls, values):
+        if not values.get("external_id") and not values.get("external_id_prefix"):
             raise ValueError("Either external_id or external_id_prefix must be set")
-        return value
+        return values
 
     def get_file_dict(self, client: CogniteClient, starttime_ms: float) -> dict:
-        if self.external_id and self.pick == "latest":
+        if self.external_id:
             return {"external_id": self.external_id, "file_type": self.file_type}
         elif self.external_id_prefix and self.pick == "closest":
             files = client.files.list(external_id_prefix=self.external_id_prefix, limit=None)
