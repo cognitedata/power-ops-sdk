@@ -153,7 +153,7 @@ class CogReader:
             return [TimeSeriesMapping.from_mapping_model(m) for m in mo.items]
         return []
 
-    def get_cog_shop_file_list(self) -> list[dict]:
+    def get_cog_shop_file_list(self) -> list[dict[str, str]]:
         return self.cog_shop_files_config.cog_shop_file_list(self.client, self.cog_shop_config.starttime_ms)
 
     @staticmethod
