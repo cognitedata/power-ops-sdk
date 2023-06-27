@@ -6,7 +6,6 @@ from cognite.client import CogniteClient
 
 from cognite.powerops.preprocessor import knockoff_logging as logging
 from cognite.powerops.preprocessor.cogreader import CogReader
-from cognite.powerops.preprocessor.utils import initialize_cognite_client # remove
 
 logger = logging.getLogger(__name__)
 
@@ -47,13 +46,6 @@ def main(
 
     return {
         "cog_shop_case_file": cog_reader.file_metadata_to_dict(cog_shop_case_file_md),
-        "cog_shop_file_list":  cog_shop_file_list
+        "cog_shop_file_list": cog_shop_file_list,
     }
 
-
-if __name__ == "__main__":
-    client = initialize_cognite_client()
-    main(client=client,
-         fdm_space_external_id="CogShop2",
-         fdm_case_external_id="Case_06ae86cf-3022-4b88-ae64-f45f040d512c",
-         output_data_set_id=3065916339847684)

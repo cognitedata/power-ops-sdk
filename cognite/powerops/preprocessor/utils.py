@@ -3,8 +3,6 @@ import time
 from collections import defaultdict
 from datetime import datetime
 from functools import wraps
-from io import StringIO
-from pathlib import Path
 from typing import Callable, Dict, Iterable, List, Optional, Type, Union
 
 import arrow
@@ -12,7 +10,7 @@ import numpy as np
 import pandas as pd
 import yaml
 from cognite.client import ClientConfig, CogniteClient
-from cognite.client.credentials import Token, OAuthClientCredentials
+from cognite.client.credentials import OAuthClientCredentials, Token
 from cognite.client.data_classes import Asset, Event, FileMetadata, LabelDefinition, Relationship, Sequence, TimeSeries
 from cognite.client.exceptions import CogniteDuplicatedError, CogniteException
 
@@ -53,9 +51,8 @@ def initialize_cognite_client() -> CogniteClient:
     logger.info(f"Setting up CogniteClient towards project {project}...")
 
     if token := os.getenv("TOKEN"):
-
         client = CogniteClient(
-                config=ClientConfig(
+            config=ClientConfig(
                 client_name="CogShop-local-debug",
                 base_url=base_url,
                 project=project,
@@ -65,19 +62,15 @@ def initialize_cognite_client() -> CogniteClient:
         )
     elif client_secret := os.getenv("CLIENT_SECRET"):
         client_id = os.getenv("CLIENT_ID")
-        tenant_id = os.getenv('TENANT_ID')
-        scopes = [os.getenv('SCOPES')]
+        tenant_id = os.getenv("TENANT_ID")
+        scopes = [os.getenv("SCOPES")]
         creds = OAuthClientCredentials(
-                token_url=f"https://login.microsoftonline.com/{tenant_id}/oauth2/v2.0/token",
-                client_id=client_id,
-                client_secret=client_secret,
-                scopes=scopes,
+            token_url=f"https://login.microsoftonline.com/{tenant_id}/oauth2/v2.0/token",
+            client_id=client_id,
+            client_secret=client_secret,
+            scopes=scopes,
         )
-        cnf = ClientConfig(client_name="local-testing",
-                           project=project,
-                           credentials=creds,
-                           base_url=base_url
-                           )
+        cnf = ClientConfig(client_name="local-testing", project=project, credentials=creds, base_url=base_url)
         client = CogniteClient(cnf)
 
     logger.info(f"Client successfully set up towards '{project}'.")
@@ -93,10 +86,6 @@ def retrieve_yaml_file(client: CogniteClient, file_external_id: str) -> dict:
 def save_dict_as_yaml(file_path: str, d: dict) -> None:
     with open(file_path, "w") as file:
         yaml.dump(d, file, allow_unicode=True)
-
-def load_yaml(yaml_path: Path, encoding="utf-8") -> dict:
-    data = Path(yaml_path).read_text(encoding=encoding)
-    return yaml.safe_load(StringIO(data))
 
 
 def rename_dict_keys(d: Dict, key_mapping: Dict) -> None:
