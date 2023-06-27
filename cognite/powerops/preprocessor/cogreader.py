@@ -154,16 +154,6 @@ class CogReader:
             return [TimeSeriesMapping.from_mapping_model(m) for m in mo.items]
         return []
 
-    def get_extra_files_metadata(self) -> List[dict[str, Union[str, int]]]:
-        files = self.client.files.list(
-            external_id_prefix=self.file_external_id_prefix,
-            metadata=ShopMetadata(type="extra_data"),
-        )
-        if files:
-            return [self.file_metadata_to_dict(fmd) for fmd in files]
-        else:
-            return []
-
     def get_cog_shop_file_list(self) -> list[dict]:
         return self.cog_shop_files_config.cog_shop_file_list(self.client, self.cog_shop_config.starttime_ms)
 
@@ -177,33 +167,6 @@ class CogReader:
         if (dsid := file_metadata.data_set_id) is not None:
             md["data_set_id"] = dsid
         return md
-
-    def get_mapping_files_metadata(self):
-        files = self.client.files.list(
-            external_id_prefix=self.file_external_id_prefix,
-            metadata=ShopMetadata(type="water_value_cut_file_reservoir_mapping"),
-        )
-        if files:
-            return [self.file_metadata_to_dict(fmd) for fmd in files]
-        else:
-            return []
-
-    def get_cut_files_metadata(self) -> list[dict]:
-        files = self.client.files.list(
-            external_id_prefix=self.file_external_id_prefix,
-            metadata={
-                "shop:type": "water_value_cut_file",
-                "shop:watercourse": self.cog_shop_config.watercourse,
-            },
-            limit=None,
-        )
-        if not files:
-            return []
-        return [
-            self.file_metadata_to_dict(f)
-            for group in group_files_by_metadata(files).values()
-            if (f := find_closest_file(group, self.cog_shop_config.starttime_ms) is not None)
-        ]
 
     @cached_property
     def license_file_path(self) -> Optional[str]:
