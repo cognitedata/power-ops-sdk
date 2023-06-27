@@ -11,7 +11,7 @@ from cognite.powerops.preprocessor import knockoff_logging as logging
 from cognite.powerops.preprocessor.data_classes import CogShopCase, CogShopConfig
 from cognite.powerops.preprocessor.data_classes.time_series_mapping import TimeSeriesMapping
 from cognite.powerops.preprocessor.exceptions import CogReaderError
-from cognite.powerops.preprocessor.utils import ShopMetadata, download_file, log_and_reraise, retrieve_yaml_file
+from cognite.powerops.preprocessor.utils import ShopMetadata, download_file, log_and_reraise, now, retrieve_yaml_file
 
 from .get_fdm_data import Case, get_case
 from .utils import find_closest_file, group_files_by_metadata
@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 
 class CogShopFile(BaseModel):
     label: Optional[str]
-    pick: Literal["closest", "latest", "all"]
+    pick: Literal["closest", "latest"]
     sort_by: Optional[str]
     external_id_prefix: Optional[str]
     external_id: Optional[str]
@@ -36,14 +36,31 @@ class CogShopFile(BaseModel):
             raise ValueError("Either external_id or external_id_prefix must be set")
         return value
 
+    def get_file_dict(self, client: CogniteClient, starttime_ms: float) -> dict:
+        if self.external_id and self.pick == "latest":
+            return {"external_id": self.external_id, "file_type": self.file_type}
+        elif self.external_id_prefix and self.pick == "closest":
+            files = client.files.list(external_id_prefix=self.external_id_prefix, limit=None)
+            if closest_file := find_closest_file(files, starttime_ms):
+                return {"external_id": closest_file.external_id, "file_type": self.file_type}
+        elif self.external_id_prefix and self.pick == "latest":
+            files = client.files.list(external_id_prefix=self.external_id_prefix, limit=None)
+            if closest_file := find_closest_file(files, now()):
+                return {"external_id": closest_file.external_id, "file_type": self.file_type}
+        logger.warning("File is not accompanied by selection method. Returning empty dict")
+        return {}
 
-class CogShopFileLoader(BaseModel):
+
+class CogShopFilesConfig(BaseModel):
     file_load_sequence: list[CogShopFile]
 
     @classmethod
-    def from_cdf(cls, client: CogniteClient, file_ex_id: str) -> "CogShopFileLoader":
+    def from_cdf(cls, client: CogniteClient, file_ex_id: str) -> "CogShopFilesConfig":
         config = retrieve_yaml_file(client, file_ex_id)
         return cls(**config)
+
+    def cog_shop_file_list(self, client: CogniteClient, starttime_ms: float) -> list[dict]:
+        return [file.get_file_dict(client, starttime_ms) for file in self.file_load_sequence]
 
 
 class CogReader:
@@ -63,7 +80,7 @@ class CogReader:
         self.fdm_model_version = fdm_model_version
 
         self._tmp_dir = tempfile.TemporaryDirectory()
-        self.cog_shop_file_loader: CogShopFileLoader
+        self.cog_shop_files_config: CogShopFilesConfig
         logger.info(f"{self.__class__.__name__} initialized.")
 
     @property
@@ -71,7 +88,7 @@ class CogReader:
         return f"SHOP_{self.cog_shop_config.watercourse}_"
 
     @log_and_reraise(CogReaderError)
-    def _set_cog_shop_file_loader(self) -> None:
+    def _set_cog_shop_files_config(self) -> None:
         if not (
             file := self.client.files.retrieve(
                 external_id=f"SHOP_{self.cog_shop_config.watercourse}_cog_shop_files_config"
@@ -82,7 +99,7 @@ class CogReader:
                 f"Ensure that file exists"
             )
         logger.debug("Attempting to download cog shop files config from CDF.")
-        self.cog_shop_file_loader = CogShopFileLoader.from_cdf(self.client, file.external_id)
+        self.cog_shop_files_config = CogShopFilesConfig.from_cdf(self.client, file.external_id)
         logger.info("Cog Shop file list config successfully initialised")
 
     @property
@@ -148,20 +165,7 @@ class CogReader:
             return []
 
     def get_cog_shop_file_list(self) -> list[dict]:
-        cog_shop_files = []
-
-        for file in self.cog_shop_file_loader.file_load_sequence:
-            if file.external_id and file.pick == "latest":
-                cog_shop_files.append({"external_id": file.external_id, "file_type": file.file_type})
-            elif file.external_id_prefix and file.pick == "closest":
-                files = self.client.files.list(external_id_prefix=file.external_id_prefix, limit=None)
-                if closest_file := find_closest_file(files, self.cog_shop_config.starttime_ms):
-                    cog_shop_files.append({"external_id": closest_file.external_id, "file_type": file.file_type})
-                else:
-                    raise CogReaderError(
-                        f"Couldn't find a valid cut file for start time " f"{self.cog_shop_config.starttime_ms}"
-                    )
-        return cog_shop_files
+        return self.cog_shop_files_config.cog_shop_file_list(self.client, self.cog_shop_config.starttime_ms)
 
     @staticmethod
     def file_metadata_to_dict(file_metadata) -> dict[str, Union[str, int]]:
@@ -256,6 +260,6 @@ class CogReader:
 
         self._replace_model_time_series()
 
-        self._set_cog_shop_file_loader()
+        self._set_cog_shop_files_config()
 
         return self
