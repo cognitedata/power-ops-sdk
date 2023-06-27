@@ -14,7 +14,7 @@ from cognite.powerops.preprocessor.exceptions import CogReaderError
 from cognite.powerops.preprocessor.utils import ShopMetadata, download_file, log_and_reraise, now, retrieve_yaml_file
 
 from .get_fdm_data import Case, get_case
-from .utils import find_closest_file, group_files_by_metadata
+from .utils import find_closest_file
 
 logger = logging.getLogger(__name__)
 
