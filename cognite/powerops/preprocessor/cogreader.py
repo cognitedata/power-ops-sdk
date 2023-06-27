@@ -87,7 +87,6 @@ class CogReader:
     def file_external_id_prefix(self) -> str:
         return f"SHOP_{self.cog_shop_config.watercourse}_"
 
-    @log_and_reraise(CogReaderError)
     def _set_cog_shop_files_config(self) -> None:
         if not (
             file := self.client.files.retrieve(
