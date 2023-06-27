@@ -48,4 +48,3 @@ def main(
         "cog_shop_case_file": cog_reader.file_metadata_to_dict(cog_shop_case_file_md),
         "cog_shop_file_list": cog_shop_file_list,
     }
-
