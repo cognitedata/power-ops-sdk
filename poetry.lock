@@ -3960,4 +3960,4 @@ docs = ["mkdocs", "mkdocs-git-authors-plugin", "mkdocs-git-revision-date-localiz
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "0dddabd8059c4daf70c78ef9f37f066bdb3de70ba9f63b29e70bca2a2b3fdb7e"
+content-hash = "93c96fef5e62f81f184be97c35383354e4425823c9d8c34dff2616b0a141a692"
