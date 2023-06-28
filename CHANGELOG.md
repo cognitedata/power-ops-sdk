@@ -13,6 +13,15 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.21.0] - 28-06-23
+### Changed
+
+* Changed how preprocessor fetches shop files from CDF
+* Preprocessor will fetch a file from CDF that says explicitly what files to fetch and in what order they should be
+loaded to shop prior to a run
+* This will support the option for having several cutfiles and module series files per watercourse
+* Breaking change for preprocessor as it will fail if the CogShop file config does not exist in CDF
+
 ## [0.20.0] - 25-06-23
 ### Added
 
