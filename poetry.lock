@@ -1830,7 +1830,7 @@ files = [
 name = "mergedeep"
 version = "1.3.4"
 description = "A deep merge function for 🐍."
-optional = false
+optional = true
 python-versions = ">=3.6"
 files = [
     {file = "mergedeep-1.3.4-py3-none-any.whl", hash = "sha256:70775750742b25c0d8f36c55aed03d24c3384d17c951b3175d898bd778ef0307"},
@@ -3960,4 +3960,4 @@ docs = ["mkdocs", "mkdocs-git-authors-plugin", "mkdocs-git-revision-date-localiz
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "93c96fef5e62f81f184be97c35383354e4425823c9d8c34dff2616b0a141a692"
+content-hash = "1c2e35bb54abc9093ea1590f7e1bc05a45cda4a9377b06fdbff50583bb91bdf9"

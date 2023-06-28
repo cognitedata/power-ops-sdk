@@ -30,6 +30,35 @@ def unique_str() -> str:
     return str(uuid4())
 
 
+def merge(*sources: dict) -> dict:
+    """
+    Merge multiple dicts:
+     * Nested dicts are merged (hard type check).
+     * When keys conflict, last source wins.
+     * Order should be preserved. Hopefully.
+
+    >>> merge({"a": 1, "c": 3}, {"b": 22, "c": 33})
+    {'a': 1, 'c': 33, 'b': 22}
+
+    >>> merge({"a": {"aa": 1}}, {"a": {"bb": 22}, "z": 33})
+    {'a': {'aa': 1, 'bb': 22}, 'z': 33}
+    """
+
+    def _merge_two(val1, val2):
+        if isinstance(val1, dict) and isinstance(val2, dict):
+            return merge(val1, val2)
+        else:
+            return val2
+
+    result = {}
+    for source in sources:
+        for key, val in source.items():
+            if key in result:
+                val = _merge_two(result[key], val)
+            result[key] = val
+    return result
+
+
 def dump_resource(resource) -> dict:
     try:
         dump_func = resource.dump

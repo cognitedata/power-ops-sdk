@@ -8,7 +8,7 @@ from pydantic import BaseModel, validator
 from cognite.powerops.settings import settings
 
 
-class CogniteConfig(BaseModel):
+class _CogniteConfig(BaseModel):
     project: str
     cdf_cluster: str
     tenant_id: str
@@ -35,25 +35,22 @@ class CogniteConfig(BaseModel):
         return getpass.getuser() if value is None else value
 
 
-def get_cognite_config(
+def get_client_config(
     project: Optional[str] = None,
     cdf_cluster: Optional[str] = None,
     tenant_id: Optional[str] = None,
     client_id: Optional[str] = None,
     client_secret: Optional[str] = None,
-) -> CogniteConfig:
-    return CogniteConfig(
+    client_name: str = "",
+) -> ClientConfig:
+    cognite_config = _CogniteConfig(
         project=project or settings.cognite.project,
         cdf_cluster=cdf_cluster or settings.cognite.cdf_cluster,
         tenant_id=tenant_id or settings.cognite.tenant_id,
         client_id=client_id or settings.cognite.client_id,
         client_secret=client_secret or settings.cognite.client_secret,
+        client_name=client_name,
     )
-
-
-def get_client_config(cognite_config: Optional[CogniteConfig] = None) -> ClientConfig:
-    if cognite_config is None:
-        cognite_config = get_cognite_config()
 
     credentials: Union[OAuthClientCredentials, OAuthDeviceCode]
     if cognite_config.client_secret:
@@ -79,5 +76,12 @@ def get_client_config(cognite_config: Optional[CogniteConfig] = None) -> ClientC
     )
 
 
-def get_cognite_client(client_config: Optional[ClientConfig] = None) -> CogniteClient:
-    return CogniteClient(client_config or get_client_config())
+def get_cognite_client(
+    project: Optional[str] = None,
+    cdf_cluster: Optional[str] = None,
+    tenant_id: Optional[str] = None,
+    client_id: Optional[str] = None,
+    client_secret: Optional[str] = None,
+    client_name: str = "",
+) -> CogniteClient:
+    return CogniteClient(get_client_config(project, cdf_cluster, tenant_id, client_id, client_secret, client_name))
