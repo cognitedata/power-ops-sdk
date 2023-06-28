@@ -4,17 +4,25 @@ import tempfile
 from functools import cached_property
 from typing import List, Literal, Optional, TypedDict, Union
 
+import arrow
 from cognite.client import CogniteClient
+from cognite.client.data_classes import FileMetadata
 from pydantic import BaseModel, root_validator
 
 from cognite.powerops.preprocessor import knockoff_logging as logging
 from cognite.powerops.preprocessor.data_classes import CogShopCase, CogShopConfig
 from cognite.powerops.preprocessor.data_classes.time_series_mapping import TimeSeriesMapping
 from cognite.powerops.preprocessor.exceptions import CogReaderError
-from cognite.powerops.preprocessor.utils import ShopMetadata, download_file, log_and_reraise, now, retrieve_yaml_file
+from cognite.powerops.preprocessor.utils import (
+    ShopMetadata,
+    arrow_to_ms,
+    download_file,
+    log_and_reraise,
+    now,
+    retrieve_yaml_file,
+)
 
 from .get_fdm_data import Case, get_case
-from .utils import find_closest_file
 
 logger = logging.getLogger(__name__)
 
@@ -24,9 +32,15 @@ class CogShopFileDict(TypedDict):
     file_type: str
 
 
-class SortBy(TypedDict):
+class SortBy(BaseModel):
     metadata_key: Optional[str]
     file_attribute: Optional[Literal["last_updated_time", "created_time", "uploaded_time"]]
+
+    @root_validator
+    def only_one_sorting_method(cls, values):
+        if values.get("metadata_key") and values.get("file_attribute"):
+            raise ValueError("Both metadata_key and file_attribute to sort by cannot be set for file")
+        return values
 
 
 class CogShopFile(BaseModel):
@@ -46,16 +60,61 @@ class CogShopFile(BaseModel):
             raise ValueError("Either external_id or external_id_prefix must be set")
         return values
 
+    def _find_earliest_file_after(self, files: list[FileMetadata], starttime_ms: float) -> Optional[FileMetadata]:
+        # Select file that is closest in time before starttime
+        valid_files = []
+
+        best_diff = float("inf")
+        closest_file = None
+
+        for this_file in files:
+            try:
+                if self.sort_by:
+                    if key := self.sort_by.metadata_key:
+                        if updated_at := this_file.metadata.get(key):
+                            updated_at_ms = arrow_to_ms(arrow.get(updated_at))
+                        else:
+                            logger.warning(
+                                f"Provided metadata field: {key} not in file metadata for {this_file.external_id} - "
+                                f"skipping file"
+                            )
+                            continue
+                    elif attr := self.sort_by.file_attribute:
+                        updated_at_ms = getattr(this_file, attr)
+                else:
+                    logger.debug("No file selection method chosen. Will use last_updated_time attribute for file.")
+                    updated_at_ms = getattr(this_file, "last_updated_time")
+
+                # Assume datetime string after last "_"
+                this_diff = starttime_ms - updated_at_ms
+                if this_diff >= 0:
+                    valid_files.append(this_file)
+                    if this_diff < best_diff:
+                        logger.debug(f"Cutfile {this_file.external_id} is closer to starttime.")
+                        best_diff = this_diff
+                        closest_file = this_file
+
+            except (arrow.parser.ParserError, TypeError) as e:
+                logger.warning(f"Failed to parse date for '{this_file.external_id}': {e}")
+
+        if not closest_file and valid_files:
+            logger.warning(f"Could not find a cut file with a valid datetime - using {valid_files[0].external_id}")
+            return valid_files[0]
+        elif not valid_files:
+            return None
+
+        return closest_file
+
     def get_file_dict(self, client: CogniteClient, starttime_ms: float) -> CogShopFileDict:
         if self.external_id:
             return {"external_id": self.external_id, "file_type": self.file_type}
         elif self.external_id_prefix and self.pick == "closest":
             files = client.files.list(external_id_prefix=self.external_id_prefix, limit=None)
-            if closest_file := find_closest_file(files, starttime_ms, self.sort_by):
+            if closest_file := self._find_earliest_file_after(files, starttime_ms):
                 return {"external_id": closest_file.external_id, "file_type": self.file_type}
         elif self.external_id_prefix and self.pick == "latest":
             files = client.files.list(external_id_prefix=self.external_id_prefix, limit=None)
-            if closest_file := find_closest_file(files, now(), sort_by=self.sort_by):
+            if closest_file := self._find_earliest_file_after(files, now()):
                 return {"external_id": closest_file.external_id, "file_type": self.file_type}
         logger.warning("File is not accompanied by selection method. Returning empty file dictionary")
         return CogShopFileDict(external_id="", file_type="")
