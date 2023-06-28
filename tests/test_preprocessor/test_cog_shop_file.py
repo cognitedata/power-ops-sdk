@@ -110,7 +110,7 @@ class TestCogShopFile:
         )
         files = [self.make_file_md(i, dt) for i, dt in enumerate(file_timestamps)]
 
-        actual = config._find_earliest_file_after(files, self.target_ts_ms)
+        actual = config._find_file_latest_before(files, self.target_ts_ms)
         if expected_index is None:
             assert actual is None
         else:
@@ -137,5 +137,5 @@ class TestCogShopFile:
         )
 
         files = [self.make_file_md(1, update_datetime)]
-        actual = config._find_earliest_file_after(files, self.target_ts_ms)
+        actual = config._find_file_latest_before(files, self.target_ts_ms)
         assert actual is None

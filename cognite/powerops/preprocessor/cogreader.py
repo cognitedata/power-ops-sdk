@@ -60,7 +60,7 @@ class CogShopFile(BaseModel):
             raise ValueError("Either external_id or external_id_prefix must be set")
         return values
 
-    def _find_earliest_file_after(self, files: list[FileMetadata], starttime_ms: float) -> Optional[FileMetadata]:
+    def _find_file_latest_before(self, files: list[FileMetadata], starttime_ms: float) -> Optional[FileMetadata]:
         # Select file that is closest in time before starttime
         valid_files = []
 
@@ -110,11 +110,11 @@ class CogShopFile(BaseModel):
             return {"external_id": self.external_id, "file_type": self.file_type}
         elif self.external_id_prefix and self.pick == "closest":
             files = client.files.list(external_id_prefix=self.external_id_prefix, limit=None)
-            if closest_file := self._find_earliest_file_after(files, starttime_ms):
+            if closest_file := self._find_file_latest_before(files, starttime_ms):
                 return {"external_id": closest_file.external_id, "file_type": self.file_type}
         elif self.external_id_prefix and self.pick == "latest":
             files = client.files.list(external_id_prefix=self.external_id_prefix, limit=None)
-            if closest_file := self._find_earliest_file_after(files, now()):
+            if closest_file := self._find_file_latest_before(files, now()):
                 return {"external_id": closest_file.external_id, "file_type": self.file_type}
         logger.warning("File is not accompanied by selection method. Returning empty file dictionary")
         return CogShopFileDict(external_id="", file_type="")
