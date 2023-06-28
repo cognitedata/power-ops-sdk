@@ -66,19 +66,19 @@ def render_query(space: str, case_external_id: str) -> str:
     query MyQuery {{
     getCaseById(instance: {{space: "{space}", externalId: "{external_id}"}}) {{
         items {{
-        start_time
-        end_time
+        startTime
+        endTime
         scenario {{
             name
-            model_template {{
+            modelTemplate {{
             watercourse
             model {{
-                file_external_id
+                fileExternalId
             }}
             base_mappings (first: 500) {{
                 items {{
                     path
-                    timeseries_external_id
+                    timeseriesExternalId
                     retrieve
                     aggregation
                     transformations {{

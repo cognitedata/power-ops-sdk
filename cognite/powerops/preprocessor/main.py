@@ -15,12 +15,14 @@ def main(
     fdm_space_external_id: str,
     fdm_case_external_id: str,
     output_data_set_id: int,
+    fdm_model_external_id: Optional[str] = None,
     fdm_model_version: Optional[int] = None,
 ) -> dict:
     cog_reader = CogReader(
         client=client,
         fdm_space_external_id=fdm_space_external_id,
         fdm_case_external_id=fdm_case_external_id,
+        fdm_model_external_id=fdm_model_external_id,
         fdm_model_version=fdm_model_version,
     ).run()
 
