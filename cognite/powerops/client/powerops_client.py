@@ -17,6 +17,7 @@ from cognite.powerops.client.api.asset_apis import (
 )
 from cognite.powerops.client.api.shop_api import ShopAPI
 from cognite.powerops.client.config_client import ConfigurationClient
+from cognite.powerops.client.dm_client import CogShopClient
 from cognite.powerops.settings import settings
 from cognite.powerops.utils.cdf_auth import get_cognite_client
 from cognite.powerops.utils.cdf_utils import retrieve_dataset
@@ -44,6 +45,7 @@ class PowerOpsClient:
         self._cogshop_version = cogshop_version or settings.powerops.cogshop_version
 
         self.cdf = get_cognite_client(config)
+        self.dm = CogShopClient(self.cdf.config)
 
         self.configurations = ConfigurationClient()
 
