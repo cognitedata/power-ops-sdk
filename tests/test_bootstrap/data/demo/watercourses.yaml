@@ -5,4 +5,4 @@
   directory: fornebu
   model_raw: model_raw.yaml
   model_mapping: model_mapping.yaml
-  model_processed: model_processed.yaml
+  model_processed: model.yaml

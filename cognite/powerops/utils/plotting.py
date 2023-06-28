@@ -22,6 +22,7 @@ def ax_plot_time_series(
         linestyle="-",
         marker=".",
         label=label,
+        alpha=0.7,
     )
     ax.xaxis.set_major_formatter(
         mdates.DateFormatter("%d. %b %y %H:%M"),

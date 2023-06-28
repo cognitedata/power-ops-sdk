@@ -1,10 +1,10 @@
 from typing import Optional
 
 from cognite.client.data_classes import Asset, Label, Relationship
+from pydantic import BaseModel
 
 from cognite.powerops.config import GeneratorTimeSeriesMapping
 from cognite.powerops.data_classes.cdf_resource_collection import BootstrapResourceCollection
-from cognite.powerops.data_classes.shared import AssetModel
 from cognite.powerops.utils.labels import AssetLabels
 from cognite.powerops.utils.labels import RelationshipLabels as rl
 from cognite.powerops.utils.relationship_types import asset_to_time_series
@@ -13,13 +13,17 @@ ExternalId = str
 GeneratorName = str
 
 
-class Generator(AssetModel):
-    external_id: ExternalId
+class Generator(BaseModel):
     name: GeneratorName
     penstock: str
     startcost: float
+    p_min: float
 
     start_stop_cost_time_series: Optional[ExternalId] = None  # external ID of time series with values in m
+
+    @property
+    def external_id(self) -> ExternalId:
+        return f"generator_{self.name}"
 
     @classmethod
     def add_time_series_mapping(
@@ -48,7 +52,11 @@ class Generator(AssetModel):
             name=self.name,
             parent_external_id="generators",
             labels=[Label(AssetLabels.GENERATOR)],
-            metadata={"penstock": self.penstock, "startcost": self.startcost},
+            metadata={
+                "penstock": self.penstock,
+                "startcost": self.startcost,
+                "p_min": self.p_min,
+            },
         )
 
     def relationships(self) -> list[Relationship]:
