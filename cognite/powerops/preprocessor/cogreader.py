@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import tempfile
 from functools import cached_property
-from typing import List, Literal, Optional, Union
+from typing import List, Literal, Optional, TypedDict, Union
 
 from cognite.client import CogniteClient
 from pydantic import BaseModel, root_validator
@@ -19,10 +19,15 @@ from .utils import find_closest_file
 logger = logging.getLogger(__name__)
 
 
+class CogShopFileDict(TypedDict):
+    external_id: str
+    file_type: str
+
+
 class CogShopFile(BaseModel):
     label: Optional[str]
     pick: Optional[Literal["closest", "exact", "latest"]]
-    sort_by: Optional[str]
+    sort_by: Optional[Literal["metadata.update_time"]]
     external_id_prefix: Optional[str]
     external_id: Optional[str]
     file_type: Literal["ascii", "yaml"]
@@ -36,7 +41,7 @@ class CogShopFile(BaseModel):
             raise ValueError("Either external_id or external_id_prefix must be set")
         return values
 
-    def get_file_dict(self, client: CogniteClient, starttime_ms: float) -> dict:
+    def get_file_dict(self, client: CogniteClient, starttime_ms: float) -> CogShopFileDict:
         if self.external_id:
             return {"external_id": self.external_id, "file_type": self.file_type}
         elif self.external_id_prefix and self.pick == "closest":
@@ -47,8 +52,8 @@ class CogShopFile(BaseModel):
             files = client.files.list(external_id_prefix=self.external_id_prefix, limit=None)
             if closest_file := find_closest_file(files, now()):
                 return {"external_id": closest_file.external_id, "file_type": self.file_type}
-        logger.warning("File is not accompanied by selection method. Returning empty dict")
-        return {}
+        logger.warning("File is not accompanied by selection method. Returning empty file dictionary")
+        return CogShopFileDict(external_id="", file_type="")
 
 
 class CogShopFilesConfig(BaseModel):
@@ -59,7 +64,7 @@ class CogShopFilesConfig(BaseModel):
         config = retrieve_yaml_file(client, file_ex_id)
         return cls(**config)
 
-    def cog_shop_file_list(self, client: CogniteClient, starttime_ms: float) -> list[dict]:
+    def to_cog_shop_file_list(self, client: CogniteClient, starttime_ms: float) -> list[CogShopFileDict]:
         return [file.get_file_dict(client, starttime_ms) for file in self.file_load_sequence]
 
 
@@ -153,8 +158,8 @@ class CogReader:
             return [TimeSeriesMapping.from_mapping_model(m) for m in mo.items]
         return []
 
-    def get_cog_shop_file_list(self) -> list[dict[str, str]]:
-        return self.cog_shop_files_config.cog_shop_file_list(self.client, self.cog_shop_config.starttime_ms)
+    def get_cog_shop_file_list(self) -> list[CogShopFileDict]:
+        return self.cog_shop_files_config.to_cog_shop_file_list(self.client, self.cog_shop_config.starttime_ms)
 
     @staticmethod
     def file_metadata_to_dict(file_metadata) -> dict[str, Union[str, int]]:
