@@ -26,12 +26,14 @@ class CogReader:
         client: CogniteClient,
         fdm_space_external_id: str,
         fdm_case_external_id: str,
+        fdm_model_external_id: Optional[str] = None,
         fdm_model_version: Optional[int] = None,
     ) -> None:
         self.client: CogniteClient = client
 
         self.fdm_space_external_id = fdm_space_external_id
         self.fdm_case_external_id = fdm_case_external_id
+        self.fdm_model_external_id = fdm_model_external_id
         self.fdm_model_version = fdm_model_version
 
         self._tmp_dir = tempfile.TemporaryDirectory()
@@ -53,6 +55,7 @@ class CogReader:
             self.client,
             self.fdm_space_external_id,
             self.fdm_case_external_id,
+            model_extenal_id=self.fdm_model_external_id,
             model_version=self.fdm_model_version,
         )
 
