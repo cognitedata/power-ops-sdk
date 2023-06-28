@@ -3,8 +3,9 @@ import os
 from typing import Any
 
 import tomli
-from mergedeep import merge
 from pydantic import BaseSettings
+
+from cognite.powerops.utils.common import merge
 
 logger = logging.getLogger(__name__)
 
