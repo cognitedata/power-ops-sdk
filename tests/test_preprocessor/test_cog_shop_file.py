@@ -18,7 +18,7 @@ class TestCogShopFile:
             **{
                 "label": "water_value_cut_file",
                 "pick": "closest",
-                "sort_by": "metadata.update_time",
+                "sort_by": {"metadata_key": "update_datetime", "file_attribute": None},
                 "external_id_prefix": "water_value_cut_file",
                 "file_type": "ascii",
             }
@@ -35,7 +35,7 @@ class TestCogShopFile:
             **{
                 "label": "water_value_cut_file",
                 "pick": "latest",
-                "sort_by": "metadata.update_time",
+                "sort_by": {"metadata_key": "update_datetime", "file_attribute": None},
                 "external_id_prefix": "water_value_cut_file",
                 "file_type": "ascii",
             }

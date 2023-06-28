@@ -360,28 +360,49 @@ def group_files_by_metadata(
     return cut_files_by_group or {"default": files}
 
 
-def find_closest_file(files: list[FileMetadata], starttime_ms: float) -> Optional[FileMetadata]:
+def find_closest_file(files: list[FileMetadata], starttime_ms: float, sort_by: dict | None) -> Optional[FileMetadata]:
     # Select file that is closest in time before starttime
     valid_files = []
 
     best_diff = float("inf")
     closest_file = None
+
     for this_file in files:
-        try:
-            # Assume datetime string after last "_"
-            updated_at = this_file.metadata.get("update_datetime", this_file.external_id.split("_")[-1])
-            updated_at_ms = arrow_to_ms(arrow.get(updated_at))  # parse ISO 8601 compliant string
-            this_diff = starttime_ms - updated_at_ms
+        updated_at_ms = getattr(this_file, "last_updated_time")
 
-            if this_diff >= 0:
-                valid_files.append(this_file)
-                if this_diff < best_diff:
-                    logger.debug(f"Cutfile {this_file.external_id} is closer to starttime.")
-                    best_diff = this_diff
-                    closest_file = this_file
+        if sort_by:
+            if key := sort_by.get("metadata_key"):
+                if updated_at := this_file.metadata.get(key):
+                    try:
+                        updated_at_ms = arrow_to_ms(arrow.get(updated_at))
+                    except (arrow.parser.ParserError, TypeError) as e:
+                        logger.warning(f"Failed to parse date for '{this_file.external_id}': {e}")
+                        continue
+                else:
+                    logger.warning(
+                        f"Provided metadata field: {key} not in file metadata. "
+                        f"Will use file last updated attribute instead."
+                    )
+                    updated_at_ms = getattr(this_file, "last_updated_time")
+            elif sort_by.get("file_attribute") and not key:  # use metadata key if both are provided
+                attr = sort_by["file_attribute"]
+                updated_at_ms = getattr(this_file, attr)
+            else:
+                logger.debug(
+                    "Non-exclusive file selection method provided. " "Will use last_updated_time attribute for file."
+                )
+        else:
+            logger.debug("No file selection method chosen. Will use last_updated_time attribute for file.")
 
-        except (arrow.parser.ParserError, TypeError) as e:
-            logger.warning(f"Failed to parse date for '{this_file.external_id}': {e}")
+        # Assume datetime string after last "_"
+        this_diff = starttime_ms - updated_at_ms
+        if this_diff >= 0:
+            valid_files.append(this_file)
+            if this_diff < best_diff:
+                logger.debug(f"Cutfile {this_file.external_id} is closer to starttime.")
+                best_diff = this_diff
+                closest_file = this_file
+
     if not closest_file and valid_files:
         logger.warning(f"Could not find a cut file with a valid datetime - using {valid_files[0].external_id}")
         return valid_files[0]

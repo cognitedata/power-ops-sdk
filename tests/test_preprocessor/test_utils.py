@@ -368,7 +368,7 @@ class TestFindClosestFile:
     def test_missing_or_valid(self, file_timestamps, expected_index):
         files = [self.make_file_md(i, dt) for i, dt in enumerate(file_timestamps)]
 
-        actual = find_closest_file(files, self.target_ts_ms)
+        actual = find_closest_file(files, self.target_ts_ms, sort_by={"metadata_key": "update_datetime"})
         if expected_index is None:
             assert actual is None
         else:
@@ -385,7 +385,7 @@ class TestFindClosestFile:
     )
     def test_invalid(self, update_datetime):
         files = [self.make_file_md(1, update_datetime)]
-        actual = find_closest_file(files, self.target_ts_ms)
+        actual = find_closest_file(files, self.target_ts_ms, sort_by={"metadata_key": "update_datetime"})
         assert actual is None
 
 

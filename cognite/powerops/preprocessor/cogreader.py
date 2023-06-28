@@ -24,10 +24,15 @@ class CogShopFileDict(TypedDict):
     file_type: str
 
 
+class SortBy(TypedDict):
+    metadata_key: Optional[str]
+    file_attribute: Optional[Literal["last_updated_time", "created_time", "uploaded_time"]]
+
+
 class CogShopFile(BaseModel):
     label: Optional[str]
     pick: Optional[Literal["closest", "exact", "latest"]]
-    sort_by: Optional[Literal["metadata.update_time"]]
+    sort_by: Optional[SortBy]
     external_id_prefix: Optional[str]
     external_id: Optional[str]
     file_type: Literal["ascii", "yaml"]
@@ -46,11 +51,11 @@ class CogShopFile(BaseModel):
             return {"external_id": self.external_id, "file_type": self.file_type}
         elif self.external_id_prefix and self.pick == "closest":
             files = client.files.list(external_id_prefix=self.external_id_prefix, limit=None)
-            if closest_file := find_closest_file(files, starttime_ms):
+            if closest_file := find_closest_file(files, starttime_ms, self.sort_by):
                 return {"external_id": closest_file.external_id, "file_type": self.file_type}
         elif self.external_id_prefix and self.pick == "latest":
             files = client.files.list(external_id_prefix=self.external_id_prefix, limit=None)
-            if closest_file := find_closest_file(files, now()):
+            if closest_file := find_closest_file(files, now(), sort_by=self.sort_by):
                 return {"external_id": closest_file.external_id, "file_type": self.file_type}
         logger.warning("File is not accompanied by selection method. Returning empty file dictionary")
         return CogShopFileDict(external_id="", file_type="")
