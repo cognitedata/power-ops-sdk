@@ -25,6 +25,12 @@ class TypeAPI(Generic[T_TypeNode, T_TypeApplyNode, T_TypeNodeList]):
         self.class_apply_type = class_apply_type
         self.class_list = class_list
 
+    def apply(self, items: T_TypeApplyNode, replace: bool = False) -> dm.InstancesApplyResult:
+        raise NotImplementedError()
+
+    def delete(self, external_id: str | Sequence[str]) -> dm.InstancesDeleteResult:
+        raise NotImplementedError()
+
     @overload
     def _retrieve(self, external_id: str) -> T_TypeNode:
         ...

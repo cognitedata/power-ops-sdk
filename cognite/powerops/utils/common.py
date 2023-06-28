@@ -28,3 +28,11 @@ def print_warning(s: str) -> None:
 
 def unique_str() -> str:
     return str(uuid4())
+
+
+def dump_resource(resource) -> dict:
+    try:
+        dump_func = resource.dump
+    except AttributeError:
+        dump_func = resource.dict
+    return dump_func()

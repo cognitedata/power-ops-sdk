@@ -1,25 +1,37 @@
 from __future__ import annotations
 
 import logging
-from typing import Union
+from typing import TYPE_CHECKING, Union
 
 import pandas as pd
-from cognite.client import CogniteClient
 from cognite.client.data_classes import Asset, Event, LabelDefinition, Relationship, Sequence
 from cognite.client.data_classes._base import CogniteResource, CogniteResourceList
 from deepdiff import DeepDiff
 from pydantic import BaseModel, Extra
 
+from cognite.powerops.client.dm_client.data_classes import (
+    FileRefApply,
+    MappingApply,
+    ModelTemplateApply,
+    TransformationApply,
+)
+from cognite.powerops.client.dm_client.data_classes._core import DomainModelApply
 from cognite.powerops.data_classes.shop_file_config import ShopFileConfig
-from cognite.powerops.utils.cdf_utils import upsert_cognite_resources
+from cognite.powerops.utils.cdf_utils import to_dm_apply, upsert_cognite_dm_resources, upsert_cognite_resources
+from cognite.powerops.utils.common import dump_resource
 from cognite.powerops.utils.files import upload_shop_config_file
+
+if TYPE_CHECKING:
+    from cognite.powerops import PowerOpsClient
 
 logger = logging.getLogger(__name__)
 
 
 ExternalId = str
 
-AddableResourceT = Union["CogniteResource", list["CogniteResource"], "SequenceContent", list[ShopFileConfig]]
+AddableResourceT = Union[
+    "CogniteResource", list["CogniteResource"], "SequenceContent", list[ShopFileConfig], list[DomainModelApply]
+]
 
 
 class SequenceRows(BaseModel):
@@ -90,6 +102,12 @@ class BootstrapResourceCollection(BaseModel):
     label_definitions: dict[ExternalId, LabelDefinition] = {}
     events: dict[ExternalId, Event] = {}
 
+    # dm resources:
+    model_templates: dict[ExternalId, ModelTemplateApply] = {}
+    mappings: dict[ExternalId, MappingApply] = {}
+    file_refs: dict[ExternalId, FileRefApply] = {}
+    transformations: dict[ExternalId, TransformationApply] = {}
+
     # other resources
     sequence_content: dict[ExternalId, SequenceContent] = {}
     shop_file_configs: dict[ExternalId, ShopFileConfig] = {}
@@ -100,13 +118,14 @@ class BootstrapResourceCollection(BaseModel):
 
     @property
     def all_cdf_resources(self) -> list[CogniteResource]:
-        return (
-            list(self.assets.values())
-            + list(self.relationships.values())
-            + list(self.sequences.values())
-            + list(self.label_definitions.values())
-            + list(self.events.values())
-        )
+        """Not including DM."""
+        return [
+            *list(self.assets.values()),
+            *list(self.relationships.values()),
+            *list(self.sequences.values()),
+            *list(self.label_definitions.values()),
+            *list(self.events.values()),
+        ]
 
     def add(self, resources_to_append: AddableResourceT):
         # sort the resource by type and append to the correct list
@@ -117,6 +136,7 @@ class BootstrapResourceCollection(BaseModel):
             self._add_resource(resources_to_append)
 
     def _add_resource(self, resource: CogniteResource | SequenceContent | ShopFileConfig):
+        # cdf
         if isinstance(resource, Asset):
             self.assets[resource.external_id] = resource
         elif isinstance(resource, Sequence):
@@ -131,45 +151,69 @@ class BootstrapResourceCollection(BaseModel):
             self.sequence_content[resource.sequence_external_id] = resource
         elif isinstance(resource, ShopFileConfig):
             self.shop_file_configs[resource.external_id] = resource
+        # dm
+        elif isinstance(resource, ModelTemplateApply):
+            self.model_templates[resource.external_id] = resource
+        elif isinstance(resource, MappingApply):
+            self.mappings[resource.external_id] = resource
+        elif isinstance(resource, TransformationApply):
+            self.transformations[resource.external_id] = resource
+        elif isinstance(resource, FileRefApply):
+            self.file_refs[resource.external_id] = resource
         else:
             raise ValueError(f"Unknown resource type: {type(resource)}")
 
     def write_to_cdf(
         self,
-        client: CogniteClient,
+        po_client: PowerOpsClient,
         data_set_external_id: str,
         overwrite: bool = False,
         skip_dm: bool = False,
     ):
         # CDF auth and data set
-        data_set_id = client.data_sets.retrieve(external_id=data_set_external_id).id
+        data_set_id = po_client.cdf.data_sets.retrieve(external_id=data_set_external_id).id
         for resource in self.all_cdf_resources:
             resource.data_set_id = data_set_id
 
-        api_by_type = {
-            "label_definitions": client.labels,
-            "assets": client.assets,
-            "sequences": client.sequences,
-            "relationships": client.relationships,
-            "events": client.events,
+        cdf_api_by_type = {
+            "label_definitions": po_client.cdf.labels,
+            "assets": po_client.cdf.assets,
+            "sequences": po_client.cdf.sequences,
+            "relationships": po_client.cdf.relationships,
+            "events": po_client.cdf.events,
         }
-        for resource_type, api in api_by_type.items():
+        for resource_type, api in cdf_api_by_type.items():
             resources = list(getattr(self, resource_type).values())
             logger.debug(f"Processing {len(resources)} {resource_type}...")
             upsert_cognite_resources(api, resource_type, resources)
+
+        dm_api_by_type = (
+            {}
+            if skip_dm
+            else {
+                "file_refs": po_client.dm.file_refs,
+                "transformations": po_client.dm.transformations,
+                "mappings": po_client.dm.mappings,
+                "model_templates": po_client.dm.model_templates,
+            }
+        )
+        for resource_type, api in dm_api_by_type.items():
+            resources = list(getattr(self, resource_type).values())
+            logger.debug(f"Processing {len(resources)} {resource_type}...")
+            upsert_cognite_dm_resources(api, resources)
 
         logger.debug(f"Processing {len(self.sequence_content)} sequences...")
         for sequence_external_id, sequence_data in self.sequence_content.items():
             if isinstance(sequence_data.data, pd.DataFrame):
                 try:
-                    client.sequences.data.insert_dataframe(
+                    po_client.cdf.sequences.data.insert_dataframe(
                         dataframe=sequence_data.data, external_id=sequence_external_id
                     )
                 except Exception as e:
                     logger.warning(f"Failed to insert sequence dataframe for {sequence_external_id}: {e}")
             else:
                 try:
-                    client.sequences.data.insert(
+                    po_client.cdf.sequences.data.insert(
                         rows=sequence_data.data.rows,
                         external_id=sequence_external_id,
                         column_external_ids=sequence_data.data.columns_external_ids,
@@ -179,7 +223,9 @@ class BootstrapResourceCollection(BaseModel):
 
         logger.debug(f"Processing {len(self.shop_file_configs)} files...")
         for shop_config in self.shop_file_configs.values():
-            upload_shop_config_file(client=client, config=shop_config, overwrite=overwrite, data_set_id=data_set_id)
+            upload_shop_config_file(
+                client=po_client.cdf, config=shop_config, overwrite=overwrite, data_set_id=data_set_id
+            )
 
     def __add__(self, other: "BootstrapResourceCollection") -> "BootstrapResourceCollection":
         return BootstrapResourceCollection(
@@ -190,6 +236,10 @@ class BootstrapResourceCollection(BaseModel):
             sequences=self.sequences | other.sequences,
             sequence_content=self.sequence_content | other.sequence_content,
             shop_file_configs=self.shop_file_configs | other.shop_file_configs,
+            file_refs=self.file_refs | other.file_refs,
+            transformations=self.transformations | other.transformations,
+            mappings=self.mappings | other.mappings,
+            model_templates=self.model_templates | other.model_templates,
         )
 
     def __iadd__(self, other: "BootstrapResourceCollection") -> "BootstrapResourceCollection":
@@ -200,6 +250,10 @@ class BootstrapResourceCollection(BaseModel):
         self.sequences |= other.sequences
         self.sequence_content |= other.sequence_content
         self.shop_file_configs |= other.shop_file_configs
+        self.file_refs |= other.file_refs
+        self.transformations |= other.transformations
+        self.mappings |= other.mappings
+        self.model_templates |= other.model_templates
         return self
 
     def difference(self, cdf: "BootstrapResourceCollection") -> dict[str, str]:
@@ -214,15 +268,19 @@ class BootstrapResourceCollection(BaseModel):
             "sequences",
             "label_definitions",
             "events",
+            "model_templates",
+            "file_refs",
+            "mappings",
+            "transformations",
         ]:
             local_resources = {
-                resource.external_id: resource.dump()
+                resource.external_id: dump_resource(resource)
                 for resource in getattr(local, cdf_resource).values()
                 if not (isinstance(resource, Event) and resource.type == "POWEROPS_BOOTSTRAP_FINISHED")
             }
             clean_local_resources_for_diff(local_resources)
             cdf_resources = {
-                resource.external_id: resource.dump()
+                resource.external_id: dump_resource(resource)
                 for resource in getattr(cdf, cdf_resource).values()
                 if not (isinstance(resource, Event) and resource.type == "POWEROPS_BOOTSTRAP_FINISHED")
             }
@@ -266,14 +324,14 @@ class BootstrapResourceCollection(BaseModel):
     @classmethod
     def from_cdf(
         cls,
-        client: CogniteClient,
+        po_client: PowerOpsClient,
         data_set_external_id: str,
     ) -> "BootstrapResourceCollection":
         """
         Function that creates a BootstrapResourceCollection from a CDF data set (typically the bootstrap data set)
         """
 
-        data_set_id = client.data_sets.retrieve(external_id=data_set_external_id).id
+        data_set_id = po_client.cdf.data_sets.retrieve(external_id=data_set_external_id).id
         bootstrap_resource_collection = BootstrapResourceCollection()
 
         # start by downloading all the resources from CDF
@@ -285,26 +343,41 @@ class BootstrapResourceCollection(BaseModel):
             "events",
         ]:
             # get the api for the resource type
-            api = getattr(client, resource_type)
+            api = getattr(po_client.cdf, resource_type)
             # get all the resources from CDF
             resources = api.list(data_set_ids=[data_set_id], limit=None)
             # add the resources to the bootstrap resource collection
             bootstrap_resource_collection.add(resources)
 
-        file_meta = client.files.list(data_set_ids=[data_set_id], limit=None)
+        for resource_type in [
+            "file_refs",
+            "transformations",
+            "mappings",
+            "model_templates",
+        ]:
+            # get the api for the resource type
+            api = getattr(po_client.dm, resource_type)
+            # get all the resources from CDF
+            actual_resources = api.list(limit=None)
+            # convert actual resources to their "apply" form, for comparison
+            apply_resources = to_dm_apply(actual_resources)
+            # add the resources to the bootstrap resource collection
+            bootstrap_resource_collection.add(apply_resources)
+
+        file_meta = po_client.cdf.files.list(data_set_ids=[data_set_id], limit=None)
         existing_external_ids = {f.external_id for f in file_meta}
         shop_files = []
         for f in file_meta:
             shop_config = ShopFileConfig.from_file_meta(f)
             if shop_config.md5_hash is None and shop_config.external_id in existing_external_ids:
-                file_content = client.files.download_bytes(external_id=shop_config.external_id)
+                file_content = po_client.cdf.files.download_bytes(external_id=shop_config.external_id)
                 shop_config.set_md5_hash(file_content)
             shop_files.append(shop_config)
         bootstrap_resource_collection.add(shop_files)
 
         # then download the sequence data
         for external_id in bootstrap_resource_collection.sequences:
-            sequence_data = client.sequences.data.retrieve_dataframe(
+            sequence_data = po_client.cdf.sequences.data.retrieve_dataframe(
                 external_id=external_id, limit=None, start=0, end=-1
             )
             bootstrap_resource_collection.add(SequenceContent(sequence_external_id=external_id, data=sequence_data))
