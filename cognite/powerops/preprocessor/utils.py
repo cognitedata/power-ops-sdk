@@ -368,40 +368,41 @@ def find_closest_file(files: list[FileMetadata], starttime_ms: float, sort_by: d
     closest_file = None
 
     for this_file in files:
-        updated_at_ms = getattr(this_file, "last_updated_time")
+        try:
+            updated_at_ms = getattr(this_file, "last_updated_time")
 
-        if sort_by:
-            if key := sort_by.get("metadata_key"):
-                if updated_at := this_file.metadata.get(key):
-                    try:
+            if sort_by:
+                if key := sort_by.get("metadata_key"):
+                    if updated_at := this_file.metadata.get(key):
                         updated_at_ms = arrow_to_ms(arrow.get(updated_at))
-                    except (arrow.parser.ParserError, TypeError) as e:
-                        logger.warning(f"Failed to parse date for '{this_file.external_id}': {e}")
-                        continue
+                    else:
+                        logger.warning(
+                            f"Provided metadata field: {key} not in file metadata. "
+                            f"Will use file last updated attribute instead."
+                        )
+                        updated_at_ms = getattr(this_file, "last_updated_time")
+                elif sort_by.get("file_attribute") and not key:  # use metadata key if both are provided
+                    attr = sort_by["file_attribute"]
+                    updated_at_ms = getattr(this_file, attr)
                 else:
-                    logger.warning(
-                        f"Provided metadata field: {key} not in file metadata. "
-                        f"Will use file last updated attribute instead."
+                    logger.debug(
+                        "Non-exclusive file selection method provided. "
+                        "Will use last_updated_time attribute for file."
                     )
-                    updated_at_ms = getattr(this_file, "last_updated_time")
-            elif sort_by.get("file_attribute") and not key:  # use metadata key if both are provided
-                attr = sort_by["file_attribute"]
-                updated_at_ms = getattr(this_file, attr)
             else:
-                logger.debug(
-                    "Non-exclusive file selection method provided. " "Will use last_updated_time attribute for file."
-                )
-        else:
-            logger.debug("No file selection method chosen. Will use last_updated_time attribute for file.")
+                logger.debug("No file selection method chosen. Will use last_updated_time attribute for file.")
 
-        # Assume datetime string after last "_"
-        this_diff = starttime_ms - updated_at_ms
-        if this_diff >= 0:
-            valid_files.append(this_file)
-            if this_diff < best_diff:
-                logger.debug(f"Cutfile {this_file.external_id} is closer to starttime.")
-                best_diff = this_diff
-                closest_file = this_file
+            # Assume datetime string after last "_"
+            this_diff = starttime_ms - updated_at_ms
+            if this_diff >= 0:
+                valid_files.append(this_file)
+                if this_diff < best_diff:
+                    logger.debug(f"Cutfile {this_file.external_id} is closer to starttime.")
+                    best_diff = this_diff
+                    closest_file = this_file
+
+        except (arrow.parser.ParserError, TypeError) as e:
+            logger.warning(f"Failed to parse date for '{this_file.external_id}': {e}")
 
     if not closest_file and valid_files:
         logger.warning(f"Could not find a cut file with a valid datetime - using {valid_files[0].external_id}")
