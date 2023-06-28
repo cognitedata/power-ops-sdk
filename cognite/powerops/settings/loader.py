@@ -2,7 +2,11 @@ import logging
 import os
 from typing import Any
 
-import tomli
+try:
+    import tomllib
+except ModuleNotFoundError:
+    import tomli as tomllib  # py < 3.11
+
 from pydantic import BaseSettings
 
 from cognite.powerops.utils.common import merge
@@ -27,4 +31,4 @@ def file_settings(_settings: BaseSettings) -> dict[str, Any]:
 
 def _load_file(file_path: str) -> dict:
     with open(file_path, "rb") as toml_file:
-        return tomli.load(toml_file)
+        return tomllib.load(toml_file)
