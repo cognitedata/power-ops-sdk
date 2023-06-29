@@ -45,7 +45,7 @@ class SortBy(BaseModel):
 
 class CogShopFile(BaseModel):
     label: Optional[str]
-    pick: Optional[Literal["closest", "exact", "latest"]]
+    pick: Optional[Literal["latest_before", "exact", "latest"]]
     sort_by: Optional[SortBy]
     external_id_prefix: Optional[str]
     external_id: Optional[str]
@@ -108,7 +108,7 @@ class CogShopFile(BaseModel):
     def get_file_dict(self, client: CogniteClient, starttime_ms: float) -> CogShopFileDict:
         if self.external_id:
             return {"external_id": self.external_id, "file_type": self.file_type}
-        elif self.external_id_prefix and self.pick == "closest":
+        elif self.external_id_prefix and self.pick == "latest_before":
             files = client.files.list(external_id_prefix=self.external_id_prefix, limit=None)
             if closest_file := self._find_file_latest_before(files, starttime_ms):
                 return {"external_id": closest_file.external_id, "file_type": self.file_type}

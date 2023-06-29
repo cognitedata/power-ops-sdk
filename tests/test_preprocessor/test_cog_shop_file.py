@@ -24,7 +24,7 @@ class TestCogShopFile:
         config = CogShopFile(
             **{
                 "label": "water_value_cut_file",
-                "pick": "closest",
+                "pick": "latest_before",
                 "sort_by": {"metadata_key": "update_datetime", "file_attribute": None},
                 "external_id_prefix": "water_value_cut_file",
                 "file_type": "ascii",
@@ -102,7 +102,7 @@ class TestCogShopFile:
         config = CogShopFile(
             **{
                 "label": "water_value_cut_file",
-                "pick": "closest",
+                "pick": "latest_before",
                 "sort_by": {"metadata_key": "update_datetime"},
                 "external_id_prefix": "water_value_cut_file",
                 "file_type": "ascii",
@@ -129,7 +129,7 @@ class TestCogShopFile:
         config = CogShopFile(
             **{
                 "label": "water_value_cut_file",
-                "pick": "closest",
+                "pick": "latest_before",
                 "sort_by": {"metadata_key": "update_datetime"},
                 "external_id_prefix": "water_value_cut_file",
                 "file_type": "ascii",
