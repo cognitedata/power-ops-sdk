@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 
 def file_settings(_settings: BaseSettings) -> dict[str, Any]:
-    settings_files = os.environ.get("SETTINGS_FILES", "settings.toml;.secrets.toml").split(";")
+    settings_files = filter(None, os.environ.get("SETTINGS_FILES", "settings.toml;.secrets.toml").split(";"))
     collected_data = {}
     for file_path in settings_files:
         try:
