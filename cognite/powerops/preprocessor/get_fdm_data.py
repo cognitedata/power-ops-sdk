@@ -2,7 +2,7 @@ from typing import Optional
 
 from cognite.client import CogniteClient
 from cognite.client.exceptions import CogniteReadTimeout
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from cognite.powerops.utils.retry import retry
 
@@ -21,7 +21,7 @@ class Commands(BaseModel):
 
 
 class FileRef(BaseModel):
-    file_external_id: str
+    file_external_id: str = Field(alias="fileExternalId")
     type: Optional[str]
 
 
@@ -31,7 +31,7 @@ class FileRefItems(BaseModel):
 
 class Mapping(BaseModel):
     path: str
-    timeseries_external_id: Optional[str]
+    timeseries_external_id: Optional[str] = Field(alias="timeseriesExternalId")
     transformations: Optional[TransformationItems]
     retrieve: Optional[str]
     aggregation: Optional[str]
@@ -44,20 +44,20 @@ class MappingItems(BaseModel):
 class ModelTemplate(BaseModel):
     watercourse: str
     model: FileRef
-    base_mappings: MappingItems
+    base_mappings: MappingItems = Field(alias="baseMappings")
 
 
 class Scenario(BaseModel):
     name: str
-    model_template: ModelTemplate
+    model_template: ModelTemplate = Field(alias="modelTemplate")
     commands: Commands
-    mappings_override: Optional[MappingItems]
-    extra_files: Optional[FileRefItems]
+    mappings_override: Optional[MappingItems] = Field(alias="mappingsOverride")
+    extra_files: Optional[FileRefItems] = Field(alias="extraFiles")
 
 
 class Case(BaseModel):
-    start_time: str  # datetime.datetime
-    end_time: str  # datetime.datetime
+    start_time: str  = Field(alias="startTime")  # datetime.datetime
+    end_time: str = Field(alias="endTime")  # datetime.datetime
     scenario: Scenario
 
 
@@ -75,7 +75,7 @@ def render_query(space: str, case_external_id: str) -> str:
             model {{
                 fileExternalId
             }}
-            base_mappings (first: 500) {{
+            baseMappings (first: 500) {{
                 items {{
                     path
                     timeseriesExternalId
