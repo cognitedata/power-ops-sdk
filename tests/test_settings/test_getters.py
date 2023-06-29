@@ -41,7 +41,6 @@ def test_powerops_client(no_files, settings):
             cogshop_version="123",
             config=mock_config,
         )
-    assert isinstance(po_client, PowerOpsClient)
     assert po_client._read_dataset == "dataset_4_readn"
     assert po_client._write_dataset == "dataset_4_rightn"
     assert po_client._cogshop_version == "123"
@@ -54,7 +53,6 @@ def test_powerops_client_from_env(no_files, with_cognite_env_vars, settings):
         patch("cognite.powerops.utils.cdf_auth.settings", settings),
     ):
         po_client = PowerOpsClient()
-    assert isinstance(po_client, PowerOpsClient)
     assert po_client._read_dataset == "read_from_this_dataset"
     assert po_client._write_dataset == "write_to_this_dataset"
     assert po_client._cogshop_version == "987"
