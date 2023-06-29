@@ -13,12 +13,11 @@ from cognite.powerops.utils.common import merge
 
 logger = logging.getLogger(__name__)
 
-SETTINGS_FILES = os.environ.get("SETTINGS_FILES", "settings.toml;.secrets.toml").split(";")
-
 
 def file_settings(_settings: BaseSettings) -> dict[str, Any]:
+    settings_files = os.environ.get("SETTINGS_FILES", "settings.toml;.secrets.toml").split(";")
     collected_data = {}
-    for file_path in SETTINGS_FILES:
+    for file_path in settings_files:
         try:
             data = _load_file(file_path)
         except FileNotFoundError:
