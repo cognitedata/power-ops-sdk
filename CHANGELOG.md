@@ -13,6 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.22.1] - 29-06-23
+### Fixed
+
+* Fix for getting PowerOpsClient instance without settings file.
+
 ## [0.22.0] - 29-06-23
 ### Removed
 
