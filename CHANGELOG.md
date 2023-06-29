@@ -12,16 +12,21 @@ Changes are grouped as follows
 - `Removed` for now removed features.
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
--
+
 ## [0.23.0] - 29-06-23
 ### Added
 
 * Re-implemented populating data to DM
 
+
 ## [0.22.2] - 29-06-23
 ### Fixed
 
 * Fix for getting PowerOpsClient instance without settings file.
+
+### Changed
+
+* Instantiating PowerOpsClient with config form settings files now has to be done via a separate factory method.
 
 
 ## [0.22.1] - 29-06-23
