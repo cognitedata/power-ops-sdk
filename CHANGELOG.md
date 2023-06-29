@@ -18,6 +18,10 @@ Changes are grouped as follows
 
 * Fix for getting PowerOpsClient instance without settings file.
 
+### Changed
+
+* Instantiating PowerOpsClient with config form settings files now has to be done via a separate factory method.
+
 
 ## [0.22.1] - 29-06-23
 ### Fixed
