@@ -43,7 +43,7 @@ class PowerOpsClient:
         self._write_dataset = write_dataset or settings.powerops.write_dataset
         self._cogshop_version = cogshop_version or settings.powerops.cogshop_version
 
-        self.cdf = get_cognite_client(config)
+        self.cdf = CogniteClient(config=config) if config else get_cognite_client()
 
         self.configurations = ConfigurationClient()
 
