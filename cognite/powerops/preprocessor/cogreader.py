@@ -58,6 +58,8 @@ class CogShopFile(BaseModel):
     def external_id_or_prefix_set(cls, values):
         if not values.get("external_id") and not values.get("external_id_prefix"):
             raise ValueError("Either external_id or external_id_prefix must be set")
+        if not values.get("pick") and not values.get("external_id"):
+            raise ValueError("File selection method by 'pick' must be set if not external id has been specified.")
         return values
 
     def _find_file_latest_before(self, files: list[FileMetadata], starttime_ms: float) -> Optional[FileMetadata]:
@@ -101,11 +103,14 @@ class CogShopFile(BaseModel):
             logger.warning(f"Could not find a cut file with a valid datetime - using {valid_files[0].external_id}")
             return valid_files[0]
         elif not valid_files:
-            return None
+            raise CogReaderError(
+                f"No valid file found with input start time {starttime_ms}. "
+                f"Please use valid file references in Cog Shop files config"
+            )
 
         return closest_file
 
-    def get_file_dict(self, client: CogniteClient, starttime_ms: float) -> CogShopFileDict:
+    def get_file_dict(self, client: CogniteClient, starttime_ms: float) -> Optional[CogShopFileDict]:
         if self.external_id:
             return {"external_id": self.external_id, "file_type": self.file_type}
         elif self.external_id_prefix and self.pick == "latest_before":
@@ -116,8 +121,7 @@ class CogShopFile(BaseModel):
             files = client.files.list(external_id_prefix=self.external_id_prefix, limit=None)
             if closest_file := self._find_file_latest_before(files, now()):
                 return {"external_id": closest_file.external_id, "file_type": self.file_type}
-        logger.warning("File is not accompanied by selection method. Returning empty file dictionary")
-        return CogShopFileDict(external_id="", file_type="")
+        raise CogReaderError("Could not extract a valid file dict from config")
 
 
 class CogShopFilesConfig(BaseModel):
@@ -128,7 +132,7 @@ class CogShopFilesConfig(BaseModel):
         config = retrieve_yaml_file(client, file_ex_id)
         return cls(**config)
 
-    def to_cog_shop_file_list(self, client: CogniteClient, starttime_ms: float) -> list[CogShopFileDict]:
+    def to_cog_shop_file_list(self, client: CogniteClient, starttime_ms: float) -> list[Optional[CogShopFileDict]]:
         return [file.get_file_dict(client, starttime_ms) for file in self.file_load_sequence]
 
 
@@ -225,7 +229,7 @@ class CogReader:
             return [TimeSeriesMapping.from_mapping_model(m) for m in mo.items]
         return []
 
-    def get_cog_shop_file_list(self) -> list[CogShopFileDict]:
+    def get_cog_shop_file_list(self) -> list[Optional[CogShopFileDict]]:
         return self.cog_shop_files_config.to_cog_shop_file_list(self.client, self.cog_shop_config.starttime_ms)
 
     @staticmethod
