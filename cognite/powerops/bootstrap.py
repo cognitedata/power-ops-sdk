@@ -150,12 +150,16 @@ def create_watercourse_dm_resources(
     dm_base_mappings = []
     dm_file_refs = []
 
-    model_files = [file for file in config_files if file.cogshop_file_type == "model"]
+    model_files = [
+        file
+        for file in config_files
+        if file.cogshop_file_type == "model" and file.external_id.endswith(f"{watercourse_name}_model")
+    ]
     if len(model_files) != 1:
         logger.warning(
             f"Expected exactly 1 model file,"
             f" got {len(model_files)}: {', '.join(mf.external_id for mf in model_files)}."
-            f"Skipping DM ModelTemplate for watercourse {watercourse_name}.",
+            f" Skipping DM ModelTemplate for watercourse {watercourse_name}.",
         )
         return []
     model_file = model_files[0]
