@@ -4,6 +4,7 @@ import logging
 import random
 from typing import TYPE_CHECKING
 
+from cognite.powerops.client.api.shop_config_api import ShopConfigurationAPI
 from cognite.powerops.client.api.shop_result_files_api import ShopFilesAPI
 from cognite.powerops.client.api.shop_results_api import ShopRunResultsAPI
 from cognite.powerops.client.api.shop_run_api import ShopRunsAPI
@@ -45,3 +46,4 @@ class ShopAPI:
         self.runs = ShopRunsAPI(po_client)
         self.results = ShopRunResultsAPI(po_client)
         self.files = ShopFilesAPI(po_client)
+        self.configuration = ShopConfigurationAPI(po_client)

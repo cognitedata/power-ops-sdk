@@ -32,9 +32,17 @@ from cognite.powerops.utils.serializer import load_yaml
 
 
 class Watercourse(BaseModel):
-    # det som skrives til cdf
     name: str
     shop_penalty_limit: int = 42000
+
+    def asset(self) -> Asset:
+        return Asset(
+            external_id=f"watercourse_{self.name}",
+            name=self.name,
+            parent_external_id="watercourses",
+            labels=[Label(AssetLabels.WATERCOURSE)],
+            metadata={"shop_penalty_limit": self.shop_penalty_limit},
+        )
 
 
 class WatercourseConfig(Watercourse):
@@ -802,7 +810,7 @@ class GeneratorTimeSeriesMapping(BaseModel):
 
 class BootstrapConfig(BaseModel):
     # denne forteller hva som er bootstrap
-    # leses fra en yaml fil 
+    # leses fra en yaml fil
     # config srkives til cdf (les kode)
     constants: CommonConstants
     cdf: CDFConfig

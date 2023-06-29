@@ -30,6 +30,7 @@ class ShopEfficiencyCurve(TypedDict):
     y: list[float]
 
 
+
 def generate_resources_and_data(
     watercourse_configs: list[WatercourseConfig],
     plant_time_series_mappings: Optional[list[PlantTimeSeriesMapping]],
@@ -89,6 +90,7 @@ def generate_resources_and_data(
 
         reservoirs = shop_case["model"]["reservoir"]
         resources += create_reservoirs(reservoirs, watercourse_config)
+        ########## - this is how far the refactoring has come - ##########
 
         generators = shop_case["model"]["generator"]
         resources += add_generators_and_efficiency_curves(generators, generator_time_series_mappings)
@@ -295,7 +297,7 @@ def add_generators_and_efficiency_curves(
     BootstrapResourceCollection
         Collection of assets, sequences, relationships and sequence data
     """
-    generators: {str: Generator} = {}
+    generators: dict[str, Generator] = {}
     resources = BootstrapResourceCollection()
     for generator_name, generator_information in shop_generator_dict.items():
         generator_name = replace_nordic_letters(generator_name)

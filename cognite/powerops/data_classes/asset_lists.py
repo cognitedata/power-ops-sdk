@@ -10,7 +10,7 @@ from cognite.powerops.data_classes.core import AssetResourceList
 from cognite.powerops.data_classes.generator import Generator
 from cognite.powerops.data_classes.plant import Plant
 from cognite.powerops.data_classes.price_area import PriceArea
-from cognite.powerops.data_classes.reservoirs import Reservoir
+from cognite.powerops.data_classes.reservoir import Reservoir
 
 
 class WatercourseList(AssetResourceList):

@@ -22,14 +22,8 @@ from cognite.powerops.client.config_client import ConfigurationClient
 from cognite.powerops.client.dm.client import get_power_ops_dm_client
 from cognite.powerops.utils.cdf_utils import retrieve_dataset
 
-
-class ConfigurationsClient:
-    def __init__(self, read_dataset: str, write_dataset: str, client: CogniteClient):
-        self.bids = BidConfigurationsAPI(client, read_dataset, write_dataset)
-        self.rkom_bids = RKOMBidConfigurationsAPI(client, read_dataset, write_dataset)
-        self.bechmarkings = BenchmarkingConfigurationsAPI(client, read_dataset, write_dataset)
-        self.markets = MarketConfigurationsAPI(client, read_dataset, write_dataset)
-        self.rkom_bid_combinations = RKOMBidCombinationConfiguration(client, read_dataset, write_dataset)
+# class ConfigurationsClient:
+#     def __init__(self, read_dataset: str, write_dataset: str, client: CogniteClient):
 
 
 class PowerOpsClient:
@@ -52,11 +46,11 @@ class PowerOpsClient:
         )
         self.cdf = self.dm._client
 
-        self.configurations = ConfigurationClient()
+        self.configuration = ConfigurationClient()
 
         self.shop = ShopAPI(po_client=self)
 
-        self.configurations = ConfigurationsClient(read_dataset, write_dataset, self.cdf)
+        # self.configurations = ConfigurationsClient(read_dataset, write_dataset, self.cdf)
         self.generators = GeneratorsAPI(self.cdf, read_dataset, write_dataset)
         self.plants = PlantAPI(self.cdf, read_dataset, write_dataset)
         self.price_areas = PriceAreasAPI(self.cdf, read_dataset, write_dataset)
