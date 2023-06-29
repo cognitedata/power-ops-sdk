@@ -5,7 +5,7 @@ from cognite.powerops.logger import configure_debug_logging
 
 configure_debug_logging("DEBUG")
 
-p = PowerOpsClient()
+p = PowerOpsClient.from_settings()
 
 case = Case.from_yaml_file("/path/to/cogshop/test_cogshopsession/test_inputs/run.yaml")
 case.add_cut_file("/path/to/cogshop/test_cogshopsession/test_inputs/cut.txt")

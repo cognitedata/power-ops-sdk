@@ -52,7 +52,7 @@ def test_powerops_client_from_env(no_files, with_cognite_env_vars, settings):
         patch("cognite.powerops.client.powerops_client.settings", settings),
         patch("cognite.powerops.utils.cdf_auth.settings", settings),
     ):
-        po_client = PowerOpsClient()
+        po_client = PowerOpsClient.from_settings()
     assert po_client._read_dataset == "read_from_this_dataset"
     assert po_client._write_dataset == "write_to_this_dataset"
     assert po_client._cogshop_version == "987"

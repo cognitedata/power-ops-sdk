@@ -8,7 +8,7 @@ from cognite.powerops.logger import configure_debug_logging
 
 configure_debug_logging("DEBUG")
 
-p = PowerOpsClient()
+p = PowerOpsClient.from_settings()
 
 run = p.shop.runs.retrieve(external_id="POWEROPS_SHOP_RUN_ede8c4c0-18b1-41b1-ae40-ea20e037645c")
 

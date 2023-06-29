@@ -376,7 +376,7 @@ def _preview_resources_diff(
     data_set_external_id: str,
 ) -> None:
     # Preview differences between bootstrap resources and CDF resources
-    po_client = PowerOpsClient()
+    po_client = PowerOpsClient.from_settings()
     cdf_bootstrap_resources = BootstrapResourceCollection.from_cdf(
         po_client=po_client, data_set_external_id=data_set_external_id
     )
@@ -390,7 +390,7 @@ def _create_cdf_resources(
     overwrite_data: bool,
     skip_dm: bool,
 ) -> None:
-    po_client = PowerOpsClient()
+    po_client = PowerOpsClient.from_settings()
     bootstrap_resources.write_to_cdf(
         po_client=po_client,
         data_set_external_id=data_set_external_id,
