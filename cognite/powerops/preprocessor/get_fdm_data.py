@@ -56,7 +56,7 @@ class Scenario(BaseModel):
 
 
 class Case(BaseModel):
-    start_time: str  = Field(alias="startTime")  # datetime.datetime
+    start_time: str = Field(alias="startTime")  # datetime.datetime
     end_time: str = Field(alias="endTime")  # datetime.datetime
     scenario: Scenario
 
