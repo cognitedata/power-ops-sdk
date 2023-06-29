@@ -1,7 +1,6 @@
 import tempfile
 from datetime import datetime
 from itertools import chain
-from typing import Union
 
 import arrow
 import numpy as np
@@ -20,7 +19,6 @@ from cognite.powerops.preprocessor.utils import (
     create_relationship,
     datetime_from_str,
     download_file,
-    find_closest_file,
     group_files_by_metadata,
     log_and_reraise,
     log_missing,
@@ -331,62 +329,6 @@ def test_retrieve_range_2_no_datapoints_in_range(cognite_client_mock):
     assert list(df.index) == [t(1)]
     # Should be ffilled from latest
     assert df["a"][t(1)] == 42
-
-
-class TestFindClosestFile:
-    target_ts_ms = datetime(2022, 8, 1).timestamp() * 1000
-
-    @staticmethod
-    def make_file_md(index: int, update_dt: Union[datetime, str, float]) -> FileMetadata:
-        if isinstance(update_dt, datetime):
-            update_dt = update_dt.timestamp() * 1000
-        return FileMetadata(id=index, data_set_id=42, external_id=str(index), metadata={"update_datetime": update_dt})
-
-    @pytest.mark.parametrize(
-        ["file_timestamps", "expected_index"],
-        [
-            ([], None),
-            ([datetime(2022, 8, 1, 5)], None),
-            (
-                [
-                    datetime(2022, 8, 1, 5),
-                    datetime(2022, 8, 1),
-                ],
-                1,
-            ),
-            (
-                [
-                    datetime(2022, 8, 1, 5),
-                    datetime(2022, 7, 20),
-                    datetime(2022, 7, 25),
-                    datetime(2022, 7, 5),
-                ],
-                2,
-            ),
-        ],
-    )
-    def test_missing_or_valid(self, file_timestamps, expected_index):
-        files = [self.make_file_md(i, dt) for i, dt in enumerate(file_timestamps)]
-
-        actual = find_closest_file(files, self.target_ts_ms)
-        if expected_index is None:
-            assert actual is None
-        else:
-            assert actual.external_id == str(expected_index)
-
-    @pytest.mark.parametrize(
-        "update_datetime",
-        [
-            "not-date",
-            "24.05.2022",
-            "2022年5月24日",
-            None,
-        ],
-    )
-    def test_invalid(self, update_datetime):
-        files = [self.make_file_md(1, update_datetime)]
-        actual = find_closest_file(files, self.target_ts_ms)
-        assert actual is None
 
 
 class TestGroupFilesByMetadata:

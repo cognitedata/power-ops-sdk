@@ -15,21 +15,21 @@ def main(
     fdm_space_external_id: str,
     fdm_case_external_id: str,
     output_data_set_id: int,
+    fdm_model_external_id: Optional[str] = None,
     fdm_model_version: Optional[int] = None,
 ) -> dict:
     cog_reader = CogReader(
         client=client,
         fdm_space_external_id=fdm_space_external_id,
         fdm_case_external_id=fdm_case_external_id,
+        fdm_model_external_id=fdm_model_external_id,
         fdm_model_version=fdm_model_version,
     ).run()
 
     cog_shop_case = cog_reader.cog_shop_case.to_dict()
     cog_shop_case_yaml = yaml.dump(cog_shop_case, allow_unicode=True, encoding="utf-8")
 
-    extra_files_md = cog_reader.get_extra_files_metadata()
-    mapping_files_md = cog_reader.get_mapping_files_metadata()
-    cut_files_md = cog_reader.get_cut_files_metadata()
+    cog_shop_file_list = cog_reader.get_cog_shop_file_list()
 
     xid = f"cog_shop_preprocessor/{fdm_space_external_id}/{fdm_case_external_id}/{str(uuid4())}"
 
@@ -48,7 +48,5 @@ def main(
 
     return {
         "cog_shop_case_file": cog_reader.file_metadata_to_dict(cog_shop_case_file_md),
-        "cut_files": cut_files_md,
-        "mapping_files": mapping_files_md,
-        "extra_files": extra_files_md,
+        "cog_shop_file_list": cog_shop_file_list,
     }
