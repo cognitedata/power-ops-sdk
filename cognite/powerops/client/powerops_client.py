@@ -2,7 +2,6 @@ from functools import cached_property
 from typing import Optional
 
 from cognite.client import ClientConfig, CogniteClient
-from cognite.dm_clients.config import settings
 
 from cognite.powerops.client.api.asset_apis import (
     BenchmarkingConfigurationsAPI,
@@ -16,10 +15,10 @@ from cognite.powerops.client.api.asset_apis import (
     RKOMBidConfigurationsAPI,
     WatercourseAPI,
 )
-from cognite.powerops.client.api.dm_apis import CaseAPI, CommandsAPI, MappingAPI, ScenarioAPI, TransformationAPI
 from cognite.powerops.client.api.shop_api import ShopAPI
 from cognite.powerops.client.config_client import ConfigurationClient
-from cognite.powerops.client.dm.client import get_power_ops_dm_client
+from cognite.powerops.settings import settings
+from cognite.powerops.utils.cdf_auth import get_cognite_client
 from cognite.powerops.utils.cdf_utils import retrieve_dataset
 
 
@@ -39,18 +38,12 @@ class PowerOpsClient:
         write_dataset: Optional[str] = None,
         cogshop_version: Optional[str] = None,
         config: Optional[ClientConfig] = None,
-        space_id: Optional[str] = None,
-        data_model: Optional[str] = None,
-        schema_version: Optional[int] = None,
     ):
         self._read_dataset = read_dataset or settings.powerops.read_dataset
         self._write_dataset = write_dataset or settings.powerops.write_dataset
-        self._cogshop_version = cogshop_version or settings.powerops.get("cogshop_version", "")
+        self._cogshop_version = cogshop_version or settings.powerops.cogshop_version
 
-        self.dm = get_power_ops_dm_client(
-            config=config, space_id=space_id, data_model=data_model, schema_version=schema_version
-        )
-        self.cdf = self.dm._client
+        self.cdf = get_cognite_client(config)
 
         self.configurations = ConfigurationClient()
 
@@ -62,12 +55,6 @@ class PowerOpsClient:
         self.price_areas = PriceAreasAPI(self.cdf, read_dataset, write_dataset)
         self.reservoirs = ReservoirsAPI(self.cdf, read_dataset, write_dataset)
         self.watercourses = WatercourseAPI(self.cdf, read_dataset, write_dataset)
-
-        self.cases = CaseAPI(self.dm)
-        self.commands = CommandsAPI(self.dm)
-        self.scenarios = ScenarioAPI(self.dm)
-        self.mappings = MappingAPI(self.dm)
-        self.transformations = TransformationAPI(self.dm)
 
     @cached_property
     def read_dataset_id(self) -> int:

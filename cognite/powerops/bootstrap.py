@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import os
 from pathlib import Path
 from typing import List, Literal, Optional
 
@@ -19,7 +18,8 @@ from cognite.powerops.data_classes.cdf_resource_collection import BootstrapResou
 from cognite.powerops.data_classes.shop_file_config import ShopFileConfig, ShopFileConfigs
 from cognite.powerops.data_classes.shop_output_definition import ShopOutputConfig
 from cognite.powerops.data_classes.time_series_mapping import TimeSeriesMapping, write_mapping_to_sequence
-from cognite.powerops.utils.cdf_auth import get_client
+from cognite.powerops.settings import settings
+from cognite.powerops.utils.cdf_auth import get_cognite_client
 from cognite.powerops.utils.files import process_yaml_file
 from cognite.powerops.utils.labels import create_labels
 from cognite.powerops.utils.powerops_asset_hierarchy import create_skeleton_asset_hierarchy
@@ -154,10 +154,7 @@ def get_shop_service_url(cognite_project: str):
 
 
 def _load_config(path: Path) -> BootstrapConfig:
-    config = BootstrapConfig.from_yamls(path)
-    if os.environ.get("COGNITE_PROJECT"):
-        config.cdf = config.cdf.from_env()
-    return config
+    return BootstrapConfig.from_yamls(path)
 
 
 def _transform(
@@ -165,7 +162,7 @@ def _transform(
     path: Path,
     market: str = "Dayahead",
 ) -> BootstrapResourceCollection:
-    cognite_project = config.cdf.dict()["COGNITE_PROJECT"]
+    cognite_project = settings.cognite.project
 
     constants = config.constants
     _ = [w.set_shop_yaml_paths(path) for w in config.watercourses]
@@ -243,11 +240,10 @@ def _transform(
 
 def _preview_resources_diff(
     bootstrap_resources: BootstrapResourceCollection,
-    cdf_parameters: dict,
     data_set_external_id: str,
 ) -> None:
     # Preview differences between bootstrap resources and CDF resources
-    client = get_client(cdf_parameters)
+    client = get_cognite_client()
     cdf_bootstrap_resources = BootstrapResourceCollection.from_cdf(
         client=client, data_set_external_id=data_set_external_id
     )
@@ -257,12 +253,11 @@ def _preview_resources_diff(
 
 def _create_cdf_resources(
     bootstrap_resources: BootstrapResourceCollection,
-    cdf_parameters: dict,
     data_set_external_id: str,
     overwrite_data: bool,
     skip_dm: bool,
 ) -> None:
-    client = get_client(cdf_parameters)
+    client = get_cognite_client()
     bootstrap_resources.write_to_cdf(
         client=client,
         data_set_external_id=data_set_external_id,
