@@ -2,20 +2,134 @@ from __future__ import annotations
 
 import tempfile
 from functools import cached_property
-from typing import List, Optional, Union
+from typing import List, Literal, Optional, TypedDict, Union
 
+import arrow
 from cognite.client import CogniteClient
+from cognite.client.data_classes import FileMetadata
+from pydantic import BaseModel, root_validator
 
 from cognite.powerops.preprocessor import knockoff_logging as logging
 from cognite.powerops.preprocessor.data_classes import CogShopCase, CogShopConfig
 from cognite.powerops.preprocessor.data_classes.time_series_mapping import TimeSeriesMapping
 from cognite.powerops.preprocessor.exceptions import CogReaderError
-from cognite.powerops.preprocessor.utils import ShopMetadata, download_file, log_and_reraise, retrieve_yaml_file
+from cognite.powerops.preprocessor.utils import (
+    ShopMetadata,
+    arrow_to_ms,
+    download_file,
+    log_and_reraise,
+    now,
+    retrieve_yaml_file,
+)
 
 from .get_fdm_data import Case, get_case
-from .utils import find_closest_file, group_files_by_metadata
 
 logger = logging.getLogger(__name__)
+
+
+class CogShopFileDict(TypedDict):
+    external_id: str
+    file_type: str
+
+
+class SortBy(BaseModel):
+    metadata_key: Optional[str]
+    file_attribute: Optional[Literal["last_updated_time", "created_time", "uploaded_time"]]
+
+    @root_validator
+    def only_one_sorting_method(cls, values):
+        if values.get("metadata_key") and values.get("file_attribute"):
+            raise ValueError("Both metadata_key and file_attribute to sort by cannot be set for file")
+        return values
+
+
+class CogShopFile(BaseModel):
+    label: Optional[str]
+    pick: Optional[Literal["latest_before", "exact", "latest"]]
+    sort_by: Optional[SortBy]
+    external_id_prefix: Optional[str]
+    external_id: Optional[str]
+    file_type: Literal["ascii", "yaml"]
+
+    class Config:
+        validate_all = True
+
+    @root_validator
+    def external_id_or_prefix_set(cls, values):
+        if not values.get("external_id") and not values.get("external_id_prefix"):
+            raise ValueError("Either external_id or external_id_prefix must be set")
+        return values
+
+    def _find_file_latest_before(self, files: list[FileMetadata], starttime_ms: float) -> Optional[FileMetadata]:
+        # Select file that is closest in time before starttime
+        valid_files = []
+
+        best_diff = float("inf")
+        closest_file = None
+
+        for this_file in files:
+            try:
+                if self.sort_by:
+                    if key := self.sort_by.metadata_key:
+                        if updated_at := this_file.metadata.get(key):
+                            updated_at_ms = arrow_to_ms(arrow.get(updated_at))
+                        else:
+                            logger.warning(
+                                f"Provided metadata field: {key} not in file metadata for {this_file.external_id} - "
+                                f"skipping file"
+                            )
+                            continue
+                    elif attr := self.sort_by.file_attribute:
+                        updated_at_ms = getattr(this_file, attr)
+                else:
+                    logger.debug("No file selection method chosen. Will use last_updated_time attribute for file.")
+                    updated_at_ms = getattr(this_file, "last_updated_time")
+
+                # Assume datetime string after last "_"
+                this_diff = starttime_ms - updated_at_ms
+                if this_diff >= 0:
+                    valid_files.append(this_file)
+                    if this_diff < best_diff:
+                        logger.debug(f"Cutfile {this_file.external_id} is closer to starttime.")
+                        best_diff = this_diff
+                        closest_file = this_file
+
+            except (arrow.parser.ParserError, TypeError) as e:
+                logger.warning(f"Failed to parse date for '{this_file.external_id}': {e}")
+
+        if not closest_file and valid_files:
+            logger.warning(f"Could not find a cut file with a valid datetime - using {valid_files[0].external_id}")
+            return valid_files[0]
+        elif not valid_files:
+            return None
+
+        return closest_file
+
+    def get_file_dict(self, client: CogniteClient, starttime_ms: float) -> CogShopFileDict:
+        if self.external_id:
+            return {"external_id": self.external_id, "file_type": self.file_type}
+        elif self.external_id_prefix and self.pick == "latest_before":
+            files = client.files.list(external_id_prefix=self.external_id_prefix, limit=None)
+            if closest_file := self._find_file_latest_before(files, starttime_ms):
+                return {"external_id": closest_file.external_id, "file_type": self.file_type}
+        elif self.external_id_prefix and self.pick == "latest":
+            files = client.files.list(external_id_prefix=self.external_id_prefix, limit=None)
+            if closest_file := self._find_file_latest_before(files, now()):
+                return {"external_id": closest_file.external_id, "file_type": self.file_type}
+        logger.warning("File is not accompanied by selection method. Returning empty file dictionary")
+        return CogShopFileDict(external_id="", file_type="")
+
+
+class CogShopFilesConfig(BaseModel):
+    file_load_sequence: list[CogShopFile]
+
+    @classmethod
+    def from_cdf(cls, client: CogniteClient, file_ex_id: str) -> "CogShopFilesConfig":
+        config = retrieve_yaml_file(client, file_ex_id)
+        return cls(**config)
+
+    def to_cog_shop_file_list(self, client: CogniteClient, starttime_ms: float) -> list[CogShopFileDict]:
+        return [file.get_file_dict(client, starttime_ms) for file in self.file_load_sequence]
 
 
 class CogReader:
@@ -26,20 +140,37 @@ class CogReader:
         client: CogniteClient,
         fdm_space_external_id: str,
         fdm_case_external_id: str,
+        fdm_model_external_id: Optional[str] = None,
         fdm_model_version: Optional[int] = None,
     ) -> None:
         self.client: CogniteClient = client
 
         self.fdm_space_external_id = fdm_space_external_id
         self.fdm_case_external_id = fdm_case_external_id
+        self.fdm_model_external_id = fdm_model_external_id
         self.fdm_model_version = fdm_model_version
 
         self._tmp_dir = tempfile.TemporaryDirectory()
+        self.cog_shop_files_config: CogShopFilesConfig
         logger.info(f"{self.__class__.__name__} initialized.")
 
     @property
     def file_external_id_prefix(self) -> str:
         return f"SHOP_{self.cog_shop_config.watercourse}_"
+
+    def _set_cog_shop_files_config(self) -> None:
+        if not (
+            file := self.client.files.retrieve(
+                external_id=f"SHOP_{self.cog_shop_config.watercourse}_cog_shop_files_config"
+            )
+        ):
+            raise CogReaderError(
+                f"No cog_shop_files_config for watercourse {self.cog_shop_config.watercourse} in CDF. "
+                f"Ensure that file exists"
+            )
+        logger.debug("Attempting to download cog shop files config from CDF.")
+        self.cog_shop_files_config = CogShopFilesConfig.from_cdf(self.client, file.external_id)
+        logger.info("Cog Shop file list config successfully initialised")
 
     @property
     def fdm_case(self) -> Case:
@@ -53,6 +184,7 @@ class CogReader:
             self.client,
             self.fdm_space_external_id,
             self.fdm_case_external_id,
+            model_extenal_id=self.fdm_model_external_id,
             model_version=self.fdm_model_version,
         )
 
@@ -93,15 +225,8 @@ class CogReader:
             return [TimeSeriesMapping.from_mapping_model(m) for m in mo.items]
         return []
 
-    def get_extra_files_metadata(self) -> List[dict[str, Union[str, int]]]:
-        files = self.client.files.list(
-            external_id_prefix=self.file_external_id_prefix,
-            metadata=ShopMetadata(type="extra_data"),
-        )
-        if files:
-            return [self.file_metadata_to_dict(fmd) for fmd in files]
-        else:
-            return []
+    def get_cog_shop_file_list(self) -> list[CogShopFileDict]:
+        return self.cog_shop_files_config.to_cog_shop_file_list(self.client, self.cog_shop_config.starttime_ms)
 
     @staticmethod
     def file_metadata_to_dict(file_metadata) -> dict[str, Union[str, int]]:
@@ -113,33 +238,6 @@ class CogReader:
         if (dsid := file_metadata.data_set_id) is not None:
             md["data_set_id"] = dsid
         return md
-
-    def get_mapping_files_metadata(self):
-        files = self.client.files.list(
-            external_id_prefix=self.file_external_id_prefix,
-            metadata=ShopMetadata(type="water_value_cut_file_reservoir_mapping"),
-        )
-        if files:
-            return [self.file_metadata_to_dict(fmd) for fmd in files]
-        else:
-            return []
-
-    def get_cut_files_metadata(self) -> list[dict]:
-        files = self.client.files.list(
-            external_id_prefix=self.file_external_id_prefix,
-            metadata={
-                "shop:type": "water_value_cut_file",
-                "shop:watercourse": self.cog_shop_config.watercourse,
-            },
-            limit=None,
-        )
-        if not files:
-            return []
-        return [
-            self.file_metadata_to_dict(f)
-            for group in group_files_by_metadata(files).values()
-            if (f := find_closest_file(group, self.cog_shop_config.starttime_ms) is not None)
-        ]
 
     @cached_property
     def license_file_path(self) -> Optional[str]:
@@ -195,4 +293,7 @@ class CogReader:
             self.cog_shop_case._set_some_commands()
 
         self._replace_model_time_series()
+
+        self._set_cog_shop_files_config()
+
         return self

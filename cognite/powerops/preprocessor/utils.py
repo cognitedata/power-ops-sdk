@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 import yaml
 from cognite.client import ClientConfig, CogniteClient
-from cognite.client.credentials import Token
+from cognite.client.credentials import OAuthClientCredentials, Token
 from cognite.client.data_classes import Asset, Event, FileMetadata, LabelDefinition, Relationship, Sequence, TimeSeries
 from cognite.client.exceptions import CogniteDuplicatedError, CogniteException
 
@@ -43,22 +43,35 @@ def shift_datetime_str(dt: str, days: int) -> str:
 
 
 def initialize_cognite_client() -> CogniteClient:
-    logger.info("Setting up CogniteClient...")
     os.environ["COGNITE_DISABLE_PYPI_VERSION_CHECK"] = "true"
 
-    token = os.getenv("TOKEN")
     project = os.getenv("PROJECT")
     base_url = os.getenv("BASE_URL") or "https://api.cognitedata.com"
 
-    client = CogniteClient(
-        config=ClientConfig(
-            client_name="CogShop-local-debug",
-            base_url=base_url,
-            project=project,
-            credentials=Token(token),
-            timeout=90,
+    logger.info(f"Setting up CogniteClient towards project {project}...")
+
+    if token := os.getenv("TOKEN"):
+        client = CogniteClient(
+            config=ClientConfig(
+                client_name="CogShop-local-debug",
+                base_url=base_url,
+                project=project,
+                credentials=Token(token),
+                timeout=90,
+            )
         )
-    )
+    elif client_secret := os.getenv("CLIENT_SECRET"):
+        client_id = os.getenv("CLIENT_ID")
+        tenant_id = os.getenv("TENANT_ID")
+        scopes = [os.getenv("SCOPES")]
+        creds = OAuthClientCredentials(
+            token_url=f"https://login.microsoftonline.com/{tenant_id}/oauth2/v2.0/token",
+            client_id=client_id,
+            client_secret=client_secret,
+            scopes=scopes,
+        )
+        cnf = ClientConfig(client_name="local-testing", project=project, credentials=creds, base_url=base_url)
+        client = CogniteClient(cnf)
 
     logger.info(f"Client successfully set up towards '{project}'.")
     return client
@@ -345,34 +358,3 @@ def group_files_by_metadata(
         if file_group := file.metadata.get(metadata_group_key):
             cut_files_by_group[file_group].append(file)
     return cut_files_by_group or {"default": files}
-
-
-def find_closest_file(files: list[FileMetadata], starttime_ms: float) -> Optional[FileMetadata]:
-    # Select file that is closest in time before starttime
-    valid_files = []
-
-    best_diff = float("inf")
-    closest_file = None
-    for this_file in files:
-        try:
-            # Assume datetime string after last "_"
-            updated_at = this_file.metadata.get("update_datetime", this_file.external_id.split("_")[-1])
-            updated_at_ms = arrow_to_ms(arrow.get(updated_at))  # parse ISO 8601 compliant string
-            this_diff = starttime_ms - updated_at_ms
-
-            if this_diff >= 0:
-                valid_files.append(this_file)
-                if this_diff < best_diff:
-                    logger.debug(f"Cutfile {this_file.external_id} is closer to starttime.")
-                    best_diff = this_diff
-                    closest_file = this_file
-
-        except (arrow.parser.ParserError, TypeError) as e:
-            logger.warning(f"Failed to parse date for '{this_file.external_id}': {e}")
-    if not closest_file and valid_files:
-        logger.warning(f"Could not find a cut file with a valid datetime - using {valid_files[0].external_id}")
-        return valid_files[0]
-    elif not valid_files:
-        return None
-
-    return closest_file
