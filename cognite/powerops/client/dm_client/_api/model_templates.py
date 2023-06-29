@@ -163,4 +163,4 @@ class ModelTemplatesAPI(TypeAPI[ModelTemplate, ModelTemplateApply, ModelTemplate
         for model_template in model_templates:
             node_id = model_template.id_tuple()
             if node_id in edges_by_start_node:
-                model_template.baseMappings = [edge.end_node.external_id for edge in edges_by_start_node[node_id]]
+                model_template.base_mappings = [edge.end_node.external_id for edge in edges_by_start_node[node_id]]
