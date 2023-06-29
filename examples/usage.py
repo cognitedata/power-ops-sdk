@@ -1,6 +1,6 @@
 from cognite.powerops.client.powerops_client import PowerOpsClient
 
-powerops = PowerOpsClient()
+powerops = PowerOpsClient.from_settings()
 
 fornebu = powerops.watercourses.retrieve("Fornebu")
 
