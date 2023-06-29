@@ -1,5 +1,4 @@
 from functools import cached_property
-from typing import Optional
 
 from cognite.client import ClientConfig, CogniteClient
 
@@ -18,7 +17,7 @@ from cognite.powerops.client.api.asset_apis import (
 from cognite.powerops.client.api.shop_api import ShopAPI
 from cognite.powerops.client.config_client import ConfigurationClient
 from cognite.powerops.settings import settings
-from cognite.powerops.utils.cdf_auth import get_cognite_client
+from cognite.powerops.utils.cdf_auth import get_client_config, get_cognite_client
 from cognite.powerops.utils.cdf_utils import retrieve_dataset
 
 
@@ -34,16 +33,16 @@ class ConfigurationsClient:
 class PowerOpsClient:
     def __init__(
         self,
-        read_dataset: Optional[str] = None,
-        write_dataset: Optional[str] = None,
-        cogshop_version: Optional[str] = None,
-        config: Optional[ClientConfig] = None,
+        read_dataset: str,
+        write_dataset: str,
+        cogshop_version: str,
+        config: ClientConfig,
     ):
-        self._read_dataset = read_dataset or settings.powerops.read_dataset
-        self._write_dataset = write_dataset or settings.powerops.write_dataset
-        self._cogshop_version = cogshop_version or settings.powerops.cogshop_version
+        self._read_dataset = read_dataset
+        self._write_dataset = write_dataset
+        self._cogshop_version = cogshop_version
 
-        self.cdf = get_cognite_client(config)
+        self.cdf = CogniteClient(config=config) if config else get_cognite_client()
 
         self.configurations = ConfigurationClient()
 
@@ -55,6 +54,15 @@ class PowerOpsClient:
         self.price_areas = PriceAreasAPI(self.cdf, read_dataset, write_dataset)
         self.reservoirs = ReservoirsAPI(self.cdf, read_dataset, write_dataset)
         self.watercourses = WatercourseAPI(self.cdf, read_dataset, write_dataset)
+
+    @classmethod
+    def from_settings(cls):
+        return cls(
+            read_dataset=settings.powerops.read_dataset,
+            write_dataset=settings.powerops.write_dataset,
+            cogshop_version=settings.powerops.cogshop_version,
+            config=get_client_config(),
+        )
 
     @cached_property
     def read_dataset_id(self) -> int:
