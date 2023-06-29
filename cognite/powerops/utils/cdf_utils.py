@@ -25,15 +25,16 @@ from cognite.client.exceptions import CogniteDuplicatedError
 
 from cognite.powerops.client.dm_client._api._core import TypeAPI
 from cognite.powerops.client.dm_client.data_classes import (
+    FileRef,
+    FileRefApply,
     Mapping,
     MappingApply,
     ModelTemplate,
     ModelTemplateApply,
+    Transformation,
     TransformationApply,
 )
 from cognite.powerops.client.dm_client.data_classes._core import DomainModel, DomainModelApply
-from cognite.powerops.data_classes.transformation import Transformation
-from cognite.powerops.preprocessor.get_fdm_data import FileRef
 
 logger = logging.getLogger(__name__)
 
@@ -144,52 +145,18 @@ def to_dm_apply(instances: list[DomainModel] | DomainModel) -> list[DomainModelA
     apply_items = []
 
     type_map = {
-        ModelTemplate: {
-            "apply_type": ModelTemplateApply,
-            "fields": (
-                "external_id",
-                "version",
-                "shop_version",
-                "watercourse",
-                "model",
-                "base_mappings",
-            ),
-        },
-        Mapping: {
-            "apply_type": MappingApply,
-            "fields": (
-                "external_id",
-                "path",
-                "timeseries_external_id",
-                "retrieve",
-                "aggregation",
-                "transformations",
-            ),
-        },
-        Transformation: {
-            "apply_type": TransformationApply,
-            "fields": (
-                "external_id",
-                "transformation",
-                "kwargs",
-            ),
-        },
-        FileRef: {
-            "apply_type": MappingApply,
-            "fields": (
-                "external_id",
-                "file_external_id",
-                "type",
-            ),
-        },
+        ModelTemplate: ModelTemplateApply,
+        Mapping: MappingApply,
+        Transformation: TransformationApply,
+        FileRef: FileRefApply,
     }
 
     for item in items:
-        if type(items) not in type_map:
+        if type(item) not in type_map:
             raise NotImplementedError(f"Dont know how to convert {item!r}.")
+        apply_type = type_map[type(item)]
+
         apply_items.append(
-            type_map(type(item))["apply_type"](
-                **{field: value for field, value in item.dict().items() if field in type_map(type(item))["fields"]}
-            )
+            apply_type(**{field: value for field, value in item.dict().items() if field in apply_type.__fields__})
         )
     return apply_items
