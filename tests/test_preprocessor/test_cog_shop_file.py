@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Union
 
 import arrow
@@ -10,11 +10,13 @@ from cognite.client.data_classes import FileMetadata
 from pytest_regressions import plugin  # noqa: provides `data_regression` fixture
 
 from cognite.powerops.preprocessor.cogreader import CogShopFile
+from cognite.powerops.preprocessor.exceptions import CogReaderError
 from cognite.powerops.preprocessor.utils import arrow_to_ms
 
 
 class TestCogShopFile:
     target_ts_ms = datetime(2022, 8, 1).timestamp() * 1000
+    target_ts_datetime = datetime(2022, 8, 1)
 
     @staticmethod
     def mock_cog_shop_file(dict) -> CogShopFile:
@@ -78,8 +80,6 @@ class TestCogShopFile:
     @pytest.mark.parametrize(
         ["file_timestamps", "expected_index"],
         [
-            ([], None),
-            ([datetime(2022, 8, 1, 5)], None),
             (
                 [
                     datetime(2022, 8, 1, 5),
@@ -98,7 +98,7 @@ class TestCogShopFile:
             ),
         ],
     )
-    def test_missing_or_valid(self, cog_shop_file_config_cognite_client, file_timestamps, expected_index):
+    def test_valid(self, cog_shop_file_config_cognite_client, file_timestamps, expected_index):
         config = CogShopFile(
             **{
                 "label": "water_value_cut_file",
@@ -111,10 +111,7 @@ class TestCogShopFile:
         files = [self.make_file_md(i, dt) for i, dt in enumerate(file_timestamps)]
 
         actual = config._find_file_latest_before(files, self.target_ts_ms)
-        if expected_index is None:
-            assert actual is None
-        else:
-            assert actual.external_id == str(expected_index)
+        assert actual.external_id == str(expected_index)
 
     @pytest.mark.parametrize(
         "update_datetime",
@@ -125,7 +122,7 @@ class TestCogShopFile:
             None,
         ],
     )
-    def test_invalid(self, update_datetime):
+    def test_raise_on_no_valid_files(self, update_datetime):
         config = CogShopFile(
             **{
                 "label": "water_value_cut_file",
@@ -137,5 +134,22 @@ class TestCogShopFile:
         )
 
         files = [self.make_file_md(1, update_datetime)]
-        actual = config._find_file_latest_before(files, self.target_ts_ms)
-        assert actual is None
+
+        with pytest.raises(CogReaderError):
+            _ = config._find_file_latest_before(files, self.target_ts_ms)
+
+    def test_raise_on_no_files_before_starttime(self, cog_shop_file_config_cognite_client):
+        config = CogShopFile(
+            **{
+                "label": "water_value_cut_file",
+                "pick": "latest_before",
+                "sort_by": {"metadata_key": "update_datetime"},
+                "external_id_prefix": "water_value_cut_file",
+                "file_type": "ascii",
+            }
+        )
+        file_timestamps_after_starttime = [self.target_ts_datetime + timedelta(hours=hour) for hour in range(1, 5)]
+        files = [self.make_file_md(i, dt) for i, dt in enumerate(file_timestamps_after_starttime)]
+
+        with pytest.raises(CogReaderError):
+            _ = config._find_file_latest_before(files, self.target_ts_ms)

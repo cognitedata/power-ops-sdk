@@ -37,9 +37,11 @@ class SortBy(BaseModel):
     file_attribute: Optional[Literal["last_updated_time", "created_time", "uploaded_time"]]
 
     @root_validator
-    def only_one_sorting_method(cls, values):
+    def valid_sorting_method(cls, values):
         if values.get("metadata_key") and values.get("file_attribute"):
             raise ValueError("Both metadata_key and file_attribute to sort by cannot be set for file")
+        if not values.get("metadata_key") or values.get("file_attribute"):
+            raise ValueError("A file sorting method need to be provided. Please check cogshop file config")
         return values
 
 
@@ -104,8 +106,8 @@ class CogShopFile(BaseModel):
             return valid_files[0]
         elif not valid_files:
             raise CogReaderError(
-                f"No valid file found with input start time {starttime_ms}. "
-                f"Please use valid file references in Cog Shop files config"
+                f"No files valid found in CDF before start time {starttime_ms} for file {self.external_id_prefix}. "
+                f"Please check existence of files before start time or check file selection method"
             )
 
         return closest_file
