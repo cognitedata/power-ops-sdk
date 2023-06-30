@@ -40,7 +40,7 @@ class SortBy(BaseModel):
     def valid_sorting_method(cls, values):
         if values.get("metadata_key") and values.get("file_attribute"):
             raise ValueError("Both metadata_key and file_attribute to sort by cannot be set for file")
-        if not values.get("metadata_key") or values.get("file_attribute"):
+        if not values.get("metadata_key") and not values.get("file_attribute"):
             raise ValueError("A file sorting method need to be provided. Please check cogshop file config")
         return values
 
