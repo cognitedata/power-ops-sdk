@@ -59,7 +59,7 @@ def merge(*sources: dict) -> dict:
     return result
 
 
-def dump_resource(resource) -> dict:
+def dump_cdf_resource(resource) -> dict:
     try:
         dump_func = resource.dump
     except AttributeError:
