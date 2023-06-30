@@ -60,6 +60,7 @@ def merge(*sources: dict) -> dict:
 
 
 def dump_cdf_resource(resource) -> dict:
+    """Legacy or DM resource."""
     try:
         dump_func = resource.dump
     except AttributeError:

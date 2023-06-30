@@ -18,7 +18,7 @@ from cognite.powerops.client.dm_client.data_classes import (
 from cognite.powerops.client.dm_client.data_classes._core import DomainModelApply
 from cognite.powerops.data_classes.shop_file_config import ShopFileConfig
 from cognite.powerops.utils.cdf_utils import to_dm_apply, upsert_cognite_dm_resources, upsert_cognite_resources
-from cognite.powerops.utils.common import dump_resource
+from cognite.powerops.utils.common import dump_cdf_resource
 from cognite.powerops.utils.files import upload_shop_config_file
 
 if TYPE_CHECKING:
@@ -274,13 +274,13 @@ class BootstrapResourceCollection(BaseModel):
             "transformations",
         ]:
             local_resources = {
-                resource.external_id: dump_resource(resource)
+                resource.external_id: dump_cdf_resource(resource)
                 for resource in getattr(local, cdf_resource).values()
                 if not (isinstance(resource, Event) and resource.type == "POWEROPS_BOOTSTRAP_FINISHED")
             }
             clean_local_resources_for_diff(local_resources)
             cdf_resources = {
-                resource.external_id: dump_resource(resource)
+                resource.external_id: dump_cdf_resource(resource)
                 for resource in getattr(cdf, cdf_resource).values()
                 if not (isinstance(resource, Event) and resource.type == "POWEROPS_BOOTSTRAP_FINISHED")
             }
