@@ -57,3 +57,12 @@ def merge(*sources: dict) -> dict:
                 val = _merge_two(result[key], val)
             result[key] = val
     return result
+
+
+def dump_cdf_resource(resource) -> dict:
+    """Legacy or DM resource."""
+    try:
+        dump_func = resource.dump
+    except AttributeError:
+        dump_func = resource.dict
+    return dump_func()

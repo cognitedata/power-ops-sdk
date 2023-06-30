@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import logging
-from typing import Optional, Union
+from typing import Optional, Union, cast
 
 from cognite.client import CogniteClient
 from cognite.client._api.assets import AssetsAPI
@@ -22,6 +22,19 @@ from cognite.client.data_classes import (
     TimeSeries,
 )
 from cognite.client.exceptions import CogniteDuplicatedError
+
+from cognite.powerops.client.dm_client._api._core import TypeAPI
+from cognite.powerops.client.dm_client.data_classes import (
+    FileRef,
+    FileRefApply,
+    Mapping,
+    MappingApply,
+    ModelTemplate,
+    ModelTemplateApply,
+    Transformation,
+    TransformationApply,
+)
+from cognite.powerops.client.dm_client.data_classes._core import DomainModel, DomainModelApply
 
 logger = logging.getLogger(__name__)
 
@@ -82,6 +95,14 @@ def upsert_cognite_resources(
             api.create(resources_to_update)
 
 
+def upsert_cognite_dm_resources(
+    api: TypeAPI,
+    resources: list[DomainModelApply],
+) -> None:
+    for resource in resources:
+        api.apply(resource, replace=True)
+
+
 def retrieve_dataset(client: CogniteClient, external_id: str) -> DataSet:
     dataset = client.data_sets.retrieve(external_id=external_id)
     if dataset is None:
@@ -117,3 +138,25 @@ def retrieve_relationships_from_source_ext_id(
         limit=-1,
         target_types=target_types,
     )
+
+
+def to_dm_apply(instances: list[DomainModel] | DomainModel) -> list[DomainModelApply]:
+    items = cast(list[DomainModel], list(instances))
+    apply_items = []
+
+    type_map = {
+        ModelTemplate: ModelTemplateApply,
+        Mapping: MappingApply,
+        Transformation: TransformationApply,
+        FileRef: FileRefApply,
+    }
+
+    for item in items:
+        if type(item) not in type_map:
+            raise NotImplementedError(f"Dont know how to convert {item!r}.")
+        apply_type = type_map[type(item)]
+
+        apply_items.append(
+            apply_type(**{field: value for field, value in item.dict().items() if field in apply_type.__fields__})
+        )
+    return apply_items

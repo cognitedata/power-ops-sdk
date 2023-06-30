@@ -1,8 +1,18 @@
 from __future__ import annotations
 
+import json
+import logging
+from hashlib import md5
 from pathlib import Path
 from typing import List, Literal, Optional
 
+from cognite.powerops import PowerOpsClient
+from cognite.powerops.client.dm_client.data_classes import (
+    FileRefApply,
+    MappingApply,
+    ModelTemplateApply,
+    TransformationApply,
+)
 from cognite.powerops.config import (
     BenchmarkingConfig,
     BidMatrixGeneratorConfig,
@@ -19,7 +29,6 @@ from cognite.powerops.data_classes.shop_file_config import ShopFileConfig, ShopF
 from cognite.powerops.data_classes.shop_output_definition import ShopOutputConfig
 from cognite.powerops.data_classes.time_series_mapping import TimeSeriesMapping, write_mapping_to_sequence
 from cognite.powerops.settings import settings
-from cognite.powerops.utils.cdf_auth import get_cognite_client
 from cognite.powerops.utils.files import process_yaml_file
 from cognite.powerops.utils.labels import create_labels
 from cognite.powerops.utils.powerops_asset_hierarchy import create_skeleton_asset_hierarchy
@@ -28,6 +37,8 @@ from cognite.powerops.utils.resource_generation import (
     generate_relationships_from_price_area_to_price,
     generate_resources_and_data,
 )
+
+logger = logging.getLogger(__name__)
 
 
 def validate_config(
@@ -95,6 +106,120 @@ def create_base_mapping_bootstrap_resources(
         watercourse=watercourse_config.name,
         mapping_type="base_mapping",
     )
+
+
+def create_dm_resources(
+    watercourse_configs: list[WatercourseConfig],
+    shop_files: list[ShopFileConfig],
+    time_series_mappings: list[TimeSeriesMapping],
+    shop_version: str,
+) -> BootstrapResourceCollection:
+    cdf_resources = BootstrapResourceCollection()
+    for watercourse_config, time_series_mapping in zip(watercourse_configs, time_series_mappings):
+        # Create DM resources
+        dm_resources = create_watercourse_dm_resources(
+            watercourse_config.name, watercourse_config.version, shop_files, time_series_mapping, shop_version
+        )
+        cdf_resources.add(dm_resources)
+
+    return cdf_resources
+
+
+def _make_ext_id(cls, watercourse_name: str, *args: str) -> str:
+    hash_value = md5(watercourse_name.encode())
+    for arg in args:
+        hash_value.update(arg.encode())
+    return f"Tr__{hash_value.hexdigest()}"
+
+
+def create_watercourse_dm_resources(
+    watercourse_name: str,
+    watercourse_version: str,
+    config_files: List[ShopFileConfig],
+    base_mapping: TimeSeriesMapping,
+    shop_version: str,
+) -> list[ModelTemplateApply | MappingApply | TransformationApply | FileRefApply]:
+    """
+    Create ModelTemplate and nested FileRef, Mapping and Transformation instances in memory.
+
+    Note: We take care to create external_id values for all instances to avoid unnecessary deletion and creation when
+    calling client.dm.model_template.apply(...) later.
+    """
+    dm_transformations = []
+    dm_model_templates = []
+    dm_base_mappings = []
+    dm_file_refs = []
+
+    model_files = [
+        file
+        for file in config_files
+        if file.cogshop_file_type == "model" and file.external_id.endswith(f"{watercourse_name}_model")
+    ]
+    if len(model_files) != 1:
+        logger.warning(
+            f"Expected exactly 1 model file,"
+            f" got {len(model_files)}: {', '.join(mf.external_id for mf in model_files)}."
+            f" Skipping DM ModelTemplate for watercourse {watercourse_name}.",
+        )
+        return []
+    model_file = model_files[0]
+    dm_file_refs.append(
+        FileRefApply(
+            external_id=f"ModelTemplate_{watercourse_name}__FileRef_model",
+            type=model_file.cogshop_file_type,
+            file_external_id=model_file.external_id,
+        )
+    )
+    for row in reversed(list(base_mapping)):
+        row_ext_id = f"BM__{watercourse_name}__{row.shop_model_path}"
+
+        # We can get duplicate mappings (same path). Only keep the last one (look is reversed):
+        visited_ext_ids = set()
+        if row_ext_id in visited_ext_ids:
+            logger.warning(f"Duplicate base mapping: {row_ext_id}")
+            continue
+        visited_ext_ids.add(row_ext_id)
+
+        row_transformations = []
+        for transformation in reversed(row.transformations or []):
+            row_transformations.append(
+                TransformationApply(
+                    external_id=_make_ext_id(
+                        watercourse_name,
+                        row.shop_model_path,
+                        transformation.transformation.name,
+                        json.dumps(transformation.kwargs or {}),
+                    ),
+                    method=transformation.transformation.name,
+                    arguments=json.dumps(transformation.kwargs or {}),
+                )
+            )
+        dm_transformations.extend(row_transformations)
+        dm_base_mappings.append(
+            MappingApply(
+                external_id=row_ext_id,
+                path=row.shop_model_path,
+                timeseries_external_id=row.time_series_external_id,
+                transformations=[tr.external_id for tr in row_transformations],
+                retrieve=row.retrieve.name if row.retrieve else None,
+                aggregation=row.aggregation.name if row.aggregation else None,
+            )
+        )
+    # restore original order:
+    dm_transformations = list(reversed(dm_transformations))
+    dm_base_mappings = list(reversed(dm_base_mappings))
+
+    dm_model_templates.append(
+        ModelTemplateApply(
+            external_id=f"ModelTemplate_{watercourse_name}",
+            version=watercourse_version,
+            shop_version=shop_version,
+            watercourse=watercourse_name,
+            model=dm_file_refs[0].external_id,
+            base_mappings=[subitem.external_id for subitem in dm_base_mappings],
+        )
+    )
+    return [*dm_file_refs, *dm_transformations, *dm_base_mappings, *dm_model_templates]
 
 
 def process_bid_process_configs(
@@ -203,6 +328,14 @@ def _transform(
         watercourse_configs=config.watercourses, time_series_mappings=config.time_series_mappings
     )
 
+    # Create DM resources
+    bootstrap_resources += create_dm_resources(
+        config.watercourses,
+        list(bootstrap_resources.shop_file_configs.values()),
+        config.time_series_mappings,
+        config.constants.shop_version,
+    )
+
     # PowerOps configuration resources
     bootstrap_resources.add(config.market.cdf_asset)
     benchmarking_config_assets = [config.cdf_asset for config in config.benchmarks]
@@ -243,9 +376,9 @@ def _preview_resources_diff(
     data_set_external_id: str,
 ) -> None:
     # Preview differences between bootstrap resources and CDF resources
-    client = get_cognite_client()
+    po_client = PowerOpsClient.from_settings()
     cdf_bootstrap_resources = BootstrapResourceCollection.from_cdf(
-        client=client, data_set_external_id=data_set_external_id
+        po_client=po_client, data_set_external_id=data_set_external_id
     )
 
     print(BootstrapResourceCollection.prettify_differences(bootstrap_resources.difference(cdf_bootstrap_resources)))
@@ -257,9 +390,9 @@ def _create_cdf_resources(
     overwrite_data: bool,
     skip_dm: bool,
 ) -> None:
-    client = get_cognite_client()
+    po_client = PowerOpsClient.from_settings()
     bootstrap_resources.write_to_cdf(
-        client=client,
+        po_client=po_client,
         data_set_external_id=data_set_external_id,
         overwrite=overwrite_data,
         skip_dm=skip_dm,

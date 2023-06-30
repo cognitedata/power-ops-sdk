@@ -13,6 +13,12 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.23.0] - 29-06-23
+### Added
+
+* Re-implemented populating data to DM
+
+
 ## [0.22.2] - 29-06-23
 ### Fixed
 
