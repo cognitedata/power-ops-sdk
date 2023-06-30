@@ -13,9 +13,6 @@ class CogniteSettings(pydantic.BaseModel):
     tenant_id: Optional[str]
     client_id: Optional[str]
     client_secret: Optional[str]
-    space: Optional[str]
-    data_model: Optional[str]
-    schema_version: Optional[str]
 
 
 class PoweropsRunSettings(pydantic.BaseModel):
