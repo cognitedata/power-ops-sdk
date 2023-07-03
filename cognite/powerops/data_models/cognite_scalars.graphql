@@ -1,0 +1,6 @@
+# Cognite specific variables
+scalar Timestamp
+scalar JSONObject
+scalar TimeSeries
+scalar File
+scalar Sequence
