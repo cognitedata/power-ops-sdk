@@ -1,0 +1,47 @@
+type Generator {
+    name: String
+    pMin: Float
+    penstock: Int
+    startcost: Float
+    startStopCost: TimeSeries
+    generatorEfficiencyCurve: Sequence
+    turbineEfficiencyCurve: Sequence
+}
+
+type Plant {
+    name: String
+    displayName: String
+    headLossFactor: Float
+    ordering: Int
+    outletLevel: Float
+    pMax: Float
+    pMin: Float
+    penstockHeadLossFactors: JSONObject
+    generators: [Generator]
+    inletReservoirs: [Reservoir]
+    pMaxTimeSeries: TimeSeries
+    pMinTimeSeries: TimeSeries
+    waterValue: TimeSeries
+    feedingFee: TimeSeries
+    outletLevel: TimeSeries
+    inletLevel: TimeSeries
+}
+
+type Reservoir {
+    name: String
+    displayName: String
+    ordering: Int
+}
+
+type Watercourse {
+    name: String
+    shopPenaltyLimit: Float
+    plants: [Plant]
+}
+
+type PriceArea {
+    name: String
+    dayAheadPrice: TimeSeries
+    plants: [Plant]
+    watercourses: [Watercourse]
+}

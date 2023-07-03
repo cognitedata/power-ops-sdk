@@ -1,0 +1,107 @@
+type DateTransformation {
+    transformation: String
+    args: [String]
+    kwargs: JSONObject
+}
+
+interface Market {
+    name: String
+    timezone: String
+}
+
+type NordPoolMarket implements Market {
+    name: String
+    timezone: String
+    maxPrice: Float
+    minPrice: Float
+    priceSteps: Int
+    priceUnit: String
+    tickSize: Float
+    timeUnit: String
+    tradeLot: Float
+}
+
+type RKOMMarket implements Market {
+    name: String
+    timezone: String
+    startOfWeek: Int
+}
+
+interface Bid {
+    name: String
+    date: [DateTransformation]
+    market: Market
+}
+
+type BenchmarkBid implements Bid {
+    name: String
+    date: [DateTransformation]
+    market: Market
+}
+
+type DayAheadBid implements Bid{
+    name: String
+    date: [DateTransformation]
+    market: Market
+    isDefaultConfigForPriceArea: Boolean
+    mainScenario: String
+    priceArea: String
+    priceScenarios: [JSONObject]
+    shop: ShopTransformation
+}
+
+type RKOMBid implements Bid {
+    name: String
+    date: [DateTransformation]
+    market: Market
+    auction: String
+    block: String
+    method: String
+    minimumPrice: Float
+    pricePremium: Float
+    priceScenarios: [String]
+    product: String
+    reserveScenarios: [String]
+    watercourse: String
+}
+
+type ShopTransformation {
+    start: [DateTransformation]
+    end: [DateTransformation]
+}
+
+type DayAheadProcess {
+    name: String
+    bid: DayAheadBid
+    shop: ShopTransformation
+    incrementalMapping: [Sequence]
+}
+
+type ProductionPlanTimeSeries {
+    name: String
+    series: [TimeSeries]
+}
+
+type Benchmarking {
+    name: String
+    productionPlanTimeSeries: [ProductionPlanTimeSeries]
+    metrics: [String]
+    bid: BenchmarkBid
+    shop: ShopTransformation
+    runEvents: [String]
+}
+
+type RKOMProcess {
+    name: String
+    bid: RKOMBid
+    shop: ShopTransformation
+    processEvents: [String]
+    timezone: String
+    incrementalMapping: [Sequence]
+}
+
+type RKOMBidCombination {
+    name: String
+    auction: String
+    bidConfigurations: [RKOMProcess]
+}
