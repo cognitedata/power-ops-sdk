@@ -1,4 +1,4 @@
-type Transformation {
+type TimeSeriesTransformation {
     transformation: String
     kwargs: JSONObject
 }
@@ -28,19 +28,19 @@ type RKOMMarket implements Market {
 
 interface Bid {
     name: String
-    date: [Transformation]
+    date: [TimeSeriesTransformation]
     market: Market
 }
 
 type BenchmarkBid implements Bid {
     name: String
-    date: [Transformation]
+    date: [TimeSeriesTransformation]
     market: Market
 }
 
 type DayAheadBid implements Bid{
     name: String
-    date: [Transformation]
+    date: [TimeSeriesTransformation]
     market: Market
     isDefaultConfigForPriceArea: Boolean
     mainScenario: String
@@ -51,7 +51,7 @@ type DayAheadBid implements Bid{
 
 type RKOMBid implements Bid {
     name: String
-    date: [Transformation]
+    date: [TimeSeriesTransformation]
     market: Market
     auction: String
     block: String
@@ -65,8 +65,8 @@ type RKOMBid implements Bid {
 }
 
 type ShopTransformation {
-    start: [Transformation]
-    end: [Transformation]
+    start: [TimeSeriesTransformation]
+    end: [TimeSeriesTransformation]
 }
 
 type DayAheadProcess {
