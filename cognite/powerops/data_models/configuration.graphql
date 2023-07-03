@@ -1,5 +1,6 @@
 type Transformation {
     transformation: String
+    args: [String]
     kwargs: JSONObject
 }
 
