@@ -37,11 +37,13 @@ class SortBy(BaseModel):
     file_attribute: Optional[Literal["last_updated_time", "created_time", "uploaded_time"]]
 
     @root_validator
-    def valid_sorting_method(cls, values):
-        if values.get("metadata_key") and values.get("file_attribute"):
-            raise ValueError("Both metadata_key and file_attribute to sort by cannot be set for file")
-        if not values.get("metadata_key") and not values.get("file_attribute"):
-            raise ValueError("A file sorting method need to be provided. Please check cogshop file config")
+    def has_valid_sorting_method(cls, values):
+        has_metadata_key = values.get("metadata_key")
+        has_file_attribute = values.get("file_attribute")
+        if has_metadata_key and has_file_attribute:
+            raise ValueError("Can only sort on ether metadata_key or file_attribute, got both.")
+        if not has_metadata_key and not has_file_attribute:
+            raise ValueError("Missing a sorting key, please set either metadata_key or file_attribute.")
         return values
 
 
