@@ -4,31 +4,10 @@ from cognite.client import ClientConfig, CogniteClient
 
 from cognite.powerops.bootstrap.utils import get_client_config
 from cognite.powerops.bootstrap.utils.cdf_utils import retrieve_dataset
-from cognite.powerops.client.api.asset_apis import (
-    BenchmarkingConfigurationsAPI,
-    BidConfigurationsAPI,
-    GeneratorsAPI,
-    MarketConfigurationsAPI,
-    PlantAPI,
-    PriceAreasAPI,
-    ReservoirsAPI,
-    RKOMBidCombinationConfiguration,
-    RKOMBidConfigurationsAPI,
-    WatercourseAPI,
-)
 from cognite.powerops.client.api.shop_api import ShopAPI
 from cognite.powerops.client.config_client import ConfigurationClient
 from cognite.powerops.client.dm_client import CogShopClient
 from cognite.powerops.utils.settings import settings
-
-
-class ConfigurationsClient:
-    def __init__(self, read_dataset: str, write_dataset: str, client: CogniteClient):
-        self.bids = BidConfigurationsAPI(client, read_dataset, write_dataset)
-        self.rkom_bids = RKOMBidConfigurationsAPI(client, read_dataset, write_dataset)
-        self.bechmarkings = BenchmarkingConfigurationsAPI(client, read_dataset, write_dataset)
-        self.markets = MarketConfigurationsAPI(client, read_dataset, write_dataset)
-        self.rkom_bid_combinations = RKOMBidCombinationConfiguration(client, read_dataset, write_dataset)
 
 
 class PowerOpsClient:
@@ -49,13 +28,6 @@ class PowerOpsClient:
         self.configurations = ConfigurationClient()
 
         self.shop = ShopAPI(po_client=self)
-
-        self.configurations = ConfigurationsClient(read_dataset, write_dataset, self.cdf)
-        self.generators = GeneratorsAPI(self.cdf, read_dataset, write_dataset)
-        self.plants = PlantAPI(self.cdf, read_dataset, write_dataset)
-        self.price_areas = PriceAreasAPI(self.cdf, read_dataset, write_dataset)
-        self.reservoirs = ReservoirsAPI(self.cdf, read_dataset, write_dataset)
-        self.watercourses = WatercourseAPI(self.cdf, read_dataset, write_dataset)
 
     @classmethod
     def from_settings(cls):

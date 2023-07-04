@@ -60,7 +60,7 @@ docs = ["mkdocs", "mkdocs-jupyter", "mkdocs-material", "mkdocs-material-extensio
     "mkdocs-git-authors-plugin", "mkdocs-gitbook", "mkdocs-glightbox", "pymdown-extensions", "mkdocstrings"]
 
 [tool.poetry.scripts]
-powerops = "cognite.powerops.main:main"
+powerops = "cognite.powerops.cli:main"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.2.2"
