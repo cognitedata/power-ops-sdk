@@ -5,7 +5,7 @@ from cognite.client import ClientConfig, CogniteClient
 from cognite.client.credentials import OAuthClientCredentials, OAuthDeviceCode
 from pydantic import BaseModel, validator
 
-from cognite.powerops.settings import settings
+from cognite.powerops.utils.settings import settings
 
 
 class _CogniteConfig(BaseModel):

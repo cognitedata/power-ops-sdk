@@ -4,7 +4,7 @@ from unittest.mock import patch
 
 import pytest
 
-import cognite.powerops.settings
+import cognite.powerops.utils.settings
 
 
 @pytest.fixture

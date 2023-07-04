@@ -19,7 +19,7 @@ from cognite.powerops.client.api.asset_apis import (
 from cognite.powerops.client.api.shop_api import ShopAPI
 from cognite.powerops.client.config_client import ConfigurationClient
 from cognite.powerops.client.dm_client import CogShopClient
-from cognite.powerops.settings import settings
+from cognite.powerops.utils.settings import settings
 
 
 class ConfigurationsClient:

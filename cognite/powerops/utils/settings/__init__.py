@@ -2,7 +2,7 @@ import logging
 
 import tomli_w
 
-from cognite.powerops.settings.data_classes import Settings
+from cognite.powerops.utils.settings.data_classes import Settings
 
 __all__ = ["settings"]
 

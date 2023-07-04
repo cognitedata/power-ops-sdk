@@ -36,7 +36,7 @@ from cognite.powerops.client.dm_client.data_classes import (
     ModelTemplateApply,
     TransformationApply,
 )
-from cognite.powerops.settings import settings
+from cognite.powerops.utils.settings import settings
 
 logger = logging.getLogger(__name__)
 

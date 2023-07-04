@@ -2,7 +2,7 @@ from typing import Optional
 
 import pydantic
 
-from cognite.powerops.settings.loader import file_settings
+from cognite.powerops.utils.settings.loader import file_settings
 
 __all__ = ["Settings"]
 
