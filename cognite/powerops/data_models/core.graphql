@@ -23,7 +23,7 @@ type Plant {
     pMinTimeSeries: TimeSeries
     waterValue: TimeSeries
     feedingFee: TimeSeries
-    outletLevel: TimeSeries
+    outletLevelTimeSeries: TimeSeries
     inletLevel: TimeSeries
 }
 
