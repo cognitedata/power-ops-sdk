@@ -2,7 +2,12 @@ import contextlib
 from pathlib import Path
 
 import pytest
-import tomli
+
+try:
+    import tomllib
+except ModuleNotFoundError:
+    import tomli as tomllib  # py < 3.11
+
 from cognite.client.testing import monkeypatch_cognite_client
 
 from cognite.powerops.main import apply
@@ -29,7 +34,7 @@ def apply_test_cases():
     if not SENSITIVE_TESTS.exists():
         return
 
-    sensitive = tomli.loads(SENSITIVE_TESTS.read_text())
+    sensitive = tomllib.loads(SENSITIVE_TESTS.read_text())
     if "tests" not in sensitive.get("Approval", {}):
         return
     for test_case in sensitive["Approval"]["tests"]:
