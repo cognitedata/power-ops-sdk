@@ -3,7 +3,7 @@ from unittest.mock import MagicMock, patch
 from cognite.client.credentials import OAuthClientCredentials
 
 from cognite.powerops import PowerOpsClient
-from cognite.powerops.utils.cdf_auth import get_cognite_client
+from cognite.powerops.bootstrap.utils import get_cognite_client
 
 
 def test_get_cognite_client(no_files, settings):

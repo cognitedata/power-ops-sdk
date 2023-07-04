@@ -9,7 +9,7 @@ except ModuleNotFoundError:
 
 from pydantic import BaseSettings
 
-from cognite.powerops.utils.common import merge
+from cognite.powerops.bootstrap.utils.common import merge
 
 logger = logging.getLogger(__name__)
 
