@@ -4,7 +4,7 @@ from pathlib import Path
 from cognite.client.testing import monkeypatch_cognite_client
 
 from cognite.powerops.main import apply
-from tests.test_bootstrap.approval_test.mock_resource_create_classes import (
+from tests.test_unit.test_bootstrap.approval_test.mock_resource_create_classes import (
     MockAssetsCreate,
     MockEventsCreate,
     MockLabelsCreate,
