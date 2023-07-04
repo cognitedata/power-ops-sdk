@@ -11,7 +11,7 @@ import cognite.powerops.utils.settings
 def with_env_vars():
     vars = {
         "SETTINGS__COGNITE__PROJECT": "BAR",
-        "SETTINGS__COGNITE__SPACE": "mockspace",
+        "SETTINGS__COGNITE__CLIENT_ID": "mockclient",
     }
     os.environ.update(vars)
     yield
@@ -51,7 +51,7 @@ def with_files():
         load_file_p.side_effect = [
             # settings.toml:
             {
-                "cognite": {"project": "0", "space": "22"},
+                "cognite": {"project": "0", "client_id": "22"},
                 "powerops": {"write_dataset": "333"},
             },
             # .secrets.toml:
