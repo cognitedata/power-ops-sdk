@@ -13,3 +13,6 @@
 - watercourse_name: Fornebu
   path: shop-fornebu2-modul_series.dat
   cogshop_file_type: module_series
+- watercourse_name: Fornebu
+  path: cog_shop_files_config.yaml
+  cogshop_file_type: extra_data

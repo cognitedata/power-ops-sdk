@@ -1,0 +1,11 @@
+# cogshop_case.yaml for case Fornebu
+
+file_load_sequence:
+  - label: "water_value_cut_file_reservoir_mapping"
+    pick: "latest"
+    external_id: "SHOP_Fornebu_water_value_cut_file_reservoir_mapping"
+    file_type: "ascii"
+  - label: "water_value_cut_file"
+    pick: "latest"
+    external_id: "SHOP_Fornebu_water_value_cut_file"
+    file_type: "ascii"
