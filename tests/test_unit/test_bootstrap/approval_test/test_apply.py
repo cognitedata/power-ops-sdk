@@ -10,7 +10,7 @@ except ModuleNotFoundError:
 
 from cognite.client.testing import monkeypatch_cognite_client
 
-from cognite.powerops.bootstrap.cli import apply
+from cognite.powerops.cli import apply
 from tests.constants import REPO_ROOT, SENSITIVE_TESTS
 from tests.test_unit.test_bootstrap.approval_test.mock_resource_create_classes import (
     MockAssetsCreate,
