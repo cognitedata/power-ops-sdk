@@ -421,14 +421,14 @@ colorama = {version = "*", markers = "platform_system == \"Windows\""}
 
 [[package]]
 name = "cognite-pygen"
-version = "0.11.0"
+version = "0.11.1"
 description = "Cognite Python SDK Generator"
 category = "dev"
 optional = false
 python-versions = ">=3.9,<4.0"
 files = [
-    {file = "cognite_pygen-0.11.0-py3-none-any.whl", hash = "sha256:57553d1fd0b45312a9adfc952f72a6b091ad9b73a1276cea65353585c00aa330"},
-    {file = "cognite_pygen-0.11.0.tar.gz", hash = "sha256:cd8e8baea89ba045c691bc85745c8836d10198e5f047ccb40752f98138c942d8"},
+    {file = "cognite_pygen-0.11.1-py3-none-any.whl", hash = "sha256:9e57a6321b52939c0a191c80f0c66b134f84ebc63e5fb1a8e2b160d899604c2e"},
+    {file = "cognite_pygen-0.11.1.tar.gz", hash = "sha256:24f5425c451bdb51c6ab2d466dbed4d42673758ae99a228acea6728d3130665a"},
 ]
 
 [package.dependencies]
