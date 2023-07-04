@@ -1,6 +1,4 @@
-import os
-import shutil
-import tempfile
+from pathlib import Path
 
 import pytest
 import yaml
@@ -19,13 +17,6 @@ def case():
           zzz: 42
         """
     )
-
-
-@pytest.fixture
-def tmp_dir():
-    tmp_path = tempfile.mkdtemp(prefix="powerops-sdk-tmp-")
-    yield tmp_path
-    shutil.rmtree(tmp_path)
 
 
 def test_case_loading():
@@ -59,16 +50,15 @@ def test_yaml(case):
     assert expected == case.yaml
 
 
-def test_save_yaml(case, tmp_dir):
-    tmp_file = os.path.join(tmp_dir, "test_save.yaml")
+def test_save_yaml(case, tmp_path: Path):
+    tmp_file = tmp_path / "test_save.yaml"
     case.save_yaml(tmp_file)
-    with open(tmp_file) as fh:
-        value = fh.read()
+    value = tmp_file.read_text()
     assert yaml.safe_load(value) == case.data
 
 
-def test_load_yaml(tmp_dir):
-    with tempfile.NamedTemporaryFile("w", dir=tmp_dir) as fh:
+def test_load_yaml(tmp_path: Path):
+    with (tmp_path / "test_load.yaml").open("w") as fh:
         fh.write("foo:\n  bar")
         fh.flush()
         case = Case.from_yaml_file(fh.name)
