@@ -21,24 +21,6 @@ def env_vars_to_vars(env_vars: dict[str, str]) -> dict[str, str]:
 
 
 @pytest.fixture
-def setting_environmental_vars():
-    setting_vars = {
-        "SETTINGS__COGNITE__PROJECT": "BAR",
-        "SETTINGS__COGNITE__CLIENT_ID": "mockclient",
-        "SETTINGS__COGNITE__LOGIN_FLOW": "interactive",
-        "SETTINGS__COGNITE__CDF_CLUSTER": "mockfield",
-        "SETTINGS__COGNITE__TENANT_ID": "mocktenant",
-        "SETTINGS__POWEROPS__READ_DATASET": "read_from_this_dataset",
-        "SETTINGS__POWEROPS__WRITE_DATASET": "write_to_this_dataset",
-        "SETTINGS__POWEROPS__cogshop_version": "987",
-    }
-    os.environ.update(setting_vars)
-    yield setting_vars
-    for var in setting_vars:
-        del os.environ[var]
-
-
-@pytest.fixture
 def settings_files(tmp_path: Path):
     settings_file = tmp_path / "settings.toml"
     secrets_file = tmp_path / ".secrets.toml"

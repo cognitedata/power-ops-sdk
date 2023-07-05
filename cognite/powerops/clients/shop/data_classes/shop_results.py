@@ -2,12 +2,14 @@ from __future__ import annotations
 
 import logging
 from functools import cached_property
-from typing import Callable, Optional, Union
+from typing import TYPE_CHECKING, Callable, Optional, Union
 
 import pandas as pd
 
-from cognite.powerops.clients.shop.data_classes import ShopRun
 from cognite.powerops.clients.shop.data_classes.shop_result_files import ShopLogFile, ShopResultFile, ShopYamlFile
+
+if TYPE_CHECKING:
+    from cognite.powerops.clients.shop.data_classes import ShopRun
 
 logger = logging.getLogger(__name__)
 

@@ -193,10 +193,10 @@ class BootstrapResourceCollection(BaseModel):
             {}
             if skip_dm
             else {
-                "file_refs": po_client.dm.file_refs,
-                "transformations": po_client.dm.transformations,
-                "mappings": po_client.dm.mappings,
-                "model_templates": po_client.dm.model_templates,
+                "file_refs": po_client.cog_shop.file_refs,
+                "transformations": po_client.cog_shop.transformations,
+                "mappings": po_client.cog_shop.mappings,
+                "model_templates": po_client.cog_shop.model_templates,
             }
         )
         for resource_type, api in dm_api_by_type.items():
@@ -359,7 +359,7 @@ class BootstrapResourceCollection(BaseModel):
             "model_templates",
         ]:
             # get the api for the resource type
-            api = getattr(po_client.dm, resource_type)
+            api = getattr(po_client.cog_shop, resource_type)
             # get all the resources from CDF
             actual_resources = api.list(limit=None)
             # convert actual resources to their "apply" form, for comparison

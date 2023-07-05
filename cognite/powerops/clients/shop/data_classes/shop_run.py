@@ -3,10 +3,12 @@ from __future__ import annotations
 import logging
 import time
 from enum import Enum
-from typing import Callable
+from typing import TYPE_CHECKING, Callable
 
-from cognite.powerops.clients.shop.data_classes.shop_results import ShopRunResult
 from cognite.powerops.clients.shop.data_classes.shop_run_event import ShopRunEvent
+
+if TYPE_CHECKING:
+    from cognite.powerops.clients.shop.data_classes.shop_results import ShopRunResult
 
 logger = logging.getLogger(__name__)
 

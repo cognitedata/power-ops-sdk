@@ -14,4 +14,4 @@ class ShopClient:
         self.models = ShopModelsAPI(cogshop)
         self.files = ShopFilesAPI(client)
         self.results = ShopRunResultsAPI(client, self.files)
-        self.runs = ShopRunsAPI(cogshop)
+        self.runs = ShopRunsAPI(client, data_set_api, self.results, cogshop_version)

@@ -47,7 +47,7 @@ def apply_test_cases():
 
 
 @pytest.mark.parametrize("input_dir, market, compare_file_path", list(apply_test_cases()))
-def test_apply(input_dir: Path, market: str, compare_file_path: Path, data_regression):
+def test_apply(input_dir: Path, market: str, compare_file_path: Path, data_regression, setting_environmental_vars):
     mock_resources = {
         "assets": MockAssetsCreate(),
         "sequences": MockSequencesCreate(),
