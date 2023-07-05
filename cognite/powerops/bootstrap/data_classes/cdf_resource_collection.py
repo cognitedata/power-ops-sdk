@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import logging
-from typing import TYPE_CHECKING, Union, cast
+from typing import Union, cast
 
 import pandas as pd
 from cognite.client.data_classes import Asset, Event, LabelDefinition, Relationship, Sequence
@@ -23,10 +23,8 @@ from cognite.powerops.clients.cogshop.data_classes import (
     TransformationApply,
 )
 from cognite.powerops.clients.cogshop.data_classes._core import DomainModel, DomainModelApply
+from cognite.powerops.clients.powerops_client import PowerOpsClient
 from cognite.powerops.utils.cdf.calls import upsert_cognite_resources
-
-if TYPE_CHECKING:
-    from cognite.powerops import PowerOpsClient
 
 logger = logging.getLogger(__name__)
 

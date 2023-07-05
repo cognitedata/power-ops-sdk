@@ -8,6 +8,8 @@ from cognite.powerops.bootstrap.bootstrap import (
     validate_config,
 )
 from cognite.powerops.bootstrap.logger import configure_debug_logging
+from cognite.powerops.clients.powerops_client import PowerOpsClient
+from cognite.powerops.utils.cdf import Settings, get_client_config
 
 
 def plan(path: Path, market: str):
@@ -24,8 +26,18 @@ def plan(path: Path, market: str):
         market,
     )
 
+    settings = Settings()
+    client_config = get_client_config(settings.cognite)
+    client = PowerOpsClient(
+        settings.powerops.read_dataset,
+        settings.powerops.write_dataset,
+        settings.powerops.cogshop_version,
+        config=client_config,
+    )
+
     # 2.b - preview diff
     _preview_resources_diff(
+        client,
         bootstrap_resources,
         config.constants.data_set_external_id,
     )
@@ -44,8 +56,17 @@ def apply(path: Path, market: str):
         market,
     )
 
+    settings = Settings()
+    client_config = get_client_config(settings.cognite)
+    client = PowerOpsClient(
+        settings.powerops.read_dataset,
+        settings.powerops.write_dataset,
+        settings.powerops.cogshop_version,
+        config=client_config,
+    )
     # Step 3 - write bootstrap resources from diffs to CDF
     _create_cdf_resources(
+        client,
         bootstrap_resources,
         config.constants.data_set_external_id,
         config.constants.overwrite_data,

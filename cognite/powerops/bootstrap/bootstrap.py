@@ -29,6 +29,7 @@ from cognite.powerops.bootstrap.utils.resource_generation import (
     generate_relationships_from_price_area_to_price,
     generate_resources_and_data,
 )
+from cognite.powerops.clients import PowerOpsClient
 from cognite.powerops.clients.cogshop.data_classes import (
     FileRefApply,
     MappingApply,
@@ -369,26 +370,28 @@ def _transform(
 
 
 def _preview_resources_diff(
+    client: PowerOpsClient,
     bootstrap_resources: BootstrapResourceCollection,
     data_set_external_id: str,
 ) -> None:
     # Preview differences between bootstrap resources and CDF resources
 
     cdf_bootstrap_resources = BootstrapResourceCollection.from_cdf(
-        po_client=po_client, data_set_external_id=data_set_external_id
+        po_client=client, data_set_external_id=data_set_external_id
     )
 
     print(BootstrapResourceCollection.prettify_differences(bootstrap_resources.difference(cdf_bootstrap_resources)))
 
 
 def _create_cdf_resources(
+    client: PowerOpsClient,
     bootstrap_resources: BootstrapResourceCollection,
     data_set_external_id: str,
     overwrite_data: bool,
     skip_dm: bool,
 ) -> None:
     bootstrap_resources.write_to_cdf(
-        po_client=po_client,
+        po_client=client,
         data_set_external_id=data_set_external_id,
         overwrite=overwrite_data,
         skip_dm=skip_dm,
