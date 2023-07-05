@@ -3,16 +3,15 @@ from __future__ import annotations
 import logging
 import tempfile
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Generic, NewType, Optional, Sequence, TextIO, Tuple, TypeVar, Union, cast
+from typing import Any, Generic, NewType, Optional, Sequence, TextIO, Tuple, TypeVar, Union, cast
 
 import yaml
+from cognite.client import CogniteClient
 from cognite.client.data_classes import FileMetadata
 
-from cognite.powerops.bootstrap.utils.cdf_utils import retrieve_relationships_from_source_ext_id
-from cognite.powerops.client.data_classes import ShopLogFile, ShopResultFile, ShopYamlFile
-
-if TYPE_CHECKING:
-    from cognite.powerops import PowerOpsClient
+# from cognite.powerops.bootstrap.utils.cdf_utils import retrieve_relationships_from_source_ext_id
+from cognite.powerops.clients.shop.data_classes import ShopLogFile, ShopResultFile, ShopYamlFile
+from cognite.powerops.utils.cdf.calls import retrieve_relationships_from_source_ext_id
 
 logger = logging.getLogger(__name__)
 
@@ -22,14 +21,14 @@ EncodingT = NewType("EncodingT", str)
 
 
 class ShopFilesAPI:
-    def __init__(self, po_client: PowerOpsClient) -> None:
-        self._po_client = po_client
-        self.log_files = ShopLogFilesAPI(po_client)
-        self.yaml_files = ShopYamlFilesAPI(po_client)
+    def __init__(self, client: CogniteClient) -> None:
+        self._client = client
+        self.log_files = ShopLogFilesAPI(self)
+        self.yaml_files = ShopYamlFilesAPI(self)
 
     def download_to_disk(self, shop_file_id: str, dir_path: Path) -> None:
         """Download a file from CDF to local filesystem."""
-        self._po_client.cdf.files.download_to_path(path=dir_path / shop_file_id, external_id=shop_file_id)
+        self._client.files.download_to_path(path=dir_path / shop_file_id, external_id=shop_file_id)
 
     def retrieve_related_files_metadata(
         self, source_external_id: str, label_ext_id: Optional[Union[str, Sequence[str]]] = None
@@ -39,22 +38,22 @@ class ShopFilesAPI:
         Optionally restrict the results by relationship labels.
         """
         relationships = retrieve_relationships_from_source_ext_id(
-            self._po_client.cdf,
+            self._client,
             source_ext_id=source_external_id,
             label_ext_id=label_ext_id,
             target_types=["file"],
         )
         if not relationships:
             return []
-        return self._po_client.cdf.files.retrieve_multiple(
+        return self._client.files.retrieve_multiple(
             external_ids=[rel.target_external_id for rel in relationships],
             ignore_unknown_ids=True,
         )
 
 
 class ShopResultFilesAPI(Generic[ShopResultFileT]):
-    def __init__(self, po_client: PowerOpsClient) -> None:
-        self._po_client = po_client
+    def __init__(self, shop_files: ShopFilesAPI) -> None:
+        self._shop_files = shop_files
 
     def retrieve(self, file_metadata: FileMetadata) -> ShopResultFileT:
         raise NotImplementedError()
@@ -66,7 +65,7 @@ class ShopResultFilesAPI(Generic[ShopResultFileT]):
         """Download the file, parse it and return the content and encoding used to open the file."""
         encoding: EncodingT = file_metadata.metadata.get("encoding", "utf-8")
         with tempfile.TemporaryDirectory() as tmp_dir:
-            self._po_client.shop.files.download_to_disk(file_metadata.external_id, Path(tmp_dir))
+            self._shop_files.download_to_disk(file_metadata.external_id, Path(tmp_dir))
             tmp_path = Path(tmp_dir) / file_metadata.external_id
             content_and_encoding: Optional[Tuple[Any, EncodingT]]
             try:

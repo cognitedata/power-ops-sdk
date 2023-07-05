@@ -7,8 +7,9 @@ import pandas as pd
 from cognite.client.data_classes import Asset, Relationship, Sequence
 
 from cognite.powerops.bootstrap.config import GeneratorTimeSeriesMapping, PlantTimeSeriesMapping, WatercourseConfig
-from cognite.powerops.bootstrap.data_classes import BootstrapResourceCollection, Plant, SequenceContent
+from cognite.powerops.bootstrap.data_classes.cdf_resource_collection import BootstrapResourceCollection, SequenceContent
 from cognite.powerops.bootstrap.data_classes.generator import Generator
+from cognite.powerops.bootstrap.data_classes.plant import Plant
 from cognite.powerops.bootstrap.utils.asset_types import price_area_asset, reservoir_asset, watercourse_asset
 from cognite.powerops.bootstrap.utils.common import replace_nordic_letters
 from cognite.powerops.bootstrap.utils.relationship_types import (

@@ -3,10 +3,10 @@ from typing import Optional
 from cognite.client.data_classes import Asset, Label, Relationship
 from pydantic import BaseModel
 
+from cognite.powerops._shared_data_classes import AssetLabels
+from cognite.powerops._shared_data_classes import RelationshipLabels as rl
 from cognite.powerops.bootstrap.config import GeneratorTimeSeriesMapping
 from cognite.powerops.bootstrap.data_classes.cdf_resource_collection import BootstrapResourceCollection
-from cognite.powerops.bootstrap.utils.labels import AssetLabels
-from cognite.powerops.bootstrap.utils.labels import RelationshipLabels as rl
 from cognite.powerops.bootstrap.utils.relationship_types import asset_to_time_series
 
 ExternalId = str

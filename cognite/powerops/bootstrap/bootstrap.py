@@ -6,7 +6,7 @@ from hashlib import md5
 from pathlib import Path
 from typing import List, Literal, Optional
 
-from cognite.powerops import PowerOpsClient
+from cognite.powerops._shared_data_classes import create_labels
 from cognite.powerops.bootstrap.config import (
     BenchmarkingConfig,
     BidMatrixGeneratorConfig,
@@ -23,20 +23,18 @@ from cognite.powerops.bootstrap.data_classes.shop_file_config import ShopFileCon
 from cognite.powerops.bootstrap.data_classes.shop_output_definition import ShopOutputConfig
 from cognite.powerops.bootstrap.data_classes.time_series_mapping import TimeSeriesMapping, write_mapping_to_sequence
 from cognite.powerops.bootstrap.utils.files import process_yaml_file
-from cognite.powerops.bootstrap.utils.labels import create_labels
 from cognite.powerops.bootstrap.utils.powerops_asset_hierarchy import create_skeleton_asset_hierarchy
 from cognite.powerops.bootstrap.utils.powerops_status_events import create_bootstrap_finished_event
 from cognite.powerops.bootstrap.utils.resource_generation import (
     generate_relationships_from_price_area_to_price,
     generate_resources_and_data,
 )
-from cognite.powerops.client.dm_client.data_classes import (
+from cognite.powerops.clients.cogshop.data_classes import (
     FileRefApply,
     MappingApply,
     ModelTemplateApply,
     TransformationApply,
 )
-from cognite.powerops.utils.settings import settings
 
 logger = logging.getLogger(__name__)
 
@@ -285,10 +283,9 @@ def _load_config(path: Path) -> BootstrapConfig:
 def _transform(
     config: BootstrapConfig,
     path: Path,
+    cognite_project: str,
     market: str = "Dayahead",
 ) -> BootstrapResourceCollection:
-    cognite_project = settings.cognite.project
-
     constants = config.constants
     _ = [w.set_shop_yaml_paths(path) for w in config.watercourses]
     watercourse_directories = {w.name: "/".join((path / w.directory).parts) for w in config.watercourses}
@@ -376,7 +373,7 @@ def _preview_resources_diff(
     data_set_external_id: str,
 ) -> None:
     # Preview differences between bootstrap resources and CDF resources
-    po_client = PowerOpsClient.from_settings()
+
     cdf_bootstrap_resources = BootstrapResourceCollection.from_cdf(
         po_client=po_client, data_set_external_id=data_set_external_id
     )
@@ -390,7 +387,6 @@ def _create_cdf_resources(
     overwrite_data: bool,
     skip_dm: bool,
 ) -> None:
-    po_client = PowerOpsClient.from_settings()
     bootstrap_resources.write_to_cdf(
         po_client=po_client,
         data_set_external_id=data_set_external_id,

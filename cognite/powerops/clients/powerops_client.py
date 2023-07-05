@@ -2,12 +2,10 @@ from functools import cached_property
 
 from cognite.client import ClientConfig, CogniteClient
 
-from cognite.powerops.bootstrap.utils import get_client_config
-from cognite.powerops.bootstrap.utils.cdf_utils import retrieve_dataset
-from cognite.powerops.client.api.shop_api import ShopAPI
-from cognite.powerops.client.config_client import ConfigurationClient
-from cognite.powerops.client.dm_client import CogShopClient
-from cognite.powerops.utils.settings import settings
+from cognite.powerops.clients.cogshop import CogShopClient
+from cognite.powerops.clients.core import CoreClient
+from cognite.powerops.clients.market_configuration import MarketConfigClient
+from cognite.powerops.clients.shop import ShopClient
 
 
 class PowerOpsClient:
@@ -23,28 +21,24 @@ class PowerOpsClient:
         self._cogshop_version = cogshop_version
 
         self.cdf = CogniteClient(config)
-        self.dm = CogShopClient(config)
-
-        self.configurations = ConfigurationClient()
-
-        self.shop = ShopAPI(po_client=self)
-
-    @classmethod
-    def from_settings(cls):
-        return cls(
-            read_dataset=settings.powerops.read_dataset,
-            write_dataset=settings.powerops.write_dataset,
-            cogshop_version=settings.powerops.cogshop_version,
-            config=get_client_config(),
-        )
+        self.core = CoreClient(config)
+        self.market_configuration = MarketConfigClient(config)
+        self.cog_shop = CogShopClient(config)
+        self.shop = ShopClient(self.cog_shop)
 
     @cached_property
     def read_dataset_id(self) -> int:
-        return retrieve_dataset(self.cdf, external_id=self._read_dataset).id
+        return self._retrieve_with_raise_if_none(self._write_dataset).id
 
     @cached_property
     def write_dataset_id(self) -> int:
-        return retrieve_dataset(self.cdf, external_id=self._write_dataset).id
+        return self._retrieve_with_raise_if_none(self._write_dataset).id
+
+    def _retrieve_with_raise_if_none(self, dataset):
+        dataset = self.cdf.data_sets.retrieve(dataset)
+        if dataset is None:
+            raise ValueError(f"Dataset {dataset} not found.")
+        return dataset
 
     @property
     def cogshop_version(self) -> str:

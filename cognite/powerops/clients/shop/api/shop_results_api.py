@@ -3,21 +3,16 @@ from __future__ import annotations
 import json
 import logging
 from json import JSONDecodeError
-from typing import TYPE_CHECKING, Optional
+from typing import Optional
 
 import pandas as pd
 from cognite.client import CogniteClient
 
-from cognite.powerops.bootstrap.utils import RelationshipLabels
-from cognite.powerops.bootstrap.utils.cdf_utils import retrieve_relationships_from_source_ext_id
-from cognite.powerops.client.data_classes.shop_result_files import ShopLogFile, ShopYamlFile
-from cognite.powerops.client.data_classes.shop_results import ObjectiveFunction, ShopRunResult
-from cognite.powerops.client.data_classes.shop_results_compare import ShopResultsCompare
-
-if TYPE_CHECKING:
-    from cognite.powerops import PowerOpsClient
-    from cognite.powerops.client.data_classes.shop_run import ShopRun
-
+from cognite.powerops._shared_data_classes import RelationshipLabels
+from cognite.powerops.clients.shop.data_classes.shop_result_files import ShopLogFile, ShopYamlFile
+from cognite.powerops.clients.shop.data_classes.shop_results import ObjectiveFunction, ShopRunResult
+from cognite.powerops.clients.shop.data_classes.shop_results_compare import ShopResultsCompare
+from cognite.powerops.utils.cdf.calls import retrieve_relationships_from_source_ext_id
 
 logger = logging.getLogger(__name__)
 

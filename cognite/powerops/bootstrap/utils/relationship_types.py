@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from cognite.client.data_classes import Asset, Label, Relationship, Sequence
 
-from cognite.powerops.bootstrap.utils.labels import RelationshipLabels
+from cognite.powerops._shared_data_classes import RelationshipLabels
 
 
 def basic_relationship(

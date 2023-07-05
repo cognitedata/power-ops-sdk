@@ -3,7 +3,7 @@ from typing import Optional
 
 from cognite.client.data_classes import Asset, Label
 
-from cognite.powerops.bootstrap.utils.labels import AssetLabels
+from cognite.powerops._shared_data_classes import AssetLabels
 
 
 def price_area_asset(name: str) -> Asset:

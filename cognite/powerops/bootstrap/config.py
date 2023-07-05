@@ -10,6 +10,7 @@ from typing import ClassVar, Dict, Generator, List, Optional, Tuple
 from cognite.client.data_classes import Asset, Label, Sequence
 from pydantic import BaseModel, Field, root_validator, validator
 
+from cognite.powerops._shared_data_classes import AssetLabels, RelationshipLabels
 from cognite.powerops.bootstrap.data_classes.cdf_resource_collection import (
     BootstrapResourceCollection,
     SequenceContent,
@@ -29,10 +30,9 @@ from cognite.powerops.bootstrap.data_classes.time_series_mapping import (
     write_mapping_to_sequence,
 )
 from cognite.powerops.bootstrap.data_classes.transformation import Transformation, TransformationType
-from cognite.powerops.bootstrap.utils.cdf_utils import simple_relationship
 from cognite.powerops.bootstrap.utils.common import print_warning
-from cognite.powerops.bootstrap.utils.labels import AssetLabels, RelationshipLabels
 from cognite.powerops.bootstrap.utils.serializer import load_yaml
+from cognite.powerops.utils.cdf.resource_creation import simple_relationship
 
 
 class Watercourse(BaseModel):

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import logging
-from typing import TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, Union, cast
 
 import pandas as pd
 from cognite.client.data_classes import Asset, Event, LabelDefinition, Relationship, Sequence
@@ -10,20 +10,20 @@ from deepdiff import DeepDiff
 from pydantic import BaseModel, Extra
 
 from cognite.powerops.bootstrap.data_classes.shop_file_config import ShopFileConfig
-from cognite.powerops.bootstrap.utils.cdf_utils import (
-    to_dm_apply,
-    upsert_cognite_dm_resources,
-    upsert_cognite_resources,
-)
 from cognite.powerops.bootstrap.utils.common import dump_cdf_resource
 from cognite.powerops.bootstrap.utils.files import upload_shop_config_file
-from cognite.powerops.client.dm_client.data_classes import (
+from cognite.powerops.clients.cogshop.data_classes import (
+    FileRef,
     FileRefApply,
+    Mapping,
     MappingApply,
+    ModelTemplate,
     ModelTemplateApply,
+    Transformation,
     TransformationApply,
 )
-from cognite.powerops.client.dm_client.data_classes._core import DomainModelApply
+from cognite.powerops.clients.cogshop.data_classes._core import DomainModel, DomainModelApply
+from cognite.powerops.utils.cdf.calls import upsert_cognite_resources
 
 if TYPE_CHECKING:
     from cognite.powerops import PowerOpsClient
@@ -204,7 +204,8 @@ class BootstrapResourceCollection(BaseModel):
         for resource_type, api in dm_api_by_type.items():
             resources = list(getattr(self, resource_type).values())
             logger.debug(f"Processing {len(resources)} {resource_type}...")
-            upsert_cognite_dm_resources(api, resources)
+            for resource in resources:
+                api.apply(resource, replace=True)
 
         logger.debug(f"Processing {len(self.sequence_content)} sequences...")
         for sequence_external_id, sequence_data in self.sequence_content.items():
@@ -387,3 +388,25 @@ class BootstrapResourceCollection(BaseModel):
             bootstrap_resource_collection.add(SequenceContent(sequence_external_id=external_id, data=sequence_data))
 
         return bootstrap_resource_collection
+
+
+def to_dm_apply(instances: list[DomainModel] | DomainModel) -> list[DomainModelApply]:
+    items = cast(list[DomainModel], list(instances))
+    apply_items = []
+
+    type_map = {
+        ModelTemplate: ModelTemplateApply,
+        Mapping: MappingApply,
+        Transformation: TransformationApply,
+        FileRef: FileRefApply,
+    }
+
+    for item in items:
+        if type(item) not in type_map:
+            raise NotImplementedError(f"Dont know how to convert {item!r}.")
+        apply_type = type_map[type(item)]
+
+        apply_items.append(
+            apply_type(**{field: value for field, value in item.dict().items() if field in apply_type.__fields__})
+        )
+    return apply_items

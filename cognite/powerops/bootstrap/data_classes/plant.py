@@ -7,12 +7,12 @@ from typing import List, NamedTuple, Optional, Tuple
 from cognite.client.data_classes import Asset, Label, Relationship
 from pydantic import BaseModel, validator
 
+from cognite.powerops._shared_data_classes import AssetLabels as al
+from cognite.powerops._shared_data_classes import RelationshipLabels as rl
 from cognite.powerops.bootstrap.config import PlantTimeSeriesMapping
 from cognite.powerops.bootstrap.data_classes.cdf_resource_collection import BootstrapResourceCollection
 from cognite.powerops.bootstrap.data_classes.time_series_mapping import TimeSeriesMapping
 from cognite.powerops.bootstrap.utils.common import print_warning
-from cognite.powerops.bootstrap.utils.labels import AssetLabels as al
-from cognite.powerops.bootstrap.utils.labels import RelationshipLabels as rl
 from cognite.powerops.bootstrap.utils.relationship_types import (
     asset_to_time_series,
     plant_to_generator,

@@ -6,12 +6,8 @@ from typing import TYPE_CHECKING, Optional, Union
 
 import pandas as pd
 
-from cognite.powerops.client.data_classes.shop_result_files import ShopLogFile, ShopResultFile, ShopYamlFile
-
-if TYPE_CHECKING:
-    from cognite.powerops import PowerOpsClient
-    from cognite.powerops.client.data_classes.shop_run import ShopRun
-
+from cognite.powerops.clients.cogshop import CogShopClient
+from cognite.powerops.clients.shop.data_classes.shop_result_files import ShopLogFile, ShopResultFile, ShopYamlFile
 
 logger = logging.getLogger(__name__)
 
@@ -19,13 +15,13 @@ logger = logging.getLogger(__name__)
 class ShopRunResult:
     def __init__(
         self,
-        po_client: PowerOpsClient,
+        cog_shop: CogShopClient,
         shop_run: ShopRun,
         cplex: ShopLogFile,
         shop_messages: ShopLogFile,
         post_run: ShopYamlFile,
     ) -> None:
-        self._po_client = po_client
+        self._cog_shop = cog_shop
         self._shop_run = shop_run
         self._cplex = cplex
         self._shop_messages = shop_messages
@@ -41,7 +37,7 @@ class ShopRunResult:
 
     @cached_property
     def objective_function(self) -> ObjectiveFunction:
-        return self._po_client.shop.results.retrieve_objective_function(self._shop_run)
+        return self._cog_shop.shop.results.retrieve_objective_function(self._shop_run)
 
     def error_message(self) -> Optional[str]:
         if not self._shop_run.succeeded:

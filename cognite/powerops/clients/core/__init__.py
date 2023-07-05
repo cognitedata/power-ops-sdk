@@ -1,3 +1,3 @@
-from ._api_client import CogniteClient
+from ._api_client import CoreClient
 
-__all__ = ["CogniteClient"]
+__all__ = ["CoreClient"]

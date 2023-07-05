@@ -4,7 +4,7 @@ from cognite.client import CogniteClient
 from cognite.client.exceptions import CogniteReadTimeout
 from pydantic import BaseModel, Field
 
-from cognite.powerops.bootstrap.utils import retry
+from cognite.powerops.utils.retry import retry
 
 
 class Transformation(BaseModel):

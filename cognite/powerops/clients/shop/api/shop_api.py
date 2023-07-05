@@ -2,14 +2,8 @@ from __future__ import annotations
 
 import logging
 import random
-from typing import TYPE_CHECKING
 
-from cognite.powerops.client.api.shop_result_files_api import ShopFilesAPI
-from cognite.powerops.client.api.shop_results_api import ShopRunResultsAPI
-from cognite.powerops.client.api.shop_run_api import ShopRunsAPI
-
-if TYPE_CHECKING:
-    from cognite.powerops import PowerOpsClient
+from cognite.powerops.clients.cogshop import CogShopClient
 
 logger = logging.getLogger(__name__)
 
@@ -26,8 +20,8 @@ class ShopModel:
 
 
 class ShopModelsAPI:
-    def __init__(self, po_client: PowerOpsClient):
-        self._po_client = po_client
+    def __init__(self, cogshop: CogShopClient):
+        self._cogshop = cogshop
 
     def list(self) -> list[ShopModel]:
         return [ShopModel()]
@@ -36,12 +30,3 @@ class ShopModelsAPI:
         m = ShopModel()
         m.model_id = model_id
         return m
-
-
-class ShopAPI:
-    def __init__(self, po_client: PowerOpsClient):
-        self._po_client = po_client
-        self.models = ShopModelsAPI(po_client)
-        self.runs = ShopRunsAPI(po_client)
-        self.results = ShopRunResultsAPI(po_client)
-        self.files = ShopFilesAPI(po_client)

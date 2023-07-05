@@ -12,7 +12,7 @@ from cognite.client.data_classes import FileMetadata
 from matplotlib import pyplot as plt
 
 from cognite.powerops.bootstrap.utils.plotting import ax_plot_time_series, create_time_series_plot
-from cognite.powerops.client.data_classes.helpers import get_dict_dot_keys, is_time_series_dict
+from cognite.powerops.clients.shop.data_classes.helpers import get_dict_dot_keys, is_time_series_dict
 
 logger = logging.getLogger(__name__)
 
