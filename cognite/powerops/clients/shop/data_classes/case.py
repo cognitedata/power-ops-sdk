@@ -51,8 +51,7 @@ class Case:
         self._extra_files: list[FileRefT] = []
         self._mapping_files: list[FileRefT] = []
 
-        yaml_docs = list(yaml.safe_load_all(data))
-        if yaml_docs:
+        if yaml_docs := list(yaml.safe_load_all(data)):
             self.data = yaml_docs[0]
             self._handle_additional_yaml_documents(yaml_docs[1:])
 

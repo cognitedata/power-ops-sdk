@@ -3,13 +3,10 @@ from __future__ import annotations
 import logging
 import time
 from enum import Enum
-from typing import TYPE_CHECKING
+from typing import Callable
 
 from cognite.powerops.clients.shop.data_classes.shop_results import ShopRunResult
 from cognite.powerops.clients.shop.data_classes.shop_run_event import ShopRunEvent
-
-if TYPE_CHECKING:
-    from cognite.powerops import PowerOpsClient
 
 logger = logging.getLogger(__name__)
 
@@ -22,11 +19,13 @@ class ShopRun:
 
     def __init__(
         self,
-        po_client: PowerOpsClient,
+        check_status: Callable[[str], ShopRun.Status],
+        retrieve_results: Callable[[ShopRun], ShopRunResult],
         *,
         shop_run_event: ShopRunEvent,
     ) -> None:
-        self._po_client = po_client
+        self._check_status = check_status
+        self._retrieve_results = retrieve_results
         self.shop_run_event = shop_run_event
 
     @property
@@ -43,7 +42,7 @@ class ShopRun:
 
     @property
     def status(self) -> ShopRun.Status:
-        return self._po_client.shop.runs.retrieve_status(self.shop_run_event.external_id)
+        return self._check_status(self.shop_run_event.external_id)
 
     def wait_until_complete(self) -> None:
         while self.in_progress:
@@ -56,7 +55,7 @@ class ShopRun:
             if self.in_progress:
                 logger.warning(f"{self.shop_run_event.external_id} is still running, waiting for results...")
             self.wait_until_complete()
-        return self._po_client.shop.results.retrieve(self)
+        return self._retrieve_results(self)
 
     def __repr__(self) -> str:
         return f'<ShopRun status="{self.status}" event_external_id="{self.shop_run_event.external_id}">'

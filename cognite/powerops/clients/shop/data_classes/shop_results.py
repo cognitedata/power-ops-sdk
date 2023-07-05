@@ -2,11 +2,11 @@ from __future__ import annotations
 
 import logging
 from functools import cached_property
-from typing import TYPE_CHECKING, Optional, Union
+from typing import Callable, Optional, Union
 
 import pandas as pd
 
-from cognite.powerops.clients.cogshop import CogShopClient
+from cognite.powerops.clients.shop.data_classes import ShopRun
 from cognite.powerops.clients.shop.data_classes.shop_result_files import ShopLogFile, ShopResultFile, ShopYamlFile
 
 logger = logging.getLogger(__name__)
@@ -15,13 +15,13 @@ logger = logging.getLogger(__name__)
 class ShopRunResult:
     def __init__(
         self,
-        cog_shop: CogShopClient,
+        retrieve_objective_function: Callable[[ShopRun], ObjectiveFunction],
         shop_run: ShopRun,
         cplex: ShopLogFile,
         shop_messages: ShopLogFile,
         post_run: ShopYamlFile,
     ) -> None:
-        self._cog_shop = cog_shop
+        self._retrieve_objective_function = retrieve_objective_function
         self._shop_run = shop_run
         self._cplex = cplex
         self._shop_messages = shop_messages
@@ -37,7 +37,7 @@ class ShopRunResult:
 
     @cached_property
     def objective_function(self) -> ObjectiveFunction:
-        return self._cog_shop.shop.results.retrieve_objective_function(self._shop_run)
+        return self._retrieve_objective_function(self._shop_run)
 
     def error_message(self) -> Optional[str]:
         if not self._shop_run.succeeded:

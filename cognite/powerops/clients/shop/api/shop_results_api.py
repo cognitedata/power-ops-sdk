@@ -9,6 +9,8 @@ import pandas as pd
 from cognite.client import CogniteClient
 
 from cognite.powerops._shared_data_classes import RelationshipLabels
+from cognite.powerops.clients.shop.api.shop_result_files_api import ShopFilesAPI
+from cognite.powerops.clients.shop.data_classes import ShopRun
 from cognite.powerops.clients.shop.data_classes.shop_result_files import ShopLogFile, ShopYamlFile
 from cognite.powerops.clients.shop.data_classes.shop_results import ObjectiveFunction, ShopRunResult
 from cognite.powerops.clients.shop.data_classes.shop_results_compare import ShopResultsCompare
@@ -18,8 +20,9 @@ logger = logging.getLogger(__name__)
 
 
 class ShopRunResultsAPI:
-    def __init__(self, po_client: PowerOpsClient):
-        self._po_client = po_client
+    def __init__(self, client: CogniteClient, files_api: ShopFilesAPI):
+        self._client = client
+        self._files_api = files_api
         self.compare = ShopResultsCompare()
 
     def retrieve(self, shop_run: ShopRun) -> ShopRunResult:
@@ -30,40 +33,39 @@ class ShopRunResultsAPI:
         cplex = None
         shop_messages = None
 
-        related_log_files = self._po_client.shop.files.retrieve_related_files_metadata(
+        related_log_files = self._files_api.retrieve_related_files_metadata(
             source_external_id=shop_run.shop_run_event.external_id,
             label_ext_id=RelationshipLabels.LOG_FILE,
         )
         for metadata in related_log_files:
             ext_id = metadata.external_id
             if ext_id.endswith(".log") and "cplex" in ext_id:
-                cplex: Optional[ShopLogFile] = self._po_client.shop.files.log_files.retrieve(metadata)
+                cplex: Optional[ShopLogFile] = self._files_api.log_files.retrieve(metadata)
             elif ext_id.endswith(".log") and "shop_messages" in ext_id:
-                shop_messages: Optional[ShopLogFile] = self._po_client.shop.files.log_files.retrieve(metadata)
+                shop_messages: Optional[ShopLogFile] = self._files_api.log_files.retrieve(metadata)
             elif ext_id.endswith(".yaml"):
-                post_run: Optional[ShopYamlFile] = self._po_client.shop.files.yaml_files.retrieve(metadata)
+                post_run: Optional[ShopYamlFile] = self._files_api.yaml_files.retrieve(metadata)
             else:
                 logger.error("Unknown file type")
-        return ShopRunResult(self._po_client, shop_run, cplex, shop_messages, post_run)
+        return ShopRunResult(self.retrieve_objective_function, shop_run, cplex, shop_messages, post_run)
 
     def retrieve_objective_function(self, shop_run: ShopRun) -> ObjectiveFunction:
         # TODO: ability to retrieve the objective function from the post run yaml file
-        cdf: CogniteClient = self._po_client.cdf
         relationships = retrieve_relationships_from_source_ext_id(
-            cdf,
+            self._client,
             shop_run.shop_run_event.external_id,
             RelationshipLabels.OBJECTIVE_SEQUENCE,
             target_types=["sequence"],
         )
-        sequences = cdf.sequences.retrieve_multiple(external_ids=[r.target_external_id for r in relationships])
+        sequences = self._client.sequences.retrieve_multiple(external_ids=[r.target_external_id for r in relationships])
         for seq in sequences:
             # sometimes the label is given to the non-objective sequence too
             if "objective" not in seq.name.lower():
                 continue
             # Data is inserted as a single row DataFrame
-            seq_data = cdf.sequences.data.retrieve_dataframe(external_id=seq.external_id, start=0, end=-1).to_dict(
-                "records"
-            )[0]
+            seq_data = self._client.sequences.data.retrieve_dataframe(
+                external_id=seq.external_id, start=0, end=-1
+            ).to_dict("records")[0]
             # This shape will always be (72, 7) 72 fields and 7 properties of each field
             column_definitions_df = pd.DataFrame(seq.columns)
 

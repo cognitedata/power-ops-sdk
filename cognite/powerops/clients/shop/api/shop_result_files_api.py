@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import contextlib
 import logging
 import tempfile
 from pathlib import Path
@@ -9,7 +10,6 @@ import yaml
 from cognite.client import CogniteClient
 from cognite.client.data_classes import FileMetadata
 
-# from cognite.powerops.bootstrap.utils.cdf_utils import retrieve_relationships_from_source_ext_id
 from cognite.powerops.clients.shop.data_classes import ShopLogFile, ShopResultFile, ShopYamlFile
 from cognite.powerops.utils.cdf.calls import retrieve_relationships_from_source_ext_id
 
@@ -37,18 +37,18 @@ class ShopFilesAPI:
         Retrieve metadata of files that have a relationship to specified source (externalId).
         Optionally restrict the results by relationship labels.
         """
-        relationships = retrieve_relationships_from_source_ext_id(
+        if relationships := retrieve_relationships_from_source_ext_id(
             self._client,
             source_ext_id=source_external_id,
             label_ext_id=label_ext_id,
             target_types=["file"],
-        )
-        if not relationships:
+        ):
+            return self._client.files.retrieve_multiple(
+                external_ids=[rel.target_external_id for rel in relationships],
+                ignore_unknown_ids=True,
+            )
+        else:
             return []
-        return self._client.files.retrieve_multiple(
-            external_ids=[rel.target_external_id for rel in relationships],
-            ignore_unknown_ids=True,
-        )
 
 
 class ShopResultFilesAPI(Generic[ShopResultFileT]):
@@ -85,10 +85,8 @@ class ShopResultFilesAPI(Generic[ShopResultFileT]):
         if encoding != "latin1":
             encoding = cast(EncodingT, "latin-1")
             with open(tmp_path, "r", encoding=encoding) as downloaded_file:
-                try:
+                with contextlib.suppress(ValueError, TypeError):
                     return self._parse_file(downloaded_file), encoding
-                except (ValueError, TypeError):
-                    pass
         return None
 
 

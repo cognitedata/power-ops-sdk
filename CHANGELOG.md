@@ -13,7 +13,7 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## [0.25.1] - 05-07-23
+## [0.25.0] - 05-07-23
 ### Changed
 
 * Refactored package into `bootstrap`, `clients` and `preprocessor` modules. This is likely a breaking change for most users of the package.
