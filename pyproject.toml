@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cognite-power-ops"
-version = "0.24.1"
+version = "0.25.0"
 description = "SDK for power markets operations on Cognite Data Fusion"
 readme = "README.md"
 authors = ["Cognite <support@cognite.com>"]
@@ -33,7 +33,7 @@ python = "^3.9"
 typer = "^0.9.0"
 PyYAML = "^6.0"
 cognite-sdk = {version = ">= 5.0.0, < 7.0", extras = ["pandas"]}
-pydantic = "^1.9.0"
+pydantic = "^1.10.1"
 cachelib = "^0.10.2"
 loguru = "^0.7.0"
 deepdiff = "^6.3.0"
@@ -60,7 +60,7 @@ docs = ["mkdocs", "mkdocs-jupyter", "mkdocs-material", "mkdocs-material-extensio
     "mkdocs-git-authors-plugin", "mkdocs-gitbook", "mkdocs-glightbox", "pymdown-extensions", "mkdocstrings"]
 
 [tool.poetry.scripts]
-powerops = "cognite.powerops.main:main"
+powerops = "cognite.powerops.cli:main"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.2.2"

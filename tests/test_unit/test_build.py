@@ -5,7 +5,7 @@ try:
 except ModuleNotFoundError:
     import tomli as tomllib  # py < 3.11
 
-from cognite.powerops import version
+from cognite.powerops import __version__ as powerops_version
 from tests.constants import REPO_ROOT
 
 
@@ -19,8 +19,8 @@ def test_matching_versions():
         raise ValueError("Failed to obtain changelog version")
     changelog_version = changelog_version_result.groups()[0]
 
-    assert version.__version__ == version_in_pyproject_toml == changelog_version, (
+    assert powerops_version == version_in_pyproject_toml == changelog_version, (
         f"Version in pyproject.toml ({version_in_pyproject_toml}) does not match version in "
-        f"cognite/powerops/version.py ({version.__version__}) or in "
+        f"cognite/powerops/version.py ({powerops_version}) or in "
         f"the CHANGELOG.md {changelog_version}"
     )

@@ -10,7 +10,7 @@ except ModuleNotFoundError:
 
 from cognite.client.testing import monkeypatch_cognite_client
 
-from cognite.powerops.main import apply
+from cognite.powerops.cli import apply
 from tests.constants import REPO_ROOT, SENSITIVE_TESTS
 from tests.test_unit.test_bootstrap.approval_test.mock_resource_create_classes import (
     MockAssetsCreate,
@@ -47,7 +47,7 @@ def apply_test_cases():
 
 
 @pytest.mark.parametrize("input_dir, market, compare_file_path", list(apply_test_cases()))
-def test_apply(input_dir: Path, market: str, compare_file_path: Path, data_regression):
+def test_apply(input_dir: Path, market: str, compare_file_path: Path, data_regression, setting_environmental_vars):
     mock_resources = {
         "assets": MockAssetsCreate(),
         "sequences": MockSequencesCreate(),
