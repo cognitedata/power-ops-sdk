@@ -4,7 +4,7 @@ from typing import ClassVar, Optional
 
 from cognite.client import data_modeling as dm
 
-from ._core import CircularModelApply, DomainModel, InstancesApply, TypeList
+from ._core import DomainModel, DomainModelApply, InstancesApply, TypeList
 
 __all__ = ["Transformation", "TransformationApply", "TransformationList"]
 
@@ -15,7 +15,7 @@ class Transformation(DomainModel):
     method: Optional[str] = None
 
 
-class TransformationApply(CircularModelApply):
+class TransformationApply(DomainModelApply):
     space: ClassVar[str] = "cogShop"
     arguments: str
     method: str

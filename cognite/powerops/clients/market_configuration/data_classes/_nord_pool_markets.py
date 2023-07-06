@@ -5,7 +5,7 @@ from typing import ClassVar, Optional
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
-from ._core import CircularModelApply, DomainModel, InstancesApply, TypeList
+from ._core import DomainModel, DomainModelApply, InstancesApply, TypeList
 
 __all__ = ["NordPoolMarket", "NordPoolMarketApply", "NordPoolMarketList"]
 
@@ -23,7 +23,7 @@ class NordPoolMarket(DomainModel):
     trade_lot: Optional[float] = Field(None, alias="tradeLot")
 
 
-class NordPoolMarketApply(CircularModelApply):
+class NordPoolMarketApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
     max_price: Optional[float] = None
     min_price: Optional[float] = None

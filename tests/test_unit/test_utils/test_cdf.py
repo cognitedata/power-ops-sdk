@@ -10,7 +10,7 @@ from cognite.powerops.utils.cdf import Settings
 def env_vars_to_vars(env_vars: dict[str, str]) -> dict[str, str]:
     output = {}
     for k, v in env_vars.items():
-        parts = k.removeprefix(Settings.Config.env_prefix).split(Settings.Config.env_nested_delimiter)
+        parts = k.removeprefix(Settings.model_config["env_prefix"]).split(Settings.model_config["env_nested_delimiter"])
         level = output
         for key in parts[:-1]:
             level[key.lower()] = level.get(key.lower(), {})

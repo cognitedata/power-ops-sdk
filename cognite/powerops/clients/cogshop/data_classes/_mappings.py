@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, ClassVar, Optional, Union
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
-from ._core import CircularModelApply, DomainModel, DomainModelApply, InstancesApply, TypeList
+from ._core import DomainModel, DomainModelApply, InstancesApply, TypeList
 
 if TYPE_CHECKING:
     from ._transformations import TransformationApply
@@ -22,13 +22,13 @@ class Mapping(DomainModel):
     transformations: list[str] = []
 
 
-class MappingApply(CircularModelApply):
+class MappingApply(DomainModelApply):
     space: ClassVar[str] = "cogShop"
     aggregation: Optional[str] = None
     path: str
     retrieve: Optional[str] = None
     timeseries_external_id: Optional[str] = None
-    transformations: list[Union[str, "TransformationApply"]] = []
+    transformations: list[Union[str, "TransformationApply"]] = Field(default_factory=lambda: [], repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> InstancesApply:
         if self.external_id in cache:

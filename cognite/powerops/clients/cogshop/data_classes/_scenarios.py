@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, ClassVar, Optional, Union
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
-from ._core import CircularModelApply, DomainModel, DomainModelApply, InstancesApply, TypeList
+from ._core import DomainModel, DomainModelApply, InstancesApply, TypeList
 
 if TYPE_CHECKING:
     from ._commands_configs import CommandsConfigApply
@@ -25,12 +25,12 @@ class Scenario(DomainModel):
     name: Optional[str] = None
 
 
-class ScenarioApply(CircularModelApply):
+class ScenarioApply(DomainModelApply):
     space: ClassVar[str] = "cogShop"
-    commands: Optional[Union[str, "CommandsConfigApply"]] = None
-    extra_files: list[Union[str, "FileRefApply"]] = []
-    mappings_override: list[Union[str, "MappingApply"]] = []
-    model_template: Optional[Union[str, "ModelTemplateApply"]] = None
+    commands: Optional[Union[str, "CommandsConfigApply"]] = Field(None, repr=False)
+    extra_files: list[Union[str, "FileRefApply"]] = Field(default_factory=lambda: [], repr=False)
+    mappings_override: list[Union[str, "MappingApply"]] = Field(default_factory=lambda: [], repr=False)
+    model_template: Optional[Union[str, "ModelTemplateApply"]] = Field(None, repr=False)
     name: str
 
     def _to_instances_apply(self, cache: set[str]) -> InstancesApply:

@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, ClassVar, Optional, Union
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
-from ._core import CircularModelApply, DomainModel, DomainModelApply, InstancesApply, TypeList
+from ._core import DomainModel, DomainModelApply, InstancesApply, TypeList
 
 if TYPE_CHECKING:
     from ._plants import PlantApply
@@ -22,12 +22,12 @@ class PriceArea(DomainModel):
     watercourses: list[str] = []
 
 
-class PriceAreaApply(CircularModelApply):
+class PriceAreaApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
     day_ahead_price: Optional[str] = None
     name: Optional[str] = None
-    plants: list[Union[str, "PlantApply"]] = []
-    watercourses: list[Union[str, "WatercourseApply"]] = []
+    plants: list[Union[str, "PlantApply"]] = Field(default_factory=lambda: [], repr=False)
+    watercourses: list[Union[str, "WatercourseApply"]] = Field(default_factory=lambda: [], repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> InstancesApply:
         if self.external_id in cache:

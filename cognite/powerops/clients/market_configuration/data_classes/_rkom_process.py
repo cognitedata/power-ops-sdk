@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, ClassVar, Optional, Union
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
-from ._core import CircularModelApply, DomainModel, DomainModelApply, InstancesApply, TypeList
+from ._core import DomainModel, DomainModelApply, InstancesApply, TypeList
 
 if TYPE_CHECKING:
     from ._rkom_bids import RKOMBidApply
@@ -24,13 +24,13 @@ class RKOMProces(DomainModel):
     timezone: Optional[str] = None
 
 
-class RKOMProcesApply(CircularModelApply):
+class RKOMProcesApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
-    bid: Optional[Union[str, "RKOMBidApply"]] = None
+    bid: Optional[Union[str, "RKOMBidApply"]] = Field(None, repr=False)
     incremental_mapping: list[str] = []
     name: Optional[str] = None
     process_events: list[str] = []
-    shop: Optional[Union[str, "ShopTransformationApply"]] = None
+    shop: Optional[Union[str, "ShopTransformationApply"]] = Field(None, repr=False)
     timezone: Optional[str] = None
 
     def _to_instances_apply(self, cache: set[str]) -> InstancesApply:

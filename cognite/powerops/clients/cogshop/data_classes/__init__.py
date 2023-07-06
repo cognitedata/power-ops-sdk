@@ -7,23 +7,10 @@ from ._processing_logs import ProcessingLog, ProcessingLogApply, ProcessingLogLi
 from ._scenarios import Scenario, ScenarioApply, ScenarioList
 from ._transformations import Transformation, TransformationApply, TransformationList
 
-CaseApply.update_forward_refs(
-    ProcessingLogApply=ProcessingLogApply,
-    ScenarioApply=ScenarioApply,
-)
-MappingApply.update_forward_refs(
-    TransformationApply=TransformationApply,
-)
-ModelTemplateApply.update_forward_refs(
-    FileRefApply=FileRefApply,
-    MappingApply=MappingApply,
-)
-ScenarioApply.update_forward_refs(
-    CommandsConfigApply=CommandsConfigApply,
-    FileRefApply=FileRefApply,
-    MappingApply=MappingApply,
-    ModelTemplateApply=ModelTemplateApply,
-)
+CaseApply.model_rebuild()
+MappingApply.model_rebuild()
+ModelTemplateApply.model_rebuild()
+ScenarioApply.model_rebuild()
 
 __all__ = [
     "Case",

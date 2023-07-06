@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, ClassVar, Optional, Union
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
-from ._core import CircularModelApply, DomainModel, DomainModelApply, InstancesApply, TypeList
+from ._core import DomainModel, DomainModelApply, InstancesApply, TypeList
 
 if TYPE_CHECKING:
     from ._processing_logs import ProcessingLogApply
@@ -22,11 +22,11 @@ class Case(DomainModel):
     start_time: Optional[str] = Field(None, alias="startTime")
 
 
-class CaseApply(CircularModelApply):
+class CaseApply(DomainModelApply):
     space: ClassVar[str] = "cogShop"
     end_time: str
-    processing_log: list[Union[str, "ProcessingLogApply"]] = []
-    scenario: Optional[Union[str, "ScenarioApply"]] = None
+    processing_log: list[Union[str, "ProcessingLogApply"]] = Field(default_factory=lambda: [], repr=False)
+    scenario: Optional[Union[str, "ScenarioApply"]] = Field(None, repr=False)
     start_time: str
 
     def _to_instances_apply(self, cache: set[str]) -> InstancesApply:

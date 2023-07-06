@@ -21,9 +21,9 @@ class CogShopClient:
     CogShopClient
 
     Generated with:
-        pygen = 0.11.2
+        pygen = 0.11.4
         cognite-sdk = 6.5.8
-        pydantic = 1.10.10
+        pydantic = 2.0.2
 
     Data Model:
         space: cogShop

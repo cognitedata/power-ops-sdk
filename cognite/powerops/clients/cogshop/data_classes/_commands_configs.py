@@ -4,7 +4,7 @@ from typing import ClassVar
 
 from cognite.client import data_modeling as dm
 
-from ._core import CircularModelApply, DomainModel, InstancesApply, TypeList
+from ._core import DomainModel, DomainModelApply, InstancesApply, TypeList
 
 __all__ = ["CommandsConfig", "CommandsConfigApply", "CommandsConfigList"]
 
@@ -14,7 +14,7 @@ class CommandsConfig(DomainModel):
     commands: list[str] = []
 
 
-class CommandsConfigApply(CircularModelApply):
+class CommandsConfigApply(DomainModelApply):
     space: ClassVar[str] = "cogShop"
     commands: list[str]
 

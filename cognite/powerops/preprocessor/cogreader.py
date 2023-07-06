@@ -7,7 +7,7 @@ from typing import List, Literal, Optional, TypedDict, Union
 import arrow
 from cognite.client import CogniteClient
 from cognite.client.data_classes import FileMetadata
-from pydantic import BaseModel, root_validator
+from pydantic import BaseModel, model_validator
 
 from cognite.powerops.preprocessor import knockoff_logging as logging
 from cognite.powerops.preprocessor.data_classes import CogShopCase, CogShopConfig
@@ -33,38 +33,38 @@ class CogShopFileDict(TypedDict):
 
 
 class SortBy(BaseModel):
-    metadata_key: Optional[str]
-    file_attribute: Optional[Literal["last_updated_time", "created_time", "uploaded_time"]]
+    metadata_key: Optional[str] = None
+    file_attribute: Optional[Literal["last_updated_time", "created_time", "uploaded_time"]] = None
 
-    @root_validator
-    def has_valid_sorting_method(cls, values):
-        has_metadata_key = values.get("metadata_key")
-        has_file_attribute = values.get("file_attribute")
+    @model_validator(mode="after")
+    def has_valid_sorting_method(cls, value: SortBy):
+        has_metadata_key = value.metadata_key is not None
+        has_file_attribute = value.file_attribute is not None
         if has_metadata_key and has_file_attribute:
             raise ValueError("Can only sort on ether metadata_key or file_attribute, got both.")
         if not has_metadata_key and not has_file_attribute:
             raise ValueError("Missing a sorting key, please set either metadata_key or file_attribute.")
-        return values
+        return value
 
 
 class CogShopFile(BaseModel):
-    label: Optional[str]
-    pick: Optional[Literal["latest_before", "exact", "latest"]]
-    sort_by: Optional[SortBy]
-    external_id_prefix: Optional[str]
-    external_id: Optional[str]
+    label: Optional[str] = None
+    pick: Optional[Literal["latest_before", "exact", "latest"]] = None
+    sort_by: Optional[SortBy] = None
+    external_id_prefix: Optional[str] = None
+    external_id: Optional[str] = None
     file_type: Literal["ascii", "yaml"]
 
     class Config:
         validate_all = True
 
-    @root_validator
-    def external_id_or_prefix_set(cls, values):
-        if not values.get("external_id") and not values.get("external_id_prefix"):
+    @model_validator(mode="after")
+    def external_id_or_prefix_set(cls, value: CogShopFile):
+        if not value.external_id and not value.external_id_prefix:
             raise ValueError("Either external_id or external_id_prefix must be set")
-        if not values.get("pick") and not values.get("external_id"):
+        if not value.pick and not value.external_id:
             raise ValueError("File selection method by 'pick' must be set if not external id has been specified.")
-        return values
+        return value
 
     def _find_file_latest_before(self, files: list[FileMetadata], starttime_ms: float) -> Optional[FileMetadata]:
         # Select file that is closest in time before starttime

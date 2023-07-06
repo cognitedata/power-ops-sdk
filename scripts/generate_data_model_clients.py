@@ -23,7 +23,7 @@ def main():
         client,
         ("power-ops", "Core", "1"),
         top_level_package=f"{top_level_base}.core",
-        client_name="CogniteClient",
+        client_name="CoreClient",
         output_dir=REPO_ROOT,
         logger=print,
     )

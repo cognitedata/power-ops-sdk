@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, ClassVar, Optional, Union
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
-from ._core import CircularModelApply, DomainModel, DomainModelApply, InstancesApply, TypeList
+from ._core import DomainModel, DomainModelApply, InstancesApply, TypeList
 
 if TYPE_CHECKING:
     from ._benchmark_bids import BenchmarkBidApply
@@ -25,14 +25,16 @@ class Benchmarking(DomainModel):
     shop: Optional[str] = None
 
 
-class BenchmarkingApply(CircularModelApply):
+class BenchmarkingApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
-    bid: Optional[Union[str, "BenchmarkBidApply"]] = None
+    bid: Optional[Union[str, "BenchmarkBidApply"]] = Field(None, repr=False)
     metrics: list[str] = []
     name: Optional[str] = None
-    production_plan_time_series: list[Union[str, "ProductionPlanTimeSeriesApply"]] = []
+    production_plan_time_series: list[Union[str, "ProductionPlanTimeSeriesApply"]] = Field(
+        default_factory=lambda: [], repr=False
+    )
     run_events: list[str] = []
-    shop: Optional[Union[str, "ShopTransformationApply"]] = None
+    shop: Optional[Union[str, "ShopTransformationApply"]] = Field(None, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> InstancesApply:
         if self.external_id in cache:

@@ -5,7 +5,7 @@ from typing import ClassVar, Optional
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
-from ._core import CircularModelApply, DomainModel, InstancesApply, TypeList
+from ._core import DomainModel, DomainModelApply, InstancesApply, TypeList
 
 __all__ = ["FileRef", "FileRefApply", "FileRefList"]
 
@@ -16,7 +16,7 @@ class FileRef(DomainModel):
     type: Optional[str] = None
 
 
-class FileRefApply(CircularModelApply):
+class FileRefApply(DomainModelApply):
     space: ClassVar[str] = "cogShop"
     file_external_id: str
     type: str
