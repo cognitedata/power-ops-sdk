@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import ClassVar, Dict, Generator, List, Optional, Tuple
 
 from cognite.client.data_classes import Asset, Label, Sequence
-from pydantic import BaseModel, Field, root_validator, validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator, validator
 
 from cognite.powerops._shared_data_classes import AssetLabels, RelationshipLabels
 from cognite.powerops.bootstrap.data_classes.cdf_resource_collection import (
@@ -115,7 +115,7 @@ class PriceScenarioID(BaseModel):
 
 class PriceScenario(BaseModel):
     name: str
-    time_series_external_id: Optional[str]
+    time_series_external_id: Optional[str] = None
     transformations: Optional[List[Transformation]]
 
     def to_time_series_mapping(self) -> TimeSeriesMapping:
@@ -251,6 +251,7 @@ class RkomMarketConfig(BaseModel):
 
 
 class RKOMBidCombinationConfig(Configuration):
+    model_config = ConfigDict(populate_by_name=True)
     auction: Auction = Field(alias="bid_auction")
     name: str = Field("default", alias="bid_combination_name")
     rkom_bid_config_external_ids: List[str] = Field(alias="bid_rkom_bid_configs")
@@ -282,10 +283,13 @@ class RKOMBidCombinationConfig(Configuration):
 
 
 class BenchmarkingConfig(Configuration):
+    model_config = ConfigDict(populate_by_name=True)
     bid_date: RelativeTime
     shop_start: RelativeTime = Field(alias="shop_starttime")
     shop_end: RelativeTime = Field(alias="shop_endtime")
-    production_plan_time_series: Optional[Dict[str, List[str]]]
+    production_plan_time_series: Optional[Dict[str, List[str]]] = Field(
+        default_factory=lambda: {}, alias="bid_production_plan_time_series"
+    )
     market_config_external_id: str = Field(alias="bid_market_config_external_id")
     relevant_shop_objective_metrics: Dict[str, str] = {
         "grand_total": "Grand Total",
@@ -393,6 +397,8 @@ MARKET_CONFIG_NORDPOOL_DAYAHEAD = MarketConfig(
 
 
 class BidProcessConfig(Configuration):
+    model_config = ConfigDict(populate_by_name=True)
+
     name: str
     price_area_name: str = Field(alias="bid_price_area")
     price_scenarios: List[PriceScenarioID] = Field(alias="bid_price_scenarios")
@@ -640,21 +646,21 @@ class RKOMBidProcessConfig(Configuration):
     parent_external_id: typing.ClassVar[str] = "rkom_bid_process_configurations"
     mapping_type: ClassVar[str] = "rkom_incremental_mapping"
 
-    @root_validator(pre=True)
-    def create_reserve_scenarios(cls, values):
-        if not isinstance(volumes := values.get("bid_reserve_scenarios"), str):
-            return values
+    @model_validator(mode="before")
+    def create_reserve_scenarios(cls, value):
+        if not isinstance(volumes := value.get("reserve_scenarios"), str):
+            return value
         volumes = [int(volume.removesuffix("MW")) for volume in volumes[1:-1].split(",")]
 
-        values["bid_reserve_scenarios"] = dict(
+        value["bid_reserve_scenarios"] = dict(
             volumes=volumes,
-            auction=values["bid_auction"],
-            product=values["bid_product"],
-            block=values["bid_block"],
-            reserve_group=values["labels"][0]["externalId"],
+            auction=value["bid_auction"],
+            product=value["bid_product"],
+            block=value["bid_block"],
+            reserve_group=value["labels"][0]["externalId"],
             mip_plant_time_series=[],
         )
-        return values
+        return value
 
     @validator("shop_start", "shop_end", pre=True)
     def json_loads(cls, value):
@@ -764,18 +770,26 @@ ExternalId = str
 
 class PlantTimeSeriesMapping(BaseModel):
     plant_name: str
-    water_value: Optional[ExternalId]
-    inlet_reservoir_level: Optional[ExternalId]
-    outlet_reservoir_level: Optional[ExternalId]
-    p_min: Optional[ExternalId]
-    p_max: Optional[ExternalId]
-    feeding_fee: Optional[ExternalId]
-    head_direct: Optional[ExternalId]
+    water_value: Optional[ExternalId] = None
+    inlet_reservoir_level: Optional[ExternalId] = None
+    outlet_reservoir_level: Optional[ExternalId] = None
+    p_min: Optional[ExternalId] = None
+    p_max: Optional[ExternalId] = None
+    feeding_fee: Optional[ExternalId] = None
+    head_direct: Optional[ExternalId] = None
+
+    @field_validator("*", mode="before")
+    def parse_number_to_string(cls, value):
+        return str(value) if isinstance(value, (int, float)) else value
 
 
 class GeneratorTimeSeriesMapping(BaseModel):
     generator_name: str
-    start_stop_cost: Optional[ExternalId]
+    start_stop_cost: Optional[ExternalId] = None
+
+    @field_validator("start_stop_cost", mode="before")
+    def parset_number_to_string(cls, value):
+        return str(value) if isinstance(value, (int, float)) else value
 
 
 class BootstrapConfig(BaseModel):

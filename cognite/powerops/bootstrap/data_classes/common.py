@@ -18,8 +18,8 @@ class CommonConstants(BaseModel):
 
 
 class RelativeTime(BaseModel):
-    relative_time_string: Optional[str]
-    operations: Optional[List[Tuple[str, Union[str, Dict[str, int]]]]]
+    relative_time_string: Optional[str] = None
+    operations: Optional[List[Tuple[str, Union[str, Dict[str, int]]]]] = None
 
     @validator("operations", pre=True, always=True)
     def to_old_format(cls, value):
