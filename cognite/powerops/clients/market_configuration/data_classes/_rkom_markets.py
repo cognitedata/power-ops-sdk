@@ -5,7 +5,7 @@ from typing import ClassVar, Optional
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
-from ._core import CircularModelApply, DomainModel, InstancesApply, TypeList
+from ._core import DomainModel, DomainModelApply, InstancesApply, TypeList
 
 __all__ = ["RKOMMarket", "RKOMMarketApply", "RKOMMarketList"]
 
@@ -17,7 +17,7 @@ class RKOMMarket(DomainModel):
     timezone: Optional[str] = None
 
 
-class RKOMMarketApply(CircularModelApply):
+class RKOMMarketApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
     name: Optional[str] = None
     start_of_week: Optional[int] = None

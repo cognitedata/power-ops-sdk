@@ -5,7 +5,7 @@ from typing import ClassVar, Optional
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
-from ._core import CircularModelApply, DomainModel, InstancesApply, TypeList
+from ._core import DomainModel, DomainModelApply, InstancesApply, TypeList
 
 __all__ = ["Generator", "GeneratorApply", "GeneratorList"]
 
@@ -21,7 +21,7 @@ class Generator(DomainModel):
     turbine_efficiency_curve: Optional[str] = Field(None, alias="turbineEfficiencyCurve")
 
 
-class GeneratorApply(CircularModelApply):
+class GeneratorApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
     generator_efficiency_curve: Optional[str] = None
     name: Optional[str] = None

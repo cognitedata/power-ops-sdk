@@ -3,8 +3,9 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, ClassVar, Optional, Union
 
 from cognite.client import data_modeling as dm
+from pydantic import Field
 
-from ._core import CircularModelApply, DomainModel, DomainModelApply, InstancesApply, TypeList
+from ._core import DomainModel, DomainModelApply, InstancesApply, TypeList
 
 if TYPE_CHECKING:
     from ._date_transformations import DateTransformationApply
@@ -20,10 +21,10 @@ class Bid(DomainModel):
     name: Optional[str] = None
 
 
-class BidApply(CircularModelApply):
+class BidApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
-    date: list[Union[str, "DateTransformationApply"]] = []
-    market: Optional[Union[str, "MarketApply"]] = None
+    date: list[Union[str, "DateTransformationApply"]] = Field(default_factory=lambda: [], repr=False)
+    market: Optional[Union[str, "MarketApply"]] = Field(None, repr=False)
     name: Optional[str] = None
 
     def _to_instances_apply(self, cache: set[str]) -> InstancesApply:

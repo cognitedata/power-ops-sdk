@@ -5,7 +5,7 @@ from typing import ClassVar, Optional
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
-from ._core import CircularModelApply, DomainModel, InstancesApply, TypeList
+from ._core import DomainModel, DomainModelApply, InstancesApply, TypeList
 
 __all__ = ["Reservoir", "ReservoirApply", "ReservoirList"]
 
@@ -17,7 +17,7 @@ class Reservoir(DomainModel):
     ordering: Optional[int] = None
 
 
-class ReservoirApply(CircularModelApply):
+class ReservoirApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
     display_name: Optional[str] = None
     name: Optional[str] = None

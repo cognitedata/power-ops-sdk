@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, ClassVar, Optional, Union
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
-from ._core import CircularModelApply, DomainModel, DomainModelApply, InstancesApply, TypeList
+from ._core import DomainModel, DomainModelApply, InstancesApply, TypeList
 
 if TYPE_CHECKING:
     from ._date_transformations import DateTransformationApply
@@ -30,12 +30,12 @@ class RKOMBid(DomainModel):
     watercourse: Optional[str] = None
 
 
-class RKOMBidApply(CircularModelApply):
+class RKOMBidApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
     auction: Optional[str] = None
     block: Optional[str] = None
-    date: list[Union[str, "DateTransformationApply"]] = []
-    market: Optional[Union[str, "MarketApply"]] = None
+    date: list[Union[str, "DateTransformationApply"]] = Field(default_factory=lambda: [], repr=False)
+    market: Optional[Union[str, "MarketApply"]] = Field(None, repr=False)
     method: Optional[str] = None
     minimum_price: Optional[float] = None
     name: Optional[str] = None

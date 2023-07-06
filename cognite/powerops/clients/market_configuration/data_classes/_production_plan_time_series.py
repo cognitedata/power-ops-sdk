@@ -4,7 +4,7 @@ from typing import ClassVar, Optional
 
 from cognite.client import data_modeling as dm
 
-from ._core import CircularModelApply, DomainModel, InstancesApply, TypeList
+from ._core import DomainModel, DomainModelApply, InstancesApply, TypeList
 
 __all__ = ["ProductionPlanTimeSeries", "ProductionPlanTimeSeriesApply", "ProductionPlanTimeSeriesList"]
 
@@ -15,7 +15,7 @@ class ProductionPlanTimeSeries(DomainModel):
     series: list[str] = []
 
 
-class ProductionPlanTimeSeriesApply(CircularModelApply):
+class ProductionPlanTimeSeriesApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
     name: Optional[str] = None
     series: list[str] = []

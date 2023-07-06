@@ -2,7 +2,7 @@ import getpass
 import logging
 import os
 from pathlib import Path
-from typing import Any, Literal, Optional
+from typing import Any, Literal, Optional, Type
 
 import pydantic
 
@@ -11,7 +11,8 @@ try:
 except ModuleNotFoundError:
     import tomli as tomllib  # py < 3.11
 
-from pydantic import BaseModel, BaseSettings, validator
+from pydantic import BaseModel, Field, field_validator
+from pydantic_settings import BaseSettings, PydanticBaseSettingsSource, SettingsConfigDict
 
 __all__ = ["Settings", "CogniteSettings", "PoweropsRunSettings"]
 
@@ -25,9 +26,9 @@ class CogniteSettings(BaseModel):
     cdf_cluster: str
     tenant_id: str
     client_id: str
-    client_secret: Optional[str]
+    client_secret: Optional[str] = None
 
-    client_name: str = ""
+    client_name: str = Field(default_factory=lambda: getpass.getuser())
     authority_host_uri: str = "https://login.microsoftonline.com"
 
     @property
@@ -46,32 +47,36 @@ class CogniteSettings(BaseModel):
     def token_url(self) -> str:
         return f"https://login.microsoftonline.com/{self.tenant_id}/oauth2/v2.0/token"
 
-    @validator("client_name", always=True)
-    def replace_none_with_user(cls, value):
-        return getpass.getuser() if value is None else value
-
 
 class PoweropsRunSettings(pydantic.BaseModel):
-    read_dataset: Optional[str]
-    write_dataset: Optional[str]
-    cogshop_version: Optional[str]
+    read_dataset: Optional[str] = None
+    write_dataset: Optional[str] = None
+    cogshop_version: Optional[str] = None
+
+    @field_validator("cogshop_version", mode="before")
+    def number_to_str(cls, v):
+        return str(v) if isinstance(v, (int, float)) else v
 
 
-class Settings(pydantic.BaseSettings):
+class Settings(BaseSettings):
+    model_config = SettingsConfigDict(env_prefix="SETTINGS__", env_nested_delimiter="__")
     cognite: CogniteSettings = {}
     powerops: PoweropsRunSettings = {}
 
-    class Config:
-        env_prefix = "SETTINGS__"
-        env_nested_delimiter = "__"
+    @classmethod
+    def settings_customise_sources(
+        cls,
+        settings_cls: Type[BaseSettings],
+        init_settings: PydanticBaseSettingsSource,
+        env_settings: PydanticBaseSettingsSource,
+        dotenv_settings: PydanticBaseSettingsSource,
+        file_secret_settings: PydanticBaseSettingsSource,
+    ) -> tuple[PydanticBaseSettingsSource, ...]:
+        """Add `file_settings` to sources (loads settings.toml and .secrets.toml)."""
+        return init_settings, env_settings, _file_settings, file_secret_settings
 
-        @classmethod
-        def customise_sources(cls, init_settings, env_settings, file_secret_settings):
-            """Add `file_settings` to sources (loads settings.toml and .secrets.toml)."""
-            return init_settings, env_settings, _file_settings, file_secret_settings
 
-
-def _file_settings(_settings: BaseSettings) -> dict[str, Any]:
+def _file_settings() -> dict[str, Any]:
     settings_files = filter(None, os.environ.get("SETTINGS_FILES", "settings.toml;.secrets.toml").split(";"))
     collected_data = {}
     for file_path in settings_files:

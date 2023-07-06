@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, ClassVar, Optional, Union
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
-from ._core import CircularModelApply, DomainModel, DomainModelApply, InstancesApply, TypeList
+from ._core import DomainModel, DomainModelApply, InstancesApply, TypeList
 
 if TYPE_CHECKING:
     from ._file_refs import FileRefApply
@@ -23,10 +23,10 @@ class ModelTemplate(DomainModel):
     watercourse: Optional[str] = None
 
 
-class ModelTemplateApply(CircularModelApply):
+class ModelTemplateApply(DomainModelApply):
     space: ClassVar[str] = "cogShop"
-    base_mappings: list[Union[str, "MappingApply"]] = []
-    model: Optional[Union[str, "FileRefApply"]] = None
+    base_mappings: list[Union[str, "MappingApply"]] = Field(default_factory=lambda: [], repr=False)
+    model: Optional[Union[str, "FileRefApply"]] = Field(None, repr=False)
     shop_version: str
     version: str
     watercourse: str

@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, ClassVar, Optional, Union
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
-from ._core import CircularModelApply, DomainModel, DomainModelApply, InstancesApply, TypeList
+from ._core import DomainModel, DomainModelApply, InstancesApply, TypeList
 
 if TYPE_CHECKING:
     from ._rkom_process import RKOMProcesApply
@@ -20,10 +20,10 @@ class RKOMBidCombination(DomainModel):
     name: Optional[str] = None
 
 
-class RKOMBidCombinationApply(CircularModelApply):
+class RKOMBidCombinationApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
     auction: Optional[str] = None
-    bid_configurations: list[Union[str, "RKOMProcesApply"]] = []
+    bid_configurations: list[Union[str, "RKOMProcesApply"]] = Field(default_factory=lambda: [], repr=False)
     name: Optional[str] = None
 
     def _to_instances_apply(self, cache: set[str]) -> InstancesApply:
@@ -62,7 +62,7 @@ class RKOMBidCombinationApply(CircularModelApply):
 
         return InstancesApply(nodes, edges)
 
-    def _create_bid_configuration_edge(self, bid_configuration: Union[str, "RKOMProcessApply"]) -> dm.EdgeApply:  # noqa
+    def _create_bid_configuration_edge(self, bid_configuration: Union[str, "RKOMProcesApply"]) -> dm.EdgeApply:
         if isinstance(bid_configuration, str):
             end_node_ext_id = bid_configuration
         elif isinstance(bid_configuration, DomainModelApply):

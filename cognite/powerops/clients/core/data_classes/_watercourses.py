@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, ClassVar, Optional, Union
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
-from ._core import CircularModelApply, DomainModel, DomainModelApply, InstancesApply, TypeList
+from ._core import DomainModel, DomainModelApply, InstancesApply, TypeList
 
 if TYPE_CHECKING:
     from ._plants import PlantApply
@@ -20,10 +20,10 @@ class Watercourse(DomainModel):
     shop_penalty_limit: Optional[float] = Field(None, alias="shopPenaltyLimit")
 
 
-class WatercourseApply(CircularModelApply):
+class WatercourseApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
     name: Optional[str] = None
-    plants: list[Union[str, "PlantApply"]] = []
+    plants: list[Union[str, "PlantApply"]] = Field(default_factory=lambda: [], repr=False)
     shop_penalty_limit: Optional[float] = None
 
     def _to_instances_apply(self, cache: set[str]) -> InstancesApply:

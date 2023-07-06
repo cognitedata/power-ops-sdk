@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, ClassVar, Optional, Union
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
-from ._core import CircularModelApply, DomainModel, DomainModelApply, InstancesApply, TypeList
+from ._core import DomainModel, DomainModelApply, InstancesApply, TypeList
 
 if TYPE_CHECKING:
     from ._day_ahead_bids import DayAheadBidApply
@@ -22,12 +22,12 @@ class DayAheadProces(DomainModel):
     shop: Optional[str] = None
 
 
-class DayAheadProcesApply(CircularModelApply):
+class DayAheadProcesApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
-    bid: Optional[Union[str, "DayAheadBidApply"]] = None
+    bid: Optional[Union[str, "DayAheadBidApply"]] = Field(None, repr=False)
     incremental_mapping: list[str] = []
     name: Optional[str] = None
-    shop: Optional[Union[str, "ShopTransformationApply"]] = None
+    shop: Optional[Union[str, "ShopTransformationApply"]] = Field(None, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> InstancesApply:
         if self.external_id in cache:

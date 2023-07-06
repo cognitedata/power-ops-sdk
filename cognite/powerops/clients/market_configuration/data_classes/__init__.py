@@ -17,42 +17,15 @@ from ._rkom_markets import RKOMMarket, RKOMMarketApply, RKOMMarketList
 from ._rkom_process import RKOMProces, RKOMProcesApply, RKOMProcesList
 from ._shop_transformations import ShopTransformation, ShopTransformationApply, ShopTransformationList
 
-BenchmarkBidApply.update_forward_refs(
-    DateTransformationApply=DateTransformationApply,
-    MarketApply=MarketApply,
-)
-BenchmarkingApply.update_forward_refs(
-    BenchmarkBidApply=BenchmarkBidApply,
-    ProductionPlanTimeSeriesApply=ProductionPlanTimeSeriesApply,
-    ShopTransformationApply=ShopTransformationApply,
-)
-BidApply.update_forward_refs(
-    DateTransformationApply=DateTransformationApply,
-    MarketApply=MarketApply,
-)
-DayAheadBidApply.update_forward_refs(
-    DateTransformationApply=DateTransformationApply,
-    MarketApply=MarketApply,
-    ShopTransformationApply=ShopTransformationApply,
-)
-DayAheadProcesApply.update_forward_refs(
-    DayAheadBidApply=DayAheadBidApply,
-    ShopTransformationApply=ShopTransformationApply,
-)
-RKOMBidApply.update_forward_refs(
-    DateTransformationApply=DateTransformationApply,
-    MarketApply=MarketApply,
-)
-RKOMBidCombinationApply.update_forward_refs(
-    RKOMProcesApply=RKOMProcesApply,
-)
-RKOMProcesApply.update_forward_refs(
-    RKOMBidApply=RKOMBidApply,
-    ShopTransformationApply=ShopTransformationApply,
-)
-ShopTransformationApply.update_forward_refs(
-    DateTransformationApply=DateTransformationApply,
-)
+BenchmarkBidApply.model_rebuild()
+BenchmarkingApply.model_rebuild()
+BidApply.model_rebuild()
+DayAheadBidApply.model_rebuild()
+DayAheadProcesApply.model_rebuild()
+RKOMBidApply.model_rebuild()
+RKOMBidCombinationApply.model_rebuild()
+RKOMProcesApply.model_rebuild()
+ShopTransformationApply.model_rebuild()
 
 __all__ = [
     "BenchmarkBid",

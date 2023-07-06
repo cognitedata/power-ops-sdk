@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, ClassVar, Optional, Union
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
-from ._core import CircularModelApply, DomainModel, DomainModelApply, InstancesApply, TypeList
+from ._core import DomainModel, DomainModelApply, InstancesApply, TypeList
 
 if TYPE_CHECKING:
     from ._generators import GeneratorApply
@@ -34,14 +34,14 @@ class Plant(DomainModel):
     water_value: Optional[str] = Field(None, alias="waterValue")
 
 
-class PlantApply(CircularModelApply):
+class PlantApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
     display_name: Optional[str] = None
     feeding_fee: Optional[str] = None
-    generators: list[Union[str, "GeneratorApply"]] = []
+    generators: list[Union[str, "GeneratorApply"]] = Field(default_factory=lambda: [], repr=False)
     head_loss_factor: Optional[float] = None
     inlet_level: Optional[str] = None
-    inlet_reservoirs: list[Union[str, "ReservoirApply"]] = []
+    inlet_reservoirs: list[Union[str, "ReservoirApply"]] = Field(default_factory=lambda: [], repr=False)
     name: Optional[str] = None
     ordering: Optional[int] = None
     outlet_level: Optional[float] = None

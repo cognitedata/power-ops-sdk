@@ -3,8 +3,9 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, ClassVar, Union
 
 from cognite.client import data_modeling as dm
+from pydantic import Field
 
-from ._core import CircularModelApply, DomainModel, DomainModelApply, InstancesApply, TypeList
+from ._core import DomainModel, DomainModelApply, InstancesApply, TypeList
 
 if TYPE_CHECKING:
     from ._date_transformations import DateTransformationApply
@@ -18,10 +19,10 @@ class ShopTransformation(DomainModel):
     start: list[str] = []
 
 
-class ShopTransformationApply(CircularModelApply):
+class ShopTransformationApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
-    end: list[Union[str, "DateTransformationApply"]] = []
-    start: list[Union[str, "DateTransformationApply"]] = []
+    end: list[Union[str, "DateTransformationApply"]] = Field(default_factory=lambda: [], repr=False)
+    start: list[Union[str, "DateTransformationApply"]] = Field(default_factory=lambda: [], repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> InstancesApply:
         if self.external_id in cache:

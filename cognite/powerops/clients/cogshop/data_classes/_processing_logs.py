@@ -5,7 +5,7 @@ from typing import ClassVar, Optional
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
-from ._core import CircularModelApply, DomainModel, InstancesApply, TypeList
+from ._core import DomainModel, DomainModelApply, InstancesApply, TypeList
 
 __all__ = ["ProcessingLog", "ProcessingLogApply", "ProcessingLogList"]
 
@@ -17,7 +17,7 @@ class ProcessingLog(DomainModel):
     timestamp: Optional[str] = None
 
 
-class ProcessingLogApply(CircularModelApply):
+class ProcessingLogApply(DomainModelApply):
     space: ClassVar[str] = "cogShop"
     error_message: Optional[str] = None
     state: Optional[str] = None

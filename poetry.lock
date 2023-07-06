@@ -433,14 +433,14 @@ colorama = {version = "*", markers = "platform_system == \"Windows\""}
 
 [[package]]
 name = "cognite-pygen"
-version = "0.11.3"
+version = "0.11.4"
 description = "Cognite Python SDK Generator"
 category = "dev"
 optional = false
 python-versions = ">=3.9,<4.0"
 files = [
-    {file = "cognite_pygen-0.11.3-py3-none-any.whl", hash = "sha256:8e08dbe2ee35b5ba0d2d0e6c3c4f07fb6534521fbdc9e34fb6ff9b3e58d85b54"},
-    {file = "cognite_pygen-0.11.3.tar.gz", hash = "sha256:fd6edca94c00adea7985676456beeccda5d7320469e49894904453c2e2317296"},
+    {file = "cognite_pygen-0.11.4-py3-none-any.whl", hash = "sha256:ce0597e23aeb191038b93d0087bc176e4a44fe81ef54e3f1b14823f1ada60087"},
+    {file = "cognite_pygen-0.11.4.tar.gz", hash = "sha256:07f96b0e6142dd4af2e4061bc404b12d8d315644c4aad4e74c02ee5b1aa3ef59"},
 ]
 
 [package.dependencies]
@@ -2973,6 +2973,22 @@ files = [
 typing-extensions = ">=4.6.0,<4.7.0 || >4.7.0"
 
 [[package]]
+name = "pydantic-settings"
+version = "2.0.1"
+description = "Settings management using Pydantic"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "pydantic_settings-2.0.1-py3-none-any.whl", hash = "sha256:579bbcbec3501e62bab73867b097ae10218201950e897463c98a182ffe7ed104"},
+    {file = "pydantic_settings-2.0.1.tar.gz", hash = "sha256:f440ec7cfb6dc63f03226c47b0e7803750d1b66a49ed944ac23eb4f0c84f8722"},
+]
+
+[package.dependencies]
+pydantic = ">=2.0.1"
+python-dotenv = ">=0.21.0"
+
+[[package]]
 name = "pygments"
 version = "2.15.1"
 description = "Pygments is a syntax highlighting package written in Python."
@@ -4227,4 +4243,4 @@ docs = ["mkdocs", "mkdocs-jupyter", "mkdocs-material", "mkdocs-material-extensio
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "bcc36030c09cca4355f9bbc857113296cd4e965510bf6fdef39606d5d9ab7d70"
+content-hash = "6cad0d8cfc59450bd67913bed97c042f576cbf3cc539cea41d7f15f21243fbf1"

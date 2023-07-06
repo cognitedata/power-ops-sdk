@@ -15,12 +15,12 @@ from ._api.watercourses import WatercoursesAPI
 
 class CoreClient:
     """
-    CogniteClient
+    CoreClient
 
     Generated with:
-        pygen = 0.11.2
+        pygen = 0.11.4
         cognite-sdk = 6.5.8
-        pydantic = 1.10.10
+        pydantic = 2.0.2
 
     Data Model:
         space: power-ops
@@ -39,7 +39,7 @@ class CoreClient:
     @classmethod
     def azure_project(
         cls, tenant_id: str, client_id: str, client_secret: str, cdf_cluster: str, project: str
-    ) -> CogniteClient:
+    ) -> CoreClient:
         base_url = f"https://{cdf_cluster}.cognitedata.com/"
         credentials = OAuthClientCredentials(
             token_url=f"https://login.microsoftonline.com/{tenant_id}/oauth2/v2.0/token",
@@ -57,7 +57,7 @@ class CoreClient:
         return cls(config)
 
     @classmethod
-    def from_toml(cls, file_path: Path | str) -> CogniteClient:
+    def from_toml(cls, file_path: Path | str) -> CoreClient:
         import toml
 
         return cls.azure_project(**toml.load(file_path)["cognite"])
