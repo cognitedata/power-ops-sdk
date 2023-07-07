@@ -7,7 +7,8 @@ from typing import ClassVar
 import pandas as pd
 from cognite.client.data_classes import Asset, Label, Relationship, Sequence, SequenceData, TimeSeries
 
-from cognite.powerops.bootstrap.data_classes.cdf_labels import AssetLabel
+from cognite.powerops.bootstrap.data_classes.cdf_labels import AssetLabel, RelationshipLabel
+from cognite.powerops.bootstrap.to_cdf_resources.create_relationship_types import basic_relationship
 
 
 @dataclass
@@ -29,7 +30,30 @@ class Type(ABC):
         return self.parent_external_id.replace("_", " ").title()
 
     def get_relationships(self) -> list[Relationship]:
-        raise NotImplementedError()
+        relationships = []
+        for f in fields(self):
+            value = getattr(self, f.name)
+            if not value:
+                continue
+            if TimeSeries.__name__ in f.type:
+                r = basic_relationship(
+                    source_type="ASSET",
+                    target_type="TIMESERIES",
+                    source_external_id=self.external_id,
+                    target_external_id=value.external_id,
+                    label=RelationshipLabel(f"relationship_to.{f.name}"),
+                )
+                relationships.append(r)
+            elif Sequence.__name__ in f.type:
+                r = basic_relationship(
+                    source_external_id=self.external_id,
+                    source_type="ASSET",
+                    target_external_id=value.sequence.external_id,
+                    target_type="SEQUENCE",
+                    label=RelationshipLabel(f"relationship_to.{f.name}"),
+                )
+                relationships.append(r)
+        return relationships
 
     def as_asset(self):
         metadata = {}
@@ -61,6 +85,7 @@ class Generator(Type):
     p_min: float
     penstock: str
     startcost: float
+    start_stop_cost_time_series: TimeSeries | None = None
     generator_efficiency_curve: CDFSequence | None = None
     turbine_efficiency_curve: CDFSequence | None = None
 

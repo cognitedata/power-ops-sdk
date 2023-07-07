@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from cognite.client.data_classes import Asset, Label, Relationship, Sequence
 
-from cognite.powerops.bootstrap.data_classes.cdf_labels import CDFLabel, RelationshipLabel
+from cognite.powerops.bootstrap.data_classes.cdf_labels import RelationshipLabel
 
 
 def basic_relationship(
@@ -10,7 +10,7 @@ def basic_relationship(
     source_type: str,
     target_external_id: str,
     target_type: str,
-    label: CDFLabel,
+    label: RelationshipLabel,
 ) -> Relationship:
     return Relationship(
         external_id=f"{source_external_id}.{target_external_id}",
@@ -25,7 +25,7 @@ def basic_relationship(
 def asset_to_asset(
     source: Asset | str,
     target: Asset | str,
-    label: CDFLabel,
+    label: RelationshipLabel,
 ) -> Relationship:
     return basic_relationship(
         source_type="ASSET",
@@ -39,7 +39,7 @@ def asset_to_asset(
 def asset_to_time_series(
     source_external_id: str,
     target_external_id: str,
-    label: CDFLabel,
+    label: RelationshipLabel,
 ) -> Relationship:
     return basic_relationship(
         source_type="ASSET",
@@ -53,7 +53,7 @@ def asset_to_time_series(
 def _asset_to_time_series(
     source_external_id: str,
     target_external_id: str,
-    label: CDFLabel,
+    label: RelationshipLabel,
 ) -> Relationship:
     return asset_to_time_series(
         source_external_id=source_external_id,
@@ -65,7 +65,7 @@ def _asset_to_time_series(
 def _asset_to_sequence(
     source_external_id: str,
     target_external_id: str,
-    label: CDFLabel,
+    label: RelationshipLabel,
 ) -> Relationship:
     return Relationship(
         external_id=f"{source_external_id}.{target_external_id}",

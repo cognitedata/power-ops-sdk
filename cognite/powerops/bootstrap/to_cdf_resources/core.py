@@ -344,6 +344,7 @@ def core_to_cdf_resources(
     )
     collection.add([reservoir.as_asset() for reservoir in model.reservoirs])
     collection.add([generator.as_asset() for generator in model.generators])
+    collection.add([relationship for generator in model.generators for relationship in generator.get_relationships()])
 
     collection += created_collection
 

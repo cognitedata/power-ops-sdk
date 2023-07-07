@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Optional, TypedDict
 
 import pandas as pd
-from cognite.client.data_classes import Asset, Relationship, Sequence
+from cognite.client.data_classes import Asset, Relationship, Sequence, TimeSeries
 
 from cognite.powerops.bootstrap.data_classes.core.generator import Generator, GeneratorTimeSeriesMapping
 from cognite.powerops.bootstrap.data_classes.core.plant import Plant, PlantTimeSeriesMapping
@@ -35,8 +35,8 @@ class ShopEfficiencyCurve(TypedDict):
 
 def generate_resources_and_data(
     watercourse_configs: list[WatercourseConfig],
-    plant_time_series_mappings: Optional[list[PlantTimeSeriesMapping]],
-    generator_time_series_mappings: Optional[list[GeneratorTimeSeriesMapping]],
+    plant_time_series_mappings: list[PlantTimeSeriesMapping] = None,
+    generator_time_series_mappings: list[GeneratorTimeSeriesMapping] = None,
 ) -> tuple[ResourceCollection, core_model.CoreModel]:
     """
     Create Assets for:
@@ -79,6 +79,10 @@ def generate_resources_and_data(
         Collection of Assets, Sequences, Relationships and sequence data
     """
 
+    start_stop_cost_time_series_by_generator = {
+        mapping.generator_name: mapping.start_stop_cost for mapping in (generator_time_series_mappings or [])
+    }
+
     resources = ResourceCollection()
     model = core_model.CoreModel()
     for watercourse_config in watercourse_configs:
@@ -112,11 +116,13 @@ def generate_resources_and_data(
         generators = shop_case["model"]["generator"]
         generators2 = []
         for generator_name, generator_attributes in generators.items():
+            start_stop_cost = start_stop_cost_time_series_by_generator.get(generator_name)
             generator2 = core_model.Generator(
                 generator_name,
                 penstock=str(generator_attributes.get("penstock", "1")),
                 p_min=float(generator_attributes.get("p_min", 0.0)),
                 startcost=float(get_single_value(generator_attributes.get("startcost", 0.0))),
+                start_stop_cost_time_series=TimeSeries(external_id=start_stop_cost) if start_stop_cost else None,
             )
             x_col_name = "generator_power"
             y_col_name = "generator_efficiency"
@@ -168,6 +174,7 @@ def generate_resources_and_data(
             )
 
             generator2.turbine_efficiency_curve = turbine_efficiency_curve
+
             generators2.append(generator2)
         model.generators.extend(generators2)
 

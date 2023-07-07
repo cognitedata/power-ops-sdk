@@ -41,7 +41,6 @@ class Generator(BaseModel):
             generators[generator_name].start_stop_cost_time_series = mapping.start_stop_cost
 
     def to_bootstrap_resources(self) -> ResourceCollection:
-        # asset = self.asset()
         relationships = self.relationships()
         return ResourceCollection(relationships={rel.external_id: rel for rel in relationships})
 
