@@ -8,7 +8,7 @@ except ImportError:
 
 class CDFLabel(StrEnum):
     @classmethod
-    def as_label_definition(cls) -> list[LabelDefinition]:
+    def as_label_definitions(cls) -> list[LabelDefinition]:
         return [
             LabelDefinition(
                 external_id=label_external_id.value,

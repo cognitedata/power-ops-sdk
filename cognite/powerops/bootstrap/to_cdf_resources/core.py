@@ -20,7 +20,7 @@ from cognite.powerops.bootstrap.data_classes.marked_configuration.rkom import (
     RkomMarketConfig,
 )
 from cognite.powerops.bootstrap.data_classes.resource_collection import ResourceCollection, write_mapping_to_sequence
-from cognite.powerops.bootstrap.data_classes.shared import TimeSeriesMapping
+from cognite.powerops.bootstrap.data_classes.shared import ExternalId, TimeSeriesMapping
 from cognite.powerops.bootstrap.data_classes.shop_file_config import ShopFileConfig
 from cognite.powerops.bootstrap.data_classes.shop_output_definition import ShopOutputConfig
 from cognite.powerops.bootstrap.data_classes.skeleton_asset_hierarchy import create_skeleton_asset_hierarchy
@@ -270,7 +270,7 @@ def transform(
     echo(f"Running bootstrap for data set {settings.data_set_external_id} in CDF project {settings.cdf_project}")
 
     # Create common CDF resources
-    labels = AssetLabel.as_label_definition() + RelationshipLabel.as_label_definition()
+    labels = AssetLabel.as_label_definitions() + RelationshipLabel.as_label_definitions()
     skeleton_assets = create_skeleton_asset_hierarchy(
         settings.shop_service_url, settings.organization_subdomain, settings.tenant_id
     )
@@ -278,8 +278,8 @@ def transform(
     bootstrap_resources.add(skeleton_assets)
     bootstrap_resources.add(labels)
 
-    bootstrap_resources = core_to_cdf_resources(
-        config.core, bootstrap_resources, config.settings.shop_version, config.watercourses_shop
+    bootstrap_resources += core_to_cdf_resources(
+        config.core, bootstrap_resources.shop_file_configs, config.settings.shop_version, config.watercourses_shop
     )
 
     bootstrap_resources = market_to_cdf_resources(
@@ -331,12 +331,13 @@ def market_to_cdf_resources(
 
 def core_to_cdf_resources(
     core: CoreConfigs,
-    bootstrap_resources: ResourceCollection,
+    shop_file_configs: dict[ExternalId, ShopFileConfig],
     shop_version: str,
     watercourses_shop: list[ShopFileConfig],
 ) -> ResourceCollection:
+    collection = ResourceCollection()
     # PowerOps asset data model
-    bootstrap_resources += generate_resources_and_data(
+    collection += generate_resources_and_data(
         watercourse_configs=core.watercourses,
         plant_time_series_mappings=core.plant_time_series_mappings,
         generator_time_series_mappings=core.generator_time_series_mappings,
@@ -344,16 +345,16 @@ def core_to_cdf_resources(
 
     # SHOP files (model, commands, cut mapping++) and configs (base mapping, output definition)
     # Shop files related to each watercourse
-    bootstrap_resources.add(create_watercourse_shop_files(watercourses_shop, core.watercourse_directories))
-    bootstrap_resources += create_watercourse_processed_shop_files(watercourse_configs=core.watercourses)
-    bootstrap_resources += create_watercourse_timeseries_mappings(
+    collection.add(create_watercourse_shop_files(watercourses_shop, core.watercourse_directories))
+    collection += create_watercourse_processed_shop_files(watercourse_configs=core.watercourses)
+    collection += create_watercourse_timeseries_mappings(
         watercourse_configs=core.watercourses, time_series_mappings=core.time_series_mappings
     )
     # Create DM resources
-    bootstrap_resources += create_dm_resources(
+    collection += create_dm_resources(
         core.watercourses,
-        list(bootstrap_resources.shop_file_configs.values()),
+        list(shop_file_configs.values()),
         core.time_series_mappings,
         shop_version,
     )
-    return bootstrap_resources
+    return collection

@@ -267,7 +267,7 @@ def create_turbine_efficiency_curve_sequence(
 
 
 def get_single_value(value_or_time_series: float | dict) -> float:
-    """Get the single value from a time series or a value
+    """Get the single value from a time series, or a value
     returns the value if value_or_time_series is a value, otherwise the first value in the time series
 
     Parameters
