@@ -4,7 +4,7 @@ import json
 import logging
 from hashlib import md5
 from pathlib import Path
-from typing import List, Literal, Optional
+from typing import List, Optional
 
 from cognite.powerops._shared_data_classes import create_labels
 from cognite.powerops.bootstrap.data_classes.bootstrap_config import BootstrapConfig
@@ -42,14 +42,6 @@ from cognite.powerops.clients.cogshop.data_classes import (
 )
 
 logger = logging.getLogger(__name__)
-
-
-def validate_config(
-    config: BootstrapConfig,
-    errors: Literal["keep", "fix"] = "keep",
-) -> BootstrapConfig:
-    config.validate_bid_configs()
-    return config
 
 
 def create_watercourse_timeseries_mappings(

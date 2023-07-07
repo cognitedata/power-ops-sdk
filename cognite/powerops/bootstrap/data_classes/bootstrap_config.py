@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import itertools
-from collections import defaultdict
+from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Dict, Optional
 
@@ -67,6 +67,20 @@ class MarketConfigs(BaseModel):
                     )
         return value
 
+    @field_validator("bidprocess", mode="after")
+    def one_default_per_price_area(cls, value: list[BidProcessConfig]):
+        default_configs = Counter(
+            (bid_config.price_area_name for bid_config in value if bid_config.is_default_config_for_price_area)
+        )
+
+        if price_areas_with_multiple_default_configs := [
+            price_area for price_area, count in default_configs.items() if count > 1
+        ]:
+            raise ValueError(
+                f"Multiple default bid configs for price areas: {price_areas_with_multiple_default_configs}"
+            )
+        return value
+
 
 class CoreConfigs(BaseModel):
     watercourses: list[WatercourseConfig]
@@ -96,22 +110,3 @@ class BootstrapConfig(BaseModel):
                 else:
                     configs[field_name] = content
         return cls(**configs)
-
-    def validate_bid_configs(self):
-        """Validate the bid configs in the bootstrap config. Per now only ensure there is at most one default config
-        per price area"""
-
-        default_configs = defaultdict(int)
-        for bid_config in self.markets.bidprocess:
-            if bid_config.is_default_config_for_price_area:
-                default_configs[bid_config.price_area_name] += 1
-
-        if price_areas_with_multiple_default_configs := [
-            price_area for price_area, count in default_configs.items() if count > 1
-        ]:
-            raise ValueError(
-                f"Multiple default bid configs for price areas: {price_areas_with_multiple_default_configs}"
-            )
-
-
-BootstrapConfig.model_rebuild()

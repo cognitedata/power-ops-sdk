@@ -6,7 +6,6 @@ from cognite.powerops.bootstrap.to_cdf_resources.bootstrap import (
     _create_cdf_resources,
     _preview_resources_diff,
     _transform,
-    validate_config,
 )
 from cognite.powerops.clients import get_powerops_client
 
@@ -41,7 +40,6 @@ def apply(path: Path, market: str):
 def _load_transform(market, path):
     # Step 1 - configure and validate config
     config = BootstrapConfig.from_yamls(path)
-    config = validate_config(config)
     configure_debug_logging(config.settings.debug_level)
     # Step 2 - transform from config to CDF resources and preview diffs
     bootstrap_resources = _transform(

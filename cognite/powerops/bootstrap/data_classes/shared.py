@@ -5,9 +5,9 @@ from enum import Enum, auto
 from typing import Any, ClassVar, Iterator, Optional
 
 import pandas as pd
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, constr, validator
 
-ExternalId = str
+ExternalId = constr(min_length=1, max_length=255)
 
 
 class Auction(str, Enum):
