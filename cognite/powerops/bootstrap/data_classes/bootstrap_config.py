@@ -4,7 +4,7 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Dict, Optional
 
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, ConfigDict, Field, validator
 
 from cognite.powerops.bootstrap._settings import Settings
 from cognite.powerops.bootstrap.data_classes.core.generator import GeneratorTimeSeriesMapping
@@ -26,7 +26,9 @@ from cognite.powerops.bootstrap.utils.serializer import load_yaml
 
 
 class BootstrapConfig(BaseModel):
-    constants: Settings
+    model_config = ConfigDict(populate_by_name=True)
+
+    settings: Settings = Field(alias="constants")
     benchmarks: list[BenchmarkingConfig]
     price_scenario_by_id: dict[str, PriceScenario]
     bidprocess: list[BidProcessConfig]

@@ -281,17 +281,13 @@ def get_shop_service_url(cognite_project: str):
     )
 
 
-def _load_config(path: Path) -> BootstrapConfig:
-    return BootstrapConfig.from_yamls(path)
-
-
 def _transform(
     config: BootstrapConfig,
     path: Path,
     cognite_project: str,
     market: str = "Dayahead",
 ) -> BootstrapResourceCollection:
-    constants = config.constants
+    constants = config.settings
     _ = [w.set_shop_yaml_paths(path) for w in config.watercourses]
     watercourse_directories = {w.name: "/".join((path / w.directory).parts) for w in config.watercourses}
 
@@ -335,7 +331,7 @@ def _transform(
         config.watercourses,
         list(bootstrap_resources.shop_file_configs.values()),
         config.time_series_mappings,
-        config.constants.shop_version,
+        config.settings.shop_version,
     )
 
     # PowerOps configuration resources
