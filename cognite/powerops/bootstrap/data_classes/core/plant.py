@@ -198,7 +198,7 @@ class Plant(BaseModel):
         reservoirs = shop_case["model"]["reservoir"]
         generators = shop_case["model"]["generator"]
         for plant_name, plant in plants.items():
-            reservoir_name = plant_to_inlet_reservoir_breadth_first_search(plant_name, all_connections, reservoirs)
+            reservoir_name = plant_to_inlet_reservoir_breadth_first_search(plant_name, all_connections, set(reservoirs))
             plant.inlet_reservoir_ext_id = f"reservoir_{reservoir_name}"
             plant.generator_ext_ids = [
                 f"generator_{gen_name}" for gen_name in generators_for_plant(plant_name, all_connections, generators)
@@ -235,7 +235,7 @@ def label_in_labels(label_external_id: str, labels: list[Label]) -> bool:
 def plant_to_inlet_reservoir_breadth_first_search(
     plant_name: str,
     all_connections: list[dict],
-    reservoirs: dict,
+    reservoirs: set[str],
 ) -> Optional[str]:
     """Search for a reservoir connected to a plant, starting from the plant and searching breadth first.
 

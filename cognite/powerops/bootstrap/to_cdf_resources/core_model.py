@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from abc import ABC
 from dataclasses import dataclass, field, fields
 from typing import ClassVar
@@ -59,8 +60,10 @@ class Type(ABC):
         for f in fields(self):
             if any(cdf_type in f.type for cdf_type in [CDFSequence.__name__, TimeSeries.__name__]) or f.name == "name":
                 continue
-
-            metadata[f.name] = getattr(self, f.name)
+            value = getattr(self, f.name)
+            if isinstance(value, dict):
+                value = json.dumps(value)
+            metadata[f.name] = value
 
         return Asset(
             external_id=self.external_id,
@@ -108,14 +111,15 @@ class Plant(Type):
     p_min: float
     p_max: float
     penstock_head_loss_factors: dict
-    generators: list[Generator]
-    inlet_reservoirs: list[Reservoir]
-    p_min_timeseries: TimeSeries
-    p_max_timeseries: TimeSeries
-    water_value: TimeSeries
-    feeding_fee: TimeSeries
-    outlet_level_timeseries: TimeSeries
-    inlet_level: TimeSeries
+    generators: list[Generator] = field(default_factory=list)
+    inlet_reservoir_time_series: Reservoir | None = None
+    p_min_time_series: TimeSeries | None = None
+    p_max_time_series: TimeSeries | None = None
+    water_value_time_series: TimeSeries | None = None
+    feeding_fee_time_series: TimeSeries | None = None
+    outlet_level_time_series: TimeSeries | None = None
+    inlet_level_time_series: TimeSeries | None = None
+    head_direct_time_series: TimeSeries | None = None
 
 
 @dataclass
@@ -124,15 +128,16 @@ class Watercourse(Type):
     label = AssetLabel.WATERCOURSE
     shop_penalty_limit: float
     plants: list[Plant]
+    production_obligation_time_series: list[TimeSeries] = field(default_factory=list)
 
 
 @dataclass
 class PriceArea(Type):
     type_: ClassVar[str] = "price_area"
     label = AssetLabel.PRICE_AREA
-    day_ahead_price: TimeSeries
-    plants: list[Plant]
-    watercourses: list[Watercourse]
+    day_ahead_price: TimeSeries | None = None
+    plants: list[Plant] = field(default_factory=list)
+    watercourses: list[Watercourse] = field(default_factory=list)
 
 
 @dataclass

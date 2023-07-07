@@ -39,7 +39,7 @@ class WatercourseConfig(Watercourse):
     hardcoded_mapping: Optional[TimeSeriesMapping] = None  # TODO: not used here
     hist_flow_timeseries: Optional[Dict[str, str]] = None  # TODO: not used here
     # ------------------------------------------------------------------
-    production_obligation_ts_ext_ids: Optional[List[str]] = None
+    production_obligation_ts_ext_ids: List[str] = Field(default_factory=list)
     plant_display_names_and_order: Dict[str, tuple[str, int]] = Field(default_factory=dict)
     reservoir_display_names_and_order: Dict[str, tuple[str, int]] = Field(default_factory=dict)
     water_value_based_method_time_series_csv_filename: Optional[str] = None
