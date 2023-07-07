@@ -25,10 +25,34 @@ from cognite.powerops.bootstrap.data_classes.shared import TimeSeriesMapping
 from cognite.powerops.bootstrap.utils.serializer import load_yaml
 
 
+class MarketConfigs(BaseModel):
+    market: MarketConfig
+    benchmarks: list[BenchmarkingConfig]
+    price_scenario_by_id: dict[str, PriceScenario]
+
+    bidprocess: list[BidProcessConfig]
+    bidmatrix_generators: list[BidMatrixGeneratorConfig]
+    dayahead_price_timeseries: Dict[str, str]
+
+    rkom_bid_process: list[RKOMBidProcessConfig]
+    rkom_bid_combination: Optional[list[RKOMBidCombinationConfig]] = None
+    rkom_market: Optional[RkomMarketConfig] = None
+
+
+class CoreConfigs(BaseModel):
+    watercourses: list[WatercourseConfig]
+    time_series_mappings: list[TimeSeriesMapping]
+    generator_time_series_mappings: list[GeneratorTimeSeriesMapping] = None
+    plant_time_series_mappings: list[PlantTimeSeriesMapping] = None
+
+
 class BootstrapConfig(BaseModel):
     model_config = ConfigDict(populate_by_name=True)
 
     settings: Settings = Field(alias="constants")
+    # core: CoreConfigs
+    # markets: MarketConfigs
+
     benchmarks: list[BenchmarkingConfig]
     price_scenario_by_id: dict[str, PriceScenario]
     bidprocess: list[BidProcessConfig]
