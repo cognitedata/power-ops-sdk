@@ -6,7 +6,7 @@ except ImportError:
     from strenum import StrEnum
 
 
-class CDFLabels(StrEnum):
+class CDFLabel(StrEnum):
     @classmethod
     def as_label_definition(cls) -> list[LabelDefinition]:
         return [
@@ -18,7 +18,7 @@ class CDFLabels(StrEnum):
         ]
 
 
-class AssetLabels(CDFLabels):
+class AssetLabel(CDFLabel):
     BENCHMARKING_CONFIGURATION = "benchmarking_configuration"
     BID_PROCESS_CONFIGURATION = "bid_process_configuration"
     BID_MATRIX_GENERATOR_CONFIG_SEQUENCE = "bid_matrix_generator_config_sequence"
@@ -44,7 +44,7 @@ class AssetLabels(CDFLabels):
     WATERCOURSE = "watercourse"
 
 
-class RelationshipLabels(CDFLabels):
+class RelationshipLabel(CDFLabel):
     BID_MATRIX_GENERATOR_CONFIG_SEQUENCE = "relationship_to.bid_matrix_generator_config_sequence"
     BID_MATRIX_SEQUENCE = "relationship_to.bid_matrix_sequence"
     RKOM_BID_FORM_SEQUENCE = "relationship_to.rkom_bid_form_sequence"

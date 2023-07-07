@@ -8,9 +8,9 @@ from pathlib import Path
 from typing import ClassVar, Dict, List, Optional
 
 from cognite.client.data_classes import Asset, Label, Sequence
-from pydantic import BaseModel, ConfigDict, Field, validator
+from pydantic import BaseModel, Field, validator
 
-from cognite.powerops.bootstrap.data_classes.cdf_labels import AssetLabels, RelationshipLabels
+from cognite.powerops.bootstrap.data_classes.cdf_labels import AssetLabel, RelationshipLabel
 from cognite.powerops.bootstrap.data_classes.core.watercourse import WatercourseConfig
 from cognite.powerops.bootstrap.data_classes.marked_configuration import (
     BenchmarkingConfig,
@@ -88,7 +88,7 @@ class BidMatrixGeneratorConfig(BaseModel):
         relationship = simple_relationship(
             source=bid_process_config_asset,
             target=sequence,
-            label_external_id=RelationshipLabels.BID_MATRIX_GENERATOR_CONFIG_SEQUENCE.value,
+            label_external_id=RelationshipLabel.BID_MATRIX_GENERATOR_CONFIG_SEQUENCE.value,
         )
         bootstrap_resource_collection.add(relationship)
 
@@ -96,8 +96,6 @@ class BidMatrixGeneratorConfig(BaseModel):
 
 
 class BidProcessConfig(Configuration):
-    model_config = ConfigDict(populate_by_name=True)
-
     name: str
     price_area_name: str = Field(alias="bid_price_area")
     price_scenarios: List[PriceScenarioID] = Field(alias="bid_price_scenarios")
@@ -151,7 +149,7 @@ class BidProcessConfig(Configuration):
             metadata=to_metadata(price_scenarios_by_id, benchmark),
             description="Bid process configuration defining how to run a bid matrix generation process",
             parent_external_id="bid_process_configurations",
-            labels=[Label(AssetLabels.BID_PROCESS_CONFIGURATION.value)],
+            labels=[Label(AssetLabel.BID_PROCESS_CONFIGURATION.value)],
         )
 
     def get_price_scenarios(
@@ -196,7 +194,7 @@ class BidProcessConfig(Configuration):
             bootstrap_resources.assets[rel.target_external_id].name
             for rel in bootstrap_resources.relationships.values()
             if rel.source_external_id == f"price_area_{self.price_area_name}"
-            and RelationshipLabels.WATERCOURSE.value in rel.labels[0].values()
+            and RelationshipLabel.WATERCOURSE.value in rel.labels[0].values()
         ]
 
         if not watercourse_names:
@@ -234,7 +232,7 @@ class BidProcessConfig(Configuration):
             relationship = simple_relationship(
                 source=asset,
                 target=sequence,
-                label_external_id=RelationshipLabels.INCREMENTAL_MAPPING_SEQUENCE.value,
+                label_external_id=RelationshipLabel.INCREMENTAL_MAPPING_SEQUENCE.value,
             )
             incremental_mapping_bootstrap_resources.add(relationship)
         return incremental_mapping_bootstrap_resources

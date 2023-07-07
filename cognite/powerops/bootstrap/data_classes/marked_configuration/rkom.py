@@ -9,7 +9,7 @@ from typing import ClassVar, Dict, Generator, List, Literal, Optional, Tuple
 from cognite.client.data_classes import Asset, Label
 from pydantic import BaseModel, ConfigDict, Field, model_validator, validator
 
-from cognite.powerops.bootstrap.data_classes.cdf_labels import AssetLabels, RelationshipLabels
+from cognite.powerops.bootstrap.data_classes.cdf_labels import AssetLabel, RelationshipLabel
 from cognite.powerops.bootstrap.data_classes.marked_configuration import PriceScenario, PriceScenarioID
 from cognite.powerops.bootstrap.data_classes.marked_configuration._core import (
     Configuration,
@@ -245,7 +245,7 @@ class RKOMBidProcessConfig(Configuration):
             metadata=self.to_metadata(rkom_price_scenarios_by_id, rkom_market_name),
             description=f"RKOM bid generation config for {self.watercourse}",
             parent_external_id=self.parent_external_id,
-            labels=[Label(AssetLabels.RKOM_BID_CONFIGURATION.value)],
+            labels=[Label(AssetLabel.RKOM_BID_CONFIGURATION.value)],
         )
 
     def to_bootstrap_resources(self, price_scenarios_by_id, market_name) -> ResourceCollection:
@@ -274,7 +274,7 @@ class RKOMBidProcessConfig(Configuration):
             relationship = simple_relationship(
                 source=asset,
                 target=sequence,
-                label_external_id=RelationshipLabels.INCREMENTAL_MAPPING_SEQUENCE.value,
+                label_external_id=RelationshipLabel.INCREMENTAL_MAPPING_SEQUENCE.value,
             )
             bootstrap_resources.add(relationship)
 

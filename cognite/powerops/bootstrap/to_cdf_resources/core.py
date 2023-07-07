@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Callable, List, Optional
 
 from cognite.powerops.bootstrap.data_classes.bootstrap_config import BootstrapConfig, CoreConfigs, MarketConfigs
-from cognite.powerops.bootstrap.data_classes.cdf_labels import AssetLabels, RelationshipLabels
+from cognite.powerops.bootstrap.data_classes.cdf_labels import AssetLabel, RelationshipLabel
 from cognite.powerops.bootstrap.data_classes.core.watercourse import WatercourseConfig
 from cognite.powerops.bootstrap.data_classes.marked_configuration import BenchmarkingConfig, PriceScenario
 from cognite.powerops.bootstrap.data_classes.marked_configuration.dayahead import (
@@ -270,7 +270,7 @@ def transform(
     echo(f"Running bootstrap for data set {settings.data_set_external_id} in CDF project {settings.cdf_project}")
 
     # Create common CDF resources
-    labels = AssetLabels.as_label_definition() + RelationshipLabels.as_label_definition()
+    labels = AssetLabel.as_label_definition() + RelationshipLabel.as_label_definition()
     skeleton_assets = create_skeleton_asset_hierarchy(
         settings.shop_service_url, settings.organization_subdomain, settings.tenant_id
     )

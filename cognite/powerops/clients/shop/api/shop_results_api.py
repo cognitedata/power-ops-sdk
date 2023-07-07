@@ -8,7 +8,7 @@ from typing import Optional
 import pandas as pd
 from cognite.client import CogniteClient
 
-from cognite.powerops.bootstrap.data_classes.cdf_labels import RelationshipLabels
+from cognite.powerops.bootstrap.data_classes.cdf_labels import RelationshipLabel
 from cognite.powerops.clients.shop.api.shop_result_files_api import ShopFilesAPI
 from cognite.powerops.clients.shop.data_classes import ShopRun
 from cognite.powerops.clients.shop.data_classes.shop_result_files import ShopLogFile, ShopYamlFile
@@ -35,7 +35,7 @@ class ShopRunResultsAPI:
 
         related_log_files = self._files_api.retrieve_related_files_metadata(
             source_external_id=shop_run.shop_run_event.external_id,
-            label_ext_id=RelationshipLabels.LOG_FILE.value,
+            label_ext_id=RelationshipLabel.LOG_FILE.value,
         )
         for metadata in related_log_files:
             ext_id = metadata.external_id
@@ -54,7 +54,7 @@ class ShopRunResultsAPI:
         relationships = retrieve_relationships_from_source_ext_id(
             self._client,
             shop_run.shop_run_event.external_id,
-            RelationshipLabels.OBJECTIVE_SEQUENCE.value,
+            RelationshipLabel.OBJECTIVE_SEQUENCE.value,
             target_types=["sequence"],
         )
         sequences = self._client.sequences.retrieve_multiple(external_ids=[r.target_external_id for r in relationships])

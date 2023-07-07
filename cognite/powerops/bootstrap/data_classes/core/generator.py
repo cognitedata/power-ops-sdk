@@ -5,8 +5,8 @@ from typing import Optional
 from cognite.client.data_classes import Asset, Label, Relationship
 from pydantic import BaseModel, field_validator
 
-from cognite.powerops.bootstrap.data_classes.cdf_labels import AssetLabels
-from cognite.powerops.bootstrap.data_classes.cdf_labels import RelationshipLabels as rl
+from cognite.powerops.bootstrap.data_classes.cdf_labels import AssetLabel
+from cognite.powerops.bootstrap.data_classes.cdf_labels import RelationshipLabel as rl
 from cognite.powerops.bootstrap.data_classes.core._core import ExternalId
 from cognite.powerops.bootstrap.data_classes.resource_collection import ResourceCollection
 from cognite.powerops.bootstrap.to_cdf_resources.create_relationship_types import asset_to_time_series
@@ -52,7 +52,7 @@ class Generator(BaseModel):
             external_id=f"generator_{self.name}",
             name=self.name,
             parent_external_id="generators",
-            labels=[Label(AssetLabels.GENERATOR.value)],
+            labels=[Label(AssetLabel.GENERATOR.value)],
             metadata={
                 "penstock": self.penstock,
                 "startcost": self.startcost,
@@ -61,13 +61,10 @@ class Generator(BaseModel):
         )
 
     def relationships(self) -> list[Relationship]:
-        time_series_to_append_if_not_none = {
-            self.start_stop_cost_time_series: rl.START_STOP_COST_TIME_SERIES.value,
-        }
+        if not self.start_stop_cost_time_series:
+            return []
         return [
-            asset_to_time_series(self.external_id, time_series, label)
-            for time_series, label in time_series_to_append_if_not_none.items()
-            if time_series
+            asset_to_time_series(self.external_id, self.start_stop_cost_time_series, rl.START_STOP_COST_TIME_SERIES)
         ]
 
 
