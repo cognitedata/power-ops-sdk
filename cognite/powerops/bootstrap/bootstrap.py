@@ -7,18 +7,18 @@ from pathlib import Path
 from typing import List, Literal, Optional
 
 from cognite.powerops._shared_data_classes import create_labels
-from cognite.powerops.bootstrap.config import (
+from cognite.powerops.bootstrap.config import BootstrapConfig
+from cognite.powerops.bootstrap.data_classes.cdf_resource_collection import BootstrapResourceCollection
+from cognite.powerops.bootstrap.data_classes.core import WatercourseConfig
+from cognite.powerops.bootstrap.data_classes.marked_configuration import (
     BenchmarkingConfig,
     BidMatrixGeneratorConfig,
     BidProcessConfig,
-    BootstrapConfig,
     PriceScenario,
     RKOMBidCombinationConfig,
     RKOMBidProcessConfig,
     RkomMarketConfig,
-    WatercourseConfig,
 )
-from cognite.powerops.bootstrap.data_classes.cdf_resource_collection import BootstrapResourceCollection
 from cognite.powerops.bootstrap.data_classes.shop_file_config import ShopFileConfig, ShopFileConfigs
 from cognite.powerops.bootstrap.data_classes.shop_output_definition import ShopOutputConfig
 from cognite.powerops.bootstrap.data_classes.time_series_mapping import TimeSeriesMapping, write_mapping_to_sequence

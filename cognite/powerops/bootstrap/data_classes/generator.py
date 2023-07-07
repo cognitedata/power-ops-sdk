@@ -5,8 +5,8 @@ from pydantic import BaseModel
 
 from cognite.powerops._shared_data_classes import AssetLabels
 from cognite.powerops._shared_data_classes import RelationshipLabels as rl
-from cognite.powerops.bootstrap.config import GeneratorTimeSeriesMapping
 from cognite.powerops.bootstrap.data_classes.cdf_resource_collection import BootstrapResourceCollection
+from cognite.powerops.bootstrap.data_classes.core import GeneratorTimeSeriesMapping
 from cognite.powerops.bootstrap.utils.relationship_types import asset_to_time_series
 
 ExternalId = str

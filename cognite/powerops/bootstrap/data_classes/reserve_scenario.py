@@ -1,16 +1,9 @@
 from dataclasses import dataclass
-from enum import Enum
 from typing import Dict, List, Literal, Optional, Tuple
 
 from cognite.powerops.bootstrap.data_classes.common import AggregationMethod, RetrievalType
+from cognite.powerops.bootstrap.data_classes.shared import Auction, Transformation, TransformationType
 from cognite.powerops.bootstrap.data_classes.time_series_mapping import TimeSeriesMapping, TimeSeriesMappingEntry
-from cognite.powerops.bootstrap.data_classes.transformation import Transformation, TransformationType
-
-
-class Auction(str, Enum):
-    week = "week"
-    weekend = "weekend"
-
 
 # TODO: Switch to class inheriting from str and Enum, or 3.11 strEnum?
 Product = Literal["up", "down"]

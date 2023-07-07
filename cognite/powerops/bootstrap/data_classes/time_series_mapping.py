@@ -9,7 +9,7 @@ from pydantic import BaseModel, validator
 
 from cognite.powerops.bootstrap.data_classes.cdf_resource_collection import BootstrapResourceCollection, SequenceContent
 from cognite.powerops.bootstrap.data_classes.common import AggregationMethod, RetrievalType
-from cognite.powerops.bootstrap.data_classes.transformation import Transformation
+from cognite.powerops.bootstrap.data_classes.shared import Transformation
 from cognite.powerops.bootstrap.utils.common import print_warning
 
 ATTRIBUTE_DEFAULT_AGGREGATION: dict[str, AggregationMethod | None] = {
@@ -112,7 +112,7 @@ class TimeSeriesMapping(BaseModel):
     def transformations_cols(self) -> list[str]:
         return [col for col in self.columns if col.startswith("transformations")]
 
-    def __iter__(self) -> Iterator[TimeSeriesMappingEntry]:  # type: ignore [override]
+    def __iter__(self) -> Iterator[TimeSeriesMappingEntry]:
         yield from self.rows
 
     def __len__(self) -> int:

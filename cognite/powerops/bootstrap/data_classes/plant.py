@@ -9,8 +9,8 @@ from pydantic import BaseModel, validator
 
 from cognite.powerops._shared_data_classes import AssetLabels as al
 from cognite.powerops._shared_data_classes import RelationshipLabels as rl
-from cognite.powerops.bootstrap.config import PlantTimeSeriesMapping
 from cognite.powerops.bootstrap.data_classes.cdf_resource_collection import BootstrapResourceCollection
+from cognite.powerops.bootstrap.data_classes.core import PlantTimeSeriesMapping
 from cognite.powerops.bootstrap.data_classes.time_series_mapping import TimeSeriesMapping
 from cognite.powerops.bootstrap.utils.common import print_warning
 from cognite.powerops.bootstrap.utils.relationship_types import (
