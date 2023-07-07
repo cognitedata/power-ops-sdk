@@ -35,21 +35,20 @@ class Type(ABC):
             value = getattr(self, f.name)
             if not value:
                 continue
-            if TimeSeries.__name__ in f.type:
+            if any(cdf_type in f.type for cdf_type in [CDFSequence.__name__, TimeSeries.__name__]):
+                if TimeSeries.__name__ in f.type:
+                    target_type = "TIMESERIES"
+                    target_external_id = value.external_id
+                elif CDFSequence.__name__ in f.type:
+                    target_type = "SEQUENCE"
+                    target_external_id = value.sequence.external_id
+                else:
+                    raise ValueError(f"Unexpected type {f.type}")
                 r = basic_relationship(
-                    source_type="ASSET",
-                    target_type="TIMESERIES",
-                    source_external_id=self.external_id,
-                    target_external_id=value.external_id,
-                    label=RelationshipLabel(f"relationship_to.{f.name}"),
-                )
-                relationships.append(r)
-            elif CDFSequence.__name__ in f.type:
-                r = basic_relationship(
                     source_external_id=self.external_id,
                     source_type="ASSET",
-                    target_external_id=value.sequence.external_id,
-                    target_type="SEQUENCE",
+                    target_external_id=target_external_id,
+                    target_type=target_type,
                     label=RelationshipLabel(f"relationship_to.{f.name}"),
                 )
                 relationships.append(r)
