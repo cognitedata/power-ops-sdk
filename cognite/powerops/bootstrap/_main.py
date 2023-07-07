@@ -1,13 +1,13 @@
 from pathlib import Path
 
-from cognite.powerops.bootstrap.bootstrap import (
+from cognite.powerops.bootstrap.logger import configure_debug_logging
+from cognite.powerops.bootstrap.to_cdf_resources.bootstrap import (
     _create_cdf_resources,
     _load_config,
     _preview_resources_diff,
     _transform,
     validate_config,
 )
-from cognite.powerops.bootstrap.logger import configure_debug_logging
 from cognite.powerops.clients.powerops_client import PowerOpsClient
 from cognite.powerops.utils.cdf import Settings, get_client_config
 
