@@ -288,8 +288,8 @@ def _transform(
     market: str = "Dayahead",
 ) -> BootstrapResourceCollection:
     constants = config.settings
-    _ = [w.set_shop_yaml_paths(path) for w in config.watercourses]
-    watercourse_directories = {w.name: "/".join((path / w.directory).parts) for w in config.watercourses}
+    _ = [w.set_shop_yaml_paths(path) for w in config.core.watercourses]
+    watercourse_directories = {w.name: "/".join((path / w.directory).parts) for w in config.core.watercourses}
 
     shop_files_config_list = ShopFileConfigs.from_yaml(path).watercourses_shop
 
@@ -311,49 +311,49 @@ def _transform(
     )
     # PowerOps asset data model
     bootstrap_resources += generate_resources_and_data(
-        watercourse_configs=config.watercourses,
-        plant_time_series_mappings=config.plant_time_series_mappings,
-        generator_time_series_mappings=config.generator_time_series_mappings,
+        watercourse_configs=config.core.watercourses,
+        plant_time_series_mappings=config.core.plant_time_series_mappings,
+        generator_time_series_mappings=config.core.generator_time_series_mappings,
     )
 
-    bootstrap_resources.add(generate_relationships_from_price_area_to_price(config.dayahead_price_timeseries))
+    bootstrap_resources.add(generate_relationships_from_price_area_to_price(config.markets.dayahead_price_timeseries))
     # SHOP files (model, commands, cut mapping++) and configs (base mapping, output definition)
 
     # Shop files related to each watercourse
     bootstrap_resources.add(create_watercourse_shop_files(shop_files_config_list, watercourse_directories))
-    bootstrap_resources += create_watercourse_processed_shop_files(watercourse_configs=config.watercourses)
+    bootstrap_resources += create_watercourse_processed_shop_files(watercourse_configs=config.core.watercourses)
     bootstrap_resources += create_watercourse_timeseries_mappings(
-        watercourse_configs=config.watercourses, time_series_mappings=config.time_series_mappings
+        watercourse_configs=config.core.watercourses, time_series_mappings=config.core.time_series_mappings
     )
 
     # Create DM resources
     bootstrap_resources += create_dm_resources(
-        config.watercourses,
+        config.core.watercourses,
         list(bootstrap_resources.shop_file_configs.values()),
-        config.time_series_mappings,
+        config.core.time_series_mappings,
         config.settings.shop_version,
     )
 
     # PowerOps configuration resources
-    bootstrap_resources.add(config.market.cdf_asset)
-    benchmarking_config_assets = [config.cdf_asset for config in config.benchmarks]
+    bootstrap_resources.add(config.markets.market.cdf_asset)
+    benchmarking_config_assets = [config.cdf_asset for config in config.markets.benchmarks]
     bootstrap_resources.add(benchmarking_config_assets)
 
     bootstrap_resources += process_bid_process_configs(
         path=path,
-        bid_process_configs=config.bidprocess,
-        bidmatrix_generators=config.bidmatrix_generators,
-        price_scenarios_by_id=config.price_scenario_by_id,
-        watercourses=config.watercourses,
-        benchmark=config.benchmarks[0],
-        existing_bootstrap_resources=bootstrap_resources.copy(),
+        bid_process_configs=config.markets.bidprocess,
+        bidmatrix_generators=config.markets.bidmatrix_generators,
+        price_scenarios_by_id=config.markets.price_scenario_by_id,
+        watercourses=config.core.watercourses,
+        benchmark=config.markets.benchmarks[0],
+        existing_bootstrap_resources=bootstrap_resources.model_copy(),
     )
 
     bootstrap_resources += process_rkom_bid_configs(
-        rkom_bid_combination_configs=config.rkom_bid_combination,
-        rkom_market_config=config.rkom_market,
-        rkom_bid_process=config.rkom_bid_process,
-        price_scenarios_by_id=config.price_scenario_by_id,
+        rkom_bid_combination_configs=config.markets.rkom_bid_combination,
+        rkom_market_config=config.markets.rkom_market,
+        rkom_bid_process=config.markets.rkom_bid_process,
+        price_scenarios_by_id=config.markets.price_scenario_by_id,
         market_name=market,
     )
 
