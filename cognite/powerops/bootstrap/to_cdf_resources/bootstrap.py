@@ -10,11 +10,12 @@ from cognite.powerops._shared_data_classes import create_labels
 from cognite.powerops.bootstrap.data_classes.cdf_resource_collection import BootstrapResourceCollection
 from cognite.powerops.bootstrap.data_classes.config import BootstrapConfig
 from cognite.powerops.bootstrap.data_classes.core.watercourse import WatercourseConfig
-from cognite.powerops.bootstrap.data_classes.marked_configuration import (
-    BenchmarkingConfig,
+from cognite.powerops.bootstrap.data_classes.marked_configuration import BenchmarkingConfig, PriceScenario
+from cognite.powerops.bootstrap.data_classes.marked_configuration.dayahead import (
     BidMatrixGeneratorConfig,
     BidProcessConfig,
-    PriceScenario,
+)
+from cognite.powerops.bootstrap.data_classes.marked_configuration.rkom import (
     RKOMBidCombinationConfig,
     RKOMBidProcessConfig,
     RkomMarketConfig,
