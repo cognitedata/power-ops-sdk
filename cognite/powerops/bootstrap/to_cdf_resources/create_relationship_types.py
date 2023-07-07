@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from cognite.client.data_classes import Asset, Label, Relationship, Sequence
+from cognite.client.data_classes import Asset, Label, Relationship
 
 from cognite.powerops.bootstrap.data_classes.cdf_labels import RelationshipLabel
 
@@ -62,21 +62,6 @@ def _asset_to_time_series(
     )
 
 
-def _asset_to_sequence(
-    source_external_id: str,
-    target_external_id: str,
-    label: RelationshipLabel,
-) -> Relationship:
-    return Relationship(
-        external_id=f"{source_external_id}.{target_external_id}",
-        source_external_id=source_external_id,
-        source_type="ASSET",
-        target_external_id=target_external_id,
-        target_type="SEQUENCE",
-        labels=[Label(external_id=label.value)],
-    )
-
-
 def price_area_to_plant(price_area: Asset | str, plant: Asset | str) -> Relationship:
     return asset_to_asset(
         source=price_area,
@@ -122,22 +107,6 @@ def watercourse_to_production_obligation(watercourse: Asset, production_obligati
         source_external_id=watercourse.external_id,
         target_external_id=production_obligation_ts_ext_id,
         label=RelationshipLabel.PRODUCTION_OBLIGATION_TIME_SERIES,
-    )
-
-
-def generator_to_generator_efficiency_curve(generator: Asset, generator_efficiency_curve: Sequence) -> Relationship:
-    return _asset_to_sequence(
-        source_external_id=generator.external_id,
-        target_external_id=generator_efficiency_curve.external_id,
-        label=RelationshipLabel.GENERATOR_EFFICIENCY_CURVE,
-    )
-
-
-def generator_to_turbine_efficiency_curve(generator: Asset, turbine_efficiency_curve: Sequence) -> Relationship:
-    return _asset_to_sequence(
-        source_external_id=generator.external_id,
-        target_external_id=turbine_efficiency_curve.external_id,
-        label=RelationshipLabel.TURBINE_EFFICIENCY_CURVE,
     )
 
 
