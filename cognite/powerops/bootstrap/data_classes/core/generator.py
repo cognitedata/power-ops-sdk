@@ -1,15 +1,16 @@
+from __future__ import annotations
+
 from typing import Optional
 
 from cognite.client.data_classes import Asset, Label, Relationship
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 
 from cognite.powerops._shared_data_classes import AssetLabels
 from cognite.powerops._shared_data_classes import RelationshipLabels as rl
 from cognite.powerops.bootstrap.data_classes.cdf_resource_collection import BootstrapResourceCollection
-from cognite.powerops.bootstrap.data_classes.core import GeneratorTimeSeriesMapping
+from cognite.powerops.bootstrap.data_classes.core._core import ExternalId
 from cognite.powerops.bootstrap.utils.relationship_types import asset_to_time_series
 
-ExternalId = str
 GeneratorName = str
 
 
@@ -68,3 +69,12 @@ class Generator(BaseModel):
             for time_series, label in time_series_to_append_if_not_none.items()
             if time_series
         ]
+
+
+class GeneratorTimeSeriesMapping(BaseModel):
+    generator_name: str
+    start_stop_cost: Optional[ExternalId] = None
+
+    @field_validator("start_stop_cost", mode="before")
+    def parset_number_to_string(cls, value):
+        return str(value) if isinstance(value, (int, float)) else value

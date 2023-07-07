@@ -17,7 +17,7 @@ from cognite.powerops.bootstrap.data_classes.cdf_resource_collection import (
     SequenceRows,
 )
 from cognite.powerops.bootstrap.data_classes.common import AggregationMethod, RelativeTime, RetrievalType
-from cognite.powerops.bootstrap.data_classes.core import WatercourseConfig
+from cognite.powerops.bootstrap.data_classes.core.watercourse import WatercourseConfig
 from cognite.powerops.bootstrap.data_classes.reserve_scenario import Block, Product, ReserveScenario
 from cognite.powerops.bootstrap.data_classes.shared import Auction, Transformation, TransformationType
 from cognite.powerops.bootstrap.data_classes.time_series_mapping import (

@@ -5,12 +5,12 @@ from pathlib import Path
 from typing import List, NamedTuple, Optional, Tuple
 
 from cognite.client.data_classes import Asset, Label, Relationship
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, field_validator, validator
 
 from cognite.powerops._shared_data_classes import AssetLabels as al
 from cognite.powerops._shared_data_classes import RelationshipLabels as rl
 from cognite.powerops.bootstrap.data_classes.cdf_resource_collection import BootstrapResourceCollection
-from cognite.powerops.bootstrap.data_classes.core import PlantTimeSeriesMapping
+from cognite.powerops.bootstrap.data_classes.core._core import ExternalId
 from cognite.powerops.bootstrap.data_classes.time_series_mapping import TimeSeriesMapping
 from cognite.powerops.bootstrap.utils.common import print_warning
 from cognite.powerops.bootstrap.utils.relationship_types import (
@@ -25,7 +25,6 @@ p_max_fallback = 1e20
 
 head_loss_factor_fallback = 0.0
 
-ExternalId = str
 PlantName = str
 
 
@@ -385,3 +384,18 @@ def _match_plants_and_mip_flag(plants: List[str], mapping: TimeSeriesMapping) ->
             print_warning(f"Did not find the `mip_flag` time series for {plant}!")
     print("\033[92m FINISHED \033[0m")
     return res
+
+
+class PlantTimeSeriesMapping(BaseModel):
+    plant_name: str
+    water_value: Optional[ExternalId] = None
+    inlet_reservoir_level: Optional[ExternalId] = None
+    outlet_reservoir_level: Optional[ExternalId] = None
+    p_min: Optional[ExternalId] = None
+    p_max: Optional[ExternalId] = None
+    feeding_fee: Optional[ExternalId] = None
+    head_direct: Optional[ExternalId] = None
+
+    @field_validator("*", mode="before")
+    def parse_number_to_string(cls, value):
+        return str(value) if isinstance(value, (int, float)) else value

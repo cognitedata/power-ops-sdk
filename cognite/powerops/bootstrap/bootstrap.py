@@ -9,7 +9,7 @@ from typing import List, Literal, Optional
 from cognite.powerops._shared_data_classes import create_labels
 from cognite.powerops.bootstrap.config import BootstrapConfig
 from cognite.powerops.bootstrap.data_classes.cdf_resource_collection import BootstrapResourceCollection
-from cognite.powerops.bootstrap.data_classes.core import WatercourseConfig
+from cognite.powerops.bootstrap.data_classes.core.watercourse import WatercourseConfig
 from cognite.powerops.bootstrap.data_classes.marked_configuration import (
     BenchmarkingConfig,
     BidMatrixGeneratorConfig,

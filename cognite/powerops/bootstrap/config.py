@@ -7,11 +7,9 @@ from typing import Dict, Optional
 from pydantic import BaseModel, validator
 
 from cognite.powerops.bootstrap.data_classes.common import CommonConstants
-from cognite.powerops.bootstrap.data_classes.core import (
-    GeneratorTimeSeriesMapping,
-    PlantTimeSeriesMapping,
-    WatercourseConfig,
-)
+from cognite.powerops.bootstrap.data_classes.core.generator import GeneratorTimeSeriesMapping
+from cognite.powerops.bootstrap.data_classes.core.plant import PlantTimeSeriesMapping
+from cognite.powerops.bootstrap.data_classes.core.watercourse import WatercourseConfig
 from cognite.powerops.bootstrap.data_classes.marked_configuration import (
     BenchmarkingConfig,
     BidMatrixGeneratorConfig,
