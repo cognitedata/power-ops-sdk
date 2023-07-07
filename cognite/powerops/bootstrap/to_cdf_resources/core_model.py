@@ -151,7 +151,7 @@ class Plant(Type):
 class Watercourse(Type):
     type_: ClassVar[str] = "watercourse"
     label = AssetLabel.WATERCOURSE
-    shop_penalty_limit: float
+    shop_penalty_limit: str
     plants: list[Plant]
     production_obligation_time_series: list[TimeSeries] = field(default_factory=list)
 

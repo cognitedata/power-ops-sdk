@@ -62,30 +62,6 @@ def _asset_to_time_series(
     )
 
 
-def price_area_to_plant(price_area: Asset | str, plant: Asset | str) -> Relationship:
-    return asset_to_asset(
-        source=price_area,
-        target=plant,
-        label=RelationshipLabel.PLANT,
-    )
-
-
-def watercourse_to_plant(watercourse: Asset | str, plant: Asset | str) -> Relationship:
-    return asset_to_asset(
-        source=watercourse,
-        target=plant,
-        label=RelationshipLabel.PLANT,
-    )
-
-
-def price_area_to_watercourse(price_area: Asset | str, watercourse: Asset | str) -> Relationship:
-    return asset_to_asset(
-        source=price_area,
-        target=watercourse,
-        label=RelationshipLabel.WATERCOURSE,
-    )
-
-
 def plant_to_inlet_reservoir(plant: Asset | str, reservoir: Asset | str) -> Relationship:
     return asset_to_asset(
         source=plant,
@@ -99,14 +75,6 @@ def plant_to_generator(plant: Asset | str, generator: Asset | str) -> Relationsh
         source=plant,
         target=generator,
         label=RelationshipLabel.GENERATOR,
-    )
-
-
-def watercourse_to_production_obligation(watercourse: Asset, production_obligation_ts_ext_id: str) -> Relationship:
-    return _asset_to_time_series(
-        source_external_id=watercourse.external_id,
-        target_external_id=production_obligation_ts_ext_id,
-        label=RelationshipLabel.PRODUCTION_OBLIGATION_TIME_SERIES,
     )
 
 

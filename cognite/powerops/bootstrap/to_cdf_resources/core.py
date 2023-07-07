@@ -28,7 +28,7 @@ from cognite.powerops.bootstrap.data_classes.to_delete import SequenceContent
 from cognite.powerops.bootstrap.to_cdf_resources.files import process_yaml_file
 from cognite.powerops.bootstrap.to_cdf_resources.generate_cdf_resource import (
     generate_relationships_from_price_area_to_price,
-    generate_resources_and_data,
+    to_core_model,
 )
 from cognite.powerops.bootstrap.to_cdf_resources.powerops_status_events import create_bootstrap_finished_event
 from cognite.powerops.clients.cogshop.data_classes import (
@@ -338,14 +338,11 @@ def core_to_cdf_resources(
 ) -> ResourceCollection:
     collection = ResourceCollection()
     # PowerOps asset data model
-    created_collection, model = generate_resources_and_data(
+    model = to_core_model(
         watercourse_configs=core.watercourses,
         plant_time_series_mappings=core.plant_time_series_mappings,
         generator_time_series_mappings=core.generator_time_series_mappings,
     )
-    # collection.add([reservoir.as_asset() for reservoir in model.reservoirs])
-    # collection.add([generator.as_asset() for generator in model.generators])
-    # collection.add([relationship for generator in model.generators for relationship in generator.get_relationships()])
     for generator in model.generators:
         collection.add(generator.generator_efficiency_curve.sequence)
         collection.add(generator.turbine_efficiency_curve.sequence)
@@ -363,8 +360,6 @@ def core_to_cdf_resources(
         )
     collection.add(model.as_assets())
     collection.add(model.as_relationships())
-
-    collection += created_collection
 
     # SHOP files (model, commands, cut mapping++) and configs (base mapping, output definition)
     # Shop files related to each watercourse

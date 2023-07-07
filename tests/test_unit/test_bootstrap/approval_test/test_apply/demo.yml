@@ -642,7 +642,7 @@ assets:
   labels:
   - externalId: watercourse
   metadata:
-    shop:penalty_limit: '42000'
+    shop_penalty_limit: '42000'
   name: Fornebu
   parent_external_id: watercourses
 - external_id: watercourses
