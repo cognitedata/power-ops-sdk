@@ -343,6 +343,7 @@ def core_to_cdf_resources(
         generator_time_series_mappings=core.generator_time_series_mappings,
     )
     collection.add([reservoir.as_asset() for reservoir in model.reservoirs])
+    collection.add([generator.as_asset() for generator in model.generators])
 
     collection += created_collection
 

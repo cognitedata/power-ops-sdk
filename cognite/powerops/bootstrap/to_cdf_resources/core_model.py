@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from abc import ABC
-from dataclasses import asdict, dataclass, field
+from dataclasses import dataclass, field, fields
 from typing import ClassVar
 
 import pandas as pd
@@ -32,8 +32,13 @@ class Type(ABC):
         raise NotImplementedError()
 
     def as_asset(self):
-        metadata = asdict(self)
-        metadata.pop("name")
+        metadata = {}
+        for f in fields(self):
+            if any(cdf_type in f.type for cdf_type in [CDFSequence.__name__, TimeSeries.__name__]) or f.name == "name":
+                continue
+
+            metadata[f.name] = getattr(self, f.name)
+
         return Asset(
             external_id=self.external_id,
             name=self.name,
@@ -54,7 +59,7 @@ class Generator(Type):
     type_: ClassVar[str] = "generator"
     label = AssetLabel.GENERATOR
     p_min: float
-    penstock: int
+    penstock: str
     startcost: float
     generator_efficiency_curve: CDFSequence | None = None
     turbine_efficiency_curve: CDFSequence | None = None

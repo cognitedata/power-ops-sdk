@@ -114,9 +114,9 @@ def generate_resources_and_data(
         for generator_name, generator_attributes in generators.items():
             generator2 = core_model.Generator(
                 generator_name,
-                penstock=generator_attributes.get("penstock", 1),
-                p_min=generator_attributes.get("p_min", 0.0),
-                startcost=get_single_value(generator_attributes.get("startcost", 0.0)),
+                penstock=str(generator_attributes.get("penstock", "1")),
+                p_min=float(generator_attributes.get("p_min", 0.0)),
+                startcost=float(get_single_value(generator_attributes.get("startcost", 0.0))),
             )
             x_col_name = "generator_power"
             y_col_name = "generator_efficiency"
@@ -169,6 +169,7 @@ def generate_resources_and_data(
 
             generator2.turbine_efficiency_curve = turbine_efficiency_curve
             generators2.append(generator2)
+        model.generators.extend(generators2)
 
         # Todo delete
         resources += add_generators_and_efficiency_curves(generators, generator_time_series_mappings)
@@ -381,8 +382,8 @@ def add_generators_and_efficiency_curves(
         generator = Generator(
             name=generator_name,
             penstock=str(generator_information.get("penstock", "1")),
-            p_min=generator_information.get("p_min", 0.0),
-            startcost=get_single_value(generator_information.get("startcost", 0.0)),
+            p_min=float(generator_information.get("p_min", 0.0)),
+            startcost=float(get_single_value(generator_information.get("startcost", 0.0))),
         )
         generators[generator_name] = generator
         generator_asset = generator.asset()
