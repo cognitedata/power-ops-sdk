@@ -343,9 +343,9 @@ def core_to_cdf_resources(
         plant_time_series_mappings=core.plant_time_series_mappings,
         generator_time_series_mappings=core.generator_time_series_mappings,
     )
-    collection.add([reservoir.as_asset() for reservoir in model.reservoirs])
-    collection.add([generator.as_asset() for generator in model.generators])
-    collection.add([relationship for generator in model.generators for relationship in generator.get_relationships()])
+    # collection.add([reservoir.as_asset() for reservoir in model.reservoirs])
+    # collection.add([generator.as_asset() for generator in model.generators])
+    # collection.add([relationship for generator in model.generators for relationship in generator.get_relationships()])
     for generator in model.generators:
         collection.add(generator.generator_efficiency_curve.sequence)
         collection.add(generator.turbine_efficiency_curve.sequence)
@@ -361,6 +361,8 @@ def core_to_cdf_resources(
                 data=generator.turbine_efficiency_curve.content,
             )
         )
+    collection.add(model.as_assets())
+    collection.add(model.as_relationships())
 
     collection += created_collection
 

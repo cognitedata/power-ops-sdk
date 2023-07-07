@@ -8,7 +8,6 @@ from cognite.client.data_classes import Relationship, Sequence, TimeSeries
 
 from cognite.powerops.bootstrap.data_classes.core.generator import GeneratorTimeSeriesMapping
 from cognite.powerops.bootstrap.data_classes.core.plant import (
-    Plant,
     PlantTimeSeriesMapping,
     plant_to_inlet_reservoir_breadth_first_search,
 )
@@ -16,13 +15,7 @@ from cognite.powerops.bootstrap.data_classes.core.watercourse import Watercourse
 from cognite.powerops.bootstrap.data_classes.model_file import Connection
 from cognite.powerops.bootstrap.data_classes.resource_collection import ResourceCollection
 from cognite.powerops.bootstrap.to_cdf_resources.create_asset_types import price_area_asset, watercourse_asset
-from cognite.powerops.bootstrap.to_cdf_resources.create_relationship_types import (
-    price_area_to_dayahead_price,
-    price_area_to_plant,
-    price_area_to_watercourse,
-    watercourse_to_plant,
-    watercourse_to_production_obligation,
-)
+from cognite.powerops.bootstrap.to_cdf_resources.create_relationship_types import price_area_to_dayahead_price
 from cognite.powerops.bootstrap.utils.serializer import load_yaml
 
 from . import core_model
@@ -189,13 +182,23 @@ def generate_resources_and_data(
             mapping = plant_time_series_mappings_by_name.get(plant_name)
             if mapping:
                 mappings = dict(
-                    water_value_time_series=mapping.water_value,
-                    inlet_level_time_series=mapping.inlet_reservoir_level,
-                    outlet_level_time_series=mapping.outlet_reservoir_level,
-                    feeding_fee_time_series=mapping.feeding_fee,
-                    p_min_time_series=mapping.p_min,
-                    p_max_time_series=mapping.p_max,
-                    head_direct_time_series=mapping.head_direct,
+                    water_value_time_series=TimeSeries(external_id=mapping.water_value)
+                    if mapping.water_value
+                    else None,
+                    inlet_level_time_series=TimeSeries(external_id=mapping.inlet_reservoir_level)
+                    if mapping.inlet_reservoir_level
+                    else None,
+                    outlet_level_time_series=TimeSeries(external_id=mapping.outlet_reservoir_level)
+                    if mapping.outlet_reservoir_level
+                    else None,
+                    feeding_fee_time_series=TimeSeries(external_id=mapping.feeding_fee)
+                    if mapping.feeding_fee
+                    else None,
+                    p_min_time_series=TimeSeries(external_id=mapping.p_min) if mapping.p_min else None,
+                    p_max_time_series=TimeSeries(external_id=mapping.p_max) if mapping.p_max else None,
+                    head_direct_time_series=TimeSeries(external_id=mapping.head_direct)
+                    if mapping.head_direct
+                    else None,
                 )
             else:
                 mappings = {}
@@ -204,14 +207,14 @@ def generate_resources_and_data(
                 name=plant_name,
                 display_name=display_name,
                 ordering=order,
-                outlet_level=attributes.get("outlet_line", 0),
-                p_min=attributes.get("p_min", p_min_fallback),
-                p_max=attributes.get("p_max", p_max_fallback),
-                head_loss_factor=attributes.get("main_loss", [head_loss_factor_fallback])[
-                    0
-                ],  # For some reason, SHOP defines this as a list, but we only need the first (and only) value
+                outlet_level=float(attributes.get("outlet_line", 0)),
+                p_min=float(attributes.get("p_min", p_min_fallback)),
+                p_max=float(attributes.get("p_max", p_max_fallback)),
+                head_loss_factor=float(
+                    attributes.get("main_loss", [head_loss_factor_fallback])[0]
+                ),  # For some reason, SHOP defines this as a list, but we only need the first (and only) value
                 penstock_head_loss_factors={
-                    str(penstock_number): loss_factor
+                    str(penstock_number): float(loss_factor)
                     for penstock_number, loss_factor in enumerate(
                         attributes.get("penstock_loss", [head_loss_factor_fallback]), start=1
                     )
@@ -246,39 +249,39 @@ def generate_resources_and_data(
 
         model.plants.extend(plants2)
 
-        plants = Plant.from_shop_case(shop_case=shop_case)
-        if plant_time_series_mappings:
-            Plant.add_time_series_mapping(
-                plant_time_series_mappings=plant_time_series_mappings,
-                plants=plants,
-            )
-        # Add display name and ordering key.
-        for plant in plants.values():
-            plant.display_name = watercourse_config.plant_display_name(plant.name)
-            plant.ordering_key = watercourse_config.plant_ordering_key(plant.name)
-
-            resources += plant.to_bootstrap_resources()
-
-        # Add relationships that are not covered by the Plant class
-        for plant_name, attributes in shop_case["model"]["plant"].items():
-            # Using the first value of the prod_area time series as the prod_area (assuming it does not change
-            prod_area = str(list(attributes["prod_area"].values())[0])
-            price_area_name = watercourse_config.market_to_price_area[prod_area]
-            price_area_external_id = f"price_area_{price_area_name}"
-            if price_area_external_id not in resources.assets:
-                resources.add(price_area_asset(name=price_area_name))
-
-            plant_external_id = f"plant_{plant_name}"
-            resources.add(watercourse_to_plant(watercourse=watercourse, plant=plant_external_id))
-            resources.add(price_area_to_plant(price_area=price_area_external_id, plant=plant_external_id))
-            resources.add(price_area_to_watercourse(price_area=price_area_external_id, watercourse=watercourse))
-
-        if watercourse_config.production_obligation_ts_ext_ids:
-            for ts_ext_id in watercourse_config.production_obligation_ts_ext_ids:
-                rel = watercourse_to_production_obligation(
-                    watercourse=watercourse, production_obligation_ts_ext_id=ts_ext_id
-                )
-                resources.add(rel)
+        # plants = Plant.from_shop_case(shop_case=shop_case)
+        # if plant_time_series_mappings:
+        #     Plant.add_time_series_mapping(
+        #         plant_time_series_mappings=plant_time_series_mappings,
+        #         plants=plants,
+        #     )
+        # # Add display name and ordering key.
+        # for plant in plants.values():
+        #     plant.display_name = watercourse_config.plant_display_name(plant.name)
+        #     plant.ordering_key = watercourse_config.plant_ordering_key(plant.name)
+        #
+        #     resources += plant.to_bootstrap_resources()
+        #
+        # # Add relationships that are not covered by the Plant class
+        # for plant_name, attributes in shop_case["model"]["plant"].items():
+        #     # Using the first value of the prod_area time series as the prod_area (assuming it does not change
+        #     prod_area = str(list(attributes["prod_area"].values())[0])
+        #     price_area_name = watercourse_config.market_to_price_area[prod_area]
+        #     price_area_external_id = f"price_area_{price_area_name}"
+        #     if price_area_external_id not in resources.assets:
+        #         resources.add(price_area_asset(name=price_area_name))
+        #
+        #     plant_external_id = f"plant_{plant_name}"
+        #     resources.add(watercourse_to_plant(watercourse=watercourse, plant=plant_external_id))
+        #     resources.add(price_area_to_plant(price_area=price_area_external_id, plant=plant_external_id))
+        #     resources.add(price_area_to_watercourse(price_area=price_area_external_id, watercourse=watercourse))
+        #
+        # if watercourse_config.production_obligation_ts_ext_ids:
+        #     for ts_ext_id in watercourse_config.production_obligation_ts_ext_ids:
+        #         rel = watercourse_to_production_obligation(
+        #             watercourse=watercourse, production_obligation_ts_ext_id=ts_ext_id
+        #         )
+        #         resources.add(rel)
 
     return resources, model
 

@@ -36,7 +36,30 @@ class Type(ABC):
             value = getattr(self, f.name)
             if not value:
                 continue
-            if any(cdf_type in f.type for cdf_type in [CDFSequence.__name__, TimeSeries.__name__]):
+            if isinstance(value, list) and value and isinstance(value[0], Type):
+                for target in value:
+                    r = basic_relationship(
+                        source_external_id=self.external_id,
+                        source_type="ASSET",
+                        target_type="ASSET",
+                        target_external_id=target.external_id,
+                        label=RelationshipLabel(f"relationship_to.{target.type_}"),
+                    )
+                    relationships.append(r)
+            elif isinstance(value, Type):
+                label_type = value.type_
+                if self.type_ == "plant" and value.type_ == "reservoir":
+                    label_type = "inlet_reservoir"
+
+                r = basic_relationship(
+                    source_external_id=self.external_id,
+                    source_type="ASSET",
+                    target_type="ASSET",
+                    target_external_id=value.external_id,
+                    label=RelationshipLabel(f"relationship_to.{label_type}"),
+                )
+                relationships.append(r)
+            elif any(cdf_type in f.type for cdf_type in [CDFSequence.__name__, TimeSeries.__name__]):
                 if TimeSeries.__name__ in f.type:
                     target_type = "TIMESERIES"
                     target_external_id = value.external_id
@@ -61,6 +84,8 @@ class Type(ABC):
             if any(cdf_type in f.type for cdf_type in [CDFSequence.__name__, TimeSeries.__name__]) or f.name == "name":
                 continue
             value = getattr(self, f.name)
+            if value is None or isinstance(value, Type) or (isinstance(value, list) and isinstance(value[0], Type)):
+                continue
             if isinstance(value, dict):
                 value = json.dumps(value)
             metadata[f.name] = value
@@ -69,8 +94,8 @@ class Type(ABC):
             external_id=self.external_id,
             name=self.name,
             parent_external_id=self.parent_external_id,
-            metadata=metadata,
             labels=[Label(self.label.value)],
+            metadata=metadata if metadata else None,
         )
 
 
@@ -112,7 +137,7 @@ class Plant(Type):
     p_max: float
     penstock_head_loss_factors: dict
     generators: list[Generator] = field(default_factory=list)
-    inlet_reservoir_time_series: Reservoir | None = None
+    inlet_reservoir: Reservoir | None = None
     p_min_time_series: TimeSeries | None = None
     p_max_time_series: TimeSeries | None = None
     water_value_time_series: TimeSeries | None = None
@@ -147,3 +172,9 @@ class CoreModel:
     plants: list[Plant] = field(default_factory=list)
     generators: list[Generator] = field(default_factory=list)
     reservoirs: list[Reservoir] = field(default_factory=list)
+
+    def as_assets(self) -> list[Asset]:
+        return [item.as_asset() for f in fields(self) for item in getattr(self, f.name)]
+
+    def as_relationships(self) -> list[Relationship]:
+        return [edge for f in fields(self) for item in getattr(self, f.name) for edge in item.get_relationships()]
