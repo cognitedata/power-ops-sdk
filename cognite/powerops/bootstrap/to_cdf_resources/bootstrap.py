@@ -27,12 +27,12 @@ from cognite.powerops.bootstrap.data_classes.shared import TimeSeriesMapping
 from cognite.powerops.bootstrap.data_classes.shop_file_config import ShopFileConfig, ShopFileConfigs
 from cognite.powerops.bootstrap.data_classes.shop_output_definition import ShopOutputConfig
 from cognite.powerops.bootstrap.to_cdf_resources.files import process_yaml_file
-from cognite.powerops.bootstrap.to_cdf_resources.powerops_asset_hierarchy import create_skeleton_asset_hierarchy
-from cognite.powerops.bootstrap.to_cdf_resources.powerops_status_events import create_bootstrap_finished_event
-from cognite.powerops.bootstrap.to_cdf_resources.resource_generation import (
+from cognite.powerops.bootstrap.to_cdf_resources.generate_cdf_resource import (
     generate_relationships_from_price_area_to_price,
     generate_resources_and_data,
 )
+from cognite.powerops.bootstrap.to_cdf_resources.powerops_asset_hierarchy import create_skeleton_asset_hierarchy
+from cognite.powerops.bootstrap.to_cdf_resources.powerops_status_events import create_bootstrap_finished_event
 from cognite.powerops.clients import PowerOpsClient
 from cognite.powerops.clients.cogshop.data_classes import (
     FileRefApply,

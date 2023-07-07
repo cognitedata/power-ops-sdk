@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from cognite.powerops.bootstrap.logger import LoggingLevelT
 
 
-class CommonConstants(BaseModel):
+class Settings(BaseModel):
     data_set_external_id: str
     overwrite_data: bool
     organization_subdomain: str

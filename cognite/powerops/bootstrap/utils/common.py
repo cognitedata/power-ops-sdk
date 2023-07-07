@@ -1,17 +1,4 @@
 import re
-from uuid import uuid4
-
-
-def replace_nordic_letters(input_string: str) -> str:
-    return input_string
-    # return (
-    #     input_string.replace("æ", "a")
-    #     .replace("Æ", "A")
-    #     .replace("ø", "o")
-    #     .replace("Ø", "O")
-    #     .replace("å", "a")
-    #     .replace("Å", "A")
-    # )
 
 
 def special_case_handle_gate_number(name: str) -> None:
@@ -24,10 +11,6 @@ def special_case_handle_gate_number(name: str) -> None:
 def print_warning(s: str) -> None:
     """Adds some nice colors to the printed text :)"""
     print(f"\033[91m[WARNING] {s}\033[0m")
-
-
-def unique_str() -> str:
-    return str(uuid4())
 
 
 def merge(*sources: dict) -> dict:

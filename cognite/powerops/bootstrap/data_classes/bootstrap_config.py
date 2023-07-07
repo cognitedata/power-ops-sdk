@@ -6,7 +6,7 @@ from typing import Dict, Optional
 
 from pydantic import BaseModel, validator
 
-from cognite.powerops.bootstrap._settings import CommonConstants
+from cognite.powerops.bootstrap._settings import Settings
 from cognite.powerops.bootstrap.data_classes.core.generator import GeneratorTimeSeriesMapping
 from cognite.powerops.bootstrap.data_classes.core.plant import PlantTimeSeriesMapping
 from cognite.powerops.bootstrap.data_classes.core.watercourse import WatercourseConfig
@@ -26,7 +26,7 @@ from cognite.powerops.bootstrap.utils.serializer import load_yaml
 
 
 class BootstrapConfig(BaseModel):
-    constants: CommonConstants
+    constants: Settings
     benchmarks: list[BenchmarkingConfig]
     price_scenario_by_id: dict[str, PriceScenario]
     bidprocess: list[BidProcessConfig]

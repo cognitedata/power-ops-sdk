@@ -11,8 +11,12 @@ from cognite.powerops.bootstrap.data_classes.core.generator import Generator, Ge
 from cognite.powerops.bootstrap.data_classes.core.plant import Plant, PlantTimeSeriesMapping
 from cognite.powerops.bootstrap.data_classes.core.watercourse import WatercourseConfig
 from cognite.powerops.bootstrap.data_classes.to_delete import SequenceContent
-from cognite.powerops.bootstrap.to_cdf_resources.asset_types import price_area_asset, reservoir_asset, watercourse_asset
-from cognite.powerops.bootstrap.to_cdf_resources.relationship_types import (
+from cognite.powerops.bootstrap.to_cdf_resources.create_asset_types import (
+    price_area_asset,
+    reservoir_asset,
+    watercourse_asset,
+)
+from cognite.powerops.bootstrap.to_cdf_resources.create_relationship_types import (
     generator_to_generator_efficiency_curve,
     generator_to_turbine_efficiency_curve,
     price_area_to_dayahead_price,
@@ -21,7 +25,6 @@ from cognite.powerops.bootstrap.to_cdf_resources.relationship_types import (
     watercourse_to_plant,
     watercourse_to_production_obligation,
 )
-from cognite.powerops.bootstrap.utils.common import replace_nordic_letters
 from cognite.powerops.bootstrap.utils.serializer import load_yaml
 
 
@@ -299,8 +302,6 @@ def add_generators_and_efficiency_curves(
     generators: {str: Generator} = {}
     resources = BootstrapResourceCollection()
     for generator_name, generator_information in shop_generator_dict.items():
-        generator_name = replace_nordic_letters(generator_name)
-
         generator = Generator(
             name=generator_name,
             penstock=str(generator_information.get("penstock", "1")),
@@ -337,8 +338,6 @@ def create_reservoirs(
 ) -> BootstrapResourceCollection:
     resources = BootstrapResourceCollection()
     for reservoir_name in reservoirs:
-        reservoir_name = replace_nordic_letters(reservoir_name)
-
         reservoir = reservoir_asset(
             name=reservoir_name,
             display_name=watercourse_config.reservoir_display_name(reservoir_name),
