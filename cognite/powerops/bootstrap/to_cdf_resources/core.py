@@ -6,7 +6,7 @@ from hashlib import md5
 from pathlib import Path
 from typing import Callable, List, Optional
 
-from cognite.powerops.bootstrap.data_classes.bootstrap_config import BootstrapConfig
+from cognite.powerops.bootstrap.data_classes.bootstrap_config import BootstrapConfig, CoreConfigs, MarketConfigs
 from cognite.powerops.bootstrap.data_classes.cdf_labels import AssetLabels, RelationshipLabels
 from cognite.powerops.bootstrap.data_classes.core.watercourse import WatercourseConfig
 from cognite.powerops.bootstrap.data_classes.marked_configuration import BenchmarkingConfig, PriceScenario
@@ -263,69 +263,27 @@ def process_rkom_bid_configs(
 
 def transform(
     config: BootstrapConfig,
-    market: str,
+    market_name: str,
     echo: Callable[[str], None],
 ) -> ResourceCollection:
     settings = config.settings
     echo(f"Running bootstrap for data set {settings.data_set_external_id} in CDF project {settings.cdf_project}")
 
-    bootstrap_resources = ResourceCollection()
     # Create common CDF resources
     labels = AssetLabels.as_label_definition() + RelationshipLabels.as_label_definition()
     skeleton_assets = create_skeleton_asset_hierarchy(
         settings.shop_service_url, settings.organization_subdomain, settings.tenant_id
     )
+    bootstrap_resources = ResourceCollection()
     bootstrap_resources.add(skeleton_assets)
     bootstrap_resources.add(labels)
 
-    # PowerOps asset data model
-    bootstrap_resources += generate_resources_and_data(
-        watercourse_configs=config.core.watercourses,
-        plant_time_series_mappings=config.core.plant_time_series_mappings,
-        generator_time_series_mappings=config.core.generator_time_series_mappings,
+    bootstrap_resources = core_to_cdf_resources(
+        config.core, bootstrap_resources, config.settings.shop_version, config.watercourses_shop
     )
 
-    bootstrap_resources.add(generate_relationships_from_price_area_to_price(config.markets.dayahead_price_timeseries))
-    # SHOP files (model, commands, cut mapping++) and configs (base mapping, output definition)
-
-    # Shop files related to each watercourse
-    bootstrap_resources.add(
-        create_watercourse_shop_files(config.watercourses_shop, config.core.watercourse_directories)
-    )
-    bootstrap_resources += create_watercourse_processed_shop_files(watercourse_configs=config.core.watercourses)
-    bootstrap_resources += create_watercourse_timeseries_mappings(
-        watercourse_configs=config.core.watercourses, time_series_mappings=config.core.time_series_mappings
-    )
-
-    # Create DM resources
-    bootstrap_resources += create_dm_resources(
-        config.core.watercourses,
-        list(bootstrap_resources.shop_file_configs.values()),
-        config.core.time_series_mappings,
-        config.settings.shop_version,
-    )
-
-    # PowerOps configuration resources
-    bootstrap_resources.add(config.markets.market.cdf_asset)
-    benchmarking_config_assets = [config.cdf_asset for config in config.markets.benchmarks]
-    bootstrap_resources.add(benchmarking_config_assets)
-
-    bootstrap_resources += process_bid_process_configs(
-        path=config.core.source_path,
-        bid_process_configs=config.markets.bidprocess,
-        bidmatrix_generators=config.markets.bidmatrix_generators,
-        price_scenarios_by_id=config.markets.price_scenario_by_id,
-        watercourses=config.core.watercourses,
-        benchmark=config.markets.benchmarks[0],
-        existing_bootstrap_resources=bootstrap_resources.model_copy(),
-    )
-
-    bootstrap_resources += process_rkom_bid_configs(
-        rkom_bid_combination_configs=config.markets.rkom_bid_combination,
-        rkom_market_config=config.markets.rkom_market,
-        rkom_bid_process=config.markets.rkom_bid_process,
-        price_scenarios_by_id=config.markets.price_scenario_by_id,
-        market_name=market,
+    bootstrap_resources = market_to_cdf_resources(
+        bootstrap_resources, config.markets, market_name, config.core.watercourses, config.core.source_path
     )
 
     # Set hashes for Shop Files, needed for comparison
@@ -337,4 +295,65 @@ def transform(
     # ! This should always stay at the bottom # TODO: consider wrapper
     bootstrap_resources.add(create_bootstrap_finished_event())
 
+    return bootstrap_resources
+
+
+def market_to_cdf_resources(
+    bootstrap_resources: ResourceCollection,
+    markets: MarketConfigs,
+    market_name: str,
+    watercourses: list[WatercourseConfig],
+    source_path: Path,
+) -> ResourceCollection:
+    # PowerOps configuration resources
+    bootstrap_resources.add(generate_relationships_from_price_area_to_price(markets.dayahead_price_timeseries))
+    bootstrap_resources.add(markets.market.cdf_asset)
+    benchmarking_config_assets = [config.cdf_asset for config in markets.benchmarks]
+    bootstrap_resources.add(benchmarking_config_assets)
+    bootstrap_resources += process_bid_process_configs(
+        path=source_path,
+        bid_process_configs=markets.bidprocess,
+        bidmatrix_generators=markets.bidmatrix_generators,
+        price_scenarios_by_id=markets.price_scenario_by_id,
+        watercourses=watercourses,
+        benchmark=markets.benchmarks[0],
+        existing_bootstrap_resources=bootstrap_resources.model_copy(),
+    )
+    bootstrap_resources += process_rkom_bid_configs(
+        rkom_bid_combination_configs=markets.rkom_bid_combination,
+        rkom_market_config=markets.rkom_market,
+        rkom_bid_process=markets.rkom_bid_process,
+        price_scenarios_by_id=markets.price_scenario_by_id,
+        market_name=market_name,
+    )
+    return bootstrap_resources
+
+
+def core_to_cdf_resources(
+    core: CoreConfigs,
+    bootstrap_resources: ResourceCollection,
+    shop_version: str,
+    watercourses_shop: list[ShopFileConfig],
+) -> ResourceCollection:
+    # PowerOps asset data model
+    bootstrap_resources += generate_resources_and_data(
+        watercourse_configs=core.watercourses,
+        plant_time_series_mappings=core.plant_time_series_mappings,
+        generator_time_series_mappings=core.generator_time_series_mappings,
+    )
+
+    # SHOP files (model, commands, cut mapping++) and configs (base mapping, output definition)
+    # Shop files related to each watercourse
+    bootstrap_resources.add(create_watercourse_shop_files(watercourses_shop, core.watercourse_directories))
+    bootstrap_resources += create_watercourse_processed_shop_files(watercourse_configs=core.watercourses)
+    bootstrap_resources += create_watercourse_timeseries_mappings(
+        watercourse_configs=core.watercourses, time_series_mappings=core.time_series_mappings
+    )
+    # Create DM resources
+    bootstrap_resources += create_dm_resources(
+        core.watercourses,
+        list(bootstrap_resources.shop_file_configs.values()),
+        core.time_series_mappings,
+        shop_version,
+    )
     return bootstrap_resources
