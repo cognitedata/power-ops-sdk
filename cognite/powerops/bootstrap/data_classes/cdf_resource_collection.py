@@ -10,8 +10,8 @@ from deepdiff import DeepDiff
 from pydantic import BaseModel, Extra
 
 from cognite.powerops.bootstrap.data_classes.shop_file_config import ShopFileConfig
+from cognite.powerops.bootstrap.to_cdf_resources.files import upload_shop_config_file
 from cognite.powerops.bootstrap.utils.common import dump_cdf_resource
-from cognite.powerops.bootstrap.utils.files import upload_shop_config_file
 from cognite.powerops.clients.cogshop.data_classes import (
     FileRef,
     FileRefApply,

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+import string
 import warnings
 from functools import lru_cache
 from io import StringIO
@@ -8,7 +9,17 @@ from pathlib import Path
 
 from yaml import safe_dump, safe_load
 
-from cognite.powerops.bootstrap.utils.constants import UNRECOGNIZABLE_CHARACTER, VALID_CHARACTERS
+# � character is used to represent unrecognizable characters in utf-8.
+UNRECOGNIZABLE_CHARACTER = "�"
+VALID_CHARACTERS = set(
+    string.ascii_lowercase
+    + string.ascii_uppercase
+    + string.digits
+    + UNRECOGNIZABLE_CHARACTER
+    + string.punctuation
+    + string.whitespace
+    + "æøåÆØÅ"
+)
 
 
 def _validate(yaml_path: Path):

@@ -9,7 +9,7 @@ from cognite.powerops._shared_data_classes import AssetLabels
 from cognite.powerops._shared_data_classes import RelationshipLabels as rl
 from cognite.powerops.bootstrap.data_classes.cdf_resource_collection import BootstrapResourceCollection
 from cognite.powerops.bootstrap.data_classes.core._core import ExternalId
-from cognite.powerops.bootstrap.utils.relationship_types import asset_to_time_series
+from cognite.powerops.bootstrap.to_cdf_resources.relationship_types import asset_to_time_series
 
 GeneratorName = str
 

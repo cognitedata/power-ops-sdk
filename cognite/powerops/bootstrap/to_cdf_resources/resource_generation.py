@@ -10,9 +10,8 @@ from cognite.powerops.bootstrap.data_classes.cdf_resource_collection import Boot
 from cognite.powerops.bootstrap.data_classes.core.generator import Generator, GeneratorTimeSeriesMapping
 from cognite.powerops.bootstrap.data_classes.core.plant import Plant, PlantTimeSeriesMapping
 from cognite.powerops.bootstrap.data_classes.core.watercourse import WatercourseConfig
-from cognite.powerops.bootstrap.utils.asset_types import price_area_asset, reservoir_asset, watercourse_asset
-from cognite.powerops.bootstrap.utils.common import replace_nordic_letters
-from cognite.powerops.bootstrap.utils.relationship_types import (
+from cognite.powerops.bootstrap.to_cdf_resources.asset_types import price_area_asset, reservoir_asset, watercourse_asset
+from cognite.powerops.bootstrap.to_cdf_resources.relationship_types import (
     generator_to_generator_efficiency_curve,
     generator_to_turbine_efficiency_curve,
     price_area_to_dayahead_price,
@@ -21,6 +20,7 @@ from cognite.powerops.bootstrap.utils.relationship_types import (
     watercourse_to_plant,
     watercourse_to_production_obligation,
 )
+from cognite.powerops.bootstrap.utils.common import replace_nordic_letters
 from cognite.powerops.bootstrap.utils.serializer import load_yaml
 
 

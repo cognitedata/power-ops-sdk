@@ -12,12 +12,12 @@ from cognite.powerops._shared_data_classes import RelationshipLabels as rl
 from cognite.powerops.bootstrap.data_classes.cdf_resource_collection import BootstrapResourceCollection
 from cognite.powerops.bootstrap.data_classes.core._core import ExternalId
 from cognite.powerops.bootstrap.data_classes.time_series_mapping import TimeSeriesMapping
-from cognite.powerops.bootstrap.utils.common import print_warning
-from cognite.powerops.bootstrap.utils.relationship_types import (
+from cognite.powerops.bootstrap.to_cdf_resources.relationship_types import (
     asset_to_time_series,
     plant_to_generator,
     plant_to_inlet_reservoir,
 )
+from cognite.powerops.bootstrap.utils.common import print_warning
 from cognite.powerops.bootstrap.utils.serializer import load_yaml
 
 p_min_fallback = 0
