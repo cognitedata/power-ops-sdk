@@ -2,20 +2,17 @@ from __future__ import annotations
 
 import re
 from pathlib import Path
-from typing import Optional, TypedDict
+from typing import TypedDict
 
 import pandas as pd
-from cognite.client.data_classes import Asset, Relationship, Sequence, TimeSeries
+from cognite.client.data_classes import Relationship, Sequence, TimeSeries
 
-from cognite.powerops.bootstrap.data_classes.core.generator import Generator, GeneratorTimeSeriesMapping
+from cognite.powerops.bootstrap.data_classes.core.generator import GeneratorTimeSeriesMapping
 from cognite.powerops.bootstrap.data_classes.core.plant import Plant, PlantTimeSeriesMapping
 from cognite.powerops.bootstrap.data_classes.core.watercourse import WatercourseConfig
 from cognite.powerops.bootstrap.data_classes.resource_collection import ResourceCollection
-from cognite.powerops.bootstrap.data_classes.to_delete import SequenceContent
 from cognite.powerops.bootstrap.to_cdf_resources.create_asset_types import price_area_asset, watercourse_asset
 from cognite.powerops.bootstrap.to_cdf_resources.create_relationship_types import (
-    generator_to_generator_efficiency_curve,
-    generator_to_turbine_efficiency_curve,
     price_area_to_dayahead_price,
     price_area_to_plant,
     price_area_to_watercourse,
@@ -178,9 +175,6 @@ def generate_resources_and_data(
             generators2.append(generator2)
         model.generators.extend(generators2)
 
-        # Todo delete
-        # resources += zadd_generators_and_efficiency_curves(generators, generator_time_series_mappings)
-
         plants = Plant.from_shop_case(shop_case=shop_case)
         if plant_time_series_mappings:
             Plant.add_time_series_mapping(
@@ -218,138 +212,6 @@ def generate_resources_and_data(
     return resources, model
 
 
-def create_generator_efficiency_curve_sequence(
-    efficiency_curve: ShopEfficiencyCurve,
-    generator_asset: Asset,
-) -> ResourceCollection:
-    """
-    Create the cognite resource for the generator efficiency curve (Sequence) and the connection
-    (Relationship) between the generator and the efficiency curve.
-
-    Parameters
-    ----------
-    efficiency_curve : dict[Literal["ref", "x", "y"], float | list[float]]
-        Dictionary of the generator efficiency curve
-    generator_asset : Asset
-        The generator asset to which the efficiency curve belongs
-
-    Returns
-    -------
-    ResourceCollection
-        The new resources (incl. sequence data)
-    """
-    resources = ResourceCollection()
-    x_col_name = "generator_power"
-    y_col_name = "generator_efficiency"
-
-    sequence = Sequence(
-        external_id=f"{generator_asset.external_id}_generator_efficiency_curve",
-        name=f"{generator_asset.name} generator efficiency curve",
-        columns=[
-            {"valueType": "DOUBLE", "externalId": x_col_name},
-            {"valueType": "DOUBLE", "externalId": y_col_name},
-        ],
-    )
-    resources.add(sequence)
-    resources.add(
-        SequenceContent(
-            sequence_external_id=sequence.external_id,
-            data=pd.DataFrame(
-                {
-                    x_col_name: efficiency_curve["x"],
-                    y_col_name: efficiency_curve["y"],
-                },
-                dtype=float,
-            ),
-        )
-    )
-
-    relationship = generator_to_generator_efficiency_curve(
-        generator=generator_asset, generator_efficiency_curve=sequence
-    )
-
-    resources.add(relationship)
-
-    return resources
-
-
-def create_turbine_efficiency_curve_sequence(
-    efficiency_curves: list[ShopEfficiencyCurve],
-    generator_asset: Asset,
-) -> ResourceCollection:
-    """
-    Create the cognite resource for turbine efficiency curve (Sequence) and the connection
-    (Relationship) between the generator and the efficiency curve.
-
-    Parameters
-    ----------
-    efficiency_curves : list[dict[Literal["ref", "x", "y"], float | list[float]]]
-        List of dictionaries of the turbine efficiency curves
-    generator_asset : Asset
-        The generator asset to which the efficiency curve belongs
-
-    Returns
-    -------
-    tuple[ResourceDict, dict[str, pd.DataFrame]]
-        The new resources and sequence data dictionary
-    """
-    resources = ResourceCollection()
-    ref_col_name = "head"
-    x_col_name = "flow"
-    y_col_name = "turbine_efficiency"
-
-    sequence_external_id = f"{generator_asset.external_id}_turbine_efficiency_curve"
-    # Start by creating the sequence
-    sequence = Sequence(
-        external_id=sequence_external_id,
-        name=f"{generator_asset.name} turbine efficiency curve",
-        columns=[
-            {"valueType": "DOUBLE", "externalId": ref_col_name},
-            {"valueType": "DOUBLE", "externalId": x_col_name},
-            {"valueType": "DOUBLE", "externalId": y_col_name},
-        ],
-    )
-    resources.add(sequence)
-
-    # Then create the sequence data
-    df_list = [
-        pd.DataFrame(
-            {
-                ref_col_name: [],
-                x_col_name: [],
-                y_col_name: [],
-            }
-        )
-    ]
-
-    for efficiency_curve in efficiency_curves:
-        ref = efficiency_curve["ref"]
-        x = efficiency_curve["x"]
-        y = efficiency_curve["y"]
-        temp_df = pd.DataFrame(
-            {
-                ref_col_name: [ref] * len(x),
-                x_col_name: x,
-                y_col_name: y,
-            }
-        )
-        df_list.append(temp_df)
-    df = pd.concat(df_list, ignore_index=True)
-
-    resources.add(
-        SequenceContent(
-            sequence_external_id=sequence.external_id,
-            data=df,
-        )
-    )
-
-    # Finally, create a relationship
-    relationship = generator_to_turbine_efficiency_curve(generator=generator_asset, turbine_efficiency_curve=sequence)
-    resources.add(relationship)
-
-    return resources
-
-
 def get_single_value(value_or_time_series: float | dict) -> float:
     """Get the single value from a time series, or a value
     returns the value if value_or_time_series is a value, otherwise the first value in the time series
@@ -362,58 +224,6 @@ def get_single_value(value_or_time_series: float | dict) -> float:
     if isinstance(value_or_time_series, dict):
         return next(iter(value_or_time_series.values()))
     return value_or_time_series
-
-
-def add_generators_and_efficiency_curves(
-    shop_generator_dict: dict,
-    generator_time_series_mappings: Optional[list[GeneratorTimeSeriesMapping]],
-) -> ResourceCollection:
-    """Create the cognite resource for the generator (Asset) and the generator- and turbine efficiencies (sequences), as
-        well as the connection (Relationship) between the generator and the efficiency curves.
-
-    Parameters
-    ----------
-    shop_generator_dict : dict
-        Dictionary of generators objects from the shop case file
-    generator_time_series_mappings : GeneratorTimeSeriesMapping
-        Mapping of generator time series
-
-    Returns
-    -------
-    ResourceCollection
-        Collection of assets, sequences, relationships and sequence data
-    """
-    generators: {str: Generator} = {}
-    resources = ResourceCollection()
-    for generator_name, generator_information in shop_generator_dict.items():
-        generator = Generator(
-            name=generator_name,
-            penstock=str(generator_information.get("penstock", "1")),
-            p_min=float(generator_information.get("p_min", 0.0)),
-            startcost=float(get_single_value(generator_information.get("startcost", 0.0))),
-        )
-        generators[generator_name] = generator
-        generator_asset = generator.asset()
-
-        resources += create_generator_efficiency_curve_sequence(
-            generator_information["gen_eff_curve"],
-            generator_asset,
-        )
-
-        resources += create_turbine_efficiency_curve_sequence(
-            generator_information["turb_eff_curves"],
-            generator_asset,
-        )
-
-    if generator_time_series_mappings:
-        Generator.add_time_series_mapping(
-            generator_time_series_mappings=generator_time_series_mappings, generators=generators
-        )
-
-    for generator in generators.values():
-        resources += generator.to_bootstrap_resources()
-
-    return resources
 
 
 def generate_relationships_from_price_area_to_price(
