@@ -7,8 +7,11 @@ from pathlib import Path
 from typing import List, Literal, Optional
 
 from cognite.powerops._shared_data_classes import create_labels
-from cognite.powerops.bootstrap.data_classes.cdf_resource_collection import BootstrapResourceCollection
-from cognite.powerops.bootstrap.data_classes.config import BootstrapConfig
+from cognite.powerops.bootstrap.data_classes.bootstrap_config import BootstrapConfig
+from cognite.powerops.bootstrap.data_classes.bootstrap_resource_collection import (
+    BootstrapResourceCollection,
+    write_mapping_to_sequence,
+)
 from cognite.powerops.bootstrap.data_classes.core.watercourse import WatercourseConfig
 from cognite.powerops.bootstrap.data_classes.marked_configuration import BenchmarkingConfig, PriceScenario
 from cognite.powerops.bootstrap.data_classes.marked_configuration.dayahead import (
@@ -20,9 +23,9 @@ from cognite.powerops.bootstrap.data_classes.marked_configuration.rkom import (
     RKOMBidProcessConfig,
     RkomMarketConfig,
 )
+from cognite.powerops.bootstrap.data_classes.shared import TimeSeriesMapping
 from cognite.powerops.bootstrap.data_classes.shop_file_config import ShopFileConfig, ShopFileConfigs
 from cognite.powerops.bootstrap.data_classes.shop_output_definition import ShopOutputConfig
-from cognite.powerops.bootstrap.data_classes.time_series_mapping import TimeSeriesMapping, write_mapping_to_sequence
 from cognite.powerops.bootstrap.to_cdf_resources.files import process_yaml_file
 from cognite.powerops.bootstrap.to_cdf_resources.powerops_asset_hierarchy import create_skeleton_asset_hierarchy
 from cognite.powerops.bootstrap.to_cdf_resources.powerops_status_events import create_bootstrap_finished_event

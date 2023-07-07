@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import logging
-from typing import Union, cast
+from typing import Literal, Union, cast
 
 import pandas as pd
 from cognite.client.data_classes import Asset, Event, LabelDefinition, Relationship, Sequence
@@ -9,10 +9,12 @@ from cognite.client.data_classes._base import CogniteResource, CogniteResourceLi
 from deepdiff import DeepDiff
 from pydantic import BaseModel, Extra
 
+from cognite.powerops.bootstrap.data_classes.shared import ExternalId, TimeSeriesMapping
 from cognite.powerops.bootstrap.data_classes.shop_file_config import ShopFileConfig
+from cognite.powerops.bootstrap.data_classes.to_delete import SequenceContent
 from cognite.powerops.bootstrap.logic import clean_cdf_resources_for_diff, clean_local_resources_for_diff
 from cognite.powerops.bootstrap.to_cdf_resources.files import upload_shop_config_file
-from cognite.powerops.bootstrap.utils.common import dump_cdf_resource
+from cognite.powerops.bootstrap.utils.common import dump_cdf_resource, print_warning
 from cognite.powerops.clients.cogshop.data_classes import (
     FileRef,
     FileRefApply,
@@ -29,39 +31,9 @@ from cognite.powerops.utils.cdf.calls import upsert_cognite_resources
 
 logger = logging.getLogger(__name__)
 
-
-ExternalId = str
-
 AddableResourceT = Union[
     "CogniteResource", list["CogniteResource"], "SequenceContent", list[ShopFileConfig], list[DomainModelApply]
 ]
-
-
-class SequenceRows(BaseModel):
-    rows: list[tuple[int, list[str]]]
-    columns_external_ids: list[str]
-
-    def to_pandas(self) -> pd.DataFrame:
-        return pd.DataFrame(
-            data=[row[1] for row in self.rows],
-            index=[row[0] for row in self.rows],
-            columns=self.columns_external_ids,
-        )
-
-
-class SequenceContent(BaseModel):
-    sequence_external_id: str
-    data: Union[pd.DataFrame, SequenceRows]
-
-    class Config:
-        arbitrary_types_allowed = True
-
-    def dump(self) -> dict:
-        return {
-            self.sequence_external_id: self.data.to_dict()
-            if isinstance(self.data, pd.DataFrame)
-            else self.data.to_pandas().to_dict()
-        }
 
 
 class BootstrapResourceCollection(BaseModel):
@@ -376,3 +348,64 @@ def to_dm_apply(instances: list[DomainModel] | DomainModel) -> list[DomainModelA
             apply_type(**{field: value for field, value in item.dict().items() if field in apply_type.__fields__})
         )
     return apply_items
+
+
+def write_mapping_to_sequence(
+    mapping: TimeSeriesMapping,
+    watercourse: str,
+    mapping_type: Literal["base_mapping", "incremental_mapping", "rkom_incremental_mapping"],
+    price_scenario_name: str = "",  # Required for incremental mapping
+    config_name: str = "",  # Required for incremental mapping
+    reserve_volume: int = -1,  # Required for rkom
+) -> BootstrapResourceCollection:
+    if mapping_type not in ["base_mapping", "incremental_mapping", "rkom_incremental_mapping"]:
+        raise ValueError(f"Unrecognized mapping type: {mapping_type}")
+
+    if mapping_type == "incremental_mapping" and (not price_scenario_name or not config_name):
+        raise ValueError(
+            "Both scenario_name and config_name must be specified when mapping_type='incremental_mapping'!"
+        )
+
+    if mapping_type == "rkom_incremental_mapping" and reserve_volume < 0:
+        raise ValueError("'reserve_volume' must be specified when mapping_type='rkom_incremental_mapping'")
+
+    metadata = {
+        "shop:watercourse": watercourse,
+        "shop:type": mapping_type,
+    }
+
+    if mapping_type == "base_mapping":
+        external_id = f"SHOP_{watercourse}_base_mapping"
+        name = external_id.replace("_", " ")
+
+    elif mapping_type == "incremental_mapping":
+        external_id = f"SHOP_{watercourse}_incremental_mapping_{config_name}_{price_scenario_name}"
+        name = external_id.replace("_", " ")
+        metadata["bid:scenario_name"] = price_scenario_name
+
+    elif mapping_type == "rkom_incremental_mapping":
+        external_id = f"SHOP_{watercourse}_incremental_mapping_{config_name}_{price_scenario_name}_{reserve_volume}MW"
+        name = f"{watercourse} {price_scenario_name} {reserve_volume} MW"
+        metadata["bid:scenario_name"] = price_scenario_name
+        metadata["bid:reserve_volume"] = str(reserve_volume)
+
+    else:
+        raise ValueError(f"Unrecognized mapping type: {mapping_type}")
+
+    sequence = Sequence(
+        name=name,
+        external_id=external_id,
+        description="Mapping between SHOP paths and CDF TimeSeries",
+        columns=mapping.column_definitions,
+        metadata=metadata,
+    )
+    bootstrap_resource_collection = BootstrapResourceCollection()
+    bootstrap_resource_collection.add(sequence)
+    sequence_dataframe = mapping.to_dataframe()
+    if not sequence_dataframe.empty:
+        bootstrap_resource_collection.add(
+            SequenceContent(sequence_external_id=sequence.external_id, data=sequence_dataframe)
+        )
+    else:
+        print_warning("Time series mapping is empty! No sequence rows to write!")
+    return bootstrap_resource_collection

@@ -6,7 +6,7 @@ from typing import Dict, List, Optional
 
 from pydantic import BaseModel
 
-from cognite.powerops.bootstrap.data_classes.time_series_mapping import TimeSeriesMapping
+from cognite.powerops.bootstrap.data_classes.shared import TimeSeriesMapping
 from cognite.powerops.bootstrap.utils.serializer import load_yaml
 
 

@@ -1,7 +1,11 @@
 from typing import Any
 
-from cognite.powerops.bootstrap.data_classes.shared import Transformation, TransformationType
-from cognite.powerops.bootstrap.data_classes.time_series_mapping import TimeSeriesMapping, TimeSeriesMappingEntry
+from cognite.powerops.bootstrap.data_classes.shared import (
+    TimeSeriesMapping,
+    TimeSeriesMappingEntry,
+    Transformation,
+    TransformationType,
+)
 
 ignored_attributes = [
     "gate.schedule_flag",

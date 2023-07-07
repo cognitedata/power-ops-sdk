@@ -1,12 +1,18 @@
 from __future__ import annotations
 
-from typing import List, Optional
+import json
+from typing import Dict, List, Optional, Tuple, Union
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, validator
 
-from cognite.powerops.bootstrap.data_classes.common import AggregationMethod, RetrievalType
-from cognite.powerops.bootstrap.data_classes.shared import Transformation, TransformationType
-from cognite.powerops.bootstrap.data_classes.time_series_mapping import TimeSeriesMapping, TimeSeriesMappingEntry
+from cognite.powerops.bootstrap.data_classes.shared import (
+    AggregationMethod,
+    RetrievalType,
+    TimeSeriesMapping,
+    TimeSeriesMappingEntry,
+    Transformation,
+    TransformationType,
+)
 
 
 class Configuration(BaseModel):
@@ -64,3 +70,45 @@ def map_price_scenarios_by_name(
         name = identifier.rename or ref_scenario.name or identifier.id
         scenario_by_name[name] = PriceScenario(name=market_name, **ref_scenario.dict(exclude={"name"}))
     return scenario_by_name
+
+
+class RelativeTime(BaseModel):
+    relative_time_string: Optional[str] = None
+    operations: Optional[List[Tuple[str, Union[str, Dict[str, int]]]]] = None
+
+    @validator("operations", pre=True, always=True)
+    def to_old_format(cls, value):
+        if not isinstance(value, list):
+            return value
+
+        old_formats = []
+        for v in value:
+            if isinstance(v, dict):
+                operation, argument = next(iter(v.items()))
+                old_formats.append((operation, argument))
+            else:
+                # Already old format
+                old_formats.append(v)
+        return old_formats
+
+    @validator("operations", pre=True, always=True)
+    @classmethod
+    def _parse_relative_time_string(cls, operations, values):
+        # NOTE: tuples will be parsed as lists when dumping to string
+        if operations:
+            return operations
+        elif values["relative_time_string"] == "tomorrow":
+            return [("shift", {"days": 1}), ("floor", "day")]
+        elif values["relative_time_string"] == "end_of_next_week":
+            return [("floor", "week"), ("shift", {"weeks": 2})]
+        elif values["relative_time_string"] == "monday":
+            # Monday next week (given that we are before friday 12:00)
+            return [("shift", {"hours": 12}), ("shift", {"weekday": 4}), ("floor", "day"), ("shift", {"weekday": 0})]
+        elif values["relative_time_string"] == "saturday":
+            # This Saturday (given that we are before thursday 12:00)
+            return [("shift", {"hours": 12}), ("shift", {"weekday": 3}), ("floor", "day"), ("shift", {"weekday": 5})]
+        else:
+            raise ValueError(f"{values['relative_time_string']} not a valid value for relative_time_string")
+
+    def __str__(self) -> str:
+        return json.dumps(self.operations)

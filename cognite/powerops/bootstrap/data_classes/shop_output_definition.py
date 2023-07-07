@@ -4,7 +4,8 @@ from typing import List, Optional
 from cognite.client.data_classes import Sequence
 from pandas import DataFrame
 
-from cognite.powerops.bootstrap.data_classes.cdf_resource_collection import BootstrapResourceCollection, SequenceContent
+from cognite.powerops.bootstrap.data_classes.bootstrap_resource_collection import BootstrapResourceCollection
+from cognite.powerops.bootstrap.data_classes.to_delete import SequenceContent
 
 
 @dataclass

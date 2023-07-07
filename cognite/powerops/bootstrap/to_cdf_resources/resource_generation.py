@@ -6,10 +6,11 @@ from typing import Optional, TypedDict
 import pandas as pd
 from cognite.client.data_classes import Asset, Relationship, Sequence
 
-from cognite.powerops.bootstrap.data_classes.cdf_resource_collection import BootstrapResourceCollection, SequenceContent
+from cognite.powerops.bootstrap.data_classes.bootstrap_resource_collection import BootstrapResourceCollection
 from cognite.powerops.bootstrap.data_classes.core.generator import Generator, GeneratorTimeSeriesMapping
 from cognite.powerops.bootstrap.data_classes.core.plant import Plant, PlantTimeSeriesMapping
 from cognite.powerops.bootstrap.data_classes.core.watercourse import WatercourseConfig
+from cognite.powerops.bootstrap.data_classes.to_delete import SequenceContent
 from cognite.powerops.bootstrap.to_cdf_resources.asset_types import price_area_asset, reservoir_asset, watercourse_asset
 from cognite.powerops.bootstrap.to_cdf_resources.relationship_types import (
     generator_to_generator_efficiency_curve,

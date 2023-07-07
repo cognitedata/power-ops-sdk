@@ -11,12 +11,10 @@ from cognite.client.data_classes import Asset, Label, Sequence
 from pydantic import BaseModel, ConfigDict, Field, validator
 
 from cognite.powerops._shared_data_classes import AssetLabels, RelationshipLabels
-from cognite.powerops.bootstrap.data_classes.cdf_resource_collection import (
+from cognite.powerops.bootstrap.data_classes.bootstrap_resource_collection import (
     BootstrapResourceCollection,
-    SequenceContent,
-    SequenceRows,
+    write_mapping_to_sequence,
 )
-from cognite.powerops.bootstrap.data_classes.common import RelativeTime
 from cognite.powerops.bootstrap.data_classes.core.watercourse import WatercourseConfig
 from cognite.powerops.bootstrap.data_classes.marked_configuration import (
     BenchmarkingConfig,
@@ -25,10 +23,11 @@ from cognite.powerops.bootstrap.data_classes.marked_configuration import (
 )
 from cognite.powerops.bootstrap.data_classes.marked_configuration._core import (
     Configuration,
+    RelativeTime,
     map_price_scenarios_by_name,
 )
 from cognite.powerops.bootstrap.data_classes.marked_configuration.market import MARKET_BY_PRICE_AREA
-from cognite.powerops.bootstrap.data_classes.time_series_mapping import write_mapping_to_sequence
+from cognite.powerops.bootstrap.data_classes.to_delete import SequenceContent, SequenceRows
 from cognite.powerops.bootstrap.utils.common import print_warning
 from cognite.powerops.utils.cdf.resource_creation import simple_relationship
 

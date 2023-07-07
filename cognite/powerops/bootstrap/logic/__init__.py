@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from cognite.powerops.bootstrap.data_classes.cdf_resource_collection import ExternalId
+from cognite.powerops.bootstrap.data_classes.shared import ExternalId
 
 
 def clean_cdf_resources_for_diff(cdf_resources: dict[ExternalId, dict]) -> None:

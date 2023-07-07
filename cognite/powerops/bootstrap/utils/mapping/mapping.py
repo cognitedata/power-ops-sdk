@@ -1,6 +1,6 @@
 from cognite.client import CogniteClient
 
-from cognite.powerops.bootstrap.data_classes.time_series_mapping import TimeSeriesMapping
+from cognite.powerops.bootstrap.data_classes.shared import TimeSeriesMapping
 from cognite.powerops.bootstrap.utils.common import print_warning
 
 

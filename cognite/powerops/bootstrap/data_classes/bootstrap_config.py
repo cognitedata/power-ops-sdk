@@ -6,7 +6,7 @@ from typing import Dict, Optional
 
 from pydantic import BaseModel, validator
 
-from cognite.powerops.bootstrap.data_classes.common import CommonConstants
+from cognite.powerops.bootstrap._settings import CommonConstants
 from cognite.powerops.bootstrap.data_classes.core.generator import GeneratorTimeSeriesMapping
 from cognite.powerops.bootstrap.data_classes.core.plant import PlantTimeSeriesMapping
 from cognite.powerops.bootstrap.data_classes.core.watercourse import WatercourseConfig
@@ -21,10 +21,8 @@ from cognite.powerops.bootstrap.data_classes.marked_configuration.rkom import (
     RKOMBidProcessConfig,
     RkomMarketConfig,
 )
-from cognite.powerops.bootstrap.data_classes.time_series_mapping import TimeSeriesMapping
+from cognite.powerops.bootstrap.data_classes.shared import TimeSeriesMapping
 from cognite.powerops.bootstrap.utils.serializer import load_yaml
-
-# TODO: Put this in a configgen module?
 
 
 class BootstrapConfig(BaseModel):
@@ -92,3 +90,6 @@ class BootstrapConfig(BaseModel):
             raise ValueError(
                 f"Multiple default bid configs for price areas: {price_areas_with_multiple_default_configs}"
             )
+
+
+BootstrapConfig.model_rebuild()
