@@ -2,8 +2,9 @@ from pathlib import Path
 from typing import Callable
 
 from cognite.powerops.bootstrap.data_classes.bootstrap_config import BootstrapConfig
+from cognite.powerops.bootstrap.data_classes.resource_collection import ResourceCollection
 from cognite.powerops.bootstrap.logger import configure_debug_logging
-from cognite.powerops.bootstrap.to_cdf_resources.core import _create_cdf_resources, _preview_resources_diff, transform
+from cognite.powerops.bootstrap.to_cdf_resources.core import transform
 from cognite.powerops.clients import get_powerops_client
 
 
@@ -13,11 +14,11 @@ def plan(path: Path, market: str, echo: Callable[[str], None] = None):
     bootstrap_resources, config = _load_transform(market, path, client.cdf.config.project, echo)
 
     # 2.b - preview diff
-    _preview_resources_diff(
-        client,
-        bootstrap_resources,
-        config.settings.data_set_external_id,
+    cdf_bootstrap_resources = bootstrap_resources.from_cdf(
+        po_client=client, data_set_external_id=config.settings.data_set_external_id
     )
+
+    echo(ResourceCollection.prettify_differences(bootstrap_resources.difference(cdf_bootstrap_resources)))
 
 
 def apply(path: Path, market: str, echo: Callable[[str], None] = None):
@@ -26,9 +27,8 @@ def apply(path: Path, market: str, echo: Callable[[str], None] = None):
     bootstrap_resources, config = _load_transform(market, path, client.cdf.config.project, echo)
 
     # Step 3 - write bootstrap resources from diffs to CDF
-    _create_cdf_resources(
+    bootstrap_resources.write_to_cdf(
         client,
-        bootstrap_resources,
         config.settings.data_set_external_id,
         config.settings.overwrite_data,
         config.settings.skip_dm,

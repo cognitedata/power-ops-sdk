@@ -5,10 +5,10 @@ from typing import Optional
 from cognite.client.data_classes import Asset, Label, Relationship
 from pydantic import BaseModel, field_validator
 
-from cognite.powerops.bootstrap.data_classes.bootstrap_resource_collection import ResourceCollection
 from cognite.powerops.bootstrap.data_classes.cdf_labels import AssetLabels
 from cognite.powerops.bootstrap.data_classes.cdf_labels import RelationshipLabels as rl
 from cognite.powerops.bootstrap.data_classes.core._core import ExternalId
+from cognite.powerops.bootstrap.data_classes.resource_collection import ResourceCollection
 from cognite.powerops.bootstrap.to_cdf_resources.create_relationship_types import asset_to_time_series
 
 GeneratorName = str

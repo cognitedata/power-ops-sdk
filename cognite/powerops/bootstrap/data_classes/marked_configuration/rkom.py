@@ -9,10 +9,6 @@ from typing import ClassVar, Dict, Generator, List, Literal, Optional, Tuple
 from cognite.client.data_classes import Asset, Label
 from pydantic import BaseModel, ConfigDict, Field, model_validator, validator
 
-from cognite.powerops.bootstrap.data_classes.bootstrap_resource_collection import (
-    ResourceCollection,
-    write_mapping_to_sequence,
-)
 from cognite.powerops.bootstrap.data_classes.cdf_labels import AssetLabels, RelationshipLabels
 from cognite.powerops.bootstrap.data_classes.marked_configuration import PriceScenario, PriceScenarioID
 from cognite.powerops.bootstrap.data_classes.marked_configuration._core import (
@@ -20,6 +16,7 @@ from cognite.powerops.bootstrap.data_classes.marked_configuration._core import (
     RelativeTime,
     map_price_scenarios_by_name,
 )
+from cognite.powerops.bootstrap.data_classes.resource_collection import ResourceCollection, write_mapping_to_sequence
 from cognite.powerops.bootstrap.data_classes.shared import (
     AggregationMethod,
     Auction,

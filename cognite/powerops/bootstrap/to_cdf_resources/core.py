@@ -7,10 +7,6 @@ from pathlib import Path
 from typing import Callable, List, Optional
 
 from cognite.powerops.bootstrap.data_classes.bootstrap_config import BootstrapConfig
-from cognite.powerops.bootstrap.data_classes.bootstrap_resource_collection import (
-    ResourceCollection,
-    write_mapping_to_sequence,
-)
 from cognite.powerops.bootstrap.data_classes.cdf_labels import AssetLabels, RelationshipLabels
 from cognite.powerops.bootstrap.data_classes.core.watercourse import WatercourseConfig
 from cognite.powerops.bootstrap.data_classes.marked_configuration import BenchmarkingConfig, PriceScenario
@@ -23,6 +19,7 @@ from cognite.powerops.bootstrap.data_classes.marked_configuration.rkom import (
     RKOMBidProcessConfig,
     RkomMarketConfig,
 )
+from cognite.powerops.bootstrap.data_classes.resource_collection import ResourceCollection, write_mapping_to_sequence
 from cognite.powerops.bootstrap.data_classes.shared import TimeSeriesMapping
 from cognite.powerops.bootstrap.data_classes.shop_file_config import ShopFileConfig
 from cognite.powerops.bootstrap.data_classes.shop_output_definition import ShopOutputConfig
@@ -33,7 +30,6 @@ from cognite.powerops.bootstrap.to_cdf_resources.generate_cdf_resource import (
     generate_resources_and_data,
 )
 from cognite.powerops.bootstrap.to_cdf_resources.powerops_status_events import create_bootstrap_finished_event
-from cognite.powerops.clients import PowerOpsClient
 from cognite.powerops.clients.cogshop.data_classes import (
     FileRefApply,
     MappingApply,
@@ -335,37 +331,10 @@ def transform(
     # Set hashes for Shop Files, needed for comparison
     for shop_config in bootstrap_resources.shop_file_configs.values():
         if shop_config.md5_hash is None:
-            file_content = Path(shop_config.path).read_bytes()  # type: ignore[arg-type]
+            file_content = Path(shop_config.path).read_bytes()
             shop_config.set_md5_hash(file_content)
 
     # ! This should always stay at the bottom # TODO: consider wrapper
     bootstrap_resources.add(create_bootstrap_finished_event())
 
     return bootstrap_resources
-
-
-def _preview_resources_diff(
-    client: PowerOpsClient,
-    bootstrap_resources: ResourceCollection,
-    data_set_external_id: str,
-) -> None:
-    # Preview differences between bootstrap resources and CDF resources
-
-    cdf_bootstrap_resources = ResourceCollection.from_cdf(po_client=client, data_set_external_id=data_set_external_id)
-
-    print(ResourceCollection.prettify_differences(bootstrap_resources.difference(cdf_bootstrap_resources)))
-
-
-def _create_cdf_resources(
-    client: PowerOpsClient,
-    bootstrap_resources: ResourceCollection,
-    data_set_external_id: str,
-    overwrite_data: bool,
-    skip_dm: bool,
-) -> None:
-    bootstrap_resources.write_to_cdf(
-        po_client=client,
-        data_set_external_id=data_set_external_id,
-        overwrite=overwrite_data,
-        skip_dm=skip_dm,
-    )

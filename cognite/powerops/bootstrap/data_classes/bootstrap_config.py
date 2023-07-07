@@ -120,7 +120,7 @@ class BootstrapConfig(BaseModel):
         if "settings" in configs:
             configs["settings"]["cdf_project"] = cdf_project
         elif "constants" in configs:
-            # For backwards compatiblitity
+            # For backwards compatibility
             configs["constants"]["cdf_project"] = cdf_project
         config = cls(**configs)
         for watercourse in config.core.watercourses:
