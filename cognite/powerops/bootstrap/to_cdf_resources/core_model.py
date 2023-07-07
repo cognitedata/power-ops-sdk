@@ -1,7 +1,10 @@
+from __future__ import annotations
+
 from abc import ABC
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import ClassVar
 
+import pandas as pd
 from cognite.client.data_classes import Sequence, SequenceData, TimeSeries
 
 
@@ -9,7 +12,18 @@ from cognite.client.data_classes import Sequence, SequenceData, TimeSeries
 class Type(ABC):
     type_: ClassVar[str]
     name: str
-    external_id: str
+
+    @property
+    def external_id(self) -> str:
+        return f"{self.type_}_{self.name}"
+
+    @property
+    def parent_external_id(self):
+        return f"{self.type_}s"
+
+    @property
+    def parent_name(self):
+        return self.parent_external_id.replace("_", " ").title()
 
     def get_relationships(self):
         raise NotImplementedError
@@ -21,7 +35,7 @@ class Type(ABC):
 @dataclass
 class CDFSequence:
     sequence: Sequence
-    content: SequenceData
+    content: SequenceData | pd.DataFrame
 
 
 @dataclass
@@ -30,8 +44,8 @@ class Generator(Type):
     p_min: float
     penstock: int
     start_cost: float
-    generator_efficiency_curve: CDFSequence
-    turbine_efficiency_curve: CDFSequence
+    generator_efficiency_curve: CDFSequence | None = None
+    turbine_efficiency_curve: CDFSequence | None = None
 
 
 @dataclass
@@ -78,8 +92,8 @@ class PriceArea(Type):
 
 @dataclass
 class CoreModel:
-    price_areas: list[PriceArea]
-    watercourses: list[Watercourse]
-    plants: list[Plant]
-    generators: list[Generator]
-    reservoirs: list[Reservoir]
+    price_areas: list[PriceArea] = field(default_factory=list)
+    watercourses: list[Watercourse] = field(default_factory=list)
+    plants: list[Plant] = field(default_factory=list)
+    generators: list[Generator] = field(default_factory=list)
+    reservoirs: list[Reservoir] = field(default_factory=list)

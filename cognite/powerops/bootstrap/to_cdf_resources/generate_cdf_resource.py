@@ -27,6 +27,8 @@ from cognite.powerops.bootstrap.to_cdf_resources.create_relationship_types impor
 )
 from cognite.powerops.bootstrap.utils.serializer import load_yaml
 
+from . import core_model
+
 
 class ShopEfficiencyCurve(TypedDict):
     ref: str
@@ -81,20 +83,99 @@ def generate_resources_and_data(
     """
 
     resources = ResourceCollection()
-
+    model = core_model.CoreModel()
     for watercourse_config in watercourse_configs:
+        # Todo delete
         watercourse = watercourse_asset(
             name=watercourse_config.name,
             shop_penalty_limit=watercourse_config.shop_penalty_limit,
         )
         resources.add(watercourse)
 
+        watercourse2 = core_model.Watercourse(
+            name=watercourse_config.name,
+            shop_penalty_limit=watercourse_config.shop_penalty_limit,
+            plants=[],
+        )
+        model.watercourses.append(watercourse2)
+
         shop_case = load_yaml(Path(watercourse_config.yaml_raw_path), clean_data=True)
 
         reservoirs = shop_case["model"]["reservoir"]
+
+        reservoirs2 = []
+        for reservoir_name in reservoirs:
+            reservoir2 = core_model.Reservoir(
+                reservoir_name, *watercourse_config.reservoir_display_names_and_order.get(reservoir_name, (None, None))
+            )
+            reservoirs2.append(reservoir2)
+        model.reservoirs.extend(reservoirs2)
+
+        # Todo delete
         resources += create_reservoirs(reservoirs, watercourse_config)
 
         generators = shop_case["model"]["generator"]
+        generators2 = []
+        for generator_name, generator_attributes in generators.items():
+            generator2 = core_model.Generator(
+                generator_name,
+                penstock=generator_attributes.get("penstock", 1),
+                p_min=generator_attributes.get("p_min", 0.0),
+                start_cost=get_single_value(generator_attributes.get("startcost", 0.0)),
+            )
+            x_col_name = "generator_power"
+            y_col_name = "generator_efficiency"
+            sequence = Sequence(
+                external_id=f"{generator2.external_id}_generator_efficiency_curve",
+                name=f"{generator2.name} generator efficiency curve",
+                columns=[
+                    {"valueType": "DOUBLE", "externalId": x_col_name},
+                    {"valueType": "DOUBLE", "externalId": y_col_name},
+                ],
+            )
+            data = generator_attributes["gen_eff_curve"]
+            efficiency_curve = core_model.CDFSequence(
+                sequence=sequence,
+                content=pd.DataFrame(
+                    {
+                        x_col_name: data["x"],
+                        y_col_name: data["y"],
+                    },
+                    dtype=float,
+                ),
+            )
+            generator2.efficiency_curve = efficiency_curve
+            data = generator_attributes["turb_eff_curves"]
+            ref_col_name = "head"
+            x_col_name = "flow"
+            y_col_name = "turbine_efficiency"
+            sequence = Sequence(
+                external_id=f"{generator2.external_id}_turbine_efficiency_curve",
+                name=f"{generator2.name} turbine efficiency curve",
+                columns=[
+                    {"valueType": "DOUBLE", "externalId": ref_col_name},
+                    {"valueType": "DOUBLE", "externalId": x_col_name},
+                    {"valueType": "DOUBLE", "externalId": y_col_name},
+                ],
+            )
+            df = pd.DataFrame(
+                {
+                    ref_col_name: [entry["ref"] for entry in data for _ in range(len(entry["x"]))],
+                    x_col_name: [item for entry in data for item in entry["x"]],
+                    y_col_name: [item for entry in data for item in entry["y"]],
+                },
+                dtype=float,
+            )
+
+            turbine_efficiency_curve = core_model.CDFSequence(
+                sequence=sequence,
+                content=df,
+            )
+
+            generator2.turbine_efficiency_curve = turbine_efficiency_curve
+            generators2.append(generator2)
+
+        # Todo delete
         resources += add_generators_and_efficiency_curves(generators, generator_time_series_mappings)
 
         plants = Plant.from_shop_case(shop_case=shop_case)

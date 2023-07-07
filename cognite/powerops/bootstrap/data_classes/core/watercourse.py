@@ -4,7 +4,7 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Dict, List, Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from cognite.powerops.bootstrap.data_classes.shared import TimeSeriesMapping
 from cognite.powerops.bootstrap.utils.serializer import load_yaml
@@ -40,8 +40,8 @@ class WatercourseConfig(Watercourse):
     hist_flow_timeseries: Optional[Dict[str, str]] = None  # TODO: not used here
     # ------------------------------------------------------------------
     production_obligation_ts_ext_ids: Optional[List[str]] = None
-    plant_display_names_and_order: Optional[Dict[str, tuple[str, int]]] = None
-    reservoir_display_names_and_order: Optional[Dict[str, tuple[str, int]]] = None
+    plant_display_names_and_order: Dict[str, tuple[str, int]] = Field(default_factory=dict)
+    reservoir_display_names_and_order: Dict[str, tuple[str, int]] = Field(default_factory=dict)
     water_value_based_method_time_series_csv_filename: Optional[str] = None
 
     @classmethod
