@@ -12,11 +12,7 @@ from cognite.powerops.bootstrap.data_classes.core.plant import Plant, PlantTimeS
 from cognite.powerops.bootstrap.data_classes.core.watercourse import WatercourseConfig
 from cognite.powerops.bootstrap.data_classes.resource_collection import ResourceCollection
 from cognite.powerops.bootstrap.data_classes.to_delete import SequenceContent
-from cognite.powerops.bootstrap.to_cdf_resources.create_asset_types import (
-    price_area_asset,
-    reservoir_asset,
-    watercourse_asset,
-)
+from cognite.powerops.bootstrap.to_cdf_resources.create_asset_types import price_area_asset, watercourse_asset
 from cognite.powerops.bootstrap.to_cdf_resources.create_relationship_types import (
     generator_to_generator_efficiency_curve,
     generator_to_turbine_efficiency_curve,
@@ -102,18 +98,16 @@ def generate_resources_and_data(
 
         shop_case = load_yaml(Path(watercourse_config.yaml_raw_path), clean_data=True)
 
-        reservoirs = shop_case["model"]["reservoir"]
-
-        reservoirs2 = []
-        for reservoir_name in reservoirs:
-            reservoir2 = core_model.Reservoir(
+        reservoirs = []
+        for reservoir_name in shop_case["model"]["reservoir"]:
+            reservoir = core_model.Reservoir(
                 reservoir_name,
                 *watercourse_config.reservoir_display_names_and_order.get(
                     reservoir_name, (re.sub(r"\([0-9]+\)", "", reservoir_name), "999")
                 ),
             )
-            reservoirs2.append(reservoir2)
-        model.reservoirs.extend(reservoirs2)
+            reservoirs.append(reservoir)
+        model.reservoirs.extend(reservoirs)
 
         generators = shop_case["model"]["generator"]
         generators2 = []
@@ -410,22 +404,6 @@ def add_generators_and_efficiency_curves(
 
     for generator in generators.values():
         resources += generator.to_bootstrap_resources()
-
-    return resources
-
-
-def create_reservoirs(
-    reservoirs: dict,
-    watercourse_config: WatercourseConfig,
-) -> ResourceCollection:
-    resources = ResourceCollection()
-    for reservoir_name in reservoirs:
-        reservoir = reservoir_asset(
-            name=reservoir_name,
-            display_name=watercourse_config.reservoir_display_name(reservoir_name),
-            ordering_key=watercourse_config.reservoir_ordering_key(reservoir_name),
-        )
-        resources.add(reservoir)
 
     return resources
 
