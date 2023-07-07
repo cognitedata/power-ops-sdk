@@ -277,7 +277,7 @@ def transform(
     # Create common CDF resources
     labels = AssetLabels.as_label_definition() + RelationshipLabels.as_label_definition()
     skeleton_assets = create_skeleton_asset_hierarchy(
-        settings.organization_subdomain, settings.tenant_id, settings.shop_service_url
+        settings.shop_service_url, settings.organization_subdomain, settings.tenant_id
     )
     bootstrap_resources.add(skeleton_assets)
     bootstrap_resources.add(labels)
