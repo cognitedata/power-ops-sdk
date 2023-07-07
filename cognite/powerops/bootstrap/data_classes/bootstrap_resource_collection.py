@@ -36,7 +36,7 @@ AddableResourceT = Union[
 ]
 
 
-class BootstrapResourceCollection(BaseModel):
+class ResourceCollection(BaseModel):
     # CDF resources
     assets: dict[ExternalId, Asset] = {}
     relationships: dict[ExternalId, Relationship] = {}
@@ -170,8 +170,8 @@ class BootstrapResourceCollection(BaseModel):
                 client=po_client.cdf, config=shop_config, overwrite=overwrite, data_set_id=data_set_id
             )
 
-    def __add__(self, other: "BootstrapResourceCollection") -> "BootstrapResourceCollection":
-        return BootstrapResourceCollection(
+    def __add__(self, other: "ResourceCollection") -> "ResourceCollection":
+        return ResourceCollection(
             assets=self.assets | other.assets,
             relationships=self.relationships | other.relationships,
             label_definitions=self.label_definitions | other.label_definitions,
@@ -185,7 +185,7 @@ class BootstrapResourceCollection(BaseModel):
             model_templates=self.model_templates | other.model_templates,
         )
 
-    def __iadd__(self, other: "BootstrapResourceCollection") -> "BootstrapResourceCollection":
+    def __iadd__(self, other: "ResourceCollection") -> "ResourceCollection":
         self.assets |= other.assets
         self.relationships |= other.relationships
         self.label_definitions |= other.label_definitions
@@ -199,7 +199,7 @@ class BootstrapResourceCollection(BaseModel):
         self.model_templates |= other.model_templates
         return self
 
-    def difference(self, cdf: "BootstrapResourceCollection") -> dict[str, str]:
+    def difference(self, cdf: "ResourceCollection") -> dict[str, str]:
         local = self
 
         resource_diff: dict[str, str] = {}
@@ -269,13 +269,13 @@ class BootstrapResourceCollection(BaseModel):
         cls,
         po_client: PowerOpsClient,
         data_set_external_id: str,
-    ) -> "BootstrapResourceCollection":
+    ) -> "ResourceCollection":
         """
         Function that creates a BootstrapResourceCollection from a CDF data set (typically the bootstrap data set)
         """
 
         data_set_id = po_client.cdf.data_sets.retrieve(external_id=data_set_external_id).id
-        bootstrap_resource_collection = BootstrapResourceCollection()
+        bootstrap_resource_collection = ResourceCollection()
 
         # start by downloading all the resources from CDF
         for resource_type in [
@@ -357,7 +357,7 @@ def write_mapping_to_sequence(
     price_scenario_name: str = "",  # Required for incremental mapping
     config_name: str = "",  # Required for incremental mapping
     reserve_volume: int = -1,  # Required for rkom
-) -> BootstrapResourceCollection:
+) -> ResourceCollection:
     if mapping_type not in ["base_mapping", "incremental_mapping", "rkom_incremental_mapping"]:
         raise ValueError(f"Unrecognized mapping type: {mapping_type}")
 
@@ -399,7 +399,7 @@ def write_mapping_to_sequence(
         columns=mapping.column_definitions,
         metadata=metadata,
     )
-    bootstrap_resource_collection = BootstrapResourceCollection()
+    bootstrap_resource_collection = ResourceCollection()
     bootstrap_resource_collection.add(sequence)
     sequence_dataframe = mapping.to_dataframe()
     if not sequence_dataframe.empty:

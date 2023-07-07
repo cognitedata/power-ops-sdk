@@ -9,5 +9,14 @@ class Settings(BaseModel):
     organization_subdomain: str
     tenant_id: str
     shop_version: str
+    cdf_project: str
     skip_dm: bool = False
     debug_level: LoggingLevelT = "INFO"
+
+    @property
+    def shop_service_url(self) -> str:
+        return (
+            "https://shop-production.az-inso-powerops.cognite.ai/submit-run"
+            if self.cdf_project.endswith("-prod")
+            else "https://shop-staging.az-inso-powerops.cognite.ai/submit-run"
+        )

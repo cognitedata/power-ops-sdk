@@ -4,14 +4,14 @@ import json
 import logging
 from hashlib import md5
 from pathlib import Path
-from typing import List, Optional
+from typing import Callable, List, Optional
 
-from cognite.powerops._shared_data_classes import create_labels
 from cognite.powerops.bootstrap.data_classes.bootstrap_config import BootstrapConfig
 from cognite.powerops.bootstrap.data_classes.bootstrap_resource_collection import (
-    BootstrapResourceCollection,
+    ResourceCollection,
     write_mapping_to_sequence,
 )
+from cognite.powerops.bootstrap.data_classes.cdf_labels import AssetLabels, RelationshipLabels
 from cognite.powerops.bootstrap.data_classes.core.watercourse import WatercourseConfig
 from cognite.powerops.bootstrap.data_classes.marked_configuration import BenchmarkingConfig, PriceScenario
 from cognite.powerops.bootstrap.data_classes.marked_configuration.dayahead import (
@@ -24,14 +24,14 @@ from cognite.powerops.bootstrap.data_classes.marked_configuration.rkom import (
     RkomMarketConfig,
 )
 from cognite.powerops.bootstrap.data_classes.shared import TimeSeriesMapping
-from cognite.powerops.bootstrap.data_classes.shop_file_config import ShopFileConfig, ShopFileConfigs
+from cognite.powerops.bootstrap.data_classes.shop_file_config import ShopFileConfig
 from cognite.powerops.bootstrap.data_classes.shop_output_definition import ShopOutputConfig
+from cognite.powerops.bootstrap.data_classes.skeleton_asset_hierarchy import create_skeleton_asset_hierarchy
 from cognite.powerops.bootstrap.to_cdf_resources.files import process_yaml_file
 from cognite.powerops.bootstrap.to_cdf_resources.generate_cdf_resource import (
     generate_relationships_from_price_area_to_price,
     generate_resources_and_data,
 )
-from cognite.powerops.bootstrap.to_cdf_resources.powerops_asset_hierarchy import create_skeleton_asset_hierarchy
 from cognite.powerops.bootstrap.to_cdf_resources.powerops_status_events import create_bootstrap_finished_event
 from cognite.powerops.clients import PowerOpsClient
 from cognite.powerops.clients.cogshop.data_classes import (
@@ -47,8 +47,8 @@ logger = logging.getLogger(__name__)
 def create_watercourse_timeseries_mappings(
     watercourse_configs: list[WatercourseConfig],
     time_series_mappings: List[TimeSeriesMapping],
-) -> BootstrapResourceCollection:
-    cdf_resources = BootstrapResourceCollection()
+) -> ResourceCollection:
+    cdf_resources = ResourceCollection()
     for watercourse_config, time_series_mapping in zip(watercourse_configs, time_series_mappings):
         cdf_resources += create_base_mapping_bootstrap_resources(
             watercourse_config=watercourse_config,
@@ -59,8 +59,8 @@ def create_watercourse_timeseries_mappings(
 
 def create_watercourse_processed_shop_files(
     watercourse_configs: list[WatercourseConfig],
-) -> BootstrapResourceCollection:
-    cdf_resources = BootstrapResourceCollection()
+) -> ResourceCollection:
+    cdf_resources = ResourceCollection()
     for watercourse_config in watercourse_configs:
         process_yaml_file(
             yaml_raw_path=watercourse_config.yaml_raw_path,
@@ -95,7 +95,7 @@ def create_watercourse_shop_files(
 def create_base_mapping_bootstrap_resources(
     watercourse_config: WatercourseConfig,
     time_series_mapping: TimeSeriesMapping,
-) -> BootstrapResourceCollection:
+) -> ResourceCollection:
     return write_mapping_to_sequence(
         mapping=time_series_mapping,
         watercourse=watercourse_config.name,
@@ -108,8 +108,8 @@ def create_dm_resources(
     shop_files: list[ShopFileConfig],
     time_series_mappings: list[TimeSeriesMapping],
     shop_version: str,
-) -> BootstrapResourceCollection:
-    cdf_resources = BootstrapResourceCollection()
+) -> ResourceCollection:
+    cdf_resources = ResourceCollection()
     for watercourse_config, time_series_mapping in zip(watercourse_configs, time_series_mappings):
         # Create DM resources
         dm_resources = create_watercourse_dm_resources(
@@ -224,9 +224,9 @@ def process_bid_process_configs(
     price_scenarios_by_id: dict[str, PriceScenario],
     watercourses: list[WatercourseConfig],
     benchmark: BenchmarkingConfig,
-    existing_bootstrap_resources: BootstrapResourceCollection,
-) -> BootstrapResourceCollection:
-    new_resources = BootstrapResourceCollection()
+    existing_bootstrap_resources: ResourceCollection,
+) -> ResourceCollection:
+    new_resources = ResourceCollection()
     for bid_process_config in bid_process_configs:
         new_resources += bid_process_config.to_bootstrap_resources(
             path=path,
@@ -246,8 +246,8 @@ def process_rkom_bid_configs(
     rkom_bid_process: List[RKOMBidProcessConfig],
     price_scenarios_by_id: dict[str, PriceScenario],
     market_name: str,
-) -> BootstrapResourceCollection:
-    bootstrap_resource_collection = BootstrapResourceCollection()
+) -> ResourceCollection:
+    bootstrap_resource_collection = ResourceCollection()
 
     if not rkom_market_config:
         rkom_market_config = RkomMarketConfig.default()
@@ -265,42 +265,23 @@ def process_rkom_bid_configs(
     return bootstrap_resource_collection
 
 
-def get_shop_service_url(cognite_project: str):
-    return (
-        "https://shop-production.az-inso-powerops.cognite.ai/submit-run"
-        if cognite_project.endswith("-prod")
-        else "https://shop-staging.az-inso-powerops.cognite.ai/submit-run"
-    )
-
-
-def _transform(
+def transform(
     config: BootstrapConfig,
-    path: Path,
-    cognite_project: str,
-    market: str = "Dayahead",
-) -> BootstrapResourceCollection:
-    constants = config.settings
-    _ = [w.set_shop_yaml_paths(path) for w in config.core.watercourses]
-    watercourse_directories = {w.name: "/".join((path / w.directory).parts) for w in config.core.watercourses}
+    market: str,
+    echo: Callable[[str], None],
+) -> ResourceCollection:
+    settings = config.settings
+    echo(f"Running bootstrap for data set {settings.data_set_external_id} in CDF project {settings.cdf_project}")
 
-    shop_files_config_list = ShopFileConfigs.from_yaml(path).watercourses_shop
-
-    print(f"Running bootstrap for data set {constants.data_set_external_id} in CDF project" + f"{cognite_project}")
-
-    shop_service_url = get_shop_service_url(cognite_project)
-
-    # TODO: split code below to three main functions(?) when having figured out function signature
-
-    bootstrap_resources = BootstrapResourceCollection()
+    bootstrap_resources = ResourceCollection()
     # Create common CDF resources
-    bootstrap_resources.add(create_labels())
-    bootstrap_resources.add(
-        create_skeleton_asset_hierarchy(
-            organization_subdomain=constants.organization_subdomain,
-            tenant_id=constants.tenant_id,
-            shop_service_url=shop_service_url,
-        )
+    labels = AssetLabels.as_label_definition() + RelationshipLabels.as_label_definition()
+    skeleton_assets = create_skeleton_asset_hierarchy(
+        settings.organization_subdomain, settings.tenant_id, settings.shop_service_url
     )
+    bootstrap_resources.add(skeleton_assets)
+    bootstrap_resources.add(labels)
+
     # PowerOps asset data model
     bootstrap_resources += generate_resources_and_data(
         watercourse_configs=config.core.watercourses,
@@ -312,7 +293,9 @@ def _transform(
     # SHOP files (model, commands, cut mapping++) and configs (base mapping, output definition)
 
     # Shop files related to each watercourse
-    bootstrap_resources.add(create_watercourse_shop_files(shop_files_config_list, watercourse_directories))
+    bootstrap_resources.add(
+        create_watercourse_shop_files(config.watercourses_shop, config.core.watercourse_directories)
+    )
     bootstrap_resources += create_watercourse_processed_shop_files(watercourse_configs=config.core.watercourses)
     bootstrap_resources += create_watercourse_timeseries_mappings(
         watercourse_configs=config.core.watercourses, time_series_mappings=config.core.time_series_mappings
@@ -332,7 +315,7 @@ def _transform(
     bootstrap_resources.add(benchmarking_config_assets)
 
     bootstrap_resources += process_bid_process_configs(
-        path=path,
+        path=config.core.source_path,
         bid_process_configs=config.markets.bidprocess,
         bidmatrix_generators=config.markets.bidmatrix_generators,
         price_scenarios_by_id=config.markets.price_scenario_by_id,
@@ -363,21 +346,19 @@ def _transform(
 
 def _preview_resources_diff(
     client: PowerOpsClient,
-    bootstrap_resources: BootstrapResourceCollection,
+    bootstrap_resources: ResourceCollection,
     data_set_external_id: str,
 ) -> None:
     # Preview differences between bootstrap resources and CDF resources
 
-    cdf_bootstrap_resources = BootstrapResourceCollection.from_cdf(
-        po_client=client, data_set_external_id=data_set_external_id
-    )
+    cdf_bootstrap_resources = ResourceCollection.from_cdf(po_client=client, data_set_external_id=data_set_external_id)
 
-    print(BootstrapResourceCollection.prettify_differences(bootstrap_resources.difference(cdf_bootstrap_resources)))
+    print(ResourceCollection.prettify_differences(bootstrap_resources.difference(cdf_bootstrap_resources)))
 
 
 def _create_cdf_resources(
     client: PowerOpsClient,
-    bootstrap_resources: BootstrapResourceCollection,
+    bootstrap_resources: ResourceCollection,
     data_set_external_id: str,
     overwrite_data: bool,
     skip_dm: bool,

@@ -6,7 +6,7 @@ from typing import Optional, TypedDict
 import pandas as pd
 from cognite.client.data_classes import Asset, Relationship, Sequence
 
-from cognite.powerops.bootstrap.data_classes.bootstrap_resource_collection import BootstrapResourceCollection
+from cognite.powerops.bootstrap.data_classes.bootstrap_resource_collection import ResourceCollection
 from cognite.powerops.bootstrap.data_classes.core.generator import Generator, GeneratorTimeSeriesMapping
 from cognite.powerops.bootstrap.data_classes.core.plant import Plant, PlantTimeSeriesMapping
 from cognite.powerops.bootstrap.data_classes.core.watercourse import WatercourseConfig
@@ -38,7 +38,7 @@ def generate_resources_and_data(
     watercourse_configs: list[WatercourseConfig],
     plant_time_series_mappings: Optional[list[PlantTimeSeriesMapping]],
     generator_time_series_mappings: Optional[list[GeneratorTimeSeriesMapping]],
-) -> BootstrapResourceCollection:
+) -> ResourceCollection:
     """
     Create Assets for:
         - price_area,
@@ -80,7 +80,7 @@ def generate_resources_and_data(
         Collection of Assets, Sequences, Relationships and sequence data
     """
 
-    resources = BootstrapResourceCollection()
+    resources = ResourceCollection()
 
     for watercourse_config in watercourse_configs:
         watercourse = watercourse_asset(
@@ -137,7 +137,7 @@ def generate_resources_and_data(
 def create_generator_efficiency_curve_sequence(
     efficiency_curve: ShopEfficiencyCurve,
     generator_asset: Asset,
-) -> BootstrapResourceCollection:
+) -> ResourceCollection:
     """
     Create the cognite resource for the generator efficiency curve (Sequence) and the connection
     (Relationship) between the generator and the efficiency curve.
@@ -151,10 +151,10 @@ def create_generator_efficiency_curve_sequence(
 
     Returns
     -------
-    BootstrapResourceCollection
+    ResourceCollection
         The new resources (incl. sequence data)
     """
-    resources = BootstrapResourceCollection()
+    resources = ResourceCollection()
     x_col_name = "generator_power"
     y_col_name = "generator_efficiency"
 
@@ -192,7 +192,7 @@ def create_generator_efficiency_curve_sequence(
 def create_turbine_efficiency_curve_sequence(
     efficiency_curves: list[ShopEfficiencyCurve],
     generator_asset: Asset,
-) -> BootstrapResourceCollection:
+) -> ResourceCollection:
     """
     Create the cognite resource for turbine efficiency curve (Sequence) and the connection
     (Relationship) between the generator and the efficiency curve.
@@ -209,7 +209,7 @@ def create_turbine_efficiency_curve_sequence(
     tuple[ResourceDict, dict[str, pd.DataFrame]]
         The new resources and sequence data dictionary
     """
-    resources = BootstrapResourceCollection()
+    resources = ResourceCollection()
     ref_col_name = "head"
     x_col_name = "flow"
     y_col_name = "turbine_efficiency"
@@ -283,7 +283,7 @@ def get_single_value(value_or_time_series: float | dict) -> float:
 def add_generators_and_efficiency_curves(
     shop_generator_dict: dict,
     generator_time_series_mappings: Optional[list[GeneratorTimeSeriesMapping]],
-) -> BootstrapResourceCollection:
+) -> ResourceCollection:
     """Create the cognite resource for the generator (Asset) and the generator- and turbine efficiencies (sequences), as
         well as the connection (Relationship) between the generator and the efficiency curves.
 
@@ -296,11 +296,11 @@ def add_generators_and_efficiency_curves(
 
     Returns
     -------
-    BootstrapResourceCollection
+    ResourceCollection
         Collection of assets, sequences, relationships and sequence data
     """
     generators: {str: Generator} = {}
-    resources = BootstrapResourceCollection()
+    resources = ResourceCollection()
     for generator_name, generator_information in shop_generator_dict.items():
         generator = Generator(
             name=generator_name,
@@ -335,8 +335,8 @@ def add_generators_and_efficiency_curves(
 def create_reservoirs(
     reservoirs: dict,
     watercourse_config: WatercourseConfig,
-) -> BootstrapResourceCollection:
-    resources = BootstrapResourceCollection()
+) -> ResourceCollection:
+    resources = ResourceCollection()
     for reservoir_name in reservoirs:
         reservoir = reservoir_asset(
             name=reservoir_name,

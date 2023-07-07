@@ -7,9 +7,9 @@ from typing import List, NamedTuple, Optional, Tuple
 from cognite.client.data_classes import Asset, Label, Relationship
 from pydantic import BaseModel, field_validator, validator
 
-from cognite.powerops._shared_data_classes import AssetLabels as al
-from cognite.powerops._shared_data_classes import RelationshipLabels as rl
-from cognite.powerops.bootstrap.data_classes.bootstrap_resource_collection import BootstrapResourceCollection
+from cognite.powerops.bootstrap.data_classes.bootstrap_resource_collection import ResourceCollection
+from cognite.powerops.bootstrap.data_classes.cdf_labels import AssetLabels as al
+from cognite.powerops.bootstrap.data_classes.cdf_labels import RelationshipLabels as rl
 from cognite.powerops.bootstrap.data_classes.core._core import ExternalId
 from cognite.powerops.bootstrap.data_classes.shared import TimeSeriesMapping
 from cognite.powerops.bootstrap.to_cdf_resources.create_relationship_types import (
@@ -72,18 +72,18 @@ class Plant(BaseModel):
                 "display_name": self.display_name or self.name,
                 "ordering": str(self.ordering_key or 999),
             },
-            labels=[Label(external_id=al.PLANT)],
+            labels=[Label(external_id=al.PLANT.value)],
         )
 
     def relationships(self) -> list[Relationship]:
         time_series_to_append_if_not_none = {
-            self.inlet_level_time_series: rl.INLET_LEVEL_TIME_SERIES,
-            self.outlet_level_time_series: rl.OUTLET_LEVEL_TIME_SERIES,
-            self.water_value_time_series: rl.WATER_VALUE_TIME_SERIES,
-            self.feeding_fee_time_series: rl.FEEDING_FEE_TIME_SERIES,
-            self.p_min_time_series: rl.P_MIN_TIME_SERIES,
-            self.p_max_time_series: rl.P_MAX_TIME_SERIES,
-            self.head_direct_time_series: rl.HEAD_DIRECT_TIME_SERIES,
+            self.inlet_level_time_series: rl.INLET_LEVEL_TIME_SERIES.value,
+            self.outlet_level_time_series: rl.OUTLET_LEVEL_TIME_SERIES.value,
+            self.water_value_time_series: rl.WATER_VALUE_TIME_SERIES.value,
+            self.feeding_fee_time_series: rl.FEEDING_FEE_TIME_SERIES.value,
+            self.p_min_time_series: rl.P_MIN_TIME_SERIES.value,
+            self.p_max_time_series: rl.P_MAX_TIME_SERIES.value,
+            self.head_direct_time_series: rl.HEAD_DIRECT_TIME_SERIES.value,
         }
         relationships: list[Relationship] = [
             asset_to_time_series(self.external_id, time_series, label)
@@ -101,10 +101,10 @@ class Plant(BaseModel):
 
         return relationships
 
-    def to_bootstrap_resources(self) -> BootstrapResourceCollection:
+    def to_bootstrap_resources(self) -> ResourceCollection:
         asset = self.asset()
         relationships = self.relationships()
-        return BootstrapResourceCollection(
+        return ResourceCollection(
             assets={asset.external_id: asset}, relationships={rel.external_id: rel for rel in relationships}
         )
 

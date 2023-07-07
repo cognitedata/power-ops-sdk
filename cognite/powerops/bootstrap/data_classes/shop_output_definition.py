@@ -4,7 +4,7 @@ from typing import List, Optional
 from cognite.client.data_classes import Sequence
 from pandas import DataFrame
 
-from cognite.powerops.bootstrap.data_classes.bootstrap_resource_collection import BootstrapResourceCollection
+from cognite.powerops.bootstrap.data_classes.bootstrap_resource_collection import ResourceCollection
 from cognite.powerops.bootstrap.data_classes.to_delete import SequenceContent
 
 
@@ -62,8 +62,8 @@ class ShopOutputConfig:
             },
         )
 
-    def to_bootstrap_resources(self) -> BootstrapResourceCollection:
-        bootstrap_resources = BootstrapResourceCollection()
+    def to_bootstrap_resources(self) -> ResourceCollection:
+        bootstrap_resources = ResourceCollection()
         sequence = ShopOutputConfig.to_sequence(watercourse=self.watercourse)
 
         bootstrap_resources.add(sequence)

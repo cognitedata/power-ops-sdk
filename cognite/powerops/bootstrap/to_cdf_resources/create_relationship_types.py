@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from cognite.client.data_classes import Asset, Label, Relationship, Sequence
 
-from cognite.powerops._shared_data_classes import RelationshipLabels
+from cognite.powerops.bootstrap.data_classes.cdf_labels import RelationshipLabels
 
 
 def basic_relationship(
@@ -81,7 +81,7 @@ def price_area_to_plant(price_area: Asset | str, plant: Asset | str) -> Relation
     return asset_to_asset(
         source=price_area,
         target=plant,
-        label=RelationshipLabels.PLANT,
+        label=RelationshipLabels.PLANT.value,
     )
 
 
@@ -89,7 +89,7 @@ def watercourse_to_plant(watercourse: Asset | str, plant: Asset | str) -> Relati
     return asset_to_asset(
         source=watercourse,
         target=plant,
-        label=RelationshipLabels.PLANT,
+        label=RelationshipLabels.PLANT.value,
     )
 
 
@@ -97,7 +97,7 @@ def price_area_to_watercourse(price_area: Asset | str, watercourse: Asset | str)
     return asset_to_asset(
         source=price_area,
         target=watercourse,
-        label=RelationshipLabels.WATERCOURSE,
+        label=RelationshipLabels.WATERCOURSE.value,
     )
 
 
@@ -105,7 +105,7 @@ def plant_to_inlet_reservoir(plant: Asset | str, reservoir: Asset | str) -> Rela
     return asset_to_asset(
         source=plant,
         target=reservoir,
-        label=RelationshipLabels.INLET_RESERVOIR,
+        label=RelationshipLabels.INLET_RESERVOIR.value,
     )
 
 
@@ -113,7 +113,7 @@ def plant_to_generator(plant: Asset | str, generator: Asset | str) -> Relationsh
     return asset_to_asset(
         source=plant,
         target=generator,
-        label=RelationshipLabels.GENERATOR,
+        label=RelationshipLabels.GENERATOR.value,
     )
 
 
@@ -121,7 +121,7 @@ def watercourse_to_production_obligation(watercourse: Asset, production_obligati
     return _asset_to_time_series(
         source_external_id=watercourse.external_id,
         target_external_id=production_obligation_ts_ext_id,
-        label=RelationshipLabels.PRODUCTION_OBLIGATION_TIME_SERIES,
+        label=RelationshipLabels.PRODUCTION_OBLIGATION_TIME_SERIES.value,
     )
 
 
@@ -129,7 +129,7 @@ def generator_to_generator_efficiency_curve(generator: Asset, generator_efficien
     return _asset_to_sequence(
         source_external_id=generator.external_id,
         target_external_id=generator_efficiency_curve.external_id,
-        label=RelationshipLabels.GENERATOR_EFFICIENCY_CURVE,
+        label=RelationshipLabels.GENERATOR_EFFICIENCY_CURVE.value,
     )
 
 
@@ -137,7 +137,7 @@ def generator_to_turbine_efficiency_curve(generator: Asset, turbine_efficiency_c
     return _asset_to_sequence(
         source_external_id=generator.external_id,
         target_external_id=turbine_efficiency_curve.external_id,
-        label=RelationshipLabels.TURBINE_EFFICIENCY_CURVE,
+        label=RelationshipLabels.TURBINE_EFFICIENCY_CURVE.value,
     )
 
 
@@ -145,5 +145,5 @@ def price_area_to_dayahead_price(price_area_asset: Asset, dayahead_price_time_se
     return _asset_to_time_series(
         source_external_id=price_area_asset.external_id,
         target_external_id=dayahead_price_time_series_external_id,
-        label=RelationshipLabels.DAYAHEAD_PRICE_TIME_SERIES,
+        label=RelationshipLabels.DAYAHEAD_PRICE_TIME_SERIES.value,
     )

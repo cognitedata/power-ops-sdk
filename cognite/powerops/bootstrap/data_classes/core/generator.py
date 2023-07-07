@@ -5,9 +5,9 @@ from typing import Optional
 from cognite.client.data_classes import Asset, Label, Relationship
 from pydantic import BaseModel, field_validator
 
-from cognite.powerops._shared_data_classes import AssetLabels
-from cognite.powerops._shared_data_classes import RelationshipLabels as rl
-from cognite.powerops.bootstrap.data_classes.bootstrap_resource_collection import BootstrapResourceCollection
+from cognite.powerops.bootstrap.data_classes.bootstrap_resource_collection import ResourceCollection
+from cognite.powerops.bootstrap.data_classes.cdf_labels import AssetLabels
+from cognite.powerops.bootstrap.data_classes.cdf_labels import RelationshipLabels as rl
 from cognite.powerops.bootstrap.data_classes.core._core import ExternalId
 from cognite.powerops.bootstrap.to_cdf_resources.create_relationship_types import asset_to_time_series
 
@@ -40,10 +40,10 @@ class Generator(BaseModel):
 
             generators[generator_name].start_stop_cost_time_series = mapping.start_stop_cost
 
-    def to_bootstrap_resources(self) -> BootstrapResourceCollection:
+    def to_bootstrap_resources(self) -> ResourceCollection:
         asset = self.asset()
         relationships = self.relationships()
-        return BootstrapResourceCollection(
+        return ResourceCollection(
             assets={asset.external_id: asset}, relationships={rel.external_id: rel for rel in relationships}
         )
 
@@ -52,7 +52,7 @@ class Generator(BaseModel):
             external_id=f"generator_{self.name}",
             name=self.name,
             parent_external_id="generators",
-            labels=[Label(AssetLabels.GENERATOR)],
+            labels=[Label(AssetLabels.GENERATOR.value)],
             metadata={
                 "penstock": self.penstock,
                 "startcost": self.startcost,
@@ -62,7 +62,7 @@ class Generator(BaseModel):
 
     def relationships(self) -> list[Relationship]:
         time_series_to_append_if_not_none = {
-            self.start_stop_cost_time_series: rl.START_STOP_COST_TIME_SERIES,
+            self.start_stop_cost_time_series: rl.START_STOP_COST_TIME_SERIES.value,
         }
         return [
             asset_to_time_series(self.external_id, time_series, label)

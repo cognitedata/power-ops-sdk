@@ -1,10 +1,24 @@
-from typing import Callable
-
 from cognite.client.data_classes import LabelDefinition
 
+try:
+    from enum import StrEnum
+except ImportError:
+    from strenum import StrEnum
 
-# All Labels used by PowerOps
-class AssetLabels:
+
+class CDFLabels(StrEnum):
+    @classmethod
+    def as_label_definition(cls) -> list[LabelDefinition]:
+        return [
+            LabelDefinition(
+                external_id=label_external_id.value,
+                name=label_external_id.value,
+            )
+            for label_external_id in cls
+        ]
+
+
+class AssetLabels(CDFLabels):
     BENCHMARKING_CONFIGURATION = "benchmarking_configuration"
     BID_PROCESS_CONFIGURATION = "bid_process_configuration"
     BID_MATRIX_GENERATOR_CONFIG_SEQUENCE = "bid_matrix_generator_config_sequence"
@@ -30,7 +44,7 @@ class AssetLabels:
     WATERCOURSE = "watercourse"
 
 
-class RelationshipLabels:
+class RelationshipLabels(CDFLabels):
     BID_MATRIX_GENERATOR_CONFIG_SEQUENCE = "relationship_to.bid_matrix_generator_config_sequence"
     BID_MATRIX_SEQUENCE = "relationship_to.bid_matrix_sequence"
     RKOM_BID_FORM_SEQUENCE = "relationship_to.rkom_bid_form_sequence"
@@ -83,18 +97,3 @@ class RelationshipLabels:
     CUT_FILE = "relationship_to.cut_file"
     MAPPING_FILE = "relationship_to.mapping_file"
     EXTRA_FILE = "relationship_to.extra_file"
-
-
-def label_external_ids(labels_class: Callable) -> list:
-    return [v for k, v in labels_class.__dict__.items() if not k.startswith("__")]
-
-
-def create_labels() -> list[LabelDefinition]:
-    external_ids = label_external_ids(AssetLabels) + label_external_ids(RelationshipLabels)
-    return [
-        LabelDefinition(
-            external_id=label_external_id,
-            name=label_external_id,
-        )
-        for label_external_id in external_ids
-    ]

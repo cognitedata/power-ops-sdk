@@ -9,7 +9,7 @@ import requests
 from cognite.client import CogniteClient
 from cognite.client.data_classes import Event, FileMetadata
 
-from cognite.powerops._shared_data_classes import RelationshipLabels
+from cognite.powerops.bootstrap.data_classes.cdf_labels import RelationshipLabels
 from cognite.powerops.clients.data_set_api import DataSetsAPI
 from cognite.powerops.clients.shop.api.shop_results_api import ShopRunResultsAPI
 from cognite.powerops.clients.shop.data_classes import Case, ShopRun, ShopRunEvent
@@ -51,14 +51,14 @@ class ShopRunsAPI:
         logger.debug(f"Uploading event '{shop_run_event.external_id}'.")
         case_file_meta = self._upload_input_file_bytes(case.yaml.encode(), shop_run_event, file_type="case")
         event = shop_run_event.to_event(self._data_set_api.write_dataset_id)
-        self._connect_file_to_event(case_file_meta, event, RelationshipLabels.CASE_FILE)
+        self._connect_file_to_event(case_file_meta, event, RelationshipLabels.CASE_FILE.value)
         preprocessor_metadata = {"cog_shop_case_file": {"external_id": case_file_meta.external_id}}
 
         if case.cut_file:
             cut_file_meta = self._upload_input_file(
                 case.cut_file["file"], shop_run_event=shop_run_event, input_file_type="cut"
             )
-            self._connect_file_to_event(cut_file_meta, event, RelationshipLabels.CUT_FILE)
+            self._connect_file_to_event(cut_file_meta, event, RelationshipLabels.CUT_FILE.value)
             preprocessor_metadata["cut_file"] = {"external_id": cut_file_meta.external_id}
 
         if case.mapping_files:
@@ -67,7 +67,7 @@ class ShopRunsAPI:
             mapping_file_meta = self._upload_input_file(
                 mapping_file["file"], shop_run_event=shop_run_event, input_file_type="mapping"
             )
-            self._connect_file_to_event(mapping_file_meta, event, RelationshipLabels.MAPPING_FILE)
+            self._connect_file_to_event(mapping_file_meta, event, RelationshipLabels.MAPPING_FILE.value)
             preprocessor_metadata["mapping_files"].append({"external_id": mapping_file_meta.external_id})
 
         if case.extra_files:
@@ -76,7 +76,7 @@ class ShopRunsAPI:
             extra_file_meta = self._upload_input_file(
                 extra_file["file"], shop_run_event=shop_run_event, input_file_type="extra"
             )
-            self._connect_file_to_event(extra_file_meta, event, RelationshipLabels.EXTRA_FILE)
+            self._connect_file_to_event(extra_file_meta, event, RelationshipLabels.EXTRA_FILE.value)
             preprocessor_metadata["extra_files"].append({"external_id": extra_file_meta.external_id})
 
         event.metadata["shop:preprocessor_data"] = json.dumps(preprocessor_metadata)

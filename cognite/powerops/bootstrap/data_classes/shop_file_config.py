@@ -7,8 +7,6 @@ from typing import Literal, Optional
 from cognite.client.data_classes import FileMetadata
 from pydantic import BaseModel
 
-from cognite.powerops.bootstrap.utils.serializer import load_yaml
-
 
 class ShopFileConfig(BaseModel):
     watercourse_name: str
@@ -58,15 +56,3 @@ class ShopFileConfig(BaseModel):
             cogshop_file_type=cogshop_file_type,
             md5_hash=file_meta.metadata.get("md5_hash"),
         )
-
-
-class ShopFileConfigs(BaseModel):
-    watercourses_shop: list[ShopFileConfig]
-
-    @classmethod
-    def from_yaml(cls, config_dir_path: Path) -> "ShopFileConfigs":
-        configs = {}
-        for field_name in cls.__fields__:
-            if (config_file_path := config_dir_path / f"{field_name}.yaml").exists():
-                configs[field_name] = load_yaml(config_file_path, encoding="utf-8")
-        return cls(**configs)

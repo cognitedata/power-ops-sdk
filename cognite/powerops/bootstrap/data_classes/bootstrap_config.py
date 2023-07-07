@@ -24,6 +24,7 @@ from cognite.powerops.bootstrap.data_classes.marked_configuration.rkom import (
     RkomMarketConfig,
 )
 from cognite.powerops.bootstrap.data_classes.shared import TimeSeriesMapping
+from cognite.powerops.bootstrap.data_classes.shop_file_config import ShopFileConfig
 from cognite.powerops.bootstrap.utils.serializer import load_yaml
 
 
@@ -83,10 +84,15 @@ class MarketConfigs(BaseModel):
 
 
 class CoreConfigs(BaseModel):
+    source_path: Path
     watercourses: list[WatercourseConfig]
     time_series_mappings: list[TimeSeriesMapping]
     generator_time_series_mappings: list[GeneratorTimeSeriesMapping] = None
     plant_time_series_mappings: list[PlantTimeSeriesMapping] = None
+
+    @property
+    def watercourse_directories(self) -> dict[str, str]:
+        return {w.name: str(self.source_path / w.directory) for w in self.watercourses}
 
 
 class BootstrapConfig(BaseModel):
@@ -94,10 +100,11 @@ class BootstrapConfig(BaseModel):
     settings: Settings = Field(alias="constants")
     core: CoreConfigs
     markets: MarketConfigs
+    watercourses_shop: list[ShopFileConfig]
 
     @classmethod
-    def from_yamls(cls, config_dir_path: Path) -> "BootstrapConfig":
-        configs = {"markets": {}, "core": {}}
+    def from_yamls(cls, config_dir_path: Path, cdf_project: str) -> "BootstrapConfig":
+        configs = {"markets": {}, "core": {"source_path": config_dir_path}}
         market_keys = set(MarketConfigs.model_fields)
         core_keys = set(CoreConfigs.model_fields)
         for field_name in itertools.chain(cls.model_fields, MarketConfigs.model_fields, CoreConfigs.model_fields):
@@ -109,4 +116,13 @@ class BootstrapConfig(BaseModel):
                     configs["core"][field_name] = content
                 else:
                     configs[field_name] = content
-        return cls(**configs)
+        # Todo Hack to get cdf project into settings.
+        if "settings" in configs:
+            configs["settings"]["cdf_project"] = cdf_project
+        elif "constants" in configs:
+            # For backwards compatiblitity
+            configs["constants"]["cdf_project"] = cdf_project
+        config = cls(**configs)
+        for watercourse in config.core.watercourses:
+            watercourse.set_shop_yaml_paths(config.core.source_path)
+        return config
