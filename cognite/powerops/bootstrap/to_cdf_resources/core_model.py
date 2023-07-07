@@ -1,16 +1,19 @@
 from __future__ import annotations
 
 from abc import ABC
-from dataclasses import dataclass, field
+from dataclasses import asdict, dataclass, field
 from typing import ClassVar
 
 import pandas as pd
-from cognite.client.data_classes import Sequence, SequenceData, TimeSeries
+from cognite.client.data_classes import Asset, Label, Relationship, Sequence, SequenceData, TimeSeries
+
+from cognite.powerops.bootstrap.data_classes.cdf_labels import AssetLabel
 
 
 @dataclass
 class Type(ABC):
     type_: ClassVar[str]
+    label: ClassVar[AssetLabel]
     name: str
 
     @property
@@ -25,11 +28,19 @@ class Type(ABC):
     def parent_name(self):
         return self.parent_external_id.replace("_", " ").title()
 
-    def get_relationships(self):
-        raise NotImplementedError
+    def get_relationships(self) -> list[Relationship]:
+        raise NotImplementedError()
 
     def as_asset(self):
-        raise NotImplementedError()
+        metadata = asdict(self)
+        metadata.pop("name")
+        return Asset(
+            external_id=self.external_id,
+            name=self.name,
+            parent_external_id=self.parent_external_id,
+            metadata=metadata,
+            labels=[Label(self.label.value)],
+        )
 
 
 @dataclass
@@ -41,9 +52,10 @@ class CDFSequence:
 @dataclass
 class Generator(Type):
     type_: ClassVar[str] = "generator"
+    label = AssetLabel.GENERATOR
     p_min: float
     penstock: int
-    start_cost: float
+    startcost: float
     generator_efficiency_curve: CDFSequence | None = None
     turbine_efficiency_curve: CDFSequence | None = None
 
@@ -51,6 +63,7 @@ class Generator(Type):
 @dataclass
 class Reservoir(Type):
     type_: ClassVar[str] = "reservoir"
+    label = AssetLabel.RESERVOIR
     display_name: str
     ordering: int
 
@@ -58,6 +71,7 @@ class Reservoir(Type):
 @dataclass
 class Plant(Type):
     type_: ClassVar[str] = "plant"
+    label = AssetLabel.PLANT
     display_name: str
     ordering: int
     head_loss_factor: float
@@ -78,6 +92,7 @@ class Plant(Type):
 @dataclass
 class Watercourse(Type):
     type_: ClassVar[str] = "watercourse"
+    label = AssetLabel.WATERCOURSE
     shop_penalty_limit: float
     plants: list[Plant]
 
@@ -85,6 +100,7 @@ class Watercourse(Type):
 @dataclass
 class PriceArea(Type):
     type_: ClassVar[str] = "price_area"
+    label = AssetLabel.PRICE_AREA
     day_ahead_price: TimeSeries
     plants: list[Plant]
     watercourses: list[Watercourse]

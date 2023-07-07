@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from pathlib import Path
 from typing import Optional, TypedDict
 
@@ -40,7 +41,7 @@ def generate_resources_and_data(
     watercourse_configs: list[WatercourseConfig],
     plant_time_series_mappings: Optional[list[PlantTimeSeriesMapping]],
     generator_time_series_mappings: Optional[list[GeneratorTimeSeriesMapping]],
-) -> ResourceCollection:
+) -> tuple[ResourceCollection, core_model.CoreModel]:
     """
     Create Assets for:
         - price_area,
@@ -106,13 +107,13 @@ def generate_resources_and_data(
         reservoirs2 = []
         for reservoir_name in reservoirs:
             reservoir2 = core_model.Reservoir(
-                reservoir_name, *watercourse_config.reservoir_display_names_and_order.get(reservoir_name, (None, None))
+                reservoir_name,
+                *watercourse_config.reservoir_display_names_and_order.get(
+                    reservoir_name, (re.sub(r"\([0-9]+\)", "", reservoir_name), "999")
+                ),
             )
             reservoirs2.append(reservoir2)
         model.reservoirs.extend(reservoirs2)
-
-        # Todo delete
-        resources += create_reservoirs(reservoirs, watercourse_config)
 
         generators = shop_case["model"]["generator"]
         generators2 = []
@@ -121,7 +122,7 @@ def generate_resources_and_data(
                 generator_name,
                 penstock=generator_attributes.get("penstock", 1),
                 p_min=generator_attributes.get("p_min", 0.0),
-                start_cost=get_single_value(generator_attributes.get("startcost", 0.0)),
+                startcost=get_single_value(generator_attributes.get("startcost", 0.0)),
             )
             x_col_name = "generator_power"
             y_col_name = "generator_efficiency"
@@ -212,7 +213,7 @@ def generate_resources_and_data(
                 )
                 resources.add(rel)
 
-    return resources
+    return resources, model
 
 
 def create_generator_efficiency_curve_sequence(

@@ -337,11 +337,14 @@ def core_to_cdf_resources(
 ) -> ResourceCollection:
     collection = ResourceCollection()
     # PowerOps asset data model
-    collection += generate_resources_and_data(
+    created_collection, model = generate_resources_and_data(
         watercourse_configs=core.watercourses,
         plant_time_series_mappings=core.plant_time_series_mappings,
         generator_time_series_mappings=core.generator_time_series_mappings,
     )
+    collection.add([reservoir.as_asset() for reservoir in model.reservoirs])
+
+    collection += created_collection
 
     # SHOP files (model, commands, cut mapping++) and configs (base mapping, output definition)
     # Shop files related to each watercourse
