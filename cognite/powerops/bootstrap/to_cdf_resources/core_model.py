@@ -11,7 +11,7 @@ from cognite.powerops.bootstrap.data_classes.cdf_labels import AssetLabel, Relat
 from cognite.powerops.bootstrap.to_cdf_resources.create_relationship_types import basic_relationship
 
 
-@dataclass
+@dataclass()
 class Type(ABC):
     type_: ClassVar[str]
     label: ClassVar[AssetLabel]
@@ -44,7 +44,7 @@ class Type(ABC):
                     label=RelationshipLabel(f"relationship_to.{f.name}"),
                 )
                 relationships.append(r)
-            elif Sequence.__name__ in f.type:
+            elif CDFSequence.__name__ in f.type:
                 r = basic_relationship(
                     source_external_id=self.external_id,
                     source_type="ASSET",

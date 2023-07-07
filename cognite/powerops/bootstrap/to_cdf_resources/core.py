@@ -24,6 +24,7 @@ from cognite.powerops.bootstrap.data_classes.shared import ExternalId, TimeSerie
 from cognite.powerops.bootstrap.data_classes.shop_file_config import ShopFileConfig
 from cognite.powerops.bootstrap.data_classes.shop_output_definition import ShopOutputConfig
 from cognite.powerops.bootstrap.data_classes.skeleton_asset_hierarchy import create_skeleton_asset_hierarchy
+from cognite.powerops.bootstrap.data_classes.to_delete import SequenceContent
 from cognite.powerops.bootstrap.to_cdf_resources.files import process_yaml_file
 from cognite.powerops.bootstrap.to_cdf_resources.generate_cdf_resource import (
     generate_relationships_from_price_area_to_price,
@@ -345,6 +346,21 @@ def core_to_cdf_resources(
     collection.add([reservoir.as_asset() for reservoir in model.reservoirs])
     collection.add([generator.as_asset() for generator in model.generators])
     collection.add([relationship for generator in model.generators for relationship in generator.get_relationships()])
+    for generator in model.generators:
+        collection.add(generator.generator_efficiency_curve.sequence)
+        collection.add(generator.turbine_efficiency_curve.sequence)
+        collection.add(
+            SequenceContent(
+                sequence_external_id=generator.generator_efficiency_curve.sequence.external_id,
+                data=generator.generator_efficiency_curve.content,
+            )
+        )
+        collection.add(
+            SequenceContent(
+                sequence_external_id=generator.turbine_efficiency_curve.sequence.external_id,
+                data=generator.turbine_efficiency_curve.content,
+            )
+        )
 
     collection += created_collection
 

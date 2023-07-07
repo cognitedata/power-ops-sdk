@@ -145,7 +145,7 @@ def generate_resources_and_data(
                     dtype=float,
                 ),
             )
-            generator2.efficiency_curve = efficiency_curve
+            generator2.generator_efficiency_curve = efficiency_curve
             data = generator_attributes["turb_eff_curves"]
             ref_col_name = "head"
             x_col_name = "flow"
@@ -179,7 +179,7 @@ def generate_resources_and_data(
         model.generators.extend(generators2)
 
         # Todo delete
-        resources += add_generators_and_efficiency_curves(generators, generator_time_series_mappings)
+        # resources += zadd_generators_and_efficiency_curves(generators, generator_time_series_mappings)
 
         plants = Plant.from_shop_case(shop_case=shop_case)
         if plant_time_series_mappings:
@@ -343,7 +343,7 @@ def create_turbine_efficiency_curve_sequence(
         )
     )
 
-    # Finally create the relationship
+    # Finally, create a relationship
     relationship = generator_to_turbine_efficiency_curve(generator=generator_asset, turbine_efficiency_curve=sequence)
     resources.add(relationship)
 
