@@ -230,9 +230,17 @@ def transform(
         config.core, collection.shop_file_configs, config.settings.shop_version, config.watercourses_shop
     )
 
-    collection = market_to_cdf_resources(
-        collection, config.markets, market_name, config.core.watercourses, config.core.source_path
+    collection, market_model = market_to_cdf_resources(
+        collection,
+        config.markets,
+        market_name,
+        config.core.watercourses,
+        config.core.source_path,
+        core_model.watercourses,
     )
+    collection.add(market_model.assets())
+    collection.add(market_model.relationships())
+    collection.add(market_model.sequences())
 
     # Set hashes for Shop Files, needed for comparison
     for shop_config in collection.shop_file_configs.values():

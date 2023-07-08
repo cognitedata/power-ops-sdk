@@ -9,7 +9,7 @@ from .rkom import RKOMBid, RKOMBidCombination, RKOMMarket, RKOMProcess
 
 
 @dataclass
-class MarketConfig(Model):
+class MarketModel(Model):
     markets: list[Market] = field(default_factory=list)
     bids: list[Bid] = field(default_factory=list)
     processes: list[Process] = field(default_factory=list)
@@ -32,5 +32,5 @@ __all__ = [
     "ShopTransformation",
     "Bid",
     "Process",
-    "MarketConfig",
+    "MarketModel",
 ]
