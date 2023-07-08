@@ -3,7 +3,6 @@ from __future__ import annotations
 import json
 from typing import Dict, List, Optional
 
-from cognite.client.data_classes import Asset
 from pydantic import ConfigDict, Field, field_validator
 
 from cognite.powerops.bootstrap.data_classes.marked_configuration._core import Configuration, RelativeTime
@@ -44,29 +43,3 @@ class BenchmarkingConfig(Configuration):
     @field_validator("shop_start", "shop_end", "bid_date", mode="before")
     def json_loads(cls, value):
         return {"operations": json.loads(value)} if isinstance(value, str) else value
-
-    @property
-    def metadata(self) -> dict:
-        metadata = {
-            "bid:date": str(self.bid_date),
-            "shop:starttime": str(self.shop_start),
-            "shop:endtime": str(self.shop_end),
-            "bid:market_config_external_id": self.market_config_external_id,
-            "benchmarking_metrics": json.dumps(self.relevant_shop_objective_metrics),
-        }
-        if self.production_plan_time_series:
-            metadata["benchmark:production_plan_time_series"] = json.dumps(
-                self.production_plan_time_series, ensure_ascii=False
-            )  # ensure_ascii=False to treat Nordic letters properly
-        return metadata
-
-    @property
-    def cdf_asset(self) -> Asset:
-        return Asset(
-            external_id="POWEROPS_dayahead_bidding_benchmarking_config",
-            name="Benchmarking config DA",
-            description="Configuration for benchmarking of day-ahead bidding",
-            metadata=self.metadata,
-            parent_external_id="benchmarking_configurations",
-            labels=["dayahead_bidding_benchmarking_config"],
-        )

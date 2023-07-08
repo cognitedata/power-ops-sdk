@@ -108,9 +108,6 @@ def market_to_cdf_resources(
     # The external_id is not following the naming convention, so we need to set it manually
     nord_pool.external_id = config.market.external_id
 
-    # benchmarking_config_assets = [config.cdf_asset for config in config.benchmarks]
-    # bootstrap_resources.add(benchmarking_config_assets)
-
     benchmarking = market_models.MarketModel()
     if len(config.benchmarks) > 1:
         # The external id for the benchmarking is hardcoded and thus there can be only one.
