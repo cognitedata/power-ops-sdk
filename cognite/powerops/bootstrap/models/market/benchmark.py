@@ -18,6 +18,7 @@ class ProductionPlanTimeSeries(Type):
 
 @dataclass
 class BenchmarkProcess(Process):
+    type_ = "benchmarking_configurations"
     bid: BenchmarkBid
     production_plan_time_series: list[ProductionPlanTimeSeries]
     metrics: list[str]

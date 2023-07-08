@@ -5,6 +5,7 @@ from cognite.powerops.bootstrap.models.base import Type
 
 @dataclass
 class Market(Type):
+    type_ = "market_configuration"
     timezone: str
 
 

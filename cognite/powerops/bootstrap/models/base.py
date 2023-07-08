@@ -19,7 +19,7 @@ ROOT_ASSET = Asset(
 
 @dataclass()
 class Type(ABC):
-    type_: ClassVar[str]
+    type_: ClassVar[str | None] = None
     label: ClassVar[AssetLabel]
     name: str
 

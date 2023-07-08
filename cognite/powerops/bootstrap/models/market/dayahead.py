@@ -15,6 +15,7 @@ class DayAheadBid(Bid):
 
 @dataclass
 class DayAheadProcess(Process):
+    type_ = "POWEROPS_bid_process_configuration"
     bid: DayAheadBid
     incremental_mapping: list[CDFSequence]
 

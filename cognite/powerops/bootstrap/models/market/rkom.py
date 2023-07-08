@@ -19,6 +19,7 @@ class RKOMBid(Bid):
 
 @dataclass
 class RKOMProcess(Process):
+    type_ = "POWEROPS"
     bid: RKOMBid
     process_events: list[str]
     timezone: str
@@ -27,6 +28,7 @@ class RKOMProcess(Process):
 
 @dataclass
 class RKOMBidCombination(Type):
+    type_ = "RKOM_bid_combination_configuration"
     auction: str
     bid_configurations: list[RKOMProcess]
 
