@@ -2,17 +2,15 @@ from __future__ import annotations
 
 import re
 from pathlib import Path
+from typing import Optional
 
 import pandas as pd
-from cognite.client.data_classes import Relationship, Sequence, TimeSeries
+from cognite.client.data_classes import Sequence, TimeSeries
 
 import cognite.powerops.bootstrap.models.base
 from cognite.powerops.bootstrap.data_classes.bootstrap_config import CoreConfigs
-from cognite.powerops.bootstrap.data_classes.core.plant import plant_to_inlet_reservoir_breadth_first_search
 from cognite.powerops.bootstrap.data_classes.model_file import Connection
 from cognite.powerops.bootstrap.models import core
-from cognite.powerops.bootstrap.to_cdf_resources.create_asset_types import price_area_asset
-from cognite.powerops.bootstrap.to_cdf_resources.create_relationship_types import price_area_to_dayahead_price
 from cognite.powerops.bootstrap.utils.serializer import load_yaml
 
 p_min_fallback = 0
@@ -247,10 +245,52 @@ def get_single_value(value_or_time_series: float | dict) -> float:
     return value_or_time_series
 
 
-def generate_relationships_from_price_area_to_price(
-    price_ts_ext_id_per_price_area: dict[str, str]
-) -> list[Relationship]:
-    return [
-        price_area_to_dayahead_price(price_area_asset(price_area_name), ts_ext_id)
-        for price_area_name, ts_ext_id in price_ts_ext_id_per_price_area.items()
-    ]
+def plant_to_inlet_reservoir_breadth_first_search(
+    plant_name: str,
+    all_connections: list[dict],
+    reservoirs: set[str],
+) -> Optional[str]:
+    """Search for a reservoir connected to a plant, starting from the plant and searching breadth first.
+
+    Parameters
+    ----------
+    plant_name : str
+        The plant we want to find a connection from
+    all_connections : list[dict]
+        All connections in the model.
+    reservoirs : dict
+        All reservoirs in the model. Keys are reservoir names.
+
+    Returns
+    -------
+    Optional[str]
+        The name of the reservoir connected to the plant, or None if no reservoir was found.
+    """
+    queue = []
+    for connection in all_connections:
+        if (
+            connection["to"] == plant_name and connection.get("to_type", "plant") == "plant"
+        ):  # if to_type is specified, it must be "plant"
+            queue.append(connection)
+            break
+    visited = []
+    while queue:
+        connection = queue.pop(0)
+        if connection not in visited:
+            # Check if the given connection is from a reservoir
+            # If we have "from_type" we can check directly if the object is a reservoir
+            try:
+                if connection["from_type"] == "reservoir":
+                    return connection["from"]
+            # If we don't have "from_type" we have to check if the name of the object is in the
+            # list of reservoirs
+            except KeyError:
+                if connection["from"] in reservoirs:
+                    return connection["from"]
+
+            visited.append(connection)
+            for candidate_connection in all_connections:
+                # if the candidate connection is extension from the current connection, traverse it
+                if candidate_connection["to"] == connection["from"]:
+                    queue.append(candidate_connection)
+    return None

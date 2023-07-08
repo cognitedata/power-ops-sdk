@@ -110,57 +110,6 @@ def label_in_labels(label_external_id: str, labels: list[Label]) -> bool:
     return label_external_id in [label.external_id for label in labels]
 
 
-def plant_to_inlet_reservoir_breadth_first_search(
-    plant_name: str,
-    all_connections: list[dict],
-    reservoirs: set[str],
-) -> Optional[str]:
-    """Search for a reservoir connected to a plant, starting from the plant and searching breadth first.
-
-    Parameters
-    ----------
-    plant_name : str
-        The plant we want to find a connection from
-    all_connections : list[dict]
-        All connections in the model.
-    reservoirs : dict
-        All reservoirs in the model. Keys are reservoir names.
-
-    Returns
-    -------
-    Optional[str]
-        The name of the reservoir connected to the plant, or None if no reservoir was found.
-    """
-    queue = []
-    for connection in all_connections:
-        if (
-            connection["to"] == plant_name and connection.get("to_type", "plant") == "plant"
-        ):  # if to_type is specified, it must be "plant"
-            queue.append(connection)
-            break
-    visited = []
-    while queue:
-        connection = queue.pop(0)
-        if connection not in visited:
-            # Check if the given connection is from a reservoir
-            # If we have "from_type" we can check directly if the object is a reservoir
-            try:
-                if connection["from_type"] == "reservoir":
-                    return connection["from"]
-            # If we don't have "from_type" we have to check if the name of the object is in the
-            # list of reservoirs
-            except KeyError:
-                if connection["from"] in reservoirs:
-                    return connection["from"]
-
-            visited.append(connection)
-            for candidate_connection in all_connections:
-                # if the candidate connection is extension from the current connection, traverse it
-                if candidate_connection["to"] == connection["from"]:
-                    queue.append(candidate_connection)
-    return None
-
-
 class PlantTimeSeriesMapping(BaseModel):
     plant_name: str
     water_value: Optional[ExternalId] = None

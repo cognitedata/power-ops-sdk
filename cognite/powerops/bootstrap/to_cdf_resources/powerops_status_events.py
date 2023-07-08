@@ -14,7 +14,7 @@ def create_bootstrap_finished_event() -> Event:
         type="POWEROPS_BOOTSTRAP_FINISHED",
         subtype=None,
         source="PowerOps bootstrap",
-        description="Manual run of bootstrap scripts finsihed",
+        description="Manual run of bootstrap scripts finished",
     )
     print(f"Created status event '{event.external_id}'")
 

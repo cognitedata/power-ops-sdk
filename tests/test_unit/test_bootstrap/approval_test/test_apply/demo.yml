@@ -11039,7 +11039,7 @@ data_modeling.instances:
       type: container
   space: cogShop
 events:
-- description: Manual run of bootstrap scripts finsihed
+- description: Manual run of bootstrap scripts finished
   source: PowerOps bootstrap
   type: POWEROPS_BOOTSTRAP_FINISHED
 files:
