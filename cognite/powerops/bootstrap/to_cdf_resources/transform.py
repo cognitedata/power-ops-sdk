@@ -217,28 +217,33 @@ def transform(
     skeleton_assets = create_skeleton_asset_hierarchy(
         settings.shop_service_url, settings.organization_subdomain, settings.tenant_id
     )
-    bootstrap_resources = ResourceCollection()
-    bootstrap_resources.add(skeleton_assets)
-    bootstrap_resources.add(labels)
+    collection = ResourceCollection()
+    collection.add(skeleton_assets)
+    collection.add(labels)
 
-    bootstrap_resources += core_to_cdf_resources(
-        config.core, bootstrap_resources.shop_file_configs, config.settings.shop_version, config.watercourses_shop
+    core_model = to_core_model(config.core)
+    collection.add(core_model.assets())
+    collection.add(core_model.relationships())
+    collection.add(core_model.sequences())
+
+    collection += core_to_cdf_resources(
+        config.core, collection.shop_file_configs, config.settings.shop_version, config.watercourses_shop
     )
 
-    bootstrap_resources = market_to_cdf_resources(
-        bootstrap_resources, config.markets, market_name, config.core.watercourses, config.core.source_path
+    collection = market_to_cdf_resources(
+        collection, config.markets, market_name, config.core.watercourses, config.core.source_path
     )
 
     # Set hashes for Shop Files, needed for comparison
-    for shop_config in bootstrap_resources.shop_file_configs.values():
+    for shop_config in collection.shop_file_configs.values():
         if shop_config.md5_hash is None:
             file_content = Path(shop_config.path).read_bytes()
             shop_config.set_md5_hash(file_content)
 
     # ! This should always stay at the bottom # TODO: consider wrapper
-    bootstrap_resources.add(create_bootstrap_finished_event(echo))
+    collection.add(create_bootstrap_finished_event(echo))
 
-    return bootstrap_resources
+    return collection
 
 
 def core_to_cdf_resources(
@@ -248,12 +253,7 @@ def core_to_cdf_resources(
     watercourses_shop: list[ShopFileConfig],
 ) -> ResourceCollection:
     # PowerOps asset data model
-    model = to_core_model(core)
     collection = ResourceCollection()
-    collection.add(model.assets())
-    collection.add(model.relationships())
-    collection.add(model.sequences())
-
     # SHOP files (model, commands, cut mapping++) and configs (base mapping, output definition)
     # Shop files related to each watercourse
     collection.add(create_watercourse_shop_files(watercourses_shop, core.watercourse_directories))
