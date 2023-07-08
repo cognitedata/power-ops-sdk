@@ -1,11 +1,15 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
 
+from cognite.powerops.bootstrap.data_classes.cdf_labels import AssetLabel
 from cognite.powerops.bootstrap.models.base import Type
 
 
 @dataclass
 class Market(Type):
     type_ = "market_configuration"
+    label = AssetLabel.MARKET
     timezone: str
 
 

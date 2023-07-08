@@ -8,6 +8,7 @@ from cognite.powerops.bootstrap.data_classes.marked_configuration._core import C
 
 
 class MarketConfig(Configuration):
+    parent_external_id: ClassVar[str] = "market_configurations"
     external_id: str
     name: str
     max_price: float = None
@@ -17,7 +18,6 @@ class MarketConfig(Configuration):
     tick_size: float = None
     trade_lot: float = None
     price_steps: int = None
-    parent_external_id: ClassVar[str] = "market_configurations"
     price_unit: str = None
 
     @property

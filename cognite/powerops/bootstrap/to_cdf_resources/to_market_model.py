@@ -17,6 +17,7 @@ from cognite.powerops.bootstrap.data_classes.marked_configuration.rkom import (
 )
 from cognite.powerops.bootstrap.data_classes.resource_collection import ResourceCollection
 from cognite.powerops.bootstrap.models import MarketModel
+from cognite.powerops.bootstrap.models import market as market_models
 from cognite.powerops.bootstrap.models.core import Watercourse
 
 
@@ -72,7 +73,7 @@ def process_rkom_bid_configs(
 
 def market_to_cdf_resources(
     bootstrap_resources: ResourceCollection,
-    markets: MarketConfigs,
+    config: MarketConfigs,
     market_name: str,
     watercourse_configs: list[WatercourseConfig],
     source_path: Path,
@@ -80,30 +81,33 @@ def market_to_cdf_resources(
 ) -> tuple[ResourceCollection, MarketModel]:
     print(watercourses[0].name)
     # PowerOps configuration resources
-    bootstrap_resources.add(markets.market.cdf_asset)
-    benchmarking_config_assets = [config.cdf_asset for config in markets.benchmarks]
+    # nord_pool = market_models.NordPoolMarket(
+    #     **config.market.model_dump("external_id"),
+    # )
+    bootstrap_resources.add(config.market.cdf_asset)
+    benchmarking_config_assets = [config.cdf_asset for config in config.benchmarks]
     bootstrap_resources.add(benchmarking_config_assets)
     created, dayahead_market = process_bid_process_configs(
         path=source_path,
-        bid_process_configs=markets.bidprocess,
-        bidmatrix_generators=markets.bidmatrix_generators,
-        price_scenarios_by_id=markets.price_scenario_by_id,
+        bid_process_configs=config.bidprocess,
+        bidmatrix_generators=config.bidmatrix_generators,
+        price_scenarios_by_id=config.price_scenario_by_id,
         watercourses=watercourse_configs,
-        benchmark=markets.benchmarks[0],
+        benchmark=config.benchmarks[0],
         existing_bootstrap_resources=bootstrap_resources.model_copy(),
     )
     bootstrap_resources += created
     created, rkom = process_rkom_bid_configs(
-        rkom_bid_combination_configs=markets.rkom_bid_combination,
-        rkom_market_config=markets.rkom_market,
-        rkom_bid_process=markets.rkom_bid_process,
-        price_scenarios_by_id=markets.price_scenario_by_id,
+        rkom_bid_combination_configs=config.rkom_bid_combination,
+        rkom_market_config=config.rkom_market,
+        rkom_bid_process=config.rkom_bid_process,
+        price_scenarios_by_id=config.price_scenario_by_id,
         market_name=market_name,
     )
     bootstrap_resources += created
 
     model = MarketModel(
-        markets=dayahead_market.markets + rkom.markets,
+        # markets=[nord_pool] + rkom.markets,
         bids=dayahead_market.bids + rkom.bids,
         processes=dayahead_market.processes + rkom.processes,
         combinations=rkom.combinations,

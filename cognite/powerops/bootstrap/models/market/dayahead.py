@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
 
 from cognite.powerops.bootstrap.models.base import CDFSequence
