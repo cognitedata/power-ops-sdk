@@ -7,12 +7,8 @@ import pandas as pd
 from cognite.client.data_classes import Relationship, Sequence, TimeSeries
 
 import cognite.powerops.bootstrap.models.base
-from cognite.powerops.bootstrap.data_classes.core.generator import GeneratorTimeSeriesMapping
-from cognite.powerops.bootstrap.data_classes.core.plant import (
-    PlantTimeSeriesMapping,
-    plant_to_inlet_reservoir_breadth_first_search,
-)
-from cognite.powerops.bootstrap.data_classes.core.watercourse import WatercourseConfig
+from cognite.powerops.bootstrap.data_classes.bootstrap_config import CoreConfigs
+from cognite.powerops.bootstrap.data_classes.core.plant import plant_to_inlet_reservoir_breadth_first_search
 from cognite.powerops.bootstrap.data_classes.model_file import Connection
 from cognite.powerops.bootstrap.models import core
 from cognite.powerops.bootstrap.to_cdf_resources.create_asset_types import price_area_asset
@@ -25,11 +21,7 @@ p_max_fallback = 1e20
 head_loss_factor_fallback = 0.0
 
 
-def to_core_model(
-    watercourse_configs: list[WatercourseConfig],
-    plant_time_series_mappings: list[PlantTimeSeriesMapping] = None,
-    generator_time_series_mappings: list[GeneratorTimeSeriesMapping] = None,
-) -> core.CoreModel:
+def to_core_model(config: CoreConfigs) -> core.CoreModel:
     """
     Create Assets for:
         - price_area,
@@ -58,25 +50,23 @@ def to_core_model(
 
     Parameters
     ----------
-    watercourse_configs : List[WatercourseConfig]
-        List of watercourse configs
-    plant_time_series_mappings : List[PlantTimeSeriesMapping]
-        List of plant time series mappings
-    generator_time_series_mappings : List[GeneratorTimeSeriesMapping]
-        List of generator time series mappings
+    config : List[CoreConfigs]
+        The configurations for the core model
 
     Returns
     -------
-    CDFResourceCollection
-        Collection of Assets, Sequences, Relationships and sequence data
+    CoreModel
+        An instance of the Core Data Model
     """
-    plant_time_series_mappings_by_name = {mapping.plant_name: mapping for mapping in (plant_time_series_mappings or [])}
+    plant_time_series_mappings_by_name = {
+        mapping.plant_name: mapping for mapping in (config.plant_time_series_mappings or [])
+    }
     start_stop_cost_time_series_by_generator = {
-        mapping.generator_name: mapping.start_stop_cost for mapping in (generator_time_series_mappings or [])
+        mapping.generator_name: mapping.start_stop_cost for mapping in (config.generator_time_series_mappings or [])
     }
 
     model = core.CoreModel()
-    for watercourse_config in watercourse_configs:
+    for watercourse_config in config.watercourses:
         watercourse = core.Watercourse(
             name=watercourse_config.name,
             shop_penalty_limit=str(watercourse_config.shop_penalty_limit),
@@ -227,6 +217,10 @@ def to_core_model(
             price_area_name = watercourse_config.market_to_price_area[prod_area]
             price_area = core.PriceArea(name=price_area_name)
             if price_area_name not in {a.name for a in model.price_areas}:
+                if price_area_name in config.dayahead_price_timeseries:
+                    price_area.dayahead_price_time_series = TimeSeries(
+                        external_id=config.dayahead_price_timeseries[price_area_name]
+                    )
                 model.price_areas.append(price_area)
             price_area = next(a for a in model.price_areas if a.name == price_area_name)
             watercourse.plants.append(plant)

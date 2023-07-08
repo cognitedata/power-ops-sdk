@@ -62,22 +62,6 @@ def _asset_to_time_series(
     )
 
 
-def plant_to_inlet_reservoir(plant: Asset | str, reservoir: Asset | str) -> Relationship:
-    return asset_to_asset(
-        source=plant,
-        target=reservoir,
-        label=RelationshipLabel.INLET_RESERVOIR,
-    )
-
-
-def plant_to_generator(plant: Asset | str, generator: Asset | str) -> Relationship:
-    return asset_to_asset(
-        source=plant,
-        target=generator,
-        label=RelationshipLabel.GENERATOR,
-    )
-
-
 def price_area_to_dayahead_price(price_area_asset: Asset, dayahead_price_time_series_external_id: str) -> Relationship:
     return _asset_to_time_series(
         source_external_id=price_area_asset.external_id,

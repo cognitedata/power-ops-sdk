@@ -35,7 +35,6 @@ class MarketConfigs(BaseModel):
 
     bidprocess: list[BidProcessConfig]
     bidmatrix_generators: list[BidMatrixGeneratorConfig]
-    dayahead_price_timeseries: Dict[str, str]
 
     rkom_bid_process: list[RKOMBidProcessConfig]
     rkom_bid_combination: Optional[list[RKOMBidCombinationConfig]] = None
@@ -85,6 +84,7 @@ class MarketConfigs(BaseModel):
 
 class CoreConfigs(BaseModel):
     source_path: Path
+    dayahead_price_timeseries: Dict[str, str]
     watercourses: list[WatercourseConfig]
     time_series_mappings: list[TimeSeriesMapping]
     generator_time_series_mappings: list[GeneratorTimeSeriesMapping] = None

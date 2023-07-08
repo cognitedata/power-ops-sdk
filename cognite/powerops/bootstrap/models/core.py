@@ -64,7 +64,7 @@ class Watercourse(Type):
 class PriceArea(Type):
     type_: ClassVar[str] = "price_area"
     label = AssetLabel.PRICE_AREA
-    day_ahead_price: TimeSeries | None = None
+    dayahead_price_time_series: TimeSeries | None = None
     plants: list[Plant] = field(default_factory=list)
     watercourses: list[Watercourse] = field(default_factory=list)
 

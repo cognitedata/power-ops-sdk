@@ -26,11 +26,8 @@ from cognite.powerops.bootstrap.data_classes.shop_output_definition import ShopO
 from cognite.powerops.bootstrap.data_classes.skeleton_asset_hierarchy import create_skeleton_asset_hierarchy
 from cognite.powerops.bootstrap.data_classes.to_delete import SequenceContent
 from cognite.powerops.bootstrap.to_cdf_resources.files import process_yaml_file
-from cognite.powerops.bootstrap.to_cdf_resources.generate_cdf_resource import (
-    generate_relationships_from_price_area_to_price,
-    to_core_model,
-)
 from cognite.powerops.bootstrap.to_cdf_resources.powerops_status_events import create_bootstrap_finished_event
+from cognite.powerops.bootstrap.to_cdf_resources.to_core_model import to_core_model
 from cognite.powerops.clients.cogshop.data_classes import (
     FileRefApply,
     MappingApply,
@@ -307,7 +304,6 @@ def market_to_cdf_resources(
     source_path: Path,
 ) -> ResourceCollection:
     # PowerOps configuration resources
-    bootstrap_resources.add(generate_relationships_from_price_area_to_price(markets.dayahead_price_timeseries))
     bootstrap_resources.add(markets.market.cdf_asset)
     benchmarking_config_assets = [config.cdf_asset for config in markets.benchmarks]
     bootstrap_resources.add(benchmarking_config_assets)
@@ -337,11 +333,7 @@ def core_to_cdf_resources(
     watercourses_shop: list[ShopFileConfig],
 ) -> ResourceCollection:
     # PowerOps asset data model
-    model = to_core_model(
-        watercourse_configs=core.watercourses,
-        plant_time_series_mappings=core.plant_time_series_mappings,
-        generator_time_series_mappings=core.generator_time_series_mappings,
-    )
+    model = to_core_model(core)
     collection = ResourceCollection()
     for generator in model.generators:
         collection.add(generator.generator_efficiency_curve.sequence)
