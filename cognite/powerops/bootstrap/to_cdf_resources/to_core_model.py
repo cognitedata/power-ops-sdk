@@ -145,7 +145,6 @@ def to_core_model(config: CoreConfigs) -> core.CoreModel:
             )
 
             generator.turbine_efficiency_curve = turbine_efficiency_curve
-
             model.generators.append(generator)
 
         generators_by_name = {generator.name: generator for generator in model.generators}

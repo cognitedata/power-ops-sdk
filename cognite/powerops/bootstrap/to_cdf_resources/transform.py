@@ -18,7 +18,6 @@ from cognite.powerops.bootstrap.data_classes.shared import ExternalId, TimeSerie
 from cognite.powerops.bootstrap.data_classes.shop_file_config import ShopFileConfig
 from cognite.powerops.bootstrap.data_classes.shop_output_definition import ShopOutputConfig
 from cognite.powerops.bootstrap.data_classes.skeleton_asset_hierarchy import create_skeleton_asset_hierarchy
-from cognite.powerops.bootstrap.data_classes.to_delete import SequenceContent
 from cognite.powerops.bootstrap.to_cdf_resources.files import process_yaml_file
 from cognite.powerops.bootstrap.to_cdf_resources.to_core_model import to_core_model
 from cognite.powerops.bootstrap.to_cdf_resources.to_market_model import market_to_cdf_resources
@@ -251,23 +250,9 @@ def core_to_cdf_resources(
     # PowerOps asset data model
     model = to_core_model(core)
     collection = ResourceCollection()
-    for generator in model.generators:
-        collection.add(generator.generator_efficiency_curve.sequence)
-        collection.add(generator.turbine_efficiency_curve.sequence)
-        collection.add(
-            SequenceContent(
-                sequence_external_id=generator.generator_efficiency_curve.sequence.external_id,
-                data=generator.generator_efficiency_curve.content,
-            )
-        )
-        collection.add(
-            SequenceContent(
-                sequence_external_id=generator.turbine_efficiency_curve.sequence.external_id,
-                data=generator.turbine_efficiency_curve.content,
-            )
-        )
-    collection.add(model.as_assets())
-    collection.add(model.as_relationships())
+    collection.add(model.assets())
+    collection.add(model.relationships())
+    collection.add(model.sequences())
 
     # SHOP files (model, commands, cut mapping++) and configs (base mapping, output definition)
     # Shop files related to each watercourse

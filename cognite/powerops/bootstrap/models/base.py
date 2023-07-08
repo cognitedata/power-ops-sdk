@@ -9,6 +9,7 @@ import pandas as pd
 from cognite.client.data_classes import Asset, Label, Relationship, Sequence, SequenceData, TimeSeries
 
 from cognite.powerops.bootstrap.data_classes.cdf_labels import AssetLabel, RelationshipLabel
+from cognite.powerops.bootstrap.data_classes.to_delete import SequenceContent
 
 ROOT_ASSET = Asset(
     external_id="power_ops",
@@ -34,7 +35,7 @@ class Type(ABC):
     def parent_name(self):
         return self.parent_external_id.replace("_", " ").title()
 
-    def get_relationships(self) -> list[Relationship]:
+    def relationships(self) -> list[Relationship]:
         relationships = []
         for f in fields(self):
             value = getattr(self, f.name)
@@ -80,6 +81,21 @@ class Type(ABC):
             metadata=metadata if metadata else None,
         )
 
+    def sequences(self) -> list[Sequence | SequenceContent]:
+        output = []
+        for f in fields(self):
+            value = getattr(self, f.name)
+            if not value:
+                continue
+            elif isinstance(value, list) and isinstance(value[0], CDFSequence):
+                for v in value:
+                    output.append(v.sequence)
+                    output.append(SequenceContent(sequence_external_id=v.sequence.external_id, data=v.content))
+            elif isinstance(value, CDFSequence):
+                output.append(value.sequence)
+                output.append(SequenceContent(sequence_external_id=value.sequence.external_id, data=value.content))
+        return output
+
     def _create_relationship(
         self,
         target_external_id: str,
@@ -104,8 +120,11 @@ class CDFSequence:
 
 @dataclass
 class Model(ABC):
-    def as_assets(self) -> list[Asset]:
+    def assets(self) -> list[Asset]:
         return [item.as_asset() for f in fields(self) for item in getattr(self, f.name)]
 
-    def as_relationships(self) -> list[Relationship]:
-        return [edge for f in fields(self) for item in getattr(self, f.name) for edge in item.get_relationships()]
+    def relationships(self) -> list[Relationship]:
+        return [edge for f in fields(self) for item in getattr(self, f.name) for edge in item.relationships()]
+
+    def sequences(self) -> list[Sequence | SequenceContent]:
+        return [sequence for f in fields(self) for item in getattr(self, f.name) for sequence in item.sequences()]
