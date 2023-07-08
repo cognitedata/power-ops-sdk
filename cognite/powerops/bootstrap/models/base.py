@@ -10,6 +10,11 @@ from cognite.client.data_classes import Asset, Label, Relationship, Sequence, Se
 
 from cognite.powerops.bootstrap.data_classes.cdf_labels import AssetLabel, RelationshipLabel
 
+ROOT_ASSET = Asset(
+    external_id="power_ops",
+    name="PowerOps",
+)
+
 
 @dataclass()
 class Type(ABC):

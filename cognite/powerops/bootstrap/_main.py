@@ -4,7 +4,7 @@ from typing import Callable
 from cognite.powerops.bootstrap.data_classes.bootstrap_config import BootstrapConfig
 from cognite.powerops.bootstrap.data_classes.resource_collection import ResourceCollection
 from cognite.powerops.bootstrap.logger import configure_debug_logging
-from cognite.powerops.bootstrap.to_cdf_resources.core import transform
+from cognite.powerops.bootstrap.to_cdf_resources.transform import transform
 from cognite.powerops.clients import get_powerops_client
 
 

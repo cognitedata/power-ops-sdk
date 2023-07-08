@@ -92,7 +92,7 @@ def to_core_model(config: CoreConfigs) -> core.CoreModel:
                 generator_name,
                 penstock=str(generator_attributes.get("penstock", "1")),
                 p_min=float(generator_attributes.get("p_min", 0.0)),
-                startcost=float(get_single_value(generator_attributes.get("startcost", 0.0))),
+                startcost=float(_get_single_value(generator_attributes.get("startcost", 0.0))),
                 start_stop_cost_time_series=TimeSeries(external_id=start_stop_cost) if start_stop_cost else None,
             )
             x_col_name = "generator_power"
@@ -197,7 +197,7 @@ def to_core_model(config: CoreConfigs) -> core.CoreModel:
                 **mappings,
             )
             all_connections = shop_case["connections"]
-            inlet_reservoir_name = plant_to_inlet_reservoir_breadth_first_search(
+            inlet_reservoir_name = _plant_to_inlet_reservoir_breadth_first_search(
                 plant_name, all_connections, {r.name for r in model.reservoirs}
             )
             selected_reservoir = next((r for r in model.reservoirs if r.name == inlet_reservoir_name), None)
@@ -231,7 +231,7 @@ def to_core_model(config: CoreConfigs) -> core.CoreModel:
     return model
 
 
-def get_single_value(value_or_time_series: float | dict) -> float:
+def _get_single_value(value_or_time_series: float | dict) -> float:
     """Get the single value from a time series, or a value
     returns the value if value_or_time_series is a value, otherwise the first value in the time series
 
@@ -245,7 +245,7 @@ def get_single_value(value_or_time_series: float | dict) -> float:
     return value_or_time_series
 
 
-def plant_to_inlet_reservoir_breadth_first_search(
+def _plant_to_inlet_reservoir_breadth_first_search(
     plant_name: str,
     all_connections: list[dict],
     reservoirs: set[str],
