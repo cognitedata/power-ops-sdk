@@ -1,12 +1,12 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field, fields
+from dataclasses import dataclass, field
 from typing import ClassVar
 
-from cognite.client.data_classes import Asset, Relationship, TimeSeries
+from cognite.client.data_classes import TimeSeries
 
 from cognite.powerops.bootstrap.data_classes.cdf_labels import AssetLabel
-from cognite.powerops.bootstrap.models.base import CDFSequence, Type
+from cognite.powerops.bootstrap.models.base import CDFSequence, Model, Type
 
 
 @dataclass
@@ -70,15 +70,9 @@ class PriceArea(Type):
 
 
 @dataclass
-class CoreModel:
+class CoreModel(Model):
     price_areas: list[PriceArea] = field(default_factory=list)
     watercourses: list[Watercourse] = field(default_factory=list)
     plants: list[Plant] = field(default_factory=list)
     generators: list[Generator] = field(default_factory=list)
     reservoirs: list[Reservoir] = field(default_factory=list)
-
-    def as_assets(self) -> list[Asset]:
-        return [item.as_asset() for f in fields(self) for item in getattr(self, f.name)]
-
-    def as_relationships(self) -> list[Relationship]:
-        return [edge for f in fields(self) for item in getattr(self, f.name) for edge in item.get_relationships()]

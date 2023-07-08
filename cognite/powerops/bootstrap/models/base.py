@@ -103,3 +103,12 @@ class Type(ABC):
 class CDFSequence:
     sequence: Sequence
     content: SequenceData | pd.DataFrame
+
+
+@dataclass
+class Model(ABC):
+    def as_assets(self) -> list[Asset]:
+        return [item.as_asset() for f in fields(self) for item in getattr(self, f.name)]
+
+    def as_relationships(self) -> list[Relationship]:
+        return [edge for f in fields(self) for item in getattr(self, f.name) for edge in item.get_relationships()]
