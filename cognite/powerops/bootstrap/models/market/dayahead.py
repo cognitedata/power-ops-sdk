@@ -1,12 +1,9 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
-
 from cognite.powerops.bootstrap.models.base import CDFSequence
 from cognite.powerops.bootstrap.models.market.base import Bid, Market, Process, ShopTransformation
 
 
-@dataclass
 class DayAheadBid(Bid):
     is_default_config_for_price_area: bool
     main_scenario: str
@@ -15,14 +12,12 @@ class DayAheadBid(Bid):
     shop: ShopTransformation
 
 
-@dataclass
 class DayAheadProcess(Process):
     type_ = "POWEROPS_bid_process_configuration"
     bid: DayAheadBid
     incremental_mapping: list[CDFSequence]
 
 
-@dataclass
 class NordPoolMarket(Market):
     max_price: float
     min_price: float

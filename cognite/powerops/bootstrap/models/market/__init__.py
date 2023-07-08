@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from pydantic.dataclasses import Field
 
 from cognite.powerops.bootstrap.models.base import Model
 
@@ -8,12 +8,11 @@ from .dayahead import DayAheadBid, DayAheadProcess, NordPoolMarket
 from .rkom import RKOMBid, RKOMBidCombination, RKOMMarket, RKOMProcess
 
 
-@dataclass
 class MarketModel(Model):
-    markets: list[Market] = field(default_factory=list)
-    bids: list[Bid] = field(default_factory=list)
-    processes: list[Process] = field(default_factory=list)
-    combinations: list[RKOMBidCombination] = field(default_factory=list)
+    markets: list[Market] = Field(default_factory=list)
+    bids: list[Bid] = Field(default_factory=list)
+    processes: list[Process] = Field(default_factory=list)
+    combinations: list[RKOMBidCombination] = Field(default_factory=list)
 
 
 __all__ = [

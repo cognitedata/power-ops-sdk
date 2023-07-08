@@ -2,11 +2,11 @@ from __future__ import annotations
 
 import json
 from abc import ABC
-from dataclasses import dataclass, fields
-from typing import ClassVar
+from typing import ClassVar, Optional, Union
 
 import pandas as pd
 from cognite.client.data_classes import Asset, Label, Relationship, Sequence, SequenceData, TimeSeries
+from pydantic import BaseModel, ConfigDict
 
 from cognite.powerops.bootstrap.data_classes.cdf_labels import AssetLabel, RelationshipLabel
 from cognite.powerops.bootstrap.data_classes.to_delete import SequenceContent
@@ -17,10 +17,10 @@ ROOT_ASSET = Asset(
 )
 
 
-@dataclass()
-class Type(ABC):
-    type_: ClassVar[str | None] = None
+class Type(BaseModel, ABC):
+    type_: ClassVar[Optional[str]] = None
     label: ClassVar[AssetLabel]
+    model_config = ConfigDict(arbitrary_types_allowed=True, populate_by_name=False)
     name: str
 
     @property
@@ -37,8 +37,8 @@ class Type(ABC):
 
     def relationships(self) -> list[Relationship]:
         relationships = []
-        for f in fields(self):
-            value = getattr(self, f.name)
+        for field_name, field in self.model_fields.items():
+            value = getattr(self, field_name)
             if not value:
                 continue
             if isinstance(value, list) and value and isinstance(value[0], Type):
@@ -49,29 +49,32 @@ class Type(ABC):
                 if self.type_ == "plant" and value.type_ == "reservoir":
                     target_type = "inlet_reservoir"
                 relationships.append(self._create_relationship(value.external_id, "ASSET", target_type))
-            elif any(cdf_type in f.type for cdf_type in [CDFSequence.__name__, TimeSeries.__name__]):
-                if TimeSeries.__name__ in f.type:
+            elif any(cdf_type in str(field.annotation) for cdf_type in [CDFSequence.__name__, TimeSeries.__name__]):
+                if TimeSeries.__name__ in str(field.annotation):
                     target_type = "TIMESERIES"
                     target_external_id = value.external_id
-                elif CDFSequence.__name__ in f.type:
+                elif CDFSequence.__name__ in str(field.annotation):
                     target_type = "SEQUENCE"
                     target_external_id = value.sequence.external_id
                 else:
-                    raise ValueError(f"Unexpected type {f.type}")
-                relationships.append(self._create_relationship(target_external_id, target_type, f.name))
+                    raise ValueError(f"Unexpected type {field.annotation}")
+                relationships.append(self._create_relationship(target_external_id, target_type, field_name))
         return relationships
 
     def as_asset(self):
         metadata = {}
-        for f in fields(self):
-            if any(cdf_type in f.type for cdf_type in [CDFSequence.__name__, TimeSeries.__name__]) or f.name == "name":
+        for field_name, field in self.model_fields.items():
+            if (
+                any(cdf_type in str(field.annotation) for cdf_type in [CDFSequence.__name__, TimeSeries.__name__])
+                or field_name == "name"
+            ):
                 continue
-            value = getattr(self, f.name)
+            value = getattr(self, field_name)
             if value is None or isinstance(value, Type) or (isinstance(value, list) and isinstance(value[0], Type)):
                 continue
             if isinstance(value, dict):
                 value = json.dumps(value)
-            metadata[f.name] = value
+            metadata[field_name] = value
 
         return Asset(
             external_id=self.external_id,
@@ -83,8 +86,8 @@ class Type(ABC):
 
     def sequences(self) -> list[Sequence | SequenceContent]:
         output = []
-        for f in fields(self):
-            value = getattr(self, f.name)
+        for field_name in self.model_fields:
+            value = getattr(self, field_name)
             if not value:
                 continue
             elif isinstance(value, list) and isinstance(value[0], CDFSequence):
@@ -112,19 +115,18 @@ class Type(ABC):
         )
 
 
-@dataclass
-class CDFSequence:
+class CDFSequence(BaseModel):
+    model_config = ConfigDict(arbitrary_types_allowed=True)
     sequence: Sequence
-    content: SequenceData | pd.DataFrame
+    content: Union[SequenceData, pd.DataFrame]
 
 
-@dataclass
-class Model(ABC):
+class Model(BaseModel, ABC):
     def assets(self) -> list[Asset]:
-        return [item.as_asset() for f in fields(self) for item in getattr(self, f.name)]
+        return [item.as_asset() for f in self.model_fields for item in getattr(self, f)]
 
     def relationships(self) -> list[Relationship]:
-        return [edge for f in fields(self) for item in getattr(self, f.name) for edge in item.relationships()]
+        return [edge for f in self.model_fields for item in getattr(self, f) for edge in item.relationships()]
 
     def sequences(self) -> list[Sequence | SequenceContent]:
-        return [sequence for f in fields(self) for item in getattr(self, f.name) for sequence in item.sequences()]
+        return [sequence for f in self.model_fields for item in getattr(self, f) for sequence in item.sequences()]

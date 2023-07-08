@@ -79,9 +79,14 @@ def to_core_model(config: CoreConfigs) -> core.CoreModel:
 
         for reservoir_name in shop_case["model"]["reservoir"]:
             reservoir = core.Reservoir(
-                reservoir_name,
-                *watercourse_config.reservoir_display_names_and_order.get(
-                    reservoir_name, (re.sub(r"\([0-9]+\)", "", reservoir_name), "999")
+                name=reservoir_name,
+                **dict(
+                    zip(
+                        ["display_name", "ordering"],
+                        watercourse_config.reservoir_display_names_and_order.get(
+                            reservoir_name, (re.sub(r"\([0-9]+\)", "", reservoir_name), "999")
+                        ),
+                    )
                 ),
             )
             model.reservoirs.append(reservoir)
@@ -89,7 +94,7 @@ def to_core_model(config: CoreConfigs) -> core.CoreModel:
         for generator_name, generator_attributes in shop_case["model"]["generator"].items():
             start_stop_cost = start_stop_cost_time_series_by_generator.get(generator_name)
             generator = core.Generator(
-                generator_name,
+                name=generator_name,
                 penstock=str(generator_attributes.get("penstock", "1")),
                 p_min=float(generator_attributes.get("p_min", 0.0)),
                 startcost=float(_get_single_value(generator_attributes.get("startcost", 0.0))),
@@ -180,7 +185,7 @@ def to_core_model(config: CoreConfigs) -> core.CoreModel:
             plant = core.Plant(
                 name=plant_name,
                 display_name=display_name,
-                ordering=order,
+                ordering=str(order),
                 outlet_level=float(attributes.get("outlet_line", 0)),
                 p_min=float(attributes.get("p_min", p_min_fallback)),
                 p_max=float(attributes.get("p_max", p_max_fallback)),
