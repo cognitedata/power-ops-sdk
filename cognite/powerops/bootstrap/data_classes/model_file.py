@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field
 
-from cognite.powerops.bootstrap.to_cdf_resources.core_model import Type
+from cognite.powerops.bootstrap.models.base import Type
 
 
 class Connection(BaseModel):

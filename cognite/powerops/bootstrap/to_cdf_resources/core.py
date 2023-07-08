@@ -336,13 +336,13 @@ def core_to_cdf_resources(
     shop_version: str,
     watercourses_shop: list[ShopFileConfig],
 ) -> ResourceCollection:
-    collection = ResourceCollection()
     # PowerOps asset data model
     model = to_core_model(
         watercourse_configs=core.watercourses,
         plant_time_series_mappings=core.plant_time_series_mappings,
         generator_time_series_mappings=core.generator_time_series_mappings,
     )
+    collection = ResourceCollection()
     for generator in model.generators:
         collection.add(generator.generator_efficiency_curve.sequence)
         collection.add(generator.turbine_efficiency_curve.sequence)

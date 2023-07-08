@@ -6,6 +6,7 @@ from pathlib import Path
 import pandas as pd
 from cognite.client.data_classes import Relationship, Sequence, TimeSeries
 
+import cognite.powerops.bootstrap.models.base
 from cognite.powerops.bootstrap.data_classes.core.generator import GeneratorTimeSeriesMapping
 from cognite.powerops.bootstrap.data_classes.core.plant import (
     PlantTimeSeriesMapping,
@@ -13,11 +14,10 @@ from cognite.powerops.bootstrap.data_classes.core.plant import (
 )
 from cognite.powerops.bootstrap.data_classes.core.watercourse import WatercourseConfig
 from cognite.powerops.bootstrap.data_classes.model_file import Connection
+from cognite.powerops.bootstrap.models import core
 from cognite.powerops.bootstrap.to_cdf_resources.create_asset_types import price_area_asset
 from cognite.powerops.bootstrap.to_cdf_resources.create_relationship_types import price_area_to_dayahead_price
 from cognite.powerops.bootstrap.utils.serializer import load_yaml
-
-from . import core_model
 
 p_min_fallback = 0
 p_max_fallback = 1e20
@@ -29,7 +29,7 @@ def to_core_model(
     watercourse_configs: list[WatercourseConfig],
     plant_time_series_mappings: list[PlantTimeSeriesMapping] = None,
     generator_time_series_mappings: list[GeneratorTimeSeriesMapping] = None,
-) -> core_model.CoreModel:
+) -> core.CoreModel:
     """
     Create Assets for:
         - price_area,
@@ -75,9 +75,9 @@ def to_core_model(
         mapping.generator_name: mapping.start_stop_cost for mapping in (generator_time_series_mappings or [])
     }
 
-    model = core_model.CoreModel()
+    model = core.CoreModel()
     for watercourse_config in watercourse_configs:
-        watercourse = core_model.Watercourse(
+        watercourse = core.Watercourse(
             name=watercourse_config.name,
             shop_penalty_limit=str(watercourse_config.shop_penalty_limit),
             plants=[],
@@ -90,7 +90,7 @@ def to_core_model(
         shop_case = load_yaml(Path(watercourse_config.yaml_raw_path), clean_data=True)
 
         for reservoir_name in shop_case["model"]["reservoir"]:
-            reservoir = core_model.Reservoir(
+            reservoir = core.Reservoir(
                 reservoir_name,
                 *watercourse_config.reservoir_display_names_and_order.get(
                     reservoir_name, (re.sub(r"\([0-9]+\)", "", reservoir_name), "999")
@@ -100,7 +100,7 @@ def to_core_model(
 
         for generator_name, generator_attributes in shop_case["model"]["generator"].items():
             start_stop_cost = start_stop_cost_time_series_by_generator.get(generator_name)
-            generator = core_model.Generator(
+            generator = core.Generator(
                 generator_name,
                 penstock=str(generator_attributes.get("penstock", "1")),
                 p_min=float(generator_attributes.get("p_min", 0.0)),
@@ -118,7 +118,7 @@ def to_core_model(
                 ],
             )
             data = generator_attributes["gen_eff_curve"]
-            efficiency_curve = core_model.CDFSequence(
+            efficiency_curve = cognite.powerops.bootstrap.models.core.CDFSequence(
                 sequence=sequence,
                 content=pd.DataFrame(
                     {
@@ -151,7 +151,7 @@ def to_core_model(
                 dtype=float,
             )
 
-            turbine_efficiency_curve = core_model.CDFSequence(
+            turbine_efficiency_curve = cognite.powerops.bootstrap.models.core.CDFSequence(
                 sequence=sequence,
                 content=df,
             )
@@ -190,7 +190,7 @@ def to_core_model(
             else:
                 mappings = {}
 
-            plant = core_model.Plant(
+            plant = core.Plant(
                 name=plant_name,
                 display_name=display_name,
                 ordering=order,
@@ -225,7 +225,7 @@ def to_core_model(
 
             prod_area = str(list(attributes["prod_area"].values())[0])
             price_area_name = watercourse_config.market_to_price_area[prod_area]
-            price_area = core_model.PriceArea(name=price_area_name)
+            price_area = core.PriceArea(name=price_area_name)
             if price_area_name not in {a.name for a in model.price_areas}:
                 model.price_areas.append(price_area)
             price_area = next(a for a in model.price_areas if a.name == price_area_name)
