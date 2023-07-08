@@ -81,10 +81,11 @@ def market_to_cdf_resources(
 ) -> tuple[ResourceCollection, MarketModel]:
     print(watercourses[0].name)
     # PowerOps configuration resources
-    # nord_pool = market_models.NordPoolMarket(
-    #     **config.market.model_dump("external_id"),
-    # )
-    bootstrap_resources.add(config.market.cdf_asset)
+    nord_pool = market_models.NordPoolMarket(**config.market.model_dump())
+    # The external_id is not following the naming convention, so we need to set it manually
+    nord_pool.external_id = config.market.external_id
+
+    # bootstrap_resources.add(config.market.cdf_asset)
     benchmarking_config_assets = [config.cdf_asset for config in config.benchmarks]
     bootstrap_resources.add(benchmarking_config_assets)
     created, dayahead_market = process_bid_process_configs(
@@ -107,7 +108,7 @@ def market_to_cdf_resources(
     bootstrap_resources += created
 
     model = MarketModel(
-        # markets=[nord_pool] + rkom.markets,
+        markets=[nord_pool] + rkom.markets,
         bids=dayahead_market.bids + rkom.bids,
         processes=dayahead_market.processes + rkom.processes,
         combinations=rkom.combinations,

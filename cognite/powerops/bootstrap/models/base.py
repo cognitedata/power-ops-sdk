@@ -22,10 +22,17 @@ class Type(BaseModel, ABC):
     label: ClassVar[AssetLabel]
     model_config = ConfigDict(arbitrary_types_allowed=True, populate_by_name=False)
     name: str
+    _external_id: Optional[str] = None
 
     @property
     def external_id(self) -> str:
+        if self._external_id:
+            return self._external_id
         return f"{self.type_}_{self.name}"
+
+    @external_id.setter
+    def external_id(self, value: str):
+        self._external_id = value
 
     @property
     def parent_external_id(self):
