@@ -4,7 +4,7 @@ import json
 from typing import Dict, List, Optional
 
 from cognite.client.data_classes import Asset
-from pydantic import ConfigDict, Field, validator
+from pydantic import ConfigDict, Field, field_validator
 
 from cognite.powerops.bootstrap.data_classes.marked_configuration._core import Configuration, RelativeTime
 
@@ -15,7 +15,7 @@ class BenchmarkingConfig(Configuration):
     shop_start: RelativeTime = Field(alias="shop_starttime")
     shop_end: RelativeTime = Field(alias="shop_endtime")
     production_plan_time_series: Optional[Dict[str, List[str]]] = Field(
-        default_factory=lambda: {}, alias="bid_production_plan_time_series"
+        default_factory=dict, alias="bid_production_plan_time_series"
     )
     market_config_external_id: str = Field(alias="bid_market_config_external_id")
     relevant_shop_objective_metrics: Dict[str, str] = {
@@ -41,7 +41,7 @@ class BenchmarkingConfig(Configuration):
     # TODO: Consider adding relationships to bid process config
     #  assets (or remove the optional part that uses those relationships in power-ops-functions)
 
-    @validator("shop_start", "shop_end", "bid_date", pre=True)
+    @field_validator("shop_start", "shop_end", "bid_date", mode="before")
     def json_loads(cls, value):
         return {"operations": json.loads(value)} if isinstance(value, str) else value
 

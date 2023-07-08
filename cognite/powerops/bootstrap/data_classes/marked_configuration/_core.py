@@ -92,7 +92,6 @@ class RelativeTime(BaseModel):
         return old_formats
 
     @validator("operations", pre=True, always=True)
-    @classmethod
     def _parse_relative_time_string(cls, operations, values):
         # NOTE: tuples will be parsed as lists when dumping to string
         if operations:

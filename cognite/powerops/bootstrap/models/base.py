@@ -20,8 +20,9 @@ ROOT_ASSET = Asset(
 class Type(BaseModel, ABC):
     type_: ClassVar[Optional[str]] = None
     label: ClassVar[AssetLabel]
-    model_config = ConfigDict(arbitrary_types_allowed=True, populate_by_name=False)
+    model_config: ClassVar[ConfigDict] = ConfigDict(arbitrary_types_allowed=True)
     name: str
+    description: Optional[str] = None
     _external_id: Optional[str] = None
 
     @property
@@ -71,15 +72,28 @@ class Type(BaseModel, ABC):
     def as_asset(self):
         metadata = {}
         for field_name, field in self.model_fields.items():
-            if (
-                any(cdf_type in str(field.annotation) for cdf_type in [CDFSequence.__name__, TimeSeries.__name__])
-                or field_name == "name"
-            ):
+            if any(
+                cdf_type in str(field.annotation) for cdf_type in [CDFSequence.__name__, TimeSeries.__name__]
+            ) or field_name in {"name", "description", "label", "parent_external_id"}:
                 continue
             value = getattr(self, field_name)
-            if value is None or isinstance(value, Type) or (isinstance(value, list) and isinstance(value[0], Type)):
+            if (
+                value is None
+                or isinstance(value, Type)
+                or (isinstance(value, list) and value and isinstance(value[0], Type))
+            ):
                 continue
-            if isinstance(value, dict):
+            if isinstance(value, list) and not value:
+                continue
+            if isinstance(value, NonAssetType):
+                value = value.model_dump(exclude_unset=True)
+                for k, v in value.items():
+                    if isinstance(v, (dict, list)):
+                        v = json.dumps(v)
+                    metadata[f"{field_name}:{k}"] = v
+                continue
+
+            if isinstance(value, (dict, list)):
                 value = json.dumps(value)
             metadata[field_name] = value
 
@@ -89,6 +103,7 @@ class Type(BaseModel, ABC):
             parent_external_id=self.parent_external_id,
             labels=[Label(self.label.value)],
             metadata=metadata if metadata else None,
+            description=self.description,
         )
 
     def sequences(self) -> list[Sequence | SequenceContent]:
@@ -137,3 +152,7 @@ class Model(BaseModel, ABC):
 
     def sequences(self) -> list[Sequence | SequenceContent]:
         return [sequence for f in self.model_fields for item in getattr(self, f) for sequence in item.sequences()]
+
+
+class NonAssetType(BaseModel, ABC):
+    model_config: ClassVar[ConfigDict] = ConfigDict(arbitrary_types_allowed=True)

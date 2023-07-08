@@ -1,11 +1,13 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 from typing import List, Optional
 
 from cognite.powerops.bootstrap.data_classes.bootstrap_config import MarketConfigs
 from cognite.powerops.bootstrap.data_classes.core.watercourse import WatercourseConfig
 from cognite.powerops.bootstrap.data_classes.marked_configuration import BenchmarkingConfig, PriceScenario
+from cognite.powerops.bootstrap.data_classes.marked_configuration._core import RelativeTime
 from cognite.powerops.bootstrap.data_classes.marked_configuration.dayahead import (
     BidMatrixGeneratorConfig,
     BidProcessConfig,
@@ -71,6 +73,26 @@ def process_rkom_bid_configs(
     return bootstrap_resource_collection, model
 
 
+def relative_date_to_date_transformation(relative_date: RelativeTime) -> list[market_models.DateTransformation]:
+    date_transformations = []
+    for operation in relative_date.operations or []:
+        transformation_name, args = operation
+        arguments = {}
+        if isinstance(args, dict):
+            arguments["kwargs"] = args
+        else:
+            arguments["args"] = args if isinstance(args, list) else [args]
+
+        date_transformations.append(
+            market_models.DateTransformation(
+                transformation=transformation_name,
+                **arguments,
+            )
+        )
+
+    return date_transformations
+
+
 def market_to_cdf_resources(
     bootstrap_resources: ResourceCollection,
     config: MarketConfigs,
@@ -81,13 +103,38 @@ def market_to_cdf_resources(
 ) -> tuple[ResourceCollection, MarketModel]:
     print(watercourses[0].name)
     # PowerOps configuration resources
+
     nord_pool = market_models.NordPoolMarket(**config.market.model_dump())
     # The external_id is not following the naming convention, so we need to set it manually
     nord_pool.external_id = config.market.external_id
 
-    # bootstrap_resources.add(config.market.cdf_asset)
-    benchmarking_config_assets = [config.cdf_asset for config in config.benchmarks]
-    bootstrap_resources.add(benchmarking_config_assets)
+    # benchmarking_config_assets = [config.cdf_asset for config in config.benchmarks]
+    # bootstrap_resources.add(benchmarking_config_assets)
+
+    benchmarking = market_models.MarketModel()
+    if len(config.benchmarks) > 1:
+        # The external id for the benchmarking is hardcoded and thus there can be only one.
+        raise NotImplementedError("Only one benchmarking config is supported")
+    for benchmarking_config in config.benchmarks:
+        bid = market_models.BenchmarkBid(
+            date=json.dumps(benchmarking_config.bid_date.operations),
+            market_config_external_id=benchmarking_config.market_config_external_id,
+        )
+        process = market_models.BenchmarkProcess(
+            name="Benchmarking config DA",
+            bid=bid,
+            shop=market_models.ShopTransformation(
+                starttime=json.dumps(benchmarking_config.shop_start.operations),
+                endtime=json.dumps(benchmarking_config.shop_end.operations),
+            ),
+            production_plan_time_series=json.dumps(benchmarking_config.production_plan_time_series, ensure_ascii=False)
+            if benchmarking_config.production_plan_time_series
+            else [],  # ensure_ascii=False to treat Nordic letters properly,
+            benchmarking_metrics=benchmarking_config.relevant_shop_objective_metrics,
+        )
+        process.external_id = "POWEROPS_dayahead_bidding_benchmarking_config"
+        benchmarking.processes.append(process)
+
     created, dayahead_market = process_bid_process_configs(
         path=source_path,
         bid_process_configs=config.bidprocess,
@@ -110,7 +157,7 @@ def market_to_cdf_resources(
     model = MarketModel(
         markets=[nord_pool] + rkom.markets,
         bids=dayahead_market.bids + rkom.bids,
-        processes=dayahead_market.processes + rkom.processes,
+        processes=dayahead_market.processes + rkom.processes + benchmarking.processes,
         combinations=rkom.combinations,
     )
 

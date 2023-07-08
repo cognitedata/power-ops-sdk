@@ -1,7 +1,11 @@
 from __future__ import annotations
 
+from typing import Union
+
+from pydantic import Field
+
 from cognite.powerops.bootstrap.data_classes.cdf_labels import AssetLabel
-from cognite.powerops.bootstrap.models.base import Type
+from cognite.powerops.bootstrap.models.base import NonAssetType, Type
 
 
 class Market(Type):
@@ -10,20 +14,20 @@ class Market(Type):
     timezone: str
 
 
-class DateTransformation:
+class DateTransformation(NonAssetType):
     transformation: str
-    args: list[str]
-    kwargs: dict[str, str]
+    args: list[Union[int, float, str]] = Field(default_factory=list)
+    kwargs: dict[str, Union[int, float, str]] = Field(default_factory=dict)
 
 
-class ShopTransformation:
-    start: [DateTransformation]
-    end: [DateTransformation]
+class ShopTransformation(NonAssetType):
+    starttime: str
+    endtime: str
 
 
-class Bid(Type):
-    date: list[DateTransformation]
-    market: Market
+class Bid(NonAssetType):
+    date: str
+    market_config_external_id: str
 
 
 class Process(Type):
