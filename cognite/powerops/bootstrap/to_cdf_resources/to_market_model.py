@@ -99,18 +99,18 @@ def process_bid_process_configs(
                 starttime=str(process.shop_start or benchmarking.shop.starttime),
                 endtime=str(process.shop_end or benchmarking.shop.endtime),
             ),
-            # bid_matrix_generator_config=CDFSequence(
-            #     sequence=bid_matrix_generator_sequence,
-            #     content=content,
-            # )
+            bid_matrix_generator_config=CDFSequence(
+                sequence=bid_matrix_generator_sequence,
+                content=content,
+            ),
         )
         # The IDs are inconsistently compared to the other data classes, so we need to set them manually
         dayahead_process.external_id = f"POWEROPS_bid_process_configuration_{process.name}"
         dayahead_process.parent_external_id = "bid_process_configurations"
-
+        dayahead_process.relationships()
         model.processes.append(dayahead_process)
 
-        new_resources += process.to_bootstrap_resources(
+        created = process.to_bootstrap_resources(
             path=path,
             bootstrap_resources=existing_bootstrap_resources,
             price_scenarios_by_id=price_scenarios_by_id,
@@ -118,6 +118,8 @@ def process_bid_process_configs(
             watercourses=watercourse_configs,
             benchmark=benchmark,
         )
+        if created is not None:
+            new_resources += created
 
     return new_resources, model
 

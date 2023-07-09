@@ -134,13 +134,27 @@ class Type(BaseModel, ABC):
         target_cdf_type: str,
         target_type: str,
     ) -> Relationship:
+        source_type = "ASSET"
+
+        # The market model uses the suffix CDF type for the relationship label, while the core model does not.
+        try:
+            # Core Model
+            label = RelationshipLabel(f"relationship_to.{target_type}")
+        except ValueError:
+            # Market Model
+            label = RelationshipLabel(f"relationship_to.{target_type}_{target_cdf_type.lower()}")
+            # In addition, the Market Model uses capitalised CDF types for the relationship type,
+            # while the core model uses all upper cases.
+            source_type = source_type.title()
+            target_cdf_type = target_cdf_type.title()
+
         return Relationship(
             external_id=f"{self.external_id}.{target_external_id}",
             source_external_id=self.external_id,
-            source_type="ASSET",
+            source_type=source_type,
             target_external_id=target_external_id,
             target_type=target_cdf_type,
-            labels=[Label(external_id=RelationshipLabel(f"relationship_to.{target_type}").value)],
+            labels=[Label(external_id=label.value)],
         )
 
 

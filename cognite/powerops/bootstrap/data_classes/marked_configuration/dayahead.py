@@ -178,17 +178,17 @@ class BidProcessConfig(Configuration):
         bid_matrix_generator_configs: list[BidMatrixGeneratorConfig],
         watercourses: list[WatercourseConfig],
         benchmark: BenchmarkingConfig,
-    ) -> ResourceCollection:
+    ) -> ResourceCollection | None:
         asset = self.to_cdf_asset(benchmark, price_scenarios_by_id)
         price_scenario_by_name = map_price_scenarios_by_name(
             self.price_scenarios, price_scenarios_by_id, MARKET_BY_PRICE_AREA[self.price_area_name]
         )
-        bid_matrix_generator_config_resources = self.create_bid_matrix_generator_config_resources(
-            bid_matrix_generator_configs,
-            asset,
-            path,
-            watercourses,
-        )
+        # bid_matrix_generator_config_resources = self.create_bid_matrix_generator_config_resources(
+        #     bid_matrix_generator_configs,
+        #     asset,
+        #     path,
+        #     watercourses,
+        # )
 
         watercourse_names = [
             bootstrap_resources.assets[rel.target_external_id].name
@@ -202,11 +202,9 @@ class BidProcessConfig(Configuration):
                 f"No related watercourses found for price area {self.price_area_name}! No 'incremental mapping' "
                 f"Sequences to write!"
             )
-            return bid_matrix_generator_config_resources
+            return None
 
-        return bid_matrix_generator_config_resources + self.create_incremental_mapping_resources(
-            price_scenario_by_name, watercourse_names, asset
-        )
+        return self.create_incremental_mapping_resources(price_scenario_by_name, watercourse_names, asset)
 
     def create_incremental_mapping_resources(
         self,
