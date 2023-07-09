@@ -67,13 +67,16 @@ class Type(BaseModel, ABC):
             elif any(cdf_type in str(field.annotation) for cdf_type in [CDFSequence.__name__, TimeSeries.__name__]):
                 if TimeSeries.__name__ in str(field.annotation):
                     target_type = "TIMESERIES"
-                    target_external_id = value.external_id
                 elif CDFSequence.__name__ in str(field.annotation):
                     target_type = "SEQUENCE"
-                    target_external_id = value.sequence.external_id
                 else:
                     raise ValueError(f"Unexpected type {field.annotation}")
-                relationships.append(self._create_relationship(target_external_id, target_type, field_name))
+
+                if isinstance(value, list):
+                    for target in value:
+                        relationships.append(self._create_relationship(target.external_id, target_type, field_name))
+                else:
+                    relationships.append(self._create_relationship(value.external_id, target_type, field_name))
         return relationships
 
     def as_asset(self):
@@ -162,6 +165,10 @@ class CDFSequence(BaseModel):
     model_config: ClassVar[ConfigDict] = ConfigDict(arbitrary_types_allowed=True)
     sequence: Sequence
     content: Union[SequenceData, pd.DataFrame]
+
+    @property
+    def external_id(self):
+        return self.sequence.external_id
 
 
 class Model(BaseModel, ABC):

@@ -99,9 +99,9 @@ def process_bid_process_configs(
                 metadata = {
                     "shop:watercourse": watercourse.name,
                     "shop:type": "incremental_mapping",
-                    "bid:scenario_name": price_area.name,
+                    "bid:scenario_name": scenario_name,
                 }
-                external_id = f"SHOP_{watercourse.name}_incremental_mapping_{process.name}_{price_area.name}"
+                external_id = f"SHOP_{watercourse.name}_incremental_mapping_{process.name}_{scenario_name}"
                 name = external_id.replace("_", " ")
                 sequence = Sequence(
                     name=name,
@@ -140,24 +140,24 @@ def process_bid_process_configs(
                 sequence=bid_matrix_generator_sequence,
                 content=content,
             ),
-            # incremental_mapping=incremental_mapping_sequences,
+            incremental_mapping=incremental_mapping_sequences,
         )
         # The IDs are inconsistently compared to the other data classes, so we need to set them manually
         dayahead_process.external_id = f"POWEROPS_bid_process_configuration_{process.name}"
         dayahead_process.parent_external_id = "bid_process_configurations"
-
+        dayahead_process.relationships()
         model.processes.append(dayahead_process)
 
-        created = process.to_bootstrap_resources(
-            path=path,
-            bootstrap_resources=existing_bootstrap_resources,
-            price_scenarios_by_id=price_scenarios_by_id,
-            bid_matrix_generator_configs=bidmatrix_generators,
-            watercourses=watercourse_configs,
-            benchmark=benchmark,
-        )
-        if created is not None:
-            new_resources += created
+        # created = process.to_bootstrap_resources(
+        #     path=path,
+        #     bootstrap_resources=existing_bootstrap_resources,
+        #     price_scenarios_by_id=price_scenarios_by_id,
+        #     bid_matrix_generator_configs=bidmatrix_generators,
+        #     watercourses=watercourse_configs,
+        #     benchmark=benchmark,
+        # )
+        # if created is not None:
+        #     new_resources += created
 
     return new_resources, model
 
