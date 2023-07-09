@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field
 
-from cognite.powerops.resync.models.base import AssetType
+from cognite.powerops.resync.models._base import AssetType
 
 
 class Connection(BaseModel):

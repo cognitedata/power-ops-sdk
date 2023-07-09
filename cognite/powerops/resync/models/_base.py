@@ -167,7 +167,15 @@ class AssetType(BaseModel, ABC):
         )
 
 
-class AssetModel(BaseModel, ABC):
+class NonAssetType(BaseModel, ABC):
+    model_config: ClassVar[ConfigDict] = ConfigDict(arbitrary_types_allowed=True)
+
+
+class Model(BaseModel, ABC):
+    ...
+
+
+class AssetModel(Model, ABC):
     root_asset: ClassVar[Asset]
 
     def assets(self) -> list[Asset]:
@@ -212,5 +220,5 @@ class AssetModel(BaseModel, ABC):
                 yield from items
 
 
-class NonAssetType(BaseModel, ABC):
-    model_config: ClassVar[ConfigDict] = ConfigDict(arbitrary_types_allowed=True)
+class DataModel(Model, ABC):
+    pass

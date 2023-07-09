@@ -23,7 +23,7 @@ from cognite.powerops.resync.config_classes.marked_configuration.rkom import (
 from cognite.powerops.resync.config_classes.resync_config import MarketConfigs
 from cognite.powerops.resync.models import MarketModel
 from cognite.powerops.resync.models import market as market_models
-from cognite.powerops.resync.models.base import CDFSequence
+from cognite.powerops.resync.models._base import CDFSequence
 from cognite.powerops.resync.models.core import PriceArea
 
 

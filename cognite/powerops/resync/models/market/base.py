@@ -5,7 +5,7 @@ from typing import ClassVar, Union
 from pydantic import Field
 
 from cognite.powerops.cdf_labels import AssetLabel
-from cognite.powerops.resync.models.base import AssetType, NonAssetType
+from cognite.powerops.resync.models._base import AssetType, NonAssetType
 
 
 class Market(AssetType):

@@ -3,7 +3,7 @@ from typing import ClassVar, Optional
 from cognite.client.data_classes import Asset
 from pydantic.dataclasses import Field
 
-from cognite.powerops.resync.models.base import AssetModel
+from cognite.powerops.resync.models._base import AssetModel
 
 from .base import Bid, DateTransformation, Market, Process, ShopTransformation
 from .benchmark import BenchmarkBid, BenchmarkProcess, ProductionPlanTimeSeries

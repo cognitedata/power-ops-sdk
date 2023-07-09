@@ -6,7 +6,7 @@ from cognite.client.data_classes import TimeSeries
 from pydantic import Field
 
 from cognite.powerops.cdf_labels import AssetLabel
-from cognite.powerops.resync.models.base import NonAssetType
+from cognite.powerops.resync.models._base import NonAssetType
 from cognite.powerops.resync.models.market.base import Bid, Process
 
 
