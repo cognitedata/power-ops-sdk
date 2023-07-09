@@ -1,15 +1,13 @@
 from __future__ import annotations
 
 import json
-from pathlib import Path
 from typing import List, Optional
 
 import pandas as pd
 from cognite.client.data_classes import Sequence
 
 from cognite.powerops.bootstrap.data_classes.bootstrap_config import MarketConfigs
-from cognite.powerops.bootstrap.data_classes.core.watercourse import WatercourseConfig
-from cognite.powerops.bootstrap.data_classes.marked_configuration import BenchmarkingConfig, PriceScenario
+from cognite.powerops.bootstrap.data_classes.marked_configuration import PriceScenario
 from cognite.powerops.bootstrap.data_classes.marked_configuration._core import RelativeTime, map_price_scenarios_by_name
 from cognite.powerops.bootstrap.data_classes.marked_configuration.dayahead import (
     BidMatrixGeneratorConfig,
@@ -25,22 +23,16 @@ from cognite.powerops.bootstrap.data_classes.resource_collection import Resource
 from cognite.powerops.bootstrap.models import MarketModel
 from cognite.powerops.bootstrap.models import market as market_models
 from cognite.powerops.bootstrap.models.base import CDFSequence
-from cognite.powerops.bootstrap.models.core import PriceArea, Watercourse
+from cognite.powerops.bootstrap.models.core import PriceArea
 
 
 def process_bid_process_configs(
-    path: Path,
     bid_process_configs: list[BidProcessConfig],
     bidmatrix_generators: list[BidMatrixGeneratorConfig],
     price_scenarios_by_id: dict[str, PriceScenario],
-    watercourse_configs: list[WatercourseConfig],
-    benchmark: BenchmarkingConfig,
-    existing_bootstrap_resources: ResourceCollection,
-    watercourses: list[Watercourse],
     benchmarking: market_models.BenchmarkProcess,
     price_areas: list[PriceArea],
-) -> tuple[ResourceCollection, MarketModel]:
-    new_resources = ResourceCollection()
+) -> MarketModel:
     model = MarketModel()
     bidmatrix_generators_by_name: dict[str, BidMatrixGeneratorConfig] = {g.name: g for g in bidmatrix_generators}
     for process in bid_process_configs:
@@ -145,21 +137,10 @@ def process_bid_process_configs(
         # The IDs are inconsistently compared to the other data classes, so we need to set them manually
         dayahead_process.external_id = f"POWEROPS_bid_process_configuration_{process.name}"
         dayahead_process.parent_external_id = "bid_process_configurations"
-        dayahead_process.relationships()
+
         model.processes.append(dayahead_process)
 
-        # created = process.to_bootstrap_resources(
-        #     path=path,
-        #     bootstrap_resources=existing_bootstrap_resources,
-        #     price_scenarios_by_id=price_scenarios_by_id,
-        #     bid_matrix_generator_configs=bidmatrix_generators,
-        #     watercourses=watercourse_configs,
-        #     benchmark=benchmark,
-        # )
-        # if created is not None:
-        #     new_resources += created
-
-    return new_resources, model
+    return model
 
 
 def process_rkom_bid_configs(
@@ -212,9 +193,6 @@ def market_to_cdf_resources(
     bootstrap_resources: ResourceCollection,
     config: MarketConfigs,
     market_name: str,
-    watercourse_configs: list[WatercourseConfig],
-    source_path: Path,
-    watercourses: list[Watercourse],
     price_areas: list[PriceArea],
 ) -> tuple[ResourceCollection, MarketModel]:
     # PowerOps configuration resources
@@ -247,19 +225,13 @@ def market_to_cdf_resources(
         process.external_id = "POWEROPS_dayahead_bidding_benchmarking_config"
         benchmarking.processes.append(process)
 
-    created, dayahead_market = process_bid_process_configs(
-        path=source_path,
+    dayahead_market = process_bid_process_configs(
         bid_process_configs=config.bidprocess,
         bidmatrix_generators=config.bidmatrix_generators,
         price_scenarios_by_id=config.price_scenario_by_id,
-        watercourse_configs=watercourse_configs,
-        benchmark=config.benchmarks[0],
-        existing_bootstrap_resources=bootstrap_resources.model_copy(),
-        watercourses=watercourses,
         benchmarking=benchmarking.processes[0],
         price_areas=price_areas,
     )
-    bootstrap_resources += created
     created, rkom = process_rkom_bid_configs(
         rkom_bid_combination_configs=config.rkom_bid_combination,
         rkom_market_config=config.rkom_market,
