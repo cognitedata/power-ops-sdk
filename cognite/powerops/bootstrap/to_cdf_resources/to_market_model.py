@@ -47,12 +47,13 @@ def process_bid_process_configs(
         price_scenarios_by_name = map_price_scenarios_by_name(
             process.price_scenarios, price_scenarios_by_id, MARKET_BY_PRICE_AREA[process.price_area_name]
         )
-        bidmatrix_generator = bidmatrix_generators_by_name[process.bid_matrix_generator]
 
         price_area = next((pa for pa in price_areas if pa.name == process.price_area_name), None)
         if not price_area:
             raise ValueError(f"Price area {process.price_area_name} not found")
 
+        # Create bid matrix generator config sequence
+        bidmatrix_generator = bidmatrix_generators_by_name[process.bid_matrix_generator]
         column_def = [
             {"valueType": "STRING", "externalId": external_id}
             for external_id in bidmatrix_generator.column_external_ids
@@ -78,6 +79,42 @@ def process_bid_process_configs(
             columns=bidmatrix_generator.column_external_ids,
         )
 
+        # Create incremental mapping sequences
+        incremental_mapping_sequences = []
+        for watercourse in price_area.watercourses:
+            price_scenarios: dict[str, PriceScenario] = price_scenarios_by_name
+            if process.price_scenarios_per_watercourse:
+                try:
+                    price_scenarios = {
+                        scenario_name: price_scenarios[scenario_name]
+                        for scenario_name in process.price_scenarios_per_watercourse[watercourse.name]
+                    }
+                except KeyError as e:
+                    raise KeyError(
+                        f"Watercourse {watercourse.name} not defined in price_scenarios_per_watercourse "
+                        f"for BidProcessConfig {process.name}"
+                    ) from e
+            for scenario_name, price_scenario in price_scenarios.items():
+                time_series_mapping = price_scenario.to_time_series_mapping()
+                metadata = {
+                    "shop:watercourse": watercourse.name,
+                    "shop:type": "incremental_mapping",
+                    "bid:scenario_name": price_area.name,
+                }
+                external_id = f"SHOP_{watercourse.name}_incremental_mapping_{process.name}_{price_area.name}"
+                name = external_id.replace("_", " ")
+                sequence = Sequence(
+                    name=name,
+                    external_id=external_id,
+                    description="Mapping between SHOP paths and CDF TimeSeries",
+                    columns=time_series_mapping.column_definitions,
+                    metadata=metadata,
+                )
+                content = time_series_mapping.to_dataframe()
+                incremental_mapping = CDFSequence(sequence=sequence, content=content)
+                incremental_mapping_sequences.append(incremental_mapping)
+
+        # Create the DayAheadBidProcess Data Class
         dayahead_process = market_models.DayAheadProcess(
             name=f"Bid process configuration {process.name}",
             description="Bid process configuration defining how to run a bid matrix generation process",
@@ -103,11 +140,12 @@ def process_bid_process_configs(
                 sequence=bid_matrix_generator_sequence,
                 content=content,
             ),
+            # incremental_mapping=incremental_mapping_sequences,
         )
         # The IDs are inconsistently compared to the other data classes, so we need to set them manually
         dayahead_process.external_id = f"POWEROPS_bid_process_configuration_{process.name}"
         dayahead_process.parent_external_id = "bid_process_configurations"
-        dayahead_process.relationships()
+
         model.processes.append(dayahead_process)
 
         created = process.to_bootstrap_resources(
