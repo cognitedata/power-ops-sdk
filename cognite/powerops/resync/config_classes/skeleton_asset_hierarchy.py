@@ -23,35 +23,6 @@ def create_skeleton_asset_hierarchy(
     }
     return [
         Asset(
-            external_id=root_external_id,
-            name="PowerOps",
-        ),
-        Asset(
-            external_id="price_areas",
-            name="Price areas",
-            parent_external_id=root_external_id,
-        ),
-        Asset(
-            external_id="watercourses",
-            name="Watercourses",
-            parent_external_id=root_external_id,
-        ),
-        Asset(
-            external_id="plants",
-            name="Plants",
-            parent_external_id=root_external_id,
-        ),
-        Asset(
-            external_id="reservoirs",
-            name="Reservoirs",
-            parent_external_id=root_external_id,
-        ),
-        Asset(
-            external_id="generators",
-            name="Generators",
-            parent_external_id=root_external_id,
-        ),
-        Asset(
             external_id=configurations_external_id,
             name="Configurations",
             description="Configurations used for PowerOps",

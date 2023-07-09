@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 from abc import ABC
-from typing import ClassVar, Optional, Union
+from typing import ClassVar, Iterable, Optional, Union
 
 import pandas as pd
 from cognite.client.data_classes import Asset, Label, Relationship, Sequence, SequenceData, TimeSeries
@@ -10,11 +10,6 @@ from pydantic import BaseModel, ConfigDict
 
 from cognite.powerops.resync.config_classes.cdf_labels import AssetLabel, RelationshipLabel
 from cognite.powerops.resync.config_classes.to_delete import SequenceContent
-
-ROOT_ASSET = Asset(
-    external_id="power_ops",
-    name="PowerOps",
-)
 
 
 class CDFSequence(BaseModel):
@@ -172,6 +167,8 @@ class AssetType(BaseModel, ABC):
 
 
 class Model(BaseModel, ABC):
+    root_asset: ClassVar[Asset]
+
     def assets(self) -> list[Asset]:
         return [item.as_asset() for f in self.model_fields for item in getattr(self, f)]
 
@@ -180,6 +177,31 @@ class Model(BaseModel, ABC):
 
     def sequences(self) -> list[Sequence | SequenceContent]:
         return [sequence for f in self.model_fields for item in getattr(self, f) for sequence in item.sequences()]
+
+    def parent_assets(self) -> list[Asset]:
+        if not self.root_asset:
+            return []
+            # raise ValueError("Root asset not set")
+
+        def _to_name(external_id: str) -> str:
+            parts = external_id.replace("_", " ").split(" ")
+            parts[0] = parts[0].title()
+            return " ".join(parts)
+
+        return [self.root_asset] + [
+            Asset(
+                external_id=items[0].parent_external_id,
+                name=_to_name(items[0].parent_external_id),
+                parent_external_id=self.root_asset.external_id,
+            )
+            for f in self.model_fields
+            if isinstance(items := getattr(self, f), list) and items and isinstance(items[0], AssetType)
+        ]
+
+    def _items(self) -> Iterable[AssetType]:
+        for f in self.model_fields:
+            if isinstance(items := getattr(self, f), list) and items and isinstance(items[0], AssetType):
+                yield from items
 
 
 class NonAssetType(BaseModel, ABC):

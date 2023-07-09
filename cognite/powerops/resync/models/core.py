@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import ClassVar, Optional
 
-from cognite.client.data_classes import TimeSeries
+from cognite.client.data_classes import Asset, TimeSeries
 from pydantic import Field
 
 from cognite.powerops.resync.config_classes.cdf_labels import AssetLabel
@@ -65,6 +65,7 @@ class PriceArea(AssetType):
 
 
 class CoreModel(Model):
+    root_asset: ClassVar[Asset] = Asset(external_id="power_ops", name="PowerOps")
     price_areas: list[PriceArea] = Field(default_factory=list)
     watercourses: list[Watercourse] = Field(default_factory=list)
     plants: list[Plant] = Field(default_factory=list)

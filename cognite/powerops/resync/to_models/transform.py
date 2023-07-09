@@ -42,6 +42,7 @@ def transform(
     collection.add(skeleton_assets)
     collection.add(labels)
     for model in [core_model, market_model]:
+        collection.add(model.parent_assets())
         collection.add(model.assets())
         collection.add(model.relationships())
         collection.add(model.sequences())
