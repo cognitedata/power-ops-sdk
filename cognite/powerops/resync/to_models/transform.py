@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from typing import Callable
 
+from cognite.powerops.cdf_labels import AssetLabel, RelationshipLabel
 from cognite.powerops.resync.config_classes.bootstrap_config import BootstrapConfig
-from cognite.powerops.resync.config_classes.cdf_labels import AssetLabel, RelationshipLabel
 from cognite.powerops.resync.config_classes.resource_collection import ResourceCollection
 from cognite.powerops.resync.to_models.to_cogshop_model import cogshop_to_cdf_resources
 from cognite.powerops.resync.to_models.to_core_model import to_core_model

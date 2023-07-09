@@ -9,10 +9,10 @@ import requests
 from cognite.client import CogniteClient
 from cognite.client.data_classes import Event, FileMetadata
 
+from cognite.powerops.cdf_labels import RelationshipLabel
 from cognite.powerops.clients.data_set_api import DataSetsAPI
 from cognite.powerops.clients.shop.api.shop_results_api import ShopRunResultsAPI
 from cognite.powerops.clients.shop.data_classes import Case, ShopRun, ShopRunEvent
-from cognite.powerops.resync.config_classes.cdf_labels import RelationshipLabel
 from cognite.powerops.utils.cdf.calls import retrieve_event
 from cognite.powerops.utils.cdf.resource_creation import simple_relationship
 

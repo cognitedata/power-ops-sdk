@@ -5,7 +5,7 @@ from typing import ClassVar, Optional
 from cognite.client.data_classes import Asset, TimeSeries
 from pydantic import Field
 
-from cognite.powerops.resync.config_classes.cdf_labels import AssetLabel
+from cognite.powerops.cdf_labels import AssetLabel
 from cognite.powerops.resync.models.base import AssetType, CDFSequence, Model
 
 

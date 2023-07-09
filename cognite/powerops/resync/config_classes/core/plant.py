@@ -6,7 +6,7 @@ from typing import Optional
 from cognite.client.data_classes import Asset, Label, Relationship
 from pydantic import BaseModel, field_validator
 
-from cognite.powerops.resync.config_classes.cdf_labels import RelationshipLabel as rl
+from cognite.powerops.cdf_labels import RelationshipLabel as rl
 from cognite.powerops.resync.config_classes.core._core import ExternalId
 
 p_min_fallback = 0
