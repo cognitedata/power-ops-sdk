@@ -1,5 +1,9 @@
+from datetime import datetime
 from pathlib import Path
 from typing import Callable
+from uuid import uuid4
+
+from cognite.client.data_classes import Event
 
 from cognite.powerops.clients import get_powerops_client
 from cognite.powerops.resync.config_classes.bootstrap_config import BootstrapConfig
@@ -24,10 +28,13 @@ def plan(path: Path, market: str, echo: Callable[[str], None] = None):
 def apply(path: Path, market: str, echo: Callable[[str], None] = None):
     echo = echo or print
     client = get_powerops_client()
-    bootstrap_resources, config = _load_transform(market, path, client.cdf.config.project, echo)
+    collection, config = _load_transform(market, path, client.cdf.config.project, echo)
+
+    # ! This should always stay at the bottom # TODO: consider wrapper
+    collection.add(_create_bootstrap_finished_event(echo))
 
     # Step 3 - write bootstrap resources from diffs to CDF
-    bootstrap_resources.write_to_cdf(
+    collection.write_to_cdf(
         client,
         config.settings.data_set_external_id,
         config.settings.overwrite_data,
@@ -42,3 +49,20 @@ def _load_transform(market: str, path: Path, cdf_project: str, echo: Callable[[s
     # Step 2 - transform from config to CDF resources and preview diffs
     bootstrap_resources = transform(config, market, echo)
     return bootstrap_resources, config
+
+
+def _create_bootstrap_finished_event(echo: Callable[[str], None]) -> Event:
+    """Creating a POWEROPS_BOOTSTRAP_FINISHED Event in CDF to signal that bootstrap scripts have been ran"""
+    current_time = int(datetime.utcnow().timestamp() * 1000)  # in milliseconds
+    event = Event(
+        start_time=current_time,
+        end_time=current_time,
+        external_id=f"POWEROPS_BOOTSTRAP_FINISHED_{str(uuid4())}",
+        type="POWEROPS_BOOTSTRAP_FINISHED",
+        subtype=None,
+        source="PowerOps bootstrap",
+        description="Manual run of bootstrap scripts finished",
+    )
+    echo(f"Created status event '{event.external_id}'")
+
+    return event

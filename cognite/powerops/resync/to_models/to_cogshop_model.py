@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import logging
 from hashlib import md5
+from pathlib import Path
 
 from cognite.powerops.clients.cogshop.data_classes import (
     FileRefApply,
@@ -43,6 +44,12 @@ def cogshop_to_cdf_resources(
         core.time_series_mappings,
         shop_version,
     )
+
+    # Set hashes for Shop Files, needed for comparison
+    for shop_config in collection.shop_file_configs.values():
+        if shop_config.md5_hash is None:
+            file_content = Path(shop_config.path).read_bytes()
+            shop_config.set_md5_hash(file_content)
     return collection
 
 

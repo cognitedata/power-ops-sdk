@@ -1,11 +1,6 @@
 from __future__ import annotations
 
-import datetime
-from pathlib import Path
 from typing import Callable
-from uuid import uuid4
-
-from cognite.client.data_classes import Event
 
 from cognite.powerops.resync.config_classes.bootstrap_config import BootstrapConfig
 from cognite.powerops.resync.config_classes.cdf_labels import AssetLabel, RelationshipLabel
@@ -40,12 +35,6 @@ def transform(
     collection = ResourceCollection()
     labels = AssetLabel.as_label_definitions() + RelationshipLabel.as_label_definitions()
 
-    # skeleton_assets = create_skeleton_asset_hierarchy(
-    #     settings.shop_service_url,
-    #     settings.organization_subdomain,
-    #     settings.tenant_id,
-    # )
-    # collection.add(skeleton_assets)
     collection.add(labels)
     for model in [core_model, market_model]:
         collection.add(model.parent_assets())
@@ -57,30 +46,4 @@ def transform(
         config.core, collection.shop_file_configs, config.settings.shop_version, config.watercourses_shop
     )
 
-    # Set hashes for Shop Files, needed for comparison
-    for shop_config in collection.shop_file_configs.values():
-        if shop_config.md5_hash is None:
-            file_content = Path(shop_config.path).read_bytes()
-            shop_config.set_md5_hash(file_content)
-
-    # ! This should always stay at the bottom # TODO: consider wrapper
-    collection.add(create_bootstrap_finished_event(echo))
-
     return collection
-
-
-def create_bootstrap_finished_event(echo: Callable[[str], None]) -> Event:
-    """Creating a POWEROPS_BOOTSTRAP_FINISHED Event in CDF to signal that bootstrap scripts have been ran"""
-    current_time = int(datetime.datetime.utcnow().timestamp() * 1000)  # in milliseconds
-    event = Event(
-        start_time=current_time,
-        end_time=current_time,
-        external_id=f"POWEROPS_BOOTSTRAP_FINISHED_{str(uuid4())}",
-        type="POWEROPS_BOOTSTRAP_FINISHED",
-        subtype=None,
-        source="PowerOps bootstrap",
-        description="Manual run of bootstrap scripts finished",
-    )
-    echo(f"Created status event '{event.external_id}'")
-
-    return event
