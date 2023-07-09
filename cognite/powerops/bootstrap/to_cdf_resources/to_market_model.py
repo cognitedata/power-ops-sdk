@@ -236,6 +236,32 @@ def _to_rkom_market(
             price_scenarios_by_id,
             market_name,
         )
+        incremental_mapping_sequences = []
+        for scenario_name, price_scenario in price_scenarios_by_name.items():
+            mappings = price_scenario.to_time_series_mapping()
+            for reserve_scenario in config.reserve_scenarios:
+                reserve_mapping = reserve_scenario.to_time_series_mapping()
+                metadata = {
+                    "shop:watercourse": config.watercourse,
+                    "shop:type": "rkom_incremental_mapping",
+                    "bid:scenario_name": scenario_name,
+                    "bid:reserve_volume": str(reserve_scenario.volume),
+                }
+                external_id = (
+                    f"SHOP_{config.watercourse}_incremental_mapping_"
+                    f"{config.name}_{scenario_name}_{reserve_scenario.volume}MW"
+                )
+                name = f"{config.watercourse} {scenario_name} {reserve_scenario.volume} MW"
+                sequence = Sequence(
+                    name=name,
+                    external_id=external_id,
+                    description="Mapping between SHOP paths and CDF TimeSeries",
+                    columns=(mappings + reserve_mapping).column_definitions,
+                    metadata=metadata,
+                )
+                content = (mappings + reserve_mapping).to_dataframe()
+                incremental_mapping = CDFSequence(sequence=sequence, content=content)
+                incremental_mapping_sequences.append(incremental_mapping)
 
         process = market_models.RKOMProcess(
             name=config.name,
@@ -258,15 +284,15 @@ def _to_rkom_market(
             ),
             timezone=config.timezone,
             rkom=market_models.RKOMPlants(plants=str(sorted(config.rkom_plants))),
-            incremental_mapping=[],
+            incremental_mapping=incremental_mapping_sequences,
         )
         process.external_id = config.external_id
         process.parent_external_id = "rkom_bid_process_configurations"
         model.processes.append(process)
 
-        bootstrap_resource_collection += config.to_bootstrap_resources(
-            price_scenarios_by_id=price_scenarios_by_id, market_name=market_name
-        )
+        # bootstrap_resource_collection += config.to_bootstrap_resources(
+        #     price_scenarios_by_id=price_scenarios_by_id, market_name=market_name
+        # )
 
     for config in rkom_bid_combination_configs or []:
         sequence_external_id = f"RKOM_bid_combination_configuration_{config.auction.value}_{config.name}"
