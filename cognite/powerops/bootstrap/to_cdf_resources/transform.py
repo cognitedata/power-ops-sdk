@@ -237,6 +237,7 @@ def transform(
         config.core.watercourses,
         config.core.source_path,
         core_model.watercourses,
+        core_model.price_areas,
     )
     collection.add(market_model.assets())
     collection.add(market_model.relationships())

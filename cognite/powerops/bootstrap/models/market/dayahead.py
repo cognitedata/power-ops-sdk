@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import ClassVar
+from typing import ClassVar, Optional
 
 from pydantic import Field
 
@@ -23,6 +23,7 @@ class DayAheadProcess(Process):
     type_: ClassVar[str] = "POWEROPS_bid_process_configuration"
     label: ClassVar[AssetLabel] = AssetLabel.BID_PROCESS_CONFIGURATION
     bid: DayAheadBid
+    bid_matrix_generator_config: Optional[CDFSequence] = None
     incremental_mapping: list[CDFSequence] = Field(default_factory=list)
 
 

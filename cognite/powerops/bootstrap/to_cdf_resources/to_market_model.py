@@ -4,6 +4,9 @@ import json
 from pathlib import Path
 from typing import List, Optional
 
+import pandas as pd
+from cognite.client.data_classes import Sequence
+
 from cognite.powerops.bootstrap.data_classes.bootstrap_config import MarketConfigs
 from cognite.powerops.bootstrap.data_classes.core.watercourse import WatercourseConfig
 from cognite.powerops.bootstrap.data_classes.marked_configuration import BenchmarkingConfig, PriceScenario
@@ -21,7 +24,8 @@ from cognite.powerops.bootstrap.data_classes.marked_configuration.rkom import (
 from cognite.powerops.bootstrap.data_classes.resource_collection import ResourceCollection
 from cognite.powerops.bootstrap.models import MarketModel
 from cognite.powerops.bootstrap.models import market as market_models
-from cognite.powerops.bootstrap.models.core import Watercourse
+from cognite.powerops.bootstrap.models.base import CDFSequence
+from cognite.powerops.bootstrap.models.core import PriceArea, Watercourse
 
 
 def process_bid_process_configs(
@@ -34,13 +38,46 @@ def process_bid_process_configs(
     existing_bootstrap_resources: ResourceCollection,
     watercourses: list[Watercourse],
     benchmarking: market_models.BenchmarkProcess,
+    price_areas: list[PriceArea],
 ) -> tuple[ResourceCollection, MarketModel]:
     new_resources = ResourceCollection()
     model = MarketModel()
+    bidmatrix_generators_by_name: dict[str, BidMatrixGeneratorConfig] = {g.name: g for g in bidmatrix_generators}
     for process in bid_process_configs:
-        price_scenarios = map_price_scenarios_by_name(
+        price_scenarios_by_name = map_price_scenarios_by_name(
             process.price_scenarios, price_scenarios_by_id, MARKET_BY_PRICE_AREA[process.price_area_name]
         )
+        bidmatrix_generator = bidmatrix_generators_by_name[process.bid_matrix_generator]
+
+        price_area = next((pa for pa in price_areas if pa.name == process.price_area_name), None)
+        if not price_area:
+            raise ValueError(f"Price area {process.price_area_name} not found")
+
+        column_def = [
+            {"valueType": "STRING", "externalId": external_id}
+            for external_id in bidmatrix_generator.column_external_ids
+        ]
+        bid_matrix_generator_sequence = Sequence(
+            external_id=f"POWEROPS_bid_matrix_generator_config_{process.name}",
+            name=f"POWEROPS bid matrix generator config {process.name}",
+            description="Configuration of bid matrix generation method to use for each plant in the price area",
+            columns=column_def,
+            metadata={
+                # TODO: Rename this from "shop:type" to something without "shop"
+                #   (but check if e.g. power-ops-functions uses this)
+                "bid:price_area": f"price_area_{process.price_area_name}",
+                "shop:type": "bid_matrix_generator_config",
+                "bid:bid_process_configuration_name": process.name,
+            },
+        )
+        content = pd.DataFrame(
+            [
+                [plant.name, bidmatrix_generator.default_method, bidmatrix_generator.default_function_external_id]
+                for plant in price_area.plants
+            ],
+            columns=bidmatrix_generator.column_external_ids,
+        )
+
         dayahead_process = market_models.DayAheadProcess(
             name=f"Bid process configuration {process.name}",
             description="Bid process configuration defining how to run a bid matrix generation process",
@@ -52,7 +89,7 @@ def process_bid_process_configs(
                 price_area=f"price_area_{process.price_area_name}",
                 price_scenarios={
                     scenario_name: scenario.time_series_external_id
-                    for scenario_name, scenario in price_scenarios.items()
+                    for scenario_name, scenario in price_scenarios_by_name.items()
                 },
                 no_shop=process.no_shop,
                 bid_process_configuration_name=process.name,
@@ -62,8 +99,12 @@ def process_bid_process_configs(
                 starttime=str(process.shop_start or benchmarking.shop.starttime),
                 endtime=str(process.shop_end or benchmarking.shop.endtime),
             ),
+            # bid_matrix_generator_config=CDFSequence(
+            #     sequence=bid_matrix_generator_sequence,
+            #     content=content,
+            # )
         )
-        # The IDs are set inconsistently in the bootstrap data classes, so we need to set them manually
+        # The IDs are inconsistently compared to the other data classes, so we need to set them manually
         dayahead_process.external_id = f"POWEROPS_bid_process_configuration_{process.name}"
         dayahead_process.parent_external_id = "bid_process_configurations"
 
@@ -134,6 +175,7 @@ def market_to_cdf_resources(
     watercourse_configs: list[WatercourseConfig],
     source_path: Path,
     watercourses: list[Watercourse],
+    price_areas: list[PriceArea],
 ) -> tuple[ResourceCollection, MarketModel]:
     # PowerOps configuration resources
 
@@ -175,6 +217,7 @@ def market_to_cdf_resources(
         existing_bootstrap_resources=bootstrap_resources.model_copy(),
         watercourses=watercourses,
         benchmarking=benchmarking.processes[0],
+        price_areas=price_areas,
     )
     bootstrap_resources += created
     created, rkom = process_rkom_bid_configs(

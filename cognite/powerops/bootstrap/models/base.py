@@ -145,7 +145,7 @@ class Type(BaseModel, ABC):
 
 
 class CDFSequence(BaseModel):
-    model_config = ConfigDict(arbitrary_types_allowed=True)
+    model_config: ClassVar[ConfigDict] = ConfigDict(arbitrary_types_allowed=True)
     sequence: Sequence
     content: Union[SequenceData, pd.DataFrame]
 
