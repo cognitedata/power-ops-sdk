@@ -230,8 +230,7 @@ def transform(
         config.core, collection.shop_file_configs, config.settings.shop_version, config.watercourses_shop
     )
 
-    collection, market_model = market_to_cdf_resources(
-        collection,
+    market_model = market_to_cdf_resources(
         config.markets,
         market_name,
         core_model.price_areas,

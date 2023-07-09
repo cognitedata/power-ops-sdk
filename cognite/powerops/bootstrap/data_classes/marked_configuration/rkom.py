@@ -6,17 +6,10 @@ import typing
 from dataclasses import dataclass
 from typing import ClassVar, Dict, Generator, List, Literal, Optional, Tuple
 
-from cognite.client.data_classes import Asset, Label
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator, validator
 
-from cognite.powerops.bootstrap.data_classes.cdf_labels import AssetLabel, RelationshipLabel
-from cognite.powerops.bootstrap.data_classes.marked_configuration import PriceScenario, PriceScenarioID
-from cognite.powerops.bootstrap.data_classes.marked_configuration._core import (
-    Configuration,
-    RelativeTime,
-    map_price_scenarios_by_name,
-)
-from cognite.powerops.bootstrap.data_classes.resource_collection import ResourceCollection, write_mapping_to_sequence
+from cognite.powerops.bootstrap.data_classes.marked_configuration import PriceScenarioID
+from cognite.powerops.bootstrap.data_classes.marked_configuration._core import Configuration, RelativeTime
 from cognite.powerops.bootstrap.data_classes.shared import (
     AggregationMethod,
     Auction,
@@ -26,7 +19,6 @@ from cognite.powerops.bootstrap.data_classes.shared import (
     Transformation,
     TransformationType,
 )
-from cognite.powerops.utils.cdf.resource_creation import simple_relationship
 
 # TODO: Switch to class inheriting from str and Enum, or 3.11 strEnum?
 Product = Literal["up", "down"]
@@ -172,70 +164,6 @@ class RKOMBidProcessConfig(Configuration):
     @property
     def rkom_plants(self) -> List[str]:
         return [plant for plant, _ in self.reserve_scenarios.mip_plant_time_series]
-
-    def to_metadata(self, rkom_price_scenarios_by_id: dict[str, PriceScenario], rkom_market_name: str) -> dict:
-        price_scenarios = map_price_scenarios_by_name(
-            self.price_scenarios, rkom_price_scenarios_by_id, rkom_market_name
-        )
-
-        return {
-            "bid:watercourse": self.watercourse,
-            "bid:auction": self.reserve_scenarios.auction.value,
-            "bid:block": self.reserve_scenarios.block,
-            "bid:product": self.reserve_scenarios.product,
-            "bid:method": self.method,
-            "bid:date": str(self.bid_date),
-            "bid:price_scenarios": str(list(price_scenarios)),
-            "bid:reserve_scenarios": str(self.reserve_scenarios),
-            "bid:minimum_price": str(self.minimum_price),
-            "bid:price_premium": str(self.price_premium),
-            "rkom:plants": str(sorted(self.rkom_plants)),
-            "shop:starttime": str(self.shop_start),
-            "shop:endtime": str(self.shop_end),
-            "timezone": self.timezone,
-        }
-
-    def to_cdf_asset(self, rkom_price_scenarios_by_id: dict[str, PriceScenario], rkom_market_name: str) -> Asset:
-        return Asset(
-            external_id=self.external_id,
-            name=self.name,
-            metadata=self.to_metadata(rkom_price_scenarios_by_id, rkom_market_name),
-            description=f"RKOM bid generation config for {self.watercourse}",
-            parent_external_id=self.parent_external_id,
-            labels=[Label(AssetLabel.RKOM_BID_CONFIGURATION.value)],
-        )
-
-    def to_bootstrap_resources(self, price_scenarios_by_id, market_name) -> ResourceCollection:
-        bootstrap_resources = ResourceCollection()
-        asset = self.to_cdf_asset(price_scenarios_by_id, market_name)
-        # bootstrap_resources.add(asset)
-
-        price_scenarios = map_price_scenarios_by_name(self.price_scenarios, price_scenarios_by_id, market_name)
-
-        # Create incremental mapping for each combination of price scenario and reserve_scenario
-        for price_scenario_name, price_scenario in price_scenarios.items():
-            price_mapping = price_scenario.to_time_series_mapping()
-            for reserve_scenario in self.reserve_scenarios:
-                reserve_mapping = reserve_scenario.to_time_series_mapping()
-
-                bootstrap_resources += write_mapping_to_sequence(
-                    watercourse=self.watercourse,
-                    mapping=price_mapping + reserve_mapping,
-                    mapping_type=self.mapping_type,  # type: ignore
-                    reserve_volume=reserve_scenario.volume,
-                    price_scenario_name=price_scenario_name,
-                    config_name=self.name,
-                )
-
-        for sequence in bootstrap_resources.sequences.values():
-            relationship = simple_relationship(
-                source=asset,
-                target=sequence,
-                label_external_id=RelationshipLabel.INCREMENTAL_MAPPING_SEQUENCE.value,
-            )
-            bootstrap_resources.add(relationship)
-
-        return bootstrap_resources
 
 
 @dataclass

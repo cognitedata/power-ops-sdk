@@ -6,8 +6,11 @@ import pandas as pd
 from cognite.client.data_classes import Sequence
 
 from cognite.powerops.bootstrap.data_classes.bootstrap_config import MarketConfigs
-from cognite.powerops.bootstrap.data_classes.marked_configuration import BenchmarkingConfig, PriceScenario
-from cognite.powerops.bootstrap.data_classes.marked_configuration._core import map_price_scenarios_by_name
+from cognite.powerops.bootstrap.data_classes.marked_configuration import (
+    BenchmarkingConfig,
+    PriceScenario,
+    PriceScenarioID,
+)
 from cognite.powerops.bootstrap.data_classes.marked_configuration.dayahead import (
     BidMatrixGeneratorConfig,
     BidProcessConfig,
@@ -18,7 +21,6 @@ from cognite.powerops.bootstrap.data_classes.marked_configuration.rkom import (
     RKOMBidProcessConfig,
     RkomMarketConfig,
 )
-from cognite.powerops.bootstrap.data_classes.resource_collection import ResourceCollection
 from cognite.powerops.bootstrap.models import MarketModel
 from cognite.powerops.bootstrap.models import market as market_models
 from cognite.powerops.bootstrap.models.base import CDFSequence
@@ -26,11 +28,10 @@ from cognite.powerops.bootstrap.models.core import PriceArea
 
 
 def market_to_cdf_resources(
-    bootstrap_resources: ResourceCollection,
     config: MarketConfigs,
     market_name: str,
     price_areas: list[PriceArea],
-) -> tuple[ResourceCollection, MarketModel]:
+) -> MarketModel:
     nord_pool = market_models.NordPoolMarket(**config.market.model_dump())
     # The external_id is not following the naming convention, so we need to set it manually
     nord_pool.external_id = config.market.external_id
@@ -45,14 +46,13 @@ def market_to_cdf_resources(
         price_areas=price_areas,
     )
 
-    created, rkom = _to_rkom_market(
+    rkom = _to_rkom_market(
         rkom_bid_process=config.rkom_bid_process,
         price_scenarios_by_id=config.price_scenario_by_id,
         market_name=market_name,
         rkom_bid_combination_configs=config.rkom_bid_combination,
         rkom_market_config=config.rkom_market,
     )
-    bootstrap_resources += created
 
     model = MarketModel(
         markets=[nord_pool] + rkom.markets,
@@ -60,7 +60,7 @@ def market_to_cdf_resources(
         combinations=rkom.combinations,
     )
 
-    return bootstrap_resources, model
+    return model
 
 
 def _to_benchmarking_process(benchmarks: list[BenchmarkingConfig]) -> list[market_models.BenchmarkProcess]:
@@ -101,7 +101,7 @@ def _to_dayahead_process(
     dayahead_processes: list[market_models.DayAheadProcess] = []
     bidmatrix_generators_by_name: dict[str, BidMatrixGeneratorConfig] = {g.name: g for g in bidmatrix_generators}
     for process in bid_process_configs:
-        price_scenarios_by_name = map_price_scenarios_by_name(
+        price_scenarios_by_name = _map_price_scenarios_by_name(
             process.price_scenarios, price_scenarios_by_id, MARKET_BY_PRICE_AREA[process.price_area_name]
         )
 
@@ -214,7 +214,7 @@ def _to_rkom_market(
     market_name: str,
     rkom_bid_combination_configs: list[RKOMBidCombinationConfig] | None = None,
     rkom_market_config: RkomMarketConfig | None = None,
-) -> tuple[ResourceCollection, MarketModel]:
+) -> MarketModel:
     model = MarketModel()
 
     if not rkom_market_config:
@@ -229,9 +229,8 @@ def _to_rkom_market(
     rkom_market.external_id = rkom_market_config.external_id
     model.markets.append(rkom_market)
 
-    bootstrap_resource_collection = ResourceCollection()
     for config in rkom_bid_process:
-        price_scenarios_by_name = map_price_scenarios_by_name(
+        price_scenarios_by_name = _map_price_scenarios_by_name(
             config.price_scenarios,
             price_scenarios_by_id,
             market_name,
@@ -290,10 +289,6 @@ def _to_rkom_market(
         process.parent_external_id = "rkom_bid_process_configurations"
         model.processes.append(process)
 
-        # bootstrap_resource_collection += config.to_bootstrap_resources(
-        #     price_scenarios_by_id=price_scenarios_by_id, market_name=market_name
-        # )
-
     for config in rkom_bid_combination_configs or []:
         sequence_external_id = f"RKOM_bid_combination_configuration_{config.auction.value}_{config.name}"
         combination = market_models.RKOMBidCombination(
@@ -308,4 +303,15 @@ def _to_rkom_market(
         combination.external_id = sequence_external_id
         model.combinations.append(combination)
 
-    return bootstrap_resource_collection, model
+    return model
+
+
+def _map_price_scenarios_by_name(
+    scenario_ids: list[PriceScenarioID], price_scenarios_by_id: dict[str, PriceScenario], market_name: str
+) -> dict[str, PriceScenario]:
+    scenario_by_name = {}
+    for identifier in scenario_ids:
+        ref_scenario = price_scenarios_by_id[identifier.id]
+        name = identifier.rename or ref_scenario.name or identifier.id
+        scenario_by_name[name] = PriceScenario(name=market_name, **ref_scenario.model_dump(exclude={"name"}))
+    return scenario_by_name
