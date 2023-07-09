@@ -8,12 +8,12 @@ from typing import Optional
 import pandas as pd
 from cognite.client import CogniteClient
 
-from cognite.powerops.bootstrap.config_classes.cdf_labels import RelationshipLabel
 from cognite.powerops.clients.shop.api.shop_result_files_api import ShopFilesAPI
 from cognite.powerops.clients.shop.data_classes import ShopRun
 from cognite.powerops.clients.shop.data_classes.shop_result_files import ShopLogFile, ShopYamlFile
 from cognite.powerops.clients.shop.data_classes.shop_results import ObjectiveFunction, ShopRunResult
 from cognite.powerops.clients.shop.data_classes.shop_results_compare import ShopResultsCompare
+from cognite.powerops.resync.config_classes.cdf_labels import RelationshipLabel
 from cognite.powerops.utils.cdf.calls import retrieve_relationships_from_source_ext_id
 
 logger = logging.getLogger(__name__)

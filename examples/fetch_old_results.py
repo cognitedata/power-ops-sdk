@@ -4,7 +4,7 @@ from pprint import pprint
 import yaml
 
 from cognite.powerops import PowerOpsClient
-from cognite.powerops.bootstrap.logger import configure_debug_logging
+from cognite.powerops.resync.logger import configure_debug_logging
 
 configure_debug_logging("DEBUG")
 
