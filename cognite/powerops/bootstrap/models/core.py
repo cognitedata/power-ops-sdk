@@ -6,10 +6,10 @@ from cognite.client.data_classes import TimeSeries
 from pydantic import Field
 
 from cognite.powerops.bootstrap.config_classes.cdf_labels import AssetLabel
-from cognite.powerops.bootstrap.models.base import CDFSequence, Model, Type
+from cognite.powerops.bootstrap.models.base import AssetType, CDFSequence, Model
 
 
-class Generator(Type):
+class Generator(AssetType):
     type_: ClassVar[str] = "generator"
     label = AssetLabel.GENERATOR
     p_min: float
@@ -20,14 +20,14 @@ class Generator(Type):
     turbine_efficiency_curve: Optional[CDFSequence] = None
 
 
-class Reservoir(Type):
+class Reservoir(AssetType):
     type_: ClassVar[str] = "reservoir"
     label = AssetLabel.RESERVOIR
     display_name: str
     ordering: str
 
 
-class Plant(Type):
+class Plant(AssetType):
     type_: ClassVar[str] = "plant"
     label = AssetLabel.PLANT
     display_name: str
@@ -48,7 +48,7 @@ class Plant(Type):
     head_direct_time_series: Optional[TimeSeries] = None
 
 
-class Watercourse(Type):
+class Watercourse(AssetType):
     type_: ClassVar[str] = "watercourse"
     label = AssetLabel.WATERCOURSE
     shop_penalty_limit: str
@@ -56,7 +56,7 @@ class Watercourse(Type):
     production_obligation_time_series: list[TimeSeries] = Field(default_factory=list)
 
 
-class PriceArea(Type):
+class PriceArea(AssetType):
     type_: ClassVar[str] = "price_area"
     label = AssetLabel.PRICE_AREA
     dayahead_price_time_series: Optional[TimeSeries] = None

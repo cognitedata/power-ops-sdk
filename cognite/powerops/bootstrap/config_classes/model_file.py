@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field
 
-from cognite.powerops.bootstrap.models.base import Type
+from cognite.powerops.bootstrap.models.base import AssetType
 
 
 class Connection(BaseModel):
@@ -12,7 +12,7 @@ class Connection(BaseModel):
     to: str
     to_type: str
 
-    def to_from_any(self, from_: dict[str, Type], to: Type) -> Type | None:
+    def to_from_any(self, from_: dict[str, AssetType], to: AssetType) -> AssetType | None:
         if self.to != to.name or self.to_type != to.type_:
             return None
         f = from_.get(self.from_)
@@ -20,7 +20,7 @@ class Connection(BaseModel):
             return f
         return None
 
-    def from_to_any(self, from_: Type, to: dict[str, Type]) -> Type | None:
+    def from_to_any(self, from_: AssetType, to: dict[str, AssetType]) -> AssetType | None:
         if self.from_ != from_.name or self.from_type != from_.type_:
             return None
         f = to.get(self.to)

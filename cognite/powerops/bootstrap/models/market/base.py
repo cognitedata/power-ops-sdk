@@ -5,10 +5,10 @@ from typing import Union
 from pydantic import Field
 
 from cognite.powerops.bootstrap.config_classes.cdf_labels import AssetLabel
-from cognite.powerops.bootstrap.models.base import NonAssetType, Type
+from cognite.powerops.bootstrap.models.base import AssetType, NonAssetType
 
 
-class Market(Type):
+class Market(AssetType):
     type_ = "market_configuration"
     label = AssetLabel.MARKET
     timezone: str
@@ -29,5 +29,5 @@ class Bid(NonAssetType):
     date: str
 
 
-class Process(Type):
+class Process(AssetType):
     shop: ShopTransformation

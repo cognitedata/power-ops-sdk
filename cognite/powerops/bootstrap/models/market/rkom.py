@@ -5,7 +5,7 @@ from typing import ClassVar
 from pydantic import Field
 
 from cognite.powerops.bootstrap.config_classes.cdf_labels import AssetLabel
-from cognite.powerops.bootstrap.models.base import CDFSequence, NonAssetType, Type
+from cognite.powerops.bootstrap.models.base import AssetType, CDFSequence, NonAssetType
 from cognite.powerops.bootstrap.models.market.base import Bid, Market, Process
 
 
@@ -41,7 +41,7 @@ class RKOMCombinationBid(NonAssetType):
     rkom_bid_configs: list[str]
 
 
-class RKOMBidCombination(Type):
+class RKOMBidCombination(AssetType):
     type_: ClassVar[str] = "rkom_bid_combination_configuration"
     label: ClassVar[str] = AssetLabel.RKOM_BID_CONFIGURATION
     bid: RKOMCombinationBid

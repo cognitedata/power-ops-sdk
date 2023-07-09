@@ -17,7 +17,17 @@ ROOT_ASSET = Asset(
 )
 
 
-class Type(BaseModel, ABC):
+class CDFSequence(BaseModel):
+    model_config: ClassVar[ConfigDict] = ConfigDict(arbitrary_types_allowed=True)
+    sequence: Sequence
+    content: Union[SequenceData, pd.DataFrame]
+
+    @property
+    def external_id(self):
+        return self.sequence.external_id
+
+
+class AssetType(BaseModel, ABC):
     type_: ClassVar[Optional[str]] = None
     label: ClassVar[AssetLabel]
     model_config: ClassVar[ConfigDict] = ConfigDict(arbitrary_types_allowed=True)
@@ -56,10 +66,10 @@ class Type(BaseModel, ABC):
             value = getattr(self, field_name)
             if not value:
                 continue
-            if isinstance(value, list) and value and isinstance(value[0], Type):
+            if isinstance(value, list) and value and isinstance(value[0], AssetType):
                 for target in value:
                     relationships.append(self._create_relationship(target.external_id, "ASSET", target.type_))
-            elif isinstance(value, Type):
+            elif isinstance(value, AssetType):
                 target_type = value.type_
                 if self.type_ == "plant" and value.type_ == "reservoir":
                     target_type = "inlet_reservoir"
@@ -89,8 +99,8 @@ class Type(BaseModel, ABC):
             value = getattr(self, field_name)
             if (
                 value is None
-                or isinstance(value, Type)
-                or (isinstance(value, list) and value and isinstance(value[0], Type))
+                or isinstance(value, AssetType)
+                or (isinstance(value, list) and value and isinstance(value[0], AssetType))
             ):
                 continue
             if isinstance(value, list) and not value:
@@ -159,16 +169,6 @@ class Type(BaseModel, ABC):
             target_type=target_cdf_type,
             labels=[Label(external_id=label.value)],
         )
-
-
-class CDFSequence(BaseModel):
-    model_config: ClassVar[ConfigDict] = ConfigDict(arbitrary_types_allowed=True)
-    sequence: Sequence
-    content: Union[SequenceData, pd.DataFrame]
-
-    @property
-    def external_id(self):
-        return self.sequence.external_id
 
 
 class Model(BaseModel, ABC):
