@@ -1,26 +1,16 @@
 from __future__ import annotations
 
-import datetime
 import json
 import logging
 from hashlib import md5
-from pathlib import Path
-from typing import Callable, List
-from uuid import uuid4
 
-from cognite.client.data_classes import Event
-
-from cognite.powerops.bootstrap.data_classes.bootstrap_config import BootstrapConfig, CoreConfigs
-from cognite.powerops.bootstrap.data_classes.cdf_labels import AssetLabel, RelationshipLabel
+from cognite.powerops.bootstrap.data_classes.bootstrap_config import CoreConfigs
 from cognite.powerops.bootstrap.data_classes.core.watercourse import WatercourseConfig
 from cognite.powerops.bootstrap.data_classes.resource_collection import ResourceCollection, write_mapping_to_sequence
 from cognite.powerops.bootstrap.data_classes.shared import ExternalId, TimeSeriesMapping
 from cognite.powerops.bootstrap.data_classes.shop_file_config import ShopFileConfig
 from cognite.powerops.bootstrap.data_classes.shop_output_definition import ShopOutputConfig
-from cognite.powerops.bootstrap.data_classes.skeleton_asset_hierarchy import create_skeleton_asset_hierarchy
-from cognite.powerops.bootstrap.to_cdf_resources.files import process_yaml_file
-from cognite.powerops.bootstrap.to_cdf_resources.to_core_model import to_core_model
-from cognite.powerops.bootstrap.to_cdf_resources.to_market_model import market_to_cdf_resources
+from cognite.powerops.bootstrap.to_models.files import process_yaml_file
 from cognite.powerops.clients.cogshop.data_classes import (
     FileRefApply,
     MappingApply,
@@ -31,9 +21,34 @@ from cognite.powerops.clients.cogshop.data_classes import (
 logger = logging.getLogger(__name__)
 
 
+def cogshop_to_cdf_resources(
+    core: CoreConfigs,
+    shop_file_configs: dict[ExternalId, ShopFileConfig],
+    shop_version: str,
+    watercourses_shop: list[ShopFileConfig],
+) -> ResourceCollection:
+    # PowerOps asset data model
+    collection = ResourceCollection()
+    # SHOP files (model, commands, cut mapping++) and configs (base mapping, output definition)
+    # Shop files related to each watercourse
+    collection.add(create_watercourse_shop_files(watercourses_shop, core.watercourse_directories))
+    collection += create_watercourse_processed_shop_files(watercourse_configs=core.watercourses)
+    collection += create_watercourse_timeseries_mappings(
+        watercourse_configs=core.watercourses, time_series_mappings=core.time_series_mappings
+    )
+    # Create DM resources
+    collection += create_dm_resources(
+        core.watercourses,
+        list(shop_file_configs.values()),
+        core.time_series_mappings,
+        shop_version,
+    )
+    return collection
+
+
 def create_watercourse_timeseries_mappings(
     watercourse_configs: list[WatercourseConfig],
-    time_series_mappings: List[TimeSeriesMapping],
+    time_series_mappings: list[TimeSeriesMapping],
 ) -> ResourceCollection:
     cdf_resources = ResourceCollection()
     for watercourse_config, time_series_mapping in zip(watercourse_configs, time_series_mappings):
@@ -115,7 +130,7 @@ def _make_ext_id(cls, watercourse_name: str, *args: str) -> str:
 def create_watercourse_dm_resources(
     watercourse_name: str,
     watercourse_version: str,
-    config_files: List[ShopFileConfig],
+    config_files: list[ShopFileConfig],
     base_mapping: TimeSeriesMapping,
     shop_version: str,
 ) -> list[ModelTemplateApply | MappingApply | TransformationApply | FileRefApply]:
@@ -200,92 +215,3 @@ def create_watercourse_dm_resources(
         )
     )
     return [*dm_file_refs, *dm_transformations, *dm_base_mappings, *dm_model_templates]
-
-
-def transform(
-    config: BootstrapConfig,
-    market_name: str,
-    echo: Callable[[str], None],
-) -> ResourceCollection:
-    settings = config.settings
-    echo(f"Running bootstrap for data set {settings.data_set_external_id} in CDF project {settings.cdf_project}")
-
-    # Create common CDF resources
-    labels = AssetLabel.as_label_definitions() + RelationshipLabel.as_label_definitions()
-    skeleton_assets = create_skeleton_asset_hierarchy(
-        settings.shop_service_url, settings.organization_subdomain, settings.tenant_id
-    )
-    collection = ResourceCollection()
-    collection.add(skeleton_assets)
-    collection.add(labels)
-
-    core_model = to_core_model(config.core)
-    collection.add(core_model.assets())
-    collection.add(core_model.relationships())
-    collection.add(core_model.sequences())
-
-    collection += core_to_cdf_resources(
-        config.core, collection.shop_file_configs, config.settings.shop_version, config.watercourses_shop
-    )
-
-    market_model = market_to_cdf_resources(
-        config.markets,
-        market_name,
-        core_model.price_areas,
-    )
-    collection.add(market_model.assets())
-    collection.add(market_model.relationships())
-    collection.add(market_model.sequences())
-
-    # Set hashes for Shop Files, needed for comparison
-    for shop_config in collection.shop_file_configs.values():
-        if shop_config.md5_hash is None:
-            file_content = Path(shop_config.path).read_bytes()
-            shop_config.set_md5_hash(file_content)
-
-    # ! This should always stay at the bottom # TODO: consider wrapper
-    collection.add(create_bootstrap_finished_event(echo))
-
-    return collection
-
-
-def core_to_cdf_resources(
-    core: CoreConfigs,
-    shop_file_configs: dict[ExternalId, ShopFileConfig],
-    shop_version: str,
-    watercourses_shop: list[ShopFileConfig],
-) -> ResourceCollection:
-    # PowerOps asset data model
-    collection = ResourceCollection()
-    # SHOP files (model, commands, cut mapping++) and configs (base mapping, output definition)
-    # Shop files related to each watercourse
-    collection.add(create_watercourse_shop_files(watercourses_shop, core.watercourse_directories))
-    collection += create_watercourse_processed_shop_files(watercourse_configs=core.watercourses)
-    collection += create_watercourse_timeseries_mappings(
-        watercourse_configs=core.watercourses, time_series_mappings=core.time_series_mappings
-    )
-    # Create DM resources
-    collection += create_dm_resources(
-        core.watercourses,
-        list(shop_file_configs.values()),
-        core.time_series_mappings,
-        shop_version,
-    )
-    return collection
-
-
-def create_bootstrap_finished_event(echo: Callable[[str], None]) -> Event:
-    """Creating a POWEROPS_BOOTSTRAP_FINISHED Event in CDF to signal that bootstrap scripts have been ran"""
-    current_time = int(datetime.datetime.utcnow().timestamp() * 1000)  # in milliseconds
-    event = Event(
-        start_time=current_time,
-        end_time=current_time,
-        external_id=f"POWEROPS_BOOTSTRAP_FINISHED_{str(uuid4())}",
-        type="POWEROPS_BOOTSTRAP_FINISHED",
-        subtype=None,
-        source="PowerOps bootstrap",
-        description="Manual run of bootstrap scripts finished",
-    )
-    echo(f"Created status event '{event.external_id}'")
-
-    return event

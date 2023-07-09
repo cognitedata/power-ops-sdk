@@ -13,7 +13,7 @@ from cognite.powerops.bootstrap.data_classes.shared import ExternalId, TimeSerie
 from cognite.powerops.bootstrap.data_classes.shop_file_config import ShopFileConfig
 from cognite.powerops.bootstrap.data_classes.to_delete import SequenceContent
 from cognite.powerops.bootstrap.logic import clean_cdf_resources_for_diff, clean_local_resources_for_diff
-from cognite.powerops.bootstrap.to_cdf_resources.files import upload_shop_config_file
+from cognite.powerops.bootstrap.to_models.files import upload_shop_config_file
 from cognite.powerops.bootstrap.utils.common import dump_cdf_resource, print_warning
 from cognite.powerops.clients.cogshop.data_classes import (
     FileRef,

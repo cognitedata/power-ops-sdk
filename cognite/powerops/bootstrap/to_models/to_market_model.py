@@ -55,8 +55,8 @@ def market_to_cdf_resources(
     )
 
     model = MarketModel(
-        markets=[nord_pool] + rkom.markets,
-        processes=dayahead_processes + rkom.processes + benchmarking_processes,
+        markets=rkom.markets + [nord_pool],
+        processes=rkom.processes + dayahead_processes + benchmarking_processes,
         combinations=rkom.combinations,
     )
 
