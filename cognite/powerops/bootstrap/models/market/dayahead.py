@@ -17,6 +17,7 @@ class DayAheadBid(Bid):
     no_shop: bool
     bid_process_configuration_name: str
     bid_matrix_generator_config_external_id: str
+    market_config_external_id: str
 
 
 class DayAheadProcess(Process):

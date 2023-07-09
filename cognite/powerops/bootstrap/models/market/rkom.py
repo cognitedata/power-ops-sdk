@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from typing import ClassVar
 
+from pydantic import Field
+
 from cognite.powerops.bootstrap.data_classes.cdf_labels import AssetLabel
 from cognite.powerops.bootstrap.models.base import CDFSequence, NonAssetType, Type
 from cognite.powerops.bootstrap.models.market.base import Bid, Market, Process
@@ -11,20 +13,26 @@ class RKOMBid(Bid):
     auction: str
     block: str
     method: str
-    minimum_price: float
-    price_premium: float
-    price_scenarios: list[str]
+    minimum_price: str
+    price_premium: str
     product: str
-    reserve_scenarios: list[str]
     watercourse: str
+    price_scenarios: str
+    reserve_scenarios: str
+
+
+class RKOMPlants(NonAssetType):
+    plants: str
 
 
 class RKOMProcess(Process):
-    type_ = "POWEROPS"
+    type_: ClassVar[str] = "POWEROPS"
+    label: ClassVar[AssetLabel] = AssetLabel.RKOM_BID_CONFIGURATION
     bid: RKOMBid
-    process_events: list[str]
+    process_events: list[str] = Field(default_factory=list)
     timezone: str
-    incremental_mapping: list[CDFSequence]
+    rkom: RKOMPlants
+    incremental_mapping: list[CDFSequence] = Field(default_factory=list)
 
 
 class RKOMCombinationBid(NonAssetType):

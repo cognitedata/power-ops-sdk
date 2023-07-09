@@ -5,7 +5,7 @@ from cognite.powerops.bootstrap.models.base import Model
 from .base import Bid, DateTransformation, Market, Process, ShopTransformation
 from .benchmark import BenchmarkBid, BenchmarkProcess, ProductionPlanTimeSeries
 from .dayahead import DayAheadBid, DayAheadProcess, NordPoolMarket
-from .rkom import RKOMBid, RKOMBidCombination, RKOMCombinationBid, RKOMMarket, RKOMProcess
+from .rkom import RKOMBid, RKOMBidCombination, RKOMCombinationBid, RKOMMarket, RKOMPlants, RKOMProcess
 
 
 class MarketModel(Model):
@@ -20,6 +20,7 @@ __all__ = [
     "RKOMMarket",
     "RKOMProcess",
     "RKOMCombinationBid",
+    "RKOMPlants",
     "DayAheadBid",
     "NordPoolMarket",
     "DayAheadProcess",

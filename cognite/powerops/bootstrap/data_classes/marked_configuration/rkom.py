@@ -208,7 +208,7 @@ class RKOMBidProcessConfig(Configuration):
     def to_bootstrap_resources(self, price_scenarios_by_id, market_name) -> ResourceCollection:
         bootstrap_resources = ResourceCollection()
         asset = self.to_cdf_asset(price_scenarios_by_id, market_name)
-        bootstrap_resources.add(asset)
+        # bootstrap_resources.add(asset)
 
         price_scenarios = map_price_scenarios_by_name(self.price_scenarios, price_scenarios_by_id, market_name)
 

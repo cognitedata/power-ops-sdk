@@ -11,7 +11,7 @@ from cognite.powerops.bootstrap.models.market.base import Bid, Process
 
 
 class BenchmarkBid(Bid):
-    ...
+    market_config_external_id: str
 
 
 class ProductionPlanTimeSeries(NonAssetType):

@@ -27,7 +27,6 @@ class ShopTransformation(NonAssetType):
 
 class Bid(NonAssetType):
     date: str
-    market_config_external_id: str
 
 
 class Process(Type):

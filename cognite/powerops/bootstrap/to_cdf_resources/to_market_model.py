@@ -25,51 +25,6 @@ from cognite.powerops.bootstrap.models.base import CDFSequence
 from cognite.powerops.bootstrap.models.core import PriceArea
 
 
-def _to_rkom_market(
-    rkom_bid_process: list[RKOMBidProcessConfig],
-    price_scenarios_by_id: dict[str, PriceScenario],
-    market_name: str,
-    rkom_bid_combination_configs: list[RKOMBidCombinationConfig] | None = None,
-    rkom_market_config: RkomMarketConfig | None = None,
-) -> tuple[ResourceCollection, MarketModel]:
-    model = MarketModel()
-
-    if not rkom_market_config:
-        # Default market configuration
-        rkom_market_config = RkomMarketConfig(
-            name="RKOM weekly (Statnett)",
-            timezone="Europe/Oslo",
-            start_of_week=1,
-            external_id="market_configuration_statnett_rkom_weekly",
-        )
-    rkom_market = market_models.RKOMMarket(**rkom_market_config.model_dump())
-    rkom_market.external_id = rkom_market_config.external_id
-    model.markets.append(rkom_market)
-
-    bootstrap_resource_collection = ResourceCollection()
-    for rkom_process_config in rkom_bid_process:
-        bootstrap_resource_collection += rkom_process_config.to_bootstrap_resources(
-            price_scenarios_by_id=price_scenarios_by_id, market_name=market_name
-        )
-
-    if rkom_bid_combination_configs:
-        for config in rkom_bid_combination_configs:
-            sequence_external_id = f"RKOM_bid_combination_configuration_{config.auction.value}_{config.name}"
-            combination = market_models.RKOMBidCombination(
-                name=sequence_external_id.replace("_", " "),
-                description="Defining which RKOM bid methods should be combined (into the total bid form)",
-                bid=market_models.RKOMCombinationBid(
-                    auction=config.auction.value,
-                    combination_name=config.name,
-                    rkom_bid_configs=config.rkom_bid_config_external_ids,
-                ),
-            )
-            combination.external_id = sequence_external_id
-            model.combinations.append(combination)
-
-    return bootstrap_resource_collection, model
-
-
 def market_to_cdf_resources(
     bootstrap_resources: ResourceCollection,
     config: MarketConfigs,
@@ -251,3 +206,80 @@ def _to_dayahead_process(
         dayahead_processes.append(dayahead_process)
 
     return dayahead_processes
+
+
+def _to_rkom_market(
+    rkom_bid_process: list[RKOMBidProcessConfig],
+    price_scenarios_by_id: dict[str, PriceScenario],
+    market_name: str,
+    rkom_bid_combination_configs: list[RKOMBidCombinationConfig] | None = None,
+    rkom_market_config: RkomMarketConfig | None = None,
+) -> tuple[ResourceCollection, MarketModel]:
+    model = MarketModel()
+
+    if not rkom_market_config:
+        # Default market configuration
+        rkom_market_config = RkomMarketConfig(
+            name="RKOM weekly (Statnett)",
+            timezone="Europe/Oslo",
+            start_of_week=1,
+            external_id="market_configuration_statnett_rkom_weekly",
+        )
+    rkom_market = market_models.RKOMMarket(**rkom_market_config.model_dump())
+    rkom_market.external_id = rkom_market_config.external_id
+    model.markets.append(rkom_market)
+
+    bootstrap_resource_collection = ResourceCollection()
+    for config in rkom_bid_process:
+        price_scenarios_by_name = map_price_scenarios_by_name(
+            config.price_scenarios,
+            price_scenarios_by_id,
+            market_name,
+        )
+
+        process = market_models.RKOMProcess(
+            name=config.name,
+            description=f"RKOM bid generation config for {config.watercourse}",
+            bid=market_models.RKOMBid(
+                date=str(config.bid_date),
+                auction=config.reserve_scenarios.auction.value,
+                block=config.reserve_scenarios.block,
+                product=config.reserve_scenarios.product,
+                watercourse=config.watercourse,
+                method=config.method,
+                minimum_price=str(config.minimum_price),
+                price_premium=str(config.price_premium),
+                price_scenarios=str(list(price_scenarios_by_name)),
+                reserve_scenarios=str(config.reserve_scenarios),
+            ),
+            shop=market_models.ShopTransformation(
+                starttime=str(config.shop_start),
+                endtime=str(config.shop_end),
+            ),
+            timezone=config.timezone,
+            rkom=market_models.RKOMPlants(plants=str(sorted(config.rkom_plants))),
+            incremental_mapping=[],
+        )
+        process.external_id = config.external_id
+        process.parent_external_id = "rkom_bid_process_configurations"
+        model.processes.append(process)
+
+        bootstrap_resource_collection += config.to_bootstrap_resources(
+            price_scenarios_by_id=price_scenarios_by_id, market_name=market_name
+        )
+
+    for config in rkom_bid_combination_configs or []:
+        sequence_external_id = f"RKOM_bid_combination_configuration_{config.auction.value}_{config.name}"
+        combination = market_models.RKOMBidCombination(
+            name=sequence_external_id.replace("_", " "),
+            description="Defining which RKOM bid methods should be combined (into the total bid form)",
+            bid=market_models.RKOMCombinationBid(
+                auction=config.auction.value,
+                combination_name=config.name,
+                rkom_bid_configs=config.rkom_bid_config_external_ids,
+            ),
+        )
+        combination.external_id = sequence_external_id
+        model.combinations.append(combination)
+
+    return bootstrap_resource_collection, model
