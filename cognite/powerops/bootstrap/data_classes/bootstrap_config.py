@@ -3,7 +3,7 @@ from __future__ import annotations
 import itertools
 from collections import Counter, defaultdict
 from pathlib import Path
-from typing import Dict, Optional
+from typing import Any, Dict, Optional
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 from pydantic_core.core_schema import ValidationInfo
@@ -104,7 +104,7 @@ class BootstrapConfig(BaseModel):
 
     @classmethod
     def from_yamls(cls, config_dir_path: Path, cdf_project: str) -> "BootstrapConfig":
-        configs = {"markets": {}, "core": {"source_path": config_dir_path}}
+        configs: dict[str, dict[str, Any]] = {"markets": {}, "core": {"source_path": config_dir_path}}
         market_keys = set(MarketConfigs.model_fields)
         core_keys = set(CoreConfigs.model_fields)
         for field_name in itertools.chain(cls.model_fields, MarketConfigs.model_fields, CoreConfigs.model_fields):

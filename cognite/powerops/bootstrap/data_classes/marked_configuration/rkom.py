@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from typing import ClassVar, Dict, Generator, List, Literal, Optional, Tuple
 
 from cognite.client.data_classes import Asset, Label
-from pydantic import BaseModel, ConfigDict, Field, model_validator, validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator, validator
 
 from cognite.powerops.bootstrap.data_classes.cdf_labels import AssetLabel, RelationshipLabel
 from cognite.powerops.bootstrap.data_classes.marked_configuration import PriceScenario, PriceScenarioID
@@ -119,11 +119,11 @@ class RKOMBidCombinationConfig(Configuration):
     name: str = Field("default", alias="bid_combination_name")
     rkom_bid_config_external_ids: List[str] = Field(alias="bid_rkom_bid_configs")
 
-    @validator("auction", pre=True)
+    @field_validator("auction", mode="before")
     def to_enum(cls, value):
         return Auction[value] if isinstance(value, str) else value
 
-    @validator("rkom_bid_config_external_ids", pre=True)
+    @field_validator("rkom_bid_config_external_ids", mode="before")
     def parse_string(cls, value):
         return [external_id for external_id in ast.literal_eval(value)] if isinstance(value, str) else value
 
@@ -178,11 +178,11 @@ class RKOMBidProcessConfig(Configuration):
         )
         return value
 
-    @validator("shop_start", "shop_end", pre=True)
+    @field_validator("shop_start", "shop_end", mode="before")
     def json_loads(cls, value):
         return {"operations": json.loads(value)} if isinstance(value, str) else value
 
-    @validator("price_scenarios", pre=True)
+    @field_validator("price_scenarios", mode="before")
     def literal_eval(cls, value):
         return [{"id": id_} for id_ in ast.literal_eval(value)] if isinstance(value, str) else value
 
@@ -360,8 +360,6 @@ class ReserveScenario:
 
 
 # ! TODO: what about daylight saving ??
-
-
 def generate_reserve_schedule(volume: int, n_days: int, night: bool = False) -> Dict[str, int]:
     """Creates the argument for the mapping transformation function for RKOM reserve obligation.
         Some examples:

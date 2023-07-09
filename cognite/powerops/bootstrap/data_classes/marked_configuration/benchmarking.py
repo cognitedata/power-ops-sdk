@@ -37,9 +37,9 @@ class BenchmarkingConfig(Configuration):
         "load_penalty": "Load Penalty",
     }  # Pydantic handles mutable defaults such that this is OK:
     # https://stackoverflow.com/questions/63793662/how-to-give-a-pydantic-list-field-a-default-value/63808835#63808835
+
     # TODO: Consider adding relationships to bid process config
     #  assets (or remove the optional part that uses those relationships in power-ops-functions)
-
     @field_validator("shop_start", "shop_end", "bid_date", mode="before")
     def json_loads(cls, value):
         return {"operations": json.loads(value)} if isinstance(value, str) else value

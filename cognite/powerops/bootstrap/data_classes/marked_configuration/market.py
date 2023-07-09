@@ -2,8 +2,6 @@ from __future__ import annotations
 
 from typing import ClassVar
 
-from cognite.client.data_classes import Asset
-
 from cognite.powerops.bootstrap.data_classes.marked_configuration._core import Configuration
 
 
@@ -19,29 +17,6 @@ class MarketConfig(Configuration):
     trade_lot: float = None
     price_steps: int = None
     price_unit: str = None
-
-    @property
-    def metadata(self) -> dict:
-        return {
-            "min_price": self.min_price,
-            "max_price": self.max_price,
-            "timezone": self.timezone,
-            "time_unit": self.time_unit,
-            "tick_size": self.tick_size,
-            "trade_lot": self.trade_lot,
-            "price_steps": self.price_steps,
-            "price_unit": self.price_unit,
-        }
-
-    @property
-    def cdf_asset(self) -> Asset:
-        return Asset(
-            external_id=self.external_id,
-            name=self.name,
-            metadata=self.metadata,
-            parent_external_id=self.parent_external_id,
-            labels=["market"],
-        )
 
 
 MARKET_CONFIG_NORDPOOL_DAYAHEAD = MarketConfig(

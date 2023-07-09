@@ -195,8 +195,6 @@ def market_to_cdf_resources(
     market_name: str,
     price_areas: list[PriceArea],
 ) -> tuple[ResourceCollection, MarketModel]:
-    # PowerOps configuration resources
-
     nord_pool = market_models.NordPoolMarket(**config.market.model_dump())
     # The external_id is not following the naming convention, so we need to set it manually
     nord_pool.external_id = config.market.external_id
