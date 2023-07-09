@@ -9,6 +9,7 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator
 from pydantic_core.core_schema import ValidationInfo
 
 from cognite.powerops.resync._settings import Settings
+from cognite.powerops.resync.config_classes.cogshop.shop_file_config import ShopFileConfig
 from cognite.powerops.resync.config_classes.core.generator import GeneratorTimeSeriesMapping
 from cognite.powerops.resync.config_classes.core.plant import PlantTimeSeriesMapping
 from cognite.powerops.resync.config_classes.core.watercourse import WatercourseConfig
@@ -24,7 +25,6 @@ from cognite.powerops.resync.config_classes.marked_configuration.rkom import (
     RkomMarketConfig,
 )
 from cognite.powerops.resync.config_classes.shared import TimeSeriesMapping
-from cognite.powerops.resync.config_classes.shop_file_config import ShopFileConfig
 from cognite.powerops.resync.utils.serializer import load_yaml
 
 

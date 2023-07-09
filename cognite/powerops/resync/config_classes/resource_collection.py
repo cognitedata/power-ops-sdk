@@ -21,8 +21,8 @@ from cognite.powerops.clients.cogshop.data_classes import (
 )
 from cognite.powerops.clients.cogshop.data_classes._core import DomainModel, DomainModelApply
 from cognite.powerops.clients.powerops_client import PowerOpsClient
+from cognite.powerops.resync.config_classes.cogshop.shop_file_config import ShopFileConfig
 from cognite.powerops.resync.config_classes.shared import ExternalId, TimeSeriesMapping
-from cognite.powerops.resync.config_classes.shop_file_config import ShopFileConfig
 from cognite.powerops.resync.config_classes.to_delete import SequenceContent
 from cognite.powerops.resync.logic import clean_cdf_resources_for_diff, clean_local_resources_for_diff
 from cognite.powerops.resync.to_models.files import upload_shop_config_file
