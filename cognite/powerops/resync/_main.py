@@ -47,7 +47,11 @@ def _load_transform(market: str, path: Path, cdf_project: str, echo: Callable[[s
     config = ReSyncConfig.from_yamls(path, cdf_project)
     configure_debug_logging(config.settings.debug_level)
     # Step 2 - transform from config to CDF resources and preview diffs
-    bootstrap_resources = transform(config, market, echo)
+    echo(
+        f"Running resync for data set {config.settings.data_set_external_id} "
+        f"in CDF project {config.settings.cdf_project}"
+    )
+    bootstrap_resources = transform(config, market)
     return bootstrap_resources, config
 
 
