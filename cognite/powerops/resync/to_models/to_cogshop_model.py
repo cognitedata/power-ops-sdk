@@ -2,8 +2,12 @@ from __future__ import annotations
 
 import json
 import logging
+from datetime import datetime
 from hashlib import md5
 from pathlib import Path
+from typing import Optional
+
+import yaml
 
 from cognite.powerops.clients.cogshop.data_classes import (
     FileRefApply,
@@ -17,7 +21,7 @@ from cognite.powerops.resync.config_classes.core.watercourse import WatercourseC
 from cognite.powerops.resync.config_classes.resource_collection import ResourceCollection, write_mapping_to_sequence
 from cognite.powerops.resync.config_classes.resync_config import CogShopConfigs, CoreConfigs
 from cognite.powerops.resync.config_classes.shared import ExternalId, TimeSeriesMapping
-from cognite.powerops.resync.to_models.files import process_yaml_file
+from cognite.powerops.resync.utils.serializer import load_yaml
 
 logger = logging.getLogger(__name__)
 
@@ -222,3 +226,58 @@ def create_watercourse_dm_resources(
         )
     )
     return [*dm_file_refs, *dm_transformations, *dm_base_mappings, *dm_model_templates]
+
+
+def shop_attribute_value_is_time_series(shop_attribute_value) -> bool:
+    return isinstance(shop_attribute_value, dict) and isinstance(list(shop_attribute_value)[0], datetime)
+
+
+def get_model_without_timeseries(
+    yaml_raw_path: str,
+    non_time_series_attributes_to_remove: Optional[list[str]] = None,
+    encoding=None,
+) -> dict:
+    if non_time_series_attributes_to_remove is None:
+        non_time_series_attributes_to_remove = []
+
+    model_incl_time_and_connections = load_yaml(Path(yaml_raw_path), encoding=encoding, clean_data=True)
+
+    model = model_incl_time_and_connections["model"]
+
+    for object_type, objects in model.items():
+        for object_attributes in objects.values():
+            for attribute_name, attribute_data in list(
+                object_attributes.items()
+            ):  # Needs list() since we pop while iterating over the dict
+                if f"{object_type}.{attribute_name}" in non_time_series_attributes_to_remove:
+                    object_attributes.pop(attribute_name)
+
+                elif shop_attribute_value_is_time_series(attribute_data):
+                    object_attributes.pop(attribute_name)
+
+    model_dict = {"model": model}
+
+    # TODO: remove this when standardizing input SHOP file strucutre (model vs model + connections)
+    if "connections" in model_incl_time_and_connections:
+        model_dict["connections"] = model_incl_time_and_connections["connections"]
+
+    return model_dict
+
+
+# ! Assumes yaml with "model", "time" and "connections"!!
+# --> TODO: "time" is just dropped?
+# TODO: extract loading of yaml
+
+
+def process_yaml_file(yaml_raw_path: str, yaml_processed_path: str) -> None:
+    """Process raw YAML file and store as new file"""
+    # Remove timeseries
+    model_without_timeseries = get_model_without_timeseries(
+        yaml_raw_path=yaml_raw_path,
+        non_time_series_attributes_to_remove=["reservoir.start_vol", "generator.initial_state"],
+        encoding="utf-8",
+    )
+
+    # Save cleaned model
+    with open(yaml_processed_path, "w", encoding="utf-8") as stream:
+        yaml.safe_dump(data=model_without_timeseries, stream=stream, allow_unicode=True, sort_keys=False)

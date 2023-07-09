@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import logging
+from pathlib import Path
 from typing import Literal, Union, cast
 
 import pandas as pd
+from cognite.client import CogniteClient
 from cognite.client.data_classes import Asset, Event, LabelDefinition, Relationship, Sequence
 from cognite.client.data_classes._base import CogniteResource, CogniteResourceList
 from deepdiff import DeepDiff
@@ -25,7 +27,6 @@ from cognite.powerops.resync.config_classes.cogshop.shop_file_config import Shop
 from cognite.powerops.resync.config_classes.shared import ExternalId, TimeSeriesMapping
 from cognite.powerops.resync.config_classes.to_delete import SequenceContent
 from cognite.powerops.resync.logic import clean_cdf_resources_for_diff, clean_local_resources_for_diff
-from cognite.powerops.resync.to_models.files import upload_shop_config_file
 from cognite.powerops.resync.utils.common import dump_cdf_resource, print_warning
 from cognite.powerops.utils.cdf.calls import upsert_cognite_resources
 
@@ -385,3 +386,30 @@ def write_mapping_to_sequence(
     else:
         print_warning("Time series mapping is empty! No sequence rows to write!")
     return bootstrap_resource_collection
+
+
+def upload_shop_config_file(
+    client: CogniteClient,
+    config: ShopFileConfig,
+    data_set_id: int,
+    overwrite: bool = True,
+) -> None:
+    if config.path is None:
+        raise ValueError("The Path must be set to upload file")
+    file_content = Path(config.path).read_bytes()
+    if config.md5_hash is None:
+        config.set_md5_hash(file_content)
+    try:
+        file = client.files.upload_bytes(
+            content=file_content,
+            external_id=config.external_id,
+            name=config.external_id,
+            metadata=config.metadata,
+            source="PowerOps bootstrap",
+            mime_type="text/plain",
+            data_set_id=data_set_id,
+            overwrite=overwrite,
+        )
+        print(f"Uploaded file with externalId {file.external_id}")
+    except Exception as e:
+        print(e)

@@ -27,7 +27,7 @@ from cognite.powerops.resync.models.base import CDFSequence
 from cognite.powerops.resync.models.core import PriceArea
 
 
-def market_to_cdf_resources(
+def to_market_model(
     config: MarketConfigs,
     market_name: str,
     price_areas: list[PriceArea],

@@ -7,7 +7,7 @@ from cognite.powerops.resync.config_classes.resource_collection import ResourceC
 from cognite.powerops.resync.config_classes.resync_config import ReSyncConfig
 from cognite.powerops.resync.to_models.to_cogshop_model import cogshop_to_cdf_resources
 from cognite.powerops.resync.to_models.to_core_model import to_core_model
-from cognite.powerops.resync.to_models.to_market_model import market_to_cdf_resources
+from cognite.powerops.resync.to_models.to_market_model import to_market_model
 
 
 def transform(
@@ -20,11 +20,7 @@ def transform(
 
     core_model = to_core_model(config.core)
 
-    market_model = market_to_cdf_resources(
-        config.markets,
-        market_name,
-        core_model.price_areas,
-    )
+    market_model = to_market_model(config.markets, market_name, core_model.price_areas)
     market_model.set_root_asset(
         settings.shop_service_url,
         settings.organization_subdomain,
