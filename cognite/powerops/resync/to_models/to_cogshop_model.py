@@ -11,9 +11,9 @@ from cognite.powerops.clients.cogshop.data_classes import (
     ModelTemplateApply,
     TransformationApply,
 )
-from cognite.powerops.resync.config_classes.bootstrap_config import CoreConfigs
 from cognite.powerops.resync.config_classes.core.watercourse import WatercourseConfig
 from cognite.powerops.resync.config_classes.resource_collection import ResourceCollection, write_mapping_to_sequence
+from cognite.powerops.resync.config_classes.resync_config import CoreConfigs
 from cognite.powerops.resync.config_classes.shared import ExternalId, TimeSeriesMapping
 from cognite.powerops.resync.config_classes.shop_file_config import ShopFileConfig
 from cognite.powerops.resync.config_classes.shop_output_definition import ShopOutputConfig

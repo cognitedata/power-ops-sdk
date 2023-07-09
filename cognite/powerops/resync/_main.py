@@ -6,8 +6,8 @@ from uuid import uuid4
 from cognite.client.data_classes import Event
 
 from cognite.powerops.clients import get_powerops_client
-from cognite.powerops.resync.config_classes.bootstrap_config import BootstrapConfig
 from cognite.powerops.resync.config_classes.resource_collection import ResourceCollection
+from cognite.powerops.resync.config_classes.resync_config import ReSyncConfig
 from cognite.powerops.resync.logger import configure_debug_logging
 from cognite.powerops.resync.to_models.transform import transform
 
@@ -44,7 +44,7 @@ def apply(path: Path, market: str, echo: Callable[[str], None] = None):
 
 def _load_transform(market: str, path: Path, cdf_project: str, echo: Callable[[str], None]):
     # Step 1 - configure and validate config
-    config = BootstrapConfig.from_yamls(path, cdf_project)
+    config = ReSyncConfig.from_yamls(path, cdf_project)
     configure_debug_logging(config.settings.debug_level)
     # Step 2 - transform from config to CDF resources and preview diffs
     bootstrap_resources = transform(config, market, echo)

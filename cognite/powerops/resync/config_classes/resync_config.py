@@ -95,7 +95,7 @@ class CoreConfigs(BaseModel):
         return {w.name: str(self.source_path / w.directory) for w in self.watercourses}
 
 
-class BootstrapConfig(BaseModel):
+class ReSyncConfig(BaseModel):
     model_config = ConfigDict(populate_by_name=True)
     settings: Settings = Field(alias="constants")
     core: CoreConfigs
@@ -103,7 +103,7 @@ class BootstrapConfig(BaseModel):
     watercourses_shop: list[ShopFileConfig]
 
     @classmethod
-    def from_yamls(cls, config_dir_path: Path, cdf_project: str) -> "BootstrapConfig":
+    def from_yamls(cls, config_dir_path: Path, cdf_project: str) -> "ReSyncConfig":
         configs: dict[str, dict[str, Any]] = {"markets": {}, "core": {"source_path": config_dir_path}}
         market_keys = set(MarketConfigs.model_fields)
         core_keys = set(CoreConfigs.model_fields)

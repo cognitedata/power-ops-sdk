@@ -5,7 +5,6 @@ import json
 import pandas as pd
 from cognite.client.data_classes import Sequence
 
-from cognite.powerops.resync.config_classes.bootstrap_config import MarketConfigs
 from cognite.powerops.resync.config_classes.marked_configuration import (
     BenchmarkingConfig,
     PriceScenario,
@@ -21,6 +20,7 @@ from cognite.powerops.resync.config_classes.marked_configuration.rkom import (
     RKOMBidProcessConfig,
     RkomMarketConfig,
 )
+from cognite.powerops.resync.config_classes.resync_config import MarketConfigs
 from cognite.powerops.resync.models import MarketModel
 from cognite.powerops.resync.models import market as market_models
 from cognite.powerops.resync.models.base import CDFSequence

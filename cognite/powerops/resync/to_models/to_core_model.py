@@ -8,8 +8,8 @@ import pandas as pd
 from cognite.client.data_classes import Sequence, TimeSeries
 
 import cognite.powerops.resync.models.base
-from cognite.powerops.resync.config_classes.bootstrap_config import CoreConfigs
 from cognite.powerops.resync.config_classes.model_file import Connection
+from cognite.powerops.resync.config_classes.resync_config import CoreConfigs
 from cognite.powerops.resync.models import core
 from cognite.powerops.resync.utils.serializer import load_yaml
 
