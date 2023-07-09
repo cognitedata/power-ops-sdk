@@ -41,6 +41,7 @@ class AssetLabel(CDFLabel):
     RESERVOIR_GATE = "reservoir_gate"
     RESERVOIR_PLANT = "reservoir_plant"
     RKOM_BID_CONFIGURATION = "rkom_bid_configuration"
+    RKOM_BID_COMBINATION_CONFIGURATION = "rkom_bid_combination_configuration"
     WATERCOURSE = "watercourse"
 
 

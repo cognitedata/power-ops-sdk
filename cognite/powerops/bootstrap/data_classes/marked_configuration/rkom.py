@@ -83,33 +83,6 @@ class RkomMarketConfig(BaseModel):
     name: str
     timezone: str
     start_of_week: int
-    parent_external_id: ClassVar[str] = "market_configurations"
-
-    @property
-    def metadata(self) -> dict:
-        return {
-            "timezone": self.timezone,
-            "start_of_week": self.start_of_week,
-        }
-
-    @property
-    def cdf_asset(self) -> Asset:
-        return Asset(
-            external_id=self.external_id,
-            name=self.name,
-            metadata=self.metadata,
-            parent_external_id=self.parent_external_id,
-            labels=["market"],
-        )
-
-    @staticmethod
-    def default() -> "RkomMarketConfig":
-        return RkomMarketConfig(
-            external_id="market_configuration_statnett_rkom_weekly",
-            name="RKOM weekly (Statnett)",
-            timezone="Europe/Oslo",
-            start_of_week=1,
-        )
 
 
 class RKOMBidCombinationConfig(Configuration):
@@ -117,7 +90,7 @@ class RKOMBidCombinationConfig(Configuration):
     model_config = ConfigDict(populate_by_name=True)
     auction: Auction = Field(alias="bid_auction")
     name: str = Field("default", alias="bid_combination_name")
-    rkom_bid_config_external_ids: List[str] = Field(alias="bid_rkom_bid_configs")
+    rkom_bid_config_external_ids: list[str] = Field(alias="bid_rkom_bid_configs")
 
     @field_validator("auction", mode="before")
     def to_enum(cls, value):
@@ -126,22 +99,6 @@ class RKOMBidCombinationConfig(Configuration):
     @field_validator("rkom_bid_config_external_ids", mode="before")
     def parse_string(cls, value):
         return [external_id for external_id in ast.literal_eval(value)] if isinstance(value, str) else value
-
-    @property
-    def cdf_asset(self) -> Asset:
-        sequence_external_id = f"RKOM_bid_combination_configuration_{self.auction.value}_{self.name}"
-
-        return Asset(
-            name=sequence_external_id.replace("_", " "),
-            description="Defining which RKOM bid methods should be combined (into the total bid form)",
-            external_id=sequence_external_id,
-            metadata={
-                "bid:auction": self.auction.value,
-                "bid:combination_name": self.name,
-                "bid:rkom_bid_configs": json.dumps(self.rkom_bid_config_external_ids),
-            },
-            parent_external_id=self.parent_external_id,
-        )
 
 
 class RKOMBidProcessConfig(Configuration):

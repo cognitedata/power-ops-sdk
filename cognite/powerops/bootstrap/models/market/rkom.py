@@ -1,6 +1,9 @@
 from __future__ import annotations
 
-from cognite.powerops.bootstrap.models.base import CDFSequence, Type
+from typing import ClassVar
+
+from cognite.powerops.bootstrap.data_classes.cdf_labels import AssetLabel
+from cognite.powerops.bootstrap.models.base import CDFSequence, NonAssetType, Type
 from cognite.powerops.bootstrap.models.market.base import Bid, Market, Process
 
 
@@ -24,10 +27,16 @@ class RKOMProcess(Process):
     incremental_mapping: list[CDFSequence]
 
 
-class RKOMBidCombination(Type):
-    type_ = "RKOM_bid_combination_configuration"
+class RKOMCombinationBid(NonAssetType):
     auction: str
-    bid_configurations: list[RKOMProcess]
+    combination_name: str
+    rkom_bid_configs: list[str]
+
+
+class RKOMBidCombination(Type):
+    type_: ClassVar[str] = "rkom_bid_combination_configuration"
+    label: ClassVar[str] = AssetLabel.RKOM_BID_CONFIGURATION
+    bid: RKOMCombinationBid
 
 
 class RKOMMarket(Market):

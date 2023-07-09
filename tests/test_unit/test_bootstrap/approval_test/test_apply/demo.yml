@@ -614,6 +614,8 @@ assets:
 - description: Defining which RKOM bid methods should be combined (into the total
     bid form)
   external_id: RKOM_bid_combination_configuration_week_default
+  labels:
+  - externalId: rkom_bid_configuration
   metadata:
     bid:auction: week
     bid:combination_name: default
@@ -623,6 +625,8 @@ assets:
 - description: Defining which RKOM bid methods should be combined (into the total
     bid form)
   external_id: RKOM_bid_combination_configuration_weekend_default
+  labels:
+  - externalId: rkom_bid_configuration
   metadata:
     bid:auction: weekend
     bid:combination_name: default
@@ -11260,6 +11264,8 @@ labels:
   name: reservoir_gate
 - external_id: reservoir_plant
   name: reservoir_plant
+- external_id: rkom_bid_combination_configuration
+  name: rkom_bid_combination_configuration
 - external_id: rkom_bid_configuration
   name: rkom_bid_configuration
 - external_id: watercourse
