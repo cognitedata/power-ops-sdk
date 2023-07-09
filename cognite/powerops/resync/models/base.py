@@ -167,7 +167,7 @@ class AssetType(BaseModel, ABC):
         )
 
 
-class Model(BaseModel, ABC):
+class AssetModel(BaseModel, ABC):
     root_asset: ClassVar[Asset]
 
     def assets(self) -> list[Asset]:

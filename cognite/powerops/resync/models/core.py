@@ -6,7 +6,7 @@ from cognite.client.data_classes import Asset, TimeSeries
 from pydantic import Field
 
 from cognite.powerops.cdf_labels import AssetLabel
-from cognite.powerops.resync.models.base import AssetType, CDFSequence, Model
+from cognite.powerops.resync.models.base import AssetModel, AssetType, CDFSequence
 
 
 class Generator(AssetType):
@@ -64,7 +64,7 @@ class PriceArea(AssetType):
     watercourses: list[Watercourse] = Field(default_factory=list)
 
 
-class CoreModel(Model):
+class CoreModel(AssetModel):
     root_asset: ClassVar[Asset] = Asset(external_id="power_ops", name="PowerOps")
     price_areas: list[PriceArea] = Field(default_factory=list)
     watercourses: list[Watercourse] = Field(default_factory=list)
