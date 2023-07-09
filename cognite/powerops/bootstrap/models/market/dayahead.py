@@ -4,7 +4,7 @@ from typing import ClassVar, Optional
 
 from pydantic import Field
 
-from cognite.powerops.bootstrap.data_classes.cdf_labels import AssetLabel
+from cognite.powerops.bootstrap.config_classes.cdf_labels import AssetLabel
 from cognite.powerops.bootstrap.models.base import CDFSequence
 from cognite.powerops.bootstrap.models.market.base import Bid, Market, Process
 

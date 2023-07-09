@@ -5,18 +5,18 @@ import json
 import pandas as pd
 from cognite.client.data_classes import Sequence
 
-from cognite.powerops.bootstrap.data_classes.bootstrap_config import MarketConfigs
-from cognite.powerops.bootstrap.data_classes.marked_configuration import (
+from cognite.powerops.bootstrap.config_classes.bootstrap_config import MarketConfigs
+from cognite.powerops.bootstrap.config_classes.marked_configuration import (
     BenchmarkingConfig,
     PriceScenario,
     PriceScenarioID,
 )
-from cognite.powerops.bootstrap.data_classes.marked_configuration.dayahead import (
+from cognite.powerops.bootstrap.config_classes.marked_configuration.dayahead import (
     BidMatrixGeneratorConfig,
     BidProcessConfig,
 )
-from cognite.powerops.bootstrap.data_classes.marked_configuration.market import MARKET_BY_PRICE_AREA
-from cognite.powerops.bootstrap.data_classes.marked_configuration.rkom import (
+from cognite.powerops.bootstrap.config_classes.marked_configuration.market import MARKET_BY_PRICE_AREA
+from cognite.powerops.bootstrap.config_classes.marked_configuration.rkom import (
     RKOMBidCombinationConfig,
     RKOMBidProcessConfig,
     RkomMarketConfig,

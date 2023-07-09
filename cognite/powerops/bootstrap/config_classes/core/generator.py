@@ -4,7 +4,7 @@ from typing import Optional
 
 from pydantic import BaseModel, field_validator
 
-from cognite.powerops.bootstrap.data_classes.core._core import ExternalId
+from cognite.powerops.bootstrap.config_classes.core._core import ExternalId
 
 GeneratorName = str
 

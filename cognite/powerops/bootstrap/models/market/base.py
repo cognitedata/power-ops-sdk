@@ -4,7 +4,7 @@ from typing import Union
 
 from pydantic import Field
 
-from cognite.powerops.bootstrap.data_classes.cdf_labels import AssetLabel
+from cognite.powerops.bootstrap.config_classes.cdf_labels import AssetLabel
 from cognite.powerops.bootstrap.models.base import NonAssetType, Type
 
 

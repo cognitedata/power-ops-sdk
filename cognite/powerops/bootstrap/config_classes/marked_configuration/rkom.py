@@ -8,9 +8,9 @@ from typing import ClassVar, Dict, Generator, List, Literal, Optional, Tuple
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
-from cognite.powerops.bootstrap.data_classes.marked_configuration import PriceScenarioID
-from cognite.powerops.bootstrap.data_classes.marked_configuration._core import Configuration, RelativeTime
-from cognite.powerops.bootstrap.data_classes.shared import (
+from cognite.powerops.bootstrap.config_classes.marked_configuration import PriceScenarioID
+from cognite.powerops.bootstrap.config_classes.marked_configuration._core import Configuration, RelativeTime
+from cognite.powerops.bootstrap.config_classes.shared import (
     AggregationMethod,
     Auction,
     RetrievalType,

@@ -5,7 +5,7 @@ from typing import Optional
 import yaml
 from cognite.client import CogniteClient
 
-from cognite.powerops.bootstrap.data_classes.shop_file_config import ShopFileConfig
+from cognite.powerops.bootstrap.config_classes.shop_file_config import ShopFileConfig
 from cognite.powerops.bootstrap.utils.serializer import load_yaml
 
 

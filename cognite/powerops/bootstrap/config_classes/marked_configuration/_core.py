@@ -5,7 +5,7 @@ from typing import Dict, List, Optional, Tuple, Union
 
 from pydantic import BaseModel, ConfigDict, validator
 
-from cognite.powerops.bootstrap.data_classes.shared import (
+from cognite.powerops.bootstrap.config_classes.shared import (
     AggregationMethod,
     RetrievalType,
     TimeSeriesMapping,

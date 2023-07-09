@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import ClassVar
 
-from cognite.powerops.bootstrap.data_classes.marked_configuration._core import Configuration
+from cognite.powerops.bootstrap.config_classes.marked_configuration._core import Configuration
 
 
 class MarketConfig(Configuration):

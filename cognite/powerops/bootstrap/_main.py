@@ -1,8 +1,8 @@
 from pathlib import Path
 from typing import Callable
 
-from cognite.powerops.bootstrap.data_classes.bootstrap_config import BootstrapConfig
-from cognite.powerops.bootstrap.data_classes.resource_collection import ResourceCollection
+from cognite.powerops.bootstrap.config_classes.bootstrap_config import BootstrapConfig
+from cognite.powerops.bootstrap.config_classes.resource_collection import ResourceCollection
 from cognite.powerops.bootstrap.logger import configure_debug_logging
 from cognite.powerops.bootstrap.to_models.transform import transform
 from cognite.powerops.clients import get_powerops_client

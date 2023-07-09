@@ -7,10 +7,10 @@ from uuid import uuid4
 
 from cognite.client.data_classes import Event
 
-from cognite.powerops.bootstrap.data_classes.bootstrap_config import BootstrapConfig
-from cognite.powerops.bootstrap.data_classes.cdf_labels import AssetLabel, RelationshipLabel
-from cognite.powerops.bootstrap.data_classes.resource_collection import ResourceCollection
-from cognite.powerops.bootstrap.data_classes.skeleton_asset_hierarchy import create_skeleton_asset_hierarchy
+from cognite.powerops.bootstrap.config_classes.bootstrap_config import BootstrapConfig
+from cognite.powerops.bootstrap.config_classes.cdf_labels import AssetLabel, RelationshipLabel
+from cognite.powerops.bootstrap.config_classes.resource_collection import ResourceCollection
+from cognite.powerops.bootstrap.config_classes.skeleton_asset_hierarchy import create_skeleton_asset_hierarchy
 from cognite.powerops.bootstrap.to_models.to_cogshop_model import cogshop_to_cdf_resources
 from cognite.powerops.bootstrap.to_models.to_core_model import to_core_model
 from cognite.powerops.bootstrap.to_models.to_market_model import market_to_cdf_resources

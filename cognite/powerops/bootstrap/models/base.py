@@ -8,8 +8,8 @@ import pandas as pd
 from cognite.client.data_classes import Asset, Label, Relationship, Sequence, SequenceData, TimeSeries
 from pydantic import BaseModel, ConfigDict
 
-from cognite.powerops.bootstrap.data_classes.cdf_labels import AssetLabel, RelationshipLabel
-from cognite.powerops.bootstrap.data_classes.to_delete import SequenceContent
+from cognite.powerops.bootstrap.config_classes.cdf_labels import AssetLabel, RelationshipLabel
+from cognite.powerops.bootstrap.config_classes.to_delete import SequenceContent
 
 ROOT_ASSET = Asset(
     external_id="power_ops",

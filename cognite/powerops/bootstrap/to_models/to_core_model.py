@@ -8,8 +8,8 @@ import pandas as pd
 from cognite.client.data_classes import Sequence, TimeSeries
 
 import cognite.powerops.bootstrap.models.base
-from cognite.powerops.bootstrap.data_classes.bootstrap_config import CoreConfigs
-from cognite.powerops.bootstrap.data_classes.model_file import Connection
+from cognite.powerops.bootstrap.config_classes.bootstrap_config import CoreConfigs
+from cognite.powerops.bootstrap.config_classes.model_file import Connection
 from cognite.powerops.bootstrap.models import core
 from cognite.powerops.bootstrap.utils.serializer import load_yaml
 

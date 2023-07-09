@@ -5,7 +5,7 @@ from typing import Dict, List, Optional
 
 from pydantic import ConfigDict, Field, field_validator
 
-from cognite.powerops.bootstrap.data_classes.marked_configuration._core import Configuration, RelativeTime
+from cognite.powerops.bootstrap.config_classes.marked_configuration._core import Configuration, RelativeTime
 
 
 class BenchmarkingConfig(Configuration):

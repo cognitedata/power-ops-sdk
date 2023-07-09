@@ -9,22 +9,22 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator
 from pydantic_core.core_schema import ValidationInfo
 
 from cognite.powerops.bootstrap._settings import Settings
-from cognite.powerops.bootstrap.data_classes.core.generator import GeneratorTimeSeriesMapping
-from cognite.powerops.bootstrap.data_classes.core.plant import PlantTimeSeriesMapping
-from cognite.powerops.bootstrap.data_classes.core.watercourse import WatercourseConfig
-from cognite.powerops.bootstrap.data_classes.marked_configuration import BenchmarkingConfig, PriceScenario
-from cognite.powerops.bootstrap.data_classes.marked_configuration.dayahead import (
+from cognite.powerops.bootstrap.config_classes.core.generator import GeneratorTimeSeriesMapping
+from cognite.powerops.bootstrap.config_classes.core.plant import PlantTimeSeriesMapping
+from cognite.powerops.bootstrap.config_classes.core.watercourse import WatercourseConfig
+from cognite.powerops.bootstrap.config_classes.marked_configuration import BenchmarkingConfig, PriceScenario
+from cognite.powerops.bootstrap.config_classes.marked_configuration.dayahead import (
     BidMatrixGeneratorConfig,
     BidProcessConfig,
 )
-from cognite.powerops.bootstrap.data_classes.marked_configuration.market import MarketConfig
-from cognite.powerops.bootstrap.data_classes.marked_configuration.rkom import (
+from cognite.powerops.bootstrap.config_classes.marked_configuration.market import MarketConfig
+from cognite.powerops.bootstrap.config_classes.marked_configuration.rkom import (
     RKOMBidCombinationConfig,
     RKOMBidProcessConfig,
     RkomMarketConfig,
 )
-from cognite.powerops.bootstrap.data_classes.shared import TimeSeriesMapping
-from cognite.powerops.bootstrap.data_classes.shop_file_config import ShopFileConfig
+from cognite.powerops.bootstrap.config_classes.shared import TimeSeriesMapping
+from cognite.powerops.bootstrap.config_classes.shop_file_config import ShopFileConfig
 from cognite.powerops.bootstrap.utils.serializer import load_yaml
 
 

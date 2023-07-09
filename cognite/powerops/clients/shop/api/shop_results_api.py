@@ -8,7 +8,7 @@ from typing import Optional
 import pandas as pd
 from cognite.client import CogniteClient
 
-from cognite.powerops.bootstrap.data_classes.cdf_labels import RelationshipLabel
+from cognite.powerops.bootstrap.config_classes.cdf_labels import RelationshipLabel
 from cognite.powerops.clients.shop.api.shop_result_files_api import ShopFilesAPI
 from cognite.powerops.clients.shop.data_classes import ShopRun
 from cognite.powerops.clients.shop.data_classes.shop_result_files import ShopLogFile, ShopYamlFile

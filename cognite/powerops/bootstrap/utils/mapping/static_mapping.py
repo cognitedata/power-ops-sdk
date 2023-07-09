@@ -1,6 +1,6 @@
 from typing import Any
 
-from cognite.powerops.bootstrap.data_classes.shared import (
+from cognite.powerops.bootstrap.config_classes.shared import (
     TimeSeriesMapping,
     TimeSeriesMappingEntry,
     Transformation,

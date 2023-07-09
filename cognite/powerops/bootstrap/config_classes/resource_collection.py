@@ -9,9 +9,9 @@ from cognite.client.data_classes._base import CogniteResource, CogniteResourceLi
 from deepdiff import DeepDiff
 from pydantic import BaseModel, Extra
 
-from cognite.powerops.bootstrap.data_classes.shared import ExternalId, TimeSeriesMapping
-from cognite.powerops.bootstrap.data_classes.shop_file_config import ShopFileConfig
-from cognite.powerops.bootstrap.data_classes.to_delete import SequenceContent
+from cognite.powerops.bootstrap.config_classes.shared import ExternalId, TimeSeriesMapping
+from cognite.powerops.bootstrap.config_classes.shop_file_config import ShopFileConfig
+from cognite.powerops.bootstrap.config_classes.to_delete import SequenceContent
 from cognite.powerops.bootstrap.logic import clean_cdf_resources_for_diff, clean_local_resources_for_diff
 from cognite.powerops.bootstrap.to_models.files import upload_shop_config_file
 from cognite.powerops.bootstrap.utils.common import dump_cdf_resource, print_warning
