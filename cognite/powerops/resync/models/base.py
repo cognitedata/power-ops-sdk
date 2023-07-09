@@ -188,14 +188,15 @@ class Model(BaseModel, ABC):
             parts[0] = parts[0].title()
             return " ".join(parts)
 
+        parent_ids = {item.parent_external_id for item in self._items()}
+
         return [self.root_asset] + [
             Asset(
-                external_id=items[0].parent_external_id,
-                name=_to_name(items[0].parent_external_id),
+                external_id=parent_id,
+                name=_to_name(parent_id),
                 parent_external_id=self.root_asset.external_id,
             )
-            for f in self.model_fields
-            if isinstance(items := getattr(self, f), list) and items and isinstance(items[0], AssetType)
+            for parent_id in parent_ids
         ]
 
     def _items(self) -> Iterable[AssetType]:
