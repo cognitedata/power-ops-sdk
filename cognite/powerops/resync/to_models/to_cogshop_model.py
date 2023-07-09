@@ -13,7 +13,7 @@ from cognite.powerops.clients.cogshop.data_classes import (
 )
 from cognite.powerops.resync.config_classes.core.watercourse import WatercourseConfig
 from cognite.powerops.resync.config_classes.resource_collection import ResourceCollection, write_mapping_to_sequence
-from cognite.powerops.resync.config_classes.resync_config import CoreConfigs
+from cognite.powerops.resync.config_classes.resync_config import CogShopConfigs, CoreConfigs
 from cognite.powerops.resync.config_classes.shared import ExternalId, TimeSeriesMapping
 from cognite.powerops.resync.config_classes.shop_file_config import ShopFileConfig
 from cognite.powerops.resync.config_classes.shop_output_definition import ShopOutputConfig
@@ -26,22 +26,22 @@ def cogshop_to_cdf_resources(
     core: CoreConfigs,
     shop_file_configs: dict[ExternalId, ShopFileConfig],
     shop_version: str,
-    watercourses_shop: list[ShopFileConfig],
+    cogshop: CogShopConfigs,
 ) -> ResourceCollection:
     # PowerOps asset data model
     collection = ResourceCollection()
     # SHOP files (model, commands, cut mapping++) and configs (base mapping, output definition)
     # Shop files related to each watercourse
-    collection.add(create_watercourse_shop_files(watercourses_shop, core.watercourse_directories))
+    collection.add(create_watercourse_shop_files(cogshop.watercourses_shop, core.watercourse_directories))
     collection += create_watercourse_processed_shop_files(watercourse_configs=core.watercourses)
     collection += create_watercourse_timeseries_mappings(
-        watercourse_configs=core.watercourses, time_series_mappings=core.time_series_mappings
+        watercourse_configs=core.watercourses, time_series_mappings=cogshop.time_series_mappings
     )
     # Create DM resources
     collection += create_dm_resources(
         core.watercourses,
         list(shop_file_configs.values()),
-        core.time_series_mappings,
+        cogshop.time_series_mappings,
         shop_version,
     )
 

@@ -43,7 +43,7 @@ def transform(
         collection.add(model.sequences())
 
     collection += cogshop_to_cdf_resources(
-        config.core, collection.shop_file_configs, config.settings.shop_version, config.watercourses_shop
+        config.core, collection.shop_file_configs, config.settings.shop_version, config.cogshop
     )
 
     return collection

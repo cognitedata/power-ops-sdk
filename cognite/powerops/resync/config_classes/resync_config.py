@@ -86,7 +86,6 @@ class CoreConfigs(BaseModel):
     source_path: Path
     dayahead_price_timeseries: Dict[str, str]
     watercourses: list[WatercourseConfig]
-    time_series_mappings: list[TimeSeriesMapping]
     generator_time_series_mappings: list[GeneratorTimeSeriesMapping] = None
     plant_time_series_mappings: list[PlantTimeSeriesMapping] = None
 
@@ -95,27 +94,38 @@ class CoreConfigs(BaseModel):
         return {w.name: str(self.source_path / w.directory) for w in self.watercourses}
 
 
+class CogShopConfigs(BaseModel):
+    time_series_mappings: list[TimeSeriesMapping]
+    watercourses_shop: list[ShopFileConfig]
+
+
 class ReSyncConfig(BaseModel):
     model_config = ConfigDict(populate_by_name=True)
     settings: Settings = Field(alias="constants")
     core: CoreConfigs
     markets: MarketConfigs
-    watercourses_shop: list[ShopFileConfig]
+    cogshop: CogShopConfigs
 
     @classmethod
     def from_yamls(cls, config_dir_path: Path, cdf_project: str) -> "ReSyncConfig":
-        configs: dict[str, dict[str, Any]] = {"markets": {}, "core": {"source_path": config_dir_path}}
+        configs: dict[str, dict[str, Any]] = {"markets": {}, "core": {"source_path": config_dir_path}, "cogshop": {}}
         market_keys = set(MarketConfigs.model_fields)
         core_keys = set(CoreConfigs.model_fields)
-        for field_name in itertools.chain(cls.model_fields, MarketConfigs.model_fields, CoreConfigs.model_fields):
+        cogshop_keys = set(CogShopConfigs.model_fields)
+        for field_name in itertools.chain(
+            cls.model_fields, MarketConfigs.model_fields, CoreConfigs.model_fields, CogShopConfigs.model_fields
+        ):
             if (config_file_path := config_dir_path / f"{field_name}.yaml").exists():
                 content = load_yaml(config_file_path, encoding="utf-8")
                 if field_name in market_keys:
                     configs["markets"][field_name] = content
                 elif field_name in core_keys:
                     configs["core"][field_name] = content
+                elif field_name in cogshop_keys:
+                    configs["cogshop"][field_name] = content
                 else:
                     configs[field_name] = content
+
         # Todo Hack to get cdf project into settings.
         if "settings" in configs:
             configs["settings"]["cdf_project"] = cdf_project
