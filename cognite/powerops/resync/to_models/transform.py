@@ -31,13 +31,17 @@ def transform(
         market_name,
         core_model.price_areas,
     )
+    # market_model.set_root_asset(settings.shop_service_url, s
+    # ettings.organization_subdomain, settings.tenant_id, core_model.root_asset.external_id)
 
     collection = ResourceCollection()
     # Create common CDF resources
     labels = AssetLabel.as_label_definitions() + RelationshipLabel.as_label_definitions()
 
     skeleton_assets = create_skeleton_asset_hierarchy(
-        settings.shop_service_url, settings.organization_subdomain, settings.tenant_id
+        settings.shop_service_url,
+        settings.organization_subdomain,
+        settings.tenant_id,
     )
     collection.add(skeleton_assets)
     collection.add(labels)

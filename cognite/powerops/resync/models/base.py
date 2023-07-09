@@ -170,13 +170,13 @@ class Model(BaseModel, ABC):
     root_asset: ClassVar[Asset]
 
     def assets(self) -> list[Asset]:
-        return [item.as_asset() for f in self.model_fields for item in getattr(self, f)]
+        return [item.as_asset() for item in self._items()]
 
     def relationships(self) -> list[Relationship]:
-        return [edge for f in self.model_fields for item in getattr(self, f) for edge in item.relationships()]
+        return [edge for item in self._items() for edge in item.relationships()]
 
     def sequences(self) -> list[Sequence | SequenceContent]:
-        return [sequence for f in self.model_fields for item in getattr(self, f) for sequence in item.sequences()]
+        return [sequence for item in self._items() for sequence in item.sequences()]
 
     def parent_assets(self) -> list[Asset]:
         if not self.root_asset:

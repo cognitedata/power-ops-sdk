@@ -19,9 +19,25 @@ class MarketModel(Model):
 
     @classmethod
     def set_root_asset(
-        cls,
-    ):
-        raise NotImplementedError()
+        cls, shop_service_url: str, organization_subdomain: str, tenant_id: str, core_root_asset_external_id: str
+    ) -> None:
+        if shop_service_url == "https://shop-staging.az-inso-powerops.cognite.ai/submit-run":
+            customer = "cognite"
+        else:
+            customer = organization_subdomain
+
+        cls.root_asset = Asset(
+            parent_external_id=core_root_asset_external_id,
+            external_id="configurations",
+            name="Configurations",
+            description="Configurations used for PowerOps",
+            metadata={
+                "shop_service_url": shop_service_url,
+                "organization_subdomain": organization_subdomain,
+                "customer": customer,
+                "tenant_id": tenant_id,
+            },
+        )
 
 
 __all__ = [
