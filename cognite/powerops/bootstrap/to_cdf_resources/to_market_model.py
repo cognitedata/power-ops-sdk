@@ -7,7 +7,7 @@ import pandas as pd
 from cognite.client.data_classes import Sequence
 
 from cognite.powerops.bootstrap.data_classes.bootstrap_config import MarketConfigs
-from cognite.powerops.bootstrap.data_classes.marked_configuration import PriceScenario
+from cognite.powerops.bootstrap.data_classes.marked_configuration import BenchmarkingConfig, PriceScenario
 from cognite.powerops.bootstrap.data_classes.marked_configuration._core import RelativeTime, map_price_scenarios_by_name
 from cognite.powerops.bootstrap.data_classes.marked_configuration.dayahead import (
     BidMatrixGeneratorConfig,
@@ -26,14 +26,14 @@ from cognite.powerops.bootstrap.models.base import CDFSequence
 from cognite.powerops.bootstrap.models.core import PriceArea
 
 
-def process_bid_process_configs(
+def to_dayahead_process(
     bid_process_configs: list[BidProcessConfig],
     bidmatrix_generators: list[BidMatrixGeneratorConfig],
     price_scenarios_by_id: dict[str, PriceScenario],
     benchmarking: market_models.BenchmarkProcess,
     price_areas: list[PriceArea],
-) -> MarketModel:
-    model = MarketModel()
+) -> list[market_models.DayAheadProcess]:
+    dayahead_processes: list[market_models.DayAheadProcess] = []
     bidmatrix_generators_by_name: dict[str, BidMatrixGeneratorConfig] = {g.name: g for g in bidmatrix_generators}
     for process in bid_process_configs:
         price_scenarios_by_name = map_price_scenarios_by_name(
@@ -138,9 +138,9 @@ def process_bid_process_configs(
         dayahead_process.external_id = f"POWEROPS_bid_process_configuration_{process.name}"
         dayahead_process.parent_external_id = "bid_process_configurations"
 
-        model.processes.append(dayahead_process)
+        dayahead_processes.append(dayahead_process)
 
-    return model
+    return dayahead_processes
 
 
 def process_rkom_bid_configs(
@@ -201,11 +201,40 @@ def market_to_cdf_resources(
     # The external_id is not following the naming convention, so we need to set it manually
     nord_pool.external_id = config.market.external_id
 
-    benchmarking = market_models.MarketModel()
-    if len(config.benchmarks) > 1:
+    benchmarking_processes = to_benchmarking_process(config.benchmarks)
+
+    dayahead_processes = to_dayahead_process(
+        bid_process_configs=config.bidprocess,
+        bidmatrix_generators=config.bidmatrix_generators,
+        price_scenarios_by_id=config.price_scenario_by_id,
+        benchmarking=benchmarking_processes[0],
+        price_areas=price_areas,
+    )
+
+    created, rkom = process_rkom_bid_configs(
+        rkom_bid_combination_configs=config.rkom_bid_combination,
+        rkom_market_config=config.rkom_market,
+        rkom_bid_process=config.rkom_bid_process,
+        price_scenarios_by_id=config.price_scenario_by_id,
+        market_name=market_name,
+    )
+    bootstrap_resources += created
+
+    model = MarketModel(
+        markets=[nord_pool] + rkom.markets,
+        processes=dayahead_processes + rkom.processes + benchmarking_processes,
+        combinations=rkom.combinations,
+    )
+
+    return bootstrap_resources, model
+
+
+def to_benchmarking_process(benchmarks: list[BenchmarkingConfig]) -> list[market_models.BenchmarkProcess]:
+    benchmarkings: list[market_models.BenchmarkProcess] = []
+    if len(benchmarks) > 1:
         # The external id for the benchmarking is hardcoded and thus there can be only one.
         raise NotImplementedError("Only one benchmarking config is supported")
-    for benchmarking_config in config.benchmarks:
+    for benchmarking_config in benchmarks:
         bid = market_models.BenchmarkBid(
             date=json.dumps(benchmarking_config.bid_date.operations),
             market_config_external_id=benchmarking_config.market_config_external_id,
@@ -223,29 +252,5 @@ def market_to_cdf_resources(
             benchmarking_metrics=benchmarking_config.relevant_shop_objective_metrics,
         )
         process.external_id = "POWEROPS_dayahead_bidding_benchmarking_config"
-        benchmarking.processes.append(process)
-
-    dayahead_market = process_bid_process_configs(
-        bid_process_configs=config.bidprocess,
-        bidmatrix_generators=config.bidmatrix_generators,
-        price_scenarios_by_id=config.price_scenario_by_id,
-        benchmarking=benchmarking.processes[0],
-        price_areas=price_areas,
-    )
-    created, rkom = process_rkom_bid_configs(
-        rkom_bid_combination_configs=config.rkom_bid_combination,
-        rkom_market_config=config.rkom_market,
-        rkom_bid_process=config.rkom_bid_process,
-        price_scenarios_by_id=config.price_scenario_by_id,
-        market_name=market_name,
-    )
-    bootstrap_resources += created
-
-    model = MarketModel(
-        markets=[nord_pool] + rkom.markets,
-        bids=dayahead_market.bids + rkom.bids,
-        processes=dayahead_market.processes + rkom.processes + benchmarking.processes,
-        combinations=rkom.combinations,
-    )
-
-    return bootstrap_resources, model
+        benchmarkings.append(process)
+    return benchmarkings
