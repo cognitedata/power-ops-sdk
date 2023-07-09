@@ -7,11 +7,12 @@ from typing import List, Optional
 from cognite.powerops.bootstrap.data_classes.bootstrap_config import MarketConfigs
 from cognite.powerops.bootstrap.data_classes.core.watercourse import WatercourseConfig
 from cognite.powerops.bootstrap.data_classes.marked_configuration import BenchmarkingConfig, PriceScenario
-from cognite.powerops.bootstrap.data_classes.marked_configuration._core import RelativeTime
+from cognite.powerops.bootstrap.data_classes.marked_configuration._core import RelativeTime, map_price_scenarios_by_name
 from cognite.powerops.bootstrap.data_classes.marked_configuration.dayahead import (
     BidMatrixGeneratorConfig,
     BidProcessConfig,
 )
+from cognite.powerops.bootstrap.data_classes.marked_configuration.market import MARKET_BY_PRICE_AREA
 from cognite.powerops.bootstrap.data_classes.marked_configuration.rkom import (
     RKOMBidCombinationConfig,
     RKOMBidProcessConfig,
@@ -28,19 +29,52 @@ def process_bid_process_configs(
     bid_process_configs: list[BidProcessConfig],
     bidmatrix_generators: list[BidMatrixGeneratorConfig],
     price_scenarios_by_id: dict[str, PriceScenario],
-    watercourses: list[WatercourseConfig],
+    watercourse_configs: list[WatercourseConfig],
     benchmark: BenchmarkingConfig,
     existing_bootstrap_resources: ResourceCollection,
+    watercourses: list[Watercourse],
+    benchmarking: market_models.BenchmarkProcess,
 ) -> tuple[ResourceCollection, MarketModel]:
     new_resources = ResourceCollection()
     model = MarketModel()
-    for bid_process_config in bid_process_configs:
-        new_resources += bid_process_config.to_bootstrap_resources(
+    for process in bid_process_configs:
+        price_scenarios = map_price_scenarios_by_name(
+            process.price_scenarios, price_scenarios_by_id, MARKET_BY_PRICE_AREA[process.price_area_name]
+        )
+        dayahead_process = market_models.DayAheadProcess(
+            name=f"Bid process configuration {process.name}",
+            description="Bid process configuration defining how to run a bid matrix generation process",
+            bid=market_models.DayAheadBid(
+                date=str(process.bid_date or benchmarking.bid.date),
+                market_config_external_id=benchmarking.bid.market_config_external_id,
+                is_default_config_for_price_area=process.is_default_config_for_price_area,
+                main_scenario=process.main_scenario,
+                price_area=f"price_area_{process.price_area_name}",
+                price_scenarios={
+                    scenario_name: scenario.time_series_external_id
+                    for scenario_name, scenario in price_scenarios.items()
+                },
+                no_shop=process.no_shop,
+                bid_process_configuration_name=process.name,
+                bid_matrix_generator_config_external_id=f"POWEROPS_bid_matrix_generator_config_{process.name}",
+            ),
+            shop=market_models.ShopTransformation(
+                starttime=str(process.shop_start or benchmarking.shop.starttime),
+                endtime=str(process.shop_end or benchmarking.shop.endtime),
+            ),
+        )
+        # The IDs are set inconsistently in the bootstrap data classes, so we need to set them manually
+        dayahead_process.external_id = f"POWEROPS_bid_process_configuration_{process.name}"
+        dayahead_process.parent_external_id = "bid_process_configurations"
+
+        model.processes.append(dayahead_process)
+
+        new_resources += process.to_bootstrap_resources(
             path=path,
             bootstrap_resources=existing_bootstrap_resources,
             price_scenarios_by_id=price_scenarios_by_id,
             bid_matrix_generator_configs=bidmatrix_generators,
-            watercourses=watercourses,
+            watercourses=watercourse_configs,
             benchmark=benchmark,
         )
 
@@ -101,7 +135,6 @@ def market_to_cdf_resources(
     source_path: Path,
     watercourses: list[Watercourse],
 ) -> tuple[ResourceCollection, MarketModel]:
-    print(watercourses[0].name)
     # PowerOps configuration resources
 
     nord_pool = market_models.NordPoolMarket(**config.market.model_dump())
@@ -137,9 +170,11 @@ def market_to_cdf_resources(
         bid_process_configs=config.bidprocess,
         bidmatrix_generators=config.bidmatrix_generators,
         price_scenarios_by_id=config.price_scenario_by_id,
-        watercourses=watercourse_configs,
+        watercourse_configs=watercourse_configs,
         benchmark=config.benchmarks[0],
         existing_bootstrap_resources=bootstrap_resources.model_copy(),
+        watercourses=watercourses,
+        benchmarking=benchmarking.processes[0],
     )
     bootstrap_resources += created
     created, rkom = process_rkom_bid_configs(

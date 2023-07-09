@@ -24,6 +24,7 @@ class Type(BaseModel, ABC):
     name: str
     description: Optional[str] = None
     _external_id: Optional[str] = None
+    _parend_external_id: Optional[str] = None
 
     @property
     def external_id(self) -> str:
@@ -32,12 +33,18 @@ class Type(BaseModel, ABC):
         return f"{self.type_}_{self.name}"
 
     @external_id.setter
-    def external_id(self, value: str):
+    def external_id(self, value: str) -> None:
         self._external_id = value
 
     @property
-    def parent_external_id(self):
+    def parent_external_id(self) -> str:
+        if self._parend_external_id:
+            return self._parend_external_id
         return f"{self.type_}s"
+
+    @parent_external_id.setter
+    def parent_external_id(self, value: str) -> None:
+        self._parend_external_id = value
 
     @property
     def parent_name(self):

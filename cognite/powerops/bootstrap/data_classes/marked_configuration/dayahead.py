@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import ClassVar, Dict, List, Optional
 
 from cognite.client.data_classes import Asset, Label, Sequence
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, field_validator
 
 from cognite.powerops.bootstrap.data_classes.cdf_labels import AssetLabel, RelationshipLabel
 from cognite.powerops.bootstrap.data_classes.core.watercourse import WatercourseConfig
@@ -108,11 +108,11 @@ class BidProcessConfig(Configuration):
     is_default_config_for_price_area: bool = False
     no_shop: bool = Field(False, alias="no_shop")
 
-    @validator("shop_start", "shop_end", "bid_date", pre=True)
+    @field_validator("shop_start", "shop_end", "bid_date", mode="before")
     def json_loads(cls, value):
         return {"operations": json.loads(value)} if isinstance(value, str) else value
 
-    @validator("price_scenarios", pre=True)
+    @field_validator("price_scenarios", mode="before")
     def literal_eval(cls, value):
         return [{"id": id_} for id_ in ast.literal_eval(value)] if isinstance(value, str) else value
 
@@ -245,7 +245,7 @@ class BidProcessConfig(Configuration):
         watercourses: list[WatercourseConfig],
     ):
         new_bootstrap_resources = ResourceCollection()
-        new_bootstrap_resources.add(asset)
+        # new_bootstrap_resources.add(asset)
 
         plants_by_price_area: dict[str, list] = defaultdict(list)
         for w in watercourses:

@@ -1,7 +1,12 @@
 from __future__ import annotations
 
+from typing import ClassVar
+
+from pydantic import Field
+
+from cognite.powerops.bootstrap.data_classes.cdf_labels import AssetLabel
 from cognite.powerops.bootstrap.models.base import CDFSequence
-from cognite.powerops.bootstrap.models.market.base import Bid, Market, Process, ShopTransformation
+from cognite.powerops.bootstrap.models.market.base import Bid, Market, Process
 
 
 class DayAheadBid(Bid):
@@ -9,13 +14,16 @@ class DayAheadBid(Bid):
     main_scenario: str
     price_area: str
     price_scenarios: dict[str, str]
-    shop: ShopTransformation
+    no_shop: bool
+    bid_process_configuration_name: str
+    bid_matrix_generator_config_external_id: str
 
 
 class DayAheadProcess(Process):
-    type_ = "POWEROPS_bid_process_configuration"
+    type_: ClassVar[str] = "POWEROPS_bid_process_configuration"
+    label: ClassVar[AssetLabel] = AssetLabel.BID_PROCESS_CONFIGURATION
     bid: DayAheadBid
-    incremental_mapping: list[CDFSequence]
+    incremental_mapping: list[CDFSequence] = Field(default_factory=list)
 
 
 class NordPoolMarket(Market):
