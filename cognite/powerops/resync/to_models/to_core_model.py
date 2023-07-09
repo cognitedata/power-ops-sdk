@@ -111,7 +111,7 @@ def to_core_model(config: CoreConfigs) -> core.CoreModel:
                 ],
             )
             data = generator_attributes["gen_eff_curve"]
-            efficiency_curve = cognite.powerops.bootstrap.models.core.CDFSequence(
+            efficiency_curve = cognite.powerops.resync.models.core.CDFSequence(
                 sequence=sequence,
                 content=pd.DataFrame(
                     {
@@ -144,7 +144,7 @@ def to_core_model(config: CoreConfigs) -> core.CoreModel:
                 dtype=float,
             )
 
-            turbine_efficiency_curve = cognite.powerops.bootstrap.models.core.CDFSequence(
+            turbine_efficiency_curve = cognite.powerops.resync.models.core.CDFSequence(
                 sequence=sequence,
                 content=df,
             )
