@@ -21,6 +21,7 @@ class ProductionPlanTimeSeries(NonAssetType):
 
 class BenchmarkProcess(Process):
     type_: ClassVar[str] = "benchmarking_configuration"
+    parent_description: ClassVar[str] = "Configurations used in benchmarking processes"
     description: str = "Configuration for benchmarking of day-ahead bidding"
     label: ClassVar[AssetLabel] = AssetLabel.DAYAHEAD_BIDDING_BENCHMARKING_CONFIG
     bid: BenchmarkBid

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Union
+from typing import ClassVar, Union
 
 from pydantic import Field
 
@@ -9,8 +9,9 @@ from cognite.powerops.resync.models.base import AssetType, NonAssetType
 
 
 class Market(AssetType):
-    type_ = "market_configuration"
-    label = AssetLabel.MARKET
+    type_: ClassVar[str] = "market_configuration"
+    label: ClassVar[AssetLabel] = AssetLabel.MARKET
+    parent_description: ClassVar[str] = "Configurations used for different markets"
     timezone: str
 
 

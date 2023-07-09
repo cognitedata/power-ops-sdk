@@ -26,6 +26,7 @@ class AssetType(BaseModel, ABC):
     type_: ClassVar[Optional[str]] = None
     label: ClassVar[AssetLabel]
     model_config: ClassVar[ConfigDict] = ConfigDict(arbitrary_types_allowed=True)
+    parent_description: ClassVar[Optional[str]] = None
     name: str
     description: Optional[str] = None
     _external_id: Optional[str] = None
@@ -180,23 +181,29 @@ class Model(BaseModel, ABC):
 
     def parent_assets(self) -> list[Asset]:
         if not self.root_asset:
-            return []
-            # raise ValueError("Root asset not set")
+            # return []
+            raise ValueError("Root asset not set")
 
         def _to_name(external_id: str) -> str:
             parts = external_id.replace("_", " ").split(" ")
-            parts[0] = parts[0].title()
-            return " ".join(parts)
+            if parts[0].lower() == "rkom":
+                parts[0] = parts[0].upper()
+            else:
+                parts[0] = parts[0].title()
+            # The replacing is to have avoid doing changes, even though this is inconsistent with the other parent
+            # assets.
+            return " ".join(parts).replace("Bid process", "Bid").replace("bid process", "bid")
 
-        parent_ids = {item.parent_external_id for item in self._items()}
+        parent_and_description_ids = {(item.parent_external_id, item.parent_description) for item in self._items()}
 
         return [self.root_asset] + [
             Asset(
                 external_id=parent_id,
                 name=_to_name(parent_id),
                 parent_external_id=self.root_asset.external_id,
+                description=description,
             )
-            for parent_id in parent_ids
+            for parent_id, description in parent_and_description_ids
         ]
 
     def _items(self) -> Iterable[AssetType]:

@@ -23,6 +23,7 @@ class DayAheadBid(Bid):
 class DayAheadProcess(Process):
     type_: ClassVar[str] = "POWEROPS_bid_process_configuration"
     label: ClassVar[AssetLabel] = AssetLabel.BID_PROCESS_CONFIGURATION
+    parent_description: ClassVar[str] = "Configurations used in bid matrix generation processes"
     bid: DayAheadBid
     bid_matrix_generator_config: Optional[CDFSequence] = None
     incremental_mapping: list[CDFSequence] = Field(default_factory=list)

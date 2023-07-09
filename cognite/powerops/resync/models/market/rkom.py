@@ -28,6 +28,7 @@ class RKOMPlants(NonAssetType):
 class RKOMProcess(Process):
     type_: ClassVar[str] = "POWEROPS"
     label: ClassVar[AssetLabel] = AssetLabel.RKOM_BID_CONFIGURATION
+    parent_description: ClassVar[str] = "Configurations used in RKOM bid generation processes"
     bid: RKOMBid
     process_events: list[str] = Field(default_factory=list)
     timezone: str
@@ -44,6 +45,7 @@ class RKOMCombinationBid(NonAssetType):
 class RKOMBidCombination(AssetType):
     type_: ClassVar[str] = "rkom_bid_combination_configuration"
     label: ClassVar[str] = AssetLabel.RKOM_BID_CONFIGURATION
+    parent_description: ClassVar[str] = "Configurations for which bids should be combined into a total RKOM bid form"
     bid: RKOMCombinationBid
 
 

@@ -10,7 +10,6 @@ from cognite.client.data_classes import Event
 from cognite.powerops.resync.config_classes.bootstrap_config import BootstrapConfig
 from cognite.powerops.resync.config_classes.cdf_labels import AssetLabel, RelationshipLabel
 from cognite.powerops.resync.config_classes.resource_collection import ResourceCollection
-from cognite.powerops.resync.config_classes.skeleton_asset_hierarchy import create_skeleton_asset_hierarchy
 from cognite.powerops.resync.to_models.to_cogshop_model import cogshop_to_cdf_resources
 from cognite.powerops.resync.to_models.to_core_model import to_core_model
 from cognite.powerops.resync.to_models.to_market_model import market_to_cdf_resources
@@ -31,19 +30,22 @@ def transform(
         market_name,
         core_model.price_areas,
     )
-    # market_model.set_root_asset(settings.shop_service_url, s
-    # ettings.organization_subdomain, settings.tenant_id, core_model.root_asset.external_id)
-
-    collection = ResourceCollection()
-    # Create common CDF resources
-    labels = AssetLabel.as_label_definitions() + RelationshipLabel.as_label_definitions()
-
-    skeleton_assets = create_skeleton_asset_hierarchy(
+    market_model.set_root_asset(
         settings.shop_service_url,
         settings.organization_subdomain,
         settings.tenant_id,
+        core_model.root_asset.external_id,
     )
-    collection.add(skeleton_assets)
+
+    collection = ResourceCollection()
+    labels = AssetLabel.as_label_definitions() + RelationshipLabel.as_label_definitions()
+
+    # skeleton_assets = create_skeleton_asset_hierarchy(
+    #     settings.shop_service_url,
+    #     settings.organization_subdomain,
+    #     settings.tenant_id,
+    # )
+    # collection.add(skeleton_assets)
     collection.add(labels)
     for model in [core_model, market_model]:
         collection.add(model.parent_assets())
