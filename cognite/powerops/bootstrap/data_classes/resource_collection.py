@@ -351,18 +351,10 @@ def to_dm_apply(instances: list[DomainModel] | DomainModel) -> list[DomainModelA
 
 
 def write_mapping_to_sequence(
-    mapping: TimeSeriesMapping,
-    watercourse: str,
-    mapping_type: Literal["base_mapping", "rkom_incremental_mapping"],
-    price_scenario_name: str = "",  # Required for incremental mapping
-    config_name: str = "",  # Required for incremental mapping
-    reserve_volume: int = -1,  # Required for rkom
+    mapping: TimeSeriesMapping, watercourse: str, mapping_type: Literal["base_mapping"]
 ) -> ResourceCollection:
-    if mapping_type not in ["base_mapping", "rkom_incremental_mapping"]:
+    if mapping_type not in ["base_mapping"]:
         raise ValueError(f"Unrecognized mapping type: {mapping_type}")
-
-    if mapping_type == "rkom_incremental_mapping" and reserve_volume < 0:
-        raise ValueError("'reserve_volume' must be specified when mapping_type='rkom_incremental_mapping'")
 
     metadata = {
         "shop:watercourse": watercourse,
@@ -372,12 +364,6 @@ def write_mapping_to_sequence(
     if mapping_type == "base_mapping":
         external_id = f"SHOP_{watercourse}_base_mapping"
         name = external_id.replace("_", " ")
-
-    elif mapping_type == "rkom_incremental_mapping":
-        external_id = f"SHOP_{watercourse}_incremental_mapping_{config_name}_{price_scenario_name}_{reserve_volume}MW"
-        name = f"{watercourse} {price_scenario_name} {reserve_volume} MW"
-        metadata["bid:scenario_name"] = price_scenario_name
-        metadata["bid:reserve_volume"] = str(reserve_volume)
 
     else:
         raise ValueError(f"Unrecognized mapping type: {mapping_type}")

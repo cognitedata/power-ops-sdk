@@ -84,9 +84,7 @@ def create_base_mapping_bootstrap_resources(
     time_series_mapping: TimeSeriesMapping,
 ) -> ResourceCollection:
     return write_mapping_to_sequence(
-        mapping=time_series_mapping,
-        watercourse=watercourse_config.name,
-        mapping_type="base_mapping",
+        mapping=time_series_mapping, watercourse=watercourse_config.name, mapping_type="base_mapping"
     )
 
 
