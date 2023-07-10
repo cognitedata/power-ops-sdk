@@ -56,6 +56,7 @@ class Watercourse(AssetType):
     shop_penalty_limit: str
     config_version: str = Field(exclude=True)
     model_file: Path = Field(exclude=True)
+    processed_model_file: Path = Field(exclude=True)
     plants: list[Plant]
     production_obligation_time_series: list[TimeSeries] = Field(default_factory=list)
 

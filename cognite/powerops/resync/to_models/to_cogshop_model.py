@@ -9,7 +9,7 @@ from typing import Optional
 
 import pandas as pd
 import yaml
-from cognite.client.data_classes import Sequence
+from cognite.client.data_classes import FileMetadata, Sequence
 
 from cognite.powerops.clients.cogshop.data_classes import (
     FileRefApply,
@@ -35,16 +35,35 @@ def cogshop_to_cdf_resources(
 ) -> tuple[ResourceCollection, CogShopModel]:
     model = CogShopModel()
 
-    # for watercourse in watercourses:
-    #     cogshop.ShopFile(
-    #         name=watercourse.name,
-    #         file=cogshop.CDFFile(
-    #             meta=FileMetadata(
-    #
-    #             ),
-    #             content=
-    #         )
-    #     )
+    for watercourse in watercourses:
+        processed_model = get_model_without_timeseries(
+            yaml_raw_path=str(watercourse.model_file),
+            # Todo Move this hardcoded configuration to a config file
+            non_time_series_attributes_to_remove=["reservoir.start_vol", "generator.initial_state"],
+            encoding="utf-8",
+        )
+        yaml_content = yaml.safe_dump(processed_model, allow_unicode=True, sort_keys=False)
+        file_content = yaml_content.encode("utf-8")
+        external_id = f"SHOP_{watercourse.name}_{watercourse.processed_model_file.stem}"
+        model_file = cogshop.ShopFile(
+            watercourse_name=watercourse.name,
+            file=cogshop.CDFFile(
+                meta=FileMetadata(
+                    external_id=external_id,
+                    name=external_id,
+                    metadata={
+                        "shop:type": "model",
+                        "shop:watercourse": watercourse.name,
+                        "shop:file_name": watercourse.processed_model_file.stem,
+                        "md5_hash": md5(file_content.replace(b"\r\n", b"\n")).hexdigest(),
+                    },
+                    source="PowerOps bootstrap",
+                    mime_type="text/plain",
+                ),
+                content=file_content,
+            ),
+        )
+        model.shop_files.append(model_file)
 
     # SHOP files (model, commands, cut mapping++) and configs (base mapping, output definition)
     # Shop files related to each watercourse
