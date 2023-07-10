@@ -80,7 +80,7 @@ def cogshop_to_cdf_resources(
                 ("reservoir", "water_value_global_result", "water_value", "EUR/Mm3", "True"),
                 ("reservoir", "energy_conversion_factor", "energy_conversion_factor", "MWh/Mm3", "True"),
             ],
-            columns=["shop_object_type", "shop_attribute_name", "cdf_attribute_name", "unit", "is_step"],
+            columns=[c["externalId"] for c in sequence.columns],
         )
 
         output_definition = cogshop.OutputDefinition(
