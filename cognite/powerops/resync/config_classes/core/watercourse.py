@@ -28,8 +28,8 @@ class WatercourseConfig(Watercourse):
     directory: str
     model_raw: str
     # ------------------------------------------------------------------
-    yaml_raw_path: str = ""
-    yaml_processed_path: str = ""  # TODO: not used here
+    yaml_raw_path: Path
+    yaml_processed_path: Path  # TODO: not used here
     yaml_mapping_path: str = ""
     model_processed: str  # TODO: not used here
     model_mapping: Optional[str] = None
@@ -46,8 +46,3 @@ class WatercourseConfig(Watercourse):
     @classmethod
     def from_yaml(cls, yaml_path: Path) -> list["WatercourseConfig"]:
         return [cls(**watercourse_raw) for watercourse_raw in load_yaml(yaml_path)]
-
-    def set_shop_yaml_paths(self, path):
-        self.yaml_raw_path = f"{path}/{self.directory}/{self.model_raw}"  # TODO: create these as properties
-        self.yaml_processed_path = f"{path}/{self.directory}/{self.model_processed}"
-        self.yaml_mapping_path = f"{path}/{self.directory}/{self.model_mapping}"

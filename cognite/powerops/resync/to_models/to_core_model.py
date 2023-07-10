@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import re
-from pathlib import Path
 from typing import Optional
 
 import pandas as pd
@@ -69,6 +68,7 @@ def to_core_model(config: CoreConfigs) -> core.CoreModel:
             name=watercourse_config.name,
             shop_penalty_limit=str(watercourse_config.shop_penalty_limit),
             config_version=watercourse_config.version,
+            model_file=watercourse_config.yaml_raw_path,
             plants=[],
             production_obligation_time_series=[
                 TimeSeries(external_id=id_) for id_ in watercourse_config.production_obligation_ts_ext_ids
@@ -76,7 +76,7 @@ def to_core_model(config: CoreConfigs) -> core.CoreModel:
         )
         model.watercourses.append(watercourse)
 
-        shop_case = load_yaml(Path(watercourse_config.yaml_raw_path), clean_data=True)
+        shop_case = load_yaml(watercourse_config.yaml_raw_path, clean_data=True)
 
         for reservoir_name in shop_case["model"]["reservoir"]:
             reservoir = core.Reservoir(

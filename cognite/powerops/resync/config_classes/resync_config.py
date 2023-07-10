@@ -120,7 +120,18 @@ class ReSyncConfig(BaseModel):
                 if field_name in market_keys:
                     configs["markets"][field_name] = content
                 elif field_name in core_keys:
+                    if field_name == "watercourses":
+                        # Setting complete paths
+                        for watercourse in content:
+                            watercourse["yaml_raw_path"] = (
+                                config_dir_path / watercourse["directory"] / watercourse["model_raw"]
+                            )
+                            watercourse["yaml_processed_path"] = (
+                                config_dir_path / watercourse["directory"] / watercourse["model_processed"]
+                            )
+
                     configs["core"][field_name] = content
+
                 elif field_name in cogshop_keys:
                     configs["cogshop"][field_name] = content
                 else:
@@ -132,7 +143,4 @@ class ReSyncConfig(BaseModel):
         elif "constants" in configs:
             # For backwards compatibility
             configs["constants"]["cdf_project"] = cdf_project
-        config = cls(**configs)
-        for watercourse in config.core.watercourses:
-            watercourse.set_shop_yaml_paths(config.core.source_path)
-        return config
+        return cls(**configs)

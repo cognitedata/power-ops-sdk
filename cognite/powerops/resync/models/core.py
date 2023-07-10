@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from pathlib import Path
 from typing import ClassVar, Optional
 
 from cognite.client.data_classes import Asset, TimeSeries
@@ -54,6 +55,7 @@ class Watercourse(AssetType):
     label = AssetLabel.WATERCOURSE
     shop_penalty_limit: str
     config_version: str = Field(exclude=True)
+    model_file: Path = Field(exclude=True)
     plants: list[Plant]
     production_obligation_time_series: list[TimeSeries] = Field(default_factory=list)
 

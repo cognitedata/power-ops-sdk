@@ -35,6 +35,17 @@ def cogshop_to_cdf_resources(
 ) -> tuple[ResourceCollection, CogShopModel]:
     model = CogShopModel()
 
+    # for watercourse in watercourses:
+    #     cogshop.ShopFile(
+    #         name=watercourse.name,
+    #         file=cogshop.CDFFile(
+    #             meta=FileMetadata(
+    #
+    #             ),
+    #             content=
+    #         )
+    #     )
+
     # SHOP files (model, commands, cut mapping++) and configs (base mapping, output definition)
     # Shop files related to each watercourse
     collection = ResourceCollection()
