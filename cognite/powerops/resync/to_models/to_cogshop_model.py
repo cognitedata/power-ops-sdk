@@ -216,12 +216,6 @@ def create_watercourse_processed_shop_files(
             ]
         )
 
-        # Create ShopOutputConfig Sequence
-        # shop_output_config = ShopOutputConfig(watercourse=watercourse_config.name)
-        #
-        # # Adds a Sequence
-        # cdf_resources += shop_output_config.to_bootstrap_resources()
-
     return cdf_resources
 
 
