@@ -39,7 +39,7 @@ def cogshop_to_cdf_resources(
     # Shop files related to each watercourse
     collection = ResourceCollection()
     # This creates the files which are used to create the instances below
-    collection += create_watercourse_processed_shop_files(watercourse_configs=core_config.watercourses)
+    # collection += create_watercourse_processed_shop_files(watercourse_configs=core_config.watercourses)
 
     collection.add(create_watercourse_shop_files(config.watercourses_shop, core_config.watercourse_directories))
 
@@ -68,7 +68,7 @@ def cogshop_to_cdf_resources(
                     external_id=external_id,
                     name=external_id,
                     metadata={
-                        "shop:type": "model",
+                        "shop:type": "case",
                         "shop:watercourse": watercourse.name,
                         "shop:file_name": watercourse.processed_model_file.stem,
                         "md5_hash": md5(file_content.replace(b"\r\n", b"\n")).hexdigest(),

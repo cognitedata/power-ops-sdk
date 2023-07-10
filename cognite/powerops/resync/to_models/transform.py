@@ -30,6 +30,7 @@ def transform(
     )
     collection.add(cogshop_model.sequences())
     collection.add(cogshop_model.instances())
+    collection.add(cogshop_model.files())
     collection += created
     print(cogshop_model.model_dump())
     labels = AssetLabel.as_label_definitions() + RelationshipLabel.as_label_definitions()
