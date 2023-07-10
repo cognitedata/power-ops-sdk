@@ -73,19 +73,14 @@ def cogshop_to_cdf_resources(
         model.output_definitions.append(output_definition)
 
         # Adding the Instances.
-        # dm_resources = create_watercourse_dm_resources(
-        #     watercourse.name, watercourse_config.version,
-        #     list(collection.shop_file_configs.values()), mapping, shop_version
-        # )
-        # collection.add(dm_resources)
-
-    # Create DM resources
-    collection += create_dm_resources(
-        core_config.watercourses,
-        list(collection.shop_file_configs.values()),
-        config,
-        shop_version,
-    )
+        dm_resources = create_watercourse_dm_resources(
+            watercourse.name,
+            watercourse.config_version,
+            list(collection.shop_file_configs.values()),
+            mapping,
+            shop_version,
+        )
+        collection.add(dm_resources)
 
     # Set hashes for Shop Files, needed for comparison
     for shop_config in collection.shop_file_configs.values():
@@ -132,24 +127,7 @@ def create_watercourse_shop_files(
     return shop_file_configs
 
 
-def create_dm_resources(
-    watercourse_configs: list[WatercourseConfig],
-    shop_files: list[ShopFileConfig],
-    config: CogShopConfigs,
-    shop_version: str,
-) -> ResourceCollection:
-    cdf_resources = ResourceCollection()
-    for watercourse_config, time_series_mapping in zip(watercourse_configs, config.time_series_mappings):
-        # Create DM resources
-        dm_resources = create_watercourse_dm_resources(
-            watercourse_config.name, watercourse_config.version, shop_files, time_series_mapping, shop_version
-        )
-        cdf_resources.add(dm_resources)
-
-    return cdf_resources
-
-
-def _make_ext_id(cls, watercourse_name: str, *args: str) -> str:
+def _make_ext_id(watercourse_name: str, *args: str) -> str:
     hash_value = md5(watercourse_name.encode())
     for arg in args:
         hash_value.update(arg.encode())
