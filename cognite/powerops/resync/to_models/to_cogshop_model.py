@@ -73,12 +73,87 @@ def cogshop_to_cdf_resources(
         model.output_definitions.append(output_definition)
 
         # Adding the Instances.
+        model_files = [
+            file
+            for file in collection.shop_file_configs.values()
+            if file.cogshop_file_type == "model" and file.external_id.endswith(f"{watercourse.name}_model")
+        ]
+        if len(model_files) != 1:
+            logger.warning(
+                f"Expected exactly 1 model file,"
+                f" got {len(model_files)}: {', '.join(mf.external_id for mf in model_files)}."
+                f" Skipping DM ModelTemplate for watercourse {watercourse.name}.",
+            )
+            continue
+        model_file = model_files[0]
+        file_ref = FileRefApply(
+            external_id=f"ModelTemplate_{watercourse.name}__FileRef_model",
+            type=model_file.cogshop_file_type,
+            file_external_id=model_file.external_id,
+        )
+        model.file_refs.append(file_ref)
+        transformations = []
+        base_mappings = []
+        for row in reversed(list(mapping)):
+            row_ext_id = f"BM__{watercourse.name}__{row.shop_model_path}"
+
+            # We can get duplicate mappings (same path). Only keep the last one (look is reversed):
+            visited_ext_ids = set()
+            if row_ext_id in visited_ext_ids:
+                logger.warning(f"Duplicate base mapping: {row_ext_id}")
+                continue
+            visited_ext_ids.add(row_ext_id)
+
+            row_transformations = []
+            for transformation in reversed(row.transformations or []):
+                row_transformations.append(
+                    TransformationApply(
+                        external_id=_make_ext_id(
+                            watercourse.name,
+                            row.shop_model_path,
+                            transformation.transformation.name,
+                            json.dumps(transformation.kwargs or {}),
+                        ),
+                        method=transformation.transformation.name,
+                        arguments=json.dumps(transformation.kwargs or {}),
+                    )
+                )
+            transformations.extend(row_transformations)
+
+            mapping_apply = MappingApply(
+                external_id=row_ext_id,
+                path=row.shop_model_path,
+                timeseries_external_id=row.time_series_external_id,
+                transformations=[tr.external_id for tr in row_transformations],
+                retrieve=row.retrieve.name if row.retrieve else None,
+                aggregation=row.aggregation.name if row.aggregation else None,
+            )
+            base_mappings.append(mapping_apply)
+
+        # restore original order:
+        transformations = list(reversed(transformations))
+        base_mappings = list(reversed(base_mappings))
+
+        model.transformations.extend(transformations)
+        model.mappings.extend(base_mappings)
+
+        model.model_templates.append(
+            ModelTemplateApply(
+                external_id=f"ModelTemplate_{watercourse.name}",
+                version=watercourse.config_version,
+                shop_version=shop_version,
+                watercourse=watercourse.name,
+                model=file_ref.external_id,
+                base_mappings=[m.external_id for m in base_mappings],
+            )
+        )
+
         dm_resources = create_watercourse_dm_resources(
-            watercourse.name,
-            watercourse.config_version,
-            list(collection.shop_file_configs.values()),
-            mapping,
-            shop_version,
+            watercourse_name=watercourse.name,
+            watercourse_version=watercourse.config_version,
+            config_files=list(collection.shop_file_configs.values()),
+            base_mapping=mapping,
+            shop_version=shop_version,
         )
         collection.add(dm_resources)
 
