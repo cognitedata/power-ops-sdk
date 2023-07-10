@@ -31,10 +31,7 @@ logger = logging.getLogger(__name__)
 
 
 def cogshop_to_cdf_resources(
-    core_config: CoreConfigs,
-    shop_version: str,
-    config: CogShopConfigs,
-    watercourses: list[Watercourse],
+    config: CogShopConfigs, watercourses: list[Watercourse], shop_version: str, core_config: CoreConfigs
 ) -> tuple[ResourceCollection, CogShopModel]:
     model = CogShopModel()
 
