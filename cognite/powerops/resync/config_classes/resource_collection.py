@@ -161,22 +161,6 @@ class ResourceCollection(BaseModel):
                 content=file.content, data_set_id=data_set_id, overwrite=overwrite, **file.meta.dump(camel_case=False)
             )
 
-        dm_api_by_type = (
-            {}
-            if skip_dm
-            else {
-                "file_refs": po_client.cog_shop.file_refs,
-                "transformations": po_client.cog_shop.transformations,
-                "mappings": po_client.cog_shop.mappings,
-                "model_templates": po_client.cog_shop.model_templates,
-            }
-        )
-        for resource_type, api in dm_api_by_type.items():
-            resources = list(getattr(self, resource_type).values())
-            logger.debug(f"Processing {len(resources)} {resource_type}...")
-            for resource in resources:
-                api.apply(resource, replace=True)
-
         logger.debug(f"Processing {len(self.sequence_content)} sequences...")
         for sequence_external_id, sequence_data in self.sequence_content.items():
             if isinstance(sequence_data.data, pd.DataFrame):
