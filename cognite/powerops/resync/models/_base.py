@@ -11,7 +11,7 @@ from pydantic import BaseModel, ConfigDict
 from cognite.powerops.cdf_labels import AssetLabel, RelationshipLabel
 from cognite.powerops.clients.cogshop.data_classes._core import DomainModelApply, InstancesApply
 from cognite.powerops.resync.config_classes.to_delete import SequenceContent
-from cognite.powerops.resync.models.cdf_resources import CDFSequence
+from cognite.powerops.resync.models.cdf_resources import CDFFile, CDFSequence
 
 
 class Type(BaseModel, ABC):
@@ -28,6 +28,18 @@ class Type(BaseModel, ABC):
             elif isinstance(value, CDFSequence):
                 output.append(value.sequence)
                 output.append(SequenceContent(sequence_external_id=value.sequence.external_id, data=value.content))
+        return output
+
+    def files(self) -> list[CDFFile]:
+        output = []
+        for field_name in self.model_fields:
+            value = getattr(self, field_name)
+            if not value:
+                continue
+            elif isinstance(value, list) and isinstance(value[0], CDFFile):
+                output.extend(value)
+            elif isinstance(value, CDFFile):
+                output.append(value)
         return output
 
 
@@ -170,6 +182,9 @@ class NonAssetType(BaseModel, ABC):
 class Model(BaseModel, ABC):
     def sequences(self) -> list[Sequence | SequenceContent]:
         return [sequence for item in self._types() for sequence in item.sequences()]
+
+    def files(self) -> list[CDFFile]:
+        return [file for item in self._types() for file in item.files()]
 
     def _types(self) -> Iterable[Type]:
         for f in self.model_fields:
