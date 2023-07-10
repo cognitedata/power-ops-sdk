@@ -11051,7 +11051,7 @@ files:
     shop:watercourse: Fornebu
   mime_type: text/plain
   name: SHOP_Fornebu_cog_shop_files_config
-  sha256_hash: 4802f17dc6af0e660f4854c6f206a6bd065d2cb9157fa4ccc1f2a5f694a03872
+  sha256_hash: 0aa456b0221df26888b90bfe89c763da410a302aacb972d843199cc0fa1e04b5
   source: PowerOps bootstrap
 - external_id: SHOP_Fornebu_commands
   metadata:
@@ -11061,7 +11061,7 @@ files:
     shop:watercourse: Fornebu
   mime_type: text/plain
   name: SHOP_Fornebu_commands
-  sha256_hash: d8b6b2addc2d893b095ca8aa4d0a8ae9a823ab6537cbec6d266dce935240a20d
+  sha256_hash: cbde2bbd5a300fc314566b7c93e5b962026f191f8a37850de4645ab05d8c493a
   source: PowerOps bootstrap
 - external_id: SHOP_Fornebu_model
   metadata:
@@ -11071,7 +11071,7 @@ files:
     shop:watercourse: Fornebu
   mime_type: text/plain
   name: SHOP_Fornebu_model
-  sha256_hash: 5af27685db2f030d22f94f933f7e3658557231fe558c95d44f64f7bedaf544e6
+  sha256_hash: c083862174094aa3a24d5abcc8ddeb4431cebeb1db3c12584f19f61369920bb0
   source: PowerOps bootstrap
 - external_id: SHOP_Fornebu_shop-fornebu1-modul_series
   metadata:
@@ -11081,7 +11081,7 @@ files:
     shop:watercourse: Fornebu
   mime_type: text/plain
   name: SHOP_Fornebu_shop-fornebu1-modul_series
-  sha256_hash: 5312dd5c4283a84127c63174fec66ca178d5b5c19a3bd5c6577a6b26470ec44e
+  sha256_hash: abf5384d47e254425989fafc84b850f714a57b4dd5eccbcb033d9bce97044ea2
   source: PowerOps bootstrap
 - external_id: SHOP_Fornebu_shop-fornebu2-modul_series
   metadata:
@@ -11091,7 +11091,7 @@ files:
     shop:watercourse: Fornebu
   mime_type: text/plain
   name: SHOP_Fornebu_shop-fornebu2-modul_series
-  sha256_hash: 5312dd5c4283a84127c63174fec66ca178d5b5c19a3bd5c6577a6b26470ec44e
+  sha256_hash: abf5384d47e254425989fafc84b850f714a57b4dd5eccbcb033d9bce97044ea2
   source: PowerOps bootstrap
 - external_id: SHOP_Fornebu_water_value_cut_file
   metadata:
@@ -11101,7 +11101,7 @@ files:
     shop:watercourse: Fornebu
   mime_type: text/plain
   name: SHOP_Fornebu_water_value_cut_file
-  sha256_hash: de29027c4d036ad01be92020d1e5cabdc66c210d82163fc8ddd390f9e7deb8f8
+  sha256_hash: 81bc5502381eb877390a166fe5bf76f0df6415336b7cb2ea5e4eb9d640de7648
   source: PowerOps bootstrap
 - external_id: SHOP_Fornebu_water_value_cut_file_reservoir_mapping
   metadata:
@@ -11111,7 +11111,7 @@ files:
     shop:watercourse: Fornebu
   mime_type: text/plain
   name: SHOP_Fornebu_water_value_cut_file_reservoir_mapping
-  sha256_hash: 1ec4e3cdedd7c7b4e147836091a1ba2931d6829be7a26f10fde09417c0c42890
+  sha256_hash: 917bea3dd3e727811fc1d725f19be9039dd1b14d5c6e94114d098663503d72b3
   source: PowerOps bootstrap
 labels:
 - external_id: benchmarking_configuration
