@@ -7,6 +7,7 @@ from hashlib import md5
 from pathlib import Path
 from typing import Optional
 
+import pandas as pd
 import yaml
 from cognite.client.data_classes import Sequence
 
@@ -40,7 +41,9 @@ def cogshop_to_cdf_resources(
     collection = ResourceCollection()
     # This creates the files which are used to create the instances below
     collection += create_watercourse_processed_shop_files(watercourse_configs=core_config.watercourses)
+
     collection.add(create_watercourse_shop_files(config.watercourses_shop, core_config.watercourse_directories))
+
     for shop_config in collection.shop_file_configs.values():
         if shop_config.md5_hash is None:
             # Set hashes for Shop Files, needed for comparison
@@ -49,6 +52,49 @@ def cogshop_to_cdf_resources(
 
     # TODO Fix the assumption that timeseries mappings and watercourses are in the same order
     for watercourse, mapping in zip(watercourses, config.time_series_mappings):
+        ##### Output definition #####
+        external_id = f"SHOP_{watercourse.name.replace(' ', '_')}_output_definition"
+
+        sequence = Sequence(
+            name=external_id.replace("_", " "),
+            description="Defining which SHOP results to output to CDF (as time series)",
+            external_id=external_id,
+            columns=[
+                {"valueType": "STRING", "externalId": "shop_object_type"},
+                {"valueType": "STRING", "externalId": "shop_attribute_name"},
+                {"valueType": "STRING", "externalId": "cdf_attribute_name"},
+                {"valueType": "STRING", "externalId": "unit"},
+                {"valueType": "STRING", "externalId": "is_step"},
+            ],
+            metadata={
+                "shop:watercourse": watercourse.name,
+                "shop:type": "output_definition",
+            },
+        )
+        # Only default mapping is used
+        df = pd.DataFrame(
+            [
+                ("market", "sale_price", "price", "EUR/MWh", "True"),
+                ("market", "sale", "sales", "MWh", "True"),
+                ("plant", "production", "production", "MW", "True"),
+                ("plant", "consumption", "consumption", "MW", "True"),
+                ("reservoir", "water_value_global_result", "water_value", "EUR/Mm3", "True"),
+                ("reservoir", "energy_conversion_factor", "energy_conversion_factor", "MWh/Mm3", "True"),
+            ],
+            columns=["shop_object_type", "shop_attribute_name", "cdf_attribute_name", "unit", "is_step"],
+        )
+
+        output_definition = cogshop.OutputDefinition(
+            watercourse_name=watercourse.name,
+            mapping=[
+                CDFSequence(
+                    sequence=sequence,
+                    content=df,
+                )
+            ],
+        )
+
+        ##### Base Mapping #####
         external_id = f"SHOP_{watercourse.name}_base_mapping"
         sequence = Sequence(
             name=external_id.replace("_", " "),
@@ -71,7 +117,7 @@ def cogshop_to_cdf_resources(
         )
         model.base_mappings.append(output_definition)
 
-        # Adding the Instances.
+        ############## Adding the Instances. ##############
         model_files = [
             file
             for file in collection.shop_file_configs.values()
