@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import hashlib
 import json
-from io import StringIO
 from typing import BinaryIO, List, TextIO, Union
 
 from cognite.client.data_classes import (
@@ -232,13 +231,11 @@ class MockFilesUploadBytes:
             mime_type=mime_type,
         )
         self.file_metadata.append(file_metadata)
+        if isinstance(content, str):
+            content = content.encode("utf-8")
         # Bytes are different between Windows and Linux
-        if isinstance(content, bytes):
-            content = content.decode("utf-8")
-        sha256_hash = hashlib.sha256()
-        with StringIO(content, newline="\n") as buffer:
-            sha256_hash.update(buffer.read().encode("utf-8"))
-        self.content_sha256_hash.append(sha256_hash.hexdigest())
+        sha256_hash = hashlib.sha256(content.replace(b"\r\n", b"\n")).hexdigest()
+        self.content_sha256_hash.append(sha256_hash)
         return file_metadata
 
     def serialize(self) -> list[dict]:
