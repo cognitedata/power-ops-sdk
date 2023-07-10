@@ -1,12 +1,12 @@
 from pydantic import Field
 
-from cognite.powerops.clients.cogshop.data_classes import CaseApply, ModelTemplateApply, ScenarioApply
+from ._base import CDFSequence, DataModel, Type
 
-from ._base import CDFSequence, DataModel
+
+class OutputDefinition(Type):
+    watercourse_name: str
+    mapping: list[CDFSequence] = Field(default_factory=list)
 
 
 class CogShopModel(DataModel):
-    base_mappings: list[CDFSequence] = Field(default_factory=list)
-    model_templates: list[ModelTemplateApply] = Field(default_factory=list)
-    scenarios: list[ScenarioApply] = Field(default_factory=list)
-    cases: list[CaseApply] = Field(default_factory=list)
+    output_definitions: list[OutputDefinition] = Field(default_factory=list)

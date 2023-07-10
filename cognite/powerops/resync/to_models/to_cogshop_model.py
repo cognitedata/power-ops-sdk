@@ -22,6 +22,7 @@ from cognite.powerops.resync.config_classes.resource_collection import ResourceC
 from cognite.powerops.resync.config_classes.resync_config import CogShopConfigs, CoreConfigs
 from cognite.powerops.resync.config_classes.shared import ExternalId, TimeSeriesMapping
 from cognite.powerops.resync.models.cogshop import CogShopModel
+from cognite.powerops.resync.models.core import Watercourse
 from cognite.powerops.resync.utils.serializer import load_yaml
 
 logger = logging.getLogger(__name__)
@@ -32,6 +33,7 @@ def cogshop_to_cdf_resources(
     shop_file_configs: dict[ExternalId, ShopFileConfig],
     shop_version: str,
     cogshop: CogShopConfigs,
+    watercourses: list[Watercourse],
 ) -> tuple[ResourceCollection, CogShopModel]:
     collection = ResourceCollection()
     model = CogShopModel()
@@ -43,9 +45,14 @@ def cogshop_to_cdf_resources(
     collection += create_watercourse_processed_shop_files(watercourse_configs=core.watercourses)
 
     # Creating Sequences
+    for mapping in cogshop.time_series_mappings:
+        ...
+
     collection += create_watercourse_timeseries_mappings(
-        watercourse_configs=core.watercourses, time_series_mappings=cogshop.time_series_mappings
+        watercourse_configs=core.watercourses,
+        time_series_mappings=cogshop.time_series_mappings,
     )
+
     # Create DM resources
     collection += create_dm_resources(
         core.watercourses,
@@ -68,9 +75,8 @@ def create_watercourse_timeseries_mappings(
 ) -> ResourceCollection:
     cdf_resources = ResourceCollection()
     for watercourse_config, time_series_mapping in zip(watercourse_configs, time_series_mappings):
-        cdf_resources += create_base_mapping_bootstrap_resources(
-            watercourse_config=watercourse_config,
-            time_series_mapping=time_series_mapping,
+        cdf_resources += write_mapping_to_sequence(
+            mapping=time_series_mapping, watercourse=watercourse_config.name, mapping_type="base_mapping"
         )
     return cdf_resources
 
@@ -110,15 +116,6 @@ def create_watercourse_shop_files(
     for shop_file in shop_file_configs:
         shop_file.set_full_path(watercourse_directories[shop_file.watercourse_name])
     return shop_file_configs
-
-
-def create_base_mapping_bootstrap_resources(
-    watercourse_config: WatercourseConfig,
-    time_series_mapping: TimeSeriesMapping,
-) -> ResourceCollection:
-    return write_mapping_to_sequence(
-        mapping=time_series_mapping, watercourse=watercourse_config.name, mapping_type="base_mapping"
-    )
 
 
 def create_dm_resources(
