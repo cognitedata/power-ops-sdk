@@ -8,6 +8,7 @@ import pandas as pd
 from cognite.client import CogniteClient
 from cognite.client.data_classes import Asset, Event, LabelDefinition, Relationship, Sequence
 from cognite.client.data_classes._base import CogniteResource, CogniteResourceList
+from cognite.client.data_classes.data_modeling import InstanceApply
 from deepdiff import DeepDiff
 from pydantic import BaseModel, Extra
 
@@ -46,6 +47,7 @@ class ResourceCollection(BaseModel):
     events: dict[ExternalId, Event] = {}
 
     # dm resources:
+    instances: dict[ExternalId, InstanceApply] = {}
     model_templates: dict[ExternalId, ModelTemplateApply] = {}
     mappings: dict[ExternalId, MappingApply] = {}
     file_refs: dict[ExternalId, FileRefApply] = {}
