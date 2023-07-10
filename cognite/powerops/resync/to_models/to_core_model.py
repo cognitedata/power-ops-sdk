@@ -8,7 +8,7 @@ import pandas as pd
 from cognite.client.data_classes import Sequence, TimeSeries
 
 import cognite.powerops.resync.models._base
-import cognite.powerops.resync.models.shared
+import cognite.powerops.resync.models.cdf_resources
 from cognite.powerops.resync.config_classes.core.connections import Connection
 from cognite.powerops.resync.config_classes.resync_config import CoreConfigs
 from cognite.powerops.resync.models import core

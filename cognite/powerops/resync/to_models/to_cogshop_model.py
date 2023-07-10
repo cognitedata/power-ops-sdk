@@ -22,9 +22,9 @@ from cognite.powerops.resync.config_classes.core.watercourse import WatercourseC
 from cognite.powerops.resync.config_classes.resource_collection import ResourceCollection
 from cognite.powerops.resync.config_classes.resync_config import CogShopConfigs, CoreConfigs
 from cognite.powerops.resync.models import cogshop
+from cognite.powerops.resync.models.cdf_resources import CDFSequence
 from cognite.powerops.resync.models.cogshop import CogShopModel
 from cognite.powerops.resync.models.core import Watercourse
-from cognite.powerops.resync.models.shared import CDFSequence
 from cognite.powerops.resync.utils.serializer import load_yaml
 
 logger = logging.getLogger(__name__)

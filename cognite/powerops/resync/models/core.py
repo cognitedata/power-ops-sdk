@@ -7,7 +7,7 @@ from pydantic import Field
 
 from cognite.powerops.cdf_labels import AssetLabel
 from cognite.powerops.resync.models._base import AssetModel, AssetType
-from cognite.powerops.resync.models.shared import CDFSequence
+from cognite.powerops.resync.models.cdf_resources import CDFSequence
 
 
 class Generator(AssetType):

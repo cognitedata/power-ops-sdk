@@ -5,8 +5,8 @@ from typing import ClassVar, Optional
 from pydantic import Field
 
 from cognite.powerops.cdf_labels import AssetLabel
+from cognite.powerops.resync.models.cdf_resources import CDFSequence
 from cognite.powerops.resync.models.market.base import Bid, Market, Process
-from cognite.powerops.resync.models.shared import CDFSequence
 
 
 class DayAheadBid(Bid):

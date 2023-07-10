@@ -11,7 +11,7 @@ from pydantic import BaseModel, ConfigDict
 from cognite.powerops.cdf_labels import AssetLabel, RelationshipLabel
 from cognite.powerops.clients.cogshop.data_classes._core import DomainModelApply, InstancesApply
 from cognite.powerops.resync.config_classes.to_delete import SequenceContent
-from cognite.powerops.resync.models.shared import CDFSequence
+from cognite.powerops.resync.models.cdf_resources import CDFSequence
 
 
 class Type(BaseModel, ABC):

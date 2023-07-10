@@ -8,7 +8,7 @@ from cognite.powerops.clients.cogshop.data_classes import (
 )
 
 from ._base import DataModel, Type
-from .shared import CDFFile, CDFSequence
+from .cdf_resources import CDFFile, CDFSequence
 
 
 class BaseMapping(Type):
