@@ -28,6 +28,7 @@ from cognite.powerops.resync.config_classes.cogshop.shop_file_config import Shop
 from cognite.powerops.resync.config_classes.shared import ExternalId
 from cognite.powerops.resync.config_classes.to_delete import SequenceContent
 from cognite.powerops.resync.logic import clean_cdf_resources_for_diff, clean_local_resources_for_diff
+from cognite.powerops.resync.models.cdf_resources import CDFFile
 from cognite.powerops.resync.utils.common import dump_cdf_resource
 from cognite.powerops.utils.cdf.calls import upsert_cognite_resources
 
@@ -40,6 +41,8 @@ AddableResourceT = Union[
     list[ShopFileConfig],
     list[DomainModelApply],
     InstancesApply,
+    CDFFile,
+    list[CDFFile],
 ]
 
 
@@ -50,6 +53,7 @@ class ResourceCollection(BaseModel):
     sequences: dict[ExternalId, Sequence] = {}
     label_definitions: dict[ExternalId, LabelDefinition] = {}
     events: dict[ExternalId, Event] = {}
+    files: dict[ExternalId, CDFFile] = {}
 
     # dm resources:
     nodes: dict[ExternalId, NodeApply] = {}
@@ -105,6 +109,8 @@ class ResourceCollection(BaseModel):
             self.events[resource.external_id] = resource
         elif isinstance(resource, SequenceContent):
             self.sequence_content[resource.sequence_external_id] = resource
+        elif isinstance(resource, CDFFile):
+            self.files[resource.external_id] = resource
         elif isinstance(resource, ShopFileConfig):
             self.shop_file_configs[resource.external_id] = resource
         # dm
@@ -150,6 +156,10 @@ class ResourceCollection(BaseModel):
         po_client.cdf.data_modeling.instances.apply(
             nodes=list(self.nodes.values()), edges=list(self.edges.values()), replace=True
         )
+        for file in self.files.values():
+            po_client.cdf.files.upload_bytes(
+                content=file.content, data_set_id=data_set_id, overwrite=overwrite, **file.meta.dump(camel_case=False)
+            )
 
         dm_api_by_type = (
             {}

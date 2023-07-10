@@ -35,7 +35,23 @@ def cogshop_to_cdf_resources(
 ) -> tuple[ResourceCollection, CogShopModel]:
     model = CogShopModel()
 
-    for watercourse in watercourses:
+    # SHOP files (model, commands, cut mapping++) and configs (base mapping, output definition)
+    # Shop files related to each watercourse
+    collection = ResourceCollection()
+    # This creates the files which are used to create the instances below
+    collection += create_watercourse_processed_shop_files(watercourse_configs=core_config.watercourses)
+
+    collection.add(create_watercourse_shop_files(config.watercourses_shop, core_config.watercourse_directories))
+
+    for shop_config in collection.shop_file_configs.values():
+        if shop_config.md5_hash is None:
+            # Set hashes for Shop Files, needed for comparison
+            file_content = Path(shop_config.file_path).read_bytes()
+            shop_config.set_md5_hash(file_content)
+
+    # TODO Fix the assumption that timeseries mappings and watercourses are in the same order
+    for watercourse, mapping in zip(watercourses, config.time_series_mappings):
+        #### Model File ####
         processed_model = get_model_without_timeseries(
             yaml_raw_path=str(watercourse.model_file),
             # Todo Move this hardcoded configuration to a config file
@@ -65,22 +81,6 @@ def cogshop_to_cdf_resources(
         )
         model.shop_files.append(model_file)
 
-    # SHOP files (model, commands, cut mapping++) and configs (base mapping, output definition)
-    # Shop files related to each watercourse
-    collection = ResourceCollection()
-    # This creates the files which are used to create the instances below
-    collection += create_watercourse_processed_shop_files(watercourse_configs=core_config.watercourses)
-
-    collection.add(create_watercourse_shop_files(config.watercourses_shop, core_config.watercourse_directories))
-
-    for shop_config in collection.shop_file_configs.values():
-        if shop_config.md5_hash is None:
-            # Set hashes for Shop Files, needed for comparison
-            file_content = Path(shop_config.file_path).read_bytes()
-            shop_config.set_md5_hash(file_content)
-
-    # TODO Fix the assumption that timeseries mappings and watercourses are in the same order
-    for watercourse, mapping in zip(watercourses, config.time_series_mappings):
         ##### Output definition #####
         external_id = f"SHOP_{watercourse.name.replace(' ', '_')}_output_definition"
 
@@ -148,23 +148,10 @@ def cogshop_to_cdf_resources(
         model.base_mappings.append(output_definition)
 
         ############## Adding the Instances. ##############
-        model_files = [
-            file
-            for file in collection.shop_file_configs.values()
-            if file.cogshop_file_type == "model" and file.external_id.endswith(f"{watercourse.name}_model")
-        ]
-        if len(model_files) != 1:
-            logger.warning(
-                f"Expected exactly 1 model file,"
-                f" got {len(model_files)}: {', '.join(mf.external_id for mf in model_files)}."
-                f" Skipping DM ModelTemplate for watercourse {watercourse.name}.",
-            )
-            continue
-        model_file = model_files[0]
         file_ref = FileRefApply(
             external_id=f"ModelTemplate_{watercourse.name}__FileRef_model",
-            type=model_file.cogshop_file_type,
-            file_external_id=model_file.external_id,
+            type="model",
+            file_external_id=model_file.file.external_id,
         )
         model.file_refs.append(file_ref)
         transformations = []
