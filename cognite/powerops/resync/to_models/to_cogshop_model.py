@@ -72,10 +72,10 @@ def cogshop_to_cdf_resources(
         )
         model.output_definitions.append(output_definition)
 
-    collection += create_watercourse_timeseries_mappings(
-        watercourse_configs=core.watercourses,
-        time_series_mappings=config.time_series_mappings,
-    )
+    # collection += create_watercourse_timeseries_mappings(
+    #     watercourse_configs=core.watercourses,
+    #     time_series_mappings=config.time_series_mappings,
+    # )
 
     # Create DM resources
     collection += create_dm_resources(
