@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Optional
 
 import yaml
+from cognite.client.data_classes import Sequence
 
 from cognite.powerops.clients.cogshop.data_classes import (
     FileRefApply,
@@ -21,6 +22,8 @@ from cognite.powerops.resync.config_classes.core.watercourse import WatercourseC
 from cognite.powerops.resync.config_classes.resource_collection import ResourceCollection, write_mapping_to_sequence
 from cognite.powerops.resync.config_classes.resync_config import CogShopConfigs, CoreConfigs
 from cognite.powerops.resync.config_classes.shared import ExternalId, TimeSeriesMapping
+from cognite.powerops.resync.models import cogshop
+from cognite.powerops.resync.models._base import CDFSequence
 from cognite.powerops.resync.models.cogshop import CogShopModel
 from cognite.powerops.resync.models.core import Watercourse
 from cognite.powerops.resync.utils.serializer import load_yaml
@@ -32,7 +35,7 @@ def cogshop_to_cdf_resources(
     core: CoreConfigs,
     shop_file_configs: dict[ExternalId, ShopFileConfig],
     shop_version: str,
-    cogshop: CogShopConfigs,
+    config: CogShopConfigs,
     watercourses: list[Watercourse],
 ) -> tuple[ResourceCollection, CogShopModel]:
     collection = ResourceCollection()
@@ -40,24 +43,45 @@ def cogshop_to_cdf_resources(
 
     # SHOP files (model, commands, cut mapping++) and configs (base mapping, output definition)
     # Shop files related to each watercourse
-    collection.add(create_watercourse_shop_files(cogshop.watercourses_shop, core.watercourse_directories))
+    collection.add(create_watercourse_shop_files(config.watercourses_shop, core.watercourse_directories))
 
     collection += create_watercourse_processed_shop_files(watercourse_configs=core.watercourses)
 
     # Creating Sequences
-    for mapping in cogshop.time_series_mappings:
-        ...
+    # TODO Fix the assumption that timeseries mappings and watercourses are in the same order
+    for watercourse, mapping in zip(watercourses, config.time_series_mappings):
+        external_id = f"SHOP_{watercourse.name}_base_mapping"
+        sequence = Sequence(
+            name=external_id.replace("_", " "),
+            external_id=external_id,
+            description="Mapping between SHOP paths and CDF TimeSeries",
+            columns=mapping.column_definitions,
+            metadata={
+                "shop:watercourse": watercourse.name,
+                "shop:type": "base_mapping",
+            },
+        )
+        output_definition = cogshop.OutputDefinition(
+            watercourse_name=watercourse.name,
+            mapping=[
+                CDFSequence(
+                    sequence=sequence,
+                    content=mapping.to_dataframe(),
+                )
+            ],
+        )
+        model.output_definitions.append(output_definition)
 
     collection += create_watercourse_timeseries_mappings(
         watercourse_configs=core.watercourses,
-        time_series_mappings=cogshop.time_series_mappings,
+        time_series_mappings=config.time_series_mappings,
     )
 
     # Create DM resources
     collection += create_dm_resources(
         core.watercourses,
         list(shop_file_configs.values()),
-        cogshop.time_series_mappings,
+        config.time_series_mappings,
         shop_version,
     )
 
