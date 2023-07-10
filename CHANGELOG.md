@@ -13,6 +13,13 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.25.2] - 07-07-23
+### Fixed
+
+* Bug causing the md5 hash used in the `powerops plan` command to be OS dependent. This is now fixed..
+
+
+
 ## [0.25.1] - 06-07-23
 ### Changed
 

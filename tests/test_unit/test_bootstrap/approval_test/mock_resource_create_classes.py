@@ -1,13 +1,15 @@
 from __future__ import annotations
 
+import hashlib
 import json
-from typing import List, Union
+from typing import BinaryIO, List, TextIO, Union
 
 from cognite.client.data_classes import (
     Asset,
     AssetList,
     Event,
     EventList,
+    FileMetadata,
     LabelDefinition,
     LabelDefinitionList,
     Relationship,
@@ -200,4 +202,46 @@ class MockInstancesApply:
 
         return [
             instance.dump(camel_case=False) for instance in sorted(self.nodes, key=key) + sorted(self.edges, key=key)
+        ]
+
+
+class MockFilesUploadBytes:
+    def __init__(self):
+        self.file_metadata = []
+        self.content_sha256_hash = []
+
+    def __call__(
+        self,
+        content: str | bytes | TextIO | BinaryIO,
+        name: str,
+        external_id: str = None,
+        source: str = None,
+        mime_type: str = None,
+        metadata: dict[str, str] = None,
+        directory: str = None,
+        data_set_id: int = None,
+        overwrite: bool = False,
+        **_,
+    ) -> FileMetadata:
+        file_metadata = FileMetadata(
+            external_id=external_id,
+            name=name,
+            metadata=metadata,
+            source=source,
+            mime_type=mime_type,
+        )
+        self.file_metadata.append(file_metadata)
+        if isinstance(content, str):
+            content = content.encode("utf-8")
+        # Bytes are different between Windows and Linux
+        sha256_hash = hashlib.sha256(content.replace(b"\r\n", b"\n")).hexdigest()
+        self.content_sha256_hash.append(sha256_hash)
+        return file_metadata
+
+    def serialize(self) -> list[dict]:
+        return [
+            {**file_metadata.dump(camel_case=False), "sha256_hash": hash_}
+            for file_metadata, hash_ in sorted(
+                zip(self.file_metadata, self.content_sha256_hash), key=lambda f: f[0].external_id
+            )
         ]

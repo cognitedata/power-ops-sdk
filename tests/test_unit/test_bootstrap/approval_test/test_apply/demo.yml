@@ -11042,6 +11042,77 @@ events:
 - description: Manual run of bootstrap scripts finsihed
   source: PowerOps bootstrap
   type: POWEROPS_BOOTSTRAP_FINISHED
+files:
+- external_id: SHOP_Fornebu_cog_shop_files_config
+  metadata:
+    md5_hash: ff316235eedd999013fed7ccea27c066
+    shop:file_name: cog_shop_files_config
+    shop:type: extra_data
+    shop:watercourse: Fornebu
+  mime_type: text/plain
+  name: SHOP_Fornebu_cog_shop_files_config
+  sha256_hash: 0aa456b0221df26888b90bfe89c763da410a302aacb972d843199cc0fa1e04b5
+  source: PowerOps bootstrap
+- external_id: SHOP_Fornebu_commands
+  metadata:
+    md5_hash: f67711a88e0205bb0fde817083d50eb7
+    shop:file_name: commands
+    shop:type: commands
+    shop:watercourse: Fornebu
+  mime_type: text/plain
+  name: SHOP_Fornebu_commands
+  sha256_hash: cbde2bbd5a300fc314566b7c93e5b962026f191f8a37850de4645ab05d8c493a
+  source: PowerOps bootstrap
+- external_id: SHOP_Fornebu_model
+  metadata:
+    md5_hash: f29c736b8b5b0892635f2a52580b9ed2
+    shop:file_name: model
+    shop:type: case
+    shop:watercourse: Fornebu
+  mime_type: text/plain
+  name: SHOP_Fornebu_model
+  sha256_hash: c083862174094aa3a24d5abcc8ddeb4431cebeb1db3c12584f19f61369920bb0
+  source: PowerOps bootstrap
+- external_id: SHOP_Fornebu_shop-fornebu1-modul_series
+  metadata:
+    md5_hash: 16e5d18659b414213c86c9bba9a29e94
+    shop:file_name: shop-fornebu1-modul_series
+    shop:type: module_series
+    shop:watercourse: Fornebu
+  mime_type: text/plain
+  name: SHOP_Fornebu_shop-fornebu1-modul_series
+  sha256_hash: abf5384d47e254425989fafc84b850f714a57b4dd5eccbcb033d9bce97044ea2
+  source: PowerOps bootstrap
+- external_id: SHOP_Fornebu_shop-fornebu2-modul_series
+  metadata:
+    md5_hash: 16e5d18659b414213c86c9bba9a29e94
+    shop:file_name: shop-fornebu2-modul_series
+    shop:type: module_series
+    shop:watercourse: Fornebu
+  mime_type: text/plain
+  name: SHOP_Fornebu_shop-fornebu2-modul_series
+  sha256_hash: abf5384d47e254425989fafc84b850f714a57b4dd5eccbcb033d9bce97044ea2
+  source: PowerOps bootstrap
+- external_id: SHOP_Fornebu_water_value_cut_file
+  metadata:
+    md5_hash: 22af45919c4c37bf1115a7159b11b981
+    shop:file_name: water_value_cut_file
+    shop:type: water_value_cut_file
+    shop:watercourse: Fornebu
+  mime_type: text/plain
+  name: SHOP_Fornebu_water_value_cut_file
+  sha256_hash: 81bc5502381eb877390a166fe5bf76f0df6415336b7cb2ea5e4eb9d640de7648
+  source: PowerOps bootstrap
+- external_id: SHOP_Fornebu_water_value_cut_file_reservoir_mapping
+  metadata:
+    md5_hash: bb8c80ddd50fcdb55cabb5b74b4cbefc
+    shop:file_name: water_value_cut_file_reservoir_mapping
+    shop:type: water_value_cut_file_reservoir_mapping
+    shop:watercourse: Fornebu
+  mime_type: text/plain
+  name: SHOP_Fornebu_water_value_cut_file_reservoir_mapping
+  sha256_hash: 917bea3dd3e727811fc1d725f19be9039dd1b14d5c6e94114d098663503d72b3
+  source: PowerOps bootstrap
 labels:
 - external_id: benchmarking_configuration
   name: benchmarking_configuration

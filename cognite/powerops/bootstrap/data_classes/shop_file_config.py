@@ -44,7 +44,7 @@ class ShopFileConfig(BaseModel):
         }
 
     def set_md5_hash(self, file_content: bytes) -> None:
-        self.md5_hash = md5(file_content).hexdigest()
+        self.md5_hash = md5(file_content.replace(b"\r\n", b"\n")).hexdigest()
 
     def set_full_path(self, directory: str) -> None:
         self.path = Path(directory) / self.path
