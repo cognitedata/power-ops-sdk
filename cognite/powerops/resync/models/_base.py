@@ -6,11 +6,11 @@ from typing import ClassVar, Iterable, Optional, Union
 
 import pandas as pd
 from cognite.client.data_classes import Asset, Label, Relationship, Sequence, SequenceData, TimeSeries
-from cognite.client.data_classes.data_modeling.instances import InstanceApply
+from cognite.client.data_classes.data_modeling.instances import EdgeApply, NodeApply
 from pydantic import BaseModel, ConfigDict
 
 from cognite.powerops.cdf_labels import AssetLabel, RelationshipLabel
-from cognite.powerops.clients.cogshop.data_classes._core import DomainModelApply
+from cognite.powerops.clients.cogshop.data_classes._core import DomainModelApply, InstancesApply
 from cognite.powerops.resync.config_classes.to_delete import SequenceContent
 
 
@@ -230,19 +230,20 @@ class AssetModel(Model, ABC):
 
 
 class DataModel(Model, ABC):
-    def instances(self) -> list[InstanceApply]:
-        instances: dict[str, InstanceApply] = {}
+    def instances(self) -> InstancesApply:
+        nodes: dict[str, NodeApply] = {}
+        edges: dict[str, EdgeApply] = {}
         for domain_model in self._domain_models():
             instance_applies = domain_model.to_instances_apply()
             # Caching in case recursive relationships are used.
             for node in instance_applies.nodes:
-                if node.external_id in instances:
-                    instances[node.external_id] = node
+                if node.external_id not in nodes:
+                    nodes[node.external_id] = node
             for edge in instance_applies.edges:
-                if edge.external_id in instances:
-                    instances[edge.external_id] = edge
+                if edge.external_id not in edges:
+                    edges[edge.external_id] = edge
 
-        return list(instances.values())
+        return InstancesApply(nodes=list(nodes.values()), edges=list(edges.values()))
 
     def _domain_models(self) -> Iterable[DomainModelApply]:
         for f in self.model_fields:

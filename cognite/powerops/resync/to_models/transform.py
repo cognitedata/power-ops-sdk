@@ -29,6 +29,7 @@ def transform(
         config.core, config.settings.shop_version, config.cogshop, core_model.watercourses
     )
     collection.add(cogshop_model.sequences())
+    collection.add(cogshop_model.instances())
     collection += created
     print(cogshop_model.model_dump())
     labels = AssetLabel.as_label_definitions() + RelationshipLabel.as_label_definitions()

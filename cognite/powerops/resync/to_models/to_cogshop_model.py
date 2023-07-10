@@ -148,14 +148,14 @@ def cogshop_to_cdf_resources(
             )
         )
 
-        dm_resources = create_watercourse_dm_resources(
-            watercourse_name=watercourse.name,
-            watercourse_version=watercourse.config_version,
-            config_files=list(collection.shop_file_configs.values()),
-            base_mapping=mapping,
-            shop_version=shop_version,
-        )
-        collection.add(dm_resources)
+        # dm_resources = create_watercourse_dm_resources(
+        #     watercourse_name=watercourse.name,
+        #     watercourse_version=watercourse.config_version,
+        #     config_files=list(collection.shop_file_configs.values()),
+        #     base_mapping=mapping,
+        #     shop_version=shop_version,
+        # )
+        # collection.add(dm_resources)
 
     # Set hashes for Shop Files, needed for comparison
     for shop_config in collection.shop_file_configs.values():

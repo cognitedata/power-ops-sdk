@@ -8,7 +8,7 @@ import pandas as pd
 from cognite.client import CogniteClient
 from cognite.client.data_classes import Asset, Event, LabelDefinition, Relationship, Sequence
 from cognite.client.data_classes._base import CogniteResource, CogniteResourceList
-from cognite.client.data_classes.data_modeling import InstanceApply
+from cognite.client.data_classes.data_modeling import EdgeApply, NodeApply
 from deepdiff import DeepDiff
 from pydantic import BaseModel, Extra
 
@@ -22,7 +22,7 @@ from cognite.powerops.clients.cogshop.data_classes import (
     Transformation,
     TransformationApply,
 )
-from cognite.powerops.clients.cogshop.data_classes._core import DomainModel, DomainModelApply
+from cognite.powerops.clients.cogshop.data_classes._core import DomainModel, DomainModelApply, InstancesApply
 from cognite.powerops.clients.powerops_client import PowerOpsClient
 from cognite.powerops.resync.config_classes.cogshop.shop_file_config import ShopFileConfig
 from cognite.powerops.resync.config_classes.shared import ExternalId
@@ -34,7 +34,12 @@ from cognite.powerops.utils.cdf.calls import upsert_cognite_resources
 logger = logging.getLogger(__name__)
 
 AddableResourceT = Union[
-    "CogniteResource", list["CogniteResource"], "SequenceContent", list[ShopFileConfig], list[DomainModelApply]
+    "CogniteResource",
+    list["CogniteResource"],
+    "SequenceContent",
+    list[ShopFileConfig],
+    list[DomainModelApply],
+    InstancesApply,
 ]
 
 
@@ -47,7 +52,8 @@ class ResourceCollection(BaseModel):
     events: dict[ExternalId, Event] = {}
 
     # dm resources:
-    instances: dict[ExternalId, InstanceApply] = {}
+    nodes: dict[ExternalId, NodeApply] = {}
+    edges: dict[ExternalId, EdgeApply] = {}
     model_templates: dict[ExternalId, ModelTemplateApply] = {}
     mappings: dict[ExternalId, MappingApply] = {}
     file_refs: dict[ExternalId, FileRefApply] = {}
@@ -77,6 +83,11 @@ class ResourceCollection(BaseModel):
         if isinstance(resources_to_append, (list, CogniteResourceList)):
             for resource in resources_to_append:
                 self._add_resource(resource)
+        elif isinstance(resources_to_append, InstancesApply):
+            for node in resources_to_append.nodes:
+                self._add_resource(node)
+            for edge in resources_to_append.edges:
+                self._add_resource(edge)
         else:
             self._add_resource(resources_to_append)
 
@@ -97,6 +108,10 @@ class ResourceCollection(BaseModel):
         elif isinstance(resource, ShopFileConfig):
             self.shop_file_configs[resource.external_id] = resource
         # dm
+        elif isinstance(resource, NodeApply):
+            self.nodes[resource.external_id] = resource
+        elif isinstance(resource, EdgeApply):
+            self.edges[resource.external_id] = resource
         elif isinstance(resource, ModelTemplateApply):
             self.model_templates[resource.external_id] = resource
         elif isinstance(resource, MappingApply):
@@ -131,6 +146,10 @@ class ResourceCollection(BaseModel):
             resources = list(getattr(self, resource_type).values())
             logger.debug(f"Processing {len(resources)} {resource_type}...")
             upsert_cognite_resources(api, resource_type, resources)
+
+        po_client.cdf.data_modeling.instances.apply(
+            nodes=list(self.nodes.values()), edges=list(self.edges.values()), replace=True
+        )
 
         dm_api_by_type = (
             {}
