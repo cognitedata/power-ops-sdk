@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 from pathlib import Path
-from typing import Literal, Union, cast
+from typing import Union, cast
 
 import pandas as pd
 from cognite.client import CogniteClient
@@ -24,10 +24,10 @@ from cognite.powerops.clients.cogshop.data_classes import (
 from cognite.powerops.clients.cogshop.data_classes._core import DomainModel, DomainModelApply
 from cognite.powerops.clients.powerops_client import PowerOpsClient
 from cognite.powerops.resync.config_classes.cogshop.shop_file_config import ShopFileConfig
-from cognite.powerops.resync.config_classes.shared import ExternalId, TimeSeriesMapping
+from cognite.powerops.resync.config_classes.shared import ExternalId
 from cognite.powerops.resync.config_classes.to_delete import SequenceContent
 from cognite.powerops.resync.logic import clean_cdf_resources_for_diff, clean_local_resources_for_diff
-from cognite.powerops.resync.utils.common import dump_cdf_resource, print_warning
+from cognite.powerops.resync.utils.common import dump_cdf_resource
 from cognite.powerops.utils.cdf.calls import upsert_cognite_resources
 
 logger = logging.getLogger(__name__)
@@ -349,43 +349,6 @@ def to_dm_apply(instances: list[DomainModel] | DomainModel) -> list[DomainModelA
             apply_type(**{field: value for field, value in item.dict().items() if field in apply_type.__fields__})
         )
     return apply_items
-
-
-def write_mapping_to_sequence(
-    mapping: TimeSeriesMapping, watercourse: str, mapping_type: Literal["base_mapping"]
-) -> ResourceCollection:
-    if mapping_type not in ["base_mapping"]:
-        raise ValueError(f"Unrecognized mapping type: {mapping_type}")
-
-    metadata = {
-        "shop:watercourse": watercourse,
-        "shop:type": mapping_type,
-    }
-
-    if mapping_type == "base_mapping":
-        external_id = f"SHOP_{watercourse}_base_mapping"
-        name = external_id.replace("_", " ")
-
-    else:
-        raise ValueError(f"Unrecognized mapping type: {mapping_type}")
-
-    sequence = Sequence(
-        name=name,
-        external_id=external_id,
-        description="Mapping between SHOP paths and CDF TimeSeries",
-        columns=mapping.column_definitions,
-        metadata=metadata,
-    )
-    bootstrap_resource_collection = ResourceCollection()
-    bootstrap_resource_collection.add(sequence)
-    sequence_dataframe = mapping.to_dataframe()
-    if not sequence_dataframe.empty:
-        bootstrap_resource_collection.add(
-            SequenceContent(sequence_external_id=sequence.external_id, data=sequence_dataframe)
-        )
-    else:
-        print_warning("Time series mapping is empty! No sequence rows to write!")
-    return bootstrap_resource_collection
 
 
 def upload_shop_config_file(
