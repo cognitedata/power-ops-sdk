@@ -52,6 +52,7 @@ class Watercourse(AssetType):
     type_: ClassVar[str] = "watercourse"
     label = AssetLabel.WATERCOURSE
     shop_penalty_limit: str
+    config_version: str = Field(exclude=True)
     plants: list[Plant]
     production_obligation_time_series: list[TimeSeries] = Field(default_factory=list)
 

@@ -68,6 +68,7 @@ def to_core_model(config: CoreConfigs) -> core.CoreModel:
         watercourse = core.Watercourse(
             name=watercourse_config.name,
             shop_penalty_limit=str(watercourse_config.shop_penalty_limit),
+            config_version=watercourse_config.version,
             plants=[],
             production_obligation_time_series=[
                 TimeSeries(external_id=id_) for id_ in watercourse_config.production_obligation_ts_ext_ids

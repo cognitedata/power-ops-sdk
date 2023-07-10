@@ -32,7 +32,7 @@ logger = logging.getLogger(__name__)
 
 
 def cogshop_to_cdf_resources(
-    core: CoreConfigs,
+    core_config: CoreConfigs,
     shop_version: str,
     config: CogShopConfigs,
     watercourses: list[Watercourse],
@@ -42,9 +42,10 @@ def cogshop_to_cdf_resources(
 
     # SHOP files (model, commands, cut mapping++) and configs (base mapping, output definition)
     # Shop files related to each watercourse
-    collection.add(create_watercourse_shop_files(config.watercourses_shop, core.watercourse_directories))
 
-    collection += create_watercourse_processed_shop_files(watercourse_configs=core.watercourses)
+    # This creates the files which are used to create the instances below
+    collection += create_watercourse_processed_shop_files(watercourse_configs=core_config.watercourses)
+    collection.add(create_watercourse_shop_files(config.watercourses_shop, core_config.watercourse_directories))
 
     # Creating Sequences
     # TODO Fix the assumption that timeseries mappings and watercourses are in the same order
@@ -71,11 +72,18 @@ def cogshop_to_cdf_resources(
         )
         model.output_definitions.append(output_definition)
 
+        # Adding the Instances.
+        # dm_resources = create_watercourse_dm_resources(
+        #     watercourse.name, watercourse_config.version,
+        #     list(collection.shop_file_configs.values()), mapping, shop_version
+        # )
+        # collection.add(dm_resources)
+
     # Create DM resources
     collection += create_dm_resources(
-        core.watercourses,
+        core_config.watercourses,
         list(collection.shop_file_configs.values()),
-        config.time_series_mappings,
+        config,
         shop_version,
     )
 
@@ -127,11 +135,11 @@ def create_watercourse_shop_files(
 def create_dm_resources(
     watercourse_configs: list[WatercourseConfig],
     shop_files: list[ShopFileConfig],
-    time_series_mappings: list[TimeSeriesMapping],
+    config: CogShopConfigs,
     shop_version: str,
 ) -> ResourceCollection:
     cdf_resources = ResourceCollection()
-    for watercourse_config, time_series_mapping in zip(watercourse_configs, time_series_mappings):
+    for watercourse_config, time_series_mapping in zip(watercourse_configs, config.time_series_mappings):
         # Create DM resources
         dm_resources = create_watercourse_dm_resources(
             watercourse_config.name, watercourse_config.version, shop_files, time_series_mapping, shop_version

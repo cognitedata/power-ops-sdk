@@ -105,9 +105,11 @@ class AssetType(Type, ABC):
     def as_asset(self):
         metadata = {}
         for field_name, field in self.model_fields.items():
-            if any(
-                cdf_type in str(field.annotation) for cdf_type in [CDFSequence.__name__, TimeSeries.__name__]
-            ) or field_name in {"name", "description", "label", "parent_external_id"}:
+            if (
+                any(cdf_type in str(field.annotation) for cdf_type in [CDFSequence.__name__, TimeSeries.__name__])
+                or field_name in {"name", "description", "label", "parent_external_id"}
+                or field.exclude
+            ):
                 continue
             value = getattr(self, field_name)
             if (
