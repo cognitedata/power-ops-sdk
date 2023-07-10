@@ -11045,7 +11045,7 @@ events:
 files:
 - external_id: SHOP_Fornebu_cog_shop_files_config
   metadata:
-    md5_hash: d67fa58424b564b7c874f9e7af1ec8df
+    md5_hash: ff316235eedd999013fed7ccea27c066
     shop:file_name: cog_shop_files_config
     shop:type: extra_data
     shop:watercourse: Fornebu
@@ -11055,7 +11055,7 @@ files:
   source: PowerOps bootstrap
 - external_id: SHOP_Fornebu_commands
   metadata:
-    md5_hash: 1232b452d49dd915bb0d169334479a66
+    md5_hash: f67711a88e0205bb0fde817083d50eb7
     shop:file_name: commands
     shop:type: commands
     shop:watercourse: Fornebu
@@ -11065,7 +11065,7 @@ files:
   source: PowerOps bootstrap
 - external_id: SHOP_Fornebu_model
   metadata:
-    md5_hash: c2a2851b8a14253cc30f2bc58b0b754c
+    md5_hash: f29c736b8b5b0892635f2a52580b9ed2
     shop:file_name: model
     shop:type: case
     shop:watercourse: Fornebu
@@ -11075,7 +11075,7 @@ files:
   source: PowerOps bootstrap
 - external_id: SHOP_Fornebu_shop-fornebu1-modul_series
   metadata:
-    md5_hash: 7d2408dde9c45f0fb715155658c71243
+    md5_hash: 16e5d18659b414213c86c9bba9a29e94
     shop:file_name: shop-fornebu1-modul_series
     shop:type: module_series
     shop:watercourse: Fornebu
@@ -11085,7 +11085,7 @@ files:
   source: PowerOps bootstrap
 - external_id: SHOP_Fornebu_shop-fornebu2-modul_series
   metadata:
-    md5_hash: 7d2408dde9c45f0fb715155658c71243
+    md5_hash: 16e5d18659b414213c86c9bba9a29e94
     shop:file_name: shop-fornebu2-modul_series
     shop:type: module_series
     shop:watercourse: Fornebu
@@ -11095,7 +11095,7 @@ files:
   source: PowerOps bootstrap
 - external_id: SHOP_Fornebu_water_value_cut_file
   metadata:
-    md5_hash: 7353323c4926c636770dea5bc7f40eab
+    md5_hash: 22af45919c4c37bf1115a7159b11b981
     shop:file_name: water_value_cut_file
     shop:type: water_value_cut_file
     shop:watercourse: Fornebu
@@ -11105,7 +11105,7 @@ files:
   source: PowerOps bootstrap
 - external_id: SHOP_Fornebu_water_value_cut_file_reservoir_mapping
   metadata:
-    md5_hash: 1cdc141f11c5ac383087622abcd9aeec
+    md5_hash: bb8c80ddd50fcdb55cabb5b74b4cbefc
     shop:file_name: water_value_cut_file_reservoir_mapping
     shop:type: water_value_cut_file_reservoir_mapping
     shop:watercourse: Fornebu
