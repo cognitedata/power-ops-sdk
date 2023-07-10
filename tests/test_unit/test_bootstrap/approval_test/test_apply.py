@@ -15,6 +15,7 @@ from tests.constants import REPO_ROOT, SENSITIVE_TESTS
 from tests.test_unit.test_bootstrap.approval_test.mock_resource_create_classes import (
     MockAssetsCreate,
     MockEventsCreate,
+    MockFilesUploadBytes,
     MockInstancesApply,
     MockLabelsCreate,
     MockRelationshipsCreate,
@@ -57,6 +58,7 @@ def test_apply(input_dir: Path, market: str, compare_file_path: Path, data_regre
         "labels.create": MockLabelsCreate(),
         "events.create": MockEventsCreate(),
         "data_modeling.instances.apply": MockInstancesApply(),
+        "files.upload_bytes": MockFilesUploadBytes(),
     }
 
     with monkeypatch_cognite_client() as client:

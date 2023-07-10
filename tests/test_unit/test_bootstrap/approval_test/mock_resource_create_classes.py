@@ -1,13 +1,15 @@
 from __future__ import annotations
 
+import hashlib
 import json
-from typing import List, Union
+from typing import BinaryIO, List, TextIO, Union
 
 from cognite.client.data_classes import (
     Asset,
     AssetList,
     Event,
     EventList,
+    FileMetadata,
     LabelDefinition,
     LabelDefinitionList,
     Relationship,
@@ -200,4 +202,42 @@ class MockInstancesApply:
 
         return [
             instance.dump(camel_case=False) for instance in sorted(self.nodes, key=key) + sorted(self.edges, key=key)
+        ]
+
+
+class MockFilesUploadBytes:
+    def __init__(self):
+        self.file_metadata = []
+        self.content_md5_hash = []
+
+    def __call__(
+        self,
+        content: str | bytes | TextIO | BinaryIO,
+        name: str,
+        external_id: str = None,
+        source: str = None,
+        mime_type: str = None,
+        metadata: dict[str, str] = None,
+        directory: str = None,
+        data_set_id: int = None,
+        overwrite: bool = False,
+        **_,
+    ) -> FileMetadata:
+        file_metadata = FileMetadata(
+            external_id=external_id,
+            name=name,
+            metadata=metadata,
+            source=source,
+            mime_type=mime_type,
+        )
+        self.file_metadata.append(file_metadata)
+        self.content_md5_hash.append(hashlib.md5(content).hexdigest())
+        return file_metadata
+
+    def serialize(self) -> list[dict]:
+        return [
+            {**file_metadata.dump(camel_case=False), "md5_hash": hash_}
+            for file_metadata, hash_ in sorted(
+                zip(self.file_metadata, self.content_md5_hash), key=lambda f: f[0].external_id
+            )
         ]
