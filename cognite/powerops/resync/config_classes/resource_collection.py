@@ -378,9 +378,9 @@ def upload_shop_config_file(
     data_set_id: int,
     overwrite: bool = True,
 ) -> None:
-    if config.path is None:
+    if config.file_path is None:
         raise ValueError("The Path must be set to upload file")
-    file_content = Path(config.path).read_bytes()
+    file_content = Path(config.file_path).read_bytes()
     if config.md5_hash is None:
         config.set_md5_hash(file_content)
     try:

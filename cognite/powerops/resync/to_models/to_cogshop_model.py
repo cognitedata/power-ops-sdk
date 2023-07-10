@@ -22,9 +22,9 @@ from cognite.powerops.resync.config_classes.core.watercourse import WatercourseC
 from cognite.powerops.resync.config_classes.resource_collection import ResourceCollection
 from cognite.powerops.resync.config_classes.resync_config import CogShopConfigs, CoreConfigs
 from cognite.powerops.resync.models import cogshop
-from cognite.powerops.resync.models._base import CDFSequence
 from cognite.powerops.resync.models.cogshop import CogShopModel
 from cognite.powerops.resync.models.core import Watercourse
+from cognite.powerops.resync.models.shared import CDFSequence
 from cognite.powerops.resync.utils.serializer import load_yaml
 
 logger = logging.getLogger(__name__)
@@ -46,7 +46,7 @@ def cogshop_to_cdf_resources(
     for shop_config in collection.shop_file_configs.values():
         if shop_config.md5_hash is None:
             # Set hashes for Shop Files, needed for comparison
-            file_content = Path(shop_config.path).read_bytes()
+            file_content = Path(shop_config.file_path).read_bytes()
             shop_config.set_md5_hash(file_content)
 
     # TODO Fix the assumption that timeseries mappings and watercourses are in the same order
@@ -209,7 +209,7 @@ def create_watercourse_processed_shop_files(
         cdf_resources.add(
             [
                 ShopFileConfig(
-                    path=watercourse_config.yaml_processed_path,
+                    file_path=watercourse_config.yaml_processed_path,
                     cogshop_file_type="model",
                     watercourse_name=watercourse_config.name,
                 )

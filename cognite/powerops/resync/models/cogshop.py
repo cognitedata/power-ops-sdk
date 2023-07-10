@@ -7,7 +7,8 @@ from cognite.powerops.clients.cogshop.data_classes import (
     TransformationApply,
 )
 
-from ._base import CDFSequence, DataModel, Type
+from ._base import DataModel, Type
+from .shared import CDFFile, CDFSequence
 
 
 class BaseMapping(Type):
@@ -20,9 +21,15 @@ class OutputDefinition(Type):
     mapping: list[CDFSequence] = Field(default_factory=list)
 
 
+class ShopFile(Type):
+    watercourse_name: str
+    file: CDFFile
+
+
 class CogShopModel(DataModel):
     base_mappings: list[BaseMapping] = Field(default_factory=list)
     output_definitions: list[OutputDefinition] = Field(default_factory=list)
+    shop_files: list[ShopFile] = Field(default_factory=list)
     model_templates: list[ModelTemplateApply] = Field(default_factory=list)
     mappings: list[MappingApply] = Field(default_factory=list)
     transformations: list[TransformationApply] = Field(default_factory=list)

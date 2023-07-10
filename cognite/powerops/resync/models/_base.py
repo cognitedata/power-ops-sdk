@@ -2,26 +2,16 @@ from __future__ import annotations
 
 import json
 from abc import ABC
-from typing import ClassVar, Iterable, Optional, Union
+from typing import ClassVar, Iterable, Optional
 
-import pandas as pd
-from cognite.client.data_classes import Asset, Label, Relationship, Sequence, SequenceData, TimeSeries
+from cognite.client.data_classes import Asset, Label, Relationship, Sequence, TimeSeries
 from cognite.client.data_classes.data_modeling.instances import EdgeApply, NodeApply
 from pydantic import BaseModel, ConfigDict
 
 from cognite.powerops.cdf_labels import AssetLabel, RelationshipLabel
 from cognite.powerops.clients.cogshop.data_classes._core import DomainModelApply, InstancesApply
 from cognite.powerops.resync.config_classes.to_delete import SequenceContent
-
-
-class CDFSequence(BaseModel):
-    model_config: ClassVar[ConfigDict] = ConfigDict(arbitrary_types_allowed=True)
-    sequence: Sequence
-    content: Union[SequenceData, pd.DataFrame]
-
-    @property
-    def external_id(self):
-        return self.sequence.external_id
+from cognite.powerops.resync.models.shared import CDFSequence
 
 
 class Type(BaseModel, ABC):

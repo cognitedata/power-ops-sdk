@@ -2,15 +2,17 @@ from __future__ import annotations
 
 from hashlib import md5
 from pathlib import Path
-from typing import Literal, Optional
+from typing import ClassVar, Literal, Optional
 
 from cognite.client.data_classes import FileMetadata
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class ShopFileConfig(BaseModel):
+    model_config: ClassVar[ConfigDict] = ConfigDict(populate_by_name=True)
     watercourse_name: str
-    path: Path
+    # Alias for backwards compatibility
+    file_path: Path = Field(alias="path")
     cogshop_file_type: Literal[
         "case",
         "model",
@@ -25,7 +27,7 @@ class ShopFileConfig(BaseModel):
 
     @property
     def external_id(self) -> str:
-        return f"SHOP_{self.watercourse_name}_{self.path.stem}"
+        return f"SHOP_{self.watercourse_name}_{self.file_path.stem}"
 
     @property
     def metadata(self) -> dict[str, str]:
@@ -37,7 +39,7 @@ class ShopFileConfig(BaseModel):
         return {
             "shop:type": shop_type,
             "shop:watercourse": self.watercourse_name,
-            "shop:file_name": self.path.stem,
+            "shop:file_name": self.file_path.stem,
             "md5_hash": self.md5_hash,
         }
 
@@ -45,7 +47,7 @@ class ShopFileConfig(BaseModel):
         self.md5_hash = md5(file_content.replace(b"\r\n", b"\n")).hexdigest()
 
     def set_full_path(self, directory: str) -> None:
-        self.path = Path(directory) / self.path
+        self.file_path = Path(directory) / self.file_path
 
     @classmethod
     def from_file_meta(cls, file_meta: FileMetadata) -> "ShopFileConfig":
