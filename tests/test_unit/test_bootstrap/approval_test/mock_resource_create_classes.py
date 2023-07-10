@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import json
 from typing import List, Union
 
@@ -14,6 +16,16 @@ from cognite.client.data_classes import (
     SequenceList,
     TimeSeries,
     TimeSeriesList,
+)
+from cognite.client.data_classes.data_modeling import (
+    EdgeApply,
+    EdgeApplyResult,
+    EdgeApplyResultList,
+    InstanceApply,
+    InstancesApplyResult,
+    NodeApply,
+    NodeApplyResult,
+    NodeApplyResultList,
 )
 
 
@@ -142,3 +154,50 @@ class MockEventsCreate:
             event.pop("end_time")
             event.pop("external_id")
         return events_serialized
+
+
+class MockInstancesApply:
+    def __init__(self):
+        self.nodes = []
+        self.edges = []
+
+    def __call__(
+        self,
+        nodes: NodeApply | Sequence[NodeApply] | None = None,
+        edges: EdgeApply | Sequence[EdgeApply] | None = None,
+        replace: bool = False,
+        **_,
+    ) -> InstancesApplyResult:
+        if nodes:
+            if isinstance(nodes, list):
+                self.nodes.extend(nodes)
+            else:
+                self.nodes.append(nodes)
+        if edges:
+            if isinstance(edges, list):
+                self.edges.extend(edges)
+            else:
+                self.edges.append(edges)
+
+        return InstancesApplyResult(
+            nodes=NodeApplyResultList(
+                [
+                    NodeApplyResult(space=node.space, external_id=node.external_id, version="1", was_modified=True)
+                    for node in self.nodes
+                ]
+            ),
+            edges=EdgeApplyResultList(
+                [
+                    EdgeApplyResult(space=edge.space, external_id=edge.external_id, version="1", was_modified=True)
+                    for edge in self.edges
+                ]
+            ),
+        )
+
+    def serialize(self) -> list[dict]:
+        def key(instance: InstanceApply) -> tuple[str, str]:
+            return instance.space, instance.external_id
+
+        return [
+            instance.dump(camel_case=False) for instance in sorted(self.nodes, key=key) + sorted(self.edges, key=key)
+        ]
