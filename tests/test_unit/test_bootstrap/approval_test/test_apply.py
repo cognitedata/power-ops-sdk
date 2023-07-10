@@ -15,6 +15,7 @@ from tests.constants import REPO_ROOT, SENSITIVE_TESTS
 from tests.test_unit.test_bootstrap.approval_test.mock_resource_create_classes import (
     MockAssetsCreate,
     MockEventsCreate,
+    MockInstancesApply,
     MockLabelsCreate,
     MockRelationshipsCreate,
     MockSequencesCreate,
@@ -49,22 +50,29 @@ def apply_test_cases():
 @pytest.mark.parametrize("input_dir, market, compare_file_path", list(apply_test_cases()))
 def test_apply(input_dir: Path, market: str, compare_file_path: Path, data_regression, setting_environmental_vars):
     mock_resources = {
-        "assets": MockAssetsCreate(),
-        "sequences": MockSequencesCreate(),
-        "relationships": MockRelationshipsCreate(),
-        "time_series": MockTimeSeriesCreate(),
-        "labels": MockLabelsCreate(),
-        "events": MockEventsCreate(),
+        "assets.create": MockAssetsCreate(),
+        "sequences.create": MockSequencesCreate(),
+        "relationships.create": MockRelationshipsCreate(),
+        "time_series.create": MockTimeSeriesCreate(),
+        "labels.create": MockLabelsCreate(),
+        "events.create": MockEventsCreate(),
+        "data_modeling.instances.apply": MockInstancesApply(),
     }
 
     with monkeypatch_cognite_client() as client:
         for resource_name, mock_resource in mock_resources.items():
-            api = getattr(client, resource_name)
-            api.create = mock_resource
+            parts = resource_name.split(".")
+            api = client
+            for resource in parts[:-1]:
+                api = getattr(api, resource)
+            setattr(api, parts[-1], mock_resource)
 
         apply(path=DATA / "demo", market="Dayahead")
 
-    dump = {resource_type: mock_resource.serialize() for resource_type, mock_resource in mock_resources.items()}
+    dump = {
+        ".".join(resource_type.split(".")[:-1]): mock_resource.serialize()
+        for resource_type, mock_resource in mock_resources.items()
+    }
 
     # for all the resources, sort the list of dicts by "external_id" in lowercase
     for resource in dump.values():
