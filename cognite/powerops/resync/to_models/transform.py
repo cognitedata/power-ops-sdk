@@ -25,11 +25,13 @@ def transform(
     )
 
     collection = ResourceCollection()
-    collection += cogshop_to_cdf_resources(
+    created, cogshop_model = cogshop_to_cdf_resources(
         config.core, collection.shop_file_configs, config.settings.shop_version, config.cogshop
     )
-
+    collection += created
+    print(cogshop_model.model_dump())
     labels = AssetLabel.as_label_definitions() + RelationshipLabel.as_label_definitions()
+
     collection.add(labels)
     for model in [core_model, market_model]:
         collection.add(model.parent_assets())

@@ -21,6 +21,7 @@ from cognite.powerops.resync.config_classes.core.watercourse import WatercourseC
 from cognite.powerops.resync.config_classes.resource_collection import ResourceCollection, write_mapping_to_sequence
 from cognite.powerops.resync.config_classes.resync_config import CogShopConfigs, CoreConfigs
 from cognite.powerops.resync.config_classes.shared import ExternalId, TimeSeriesMapping
+from cognite.powerops.resync.models.cogshop import CogShopModel
 from cognite.powerops.resync.utils.serializer import load_yaml
 
 logger = logging.getLogger(__name__)
@@ -31,9 +32,10 @@ def cogshop_to_cdf_resources(
     shop_file_configs: dict[ExternalId, ShopFileConfig],
     shop_version: str,
     cogshop: CogShopConfigs,
-) -> ResourceCollection:
-    # PowerOps asset data model
+) -> tuple[ResourceCollection, CogShopModel]:
     collection = ResourceCollection()
+    model = CogShopModel()
+
     # SHOP files (model, commands, cut mapping++) and configs (base mapping, output definition)
     # Shop files related to each watercourse
     collection.add(create_watercourse_shop_files(cogshop.watercourses_shop, core.watercourse_directories))
@@ -54,7 +56,7 @@ def cogshop_to_cdf_resources(
         if shop_config.md5_hash is None:
             file_content = Path(shop_config.path).read_bytes()
             shop_config.set_md5_hash(file_content)
-    return collection
+    return collection, model
 
 
 def create_watercourse_timeseries_mappings(
