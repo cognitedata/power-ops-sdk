@@ -18,7 +18,6 @@ from cognite.powerops.clients.cogshop.data_classes import (
     TransformationApply,
 )
 from cognite.powerops.resync.config_classes.cogshop.shop_file_config import ShopFileConfig
-from cognite.powerops.resync.config_classes.core.watercourse import WatercourseConfig
 from cognite.powerops.resync.config_classes.resource_collection import ResourceCollection
 from cognite.powerops.resync.config_classes.resync_config import CogShopConfigs, CoreConfigs
 from cognite.powerops.resync.models import cogshop
@@ -35,12 +34,7 @@ def cogshop_to_cdf_resources(
 ) -> tuple[ResourceCollection, CogShopModel]:
     model = CogShopModel()
 
-    # SHOP files (model, commands, cut mapping++) and configs (base mapping, output definition)
-    # Shop files related to each watercourse
     collection = ResourceCollection()
-    # This creates the files which are used to create the instances below
-    # collection += create_watercourse_processed_shop_files(watercourse_configs=core_config.watercourses)
-
     collection.add(create_watercourse_shop_files(config.watercourses_shop, core_config.watercourse_directories))
 
     for shop_config in collection.shop_file_configs.values():
@@ -213,29 +207,6 @@ def cogshop_to_cdf_resources(
     return collection, model
 
 
-def create_watercourse_processed_shop_files(
-    watercourse_configs: list[WatercourseConfig],
-) -> ResourceCollection:
-    cdf_resources = ResourceCollection()
-    for watercourse_config in watercourse_configs:
-        process_yaml_file(
-            yaml_raw_path=watercourse_config.yaml_raw_path,
-            yaml_processed_path=watercourse_config.yaml_processed_path,
-        )
-
-        cdf_resources.add(
-            [
-                ShopFileConfig(
-                    file_path=watercourse_config.yaml_processed_path,
-                    cogshop_file_type="model",
-                    watercourse_name=watercourse_config.name,
-                )
-            ]
-        )
-
-    return cdf_resources
-
-
 def create_watercourse_shop_files(
     shop_file_configs: list[ShopFileConfig], watercourse_directories: dict
 ) -> list[ShopFileConfig]:
@@ -285,22 +256,3 @@ def get_model_without_timeseries(
         model_dict["connections"] = model_incl_time_and_connections["connections"]
 
     return model_dict
-
-
-# ! Assumes yaml with "model", "time" and "connections"!!
-# --> TODO: "time" is just dropped?
-# TODO: extract loading of yaml
-
-
-def process_yaml_file(yaml_raw_path: str, yaml_processed_path: str) -> None:
-    """Process raw YAML file and store as new file"""
-    # Remove timeseries
-    model_without_timeseries = get_model_without_timeseries(
-        yaml_raw_path=yaml_raw_path,
-        non_time_series_attributes_to_remove=["reservoir.start_vol", "generator.initial_state"],
-        encoding="utf-8",
-    )
-
-    # Save cleaned model
-    with open(yaml_processed_path, "w", encoding="utf-8") as stream:
-        yaml.safe_dump(data=model_without_timeseries, stream=stream, allow_unicode=True, sort_keys=False)
