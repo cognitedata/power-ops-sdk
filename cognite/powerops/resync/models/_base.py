@@ -9,6 +9,7 @@ from cognite.client.data_classes import Asset, Label, Relationship, Sequence, Se
 from pydantic import BaseModel, ConfigDict
 
 from cognite.powerops.cdf_labels import AssetLabel, RelationshipLabel
+from cognite.powerops.clients.cogshop.data_classes._core import DomainModelApply, InstancesApply
 from cognite.powerops.resync.config_classes.to_delete import SequenceContent
 
 
@@ -228,4 +229,17 @@ class AssetModel(Model, ABC):
 
 
 class DataModel(Model, ABC):
-    pass
+    def instances(self) -> InstancesApply:
+        nodes = []
+        edges = []
+        for domain_model in self._domain_models():
+            instances = domain_model.to_instances_apply()
+            nodes.extend(instances.nodes)
+            edges.extend(instances.edges)
+
+        return InstancesApply(nodes, edges)
+
+    def _domain_models(self) -> Iterable[DomainModelApply]:
+        for f in self.model_fields:
+            if isinstance(items := getattr(self, f), list) and items and isinstance(items[0], DomainModelApply):
+                yield from items
