@@ -39,7 +39,10 @@ def cogshop_to_cdf_resources(
     # SHOP files (model, commands, cut mapping++) and configs (base mapping, output definition)
     # Shop files related to each watercourse
     collection.add(create_watercourse_shop_files(cogshop.watercourses_shop, core.watercourse_directories))
+
     collection += create_watercourse_processed_shop_files(watercourse_configs=core.watercourses)
+
+    # Creating Sequences
     collection += create_watercourse_timeseries_mappings(
         watercourse_configs=core.watercourses, time_series_mappings=cogshop.time_series_mappings
     )
@@ -94,6 +97,8 @@ def create_watercourse_processed_shop_files(
 
         # Create ShopOutputConfig Sequence
         shop_output_config = ShopOutputConfig(watercourse=watercourse_config.name)
+
+        # Adds a Sequence
         cdf_resources += shop_output_config.to_bootstrap_resources()
 
     return cdf_resources

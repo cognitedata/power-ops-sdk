@@ -22,7 +22,24 @@ class CDFSequence(BaseModel):
         return self.sequence.external_id
 
 
-class AssetType(BaseModel, ABC):
+class Type(BaseModel, ABC):
+    def sequences(self) -> list[Sequence | SequenceContent]:
+        output = []
+        for field_name in self.model_fields:
+            value = getattr(self, field_name)
+            if not value:
+                continue
+            elif isinstance(value, list) and isinstance(value[0], CDFSequence):
+                for v in value:
+                    output.append(v.sequence)
+                    output.append(SequenceContent(sequence_external_id=v.sequence.external_id, data=v.content))
+            elif isinstance(value, CDFSequence):
+                output.append(value.sequence)
+                output.append(SequenceContent(sequence_external_id=value.sequence.external_id, data=value.content))
+        return output
+
+
+class AssetType(Type, ABC):
     type_: ClassVar[Optional[str]] = None
     label: ClassVar[AssetLabel]
     model_config: ClassVar[ConfigDict] = ConfigDict(arbitrary_types_allowed=True)
@@ -122,21 +139,6 @@ class AssetType(BaseModel, ABC):
             description=self.description,
         )
 
-    def sequences(self) -> list[Sequence | SequenceContent]:
-        output = []
-        for field_name in self.model_fields:
-            value = getattr(self, field_name)
-            if not value:
-                continue
-            elif isinstance(value, list) and isinstance(value[0], CDFSequence):
-                for v in value:
-                    output.append(v.sequence)
-                    output.append(SequenceContent(sequence_external_id=v.sequence.external_id, data=v.content))
-            elif isinstance(value, CDFSequence):
-                output.append(value.sequence)
-                output.append(SequenceContent(sequence_external_id=value.sequence.external_id, data=value.content))
-        return output
-
     def _create_relationship(
         self,
         target_external_id: str,
@@ -172,20 +174,23 @@ class NonAssetType(BaseModel, ABC):
 
 
 class Model(BaseModel, ABC):
-    ...
+    def sequences(self) -> list[Sequence | SequenceContent]:
+        return [sequence for item in self._types() for sequence in item.sequences()]
+
+    def _types(self) -> Iterable[Type]:
+        for f in self.model_fields:
+            if isinstance(items := getattr(self, f), list) and items and isinstance(items[0], Type):
+                yield from items
 
 
 class AssetModel(Model, ABC):
     root_asset: ClassVar[Asset]
 
     def assets(self) -> list[Asset]:
-        return [item.as_asset() for item in self._items()]
+        return [item.as_asset() for item in self._asset_types()]
 
     def relationships(self) -> list[Relationship]:
-        return [edge for item in self._items() for edge in item.relationships()]
-
-    def sequences(self) -> list[Sequence | SequenceContent]:
-        return [sequence for item in self._items() for sequence in item.sequences()]
+        return [edge for item in self._asset_types() for edge in item.relationships()]
 
     def parent_assets(self) -> list[Asset]:
         if not self.root_asset:
@@ -202,7 +207,9 @@ class AssetModel(Model, ABC):
             # assets.
             return " ".join(parts).replace("Bid process", "Bid").replace("bid process", "bid")
 
-        parent_and_description_ids = {(item.parent_external_id, item.parent_description) for item in self._items()}
+        parent_and_description_ids = {
+            (item.parent_external_id, item.parent_description) for item in self._asset_types()
+        }
 
         return [self.root_asset] + [
             Asset(
@@ -214,10 +221,8 @@ class AssetModel(Model, ABC):
             for parent_id, description in parent_and_description_ids
         ]
 
-    def _items(self) -> Iterable[AssetType]:
-        for f in self.model_fields:
-            if isinstance(items := getattr(self, f), list) and items and isinstance(items[0], AssetType):
-                yield from items
+    def _asset_types(self) -> Iterable[AssetType]:
+        yield from (item for item in self._types() if isinstance(item, AssetType))
 
 
 class DataModel(Model, ABC):
