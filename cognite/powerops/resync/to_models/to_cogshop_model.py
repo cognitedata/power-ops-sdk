@@ -21,7 +21,6 @@ from cognite.powerops.resync.config_classes.cogshop.shop_output_definition impor
 from cognite.powerops.resync.config_classes.core.watercourse import WatercourseConfig
 from cognite.powerops.resync.config_classes.resource_collection import ResourceCollection
 from cognite.powerops.resync.config_classes.resync_config import CogShopConfigs, CoreConfigs
-from cognite.powerops.resync.config_classes.shared import TimeSeriesMapping
 from cognite.powerops.resync.models import cogshop
 from cognite.powerops.resync.models._base import CDFSequence
 from cognite.powerops.resync.models.cogshop import CogShopModel
@@ -37,17 +36,20 @@ def cogshop_to_cdf_resources(
     config: CogShopConfigs,
     watercourses: list[Watercourse],
 ) -> tuple[ResourceCollection, CogShopModel]:
-    collection = ResourceCollection()
     model = CogShopModel()
 
     # SHOP files (model, commands, cut mapping++) and configs (base mapping, output definition)
     # Shop files related to each watercourse
-
+    collection = ResourceCollection()
     # This creates the files which are used to create the instances below
     collection += create_watercourse_processed_shop_files(watercourse_configs=core_config.watercourses)
     collection.add(create_watercourse_shop_files(config.watercourses_shop, core_config.watercourse_directories))
+    for shop_config in collection.shop_file_configs.values():
+        if shop_config.md5_hash is None:
+            # Set hashes for Shop Files, needed for comparison
+            file_content = Path(shop_config.path).read_bytes()
+            shop_config.set_md5_hash(file_content)
 
-    # Creating Sequences
     # TODO Fix the assumption that timeseries mappings and watercourses are in the same order
     for watercourse, mapping in zip(watercourses, config.time_series_mappings):
         external_id = f"SHOP_{watercourse.name}_base_mapping"
@@ -61,7 +63,7 @@ def cogshop_to_cdf_resources(
                 "shop:type": "base_mapping",
             },
         )
-        output_definition = cogshop.OutputDefinition(
+        output_definition = cogshop.BaseMapping(
             watercourse_name=watercourse.name,
             mapping=[
                 CDFSequence(
@@ -70,7 +72,7 @@ def cogshop_to_cdf_resources(
                 )
             ],
         )
-        model.output_definitions.append(output_definition)
+        model.base_mappings.append(output_definition)
 
         # Adding the Instances.
         model_files = [
@@ -148,20 +150,6 @@ def cogshop_to_cdf_resources(
             )
         )
 
-        # dm_resources = create_watercourse_dm_resources(
-        #     watercourse_name=watercourse.name,
-        #     watercourse_version=watercourse.config_version,
-        #     config_files=list(collection.shop_file_configs.values()),
-        #     base_mapping=mapping,
-        #     shop_version=shop_version,
-        # )
-        # collection.add(dm_resources)
-
-    # Set hashes for Shop Files, needed for comparison
-    for shop_config in collection.shop_file_configs.values():
-        if shop_config.md5_hash is None:
-            file_content = Path(shop_config.path).read_bytes()
-            shop_config.set_md5_hash(file_content)
     return collection, model
 
 
@@ -207,96 +195,6 @@ def _make_ext_id(watercourse_name: str, *args: str) -> str:
     for arg in args:
         hash_value.update(arg.encode())
     return f"Tr__{hash_value.hexdigest()}"
-
-
-def create_watercourse_dm_resources(
-    watercourse_name: str,
-    watercourse_version: str,
-    config_files: list[ShopFileConfig],
-    base_mapping: TimeSeriesMapping,
-    shop_version: str,
-) -> list[ModelTemplateApply | MappingApply | TransformationApply | FileRefApply]:
-    """
-    Create ModelTemplate and nested FileRef, Mapping and Transformation instances in memory.
-
-    Note: We take care to create external_id values for all instances to avoid unnecessary deletion and creation when
-    calling client.dm.model_template.apply(...) later.
-    """
-    dm_transformations = []
-    dm_model_templates = []
-    dm_base_mappings = []
-    dm_file_refs = []
-
-    model_files = [
-        file
-        for file in config_files
-        if file.cogshop_file_type == "model" and file.external_id.endswith(f"{watercourse_name}_model")
-    ]
-    if len(model_files) != 1:
-        logger.warning(
-            f"Expected exactly 1 model file,"
-            f" got {len(model_files)}: {', '.join(mf.external_id for mf in model_files)}."
-            f" Skipping DM ModelTemplate for watercourse {watercourse_name}.",
-        )
-        return []
-    model_file = model_files[0]
-    dm_file_refs.append(
-        FileRefApply(
-            external_id=f"ModelTemplate_{watercourse_name}__FileRef_model",
-            type=model_file.cogshop_file_type,
-            file_external_id=model_file.external_id,
-        )
-    )
-    for row in reversed(list(base_mapping)):
-        row_ext_id = f"BM__{watercourse_name}__{row.shop_model_path}"
-
-        # We can get duplicate mappings (same path). Only keep the last one (look is reversed):
-        visited_ext_ids = set()
-        if row_ext_id in visited_ext_ids:
-            logger.warning(f"Duplicate base mapping: {row_ext_id}")
-            continue
-        visited_ext_ids.add(row_ext_id)
-
-        row_transformations = []
-        for transformation in reversed(row.transformations or []):
-            row_transformations.append(
-                TransformationApply(
-                    external_id=_make_ext_id(
-                        watercourse_name,
-                        row.shop_model_path,
-                        transformation.transformation.name,
-                        json.dumps(transformation.kwargs or {}),
-                    ),
-                    method=transformation.transformation.name,
-                    arguments=json.dumps(transformation.kwargs or {}),
-                )
-            )
-        dm_transformations.extend(row_transformations)
-        dm_base_mappings.append(
-            MappingApply(
-                external_id=row_ext_id,
-                path=row.shop_model_path,
-                timeseries_external_id=row.time_series_external_id,
-                transformations=[tr.external_id for tr in row_transformations],
-                retrieve=row.retrieve.name if row.retrieve else None,
-                aggregation=row.aggregation.name if row.aggregation else None,
-            )
-        )
-    # restore original order:
-    dm_transformations = list(reversed(dm_transformations))
-    dm_base_mappings = list(reversed(dm_base_mappings))
-
-    dm_model_templates.append(
-        ModelTemplateApply(
-            external_id=f"ModelTemplate_{watercourse_name}",
-            version=watercourse_version,
-            shop_version=shop_version,
-            watercourse=watercourse_name,
-            model=dm_file_refs[0].external_id,
-            base_mappings=[subitem.external_id for subitem in dm_base_mappings],
-        )
-    )
-    return [*dm_file_refs, *dm_transformations, *dm_base_mappings, *dm_model_templates]
 
 
 def shop_attribute_value_is_time_series(shop_attribute_value) -> bool:
