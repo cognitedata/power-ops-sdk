@@ -21,7 +21,7 @@ from cognite.powerops.resync.config_classes.cogshop.shop_output_definition impor
 from cognite.powerops.resync.config_classes.core.watercourse import WatercourseConfig
 from cognite.powerops.resync.config_classes.resource_collection import ResourceCollection
 from cognite.powerops.resync.config_classes.resync_config import CogShopConfigs, CoreConfigs
-from cognite.powerops.resync.config_classes.shared import ExternalId, TimeSeriesMapping
+from cognite.powerops.resync.config_classes.shared import TimeSeriesMapping
 from cognite.powerops.resync.models import cogshop
 from cognite.powerops.resync.models._base import CDFSequence
 from cognite.powerops.resync.models.cogshop import CogShopModel
@@ -33,7 +33,6 @@ logger = logging.getLogger(__name__)
 
 def cogshop_to_cdf_resources(
     core: CoreConfigs,
-    shop_file_configs: dict[ExternalId, ShopFileConfig],
     shop_version: str,
     config: CogShopConfigs,
     watercourses: list[Watercourse],
@@ -75,7 +74,7 @@ def cogshop_to_cdf_resources(
     # Create DM resources
     collection += create_dm_resources(
         core.watercourses,
-        list(shop_file_configs.values()),
+        list(collection.shop_file_configs.values()),
         config.time_series_mappings,
         shop_version,
     )

@@ -26,7 +26,7 @@ def transform(
 
     collection = ResourceCollection()
     created, cogshop_model = cogshop_to_cdf_resources(
-        config.core, collection.shop_file_configs, config.settings.shop_version, config.cogshop, core_model.watercourses
+        config.core, config.settings.shop_version, config.cogshop, core_model.watercourses
     )
     collection.add(cogshop_model.sequences())
     collection += created
