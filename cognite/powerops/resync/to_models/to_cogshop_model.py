@@ -18,7 +18,6 @@ from cognite.powerops.clients.cogshop.data_classes import (
     TransformationApply,
 )
 from cognite.powerops.resync.config_classes.cogshop.shop_file_config import ShopFileConfig
-from cognite.powerops.resync.config_classes.cogshop.shop_output_definition import ShopOutputConfig
 from cognite.powerops.resync.config_classes.core.watercourse import WatercourseConfig
 from cognite.powerops.resync.config_classes.resource_collection import ResourceCollection
 from cognite.powerops.resync.config_classes.resync_config import CogShopConfigs, CoreConfigs
@@ -93,6 +92,7 @@ def cogshop_to_cdf_resources(
                 )
             ],
         )
+        model.output_definitions.append(output_definition)
 
         ##### Base Mapping #####
         external_id = f"SHOP_{watercourse.name}_base_mapping"
@@ -217,10 +217,10 @@ def create_watercourse_processed_shop_files(
         )
 
         # Create ShopOutputConfig Sequence
-        shop_output_config = ShopOutputConfig(watercourse=watercourse_config.name)
-
-        # Adds a Sequence
-        cdf_resources += shop_output_config.to_bootstrap_resources()
+        # shop_output_config = ShopOutputConfig(watercourse=watercourse_config.name)
+        #
+        # # Adds a Sequence
+        # cdf_resources += shop_output_config.to_bootstrap_resources()
 
     return cdf_resources
 
