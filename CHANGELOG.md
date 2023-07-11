@@ -16,52 +16,49 @@ Changes are grouped as follows
 
 ## [0.25.3] - 2023-07-11
 
-### Changed
-* CHANGELOG (this document) dates are now using ISO 8601 standard date representation (yyyy-mm-dd).
-
 ### Fixed
 
 * Bug causing the md5 hash used in the `powerops plan` command to be OS dependent. This is now fixed.
 
 
-## [0.25.2] - 07-07-23
+## [0.25.2] - 2023-07-07
 ### Fixed
 
 * Bug causing the md5 hash used in the `powerops plan` command to be OS dependent. This is now fixed.
 
 
 
-## [0.25.1] - 06-07-23
+## [0.25.1] - 2023-07-06
 ### Changed
 
 * Upgrade to `pydantic` 2.0.
 
 
-## [0.25.0] - 05-07-23
+## [0.25.0] - 2023-07-05
 ### Changed
 
 * Refactored package into `bootstrap`, `clients` and `preprocessor` modules. This is likely a breaking change for most users of the package.
 
 
-## [0.24.1] - 30-06-23
+## [0.24.1] - 2023-06-30
 ### Removed
 
 * Removed unused settings.
 
 
-## [0.24.0] - 03-07-23
+## [0.24.0] - 2023-07-03
 ### Added
 
 * Data Models for bootstrap resources
 
 
-## [0.23.0] - 29-06-23
+## [0.23.0] - 2023-06-29
 ### Added
 
 * Re-implemented populating data to DM.
 
 
-## [0.22.2] - 29-06-23
+## [0.22.2] - 2023-06-29
 ### Fixed
 
 * Fix for getting PowerOpsClient instance without settings file.
@@ -71,13 +68,13 @@ Changes are grouped as follows
 * Instantiating PowerOpsClient with config form settings files now has to be done via a separate factory method.
 
 
-## [0.22.1] - 29-06-23
+## [0.22.1] - 2023-06-29
 ### Fixed
 
 * Fixed the data model field names in the preprocessor package.
 
 
-## [0.22.0] - 29-06-23
+## [0.22.0] - 2023-06-29
 ### Removed
 
 * Dependency on cognite-gql-pygen
@@ -88,7 +85,7 @@ Changes are grouped as follows
 * Settings validation.
 
 
-## [0.21.0] - 28-06-23
+## [0.21.0] - 2023-06-28
 ### Changed
 
 * Changed how preprocessor fetches shop files from CDF
@@ -97,54 +94,54 @@ loaded to shop prior to a run
 * This will support the option for having several cutfiles and module series files per watercourse
 * Breaking change for preprocessor as it will fail if the CogShop file config does not exist in CDF
 
-## [0.20.0] - 25-06-23
+## [0.20.0] - 2023-06-25
 ### Added
 
 * Added file type for shop files of type "module_series"
 * Added option to provide additional string in file names and external ID for files uploaded to CDF
 
-## [0.19.1] - 26-06-23
+## [0.19.1] - 2023-06-26
 ### Fixed
 
 * Adding "generator_" prefix to the external_id of generators
 
-## [0.19.0] - 26-06-23
+## [0.19.0] - 2023-06-26
 ### Added
 
 * Add p-min to cdf generator object
 
-## [0.18.0] - 23-06-23
+## [0.18.0] - 2023-06-23
 ### Added
 
 * Added ability to compare the yamls of shop runs and view it in a notebook.
 * Example Notebook for showing results and comparing shop runs.
 
 
-## [0.17.0] - 21-06-23
+## [0.17.0] - 2023-06-21
 ### Added
 
 * Support for multiple cut files on the preprocessor subpackage.
 
 
-## [0.16.0] - 21-06-23
+## [0.16.0] - 2023-06-21
 ### Added
 
 * Add metadata field "no_shop" to bid process config.
 
 
-## [0.15.2] - 21-06-23
+## [0.15.2] - 2023-06-21
 ### Added
 
 * Documentation metadata to package, and a minimum introduction to the package in the documentation.
 
 
-## [0.15.1] - 19-06-23
+## [0.15.1] - 2023-06-19
 ### Changed
 
 * Upd required versions for cognite-sdk and cognite-gql-pygen.
 
 
-## [0.15.0] - 19-06-23
+## [0.15.0] - 2023-06-19
 ### Added
 
 * Ability to find time series keys in the shop generated YAML files, including some filtering.
@@ -152,52 +149,52 @@ loaded to shop prior to a run
 * Ability to compare a time series from different shop runs in a plot view if they are accessible by the same keys.
 
 
-## [0.14.0] - 19-06-23
+## [0.14.0] - 2023-06-19
 ### Added
 
 * CogShop preprocessor, moved from dedicated repo.
 
-## [0.13.0] - 19-06-23
+## [0.13.0] - 2023-06-19
 ### Changed
 
 * Removed unnecessary dependencies
 
 
-## [0.12.0] - 08-06-23
+## [0.12.0] - 2023-06-08
 ### Added
 
 * Ability to trigger SHOP runs via CogShop.
 * Retrieval of ShopRun results.
 
-## [0.11.0] - 08-06-23
+## [0.11.0] - 2023-06-08
 ### Added
 
 * Allow customers to specify default bid config per price area
 
-## [0.10.0] - 05-06-23
+## [0.10.0] - 2023-06-05
 ### Added
 
 * Added validation to rkom_bid_combination config for reference to rkom_bid_process external IDs.
 
-## [0.9.2] - 30-05-23
+## [0.9.2] - 2023-05-30
 ### Fixed
 
 * Fixed bug for overriding CDF parameters from env variables
 
-## [0.9.1] - 26-05-23
+## [0.9.1] - 2023-05-26
 ### Fixed
 
 * Typo in warning message for plant display name
 * Removed redundant warning message for reservoir display name and order
 
-## [0.9.0] - 25-05-23
+## [0.9.0] - 2023-05-25
 ### Changed
 
 * Changed location of all config related class definitions located in dataclasses module
 to config.py module
 * Deleted unused modules
 
-## [0.8.0] - 23-05-23
+## [0.8.0] - 2023-05-23
 ### Added
 
 * Basic handling for YAML case files.
@@ -211,53 +208,53 @@ to config.py module
 
 * Renamed `powerops.core` attribute to `powerops.cdf`
 
-## [0.7.1] - 23-05-23
+## [0.7.1] - 2023-05-23
 ### Fixed
 
 * Fixed bug with external id being stored as int in bootstrap resources
 
-## [0.7.0] - 22-05-23
+## [0.7.0] - 2023-05-22
 ### Added
 
 * Added test for the water value based bid generation (WVBBG) time series contextualization
 * Changed the mapping format for wvbbg from csv to yaml.
 * Added time series contextualization for generators as well
 
-## [0.6.0] - 22-05-23
+## [0.6.0] - 2023-05-22
 ### Added
 
 * Added support for reading configuration parameters for Cognite Client from env variables in addition to yaml file.
 
-## [0.5.0] - 16-05-23
+## [0.5.0] - 2023-05-16
 ### Added
 
 * Support adding direct head values to water value based bid generation (WVBBG) time series contextualization.
 
-## [0.4.2] - 15-05-23
+## [0.4.2] - 2023-05-15
 ### Fixed
 
 * Shop files external ID suffix to get correct preview print with bootstrap "plan"
 
 
-## [0.4.1] - 15-05-23
+## [0.4.1] - 2023-05-15
 ### Fixed
 
 * Import errors in `PowerOpsClient`
 
 
-## [0.4.0] - 12-05-23
+## [0.4.0] - 2023-05-12
 ### Added
 
 * Scaffolding for a `SHOPApi` implementation.
 
 
-## [0.3.1] - 12-05-23
+## [0.3.1] - 2023-05-12
 ### Fixed
 
 * Fixed missing `README.md` in package metadata.
 
 
-## [0.3.0] - 12-05-23
+## [0.3.0] - 2023-05-12
 ### Added
 
 * Added a `PowerOpsClient` with support for `list` and `retrieve` of `asset` resources
