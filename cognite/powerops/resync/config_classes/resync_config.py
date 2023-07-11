@@ -10,20 +10,17 @@ from pydantic_core.core_schema import ValidationInfo
 
 from cognite.powerops.resync._settings import Settings
 from cognite.powerops.resync.config_classes.cogshop.shop_file_config import ShopFileConfig
-from cognite.powerops.resync.config_classes.core.generator import GeneratorTimeSeriesMapping
-from cognite.powerops.resync.config_classes.core.plant import PlantTimeSeriesMapping
-from cognite.powerops.resync.config_classes.core.watercourse import WatercourseConfig
-from cognite.powerops.resync.config_classes.marked_configuration import BenchmarkingConfig, PriceScenario
-from cognite.powerops.resync.config_classes.marked_configuration.dayahead import (
-    BidMatrixGeneratorConfig,
-    BidProcessConfig,
-)
-from cognite.powerops.resync.config_classes.marked_configuration.market import MarketConfig
-from cognite.powerops.resync.config_classes.marked_configuration.rkom import (
+from cognite.powerops.resync.config_classes.market import BenchmarkingConfig, PriceScenario
+from cognite.powerops.resync.config_classes.market.dayahead import BidMatrixGeneratorConfig, BidProcessConfig
+from cognite.powerops.resync.config_classes.market.market import MarketConfig
+from cognite.powerops.resync.config_classes.market.rkom import (
     RKOMBidCombinationConfig,
     RKOMBidProcessConfig,
     RkomMarketConfig,
 )
+from cognite.powerops.resync.config_classes.production.generator import GeneratorTimeSeriesMapping
+from cognite.powerops.resync.config_classes.production.plant import PlantTimeSeriesMapping
+from cognite.powerops.resync.config_classes.production.watercourse import WatercourseConfig
 from cognite.powerops.resync.config_classes.shared import TimeSeriesMapping
 from cognite.powerops.resync.utils.serializer import load_yaml
 
@@ -97,13 +94,13 @@ class CogShopConfigs(BaseModel):
 class ReSyncConfig(BaseModel):
     model_config = ConfigDict(populate_by_name=True)
     settings: Settings = Field(alias="constants")
-    core: CoreConfigs
+    production: CoreConfigs
     markets: MarketConfigs
     cogshop: CogShopConfigs
 
     @classmethod
     def from_yamls(cls, config_dir_path: Path, cdf_project: str) -> "ReSyncConfig":
-        configs: dict[str, dict[str, Any]] = {"markets": {}, "core": {}, "cogshop": {}}
+        configs: dict[str, dict[str, Any]] = {"markets": {}, "production": {}, "cogshop": {}}
         market_keys = set(MarketConfigs.model_fields)
         core_keys = set(CoreConfigs.model_fields)
         cogshop_keys = set(CogShopConfigs.model_fields)
@@ -129,8 +126,7 @@ class ReSyncConfig(BaseModel):
                                 )
                             if all(key in watercourse for key in ["directory", "model_raw"]):
                                 watercourse_directory_by_name[watercourse["name"]] = watercourse["directory"]
-                    configs["core"][field_name] = content
-
+                    configs["production"][field_name] = content
                 elif field_name in cogshop_keys:
                     configs["cogshop"][field_name] = content
                 else:

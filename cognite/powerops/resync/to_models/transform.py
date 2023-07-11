@@ -13,7 +13,7 @@ def transform(
     config: ReSyncConfig,
     market_name: str,
 ) -> ResourceCollection:
-    core_model = to_core_model(config.core)
+    core_model = to_core_model(config.production)
     market_model = to_market_model(config.markets, core_model.price_areas, market_name)
     cogshop_model = to_cogshop_model(config.cogshop, core_model.watercourses, config.settings.shop_version)
 

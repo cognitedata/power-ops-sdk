@@ -5,17 +5,10 @@ import json
 import pandas as pd
 from cognite.client.data_classes import Sequence
 
-from cognite.powerops.resync.config_classes.marked_configuration import (
-    BenchmarkingConfig,
-    PriceScenario,
-    PriceScenarioID,
-)
-from cognite.powerops.resync.config_classes.marked_configuration.dayahead import (
-    BidMatrixGeneratorConfig,
-    BidProcessConfig,
-)
-from cognite.powerops.resync.config_classes.marked_configuration.market import MARKET_BY_PRICE_AREA
-from cognite.powerops.resync.config_classes.marked_configuration.rkom import (
+from cognite.powerops.resync.config_classes.market import BenchmarkingConfig, PriceScenario, PriceScenarioID
+from cognite.powerops.resync.config_classes.market.dayahead import BidMatrixGeneratorConfig, BidProcessConfig
+from cognite.powerops.resync.config_classes.market.market import MARKET_BY_PRICE_AREA
+from cognite.powerops.resync.config_classes.market.rkom import (
     RKOMBidCombinationConfig,
     RKOMBidProcessConfig,
     RkomMarketConfig,

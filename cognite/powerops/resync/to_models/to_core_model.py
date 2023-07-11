@@ -6,7 +6,7 @@ from typing import Optional
 import pandas as pd
 from cognite.client.data_classes import Sequence, TimeSeries
 
-from cognite.powerops.resync.config_classes.core.connections import Connection
+from cognite.powerops.resync.config_classes.production.connections import Connection
 from cognite.powerops.resync.config_classes.resync_config import CoreConfigs
 from cognite.powerops.resync.models import core
 from cognite.powerops.resync.models.cdf_resources import CDFSequence
