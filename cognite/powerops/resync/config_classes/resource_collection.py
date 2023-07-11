@@ -186,35 +186,6 @@ class ResourceCollection(BaseModel):
             except CogniteAPIError as e:
                 logger.warning(f"Failed to insert sequence dataframe for {sequence_external_id}: {e}")
 
-    def __add__(self, other: "ResourceCollection") -> "ResourceCollection":
-        return ResourceCollection(
-            assets=self.assets | other.assets,
-            relationships=self.relationships | other.relationships,
-            label_definitions=self.label_definitions | other.label_definitions,
-            events=self.events | other.events,
-            sequences=self.sequences | other.sequences,
-            sequence_content=self.sequence_content | other.sequence_content,
-            shop_file_configs=self.shop_file_configs | other.shop_file_configs,
-            file_refs=self.file_refs | other.file_refs,
-            transformations=self.transformations | other.transformations,
-            mappings=self.mappings | other.mappings,
-            model_templates=self.model_templates | other.model_templates,
-        )
-
-    def __iadd__(self, other: "ResourceCollection") -> "ResourceCollection":
-        self.assets |= other.assets
-        self.relationships |= other.relationships
-        self.label_definitions |= other.label_definitions
-        self.events |= other.events
-        self.sequences |= other.sequences
-        self.sequence_content |= other.sequence_content
-        self.shop_file_configs |= other.shop_file_configs
-        self.file_refs |= other.file_refs
-        self.transformations |= other.transformations
-        self.mappings |= other.mappings
-        self.model_templates |= other.model_templates
-        return self
-
     def difference(self, cdf: "ResourceCollection") -> dict[str, str]:
         local = self
 
