@@ -18,7 +18,7 @@ Changes are grouped as follows
 
 ### Fixed
 
-* Bug causing the md5 hash used in the `powerops plan` command to be OS dependent. This is now fixed.
+* Preprocessor graphQL query missed optional fields.
 
 
 ## [0.25.2] - 2023-07-07
