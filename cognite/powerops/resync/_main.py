@@ -6,9 +6,9 @@ from uuid import uuid4
 from cognite.client.data_classes import Event
 
 from cognite.powerops.clients import get_powerops_client
+from cognite.powerops.resync._logger import configure_debug_logging
 from cognite.powerops.resync.config.resource_collection import ResourceCollection
 from cognite.powerops.resync.config.resync_config import ReSyncConfig
-from cognite.powerops.resync.logger import configure_debug_logging
 from cognite.powerops.resync.to_models.transform import transform
 
 

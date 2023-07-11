@@ -4,7 +4,7 @@ import tempfile
 from pprint import pprint
 
 from cognite.powerops import Case, PowerOpsClient
-from cognite.powerops.resync.logger import configure_debug_logging
+from cognite.powerops.resync._logger import configure_debug_logging
 
 # some nice logging:
 configure_debug_logging(level=logging.INFO)
