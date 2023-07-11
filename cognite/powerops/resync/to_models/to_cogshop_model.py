@@ -16,7 +16,7 @@ from cognite.powerops.clients.cogshop.data_classes import (
     ModelTemplateApply,
     TransformationApply,
 )
-from cognite.powerops.resync.config_classes.resync_config import CogShopConfigs
+from cognite.powerops.resync.config_classes.resync_config import CogShopConfig
 from cognite.powerops.resync.models import cogshop
 from cognite.powerops.resync.models.cdf_resources import CDFSequence
 from cognite.powerops.resync.models.cogshop import CogShopModel
@@ -26,7 +26,7 @@ from cognite.powerops.resync.utils.serializer import load_yaml
 logger = logging.getLogger(__name__)
 
 
-def to_cogshop_model(config: CogShopConfigs, watercourses: list[Watercourse], shop_version: str) -> CogShopModel:
+def to_cogshop_model(config: CogShopConfig, watercourses: list[Watercourse], shop_version: str) -> CogShopModel:
     model = CogShopModel()
 
     for shop_config in config.watercourses_shop:

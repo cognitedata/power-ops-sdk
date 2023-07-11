@@ -13,14 +13,14 @@ from cognite.powerops.resync.config_classes.market.rkom import (
     RKOMBidProcessConfig,
     RkomMarketConfig,
 )
-from cognite.powerops.resync.config_classes.resync_config import MarketConfigs
+from cognite.powerops.resync.config_classes.resync_config import MarketConfig
 from cognite.powerops.resync.models import MarketModel
 from cognite.powerops.resync.models import market as market_models
 from cognite.powerops.resync.models.cdf_resources import CDFSequence
 from cognite.powerops.resync.models.production import PriceArea
 
 
-def to_market_model(config: MarketConfigs, price_areas: list[PriceArea], market_name: str) -> MarketModel:
+def to_market_model(config: MarketConfig, price_areas: list[PriceArea], market_name: str) -> MarketModel:
     nord_pool = market_models.NordPoolMarket(**config.market.model_dump())
     # The external_id is not following the naming convention, so we need to set it manually
     nord_pool.external_id = config.market.external_id

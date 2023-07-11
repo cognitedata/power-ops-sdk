@@ -14,7 +14,7 @@ def transform(
     market_name: str,
 ) -> ResourceCollection:
     production_model = to_production_model(config.production)
-    market_model = to_market_model(config.markets, production_model.price_areas, market_name)
+    market_model = to_market_model(config.market, production_model.price_areas, market_name)
     cogshop_model = to_cogshop_model(config.cogshop, production_model.watercourses, config.settings.shop_version)
 
     settings = config.settings

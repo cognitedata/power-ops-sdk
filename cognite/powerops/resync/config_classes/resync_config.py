@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import itertools
 from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any, Dict, Optional
@@ -12,7 +11,7 @@ from cognite.powerops.resync._settings import Settings
 from cognite.powerops.resync.config_classes.cogshop.shop_file_config import ShopFileConfig
 from cognite.powerops.resync.config_classes.market import BenchmarkingConfig, PriceScenario
 from cognite.powerops.resync.config_classes.market.dayahead import BidMatrixGeneratorConfig, BidProcessConfig
-from cognite.powerops.resync.config_classes.market.market import MarketConfig
+from cognite.powerops.resync.config_classes.market.market import Market
 from cognite.powerops.resync.config_classes.market.rkom import (
     RKOMBidCombinationConfig,
     RKOMBidProcessConfig,
@@ -25,8 +24,35 @@ from cognite.powerops.resync.config_classes.shared import TimeSeriesMapping
 from cognite.powerops.resync.utils.serializer import load_yaml
 
 
-class MarketConfigs(BaseModel):
-    market: MarketConfig
+class Config(BaseModel):
+    @classmethod
+    def load_yamls(cls, config_dir_path: Path) -> dict[str, Any]:
+        """
+        Loads all yaml files in the config directory and returns a dictionary with the file name as key and the
+        content as value.
+
+        Note the config_dir_path can be nested, all yaml files in the directory and subdirectories will be loaded.
+
+        Parameters
+        ----------
+        config_dir_path: Path
+            The path to the config directory
+
+        Returns
+        -------
+            Dictionary with all yaml files loaded.
+        """
+        config: dict[str, Any] = {}
+        field_names = set(cls.model_fields)
+        for file_path in config_dir_path.glob("**/*.yaml"):
+            if file_path.stem not in field_names:
+                continue
+            config[file_path.stem] = load_yaml(file_path)
+        return config
+
+
+class MarketConfig(Config):
+    market: Market
     benchmarks: list[BenchmarkingConfig]
     price_scenario_by_id: dict[str, PriceScenario]
 
@@ -79,14 +105,35 @@ class MarketConfigs(BaseModel):
         return value
 
 
-class ProductionConfigs(BaseModel):
+class ProductionConfig(Config):
     dayahead_price_timeseries: Dict[str, str]
     watercourses: list[WatercourseConfig]
     generator_time_series_mappings: list[GeneratorTimeSeriesMapping] = None
     plant_time_series_mappings: list[PlantTimeSeriesMapping] = None
 
+    @classmethod
+    def load_yamls(cls, config_dir_path: Path) -> dict[str, Any]:
+        config: dict[str, Any] = {}
+        for field_name in cls.model_fields:
+            if not (config_file_path := config_dir_path / f"{field_name}.yaml").exists():
+                continue
+            content = load_yaml(config_file_path)
+            if field_name == "watercourses":
+                for watercourse in content:
+                    # Complete the paths for the yaml files
+                    if all(key in watercourse for key in ["directory", "model_raw"]):
+                        watercourse["yaml_raw_path"] = (
+                            config_dir_path / watercourse["directory"] / watercourse["model_raw"]
+                        )
+                    if all(key in watercourse for key in ["directory", "model_processed"]):
+                        watercourse["yaml_processed_path"] = (
+                            config_dir_path / watercourse["directory"] / watercourse["model_processed"]
+                        )
+            config[field_name] = content
+        return config
 
-class CogShopConfigs(BaseModel):
+
+class CogShopConfig(Config):
     time_series_mappings: list[TimeSeriesMapping]
     watercourses_shop: list[ShopFileConfig]
 
@@ -94,54 +141,36 @@ class CogShopConfigs(BaseModel):
 class ReSyncConfig(BaseModel):
     model_config = ConfigDict(populate_by_name=True)
     settings: Settings = Field(alias="constants")
-    production: ProductionConfigs
-    markets: MarketConfigs
-    cogshop: CogShopConfigs
+    production: ProductionConfig
+    market: MarketConfig
+    cogshop: CogShopConfig
 
     @classmethod
     def from_yamls(cls, config_dir_path: Path, cdf_project: str) -> "ReSyncConfig":
-        configs: dict[str, dict[str, Any]] = {"markets": {}, "production": {}, "cogshop": {}}
-        market_keys = set(MarketConfigs.model_fields)
-        core_keys = set(ProductionConfigs.model_fields)
-        cogshop_keys = set(CogShopConfigs.model_fields)
+        configs: dict[str, Any] = {}
+        for field in cls.model_fields:
+            if (config_file_path := config_dir_path / f"{field}.yaml").exists():
+                configs[field] = load_yaml(config_file_path, encoding="utf-8")
+            elif (config_subdir_path := config_dir_path / field).exists() and hasattr(
+                cls.model_fields[field].annotation, "load_yamls"
+            ):
+                configs[field] = cls.model_fields[field].annotation.load_yamls(config_subdir_path)
+
         watercourse_directory_by_name = {}
-        for field_name in itertools.chain(
-            cls.model_fields, MarketConfigs.model_fields, ProductionConfigs.model_fields, CogShopConfigs.model_fields
-        ):
-            if (config_file_path := config_dir_path / f"{field_name}.yaml").exists():
-                content = load_yaml(config_file_path, encoding="utf-8")
-                if field_name in market_keys:
-                    configs["markets"][field_name] = content
-                elif field_name in core_keys:
-                    if field_name == "watercourses":
-                        # Setting complete paths
-                        for watercourse in content:
-                            if all(key in watercourse for key in ["directory", "model_raw"]):
-                                watercourse["yaml_raw_path"] = (
-                                    config_dir_path / watercourse["directory"] / watercourse["model_raw"]
-                                )
-                            if all(key in watercourse for key in ["directory", "model_processed"]):
-                                watercourse["yaml_processed_path"] = (
-                                    config_dir_path / watercourse["directory"] / watercourse["model_processed"]
-                                )
-                            if all(key in watercourse for key in ["directory", "model_raw"]):
-                                watercourse_directory_by_name[watercourse["name"]] = watercourse["directory"]
-                    configs["production"][field_name] = content
-                elif field_name in cogshop_keys:
-                    configs["cogshop"][field_name] = content
-                else:
-                    configs[field_name] = content
+        for watercourse in configs.get("production", {}).get("watercourses", []):
+            if "directory" in watercourse and "name" in watercourse:
+                watercourse_directory_by_name[watercourse["name"]] = watercourse["directory"]
 
         # Completing the paths for the shop files
-        for shop_file in configs["cogshop"].get("watercourses_shop", []):
+        for shop_file in configs.get("cogshop", {}).get("watercourses_shop", []):
             if (watercourse_name := shop_file.get("watercourse_name")) and (
                 directory := watercourse_directory_by_name.get(watercourse_name)
             ):
                 if "file_path" in shop_file:
-                    shop_file["file_path"] = config_dir_path / directory / shop_file["file_path"]
+                    shop_file["file_path"] = config_dir_path / "production" / directory / shop_file["file_path"]
                 # For backwards compatibility
                 if "path" in shop_file:
-                    shop_file["path"] = config_dir_path / directory / shop_file["path"]
+                    shop_file["path"] = config_dir_path / "production" / directory / shop_file["path"]
 
         # Todo Hack to get cdf project into settings.
         if "settings" in configs:

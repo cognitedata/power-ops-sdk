@@ -5,7 +5,7 @@ from typing import ClassVar
 from cognite.powerops.resync.config_classes.market._core import Configuration
 
 
-class MarketConfig(Configuration):
+class Market(Configuration):
     parent_external_id: ClassVar[str] = "market_configurations"
     external_id: str
     name: str
@@ -19,7 +19,7 @@ class MarketConfig(Configuration):
     price_unit: str = None
 
 
-MARKET_CONFIG_NORDPOOL_DAYAHEAD = MarketConfig(
+MARKET_CONFIG_NORDPOOL_DAYAHEAD = Market(
     external_id="market_configuration_nordpool_dayahead",
     name="Nord Pool Day-ahead",
     max_price=4000,
