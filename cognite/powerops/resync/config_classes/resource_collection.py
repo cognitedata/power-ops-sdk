@@ -1,10 +1,8 @@
 from __future__ import annotations
 
 import logging
-from pathlib import Path
 from typing import Union, cast
 
-from cognite.client import CogniteClient
 from cognite.client.data_classes import Asset, Event, LabelDefinition, Relationship, Sequence
 from cognite.client.data_classes._base import CogniteResource, CogniteResourceList
 from cognite.client.data_classes.data_modeling import EdgeApply, NodeApply
@@ -367,30 +365,3 @@ def to_dm_apply(instances: list[DomainModel] | DomainModel) -> list[DomainModelA
             apply_type(**{field: value for field, value in item.dict().items() if field in apply_type.__fields__})
         )
     return apply_items
-
-
-def upload_shop_config_file(
-    client: CogniteClient,
-    config: ShopFileConfig,
-    data_set_id: int,
-    overwrite: bool = True,
-) -> None:
-    if config.file_path is None:
-        raise ValueError("The Path must be set to upload file")
-    file_content = Path(config.file_path).read_bytes()
-    if config.md5_hash is None:
-        config.set_md5_hash(file_content)
-    try:
-        file = client.files.upload_bytes(
-            content=file_content,
-            external_id=config.external_id,
-            name=config.external_id,
-            metadata=config.metadata,
-            source="PowerOps bootstrap",
-            mime_type="text/plain",
-            data_set_id=data_set_id,
-            overwrite=overwrite,
-        )
-        print(f"Uploaded file with externalId {file.external_id}")
-    except Exception as e:
-        print(e)
