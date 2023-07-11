@@ -31,7 +31,6 @@ class Plant(BaseModel):
     generator_ext_ids: list[ExternalId] = []  # external IDs of generator assets
     inlet_reservoir_ext_id: Optional[ExternalId] = None  # external ID of reservoir asset
 
-    # TODO: Consider splitting this into a separate class/subclass
     inlet_level_time_series: Optional[ExternalId] = None  # external ID of time series with values in m.a.s.l.
     outlet_level_time_series: Optional[ExternalId] = None  # external ID of time series with values in m.a.s.l.
     water_value_time_series: Optional[ExternalId] = None  # external ID of time series with values in €/MWh
