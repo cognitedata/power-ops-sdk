@@ -29,7 +29,6 @@ from cognite.powerops.resync.config_classes.shared import ExternalId
 from cognite.powerops.resync.config_classes.to_delete import SequenceContent
 from cognite.powerops.resync.logic import clean_cdf_resources_for_diff, clean_local_resources_for_diff
 from cognite.powerops.resync.models.cdf_resources import CDFFile
-from cognite.powerops.resync.utils.common import dump_cdf_resource
 from cognite.powerops.utils.cdf.calls import upsert_cognite_resources
 
 logger = logging.getLogger(__name__)
@@ -44,6 +43,15 @@ AddableResourceT = Union[
     CDFFile,
     list[CDFFile],
 ]
+
+
+def dump_cdf_resource(resource) -> dict:
+    """Legacy or DM resource."""
+    try:
+        dump_func = resource.dump
+    except AttributeError:
+        dump_func = resource.dict
+    return dump_func()
 
 
 class ResourceCollection(BaseModel):

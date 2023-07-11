@@ -17,7 +17,6 @@ from cognite.powerops.clients.cogshop.data_classes import (
     ModelTemplateApply,
     TransformationApply,
 )
-from cognite.powerops.resync.config_classes.cogshop.shop_file_config import ShopFileConfig
 from cognite.powerops.resync.config_classes.resync_config import CogShopConfigs
 from cognite.powerops.resync.models import cogshop
 from cognite.powerops.resync.models.cdf_resources import CDFSequence
@@ -215,14 +214,6 @@ def to_cogshop_model(config: CogShopConfigs, watercourses: list[Watercourse], sh
         )
 
     return model
-
-
-def create_watercourse_shop_files(
-    shop_file_configs: list[ShopFileConfig], watercourse_directories: dict
-) -> list[ShopFileConfig]:
-    for shop_file in shop_file_configs:
-        shop_file.set_full_path(watercourse_directories[shop_file.watercourse_name])
-    return shop_file_configs
 
 
 def _make_ext_id(watercourse_name: str, *args: str) -> str:

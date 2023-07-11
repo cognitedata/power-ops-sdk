@@ -83,15 +83,10 @@ class MarketConfigs(BaseModel):
 
 
 class CoreConfigs(BaseModel):
-    source_path: Path
     dayahead_price_timeseries: Dict[str, str]
     watercourses: list[WatercourseConfig]
     generator_time_series_mappings: list[GeneratorTimeSeriesMapping] = None
     plant_time_series_mappings: list[PlantTimeSeriesMapping] = None
-
-    @property
-    def watercourse_directories(self) -> dict[str, str]:
-        return {w.name: str(self.source_path / w.directory) for w in self.watercourses}
 
 
 class CogShopConfigs(BaseModel):
@@ -108,7 +103,7 @@ class ReSyncConfig(BaseModel):
 
     @classmethod
     def from_yamls(cls, config_dir_path: Path, cdf_project: str) -> "ReSyncConfig":
-        configs: dict[str, dict[str, Any]] = {"markets": {}, "core": {"source_path": config_dir_path}, "cogshop": {}}
+        configs: dict[str, dict[str, Any]] = {"markets": {}, "core": {}, "cogshop": {}}
         market_keys = set(MarketConfigs.model_fields)
         core_keys = set(CoreConfigs.model_fields)
         cogshop_keys = set(CogShopConfigs.model_fields)

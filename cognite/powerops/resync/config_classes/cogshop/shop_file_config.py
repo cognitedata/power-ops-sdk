@@ -46,9 +46,6 @@ class ShopFileConfig(BaseModel):
     def set_md5_hash(self, file_content: bytes) -> None:
         self.md5_hash = md5(file_content.replace(b"\r\n", b"\n")).hexdigest()
 
-    def set_full_path(self, directory: str) -> None:
-        self.file_path = Path(directory) / self.file_path
-
     @classmethod
     def from_file_meta(cls, file_meta: FileMetadata) -> "ShopFileConfig":
         cogshop_file_type = file_meta.metadata["shop:type"] if file_meta.metadata["shop:type"] != "case" else "model"
