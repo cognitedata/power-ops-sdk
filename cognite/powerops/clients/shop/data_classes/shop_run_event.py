@@ -4,10 +4,9 @@ import json
 from dataclasses import dataclass
 from functools import cached_property
 from typing import ClassVar, Optional
+from uuid import uuid4
 
 from cognite.client.data_classes import Event
-
-from cognite.powerops.bootstrap.utils.common import unique_str
 
 
 @dataclass
@@ -39,7 +38,7 @@ class ShopRunEvent:
 
     @cached_property
     def external_id(self) -> str:
-        return f"{self.process_type}_{unique_str()}"
+        return f"{self.process_type}_{uuid4()}"
 
     @property
     def metadata(self) -> dict:

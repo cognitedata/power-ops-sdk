@@ -1,7 +1,0 @@
-data_set_external_id: "uc:000:powerops"
-overwrite_data: True
-organization_subdomain: "cog-power-ops"
-tenant_id: "431fcc8b-74b8-4171-b7c9-e6fab253913b"
-shop_version: "14.4.3.0"
-skip_dm: False
-logging_level: "DEBUG"

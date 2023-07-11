@@ -3970,6 +3970,23 @@ pure-eval = "*"
 tests = ["cython", "littleutils", "pygments", "pytest", "typeguard"]
 
 [[package]]
+name = "strenum"
+version = "0.4.15"
+description = "An Enum that inherits from str."
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "StrEnum-0.4.15-py3-none-any.whl", hash = "sha256:a30cda4af7cc6b5bf52c8055bc4bf4b2b6b14a93b574626da33df53cf7740659"},
+    {file = "StrEnum-0.4.15.tar.gz", hash = "sha256:878fb5ab705442070e4dd1929bb5e2249511c0bcf2b0eeacf3bcd80875c82eff"},
+]
+
+[package.extras]
+docs = ["myst-parser[linkify]", "sphinx", "sphinx-rtd-theme"]
+release = ["twine"]
+test = ["pylint", "pytest", "pytest-black", "pytest-cov", "pytest-pylint"]
+
+[[package]]
 name = "terminado"
 version = "0.17.1"
 description = "Tornado websocket backend for the Xterm.js Javascript terminal emulator library."
@@ -4351,4 +4368,4 @@ docs = ["mkdocs", "mkdocs-jupyter", "mkdocs-material", "mkdocs-material-extensio
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "a337312282164dae088ed2837214703ad7df1275876daf5ba1da0e0be70fbf32"
+content-hash = "bac208b8c19e1b911555fb6262de2a8e9ba50cf14e4ce63afcd0aa731b7276a5"

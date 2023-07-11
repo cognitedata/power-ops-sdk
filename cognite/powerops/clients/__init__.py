@@ -1,3 +1,3 @@
-from .powerops_client import PowerOpsClient
+from .powerops_client import PowerOpsClient, get_powerops_client
 
-__all__ = ["PowerOpsClient"]
+__all__ = ["PowerOpsClient", "get_powerops_client"]

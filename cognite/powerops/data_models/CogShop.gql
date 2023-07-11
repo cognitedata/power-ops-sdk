@@ -1,50 +1,43 @@
-type Case {
-  scenario: Scenario
-  startTime: String!
-  endTime: String!
-  processingLog: [ProcessingLog]
+type ValueTransformation {
+  method: String!
+  arguments: JSONObject
+}
+
+type InputTimeSeriesMapping {
+  shopObjectType: String!
+  shopObjectName: String!
+  shopAttributeName: String!
+  cdfTimeSeries: TimeSeries
+  transformations: [ValueTransformation]
+  aggregation: String
+}
+
+type OutputMapping{
+  shopObjectType: String!
+  shopAttributeName: String!
+  cdfAttributeName: String!
+  unit: String
+  isStep: Boolean
 }
 
 type CommandsConfig {
   commands: [String!]!
 }
 
-type FileRef {
-  type: String!
-  fileExternalId: String!
-}
-
-type Mapping {
-  path: String!
-  timeseriesExternalId: String
-  transformations: [Transformation]
-  retrieve: String
-  aggregation: String
-}
-
-type ModelTemplate {
-  version: String!
-  shopVersion: String!
-  watercourse: String!
-  model: FileRef
-  baseMappings: [Mapping]
-}
-
-type ProcessingLog {
-  state: String
-  timestamp: String
-  errorMessage: String
-}
-
 type Scenario {
   name: String!
   modelTemplate: ModelTemplate
-  mappingsOverride: [Mapping]
+  mappingsOverride: [InputTimeSeriesMapping]
   commands: CommandsConfig
-  extraFiles: [FileRef]
 }
 
-type Transformation {
-  method: String!
-  arguments: String!
+
+type ModelTemplate {
+  watercourse: String!
+  shopVersion: String!
+  templateVersion: String!
+  model: File
+  shopFiles: [File]
+  baseMapping: [InputTimeSeriesMapping]
+  outputDefinitions: [OutputMapping]
 }

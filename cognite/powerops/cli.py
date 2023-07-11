@@ -5,7 +5,7 @@ from typing import Annotated
 
 import typer
 
-from . import bootstrap
+from . import resync
 
 app = typer.Typer()
 
@@ -19,7 +19,7 @@ def plan(
     market: Annotated[str, typer.Argument(help="Selected power market")],
 ):
     typer.echo(f"Running plan on configuration files located in {path}")
-    bootstrap.plan(path, market)
+    resync.plan(path, market)
 
 
 @app.command("apply", help="Apply the changes from the configuration files to the data model in CDF")
@@ -29,7 +29,7 @@ def apply(
 ):
     typer.echo(f"Running apply on configuration files located in {path}")
 
-    bootstrap.apply(path, market)
+    resync.apply(path, market)
 
 
 def main():

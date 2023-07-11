@@ -62,6 +62,7 @@ def test_apply(input_dir: Path, market: str, compare_file_path: Path, data_regre
     }
 
     with monkeypatch_cognite_client() as client:
+        client.config.project = "cdf-project"
         for resource_name, mock_resource in mock_resources.items():
             parts = resource_name.split(".")
             api = client
