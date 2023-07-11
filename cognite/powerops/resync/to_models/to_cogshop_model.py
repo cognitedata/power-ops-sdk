@@ -18,8 +18,7 @@ from cognite.powerops.clients.cogshop.data_classes import (
     TransformationApply,
 )
 from cognite.powerops.resync.config_classes.cogshop.shop_file_config import ShopFileConfig
-from cognite.powerops.resync.config_classes.resource_collection import ResourceCollection
-from cognite.powerops.resync.config_classes.resync_config import CogShopConfigs, CoreConfigs
+from cognite.powerops.resync.config_classes.resync_config import CogShopConfigs
 from cognite.powerops.resync.models import cogshop
 from cognite.powerops.resync.models.cdf_resources import CDFSequence
 from cognite.powerops.resync.models.cogshop import CogShopModel
@@ -29,19 +28,9 @@ from cognite.powerops.resync.utils.serializer import load_yaml
 logger = logging.getLogger(__name__)
 
 
-def cogshop_to_cdf_resources(
-    config: CogShopConfigs, watercourses: list[Watercourse], shop_version: str, core_config: CoreConfigs
-) -> tuple[ResourceCollection, CogShopModel]:
+def to_cogshop_model(config: CogShopConfigs, watercourses: list[Watercourse], shop_version: str) -> CogShopModel:
     model = CogShopModel()
 
-    collection = ResourceCollection()
-    # collection.add(create_watercourse_shop_files(config.watercourses_shop, core_config.watercourse_directories))
-    #
-    # for shop_config in collection.shop_file_configs.values():
-    #     if shop_config.md5_hash is None:
-    #         # Set hashes for Shop Files, needed for comparison
-    #         file_content = Path(shop_config.file_path).read_bytes()
-    #         shop_config.set_md5_hash(file_content)
     for shop_config in config.watercourses_shop:
         file_content = Path(shop_config.file_path).read_bytes()
         shop_file = cogshop.ShopFile(
@@ -225,7 +214,7 @@ def cogshop_to_cdf_resources(
             )
         )
 
-    return collection, model
+    return model
 
 
 def create_watercourse_shop_files(

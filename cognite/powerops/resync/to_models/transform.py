@@ -4,7 +4,7 @@ from cognite.powerops.cdf_labels import AssetLabel, RelationshipLabel
 from cognite.powerops.resync.config_classes.resource_collection import ResourceCollection
 from cognite.powerops.resync.config_classes.resync_config import ReSyncConfig
 
-from .to_cogshop_model import cogshop_to_cdf_resources
+from .to_cogshop_model import to_cogshop_model
 from .to_core_model import to_core_model
 from .to_market_model import to_market_model
 
@@ -24,15 +24,13 @@ def transform(
         core_model.root_asset.external_id,
     )
 
+    cogshop_model = to_cogshop_model(config.cogshop, core_model.watercourses, config.settings.shop_version)
+
     collection = ResourceCollection()
-    created, cogshop_model = cogshop_to_cdf_resources(
-        config.cogshop, core_model.watercourses, config.settings.shop_version, config.core
-    )
     collection.add(cogshop_model.sequences())
     collection.add(cogshop_model.instances())
     collection.add(cogshop_model.files())
-    collection += created
-    print(cogshop_model.model_dump())
+
     labels = AssetLabel.as_label_definitions() + RelationshipLabel.as_label_definitions()
 
     collection.add(labels)
