@@ -13,6 +13,17 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.26.0] - 2023-07-11
+
+### Changed
+
+* The `bootstrap` package has been completely rewritten and renamed `resync`. The functionality is the same, with no
+  changes to the CLI calls `apply` and `plan`. However, all the internal code has been rewritten to be more robust and
+  easier to maintain.
+* `BREAKING_CHANGE:` The new `resync` requires the configuration files to be structured into `production`, `market`, and
+  `cogshop`. The motivation for this change is to make it easier to navigate the `PowerOps` model by grouping into
+  smaller submodels, and make the dependencies between the models clear, `Market` depends on `Production.price_areas`
+  and `CogShop` depends on `Production.watercourses`.
 
 ## [0.25.3] - 2023-07-11
 
