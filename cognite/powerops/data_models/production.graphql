@@ -11,20 +11,23 @@ type Generator {
 type Plant {
     name: String
     displayName: String
-    headLossFactor: Float
     ordering: Int
+    headLossFactor: Float
     outletLevel: Float
     pMax: Float
     pMin: Float
     penstockHeadLossFactors: JSONObject
-    generators: [Generator]
-    inletReservoirs: [Reservoir]
+
     pMaxTimeSeries: TimeSeries
     pMinTimeSeries: TimeSeries
     waterValue: TimeSeries
     feedingFee: TimeSeries
     outletLevelTimeSeries: TimeSeries
     inletLevel: TimeSeries
+    headDirectTimeSeries: TimeSeries
+
+    inletReservoirs: [Reservoir]
+    generators: [Generator]
 }
 
 type Reservoir {
@@ -33,14 +36,20 @@ type Reservoir {
     ordering: Int
 }
 
+type WatercourseShop {
+    penaltyLimit: Float
+}
+
 type Watercourse {
     name: String
-    shopPenaltyLimit: Float
+    shop: WatercourseShop
     plants: [Plant]
+    productionObligation: TimeSeries
 }
 
 type PriceArea {
     name: String
+    description: String
     dayAheadPrice: TimeSeries
     plants: [Plant]
     watercourses: [Watercourse]
