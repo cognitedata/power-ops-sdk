@@ -2,100 +2,125 @@ from typing import Optional
 
 from cognite.client import CogniteClient
 from cognite.client.exceptions import CogniteReadTimeout
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
+from pydantic.alias_generators import to_camel
 
 from cognite.powerops.utils.retry import retry
 
 
-class Transformation(BaseModel):
+class GraphQlModel(BaseModel, alias_generator=to_camel):
+    ...
+
+
+class Transformation(GraphQlModel):
     method: str
-    arguments: Optional[str]
+    arguments: Optional[str] = None
 
 
-class TransformationItems(BaseModel):
+class TransformationItems(GraphQlModel):
     items: list[Transformation]
 
 
-class Commands(BaseModel):
+class Commands(GraphQlModel):
     commands: list[str]
 
 
-class FileRef(BaseModel):
-    file_external_id: str = Field(alias="fileExternalId")
-    type: Optional[str]
+class FileRef(GraphQlModel):
+    file_external_id: str
+    type: Optional[str] = None
 
 
-class FileRefItems(BaseModel):
+class FileRefItems(GraphQlModel):
     items: list[FileRef]
 
 
-class Mapping(BaseModel):
+class Mapping(GraphQlModel):
     path: str
-    timeseries_external_id: Optional[str] = Field(alias="timeseriesExternalId")
-    transformations: Optional[TransformationItems]
-    retrieve: Optional[str]
-    aggregation: Optional[str]
+    timeseries_external_id: Optional[str] = None
+    transformations: Optional[TransformationItems] = None
+    retrieve: Optional[str] = None
+    aggregation: Optional[str] = None
 
 
-class MappingItems(BaseModel):
+class MappingItems(GraphQlModel):
     items: list[Mapping]
 
 
-class ModelTemplate(BaseModel):
+class ModelTemplate(GraphQlModel):
     watercourse: str
     model: FileRef
-    base_mappings: MappingItems = Field(alias="baseMappings")
+    base_mappings: MappingItems
 
 
-class Scenario(BaseModel):
+class Scenario(GraphQlModel):
     name: str
-    model_template: ModelTemplate = Field(alias="modelTemplate")
+    model_template: ModelTemplate
     commands: Commands
-    mappings_override: Optional[MappingItems] = Field(alias="mappingsOverride")
-    extra_files: Optional[FileRefItems] = Field(alias="extraFiles")
+    mappings_override: Optional[MappingItems] = None
+    extra_files: Optional[FileRefItems] = None
 
 
-class Case(BaseModel):
-    start_time: str = Field(alias="startTime")  # datetime.datetime
-    end_time: str = Field(alias="endTime")  # datetime.datetime
+class Case(GraphQlModel):
+    start_time: str
+    end_time: str
     scenario: Scenario
 
 
 def render_query(space: str, case_external_id: str) -> str:
     query_template = """
     query MyQuery {{
-    getCaseById(instance: {{space: "{space}", externalId: "{external_id}"}}) {{
-        items {{
-        startTime
-        endTime
-        scenario {{
-            name
-            modelTemplate {{
-            watercourse
-            model {{
-                fileExternalId
-            }}
-            baseMappings (first: 500) {{
-                items {{
-                    path
-                    timeseriesExternalId
-                    retrieve
-                    aggregation
-                    transformations {{
+        getCaseById(instance: {{space: "{space}", externalId: "{external_id}"}}) {{
+            items {{
+                startTime
+                endTime
+                scenario {{
+                    name
+                    extraFiles (first: 500) {{
                         items {{
-                            method
-                            arguments
+                            fileExternalId
+                            type
                         }}
+                    }}
+                    mappingsOverride (first: 500) {{
+                        items {{
+                            path
+                            timeseriesExternalId
+                            retrieve
+                            aggregation
+                            transformations {{
+                                items {{
+                                    arguments
+                                    method
+                                }}
+                            }}
+                        }}
+                    }}
+                    modelTemplate {{
+                        watercourse
+                        model {{
+                            fileExternalId
+                        }}
+                        baseMappings (first: 500) {{
+                            items {{
+                                path
+                                timeseriesExternalId
+                                retrieve
+                                aggregation
+                                transformations {{
+                                    items {{
+                                        method
+                                        arguments
+                                    }}
+                                }}
+                            }}
+                        }}
+                    }}
+                    commands {{
+                        commands
                     }}
                 }}
             }}
-            }}
-            commands {{
-                commands
-            }}
         }}
-        }}
-    }}
     }}
     """
     return query_template.format(space=space, external_id=case_external_id)
