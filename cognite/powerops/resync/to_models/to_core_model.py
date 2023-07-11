@@ -66,7 +66,7 @@ def to_core_model(config: CoreConfigs) -> core.CoreModel:
     for watercourse_config in config.watercourses:
         watercourse = core.Watercourse(
             name=watercourse_config.name,
-            shop_penalty_limit=str(watercourse_config.shop_penalty_limit),
+            shop=core.WaterCourseShop(penalty_limit=str(watercourse_config.shop_penalty_limit)),
             config_version=watercourse_config.version,
             model_file=watercourse_config.yaml_raw_path,
             processed_model_file=watercourse_config.yaml_processed_path,

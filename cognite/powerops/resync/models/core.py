@@ -7,7 +7,7 @@ from cognite.client.data_classes import Asset, TimeSeries
 from pydantic import Field
 
 from cognite.powerops.cdf_labels import AssetLabel
-from cognite.powerops.resync.models._base import AssetModel, AssetType
+from cognite.powerops.resync.models._base import AssetModel, AssetType, NonAssetType
 from cognite.powerops.resync.models.cdf_resources import CDFSequence
 
 
@@ -50,10 +50,14 @@ class Plant(AssetType):
     head_direct_time_series: Optional[TimeSeries] = None
 
 
+class WaterCourseShop(NonAssetType):
+    penalty_limit: str
+
+
 class Watercourse(AssetType):
     type_: ClassVar[str] = "watercourse"
     label = AssetLabel.WATERCOURSE
-    shop_penalty_limit: str
+    shop: WaterCourseShop
     config_version: str = Field(exclude=True)
     model_file: Path = Field(exclude=True)
     processed_model_file: Path = Field(exclude=True)
