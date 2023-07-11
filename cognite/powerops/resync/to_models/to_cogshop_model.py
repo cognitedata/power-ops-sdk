@@ -5,7 +5,6 @@ import logging
 from datetime import datetime
 from hashlib import md5
 from pathlib import Path
-from typing import Optional
 
 import pandas as pd
 import yaml
@@ -55,10 +54,10 @@ def to_cogshop_model(config: CogShopConfigs, watercourses: list[Watercourse], sh
     # TODO Fix the assumption that timeseries mappings and watercourses are in the same order
     for watercourse, mapping in zip(watercourses, config.time_series_mappings):
         #### Model File ####
-        processed_model = get_model_without_timeseries(
+        processed_model = _to_model_without_timeseries(
             yaml_raw_path=str(watercourse.model_file),
             # Todo Move this hardcoded configuration to a config file
-            non_time_series_attributes_to_remove=["reservoir.start_vol", "generator.initial_state"],
+            non_time_series_attributes_to_remove={"reservoir.start_vol", "generator.initial_state"},
             encoding="utf-8",
         )
         yaml_content = yaml.safe_dump(processed_model, allow_unicode=True, sort_keys=False)
@@ -223,17 +222,16 @@ def _make_ext_id(watercourse_name: str, *args: str) -> str:
     return f"Tr__{hash_value.hexdigest()}"
 
 
-def shop_attribute_value_is_time_series(shop_attribute_value) -> bool:
+def _is_time_series(shop_attribute_value) -> bool:
     return isinstance(shop_attribute_value, dict) and isinstance(list(shop_attribute_value)[0], datetime)
 
 
-def get_model_without_timeseries(
+def _to_model_without_timeseries(
     yaml_raw_path: str,
-    non_time_series_attributes_to_remove: Optional[list[str]] = None,
+    non_time_series_attributes_to_remove: set[str] | None = None,
     encoding=None,
 ) -> dict:
-    if non_time_series_attributes_to_remove is None:
-        non_time_series_attributes_to_remove = []
+    non_time_series_attributes_to_remove = non_time_series_attributes_to_remove or set()
 
     model_incl_time_and_connections = load_yaml(Path(yaml_raw_path), encoding=encoding, clean_data=True)
 
@@ -247,12 +245,12 @@ def get_model_without_timeseries(
                 if f"{object_type}.{attribute_name}" in non_time_series_attributes_to_remove:
                     object_attributes.pop(attribute_name)
 
-                elif shop_attribute_value_is_time_series(attribute_data):
+                elif _is_time_series(attribute_data):
                     object_attributes.pop(attribute_name)
 
     model_dict = {"model": model}
 
-    # TODO: remove this when standardizing input SHOP file strucutre (model vs model + connections)
+    # TODO: remove this when standardizing input SHOP file structure (model vs model + connections)
     if "connections" in model_incl_time_and_connections:
         model_dict["connections"] = model_incl_time_and_connections["connections"]
 
