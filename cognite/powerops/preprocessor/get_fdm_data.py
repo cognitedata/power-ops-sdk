@@ -8,7 +8,7 @@ from pydantic.alias_generators import to_camel
 from cognite.powerops.utils.retry import retry
 
 
-class GraphQlModel(BaseModel, alias_generator=to_camel):
+class GraphQlModel(BaseModel, alias_generator=to_camel):  # type: ignore
     ...
 
 
