@@ -4,11 +4,11 @@ import logging
 from pathlib import Path
 from typing import Union, cast
 
-import pandas as pd
 from cognite.client import CogniteClient
 from cognite.client.data_classes import Asset, Event, LabelDefinition, Relationship, Sequence
 from cognite.client.data_classes._base import CogniteResource, CogniteResourceList
 from cognite.client.data_classes.data_modeling import EdgeApply, NodeApply
+from cognite.client.exceptions import CogniteAPIError
 from deepdiff import DeepDiff
 from pydantic import BaseModel, Extra
 
@@ -28,7 +28,7 @@ from cognite.powerops.resync.config_classes.cogshop.shop_file_config import Shop
 from cognite.powerops.resync.config_classes.shared import ExternalId
 from cognite.powerops.resync.config_classes.to_delete import SequenceContent
 from cognite.powerops.resync.logic import clean_cdf_resources_for_diff, clean_local_resources_for_diff
-from cognite.powerops.resync.models.cdf_resources import CDFFile
+from cognite.powerops.resync.models.cdf_resources import CDFFile, CDFSequence
 from cognite.powerops.utils.cdf.calls import upsert_cognite_resources
 
 logger = logging.getLogger(__name__)
@@ -42,6 +42,8 @@ AddableResourceT = Union[
     InstancesApply,
     CDFFile,
     list[CDFFile],
+    CDFSequence,
+    list[CDFSequence],
 ]
 
 
@@ -58,10 +60,11 @@ class ResourceCollection(BaseModel):
     # CDF resources
     assets: dict[ExternalId, Asset] = {}
     relationships: dict[ExternalId, Relationship] = {}
-    sequences: dict[ExternalId, Sequence] = {}
+    # sequences: dict[ExternalId, Sequence] = {}
     label_definitions: dict[ExternalId, LabelDefinition] = {}
     events: dict[ExternalId, Event] = {}
     files: dict[ExternalId, CDFFile] = {}
+    sequences: dict[ExternalId, CDFSequence] = {}
 
     # dm resources:
     nodes: dict[ExternalId, NodeApply] = {}
@@ -119,6 +122,8 @@ class ResourceCollection(BaseModel):
             self.sequence_content[resource.sequence_external_id] = resource
         elif isinstance(resource, CDFFile):
             self.files[resource.external_id] = resource
+        elif isinstance(resource, CDFSequence):
+            self.sequences[resource.external_id] = resource
         elif isinstance(resource, ShopFileConfig):
             self.shop_file_configs[resource.external_id] = resource
         # dm
@@ -142,7 +147,6 @@ class ResourceCollection(BaseModel):
         po_client: PowerOpsClient,
         data_set_external_id: str,
         overwrite: bool = False,
-        skip_dm: bool = False,
     ):
         # CDF auth and data set
         data_set_id = po_client.cdf.data_sets.retrieve(external_id=data_set_external_id).id
@@ -152,7 +156,6 @@ class ResourceCollection(BaseModel):
         cdf_api_by_type = {
             "label_definitions": po_client.cdf.labels,
             "assets": po_client.cdf.assets,
-            "sequences": po_client.cdf.sequences,
             "relationships": po_client.cdf.relationships,
             "events": po_client.cdf.events,
         }
@@ -164,35 +167,27 @@ class ResourceCollection(BaseModel):
         po_client.cdf.data_modeling.instances.apply(
             nodes=list(self.nodes.values()), edges=list(self.edges.values()), replace=True
         )
+
+        logger.debug(f"Processing {len(self.shop_file_configs)} files...")
         for file in self.files.values():
             po_client.cdf.files.upload_bytes(
                 content=file.content, data_set_id=data_set_id, overwrite=overwrite, **file.meta.dump(camel_case=False)
             )
 
         logger.debug(f"Processing {len(self.sequence_content)} sequences...")
-        for sequence_external_id, sequence_data in self.sequence_content.items():
-            if isinstance(sequence_data.data, pd.DataFrame):
-                try:
-                    po_client.cdf.sequences.data.insert_dataframe(
-                        dataframe=sequence_data.data, external_id=sequence_external_id
-                    )
-                except Exception as e:
-                    logger.warning(f"Failed to insert sequence dataframe for {sequence_external_id}: {e}")
-            else:
-                try:
-                    po_client.cdf.sequences.data.insert(
-                        rows=sequence_data.data.rows,
-                        external_id=sequence_external_id,
-                        column_external_ids=sequence_data.data.columns_external_ids,
-                    )
-                except Exception as e:
-                    logger.warning(f"Failed to insert sequence rows for {sequence_external_id}: {e}")
-
-        logger.debug(f"Processing {len(self.shop_file_configs)} files...")
-        for shop_config in self.shop_file_configs.values():
-            upload_shop_config_file(
-                client=po_client.cdf, config=shop_config, overwrite=overwrite, data_set_id=data_set_id
-            )
+        upsert_cognite_resources(
+            po_client.cdf.sequences, "sequences", [cdf_sequence.sequence for cdf_sequence in self.sequences.values()]
+        )
+        for sequence_external_id, cdf_sequence in self.sequences.items():
+            if cdf_sequence.content.empty:
+                logger.warning(f"Empty sequence dataframe for {sequence_external_id}")
+                continue
+            try:
+                po_client.cdf.sequences.data.insert_dataframe(
+                    dataframe=cdf_sequence.content, external_id=sequence_external_id
+                )
+            except CogniteAPIError as e:
+                logger.warning(f"Failed to insert sequence dataframe for {sequence_external_id}: {e}")
 
     def __add__(self, other: "ResourceCollection") -> "ResourceCollection":
         return ResourceCollection(

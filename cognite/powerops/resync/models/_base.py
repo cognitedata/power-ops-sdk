@@ -3,6 +3,8 @@ from __future__ import annotations
 import json
 from abc import ABC
 from typing import ClassVar, Iterable, Optional
+from typing import Type as TypingType
+from typing import TypeVar
 
 from cognite.client.data_classes import Asset, Label, Relationship, Sequence, TimeSeries
 from cognite.client.data_classes.data_modeling.instances import EdgeApply, NodeApply
@@ -15,32 +17,26 @@ from cognite.powerops.resync.models.cdf_resources import CDFFile, CDFSequence
 
 
 class Type(BaseModel, ABC):
-    def sequences(self) -> list[Sequence | SequenceContent]:
-        output = []
-        for field_name in self.model_fields:
-            value = getattr(self, field_name)
-            if not value:
-                continue
-            elif isinstance(value, list) and isinstance(value[0], CDFSequence):
-                for v in value:
-                    output.append(v.sequence)
-                    output.append(SequenceContent(sequence_external_id=v.sequence.external_id, data=v.content))
-            elif isinstance(value, CDFSequence):
-                output.append(value.sequence)
-                output.append(SequenceContent(sequence_external_id=value.sequence.external_id, data=value.content))
-        return output
+    def sequences(self) -> list[CDFSequence]:
+        return self._fields_of_type(CDFSequence)
 
     def files(self) -> list[CDFFile]:
-        output = []
+        return self._fields_of_type(CDFFile)
+
+    def _fields_of_type(self, type_: TypingType[_T_Type]) -> list[_T_Type]:
+        output: list[_T_Type] = []
         for field_name in self.model_fields:
             value = getattr(self, field_name)
             if not value:
                 continue
-            elif isinstance(value, list) and isinstance(value[0], CDFFile):
+            elif isinstance(value, list) and isinstance(value[0], type_):
                 output.extend(value)
-            elif isinstance(value, CDFFile):
+            elif isinstance(value, type_):
                 output.append(value)
         return output
+
+
+_T_Type = TypeVar("_T_Type")
 
 
 class AssetType(Type, ABC):

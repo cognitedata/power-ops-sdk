@@ -38,7 +38,6 @@ def apply(path: Path, market: str, echo: Callable[[str], None] = None):
         client,
         config.settings.data_set_external_id,
         config.settings.overwrite_data,
-        config.settings.skip_dm,
     )
 
 
