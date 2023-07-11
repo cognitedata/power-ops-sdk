@@ -18,7 +18,7 @@ p_max_fallback = 1e20
 head_loss_factor_fallback = 0.0
 
 
-def to_core_model(config: ProductionConfigs) -> production.ProductionModel:
+def to_production_model(config: ProductionConfigs) -> production.ProductionModel:
     """
     Create Assets for:
         - price_area,

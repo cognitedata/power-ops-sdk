@@ -5,15 +5,15 @@ from cognite.powerops.resync.config_classes.resource_collection import ResourceC
 from cognite.powerops.resync.config_classes.resync_config import ReSyncConfig
 
 from .to_cogshop_model import to_cogshop_model
-from .to_core_model import to_core_model
 from .to_market_model import to_market_model
+from .to_production_model import to_production_model
 
 
 def transform(
     config: ReSyncConfig,
     market_name: str,
 ) -> ResourceCollection:
-    core_model = to_core_model(config.production)
+    core_model = to_production_model(config.production)
     market_model = to_market_model(config.markets, core_model.price_areas, market_name)
     cogshop_model = to_cogshop_model(config.cogshop, core_model.watercourses, config.settings.shop_version)
 
