@@ -23,8 +23,8 @@ from cognite.powerops.clients.cogshop.data_classes import (
 )
 from cognite.powerops.clients.cogshop.data_classes._core import DomainModel, DomainModelApply, InstancesApply
 from cognite.powerops.clients.powerops_client import PowerOpsClient
-from cognite.powerops.resync.config_classes.cogshop.shop_file_config import ShopFileConfig
-from cognite.powerops.resync.config_classes.shared import ExternalId
+from cognite.powerops.resync.config.cogshop.shop_file_config import ShopFileConfig
+from cognite.powerops.resync.config.shared import ExternalId
 from cognite.powerops.resync.models.cdf_resources import CDFFile, CDFSequence
 from cognite.powerops.utils.cdf.calls import upsert_cognite_resources
 

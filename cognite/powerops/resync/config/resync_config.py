@@ -8,19 +8,15 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator
 from pydantic_core.core_schema import ValidationInfo
 
 from cognite.powerops.resync._settings import Settings
-from cognite.powerops.resync.config_classes.cogshop.shop_file_config import ShopFileConfig
-from cognite.powerops.resync.config_classes.market import BenchmarkingConfig, PriceScenario
-from cognite.powerops.resync.config_classes.market.dayahead import BidMatrixGeneratorConfig, BidProcessConfig
-from cognite.powerops.resync.config_classes.market.market import Market
-from cognite.powerops.resync.config_classes.market.rkom import (
-    RKOMBidCombinationConfig,
-    RKOMBidProcessConfig,
-    RkomMarketConfig,
-)
-from cognite.powerops.resync.config_classes.production.generator import GeneratorTimeSeriesMapping
-from cognite.powerops.resync.config_classes.production.plant import PlantTimeSeriesMapping
-from cognite.powerops.resync.config_classes.production.watercourse import WatercourseConfig
-from cognite.powerops.resync.config_classes.shared import TimeSeriesMapping
+from cognite.powerops.resync.config.cogshop.shop_file_config import ShopFileConfig
+from cognite.powerops.resync.config.market import BenchmarkingConfig, PriceScenario
+from cognite.powerops.resync.config.market.dayahead import BidMatrixGeneratorConfig, BidProcessConfig
+from cognite.powerops.resync.config.market.market import Market
+from cognite.powerops.resync.config.market.rkom import RKOMBidCombinationConfig, RKOMBidProcessConfig, RkomMarketConfig
+from cognite.powerops.resync.config.production.generator import GeneratorTimeSeriesMapping
+from cognite.powerops.resync.config.production.plant import PlantTimeSeriesMapping
+from cognite.powerops.resync.config.production.watercourse import WatercourseConfig
+from cognite.powerops.resync.config.shared import TimeSeriesMapping
 from cognite.powerops.resync.utils.serializer import load_yaml
 
 

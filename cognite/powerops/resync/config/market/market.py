@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import ClassVar
 
-from cognite.powerops.resync.config_classes.market._core import Configuration
+from cognite.powerops.resync.config.market._core import Configuration
 
 
 class Market(Configuration):

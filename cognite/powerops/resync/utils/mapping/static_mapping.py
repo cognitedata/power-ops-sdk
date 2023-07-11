@@ -1,6 +1,6 @@
 from typing import Any
 
-from cognite.powerops.resync.config_classes.shared import (
+from cognite.powerops.resync.config.shared import (
     TimeSeriesMapping,
     TimeSeriesMappingEntry,
     Transformation,

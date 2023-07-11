@@ -1,6 +1,6 @@
 from cognite.client import CogniteClient
 
-from cognite.powerops.resync.config_classes.shared import TimeSeriesMapping
+from cognite.powerops.resync.config.shared import TimeSeriesMapping
 from cognite.powerops.resync.utils.common import print_warning
 
 

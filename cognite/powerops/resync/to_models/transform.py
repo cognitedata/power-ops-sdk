@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 from cognite.powerops.cdf_labels import AssetLabel, RelationshipLabel
-from cognite.powerops.resync.config_classes.resource_collection import ResourceCollection
-from cognite.powerops.resync.config_classes.resync_config import ReSyncConfig
+from cognite.powerops.resync.config.resource_collection import ResourceCollection
+from cognite.powerops.resync.config.resync_config import ReSyncConfig
 
 from .to_cogshop_model import to_cogshop_model
 from .to_market_model import to_market_model
