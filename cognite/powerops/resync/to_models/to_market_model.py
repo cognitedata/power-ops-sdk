@@ -27,11 +27,7 @@ from cognite.powerops.resync.models.cdf_resources import CDFSequence
 from cognite.powerops.resync.models.core import PriceArea
 
 
-def to_market_model(
-    config: MarketConfigs,
-    market_name: str,
-    price_areas: list[PriceArea],
-) -> MarketModel:
+def to_market_model(config: MarketConfigs, price_areas: list[PriceArea], market_name: str) -> MarketModel:
     nord_pool = market_models.NordPoolMarket(**config.market.model_dump())
     # The external_id is not following the naming convention, so we need to set it manually
     nord_pool.external_id = config.market.external_id

@@ -10,7 +10,6 @@ class Settings(BaseModel):
     tenant_id: str
     shop_version: str
     cdf_project: str
-    skip_dm: bool = False
     debug_level: LoggingLevelT = "INFO"
 
     @property

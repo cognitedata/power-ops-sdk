@@ -6,13 +6,12 @@ from typing import ClassVar, Iterable, Optional
 from typing import Type as TypingType
 from typing import TypeVar
 
-from cognite.client.data_classes import Asset, Label, Relationship, Sequence, TimeSeries
+from cognite.client.data_classes import Asset, Label, Relationship, TimeSeries
 from cognite.client.data_classes.data_modeling.instances import EdgeApply, NodeApply
 from pydantic import BaseModel, ConfigDict
 
 from cognite.powerops.cdf_labels import AssetLabel, RelationshipLabel
 from cognite.powerops.clients.cogshop.data_classes._core import DomainModelApply, InstancesApply
-from cognite.powerops.resync.config_classes.to_delete import SequenceContent
 from cognite.powerops.resync.models.cdf_resources import CDFFile, CDFSequence
 
 
@@ -176,7 +175,7 @@ class NonAssetType(BaseModel, ABC):
 
 
 class Model(BaseModel, ABC):
-    def sequences(self) -> list[Sequence | SequenceContent]:
+    def sequences(self) -> list[CDFSequence]:
         return [sequence for item in self._types() for sequence in item.sequences()]
 
     def files(self) -> list[CDFFile]:

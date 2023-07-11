@@ -14,7 +14,8 @@ def transform(
     market_name: str,
 ) -> ResourceCollection:
     core_model = to_core_model(config.core)
-    market_model = to_market_model(config.markets, market_name, core_model.price_areas)
+    market_model = to_market_model(config.markets, core_model.price_areas, market_name)
+    cogshop_model = to_cogshop_model(config.cogshop, core_model.watercourses, config.settings.shop_version)
 
     settings = config.settings
     market_model.set_root_asset(
@@ -24,20 +25,18 @@ def transform(
         core_model.root_asset.external_id,
     )
 
-    cogshop_model = to_cogshop_model(config.cogshop, core_model.watercourses, config.settings.shop_version)
-
-    collection = ResourceCollection()
-    collection.add(cogshop_model.sequences())
-    collection.add(cogshop_model.instances())
-    collection.add(cogshop_model.files())
-
     labels = AssetLabel.as_label_definitions() + RelationshipLabel.as_label_definitions()
-
+    collection = ResourceCollection()
     collection.add(labels)
-    for model in [core_model, market_model]:
-        collection.add(model.parent_assets())
-        collection.add(model.assets())
-        collection.add(model.relationships())
+
+    for model in [core_model, market_model, cogshop_model]:
         collection.add(model.sequences())
+        collection.add(model.files())
+    for asset_model in [core_model, market_model]:
+        collection.add(asset_model.parent_assets())
+        collection.add(asset_model.assets())
+        collection.add(asset_model.relationships())
+    for data_model in [cogshop_model]:
+        collection.add(data_model.instances())
 
     return collection
