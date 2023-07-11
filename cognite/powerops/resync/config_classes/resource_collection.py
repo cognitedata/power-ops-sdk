@@ -4,7 +4,7 @@ import hashlib
 import logging
 from typing import Union, cast
 
-from cognite.client.data_classes import Asset, Event, LabelDefinition, Relationship, Sequence
+from cognite.client.data_classes import Asset, Event, LabelDefinition, Relationship
 from cognite.client.data_classes._base import CogniteResource, CogniteResourceList
 from cognite.client.data_classes.data_modeling import EdgeApply, NodeApply
 from cognite.client.exceptions import CogniteAPIError
@@ -25,7 +25,6 @@ from cognite.powerops.clients.cogshop.data_classes._core import DomainModel, Dom
 from cognite.powerops.clients.powerops_client import PowerOpsClient
 from cognite.powerops.resync.config_classes.cogshop.shop_file_config import ShopFileConfig
 from cognite.powerops.resync.config_classes.shared import ExternalId
-from cognite.powerops.resync.config_classes.to_delete import SequenceContent
 from cognite.powerops.resync.models.cdf_resources import CDFFile, CDFSequence
 from cognite.powerops.utils.cdf.calls import upsert_cognite_resources
 
@@ -34,7 +33,6 @@ logger = logging.getLogger(__name__)
 AddableResourceT = Union[
     "CogniteResource",
     list["CogniteResource"],
-    "SequenceContent",
     list[ShopFileConfig],
     list[DomainModelApply],
     InstancesApply,
@@ -99,12 +97,10 @@ class ResourceCollection(BaseModel):
         else:
             self._add_resource(resources_to_append)
 
-    def _add_resource(self, resource: CogniteResource | SequenceContent | ShopFileConfig):
+    def _add_resource(self, resource: CogniteResource | ShopFileConfig):
         # cdf
         if isinstance(resource, Asset):
             self.assets[resource.external_id] = resource
-        elif isinstance(resource, Sequence):
-            self.sequences[resource.external_id] = resource
         elif isinstance(resource, Relationship):
             self.relationships[resource.external_id] = resource
         elif isinstance(resource, LabelDefinition):
@@ -283,7 +279,7 @@ class ResourceCollection(BaseModel):
         for f in file_meta:
             if f.metadata.get("md5_hash") is None:
                 file_content = po_client.cdf.files.download_bytes(external_id=f.external_id)
-                md5_hash = hashlib.md5(file_content.replace(r"\n\r", r"\n")).hexdigest()
+                md5_hash = hashlib.md5(file_content.replace(b"\r\n", b"\n")).hexdigest()
                 f.metadata["md5_hash"] = md5_hash
 
             shop_files.append(CDFFile(meta=f))
