@@ -7,8 +7,8 @@ import pandas as pd
 from cognite.client.data_classes import Sequence, TimeSeries
 
 from cognite.powerops.resync.config_classes.production.connections import Connection
-from cognite.powerops.resync.config_classes.resync_config import CoreConfigs
-from cognite.powerops.resync.models import core
+from cognite.powerops.resync.config_classes.resync_config import ProductionConfigs
+from cognite.powerops.resync.models import production
 from cognite.powerops.resync.models.cdf_resources import CDFSequence
 from cognite.powerops.resync.utils.serializer import load_yaml
 
@@ -18,7 +18,7 @@ p_max_fallback = 1e20
 head_loss_factor_fallback = 0.0
 
 
-def to_core_model(config: CoreConfigs) -> core.CoreModel:
+def to_core_model(config: ProductionConfigs) -> production.ProductionModel:
     """
     Create Assets for:
         - price_area,
@@ -62,11 +62,11 @@ def to_core_model(config: CoreConfigs) -> core.CoreModel:
         mapping.generator_name: mapping.start_stop_cost for mapping in (config.generator_time_series_mappings or [])
     }
 
-    model = core.CoreModel()
+    model = production.ProductionModel()
     for watercourse_config in config.watercourses:
-        watercourse = core.Watercourse(
+        watercourse = production.Watercourse(
             name=watercourse_config.name,
-            shop=core.WaterCourseShop(penalty_limit=str(watercourse_config.shop_penalty_limit)),
+            shop=production.WaterCourseShop(penalty_limit=str(watercourse_config.shop_penalty_limit)),
             config_version=watercourse_config.version,
             model_file=watercourse_config.yaml_raw_path,
             processed_model_file=watercourse_config.yaml_processed_path,
@@ -80,7 +80,7 @@ def to_core_model(config: CoreConfigs) -> core.CoreModel:
         shop_case = load_yaml(watercourse_config.yaml_raw_path, clean_data=True)
 
         for reservoir_name in shop_case["model"]["reservoir"]:
-            reservoir = core.Reservoir(
+            reservoir = production.Reservoir(
                 name=reservoir_name,
                 **dict(
                     zip(
@@ -95,7 +95,7 @@ def to_core_model(config: CoreConfigs) -> core.CoreModel:
 
         for generator_name, generator_attributes in shop_case["model"]["generator"].items():
             start_stop_cost = start_stop_cost_time_series_by_generator.get(generator_name)
-            generator = core.Generator(
+            generator = production.Generator(
                 name=generator_name,
                 penstock=str(generator_attributes.get("penstock", "1")),
                 p_min=float(generator_attributes.get("p_min", 0.0)),
@@ -184,7 +184,7 @@ def to_core_model(config: CoreConfigs) -> core.CoreModel:
             else:
                 mappings = {}
 
-            plant = core.Plant(
+            plant = production.Plant(
                 name=plant_name,
                 display_name=display_name,
                 ordering=str(order),
@@ -219,7 +219,7 @@ def to_core_model(config: CoreConfigs) -> core.CoreModel:
 
             prod_area = str(list(attributes["prod_area"].values())[0])
             price_area_name = watercourse_config.market_to_price_area[prod_area]
-            price_area = core.PriceArea(name=price_area_name)
+            price_area = production.PriceArea(name=price_area_name)
             if price_area_name not in {a.name for a in model.price_areas}:
                 if price_area_name in config.dayahead_price_timeseries:
                     price_area.dayahead_price_time_series = TimeSeries(

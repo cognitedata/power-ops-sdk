@@ -79,7 +79,7 @@ class MarketConfigs(BaseModel):
         return value
 
 
-class CoreConfigs(BaseModel):
+class ProductionConfigs(BaseModel):
     dayahead_price_timeseries: Dict[str, str]
     watercourses: list[WatercourseConfig]
     generator_time_series_mappings: list[GeneratorTimeSeriesMapping] = None
@@ -94,7 +94,7 @@ class CogShopConfigs(BaseModel):
 class ReSyncConfig(BaseModel):
     model_config = ConfigDict(populate_by_name=True)
     settings: Settings = Field(alias="constants")
-    production: CoreConfigs
+    production: ProductionConfigs
     markets: MarketConfigs
     cogshop: CogShopConfigs
 
@@ -102,11 +102,11 @@ class ReSyncConfig(BaseModel):
     def from_yamls(cls, config_dir_path: Path, cdf_project: str) -> "ReSyncConfig":
         configs: dict[str, dict[str, Any]] = {"markets": {}, "production": {}, "cogshop": {}}
         market_keys = set(MarketConfigs.model_fields)
-        core_keys = set(CoreConfigs.model_fields)
+        core_keys = set(ProductionConfigs.model_fields)
         cogshop_keys = set(CogShopConfigs.model_fields)
         watercourse_directory_by_name = {}
         for field_name in itertools.chain(
-            cls.model_fields, MarketConfigs.model_fields, CoreConfigs.model_fields, CogShopConfigs.model_fields
+            cls.model_fields, MarketConfigs.model_fields, ProductionConfigs.model_fields, CogShopConfigs.model_fields
         ):
             if (config_file_path := config_dir_path / f"{field_name}.yaml").exists():
                 content = load_yaml(config_file_path, encoding="utf-8")

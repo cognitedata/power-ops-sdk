@@ -17,7 +17,7 @@ from cognite.powerops.resync.config_classes.resync_config import MarketConfigs
 from cognite.powerops.resync.models import MarketModel
 from cognite.powerops.resync.models import market as market_models
 from cognite.powerops.resync.models.cdf_resources import CDFSequence
-from cognite.powerops.resync.models.core import PriceArea
+from cognite.powerops.resync.models.production import PriceArea
 
 
 def to_market_model(config: MarketConfigs, price_areas: list[PriceArea], market_name: str) -> MarketModel:

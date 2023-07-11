@@ -73,7 +73,7 @@ class PriceArea(AssetType):
     watercourses: list[Watercourse] = Field(default_factory=list)
 
 
-class CoreModel(AssetModel):
+class ProductionModel(AssetModel):
     root_asset: ClassVar[Asset] = Asset(external_id="power_ops", name="PowerOps")
     price_areas: list[PriceArea] = Field(default_factory=list)
     watercourses: list[Watercourse] = Field(default_factory=list)

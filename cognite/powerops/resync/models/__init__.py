@@ -1,4 +1,4 @@
-from .core import CoreModel
 from .market import MarketModel
+from .production import ProductionModel
 
-__all__ = ["CoreModel", "MarketModel"]
+__all__ = ["ProductionModel", "MarketModel"]
