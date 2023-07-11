@@ -112,6 +112,7 @@ class ReSyncConfig(BaseModel):
         market_keys = set(MarketConfigs.model_fields)
         core_keys = set(CoreConfigs.model_fields)
         cogshop_keys = set(CogShopConfigs.model_fields)
+        watercourse_directory_by_name = {}
         for field_name in itertools.chain(
             cls.model_fields, MarketConfigs.model_fields, CoreConfigs.model_fields, CogShopConfigs.model_fields
         ):
@@ -123,13 +124,16 @@ class ReSyncConfig(BaseModel):
                     if field_name == "watercourses":
                         # Setting complete paths
                         for watercourse in content:
-                            watercourse["yaml_raw_path"] = (
-                                config_dir_path / watercourse["directory"] / watercourse["model_raw"]
-                            )
-                            watercourse["yaml_processed_path"] = (
-                                config_dir_path / watercourse["directory"] / watercourse["model_processed"]
-                            )
-
+                            if all(key in watercourse for key in ["directory", "model_raw"]):
+                                watercourse["yaml_raw_path"] = (
+                                    config_dir_path / watercourse["directory"] / watercourse["model_raw"]
+                                )
+                            if all(key in watercourse for key in ["directory", "model_processed"]):
+                                watercourse["yaml_processed_path"] = (
+                                    config_dir_path / watercourse["directory"] / watercourse["model_processed"]
+                                )
+                            if all(key in watercourse for key in ["directory", "model_raw"]):
+                                watercourse_directory_by_name[watercourse["name"]] = watercourse["directory"]
                     configs["core"][field_name] = content
 
                 elif field_name in cogshop_keys:
@@ -137,10 +141,22 @@ class ReSyncConfig(BaseModel):
                 else:
                     configs[field_name] = content
 
+        # Completing the paths for the shop files
+        for shop_file in configs["cogshop"].get("watercourses_shop", []):
+            if (watercourse_name := shop_file.get("watercourse_name")) and (
+                directory := watercourse_directory_by_name.get(watercourse_name)
+            ):
+                if "file_path" in shop_file:
+                    shop_file["file_path"] = config_dir_path / directory / shop_file["file_path"]
+                # For backwards compatibility
+                if "path" in shop_file:
+                    shop_file["path"] = config_dir_path / directory / shop_file["path"]
+
         # Todo Hack to get cdf project into settings.
         if "settings" in configs:
             configs["settings"]["cdf_project"] = cdf_project
         elif "constants" in configs:
             # For backwards compatibility
             configs["constants"]["cdf_project"] = cdf_project
+
         return cls(**configs)

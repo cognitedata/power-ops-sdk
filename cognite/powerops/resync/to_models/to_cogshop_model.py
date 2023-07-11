@@ -35,13 +35,34 @@ def cogshop_to_cdf_resources(
     model = CogShopModel()
 
     collection = ResourceCollection()
-    collection.add(create_watercourse_shop_files(config.watercourses_shop, core_config.watercourse_directories))
-
-    for shop_config in collection.shop_file_configs.values():
-        if shop_config.md5_hash is None:
-            # Set hashes for Shop Files, needed for comparison
-            file_content = Path(shop_config.file_path).read_bytes()
-            shop_config.set_md5_hash(file_content)
+    # collection.add(create_watercourse_shop_files(config.watercourses_shop, core_config.watercourse_directories))
+    #
+    # for shop_config in collection.shop_file_configs.values():
+    #     if shop_config.md5_hash is None:
+    #         # Set hashes for Shop Files, needed for comparison
+    #         file_content = Path(shop_config.file_path).read_bytes()
+    #         shop_config.set_md5_hash(file_content)
+    for shop_config in config.watercourses_shop:
+        file_content = Path(shop_config.file_path).read_bytes()
+        shop_file = cogshop.ShopFile(
+            watercourse_name=shop_config.watercourse_name,
+            file=cogshop.CDFFile(
+                meta=FileMetadata(
+                    external_id=shop_config.external_id,
+                    name=shop_config.external_id,
+                    metadata={
+                        "shop:type": shop_config.cogshop_file_type,
+                        "shop:watercourse": shop_config.watercourse_name,
+                        "shop:file_name": shop_config.file_path.stem,
+                        "md5_hash": md5(file_content.replace(b"\r\n", b"\n")).hexdigest(),
+                    },
+                    source="PowerOps bootstrap",
+                    mime_type="text/plain",
+                ),
+                content=file_content,
+            ),
+        )
+        model.shop_files.append(shop_file)
 
     # TODO Fix the assumption that timeseries mappings and watercourses are in the same order
     for watercourse, mapping in zip(watercourses, config.time_series_mappings):
