@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import logging
 from typing import Union, cast
 
@@ -57,7 +58,6 @@ class ResourceCollection(BaseModel):
     # CDF resources
     assets: dict[ExternalId, Asset] = {}
     relationships: dict[ExternalId, Relationship] = {}
-    # sequences: dict[ExternalId, Sequence] = {}
     label_definitions: dict[ExternalId, LabelDefinition] = {}
     events: dict[ExternalId, Event] = {}
     files: dict[ExternalId, CDFFile] = {}
@@ -70,10 +70,6 @@ class ResourceCollection(BaseModel):
     mappings: dict[ExternalId, MappingApply] = {}
     file_refs: dict[ExternalId, FileRefApply] = {}
     transformations: dict[ExternalId, TransformationApply] = {}
-
-    # other resources
-    sequence_content: dict[ExternalId, SequenceContent] = {}
-    shop_file_configs: dict[ExternalId, ShopFileConfig] = {}
 
     class Config:
         arbitrary_types_allowed = True
@@ -115,14 +111,10 @@ class ResourceCollection(BaseModel):
             self.label_definitions[resource.external_id] = resource
         elif isinstance(resource, Event):
             self.events[resource.external_id] = resource
-        elif isinstance(resource, SequenceContent):
-            self.sequence_content[resource.sequence_external_id] = resource
         elif isinstance(resource, CDFFile):
             self.files[resource.external_id] = resource
         elif isinstance(resource, CDFSequence):
             self.sequences[resource.external_id] = resource
-        elif isinstance(resource, ShopFileConfig):
-            self.shop_file_configs[resource.external_id] = resource
         # dm
         elif isinstance(resource, NodeApply):
             self.nodes[resource.external_id] = resource
@@ -165,13 +157,13 @@ class ResourceCollection(BaseModel):
             nodes=list(self.nodes.values()), edges=list(self.edges.values()), replace=True
         )
 
-        logger.debug(f"Processing {len(self.shop_file_configs)} files...")
+        logger.debug(f"Processing {len(self.files)} files...")
         for file in self.files.values():
             po_client.cdf.files.upload_bytes(
                 content=file.content, data_set_id=data_set_id, overwrite=overwrite, **file.meta.dump(camel_case=False)
             )
 
-        logger.debug(f"Processing {len(self.sequence_content)} sequences...")
+        logger.debug(f"Processing {len(self.sequences)} sequences...")
         upsert_cognite_resources(
             po_client.cdf.sequences, "sequences", [cdf_sequence.sequence for cdf_sequence in self.sequences.values()]
         )
@@ -195,13 +187,14 @@ class ResourceCollection(BaseModel):
         for cdf_resource in [
             "assets",
             "relationships",
-            "sequences",
             "label_definitions",
             "events",
             "model_templates",
             "file_refs",
             "mappings",
             "transformations",
+            "sequences",
+            "files",
         ]:
             local_resources = {
                 resource.external_id: dump_cdf_resource(resource)
@@ -219,23 +212,15 @@ class ResourceCollection(BaseModel):
             resource_diff[cdf_resource] = DeepDiff(cdf_resources, local_resources, ignore_string_case=True).pretty()
 
         # Then we handle the sequence content
-        local_sequence_content = {external_id: data.dump() for external_id, data in local.sequence_content.items()}
-        cdf_sequence_content = {external_id: data.dump() for external_id, data in cdf.sequence_content.items()}
+        local_sequence_content = {external_id: data.content.to_dict() for external_id, data in local.sequences.items()}
+        cdf_sequence_content = {external_id: data.content.to_dict() for external_id, data in cdf.sequences.items()}
         sequence_content_diff = {
             "sequence_content": DeepDiff(
                 cdf_sequence_content, local_sequence_content, ignore_nan_inequality=True
             ).pretty()
         }
 
-        # And then finally the shop files
-        shop_file_diff = {
-            "shop_files": DeepDiff(
-                {external_id: config.dict(exclude={"path"}) for external_id, config in cdf.shop_file_configs.items()},
-                {external_id: config.dict(exclude={"path"}) for external_id, config in local.shop_file_configs.items()},
-            ).pretty()
-        }
-
-        return resource_diff | sequence_content_diff | shop_file_diff
+        return resource_diff | sequence_content_diff
 
     @classmethod
     def prettify_differences(cls, diff_per_resource_type: dict[str, str]) -> str:
@@ -267,7 +252,6 @@ class ResourceCollection(BaseModel):
         # start by downloading all the resources from CDF
         for resource_type in [
             "assets",
-            "sequences",
             "relationships",
             "labels",
             "events",
@@ -295,22 +279,24 @@ class ResourceCollection(BaseModel):
             bootstrap_resource_collection.add(apply_resources)
 
         file_meta = po_client.cdf.files.list(data_set_ids=[data_set_id], limit=None)
-        existing_external_ids = {f.external_id for f in file_meta}
         shop_files = []
         for f in file_meta:
-            shop_config = ShopFileConfig.from_file_meta(f)
-            if shop_config.md5_hash is None and shop_config.external_id in existing_external_ids:
-                file_content = po_client.cdf.files.download_bytes(external_id=shop_config.external_id)
-                shop_config.set_md5_hash(file_content)
-            shop_files.append(shop_config)
+            if f.metadata.get("md5_hash") is None:
+                file_content = po_client.cdf.files.download_bytes(external_id=f.external_id)
+                md5_hash = hashlib.md5(file_content.replace(r"\n\r", r"\n")).hexdigest()
+                f.metadata["md5_hash"] = md5_hash
+
+            shop_files.append(CDFFile(meta=f))
         bootstrap_resource_collection.add(shop_files)
 
         # then download the sequence data
-        for external_id in bootstrap_resource_collection.sequences:
+        all_sequences = po_client.cdf.sequences.list(data_set_ids=[data_set_id], limit=None)
+
+        for sequence in all_sequences:
             sequence_data = po_client.cdf.sequences.data.retrieve_dataframe(
-                external_id=external_id, limit=None, start=0, end=-1
+                external_id=sequence.external_id, limit=None, start=0, end=-1
             )
-            bootstrap_resource_collection.add(SequenceContent(sequence_external_id=external_id, data=sequence_data))
+            bootstrap_resource_collection.add(CDFSequence(sequence=sequence, content=sequence_data))
 
         return bootstrap_resource_collection
 
