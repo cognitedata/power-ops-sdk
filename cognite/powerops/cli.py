@@ -4,6 +4,7 @@ import logging
 from pathlib import Path
 from typing import Annotated
 
+import cognite.client
 import typer
 from rich.logging import RichHandler
 
@@ -13,7 +14,9 @@ from . import resync
 from ._models import MODEL_BY_NAME
 
 FORMAT = "%(message)s"
-logging.basicConfig(level="NOTSET", format=FORMAT, datefmt="[%X]", handlers=[RichHandler()])
+logging.basicConfig(
+    level="NOTSET", format=FORMAT, datefmt="[%X]", handlers=[RichHandler(tracebacks_suppress=[cognite.client])]
+)
 
 log = logging.getLogger("rich")
 
