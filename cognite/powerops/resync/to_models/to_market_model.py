@@ -113,7 +113,7 @@ def _to_dayahead_process(
                 "bid:bid_process_configuration_name": process.name,
             },
         )
-        content = pd.DataFrame(
+        bid_matrix_generator_sequence_content = pd.DataFrame(
             [
                 [plant.name, bidmatrix_generator.default_method, bidmatrix_generator.default_function_external_id]
                 for plant in price_area.plants
@@ -179,7 +179,7 @@ def _to_dayahead_process(
             ),
             bid_matrix_generator_config=CDFSequence(
                 sequence=bid_matrix_generator_sequence,
-                content=content,
+                content=bid_matrix_generator_sequence_content,
             ),
             incremental_mapping=incremental_mapping_sequences,
         )

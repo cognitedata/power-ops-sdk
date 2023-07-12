@@ -31,4 +31,4 @@ class Bid(NonAssetType):
 
 
 class Process(AssetType):
-    shop: ShopTransformation
+    ...
