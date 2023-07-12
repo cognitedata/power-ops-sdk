@@ -17,17 +17,22 @@ def delete_resources(api: API, space: str):
     while True:
         for no, resource in enumerate(resources):
             print(f"{no}): {resource.external_id}")
+        print("\na): Delete all")
         print("\nq): Quit")
 
         delete_no = input(f"Which {resource_name} to delete? (You can type multiple numbers separated by comma)\n")
         if delete_no.casefold() == "q":
             break
-
-        delete_numbers = delete_no.split(",")
+        if delete_no.casefold() == "a":
+            delete_numbers = range(len(resources))
+        else:
+            delete_numbers = delete_no.split(",")
         deleted = api.delete([resources[int(no)].as_id() for no in delete_numbers])
         if deleted:
             print(f"Deleted {', '.join((d.external_id for d in deleted))}")
         resources = [r for r in resources if r.external_id not in {d.external_id for d in deleted}]
+        if not resources:
+            break
 
 
 def main():
