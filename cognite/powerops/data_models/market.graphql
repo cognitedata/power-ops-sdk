@@ -35,18 +35,20 @@ type RKOMMarket implements Market {
 
 interface Bid {
     name: String
-    date: [DateTransformation]
+    date: Date
+    market: Market
 }
 
 type BenchmarkBid implements Bid {
     name: String
-    date: [DateTransformation]
+    date: Date
     market: Market
 }
 
 type DayAheadBid implements Bid{
     name: String
-    date: [DateTransformation]
+    date: Date
+    market: Market
     isDefaultConfigForPriceArea: Boolean
     mainScenario: String
     priceArea: String
@@ -55,7 +57,6 @@ type DayAheadBid implements Bid{
     noShop: Boolean
     bidProcessConfigurationName: String
     bidMatrixGeneratorConfigExternalId: String
-    marketConfigExternalId: String
 }
 
 type PriceScenario{
@@ -76,7 +77,8 @@ type ReserveScenario{
 
 type RKOMBid implements Bid {
     name: String
-    date: [DateTransformation]
+    date: Date
+    market: Market
     auction: String
     block: String
     method: String
