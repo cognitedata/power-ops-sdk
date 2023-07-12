@@ -42,7 +42,7 @@ def apply(
     resync.apply(path, market)
 
 
-@app.command("deploy", help="Deploy the data model in CDF")
+@app.command("deploy", help=f"Deploy the data model in CDF. Available models: {list(MODEL_BY_NAME.keys())}")
 def deploy(
     models: Annotated[list[str], typer.Argument(help="The models to deploy")],
 ):
@@ -58,6 +58,16 @@ def deploy(
             model.id_, model.graphql_file.read_text(), model.name, model.description
         )
         log.info(f"Deployed {model_name} model ({result.space}, {result.external_id}, {result.version})")
+
+
+@app.command("show", help=f"Show the graphql schema of Power Ops model. Available models: {list(MODEL_BY_NAME.keys())}")
+def show(
+    model: Annotated[str, typer.Argument(help="The models to deploy")],
+):
+    if model not in MODEL_BY_NAME:
+        log.warning(f"Model {model} not found. Available models: {list(MODEL_BY_NAME.keys())}")
+
+    print(MODEL_BY_NAME[model].graphql_file.read_text())
 
 
 def main():
