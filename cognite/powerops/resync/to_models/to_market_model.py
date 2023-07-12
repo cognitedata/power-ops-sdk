@@ -152,8 +152,7 @@ def _to_dayahead_process(
                     columns=time_series_mapping.column_definitions,
                     metadata=metadata,
                 )
-                content = time_series_mapping.to_dataframe()
-                incremental_mapping = CDFSequence(sequence=sequence, content=content)
+                incremental_mapping = CDFSequence(sequence=sequence, content=time_series_mapping.to_dataframe())
                 incremental_mapping_sequences.append(incremental_mapping)
 
         # Create the DayAheadBidProcess Data Class
