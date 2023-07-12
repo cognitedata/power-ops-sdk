@@ -13,10 +13,19 @@ class PowerOpsModel:
     description: str
     graphql_file: Path
     id_: DataModelId
+    extra_types: list[Path] = None
+
+    @property
+    def graphql(self) -> str:
+        graphql = self.graphql_file.read_text()
+        if self.extra_types:
+            graphql = "\n".join([extra.read_text() for extra in self.extra_types] + [graphql])
+
+        return graphql
 
 
 _SPACE = "power-ops"
-
+_INPUT_TIMESERIES_MAPPING = GRAPHQL_SCHEMAS / "input_timeseries_mapping.graphql"
 
 MODEL_BY_NAME: dict[str, PowerOpsModel] = {
     "production": PowerOpsModel(
@@ -33,6 +42,7 @@ MODEL_BY_NAME: dict[str, PowerOpsModel] = {
         "bids and processes. In addition, to benchmarking.",
         graphql_file=GRAPHQL_SCHEMAS / "market.graphql",
         id_=DataModelId(_SPACE, "market", "1"),
+        extra_types=[_INPUT_TIMESERIES_MAPPING],
     ),
     "cogshop": PowerOpsModel(
         name="CogShop",
@@ -41,5 +51,6 @@ MODEL_BY_NAME: dict[str, PowerOpsModel] = {
         "executed daily and configuration of those SHOP runs.",
         graphql_file=GRAPHQL_SCHEMAS / "cogshop.graphql",
         id_=DataModelId(_SPACE, "cogshop", "1"),
+        extra_types=[_INPUT_TIMESERIES_MAPPING],
     ),
 }

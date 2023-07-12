@@ -73,7 +73,7 @@ def deploy(
 
         model = MODEL_BY_NAME[model_name]
         result = client.cdf.data_modeling.graphql.apply_dml(
-            model.id_, model.graphql_file.read_text().replace("\n", " "), model.name, model.description
+            model.id_, model.graphql.replace("\n", " "), model.name, model.description
         )
         log.info(f"Deployed {model_name} model ({result.space}, {result.external_id}, {result.version})")
 
@@ -85,7 +85,7 @@ def show(
     if model not in MODEL_BY_NAME:
         log.warning(f"Model {model} not found. Available models: {list(MODEL_BY_NAME.keys())}")
 
-    print(f"{MODEL_BY_NAME[model].graphql_file.read_text()!r}")
+    print(f"{MODEL_BY_NAME[model].graphql!r}")
 
 
 def main():
