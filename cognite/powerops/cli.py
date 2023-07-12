@@ -6,6 +6,7 @@ from typing import Annotated
 
 import cognite.client
 import typer
+from rich.console import Console
 from rich.logging import RichHandler
 
 from cognite import powerops
@@ -81,11 +82,23 @@ def deploy(
 @app.command("show", help=f"Show the graphql schema of Power Ops model. Available models: {list(MODEL_BY_NAME.keys())}")
 def show(
     model: Annotated[str, typer.Argument(help="The models to deploy")],
+    remove_newlines: bool = typer.Option(
+        False,
+        "--remove-newlines",
+        help="Remove newlines from the graphql schema. This is done when deploying the schema.",
+    ),
 ):
     if model not in MODEL_BY_NAME:
         log.warning(f"Model {model} not found. Available models: {list(MODEL_BY_NAME.keys())}")
+        typer.Exit()
 
-    print(f"{MODEL_BY_NAME[model].graphql!r}")
+    console = Console()
+    graphql = MODEL_BY_NAME[model].graphql
+    if remove_newlines:
+        graphql = graphql.replace("\n", "")
+        console.print(f"{graphql!r}")
+    else:
+        console.print(graphql)
 
 
 def main():

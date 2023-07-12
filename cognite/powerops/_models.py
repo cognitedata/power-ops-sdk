@@ -19,7 +19,7 @@ class PowerOpsModel:
     def graphql(self) -> str:
         graphql = self.graphql_file.read_text()
         if self.extra_types:
-            graphql = "\n".join([extra.read_text() for extra in self.extra_types] + [graphql])
+            graphql = "\n\n".join([extra.read_text() for extra in self.extra_types] + [graphql])
 
         return graphql
 
