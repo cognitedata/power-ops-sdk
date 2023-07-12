@@ -8,6 +8,7 @@ import cognite.client
 import typer
 from rich.logging import RichHandler
 
+from cognite import powerops
 from cognite.powerops.clients import get_powerops_client
 
 from . import resync
@@ -21,6 +22,20 @@ logging.basicConfig(
 log = logging.getLogger("rich")
 
 app = typer.Typer()
+
+
+def _version_callback(value: bool):
+    if value:
+        typer.echo(powerops.__version__)
+        raise typer.Exit()
+
+
+@app.callback()
+def common(
+    ctx: typer.Context,
+    version: bool = typer.Option(None, "--version", callback=_version_callback),
+):
+    ...
 
 
 @app.command(
