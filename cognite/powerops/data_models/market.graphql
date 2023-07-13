@@ -101,12 +101,16 @@ type BidMatrixGenerator {
     functionExternalId: String
 }
 
+type IncrementalMapping {
+    mappings: [InputTimeSeriesMapping]
+}
+
 type DayAheadProcess implements Process{
     name: String
     bid: DayAheadBid
     shop: ShopTransformation
-    incrementalMapping: [InputTimeSeriesMapping]
-    bidMatrixGeneratorConfig: BidMatrixGenerator
+    incrementalMapping: [IncrementalMapping]
+    bidMatrixGeneratorConfig: [BidMatrixGenerator]
 }
 
 type ProductionPlanTimeSeries {
