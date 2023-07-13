@@ -18,5 +18,5 @@ class MarketDM(DataModel):
     nordpool_market: list[NordPoolMarketApply] = Field(default_factory=list)
     rkom_proces: list[RKOMProces] = Field(default_factory=list)
     rkom_bid_combination: list[RKOMBidCombinationApply] = Field(default_factory=list)
-    day_ahead_proces: list[DayAheadProcesApply] = Field(default_factory=list)
+    dayahead_process: list[DayAheadProcesApply] = Field(default_factory=list)
     benchmarking: list[BenchmarkingApply] = Field(default_factory=list)

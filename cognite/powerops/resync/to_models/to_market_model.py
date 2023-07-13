@@ -6,17 +6,7 @@ from typing import Any
 import pandas as pd
 from cognite.client.data_classes import Sequence
 
-from cognite.powerops.clients.market.data_classes import (  # BenchmarkingApply,; RKOMBidCombinationApply,; RKOMProces,
-    BidMatrixGeneratorApply,
-    DateTransformationApply,
-    DayAheadProcesApply,
-    IncrementalMappingApply,
-    InputTimeSeriesMappingApply,
-    NordPoolMarketApply,
-    RKOMMarketApply,
-    ShopTransformationApply,
-    ValueTransformationApply,
-)
+from cognite.powerops.clients.market.data_classes import DayAheadProcesApply, NordPoolMarketApply, RKOMMarketApply
 from cognite.powerops.resync.config.market import BenchmarkingConfig, PriceScenario, PriceScenarioID
 from cognite.powerops.resync.config.market.dayahead import BidMatrixGeneratorConfig, BidProcessConfig
 from cognite.powerops.resync.config.market.market import MARKET_BY_PRICE_AREA
@@ -91,43 +81,59 @@ def to_market_data_model(model: MarketModel) -> MarketDM:
     for process in model.processes:
         if isinstance(process, market_models.DayAheadProcess):
             generator_config = [
-                BidMatrixGeneratorApply(
+                dict(
                     external_id=make_ext_id(*r.values(), prefix="BidMatrixGenerator"),
                     **_rename_keys(r, {"bid_matrix_generation_method": "methods"}),
                 )
                 for r in process.bid_matrix_generator_config.content.to_dict(orient="records")
             ]
 
-            incremental_mappings: list[IncrementalMappingApply] = []
+            incremental_mappings: list[dict] = []
             for mapping in process.incremental_mapping:
                 incremental_mappings.append(
-                    IncrementalMappingApply(
+                    dict(
                         external_id=mapping.external_id,
                         mappings=[_to_input_timeseries_mapping(r) for r in mapping.content.to_dict(orient="records")],
                         name=mapping.sequence.name,
                     )
                 )
 
-            shop_transformation = ShopTransformationApply(
+            shop_transformation = dict(
                 external_id=make_ext_id(process.shop.starttime, process.shop.endtime, prefix="ShopTransformation"),
                 start=_to_date_transformation(process.shop.starttime),
                 end=_to_date_transformation(process.shop.endtime),
             )
 
+            bid = process.bid
+            bid_apply = dict(
+                external_id=make_ext_id(*bid.model_dump().values(), prefix="DayAheadBid"),
+                bid_matrix_generator_config_external_id=bid.bid_matrix_generator_config_external_id,
+                bid_process_configuration_name=bid.bid_process_configuration_name,
+                date=_to_date_transformation(bid.date),
+                is_default_config_for_price_area=bid.is_default_config_for_price_area,
+                main_scenario=bid.main_scenario,
+                price_area=bid.price_area,
+                price_scenarios=[bid.price_scenarios],
+                market=bid.market_config_external_id,
+                no_shop=bid.no_shop,
+            )
+
             apply = DayAheadProcesApply(
-                external_id=process.external_id,
-                name=process.name,
-                bid=process.bid.external_id,
-                bid_matrix_generator_config=generator_config,
-                incremental_mapping=incremental_mappings,
-                shop=shop_transformation,
+                **dict(
+                    external_id=process.external_id,
+                    name=process.name,
+                    bid=bid_apply,
+                    bid_matrix_generator_config=generator_config,
+                    incremental_mapping=incremental_mappings,
+                    shop=shop_transformation,
+                )
             )
             data_model.dayahead_process.append(apply)
 
     return data_model
 
 
-def _to_date_transformation(raw: str) -> list[DateTransformationApply]:
+def _to_date_transformation(raw: str) -> list[dict]:
     parsed = []
     for transformation in json.loads(raw):
         method, args = transformation
@@ -136,7 +142,7 @@ def _to_date_transformation(raw: str) -> list[DateTransformationApply]:
             args = [args]
 
         parsed.append(
-            DateTransformationApply(
+            dict(
                 external_id=make_ext_id(method, args, prefix="DateTransformation"),
                 transformation=method,
                 args=args if not is_kwargs else [],
@@ -146,18 +152,18 @@ def _to_date_transformation(raw: str) -> list[DateTransformationApply]:
     return parsed
 
 
-def _to_value_transformation(raw: dict[str, Any]) -> ValueTransformationApply:
-    return ValueTransformationApply(
+def _to_value_transformation(raw: dict[str, Any]) -> dict:
+    return dict(
         external_id=make_ext_id(*raw.values(), prefix="ValueTransformation"),
         method=raw["transformation"],
         arguments=raw.get("kwargs", {}),
     )
 
 
-def _to_input_timeseries_mapping(raw: dict[str, Any]) -> InputTimeSeriesMappingApply:
+def _to_input_timeseries_mapping(raw: dict[str, Any]) -> dict:
     type_, name, attribute = raw["shop_model_path"].split(".")
 
-    return InputTimeSeriesMappingApply(
+    return dict(
         external_id=make_ext_id(*raw.values(), prefix="InputTimeSeriesMapping"),
         aggregation=raw["aggregation"],
         cdf_time_series=raw["time_series_external_id"],
