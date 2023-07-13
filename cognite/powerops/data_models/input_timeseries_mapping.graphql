@@ -1,0 +1,8 @@
+type InputTimeSeriesMapping {
+  shopObjectType: String!
+  shopObjectName: String!
+  shopAttributeName: String!
+  cdfTimeSeries: TimeSeries
+  transformations: [ValueTransformation]
+  aggregation: String
+}

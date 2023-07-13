@@ -6,7 +6,8 @@ from pydantic import Field
 
 from cognite.powerops.cdf_labels import AssetLabel
 from cognite.powerops.resync.models.cdf_resources import CDFSequence
-from cognite.powerops.resync.models.market.base import Bid, Market, Process
+
+from .base import Bid, Market, Process, ShopTransformation
 
 
 class DayAheadBid(Bid):
@@ -24,6 +25,7 @@ class DayAheadProcess(Process):
     type_: ClassVar[str] = "POWEROPS_bid_process_configuration"
     label: ClassVar[AssetLabel] = AssetLabel.BID_PROCESS_CONFIGURATION
     parent_description: ClassVar[str] = "Configurations used in bid matrix generation processes"
+    shop: ShopTransformation
     bid: DayAheadBid
     bid_matrix_generator_config: Optional[CDFSequence] = None
     incremental_mapping: list[CDFSequence] = Field(default_factory=list)

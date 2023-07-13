@@ -7,7 +7,8 @@ from pydantic import Field
 from cognite.powerops.cdf_labels import AssetLabel
 from cognite.powerops.resync.models._base import AssetType, NonAssetType
 from cognite.powerops.resync.models.cdf_resources import CDFSequence
-from cognite.powerops.resync.models.market.base import Bid, Market, Process
+
+from .base import Bid, Market, Process, ShopTransformation
 
 
 class RKOMBid(Bid):
@@ -30,6 +31,7 @@ class RKOMProcess(Process):
     type_: ClassVar[str] = "POWEROPS"
     label: ClassVar[AssetLabel] = AssetLabel.RKOM_BID_CONFIGURATION
     parent_description: ClassVar[str] = "Configurations used in RKOM bid generation processes"
+    shop: ShopTransformation
     bid: RKOMBid
     process_events: list[str] = Field(default_factory=list)
     timezone: str

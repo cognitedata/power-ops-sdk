@@ -13,6 +13,22 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.27.0] - 2023-07-11
+
+### Added
+
+CLI commands
+
+* `deploy` for deploying the PowerOps models to CDF.
+* `show` for displaying the PowerOps models in the terminal.
+* `--version` for displaying the version of the PowerOps-SDK package.
+
+### Changed
+
+* `production` to reflect the content from the `resync` package.
+* `market` to reflect the content from the `resync` package.
+* `cogshop` to reflect the content from the `resync` package.
+
 ## [0.26.0] - 2023-07-11
 
 ### Changed

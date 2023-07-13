@@ -1,13 +1,42 @@
 from __future__ import annotations
 
+import logging
 from pathlib import Path
 from typing import Annotated
 
+import cognite.client
 import typer
+from rich.console import Console
+from rich.logging import RichHandler
+
+from cognite import powerops
+from cognite.powerops.clients import get_powerops_client
 
 from . import resync
+from ._models import MODEL_BY_NAME
+
+FORMAT = "%(message)s"
+logging.basicConfig(
+    level="NOTSET", format=FORMAT, datefmt="[%X]", handlers=[RichHandler(tracebacks_suppress=[cognite.client])]
+)
+
+log = logging.getLogger("rich")
 
 app = typer.Typer()
+
+
+def _version_callback(value: bool):
+    if value:
+        typer.echo(powerops.__version__)
+        raise typer.Exit()
+
+
+@app.callback()
+def common(
+    ctx: typer.Context,
+    version: bool = typer.Option(None, "--version", callback=_version_callback),
+):
+    ...
 
 
 @app.command(
@@ -18,7 +47,7 @@ def plan(
     path: Annotated[Path, typer.Argument(help="Path to configuration files")],
     market: Annotated[str, typer.Argument(help="Selected power market")],
 ):
-    typer.echo(f"Running plan on configuration files located in {path}")
+    log.info(f"Running plan on configuration files located in {path}")
     resync.plan(path, market)
 
 
@@ -27,9 +56,53 @@ def apply(
     path: Annotated[Path, typer.Argument(help="Path to configuration files")],
     market: Annotated[str, typer.Argument(help="Selected power market")],
 ):
-    typer.echo(f"Running apply on configuration files located in {path}")
+    log.info(f"Running apply on configuration files located in {path}")
 
     resync.apply(path, market)
+
+
+@app.command("deploy", help=f"Deploy the data model in CDF. Available models: {list(MODEL_BY_NAME.keys())}")
+def deploy(
+    models: Annotated[list[str], typer.Argument(help="The models to deploy")],
+):
+    client = get_powerops_client()
+    for model_name in models:
+        if model_name not in MODEL_BY_NAME:
+            log.warning(f"Model {model_name} not found, skipping. Available models: {list(MODEL_BY_NAME.keys())}")
+            continue
+        log.info(f"Deploying {model_name} model...")
+
+        model = MODEL_BY_NAME[model_name]
+        result = client.cdf.data_modeling.graphql.apply_dml(
+            # The removal of newlines is done to avoid a bug in the GraphQL API.
+            model.id_,
+            model.graphql.replace("\n", " "),
+            model.name,
+            model.description,
+        )
+        log.info(f"Deployed {model_name} model ({result.space}, {result.external_id}, {result.version})")
+
+
+@app.command("show", help=f"Show the graphql schema of Power Ops model. Available models: {list(MODEL_BY_NAME.keys())}")
+def show(
+    model: Annotated[str, typer.Argument(help="The models to deploy")],
+    remove_newlines: bool = typer.Option(
+        False,
+        "--remove-newlines",
+        help="Remove newlines from the graphql schema. This is done when deploying the schema.",
+    ),
+):
+    if model not in MODEL_BY_NAME:
+        log.warning(f"Model {model} not found. Available models: {list(MODEL_BY_NAME.keys())}")
+        typer.Exit()
+
+    console = Console()
+    graphql = MODEL_BY_NAME[model].graphql
+    if remove_newlines:
+        graphql = graphql.replace("\n", "")
+        console.print(f"{graphql!r}")
+    else:
+        console.print(graphql)
 
 
 def main():

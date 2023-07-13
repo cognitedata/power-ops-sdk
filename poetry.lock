@@ -415,13 +415,13 @@ colorama = {version = "*", markers = "platform_system == \"Windows\""}
 
 [[package]]
 name = "cognite-pygen"
-version = "0.11.4"
+version = "0.11.5"
 description = "Cognite Python SDK Generator"
 optional = false
 python-versions = ">=3.9,<4.0"
 files = [
-    {file = "cognite_pygen-0.11.4-py3-none-any.whl", hash = "sha256:ce0597e23aeb191038b93d0087bc176e4a44fe81ef54e3f1b14823f1ada60087"},
-    {file = "cognite_pygen-0.11.4.tar.gz", hash = "sha256:07f96b0e6142dd4af2e4061bc404b12d8d315644c4aad4e74c02ee5b1aa3ef59"},
+    {file = "cognite_pygen-0.11.5-py3-none-any.whl", hash = "sha256:02016769f05e9fed7d6b73aa1847f3d5f30b9c1a61613c113db96dbb4f5d0380"},
+    {file = "cognite_pygen-0.11.5.tar.gz", hash = "sha256:055211ade9873a72e653917961bcfe1bc3d2b48bc0df18f5ae26f4a3bc149a4d"},
 ]
 
 [package.dependencies]
@@ -440,13 +440,13 @@ docs = ["mkdocs", "mkdocs-git-authors-plugin", "mkdocs-git-revision-date-localiz
 
 [[package]]
 name = "cognite-sdk"
-version = "6.8.1"
+version = "6.8.2"
 description = "Cognite Python SDK"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "cognite_sdk-6.8.1-py3-none-any.whl", hash = "sha256:048c8c407b9f2dc48412d854075aadfa4568cd39316f0124a6b8405d0157862f"},
-    {file = "cognite_sdk-6.8.1.tar.gz", hash = "sha256:d2b7b65e9b9619e4a91f666abd146ab3aa7b0accdff57cf194b57b0d096b4e80"},
+    {file = "cognite_sdk-6.8.2-py3-none-any.whl", hash = "sha256:027e395f888ee69fd10d9633460ee1b98aca70f1453ad2e50b9b8674a9299152"},
+    {file = "cognite_sdk-6.8.2.tar.gz", hash = "sha256:c0ab068f6d7d055f58f56327e3fdfcd9f784dc14fd6f4cd2e6a9fa31f9024782"},
 ]
 
 [package.dependencies]
@@ -1265,13 +1265,13 @@ files = [
 
 [[package]]
 name = "jsonschema"
-version = "4.18.0"
+version = "4.18.1"
 description = "An implementation of JSON Schema validation for Python"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "jsonschema-4.18.0-py3-none-any.whl", hash = "sha256:b508dd6142bd03f4c3670534c80af68cd7bbff9ea830b9cf2625d4a3c49ddf60"},
-    {file = "jsonschema-4.18.0.tar.gz", hash = "sha256:8caf5b57a990a98e9b39832ef3cb35c176fe331414252b6e1b26fd5866f891a4"},
+    {file = "jsonschema-4.18.1-py3-none-any.whl", hash = "sha256:e5fde3cb78f3be8cf49150390ee4efbb8e73c46ea467d42cd4ec16e364495eb3"},
+    {file = "jsonschema-4.18.1.tar.gz", hash = "sha256:b5896514b46cc9283e9951bfebf51cc72fa3eab229919c0469f94e11b4387776"},
 ]
 
 [package.dependencies]
@@ -4176,4 +4176,4 @@ docs = ["mkdocs", "mkdocs-git-authors-plugin", "mkdocs-git-revision-date-localiz
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "bac208b8c19e1b911555fb6262de2a8e9ba50cf14e4ce63afcd0aa731b7276a5"
+content-hash = "660837702853bdaf8204357cf058670a023460fa1fd53881ef7065cf49853294"

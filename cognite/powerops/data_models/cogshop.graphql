@@ -3,15 +3,6 @@ type ValueTransformation {
   arguments: JSONObject
 }
 
-type InputTimeSeriesMapping {
-  shopObjectType: String!
-  shopObjectName: String!
-  shopAttributeName: String!
-  cdfTimeSeries: TimeSeries
-  transformations: [ValueTransformation]
-  aggregation: String
-}
-
 type OutputMapping{
   shopObjectType: String!
   shopAttributeName: String!
@@ -26,13 +17,13 @@ type CommandsConfig {
 
 type Scenario {
   name: String!
-  modelTemplate: ModelTemplate
+  template: ScenarioTemplate
   mappingsOverride: [InputTimeSeriesMapping]
   commands: CommandsConfig
 }
 
 
-type ModelTemplate {
+type ScenarioTemplate {
   watercourse: String!
   shopVersion: String!
   templateVersion: String!
