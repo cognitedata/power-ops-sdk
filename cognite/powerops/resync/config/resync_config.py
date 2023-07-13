@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from collections import Counter, defaultdict
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Literal, Optional, overload
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 from pydantic_core.core_schema import FieldValidationInfo
@@ -108,7 +108,17 @@ class ProductionConfig(Config):
     plant_time_series_mappings: Optional[list[PlantTimeSeriesMapping]] = None
 
     @classmethod
-    def load_yamls(cls, config_dir_path: Path) -> dict[str, Any]:
+    @overload
+    def load_yamls(cls, config_dir_path: Path, instantiate: Literal[False] = False) -> dict[str, Any]:
+        ...
+
+    @classmethod
+    @overload
+    def load_yamls(cls, config_dir_path: Path, instantiate: Literal[True] = True) -> ProductionConfig:
+        ...
+
+    @classmethod
+    def load_yamls(cls, config_dir_path: Path, instantiate: bool = False) -> dict[str, Any] | ProductionConfig:
         config: dict[str, Any] = {}
         for field_name in cls.model_fields:
             if not (config_file_path := config_dir_path / f"{field_name}.yaml").exists():
@@ -126,6 +136,8 @@ class ProductionConfig(Config):
                             config_dir_path / watercourse["directory"] / watercourse["model_processed"]
                         )
             config[field_name] = content
+        if instantiate:
+            return cls(**config)
         return config
 
 

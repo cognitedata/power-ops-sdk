@@ -7,6 +7,7 @@ from typing import Type
 from typing import Type as TypingType
 from typing import TypeVar
 
+from cognite.client import CogniteClient
 from cognite.client.data_classes import Asset, Label, Relationship, TimeSeries
 from cognite.client.data_classes.data_modeling.instances import EdgeApply, NodeApply
 from pydantic import BaseModel, ConfigDict
@@ -172,6 +173,16 @@ class AssetType(ResourceType, ABC):
             labels=[Label(external_id=label.value)],
         )
 
+    @classmethod
+    def from_cdf(cls: Type[T_Asset_Type], client: CogniteClient) -> T_Asset_Type:
+        raise NotImplementedError()
+
+    def difference(self: T_Asset_Type, other: T_Asset_Type) -> dict:
+        raise NotImplementedError()
+
+
+T_Asset_Type = TypeVar("T_Asset_Type", bound=AssetType)
+
 
 class NonAssetType(BaseModel, ABC):
     model_config: ClassVar[ConfigDict] = ConfigDict(arbitrary_types_allowed=True)
@@ -267,6 +278,16 @@ class AssetModel(Model, ABC):
         summary[self.model_name]["cdf"]["relationships"] = len(self.relationships())
         summary[self.model_name]["cdf"]["parent_assets"] = len(self.parent_assets())
         return summary
+
+    @classmethod
+    def from_cdf(cls: Type[T_Asset_Model], client: CogniteClient) -> T_Asset_Model:
+        raise NotImplementedError()
+
+    def difference(self: T_Asset_Model, other: T_Asset_Model) -> dict:
+        raise NotImplementedError()
+
+
+T_Asset_Model = TypeVar("T_Asset_Model", bound=AssetModel)
 
 
 class DataModel(Model, ABC):
