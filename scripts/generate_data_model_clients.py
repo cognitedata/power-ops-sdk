@@ -15,7 +15,7 @@ def main():
         generate_sdk(
             client,
             model.id_,
-            top_level_package=f"{top_level_base}.cogshop",
+            top_level_package=f"{top_level_base}.{model.id_.external_id}",
             client_name=model.client_name,
             output_dir=REPO_ROOT,
             logger=print,
