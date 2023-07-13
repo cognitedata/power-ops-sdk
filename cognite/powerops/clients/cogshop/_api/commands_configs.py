@@ -15,7 +15,7 @@ class CommandsConfigsAPI(TypeAPI[CommandsConfig, CommandsConfigApply, CommandsCo
     def __init__(self, client: CogniteClient):
         super().__init__(
             client=client,
-            sources=dm.ViewId("cogShop", "CommandsConfig", "697b9d681302c8"),
+            sources=dm.ViewId("power-ops", "CommandsConfig", "a9af6f9e49c050"),
             class_type=CommandsConfig,
             class_apply_type=CommandsConfigApply,
             class_list=CommandsConfigList,

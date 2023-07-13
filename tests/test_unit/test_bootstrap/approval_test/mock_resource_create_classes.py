@@ -184,13 +184,27 @@ class MockInstancesApply:
         return InstancesApplyResult(
             nodes=NodeApplyResultList(
                 [
-                    NodeApplyResult(space=node.space, external_id=node.external_id, version="1", was_modified=True)
+                    NodeApplyResult(
+                        space=node.space,
+                        external_id=node.external_id,
+                        version="1",
+                        was_modified=True,
+                        last_updated_time=1,
+                        created_time=1,
+                    )
                     for node in self.nodes
                 ]
             ),
             edges=EdgeApplyResultList(
                 [
-                    EdgeApplyResult(space=edge.space, external_id=edge.external_id, version="1", was_modified=True)
+                    EdgeApplyResult(
+                        space=edge.space,
+                        external_id=edge.external_id,
+                        version="1",
+                        was_modified=True,
+                        last_updated_time=1,
+                        created_time=1,
+                    )
                     for edge in self.edges
                 ]
             ),

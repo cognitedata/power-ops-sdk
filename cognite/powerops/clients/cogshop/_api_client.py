@@ -6,14 +6,12 @@ from pathlib import Path
 from cognite.client import ClientConfig, CogniteClient
 from cognite.client.credentials import OAuthClientCredentials
 
-from ._api.cases import CasesAPI
 from ._api.commands_configs import CommandsConfigsAPI
-from ._api.file_refs import FileRefsAPI
-from ._api.mappings import MappingsAPI
-from ._api.model_templates import ModelTemplatesAPI
-from ._api.processing_logs import ProcessingLogsAPI
+from ._api.input_time_series_mappings import InputTimeSeriesMappingsAPI
+from ._api.output_mappings import OutputMappingsAPI
+from ._api.scenario_templates import ScenarioTemplatesAPI
 from ._api.scenarios import ScenariosAPI
-from ._api.transformations import TransformationsAPI
+from ._api.value_transformations import ValueTransformationsAPI
 
 
 class CogShopClient:
@@ -21,26 +19,24 @@ class CogShopClient:
     CogShopClient
 
     Generated with:
-        pygen = 0.11.4
-        cognite-sdk = 6.5.8
+        pygen = 0.11.6
+        cognite-sdk = 6.8.4
         pydantic = 2.0.2
 
     Data Model:
-        space: cogShop
-        externalId: CogShop
+        space: power-ops
+        externalId: cogshop
         version: 1
     """
 
     def __init__(self, config: ClientConfig | None = None):
         client = CogniteClient(config)
-        self.cases = CasesAPI(client)
         self.commands_configs = CommandsConfigsAPI(client)
-        self.file_refs = FileRefsAPI(client)
-        self.mappings = MappingsAPI(client)
-        self.model_templates = ModelTemplatesAPI(client)
-        self.processing_logs = ProcessingLogsAPI(client)
+        self.input_time_series_mappings = InputTimeSeriesMappingsAPI(client)
+        self.output_mappings = OutputMappingsAPI(client)
         self.scenarios = ScenariosAPI(client)
-        self.transformations = TransformationsAPI(client)
+        self.scenario_templates = ScenarioTemplatesAPI(client)
+        self.value_transformations = ValueTransformationsAPI(client)
 
     @classmethod
     def azure_project(

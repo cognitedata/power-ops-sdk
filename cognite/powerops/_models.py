@@ -13,6 +13,7 @@ class PowerOpsModel:
     description: str
     graphql_file: Path
     id_: DataModelId
+    client_name: str
     extra_types: list[Path] = None
 
     @property
@@ -35,6 +36,7 @@ MODEL_BY_NAME: dict[str, PowerOpsModel] = {
         "plants, and generators located in a price area.",
         graphql_file=GRAPHQL_SCHEMAS / "production.graphql",
         id_=DataModelId(_SPACE, "production", "1"),
+        client_name="ProductionClient",
     ),
     "market": PowerOpsModel(
         name="Market",
@@ -44,6 +46,7 @@ MODEL_BY_NAME: dict[str, PowerOpsModel] = {
         graphql_file=GRAPHQL_SCHEMAS / "market.graphql",
         id_=DataModelId(_SPACE, "market", "1"),
         extra_types=[_INPUT_TIMESERIES_MAPPING, _VALUE_TRANSFORMATION],
+        client_name="MarketClient",
     ),
     "cogshop": PowerOpsModel(
         name="CogShop",
@@ -53,5 +56,6 @@ MODEL_BY_NAME: dict[str, PowerOpsModel] = {
         graphql_file=GRAPHQL_SCHEMAS / "cogshop.graphql",
         id_=DataModelId(_SPACE, "cogshop", "1"),
         extra_types=[_INPUT_TIMESERIES_MAPPING, _VALUE_TRANSFORMATION],
+        client_name="CogShopClient",
     ),
 }
