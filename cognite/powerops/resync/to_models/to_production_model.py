@@ -6,10 +6,20 @@ from typing import Optional
 import pandas as pd
 from cognite.client.data_classes import Sequence, TimeSeries
 
+from cognite.powerops.clients.production.data_classes import (
+    GeneratorApply,
+    PlantApply,
+    PriceAreaApply,
+    ReservoirApply,
+    WatercourseApply,
+    WatercourseShopApply,
+)
 from cognite.powerops.resync.config.production.connections import Connection
 from cognite.powerops.resync.config.resync_config import ProductionConfig
 from cognite.powerops.resync.models import production
 from cognite.powerops.resync.models.cdf_resources import CDFSequence
+from cognite.powerops.resync.models.production_dm import ProductionModelDM
+from cognite.powerops.resync.utils.common import make_ext_id
 from cognite.powerops.resync.utils.serializer import load_yaml
 
 p_min_fallback = 0
@@ -235,6 +245,85 @@ def to_production_model(config: ProductionConfig) -> production.ProductionModel:
         model.plants.extend(plants)
 
     return model
+
+
+def to_production_data_model(asset_model: production.ProductionModel) -> ProductionModelDM:
+    data_model = ProductionModelDM()
+
+    for generator in asset_model.generators:
+        apply = GeneratorApply(
+            external_id=generator.external_id,
+            name=generator.name,
+            p_min=generator.p_min,
+            penstock=int(generator.penstock),
+            start_stop_cost=generator.start_stop_cost_time_series.external_id
+            if generator.start_stop_cost_time_series
+            else None,
+            startcost=float(generator.startcost),
+            turbine_efficiency_curve=generator.turbine_efficiency_curve.external_id,
+            generator_efficiency_curve=generator.generator_efficiency_curve.external_id,
+        )
+        data_model.generators.append(apply)
+
+    for reservoir in asset_model.reservoirs:
+        apply = ReservoirApply(
+            external_id=reservoir.external_id,
+            name=reservoir.name,
+            display_name=reservoir.display_name,
+            ordering=int(reservoir.ordering),
+        )
+        data_model.reservoirs.append(apply)
+
+    for plant in asset_model.plants:
+        apply = PlantApply(
+            external_id=plant.external_id,
+            display_name=plant.display_name,
+            generators=[g.external_id for g in plant.generators],
+            inlet_reservoirs=[plant.inlet_reservoir.external_id],
+            head_loss_factor=plant.head_loss_factor,
+            penstock_head_loss_factors=plant.penstock_head_loss_factors,
+            outlet_level=plant.outlet_level,
+            p_min=plant.p_min,
+            p_max=plant.p_max,
+            p_min_time_series=plant.p_min_time_series.external_id if plant.p_min_time_series else None,
+            p_max_time_series=plant.p_max_time_series.external_id if plant.p_max_time_series else None,
+            head_direct_time_series=plant.head_direct_time_series.external_id
+            if plant.head_direct_time_series
+            else None,
+            inlet_level=plant.inlet_level_time_series if plant.inlet_level_time_series is not None else None,
+            name=plant.name,
+            ordering=int(plant.ordering),
+            outlet_level_time_series=plant.outlet_level_time_series.external_id
+            if plant.outlet_level_time_series
+            else None,
+            water_value=plant.water_value_time_series.external_id if plant.water_value_time_series else None,
+        )
+        data_model.plants.append(apply)
+
+    for watercourse in asset_model.watercourses:
+        apply = WatercourseApply(
+            external_id=watercourse.external_id,
+            name=watercourse.name,
+            plants=[plant.external_id for plant in watercourse.plants],
+            shop=WatercourseShopApply(
+                external_id=make_ext_id(watercourse.name, watercourse.shop.penalty_limit),
+                penalty_limit=float(watercourse.shop.penalty_limit),
+            ),
+            production_obligation=watercourse.production_obligation_time_series[0].external_id
+            if watercourse.production_obligation_time_series
+            else None,
+        )
+        data_model.watercourses.append(apply)
+
+    for price_area in asset_model.price_areas:
+        apply = PriceAreaApply(
+            external_id=price_area.external_id,
+            watercourses=[watercourse.external_id for watercourse in price_area.watercourses],
+            plants=[p.external_id for p in price_area.plants],
+        )
+        data_model.price_areas.append(apply)
+
+    return data_model
 
 
 def _get_single_value(value_or_time_series: float | dict) -> float:

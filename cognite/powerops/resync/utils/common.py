@@ -1,4 +1,5 @@
 import re
+from hashlib import md5
 
 
 def special_case_handle_gate_number(name: str) -> None:
@@ -11,3 +12,10 @@ def special_case_handle_gate_number(name: str) -> None:
 def print_warning(s: str) -> None:
     """Adds some nice colors to the printed text :)"""
     print(f"\033[91m[WARNING] {s}\033[0m")
+
+
+def make_ext_id(watercourse_name: str, *args: str, prefix: str = "Tr") -> str:
+    hash_value = md5(watercourse_name.encode())
+    for arg in args:
+        hash_value.update(arg.encode())
+    return f"{prefix}__{hash_value.hexdigest()}"

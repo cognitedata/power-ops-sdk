@@ -22,6 +22,7 @@ from cognite.powerops.resync.models import cogshop
 from cognite.powerops.resync.models.cdf_resources import CDFSequence
 from cognite.powerops.resync.models.cogshop import CogShopModel
 from cognite.powerops.resync.models.production import Watercourse
+from cognite.powerops.resync.utils.common import make_ext_id
 from cognite.powerops.resync.utils.serializer import load_yaml
 
 logger = logging.getLogger(__name__)
@@ -128,7 +129,7 @@ def to_cogshop_model(config: CogShopConfig, watercourses: list[Watercourse], sho
         model.output_definitions.append(output_definition)
 
         instance_output_definitions = [
-            OutputMappingApply(external_id=_make_ext_id(watercourse.name, *r.values(), prefix="OutMapping"), **r)
+            OutputMappingApply(external_id=make_ext_id(watercourse.name, *r.values(), prefix="OutMapping"), **r)
             for r in df.to_dict("records")
         ]
 
@@ -173,7 +174,7 @@ def to_cogshop_model(config: CogShopConfig, watercourses: list[Watercourse], sho
             for transformation in reversed(row.transformations or []):
                 row_transformations.append(
                     ValueTransformationApply(
-                        external_id=_make_ext_id(
+                        external_id=make_ext_id(
                             watercourse.name,
                             row.shop_model_path,
                             transformation.transformation.name,
@@ -216,13 +217,6 @@ def to_cogshop_model(config: CogShopConfig, watercourses: list[Watercourse], sho
         )
 
     return model
-
-
-def _make_ext_id(watercourse_name: str, *args: str, prefix: str = "Tr") -> str:
-    hash_value = md5(watercourse_name.encode())
-    for arg in args:
-        hash_value.update(arg.encode())
-    return f"{prefix}__{hash_value.hexdigest()}"
 
 
 def _is_time_series(shop_attribute_value) -> bool:
