@@ -5,6 +5,7 @@ from ._bids import Bid, BidApply, BidList
 from ._date_transformations import DateTransformation, DateTransformationApply, DateTransformationList
 from ._day_ahead_bids import DayAheadBid, DayAheadBidApply, DayAheadBidList
 from ._day_ahead_process import DayAheadProces, DayAheadProcesApply, DayAheadProcesList
+from ._incremental_mappings import IncrementalMapping, IncrementalMappingApply, IncrementalMappingList
 from ._input_time_series_mappings import InputTimeSeriesMapping, InputTimeSeriesMappingApply, InputTimeSeriesMappingList
 from ._markets import Market, MarketApply, MarketList
 from ._nord_pool_markets import NordPoolMarket, NordPoolMarketApply, NordPoolMarketList
@@ -29,6 +30,7 @@ BenchmarkingApply.model_rebuild()
 BidApply.model_rebuild()
 DayAheadBidApply.model_rebuild()
 DayAheadProcesApply.model_rebuild()
+IncrementalMappingApply.model_rebuild()
 InputTimeSeriesMappingApply.model_rebuild()
 PriceScenarioApply.model_rebuild()
 RKOMBidApply.model_rebuild()
@@ -58,6 +60,9 @@ __all__ = [
     "DayAheadProces",
     "DayAheadProcesApply",
     "DayAheadProcesList",
+    "IncrementalMapping",
+    "IncrementalMappingApply",
+    "IncrementalMappingList",
     "InputTimeSeriesMapping",
     "InputTimeSeriesMappingApply",
     "InputTimeSeriesMappingList",

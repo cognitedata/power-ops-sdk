@@ -102,6 +102,7 @@ type BidMatrixGenerator {
 }
 
 type IncrementalMapping {
+    name: String
     mappings: [InputTimeSeriesMapping]
 }
 
@@ -134,7 +135,7 @@ type RKOMProcess implements Process{
     processEvents: [String]
     timezone: String
     plants: [String]
-    incrementalMapping: [InputTimeSeriesMapping]
+    incrementalMapping: [IncrementalMapping]
 }
 
 type RKOMCombinationBid{

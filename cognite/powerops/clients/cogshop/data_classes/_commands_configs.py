@@ -16,7 +16,7 @@ class CommandsConfig(DomainModel):
 
 class CommandsConfigApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
-    commands: list[str]
+    commands: list[str] = []
 
     def _to_instances_apply(self, cache: set[str]) -> InstancesApply:
         if self.external_id in cache:

@@ -5,7 +5,7 @@ from cognite.powerops.resync.config.resource_collection import ResourceCollectio
 from cognite.powerops.resync.config.resync_config import ReSyncConfig
 
 from .to_cogshop_model import to_cogshop_model
-from .to_market_model import to_market_model
+from .to_market_model import to_market_data_model, to_market_model
 from .to_production_model import to_production_data_model, to_production_model
 
 
@@ -26,6 +26,7 @@ def transform(
     )
 
     production_data_model = to_production_data_model(production_model)
+    market_data_model = to_market_data_model(market_model)
 
     labels = AssetLabel.as_label_definitions() + RelationshipLabel.as_label_definitions()
     collection = ResourceCollection()
@@ -38,7 +39,7 @@ def transform(
         collection.add(asset_model.parent_assets())
         collection.add(asset_model.assets())
         collection.add(asset_model.relationships())
-    for data_model in [cogshop_model, production_data_model]:
+    for data_model in [cogshop_model, production_data_model, market_data_model]:
         collection.add(data_model.instances())
 
     return collection

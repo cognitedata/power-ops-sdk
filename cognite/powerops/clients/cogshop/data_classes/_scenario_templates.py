@@ -31,9 +31,9 @@ class ScenarioTemplateApply(DomainModelApply):
     model: Optional[str] = None
     output_definitions: list[Union[str, "OutputMappingApply"]] = Field(default_factory=lambda: [], repr=False)
     shop_files: list[str] = []
-    shop_version: str
-    template_version: str
-    watercourse: str
+    shop_version: Optional[str] = None
+    template_version: Optional[str] = None
+    watercourse: Optional[str] = None
 
     def _to_instances_apply(self, cache: set[str]) -> InstancesApply:
         if self.external_id in cache:

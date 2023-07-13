@@ -1,3 +1,4 @@
+import json
 import re
 from hashlib import md5
 
@@ -14,8 +15,11 @@ def print_warning(s: str) -> None:
     print(f"\033[91m[WARNING] {s}\033[0m")
 
 
-def make_ext_id(watercourse_name: str, *args: str, prefix: str = "Tr") -> str:
-    hash_value = md5(watercourse_name.encode())
-    for arg in args:
-        hash_value.update(arg.encode())
+def make_ext_id(*args: str, prefix: str = "Tr") -> str:
+    hash_value = md5()
+    for args in args:
+        if isinstance(args, (str, int, float, bool)):
+            hash_value.update(str(args).encode())
+        elif isinstance(args, (list, dict)):
+            hash_value.update(json.dumps(args).encode())
     return f"{prefix}__{hash_value.hexdigest()}"

@@ -18,7 +18,7 @@ class ValueTransformation(DomainModel):
 class ValueTransformationApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
     arguments: Optional[dict] = None
-    method: str
+    method: Optional[str] = None
 
     def _to_instances_apply(self, cache: set[str]) -> InstancesApply:
         if self.external_id in cache:

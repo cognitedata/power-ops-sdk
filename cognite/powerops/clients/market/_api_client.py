@@ -13,6 +13,7 @@ from ._api.bids import BidsAPI
 from ._api.date_transformations import DateTransformationsAPI
 from ._api.day_ahead_bids import DayAheadBidsAPI
 from ._api.day_ahead_process import DayAheadProcessAPI
+from ._api.incremental_mappings import IncrementalMappingsAPI
 from ._api.input_time_series_mappings import InputTimeSeriesMappingsAPI
 from ._api.markets import MarketsAPI
 from ._api.nord_pool_markets import NordPoolMarketsAPI
@@ -53,6 +54,7 @@ class MarketClient:
         self.date_transformations = DateTransformationsAPI(client)
         self.day_ahead_bids = DayAheadBidsAPI(client)
         self.day_ahead_process = DayAheadProcessAPI(client)
+        self.incremental_mappings = IncrementalMappingsAPI(client)
         self.input_time_series_mappings = InputTimeSeriesMappingsAPI(client)
         self.markets = MarketsAPI(client)
         self.nord_pool_markets = NordPoolMarketsAPI(client)

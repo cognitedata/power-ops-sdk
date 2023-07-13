@@ -1,10 +1,22 @@
 from __future__ import annotations
 
 import json
+from typing import Any
 
 import pandas as pd
 from cognite.client.data_classes import Sequence
 
+from cognite.powerops.clients.market.data_classes import (  # BenchmarkingApply,; RKOMBidCombinationApply,; RKOMProces,
+    BidMatrixGeneratorApply,
+    DateTransformationApply,
+    DayAheadProcesApply,
+    IncrementalMappingApply,
+    InputTimeSeriesMappingApply,
+    NordPoolMarketApply,
+    RKOMMarketApply,
+    ShopTransformationApply,
+    ValueTransformationApply,
+)
 from cognite.powerops.resync.config.market import BenchmarkingConfig, PriceScenario, PriceScenarioID
 from cognite.powerops.resync.config.market.dayahead import BidMatrixGeneratorConfig, BidProcessConfig
 from cognite.powerops.resync.config.market.market import MARKET_BY_PRICE_AREA
@@ -13,7 +25,9 @@ from cognite.powerops.resync.config.resync_config import MarketConfig
 from cognite.powerops.resync.models import MarketModel
 from cognite.powerops.resync.models import market as market_models
 from cognite.powerops.resync.models.cdf_resources import CDFSequence
+from cognite.powerops.resync.models.market_dm import MarketDM
 from cognite.powerops.resync.models.production import PriceArea
+from cognite.powerops.resync.utils.common import make_ext_id
 
 
 def to_market_model(config: MarketConfig, price_areas: list[PriceArea], market_name: str) -> MarketModel:
@@ -46,6 +60,116 @@ def to_market_model(config: MarketConfig, price_areas: list[PriceArea], market_n
     )
 
     return model
+
+
+def to_market_data_model(model: MarketModel) -> MarketDM:
+    data_model = MarketDM()
+    for market in model.markets:
+        if isinstance(market, market_models.NordPoolMarket):
+            apply = NordPoolMarketApply(
+                external_id=market.external_id,
+                max_price=market.max_price,
+                min_price=market.min_price,
+                name=market.name,
+                price_steps=market.price_steps,
+                price_unit=market.price_unit,
+                tick_size=market.tick_size,
+                time_unit=market.time_unit,
+                timezone=market.timezone,
+                trade_lot=market.trade_lot,
+            )
+            data_model.nordpool_market.append(apply)
+        elif isinstance(market, market_models.RKOMMarket):
+            apply = RKOMMarketApply(
+                external_id=market.external_id,
+                name=market.name,
+                timezone=market.timezone,
+                start_of_week=market.start_of_week,
+            )
+            data_model.rkom_market.append(apply)
+
+    for process in model.processes:
+        if isinstance(process, market_models.DayAheadProcess):
+            generator_config = [
+                BidMatrixGeneratorApply(
+                    external_id=make_ext_id(*r.values(), prefix="BidMatrixGenerator"),
+                    **_rename_keys(r, {"bid_matrix_generation_method": "methods"}),
+                )
+                for r in process.bid_matrix_generator_config.content.to_dict(orient="records")
+            ]
+
+            incremental_mappings: list[IncrementalMappingApply] = []
+            for mapping in process.incremental_mapping:
+                incremental_mappings.append(
+                    IncrementalMappingApply(
+                        external_id=mapping.external_id,
+                        mappings=[_to_input_timeseries_mapping(r) for r in mapping.content.to_dict(orient="records")],
+                        name=mapping.sequence.name,
+                    )
+                )
+
+            shop_transformation = ShopTransformationApply(
+                external_id=make_ext_id(process.shop.starttime, process.shop.endtime, prefix="ShopTransformation"),
+                start=_to_date_transformation(process.shop.starttime),
+                end=_to_date_transformation(process.shop.endtime),
+            )
+
+            apply = DayAheadProcesApply(
+                external_id=process.external_id,
+                name=process.name,
+                bid=process.bid.external_id,
+                bid_matrix_generator_config=generator_config,
+                incremental_mapping=incremental_mappings,
+                shop=shop_transformation,
+            )
+            data_model.dayahead_process.append(apply)
+
+    return data_model
+
+
+def _to_date_transformation(raw: str) -> list[DateTransformationApply]:
+    parsed = []
+    for transformation in json.loads(raw):
+        method, args = transformation
+        is_kwargs = isinstance(args, dict)
+        if not is_kwargs and not isinstance(args, list):
+            args = [args]
+
+        parsed.append(
+            DateTransformationApply(
+                external_id=make_ext_id(method, args, prefix="DateTransformation"),
+                transformation=method,
+                args=args if not is_kwargs else [],
+                kwargs=args if is_kwargs else {},
+            )
+        )
+    return parsed
+
+
+def _to_value_transformation(raw: dict[str, Any]) -> ValueTransformationApply:
+    return ValueTransformationApply(
+        external_id=make_ext_id(*raw.values(), prefix="ValueTransformation"),
+        method=raw["transformation"],
+        arguments=raw.get("kwargs", {}),
+    )
+
+
+def _to_input_timeseries_mapping(raw: dict[str, Any]) -> InputTimeSeriesMappingApply:
+    type_, name, attribute = raw["shop_model_path"].split(".")
+
+    return InputTimeSeriesMappingApply(
+        external_id=make_ext_id(*raw.values(), prefix="InputTimeSeriesMapping"),
+        aggregation=raw["aggregation"],
+        cdf_time_series=raw["time_series_external_id"],
+        shop_object_type=type_,
+        shop_object_name=name,
+        shop_attribute_name=attribute,
+        transformations=[_to_value_transformation(t) for t in json.loads(raw["transformations"])],
+    )
+
+
+def _rename_keys(mapping: dict, keys: dict) -> dict:
+    return {keys.get(k, k): v for k, v in mapping.items()}
 
 
 def _to_benchmarking_process(benchmarks: list[BenchmarkingConfig]) -> list[market_models.BenchmarkProcess]:

@@ -8,7 +8,7 @@ from pydantic import Field
 from ._core import DomainModel, DomainModelApply, InstancesApply, TypeList
 
 if TYPE_CHECKING:
-    from ._input_time_series_mappings import InputTimeSeriesMappingApply
+    from ._incremental_mappings import IncrementalMappingApply
     from ._rkom_bids import RKOMBidApply
     from ._shop_transformations import ShopTransformationApply
 
@@ -29,7 +29,7 @@ class RKOMProces(DomainModel):
 class RKOMProcesApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
     bid: Optional[Union[str, "RKOMBidApply"]] = Field(None, repr=False)
-    incremental_mapping: list[Union[str, "InputTimeSeriesMappingApply"]] = Field(default_factory=lambda: [], repr=False)
+    incremental_mapping: list[Union[str, "IncrementalMappingApply"]] = Field(default_factory=lambda: [], repr=False)
     name: Optional[str] = None
     plants: list[str] = []
     process_events: list[str] = []
@@ -100,14 +100,14 @@ class RKOMProcesApply(DomainModelApply):
         return InstancesApply(nodes, edges)
 
     def _create_incremental_mapping_edge(
-        self, incremental_mapping: Union[str, "InputTimeSeriesMappingApply"]
+        self, incremental_mapping: Union[str, "IncrementalMappingApply"]
     ) -> dm.EdgeApply:
         if isinstance(incremental_mapping, str):
             end_node_ext_id = incremental_mapping
         elif isinstance(incremental_mapping, DomainModelApply):
             end_node_ext_id = incremental_mapping.external_id
         else:
-            raise TypeError(f"Expected str or InputTimeSeriesMappingApply, got {type(incremental_mapping)}")
+            raise TypeError(f"Expected str or IncrementalMappingApply, got {type(incremental_mapping)}")
 
         return dm.EdgeApply(
             space="power-ops",

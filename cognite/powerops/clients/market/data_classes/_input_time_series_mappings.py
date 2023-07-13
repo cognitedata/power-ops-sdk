@@ -27,10 +27,10 @@ class InputTimeSeriesMappingApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
     aggregation: Optional[str] = None
     cdf_time_series: Optional[str] = None
-    shop_attribute_name: str
-    shop_object_name: str
-    shop_object_type: str
-    transformations: list[Union[str, "ValueTransformationApply"]] = Field(default_factory=lambda: [], repr=False)
+    shop_attribute_name: Optional[str] = None
+    shop_object_name: Optional[str] = None
+    shop_object_type: Optional[str] = None
+    transformations: list[Union["ValueTransformationApply", str]] = Field(default_factory=lambda: [], repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> InstancesApply:
         if self.external_id in cache:

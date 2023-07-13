@@ -21,10 +21,10 @@ class OutputMapping(DomainModel):
 
 class OutputMappingApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
-    cdf_attribute_name: str
+    cdf_attribute_name: Optional[str] = None
     is_step: Optional[bool] = None
-    shop_attribute_name: str
-    shop_object_type: str
+    shop_attribute_name: Optional[str] = None
+    shop_object_type: Optional[str] = None
     unit: Optional[str] = None
 
     def _to_instances_apply(self, cache: set[str]) -> InstancesApply:

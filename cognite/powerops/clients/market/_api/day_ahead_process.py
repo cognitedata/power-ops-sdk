@@ -12,6 +12,43 @@ from cognite.powerops.clients.market.data_classes import DayAheadProces, DayAhea
 from ._core import TypeAPI
 
 
+class DayAheadProcesMatrixGeneratorConfigsAPI:
+    def __init__(self, client: CogniteClient):
+        self._client = client
+
+    def retrieve(self, external_id: str | Sequence[str]) -> dm.EdgeList:
+        f = dm.filters
+        is_edge_type = f.Equals(
+            ["edge", "type"],
+            {"space": "power-ops", "externalId": "DayAheadProcess.bidMatrixGeneratorConfig"},
+        )
+        if isinstance(external_id, str):
+            is_day_ahead_proces = f.Equals(
+                ["edge", "startNode"],
+                {"space": "power-ops", "externalId": external_id},
+            )
+            return self._client.data_modeling.instances.list(
+                "edge", limit=-1, filter=f.And(is_edge_type, is_day_ahead_proces)
+            )
+
+        else:
+            is_day_ahead_process = f.In(
+                ["edge", "startNode"],
+                [{"space": "power-ops", "externalId": ext_id} for ext_id in external_id],
+            )
+            return self._client.data_modeling.instances.list(
+                "edge", limit=-1, filter=f.And(is_edge_type, is_day_ahead_process)
+            )
+
+    def list(self, limit=INSTANCES_LIST_LIMIT_DEFAULT) -> dm.EdgeList:
+        f = dm.filters
+        is_edge_type = f.Equals(
+            ["edge", "type"],
+            {"space": "power-ops", "externalId": "DayAheadProcess.bidMatrixGeneratorConfig"},
+        )
+        return self._client.data_modeling.instances.list("edge", limit=limit, filter=is_edge_type)
+
+
 class DayAheadProcesMappingsAPI:
     def __init__(self, client: CogniteClient):
         self._client = client
@@ -58,6 +95,7 @@ class DayAheadProcessAPI(TypeAPI[DayAheadProces, DayAheadProcesApply, DayAheadPr
             class_apply_type=DayAheadProcesApply,
             class_list=DayAheadProcesList,
         )
+        self.bid_matrix_generator_configs = DayAheadProcesMatrixGeneratorConfigsAPI(client)
         self.incremental_mappings = DayAheadProcesMappingsAPI(client)
 
     def apply(self, day_ahead_proces: DayAheadProcesApply, replace: bool = False) -> dm.InstancesApplyResult:
@@ -84,6 +122,10 @@ class DayAheadProcessAPI(TypeAPI[DayAheadProces, DayAheadProcesApply, DayAheadPr
         if isinstance(external_id, str):
             day_ahead_proces = self._retrieve((self.sources.space, external_id))
 
+            bid_matrix_generator_config_edges = self.bid_matrix_generator_configs.retrieve(external_id)
+            day_ahead_proces.bid_matrix_generator_config = [
+                edge.end_node.external_id for edge in bid_matrix_generator_config_edges
+            ]
             incremental_mapping_edges = self.incremental_mappings.retrieve(external_id)
             day_ahead_proces.incremental_mapping = [edge.end_node.external_id for edge in incremental_mapping_edges]
 
@@ -91,6 +133,8 @@ class DayAheadProcessAPI(TypeAPI[DayAheadProces, DayAheadProcesApply, DayAheadPr
         else:
             day_ahead_process = self._retrieve([(self.sources.space, ext_id) for ext_id in external_id])
 
+            bid_matrix_generator_config_edges = self.bid_matrix_generator_configs.retrieve(external_id)
+            self._set_bid_matrix_generator_config(day_ahead_process, bid_matrix_generator_config_edges)
             incremental_mapping_edges = self.incremental_mappings.retrieve(external_id)
             self._set_incremental_mapping(day_ahead_process, incremental_mapping_edges)
 
@@ -99,10 +143,27 @@ class DayAheadProcessAPI(TypeAPI[DayAheadProces, DayAheadProcesApply, DayAheadPr
     def list(self, limit: int = INSTANCES_LIST_LIMIT_DEFAULT) -> DayAheadProcesList:
         day_ahead_process = self._list(limit=limit)
 
+        bid_matrix_generator_config_edges = self.bid_matrix_generator_configs.list(limit=-1)
+        self._set_bid_matrix_generator_config(day_ahead_process, bid_matrix_generator_config_edges)
         incremental_mapping_edges = self.incremental_mappings.list(limit=-1)
         self._set_incremental_mapping(day_ahead_process, incremental_mapping_edges)
 
         return day_ahead_process
+
+    @staticmethod
+    def _set_bid_matrix_generator_config(
+        day_ahead_process: Sequence[DayAheadProces], bid_matrix_generator_config_edges: Sequence[dm.Edge]
+    ):
+        edges_by_start_node: Dict[Tuple, List] = defaultdict(list)
+        for edge in bid_matrix_generator_config_edges:
+            edges_by_start_node[edge.start_node.as_tuple()].append(edge)
+
+        for day_ahead_proces in day_ahead_process:
+            node_id = day_ahead_proces.id_tuple()
+            if node_id in edges_by_start_node:
+                day_ahead_proces.bid_matrix_generator_config = [
+                    edge.end_node.external_id for edge in edges_by_start_node[node_id]
+                ]
 
     @staticmethod
     def _set_incremental_mapping(

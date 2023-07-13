@@ -27,7 +27,7 @@ class ScenarioApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
     commands: Optional[Union[str, "CommandsConfigApply"]] = Field(None, repr=False)
     mappings_override: list[Union[str, "InputTimeSeriesMappingApply"]] = Field(default_factory=lambda: [], repr=False)
-    name: str
+    name: Optional[str] = None
     template: Optional[Union[str, "ScenarioTemplateApply"]] = Field(None, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> InstancesApply:
