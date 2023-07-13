@@ -69,3 +69,9 @@ def _create_bootstrap_finished_event(echo: Callable[[str], None]) -> Event:
     echo(f"Created status event '{event.external_id}'")
 
     return event
+
+
+if __name__ == "__main__":
+    demo_data = Path(__file__).parent.parent.parent.parent / "tests" / "test_unit" / "test_bootstrap" / "data" / "demo"
+
+    apply(demo_data, "DayAhead", print)

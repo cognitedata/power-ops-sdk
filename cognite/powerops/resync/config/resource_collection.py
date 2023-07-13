@@ -127,6 +127,21 @@ class ResourceCollection(BaseModel):
             logger.debug(f"Processing {len(resources)} {resource_type}...")
             upsert_cognite_resources(api, resource_type, resources)
 
+        # for node in self.nodes.values():
+        #     try:
+        #         po_client.cdf.data_modeling.instances.apply(nodes=node , replace=True)
+        #         logger.info(f"Written {node.external_id} to CDF")
+        #     except CogniteAPIError as e:
+        #         logger.info(f"Failed to write {node.external_id} to CDF: {e}")
+        #         raise e
+        # for edge in self.edges.values():
+        #     try:
+        #         po_client.cdf.data_modeling.instances.apply(edges=edge , replace=True)
+        #         logger.info(f"Written {edge.external_id} to CDF")
+        #     except CogniteAPIError as e:
+        #         logger.info(f"Failed to write {edge.external_id} to CDF: {e}")
+        #         raise e
+
         po_client.cdf.data_modeling.instances.apply(
             nodes=list(self.nodes.values()), edges=list(self.edges.values()), replace=True
         )
@@ -163,10 +178,6 @@ class ResourceCollection(BaseModel):
             "relationships",
             "label_definitions",
             "events",
-            "model_templates",
-            "file_refs",
-            "mappings",
-            "transformations",
             "sequences",
             "files",
         ]:

@@ -38,7 +38,7 @@ def transform(
         collection.add(asset_model.parent_assets())
         collection.add(asset_model.assets())
         collection.add(asset_model.relationships())
-    for data_model in [cogshop_model, production_data_model]:
+    for data_model in [production_data_model]:
         collection.add(data_model.instances())
 
     return collection
