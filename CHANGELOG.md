@@ -13,7 +13,14 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## [0.27.0] - 2023-07-11
+## [0.27.1] - 2023-07-13
+
+### Fixed
+
+* Bug when deploying the market model, missing type `ValueTransformation`.
+
+
+## [0.27.0] - 2023-07-13
 
 ### Added
 
