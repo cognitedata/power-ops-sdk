@@ -11,12 +11,13 @@ import yaml
 from cognite.client.data_classes import FileMetadata, Sequence
 
 from cognite.powerops.clients.cogshop.data_classes import (
-    FileRefApply,
-    MappingApply,
-    ModelTemplateApply,
-    TransformationApply,
+    InputTimeSeriesMappingApply,
+    OutputMappingApply,
+    ScenarioTemplateApply,
+    ValueTransformationApply,
 )
 from cognite.powerops.resync.config.resync_config import CogShopConfig
+from cognite.powerops.resync.config.shared import TimeSeriesMappingEntry
 from cognite.powerops.resync.models import cogshop
 from cognite.powerops.resync.models.cdf_resources import CDFSequence
 from cognite.powerops.resync.models.cogshop import CogShopModel
@@ -126,6 +127,11 @@ def to_cogshop_model(config: CogShopConfig, watercourses: list[Watercourse], sho
         )
         model.output_definitions.append(output_definition)
 
+        instance_output_definitions = [
+            OutputMappingApply(external_id=_make_ext_id(watercourse.name, *r.values(), prefix="OutMapping"), **r)
+            for r in df.to_dict("records")
+        ]
+
         ##### Base Mapping #####
         external_id = f"SHOP_{watercourse.name}_base_mapping"
         sequence = Sequence(
@@ -150,15 +156,10 @@ def to_cogshop_model(config: CogShopConfig, watercourses: list[Watercourse], sho
         model.base_mappings.append(output_definition)
 
         ############## Adding the Instances. ##############
-        file_ref = FileRefApply(
-            external_id=f"ModelTemplate_{watercourse.name}__FileRef_model",
-            type="model",
-            file_external_id=model_file.file.external_id,
-        )
-        model.file_refs.append(file_ref)
         transformations = []
         base_mappings = []
         for row in reversed(list(mapping)):
+            row: TimeSeriesMappingEntry
             row_ext_id = f"BM__{watercourse.name}__{row.shop_model_path}"
 
             # We can get duplicate mappings (same path). Only keep the last one (look is reversed):
@@ -171,7 +172,7 @@ def to_cogshop_model(config: CogShopConfig, watercourses: list[Watercourse], sho
             row_transformations = []
             for transformation in reversed(row.transformations or []):
                 row_transformations.append(
-                    TransformationApply(
+                    ValueTransformationApply(
                         external_id=_make_ext_id(
                             watercourse.name,
                             row.shop_model_path,
@@ -179,17 +180,18 @@ def to_cogshop_model(config: CogShopConfig, watercourses: list[Watercourse], sho
                             json.dumps(transformation.kwargs or {}),
                         ),
                         method=transformation.transformation.name,
-                        arguments=json.dumps(transformation.kwargs or {}),
+                        arguments=transformation.kwargs or {},
                     )
                 )
             transformations.extend(row_transformations)
 
-            mapping_apply = MappingApply(
+            mapping_apply = InputTimeSeriesMappingApply(
                 external_id=row_ext_id,
-                path=row.shop_model_path,
-                timeseries_external_id=row.time_series_external_id,
+                shop_object_name=row.object_name,
+                shop_object_type=row.object_type,
+                shop_attribute_name=row.attribute_name,
+                cdf_time_series=row.time_series_external_id,
                 transformations=[tr.external_id for tr in row_transformations],
-                retrieve=row.retrieve.name if row.retrieve else None,
                 aggregation=row.aggregation.name if row.aggregation else None,
             )
             base_mappings.append(mapping_apply)
@@ -197,29 +199,30 @@ def to_cogshop_model(config: CogShopConfig, watercourses: list[Watercourse], sho
         # restore original order:
         transformations = list(reversed(transformations))
         base_mappings = list(reversed(base_mappings))
+        model.value_transformations.extend(transformations)
+        model.input_time_series_mappings.extend(base_mappings)
 
-        model.transformations.extend(transformations)
-        model.mappings.extend(base_mappings)
-
-        model.model_templates.append(
-            ModelTemplateApply(
+        model.scenario_templates.append(
+            ScenarioTemplateApply(
                 external_id=f"ModelTemplate_{watercourse.name}",
-                version=watercourse.config_version,
+                model=model_file.file.external_id,
                 shop_version=shop_version,
+                template_version="1",
+                base_mapping=base_mappings,
+                output_definitions=instance_output_definitions,
+                shop_files=[f.file.external_id for f in model.shop_files],
                 watercourse=watercourse.name,
-                model=file_ref.external_id,
-                base_mappings=[m.external_id for m in base_mappings],
             )
         )
 
     return model
 
 
-def _make_ext_id(watercourse_name: str, *args: str) -> str:
+def _make_ext_id(watercourse_name: str, *args: str, prefix: str = "Tr") -> str:
     hash_value = md5(watercourse_name.encode())
     for arg in args:
         hash_value.update(arg.encode())
-    return f"Tr__{hash_value.hexdigest()}"
+    return f"{prefix}__{hash_value.hexdigest()}"
 
 
 def _is_time_series(shop_attribute_value) -> bool:

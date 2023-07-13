@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import logging
-from typing import Union, cast
+from typing import Union
 
 from cognite.client.data_classes import Asset, Event, LabelDefinition, Relationship
 from cognite.client.data_classes._base import CogniteResource, CogniteResourceList
@@ -11,17 +11,7 @@ from cognite.client.exceptions import CogniteAPIError
 from deepdiff import DeepDiff
 from pydantic import BaseModel, Extra
 
-from cognite.powerops.clients.cogshop.data_classes import (
-    FileRef,
-    FileRefApply,
-    Mapping,
-    MappingApply,
-    ModelTemplate,
-    ModelTemplateApply,
-    Transformation,
-    TransformationApply,
-)
-from cognite.powerops.clients.cogshop.data_classes._core import DomainModel, DomainModelApply, InstancesApply
+from cognite.powerops.clients.cogshop.data_classes._core import DomainModelApply, InstancesApply
 from cognite.powerops.clients.powerops_client import PowerOpsClient
 from cognite.powerops.resync.config.cogshop.shop_file_config import ShopFileConfig
 from cognite.powerops.resync.config.shared import ExternalId
@@ -64,10 +54,6 @@ class ResourceCollection(BaseModel):
     # dm resources:
     nodes: dict[ExternalId, NodeApply] = {}
     edges: dict[ExternalId, EdgeApply] = {}
-    model_templates: dict[ExternalId, ModelTemplateApply] = {}
-    mappings: dict[ExternalId, MappingApply] = {}
-    file_refs: dict[ExternalId, FileRefApply] = {}
-    transformations: dict[ExternalId, TransformationApply] = {}
 
     class Config:
         arbitrary_types_allowed = True
@@ -116,14 +102,6 @@ class ResourceCollection(BaseModel):
             self.nodes[resource.external_id] = resource
         elif isinstance(resource, EdgeApply):
             self.edges[resource.external_id] = resource
-        elif isinstance(resource, ModelTemplateApply):
-            self.model_templates[resource.external_id] = resource
-        elif isinstance(resource, MappingApply):
-            self.mappings[resource.external_id] = resource
-        elif isinstance(resource, TransformationApply):
-            self.transformations[resource.external_id] = resource
-        elif isinstance(resource, FileRefApply):
-            self.file_refs[resource.external_id] = resource
         else:
             raise ValueError(f"Unknown resource type: {type(resource)}")
 
@@ -259,21 +237,6 @@ class ResourceCollection(BaseModel):
             # add the resources to the bootstrap resource collection
             bootstrap_resource_collection.add(resources)
 
-        for resource_type in [
-            "file_refs",
-            "transformations",
-            "mappings",
-            "model_templates",
-        ]:
-            # get the api for the resource type
-            api = getattr(po_client.cog_shop, resource_type)
-            # get all the resources from CDF
-            actual_resources = api.list(limit=None)
-            # convert actual resources to their "apply" form, for comparison
-            apply_resources = to_dm_apply(actual_resources)
-            # add the resources to the bootstrap resource collection
-            bootstrap_resource_collection.add(apply_resources)
-
         file_meta = po_client.cdf.files.list(data_set_ids=[data_set_id], limit=None)
         shop_files = []
         for f in file_meta:
@@ -295,28 +258,6 @@ class ResourceCollection(BaseModel):
             bootstrap_resource_collection.add(CDFSequence(sequence=sequence, content=sequence_data))
 
         return bootstrap_resource_collection
-
-
-def to_dm_apply(instances: list[DomainModel] | DomainModel) -> list[DomainModelApply]:
-    items = cast(list[DomainModel], list(instances))
-    apply_items = []
-
-    type_map = {
-        ModelTemplate: ModelTemplateApply,
-        Mapping: MappingApply,
-        Transformation: TransformationApply,
-        FileRef: FileRefApply,
-    }
-
-    for item in items:
-        if type(item) not in type_map:
-            raise NotImplementedError(f"Dont know how to convert {item!r}.")
-        apply_type = type_map[type(item)]
-
-        apply_items.append(
-            apply_type(**{field: value for field, value in item.dict().items() if field in apply_type.__fields__})
-        )
-    return apply_items
 
 
 def clean_cdf_resources_for_diff(cdf_resources: dict[ExternalId, dict]) -> None:

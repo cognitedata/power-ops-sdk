@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, ClassVar, Union
+from typing import TYPE_CHECKING, ClassVar, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     from ._plants import PlantApply
     from ._watercourses import WatercourseApply
 
-__all__ = ["PriceArea", "PriceAreaApply", "PriceAreaList"]
+__all__ = ["PriceArea", "PriceAreaApply", "PriceAreaList", "Optional"]
 
 
 class PriceArea(DomainModel):

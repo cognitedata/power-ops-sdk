@@ -1,10 +1,10 @@
 from pydantic import Field
 
 from cognite.powerops.clients.cogshop.data_classes import (
-    FileRefApply,
-    MappingApply,
-    ModelTemplateApply,
-    TransformationApply,
+    InputTimeSeriesMappingApply,
+    OutputMappingApply,
+    ScenarioTemplateApply,
+    ValueTransformationApply,
 )
 
 from ._base import DataModel, Type
@@ -30,7 +30,8 @@ class CogShopModel(DataModel):
     base_mappings: list[BaseMapping] = Field(default_factory=list)
     output_definitions: list[OutputDefinition] = Field(default_factory=list)
     shop_files: list[ShopFile] = Field(default_factory=list)
-    model_templates: list[ModelTemplateApply] = Field(default_factory=list)
-    mappings: list[MappingApply] = Field(default_factory=list)
-    transformations: list[TransformationApply] = Field(default_factory=list)
-    file_refs: list[FileRefApply] = Field(default_factory=list)
+
+    scenario_templates: list[ScenarioTemplateApply] = Field(default_factory=list)
+    input_time_series_mappings: list[InputTimeSeriesMappingApply] = Field(default_factory=list)
+    output_mappings: list[OutputMappingApply] = Field(default_factory=list)
+    value_transformations: list[ValueTransformationApply] = Field(default_factory=list)
