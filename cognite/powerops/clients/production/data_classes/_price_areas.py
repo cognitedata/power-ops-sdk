@@ -28,8 +28,8 @@ class PriceAreaApply(DomainModelApply):
     day_ahead_price: Optional[str] = None
     description: Optional[str] = None
     name: Optional[str] = None
-    plants: list[Union[str, "PlantApply"]] = Field(default_factory=lambda: [], repr=False)
-    watercourses: list[Union[str, "WatercourseApply"]] = Field(default_factory=lambda: [], repr=False)
+    plants: list[Union["PlantApply", str]] = Field(default_factory=list, repr=False)
+    watercourses: list[Union["WatercourseApply", str]] = Field(default_factory=list, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> InstancesApply:
         if self.external_id in cache:

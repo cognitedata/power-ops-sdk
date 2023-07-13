@@ -12,7 +12,7 @@ from cognite.powerops.clients.market.data_classes import DayAheadProces, DayAhea
 from ._core import TypeAPI
 
 
-class DayAheadProcesMatrixGeneratorConfigsAPI:
+class DayAheadProcesBidMatrixGeneratorConfigsAPI:
     def __init__(self, client: CogniteClient):
         self._client = client
 
@@ -49,7 +49,7 @@ class DayAheadProcesMatrixGeneratorConfigsAPI:
         return self._client.data_modeling.instances.list("edge", limit=limit, filter=is_edge_type)
 
 
-class DayAheadProcesMappingsAPI:
+class DayAheadProcesIncrementalMappingsAPI:
     def __init__(self, client: CogniteClient):
         self._client = client
 
@@ -95,8 +95,8 @@ class DayAheadProcessAPI(TypeAPI[DayAheadProces, DayAheadProcesApply, DayAheadPr
             class_apply_type=DayAheadProcesApply,
             class_list=DayAheadProcesList,
         )
-        self.bid_matrix_generator_configs = DayAheadProcesMatrixGeneratorConfigsAPI(client)
-        self.incremental_mappings = DayAheadProcesMappingsAPI(client)
+        self.bid_matrix_generator_configs = DayAheadProcesBidMatrixGeneratorConfigsAPI(client)
+        self.incremental_mappings = DayAheadProcesIncrementalMappingsAPI(client)
 
     def apply(self, day_ahead_proces: DayAheadProcesApply, replace: bool = False) -> dm.InstancesApplyResult:
         instances = day_ahead_proces.to_instances_apply()

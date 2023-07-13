@@ -12,7 +12,7 @@ from cognite.powerops.clients.market.data_classes import Benchmarking, Benchmark
 from ._core import TypeAPI
 
 
-class BenchmarkingPlanTimeSeriesAPI:
+class BenchmarkingProductionPlanTimeSeriesAPI:
     def __init__(self, client: CogniteClient):
         self._client = client
 
@@ -58,7 +58,7 @@ class BenchmarkingsAPI(TypeAPI[Benchmarking, BenchmarkingApply, BenchmarkingList
             class_apply_type=BenchmarkingApply,
             class_list=BenchmarkingList,
         )
-        self.production_plan_time_series = BenchmarkingPlanTimeSeriesAPI(client)
+        self.production_plan_time_series = BenchmarkingProductionPlanTimeSeriesAPI(client)
 
     def apply(self, benchmarking: BenchmarkingApply, replace: bool = False) -> dm.InstancesApplyResult:
         instances = benchmarking.to_instances_apply()

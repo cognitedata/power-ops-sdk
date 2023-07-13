@@ -12,7 +12,7 @@ from cognite.powerops.clients.cogshop.data_classes import ScenarioTemplate, Scen
 from ._core import TypeAPI
 
 
-class ScenarioTemplateMappingsAPI:
+class ScenarioTemplateBaseMappingsAPI:
     def __init__(self, client: CogniteClient):
         self._client = client
 
@@ -49,7 +49,7 @@ class ScenarioTemplateMappingsAPI:
         return self._client.data_modeling.instances.list("edge", limit=limit, filter=is_edge_type)
 
 
-class ScenarioTemplateDefinitionsAPI:
+class ScenarioTemplateOutputDefinitionsAPI:
     def __init__(self, client: CogniteClient):
         self._client = client
 
@@ -95,8 +95,8 @@ class ScenarioTemplatesAPI(TypeAPI[ScenarioTemplate, ScenarioTemplateApply, Scen
             class_apply_type=ScenarioTemplateApply,
             class_list=ScenarioTemplateList,
         )
-        self.base_mappings = ScenarioTemplateMappingsAPI(client)
-        self.output_definitions = ScenarioTemplateDefinitionsAPI(client)
+        self.base_mappings = ScenarioTemplateBaseMappingsAPI(client)
+        self.output_definitions = ScenarioTemplateOutputDefinitionsAPI(client)
 
     def apply(self, scenario_template: ScenarioTemplateApply, replace: bool = False) -> dm.InstancesApplyResult:
         instances = scenario_template.to_instances_apply()

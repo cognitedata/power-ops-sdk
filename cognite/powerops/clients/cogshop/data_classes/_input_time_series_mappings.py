@@ -30,7 +30,7 @@ class InputTimeSeriesMappingApply(DomainModelApply):
     shop_attribute_name: str
     shop_object_name: str
     shop_object_type: str
-    transformations: list[Union[str, "ValueTransformationApply"]] = Field(default_factory=lambda: [], repr=False)
+    transformations: list[Union["ValueTransformationApply", str]] = Field(default_factory=list, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> InstancesApply:
         if self.external_id in cache:

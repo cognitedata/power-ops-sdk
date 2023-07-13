@@ -28,12 +28,12 @@ class RKOMProces(DomainModel):
 
 class RKOMProcesApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
-    bid: Optional[Union[str, "RKOMBidApply"]] = Field(None, repr=False)
-    incremental_mapping: list[Union[str, "IncrementalMappingApply"]] = Field(default_factory=lambda: [], repr=False)
+    bid: Optional[Union["RKOMBidApply", str]] = Field(None, repr=False)
+    incremental_mapping: list[Union["IncrementalMappingApply", str]] = Field(default_factory=list, repr=False)
     name: Optional[str] = None
     plants: list[str] = []
     process_events: list[str] = []
-    shop: Optional[Union[str, "ShopTransformationApply"]] = Field(None, repr=False)
+    shop: Optional[Union["ShopTransformationApply", str]] = Field(None, repr=False)
     timezone: Optional[str] = None
 
     def _to_instances_apply(self, cache: set[str]) -> InstancesApply:

@@ -12,7 +12,7 @@ from cognite.powerops.clients.cogshop.data_classes import Scenario, ScenarioAppl
 from ._core import TypeAPI
 
 
-class ScenarioOverridesAPI:
+class ScenarioMappingsOverridesAPI:
     def __init__(self, client: CogniteClient):
         self._client = client
 
@@ -54,7 +54,7 @@ class ScenariosAPI(TypeAPI[Scenario, ScenarioApply, ScenarioList]):
             class_apply_type=ScenarioApply,
             class_list=ScenarioList,
         )
-        self.mappings_overrides = ScenarioOverridesAPI(client)
+        self.mappings_overrides = ScenarioMappingsOverridesAPI(client)
 
     def apply(self, scenario: ScenarioApply, replace: bool = False) -> dm.InstancesApplyResult:
         instances = scenario.to_instances_apply()

@@ -21,7 +21,7 @@ class IncrementalMapping(DomainModel):
 
 class IncrementalMappingApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
-    mappings: list[Union["InputTimeSeriesMappingApply", str]] = Field(default_factory=lambda: [], repr=False)
+    mappings: list[Union["InputTimeSeriesMappingApply", str]] = Field(default_factory=list, repr=False)
     name: Optional[str] = None
 
     def _to_instances_apply(self, cache: set[str]) -> InstancesApply:

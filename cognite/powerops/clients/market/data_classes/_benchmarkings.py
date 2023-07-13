@@ -27,14 +27,14 @@ class Benchmarking(DomainModel):
 
 class BenchmarkingApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
-    bid: Optional[Union[str, "BenchmarkBidApply"]] = Field(None, repr=False)
+    bid: Optional[Union["BenchmarkBidApply", str]] = Field(None, repr=False)
     metrics: Optional[dict] = None
     name: Optional[str] = None
-    production_plan_time_series: list[Union[str, "ProductionPlanTimeSeriesApply"]] = Field(
-        default_factory=lambda: [], repr=False
+    production_plan_time_series: list[Union["ProductionPlanTimeSeriesApply", str]] = Field(
+        default_factory=list, repr=False
     )
     run_events: list[str] = []
-    shop: Optional[Union[str, "ShopTransformationApply"]] = Field(None, repr=False)
+    shop: Optional[Union["ShopTransformationApply", str]] = Field(None, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> InstancesApply:
         if self.external_id in cache:

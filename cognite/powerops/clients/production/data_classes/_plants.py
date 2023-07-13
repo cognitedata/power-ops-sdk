@@ -39,11 +39,11 @@ class PlantApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
     display_name: Optional[str] = None
     feeding_fee: Optional[str] = None
-    generators: list[Union[str, "GeneratorApply"]] = Field(default_factory=lambda: [], repr=False)
+    generators: list[Union["GeneratorApply", str]] = Field(default_factory=list, repr=False)
     head_direct_time_series: Optional[str] = None
     head_loss_factor: Optional[float] = None
     inlet_level: Optional[str] = None
-    inlet_reservoirs: list[Union[str, "ReservoirApply"]] = Field(default_factory=lambda: [], repr=False)
+    inlet_reservoirs: list[Union["ReservoirApply", str]] = Field(default_factory=list, repr=False)
     name: Optional[str] = None
     ordering: Optional[int] = None
     outlet_level: Optional[float] = None

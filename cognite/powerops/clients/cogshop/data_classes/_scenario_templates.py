@@ -27,9 +27,9 @@ class ScenarioTemplate(DomainModel):
 
 class ScenarioTemplateApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
-    base_mapping: list[Union[str, "InputTimeSeriesMappingApply"]] = Field(default_factory=lambda: [], repr=False)
+    base_mapping: list[Union["InputTimeSeriesMappingApply", str]] = Field(default_factory=list, repr=False)
     model: Optional[str] = None
-    output_definitions: list[Union[str, "OutputMappingApply"]] = Field(default_factory=lambda: [], repr=False)
+    output_definitions: list[Union["OutputMappingApply", str]] = Field(default_factory=list, repr=False)
     shop_files: list[str] = []
     shop_version: Optional[str] = None
     template_version: Optional[str] = None

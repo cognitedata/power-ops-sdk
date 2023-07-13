@@ -24,7 +24,7 @@ class PriceScenarioApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
     name: Optional[str] = None
     time_series: Optional[str] = None
-    transformations: list[Union[str, "ValueTransformationApply"]] = Field(default_factory=lambda: [], repr=False)
+    transformations: list[Union["ValueTransformationApply", str]] = Field(default_factory=list, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> InstancesApply:
         if self.external_id in cache:

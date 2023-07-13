@@ -21,8 +21,8 @@ class ShopTransformation(DomainModel):
 
 class ShopTransformationApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
-    end: list[Union[str, "DateTransformationApply"]] = Field(default_factory=lambda: [], repr=False)
-    start: list[Union[str, "DateTransformationApply"]] = Field(default_factory=lambda: [], repr=False)
+    end: list[Union["DateTransformationApply", str]] = Field(default_factory=list, repr=False)
+    start: list[Union["DateTransformationApply", str]] = Field(default_factory=list, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> InstancesApply:
         if self.external_id in cache:

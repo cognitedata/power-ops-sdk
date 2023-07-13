@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from datetime import date
 from typing import TYPE_CHECKING, ClassVar, Optional, Union
 
 from cognite.client import data_modeling as dm
@@ -9,6 +8,7 @@ from pydantic import Field
 from ._core import DomainModel, DomainModelApply, InstancesApply, TypeList
 
 if TYPE_CHECKING:
+    from ._date_transformations import DateTransformationApply
     from ._markets import MarketApply
     from ._price_scenarios import PriceScenarioApply
     from ._reserve_scenarios import ReserveScenarioApply
@@ -20,7 +20,7 @@ class RKOMBid(DomainModel):
     space: ClassVar[str] = "power-ops"
     auction: Optional[str] = None
     block: Optional[str] = None
-    date: Optional[date] = None
+    date: list[str] = []
     market: Optional[str] = None
     method: Optional[str] = None
     minimum_price: Optional[float] = Field(None, alias="minimumPrice")
@@ -36,15 +36,15 @@ class RKOMBidApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
     auction: Optional[str] = None
     block: Optional[str] = None
-    date: Optional[date] = None
-    market: Optional[Union[str, "MarketApply"]] = Field(None, repr=False)
+    date: list[Union["DateTransformationApply", str]] = Field(default_factory=list, repr=False)
+    market: Optional[Union["MarketApply", str]] = Field(None, repr=False)
     method: Optional[str] = None
     minimum_price: Optional[float] = None
     name: Optional[str] = None
     price_premium: Optional[float] = None
-    price_scenarios: list[Union[str, "PriceScenarioApply"]] = Field(default_factory=lambda: [], repr=False)
+    price_scenarios: list[Union["PriceScenarioApply", str]] = Field(default_factory=list, repr=False)
     product: Optional[str] = None
-    reserve_scenarios: list[Union[str, "ReserveScenarioApply"]] = Field(default_factory=lambda: [], repr=False)
+    reserve_scenarios: list[Union["ReserveScenarioApply", str]] = Field(default_factory=list, repr=False)
     watercourse: Optional[str] = None
 
     def _to_instances_apply(self, cache: set[str]) -> InstancesApply:
@@ -69,7 +69,6 @@ class RKOMBidApply(DomainModelApply):
         source = dm.NodeOrEdgeData(
             source=dm.ContainerId("power-ops", "Bid"),
             properties={
-                "date": self.date,
                 "market": {
                     "space": "power-ops",
                     "externalId": self.market if isinstance(self.market, str) else self.market.external_id,
@@ -87,6 +86,17 @@ class RKOMBidApply(DomainModelApply):
         )
         nodes = [this_node]
         edges = []
+
+        for date in self.date:
+            edge = self._create_date_edge(date)
+            if edge.external_id not in cache:
+                edges.append(edge)
+                cache.add(edge.external_id)
+
+            if isinstance(date, DomainModelApply):
+                instances = date._to_instances_apply(cache)
+                nodes.extend(instances.nodes)
+                edges.extend(instances.edges)
 
         for price_scenario in self.price_scenarios:
             edge = self._create_price_scenario_edge(price_scenario)
@@ -116,6 +126,22 @@ class RKOMBidApply(DomainModelApply):
             edges.extend(instances.edges)
 
         return InstancesApply(nodes, edges)
+
+    def _create_date_edge(self, date: Union[str, "DateTransformationApply"]) -> dm.EdgeApply:
+        if isinstance(date, str):
+            end_node_ext_id = date
+        elif isinstance(date, DomainModelApply):
+            end_node_ext_id = date.external_id
+        else:
+            raise TypeError(f"Expected str or DateTransformationApply, got {type(date)}")
+
+        return dm.EdgeApply(
+            space="power-ops",
+            external_id=f"{self.external_id}:{end_node_ext_id}",
+            type=dm.DirectRelationReference("power-ops", "Bid.date"),
+            start_node=dm.DirectRelationReference(self.space, self.external_id),
+            end_node=dm.DirectRelationReference("power-ops", end_node_ext_id),
+        )
 
     def _create_price_scenario_edge(self, price_scenario: Union[str, "PriceScenarioApply"]) -> dm.EdgeApply:
         if isinstance(price_scenario, str):

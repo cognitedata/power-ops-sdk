@@ -27,13 +27,11 @@ class DayAheadProces(DomainModel):
 
 class DayAheadProcesApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
-    bid: Optional[Union[str, "DayAheadBidApply"]] = Field(None, repr=False)
-    bid_matrix_generator_config: list[Union[str, "BidMatrixGeneratorApply"]] = Field(
-        default_factory=lambda: [], repr=False
-    )
-    incremental_mapping: list[Union[str, "IncrementalMappingApply"]] = Field(default_factory=lambda: [], repr=False)
+    bid: Optional[Union["DayAheadBidApply", str]] = Field(None, repr=False)
+    bid_matrix_generator_config: list[Union["BidMatrixGeneratorApply", str]] = Field(default_factory=list, repr=False)
+    incremental_mapping: list[Union["IncrementalMappingApply", str]] = Field(default_factory=list, repr=False)
     name: Optional[str] = None
-    shop: Optional[Union[str, "ShopTransformationApply"]] = Field(None, repr=False)
+    shop: Optional[Union["ShopTransformationApply", str]] = Field(None, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> InstancesApply:
         if self.external_id in cache:

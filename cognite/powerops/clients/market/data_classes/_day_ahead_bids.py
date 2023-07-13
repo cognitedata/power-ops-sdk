@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from datetime import date
 from typing import TYPE_CHECKING, ClassVar, Optional, Union
 
 from cognite.client import data_modeling as dm
@@ -9,6 +8,7 @@ from pydantic import Field
 from ._core import DomainModel, DomainModelApply, InstancesApply, TypeList
 
 if TYPE_CHECKING:
+    from ._date_transformations import DateTransformationApply
     from ._markets import MarketApply
     from ._shop_transformations import ShopTransformationApply
 
@@ -19,7 +19,7 @@ class DayAheadBid(DomainModel):
     space: ClassVar[str] = "power-ops"
     bid_matrix_generator_config_external_id: Optional[str] = Field(None, alias="bidMatrixGeneratorConfigExternalId")
     bid_process_configuration_name: Optional[str] = Field(None, alias="bidProcessConfigurationName")
-    date: Optional[date] = None
+    date: list[str] = []
     is_default_config_for_price_area: Optional[bool] = Field(None, alias="isDefaultConfigForPriceArea")
     main_scenario: Optional[str] = Field(None, alias="mainScenario")
     market: Optional[str] = None
@@ -34,15 +34,15 @@ class DayAheadBidApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
     bid_matrix_generator_config_external_id: Optional[str] = None
     bid_process_configuration_name: Optional[str] = None
-    date: Optional[date] = None
+    date: list[Union["DateTransformationApply", str]] = Field(default_factory=list, repr=False)
     is_default_config_for_price_area: Optional[bool] = None
     main_scenario: Optional[str] = None
-    market: Optional[Union[str, "MarketApply"]] = Field(None, repr=False)
+    market: Optional[Union["MarketApply", str]] = Field(None, repr=False)
     name: Optional[str] = None
     no_shop: Optional[bool] = None
     price_area: Optional[str] = None
     price_scenarios: list[dict] = []
-    shop: Optional[Union[str, "ShopTransformationApply"]] = Field(None, repr=False)
+    shop: Optional[Union["ShopTransformationApply", str]] = Field(None, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> InstancesApply:
         if self.external_id in cache:
@@ -70,7 +70,6 @@ class DayAheadBidApply(DomainModelApply):
         source = dm.NodeOrEdgeData(
             source=dm.ContainerId("power-ops", "Bid"),
             properties={
-                "date": self.date,
                 "market": {
                     "space": "power-ops",
                     "externalId": self.market if isinstance(self.market, str) else self.market.external_id,
@@ -89,6 +88,17 @@ class DayAheadBidApply(DomainModelApply):
         nodes = [this_node]
         edges = []
 
+        for date in self.date:
+            edge = self._create_date_edge(date)
+            if edge.external_id not in cache:
+                edges.append(edge)
+                cache.add(edge.external_id)
+
+            if isinstance(date, DomainModelApply):
+                instances = date._to_instances_apply(cache)
+                nodes.extend(instances.nodes)
+                edges.extend(instances.edges)
+
         if isinstance(self.market, DomainModelApply):
             instances = self.market._to_instances_apply(cache)
             nodes.extend(instances.nodes)
@@ -100,6 +110,22 @@ class DayAheadBidApply(DomainModelApply):
             edges.extend(instances.edges)
 
         return InstancesApply(nodes, edges)
+
+    def _create_date_edge(self, date: Union[str, "DateTransformationApply"]) -> dm.EdgeApply:
+        if isinstance(date, str):
+            end_node_ext_id = date
+        elif isinstance(date, DomainModelApply):
+            end_node_ext_id = date.external_id
+        else:
+            raise TypeError(f"Expected str or DateTransformationApply, got {type(date)}")
+
+        return dm.EdgeApply(
+            space="power-ops",
+            external_id=f"{self.external_id}:{end_node_ext_id}",
+            type=dm.DirectRelationReference("power-ops", "Bid.date"),
+            start_node=dm.DirectRelationReference(self.space, self.external_id),
+            end_node=dm.DirectRelationReference("power-ops", end_node_ext_id),
+        )
 
 
 class DayAheadBidList(TypeList[DayAheadBid]):

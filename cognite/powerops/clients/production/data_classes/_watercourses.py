@@ -25,9 +25,9 @@ class Watercourse(DomainModel):
 class WatercourseApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
     name: Optional[str] = None
-    plants: list[Union[str, "PlantApply"]] = Field(default_factory=lambda: [], repr=False)
+    plants: list[Union["PlantApply", str]] = Field(default_factory=list, repr=False)
     production_obligation: Optional[str] = None
-    shop: Optional[Union[str, "WatercourseShopApply"]] = Field(None, repr=False)
+    shop: Optional[Union["WatercourseShopApply", str]] = Field(None, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> InstancesApply:
         if self.external_id in cache:

@@ -45,7 +45,7 @@ class PlantGeneratorsAPI:
         return self._client.data_modeling.instances.list("edge", limit=limit, filter=is_edge_type)
 
 
-class PlantReservoirsAPI:
+class PlantInletReservoirsAPI:
     def __init__(self, client: CogniteClient):
         self._client = client
 
@@ -88,7 +88,7 @@ class PlantsAPI(TypeAPI[Plant, PlantApply, PlantList]):
             class_list=PlantList,
         )
         self.generators = PlantGeneratorsAPI(client)
-        self.inlet_reservoirs = PlantReservoirsAPI(client)
+        self.inlet_reservoirs = PlantInletReservoirsAPI(client)
 
     def apply(self, plant: PlantApply, replace: bool = False) -> dm.InstancesApplyResult:
         instances = plant.to_instances_apply()

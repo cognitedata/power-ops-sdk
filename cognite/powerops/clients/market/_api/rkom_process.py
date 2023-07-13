@@ -12,7 +12,7 @@ from cognite.powerops.clients.market.data_classes import RKOMProces, RKOMProcesA
 from ._core import TypeAPI
 
 
-class RKOMProcesMappingsAPI:
+class RKOMProcesIncrementalMappingsAPI:
     def __init__(self, client: CogniteClient):
         self._client = client
 
@@ -58,7 +58,7 @@ class RKOMProcessAPI(TypeAPI[RKOMProces, RKOMProcesApply, RKOMProcesList]):
             class_apply_type=RKOMProcesApply,
             class_list=RKOMProcesList,
         )
-        self.incremental_mappings = RKOMProcesMappingsAPI(client)
+        self.incremental_mappings = RKOMProcesIncrementalMappingsAPI(client)
 
     def apply(self, rkom_proces: RKOMProcesApply, replace: bool = False) -> dm.InstancesApplyResult:
         instances = rkom_proces.to_instances_apply()
