@@ -1,4 +1,4 @@
- type ValueTransformation {
+type ValueTransformation {
   method: String!
   arguments: JSONObject
 }
