@@ -440,13 +440,13 @@ docs = ["mkdocs", "mkdocs-git-authors-plugin", "mkdocs-git-revision-date-localiz
 
 [[package]]
 name = "cognite-sdk"
-version = "6.8.2"
+version = "6.8.4"
 description = "Cognite Python SDK"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "cognite_sdk-6.8.2-py3-none-any.whl", hash = "sha256:027e395f888ee69fd10d9633460ee1b98aca70f1453ad2e50b9b8674a9299152"},
-    {file = "cognite_sdk-6.8.2.tar.gz", hash = "sha256:c0ab068f6d7d055f58f56327e3fdfcd9f784dc14fd6f4cd2e6a9fa31f9024782"},
+    {file = "cognite_sdk-6.8.4-py3-none-any.whl", hash = "sha256:d89b68421f15850edb17992887e0f049227e94a0bfda96cd956e5db824be6688"},
+    {file = "cognite_sdk-6.8.4.tar.gz", hash = "sha256:11fa861cae463d6bcf3ba1b28f7194cf1f7e7fcff9ae78e412d5186dac2aad9b"},
 ]
 
 [package.dependencies]
