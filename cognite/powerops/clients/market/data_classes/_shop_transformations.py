@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, ClassVar, Union
+from typing import TYPE_CHECKING, ClassVar, Optional, Union  # noqa: F401
 
 from cognite.client import data_modeling as dm
 from pydantic import Field

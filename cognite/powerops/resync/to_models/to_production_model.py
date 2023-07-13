@@ -22,8 +22,8 @@ from cognite.powerops.resync.models.production_dm import ProductionModelDM
 from cognite.powerops.resync.utils.common import make_ext_id
 from cognite.powerops.resync.utils.serializer import load_yaml
 
-p_min_fallback = 0
-p_max_fallback = 1e20
+p_min_fallback = 0.0
+p_max_fallback = 100_000_000_000_000_000.0
 
 head_loss_factor_fallback = 0.0
 
@@ -283,8 +283,8 @@ def to_production_data_model(asset_model: production.ProductionModel) -> Product
             head_loss_factor=plant.head_loss_factor,
             penstock_head_loss_factors=plant.penstock_head_loss_factors,
             outlet_level=plant.outlet_level,
-            p_min=plant.p_min,
-            p_max=plant.p_max,
+            p_min=float(plant.p_min),
+            p_max=float(plant.p_max),
             p_min_time_series=plant.p_min_time_series.external_id if plant.p_min_time_series else None,
             p_max_time_series=plant.p_max_time_series.external_id if plant.p_max_time_series else None,
             head_direct_time_series=plant.head_direct_time_series.external_id
@@ -320,6 +320,10 @@ def to_production_data_model(asset_model: production.ProductionModel) -> Product
             external_id=price_area.external_id,
             watercourses=[watercourse.external_id for watercourse in price_area.watercourses],
             plants=[p.external_id for p in price_area.plants],
+            name=price_area.name,
+            day_ahead_price=price_area.dayahead_price_time_series.external_id
+            if price_area.dayahead_price_time_series
+            else None,
         )
         data_model.price_areas.append(apply)
 

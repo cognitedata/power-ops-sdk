@@ -12,7 +12,7 @@ from cognite.powerops.clients.market.data_classes import RKOMBid, RKOMBidApply, 
 from ._core import TypeAPI
 
 
-class ReserveScenariosAPI:
+class PriceScenariosAPI:
     def __init__(self, client: CogniteClient):
         self._client = client
 
@@ -45,7 +45,7 @@ class ReserveScenariosAPI:
         return self._client.data_modeling.instances.list("edge", limit=limit, filter=is_edge_type)
 
 
-class PriceScenariosAPI:
+class ReserveScenariosAPI:
     def __init__(self, client: CogniteClient):
         self._client = client
 
@@ -87,8 +87,8 @@ class RKOMBidsAPI(TypeAPI[RKOMBid, RKOMBidApply, RKOMBidList]):
             class_apply_type=RKOMBidApply,
             class_list=RKOMBidList,
         )
-        self.price_scenarios = ReserveScenariosAPI(client)
-        self.reserve_scenarios = PriceScenariosAPI(client)
+        self.price_scenarios = PriceScenariosAPI(client)
+        self.reserve_scenarios = ReserveScenariosAPI(client)
 
     def apply(self, rkom_bid: RKOMBidApply, replace: bool = False) -> dm.InstancesApplyResult:
         instances = rkom_bid.to_instances_apply()

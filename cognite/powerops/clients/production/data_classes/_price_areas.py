@@ -11,17 +11,23 @@ if TYPE_CHECKING:
     from ._plants import PlantApply
     from ._watercourses import WatercourseApply
 
-__all__ = ["PriceArea", "PriceAreaApply", "PriceAreaList", "Optional"]
+__all__ = ["PriceArea", "PriceAreaApply", "PriceAreaList"]
 
 
 class PriceArea(DomainModel):
     space: ClassVar[str] = "power-ops"
+    day_ahead_price: Optional[str] = Field(None, alias="dayAheadPrice")
+    description: Optional[str] = None
+    name: Optional[str] = None
     plants: list[str] = []
     watercourses: list[str] = []
 
 
 class PriceAreaApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
+    day_ahead_price: Optional[str] = None
+    description: Optional[str] = None
+    name: Optional[str] = None
     plants: list[Union[str, "PlantApply"]] = Field(default_factory=lambda: [], repr=False)
     watercourses: list[Union[str, "WatercourseApply"]] = Field(default_factory=lambda: [], repr=False)
 
@@ -30,6 +36,16 @@ class PriceAreaApply(DomainModelApply):
             return InstancesApply([], [])
 
         sources = []
+        source = dm.NodeOrEdgeData(
+            source=dm.ContainerId("power-ops", "PriceArea"),
+            properties={
+                "dayAheadPrice": self.day_ahead_price,
+                "description": self.description,
+                "name": self.name,
+            },
+        )
+        sources.append(source)
+
         this_node = dm.NodeApply(
             space=self.space,
             external_id=self.external_id,
