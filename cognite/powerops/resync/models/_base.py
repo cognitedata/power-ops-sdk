@@ -11,7 +11,9 @@ from cognite.client.data_classes.data_modeling.instances import EdgeApply, NodeA
 from pydantic import BaseModel, ConfigDict
 
 from cognite.powerops.cdf_labels import AssetLabel, RelationshipLabel
-from cognite.powerops.clients.cogshop.data_classes._core import DomainModelApply, InstancesApply
+from cognite.powerops.clients.cogshop.data_classes._core import DomainModelApply as CogShopApply
+from cognite.powerops.clients.cogshop.data_classes._core import InstancesApply
+from cognite.powerops.clients.production.data_classes._core import DomainModelApply as ProductionApply
 from cognite.powerops.resync.models.cdf_resources import CDFFile, CDFSequence
 
 
@@ -245,7 +247,11 @@ class DataModel(Model, ABC):
 
         return InstancesApply(nodes=list(nodes.values()), edges=list(edges.values()))
 
-    def _domain_models(self) -> Iterable[DomainModelApply]:
+    def _domain_models(self) -> Iterable[CogShopApply | ProductionApply]:
         for f in self.model_fields:
-            if isinstance(items := getattr(self, f), list) and items and isinstance(items[0], DomainModelApply):
+            if (
+                isinstance(items := getattr(self, f), list)
+                and items
+                and isinstance(items[0], (CogShopApply, ProductionApply))
+            ):
                 yield from items

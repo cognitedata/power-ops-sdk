@@ -306,7 +306,7 @@ def to_production_data_model(asset_model: production.ProductionModel) -> Product
             name=watercourse.name,
             plants=[plant.external_id for plant in watercourse.plants],
             shop=WatercourseShopApply(
-                external_id=make_ext_id(watercourse.name, watercourse.shop.penalty_limit),
+                external_id=make_ext_id(watercourse.name, watercourse.shop.penalty_limit, prefix="WaterCourseShop"),
                 penalty_limit=float(watercourse.shop.penalty_limit),
             ),
             production_obligation=watercourse.production_obligation_time_series[0].external_id
