@@ -1,22 +1,23 @@
 from __future__ import annotations
 
-from typing import ClassVar
+from typing import ClassVar, Optional
 
 from cognite.client import data_modeling as dm
+from pydantic import Field
 
 from ._core import DomainModel, DomainModelApply, InstancesApply, TypeList
 
-__all__ = ["CommandsConfig", "CommandsConfigApply", "CommandsConfigList"]
+__all__ = ["WatercourseShop", "WatercourseShopApply", "WatercourseShopList"]
 
 
-class CommandsConfig(DomainModel):
+class WatercourseShop(DomainModel):
     space: ClassVar[str] = "power-ops"
-    commands: list[str] = []
+    penalty_limit: Optional[float] = Field(None, alias="penaltyLimit")
 
 
-class CommandsConfigApply(DomainModelApply):
+class WatercourseShopApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
-    commands: list[str]
+    penalty_limit: Optional[float] = None
 
     def _to_instances_apply(self, cache: set[str]) -> InstancesApply:
         if self.external_id in cache:
@@ -24,9 +25,9 @@ class CommandsConfigApply(DomainModelApply):
 
         sources = []
         source = dm.NodeOrEdgeData(
-            source=dm.ContainerId("power-ops", "CommandsConfig"),
+            source=dm.ContainerId("power-ops", "WatercourseShop"),
             properties={
-                "commands": self.commands,
+                "penaltyLimit": self.penalty_limit,
             },
         )
         sources.append(source)
@@ -43,5 +44,5 @@ class CommandsConfigApply(DomainModelApply):
         return InstancesApply(nodes, edges)
 
 
-class CommandsConfigList(TypeList[CommandsConfig]):
-    _NODE = CommandsConfig
+class WatercourseShopList(TypeList[WatercourseShop]):
+    _NODE = WatercourseShop

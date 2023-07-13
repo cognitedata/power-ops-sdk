@@ -6,17 +6,17 @@ from pathlib import Path
 from cognite.client import ClientConfig, CogniteClient
 from cognite.client.credentials import OAuthClientCredentials
 
-from ._api.commands_configs import CommandsConfigsAPI
-from ._api.input_time_series_mappings import InputTimeSeriesMappingsAPI
-from ._api.output_mappings import OutputMappingsAPI
-from ._api.scenario_templates import ScenarioTemplatesAPI
-from ._api.scenarios import ScenariosAPI
-from ._api.value_transformations import ValueTransformationsAPI
+from ._api.generators import GeneratorsAPI
+from ._api.plants import PlantsAPI
+from ._api.price_areas import PriceAreasAPI
+from ._api.reservoirs import ReservoirsAPI
+from ._api.watercourse_shops import WatercourseShopsAPI
+from ._api.watercourses import WatercoursesAPI
 
 
-class CogShopClient:
+class ProductionClient:
     """
-    CogShopClient
+    ProductionClient
 
     Generated with:
         pygen = 0.11.5
@@ -25,23 +25,23 @@ class CogShopClient:
 
     Data Model:
         space: power-ops
-        externalId: cogshop
+        externalId: production
         version: 1
     """
 
     def __init__(self, config: ClientConfig | None = None):
         client = CogniteClient(config)
-        self.commands_configs = CommandsConfigsAPI(client)
-        self.input_time_series_mappings = InputTimeSeriesMappingsAPI(client)
-        self.output_mappings = OutputMappingsAPI(client)
-        self.scenarios = ScenariosAPI(client)
-        self.scenario_templates = ScenarioTemplatesAPI(client)
-        self.value_transformations = ValueTransformationsAPI(client)
+        self.generators = GeneratorsAPI(client)
+        self.plants = PlantsAPI(client)
+        self.price_areas = PriceAreasAPI(client)
+        self.reservoirs = ReservoirsAPI(client)
+        self.watercourses = WatercoursesAPI(client)
+        self.watercourse_shops = WatercourseShopsAPI(client)
 
     @classmethod
     def azure_project(
         cls, tenant_id: str, client_id: str, client_secret: str, cdf_cluster: str, project: str
-    ) -> CogShopClient:
+    ) -> ProductionClient:
         base_url = f"https://{cdf_cluster}.cognitedata.com/"
         credentials = OAuthClientCredentials(
             token_url=f"https://login.microsoftonline.com/{tenant_id}/oauth2/v2.0/token",
@@ -59,7 +59,7 @@ class CogShopClient:
         return cls(config)
 
     @classmethod
-    def from_toml(cls, file_path: Path | str) -> CogShopClient:
+    def from_toml(cls, file_path: Path | str) -> ProductionClient:
         import toml
 
         return cls.azure_project(**toml.load(file_path)["cognite"])

@@ -1,22 +1,24 @@
 from __future__ import annotations
 
-from typing import ClassVar
+from typing import ClassVar, Optional
 
 from cognite.client import data_modeling as dm
 
 from ._core import DomainModel, DomainModelApply, InstancesApply, TypeList
 
-__all__ = ["CommandsConfig", "CommandsConfigApply", "CommandsConfigList"]
+__all__ = ["ValueTransformation", "ValueTransformationApply", "ValueTransformationList"]
 
 
-class CommandsConfig(DomainModel):
+class ValueTransformation(DomainModel):
     space: ClassVar[str] = "power-ops"
-    commands: list[str] = []
+    arguments: Optional[dict] = None
+    method: Optional[str] = None
 
 
-class CommandsConfigApply(DomainModelApply):
+class ValueTransformationApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
-    commands: list[str]
+    arguments: Optional[dict] = None
+    method: str
 
     def _to_instances_apply(self, cache: set[str]) -> InstancesApply:
         if self.external_id in cache:
@@ -24,9 +26,10 @@ class CommandsConfigApply(DomainModelApply):
 
         sources = []
         source = dm.NodeOrEdgeData(
-            source=dm.ContainerId("power-ops", "CommandsConfig"),
+            source=dm.ContainerId("power-ops", "ValueTransformation"),
             properties={
-                "commands": self.commands,
+                "arguments": self.arguments,
+                "method": self.method,
             },
         )
         sources.append(source)
@@ -43,5 +46,5 @@ class CommandsConfigApply(DomainModelApply):
         return InstancesApply(nodes, edges)
 
 
-class CommandsConfigList(TypeList[CommandsConfig]):
-    _NODE = CommandsConfig
+class ValueTransformationList(TypeList[ValueTransformation]):
+    _NODE = ValueTransformation

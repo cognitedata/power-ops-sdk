@@ -9,29 +9,26 @@ from ._core import DomainModel, DomainModelApply, InstancesApply, TypeList
 
 if TYPE_CHECKING:
     from ._commands_configs import CommandsConfigApply
-    from ._file_refs import FileRefApply
-    from ._mappings import MappingApply
-    from ._model_templates import ModelTemplateApply
+    from ._input_time_series_mappings import InputTimeSeriesMappingApply
+    from ._scenario_templates import ScenarioTemplateApply
 
 __all__ = ["Scenario", "ScenarioApply", "ScenarioList"]
 
 
 class Scenario(DomainModel):
-    space: ClassVar[str] = "cogShop"
+    space: ClassVar[str] = "power-ops"
     commands: Optional[str] = None
-    extra_files: list[str] = Field([], alias="extraFiles")
     mappings_override: list[str] = Field([], alias="mappingsOverride")
-    model_template: Optional[str] = Field(None, alias="modelTemplate")
     name: Optional[str] = None
+    template: Optional[str] = None
 
 
 class ScenarioApply(DomainModelApply):
-    space: ClassVar[str] = "cogShop"
+    space: ClassVar[str] = "power-ops"
     commands: Optional[Union[str, "CommandsConfigApply"]] = Field(None, repr=False)
-    extra_files: list[Union[str, "FileRefApply"]] = Field(default_factory=lambda: [], repr=False)
-    mappings_override: list[Union[str, "MappingApply"]] = Field(default_factory=lambda: [], repr=False)
-    model_template: Optional[Union[str, "ModelTemplateApply"]] = Field(None, repr=False)
+    mappings_override: list[Union[str, "InputTimeSeriesMappingApply"]] = Field(default_factory=lambda: [], repr=False)
     name: str
+    template: Optional[Union[str, "ScenarioTemplateApply"]] = Field(None, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> InstancesApply:
         if self.external_id in cache:
@@ -39,19 +36,17 @@ class ScenarioApply(DomainModelApply):
 
         sources = []
         source = dm.NodeOrEdgeData(
-            source=dm.ContainerId("cogShop", "Scenario"),
+            source=dm.ContainerId("power-ops", "Scenario"),
             properties={
                 "commands": {
-                    "space": "cogShop",
+                    "space": "power-ops",
                     "externalId": self.commands if isinstance(self.commands, str) else self.commands.external_id,
                 },
-                "modelTemplate": {
-                    "space": "cogShop",
-                    "externalId": self.model_template
-                    if isinstance(self.model_template, str)
-                    else self.model_template.external_id,
-                },
                 "name": self.name,
+                "template": {
+                    "space": "power-ops",
+                    "externalId": self.template if isinstance(self.template, str) else self.template.external_id,
+                },
             },
         )
         sources.append(source)
@@ -64,17 +59,6 @@ class ScenarioApply(DomainModelApply):
         )
         nodes = [this_node]
         edges = []
-
-        for extra_file in self.extra_files:
-            edge = self._create_extra_file_edge(extra_file)
-            if edge.external_id not in cache:
-                edges.append(edge)
-                cache.add(edge.external_id)
-
-            if isinstance(extra_file, DomainModelApply):
-                instances = extra_file._to_instances_apply(cache)
-                nodes.extend(instances.nodes)
-                edges.extend(instances.edges)
 
         for mappings_override in self.mappings_override:
             edge = self._create_mappings_override_edge(mappings_override)
@@ -92,43 +76,29 @@ class ScenarioApply(DomainModelApply):
             nodes.extend(instances.nodes)
             edges.extend(instances.edges)
 
-        if isinstance(self.model_template, DomainModelApply):
-            instances = self.model_template._to_instances_apply(cache)
+        if isinstance(self.template, DomainModelApply):
+            instances = self.template._to_instances_apply(cache)
             nodes.extend(instances.nodes)
             edges.extend(instances.edges)
 
         return InstancesApply(nodes, edges)
 
-    def _create_extra_file_edge(self, extra_file: Union[str, "FileRefApply"]) -> dm.EdgeApply:
-        if isinstance(extra_file, str):
-            end_node_ext_id = extra_file
-        elif isinstance(extra_file, DomainModelApply):
-            end_node_ext_id = extra_file.external_id
-        else:
-            raise TypeError(f"Expected str or FileRefApply, got {type(extra_file)}")
-
-        return dm.EdgeApply(
-            space="cogShop",
-            external_id=f"{self.external_id}:{end_node_ext_id}",
-            type=dm.DirectRelationReference("cogShop", "Scenario.extraFiles"),
-            start_node=dm.DirectRelationReference(self.space, self.external_id),
-            end_node=dm.DirectRelationReference("cogShop", end_node_ext_id),
-        )
-
-    def _create_mappings_override_edge(self, mappings_override: Union[str, "MappingApply"]) -> dm.EdgeApply:
+    def _create_mappings_override_edge(
+        self, mappings_override: Union[str, "InputTimeSeriesMappingApply"]
+    ) -> dm.EdgeApply:
         if isinstance(mappings_override, str):
             end_node_ext_id = mappings_override
         elif isinstance(mappings_override, DomainModelApply):
             end_node_ext_id = mappings_override.external_id
         else:
-            raise TypeError(f"Expected str or MappingApply, got {type(mappings_override)}")
+            raise TypeError(f"Expected str or InputTimeSeriesMappingApply, got {type(mappings_override)}")
 
         return dm.EdgeApply(
-            space="cogShop",
+            space="power-ops",
             external_id=f"{self.external_id}:{end_node_ext_id}",
-            type=dm.DirectRelationReference("cogShop", "Scenario.mappingsOverride"),
+            type=dm.DirectRelationReference("power-ops", "Scenario.mappingsOverride"),
             start_node=dm.DirectRelationReference(self.space, self.external_id),
-            end_node=dm.DirectRelationReference("cogShop", end_node_ext_id),
+            end_node=dm.DirectRelationReference("power-ops", end_node_ext_id),
         )
 
 

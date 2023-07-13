@@ -1,22 +1,27 @@
 from __future__ import annotations
 
-from typing import ClassVar
+from typing import ClassVar, Optional
 
 from cognite.client import data_modeling as dm
+from pydantic import Field
 
 from ._core import DomainModel, DomainModelApply, InstancesApply, TypeList
 
-__all__ = ["CommandsConfig", "CommandsConfigApply", "CommandsConfigList"]
+__all__ = ["RKOMCombinationBid", "RKOMCombinationBidApply", "RKOMCombinationBidList"]
 
 
-class CommandsConfig(DomainModel):
+class RKOMCombinationBid(DomainModel):
     space: ClassVar[str] = "power-ops"
-    commands: list[str] = []
+    auction: Optional[str] = None
+    name: Optional[str] = None
+    rkom_big_configs: list[str] = Field([], alias="rkomBigConfigs")
 
 
-class CommandsConfigApply(DomainModelApply):
+class RKOMCombinationBidApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
-    commands: list[str]
+    auction: Optional[str] = None
+    name: Optional[str] = None
+    rkom_big_configs: list[str] = []
 
     def _to_instances_apply(self, cache: set[str]) -> InstancesApply:
         if self.external_id in cache:
@@ -24,9 +29,11 @@ class CommandsConfigApply(DomainModelApply):
 
         sources = []
         source = dm.NodeOrEdgeData(
-            source=dm.ContainerId("power-ops", "CommandsConfig"),
+            source=dm.ContainerId("power-ops", "RKOMCombinationBid"),
             properties={
-                "commands": self.commands,
+                "auction": self.auction,
+                "name": self.name,
+                "rkomBigConfigs": self.rkom_big_configs,
             },
         )
         sources.append(source)
@@ -43,5 +50,5 @@ class CommandsConfigApply(DomainModelApply):
         return InstancesApply(nodes, edges)
 
 
-class CommandsConfigList(TypeList[CommandsConfig]):
-    _NODE = CommandsConfig
+class RKOMCombinationBidList(TypeList[RKOMCombinationBid]):
+    _NODE = RKOMCombinationBid
