@@ -26,6 +26,7 @@ class PowerOpsModel:
 
 _SPACE = "power-ops"
 _INPUT_TIMESERIES_MAPPING = GRAPHQL_SCHEMAS / "input_timeseries_mapping.graphql"
+_VALUE_TRANSFORMATION = GRAPHQL_SCHEMAS / "value_transformation.graphql"
 
 MODEL_BY_NAME: dict[str, PowerOpsModel] = {
     "production": PowerOpsModel(
@@ -42,7 +43,7 @@ MODEL_BY_NAME: dict[str, PowerOpsModel] = {
         "bids and processes. In addition, to benchmarking.",
         graphql_file=GRAPHQL_SCHEMAS / "market.graphql",
         id_=DataModelId(_SPACE, "market", "1"),
-        extra_types=[_INPUT_TIMESERIES_MAPPING],
+        extra_types=[_INPUT_TIMESERIES_MAPPING, _VALUE_TRANSFORMATION],
     ),
     "cogshop": PowerOpsModel(
         name="CogShop",
@@ -51,6 +52,6 @@ MODEL_BY_NAME: dict[str, PowerOpsModel] = {
         "executed daily and configuration of those SHOP runs.",
         graphql_file=GRAPHQL_SCHEMAS / "cogshop.graphql",
         id_=DataModelId(_SPACE, "cogshop", "1"),
-        extra_types=[_INPUT_TIMESERIES_MAPPING],
+        extra_types=[_INPUT_TIMESERIES_MAPPING, _VALUE_TRANSFORMATION],
     ),
 }
