@@ -160,7 +160,7 @@ class ReserveScenarios(BaseModel):
         return list(set(volumes))  # Do not want duplicate volumes
 
     def __str__(self) -> str:
-        return f'[{"MW, ".join(str(volume) for volume in sorted(self.volumes))}MW]'  # E.g "[0MW, 10MW, 20MW]"
+        return json.dumps([f"{volume}MW" for volume in sorted(self.volumes)])
 
     def __len__(self) -> int:
         return len(self.list_scenarios())

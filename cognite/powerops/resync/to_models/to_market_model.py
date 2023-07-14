@@ -6,7 +6,12 @@ from typing import Any
 import pandas as pd
 from cognite.client.data_classes import Sequence
 
-from cognite.powerops.clients.market.data_classes import DayAheadProcesApply, NordPoolMarketApply, RKOMMarketApply
+from cognite.powerops.clients.market.data_classes import (
+    DayAheadProcesApply,
+    NordPoolMarketApply,
+    RKOMMarketApply,
+    RKOMProcesApply,
+)
 from cognite.powerops.resync.config.market import BenchmarkingConfig, PriceScenario, PriceScenarioID
 from cognite.powerops.resync.config.market.dayahead import BidMatrixGeneratorConfig, BidProcessConfig
 from cognite.powerops.resync.config.market.market import MARKET_BY_PRICE_AREA
@@ -88,21 +93,9 @@ def to_market_data_model(model: MarketModel) -> MarketDM:
                 for r in process.bid_matrix_generator_config.content.to_dict(orient="records")
             ]
 
-            incremental_mappings: list[dict] = []
-            for mapping in process.incremental_mapping:
-                incremental_mappings.append(
-                    dict(
-                        external_id=mapping.external_id,
-                        mappings=[_to_input_timeseries_mapping(r) for r in mapping.content.to_dict(orient="records")],
-                        name=mapping.sequence.name,
-                    )
-                )
+            incremental_mappings = _to_incremental_mappings(process.incremental_mapping)
 
-            shop_transformation = dict(
-                external_id=make_ext_id(process.shop.starttime, process.shop.endtime, prefix="ShopTransformation"),
-                start=_to_date_transformation(process.shop.starttime),
-                end=_to_date_transformation(process.shop.endtime),
-            )
+            shop_transformation = _to_shop_transformation(process.shop)
 
             bid = process.bid
             bid_apply = dict(
@@ -130,7 +123,66 @@ def to_market_data_model(model: MarketModel) -> MarketDM:
             )
             data_model.dayahead_process.append(apply)
 
+        elif isinstance(process, market_models.RKOMProcess):
+            incremental_mappings = _to_incremental_mappings(process.incremental_mapping)
+            shop_transformation = _to_shop_transformation(process.shop)
+            bid = process.bid
+            bid_apply = dict(
+                external_id=make_ext_id(*bid.model_dump().values(), prefix="RKOMBid"),
+                auction=bid.auction,
+                block=bid.block,
+                date=_to_date_transformation(bid.date),
+                market=data_model.rkom_market[0].external_id if data_model.rkom_market else None,
+                method=bid.method,
+                minimum_price=float(bid.minimum_price),
+                price_premium=float(bid.price_premium),
+                # price_scenarios=json.loads(bid.price_scenarios),
+                product=bid.product,
+                watercourse=bid.watercourse,
+                # reserve_scenarios=json.loads(bid.reserve_scenarios),
+            )
+
+            apply = RKOMProcesApply(
+                **dict(
+                    external_id=process.external_id,
+                    name=process.name,
+                    bid=bid_apply,
+                    incremental_mapping=incremental_mappings,
+                    plants=json.loads(process.rkom.plants),
+                    shop=shop_transformation,
+                    timezone=process.timezone,
+                )
+            )
+            data_model.rkom_process.append(apply)
+        # elif isinstance(process, market_models.BenchmarkProcess):
+        #     apply = BenchmarkingApply(
+        #     )
+
+    # for combination in model.combinations:
+    #     apply = RKOMBidCombinationApply(
+    #     )
     return data_model
+
+
+def _to_shop_transformation(shop: market_models.ShopTransformation) -> dict:
+    return dict(
+        external_id=make_ext_id(shop.starttime, shop.endtime, prefix="ShopTransformation"),
+        start=_to_date_transformation(shop.starttime),
+        end=_to_date_transformation(shop.endtime),
+    )
+
+
+def _to_incremental_mappings(sequence_mapping: list[CDFSequence]) -> list[dict[str, Any]]:
+    incremental_mappings: list[dict] = []
+    for mapping in sequence_mapping:
+        incremental_mappings.append(
+            dict(
+                external_id=mapping.external_id,
+                mappings=[_to_input_timeseries_mapping(r) for r in mapping.content.to_dict(orient="records")],
+                name=mapping.sequence.name,
+            )
+        )
+    return incremental_mappings
 
 
 def _to_date_transformation(raw: str) -> list[dict]:
@@ -388,7 +440,7 @@ def _to_rkom_market(
                 method=config.method,
                 minimum_price=str(config.minimum_price),
                 price_premium=str(config.price_premium),
-                price_scenarios=str(list(price_scenarios_by_name)),
+                price_scenarios=json.dumps(list(price_scenarios_by_name)),
                 reserve_scenarios=str(config.reserve_scenarios),
             ),
             shop=market_models.ShopTransformation(
@@ -396,7 +448,7 @@ def _to_rkom_market(
                 endtime=str(config.shop_end),
             ),
             timezone=config.timezone,
-            rkom=market_models.RKOMPlants(plants=str(sorted(config.rkom_plants))),
+            rkom=market_models.RKOMPlants(plants=json.dumps(sorted(config.rkom_plants))),
             incremental_mapping=incremental_mapping_sequences,
         )
         process.external_id = config.external_id
