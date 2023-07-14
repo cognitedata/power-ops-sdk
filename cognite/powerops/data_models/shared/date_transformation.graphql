@@ -1,0 +1,5 @@
+type DateTransformation {
+    transformation: String
+    args: [String]
+    kwargs: JSONObject
+}

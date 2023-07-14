@@ -7,15 +7,15 @@ type OutputMapping{
   isStep: Boolean
 }
 
-type CommandsConfig {
+type CommandConfig {
   commands: [String]
 }
 
 type Scenario {
   name: String
   template: ScenarioTemplate
-  mappingsOverride: [InputTimeSeriesMapping]
-  commands: CommandsConfig
+  mapping: ScenarioMapping
+  commands: CommandConfig
 }
 
 

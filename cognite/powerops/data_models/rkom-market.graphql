@@ -1,0 +1,59 @@
+type RKOMMarket implements Market {
+    name: String
+    timezone: String
+    startOfWeek: Int
+}
+
+
+type PriceScenario{
+    name: String
+    timeSeries: TimeSeries
+    transformations: [ValueTransformation]
+}
+
+type ReserveScenario{
+    volumes: [Int]
+    auction: String
+    product: String
+    block: String
+    reserveGroup: String
+    mipPlant: [TimeSeries]
+    obligation: TimeSeries
+}
+
+type RKOMBid implements Bid {
+    name: String
+    date: [DateTransformation]
+    market: Market
+    auction: String
+    block: String
+    method: String
+    minimumPrice: Float
+    pricePremium: Float
+    priceScenarios: [PriceScenario]
+    product: String
+    reserveScenarios: [ReserveScenario]
+    watercourse: String
+}
+
+type RKOMProcess implements Process{
+    name: String
+    bid: RKOMBid
+    shop: ShopTransformation
+    processEvents: [String]
+    timezone: String
+    plants: [String]
+    scenario_mappings: [ScenarioMapping]
+}
+
+type RKOMCombinationBid{
+    name: String
+    auction: String
+    rkomBigConfigs: [String]
+}
+
+type RKOMBidCombination {
+    name: String
+    auction: String
+    bid: RKOMCombinationBid
+}

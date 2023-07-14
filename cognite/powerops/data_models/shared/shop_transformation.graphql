@@ -1,0 +1,4 @@
+type ShopTransformation {
+    start: [DateTransformation]
+    end: [DateTransformation]
+}
