@@ -6,7 +6,7 @@ from typing import Optional
 import pandas as pd
 from cognite.client.data_classes import Sequence, TimeSeries
 
-from cognite.powerops.clients.production.data_classes import (
+from cognite.powerops.clients.data_classes import (
     GeneratorApply,
     PlantApply,
     PriceAreaApply,

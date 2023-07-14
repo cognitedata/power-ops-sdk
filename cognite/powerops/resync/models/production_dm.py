@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pydantic import Field
 
-from cognite.powerops.clients.production.data_classes import (
+from cognite.powerops.clients.data_classes import (
     GeneratorApply,
     PlantApply,
     PriceAreaApply,

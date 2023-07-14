@@ -1,6 +1,6 @@
 from pydantic import Field
 
-from cognite.powerops.clients.cogshop.data_classes import (
+from cognite.powerops.clients.data_classes import (
     InputTimeSeriesMappingApply,
     OutputMappingApply,
     ScenarioTemplateApply,

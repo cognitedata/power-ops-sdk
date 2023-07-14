@@ -6,7 +6,7 @@ from typing import Any
 import pandas as pd
 from cognite.client.data_classes import Sequence
 
-from cognite.powerops.clients.market.data_classes import (
+from cognite.powerops.clients.data_classes import (
     DayAheadProcesApply,
     NordPoolMarketApply,
     RKOMMarketApply,

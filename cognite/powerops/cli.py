@@ -10,7 +10,7 @@ from rich.console import Console
 from rich.logging import RichHandler
 
 from cognite import powerops
-from cognite.powerops.clients import get_powerops_client
+from cognite.powerops.clients.powerops_client import get_powerops_client
 
 from . import resync
 from ._models import MODEL_BY_NAME

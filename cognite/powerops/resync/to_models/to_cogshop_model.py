@@ -10,7 +10,7 @@ import pandas as pd
 import yaml
 from cognite.client.data_classes import FileMetadata, Sequence
 
-from cognite.powerops.clients.cogshop.data_classes import (
+from cognite.powerops.clients.data_classes import (
     InputTimeSeriesMappingApply,
     OutputMappingApply,
     ScenarioTemplateApply,

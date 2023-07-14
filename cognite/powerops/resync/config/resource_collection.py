@@ -11,7 +11,7 @@ from cognite.client.exceptions import CogniteAPIError
 from deepdiff import DeepDiff
 from pydantic import BaseModel, Extra
 
-from cognite.powerops.clients.cogshop.data_classes._core import DomainModelApply, InstancesApply
+from cognite.powerops.clients.data_classes._core import DomainModelApply, InstancesApply
 from cognite.powerops.clients.powerops_client import PowerOpsClient
 from cognite.powerops.resync.config.cogshop.shop_file_config import ShopFileConfig
 from cognite.powerops.resync.config.shared import ExternalId
