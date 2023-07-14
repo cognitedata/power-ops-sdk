@@ -1,8 +1,10 @@
 from __future__ import annotations
 
+from typing import TypeVar
+
 from pydantic import BaseModel, Field
 
-from cognite.powerops.resync.models._base import AssetType
+T = TypeVar("T")
 
 
 class Connection(BaseModel):
@@ -12,19 +14,19 @@ class Connection(BaseModel):
     to: str
     to_type: str
 
-    def to_from_any(self, from_: dict[str, AssetType], to: AssetType) -> AssetType | None:
-        if self.to != to.name or self.to_type != to.type_:
+    def to_from_any(self, from_: dict[str, T], to_name: str, to_type: str) -> T | None:
+        if self.to != to_name or self.to_type != to_type:
             return None
         f = from_.get(self.from_)
-        if f and self.from_type == f.type_:
+        if f:
             return f
         return None
 
-    def from_to_any(self, from_: AssetType, to: dict[str, AssetType]) -> AssetType | None:
-        if self.from_ != from_.name or self.from_type != from_.type_:
+    def from_to_any(self, from_name: str, from_type: str, to: dict[str, T]) -> T | None:
+        if self.from_ != from_name or self.from_type != from_type:
             return None
         f = to.get(self.to)
 
-        if f and self.to_type == f.type_:
+        if f:
             return f
         return None

@@ -112,55 +112,15 @@ def to_production_model(config: ProductionConfig) -> production.ProductionModel:
                 startcost=float(_get_single_value(generator_attributes.get("startcost", 0.0))),
                 start_stop_cost_time_series=TimeSeries(external_id=start_stop_cost) if start_stop_cost else None,
             )
-            x_col_name = "generator_power"
-            y_col_name = "generator_efficiency"
-            sequence = Sequence(
-                external_id=f"{generator.external_id}_generator_efficiency_curve",
-                name=f"{generator.name} generator efficiency curve",
-                columns=[
-                    {"valueType": "DOUBLE", "externalId": x_col_name},
-                    {"valueType": "DOUBLE", "externalId": y_col_name},
-                ],
-            )
-            data = generator_attributes["gen_eff_curve"]
-            efficiency_curve = CDFSequence(
-                sequence=sequence,
-                content=pd.DataFrame(
-                    {
-                        x_col_name: data["x"],
-                        y_col_name: data["y"],
-                    },
-                    dtype=float,
-                ),
+
+            efficiency_curve = _create_generator_efficiency_curve(
+                generator_attributes, generator.name, generator.external_id
             )
             generator.generator_efficiency_curve = efficiency_curve
-            data = generator_attributes["turb_eff_curves"]
-            ref_col_name = "head"
-            x_col_name = "flow"
-            y_col_name = "turbine_efficiency"
-            sequence = Sequence(
-                external_id=f"{generator.external_id}_turbine_efficiency_curve",
-                name=f"{generator.name} turbine efficiency curve",
-                columns=[
-                    {"valueType": "DOUBLE", "externalId": ref_col_name},
-                    {"valueType": "DOUBLE", "externalId": x_col_name},
-                    {"valueType": "DOUBLE", "externalId": y_col_name},
-                ],
-            )
-            df = pd.DataFrame(
-                {
-                    ref_col_name: [entry["ref"] for entry in data for _ in range(len(entry["x"]))],
-                    x_col_name: [item for entry in data for item in entry["x"]],
-                    y_col_name: [item for entry in data for item in entry["y"]],
-                },
-                dtype=float,
-            )
 
-            turbine_efficiency_curve = CDFSequence(
-                sequence=sequence,
-                content=df,
+            turbine_efficiency_curve = _create_turbine_efficency_curve(
+                generator_attributes, generator.name, generator.external_id
             )
-
             generator.turbine_efficiency_curve = turbine_efficiency_curve
             model.generators.append(generator)
 
@@ -223,8 +183,14 @@ def to_production_model(config: ProductionConfig) -> production.ProductionModel:
 
             # Add the generators to the plant
             plant.generators = [
-                g for connection in parsed_connections if (g := connection.to_from_any(generators_by_name, plant))
-            ] + [g for connection in parsed_connections if (g := connection.from_to_any(plant, generators_by_name))]
+                g
+                for connection in parsed_connections
+                if (g := connection.to_from_any(generators_by_name, plant.name, plant.type_))
+            ] + [
+                g
+                for connection in parsed_connections
+                if (g := connection.from_to_any(plant.name, plant.type_, generators_by_name))
+            ]
             plants.append(plant)
 
             prod_area = str(list(attributes["prod_area"].values())[0])
@@ -247,87 +213,205 @@ def to_production_model(config: ProductionConfig) -> production.ProductionModel:
     return model
 
 
-def to_production_data_model(asset_model: production.ProductionModel) -> ProductionModelDM:
-    data_model = ProductionModelDM()
+def to_production_data_model(config: ProductionConfig) -> ProductionModelDM:
+    model = ProductionModelDM()
+    plant_time_series_mappings_by_name = {
+        mapping.plant_name: mapping for mapping in (config.plant_time_series_mappings or [])
+    }
+    start_stop_cost_time_series_by_generator = {
+        mapping.generator_name: mapping.start_stop_cost for mapping in (config.generator_time_series_mappings or [])
+    }
 
-    for generator in asset_model.generators:
-        apply = GeneratorApply(
-            external_id=generator.external_id,
-            name=generator.name,
-            p_min=generator.p_min,
-            penstock=int(generator.penstock),
-            start_stop_cost=generator.start_stop_cost_time_series.external_id
-            if generator.start_stop_cost_time_series
-            else None,
-            startcost=float(generator.startcost),
-            turbine_efficiency_curve=generator.turbine_efficiency_curve.external_id,
-            generator_efficiency_curve=generator.generator_efficiency_curve.external_id,
-        )
-        data_model.generators.append(apply)
-
-    for reservoir in asset_model.reservoirs:
-        apply = ReservoirApply(
-            external_id=reservoir.external_id,
-            name=reservoir.name,
-            display_name=reservoir.display_name,
-            ordering=int(reservoir.ordering),
-        )
-        data_model.reservoirs.append(apply)
-
-    for plant in asset_model.plants:
-        apply = PlantApply(
-            external_id=plant.external_id,
-            display_name=plant.display_name,
-            generators=[g.external_id for g in plant.generators],
-            inlet_reservoirs=[plant.inlet_reservoir.external_id],
-            head_loss_factor=plant.head_loss_factor,
-            penstock_head_loss_factors=plant.penstock_head_loss_factors,
-            outlet_level=plant.outlet_level,
-            p_min=float(plant.p_min),
-            p_max=float(plant.p_max),
-            p_min_time_series=plant.p_min_time_series.external_id if plant.p_min_time_series else None,
-            p_max_time_series=plant.p_max_time_series.external_id if plant.p_max_time_series else None,
-            head_direct_time_series=plant.head_direct_time_series.external_id
-            if plant.head_direct_time_series
-            else None,
-            inlet_level=plant.inlet_level_time_series if plant.inlet_level_time_series is not None else None,
-            name=plant.name,
-            ordering=int(plant.ordering),
-            outlet_level_time_series=plant.outlet_level_time_series.external_id
-            if plant.outlet_level_time_series
-            else None,
-            water_value=plant.water_value_time_series.external_id if plant.water_value_time_series else None,
-        )
-        data_model.plants.append(apply)
-
-    for watercourse in asset_model.watercourses:
-        apply = WatercourseApply(
-            external_id=watercourse.external_id,
-            name=watercourse.name,
-            plants=[plant.external_id for plant in watercourse.plants],
+    for watercourse_config in config.watercourses:
+        watercourse = WatercourseApply(
+            external_id=f"watercourse:{watercourse_config.name}",
+            name=watercourse_config.name,
             shop=WatercourseShopApply(
-                external_id=make_ext_id(watercourse.name, watercourse.shop.penalty_limit, prefix="WaterCourseShop"),
-                penalty_limit=float(watercourse.shop.penalty_limit),
+                external_id=make_ext_id(watercourse_config.shop_penalty_limit, WatercourseShopApply),
+                penalty_limit=watercourse_config.shop_penalty_limit,
             ),
-            production_obligation=watercourse.production_obligation_time_series[0].external_id
-            if watercourse.production_obligation_time_series
-            else None,
+            plants=[],
+            production_obligation=watercourse_config.production_obligation_ts_ext_ids,
         )
-        data_model.watercourses.append(apply)
+        model.watercourses.append(watercourse)
+        # config_version = watercourse_config.version,
+        # model_file = watercourse_config.yaml_raw_path,
+        # processed_model_file = watercourse_config.yaml_processed_path,
 
-    for price_area in asset_model.price_areas:
-        apply = PriceAreaApply(
-            external_id=price_area.external_id,
-            watercourses=[watercourse.external_id for watercourse in price_area.watercourses],
-            plants=[p.external_id for p in price_area.plants],
-            name=price_area.name,
-            day_ahead_price=price_area.dayahead_price_time_series.external_id
-            if price_area.dayahead_price_time_series
-            else None,
-        )
-        data_model.price_areas.append(apply)
+        shop_case = load_yaml(watercourse_config.yaml_raw_path, clean_data=True)
 
-    return data_model
+        reservoirs = []
+        for reservoir_name in shop_case["model"]["reservoir"]:
+            reservoir = ReservoirApply(
+                external_id=f"reservoir:{reservoir_name}",
+                name=reservoir_name,
+                **dict(
+                    zip(
+                        ["display_name", "ordering"],
+                        watercourse_config.reservoir_display_names_and_order.get(
+                            reservoir_name, (re.sub(r"\([0-9]+\)", "", reservoir_name), "999")
+                        ),
+                    )
+                ),
+            )
+            reservoirs.append(reservoir)
+        model.reservoirs.extend(reservoirs)
+
+        for generator_name, generator_attributes in shop_case["model"]["generator"].items():
+            start_stop_cost = start_stop_cost_time_series_by_generator.get(generator_name)
+            generator = GeneratorApply(
+                external_id=f"generator:{generator_name}",
+                name=generator_name,
+                penstock=int(generator_attributes.get("penstock", 1)),
+                p_min=float(generator_attributes.get("p_min", 0.0)),
+                startcost=float(_get_single_value(generator_attributes.get("startcost", 0.0))),
+                start_stop_cost=start_stop_cost,
+            )
+            efficiency_curve = _create_generator_efficiency_curve(
+                generator_attributes, generator.name, generator.external_id
+            )
+            model.cdf_sequences.append(efficiency_curve)
+            generator.generator_efficiency_curve = efficiency_curve.external_id
+            turbine_efficiency_curve = _create_turbine_efficency_curve(
+                generator_attributes, generator.name, generator.external_id
+            )
+
+            generator.turbine_efficiency_curve = turbine_efficiency_curve.external_id
+            model.generators.append(generator)
+            model.cdf_sequences.append(turbine_efficiency_curve)
+
+        generators_by_name = {generator.name: generator for generator in model.generators}
+        plants = []
+        for plant_name, attributes in shop_case["model"]["plant"].items():
+            display_name, order = watercourse_config.plant_display_names_and_order.get(
+                plant_name, (re.sub(r"\([0-9]+\)", "", plant_name), "999")
+            )
+            mapping = plant_time_series_mappings_by_name.get(plant_name)
+            if mapping:
+                mappings = dict(
+                    water_value=mapping.water_value,
+                    inlet_level=mapping.inlet_reservoir_level,
+                    outlet_level_time_series=mapping.outlet_reservoir_level,
+                    feeding_fee=mapping.feeding_fee,
+                    p_min_time_series=mapping.p_min,
+                    p_max_time_series=mapping.p_max,
+                    head_direct_time_series=mapping.head_direct,
+                )
+            else:
+                mappings = {}
+
+            plant = PlantApply(
+                external_id=f"plant:{plant_name}",
+                name=plant_name,
+                display_name=display_name,
+                ordering=order,
+                outlet_level=float(attributes.get("outlet_line", 0)),
+                p_min=float(attributes.get("p_min", p_min_fallback)),
+                p_max=float(attributes.get("p_max", p_max_fallback)),
+                head_loss_factor=float(
+                    attributes.get("main_loss", [head_loss_factor_fallback])[0]
+                ),  # For some reason, SHOP defines this as a list, but we only need the first (and only) value
+                penstock_head_loss_factors={
+                    str(penstock_number): float(loss_factor)
+                    for penstock_number, loss_factor in enumerate(
+                        attributes.get("penstock_loss", [head_loss_factor_fallback]), start=1
+                    )
+                },
+                **mappings,
+            )
+            all_connections = shop_case["connections"]
+            inlet_reservoir_name = _plant_to_inlet_reservoir_breadth_first_search(
+                plant_name, all_connections, {r.name for r in model.reservoirs}
+            )
+            selected_reservoir = next((r for r in model.reservoirs if r.name == inlet_reservoir_name), None)
+            plant.inlet_reservoirs = [selected_reservoir]
+
+            parsed_connections = [Connection(**connection) for connection in all_connections]
+            # Add the generators to the plant
+            plant.generators = [
+                g
+                for connection in parsed_connections
+                if (g := connection.to_from_any(generators_by_name, plant.name, "plant"))
+            ] + [
+                g
+                for connection in parsed_connections
+                if (g := connection.from_to_any(plant.name, "plant", generators_by_name))
+            ]
+            plants.append(plant)
+
+            prod_area = str(list(attributes["prod_area"].values())[0])
+            price_area_name = watercourse_config.market_to_price_area[prod_area]
+            price_area = PriceAreaApply(
+                name=price_area_name,
+                external_id=f"price_area:{price_area_name}",
+            )
+            if price_area_name not in {a.name for a in model.price_areas}:
+                if price_area_name in config.dayahead_price_timeseries:
+                    price_area.day_ahead_price = config.dayahead_price_timeseries[price_area_name]
+                model.price_areas.append(price_area)
+            price_area = next(a for a in model.price_areas if a.name == price_area_name)
+
+            watercourse.plants.append(plant)
+            price_area.plants.append(plant)
+            if watercourse.name not in {w.name for w in price_area.watercourses}:
+                price_area.watercourses.append(watercourse)
+        model.plants.extend(plants)
+
+    return model
+
+
+def _create_generator_efficiency_curve(generator_attributes, generator_name, generator_external_id) -> CDFSequence:
+    x_col_name = "generator_power"
+    y_col_name = "generator_efficiency"
+    sequence = Sequence(
+        external_id=f"{generator_external_id}_generator_efficiency_curve",
+        name=f"{generator_name} generator efficiency curve",
+        columns=[
+            {"valueType": "DOUBLE", "externalId": x_col_name},
+            {"valueType": "DOUBLE", "externalId": y_col_name},
+        ],
+    )
+    data = generator_attributes["gen_eff_curve"]
+    efficiency_curve = CDFSequence(
+        sequence=sequence,
+        content=pd.DataFrame(
+            {
+                x_col_name: data["x"],
+                y_col_name: data["y"],
+            },
+            dtype=float,
+        ),
+    )
+    return efficiency_curve
+
+
+def _create_turbine_efficency_curve(generator_attributes, generator_name, generator_external_id) -> CDFSequence:
+    data = generator_attributes["turb_eff_curves"]
+    ref_col_name = "head"
+    x_col_name = "flow"
+    y_col_name = "turbine_efficiency"
+    sequence = Sequence(
+        external_id=f"{generator_external_id}_turbine_efficiency_curve",
+        name=f"{generator_name} turbine efficiency curve",
+        columns=[
+            {"valueType": "DOUBLE", "externalId": ref_col_name},
+            {"valueType": "DOUBLE", "externalId": x_col_name},
+            {"valueType": "DOUBLE", "externalId": y_col_name},
+        ],
+    )
+    df = pd.DataFrame(
+        {
+            ref_col_name: [entry["ref"] for entry in data for _ in range(len(entry["x"]))],
+            x_col_name: [item for entry in data for item in entry["x"]],
+            y_col_name: [item for entry in data for item in entry["y"]],
+        },
+        dtype=float,
+    )
+    turbine_efficiency_curve = CDFSequence(
+        sequence=sequence,
+        content=df,
+    )
+    return turbine_efficiency_curve
 
 
 def _get_single_value(value_or_time_series: float | dict) -> float:

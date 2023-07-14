@@ -9,7 +9,7 @@ from cognite.powerops.resync.models._base import AssetModel, DataModel, Model
 
 from .to_cogshop_model import to_cogshop_asset_model
 from .to_market_model import to_market_model
-from .to_production_model import to_production_model
+from .to_production_model import to_production_data_model, to_production_model
 
 
 def transform(
@@ -38,6 +38,11 @@ def transform(
         if "CogShopAsset" in models:
             cogshop_model = to_cogshop_asset_model(config.cogshop, production_model.watercourses)
             asset_models.append(cogshop_model)
+
+    if any("DataModel" in m for m in models):
+        production_model = to_production_data_model(config.production)
+        if "ProductionDataModel" in models:
+            data_models.append(production_model)
 
     labels = AssetLabel.as_label_definitions() + RelationshipLabel.as_label_definitions()
     collection = ResourceCollection()

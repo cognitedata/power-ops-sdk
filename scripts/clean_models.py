@@ -1,6 +1,6 @@
 from typing import Any, Protocol
 
-from cognite.powerops.clients import get_powerops_client
+from cognite.powerops.clients.powerops_client import get_powerops_client
 
 
 class API(Protocol):
