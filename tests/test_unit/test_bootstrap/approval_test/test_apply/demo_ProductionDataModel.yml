@@ -1132,159 +1132,199 @@ events:
   source: PowerOps bootstrap
   type: POWEROPS_BOOTSTRAP_FINISHED
 files: []
-labels:
-- external_id: benchmarking_configuration
-  name: benchmarking_configuration
-- external_id: bid_matrix_generator_config_sequence
-  name: bid_matrix_generator_config_sequence
-- external_id: bid_process_configuration
-  name: bid_process_configuration
-- external_id: connection_bypass
-  name: connection_bypass
-- external_id: connection_spill
-  name: connection_spill
-- external_id: connection_standard
-  name: connection_standard
-- external_id: dayahead_bidding_benchmarking_config
-  name: dayahead_bidding_benchmarking_config
-- external_id: gate
-  name: gate
-- external_id: gate_reservoir
-  name: gate_reservoir
-- external_id: generator
-  name: generator
-- external_id: generator_plant
-  name: generator_plant
-- external_id: incremental_mapping_sequence
-  name: incremental_mapping_sequence
-- external_id: market
-  name: market
-- external_id: plant
-  name: plant
-- external_id: plant_reservoir
-  name: plant_reservoir
-- external_id: price_area
-  name: price_area
-- external_id: relationship_to.bid_matrix_generator_config_sequence
-  name: relationship_to.bid_matrix_generator_config_sequence
-- external_id: relationship_to.bid_matrix_sequence
-  name: relationship_to.bid_matrix_sequence
-- external_id: relationship_to.bid_process_configuration_asset
-  name: relationship_to.bid_process_configuration_asset
-- external_id: relationship_to.bid_process_event
-  name: relationship_to.bid_process_event
-- external_id: relationship_to.calculate_total_bid_matrix_event
-  name: relationship_to.calculate_total_bid_matrix_event
-- external_id: relationship_to.case_file
-  name: relationship_to.case_file
-- external_id: relationship_to.consumption_schedule
-  name: relationship_to.consumption_schedule
-- external_id: relationship_to.cut_file
-  name: relationship_to.cut_file
-- external_id: relationship_to.dayahead_price_time_series
-  name: relationship_to.dayahead_price_time_series
-- external_id: relationship_to.extra_file
-  name: relationship_to.extra_file
-- external_id: relationship_to.feeding_fee_time_series
-  name: relationship_to.feeding_fee_time_series
-- external_id: relationship_to.gate_discharge_time_series
-  name: relationship_to.gate_discharge_time_series
-- external_id: relationship_to.generator
-  name: relationship_to.generator
-- external_id: relationship_to.generator_discharge_time_series
-  name: relationship_to.generator_discharge_time_series
-- external_id: relationship_to.generator_efficiency_curve
-  name: relationship_to.generator_efficiency_curve
-- external_id: relationship_to.generator_production_time_series
-  name: relationship_to.generator_production_time_series
-- external_id: relationship_to.head_direct_time_series
-  name: relationship_to.head_direct_time_series
-- external_id: relationship_to.incremental_mapping_sequence
-  name: relationship_to.incremental_mapping_sequence
-- external_id: relationship_to.inlet_level_time_series
-  name: relationship_to.inlet_level_time_series
-- external_id: relationship_to.inlet_reservoir
-  name: relationship_to.inlet_reservoir
-- external_id: relationship_to.log_file
-  name: relationship_to.log_file
-- external_id: relationship_to.mapping_file
-  name: relationship_to.mapping_file
-- external_id: relationship_to.market_asset
-  name: relationship_to.market_asset
-- external_id: relationship_to.market_price_time_series
-  name: relationship_to.market_price_time_series
-- external_id: relationship_to.market_sales_time_series
-  name: relationship_to.market_sales_time_series
-- external_id: relationship_to.objective_sequence
-  name: relationship_to.objective_sequence
-- external_id: relationship_to.outlet_level_time_series
-  name: relationship_to.outlet_level_time_series
-- external_id: relationship_to.p_max_time_series
-  name: relationship_to.p_max_time_series
-- external_id: relationship_to.p_min_time_series
-  name: relationship_to.p_min_time_series
-- external_id: relationship_to.parent_collection
-  name: relationship_to.parent_collection
-- external_id: relationship_to.parent_process
-  name: relationship_to.parent_process
-- external_id: relationship_to.plant
-  name: relationship_to.plant
-- external_id: relationship_to.plant_consumption_time_series
-  name: relationship_to.plant_consumption_time_series
-- external_id: relationship_to.plant_discharge_time_series
-  name: relationship_to.plant_discharge_time_series
-- external_id: relationship_to.plant_production_time_series
-  name: relationship_to.plant_production_time_series
-- external_id: relationship_to.production_obligation_time_series
-  name: relationship_to.production_obligation_time_series
-- external_id: relationship_to.production_schedule
-  name: relationship_to.production_schedule
-- external_id: relationship_to.reservoir_energy_conversion_factor_time_series
-  name: relationship_to.reservoir_energy_conversion_factor_time_series
-- external_id: relationship_to.reservoir_level_time_series
-  name: relationship_to.reservoir_level_time_series
-- external_id: relationship_to.reservoir_volume_time_series
-  name: relationship_to.reservoir_volume_time_series
-- external_id: relationship_to.reservoir_water_value_time_series
-  name: relationship_to.reservoir_water_value_time_series
-- external_id: relationship_to.rkom_bid_form_sequence
-  name: relationship_to.rkom_bid_form_sequence
-- external_id: relationship_to.rkom_collection_config
-  name: relationship_to.rkom_collection_config
-- external_id: relationship_to.shop_run_event
-  name: relationship_to.shop_run_event
-- external_id: relationship_to.start_stop_cost_time_series
-  name: relationship_to.start_stop_cost_time_series
-- external_id: relationship_to.status_event_failed
-  name: relationship_to.status_event_failed
-- external_id: relationship_to.status_event_finished
-  name: relationship_to.status_event_finished
-- external_id: relationship_to.status_event_started
-  name: relationship_to.status_event_started
-- external_id: relationship_to.trigger_event
-  name: relationship_to.trigger_event
-- external_id: relationship_to.turbine_efficiency_curve
-  name: relationship_to.turbine_efficiency_curve
-- external_id: relationship_to.water_value_time_series
-  name: relationship_to.water_value_time_series
-- external_id: relationship_to.watercourse
-  name: relationship_to.watercourse
-- external_id: reserve_group
-  name: reserve_group
-- external_id: reserve_group_generator
-  name: reserve_group_generator
-- external_id: reservoir
-  name: reservoir
-- external_id: reservoir_gate
-  name: reservoir_gate
-- external_id: reservoir_plant
-  name: reservoir_plant
-- external_id: rkom_bid_combination_configuration
-  name: rkom_bid_combination_configuration
-- external_id: rkom_bid_configuration
-  name: rkom_bid_configuration
-- external_id: watercourse
-  name: watercourse
+labels: []
 relationships: []
-sequences: []
+sequences:
+- columns:
+  - externalId: generator_power
+    valueType: DOUBLE
+  - externalId: generator_efficiency
+    valueType: DOUBLE
+  external_id: generator:Dalby_G1_generator_efficiency_curve
+  name: Dalby_G1 generator efficiency curve
+- columns:
+  - externalId: head
+    valueType: DOUBLE
+  - externalId: flow
+    valueType: DOUBLE
+  - externalId: turbine_efficiency
+    valueType: DOUBLE
+  external_id: generator:Dalby_G1_turbine_efficiency_curve
+  name: Dalby_G1 turbine efficiency curve
+- columns:
+  - externalId: generator_power
+    valueType: DOUBLE
+  - externalId: generator_efficiency
+    valueType: DOUBLE
+  external_id: generator:Dalby_G2_generator_efficiency_curve
+  name: Dalby_G2 generator efficiency curve
+- columns:
+  - externalId: head
+    valueType: DOUBLE
+  - externalId: flow
+    valueType: DOUBLE
+  - externalId: turbine_efficiency
+    valueType: DOUBLE
+  external_id: generator:Dalby_G2_turbine_efficiency_curve
+  name: Dalby_G2 turbine efficiency curve
+- columns:
+  - externalId: generator_power
+    valueType: DOUBLE
+  - externalId: generator_efficiency
+    valueType: DOUBLE
+  external_id: generator:Holen_G1_generator_efficiency_curve
+  name: Holen_G1 generator efficiency curve
+- columns:
+  - externalId: head
+    valueType: DOUBLE
+  - externalId: flow
+    valueType: DOUBLE
+  - externalId: turbine_efficiency
+    valueType: DOUBLE
+  external_id: generator:Holen_G1_turbine_efficiency_curve
+  name: Holen_G1 turbine efficiency curve
+- columns:
+  - externalId: generator_power
+    valueType: DOUBLE
+  - externalId: generator_efficiency
+    valueType: DOUBLE
+  external_id: generator:Landet_G1_generator_efficiency_curve
+  name: Landet_G1 generator efficiency curve
+- columns:
+  - externalId: head
+    valueType: DOUBLE
+  - externalId: flow
+    valueType: DOUBLE
+  - externalId: turbine_efficiency
+    valueType: DOUBLE
+  external_id: generator:Landet_G1_turbine_efficiency_curve
+  name: Landet_G1 turbine efficiency curve
+- columns:
+  - externalId: generator_power
+    valueType: DOUBLE
+  - externalId: generator_efficiency
+    valueType: DOUBLE
+  external_id: generator:Lien_krv_G1_generator_efficiency_curve
+  name: Lien_krv_G1 generator efficiency curve
+- columns:
+  - externalId: head
+    valueType: DOUBLE
+  - externalId: flow
+    valueType: DOUBLE
+  - externalId: turbine_efficiency
+    valueType: DOUBLE
+  external_id: generator:Lien_krv_G1_turbine_efficiency_curve
+  name: Lien_krv_G1 turbine efficiency curve
+- columns:
+  - externalId: generator_power
+    valueType: DOUBLE
+  - externalId: generator_efficiency
+    valueType: DOUBLE
+  external_id: generator:Lund_G1_generator_efficiency_curve
+  name: Lund_G1 generator efficiency curve
+- columns:
+  - externalId: head
+    valueType: DOUBLE
+  - externalId: flow
+    valueType: DOUBLE
+  - externalId: turbine_efficiency
+    valueType: DOUBLE
+  external_id: generator:Lund_G1_turbine_efficiency_curve
+  name: Lund_G1 turbine efficiency curve
+- columns:
+  - externalId: generator_power
+    valueType: DOUBLE
+  - externalId: generator_efficiency
+    valueType: DOUBLE
+  external_id: generator:Rull1_G1_generator_efficiency_curve
+  name: Rull1_G1 generator efficiency curve
+- columns:
+  - externalId: head
+    valueType: DOUBLE
+  - externalId: flow
+    valueType: DOUBLE
+  - externalId: turbine_efficiency
+    valueType: DOUBLE
+  external_id: generator:Rull1_G1_turbine_efficiency_curve
+  name: Rull1_G1 turbine efficiency curve
+- columns:
+  - externalId: generator_power
+    valueType: DOUBLE
+  - externalId: generator_efficiency
+    valueType: DOUBLE
+  external_id: generator:Rull1_G2_generator_efficiency_curve
+  name: Rull1_G2 generator efficiency curve
+- columns:
+  - externalId: head
+    valueType: DOUBLE
+  - externalId: flow
+    valueType: DOUBLE
+  - externalId: turbine_efficiency
+    valueType: DOUBLE
+  external_id: generator:Rull1_G2_turbine_efficiency_curve
+  name: Rull1_G2 turbine efficiency curve
+- columns:
+  - externalId: generator_power
+    valueType: DOUBLE
+  - externalId: generator_efficiency
+    valueType: DOUBLE
+  external_id: generator:Rull2_G1_generator_efficiency_curve
+  name: Rull2_G1 generator efficiency curve
+- columns:
+  - externalId: head
+    valueType: DOUBLE
+  - externalId: flow
+    valueType: DOUBLE
+  - externalId: turbine_efficiency
+    valueType: DOUBLE
+  external_id: generator:Rull2_G1_turbine_efficiency_curve
+  name: Rull2_G1 turbine efficiency curve
+- columns:
+  - externalId: generator_power
+    valueType: DOUBLE
+  - externalId: generator_efficiency
+    valueType: DOUBLE
+  external_id: generator:Rull2_G2_generator_efficiency_curve
+  name: Rull2_G2 generator efficiency curve
+- columns:
+  - externalId: head
+    valueType: DOUBLE
+  - externalId: flow
+    valueType: DOUBLE
+  - externalId: turbine_efficiency
+    valueType: DOUBLE
+  external_id: generator:Rull2_G2_turbine_efficiency_curve
+  name: Rull2_G2 turbine efficiency curve
+- columns:
+  - externalId: generator_power
+    valueType: DOUBLE
+  - externalId: generator_efficiency
+    valueType: DOUBLE
+  external_id: generator:Scott_G1_generator_efficiency_curve
+  name: Scott_G1 generator efficiency curve
+- columns:
+  - externalId: head
+    valueType: DOUBLE
+  - externalId: flow
+    valueType: DOUBLE
+  - externalId: turbine_efficiency
+    valueType: DOUBLE
+  external_id: generator:Scott_G1_turbine_efficiency_curve
+  name: Scott_G1 turbine efficiency curve
+- columns:
+  - externalId: generator_power
+    valueType: DOUBLE
+  - externalId: generator_efficiency
+    valueType: DOUBLE
+  external_id: generator:Strand_krv_G1_generator_efficiency_curve
+  name: Strand_krv_G1 generator efficiency curve
+- columns:
+  - externalId: head
+    valueType: DOUBLE
+  - externalId: flow
+    valueType: DOUBLE
+  - externalId: turbine_efficiency
+    valueType: DOUBLE
+  external_id: generator:Strand_krv_G1_turbine_efficiency_curve
+  name: Strand_krv_G1 turbine efficiency curve
 time_series: []

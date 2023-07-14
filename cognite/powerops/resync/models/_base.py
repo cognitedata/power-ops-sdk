@@ -176,10 +176,30 @@ class NonAssetType(BaseModel, ABC):
 
 class Model(BaseModel, ABC):
     def sequences(self) -> list[CDFSequence]:
-        return [sequence for item in self._types() for sequence in item.sequences()]
+        return (
+            [sequence for item in self._types() for sequence in item.sequences()]
+            + [f for f in self.model_fields if (value := getattr(self, f)) and isinstance(value, CDFSequence)]
+            + [
+                v
+                for f in self.model_fields
+                if (value := getattr(self, f)) and isinstance(value, list)
+                for v in value
+                if isinstance(v, CDFSequence)
+            ]
+        )
 
     def files(self) -> list[CDFFile]:
-        return [file for item in self._types() for file in item.files()]
+        return (
+            [file for item in self._types() for file in item.files()]
+            + [f for f in self.model_fields if (value := getattr(self, f)) and isinstance(value, CDFFile)]
+            + [
+                v
+                for f in self.model_fields
+                if (value := getattr(self, f)) and isinstance(value, list)
+                for v in value
+                if isinstance(v, CDFFile)
+            ]
+        )
 
     def _types(self) -> Iterable[Type]:
         for f in self.model_fields:

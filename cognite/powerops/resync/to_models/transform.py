@@ -44,9 +44,11 @@ def transform(
         if "ProductionDataModel" in models:
             data_models.append(production_model)
 
-    labels = AssetLabel.as_label_definitions() + RelationshipLabel.as_label_definitions()
     collection = ResourceCollection()
-    collection.add(labels)
+    if any("Asset" in m for m in models):
+        labels = AssetLabel.as_label_definitions() + RelationshipLabel.as_label_definitions()
+        collection.add(labels)
+
     all_models: list[Model] = cast(Model, asset_models) + data_models
     for model in all_models:
         collection.add(model.sequences())
