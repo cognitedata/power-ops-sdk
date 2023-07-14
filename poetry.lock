@@ -433,14 +433,14 @@ colorama = {version = "*", markers = "platform_system == \"Windows\""}
 
 [[package]]
 name = "cognite-pygen"
-version = "0.12.0"
+version = "0.12.1"
 description = "Cognite Python SDK Generator"
 category = "dev"
 optional = false
 python-versions = ">=3.9,<4.0"
 files = [
-    {file = "cognite_pygen-0.12.0-py3-none-any.whl", hash = "sha256:7a5d1fade34caabf638a464cd175efaf655bc5c8dec411660c681d10010dedc3"},
-    {file = "cognite_pygen-0.12.0.tar.gz", hash = "sha256:1478eae678c0bdd529166256879ceaca95d21ab96f5ba88003c51647925d1f9b"},
+    {file = "cognite_pygen-0.12.1-py3-none-any.whl", hash = "sha256:431008605cb7353d7a06054e9db4d9857c20b3522a537ffef7069cc7bc349fc7"},
+    {file = "cognite_pygen-0.12.1.tar.gz", hash = "sha256:4f148b2d89cb49b073461010cbec8a011c9dc39fb9e0cb363280cbd1bc4f38e6"},
 ]
 
 [package.dependencies]
@@ -2996,14 +2996,14 @@ typing-extensions = ">=4.6.0,<4.7.0 || >4.7.0"
 
 [[package]]
 name = "pydantic-settings"
-version = "2.0.1"
+version = "2.0.2"
 description = "Settings management using Pydantic"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "pydantic_settings-2.0.1-py3-none-any.whl", hash = "sha256:579bbcbec3501e62bab73867b097ae10218201950e897463c98a182ffe7ed104"},
-    {file = "pydantic_settings-2.0.1.tar.gz", hash = "sha256:f440ec7cfb6dc63f03226c47b0e7803750d1b66a49ed944ac23eb4f0c84f8722"},
+    {file = "pydantic_settings-2.0.2-py3-none-any.whl", hash = "sha256:6183a2abeab465d5a3ab69758e9a22d38b0cc2ba193f0b85f6971a252ea630f6"},
+    {file = "pydantic_settings-2.0.2.tar.gz", hash = "sha256:342337fff50b23585e807a86dec85037900972364435c55c2fc00d16ff080539"},
 ]
 
 [package.dependencies]
@@ -4368,4 +4368,4 @@ docs = ["mkdocs", "mkdocs-jupyter", "mkdocs-material", "mkdocs-material-extensio
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "a23f85c6aa8f6edbabace232f022ced3fe5f6f0d0a87ed5fdde2cc5a7c1bd877"
+content-hash = "35c4f68a2444758c894bd61d2117951e8e8423b08d8f10e51dcb11038c7ee860"
