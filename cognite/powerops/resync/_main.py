@@ -11,6 +11,8 @@ from cognite.powerops.resync.config.resource_collection import ResourceCollectio
 from cognite.powerops.resync.config.resync_config import ReSyncConfig
 from cognite.powerops.resync.to_models.transform import transform
 
+AVAILABLE_MODELS = ["ProductionAsset", "MarketAsset", "CogShopAsset"]
+
 
 def plan(path: Path, market: str, echo: Callable[[str], None] = None):
     echo = echo or print
@@ -25,10 +27,11 @@ def plan(path: Path, market: str, echo: Callable[[str], None] = None):
     echo(ResourceCollection.prettify_differences(bootstrap_resources.difference(cdf_bootstrap_resources)))
 
 
-def apply(path: Path, market: str, echo: Callable[[str], None] = None):
+def apply(path: Path, market: str, echo: Callable[[str], None] = None, models: list[str] = None):
     echo = echo or print
+    models = models or AVAILABLE_MODELS
     client = get_powerops_client()
-    collection, config = _load_transform(market, path, client.cdf.config.project, echo)
+    collection, config = _load_transform(market, path, client.cdf.config.project, echo, models)
 
     # ! This should always stay at the bottom # TODO: consider wrapper
     collection.add(_create_bootstrap_finished_event(echo))
@@ -41,7 +44,7 @@ def apply(path: Path, market: str, echo: Callable[[str], None] = None):
     )
 
 
-def _load_transform(market: str, path: Path, cdf_project: str, echo: Callable[[str], None]):
+def _load_transform(market: str, path: Path, cdf_project: str, echo: Callable[[str], None], models: list[str]):
     # Step 1 - configure and validate config
     config = ReSyncConfig.from_yamls(path, cdf_project)
     configure_debug_logging(config.settings.debug_level)
@@ -50,7 +53,7 @@ def _load_transform(market: str, path: Path, cdf_project: str, echo: Callable[[s
         f"Running resync for data set {config.settings.data_set_external_id} "
         f"in CDF project {config.settings.cdf_project}"
     )
-    bootstrap_resources = transform(config, market)
+    bootstrap_resources = transform(config, market, set(models))
     return bootstrap_resources, config
 
 

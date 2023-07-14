@@ -15,7 +15,7 @@ def print_warning(s: str) -> None:
     print(f"\033[91m[WARNING] {s}\033[0m")
 
 
-def make_ext_id(*args: str, prefix: str = "Tr") -> str:
+def make_ext_id(*args: str, prefix: str) -> str:
     hash_value = md5()
     for args in args:
         if isinstance(args, (str, int, float, bool)):

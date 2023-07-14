@@ -179,6 +179,7 @@ def to_cogshop_model(config: CogShopConfig, watercourses: list[Watercourse], sho
                             row.shop_model_path,
                             transformation.transformation.name,
                             json.dumps(transformation.kwargs or {}),
+                            prefix="ValueTransformation",
                         ),
                         method=transformation.transformation.name,
                         arguments=transformation.kwargs or {},
