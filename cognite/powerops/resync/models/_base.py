@@ -198,8 +198,7 @@ class AssetModel(Model, ABC):
 
     def parent_assets(self) -> list[Asset]:
         if not self.root_asset:
-            # return []
-            raise ValueError("Root asset not set")
+            return []
 
         def _to_name(external_id: str) -> str:
             parts = external_id.replace("_", " ").split(" ")
