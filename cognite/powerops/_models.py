@@ -5,6 +5,7 @@ from cognite.client.data_classes.data_modeling import DataModelId
 
 _POWEROPS_ROOT = Path(__file__).parent
 GRAPHQL_SCHEMAS = _POWEROPS_ROOT / "data_models"
+_SHARED_TYPES = GRAPHQL_SCHEMAS / "shared"
 
 
 @dataclass
@@ -28,12 +29,12 @@ _SPACE = "power-ops"
 
 
 class _ExtraTypes:
-    input_timeseries_mapping = GRAPHQL_SCHEMAS / "input_timeseries_mapping.graphql"
-    value_transformation = GRAPHQL_SCHEMAS / "value_transformation.graphql"
-    date_transformation = GRAPHQL_SCHEMAS / "date_transformation.graphql"
-    market = GRAPHQL_SCHEMAS / "market.graphql"
-    scenario_mapping = GRAPHQL_SCHEMAS / "scenario_mapping.graphql"
-    shop_transformation = GRAPHQL_SCHEMAS / "shop_transformation.graphql"
+    input_timeseries_mapping = _SHARED_TYPES / "input_timeseries_mapping.graphql"
+    value_transformation = _SHARED_TYPES / "value_transformation.graphql"
+    date_transformation = _SHARED_TYPES / "date_transformation.graphql"
+    market = _SHARED_TYPES / "market.graphql"
+    scenario_mapping = _SHARED_TYPES / "scenario_mapping.graphql"
+    shop_transformation = _SHARED_TYPES / "shop_transformation.graphql"
 
 
 MODEL_BY_NAME: dict[str, PowerOpsModel] = {
