@@ -13,7 +13,6 @@ class PowerOpsModel:
     description: str
     graphql_file: Path
     id_: DataModelId
-    client_name: str
     extra_types: list[Path] = None
 
     @property
@@ -26,8 +25,16 @@ class PowerOpsModel:
 
 
 _SPACE = "power-ops"
-_INPUT_TIMESERIES_MAPPING = GRAPHQL_SCHEMAS / "input_timeseries_mapping.graphql"
-_VALUE_TRANSFORMATION = GRAPHQL_SCHEMAS / "value_transformation.graphql"
+
+
+class _ExtraTypes:
+    input_timeseries_mapping = GRAPHQL_SCHEMAS / "input_timeseries_mapping.graphql"
+    value_transformation = GRAPHQL_SCHEMAS / "value_transformation.graphql"
+    date_transformation = GRAPHQL_SCHEMAS / "date_transformation.graphql"
+    market = GRAPHQL_SCHEMAS / "market.graphql"
+    scenario_mapping = GRAPHQL_SCHEMAS / "scenario_mapping.graphql"
+    shop_transformation = GRAPHQL_SCHEMAS / "shop_transformation.graphql"
+
 
 MODEL_BY_NAME: dict[str, PowerOpsModel] = {
     "production": PowerOpsModel(
@@ -36,17 +43,6 @@ MODEL_BY_NAME: dict[str, PowerOpsModel] = {
         "plants, and generators located in a price area.",
         graphql_file=GRAPHQL_SCHEMAS / "production.graphql",
         id_=DataModelId(_SPACE, "production", "1"),
-        client_name="ProductionClient",
-    ),
-    "market": PowerOpsModel(
-        name="Market",
-        description="The market model describes the different markets in an price area and their "
-        "financial assets such as "
-        "bids and processes. In addition, to benchmarking.",
-        graphql_file=GRAPHQL_SCHEMAS / "market.graphql",
-        id_=DataModelId(_SPACE, "market", "1"),
-        extra_types=[_INPUT_TIMESERIES_MAPPING, _VALUE_TRANSFORMATION],
-        client_name="MarketClient",
     ),
     "cogshop": PowerOpsModel(
         name="CogShop",
@@ -55,7 +51,52 @@ MODEL_BY_NAME: dict[str, PowerOpsModel] = {
         "executed daily and configuration of those SHOP runs.",
         graphql_file=GRAPHQL_SCHEMAS / "cogshop.graphql",
         id_=DataModelId(_SPACE, "cogshop", "1"),
-        extra_types=[_INPUT_TIMESERIES_MAPPING, _VALUE_TRANSFORMATION],
-        client_name="CogShopClient",
+        extra_types=[
+            _ExtraTypes.value_transformation,
+            _ExtraTypes.input_timeseries_mapping,
+            _ExtraTypes.scenario_mapping,
+        ],
+    ),
+    "dayahead": PowerOpsModel(
+        name="DayAhead",
+        description="The DayAhead model describes the day-ahead market.",
+        graphql_file=GRAPHQL_SCHEMAS / "dayahead-market.graphql",
+        id_=DataModelId(_SPACE, "dayaheadMarket", "1"),
+        extra_types=[
+            _ExtraTypes.value_transformation,
+            _ExtraTypes.date_transformation,
+            _ExtraTypes.input_timeseries_mapping,
+            _ExtraTypes.scenario_mapping,
+            _ExtraTypes.shop_transformation,
+            _ExtraTypes.market,
+        ],
+    ),
+    "rkom": PowerOpsModel(
+        name="RKomMarket",
+        description="The RKOM market is a balancing market",
+        graphql_file=GRAPHQL_SCHEMAS / "rkom-market.graphql",
+        id_=DataModelId(_SPACE, "rkomMarket", "1"),
+        extra_types=[
+            _ExtraTypes.value_transformation,
+            _ExtraTypes.date_transformation,
+            _ExtraTypes.input_timeseries_mapping,
+            _ExtraTypes.scenario_mapping,
+            _ExtraTypes.shop_transformation,
+            _ExtraTypes.market,
+        ],
+    ),
+    "benchmark": PowerOpsModel(
+        name="Benchmark",
+        description="The Benchmark model is used for benchmarking different bid processes.",
+        graphql_file=GRAPHQL_SCHEMAS / "benchmark-market.graphql",
+        id_=DataModelId(_SPACE, "benchmarkMarket", "1"),
+        extra_types=[
+            _ExtraTypes.value_transformation,
+            _ExtraTypes.date_transformation,
+            _ExtraTypes.input_timeseries_mapping,
+            _ExtraTypes.scenario_mapping,
+            _ExtraTypes.shop_transformation,
+            _ExtraTypes.market,
+        ],
     ),
 }
