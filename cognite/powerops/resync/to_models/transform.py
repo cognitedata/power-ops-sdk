@@ -56,12 +56,14 @@ def transform(
             if "BenchmarkMarketDataModel" in model_names:
                 data_models.append(benchmark_market_model)
             if "DayAheadMarketDataModel" in model_names:
+                dayahead_benchmark = benchmark_market_model.benchmarking[0]
+                dayahead_bid = benchmark_market_model.bids[dayahead_benchmark.bid]
                 day_ahead_market_model = to_dayahead_data_model(
-                    config.market, benchmark_market_model.benchmarking[0], production_model.price_areas
+                    config.market, dayahead_benchmark, dayahead_bid, production_model.price_areas
                 )
                 data_models.append(day_ahead_market_model)
         if "RKOMMarketDataModel" in model_names:
-            rkom_market_model = to_rkom_data_model(config.market.rkom_bid_process)
+            rkom_market_model = to_rkom_data_model(config.market, production_model.price_areas, market_name)
             data_models.append(rkom_market_model)
 
     collection = ResourceCollection()

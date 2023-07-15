@@ -32,7 +32,7 @@ from cognite.powerops.resync.models.market_dm import (
 from cognite.powerops.resync.models.production import PriceArea
 from cognite.powerops.resync.utils.common import make_ext_id
 
-from ._to_instances import _to_date_transformations, _to_input_timeseries_mapping, _to_shop_transformation
+from ._to_instances import _to_date_transformations, _to_scenario_mapping, _to_shop_transformation
 
 
 def to_market_asset_model(config: MarketConfig, price_areas: list[PriceArea], market_name: str) -> MarketModel:
@@ -102,7 +102,10 @@ def to_benchmark_data_model(configs: list[BenchmarkingConfig]) -> BenchmarkMarke
 
 
 def to_dayahead_data_model(
-    config: MarketConfig, dayahead_benchmark: BenchmarkProcesApply, price_areas: list[PriceAreaApply]
+    config: MarketConfig,
+    dayahead_benchmark: BenchmarkProcesApply,
+    benchmark_bid: BenchmarkBidApply,
+    price_areas: list[PriceAreaApply],
 ) -> DayAheadMarketDataModel:
     model = DayAheadMarketDataModel()
 
@@ -112,7 +115,7 @@ def to_dayahead_data_model(
 
     for process in config.bidprocess:
         price_scenarios_by_name = _map_price_scenarios_by_name(
-            process.price_scenarios, config.price_scenarios_by_id, MARKET_BY_PRICE_AREA[process.price_area_name]
+            process.price_scenarios, config.price_scenario_by_id, MARKET_BY_PRICE_AREA[process.price_area_name]
         )
 
         price_area = next((pa for pa in price_areas if pa.name == process.price_area_name), None)
@@ -140,28 +143,26 @@ def to_dayahead_data_model(
                         f"for BidProcessConfig {process.name}"
                     ) from e
             for scenario_name, price_scenario in price_scenarios.items():
-                time_series_mapping = price_scenario.to_time_series_mapping()
-                scenario_mappings.extend(_to_input_timeseries_mapping(m) for m in time_series_mapping)
+                scenario = _to_scenario_mapping(scenario_name, price_scenario.to_time_series_mapping())
+                scenario_mappings.append(scenario)
 
             shop = _to_shop_transformation(
                 process.shop_start or dayahead_benchmark.shop.start, process.shop_end or dayahead_benchmark.shop.end
             )
+
             bid = DayAheadBidApply(
                 external_id=f"POWEROPS_bid_process_configuration_{process.name}_bid",
-                date=_to_date_transformations(process.bid_date or dayahead_benchmark.bid.date),
+                date=_to_date_transformations(process.bid_date or benchmark_bid.date),
                 market=model.nordpool_market.external_id,
                 is_default_config_for_price_area=process.is_default_config_for_price_area,
                 main_scenario=process.main_scenario,
                 price_area=f"price_area_{process.price_area_name}",
-                price_scenarios={
-                    scenario_name: scenario.time_series_external_id
-                    for scenario_name, scenario in price_scenarios_by_name.items()
-                },
+                price_scenarios=scenario_mappings,
                 no_shop=process.no_shop,
                 bid_process_configuration_name=process.name,
                 bid_matrix_generator_config_external_id=f"POWEROPS_bid_matrix_generator_config_{process.name}",
-                shop=shop,
             )
+            model.bids[bid.external_id] = bid
 
             # Create the DayAheadBidProcess Data Class
             dayahead_process = DayAheadProcesApply(
@@ -170,10 +171,9 @@ def to_dayahead_data_model(
                 bid=bid.external_id,
                 shop=shop,
                 bid_matrix_generator_config=list(bid_matrix_generators.values()),
-                scenario_mappings=scenario_mappings,
             )
 
-        model.dayahead_processes.append(dayahead_process)
+            model.dayahead_processes.append(dayahead_process)
 
     return model
 

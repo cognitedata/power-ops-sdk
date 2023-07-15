@@ -33,6 +33,5 @@ type DayAheadProcess implements Process{
     name: String
     bid: DayAheadBid
     shop: ShopTransformation
-    price_scenarios: [ScenarioMapping]
     bidMatrixGeneratorConfig: [BidMatrixGenerator]
 }

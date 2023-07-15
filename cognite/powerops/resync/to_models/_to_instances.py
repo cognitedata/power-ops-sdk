@@ -10,15 +10,18 @@ from __future__ import annotations
 from cognite.powerops.clients.data_classes import (
     DateTransformationApply,
     InputTimeSeriesMappingApply,
+    ScenarioMappingApply,
     ShopTransformationApply,
     ValueTransformationApply,
 )
 from cognite.powerops.resync.config.market._core import RelativeTime
-from cognite.powerops.resync.config.shared import TimeSeriesMappingEntry, Transformation
+from cognite.powerops.resync.config.shared import TimeSeriesMapping, TimeSeriesMappingEntry, Transformation
 from cognite.powerops.resync.utils.common import make_ext_id
 
 
-def _to_date_transformations(time: RelativeTime) -> list[DateTransformationApply]:
+def _to_date_transformations(time: RelativeTime | list[DateTransformationApply]) -> list[DateTransformationApply]:
+    if isinstance(time, list) and time and isinstance(time[0], DateTransformationApply):
+        return time
     output = []
     for operation in time.operations or []:
         method, arguments = operation
@@ -45,8 +48,8 @@ def _to_date_transformations(time: RelativeTime) -> list[DateTransformationApply
 def _to_shop_transformation(
     start: RelativeTime | list[DateTransformationApply], end: RelativeTime | list[DateTransformationApply]
 ) -> ShopTransformationApply:
-    start_list = _to_date_transformations(start) if isinstance(start, RelativeTime) else start
-    end_list = _to_date_transformations(end) if isinstance(end, RelativeTime) else end
+    start_list = _to_date_transformations(start)
+    end_list = _to_date_transformations(end)
     external_id = make_ext_id([d.model_dump_json() for d in start_list + end_list], ShopTransformationApply)
     return ShopTransformationApply(
         external_id=external_id,
@@ -73,4 +76,14 @@ def _to_value_transformation(transformation: Transformation) -> ValueTransformat
         external_id=make_ext_id(transformation.model_dump_json(), class_=ValueTransformationApply),
         method=transformation.transformation.name,
         arguments=transformation.kwargs,
+    )
+
+
+def _to_scenario_mapping(name: str, time_series_mapping: TimeSeriesMapping) -> ScenarioMappingApply:
+    mappings = [_to_input_timeseries_mapping(entry) for entry in time_series_mapping]
+
+    return ScenarioMappingApply(
+        external_id=f"{name}_{make_ext_id([m.external_id for m in mappings], class_=ScenarioMappingApply)}",
+        mapping_override=mappings,
+        name=name,
     )

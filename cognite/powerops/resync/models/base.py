@@ -203,7 +203,12 @@ class Model(BaseModel, ABC):
         return type(self).__name__
 
     def summary(self) -> dict[str, dict[str, int]]:
-        return {self.model_name: {field_name: len(getattr(self, field_name)) for field_name in self.model_fields}}
+        return {
+            self.model_name: {
+                field_name: len(value) if isinstance(value := getattr(self, field_name), (list, dict)) else 1
+                for field_name in self.model_fields
+            }
+        }
 
 
 class AssetModel(Model, ABC):

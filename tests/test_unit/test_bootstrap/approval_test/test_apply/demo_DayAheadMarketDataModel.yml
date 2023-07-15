@@ -1,0 +1,1044 @@
+assets: []
+data_modeling.instances:
+- external_id: BidMatrixGenerator__0a2c142d516e5b6ab2d36dde4cef352a
+  instance_type: node
+  sources:
+  - properties:
+      functionExternalId: generate_bid_matrix
+      methods: price_independent
+      shopPlant: Rull2
+    source:
+      external_id: BidMatrixGenerator
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: BidMatrixGenerator__106d4499f2b2c82404586cf54c6032ae
+  instance_type: node
+  sources:
+  - properties:
+      functionExternalId: generate_bid_matrix
+      methods: price_independent
+      shopPlant: Strand_krv
+    source:
+      external_id: BidMatrixGenerator
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: BidMatrixGenerator__1320ef2183d25b7f77101bb566648c15
+  instance_type: node
+  sources:
+  - properties:
+      functionExternalId: generate_bid_matrix
+      methods: price_independent
+      shopPlant: Rull1
+    source:
+      external_id: BidMatrixGenerator
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: BidMatrixGenerator__1a3b8a8179a1356efba710b8459bf9d7
+  instance_type: node
+  sources:
+  - properties:
+      functionExternalId: generate_bid_matrix
+      methods: multi_scenario
+      shopPlant: Rull1
+    source:
+      external_id: BidMatrixGenerator
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: BidMatrixGenerator__26f2d6e916ca8d48689e1ba6c6272af2
+  instance_type: node
+  sources:
+  - properties:
+      functionExternalId: generate_bid_matrix
+      methods: price_independent
+      shopPlant: Holen
+    source:
+      external_id: BidMatrixGenerator
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: BidMatrixGenerator__31ae7deb3cb35fefaea06f6dd3eab9a4
+  instance_type: node
+  sources:
+  - properties:
+      functionExternalId: generate_water_value_based_bid_matrix
+      methods: simple
+      shopPlant: Strand_krv
+    source:
+      external_id: BidMatrixGenerator
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: BidMatrixGenerator__47760a45deb976f35b39fc6249129e7e
+  instance_type: node
+  sources:
+  - properties:
+      functionExternalId: generate_water_value_based_bid_matrix
+      methods: simple
+      shopPlant: Lund
+    source:
+      external_id: BidMatrixGenerator
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: BidMatrixGenerator__49fc8b6c47fc60a09452b7ee2f446f17
+  instance_type: node
+  sources:
+  - properties:
+      functionExternalId: generate_bid_matrix
+      methods: price_independent
+      shopPlant: Lien_krv
+    source:
+      external_id: BidMatrixGenerator
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: BidMatrixGenerator__4bfc4050b1aa449d59496bf89cbab4d3
+  instance_type: node
+  sources:
+  - properties:
+      functionExternalId: generate_bid_matrix
+      methods: multi_scenario
+      shopPlant: Landet
+    source:
+      external_id: BidMatrixGenerator
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: BidMatrixGenerator__598faf746fcd3ef013e8de01c4e39273
+  instance_type: node
+  sources:
+  - properties:
+      functionExternalId: generate_water_value_based_bid_matrix
+      methods: simple
+      shopPlant: Holen
+    source:
+      external_id: BidMatrixGenerator
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: BidMatrixGenerator__6562313ba97537ce0c32153a1d9a399d
+  instance_type: node
+  sources:
+  - properties:
+      functionExternalId: generate_bid_matrix
+      methods: multi_scenario
+      shopPlant: Lien_krv
+    source:
+      external_id: BidMatrixGenerator
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: BidMatrixGenerator__6ee6e201a4b44f91d8e30544df52a00f
+  instance_type: node
+  sources:
+  - properties:
+      functionExternalId: generate_bid_matrix
+      methods: price_independent
+      shopPlant: Dalby
+    source:
+      external_id: BidMatrixGenerator
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: BidMatrixGenerator__6fce631997f9a9b64bebff108554a438
+  instance_type: node
+  sources:
+  - properties:
+      functionExternalId: generate_water_value_based_bid_matrix
+      methods: simple
+      shopPlant: Landet
+    source:
+      external_id: BidMatrixGenerator
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: BidMatrixGenerator__7fbeda9a5f09bfa17af6b8295bfd48e2
+  instance_type: node
+  sources:
+  - properties:
+      functionExternalId: generate_bid_matrix
+      methods: multi_scenario
+      shopPlant: Dalby
+    source:
+      external_id: BidMatrixGenerator
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: BidMatrixGenerator__8f53fa5db2b6b5de9b93d5798e341ce2
+  instance_type: node
+  sources:
+  - properties:
+      functionExternalId: generate_bid_matrix
+      methods: price_independent
+      shopPlant: Scott
+    source:
+      external_id: BidMatrixGenerator
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: BidMatrixGenerator__91b66a897d5d76d2e871948974910d29
+  instance_type: node
+  sources:
+  - properties:
+      functionExternalId: generate_water_value_based_bid_matrix
+      methods: simple
+      shopPlant: Lien_krv
+    source:
+      external_id: BidMatrixGenerator
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: BidMatrixGenerator__a8a4f4c053cdf0e35f7eb3368d9e487a
+  instance_type: node
+  sources:
+  - properties:
+      functionExternalId: generate_bid_matrix
+      methods: multi_scenario
+      shopPlant: Scott
+    source:
+      external_id: BidMatrixGenerator
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: BidMatrixGenerator__c15f6250816ff5f06ec0283c4e699d1f
+  instance_type: node
+  sources:
+  - properties:
+      functionExternalId: generate_water_value_based_bid_matrix
+      methods: simple
+      shopPlant: Scott
+    source:
+      external_id: BidMatrixGenerator
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: BidMatrixGenerator__c2a60ed712b890bf93ad26c123635c69
+  instance_type: node
+  sources:
+  - properties:
+      functionExternalId: generate_bid_matrix
+      methods: multi_scenario
+      shopPlant: Strand_krv
+    source:
+      external_id: BidMatrixGenerator
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: BidMatrixGenerator__cd9077e715743ba49961dba58d6955a2
+  instance_type: node
+  sources:
+  - properties:
+      functionExternalId: generate_bid_matrix
+      methods: multi_scenario
+      shopPlant: Lund
+    source:
+      external_id: BidMatrixGenerator
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: BidMatrixGenerator__e5e9add663f85e7b1a12e5c2f53eb2fc
+  instance_type: node
+  sources:
+  - properties:
+      functionExternalId: generate_water_value_based_bid_matrix
+      methods: simple
+      shopPlant: Dalby
+    source:
+      external_id: BidMatrixGenerator
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: BidMatrixGenerator__e6c95b4196f9f3acc9f944a4726494d4
+  instance_type: node
+  sources:
+  - properties:
+      functionExternalId: generate_water_value_based_bid_matrix
+      methods: simple
+      shopPlant: Rull2
+    source:
+      external_id: BidMatrixGenerator
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: BidMatrixGenerator__f6c05befebaa96452ed83582d2b5f981
+  instance_type: node
+  sources:
+  - properties:
+      functionExternalId: generate_bid_matrix
+      methods: multi_scenario
+      shopPlant: Holen
+    source:
+      external_id: BidMatrixGenerator
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: BidMatrixGenerator__f74c8faa244465851d2b3bc1cb013f96
+  instance_type: node
+  sources:
+  - properties:
+      functionExternalId: generate_bid_matrix
+      methods: price_independent
+      shopPlant: Landet
+    source:
+      external_id: BidMatrixGenerator
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: BidMatrixGenerator__f8573c5273440892092848fb8f24da5b
+  instance_type: node
+  sources:
+  - properties:
+      functionExternalId: generate_water_value_based_bid_matrix
+      methods: simple
+      shopPlant: Rull1
+    source:
+      external_id: BidMatrixGenerator
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: BidMatrixGenerator__f994e2dc55489aa6d061e28685c48e9a
+  instance_type: node
+  sources:
+  - properties:
+      functionExternalId: generate_bid_matrix
+      methods: multi_scenario
+      shopPlant: Rull2
+    source:
+      external_id: BidMatrixGenerator
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: BidMatrixGenerator__faf473e18b3477c063b6f794953a048c
+  instance_type: node
+  sources:
+  - properties:
+      functionExternalId: generate_bid_matrix
+      methods: price_independent
+      shopPlant: Lund
+    source:
+      external_id: BidMatrixGenerator
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: DateTransformation__01c2b78fedff0cbc3f835ba600b48795
+  instance_type: node
+  sources:
+  - properties:
+      args: []
+      kwargs:
+        weeks: 2
+      transformation: shift
+    source:
+      external_id: DateTransformation
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: DateTransformation__28df48a8d73a6cea9f4917637dcfc14b
+  instance_type: node
+  sources:
+  - properties:
+      args:
+      - week
+      kwargs: {}
+      transformation: floor
+    source:
+      external_id: DateTransformation
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: DateTransformation__3c107c6a7dd7a026429b1037766430e2
+  instance_type: node
+  sources:
+  - properties:
+      args: []
+      kwargs:
+        days: 2
+      transformation: shift
+    source:
+      external_id: DateTransformation
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: DateTransformation__b9e809e11bd75d1befc81f2a3fe25834
+  instance_type: node
+  sources:
+  - properties:
+      args:
+      - day
+      kwargs: {}
+      transformation: floor
+    source:
+      external_id: DateTransformation
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: DateTransformation__f24aca5d65632cfd7ec87d4488ce8789
+  instance_type: node
+  sources:
+  - properties:
+      args: []
+      kwargs:
+        days: 1
+      transformation: shift
+    source:
+      external_id: DateTransformation
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: DateTransformation__f9f90921095b2f4b241249a5745014b3
+  instance_type: node
+  sources:
+  - properties:
+      args: []
+      kwargs:
+        days: -400
+      transformation: shift
+    source:
+      external_id: DateTransformation
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: market_configuration_nordpool_dayahead
+  instance_type: node
+  sources:
+  - properties:
+      maxPrice: 4000.0
+      minPrice: -500.0
+      priceSteps: 200
+      priceUnit: EUR/MWh
+      tickSize: 0.1
+      timeUnit: 1h
+      tradeLot: 0.1
+    source:
+      external_id: NordPoolMarket
+      space: power-ops
+      type: container
+  - properties:
+      name: Nord Pool Day-ahead
+      timezone: Europe/Oslo
+    source:
+      external_id: Market
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2
+  instance_type: node
+  sources:
+  - properties:
+      bid:
+        externalId: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid
+        space: power-ops
+      name: Bid process configuration multi_scenario_20_NO2
+    source:
+      external_id: Process
+      space: power-ops
+      type: container
+  - properties:
+      shop:
+        externalId: ShopTransformation__168e44cd5fbaa4a825986c1dc6254309
+        space: power-ops
+    source:
+      external_id: DayAheadProcess
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: BidMatrixGenerator__1a3b8a8179a1356efba710b8459bf9d7
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2:BidMatrixGenerator__1a3b8a8179a1356efba710b8459bf9d7
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2
+    space: power-ops
+  type:
+    external_id: DayAheadProcess.bidMatrixGeneratorConfig
+    space: power-ops
+- end_node:
+    external_id: BidMatrixGenerator__4bfc4050b1aa449d59496bf89cbab4d3
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2:BidMatrixGenerator__4bfc4050b1aa449d59496bf89cbab4d3
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2
+    space: power-ops
+  type:
+    external_id: DayAheadProcess.bidMatrixGeneratorConfig
+    space: power-ops
+- end_node:
+    external_id: BidMatrixGenerator__6562313ba97537ce0c32153a1d9a399d
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2:BidMatrixGenerator__6562313ba97537ce0c32153a1d9a399d
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2
+    space: power-ops
+  type:
+    external_id: DayAheadProcess.bidMatrixGeneratorConfig
+    space: power-ops
+- end_node:
+    external_id: BidMatrixGenerator__7fbeda9a5f09bfa17af6b8295bfd48e2
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2:BidMatrixGenerator__7fbeda9a5f09bfa17af6b8295bfd48e2
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2
+    space: power-ops
+  type:
+    external_id: DayAheadProcess.bidMatrixGeneratorConfig
+    space: power-ops
+- end_node:
+    external_id: BidMatrixGenerator__a8a4f4c053cdf0e35f7eb3368d9e487a
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2:BidMatrixGenerator__a8a4f4c053cdf0e35f7eb3368d9e487a
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2
+    space: power-ops
+  type:
+    external_id: DayAheadProcess.bidMatrixGeneratorConfig
+    space: power-ops
+- end_node:
+    external_id: BidMatrixGenerator__c2a60ed712b890bf93ad26c123635c69
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2:BidMatrixGenerator__c2a60ed712b890bf93ad26c123635c69
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2
+    space: power-ops
+  type:
+    external_id: DayAheadProcess.bidMatrixGeneratorConfig
+    space: power-ops
+- end_node:
+    external_id: BidMatrixGenerator__cd9077e715743ba49961dba58d6955a2
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2:BidMatrixGenerator__cd9077e715743ba49961dba58d6955a2
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2
+    space: power-ops
+  type:
+    external_id: DayAheadProcess.bidMatrixGeneratorConfig
+    space: power-ops
+- end_node:
+    external_id: BidMatrixGenerator__f6c05befebaa96452ed83582d2b5f981
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2:BidMatrixGenerator__f6c05befebaa96452ed83582d2b5f981
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2
+    space: power-ops
+  type:
+    external_id: DayAheadProcess.bidMatrixGeneratorConfig
+    space: power-ops
+- end_node:
+    external_id: BidMatrixGenerator__f994e2dc55489aa6d061e28685c48e9a
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2:BidMatrixGenerator__f994e2dc55489aa6d061e28685c48e9a
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2
+    space: power-ops
+  type:
+    external_id: DayAheadProcess.bidMatrixGeneratorConfig
+    space: power-ops
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2
+  instance_type: node
+  sources:
+  - properties:
+      bid:
+        externalId: POWEROPS_bid_process_configuration_multi_scenario_2_NO2_bid
+        space: power-ops
+      name: Bid process configuration multi_scenario_2_NO2
+    source:
+      external_id: Process
+      space: power-ops
+      type: container
+  - properties:
+      shop:
+        externalId: ShopTransformation__168e44cd5fbaa4a825986c1dc6254309
+        space: power-ops
+    source:
+      external_id: DayAheadProcess
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: BidMatrixGenerator__1a3b8a8179a1356efba710b8459bf9d7
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2:BidMatrixGenerator__1a3b8a8179a1356efba710b8459bf9d7
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2
+    space: power-ops
+  type:
+    external_id: DayAheadProcess.bidMatrixGeneratorConfig
+    space: power-ops
+- end_node:
+    external_id: BidMatrixGenerator__4bfc4050b1aa449d59496bf89cbab4d3
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2:BidMatrixGenerator__4bfc4050b1aa449d59496bf89cbab4d3
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2
+    space: power-ops
+  type:
+    external_id: DayAheadProcess.bidMatrixGeneratorConfig
+    space: power-ops
+- end_node:
+    external_id: BidMatrixGenerator__6562313ba97537ce0c32153a1d9a399d
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2:BidMatrixGenerator__6562313ba97537ce0c32153a1d9a399d
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2
+    space: power-ops
+  type:
+    external_id: DayAheadProcess.bidMatrixGeneratorConfig
+    space: power-ops
+- end_node:
+    external_id: BidMatrixGenerator__7fbeda9a5f09bfa17af6b8295bfd48e2
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2:BidMatrixGenerator__7fbeda9a5f09bfa17af6b8295bfd48e2
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2
+    space: power-ops
+  type:
+    external_id: DayAheadProcess.bidMatrixGeneratorConfig
+    space: power-ops
+- end_node:
+    external_id: BidMatrixGenerator__a8a4f4c053cdf0e35f7eb3368d9e487a
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2:BidMatrixGenerator__a8a4f4c053cdf0e35f7eb3368d9e487a
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2
+    space: power-ops
+  type:
+    external_id: DayAheadProcess.bidMatrixGeneratorConfig
+    space: power-ops
+- end_node:
+    external_id: BidMatrixGenerator__c2a60ed712b890bf93ad26c123635c69
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2:BidMatrixGenerator__c2a60ed712b890bf93ad26c123635c69
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2
+    space: power-ops
+  type:
+    external_id: DayAheadProcess.bidMatrixGeneratorConfig
+    space: power-ops
+- end_node:
+    external_id: BidMatrixGenerator__cd9077e715743ba49961dba58d6955a2
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2:BidMatrixGenerator__cd9077e715743ba49961dba58d6955a2
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2
+    space: power-ops
+  type:
+    external_id: DayAheadProcess.bidMatrixGeneratorConfig
+    space: power-ops
+- end_node:
+    external_id: BidMatrixGenerator__f6c05befebaa96452ed83582d2b5f981
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2:BidMatrixGenerator__f6c05befebaa96452ed83582d2b5f981
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2
+    space: power-ops
+  type:
+    external_id: DayAheadProcess.bidMatrixGeneratorConfig
+    space: power-ops
+- end_node:
+    external_id: BidMatrixGenerator__f994e2dc55489aa6d061e28685c48e9a
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2:BidMatrixGenerator__f994e2dc55489aa6d061e28685c48e9a
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2
+    space: power-ops
+  type:
+    external_id: DayAheadProcess.bidMatrixGeneratorConfig
+    space: power-ops
+- external_id: POWEROPS_bid_process_configuration_price_independent_NO2
+  instance_type: node
+  sources:
+  - properties:
+      bid:
+        externalId: POWEROPS_bid_process_configuration_price_independent_NO2_bid
+        space: power-ops
+      name: Bid process configuration price_independent_NO2
+    source:
+      external_id: Process
+      space: power-ops
+      type: container
+  - properties:
+      shop:
+        externalId: ShopTransformation__168e44cd5fbaa4a825986c1dc6254309
+        space: power-ops
+    source:
+      external_id: DayAheadProcess
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: BidMatrixGenerator__0a2c142d516e5b6ab2d36dde4cef352a
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_price_independent_NO2:BidMatrixGenerator__0a2c142d516e5b6ab2d36dde4cef352a
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_price_independent_NO2
+    space: power-ops
+  type:
+    external_id: DayAheadProcess.bidMatrixGeneratorConfig
+    space: power-ops
+- end_node:
+    external_id: BidMatrixGenerator__106d4499f2b2c82404586cf54c6032ae
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_price_independent_NO2:BidMatrixGenerator__106d4499f2b2c82404586cf54c6032ae
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_price_independent_NO2
+    space: power-ops
+  type:
+    external_id: DayAheadProcess.bidMatrixGeneratorConfig
+    space: power-ops
+- end_node:
+    external_id: BidMatrixGenerator__1320ef2183d25b7f77101bb566648c15
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_price_independent_NO2:BidMatrixGenerator__1320ef2183d25b7f77101bb566648c15
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_price_independent_NO2
+    space: power-ops
+  type:
+    external_id: DayAheadProcess.bidMatrixGeneratorConfig
+    space: power-ops
+- end_node:
+    external_id: BidMatrixGenerator__26f2d6e916ca8d48689e1ba6c6272af2
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_price_independent_NO2:BidMatrixGenerator__26f2d6e916ca8d48689e1ba6c6272af2
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_price_independent_NO2
+    space: power-ops
+  type:
+    external_id: DayAheadProcess.bidMatrixGeneratorConfig
+    space: power-ops
+- end_node:
+    external_id: BidMatrixGenerator__49fc8b6c47fc60a09452b7ee2f446f17
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_price_independent_NO2:BidMatrixGenerator__49fc8b6c47fc60a09452b7ee2f446f17
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_price_independent_NO2
+    space: power-ops
+  type:
+    external_id: DayAheadProcess.bidMatrixGeneratorConfig
+    space: power-ops
+- end_node:
+    external_id: BidMatrixGenerator__6ee6e201a4b44f91d8e30544df52a00f
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_price_independent_NO2:BidMatrixGenerator__6ee6e201a4b44f91d8e30544df52a00f
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_price_independent_NO2
+    space: power-ops
+  type:
+    external_id: DayAheadProcess.bidMatrixGeneratorConfig
+    space: power-ops
+- end_node:
+    external_id: BidMatrixGenerator__8f53fa5db2b6b5de9b93d5798e341ce2
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_price_independent_NO2:BidMatrixGenerator__8f53fa5db2b6b5de9b93d5798e341ce2
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_price_independent_NO2
+    space: power-ops
+  type:
+    external_id: DayAheadProcess.bidMatrixGeneratorConfig
+    space: power-ops
+- end_node:
+    external_id: BidMatrixGenerator__f74c8faa244465851d2b3bc1cb013f96
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_price_independent_NO2:BidMatrixGenerator__f74c8faa244465851d2b3bc1cb013f96
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_price_independent_NO2
+    space: power-ops
+  type:
+    external_id: DayAheadProcess.bidMatrixGeneratorConfig
+    space: power-ops
+- end_node:
+    external_id: BidMatrixGenerator__faf473e18b3477c063b6f794953a048c
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_price_independent_NO2:BidMatrixGenerator__faf473e18b3477c063b6f794953a048c
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_price_independent_NO2
+    space: power-ops
+  type:
+    external_id: DayAheadProcess.bidMatrixGeneratorConfig
+    space: power-ops
+- external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2
+  instance_type: node
+  sources:
+  - properties:
+      bid:
+        externalId: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2_bid
+        space: power-ops
+      name: Bid process configuration water_value_based_with_dummy_SHOP_runNO2
+    source:
+      external_id: Process
+      space: power-ops
+      type: container
+  - properties:
+      shop:
+        externalId: ShopTransformation__5e36c7730f0b32646ab7f2967beee93a
+        space: power-ops
+    source:
+      external_id: DayAheadProcess
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: BidMatrixGenerator__31ae7deb3cb35fefaea06f6dd3eab9a4
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2:BidMatrixGenerator__31ae7deb3cb35fefaea06f6dd3eab9a4
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2
+    space: power-ops
+  type:
+    external_id: DayAheadProcess.bidMatrixGeneratorConfig
+    space: power-ops
+- end_node:
+    external_id: BidMatrixGenerator__47760a45deb976f35b39fc6249129e7e
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2:BidMatrixGenerator__47760a45deb976f35b39fc6249129e7e
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2
+    space: power-ops
+  type:
+    external_id: DayAheadProcess.bidMatrixGeneratorConfig
+    space: power-ops
+- end_node:
+    external_id: BidMatrixGenerator__598faf746fcd3ef013e8de01c4e39273
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2:BidMatrixGenerator__598faf746fcd3ef013e8de01c4e39273
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2
+    space: power-ops
+  type:
+    external_id: DayAheadProcess.bidMatrixGeneratorConfig
+    space: power-ops
+- end_node:
+    external_id: BidMatrixGenerator__6fce631997f9a9b64bebff108554a438
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2:BidMatrixGenerator__6fce631997f9a9b64bebff108554a438
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2
+    space: power-ops
+  type:
+    external_id: DayAheadProcess.bidMatrixGeneratorConfig
+    space: power-ops
+- end_node:
+    external_id: BidMatrixGenerator__91b66a897d5d76d2e871948974910d29
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2:BidMatrixGenerator__91b66a897d5d76d2e871948974910d29
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2
+    space: power-ops
+  type:
+    external_id: DayAheadProcess.bidMatrixGeneratorConfig
+    space: power-ops
+- end_node:
+    external_id: BidMatrixGenerator__c15f6250816ff5f06ec0283c4e699d1f
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2:BidMatrixGenerator__c15f6250816ff5f06ec0283c4e699d1f
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2
+    space: power-ops
+  type:
+    external_id: DayAheadProcess.bidMatrixGeneratorConfig
+    space: power-ops
+- end_node:
+    external_id: BidMatrixGenerator__e5e9add663f85e7b1a12e5c2f53eb2fc
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2:BidMatrixGenerator__e5e9add663f85e7b1a12e5c2f53eb2fc
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2
+    space: power-ops
+  type:
+    external_id: DayAheadProcess.bidMatrixGeneratorConfig
+    space: power-ops
+- end_node:
+    external_id: BidMatrixGenerator__e6c95b4196f9f3acc9f944a4726494d4
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2:BidMatrixGenerator__e6c95b4196f9f3acc9f944a4726494d4
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2
+    space: power-ops
+  type:
+    external_id: DayAheadProcess.bidMatrixGeneratorConfig
+    space: power-ops
+- end_node:
+    external_id: BidMatrixGenerator__f8573c5273440892092848fb8f24da5b
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2:BidMatrixGenerator__f8573c5273440892092848fb8f24da5b
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2
+    space: power-ops
+  type:
+    external_id: DayAheadProcess.bidMatrixGeneratorConfig
+    space: power-ops
+- external_id: ShopTransformation__168e44cd5fbaa4a825986c1dc6254309
+  instance_type: node
+  sources: []
+  space: power-ops
+- end_node:
+    external_id: DateTransformation__01c2b78fedff0cbc3f835ba600b48795
+    space: power-ops
+  external_id: ShopTransformation__168e44cd5fbaa4a825986c1dc6254309:DateTransformation__01c2b78fedff0cbc3f835ba600b48795
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: ShopTransformation__168e44cd5fbaa4a825986c1dc6254309
+    space: power-ops
+  type:
+    external_id: ShopTransformation.end
+    space: power-ops
+- end_node:
+    external_id: DateTransformation__28df48a8d73a6cea9f4917637dcfc14b
+    space: power-ops
+  external_id: ShopTransformation__168e44cd5fbaa4a825986c1dc6254309:DateTransformation__28df48a8d73a6cea9f4917637dcfc14b
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: ShopTransformation__168e44cd5fbaa4a825986c1dc6254309
+    space: power-ops
+  type:
+    external_id: ShopTransformation.end
+    space: power-ops
+- end_node:
+    external_id: DateTransformation__b9e809e11bd75d1befc81f2a3fe25834
+    space: power-ops
+  external_id: ShopTransformation__168e44cd5fbaa4a825986c1dc6254309:DateTransformation__b9e809e11bd75d1befc81f2a3fe25834
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: ShopTransformation__168e44cd5fbaa4a825986c1dc6254309
+    space: power-ops
+  type:
+    external_id: ShopTransformation.start
+    space: power-ops
+- end_node:
+    external_id: DateTransformation__f9f90921095b2f4b241249a5745014b3
+    space: power-ops
+  external_id: ShopTransformation__168e44cd5fbaa4a825986c1dc6254309:DateTransformation__f9f90921095b2f4b241249a5745014b3
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: ShopTransformation__168e44cd5fbaa4a825986c1dc6254309
+    space: power-ops
+  type:
+    external_id: ShopTransformation.end
+    space: power-ops
+- external_id: ShopTransformation__5e36c7730f0b32646ab7f2967beee93a
+  instance_type: node
+  sources: []
+  space: power-ops
+- end_node:
+    external_id: DateTransformation__3c107c6a7dd7a026429b1037766430e2
+    space: power-ops
+  external_id: ShopTransformation__5e36c7730f0b32646ab7f2967beee93a:DateTransformation__3c107c6a7dd7a026429b1037766430e2
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: ShopTransformation__5e36c7730f0b32646ab7f2967beee93a
+    space: power-ops
+  type:
+    external_id: ShopTransformation.end
+    space: power-ops
+- end_node:
+    external_id: DateTransformation__b9e809e11bd75d1befc81f2a3fe25834
+    space: power-ops
+  external_id: ShopTransformation__5e36c7730f0b32646ab7f2967beee93a:DateTransformation__b9e809e11bd75d1befc81f2a3fe25834
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: ShopTransformation__5e36c7730f0b32646ab7f2967beee93a
+    space: power-ops
+  type:
+    external_id: ShopTransformation.end
+    space: power-ops
+- end_node:
+    external_id: DateTransformation__f24aca5d65632cfd7ec87d4488ce8789
+    space: power-ops
+  external_id: ShopTransformation__5e36c7730f0b32646ab7f2967beee93a:DateTransformation__f24aca5d65632cfd7ec87d4488ce8789
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: ShopTransformation__5e36c7730f0b32646ab7f2967beee93a
+    space: power-ops
+  type:
+    external_id: ShopTransformation.start
+    space: power-ops
+events:
+- description: Manual run of bootstrap scripts finished
+  source: PowerOps bootstrap
+  type: POWEROPS_BOOTSTRAP_FINISHED
+files: []
+labels: []
+relationships: []
+sequences: []
+time_series: []
