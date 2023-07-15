@@ -233,7 +233,7 @@ def to_rkom_data_model(config: MarketConfig, market_name: str) -> RKOMMarketData
                 override_mappings=[mapping],
                 product=reserve_scenario.product,
                 reserve_group=reserve_scenario.reserve_group,
-                volumes=reserve_scenario.volume,
+                volume=reserve_scenario.volume,
             )
             reserve_scenarios.append(apply)
 
@@ -273,7 +273,7 @@ def to_rkom_data_model(config: MarketConfig, market_name: str) -> RKOMMarketData
             ),
             auction=comb.auction.value,
             name=comb.name,
-            rkom_big_configs=comb.rkom_bid_config_external_ids,
+            rkom_bid_configs=comb.rkom_bid_config_external_ids,
         )
 
         combination = RKOMBidCombinationApply(

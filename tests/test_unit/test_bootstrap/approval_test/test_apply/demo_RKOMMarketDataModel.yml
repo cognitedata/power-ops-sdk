@@ -2958,7 +2958,7 @@ data_modeling.instances:
   - properties:
       auction: weekend
       name: default
-      rkomBigConfigs:
+      rkomBidConfigs:
       - POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW
     source:
       external_id: RKOMCombinationBid
@@ -2971,7 +2971,7 @@ data_modeling.instances:
   - properties:
       auction: week
       name: default
-      rkomBigConfigs:
+      rkomBidConfigs:
       - POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW
     source:
       external_id: RKOMCombinationBid
@@ -3583,7 +3583,7 @@ data_modeling.instances:
       block: day
       product: down
       reserveGroup: rkom_up
-      volumes: 0
+      volume: 0
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -3703,7 +3703,7 @@ data_modeling.instances:
       block: day
       product: down
       reserveGroup: rkom_up
-      volumes: 100
+      volume: 100
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -3823,7 +3823,7 @@ data_modeling.instances:
       block: day
       product: down
       reserveGroup: rkom_up
-      volumes: 120
+      volume: 120
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -3943,7 +3943,7 @@ data_modeling.instances:
       block: day
       product: down
       reserveGroup: rkom_up
-      volumes: 140
+      volume: 140
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -4063,7 +4063,7 @@ data_modeling.instances:
       block: day
       product: down
       reserveGroup: rkom_up
-      volumes: 160
+      volume: 160
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -4183,7 +4183,7 @@ data_modeling.instances:
       block: day
       product: down
       reserveGroup: rkom_up
-      volumes: 180
+      volume: 180
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -4303,7 +4303,7 @@ data_modeling.instances:
       block: day
       product: down
       reserveGroup: rkom_up
-      volumes: 200
+      volume: 200
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -4423,7 +4423,7 @@ data_modeling.instances:
       block: day
       product: down
       reserveGroup: rkom_up
-      volumes: 20
+      volume: 20
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -4543,7 +4543,7 @@ data_modeling.instances:
       block: day
       product: down
       reserveGroup: rkom_up
-      volumes: 40
+      volume: 40
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -4663,7 +4663,7 @@ data_modeling.instances:
       block: day
       product: down
       reserveGroup: rkom_up
-      volumes: 60
+      volume: 60
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -4783,7 +4783,7 @@ data_modeling.instances:
       block: day
       product: down
       reserveGroup: rkom_up
-      volumes: 80
+      volume: 80
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -4903,7 +4903,7 @@ data_modeling.instances:
       block: day
       product: up
       reserveGroup: rkom_up
-      volumes: 0
+      volume: 0
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -5023,7 +5023,7 @@ data_modeling.instances:
       block: day
       product: up
       reserveGroup: rkom_up
-      volumes: 100
+      volume: 100
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -5143,7 +5143,7 @@ data_modeling.instances:
       block: day
       product: up
       reserveGroup: rkom_up
-      volumes: 120
+      volume: 120
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -5263,7 +5263,7 @@ data_modeling.instances:
       block: day
       product: up
       reserveGroup: rkom_up
-      volumes: 140
+      volume: 140
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -5383,7 +5383,7 @@ data_modeling.instances:
       block: day
       product: up
       reserveGroup: rkom_up
-      volumes: 160
+      volume: 160
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -5503,7 +5503,7 @@ data_modeling.instances:
       block: day
       product: up
       reserveGroup: rkom_up
-      volumes: 180
+      volume: 180
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -5623,7 +5623,7 @@ data_modeling.instances:
       block: day
       product: up
       reserveGroup: rkom_up
-      volumes: 200
+      volume: 200
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -5743,7 +5743,7 @@ data_modeling.instances:
       block: day
       product: up
       reserveGroup: rkom_up
-      volumes: 20
+      volume: 20
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -5863,7 +5863,7 @@ data_modeling.instances:
       block: day
       product: up
       reserveGroup: rkom_up
-      volumes: 40
+      volume: 40
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -5983,7 +5983,7 @@ data_modeling.instances:
       block: day
       product: up
       reserveGroup: rkom_up
-      volumes: 60
+      volume: 60
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -6103,7 +6103,7 @@ data_modeling.instances:
       block: day
       product: up
       reserveGroup: rkom_up
-      volumes: 80
+      volume: 80
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -6223,7 +6223,7 @@ data_modeling.instances:
       block: day
       product: down
       reserveGroup: rkom_up
-      volumes: 0
+      volume: 0
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -6343,7 +6343,7 @@ data_modeling.instances:
       block: day
       product: down
       reserveGroup: rkom_up
-      volumes: 100
+      volume: 100
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -6463,7 +6463,7 @@ data_modeling.instances:
       block: day
       product: down
       reserveGroup: rkom_up
-      volumes: 120
+      volume: 120
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -6583,7 +6583,7 @@ data_modeling.instances:
       block: day
       product: down
       reserveGroup: rkom_up
-      volumes: 140
+      volume: 140
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -6703,7 +6703,7 @@ data_modeling.instances:
       block: day
       product: down
       reserveGroup: rkom_up
-      volumes: 160
+      volume: 160
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -6823,7 +6823,7 @@ data_modeling.instances:
       block: day
       product: down
       reserveGroup: rkom_up
-      volumes: 180
+      volume: 180
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -6943,7 +6943,7 @@ data_modeling.instances:
       block: day
       product: down
       reserveGroup: rkom_up
-      volumes: 200
+      volume: 200
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -7063,7 +7063,7 @@ data_modeling.instances:
       block: day
       product: down
       reserveGroup: rkom_up
-      volumes: 20
+      volume: 20
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -7183,7 +7183,7 @@ data_modeling.instances:
       block: day
       product: down
       reserveGroup: rkom_up
-      volumes: 40
+      volume: 40
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -7303,7 +7303,7 @@ data_modeling.instances:
       block: day
       product: down
       reserveGroup: rkom_up
-      volumes: 60
+      volume: 60
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -7423,7 +7423,7 @@ data_modeling.instances:
       block: day
       product: down
       reserveGroup: rkom_up
-      volumes: 80
+      volume: 80
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -7543,7 +7543,7 @@ data_modeling.instances:
       block: day
       product: up
       reserveGroup: rkom_up
-      volumes: 0
+      volume: 0
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -7663,7 +7663,7 @@ data_modeling.instances:
       block: day
       product: up
       reserveGroup: rkom_up
-      volumes: 100
+      volume: 100
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -7783,7 +7783,7 @@ data_modeling.instances:
       block: day
       product: up
       reserveGroup: rkom_up
-      volumes: 120
+      volume: 120
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -7903,7 +7903,7 @@ data_modeling.instances:
       block: day
       product: up
       reserveGroup: rkom_up
-      volumes: 140
+      volume: 140
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -8023,7 +8023,7 @@ data_modeling.instances:
       block: day
       product: up
       reserveGroup: rkom_up
-      volumes: 160
+      volume: 160
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -8143,7 +8143,7 @@ data_modeling.instances:
       block: day
       product: up
       reserveGroup: rkom_up
-      volumes: 180
+      volume: 180
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -8263,7 +8263,7 @@ data_modeling.instances:
       block: day
       product: up
       reserveGroup: rkom_up
-      volumes: 200
+      volume: 200
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -8383,7 +8383,7 @@ data_modeling.instances:
       block: day
       product: up
       reserveGroup: rkom_up
-      volumes: 20
+      volume: 20
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -8503,7 +8503,7 @@ data_modeling.instances:
       block: day
       product: up
       reserveGroup: rkom_up
-      volumes: 40
+      volume: 40
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -8623,7 +8623,7 @@ data_modeling.instances:
       block: day
       product: up
       reserveGroup: rkom_up
-      volumes: 60
+      volume: 60
     source:
       external_id: ReserveScenario
       space: power-ops
@@ -8743,7 +8743,7 @@ data_modeling.instances:
       block: day
       product: up
       reserveGroup: rkom_up
-      volumes: 80
+      volume: 80
     source:
       external_id: ReserveScenario
       space: power-ops
