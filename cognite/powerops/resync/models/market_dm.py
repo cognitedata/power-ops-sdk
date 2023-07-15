@@ -5,8 +5,11 @@ from pydantic import Field
 from cognite.powerops.clients.data_classes import (
     BenchmarkBidApply,
     BenchmarkProcesApply,
+    BidMatrixGeneratorApply,
+    DayAheadBidApply,
     DayAheadProcesApply,
     NordPoolMarketApply,
+    RKOMBidApply,
     RKOMBidCombinationApply,
     RKOMMarketApply,
     RKOMProces,
@@ -21,10 +24,15 @@ class BenchmarkMarketDataModel(DataModel):
     bids: dict[ExternalID, BenchmarkBidApply] = Field(default_factory=dict)
 
 
-class MarketDM(DataModel):
-    rkom_market: list[RKOMMarketApply] = Field(default_factory=list)
-    nordpool_market: list[NordPoolMarketApply] = Field(default_factory=list)
-    rkom_proces: list[RKOMProces] = Field(default_factory=list)
-    rkom_bid_combination: list[RKOMBidCombinationApply] = Field(default_factory=list)
-    dayahead_process: list[DayAheadProcesApply] = Field(default_factory=list)
-    benchmarking: list[BenchmarkProcesApply] = Field(default_factory=list)
+class DayAheadMarketDataModel(DataModel):
+    dayahead_processes: list[DayAheadProcesApply] = Field(default_factory=list)
+    bids: dict[ExternalID, DayAheadBidApply] = Field(default_factory=dict)
+    bid_matrix_generator: dict[ExternalID, BidMatrixGeneratorApply] = Field(default_factory=dict)
+    nordpool_market: NordPoolMarketApply = None
+
+
+class RKOMMarketDataModel(DataModel):
+    rkom_market: RKOMMarketApply = None
+    bids: dict[ExternalID, RKOMBidApply] = Field(default_factory=dict)
+    rkom_bid_combinations: list[RKOMBidCombinationApply] = Field(default_factory=list)
+    rkom_processes: list[RKOMProces] = Field(default_factory=list)

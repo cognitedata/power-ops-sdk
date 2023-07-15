@@ -21,6 +21,8 @@ AVAILABLE_MODELS = [
     "ProductionDataModel",
     "CogShopDataModel",
     "BenchmarkMarketDataModel",
+    "DayAheadMarketDataModel",
+    # "RKOMMarketDataModel",
 ]
 
 

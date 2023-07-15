@@ -183,12 +183,6 @@ class TimeSeriesMapping(BaseModel):
     def column_definitions(self) -> list[dict]:
         return [{"valueType": "STRING", "externalId": col} for col in self.columns]
 
-    def to_sequence_rows(self) -> dict[int, list[str | float]]:
-        return {
-            i: row.to_sequence_row(max_transformation_cols=len(self.transformations_cols))
-            for i, row in enumerate(self.rows)
-        }
-
     def to_dataframe(self) -> pd.DataFrame:
         rows = [row.to_sequence_row(max_transformation_cols=len(self.transformations_cols)) for row in self.rows]
         return pd.DataFrame(data=rows, columns=self.columns)

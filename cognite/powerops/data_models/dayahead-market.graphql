@@ -17,8 +17,7 @@ type DayAheadBid implements Bid{
     isDefaultConfigForPriceArea: Boolean
     mainScenario: String
     priceArea: String
-    priceScenarios: [JSONObject]
-    shop: ShopTransformation
+    priceScenarios: [ScenarioMapping]
     noShop: Boolean
     bidProcessConfigurationName: String
     bidMatrixGeneratorConfigExternalId: String
@@ -34,6 +33,6 @@ type DayAheadProcess implements Process{
     name: String
     bid: DayAheadBid
     shop: ShopTransformation
-    scenario_mappings: [ScenarioMapping]
+    price_scenarios: [ScenarioMapping]
     bidMatrixGeneratorConfig: [BidMatrixGenerator]
 }

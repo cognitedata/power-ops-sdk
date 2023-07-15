@@ -24,6 +24,9 @@ from cognite.powerops.resync.config.shared import (
 Product = Literal["up", "down"]
 Block = Literal["day", "night"]
 
+PlantExternalId = str
+TimeSeriesExeteralId = str
+
 
 @dataclass
 class ReserveScenario:
@@ -33,7 +36,7 @@ class ReserveScenario:
     block: Block
     reserve_group: str
     mip_plant_time_series: List[
-        Tuple[str, Optional[str]]
+        Tuple[PlantExternalId, Optional[TimeSeriesExeteralId]]
     ]  # (plant, mip_flag_time_series) for plants with generators that are in the reserve group
     obligation_external_id: Optional[str] = None
 
@@ -144,7 +147,7 @@ class ReserveScenarios(BaseModel):
     product: Product
     block: Block
     reserve_group: str
-    mip_plant_time_series: List[Tuple[str, Optional[str]]]
+    mip_plant_time_series: List[Tuple[PlantExternalId, Optional[TimeSeriesExeteralId]]]
     obligation_external_id: Optional[str]
 
     @field_validator("auction", mode="before")
@@ -188,6 +191,15 @@ class RkomMarketConfig(BaseModel):
     name: str
     timezone: str
     start_of_week: int
+
+    @classmethod
+    def default(cls) -> "RkomMarketConfig":
+        return cls(
+            name="RKOM weekly (Statnett)",
+            timezone="Europe/Oslo",
+            start_of_week=1,
+            external_id="market_configuration_statnett_rkom_weekly",
+        )
 
 
 class RKOMBidCombinationConfig(Configuration):

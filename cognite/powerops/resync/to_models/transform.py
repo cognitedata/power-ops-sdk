@@ -8,7 +8,7 @@ from cognite.powerops.resync.config.resync_config import ReSyncConfig
 from cognite.powerops.resync.models.base import AssetModel, DataModel, Model
 
 from .to_cogshop_model import to_cogshop_asset_model, to_cogshop_data_model
-from .to_market_model import to_benchmark_data_model, to_market_asset_model
+from .to_market_model import to_benchmark_data_model, to_dayahead_data_model, to_market_asset_model, to_rkom_data_model
 from .to_production_model import to_production_data_model, to_production_model
 
 
@@ -51,9 +51,18 @@ def transform(
                 config.cogshop, config.production.watercourses, config.settings.shop_version
             )
             data_models.append(cogshop_model)
-        if "BenchmarkMarketDataModel" in model_names:
+        if "BenchmarkMarketDataModel" in model_names or "DayAheadMarketDataModel" in model_names:
             benchmark_market_model = to_benchmark_data_model(config.market.benchmarks)
-            data_models.append(benchmark_market_model)
+            if "BenchmarkMarketDataModel" in model_names:
+                data_models.append(benchmark_market_model)
+            if "DayAheadMarketDataModel" in model_names:
+                day_ahead_market_model = to_dayahead_data_model(
+                    config.market, benchmark_market_model.benchmarking[0], production_model.price_areas
+                )
+                data_models.append(day_ahead_market_model)
+        if "RKOMMarketDataModel" in model_names:
+            rkom_market_model = to_rkom_data_model(config.market.rkom_bid_process)
+            data_models.append(rkom_market_model)
 
     collection = ResourceCollection()
     if has_asset_model:

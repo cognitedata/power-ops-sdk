@@ -5,20 +5,13 @@ type RKOMMarket implements Market {
 }
 
 
-type PriceScenario{
-    name: String
-    timeSeries: TimeSeries
-    transformations: [ValueTransformation]
-}
-
 type ReserveScenario{
-    volumes: [Int]
+    volumes: Int
     auction: String
     product: String
     block: String
     reserveGroup: String
-    mipPlant: [TimeSeries]
-    obligation: TimeSeries
+    overrideMappings: [ScenarioMapping]
 }
 
 type RKOMBid implements Bid {
@@ -30,7 +23,7 @@ type RKOMBid implements Bid {
     method: String
     minimumPrice: Float
     pricePremium: Float
-    priceScenarios: [PriceScenario]
+    priceScenarios: [ScenarioMapping]
     product: String
     reserveScenarios: [ReserveScenario]
     watercourse: String

@@ -9,22 +9,18 @@ import pandas as pd
 import yaml
 from cognite.client.data_classes import FileMetadata, Sequence
 
-from cognite.powerops.clients.data_classes import (
-    InputTimeSeriesMappingApply,
-    OutputMappingApply,
-    ScenarioTemplateApply,
-    ValueTransformationApply,
-)
+from cognite.powerops.clients.data_classes import OutputMappingApply, ScenarioTemplateApply
 from cognite.powerops.resync.config.cogshop.shop_file_config import ShopFileConfig
 from cognite.powerops.resync.config.production.watercourse import WatercourseConfig
 from cognite.powerops.resync.config.resync_config import CogShopConfig
-from cognite.powerops.resync.config.shared import TimeSeriesMappingEntry
 from cognite.powerops.resync.models import cogshop
 from cognite.powerops.resync.models.cdf_resources import CDFSequence
 from cognite.powerops.resync.models.cogshop import CogShopDataModel
 from cognite.powerops.resync.models.production import Watercourse
 from cognite.powerops.resync.utils.common import make_ext_id
 from cognite.powerops.resync.utils.serializer import load_yaml
+
+from ._to_instances import _to_input_timeseries_mapping
 
 logger = logging.getLogger(__name__)
 
@@ -68,24 +64,7 @@ def to_cogshop_data_model(
         base_mappings = {}
         transformations = {}
         for entry in mapping:
-            entry: TimeSeriesMappingEntry
-
-            base_mapping = InputTimeSeriesMappingApply(
-                external_id=make_ext_id(entry.model_dump_json(), class_=InputTimeSeriesMappingApply),
-                aggregation=entry.aggregation.name if entry.aggregation else None,
-                cdf_time_series=entry.time_series_external_id,
-                shop_object_type=entry.object_type,
-                shop_object_name=entry.object_name,
-                shop_attribute_name=entry.attribute_name,
-                transformations=[
-                    ValueTransformationApply(
-                        external_id=make_ext_id(t.model_dump_json(), class_=ValueTransformationApply),
-                        method=t.transformation.name,
-                        arguments=t.kwargs,
-                    )
-                    for t in (entry.transformations or [])
-                ],
-            )
+            base_mapping = _to_input_timeseries_mapping(entry)
             base_mappings[base_mapping.external_id] = base_mapping
             transformations.update({t.external_id: t for t in base_mapping.transformations})
 

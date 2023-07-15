@@ -3,6 +3,7 @@ type InputTimeSeriesMapping {
   shopObjectName: String
   shopAttributeName: String
   cdfTimeSeries: TimeSeries
+  retrieve: String
   transformations: [ValueTransformation]
   aggregation: String
 }
