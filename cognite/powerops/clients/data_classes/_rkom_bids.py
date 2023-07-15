@@ -10,8 +10,8 @@ from cognite.powerops.clients.data_classes._core import DomainModel, DomainModel
 if TYPE_CHECKING:
     from cognite.powerops.clients.data_classes._date_transformations import DateTransformationApply
     from cognite.powerops.clients.data_classes._markets import MarketApply
-    from cognite.powerops.clients.data_classes._price_scenarios import PriceScenarioApply
     from cognite.powerops.clients.data_classes._reserve_scenarios import ReserveScenarioApply
+    from cognite.powerops.clients.data_classes._scenario_mappings import ScenarioMappingApply
 
 __all__ = ["RKOMBid", "RKOMBidApply", "RKOMBidList"]
 
@@ -42,7 +42,7 @@ class RKOMBidApply(DomainModelApply):
     minimum_price: Optional[float] = None
     name: Optional[str] = None
     price_premium: Optional[float] = None
-    price_scenarios: list[Union["PriceScenarioApply", str]] = Field(default_factory=list, repr=False)
+    price_scenarios: list[Union["ScenarioMappingApply", str]] = Field(default_factory=list, repr=False)
     product: Optional[str] = None
     reserve_scenarios: list[Union["ReserveScenarioApply", str]] = Field(default_factory=list, repr=False)
     watercourse: Optional[str] = None
@@ -143,13 +143,13 @@ class RKOMBidApply(DomainModelApply):
             end_node=dm.DirectRelationReference("power-ops", end_node_ext_id),
         )
 
-    def _create_price_scenario_edge(self, price_scenario: Union[str, "PriceScenarioApply"]) -> dm.EdgeApply:
+    def _create_price_scenario_edge(self, price_scenario: Union[str, "ScenarioMappingApply"]) -> dm.EdgeApply:
         if isinstance(price_scenario, str):
             end_node_ext_id = price_scenario
         elif isinstance(price_scenario, DomainModelApply):
             end_node_ext_id = price_scenario.external_id
         else:
-            raise TypeError(f"Expected str or PriceScenarioApply, got {type(price_scenario)}")
+            raise TypeError(f"Expected str or ScenarioMappingApply, got {type(price_scenario)}")
 
         return dm.EdgeApply(
             space="power-ops",

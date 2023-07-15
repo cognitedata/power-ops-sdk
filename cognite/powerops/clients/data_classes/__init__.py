@@ -37,7 +37,6 @@ from cognite.powerops.clients.data_classes._nord_pool_markets import (
 from cognite.powerops.clients.data_classes._output_mappings import OutputMapping, OutputMappingApply, OutputMappingList
 from cognite.powerops.clients.data_classes._plants import Plant, PlantApply, PlantList
 from cognite.powerops.clients.data_classes._price_areas import PriceArea, PriceAreaApply, PriceAreaList
-from cognite.powerops.clients.data_classes._price_scenarios import PriceScenario, PriceScenarioApply, PriceScenarioList
 from cognite.powerops.clients.data_classes._process import Proces, ProcesApply, ProcesList
 from cognite.powerops.clients.data_classes._production_plan_time_series import (
     ProductionPlanTimeSeries,
@@ -99,11 +98,11 @@ DayAheadProcesApply.model_rebuild()
 InputTimeSeriesMappingApply.model_rebuild()
 PlantApply.model_rebuild()
 PriceAreaApply.model_rebuild()
-PriceScenarioApply.model_rebuild()
 ProcesApply.model_rebuild()
 RKOMBidApply.model_rebuild()
 RKOMBidCombinationApply.model_rebuild()
 RKOMProcesApply.model_rebuild()
+ReserveScenarioApply.model_rebuild()
 ScenarioApply.model_rebuild()
 ScenarioMappingApply.model_rebuild()
 ScenarioTemplateApply.model_rebuild()
@@ -156,9 +155,6 @@ __all__ = [
     "PriceArea",
     "PriceAreaApply",
     "PriceAreaList",
-    "PriceScenario",
-    "PriceScenarioApply",
-    "PriceScenarioList",
     "Proces",
     "ProcesApply",
     "ProcesList",

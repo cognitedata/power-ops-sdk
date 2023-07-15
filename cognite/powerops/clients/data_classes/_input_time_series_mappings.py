@@ -17,6 +17,7 @@ class InputTimeSeriesMapping(DomainModel):
     space: ClassVar[str] = "power-ops"
     aggregation: Optional[str] = None
     cdf_time_series: Optional[str] = Field(None, alias="cdfTimeSeries")
+    retrieve: Optional[str] = None
     shop_attribute_name: Optional[str] = Field(None, alias="shopAttributeName")
     shop_object_name: Optional[str] = Field(None, alias="shopObjectName")
     shop_object_type: Optional[str] = Field(None, alias="shopObjectType")
@@ -27,6 +28,7 @@ class InputTimeSeriesMappingApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
     aggregation: Optional[str] = None
     cdf_time_series: Optional[str] = None
+    retrieve: Optional[str] = None
     shop_attribute_name: Optional[str] = None
     shop_object_name: Optional[str] = None
     shop_object_type: Optional[str] = None
@@ -42,6 +44,7 @@ class InputTimeSeriesMappingApply(DomainModelApply):
             properties={
                 "aggregation": self.aggregation,
                 "cdfTimeSeries": self.cdf_time_series,
+                "retrieve": self.retrieve,
                 "shopAttributeName": self.shop_attribute_name,
                 "shopObjectName": self.shop_object_name,
                 "shopObjectType": self.shop_object_type,

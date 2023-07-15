@@ -20,7 +20,6 @@ from cognite.powerops.clients._api.nord_pool_markets import NordPoolMarketsAPI
 from cognite.powerops.clients._api.output_mappings import OutputMappingsAPI
 from cognite.powerops.clients._api.plants import PlantsAPI
 from cognite.powerops.clients._api.price_areas import PriceAreasAPI
-from cognite.powerops.clients._api.price_scenarios import PriceScenariosAPI
 from cognite.powerops.clients._api.process import ProcessAPI
 from cognite.powerops.clients._api.production_plan_time_series import ProductionPlanTimeSeriesAPI
 from cognite.powerops.clients._api.reserve_scenarios import ReserveScenariosAPI
@@ -131,9 +130,9 @@ class ProductionAPIs:
         self.watercourse_shops = WatercourseShopsAPI(client)
 
 
-class RKomMarketAPIs:
+class RKOMMarketAPIs:
     """
-    RKomMarketAPIs
+    RKOMMarketAPIs
 
     Data Model:
         space: power-ops
@@ -147,7 +146,6 @@ class RKomMarketAPIs:
         self.date_transformations = DateTransformationsAPI(client)
         self.input_time_series_mappings = InputTimeSeriesMappingsAPI(client)
         self.markets = MarketsAPI(client)
-        self.price_scenarios = PriceScenariosAPI(client)
         self.process = ProcessAPI(client)
         self.rkom_bids = RKOMBidsAPI(client)
         self.rkom_bid_combinations = RKOMBidCombinationsAPI(client)
@@ -165,7 +163,7 @@ class PowerOpsClient:
     PowerOpsClient
 
     Generated with:
-        pygen = 0.12.1
+        pygen = 0.12.2
         cognite-sdk = 6.8.4
         pydantic = 2.0.3
 
@@ -177,7 +175,7 @@ class PowerOpsClient:
         self.cog_shop = CogShopAPIs(client)
         self.day_ahead = DayAheadAPIs(client)
         self.production = ProductionAPIs(client)
-        self.r_kom_market = RKomMarketAPIs(client)
+        self.rkom_market = RKOMMarketAPIs(client)
 
     @classmethod
     def azure_project(

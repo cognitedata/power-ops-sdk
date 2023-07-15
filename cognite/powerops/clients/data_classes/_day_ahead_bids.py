@@ -10,7 +10,7 @@ from cognite.powerops.clients.data_classes._core import DomainModel, DomainModel
 if TYPE_CHECKING:
     from cognite.powerops.clients.data_classes._date_transformations import DateTransformationApply
     from cognite.powerops.clients.data_classes._markets import MarketApply
-    from cognite.powerops.clients.data_classes._shop_transformations import ShopTransformationApply
+    from cognite.powerops.clients.data_classes._scenario_mappings import ScenarioMappingApply
 
 __all__ = ["DayAheadBid", "DayAheadBidApply", "DayAheadBidList"]
 
@@ -26,8 +26,7 @@ class DayAheadBid(DomainModel):
     name: Optional[str] = None
     no_shop: Optional[bool] = Field(None, alias="noShop")
     price_area: Optional[str] = Field(None, alias="priceArea")
-    price_scenarios: list[dict] = Field([], alias="priceScenarios")
-    shop: Optional[str] = None
+    price_scenarios: list[str] = Field([], alias="priceScenarios")
 
 
 class DayAheadBidApply(DomainModelApply):
@@ -41,8 +40,7 @@ class DayAheadBidApply(DomainModelApply):
     name: Optional[str] = None
     no_shop: Optional[bool] = None
     price_area: Optional[str] = None
-    price_scenarios: list[dict] = []
-    shop: Optional[Union["ShopTransformationApply", str]] = Field(None, repr=False)
+    price_scenarios: list[Union["ScenarioMappingApply", str]] = Field(default_factory=list, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> InstancesApply:
         if self.external_id in cache:
@@ -58,11 +56,6 @@ class DayAheadBidApply(DomainModelApply):
                 "mainScenario": self.main_scenario,
                 "noShop": self.no_shop,
                 "priceArea": self.price_area,
-                "priceScenarios": self.price_scenarios,
-                "shop": {
-                    "space": "power-ops",
-                    "externalId": self.shop if isinstance(self.shop, str) else self.shop.external_id,
-                },
             },
         )
         sources.append(source)
@@ -99,13 +92,19 @@ class DayAheadBidApply(DomainModelApply):
                 nodes.extend(instances.nodes)
                 edges.extend(instances.edges)
 
+        for price_scenario in self.price_scenarios:
+            edge = self._create_price_scenario_edge(price_scenario)
+            if edge.external_id not in cache:
+                edges.append(edge)
+                cache.add(edge.external_id)
+
+            if isinstance(price_scenario, DomainModelApply):
+                instances = price_scenario._to_instances_apply(cache)
+                nodes.extend(instances.nodes)
+                edges.extend(instances.edges)
+
         if isinstance(self.market, DomainModelApply):
             instances = self.market._to_instances_apply(cache)
-            nodes.extend(instances.nodes)
-            edges.extend(instances.edges)
-
-        if isinstance(self.shop, DomainModelApply):
-            instances = self.shop._to_instances_apply(cache)
             nodes.extend(instances.nodes)
             edges.extend(instances.edges)
 
@@ -123,6 +122,22 @@ class DayAheadBidApply(DomainModelApply):
             space="power-ops",
             external_id=f"{self.external_id}:{end_node_ext_id}",
             type=dm.DirectRelationReference("power-ops", "Bid.date"),
+            start_node=dm.DirectRelationReference(self.space, self.external_id),
+            end_node=dm.DirectRelationReference("power-ops", end_node_ext_id),
+        )
+
+    def _create_price_scenario_edge(self, price_scenario: Union[str, "ScenarioMappingApply"]) -> dm.EdgeApply:
+        if isinstance(price_scenario, str):
+            end_node_ext_id = price_scenario
+        elif isinstance(price_scenario, DomainModelApply):
+            end_node_ext_id = price_scenario.external_id
+        else:
+            raise TypeError(f"Expected str or ScenarioMappingApply, got {type(price_scenario)}")
+
+        return dm.EdgeApply(
+            space="power-ops",
+            external_id=f"{self.external_id}:{end_node_ext_id}",
+            type=dm.DirectRelationReference("power-ops", "DayAheadBid.priceScenarios"),
             start_node=dm.DirectRelationReference(self.space, self.external_id),
             end_node=dm.DirectRelationReference("power-ops", end_node_ext_id),
         )

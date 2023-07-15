@@ -18,7 +18,7 @@ class Watercourse(DomainModel):
     space: ClassVar[str] = "power-ops"
     name: Optional[str] = None
     plants: list[str] = []
-    production_obligation: list[str] = Field(default_factory=list, alias="productionObligation")
+    production_obligation: list[str] = Field([], alias="productionObligation")
     shop: Optional[str] = None
 
 
@@ -26,7 +26,7 @@ class WatercourseApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
     name: Optional[str] = None
     plants: list[Union["PlantApply", str]] = Field(default_factory=list, repr=False)
-    production_obligation: list[str] = Field(default_factory=list)
+    production_obligation: list[str] = []
     shop: Optional[Union["WatercourseShopApply", str]] = Field(None, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> InstancesApply:
