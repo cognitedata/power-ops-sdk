@@ -10,7 +10,6 @@ from cognite.powerops.clients.data_classes._core import DomainModel, DomainModel
 if TYPE_CHECKING:
     from cognite.powerops.clients.data_classes._bid_matrix_generators import BidMatrixGeneratorApply
     from cognite.powerops.clients.data_classes._bids import BidApply
-    from cognite.powerops.clients.data_classes._scenario_mappings import ScenarioMappingApply
     from cognite.powerops.clients.data_classes._shop_transformations import ShopTransformationApply
 
 __all__ = ["DayAheadProces", "DayAheadProcesApply", "DayAheadProcesList"]
@@ -21,7 +20,6 @@ class DayAheadProces(DomainModel):
     bid: Optional[str] = None
     bid_matrix_generator_config: list[str] = Field([], alias="bidMatrixGeneratorConfig")
     name: Optional[str] = None
-    price_scenarios: list[str] = []
     shop: Optional[str] = None
 
 
@@ -30,7 +28,6 @@ class DayAheadProcesApply(DomainModelApply):
     bid: Optional[Union["BidApply", str]] = Field(None, repr=False)
     bid_matrix_generator_config: list[Union["BidMatrixGeneratorApply", str]] = Field(default_factory=list, repr=False)
     name: Optional[str] = None
-    price_scenarios: list[Union["ScenarioMappingApply", str]] = Field(default_factory=list, repr=False)
     shop: Optional[Union["ShopTransformationApply", str]] = Field(None, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> InstancesApply:
@@ -81,17 +78,6 @@ class DayAheadProcesApply(DomainModelApply):
                 nodes.extend(instances.nodes)
                 edges.extend(instances.edges)
 
-        for price_scenario in self.price_scenarios:
-            edge = self._create_price_scenario_edge(price_scenario)
-            if edge.external_id not in cache:
-                edges.append(edge)
-                cache.add(edge.external_id)
-
-            if isinstance(price_scenario, DomainModelApply):
-                instances = price_scenario._to_instances_apply(cache)
-                nodes.extend(instances.nodes)
-                edges.extend(instances.edges)
-
         if isinstance(self.bid, DomainModelApply):
             instances = self.bid._to_instances_apply(cache)
             nodes.extend(instances.nodes)
@@ -118,22 +104,6 @@ class DayAheadProcesApply(DomainModelApply):
             space="power-ops",
             external_id=f"{self.external_id}:{end_node_ext_id}",
             type=dm.DirectRelationReference("power-ops", "DayAheadProcess.bidMatrixGeneratorConfig"),
-            start_node=dm.DirectRelationReference(self.space, self.external_id),
-            end_node=dm.DirectRelationReference("power-ops", end_node_ext_id),
-        )
-
-    def _create_price_scenario_edge(self, price_scenario: Union[str, "ScenarioMappingApply"]) -> dm.EdgeApply:
-        if isinstance(price_scenario, str):
-            end_node_ext_id = price_scenario
-        elif isinstance(price_scenario, DomainModelApply):
-            end_node_ext_id = price_scenario.external_id
-        else:
-            raise TypeError(f"Expected str or ScenarioMappingApply, got {type(price_scenario)}")
-
-        return dm.EdgeApply(
-            space="power-ops",
-            external_id=f"{self.external_id}:{end_node_ext_id}",
-            type=dm.DirectRelationReference("power-ops", "DayAheadProcess.price_scenarios"),
             start_node=dm.DirectRelationReference(self.space, self.external_id),
             end_node=dm.DirectRelationReference("power-ops", end_node_ext_id),
         )

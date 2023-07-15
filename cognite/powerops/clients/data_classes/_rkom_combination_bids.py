@@ -14,14 +14,14 @@ class RKOMCombinationBid(DomainModel):
     space: ClassVar[str] = "power-ops"
     auction: Optional[str] = None
     name: Optional[str] = None
-    rkom_big_configs: list[str] = Field([], alias="rkomBigConfigs")
+    rkom_bid_configs: list[str] = Field([], alias="rkomBidConfigs")
 
 
 class RKOMCombinationBidApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
     auction: Optional[str] = None
     name: Optional[str] = None
-    rkom_big_configs: list[str] = []
+    rkom_bid_configs: list[str] = []
 
     def _to_instances_apply(self, cache: set[str]) -> InstancesApply:
         if self.external_id in cache:
@@ -33,7 +33,7 @@ class RKOMCombinationBidApply(DomainModelApply):
             properties={
                 "auction": self.auction,
                 "name": self.name,
-                "rkomBigConfigs": self.rkom_big_configs,
+                "rkomBidConfigs": self.rkom_bid_configs,
             },
         )
         sources.append(source)

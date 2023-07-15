@@ -20,7 +20,7 @@ class ReserveScenario(DomainModel):
     override_mappings: list[str] = Field([], alias="overrideMappings")
     product: Optional[str] = None
     reserve_group: Optional[str] = Field(None, alias="reserveGroup")
-    volumes: Optional[int] = None
+    volume: Optional[int] = None
 
 
 class ReserveScenarioApply(DomainModelApply):
@@ -30,7 +30,7 @@ class ReserveScenarioApply(DomainModelApply):
     override_mappings: list[Union["ScenarioMappingApply", str]] = Field(default_factory=list, repr=False)
     product: Optional[str] = None
     reserve_group: Optional[str] = None
-    volumes: Optional[int] = None
+    volume: Optional[int] = None
 
     def _to_instances_apply(self, cache: set[str]) -> InstancesApply:
         if self.external_id in cache:
@@ -44,7 +44,7 @@ class ReserveScenarioApply(DomainModelApply):
                 "block": self.block,
                 "product": self.product,
                 "reserveGroup": self.reserve_group,
-                "volumes": self.volumes,
+                "volume": self.volume,
             },
         )
         sources.append(source)

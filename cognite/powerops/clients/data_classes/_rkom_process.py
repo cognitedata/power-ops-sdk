@@ -9,7 +9,6 @@ from cognite.powerops.clients.data_classes._core import DomainModel, DomainModel
 
 if TYPE_CHECKING:
     from cognite.powerops.clients.data_classes._bids import BidApply
-    from cognite.powerops.clients.data_classes._scenario_mappings import ScenarioMappingApply
     from cognite.powerops.clients.data_classes._shop_transformations import ShopTransformationApply
 
 __all__ = ["RKOMProces", "RKOMProcesApply", "RKOMProcesList"]
@@ -21,7 +20,6 @@ class RKOMProces(DomainModel):
     name: Optional[str] = None
     plants: list[str] = []
     process_events: list[str] = Field([], alias="processEvents")
-    scenario_mappings: list[str] = []
     shop: Optional[str] = None
     timezone: Optional[str] = None
 
@@ -32,7 +30,6 @@ class RKOMProcesApply(DomainModelApply):
     name: Optional[str] = None
     plants: list[str] = []
     process_events: list[str] = []
-    scenario_mappings: list[Union["ScenarioMappingApply", str]] = Field(default_factory=list, repr=False)
     shop: Optional[Union["ShopTransformationApply", str]] = Field(None, repr=False)
     timezone: Optional[str] = None
 
@@ -76,17 +73,6 @@ class RKOMProcesApply(DomainModelApply):
         nodes = [this_node]
         edges = []
 
-        for scenario_mapping in self.scenario_mappings:
-            edge = self._create_scenario_mapping_edge(scenario_mapping)
-            if edge.external_id not in cache:
-                edges.append(edge)
-                cache.add(edge.external_id)
-
-            if isinstance(scenario_mapping, DomainModelApply):
-                instances = scenario_mapping._to_instances_apply(cache)
-                nodes.extend(instances.nodes)
-                edges.extend(instances.edges)
-
         if isinstance(self.bid, DomainModelApply):
             instances = self.bid._to_instances_apply(cache)
             nodes.extend(instances.nodes)
@@ -98,22 +84,6 @@ class RKOMProcesApply(DomainModelApply):
             edges.extend(instances.edges)
 
         return InstancesApply(nodes, edges)
-
-    def _create_scenario_mapping_edge(self, scenario_mapping: Union[str, "ScenarioMappingApply"]) -> dm.EdgeApply:
-        if isinstance(scenario_mapping, str):
-            end_node_ext_id = scenario_mapping
-        elif isinstance(scenario_mapping, DomainModelApply):
-            end_node_ext_id = scenario_mapping.external_id
-        else:
-            raise TypeError(f"Expected str or ScenarioMappingApply, got {type(scenario_mapping)}")
-
-        return dm.EdgeApply(
-            space="power-ops",
-            external_id=f"{self.external_id}:{end_node_ext_id}",
-            type=dm.DirectRelationReference("power-ops", "RKOMProcess.scenario_mappings"),
-            start_node=dm.DirectRelationReference(self.space, self.external_id),
-            end_node=dm.DirectRelationReference("power-ops", end_node_ext_id),
-        )
 
 
 class RKOMProcesList(TypeList[RKOMProces]):

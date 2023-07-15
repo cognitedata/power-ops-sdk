@@ -48,43 +48,6 @@ class DayAheadProcesBidMatrixGeneratorConfigsAPI:
         return self._client.data_modeling.instances.list("edge", limit=limit, filter=is_edge_type)
 
 
-class DayAheadProcesPriceScenariosAPI:
-    def __init__(self, client: CogniteClient):
-        self._client = client
-
-    def retrieve(self, external_id: str | Sequence[str]) -> dm.EdgeList:
-        f = dm.filters
-        is_edge_type = f.Equals(
-            ["edge", "type"],
-            {"space": "power-ops", "externalId": "DayAheadProcess.price_scenarios"},
-        )
-        if isinstance(external_id, str):
-            is_day_ahead_proces = f.Equals(
-                ["edge", "startNode"],
-                {"space": "power-ops", "externalId": external_id},
-            )
-            return self._client.data_modeling.instances.list(
-                "edge", limit=-1, filter=f.And(is_edge_type, is_day_ahead_proces)
-            )
-
-        else:
-            is_day_ahead_process = f.In(
-                ["edge", "startNode"],
-                [{"space": "power-ops", "externalId": ext_id} for ext_id in external_id],
-            )
-            return self._client.data_modeling.instances.list(
-                "edge", limit=-1, filter=f.And(is_edge_type, is_day_ahead_process)
-            )
-
-    def list(self, limit=INSTANCES_LIST_LIMIT_DEFAULT) -> dm.EdgeList:
-        f = dm.filters
-        is_edge_type = f.Equals(
-            ["edge", "type"],
-            {"space": "power-ops", "externalId": "DayAheadProcess.price_scenarios"},
-        )
-        return self._client.data_modeling.instances.list("edge", limit=limit, filter=is_edge_type)
-
-
 class DayAheadProcessAPI(TypeAPI[DayAheadProces, DayAheadProcesApply, DayAheadProcesList]):
     def __init__(self, client: CogniteClient):
         super().__init__(
@@ -95,7 +58,6 @@ class DayAheadProcessAPI(TypeAPI[DayAheadProces, DayAheadProcesApply, DayAheadPr
             class_list=DayAheadProcesList,
         )
         self.bid_matrix_generator_configs = DayAheadProcesBidMatrixGeneratorConfigsAPI(client)
-        self.price_scenarios = DayAheadProcesPriceScenariosAPI(client)
 
     def apply(self, day_ahead_proces: DayAheadProcesApply, replace: bool = False) -> dm.InstancesApplyResult:
         instances = day_ahead_proces.to_instances_apply()
@@ -125,8 +87,6 @@ class DayAheadProcessAPI(TypeAPI[DayAheadProces, DayAheadProcesApply, DayAheadPr
             day_ahead_proces.bid_matrix_generator_config = [
                 edge.end_node.external_id for edge in bid_matrix_generator_config_edges
             ]
-            price_scenario_edges = self.price_scenarios.retrieve(external_id)
-            day_ahead_proces.price_scenarios = [edge.end_node.external_id for edge in price_scenario_edges]
 
             return day_ahead_proces
         else:
@@ -134,8 +94,6 @@ class DayAheadProcessAPI(TypeAPI[DayAheadProces, DayAheadProcesApply, DayAheadPr
 
             bid_matrix_generator_config_edges = self.bid_matrix_generator_configs.retrieve(external_id)
             self._set_bid_matrix_generator_config(day_ahead_process, bid_matrix_generator_config_edges)
-            price_scenario_edges = self.price_scenarios.retrieve(external_id)
-            self._set_price_scenarios(day_ahead_process, price_scenario_edges)
 
             return day_ahead_process
 
@@ -144,8 +102,6 @@ class DayAheadProcessAPI(TypeAPI[DayAheadProces, DayAheadProcesApply, DayAheadPr
 
         bid_matrix_generator_config_edges = self.bid_matrix_generator_configs.list(limit=-1)
         self._set_bid_matrix_generator_config(day_ahead_process, bid_matrix_generator_config_edges)
-        price_scenario_edges = self.price_scenarios.list(limit=-1)
-        self._set_price_scenarios(day_ahead_process, price_scenario_edges)
 
         return day_ahead_process
 
@@ -163,14 +119,3 @@ class DayAheadProcessAPI(TypeAPI[DayAheadProces, DayAheadProcesApply, DayAheadPr
                 day_ahead_proces.bid_matrix_generator_config = [
                     edge.end_node.external_id for edge in edges_by_start_node[node_id]
                 ]
-
-    @staticmethod
-    def _set_price_scenarios(day_ahead_process: Sequence[DayAheadProces], price_scenario_edges: Sequence[dm.Edge]):
-        edges_by_start_node: Dict[Tuple, List] = defaultdict(list)
-        for edge in price_scenario_edges:
-            edges_by_start_node[edge.start_node.as_tuple()].append(edge)
-
-        for day_ahead_proces in day_ahead_process:
-            node_id = day_ahead_proces.id_tuple()
-            if node_id in edges_by_start_node:
-                day_ahead_proces.price_scenarios = [edge.end_node.external_id for edge in edges_by_start_node[node_id]]
