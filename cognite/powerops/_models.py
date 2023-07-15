@@ -73,7 +73,7 @@ MODEL_BY_NAME: dict[str, PowerOpsModel] = {
         ],
     ),
     "rkom": PowerOpsModel(
-        name="RKomMarket",
+        name="RKOMMarket",
         description="The RKOM market is a balancing market",
         graphql_file=GRAPHQL_SCHEMAS / "rkom-market.graphql",
         id_=DataModelId(_SPACE, "rkomMarket", "1"),

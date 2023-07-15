@@ -4,21 +4,21 @@ import logging
 from pathlib import Path
 from typing import Annotated
 
-import cognite.client
 import typer
 from rich.console import Console
 from rich.logging import RichHandler
 
 from cognite import powerops
+from cognite.powerops import resync
+from cognite.powerops._models import MODEL_BY_NAME
 from cognite.powerops.clients.powerops_client import get_powerops_client
 
-from . import resync
-from ._models import MODEL_BY_NAME
+logging.getLogger("requests").setLevel(logging.WARNING)
+logging.getLogger("urllib3").setLevel(logging.WARNING)
+logging.getLogger("msal").setLevel(logging.WARNING)
 
 FORMAT = "%(message)s"
-logging.basicConfig(
-    level="NOTSET", format=FORMAT, datefmt="[%X]", handlers=[RichHandler(tracebacks_suppress=[cognite.client])]
-)
+logging.basicConfig(level="NOTSET", format=FORMAT, datefmt="[%X]", handlers=[RichHandler()])
 
 log = logging.getLogger("rich")
 
@@ -61,10 +61,17 @@ def apply(
     resync.apply(path, market)
 
 
-@app.command("deploy", help=f"Deploy the data model in CDF. Available models: {list(MODEL_BY_NAME.keys())}")
+@app.command(
+    "deploy",
+    help=f"Deploy the data model in CDF. Available models: {list(MODEL_BY_NAME.keys())}. "
+    f"Use 'all' to deploy all models.",
+)
 def deploy(
     models: Annotated[list[str], typer.Argument(help="The models to deploy")],
 ):
+    if len(models) == 1 and models[0].lower() == "all":
+        models = list(MODEL_BY_NAME.keys())
+
     client = get_powerops_client()
     for model_name in models:
         if model_name not in MODEL_BY_NAME:
@@ -110,4 +117,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    deploy(["dayahead"])

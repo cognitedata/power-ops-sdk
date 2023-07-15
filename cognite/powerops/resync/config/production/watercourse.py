@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import ClassVar, Dict, List, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from cognite.powerops.resync.config.shared import TimeSeriesMapping
 from cognite.powerops.resync.utils.serializer import load_yaml
@@ -23,6 +23,7 @@ class WatercourseConfig(Watercourse):
 
     """
 
+    model_config: ClassVar[ConfigDict] = ConfigDict(protected_namespaces=tuple())
     version: str
     market_to_price_area: Dict[str, str]
     directory: str
