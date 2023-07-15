@@ -6,6 +6,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: '601728'
+      retrieve: START
       shopAttributeName: start_vol
       shopObjectName: Lundvann
       shopObjectType: reservoir
@@ -20,6 +21,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_flow
       shopObjectName: f_Rullsvatn_Rullslaagen
       shopObjectType: gate
@@ -46,6 +48,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_flow
       shopObjectName: w_Varhaug
       shopObjectType: gate
@@ -72,6 +75,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_flow
       shopObjectName: b_Hagen_Strand
       shopObjectType: gate
@@ -98,6 +102,7 @@ data_modeling.instances:
   - properties:
       aggregation: first
       cdfTimeSeries: '136444'
+      retrieve: RANGE
       shopAttributeName: production_schedule
       shopObjectName: Rull2
       shopObjectType: plant
@@ -112,6 +117,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_flow
       shopObjectName: w_Hovden_Livincovs
       shopObjectType: gate
@@ -138,6 +144,7 @@ data_modeling.instances:
   - properties:
       aggregation: mean
       cdfTimeSeries: '649838'
+      retrieve: RANGE
       shopAttributeName: inflow
       shopObjectName: Varhaug
       shopObjectType: reservoir
@@ -152,6 +159,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_flow
       shopObjectName: f_Hagen_Strand
       shopObjectType: gate
@@ -178,6 +186,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: droop_max
       shopObjectName: Holen_G1
       shopObjectType: generator
@@ -204,6 +213,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: droop_min
       shopObjectName: Scott_G1
       shopObjectType: generator
@@ -230,6 +240,7 @@ data_modeling.instances:
   - properties:
       aggregation: mean
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: tactical_limit_max
       shopObjectName: Danielsen
       shopObjectType: reservoir
@@ -256,6 +267,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: p_fcr_min
       shopObjectName: Strand_krv_G1
       shopObjectType: generator
@@ -282,6 +294,7 @@ data_modeling.instances:
   - properties:
       aggregation: max
       cdfTimeSeries: '582113'
+      retrieve: RANGE
       shopAttributeName: maintenance_flag
       shopObjectName: Rull1_G2
       shopObjectType: generator
@@ -320,6 +333,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_p_constr
       shopObjectName: Holen_G1
       shopObjectType: generator
@@ -346,6 +360,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: p_rr_min
       shopObjectName: Lund_G1
       shopObjectType: generator
@@ -372,6 +387,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_p_constr
       shopObjectName: Landet
       shopObjectType: plant
@@ -398,6 +414,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: '501437'
+      retrieve: START
       shopAttributeName: start_head
       shopObjectName: Frosta
       shopObjectType: reservoir
@@ -412,6 +429,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_flow
       shopObjectName: f_Livincovs
       shopObjectType: gate
@@ -438,6 +456,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_p_constr
       shopObjectName: Rull1
       shopObjectType: plant
@@ -464,6 +483,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: p_rr_min
       shopObjectName: Rull2_G2
       shopObjectType: generator
@@ -490,6 +510,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_flow
       shopObjectName: f_Lont_Dalbysvatn
       shopObjectType: gate
@@ -516,6 +537,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: droop_max
       shopObjectName: Scott_G1
       shopObjectType: generator
@@ -542,6 +564,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_flow
       shopObjectName: f_Lundvann_Lensvik
       shopObjectType: gate
@@ -568,6 +591,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: droop_cost
       shopObjectName: Rull2_G1
       shopObjectType: generator
@@ -594,6 +618,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: startcost
       shopObjectName: Rull2_G2
       shopObjectType: generator
@@ -620,6 +645,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_q_constr
       shopObjectName: Strand_krv
       shopObjectType: plant
@@ -646,6 +672,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: p_fcr_max
       shopObjectName: Rull2_G2
       shopObjectType: generator
@@ -672,6 +699,7 @@ data_modeling.instances:
   - properties:
       aggregation: first
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: mip_flag
       shopObjectName: Lien_krv
       shopObjectType: plant
@@ -698,6 +726,7 @@ data_modeling.instances:
   - properties:
       aggregation: first
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: mip_flag
       shopObjectName: Rull1
       shopObjectType: plant
@@ -724,6 +753,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: droop_max
       shopObjectName: Lund_G1
       shopObjectType: generator
@@ -750,6 +780,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: p_fcr_max
       shopObjectName: Rull1_G2
       shopObjectType: generator
@@ -776,6 +807,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_flow
       shopObjectName: f_Finnvasstol_Dalbysvatn
       shopObjectType: gate
@@ -802,6 +834,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: prod_area
       shopObjectName: Dalby
       shopObjectType: plant
@@ -828,6 +861,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: '624330'
+      retrieve: RANGE
       shopAttributeName: inflow
       shopObjectName: Narvhus
       shopObjectType: creek_intake
@@ -866,6 +900,7 @@ data_modeling.instances:
   - properties:
       aggregation: mean
       cdfTimeSeries: '649827'
+      retrieve: RANGE
       shopAttributeName: inflow
       shopObjectName: Hagen
       shopObjectType: reservoir
@@ -880,6 +915,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: droop_min
       shopObjectName: Strand_krv_G1
       shopObjectType: generator
@@ -906,6 +942,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_p_limit
       shopObjectName: T2Landet
       shopObjectType: production_group
@@ -932,6 +969,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: prod_area
       shopObjectName: Landet
       shopObjectType: plant
@@ -958,6 +996,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_flow
       shopObjectName: b_Nielsen_Blakstadana
       shopObjectType: gate
@@ -984,6 +1023,7 @@ data_modeling.instances:
   - properties:
       aggregation: max
       cdfTimeSeries: '582091'
+      retrieve: RANGE
       shopAttributeName: maintenance_flag
       shopObjectName: Lund_G1
       shopObjectType: generator
@@ -1022,6 +1062,7 @@ data_modeling.instances:
   - properties:
       aggregation: mean
       cdfTimeSeries: '649826'
+      retrieve: RANGE
       shopAttributeName: inflow
       shopObjectName: Strand
       shopObjectType: reservoir
@@ -1036,6 +1077,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: droop_max
       shopObjectName: Lien_krv_G1
       shopObjectType: generator
@@ -1062,6 +1104,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_p_constr
       shopObjectName: Landet_G1
       shopObjectType: generator
@@ -1088,6 +1131,7 @@ data_modeling.instances:
   - properties:
       aggregation: max
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: min_p_constr
       shopObjectName: Lien_krv_G1
       shopObjectType: generator
@@ -1114,6 +1158,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_flow
       shopObjectName: f_Blakstadana_Knute_Rullsvatn
       shopObjectType: gate
@@ -1140,6 +1185,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: startcost
       shopObjectName: Lien_krv_G1
       shopObjectType: generator
@@ -1166,6 +1212,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_sale
       shopObjectName: Dayahead
       shopObjectType: market
@@ -1192,6 +1239,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: prod_area
       shopObjectName: Lund
       shopObjectType: plant
@@ -1218,6 +1266,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: startcost
       shopObjectName: Holen_G1
       shopObjectType: generator
@@ -1244,6 +1293,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: startcost
       shopObjectName: Rull1_G2
       shopObjectType: generator
@@ -1270,6 +1320,7 @@ data_modeling.instances:
   - properties:
       aggregation: first
       cdfTimeSeries: '136442'
+      retrieve: RANGE
       shopAttributeName: production_schedule
       shopObjectName: Dalby
       shopObjectType: plant
@@ -1284,6 +1335,7 @@ data_modeling.instances:
   - properties:
       aggregation: mean
       cdfTimeSeries: '649828'
+      retrieve: RANGE
       shopAttributeName: inflow
       shopObjectName: Danielsen
       shopObjectType: reservoir
@@ -1298,6 +1350,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_flow
       shopObjectName: b_Sirefelt_Knute_Rullsvatn
       shopObjectType: gate
@@ -1324,6 +1377,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: startcost
       shopObjectName: Rull1_G1
       shopObjectType: generator
@@ -1350,6 +1404,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: droop_max
       shopObjectName: Rull2_G2
       shopObjectType: generator
@@ -1376,6 +1431,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: p_fcr_max
       shopObjectName: Rull2_G1
       shopObjectType: generator
@@ -1402,6 +1458,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: prod_area
       shopObjectName: Lien_krv
       shopObjectType: plant
@@ -1428,6 +1485,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_flow
       shopObjectName: f_Golebiowski_Dalbysvatn
       shopObjectType: gate
@@ -1454,6 +1512,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: p_rr_min
       shopObjectName: Strand_krv_G1
       shopObjectType: generator
@@ -1480,6 +1539,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: p_rr_min
       shopObjectName: Scott_G1
       shopObjectType: generator
@@ -1506,6 +1566,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: inflow
       shopObjectName: Sandvika
       shopObjectType: creek_intake
@@ -1532,6 +1593,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: '740791'
+      retrieve: START
       shopAttributeName: start_head
       shopObjectName: Varhaug
       shopObjectType: reservoir
@@ -1546,6 +1608,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: droop_max
       shopObjectName: Rull1_G1
       shopObjectType: generator
@@ -1572,6 +1635,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_flow
       shopObjectName: f_Varhaug
       shopObjectType: gate
@@ -1598,6 +1662,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: prod_area
       shopObjectName: Rull1
       shopObjectType: plant
@@ -1624,6 +1689,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_flow
       shopObjectName: f_Tangvall
       shopObjectType: gate
@@ -1650,6 +1716,7 @@ data_modeling.instances:
   - properties:
       aggregation: max
       cdfTimeSeries: '582111'
+      retrieve: RANGE
       shopAttributeName: maintenance_flag
       shopObjectName: Rull1_G1
       shopObjectType: generator
@@ -1688,6 +1755,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_p_constr
       shopObjectName: Rull1_G1
       shopObjectType: generator
@@ -1714,6 +1782,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: p_fcr_min
       shopObjectName: Scott_G1
       shopObjectType: generator
@@ -1740,6 +1809,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: load
       shopObjectName: Dayahead
       shopObjectType: market
@@ -1766,6 +1836,7 @@ data_modeling.instances:
   - properties:
       aggregation: mean
       cdfTimeSeries: '6694'
+      retrieve: RANGE
       shopAttributeName: sale_price
       shopObjectName: Dayahead
       shopObjectType: market
@@ -1780,6 +1851,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_q_constr
       shopObjectName: Rull1
       shopObjectType: plant
@@ -1806,6 +1878,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: '649835'
+      retrieve: RANGE
       shopAttributeName: inflow
       shopObjectName: Blakstad
       shopObjectType: creek_intake
@@ -1844,6 +1917,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: startcost
       shopObjectName: Scott_G1
       shopObjectType: generator
@@ -1870,6 +1944,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: p_rr_min
       shopObjectName: Dalby_G1
       shopObjectType: generator
@@ -1896,6 +1971,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: '649792'
+      retrieve: RANGE
       shopAttributeName: inflow
       shopObjectName: Fjerdingby_intake
       shopObjectType: creek_intake
@@ -1934,6 +2010,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_flow
       shopObjectName: f_Dalbysvatn_Knute_Rullsvatn
       shopObjectType: gate
@@ -1960,6 +2037,7 @@ data_modeling.instances:
   - properties:
       aggregation: max
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: min_p_constr
       shopObjectName: Rull1_G2
       shopObjectType: generator
@@ -1986,6 +2064,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: droop_max
       shopObjectName: Dalby_G2
       shopObjectType: generator
@@ -2012,6 +2091,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_p_constr
       shopObjectName: Lien_krv_G1
       shopObjectType: generator
@@ -2038,6 +2118,7 @@ data_modeling.instances:
   - properties:
       aggregation: max
       cdfTimeSeries: '582059'
+      retrieve: RANGE
       shopAttributeName: maintenance_flag
       shopObjectName: Dalby_G2
       shopObjectType: generator
@@ -2076,6 +2157,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: droop_cost
       shopObjectName: Rull1_G2
       shopObjectType: generator
@@ -2102,6 +2184,7 @@ data_modeling.instances:
   - properties:
       aggregation: max
       cdfTimeSeries: '582079'
+      retrieve: RANGE
       shopAttributeName: maintenance_flag
       shopObjectName: Holen_G1
       shopObjectType: generator
@@ -2140,6 +2223,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_q_constr
       shopObjectName: Scott
       shopObjectType: plant
@@ -2166,6 +2250,7 @@ data_modeling.instances:
   - properties:
       aggregation: max
       cdfTimeSeries: '582093'
+      retrieve: RANGE
       shopAttributeName: maintenance_flag
       shopObjectName: Rull2_G1
       shopObjectType: generator
@@ -2204,6 +2289,7 @@ data_modeling.instances:
   - properties:
       aggregation: mean
       cdfTimeSeries: '649836'
+      retrieve: RANGE
       shopAttributeName: inflow
       shopObjectName: Nielsen
       shopObjectType: reservoir
@@ -2218,6 +2304,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_flow
       shopObjectName: w_Tangvall
       shopObjectType: gate
@@ -2244,6 +2331,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_flow
       shopObjectName: f_Nupstj
       shopObjectType: gate
@@ -2270,6 +2358,7 @@ data_modeling.instances:
   - properties:
       aggregation: mean
       cdfTimeSeries: '649837'
+      retrieve: RANGE
       shopAttributeName: inflow
       shopObjectName: Frosta
       shopObjectType: reservoir
@@ -2284,6 +2373,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: p_fcr_min
       shopObjectName: Landet_G1
       shopObjectType: generator
@@ -2310,6 +2400,7 @@ data_modeling.instances:
   - properties:
       aggregation: mean
       cdfTimeSeries: '624330'
+      retrieve: RANGE
       shopAttributeName: inflow
       shopObjectName: Dalbysvatn
       shopObjectType: reservoir
@@ -2324,6 +2415,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: droop_min
       shopObjectName: Rull2_G2
       shopObjectType: generator
@@ -2350,6 +2442,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_p_constr
       shopObjectName: Rull2_G2
       shopObjectType: generator
@@ -2376,6 +2469,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: droop_min
       shopObjectName: Lien_krv_G1
       shopObjectType: generator
@@ -2402,6 +2496,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: p_fcr_max
       shopObjectName: Dalby_G1
       shopObjectType: generator
@@ -2428,6 +2523,7 @@ data_modeling.instances:
   - properties:
       aggregation: max
       cdfTimeSeries: '627753'
+      retrieve: RANGE
       shopAttributeName: maintenance_flag
       shopObjectName: Strand_krv_G1
       shopObjectType: generator
@@ -2466,6 +2562,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: overflow_cost
       shopObjectName: Golebiowski_intake
       shopObjectType: creek_intake
@@ -2492,6 +2589,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: p_fcr_min
       shopObjectName: Dalby_G2
       shopObjectType: generator
@@ -2518,6 +2616,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: p_fcr_max
       shopObjectName: Strand_krv_G1
       shopObjectType: generator
@@ -2544,6 +2643,7 @@ data_modeling.instances:
   - properties:
       aggregation: max
       cdfTimeSeries: '601608'
+      retrieve: RANGE
       shopAttributeName: maintenance_flag
       shopObjectName: Rull2_G2
       shopObjectType: generator
@@ -2582,6 +2682,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: prod_area
       shopObjectName: Strand_krv
       shopObjectType: plant
@@ -2608,6 +2709,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: prod_area
       shopObjectName: Rull2
       shopObjectType: plant
@@ -2634,6 +2736,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: droop_max
       shopObjectName: Rull1_G2
       shopObjectType: generator
@@ -2660,6 +2763,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: '603779'
+      retrieve: RANGE
       shopAttributeName: max_head_constr
       shopObjectName: Dalbysvatn
       shopObjectType: reservoir
@@ -2674,6 +2778,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_p_constr
       shopObjectName: Rull1_G2
       shopObjectType: generator
@@ -2700,6 +2805,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: p_fcr_min
       shopObjectName: Rull1_G1
       shopObjectType: generator
@@ -2726,6 +2832,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_flow
       shopObjectName: f_Sirefelt_Knute_Rullsvatn
       shopObjectType: gate
@@ -2752,6 +2859,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_q_constr
       shopObjectName: Dalby
       shopObjectType: plant
@@ -2778,6 +2886,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: droop_cost
       shopObjectName: Rull2_G2
       shopObjectType: generator
@@ -2804,6 +2913,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: droop_max
       shopObjectName: Rull2_G1
       shopObjectType: generator
@@ -2830,6 +2940,7 @@ data_modeling.instances:
   - properties:
       aggregation: first
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: mip_flag
       shopObjectName: Lund
       shopObjectType: plant
@@ -2856,6 +2967,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: startcost
       shopObjectName: Rull2_G1
       shopObjectType: generator
@@ -2882,6 +2994,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: droop_min
       shopObjectName: Rull2_G1
       shopObjectType: generator
@@ -2908,6 +3021,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: p_fcr_max
       shopObjectName: Holen_G1
       shopObjectType: generator
@@ -2934,6 +3048,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: p_fcr_min
       shopObjectName: Rull2_G1
       shopObjectType: generator
@@ -2960,6 +3075,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: p_fcr_min
       shopObjectName: Rull1_G2
       shopObjectType: generator
@@ -2986,6 +3102,7 @@ data_modeling.instances:
   - properties:
       aggregation: first
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: mip_flag
       shopObjectName: Holen
       shopObjectType: plant
@@ -3012,6 +3129,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: p_fcr_min
       shopObjectName: Lund_G1
       shopObjectType: generator
@@ -3038,6 +3156,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: '501439'
+      retrieve: START
       shopAttributeName: start_head
       shopObjectName: Danielsen
       shopObjectType: reservoir
@@ -3052,6 +3171,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: droop_min
       shopObjectName: Rull1_G2
       shopObjectType: generator
@@ -3078,6 +3198,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: p_rr_min
       shopObjectName: Dalby_G2
       shopObjectType: generator
@@ -3104,6 +3225,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: droop_max
       shopObjectName: Landet_G1
       shopObjectType: generator
@@ -3130,6 +3252,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_flow
       shopObjectName: b_Dalbysvatn_Knute_Rullsvatn
       shopObjectType: gate
@@ -3156,6 +3279,7 @@ data_modeling.instances:
   - properties:
       aggregation: first
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: mip_flag
       shopObjectName: Strand_krv
       shopObjectType: plant
@@ -3182,6 +3306,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: droop_min
       shopObjectName: Lund_G1
       shopObjectType: generator
@@ -3208,6 +3333,7 @@ data_modeling.instances:
   - properties:
       aggregation: first
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: mip_flag
       shopObjectName: Landet
       shopObjectType: plant
@@ -3234,6 +3360,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: '501438'
+      retrieve: START
       shopAttributeName: start_head
       shopObjectName: Livincovs
       shopObjectType: reservoir
@@ -3248,6 +3375,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: '601729'
+      retrieve: START
       shopAttributeName: start_vol
       shopObjectName: Hovden
       shopObjectType: reservoir
@@ -3262,6 +3390,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: p_rr_min
       shopObjectName: Holen_G1
       shopObjectType: generator
@@ -3288,6 +3417,7 @@ data_modeling.instances:
   - properties:
       aggregation: mean
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: tactical_limit_max
       shopObjectName: Sirefelt
       shopObjectType: reservoir
@@ -3314,6 +3444,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: '582116'
+      retrieve: RANGE
       shopAttributeName: min_head_constr
       shopObjectName: Dalbysvatn
       shopObjectType: reservoir
@@ -3328,6 +3459,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: overflow_cost
       shopObjectName: Fjerdingby_intake
       shopObjectType: creek_intake
@@ -3354,6 +3486,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_flow
       shopObjectName: f_Narvhus_Rullsvatn
       shopObjectType: gate
@@ -3380,6 +3513,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: '501433'
+      retrieve: START
       shopAttributeName: start_head
       shopObjectName: Sirefelt
       shopObjectType: reservoir
@@ -3394,6 +3528,7 @@ data_modeling.instances:
   - properties:
       aggregation: mean
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: tactical_limit_max
       shopObjectName: Dalbysvatn
       shopObjectType: reservoir
@@ -3420,6 +3555,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_p_constr
       shopObjectName: Holen
       shopObjectType: plant
@@ -3446,6 +3582,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: startcost
       shopObjectName: Dalby_G1
       shopObjectType: generator
@@ -3472,6 +3609,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_flow
       shopObjectName: f_Lensvik
       shopObjectType: gate
@@ -3498,6 +3636,7 @@ data_modeling.instances:
   - properties:
       aggregation: first
       cdfTimeSeries: '136446'
+      retrieve: RANGE
       shopAttributeName: production_schedule
       shopObjectName: Landet
       shopObjectType: plant
@@ -3512,6 +3651,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: droop_min
       shopObjectName: Dalby_G1
       shopObjectType: generator
@@ -3538,6 +3678,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_flow
       shopObjectName: f_Frosta
       shopObjectType: gate
@@ -3564,6 +3705,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_flow
       shopObjectName: w_Rullsvatn_Rullslaagen
       shopObjectType: gate
@@ -3590,6 +3732,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_flow
       shopObjectName: b_Livincovs_Dalbysvatn
       shopObjectType: gate
@@ -3616,6 +3759,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: droop_min
       shopObjectName: Landet_G1
       shopObjectType: generator
@@ -3642,6 +3786,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: prod_area
       shopObjectName: Holen
       shopObjectType: plant
@@ -3668,6 +3813,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_flow
       shopObjectName: f_Nielsen
       shopObjectType: gate
@@ -3694,6 +3840,7 @@ data_modeling.instances:
   - properties:
       aggregation: first
       cdfTimeSeries: '136443'
+      retrieve: RANGE
       shopAttributeName: production_schedule
       shopObjectName: Rull1
       shopObjectType: plant
@@ -3708,6 +3855,7 @@ data_modeling.instances:
   - properties:
       aggregation: first
       cdfTimeSeries: '136449'
+      retrieve: RANGE
       shopAttributeName: production_schedule
       shopObjectName: Lien_krv
       shopObjectType: plant
@@ -3722,6 +3870,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: p_rr_min
       shopObjectName: Rull2_G1
       shopObjectType: generator
@@ -3748,6 +3897,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_q_constr
       shopObjectName: Lien_krv
       shopObjectType: plant
@@ -3774,6 +3924,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: min_pressure
       shopObjectName: Sandvika
       shopObjectType: junction
@@ -3800,6 +3951,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: '501440'
+      retrieve: START
       shopAttributeName: start_head
       shopObjectName: Dalbysvatn
       shopObjectType: reservoir
@@ -3814,6 +3966,7 @@ data_modeling.instances:
   - properties:
       aggregation: max
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: min_p_constr
       shopObjectName: Holen_G1
       shopObjectType: generator
@@ -3840,6 +3993,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: p_rr_min
       shopObjectName: Rull1_G1
       shopObjectType: generator
@@ -3866,6 +4020,7 @@ data_modeling.instances:
   - properties:
       aggregation: mean
       cdfTimeSeries: '649792'
+      retrieve: RANGE
       shopAttributeName: inflow
       shopObjectName: Lensvik
       shopObjectType: reservoir
@@ -3880,6 +4035,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_flow
       shopObjectName: f_Ranemsletta_1183_Livincovs
       shopObjectType: gate
@@ -3906,6 +4062,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: '501441'
+      retrieve: START
       shopAttributeName: start_head
       shopObjectName: Tangvall
       shopObjectType: reservoir
@@ -3920,6 +4077,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: p_fcr_min
       shopObjectName: Lien_krv_G1
       shopObjectType: generator
@@ -3946,6 +4104,7 @@ data_modeling.instances:
   - properties:
       aggregation: first
       cdfTimeSeries: '136447'
+      retrieve: RANGE
       shopAttributeName: production_schedule
       shopObjectName: Scott
       shopObjectType: plant
@@ -3960,6 +4119,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_flow
       shopObjectName: w_Finnvasstol_Strand_tunnel
       shopObjectType: gate
@@ -3986,6 +4146,7 @@ data_modeling.instances:
   - properties:
       aggregation: mean
       cdfTimeSeries: '649832'
+      retrieve: RANGE
       shopAttributeName: inflow
       shopObjectName: Lundvann
       shopObjectType: reservoir
@@ -4000,6 +4161,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: droop_min
       shopObjectName: Holen_G1
       shopObjectType: generator
@@ -4026,6 +4188,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_flow
       shopObjectName: f_Hovden_Hagen
       shopObjectType: gate
@@ -4052,6 +4215,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: droop_cost
       shopObjectName: Dalby_G1
       shopObjectType: generator
@@ -4078,6 +4242,7 @@ data_modeling.instances:
   - properties:
       aggregation: max
       cdfTimeSeries: '582085'
+      retrieve: RANGE
       shopAttributeName: maintenance_flag
       shopObjectName: Landet_G1
       shopObjectType: generator
@@ -4116,6 +4281,7 @@ data_modeling.instances:
   - properties:
       aggregation: first
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: mip_flag
       shopObjectName: Scott
       shopObjectType: plant
@@ -4142,6 +4308,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: '501436'
+      retrieve: START
       shopAttributeName: start_head
       shopObjectName: Hagen
       shopObjectType: reservoir
@@ -4156,6 +4323,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: p_rr_min
       shopObjectName: Lien_krv_G1
       shopObjectType: generator
@@ -4182,6 +4350,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: '501428'
+      retrieve: START
       shopAttributeName: start_head
       shopObjectName: Lensvik
       shopObjectType: reservoir
@@ -4196,6 +4365,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: '649835'
+      retrieve: RANGE
       shopAttributeName: inflow
       shopObjectName: Gustad
       shopObjectType: creek_intake
@@ -4234,6 +4404,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_q_constr
       shopObjectName: Lund
       shopObjectType: plant
@@ -4260,6 +4431,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_flow
       shopObjectName: b_Danielsen_Lundvann
       shopObjectType: gate
@@ -4286,6 +4458,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: droop_max
       shopObjectName: Strand_krv_G1
       shopObjectType: generator
@@ -4312,6 +4485,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: p_fcr_min
       shopObjectName: Dalby_G1
       shopObjectType: generator
@@ -4338,6 +4512,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: startcost
       shopObjectName: Dalby_G2
       shopObjectType: generator
@@ -4364,6 +4539,7 @@ data_modeling.instances:
   - properties:
       aggregation: max
       cdfTimeSeries: '582055'
+      retrieve: RANGE
       shopAttributeName: maintenance_flag
       shopObjectName: Dalby_G1
       shopObjectType: generator
@@ -4402,6 +4578,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: prod_area
       shopObjectName: Scott
       shopObjectType: plant
@@ -4428,6 +4605,7 @@ data_modeling.instances:
   - properties:
       aggregation: mean
       cdfTimeSeries: '769827'
+      retrieve: RANGE
       shopAttributeName: inflow
       shopObjectName: Ranemsletta_1183
       shopObjectType: reservoir
@@ -4442,6 +4620,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: overflow_cost
       shopObjectName: Narvhus
       shopObjectType: creek_intake
@@ -4468,6 +4647,7 @@ data_modeling.instances:
   - properties:
       aggregation: first
       cdfTimeSeries: '136450'
+      retrieve: RANGE
       shopAttributeName: production_schedule
       shopObjectName: Lund
       shopObjectType: plant
@@ -4482,6 +4662,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: p_fcr_max
       shopObjectName: Dalby_G2
       shopObjectType: generator
@@ -4508,6 +4689,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: '501428'
+      retrieve: START
       shopAttributeName: start_head
       shopObjectName: Strand_tunnel
       shopObjectType: reservoir
@@ -4522,6 +4704,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: p_fcr_max
       shopObjectName: Rull1_G1
       shopObjectType: generator
@@ -4548,6 +4731,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: p_rr_min
       shopObjectName: Rull1_G2
       shopObjectType: generator
@@ -4574,6 +4758,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_q_constr
       shopObjectName: Rull2
       shopObjectType: plant
@@ -4600,6 +4785,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_flow
       shopObjectName: b_Lensvik_Dalbysvatn
       shopObjectType: gate
@@ -4626,6 +4812,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: p_fcr_max
       shopObjectName: Landet_G1
       shopObjectType: generator
@@ -4652,6 +4839,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: '649792'
+      retrieve: RANGE
       shopAttributeName: inflow
       shopObjectName: Lont_intake
       shopObjectType: creek_intake
@@ -4690,6 +4878,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: '770346'
+      retrieve: START
       shopAttributeName: start_head
       shopObjectName: Ranemsletta_1183
       shopObjectType: reservoir
@@ -4704,6 +4893,7 @@ data_modeling.instances:
   - properties:
       aggregation: first
       cdfTimeSeries: '136448'
+      retrieve: RANGE
       shopAttributeName: production_schedule
       shopObjectName: Strand_krv
       shopObjectType: plant
@@ -4718,6 +4908,7 @@ data_modeling.instances:
   - properties:
       aggregation: mean
       cdfTimeSeries: '649831'
+      retrieve: RANGE
       shopAttributeName: inflow
       shopObjectName: Hovden
       shopObjectType: reservoir
@@ -4732,6 +4923,7 @@ data_modeling.instances:
   - properties:
       aggregation: first
       cdfTimeSeries: '136445'
+      retrieve: RANGE
       shopAttributeName: production_schedule
       shopObjectName: Holen
       shopObjectType: plant
@@ -4746,6 +4938,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: droop_cost
       shopObjectName: Rull1_G1
       shopObjectType: generator
@@ -4772,6 +4965,7 @@ data_modeling.instances:
   - properties:
       aggregation: first
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: mip_flag
       shopObjectName: Rull2
       shopObjectType: plant
@@ -4798,6 +4992,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: startcost
       shopObjectName: Landet_G1
       shopObjectType: generator
@@ -4824,6 +5019,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_q_constr
       shopObjectName: Holen
       shopObjectType: plant
@@ -4850,6 +5046,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_flow
       shopObjectName: f_Fjerdingby_Dalbysvatn
       shopObjectType: gate
@@ -4876,6 +5073,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: droop_min
       shopObjectName: Dalby_G2
       shopObjectType: generator
@@ -4902,6 +5100,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: p_fcr_max
       shopObjectName: Lund_G1
       shopObjectType: generator
@@ -4928,6 +5127,7 @@ data_modeling.instances:
   - properties:
       aggregation: max
       cdfTimeSeries: '829157'
+      retrieve: RANGE
       shopAttributeName: maintenance_flag
       shopObjectName: Lien_krv_G1
       shopObjectType: generator
@@ -4966,6 +5166,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: startcost
       shopObjectName: Strand_krv_G1
       shopObjectType: generator
@@ -4992,6 +5193,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_q_constr
       shopObjectName: Landet
       shopObjectType: plant
@@ -5018,6 +5220,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: droop_max
       shopObjectName: Dalby_G1
       shopObjectType: generator
@@ -5044,6 +5247,7 @@ data_modeling.instances:
   - properties:
       aggregation: first
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: mip_flag
       shopObjectName: Dalby
       shopObjectType: plant
@@ -5070,6 +5274,7 @@ data_modeling.instances:
   - properties:
       aggregation: max
       cdfTimeSeries: '601610'
+      retrieve: RANGE
       shopAttributeName: maintenance_flag
       shopObjectName: Scott_G1
       shopObjectType: generator
@@ -5108,6 +5313,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: '501431'
+      retrieve: START
       shopAttributeName: start_head
       shopObjectName: Nielsen
       shopObjectType: reservoir
@@ -5122,6 +5328,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: p_fcr_max
       shopObjectName: Lien_krv_G1
       shopObjectType: generator
@@ -5148,6 +5355,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: p_fcr_min
       shopObjectName: Holen_G1
       shopObjectType: generator
@@ -5174,6 +5382,7 @@ data_modeling.instances:
   - properties:
       aggregation: mean
       cdfTimeSeries: '6694'
+      retrieve: RANGE
       shopAttributeName: buy_price
       shopObjectName: Dayahead
       shopObjectType: market
@@ -5212,6 +5421,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: '649835'
+      retrieve: RANGE
       shopAttributeName: inflow
       shopObjectName: Vigrestad
       shopObjectType: creek_intake
@@ -5250,6 +5460,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: '649792'
+      retrieve: RANGE
       shopAttributeName: inflow
       shopObjectName: Golebiowski_intake
       shopObjectType: creek_intake
@@ -5288,6 +5499,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: p_rr_min
       shopObjectName: Landet_G1
       shopObjectType: generator
@@ -5314,6 +5526,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: '501430'
+      retrieve: START
       shopAttributeName: start_head
       shopObjectName: Strand
       shopObjectType: reservoir
@@ -5328,6 +5541,7 @@ data_modeling.instances:
   - properties:
       aggregation: mean
       cdfTimeSeries: '649829'
+      retrieve: RANGE
       shopAttributeName: inflow
       shopObjectName: Livincovs
       shopObjectType: reservoir
@@ -5366,6 +5580,7 @@ data_modeling.instances:
   - properties:
       aggregation: min
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_flow
       shopObjectName: w_Frosta
       shopObjectType: gate
@@ -5392,6 +5607,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: droop_cost
       shopObjectName: Dalby_G2
       shopObjectType: generator
@@ -5418,6 +5634,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: p_fcr_min
       shopObjectName: Rull2_G2
       shopObjectType: generator
@@ -5444,6 +5661,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: overflow_cost
       shopObjectName: Lont_intake
       shopObjectType: creek_intake
@@ -5470,6 +5688,7 @@ data_modeling.instances:
   - properties:
       aggregation: mean
       cdfTimeSeries: '649835'
+      retrieve: RANGE
       shopAttributeName: inflow
       shopObjectName: Sirefelt
       shopObjectType: reservoir
@@ -5484,6 +5703,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: p_fcr_max
       shopObjectName: Scott_G1
       shopObjectType: generator
@@ -5510,6 +5730,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: max_buy
       shopObjectName: Dayahead
       shopObjectType: market
@@ -5536,6 +5757,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: startcost
       shopObjectName: Lund_G1
       shopObjectType: generator
@@ -5562,6 +5784,7 @@ data_modeling.instances:
   - properties:
       aggregation: null
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: droop_min
       shopObjectName: Rull1_G1
       shopObjectType: generator
@@ -5588,6 +5811,7 @@ data_modeling.instances:
   - properties:
       aggregation: mean
       cdfTimeSeries: '649830'
+      retrieve: RANGE
       shopAttributeName: inflow
       shopObjectName: Tangvall
       shopObjectType: reservoir
@@ -5602,6 +5826,7 @@ data_modeling.instances:
   - properties:
       aggregation: max
       cdfTimeSeries: null
+      retrieve: null
       shopAttributeName: rr_up_obligation
       shopObjectName: rkom_up
       shopObjectType: reserve_group

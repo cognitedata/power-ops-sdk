@@ -7,7 +7,7 @@ from cognite.powerops.clients._api_client import (
     CogShopAPIs,
     DayAheadAPIs,
     ProductionAPIs,
-    RKomMarketAPIs,
+    RKOMMarketAPIs,
 )
 from cognite.powerops.clients.data_set_api import DataSetsAPI
 from cognite.powerops.clients.shop import ShopClient
@@ -27,7 +27,7 @@ class PowerOpsClient:
 
         self.production = ProductionAPIs(self.cdf)
         self.dayahead = DayAheadAPIs(self.cdf)
-        self.rkom = RKomMarketAPIs(self.cdf)
+        self.rkom = RKOMMarketAPIs(self.cdf)
         self.benchmark = BenchmarkAPIs(self.cdf)
         self.cog_shop = CogShopAPIs(self.cdf)
         self.shop = ShopClient(self.cdf, self.cog_shop, data_set_api, cogshop_version)

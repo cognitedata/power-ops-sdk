@@ -63,6 +63,7 @@ def _to_input_timeseries_mapping(entry: TimeSeriesMappingEntry) -> InputTimeSeri
         shop_object_type=entry.object_type,
         shop_object_name=entry.object_name,
         shop_attribute_name=entry.attribute_name,
+        retrieve=entry.retrieve.name if entry.retrieve else None,
         transformations=[_to_value_transformation(t) for t in (entry.transformations or [])],
     )
 
