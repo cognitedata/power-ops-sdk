@@ -198,8 +198,12 @@ class Model(BaseModel, ABC):
             elif isinstance(value, list) and value and isinstance(value[0], type_):
                 yield from value
 
+    @property
+    def model_name(self) -> str:
+        return type(self).__name__
+
     def summary(self) -> dict[str, dict[str, int]]:
-        return {type(self).__name__: {field_name: len(getattr(self, field_name)) for field_name in self.model_fields}}
+        return {self.model_name: {field_name: len(getattr(self, field_name)) for field_name in self.model_fields}}
 
 
 class AssetModel(Model, ABC):
@@ -268,3 +272,10 @@ class DataModel(Model, ABC):
                 yield items
             if isinstance(items, dict) and items and isinstance(next(iter(items.values())), DomainModelApply):
                 yield from items.values()
+
+    def summary(self) -> dict[str, dict[str, int]]:
+        summary = super().summary()
+        instances = self.instances()
+        summary[self.model_name]["nodes"] = len(instances.nodes)
+        summary[self.model_name]["edges"] = len(instances.edges)
+        return summary

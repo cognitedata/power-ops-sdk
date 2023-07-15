@@ -1,6 +1,8 @@
 ProductionModelDM:
   cdf_sequences: 24
+  edges: 40
   generators: 12
+  nodes: 40
   plants: 9
   price_areas: 1
   reservoirs: 16
