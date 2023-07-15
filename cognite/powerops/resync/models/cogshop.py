@@ -7,21 +7,21 @@ from cognite.powerops.clients.data_classes import (
     ValueTransformationApply,
 )
 
-from ._base import AssetModel, DataModel, Model, Type
+from ._base import AssetModel, DataModel, Model, ResourceType
 from .cdf_resources import CDFFile, CDFSequence
 
 
-class BaseMapping(Type):
+class BaseMapping(ResourceType):
     watercourse_name: str
     mapping: list[CDFSequence] = Field(default_factory=list)
 
 
-class OutputDefinition(Type):
+class OutputDefinition(ResourceType):
     watercourse_name: str
     mapping: list[CDFSequence] = Field(default_factory=list)
 
 
-class ShopFile(Type):
+class ShopFile(ResourceType):
     watercourse_name: str
     file: CDFFile
 

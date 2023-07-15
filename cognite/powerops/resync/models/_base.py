@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from abc import ABC
 from typing import ClassVar, Iterable, Optional
+from typing import Type
 from typing import Type as TypingType
 from typing import TypeVar
 
@@ -14,8 +15,10 @@ from cognite.powerops.cdf_labels import AssetLabel, RelationshipLabel
 from cognite.powerops.clients.data_classes._core import DomainModelApply, InstancesApply
 from cognite.powerops.resync.models.cdf_resources import CDFFile, CDFSequence
 
+_T_Type = TypeVar("_T_Type")
 
-class Type(BaseModel, ABC):
+
+class ResourceType(BaseModel, ABC):
     def sequences(self) -> list[CDFSequence]:
         return self._fields_of_type(CDFSequence)
 
@@ -35,10 +38,7 @@ class Type(BaseModel, ABC):
         return output
 
 
-_T_Type = TypeVar("_T_Type")
-
-
-class AssetType(Type, ABC):
+class AssetType(ResourceType, ABC):
     type_: ClassVar[Optional[str]] = None
     label: ClassVar[AssetLabel]
     model_config: ClassVar[ConfigDict] = ConfigDict(arbitrary_types_allowed=True)
@@ -176,35 +176,27 @@ class NonAssetType(BaseModel, ABC):
 
 class Model(BaseModel, ABC):
     def sequences(self) -> list[CDFSequence]:
-        return (
-            [sequence for item in self._types() for sequence in item.sequences()]
-            + [f for f in self.model_fields if (value := getattr(self, f)) and isinstance(value, CDFSequence)]
-            + [
-                v
-                for f in self.model_fields
-                if (value := getattr(self, f)) and isinstance(value, list)
-                for v in value
-                if isinstance(v, CDFSequence)
-            ]
-        )
+        sequences = [sequence for item in self._resource_types() for sequence in item.sequences()]
+        sequences.extend(self._fields_of_type(CDFSequence))
+        return sequences
 
     def files(self) -> list[CDFFile]:
-        return (
-            [file for item in self._types() for file in item.files()]
-            + [f for f in self.model_fields if (value := getattr(self, f)) and isinstance(value, CDFFile)]
-            + [
-                v
-                for f in self.model_fields
-                if (value := getattr(self, f)) and isinstance(value, list)
-                for v in value
-                if isinstance(v, CDFFile)
-            ]
-        )
+        files = [file for item in self._resource_types() for file in item.files()]
+        files.extend(self._fields_of_type(CDFFile))
+        return files
 
-    def _types(self) -> Iterable[Type]:
+    def _resource_types(self) -> Iterable[ResourceType]:
         for f in self.model_fields:
-            if isinstance(items := getattr(self, f), list) and items and isinstance(items[0], Type):
+            if isinstance(items := getattr(self, f), list) and items and isinstance(items[0], ResourceType):
                 yield from items
+
+    def _fields_of_type(self, type_: Type[_T_Type]) -> Iterable[_T_Type]:
+        for field_name in self.model_fields:
+            value = getattr(self, field_name)
+            if isinstance(value, type_):
+                yield value
+            elif isinstance(value, list) and value and isinstance(value[0], type_):
+                yield from value
 
 
 class AssetModel(Model, ABC):
@@ -245,7 +237,7 @@ class AssetModel(Model, ABC):
         ]
 
     def _asset_types(self) -> Iterable[AssetType]:
-        yield from (item for item in self._types() if isinstance(item, AssetType))
+        yield from (item for item in self._resource_types() if isinstance(item, AssetType))
 
 
 class DataModel(Model, ABC):
