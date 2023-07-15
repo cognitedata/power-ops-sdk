@@ -14,7 +14,14 @@ from cognite.powerops.resync.config.resync_config import ReSyncConfig
 from cognite.powerops.resync.models.base import Model
 from cognite.powerops.resync.to_models.transform import transform
 
-AVAILABLE_MODELS = ["ProductionAsset", "MarketAsset", "CogShopAsset", "ProductionDataModel", "CogShopDataModel"]
+AVAILABLE_MODELS = [
+    "ProductionAsset",
+    "MarketAsset",
+    "CogShopAsset",
+    "ProductionDataModel",
+    "CogShopDataModel",
+    "BenchmarkMarketDataModel",
+]
 
 
 def plan(path: Path, market: str, echo: Callable[[str], None] = None, model_names: str | list[str] = None) -> None:

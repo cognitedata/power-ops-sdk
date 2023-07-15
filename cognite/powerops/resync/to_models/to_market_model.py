@@ -7,12 +7,18 @@ import pandas as pd
 from cognite.client.data_classes import Sequence
 
 from cognite.powerops.clients.data_classes import (
+    BenchmarkBidApply,
+    BenchmarkProcesApply,
+    DateTransformationApply,
     DayAheadProcesApply,
     NordPoolMarketApply,
+    ProductionPlanTimeSeriesApply,
     RKOMMarketApply,
     RKOMProcesApply,
+    ShopTransformationApply,
 )
 from cognite.powerops.resync.config.market import BenchmarkingConfig, PriceScenario, PriceScenarioID
+from cognite.powerops.resync.config.market._core import RelativeTime
 from cognite.powerops.resync.config.market.dayahead import BidMatrixGeneratorConfig, BidProcessConfig
 from cognite.powerops.resync.config.market.market import MARKET_BY_PRICE_AREA
 from cognite.powerops.resync.config.market.rkom import RKOMBidCombinationConfig, RKOMBidProcessConfig, RkomMarketConfig
@@ -20,12 +26,12 @@ from cognite.powerops.resync.config.resync_config import MarketConfig
 from cognite.powerops.resync.models import MarketModel
 from cognite.powerops.resync.models import market as market_models
 from cognite.powerops.resync.models.cdf_resources import CDFSequence
-from cognite.powerops.resync.models.market_dm import MarketDM
+from cognite.powerops.resync.models.market_dm import BenchmarkMarketDataModel, MarketDM
 from cognite.powerops.resync.models.production import PriceArea
 from cognite.powerops.resync.utils.common import make_ext_id
 
 
-def to_market_model(config: MarketConfig, price_areas: list[PriceArea], market_name: str) -> MarketModel:
+def to_market_asset_model(config: MarketConfig, price_areas: list[PriceArea], market_name: str) -> MarketModel:
     nord_pool = market_models.NordPoolMarket(**config.market.model_dump())
     # The external_id is not following the naming convention, so we need to set it manually
     nord_pool.external_id = config.market.external_id
@@ -55,6 +61,50 @@ def to_market_model(config: MarketConfig, price_areas: list[PriceArea], market_n
     )
 
     return model
+
+
+def to_benchmark_data_model(configs: list[BenchmarkingConfig]) -> BenchmarkMarketDataModel:
+    if len(configs) > 1:
+        # The external id for the benchmarking is hardcoded and thus there can be only one.
+        raise NotImplementedError("Only one benchmarking config is supported")
+    model = BenchmarkMarketDataModel()
+    for config in configs:
+        bid = BenchmarkBidApply(
+            external_id=make_ext_id(
+                [config.bid_date.model_dump_json(), config.market_config_external_id], BenchmarkBidApply
+            ),
+            date=_relative_time_to_data_transformations(config.bid_date),
+            market=config.market_config_external_id,
+        )
+        model.bids[bid.external_id] = bid
+        process = BenchmarkProcesApply(
+            external_id="benchmarking_config_day_ahead",
+            name="Benchmarking config DayAhead",
+            bid=bid.external_id,
+            shop=ShopTransformationApply(
+                external_id=make_ext_id(
+                    [config.shop_start.model_dump_json(), config.shop_end.model_dump_json()], ShopTransformationApply
+                ),
+                start=_relative_time_to_data_transformations(config.shop_start),
+                end=_relative_time_to_data_transformations(config.shop_end),
+            ),
+            production_plan_time_series=[
+                ProductionPlanTimeSeriesApply(
+                    external_id=make_ext_id([name, series], ProductionPlanTimeSeriesApply),
+                    name=name,
+                    series=series,
+                )
+                for name, series in config.production_plan_time_series
+            ],
+            run_events=[],
+            metrics=config.relevant_shop_objective_metrics,
+        )
+        model.benchmarking.append(process)
+    return model
+
+
+def to_dayahead_data_model():
+    raise NotImplementedError
 
 
 def to_market_data_model(model: MarketModel) -> MarketDM:
@@ -162,6 +212,30 @@ def to_market_data_model(model: MarketModel) -> MarketDM:
     #     apply = RKOMBidCombinationApply(
     #     )
     return data_model
+
+
+def _relative_time_to_data_transformations(time: RelativeTime) -> list[DateTransformationApply]:
+    output = []
+    for operation in time.operations or []:
+        method, arguments = operation
+        args, kwargs = [], {}
+        if isinstance(arguments, dict):
+            kwargs = arguments
+        elif isinstance(arguments, list):
+            args = arguments
+        elif isinstance(arguments, str):
+            args = [arguments]
+        else:
+            raise ValueError(f"Unknown arguments type: {type(arguments)}")
+        output.append(
+            DateTransformationApply(
+                external_id=make_ext_id(operation, DateTransformationApply),
+                transformation=method,
+                args=args,
+                kwargs=kwargs,
+            )
+        )
+    return output
 
 
 def _to_shop_transformation(shop: market_models.ShopTransformation) -> dict:

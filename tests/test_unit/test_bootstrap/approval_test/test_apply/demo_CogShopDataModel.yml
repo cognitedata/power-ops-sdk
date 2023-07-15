@@ -5622,7 +5622,49 @@ data_modeling.instances:
   type:
     external_id: InputTimeSeriesMapping.transformations
     space: power-ops
-- external_id: OutputMapping__d41d8cd98f00b204e9800998ecf8427e
+- external_id: OutputMapping__07a165841103141c1ff82b89a33bfc96
+  instance_type: node
+  sources:
+  - properties:
+      cdfAttributeName: sales
+      isStep: true
+      shopAttributeName: sale
+      shopObjectType: market
+      unit: MWh
+    source:
+      external_id: OutputMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: OutputMapping__0d0326c4f307c79c51bc6a4269799236
+  instance_type: node
+  sources:
+  - properties:
+      cdfAttributeName: production
+      isStep: true
+      shopAttributeName: production
+      shopObjectType: plant
+      unit: MW
+    source:
+      external_id: OutputMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: OutputMapping__478554acf7c261a343be21a9fe4df5c2
+  instance_type: node
+  sources:
+  - properties:
+      cdfAttributeName: consumption
+      isStep: true
+      shopAttributeName: consumption
+      shopObjectType: plant
+      unit: MW
+    source:
+      external_id: OutputMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: OutputMapping__69593fce0796c9c81cb862e7cca3dada
   instance_type: node
   sources:
   - properties:
@@ -5631,6 +5673,34 @@ data_modeling.instances:
       shopAttributeName: sale_price
       shopObjectType: market
       unit: EUR/MWh
+    source:
+      external_id: OutputMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: OutputMapping__6e521f915bac7e79ec6a8c674cb02497
+  instance_type: node
+  sources:
+  - properties:
+      cdfAttributeName: energy_conversion_factor
+      isStep: true
+      shopAttributeName: energy_conversion_factor
+      shopObjectType: reservoir
+      unit: MWh/Mm3
+    source:
+      external_id: OutputMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: OutputMapping__ebaa15da89c0de66fe11f26b0e36752f
+  instance_type: node
+  sources:
+  - properties:
+      cdfAttributeName: water_value
+      isStep: true
+      shopAttributeName: water_value_global_result
+      shopObjectType: reservoir
+      unit: EUR/Mm3
     source:
       external_id: OutputMapping
       space: power-ops
@@ -8358,9 +8428,69 @@ data_modeling.instances:
     external_id: ScenarioTemplate.baseMapping
     space: power-ops
 - end_node:
-    external_id: OutputMapping__d41d8cd98f00b204e9800998ecf8427e
+    external_id: OutputMapping__07a165841103141c1ff82b89a33bfc96
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:OutputMapping__d41d8cd98f00b204e9800998ecf8427e
+  external_id: ScenarioTemplate_Fornebu:OutputMapping__07a165841103141c1ff82b89a33bfc96
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: ScenarioTemplate_Fornebu
+    space: power-ops
+  type:
+    external_id: ScenarioTemplate.outputDefinitions
+    space: power-ops
+- end_node:
+    external_id: OutputMapping__0d0326c4f307c79c51bc6a4269799236
+    space: power-ops
+  external_id: ScenarioTemplate_Fornebu:OutputMapping__0d0326c4f307c79c51bc6a4269799236
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: ScenarioTemplate_Fornebu
+    space: power-ops
+  type:
+    external_id: ScenarioTemplate.outputDefinitions
+    space: power-ops
+- end_node:
+    external_id: OutputMapping__478554acf7c261a343be21a9fe4df5c2
+    space: power-ops
+  external_id: ScenarioTemplate_Fornebu:OutputMapping__478554acf7c261a343be21a9fe4df5c2
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: ScenarioTemplate_Fornebu
+    space: power-ops
+  type:
+    external_id: ScenarioTemplate.outputDefinitions
+    space: power-ops
+- end_node:
+    external_id: OutputMapping__69593fce0796c9c81cb862e7cca3dada
+    space: power-ops
+  external_id: ScenarioTemplate_Fornebu:OutputMapping__69593fce0796c9c81cb862e7cca3dada
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: ScenarioTemplate_Fornebu
+    space: power-ops
+  type:
+    external_id: ScenarioTemplate.outputDefinitions
+    space: power-ops
+- end_node:
+    external_id: OutputMapping__6e521f915bac7e79ec6a8c674cb02497
+    space: power-ops
+  external_id: ScenarioTemplate_Fornebu:OutputMapping__6e521f915bac7e79ec6a8c674cb02497
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: ScenarioTemplate_Fornebu
+    space: power-ops
+  type:
+    external_id: ScenarioTemplate.outputDefinitions
+    space: power-ops
+- end_node:
+    external_id: OutputMapping__ebaa15da89c0de66fe11f26b0e36752f
+    space: power-ops
+  external_id: ScenarioTemplate_Fornebu:OutputMapping__ebaa15da89c0de66fe11f26b0e36752f
   instance_type: edge
   space: power-ops
   start_node:

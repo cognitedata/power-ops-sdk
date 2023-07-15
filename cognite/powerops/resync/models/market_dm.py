@@ -3,6 +3,7 @@ from __future__ import annotations
 from pydantic import Field
 
 from cognite.powerops.clients.data_classes import (
+    BenchmarkBidApply,
     BenchmarkProcesApply,
     DayAheadProcesApply,
     NordPoolMarketApply,
@@ -11,6 +12,13 @@ from cognite.powerops.clients.data_classes import (
     RKOMProces,
 )
 from cognite.powerops.resync.models.base import DataModel
+
+ExternalID = str
+
+
+class BenchmarkMarketDataModel(DataModel):
+    benchmarking: list[BenchmarkProcesApply] = Field(default_factory=list)
+    bids: dict[ExternalID, BenchmarkBidApply] = Field(default_factory=dict)
 
 
 class MarketDM(DataModel):

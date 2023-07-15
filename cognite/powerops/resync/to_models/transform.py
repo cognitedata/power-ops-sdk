@@ -8,26 +8,26 @@ from cognite.powerops.resync.config.resync_config import ReSyncConfig
 from cognite.powerops.resync.models.base import AssetModel, DataModel, Model
 
 from .to_cogshop_model import to_cogshop_asset_model, to_cogshop_data_model
-from .to_market_model import to_market_model
+from .to_market_model import to_benchmark_data_model, to_market_asset_model
 from .to_production_model import to_production_data_model, to_production_model
 
 
 def transform(
     config: ReSyncConfig,
     market_name: str,
-    models: set[str],
+    model_names: set[str],
 ) -> tuple[ResourceCollection, list[Model]]:
     asset_models: list[AssetModel] = []
     data_models: list[DataModel] = []
 
     # The Production model is a prerequisite for the Market and CogShop models
-    has_asset_model = any("Asset" in m for m in models)
+    has_asset_model = any("Asset" in m for m in model_names)
     if has_asset_model:
         production_model = to_production_model(config.production)
-        if "ProductionAsset" in models:
+        if "ProductionAsset" in model_names:
             asset_models.append(production_model)
-        if "MarketAsset" in models:
-            market_model = to_market_model(config.market, production_model.price_areas, market_name)
+        if "MarketAsset" in model_names:
+            market_model = to_market_asset_model(config.market, production_model.price_areas, market_name)
             settings = config.settings
             market_model.set_root_asset(
                 settings.shop_service_url,
@@ -36,21 +36,24 @@ def transform(
                 production_model.root_asset.external_id,
             )
             asset_models.append(market_model)
-        if "CogShopAsset" in models:
+        if "CogShopAsset" in model_names:
             cogshop_model = to_cogshop_asset_model(config.cogshop, production_model.watercourses)
             asset_models.append(cogshop_model)
 
-    has_data_model = any("DataModel" in m for m in models)
+    has_data_model = any("DataModel" in m for m in model_names)
     if has_data_model:
         # The production model is a prerequisite for the CogShop and Market models
         production_model = to_production_data_model(config.production)
-        if "ProductionDataModel" in models:
+        if "ProductionDataModel" in model_names:
             data_models.append(production_model)
-        if "CogShopDataModel" in models:
+        if "CogShopDataModel" in model_names:
             cogshop_model = to_cogshop_data_model(
                 config.cogshop, config.production.watercourses, config.settings.shop_version
             )
             data_models.append(cogshop_model)
+        if "BenchmarkMarketDataModel" in model_names:
+            benchmark_market_model = to_benchmark_data_model(config.market.benchmarks)
+            data_models.append(benchmark_market_model)
 
     collection = ResourceCollection()
     if has_asset_model:
