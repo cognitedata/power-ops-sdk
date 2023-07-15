@@ -246,6 +246,13 @@ class AssetModel(Model, ABC):
     def _asset_types(self) -> Iterable[AssetType]:
         yield from (item for item in self._resource_types() if isinstance(item, AssetType))
 
+    def summary(self) -> dict[str, dict[str, int]]:
+        summary = super().summary()
+        summary[self.model_name]["assets"] = len(self.assets())
+        summary[self.model_name]["relationships"] = len(self.relationships())
+        summary[self.model_name]["parent_assets"] = len(self.parent_assets())
+        return summary
+
 
 class DataModel(Model, ABC):
     def instances(self) -> InstancesApply:

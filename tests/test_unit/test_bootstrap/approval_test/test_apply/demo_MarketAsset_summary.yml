@@ -1,4 +1,7 @@
 MarketModel:
+  assets: 13
   combinations: 2
   markets: 2
+  parent_assets: 6
   processes: 9
+  relationships: 160
