@@ -21,7 +21,8 @@ def transform(
     data_models: list[DataModel] = []
 
     # The Production model is a prerequisite for the Market and CogShop models
-    if any("Asset" in m for m in models):
+    has_asset_model = any("Asset" in m for m in models)
+    if has_asset_model:
         production_model = to_production_model(config.production)
         if "ProductionAsset" in models:
             asset_models.append(production_model)
@@ -39,7 +40,9 @@ def transform(
             cogshop_model = to_cogshop_asset_model(config.cogshop, production_model.watercourses)
             asset_models.append(cogshop_model)
 
-    if any("DataModel" in m for m in models):
+    has_data_model = any("DataModel" in m for m in models)
+    if has_data_model:
+        # The production model is a prerequisite for the CogShop and Market models
         production_model = to_production_data_model(config.production)
         if "ProductionDataModel" in models:
             data_models.append(production_model)
@@ -48,7 +51,7 @@ def transform(
             data_models.append(cogshop_model)
 
     collection = ResourceCollection()
-    if any("Asset" in m for m in models):
+    if has_asset_model:
         labels = AssetLabel.as_label_definitions() + RelationshipLabel.as_label_definitions()
         collection.add(labels)
 

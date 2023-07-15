@@ -242,15 +242,11 @@ def to_cogshop_asset_model(config: CogShopConfig, watercourses: list[Watercourse
             columns=[c["externalId"] for c in sequence.columns],
         )
 
-        output_definition = cogshop.OutputDefinition(
-            watercourse_name=watercourse.name,
-            mapping=[
-                CDFSequence(
-                    sequence=sequence,
-                    content=df,
-                )
-            ],
+        output_definition = CDFSequence(
+            sequence=sequence,
+            content=df,
         )
+
         model.output_definitions.append(output_definition)
 
         ##### Base Mapping #####
@@ -265,21 +261,16 @@ def to_cogshop_asset_model(config: CogShopConfig, watercourses: list[Watercourse
                 "shop:type": "base_mapping",
             },
         )
-        output_definition = cogshop.BaseMapping(
-            watercourse_name=watercourse.name,
-            mapping=[
-                CDFSequence(
-                    sequence=sequence,
-                    content=mapping.to_dataframe(),
-                )
-            ],
+        output_definition = CDFSequence(
+            sequence=sequence,
+            content=mapping.to_dataframe(),
         )
         model.base_mappings.append(output_definition)
 
     return model
 
 
-def _to_shop_model_file(watercourse: Watercourse) -> cogshop.ShopFile:
+def _to_shop_model_file(watercourse: Watercourse) -> cogshop.CDFFile:
     processed_model = _to_model_without_timeseries(
         yaml_raw_path=str(watercourse.model_file),
         # Todo Move this hardcoded configuration to a config file
@@ -291,7 +282,6 @@ def _to_shop_model_file(watercourse: Watercourse) -> cogshop.ShopFile:
     external_id = f"SHOP_{watercourse.name}_{watercourse.processed_model_file.stem}"
     return _create_shop_file(
         file_content,
-        watercourse.name,
         external_id,
         {
             "shop:type": "case",
@@ -301,13 +291,12 @@ def _to_shop_model_file(watercourse: Watercourse) -> cogshop.ShopFile:
     )
 
 
-def _to_shop_files(watercourses_shop: list[ShopFileConfig]) -> list[cogshop.ShopFile]:
+def _to_shop_files(watercourses_shop: list[ShopFileConfig]) -> list[cogshop.CDFFile]:
     shop_files = []
     for shop_config in watercourses_shop:
         file_content = Path(shop_config.file_path).read_bytes()
         shop_file = _create_shop_file(
             file_content,
-            shop_config.watercourse_name,
             shop_config.external_id,
             {
                 "shop:type": shop_config.cogshop_file_type,
@@ -319,20 +308,17 @@ def _to_shop_files(watercourses_shop: list[ShopFileConfig]) -> list[cogshop.Shop
     return shop_files
 
 
-def _create_shop_file(file_content: bytes, watercourse_name: str, external_id: str, metadata: dict[str, str]):
+def _create_shop_file(file_content: bytes, external_id: str, metadata: dict[str, str]) -> cogshop.CDFFile:
     metadata["md5_hash"] = md5(file_content.replace(b"\r\n", b"\n")).hexdigest()
-    return cogshop.ShopFile(
-        watercourse_name=watercourse_name,
-        file=cogshop.CDFFile(
-            meta=FileMetadata(
-                external_id=external_id,
-                name=external_id,
-                metadata=metadata,
-                source="PowerOps bootstrap",
-                mime_type="text/plain",
-            ),
-            content=file_content,
+    return cogshop.CDFFile(
+        meta=FileMetadata(
+            external_id=external_id,
+            name=external_id,
+            metadata=metadata,
+            source="PowerOps bootstrap",
+            mime_type="text/plain",
         ),
+        content=file_content,
     )
 
 
