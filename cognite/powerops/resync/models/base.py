@@ -260,6 +260,11 @@ class DataModel(Model, ABC):
         return InstancesApply(nodes=list(nodes.values()), edges=list(edges.values()))
 
     def _domain_models(self) -> Iterable[DomainModelApply]:
-        for f in self.model_fields:
-            if isinstance(items := getattr(self, f), list) and items and isinstance(items[0], DomainModelApply):
+        for field_name in self.model_fields:
+            items = getattr(self, field_name)
+            if isinstance(items, list) and items and isinstance(items[0], DomainModelApply):
                 yield from items
+            if isinstance(items, DomainModelApply):
+                yield items
+            if isinstance(items, dict) and items and isinstance(next(iter(items.values())), DomainModelApply):
+                yield from items.values()

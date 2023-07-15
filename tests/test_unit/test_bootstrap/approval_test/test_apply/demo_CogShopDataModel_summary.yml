@@ -1,0 +1,6 @@
+CogShopDataModel:
+  input_time_series_mappings: 225
+  output_definitions: 6
+  scenario_templates: 1
+  shop_files: 7
+  value_transformations: 59

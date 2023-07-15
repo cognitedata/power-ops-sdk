@@ -10,6 +10,8 @@ from cognite.powerops.clients.data_classes import (
 from .base import AssetModel, DataModel, Model
 from .cdf_resources import CDFFile, CDFSequence
 
+ExternalID = str
+
 
 class CogShopCore(Model):
     shop_files: list[CDFFile] = Field(default_factory=list)
@@ -17,9 +19,9 @@ class CogShopCore(Model):
 
 class CogShopDataModel(CogShopCore, DataModel):
     scenario_templates: list[ScenarioTemplateApply] = Field(default_factory=list)
-    input_time_series_mappings: list[InputTimeSeriesMappingApply] = Field(default_factory=list)
-    output_mappings: list[OutputMappingApply] = Field(default_factory=list)
-    value_transformations: list[ValueTransformationApply] = Field(default_factory=list)
+    input_time_series_mappings: dict[ExternalID, InputTimeSeriesMappingApply] = Field(default_factory=dict)
+    output_definitions: dict[ExternalID, OutputMappingApply] = Field(default_factory=dict)
+    value_transformations: dict[ExternalID, ValueTransformationApply] = Field(default_factory=dict)
 
 
 class CogShopAsset(CogShopCore, AssetModel):

@@ -47,7 +47,9 @@ def transform(
         if "ProductionDataModel" in models:
             data_models.append(production_model)
         if "CogShopDataModel" in models:
-            cogshop_model = to_cogshop_data_model(config.cogshop, production_model.watercourses)
+            cogshop_model = to_cogshop_data_model(
+                config.cogshop, config.production.watercourses, config.settings.shop_version
+            )
             data_models.append(cogshop_model)
 
     collection = ResourceCollection()

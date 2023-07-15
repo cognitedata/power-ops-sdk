@@ -22,6 +22,6 @@ def make_ext_id(arg: Any, class_: Type[DomainModelApply]) -> str:
     hash_value = md5()
     if isinstance(arg, (str, int, float, bool)):
         hash_value.update(str(arg).encode())
-    elif isinstance(arg, (list, dict)):
+    elif isinstance(arg, (list, dict, tuple)):
         hash_value.update(json.dumps(arg).encode())
     return f"{class_.__name__.removesuffix('Apply')}__{hash_value.hexdigest()}"
