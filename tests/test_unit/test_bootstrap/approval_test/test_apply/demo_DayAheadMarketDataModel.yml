@@ -402,6 +402,1402 @@ data_modeling.instances:
       space: power-ops
       type: container
   space: power-ops
+- external_id: InputTimeSeriesMapping__03487167e13d5a7d31dc5dcc81360559
+  instance_type: node
+  sources:
+  - properties:
+      aggregation: mean
+      cdfTimeSeries: '907677'
+      retrieve: RANGE
+      shopAttributeName: sale_price
+      shopObjectName: Dayahead
+      shopObjectType: market
+    source:
+      external_id: InputTimeSeriesMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: ValueTransformation__570b266c92df7c5069af6d946ddc37f6
+    space: power-ops
+  external_id: InputTimeSeriesMapping__03487167e13d5a7d31dc5dcc81360559:ValueTransformation__570b266c92df7c5069af6d946ddc37f6
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__03487167e13d5a7d31dc5dcc81360559
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- external_id: InputTimeSeriesMapping__04e159867306f76632119dc2d16a63ad
+  instance_type: node
+  sources:
+  - properties:
+      aggregation: mean
+      cdfTimeSeries: '907677'
+      retrieve: RANGE
+      shopAttributeName: buy_price
+      shopObjectName: Dayahead
+      shopObjectType: market
+    source:
+      external_id: InputTimeSeriesMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: ValueTransformation__74b2264482756828411c057520e54d73
+    space: power-ops
+  external_id: InputTimeSeriesMapping__04e159867306f76632119dc2d16a63ad:ValueTransformation__74b2264482756828411c057520e54d73
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__04e159867306f76632119dc2d16a63ad
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- end_node:
+    external_id: ValueTransformation__bd3593781ecd7247732efac41d383086
+    space: power-ops
+  external_id: InputTimeSeriesMapping__04e159867306f76632119dc2d16a63ad:ValueTransformation__bd3593781ecd7247732efac41d383086
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__04e159867306f76632119dc2d16a63ad
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- external_id: InputTimeSeriesMapping__0d9de884c18baa37267e924d5cf50999
+  instance_type: node
+  sources:
+  - properties:
+      aggregation: mean
+      cdfTimeSeries: '907677'
+      retrieve: RANGE
+      shopAttributeName: sale_price
+      shopObjectName: Dayahead
+      shopObjectType: market
+    source:
+      external_id: InputTimeSeriesMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: ValueTransformation__ce31695d5196d1cf61a44570f32563d1
+    space: power-ops
+  external_id: InputTimeSeriesMapping__0d9de884c18baa37267e924d5cf50999:ValueTransformation__ce31695d5196d1cf61a44570f32563d1
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__0d9de884c18baa37267e924d5cf50999
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- external_id: InputTimeSeriesMapping__0dce6fd8737e0802e69e2529b28917ed
+  instance_type: node
+  sources:
+  - properties:
+      aggregation: mean
+      cdfTimeSeries: '907677'
+      retrieve: RANGE
+      shopAttributeName: buy_price
+      shopObjectName: Dayahead
+      shopObjectType: market
+    source:
+      external_id: InputTimeSeriesMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: ValueTransformation__74b2264482756828411c057520e54d73
+    space: power-ops
+  external_id: InputTimeSeriesMapping__0dce6fd8737e0802e69e2529b28917ed:ValueTransformation__74b2264482756828411c057520e54d73
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__0dce6fd8737e0802e69e2529b28917ed
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- end_node:
+    external_id: ValueTransformation__99dc53bfeab6fcbc030c410b5192d8a2
+    space: power-ops
+  external_id: InputTimeSeriesMapping__0dce6fd8737e0802e69e2529b28917ed:ValueTransformation__99dc53bfeab6fcbc030c410b5192d8a2
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__0dce6fd8737e0802e69e2529b28917ed
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- external_id: InputTimeSeriesMapping__1940f0474e174affb207649606b3c194
+  instance_type: node
+  sources:
+  - properties:
+      aggregation: mean
+      cdfTimeSeries: '907677'
+      retrieve: RANGE
+      shopAttributeName: buy_price
+      shopObjectName: Dayahead
+      shopObjectType: market
+    source:
+      external_id: InputTimeSeriesMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: ValueTransformation__3d60ddb40a293f9896683a744ed9dc3e
+    space: power-ops
+  external_id: InputTimeSeriesMapping__1940f0474e174affb207649606b3c194:ValueTransformation__3d60ddb40a293f9896683a744ed9dc3e
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__1940f0474e174affb207649606b3c194
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- end_node:
+    external_id: ValueTransformation__74b2264482756828411c057520e54d73
+    space: power-ops
+  external_id: InputTimeSeriesMapping__1940f0474e174affb207649606b3c194:ValueTransformation__74b2264482756828411c057520e54d73
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__1940f0474e174affb207649606b3c194
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- external_id: InputTimeSeriesMapping__1b42eb2bf41e38490abe4be73da9073c
+  instance_type: node
+  sources:
+  - properties:
+      aggregation: mean
+      cdfTimeSeries: '907678'
+      retrieve: RANGE
+      shopAttributeName: buy_price
+      shopObjectName: Dayahead
+      shopObjectType: market
+    source:
+      external_id: InputTimeSeriesMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: ValueTransformation__74b2264482756828411c057520e54d73
+    space: power-ops
+  external_id: InputTimeSeriesMapping__1b42eb2bf41e38490abe4be73da9073c:ValueTransformation__74b2264482756828411c057520e54d73
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__1b42eb2bf41e38490abe4be73da9073c
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- external_id: InputTimeSeriesMapping__23e140b22c826891797ca137c2c3ae97
+  instance_type: node
+  sources:
+  - properties:
+      aggregation: mean
+      cdfTimeSeries: '907677'
+      retrieve: RANGE
+      shopAttributeName: buy_price
+      shopObjectName: Dayahead
+      shopObjectType: market
+    source:
+      external_id: InputTimeSeriesMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: ValueTransformation__5f7635881c490d837edfa58a679534f3
+    space: power-ops
+  external_id: InputTimeSeriesMapping__23e140b22c826891797ca137c2c3ae97:ValueTransformation__5f7635881c490d837edfa58a679534f3
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__23e140b22c826891797ca137c2c3ae97
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- end_node:
+    external_id: ValueTransformation__74b2264482756828411c057520e54d73
+    space: power-ops
+  external_id: InputTimeSeriesMapping__23e140b22c826891797ca137c2c3ae97:ValueTransformation__74b2264482756828411c057520e54d73
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__23e140b22c826891797ca137c2c3ae97
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- external_id: InputTimeSeriesMapping__2c88e19831a78ac681d910f5ce6c6261
+  instance_type: node
+  sources:
+  - properties:
+      aggregation: mean
+      cdfTimeSeries: '907677'
+      retrieve: RANGE
+      shopAttributeName: sale_price
+      shopObjectName: Dayahead
+      shopObjectType: market
+    source:
+      external_id: InputTimeSeriesMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: ValueTransformation__daacf7a3d968f0f4cea1e3095becabb3
+    space: power-ops
+  external_id: InputTimeSeriesMapping__2c88e19831a78ac681d910f5ce6c6261:ValueTransformation__daacf7a3d968f0f4cea1e3095becabb3
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__2c88e19831a78ac681d910f5ce6c6261
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- external_id: InputTimeSeriesMapping__2ca41e9cafa565a76ccf7a44ca2a2ea5
+  instance_type: node
+  sources:
+  - properties:
+      aggregation: mean
+      cdfTimeSeries: '907677'
+      retrieve: RANGE
+      shopAttributeName: sale_price
+      shopObjectName: Dayahead
+      shopObjectType: market
+    source:
+      external_id: InputTimeSeriesMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: ValueTransformation__3d60ddb40a293f9896683a744ed9dc3e
+    space: power-ops
+  external_id: InputTimeSeriesMapping__2ca41e9cafa565a76ccf7a44ca2a2ea5:ValueTransformation__3d60ddb40a293f9896683a744ed9dc3e
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__2ca41e9cafa565a76ccf7a44ca2a2ea5
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- external_id: InputTimeSeriesMapping__2f1c9e642f592841225fb92f829f77bf
+  instance_type: node
+  sources:
+  - properties:
+      aggregation: mean
+      cdfTimeSeries: '907677'
+      retrieve: RANGE
+      shopAttributeName: buy_price
+      shopObjectName: Dayahead
+      shopObjectType: market
+    source:
+      external_id: InputTimeSeriesMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: ValueTransformation__74b2264482756828411c057520e54d73
+    space: power-ops
+  external_id: InputTimeSeriesMapping__2f1c9e642f592841225fb92f829f77bf:ValueTransformation__74b2264482756828411c057520e54d73
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__2f1c9e642f592841225fb92f829f77bf
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- external_id: InputTimeSeriesMapping__468587c67e414e46db0cb1bb52ba77a4
+  instance_type: node
+  sources:
+  - properties:
+      aggregation: mean
+      cdfTimeSeries: '907677'
+      retrieve: RANGE
+      shopAttributeName: buy_price
+      shopObjectName: Dayahead
+      shopObjectType: market
+    source:
+      external_id: InputTimeSeriesMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: ValueTransformation__74b2264482756828411c057520e54d73
+    space: power-ops
+  external_id: InputTimeSeriesMapping__468587c67e414e46db0cb1bb52ba77a4:ValueTransformation__74b2264482756828411c057520e54d73
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__468587c67e414e46db0cb1bb52ba77a4
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- end_node:
+    external_id: ValueTransformation__fb10c8b4fa1486445a412e777100c6d6
+    space: power-ops
+  external_id: InputTimeSeriesMapping__468587c67e414e46db0cb1bb52ba77a4:ValueTransformation__fb10c8b4fa1486445a412e777100c6d6
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__468587c67e414e46db0cb1bb52ba77a4
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- external_id: InputTimeSeriesMapping__4e11f5e585b593b021206920f49983ef
+  instance_type: node
+  sources:
+  - properties:
+      aggregation: mean
+      cdfTimeSeries: '907677'
+      retrieve: RANGE
+      shopAttributeName: sale_price
+      shopObjectName: Dayahead
+      shopObjectType: market
+    source:
+      external_id: InputTimeSeriesMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: ValueTransformation__99dc53bfeab6fcbc030c410b5192d8a2
+    space: power-ops
+  external_id: InputTimeSeriesMapping__4e11f5e585b593b021206920f49983ef:ValueTransformation__99dc53bfeab6fcbc030c410b5192d8a2
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__4e11f5e585b593b021206920f49983ef
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- external_id: InputTimeSeriesMapping__5aeab397c1e9f8cbf8ea8e5360adfdb9
+  instance_type: node
+  sources:
+  - properties:
+      aggregation: mean
+      cdfTimeSeries: '907677'
+      retrieve: RANGE
+      shopAttributeName: sale_price
+      shopObjectName: Dayahead
+      shopObjectType: market
+    source:
+      external_id: InputTimeSeriesMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: ValueTransformation__ad86a645e17ec39c168d74e4d45251ae
+    space: power-ops
+  external_id: InputTimeSeriesMapping__5aeab397c1e9f8cbf8ea8e5360adfdb9:ValueTransformation__ad86a645e17ec39c168d74e4d45251ae
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__5aeab397c1e9f8cbf8ea8e5360adfdb9
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- external_id: InputTimeSeriesMapping__5bb9b0be4bfbf51856a63f09d687e417
+  instance_type: node
+  sources:
+  - properties:
+      aggregation: mean
+      cdfTimeSeries: '907677'
+      retrieve: RANGE
+      shopAttributeName: sale_price
+      shopObjectName: Dayahead
+      shopObjectType: market
+    source:
+      external_id: InputTimeSeriesMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: ValueTransformation__5f7635881c490d837edfa58a679534f3
+    space: power-ops
+  external_id: InputTimeSeriesMapping__5bb9b0be4bfbf51856a63f09d687e417:ValueTransformation__5f7635881c490d837edfa58a679534f3
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__5bb9b0be4bfbf51856a63f09d687e417
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- external_id: InputTimeSeriesMapping__5ee09b992b096b04f3d0f42a4885537e
+  instance_type: node
+  sources:
+  - properties:
+      aggregation: mean
+      cdfTimeSeries: '907677'
+      retrieve: RANGE
+      shopAttributeName: sale_price
+      shopObjectName: Dayahead
+      shopObjectType: market
+    source:
+      external_id: InputTimeSeriesMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: ValueTransformation__f65dd7e068888ab3ed0a0f60e528e1c1
+    space: power-ops
+  external_id: InputTimeSeriesMapping__5ee09b992b096b04f3d0f42a4885537e:ValueTransformation__f65dd7e068888ab3ed0a0f60e528e1c1
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__5ee09b992b096b04f3d0f42a4885537e
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- external_id: InputTimeSeriesMapping__669597341a9f3eb5c02d9916ea77d2c5
+  instance_type: node
+  sources:
+  - properties:
+      aggregation: mean
+      cdfTimeSeries: '907677'
+      retrieve: RANGE
+      shopAttributeName: sale_price
+      shopObjectName: Dayahead
+      shopObjectType: market
+    source:
+      external_id: InputTimeSeriesMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: ValueTransformation__e6311d7cc3ef1c71fe434ff8361b65dc
+    space: power-ops
+  external_id: InputTimeSeriesMapping__669597341a9f3eb5c02d9916ea77d2c5:ValueTransformation__e6311d7cc3ef1c71fe434ff8361b65dc
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__669597341a9f3eb5c02d9916ea77d2c5
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- external_id: InputTimeSeriesMapping__693e6cab3af7dcf57a1b8a42b36e5be4
+  instance_type: node
+  sources:
+  - properties:
+      aggregation: mean
+      cdfTimeSeries: '907677'
+      retrieve: RANGE
+      shopAttributeName: buy_price
+      shopObjectName: Dayahead
+      shopObjectType: market
+    source:
+      external_id: InputTimeSeriesMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: ValueTransformation__74b2264482756828411c057520e54d73
+    space: power-ops
+  external_id: InputTimeSeriesMapping__693e6cab3af7dcf57a1b8a42b36e5be4:ValueTransformation__74b2264482756828411c057520e54d73
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__693e6cab3af7dcf57a1b8a42b36e5be4
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- end_node:
+    external_id: ValueTransformation__9a75ff77bbfaff475fad76b56ca12e3f
+    space: power-ops
+  external_id: InputTimeSeriesMapping__693e6cab3af7dcf57a1b8a42b36e5be4:ValueTransformation__9a75ff77bbfaff475fad76b56ca12e3f
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__693e6cab3af7dcf57a1b8a42b36e5be4
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- external_id: InputTimeSeriesMapping__6982c4eef6045db5ca295ccfc71bbcfa
+  instance_type: node
+  sources:
+  - properties:
+      aggregation: mean
+      cdfTimeSeries: '907677'
+      retrieve: RANGE
+      shopAttributeName: sale_price
+      shopObjectName: Dayahead
+      shopObjectType: market
+    source:
+      external_id: InputTimeSeriesMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: ValueTransformation__fb10c8b4fa1486445a412e777100c6d6
+    space: power-ops
+  external_id: InputTimeSeriesMapping__6982c4eef6045db5ca295ccfc71bbcfa:ValueTransformation__fb10c8b4fa1486445a412e777100c6d6
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__6982c4eef6045db5ca295ccfc71bbcfa
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- external_id: InputTimeSeriesMapping__736d5b9bd841fa62c5a1f32b7f128968
+  instance_type: node
+  sources:
+  - properties:
+      aggregation: mean
+      cdfTimeSeries: '907677'
+      retrieve: RANGE
+      shopAttributeName: buy_price
+      shopObjectName: Dayahead
+      shopObjectType: market
+    source:
+      external_id: InputTimeSeriesMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: ValueTransformation__505b058c6b388d78b1ae8a4c1f875d1a
+    space: power-ops
+  external_id: InputTimeSeriesMapping__736d5b9bd841fa62c5a1f32b7f128968:ValueTransformation__505b058c6b388d78b1ae8a4c1f875d1a
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__736d5b9bd841fa62c5a1f32b7f128968
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- end_node:
+    external_id: ValueTransformation__74b2264482756828411c057520e54d73
+    space: power-ops
+  external_id: InputTimeSeriesMapping__736d5b9bd841fa62c5a1f32b7f128968:ValueTransformation__74b2264482756828411c057520e54d73
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__736d5b9bd841fa62c5a1f32b7f128968
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- external_id: InputTimeSeriesMapping__77500130c817fe02423992ad569e89a7
+  instance_type: node
+  sources:
+  - properties:
+      aggregation: mean
+      cdfTimeSeries: '907677'
+      retrieve: RANGE
+      shopAttributeName: sale_price
+      shopObjectName: Dayahead
+      shopObjectType: market
+    source:
+      external_id: InputTimeSeriesMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: InputTimeSeriesMapping__830e3e29139753330aa7191571654d8b
+  instance_type: node
+  sources:
+  - properties:
+      aggregation: mean
+      cdfTimeSeries: '907677'
+      retrieve: RANGE
+      shopAttributeName: sale_price
+      shopObjectName: Dayahead
+      shopObjectType: market
+    source:
+      external_id: InputTimeSeriesMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: ValueTransformation__d7f9bdbbef3092a36fe40fc37b3081e4
+    space: power-ops
+  external_id: InputTimeSeriesMapping__830e3e29139753330aa7191571654d8b:ValueTransformation__d7f9bdbbef3092a36fe40fc37b3081e4
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__830e3e29139753330aa7191571654d8b
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- external_id: InputTimeSeriesMapping__8bd4d523e223dac586193113622491a7
+  instance_type: node
+  sources:
+  - properties:
+      aggregation: mean
+      cdfTimeSeries: '907677'
+      retrieve: RANGE
+      shopAttributeName: sale_price
+      shopObjectName: Dayahead
+      shopObjectType: market
+    source:
+      external_id: InputTimeSeriesMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: ValueTransformation__50f593aa55c7633c2cecb0c3f040e965
+    space: power-ops
+  external_id: InputTimeSeriesMapping__8bd4d523e223dac586193113622491a7:ValueTransformation__50f593aa55c7633c2cecb0c3f040e965
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__8bd4d523e223dac586193113622491a7
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- external_id: InputTimeSeriesMapping__9dc4be932cd63e80ae77f9b46f9419bc
+  instance_type: node
+  sources:
+  - properties:
+      aggregation: mean
+      cdfTimeSeries: '907677'
+      retrieve: RANGE
+      shopAttributeName: buy_price
+      shopObjectName: Dayahead
+      shopObjectType: market
+    source:
+      external_id: InputTimeSeriesMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: ValueTransformation__74b2264482756828411c057520e54d73
+    space: power-ops
+  external_id: InputTimeSeriesMapping__9dc4be932cd63e80ae77f9b46f9419bc:ValueTransformation__74b2264482756828411c057520e54d73
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__9dc4be932cd63e80ae77f9b46f9419bc
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- end_node:
+    external_id: ValueTransformation__e6311d7cc3ef1c71fe434ff8361b65dc
+    space: power-ops
+  external_id: InputTimeSeriesMapping__9dc4be932cd63e80ae77f9b46f9419bc:ValueTransformation__e6311d7cc3ef1c71fe434ff8361b65dc
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__9dc4be932cd63e80ae77f9b46f9419bc
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- external_id: InputTimeSeriesMapping__9ed63f57570fbdbbadfd8d58bde41f2b
+  instance_type: node
+  sources:
+  - properties:
+      aggregation: mean
+      cdfTimeSeries: '907677'
+      retrieve: RANGE
+      shopAttributeName: buy_price
+      shopObjectName: Dayahead
+      shopObjectType: market
+    source:
+      external_id: InputTimeSeriesMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: ValueTransformation__74b2264482756828411c057520e54d73
+    space: power-ops
+  external_id: InputTimeSeriesMapping__9ed63f57570fbdbbadfd8d58bde41f2b:ValueTransformation__74b2264482756828411c057520e54d73
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__9ed63f57570fbdbbadfd8d58bde41f2b
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- end_node:
+    external_id: ValueTransformation__daacf7a3d968f0f4cea1e3095becabb3
+    space: power-ops
+  external_id: InputTimeSeriesMapping__9ed63f57570fbdbbadfd8d58bde41f2b:ValueTransformation__daacf7a3d968f0f4cea1e3095becabb3
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__9ed63f57570fbdbbadfd8d58bde41f2b
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- external_id: InputTimeSeriesMapping__a2b8affe3a56a322c327434c61c7cdb6
+  instance_type: node
+  sources:
+  - properties:
+      aggregation: mean
+      cdfTimeSeries: '907677'
+      retrieve: RANGE
+      shopAttributeName: buy_price
+      shopObjectName: Dayahead
+      shopObjectType: market
+    source:
+      external_id: InputTimeSeriesMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: ValueTransformation__570b266c92df7c5069af6d946ddc37f6
+    space: power-ops
+  external_id: InputTimeSeriesMapping__a2b8affe3a56a322c327434c61c7cdb6:ValueTransformation__570b266c92df7c5069af6d946ddc37f6
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__a2b8affe3a56a322c327434c61c7cdb6
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- end_node:
+    external_id: ValueTransformation__74b2264482756828411c057520e54d73
+    space: power-ops
+  external_id: InputTimeSeriesMapping__a2b8affe3a56a322c327434c61c7cdb6:ValueTransformation__74b2264482756828411c057520e54d73
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__a2b8affe3a56a322c327434c61c7cdb6
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- external_id: InputTimeSeriesMapping__ae10145ee3f1c384c8029b8295a68e64
+  instance_type: node
+  sources:
+  - properties:
+      aggregation: mean
+      cdfTimeSeries: '907677'
+      retrieve: RANGE
+      shopAttributeName: sale_price
+      shopObjectName: Dayahead
+      shopObjectType: market
+    source:
+      external_id: InputTimeSeriesMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: ValueTransformation__d718d3023f1db2bcc1f80adff01f3ac1
+    space: power-ops
+  external_id: InputTimeSeriesMapping__ae10145ee3f1c384c8029b8295a68e64:ValueTransformation__d718d3023f1db2bcc1f80adff01f3ac1
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__ae10145ee3f1c384c8029b8295a68e64
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- external_id: InputTimeSeriesMapping__b5ae5a24bf62597e0acbbca1ec41b119
+  instance_type: node
+  sources:
+  - properties:
+      aggregation: mean
+      cdfTimeSeries: '907677'
+      retrieve: RANGE
+      shopAttributeName: sale_price
+      shopObjectName: Dayahead
+      shopObjectType: market
+    source:
+      external_id: InputTimeSeriesMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: ValueTransformation__5a76ff11a7fea4c198b83b7547758949
+    space: power-ops
+  external_id: InputTimeSeriesMapping__b5ae5a24bf62597e0acbbca1ec41b119:ValueTransformation__5a76ff11a7fea4c198b83b7547758949
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__b5ae5a24bf62597e0acbbca1ec41b119
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- external_id: InputTimeSeriesMapping__b93bb78ac98360c1b1d54bfa2894f898
+  instance_type: node
+  sources:
+  - properties:
+      aggregation: mean
+      cdfTimeSeries: '907677'
+      retrieve: RANGE
+      shopAttributeName: buy_price
+      shopObjectName: Dayahead
+      shopObjectType: market
+    source:
+      external_id: InputTimeSeriesMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: ValueTransformation__74b2264482756828411c057520e54d73
+    space: power-ops
+  external_id: InputTimeSeriesMapping__b93bb78ac98360c1b1d54bfa2894f898:ValueTransformation__74b2264482756828411c057520e54d73
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__b93bb78ac98360c1b1d54bfa2894f898
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- end_node:
+    external_id: ValueTransformation__d718d3023f1db2bcc1f80adff01f3ac1
+    space: power-ops
+  external_id: InputTimeSeriesMapping__b93bb78ac98360c1b1d54bfa2894f898:ValueTransformation__d718d3023f1db2bcc1f80adff01f3ac1
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__b93bb78ac98360c1b1d54bfa2894f898
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- external_id: InputTimeSeriesMapping__baefb8ebf27de4af086a3adb5f6bd12d
+  instance_type: node
+  sources:
+  - properties:
+      aggregation: mean
+      cdfTimeSeries: '907677'
+      retrieve: RANGE
+      shopAttributeName: sale_price
+      shopObjectName: Dayahead
+      shopObjectType: market
+    source:
+      external_id: InputTimeSeriesMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: ValueTransformation__9a75ff77bbfaff475fad76b56ca12e3f
+    space: power-ops
+  external_id: InputTimeSeriesMapping__baefb8ebf27de4af086a3adb5f6bd12d:ValueTransformation__9a75ff77bbfaff475fad76b56ca12e3f
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__baefb8ebf27de4af086a3adb5f6bd12d
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- external_id: InputTimeSeriesMapping__c85b3e82649e3dba3684afa1526b5255
+  instance_type: node
+  sources:
+  - properties:
+      aggregation: mean
+      cdfTimeSeries: '907677'
+      retrieve: RANGE
+      shopAttributeName: buy_price
+      shopObjectName: Dayahead
+      shopObjectType: market
+    source:
+      external_id: InputTimeSeriesMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: ValueTransformation__74b2264482756828411c057520e54d73
+    space: power-ops
+  external_id: InputTimeSeriesMapping__c85b3e82649e3dba3684afa1526b5255:ValueTransformation__74b2264482756828411c057520e54d73
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__c85b3e82649e3dba3684afa1526b5255
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- end_node:
+    external_id: ValueTransformation__f65dd7e068888ab3ed0a0f60e528e1c1
+    space: power-ops
+  external_id: InputTimeSeriesMapping__c85b3e82649e3dba3684afa1526b5255:ValueTransformation__f65dd7e068888ab3ed0a0f60e528e1c1
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__c85b3e82649e3dba3684afa1526b5255
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- external_id: InputTimeSeriesMapping__c96f80e1bf9a11c530f199fb4e6d9a21
+  instance_type: node
+  sources:
+  - properties:
+      aggregation: mean
+      cdfTimeSeries: '907677'
+      retrieve: RANGE
+      shopAttributeName: buy_price
+      shopObjectName: Dayahead
+      shopObjectType: market
+    source:
+      external_id: InputTimeSeriesMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: ValueTransformation__74b2264482756828411c057520e54d73
+    space: power-ops
+  external_id: InputTimeSeriesMapping__c96f80e1bf9a11c530f199fb4e6d9a21:ValueTransformation__74b2264482756828411c057520e54d73
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__c96f80e1bf9a11c530f199fb4e6d9a21
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- end_node:
+    external_id: ValueTransformation__ad86a645e17ec39c168d74e4d45251ae
+    space: power-ops
+  external_id: InputTimeSeriesMapping__c96f80e1bf9a11c530f199fb4e6d9a21:ValueTransformation__ad86a645e17ec39c168d74e4d45251ae
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__c96f80e1bf9a11c530f199fb4e6d9a21
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- external_id: InputTimeSeriesMapping__cb05151aab65edd709989eed9a397e70
+  instance_type: node
+  sources:
+  - properties:
+      aggregation: mean
+      cdfTimeSeries: '907677'
+      retrieve: RANGE
+      shopAttributeName: sale_price
+      shopObjectName: Dayahead
+      shopObjectType: market
+    source:
+      external_id: InputTimeSeriesMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: ValueTransformation__0860584d6620f4879d3254f035df81a5
+    space: power-ops
+  external_id: InputTimeSeriesMapping__cb05151aab65edd709989eed9a397e70:ValueTransformation__0860584d6620f4879d3254f035df81a5
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__cb05151aab65edd709989eed9a397e70
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- end_node:
+    external_id: ValueTransformation__e6311d7cc3ef1c71fe434ff8361b65dc
+    space: power-ops
+  external_id: InputTimeSeriesMapping__cb05151aab65edd709989eed9a397e70:ValueTransformation__e6311d7cc3ef1c71fe434ff8361b65dc
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__cb05151aab65edd709989eed9a397e70
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- external_id: InputTimeSeriesMapping__d70a26dd0ee1fc67c1ad5a27f39d8e8b
+  instance_type: node
+  sources:
+  - properties:
+      aggregation: mean
+      cdfTimeSeries: '907677'
+      retrieve: RANGE
+      shopAttributeName: sale_price
+      shopObjectName: Dayahead
+      shopObjectType: market
+    source:
+      external_id: InputTimeSeriesMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: ValueTransformation__bd3593781ecd7247732efac41d383086
+    space: power-ops
+  external_id: InputTimeSeriesMapping__d70a26dd0ee1fc67c1ad5a27f39d8e8b:ValueTransformation__bd3593781ecd7247732efac41d383086
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__d70a26dd0ee1fc67c1ad5a27f39d8e8b
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- external_id: InputTimeSeriesMapping__d7edaa7a255f419d6306ff8adf023806
+  instance_type: node
+  sources:
+  - properties:
+      aggregation: mean
+      cdfTimeSeries: '907677'
+      retrieve: RANGE
+      shopAttributeName: sale_price
+      shopObjectName: Dayahead
+      shopObjectType: market
+    source:
+      external_id: InputTimeSeriesMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: ValueTransformation__42335a7f6c6ce4d36a0ed881c13571e2
+    space: power-ops
+  external_id: InputTimeSeriesMapping__d7edaa7a255f419d6306ff8adf023806:ValueTransformation__42335a7f6c6ce4d36a0ed881c13571e2
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__d7edaa7a255f419d6306ff8adf023806
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- external_id: InputTimeSeriesMapping__db159d64c1364e2235e8619f2a605b25
+  instance_type: node
+  sources:
+  - properties:
+      aggregation: mean
+      cdfTimeSeries: '907677'
+      retrieve: RANGE
+      shopAttributeName: buy_price
+      shopObjectName: Dayahead
+      shopObjectType: market
+    source:
+      external_id: InputTimeSeriesMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: ValueTransformation__5a76ff11a7fea4c198b83b7547758949
+    space: power-ops
+  external_id: InputTimeSeriesMapping__db159d64c1364e2235e8619f2a605b25:ValueTransformation__5a76ff11a7fea4c198b83b7547758949
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__db159d64c1364e2235e8619f2a605b25
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- end_node:
+    external_id: ValueTransformation__74b2264482756828411c057520e54d73
+    space: power-ops
+  external_id: InputTimeSeriesMapping__db159d64c1364e2235e8619f2a605b25:ValueTransformation__74b2264482756828411c057520e54d73
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__db159d64c1364e2235e8619f2a605b25
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- external_id: InputTimeSeriesMapping__e9b96b53195846e4d2262d141eff2a28
+  instance_type: node
+  sources:
+  - properties:
+      aggregation: mean
+      cdfTimeSeries: '907677'
+      retrieve: RANGE
+      shopAttributeName: buy_price
+      shopObjectName: Dayahead
+      shopObjectType: market
+    source:
+      external_id: InputTimeSeriesMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: ValueTransformation__0860584d6620f4879d3254f035df81a5
+    space: power-ops
+  external_id: InputTimeSeriesMapping__e9b96b53195846e4d2262d141eff2a28:ValueTransformation__0860584d6620f4879d3254f035df81a5
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__e9b96b53195846e4d2262d141eff2a28
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- end_node:
+    external_id: ValueTransformation__74b2264482756828411c057520e54d73
+    space: power-ops
+  external_id: InputTimeSeriesMapping__e9b96b53195846e4d2262d141eff2a28:ValueTransformation__74b2264482756828411c057520e54d73
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__e9b96b53195846e4d2262d141eff2a28
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- end_node:
+    external_id: ValueTransformation__e6311d7cc3ef1c71fe434ff8361b65dc
+    space: power-ops
+  external_id: InputTimeSeriesMapping__e9b96b53195846e4d2262d141eff2a28:ValueTransformation__e6311d7cc3ef1c71fe434ff8361b65dc
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__e9b96b53195846e4d2262d141eff2a28
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- external_id: InputTimeSeriesMapping__f4ae266b8c58a9790dfb1081491b4883
+  instance_type: node
+  sources:
+  - properties:
+      aggregation: mean
+      cdfTimeSeries: '907677'
+      retrieve: RANGE
+      shopAttributeName: sale_price
+      shopObjectName: Dayahead
+      shopObjectType: market
+    source:
+      external_id: InputTimeSeriesMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: ValueTransformation__505b058c6b388d78b1ae8a4c1f875d1a
+    space: power-ops
+  external_id: InputTimeSeriesMapping__f4ae266b8c58a9790dfb1081491b4883:ValueTransformation__505b058c6b388d78b1ae8a4c1f875d1a
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__f4ae266b8c58a9790dfb1081491b4883
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- external_id: InputTimeSeriesMapping__f8bdae710c9d2556d9b6f9d81e86d129
+  instance_type: node
+  sources:
+  - properties:
+      aggregation: mean
+      cdfTimeSeries: '907677'
+      retrieve: RANGE
+      shopAttributeName: buy_price
+      shopObjectName: Dayahead
+      shopObjectType: market
+    source:
+      external_id: InputTimeSeriesMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: ValueTransformation__50f593aa55c7633c2cecb0c3f040e965
+    space: power-ops
+  external_id: InputTimeSeriesMapping__f8bdae710c9d2556d9b6f9d81e86d129:ValueTransformation__50f593aa55c7633c2cecb0c3f040e965
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__f8bdae710c9d2556d9b6f9d81e86d129
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- end_node:
+    external_id: ValueTransformation__74b2264482756828411c057520e54d73
+    space: power-ops
+  external_id: InputTimeSeriesMapping__f8bdae710c9d2556d9b6f9d81e86d129:ValueTransformation__74b2264482756828411c057520e54d73
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__f8bdae710c9d2556d9b6f9d81e86d129
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- external_id: InputTimeSeriesMapping__f9d0f523977170f26588616c67e5272c
+  instance_type: node
+  sources:
+  - properties:
+      aggregation: mean
+      cdfTimeSeries: '907678'
+      retrieve: RANGE
+      shopAttributeName: sale_price
+      shopObjectName: Dayahead
+      shopObjectType: market
+    source:
+      external_id: InputTimeSeriesMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: InputTimeSeriesMapping__fc2ebe9bb4fcdefc99f8a8fff22bc0b6
+  instance_type: node
+  sources:
+  - properties:
+      aggregation: mean
+      cdfTimeSeries: '907677'
+      retrieve: RANGE
+      shopAttributeName: buy_price
+      shopObjectName: Dayahead
+      shopObjectType: market
+    source:
+      external_id: InputTimeSeriesMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: ValueTransformation__74b2264482756828411c057520e54d73
+    space: power-ops
+  external_id: InputTimeSeriesMapping__fc2ebe9bb4fcdefc99f8a8fff22bc0b6:ValueTransformation__74b2264482756828411c057520e54d73
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__fc2ebe9bb4fcdefc99f8a8fff22bc0b6
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- end_node:
+    external_id: ValueTransformation__d7f9bdbbef3092a36fe40fc37b3081e4
+    space: power-ops
+  external_id: InputTimeSeriesMapping__fc2ebe9bb4fcdefc99f8a8fff22bc0b6:ValueTransformation__d7f9bdbbef3092a36fe40fc37b3081e4
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__fc2ebe9bb4fcdefc99f8a8fff22bc0b6
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- external_id: InputTimeSeriesMapping__fd8b93a1fd3549800ac589aab34ac783
+  instance_type: node
+  sources:
+  - properties:
+      aggregation: mean
+      cdfTimeSeries: '907677'
+      retrieve: RANGE
+      shopAttributeName: buy_price
+      shopObjectName: Dayahead
+      shopObjectType: market
+    source:
+      external_id: InputTimeSeriesMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: ValueTransformation__74b2264482756828411c057520e54d73
+    space: power-ops
+  external_id: InputTimeSeriesMapping__fd8b93a1fd3549800ac589aab34ac783:ValueTransformation__74b2264482756828411c057520e54d73
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__fd8b93a1fd3549800ac589aab34ac783
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- end_node:
+    external_id: ValueTransformation__ce31695d5196d1cf61a44570f32563d1
+    space: power-ops
+  external_id: InputTimeSeriesMapping__fd8b93a1fd3549800ac589aab34ac783:ValueTransformation__ce31695d5196d1cf61a44570f32563d1
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__fd8b93a1fd3549800ac589aab34ac783
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- external_id: InputTimeSeriesMapping__ffd706dec8b884f8b79c086f790a85a3
+  instance_type: node
+  sources:
+  - properties:
+      aggregation: mean
+      cdfTimeSeries: '907677'
+      retrieve: RANGE
+      shopAttributeName: buy_price
+      shopObjectName: Dayahead
+      shopObjectType: market
+    source:
+      external_id: InputTimeSeriesMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: ValueTransformation__42335a7f6c6ce4d36a0ed881c13571e2
+    space: power-ops
+  external_id: InputTimeSeriesMapping__ffd706dec8b884f8b79c086f790a85a3:ValueTransformation__42335a7f6c6ce4d36a0ed881c13571e2
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__ffd706dec8b884f8b79c086f790a85a3
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- end_node:
+    external_id: ValueTransformation__74b2264482756828411c057520e54d73
+    space: power-ops
+  external_id: InputTimeSeriesMapping__ffd706dec8b884f8b79c086f790a85a3:ValueTransformation__74b2264482756828411c057520e54d73
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: InputTimeSeriesMapping__ffd706dec8b884f8b79c086f790a85a3
+    space: power-ops
+  type:
+    external_id: InputTimeSeriesMapping.transformations
+    space: power-ops
+- external_id: Main_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e
+  instance_type: node
+  sources:
+  - properties:
+      name: Main
+    source:
+      external_id: ScenarioMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__2f1c9e642f592841225fb92f829f77bf
+    space: power-ops
+  external_id: Main_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e:InputTimeSeriesMapping__2f1c9e642f592841225fb92f829f77bf
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: Main_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__77500130c817fe02423992ad569e89a7
+    space: power-ops
+  external_id: Main_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e:InputTimeSeriesMapping__77500130c817fe02423992ad569e89a7
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: Main_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
 - external_id: market_configuration_nordpool_dayahead
   instance_type: node
   sources:
@@ -554,6 +1950,294 @@ data_modeling.instances:
   type:
     external_id: DayAheadProcess.bidMatrixGeneratorConfig
     space: power-ops
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid
+  instance_type: node
+  sources:
+  - properties:
+      bidMatrixGeneratorConfigExternalId: POWEROPS_bid_matrix_generator_config_multi_scenario_20_NO2
+      bidProcessConfigurationName: multi_scenario_20_NO2
+      isDefaultConfigForPriceArea: false
+      mainScenario: scenario_10
+      noShop: true
+      priceArea: price_area_NO2
+    source:
+      external_id: DayAheadBid
+      space: power-ops
+      type: container
+  - properties:
+      market:
+        externalId: market_configuration_nordpool_dayahead
+        space: power-ops
+      name: null
+    source:
+      external_id: Bid
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: DateTransformation__b9e809e11bd75d1befc81f2a3fe25834
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:DateTransformation__b9e809e11bd75d1befc81f2a3fe25834
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid
+    space: power-ops
+  type:
+    external_id: Bid.date
+    space: power-ops
+- end_node:
+    external_id: DateTransformation__f9f90921095b2f4b241249a5745014b3
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:DateTransformation__f9f90921095b2f4b241249a5745014b3
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid
+    space: power-ops
+  type:
+    external_id: Bid.date
+    space: power-ops
+- end_node:
+    external_id: scenario_10_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:scenario_10_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid
+    space: power-ops
+  type:
+    external_id: DayAheadBid.priceScenarios
+    space: power-ops
+- end_node:
+    external_id: scenario_11_ScenarioMapping__e7c21d75c6a34a3edad165b098525cdc
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:scenario_11_ScenarioMapping__e7c21d75c6a34a3edad165b098525cdc
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid
+    space: power-ops
+  type:
+    external_id: DayAheadBid.priceScenarios
+    space: power-ops
+- end_node:
+    external_id: scenario_12_ScenarioMapping__109780f4f082f005302c16fe6f2ad018
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:scenario_12_ScenarioMapping__109780f4f082f005302c16fe6f2ad018
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid
+    space: power-ops
+  type:
+    external_id: DayAheadBid.priceScenarios
+    space: power-ops
+- end_node:
+    external_id: scenario_13_ScenarioMapping__75971e040564667cf08c68fe93e67f88
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:scenario_13_ScenarioMapping__75971e040564667cf08c68fe93e67f88
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid
+    space: power-ops
+  type:
+    external_id: DayAheadBid.priceScenarios
+    space: power-ops
+- end_node:
+    external_id: scenario_14_ScenarioMapping__5f0aeb0cc127dd4fe9e94b36ff472fc2
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:scenario_14_ScenarioMapping__5f0aeb0cc127dd4fe9e94b36ff472fc2
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid
+    space: power-ops
+  type:
+    external_id: DayAheadBid.priceScenarios
+    space: power-ops
+- end_node:
+    external_id: scenario_15_ScenarioMapping__124aa1b66b7979b64d8c349e7fb15eff
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:scenario_15_ScenarioMapping__124aa1b66b7979b64d8c349e7fb15eff
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid
+    space: power-ops
+  type:
+    external_id: DayAheadBid.priceScenarios
+    space: power-ops
+- end_node:
+    external_id: scenario_16_ScenarioMapping__88b42ef7e3d319d62ee74791cefb1a1c
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:scenario_16_ScenarioMapping__88b42ef7e3d319d62ee74791cefb1a1c
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid
+    space: power-ops
+  type:
+    external_id: DayAheadBid.priceScenarios
+    space: power-ops
+- end_node:
+    external_id: scenario_17_ScenarioMapping__9c089027f716b767e1773245dee79ea0
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:scenario_17_ScenarioMapping__9c089027f716b767e1773245dee79ea0
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid
+    space: power-ops
+  type:
+    external_id: DayAheadBid.priceScenarios
+    space: power-ops
+- end_node:
+    external_id: scenario_18_ScenarioMapping__99bf0715ba0ad40148ec9914332aa86e
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:scenario_18_ScenarioMapping__99bf0715ba0ad40148ec9914332aa86e
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid
+    space: power-ops
+  type:
+    external_id: DayAheadBid.priceScenarios
+    space: power-ops
+- end_node:
+    external_id: scenario_19_ScenarioMapping__3e2a8303e7f378700deb9bd2920f464f
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:scenario_19_ScenarioMapping__3e2a8303e7f378700deb9bd2920f464f
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid
+    space: power-ops
+  type:
+    external_id: DayAheadBid.priceScenarios
+    space: power-ops
+- end_node:
+    external_id: scenario_1_ScenarioMapping__03307b838ab0233db2d411a8ca182866
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:scenario_1_ScenarioMapping__03307b838ab0233db2d411a8ca182866
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid
+    space: power-ops
+  type:
+    external_id: DayAheadBid.priceScenarios
+    space: power-ops
+- end_node:
+    external_id: scenario_20_ScenarioMapping__70dd2959c2029dbc80dfc8f21c89d8aa
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:scenario_20_ScenarioMapping__70dd2959c2029dbc80dfc8f21c89d8aa
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid
+    space: power-ops
+  type:
+    external_id: DayAheadBid.priceScenarios
+    space: power-ops
+- end_node:
+    external_id: scenario_2_ScenarioMapping__390db080c26adefb49885993e96af910
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:scenario_2_ScenarioMapping__390db080c26adefb49885993e96af910
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid
+    space: power-ops
+  type:
+    external_id: DayAheadBid.priceScenarios
+    space: power-ops
+- end_node:
+    external_id: scenario_3_ScenarioMapping__0a3f680ab4e6ba7ea52114149f1859e7
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:scenario_3_ScenarioMapping__0a3f680ab4e6ba7ea52114149f1859e7
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid
+    space: power-ops
+  type:
+    external_id: DayAheadBid.priceScenarios
+    space: power-ops
+- end_node:
+    external_id: scenario_4_ScenarioMapping__f455a6a87281987a16c84e260b006a81
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:scenario_4_ScenarioMapping__f455a6a87281987a16c84e260b006a81
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid
+    space: power-ops
+  type:
+    external_id: DayAheadBid.priceScenarios
+    space: power-ops
+- end_node:
+    external_id: scenario_5_ScenarioMapping__7a9ac6dba9a045572b4e01c89b8cb985
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:scenario_5_ScenarioMapping__7a9ac6dba9a045572b4e01c89b8cb985
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid
+    space: power-ops
+  type:
+    external_id: DayAheadBid.priceScenarios
+    space: power-ops
+- end_node:
+    external_id: scenario_6_ScenarioMapping__52c41fb4875512d0755989b5e363b5b5
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:scenario_6_ScenarioMapping__52c41fb4875512d0755989b5e363b5b5
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid
+    space: power-ops
+  type:
+    external_id: DayAheadBid.priceScenarios
+    space: power-ops
+- end_node:
+    external_id: scenario_7_ScenarioMapping__2c6c0d6ce78cae1820a2c6163746ba4a
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:scenario_7_ScenarioMapping__2c6c0d6ce78cae1820a2c6163746ba4a
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid
+    space: power-ops
+  type:
+    external_id: DayAheadBid.priceScenarios
+    space: power-ops
+- end_node:
+    external_id: scenario_8_ScenarioMapping__8d9832efcd9f68ead9e2ebf4ee7f5780
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:scenario_8_ScenarioMapping__8d9832efcd9f68ead9e2ebf4ee7f5780
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid
+    space: power-ops
+  type:
+    external_id: DayAheadBid.priceScenarios
+    space: power-ops
+- end_node:
+    external_id: scenario_9_ScenarioMapping__5d98d37e010bdf35f727806b40af5225
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:scenario_9_ScenarioMapping__5d98d37e010bdf35f727806b40af5225
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid
+    space: power-ops
+  type:
+    external_id: DayAheadBid.priceScenarios
+    space: power-ops
 - external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2
   instance_type: node
   sources:
@@ -682,6 +2366,78 @@ data_modeling.instances:
     space: power-ops
   type:
     external_id: DayAheadProcess.bidMatrixGeneratorConfig
+    space: power-ops
+- external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2_bid
+  instance_type: node
+  sources:
+  - properties:
+      bidMatrixGeneratorConfigExternalId: POWEROPS_bid_matrix_generator_config_multi_scenario_2_NO2
+      bidProcessConfigurationName: multi_scenario_2_NO2
+      isDefaultConfigForPriceArea: false
+      mainScenario: scenario_1
+      noShop: false
+      priceArea: price_area_NO2
+    source:
+      external_id: DayAheadBid
+      space: power-ops
+      type: container
+  - properties:
+      market:
+        externalId: market_configuration_nordpool_dayahead
+        space: power-ops
+      name: null
+    source:
+      external_id: Bid
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: DateTransformation__b9e809e11bd75d1befc81f2a3fe25834
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2_bid:DateTransformation__b9e809e11bd75d1befc81f2a3fe25834
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2_bid
+    space: power-ops
+  type:
+    external_id: Bid.date
+    space: power-ops
+- end_node:
+    external_id: DateTransformation__f9f90921095b2f4b241249a5745014b3
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2_bid:DateTransformation__f9f90921095b2f4b241249a5745014b3
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2_bid
+    space: power-ops
+  type:
+    external_id: Bid.date
+    space: power-ops
+- end_node:
+    external_id: scenario_1_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2_bid:scenario_1_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2_bid
+    space: power-ops
+  type:
+    external_id: DayAheadBid.priceScenarios
+    space: power-ops
+- end_node:
+    external_id: scenario_2_ScenarioMapping__d979684d6827527f9d5555c56e89b229
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2_bid:scenario_2_ScenarioMapping__d979684d6827527f9d5555c56e89b229
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2_bid
+    space: power-ops
+  type:
+    external_id: DayAheadBid.priceScenarios
     space: power-ops
 - external_id: POWEROPS_bid_process_configuration_price_independent_NO2
   instance_type: node
@@ -812,6 +2568,66 @@ data_modeling.instances:
   type:
     external_id: DayAheadProcess.bidMatrixGeneratorConfig
     space: power-ops
+- external_id: POWEROPS_bid_process_configuration_price_independent_NO2_bid
+  instance_type: node
+  sources:
+  - properties:
+      bidMatrixGeneratorConfigExternalId: POWEROPS_bid_matrix_generator_config_price_independent_NO2
+      bidProcessConfigurationName: price_independent_NO2
+      isDefaultConfigForPriceArea: true
+      mainScenario: scenario_1
+      noShop: false
+      priceArea: price_area_NO2
+    source:
+      external_id: DayAheadBid
+      space: power-ops
+      type: container
+  - properties:
+      market:
+        externalId: market_configuration_nordpool_dayahead
+        space: power-ops
+      name: null
+    source:
+      external_id: Bid
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: DateTransformation__b9e809e11bd75d1befc81f2a3fe25834
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_price_independent_NO2_bid:DateTransformation__b9e809e11bd75d1befc81f2a3fe25834
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_price_independent_NO2_bid
+    space: power-ops
+  type:
+    external_id: Bid.date
+    space: power-ops
+- end_node:
+    external_id: DateTransformation__f9f90921095b2f4b241249a5745014b3
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_price_independent_NO2_bid:DateTransformation__f9f90921095b2f4b241249a5745014b3
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_price_independent_NO2_bid
+    space: power-ops
+  type:
+    external_id: Bid.date
+    space: power-ops
+- end_node:
+    external_id: scenario_1_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_price_independent_NO2_bid:scenario_1_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_price_independent_NO2_bid
+    space: power-ops
+  type:
+    external_id: DayAheadBid.priceScenarios
+    space: power-ops
 - external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2
   instance_type: node
   sources:
@@ -941,6 +2757,814 @@ data_modeling.instances:
   type:
     external_id: DayAheadProcess.bidMatrixGeneratorConfig
     space: power-ops
+- external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2_bid
+  instance_type: node
+  sources:
+  - properties:
+      bidMatrixGeneratorConfigExternalId: POWEROPS_bid_matrix_generator_config_water_value_based_with_dummy_SHOP_runNO2
+      bidProcessConfigurationName: water_value_based_with_dummy_SHOP_runNO2
+      isDefaultConfigForPriceArea: false
+      mainScenario: Main
+      noShop: false
+      priceArea: price_area_NO2
+    source:
+      external_id: DayAheadBid
+      space: power-ops
+      type: container
+  - properties:
+      market:
+        externalId: market_configuration_nordpool_dayahead
+        space: power-ops
+      name: null
+    source:
+      external_id: Bid
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: DateTransformation__b9e809e11bd75d1befc81f2a3fe25834
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2_bid:DateTransformation__b9e809e11bd75d1befc81f2a3fe25834
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2_bid
+    space: power-ops
+  type:
+    external_id: Bid.date
+    space: power-ops
+- end_node:
+    external_id: DateTransformation__f9f90921095b2f4b241249a5745014b3
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2_bid:DateTransformation__f9f90921095b2f4b241249a5745014b3
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2_bid
+    space: power-ops
+  type:
+    external_id: Bid.date
+    space: power-ops
+- end_node:
+    external_id: Main_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e
+    space: power-ops
+  external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2_bid:Main_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2_bid
+    space: power-ops
+  type:
+    external_id: DayAheadBid.priceScenarios
+    space: power-ops
+- external_id: scenario_10_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e
+  instance_type: node
+  sources:
+  - properties:
+      name: scenario_10
+    source:
+      external_id: ScenarioMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__2f1c9e642f592841225fb92f829f77bf
+    space: power-ops
+  external_id: scenario_10_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e:InputTimeSeriesMapping__2f1c9e642f592841225fb92f829f77bf
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_10_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__77500130c817fe02423992ad569e89a7
+    space: power-ops
+  external_id: scenario_10_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e:InputTimeSeriesMapping__77500130c817fe02423992ad569e89a7
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_10_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- external_id: scenario_11_ScenarioMapping__e7c21d75c6a34a3edad165b098525cdc
+  instance_type: node
+  sources:
+  - properties:
+      name: scenario_11
+    source:
+      external_id: ScenarioMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__2c88e19831a78ac681d910f5ce6c6261
+    space: power-ops
+  external_id: scenario_11_ScenarioMapping__e7c21d75c6a34a3edad165b098525cdc:InputTimeSeriesMapping__2c88e19831a78ac681d910f5ce6c6261
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_11_ScenarioMapping__e7c21d75c6a34a3edad165b098525cdc
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__9ed63f57570fbdbbadfd8d58bde41f2b
+    space: power-ops
+  external_id: scenario_11_ScenarioMapping__e7c21d75c6a34a3edad165b098525cdc:InputTimeSeriesMapping__9ed63f57570fbdbbadfd8d58bde41f2b
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_11_ScenarioMapping__e7c21d75c6a34a3edad165b098525cdc
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- external_id: scenario_12_ScenarioMapping__109780f4f082f005302c16fe6f2ad018
+  instance_type: node
+  sources:
+  - properties:
+      name: scenario_12
+    source:
+      external_id: ScenarioMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__d7edaa7a255f419d6306ff8adf023806
+    space: power-ops
+  external_id: scenario_12_ScenarioMapping__109780f4f082f005302c16fe6f2ad018:InputTimeSeriesMapping__d7edaa7a255f419d6306ff8adf023806
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_12_ScenarioMapping__109780f4f082f005302c16fe6f2ad018
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__ffd706dec8b884f8b79c086f790a85a3
+    space: power-ops
+  external_id: scenario_12_ScenarioMapping__109780f4f082f005302c16fe6f2ad018:InputTimeSeriesMapping__ffd706dec8b884f8b79c086f790a85a3
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_12_ScenarioMapping__109780f4f082f005302c16fe6f2ad018
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- external_id: scenario_13_ScenarioMapping__75971e040564667cf08c68fe93e67f88
+  instance_type: node
+  sources:
+  - properties:
+      name: scenario_13
+    source:
+      external_id: ScenarioMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__830e3e29139753330aa7191571654d8b
+    space: power-ops
+  external_id: scenario_13_ScenarioMapping__75971e040564667cf08c68fe93e67f88:InputTimeSeriesMapping__830e3e29139753330aa7191571654d8b
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_13_ScenarioMapping__75971e040564667cf08c68fe93e67f88
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__fc2ebe9bb4fcdefc99f8a8fff22bc0b6
+    space: power-ops
+  external_id: scenario_13_ScenarioMapping__75971e040564667cf08c68fe93e67f88:InputTimeSeriesMapping__fc2ebe9bb4fcdefc99f8a8fff22bc0b6
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_13_ScenarioMapping__75971e040564667cf08c68fe93e67f88
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- external_id: scenario_14_ScenarioMapping__5f0aeb0cc127dd4fe9e94b36ff472fc2
+  instance_type: node
+  sources:
+  - properties:
+      name: scenario_14
+    source:
+      external_id: ScenarioMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__736d5b9bd841fa62c5a1f32b7f128968
+    space: power-ops
+  external_id: scenario_14_ScenarioMapping__5f0aeb0cc127dd4fe9e94b36ff472fc2:InputTimeSeriesMapping__736d5b9bd841fa62c5a1f32b7f128968
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_14_ScenarioMapping__5f0aeb0cc127dd4fe9e94b36ff472fc2
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__f4ae266b8c58a9790dfb1081491b4883
+    space: power-ops
+  external_id: scenario_14_ScenarioMapping__5f0aeb0cc127dd4fe9e94b36ff472fc2:InputTimeSeriesMapping__f4ae266b8c58a9790dfb1081491b4883
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_14_ScenarioMapping__5f0aeb0cc127dd4fe9e94b36ff472fc2
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- external_id: scenario_15_ScenarioMapping__124aa1b66b7979b64d8c349e7fb15eff
+  instance_type: node
+  sources:
+  - properties:
+      name: scenario_15
+    source:
+      external_id: ScenarioMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__5ee09b992b096b04f3d0f42a4885537e
+    space: power-ops
+  external_id: scenario_15_ScenarioMapping__124aa1b66b7979b64d8c349e7fb15eff:InputTimeSeriesMapping__5ee09b992b096b04f3d0f42a4885537e
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_15_ScenarioMapping__124aa1b66b7979b64d8c349e7fb15eff
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__c85b3e82649e3dba3684afa1526b5255
+    space: power-ops
+  external_id: scenario_15_ScenarioMapping__124aa1b66b7979b64d8c349e7fb15eff:InputTimeSeriesMapping__c85b3e82649e3dba3684afa1526b5255
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_15_ScenarioMapping__124aa1b66b7979b64d8c349e7fb15eff
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- external_id: scenario_16_ScenarioMapping__88b42ef7e3d319d62ee74791cefb1a1c
+  instance_type: node
+  sources:
+  - properties:
+      name: scenario_16
+    source:
+      external_id: ScenarioMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__23e140b22c826891797ca137c2c3ae97
+    space: power-ops
+  external_id: scenario_16_ScenarioMapping__88b42ef7e3d319d62ee74791cefb1a1c:InputTimeSeriesMapping__23e140b22c826891797ca137c2c3ae97
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_16_ScenarioMapping__88b42ef7e3d319d62ee74791cefb1a1c
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__5bb9b0be4bfbf51856a63f09d687e417
+    space: power-ops
+  external_id: scenario_16_ScenarioMapping__88b42ef7e3d319d62ee74791cefb1a1c:InputTimeSeriesMapping__5bb9b0be4bfbf51856a63f09d687e417
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_16_ScenarioMapping__88b42ef7e3d319d62ee74791cefb1a1c
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- external_id: scenario_17_ScenarioMapping__9c089027f716b767e1773245dee79ea0
+  instance_type: node
+  sources:
+  - properties:
+      name: scenario_17
+    source:
+      external_id: ScenarioMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__04e159867306f76632119dc2d16a63ad
+    space: power-ops
+  external_id: scenario_17_ScenarioMapping__9c089027f716b767e1773245dee79ea0:InputTimeSeriesMapping__04e159867306f76632119dc2d16a63ad
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_17_ScenarioMapping__9c089027f716b767e1773245dee79ea0
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__d70a26dd0ee1fc67c1ad5a27f39d8e8b
+    space: power-ops
+  external_id: scenario_17_ScenarioMapping__9c089027f716b767e1773245dee79ea0:InputTimeSeriesMapping__d70a26dd0ee1fc67c1ad5a27f39d8e8b
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_17_ScenarioMapping__9c089027f716b767e1773245dee79ea0
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- external_id: scenario_18_ScenarioMapping__99bf0715ba0ad40148ec9914332aa86e
+  instance_type: node
+  sources:
+  - properties:
+      name: scenario_18
+    source:
+      external_id: ScenarioMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__0dce6fd8737e0802e69e2529b28917ed
+    space: power-ops
+  external_id: scenario_18_ScenarioMapping__99bf0715ba0ad40148ec9914332aa86e:InputTimeSeriesMapping__0dce6fd8737e0802e69e2529b28917ed
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_18_ScenarioMapping__99bf0715ba0ad40148ec9914332aa86e
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__4e11f5e585b593b021206920f49983ef
+    space: power-ops
+  external_id: scenario_18_ScenarioMapping__99bf0715ba0ad40148ec9914332aa86e:InputTimeSeriesMapping__4e11f5e585b593b021206920f49983ef
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_18_ScenarioMapping__99bf0715ba0ad40148ec9914332aa86e
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- external_id: scenario_19_ScenarioMapping__3e2a8303e7f378700deb9bd2920f464f
+  instance_type: node
+  sources:
+  - properties:
+      name: scenario_19
+    source:
+      external_id: ScenarioMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__5aeab397c1e9f8cbf8ea8e5360adfdb9
+    space: power-ops
+  external_id: scenario_19_ScenarioMapping__3e2a8303e7f378700deb9bd2920f464f:InputTimeSeriesMapping__5aeab397c1e9f8cbf8ea8e5360adfdb9
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_19_ScenarioMapping__3e2a8303e7f378700deb9bd2920f464f
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__c96f80e1bf9a11c530f199fb4e6d9a21
+    space: power-ops
+  external_id: scenario_19_ScenarioMapping__3e2a8303e7f378700deb9bd2920f464f:InputTimeSeriesMapping__c96f80e1bf9a11c530f199fb4e6d9a21
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_19_ScenarioMapping__3e2a8303e7f378700deb9bd2920f464f
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- external_id: scenario_1_ScenarioMapping__03307b838ab0233db2d411a8ca182866
+  instance_type: node
+  sources:
+  - properties:
+      name: scenario_1
+    source:
+      external_id: ScenarioMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__cb05151aab65edd709989eed9a397e70
+    space: power-ops
+  external_id: scenario_1_ScenarioMapping__03307b838ab0233db2d411a8ca182866:InputTimeSeriesMapping__cb05151aab65edd709989eed9a397e70
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_1_ScenarioMapping__03307b838ab0233db2d411a8ca182866
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__e9b96b53195846e4d2262d141eff2a28
+    space: power-ops
+  external_id: scenario_1_ScenarioMapping__03307b838ab0233db2d411a8ca182866:InputTimeSeriesMapping__e9b96b53195846e4d2262d141eff2a28
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_1_ScenarioMapping__03307b838ab0233db2d411a8ca182866
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- external_id: scenario_1_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e
+  instance_type: node
+  sources:
+  - properties:
+      name: scenario_1
+    source:
+      external_id: ScenarioMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__2f1c9e642f592841225fb92f829f77bf
+    space: power-ops
+  external_id: scenario_1_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e:InputTimeSeriesMapping__2f1c9e642f592841225fb92f829f77bf
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_1_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__77500130c817fe02423992ad569e89a7
+    space: power-ops
+  external_id: scenario_1_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e:InputTimeSeriesMapping__77500130c817fe02423992ad569e89a7
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_1_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- external_id: scenario_20_ScenarioMapping__70dd2959c2029dbc80dfc8f21c89d8aa
+  instance_type: node
+  sources:
+  - properties:
+      name: scenario_20
+    source:
+      external_id: ScenarioMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__ae10145ee3f1c384c8029b8295a68e64
+    space: power-ops
+  external_id: scenario_20_ScenarioMapping__70dd2959c2029dbc80dfc8f21c89d8aa:InputTimeSeriesMapping__ae10145ee3f1c384c8029b8295a68e64
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_20_ScenarioMapping__70dd2959c2029dbc80dfc8f21c89d8aa
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__b93bb78ac98360c1b1d54bfa2894f898
+    space: power-ops
+  external_id: scenario_20_ScenarioMapping__70dd2959c2029dbc80dfc8f21c89d8aa:InputTimeSeriesMapping__b93bb78ac98360c1b1d54bfa2894f898
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_20_ScenarioMapping__70dd2959c2029dbc80dfc8f21c89d8aa
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- external_id: scenario_2_ScenarioMapping__390db080c26adefb49885993e96af910
+  instance_type: node
+  sources:
+  - properties:
+      name: scenario_2
+    source:
+      external_id: ScenarioMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__669597341a9f3eb5c02d9916ea77d2c5
+    space: power-ops
+  external_id: scenario_2_ScenarioMapping__390db080c26adefb49885993e96af910:InputTimeSeriesMapping__669597341a9f3eb5c02d9916ea77d2c5
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_2_ScenarioMapping__390db080c26adefb49885993e96af910
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__9dc4be932cd63e80ae77f9b46f9419bc
+    space: power-ops
+  external_id: scenario_2_ScenarioMapping__390db080c26adefb49885993e96af910:InputTimeSeriesMapping__9dc4be932cd63e80ae77f9b46f9419bc
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_2_ScenarioMapping__390db080c26adefb49885993e96af910
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- external_id: scenario_2_ScenarioMapping__d979684d6827527f9d5555c56e89b229
+  instance_type: node
+  sources:
+  - properties:
+      name: scenario_2
+    source:
+      external_id: ScenarioMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__1b42eb2bf41e38490abe4be73da9073c
+    space: power-ops
+  external_id: scenario_2_ScenarioMapping__d979684d6827527f9d5555c56e89b229:InputTimeSeriesMapping__1b42eb2bf41e38490abe4be73da9073c
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_2_ScenarioMapping__d979684d6827527f9d5555c56e89b229
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__f9d0f523977170f26588616c67e5272c
+    space: power-ops
+  external_id: scenario_2_ScenarioMapping__d979684d6827527f9d5555c56e89b229:InputTimeSeriesMapping__f9d0f523977170f26588616c67e5272c
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_2_ScenarioMapping__d979684d6827527f9d5555c56e89b229
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- external_id: scenario_3_ScenarioMapping__0a3f680ab4e6ba7ea52114149f1859e7
+  instance_type: node
+  sources:
+  - properties:
+      name: scenario_3
+    source:
+      external_id: ScenarioMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__468587c67e414e46db0cb1bb52ba77a4
+    space: power-ops
+  external_id: scenario_3_ScenarioMapping__0a3f680ab4e6ba7ea52114149f1859e7:InputTimeSeriesMapping__468587c67e414e46db0cb1bb52ba77a4
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_3_ScenarioMapping__0a3f680ab4e6ba7ea52114149f1859e7
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__6982c4eef6045db5ca295ccfc71bbcfa
+    space: power-ops
+  external_id: scenario_3_ScenarioMapping__0a3f680ab4e6ba7ea52114149f1859e7:InputTimeSeriesMapping__6982c4eef6045db5ca295ccfc71bbcfa
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_3_ScenarioMapping__0a3f680ab4e6ba7ea52114149f1859e7
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- external_id: scenario_4_ScenarioMapping__f455a6a87281987a16c84e260b006a81
+  instance_type: node
+  sources:
+  - properties:
+      name: scenario_4
+    source:
+      external_id: ScenarioMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__0d9de884c18baa37267e924d5cf50999
+    space: power-ops
+  external_id: scenario_4_ScenarioMapping__f455a6a87281987a16c84e260b006a81:InputTimeSeriesMapping__0d9de884c18baa37267e924d5cf50999
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_4_ScenarioMapping__f455a6a87281987a16c84e260b006a81
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__fd8b93a1fd3549800ac589aab34ac783
+    space: power-ops
+  external_id: scenario_4_ScenarioMapping__f455a6a87281987a16c84e260b006a81:InputTimeSeriesMapping__fd8b93a1fd3549800ac589aab34ac783
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_4_ScenarioMapping__f455a6a87281987a16c84e260b006a81
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- external_id: scenario_5_ScenarioMapping__7a9ac6dba9a045572b4e01c89b8cb985
+  instance_type: node
+  sources:
+  - properties:
+      name: scenario_5
+    source:
+      external_id: ScenarioMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__8bd4d523e223dac586193113622491a7
+    space: power-ops
+  external_id: scenario_5_ScenarioMapping__7a9ac6dba9a045572b4e01c89b8cb985:InputTimeSeriesMapping__8bd4d523e223dac586193113622491a7
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_5_ScenarioMapping__7a9ac6dba9a045572b4e01c89b8cb985
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__f8bdae710c9d2556d9b6f9d81e86d129
+    space: power-ops
+  external_id: scenario_5_ScenarioMapping__7a9ac6dba9a045572b4e01c89b8cb985:InputTimeSeriesMapping__f8bdae710c9d2556d9b6f9d81e86d129
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_5_ScenarioMapping__7a9ac6dba9a045572b4e01c89b8cb985
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- external_id: scenario_6_ScenarioMapping__52c41fb4875512d0755989b5e363b5b5
+  instance_type: node
+  sources:
+  - properties:
+      name: scenario_6
+    source:
+      external_id: ScenarioMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__03487167e13d5a7d31dc5dcc81360559
+    space: power-ops
+  external_id: scenario_6_ScenarioMapping__52c41fb4875512d0755989b5e363b5b5:InputTimeSeriesMapping__03487167e13d5a7d31dc5dcc81360559
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_6_ScenarioMapping__52c41fb4875512d0755989b5e363b5b5
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__a2b8affe3a56a322c327434c61c7cdb6
+    space: power-ops
+  external_id: scenario_6_ScenarioMapping__52c41fb4875512d0755989b5e363b5b5:InputTimeSeriesMapping__a2b8affe3a56a322c327434c61c7cdb6
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_6_ScenarioMapping__52c41fb4875512d0755989b5e363b5b5
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- external_id: scenario_7_ScenarioMapping__2c6c0d6ce78cae1820a2c6163746ba4a
+  instance_type: node
+  sources:
+  - properties:
+      name: scenario_7
+    source:
+      external_id: ScenarioMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__b5ae5a24bf62597e0acbbca1ec41b119
+    space: power-ops
+  external_id: scenario_7_ScenarioMapping__2c6c0d6ce78cae1820a2c6163746ba4a:InputTimeSeriesMapping__b5ae5a24bf62597e0acbbca1ec41b119
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_7_ScenarioMapping__2c6c0d6ce78cae1820a2c6163746ba4a
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__db159d64c1364e2235e8619f2a605b25
+    space: power-ops
+  external_id: scenario_7_ScenarioMapping__2c6c0d6ce78cae1820a2c6163746ba4a:InputTimeSeriesMapping__db159d64c1364e2235e8619f2a605b25
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_7_ScenarioMapping__2c6c0d6ce78cae1820a2c6163746ba4a
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- external_id: scenario_8_ScenarioMapping__8d9832efcd9f68ead9e2ebf4ee7f5780
+  instance_type: node
+  sources:
+  - properties:
+      name: scenario_8
+    source:
+      external_id: ScenarioMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__693e6cab3af7dcf57a1b8a42b36e5be4
+    space: power-ops
+  external_id: scenario_8_ScenarioMapping__8d9832efcd9f68ead9e2ebf4ee7f5780:InputTimeSeriesMapping__693e6cab3af7dcf57a1b8a42b36e5be4
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_8_ScenarioMapping__8d9832efcd9f68ead9e2ebf4ee7f5780
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__baefb8ebf27de4af086a3adb5f6bd12d
+    space: power-ops
+  external_id: scenario_8_ScenarioMapping__8d9832efcd9f68ead9e2ebf4ee7f5780:InputTimeSeriesMapping__baefb8ebf27de4af086a3adb5f6bd12d
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_8_ScenarioMapping__8d9832efcd9f68ead9e2ebf4ee7f5780
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- external_id: scenario_9_ScenarioMapping__5d98d37e010bdf35f727806b40af5225
+  instance_type: node
+  sources:
+  - properties:
+      name: scenario_9
+    source:
+      external_id: ScenarioMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__1940f0474e174affb207649606b3c194
+    space: power-ops
+  external_id: scenario_9_ScenarioMapping__5d98d37e010bdf35f727806b40af5225:InputTimeSeriesMapping__1940f0474e174affb207649606b3c194
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_9_ScenarioMapping__5d98d37e010bdf35f727806b40af5225
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__2ca41e9cafa565a76ccf7a44ca2a2ea5
+    space: power-ops
+  external_id: scenario_9_ScenarioMapping__5d98d37e010bdf35f727806b40af5225:InputTimeSeriesMapping__2ca41e9cafa565a76ccf7a44ca2a2ea5
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: scenario_9_ScenarioMapping__5d98d37e010bdf35f727806b40af5225
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
 - external_id: ShopTransformation__168e44cd5fbaa4a825986c1dc6254309
   instance_type: node
   sources: []
@@ -1033,6 +3657,265 @@ data_modeling.instances:
   type:
     external_id: ShopTransformation.start
     space: power-ops
+- external_id: ValueTransformation__0860584d6620f4879d3254f035df81a5
+  instance_type: node
+  sources:
+  - properties:
+      arguments:
+        '0': -500
+        '1440': 0
+      method: ADD_FROM_OFFSET
+    source:
+      external_id: ValueTransformation
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: ValueTransformation__3d60ddb40a293f9896683a744ed9dc3e
+  instance_type: node
+  sources:
+  - properties:
+      arguments:
+        '0': -5
+        '1440': 0
+      method: ADD_FROM_OFFSET
+    source:
+      external_id: ValueTransformation
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: ValueTransformation__42335a7f6c6ce4d36a0ed881c13571e2
+  instance_type: node
+  sources:
+  - properties:
+      arguments:
+        '0': 10
+        '1440': 0
+      method: ADD_FROM_OFFSET
+    source:
+      external_id: ValueTransformation
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: ValueTransformation__505b058c6b388d78b1ae8a4c1f875d1a
+  instance_type: node
+  sources:
+  - properties:
+      arguments:
+        '0': 20
+        '1440': 0
+      method: ADD_FROM_OFFSET
+    source:
+      external_id: ValueTransformation
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: ValueTransformation__50f593aa55c7633c2cecb0c3f040e965
+  instance_type: node
+  sources:
+  - properties:
+      arguments:
+        '0': -30
+        '1440': 0
+      method: ADD_FROM_OFFSET
+    source:
+      external_id: ValueTransformation
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: ValueTransformation__570b266c92df7c5069af6d946ddc37f6
+  instance_type: node
+  sources:
+  - properties:
+      arguments:
+        '0': -20
+        '1440': 0
+      method: ADD_FROM_OFFSET
+    source:
+      external_id: ValueTransformation
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: ValueTransformation__5a76ff11a7fea4c198b83b7547758949
+  instance_type: node
+  sources:
+  - properties:
+      arguments:
+        '0': -15
+        '1440': 0
+      method: ADD_FROM_OFFSET
+    source:
+      external_id: ValueTransformation
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: ValueTransformation__5f7635881c490d837edfa58a679534f3
+  instance_type: node
+  sources:
+  - properties:
+      arguments:
+        '0': 40
+        '1440': 0
+      method: ADD_FROM_OFFSET
+    source:
+      external_id: ValueTransformation
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: ValueTransformation__74b2264482756828411c057520e54d73
+  instance_type: node
+  sources:
+  - properties:
+      arguments:
+        value: 0.01
+      method: ADD
+    source:
+      external_id: ValueTransformation
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: ValueTransformation__99dc53bfeab6fcbc030c410b5192d8a2
+  instance_type: node
+  sources:
+  - properties:
+      arguments:
+        '0': 70
+        '1440': 0
+      method: ADD_FROM_OFFSET
+    source:
+      external_id: ValueTransformation
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: ValueTransformation__9a75ff77bbfaff475fad76b56ca12e3f
+  instance_type: node
+  sources:
+  - properties:
+      arguments:
+        '0': -10
+        '1440': 0
+      method: ADD_FROM_OFFSET
+    source:
+      external_id: ValueTransformation
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: ValueTransformation__ad86a645e17ec39c168d74e4d45251ae
+  instance_type: node
+  sources:
+  - properties:
+      arguments:
+        '0': 100
+        '1440': 0
+      method: ADD_FROM_OFFSET
+    source:
+      external_id: ValueTransformation
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: ValueTransformation__bd3593781ecd7247732efac41d383086
+  instance_type: node
+  sources:
+  - properties:
+      arguments:
+        '0': 50
+        '1440': 0
+      method: ADD_FROM_OFFSET
+    source:
+      external_id: ValueTransformation
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: ValueTransformation__ce31695d5196d1cf61a44570f32563d1
+  instance_type: node
+  sources:
+  - properties:
+      arguments:
+        '0': -40
+        '1440': 0
+      method: ADD_FROM_OFFSET
+    source:
+      external_id: ValueTransformation
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: ValueTransformation__d718d3023f1db2bcc1f80adff01f3ac1
+  instance_type: node
+  sources:
+  - properties:
+      arguments:
+        '0': 2000
+        '1440': 0
+      method: ADD_FROM_OFFSET
+    source:
+      external_id: ValueTransformation
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: ValueTransformation__d7f9bdbbef3092a36fe40fc37b3081e4
+  instance_type: node
+  sources:
+  - properties:
+      arguments:
+        '0': 15
+        '1440': 0
+      method: ADD_FROM_OFFSET
+    source:
+      external_id: ValueTransformation
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: ValueTransformation__daacf7a3d968f0f4cea1e3095becabb3
+  instance_type: node
+  sources:
+  - properties:
+      arguments:
+        '0': 5
+        '1440': 0
+      method: ADD_FROM_OFFSET
+    source:
+      external_id: ValueTransformation
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: ValueTransformation__e6311d7cc3ef1c71fe434ff8361b65dc
+  instance_type: node
+  sources:
+  - properties:
+      arguments:
+        '0': 0
+        '1440': 1
+      method: MULTIPLY_FROM_OFFSET
+    source:
+      external_id: ValueTransformation
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: ValueTransformation__f65dd7e068888ab3ed0a0f60e528e1c1
+  instance_type: node
+  sources:
+  - properties:
+      arguments:
+        '0': 30
+        '1440': 0
+      method: ADD_FROM_OFFSET
+    source:
+      external_id: ValueTransformation
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: ValueTransformation__fb10c8b4fa1486445a412e777100c6d6
+  instance_type: node
+  sources:
+  - properties:
+      arguments:
+        '0': -50
+        '1440': 0
+      method: ADD_FROM_OFFSET
+    source:
+      external_id: ValueTransformation
+      space: power-ops
+      type: container
+  space: power-ops
 events:
 - description: Manual run of bootstrap scripts finished
   source: PowerOps bootstrap
