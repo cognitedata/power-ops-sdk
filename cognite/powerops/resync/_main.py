@@ -15,13 +15,13 @@ from cognite.powerops.resync.models.base import Model
 from cognite.powerops.resync.to_models.transform import transform
 
 AVAILABLE_MODELS = [
-    # "ProductionAsset",
-    # "MarketAsset",
-    # "CogShopAsset",
-    # "ProductionDataModel",
-    # "CogShopDataModel",
-    # "BenchmarkMarketDataModel",
-    # "DayAheadMarketDataModel",
+    "ProductionAsset",
+    "MarketAsset",
+    "CogShopAsset",
+    "ProductionDataModel",
+    "CogShopDataModel",
+    "BenchmarkMarketDataModel",
+    "DayAheadMarketDataModel",
     "RKOMMarketDataModel",
 ]
 
