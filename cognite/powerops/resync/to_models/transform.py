@@ -63,7 +63,7 @@ def transform(
                 )
                 data_models.append(day_ahead_market_model)
         if "RKOMMarketDataModel" in model_names:
-            rkom_market_model = to_rkom_data_model(config.market, production_model.price_areas, market_name)
+            rkom_market_model = to_rkom_data_model(config.market, market_name)
             data_models.append(rkom_market_model)
 
     collection = ResourceCollection()

@@ -12,7 +12,7 @@ from cognite.powerops.clients.data_classes import (
     RKOMBidApply,
     RKOMBidCombinationApply,
     RKOMMarketApply,
-    RKOMProces,
+    RKOMProcesApply,
 )
 from cognite.powerops.resync.models.base import DataModel
 
@@ -35,4 +35,4 @@ class RKOMMarketDataModel(DataModel):
     rkom_market: RKOMMarketApply = None
     bids: dict[ExternalID, RKOMBidApply] = Field(default_factory=dict)
     rkom_bid_combinations: list[RKOMBidCombinationApply] = Field(default_factory=list)
-    rkom_processes: list[RKOMProces] = Field(default_factory=list)
+    rkom_processes: list[RKOMProcesApply] = Field(default_factory=list)

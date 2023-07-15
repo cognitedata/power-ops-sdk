@@ -6,7 +6,7 @@ type RKOMMarket implements Market {
 
 
 type ReserveScenario{
-    volumes: Int
+    volume: Int
     auction: String
     product: String
     block: String
@@ -36,13 +36,12 @@ type RKOMProcess implements Process{
     processEvents: [String]
     timezone: String
     plants: [String]
-    scenario_mappings: [ScenarioMapping]
 }
 
 type RKOMCombinationBid{
     name: String
     auction: String
-    rkomBigConfigs: [String]
+    rkomBidConfigs: [String]
 }
 
 type RKOMBidCombination {

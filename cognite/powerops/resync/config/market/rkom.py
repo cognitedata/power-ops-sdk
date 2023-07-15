@@ -204,7 +204,7 @@ class RkomMarketConfig(BaseModel):
 
 class RKOMBidCombinationConfig(Configuration):
     parent_external_id: ClassVar[str] = "rkom_bid_combination_configurations"
-    model_config = ConfigDict(populate_by_name=True)
+    model_config: ClassVar[ConfigDict] = ConfigDict(populate_by_name=True)
     auction: Auction = Field(alias="bid_auction")
     name: str = Field("default", alias="bid_combination_name")
     rkom_bid_config_external_ids: list[str] = Field(alias="bid_rkom_bid_configs")

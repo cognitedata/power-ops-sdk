@@ -14,7 +14,12 @@ from cognite.powerops.clients.data_classes import (
     NordPoolMarketApply,
     PriceAreaApply,
     ProductionPlanTimeSeriesApply,
+    ReserveScenarioApply,
+    RKOMBidApply,
+    RKOMBidCombinationApply,
+    RKOMCombinationBidApply,
     RKOMMarketApply,
+    RKOMProcesApply,
 )
 from cognite.powerops.resync.config.market import BenchmarkingConfig, PriceScenario, PriceScenarioID
 from cognite.powerops.resync.config.market.dayahead import BidMatrixGeneratorConfig, BidProcessConfig
@@ -197,26 +202,87 @@ def _to_bid_matrix_generator(
     }
 
 
-def to_rkom_data_model(
-    config: MarketConfig, price_areas: list[PriceAreaApply], market_name: str
-) -> RKOMMarketDataModel:
+def to_rkom_data_model(config: MarketConfig, market_name: str) -> RKOMMarketDataModel:
     model = RKOMMarketDataModel()
 
     model.rkom_market = RKOMMarketApply(**config.rkom_market.model_dump())
 
-    # for process in config.rkom_bid_process:
-    #     price_scenarios_by_name = _map_price_scenarios_by_name(
-    #         config.price_scenarios,
-    #         config.price_scenario_by_id,
-    #         market_name,
-    #     )
+    for process in config.rkom_bid_process:
+        price_scenarios_by_name = _map_price_scenarios_by_name(
+            process.price_scenarios,
+            config.price_scenario_by_id,
+            market_name,
+        )
 
-    # scenario_mappings = []
-    # for scenario_name, price_scenario in price_scenarios_by_name.items():
-    #     mappings = price_scenario.to_time_series_mapping()
-    #     mapping_override = [_to_input_timeseries_mapping(entry) for entry in mappings]
-    #     ScenarioMappingApply(external_id=external_id, mapping_override=mapping_override, name=)
-    #
+        scenario_mappings = []
+        for scenario_name, price_scenario in price_scenarios_by_name.items():
+            mapping = _to_scenario_mapping(scenario_name, price_scenario.to_time_series_mapping())
+            scenario_mappings.append(mapping)
+
+        reserve_scenarios = []
+        for reserve_scenario in process.reserve_scenarios.list_scenarios():
+            name = (
+                f"{reserve_scenario.auction.name}_{reserve_scenario.block}_{reserve_scenario.product}_"
+                f"{reserve_scenario.reserve_group}_{reserve_scenario.volume}"
+            )
+            mapping = _to_scenario_mapping(name, reserve_scenario.to_time_series_mapping())
+            apply = ReserveScenarioApply(
+                external_id=f"{name}_{mapping.external_id}",
+                auction=reserve_scenario.auction.name,
+                block=reserve_scenario.block,
+                override_mappings=[mapping],
+                product=reserve_scenario.product,
+                reserve_group=reserve_scenario.reserve_group,
+                volumes=reserve_scenario.volume,
+            )
+            reserve_scenarios.append(apply)
+
+        bid = RKOMBidApply(
+            external_id=f"{process.external_id}_bid",
+            date=_to_date_transformations(process.bid_date),
+            auction=process.reserve_scenarios.auction.value,
+            block=process.reserve_scenarios.block,
+            product=process.reserve_scenarios.product,
+            watercourse=process.watercourse,
+            method=process.method,
+            minimum_price=process.minimum_price,
+            price_premium=process.price_premium,
+            price_scenarios=scenario_mappings,
+            reserve_scenarios=reserve_scenarios,
+            market=model.rkom_market.external_id,
+        )
+        model.bids[bid.external_id] = bid
+        shop = _to_shop_transformation(process.shop_start, process.shop_end)
+
+        apply = RKOMProcesApply(
+            external_id=process.external_id,
+            name=process.name,
+            bid=bid.external_id,
+            shop=shop,
+            timezone=process.timezone,
+            plants=process.rkom_plants,
+        )
+        model.rkom_processes.append(apply)
+
+    for comb in config.rkom_bid_combination or []:
+        sequence_external_id = f"RKOM_bid_combination_configuration_{comb.auction.value}_{comb.name}"
+
+        bid = RKOMCombinationBidApply(
+            external_id=make_ext_id(
+                [comb.auction.value, comb.name] + comb.rkom_bid_config_external_ids, RKOMCombinationBidApply
+            ),
+            auction=comb.auction.value,
+            name=comb.name,
+            rkom_big_configs=comb.rkom_bid_config_external_ids,
+        )
+
+        combination = RKOMBidCombinationApply(
+            external_id=sequence_external_id,
+            name=sequence_external_id.replace("_", " "),
+            bid=bid,
+            auction=comb.auction.value,
+        )
+        model.rkom_bid_combinations.append(combination)
 
     return model
 
