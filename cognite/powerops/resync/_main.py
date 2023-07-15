@@ -41,17 +41,25 @@ def plan(path: Path, market: str, echo: Callable[[str], None] = None, model_name
 
 
 @overload
-def apply(path: Path, market: str, echo: Callable[[str], None] = None, model_names: str = None) -> Model:
+def apply(
+    path: Path, market: str, echo: Callable[[str], None] = None, model_names: str = None, auto_yes: bool = False
+) -> Model:
     ...
 
 
 @overload
-def apply(path: Path, market: str, echo: Callable[[str], None] = None, model_names: list[str] = None) -> list[Model]:
+def apply(
+    path: Path, market: str, echo: Callable[[str], None] = None, model_names: list[str] = None, auto_yes: bool = False
+) -> list[Model]:
     ...
 
 
 def apply(
-    path: Path, market: str, echo: Callable[[str], None] = None, model_names: str | list[str] = None
+    path: Path,
+    market: str,
+    echo: Callable[[str], None] = None,
+    model_names: list[str] | str = None,
+    auto_yes: bool = False,
 ) -> Model | list[Model]:
     echo = echo or print
     model_names = [model_names] if isinstance(model_names, str) else model_names or AVAILABLE_MODELS
@@ -61,12 +69,27 @@ def apply(
     # ! This should always stay at the bottom # TODO: consider wrapper
     collection.add(_create_bootstrap_finished_event(echo))
 
-    # Step 3 - write bootstrap resources from diffs to CDF
-    collection.write_to_cdf(
-        client,
-        config.settings.data_set_external_id,
-        config.settings.overwrite_data,
-    )
+    summaries = {}
+    for model in models:
+        summaries.update(model.summary())
+
+    echo("Models About to be uploaded")
+    echo(summaries)
+    if not auto_yes:
+        ans = input("Continue? (y/n)")
+    else:
+        ans = "y"
+
+    if ans.lower() == "y":
+        # Step 3 - write bootstrap resources from diffs to CDF
+        collection.write_to_cdf(
+            client,
+            config.settings.data_set_external_id,
+            config.settings.overwrite_data,
+        )
+        echo("Resync written to CDF")
+    else:
+        echo("Aborting")
     if len(model_names) == 1:
         return models[0]
     return models

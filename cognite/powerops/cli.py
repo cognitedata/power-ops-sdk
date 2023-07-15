@@ -46,19 +46,28 @@ def common(
 def plan(
     path: Annotated[Path, typer.Argument(help="Path to configuration files")],
     market: Annotated[str, typer.Argument(help="Selected power market")],
+    models: list[str] = typer.Option(
+        default=["all"],
+        help=f"The models to run the plan. Available models: {', '.join(resync.AVAILABLE_MODELS)}",
+    ),
 ):
     log.info(f"Running plan on configuration files located in {path}")
-    resync.plan(path, market)
+    resync.plan(path, market, echo=log.info, model_names=models)
 
 
 @app.command("apply", help="Apply the changes from the configuration files to the data model in CDF")
 def apply(
     path: Annotated[Path, typer.Argument(help="Path to configuration files")],
     market: Annotated[str, typer.Argument(help="Selected power market")],
+    models: list[str] = typer.Option(
+        default=["all"],
+        help=f"The models to run apply. Available models: {', '.join(resync.AVAILABLE_MODELS)}",
+    ),
+    auto_yes: bool = typer.Option(False, "--yes", "-y", help="Auto confirm all prompts"),
 ):
     log.info(f"Running apply on configuration files located in {path}")
 
-    resync.apply(path, market)
+    resync.apply(path, market, echo=log.info, model_names=models, auto_yes=auto_yes)
 
 
 @app.command(

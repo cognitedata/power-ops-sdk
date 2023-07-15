@@ -23,7 +23,7 @@ from cognite.powerops.resync.utils.common import make_ext_id
 from cognite.powerops.resync.utils.serializer import load_yaml
 
 p_min_fallback = 0.0
-p_max_fallback = 100_000_000_000_000_000_000.0
+p_max_fallback = 100_000_000_000_000_000_00.0
 
 head_loss_factor_fallback = 0.0
 
