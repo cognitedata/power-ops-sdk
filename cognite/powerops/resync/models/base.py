@@ -198,6 +198,9 @@ class Model(BaseModel, ABC):
             elif isinstance(value, list) and value and isinstance(value[0], type_):
                 yield from value
 
+    def summary(self) -> dict[str, dict[str, int]]:
+        return {type(self).__name__: {field_name: len(getattr(self, field_name)) for field_name in self.model_fields}}
+
 
 class AssetModel(Model, ABC):
     root_asset: ClassVar[Asset]

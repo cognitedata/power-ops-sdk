@@ -10,7 +10,7 @@ from cognite.powerops.clients.data_classes import (
     RKOMMarketApply,
     RKOMProces,
 )
-from cognite.powerops.resync.models._base import DataModel
+from cognite.powerops.resync.models.base import DataModel
 
 
 class MarketDM(DataModel):

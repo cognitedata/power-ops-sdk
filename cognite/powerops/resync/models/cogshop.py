@@ -7,7 +7,7 @@ from cognite.powerops.clients.data_classes import (
     ValueTransformationApply,
 )
 
-from ._base import AssetModel, DataModel, Model, ResourceType
+from .base import AssetModel, DataModel, Model, ResourceType
 from .cdf_resources import CDFFile, CDFSequence
 
 

@@ -1,0 +1,6 @@
+ProductionModel:
+  generators: 12
+  plants: 9
+  price_areas: 1
+  reservoirs: 16
+  watercourses: 1

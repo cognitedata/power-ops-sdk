@@ -50,15 +50,16 @@ def apply_test_cases():
 
 
 @pytest.mark.parametrize(
-    "input_dir, market, compare_file_path, model",
+    "input_dir, market, compare_file_path, model_name",
     list(
-        pytest.param(*case.values, model, id=f"{case.id} {model}")
-        for case, model in product(apply_test_cases(), AVAILABLE_MODELS)
+        pytest.param(*case.values, model_name, id=f"{case.id} {model_name}")
+        for case, model_name in product(apply_test_cases(), AVAILABLE_MODELS)
     ),
 )
 def test_apply(
-    input_dir: Path, market: str, compare_file_path: Path, model: str, data_regression, setting_environmental_vars
+    input_dir: Path, market: str, compare_file_path: Path, model_name: str, data_regression, setting_environmental_vars
 ):
+    # Arrange
     mock_resources = {
         "assets.create": MockAssetsCreate(),
         "sequences.create": MockSequencesCreate(),
@@ -79,15 +80,22 @@ def test_apply(
                 api = getattr(api, resource)
             setattr(api, parts[-1], mock_resource)
 
-        apply(path=DATA / "demo", market="Dayahead", models=[model])
+        # Act
+        model = apply(path=DATA / "demo", market="Dayahead", model_names=model_name)
+
+    # Assert
+    data_regression.check(
+        model.summary(), fullpath=compare_file_path.parent / f"{compare_file_path.stem}_{model_name}_summary.yml"
+    )
 
     dump = {
         ".".join(resource_type.split(".")[:-1]): mock_resource.serialize()
         for resource_type, mock_resource in mock_resources.items()
     }
-
     # for all the resources, sort the list of dicts by "external_id" in lowercase
     for resource in dump.values():
         with contextlib.suppress(KeyError):
             resource.sort(key=lambda x: x["external_id"].lower())
-    data_regression.check(dump, fullpath=compare_file_path.parent / f"{compare_file_path.stem}_{model}.yml")
+
+    # Assert
+    data_regression.check(dump, fullpath=compare_file_path.parent / f"{compare_file_path.stem}_{model_name}.yml")

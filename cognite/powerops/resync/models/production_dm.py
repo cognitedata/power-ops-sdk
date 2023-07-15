@@ -9,7 +9,7 @@ from cognite.powerops.clients.data_classes import (
     ReservoirApply,
     WatercourseApply,
 )
-from cognite.powerops.resync.models._base import DataModel
+from cognite.powerops.resync.models.base import DataModel
 from cognite.powerops.resync.models.cdf_resources import CDFSequence
 
 
