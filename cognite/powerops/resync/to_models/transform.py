@@ -7,7 +7,7 @@ from cognite.powerops.resync.config.resource_collection import ResourceCollectio
 from cognite.powerops.resync.config.resync_config import ReSyncConfig
 from cognite.powerops.resync.models._base import AssetModel, DataModel, Model
 
-from .to_cogshop_model import to_cogshop_asset_model
+from .to_cogshop_model import to_cogshop_asset_model, to_cogshop_data_model
 from .to_market_model import to_market_model
 from .to_production_model import to_production_data_model, to_production_model
 
@@ -43,6 +43,9 @@ def transform(
         production_model = to_production_data_model(config.production)
         if "ProductionDataModel" in models:
             data_models.append(production_model)
+        if "CogShopDataModel" in models:
+            cogshop_model = to_cogshop_data_model(config.cogshop, production_model.watercourses)
+            data_models.append(cogshop_model)
 
     collection = ResourceCollection()
     if any("Asset" in m for m in models):

@@ -15,6 +15,7 @@ from cognite.powerops.clients.data_classes import (
     OutputMappingApply,
     ScenarioTemplateApply,
     ValueTransformationApply,
+    WatercourseApply,
 )
 from cognite.powerops.resync.config.cogshop.shop_file_config import ShopFileConfig
 from cognite.powerops.resync.config.resync_config import CogShopConfig
@@ -30,7 +31,7 @@ logger = logging.getLogger(__name__)
 
 
 def to_cogshop_data_model(
-    config: CogShopConfig, watercourses: list[Watercourse], shop_version: str
+    config: CogShopConfig, watercourses: list[WatercourseApply], shop_version: str
 ) -> CogShopDataModel:
     model = CogShopDataModel()
 
