@@ -1,9 +1,13 @@
 ProductionModel:
-  assets: 39
-  generators: 12
-  parent_assets: 6
-  plants: 9
-  price_areas: 1
-  relationships: 70
-  reservoirs: 16
-  watercourses: 1
+  cdf:
+    assets: 39
+    files: 0
+    parent_assets: 6
+    relationships: 70
+    sequences: 24
+  domain:
+    generators: 12
+    plants: 9
+    price_areas: 1
+    reservoirs: 16
+    watercourses: 1

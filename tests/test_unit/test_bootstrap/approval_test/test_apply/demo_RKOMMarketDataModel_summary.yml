@@ -1,7 +1,11 @@
 RKOMMarketDataModel:
-  bids: 4
-  edges: 496
-  nodes: 198
-  rkom_bid_combinations: 2
-  rkom_market: 1
-  rkom_processes: 4
+  cdf:
+    edges: 496
+    files: 0
+    nodes: 198
+    sequences: 0
+  domain:
+    bids: 4
+    rkom_bid_combinations: 2
+    rkom_market: 1
+    rkom_processes: 4

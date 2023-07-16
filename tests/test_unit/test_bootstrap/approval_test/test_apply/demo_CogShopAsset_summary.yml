@@ -1,7 +1,11 @@
 CogShopAsset:
-  assets: 0
-  base_mappings: 1
-  output_definitions: 1
-  parent_assets: 0
-  relationships: 0
-  shop_files: 7
+  cdf:
+    assets: 0
+    files: 7
+    parent_assets: 0
+    relationships: 0
+    sequences: 2
+  domain:
+    base_mappings: 1
+    output_definitions: 1
+    shop_files: 7
