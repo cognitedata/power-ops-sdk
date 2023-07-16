@@ -118,7 +118,7 @@ assets:
     head_loss_factor: 0.002105
     ordering: '999'
     outlet_level: 365.0
-    p_max: 1.0e+20
+    p_max: 1.0e+19
     p_min: 0.0
     penstock_head_loss_factors: '{"1": 0.0006}'
   name: Dalby
@@ -131,7 +131,7 @@ assets:
     head_loss_factor: 0.0339
     ordering: '999'
     outlet_level: 628.0
-    p_max: 1.0e+20
+    p_max: 1.0e+19
     p_min: 0.0
     penstock_head_loss_factors: '{"1": 0.0113}'
   name: Holen
@@ -144,7 +144,7 @@ assets:
     head_loss_factor: 0.02007
     ordering: '999'
     outlet_level: 670.0
-    p_max: 1.0e+20
+    p_max: 1.0e+19
     p_min: 0.0
     penstock_head_loss_factors: '{"1": 0.0}'
   name: Landet
@@ -157,7 +157,7 @@ assets:
     head_loss_factor: 0.8
     ordering: '999'
     outlet_level: 1030.0
-    p_max: 1.0e+20
+    p_max: 1.0e+19
     p_min: 0.0
     penstock_head_loss_factors: '{"1": 0.0}'
   name: Lien_krv
@@ -170,7 +170,7 @@ assets:
     head_loss_factor: 0.002
     ordering: '999'
     outlet_level: 1240.0
-    p_max: 1.0e+20
+    p_max: 1.0e+19
     p_min: 0.0
     penstock_head_loss_factors: '{"1": 0.022}'
   name: Lund
@@ -183,7 +183,7 @@ assets:
     head_loss_factor: 0.00107
     ordering: '999'
     outlet_level: 68.0
-    p_max: 1.0e+20
+    p_max: 1.0e+19
     p_min: 0.0
     penstock_head_loss_factors: '{"1": 0.0007, "2": 0.0005}'
   name: Rull1
@@ -196,7 +196,7 @@ assets:
     head_loss_factor: 0.0225
     ordering: '999'
     outlet_level: 68.0
-    p_max: 1.0e+20
+    p_max: 1.0e+19
     p_min: 0.0
     penstock_head_loss_factors: '{"1": 0.0018, "2": 0.0041}'
   name: Rull2
@@ -209,7 +209,7 @@ assets:
     head_loss_factor: 0.003399
     ordering: '999'
     outlet_level: 1013.0
-    p_max: 1.0e+20
+    p_max: 1.0e+19
     p_min: 0.0
     penstock_head_loss_factors: '{"1": 0.022}'
   name: Scott
@@ -222,7 +222,7 @@ assets:
     head_loss_factor: 0.0
     ordering: '999'
     outlet_level: 753.06
-    p_max: 1.0e+20
+    p_max: 1.0e+19
     p_min: 0.0
     penstock_head_loss_factors: '{"1": 0.3125}'
   name: Strand_krv

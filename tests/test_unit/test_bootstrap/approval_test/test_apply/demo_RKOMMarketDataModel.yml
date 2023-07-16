@@ -2980,7 +2980,13 @@ data_modeling.instances:
   space: power-ops
 - external_id: ShopTransformation__991fda475781d62139210dafcf83d37f
   instance_type: node
-  sources: []
+  sources:
+  - properties:
+      typeName: ShopTransformation
+    source:
+      external_id: ShopTransformation
+      space: power-ops
+      type: container
   space: power-ops
 - end_node:
     external_id: DateTransformation__01c2b78fedff0cbc3f835ba600b48795

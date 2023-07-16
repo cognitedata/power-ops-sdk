@@ -53,6 +53,7 @@ def _to_shop_transformation(
     external_id = make_ext_id([d.model_dump_json() for d in start_list + end_list], ShopTransformationApply)
     return ShopTransformationApply(
         external_id=external_id,
+        type_name=ShopTransformationApply.__name__.removesuffix("Apply"),
         start=start_list,
         end=end_list,
     )
