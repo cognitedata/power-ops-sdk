@@ -202,13 +202,18 @@ class Model(BaseModel, ABC):
     def model_name(self) -> str:
         return type(self).__name__
 
-    def summary(self) -> dict[str, dict[str, int]]:
-        return {
+    def summary(self) -> dict[str, dict[str, dict[str, int]]]:
+        summary = {
             self.model_name: {
-                field_name: len(value) if isinstance(value := getattr(self, field_name), (list, dict)) else 1
-                for field_name in self.model_fields
+                "domain": {
+                    field_name: len(value) if isinstance(value := getattr(self, field_name), (list, dict)) else 1
+                    for field_name in self.model_fields
+                }
             }
         }
+        summary[self.model_name]["cdf"]["files"] = len(self.files())
+        summary[self.model_name]["cdf"]["sequences"] = len(self.sequences())
+        return summary
 
 
 class AssetModel(Model, ABC):
@@ -251,11 +256,11 @@ class AssetModel(Model, ABC):
     def _asset_types(self) -> Iterable[AssetType]:
         yield from (item for item in self._resource_types() if isinstance(item, AssetType))
 
-    def summary(self) -> dict[str, dict[str, int]]:
+    def summary(self) -> dict[str, dict[str, dict[str, int]]]:
         summary = super().summary()
-        summary[self.model_name]["assets"] = len(self.assets())
-        summary[self.model_name]["relationships"] = len(self.relationships())
-        summary[self.model_name]["parent_assets"] = len(self.parent_assets())
+        summary[self.model_name]["cdf"]["assets"] = len(self.assets())
+        summary[self.model_name]["cdf"]["relationships"] = len(self.relationships())
+        summary[self.model_name]["cdf"]["parent_assets"] = len(self.parent_assets())
         return summary
 
 
@@ -285,9 +290,9 @@ class DataModel(Model, ABC):
             if isinstance(items, dict) and items and isinstance(next(iter(items.values())), DomainModelApply):
                 yield from items.values()
 
-    def summary(self) -> dict[str, dict[str, int]]:
+    def summary(self) -> dict[str, dict[str, dict[str, int]]]:
         summary = super().summary()
         instances = self.instances()
-        summary[self.model_name]["nodes"] = len(instances.nodes)
-        summary[self.model_name]["edges"] = len(instances.edges)
+        summary[self.model_name]["cdf"]["nodes"] = len(instances.nodes)
+        summary[self.model_name]["cdf"]["edges"] = len(instances.edges)
         return summary

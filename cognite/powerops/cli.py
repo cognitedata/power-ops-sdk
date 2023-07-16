@@ -7,6 +7,7 @@ from typing import Annotated
 import typer
 from rich.console import Console
 from rich.logging import RichHandler
+from rich.pretty import pprint
 
 from cognite import powerops
 from cognite.powerops import resync
@@ -67,7 +68,7 @@ def apply(
 ):
     log.info(f"Running apply on configuration files located in {path}")
 
-    resync.apply(path, market, echo=log.info, model_names=models, auto_yes=auto_yes)
+    resync.apply(path, market, echo=log.info, model_names=models, auto_yes=auto_yes, echo_pretty=pprint)
 
 
 @app.command(

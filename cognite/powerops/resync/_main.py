@@ -42,14 +42,24 @@ def plan(path: Path, market: str, echo: Callable[[str], None] = None, model_name
 
 @overload
 def apply(
-    path: Path, market: str, echo: Callable[[str], None] = None, model_names: str = None, auto_yes: bool = False
+    path: Path,
+    market: str,
+    echo: Callable[[str], None] = None,
+    model_names: str = None,
+    auto_yes: bool = False,
+    echo_pretty: Callable[[str], None] = None,
 ) -> Model:
     ...
 
 
 @overload
 def apply(
-    path: Path, market: str, echo: Callable[[str], None] = None, model_names: list[str] = None, auto_yes: bool = False
+    path: Path,
+    market: str,
+    echo: Callable[[str], None] = None,
+    model_names: list[str] = None,
+    auto_yes: bool = False,
+    echo_pretty: Callable[[str], None] = None,
 ) -> list[Model]:
     ...
 
@@ -60,8 +70,10 @@ def apply(
     echo: Callable[[str], None] = None,
     model_names: list[str] | str = None,
     auto_yes: bool = False,
+    echo_pretty: Callable[[str], None] = None,
 ) -> Model | list[Model]:
     echo = echo or print
+    echo_pretty = echo_pretty or echo
     model_names = [model_names] if isinstance(model_names, str) else model_names or AVAILABLE_MODELS
     client = get_powerops_client()
     collection, config, models = _load_transform(market, path, client.cdf.config.project, echo, model_names)
@@ -74,7 +86,7 @@ def apply(
         summaries.update(model.summary())
 
     echo("Models About to be uploaded")
-    echo(summaries)
+    echo_pretty(summaries)
     if not auto_yes:
         ans = input("Continue? (y/n)")
     else:
