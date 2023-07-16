@@ -203,13 +203,10 @@ class Model(BaseModel, ABC):
         return type(self).__name__
 
     def summary(self) -> dict[str, dict[str, dict[str, int]]]:
-        summary = {
-            self.model_name: {
-                "domain": {
-                    field_name: len(value) if isinstance(value := getattr(self, field_name), (list, dict)) else 1
-                    for field_name in self.model_fields
-                }
-            }
+        summary: dict[str, dict[str, dict[str, int]]] = {self.model_name: {"domain": {}, "cdf": {}}}
+        summary[self.model_name]["domain"] = {
+            field_name: len(value) if isinstance(value := getattr(self, field_name), (list, dict)) else 1
+            for field_name in self.model_fields
         }
         summary[self.model_name]["cdf"]["files"] = len(self.files())
         summary[self.model_name]["cdf"]["sequences"] = len(self.sequences())
