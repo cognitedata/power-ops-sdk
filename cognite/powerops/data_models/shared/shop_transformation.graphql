@@ -1,7 +1,5 @@
 type ShopTransformation {
-    # CDF does store the type, thus a type with only one to many edges
-    # will display all nodes in the entire space. This is a workaround
-    type_name: String
+    typeName: String
     start: [DateTransformation]
     end: [DateTransformation]
 }

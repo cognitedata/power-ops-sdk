@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, ClassVar, Optional, Union  # noqa: F401
+from typing import TYPE_CHECKING, ClassVar, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -17,18 +17,28 @@ class ShopTransformation(DomainModel):
     space: ClassVar[str] = "power-ops"
     end: list[str] = []
     start: list[str] = []
+    type_name: Optional[str] = Field(None, alias="typeName")
 
 
 class ShopTransformationApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
     end: list[Union["DateTransformationApply", str]] = Field(default_factory=list, repr=False)
     start: list[Union["DateTransformationApply", str]] = Field(default_factory=list, repr=False)
+    type_name: Optional[str] = None
 
     def _to_instances_apply(self, cache: set[str]) -> InstancesApply:
         if self.external_id in cache:
             return InstancesApply([], [])
 
         sources = []
+        source = dm.NodeOrEdgeData(
+            source=dm.ContainerId("power-ops", "ShopTransformation"),
+            properties={
+                "typeName": self.type_name,
+            },
+        )
+        sources.append(source)
+
         this_node = dm.NodeApply(
             space=self.space,
             external_id=self.external_id,
