@@ -5,7 +5,7 @@ from typing import ClassVar
 from pydantic import Field
 
 from cognite.powerops.cdf_labels import AssetLabel
-from cognite.powerops.resync.models._base import AssetType, NonAssetType
+from cognite.powerops.resync.models.base import AssetType, NonAssetType
 from cognite.powerops.resync.models.cdf_resources import CDFSequence
 
 from .base import Bid, Market, Process, ShopTransformation

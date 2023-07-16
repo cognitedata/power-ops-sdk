@@ -1,0 +1,273 @@
+assets: []
+data_modeling.instances: []
+events:
+- description: Manual run of bootstrap scripts finished
+  source: PowerOps bootstrap
+  type: POWEROPS_BOOTSTRAP_FINISHED
+files:
+- external_id: SHOP_Fornebu_cog_shop_files_config
+  metadata:
+    md5_hash: ff316235eedd999013fed7ccea27c066
+    shop:file_name: cog_shop_files_config
+    shop:type: extra_data
+    shop:watercourse: Fornebu
+  mime_type: text/plain
+  name: SHOP_Fornebu_cog_shop_files_config
+  sha256_hash: 0aa456b0221df26888b90bfe89c763da410a302aacb972d843199cc0fa1e04b5
+  source: PowerOps bootstrap
+- external_id: SHOP_Fornebu_commands
+  metadata:
+    md5_hash: f67711a88e0205bb0fde817083d50eb7
+    shop:file_name: commands
+    shop:type: commands
+    shop:watercourse: Fornebu
+  mime_type: text/plain
+  name: SHOP_Fornebu_commands
+  sha256_hash: cbde2bbd5a300fc314566b7c93e5b962026f191f8a37850de4645ab05d8c493a
+  source: PowerOps bootstrap
+- external_id: SHOP_Fornebu_model
+  metadata:
+    md5_hash: f29c736b8b5b0892635f2a52580b9ed2
+    shop:file_name: model
+    shop:type: case
+    shop:watercourse: Fornebu
+  mime_type: text/plain
+  name: SHOP_Fornebu_model
+  sha256_hash: c083862174094aa3a24d5abcc8ddeb4431cebeb1db3c12584f19f61369920bb0
+  source: PowerOps bootstrap
+- external_id: SHOP_Fornebu_shop-fornebu1-modul_series
+  metadata:
+    md5_hash: 16e5d18659b414213c86c9bba9a29e94
+    shop:file_name: shop-fornebu1-modul_series
+    shop:type: module_series
+    shop:watercourse: Fornebu
+  mime_type: text/plain
+  name: SHOP_Fornebu_shop-fornebu1-modul_series
+  sha256_hash: abf5384d47e254425989fafc84b850f714a57b4dd5eccbcb033d9bce97044ea2
+  source: PowerOps bootstrap
+- external_id: SHOP_Fornebu_shop-fornebu2-modul_series
+  metadata:
+    md5_hash: 16e5d18659b414213c86c9bba9a29e94
+    shop:file_name: shop-fornebu2-modul_series
+    shop:type: module_series
+    shop:watercourse: Fornebu
+  mime_type: text/plain
+  name: SHOP_Fornebu_shop-fornebu2-modul_series
+  sha256_hash: abf5384d47e254425989fafc84b850f714a57b4dd5eccbcb033d9bce97044ea2
+  source: PowerOps bootstrap
+- external_id: SHOP_Fornebu_water_value_cut_file
+  metadata:
+    md5_hash: 22af45919c4c37bf1115a7159b11b981
+    shop:file_name: water_value_cut_file
+    shop:type: water_value_cut_file
+    shop:watercourse: Fornebu
+  mime_type: text/plain
+  name: SHOP_Fornebu_water_value_cut_file
+  sha256_hash: 81bc5502381eb877390a166fe5bf76f0df6415336b7cb2ea5e4eb9d640de7648
+  source: PowerOps bootstrap
+- external_id: SHOP_Fornebu_water_value_cut_file_reservoir_mapping
+  metadata:
+    md5_hash: bb8c80ddd50fcdb55cabb5b74b4cbefc
+    shop:file_name: water_value_cut_file_reservoir_mapping
+    shop:type: water_value_cut_file_reservoir_mapping
+    shop:watercourse: Fornebu
+  mime_type: text/plain
+  name: SHOP_Fornebu_water_value_cut_file_reservoir_mapping
+  sha256_hash: 917bea3dd3e727811fc1d725f19be9039dd1b14d5c6e94114d098663503d72b3
+  source: PowerOps bootstrap
+labels:
+- external_id: benchmarking_configuration
+  name: benchmarking_configuration
+- external_id: bid_matrix_generator_config_sequence
+  name: bid_matrix_generator_config_sequence
+- external_id: bid_process_configuration
+  name: bid_process_configuration
+- external_id: connection_bypass
+  name: connection_bypass
+- external_id: connection_spill
+  name: connection_spill
+- external_id: connection_standard
+  name: connection_standard
+- external_id: dayahead_bidding_benchmarking_config
+  name: dayahead_bidding_benchmarking_config
+- external_id: gate
+  name: gate
+- external_id: gate_reservoir
+  name: gate_reservoir
+- external_id: generator
+  name: generator
+- external_id: generator_plant
+  name: generator_plant
+- external_id: incremental_mapping_sequence
+  name: incremental_mapping_sequence
+- external_id: market
+  name: market
+- external_id: plant
+  name: plant
+- external_id: plant_reservoir
+  name: plant_reservoir
+- external_id: price_area
+  name: price_area
+- external_id: relationship_to.bid_matrix_generator_config_sequence
+  name: relationship_to.bid_matrix_generator_config_sequence
+- external_id: relationship_to.bid_matrix_sequence
+  name: relationship_to.bid_matrix_sequence
+- external_id: relationship_to.bid_process_configuration_asset
+  name: relationship_to.bid_process_configuration_asset
+- external_id: relationship_to.bid_process_event
+  name: relationship_to.bid_process_event
+- external_id: relationship_to.calculate_total_bid_matrix_event
+  name: relationship_to.calculate_total_bid_matrix_event
+- external_id: relationship_to.case_file
+  name: relationship_to.case_file
+- external_id: relationship_to.consumption_schedule
+  name: relationship_to.consumption_schedule
+- external_id: relationship_to.cut_file
+  name: relationship_to.cut_file
+- external_id: relationship_to.dayahead_price_time_series
+  name: relationship_to.dayahead_price_time_series
+- external_id: relationship_to.extra_file
+  name: relationship_to.extra_file
+- external_id: relationship_to.feeding_fee_time_series
+  name: relationship_to.feeding_fee_time_series
+- external_id: relationship_to.gate_discharge_time_series
+  name: relationship_to.gate_discharge_time_series
+- external_id: relationship_to.generator
+  name: relationship_to.generator
+- external_id: relationship_to.generator_discharge_time_series
+  name: relationship_to.generator_discharge_time_series
+- external_id: relationship_to.generator_efficiency_curve
+  name: relationship_to.generator_efficiency_curve
+- external_id: relationship_to.generator_production_time_series
+  name: relationship_to.generator_production_time_series
+- external_id: relationship_to.head_direct_time_series
+  name: relationship_to.head_direct_time_series
+- external_id: relationship_to.incremental_mapping_sequence
+  name: relationship_to.incremental_mapping_sequence
+- external_id: relationship_to.inlet_level_time_series
+  name: relationship_to.inlet_level_time_series
+- external_id: relationship_to.inlet_reservoir
+  name: relationship_to.inlet_reservoir
+- external_id: relationship_to.log_file
+  name: relationship_to.log_file
+- external_id: relationship_to.mapping_file
+  name: relationship_to.mapping_file
+- external_id: relationship_to.market_asset
+  name: relationship_to.market_asset
+- external_id: relationship_to.market_price_time_series
+  name: relationship_to.market_price_time_series
+- external_id: relationship_to.market_sales_time_series
+  name: relationship_to.market_sales_time_series
+- external_id: relationship_to.objective_sequence
+  name: relationship_to.objective_sequence
+- external_id: relationship_to.outlet_level_time_series
+  name: relationship_to.outlet_level_time_series
+- external_id: relationship_to.p_max_time_series
+  name: relationship_to.p_max_time_series
+- external_id: relationship_to.p_min_time_series
+  name: relationship_to.p_min_time_series
+- external_id: relationship_to.parent_collection
+  name: relationship_to.parent_collection
+- external_id: relationship_to.parent_process
+  name: relationship_to.parent_process
+- external_id: relationship_to.plant
+  name: relationship_to.plant
+- external_id: relationship_to.plant_consumption_time_series
+  name: relationship_to.plant_consumption_time_series
+- external_id: relationship_to.plant_discharge_time_series
+  name: relationship_to.plant_discharge_time_series
+- external_id: relationship_to.plant_production_time_series
+  name: relationship_to.plant_production_time_series
+- external_id: relationship_to.production_obligation_time_series
+  name: relationship_to.production_obligation_time_series
+- external_id: relationship_to.production_schedule
+  name: relationship_to.production_schedule
+- external_id: relationship_to.reservoir_energy_conversion_factor_time_series
+  name: relationship_to.reservoir_energy_conversion_factor_time_series
+- external_id: relationship_to.reservoir_level_time_series
+  name: relationship_to.reservoir_level_time_series
+- external_id: relationship_to.reservoir_volume_time_series
+  name: relationship_to.reservoir_volume_time_series
+- external_id: relationship_to.reservoir_water_value_time_series
+  name: relationship_to.reservoir_water_value_time_series
+- external_id: relationship_to.rkom_bid_form_sequence
+  name: relationship_to.rkom_bid_form_sequence
+- external_id: relationship_to.rkom_collection_config
+  name: relationship_to.rkom_collection_config
+- external_id: relationship_to.shop_run_event
+  name: relationship_to.shop_run_event
+- external_id: relationship_to.start_stop_cost_time_series
+  name: relationship_to.start_stop_cost_time_series
+- external_id: relationship_to.status_event_failed
+  name: relationship_to.status_event_failed
+- external_id: relationship_to.status_event_finished
+  name: relationship_to.status_event_finished
+- external_id: relationship_to.status_event_started
+  name: relationship_to.status_event_started
+- external_id: relationship_to.trigger_event
+  name: relationship_to.trigger_event
+- external_id: relationship_to.turbine_efficiency_curve
+  name: relationship_to.turbine_efficiency_curve
+- external_id: relationship_to.water_value_time_series
+  name: relationship_to.water_value_time_series
+- external_id: relationship_to.watercourse
+  name: relationship_to.watercourse
+- external_id: reserve_group
+  name: reserve_group
+- external_id: reserve_group_generator
+  name: reserve_group_generator
+- external_id: reservoir
+  name: reservoir
+- external_id: reservoir_gate
+  name: reservoir_gate
+- external_id: reservoir_plant
+  name: reservoir_plant
+- external_id: rkom_bid_combination_configuration
+  name: rkom_bid_combination_configuration
+- external_id: rkom_bid_configuration
+  name: rkom_bid_configuration
+- external_id: watercourse
+  name: watercourse
+relationships: []
+sequences:
+- columns:
+  - externalId: shop_model_path
+    valueType: STRING
+  - externalId: time_series_external_id
+    valueType: STRING
+  - externalId: transformations
+    valueType: STRING
+  - externalId: transformations1
+    valueType: STRING
+  - externalId: transformations2
+    valueType: STRING
+  - externalId: transformations3
+    valueType: STRING
+  - externalId: retrieve
+    valueType: STRING
+  - externalId: aggregation
+    valueType: STRING
+  description: Mapping between SHOP paths and CDF TimeSeries
+  external_id: SHOP_Fornebu_base_mapping
+  metadata:
+    shop:type: base_mapping
+    shop:watercourse: Fornebu
+  name: SHOP Fornebu base mapping
+- columns:
+  - externalId: shop_object_type
+    valueType: STRING
+  - externalId: shop_attribute_name
+    valueType: STRING
+  - externalId: cdf_attribute_name
+    valueType: STRING
+  - externalId: unit
+    valueType: STRING
+  - externalId: is_step
+    valueType: STRING
+  description: Defining which SHOP results to output to CDF (as time series)
+  external_id: SHOP_Fornebu_output_definition
+  metadata:
+    shop:type: output_definition
+    shop:watercourse: Fornebu
+  name: SHOP Fornebu output definition
+time_series: []

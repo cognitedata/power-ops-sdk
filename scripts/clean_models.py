@@ -1,6 +1,6 @@
 from typing import Any, Protocol
 
-from cognite.powerops.clients import get_powerops_client
+from cognite.powerops.clients.powerops_client import get_powerops_client
 
 
 class API(Protocol):
@@ -13,7 +13,7 @@ class API(Protocol):
 
 def delete_resources(api: API, space: str):
     resource_name = type(api).__name__.removesuffix("API")
-    resources = api.list(space=space)
+    resources = api.list(space=space, limit=-1)
     while True:
         for no, resource in enumerate(resources):
             print(f"{no}): {resource.external_id}")

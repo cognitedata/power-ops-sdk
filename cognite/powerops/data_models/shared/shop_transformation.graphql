@@ -1,0 +1,5 @@
+type ShopTransformation {
+    typeName: String
+    start: [DateTransformation]
+    end: [DateTransformation]
+}

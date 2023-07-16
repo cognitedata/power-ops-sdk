@@ -4,21 +4,22 @@ import logging
 from pathlib import Path
 from typing import Annotated
 
-import cognite.client
 import typer
 from rich.console import Console
 from rich.logging import RichHandler
+from rich.pretty import pprint
 
 from cognite import powerops
-from cognite.powerops.clients import get_powerops_client
+from cognite.powerops import resync
+from cognite.powerops._models import MODEL_BY_NAME
+from cognite.powerops.clients.powerops_client import get_powerops_client
 
-from . import resync
-from ._models import MODEL_BY_NAME
+logging.getLogger("requests").setLevel(logging.WARNING)
+logging.getLogger("urllib3").setLevel(logging.WARNING)
+logging.getLogger("msal").setLevel(logging.WARNING)
 
 FORMAT = "%(message)s"
-logging.basicConfig(
-    level="NOTSET", format=FORMAT, datefmt="[%X]", handlers=[RichHandler(tracebacks_suppress=[cognite.client])]
-)
+logging.basicConfig(level="NOTSET", format=FORMAT, datefmt="[%X]", handlers=[RichHandler()])
 
 log = logging.getLogger("rich")
 
@@ -46,25 +47,41 @@ def common(
 def plan(
     path: Annotated[Path, typer.Argument(help="Path to configuration files")],
     market: Annotated[str, typer.Argument(help="Selected power market")],
+    models: list[str] = typer.Option(
+        default=["all"],
+        help=f"The models to run the plan. Available models: {', '.join(resync.AVAILABLE_MODELS)}",
+    ),
 ):
     log.info(f"Running plan on configuration files located in {path}")
-    resync.plan(path, market)
+    resync.plan(path, market, echo=log.info, model_names=models)
 
 
 @app.command("apply", help="Apply the changes from the configuration files to the data model in CDF")
 def apply(
     path: Annotated[Path, typer.Argument(help="Path to configuration files")],
     market: Annotated[str, typer.Argument(help="Selected power market")],
+    models: list[str] = typer.Option(
+        default=["all"],
+        help=f"The models to run apply. Available models: {', '.join(resync.AVAILABLE_MODELS)}",
+    ),
+    auto_yes: bool = typer.Option(False, "--yes", "-y", help="Auto confirm all prompts"),
 ):
     log.info(f"Running apply on configuration files located in {path}")
 
-    resync.apply(path, market)
+    resync.apply(path, market, echo=log.info, model_names=models, auto_yes=auto_yes, echo_pretty=pprint)
 
 
-@app.command("deploy", help=f"Deploy the data model in CDF. Available models: {list(MODEL_BY_NAME.keys())}")
+@app.command(
+    "deploy",
+    help=f"Deploy the data model in CDF. Available models: {list(MODEL_BY_NAME.keys())}. "
+    f"Use 'all' to deploy all models.",
+)
 def deploy(
     models: Annotated[list[str], typer.Argument(help="The models to deploy")],
 ):
+    if len(models) == 1 and models[0].lower() == "all":
+        models = list(MODEL_BY_NAME.keys())
+
     client = get_powerops_client()
     for model_name in models:
         if model_name not in MODEL_BY_NAME:
@@ -110,4 +127,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    deploy(["dayahead"])

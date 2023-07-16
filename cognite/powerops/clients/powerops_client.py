@@ -2,10 +2,14 @@ from __future__ import annotations
 
 from cognite.client import ClientConfig, CogniteClient
 
-from cognite.powerops.clients.cogshop import CogShopClient
-from cognite.powerops.clients.core import CoreClient
+from cognite.powerops.clients._api_client import (
+    BenchmarkAPIs,
+    CogShopAPIs,
+    DayAheadAPIs,
+    ProductionAPIs,
+    RKOMMarketAPIs,
+)
 from cognite.powerops.clients.data_set_api import DataSetsAPI
-from cognite.powerops.clients.market_configuration import MarketConfigClient
 from cognite.powerops.clients.shop import ShopClient
 from cognite.powerops.utils.cdf import Settings, get_client_config
 
@@ -21,9 +25,11 @@ class PowerOpsClient:
         self.cdf = CogniteClient(config)
         data_set_api = DataSetsAPI(self.cdf, read_dataset, write_dataset)
 
-        self.core = CoreClient(config)
-        self.market_configuration = MarketConfigClient(config)
-        self.cog_shop = CogShopClient(config)
+        self.production = ProductionAPIs(self.cdf)
+        self.dayahead = DayAheadAPIs(self.cdf)
+        self.rkom = RKOMMarketAPIs(self.cdf)
+        self.benchmark = BenchmarkAPIs(self.cdf)
+        self.cog_shop = CogShopAPIs(self.cdf)
         self.shop = ShopClient(self.cdf, self.cog_shop, data_set_api, cogshop_version)
 
 

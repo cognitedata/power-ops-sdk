@@ -57,7 +57,7 @@ class MarketConfig(Config):
 
     rkom_bid_process: list[RKOMBidProcessConfig]
     rkom_bid_combination: Optional[list[RKOMBidCombinationConfig]] = None
-    rkom_market: Optional[RkomMarketConfig] = None
+    rkom_market: RkomMarketConfig = Field(default_factory=RkomMarketConfig.default)
 
     @field_validator("price_scenario_by_id")
     def no_duplicated_scenarios(cls, value: dict[str, PriceScenario]):

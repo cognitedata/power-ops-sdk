@@ -1,0 +1,19 @@
+type ProductionPlanTimeSeries {
+    name: String
+    series: [TimeSeries]
+}
+
+type BenchmarkBid implements Bid {
+    name: String
+    date: [DateTransformation]
+    market: Market
+}
+
+type BenchmarkProcess implements Process{
+    name: String
+    productionPlanTimeSeries: [ProductionPlanTimeSeries]
+    metrics: JSONObject
+    bid: BenchmarkBid
+    shop: ShopTransformation
+    runEvents: [String]
+}

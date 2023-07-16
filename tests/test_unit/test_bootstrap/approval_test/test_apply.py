@@ -1,4 +1,5 @@
 import contextlib
+from itertools import product
 from pathlib import Path
 
 import pytest
@@ -10,7 +11,7 @@ except ModuleNotFoundError:
 
 from cognite.client.testing import monkeypatch_cognite_client
 
-from cognite.powerops.cli import apply
+from cognite.powerops.resync._main import AVAILABLE_MODELS, apply
 from tests.constants import REPO_ROOT, SENSITIVE_TESTS
 from tests.test_unit.test_bootstrap.approval_test.mock_resource_create_classes import (
     MockAssetsCreate,
@@ -48,8 +49,17 @@ def apply_test_cases():
         )
 
 
-@pytest.mark.parametrize("input_dir, market, compare_file_path", list(apply_test_cases()))
-def test_apply(input_dir: Path, market: str, compare_file_path: Path, data_regression, setting_environmental_vars):
+@pytest.mark.parametrize(
+    "input_dir, market, compare_file_path, model_name",
+    list(
+        pytest.param(*case.values, model_name, id=f"{case.id} {model_name}")
+        for case, model_name in product(apply_test_cases(), AVAILABLE_MODELS)
+    ),
+)
+def test_apply(
+    input_dir: Path, market: str, compare_file_path: Path, model_name: str, data_regression, setting_environmental_vars
+):
+    # Arrange
     mock_resources = {
         "assets.create": MockAssetsCreate(),
         "sequences.create": MockSequencesCreate(),
@@ -70,15 +80,22 @@ def test_apply(input_dir: Path, market: str, compare_file_path: Path, data_regre
                 api = getattr(api, resource)
             setattr(api, parts[-1], mock_resource)
 
-        apply(path=DATA / "demo", market="Dayahead")
+        # Act
+        model = apply(path=DATA / "demo", market="Dayahead", model_names=model_name, auto_yes=True)
+
+    # Assert
+    data_regression.check(
+        model.summary(), fullpath=compare_file_path.parent / f"{compare_file_path.stem}_{model_name}_summary.yml"
+    )
 
     dump = {
         ".".join(resource_type.split(".")[:-1]): mock_resource.serialize()
         for resource_type, mock_resource in mock_resources.items()
     }
-
     # for all the resources, sort the list of dicts by "external_id" in lowercase
     for resource in dump.values():
         with contextlib.suppress(KeyError):
             resource.sort(key=lambda x: x["external_id"].lower())
-    data_regression.check(dump, fullpath=compare_file_path)
+
+    # Assert
+    data_regression.check(dump, fullpath=compare_file_path.parent / f"{compare_file_path.stem}_{model_name}.yml")

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import json
-from typing import Dict, List, Optional, Tuple, Union
+from typing import Dict, List, Optional, Union
 
 from pydantic import BaseModel, ConfigDict, validator
 
@@ -63,7 +63,7 @@ class PriceScenario(BaseModel):
 
 class RelativeTime(BaseModel):
     relative_time_string: Optional[str] = None
-    operations: Optional[List[Tuple[str, Union[str, Dict[str, int]]]]] = None
+    operations: Optional[list[tuple[str, Union[str, Dict[str, int]]]]] = None
 
     @validator("operations", pre=True, always=True)
     def to_old_format(cls, value):
