@@ -76,6 +76,7 @@ ipykernel="6.24.0"
 twine = "^4.0.2"
 jupyter = "^1.0.0"
 cognite-pygen = {version = "^0.12.2", extras = ["cli"]}
+mypy = "^1.4"
 
 [build-system]
 requires = ["poetry-core"]
