@@ -57,7 +57,7 @@ def transform(
                 data_models.append(benchmark_market_model)
             if "DayAheadMarketDataModel" in model_names:
                 dayahead_benchmark = benchmark_market_model.benchmarking[0]
-                dayahead_bid = benchmark_market_model.bids[dayahead_benchmark.bid]
+                dayahead_bid = benchmark_market_model.bids[cast(str, dayahead_benchmark.bid)]
                 day_ahead_market_model = to_dayahead_data_model(
                     config.market, dayahead_benchmark, dayahead_bid, production_model.price_areas
                 )
@@ -71,7 +71,7 @@ def transform(
         labels = AssetLabel.as_label_definitions() + RelationshipLabel.as_label_definitions()
         collection.add(labels)
 
-    all_models: list[Model] = cast(Model, asset_models) + data_models
+    all_models: list[Model] = cast(list[Model], asset_models) + cast(list[Model], data_models)
     for model in all_models:
         collection.add(model.sequences())
         collection.add(model.files())

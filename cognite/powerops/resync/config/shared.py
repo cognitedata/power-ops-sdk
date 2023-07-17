@@ -3,11 +3,11 @@ from __future__ import annotations
 import json
 from enum import Enum, auto
 from typing import Any, ClassVar, Iterator, Optional
-
+from typing_extensions import TypeAlias, Annotated
 import pandas as pd
 from pydantic import BaseModel, constr, validator
 
-ExternalId = constr(min_length=1, max_length=255)
+ExternalId: TypeAlias = Annotated[str, constr(min_length=1, max_length=255)]
 
 
 class Auction(str, Enum):

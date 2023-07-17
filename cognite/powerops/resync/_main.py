@@ -49,7 +49,7 @@ def apply(
     model_names: str,
     echo: Optional[Callable[[str], None]] = None,
     auto_yes: bool = False,
-    echo_pretty: Optional[Callable[[str], None]] = None,
+    echo_pretty: Optional[Callable[[Any], None]] = None,
 ) -> Model:
     ...
 
@@ -61,7 +61,7 @@ def apply(
     model_names: list[str] | None = None,
     echo: Optional[Callable[[str], None]] = None,
     auto_yes: bool = False,
-    echo_pretty: Optional[Callable[[str], None]] = None,
+    echo_pretty: Optional[Callable[[Any], None]] = None,
 ) -> list[Model]:
     ...
 

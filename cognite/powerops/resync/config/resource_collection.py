@@ -133,9 +133,10 @@ class ResourceCollection(BaseModel):
 
         logger.debug(f"Processing {len(self.files)} files...")
         for file in self.files.values():
-            po_client.cdf.files.upload_bytes(
-                content=file.content, data_set_id=data_set_id, overwrite=overwrite, **file.meta.dump(camel_case=False)
-            )
+            if file.content:
+                po_client.cdf.files.upload_bytes(
+                    content=file.content, data_set_id=data_set_id, overwrite=overwrite, **file.meta.dump(camel_case=False)
+                )
 
         logger.debug(f"Processing {len(self.sequences)} sequences...")
         upsert_cognite_resources(
@@ -229,11 +230,11 @@ class ResourceCollection(BaseModel):
             # get the api for the resource type
             api = getattr(po_client.cdf, resource_type)
             # get all the resources from CDF
-            resources = api.list(data_set_ids=[data_set_id], limit=None)
+            resources = api.list(data_set_ids=[data_set_id], limit=-1)
             # add the resources to the bootstrap resource collection
             bootstrap_resource_collection.add(resources)
 
-        file_meta = po_client.cdf.files.list(data_set_ids=[data_set_id], limit=None)
+        file_meta = po_client.cdf.files.list(data_set_ids=[data_set_id], limit=-1)
         shop_files = []
         for f in file_meta:
             if f.metadata.get("md5_hash") is None:
@@ -245,11 +246,11 @@ class ResourceCollection(BaseModel):
         bootstrap_resource_collection.add(shop_files)
 
         # then download the sequence data
-        all_sequences = po_client.cdf.sequences.list(data_set_ids=[data_set_id], limit=None)
+        all_sequences = po_client.cdf.sequences.list(data_set_ids=[data_set_id], limit=-1)
 
         for sequence in all_sequences:
             sequence_data = po_client.cdf.sequences.data.retrieve_dataframe(
-                external_id=sequence.external_id, limit=None, start=0, end=-1
+                external_id=sequence.external_id, limit=-1, start=0, end=-1
             )
             bootstrap_resource_collection.add(CDFSequence(sequence=sequence, content=sequence_data))
 

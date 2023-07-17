@@ -57,7 +57,7 @@ class WaterCourseShop(NonAssetType):
 class Watercourse(AssetType):
     model_config: ClassVar[ConfigDict] = ConfigDict(protected_namespaces=tuple())
     type_: ClassVar[str] = "watercourse"
-    label = AssetLabel.WATERCOURSE
+    label: ClassVar[AssetLabel] = AssetLabel.WATERCOURSE
     shop: WaterCourseShop
     config_version: str = Field(exclude=True)
     model_file: Path = Field(exclude=True)

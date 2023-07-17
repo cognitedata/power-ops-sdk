@@ -56,10 +56,10 @@ class Plant(BaseModel):
         plant = cls(
             name=asset.name,
             external_id=asset.external_id,
-            outlet_level=asset.metadata["outlet_level"],
-            p_min=asset.metadata["p_min"],
-            p_max=asset.metadata["p_max"],
-            head_loss_factor=asset.metadata["head_loss_factor"],
+            outlet_level=float(asset.metadata["outlet_level"]),
+            p_min=float(asset.metadata["p_min"]),
+            p_max=float(asset.metadata["p_max"]),
+            head_loss_factor=float(asset.metadata["head_loss_factor"]),
             penstock_head_loss_factors=json.loads(asset.metadata.get("penstock_head_loss_factors")),
             **kwargs,  # kwargs to set any other attributes that are not part of the Asset
         )

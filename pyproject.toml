@@ -30,6 +30,12 @@ target-version = 'py39'
 
 [tool.mypy]
 explicit_package_bases = true
+exclude = [
+    "^cognite/powerops/preprocessor/",
+    "^cognite/powerops/clients/",
+    "^cognite/powerops/utils/",
+]
+
 
 [tool.poetry.dependencies]
 python = "^3.9"

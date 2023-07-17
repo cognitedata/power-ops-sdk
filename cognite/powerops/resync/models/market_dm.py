@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import Optional
+
 from pydantic import Field
 
 from cognite.powerops.clients.data_classes import (
@@ -28,11 +30,11 @@ class DayAheadMarketDataModel(DataModel):
     dayahead_processes: list[DayAheadProcesApply] = Field(default_factory=list)
     bids: dict[ExternalID, DayAheadBidApply] = Field(default_factory=dict)
     bid_matrix_generator: dict[ExternalID, BidMatrixGeneratorApply] = Field(default_factory=dict)
-    nordpool_market: NordPoolMarketApply = None
+    nordpool_market: Optional[NordPoolMarketApply] = None
 
 
 class RKOMMarketDataModel(DataModel):
-    rkom_market: RKOMMarketApply = None
+    rkom_market: Optional[RKOMMarketApply] = None
     bids: dict[ExternalID, RKOMBidApply] = Field(default_factory=dict)
     rkom_bid_combinations: list[RKOMBidCombinationApply] = Field(default_factory=list)
     rkom_processes: list[RKOMProcesApply] = Field(default_factory=list)
