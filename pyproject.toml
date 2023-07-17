@@ -28,6 +28,9 @@ target-version = 'py39'
 [tool.ruff.per-file-ignores]
 "__init__.py" = ["F401"]  # unused import
 
+[tool.mypy]
+explicit_package_bases = true
+
 [tool.poetry.dependencies]
 python = "^3.9"
 typer = {version="^0.9.0", extras=["rich"]}
@@ -77,6 +80,8 @@ twine = "^4.0.2"
 jupyter = "^1.0.0"
 cognite-pygen = {version = "^0.12.2", extras = ["cli"]}
 mypy = "^1.4"
+pandas-stubs = "^2"
+types-PyYAML = "^6"
 
 [build-system]
 requires = ["poetry-core"]
