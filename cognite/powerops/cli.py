@@ -68,7 +68,7 @@ def apply(
 ):
     log.info(f"Running apply on configuration files located in {path}")
 
-    resync.apply(path, market, echo=log.info, model_names=models, auto_yes=auto_yes, echo_pretty=pprint)
+    resync.apply(path, market, model_names=models, echo=log.info, auto_yes=auto_yes, echo_pretty=pprint)
 
 
 @app.command(

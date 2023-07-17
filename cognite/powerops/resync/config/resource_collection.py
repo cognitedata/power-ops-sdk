@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import logging
-from typing import Union
+from typing import Union, Sequence
 
 from cognite.client.data_classes import Asset, Event, LabelDefinition, Relationship
 from cognite.client.data_classes._base import CogniteResource, CogniteResourceList
@@ -22,14 +22,14 @@ logger = logging.getLogger(__name__)
 
 AddableResourceT = Union[
     "CogniteResource",
-    list["CogniteResource"],
-    list[ShopFileConfig],
-    list[DomainModelApply],
+    Sequence["CogniteResource"],
+    Sequence[ShopFileConfig],
+    Sequence[DomainModelApply],
     InstancesApply,
     CDFFile,
-    list[CDFFile],
+    Sequence[CDFFile],
     CDFSequence,
-    list[CDFSequence],
+    Sequence[CDFSequence],
 ]
 
 
@@ -126,21 +126,6 @@ class ResourceCollection(BaseModel):
             resources = list(getattr(self, resource_type).values())
             logger.debug(f"Processing {len(resources)} {resource_type}...")
             upsert_cognite_resources(api, resource_type, resources)
-
-        # for node in self.nodes.values():
-        #     try:
-        #         po_client.cdf.data_modeling.instances.apply(nodes=node , replace=True)
-        #         logger.info(f"Written {node.external_id} to CDF")
-        #     except CogniteAPIError as e:
-        #         logger.info(f"Failed to write {node.external_id} to CDF: {e}")
-        #         raise e
-        # for edge in self.edges.values():
-        #     try:
-        #         po_client.cdf.data_modeling.instances.apply(edges=edge , replace=True)
-        #         logger.info(f"Written {edge.external_id} to CDF")
-        #     except CogniteAPIError as e:
-        #         logger.info(f"Failed to write {edge.external_id} to CDF: {e}")
-        #         raise e
 
         po_client.cdf.data_modeling.instances.apply(
             nodes=list(self.nodes.values()), edges=list(self.edges.values()), replace=True
