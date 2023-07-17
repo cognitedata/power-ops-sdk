@@ -5,9 +5,9 @@ from typing import Union
 
 import arrow
 import pytest
-import pytest_mock  # noqa: provides `mocker` fixture
+import pytest_mock  # noqa: F401 provides `mocker` fixture
 from cognite.client.data_classes import FileMetadata
-from pytest_regressions import plugin  # noqa: provides `data_regression` fixture
+from pytest_regressions import plugin  # noqa: F401 provides `data_regression` fixture
 
 from cognite.powerops.preprocessor.cogreader import CogShopFile
 from cognite.powerops.preprocessor.exceptions import CogReaderError
