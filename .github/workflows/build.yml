@@ -10,7 +10,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: pre-commit/action@v3.0.0
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+
+      # The installation is required as mypy must be run in the local system environment, not in the pre-commit environment.
+      - name: Install required dependencies
+        run: |
+          python3 -m pip install --upgrade pip poetry
+          poetry config virtualenvs.create false
+          poetry install
+
+      - name: Linting and static code checks
+        run: |
+          pre-commit run --all-files
 
   tests:
     runs-on: ubuntu-latest
