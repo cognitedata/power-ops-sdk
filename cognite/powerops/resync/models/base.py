@@ -237,7 +237,7 @@ class AssetModel(Model, ABC):
             return " ".join(parts).replace("Bid process", "Bid").replace("bid process", "bid")
 
         parent_and_description_ids = {
-            (item.parent_external_id, item.parent_description) for item in self._asset_types()
+            (item.parent_external_id, item.parent_description or "") for item in self._asset_types()
         }
 
         return [self.root_asset] + [

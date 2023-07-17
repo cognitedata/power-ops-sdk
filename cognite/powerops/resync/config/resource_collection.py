@@ -60,7 +60,7 @@ class ResourceCollection(BaseModel):
         extra = Extra.forbid
 
     @property
-    def all_cdf_resources(self) -> list[CogniteResource]:
+    def all_cdf_resources(self) -> list[Asset | Relationship | LabelDefinition | Event | CDFSequence]:
         """Not including DM."""
         return [
             *list(self.assets.values()),
@@ -112,7 +112,11 @@ class ResourceCollection(BaseModel):
         overwrite: bool = False,
     ):
         # CDF auth and data set
-        data_set_id = po_client.cdf.data_sets.retrieve(external_id=data_set_external_id).id
+        data_set = po_client.cdf.data_sets.retrieve(external_id=data_set_external_id)
+        if not data_set:
+            raise ValueError(f"Data set {data_set_external_id} not found.")
+        data_set_id = data_set.id
+
         for resource in self.all_cdf_resources:
             resource.data_set_id = data_set_id
 
@@ -135,7 +139,10 @@ class ResourceCollection(BaseModel):
         for file in self.files.values():
             if file.content:
                 po_client.cdf.files.upload_bytes(
-                    content=file.content, data_set_id=data_set_id, overwrite=overwrite, **file.meta.dump(camel_case=False)
+                    content=file.content,
+                    data_set_id=data_set_id,
+                    overwrite=overwrite,
+                    **file.meta.dump(camel_case=False),
                 )
 
         logger.debug(f"Processing {len(self.sequences)} sequences...")
@@ -217,7 +224,11 @@ class ResourceCollection(BaseModel):
         Function that creates a BootstrapResourceCollection from a CDF data set (typically the bootstrap data set)
         """
 
-        data_set_id = po_client.cdf.data_sets.retrieve(external_id=data_set_external_id).id
+        data_set_id = po_client.cdf.data_sets.retrieve(external_id=data_set_external_id)
+        if not data_set_id:
+            raise ValueError(f"Data set {data_set_external_id} not found.")
+        data_set_id = data_set_id.id
+
         bootstrap_resource_collection = ResourceCollection()
 
         # start by downloading all the resources from CDF

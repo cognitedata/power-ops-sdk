@@ -35,6 +35,7 @@ exclude = [
     "^cognite/powerops/clients/",
     "^cognite/powerops/utils/",
 ]
+allow_redefinition = true
 
 
 [tool.poetry.dependencies]

@@ -47,7 +47,7 @@ def apply(
     path: Path,
     market: str,
     model_names: str,
-    echo: Optional[Callable[[str], None]] = None,
+    echo: Optional[Callable[[Any], None]] = None,
     auto_yes: bool = False,
     echo_pretty: Optional[Callable[[Any], None]] = None,
 ) -> Model:
@@ -59,7 +59,7 @@ def apply(
     path: Path,
     market: str,
     model_names: list[str] | None = None,
-    echo: Optional[Callable[[str], None]] = None,
+    echo: Optional[Callable[[Any], None]] = None,
     auto_yes: bool = False,
     echo_pretty: Optional[Callable[[Any], None]] = None,
 ) -> list[Model]:
@@ -70,7 +70,7 @@ def apply(
     path: Path,
     market: str,
     model_names: list[str] | str | None = None,
-    echo: Optional[Callable[[str], None]] = None,
+    echo: Optional[Callable[[Any], None]] = None,
     auto_yes: bool = False,
     echo_pretty: Optional[Callable[[Any], None]] = None,
 ) -> Model | list[Model]:
