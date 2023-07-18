@@ -24,6 +24,9 @@ from cognite.powerops.resync.config.shared import (
 Product = Literal["up", "down"]
 Block = Literal["day", "night"]
 
+PlantExternalId = str
+TimeSeriesExeteralId = str
+
 
 @dataclass
 class ReserveScenario:
@@ -33,7 +36,7 @@ class ReserveScenario:
     block: Block
     reserve_group: str
     mip_plant_time_series: List[
-        Tuple[str, Optional[str]]
+        Tuple[PlantExternalId, Optional[TimeSeriesExeteralId]]
     ]  # (plant, mip_flag_time_series) for plants with generators that are in the reserve group
     obligation_external_id: Optional[str] = None
 
@@ -144,7 +147,7 @@ class ReserveScenarios(BaseModel):
     product: Product
     block: Block
     reserve_group: str
-    mip_plant_time_series: List[Tuple[str, Optional[str]]]
+    mip_plant_time_series: List[Tuple[PlantExternalId, Optional[TimeSeriesExeteralId]]]
     obligation_external_id: Optional[str]
 
     @field_validator("auction", mode="before")
@@ -160,7 +163,7 @@ class ReserveScenarios(BaseModel):
         return list(set(volumes))  # Do not want duplicate volumes
 
     def __str__(self) -> str:
-        return f'[{"MW, ".join(str(volume) for volume in sorted(self.volumes))}MW]'  # E.g "[0MW, 10MW, 20MW]"
+        return json.dumps([f"{volume}MW" for volume in sorted(self.volumes)])
 
     def __len__(self) -> int:
         return len(self.list_scenarios())
@@ -189,10 +192,19 @@ class RkomMarketConfig(BaseModel):
     timezone: str
     start_of_week: int
 
+    @classmethod
+    def default(cls) -> "RkomMarketConfig":
+        return cls(
+            name="RKOM weekly (Statnett)",
+            timezone="Europe/Oslo",
+            start_of_week=1,
+            external_id="market_configuration_statnett_rkom_weekly",
+        )
+
 
 class RKOMBidCombinationConfig(Configuration):
     parent_external_id: ClassVar[str] = "rkom_bid_combination_configurations"
-    model_config = ConfigDict(populate_by_name=True)
+    model_config: ClassVar[ConfigDict] = ConfigDict(populate_by_name=True)
     auction: Auction = Field(alias="bid_auction")
     name: str = Field("default", alias="bid_combination_name")
     rkom_bid_config_external_ids: list[str] = Field(alias="bid_rkom_bid_configs")

@@ -5,12 +5,12 @@ from typing import ClassVar, Union
 from pydantic import Field
 
 from cognite.powerops.cdf_labels import AssetLabel
-from cognite.powerops.resync.models._base import AssetType, NonAssetType
+from cognite.powerops.resync.models.base import AssetType, NonAssetType
 
 
 class Market(AssetType):
     type_: ClassVar[str] = "market_configuration"
-    label: ClassVar[AssetLabel] = AssetLabel.MARKET
+    label: ClassVar[Union[AssetLabel, str]] = AssetLabel.MARKET
     parent_description: ClassVar[str] = "Configurations used for different markets"
     timezone: str
 

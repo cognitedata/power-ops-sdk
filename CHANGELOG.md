@@ -13,6 +13,25 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.28.0] - 2023-07-16
+
+### Added
+
+* Created DataModels for Market, now split into `DayAhead`, `RKOM`, and `Benchmark`.
+* Split the CogShop model into a `CogShopAsset` and a `CogShopDataModel`.
+* Option for running `deploy`, `apply` and `plan` on a subset of data models in the CLI.
+* Added a summary view of each data model and an option for user input before deploying.
+
+
+### Changed
+
+* Upgraded to `0.12.0` of `pygen` which generates one SDK for multiple data models.
+* Changed the production and cogshop data models to better match the configuration files.
+
+### Improved
+
+* Split approval test into one test per model.
+
 ## [0.27.1] - 2023-07-13
 
 ### Fixed

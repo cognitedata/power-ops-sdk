@@ -1,36 +1,34 @@
+from __future__ import annotations
+from typing import ClassVar, Optional
+
+from cognite.client.data_classes import Asset
 from pydantic import Field
 
-from cognite.powerops.clients.cogshop.data_classes import (
-    FileRefApply,
-    MappingApply,
-    ModelTemplateApply,
-    TransformationApply,
+from cognite.powerops.clients.data_classes import (
+    InputTimeSeriesMappingApply,
+    OutputMappingApply,
+    ScenarioTemplateApply,
+    ValueTransformationApply,
 )
 
-from ._base import DataModel, Type
+from .base import AssetModel, DataModel, Model
 from .cdf_resources import CDFFile, CDFSequence
 
-
-class BaseMapping(Type):
-    watercourse_name: str
-    mapping: list[CDFSequence] = Field(default_factory=list)
+ExternalID = str
 
 
-class OutputDefinition(Type):
-    watercourse_name: str
-    mapping: list[CDFSequence] = Field(default_factory=list)
+class CogShopCore(Model):
+    shop_files: list[CDFFile] = Field(default_factory=list)
 
 
-class ShopFile(Type):
-    watercourse_name: str
-    file: CDFFile
+class CogShopDataModel(CogShopCore, DataModel):
+    scenario_templates: list[ScenarioTemplateApply] = Field(default_factory=list)
+    input_time_series_mappings: dict[ExternalID, InputTimeSeriesMappingApply] = Field(default_factory=dict)
+    output_definitions: dict[ExternalID, OutputMappingApply] = Field(default_factory=dict)
+    value_transformations: dict[ExternalID, ValueTransformationApply] = Field(default_factory=dict)
 
 
-class CogShopModel(DataModel):
-    base_mappings: list[BaseMapping] = Field(default_factory=list)
-    output_definitions: list[OutputDefinition] = Field(default_factory=list)
-    shop_files: list[ShopFile] = Field(default_factory=list)
-    model_templates: list[ModelTemplateApply] = Field(default_factory=list)
-    mappings: list[MappingApply] = Field(default_factory=list)
-    transformations: list[TransformationApply] = Field(default_factory=list)
-    file_refs: list[FileRefApply] = Field(default_factory=list)
+class CogShopAsset(CogShopCore, AssetModel):
+    root_asset: ClassVar[Optional[Asset]] = None
+    base_mappings: list[CDFSequence] = Field(default_factory=list)
+    output_definitions: list[CDFSequence] = Field(default_factory=list)

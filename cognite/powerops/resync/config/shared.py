@@ -3,11 +3,11 @@ from __future__ import annotations
 import json
 from enum import Enum, auto
 from typing import Any, ClassVar, Iterator, Optional
-
+from typing_extensions import TypeAlias, Annotated
 import pandas as pd
 from pydantic import BaseModel, constr, validator
 
-ExternalId = constr(min_length=1, max_length=255)
+ExternalId: TypeAlias = Annotated[str, constr(min_length=1, max_length=255)]
 
 
 class Auction(str, Enum):
@@ -164,7 +164,7 @@ class TimeSeriesMapping(BaseModel):
     def transformations_cols(self) -> list[str]:
         return [col for col in self.columns if col.startswith("transformations")]
 
-    def __iter__(self) -> Iterator[TimeSeriesMappingEntry]:
+    def __iter__(self) -> Iterator[TimeSeriesMappingEntry]:  # type: ignore[override]
         yield from self.rows
 
     def __len__(self) -> int:
@@ -182,12 +182,6 @@ class TimeSeriesMapping(BaseModel):
     @property
     def column_definitions(self) -> list[dict]:
         return [{"valueType": "STRING", "externalId": col} for col in self.columns]
-
-    def to_sequence_rows(self) -> dict[int, list[str | float]]:
-        return {
-            i: row.to_sequence_row(max_transformation_cols=len(self.transformations_cols))
-            for i, row in enumerate(self.rows)
-        }
 
     def to_dataframe(self) -> pd.DataFrame:
         rows = [row.to_sequence_row(max_transformation_cols=len(self.transformations_cols)) for row in self.rows]

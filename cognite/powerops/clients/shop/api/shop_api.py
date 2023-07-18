@@ -3,7 +3,7 @@ from __future__ import annotations
 import logging
 import random
 
-from cognite.powerops.clients.cogshop import CogShopClient
+from cognite.powerops.clients._api_client import CogShopAPIs
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +20,7 @@ class ShopModel:
 
 
 class ShopModelsAPI:
-    def __init__(self, cogshop: CogShopClient):
+    def __init__(self, cogshop: CogShopAPIs):
         self._cogshop = cogshop
 
     def list(self) -> list[ShopModel]:

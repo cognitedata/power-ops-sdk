@@ -1,28 +1,28 @@
 
 type OutputMapping{
-  shopObjectType: String!
-  shopAttributeName: String!
-  cdfAttributeName: String!
+  shopObjectType: String
+  shopAttributeName: String
+  cdfAttributeName: String
   unit: String
   isStep: Boolean
 }
 
-type CommandsConfig {
-  commands: [String!]!
+type CommandConfig {
+  commands: [String]
 }
 
 type Scenario {
-  name: String!
+  name: String
   template: ScenarioTemplate
-  mappingsOverride: [InputTimeSeriesMapping]
-  commands: CommandsConfig
+  mapping: ScenarioMapping
+  commands: CommandConfig
 }
 
 
 type ScenarioTemplate {
-  watercourse: String!
-  shopVersion: String!
-  templateVersion: String!
+  watercourse: String
+  shopVersion: String
+  templateVersion: String
   model: File
   shopFiles: [File]
   baseMapping: [InputTimeSeriesMapping]

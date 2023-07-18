@@ -3,7 +3,7 @@ from typing import ClassVar, Optional
 from cognite.client.data_classes import Asset
 from pydantic.dataclasses import Field
 
-from cognite.powerops.resync.models._base import AssetModel
+from cognite.powerops.resync.models.base import AssetModel
 
 from .base import Bid, DateTransformation, Market, Process, ShopTransformation
 from .benchmark import BenchmarkBid, BenchmarkProcess, ProductionPlanTimeSeries
@@ -12,7 +12,7 @@ from .rkom import RKOMBid, RKOMBidCombination, RKOMCombinationBid, RKOMMarket, R
 
 
 class MarketModel(AssetModel):
-    root_asset: ClassVar[Asset] = None
+    root_asset: ClassVar[Optional[Asset]] = None
     markets: list[Market] = Field(default_factory=list)
     processes: list[Process] = Field(default_factory=list)
     combinations: list[RKOMBidCombination] = Field(default_factory=list)

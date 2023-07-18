@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import ClassVar
+from typing import ClassVar, Optional
 
 from cognite.powerops.resync.config.market._core import Configuration
 
@@ -9,14 +9,14 @@ class Market(Configuration):
     parent_external_id: ClassVar[str] = "market_configurations"
     external_id: str
     name: str
-    max_price: float = None
-    min_price: float = None
-    time_unit: str = None
-    timezone: str
-    tick_size: float = None
-    trade_lot: float = None
-    price_steps: int = None
-    price_unit: str = None
+    max_price: Optional[float] = None
+    min_price: Optional[float] = None
+    time_unit: Optional[str] = None
+    timezone: Optional[str] = None
+    tick_size: Optional[float] = None
+    trade_lot: Optional[float] = None
+    price_steps: Optional[int] = None
+    price_unit: Optional[str] = None
 
 
 MARKET_CONFIG_NORDPOOL_DAYAHEAD = Market(

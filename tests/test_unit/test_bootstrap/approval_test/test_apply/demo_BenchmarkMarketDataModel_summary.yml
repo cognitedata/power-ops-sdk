@@ -1,0 +1,9 @@
+BenchmarkMarketDataModel:
+  cdf:
+    edges: 6
+    files: 0
+    nodes: 7
+    sequences: 0
+  domain:
+    benchmarking: 1
+    bids: 1
