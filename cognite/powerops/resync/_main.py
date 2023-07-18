@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from datetime import datetime
 from pathlib import Path
-from typing import Callable, overload
+from typing import Optional, Callable, overload, Any
 from uuid import uuid4
 
 from cognite.client.data_classes import Event
@@ -26,7 +26,9 @@ AVAILABLE_MODELS = [
 ]
 
 
-def plan(path: Path, market: str, echo: Callable[[str], None] = None, model_names: str | list[str] = None) -> None:
+def plan(
+    path: Path, market: str, echo: Optional[Callable[[str], None]] = None, model_names: Optional[str | list[str]] = None
+) -> None:
     echo = echo or print
     model_names = [model_names] if isinstance(model_names, str) else model_names or AVAILABLE_MODELS
     client = get_powerops_client()
@@ -44,10 +46,10 @@ def plan(path: Path, market: str, echo: Callable[[str], None] = None, model_name
 def apply(
     path: Path,
     market: str,
-    echo: Callable[[str], None] = None,
-    model_names: str = None,
+    model_names: str,
+    echo: Optional[Callable[[Any], None]] = None,
     auto_yes: bool = False,
-    echo_pretty: Callable[[str], None] = None,
+    echo_pretty: Optional[Callable[[Any], None]] = None,
 ) -> Model:
     ...
 
@@ -56,10 +58,10 @@ def apply(
 def apply(
     path: Path,
     market: str,
-    echo: Callable[[str], None] = None,
-    model_names: list[str] = None,
+    model_names: list[str] | None = None,
+    echo: Optional[Callable[[Any], None]] = None,
     auto_yes: bool = False,
-    echo_pretty: Callable[[str], None] = None,
+    echo_pretty: Optional[Callable[[Any], None]] = None,
 ) -> list[Model]:
     ...
 
@@ -67,10 +69,10 @@ def apply(
 def apply(
     path: Path,
     market: str,
-    echo: Callable[[str], None] = None,
-    model_names: list[str] | str = None,
+    model_names: list[str] | str | None = None,
+    echo: Optional[Callable[[Any], None]] = None,
     auto_yes: bool = False,
-    echo_pretty: Callable[[str], None] = None,
+    echo_pretty: Optional[Callable[[Any], None]] = None,
 ) -> Model | list[Model]:
     echo = echo or print
     echo_pretty = echo_pretty or echo
@@ -130,7 +132,6 @@ def _create_bootstrap_finished_event(echo: Callable[[str], None]) -> Event:
         end_time=current_time,
         external_id=f"POWEROPS_BOOTSTRAP_FINISHED_{str(uuid4())}",
         type="POWEROPS_BOOTSTRAP_FINISHED",
-        subtype=None,
         source="PowerOps bootstrap",
         description="Manual run of bootstrap scripts finished",
     )
@@ -142,4 +143,4 @@ def _create_bootstrap_finished_event(echo: Callable[[str], None]) -> Event:
 if __name__ == "__main__":
     demo_data = Path(__file__).parent.parent.parent.parent / "tests" / "test_unit" / "test_bootstrap" / "data" / "demo"
 
-    apply(demo_data, "DayAhead", print)
+    apply(demo_data, "DayAhead", echo=print)

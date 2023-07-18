@@ -28,6 +28,19 @@ target-version = 'py39'
 [tool.ruff.per-file-ignores]
 "__init__.py" = ["F401"]  # unused import
 
+[tool.mypy]
+explicit_package_bases = true
+exclude = [
+    # The plan is to gradually add mypy to the code base. As of 18. Juli 2023,
+    # the following packages are not type checked:
+    "^cognite/powerops/preprocessor/",
+    "^cognite/powerops/clients/",
+    "^cognite/powerops/utils/",
+    "^cognite/powerops/resync/to_models/",
+]
+allow_redefinition = true
+
+
 [tool.poetry.dependencies]
 python = "^3.9"
 typer = {version="^0.9.0", extras=["rich"]}
@@ -76,6 +89,9 @@ ipykernel="6.24.0"
 twine = "^4.0.2"
 jupyter = "^1.0.0"
 cognite-pygen = {version = "^0.12.2", extras = ["cli"]}
+mypy = "^1.4"
+pandas-stubs = "^2"
+types-PyYAML = "^6"
 
 [build-system]
 requires = ["poetry-core"]

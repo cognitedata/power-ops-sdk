@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import json
-from typing import Optional
+from typing import Optional, Sequence
 
 from cognite.client.data_classes import Asset, Label, Relationship
 from pydantic import BaseModel, field_validator
@@ -56,17 +56,17 @@ class Plant(BaseModel):
         plant = cls(
             name=asset.name,
             external_id=asset.external_id,
-            outlet_level=asset.metadata["outlet_level"],
-            p_min=asset.metadata["p_min"],
-            p_max=asset.metadata["p_max"],
-            head_loss_factor=asset.metadata["head_loss_factor"],
-            penstock_head_loss_factors=json.loads(asset.metadata.get("penstock_head_loss_factors")),
+            outlet_level=float(asset.metadata["outlet_level"]),
+            p_min=float(asset.metadata["p_min"]),
+            p_max=float(asset.metadata["p_max"]),
+            head_loss_factor=float(asset.metadata["head_loss_factor"]),
+            penstock_head_loss_factors=json.loads(asset.metadata.get("penstock_head_loss_factors") or "{}"),
             **kwargs,  # kwargs to set any other attributes that are not part of the Asset
         )
 
         # Find time series based on relationships
         time_series_ext_ids_and_labels = [
-            (rel.target_external_id, [label.external_id for label in rel.labels])
+            (rel.target_external_id, [label.external_id for label in (rel.labels or [])])
             for rel in relationships
             if rel.target_type == "TIMESERIES" and rel.source_external_id == plant.external_id
         ]
@@ -88,14 +88,14 @@ class Plant(BaseModel):
 
         # Find generators based on relationships
         plant.generator_ext_ids = [
-            rel.target_external_id for rel in relationships if label_in_labels(rl.GENERATOR, rel.labels)
+            rel.target_external_id for rel in relationships if label_in_labels(rl.GENERATOR, rel.labels or [])
         ]
 
         # Find inlet reservoir based on relationships
         for rel in relationships:
             if (
                 rel.target_type == "ASSET"
-                and label_in_labels(rl.INLET_RESERVOIR, rel.labels)
+                and label_in_labels(rl.INLET_RESERVOIR, rel.labels or [])
                 and rel.source_external_id == plant.external_id
             ):
                 plant.inlet_reservoir_ext_id = rel.target_external_id
@@ -104,7 +104,7 @@ class Plant(BaseModel):
         return plant
 
 
-def label_in_labels(label_external_id: str, labels: list[Label]) -> bool:
+def label_in_labels(label_external_id: str, labels: Sequence[Label]) -> bool:
     """Check if a label with a given external id is in a list of labels."""
     return label_external_id in [label.external_id for label in labels]
 

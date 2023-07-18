@@ -2,34 +2,31 @@ from __future__ import annotations
 
 import hashlib
 import logging
-from typing import Union
+from typing import Union, Sequence
 
 from cognite.client.data_classes import Asset, Event, LabelDefinition, Relationship
 from cognite.client.data_classes._base import CogniteResource, CogniteResourceList
 from cognite.client.data_classes.data_modeling import EdgeApply, NodeApply
 from cognite.client.exceptions import CogniteAPIError
-from deepdiff import DeepDiff
+from deepdiff import DeepDiff  # type: ignore[import]
 from pydantic import BaseModel, Extra
 
-from cognite.powerops.clients.data_classes._core import DomainModelApply, InstancesApply
+from cognite.powerops.clients.data_classes._core import InstancesApply
 from cognite.powerops.clients.powerops_client import PowerOpsClient
-from cognite.powerops.resync.config.cogshop.shop_file_config import ShopFileConfig
 from cognite.powerops.resync.config.shared import ExternalId
 from cognite.powerops.resync.models.cdf_resources import CDFFile, CDFSequence
-from cognite.powerops.utils.cdf.calls import upsert_cognite_resources
+from cognite.powerops.utils.cdf.calls import upsert_cognite_resources, CogniteAPI
 
 logger = logging.getLogger(__name__)
 
 AddableResourceT = Union[
     "CogniteResource",
-    list["CogniteResource"],
-    list[ShopFileConfig],
-    list[DomainModelApply],
+    Sequence["CogniteResource"],
     InstancesApply,
     CDFFile,
-    list[CDFFile],
+    Sequence[CDFFile],
     CDFSequence,
-    list[CDFSequence],
+    Sequence[CDFSequence],
 ]
 
 
@@ -60,7 +57,7 @@ class ResourceCollection(BaseModel):
         extra = Extra.forbid
 
     @property
-    def all_cdf_resources(self) -> list[CogniteResource]:
+    def all_cdf_resources(self) -> list[Asset | Relationship | LabelDefinition | Event | CDFSequence]:
         """Not including DM."""
         return [
             *list(self.assets.values()),
@@ -72,7 +69,7 @@ class ResourceCollection(BaseModel):
 
     def add(self, resources_to_append: AddableResourceT):
         # sort the resource by type and append to the correct list
-        if isinstance(resources_to_append, (list, CogniteResourceList)):
+        if isinstance(resources_to_append, (Sequence, CogniteResourceList)):
             for resource in resources_to_append:
                 self._add_resource(resource)
         elif isinstance(resources_to_append, InstancesApply):
@@ -83,7 +80,7 @@ class ResourceCollection(BaseModel):
         else:
             self._add_resource(resources_to_append)
 
-    def _add_resource(self, resource: CogniteResource | ShopFileConfig):
+    def _add_resource(self, resource: CogniteResource | CDFFile | CDFSequence):
         # cdf
         if isinstance(resource, Asset):
             self.assets[resource.external_id] = resource
@@ -112,11 +109,15 @@ class ResourceCollection(BaseModel):
         overwrite: bool = False,
     ):
         # CDF auth and data set
-        data_set_id = po_client.cdf.data_sets.retrieve(external_id=data_set_external_id).id
+        data_set = po_client.cdf.data_sets.retrieve(external_id=data_set_external_id)
+        if not data_set:
+            raise ValueError(f"Data set {data_set_external_id} not found.")
+        data_set_id = data_set.id
+
         for resource in self.all_cdf_resources:
             resource.data_set_id = data_set_id
 
-        cdf_api_by_type = {
+        cdf_api_by_type: dict[str, CogniteAPI] = {
             "label_definitions": po_client.cdf.labels,
             "assets": po_client.cdf.assets,
             "relationships": po_client.cdf.relationships,
@@ -127,30 +128,19 @@ class ResourceCollection(BaseModel):
             logger.debug(f"Processing {len(resources)} {resource_type}...")
             upsert_cognite_resources(api, resource_type, resources)
 
-        # for node in self.nodes.values():
-        #     try:
-        #         po_client.cdf.data_modeling.instances.apply(nodes=node , replace=True)
-        #         logger.info(f"Written {node.external_id} to CDF")
-        #     except CogniteAPIError as e:
-        #         logger.info(f"Failed to write {node.external_id} to CDF: {e}")
-        #         raise e
-        # for edge in self.edges.values():
-        #     try:
-        #         po_client.cdf.data_modeling.instances.apply(edges=edge , replace=True)
-        #         logger.info(f"Written {edge.external_id} to CDF")
-        #     except CogniteAPIError as e:
-        #         logger.info(f"Failed to write {edge.external_id} to CDF: {e}")
-        #         raise e
-
         po_client.cdf.data_modeling.instances.apply(
             nodes=list(self.nodes.values()), edges=list(self.edges.values()), replace=True
         )
 
         logger.debug(f"Processing {len(self.files)} files...")
         for file in self.files.values():
-            po_client.cdf.files.upload_bytes(
-                content=file.content, data_set_id=data_set_id, overwrite=overwrite, **file.meta.dump(camel_case=False)
-            )
+            if file.content:
+                po_client.cdf.files.upload_bytes(
+                    content=file.content,
+                    data_set_id=data_set_id,
+                    overwrite=overwrite,
+                    **file.meta.dump(camel_case=False),
+                )
 
         logger.debug(f"Processing {len(self.sequences)} sequences...")
         upsert_cognite_resources(
@@ -231,7 +221,11 @@ class ResourceCollection(BaseModel):
         Function that creates a BootstrapResourceCollection from a CDF data set (typically the bootstrap data set)
         """
 
-        data_set_id = po_client.cdf.data_sets.retrieve(external_id=data_set_external_id).id
+        data_set_id = po_client.cdf.data_sets.retrieve(external_id=data_set_external_id)
+        if not data_set_id:
+            raise ValueError(f"Data set {data_set_external_id} not found.")
+        data_set_id = data_set_id.id
+
         bootstrap_resource_collection = ResourceCollection()
 
         # start by downloading all the resources from CDF
@@ -244,11 +238,11 @@ class ResourceCollection(BaseModel):
             # get the api for the resource type
             api = getattr(po_client.cdf, resource_type)
             # get all the resources from CDF
-            resources = api.list(data_set_ids=[data_set_id], limit=None)
+            resources = api.list(data_set_ids=[data_set_id], limit=-1)
             # add the resources to the bootstrap resource collection
             bootstrap_resource_collection.add(resources)
 
-        file_meta = po_client.cdf.files.list(data_set_ids=[data_set_id], limit=None)
+        file_meta = po_client.cdf.files.list(data_set_ids=[data_set_id], limit=-1)
         shop_files = []
         for f in file_meta:
             if f.metadata.get("md5_hash") is None:
@@ -260,11 +254,11 @@ class ResourceCollection(BaseModel):
         bootstrap_resource_collection.add(shop_files)
 
         # then download the sequence data
-        all_sequences = po_client.cdf.sequences.list(data_set_ids=[data_set_id], limit=None)
+        all_sequences = po_client.cdf.sequences.list(data_set_ids=[data_set_id], limit=-1)
 
         for sequence in all_sequences:
             sequence_data = po_client.cdf.sequences.data.retrieve_dataframe(
-                external_id=sequence.external_id, limit=None, start=0, end=-1
+                external_id=sequence.external_id, limit=-1, start=0, end=-1
             )
             bootstrap_resource_collection.add(CDFSequence(sequence=sequence, content=sequence_data))
 

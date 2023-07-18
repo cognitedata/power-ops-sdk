@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Any, Dict, Optional
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
-from pydantic_core.core_schema import ValidationInfo
+from pydantic_core.core_schema import FieldValidationInfo
 
 from cognite.powerops.resync._settings import Settings
 from cognite.powerops.resync.config.cogshop.shop_file_config import ShopFileConfig
@@ -74,7 +74,7 @@ class MarketConfig(Config):
         return value
 
     @field_validator("rkom_bid_combination", mode="after")
-    def valid_process_external_id(cls, value: list[RKOMBidCombinationConfig], values: ValidationInfo):
+    def valid_process_external_id(cls, value: list[RKOMBidCombinationConfig], values: FieldValidationInfo):
         valid_ids = {process_config.external_id for process_config in values.data["rkom_bid_process"]}
         for combination in value:
             for external_id_to_validate in combination.rkom_bid_config_external_ids:
@@ -82,7 +82,7 @@ class MarketConfig(Config):
                     raise ValueError(
                         f"Reference to rkom bid process config in rkom_bid_combination yaml is wrong for "
                         f"{external_id_to_validate}. "
-                        f"Possible references are: {[config.external_id for config in values['rkom_bid_process']]}"
+                        f"Possible references are: {[config.external_id for config in values.data['rkom_bid_process']]}"
                     )
         return value
 
@@ -104,8 +104,8 @@ class MarketConfig(Config):
 class ProductionConfig(Config):
     dayahead_price_timeseries: Dict[str, str]
     watercourses: list[WatercourseConfig]
-    generator_time_series_mappings: list[GeneratorTimeSeriesMapping] = None
-    plant_time_series_mappings: list[PlantTimeSeriesMapping] = None
+    generator_time_series_mappings: Optional[list[GeneratorTimeSeriesMapping]] = None
+    plant_time_series_mappings: Optional[list[PlantTimeSeriesMapping]] = None
 
     @classmethod
     def load_yamls(cls, config_dir_path: Path) -> dict[str, Any]:
@@ -147,10 +147,12 @@ class ReSyncConfig(BaseModel):
         for field in cls.model_fields:
             if (config_file_path := config_dir_path / f"{field}.yaml").exists():
                 configs[field] = load_yaml(config_file_path, encoding="utf-8")
-            elif (config_subdir_path := config_dir_path / field).exists() and hasattr(
-                cls.model_fields[field].annotation, "load_yamls"
+            elif (
+                (config_subdir_path := config_dir_path / field).exists()
+                and (class_ := cls.model_fields[field].annotation) is not None
+                and issubclass(class_, Config)
             ):
-                configs[field] = cls.model_fields[field].annotation.load_yamls(config_subdir_path)
+                configs[field] = class_.load_yamls(config_subdir_path)
 
         watercourse_directory_by_name = {}
         for watercourse in configs.get("production", {}).get("watercourses", []):

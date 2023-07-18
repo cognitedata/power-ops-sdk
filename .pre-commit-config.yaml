@@ -1,12 +1,5 @@
 ---
 repos:
-  - repo: https://github.com/timothycrosley/isort
-    rev: 5.12.0
-    hooks:
-      - id: isort
-        additional_dependencies: [toml]
-        args: ["--profile", "black"]
-
   - repo: https://github.com/psf/black
     rev: 23.7.0
     hooks:
@@ -17,7 +10,10 @@ repos:
     rev: 'v0.0.278'
     hooks:
       - id: ruff
-        args: ['--config', 'pyproject.toml']
+        args:
+          - --fix
+          - --exit-non-zero-on-fix
+          - --config=pyproject.toml
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
@@ -34,21 +30,14 @@ repos:
     hooks:
       - id: check-nocommit
 
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.4.1
-    hooks:
-      - id: mypy
-        additional_dependencies:
-          - arrow
-          - cognite-sdk
-          - dacite
-          - numpy
-          - pandas-stubs
-          - pydantic
-          - python-dotenv
-          - types-PyYAML
-          - types-retry
-        files: '^cognite/powerops/preprocessor/'
-        args:
-          - '--explicit-package-bases'
-          - '--follow-imports=skip'
+# Mypy must be run in the local system environment, not in the pre-commit environment.
+  - hooks:
+    - id: mypy
+      name: mypy
+      # Gradually the entire codebase should be checked by mypy, plan is to gradually add mypy for each
+      # module as we refactor it.
+      entry: dmypy run -- cognite/powerops/resync
+      files: ^.*.(py|pyi)$
+      language: system
+      pass_filenames: false
+    repo: local

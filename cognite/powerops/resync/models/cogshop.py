@@ -1,3 +1,7 @@
+from __future__ import annotations
+from typing import ClassVar, Optional
+
+from cognite.client.data_classes import Asset
 from pydantic import Field
 
 from cognite.powerops.clients.data_classes import (
@@ -25,6 +29,6 @@ class CogShopDataModel(CogShopCore, DataModel):
 
 
 class CogShopAsset(CogShopCore, AssetModel):
-    root_asset = None
+    root_asset: ClassVar[Optional[Asset]] = None
     base_mappings: list[CDFSequence] = Field(default_factory=list)
     output_definitions: list[CDFSequence] = Field(default_factory=list)
