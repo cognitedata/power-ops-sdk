@@ -13,7 +13,7 @@ from cognite.powerops.resync.models.cdf_resources import CDFSequence
 
 class Generator(AssetType):
     type_: ClassVar[str] = "generator"
-    label: ClassVar[AssetLabel] = AssetLabel.GENERATOR
+    label: ClassVar[AssetLabel | str] = AssetLabel.GENERATOR
     p_min: float
     penstock: str
     startcost: float
@@ -24,14 +24,14 @@ class Generator(AssetType):
 
 class Reservoir(AssetType):
     type_: ClassVar[str] = "reservoir"
-    label: ClassVar[AssetLabel] = AssetLabel.RESERVOIR
+    label: ClassVar[AssetLabel | str] = AssetLabel.RESERVOIR
     display_name: str
     ordering: str
 
 
 class Plant(AssetType):
     type_: ClassVar[str] = "plant"
-    label: ClassVar[AssetLabel] = AssetLabel.PLANT
+    label: ClassVar[AssetLabel | str] = AssetLabel.PLANT
     display_name: str
     ordering: str
     head_loss_factor: float
@@ -57,7 +57,7 @@ class WaterCourseShop(NonAssetType):
 class Watercourse(AssetType):
     model_config: ClassVar[ConfigDict] = ConfigDict(protected_namespaces=tuple())
     type_: ClassVar[str] = "watercourse"
-    label: ClassVar[AssetLabel] = AssetLabel.WATERCOURSE
+    label: ClassVar[AssetLabel | str] = AssetLabel.WATERCOURSE
     shop: WaterCourseShop
     config_version: str = Field(exclude=True)
     model_file: Path = Field(exclude=True)
@@ -68,7 +68,7 @@ class Watercourse(AssetType):
 
 class PriceArea(AssetType):
     type_: ClassVar[str] = "price_area"
-    label: ClassVar[AssetLabel] = AssetLabel.PRICE_AREA
+    label: ClassVar[AssetLabel | str] = AssetLabel.PRICE_AREA
     dayahead_price_time_series: Optional[TimeSeries] = None
     plants: list[Plant] = Field(default_factory=list)
     watercourses: list[Watercourse] = Field(default_factory=list)

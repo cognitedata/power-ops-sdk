@@ -9,7 +9,7 @@ import pandas as pd
 import yaml
 from cognite.client.data_classes import FileMetadata, Sequence
 
-from cognite.powerops.clients.data_classes import OutputMappingApply, ScenarioTemplateApply
+from cognite.powerops.clients.data_classes import OutputMappingApply, ScenarioTemplateApply, ValueTransformationApply
 from cognite.powerops.resync.config.cogshop.shop_file_config import ShopFileConfig
 from cognite.powerops.resync.config.production.watercourse import WatercourseConfig
 from cognite.powerops.resync.config.resync_config import CogShopConfig
@@ -66,7 +66,9 @@ def to_cogshop_data_model(
         for entry in mapping:
             base_mapping = _to_input_timeseries_mapping(entry)
             base_mappings[base_mapping.external_id] = base_mapping
-            transformations.update({t.external_id: t for t in base_mapping.transformations})
+            transformations.update(
+                {t.external_id: t for t in base_mapping.transformations if isinstance(t, ValueTransformationApply)}
+            )
 
         model.input_time_series_mappings.update(base_mappings)
         model.value_transformations.update(transformations)

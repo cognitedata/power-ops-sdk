@@ -23,7 +23,7 @@ class DayAheadBid(Bid):
 
 class DayAheadProcess(Process):
     type_: ClassVar[str] = "POWEROPS_bid_process_configuration"
-    label: ClassVar[AssetLabel] = AssetLabel.BID_PROCESS_CONFIGURATION
+    label: ClassVar[AssetLabel | str] = AssetLabel.BID_PROCESS_CONFIGURATION
     parent_description: ClassVar[str] = "Configurations used in bid matrix generation processes"
     shop: ShopTransformation
     bid: DayAheadBid

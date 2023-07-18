@@ -24,7 +24,7 @@ class BenchmarkProcess(Process):
     type_: ClassVar[str] = "benchmarking_configuration"
     parent_description: ClassVar[str] = "Configurations used in benchmarking processes"
     description: str = "Configuration for benchmarking of day-ahead bidding"
-    label: ClassVar[AssetLabel] = AssetLabel.DAYAHEAD_BIDDING_BENCHMARKING_CONFIG
+    label: ClassVar[AssetLabel | str] = AssetLabel.DAYAHEAD_BIDDING_BENCHMARKING_CONFIG
     shop: ShopTransformation
     bid: BenchmarkBid
     production_plan_time_series: list[ProductionPlanTimeSeries] = Field(default_factory=list)

@@ -29,7 +29,7 @@ class RKOMPlants(NonAssetType):
 
 class RKOMProcess(Process):
     type_: ClassVar[str] = "POWEROPS"
-    label: ClassVar[AssetLabel] = AssetLabel.RKOM_BID_CONFIGURATION
+    label: ClassVar[AssetLabel | str] = AssetLabel.RKOM_BID_CONFIGURATION
     parent_description: ClassVar[str] = "Configurations used in RKOM bid generation processes"
     shop: ShopTransformation
     bid: RKOMBid

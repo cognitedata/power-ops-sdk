@@ -12,7 +12,7 @@ from .rkom import RKOMBid, RKOMBidCombination, RKOMCombinationBid, RKOMMarket, R
 
 
 class MarketModel(AssetModel):
-    root_asset: ClassVar[Asset] = None
+    root_asset: ClassVar[Optional[Asset]] = None
     markets: list[Market] = Field(default_factory=list)
     processes: list[Process] = Field(default_factory=list)
     combinations: list[RKOMBidCombination] = Field(default_factory=list)

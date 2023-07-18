@@ -39,8 +39,8 @@ class ResourceType(BaseModel, ABC):
 
 
 class AssetType(ResourceType, ABC):
-    type_: ClassVar[Optional[str]] = None
-    label: ClassVar[AssetLabel]
+    type_: ClassVar[str]
+    label: ClassVar[AssetLabel | str]
     model_config: ClassVar[ConfigDict] = ConfigDict(arbitrary_types_allowed=True)
     parent_description: ClassVar[Optional[str]] = None
     name: str
@@ -214,7 +214,7 @@ class Model(BaseModel, ABC):
 
 
 class AssetModel(Model, ABC):
-    root_asset: ClassVar[Asset]
+    root_asset: ClassVar[Optional[Asset]] = None
 
     def assets(self) -> list[Asset]:
         return [item.as_asset() for item in self._asset_types()]

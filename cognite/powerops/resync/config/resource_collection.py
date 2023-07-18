@@ -8,23 +8,20 @@ from cognite.client.data_classes import Asset, Event, LabelDefinition, Relations
 from cognite.client.data_classes._base import CogniteResource, CogniteResourceList
 from cognite.client.data_classes.data_modeling import EdgeApply, NodeApply
 from cognite.client.exceptions import CogniteAPIError
-from deepdiff import DeepDiff
+from deepdiff import DeepDiff  # type: ignore[import]
 from pydantic import BaseModel, Extra
 
-from cognite.powerops.clients.data_classes._core import DomainModelApply, InstancesApply
+from cognite.powerops.clients.data_classes._core import InstancesApply
 from cognite.powerops.clients.powerops_client import PowerOpsClient
-from cognite.powerops.resync.config.cogshop.shop_file_config import ShopFileConfig
 from cognite.powerops.resync.config.shared import ExternalId
 from cognite.powerops.resync.models.cdf_resources import CDFFile, CDFSequence
-from cognite.powerops.utils.cdf.calls import upsert_cognite_resources
+from cognite.powerops.utils.cdf.calls import upsert_cognite_resources, CogniteAPI
 
 logger = logging.getLogger(__name__)
 
 AddableResourceT = Union[
     "CogniteResource",
     Sequence["CogniteResource"],
-    Sequence[ShopFileConfig],
-    Sequence[DomainModelApply],
     InstancesApply,
     CDFFile,
     Sequence[CDFFile],
@@ -72,7 +69,7 @@ class ResourceCollection(BaseModel):
 
     def add(self, resources_to_append: AddableResourceT):
         # sort the resource by type and append to the correct list
-        if isinstance(resources_to_append, (list, CogniteResourceList)):
+        if isinstance(resources_to_append, (Sequence, CogniteResourceList)):
             for resource in resources_to_append:
                 self._add_resource(resource)
         elif isinstance(resources_to_append, InstancesApply):
@@ -83,7 +80,7 @@ class ResourceCollection(BaseModel):
         else:
             self._add_resource(resources_to_append)
 
-    def _add_resource(self, resource: CogniteResource | ShopFileConfig):
+    def _add_resource(self, resource: CogniteResource | CDFFile | CDFSequence):
         # cdf
         if isinstance(resource, Asset):
             self.assets[resource.external_id] = resource
@@ -120,7 +117,7 @@ class ResourceCollection(BaseModel):
         for resource in self.all_cdf_resources:
             resource.data_set_id = data_set_id
 
-        cdf_api_by_type = {
+        cdf_api_by_type: dict[str, CogniteAPI] = {
             "label_definitions": po_client.cdf.labels,
             "assets": po_client.cdf.assets,
             "relationships": po_client.cdf.relationships,
