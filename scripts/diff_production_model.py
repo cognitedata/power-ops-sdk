@@ -1,4 +1,4 @@
-from cognite.powerops.clients import get_powerops_client
+from cognite.powerops.clients.powerops_client import get_powerops_client
 from cognite.powerops.resync.config.resync_config import ProductionConfig
 from cognite.powerops.resync.models.production import ProductionModel
 from cognite.powerops.resync.to_models.to_production_model import to_production_model
