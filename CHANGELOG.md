@@ -13,6 +13,13 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.28.1] - 2023-07-18
+
+### Fixed
+
+* The command `powerops plan` failed wtih `CogniteAPIError`. This is now fixed.
+
+
 ## [0.28.0] - 2023-07-16
 
 ### Added
