@@ -10,7 +10,7 @@ from cognite.powerops.resync.models.base import AssetType, NonAssetType
 
 class Market(AssetType):
     type_: ClassVar[str] = "market_configuration"
-    label: ClassVar[AssetLabel | str] = AssetLabel.MARKET
+    label: ClassVar[Union[AssetLabel, str]] = AssetLabel.MARKET
     parent_description: ClassVar[str] = "Configurations used for different markets"
     timezone: str
 

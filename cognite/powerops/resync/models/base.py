@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 from abc import ABC
-from typing import ClassVar, Iterable, Optional
+from typing import ClassVar, Iterable, Optional, Union
 from typing import Type
 from typing import Type as TypingType
 from typing import TypeVar
@@ -40,7 +40,7 @@ class ResourceType(BaseModel, ABC):
 
 class AssetType(ResourceType, ABC):
     type_: ClassVar[str]
-    label: ClassVar[AssetLabel | str]
+    label: ClassVar[Union[AssetLabel, str]]
     model_config: ClassVar[ConfigDict] = ConfigDict(arbitrary_types_allowed=True)
     parent_description: ClassVar[Optional[str]] = None
     name: str
