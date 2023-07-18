@@ -238,11 +238,11 @@ class ResourceCollection(BaseModel):
             # get the api for the resource type
             api = getattr(po_client.cdf, resource_type)
             # get all the resources from CDF
-            resources = api.list(data_set_ids=[data_set_id], limit=-1)
+            resources = api.list(data_set_ids=[data_set_id], limit=None)
             # add the resources to the bootstrap resource collection
             bootstrap_resource_collection.add(resources)
 
-        file_meta = po_client.cdf.files.list(data_set_ids=[data_set_id], limit=-1)
+        file_meta = po_client.cdf.files.list(data_set_ids=[data_set_id], limit=None)  # type: ignore[arg-type]
         shop_files = []
         for f in file_meta:
             if f.metadata.get("md5_hash") is None:
@@ -254,11 +254,11 @@ class ResourceCollection(BaseModel):
         bootstrap_resource_collection.add(shop_files)
 
         # then download the sequence data
-        all_sequences = po_client.cdf.sequences.list(data_set_ids=[data_set_id], limit=-1)
+        all_sequences = po_client.cdf.sequences.list(data_set_ids=[data_set_id], limit=None)
 
         for sequence in all_sequences:
             sequence_data = po_client.cdf.sequences.data.retrieve_dataframe(
-                external_id=sequence.external_id, limit=-1, start=0, end=-1
+                external_id=sequence.external_id, limit=None, start=0, end=-1  # type: ignore[arg-type]
             )
             bootstrap_resource_collection.add(CDFSequence(sequence=sequence, content=sequence_data))
 
