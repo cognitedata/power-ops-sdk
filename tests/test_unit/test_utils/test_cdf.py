@@ -58,8 +58,9 @@ def test_settings_from_env(setting_environmental_vars):
     # Arrange
     expected = env_vars_to_vars(setting_environmental_vars)
 
-    # Act
+    # Actual
     settings = Settings()
+    settings.cognite.client_secret = "super-secret"
 
     # Assert
     assert expected == settings.dict(exclude_unset=True)
