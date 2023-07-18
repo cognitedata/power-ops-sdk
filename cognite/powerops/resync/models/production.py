@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import ClassVar, Optional, Union
 
+from cognite.client import CogniteClient
 from cognite.client.data_classes import Asset, TimeSeries
 from pydantic import ConfigDict, Field
 
@@ -65,6 +66,37 @@ class Watercourse(AssetType):
     plants: list[Plant]
     production_obligation_time_series: list[TimeSeries] = Field(default_factory=list)
 
+    @classmethod
+    def from_cdf(cls: Watercourse, client:CogniteClient, root_watercourse_asset: Asset,) -> list[Watercourse]:
+        watercourses = []
+        asset_subtree = client.assets.retrieve_subtree(
+            external_id=root_watercourse_asset.external_id, 
+        )
+        print(asset_subtree)
+        for watercourse_asset in asset_subtree:
+            if watercourse_asset.external_id == root_watercourse_asset.external_id:
+                continue # skip root asset
+            watercourses.append(
+                cls(
+                    external_id=watercourse_asset.external_id,
+                    name=watercourse_asset.name,
+                    description=watercourse_asset.description,
+                    shop = WaterCourseShop(penalty_limit=watercourse_asset.metadata.get("penalty_limit", "")),
+                    # Are these storied in cdf at all?
+                    config_version=watercourse_asset.metadata.get("config_version", ""),
+                    model_file=watercourse_asset.metadata.get("model_file", ""),
+                    processed_model_file=watercourse_asset.metadata.get("processed_model_file", ""),
+                    plants=[],
+                    production_obligation_time_series = [],
+            ))
+
+        return watercourses
+        
+
+
+        
+        
+
 
 class PriceArea(AssetType):
     type_: ClassVar[str] = "price_area"
@@ -81,3 +113,30 @@ class ProductionModel(AssetModel):
     plants: list[Plant] = Field(default_factory=list)
     generators: list[Generator] = Field(default_factory=list)
     reservoirs: list[Reservoir] = Field(default_factory=list)
+
+    
+    @classmethod
+    def from_cdf(cls: ProductionModel, client: CogniteClient) -> ProductionModel:
+        model = cls()
+        root_asset = client.assets.retrieve(external_id=cls.root_asset.external_id)
+        asset_subtree = client.assets.retrieve_subtree(external_id=cls.root_asset.external_id, depth=1)
+        for asset in asset_subtree:
+            if asset.external_id == "watercourses":
+                model.watercourses = [Watercourse.from_cdf(client, asset)]
+
+        # start by downloading all the resources from CDF
+        # for resource_type in [
+        #     "assets",
+        #     "relationships",
+        #     "labels",
+        #     "events",
+        # ]:
+        #     # get the api for the resource type
+        #     api = getattr(client, resource_type)
+        #     # get all the resources from CDF
+        #     resources = api.list(data_set_ids=[ds_id], limit=None)
+        #     # add the resources to the bootstrap resource collection
+        #     model.resources[resource_type].extend(resources)
+        return model
+
+        
