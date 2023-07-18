@@ -12,8 +12,20 @@ def main():
 
     config = ProductionConfig.load_yamls(DEMO_DATA / "production", instantiate=True)
     local_model = to_production_model(config)
+    print("local_model")
+    # print(type(local_model))
+    print(1)
+    print(local_model.watercourses[0].production_obligation_time_series)
+    # print(2)
+    print("-----------------------")
 
     cdf_model = ProductionModel.from_cdf(client)
+    print("cdf_model")
+    print(type(cdf_model))
+    print(3)
+    print(cdf_model.watercourses[0].production_obligation_time_series)
+    print(4)
+    print("-----------------------")
 
     print(local_model.difference(cdf_model))
 

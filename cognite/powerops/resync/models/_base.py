@@ -171,10 +171,12 @@ class AssetType(Type, ABC):
         )
 
     @classmethod
-    def from_cdf(cls: Type[T_Asset_Type], client: CogniteClient) -> T_Asset_Type:
+    def from_cdf(cls: Type["T_Asset_Type"], client: CogniteClient) -> T_Asset_Type:
+        # todo: 
         raise NotImplementedError()
 
     def difference(self: T_Asset_Type, other: T_Asset_Type) -> dict:
+        # todo: 
         raise NotImplementedError()
 
 
@@ -240,10 +242,14 @@ class AssetModel(Model, ABC):
         yield from (item for item in self._types() if isinstance(item, AssetType))
 
     @classmethod
-    def from_cdf(cls: Type[T_Asset_Model], client: CogniteClient) -> T_Asset_Model:
-        raise NotImplementedError()
+    # todo: 
+    def from_cdf(cls: Type["T_Asset_Model"], client: CogniteClient) -> T_Asset_Model:
+        # raise NotImplementedError()
+        ...
+
 
     def difference(self: T_Asset_Model, other: T_Asset_Model) -> dict:
+        # todo: 
         raise NotImplementedError()
 
 
