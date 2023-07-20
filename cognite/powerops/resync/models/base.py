@@ -1,11 +1,10 @@
 from __future__ import annotations
 
 import json
-from abc import ABC
-from typing import ClassVar, Iterable, Optional, Union
+from abc import ABC, abstractclassmethod
+from typing import ClassVar, Iterable, Optional, Union, TypeVar
 from typing import Type
 from typing import Type as TypingType
-from typing import TypeVar
 
 from cognite.client import CogniteClient
 from cognite.client.data_classes import Asset, Label, Relationship, TimeSeries
@@ -47,7 +46,7 @@ class AssetType(ResourceType, ABC):
     name: str
     description: Optional[str] = None
     _external_id: Optional[str] = None
-    _parend_external_id: Optional[str] = None
+    _parent_external_id: Optional[str] = None
 
     @property
     def external_id(self) -> str:
@@ -61,13 +60,13 @@ class AssetType(ResourceType, ABC):
 
     @property
     def parent_external_id(self) -> str:
-        if self._parend_external_id:
-            return self._parend_external_id
+        if self._parent_external_id:
+            return self._parent_external_id
         return f"{self.type_}s"
 
     @parent_external_id.setter
     def parent_external_id(self, value: str) -> None:
-        self._parend_external_id = value
+        self._parent_external_id = value
 
     @property
     def parent_name(self):
@@ -137,7 +136,7 @@ class AssetType(ResourceType, ABC):
             name=self.name,
             parent_external_id=self.parent_external_id,
             labels=[Label(self.label.value)],
-            metadata=metadata if metadata else None,
+            metadata=metadata or None,
             description=self.description,
         )
 
@@ -171,13 +170,19 @@ class AssetType(ResourceType, ABC):
         )
 
     @classmethod
-    def from_cdf(cls: Type["T_Asset_Type"], client: CogniteClient) -> T_Asset_Type:
+    def from_cdf(cls: TypingType["T_Asset_Type"], client: CogniteClient) -> T_Asset_Type:
         # todo: 
         raise NotImplementedError()
 
     def difference(self: T_Asset_Type, other: T_Asset_Type) -> dict:
         # todo: 
         raise NotImplementedError()
+    
+    @abstractclassmethod
+    def from_asset(cls: TypingType["T_Asset_Type"], asset: Asset) -> T_Asset_Type:
+        # optionally additional more cdf resources 
+        raise NotImplementedError()
+    
 
 
 T_Asset_Type = TypeVar("T_Asset_Type", bound=AssetType)
@@ -276,13 +281,22 @@ class AssetModel(Model, ABC):
     @classmethod
     # todo: 
     def from_cdf(cls: Type["T_Asset_Model"], client: CogniteClient) -> T_Asset_Model:
-        # raise NotImplementedError()
-        ...
+        print("classmethod asset model superclass")
+        asset_subtree = client.assets.retrieve_subtree(
+            external_id=cls.root_asset.external_id, 
+            depth=2
+        )
+        print("asset_subtree")
+        print(asset_subtree)
+        for asset in asset_subtree:
+            if asset.external_id == cls.root_asset.external_id:
+                continue
+
+        # asset_subtree = client.assets.retrieve_subtree()
 
 
     def difference(self: T_Asset_Model, other: T_Asset_Model) -> dict:
-        # todo: 
-        raise NotImplementedError()
+        print("not ready yet")
 
 
 T_Asset_Model = TypeVar("T_Asset_Model", bound=AssetModel)
