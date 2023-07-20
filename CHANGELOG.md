@@ -13,6 +13,14 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+
+## [0.29.0] - 2023-07-20
+
+### Changed
+
+* Removed all interfaces from data models.
+
+
 ## [0.28.1] - 2023-07-18
 
 ### Fixed
