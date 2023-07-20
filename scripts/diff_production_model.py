@@ -11,23 +11,21 @@ def main():
     client = get_powerops_client().cdf
 
     config = ProductionConfig.load_yamls(DEMO_DATA / "production", instantiate=True)
-    local_model = to_production_model(config)
-    print("local_model")
-    # print(type(local_model))
-    print(1)
-    print(local_model.watercourses[0].production_obligation_time_series)
-    # print(2)
-    print("-----------------------")
+    # local_model = to_production_model(config)
+    # print("local_model")
+    # # print(local_model.generators)
+    # print((local_model.generators[1].external_id))
+    # print("-----------------------")
 
+    print("cdf_model.. creating")
     cdf_model = ProductionModel.from_cdf(client)
-    print("cdf_model")
-    print(type(cdf_model))
-    print(3)
-    print(cdf_model.watercourses[0].production_obligation_time_series)
-    print(4)
+    # print(cdf_model.generators)
+    # print(type(cdf_model.generators[0].penstock))
+
     print("-----------------------")
 
-    print(local_model.difference(cdf_model))
+
+    # print(local_model.difference(cdf_model))
 
 
 if __name__ == "__main__":
