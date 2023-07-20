@@ -1,0 +1,11 @@
+type NordPoolMarket  {
+    name: String
+    timezone: String
+    maxPrice: Float
+    minPrice: Float
+    priceSteps: Int
+    priceUnit: String
+    tickSize: Float
+    timeUnit: String
+    tradeLot: Float
+}
