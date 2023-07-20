@@ -8,6 +8,6 @@
   client_id = "140df241-50bf-4c16-a965-6fd4e5b87958"
 
 [powerops]
-  read_dataset = ""
-  write_dataset = ""
+  read_dataset = "uc:000:powerops"
+  write_dataset = "uc:000:powerops"
   cogshop_version = ""
