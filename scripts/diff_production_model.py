@@ -11,8 +11,9 @@ def main():
     client = get_powerops_client().cdf
 
     config = ProductionConfig.load_yamls(DEMO_DATA / "production", instantiate=True)
-    # local_model = to_production_model(config)
+    local_model = to_production_model(config)
     # print("local_model")
+    print(local_model.generators[1].external_id)
     # # print(local_model.generators)
     # print((local_model.generators[1].external_id))
     # print("-----------------------")
@@ -21,9 +22,9 @@ def main():
     cdf_model = ProductionModel.from_cdf(client)
     # print(cdf_model.generators)
     # print(type(cdf_model.generators[0].penstock))
-
+    print("cdf_model.. created")
+    print(cdf_model)
     print("-----------------------")
-
 
     # print(local_model.difference(cdf_model))
 

@@ -1,16 +1,14 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import ClassVar, Optional, Union
+from typing import ClassVar, Optional, Union, Iterable
 
-from cognite.client import CogniteClient
 from cognite.client.data_classes import Asset, TimeSeries
 from pydantic import ConfigDict, Field
 
-from cognite.powerops.cdf_labels import AssetLabel, RelationshipLabel
-from cognite.powerops.resync.models.base import AssetModel, AssetType, NonAssetType
+from cognite.powerops.cdf_labels import AssetLabel
+from cognite.powerops.resync.models.base import AssetModel, AssetType, NonAssetType, T_Asset_Type
 from cognite.powerops.resync.models.cdf_resources import CDFSequence
-from cognite.powerops.utils.cdf.calls import retrieve_relationships_from_source_ext_id
 
 
 class Generator(AssetType):
@@ -26,24 +24,18 @@ class Generator(AssetType):
     @classmethod
     def from_asset(cls, asset: Asset) -> Generator:
         return cls(
-                external_id=asset.external_id,
-                name=asset.name,
-                description=asset.description,
-                labels=asset.labels,
-                p_min=float(asset.metadata.get("p_min", 0.0)),
-                penstock=asset.metadata.get("penstock", ""),
-                startcost=float(asset.metadata.get("startcost", 0.0)),
-                start_stop_cost_time_series=None,
-                generator_efficiency_curve=None,
-                turbine_efficiency_curve=None
-            )
-
-    # @classmethod
-    # def from_cdf(cls, client: CogniteClient, root_generator_asset: Asset, ) -> list[Generator]:
-    #     asset_subtree = client.assets.retrieve_subtree(root_generator_asset.id)
-    #     return [ Generator.from_asset(client, asset) for asset in asset_subtree if asset.id != root_generator_asset.id ]
-
-    
+            _external_id=asset.external_id,
+            _parent_external_id=asset.parent_external_id,
+            name=asset.name,
+            description=asset.description,
+            label=asset.labels,
+            p_min=float(asset.metadata.get("p_min", 0.0)),
+            penstock=asset.metadata.get("penstock", ""),
+            startcost=float(asset.metadata.get("startcost", 0.0)),
+            start_stop_cost_time_series=None,
+            generator_efficiency_curve=None,
+            turbine_efficiency_curve=None,
+        )
 
 
 class Reservoir(AssetType):
@@ -55,14 +47,15 @@ class Reservoir(AssetType):
     @classmethod
     def from_asset(cls, asset: Asset) -> Reservoir:
         return cls(
-                external_id=asset.external_id,
-                name=asset.name,
-                description=asset.description,
-                labels=asset.labels,
-                display_name=asset.metadata.get("display_name", ""),
-                ordering=asset.metadata.get("ordering", ""),
-            )
-    
+            _external_id=asset.external_id,
+            _parent_external_id=asset.parent_external_id,
+            name=asset.name,
+            description=asset.description,
+            label=asset.labels,
+            display_name=asset.metadata.get("display_name", ""),
+            ordering=asset.metadata.get("ordering", ""),
+        )
+
 
 class Plant(AssetType):
     type_: ClassVar[str] = "plant"
@@ -85,29 +78,30 @@ class Plant(AssetType):
     head_direct_time_series: Optional[TimeSeries] = None
 
     @classmethod
-    def from_asset(cls, asset: Asset) -> PriceArea:
+    def from_asset(cls, asset: Asset) -> Plant:
         return cls(
-                external_id=asset.external_id,
-                name=asset.name,
-                description=asset.description,
-                labels=asset.labels,
-                display_name=asset.metadata.get("display_name", ""),
-                ordering=asset.metadata.get("ordering", ""),
-                head_loss_factor=float(asset.metadata.get("head_loss_factor", 0.0)),
-                outlet_level=float(asset.metadata.get("outlet_level", 0.0)),
-                p_min=float(asset.metadata.get("p_min", 0.0)),
-                p_max=float(asset.metadata.get("p_max", 0.0)),
-                penstock_head_loss_factors=asset.metadata.get("penstock_head_loss_factors", {}),
-                generators=[],
-                inlet_reservoir=None,
-                p_min_time_series=None,
-                p_max_time_series=None,
-                water_value_time_series=None,
-                feeding_fee_time_series=None,
-                outlet_level_time_series=None,
-                inlet_level_time_series=None,
-                head_direct_time_series=None,                
-            )
+            _external_id=asset.external_id,
+            _parent_external_id=asset.parent_external_id,
+            name=asset.name,
+            description=asset.description,
+            label=asset.labels,
+            display_name=asset.metadata.get("display_name", ""),
+            ordering=asset.metadata.get("ordering", ""),
+            head_loss_factor=float(asset.metadata.get("head_loss_factor", 0.0)),
+            outlet_level=float(asset.metadata.get("outlet_level", 0.0)),
+            p_min=float(asset.metadata.get("p_min", 0.0)),
+            p_max=float(asset.metadata.get("p_max", 0.0)),
+            penstock_head_loss_factors=asset.metadata.get("penstock_head_loss_factors", {}),
+            generators=[],
+            inlet_reservoir=None,
+            p_min_time_series=None,
+            p_max_time_series=None,
+            water_value_time_series=None,
+            feeding_fee_time_series=None,
+            outlet_level_time_series=None,
+            inlet_level_time_series=None,
+            head_direct_time_series=None,
+        )
 
 
 class WaterCourseShop(NonAssetType):
@@ -125,38 +119,21 @@ class Watercourse(AssetType):
     plants: list[Plant]
     production_obligation_time_series: list[TimeSeries] = Field(default_factory=list)
 
-    # @classmethod
-    # def from_cdf(cls: Watercourse, client:CogniteClient, root_watercourse_asset: Asset,) -> list[Watercourse]:
-    #     watercourses = []
-    #     asset_subtree = client.assets.retrieve_subtree(root_watercourse_asset.id)
-    #     print(asset_subtree)
-    #     watercourses.extend(
-    #         cls(
-    #             external_id=watercourse_asset.external_id,
-    #             name=watercourse_asset.name,
-    #             description=watercourse_asset.description,
-    #             shop=WaterCourseShop(
-    #                 penalty_limit=watercourse_asset.metadata.get(
-    #                     "penalty_limit", ""
-    #                 )
-    #             ),
-    #             # Are these storied in cdf at all?
-    #             config_version=watercourse_asset.metadata.get(
-    #                 "config_version", ""
-    #             ),
-    #             model_file=watercourse_asset.metadata.get("model_file", ""),
-    #             processed_model_file=watercourse_asset.metadata.get(
-    #                 "processed_model_file", ""
-    #             ),
-    #             plants=[],
-    #             production_obligation_time_series=[],
-    #         )
-    #         for watercourse_asset in asset_subtree
-    #         if watercourse_asset.external_id != root_watercourse_asset.external_id
-    #     )
-    #     return watercourses
-
-        
+    @classmethod
+    def from_asset(cls, asset: Asset) -> Watercourse:
+        return cls(
+            _external_id=asset.external_id,
+            _parent_external_id=asset.parent_external_id,
+            name=asset.name,
+            description=asset.description,
+            shop=WaterCourseShop(penalty_limit=asset.metadata.get("penalty_limit", "")),
+            # Are these storied in cdf at all?
+            config_version=asset.metadata.get("config_version", ""),
+            model_file=asset.metadata.get("model_file", ""),
+            processed_model_file=asset.metadata.get("processed_model_file", ""),
+            plants=[],
+            production_obligation_time_series=[],
+        )
 
 
 class PriceArea(AssetType):
@@ -169,23 +146,15 @@ class PriceArea(AssetType):
     @classmethod
     def from_asset(cls, asset: Asset) -> PriceArea:
         return cls(
-                # external_id=asset.external_id,
-                # name=asset.name,
-                # description=asset.description,
-                # labels=asset.labels,
-            )
-    @classmethod
-    def from_asset(cls, asset: Asset) -> PriceArea:
-        return cls(
-            external_id=asset.external_id,
+            _external_id=asset.external_id,
+            _parent_external_id=asset.parent_external_id,
             name=asset.name,
             description=asset.description,
-            labels=asset.labels,
+            label=asset.labels,
             dayahead_price_time_series=None,
             plants=[],
             watercourses=[],
         )
-        
 
 
 class ProductionModel(AssetModel):
@@ -197,25 +166,14 @@ class ProductionModel(AssetModel):
     reservoirs: list[Reservoir] = Field(default_factory=list)
 
     
-    # @classmethod
-    # def from_cdf(cls: ProductionModel, client: CogniteClient) -> ProductionModel:
-    #     model = cls()
-    #     asset_subtree = client.assets.retrieve_subtree(external_id=cls.root_asset.external_id, depth=1)
-    #     for asset in asset_subtree:
-    #         asset_ext_id = asset.external_id
-    #         print("asset_ext_id", asset_ext_id)
-    #         if asset.external_id == "power_ops":
-    #             continue
-    #         if asset_ext_id == "generators":
-    #             model.generators = Generator.from_cdf(client, asset)
-    #         elif asset_ext_id == "reservoirs":
-    #             model.reservoirs = Reservoir.from_cdf(client, asset)
-    #         # elif asset.external_id == "watercourses":
-    #         #     model.watercourses = [Watercourse.from_cdf(client, asset)]
-    #         print("----------")
+    @classmethod
+    def _asset_types_and_field_names(cls) -> Iterable[tuple[T_Asset_Type, str]]:
+        return [
+            (PriceArea, "price_areas"),
+            (Watercourse, "watercourses"),
+            (Plant, "plants"), 
+            (Reservoir, "reservoirs"), 
+            (Generator, "generators"),
+        ]
 
-    #     return model
-    
-
-
-        
+  
