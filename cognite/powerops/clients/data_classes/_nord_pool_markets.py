@@ -45,20 +45,13 @@ class NordPoolMarketApply(DomainModelApply):
             properties={
                 "maxPrice": self.max_price,
                 "minPrice": self.min_price,
+                "name": self.name,
                 "priceSteps": self.price_steps,
                 "priceUnit": self.price_unit,
                 "tickSize": self.tick_size,
                 "timeUnit": self.time_unit,
-                "tradeLot": self.trade_lot,
-            },
-        )
-        sources.append(source)
-
-        source = dm.NodeOrEdgeData(
-            source=dm.ContainerId("power-ops", "Market"),
-            properties={
-                "name": self.name,
                 "timezone": self.timezone,
+                "tradeLot": self.trade_lot,
             },
         )
         sources.append(source)

@@ -8,7 +8,7 @@ from pydantic import Field
 from cognite.powerops.clients.data_classes._core import DomainModel, DomainModelApply, InstancesApply, TypeList
 
 if TYPE_CHECKING:
-    from cognite.powerops.clients.data_classes._bids import BidApply
+    from cognite.powerops.clients.data_classes._benchmark_bids import BenchmarkBidApply
     from cognite.powerops.clients.data_classes._production_plan_time_series import ProductionPlanTimeSeriesApply
     from cognite.powerops.clients.data_classes._shop_transformations import ShopTransformationApply
 
@@ -27,7 +27,7 @@ class BenchmarkProces(DomainModel):
 
 class BenchmarkProcesApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
-    bid: Optional[Union["BidApply", str]] = Field(None, repr=False)
+    bid: Optional[Union["BenchmarkBidApply", str]] = Field(None, repr=False)
     metrics: Optional[dict] = None
     name: Optional[str] = None
     production_plan_time_series: list[Union["ProductionPlanTimeSeriesApply", str]] = Field(
@@ -42,21 +42,14 @@ class BenchmarkProcesApply(DomainModelApply):
 
         sources = []
         source = dm.NodeOrEdgeData(
-            source=dm.ContainerId("power-ops", "Process"),
+            source=dm.ContainerId("power-ops", "BenchmarkProcess"),
             properties={
                 "bid": {
                     "space": "power-ops",
                     "externalId": self.bid if isinstance(self.bid, str) else self.bid.external_id,
                 },
-                "name": self.name,
-            },
-        )
-        sources.append(source)
-
-        source = dm.NodeOrEdgeData(
-            source=dm.ContainerId("power-ops", "BenchmarkProcess"),
-            properties={
                 "metrics": self.metrics,
+                "name": self.name,
                 "runEvents": self.run_events,
                 "shop": {
                     "space": "power-ops",

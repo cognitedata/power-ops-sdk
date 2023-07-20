@@ -14,7 +14,7 @@ class NordPoolMarketsAPI(TypeAPI[NordPoolMarket, NordPoolMarketApply, NordPoolMa
     def __init__(self, client: CogniteClient):
         super().__init__(
             client=client,
-            sources=dm.ViewId("power-ops", "NordPoolMarket", "919be6b14f829d"),
+            sources=dm.ViewId("power-ops", "NordPoolMarket", "88c86032b9ac9c"),
             class_type=NordPoolMarket,
             class_apply_type=NordPoolMarketApply,
             class_list=NordPoolMarketList,

@@ -9,7 +9,6 @@ from cognite.powerops.clients.data_classes._bid_matrix_generators import (
     BidMatrixGeneratorApply,
     BidMatrixGeneratorList,
 )
-from cognite.powerops.clients.data_classes._bids import Bid, BidApply, BidList
 from cognite.powerops.clients.data_classes._command_configs import CommandConfig, CommandConfigApply, CommandConfigList
 from cognite.powerops.clients.data_classes._date_transformations import (
     DateTransformation,
@@ -28,7 +27,6 @@ from cognite.powerops.clients.data_classes._input_time_series_mappings import (
     InputTimeSeriesMappingApply,
     InputTimeSeriesMappingList,
 )
-from cognite.powerops.clients.data_classes._markets import Market, MarketApply, MarketList
 from cognite.powerops.clients.data_classes._nord_pool_markets import (
     NordPoolMarket,
     NordPoolMarketApply,
@@ -37,24 +35,17 @@ from cognite.powerops.clients.data_classes._nord_pool_markets import (
 from cognite.powerops.clients.data_classes._output_mappings import OutputMapping, OutputMappingApply, OutputMappingList
 from cognite.powerops.clients.data_classes._plants import Plant, PlantApply, PlantList
 from cognite.powerops.clients.data_classes._price_areas import PriceArea, PriceAreaApply, PriceAreaList
-from cognite.powerops.clients.data_classes._process import Proces, ProcesApply, ProcesList
 from cognite.powerops.clients.data_classes._production_plan_time_series import (
     ProductionPlanTimeSeries,
     ProductionPlanTimeSeriesApply,
     ProductionPlanTimeSeriesList,
 )
-from cognite.powerops.clients.data_classes._reserve_scenarios import (
-    ReserveScenario,
-    ReserveScenarioApply,
-    ReserveScenarioList,
-)
-from cognite.powerops.clients.data_classes._reservoirs import Reservoir, ReservoirApply, ReservoirList
+from cognite.powerops.clients.data_classes._rkom_bids import RKOMBid, RKOMBidApply, RKOMBidList
 from cognite.powerops.clients.data_classes._rkom_bid_combinations import (
     RKOMBidCombination,
     RKOMBidCombinationApply,
     RKOMBidCombinationList,
 )
-from cognite.powerops.clients.data_classes._rkom_bids import RKOMBid, RKOMBidApply, RKOMBidList
 from cognite.powerops.clients.data_classes._rkom_combination_bids import (
     RKOMCombinationBid,
     RKOMCombinationBidApply,
@@ -62,6 +53,13 @@ from cognite.powerops.clients.data_classes._rkom_combination_bids import (
 )
 from cognite.powerops.clients.data_classes._rkom_markets import RKOMMarket, RKOMMarketApply, RKOMMarketList
 from cognite.powerops.clients.data_classes._rkom_process import RKOMProces, RKOMProcesApply, RKOMProcesList
+from cognite.powerops.clients.data_classes._reserve_scenarios import (
+    ReserveScenario,
+    ReserveScenarioApply,
+    ReserveScenarioList,
+)
+from cognite.powerops.clients.data_classes._reservoirs import Reservoir, ReservoirApply, ReservoirList
+from cognite.powerops.clients.data_classes._scenarios import Scenario, ScenarioApply, ScenarioList
 from cognite.powerops.clients.data_classes._scenario_mappings import (
     ScenarioMapping,
     ScenarioMappingApply,
@@ -72,7 +70,6 @@ from cognite.powerops.clients.data_classes._scenario_templates import (
     ScenarioTemplateApply,
     ScenarioTemplateList,
 )
-from cognite.powerops.clients.data_classes._scenarios import Scenario, ScenarioApply, ScenarioList
 from cognite.powerops.clients.data_classes._shop_transformations import (
     ShopTransformation,
     ShopTransformationApply,
@@ -83,22 +80,20 @@ from cognite.powerops.clients.data_classes._value_transformations import (
     ValueTransformationApply,
     ValueTransformationList,
 )
+from cognite.powerops.clients.data_classes._watercourses import Watercourse, WatercourseApply, WatercourseList
 from cognite.powerops.clients.data_classes._watercourse_shops import (
     WatercourseShop,
     WatercourseShopApply,
     WatercourseShopList,
 )
-from cognite.powerops.clients.data_classes._watercourses import Watercourse, WatercourseApply, WatercourseList
 
 BenchmarkBidApply.model_rebuild()
 BenchmarkProcesApply.model_rebuild()
-BidApply.model_rebuild()
 DayAheadBidApply.model_rebuild()
 DayAheadProcesApply.model_rebuild()
 InputTimeSeriesMappingApply.model_rebuild()
 PlantApply.model_rebuild()
 PriceAreaApply.model_rebuild()
-ProcesApply.model_rebuild()
 RKOMBidApply.model_rebuild()
 RKOMBidCombinationApply.model_rebuild()
 RKOMProcesApply.model_rebuild()
@@ -116,9 +111,6 @@ __all__ = [
     "BenchmarkProces",
     "BenchmarkProcesApply",
     "BenchmarkProcesList",
-    "Bid",
-    "BidApply",
-    "BidList",
     "BidMatrixGenerator",
     "BidMatrixGeneratorApply",
     "BidMatrixGeneratorList",
@@ -140,9 +132,6 @@ __all__ = [
     "InputTimeSeriesMapping",
     "InputTimeSeriesMappingApply",
     "InputTimeSeriesMappingList",
-    "Market",
-    "MarketApply",
-    "MarketList",
     "NordPoolMarket",
     "NordPoolMarketApply",
     "NordPoolMarketList",
@@ -155,9 +144,6 @@ __all__ = [
     "PriceArea",
     "PriceAreaApply",
     "PriceAreaList",
-    "Proces",
-    "ProcesApply",
-    "ProcesList",
     "ProductionPlanTimeSeries",
     "ProductionPlanTimeSeriesApply",
     "ProductionPlanTimeSeriesList",

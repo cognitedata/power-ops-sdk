@@ -9,7 +9,7 @@ from cognite.powerops.clients.data_classes._core import DomainModel, DomainModel
 
 if TYPE_CHECKING:
     from cognite.powerops.clients.data_classes._bid_matrix_generators import BidMatrixGeneratorApply
-    from cognite.powerops.clients.data_classes._bids import BidApply
+    from cognite.powerops.clients.data_classes._day_ahead_bids import DayAheadBidApply
     from cognite.powerops.clients.data_classes._shop_transformations import ShopTransformationApply
 
 __all__ = ["DayAheadProces", "DayAheadProcesApply", "DayAheadProcesList"]
@@ -25,7 +25,7 @@ class DayAheadProces(DomainModel):
 
 class DayAheadProcesApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
-    bid: Optional[Union["BidApply", str]] = Field(None, repr=False)
+    bid: Optional[Union["DayAheadBidApply", str]] = Field(None, repr=False)
     bid_matrix_generator_config: list[Union["BidMatrixGeneratorApply", str]] = Field(default_factory=list, repr=False)
     name: Optional[str] = None
     shop: Optional[Union["ShopTransformationApply", str]] = Field(None, repr=False)
@@ -36,20 +36,13 @@ class DayAheadProcesApply(DomainModelApply):
 
         sources = []
         source = dm.NodeOrEdgeData(
-            source=dm.ContainerId("power-ops", "Process"),
+            source=dm.ContainerId("power-ops", "DayAheadProcess"),
             properties={
                 "bid": {
                     "space": "power-ops",
                     "externalId": self.bid if isinstance(self.bid, str) else self.bid.external_id,
                 },
                 "name": self.name,
-            },
-        )
-        sources.append(source)
-
-        source = dm.NodeOrEdgeData(
-            source=dm.ContainerId("power-ops", "DayAheadProcess"),
-            properties={
                 "shop": {
                     "space": "power-ops",
                     "externalId": self.shop if isinstance(self.shop, str) else self.shop.external_id,
