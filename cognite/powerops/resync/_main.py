@@ -5,14 +5,13 @@ from pathlib import Path
 from typing import Optional, Callable, overload, Any
 from uuid import uuid4
 
-from cognite.client import CogniteClient
 from cognite.client.data_classes import Event
 
 from cognite.powerops.clients.powerops_client import get_powerops_client
 from cognite.powerops.resync._logger import configure_debug_logging
 from cognite.powerops.resync.config.resource_collection import ResourceCollection
 from cognite.powerops.resync.config.resync_config import ReSyncConfig
-from cognite.powerops.resync.models.base import Model, AssetModel
+from cognite.powerops.resync.models.base import Model
 from cognite.powerops.resync.to_models.transform import transform
 
 AVAILABLE_MODELS = [
@@ -81,9 +80,8 @@ def apply(
     client = get_powerops_client()
     collection, config, models = _load_transform(market, path, client.cdf.config.project, echo, model_names)
 
+    # ! This should always stay at the bottom # TODO: consider wrapper
     collection.add(_create_bootstrap_finished_event(echo))
-
-    _validate_relationship_targets(client, models, collection, echo)
 
     summaries = {}
     for model in models:
@@ -140,32 +138,6 @@ def _create_bootstrap_finished_event(echo: Callable[[str], None]) -> Event:
     echo(f"Created status event '{event.external_id}'")
 
     return event
-
-
-def _validate_relationship_targets(
-    client: CogniteClient, models: list[Model], collection: ResourceCollection, echo: Callable[[str], None]
-) -> None:
-    """Validates that all relationships in the collection have targets that exist in CDF"""
-    for model in models:
-        if not isinstance(model, AssetModel):
-            continue
-        time_series = model.time_series()
-        existing_time_series = client.time_series.retrieve_multiple(
-            external_ids=list({t.external_id for t in time_series}), ignore_unknown_ids=True
-        )
-        existing_timeseries_ids = {ts.external_id: ts for ts in existing_time_series}
-        missing_timeseries = {t.external_id for t in time_series if t.external_id not in existing_timeseries_ids}
-
-        relationships = model.relationships()
-        to_delete = {r.external_id for r in relationships if r.target_external_id in missing_timeseries}
-        if to_delete:
-            echo(
-                f"WARNING: There are {len(to_delete)} relationships in {model.model_name} that have targets "
-                "that do not exist in CDF. These relationships will not be created."
-            )
-
-        for r in relationships:
-            collection.relationships.pop(r.external_id, None)
 
 
 if __name__ == "__main__":
