@@ -1,19 +1,7 @@
-type NordPoolMarket implements Market {
-    name: String
-    timezone: String
-    maxPrice: Float
-    minPrice: Float
-    priceSteps: Int
-    priceUnit: String
-    tickSize: Float
-    timeUnit: String
-    tradeLot: Float
-}
-
-type DayAheadBid implements Bid{
+type DayAheadBid{
     name: String
     date: [DateTransformation]
-    market: Market
+    market: NordPoolMarket
     isDefaultConfigForPriceArea: Boolean
     mainScenario: String
     priceArea: String
@@ -29,7 +17,7 @@ type BidMatrixGenerator {
     functionExternalId: String
 }
 
-type DayAheadProcess implements Process{
+type DayAheadProcess{
     name: String
     bid: DayAheadBid
     shop: ShopTransformation

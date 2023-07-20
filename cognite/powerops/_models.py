@@ -32,9 +32,9 @@ class _ExtraTypes:
     input_timeseries_mapping = _SHARED_TYPES / "input_timeseries_mapping.graphql"
     value_transformation = _SHARED_TYPES / "value_transformation.graphql"
     date_transformation = _SHARED_TYPES / "date_transformation.graphql"
-    market = _SHARED_TYPES / "market.graphql"
     scenario_mapping = _SHARED_TYPES / "scenario_mapping.graphql"
     shop_transformation = _SHARED_TYPES / "shop_transformation.graphql"
+    nordpooL_market = _SHARED_TYPES / "nordpool_market.graphql"
 
 
 MODEL_BY_NAME: dict[str, PowerOpsModel] = {
@@ -69,7 +69,7 @@ MODEL_BY_NAME: dict[str, PowerOpsModel] = {
             _ExtraTypes.input_timeseries_mapping,
             _ExtraTypes.scenario_mapping,
             _ExtraTypes.shop_transformation,
-            _ExtraTypes.market,
+            _ExtraTypes.nordpooL_market,
         ],
     ),
     "rkom": PowerOpsModel(
@@ -83,7 +83,6 @@ MODEL_BY_NAME: dict[str, PowerOpsModel] = {
             _ExtraTypes.input_timeseries_mapping,
             _ExtraTypes.scenario_mapping,
             _ExtraTypes.shop_transformation,
-            _ExtraTypes.market,
         ],
     ),
     "benchmark": PowerOpsModel(
@@ -97,7 +96,7 @@ MODEL_BY_NAME: dict[str, PowerOpsModel] = {
             _ExtraTypes.input_timeseries_mapping,
             _ExtraTypes.scenario_mapping,
             _ExtraTypes.shop_transformation,
-            _ExtraTypes.market,
+            _ExtraTypes.nordpooL_market,
         ],
     ),
 }

@@ -9,7 +9,7 @@ from cognite.powerops.clients.data_classes._core import DomainModel, DomainModel
 
 if TYPE_CHECKING:
     from cognite.powerops.clients.data_classes._date_transformations import DateTransformationApply
-    from cognite.powerops.clients.data_classes._markets import MarketApply
+    from cognite.powerops.clients.data_classes._nord_pool_markets import NordPoolMarketApply
     from cognite.powerops.clients.data_classes._scenario_mappings import ScenarioMappingApply
 
 __all__ = ["DayAheadBid", "DayAheadBidApply", "DayAheadBidList"]
@@ -36,7 +36,7 @@ class DayAheadBidApply(DomainModelApply):
     date: list[Union["DateTransformationApply", str]] = Field(default_factory=list, repr=False)
     is_default_config_for_price_area: Optional[bool] = None
     main_scenario: Optional[str] = None
-    market: Optional[Union["MarketApply", str]] = Field(None, repr=False)
+    market: Optional[Union["NordPoolMarketApply", str]] = Field(None, repr=False)
     name: Optional[str] = None
     no_shop: Optional[bool] = None
     price_area: Optional[str] = None
@@ -54,20 +54,13 @@ class DayAheadBidApply(DomainModelApply):
                 "bidProcessConfigurationName": self.bid_process_configuration_name,
                 "isDefaultConfigForPriceArea": self.is_default_config_for_price_area,
                 "mainScenario": self.main_scenario,
-                "noShop": self.no_shop,
-                "priceArea": self.price_area,
-            },
-        )
-        sources.append(source)
-
-        source = dm.NodeOrEdgeData(
-            source=dm.ContainerId("power-ops", "Bid"),
-            properties={
                 "market": {
                     "space": "power-ops",
                     "externalId": self.market if isinstance(self.market, str) else self.market.external_id,
                 },
                 "name": self.name,
+                "noShop": self.no_shop,
+                "priceArea": self.price_area,
             },
         )
         sources.append(source)
@@ -121,7 +114,7 @@ class DayAheadBidApply(DomainModelApply):
         return dm.EdgeApply(
             space="power-ops",
             external_id=f"{self.external_id}:{end_node_ext_id}",
-            type=dm.DirectRelationReference("power-ops", "Bid.date"),
+            type=dm.DirectRelationReference("power-ops", "DayAheadBid.date"),
             start_node=dm.DirectRelationReference(self.space, self.external_id),
             end_node=dm.DirectRelationReference("power-ops", end_node_ext_id),
         )

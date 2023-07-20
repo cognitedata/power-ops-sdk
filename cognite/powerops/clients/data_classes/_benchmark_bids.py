@@ -9,7 +9,7 @@ from cognite.powerops.clients.data_classes._core import DomainModel, DomainModel
 
 if TYPE_CHECKING:
     from cognite.powerops.clients.data_classes._date_transformations import DateTransformationApply
-    from cognite.powerops.clients.data_classes._markets import MarketApply
+    from cognite.powerops.clients.data_classes._nord_pool_markets import NordPoolMarketApply
 
 __all__ = ["BenchmarkBid", "BenchmarkBidApply", "BenchmarkBidList"]
 
@@ -24,7 +24,7 @@ class BenchmarkBid(DomainModel):
 class BenchmarkBidApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
     date: list[Union["DateTransformationApply", str]] = Field(default_factory=list, repr=False)
-    market: Optional[Union["MarketApply", str]] = Field(None, repr=False)
+    market: Optional[Union["NordPoolMarketApply", str]] = Field(None, repr=False)
     name: Optional[str] = None
 
     def _to_instances_apply(self, cache: set[str]) -> InstancesApply:
@@ -33,7 +33,7 @@ class BenchmarkBidApply(DomainModelApply):
 
         sources = []
         source = dm.NodeOrEdgeData(
-            source=dm.ContainerId("power-ops", "Bid"),
+            source=dm.ContainerId("power-ops", "BenchmarkBid"),
             properties={
                 "market": {
                     "space": "power-ops",
@@ -82,7 +82,7 @@ class BenchmarkBidApply(DomainModelApply):
         return dm.EdgeApply(
             space="power-ops",
             external_id=f"{self.external_id}:{end_node_ext_id}",
-            type=dm.DirectRelationReference("power-ops", "Bid.date"),
+            type=dm.DirectRelationReference("power-ops", "BenchmarkBid.date"),
             start_node=dm.DirectRelationReference(self.space, self.external_id),
             end_node=dm.DirectRelationReference("power-ops", end_node_ext_id),
         )

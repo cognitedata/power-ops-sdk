@@ -19,7 +19,7 @@ class DayAheadBidDatesAPI:
         f = dm.filters
         is_edge_type = f.Equals(
             ["edge", "type"],
-            {"space": "power-ops", "externalId": "Bid.date"},
+            {"space": "power-ops", "externalId": "DayAheadBid.date"},
         )
         if isinstance(external_id, str):
             is_day_ahead_bid = f.Equals(
@@ -43,7 +43,7 @@ class DayAheadBidDatesAPI:
         f = dm.filters
         is_edge_type = f.Equals(
             ["edge", "type"],
-            {"space": "power-ops", "externalId": "Bid.date"},
+            {"space": "power-ops", "externalId": "DayAheadBid.date"},
         )
         return self._client.data_modeling.instances.list("edge", limit=limit, filter=is_edge_type)
 

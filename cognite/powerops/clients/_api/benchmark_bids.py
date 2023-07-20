@@ -19,7 +19,7 @@ class BenchmarkBidDatesAPI:
         f = dm.filters
         is_edge_type = f.Equals(
             ["edge", "type"],
-            {"space": "power-ops", "externalId": "Bid.date"},
+            {"space": "power-ops", "externalId": "BenchmarkBid.date"},
         )
         if isinstance(external_id, str):
             is_benchmark_bid = f.Equals(
@@ -43,7 +43,7 @@ class BenchmarkBidDatesAPI:
         f = dm.filters
         is_edge_type = f.Equals(
             ["edge", "type"],
-            {"space": "power-ops", "externalId": "Bid.date"},
+            {"space": "power-ops", "externalId": "BenchmarkBid.date"},
         )
         return self._client.data_modeling.instances.list("edge", limit=limit, filter=is_edge_type)
 

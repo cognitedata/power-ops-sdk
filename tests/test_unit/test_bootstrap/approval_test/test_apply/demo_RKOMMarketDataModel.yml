@@ -1828,13 +1828,8 @@ data_modeling.instances:
   sources:
   - properties:
       name: RKOM weekly (Statnett)
-      timezone: Europe/Oslo
-    source:
-      external_id: Market
-      space: power-ops
-      type: container
-  - properties:
       startOfWeek: 1
+      timezone: Europe/Oslo
     source:
       external_id: RKOMMarket
       space: power-ops
@@ -1848,11 +1843,6 @@ data_modeling.instances:
         externalId: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW_bid
         space: power-ops
       name: Fornebu_week_down_day_3-prices_20MW-200MW
-    source:
-      external_id: Process
-      space: power-ops
-      type: container
-  - properties:
       plants:
       - Rull2
       - Rull1
@@ -1876,22 +1866,17 @@ data_modeling.instances:
   - properties:
       auction: week
       block: day
+      market:
+        externalId: market_configuration_statnett_rkom_weekly
+        space: power-ops
       method: simple
       minimumPrice: 0.0
+      name: null
       pricePremium: 0.0
       product: down
       watercourse: Fornebu
     source:
       external_id: RKOMBid
-      space: power-ops
-      type: container
-  - properties:
-      market:
-        externalId: market_configuration_statnett_rkom_weekly
-        space: power-ops
-      name: null
-    source:
-      external_id: Bid
       space: power-ops
       type: container
   space: power-ops
@@ -1941,7 +1926,7 @@ data_modeling.instances:
     external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW_bid
     space: power-ops
   type:
-    external_id: Bid.date
+    external_id: RKOMBid.date
     space: power-ops
 - end_node:
     external_id: DateTransformation__9501ec598e1ff690959af9e852b50085
@@ -1953,7 +1938,7 @@ data_modeling.instances:
     external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW_bid
     space: power-ops
   type:
-    external_id: Bid.date
+    external_id: RKOMBid.date
     space: power-ops
 - end_node:
     external_id: DateTransformation__b9e809e11bd75d1befc81f2a3fe25834
@@ -1965,7 +1950,7 @@ data_modeling.instances:
     external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW_bid
     space: power-ops
   type:
-    external_id: Bid.date
+    external_id: RKOMBid.date
     space: power-ops
 - end_node:
     external_id: DateTransformation__eab12bae2544b1c7e6283c5b2f2f91f5
@@ -1977,7 +1962,7 @@ data_modeling.instances:
     external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW_bid
     space: power-ops
   type:
-    external_id: Bid.date
+    external_id: RKOMBid.date
     space: power-ops
 - end_node:
     external_id: week_day_down_rkom_up_0_week_day_down_rkom_up_0_ScenarioMapping__d6aa559a1a05224e0d21dbef739ccafb
@@ -2119,11 +2104,6 @@ data_modeling.instances:
         externalId: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW_bid
         space: power-ops
       name: Fornebu_week_up_day_3-prices_20MW-200MW
-    source:
-      external_id: Process
-      space: power-ops
-      type: container
-  - properties:
       plants:
       - Rull2
       - Rull1
@@ -2147,22 +2127,17 @@ data_modeling.instances:
   - properties:
       auction: week
       block: day
+      market:
+        externalId: market_configuration_statnett_rkom_weekly
+        space: power-ops
       method: simple
       minimumPrice: 0.0
+      name: null
       pricePremium: 0.0
       product: up
       watercourse: Fornebu
     source:
       external_id: RKOMBid
-      space: power-ops
-      type: container
-  - properties:
-      market:
-        externalId: market_configuration_statnett_rkom_weekly
-        space: power-ops
-      name: null
-    source:
-      external_id: Bid
       space: power-ops
       type: container
   space: power-ops
@@ -2212,7 +2187,7 @@ data_modeling.instances:
     external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW_bid
     space: power-ops
   type:
-    external_id: Bid.date
+    external_id: RKOMBid.date
     space: power-ops
 - end_node:
     external_id: DateTransformation__9501ec598e1ff690959af9e852b50085
@@ -2224,7 +2199,7 @@ data_modeling.instances:
     external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW_bid
     space: power-ops
   type:
-    external_id: Bid.date
+    external_id: RKOMBid.date
     space: power-ops
 - end_node:
     external_id: DateTransformation__b9e809e11bd75d1befc81f2a3fe25834
@@ -2236,7 +2211,7 @@ data_modeling.instances:
     external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW_bid
     space: power-ops
   type:
-    external_id: Bid.date
+    external_id: RKOMBid.date
     space: power-ops
 - end_node:
     external_id: DateTransformation__eab12bae2544b1c7e6283c5b2f2f91f5
@@ -2248,7 +2223,7 @@ data_modeling.instances:
     external_id: POWEROPS_Fornebu_week_up_day_3-prices_20MW-200MW_bid
     space: power-ops
   type:
-    external_id: Bid.date
+    external_id: RKOMBid.date
     space: power-ops
 - end_node:
     external_id: week_day_up_rkom_up_0_week_day_up_rkom_up_0_ScenarioMapping__5ffd2a346e6a38e0a96c1aa4d4dd289a
@@ -2390,11 +2365,6 @@ data_modeling.instances:
         externalId: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW_bid
         space: power-ops
       name: Fornebu_weekend_down_day_3-prices_20MW-200MW
-    source:
-      external_id: Process
-      space: power-ops
-      type: container
-  - properties:
       plants:
       - Rull2
       - Rull1
@@ -2418,22 +2388,17 @@ data_modeling.instances:
   - properties:
       auction: weekend
       block: day
+      market:
+        externalId: market_configuration_statnett_rkom_weekly
+        space: power-ops
       method: simple
       minimumPrice: 0.0
+      name: null
       pricePremium: 0.0
       product: down
       watercourse: Fornebu
     source:
       external_id: RKOMBid
-      space: power-ops
-      type: container
-  - properties:
-      market:
-        externalId: market_configuration_statnett_rkom_weekly
-        space: power-ops
-      name: null
-    source:
-      external_id: Bid
       space: power-ops
       type: container
   space: power-ops
@@ -2483,7 +2448,7 @@ data_modeling.instances:
     external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW_bid
     space: power-ops
   type:
-    external_id: Bid.date
+    external_id: RKOMBid.date
     space: power-ops
 - end_node:
     external_id: DateTransformation__b9e809e11bd75d1befc81f2a3fe25834
@@ -2495,7 +2460,7 @@ data_modeling.instances:
     external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW_bid
     space: power-ops
   type:
-    external_id: Bid.date
+    external_id: RKOMBid.date
     space: power-ops
 - end_node:
     external_id: DateTransformation__deb6d1a3955f33f14a2734dc7d00a74a
@@ -2507,7 +2472,7 @@ data_modeling.instances:
     external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW_bid
     space: power-ops
   type:
-    external_id: Bid.date
+    external_id: RKOMBid.date
     space: power-ops
 - end_node:
     external_id: DateTransformation__eab12bae2544b1c7e6283c5b2f2f91f5
@@ -2519,7 +2484,7 @@ data_modeling.instances:
     external_id: POWEROPS_Fornebu_weekend_down_day_3-prices_20MW-200MW_bid
     space: power-ops
   type:
-    external_id: Bid.date
+    external_id: RKOMBid.date
     space: power-ops
 - end_node:
     external_id: weekend_day_down_rkom_up_0_weekend_day_down_rkom_up_0_ScenarioMapping__d6aa559a1a05224e0d21dbef739ccafb
@@ -2661,11 +2626,6 @@ data_modeling.instances:
         externalId: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW_bid
         space: power-ops
       name: Fornebu_weekend_up_day_3-prices_20MW-200MW
-    source:
-      external_id: Process
-      space: power-ops
-      type: container
-  - properties:
       plants:
       - Rull2
       - Rull1
@@ -2689,22 +2649,17 @@ data_modeling.instances:
   - properties:
       auction: weekend
       block: day
+      market:
+        externalId: market_configuration_statnett_rkom_weekly
+        space: power-ops
       method: simple
       minimumPrice: 0.0
+      name: null
       pricePremium: 0.0
       product: up
       watercourse: Fornebu
     source:
       external_id: RKOMBid
-      space: power-ops
-      type: container
-  - properties:
-      market:
-        externalId: market_configuration_statnett_rkom_weekly
-        space: power-ops
-      name: null
-    source:
-      external_id: Bid
       space: power-ops
       type: container
   space: power-ops
@@ -2754,7 +2709,7 @@ data_modeling.instances:
     external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW_bid
     space: power-ops
   type:
-    external_id: Bid.date
+    external_id: RKOMBid.date
     space: power-ops
 - end_node:
     external_id: DateTransformation__b9e809e11bd75d1befc81f2a3fe25834
@@ -2766,7 +2721,7 @@ data_modeling.instances:
     external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW_bid
     space: power-ops
   type:
-    external_id: Bid.date
+    external_id: RKOMBid.date
     space: power-ops
 - end_node:
     external_id: DateTransformation__deb6d1a3955f33f14a2734dc7d00a74a
@@ -2778,7 +2733,7 @@ data_modeling.instances:
     external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW_bid
     space: power-ops
   type:
-    external_id: Bid.date
+    external_id: RKOMBid.date
     space: power-ops
 - end_node:
     external_id: DateTransformation__eab12bae2544b1c7e6283c5b2f2f91f5
@@ -2790,7 +2745,7 @@ data_modeling.instances:
     external_id: POWEROPS_Fornebu_weekend_up_day_3-prices_20MW-200MW_bid
     space: power-ops
   type:
-    external_id: Bid.date
+    external_id: RKOMBid.date
     space: power-ops
 - end_node:
     external_id: weekend_day_up_rkom_up_0_weekend_day_up_rkom_up_0_ScenarioMapping__5ffd2a346e6a38e0a96c1aa4d4dd289a

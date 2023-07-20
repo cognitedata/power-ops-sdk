@@ -9,7 +9,7 @@ data_modeling.instances:
         space: power-ops
       name: null
     source:
-      external_id: Bid
+      external_id: BenchmarkBid
       space: power-ops
       type: container
   space: power-ops
@@ -23,7 +23,7 @@ data_modeling.instances:
     external_id: BenchmarkBid__353f8b6628349d7f0b3f0d0b92eed7ad
     space: power-ops
   type:
-    external_id: Bid.date
+    external_id: BenchmarkBid.date
     space: power-ops
 - end_node:
     external_id: DateTransformation__f9f90921095b2f4b241249a5745014b3
@@ -35,7 +35,7 @@ data_modeling.instances:
     external_id: BenchmarkBid__353f8b6628349d7f0b3f0d0b92eed7ad
     space: power-ops
   type:
-    external_id: Bid.date
+    external_id: BenchmarkBid.date
     space: power-ops
 - external_id: benchmarking_config_day_ahead
   instance_type: node
@@ -44,12 +44,6 @@ data_modeling.instances:
       bid:
         externalId: BenchmarkBid__353f8b6628349d7f0b3f0d0b92eed7ad
         space: power-ops
-      name: Benchmarking config DayAhead
-    source:
-      external_id: Process
-      space: power-ops
-      type: container
-  - properties:
       metrics:
         bypass_cost: Bypass Cost
         gate_discharge_cost: Gate Discharge Cost
@@ -68,6 +62,7 @@ data_modeling.instances:
         sum_penalties: Sum Penalties
         total: Total
         vow_in_transit: Vow in Transit
+      name: Benchmarking config DayAhead
       runEvents: []
       shop:
         externalId: ShopTransformation__168e44cd5fbaa4a825986c1dc6254309

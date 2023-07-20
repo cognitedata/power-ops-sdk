@@ -29,18 +29,11 @@ class RKOMMarketApply(DomainModelApply):
 
         sources = []
         source = dm.NodeOrEdgeData(
-            source=dm.ContainerId("power-ops", "Market"),
-            properties={
-                "name": self.name,
-                "timezone": self.timezone,
-            },
-        )
-        sources.append(source)
-
-        source = dm.NodeOrEdgeData(
             source=dm.ContainerId("power-ops", "RKOMMarket"),
             properties={
+                "name": self.name,
                 "startOfWeek": self.start_of_week,
+                "timezone": self.timezone,
             },
         )
         sources.append(source)
