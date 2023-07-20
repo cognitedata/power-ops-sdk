@@ -1,4 +1,5 @@
 from __future__ import annotations
+from collections import defaultdict
 
 import json
 from abc import ABC, abstractclassmethod
@@ -14,6 +15,7 @@ from pydantic import BaseModel, ConfigDict
 from cognite.powerops.cdf_labels import AssetLabel, RelationshipLabel
 from cognite.powerops.clients.data_classes._core import DomainModelApply, InstancesApply
 from cognite.powerops.resync.models.cdf_resources import CDFFile, CDFSequence
+
 
 _T_Type = TypeVar("_T_Type")
 
@@ -172,20 +174,14 @@ class AssetType(ResourceType, ABC):
             labels=[Label(external_id=label.value)],
         )
 
-    @classmethod
-    def from_cdf(cls: TypingType["T_Asset_Type"], client: CogniteClient) -> T_Asset_Type:
-        # todo: 
+    def difference(self: "T_Asset_Type", other: "T_Asset_Type") -> dict:
+        # todo:
         raise NotImplementedError()
 
-    def difference(self: T_Asset_Type, other: T_Asset_Type) -> dict:
-        # todo: 
-        raise NotImplementedError()
-    
     @abstractclassmethod
-    def from_asset(cls: TypingType["T_Asset_Type"], asset: Asset) -> T_Asset_Type:
-        # optionally additional more cdf resources 
+    def from_asset(cls: TypingType["T_Asset_Type"], asset: Asset) -> "T_Asset_Type":
+        # optionally additional more cdf resources
         raise NotImplementedError()
-    
 
 
 T_Asset_Type = TypeVar("T_Asset_Type", bound=AssetType)
@@ -278,6 +274,11 @@ class AssetModel(Model, ABC):
 
     def _asset_types(self) -> Iterable[AssetType]:
         yield from (item for item in self._resource_types() if isinstance(item, AssetType))
+    
+    @classmethod
+    def _asset_types_and_field_names(cls) -> Iterable[tuple[T_Asset_Type, str]]:
+       raise NotImplementedError()
+        
 
     def summary(self) -> dict[str, dict[str, dict[str, int]]]:
         summary = super().summary()
@@ -286,25 +287,24 @@ class AssetModel(Model, ABC):
         summary[self.model_name]["cdf"]["parent_assets"] = len(self.parent_assets())
         return summary
 
+
     @classmethod
-    # todo: 
-    def from_cdf(cls: Type["T_Asset_Model"], client: CogniteClient) -> T_Asset_Model:
-        print("classmethod asset model superclass")
-        asset_subtree = client.assets.retrieve_subtree(
-            external_id=cls.root_asset.external_id, 
-            depth=2
-        )
-        print("asset_subtree")
-        print(asset_subtree)
-        for asset in asset_subtree:
-            if asset.external_id == cls.root_asset.external_id:
-                continue
+    def from_cdf(cls, client: CogniteClient):
+        output = defaultdict(list)
+        asset_type: T_Asset_Type = None
+        
+        for asset_type, field_name in cls._asset_types_and_field_names():
+            assets = client.assets.retrieve_subtree(external_id=asset_type.parent_external_id)
+            for asset in assets:
+                instance = asset_type.from_asset(asset)
+                output[field_name].append(instance)
+        return cls(**output)
 
         # asset_subtree = client.assets.retrieve_subtree()
 
-
     def difference(self: T_Asset_Model, other: T_Asset_Model) -> dict:
         print("not ready yet")
+        raise NotImplementedError()
 
 
 T_Asset_Model = TypeVar("T_Asset_Model", bound=AssetModel)
