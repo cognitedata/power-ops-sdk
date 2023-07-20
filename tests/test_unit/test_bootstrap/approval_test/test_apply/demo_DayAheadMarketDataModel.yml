@@ -1804,20 +1804,15 @@ data_modeling.instances:
   - properties:
       maxPrice: 4000.0
       minPrice: -500.0
+      name: Nord Pool Day-ahead
       priceSteps: 200
       priceUnit: EUR/MWh
       tickSize: 0.1
       timeUnit: 1h
+      timezone: Europe/Oslo
       tradeLot: 0.1
     source:
       external_id: NordPoolMarket
-      space: power-ops
-      type: container
-  - properties:
-      name: Nord Pool Day-ahead
-      timezone: Europe/Oslo
-    source:
-      external_id: Market
       space: power-ops
       type: container
   space: power-ops
@@ -1829,11 +1824,6 @@ data_modeling.instances:
         externalId: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid
         space: power-ops
       name: Bid process configuration multi_scenario_20_NO2
-    source:
-      external_id: Process
-      space: power-ops
-      type: container
-  - properties:
       shop:
         externalId: ShopTransformation__168e44cd5fbaa4a825986c1dc6254309
         space: power-ops
@@ -1958,19 +1948,14 @@ data_modeling.instances:
       bidProcessConfigurationName: multi_scenario_20_NO2
       isDefaultConfigForPriceArea: false
       mainScenario: scenario_10
-      noShop: true
-      priceArea: price_area_NO2
-    source:
-      external_id: DayAheadBid
-      space: power-ops
-      type: container
-  - properties:
       market:
         externalId: market_configuration_nordpool_dayahead
         space: power-ops
       name: null
+      noShop: true
+      priceArea: price_area_NO2
     source:
-      external_id: Bid
+      external_id: DayAheadBid
       space: power-ops
       type: container
   space: power-ops
@@ -1984,7 +1969,7 @@ data_modeling.instances:
     external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid
     space: power-ops
   type:
-    external_id: Bid.date
+    external_id: DayAheadBid.date
     space: power-ops
 - end_node:
     external_id: DateTransformation__f9f90921095b2f4b241249a5745014b3
@@ -1996,7 +1981,7 @@ data_modeling.instances:
     external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid
     space: power-ops
   type:
-    external_id: Bid.date
+    external_id: DayAheadBid.date
     space: power-ops
 - end_node:
     external_id: scenario_10_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e
@@ -2246,11 +2231,6 @@ data_modeling.instances:
         externalId: POWEROPS_bid_process_configuration_multi_scenario_2_NO2_bid
         space: power-ops
       name: Bid process configuration multi_scenario_2_NO2
-    source:
-      external_id: Process
-      space: power-ops
-      type: container
-  - properties:
       shop:
         externalId: ShopTransformation__168e44cd5fbaa4a825986c1dc6254309
         space: power-ops
@@ -2375,19 +2355,14 @@ data_modeling.instances:
       bidProcessConfigurationName: multi_scenario_2_NO2
       isDefaultConfigForPriceArea: false
       mainScenario: scenario_1
-      noShop: false
-      priceArea: price_area_NO2
-    source:
-      external_id: DayAheadBid
-      space: power-ops
-      type: container
-  - properties:
       market:
         externalId: market_configuration_nordpool_dayahead
         space: power-ops
       name: null
+      noShop: false
+      priceArea: price_area_NO2
     source:
-      external_id: Bid
+      external_id: DayAheadBid
       space: power-ops
       type: container
   space: power-ops
@@ -2401,7 +2376,7 @@ data_modeling.instances:
     external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2_bid
     space: power-ops
   type:
-    external_id: Bid.date
+    external_id: DayAheadBid.date
     space: power-ops
 - end_node:
     external_id: DateTransformation__f9f90921095b2f4b241249a5745014b3
@@ -2413,7 +2388,7 @@ data_modeling.instances:
     external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2_bid
     space: power-ops
   type:
-    external_id: Bid.date
+    external_id: DayAheadBid.date
     space: power-ops
 - end_node:
     external_id: scenario_1_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e
@@ -2447,11 +2422,6 @@ data_modeling.instances:
         externalId: POWEROPS_bid_process_configuration_price_independent_NO2_bid
         space: power-ops
       name: Bid process configuration price_independent_NO2
-    source:
-      external_id: Process
-      space: power-ops
-      type: container
-  - properties:
       shop:
         externalId: ShopTransformation__168e44cd5fbaa4a825986c1dc6254309
         space: power-ops
@@ -2576,19 +2546,14 @@ data_modeling.instances:
       bidProcessConfigurationName: price_independent_NO2
       isDefaultConfigForPriceArea: true
       mainScenario: scenario_1
-      noShop: false
-      priceArea: price_area_NO2
-    source:
-      external_id: DayAheadBid
-      space: power-ops
-      type: container
-  - properties:
       market:
         externalId: market_configuration_nordpool_dayahead
         space: power-ops
       name: null
+      noShop: false
+      priceArea: price_area_NO2
     source:
-      external_id: Bid
+      external_id: DayAheadBid
       space: power-ops
       type: container
   space: power-ops
@@ -2602,7 +2567,7 @@ data_modeling.instances:
     external_id: POWEROPS_bid_process_configuration_price_independent_NO2_bid
     space: power-ops
   type:
-    external_id: Bid.date
+    external_id: DayAheadBid.date
     space: power-ops
 - end_node:
     external_id: DateTransformation__f9f90921095b2f4b241249a5745014b3
@@ -2614,7 +2579,7 @@ data_modeling.instances:
     external_id: POWEROPS_bid_process_configuration_price_independent_NO2_bid
     space: power-ops
   type:
-    external_id: Bid.date
+    external_id: DayAheadBid.date
     space: power-ops
 - end_node:
     external_id: scenario_1_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e
@@ -2636,11 +2601,6 @@ data_modeling.instances:
         externalId: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2_bid
         space: power-ops
       name: Bid process configuration water_value_based_with_dummy_SHOP_runNO2
-    source:
-      external_id: Process
-      space: power-ops
-      type: container
-  - properties:
       shop:
         externalId: ShopTransformation__5e36c7730f0b32646ab7f2967beee93a
         space: power-ops
@@ -2765,19 +2725,14 @@ data_modeling.instances:
       bidProcessConfigurationName: water_value_based_with_dummy_SHOP_runNO2
       isDefaultConfigForPriceArea: false
       mainScenario: Main
-      noShop: false
-      priceArea: price_area_NO2
-    source:
-      external_id: DayAheadBid
-      space: power-ops
-      type: container
-  - properties:
       market:
         externalId: market_configuration_nordpool_dayahead
         space: power-ops
       name: null
+      noShop: false
+      priceArea: price_area_NO2
     source:
-      external_id: Bid
+      external_id: DayAheadBid
       space: power-ops
       type: container
   space: power-ops
@@ -2791,7 +2746,7 @@ data_modeling.instances:
     external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2_bid
     space: power-ops
   type:
-    external_id: Bid.date
+    external_id: DayAheadBid.date
     space: power-ops
 - end_node:
     external_id: DateTransformation__f9f90921095b2f4b241249a5745014b3
@@ -2803,7 +2758,7 @@ data_modeling.instances:
     external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2_bid
     space: power-ops
   type:
-    external_id: Bid.date
+    external_id: DayAheadBid.date
     space: power-ops
 - end_node:
     external_id: Main_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e
