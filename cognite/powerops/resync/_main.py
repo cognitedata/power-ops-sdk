@@ -35,6 +35,8 @@ def plan(
     client = get_powerops_client()
     bootstrap_resources, config, models = _load_transform(market, path, client.cdf.config.project, echo, model_names)
 
+    _remove_non_existing_relationship_time_series_targets(client.cdf, models, bootstrap_resources, echo)
+
     # 2.b - preview diff
     cdf_bootstrap_resources = bootstrap_resources.from_cdf(
         po_client=client, data_set_external_id=config.settings.data_set_external_id
