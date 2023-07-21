@@ -13,6 +13,12 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.29.1] - 2023-07-21
+
+### Added
+
+* Validation that all timeseries exists in CDF before creating relatioinships to them.
+
 
 ## [0.29.0] - 2023-07-20
 
