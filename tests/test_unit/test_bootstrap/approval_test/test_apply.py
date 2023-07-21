@@ -3,6 +3,7 @@ from itertools import product
 from pathlib import Path
 
 import pytest
+from cognite.client.data_classes import TimeSeries
 
 try:
     import tomllib
@@ -22,6 +23,7 @@ from tests.test_unit.test_bootstrap.approval_test.mock_resource_create_classes i
     MockRelationshipsCreate,
     MockSequencesCreate,
     MockTimeSeriesCreate,
+    MockTimeSeriesRetrieveMultiple,
 )
 
 APPROVAL_TEST = Path(__file__).resolve().parent
@@ -31,7 +33,9 @@ DEMO_OUT = APPROVAL_TEST / "test_apply"
 
 
 def apply_test_cases():
-    yield pytest.param(DATA / "demo", "Dayahead", DEMO_OUT / "demo.yml", id="Demo Case")
+    cdf_timeseries = [TimeSeries(external_id=external_id) for external_id in ["6694", "2", "1", "112233"]]
+
+    yield pytest.param(DATA / "demo", "Dayahead", DEMO_OUT / "demo.yml", cdf_timeseries, id="Demo Case")
 
     # This test will be skipped if the file sensitive_tests.toml does not exist
     if not SENSITIVE_TESTS.exists():
@@ -45,19 +49,26 @@ def apply_test_cases():
             REPO_ROOT / test_case["input_dir"],
             test_case["market"],
             REPO_ROOT / test_case["compare_file_path"],
+            cdf_timeseries,
             id=test_case["name"],
         )
 
 
 @pytest.mark.parametrize(
-    "input_dir, market, compare_file_path, model_name",
+    "input_dir, market, compare_file_path, cdf_timeseries, model_name",
     list(
         pytest.param(*case.values, model_name, id=f"{case.id} {model_name}")
         for case, model_name in product(apply_test_cases(), AVAILABLE_MODELS)
     ),
 )
 def test_apply(
-    input_dir: Path, market: str, compare_file_path: Path, model_name: str, data_regression, setting_environmental_vars
+    input_dir: Path,
+    market: str,
+    compare_file_path: Path,
+    cdf_timeseries: list[TimeSeries],
+    model_name: str,
+    data_regression,
+    setting_environmental_vars,
 ):
     # Arrange
     mock_resources = {
@@ -69,6 +80,7 @@ def test_apply(
         "events.create": MockEventsCreate(),
         "data_modeling.instances.apply": MockInstancesApply(),
         "files.upload_bytes": MockFilesUploadBytes(),
+        "time_series.retrieve_multiple": MockTimeSeriesRetrieveMultiple(cdf_timeseries),
     }
 
     with monkeypatch_cognite_client() as client:
@@ -91,6 +103,7 @@ def test_apply(
     dump = {
         ".".join(resource_type.split(".")[:-1]): mock_resource.serialize()
         for resource_type, mock_resource in mock_resources.items()
+        if hasattr(mock_resource, "serialize")
     }
     # for all the resources, sort the list of dicts by "external_id" in lowercase
     for resource in dump.values():
