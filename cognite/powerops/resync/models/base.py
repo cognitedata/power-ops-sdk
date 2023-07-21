@@ -3,8 +3,7 @@ from collections import defaultdict
 
 import json
 from abc import ABC, abstractclassmethod
-from typing import ClassVar, Iterable, Optional, Union, TypeVar
-from typing import Type
+from typing import ClassVar, Iterable, Optional, Union, TypeVar,  GenericAlias, get_args
 from typing import Type as TypingType
 
 from cognite.client import CogniteClient
@@ -41,14 +40,13 @@ class ResourceType(BaseModel, ABC):
 
 
 class AssetType(ResourceType, ABC):
-    type_: ClassVar[str]
+    parent_external_id: ClassVar[str]
     label: ClassVar[Union[AssetLabel, str]]
     model_config: ClassVar[ConfigDict] = ConfigDict(arbitrary_types_allowed=True)
     parent_description: ClassVar[Optional[str]] = None
     name: str
     description: Optional[str] = None
     _external_id: Optional[str] = None
-    _parent_external_id: Optional[str] = None
 
     @property
     def external_id(self) -> str:
@@ -59,17 +57,10 @@ class AssetType(ResourceType, ABC):
     @external_id.setter
     def external_id(self, value: str) -> None:
         self._external_id = value
-
+    
     @property
     def parent_external_id(self) -> str:
-        if self._parent_external_id:
-            return self._parent_external_id
-        return f"{self.type_}s"
-
-    @parent_external_id.setter
-    def parent_external_id(self, value: str) -> None:
-        self._parent_external_id = value
-
+        return self.parent_external_id.removesuffix("s")
     @property
     def parent_name(self):
         return self.parent_external_id.replace("_", " ").title()
@@ -171,13 +162,8 @@ class AssetType(ResourceType, ABC):
             labels=[Label(external_id=label.value)],
         )
 
-    def difference(self: "T_Asset_Type", other: "T_Asset_Type") -> dict:
-        # todo:
-        raise NotImplementedError()
-
-    @abstractclassmethod
+    @classmethod
     def from_asset(cls: TypingType["T_Asset_Type"], asset: Asset) -> "T_Asset_Type":
-        # optionally additional more cdf resources
         raise NotImplementedError()
 
 
@@ -204,7 +190,7 @@ class Model(BaseModel, ABC):
             if isinstance(items := getattr(self, f), list) and items and isinstance(items[0], ResourceType):
                 yield from items
 
-    def _fields_of_type(self, type_: Type[_T_Type]) -> Iterable[_T_Type]:
+    def _fields_of_type(self, type_: TypingType[_T_Type]) -> Iterable[_T_Type]:
         for field_name in self.model_fields:
             value = getattr(self, field_name)
             if isinstance(value, type_):
@@ -268,8 +254,13 @@ class AssetModel(Model, ABC):
         yield from (item for item in self._resource_types() if isinstance(item, AssetType))
     
     @classmethod
-    def _asset_types_and_field_names(cls) -> Iterable[tuple[T_Asset_Type, str]]:
-       raise NotImplementedError()
+    def _asset_types_and_field_names(cls) -> Iterable[tuple[str, TypingType[AssetType]]]:
+       for  field_name in cls.model_fields:
+            class_ = cls.model_fields[field_name].annotation
+            if isinstance(class_, GenericAlias):
+               asset_resource_class = get_args(class_)[0]
+               if issubclass(asset_resource_class, AssetType):
+                   yield field_name, asset_resource_class 
         
 
     def summary(self) -> dict[str, dict[str, dict[str, int]]]:
@@ -283,19 +274,19 @@ class AssetModel(Model, ABC):
     @classmethod
     def from_cdf(cls, client: CogniteClient):
         output = defaultdict(list)
-        asset_type: T_Asset_Type = None
-        
-        for asset_type, field_name in cls._asset_types_and_field_names():
-            assets = client.assets.retrieve_subtree(external_id=asset_type.parent_external_id)
+        for field_name, asset_cls in cls._asset_types_and_field_names():
+            assets = client.assets.retrieve_subtree(external_id=asset_cls.parent_external_id)
             for asset in assets:
-                instance = asset_type.from_asset(asset)
+                if asset.external_id == asset_cls.parent_external_id:
+                    continue
+                instance = asset_cls.from_asset(asset)
                 output[field_name].append(instance)
         return cls(**output)
 
-        # asset_subtree = client.assets.retrieve_subtree()
 
     def difference(self: T_Asset_Model, other: T_Asset_Model) -> dict:
-        print("not ready yet")
+        # todo: group by domain model classes `cls.model_fields:`
+        # dump 
         raise NotImplementedError()
 
 

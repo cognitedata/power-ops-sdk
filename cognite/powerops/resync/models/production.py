@@ -1,7 +1,8 @@
 from __future__ import annotations
+import json
 
 from pathlib import Path
-from typing import ClassVar, Optional, Union, Iterable
+from typing import ClassVar, Optional, Union
 
 from cognite.client.data_classes import Asset, TimeSeries
 from pydantic import ConfigDict, Field
@@ -12,7 +13,7 @@ from cognite.powerops.resync.models.cdf_resources import CDFSequence
 
 
 class Generator(AssetType):
-    type_: ClassVar[str] = "generator"
+    parent_external_id: ClassVar[str] = "generators"
     label: ClassVar[Union[AssetLabel, str]] = AssetLabel.GENERATOR
     p_min: float
     penstock: str
@@ -39,7 +40,7 @@ class Generator(AssetType):
 
 
 class Reservoir(AssetType):
-    type_: ClassVar[str] = "reservoir"
+    parent_external_id: ClassVar[str] = "reservoirs"
     label: ClassVar[Union[AssetLabel, str]] = AssetLabel.RESERVOIR
     display_name: str
     ordering: str
@@ -58,7 +59,7 @@ class Reservoir(AssetType):
 
 
 class Plant(AssetType):
-    type_: ClassVar[str] = "plant"
+    parent_external_id: ClassVar[str] = "plants"
     label: ClassVar[Union[AssetLabel, str]] = AssetLabel.PLANT
     display_name: str
     ordering: str
@@ -79,6 +80,13 @@ class Plant(AssetType):
 
     @classmethod
     def from_asset(cls, asset: Asset) -> Plant:
+        penstock_head_loss_factors = asset.metadata.get("penstock_head_loss_factors", {}) 
+        try:
+            penstock_head_loss_factors = json.loads(penstock_head_loss_factors)
+            if not isinstance(penstock_head_loss_factors, dict):
+                raise TypeError
+        except(json.JSONDecodeError, TypeError):
+            penstock_head_loss_factors = {}
         return cls(
             _external_id=asset.external_id,
             _parent_external_id=asset.parent_external_id,
@@ -91,7 +99,7 @@ class Plant(AssetType):
             outlet_level=float(asset.metadata.get("outlet_level", 0.0)),
             p_min=float(asset.metadata.get("p_min", 0.0)),
             p_max=float(asset.metadata.get("p_max", 0.0)),
-            penstock_head_loss_factors=asset.metadata.get("penstock_head_loss_factors", {}),
+            penstock_head_loss_factors=penstock_head_loss_factors,
             generators=[],
             inlet_reservoir=None,
             p_min_time_series=None,
@@ -110,7 +118,7 @@ class WaterCourseShop(NonAssetType):
 
 class Watercourse(AssetType):
     model_config: ClassVar[ConfigDict] = ConfigDict(protected_namespaces=tuple())
-    type_: ClassVar[str] = "watercourse"
+    parent_external_id: ClassVar[str] = "watercourses"
     label: ClassVar[Union[AssetLabel, str]] = AssetLabel.WATERCOURSE
     shop: WaterCourseShop
     config_version: str = Field(exclude=True)
@@ -127,7 +135,6 @@ class Watercourse(AssetType):
             name=asset.name,
             description=asset.description,
             shop=WaterCourseShop(penalty_limit=asset.metadata.get("penalty_limit", "")),
-            # Are these storied in cdf at all?
             config_version=asset.metadata.get("config_version", ""),
             model_file=asset.metadata.get("model_file", ""),
             processed_model_file=asset.metadata.get("processed_model_file", ""),
@@ -137,7 +144,7 @@ class Watercourse(AssetType):
 
 
 class PriceArea(AssetType):
-    type_: ClassVar[str] = "price_area"
+    parent_external_id: ClassVar[str] = "price_areas"
     label: ClassVar[Union[AssetLabel, str]] = AssetLabel.PRICE_AREA
     dayahead_price_time_series: Optional[TimeSeries] = None
     plants: list[Plant] = Field(default_factory=list)
@@ -165,15 +172,3 @@ class ProductionModel(AssetModel):
     generators: list[Generator] = Field(default_factory=list)
     reservoirs: list[Reservoir] = Field(default_factory=list)
 
-    
-    @classmethod
-    def _asset_types_and_field_names(cls) -> Iterable[tuple[T_Asset_Type, str]]:
-        return [
-            (PriceArea, "price_areas"),
-            (Watercourse, "watercourses"),
-            (Plant, "plants"), 
-            (Reservoir, "reservoirs"), 
-            (Generator, "generators"),
-        ]
-
-  
