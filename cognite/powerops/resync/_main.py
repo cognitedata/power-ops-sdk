@@ -83,7 +83,7 @@ def apply(
 
     collection.add(_create_bootstrap_finished_event(echo))
 
-    _validate_relationship_targets(client, models, collection, echo)
+    _remove_non_existing_relationship_time_series_targets(client.cdf, models, collection, echo)
 
     summaries = {}
     for model in models:
@@ -142,7 +142,7 @@ def _create_bootstrap_finished_event(echo: Callable[[str], None]) -> Event:
     return event
 
 
-def _validate_relationship_targets(
+def _remove_non_existing_relationship_time_series_targets(
     client: CogniteClient, models: list[Model], collection: ResourceCollection, echo: Callable[[str], None]
 ) -> None:
     """Validates that all relationships in the collection have targets that exist in CDF"""
@@ -157,15 +157,19 @@ def _validate_relationship_targets(
         missing_timeseries = {t.external_id for t in time_series if t.external_id not in existing_timeseries_ids}
 
         relationships = model.relationships()
-        to_delete = {r.external_id for r in relationships if r.target_external_id in missing_timeseries}
+        to_delete = {
+            r.external_id
+            for r in relationships
+            if r.target_type.casefold() == "timeseries" and r.target_external_id in missing_timeseries
+        }
         if to_delete:
             echo(
                 f"WARNING: There are {len(to_delete)} relationships in {model.model_name} that have targets "
                 "that do not exist in CDF. These relationships will not be created."
             )
 
-        for r in relationships:
-            collection.relationships.pop(r.external_id, None)
+        for external_id in to_delete:
+            collection.relationships.pop(external_id, None)
 
 
 if __name__ == "__main__":
