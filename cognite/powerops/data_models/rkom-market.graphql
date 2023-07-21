@@ -1,4 +1,4 @@
-type RKOMMarket implements Market {
+type RKOMMarket {
     name: String
     timezone: String
     startOfWeek: Int
@@ -14,10 +14,10 @@ type ReserveScenario{
     overrideMappings: [ScenarioMapping]
 }
 
-type RKOMBid implements Bid {
+type RKOMBid {
     name: String
     date: [DateTransformation]
-    market: Market
+    market: RKOMMarket
     auction: String
     block: String
     method: String
@@ -29,7 +29,7 @@ type RKOMBid implements Bid {
     watercourse: String
 }
 
-type RKOMProcess implements Process{
+type RKOMProcess {
     name: String
     bid: RKOMBid
     shop: ShopTransformation

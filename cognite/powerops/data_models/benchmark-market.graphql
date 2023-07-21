@@ -3,13 +3,13 @@ type ProductionPlanTimeSeries {
     series: [TimeSeries]
 }
 
-type BenchmarkBid implements Bid {
+type BenchmarkBid{
     name: String
     date: [DateTransformation]
-    market: Market
+    market: NordPoolMarket
 }
 
-type BenchmarkProcess implements Process{
+type BenchmarkProcess{
     name: String
     productionPlanTimeSeries: [ProductionPlanTimeSeries]
     metrics: JSONObject

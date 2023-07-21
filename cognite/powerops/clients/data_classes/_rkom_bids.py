@@ -9,8 +9,8 @@ from cognite.powerops.clients.data_classes._core import DomainModel, DomainModel
 
 if TYPE_CHECKING:
     from cognite.powerops.clients.data_classes._date_transformations import DateTransformationApply
-    from cognite.powerops.clients.data_classes._markets import MarketApply
     from cognite.powerops.clients.data_classes._reserve_scenarios import ReserveScenarioApply
+    from cognite.powerops.clients.data_classes._rkom_markets import RKOMMarketApply
     from cognite.powerops.clients.data_classes._scenario_mappings import ScenarioMappingApply
 
 __all__ = ["RKOMBid", "RKOMBidApply", "RKOMBidList"]
@@ -37,7 +37,7 @@ class RKOMBidApply(DomainModelApply):
     auction: Optional[str] = None
     block: Optional[str] = None
     date: list[Union["DateTransformationApply", str]] = Field(default_factory=list, repr=False)
-    market: Optional[Union["MarketApply", str]] = Field(None, repr=False)
+    market: Optional[Union["RKOMMarketApply", str]] = Field(None, repr=False)
     method: Optional[str] = None
     minimum_price: Optional[float] = None
     name: Optional[str] = None
@@ -57,23 +57,16 @@ class RKOMBidApply(DomainModelApply):
             properties={
                 "auction": self.auction,
                 "block": self.block,
-                "method": self.method,
-                "minimumPrice": self.minimum_price,
-                "pricePremium": self.price_premium,
-                "product": self.product,
-                "watercourse": self.watercourse,
-            },
-        )
-        sources.append(source)
-
-        source = dm.NodeOrEdgeData(
-            source=dm.ContainerId("power-ops", "Bid"),
-            properties={
                 "market": {
                     "space": "power-ops",
                     "externalId": self.market if isinstance(self.market, str) else self.market.external_id,
                 },
+                "method": self.method,
+                "minimumPrice": self.minimum_price,
                 "name": self.name,
+                "pricePremium": self.price_premium,
+                "product": self.product,
+                "watercourse": self.watercourse,
             },
         )
         sources.append(source)
@@ -138,7 +131,7 @@ class RKOMBidApply(DomainModelApply):
         return dm.EdgeApply(
             space="power-ops",
             external_id=f"{self.external_id}:{end_node_ext_id}",
-            type=dm.DirectRelationReference("power-ops", "Bid.date"),
+            type=dm.DirectRelationReference("power-ops", "RKOMBid.date"),
             start_node=dm.DirectRelationReference(self.space, self.external_id),
             end_node=dm.DirectRelationReference("power-ops", end_node_ext_id),
         )

@@ -116,6 +116,16 @@ class MockTimeSeriesCreate:
         return time_series_serialized
 
 
+class MockTimeSeriesRetrieveMultiple:
+    def __init__(self, time_series: List[TimeSeries]):
+        self.time_series = time_series
+
+    def __call__(self, external_ids: List[str], **_):
+        return TimeSeriesList(
+            [time_series for time_series in self.time_series if time_series.external_id in external_ids]
+        )
+
+
 class MockLabelsCreate:
     def __init__(self):
         self.labels = []

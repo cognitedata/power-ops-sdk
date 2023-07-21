@@ -8,7 +8,7 @@ from pydantic import Field
 from cognite.powerops.clients.data_classes._core import DomainModel, DomainModelApply, InstancesApply, TypeList
 
 if TYPE_CHECKING:
-    from cognite.powerops.clients.data_classes._bids import BidApply
+    from cognite.powerops.clients.data_classes._rkom_bids import RKOMBidApply
     from cognite.powerops.clients.data_classes._shop_transformations import ShopTransformationApply
 
 __all__ = ["RKOMProces", "RKOMProcesApply", "RKOMProcesList"]
@@ -26,7 +26,7 @@ class RKOMProces(DomainModel):
 
 class RKOMProcesApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
-    bid: Optional[Union["BidApply", str]] = Field(None, repr=False)
+    bid: Optional[Union["RKOMBidApply", str]] = Field(None, repr=False)
     name: Optional[str] = None
     plants: list[str] = []
     process_events: list[str] = []
@@ -39,20 +39,13 @@ class RKOMProcesApply(DomainModelApply):
 
         sources = []
         source = dm.NodeOrEdgeData(
-            source=dm.ContainerId("power-ops", "Process"),
+            source=dm.ContainerId("power-ops", "RKOMProcess"),
             properties={
                 "bid": {
                     "space": "power-ops",
                     "externalId": self.bid if isinstance(self.bid, str) else self.bid.external_id,
                 },
                 "name": self.name,
-            },
-        )
-        sources.append(source)
-
-        source = dm.NodeOrEdgeData(
-            source=dm.ContainerId("power-ops", "RKOMProcess"),
-            properties={
                 "plants": self.plants,
                 "processEvents": self.process_events,
                 "shop": {

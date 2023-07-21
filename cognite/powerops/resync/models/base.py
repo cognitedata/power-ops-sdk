@@ -26,6 +26,9 @@ class ResourceType(BaseModel, ABC):
     def files(self) -> list[CDFFile]:
         return self._fields_of_type(CDFFile)
 
+    def time_series(self) -> list[TimeSeries]:
+        return self._fields_of_type(TimeSeries)
+
     def _fields_of_type(self, type_: TypingType[_T_Type]) -> list[_T_Type]:
         output: list[_T_Type] = []
         for field_name in self.model_fields:
@@ -184,6 +187,11 @@ class Model(BaseModel, ABC):
         files = [file for item in self._resource_types() for file in item.files()]
         files.extend(self._fields_of_type(CDFFile))
         return files
+
+    def time_series(self) -> list[TimeSeries]:
+        time_series = [ts for item in self._resource_types() for ts in item.time_series()]
+        time_series.extend(self._fields_of_type(TimeSeries))
+        return time_series
 
     def _resource_types(self) -> Iterable[ResourceType]:
         for f in self.model_fields:
