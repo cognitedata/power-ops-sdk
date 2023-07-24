@@ -7,7 +7,7 @@ type OutputMapping{
   isStep: Boolean
 }
 
-type OutputMappings{
+type OutputContainer{
   name: String
   watercouse: String
   shopType: String
@@ -33,5 +33,5 @@ type ScenarioTemplate {
   model: File
   shopFiles: [File]
   baseMapping: ScenarioMapping
-  outputDefinitions: OutputMappings
+  outputDefinitions: OutputContainer
 }

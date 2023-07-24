@@ -27,6 +27,7 @@ class DayAheadBid(DomainModel):
     no_shop: Optional[bool] = Field(None, alias="noShop")
     price_area: Optional[str] = Field(None, alias="priceArea")
     price_scenarios: list[str] = Field([], alias="priceScenarios")
+    watercourse: Optional[str] = None
 
 
 class DayAheadBidApply(DomainModelApply):
@@ -41,6 +42,7 @@ class DayAheadBidApply(DomainModelApply):
     no_shop: Optional[bool] = None
     price_area: Optional[str] = None
     price_scenarios: list[Union["ScenarioMappingApply", str]] = Field(default_factory=list, repr=False)
+    watercourse: Optional[str] = None
 
     def _to_instances_apply(self, cache: set[str]) -> InstancesApply:
         if self.external_id in cache:
@@ -61,6 +63,7 @@ class DayAheadBidApply(DomainModelApply):
                 "name": self.name,
                 "noShop": self.no_shop,
                 "priceArea": self.price_area,
+                "watercourse": self.watercourse,
             },
         )
         sources.append(source)

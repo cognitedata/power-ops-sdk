@@ -8,17 +8,17 @@ from pydantic import Field
 from cognite.powerops.clients.data_classes._core import DomainModel, DomainModelApply, InstancesApply, TypeList
 
 if TYPE_CHECKING:
-    from cognite.powerops.clients.data_classes._input_time_series_mappings import InputTimeSeriesMappingApply
-    from cognite.powerops.clients.data_classes._output_mappings import OutputMappingApply
+    from cognite.powerops.clients.data_classes._output_containers import OutputContainerApply
+    from cognite.powerops.clients.data_classes._scenario_mappings import ScenarioMappingApply
 
 __all__ = ["ScenarioTemplate", "ScenarioTemplateApply", "ScenarioTemplateList"]
 
 
 class ScenarioTemplate(DomainModel):
     space: ClassVar[str] = "power-ops"
-    base_mapping: list[str] = Field([], alias="baseMapping")
+    base_mapping: Optional[str] = Field(None, alias="baseMapping")
     model: Optional[str] = None
-    output_definitions: list[str] = Field([], alias="outputDefinitions")
+    output_definitions: Optional[str] = Field(None, alias="outputDefinitions")
     shop_files: list[str] = Field([], alias="shopFiles")
     shop_version: Optional[str] = Field(None, alias="shopVersion")
     template_version: Optional[str] = Field(None, alias="templateVersion")
@@ -27,9 +27,9 @@ class ScenarioTemplate(DomainModel):
 
 class ScenarioTemplateApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
-    base_mapping: list[Union["InputTimeSeriesMappingApply", str]] = Field(default_factory=list, repr=False)
+    base_mapping: Optional[Union["ScenarioMappingApply", str]] = Field(None, repr=False)
     model: Optional[str] = None
-    output_definitions: list[Union["OutputMappingApply", str]] = Field(default_factory=list, repr=False)
+    output_definitions: Optional[Union["OutputContainerApply", str]] = Field(None, repr=False)
     shop_files: list[str] = []
     shop_version: Optional[str] = None
     template_version: Optional[str] = None
@@ -43,7 +43,19 @@ class ScenarioTemplateApply(DomainModelApply):
         source = dm.NodeOrEdgeData(
             source=dm.ContainerId("power-ops", "ScenarioTemplate"),
             properties={
+                "baseMapping": {
+                    "space": "power-ops",
+                    "externalId": self.base_mapping
+                    if isinstance(self.base_mapping, str)
+                    else self.base_mapping.external_id,
+                },
                 "model": self.model,
+                "outputDefinitions": {
+                    "space": "power-ops",
+                    "externalId": self.output_definitions
+                    if isinstance(self.output_definitions, str)
+                    else self.output_definitions.external_id,
+                },
                 "shopFiles": self.shop_files,
                 "shopVersion": self.shop_version,
                 "templateVersion": self.template_version,
@@ -61,61 +73,17 @@ class ScenarioTemplateApply(DomainModelApply):
         nodes = [this_node]
         edges = []
 
-        for base_mapping in self.base_mapping:
-            edge = self._create_base_mapping_edge(base_mapping)
-            if edge.external_id not in cache:
-                edges.append(edge)
-                cache.add(edge.external_id)
+        if isinstance(self.base_mapping, DomainModelApply):
+            instances = self.base_mapping._to_instances_apply(cache)
+            nodes.extend(instances.nodes)
+            edges.extend(instances.edges)
 
-            if isinstance(base_mapping, DomainModelApply):
-                instances = base_mapping._to_instances_apply(cache)
-                nodes.extend(instances.nodes)
-                edges.extend(instances.edges)
-
-        for output_definition in self.output_definitions:
-            edge = self._create_output_definition_edge(output_definition)
-            if edge.external_id not in cache:
-                edges.append(edge)
-                cache.add(edge.external_id)
-
-            if isinstance(output_definition, DomainModelApply):
-                instances = output_definition._to_instances_apply(cache)
-                nodes.extend(instances.nodes)
-                edges.extend(instances.edges)
+        if isinstance(self.output_definitions, DomainModelApply):
+            instances = self.output_definitions._to_instances_apply(cache)
+            nodes.extend(instances.nodes)
+            edges.extend(instances.edges)
 
         return InstancesApply(nodes, edges)
-
-    def _create_base_mapping_edge(self, base_mapping: Union[str, "InputTimeSeriesMappingApply"]) -> dm.EdgeApply:
-        if isinstance(base_mapping, str):
-            end_node_ext_id = base_mapping
-        elif isinstance(base_mapping, DomainModelApply):
-            end_node_ext_id = base_mapping.external_id
-        else:
-            raise TypeError(f"Expected str or InputTimeSeriesMappingApply, got {type(base_mapping)}")
-
-        return dm.EdgeApply(
-            space="power-ops",
-            external_id=f"{self.external_id}:{end_node_ext_id}",
-            type=dm.DirectRelationReference("power-ops", "ScenarioTemplate.baseMapping"),
-            start_node=dm.DirectRelationReference(self.space, self.external_id),
-            end_node=dm.DirectRelationReference("power-ops", end_node_ext_id),
-        )
-
-    def _create_output_definition_edge(self, output_definition: Union[str, "OutputMappingApply"]) -> dm.EdgeApply:
-        if isinstance(output_definition, str):
-            end_node_ext_id = output_definition
-        elif isinstance(output_definition, DomainModelApply):
-            end_node_ext_id = output_definition.external_id
-        else:
-            raise TypeError(f"Expected str or OutputMappingApply, got {type(output_definition)}")
-
-        return dm.EdgeApply(
-            space="power-ops",
-            external_id=f"{self.external_id}:{end_node_ext_id}",
-            type=dm.DirectRelationReference("power-ops", "ScenarioTemplate.outputDefinitions"),
-            start_node=dm.DirectRelationReference(self.space, self.external_id),
-            end_node=dm.DirectRelationReference("power-ops", end_node_ext_id),
-        )
 
 
 class ScenarioTemplateList(TypeList[ScenarioTemplate]):

@@ -8,25 +8,25 @@ from pydantic import Field
 from cognite.powerops.clients.data_classes._core import DomainModel, DomainModelApply, InstancesApply, TypeList
 
 if TYPE_CHECKING:
-    from cognite.powerops.clients.data_classes._input_time_series_mappings import InputTimeSeriesMappingApply
+    from cognite.powerops.clients.data_classes._output_mappings import OutputMappingApply
 
-__all__ = ["ScenarioMapping", "ScenarioMappingApply", "ScenarioMappingList"]
+__all__ = ["OutputContainer", "OutputContainerApply", "OutputContainerList"]
 
 
-class ScenarioMapping(DomainModel):
+class OutputContainer(DomainModel):
     space: ClassVar[str] = "power-ops"
-    mapping_override: list[str] = Field([], alias="mappingOverride")
+    mappings: list[str] = []
     name: Optional[str] = None
     shop_type: Optional[str] = Field(None, alias="shopType")
-    watercourse: Optional[str] = None
+    watercouse: Optional[str] = None
 
 
-class ScenarioMappingApply(DomainModelApply):
+class OutputContainerApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
-    mapping_override: list[Union["InputTimeSeriesMappingApply", str]] = Field(default_factory=list, repr=False)
+    mappings: list[Union["OutputMappingApply", str]] = Field(default_factory=list, repr=False)
     name: Optional[str] = None
     shop_type: Optional[str] = None
-    watercourse: Optional[str] = None
+    watercouse: Optional[str] = None
 
     def _to_instances_apply(self, cache: set[str]) -> InstancesApply:
         if self.external_id in cache:
@@ -34,11 +34,11 @@ class ScenarioMappingApply(DomainModelApply):
 
         sources = []
         source = dm.NodeOrEdgeData(
-            source=dm.ContainerId("power-ops", "ScenarioMapping"),
+            source=dm.ContainerId("power-ops", "OutputContainer"),
             properties={
                 "name": self.name,
                 "shopType": self.shop_type,
-                "watercourse": self.watercourse,
+                "watercouse": self.watercouse,
             },
         )
         sources.append(source)
@@ -52,37 +52,35 @@ class ScenarioMappingApply(DomainModelApply):
         nodes = [this_node]
         edges = []
 
-        for mapping_override in self.mapping_override:
-            edge = self._create_mapping_override_edge(mapping_override)
+        for mapping in self.mappings:
+            edge = self._create_mapping_edge(mapping)
             if edge.external_id not in cache:
                 edges.append(edge)
                 cache.add(edge.external_id)
 
-            if isinstance(mapping_override, DomainModelApply):
-                instances = mapping_override._to_instances_apply(cache)
+            if isinstance(mapping, DomainModelApply):
+                instances = mapping._to_instances_apply(cache)
                 nodes.extend(instances.nodes)
                 edges.extend(instances.edges)
 
         return InstancesApply(nodes, edges)
 
-    def _create_mapping_override_edge(
-        self, mapping_override: Union[str, "InputTimeSeriesMappingApply"]
-    ) -> dm.EdgeApply:
-        if isinstance(mapping_override, str):
-            end_node_ext_id = mapping_override
-        elif isinstance(mapping_override, DomainModelApply):
-            end_node_ext_id = mapping_override.external_id
+    def _create_mapping_edge(self, mapping: Union[str, "OutputMappingApply"]) -> dm.EdgeApply:
+        if isinstance(mapping, str):
+            end_node_ext_id = mapping
+        elif isinstance(mapping, DomainModelApply):
+            end_node_ext_id = mapping.external_id
         else:
-            raise TypeError(f"Expected str or InputTimeSeriesMappingApply, got {type(mapping_override)}")
+            raise TypeError(f"Expected str or OutputMappingApply, got {type(mapping)}")
 
         return dm.EdgeApply(
             space="power-ops",
             external_id=f"{self.external_id}:{end_node_ext_id}",
-            type=dm.DirectRelationReference("power-ops", "ScenarioMapping.mappingOverride"),
+            type=dm.DirectRelationReference("power-ops", "OutputContainer.mappings"),
             start_node=dm.DirectRelationReference(self.space, self.external_id),
             end_node=dm.DirectRelationReference("power-ops", end_node_ext_id),
         )
 
 
-class ScenarioMappingList(TypeList[ScenarioMapping]):
-    _NODE = ScenarioMapping
+class OutputContainerList(TypeList[OutputContainer]):
+    _NODE = OutputContainer
