@@ -26,10 +26,8 @@ class Generator(AssetType):
     def from_asset(cls, asset: Asset) -> Generator:
         return cls(
             _external_id=asset.external_id,
-            _parent_external_id=asset.parent_external_id,
             name=asset.name,
             description=asset.description,
-            label=asset.labels,
             p_min=float(asset.metadata.get("p_min", 0.0)),
             penstock=asset.metadata.get("penstock", ""),
             startcost=float(asset.metadata.get("startcost", 0.0)),
@@ -49,10 +47,8 @@ class Reservoir(AssetType):
     def from_asset(cls, asset: Asset) -> Reservoir:
         return cls(
             _external_id=asset.external_id,
-            _parent_external_id=asset.parent_external_id,
             name=asset.name,
             description=asset.description,
-            label=asset.labels,
             display_name=asset.metadata.get("display_name", ""),
             ordering=asset.metadata.get("ordering", ""),
         )
@@ -80,19 +76,17 @@ class Plant(AssetType):
 
     @classmethod
     def from_asset(cls, asset: Asset) -> Plant:
-        penstock_head_loss_factors = asset.metadata.get("penstock_head_loss_factors", {})
+        penstock_head_loss_factors_raw: str = asset.metadata.get("penstock_head_loss_factors", "")
         try:
-            penstock_head_loss_factors = json.loads(penstock_head_loss_factors)
+            penstock_head_loss_factors = json.loads(penstock_head_loss_factors_raw)
             if not isinstance(penstock_head_loss_factors, dict):
                 raise TypeError
         except (json.JSONDecodeError, TypeError):
             penstock_head_loss_factors = {}
         return cls(
             _external_id=asset.external_id,
-            _parent_external_id=asset.parent_external_id,
             name=asset.name,
             description=asset.description,
-            label=asset.labels,
             display_name=asset.metadata.get("display_name", ""),
             ordering=asset.metadata.get("ordering", ""),
             head_loss_factor=float(asset.metadata.get("head_loss_factor", 0.0)),
@@ -121,9 +115,9 @@ class Watercourse(AssetType):
     parent_external_id: ClassVar[str] = "watercourses"
     label: ClassVar[Union[AssetLabel, str]] = AssetLabel.WATERCOURSE
     shop: WaterCourseShop
-    config_version: str = Field(exclude=True)
-    model_file: Path = Field(exclude=True)
-    processed_model_file: Path = Field(exclude=True)
+    config_version: Optional[str] = Field(exclude=True)
+    model_file: Optional[Path] = Field(exclude=True)
+    processed_model_file: Optional[Path] = Field(exclude=True)
     plants: list[Plant]
     production_obligation_time_series: list[TimeSeries] = Field(default_factory=list)
 
@@ -131,13 +125,12 @@ class Watercourse(AssetType):
     def from_asset(cls, asset: Asset) -> Watercourse:
         return cls(
             _external_id=asset.external_id,
-            _parent_external_id=asset.parent_external_id,
             name=asset.name,
             description=asset.description,
             shop=WaterCourseShop(penalty_limit=asset.metadata.get("penalty_limit", "")),
-            config_version=asset.metadata.get("config_version", ""),
-            model_file=asset.metadata.get("model_file", ""),
-            processed_model_file=asset.metadata.get("processed_model_file", ""),
+            config_version=None,
+            model_file=None,
+            processed_model_file=None,
             plants=[],
             production_obligation_time_series=[],
         )
@@ -154,10 +147,8 @@ class PriceArea(AssetType):
     def from_asset(cls, asset: Asset) -> PriceArea:
         return cls(
             _external_id=asset.external_id,
-            _parent_external_id=asset.parent_external_id,
             name=asset.name,
             description=asset.description,
-            label=asset.labels,
             dayahead_price_time_series=None,
             plants=[],
             watercourses=[],

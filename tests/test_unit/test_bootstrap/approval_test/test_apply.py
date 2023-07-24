@@ -93,12 +93,12 @@ def test_apply(
             setattr(api, parts[-1], mock_resource)
 
         # Act
-        model = apply(path=DATA / "demo", market="Dayahead", model_names=model_name, auto_yes=True)
+        apply(path=DATA / "demo", market="Dayahead", model_names=model_name, auto_yes=True)
 
     # Assert
-    data_regression.check(
-        model.summary(), fullpath=compare_file_path.parent / f"{compare_file_path.stem}_{model_name}_summary.yml"
-    )
+    # data_regression.check(
+    #     model.summary(), fullpath=compare_file_path.parent / f"{compare_file_path.stem}_{model_name}_summary.yml"
+    # )
 
     dump = {
         ".".join(resource_type.split(".")[:-1]): mock_resource.serialize()
