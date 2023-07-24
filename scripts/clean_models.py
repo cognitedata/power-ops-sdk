@@ -13,12 +13,15 @@ class API(Protocol):
 
 def delete_resources(api: API, space: str):
     resource_name = type(api).__name__.removesuffix("API")
-    resources = api.list(space=space, limit=-1)
     while True:
+        resources = api.list(space=space, limit=-1)
         for no, resource in enumerate(resources):
             print(f"{no}): {resource.external_id}")
         print("\na): Delete all")
         print("\nq): Quit")
+        if not resources:
+            print(f"\nNo more {resource_name} to delete")
+            break
 
         delete_no = input(f"Which {resource_name} to delete? (You can type multiple numbers separated by comma)\n")
         if delete_no.casefold() == "q":
@@ -30,9 +33,6 @@ def delete_resources(api: API, space: str):
         deleted = api.delete([resources[int(no)].as_id() for no in delete_numbers])
         if deleted:
             print(f"Deleted {', '.join((d.external_id for d in deleted))}")
-        resources = [r for r in resources if r.external_id not in {d.external_id for d in deleted}]
-        if not resources:
-            break
 
 
 def main():
