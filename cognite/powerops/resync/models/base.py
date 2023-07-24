@@ -168,11 +168,7 @@ class AssetType(ResourceType, ABC):
 
     @classmethod
     def from_asset(cls: TypingType["T_Asset_Type"], asset: Asset) -> "T_Asset_Type":
-        raise NotImplementedError()
-
-    def clean_for_diff(self):
-        # remove lists of other asset types (they will have their own diff)
-        # remove optional fields / cdf resources
+        "Not yet implemented: CDF relationships"
         raise NotImplementedError()
 
 
@@ -295,58 +291,8 @@ class AssetModel(Model, ABC):
                 output[field_name].append(instance)
         return cls(**output)
 
-    def _get_cleaned_clone_for_diff(self):
-        raise NotImplementedError()
-
     def difference(self: T_Asset_Model, other: T_Asset_Model) -> dict:
-        # todo: group by domain model classes `cls.model_fields:`
-        if type(self) != type(other):
-            raise ValueError("Cannot compare these models of different types.")
-
-        felids = self.model_fields
-        cleaned_self = self._get_cleaned_clone_for_diff()
-        other._get_cleaned_clone_for_diff()
-
-        for field_name in felids:
-            print("FIELD NAME", field_name)
-            self_field = getattr(cleaned_self, field_name)
-            other_field = getattr(other, field_name)
-
-            print("self_field")
-            print(self_field)
-            print(len(self_field))
-            print("--")
-            print("other_field")
-            print(other_field)
-            print(len(other_field))
-            print("--------")
-            break
-        #     # print("FIELD NAME", field_name)
-
-        #     print()
-        #     break
-
-        # ddiff = DeepDiff(getattr(self, field_name), getattr(other, field_name), ignore_order=True).to_dict()
-        # print(ddiff)
-        # return AssetModel._pretty_difference(ddiff)
-
-        # raise NotImplementedError()
-        # return DeepDiff(self.model_dump(), other.model_dump(), ignore_order=True)
-
-    @classmethod
-    def _pretty_difference(cls, diff_per_resource_type: dict[str, str]):
-        str_builder = []
-        for resource_type, differences in diff_per_resource_type.items():
-            if differences:
-                str_builder.extend(
-                    (
-                        "--------------------------------------------\n",
-                        f"Difference for {resource_type}:",
-                        "--------------------------------------------\n",
-                        differences,
-                    )
-                )
-        return "\n".join(str_builder)
+        raise NotImplementedError()
 
 
 T_Asset_Model = TypeVar("T_Asset_Model", bound=AssetModel)
