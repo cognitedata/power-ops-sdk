@@ -51,6 +51,7 @@ class AssetType(ResourceType, ABC):
     name: str
     description: Optional[str] = None
     _external_id: Optional[str] = None
+    _type: Optional[str] = None
 
     @property
     def external_id(self) -> str:
@@ -60,11 +61,38 @@ class AssetType(ResourceType, ABC):
 
     @external_id.setter
     def external_id(self, value: str) -> None:
+        """
+        This setter is only used in the Market models which have inconsistent naming between the type and the
+        parent_external_id. It is a workaround to keep the refactoring to models to avoid introducing breaking changes
+        in CDF.
+        Parameters
+        ----------
+        value : str
+            The external id of the asset.
+
+        """
         self._external_id = value
 
     @property
     def type_(self) -> str:
+        if self._type:
+            return self._type
         return self.parent_external_id.removesuffix("s")
+
+    @type_.setter
+    def type_(self, value: str) -> None:
+        """
+        This setter is only used in the Market models which have inconsistent naming between the type and
+        parent_external_id. It is a workaround to keep the refactoring to models to avoid introducing breaking changes
+        in CDF.
+
+        Parameters
+        ----------
+        value: str
+            The type of the asset.
+
+        """
+        self._type = value
 
     @property
     def parent_name(self):
