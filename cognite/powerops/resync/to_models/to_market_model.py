@@ -221,7 +221,7 @@ def to_rkom_data_model(config: MarketConfig, market_name: str) -> RKOMMarketData
         scenario_mappings = []
         for scenario_name, price_scenario in price_scenarios_by_name.items():
             external_id = make_ext_id()
-            scenario_mapping = _to_scenario_mapping(external_id ,scenario_name, price_scenario.to_time_series_mapping())
+            scenario_mapping = _to_scenario_mapping(external_id, scenario_name, price_scenario.to_time_series_mapping())
             scenario_mappings.append(scenario_mapping)
             for reserve_scenario in process.reserve_scenarios.list_scenarios():
                 name = (
@@ -232,8 +232,11 @@ def to_rkom_data_model(config: MarketConfig, market_name: str) -> RKOMMarketData
                     f"SHOP_{process.watercourse}_incremental_mapping_"
                     f"{process.name}_{scenario_name}_{reserve_scenario.volume}MW"
                 )
-                reserve_mapping = _to_scenario_mapping(external_id, name,
-                                                       price_scenario.to_time_series_mapping() + reserve_scenario.to_time_series_mapping(),)
+                reserve_mapping = _to_scenario_mapping(
+                    external_id,
+                    name,
+                    price_scenario.to_time_series_mapping() + reserve_scenario.to_time_series_mapping(),
+                )
                 incremental_mappings.append(reserve_mapping)
 
                 external_id = make_ext_id(

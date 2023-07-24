@@ -9,6 +9,7 @@ from cognite.powerops.clients.data_classes._core import DomainModel, DomainModel
 
 if TYPE_CHECKING:
     from cognite.powerops.clients.data_classes._rkom_bids import RKOMBidApply
+    from cognite.powerops.clients.data_classes._scenario_mappings import ScenarioMappingApply
     from cognite.powerops.clients.data_classes._shop_transformations import ShopTransformationApply
 
 __all__ = ["RKOMProces", "RKOMProcesApply", "RKOMProcesList"]
@@ -17,6 +18,7 @@ __all__ = ["RKOMProces", "RKOMProcesApply", "RKOMProcesList"]
 class RKOMProces(DomainModel):
     space: ClassVar[str] = "power-ops"
     bid: Optional[str] = None
+    incremental_mappings: list[str] = []
     name: Optional[str] = None
     plants: list[str] = []
     process_events: list[str] = Field([], alias="processEvents")
@@ -27,6 +29,7 @@ class RKOMProces(DomainModel):
 class RKOMProcesApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
     bid: Optional[Union["RKOMBidApply", str]] = Field(None, repr=False)
+    incremental_mappings: list[Union["ScenarioMappingApply", str]] = Field(default_factory=list, repr=False)
     name: Optional[str] = None
     plants: list[str] = []
     process_events: list[str] = []
@@ -66,6 +69,17 @@ class RKOMProcesApply(DomainModelApply):
         nodes = [this_node]
         edges = []
 
+        for incremental_mapping in self.incremental_mappings:
+            edge = self._create_incremental_mapping_edge(incremental_mapping)
+            if edge.external_id not in cache:
+                edges.append(edge)
+                cache.add(edge.external_id)
+
+            if isinstance(incremental_mapping, DomainModelApply):
+                instances = incremental_mapping._to_instances_apply(cache)
+                nodes.extend(instances.nodes)
+                edges.extend(instances.edges)
+
         if isinstance(self.bid, DomainModelApply):
             instances = self.bid._to_instances_apply(cache)
             nodes.extend(instances.nodes)
@@ -77,6 +91,22 @@ class RKOMProcesApply(DomainModelApply):
             edges.extend(instances.edges)
 
         return InstancesApply(nodes, edges)
+
+    def _create_incremental_mapping_edge(self, incremental_mapping: Union[str, "ScenarioMappingApply"]) -> dm.EdgeApply:
+        if isinstance(incremental_mapping, str):
+            end_node_ext_id = incremental_mapping
+        elif isinstance(incremental_mapping, DomainModelApply):
+            end_node_ext_id = incremental_mapping.external_id
+        else:
+            raise TypeError(f"Expected str or ScenarioMappingApply, got {type(incremental_mapping)}")
+
+        return dm.EdgeApply(
+            space="power-ops",
+            external_id=f"{self.external_id}:{end_node_ext_id}",
+            type=dm.DirectRelationReference("power-ops", "RKOMProcess.incremental_mappings"),
+            start_node=dm.DirectRelationReference(self.space, self.external_id),
+            end_node=dm.DirectRelationReference("power-ops", end_node_ext_id),
+        )
 
 
 class RKOMProcesList(TypeList[RKOMProces]):
