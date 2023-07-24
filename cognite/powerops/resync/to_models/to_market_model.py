@@ -424,7 +424,7 @@ def _to_dayahead_process(
         )
         # The IDs are inconsistently compared to the other data classes, so we need to set them manually
         dayahead_process.external_id = f"POWEROPS_bid_process_configuration_{process.name}"
-        dayahead_process.parent_external_id = "bid_process_configurations"
+        dayahead_process.type_ = "POWEROPS_bid_process_configuration"
 
         dayahead_processes.append(dayahead_process)
 
@@ -501,7 +501,7 @@ def _to_rkom_market(
             incremental_mapping=incremental_mapping_sequences,
         )
         process.external_id = config.external_id
-        process.parent_external_id = "rkom_bid_process_configurations"
+        process.type_ = "POWEROPS"
         model.processes.append(process)
 
     for config in rkom_bid_combination_configs or []:

@@ -1,12 +1,13 @@
 from __future__ import annotations
+from collections import defaultdict
 
 import json
 from abc import ABC
-from typing import ClassVar, Iterable, Optional, Union
-from typing import Type
+from typing import ClassVar, Iterable, Optional, Union, TypeVar, get_args
 from typing import Type as TypingType
-from typing import TypeVar
+from types import GenericAlias
 
+from cognite.client import CogniteClient
 from cognite.client.data_classes import Asset, Label, Relationship, TimeSeries
 from cognite.client.data_classes.data_modeling.instances import EdgeApply, NodeApply
 from pydantic import BaseModel, ConfigDict
@@ -14,6 +15,7 @@ from pydantic import BaseModel, ConfigDict
 from cognite.powerops.cdf_labels import AssetLabel, RelationshipLabel
 from cognite.powerops.clients.data_classes._core import DomainModelApply, InstancesApply
 from cognite.powerops.resync.models.cdf_resources import CDFFile, CDFSequence
+
 
 _T_Type = TypeVar("_T_Type")
 
@@ -42,14 +44,14 @@ class ResourceType(BaseModel, ABC):
 
 
 class AssetType(ResourceType, ABC):
-    type_: ClassVar[str]
+    parent_external_id: ClassVar[str]
     label: ClassVar[Union[AssetLabel, str]]
     model_config: ClassVar[ConfigDict] = ConfigDict(arbitrary_types_allowed=True)
     parent_description: ClassVar[Optional[str]] = None
     name: str
     description: Optional[str] = None
     _external_id: Optional[str] = None
-    _parend_external_id: Optional[str] = None
+    _type: Optional[str] = None
 
     @property
     def external_id(self) -> str:
@@ -59,17 +61,38 @@ class AssetType(ResourceType, ABC):
 
     @external_id.setter
     def external_id(self, value: str) -> None:
+        """
+        This setter is only used in the Market models which have inconsistent naming between the type and the
+        parent_external_id. It is a workaround to keep the refactoring to models to avoid introducing breaking changes
+        in CDF.
+        Parameters
+        ----------
+        value : str
+            The external id of the asset.
+
+        """
         self._external_id = value
 
     @property
-    def parent_external_id(self) -> str:
-        if self._parend_external_id:
-            return self._parend_external_id
-        return f"{self.type_}s"
+    def type_(self) -> str:
+        if self._type:
+            return self._type
+        return self.parent_external_id.removesuffix("s")
 
-    @parent_external_id.setter
-    def parent_external_id(self, value: str) -> None:
-        self._parend_external_id = value
+    @type_.setter
+    def type_(self, value: str) -> None:
+        """
+        This setter is only used in the Market models which have inconsistent naming between the type and
+        parent_external_id. It is a workaround to keep the refactoring to models to avoid introducing breaking changes
+        in CDF.
+
+        Parameters
+        ----------
+        value: str
+            The type of the asset.
+
+        """
+        self._type = value
 
     @property
     def parent_name(self):
@@ -139,7 +162,7 @@ class AssetType(ResourceType, ABC):
             name=self.name,
             parent_external_id=self.parent_external_id,
             labels=[Label(self.label.value)],
-            metadata=metadata if metadata else None,
+            metadata=metadata or None,
             description=self.description,
         )
 
@@ -172,6 +195,14 @@ class AssetType(ResourceType, ABC):
             labels=[Label(external_id=label.value)],
         )
 
+    @classmethod
+    def from_asset(cls: TypingType["T_Asset_Type"], asset: Asset) -> "T_Asset_Type":
+        "Not yet implemented: CDF relationships"
+        raise NotImplementedError()
+
+
+T_Asset_Type = TypeVar("T_Asset_Type", bound=AssetType)
+
 
 class NonAssetType(BaseModel, ABC):
     model_config: ClassVar[ConfigDict] = ConfigDict(arbitrary_types_allowed=True)
@@ -198,7 +229,7 @@ class Model(BaseModel, ABC):
             if isinstance(items := getattr(self, f), list) and items and isinstance(items[0], ResourceType):
                 yield from items
 
-    def _fields_of_type(self, type_: Type[_T_Type]) -> Iterable[_T_Type]:
+    def _fields_of_type(self, type_: TypingType[_T_Type]) -> Iterable[_T_Type]:
         for field_name in self.model_fields:
             value = getattr(self, field_name)
             if isinstance(value, type_):
@@ -261,12 +292,39 @@ class AssetModel(Model, ABC):
     def _asset_types(self) -> Iterable[AssetType]:
         yield from (item for item in self._resource_types() if isinstance(item, AssetType))
 
+    @classmethod
+    def _asset_types_and_field_names(cls) -> Iterable[tuple[str, TypingType[AssetType]]]:
+        for field_name in cls.model_fields:
+            class_ = cls.model_fields[field_name].annotation
+            if isinstance(class_, GenericAlias):
+                asset_resource_class = get_args(class_)[0]
+                if issubclass(asset_resource_class, AssetType):
+                    yield field_name, asset_resource_class
+
     def summary(self) -> dict[str, dict[str, dict[str, int]]]:
         summary = super().summary()
         summary[self.model_name]["cdf"]["assets"] = len(self.assets())
         summary[self.model_name]["cdf"]["relationships"] = len(self.relationships())
         summary[self.model_name]["cdf"]["parent_assets"] = len(self.parent_assets())
         return summary
+
+    @classmethod
+    def from_cdf(cls: TypingType[T_Asset_Model], client: CogniteClient) -> T_Asset_Model:
+        output = defaultdict(list)
+        for field_name, asset_cls in cls._asset_types_and_field_names():
+            assets = client.assets.retrieve_subtree(external_id=asset_cls.parent_external_id)
+            for asset in assets:
+                if asset.external_id == asset_cls.parent_external_id:
+                    continue
+                instance = asset_cls.from_asset(asset)
+                output[field_name].append(instance)
+        return cls(**output)
+
+    def difference(self: T_Asset_Model, other: T_Asset_Model) -> dict:
+        raise NotImplementedError()
+
+
+T_Asset_Model = TypeVar("T_Asset_Model", bound=AssetModel)
 
 
 class DataModel(Model, ABC):
