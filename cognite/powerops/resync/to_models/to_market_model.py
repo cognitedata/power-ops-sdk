@@ -129,7 +129,7 @@ def to_dayahead_data_model(
 
         # Create bid matrix generators
         bid_gen_config = bidmatrix_generators_by_name[process.bid_matrix_generator]
-        bid_matrix_generators = _to_bid_matrix_generator(bid_gen_config, price_area)
+        bid_matrix_generators = _to_bid_matrix_generator(bid_gen_config, price_area, process.name)
         model.bid_matrix_generator.update(bid_matrix_generators)
 
         # Create incremental mapping sequences
@@ -148,7 +148,8 @@ def to_dayahead_data_model(
                         f"for BidProcessConfig {process.name}"
                     ) from e
             for scenario_name, price_scenario in price_scenarios.items():
-                scenario = _to_scenario_mapping(scenario_name, price_scenario.to_time_series_mapping())
+                external_id = f"SHOP_{watercourse.name}_incremental_mapping_{process.name}_{scenario_name}"
+                scenario = _to_scenario_mapping(external_id, scenario_name, price_scenario.to_time_series_mapping())
                 scenario_mappings.append(scenario)
 
             shop = _to_shop_transformation(
@@ -184,14 +185,15 @@ def to_dayahead_data_model(
 
 
 def _to_bid_matrix_generator(
-    bid_gen_config: BidMatrixGeneratorConfig, price_area: PriceAreaApply
+    bid_gen_config: BidMatrixGeneratorConfig, price_area: PriceAreaApply, process_name: str
 ) -> dict[str, BidMatrixGeneratorApply]:
     return {
         (
-            external_id := make_ext_id(
-                [plant.name, bid_gen_config.default_method, bid_gen_config.default_function_external_id],
-                BidMatrixGeneratorApply,
-            )
+            external_id := f"POWEROPS_bid_matrix_generator_config_{process_name}"
+            # make_ext_id(
+            #     [plant.name, bid_gen_config.default_method, bid_gen_config.default_function_external_id],
+            #     BidMatrixGeneratorApply,
+            # )
         ): BidMatrixGeneratorApply(
             external_id=external_id,
             shop_plant=plant.name,
@@ -216,26 +218,33 @@ def to_rkom_data_model(config: MarketConfig, market_name: str) -> RKOMMarketData
 
         scenario_mappings = []
         for scenario_name, price_scenario in price_scenarios_by_name.items():
-            mapping = _to_scenario_mapping(scenario_name, price_scenario.to_time_series_mapping())
-            scenario_mappings.append(mapping)
-
-        reserve_scenarios = []
-        for reserve_scenario in process.reserve_scenarios.list_scenarios():
-            name = (
-                f"{reserve_scenario.auction.name}_{reserve_scenario.block}_{reserve_scenario.product}_"
-                f"{reserve_scenario.reserve_group}_{reserve_scenario.volume}"
-            )
-            mapping = _to_scenario_mapping(name, reserve_scenario.to_time_series_mapping())
-            apply = ReserveScenarioApply(
-                external_id=f"{name}_{mapping.external_id}",
-                auction=reserve_scenario.auction.name,
-                block=reserve_scenario.block,
-                override_mappings=[mapping],
-                product=reserve_scenario.product,
-                reserve_group=reserve_scenario.reserve_group,
-                volume=reserve_scenario.volume,
-            )
-            reserve_scenarios.append(apply)
+            mappings = _to_scenario_mapping(
+                "Dummy_external_id", scenario_name, price_scenario.to_time_series_mapping()
+            ).mapping_override
+            for reserve_scenario in process.reserve_scenarios.list_scenarios():
+                name = (
+                    f"{reserve_scenario.auction.name}_{reserve_scenario.block}_{reserve_scenario.product}_"
+                    f"{reserve_scenario.reserve_group}_{reserve_scenario.volume}"
+                )
+                external_id = (
+                    f"SHOP_{process.watercourse}_incremental_mapping_"
+                    f"{process.name}_{scenario_name}_{reserve_scenario.volume}MW"
+                )
+                reserve_mapping = _to_scenario_mapping(external_id, name, reserve_scenario.to_time_series_mapping())
+                reserve_mapping.mapping_override.append(mappings)
+                external_id = make_ext_id(
+                    reserve_mapping.model_dump(exclude={"obligation_external_id", "mip_plant_time_series"}),
+                    ReserveScenarioApply,
+                )
+                apply = ReserveScenarioApply(
+                    external_id=external_id,
+                    auction=reserve_scenario.auction.name,
+                    block=reserve_scenario.block,
+                    product=reserve_scenario.product,
+                    reserve_group=reserve_scenario.reserve_group,
+                    volume=reserve_scenario.volume,
+                )
+                scenario_mappings.append(apply)
 
         bid = RKOMBidApply(
             external_id=f"{process.external_id}_bid",
@@ -248,7 +257,7 @@ def to_rkom_data_model(config: MarketConfig, market_name: str) -> RKOMMarketData
             minimum_price=process.minimum_price,
             price_premium=process.price_premium,
             price_scenarios=scenario_mappings,
-            reserve_scenarios=reserve_scenarios,
+            reserve_scenarios=process.reserve_scenarios,
             market=model.rkom_market.external_id,
         )
         model.bids[bid.external_id] = bid
