@@ -39,6 +39,13 @@ class MarketModel(AssetModel):
             },
         )
 
+    @classmethod
+    def from_cdf(cls, client) -> "MarketModel":
+        # TODO:
+        # * Missing a from `from_asset` method on each AssetType
+        # * Handle the rewrite from `type_` to `parent_external_id` on AssetType
+        raise NotImplementedError()
+
 
 __all__ = [
     "RKOMBid",
