@@ -61,6 +61,53 @@ def apply_test_cases():
         for case, model_name in product(apply_test_cases(), AVAILABLE_MODELS)
     ),
 )
+def test_apply_summary(
+    input_dir: Path,
+    market: str,
+    compare_file_path: Path,
+    cdf_timeseries: list[TimeSeries],
+    model_name: str,
+    data_regression,
+    setting_environmental_vars,
+):
+    # Arrange
+    mock_resources = {
+        "assets.create": MockAssetsCreate(),
+        "sequences.create": MockSequencesCreate(),
+        "relationships.create": MockRelationshipsCreate(),
+        "time_series.create": MockTimeSeriesCreate(),
+        "labels.create": MockLabelsCreate(),
+        "events.create": MockEventsCreate(),
+        "data_modeling.instances.apply": MockInstancesApply(),
+        "files.upload_bytes": MockFilesUploadBytes(),
+        "time_series.retrieve_multiple": MockTimeSeriesRetrieveMultiple(cdf_timeseries),
+    }
+
+    with monkeypatch_cognite_client() as client:
+        client.config.project = "cdf-project"
+        for resource_name, mock_resource in mock_resources.items():
+            parts = resource_name.split(".")
+            api = client
+            for resource in parts[:-1]:
+                api = getattr(api, resource)
+            setattr(api, parts[-1], mock_resource)
+
+        # Act
+        model = apply(path=DATA / "demo", market="Dayahead", model_names=model_name, auto_yes=True)
+
+    # Assert
+    data_regression.check(
+        model.summary(), fullpath=compare_file_path.parent / f"{compare_file_path.stem}_{model_name}_summary.yml"
+    )
+
+
+@pytest.mark.parametrize(
+    "input_dir, market, compare_file_path, cdf_timeseries, model_name",
+    list(
+        pytest.param(*case.values, model_name, id=f"{case.id} {model_name}")
+        for case, model_name in product(apply_test_cases(), AVAILABLE_MODELS)
+    ),
+)
 def test_apply(
     input_dir: Path,
     market: str,
@@ -96,10 +143,6 @@ def test_apply(
         apply(path=DATA / "demo", market="Dayahead", model_names=model_name, auto_yes=True)
 
     # Assert
-    # data_regression.check(
-    #     model.summary(), fullpath=compare_file_path.parent / f"{compare_file_path.stem}_{model_name}_summary.yml"
-    # )
-
     dump = {
         ".".join(resource_type.split(".")[:-1]): mock_resource.serialize()
         for resource_type, mock_resource in mock_resources.items()
