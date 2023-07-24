@@ -7,6 +7,13 @@ type OutputMapping{
   isStep: Boolean
 }
 
+type OutputMappings{
+  name: String
+  watercouse: String
+  shopType: String
+  mappings: [OutputMapping]
+}
+
 type CommandConfig {
   commands: [String]
 }
@@ -25,6 +32,6 @@ type ScenarioTemplate {
   templateVersion: String
   model: File
   shopFiles: [File]
-  baseMapping: [InputTimeSeriesMapping]
-  outputDefinitions: [OutputMapping]
+  baseMapping: ScenarioMapping
+  outputDefinitions: OutputMappings
 }
