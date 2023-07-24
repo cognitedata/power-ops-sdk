@@ -314,7 +314,6 @@ class AssetModel(Model, ABC):
         for field_name, asset_cls in cls._asset_types_and_field_names():
             assets = client.assets.retrieve_subtree(external_id=asset_cls.parent_external_id)
             for asset in assets:
-                print(asset)
                 if asset.external_id == asset_cls.parent_external_id:
                     continue
                 instance = asset_cls.from_asset(asset)
