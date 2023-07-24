@@ -5935,7 +5935,13 @@ data_modeling.instances:
   instance_type: node
   sources:
   - properties:
+      baseMapping:
+        externalId: SHOP_Fornebu_base_mapping
+        space: power-ops
       model: SHOP_Fornebu_model
+      outputDefinitions:
+        externalId: SHOP_Fornebu_output_definition
+        space: power-ops
       shopFiles:
       - SHOP_Fornebu_commands
       - SHOP_Fornebu_water_value_cut_file
@@ -5952,2777 +5958,2801 @@ data_modeling.instances:
       space: power-ops
       type: container
   space: power-ops
+- external_id: SHOP_Fornebu_base_mapping
+  instance_type: node
+  sources:
+  - properties:
+      name: null
+      shopType: base_mapping
+      watercourse: Fornebu
+    source:
+      external_id: ScenarioMapping
+      space: power-ops
+      type: container
+  space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__014c383df89fc7300b8b97ea81b7e9c5
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__014c383df89fc7300b8b97ea81b7e9c5
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__014c383df89fc7300b8b97ea81b7e9c5
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__025eb8d3f8a4b7c60029c7756a4ce1af
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__025eb8d3f8a4b7c60029c7756a4ce1af
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__025eb8d3f8a4b7c60029c7756a4ce1af
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__03ef2a517b4439335438b90c9093838a
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__03ef2a517b4439335438b90c9093838a
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__03ef2a517b4439335438b90c9093838a
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__0445eb9211ae1b6fc3637d4988af278b
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__0445eb9211ae1b6fc3637d4988af278b
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__0445eb9211ae1b6fc3637d4988af278b
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__04acea8c288b2aa9c32ccad90f97db1e
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__04acea8c288b2aa9c32ccad90f97db1e
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__04acea8c288b2aa9c32ccad90f97db1e
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__05c9a78d01e3d95bbef2ff028aa5e552
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__05c9a78d01e3d95bbef2ff028aa5e552
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__05c9a78d01e3d95bbef2ff028aa5e552
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__074818086fa8b1f1305572f5c8b07729
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__074818086fa8b1f1305572f5c8b07729
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__074818086fa8b1f1305572f5c8b07729
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__0780c29ab37e5cda2f39ee05557345fd
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__0780c29ab37e5cda2f39ee05557345fd
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__0780c29ab37e5cda2f39ee05557345fd
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__08025f4db042aa43bf9839842ed8c0fd
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__08025f4db042aa43bf9839842ed8c0fd
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__08025f4db042aa43bf9839842ed8c0fd
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__08ceb9c791d45d419ab63e149cd549d2
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__08ceb9c791d45d419ab63e149cd549d2
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__08ceb9c791d45d419ab63e149cd549d2
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__0b814c7f9b082e3056e71740f03fc123
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__0b814c7f9b082e3056e71740f03fc123
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__0b814c7f9b082e3056e71740f03fc123
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__0c5076542f3489edad1475175dd88ae3
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__0c5076542f3489edad1475175dd88ae3
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__0c5076542f3489edad1475175dd88ae3
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__0d176dcffcf0ab41a65f8535b5a5e8ca
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__0d176dcffcf0ab41a65f8535b5a5e8ca
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__0d176dcffcf0ab41a65f8535b5a5e8ca
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__0d72f9ca8f3af096c186bb82b431b192
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__0d72f9ca8f3af096c186bb82b431b192
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__0d72f9ca8f3af096c186bb82b431b192
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__1021dd14099da11476a5a391c3f6b6dd
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__1021dd14099da11476a5a391c3f6b6dd
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__1021dd14099da11476a5a391c3f6b6dd
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__102ff9911d9910ab3f4eeb6913843c10
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__102ff9911d9910ab3f4eeb6913843c10
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__102ff9911d9910ab3f4eeb6913843c10
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__10cc852c6df30c7878860c79f1214f07
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__10cc852c6df30c7878860c79f1214f07
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__10cc852c6df30c7878860c79f1214f07
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__1428a11f85a59350f1286741991e9491
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__1428a11f85a59350f1286741991e9491
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__1428a11f85a59350f1286741991e9491
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__1667b4d5757dfd1471f2fd894b990fb9
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__1667b4d5757dfd1471f2fd894b990fb9
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__1667b4d5757dfd1471f2fd894b990fb9
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__171bb8991983d6cff01fd0463f3e7ba4
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__171bb8991983d6cff01fd0463f3e7ba4
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__171bb8991983d6cff01fd0463f3e7ba4
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__19c80605d71a6d612e1be10c0ea215e8
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__19c80605d71a6d612e1be10c0ea215e8
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__19c80605d71a6d612e1be10c0ea215e8
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__19d66caee2fb3922b05070c7c46501e2
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__19d66caee2fb3922b05070c7c46501e2
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__19d66caee2fb3922b05070c7c46501e2
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__1a52586f9f68ab2c5b1478b4140f342f
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__1a52586f9f68ab2c5b1478b4140f342f
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__1a52586f9f68ab2c5b1478b4140f342f
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__1b20919c2ae18dedaec53e7d41a150a6
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__1b20919c2ae18dedaec53e7d41a150a6
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__1b20919c2ae18dedaec53e7d41a150a6
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__1b4ecf1d699863ab886c327ee928f974
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__1b4ecf1d699863ab886c327ee928f974
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__1b4ecf1d699863ab886c327ee928f974
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__1c46d531b97984f69081c88422b1a0a6
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__1c46d531b97984f69081c88422b1a0a6
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__1c46d531b97984f69081c88422b1a0a6
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__1db7fca46bde3d15d15da659abbbdf4a
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__1db7fca46bde3d15d15da659abbbdf4a
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__1db7fca46bde3d15d15da659abbbdf4a
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__1dff48cd0e380ed2eb38f98812c1cb3f
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__1dff48cd0e380ed2eb38f98812c1cb3f
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__1dff48cd0e380ed2eb38f98812c1cb3f
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__20c4c5d81754e48af6a044089ede5f5f
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__20c4c5d81754e48af6a044089ede5f5f
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__20c4c5d81754e48af6a044089ede5f5f
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__234bcab79c1a0bff7001a23af93a7910
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__234bcab79c1a0bff7001a23af93a7910
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__234bcab79c1a0bff7001a23af93a7910
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__2c19f9a40f769bd7600dc37e62a56ede
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__2c19f9a40f769bd7600dc37e62a56ede
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__2c19f9a40f769bd7600dc37e62a56ede
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__2c60858421f99da385da201c15ef51c0
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__2c60858421f99da385da201c15ef51c0
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__2c60858421f99da385da201c15ef51c0
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__3076e9f8abf8f7f15b4685d48b46ce25
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__3076e9f8abf8f7f15b4685d48b46ce25
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__3076e9f8abf8f7f15b4685d48b46ce25
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__33329b993744d117c925b451a3a7a187
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__33329b993744d117c925b451a3a7a187
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__33329b993744d117c925b451a3a7a187
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__35e6322e2155dc78db871e56f6e54bb9
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__35e6322e2155dc78db871e56f6e54bb9
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__35e6322e2155dc78db871e56f6e54bb9
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__35fa34d8706adfc154cd65acda5435b8
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__35fa34d8706adfc154cd65acda5435b8
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__35fa34d8706adfc154cd65acda5435b8
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__365c89f19522af02504c89ccea356614
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__365c89f19522af02504c89ccea356614
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__365c89f19522af02504c89ccea356614
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__36fae11f48a0b5ce4fe2d655635f721f
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__36fae11f48a0b5ce4fe2d655635f721f
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__36fae11f48a0b5ce4fe2d655635f721f
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__3718303d057f4292b41a12d56ff65f8d
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__3718303d057f4292b41a12d56ff65f8d
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__3718303d057f4292b41a12d56ff65f8d
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__38390942210a0f18bb6f9923aa2acb0c
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__38390942210a0f18bb6f9923aa2acb0c
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__38390942210a0f18bb6f9923aa2acb0c
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__39cb5b329e6d06c55b3eda664bde825d
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__39cb5b329e6d06c55b3eda664bde825d
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__39cb5b329e6d06c55b3eda664bde825d
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__39da4a08567a92fe74b91aef44fc8ad1
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__39da4a08567a92fe74b91aef44fc8ad1
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__39da4a08567a92fe74b91aef44fc8ad1
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__39fe7466e77eb787123fcb61b17f186e
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__39fe7466e77eb787123fcb61b17f186e
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__39fe7466e77eb787123fcb61b17f186e
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__3cf9d1a82420f67c9e7b9305221363db
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__3cf9d1a82420f67c9e7b9305221363db
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__3cf9d1a82420f67c9e7b9305221363db
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__3d154f0595acc2c541e2c1c3cb1a538a
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__3d154f0595acc2c541e2c1c3cb1a538a
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__3d154f0595acc2c541e2c1c3cb1a538a
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__3d7b192e4d605ffa7d24bcd11c1d3679
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__3d7b192e4d605ffa7d24bcd11c1d3679
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__3d7b192e4d605ffa7d24bcd11c1d3679
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__3dfac05cd817e0589fd4e8711d235ff8
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__3dfac05cd817e0589fd4e8711d235ff8
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__3dfac05cd817e0589fd4e8711d235ff8
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__40c6694f28f0e97215dbfa83dba4fa92
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__40c6694f28f0e97215dbfa83dba4fa92
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__40c6694f28f0e97215dbfa83dba4fa92
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__41f6186fa3be942e2dea735808d53b4e
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__41f6186fa3be942e2dea735808d53b4e
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__41f6186fa3be942e2dea735808d53b4e
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__42a3eef50f1fb6349f2bb4b7a1290a6c
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__42a3eef50f1fb6349f2bb4b7a1290a6c
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__42a3eef50f1fb6349f2bb4b7a1290a6c
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__42bb81076027304a26147e60d8c36454
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__42bb81076027304a26147e60d8c36454
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__42bb81076027304a26147e60d8c36454
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__42f9430864ebafa4f15dd8b3c8676109
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__42f9430864ebafa4f15dd8b3c8676109
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__42f9430864ebafa4f15dd8b3c8676109
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__4396dd0cfa8996947488dffa6ca3c684
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__4396dd0cfa8996947488dffa6ca3c684
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__4396dd0cfa8996947488dffa6ca3c684
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__43dd33e0f6058da78d827f6ff7183fa9
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__43dd33e0f6058da78d827f6ff7183fa9
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__43dd33e0f6058da78d827f6ff7183fa9
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__465aadc22856928c6b178bcf8b73fbc1
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__465aadc22856928c6b178bcf8b73fbc1
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__465aadc22856928c6b178bcf8b73fbc1
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__46d64172dbc721e580bba584e9f54cac
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__46d64172dbc721e580bba584e9f54cac
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__46d64172dbc721e580bba584e9f54cac
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__48f30e0d6c0f49c3d162322e01c98d5a
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__48f30e0d6c0f49c3d162322e01c98d5a
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__48f30e0d6c0f49c3d162322e01c98d5a
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__492e18e1e9abba9058f59fb386735c90
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__492e18e1e9abba9058f59fb386735c90
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__492e18e1e9abba9058f59fb386735c90
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__4aff5cefa015b7bd45f4d1ad3fd396fb
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__4aff5cefa015b7bd45f4d1ad3fd396fb
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__4aff5cefa015b7bd45f4d1ad3fd396fb
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__4d2c720ad9f5d84a9c520b02879fafc5
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__4d2c720ad9f5d84a9c520b02879fafc5
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__4d2c720ad9f5d84a9c520b02879fafc5
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__4e6246e38c9391492e35c89638c3718d
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__4e6246e38c9391492e35c89638c3718d
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__4e6246e38c9391492e35c89638c3718d
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__500146ebfe2bd9d352e67050619c774f
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__500146ebfe2bd9d352e67050619c774f
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__500146ebfe2bd9d352e67050619c774f
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__504ce937c50e50ea91075918a5331559
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__504ce937c50e50ea91075918a5331559
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__504ce937c50e50ea91075918a5331559
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__5106533046abaf6575cba80588b6e707
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__5106533046abaf6575cba80588b6e707
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__5106533046abaf6575cba80588b6e707
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__517555fd006c96405d5d88a82db961b9
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__517555fd006c96405d5d88a82db961b9
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__517555fd006c96405d5d88a82db961b9
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__51b4311aa67936c289e39ee05f46b620
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__51b4311aa67936c289e39ee05f46b620
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__51b4311aa67936c289e39ee05f46b620
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__531134c78250715c8f31b063bc849bcb
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__531134c78250715c8f31b063bc849bcb
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__531134c78250715c8f31b063bc849bcb
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__54911e652ff63bb2668878b5b621195a
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__54911e652ff63bb2668878b5b621195a
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__54911e652ff63bb2668878b5b621195a
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__55030b1391a4c21f76991e047115ef36
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__55030b1391a4c21f76991e047115ef36
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__55030b1391a4c21f76991e047115ef36
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__56548f90fb1a46e305e856e2a3c88a03
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__56548f90fb1a46e305e856e2a3c88a03
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__56548f90fb1a46e305e856e2a3c88a03
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__5820b77f224509b09b549389c1088097
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__5820b77f224509b09b549389c1088097
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__5820b77f224509b09b549389c1088097
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__5908afe587b57ef4360c5216dc299a5b
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__5908afe587b57ef4360c5216dc299a5b
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__5908afe587b57ef4360c5216dc299a5b
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__5a7a59e2b9760f74a893730de3df0e69
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__5a7a59e2b9760f74a893730de3df0e69
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__5a7a59e2b9760f74a893730de3df0e69
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__5ae7f6a33f8db8e6190a459fe42f44f6
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__5ae7f6a33f8db8e6190a459fe42f44f6
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__5ae7f6a33f8db8e6190a459fe42f44f6
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__5c13a88b96b575509f1551df4a31de14
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__5c13a88b96b575509f1551df4a31de14
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__5c13a88b96b575509f1551df4a31de14
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__5d932f96a8b146789d3575361b3bafe3
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__5d932f96a8b146789d3575361b3bafe3
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__5d932f96a8b146789d3575361b3bafe3
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__607311363e17d224c6487689c88a6ebc
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__607311363e17d224c6487689c88a6ebc
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__607311363e17d224c6487689c88a6ebc
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__629423a7f993bedfba3f4eac681e1cde
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__629423a7f993bedfba3f4eac681e1cde
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__629423a7f993bedfba3f4eac681e1cde
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__62f0441fab3395306c744b97893243fb
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__62f0441fab3395306c744b97893243fb
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__62f0441fab3395306c744b97893243fb
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__64812fdf739d104afc9f3a8e6f2bfee1
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__64812fdf739d104afc9f3a8e6f2bfee1
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__64812fdf739d104afc9f3a8e6f2bfee1
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__6488180a6eb16a1af649b3144b285425
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__6488180a6eb16a1af649b3144b285425
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__6488180a6eb16a1af649b3144b285425
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__6646baa28e2beb3b5ea3bb5803959570
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__6646baa28e2beb3b5ea3bb5803959570
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__6646baa28e2beb3b5ea3bb5803959570
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__6746cf044b501a76b63c12a4aa865325
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__6746cf044b501a76b63c12a4aa865325
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__6746cf044b501a76b63c12a4aa865325
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__683c7b9aa24b27f1801b65d3e19c7cd5
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__683c7b9aa24b27f1801b65d3e19c7cd5
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__683c7b9aa24b27f1801b65d3e19c7cd5
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__693f3076cc1bad0e1a0567ea4cbf83b0
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__693f3076cc1bad0e1a0567ea4cbf83b0
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__693f3076cc1bad0e1a0567ea4cbf83b0
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__6bac2d3fb9432a1190a650415ddef186
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__6bac2d3fb9432a1190a650415ddef186
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__6bac2d3fb9432a1190a650415ddef186
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__6d43482059f5d4581315299c03d8339c
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__6d43482059f5d4581315299c03d8339c
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__6d43482059f5d4581315299c03d8339c
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__6d95b043307965985cca0e0ea922f817
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__6d95b043307965985cca0e0ea922f817
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__6d95b043307965985cca0e0ea922f817
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__6e9ade43f8a72c59509aa34f6193cbc6
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__6e9ade43f8a72c59509aa34f6193cbc6
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__6e9ade43f8a72c59509aa34f6193cbc6
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__6f9d4bd475b13b040935dc862eb7a9f9
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__6f9d4bd475b13b040935dc862eb7a9f9
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__6f9d4bd475b13b040935dc862eb7a9f9
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__729cf182b7db7f79a1af602bd4b688cb
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__729cf182b7db7f79a1af602bd4b688cb
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__729cf182b7db7f79a1af602bd4b688cb
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__730166e9b2b578857d376a93d8c5cc91
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__730166e9b2b578857d376a93d8c5cc91
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__730166e9b2b578857d376a93d8c5cc91
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__742884bf54a4bcf25a2001c69f662253
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__742884bf54a4bcf25a2001c69f662253
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__742884bf54a4bcf25a2001c69f662253
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__743087371edbabd60f548e8cf9a6702b
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__743087371edbabd60f548e8cf9a6702b
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__743087371edbabd60f548e8cf9a6702b
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__74f26a346e70669e5e972aacfb730b48
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__74f26a346e70669e5e972aacfb730b48
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__74f26a346e70669e5e972aacfb730b48
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__74fc9e949393b295911ab019b08246a0
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__74fc9e949393b295911ab019b08246a0
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__74fc9e949393b295911ab019b08246a0
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__76057f80fa1dfbe107e2e26872df1de0
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__76057f80fa1dfbe107e2e26872df1de0
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__76057f80fa1dfbe107e2e26872df1de0
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__76bf9248d3ca03b0030c0e30f0dce3fd
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__76bf9248d3ca03b0030c0e30f0dce3fd
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__76bf9248d3ca03b0030c0e30f0dce3fd
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__7a59eba4192313e0f3508f5f396129b3
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__7a59eba4192313e0f3508f5f396129b3
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__7a59eba4192313e0f3508f5f396129b3
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__7bbf8da8d8a205975af8f7563927e035
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__7bbf8da8d8a205975af8f7563927e035
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__7bbf8da8d8a205975af8f7563927e035
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__7bf0290e5cbbad9df51ff9d9fa8e8ac3
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__7bf0290e5cbbad9df51ff9d9fa8e8ac3
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__7bf0290e5cbbad9df51ff9d9fa8e8ac3
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__7c58b0fe8fc9cfaedaaa9dc69a3b32bd
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__7c58b0fe8fc9cfaedaaa9dc69a3b32bd
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__7c58b0fe8fc9cfaedaaa9dc69a3b32bd
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__7cb6c28028acf969ec6ed8d6d72bd330
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__7cb6c28028acf969ec6ed8d6d72bd330
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__7cb6c28028acf969ec6ed8d6d72bd330
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__7d79ce6e6bf72388388d13db861b1007
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__7d79ce6e6bf72388388d13db861b1007
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__7d79ce6e6bf72388388d13db861b1007
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__7d98410596f097521c73bfe7b95a36df
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__7d98410596f097521c73bfe7b95a36df
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__7d98410596f097521c73bfe7b95a36df
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__7eb4f23cab45ad7e268eff83091566aa
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__7eb4f23cab45ad7e268eff83091566aa
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__7eb4f23cab45ad7e268eff83091566aa
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__7ecbdcbefd10ba8c7a84397ea5c6f6d5
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__7ecbdcbefd10ba8c7a84397ea5c6f6d5
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__7ecbdcbefd10ba8c7a84397ea5c6f6d5
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__7f6798ab61696ca300b424d1feefcad8
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__7f6798ab61696ca300b424d1feefcad8
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__7f6798ab61696ca300b424d1feefcad8
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__7f713bfae49fffe36c39465821d57594
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__7f713bfae49fffe36c39465821d57594
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__7f713bfae49fffe36c39465821d57594
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__81350e37626db106adccf526d9817090
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__81350e37626db106adccf526d9817090
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__81350e37626db106adccf526d9817090
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__81aa42bbb6d0cafcc36c73bb4f57ae62
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__81aa42bbb6d0cafcc36c73bb4f57ae62
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__81aa42bbb6d0cafcc36c73bb4f57ae62
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__839a3a5d393c8c2284318ff5afa51fa0
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__839a3a5d393c8c2284318ff5afa51fa0
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__839a3a5d393c8c2284318ff5afa51fa0
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__8445d143e4b65272027ac9b575218755
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__8445d143e4b65272027ac9b575218755
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__8445d143e4b65272027ac9b575218755
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__85e373a7595f0eb5a31019a65b52fa27
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__85e373a7595f0eb5a31019a65b52fa27
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__85e373a7595f0eb5a31019a65b52fa27
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__8614960a98cfa9deaed56f824f6255b1
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__8614960a98cfa9deaed56f824f6255b1
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__8614960a98cfa9deaed56f824f6255b1
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__873ab2e06747d4e4169b03aba00c0261
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__873ab2e06747d4e4169b03aba00c0261
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__873ab2e06747d4e4169b03aba00c0261
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__88bd25042ecf36ea97532ccb91e2aff3
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__88bd25042ecf36ea97532ccb91e2aff3
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__88bd25042ecf36ea97532ccb91e2aff3
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__88c1b49d1b7cad3a38ac838f3f7f34a0
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__88c1b49d1b7cad3a38ac838f3f7f34a0
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__88c1b49d1b7cad3a38ac838f3f7f34a0
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__8b0c6f7106c035026c14169f433f919f
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__8b0c6f7106c035026c14169f433f919f
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__8b0c6f7106c035026c14169f433f919f
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__8e16892b50493e7e37966ee3c06fc02f
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__8e16892b50493e7e37966ee3c06fc02f
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__8e16892b50493e7e37966ee3c06fc02f
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__8ee05865955efb7d403869e087569f56
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__8ee05865955efb7d403869e087569f56
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__8ee05865955efb7d403869e087569f56
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__8f0de2d40533294991c2e8a6610cbd13
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__8f0de2d40533294991c2e8a6610cbd13
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__8f0de2d40533294991c2e8a6610cbd13
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__8fd9644cb133b78f34940828ec308875
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__8fd9644cb133b78f34940828ec308875
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__8fd9644cb133b78f34940828ec308875
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__901b493a7428bbd84e588393ea02fa2d
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__901b493a7428bbd84e588393ea02fa2d
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__901b493a7428bbd84e588393ea02fa2d
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__9192da8b1e0fc5fc89a5152180e87ed0
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__9192da8b1e0fc5fc89a5152180e87ed0
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__9192da8b1e0fc5fc89a5152180e87ed0
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__9218edc127fcf67b2ad8c487a1264cb7
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__9218edc127fcf67b2ad8c487a1264cb7
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__9218edc127fcf67b2ad8c487a1264cb7
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__93db214d232ee0327c1fe6ebafbc883f
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__93db214d232ee0327c1fe6ebafbc883f
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__93db214d232ee0327c1fe6ebafbc883f
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__95a3928bb559f299c171534e9355cd08
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__95a3928bb559f299c171534e9355cd08
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__95a3928bb559f299c171534e9355cd08
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__96b65dffe8799bc1c35c0f3e93f949a3
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__96b65dffe8799bc1c35c0f3e93f949a3
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__96b65dffe8799bc1c35c0f3e93f949a3
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__9887503a45b4d3cade8aab1b0d62089d
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__9887503a45b4d3cade8aab1b0d62089d
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__9887503a45b4d3cade8aab1b0d62089d
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__990e927863015b923d1ae99de642c40e
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__990e927863015b923d1ae99de642c40e
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__990e927863015b923d1ae99de642c40e
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__9946ac313952fdf201a7525c01539aa3
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__9946ac313952fdf201a7525c01539aa3
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__9946ac313952fdf201a7525c01539aa3
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__996a9ea29c28d69da10078711b5ccecc
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__996a9ea29c28d69da10078711b5ccecc
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__996a9ea29c28d69da10078711b5ccecc
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__9af34fed2d405317d9c78ebb4ae3ca4c
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__9af34fed2d405317d9c78ebb4ae3ca4c
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__9af34fed2d405317d9c78ebb4ae3ca4c
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__9b289f1bc1769caa3d6013b91f35d4b5
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__9b289f1bc1769caa3d6013b91f35d4b5
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__9b289f1bc1769caa3d6013b91f35d4b5
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__9b7b37c12c693cd88bfe521ffabf801e
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__9b7b37c12c693cd88bfe521ffabf801e
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__9b7b37c12c693cd88bfe521ffabf801e
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__9baf1d30ef443331b4c1ad38654bfc06
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__9baf1d30ef443331b4c1ad38654bfc06
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__9baf1d30ef443331b4c1ad38654bfc06
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__9f18794db367541490fa66b9e68ad1e7
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__9f18794db367541490fa66b9e68ad1e7
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__9f18794db367541490fa66b9e68ad1e7
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__a17a9079e0a08c780f9de9cca6052953
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__a17a9079e0a08c780f9de9cca6052953
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__a17a9079e0a08c780f9de9cca6052953
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__a200ec9609f4d00ea94b7807b61acbc3
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__a200ec9609f4d00ea94b7807b61acbc3
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__a200ec9609f4d00ea94b7807b61acbc3
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__a54978e39ba085e2de72cadd4cb59e3c
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__a54978e39ba085e2de72cadd4cb59e3c
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__a54978e39ba085e2de72cadd4cb59e3c
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__a6bd5aaf9a5a032584529ef88b68a7e9
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__a6bd5aaf9a5a032584529ef88b68a7e9
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__a6bd5aaf9a5a032584529ef88b68a7e9
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__a6c8187fbb932057c26fd698cf1ef9cc
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__a6c8187fbb932057c26fd698cf1ef9cc
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__a6c8187fbb932057c26fd698cf1ef9cc
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__aacb22a32f6c2a7f9610acd4af84b0f3
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__aacb22a32f6c2a7f9610acd4af84b0f3
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__aacb22a32f6c2a7f9610acd4af84b0f3
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__ab308122f2f7543cb796ee6f9dd87d3c
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__ab308122f2f7543cb796ee6f9dd87d3c
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__ab308122f2f7543cb796ee6f9dd87d3c
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__ab36381c005d10b57994cf313f51b94e
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__ab36381c005d10b57994cf313f51b94e
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__ab36381c005d10b57994cf313f51b94e
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__aeed08fa14294b35340c0b0a755489bb
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__aeed08fa14294b35340c0b0a755489bb
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__aeed08fa14294b35340c0b0a755489bb
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__af5c21ecfb80ffa62d2d732a9fd0765e
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__af5c21ecfb80ffa62d2d732a9fd0765e
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__af5c21ecfb80ffa62d2d732a9fd0765e
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__afed7361e327c4185e3bb366e2402838
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__afed7361e327c4185e3bb366e2402838
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__afed7361e327c4185e3bb366e2402838
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__b02eb3c6475ad14f4ba254f41093eab8
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__b02eb3c6475ad14f4ba254f41093eab8
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__b02eb3c6475ad14f4ba254f41093eab8
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__b1730f54a186ef7e350480dacbef3459
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__b1730f54a186ef7e350480dacbef3459
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__b1730f54a186ef7e350480dacbef3459
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__b1ed9129cf0d31b9861bae00d9e4d67b
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__b1ed9129cf0d31b9861bae00d9e4d67b
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__b1ed9129cf0d31b9861bae00d9e4d67b
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__b28bb1c665d419b33d7ff01130eb99e5
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__b28bb1c665d419b33d7ff01130eb99e5
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__b28bb1c665d419b33d7ff01130eb99e5
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__b4c61c9aa7417755420785f7c0787f0a
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__b4c61c9aa7417755420785f7c0787f0a
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__b4c61c9aa7417755420785f7c0787f0a
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__b4ddd0e3a2e96c019f125899b7377d8b
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__b4ddd0e3a2e96c019f125899b7377d8b
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__b4ddd0e3a2e96c019f125899b7377d8b
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__b5e74fcf5c0b7141d397f23c7b0bdf1f
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__b5e74fcf5c0b7141d397f23c7b0bdf1f
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__b5e74fcf5c0b7141d397f23c7b0bdf1f
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__b5e9010e3ad28133a0225d2cd8ca83cc
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__b5e9010e3ad28133a0225d2cd8ca83cc
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__b5e9010e3ad28133a0225d2cd8ca83cc
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__b8167150657eb38326b28b01b965663e
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__b8167150657eb38326b28b01b965663e
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__b8167150657eb38326b28b01b965663e
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__b8b7a541048706654f4405cf2ba6b54e
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__b8b7a541048706654f4405cf2ba6b54e
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__b8b7a541048706654f4405cf2ba6b54e
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__b8e0247a38371f0d8b61508fdd221846
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__b8e0247a38371f0d8b61508fdd221846
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__b8e0247a38371f0d8b61508fdd221846
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__babe8cff2cc49c39fc1804d4c9685c7a
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__babe8cff2cc49c39fc1804d4c9685c7a
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__babe8cff2cc49c39fc1804d4c9685c7a
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__baf4b7d3517c9398c37a7336b53feadf
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__baf4b7d3517c9398c37a7336b53feadf
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__baf4b7d3517c9398c37a7336b53feadf
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__bc305bcdf2cf51879763923b3d1c4806
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__bc305bcdf2cf51879763923b3d1c4806
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__bc305bcdf2cf51879763923b3d1c4806
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__bcfda4f365d87b91896468bf0a91c98e
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__bcfda4f365d87b91896468bf0a91c98e
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__bcfda4f365d87b91896468bf0a91c98e
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__be03e80bd22230f3b0bed2162470edd2
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__be03e80bd22230f3b0bed2162470edd2
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__be03e80bd22230f3b0bed2162470edd2
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__bebc203323b02050016461b9a9b0eb98
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__bebc203323b02050016461b9a9b0eb98
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__bebc203323b02050016461b9a9b0eb98
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__bec08b43cba17cb678a64294dc627a69
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__bec08b43cba17cb678a64294dc627a69
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__bec08b43cba17cb678a64294dc627a69
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__c05b7e9b86de54793befd2360467f4c9
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__c05b7e9b86de54793befd2360467f4c9
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__c05b7e9b86de54793befd2360467f4c9
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__c082c8482e7542afc77ff2d818ccbf78
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__c082c8482e7542afc77ff2d818ccbf78
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__c082c8482e7542afc77ff2d818ccbf78
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__c0adf0f5f5dd2fcac3d29a12f158c8ab
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__c0adf0f5f5dd2fcac3d29a12f158c8ab
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__c0adf0f5f5dd2fcac3d29a12f158c8ab
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__c187e7dca5351e0f9a132c6006ee2ec5
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__c187e7dca5351e0f9a132c6006ee2ec5
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__c187e7dca5351e0f9a132c6006ee2ec5
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__c1dbde7bf5da1ac063002cba7c92ad3e
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__c1dbde7bf5da1ac063002cba7c92ad3e
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__c1dbde7bf5da1ac063002cba7c92ad3e
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__c281cdcbff283d5fb298ebf4c9c72ae3
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__c281cdcbff283d5fb298ebf4c9c72ae3
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__c281cdcbff283d5fb298ebf4c9c72ae3
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__c61bd532f250cb2853c9544855f6306c
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__c61bd532f250cb2853c9544855f6306c
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__c61bd532f250cb2853c9544855f6306c
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__c7dcf468f918b097081eb8af56030f15
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__c7dcf468f918b097081eb8af56030f15
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__c7dcf468f918b097081eb8af56030f15
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__c824a76327dd5e70948b6b964219e16c
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__c824a76327dd5e70948b6b964219e16c
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__c824a76327dd5e70948b6b964219e16c
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__c83bcec2e4ecb17376641e283740be2c
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__c83bcec2e4ecb17376641e283740be2c
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__c83bcec2e4ecb17376641e283740be2c
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__c846af8c03f0de2df8ae0f00b32b77ab
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__c846af8c03f0de2df8ae0f00b32b77ab
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__c846af8c03f0de2df8ae0f00b32b77ab
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__c8f1f476d7585fe77b5d784e6b85b097
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__c8f1f476d7585fe77b5d784e6b85b097
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__c8f1f476d7585fe77b5d784e6b85b097
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__c9bd2c70e682f2a5f82bbd37fc35ba4f
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__c9bd2c70e682f2a5f82bbd37fc35ba4f
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__c9bd2c70e682f2a5f82bbd37fc35ba4f
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__ca1d6f0ae41b95dadd91c65026027a11
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__ca1d6f0ae41b95dadd91c65026027a11
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__ca1d6f0ae41b95dadd91c65026027a11
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__ccf702b96f00e98c90dcbf11b571db7f
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__ccf702b96f00e98c90dcbf11b571db7f
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__ccf702b96f00e98c90dcbf11b571db7f
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__d19989ed1b1f29c3bc199a7260a78c1f
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__d19989ed1b1f29c3bc199a7260a78c1f
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__d19989ed1b1f29c3bc199a7260a78c1f
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__d1c18afbcab76923b87126c0f8a1d8b2
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__d1c18afbcab76923b87126c0f8a1d8b2
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__d1c18afbcab76923b87126c0f8a1d8b2
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__d232bea4cd7039bfdf684571ad4539cc
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__d232bea4cd7039bfdf684571ad4539cc
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__d232bea4cd7039bfdf684571ad4539cc
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__d333e5d521766f662f08f207dbd3b6cd
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__d333e5d521766f662f08f207dbd3b6cd
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__d333e5d521766f662f08f207dbd3b6cd
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__d485b1d9a8ae419155dd9f79fd9fce66
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__d485b1d9a8ae419155dd9f79fd9fce66
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__d485b1d9a8ae419155dd9f79fd9fce66
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__d611854ef1e345bcd94d1b126f51c135
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__d611854ef1e345bcd94d1b126f51c135
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__d611854ef1e345bcd94d1b126f51c135
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__d6d49cf9f5b3fa49fc0e552ee31ee7ff
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__d6d49cf9f5b3fa49fc0e552ee31ee7ff
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__d6d49cf9f5b3fa49fc0e552ee31ee7ff
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__d79c6a767a7bbfc56404f286a0cb3dad
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__d79c6a767a7bbfc56404f286a0cb3dad
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__d79c6a767a7bbfc56404f286a0cb3dad
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__d7aed5237f00018990315c76af2de468
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__d7aed5237f00018990315c76af2de468
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__d7aed5237f00018990315c76af2de468
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__d8c97fe597d6ef03ee9125d0da1fc7c9
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__d8c97fe597d6ef03ee9125d0da1fc7c9
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__d8c97fe597d6ef03ee9125d0da1fc7c9
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__d91a79edffbc59ae74566bea1ae12391
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__d91a79edffbc59ae74566bea1ae12391
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__d91a79edffbc59ae74566bea1ae12391
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__dcccb935231f99196e21e1a631c29946
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__dcccb935231f99196e21e1a631c29946
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__dcccb935231f99196e21e1a631c29946
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__dee694edaf011f443daa10d704aa16f6
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__dee694edaf011f443daa10d704aa16f6
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__dee694edaf011f443daa10d704aa16f6
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__e2c9e3a9382f4994ad58b5514b25ffa1
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__e2c9e3a9382f4994ad58b5514b25ffa1
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__e2c9e3a9382f4994ad58b5514b25ffa1
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__e547e7220f2e8a8cfb3cac8011baf9d3
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__e547e7220f2e8a8cfb3cac8011baf9d3
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__e547e7220f2e8a8cfb3cac8011baf9d3
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__e5a8adde4b0a538460eb48e1405f3722
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__e5a8adde4b0a538460eb48e1405f3722
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__e5a8adde4b0a538460eb48e1405f3722
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__e61e335db1bd4f929d1b2f330ae665f4
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__e61e335db1bd4f929d1b2f330ae665f4
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__e61e335db1bd4f929d1b2f330ae665f4
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__e69a2cbe2fc54e33d1e7bd91d75070f2
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__e69a2cbe2fc54e33d1e7bd91d75070f2
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__e69a2cbe2fc54e33d1e7bd91d75070f2
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__e6da0a73898716b1243f2fb6a93320c1
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__e6da0a73898716b1243f2fb6a93320c1
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__e6da0a73898716b1243f2fb6a93320c1
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__e6ff2986bc25ef5ba49d6c5b189cdfd6
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__e6ff2986bc25ef5ba49d6c5b189cdfd6
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__e6ff2986bc25ef5ba49d6c5b189cdfd6
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__e9ebf291bbf814ff5cba49e5dc6d5068
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__e9ebf291bbf814ff5cba49e5dc6d5068
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__e9ebf291bbf814ff5cba49e5dc6d5068
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__eb4d32de2680d87eeef2d4de3c28f065
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__eb4d32de2680d87eeef2d4de3c28f065
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__eb4d32de2680d87eeef2d4de3c28f065
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__ece72c1f417fd091e30552fd01226605
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__ece72c1f417fd091e30552fd01226605
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__ece72c1f417fd091e30552fd01226605
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__edb8a6090a6cd01bbf25cb617d0f820c
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__edb8a6090a6cd01bbf25cb617d0f820c
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__edb8a6090a6cd01bbf25cb617d0f820c
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__efc2db76a5ab852df7a7f26bbf2f00b7
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__efc2db76a5ab852df7a7f26bbf2f00b7
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__efc2db76a5ab852df7a7f26bbf2f00b7
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__eff73abd0f3d52276e51fabc282141e0
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__eff73abd0f3d52276e51fabc282141e0
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__eff73abd0f3d52276e51fabc282141e0
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__f105561d5426c2459b11dc627facbbf7
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__f105561d5426c2459b11dc627facbbf7
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__f105561d5426c2459b11dc627facbbf7
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__f15c0fa0140df6d9461c65fb9b7d7b7e
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__f15c0fa0140df6d9461c65fb9b7d7b7e
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__f15c0fa0140df6d9461c65fb9b7d7b7e
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__f1714b18ded6d25e5f6556b8a8211ed7
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__f1714b18ded6d25e5f6556b8a8211ed7
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__f1714b18ded6d25e5f6556b8a8211ed7
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__f235446bf5353d0346dc70b0dc3979c8
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__f235446bf5353d0346dc70b0dc3979c8
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__f235446bf5353d0346dc70b0dc3979c8
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__f25a46daea0ea29784fdb64c85a76b71
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__f25a46daea0ea29784fdb64c85a76b71
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__f25a46daea0ea29784fdb64c85a76b71
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__f3a79978402390c31751f8a1f841f222
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__f3a79978402390c31751f8a1f841f222
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__f3a79978402390c31751f8a1f841f222
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__f3da9bb3adf1365b62057628d5ad02e7
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__f3da9bb3adf1365b62057628d5ad02e7
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__f3da9bb3adf1365b62057628d5ad02e7
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__f4b28d4884a90fdc4cdff7522154c91a
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__f4b28d4884a90fdc4cdff7522154c91a
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__f4b28d4884a90fdc4cdff7522154c91a
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__f6e46758e8fcc9adf9a252ca614853c4
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__f6e46758e8fcc9adf9a252ca614853c4
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__f6e46758e8fcc9adf9a252ca614853c4
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__f7e9464b07c74e8f59b556e525793175
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__f7e9464b07c74e8f59b556e525793175
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__f7e9464b07c74e8f59b556e525793175
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__f86cadfc8a1f291b3b1cbeedbb861bd8
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__f86cadfc8a1f291b3b1cbeedbb861bd8
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__f86cadfc8a1f291b3b1cbeedbb861bd8
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__f8ad19d580935a6480978636daa4991a
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__f8ad19d580935a6480978636daa4991a
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__f8ad19d580935a6480978636daa4991a
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__fa19a3790a7022e5498b247e425a4389
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__fa19a3790a7022e5498b247e425a4389
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__fa19a3790a7022e5498b247e425a4389
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__fbd73d3a5238212a81a0d98d21bb93d1
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__fbd73d3a5238212a81a0d98d21bb93d1
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__fbd73d3a5238212a81a0d98d21bb93d1
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__fde087887a3b75b249298ff61a8bb539
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__fde087887a3b75b249298ff61a8bb539
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__fde087887a3b75b249298ff61a8bb539
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__fee9f3c6a5fc1ac70b1145539a98ba86
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__fee9f3c6a5fc1ac70b1145539a98ba86
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__fee9f3c6a5fc1ac70b1145539a98ba86
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__ff94eabed80ce66603210ffcd0d80a8b
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:InputTimeSeriesMapping__ff94eabed80ce66603210ffcd0d80a8b
+  external_id: SHOP_Fornebu_base_mapping:InputTimeSeriesMapping__ff94eabed80ce66603210ffcd0d80a8b
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_base_mapping
     space: power-ops
   type:
-    external_id: ScenarioTemplate.baseMapping
+    external_id: ScenarioMapping.mappingOverride
     space: power-ops
+- external_id: SHOP_Fornebu_output_definition
+  instance_type: node
+  sources:
+  - properties:
+      name: SHOP Fornebu output definition
+      shopType: output_definition
+      watercouse: Fornebu
+    source:
+      external_id: OutputContainer
+      space: power-ops
+      type: container
+  space: power-ops
 - end_node:
     external_id: OutputMapping__07a165841103141c1ff82b89a33bfc96
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:OutputMapping__07a165841103141c1ff82b89a33bfc96
+  external_id: SHOP_Fornebu_output_definition:OutputMapping__07a165841103141c1ff82b89a33bfc96
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_output_definition
     space: power-ops
   type:
-    external_id: ScenarioTemplate.outputDefinitions
+    external_id: OutputContainer.mappings
     space: power-ops
 - end_node:
     external_id: OutputMapping__0d0326c4f307c79c51bc6a4269799236
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:OutputMapping__0d0326c4f307c79c51bc6a4269799236
+  external_id: SHOP_Fornebu_output_definition:OutputMapping__0d0326c4f307c79c51bc6a4269799236
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_output_definition
     space: power-ops
   type:
-    external_id: ScenarioTemplate.outputDefinitions
+    external_id: OutputContainer.mappings
     space: power-ops
 - end_node:
     external_id: OutputMapping__478554acf7c261a343be21a9fe4df5c2
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:OutputMapping__478554acf7c261a343be21a9fe4df5c2
+  external_id: SHOP_Fornebu_output_definition:OutputMapping__478554acf7c261a343be21a9fe4df5c2
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_output_definition
     space: power-ops
   type:
-    external_id: ScenarioTemplate.outputDefinitions
+    external_id: OutputContainer.mappings
     space: power-ops
 - end_node:
     external_id: OutputMapping__69593fce0796c9c81cb862e7cca3dada
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:OutputMapping__69593fce0796c9c81cb862e7cca3dada
+  external_id: SHOP_Fornebu_output_definition:OutputMapping__69593fce0796c9c81cb862e7cca3dada
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_output_definition
     space: power-ops
   type:
-    external_id: ScenarioTemplate.outputDefinitions
+    external_id: OutputContainer.mappings
     space: power-ops
 - end_node:
     external_id: OutputMapping__6e521f915bac7e79ec6a8c674cb02497
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:OutputMapping__6e521f915bac7e79ec6a8c674cb02497
+  external_id: SHOP_Fornebu_output_definition:OutputMapping__6e521f915bac7e79ec6a8c674cb02497
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_output_definition
     space: power-ops
   type:
-    external_id: ScenarioTemplate.outputDefinitions
+    external_id: OutputContainer.mappings
     space: power-ops
 - end_node:
     external_id: OutputMapping__ebaa15da89c0de66fe11f26b0e36752f
     space: power-ops
-  external_id: ScenarioTemplate_Fornebu:OutputMapping__ebaa15da89c0de66fe11f26b0e36752f
+  external_id: SHOP_Fornebu_output_definition:OutputMapping__ebaa15da89c0de66fe11f26b0e36752f
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: ScenarioTemplate_Fornebu
+    external_id: SHOP_Fornebu_output_definition
     space: power-ops
   type:
-    external_id: ScenarioTemplate.outputDefinitions
+    external_id: OutputContainer.mappings
     space: power-ops
 - external_id: ValueTransformation__025fa4179f2ddebbd1ed688ec6d48b9b
   instance_type: node

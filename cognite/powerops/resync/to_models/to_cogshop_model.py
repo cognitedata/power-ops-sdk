@@ -67,7 +67,7 @@ def to_cogshop_data_model(
         output_container = OutputContainerApply(
             external_id=external_id,
             name=external_id.replace("_", " "),
-            watercourse=watercourse.name,
+            watercouse=watercourse.name,
             shop_type="output_definition",
             mappings=output_definitions,
         )
@@ -91,7 +91,6 @@ def to_cogshop_data_model(
             mapping_override=base_mappings,
         )
 
-        model.input_time_series_mappings.update(base_mappings)
         model.value_transformations.update(transformations)
 
         model.scenario_templates.append(
@@ -100,7 +99,7 @@ def to_cogshop_data_model(
                 model=model_file.external_id,
                 shop_version=shop_version,
                 template_version="1",
-                output_definitions=list(output_definitions.values()),
+                output_definitions=output_container,
                 shop_files=[f.external_id for f in model.shop_files],
                 watercourse=watercourse.name,
                 base_mapping=scenario_mapping,

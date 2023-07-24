@@ -1,8 +1,8 @@
 RKOMMarketDataModel:
   cdf:
-    edges: 496
+    edges: 1566
     files: 0
-    nodes: 198
+    nodes: 381
     sequences: 0
   domain:
     bids: 4
