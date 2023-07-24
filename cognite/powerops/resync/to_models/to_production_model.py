@@ -185,11 +185,11 @@ def to_production_model(config: ProductionConfig) -> production.ProductionModel:
             plant.generators = [
                 g
                 for connection in parsed_connections
-                if (g := connection.to_from_any(generators_by_name, plant.name, plant.parent_external_id))
+                if (g := connection.to_from_any(generators_by_name, plant.name, plant.type_))
             ] + [
                 g
                 for connection in parsed_connections
-                if (g := connection.from_to_any(plant.name, plant.parent_external_id, generators_by_name))
+                if (g := connection.from_to_any(plant.name, plant.type_, generators_by_name))
             ]
             plants.append(plant)
 
