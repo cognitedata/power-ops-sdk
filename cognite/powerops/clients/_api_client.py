@@ -15,6 +15,7 @@ from cognite.powerops.clients._api.day_ahead_process import DayAheadProcessAPI
 from cognite.powerops.clients._api.generators import GeneratorsAPI
 from cognite.powerops.clients._api.input_time_series_mappings import InputTimeSeriesMappingsAPI
 from cognite.powerops.clients._api.nord_pool_markets import NordPoolMarketsAPI
+from cognite.powerops.clients._api.output_containers import OutputContainersAPI
 from cognite.powerops.clients._api.output_mappings import OutputMappingsAPI
 from cognite.powerops.clients._api.plants import PlantsAPI
 from cognite.powerops.clients._api.price_areas import PriceAreasAPI
@@ -72,6 +73,7 @@ class CogShopAPIs:
     def __init__(self, client: CogniteClient):
         self.command_configs = CommandConfigsAPI(client)
         self.input_time_series_mappings = InputTimeSeriesMappingsAPI(client)
+        self.output_containers = OutputContainersAPI(client)
         self.output_mappings = OutputMappingsAPI(client)
         self.scenarios = ScenariosAPI(client)
         self.scenario_mappings = ScenarioMappingsAPI(client)
@@ -153,7 +155,7 @@ class PowerOpsClient:
 
     Generated with:
         pygen = 0.12.3
-        cognite-sdk = 6.8.4
+        cognite-sdk = 6.11.1
         pydantic = 2.0.3
 
     """

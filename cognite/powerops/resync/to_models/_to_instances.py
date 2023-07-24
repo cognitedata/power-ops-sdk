@@ -80,11 +80,11 @@ def _to_value_transformation(transformation: Transformation) -> ValueTransformat
     )
 
 
-def _to_scenario_mapping(name: str, time_series_mapping: TimeSeriesMapping) -> ScenarioMappingApply:
+def _to_scenario_mapping(external_id: str, name: str, time_series_mapping: TimeSeriesMapping) -> ScenarioMappingApply:
     mappings = [_to_input_timeseries_mapping(entry) for entry in time_series_mapping]
 
     return ScenarioMappingApply(
-        external_id=f"{name}_{make_ext_id([m.external_id for m in mappings], class_=ScenarioMappingApply)}",
+        external_id=external_id,
         mapping_override=mappings,
         name=name,
     )

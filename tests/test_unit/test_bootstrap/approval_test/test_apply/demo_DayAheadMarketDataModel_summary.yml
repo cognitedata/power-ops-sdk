@@ -1,11 +1,11 @@
 DayAheadMarketDataModel:
   cdf:
-    edges: 182
+    edges: 152
     files: 0
-    nodes: 129
+    nodes: 107
     sequences: 0
   domain:
-    bid_matrix_generator: 27
+    bid_matrix_generator: 4
     bids: 4
     dayahead_processes: 4
     nordpool_market: 1

@@ -9,7 +9,13 @@ import pandas as pd
 import yaml
 from cognite.client.data_classes import FileMetadata, Sequence
 
-from cognite.powerops.clients.data_classes import OutputMappingApply, ScenarioTemplateApply, ValueTransformationApply
+from cognite.powerops.clients.data_classes import (
+    OutputMappingApply,
+    ScenarioTemplateApply,
+    ValueTransformationApply,
+    OutputContainerApply,
+    ScenarioMappingApply,
+)
 from cognite.powerops.resync.config.cogshop.shop_file_config import ShopFileConfig
 from cognite.powerops.resync.config.production.watercourse import WatercourseConfig
 from cognite.powerops.resync.config.resync_config import CogShopConfig
@@ -39,9 +45,9 @@ def to_cogshop_data_model(
 
         ##### Output Definitions #####
         # Only default mapping is used
-        output_definitions = {
-            (external_id := make_ext_id(values, class_=OutputMappingApply)): OutputMappingApply(
-                external_id=external_id,
+        output_definitions = [
+            OutputMappingApply(
+                external_id=make_ext_id(values, class_=OutputMappingApply),
                 shop_object_type=values[0],
                 shop_attribute_name=values[1],
                 cdf_attribute_name=values[2],
@@ -56,21 +62,35 @@ def to_cogshop_data_model(
                 ("reservoir", "water_value_global_result", "water_value", "EUR/Mm3", True),
                 ("reservoir", "energy_conversion_factor", "energy_conversion_factor", "MWh/Mm3", True),
             ]
-        }
+        ]
+        external_id = f"SHOP_{watercourse.name.replace(' ', '_')}_output_definition"
+        output_container = OutputContainerApply(
+            external_id=external_id,
+            name=external_id.replace("_", " "),
+            watercouse=watercourse.name,
+            shop_type="output_definition",
+            mappings=output_definitions,
+        )
 
-        model.output_definitions.update(output_definitions)
+        model.output_definitions[external_id] = output_container
 
         ##### Base Mapping #####
-        base_mappings = {}
+        base_mappings = []
         transformations = {}
         for entry in mapping:
             base_mapping = _to_input_timeseries_mapping(entry)
-            base_mappings[base_mapping.external_id] = base_mapping
+            base_mappings.append(base_mapping)
+
             transformations.update(
                 {t.external_id: t for t in base_mapping.transformations if isinstance(t, ValueTransformationApply)}
             )
+        scenario_mapping = ScenarioMappingApply(
+            external_id=f"SHOP_{watercourse.name}_base_mapping",
+            watercourse=watercourse.name,
+            shop_type="base_mapping",
+            mapping_override=base_mappings,
+        )
 
-        model.input_time_series_mappings.update(base_mappings)
         model.value_transformations.update(transformations)
 
         model.scenario_templates.append(
@@ -79,10 +99,10 @@ def to_cogshop_data_model(
                 model=model_file.external_id,
                 shop_version=shop_version,
                 template_version="1",
-                base_mapping=list(base_mappings.values()),
-                output_definitions=list(output_definitions.values()),
+                output_definitions=output_container,
                 shop_files=[f.external_id for f in model.shop_files],
                 watercourse=watercourse.name,
+                base_mapping=scenario_mapping,
             )
         )
 

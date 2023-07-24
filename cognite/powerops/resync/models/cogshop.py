@@ -5,10 +5,10 @@ from cognite.client.data_classes import Asset
 from pydantic import Field
 
 from cognite.powerops.clients.data_classes import (
-    InputTimeSeriesMappingApply,
-    OutputMappingApply,
     ScenarioTemplateApply,
     ValueTransformationApply,
+    OutputContainerApply,
+    ScenarioMappingApply,
 )
 
 from .base import AssetModel, DataModel, Model
@@ -23,8 +23,8 @@ class CogShopCore(Model):
 
 class CogShopDataModel(CogShopCore, DataModel):
     scenario_templates: list[ScenarioTemplateApply] = Field(default_factory=list)
-    input_time_series_mappings: dict[ExternalID, InputTimeSeriesMappingApply] = Field(default_factory=dict)
-    output_definitions: dict[ExternalID, OutputMappingApply] = Field(default_factory=dict)
+    base_mappings: dict[ExternalID, ScenarioMappingApply] = Field(default_factory=dict)
+    output_definitions: dict[ExternalID, OutputContainerApply] = Field(default_factory=dict)
     value_transformations: dict[ExternalID, ValueTransformationApply] = Field(default_factory=dict)
 
 

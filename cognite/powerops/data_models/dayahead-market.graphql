@@ -5,6 +5,7 @@ type DayAheadBid{
     isDefaultConfigForPriceArea: Boolean
     mainScenario: String
     priceArea: String
+    watercourse: String
     priceScenarios: [ScenarioMapping]
     noShop: Boolean
     bidProcessConfigurationName: String

@@ -1,4 +1,6 @@
 type ScenarioMapping {
   name: String
+  watercourse: String
   mappingOverride: [InputTimeSeriesMapping]
+  shopType: String
 }

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cognite-power-ops"
-version = "0.30.0"
+version = "0.31.0"
 description = "SDK for power markets operations on Cognite Data Fusion"
 readme = "README.md"
 authors = ["Cognite <support@cognite.com>"]
@@ -37,6 +37,8 @@ exclude = [
     "^cognite/powerops/clients/",
     "^cognite/powerops/utils/",
     "^cognite/powerops/resync/to_models/",
+    "^cognite/powerops/resync/config/",
+    "^cognite/powerops/resync/models/",
 ]
 allow_redefinition = true
 

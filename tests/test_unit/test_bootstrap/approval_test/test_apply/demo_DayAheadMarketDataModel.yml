@@ -1,329 +1,5 @@
 assets: []
 data_modeling.instances:
-- external_id: BidMatrixGenerator__0a2c142d516e5b6ab2d36dde4cef352a
-  instance_type: node
-  sources:
-  - properties:
-      functionExternalId: generate_bid_matrix
-      methods: price_independent
-      shopPlant: Rull2
-    source:
-      external_id: BidMatrixGenerator
-      space: power-ops
-      type: container
-  space: power-ops
-- external_id: BidMatrixGenerator__106d4499f2b2c82404586cf54c6032ae
-  instance_type: node
-  sources:
-  - properties:
-      functionExternalId: generate_bid_matrix
-      methods: price_independent
-      shopPlant: Strand_krv
-    source:
-      external_id: BidMatrixGenerator
-      space: power-ops
-      type: container
-  space: power-ops
-- external_id: BidMatrixGenerator__1320ef2183d25b7f77101bb566648c15
-  instance_type: node
-  sources:
-  - properties:
-      functionExternalId: generate_bid_matrix
-      methods: price_independent
-      shopPlant: Rull1
-    source:
-      external_id: BidMatrixGenerator
-      space: power-ops
-      type: container
-  space: power-ops
-- external_id: BidMatrixGenerator__1a3b8a8179a1356efba710b8459bf9d7
-  instance_type: node
-  sources:
-  - properties:
-      functionExternalId: generate_bid_matrix
-      methods: multi_scenario
-      shopPlant: Rull1
-    source:
-      external_id: BidMatrixGenerator
-      space: power-ops
-      type: container
-  space: power-ops
-- external_id: BidMatrixGenerator__26f2d6e916ca8d48689e1ba6c6272af2
-  instance_type: node
-  sources:
-  - properties:
-      functionExternalId: generate_bid_matrix
-      methods: price_independent
-      shopPlant: Holen
-    source:
-      external_id: BidMatrixGenerator
-      space: power-ops
-      type: container
-  space: power-ops
-- external_id: BidMatrixGenerator__31ae7deb3cb35fefaea06f6dd3eab9a4
-  instance_type: node
-  sources:
-  - properties:
-      functionExternalId: generate_water_value_based_bid_matrix
-      methods: simple
-      shopPlant: Strand_krv
-    source:
-      external_id: BidMatrixGenerator
-      space: power-ops
-      type: container
-  space: power-ops
-- external_id: BidMatrixGenerator__47760a45deb976f35b39fc6249129e7e
-  instance_type: node
-  sources:
-  - properties:
-      functionExternalId: generate_water_value_based_bid_matrix
-      methods: simple
-      shopPlant: Lund
-    source:
-      external_id: BidMatrixGenerator
-      space: power-ops
-      type: container
-  space: power-ops
-- external_id: BidMatrixGenerator__49fc8b6c47fc60a09452b7ee2f446f17
-  instance_type: node
-  sources:
-  - properties:
-      functionExternalId: generate_bid_matrix
-      methods: price_independent
-      shopPlant: Lien_krv
-    source:
-      external_id: BidMatrixGenerator
-      space: power-ops
-      type: container
-  space: power-ops
-- external_id: BidMatrixGenerator__4bfc4050b1aa449d59496bf89cbab4d3
-  instance_type: node
-  sources:
-  - properties:
-      functionExternalId: generate_bid_matrix
-      methods: multi_scenario
-      shopPlant: Landet
-    source:
-      external_id: BidMatrixGenerator
-      space: power-ops
-      type: container
-  space: power-ops
-- external_id: BidMatrixGenerator__598faf746fcd3ef013e8de01c4e39273
-  instance_type: node
-  sources:
-  - properties:
-      functionExternalId: generate_water_value_based_bid_matrix
-      methods: simple
-      shopPlant: Holen
-    source:
-      external_id: BidMatrixGenerator
-      space: power-ops
-      type: container
-  space: power-ops
-- external_id: BidMatrixGenerator__6562313ba97537ce0c32153a1d9a399d
-  instance_type: node
-  sources:
-  - properties:
-      functionExternalId: generate_bid_matrix
-      methods: multi_scenario
-      shopPlant: Lien_krv
-    source:
-      external_id: BidMatrixGenerator
-      space: power-ops
-      type: container
-  space: power-ops
-- external_id: BidMatrixGenerator__6ee6e201a4b44f91d8e30544df52a00f
-  instance_type: node
-  sources:
-  - properties:
-      functionExternalId: generate_bid_matrix
-      methods: price_independent
-      shopPlant: Dalby
-    source:
-      external_id: BidMatrixGenerator
-      space: power-ops
-      type: container
-  space: power-ops
-- external_id: BidMatrixGenerator__6fce631997f9a9b64bebff108554a438
-  instance_type: node
-  sources:
-  - properties:
-      functionExternalId: generate_water_value_based_bid_matrix
-      methods: simple
-      shopPlant: Landet
-    source:
-      external_id: BidMatrixGenerator
-      space: power-ops
-      type: container
-  space: power-ops
-- external_id: BidMatrixGenerator__7fbeda9a5f09bfa17af6b8295bfd48e2
-  instance_type: node
-  sources:
-  - properties:
-      functionExternalId: generate_bid_matrix
-      methods: multi_scenario
-      shopPlant: Dalby
-    source:
-      external_id: BidMatrixGenerator
-      space: power-ops
-      type: container
-  space: power-ops
-- external_id: BidMatrixGenerator__8f53fa5db2b6b5de9b93d5798e341ce2
-  instance_type: node
-  sources:
-  - properties:
-      functionExternalId: generate_bid_matrix
-      methods: price_independent
-      shopPlant: Scott
-    source:
-      external_id: BidMatrixGenerator
-      space: power-ops
-      type: container
-  space: power-ops
-- external_id: BidMatrixGenerator__91b66a897d5d76d2e871948974910d29
-  instance_type: node
-  sources:
-  - properties:
-      functionExternalId: generate_water_value_based_bid_matrix
-      methods: simple
-      shopPlant: Lien_krv
-    source:
-      external_id: BidMatrixGenerator
-      space: power-ops
-      type: container
-  space: power-ops
-- external_id: BidMatrixGenerator__a8a4f4c053cdf0e35f7eb3368d9e487a
-  instance_type: node
-  sources:
-  - properties:
-      functionExternalId: generate_bid_matrix
-      methods: multi_scenario
-      shopPlant: Scott
-    source:
-      external_id: BidMatrixGenerator
-      space: power-ops
-      type: container
-  space: power-ops
-- external_id: BidMatrixGenerator__c15f6250816ff5f06ec0283c4e699d1f
-  instance_type: node
-  sources:
-  - properties:
-      functionExternalId: generate_water_value_based_bid_matrix
-      methods: simple
-      shopPlant: Scott
-    source:
-      external_id: BidMatrixGenerator
-      space: power-ops
-      type: container
-  space: power-ops
-- external_id: BidMatrixGenerator__c2a60ed712b890bf93ad26c123635c69
-  instance_type: node
-  sources:
-  - properties:
-      functionExternalId: generate_bid_matrix
-      methods: multi_scenario
-      shopPlant: Strand_krv
-    source:
-      external_id: BidMatrixGenerator
-      space: power-ops
-      type: container
-  space: power-ops
-- external_id: BidMatrixGenerator__cd9077e715743ba49961dba58d6955a2
-  instance_type: node
-  sources:
-  - properties:
-      functionExternalId: generate_bid_matrix
-      methods: multi_scenario
-      shopPlant: Lund
-    source:
-      external_id: BidMatrixGenerator
-      space: power-ops
-      type: container
-  space: power-ops
-- external_id: BidMatrixGenerator__e5e9add663f85e7b1a12e5c2f53eb2fc
-  instance_type: node
-  sources:
-  - properties:
-      functionExternalId: generate_water_value_based_bid_matrix
-      methods: simple
-      shopPlant: Dalby
-    source:
-      external_id: BidMatrixGenerator
-      space: power-ops
-      type: container
-  space: power-ops
-- external_id: BidMatrixGenerator__e6c95b4196f9f3acc9f944a4726494d4
-  instance_type: node
-  sources:
-  - properties:
-      functionExternalId: generate_water_value_based_bid_matrix
-      methods: simple
-      shopPlant: Rull2
-    source:
-      external_id: BidMatrixGenerator
-      space: power-ops
-      type: container
-  space: power-ops
-- external_id: BidMatrixGenerator__f6c05befebaa96452ed83582d2b5f981
-  instance_type: node
-  sources:
-  - properties:
-      functionExternalId: generate_bid_matrix
-      methods: multi_scenario
-      shopPlant: Holen
-    source:
-      external_id: BidMatrixGenerator
-      space: power-ops
-      type: container
-  space: power-ops
-- external_id: BidMatrixGenerator__f74c8faa244465851d2b3bc1cb013f96
-  instance_type: node
-  sources:
-  - properties:
-      functionExternalId: generate_bid_matrix
-      methods: price_independent
-      shopPlant: Landet
-    source:
-      external_id: BidMatrixGenerator
-      space: power-ops
-      type: container
-  space: power-ops
-- external_id: BidMatrixGenerator__f8573c5273440892092848fb8f24da5b
-  instance_type: node
-  sources:
-  - properties:
-      functionExternalId: generate_water_value_based_bid_matrix
-      methods: simple
-      shopPlant: Rull1
-    source:
-      external_id: BidMatrixGenerator
-      space: power-ops
-      type: container
-  space: power-ops
-- external_id: BidMatrixGenerator__f994e2dc55489aa6d061e28685c48e9a
-  instance_type: node
-  sources:
-  - properties:
-      functionExternalId: generate_bid_matrix
-      methods: multi_scenario
-      shopPlant: Rull2
-    source:
-      external_id: BidMatrixGenerator
-      space: power-ops
-      type: container
-  space: power-ops
-- external_id: BidMatrixGenerator__faf473e18b3477c063b6f794953a048c
-  instance_type: node
-  sources:
-  - properties:
-      functionExternalId: generate_bid_matrix
-      methods: price_independent
-      shopPlant: Lund
-    source:
-      external_id: BidMatrixGenerator
-      space: power-ops
-      type: container
-  space: power-ops
 - external_id: DateTransformation__01c2b78fedff0cbc3f835ba600b48795
   instance_type: node
   sources:
@@ -1764,40 +1440,6 @@ data_modeling.instances:
   type:
     external_id: InputTimeSeriesMapping.transformations
     space: power-ops
-- external_id: Main_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e
-  instance_type: node
-  sources:
-  - properties:
-      name: Main
-    source:
-      external_id: ScenarioMapping
-      space: power-ops
-      type: container
-  space: power-ops
-- end_node:
-    external_id: InputTimeSeriesMapping__2f1c9e642f592841225fb92f829f77bf
-    space: power-ops
-  external_id: Main_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e:InputTimeSeriesMapping__2f1c9e642f592841225fb92f829f77bf
-  instance_type: edge
-  space: power-ops
-  start_node:
-    external_id: Main_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e
-    space: power-ops
-  type:
-    external_id: ScenarioMapping.mappingOverride
-    space: power-ops
-- end_node:
-    external_id: InputTimeSeriesMapping__77500130c817fe02423992ad569e89a7
-    space: power-ops
-  external_id: Main_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e:InputTimeSeriesMapping__77500130c817fe02423992ad569e89a7
-  instance_type: edge
-  space: power-ops
-  start_node:
-    external_id: Main_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e
-    space: power-ops
-  type:
-    external_id: ScenarioMapping.mappingOverride
-    space: power-ops
 - external_id: market_configuration_nordpool_dayahead
   instance_type: node
   sources:
@@ -1813,6 +1455,54 @@ data_modeling.instances:
       tradeLot: 0.1
     source:
       external_id: NordPoolMarket
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: POWEROPS_bid_matrix_generator_config_multi_scenario_20_NO2
+  instance_type: node
+  sources:
+  - properties:
+      functionExternalId: generate_bid_matrix
+      methods: multi_scenario
+      shopPlant: Strand_krv
+    source:
+      external_id: BidMatrixGenerator
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: POWEROPS_bid_matrix_generator_config_multi_scenario_2_NO2
+  instance_type: node
+  sources:
+  - properties:
+      functionExternalId: generate_bid_matrix
+      methods: multi_scenario
+      shopPlant: Strand_krv
+    source:
+      external_id: BidMatrixGenerator
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: POWEROPS_bid_matrix_generator_config_price_independent_NO2
+  instance_type: node
+  sources:
+  - properties:
+      functionExternalId: generate_bid_matrix
+      methods: price_independent
+      shopPlant: Strand_krv
+    source:
+      external_id: BidMatrixGenerator
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: POWEROPS_bid_matrix_generator_config_water_value_based_with_dummy_SHOP_runNO2
+  instance_type: node
+  sources:
+  - properties:
+      functionExternalId: generate_water_value_based_bid_matrix
+      methods: simple
+      shopPlant: Strand_krv
+    source:
+      external_id: BidMatrixGenerator
       space: power-ops
       type: container
   space: power-ops
@@ -1833,105 +1523,9 @@ data_modeling.instances:
       type: container
   space: power-ops
 - end_node:
-    external_id: BidMatrixGenerator__1a3b8a8179a1356efba710b8459bf9d7
+    external_id: POWEROPS_bid_matrix_generator_config_multi_scenario_20_NO2
     space: power-ops
-  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2:BidMatrixGenerator__1a3b8a8179a1356efba710b8459bf9d7
-  instance_type: edge
-  space: power-ops
-  start_node:
-    external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2
-    space: power-ops
-  type:
-    external_id: DayAheadProcess.bidMatrixGeneratorConfig
-    space: power-ops
-- end_node:
-    external_id: BidMatrixGenerator__4bfc4050b1aa449d59496bf89cbab4d3
-    space: power-ops
-  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2:BidMatrixGenerator__4bfc4050b1aa449d59496bf89cbab4d3
-  instance_type: edge
-  space: power-ops
-  start_node:
-    external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2
-    space: power-ops
-  type:
-    external_id: DayAheadProcess.bidMatrixGeneratorConfig
-    space: power-ops
-- end_node:
-    external_id: BidMatrixGenerator__6562313ba97537ce0c32153a1d9a399d
-    space: power-ops
-  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2:BidMatrixGenerator__6562313ba97537ce0c32153a1d9a399d
-  instance_type: edge
-  space: power-ops
-  start_node:
-    external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2
-    space: power-ops
-  type:
-    external_id: DayAheadProcess.bidMatrixGeneratorConfig
-    space: power-ops
-- end_node:
-    external_id: BidMatrixGenerator__7fbeda9a5f09bfa17af6b8295bfd48e2
-    space: power-ops
-  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2:BidMatrixGenerator__7fbeda9a5f09bfa17af6b8295bfd48e2
-  instance_type: edge
-  space: power-ops
-  start_node:
-    external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2
-    space: power-ops
-  type:
-    external_id: DayAheadProcess.bidMatrixGeneratorConfig
-    space: power-ops
-- end_node:
-    external_id: BidMatrixGenerator__a8a4f4c053cdf0e35f7eb3368d9e487a
-    space: power-ops
-  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2:BidMatrixGenerator__a8a4f4c053cdf0e35f7eb3368d9e487a
-  instance_type: edge
-  space: power-ops
-  start_node:
-    external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2
-    space: power-ops
-  type:
-    external_id: DayAheadProcess.bidMatrixGeneratorConfig
-    space: power-ops
-- end_node:
-    external_id: BidMatrixGenerator__c2a60ed712b890bf93ad26c123635c69
-    space: power-ops
-  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2:BidMatrixGenerator__c2a60ed712b890bf93ad26c123635c69
-  instance_type: edge
-  space: power-ops
-  start_node:
-    external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2
-    space: power-ops
-  type:
-    external_id: DayAheadProcess.bidMatrixGeneratorConfig
-    space: power-ops
-- end_node:
-    external_id: BidMatrixGenerator__cd9077e715743ba49961dba58d6955a2
-    space: power-ops
-  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2:BidMatrixGenerator__cd9077e715743ba49961dba58d6955a2
-  instance_type: edge
-  space: power-ops
-  start_node:
-    external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2
-    space: power-ops
-  type:
-    external_id: DayAheadProcess.bidMatrixGeneratorConfig
-    space: power-ops
-- end_node:
-    external_id: BidMatrixGenerator__f6c05befebaa96452ed83582d2b5f981
-    space: power-ops
-  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2:BidMatrixGenerator__f6c05befebaa96452ed83582d2b5f981
-  instance_type: edge
-  space: power-ops
-  start_node:
-    external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2
-    space: power-ops
-  type:
-    external_id: DayAheadProcess.bidMatrixGeneratorConfig
-    space: power-ops
-- end_node:
-    external_id: BidMatrixGenerator__f994e2dc55489aa6d061e28685c48e9a
-    space: power-ops
-  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2:BidMatrixGenerator__f994e2dc55489aa6d061e28685c48e9a
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2:POWEROPS_bid_matrix_generator_config_multi_scenario_20_NO2
   instance_type: edge
   space: power-ops
   start_node:
@@ -1954,6 +1548,7 @@ data_modeling.instances:
       name: null
       noShop: true
       priceArea: price_area_NO2
+      watercourse: null
     source:
       external_id: DayAheadBid
       space: power-ops
@@ -1984,9 +1579,9 @@ data_modeling.instances:
     external_id: DayAheadBid.date
     space: power-ops
 - end_node:
-    external_id: scenario_10_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_1
     space: power-ops
-  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:scenario_10_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_1
   instance_type: edge
   space: power-ops
   start_node:
@@ -1996,9 +1591,9 @@ data_modeling.instances:
     external_id: DayAheadBid.priceScenarios
     space: power-ops
 - end_node:
-    external_id: scenario_11_ScenarioMapping__e7c21d75c6a34a3edad165b098525cdc
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_10
     space: power-ops
-  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:scenario_11_ScenarioMapping__e7c21d75c6a34a3edad165b098525cdc
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_10
   instance_type: edge
   space: power-ops
   start_node:
@@ -2008,9 +1603,9 @@ data_modeling.instances:
     external_id: DayAheadBid.priceScenarios
     space: power-ops
 - end_node:
-    external_id: scenario_12_ScenarioMapping__109780f4f082f005302c16fe6f2ad018
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_11
     space: power-ops
-  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:scenario_12_ScenarioMapping__109780f4f082f005302c16fe6f2ad018
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_11
   instance_type: edge
   space: power-ops
   start_node:
@@ -2020,9 +1615,9 @@ data_modeling.instances:
     external_id: DayAheadBid.priceScenarios
     space: power-ops
 - end_node:
-    external_id: scenario_13_ScenarioMapping__75971e040564667cf08c68fe93e67f88
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_12
     space: power-ops
-  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:scenario_13_ScenarioMapping__75971e040564667cf08c68fe93e67f88
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_12
   instance_type: edge
   space: power-ops
   start_node:
@@ -2032,9 +1627,9 @@ data_modeling.instances:
     external_id: DayAheadBid.priceScenarios
     space: power-ops
 - end_node:
-    external_id: scenario_14_ScenarioMapping__5f0aeb0cc127dd4fe9e94b36ff472fc2
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_13
     space: power-ops
-  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:scenario_14_ScenarioMapping__5f0aeb0cc127dd4fe9e94b36ff472fc2
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_13
   instance_type: edge
   space: power-ops
   start_node:
@@ -2044,9 +1639,9 @@ data_modeling.instances:
     external_id: DayAheadBid.priceScenarios
     space: power-ops
 - end_node:
-    external_id: scenario_15_ScenarioMapping__124aa1b66b7979b64d8c349e7fb15eff
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_14
     space: power-ops
-  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:scenario_15_ScenarioMapping__124aa1b66b7979b64d8c349e7fb15eff
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_14
   instance_type: edge
   space: power-ops
   start_node:
@@ -2056,9 +1651,9 @@ data_modeling.instances:
     external_id: DayAheadBid.priceScenarios
     space: power-ops
 - end_node:
-    external_id: scenario_16_ScenarioMapping__88b42ef7e3d319d62ee74791cefb1a1c
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_15
     space: power-ops
-  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:scenario_16_ScenarioMapping__88b42ef7e3d319d62ee74791cefb1a1c
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_15
   instance_type: edge
   space: power-ops
   start_node:
@@ -2068,9 +1663,9 @@ data_modeling.instances:
     external_id: DayAheadBid.priceScenarios
     space: power-ops
 - end_node:
-    external_id: scenario_17_ScenarioMapping__9c089027f716b767e1773245dee79ea0
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_16
     space: power-ops
-  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:scenario_17_ScenarioMapping__9c089027f716b767e1773245dee79ea0
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_16
   instance_type: edge
   space: power-ops
   start_node:
@@ -2080,9 +1675,9 @@ data_modeling.instances:
     external_id: DayAheadBid.priceScenarios
     space: power-ops
 - end_node:
-    external_id: scenario_18_ScenarioMapping__99bf0715ba0ad40148ec9914332aa86e
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_17
     space: power-ops
-  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:scenario_18_ScenarioMapping__99bf0715ba0ad40148ec9914332aa86e
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_17
   instance_type: edge
   space: power-ops
   start_node:
@@ -2092,9 +1687,9 @@ data_modeling.instances:
     external_id: DayAheadBid.priceScenarios
     space: power-ops
 - end_node:
-    external_id: scenario_19_ScenarioMapping__3e2a8303e7f378700deb9bd2920f464f
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_18
     space: power-ops
-  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:scenario_19_ScenarioMapping__3e2a8303e7f378700deb9bd2920f464f
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_18
   instance_type: edge
   space: power-ops
   start_node:
@@ -2104,9 +1699,9 @@ data_modeling.instances:
     external_id: DayAheadBid.priceScenarios
     space: power-ops
 - end_node:
-    external_id: scenario_1_ScenarioMapping__03307b838ab0233db2d411a8ca182866
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_19
     space: power-ops
-  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:scenario_1_ScenarioMapping__03307b838ab0233db2d411a8ca182866
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_19
   instance_type: edge
   space: power-ops
   start_node:
@@ -2116,9 +1711,9 @@ data_modeling.instances:
     external_id: DayAheadBid.priceScenarios
     space: power-ops
 - end_node:
-    external_id: scenario_20_ScenarioMapping__70dd2959c2029dbc80dfc8f21c89d8aa
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_2
     space: power-ops
-  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:scenario_20_ScenarioMapping__70dd2959c2029dbc80dfc8f21c89d8aa
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_2
   instance_type: edge
   space: power-ops
   start_node:
@@ -2128,9 +1723,9 @@ data_modeling.instances:
     external_id: DayAheadBid.priceScenarios
     space: power-ops
 - end_node:
-    external_id: scenario_2_ScenarioMapping__390db080c26adefb49885993e96af910
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_20
     space: power-ops
-  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:scenario_2_ScenarioMapping__390db080c26adefb49885993e96af910
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_20
   instance_type: edge
   space: power-ops
   start_node:
@@ -2140,9 +1735,9 @@ data_modeling.instances:
     external_id: DayAheadBid.priceScenarios
     space: power-ops
 - end_node:
-    external_id: scenario_3_ScenarioMapping__0a3f680ab4e6ba7ea52114149f1859e7
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_3
     space: power-ops
-  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:scenario_3_ScenarioMapping__0a3f680ab4e6ba7ea52114149f1859e7
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_3
   instance_type: edge
   space: power-ops
   start_node:
@@ -2152,9 +1747,9 @@ data_modeling.instances:
     external_id: DayAheadBid.priceScenarios
     space: power-ops
 - end_node:
-    external_id: scenario_4_ScenarioMapping__f455a6a87281987a16c84e260b006a81
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_4
     space: power-ops
-  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:scenario_4_ScenarioMapping__f455a6a87281987a16c84e260b006a81
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_4
   instance_type: edge
   space: power-ops
   start_node:
@@ -2164,9 +1759,9 @@ data_modeling.instances:
     external_id: DayAheadBid.priceScenarios
     space: power-ops
 - end_node:
-    external_id: scenario_5_ScenarioMapping__7a9ac6dba9a045572b4e01c89b8cb985
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_5
     space: power-ops
-  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:scenario_5_ScenarioMapping__7a9ac6dba9a045572b4e01c89b8cb985
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_5
   instance_type: edge
   space: power-ops
   start_node:
@@ -2176,9 +1771,9 @@ data_modeling.instances:
     external_id: DayAheadBid.priceScenarios
     space: power-ops
 - end_node:
-    external_id: scenario_6_ScenarioMapping__52c41fb4875512d0755989b5e363b5b5
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_6
     space: power-ops
-  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:scenario_6_ScenarioMapping__52c41fb4875512d0755989b5e363b5b5
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_6
   instance_type: edge
   space: power-ops
   start_node:
@@ -2188,9 +1783,9 @@ data_modeling.instances:
     external_id: DayAheadBid.priceScenarios
     space: power-ops
 - end_node:
-    external_id: scenario_7_ScenarioMapping__2c6c0d6ce78cae1820a2c6163746ba4a
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_7
     space: power-ops
-  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:scenario_7_ScenarioMapping__2c6c0d6ce78cae1820a2c6163746ba4a
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_7
   instance_type: edge
   space: power-ops
   start_node:
@@ -2200,9 +1795,9 @@ data_modeling.instances:
     external_id: DayAheadBid.priceScenarios
     space: power-ops
 - end_node:
-    external_id: scenario_8_ScenarioMapping__8d9832efcd9f68ead9e2ebf4ee7f5780
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_8
     space: power-ops
-  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:scenario_8_ScenarioMapping__8d9832efcd9f68ead9e2ebf4ee7f5780
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_8
   instance_type: edge
   space: power-ops
   start_node:
@@ -2212,9 +1807,9 @@ data_modeling.instances:
     external_id: DayAheadBid.priceScenarios
     space: power-ops
 - end_node:
-    external_id: scenario_9_ScenarioMapping__5d98d37e010bdf35f727806b40af5225
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_9
     space: power-ops
-  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:scenario_9_ScenarioMapping__5d98d37e010bdf35f727806b40af5225
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2_bid:SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_9
   instance_type: edge
   space: power-ops
   start_node:
@@ -2240,105 +1835,9 @@ data_modeling.instances:
       type: container
   space: power-ops
 - end_node:
-    external_id: BidMatrixGenerator__1a3b8a8179a1356efba710b8459bf9d7
+    external_id: POWEROPS_bid_matrix_generator_config_multi_scenario_2_NO2
     space: power-ops
-  external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2:BidMatrixGenerator__1a3b8a8179a1356efba710b8459bf9d7
-  instance_type: edge
-  space: power-ops
-  start_node:
-    external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2
-    space: power-ops
-  type:
-    external_id: DayAheadProcess.bidMatrixGeneratorConfig
-    space: power-ops
-- end_node:
-    external_id: BidMatrixGenerator__4bfc4050b1aa449d59496bf89cbab4d3
-    space: power-ops
-  external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2:BidMatrixGenerator__4bfc4050b1aa449d59496bf89cbab4d3
-  instance_type: edge
-  space: power-ops
-  start_node:
-    external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2
-    space: power-ops
-  type:
-    external_id: DayAheadProcess.bidMatrixGeneratorConfig
-    space: power-ops
-- end_node:
-    external_id: BidMatrixGenerator__6562313ba97537ce0c32153a1d9a399d
-    space: power-ops
-  external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2:BidMatrixGenerator__6562313ba97537ce0c32153a1d9a399d
-  instance_type: edge
-  space: power-ops
-  start_node:
-    external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2
-    space: power-ops
-  type:
-    external_id: DayAheadProcess.bidMatrixGeneratorConfig
-    space: power-ops
-- end_node:
-    external_id: BidMatrixGenerator__7fbeda9a5f09bfa17af6b8295bfd48e2
-    space: power-ops
-  external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2:BidMatrixGenerator__7fbeda9a5f09bfa17af6b8295bfd48e2
-  instance_type: edge
-  space: power-ops
-  start_node:
-    external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2
-    space: power-ops
-  type:
-    external_id: DayAheadProcess.bidMatrixGeneratorConfig
-    space: power-ops
-- end_node:
-    external_id: BidMatrixGenerator__a8a4f4c053cdf0e35f7eb3368d9e487a
-    space: power-ops
-  external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2:BidMatrixGenerator__a8a4f4c053cdf0e35f7eb3368d9e487a
-  instance_type: edge
-  space: power-ops
-  start_node:
-    external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2
-    space: power-ops
-  type:
-    external_id: DayAheadProcess.bidMatrixGeneratorConfig
-    space: power-ops
-- end_node:
-    external_id: BidMatrixGenerator__c2a60ed712b890bf93ad26c123635c69
-    space: power-ops
-  external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2:BidMatrixGenerator__c2a60ed712b890bf93ad26c123635c69
-  instance_type: edge
-  space: power-ops
-  start_node:
-    external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2
-    space: power-ops
-  type:
-    external_id: DayAheadProcess.bidMatrixGeneratorConfig
-    space: power-ops
-- end_node:
-    external_id: BidMatrixGenerator__cd9077e715743ba49961dba58d6955a2
-    space: power-ops
-  external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2:BidMatrixGenerator__cd9077e715743ba49961dba58d6955a2
-  instance_type: edge
-  space: power-ops
-  start_node:
-    external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2
-    space: power-ops
-  type:
-    external_id: DayAheadProcess.bidMatrixGeneratorConfig
-    space: power-ops
-- end_node:
-    external_id: BidMatrixGenerator__f6c05befebaa96452ed83582d2b5f981
-    space: power-ops
-  external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2:BidMatrixGenerator__f6c05befebaa96452ed83582d2b5f981
-  instance_type: edge
-  space: power-ops
-  start_node:
-    external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2
-    space: power-ops
-  type:
-    external_id: DayAheadProcess.bidMatrixGeneratorConfig
-    space: power-ops
-- end_node:
-    external_id: BidMatrixGenerator__f994e2dc55489aa6d061e28685c48e9a
-    space: power-ops
-  external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2:BidMatrixGenerator__f994e2dc55489aa6d061e28685c48e9a
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2:POWEROPS_bid_matrix_generator_config_multi_scenario_2_NO2
   instance_type: edge
   space: power-ops
   start_node:
@@ -2361,6 +1860,7 @@ data_modeling.instances:
       name: null
       noShop: false
       priceArea: price_area_NO2
+      watercourse: null
     source:
       external_id: DayAheadBid
       space: power-ops
@@ -2391,9 +1891,9 @@ data_modeling.instances:
     external_id: DayAheadBid.date
     space: power-ops
 - end_node:
-    external_id: scenario_1_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_2_NO2_scenario_1
     space: power-ops
-  external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2_bid:scenario_1_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2_bid:SHOP_Fornebu_incremental_mapping_multi_scenario_2_NO2_scenario_1
   instance_type: edge
   space: power-ops
   start_node:
@@ -2403,9 +1903,9 @@ data_modeling.instances:
     external_id: DayAheadBid.priceScenarios
     space: power-ops
 - end_node:
-    external_id: scenario_2_ScenarioMapping__d979684d6827527f9d5555c56e89b229
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_2_NO2_scenario_2
     space: power-ops
-  external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2_bid:scenario_2_ScenarioMapping__d979684d6827527f9d5555c56e89b229
+  external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2_bid:SHOP_Fornebu_incremental_mapping_multi_scenario_2_NO2_scenario_2
   instance_type: edge
   space: power-ops
   start_node:
@@ -2431,105 +1931,9 @@ data_modeling.instances:
       type: container
   space: power-ops
 - end_node:
-    external_id: BidMatrixGenerator__0a2c142d516e5b6ab2d36dde4cef352a
+    external_id: POWEROPS_bid_matrix_generator_config_price_independent_NO2
     space: power-ops
-  external_id: POWEROPS_bid_process_configuration_price_independent_NO2:BidMatrixGenerator__0a2c142d516e5b6ab2d36dde4cef352a
-  instance_type: edge
-  space: power-ops
-  start_node:
-    external_id: POWEROPS_bid_process_configuration_price_independent_NO2
-    space: power-ops
-  type:
-    external_id: DayAheadProcess.bidMatrixGeneratorConfig
-    space: power-ops
-- end_node:
-    external_id: BidMatrixGenerator__106d4499f2b2c82404586cf54c6032ae
-    space: power-ops
-  external_id: POWEROPS_bid_process_configuration_price_independent_NO2:BidMatrixGenerator__106d4499f2b2c82404586cf54c6032ae
-  instance_type: edge
-  space: power-ops
-  start_node:
-    external_id: POWEROPS_bid_process_configuration_price_independent_NO2
-    space: power-ops
-  type:
-    external_id: DayAheadProcess.bidMatrixGeneratorConfig
-    space: power-ops
-- end_node:
-    external_id: BidMatrixGenerator__1320ef2183d25b7f77101bb566648c15
-    space: power-ops
-  external_id: POWEROPS_bid_process_configuration_price_independent_NO2:BidMatrixGenerator__1320ef2183d25b7f77101bb566648c15
-  instance_type: edge
-  space: power-ops
-  start_node:
-    external_id: POWEROPS_bid_process_configuration_price_independent_NO2
-    space: power-ops
-  type:
-    external_id: DayAheadProcess.bidMatrixGeneratorConfig
-    space: power-ops
-- end_node:
-    external_id: BidMatrixGenerator__26f2d6e916ca8d48689e1ba6c6272af2
-    space: power-ops
-  external_id: POWEROPS_bid_process_configuration_price_independent_NO2:BidMatrixGenerator__26f2d6e916ca8d48689e1ba6c6272af2
-  instance_type: edge
-  space: power-ops
-  start_node:
-    external_id: POWEROPS_bid_process_configuration_price_independent_NO2
-    space: power-ops
-  type:
-    external_id: DayAheadProcess.bidMatrixGeneratorConfig
-    space: power-ops
-- end_node:
-    external_id: BidMatrixGenerator__49fc8b6c47fc60a09452b7ee2f446f17
-    space: power-ops
-  external_id: POWEROPS_bid_process_configuration_price_independent_NO2:BidMatrixGenerator__49fc8b6c47fc60a09452b7ee2f446f17
-  instance_type: edge
-  space: power-ops
-  start_node:
-    external_id: POWEROPS_bid_process_configuration_price_independent_NO2
-    space: power-ops
-  type:
-    external_id: DayAheadProcess.bidMatrixGeneratorConfig
-    space: power-ops
-- end_node:
-    external_id: BidMatrixGenerator__6ee6e201a4b44f91d8e30544df52a00f
-    space: power-ops
-  external_id: POWEROPS_bid_process_configuration_price_independent_NO2:BidMatrixGenerator__6ee6e201a4b44f91d8e30544df52a00f
-  instance_type: edge
-  space: power-ops
-  start_node:
-    external_id: POWEROPS_bid_process_configuration_price_independent_NO2
-    space: power-ops
-  type:
-    external_id: DayAheadProcess.bidMatrixGeneratorConfig
-    space: power-ops
-- end_node:
-    external_id: BidMatrixGenerator__8f53fa5db2b6b5de9b93d5798e341ce2
-    space: power-ops
-  external_id: POWEROPS_bid_process_configuration_price_independent_NO2:BidMatrixGenerator__8f53fa5db2b6b5de9b93d5798e341ce2
-  instance_type: edge
-  space: power-ops
-  start_node:
-    external_id: POWEROPS_bid_process_configuration_price_independent_NO2
-    space: power-ops
-  type:
-    external_id: DayAheadProcess.bidMatrixGeneratorConfig
-    space: power-ops
-- end_node:
-    external_id: BidMatrixGenerator__f74c8faa244465851d2b3bc1cb013f96
-    space: power-ops
-  external_id: POWEROPS_bid_process_configuration_price_independent_NO2:BidMatrixGenerator__f74c8faa244465851d2b3bc1cb013f96
-  instance_type: edge
-  space: power-ops
-  start_node:
-    external_id: POWEROPS_bid_process_configuration_price_independent_NO2
-    space: power-ops
-  type:
-    external_id: DayAheadProcess.bidMatrixGeneratorConfig
-    space: power-ops
-- end_node:
-    external_id: BidMatrixGenerator__faf473e18b3477c063b6f794953a048c
-    space: power-ops
-  external_id: POWEROPS_bid_process_configuration_price_independent_NO2:BidMatrixGenerator__faf473e18b3477c063b6f794953a048c
+  external_id: POWEROPS_bid_process_configuration_price_independent_NO2:POWEROPS_bid_matrix_generator_config_price_independent_NO2
   instance_type: edge
   space: power-ops
   start_node:
@@ -2552,6 +1956,7 @@ data_modeling.instances:
       name: null
       noShop: false
       priceArea: price_area_NO2
+      watercourse: null
     source:
       external_id: DayAheadBid
       space: power-ops
@@ -2582,9 +1987,9 @@ data_modeling.instances:
     external_id: DayAheadBid.date
     space: power-ops
 - end_node:
-    external_id: scenario_1_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e
+    external_id: SHOP_Fornebu_incremental_mapping_price_independent_NO2_scenario_1
     space: power-ops
-  external_id: POWEROPS_bid_process_configuration_price_independent_NO2_bid:scenario_1_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e
+  external_id: POWEROPS_bid_process_configuration_price_independent_NO2_bid:SHOP_Fornebu_incremental_mapping_price_independent_NO2_scenario_1
   instance_type: edge
   space: power-ops
   start_node:
@@ -2610,105 +2015,9 @@ data_modeling.instances:
       type: container
   space: power-ops
 - end_node:
-    external_id: BidMatrixGenerator__31ae7deb3cb35fefaea06f6dd3eab9a4
+    external_id: POWEROPS_bid_matrix_generator_config_water_value_based_with_dummy_SHOP_runNO2
     space: power-ops
-  external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2:BidMatrixGenerator__31ae7deb3cb35fefaea06f6dd3eab9a4
-  instance_type: edge
-  space: power-ops
-  start_node:
-    external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2
-    space: power-ops
-  type:
-    external_id: DayAheadProcess.bidMatrixGeneratorConfig
-    space: power-ops
-- end_node:
-    external_id: BidMatrixGenerator__47760a45deb976f35b39fc6249129e7e
-    space: power-ops
-  external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2:BidMatrixGenerator__47760a45deb976f35b39fc6249129e7e
-  instance_type: edge
-  space: power-ops
-  start_node:
-    external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2
-    space: power-ops
-  type:
-    external_id: DayAheadProcess.bidMatrixGeneratorConfig
-    space: power-ops
-- end_node:
-    external_id: BidMatrixGenerator__598faf746fcd3ef013e8de01c4e39273
-    space: power-ops
-  external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2:BidMatrixGenerator__598faf746fcd3ef013e8de01c4e39273
-  instance_type: edge
-  space: power-ops
-  start_node:
-    external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2
-    space: power-ops
-  type:
-    external_id: DayAheadProcess.bidMatrixGeneratorConfig
-    space: power-ops
-- end_node:
-    external_id: BidMatrixGenerator__6fce631997f9a9b64bebff108554a438
-    space: power-ops
-  external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2:BidMatrixGenerator__6fce631997f9a9b64bebff108554a438
-  instance_type: edge
-  space: power-ops
-  start_node:
-    external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2
-    space: power-ops
-  type:
-    external_id: DayAheadProcess.bidMatrixGeneratorConfig
-    space: power-ops
-- end_node:
-    external_id: BidMatrixGenerator__91b66a897d5d76d2e871948974910d29
-    space: power-ops
-  external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2:BidMatrixGenerator__91b66a897d5d76d2e871948974910d29
-  instance_type: edge
-  space: power-ops
-  start_node:
-    external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2
-    space: power-ops
-  type:
-    external_id: DayAheadProcess.bidMatrixGeneratorConfig
-    space: power-ops
-- end_node:
-    external_id: BidMatrixGenerator__c15f6250816ff5f06ec0283c4e699d1f
-    space: power-ops
-  external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2:BidMatrixGenerator__c15f6250816ff5f06ec0283c4e699d1f
-  instance_type: edge
-  space: power-ops
-  start_node:
-    external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2
-    space: power-ops
-  type:
-    external_id: DayAheadProcess.bidMatrixGeneratorConfig
-    space: power-ops
-- end_node:
-    external_id: BidMatrixGenerator__e5e9add663f85e7b1a12e5c2f53eb2fc
-    space: power-ops
-  external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2:BidMatrixGenerator__e5e9add663f85e7b1a12e5c2f53eb2fc
-  instance_type: edge
-  space: power-ops
-  start_node:
-    external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2
-    space: power-ops
-  type:
-    external_id: DayAheadProcess.bidMatrixGeneratorConfig
-    space: power-ops
-- end_node:
-    external_id: BidMatrixGenerator__e6c95b4196f9f3acc9f944a4726494d4
-    space: power-ops
-  external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2:BidMatrixGenerator__e6c95b4196f9f3acc9f944a4726494d4
-  instance_type: edge
-  space: power-ops
-  start_node:
-    external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2
-    space: power-ops
-  type:
-    external_id: DayAheadProcess.bidMatrixGeneratorConfig
-    space: power-ops
-- end_node:
-    external_id: BidMatrixGenerator__f8573c5273440892092848fb8f24da5b
-    space: power-ops
-  external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2:BidMatrixGenerator__f8573c5273440892092848fb8f24da5b
+  external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2:POWEROPS_bid_matrix_generator_config_water_value_based_with_dummy_SHOP_runNO2
   instance_type: edge
   space: power-ops
   start_node:
@@ -2731,6 +2040,7 @@ data_modeling.instances:
       name: null
       noShop: false
       priceArea: price_area_NO2
+      watercourse: null
     source:
       external_id: DayAheadBid
       space: power-ops
@@ -2761,9 +2071,9 @@ data_modeling.instances:
     external_id: DayAheadBid.date
     space: power-ops
 - end_node:
-    external_id: Main_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e
+    external_id: SHOP_Fornebu_incremental_mapping_water_value_based_with_dummy_SHOP_runNO2_Main
     space: power-ops
-  external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2_bid:Main_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e
+  external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2_bid:SHOP_Fornebu_incremental_mapping_water_value_based_with_dummy_SHOP_runNO2_Main
   instance_type: edge
   space: power-ops
   start_node:
@@ -2772,11 +2082,25 @@ data_modeling.instances:
   type:
     external_id: DayAheadBid.priceScenarios
     space: power-ops
-- external_id: scenario_10_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e
+- external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_1
+  instance_type: node
+  sources:
+  - properties:
+      name: scenario_1
+      shopType: null
+      watercourse: null
+    source:
+      external_id: ScenarioMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_10
   instance_type: node
   sources:
   - properties:
       name: scenario_10
+      shopType: null
+      watercourse: null
     source:
       external_id: ScenarioMapping
       space: power-ops
@@ -2785,11 +2109,11 @@ data_modeling.instances:
 - end_node:
     external_id: InputTimeSeriesMapping__2f1c9e642f592841225fb92f829f77bf
     space: power-ops
-  external_id: scenario_10_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e:InputTimeSeriesMapping__2f1c9e642f592841225fb92f829f77bf
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_10:InputTimeSeriesMapping__2f1c9e642f592841225fb92f829f77bf
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: scenario_10_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_10
     space: power-ops
   type:
     external_id: ScenarioMapping.mappingOverride
@@ -2797,20 +2121,22 @@ data_modeling.instances:
 - end_node:
     external_id: InputTimeSeriesMapping__77500130c817fe02423992ad569e89a7
     space: power-ops
-  external_id: scenario_10_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e:InputTimeSeriesMapping__77500130c817fe02423992ad569e89a7
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_10:InputTimeSeriesMapping__77500130c817fe02423992ad569e89a7
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: scenario_10_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_10
     space: power-ops
   type:
     external_id: ScenarioMapping.mappingOverride
     space: power-ops
-- external_id: scenario_11_ScenarioMapping__e7c21d75c6a34a3edad165b098525cdc
+- external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_11
   instance_type: node
   sources:
   - properties:
       name: scenario_11
+      shopType: null
+      watercourse: null
     source:
       external_id: ScenarioMapping
       space: power-ops
@@ -2819,11 +2145,11 @@ data_modeling.instances:
 - end_node:
     external_id: InputTimeSeriesMapping__2c88e19831a78ac681d910f5ce6c6261
     space: power-ops
-  external_id: scenario_11_ScenarioMapping__e7c21d75c6a34a3edad165b098525cdc:InputTimeSeriesMapping__2c88e19831a78ac681d910f5ce6c6261
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_11:InputTimeSeriesMapping__2c88e19831a78ac681d910f5ce6c6261
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: scenario_11_ScenarioMapping__e7c21d75c6a34a3edad165b098525cdc
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_11
     space: power-ops
   type:
     external_id: ScenarioMapping.mappingOverride
@@ -2831,20 +2157,22 @@ data_modeling.instances:
 - end_node:
     external_id: InputTimeSeriesMapping__9ed63f57570fbdbbadfd8d58bde41f2b
     space: power-ops
-  external_id: scenario_11_ScenarioMapping__e7c21d75c6a34a3edad165b098525cdc:InputTimeSeriesMapping__9ed63f57570fbdbbadfd8d58bde41f2b
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_11:InputTimeSeriesMapping__9ed63f57570fbdbbadfd8d58bde41f2b
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: scenario_11_ScenarioMapping__e7c21d75c6a34a3edad165b098525cdc
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_11
     space: power-ops
   type:
     external_id: ScenarioMapping.mappingOverride
     space: power-ops
-- external_id: scenario_12_ScenarioMapping__109780f4f082f005302c16fe6f2ad018
+- external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_12
   instance_type: node
   sources:
   - properties:
       name: scenario_12
+      shopType: null
+      watercourse: null
     source:
       external_id: ScenarioMapping
       space: power-ops
@@ -2853,11 +2181,11 @@ data_modeling.instances:
 - end_node:
     external_id: InputTimeSeriesMapping__d7edaa7a255f419d6306ff8adf023806
     space: power-ops
-  external_id: scenario_12_ScenarioMapping__109780f4f082f005302c16fe6f2ad018:InputTimeSeriesMapping__d7edaa7a255f419d6306ff8adf023806
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_12:InputTimeSeriesMapping__d7edaa7a255f419d6306ff8adf023806
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: scenario_12_ScenarioMapping__109780f4f082f005302c16fe6f2ad018
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_12
     space: power-ops
   type:
     external_id: ScenarioMapping.mappingOverride
@@ -2865,20 +2193,22 @@ data_modeling.instances:
 - end_node:
     external_id: InputTimeSeriesMapping__ffd706dec8b884f8b79c086f790a85a3
     space: power-ops
-  external_id: scenario_12_ScenarioMapping__109780f4f082f005302c16fe6f2ad018:InputTimeSeriesMapping__ffd706dec8b884f8b79c086f790a85a3
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_12:InputTimeSeriesMapping__ffd706dec8b884f8b79c086f790a85a3
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: scenario_12_ScenarioMapping__109780f4f082f005302c16fe6f2ad018
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_12
     space: power-ops
   type:
     external_id: ScenarioMapping.mappingOverride
     space: power-ops
-- external_id: scenario_13_ScenarioMapping__75971e040564667cf08c68fe93e67f88
+- external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_13
   instance_type: node
   sources:
   - properties:
       name: scenario_13
+      shopType: null
+      watercourse: null
     source:
       external_id: ScenarioMapping
       space: power-ops
@@ -2887,11 +2217,11 @@ data_modeling.instances:
 - end_node:
     external_id: InputTimeSeriesMapping__830e3e29139753330aa7191571654d8b
     space: power-ops
-  external_id: scenario_13_ScenarioMapping__75971e040564667cf08c68fe93e67f88:InputTimeSeriesMapping__830e3e29139753330aa7191571654d8b
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_13:InputTimeSeriesMapping__830e3e29139753330aa7191571654d8b
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: scenario_13_ScenarioMapping__75971e040564667cf08c68fe93e67f88
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_13
     space: power-ops
   type:
     external_id: ScenarioMapping.mappingOverride
@@ -2899,20 +2229,22 @@ data_modeling.instances:
 - end_node:
     external_id: InputTimeSeriesMapping__fc2ebe9bb4fcdefc99f8a8fff22bc0b6
     space: power-ops
-  external_id: scenario_13_ScenarioMapping__75971e040564667cf08c68fe93e67f88:InputTimeSeriesMapping__fc2ebe9bb4fcdefc99f8a8fff22bc0b6
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_13:InputTimeSeriesMapping__fc2ebe9bb4fcdefc99f8a8fff22bc0b6
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: scenario_13_ScenarioMapping__75971e040564667cf08c68fe93e67f88
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_13
     space: power-ops
   type:
     external_id: ScenarioMapping.mappingOverride
     space: power-ops
-- external_id: scenario_14_ScenarioMapping__5f0aeb0cc127dd4fe9e94b36ff472fc2
+- external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_14
   instance_type: node
   sources:
   - properties:
       name: scenario_14
+      shopType: null
+      watercourse: null
     source:
       external_id: ScenarioMapping
       space: power-ops
@@ -2921,11 +2253,11 @@ data_modeling.instances:
 - end_node:
     external_id: InputTimeSeriesMapping__736d5b9bd841fa62c5a1f32b7f128968
     space: power-ops
-  external_id: scenario_14_ScenarioMapping__5f0aeb0cc127dd4fe9e94b36ff472fc2:InputTimeSeriesMapping__736d5b9bd841fa62c5a1f32b7f128968
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_14:InputTimeSeriesMapping__736d5b9bd841fa62c5a1f32b7f128968
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: scenario_14_ScenarioMapping__5f0aeb0cc127dd4fe9e94b36ff472fc2
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_14
     space: power-ops
   type:
     external_id: ScenarioMapping.mappingOverride
@@ -2933,20 +2265,22 @@ data_modeling.instances:
 - end_node:
     external_id: InputTimeSeriesMapping__f4ae266b8c58a9790dfb1081491b4883
     space: power-ops
-  external_id: scenario_14_ScenarioMapping__5f0aeb0cc127dd4fe9e94b36ff472fc2:InputTimeSeriesMapping__f4ae266b8c58a9790dfb1081491b4883
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_14:InputTimeSeriesMapping__f4ae266b8c58a9790dfb1081491b4883
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: scenario_14_ScenarioMapping__5f0aeb0cc127dd4fe9e94b36ff472fc2
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_14
     space: power-ops
   type:
     external_id: ScenarioMapping.mappingOverride
     space: power-ops
-- external_id: scenario_15_ScenarioMapping__124aa1b66b7979b64d8c349e7fb15eff
+- external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_15
   instance_type: node
   sources:
   - properties:
       name: scenario_15
+      shopType: null
+      watercourse: null
     source:
       external_id: ScenarioMapping
       space: power-ops
@@ -2955,11 +2289,11 @@ data_modeling.instances:
 - end_node:
     external_id: InputTimeSeriesMapping__5ee09b992b096b04f3d0f42a4885537e
     space: power-ops
-  external_id: scenario_15_ScenarioMapping__124aa1b66b7979b64d8c349e7fb15eff:InputTimeSeriesMapping__5ee09b992b096b04f3d0f42a4885537e
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_15:InputTimeSeriesMapping__5ee09b992b096b04f3d0f42a4885537e
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: scenario_15_ScenarioMapping__124aa1b66b7979b64d8c349e7fb15eff
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_15
     space: power-ops
   type:
     external_id: ScenarioMapping.mappingOverride
@@ -2967,20 +2301,22 @@ data_modeling.instances:
 - end_node:
     external_id: InputTimeSeriesMapping__c85b3e82649e3dba3684afa1526b5255
     space: power-ops
-  external_id: scenario_15_ScenarioMapping__124aa1b66b7979b64d8c349e7fb15eff:InputTimeSeriesMapping__c85b3e82649e3dba3684afa1526b5255
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_15:InputTimeSeriesMapping__c85b3e82649e3dba3684afa1526b5255
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: scenario_15_ScenarioMapping__124aa1b66b7979b64d8c349e7fb15eff
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_15
     space: power-ops
   type:
     external_id: ScenarioMapping.mappingOverride
     space: power-ops
-- external_id: scenario_16_ScenarioMapping__88b42ef7e3d319d62ee74791cefb1a1c
+- external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_16
   instance_type: node
   sources:
   - properties:
       name: scenario_16
+      shopType: null
+      watercourse: null
     source:
       external_id: ScenarioMapping
       space: power-ops
@@ -2989,11 +2325,11 @@ data_modeling.instances:
 - end_node:
     external_id: InputTimeSeriesMapping__23e140b22c826891797ca137c2c3ae97
     space: power-ops
-  external_id: scenario_16_ScenarioMapping__88b42ef7e3d319d62ee74791cefb1a1c:InputTimeSeriesMapping__23e140b22c826891797ca137c2c3ae97
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_16:InputTimeSeriesMapping__23e140b22c826891797ca137c2c3ae97
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: scenario_16_ScenarioMapping__88b42ef7e3d319d62ee74791cefb1a1c
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_16
     space: power-ops
   type:
     external_id: ScenarioMapping.mappingOverride
@@ -3001,20 +2337,22 @@ data_modeling.instances:
 - end_node:
     external_id: InputTimeSeriesMapping__5bb9b0be4bfbf51856a63f09d687e417
     space: power-ops
-  external_id: scenario_16_ScenarioMapping__88b42ef7e3d319d62ee74791cefb1a1c:InputTimeSeriesMapping__5bb9b0be4bfbf51856a63f09d687e417
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_16:InputTimeSeriesMapping__5bb9b0be4bfbf51856a63f09d687e417
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: scenario_16_ScenarioMapping__88b42ef7e3d319d62ee74791cefb1a1c
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_16
     space: power-ops
   type:
     external_id: ScenarioMapping.mappingOverride
     space: power-ops
-- external_id: scenario_17_ScenarioMapping__9c089027f716b767e1773245dee79ea0
+- external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_17
   instance_type: node
   sources:
   - properties:
       name: scenario_17
+      shopType: null
+      watercourse: null
     source:
       external_id: ScenarioMapping
       space: power-ops
@@ -3023,11 +2361,11 @@ data_modeling.instances:
 - end_node:
     external_id: InputTimeSeriesMapping__04e159867306f76632119dc2d16a63ad
     space: power-ops
-  external_id: scenario_17_ScenarioMapping__9c089027f716b767e1773245dee79ea0:InputTimeSeriesMapping__04e159867306f76632119dc2d16a63ad
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_17:InputTimeSeriesMapping__04e159867306f76632119dc2d16a63ad
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: scenario_17_ScenarioMapping__9c089027f716b767e1773245dee79ea0
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_17
     space: power-ops
   type:
     external_id: ScenarioMapping.mappingOverride
@@ -3035,20 +2373,22 @@ data_modeling.instances:
 - end_node:
     external_id: InputTimeSeriesMapping__d70a26dd0ee1fc67c1ad5a27f39d8e8b
     space: power-ops
-  external_id: scenario_17_ScenarioMapping__9c089027f716b767e1773245dee79ea0:InputTimeSeriesMapping__d70a26dd0ee1fc67c1ad5a27f39d8e8b
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_17:InputTimeSeriesMapping__d70a26dd0ee1fc67c1ad5a27f39d8e8b
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: scenario_17_ScenarioMapping__9c089027f716b767e1773245dee79ea0
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_17
     space: power-ops
   type:
     external_id: ScenarioMapping.mappingOverride
     space: power-ops
-- external_id: scenario_18_ScenarioMapping__99bf0715ba0ad40148ec9914332aa86e
+- external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_18
   instance_type: node
   sources:
   - properties:
       name: scenario_18
+      shopType: null
+      watercourse: null
     source:
       external_id: ScenarioMapping
       space: power-ops
@@ -3057,11 +2397,11 @@ data_modeling.instances:
 - end_node:
     external_id: InputTimeSeriesMapping__0dce6fd8737e0802e69e2529b28917ed
     space: power-ops
-  external_id: scenario_18_ScenarioMapping__99bf0715ba0ad40148ec9914332aa86e:InputTimeSeriesMapping__0dce6fd8737e0802e69e2529b28917ed
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_18:InputTimeSeriesMapping__0dce6fd8737e0802e69e2529b28917ed
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: scenario_18_ScenarioMapping__99bf0715ba0ad40148ec9914332aa86e
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_18
     space: power-ops
   type:
     external_id: ScenarioMapping.mappingOverride
@@ -3069,20 +2409,22 @@ data_modeling.instances:
 - end_node:
     external_id: InputTimeSeriesMapping__4e11f5e585b593b021206920f49983ef
     space: power-ops
-  external_id: scenario_18_ScenarioMapping__99bf0715ba0ad40148ec9914332aa86e:InputTimeSeriesMapping__4e11f5e585b593b021206920f49983ef
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_18:InputTimeSeriesMapping__4e11f5e585b593b021206920f49983ef
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: scenario_18_ScenarioMapping__99bf0715ba0ad40148ec9914332aa86e
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_18
     space: power-ops
   type:
     external_id: ScenarioMapping.mappingOverride
     space: power-ops
-- external_id: scenario_19_ScenarioMapping__3e2a8303e7f378700deb9bd2920f464f
+- external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_19
   instance_type: node
   sources:
   - properties:
       name: scenario_19
+      shopType: null
+      watercourse: null
     source:
       external_id: ScenarioMapping
       space: power-ops
@@ -3091,11 +2433,11 @@ data_modeling.instances:
 - end_node:
     external_id: InputTimeSeriesMapping__5aeab397c1e9f8cbf8ea8e5360adfdb9
     space: power-ops
-  external_id: scenario_19_ScenarioMapping__3e2a8303e7f378700deb9bd2920f464f:InputTimeSeriesMapping__5aeab397c1e9f8cbf8ea8e5360adfdb9
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_19:InputTimeSeriesMapping__5aeab397c1e9f8cbf8ea8e5360adfdb9
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: scenario_19_ScenarioMapping__3e2a8303e7f378700deb9bd2920f464f
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_19
     space: power-ops
   type:
     external_id: ScenarioMapping.mappingOverride
@@ -3103,33 +2445,23 @@ data_modeling.instances:
 - end_node:
     external_id: InputTimeSeriesMapping__c96f80e1bf9a11c530f199fb4e6d9a21
     space: power-ops
-  external_id: scenario_19_ScenarioMapping__3e2a8303e7f378700deb9bd2920f464f:InputTimeSeriesMapping__c96f80e1bf9a11c530f199fb4e6d9a21
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_19:InputTimeSeriesMapping__c96f80e1bf9a11c530f199fb4e6d9a21
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: scenario_19_ScenarioMapping__3e2a8303e7f378700deb9bd2920f464f
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_19
     space: power-ops
   type:
     external_id: ScenarioMapping.mappingOverride
     space: power-ops
-- external_id: scenario_1_ScenarioMapping__03307b838ab0233db2d411a8ca182866
-  instance_type: node
-  sources:
-  - properties:
-      name: scenario_1
-    source:
-      external_id: ScenarioMapping
-      space: power-ops
-      type: container
-  space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__cb05151aab65edd709989eed9a397e70
     space: power-ops
-  external_id: scenario_1_ScenarioMapping__03307b838ab0233db2d411a8ca182866:InputTimeSeriesMapping__cb05151aab65edd709989eed9a397e70
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_1:InputTimeSeriesMapping__cb05151aab65edd709989eed9a397e70
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: scenario_1_ScenarioMapping__03307b838ab0233db2d411a8ca182866
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_1
     space: power-ops
   type:
     external_id: ScenarioMapping.mappingOverride
@@ -3137,54 +2469,34 @@ data_modeling.instances:
 - end_node:
     external_id: InputTimeSeriesMapping__e9b96b53195846e4d2262d141eff2a28
     space: power-ops
-  external_id: scenario_1_ScenarioMapping__03307b838ab0233db2d411a8ca182866:InputTimeSeriesMapping__e9b96b53195846e4d2262d141eff2a28
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_1:InputTimeSeriesMapping__e9b96b53195846e4d2262d141eff2a28
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: scenario_1_ScenarioMapping__03307b838ab0233db2d411a8ca182866
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_1
     space: power-ops
   type:
     external_id: ScenarioMapping.mappingOverride
     space: power-ops
-- external_id: scenario_1_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e
+- external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_2
   instance_type: node
   sources:
   - properties:
-      name: scenario_1
+      name: scenario_2
+      shopType: null
+      watercourse: null
     source:
       external_id: ScenarioMapping
       space: power-ops
       type: container
   space: power-ops
-- end_node:
-    external_id: InputTimeSeriesMapping__2f1c9e642f592841225fb92f829f77bf
-    space: power-ops
-  external_id: scenario_1_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e:InputTimeSeriesMapping__2f1c9e642f592841225fb92f829f77bf
-  instance_type: edge
-  space: power-ops
-  start_node:
-    external_id: scenario_1_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e
-    space: power-ops
-  type:
-    external_id: ScenarioMapping.mappingOverride
-    space: power-ops
-- end_node:
-    external_id: InputTimeSeriesMapping__77500130c817fe02423992ad569e89a7
-    space: power-ops
-  external_id: scenario_1_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e:InputTimeSeriesMapping__77500130c817fe02423992ad569e89a7
-  instance_type: edge
-  space: power-ops
-  start_node:
-    external_id: scenario_1_ScenarioMapping__1bcde7f8f15dc00be7ebcbe59a659b0e
-    space: power-ops
-  type:
-    external_id: ScenarioMapping.mappingOverride
-    space: power-ops
-- external_id: scenario_20_ScenarioMapping__70dd2959c2029dbc80dfc8f21c89d8aa
+- external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_20
   instance_type: node
   sources:
   - properties:
       name: scenario_20
+      shopType: null
+      watercourse: null
     source:
       external_id: ScenarioMapping
       space: power-ops
@@ -3193,11 +2505,11 @@ data_modeling.instances:
 - end_node:
     external_id: InputTimeSeriesMapping__ae10145ee3f1c384c8029b8295a68e64
     space: power-ops
-  external_id: scenario_20_ScenarioMapping__70dd2959c2029dbc80dfc8f21c89d8aa:InputTimeSeriesMapping__ae10145ee3f1c384c8029b8295a68e64
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_20:InputTimeSeriesMapping__ae10145ee3f1c384c8029b8295a68e64
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: scenario_20_ScenarioMapping__70dd2959c2029dbc80dfc8f21c89d8aa
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_20
     space: power-ops
   type:
     external_id: ScenarioMapping.mappingOverride
@@ -3205,33 +2517,23 @@ data_modeling.instances:
 - end_node:
     external_id: InputTimeSeriesMapping__b93bb78ac98360c1b1d54bfa2894f898
     space: power-ops
-  external_id: scenario_20_ScenarioMapping__70dd2959c2029dbc80dfc8f21c89d8aa:InputTimeSeriesMapping__b93bb78ac98360c1b1d54bfa2894f898
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_20:InputTimeSeriesMapping__b93bb78ac98360c1b1d54bfa2894f898
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: scenario_20_ScenarioMapping__70dd2959c2029dbc80dfc8f21c89d8aa
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_20
     space: power-ops
   type:
     external_id: ScenarioMapping.mappingOverride
     space: power-ops
-- external_id: scenario_2_ScenarioMapping__390db080c26adefb49885993e96af910
-  instance_type: node
-  sources:
-  - properties:
-      name: scenario_2
-    source:
-      external_id: ScenarioMapping
-      space: power-ops
-      type: container
-  space: power-ops
 - end_node:
     external_id: InputTimeSeriesMapping__669597341a9f3eb5c02d9916ea77d2c5
     space: power-ops
-  external_id: scenario_2_ScenarioMapping__390db080c26adefb49885993e96af910:InputTimeSeriesMapping__669597341a9f3eb5c02d9916ea77d2c5
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_2:InputTimeSeriesMapping__669597341a9f3eb5c02d9916ea77d2c5
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: scenario_2_ScenarioMapping__390db080c26adefb49885993e96af910
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_2
     space: power-ops
   type:
     external_id: ScenarioMapping.mappingOverride
@@ -3239,54 +2541,22 @@ data_modeling.instances:
 - end_node:
     external_id: InputTimeSeriesMapping__9dc4be932cd63e80ae77f9b46f9419bc
     space: power-ops
-  external_id: scenario_2_ScenarioMapping__390db080c26adefb49885993e96af910:InputTimeSeriesMapping__9dc4be932cd63e80ae77f9b46f9419bc
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_2:InputTimeSeriesMapping__9dc4be932cd63e80ae77f9b46f9419bc
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: scenario_2_ScenarioMapping__390db080c26adefb49885993e96af910
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_2
     space: power-ops
   type:
     external_id: ScenarioMapping.mappingOverride
     space: power-ops
-- external_id: scenario_2_ScenarioMapping__d979684d6827527f9d5555c56e89b229
-  instance_type: node
-  sources:
-  - properties:
-      name: scenario_2
-    source:
-      external_id: ScenarioMapping
-      space: power-ops
-      type: container
-  space: power-ops
-- end_node:
-    external_id: InputTimeSeriesMapping__1b42eb2bf41e38490abe4be73da9073c
-    space: power-ops
-  external_id: scenario_2_ScenarioMapping__d979684d6827527f9d5555c56e89b229:InputTimeSeriesMapping__1b42eb2bf41e38490abe4be73da9073c
-  instance_type: edge
-  space: power-ops
-  start_node:
-    external_id: scenario_2_ScenarioMapping__d979684d6827527f9d5555c56e89b229
-    space: power-ops
-  type:
-    external_id: ScenarioMapping.mappingOverride
-    space: power-ops
-- end_node:
-    external_id: InputTimeSeriesMapping__f9d0f523977170f26588616c67e5272c
-    space: power-ops
-  external_id: scenario_2_ScenarioMapping__d979684d6827527f9d5555c56e89b229:InputTimeSeriesMapping__f9d0f523977170f26588616c67e5272c
-  instance_type: edge
-  space: power-ops
-  start_node:
-    external_id: scenario_2_ScenarioMapping__d979684d6827527f9d5555c56e89b229
-    space: power-ops
-  type:
-    external_id: ScenarioMapping.mappingOverride
-    space: power-ops
-- external_id: scenario_3_ScenarioMapping__0a3f680ab4e6ba7ea52114149f1859e7
+- external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_3
   instance_type: node
   sources:
   - properties:
       name: scenario_3
+      shopType: null
+      watercourse: null
     source:
       external_id: ScenarioMapping
       space: power-ops
@@ -3295,11 +2565,11 @@ data_modeling.instances:
 - end_node:
     external_id: InputTimeSeriesMapping__468587c67e414e46db0cb1bb52ba77a4
     space: power-ops
-  external_id: scenario_3_ScenarioMapping__0a3f680ab4e6ba7ea52114149f1859e7:InputTimeSeriesMapping__468587c67e414e46db0cb1bb52ba77a4
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_3:InputTimeSeriesMapping__468587c67e414e46db0cb1bb52ba77a4
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: scenario_3_ScenarioMapping__0a3f680ab4e6ba7ea52114149f1859e7
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_3
     space: power-ops
   type:
     external_id: ScenarioMapping.mappingOverride
@@ -3307,20 +2577,22 @@ data_modeling.instances:
 - end_node:
     external_id: InputTimeSeriesMapping__6982c4eef6045db5ca295ccfc71bbcfa
     space: power-ops
-  external_id: scenario_3_ScenarioMapping__0a3f680ab4e6ba7ea52114149f1859e7:InputTimeSeriesMapping__6982c4eef6045db5ca295ccfc71bbcfa
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_3:InputTimeSeriesMapping__6982c4eef6045db5ca295ccfc71bbcfa
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: scenario_3_ScenarioMapping__0a3f680ab4e6ba7ea52114149f1859e7
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_3
     space: power-ops
   type:
     external_id: ScenarioMapping.mappingOverride
     space: power-ops
-- external_id: scenario_4_ScenarioMapping__f455a6a87281987a16c84e260b006a81
+- external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_4
   instance_type: node
   sources:
   - properties:
       name: scenario_4
+      shopType: null
+      watercourse: null
     source:
       external_id: ScenarioMapping
       space: power-ops
@@ -3329,11 +2601,11 @@ data_modeling.instances:
 - end_node:
     external_id: InputTimeSeriesMapping__0d9de884c18baa37267e924d5cf50999
     space: power-ops
-  external_id: scenario_4_ScenarioMapping__f455a6a87281987a16c84e260b006a81:InputTimeSeriesMapping__0d9de884c18baa37267e924d5cf50999
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_4:InputTimeSeriesMapping__0d9de884c18baa37267e924d5cf50999
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: scenario_4_ScenarioMapping__f455a6a87281987a16c84e260b006a81
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_4
     space: power-ops
   type:
     external_id: ScenarioMapping.mappingOverride
@@ -3341,20 +2613,22 @@ data_modeling.instances:
 - end_node:
     external_id: InputTimeSeriesMapping__fd8b93a1fd3549800ac589aab34ac783
     space: power-ops
-  external_id: scenario_4_ScenarioMapping__f455a6a87281987a16c84e260b006a81:InputTimeSeriesMapping__fd8b93a1fd3549800ac589aab34ac783
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_4:InputTimeSeriesMapping__fd8b93a1fd3549800ac589aab34ac783
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: scenario_4_ScenarioMapping__f455a6a87281987a16c84e260b006a81
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_4
     space: power-ops
   type:
     external_id: ScenarioMapping.mappingOverride
     space: power-ops
-- external_id: scenario_5_ScenarioMapping__7a9ac6dba9a045572b4e01c89b8cb985
+- external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_5
   instance_type: node
   sources:
   - properties:
       name: scenario_5
+      shopType: null
+      watercourse: null
     source:
       external_id: ScenarioMapping
       space: power-ops
@@ -3363,11 +2637,11 @@ data_modeling.instances:
 - end_node:
     external_id: InputTimeSeriesMapping__8bd4d523e223dac586193113622491a7
     space: power-ops
-  external_id: scenario_5_ScenarioMapping__7a9ac6dba9a045572b4e01c89b8cb985:InputTimeSeriesMapping__8bd4d523e223dac586193113622491a7
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_5:InputTimeSeriesMapping__8bd4d523e223dac586193113622491a7
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: scenario_5_ScenarioMapping__7a9ac6dba9a045572b4e01c89b8cb985
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_5
     space: power-ops
   type:
     external_id: ScenarioMapping.mappingOverride
@@ -3375,20 +2649,22 @@ data_modeling.instances:
 - end_node:
     external_id: InputTimeSeriesMapping__f8bdae710c9d2556d9b6f9d81e86d129
     space: power-ops
-  external_id: scenario_5_ScenarioMapping__7a9ac6dba9a045572b4e01c89b8cb985:InputTimeSeriesMapping__f8bdae710c9d2556d9b6f9d81e86d129
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_5:InputTimeSeriesMapping__f8bdae710c9d2556d9b6f9d81e86d129
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: scenario_5_ScenarioMapping__7a9ac6dba9a045572b4e01c89b8cb985
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_5
     space: power-ops
   type:
     external_id: ScenarioMapping.mappingOverride
     space: power-ops
-- external_id: scenario_6_ScenarioMapping__52c41fb4875512d0755989b5e363b5b5
+- external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_6
   instance_type: node
   sources:
   - properties:
       name: scenario_6
+      shopType: null
+      watercourse: null
     source:
       external_id: ScenarioMapping
       space: power-ops
@@ -3397,11 +2673,11 @@ data_modeling.instances:
 - end_node:
     external_id: InputTimeSeriesMapping__03487167e13d5a7d31dc5dcc81360559
     space: power-ops
-  external_id: scenario_6_ScenarioMapping__52c41fb4875512d0755989b5e363b5b5:InputTimeSeriesMapping__03487167e13d5a7d31dc5dcc81360559
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_6:InputTimeSeriesMapping__03487167e13d5a7d31dc5dcc81360559
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: scenario_6_ScenarioMapping__52c41fb4875512d0755989b5e363b5b5
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_6
     space: power-ops
   type:
     external_id: ScenarioMapping.mappingOverride
@@ -3409,20 +2685,22 @@ data_modeling.instances:
 - end_node:
     external_id: InputTimeSeriesMapping__a2b8affe3a56a322c327434c61c7cdb6
     space: power-ops
-  external_id: scenario_6_ScenarioMapping__52c41fb4875512d0755989b5e363b5b5:InputTimeSeriesMapping__a2b8affe3a56a322c327434c61c7cdb6
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_6:InputTimeSeriesMapping__a2b8affe3a56a322c327434c61c7cdb6
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: scenario_6_ScenarioMapping__52c41fb4875512d0755989b5e363b5b5
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_6
     space: power-ops
   type:
     external_id: ScenarioMapping.mappingOverride
     space: power-ops
-- external_id: scenario_7_ScenarioMapping__2c6c0d6ce78cae1820a2c6163746ba4a
+- external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_7
   instance_type: node
   sources:
   - properties:
       name: scenario_7
+      shopType: null
+      watercourse: null
     source:
       external_id: ScenarioMapping
       space: power-ops
@@ -3431,11 +2709,11 @@ data_modeling.instances:
 - end_node:
     external_id: InputTimeSeriesMapping__b5ae5a24bf62597e0acbbca1ec41b119
     space: power-ops
-  external_id: scenario_7_ScenarioMapping__2c6c0d6ce78cae1820a2c6163746ba4a:InputTimeSeriesMapping__b5ae5a24bf62597e0acbbca1ec41b119
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_7:InputTimeSeriesMapping__b5ae5a24bf62597e0acbbca1ec41b119
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: scenario_7_ScenarioMapping__2c6c0d6ce78cae1820a2c6163746ba4a
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_7
     space: power-ops
   type:
     external_id: ScenarioMapping.mappingOverride
@@ -3443,20 +2721,22 @@ data_modeling.instances:
 - end_node:
     external_id: InputTimeSeriesMapping__db159d64c1364e2235e8619f2a605b25
     space: power-ops
-  external_id: scenario_7_ScenarioMapping__2c6c0d6ce78cae1820a2c6163746ba4a:InputTimeSeriesMapping__db159d64c1364e2235e8619f2a605b25
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_7:InputTimeSeriesMapping__db159d64c1364e2235e8619f2a605b25
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: scenario_7_ScenarioMapping__2c6c0d6ce78cae1820a2c6163746ba4a
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_7
     space: power-ops
   type:
     external_id: ScenarioMapping.mappingOverride
     space: power-ops
-- external_id: scenario_8_ScenarioMapping__8d9832efcd9f68ead9e2ebf4ee7f5780
+- external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_8
   instance_type: node
   sources:
   - properties:
       name: scenario_8
+      shopType: null
+      watercourse: null
     source:
       external_id: ScenarioMapping
       space: power-ops
@@ -3465,11 +2745,11 @@ data_modeling.instances:
 - end_node:
     external_id: InputTimeSeriesMapping__693e6cab3af7dcf57a1b8a42b36e5be4
     space: power-ops
-  external_id: scenario_8_ScenarioMapping__8d9832efcd9f68ead9e2ebf4ee7f5780:InputTimeSeriesMapping__693e6cab3af7dcf57a1b8a42b36e5be4
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_8:InputTimeSeriesMapping__693e6cab3af7dcf57a1b8a42b36e5be4
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: scenario_8_ScenarioMapping__8d9832efcd9f68ead9e2ebf4ee7f5780
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_8
     space: power-ops
   type:
     external_id: ScenarioMapping.mappingOverride
@@ -3477,20 +2757,22 @@ data_modeling.instances:
 - end_node:
     external_id: InputTimeSeriesMapping__baefb8ebf27de4af086a3adb5f6bd12d
     space: power-ops
-  external_id: scenario_8_ScenarioMapping__8d9832efcd9f68ead9e2ebf4ee7f5780:InputTimeSeriesMapping__baefb8ebf27de4af086a3adb5f6bd12d
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_8:InputTimeSeriesMapping__baefb8ebf27de4af086a3adb5f6bd12d
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: scenario_8_ScenarioMapping__8d9832efcd9f68ead9e2ebf4ee7f5780
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_8
     space: power-ops
   type:
     external_id: ScenarioMapping.mappingOverride
     space: power-ops
-- external_id: scenario_9_ScenarioMapping__5d98d37e010bdf35f727806b40af5225
+- external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_9
   instance_type: node
   sources:
   - properties:
       name: scenario_9
+      shopType: null
+      watercourse: null
     source:
       external_id: ScenarioMapping
       space: power-ops
@@ -3499,11 +2781,11 @@ data_modeling.instances:
 - end_node:
     external_id: InputTimeSeriesMapping__1940f0474e174affb207649606b3c194
     space: power-ops
-  external_id: scenario_9_ScenarioMapping__5d98d37e010bdf35f727806b40af5225:InputTimeSeriesMapping__1940f0474e174affb207649606b3c194
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_9:InputTimeSeriesMapping__1940f0474e174affb207649606b3c194
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: scenario_9_ScenarioMapping__5d98d37e010bdf35f727806b40af5225
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_9
     space: power-ops
   type:
     external_id: ScenarioMapping.mappingOverride
@@ -3511,11 +2793,155 @@ data_modeling.instances:
 - end_node:
     external_id: InputTimeSeriesMapping__2ca41e9cafa565a76ccf7a44ca2a2ea5
     space: power-ops
-  external_id: scenario_9_ScenarioMapping__5d98d37e010bdf35f727806b40af5225:InputTimeSeriesMapping__2ca41e9cafa565a76ccf7a44ca2a2ea5
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_9:InputTimeSeriesMapping__2ca41e9cafa565a76ccf7a44ca2a2ea5
   instance_type: edge
   space: power-ops
   start_node:
-    external_id: scenario_9_ScenarioMapping__5d98d37e010bdf35f727806b40af5225
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_9
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_2_NO2_scenario_1
+  instance_type: node
+  sources:
+  - properties:
+      name: scenario_1
+      shopType: null
+      watercourse: null
+    source:
+      external_id: ScenarioMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__2f1c9e642f592841225fb92f829f77bf
+    space: power-ops
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_2_NO2_scenario_1:InputTimeSeriesMapping__2f1c9e642f592841225fb92f829f77bf
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_2_NO2_scenario_1
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__77500130c817fe02423992ad569e89a7
+    space: power-ops
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_2_NO2_scenario_1:InputTimeSeriesMapping__77500130c817fe02423992ad569e89a7
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_2_NO2_scenario_1
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_2_NO2_scenario_2
+  instance_type: node
+  sources:
+  - properties:
+      name: scenario_2
+      shopType: null
+      watercourse: null
+    source:
+      external_id: ScenarioMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__1b42eb2bf41e38490abe4be73da9073c
+    space: power-ops
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_2_NO2_scenario_2:InputTimeSeriesMapping__1b42eb2bf41e38490abe4be73da9073c
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_2_NO2_scenario_2
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__f9d0f523977170f26588616c67e5272c
+    space: power-ops
+  external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_2_NO2_scenario_2:InputTimeSeriesMapping__f9d0f523977170f26588616c67e5272c
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: SHOP_Fornebu_incremental_mapping_multi_scenario_2_NO2_scenario_2
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- external_id: SHOP_Fornebu_incremental_mapping_price_independent_NO2_scenario_1
+  instance_type: node
+  sources:
+  - properties:
+      name: scenario_1
+      shopType: null
+      watercourse: null
+    source:
+      external_id: ScenarioMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__2f1c9e642f592841225fb92f829f77bf
+    space: power-ops
+  external_id: SHOP_Fornebu_incremental_mapping_price_independent_NO2_scenario_1:InputTimeSeriesMapping__2f1c9e642f592841225fb92f829f77bf
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: SHOP_Fornebu_incremental_mapping_price_independent_NO2_scenario_1
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__77500130c817fe02423992ad569e89a7
+    space: power-ops
+  external_id: SHOP_Fornebu_incremental_mapping_price_independent_NO2_scenario_1:InputTimeSeriesMapping__77500130c817fe02423992ad569e89a7
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: SHOP_Fornebu_incremental_mapping_price_independent_NO2_scenario_1
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- external_id: SHOP_Fornebu_incremental_mapping_water_value_based_with_dummy_SHOP_runNO2_Main
+  instance_type: node
+  sources:
+  - properties:
+      name: Main
+      shopType: null
+      watercourse: null
+    source:
+      external_id: ScenarioMapping
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__2f1c9e642f592841225fb92f829f77bf
+    space: power-ops
+  external_id: SHOP_Fornebu_incremental_mapping_water_value_based_with_dummy_SHOP_runNO2_Main:InputTimeSeriesMapping__2f1c9e642f592841225fb92f829f77bf
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: SHOP_Fornebu_incremental_mapping_water_value_based_with_dummy_SHOP_runNO2_Main
+    space: power-ops
+  type:
+    external_id: ScenarioMapping.mappingOverride
+    space: power-ops
+- end_node:
+    external_id: InputTimeSeriesMapping__77500130c817fe02423992ad569e89a7
+    space: power-ops
+  external_id: SHOP_Fornebu_incremental_mapping_water_value_based_with_dummy_SHOP_runNO2_Main:InputTimeSeriesMapping__77500130c817fe02423992ad569e89a7
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: SHOP_Fornebu_incremental_mapping_water_value_based_with_dummy_SHOP_runNO2_Main
     space: power-ops
   type:
     external_id: ScenarioMapping.mappingOverride
