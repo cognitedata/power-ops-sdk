@@ -13,6 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.30.0] - 2023-07-22
+
+### Added
+* Ability to retrieve production data model from CDF assets. Relationships to other resources not yet supported.
+
 ## [0.29.1] - 2023-07-21
 
 ### Added

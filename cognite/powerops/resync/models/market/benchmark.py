@@ -21,7 +21,7 @@ class ProductionPlanTimeSeries(NonAssetType):
 
 
 class BenchmarkProcess(Process):
-    parent_external_id: ClassVar[str] = "benchmarking_configuration"
+    parent_external_id: ClassVar[str] = "benchmarking_configurations"
     parent_description: ClassVar[str] = "Configurations used in benchmarking processes"
     description: str = "Configuration for benchmarking of day-ahead bidding"
     label: ClassVar[Union[AssetLabel, str]] = AssetLabel.DAYAHEAD_BIDDING_BENCHMARKING_CONFIG
