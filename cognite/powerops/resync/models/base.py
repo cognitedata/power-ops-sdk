@@ -174,7 +174,16 @@ class AssetType(ResourceType, ABC):
         # remove lists of other asset types (they will have their own diff)
         # remove optional fields / cdf resources
         raise NotImplementedError()
-
+    
+    def _asset_type_fields(self) -> Iterable[str]:
+        # Exclude fom model_dump in diff (ext_id only)
+        for field_name in self.model_fields:
+            class_ = self.model_fields[field_name].annotation
+            if isinstance(class_, GenericAlias):
+                asset_resource_class = get_args(class_)[0]
+                if issubclass(asset_resource_class, AssetType):
+                    yield field_name
+    
 
 T_Asset_Type = TypeVar("T_Asset_Type", bound=AssetType)
 
@@ -321,11 +330,7 @@ class AssetModel(Model, ABC):
             print(len(other_field))
             print("--------")
             break
-        #     # print("FIELD NAME", field_name)
-
-        #     print()
-        #     break
-
+        
         # ddiff = DeepDiff(getattr(self, field_name), getattr(other, field_name), ignore_order=True).to_dict()
         # print(ddiff)
         # return AssetModel._pretty_difference(ddiff)
