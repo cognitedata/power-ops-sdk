@@ -3,8 +3,9 @@ from collections import defaultdict
 
 import json
 from abc import ABC
-from typing import ClassVar, Iterable, Optional, Union, TypeVar, GenericAlias, get_args
+from typing import ClassVar, Iterable, Optional, Union, TypeVar, get_args
 from typing import Type as TypingType
+from types import GenericAlias
 
 from cognite.client import CogniteClient
 from cognite.client.data_classes import Asset, Label, Relationship, TimeSeries
@@ -55,14 +56,14 @@ class AssetType(ResourceType, ABC):
     def external_id(self) -> str:
         if self._external_id:
             return self._external_id
-        return f"{self.parent_external_id}_{self.name}"
+        return f"{self.type_}_{self.name}"
 
     @external_id.setter
     def external_id(self, value: str) -> None:
         self._external_id = value
 
     @property
-    def parent_external_id(self) -> str:
+    def type_(self) -> str:
         return self.parent_external_id.removesuffix("s")
 
     @property
@@ -285,6 +286,7 @@ class AssetModel(Model, ABC):
         for field_name, asset_cls in cls._asset_types_and_field_names():
             assets = client.assets.retrieve_subtree(external_id=asset_cls.parent_external_id)
             for asset in assets:
+                print(asset)
                 if asset.external_id == asset_cls.parent_external_id:
                     continue
                 instance = asset_cls.from_asset(asset)
