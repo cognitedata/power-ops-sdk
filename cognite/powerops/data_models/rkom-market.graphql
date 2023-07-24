@@ -11,20 +11,17 @@ type ReserveScenario{
     product: String
     block: String
     reserveGroup: String
-    overrideMappings: [ScenarioMapping]
 }
+
 
 type RKOMBid {
     name: String
     date: [DateTransformation]
     market: RKOMMarket
-    auction: String
-    block: String
     method: String
     minimumPrice: Float
     pricePremium: Float
     priceScenarios: [ScenarioMapping]
-    product: String
     reserveScenarios: [ReserveScenario]
     watercourse: String
 }
@@ -42,6 +39,7 @@ type RKOMCombinationBid{
     name: String
     auction: String
     rkomBidConfigs: [String]
+    incremental_mapping: [ScenarioMapping]
 }
 
 type RKOMBidCombination {
