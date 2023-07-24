@@ -2,8 +2,8 @@ from __future__ import annotations
 from collections import defaultdict
 
 import json
-from abc import ABC, abstractclassmethod
-from typing import ClassVar, Iterable, Optional, Union, TypeVar,  GenericAlias, get_args
+from abc import ABC
+from typing import ClassVar, Iterable, Optional, Union, TypeVar, GenericAlias, get_args
 from typing import Type as TypingType
 
 from cognite.client import CogniteClient
@@ -55,15 +55,16 @@ class AssetType(ResourceType, ABC):
     def external_id(self) -> str:
         if self._external_id:
             return self._external_id
-        return f"{self.type_}_{self.name}"
+        return f"{self.parent_external_id}_{self.name}"
 
     @external_id.setter
     def external_id(self, value: str) -> None:
         self._external_id = value
-    
+
     @property
     def parent_external_id(self) -> str:
         return self.parent_external_id.removesuffix("s")
+
     @property
     def parent_name(self):
         return self.parent_external_id.replace("_", " ").title()
@@ -169,6 +170,11 @@ class AssetType(ResourceType, ABC):
     def from_asset(cls: TypingType["T_Asset_Type"], asset: Asset) -> "T_Asset_Type":
         raise NotImplementedError()
 
+    def clean_for_diff(self):
+        # remove lists of other asset types (they will have their own diff)
+        # remove optional fields / cdf resources
+        raise NotImplementedError()
+
 
 T_Asset_Type = TypeVar("T_Asset_Type", bound=AssetType)
 
@@ -260,16 +266,15 @@ class AssetModel(Model, ABC):
 
     def _asset_types(self) -> Iterable[AssetType]:
         yield from (item for item in self._resource_types() if isinstance(item, AssetType))
-    
+
     @classmethod
     def _asset_types_and_field_names(cls) -> Iterable[tuple[str, TypingType[AssetType]]]:
-       for  field_name in cls.model_fields:
+        for field_name in cls.model_fields:
             class_ = cls.model_fields[field_name].annotation
             if isinstance(class_, GenericAlias):
-               asset_resource_class = get_args(class_)[0]
-               if issubclass(asset_resource_class, AssetType):
-                   yield field_name, asset_resource_class 
-        
+                asset_resource_class = get_args(class_)[0]
+                if issubclass(asset_resource_class, AssetType):
+                    yield field_name, asset_resource_class
 
     def summary(self) -> dict[str, dict[str, dict[str, int]]]:
         summary = super().summary()
@@ -277,7 +282,6 @@ class AssetModel(Model, ABC):
         summary[self.model_name]["cdf"]["relationships"] = len(self.relationships())
         summary[self.model_name]["cdf"]["parent_assets"] = len(self.parent_assets())
         return summary
-
 
     @classmethod
     def from_cdf(cls, client: CogniteClient):
@@ -291,11 +295,58 @@ class AssetModel(Model, ABC):
                 output[field_name].append(instance)
         return cls(**output)
 
+    def _get_cleaned_clone_for_diff(self):
+        raise NotImplementedError()
 
     def difference(self: T_Asset_Model, other: T_Asset_Model) -> dict:
         # todo: group by domain model classes `cls.model_fields:`
-        # dump 
-        raise NotImplementedError()
+        if type(self) != type(other):
+            raise ValueError("Cannot compare these models of different types.")
+
+        felids = self.model_fields
+        cleaned_self = self._get_cleaned_clone_for_diff()
+        other._get_cleaned_clone_for_diff()
+
+        for field_name in felids:
+            print("FIELD NAME", field_name)
+            self_field = getattr(cleaned_self, field_name)
+            other_field = getattr(other, field_name)
+
+            print("self_field")
+            print(self_field)
+            print(len(self_field))
+            print("--")
+            print("other_field")
+            print(other_field)
+            print(len(other_field))
+            print("--------")
+            break
+        #     # print("FIELD NAME", field_name)
+
+        #     print()
+        #     break
+
+        # ddiff = DeepDiff(getattr(self, field_name), getattr(other, field_name), ignore_order=True).to_dict()
+        # print(ddiff)
+        # return AssetModel._pretty_difference(ddiff)
+
+        # raise NotImplementedError()
+        # return DeepDiff(self.model_dump(), other.model_dump(), ignore_order=True)
+
+    @classmethod
+    def _pretty_difference(cls, diff_per_resource_type: dict[str, str]):
+        str_builder = []
+        for resource_type, differences in diff_per_resource_type.items():
+            if differences:
+                str_builder.extend(
+                    (
+                        "--------------------------------------------\n",
+                        f"Difference for {resource_type}:",
+                        "--------------------------------------------\n",
+                        differences,
+                    )
+                )
+        return "\n".join(str_builder)
 
 
 T_Asset_Model = TypeVar("T_Asset_Model", bound=AssetModel)

@@ -8,7 +8,7 @@ from cognite.client.data_classes import Asset, TimeSeries
 from pydantic import ConfigDict, Field
 
 from cognite.powerops.cdf_labels import AssetLabel
-from cognite.powerops.resync.models.base import AssetModel, AssetType, NonAssetType, T_Asset_Type
+from cognite.powerops.resync.models.base import AssetModel, AssetType, NonAssetType
 from cognite.powerops.resync.models.cdf_resources import CDFSequence
 
 
@@ -38,6 +38,12 @@ class Generator(AssetType):
             turbine_efficiency_curve=None,
         )
 
+    def clean_for_diff(self):
+        self.start_stop_cost_time_series = None
+        self.generator_efficiency_curve = None
+        self.turbine_efficiency_curve = None
+        return self
+
 
 class Reservoir(AssetType):
     parent_external_id: ClassVar[str] = "reservoirs"
@@ -56,6 +62,9 @@ class Reservoir(AssetType):
             display_name=asset.metadata.get("display_name", ""),
             ordering=asset.metadata.get("ordering", ""),
         )
+
+    def clean_for_diff(self):
+        self
 
 
 class Plant(AssetType):
@@ -80,12 +89,12 @@ class Plant(AssetType):
 
     @classmethod
     def from_asset(cls, asset: Asset) -> Plant:
-        penstock_head_loss_factors = asset.metadata.get("penstock_head_loss_factors", {}) 
+        penstock_head_loss_factors = asset.metadata.get("penstock_head_loss_factors", {})
         try:
             penstock_head_loss_factors = json.loads(penstock_head_loss_factors)
             if not isinstance(penstock_head_loss_factors, dict):
                 raise TypeError
-        except(json.JSONDecodeError, TypeError):
+        except (json.JSONDecodeError, TypeError):
             penstock_head_loss_factors = {}
         return cls(
             _external_id=asset.external_id,
@@ -110,6 +119,18 @@ class Plant(AssetType):
             inlet_level_time_series=None,
             head_direct_time_series=None,
         )
+
+    def clean_for_diff(self):
+        self.generators = []
+        self.inlet_reservoir = None
+        self.p_min_time_series = None
+        self.p_max_time_series = None
+        self.water_value_time_series = None
+        self.feeding_fee_time_series = None
+        self.outlet_level_time_series = None
+        self.inlet_level_time_series = None
+        self.head_direct_time_series = None
+        return self
 
 
 class WaterCourseShop(NonAssetType):
@@ -142,6 +163,11 @@ class Watercourse(AssetType):
             production_obligation_time_series=[],
         )
 
+    def clean_for_diff(self):
+        self.plants = []
+        self.production_obligation_time_series = []
+        return self
+
 
 class PriceArea(AssetType):
     parent_external_id: ClassVar[str] = "price_areas"
@@ -163,12 +189,28 @@ class PriceArea(AssetType):
             watercourses=[],
         )
 
+    def clean_for_diff(self):
+        self.dayahead_price_time_series = None
+        self.plants = []
+        self.watercourses = []
+        return self
+
 
 class ProductionModel(AssetModel):
     root_asset: ClassVar[Asset] = Asset(external_id="power_ops", name="PowerOps")
-    price_areas: list[PriceArea] = Field(default_factory=list)
+    reservoirs: list[Reservoir] = Field(default_factory=list)
     watercourses: list[Watercourse] = Field(default_factory=list)
+    price_areas: list[PriceArea] = Field(default_factory=list)
     plants: list[Plant] = Field(default_factory=list)
     generators: list[Generator] = Field(default_factory=list)
-    reservoirs: list[Reservoir] = Field(default_factory=list)
 
+    def _get_cleaned_clone_for_diff(self):
+        clone = self.model_copy(deep=True)
+        for model_field in clone.__fields__:
+            if model_field == "root_asset":
+                continue
+            resource_list: list[AssetType] = getattr(clone, model_field)
+            resource_list.sort(key=lambda x: x.name)
+            for resource in resource_list:
+                resource.clean_for_diff()
+        return clone
