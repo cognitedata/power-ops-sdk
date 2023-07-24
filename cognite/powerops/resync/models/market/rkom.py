@@ -28,7 +28,7 @@ class RKOMPlants(NonAssetType):
 
 
 class RKOMProcess(Process):
-    type_: ClassVar[str] = "POWEROPS"
+    parent_external_id: ClassVar[str] = "rkom_bid_process_configurations"
     label: ClassVar[Union[AssetLabel, str]] = AssetLabel.RKOM_BID_CONFIGURATION
     parent_description: ClassVar[str] = "Configurations used in RKOM bid generation processes"
     shop: ShopTransformation
@@ -46,7 +46,7 @@ class RKOMCombinationBid(NonAssetType):
 
 
 class RKOMBidCombination(AssetType):
-    type_: ClassVar[str] = "rkom_bid_combination_configuration"
+    parent_external_id: ClassVar[str] = "rkom_bid_combination_configurations"
     label: ClassVar[str] = AssetLabel.RKOM_BID_CONFIGURATION
     parent_description: ClassVar[str] = "Configurations for which bids should be combined into a total RKOM bid form"
     bid: RKOMCombinationBid

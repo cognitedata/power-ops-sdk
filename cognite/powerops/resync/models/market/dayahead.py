@@ -22,7 +22,7 @@ class DayAheadBid(Bid):
 
 
 class DayAheadProcess(Process):
-    type_: ClassVar[str] = "POWEROPS_bid_process_configuration"
+    parent_external_id = "bid_process_configurations"
     label: ClassVar[Union[AssetLabel, str]] = AssetLabel.BID_PROCESS_CONFIGURATION
     parent_description: ClassVar[str] = "Configurations used in bid matrix generation processes"
     shop: ShopTransformation
