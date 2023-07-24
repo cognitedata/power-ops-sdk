@@ -309,7 +309,7 @@ class AssetModel(Model, ABC):
         return summary
 
     @classmethod
-    def from_cdf(cls, client: CogniteClient) -> T_Asset_Model:
+    def from_cdf(cls: TypingType[T_Asset_Model], client: CogniteClient) -> T_Asset_Model:
         output = defaultdict(list)
         for field_name, asset_cls in cls._asset_types_and_field_names():
             assets = client.assets.retrieve_subtree(external_id=asset_cls.parent_external_id)
