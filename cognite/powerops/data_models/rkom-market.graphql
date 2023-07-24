@@ -33,13 +33,13 @@ type RKOMProcess {
     processEvents: [String]
     timezone: String
     plants: [String]
+    incremental_mappings: [ScenarioMapping]
 }
 
 type RKOMCombinationBid{
     name: String
     auction: String
     rkomBidConfigs: [String]
-    incremental_mapping: [ScenarioMapping]
 }
 
 type RKOMBidCombination {
