@@ -18,8 +18,6 @@ __all__ = ["RKOMBid", "RKOMBidApply", "RKOMBidList"]
 
 class RKOMBid(DomainModel):
     space: ClassVar[str] = "power-ops"
-    auction: Optional[str] = None
-    block: Optional[str] = None
     date: list[str] = []
     market: Optional[str] = None
     method: Optional[str] = None
@@ -27,15 +25,12 @@ class RKOMBid(DomainModel):
     name: Optional[str] = None
     price_premium: Optional[float] = Field(None, alias="pricePremium")
     price_scenarios: list[str] = Field([], alias="priceScenarios")
-    product: Optional[str] = None
     reserve_scenarios: list[str] = Field([], alias="reserveScenarios")
     watercourse: Optional[str] = None
 
 
 class RKOMBidApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
-    auction: Optional[str] = None
-    block: Optional[str] = None
     date: list[Union["DateTransformationApply", str]] = Field(default_factory=list, repr=False)
     market: Optional[Union["RKOMMarketApply", str]] = Field(None, repr=False)
     method: Optional[str] = None
@@ -43,7 +38,6 @@ class RKOMBidApply(DomainModelApply):
     name: Optional[str] = None
     price_premium: Optional[float] = None
     price_scenarios: list[Union["ScenarioMappingApply", str]] = Field(default_factory=list, repr=False)
-    product: Optional[str] = None
     reserve_scenarios: list[Union["ReserveScenarioApply", str]] = Field(default_factory=list, repr=False)
     watercourse: Optional[str] = None
 
@@ -55,8 +49,6 @@ class RKOMBidApply(DomainModelApply):
         source = dm.NodeOrEdgeData(
             source=dm.ContainerId("power-ops", "RKOMBid"),
             properties={
-                "auction": self.auction,
-                "block": self.block,
                 "market": {
                     "space": "power-ops",
                     "externalId": self.market if isinstance(self.market, str) else self.market.external_id,
@@ -65,7 +57,6 @@ class RKOMBidApply(DomainModelApply):
                 "minimumPrice": self.minimum_price,
                 "name": self.name,
                 "pricePremium": self.price_premium,
-                "product": self.product,
                 "watercourse": self.watercourse,
             },
         )

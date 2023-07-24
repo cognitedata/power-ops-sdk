@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import Sequence, overload
+from collections import defaultdict
+from typing import Dict, List, Sequence, Tuple, overload
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
@@ -8,6 +9,43 @@ from cognite.client._constants import INSTANCES_LIST_LIMIT_DEFAULT
 
 from cognite.powerops.clients._api._core import TypeAPI
 from cognite.powerops.clients.data_classes import RKOMCombinationBid, RKOMCombinationBidApply, RKOMCombinationBidList
+
+
+class RKOMCombinationBidIncrementalMappingsAPI:
+    def __init__(self, client: CogniteClient):
+        self._client = client
+
+    def retrieve(self, external_id: str | Sequence[str]) -> dm.EdgeList:
+        f = dm.filters
+        is_edge_type = f.Equals(
+            ["edge", "type"],
+            {"space": "power-ops", "externalId": "RKOMCombinationBid.incremental_mapping"},
+        )
+        if isinstance(external_id, str):
+            is_rkom_combination_bid = f.Equals(
+                ["edge", "startNode"],
+                {"space": "power-ops", "externalId": external_id},
+            )
+            return self._client.data_modeling.instances.list(
+                "edge", limit=-1, filter=f.And(is_edge_type, is_rkom_combination_bid)
+            )
+
+        else:
+            is_rkom_combination_bids = f.In(
+                ["edge", "startNode"],
+                [{"space": "power-ops", "externalId": ext_id} for ext_id in external_id],
+            )
+            return self._client.data_modeling.instances.list(
+                "edge", limit=-1, filter=f.And(is_edge_type, is_rkom_combination_bids)
+            )
+
+    def list(self, limit=INSTANCES_LIST_LIMIT_DEFAULT) -> dm.EdgeList:
+        f = dm.filters
+        is_edge_type = f.Equals(
+            ["edge", "type"],
+            {"space": "power-ops", "externalId": "RKOMCombinationBid.incremental_mapping"},
+        )
+        return self._client.data_modeling.instances.list("edge", limit=limit, filter=is_edge_type)
 
 
 class RKOMCombinationBidsAPI(TypeAPI[RKOMCombinationBid, RKOMCombinationBidApply, RKOMCombinationBidList]):
@@ -19,6 +57,7 @@ class RKOMCombinationBidsAPI(TypeAPI[RKOMCombinationBid, RKOMCombinationBidApply
             class_apply_type=RKOMCombinationBidApply,
             class_list=RKOMCombinationBidList,
         )
+        self.incremental_mappings = RKOMCombinationBidIncrementalMappingsAPI(client)
 
     def apply(self, rkom_combination_bid: RKOMCombinationBidApply, replace: bool = False) -> dm.InstancesApplyResult:
         instances = rkom_combination_bid.to_instances_apply()
@@ -42,9 +81,39 @@ class RKOMCombinationBidsAPI(TypeAPI[RKOMCombinationBid, RKOMCombinationBidApply
 
     def retrieve(self, external_id: str | Sequence[str]) -> RKOMCombinationBid | RKOMCombinationBidList:
         if isinstance(external_id, str):
-            return self._retrieve((self.sources.space, external_id))
+            rkom_combination_bid = self._retrieve((self.sources.space, external_id))
+
+            incremental_mapping_edges = self.incremental_mappings.retrieve(external_id)
+            rkom_combination_bid.incremental_mapping = [edge.end_node.external_id for edge in incremental_mapping_edges]
+
+            return rkom_combination_bid
         else:
-            return self._retrieve([(self.sources.space, ext_id) for ext_id in external_id])
+            rkom_combination_bids = self._retrieve([(self.sources.space, ext_id) for ext_id in external_id])
+
+            incremental_mapping_edges = self.incremental_mappings.retrieve(external_id)
+            self._set_incremental_mapping(rkom_combination_bids, incremental_mapping_edges)
+
+            return rkom_combination_bids
 
     def list(self, limit: int = INSTANCES_LIST_LIMIT_DEFAULT) -> RKOMCombinationBidList:
-        return self._list(limit=limit)
+        rkom_combination_bids = self._list(limit=limit)
+
+        incremental_mapping_edges = self.incremental_mappings.list(limit=-1)
+        self._set_incremental_mapping(rkom_combination_bids, incremental_mapping_edges)
+
+        return rkom_combination_bids
+
+    @staticmethod
+    def _set_incremental_mapping(
+        rkom_combination_bids: Sequence[RKOMCombinationBid], incremental_mapping_edges: Sequence[dm.Edge]
+    ):
+        edges_by_start_node: Dict[Tuple, List] = defaultdict(list)
+        for edge in incremental_mapping_edges:
+            edges_by_start_node[edge.start_node.as_tuple()].append(edge)
+
+        for rkom_combination_bid in rkom_combination_bids:
+            node_id = rkom_combination_bid.id_tuple()
+            if node_id in edges_by_start_node:
+                rkom_combination_bid.incremental_mapping = [
+                    edge.end_node.external_id for edge in edges_by_start_node[node_id]
+                ]
