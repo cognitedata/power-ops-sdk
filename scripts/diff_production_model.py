@@ -12,7 +12,9 @@ def main():
 
     config = ProductionConfig.load_yamls(DEMO_DATA / "production", instantiate=True)
     local_model = to_production_model(config)
+
     cdf_model = ProductionModel.from_cdf(client)
+
     print(local_model.difference(cdf_model))
 
 

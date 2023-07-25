@@ -3,7 +3,9 @@ from collections import defaultdict
 
 import json
 from abc import ABC
-from typing import ClassVar, Iterable, Optional, Union, TypeVar, get_args
+from deepdiff import DeepDiff
+from pathlib import Path
+from typing import ClassVar, Iterable, Optional, Union, TypeVar, get_args, get_origin
 from typing import Type as TypingType
 from types import GenericAlias
 
@@ -200,6 +202,34 @@ class AssetType(ResourceType, ABC):
         "Not yet implemented: CDF relationships"
         raise NotImplementedError()
 
+    def _asset_type_fields(self) -> Iterable[str]:
+        # Exclude fom model_dump in diff (ext_id only)
+        for field_name in self.model_fields:
+            class_ = self.model_fields[field_name].annotation
+            if isinstance(class_, GenericAlias):
+                asset_resource_class = get_args(class_)[0]
+                if issubclass(asset_resource_class, AssetType):
+                    yield field_name
+            elif get_origin(class_) is Union and type(None) in get_args(class_):
+                # Optional field `inlet_reservoir` on Plant
+                field_class = get_args(class_)[0]
+                if issubclass(field_class, AssetType):
+                    yield field_name
+
+    def _asset_type_prepare_for_diff(self: T_Asset_Type) -> dict[str, dict]:
+        for model_field in self.model_fields:
+            field = getattr(self, model_field)
+            if isinstance(field, AssetType):
+                # Only include external id in diff
+                setattr(self, model_field, field.external_id)
+            elif isinstance(field, list) and field and isinstance(field[0], AssetType):
+                # Sort bt external id to have consistent order for diff
+                setattr(self, model_field, sorted(map(lambda x: x.external_id, field)))
+            elif isinstance(field, Path):
+                # remove path from diff
+                setattr(self, model_field, None)
+        return self.model_dump()
+
 
 T_Asset_Type = TypeVar("T_Asset_Type", bound=AssetType)
 
@@ -320,8 +350,40 @@ class AssetModel(Model, ABC):
                 output[field_name].append(instance)
         return cls(**output)
 
-    def difference(self: T_Asset_Model, other: T_Asset_Model) -> dict:
+    def _prepare_for_diff(self: T_Asset_Model) -> dict[str:dict]:
         raise NotImplementedError()
+
+    def difference(self: T_Asset_Model, other: T_Asset_Model) -> dict:
+        if type(self) != type(other):
+            raise ValueError("Cannot compare these models of different types.")
+        self_dump = self._prepare_for_diff()
+        other_dump = other._prepare_for_diff()
+        diff_per_resource_type = {}
+
+        for key in self_dump:
+            print("Key:", key)
+            self_dump[key]
+            other_dump[key]
+
+            deep_diff = DeepDiff(self_dump[key], other_dump[key], ignore_order=True).to_dict()
+
+            diff_per_resource_type[key] = deep_diff
+
+        # fields = self.model_fields
+        # for field_name in fields:
+        #     print("Field name:", field_name)
+        #     self_field = self_prepared[field_name]
+        #     other_field = other_prepared[field_name]
+
+        print("DIFF PER RESOURCE TYPE:", diff_per_resource_type)
+
+    @classmethod
+    def _pretty_difference(cls, diff_per_resource_type: dict[str, dict]):
+        str_builder = []
+        for resource_type, deep_diff_dict in diff_per_resource_type.items():
+            ...
+
+        return "\n".join(str_builder)
 
 
 T_Asset_Model = TypeVar("T_Asset_Model", bound=AssetModel)

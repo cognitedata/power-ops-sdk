@@ -162,3 +162,17 @@ class ProductionModel(AssetModel):
     price_areas: list[PriceArea] = Field(default_factory=list)
     plants: list[Plant] = Field(default_factory=list)
     generators: list[Generator] = Field(default_factory=list)
+
+    def _prepare_for_diff(self: ProductionModel) -> dict:
+        clone = self.model_copy(deep=True)
+
+        for model_field in clone.model_fields:
+            field_value = getattr(clone, model_field)
+            if isinstance(field_value, list) and field_value and isinstance(field_value[0], AssetType):
+                # Sort bt external id to have consistent order for diff
+                _sorted = sorted(field_value, key=lambda x: x.external_id)
+                _prepared = map(lambda x: x._asset_type_prepare_for_diff(), _sorted)
+                setattr(clone, model_field, list(_prepared))
+            elif isinstance(field_value, AssetType):
+                field_value._asset_type_prepare_for_diff()
+        return clone.model_dump()
