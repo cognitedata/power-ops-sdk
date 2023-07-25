@@ -9,7 +9,7 @@ type OutputMapping{
 
 type OutputContainer{
   name: String
-  watercouse: String
+  watercourse: String
   shopType: String
   mappings: [OutputMapping]
 }

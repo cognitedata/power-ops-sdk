@@ -23,4 +23,5 @@ type DayAheadProcess{
     bid: DayAheadBid
     shop: ShopTransformation
     bidMatrixGeneratorConfig: [BidMatrixGenerator]
+    incremental_mappings: [ScenarioMapping]
 }
