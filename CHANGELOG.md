@@ -13,13 +13,20 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## [0.31.0] - 2023-07-22
+## [0.31.0] - 2023-07-25
+
+### Changed
+* Data Model for dayahead model to match better the asset version of the data models.
+
+
+
+## [0.31.0] - 2023-07-24
 
 ### Changed
 * Data Model for market, production, and cogshop to match better the asset version of the data models.
 
 
-## [0.30.0] - 2023-07-22
+## [0.30.0] - 2023-07-24
 
 ### Added
 * Ability to retrieve production data model from CDF assets. Relationships to other resources not yet supported.
