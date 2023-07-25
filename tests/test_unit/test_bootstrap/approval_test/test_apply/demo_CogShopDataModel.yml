@@ -8676,7 +8676,7 @@ data_modeling.instances:
   - properties:
       name: SHOP Fornebu output definition
       shopType: output_definition
-      watercouse: Fornebu
+      watercourse: Fornebu
     source:
       external_id: OutputContainer
       space: power-ops
