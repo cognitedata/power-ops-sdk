@@ -20,6 +20,7 @@ from cognite.powerops.clients.data_classes import (
     RKOMCombinationBidApply,
     RKOMMarketApply,
     RKOMProcesApply,
+    ScenarioMappingApply,
 )
 from cognite.powerops.resync.config.market import BenchmarkingConfig, PriceScenario, PriceScenarioID
 from cognite.powerops.resync.config.market.dayahead import BidMatrixGeneratorConfig, BidProcessConfig
@@ -37,7 +38,12 @@ from cognite.powerops.resync.models.market_dm import (
 from cognite.powerops.resync.models.production import PriceArea
 from cognite.powerops.resync.utils.common import make_ext_id
 
-from ._to_instances import _to_date_transformations, _to_scenario_mapping, _to_shop_transformation
+from ._to_instances import (
+    _to_date_transformations,
+    _to_scenario_mapping,
+    _to_shop_transformation,
+    _to_input_timeseries_mapping,
+)
 
 
 def to_market_asset_model(config: MarketConfig, price_areas: list[PriceArea], market_name: str) -> MarketModel:
@@ -133,7 +139,7 @@ def to_dayahead_data_model(
         model.bid_matrix_generator.update(bid_matrix_generators)
 
         # Create incremental mapping sequences
-        scenario_mappings = []
+        incremental_mappings = []
         for watercourse in price_area.watercourses:
             price_scenarios: dict[str, PriceScenario] = price_scenarios_by_name
             if process.price_scenarios_per_watercourse:
@@ -150,36 +156,48 @@ def to_dayahead_data_model(
             for scenario_name, price_scenario in price_scenarios.items():
                 external_id = f"SHOP_{watercourse.name}_incremental_mapping_{process.name}_{scenario_name}"
                 scenario = _to_scenario_mapping(external_id, scenario_name, price_scenario.to_time_series_mapping())
-                scenario_mappings.append(scenario)
+                incremental_mappings.append(scenario)
 
-            shop = _to_shop_transformation(
-                process.shop_start or dayahead_benchmark.shop.start, process.shop_end or dayahead_benchmark.shop.end
-            )
+        shop = _to_shop_transformation(
+            process.shop_start or dayahead_benchmark.shop.start, process.shop_end or dayahead_benchmark.shop.end
+        )
 
-            bid = DayAheadBidApply(
-                external_id=f"POWEROPS_bid_process_configuration_{process.name}_bid",
-                date=_to_date_transformations(process.bid_date or benchmark_bid.date),
-                market=model.nordpool_market.external_id,
-                is_default_config_for_price_area=process.is_default_config_for_price_area,
-                main_scenario=process.main_scenario,
-                price_area=f"price_area_{process.price_area_name}",
-                price_scenarios=scenario_mappings,
-                no_shop=process.no_shop,
-                bid_process_configuration_name=process.name,
-                bid_matrix_generator_config_external_id=f"POWEROPS_bid_matrix_generator_config_{process.name}",
-            )
-            model.bids[bid.external_id] = bid
+        bid = DayAheadBidApply(
+            external_id=f"POWEROPS_bid_process_configuration_{process.name}_bid",
+            date=_to_date_transformations(process.bid_date or benchmark_bid.date),
+            market=model.nordpool_market.external_id,
+            is_default_config_for_price_area=process.is_default_config_for_price_area,
+            main_scenario=process.main_scenario,
+            price_area=f"price_area_{process.price_area_name}",
+            # watercourse=process.watercourse,
+            price_scenarios=[
+                ScenarioMappingApply(
+                    external_id=f"SHOP_incremental_mapping_{process.name}_{scenario_name}",
+                    mapping_override=[
+                        _to_input_timeseries_mapping(entry) for entry in price_scenario.to_time_series_mapping()
+                    ],
+                    name=scenario_name,
+                    shop_type="incremental_mapping",
+                )
+                for scenario_name, price_scenario in price_scenarios_by_name.items()
+            ],
+            no_shop=process.no_shop,
+            bid_process_configuration_name=process.name,
+            bid_matrix_generator_config_external_id=f"POWEROPS_bid_matrix_generator_config_{process.name}",
+        )
+        model.bids[bid.external_id] = bid
 
-            # Create the DayAheadBidProcess Data Class
-            dayahead_process = DayAheadProcesApply(
-                name=f"Bid process configuration {process.name}",
-                external_id=f"POWEROPS_bid_process_configuration_{process.name}",
-                bid=bid.external_id,
-                shop=shop,
-                bid_matrix_generator_config=list(bid_matrix_generators.values()),
-            )
+        # Create the DayAheadBidProcess Data Class
+        dayahead_process = DayAheadProcesApply(
+            name=f"Bid process configuration {process.name}",
+            external_id=f"POWEROPS_bid_process_configuration_{process.name}",
+            bid=bid.external_id,
+            shop=shop,
+            bid_matrix_generator_config=list(bid_matrix_generators.values()),
+            incremental_mappings=incremental_mappings,
+        )
 
-            model.dayahead_processes.append(dayahead_process)
+        model.dayahead_processes.append(dayahead_process)
 
     return model
 

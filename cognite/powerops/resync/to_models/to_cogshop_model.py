@@ -67,7 +67,7 @@ def to_cogshop_data_model(
         output_container = OutputContainerApply(
             external_id=external_id,
             name=external_id.replace("_", " "),
-            watercouse=watercourse.name,
+            watercourse=watercourse.name,
             shop_type="output_definition",
             mappings=output_definitions,
         )

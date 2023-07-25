@@ -1,8 +1,8 @@
 DayAheadMarketDataModel:
   cdf:
-    edges: 152
+    edges: 224
     files: 0
-    nodes: 107
+    nodes: 131
     sequences: 0
   domain:
     bid_matrix_generator: 4

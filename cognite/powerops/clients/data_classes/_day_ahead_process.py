@@ -10,6 +10,7 @@ from cognite.powerops.clients.data_classes._core import DomainModel, DomainModel
 if TYPE_CHECKING:
     from cognite.powerops.clients.data_classes._bid_matrix_generators import BidMatrixGeneratorApply
     from cognite.powerops.clients.data_classes._day_ahead_bids import DayAheadBidApply
+    from cognite.powerops.clients.data_classes._scenario_mappings import ScenarioMappingApply
     from cognite.powerops.clients.data_classes._shop_transformations import ShopTransformationApply
 
 __all__ = ["DayAheadProces", "DayAheadProcesApply", "DayAheadProcesList"]
@@ -19,6 +20,7 @@ class DayAheadProces(DomainModel):
     space: ClassVar[str] = "power-ops"
     bid: Optional[str] = None
     bid_matrix_generator_config: list[str] = Field([], alias="bidMatrixGeneratorConfig")
+    incremental_mappings: list[str] = []
     name: Optional[str] = None
     shop: Optional[str] = None
 
@@ -27,6 +29,7 @@ class DayAheadProcesApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
     bid: Optional[Union["DayAheadBidApply", str]] = Field(None, repr=False)
     bid_matrix_generator_config: list[Union["BidMatrixGeneratorApply", str]] = Field(default_factory=list, repr=False)
+    incremental_mappings: list[Union["ScenarioMappingApply", str]] = Field(default_factory=list, repr=False)
     name: Optional[str] = None
     shop: Optional[Union["ShopTransformationApply", str]] = Field(None, repr=False)
 
@@ -71,6 +74,17 @@ class DayAheadProcesApply(DomainModelApply):
                 nodes.extend(instances.nodes)
                 edges.extend(instances.edges)
 
+        for incremental_mapping in self.incremental_mappings:
+            edge = self._create_incremental_mapping_edge(incremental_mapping)
+            if edge.external_id not in cache:
+                edges.append(edge)
+                cache.add(edge.external_id)
+
+            if isinstance(incremental_mapping, DomainModelApply):
+                instances = incremental_mapping._to_instances_apply(cache)
+                nodes.extend(instances.nodes)
+                edges.extend(instances.edges)
+
         if isinstance(self.bid, DomainModelApply):
             instances = self.bid._to_instances_apply(cache)
             nodes.extend(instances.nodes)
@@ -97,6 +111,22 @@ class DayAheadProcesApply(DomainModelApply):
             space="power-ops",
             external_id=f"{self.external_id}:{end_node_ext_id}",
             type=dm.DirectRelationReference("power-ops", "DayAheadProcess.bidMatrixGeneratorConfig"),
+            start_node=dm.DirectRelationReference(self.space, self.external_id),
+            end_node=dm.DirectRelationReference("power-ops", end_node_ext_id),
+        )
+
+    def _create_incremental_mapping_edge(self, incremental_mapping: Union[str, "ScenarioMappingApply"]) -> dm.EdgeApply:
+        if isinstance(incremental_mapping, str):
+            end_node_ext_id = incremental_mapping
+        elif isinstance(incremental_mapping, DomainModelApply):
+            end_node_ext_id = incremental_mapping.external_id
+        else:
+            raise TypeError(f"Expected str or ScenarioMappingApply, got {type(incremental_mapping)}")
+
+        return dm.EdgeApply(
+            space="power-ops",
+            external_id=f"{self.external_id}:{end_node_ext_id}",
+            type=dm.DirectRelationReference("power-ops", "DayAheadProcess.incremental_mappings"),
             start_node=dm.DirectRelationReference(self.space, self.external_id),
             end_node=dm.DirectRelationReference("power-ops", end_node_ext_id),
         )
