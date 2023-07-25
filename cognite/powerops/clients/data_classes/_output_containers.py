@@ -18,7 +18,7 @@ class OutputContainer(DomainModel):
     mappings: list[str] = []
     name: Optional[str] = None
     shop_type: Optional[str] = Field(None, alias="shopType")
-    watercouse: Optional[str] = None
+    watercourse: Optional[str] = None
 
 
 class OutputContainerApply(DomainModelApply):
@@ -26,7 +26,7 @@ class OutputContainerApply(DomainModelApply):
     mappings: list[Union["OutputMappingApply", str]] = Field(default_factory=list, repr=False)
     name: Optional[str] = None
     shop_type: Optional[str] = None
-    watercouse: Optional[str] = None
+    watercourse: Optional[str] = None
 
     def _to_instances_apply(self, cache: set[str]) -> InstancesApply:
         if self.external_id in cache:
@@ -38,7 +38,7 @@ class OutputContainerApply(DomainModelApply):
             properties={
                 "name": self.name,
                 "shopType": self.shop_type,
-                "watercouse": self.watercouse,
+                "watercourse": self.watercourse,
             },
         )
         sources.append(source)
