@@ -13,11 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## [0.31.0] - 2023-07-25
+## [0.32.0] - 2023-07-25
 
 ### Changed
 * Data Model for dayahead model to match better the asset version of the data models.
-
 
 
 ## [0.31.0] - 2023-07-24
