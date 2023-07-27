@@ -9,17 +9,16 @@ from pathlib import Path
 from typing import ClassVar, Iterable, Optional, Union, TypeVar, get_args, get_origin
 from typing import Type as TypingType
 from types import GenericAlias
-from pprint import pformat
+from pydantic import BaseModel, ConfigDict
 
 from cognite.client import CogniteClient
 from cognite.client.data_classes import Asset, Label, Relationship, TimeSeries
 from cognite.client.data_classes.data_modeling.instances import EdgeApply, NodeApply
-from pydantic import BaseModel, ConfigDict
 
 from cognite.powerops.cdf_labels import AssetLabel, RelationshipLabel
 from cognite.powerops.clients.data_classes._core import DomainModelApply, InstancesApply
 from cognite.powerops.resync.models.cdf_resources import CDFFile, CDFSequence
-
+from cognite.powerops.resync.models.helpers import format_change_binary, format_change_unary
 
 _T_Type = TypeVar("_T_Type")
 
@@ -202,6 +201,7 @@ class AssetType(ResourceType, ABC):
     @classmethod
     def from_asset(cls: TypingType["T_Asset_Type"], asset: Asset) -> "T_Asset_Type":
         "Not yet implemented: CDF relationships"
+        # take in client,
         raise NotImplementedError()
 
     def _asset_type_fields(self) -> Iterable[str]:
@@ -342,6 +342,13 @@ class AssetModel(Model, ABC):
 
     @classmethod
     def from_cdf(cls: TypingType[T_Asset_Model], client: CogniteClient) -> T_Asset_Model:
+        # finne alle relationships form har src i assetet
+        # sannsynvus verd å begynne på prod modelen
+        # finne alle targets for de rel (ts, sek, fil, annet asset)
+        # Lage alle asset typene for alle assets (pydantic instanser)
+
+        # sy de sammen slik som relationshippene
+        # NB! Pass på å ikke hente ting dobblet.
         output = defaultdict(list)
         for field_name, asset_cls in cls._asset_types_and_field_names():
             assets = client.assets.retrieve_subtree(external_id=asset_cls.parent_external_id)
@@ -382,13 +389,8 @@ class AssetModel(Model, ABC):
         # only valid when the fields are lists, which they are in ProductionModel
         self_affected_field: list[dict],
     ) -> list[str]:
-        print("#############################################")
-        print("#############################################")
-        print("#############################################")
-        print("#############################################")
-        print("#############################################")
-        print("#############################################")
         str_builder = ["\n\n============= ", *field_name.title().split("_"), " =============\n"]
+        # Might need a better fallback for names
         names = [
             f'{i}:{d.get("display_name", False) or d.get("name", "")}, ' for i, d in enumerate(self_affected_field)
         ]
@@ -397,72 +399,29 @@ class AssetModel(Model, ABC):
 
         for diff_type, diffs in field_deep_diff.items():
             if diff_type in ("type_changes", "values_changed"):
-                str_builder.append(f"The following {'types' if 'type' in diff_type else 'values' } have changed:\n")
-                for path_, change_dict in diffs.items():
-                    str_builder.extend(
-                        (
-                            f" * {path_.replace('root', '') }:\n",
-                            f'\t- {pformat(change_dict.get("old_value"))}\t',
-                            "  -->   ",
-                            f'{pformat(change_dict.get("new_value"))}\n',
-                            "\n",
-                        )
-                    )
-                str_builder.append("\n")
-            elif "iterable" in diff_type:
-                if "removed" in diff_type:
-                    print("Removed iterable")
-                elif "added" in diff_type:
-                    print("Added iterable")
-                else:
-                    print("Other iterable change type")
-                    print(f"{diff_type=}")
+                str_builder.extend(
+                    (
+                        f'The following values have changed {"type" if "type" in diff_type else ""}:\n',
+                        *format_change_binary(diffs),
+                        "\n",
+                    ),
+                )
 
-            elif "dictionary" in diff_type:
-                if "removed" in diff_type:
-                    print("Removed dictionary")
-                elif "added" in diff_type:
-                    print("Added dictionary")
-                else:
-                    print("Other dictionary change type")
-                    print(f"{diff_type=}")
+            elif "added" in diff_type or "removed" in diff_type:
+                action = "added" if "added" in diff_type else "removed"
+                is_iterable = "iterable" in diff_type
+                str_builder.extend(
+                    (
+                        f"The following {'values' if is_iterable else 'entries'} have been {action}:\n",
+                        *format_change_unary(diffs, is_iterable),
+                        "\n",
+                    )
+                )
 
             else:
-                print("OTHERRR")
-                print(f"{diff_type=}")
+                print(f"cannot handle {diff_type=}")
 
         return str_builder
-
-    # @classmethod
-    # def _pretty_difference_str_builder(
-    #     cls,
-    #     resource,
-    #     resource_diff: dict[str, dict],
-    #     diff_base: list, # a list since ProductionModel only has lists under it
-    #     ) -> list[str]:
-    #     str_builder = [f'-----------{resource}-----------']
-    #     print("base")
-    #     print(pformat(base))
-    #     for diff_type, diffs in resource_diff.items():
-    #         print(f"{diff_type=}")
-    #         str_builder.append("The following fields have changed:")
-    #         str_builder.append(f"{diff_type=}")
-
-    #         for k, v in diffs.items():
-    #             old = v.get('old_value')
-    #             new = v.get('new_value')
-    #             str_builder.append(f"{k}: \n{pformat(old)} \n->\n{pformat(new)}")
-    #             str_builder.append('--')
-
-    #                 # print(f"{v.get('old_value')=}")
-    #                 # print(f"{v.get('new_value')=}")
-    #             print('--')
-    #         # print(f"**{resource}**\n {diff_type}:" f'\n')
-
-    #         str_builder.append('-----------')
-    #         # str_builder.extend((f"**{resource}**\n {diff_type}:", f'\n'))
-
-    #     return str_builder
 
 
 T_Asset_Model = TypeVar("T_Asset_Model", bound=AssetModel)
