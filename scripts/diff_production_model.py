@@ -15,7 +15,7 @@ def main():
 
     cdf_model = ProductionModel.from_cdf(client)
 
-    print(local_model.difference(cdf_model))
+    local_model.difference(cdf_model)
 
 
 if __name__ == "__main__":

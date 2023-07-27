@@ -4,10 +4,12 @@ from collections import defaultdict
 import json
 from abc import ABC
 from deepdiff import DeepDiff
+
 from pathlib import Path
 from typing import ClassVar, Iterable, Optional, Union, TypeVar, get_args, get_origin
 from typing import Type as TypingType
 from types import GenericAlias
+from pprint import pformat
 
 from cognite.client import CogniteClient
 from cognite.client.data_classes import Asset, Label, Relationship, TimeSeries
@@ -228,7 +230,7 @@ class AssetType(ResourceType, ABC):
             elif isinstance(field, Path):
                 # remove path from diff
                 setattr(self, model_field, None)
-        return self.model_dump()
+        return self
 
 
 T_Asset_Type = TypeVar("T_Asset_Type", bound=AssetType)
@@ -358,32 +360,109 @@ class AssetModel(Model, ABC):
             raise ValueError("Cannot compare these models of different types.")
         self_dump = self._prepare_for_diff()
         other_dump = other._prepare_for_diff()
-        diff_per_resource_type = {}
-
-        for key in self_dump:
-            print("Key:", key)
-            self_dump[key]
-            other_dump[key]
-
-            deep_diff = DeepDiff(self_dump[key], other_dump[key], ignore_order=True).to_dict()
-
-            diff_per_resource_type[key] = deep_diff
-
-        # fields = self.model_fields
-        # for field_name in fields:
-        #     print("Field name:", field_name)
-        #     self_field = self_prepared[field_name]
-        #     other_field = other_prepared[field_name]
-
-        print("DIFF PER RESOURCE TYPE:", diff_per_resource_type)
+        str_builder = []
+        diff_dict = {}
+        for model_field in self_dump:
+            if deep_diff := DeepDiff(
+                self_dump[model_field],
+                other_dump[model_field],
+                ignore_type_in_groups=[(float, int)],
+            ).to_dict():
+                diff_dict[model_field] = deep_diff
+                str_builder.extend(self._field_diff_str_builder(model_field, deep_diff, self_dump[model_field]))
+            # break
+        print("".join(str_builder))
+        return diff_dict
 
     @classmethod
-    def _pretty_difference(cls, diff_per_resource_type: dict[str, dict]):
-        str_builder = []
-        for resource_type, deep_diff_dict in diff_per_resource_type.items():
-            ...
+    def _field_diff_str_builder(
+        cls,
+        field_name: str,
+        field_deep_diff: dict,
+        # only valid when the fields are lists, which they are in ProductionModel
+        self_affected_field: list[dict],
+    ) -> list[str]:
+        print("#############################################")
+        print("#############################################")
+        print("#############################################")
+        print("#############################################")
+        print("#############################################")
+        print("#############################################")
+        str_builder = ["\n\n============= ", *field_name.title().split("_"), " =============\n"]
+        names = [
+            f'{i}:{d.get("display_name", False) or d.get("name", "")}, ' for i, d in enumerate(self_affected_field)
+        ]
+        str_builder.extend(names)
+        str_builder.append("\n\n")
 
-        return "\n".join(str_builder)
+        for diff_type, diffs in field_deep_diff.items():
+            if diff_type in ("type_changes", "values_changed"):
+                str_builder.append(f"The following {'types' if 'type' in diff_type else 'values' } have changed:\n")
+                for path_, change_dict in diffs.items():
+                    str_builder.extend(
+                        (
+                            f" * {path_.replace('root', '') }:\n",
+                            f'\t- {pformat(change_dict.get("old_value"))}\t',
+                            "  -->   ",
+                            f'{pformat(change_dict.get("new_value"))}\n',
+                            "\n",
+                        )
+                    )
+                str_builder.append("\n")
+            elif "iterable" in diff_type:
+                if "removed" in diff_type:
+                    print("Removed iterable")
+                elif "added" in diff_type:
+                    print("Added iterable")
+                else:
+                    print("Other iterable change type")
+                    print(f"{diff_type=}")
+
+            elif "dictionary" in diff_type:
+                if "removed" in diff_type:
+                    print("Removed dictionary")
+                elif "added" in diff_type:
+                    print("Added dictionary")
+                else:
+                    print("Other dictionary change type")
+                    print(f"{diff_type=}")
+
+            else:
+                print("OTHERRR")
+                print(f"{diff_type=}")
+
+        return str_builder
+
+    # @classmethod
+    # def _pretty_difference_str_builder(
+    #     cls,
+    #     resource,
+    #     resource_diff: dict[str, dict],
+    #     diff_base: list, # a list since ProductionModel only has lists under it
+    #     ) -> list[str]:
+    #     str_builder = [f'-----------{resource}-----------']
+    #     print("base")
+    #     print(pformat(base))
+    #     for diff_type, diffs in resource_diff.items():
+    #         print(f"{diff_type=}")
+    #         str_builder.append("The following fields have changed:")
+    #         str_builder.append(f"{diff_type=}")
+
+    #         for k, v in diffs.items():
+    #             old = v.get('old_value')
+    #             new = v.get('new_value')
+    #             str_builder.append(f"{k}: \n{pformat(old)} \n->\n{pformat(new)}")
+    #             str_builder.append('--')
+
+    #                 # print(f"{v.get('old_value')=}")
+    #                 # print(f"{v.get('new_value')=}")
+    #             print('--')
+    #         # print(f"**{resource}**\n {diff_type}:" f'\n')
+
+    #         str_builder.append('-----------')
+    #         # str_builder.extend((f"**{resource}**\n {diff_type}:", f'\n'))
+
+    #     return str_builder
 
 
 T_Asset_Model = TypeVar("T_Asset_Model", bound=AssetModel)
