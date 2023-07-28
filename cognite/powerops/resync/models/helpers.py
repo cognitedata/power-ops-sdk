@@ -1,7 +1,14 @@
 import doctest
 from pprint import pformat
-from typing import Union
+from typing import Any, Union, Type
 
+# from cognite.client.data_classes import LabelFilter
+
+def isinstance_list(value: Any, type_: Type):
+    return isinstance(value, list) and value and isinstance(value[0], type_)
+
+# def _labels_contains_any(label_ext_ids: list[str]) -> LabelFilter:
+#         return {"containsAny": [{"externalId": ext_id} for ext_id in label_ext_ids]}
 
 def format_change_binary(
     deep_diff: dict[str, dict],
@@ -49,37 +56,6 @@ def format_change_unary(
 
         str_builder.extend((f" * {_path[:_path.rfind('[')].replace('root', '')}:\n", f"\t- {pformat(change)}\n"))
     return str_builder
-
-    # @classmethod
-    # def _pretty_difference_str_builder(
-    #     cls,
-    #     resource,
-    #     resource_diff: dict[str, dict],
-    #     diff_base: list, # a list since ProductionModel only has lists under it
-    #     ) -> list[str]:
-    #     str_builder = [f'-----------{resource}-----------']
-    #     print("base")
-    #     print(pformat(base))
-    #     for diff_type, diffs in resource_diff.items():
-    #         print(f"{diff_type=}")
-    #         str_builder.append("The following fields have changed:")
-    #         str_builder.append(f"{diff_type=}")
-
-    #         for k, v in diffs.items():
-    #             old = v.get('old_value')
-    #             new = v.get('new_value')
-    #             str_builder.append(f"{k}: \n{pformat(old)} \n->\n{pformat(new)}")
-    #             str_builder.append('--')
-
-    #                 # print(f"{v.get('old_value')=}")
-    #                 # print(f"{v.get('new_value')=}")
-    #             print('--')
-    #         # print(f"**{resource}**\n {diff_type}:" f'\n')
-
-    #         str_builder.append('-----------')
-    #         # str_builder.extend((f"**{resource}**\n {diff_type}:", f'\n'))
-
-    #     return str_builder
 
 
 if __name__ == "__main__":

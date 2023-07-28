@@ -18,7 +18,11 @@ from cognite.client.data_classes.data_modeling.instances import EdgeApply, NodeA
 from cognite.powerops.cdf_labels import AssetLabel, RelationshipLabel
 from cognite.powerops.clients.data_classes._core import DomainModelApply, InstancesApply
 from cognite.powerops.resync.models.cdf_resources import CDFFile, CDFSequence
-from cognite.powerops.resync.models.helpers import format_change_binary, format_change_unary
+from cognite.powerops.resync.models.helpers import (
+    format_change_binary,
+    format_change_unary,
+    isinstance_list,
+)
 
 _T_Type = TypeVar("_T_Type")
 
@@ -39,7 +43,7 @@ class ResourceType(BaseModel, ABC):
             value = getattr(self, field_name)
             if not value:
                 continue
-            elif isinstance(value, list) and isinstance(value[0], type_):
+            elif isinstance_list(value, type_):
                 output.extend(value)
             elif isinstance(value, type_):
                 output.append(value)
@@ -107,7 +111,7 @@ class AssetType(ResourceType, ABC):
             value = getattr(self, field_name)
             if not value:
                 continue
-            if isinstance(value, list) and value and isinstance(value[0], AssetType):
+            if isinstance_list(value, AssetType):
                 for target in value:
                     relationships.append(self._create_relationship(target.external_id, "ASSET", target.type_))
             elif isinstance(value, AssetType):
@@ -140,11 +144,7 @@ class AssetType(ResourceType, ABC):
             ):
                 continue
             value = getattr(self, field_name)
-            if (
-                value is None
-                or isinstance(value, AssetType)
-                or (isinstance(value, list) and value and isinstance(value[0], AssetType))
-            ):
+            if value is None or isinstance(value, AssetType) or isinstance_list(value, AssetType):
                 continue
             if isinstance(value, list) and not value:
                 continue
@@ -198,10 +198,30 @@ class AssetType(ResourceType, ABC):
             labels=[Label(external_id=label.value)],
         )
 
+    # @classmethod
+    # def from_asset(cls: TypingType["T_Asset_Type"], asset: Asset) -> "T_Asset_Type":
+    #     "Not yet implemented: CDF relationships"
+    #     # take in client,
+    #     raise NotImplementedError()
+
     @classmethod
-    def from_asset(cls: TypingType["T_Asset_Type"], asset: Asset) -> "T_Asset_Type":
-        "Not yet implemented: CDF relationships"
-        # take in client,
+    def from_cdf(
+        cls,
+        client: CogniteClient,
+        external_id: Optional[str] = "",
+        asset: Optional[Asset] = None,
+        fetch_relationships: bool = False,
+        fetch_content: bool = False,
+    ) -> "T_Asset_Type":
+        """
+        Fetch an asset from CDF and convert it to a model instance.
+        Optionally fetch relationships targets and content by setting
+        `fetch_relationships`.
+
+        By default, content of files/sequences/time series is not fetched.
+        This can be enabled by setting `fetch_content=True`.
+
+        """
         raise NotImplementedError()
 
     def _asset_type_fields(self) -> Iterable[str]:
@@ -266,7 +286,7 @@ class Model(BaseModel, ABC):
             value = getattr(self, field_name)
             if isinstance(value, type_):
                 yield value
-            elif isinstance(value, list) and value and isinstance(value[0], type_):
+            elif isinstance_list(value, type_):
                 yield from value
 
     @property
@@ -341,7 +361,12 @@ class AssetModel(Model, ABC):
         return summary
 
     @classmethod
-    def from_cdf(cls: TypingType[T_Asset_Model], client: CogniteClient) -> T_Asset_Model:
+    def from_cdf(
+        cls: TypingType[T_Asset_Model],
+        client: CogniteClient,
+        fetch_metadata: bool = True,
+        fetch_content: bool = False,
+    ) -> T_Asset_Model:
         # finne alle relationships form har src i assetet
         # sannsynvus verd å begynne på prod modelen
         # finne alle targets for de rel (ts, sek, fil, annet asset)
@@ -351,11 +376,18 @@ class AssetModel(Model, ABC):
         # NB! Pass på å ikke hente ting dobblet.
         output = defaultdict(list)
         for field_name, asset_cls in cls._asset_types_and_field_names():
+            if asset_cls.parent_external_id not in ("reservoirs", "generators"):
+                continue
             assets = client.assets.retrieve_subtree(external_id=asset_cls.parent_external_id)
             for asset in assets:
                 if asset.external_id == asset_cls.parent_external_id:
                     continue
-                instance = asset_cls.from_asset(asset)
+                instance = asset_cls.from_cdf(
+                    client=client,
+                    asset=asset,
+                    fetch_metadata=fetch_metadata,
+                    fetch_content=fetch_content,
+                )
                 output[field_name].append(instance)
         return cls(**output)
 

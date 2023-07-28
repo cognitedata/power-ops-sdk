@@ -30,17 +30,16 @@ class DayAheadProcess(Process):
     bid_matrix_generator_config: Optional[CDFSequence] = None
     incremental_mapping: list[CDFSequence] = Field(default_factory=list)
 
-    @classmethod
-    # i teorien, løftes til AssetType... kanskje
-    def from_cdf(
-        cls,
-        client,
-        external_id: str,
-        fetch_relationships: bool = False,
-        fetch_content: bool = False,
-    ) -> DayAheadProcess:
-        "ikke hente alt content fra filer/sevens, kun metadata"
-        raise NotImplementedError()
+    # @classmethod
+    # # i teorien, løftes til AssetType... kanskje
+    # def from_cdf(
+    #     cls,
+    #     client,
+    #     external_id: str,
+    #     fetch_relationships: bool = False,
+    #     fetch_content: bool = False,
+    # ) -> DayAheadProcess:
+    #     raise NotImplementedError()
 
 
 class NordPoolMarket(Market):
