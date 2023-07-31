@@ -374,10 +374,12 @@ class AssetModel(Model, ABC):
 
         # sy de sammen slik som relationshippene
         # NB! Pass på å ikke hente ting dobblet.
+        if fetch_content and not fetch_metadata:
+            raise ValueError("Cannot fetch content without also fetching metadata")
+
         output = defaultdict(list)
         for field_name, asset_cls in cls._asset_types_and_field_names():
-            if asset_cls.parent_external_id not in ("reservoirs", "generators"):
-                continue
+            # TODO: remove as implementation continues
             assets = client.assets.retrieve_subtree(external_id=asset_cls.parent_external_id)
             for asset in assets:
                 if asset.external_id == asset_cls.parent_external_id:
@@ -389,14 +391,21 @@ class AssetModel(Model, ABC):
                     fetch_content=fetch_content,
                 )
                 output[field_name].append(instance)
+                if asset_cls.parent_external_id == "plant":
+                    break
+
         return cls(**output)
 
     def _prepare_for_diff(self: T_Asset_Model) -> dict[str:dict]:
         raise NotImplementedError()
 
-    def difference(self: T_Asset_Model, other: T_Asset_Model) -> dict:
+    def difference(self: T_Asset_Model, other: T_Asset_Model, debug: bool = False) -> dict:
         if type(self) != type(other):
             raise ValueError("Cannot compare these models of different types.")
+
+        if debug:
+            return
+
         self_dump = self._prepare_for_diff()
         other_dump = other._prepare_for_diff()
         str_builder = []

@@ -45,6 +45,12 @@ class CDFSequence(_CDFResource):
     sequence: Sequence
     content: Optional[pd.DataFrame]
 
+    def __repr__(self) -> str:
+        return f"CDFSequence(external_id={self.external_id})"
+
+    def __str__(self) -> str:
+        return self.__repr__()
+
     @property
     def external_id(self):
         return self.sequence.external_id
@@ -66,11 +72,11 @@ class CDFSequence(_CDFResource):
     ) -> CDFSequence:
         sequence = client.sequences.retrieve(external_id=resource_ext_id)
         if fetch_content:
+            # limit defaults to 100, might not be an issue
             content = client.sequences.data.retrieve_dataframe(
                 external_id=resource_ext_id,
                 start=0,
                 end=None,
-                limit=-1,
             )
         else:
             content = None
@@ -80,6 +86,12 @@ class CDFSequence(_CDFResource):
 class CDFFile(_CDFResource):
     meta: FileMetadata
     content: Optional[bytes] = None
+
+    def __repr__(self) -> str:
+        return f"CDFFile(external_id={self.external_id})"
+
+    def __str__(self) -> str:
+        return self.__repr__()
 
     @property
     def external_id(self):

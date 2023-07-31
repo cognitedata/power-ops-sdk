@@ -2,13 +2,25 @@ import doctest
 from pprint import pformat
 from typing import Any, Union, Type
 
-# from cognite.client.data_classes import LabelFilter
+from cognite.client.data_classes import Relationship
+
 
 def isinstance_list(value: Any, type_: Type):
     return isinstance(value, list) and value and isinstance(value[0], type_)
 
-# def _labels_contains_any(label_ext_ids: list[str]) -> LabelFilter:
-#         return {"containsAny": [{"externalId": ext_id} for ext_id in label_ext_ids]}
+
+def match_field_from_relationship(model_fields: list[str], relationship: Relationship) -> str:
+    if len(relationship.labels) != 1:
+        raise ValueError(f"Expected one label in {relationship.labels=}")
+    label = relationship.labels[0].external_id.split(".")[-1]
+
+    candidates = list(filter(lambda k: label in k, model_fields))
+
+    if len(candidates) != 1:
+        raise ValueError(f"Could not match {relationship.external_id=} to {model_fields=}")
+
+    return candidates[0]
+
 
 def format_change_binary(
     deep_diff: dict[str, dict],
