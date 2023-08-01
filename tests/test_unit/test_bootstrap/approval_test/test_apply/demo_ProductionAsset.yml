@@ -762,18 +762,6 @@ relationships:
   source_type: ASSET
   target_external_id: reservoir_Ranemsletta_1183
   target_type: ASSET
-- external_id: plant_Lund.1
-  labels: '[{''externalId'': ''relationship_to.water_value_time_series''}]'
-  source_external_id: plant_Lund
-  source_type: ASSET
-  target_external_id: '1'
-  target_type: TIMESERIES
-- external_id: plant_Lund.2
-  labels: '[{''externalId'': ''relationship_to.head_direct_time_series''}]'
-  source_external_id: plant_Lund
-  source_type: ASSET
-  target_external_id: '2'
-  target_type: TIMESERIES
 - external_id: plant_Lund.generator_Lund_G1
   labels: '[{''externalId'': ''relationship_to.generator''}]'
   source_external_id: plant_Lund
