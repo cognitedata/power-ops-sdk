@@ -3,7 +3,7 @@ ProductionModel:
     assets: 39
     files: 0
     parent_assets: 6
-    relationships: 70
+    relationships: 72
     sequences: 24
   domain:
     generators: 12
