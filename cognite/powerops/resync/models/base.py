@@ -3,10 +3,11 @@ from collections import defaultdict
 
 import json
 from abc import ABC
+from pprint import pprint
 from deepdiff import DeepDiff
 
 from pathlib import Path
-from typing import ClassVar, Iterable, Optional, Union, TypeVar, get_args, get_origin
+from typing import Any, ClassVar, Iterable, Optional, Union, TypeVar, get_args, get_origin
 from typing import Type as TypingType
 from types import GenericAlias
 from pydantic import BaseModel, ConfigDict
@@ -22,6 +23,7 @@ from cognite.powerops.resync.models.helpers import (
     format_change_binary,
     format_change_unary,
     isinstance_list,
+    match_field_from_relationship,
 )
 
 _T_Type = TypeVar("_T_Type")
@@ -197,45 +199,122 @@ class AssetType(ResourceType, ABC):
             target_type=target_cdf_type,
             labels=[Label(external_id=label.value)],
         )
+    
+    @classmethod
+    def _parse_asset_metadata(
+        cls, 
+        metadata: Optional[dict[str, Any]] = None,
+    ) -> dict[str, Any]:
+        raise NotImplementedError()
+    
 
-    # @classmethod
-    # def from_asset(cls: TypingType["T_Asset_Type"], asset: Asset) -> "T_Asset_Type":
-    #     "Not yet implemented: CDF relationships"
-    #     # take in client,
-    #     raise NotImplementedError()
+    @classmethod
+    def _from_asset(
+        cls,
+        asset: Asset,
+        additional_fields: Optional[dict[str, Any]] = None,
+    ) -> T_Asset_Type:
+        if not additional_fields:
+            additional_fields = {}
+        metadata = cls._parse_asset_metadata(asset.metadata)
 
+        return cls(
+            _external_id=asset.external_id,
+            name=asset.name,
+            description=asset.description,
+            **metadata,
+            **additional_fields,
+        )
+    
+    @classmethod
+    def _handle_asset_relationship(cls, target_external_id:str) -> T_Asset_Type:
+        print("Need to find out how to handle asset relationships that dont yet exist")
+        ...
+
+    
     @classmethod
     def from_cdf(
         cls,
         client: CogniteClient,
         external_id: Optional[str] = "",
         asset: Optional[Asset] = None,
-        fetch_relationships: bool = False,
+        fetch_metadata: bool = True,
         fetch_content: bool = False,
-    ) -> "T_Asset_Type":
+        instantiated_assets: Optional[dict[str, AssetType]]=None,
+    ) -> T_Asset_Type:
         """
         Fetch an asset from CDF and convert it to a model instance.
         Optionally fetch relationships targets and content by setting
-        `fetch_relationships`.
+        `fetch_metadata` and optionally `fetch_content`
 
         By default, content of files/sequences/time series is not fetched.
         This can be enabled by setting `fetch_content=True`.
 
         """
-        raise NotImplementedError()
+        if asset and external_id:
+            raise ValueError("Only one of asset and external_id can be provided")
+        if external_id:
+            asset = client.assets.retrieve(external_id)
+        if not asset:
+            raise ValueError(f"Could not retrieve asset with {external_id=}")
+        if not instantiated_assets:
+            instantiated_assets = {}
+        
+        
+        # Prepare non-asset metadata fields
+        additional_fields = {}
+        for field, field_info in cls.model_fields.items():
+            field_annotation = field_info.annotation
+            if any(cdf_type in str(field_annotation) for cdf_type in [CDFSequence.__name__, TimeSeries.__name__]):
+                additional_fields[field] = None
 
-    def _asset_type_fields(self) -> Iterable[str]:
+            # #this might not be needed -- handled in in the fetch_metadata section
+            if field in cls._asset_type_fields():
+                additional_fields[field] = [] if "list" in str(field_annotation)  else None
+        
+        # Populate non-asset metadata fields according to relationships/flags
+        if fetch_metadata:
+            relationships = client.relationships.list(
+                source_external_ids=[asset.external_id],
+                source_types=["asset"],
+                target_types=["timeseries", "asset", "sequence", "file"],
+                limit=-1,
+            )
+            for r in relationships:
+                field = match_field_from_relationship(cls.model_fields.keys(), r)
+                if r.target_type.lower() == "asset":
+                    if r.target_external_id in instantiated_assets:
+                        linked_asset = instantiated_assets[r.target_external_id]
+                    else:
+                        linked_asset = cls._handle_asset_relationship(target_external_id=r.target_external_id)
+
+                    if isinstance(additional_fields[field], list):
+                        additional_fields[field].append(linked_asset)
+                    else:
+                        additional_fields[field] = linked_asset
+
+                if r.target_type.lower() == "timeseries":
+                    additional_fields[field] = client.time_series.retrieve(external_id=r.target_external_id)
+                if r.target_type.lower() == "sequence":
+                    additional_fields[field] = CDFSequence.from_cdf(client, r.target_external_id, fetch_content)
+                if r.target_type.lower() == "file":
+                    additional_fields[field] = CDFFile.from_cdf(client, r.target_external_id, fetch_content)
+                 
+        return cls._from_asset(asset, additional_fields)
+
+
+    @classmethod
+    def _asset_type_fields(cls) -> Iterable[str]:
         # Exclude fom model_dump in diff (ext_id only)
-        for field_name in self.model_fields:
-            class_ = self.model_fields[field_name].annotation
+        for field_name in cls.model_fields:
+            class_ = cls.model_fields[field_name].annotation
             if isinstance(class_, GenericAlias):
                 asset_resource_class = get_args(class_)[0]
                 if issubclass(asset_resource_class, AssetType):
                     yield field_name
             elif get_origin(class_) is Union and type(None) in get_args(class_):
-                # Optional field `inlet_reservoir` on Plant
-                field_class = get_args(class_)[0]
-                if issubclass(field_class, AssetType):
+                # Optional field `AssetType, not a list
+                if issubclass(get_args(class_)[0], AssetType):
                     yield field_name
 
     def _asset_type_prepare_for_diff(self: T_Asset_Type) -> dict[str, dict]:
@@ -244,7 +323,8 @@ class AssetType(ResourceType, ABC):
             if isinstance(field, AssetType):
                 # Only include external id in diff
                 setattr(self, model_field, field.external_id)
-            elif isinstance(field, list) and field and isinstance(field[0], AssetType):
+
+            elif isinstance_list(field, AssetType):
                 # Sort bt external id to have consistent order for diff
                 setattr(self, model_field, sorted(map(lambda x: x.external_id, field)))
             elif isinstance(field, Path):
@@ -367,19 +447,15 @@ class AssetModel(Model, ABC):
         fetch_metadata: bool = True,
         fetch_content: bool = False,
     ) -> T_Asset_Model:
-        # finne alle relationships form har src i assetet
-        # sannsynvus verd å begynne på prod modelen
-        # finne alle targets for de rel (ts, sek, fil, annet asset)
-        # Lage alle asset typene for alle assets (pydantic instanser)
-
-        # sy de sammen slik som relationshippene
-        # NB! Pass på å ikke hente ting dobblet.
+        
         if fetch_content and not fetch_metadata:
             raise ValueError("Cannot fetch content without also fetching metadata")
 
         output = defaultdict(list)
+        instantiated_assets: dict[str: AssetType ]= {}
         for field_name, asset_cls in cls._asset_types_and_field_names():
-            # TODO: remove as implementation continues
+            # if asset_cls.parent_external_id not in ("plants"):
+            #     continue
             assets = client.assets.retrieve_subtree(external_id=asset_cls.parent_external_id)
             for asset in assets:
                 if asset.external_id == asset_cls.parent_external_id:
@@ -389,10 +465,10 @@ class AssetModel(Model, ABC):
                     asset=asset,
                     fetch_metadata=fetch_metadata,
                     fetch_content=fetch_content,
+                    instantiated_assets=instantiated_assets,
                 )
                 output[field_name].append(instance)
-                if asset_cls.parent_external_id == "plant":
-                    break
+                instantiated_assets[asset.external_id] = instance
 
         return cls(**output)
 

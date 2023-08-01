@@ -14,14 +14,17 @@ def main():
     # local_model = to_production_model(config)
     # pprint(local_model.generators[0].model_dump())
 
-    # print("-------------------")
     cdf_model = ProductionModel.from_cdf(
         client,
         fetch_metadata=True,
         fetch_content=False,
     )
 
-    pprint(cdf_model.model_dump())
+    print("-------------------")
+    # pprint(cdf_model.model_dump())
+    # pprint(cdf_model.reservoirs[0].model_dump())
+    # pprint(cdf_model.generators[0].model_dump())
+    pprint(cdf_model.plants[0].model_dump())
     print("-------------------")
 
     # pprint(cdf_model.generators[0].model_dump())

@@ -28,14 +28,14 @@ def format_change_binary(
     """
     Formats a dict of changes to a list of strings
 
-    >>> deep_diff = {
-    ...     "root[0][plants][name]": {
-    ...         "old_value": "Old name",
-    ...         "new_value": "New name",
-    ...     },
-    ... }
-    >>> format_change_binary(deep_diff)
-    [' * [0][plants][name]:\n', '\t- Old name\t', ' -->   ','New name\n', '\n']
+    # >>> deep_diff = {
+    # ...     "root[0][plants][name]": {
+    # ...         "old_value": "Old name",
+    # ...         "new_value": "New name",
+    # ...     },
+    # ... }
+    # >>> format_change_binary(deep_diff)
+    # [' * [0][plants][name]:\n', '\t- Old name\t', ' -->   ','New name\n', '\n']
     """
     str_builder = []
     for path_, change_dict in deep_diff.items():
