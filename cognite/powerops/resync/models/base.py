@@ -262,16 +262,11 @@ class AssetType(ResourceType, ABC):
         
         
         # Prepare non-asset metadata fields
-        additional_fields = {}
-        for field, field_info in cls.model_fields.items():
-            field_annotation = field_info.annotation
-            if any(cdf_type in str(field_annotation) for cdf_type in [CDFSequence.__name__, TimeSeries.__name__]):
-                additional_fields[field] = None
+        additional_fields = {
+            field: [] if 'list' in str(field_info.annotation) else None
+            for field, field_info in cls.model_fields.items()
+        }
 
-            # #this might not be needed -- handled in in the fetch_metadata section
-            if field in cls._asset_type_fields():
-                additional_fields[field] = [] if "list" in str(field_annotation)  else None
-        
         # Populate non-asset metadata fields according to relationships/flags
         if fetch_metadata:
             relationships = client.relationships.list(
@@ -282,23 +277,32 @@ class AssetType(ResourceType, ABC):
             )
             for r in relationships:
                 field = match_field_from_relationship(cls.model_fields.keys(), r)
-                if r.target_type.lower() == "asset":
+                target_type = r.target_type.lower()
+                relationship_target = None
+
+                if target_type == "asset":
                     if r.target_external_id in instantiated_assets:
-                        linked_asset = instantiated_assets[r.target_external_id]
+                        relationship_target = instantiated_assets[r.target_external_id]
                     else:
-                        linked_asset = cls._handle_asset_relationship(target_external_id=r.target_external_id)
+                        relationship_target = cls._handle_asset_relationship(target_external_id=r.target_external_id)
 
-                    if isinstance(additional_fields[field], list):
-                        additional_fields[field].append(linked_asset)
-                    else:
-                        additional_fields[field] = linked_asset
+                elif target_type == "timeseries":
+                    relationship_target = client.time_series.retrieve(external_id=r.target_external_id)
+                elif target_type == "sequence":
+                    relationship_target = CDFSequence.from_cdf(client, r.target_external_id, fetch_content)
+                elif target_type == "file":
+                    relationship_target = CDFFile.from_cdf(client, r.target_external_id, fetch_content)
+                else:
+                    raise ValueError(f"Cannot handle target type  {r.target_type}")
+                
+                
+                if isinstance(additional_fields[field], list):
+                        additional_fields[field].append(relationship_target)
+                else:
+                    additional_fields[field] = relationship_target
 
-                if r.target_type.lower() == "timeseries":
-                    additional_fields[field] = client.time_series.retrieve(external_id=r.target_external_id)
-                if r.target_type.lower() == "sequence":
-                    additional_fields[field] = CDFSequence.from_cdf(client, r.target_external_id, fetch_content)
-                if r.target_type.lower() == "file":
-                    additional_fields[field] = CDFFile.from_cdf(client, r.target_external_id, fetch_content)
+                
+
                  
         return cls._from_asset(asset, additional_fields)
 
