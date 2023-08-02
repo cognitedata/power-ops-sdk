@@ -3,7 +3,6 @@ from collections import defaultdict
 
 import json
 from abc import ABC
-from pprint import pprint
 from deepdiff import DeepDiff
 
 from pathlib import Path
@@ -114,14 +113,21 @@ class AssetType(ResourceType, ABC):
             if not value:
                 continue
             if isinstance_list(value, AssetType):
-                for target in value:
-                    relationships.append(self._create_relationship(target.external_id, "ASSET", target.type_))
+                relationships.extend(
+                    self._create_relationship(target.external_id, "ASSET", target.type_) for target in value
+                )
             elif isinstance(value, AssetType):
                 target_type = value.type_
                 if self.type_ == "plant" and value.type_ == "reservoir":
                     target_type = "inlet_reservoir"
                 relationships.append(self._create_relationship(value.external_id, "ASSET", target_type))
-            elif any(cdf_type in str(field.annotation) for cdf_type in [CDFSequence.__name__, TimeSeries.__name__]):
+            elif any(
+                cdf_type in str(field.annotation)
+                for cdf_type in [
+                    CDFSequence.__name__,
+                    TimeSeries.__name__,
+                ]
+            ):
                 if TimeSeries.__name__ in str(field.annotation):
                     target_type = "TIMESERIES"
                 elif CDFSequence.__name__ in str(field.annotation):
@@ -130,10 +136,22 @@ class AssetType(ResourceType, ABC):
                     raise ValueError(f"Unexpected type {field.annotation}")
 
                 if isinstance(value, list):
-                    for target in value:
-                        relationships.append(self._create_relationship(target.external_id, target_type, field_name))
+                    relationships.extend(
+                        self._create_relationship(
+                            target.external_id,
+                            target_type,
+                            field_name,
+                        )
+                        for target in value
+                    )
                 else:
-                    relationships.append(self._create_relationship(value.external_id, target_type, field_name))
+                    relationships.append(
+                        self._create_relationship(
+                            value.external_id,
+                            target_type,
+                            field_name,
+                        )
+                    )
         return relationships
 
     def as_asset(self):
@@ -199,14 +217,10 @@ class AssetType(ResourceType, ABC):
             target_type=target_cdf_type,
             labels=[Label(external_id=label.value)],
         )
-    
+
     @classmethod
-    def _parse_asset_metadata(
-        cls, 
-        metadata: Optional[dict[str, Any]] = None,
-    ) -> dict[str, Any]:
+    def _parse_asset_metadata(cls, metadata: dict[str, Any] = None) -> dict[str, Any]:
         raise NotImplementedError()
-    
 
     @classmethod
     def _from_asset(
@@ -225,13 +239,12 @@ class AssetType(ResourceType, ABC):
             **metadata,
             **additional_fields,
         )
-    
+
     @classmethod
-    def _handle_asset_relationship(cls, target_external_id:str) -> T_Asset_Type:
+    def _handle_asset_relationship(cls, target_external_id: str) -> T_Asset_Type:
         print("Need to find out how to handle asset relationships that dont yet exist")
         ...
 
-    
     @classmethod
     def from_cdf(
         cls,
@@ -240,7 +253,7 @@ class AssetType(ResourceType, ABC):
         asset: Optional[Asset] = None,
         fetch_metadata: bool = True,
         fetch_content: bool = False,
-        instantiated_assets: Optional[dict[str, AssetType]]=None,
+        instantiated_assets: Optional[dict[str, AssetType]] = None,
     ) -> T_Asset_Type:
         """
         Fetch an asset from CDF and convert it to a model instance.
@@ -259,12 +272,13 @@ class AssetType(ResourceType, ABC):
             raise ValueError(f"Could not retrieve asset with {external_id=}")
         if not instantiated_assets:
             instantiated_assets = {}
-        
-        
+
         # Prepare non-asset metadata fields
         additional_fields = {
-            field: [] if 'list' in str(field_info.annotation) else None
+            field: [] if "list" in str(field_info.annotation) else None
             for field, field_info in cls.model_fields.items()
+            if field in cls._asset_type_fields()
+            or any(cdf_type in str(field_info.annotation) for cdf_type in [CDFSequence.__name__, TimeSeries.__name__])
         }
 
         # Populate non-asset metadata fields according to relationships/flags
@@ -294,18 +308,13 @@ class AssetType(ResourceType, ABC):
                     relationship_target = CDFFile.from_cdf(client, r.target_external_id, fetch_content)
                 else:
                     raise ValueError(f"Cannot handle target type  {r.target_type}")
-                
-                
+
                 if isinstance(additional_fields[field], list):
-                        additional_fields[field].append(relationship_target)
+                    additional_fields[field].append(relationship_target)
                 else:
                     additional_fields[field] = relationship_target
 
-                
-
-                 
         return cls._from_asset(asset, additional_fields)
-
 
     @classmethod
     def _asset_type_fields(cls) -> Iterable[str]:
@@ -451,15 +460,15 @@ class AssetModel(Model, ABC):
         fetch_metadata: bool = True,
         fetch_content: bool = False,
     ) -> T_Asset_Model:
-        
         if fetch_content and not fetch_metadata:
             raise ValueError("Cannot fetch content without also fetching metadata")
 
+        # Instance of model as dict
         output = defaultdict(list)
-        instantiated_assets: dict[str: AssetType ]= {}
+
+        # Cache to avoid fetching the same asset multiple times
+        instantiated_assets: dict[str:AssetType] = {}
         for field_name, asset_cls in cls._asset_types_and_field_names():
-            # if asset_cls.parent_external_id not in ("plants"):
-            #     continue
             assets = client.assets.retrieve_subtree(external_id=asset_cls.parent_external_id)
             for asset in assets:
                 if asset.external_id == asset_cls.parent_external_id:
@@ -479,12 +488,9 @@ class AssetModel(Model, ABC):
     def _prepare_for_diff(self: T_Asset_Model) -> dict[str:dict]:
         raise NotImplementedError()
 
-    def difference(self: T_Asset_Model, other: T_Asset_Model, debug: bool = False) -> dict:
+    def difference(self: T_Asset_Model, other: T_Asset_Model) -> dict:
         if type(self) != type(other):
             raise ValueError("Cannot compare these models of different types.")
-
-        if debug:
-            return
 
         self_dump = self._prepare_for_diff()
         other_dump = other._prepare_for_diff()

@@ -1,4 +1,7 @@
 from cognite.powerops.clients.powerops_client import get_powerops_client
+
+# from cognite.powerops.resync.config.resync_config import ProductionConfig
+# from cognite.powerops.resync.to_models.to_production_model import to_production_model
 from cognite.powerops.resync.models.production import ProductionModel
 from tests.constants import REPO_ROOT
 
@@ -12,7 +15,6 @@ def main():
 
     # config = ProductionConfig.load_yamls(DEMO_DATA / "production", instantiate=True)
     # local_model = to_production_model(config)
-    # pprint(local_model.generators[0].model_dump())
 
     cdf_model = ProductionModel.from_cdf(
         client,
@@ -20,16 +22,13 @@ def main():
         fetch_content=False,
     )
 
-    print("-------------------")
-    # pprint(cdf_model.model_dump())
     # pprint(cdf_model.reservoirs[0].model_dump())
     # pprint(cdf_model.generators[0].model_dump())
-    pprint(cdf_model.plants[0].model_dump())
-    print("-------------------")
+    # pprint(cdf_model.plants[0].model_dump())
 
-    # pprint(cdf_model.generators[0].model_dump())
+    pprint(cdf_model.generators[0].model_dump())
 
-    # local_model.difference(cdf_model, True)
+    # local_model.difference(cdf_model)
 
 
 if __name__ == "__main__":
