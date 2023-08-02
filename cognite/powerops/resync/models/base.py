@@ -256,6 +256,56 @@ class AssetType(ResourceType, ABC):
                 asset_resource_class = get_args(class_)[0]
                 if issubclass(asset_resource_class, AssetType):
                     return get_args(class_)[0]
+        raise ValueError(f"Could not find asset type class for {field=} in {cls.__name__}")
+
+    @classmethod
+    def _fetch_metadata(
+        cls,
+        client: CogniteClient,
+        additional_fields: dict[str, Union[list, None]],
+        asset_external_id: str,
+        fetch_metadata: bool,
+        fetch_content: bool,
+    ) -> dict[str, Any]:
+        """Fetches resources that are linked with relationships to the asset."""
+        relationships = client.relationships.list(
+            source_external_ids=[asset_external_id],
+            source_types=["asset"],
+            target_types=["timeseries", "asset", "sequence", "file"],
+            limit=-1,
+        )
+        for r in relationships:
+            field = match_field_from_relationship(cls.model_fields.keys(), r)
+            target_type = r.target_type.lower()
+            relationship_target = None
+
+            if target_type == "asset":
+                if r.target_external_id in AssetType._instantiated_assets:
+                    relationship_target = AssetType._instantiated_assets[r.target_external_id]
+
+                else:
+                    target_class = cls._find_asset_type_class(field=field)
+                    relationship_target = target_class.from_cdf(
+                        client=client,
+                        external_id=r.target_external_id,
+                        fetch_metadata=fetch_metadata,
+                        fetch_content=fetch_content,
+                    )
+
+            elif target_type == "timeseries":
+                relationship_target = client.time_series.retrieve(external_id=r.target_external_id)
+            elif target_type == "sequence":
+                relationship_target = CDFSequence.from_cdf(client, r.target_external_id, fetch_content)
+            elif target_type == "file":
+                relationship_target = CDFFile.from_cdf(client, r.target_external_id, fetch_content)
+            else:
+                raise ValueError(f"Cannot handle target type {r.target_type}")
+            
+            if isinstance(additional_fields[field], list):
+                additional_fields[field].append(relationship_target)
+            else:
+                additional_fields[field] = relationship_target
+        return additional_fields
 
     @classmethod
     def from_cdf(
@@ -296,44 +346,16 @@ class AssetType(ResourceType, ABC):
         }
 
         # Populate non-asset metadata fields according to relationships/flags
+        
         if fetch_metadata:
-            relationships = client.relationships.list(
-                source_external_ids=[asset.external_id],
-                source_types=["asset"],
-                target_types=["timeseries", "asset", "sequence", "file"],
-                limit=-1,
+            # Additional_fields is modified in-place by `_fetch_metadata`  
+            cls._fetch_metadata(
+                client,
+                additional_fields,
+                asset.external_id,
+                fetch_metadata,
+                fetch_content,
             )
-            for r in relationships:
-                field = match_field_from_relationship(cls.model_fields.keys(), r)
-                target_type = r.target_type.lower()
-                relationship_target = None
-
-                if target_type == "asset":
-                    if r.target_external_id in AssetType._instantiated_assets:
-                        relationship_target = AssetType._instantiated_assets[r.target_external_id]
-
-                    else:
-                        target_class = cls._find_asset_type_class(field=field)
-                        relationship_target = target_class.from_cdf(
-                            client=client,
-                            external_id=r.target_external_id,
-                            fetch_metadata=fetch_metadata,
-                            fetch_content=fetch_content,
-                        )
-
-                elif target_type == "timeseries":
-                    relationship_target = client.time_series.retrieve(external_id=r.target_external_id)
-                elif target_type == "sequence":
-                    relationship_target = CDFSequence.from_cdf(client, r.target_external_id, fetch_content)
-                elif target_type == "file":
-                    relationship_target = CDFFile.from_cdf(client, r.target_external_id, fetch_content)
-                else:
-                    raise ValueError(f"Cannot handle target type {r.target_type}")
-
-                if isinstance(additional_fields[field], list):
-                    additional_fields[field].append(relationship_target)
-                else:
-                    additional_fields[field] = relationship_target
 
         return cls._from_asset(asset, additional_fields)
 
@@ -498,6 +520,7 @@ class AssetModel(Model, ABC):
                     fetch_content=fetch_content,
                 )
                 output[field_name].append(instance)
+                break
 
         return cls(**output)
 
