@@ -6,9 +6,8 @@ from abc import ABC
 from deepdiff import DeepDiff
 
 from pathlib import Path
-from typing import Any, ClassVar, Iterable, Optional, Union, TypeVar, get_args, get_origin
+from typing import Any, ClassVar, Iterable, Optional, Union, TypeVar, get_args
 from typing import Type as TypingType
-from types import GenericAlias
 from pydantic import BaseModel, ConfigDict
 
 from cognite.client import CogniteClient
@@ -23,6 +22,7 @@ from cognite.powerops.resync.models.helpers import (
     format_change_unary,
     isinstance_list,
     match_field_from_relationship,
+    pydantic_model_class_candidate,
 )
 
 _T_Type = TypeVar("_T_Type")
@@ -244,22 +244,19 @@ class AssetType(ResourceType, ABC):
         return instance
 
     @classmethod
-    def _find_asset_type_class(cls, field: str) -> TypingType[AssetType]:
+    def _field_name_asset_resource_class(cls) -> Iterable[tuple[str, TypingType[AssetType]]]:
+        """AssetType fields are are of type list[AssetType] or Optional[AssetType]"""
+        # todo? method is identical to _field_name_asset_resource_class in AssetModel
+        # * unsure how to reuse?
         for field_name in cls.model_fields:
             class_ = cls.model_fields[field_name].annotation
-            if isinstance(class_, GenericAlias):
-                asset_resource_class = get_args(class_)[0]
-                if issubclass(asset_resource_class, AssetType) and field_name == field:
-                    return asset_resource_class
-            elif get_origin(class_) is Union and type(None) in get_args(class_):
-                # Optional field `AssetType, not a list
+            if pydantic_model_class_candidate(class_):
                 asset_resource_class = get_args(class_)[0]
                 if issubclass(asset_resource_class, AssetType):
-                    return get_args(class_)[0]
-        raise ValueError(f"Could not find asset type class for {field=} in {cls.__name__}")
+                    yield field_name, asset_resource_class
 
     @classmethod
-    def _fetch_metadata(
+    def _fetch_and_set_metadata(
         cls,
         client: CogniteClient,
         additional_fields: dict[str, Union[list, None]],
@@ -284,7 +281,7 @@ class AssetType(ResourceType, ABC):
                     relationship_target = AssetType._instantiated_assets[r.target_external_id]
 
                 else:
-                    target_class = cls._find_asset_type_class(field=field)
+                    target_class = [y for x, y in cls._field_name_asset_resource_class() if field == x and y][0]
                     relationship_target = target_class.from_cdf(
                         client=client,
                         external_id=r.target_external_id,
@@ -300,12 +297,12 @@ class AssetType(ResourceType, ABC):
                 relationship_target = CDFFile.from_cdf(client, r.target_external_id, fetch_content)
             else:
                 raise ValueError(f"Cannot handle target type {r.target_type}")
-            
+
+            # Add relationship target to additional fields in-place
             if isinstance(additional_fields[field], list):
                 additional_fields[field].append(relationship_target)
             else:
                 additional_fields[field] = relationship_target
-        return additional_fields
 
     @classmethod
     def from_cdf(
@@ -323,7 +320,6 @@ class AssetType(ResourceType, ABC):
 
         By default, content of files/sequences/time series is not fetched.
         This can be enabled by setting `fetch_content=True`.
-
         """
 
         if asset and external_id:
@@ -341,15 +337,14 @@ class AssetType(ResourceType, ABC):
         additional_fields = {
             field: [] if "list" in str(field_info.annotation) else None
             for field, field_info in cls.model_fields.items()
-            if field in cls._asset_type_fields()
+            if field in [x for x, _ in cls._field_name_asset_resource_class()]
             or any(cdf_type in str(field_info.annotation) for cdf_type in [CDFSequence.__name__, TimeSeries.__name__])
         }
 
         # Populate non-asset metadata fields according to relationships/flags
-        
+        # `Additional_fields` is modified in-place by `_fetch_metadata`
         if fetch_metadata:
-            # Additional_fields is modified in-place by `_fetch_metadata`  
-            cls._fetch_metadata(
+            cls._fetch_and_set_metadata(
                 client,
                 additional_fields,
                 asset.external_id,
@@ -358,20 +353,6 @@ class AssetType(ResourceType, ABC):
             )
 
         return cls._from_asset(asset, additional_fields)
-
-    @classmethod
-    def _asset_type_fields(cls) -> Iterable[str]:
-        # Exclude fom model_dump in diff (ext_id only)
-        for field_name in cls.model_fields:
-            class_ = cls.model_fields[field_name].annotation
-            if isinstance(class_, GenericAlias):
-                asset_resource_class = get_args(class_)[0]
-                if issubclass(asset_resource_class, AssetType):
-                    yield field_name
-            elif get_origin(class_) is Union and type(None) in get_args(class_):
-                # Optional field `AssetType, not a list
-                if issubclass(get_args(class_)[0], AssetType):
-                    yield field_name
 
     def _asset_type_prepare_for_diff(self: T_Asset_Type) -> dict[str, dict]:
         for model_field in self.model_fields:
@@ -481,10 +462,13 @@ class AssetModel(Model, ABC):
         yield from (item for item in self._resource_types() if isinstance(item, AssetType))
 
     @classmethod
-    def _asset_types_and_field_names(cls) -> Iterable[tuple[str, TypingType[AssetType]]]:
+    def _field_name_asset_resource_class(cls) -> Iterable[tuple[str, TypingType[AssetType]]]:
+        """AssetType fields are are of type list[AssetType] or Optional[AssetType]"""
+        # todo? method is identical to _field_name_asset_resource_class in AssetType
+        # * unsure how to reuse?
         for field_name in cls.model_fields:
             class_ = cls.model_fields[field_name].annotation
-            if isinstance(class_, GenericAlias):
+            if pydantic_model_class_candidate(class_):
                 asset_resource_class = get_args(class_)[0]
                 if issubclass(asset_resource_class, AssetType):
                     yield field_name, asset_resource_class
@@ -508,7 +492,7 @@ class AssetModel(Model, ABC):
 
         output = defaultdict(list)
 
-        for field_name, asset_cls in cls._asset_types_and_field_names():
+        for field_name, asset_cls in cls._field_name_asset_resource_class():
             assets = client.assets.retrieve_subtree(external_id=asset_cls.parent_external_id)
             for asset in assets:
                 if asset.external_id == asset_cls.parent_external_id:

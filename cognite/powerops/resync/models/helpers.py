@@ -1,6 +1,8 @@
 import doctest
 from pprint import pformat
-from typing import Any, Union, Type
+from typing import Any, Union, Type, get_args, get_origin
+from types import GenericAlias
+
 
 from cognite.client.data_classes import Relationship
 
@@ -20,6 +22,11 @@ def match_field_from_relationship(model_fields: list[str], relationship: Relatio
         raise ValueError(f"Could not match {relationship.external_id=} to {model_fields=}")
 
     return candidates[0]
+
+
+def pydantic_model_class_candidate(class_: type = None) -> bool:
+    """GenericAlias is a potential list, get origin checks an optional field"""
+    return isinstance(class_, GenericAlias) or (get_origin(class_) is Union and type(None) in get_args(class_))
 
 
 def format_change_binary(
