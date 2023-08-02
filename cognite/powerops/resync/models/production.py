@@ -127,9 +127,9 @@ class PriceArea(AssetType):
 
 class ProductionModel(AssetModel):
     root_asset: ClassVar[Asset] = Asset(external_id="power_ops", name="PowerOps")
-    reservoirs: list[Reservoir] = Field(default_factory=list)
-    generators: list[Generator] = Field(default_factory=list)
     plants: list[Plant] = Field(default_factory=list)
+    generators: list[Generator] = Field(default_factory=list)
+    reservoirs: list[Reservoir] = Field(default_factory=list)
     watercourses: list[Watercourse] = Field(default_factory=list)
     price_areas: list[PriceArea] = Field(default_factory=list)
 

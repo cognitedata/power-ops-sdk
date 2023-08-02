@@ -56,6 +56,8 @@ class AssetType(ResourceType, ABC):
     label: ClassVar[Union[AssetLabel, str]]
     model_config: ClassVar[ConfigDict] = ConfigDict(arbitrary_types_allowed=True)
     parent_description: ClassVar[Optional[str]] = None
+    _instantiated_assets: ClassVar[dict[str, AssetType]] = defaultdict(dict)
+
     name: str
     description: Optional[str] = None
     _external_id: Optional[str] = None
@@ -231,19 +233,29 @@ class AssetType(ResourceType, ABC):
         if not additional_fields:
             additional_fields = {}
         metadata = cls._parse_asset_metadata(asset.metadata)
-
-        return cls(
+        instance = cls(
             _external_id=asset.external_id,
             name=asset.name,
             description=asset.description,
             **metadata,
             **additional_fields,
         )
+        AssetType._instantiated_assets[asset.external_id] = instance
+        return instance
 
     @classmethod
-    def _handle_asset_relationship(cls, target_external_id: str) -> T_Asset_Type:
-        print("Need to find out how to handle asset relationships that dont yet exist")
-        ...
+    def _find_asset_type_class(cls, field: str) -> TypingType[AssetType]:
+        for field_name in cls.model_fields:
+            class_ = cls.model_fields[field_name].annotation
+            if isinstance(class_, GenericAlias):
+                asset_resource_class = get_args(class_)[0]
+                if issubclass(asset_resource_class, AssetType) and field_name == field:
+                    return asset_resource_class
+            elif get_origin(class_) is Union and type(None) in get_args(class_):
+                # Optional field `AssetType, not a list
+                asset_resource_class = get_args(class_)[0]
+                if issubclass(asset_resource_class, AssetType):
+                    return get_args(class_)[0]
 
     @classmethod
     def from_cdf(
@@ -253,7 +265,6 @@ class AssetType(ResourceType, ABC):
         asset: Optional[Asset] = None,
         fetch_metadata: bool = True,
         fetch_content: bool = False,
-        instantiated_assets: Optional[dict[str, AssetType]] = None,
     ) -> T_Asset_Type:
         """
         Fetch an asset from CDF and convert it to a model instance.
@@ -264,14 +275,17 @@ class AssetType(ResourceType, ABC):
         This can be enabled by setting `fetch_content=True`.
 
         """
+
         if asset and external_id:
             raise ValueError("Only one of asset and external_id can be provided")
         if external_id:
-            asset = client.assets.retrieve(external_id)
+            # Check if asset has already been instantiated, eg. by a relationship
+            if external_id in AssetType._instantiated_assets:
+                return AssetType._instantiated_assets[external_id]
+            else:
+                asset = client.assets.retrieve(external_id=external_id)
         if not asset:
             raise ValueError(f"Could not retrieve asset with {external_id=}")
-        if not instantiated_assets:
-            instantiated_assets = {}
 
         # Prepare non-asset metadata fields
         additional_fields = {
@@ -295,10 +309,17 @@ class AssetType(ResourceType, ABC):
                 relationship_target = None
 
                 if target_type == "asset":
-                    if r.target_external_id in instantiated_assets:
-                        relationship_target = instantiated_assets[r.target_external_id]
+                    if r.target_external_id in AssetType._instantiated_assets:
+                        relationship_target = AssetType._instantiated_assets[r.target_external_id]
+
                     else:
-                        relationship_target = cls._handle_asset_relationship(target_external_id=r.target_external_id)
+                        target_class = cls._find_asset_type_class(field=field)
+                        relationship_target = target_class.from_cdf(
+                            client=client,
+                            external_id=r.target_external_id,
+                            fetch_metadata=fetch_metadata,
+                            fetch_content=fetch_content,
+                        )
 
                 elif target_type == "timeseries":
                     relationship_target = client.time_series.retrieve(external_id=r.target_external_id)
@@ -307,7 +328,7 @@ class AssetType(ResourceType, ABC):
                 elif target_type == "file":
                     relationship_target = CDFFile.from_cdf(client, r.target_external_id, fetch_content)
                 else:
-                    raise ValueError(f"Cannot handle target type  {r.target_type}")
+                    raise ValueError(f"Cannot handle target type {r.target_type}")
 
                 if isinstance(additional_fields[field], list):
                     additional_fields[field].append(relationship_target)
@@ -463,11 +484,8 @@ class AssetModel(Model, ABC):
         if fetch_content and not fetch_metadata:
             raise ValueError("Cannot fetch content without also fetching metadata")
 
-        # Instance of model as dict
         output = defaultdict(list)
 
-        # Cache to avoid fetching the same asset multiple times
-        instantiated_assets: dict[str:AssetType] = {}
         for field_name, asset_cls in cls._asset_types_and_field_names():
             assets = client.assets.retrieve_subtree(external_id=asset_cls.parent_external_id)
             for asset in assets:
@@ -478,10 +496,8 @@ class AssetModel(Model, ABC):
                     asset=asset,
                     fetch_metadata=fetch_metadata,
                     fetch_content=fetch_content,
-                    instantiated_assets=instantiated_assets,
                 )
                 output[field_name].append(instance)
-                instantiated_assets[asset.external_id] = instance
 
         return cls(**output)
 
@@ -504,7 +520,7 @@ class AssetModel(Model, ABC):
             ).to_dict():
                 diff_dict[model_field] = deep_diff
                 str_builder.extend(self._field_diff_str_builder(model_field, deep_diff, self_dump[model_field]))
-            # break
+
         print("".join(str_builder))
         return diff_dict
 
