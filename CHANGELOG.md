@@ -13,6 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.33.1] - 2023-08-03
+
+### Changed
+* ResyncConfig.cogshop to have time_series_mappings as optional.
+
 ## [0.33.0] - 2023-07-26
 
 ### Removed
