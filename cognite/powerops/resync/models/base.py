@@ -3,7 +3,9 @@ from collections import defaultdict
 
 import json
 from abc import ABC
+from pprint import pformat
 from deepdiff import DeepDiff
+from deepdiff.model import PrettyOrderedSet
 
 from pathlib import Path
 from typing import Any, ClassVar, Iterable, Optional, Union, TypeVar, get_args
@@ -20,6 +22,8 @@ from cognite.powerops.resync.models.cdf_resources import CDFFile, CDFSequence
 from cognite.powerops.resync.models.helpers import (
     format_change_binary,
     format_change_unary,
+    format_value_added,
+    format_value_removed,
     isinstance_list,
     match_field_from_relationship,
     pydantic_model_class_candidate,
@@ -504,74 +508,45 @@ class AssetModel(Model, ABC):
                     fetch_content=fetch_content,
                 )
                 output[field_name].append(instance)
-                break
 
         return cls(**output)
 
     def _prepare_for_diff(self: T_Asset_Model) -> dict[str:dict]:
         raise NotImplementedError()
 
-    def difference(self: T_Asset_Model, other: T_Asset_Model) -> dict:
+    def difference(self: T_Asset_Model, other: T_Asset_Model, print_string: bool = True) -> dict:
         if type(self) != type(other):
             raise ValueError("Cannot compare these models of different types.")
 
         self_dump = self._prepare_for_diff()
         other_dump = other._prepare_for_diff()
-        str_builder = []
         diff_dict = {}
         for model_field in self_dump:
             if deep_diff := DeepDiff(
                 self_dump[model_field],
                 other_dump[model_field],
-                ignore_type_in_groups=[(float, int)],
+                ignore_type_in_groups=[(float, int, type(None))],
+                # exclude_regex_paths=[
+                #     r"root(\[\'\w+\'\])*_cognite_client",
+                #     r"root(\[\'\w+\'\])*last_updated_time",
+                #     r"root(\[\'\w+\'\])*created_time",
+                #     r"root(\[\'\w+\'\])*parent_id",
+                #     r"root(\[\'\w+\'\])*root_id",
+                #     r"root(\[\'\w+\'\])*data_set_id",
+                #     r"root(\[\'\w+\'\])*id",
+                # ],
             ).to_dict():
                 diff_dict[model_field] = deep_diff
-                str_builder.extend(self._field_diff_str_builder(model_field, deep_diff, self_dump[model_field]))
 
-        print("".join(str_builder))
+        if print_string:
+            _diff_formatter = _DiffFormatter(
+                full_diff_per_field=diff_dict,
+                model_a=self_dump,
+                model_b=other_dump,
+            )
+            print(_diff_formatter.format_as_string())
+
         return diff_dict
-
-    @classmethod
-    def _field_diff_str_builder(
-        cls,
-        field_name: str,
-        field_deep_diff: dict,
-        # only valid when the fields are lists, which they are in ProductionModel
-        self_affected_field: list[dict],
-    ) -> list[str]:
-        str_builder = ["\n\n============= ", *field_name.title().split("_"), " =============\n"]
-        # Might need a better fallback for names
-        names = [
-            f'{i}:{d.get("display_name", False) or d.get("name", "")}, ' for i, d in enumerate(self_affected_field)
-        ]
-        str_builder.extend(names)
-        str_builder.append("\n\n")
-
-        for diff_type, diffs in field_deep_diff.items():
-            if diff_type in ("type_changes", "values_changed"):
-                str_builder.extend(
-                    (
-                        f'The following values have changed {"type" if "type" in diff_type else ""}:\n',
-                        *format_change_binary(diffs),
-                        "\n",
-                    ),
-                )
-
-            elif "added" in diff_type or "removed" in diff_type:
-                action = "added" if "added" in diff_type else "removed"
-                is_iterable = "iterable" in diff_type
-                str_builder.extend(
-                    (
-                        f"The following {'values' if is_iterable else 'entries'} have been {action}:\n",
-                        *format_change_unary(diffs, is_iterable),
-                        "\n",
-                    )
-                )
-
-            else:
-                print(f"cannot handle {diff_type=}")
-
-        return str_builder
 
 
 T_Asset_Model = TypeVar("T_Asset_Model", bound=AssetModel)
@@ -609,3 +584,63 @@ class DataModel(Model, ABC):
         summary[self.model_name]["cdf"]["nodes"] = len(instances.nodes)
         summary[self.model_name]["cdf"]["edges"] = len(instances.edges)
         return summary
+
+
+class _DiffFormatter:
+    def __init__(self, full_diff_per_field: dict[str, dict], model_a: dict, model_b: dict):
+        self.full_diff_per_field = full_diff_per_field
+        self.model_a = model_a
+        self.model_b = model_b
+
+        self.str_builder: list = None
+
+    def _format_per_field(self, field_name: str, field_diff: dict[str, Union[dict, PrettyOrderedSet]]):
+        self.str_builder.extend(["\n\n============= ", *field_name.title().split("_"), " =============\n"])
+        # Might need a better fallback for names
+        names = [
+            f'{i}:{d.get("display_name", False) or d.get("name", "")}, ' for i, d in enumerate(self.model_a[field_name])
+        ]
+
+        self.str_builder.extend(names)
+        self.str_builder.append("\n\n")
+
+        for diff_type, diffs in field_diff.items():
+            if "added" not in diff_type:
+                print("SKIPPING NON ADD", diff_type.upper())
+                continue
+            is_iterable = "iterable" in diff_type
+
+            if diff_type in ("type_changes", "values_changed"):
+                self.str_builder.extend(
+                    (
+                        f'The following values have changed {"type" if "type" in diff_type else ""}:\n',
+                        *format_change_binary(diffs),
+                        "\n",
+                    ),
+                )
+            elif "removed" in diff_type:
+                self.str_builder.extend(
+                    (
+                        f"The following {'values' if is_iterable else 'entries'} have been removed:\n",
+                        *format_value_removed(diffs),
+                        "\n",
+                    )
+                )
+            elif "added" in diff_type:
+                self.str_builder.extend(
+                    (
+                        f"The following {'values' if is_iterable else 'entries'} have been added:\n",
+                        *format_value_added(diffs, self.model_b[field_name]),
+                        "\n",
+                    )
+                )
+
+            else:
+                print(f"cannot handle {diff_type=}")
+
+    def format_as_string(self) -> str:
+        self.str_builder = []
+        for field_name, field_diff in self.full_diff_per_field.items():
+            self._format_per_field(field_name, field_diff)
+
+        return "".join(self.str_builder)
