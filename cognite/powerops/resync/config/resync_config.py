@@ -142,7 +142,7 @@ class ProductionConfig(Config):
 
 
 class CogShopConfig(Config):
-    time_series_mappings: list[TimeSeriesMapping]
+    time_series_mappings: Optional[list[TimeSeriesMapping]] = None
     watercourses_shop: list[ShopFileConfig]
 
 
