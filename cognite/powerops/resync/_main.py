@@ -154,7 +154,7 @@ def _remove_non_existing_relationship_time_series_targets(
         time_series = model.time_series()
         if time_series_ext_ids := list({t.external_id for t in time_series if t.external_id}):
             existing_time_series = client.time_series.retrieve_multiple(
-                    external_ids=time_series_ext_ids, ignore_unknown_ids=True
+                external_ids=time_series_ext_ids, ignore_unknown_ids=True
             )
             existing_timeseries_ids = {ts.external_id: ts for ts in existing_time_series}
             missing_timeseries = {t.external_id for t in time_series if t.external_id not in existing_timeseries_ids}
@@ -163,7 +163,9 @@ def _remove_non_existing_relationship_time_series_targets(
             to_delete = {
                 r.external_id
                 for r in relationships
-                if r.target_type and r.target_type.casefold() == "timeseries" and r.target_external_id in missing_timeseries
+                if r.target_type
+                and r.target_type.casefold() == "timeseries"
+                and r.target_external_id in missing_timeseries
             }
             if to_delete:
                 echo(
