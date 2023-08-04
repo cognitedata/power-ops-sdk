@@ -17,6 +17,7 @@ from cognite.powerops.clients.powerops_client import get_powerops_client
 logging.getLogger("requests").setLevel(logging.WARNING)
 logging.getLogger("urllib3").setLevel(logging.WARNING)
 logging.getLogger("msal").setLevel(logging.WARNING)
+logging.getLogger("cognite-sdk").setLevel(logging.WARNING)
 
 FORMAT = "%(message)s"
 logging.basicConfig(level="NOTSET", format=FORMAT, datefmt="[%X]", handlers=[RichHandler()])
