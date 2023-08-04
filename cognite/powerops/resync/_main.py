@@ -152,27 +152,28 @@ def _remove_non_existing_relationship_time_series_targets(
         if not isinstance(model, AssetModel):
             continue
         time_series = model.time_series()
-        existing_time_series = client.time_series.retrieve_multiple(
-            external_ids=list({t.external_id for t in time_series if t.external_id}), ignore_unknown_ids=True
-        )
-        existing_timeseries_ids = {ts.external_id: ts for ts in existing_time_series}
-        missing_timeseries = {t.external_id for t in time_series if t.external_id not in existing_timeseries_ids}
-
-        relationships = model.relationships()
-        to_delete = {
-            r.external_id
-            for r in relationships
-            if r.target_type and r.target_type.casefold() == "timeseries" and r.target_external_id in missing_timeseries
-        }
-        if to_delete:
-            echo(
-                f"WARNING: There are {len(to_delete)} relationships in {model.model_name} that have targets "
-                "that do not exist in CDF. These relationships will not be created."
+        if time_series_ext_ids := list({t.external_id for t in time_series if t.external_id}):
+            existing_time_series = client.time_series.retrieve_multiple(
+                    external_ids=time_series_ext_ids, ignore_unknown_ids=True
             )
+            existing_timeseries_ids = {ts.external_id: ts for ts in existing_time_series}
+            missing_timeseries = {t.external_id for t in time_series if t.external_id not in existing_timeseries_ids}
 
-        for external_id in to_delete:
-            if external_id:
-                collection.relationships.pop(external_id, None)
+            relationships = model.relationships()
+            to_delete = {
+                r.external_id
+                for r in relationships
+                if r.target_type and r.target_type.casefold() == "timeseries" and r.target_external_id in missing_timeseries
+            }
+            if to_delete:
+                echo(
+                    f"WARNING: There are {len(to_delete)} relationships in {model.model_name} that have targets "
+                    "that do not exist in CDF. These relationships will not be created."
+                )
+
+            for external_id in to_delete:
+                if external_id:
+                    collection.relationships.pop(external_id, None)
 
 
 if __name__ == "__main__":
