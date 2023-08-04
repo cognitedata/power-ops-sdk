@@ -146,4 +146,5 @@ class ProductionModel(AssetModel):
                 setattr(clone, model_field, list(_prepared))
             elif isinstance(field_value, AssetType):
                 field_value._asset_type_prepare_for_diff()
-        return clone.model_dump()
+        # Some fields are have been set to their external_id which gives a warning we can ignore
+        return clone.model_dump(warnings=False)

@@ -3,7 +3,6 @@ from collections import defaultdict
 
 import json
 from abc import ABC
-from pprint import pformat
 from deepdiff import DeepDiff
 from deepdiff.model import PrettyOrderedSet
 
@@ -21,7 +20,6 @@ from cognite.powerops.clients.data_classes._core import DomainModelApply, Instan
 from cognite.powerops.resync.models.cdf_resources import CDFFile, CDFSequence
 from cognite.powerops.resync.models.helpers import (
     format_change_binary,
-    format_change_unary,
     format_value_added,
     format_value_removed,
     isinstance_list,
@@ -526,15 +524,20 @@ class AssetModel(Model, ABC):
                 self_dump[model_field],
                 other_dump[model_field],
                 ignore_type_in_groups=[(float, int, type(None))],
-                # exclude_regex_paths=[
-                #     r"root(\[\'\w+\'\])*_cognite_client",
-                #     r"root(\[\'\w+\'\])*last_updated_time",
-                #     r"root(\[\'\w+\'\])*created_time",
-                #     r"root(\[\'\w+\'\])*parent_id",
-                #     r"root(\[\'\w+\'\])*root_id",
-                #     r"root(\[\'\w+\'\])*data_set_id",
-                #     r"root(\[\'\w+\'\])*id",
-                # ],
+                exclude_regex_paths=[
+                    r"(.+?)._cognite_client",
+                    r"(.+?).last_updated_time",
+                    r"(.+?).parent_id",
+                    r"(.+?).root_id]",
+                    r"(.+?).data_set_id",
+                    r"(.+?).created_time",
+                    r"(.+?)lastUpdatedTime",
+                    r"(.+?)createdTime",
+                    r"(.+?)parentId",
+                    r"(.+?)\.id",
+                    # Relevant metadata should already be included in the model
+                    r"(.+?)metadata",
+                ],
             ).to_dict():
                 diff_dict[model_field] = deep_diff
 
@@ -595,8 +598,15 @@ class _DiffFormatter:
         self.str_builder: list = None
 
     def _format_per_field(self, field_name: str, field_diff: dict[str, Union[dict, PrettyOrderedSet]]):
-        self.str_builder.extend(["\n\n============= ", *field_name.title().split("_"), " =============\n"])
+        self.str_builder.extend(
+            (
+                "\n\n========================== ",
+                *field_name.title().split("_"),
+                " ==========================\n",
+            )
+        )
         # Might need a better fallback for names
+        self.str_builder.append("Indexes and names:\n\t")
         names = [
             f'{i}:{d.get("display_name", False) or d.get("name", "")}, ' for i, d in enumerate(self.model_a[field_name])
         ]
@@ -605,15 +615,12 @@ class _DiffFormatter:
         self.str_builder.append("\n\n")
 
         for diff_type, diffs in field_diff.items():
-            if "added" not in diff_type:
-                print("SKIPPING NON ADD", diff_type.upper())
-                continue
             is_iterable = "iterable" in diff_type
 
             if diff_type in ("type_changes", "values_changed"):
                 self.str_builder.extend(
                     (
-                        f'The following values have changed {"type" if "type" in diff_type else ""}:\n',
+                        f'The following values have changed {"type and value" if "type" in diff_type else ""}:\n',
                         *format_change_binary(diffs),
                         "\n",
                     ),

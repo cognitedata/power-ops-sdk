@@ -1,9 +1,8 @@
 import doctest
-import re
 import operator
 
 from functools import reduce
-from pprint import pformat, pprint
+from pprint import pformat
 from deepdiff.model import PrettyOrderedSet
 from typing import Any, Union, Type, get_args, get_origin
 from types import GenericAlias
@@ -87,9 +86,10 @@ def format_value_removed(deep_diff: dict[str, dict]) -> list[str]:
         )
     return str_builder
 
-def _get_from_deep_diff_path(deep_diff_path:str, lookup_model:dict):
+
+def _get_from_deep_diff_path(deep_diff_path: str, lookup_model: dict) -> Any:
     """
-    Similar to `format_deep_diff_path` and `get_dict_dot_keys` in 
+    Similar to `format_deep_diff_path` and `get_dict_dot_keys` in
     `cognite.powerops.clients.shop.data_classes.helpers` but modified
     to work with the deepdiff format separated from yaml formats
 
@@ -99,115 +99,35 @@ def _get_from_deep_diff_path(deep_diff_path:str, lookup_model:dict):
     ... }
     >>> _get_from_deep_diff_path(_path, _lookup_model)
     'value_3'
-    
+
     """
-    # TODO:! fix look up
-    keys = [int(k) if k.isdigit() else k for k in deep_diff_path.replace("root[", "").removesuffix("]").split("][")]
-    return reduce(operator.getitem, keys, lookup_model)
-
-
-
+    keys = [
+        int(k) if k.isdigit() else k
+        for k in deep_diff_path.replace("root[", "").replace("'", "").removesuffix("]").split("][")
+    ]
+    try:
+        item = reduce(operator.getitem, keys, lookup_model)
+    except KeyError:
+        item = f"Could not retrieve at {deep_diff_path}"
+    return item
 
 
 def format_value_added(deep_diff: PrettyOrderedSet, lookup_model: dict) -> list[str]:
-    str_builder = []
-    pprint(lookup_model)
-    for _path in deep_diff:
-
-        print(1)
-        pprint(diff)
-        print(2)
-        pprint(type(diff))
-        print(3)
-        pprint(lookup_model.get(diff))
-        print(4)
-        pprint(type(lookup_model.get(diff)))
-        # str_builder.extend(
-        #     (
-        #         f" * {diff.replace('root', '')}:\n",
-        #         f"\t- {pformat(lookup_model.get(diff))}\n",
-        #     )
-        # )
-    # for _path, removed in deep_diff.items():
-    #     str_builder.extend(
-    #         (
-    #             f" * {_path.replace('root', '')}:\n",
-    #             f"\t- {pformat(removed)}\n",
-    #         )
-    #     )
-    return str_builder
-
-
-def format_change_unary(
-    deep_diff: PrettyOrderedSet,
-    is_iterable: bool,
-    look_up: dict[str, Any] = None,
-) -> list[str]:
     """
-    Formats a dict of changes to a list of strings
-
-    TODO: doctest
-
+    Formats a dict of values that were added to a list of strings
+    The deep_diff does not contain the new value, so it it fetched from the lookup_model
     """
-    print(f"format_change_unary, {is_iterable=}")
-    print("deep_diff")
-    pprint(deep_diff)
-    pprint(type(deep_diff))
-    print()
     str_builder = []
+    _path: str = None  # type: ignore
     for _path in deep_diff:
-        # remove the index/key of which the item was added/removed in path
-        _path = _path[: _path.rfind("[")] if is_iterable else _path
-        change = look_up.get(_path)
-
-        str_builder.extend((f" * {_path[:_path.rfind('[')].replace('root', '')}:\n", f"\t- {pformat(change)}\n"))
+        str_builder.extend(
+            (
+                f" * {_path.replace('root', '')}:\n",
+                f"\t- {pformat(_get_from_deep_diff_path(_path, lookup_model))}\n",
+            )
+        )
     return str_builder
 
 
 if __name__ == "__main__":
     doctest.testmod()
-
-    # @classmethod
-    # def _field_diff_str_builder(
-    #     cls,
-    #     field_name: str,
-    #     field_deep_diff: dict,
-    #     # only valid when the fields are lists, which they are in ProductionModel
-    #     self_affected_field: list[dict],
-    # ) -> list[str]:
-    #     str_builder = ["\n\n============= ", *field_name.title().split("_"), " =============\n"]
-    #     # Might need a better fallback for names
-    #     names = [
-    #         f'{i}:{d.get("display_name", False) or d.get("name", "")}, ' for i, d in enumerate(self_affected_field)
-    #     ]
-    #     str_builder.extend(names)
-    #     print(f"{names=}")
-    #     str_builder.append("\n\n")
-    #     print()
-    #     print(f"{self_affected_field=}")
-
-    #     for diff_type, diffs in field_deep_diff.items():
-    #         if diff_type in ("type_changes", "values_changed"):
-    #             str_builder.extend(
-    #                 (
-    #                     f'The following values have changed {"type" if "type" in diff_type else ""}:\n',
-    #                     *format_change_binary(diffs),
-    #                     "\n",
-    #                 ),
-    #             )
-
-    #         elif "added" in diff_type or "removed" in diff_type:
-    #             action = "added" if "added" in diff_type else "removed"
-    #             is_iterable = "iterable" in diff_type
-    #             str_builder.extend(
-    #                 (
-    #                     f"The following {'values' if is_iterable else 'entries'} have been {action}:\n",
-    #                     *format_change_unary(diffs, is_iterable),
-    #                     "\n",
-    #                 )
-    #             )
-
-    #         else:
-    #             print(f"cannot handle {diff_type=}")
-
-    #     return str_builder
