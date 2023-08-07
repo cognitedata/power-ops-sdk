@@ -2,7 +2,7 @@ from __future__ import annotations
 import json
 
 from pathlib import Path
-from typing import ClassVar, Optional, Union
+from typing import Any, ClassVar, Optional, Union
 
 from cognite.client.data_classes import Asset, TimeSeries
 from pydantic import ConfigDict, Field
@@ -10,6 +10,7 @@ from pydantic import ConfigDict, Field
 from cognite.powerops.cdf_labels import AssetLabel
 from cognite.powerops.resync.models.base import AssetModel, AssetType, NonAssetType
 from cognite.powerops.resync.models.cdf_resources import CDFSequence
+from cognite.powerops.resync.models.helpers import isinstance_list
 
 
 class Generator(AssetType):
@@ -23,18 +24,12 @@ class Generator(AssetType):
     turbine_efficiency_curve: Optional[CDFSequence] = None
 
     @classmethod
-    def from_asset(cls, asset: Asset) -> Generator:
-        return cls(
-            _external_id=asset.external_id,
-            name=asset.name,
-            description=asset.description,
-            p_min=float(asset.metadata.get("p_min", 0.0)),
-            penstock=asset.metadata.get("penstock", ""),
-            startcost=float(asset.metadata.get("startcost", 0.0)),
-            start_stop_cost_time_series=None,
-            generator_efficiency_curve=None,
-            turbine_efficiency_curve=None,
-        )
+    def _parse_asset_metadata(cls, asset_metadata: dict[str, str]) -> dict[str, Any]:
+        return {
+            "p_min": float(asset_metadata.get("p_min", 0.0)),
+            "penstock": asset_metadata.get("penstock", ""),
+            "startcost": float(asset_metadata.get("startcost", 0.0)),
+        }
 
 
 class Reservoir(AssetType):
@@ -44,14 +39,11 @@ class Reservoir(AssetType):
     ordering: str
 
     @classmethod
-    def from_asset(cls, asset: Asset) -> Reservoir:
-        return cls(
-            _external_id=asset.external_id,
-            name=asset.name,
-            description=asset.description,
-            display_name=asset.metadata.get("display_name", ""),
-            ordering=asset.metadata.get("ordering", ""),
-        )
+    def _parse_asset_metadata(cls, asset_metadata: dict[str, str]) -> dict[str, Any]:
+        return {
+            "display_name": asset_metadata.get("display_name", ""),
+            "ordering": asset_metadata.get("ordering", ""),
+        }
 
 
 class Plant(AssetType):
@@ -75,35 +67,24 @@ class Plant(AssetType):
     head_direct_time_series: Optional[TimeSeries] = None
 
     @classmethod
-    def from_asset(cls, asset: Asset) -> Plant:
-        penstock_head_loss_factors_raw: str = asset.metadata.get("penstock_head_loss_factors", "")
+    def _parse_asset_metadata(cls, asset_metadata: dict[str, str]) -> dict[str, Any]:
+        penstock_head_loss_factors_raw: str = asset_metadata.get("penstock_head_loss_factors", "")
         try:
             penstock_head_loss_factors = json.loads(penstock_head_loss_factors_raw)
             if not isinstance(penstock_head_loss_factors, dict):
                 raise TypeError
         except (json.JSONDecodeError, TypeError):
             penstock_head_loss_factors = {}
-        return cls(
-            _external_id=asset.external_id,
-            name=asset.name,
-            description=asset.description,
-            display_name=asset.metadata.get("display_name", ""),
-            ordering=asset.metadata.get("ordering", ""),
-            head_loss_factor=float(asset.metadata.get("head_loss_factor", 0.0)),
-            outlet_level=float(asset.metadata.get("outlet_level", 0.0)),
-            p_min=float(asset.metadata.get("p_min", 0.0)),
-            p_max=float(asset.metadata.get("p_max", 0.0)),
-            penstock_head_loss_factors=penstock_head_loss_factors,
-            generators=[],
-            inlet_reservoir=None,
-            p_min_time_series=None,
-            p_max_time_series=None,
-            water_value_time_series=None,
-            feeding_fee_time_series=None,
-            outlet_level_time_series=None,
-            inlet_level_time_series=None,
-            head_direct_time_series=None,
-        )
+
+        return {
+            "display_name": asset_metadata.get("display_name", ""),
+            "ordering": asset_metadata.get("ordering", ""),
+            "head_loss_factor": float(asset_metadata.get("head_loss_factor", 0.0)),
+            "outlet_level": float(asset_metadata.get("outlet_level", 0.0)),
+            "p_min": float(asset_metadata.get("p_min", 0.0)),
+            "p_max": float(asset_metadata.get("p_max", 0.0)),
+            "penstock_head_loss_factors": penstock_head_loss_factors,
+        }
 
 
 class WaterCourseShop(NonAssetType):
@@ -122,18 +103,13 @@ class Watercourse(AssetType):
     production_obligation_time_series: list[TimeSeries] = Field(default_factory=list)
 
     @classmethod
-    def from_asset(cls, asset: Asset) -> Watercourse:
-        return cls(
-            _external_id=asset.external_id,
-            name=asset.name,
-            description=asset.description,
-            shop=WaterCourseShop(penalty_limit=asset.metadata.get("penalty_limit", "")),
-            config_version=None,
-            model_file=None,
-            processed_model_file=None,
-            plants=[],
-            production_obligation_time_series=[],
-        )
+    def _parse_asset_metadata(cls, asset_metadata: dict[str, str]) -> dict[str, Any]:
+        return {
+            "config_version": "",
+            "shop": WaterCourseShop(penalty_limit=asset_metadata.get("shop:penalty_limit", "")),
+            "model_file": None,
+            "processed_model_file": None,
+        }
 
 
 class PriceArea(AssetType):
@@ -144,21 +120,31 @@ class PriceArea(AssetType):
     watercourses: list[Watercourse] = Field(default_factory=list)
 
     @classmethod
-    def from_asset(cls, asset: Asset) -> PriceArea:
-        return cls(
-            _external_id=asset.external_id,
-            name=asset.name,
-            description=asset.description,
-            dayahead_price_time_series=None,
-            plants=[],
-            watercourses=[],
-        )
+    def _parse_asset_metadata(cls, asset_metadata: dict[str, str]) -> dict[str, Any]:
+        # Maintain the AssetType structure
+        return {}
 
 
 class ProductionModel(AssetModel):
     root_asset: ClassVar[Asset] = Asset(external_id="power_ops", name="PowerOps")
+    plants: list[Plant] = Field(default_factory=list)
+    generators: list[Generator] = Field(default_factory=list)
     reservoirs: list[Reservoir] = Field(default_factory=list)
     watercourses: list[Watercourse] = Field(default_factory=list)
     price_areas: list[PriceArea] = Field(default_factory=list)
-    plants: list[Plant] = Field(default_factory=list)
-    generators: list[Generator] = Field(default_factory=list)
+
+    def _prepare_for_diff(self: ProductionModel) -> dict:
+        clone = self.model_copy(deep=True)
+
+        for model_field in clone.model_fields:
+            field_value = getattr(clone, model_field)
+            if isinstance_list(field_value, AssetType):
+                # Sort the asset types to have comparable order for diff
+                _sorted = sorted(field_value, key=lambda x: x.external_id)
+                # Prepare each asset type for diff
+                _prepared = map(lambda x: x._asset_type_prepare_for_diff(), _sorted)
+                setattr(clone, model_field, list(_prepared))
+            elif isinstance(field_value, AssetType):
+                field_value._asset_type_prepare_for_diff()
+        # Some fields are have been set to their external_id which gives a warning we can ignore
+        return clone.model_dump(warnings=False)

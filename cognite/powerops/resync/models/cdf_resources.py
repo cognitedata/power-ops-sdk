@@ -1,9 +1,10 @@
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
+from abc import ABC, abstractclassmethod, abstractmethod
 from typing import Any, ClassVar, Optional
 
 import pandas as pd
+from cognite.client import CogniteClient
 from cognite.client.data_classes import FileMetadata, Sequence
 from pydantic import BaseModel, ConfigDict
 
@@ -30,10 +31,25 @@ class _CDFResource(BaseModel, ABC):
             dump.pop(read_only_field, None)
         return dump
 
+    @abstractclassmethod
+    def from_cdf(
+        cls,
+        client: CogniteClient,
+        resource_ext_id: str,
+        fetch_content: bool = False,
+    ) -> _CDFResource:
+        ...
+
 
 class CDFSequence(_CDFResource):
     sequence: Sequence
-    content: pd.DataFrame
+    content: Optional[pd.DataFrame]
+
+    def __repr__(self) -> str:
+        return f"CDFSequence(external_id={self.external_id})"
+
+    def __str__(self) -> str:
+        return self.__repr__()
 
     @property
     def external_id(self):
@@ -47,10 +63,35 @@ class CDFSequence(_CDFResource):
     def _dump(self, camel_case: bool = False) -> dict[str, Any]:
         return self.sequence.dump(camel_case=camel_case)
 
+    @classmethod
+    def from_cdf(
+        cls,
+        client: CogniteClient,
+        resource_ext_id: str,
+        fetch_content: bool = False,
+    ) -> CDFSequence:
+        sequence = client.sequences.retrieve(external_id=resource_ext_id)
+        if fetch_content:
+            # limit defaults to 100, might not be an issue
+            content = client.sequences.data.retrieve_dataframe(
+                external_id=resource_ext_id,
+                start=0,
+                end=None,
+            )
+        else:
+            content = None
+        return cls(sequence=sequence, content=content)
+
 
 class CDFFile(_CDFResource):
     meta: FileMetadata
     content: Optional[bytes] = None
+
+    def __repr__(self) -> str:
+        return f"CDFFile(external_id={self.external_id})"
+
+    def __str__(self) -> str:
+        return self.__repr__()
 
     @property
     def external_id(self):
@@ -58,3 +99,17 @@ class CDFFile(_CDFResource):
 
     def _dump(self, camel_case: bool = False) -> dict[str, Any]:
         return self.meta.dump(camel_case=camel_case)
+
+    @classmethod
+    def from_cdf(
+        cls,
+        client: CogniteClient,
+        resource_ext_id: str,
+        fetch_content: bool = False,
+    ) -> CDFFile:
+        meta = client.files.retrieve(external_id=resource_ext_id)
+        if fetch_content:
+            content = client.files.download_bytes(external_id=resource_ext_id)
+        else:
+            content = None
+        return cls(meta=meta, content=content)

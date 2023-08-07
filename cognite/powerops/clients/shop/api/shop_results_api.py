@@ -54,7 +54,7 @@ class ShopRunResultsAPI:
         relationships = retrieve_relationships_from_source_ext_id(
             self._client,
             shop_run.shop_run_event.external_id,
-            RelationshipLabel.OBJECTIVE_SEQUENCE.value,
+            RelationshipLabel.OBJECTIVE_SEQUENCE,
             target_types=["sequence"],
         )
         sequences = self._client.sequences.retrieve_multiple(external_ids=[r.target_external_id for r in relationships])
