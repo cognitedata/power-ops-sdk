@@ -115,7 +115,7 @@ def _get_from_deep_diff_path(deep_diff_path: str, lookup_model: dict) -> Any:
 def format_value_added(deep_diff: PrettyOrderedSet, lookup_model: dict) -> list[str]:
     """
     Formats a dict of values that were added to a list of strings
-    The deep_diff does not contain the new value, so it it fetched from the lookup_model
+    The deep_diff does not contain the new value, so it is fetched from the lookup_model
     """
     str_builder = []
     _path: str = None  # type: ignore
