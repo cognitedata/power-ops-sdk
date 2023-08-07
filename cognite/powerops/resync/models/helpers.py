@@ -16,6 +16,7 @@ def isinstance_list(value: Any, type_: Type):
 
 
 def match_field_from_relationship(model_fields: list[str], relationship: Relationship) -> str:
+    """Find the field on the model that matches the relationship using the label"""
     if len(relationship.labels) != 1:
         raise ValueError(f"Expected one label in {relationship.labels=}")
     label = relationship.labels[0].external_id.split(".")[-1]
