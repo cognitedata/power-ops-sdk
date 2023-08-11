@@ -70,7 +70,6 @@ def transform(
     if has_asset_model:
         labels = AssetLabel.as_label_definitions() + RelationshipLabel.as_label_definitions()
         collection.add(labels)
-
     all_models: list[Model] = cast(list[Model], asset_models) + cast(list[Model], data_models)
     for model in all_models:
         collection.add(model.sequences())
@@ -82,5 +81,4 @@ def transform(
         collection.add(asset_model.relationships())
     for data_model in data_models:
         collection.add(data_model.instances())
-
     return collection, all_models

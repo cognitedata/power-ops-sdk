@@ -54,6 +54,9 @@ def plan(
     ),
 ):
     log.info(f"Running plan on configuration files located in {path}")
+    if len(models) == 1 and models[0].lower() == "all":
+        models = list(MODEL_BY_NAME.keys())
+
     resync.plan(path, market, echo=log.info, model_names=models)
 
 

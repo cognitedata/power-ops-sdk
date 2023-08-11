@@ -40,7 +40,7 @@ class _ExtraTypes:
 MODEL_BY_NAME: dict[str, PowerOpsModel] = {
     "production": PowerOpsModel(
         name="Production",
-        description="The production model descripbes the physical assets such as watercourses, "
+        description="The production model describes the physical assets such as watercourses, "
         "plants, and generators located in a price area.",
         graphql_file=GRAPHQL_SCHEMAS / "production.graphql",
         id_=DataModelId(_SPACE, "production", "1"),

@@ -56,6 +56,9 @@ class ResourceCollection(BaseModel):
         arbitrary_types_allowed = True
         extra = Extra.forbid
 
+    def __len__(self):
+        return len(self.all_cdf_resources)
+
     @property
     def all_cdf_resources(self) -> list[Asset | Relationship | LabelDefinition | Event | CDFSequence]:
         """Not including DM."""
@@ -245,6 +248,8 @@ class ResourceCollection(BaseModel):
         file_meta = po_client.cdf.files.list(data_set_ids=[data_set_id], limit=None)  # type: ignore[arg-type]
         shop_files = []
         for f in file_meta:
+            if not f.metadata:
+                f.metadata = {}  # Prevent NoneType error
             if f.metadata.get("md5_hash") is None:
                 file_content = po_client.cdf.files.download_bytes(external_id=f.external_id)
                 md5_hash = hashlib.md5(file_content.replace(b"\r\n", b"\n")).hexdigest()
