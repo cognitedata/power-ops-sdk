@@ -13,6 +13,12 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.34.1] - 2023-08-11
+
+### Fixed
+* Mapping of models names accepted by the CLI and the models names' in `resync`.
+
+
 ## [0.34.0] - 2023-08-03
 
 ### Added
