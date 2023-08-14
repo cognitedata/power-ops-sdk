@@ -100,4 +100,8 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.pytest.ini_options]
-addopts = "--doctest-modules --ignore-glob=examples/* --ignore-glob=cognite/powerops/preprocessor/test_data/otta_base.py"
+addopts = "--doctest-modules --ignore=customers/ --ignore=examples/ --ignore=playground/"
+testpaths = [
+    "tests",
+    "cognite",
+]
