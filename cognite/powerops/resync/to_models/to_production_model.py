@@ -304,6 +304,7 @@ def to_production_data_model(config: ProductionConfig) -> ProductionModelDM:
                 name=plant_name,
                 display_name=display_name,
                 ordering=order,
+                watercourse=watercourse,
                 outlet_level=float(attributes.get("outlet_line", 0)),
                 p_min=float(attributes.get("p_min", p_min_fallback)),
                 p_max=float(attributes.get("p_max", p_max_fallback)),
