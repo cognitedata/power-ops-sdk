@@ -475,13 +475,13 @@ colorama = {version = "*", markers = "platform_system == \"Windows\""}
 
 [[package]]
 name = "cognite-pygen"
-version = "0.15.1"
+version = "0.15.2"
 description = "Cognite Python SDK Generator"
 optional = false
 python-versions = ">=3.9,<4.0"
 files = [
-    {file = "cognite_pygen-0.15.1-py3-none-any.whl", hash = "sha256:ae30e39606a54e03c595883000cca48c80122329fca434d2cd190d84fbbc1842"},
-    {file = "cognite_pygen-0.15.1.tar.gz", hash = "sha256:f5f4218c25610875fa2a6a5509fb1143980c0ed260e9796feb137a3b794f2a18"},
+    {file = "cognite_pygen-0.15.2-py3-none-any.whl", hash = "sha256:760207a8b3adc2163bb7bd5c90727c9821baa986e11ae991e701379d313f4fdf"},
+    {file = "cognite_pygen-0.15.2.tar.gz", hash = "sha256:71bbfaa75f25e66c2b7c6618c3f2fa90cae32bfa511089f0e194ec699e1f476d"},
 ]
 
 [package.dependencies]
@@ -2584,17 +2584,17 @@ xml = ["lxml (>=4.6.3)"]
 
 [[package]]
 name = "pandas-stubs"
-version = "2.0.2.230605"
+version = "2.0.3.230814"
 description = "Type annotations for pandas"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "pandas_stubs-2.0.2.230605-py3-none-any.whl", hash = "sha256:39106b602f3cb6dc5f728b84e1b32bde6ecf41ee34ee714c66228009609fbada"},
-    {file = "pandas_stubs-2.0.2.230605.tar.gz", hash = "sha256:624c7bb06d38145a44b61be459ccd19b038e0bf20364a025ecaab78fea65e858"},
+    {file = "pandas_stubs-2.0.3.230814-py3-none-any.whl", hash = "sha256:4b3dfc027d49779176b7daa031a3405f7b839bcb6e312f4b9f29fea5feec5b4f"},
+    {file = "pandas_stubs-2.0.3.230814.tar.gz", hash = "sha256:1d5cc09e36e3d9f9a1ed9dceae4e03eeb26d1b898dd769996925f784365c8769"},
 ]
 
 [package.dependencies]
-numpy = ">=1.24.3"
+numpy = {version = ">=1.25.0", markers = "python_version >= \"3.9\""}
 types-pytz = ">=2022.1.1"
 
 [[package]]
