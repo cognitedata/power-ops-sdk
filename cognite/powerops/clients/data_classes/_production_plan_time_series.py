@@ -4,7 +4,7 @@ from typing import ClassVar, Optional
 
 from cognite.client import data_modeling as dm
 
-from cognite.powerops.clients.data_classes._core import DomainModel, DomainModelApply, InstancesApply, TypeList
+from cognite.powerops.clients.data_classes._core import DomainModel, DomainModelApply, TypeList
 
 __all__ = ["ProductionPlanTimeSeries", "ProductionPlanTimeSeriesApply", "ProductionPlanTimeSeriesList"]
 
@@ -20,9 +20,9 @@ class ProductionPlanTimeSeriesApply(DomainModelApply):
     name: Optional[str] = None
     series: list[str] = []
 
-    def _to_instances_apply(self, cache: set[str]) -> InstancesApply:
+    def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
-            return InstancesApply([], [])
+            return dm.InstancesApply(dm.NodeApplyList([]), dm.EdgeApplyList([]))
 
         sources = []
         source = dm.NodeOrEdgeData(
@@ -42,8 +42,9 @@ class ProductionPlanTimeSeriesApply(DomainModelApply):
         )
         nodes = [this_node]
         edges = []
+        cache.add(self.external_id)
 
-        return InstancesApply(nodes, edges)
+        return dm.InstancesApply(dm.NodeApplyList(nodes), dm.EdgeApplyList(edges))
 
 
 class ProductionPlanTimeSeriesList(TypeList[ProductionPlanTimeSeries]):

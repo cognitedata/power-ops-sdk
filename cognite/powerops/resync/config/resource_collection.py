@@ -6,12 +6,11 @@ from typing import Union, Sequence
 
 from cognite.client.data_classes import Asset, Event, LabelDefinition, Relationship
 from cognite.client.data_classes._base import CogniteResource, CogniteResourceList
-from cognite.client.data_classes.data_modeling import EdgeApply, NodeApply
+from cognite.client.data_classes.data_modeling import EdgeApply, NodeApply, InstancesApply
 from cognite.client.exceptions import CogniteAPIError
 from deepdiff import DeepDiff  # type: ignore[import]
 from pydantic import BaseModel, Extra
 
-from cognite.powerops.clients.data_classes._core import InstancesApply
 from cognite.powerops.clients.powerops_client import PowerOpsClient
 from cognite.powerops.resync.config.shared import ExternalId
 from cognite.powerops.resync.models.cdf_resources import CDFFile, CDFSequence

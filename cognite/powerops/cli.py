@@ -95,9 +95,8 @@ def deploy(
 
         model = MODEL_BY_NAME[model_name]
         result = client.cdf.data_modeling.graphql.apply_dml(
-            # The removal of newlines is done to avoid a bug in the GraphQL API.
             model.id_,
-            model.graphql.replace("\n", " "),
+            model.graphql,
             model.name,
             model.description,
         )

@@ -17,6 +17,7 @@ type Plant {
     pMax: Float
     pMin: Float
     penstockHeadLossFactors: JSONObject
+    watercourse: Watercourse
 
     pMaxTimeSeries: TimeSeries
     pMinTimeSeries: TimeSeries

@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, ClassVar, Optional, Union
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
-from cognite.powerops.clients.data_classes._core import DomainModel, DomainModelApply, InstancesApply, TypeList
+from cognite.powerops.clients.data_classes._core import DomainModel, DomainModelApply, TypeList
 
 if TYPE_CHECKING:
     from cognite.powerops.clients.data_classes._output_containers import OutputContainerApply
@@ -35,9 +35,9 @@ class ScenarioTemplateApply(DomainModelApply):
     template_version: Optional[str] = None
     watercourse: Optional[str] = None
 
-    def _to_instances_apply(self, cache: set[str]) -> InstancesApply:
+    def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
-            return InstancesApply([], [])
+            return dm.InstancesApply(dm.NodeApplyList([]), dm.EdgeApplyList([]))
 
         sources = []
         source = dm.NodeOrEdgeData(
@@ -72,6 +72,7 @@ class ScenarioTemplateApply(DomainModelApply):
         )
         nodes = [this_node]
         edges = []
+        cache.add(self.external_id)
 
         if isinstance(self.base_mapping, DomainModelApply):
             instances = self.base_mapping._to_instances_apply(cache)
@@ -83,7 +84,7 @@ class ScenarioTemplateApply(DomainModelApply):
             nodes.extend(instances.nodes)
             edges.extend(instances.edges)
 
-        return InstancesApply(nodes, edges)
+        return dm.InstancesApply(dm.NodeApplyList(nodes), dm.EdgeApplyList(edges))
 
 
 class ScenarioTemplateList(TypeList[ScenarioTemplate]):

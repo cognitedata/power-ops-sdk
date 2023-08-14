@@ -212,6 +212,9 @@ data_modeling.instances:
       penstockHeadLossFactors:
         '1': 0.0006
       waterValue: null
+      watercourse:
+        externalId: watercourse:Fornebu
+        space: power-ops
     source:
       external_id: Plant
       space: power-ops
@@ -273,6 +276,9 @@ data_modeling.instances:
       penstockHeadLossFactors:
         '1': 0.0113
       waterValue: null
+      watercourse:
+        externalId: watercourse:Fornebu
+        space: power-ops
     source:
       external_id: Plant
       space: power-ops
@@ -322,6 +328,9 @@ data_modeling.instances:
       penstockHeadLossFactors:
         '1': 0.0
       waterValue: null
+      watercourse:
+        externalId: watercourse:Fornebu
+        space: power-ops
     source:
       external_id: Plant
       space: power-ops
@@ -371,6 +380,9 @@ data_modeling.instances:
       penstockHeadLossFactors:
         '1': 0.0
       waterValue: null
+      watercourse:
+        externalId: watercourse:Fornebu
+        space: power-ops
     source:
       external_id: Plant
       space: power-ops
@@ -420,6 +432,9 @@ data_modeling.instances:
       penstockHeadLossFactors:
         '1': 0.022
       waterValue: '136120'
+      watercourse:
+        externalId: watercourse:Fornebu
+        space: power-ops
     source:
       external_id: Plant
       space: power-ops
@@ -470,6 +485,9 @@ data_modeling.instances:
         '1': 0.0007
         '2': 0.0005
       waterValue: null
+      watercourse:
+        externalId: watercourse:Fornebu
+        space: power-ops
     source:
       external_id: Plant
       space: power-ops
@@ -532,6 +550,9 @@ data_modeling.instances:
         '1': 0.0018
         '2': 0.0041
       waterValue: null
+      watercourse:
+        externalId: watercourse:Fornebu
+        space: power-ops
     source:
       external_id: Plant
       space: power-ops
@@ -593,6 +614,9 @@ data_modeling.instances:
       penstockHeadLossFactors:
         '1': 0.022
       waterValue: null
+      watercourse:
+        externalId: watercourse:Fornebu
+        space: power-ops
     source:
       external_id: Plant
       space: power-ops
@@ -642,6 +666,9 @@ data_modeling.instances:
       penstockHeadLossFactors:
         '1': 0.3125
       waterValue: null
+      watercourse:
+        externalId: watercourse:Fornebu
+        space: power-ops
     source:
       external_id: Plant
       space: power-ops

@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, ClassVar, Optional, Union
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
-from cognite.powerops.clients.data_classes._core import DomainModel, DomainModelApply, InstancesApply, TypeList
+from cognite.powerops.clients.data_classes._core import DomainModel, DomainModelApply, TypeList
 
 if TYPE_CHECKING:
     from cognite.powerops.clients.data_classes._plants import PlantApply
@@ -29,9 +29,9 @@ class WatercourseApply(DomainModelApply):
     production_obligation: list[str] = []
     shop: Optional[Union["WatercourseShopApply", str]] = Field(None, repr=False)
 
-    def _to_instances_apply(self, cache: set[str]) -> InstancesApply:
+    def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
-            return InstancesApply([], [])
+            return dm.InstancesApply(dm.NodeApplyList([]), dm.EdgeApplyList([]))
 
         sources = []
         source = dm.NodeOrEdgeData(
@@ -55,6 +55,7 @@ class WatercourseApply(DomainModelApply):
         )
         nodes = [this_node]
         edges = []
+        cache.add(self.external_id)
 
         for plant in self.plants:
             edge = self._create_plant_edge(plant)
@@ -72,7 +73,7 @@ class WatercourseApply(DomainModelApply):
             nodes.extend(instances.nodes)
             edges.extend(instances.edges)
 
-        return InstancesApply(nodes, edges)
+        return dm.InstancesApply(dm.NodeApplyList(nodes), dm.EdgeApplyList(edges))
 
     def _create_plant_edge(self, plant: Union[str, "PlantApply"]) -> dm.EdgeApply:
         if isinstance(plant, str):

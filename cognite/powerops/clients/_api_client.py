@@ -154,14 +154,19 @@ class PowerOpsClient:
     PowerOpsClient
 
     Generated with:
-        pygen = 0.12.3
-        cognite-sdk = 6.11.1
-        pydantic = 2.0.3
+        pygen = 0.15.2
+        cognite-sdk = 6.13.3
+        pydantic = 2.1.1
 
     """
 
-    def __init__(self, config: ClientConfig | None = None):
-        client = CogniteClient(config)
+    def __init__(self, config_or_client: CogniteClient | ClientConfig):
+        if isinstance(config_or_client, CogniteClient):
+            client = config_or_client
+        elif isinstance(config_or_client, ClientConfig):
+            client = CogniteClient(config_or_client)
+        else:
+            raise ValueError(f"Expected CogniteClient or ClientConfig, got {type(config_or_client)}")
         self.benchmark = BenchmarkAPIs(client)
         self.cog_shop = CogShopAPIs(client)
         self.day_ahead = DayAheadAPIs(client)
@@ -178,7 +183,14 @@ class PowerOpsClient:
         return cls(config)
 
     @classmethod
-    def from_toml(cls, file_path: Path | str) -> PowerOpsClient:
+    def from_toml(cls, file_path: Path | str, section: str | None = "cognite") -> PowerOpsClient:
         import toml
 
-        return cls.azure_project(**toml.load(file_path)["cognite"])
+        toml_content = toml.load(file_path)
+        if section is not None:
+            try:
+                toml_content = toml_content[section]
+            except KeyError:
+                raise ValueError(f"Could not find section '{section}' in {file_path}")
+
+        return cls.azure_project(**toml_content)
