@@ -30,7 +30,7 @@ class ScenarioMappingApply(DomainModelApply):
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
-            return dm.InstancesApply([], [])
+            return dm.InstancesApply(dm.NodeApplyList([]), dm.EdgeApplyList([]))
 
         sources = []
         source = dm.NodeOrEdgeData(
@@ -51,6 +51,7 @@ class ScenarioMappingApply(DomainModelApply):
         )
         nodes = [this_node]
         edges = []
+        cache.add(self.external_id)
 
         for mapping_override in self.mapping_override:
             edge = self._create_mapping_override_edge(mapping_override)
@@ -63,7 +64,7 @@ class ScenarioMappingApply(DomainModelApply):
                 nodes.extend(instances.nodes)
                 edges.extend(instances.edges)
 
-        return dm.InstancesApply(nodes, edges)
+        return dm.InstancesApply(dm.NodeApplyList(nodes), dm.EdgeApplyList(edges))
 
     def _create_mapping_override_edge(
         self, mapping_override: Union[str, "InputTimeSeriesMappingApply"]

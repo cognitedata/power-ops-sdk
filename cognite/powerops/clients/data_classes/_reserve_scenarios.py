@@ -29,7 +29,7 @@ class ReserveScenarioApply(DomainModelApply):
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
-            return dm.InstancesApply([], [])
+            return dm.InstancesApply(dm.NodeApplyList([]), dm.EdgeApplyList([]))
 
         sources = []
         source = dm.NodeOrEdgeData(
@@ -52,8 +52,9 @@ class ReserveScenarioApply(DomainModelApply):
         )
         nodes = [this_node]
         edges = []
+        cache.add(self.external_id)
 
-        return dm.InstancesApply(nodes, edges)
+        return dm.InstancesApply(dm.NodeApplyList(nodes), dm.EdgeApplyList(edges))
 
 
 class ReserveScenarioList(TypeList[ReserveScenario]):

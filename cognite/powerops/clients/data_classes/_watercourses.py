@@ -31,7 +31,7 @@ class WatercourseApply(DomainModelApply):
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
-            return dm.InstancesApply([], [])
+            return dm.InstancesApply(dm.NodeApplyList([]), dm.EdgeApplyList([]))
 
         sources = []
         source = dm.NodeOrEdgeData(
@@ -55,6 +55,7 @@ class WatercourseApply(DomainModelApply):
         )
         nodes = [this_node]
         edges = []
+        cache.add(self.external_id)
 
         for plant in self.plants:
             edge = self._create_plant_edge(plant)
@@ -72,7 +73,7 @@ class WatercourseApply(DomainModelApply):
             nodes.extend(instances.nodes)
             edges.extend(instances.edges)
 
-        return dm.InstancesApply(nodes, edges)
+        return dm.InstancesApply(dm.NodeApplyList(nodes), dm.EdgeApplyList(edges))
 
     def _create_plant_edge(self, plant: Union[str, "PlantApply"]) -> dm.EdgeApply:
         if isinstance(plant, str):

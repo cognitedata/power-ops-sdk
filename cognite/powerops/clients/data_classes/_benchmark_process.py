@@ -38,7 +38,7 @@ class BenchmarkProcesApply(DomainModelApply):
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
-            return dm.InstancesApply([], [])
+            return dm.InstancesApply(dm.NodeApplyList([]), dm.EdgeApplyList([]))
 
         sources = []
         source = dm.NodeOrEdgeData(
@@ -67,6 +67,7 @@ class BenchmarkProcesApply(DomainModelApply):
         )
         nodes = [this_node]
         edges = []
+        cache.add(self.external_id)
 
         for production_plan_time_series in self.production_plan_time_series:
             edge = self._create_production_plan_time_series_edge(production_plan_time_series)
@@ -89,7 +90,7 @@ class BenchmarkProcesApply(DomainModelApply):
             nodes.extend(instances.nodes)
             edges.extend(instances.edges)
 
-        return dm.InstancesApply(nodes, edges)
+        return dm.InstancesApply(dm.NodeApplyList(nodes), dm.EdgeApplyList(edges))
 
     def _create_production_plan_time_series_edge(
         self, production_plan_time_series: Union[str, "ProductionPlanTimeSeriesApply"]
