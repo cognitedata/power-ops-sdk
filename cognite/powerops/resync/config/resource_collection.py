@@ -69,19 +69,39 @@ class ResourceCollection(BaseModel):
             raise ValueError(f"Could not find external_id in {resource}")
 
         return {
-            "assets": sorted([dump_cdf_resource(asset) for asset in self.assets.values()], key=external_id),
-            "relationships": sorted(
-                [dump_cdf_resource(relationship) for relationship in self.relationships.values()], key=external_id
+            "assets": sorted(
+                [dump_cdf_resource(asset, remove_read_fields=True) for asset in self.assets.values()], key=external_id
             ),
-            "label_definitions": sorted(
-                [dump_cdf_resource(label_definition) for label_definition in self.label_definitions.values()],
+            "relationships": sorted(
+                [
+                    dump_cdf_resource(relationship, remove_read_fields=True)
+                    for relationship in self.relationships.values()
+                ],
                 key=external_id,
             ),
-            "events": sorted([dump_cdf_resource(event) for event in self.events.values()], key=external_id),
-            "files": sorted([dump_cdf_resource(file) for file in self.files.values()], key=external_id),
-            "sequences": sorted([dump_cdf_resource(sequence) for sequence in self.sequences.values()], key=external_id),
-            "nodes": sorted([dump_cdf_resource(node) for node in self.nodes.values()], key=external_id),
-            "edges": sorted([dump_cdf_resource(edge) for edge in self.edges.values()], key=external_id),
+            "label_definitions": sorted(
+                [
+                    dump_cdf_resource(label_definition, remove_read_fields=True)
+                    for label_definition in self.label_definitions.values()
+                ],
+                key=external_id,
+            ),
+            "events": sorted(
+                [dump_cdf_resource(event, remove_read_fields=True) for event in self.events.values()], key=external_id
+            ),
+            "files": sorted(
+                [dump_cdf_resource(file, remove_read_fields=True) for file in self.files.values()], key=external_id
+            ),
+            "sequences": sorted(
+                [dump_cdf_resource(sequence, remove_read_fields=True) for sequence in self.sequences.values()],
+                key=external_id,
+            ),
+            "nodes": sorted(
+                [dump_cdf_resource(node, remove_read_fields=True) for node in self.nodes.values()], key=external_id
+            ),
+            "edges": sorted(
+                [dump_cdf_resource(edge, remove_read_fields=True) for edge in self.edges.values()], key=external_id
+            ),
         }
 
     def __len__(self):
