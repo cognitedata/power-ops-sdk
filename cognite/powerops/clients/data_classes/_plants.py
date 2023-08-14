@@ -5,11 +5,12 @@ from typing import TYPE_CHECKING, ClassVar, Optional, Union
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
-from cognite.powerops.clients.data_classes._core import DomainModel, DomainModelApply, InstancesApply, TypeList
+from cognite.powerops.clients.data_classes._core import DomainModel, DomainModelApply, TypeList
 
 if TYPE_CHECKING:
     from cognite.powerops.clients.data_classes._generators import GeneratorApply
     from cognite.powerops.clients.data_classes._reservoirs import ReservoirApply
+    from cognite.powerops.clients.data_classes._watercourses import WatercourseApply
 
 __all__ = ["Plant", "PlantApply", "PlantList"]
 
@@ -33,6 +34,7 @@ class Plant(DomainModel):
     p_min_time_series: Optional[str] = Field(None, alias="pMinTimeSeries")
     penstock_head_loss_factors: Optional[dict] = Field(None, alias="penstockHeadLossFactors")
     water_value: Optional[str] = Field(None, alias="waterValue")
+    watercourse: Optional[str] = None
 
 
 class PlantApply(DomainModelApply):
@@ -54,10 +56,11 @@ class PlantApply(DomainModelApply):
     p_min_time_series: Optional[str] = None
     penstock_head_loss_factors: Optional[dict] = None
     water_value: Optional[str] = None
+    watercourse: Optional[Union["WatercourseApply", str]] = Field(None, repr=False)
 
-    def _to_instances_apply(self, cache: set[str]) -> InstancesApply:
+    def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
-            return InstancesApply([], [])
+            return dm.InstancesApply([], [])
 
         sources = []
         source = dm.NodeOrEdgeData(
@@ -78,6 +81,12 @@ class PlantApply(DomainModelApply):
                 "pMinTimeSeries": self.p_min_time_series,
                 "penstockHeadLossFactors": self.penstock_head_loss_factors,
                 "waterValue": self.water_value,
+                "watercourse": {
+                    "space": "power-ops",
+                    "externalId": self.watercourse
+                    if isinstance(self.watercourse, str)
+                    else self.watercourse.external_id,
+                },
             },
         )
         sources.append(source)
@@ -113,7 +122,12 @@ class PlantApply(DomainModelApply):
                 nodes.extend(instances.nodes)
                 edges.extend(instances.edges)
 
-        return InstancesApply(nodes, edges)
+        if isinstance(self.watercourse, DomainModelApply):
+            instances = self.watercourse._to_instances_apply(cache)
+            nodes.extend(instances.nodes)
+            edges.extend(instances.edges)
+
+        return dm.InstancesApply(nodes, edges)
 
     def _create_generator_edge(self, generator: Union[str, "GeneratorApply"]) -> dm.EdgeApply:
         if isinstance(generator, str):

@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, ClassVar, Optional, Union
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
-from cognite.powerops.clients.data_classes._core import DomainModel, DomainModelApply, InstancesApply, TypeList
+from cognite.powerops.clients.data_classes._core import DomainModel, DomainModelApply, TypeList
 
 if TYPE_CHECKING:
     from cognite.powerops.clients.data_classes._command_configs import CommandConfigApply
@@ -30,9 +30,9 @@ class ScenarioApply(DomainModelApply):
     name: Optional[str] = None
     template: Optional[Union["ScenarioTemplateApply", str]] = Field(None, repr=False)
 
-    def _to_instances_apply(self, cache: set[str]) -> InstancesApply:
+    def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
-            return InstancesApply([], [])
+            return dm.InstancesApply([], [])
 
         sources = []
         source = dm.NodeOrEdgeData(
@@ -79,7 +79,7 @@ class ScenarioApply(DomainModelApply):
             nodes.extend(instances.nodes)
             edges.extend(instances.edges)
 
-        return InstancesApply(nodes, edges)
+        return dm.InstancesApply(nodes, edges)
 
 
 class ScenarioList(TypeList[Scenario]):

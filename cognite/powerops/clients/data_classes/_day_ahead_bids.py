@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, ClassVar, Optional, Union
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
-from cognite.powerops.clients.data_classes._core import DomainModel, DomainModelApply, InstancesApply, TypeList
+from cognite.powerops.clients.data_classes._core import DomainModel, DomainModelApply, TypeList
 
 if TYPE_CHECKING:
     from cognite.powerops.clients.data_classes._date_transformations import DateTransformationApply
@@ -44,9 +44,9 @@ class DayAheadBidApply(DomainModelApply):
     price_scenarios: list[Union["ScenarioMappingApply", str]] = Field(default_factory=list, repr=False)
     watercourse: Optional[str] = None
 
-    def _to_instances_apply(self, cache: set[str]) -> InstancesApply:
+    def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
-            return InstancesApply([], [])
+            return dm.InstancesApply([], [])
 
         sources = []
         source = dm.NodeOrEdgeData(
@@ -104,7 +104,7 @@ class DayAheadBidApply(DomainModelApply):
             nodes.extend(instances.nodes)
             edges.extend(instances.edges)
 
-        return InstancesApply(nodes, edges)
+        return dm.InstancesApply(nodes, edges)
 
     def _create_date_edge(self, date: Union[str, "DateTransformationApply"]) -> dm.EdgeApply:
         if isinstance(date, str):

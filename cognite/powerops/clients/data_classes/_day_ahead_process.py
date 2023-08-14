@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, ClassVar, Optional, Union
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
-from cognite.powerops.clients.data_classes._core import DomainModel, DomainModelApply, InstancesApply, TypeList
+from cognite.powerops.clients.data_classes._core import DomainModel, DomainModelApply, TypeList
 
 if TYPE_CHECKING:
     from cognite.powerops.clients.data_classes._bid_matrix_generators import BidMatrixGeneratorApply
@@ -33,9 +33,9 @@ class DayAheadProcesApply(DomainModelApply):
     name: Optional[str] = None
     shop: Optional[Union["ShopTransformationApply", str]] = Field(None, repr=False)
 
-    def _to_instances_apply(self, cache: set[str]) -> InstancesApply:
+    def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
-            return InstancesApply([], [])
+            return dm.InstancesApply([], [])
 
         sources = []
         source = dm.NodeOrEdgeData(
@@ -95,7 +95,7 @@ class DayAheadProcesApply(DomainModelApply):
             nodes.extend(instances.nodes)
             edges.extend(instances.edges)
 
-        return InstancesApply(nodes, edges)
+        return dm.InstancesApply(nodes, edges)
 
     def _create_bid_matrix_generator_config_edge(
         self, bid_matrix_generator_config: Union[str, "BidMatrixGeneratorApply"]

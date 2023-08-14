@@ -5,7 +5,7 @@ from typing import ClassVar, Optional
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
-from cognite.powerops.clients.data_classes._core import DomainModel, DomainModelApply, InstancesApply, TypeList
+from cognite.powerops.clients.data_classes._core import DomainModel, DomainModelApply, TypeList
 
 __all__ = ["Generator", "GeneratorApply", "GeneratorList"]
 
@@ -31,9 +31,9 @@ class GeneratorApply(DomainModelApply):
     startcost: Optional[float] = None
     turbine_efficiency_curve: Optional[str] = None
 
-    def _to_instances_apply(self, cache: set[str]) -> InstancesApply:
+    def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
-            return InstancesApply([], [])
+            return dm.InstancesApply([], [])
 
         sources = []
         source = dm.NodeOrEdgeData(
@@ -59,7 +59,7 @@ class GeneratorApply(DomainModelApply):
         nodes = [this_node]
         edges = []
 
-        return InstancesApply(nodes, edges)
+        return dm.InstancesApply(nodes, edges)
 
 
 class GeneratorList(TypeList[Generator]):
