@@ -13,6 +13,12 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.35.0] - 2023-08-11
+
+### Added
+* Extended the `Production` data model with a relation from `Plant`to `Watercourse`.
+
+
 ## [0.34.1] - 2023-08-11
 
 ### Fixed
