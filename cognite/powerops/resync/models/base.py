@@ -13,10 +13,10 @@ from pydantic import BaseModel, ConfigDict
 
 from cognite.client import CogniteClient
 from cognite.client.data_classes import Asset, Label, Relationship, TimeSeries
-from cognite.client.data_classes.data_modeling.instances import EdgeApply, NodeApply
+from cognite.client.data_classes.data_modeling.instances import EdgeApply, NodeApply, InstancesApply
 
 from cognite.powerops.cdf_labels import AssetLabel, RelationshipLabel
-from cognite.powerops.clients.data_classes._core import DomainModelApply, InstancesApply
+from cognite.powerops.clients.data_classes._core import DomainModelApply
 from cognite.powerops.resync.models.cdf_resources import CDFFile, CDFSequence
 from cognite.powerops.resync.models.helpers import (
     format_change_binary,
