@@ -34,12 +34,20 @@ def plan(
     echo: Optional[Callable[[str], None]] = None,
     model_names: Optional[str | list[str]] = None,
     dump_folder: Optional[Path] = None,
+    echo_pretty: Optional[Callable[[Any], None]] = None,
 ) -> None:
     echo = echo or print
+    echo_pretty: Callable[[Any], None] = echo_pretty or echo
     model_names = _cli_names_to_resync_names(model_names)
     client = get_powerops_client()
     bootstrap_resources, config, models = _load_transform(market, path, client.cdf.config.project, echo, model_names)
     _remove_non_existing_relationship_time_series_targets(client.cdf, models, bootstrap_resources, echo)
+
+    summaries = {}
+    for model in models:
+        summaries.update(model.summary())
+    echo("Summary of local models:")
+    echo_pretty(summaries)
 
     # ResourceCollection currently collects all resources, not dependent on the local model
     cdf_bootstrap_resources = ResourceCollection.from_cdf(

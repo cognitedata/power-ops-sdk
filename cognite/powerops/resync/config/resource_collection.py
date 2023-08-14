@@ -11,7 +11,6 @@ from cognite.client.exceptions import CogniteAPIError
 from deepdiff import DeepDiff  # type: ignore[import]
 from pydantic import BaseModel, Extra
 
-import operator
 from cognite.powerops.clients.powerops_client import PowerOpsClient
 from cognite.powerops.resync.config.shared import ExternalId
 from cognite.powerops.resync.models.cdf_resources import CDFFile, CDFSequence
@@ -30,13 +29,18 @@ AddableResourceT = Union[
 ]
 
 
-def dump_cdf_resource(resource) -> dict:
+def dump_cdf_resource(resource, remove_read_fields: bool = False) -> dict[str, Any]:
     """Legacy or DM resource."""
     try:
         dump_func = resource.dump
     except AttributeError:
         dump_func = resource.dict
-    return dump_func()
+    if not remove_read_fields:
+        return dump_func()
+    dumped = dump_func()
+    for key in ["created_time", "last_updated_time", "data_set_id", "id"]:
+        dumped.pop(key, None)
+    return dumped
 
 
 class ResourceCollection(BaseModel):
@@ -57,7 +61,13 @@ class ResourceCollection(BaseModel):
         extra = Extra.forbid
 
     def dump(self) -> dict[str, Any]:
-        external_id = operator.attrgetter("external_id")
+        def external_id(resource):
+            if hasattr(resource, "external_id"):
+                return resource.external_id
+            elif isinstance(resource, dict) and ("external_id" in resource or "externalId" in resource):
+                return resource.get("external_id", resource.get("externalId"))
+            raise ValueError(f"Could not find external_id in {resource}")
+
         return {
             "assets": sorted([dump_cdf_resource(asset) for asset in self.assets.values()], key=external_id),
             "relationships": sorted(
