@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 from pathlib import Path
-from typing import Annotated
+from typing import Annotated, Optional
 
 import typer
 from rich.console import Console
@@ -52,12 +52,13 @@ def plan(
         default=["all"],
         help=f"The models to run the plan. Available models: {', '.join(resync.AVAILABLE_MODELS)}",
     ),
+    dump_folder: Optional[Path] = typer.Option(default=None, help="Path to dump the the models to for local and cdf"),
 ):
     log.info(f"Running plan on configuration files located in {path}")
     if len(models) == 1 and models[0].lower() == "all":
         models = list(MODEL_BY_NAME.keys())
 
-    resync.plan(path, market, echo=log.info, model_names=models)
+    resync.plan(path, market, echo=log.info, model_names=models, dump_folder=dump_folder)
 
 
 @app.command("apply", help="Apply the changes from the configuration files to the data model in CDF")

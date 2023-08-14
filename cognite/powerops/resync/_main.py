@@ -14,6 +14,7 @@ from cognite.powerops.resync.config.resource_collection import ResourceCollectio
 from cognite.powerops.resync.config.resync_config import ReSyncConfig
 from cognite.powerops.resync.models.base import Model, AssetModel
 from cognite.powerops.resync.to_models.transform import transform
+from yaml import safe_dump
 
 AVAILABLE_MODELS = [
     "ProductionAsset",
@@ -28,7 +29,11 @@ AVAILABLE_MODELS = [
 
 
 def plan(
-    path: Path, market: str, echo: Optional[Callable[[str], None]] = None, model_names: Optional[str | list[str]] = None
+    path: Path,
+    market: str,
+    echo: Optional[Callable[[str], None]] = None,
+    model_names: Optional[str | list[str]] = None,
+    dump_folder: Optional[Path] = None,
 ) -> None:
     echo = echo or print
     model_names = _cli_names_to_resync_names(model_names)
@@ -40,6 +45,12 @@ def plan(
     cdf_bootstrap_resources = ResourceCollection.from_cdf(
         po_client=client, data_set_external_id=config.settings.data_set_external_id
     )
+    if dump_folder:
+        dump_folder.mkdir(parents=True, exist_ok=True)
+
+        (dump_folder / "local.yaml").write_text(safe_dump(bootstrap_resources.dump()))
+        (dump_folder / "cdf.yaml").write_text(safe_dump(cdf_bootstrap_resources.dump()))
+
     # 2.b - preview diff
     echo(ResourceCollection.prettify_differences(bootstrap_resources.difference(cdf_bootstrap_resources)))
 

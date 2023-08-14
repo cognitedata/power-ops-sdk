@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import logging
-from typing import Union, Sequence
+from typing import Union, Sequence, Any
 
 from cognite.client.data_classes import Asset, Event, LabelDefinition, Relationship
 from cognite.client.data_classes._base import CogniteResource, CogniteResourceList
@@ -11,6 +11,7 @@ from cognite.client.exceptions import CogniteAPIError
 from deepdiff import DeepDiff  # type: ignore[import]
 from pydantic import BaseModel, Extra
 
+import operator
 from cognite.powerops.clients.powerops_client import PowerOpsClient
 from cognite.powerops.resync.config.shared import ExternalId
 from cognite.powerops.resync.models.cdf_resources import CDFFile, CDFSequence
@@ -54,6 +55,24 @@ class ResourceCollection(BaseModel):
     class Config:
         arbitrary_types_allowed = True
         extra = Extra.forbid
+
+    def dump(self) -> dict[str, Any]:
+        external_id = operator.attrgetter("external_id")
+        return {
+            "assets": sorted([dump_cdf_resource(asset) for asset in self.assets.values()], key=external_id),
+            "relationships": sorted(
+                [dump_cdf_resource(relationship) for relationship in self.relationships.values()], key=external_id
+            ),
+            "label_definitions": sorted(
+                [dump_cdf_resource(label_definition) for label_definition in self.label_definitions.values()],
+                key=external_id,
+            ),
+            "events": sorted([dump_cdf_resource(event) for event in self.events.values()], key=external_id),
+            "files": sorted([dump_cdf_resource(file) for file in self.files.values()], key=external_id),
+            "sequences": sorted([dump_cdf_resource(sequence) for sequence in self.sequences.values()], key=external_id),
+            "nodes": sorted([dump_cdf_resource(node) for node in self.nodes.values()], key=external_id),
+            "edges": sorted([dump_cdf_resource(edge) for edge in self.edges.values()], key=external_id),
+        }
 
     def __len__(self):
         return len(self.all_cdf_resources)
