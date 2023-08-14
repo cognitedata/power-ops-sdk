@@ -209,7 +209,6 @@ def to_production_model(config: ProductionConfig) -> production.ProductionModel:
                 price_area.watercourses.append(watercourse)
 
         model.plants.extend(plants)
-
     return model
 
 

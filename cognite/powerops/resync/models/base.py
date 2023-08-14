@@ -67,9 +67,7 @@ class AssetType(ResourceType, ABC):
 
     @property
     def external_id(self) -> str:
-        if self._external_id:
-            return self._external_id
-        return f"{self.type_}_{self.name}"
+        return self._external_id or f"{self.type_}_{self.name}"
 
     @external_id.setter
     def external_id(self, value: str) -> None:
@@ -87,9 +85,7 @@ class AssetType(ResourceType, ABC):
 
     @property
     def type_(self) -> str:
-        if self._type:
-            return self._type
-        return self.parent_external_id.removesuffix("s")
+        return self._type or self.parent_external_id.removesuffix("s")
 
     @type_.setter
     def type_(self, value: str) -> None:

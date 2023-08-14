@@ -32,3 +32,8 @@ class CogShopAsset(CogShopCore, AssetModel):
     root_asset: ClassVar[Optional[Asset]] = None
     base_mappings: list[CDFSequence] = Field(default_factory=list)
     output_definitions: list[CDFSequence] = Field(default_factory=list)
+
+    @classmethod
+    def from_cdf(cls, client) -> "CogShopAsset":
+        # TODO: undetermined how to handle
+        raise NotImplementedError()

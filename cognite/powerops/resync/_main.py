@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional, Callable, overload, Any
 from uuid import uuid4
@@ -31,17 +31,16 @@ def plan(
     path: Path, market: str, echo: Optional[Callable[[str], None]] = None, model_names: Optional[str | list[str]] = None
 ) -> None:
     echo = echo or print
-    model_names = [model_names] if isinstance(model_names, str) else model_names or AVAILABLE_MODELS
+    model_names = _cli_names_to_resync_names(model_names)
     client = get_powerops_client()
     bootstrap_resources, config, models = _load_transform(market, path, client.cdf.config.project, echo, model_names)
-
     _remove_non_existing_relationship_time_series_targets(client.cdf, models, bootstrap_resources, echo)
 
-    # 2.b - preview diff
-    cdf_bootstrap_resources = bootstrap_resources.from_cdf(
+    # ResourceCollection currently collects all resources, not dependent on the local model
+    cdf_bootstrap_resources = ResourceCollection.from_cdf(
         po_client=client, data_set_external_id=config.settings.data_set_external_id
     )
-
+    # 2.b - preview diff
     echo(ResourceCollection.prettify_differences(bootstrap_resources.difference(cdf_bootstrap_resources)))
 
 
@@ -79,7 +78,7 @@ def apply(
 ) -> Model | list[Model]:
     echo = echo or print
     echo_pretty = echo_pretty or echo
-    model_names = [model_names] if isinstance(model_names, str) else model_names or AVAILABLE_MODELS
+    model_names = _cli_names_to_resync_names(model_names)
     client = get_powerops_client()
     collection, config, models = _load_transform(market, path, client.cdf.config.project, echo, model_names)
 
@@ -93,11 +92,7 @@ def apply(
 
     echo("Models About to be uploaded")
     echo_pretty(summaries)
-    if not auto_yes:
-        ans = input("Continue? (y/n)")
-    else:
-        ans = "y"
-
+    ans = "y" if auto_yes else input("Continue? (y/n)")
     if ans.lower() == "y":
         # Step 3 - write bootstrap resources from diffs to CDF
         collection.write_to_cdf(
@@ -108,9 +103,8 @@ def apply(
         echo("Resync written to CDF")
     else:
         echo("Aborting")
-    if len(model_names) == 1:
-        return models[0]
-    return models
+
+    return models[0] if len(model_names) == 1 else models
 
 
 def _load_transform(
@@ -130,7 +124,7 @@ def _load_transform(
 
 def _create_bootstrap_finished_event(echo: Callable[[str], None]) -> Event:
     """Creating a POWEROPS_BOOTSTRAP_FINISHED Event in CDF to signal that bootstrap scripts have been ran"""
-    current_time = int(datetime.utcnow().timestamp() * 1000)  # in milliseconds
+    current_time = int(datetime.now(timezone.utc).timestamp() * 1000)  # in milliseconds
     event = Event(
         start_time=current_time,
         end_time=current_time,
@@ -148,10 +142,15 @@ def _remove_non_existing_relationship_time_series_targets(
     client: CogniteClient, models: list[Model], collection: ResourceCollection, echo: Callable[[str], None]
 ) -> None:
     """Validates that all relationships in the collection have targets that exist in CDF"""
+    to_delete = set()
     for model in models:
         if not isinstance(model, AssetModel):
             continue
         time_series = model.time_series()
+        # retrieve_multiple fails if no time series are provided
+        if not time_series:
+            continue
+
         existing_time_series = client.time_series.retrieve_multiple(
             external_ids=list({t.external_id for t in time_series if t.external_id}), ignore_unknown_ids=True
         )
@@ -173,6 +172,23 @@ def _remove_non_existing_relationship_time_series_targets(
         for external_id in to_delete:
             if external_id:
                 collection.relationships.pop(external_id, None)
+
+
+# Only needed while we support both asset models and data models
+def _cli_names_to_resync_names(model_names: Optional[str | list[str]]) -> list[str]:
+    """Map model names as accepted by cli to available models in resync"""
+    if not model_names:
+        return AVAILABLE_MODELS
+    cli_names = {model_names} if isinstance(model_names, str) else set(model_names)
+
+    res: list[str] = []
+    for m in AVAILABLE_MODELS:
+        res.extend(m for c in cli_names if c.casefold() in m.casefold())
+
+    # If any of the market models are present, add the MarketAsset
+    if {"dayahead", "rkom", "benchmark"}.intersection(cli_names):
+        res.append("MarketAsset")
+    return res
 
 
 if __name__ == "__main__":
