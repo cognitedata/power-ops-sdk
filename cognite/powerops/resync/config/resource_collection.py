@@ -15,6 +15,7 @@ from cognite.powerops.clients.powerops_client import PowerOpsClient
 from cognite.powerops.resync.config.shared import ExternalId
 from cognite.powerops.resync.models.cdf_resources import CDFFile, CDFSequence
 from cognite.powerops.utils.cdf.calls import upsert_cognite_resources, CogniteAPI
+from cognite.client.utils._text import to_camel_case
 
 logger = logging.getLogger(__name__)
 
@@ -38,8 +39,9 @@ def dump_cdf_resource(resource, remove_read_fields: bool = False) -> dict[str, A
     if not remove_read_fields:
         return dump_func()
     dumped = dump_func()
-    for key in ["created_time", "last_updated_time", "data_set_id", "id"]:
+    for key in ["created_time", "last_updated_time", "data_set_id", "id", "parent_id", "root_id"]:
         dumped.pop(key, None)
+        dumped.pop(to_camel_case(key), None)
     return dumped
 
 

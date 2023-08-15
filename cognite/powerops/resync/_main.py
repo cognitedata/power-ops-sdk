@@ -49,18 +49,18 @@ def plan(
     echo("Summary of local models:")
     echo_pretty(summaries)
 
-    # ResourceCollection currently collects all resources, not dependent on the local model
-    cdf_bootstrap_resources = ResourceCollection.from_cdf(
-        po_client=client, data_set_external_id=config.settings.data_set_external_id
-    )
-    if dump_folder:
-        dump_folder.mkdir(parents=True, exist_ok=True)
+    for model in models:
+        if isinstance(model, AssetModel):
+            cdf_model = type(model).from_cdf(client.cdf, fetch_metadata=True, fetch_content=False)
+            cdf_model.difference(model, print_string=True)
 
-        (dump_folder / "local.yaml").write_text(safe_dump(bootstrap_resources.dump()))
-        (dump_folder / "cdf.yaml").write_text(safe_dump(cdf_bootstrap_resources.dump()))
+            if dump_folder:
+                dump_folder.mkdir(parents=True, exist_ok=True)
 
-    # 2.b - preview diff
-    echo(ResourceCollection.prettify_differences(bootstrap_resources.difference(cdf_bootstrap_resources)))
+                (dump_folder / f"local_{type(model).__name__}.yaml").write_text(safe_dump(model.dump()))
+                (dump_folder / f"cdf_{type(model).__name__}.yaml").write_text(safe_dump(cdf_model.dump()))
+        else:
+            raise NotImplementedError("Missing support for non-asset models")
 
 
 @overload
@@ -129,6 +129,7 @@ def apply(
 def _load_transform(
     market: str, path: Path, cdf_project: str, echo: Callable[[str], None], model_names: list[str]
 ) -> tuple[ResourceCollection, ReSyncConfig, list[Model]]:
+    echo(f"Loading and transforming {', '.join(model_names)}")
     # Step 1 - configure and validate config
     config = ReSyncConfig.from_yamls(path, cdf_project)
     configure_debug_logging(config.settings.debug_level)

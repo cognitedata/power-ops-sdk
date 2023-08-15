@@ -13,7 +13,13 @@ from pydantic import BaseModel, ConfigDict
 
 from cognite.client import CogniteClient
 from cognite.client.data_classes import Asset, Label, Relationship, TimeSeries
-from cognite.client.data_classes.data_modeling.instances import EdgeApply, NodeApply, InstancesApply
+from cognite.client.data_classes.data_modeling.instances import (
+    EdgeApply,
+    NodeApply,
+    InstancesApply,
+    NodeApplyList,
+    EdgeApplyList,
+)
 
 from cognite.powerops.cdf_labels import AssetLabel, RelationshipLabel
 from cognite.powerops.clients.data_classes._core import DomainModelApply
@@ -26,6 +32,7 @@ from cognite.powerops.resync.models.helpers import (
     match_field_from_relationship,
     pydantic_model_class_candidate,
 )
+from cognite.powerops.resync.utils.serializer import remove_read_only_fields
 
 _T_Type = TypeVar("_T_Type")
 
@@ -391,6 +398,13 @@ class Model(BaseModel, ABC):
         time_series.extend(self._fields_of_type(TimeSeries))
         return time_series
 
+    def drop_content(self) -> None:
+        for item in self._resource_types():
+            for sequence in item.sequences():
+                sequence.content = None
+            for file in item.files():
+                file.content = None
+
     def _resource_types(self) -> Iterable[ResourceType]:
         for f in self.model_fields:
             if isinstance(items := getattr(self, f), list) and items and isinstance(items[0], ResourceType):
@@ -417,6 +431,29 @@ class Model(BaseModel, ABC):
         summary[self.model_name]["cdf"]["files"] = len(self.files())
         summary[self.model_name]["cdf"]["sequences"] = len(self.sequences())
         return summary
+
+    def dump(self) -> dict[str, Any]:
+        output: dict[str, Any] = {}
+        if time_series := self.time_series():
+            output["time_series"] = sorted(
+                ({"external_id": ts.external_id} if isinstance(ts, TimeSeries) else ts for ts in time_series),
+                key=self._external_id_key,
+            )
+        for field_method in [self.sequences, self.files]:
+            if resources := field_method():
+                output[field_method.__name__] = sorted(
+                    (remove_read_only_fields(resource.dump(camel_case=False)) for resource in resources),
+                    key=self._external_id_key,
+                )
+        return output
+
+    @classmethod
+    def _external_id_key(cls, resource: dict | Any) -> str:
+        if hasattr(resource, "external_id"):
+            return resource.external_id
+        elif isinstance(resource, dict) and ("external_id" in resource or "externalId" in resource):
+            return resource.get("external_id", resource.get("externalId"))
+        raise ValueError(f"Could not find external_id in {resource}")
 
 
 class AssetModel(Model, ABC):
@@ -478,6 +515,16 @@ class AssetModel(Model, ABC):
         summary[self.model_name]["cdf"]["parent_assets"] = len(self.parent_assets())
         return summary
 
+    def dump(self) -> dict[str, Any]:
+        output = super().dump()
+        for field_method in [self.assets, self.relationships, self.parent_assets]:
+            if resources := field_method():
+                output[field_method.__name__] = sorted(
+                    (remove_read_only_fields(resource.dump(camel_case=False)) for resource in resources),
+                    key=self._external_id_key,
+                )
+        return output
+
     @classmethod
     def from_cdf(
         cls: TypingType[T_Asset_Model],
@@ -489,7 +536,6 @@ class AssetModel(Model, ABC):
             raise ValueError("Cannot fetch content without also fetching metadata")
 
         output = defaultdict(list)
-
         for field_name, asset_cls in cls._field_name_asset_resource_class():
             assets = client.assets.retrieve_subtree(external_id=asset_cls.parent_external_id)
             for asset in assets:
@@ -565,7 +611,7 @@ class DataModel(Model, ABC):
                 if edge.external_id not in edges:
                     edges[edge.external_id] = edge
 
-        return InstancesApply(nodes=list(nodes.values()), edges=list(edges.values()))
+        return InstancesApply(nodes=NodeApplyList(nodes.values()), edges=EdgeApplyList(edges.values()))
 
     def _domain_models(self) -> Iterable[DomainModelApply]:
         for field_name in self.model_fields:
@@ -583,6 +629,17 @@ class DataModel(Model, ABC):
         summary[self.model_name]["cdf"]["nodes"] = len(instances.nodes)
         summary[self.model_name]["cdf"]["edges"] = len(instances.edges)
         return summary
+
+    def dump(self) -> dict[str, Any]:
+        output = super().dump()
+        instances = self.instances()
+        for instance_type in ["nodes", "edges"]:
+            if resources := getattr(instances, instance_type):
+                output[instance_type] = sorted(
+                    (remove_read_only_fields(resource.dump(camel_case=False)) for resource in resources),
+                    key=self._external_id_key,
+                )
+        return output
 
 
 class _DiffFormatter:

@@ -6,8 +6,9 @@ import warnings
 from functools import lru_cache
 from io import StringIO
 from pathlib import Path
-
+from typing import Any
 from yaml import safe_dump, safe_load
+from cognite.client.utils._text import to_camel_case
 
 # � character is used to represent unrecognizable characters in utf-8.
 UNRECOGNIZABLE_CHARACTER = "�"
@@ -20,6 +21,15 @@ VALID_CHARACTERS = set(
     + string.whitespace
     + "æøåÆØÅ"
 )
+
+_READ_ONLY_FIELDS = ["created_time", "last_updated_time", "uploaded_time", "data_set_id", "id", "parent_id", "root_id"]
+
+
+def remove_read_only_fields(cdf_resource: dict[str, Any]) -> dict[str, Any]:
+    for field in _READ_ONLY_FIELDS:
+        cdf_resource.pop(field, None)
+        cdf_resource.pop(to_camel_case(field), None)
+    return cdf_resource
 
 
 def _validate(yaml_path: Path):

@@ -1,21 +1,13 @@
 from __future__ import annotations
 
-from abc import ABC, abstractclassmethod, abstractmethod
+from abc import ABC, abstractmethod
 from typing import Any, ClassVar, Optional
 
 import pandas as pd
 from cognite.client import CogniteClient
 from cognite.client.data_classes import FileMetadata, Sequence
 from pydantic import BaseModel, ConfigDict
-
-_READ_ONLY_FIELDS = [
-    "created_time",
-    "last_updated_time",
-    "lastUpdatedTime",
-    "createdTime",
-    "uploaded_time",
-    "uploadedTime",
-]
+from cognite.powerops.resync.utils.serializer import remove_read_only_fields
 
 
 class _CDFResource(BaseModel, ABC):
@@ -27,11 +19,11 @@ class _CDFResource(BaseModel, ABC):
 
     def dump(self, camel_case: bool = False) -> dict[str, Any]:
         dump = self._dump(camel_case)
-        for read_only_field in _READ_ONLY_FIELDS:
-            dump.pop(read_only_field, None)
+        remove_read_only_fields(dump)
         return dump
 
-    @abstractclassmethod
+    @classmethod
+    @abstractmethod
     def from_cdf(
         cls,
         client: CogniteClient,
