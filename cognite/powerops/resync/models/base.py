@@ -439,12 +439,23 @@ class Model(BaseModel, ABC):
                 ({"external_id": ts.external_id} if isinstance(ts, TimeSeries) else ts for ts in time_series),
                 key=self._external_id_key,
             )
-        for field_method in [self.sequences, self.files]:
-            if resources := field_method():
-                output[field_method.__name__] = sorted(
-                    (remove_read_only_fields(resource.dump(camel_case=False)) for resource in resources),
-                    key=self._external_id_key,
-                )
+        if files := self.files():
+            output["files"] = sorted(
+                (remove_read_only_fields(file.dump(camel_case=False)) for file in files),
+                key=self._external_id_key,
+            )
+        if sequences := self.sequences():
+
+            def dump_sequence(resource: CDFSequence) -> dict[str, Any]:
+                output = remove_read_only_fields(resource.dump(camel_case=False))
+                if "columns" in output:
+                    output["columns"] = remove_read_only_fields(output["columns"])
+                return output
+
+            output["sequences"] = sorted(
+                (dump_sequence(sequence) for sequence in sequences),
+                key=self._external_id_key,
+            )
         return output
 
     @classmethod

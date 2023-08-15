@@ -56,9 +56,10 @@ def plan(
 
             if dump_folder:
                 dump_folder.mkdir(parents=True, exist_ok=True)
+                model.model_name
 
-                (dump_folder / f"local_{type(model).__name__}.yaml").write_text(safe_dump(model.dump()))
-                (dump_folder / f"cdf_{type(model).__name__}.yaml").write_text(safe_dump(cdf_model.dump()))
+                (dump_folder / f"{model.model_name}_local.yaml").write_text(safe_dump(model.dump()))
+                (dump_folder / f"{model.model_name}_cdf.yaml").write_text(safe_dump(cdf_model.dump()))
         else:
             raise NotImplementedError("Missing support for non-asset models")
 
