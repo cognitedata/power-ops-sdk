@@ -1,5 +1,5 @@
 from __future__ import annotations
-from collections import defaultdict
+from collections import defaultdict, Counter
 
 import json
 from abc import ABC
@@ -226,8 +226,23 @@ class AssetType(ResourceType, ABC):
         )
 
     @classmethod
-    def _parse_asset_metadata(cls, metadata: dict[str, Any] = None) -> dict[str, Any]:
-        raise NotImplementedError()
+    def _parse_asset_metadata(cls, metadata: dict[str, str] | None = None) -> dict[str, dict | str]:
+        if not metadata:
+            return {}
+        output: dict[str, dict | str] = {}
+        for key, value in metadata.items():
+            counts = Counter(key)
+            if counts[":"] == 1:
+                field_name, sub_key = key.split(":")
+                if field_name not in output:
+                    output[field_name] = {}
+                output[field_name][sub_key] = value
+            elif counts[":"] == 0:
+                output[key] = value
+            else:
+                raise NotImplementedError("Nested keys more than one level is not supported")
+
+        return output
 
     @classmethod
     def _from_asset(

@@ -1,6 +1,6 @@
 from typing import ClassVar, Optional
 
-from cognite.client import CogniteClient
+
 from cognite.client.data_classes import Asset
 from pydantic.dataclasses import Field
 
@@ -39,17 +39,6 @@ class MarketModel(AssetModel):
                 "tenant_id": tenant_id,
             },
         )
-
-    @classmethod
-    def from_cdf(
-        cls,
-        client: CogniteClient,
-        fetch_metadata: bool = True,
-        fetch_content: bool = False,
-    ) -> "MarketModel":
-        # TODO:
-        # * Missing a from `from_asset` method on each AssetType
-        raise NotImplementedError()
 
 
 __all__ = [
