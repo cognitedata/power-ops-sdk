@@ -52,7 +52,6 @@ def plan(
     for model in models:
         if isinstance(model, AssetModel):
             cdf_model = type(model).from_cdf(client.cdf, fetch_metadata=True, fetch_content=False)
-            cdf_model.difference(model, print_string=True)
 
             if dump_folder:
                 dump_folder.mkdir(parents=True, exist_ok=True)
@@ -60,6 +59,8 @@ def plan(
 
                 (dump_folder / f"{model.model_name}_local.yaml").write_text(safe_dump(model.dump()))
                 (dump_folder / f"{model.model_name}_cdf.yaml").write_text(safe_dump(cdf_model.dump()))
+            else:
+                cdf_model.difference(model, print_string=True)
         else:
             raise NotImplementedError("Missing support for non-asset models")
 

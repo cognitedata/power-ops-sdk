@@ -25,10 +25,14 @@ VALID_CHARACTERS = set(
 _READ_ONLY_FIELDS = ["created_time", "last_updated_time", "uploaded_time", "data_set_id", "id", "parent_id", "root_id"]
 
 
-def remove_read_only_fields(cdf_resource: dict[str, Any]) -> dict[str, Any]:
+def remove_read_only_fields(cdf_resource: dict[str, Any], remove_empty: bool = True) -> dict[str, Any]:
     for field in _READ_ONLY_FIELDS:
         cdf_resource.pop(field, None)
         cdf_resource.pop(to_camel_case(field), None)
+    if remove_empty:
+        for field in list(cdf_resource):
+            if not cdf_resource[field]:
+                cdf_resource.pop(field)
     return cdf_resource
 
 

@@ -448,8 +448,9 @@ class Model(BaseModel, ABC):
 
             def dump_sequence(resource: CDFSequence) -> dict[str, Any]:
                 output = remove_read_only_fields(resource.dump(camel_case=False))
-                if "columns" in output:
-                    output["columns"] = remove_read_only_fields(output["columns"])
+                if (columns := output.get("columns")) and isinstance(columns, list):
+                    for no, column in enumerate(columns):
+                        output["columns"][no] = remove_read_only_fields(column)
                 return output
 
             output["sequences"] = sorted(
