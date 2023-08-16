@@ -43,15 +43,13 @@ def plan(
     bootstrap_resources, config, models = _load_transform(market, path, client.cdf.config.project, echo, model_names)
     _remove_non_existing_relationship_time_series_targets(client.cdf, models, bootstrap_resources, echo)
 
-    summaries = {}
-    for model in models:
-        summaries.update(model.summary())
-    echo("Summary of local models:")
-    echo_pretty(summaries)
-
     for model in models:
         if isinstance(model, AssetModel):
             cdf_model = type(model).from_cdf(client.cdf, fetch_metadata=True, fetch_content=False)
+
+            summary_diff = model.summary_diff(cdf_model)
+            echo(f"Summary diff for {model.model_name}")
+            echo_pretty(summary_diff)
 
             if dump_folder:
                 dump_folder.mkdir(parents=True, exist_ok=True)

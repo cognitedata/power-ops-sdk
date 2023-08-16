@@ -455,7 +455,38 @@ class Model(BaseModel, ABC):
         }
         summary[self.model_name]["cdf"]["files"] = len(self.files())
         summary[self.model_name]["cdf"]["sequences"] = len(self.sequences())
+        summary[self.model_name]["cdf"]["time_series"] = len(self.time_series())
         return summary
+
+    def dump_external_ids(self) -> dict[str, dict, str, dict[str, list[str]]]:
+        output: dict[str, dict, str, dict[str, list[str]]] = {self.model_name: {"domain": {}, "cdf": {}}}
+        output[self.model_name]["domain"] = {
+            field_name: [(v.external_id if hasattr(v, "external_id") else str(v)) for v in value]
+            if isinstance(value := getattr(self, field_name), (list, dict))
+            else [value.external_id if hasattr(value, "external_id") else str(value)]
+            for field_name in self.model_fields
+        }
+        output[self.model_name]["cdf"]["files"] = [file.external_id for file in self.files()]
+        output[self.model_name]["cdf"]["sequences"] = [sequence.external_id for sequence in self.sequences()]
+        output[self.model_name]["cdf"]["time_series"] = [time_series.external_id for time_series in self.time_series()]
+        return output
+
+    def summary_diff(self: T_Model, other: T_Model) -> dict[str, dict[str, dict[str, dict[str, int]]]]:
+        this_summary = self.dump_external_ids()
+        other_summary = other.dump_external_ids()
+        output: dict[str, dict[str, dict[str, dict[str, int]]]] = {}
+        for model_name in this_summary:
+            output[model_name] = {}
+            for domain in this_summary[model_name]:
+                output[model_name][domain] = {}
+                for type_ in this_summary[model_name][domain]:
+                    this_ext_ids = set(this_summary[model_name][domain][type_])
+                    other_ext_ids = set(other_summary[model_name][domain][type_])
+                    output[model_name][domain][type_] = {
+                        "added": len(this_ext_ids - other_ext_ids),
+                        "removed": len(other_ext_ids - this_ext_ids),
+                    }
+        return output
 
     def dump(self) -> dict[str, Any]:
         output: dict[str, Any] = {}
@@ -491,6 +522,9 @@ class Model(BaseModel, ABC):
         elif isinstance(resource, dict) and ("external_id" in resource or "externalId" in resource):
             return resource.get("external_id", resource.get("externalId"))
         raise ValueError(f"Could not find external_id in {resource}")
+
+
+T_Model = TypeVar("T_Model", bound=Model)
 
 
 class AssetModel(Model, ABC):
@@ -556,6 +590,15 @@ class AssetModel(Model, ABC):
         summary[self.model_name]["cdf"]["relationships"] = len(self.relationships())
         summary[self.model_name]["cdf"]["parent_assets"] = len(self.parent_assets())
         return summary
+
+    def dump_external_ids(self) -> dict[str, dict, str, dict[str, list[str]]]:
+        output = super().dump_external_ids()
+        output[self.model_name]["cdf"]["assets"] = [asset.external_id for asset in self.assets()]
+        output[self.model_name]["cdf"]["relationships"] = [
+            relationship.external_id for relationship in self.relationships()
+        ]
+        output[self.model_name]["cdf"]["parent_assets"] = [asset.external_id for asset in self.parent_assets()]
+        return output
 
     def dump(self) -> dict[str, Any]:
         output = super().dump()
@@ -674,6 +717,13 @@ class DataModel(Model, ABC):
         summary[self.model_name]["cdf"]["nodes"] = len(instances.nodes)
         summary[self.model_name]["cdf"]["edges"] = len(instances.edges)
         return summary
+
+    def dump_external_ids(self) -> dict[str, dict, str, dict[str, list[str]]]:
+        output = super().dump_external_ids()
+        instances = self.instances()
+        output[self.model_name]["cdf"]["nodes"] = [node.external_id for node in instances.nodes]
+        output[self.model_name]["cdf"]["edges"] = [edge.external_id for edge in instances.edges]
+        return output
 
     def dump(self) -> dict[str, Any]:
         output = super().dump()
