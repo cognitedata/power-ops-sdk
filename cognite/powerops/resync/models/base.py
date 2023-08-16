@@ -1,8 +1,12 @@
 from __future__ import annotations
+
+import abc
 from collections import defaultdict, Counter
 
 import json
 from abc import ABC
+
+from cognite.client.exceptions import CogniteNotFoundError
 from deepdiff import DeepDiff
 from deepdiff.model import PrettyOrderedSet
 
@@ -32,6 +36,7 @@ from cognite.powerops.resync.models.helpers import (
     match_field_from_relationship,
     pydantic_model_class_candidate,
 )
+from cognite.powerops.resync.utils.common import all_subclasses
 from cognite.powerops.resync.utils.serializer import remove_read_only_fields
 
 _T_Type = TypeVar("_T_Type")
@@ -292,9 +297,8 @@ class AssetType(ResourceType, ABC):
             limit=-1,
         )
         for r in relationships:
-            field = match_field_from_relationship(cls.model_fields.keys(), r)
+            field = match_field_from_relationship(cls.model_fields, r)
             target_type = r.target_type.lower()
-            relationship_target = None
 
             if target_type == "asset":
                 if r.target_external_id in AssetType._instantiated_assets:
@@ -312,9 +316,15 @@ class AssetType(ResourceType, ABC):
             elif target_type == "timeseries":
                 relationship_target = client.time_series.retrieve(external_id=r.target_external_id)
             elif target_type == "sequence":
-                relationship_target = CDFSequence.from_cdf(client, r.target_external_id, fetch_content)
+                try:
+                    relationship_target = CDFSequence.from_cdf(client, r.target_external_id, fetch_content)
+                except CogniteNotFoundError:
+                    relationship_target = None
             elif target_type == "file":
-                relationship_target = CDFFile.from_cdf(client, r.target_external_id, fetch_content)
+                try:
+                    relationship_target = CDFFile.from_cdf(client, r.target_external_id, fetch_content)
+                except CogniteNotFoundError:
+                    relationship_target = None
             else:
                 raise ValueError(f"Cannot handle target type {r.target_type}")
 
@@ -361,8 +371,8 @@ class AssetType(ResourceType, ABC):
             or any(cdf_type in str(field_info.annotation) for cdf_type in [CDFSequence.__name__, TimeSeries.__name__])
         }
 
-        # Populate non-asset metadata fields according to relationships/flags
-        # `Additional_fields` is modified in-place by `_fetch_metadata`
+        # Populate non-asset metadata fields, according to relationships/flags
+        # `Additional_fields`, is modified in-place by `_fetch_metadata`
         if fetch_metadata:
             cls._fetch_and_set_metadata(
                 client,
@@ -525,14 +535,19 @@ class AssetModel(Model, ABC):
 
     @classmethod
     def _field_name_asset_resource_class(cls) -> Iterable[tuple[str, TypingType[AssetType]]]:
-        """AssetType fields are are of type list[AssetType] or Optional[AssetType]"""
+        """AssetType fields are of type list[AssetType] or Optional[AssetType]"""
         # todo? method is identical to _field_name_asset_resource_class in AssetType
         # * unsure how to reuse?
         for field_name in cls.model_fields:
             class_ = cls.model_fields[field_name].annotation
             if pydantic_model_class_candidate(class_):
                 asset_resource_class = get_args(class_)[0]
-                if issubclass(asset_resource_class, AssetType):
+                if (is_asset_type := issubclass(asset_resource_class, AssetType)) and any(
+                    base is abc.ABC for base in asset_resource_class.__bases__
+                ):
+                    for subclass in all_subclasses(asset_resource_class):
+                        yield field_name, subclass
+                elif is_asset_type:
                     yield field_name, asset_resource_class
 
     def summary(self) -> dict[str, dict[str, dict[str, int]]]:
@@ -564,7 +579,10 @@ class AssetModel(Model, ABC):
 
         output = defaultdict(list)
         for field_name, asset_cls in cls._field_name_asset_resource_class():
-            assets = client.assets.retrieve_subtree(external_id=asset_cls.parent_external_id)
+            try:
+                assets = client.assets.retrieve_subtree(external_id=asset_cls.parent_external_id)
+            except AttributeError:
+                raise
             for asset in assets:
                 if asset.external_id == asset_cls.parent_external_id:
                     continue

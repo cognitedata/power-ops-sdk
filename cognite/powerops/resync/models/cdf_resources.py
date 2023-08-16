@@ -6,6 +6,7 @@ from typing import Any, ClassVar, Optional
 import pandas as pd
 from cognite.client import CogniteClient
 from cognite.client.data_classes import FileMetadata, Sequence
+from cognite.client.exceptions import CogniteNotFoundError
 from pydantic import BaseModel, ConfigDict
 from cognite.powerops.resync.utils.serializer import remove_read_only_fields
 
@@ -63,6 +64,8 @@ class CDFSequence(_CDFResource):
         fetch_content: bool = False,
     ) -> CDFSequence:
         sequence = client.sequences.retrieve(external_id=resource_ext_id)
+        if sequence is None:
+            raise CogniteNotFoundError([resource_ext_id])
         if fetch_content:
             # limit defaults to 100, might not be an issue
             content = client.sequences.data.retrieve_dataframe(
@@ -100,6 +103,8 @@ class CDFFile(_CDFResource):
         fetch_content: bool = False,
     ) -> CDFFile:
         meta = client.files.retrieve(external_id=resource_ext_id)
+        if meta is None:
+            raise CogniteNotFoundError([resource_ext_id])
         if fetch_content:
             content = client.files.download_bytes(external_id=resource_ext_id)
         else:

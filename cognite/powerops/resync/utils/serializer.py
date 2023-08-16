@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import re
 import string
 import warnings
@@ -23,6 +24,24 @@ VALID_CHARACTERS = set(
 )
 
 _READ_ONLY_FIELDS = ["created_time", "last_updated_time", "uploaded_time", "data_set_id", "id", "parent_id", "root_id"]
+
+
+def try_load_list(value: str | Any) -> Any | list[Any]:
+    if isinstance(value, str):
+        try:
+            return json.loads(value)
+        except json.JSONDecodeError:
+            return []
+    return value
+
+
+def try_load_dict(value: str | Any) -> Any | dict[str, Any]:
+    if isinstance(value, str):
+        try:
+            return json.loads(value)
+        except json.JSONDecodeError:
+            return {}
+    return value
 
 
 def remove_read_only_fields(cdf_resource: dict[str, Any], remove_empty: bool = True) -> dict[str, Any]:

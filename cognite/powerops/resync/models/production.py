@@ -1,5 +1,4 @@
 from __future__ import annotations
-import json
 
 from pathlib import Path
 from typing import ClassVar, Optional, Union
@@ -11,6 +10,7 @@ from cognite.powerops.cdf_labels import AssetLabel
 from cognite.powerops.resync.models.base import AssetModel, AssetType, NonAssetType
 from cognite.powerops.resync.models.cdf_resources import CDFSequence
 from cognite.powerops.resync.models.helpers import isinstance_list
+from cognite.powerops.resync.utils.serializer import try_load_dict
 
 
 class Generator(AssetType):
@@ -53,12 +53,7 @@ class Plant(AssetType):
 
     @field_validator("penstock_head_loss_factors", mode="before")
     def parse_str(cls, value) -> dict:
-        if isinstance(value, str):
-            try:
-                return json.loads(value)
-            except json.JSONDecodeError:
-                return {}
-        return value
+        return try_load_dict(value)
 
 
 class WaterCourseShop(NonAssetType):

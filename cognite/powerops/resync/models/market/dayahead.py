@@ -1,13 +1,15 @@
 from __future__ import annotations
 
+
 from typing import ClassVar, Optional, Union
 
-from pydantic import Field
+from pydantic import Field, field_validator
 
 from cognite.powerops.cdf_labels import AssetLabel
 from cognite.powerops.resync.models.cdf_resources import CDFSequence
 
 from .base import Bid, Market, Process, ShopTransformation
+from cognite.powerops.resync.utils.serializer import try_load_dict
 
 
 class DayAheadBid(Bid):
@@ -19,6 +21,10 @@ class DayAheadBid(Bid):
     bid_process_configuration_name: str
     bid_matrix_generator_config_external_id: str
     market_config_external_id: str
+
+    @field_validator("price_scenarios", mode="before")
+    def parse_str(cls, value) -> dict:
+        return try_load_dict(value)
 
 
 class DayAheadProcess(Process):
