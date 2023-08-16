@@ -5,6 +5,7 @@ CogShopAsset:
     parent_assets: 0
     relationships: 0
     sequences: 2
+    time_series: 0
   domain:
     base_mappings: 1
     output_definitions: 1
