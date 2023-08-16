@@ -189,7 +189,7 @@ def to_cogshop_asset_model(
 
         model_template = cogshop_v1.ModelTemplateApply(
             external_id=f"ModelTemplate_{watercourse.name}",
-            version=watercourse.version,
+            version="1",
             shop_version=shop_version,
             watercourse=watercourse.name,
             model=cogshop_v1.FileRefApply(

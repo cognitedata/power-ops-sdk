@@ -531,6 +531,20 @@ class Model(BaseModel, ABC):
             return resource.get("external_id", resource.get("externalId")).casefold()
         raise ValueError(f"Could not find external_id in {resource}")
 
+    @classmethod
+    @abc.abstractmethod
+    def from_cdf(
+        cls: TypingType[T_Model],
+        client: CogniteClient,
+        fetch_metadata: bool = True,
+        fetch_content: bool = False,
+    ) -> T_Model:
+        ...
+
+    @abc.abstractmethod
+    def difference(self: T_Model, other: T_Model, print_string: bool = True) -> dict:
+        ...
+
 
 T_Model = TypeVar("T_Model", bound=Model)
 

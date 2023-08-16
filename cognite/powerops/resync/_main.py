@@ -19,7 +19,7 @@ from yaml import safe_dump
 AVAILABLE_MODELS = [
     "ProductionAsset",
     "MarketAsset",
-    "CogShopAsset",
+    "CogShop1Asset",
     # "ProductionDataModel",
     # "CogShopDataModel",
     # "BenchmarkMarketDataModel",
@@ -44,25 +44,22 @@ def plan(
     _remove_non_existing_relationship_time_series_targets(client.cdf, models, bootstrap_resources, echo)
 
     for model in models:
-        if isinstance(model, AssetModel):
-            # if dump_folder and (dump_file := (dump_folder / f"{model.model_name}_cdf.yaml")).exists():
-            #     cdf_model = type(model).load(safe_load(dump_file.read_text()))
-            # else:
-            cdf_model = type(model).from_cdf(client.cdf, fetch_metadata=True, fetch_content=False)
+        # if dump_folder and (dump_file := (dump_folder / f"{model.model_name}_cdf.yaml")).exists():
+        #     cdf_model = type(model).load(safe_load(dump_file.read_text()))
+        # else:
+        cdf_model = type(model).from_cdf(client.cdf, fetch_metadata=True, fetch_content=False)
 
-            summary_diff = model.summary_diff(cdf_model)
-            echo(f"Summary diff for {model.model_name}")
-            echo_pretty(summary_diff)
+        summary_diff = model.summary_diff(cdf_model)
+        echo(f"Summary diff for {model.model_name}")
+        echo_pretty(summary_diff)
 
-            if dump_folder:
-                dump_folder.mkdir(parents=True, exist_ok=True)
+        if dump_folder:
+            dump_folder.mkdir(parents=True, exist_ok=True)
 
-                (dump_folder / f"{model.model_name}_local.yaml").write_text(safe_dump(model.dump()))
-                (dump_folder / f"{model.model_name}_cdf.yaml").write_text(safe_dump(cdf_model.dump()))
-            else:
-                cdf_model.difference(model, print_string=True)
+            (dump_folder / f"{model.model_name}_local.yaml").write_text(safe_dump(model.dump()))
+            (dump_folder / f"{model.model_name}_cdf.yaml").write_text(safe_dump(cdf_model.dump()))
         else:
-            raise NotImplementedError("Missing support for non-asset models")
+            cdf_model.difference(model, print_string=True)
 
 
 @overload
