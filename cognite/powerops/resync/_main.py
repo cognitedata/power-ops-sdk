@@ -45,6 +45,9 @@ def plan(
 
     for model in models:
         if isinstance(model, AssetModel):
+            # if dump_folder and (dump_file := (dump_folder / f"{model.model_name}_cdf.yaml")).exists():
+            #     cdf_model = type(model).load(safe_load(dump_file.read_text()))
+            # else:
             cdf_model = type(model).from_cdf(client.cdf, fetch_metadata=True, fetch_content=False)
 
             summary_diff = model.summary_diff(cdf_model)

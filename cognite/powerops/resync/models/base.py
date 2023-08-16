@@ -382,7 +382,11 @@ class AssetType(ResourceType, ABC):
                 fetch_content,
             )
 
-        return cls._from_asset(asset, additional_fields)
+        instance = cls._from_asset(asset, additional_fields)
+        if asset.external_id != instance.external_id:
+            # The external id is not set in a standardized way for Market configs.
+            instance.external_id = asset.external_id
+        return instance
 
     def _asset_type_prepare_for_diff(self: T_Asset_Type) -> dict[str, dict]:
         for model_field in self.model_fields:
@@ -516,11 +520,15 @@ class Model(BaseModel, ABC):
         return output
 
     @classmethod
+    def load(cls: TypingType[T_Model], data: dict[str, Any]) -> T_Model:
+        raise NotImplementedError()
+
+    @classmethod
     def _external_id_key(cls, resource: dict | Any) -> str:
         if hasattr(resource, "external_id"):
-            return resource.external_id
+            return resource.external_id.casefold()
         elif isinstance(resource, dict) and ("external_id" in resource or "externalId" in resource):
-            return resource.get("external_id", resource.get("externalId"))
+            return resource.get("external_id", resource.get("externalId")).casefold()
         raise ValueError(f"Could not find external_id in {resource}")
 
 
