@@ -1,0 +1,12 @@
+CogShop1Asset:
+  cdf:
+    edges: 431
+    files: 7
+    nodes: 433
+    sequences: 2
+    time_series: 0
+  domain:
+    base_mappings: 1
+    model_templates: 1
+    output_definitions: 1
+    shop_files: 7
