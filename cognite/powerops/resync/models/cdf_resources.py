@@ -36,7 +36,7 @@ class _CDFResource(BaseModel, ABC):
 
 class CDFSequence(_CDFResource):
     sequence: Sequence
-    content: Optional[pd.DataFrame]
+    content: Optional[pd.DataFrame] = None
 
     def __repr__(self) -> str:
         return f"CDFSequence(external_id={self.external_id})"

@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+from itertools import product
+
+from cognite.client import CogniteClient
 from pydantic import Field
 
 from cognite.powerops.clients.data_classes import (
@@ -64,6 +67,31 @@ class CogShop1Asset(CogShopCore, DataModel, protected_namespaces=()):
             apply = cogshop_v1.ModelTemplateApply(**data)
             model_templates[apply.external_id] = apply
 
+        # There files and sequences are not linked to the model templates
+        # (this should be done in the next version of Cogshop).
+        watercourse_names = list({t.watercourse for t in model_templates.values()})
+        sequence_ids = [
+            f"SHOP_{name}{suffix}"
+            for name, suffix in product(watercourse_names, ["_base_mapping", "_output_definition"])
+        ]
+        cdf_client: CogniteClient = client.model_templates._client
+        sequences = cdf_client.sequences.retrieve_multiple(external_ids=sequence_ids)
+
+        base_mappings = [CDFSequence(sequence=s) for s in sequences if s.external_id.endswith("_base_mapping")]
+        output_definitions = [
+            CDFSequence(sequence=s) for s in sequences if s.external_id.endswith("_output_definition")
+        ]
+
+        files = cdf_client.files.list(
+            limit=-1,
+            source="PowerOps bootstrap",
+            mime_type="text/plain",
+        )
+        shop_files = [CDFFile(meta=f) for f in files]
+
         return cls(
             model_templates=model_templates,
+            base_mappings=base_mappings,
+            output_definitions=output_definitions,
+            shop_files=shop_files,
         )
