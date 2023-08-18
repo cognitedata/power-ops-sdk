@@ -13,7 +13,7 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## [0.35.0] - 2023-08-18
+## [0.36.0] - 2023-08-18
 ### Added
 
 * Extended the `powerops plan` options. Now you can dump the entire models to file with the argument `--dump-folder`.
