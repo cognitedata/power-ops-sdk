@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from itertools import product
+from typing import Type
 
 from cognite.client import CogniteClient
 from pydantic import Field
@@ -12,7 +13,7 @@ from cognite.powerops.clients.data_classes import (
     ScenarioMappingApply,
 )
 import cognite.powerops.cogshop1.data_classes as cogshop_v1
-from .base import DataModel, Model
+from .base import DataModel, Model, T_Model
 from .cdf_resources import CDFFile, CDFSequence
 from cognite.powerops.clients.powerops_client import PowerOpsClient
 
@@ -28,6 +29,12 @@ class CogShopDataModel(CogShopCore, DataModel):
     base_mappings: dict[ExternalID, ScenarioMappingApply] = Field(default_factory=dict)
     output_definitions: dict[ExternalID, OutputContainerApply] = Field(default_factory=dict)
     value_transformations: dict[ExternalID, ValueTransformationApply] = Field(default_factory=dict)
+
+    @classmethod
+    def from_cdf(
+        cls: Type[T_Model], client: PowerOpsClient, fetch_metadata: bool = True, fetch_content: bool = False
+    ) -> T_Model:
+        ...
 
 
 class CogShop1Asset(CogShopCore, DataModel, protected_namespaces=()):
