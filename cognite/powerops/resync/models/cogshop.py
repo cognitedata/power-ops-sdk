@@ -33,11 +33,37 @@ class CogShop1Asset(CogShopCore, DataModel, protected_namespaces=()):
     output_definitions: list[CDFSequence] = Field(default_factory=list)
 
     @classmethod
-    def from_cdf(cls, client: CogShop1Client) -> "CogShop1Asset":
-        templates: cogshop_v1.ModelTemplateList = client.model_templates.list(limit=-1)
+    def from_cdf(
+        cls, client: CogShop1Client, fetch_metadata: bool = True, fetch_content: bool = False
+    ) -> "CogShop1Asset":
+        templates = client.model_templates.list(limit=-1)
+        base_mapping_ids = list({mapping for t in templates for mapping in t.base_mappings})
+        base_mappings = client.mappings.retrieve(base_mapping_ids)
+        transformations_ids = list({t for m in base_mappings for t in m.transformations})
+        transformations = client.transformations.retrieve(transformations_ids)
+        file_ids = list({t.model for t in templates})
+        files = client.file_refs.retrieve(file_ids)
+        transformation_by_id = {t.external_id: t for t in transformations}
+        mappings_by_id = {}
+        readme_fields = {"created_time", "deleted_time", "last_updated_time", "version"}
+        for mapping in base_mappings:
+            data = mapping.model_dump(exclude=readme_fields)
+            data["transformations"] = [
+                transformation_by_id[t].model_dump(exclude=readme_fields) for t in data["transformations"]
+            ]
+            apply = cogshop_v1.MappingApply(**data)
+            mappings_by_id[apply.external_id] = apply
+
+        file_by_id = {f.external_id: f for f in files}
+        model_templates = {}
+        for template in templates:
+            data = template.model_dump(exclude=readme_fields - {"version"})
+            data["version"] = str(data["version"])
+            data["model"] = file_by_id[data["model"]].model_dump(exclude=readme_fields)
+            data["base_mappings"] = [mappings_by_id[m] for m in data["base_mappings"]]
+            apply = cogshop_v1.ModelTemplateApply(**data)
+            model_templates[apply.external_id] = apply
+
         return cls(
-            shop_files=[],
-            model_templates={t.external_id: t for t in templates},
-            base_mappings=[],
-            output_definitions=[],
+            model_templates=model_templates,
         )

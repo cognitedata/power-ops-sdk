@@ -758,6 +758,9 @@ class DataModel(Model, ABC):
                 )
         return output
 
+    def difference(self: T_Model, other: T_Model, print_string: bool = True) -> dict:
+        raise NotImplementedError
+
 
 class _DiffFormatter:
     def __init__(self, full_diff_per_field: dict[str, dict], model_a: dict, model_b: dict):
