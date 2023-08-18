@@ -28,6 +28,7 @@ from cognite.client.data_classes.data_modeling.instances import (
 from cognite.powerops.cdf_labels import AssetLabel, RelationshipLabel
 from cognite.powerops.clients.powerops_client import PowerOpsClient
 from cognite.powerops.clients.data_classes._core import DomainModelApply
+from cognite.powerops.cogshop1.data_classes._core import DomainModelApply as DomainModelApplyCogShop1
 from cognite.powerops.resync.models.cdf_resources import CDFFile, CDFSequence
 from cognite.powerops.resync.models.helpers import (
     format_change_binary,
@@ -727,11 +728,15 @@ class DataModel(Model, ABC):
     def _domain_models(self) -> Iterable[DomainModelApply]:
         for field_name in self.model_fields:
             items = getattr(self, field_name)
-            if isinstance(items, list) and items and isinstance(items[0], DomainModelApply):
+            if isinstance(items, list) and items and isinstance(items[0], (DomainModelApply, DomainModelApplyCogShop1)):
                 yield from items
-            if isinstance(items, DomainModelApply):
+            if isinstance(items, (DomainModelApply, DomainModelApplyCogShop1)):
                 yield items
-            if isinstance(items, dict) and items and isinstance(next(iter(items.values())), DomainModelApply):
+            if (
+                isinstance(items, dict)
+                and items
+                and isinstance(next(iter(items.values())), (DomainModelApply, DomainModelApplyCogShop1))
+            ):
                 yield from items.values()
 
     def summary(self) -> dict[str, dict[str, dict[str, int]]]:
