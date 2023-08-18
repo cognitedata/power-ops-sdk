@@ -26,6 +26,7 @@ from cognite.client.data_classes.data_modeling.instances import (
 )
 
 from cognite.powerops.cdf_labels import AssetLabel, RelationshipLabel
+from cognite.powerops.clients.powerops_client import PowerOpsClient
 from cognite.powerops.clients.data_classes._core import DomainModelApply
 from cognite.powerops.resync.models.cdf_resources import CDFFile, CDFSequence
 from cognite.powerops.resync.models.helpers import (
@@ -535,7 +536,7 @@ class Model(BaseModel, ABC):
     @abc.abstractmethod
     def from_cdf(
         cls: TypingType[T_Model],
-        client: CogniteClient,
+        client: PowerOpsClient,
         fetch_metadata: bool = True,
         fetch_content: bool = False,
     ) -> T_Model:
@@ -635,24 +636,24 @@ class AssetModel(Model, ABC):
     @classmethod
     def from_cdf(
         cls: TypingType[T_Asset_Model],
-        client: CogniteClient,
+        client: PowerOpsClient,
         fetch_metadata: bool = True,
         fetch_content: bool = False,
     ) -> T_Asset_Model:
         if fetch_content and not fetch_metadata:
             raise ValueError("Cannot fetch content without also fetching metadata")
-
+        cdf = client.cdf
         output = defaultdict(list)
         for field_name, asset_cls in cls._field_name_asset_resource_class():
             try:
-                assets = client.assets.retrieve_subtree(external_id=asset_cls.parent_external_id)
+                assets = cdf.assets.retrieve_subtree(external_id=asset_cls.parent_external_id)
             except AttributeError:
                 raise
             for asset in assets:
                 if asset.external_id == asset_cls.parent_external_id:
                     continue
                 instance = asset_cls.from_cdf(
-                    client=client,
+                    client=cdf,
                     asset=asset,
                     fetch_metadata=fetch_metadata,
                     fetch_content=fetch_content,

@@ -14,7 +14,7 @@ from cognite.powerops.clients.data_classes import (
 import cognite.powerops.cogshop1.data_classes as cogshop_v1
 from .base import DataModel, Model
 from .cdf_resources import CDFFile, CDFSequence
-from ...cogshop1 import CogShop1Client
+from cognite.powerops.clients.powerops_client import PowerOpsClient
 
 ExternalID = str
 
@@ -37,15 +37,16 @@ class CogShop1Asset(CogShopCore, DataModel, protected_namespaces=()):
 
     @classmethod
     def from_cdf(
-        cls, client: CogShop1Client, fetch_metadata: bool = True, fetch_content: bool = False
+        cls, client: PowerOpsClient, fetch_metadata: bool = True, fetch_content: bool = False
     ) -> "CogShop1Asset":
-        templates = client.model_templates.list(limit=-1)
+        cog_shop = client.cog_shop1
+        templates = cog_shop.model_templates.list(limit=-1)
         base_mapping_ids = list({mapping for t in templates for mapping in t.base_mappings})
-        base_mappings = client.mappings.retrieve(base_mapping_ids)
+        base_mappings = cog_shop.mappings.retrieve(base_mapping_ids)
         transformations_ids = list({t for m in base_mappings for t in m.transformations})
-        transformations = client.transformations.retrieve(transformations_ids)
+        transformations = cog_shop.transformations.retrieve(transformations_ids)
         file_ids = list({t.model for t in templates})
-        files = client.file_refs.retrieve(file_ids)
+        files = cog_shop.file_refs.retrieve(file_ids)
         transformation_by_id = {t.external_id: t for t in transformations}
         mappings_by_id = {}
         readme_fields = {"created_time", "deleted_time", "last_updated_time", "version"}
@@ -74,7 +75,7 @@ class CogShop1Asset(CogShopCore, DataModel, protected_namespaces=()):
             f"SHOP_{name}{suffix}"
             for name, suffix in product(watercourse_names, ["_base_mapping", "_output_definition"])
         ]
-        cdf_client: CogniteClient = client.model_templates._client
+        cdf_client: CogniteClient = client.cdf
         sequences = cdf_client.sequences.retrieve_multiple(external_ids=sequence_ids)
 
         base_mappings = [CDFSequence(sequence=s) for s in sequences if s.external_id.endswith("_base_mapping")]

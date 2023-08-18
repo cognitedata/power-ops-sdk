@@ -44,10 +44,7 @@ def plan(
     _remove_non_existing_relationship_time_series_targets(client.cdf, models, bootstrap_resources, echo)
 
     for model in models:
-        # if dump_folder and (dump_file := (dump_folder / f"{model.model_name}_cdf.yaml")).exists():
-        #     cdf_model = type(model).load(safe_load(dump_file.read_text()))
-        # else:
-        cdf_model = type(model).from_cdf(client.cdf, fetch_metadata=True, fetch_content=False)
+        cdf_model = type(model).from_cdf(client, fetch_metadata=True, fetch_content=False)
 
         summary_diff = model.summary_diff(cdf_model)
         echo(f"Summary diff for {model.model_name}")
