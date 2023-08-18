@@ -1,5 +1,6 @@
 import doctest
 import operator
+from collections.abc import Iterable
 
 from functools import reduce
 from pprint import pformat
@@ -15,13 +16,16 @@ def isinstance_list(value: Any, type_: Type):
     return isinstance(value, list) and value and isinstance(value[0], type_)
 
 
-def match_field_from_relationship(model_fields: list[str], relationship: Relationship) -> str:
+def match_field_from_relationship(model_fields: Iterable[str], relationship: Relationship) -> str:
     """Find the field on the model that matches the relationship using the label"""
     if len(relationship.labels) != 1:
         raise ValueError(f"Expected one label in {relationship.labels=}")
     label = relationship.labels[0].external_id.split(".")[-1]
 
-    candidates = list(filter(lambda k: label in k, model_fields))
+    # Market labels sometimes have a suffix of _{target_type}
+    candidates = [
+        field for field in model_fields if label in field or label.removesuffix(f"_{relationship.target_type}") in field
+    ]
 
     if len(candidates) != 1:
         raise ValueError(f"Could not match {relationship.external_id=} to {model_fields=}")

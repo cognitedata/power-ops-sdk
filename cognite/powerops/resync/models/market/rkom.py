@@ -2,13 +2,14 @@ from __future__ import annotations
 
 from typing import ClassVar, Union
 
-from pydantic import Field
+from pydantic import Field, field_validator
 
 from cognite.powerops.cdf_labels import AssetLabel
 from cognite.powerops.resync.models.base import AssetType, NonAssetType
 from cognite.powerops.resync.models.cdf_resources import CDFSequence
 
 from .base import Bid, Market, Process, ShopTransformation
+from ...utils.serializer import try_load_list
 
 
 class RKOMBid(Bid):
@@ -38,11 +39,19 @@ class RKOMProcess(Process):
     rkom: RKOMPlants
     incremental_mapping: list[CDFSequence] = Field(default_factory=list)
 
+    @field_validator("process_events", mode="before")
+    def parse_str(cls, value) -> list:
+        return try_load_list(value)
+
 
 class RKOMCombinationBid(NonAssetType):
     auction: str
     combination_name: str
     rkom_bid_configs: list[str]
+
+    @field_validator("rkom_bid_configs", mode="before")
+    def parse_str(cls, value) -> list:
+        return try_load_list(value)
 
 
 class RKOMBidCombination(AssetType):

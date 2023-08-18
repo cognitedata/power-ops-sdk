@@ -4,6 +4,7 @@ ProductionModelDM:
     files: 0
     nodes: 40
     sequences: 24
+    time_series: 0
   domain:
     cdf_sequences: 24
     generators: 12

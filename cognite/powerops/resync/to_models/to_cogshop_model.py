@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import logging
 from datetime import datetime
 from hashlib import md5
@@ -25,6 +26,7 @@ from cognite.powerops.resync.models.cogshop import CogShopDataModel
 from cognite.powerops.resync.models.production import Watercourse
 from cognite.powerops.resync.utils.common import make_ext_id
 from cognite.powerops.resync.utils.serializer import load_yaml
+import cognite.powerops.cogshop1.data_classes as cogshop_v1
 
 from ._to_instances import _to_input_timeseries_mapping
 
@@ -109,8 +111,10 @@ def to_cogshop_data_model(
     return model
 
 
-def to_cogshop_asset_model(config: CogShopConfig, watercourses: list[Watercourse]) -> cogshop.CogShopAsset:
-    model = cogshop.CogShopAsset()
+def to_cogshop_asset_model(
+    config: CogShopConfig, watercourses: list[Watercourse], shop_version: str
+) -> cogshop.CogShop1Asset:
+    model = cogshop.CogShop1Asset()
 
     model.shop_files.extend(_to_shop_files(config.watercourses_shop))
 
@@ -175,6 +179,49 @@ def to_cogshop_asset_model(config: CogShopConfig, watercourses: list[Watercourse
             content=mapping.to_dataframe(),
         )
         model.base_mappings.append(output_definition)
+
+        ### Model Template ###
+        def make_ext_id(watercourse_name: str, *args: str) -> str:
+            hash_value = md5(watercourse_name.encode())
+            for arg in args:
+                hash_value.update(arg.encode())
+            return f"Tr__{hash_value.hexdigest()}"
+
+        model_template = cogshop_v1.ModelTemplateApply(
+            external_id=f"ModelTemplate_{watercourse.name}",
+            version="1",
+            shop_version=shop_version,
+            watercourse=watercourse.name,
+            model=cogshop_v1.FileRefApply(
+                external_id=f"ModelTemplate_{watercourse.name}__FileRef_model",
+                type="case",
+                file_external_id=model_file.external_id,
+            ),
+            base_mappings=[
+                cogshop_v1.MappingApply(
+                    external_id=f"BM__{watercourse.name}__{row.shop_model_path}",
+                    path=row.shop_model_path,
+                    timeseries_external_id=row.time_series_external_id,
+                    transformations=[
+                        cogshop_v1.TransformationApply(
+                            external_id=make_ext_id(
+                                watercourse.name,
+                                row.shop_model_path,
+                                transformation.transformation.name,
+                                json.dumps(transformation.kwargs or {}),
+                            ),
+                            method=transformation.transformation.name,
+                            arguments=json.dumps(transformation.kwargs or {}),
+                        )
+                        for transformation in (row.transformations or [])
+                    ],
+                    retrieve=row.retrieve.name if row.retrieve else None,
+                    aggregation=row.aggregation.name if row.aggregation else None,
+                )
+                for row in mapping
+            ],
+        )
+        model.model_templates[model_template.external_id] = model_template
 
     return model
 

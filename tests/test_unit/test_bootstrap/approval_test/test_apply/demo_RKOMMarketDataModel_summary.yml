@@ -4,6 +4,7 @@ RKOMMarketDataModel:
     files: 0
     nodes: 381
     sequences: 0
+    time_series: 0
   domain:
     bids: 4
     rkom_bid_combinations: 2

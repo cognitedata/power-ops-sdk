@@ -1,21 +1,14 @@
 from __future__ import annotations
 
-from abc import ABC, abstractclassmethod, abstractmethod
+from abc import ABC, abstractmethod
 from typing import Any, ClassVar, Optional
 
 import pandas as pd
 from cognite.client import CogniteClient
 from cognite.client.data_classes import FileMetadata, Sequence
+from cognite.client.exceptions import CogniteNotFoundError
 from pydantic import BaseModel, ConfigDict
-
-_READ_ONLY_FIELDS = [
-    "created_time",
-    "last_updated_time",
-    "lastUpdatedTime",
-    "createdTime",
-    "uploaded_time",
-    "uploadedTime",
-]
+from cognite.powerops.resync.utils.serializer import remove_read_only_fields
 
 
 class _CDFResource(BaseModel, ABC):
@@ -27,11 +20,11 @@ class _CDFResource(BaseModel, ABC):
 
     def dump(self, camel_case: bool = False) -> dict[str, Any]:
         dump = self._dump(camel_case)
-        for read_only_field in _READ_ONLY_FIELDS:
-            dump.pop(read_only_field, None)
+        remove_read_only_fields(dump)
         return dump
 
-    @abstractclassmethod
+    @classmethod
+    @abstractmethod
     def from_cdf(
         cls,
         client: CogniteClient,
@@ -43,7 +36,7 @@ class _CDFResource(BaseModel, ABC):
 
 class CDFSequence(_CDFResource):
     sequence: Sequence
-    content: Optional[pd.DataFrame]
+    content: Optional[pd.DataFrame] = None
 
     def __repr__(self) -> str:
         return f"CDFSequence(external_id={self.external_id})"
@@ -71,6 +64,8 @@ class CDFSequence(_CDFResource):
         fetch_content: bool = False,
     ) -> CDFSequence:
         sequence = client.sequences.retrieve(external_id=resource_ext_id)
+        if sequence is None:
+            raise CogniteNotFoundError([resource_ext_id])
         if fetch_content:
             # limit defaults to 100, might not be an issue
             content = client.sequences.data.retrieve_dataframe(
@@ -108,6 +103,8 @@ class CDFFile(_CDFResource):
         fetch_content: bool = False,
     ) -> CDFFile:
         meta = client.files.retrieve(external_id=resource_ext_id)
+        if meta is None:
+            raise CogniteNotFoundError([resource_ext_id])
         if fetch_content:
             content = client.files.download_bytes(external_id=resource_ext_id)
         else:

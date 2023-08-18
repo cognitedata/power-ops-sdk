@@ -1,14 +1,16 @@
 from __future__ import annotations
 
+
 from typing import ClassVar, Union
 
 from cognite.client.data_classes import TimeSeries
-from pydantic import Field
+from pydantic import Field, field_validator
 
 from cognite.powerops.cdf_labels import AssetLabel
 from cognite.powerops.resync.models.base import NonAssetType
 
 from .base import Bid, Process, ShopTransformation
+from cognite.powerops.resync.utils.serializer import try_load_dict
 
 
 class BenchmarkBid(Bid):
@@ -30,3 +32,7 @@ class BenchmarkProcess(Process):
     production_plan_time_series: list[ProductionPlanTimeSeries] = Field(default_factory=list)
     benchmarking_metrics: dict[str, str] = Field(default_factory=dict)
     run_events: list[str] = Field(default_factory=list)
+
+    @field_validator("benchmarking_metrics", mode="before")
+    def parse_str(cls, value) -> dict:
+        return try_load_dict(value)

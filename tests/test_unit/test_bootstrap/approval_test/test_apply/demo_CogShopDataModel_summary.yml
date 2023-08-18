@@ -4,6 +4,7 @@ CogShopDataModel:
     files: 7
     nodes: 293
     sequences: 0
+    time_series: 0
   domain:
     base_mappings: 0
     output_definitions: 1

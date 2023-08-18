@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from abc import ABC
 from typing import ClassVar, Union
 
 from pydantic import Field
@@ -30,5 +31,5 @@ class Bid(NonAssetType):
     date: str
 
 
-class Process(AssetType):
+class Process(AssetType, ABC):
     ...
