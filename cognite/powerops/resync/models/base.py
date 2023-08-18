@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import abc
 from collections import defaultdict, Counter
-
+from itertools import groupby
 import json
 from abc import ABC
 
@@ -488,10 +488,54 @@ class Model(BaseModel, ABC):
                 for type_ in this_summary[model_name][domain]:
                     this_ext_ids = set(this_summary[model_name][domain][type_])
                     other_ext_ids = set(other_summary[model_name][domain][type_])
-                    output[model_name][domain][type_] = {
-                        "added": len(this_ext_ids - other_ext_ids),
-                        "removed": len(other_ext_ids - this_ext_ids),
-                    }
+                    if not type_ == "nodes":
+                        output[model_name][domain][type_] = {
+                            "added": len(this_ext_ids - other_ext_ids),
+                            "removed": len(other_ext_ids - this_ext_ids),
+                        }
+                        continue
+                    # Todo this is a hack go get more detailed diff for nodes
+                    # To make it not a hack the external id has to be standardized
+                    # and not just assumed to have this format.
+                    output[model_name][domain][type_] = {}
+
+                    this_ext_ids_by_node_type = defaultdict(set)
+                    for node_type, ext_id in groupby(sorted(this_ext_ids), key=lambda x: x.split("_", 1)[0]):
+                        this_ext_ids_by_node_type[node_type].update(ext_id)
+                    other_ext_ids_by_node_type = defaultdict(set)
+                    for node_type, ext_id in groupby(sorted(other_ext_ids), key=lambda x: x.split("_", 1)[0]):
+                        other_ext_ids_by_node_type[node_type].update(ext_id)
+                    for node_type in set(this_ext_ids_by_node_type) | set(other_ext_ids_by_node_type):
+                        if node_type != "BM":
+                            output[model_name][domain][type_][node_type] = {
+                                "added": len(
+                                    this_ext_ids_by_node_type[node_type] - other_ext_ids_by_node_type[node_type]
+                                ),
+                                "removed": len(
+                                    other_ext_ids_by_node_type[node_type] - this_ext_ids_by_node_type[node_type]
+                                ),
+                            }
+                            continue
+                        output[model_name][domain][type_][node_type] = {}
+                        this_mapping_by_watercourse = defaultdict(set)
+                        for watercourse, ext_id in groupby(
+                            sorted(this_ext_ids_by_node_type[node_type]), lambda x: x.split("__")[1]
+                        ):
+                            this_mapping_by_watercourse[watercourse].update(ext_id)
+                        other_mapping_by_watercourse = defaultdict(set)
+                        for watercourse, ext_id in groupby(
+                            sorted(other_ext_ids_by_node_type[node_type]), lambda x: x.split("__")[1]
+                        ):
+                            other_mapping_by_watercourse[watercourse].update(ext_id)
+                        for watercourse in set(this_mapping_by_watercourse) | set(other_mapping_by_watercourse):
+                            output[model_name][domain][type_][node_type][watercourse] = {
+                                "added": len(
+                                    this_mapping_by_watercourse[watercourse] - other_mapping_by_watercourse[watercourse]
+                                ),
+                                "removed": len(
+                                    other_mapping_by_watercourse[watercourse] - this_mapping_by_watercourse[watercourse]
+                                ),
+                            }
         return output
 
     def dump(self) -> dict[str, Any]:
