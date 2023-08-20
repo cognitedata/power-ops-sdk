@@ -20,7 +20,7 @@ from cognite.powerops.clients.data_classes import (
     InputTimeSeriesMapping,
     InputTimeSeriesMappingApply,
 )
-from cognite.powerops.preprocessor.utils import retrieve_time_series_datapoints, arrow_to_ms
+from cognite.powerops.utils.preprocessor_utils import retrieve_time_series_datapoints, arrow_to_ms
 from cognite.powerops.resync.models.base import Model
 from cognite.powerops.resync.utils.common import require
 from cognite.powerops.utils.time import relative_time_specification_to_arrow
