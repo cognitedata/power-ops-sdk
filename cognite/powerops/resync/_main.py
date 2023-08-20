@@ -18,10 +18,8 @@ from cognite.powerops.resync.config.resource_collection import ResourceCollectio
 from cognite.powerops.resync.config.resync_config import ReSyncConfig
 from cognite.powerops.resync.models.base import Model, AssetModel
 from cognite.powerops.resync.to_models.transform import transform
-from cognite.powerops.resync.validation import (
-    prepare_validation,
-    perform_validation,
-)
+from cognite.powerops.resync.validation import prepare_validation, perform_validation
+
 
 logger = logging.getLogger(__name__)
 
@@ -147,7 +145,7 @@ def _load_transform(
     market: str, path: Path, cdf_project: str, echo: Callable[[str], None], model_names: list[str]
 ) -> tuple[ResourceCollection, ReSyncConfig, list[Model]]:
     # Step 1 - configure and validate config
-    config = _load_config(path, cdf_project, echo)
+    config = ReSyncConfig.from_yamls(path, cdf_project)
     configure_debug_logging(config.settings.debug_level)
     # Step 2 - transform from config to CDF resources and preview diffs
     echo(
@@ -156,14 +154,6 @@ def _load_transform(
     )
     bootstrap_resources, models = transform(config, market, set(model_names))
     return bootstrap_resources, config, models
-
-
-def _load_config(path: Path, cdf_project: str, echo: Callable[[str], None]) -> ReSyncConfig:
-    # Step 1 - configure and validate config
-    echo(f"Loading resync config from {path}.")
-    config = ReSyncConfig.from_yamls(path, cdf_project)
-    configure_debug_logging(config.settings.debug_level)
-    return config
 
 
 def _create_bootstrap_finished_event(echo: Callable[[str], None]) -> Event:
