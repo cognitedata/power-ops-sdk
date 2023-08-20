@@ -76,6 +76,22 @@ def apply(
 
 
 @app.command(
+    "validate",
+    help="Check that all time series used in mappings are present and have datapoints for the specified time range",
+)
+def validate(
+    path: Annotated[Path, typer.Argument(help="Path to configuration files")],
+    market: Annotated[str, typer.Argument(help="Selected power market")],
+    models: list[str] = typer.Option(
+        default=["all"],
+        help=f"The models to run apply. Available models: {', '.join(resync.AVAILABLE_MODELS)}",
+    ),
+):
+    log.info(f"Running validate on configuration files located in {path}")
+    resync.validate(path, market, echo=log.info)
+
+
+@app.command(
     "deploy",
     help=f"Deploy the data model in CDF. Available models: {list(MODEL_BY_NAME.keys())}. "
     f"Use 'all' to deploy all models.",
@@ -130,4 +146,4 @@ def main():
 
 
 if __name__ == "__main__":
-    deploy(["dayahead"])
+    main()

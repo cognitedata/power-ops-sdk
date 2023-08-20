@@ -1,5 +1,9 @@
 from __future__ import annotations
 
+
+import logging
+
+
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional, Callable, overload, Any
@@ -14,6 +18,12 @@ from cognite.powerops.resync.config.resource_collection import ResourceCollectio
 from cognite.powerops.resync.config.resync_config import ReSyncConfig
 from cognite.powerops.resync.models.base import Model, AssetModel
 from cognite.powerops.resync.to_models.transform import transform
+from cognite.powerops.resync.validation import (
+    prepare_validation,
+    perform_validation,
+)
+
+logger = logging.getLogger(__name__)
 
 AVAILABLE_MODELS = [
     "ProductionAsset",
@@ -107,11 +117,37 @@ def apply(
     return models[0] if len(model_names) == 1 else models
 
 
+# TODO make validate an option for plan ("--validate")?
+def validate(
+    path: Path,
+    market: str,
+    model_names: list[str] | str | None = None,
+    echo: Optional[Callable[[str], None]] = None,
+) -> None:
+    market = market.lower()
+    echo = echo or print
+    model_names = _cli_names_to_resync_names(model_names)
+    po_client = get_powerops_client()
+
+    # config = _load_config(path, po_client.cdf.config.project, echo)
+
+    bootstrap_resources, config, models = _load_transform(market, path, po_client.cdf.config.project, echo, model_names)
+    model_names = [
+        "BenchmarkMarketDataModel",
+        "DayAheadMarketDataModel",
+        "RKOMMarketDataModel",
+    ]
+    models = [model for model in models if type(model).__name__ in model_names]
+
+    ts_validations, validation_ranges = prepare_validation(models)
+    perform_validation(po_client, ts_validations, validation_ranges)
+
+
 def _load_transform(
     market: str, path: Path, cdf_project: str, echo: Callable[[str], None], model_names: list[str]
 ) -> tuple[ResourceCollection, ReSyncConfig, list[Model]]:
     # Step 1 - configure and validate config
-    config = ReSyncConfig.from_yamls(path, cdf_project)
+    config = _load_config(path, cdf_project, echo)
     configure_debug_logging(config.settings.debug_level)
     # Step 2 - transform from config to CDF resources and preview diffs
     echo(
@@ -122,8 +158,16 @@ def _load_transform(
     return bootstrap_resources, config, models
 
 
+def _load_config(path: Path, cdf_project: str, echo: Callable[[str], None]) -> ReSyncConfig:
+    # Step 1 - configure and validate config
+    echo(f"Loading resync config from {path}.")
+    config = ReSyncConfig.from_yamls(path, cdf_project)
+    configure_debug_logging(config.settings.debug_level)
+    return config
+
+
 def _create_bootstrap_finished_event(echo: Callable[[str], None]) -> Event:
-    """Creating a POWEROPS_BOOTSTRAP_FINISHED Event in CDF to signal that bootstrap scripts have been ran"""
+    """Creating a POWEROPS_BOOTSTRAP_FINISHED Event in CDF to signal that bootstrap scripts have been run"""
     current_time = int(datetime.now(timezone.utc).timestamp() * 1000)  # in milliseconds
     event = Event(
         start_time=current_time,
@@ -194,4 +238,5 @@ def _cli_names_to_resync_names(model_names: Optional[str | list[str]]) -> list[s
 if __name__ == "__main__":
     demo_data = Path(__file__).parent.parent.parent.parent / "tests" / "test_unit" / "test_bootstrap" / "data" / "demo"
 
-    apply(demo_data, "DayAhead", echo=print)
+    # apply(demo_data, "DayAhead", echo=print)
+    validate(demo_data, "DayAhead", echo=print)

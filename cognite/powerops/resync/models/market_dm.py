@@ -25,6 +25,10 @@ class BenchmarkMarketDataModel(DataModel):
     benchmarking: list[BenchmarkProcesApply] = Field(default_factory=list)
     bids: dict[ExternalID, BenchmarkBidApply] = Field(default_factory=dict)
 
+    @property
+    def processes(self):
+        return self.benchmarking
+
 
 class DayAheadMarketDataModel(DataModel):
     dayahead_processes: list[DayAheadProcesApply] = Field(default_factory=list)
@@ -32,9 +36,17 @@ class DayAheadMarketDataModel(DataModel):
     bid_matrix_generator: dict[ExternalID, BidMatrixGeneratorApply] = Field(default_factory=dict)
     nordpool_market: Optional[NordPoolMarketApply] = None
 
+    @property
+    def processes(self):
+        return self.dayahead_processes
+
 
 class RKOMMarketDataModel(DataModel):
     rkom_market: Optional[RKOMMarketApply] = None
     bids: dict[ExternalID, RKOMBidApply] = Field(default_factory=dict)
     rkom_bid_combinations: list[RKOMBidCombinationApply] = Field(default_factory=list)
     rkom_processes: list[RKOMProcesApply] = Field(default_factory=list)
+
+    @property
+    def processes(self):
+        return self.rkom_processes

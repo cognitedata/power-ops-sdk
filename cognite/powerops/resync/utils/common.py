@@ -1,7 +1,7 @@
 import json
 import re
 from hashlib import md5
-from typing import Any, Type
+from typing import Any, Type, TypeVar, overload, Optional
 
 from cognite.powerops.clients.data_classes._core import DomainModelApply
 
@@ -25,3 +25,24 @@ def make_ext_id(arg: Any, class_: Type[DomainModelApply]) -> str:
     elif isinstance(arg, (list, dict, tuple)):
         hash_value.update(json.dumps(arg).encode())
     return f"{class_.__name__.removesuffix('Apply')}__{hash_value.hexdigest()}"
+
+
+_T = TypeVar("_T")
+
+
+@overload
+def require(value: Optional[_T]) -> _T:
+    ...
+
+
+@overload
+def require(value: Any, as_type: Type[_T]) -> _T:
+    ...
+
+
+def require(value, as_type=None):
+    if value is None:
+        raise ValueError("Value is required")
+    if as_type is not None and not isinstance(value, as_type):
+        raise TypeError(f"Expected type '{as_type}', got '{type(value)}'")
+    return value
