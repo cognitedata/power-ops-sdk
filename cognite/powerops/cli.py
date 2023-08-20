@@ -88,7 +88,9 @@ def validate(
     ),
 ):
     log.info(f"Running validate on configuration files located in {path}")
-    resync.validate(path, market, echo=log.info)
+    if len(models) == 1 and models[0].lower() == "all":
+        models = list(MODEL_BY_NAME.keys())
+    resync.validate(path, market, model_names=models, echo=log.info)
 
 
 @app.command(

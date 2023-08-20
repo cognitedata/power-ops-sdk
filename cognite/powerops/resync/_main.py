@@ -130,12 +130,8 @@ def validate(
     # config = _load_config(path, po_client.cdf.config.project, echo)
 
     bootstrap_resources, config, models = _load_transform(market, path, po_client.cdf.config.project, echo, model_names)
-    model_names = [
-        "BenchmarkMarketDataModel",
-        "DayAheadMarketDataModel",
-        "RKOMMarketDataModel",
-    ]
-    models = [model for model in models if type(model).__name__ in model_names]
+    models = [model for model in models if type(model).__name__ in model_names and hasattr(model, "processes")]
+    echo(f"Validating {len(models)} models: {', '.join([str(type(model).__name__) for model in models])}.")
 
     ts_validations, validation_ranges = prepare_validation(models)
     perform_validation(po_client, ts_validations, validation_ranges)
