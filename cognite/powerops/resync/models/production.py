@@ -1,61 +1,46 @@
 from __future__ import annotations
-import json
 
 from pathlib import Path
-from typing import Any, ClassVar, Optional, Union
+from typing import ClassVar, Optional, Union
 
 from cognite.client.data_classes import Asset, TimeSeries
-from pydantic import ConfigDict, Field
+from pydantic import ConfigDict, Field, field_validator
 
 from cognite.powerops.cdf_labels import AssetLabel
 from cognite.powerops.resync.models.base import AssetModel, AssetType, NonAssetType
 from cognite.powerops.resync.models.cdf_resources import CDFSequence
 from cognite.powerops.resync.models.helpers import isinstance_list
+from cognite.powerops.resync.utils.serializer import try_load_dict
 
 
 class Generator(AssetType):
     parent_external_id: ClassVar[str] = "generators"
     label: ClassVar[Union[AssetLabel, str]] = AssetLabel.GENERATOR
-    p_min: float
-    penstock: str
-    startcost: float
+    p_min: float = 0.0
+    penstock: str = ""
+    startcost: float = 0.0
     start_stop_cost_time_series: Optional[TimeSeries] = None
     generator_efficiency_curve: Optional[CDFSequence] = None
     turbine_efficiency_curve: Optional[CDFSequence] = None
-
-    @classmethod
-    def _parse_asset_metadata(cls, asset_metadata: dict[str, str]) -> dict[str, Any]:
-        return {
-            "p_min": float(asset_metadata.get("p_min", 0.0)),
-            "penstock": asset_metadata.get("penstock", ""),
-            "startcost": float(asset_metadata.get("startcost", 0.0)),
-        }
 
 
 class Reservoir(AssetType):
     parent_external_id: ClassVar[str] = "reservoirs"
     label: ClassVar[Union[AssetLabel, str]] = AssetLabel.RESERVOIR
-    display_name: str
-    ordering: str
-
-    @classmethod
-    def _parse_asset_metadata(cls, asset_metadata: dict[str, str]) -> dict[str, Any]:
-        return {
-            "display_name": asset_metadata.get("display_name", ""),
-            "ordering": asset_metadata.get("ordering", ""),
-        }
+    display_name: str = ""
+    ordering: str = ""
 
 
 class Plant(AssetType):
     parent_external_id: ClassVar[str] = "plants"
     label: ClassVar[Union[AssetLabel, str]] = AssetLabel.PLANT
-    display_name: str
-    ordering: str
-    head_loss_factor: float
-    outlet_level: float
-    p_min: float
-    p_max: float
-    penstock_head_loss_factors: dict
+    display_name: str = ""
+    ordering: str = ""
+    head_loss_factor: float = 0.0
+    outlet_level: float = 0.0
+    p_min: float = 0.0
+    p_max: float = 0.0
+    penstock_head_loss_factors: dict = Field(default_factory=dict)
     generators: list[Generator] = Field(default_factory=list)
     inlet_reservoir: Optional[Reservoir] = None
     p_min_time_series: Optional[TimeSeries] = None
@@ -66,25 +51,9 @@ class Plant(AssetType):
     inlet_level_time_series: Optional[TimeSeries] = None
     head_direct_time_series: Optional[TimeSeries] = None
 
-    @classmethod
-    def _parse_asset_metadata(cls, asset_metadata: dict[str, str]) -> dict[str, Any]:
-        penstock_head_loss_factors_raw: str = asset_metadata.get("penstock_head_loss_factors", "")
-        try:
-            penstock_head_loss_factors = json.loads(penstock_head_loss_factors_raw)
-            if not isinstance(penstock_head_loss_factors, dict):
-                raise TypeError
-        except (json.JSONDecodeError, TypeError):
-            penstock_head_loss_factors = {}
-
-        return {
-            "display_name": asset_metadata.get("display_name", ""),
-            "ordering": asset_metadata.get("ordering", ""),
-            "head_loss_factor": float(asset_metadata.get("head_loss_factor", 0.0)),
-            "outlet_level": float(asset_metadata.get("outlet_level", 0.0)),
-            "p_min": float(asset_metadata.get("p_min", 0.0)),
-            "p_max": float(asset_metadata.get("p_max", 0.0)),
-            "penstock_head_loss_factors": penstock_head_loss_factors,
-        }
+    @field_validator("penstock_head_loss_factors", mode="before")
+    def parse_str(cls, value) -> dict:
+        return try_load_dict(value)
 
 
 class WaterCourseShop(NonAssetType):
@@ -96,20 +65,11 @@ class Watercourse(AssetType):
     parent_external_id: ClassVar[str] = "watercourses"
     label: ClassVar[Union[AssetLabel, str]] = AssetLabel.WATERCOURSE
     shop: WaterCourseShop
-    config_version: Optional[str] = Field(exclude=True)
-    model_file: Optional[Path] = Field(exclude=True)
-    processed_model_file: Optional[Path] = Field(exclude=True)
+    config_version: Optional[str] = Field("", exclude=True)
+    model_file: Optional[Path] = Field(None, exclude=True)
+    processed_model_file: Optional[Path] = Field(None, exclude=True)
     plants: list[Plant]
     production_obligation_time_series: list[TimeSeries] = Field(default_factory=list)
-
-    @classmethod
-    def _parse_asset_metadata(cls, asset_metadata: dict[str, str]) -> dict[str, Any]:
-        return {
-            "config_version": "",
-            "shop": WaterCourseShop(penalty_limit=asset_metadata.get("shop:penalty_limit", "")),
-            "model_file": None,
-            "processed_model_file": None,
-        }
 
 
 class PriceArea(AssetType):
@@ -118,11 +78,6 @@ class PriceArea(AssetType):
     dayahead_price_time_series: Optional[TimeSeries] = None
     plants: list[Plant] = Field(default_factory=list)
     watercourses: list[Watercourse] = Field(default_factory=list)
-
-    @classmethod
-    def _parse_asset_metadata(cls, asset_metadata: dict[str, str]) -> dict[str, Any]:
-        # Maintain the AssetType structure
-        return {}
 
 
 class ProductionModel(AssetModel):

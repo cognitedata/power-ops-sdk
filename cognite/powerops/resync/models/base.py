@@ -1,8 +1,12 @@
 from __future__ import annotations
-from collections import defaultdict
 
+import abc
+from collections import defaultdict, Counter
+from itertools import groupby
 import json
 from abc import ABC
+
+from cognite.client.exceptions import CogniteNotFoundError
 from deepdiff import DeepDiff
 from deepdiff.model import PrettyOrderedSet
 
@@ -13,10 +17,18 @@ from pydantic import BaseModel, ConfigDict
 
 from cognite.client import CogniteClient
 from cognite.client.data_classes import Asset, Label, Relationship, TimeSeries
-from cognite.client.data_classes.data_modeling.instances import EdgeApply, NodeApply, InstancesApply
+from cognite.client.data_classes.data_modeling.instances import (
+    EdgeApply,
+    NodeApply,
+    InstancesApply,
+    NodeApplyList,
+    EdgeApplyList,
+)
 
 from cognite.powerops.cdf_labels import AssetLabel, RelationshipLabel
+from cognite.powerops.clients.powerops_client import PowerOpsClient
 from cognite.powerops.clients.data_classes._core import DomainModelApply
+from cognite.powerops.cogshop1.data_classes._core import DomainModelApply as DomainModelApplyCogShop1
 from cognite.powerops.resync.models.cdf_resources import CDFFile, CDFSequence
 from cognite.powerops.resync.models.helpers import (
     format_change_binary,
@@ -26,6 +38,8 @@ from cognite.powerops.resync.models.helpers import (
     match_field_from_relationship,
     pydantic_model_class_candidate,
 )
+from cognite.powerops.resync.utils.common import all_subclasses
+from cognite.powerops.resync.utils.serializer import remove_read_only_fields
 
 _T_Type = TypeVar("_T_Type")
 
@@ -219,8 +233,23 @@ class AssetType(ResourceType, ABC):
         )
 
     @classmethod
-    def _parse_asset_metadata(cls, metadata: dict[str, Any] = None) -> dict[str, Any]:
-        raise NotImplementedError()
+    def _parse_asset_metadata(cls, metadata: dict[str, str] | None = None) -> dict[str, dict | str]:
+        if not metadata:
+            return {}
+        output: dict[str, dict | str] = {}
+        for key, value in metadata.items():
+            counts = Counter(key)
+            if counts[":"] == 1:
+                field_name, sub_key = key.split(":")
+                if field_name not in output:
+                    output[field_name] = {}
+                output[field_name][sub_key] = value
+            elif counts[":"] == 0:
+                output[key] = value
+            else:
+                raise NotImplementedError("Nested keys more than one level is not supported")
+
+        return output
 
     @classmethod
     def _from_asset(
@@ -270,9 +299,8 @@ class AssetType(ResourceType, ABC):
             limit=-1,
         )
         for r in relationships:
-            field = match_field_from_relationship(cls.model_fields.keys(), r)
+            field = match_field_from_relationship(cls.model_fields, r)
             target_type = r.target_type.lower()
-            relationship_target = None
 
             if target_type == "asset":
                 if r.target_external_id in AssetType._instantiated_assets:
@@ -290,9 +318,15 @@ class AssetType(ResourceType, ABC):
             elif target_type == "timeseries":
                 relationship_target = client.time_series.retrieve(external_id=r.target_external_id)
             elif target_type == "sequence":
-                relationship_target = CDFSequence.from_cdf(client, r.target_external_id, fetch_content)
+                try:
+                    relationship_target = CDFSequence.from_cdf(client, r.target_external_id, fetch_content)
+                except CogniteNotFoundError:
+                    relationship_target = None
             elif target_type == "file":
-                relationship_target = CDFFile.from_cdf(client, r.target_external_id, fetch_content)
+                try:
+                    relationship_target = CDFFile.from_cdf(client, r.target_external_id, fetch_content)
+                except CogniteNotFoundError:
+                    relationship_target = None
             else:
                 raise ValueError(f"Cannot handle target type {r.target_type}")
 
@@ -339,8 +373,8 @@ class AssetType(ResourceType, ABC):
             or any(cdf_type in str(field_info.annotation) for cdf_type in [CDFSequence.__name__, TimeSeries.__name__])
         }
 
-        # Populate non-asset metadata fields according to relationships/flags
-        # `Additional_fields` is modified in-place by `_fetch_metadata`
+        # Populate non-asset metadata fields, according to relationships/flags
+        # `Additional_fields`, is modified in-place by `_fetch_metadata`
         if fetch_metadata:
             cls._fetch_and_set_metadata(
                 client,
@@ -350,7 +384,11 @@ class AssetType(ResourceType, ABC):
                 fetch_content,
             )
 
-        return cls._from_asset(asset, additional_fields)
+        instance = cls._from_asset(asset, additional_fields)
+        if asset.external_id != instance.external_id:
+            # The external id is not set in a standardized way for Market configs.
+            instance.external_id = asset.external_id
+        return instance
 
     def _asset_type_prepare_for_diff(self: T_Asset_Type) -> dict[str, dict]:
         for model_field in self.model_fields:
@@ -391,6 +429,13 @@ class Model(BaseModel, ABC):
         time_series.extend(self._fields_of_type(TimeSeries))
         return time_series
 
+    def drop_content(self) -> None:
+        for item in self._resource_types():
+            for sequence in item.sequences():
+                sequence.content = None
+            for file in item.files():
+                file.content = None
+
     def _resource_types(self) -> Iterable[ResourceType]:
         for f in self.model_fields:
             if isinstance(items := getattr(self, f), list) and items and isinstance(items[0], ResourceType):
@@ -416,7 +461,138 @@ class Model(BaseModel, ABC):
         }
         summary[self.model_name]["cdf"]["files"] = len(self.files())
         summary[self.model_name]["cdf"]["sequences"] = len(self.sequences())
+        summary[self.model_name]["cdf"]["time_series"] = len(self.time_series())
         return summary
+
+    def dump_external_ids(self) -> dict[str, dict, str, dict[str, list[str]]]:
+        output: dict[str, dict, str, dict[str, list[str]]] = {self.model_name: {"domain": {}, "cdf": {}}}
+        output[self.model_name]["domain"] = {
+            field_name: [(v.external_id if hasattr(v, "external_id") else str(v)) for v in value]
+            if isinstance(value := getattr(self, field_name), (list, dict))
+            else [value.external_id if hasattr(value, "external_id") else str(value)]
+            for field_name in self.model_fields
+        }
+        output[self.model_name]["cdf"]["files"] = [file.external_id for file in self.files()]
+        output[self.model_name]["cdf"]["sequences"] = [sequence.external_id for sequence in self.sequences()]
+        output[self.model_name]["cdf"]["time_series"] = [time_series.external_id for time_series in self.time_series()]
+        return output
+
+    def summary_diff(self: T_Model, other: T_Model) -> dict[str, dict[str, dict[str, dict[str, int]]]]:
+        this_summary = self.dump_external_ids()
+        other_summary = other.dump_external_ids()
+        output: dict[str, dict[str, dict[str, dict[str, int]]]] = {}
+        for model_name in this_summary:
+            output[model_name] = {}
+            for domain in this_summary[model_name]:
+                output[model_name][domain] = {}
+                for type_ in this_summary[model_name][domain]:
+                    this_ext_ids = set(this_summary[model_name][domain][type_])
+                    other_ext_ids = set(other_summary[model_name][domain][type_])
+                    if not type_ == "nodes":
+                        output[model_name][domain][type_] = {
+                            "added": len(this_ext_ids - other_ext_ids),
+                            "removed": len(other_ext_ids - this_ext_ids),
+                        }
+                        continue
+                    # Todo this is a hack go get more detailed diff for nodes
+                    # To make it not a hack the external id has to be standardized
+                    # and not just assumed to have this format.
+                    output[model_name][domain][type_] = {}
+
+                    this_ext_ids_by_node_type = defaultdict(set)
+                    for node_type, ext_id in groupby(sorted(this_ext_ids), key=lambda x: x.split("_", 1)[0]):
+                        this_ext_ids_by_node_type[node_type].update(ext_id)
+                    other_ext_ids_by_node_type = defaultdict(set)
+                    for node_type, ext_id in groupby(sorted(other_ext_ids), key=lambda x: x.split("_", 1)[0]):
+                        other_ext_ids_by_node_type[node_type].update(ext_id)
+                    for node_type in set(this_ext_ids_by_node_type) | set(other_ext_ids_by_node_type):
+                        if node_type != "BM":
+                            output[model_name][domain][type_][node_type] = {
+                                "added": len(
+                                    this_ext_ids_by_node_type[node_type] - other_ext_ids_by_node_type[node_type]
+                                ),
+                                "removed": len(
+                                    other_ext_ids_by_node_type[node_type] - this_ext_ids_by_node_type[node_type]
+                                ),
+                            }
+                            continue
+                        output[model_name][domain][type_][node_type] = {}
+                        this_mapping_by_watercourse = defaultdict(set)
+                        for watercourse, ext_id in groupby(
+                            sorted(this_ext_ids_by_node_type[node_type]), lambda x: x.split("__")[1]
+                        ):
+                            this_mapping_by_watercourse[watercourse].update(ext_id)
+                        other_mapping_by_watercourse = defaultdict(set)
+                        for watercourse, ext_id in groupby(
+                            sorted(other_ext_ids_by_node_type[node_type]), lambda x: x.split("__")[1]
+                        ):
+                            other_mapping_by_watercourse[watercourse].update(ext_id)
+                        for watercourse in set(this_mapping_by_watercourse) | set(other_mapping_by_watercourse):
+                            output[model_name][domain][type_][node_type][watercourse] = {
+                                "added": len(
+                                    this_mapping_by_watercourse[watercourse] - other_mapping_by_watercourse[watercourse]
+                                ),
+                                "removed": len(
+                                    other_mapping_by_watercourse[watercourse] - this_mapping_by_watercourse[watercourse]
+                                ),
+                            }
+        return output
+
+    def dump(self) -> dict[str, Any]:
+        output: dict[str, Any] = {}
+        if time_series := self.time_series():
+            output["time_series"] = sorted(
+                ({"external_id": ts.external_id} if isinstance(ts, TimeSeries) else ts for ts in time_series),
+                key=self._external_id_key,
+            )
+        if files := self.files():
+            output["files"] = sorted(
+                (remove_read_only_fields(file.dump(camel_case=False)) for file in files),
+                key=self._external_id_key,
+            )
+        if sequences := self.sequences():
+
+            def dump_sequence(resource: CDFSequence) -> dict[str, Any]:
+                output = remove_read_only_fields(resource.dump(camel_case=False))
+                if (columns := output.get("columns")) and isinstance(columns, list):
+                    for no, column in enumerate(columns):
+                        output["columns"][no] = remove_read_only_fields(column)
+                return output
+
+            output["sequences"] = sorted(
+                (dump_sequence(sequence) for sequence in sequences),
+                key=self._external_id_key,
+            )
+        return output
+
+    @classmethod
+    def load(cls: TypingType[T_Model], data: dict[str, Any]) -> T_Model:
+        raise NotImplementedError()
+
+    @classmethod
+    def _external_id_key(cls, resource: dict | Any) -> str:
+        if hasattr(resource, "external_id"):
+            return resource.external_id.casefold()
+        elif isinstance(resource, dict) and ("external_id" in resource or "externalId" in resource):
+            return resource.get("external_id", resource.get("externalId")).casefold()
+        raise ValueError(f"Could not find external_id in {resource}")
+
+    @classmethod
+    @abc.abstractmethod
+    def from_cdf(
+        cls: TypingType[T_Model],
+        client: PowerOpsClient,
+        fetch_metadata: bool = True,
+        fetch_content: bool = False,
+    ) -> T_Model:
+        ...
+
+    @abc.abstractmethod
+    def difference(self: T_Model, other: T_Model, print_string: bool = True) -> dict:
+        ...
+
+
+T_Model = TypeVar("T_Model", bound=Model)
 
 
 class AssetModel(Model, ABC):
@@ -461,14 +637,19 @@ class AssetModel(Model, ABC):
 
     @classmethod
     def _field_name_asset_resource_class(cls) -> Iterable[tuple[str, TypingType[AssetType]]]:
-        """AssetType fields are are of type list[AssetType] or Optional[AssetType]"""
+        """AssetType fields are of type list[AssetType] or Optional[AssetType]"""
         # todo? method is identical to _field_name_asset_resource_class in AssetType
         # * unsure how to reuse?
         for field_name in cls.model_fields:
             class_ = cls.model_fields[field_name].annotation
             if pydantic_model_class_candidate(class_):
                 asset_resource_class = get_args(class_)[0]
-                if issubclass(asset_resource_class, AssetType):
+                if (is_asset_type := issubclass(asset_resource_class, AssetType)) and any(
+                    base is abc.ABC for base in asset_resource_class.__bases__
+                ):
+                    for subclass in all_subclasses(asset_resource_class):
+                        yield field_name, subclass
+                elif is_asset_type:
                     yield field_name, asset_resource_class
 
     def summary(self) -> dict[str, dict[str, dict[str, int]]]:
@@ -478,25 +659,46 @@ class AssetModel(Model, ABC):
         summary[self.model_name]["cdf"]["parent_assets"] = len(self.parent_assets())
         return summary
 
+    def dump_external_ids(self) -> dict[str, dict, str, dict[str, list[str]]]:
+        output = super().dump_external_ids()
+        output[self.model_name]["cdf"]["assets"] = [asset.external_id for asset in self.assets()]
+        output[self.model_name]["cdf"]["relationships"] = [
+            relationship.external_id for relationship in self.relationships()
+        ]
+        output[self.model_name]["cdf"]["parent_assets"] = [asset.external_id for asset in self.parent_assets()]
+        return output
+
+    def dump(self) -> dict[str, Any]:
+        output = super().dump()
+        for field_method in [self.assets, self.relationships, self.parent_assets]:
+            if resources := field_method():
+                output[field_method.__name__] = sorted(
+                    (remove_read_only_fields(resource.dump(camel_case=False)) for resource in resources),
+                    key=self._external_id_key,
+                )
+        return output
+
     @classmethod
     def from_cdf(
         cls: TypingType[T_Asset_Model],
-        client: CogniteClient,
+        client: PowerOpsClient,
         fetch_metadata: bool = True,
         fetch_content: bool = False,
     ) -> T_Asset_Model:
         if fetch_content and not fetch_metadata:
             raise ValueError("Cannot fetch content without also fetching metadata")
-
+        cdf = client.cdf
         output = defaultdict(list)
-
         for field_name, asset_cls in cls._field_name_asset_resource_class():
-            assets = client.assets.retrieve_subtree(external_id=asset_cls.parent_external_id)
+            try:
+                assets = cdf.assets.retrieve_subtree(external_id=asset_cls.parent_external_id)
+            except AttributeError:
+                raise
             for asset in assets:
                 if asset.external_id == asset_cls.parent_external_id:
                     continue
                 instance = asset_cls.from_cdf(
-                    client=client,
+                    client=cdf,
                     asset=asset,
                     fetch_metadata=fetch_metadata,
                     fetch_content=fetch_content,
@@ -565,16 +767,20 @@ class DataModel(Model, ABC):
                 if edge.external_id not in edges:
                     edges[edge.external_id] = edge
 
-        return InstancesApply(nodes=list(nodes.values()), edges=list(edges.values()))
+        return InstancesApply(nodes=NodeApplyList(nodes.values()), edges=EdgeApplyList(edges.values()))
 
     def _domain_models(self) -> Iterable[DomainModelApply]:
         for field_name in self.model_fields:
             items = getattr(self, field_name)
-            if isinstance(items, list) and items and isinstance(items[0], DomainModelApply):
+            if isinstance(items, list) and items and isinstance(items[0], (DomainModelApply, DomainModelApplyCogShop1)):
                 yield from items
-            if isinstance(items, DomainModelApply):
+            if isinstance(items, (DomainModelApply, DomainModelApplyCogShop1)):
                 yield items
-            if isinstance(items, dict) and items and isinstance(next(iter(items.values())), DomainModelApply):
+            if (
+                isinstance(items, dict)
+                and items
+                and isinstance(next(iter(items.values())), (DomainModelApply, DomainModelApplyCogShop1))
+            ):
                 yield from items.values()
 
     def summary(self) -> dict[str, dict[str, dict[str, int]]]:
@@ -583,6 +789,27 @@ class DataModel(Model, ABC):
         summary[self.model_name]["cdf"]["nodes"] = len(instances.nodes)
         summary[self.model_name]["cdf"]["edges"] = len(instances.edges)
         return summary
+
+    def dump_external_ids(self) -> dict[str, dict, str, dict[str, list[str]]]:
+        output = super().dump_external_ids()
+        instances = self.instances()
+        output[self.model_name]["cdf"]["nodes"] = [node.external_id for node in instances.nodes]
+        output[self.model_name]["cdf"]["edges"] = [edge.external_id for edge in instances.edges]
+        return output
+
+    def dump(self) -> dict[str, Any]:
+        output = super().dump()
+        instances = self.instances()
+        for instance_type in ["nodes", "edges"]:
+            if resources := getattr(instances, instance_type):
+                output[instance_type] = sorted(
+                    (remove_read_only_fields(resource.dump(camel_case=False)) for resource in resources),
+                    key=self._external_id_key,
+                )
+        return output
+
+    def difference(self: T_Model, other: T_Model, print_string: bool = True) -> dict:
+        raise NotImplementedError
 
 
 class _DiffFormatter:

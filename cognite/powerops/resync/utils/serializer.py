@@ -1,13 +1,15 @@
 from __future__ import annotations
 
+import json
 import re
 import string
 import warnings
 from functools import lru_cache
 from io import StringIO
 from pathlib import Path
-
+from typing import Any
 from yaml import safe_dump, safe_load
+from cognite.client.utils._text import to_camel_case
 
 # � character is used to represent unrecognizable characters in utf-8.
 UNRECOGNIZABLE_CHARACTER = "�"
@@ -20,6 +22,37 @@ VALID_CHARACTERS = set(
     + string.whitespace
     + "æøåÆØÅ"
 )
+
+_READ_ONLY_FIELDS = ["created_time", "last_updated_time", "uploaded_time", "data_set_id", "id", "parent_id", "root_id"]
+
+
+def try_load_list(value: str | Any) -> Any | list[Any]:
+    if isinstance(value, str):
+        try:
+            return json.loads(value)
+        except json.JSONDecodeError:
+            return []
+    return value
+
+
+def try_load_dict(value: str | Any) -> Any | dict[str, Any]:
+    if isinstance(value, str):
+        try:
+            return json.loads(value)
+        except json.JSONDecodeError:
+            return {}
+    return value
+
+
+def remove_read_only_fields(cdf_resource: dict[str, Any], remove_empty: bool = True) -> dict[str, Any]:
+    for field in _READ_ONLY_FIELDS:
+        cdf_resource.pop(field, None)
+        cdf_resource.pop(to_camel_case(field), None)
+    if remove_empty:
+        for field in list(cdf_resource):
+            if not cdf_resource[field]:
+                cdf_resource.pop(field)
+    return cdf_resource
 
 
 def _validate(yaml_path: Path):

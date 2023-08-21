@@ -36,9 +36,11 @@ def transform(
                 production_model.root_asset.external_id,
             )
             asset_models.append(market_model)
-        if "CogShopAsset" in model_names:
-            cogshop_model = to_cogshop_asset_model(config.cogshop, production_model.watercourses)
-            asset_models.append(cogshop_model)
+        if "CogShop1Asset" in model_names:
+            cogshop_model = to_cogshop_asset_model(
+                config.cogshop, production_model.watercourses, config.settings.shop_version
+            )
+            data_models.append(cogshop_model)
 
     has_data_model = any("DataModel" in m for m in model_names)
     if has_data_model:

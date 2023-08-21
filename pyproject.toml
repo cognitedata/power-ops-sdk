@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cognite-power-ops"
-version = "0.35.0"
+version = "0.36.0"
 description = "SDK for power markets operations on Cognite Data Fusion"
 readme = "README.md"
 authors = ["Cognite <support@cognite.com>"]
@@ -100,4 +100,8 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.pytest.ini_options]
-addopts = "--doctest-modules --ignore-glob=examples/* --ignore-glob=cognite/powerops/preprocessor/test_data/otta_base.py"
+addopts = "--doctest-modules --ignore=customers/ --ignore=examples/ --ignore=playground/"
+testpaths = [
+    "tests",
+    "cognite",
+]

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Optional
+from typing import Optional, Type
 
 from pydantic import Field
 
@@ -16,7 +16,8 @@ from cognite.powerops.clients.data_classes import (
     RKOMMarketApply,
     RKOMProcesApply,
 )
-from cognite.powerops.resync.models.base import DataModel
+from cognite.powerops.clients.powerops_client import PowerOpsClient
+from cognite.powerops.resync.models.base import DataModel, T_Model
 
 ExternalID = str
 
@@ -29,6 +30,12 @@ class BenchmarkMarketDataModel(DataModel):
     def processes(self):
         return self.benchmarking
 
+    @classmethod
+    def from_cdf(
+        cls: Type[T_Model], client: PowerOpsClient, fetch_metadata: bool = True, fetch_content: bool = False
+    ) -> T_Model:
+        ...
+
 
 class DayAheadMarketDataModel(DataModel):
     dayahead_processes: list[DayAheadProcesApply] = Field(default_factory=list)
@@ -40,6 +47,12 @@ class DayAheadMarketDataModel(DataModel):
     def processes(self):
         return self.dayahead_processes
 
+    @classmethod
+    def from_cdf(
+        cls: Type[T_Model], client: PowerOpsClient, fetch_metadata: bool = True, fetch_content: bool = False
+    ) -> T_Model:
+        ...
+
 
 class RKOMMarketDataModel(DataModel):
     rkom_market: Optional[RKOMMarketApply] = None
@@ -50,3 +63,9 @@ class RKOMMarketDataModel(DataModel):
     @property
     def processes(self):
         return self.rkom_processes
+
+    @classmethod
+    def from_cdf(
+        cls: Type[T_Model], client: PowerOpsClient, fetch_metadata: bool = True, fetch_content: bool = False
+    ) -> T_Model:
+        ...

@@ -12,6 +12,7 @@ from cognite.powerops.clients._api_client import (
 from cognite.powerops.clients.data_set_api import DataSetsAPI
 from cognite.powerops.clients.shop import ShopClient
 from cognite.powerops.utils.cdf import Settings, get_client_config
+from cognite.powerops.cogshop1 import CogShop1Client
 
 
 class PowerOpsClient:
@@ -31,11 +32,13 @@ class PowerOpsClient:
         self.benchmark = BenchmarkAPIs(self.cdf)
         self.cog_shop = CogShopAPIs(self.cdf)
         self.shop = ShopClient(self.cdf, self.cog_shop, data_set_api, cogshop_version)
+        self.cog_shop1 = CogShop1Client(self.cdf)
 
 
-def get_powerops_client(write_dataset: str | None = None):
+def get_powerops_client(write_dataset: str | None = None) -> PowerOpsClient:
     settings = Settings(**{"powerops": {"write_dataset": write_dataset}})
     client_config = get_client_config(settings.cognite)
+
     return PowerOpsClient(
         settings.powerops.read_dataset,
         settings.powerops.write_dataset,

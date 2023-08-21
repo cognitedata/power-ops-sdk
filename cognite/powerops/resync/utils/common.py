@@ -1,7 +1,7 @@
 import json
 import re
 from hashlib import md5
-from typing import Any, Type
+from typing import Any, Type, TypeVar
 
 from cognite.powerops.clients.data_classes._core import DomainModelApply
 
@@ -25,3 +25,19 @@ def make_ext_id(arg: Any, class_: Type[DomainModelApply]) -> str:
     elif isinstance(arg, (list, dict, tuple)):
         hash_value.update(json.dumps(arg).encode())
     return f"{class_.__name__.removesuffix('Apply')}__{hash_value.hexdigest()}"
+
+
+T_Type = TypeVar("T_Type", bound=type)
+
+
+def all_subclasses(base: T_Type) -> list[T_Type]:
+    """Returns a list (without duplicates) of all subclasses of a given class, sorted on import-path-name.
+    Ignores classes not part of the main library, e.g. subclasses part of tests.
+    """
+    return sorted(
+        filter(
+            lambda sub: str(sub).startswith("<class 'cognite.powerops"),
+            set(base.__subclasses__()).union(s for c in base.__subclasses__() for s in all_subclasses(c)),
+        ),
+        key=str,
+    )

@@ -5,6 +5,7 @@ MarketModel:
     parent_assets: 6
     relationships: 160
     sequences: 160
+    time_series: 0
   domain:
     combinations: 2
     markets: 2

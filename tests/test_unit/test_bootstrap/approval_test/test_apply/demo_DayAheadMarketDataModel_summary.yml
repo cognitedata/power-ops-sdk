@@ -4,6 +4,7 @@ DayAheadMarketDataModel:
     files: 0
     nodes: 131
     sequences: 0
+    time_series: 0
   domain:
     bid_matrix_generator: 4
     bids: 4

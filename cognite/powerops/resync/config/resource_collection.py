@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import logging
-from typing import Union, Sequence
+from typing import Union, Sequence, Any
 
 from cognite.client.data_classes import Asset, Event, LabelDefinition, Relationship
 from cognite.client.data_classes._base import CogniteResource, CogniteResourceList
@@ -15,6 +15,7 @@ from cognite.powerops.clients.powerops_client import PowerOpsClient
 from cognite.powerops.resync.config.shared import ExternalId
 from cognite.powerops.resync.models.cdf_resources import CDFFile, CDFSequence
 from cognite.powerops.utils.cdf.calls import upsert_cognite_resources, CogniteAPI
+from cognite.client.utils._text import to_camel_case
 
 logger = logging.getLogger(__name__)
 
@@ -29,13 +30,19 @@ AddableResourceT = Union[
 ]
 
 
-def dump_cdf_resource(resource) -> dict:
+def dump_cdf_resource(resource, remove_read_fields: bool = False) -> dict[str, Any]:
     """Legacy or DM resource."""
     try:
         dump_func = resource.dump
     except AttributeError:
         dump_func = resource.dict
-    return dump_func()
+    if not remove_read_fields:
+        return dump_func()
+    dumped = dump_func()
+    for key in ["created_time", "last_updated_time", "data_set_id", "id", "parent_id", "root_id"]:
+        dumped.pop(key, None)
+        dumped.pop(to_camel_case(key), None)
+    return dumped
 
 
 class ResourceCollection(BaseModel):
@@ -54,6 +61,50 @@ class ResourceCollection(BaseModel):
     class Config:
         arbitrary_types_allowed = True
         extra = Extra.forbid
+
+    def dump(self) -> dict[str, Any]:
+        def external_id(resource):
+            if hasattr(resource, "external_id"):
+                return resource.external_id
+            elif isinstance(resource, dict) and ("external_id" in resource or "externalId" in resource):
+                return resource.get("external_id", resource.get("externalId"))
+            raise ValueError(f"Could not find external_id in {resource}")
+
+        return {
+            "assets": sorted(
+                [dump_cdf_resource(asset, remove_read_fields=True) for asset in self.assets.values()], key=external_id
+            ),
+            "relationships": sorted(
+                [
+                    dump_cdf_resource(relationship, remove_read_fields=True)
+                    for relationship in self.relationships.values()
+                ],
+                key=external_id,
+            ),
+            "label_definitions": sorted(
+                [
+                    dump_cdf_resource(label_definition, remove_read_fields=True)
+                    for label_definition in self.label_definitions.values()
+                ],
+                key=external_id,
+            ),
+            "events": sorted(
+                [dump_cdf_resource(event, remove_read_fields=True) for event in self.events.values()], key=external_id
+            ),
+            "files": sorted(
+                [dump_cdf_resource(file, remove_read_fields=True) for file in self.files.values()], key=external_id
+            ),
+            "sequences": sorted(
+                [dump_cdf_resource(sequence, remove_read_fields=True) for sequence in self.sequences.values()],
+                key=external_id,
+            ),
+            "nodes": sorted(
+                [dump_cdf_resource(node, remove_read_fields=True) for node in self.nodes.values()], key=external_id
+            ),
+            "edges": sorted(
+                [dump_cdf_resource(edge, remove_read_fields=True) for edge in self.edges.values()], key=external_id
+            ),
+        }
 
     def __len__(self):
         return len(self.all_cdf_resources)

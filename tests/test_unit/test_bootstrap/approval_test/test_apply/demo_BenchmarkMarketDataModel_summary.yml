@@ -4,6 +4,7 @@ BenchmarkMarketDataModel:
     files: 0
     nodes: 7
     sequences: 0
+    time_series: 0
   domain:
     benchmarking: 1
     bids: 1
