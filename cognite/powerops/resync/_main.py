@@ -239,5 +239,4 @@ def _cli_names_to_resync_names(model_names: Optional[str | list[str]]) -> list[s
 if __name__ == "__main__":
     demo_data = Path(__file__).parent.parent.parent.parent / "tests" / "test_unit" / "test_bootstrap" / "data" / "demo"
 
-    # apply(demo_data, "DayAhead", echo=print)
-    validate(demo_data, "DayAhead", echo=print)
+    apply(demo_data, "DayAhead", echo=print)
