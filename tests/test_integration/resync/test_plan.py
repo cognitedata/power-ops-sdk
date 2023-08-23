@@ -41,4 +41,4 @@ def test_plan(
 
     # Assert
     data = safe_load((dump_folder / f"{model_name}_local.yaml").read_text())
-    data_regression.check(data, fullpath=dump_folder / f"{model_name}_local.yml")
+    data_regression.check(data, fullpath=dump_folder / f"{model_name}_local_check.yml")

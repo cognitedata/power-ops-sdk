@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Optional, Callable, overload, Any
+from typing import Optional, Callable, overload, Any, Type
 from uuid import uuid4
 
 from cognite.client import CogniteClient
@@ -15,17 +15,12 @@ from cognite.powerops.resync.config.resync_config import ReSyncConfig
 from cognite.powerops.resync.models.base import Model, AssetModel
 from cognite.powerops.resync.to_models.transform import transform
 from yaml import safe_dump
+from cognite.powerops.resync.utils.common import all_concrete_subclasses
 
-AVAILABLE_MODELS = [
-    "ProductionAsset",
-    "MarketAsset",
-    "CogShop1Asset",
-    "ProductionDataModel",
-    "CogShopDataModel",
-    "BenchmarkMarketDataModel",
-    "DayAheadMarketDataModel",
-    "RKOMMarketDataModel",
-]
+MODEL_BY_NAME: dict[str, Type[Model]] = {
+    model.__name__: model for model in all_concrete_subclasses(Model)  # type: ignore[type-abstract]
+}
+AVAILABLE_MODELS: frozenset[str] = frozenset(MODEL_BY_NAME)
 
 
 def plan(
@@ -39,7 +34,6 @@ def plan(
 ) -> None:
     echo = echo or print
     echo_pretty: Callable[[Any], None] = echo_pretty or echo
-    model_names = _cli_names_to_resync_names(model_names)
     client = client or get_powerops_client()
 
     bootstrap_resources, config, models = _load_transform(market, path, client.cdf.config.project, echo, model_names)
@@ -95,10 +89,11 @@ def apply(
 ) -> Model | list[Model]:
     echo = echo or print
     echo_pretty = echo_pretty or echo
-    model_names = _cli_names_to_resync_names(model_names)
     client = get_powerops_client()
-    collection, config, models = _load_transform(market, path, client.cdf.config.project, echo, model_names)
 
+    collection, config, models = _load_transform(
+        market, path, client.cdf.config.project, echo, model_names or list(AVAILABLE_MODELS)
+    )
     collection.add(_create_bootstrap_finished_event(echo))
 
     _remove_non_existing_relationship_time_series_targets(client.cdf, models, collection, echo)
@@ -121,12 +116,21 @@ def apply(
     else:
         echo("Aborting")
 
-    return models[0] if len(model_names) == 1 else models
+    return models[0] if len(models) == 1 else models
 
 
 def _load_transform(
-    market: str, path: Path, cdf_project: str, echo: Callable[[str], None], model_names: list[str]
+    market: str, path: Path, cdf_project: str, echo: Callable[[str], None], model_names: str | list[str] | None
 ) -> tuple[ResourceCollection, ReSyncConfig, list[Model]]:
+    if isinstance(model_names, str):
+        model_names = [model_names]
+    elif model_names is None:
+        model_names = list(AVAILABLE_MODELS)
+    elif isinstance(model_names, list) and model_names and isinstance(model_names[0], str):
+        model_names = model_names
+    else:
+        raise ValueError(f"Invalid model_names type: {type(model_names)}")
+
     echo(f"Loading and transforming {', '.join(model_names)}")
     # Step 1 - configure and validate config
     config = ReSyncConfig.from_yamls(path, cdf_project)
@@ -136,7 +140,7 @@ def _load_transform(
         f"Running resync for data set {config.settings.data_set_external_id} "
         f"in CDF project {config.settings.cdf_project}"
     )
-    bootstrap_resources, models = transform(config, market, set(model_names))
+    bootstrap_resources, models = transform(config, market, {MODEL_BY_NAME[model_name] for model_name in model_names})
     return bootstrap_resources, config, models
 
 
@@ -190,23 +194,6 @@ def _remove_non_existing_relationship_time_series_targets(
         for external_id in to_delete:
             if external_id:
                 collection.relationships.pop(external_id, None)
-
-
-# Only needed while we support both asset models and data models
-def _cli_names_to_resync_names(model_names: Optional[str | list[str]]) -> list[str]:
-    """Map model names as accepted by cli to available models in resync"""
-    if not model_names:
-        return AVAILABLE_MODELS
-    cli_names = {model_names} if isinstance(model_names, str) else set(model_names)
-
-    res: list[str] = []
-    for m in AVAILABLE_MODELS:
-        res.extend(m for c in cli_names if c.casefold() in m.casefold())
-
-    # If any of the market models are present, add the MarketAsset
-    if {"dayahead", "rkom", "benchmark"}.intersection(cli_names):
-        res.append("MarketAsset")
-    return res
 
 
 if __name__ == "__main__":
