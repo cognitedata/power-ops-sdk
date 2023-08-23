@@ -8,7 +8,7 @@ from uuid import uuid4
 from cognite.client import CogniteClient
 from cognite.client.data_classes import Event
 
-from cognite.powerops.clients.powerops_client import get_powerops_client
+from cognite.powerops.clients.powerops_client import get_powerops_client, PowerOpsClient
 from cognite.powerops.resync._logger import configure_debug_logging
 from cognite.powerops.resync.config.resource_collection import ResourceCollection
 from cognite.powerops.resync.config.resync_config import ReSyncConfig
@@ -35,11 +35,13 @@ def plan(
     model_names: Optional[str | list[str]] = None,
     dump_folder: Optional[Path] = None,
     echo_pretty: Optional[Callable[[Any], None]] = None,
+    client: PowerOpsClient | None = None,
 ) -> None:
     echo = echo or print
     echo_pretty: Callable[[Any], None] = echo_pretty or echo
     model_names = _cli_names_to_resync_names(model_names)
-    client = get_powerops_client()
+    client = client or get_powerops_client()
+
     bootstrap_resources, config, models = _load_transform(market, path, client.cdf.config.project, echo, model_names)
     _remove_non_existing_relationship_time_series_targets(client.cdf, models, bootstrap_resources, echo)
 
