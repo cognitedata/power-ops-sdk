@@ -20,6 +20,7 @@ class Generator(AssetType):
     penstock: str = ""
     startcost: float = 0.0
     start_stop_cost_time_series: Optional[TimeSeries] = None
+    is_available_time_series: Optional[TimeSeries] = None
     generator_efficiency_curve: Optional[CDFSequence] = None
     turbine_efficiency_curve: Optional[CDFSequence] = None
 
