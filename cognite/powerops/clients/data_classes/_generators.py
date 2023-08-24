@@ -17,6 +17,7 @@ class Generator(DomainModel):
     p_min: Optional[float] = Field(None, alias="pMin")
     penstock: Optional[int] = None
     start_stop_cost: Optional[str] = Field(None, alias="startStopCost")
+    is_available: Optional[str] = Field(None, alias="isAvailable")
     startcost: Optional[float] = None
     turbine_efficiency_curve: Optional[str] = Field(None, alias="turbineEfficiencyCurve")
 
@@ -28,6 +29,7 @@ class GeneratorApply(DomainModelApply):
     p_min: Optional[float] = None
     penstock: Optional[int] = None
     start_stop_cost: Optional[str] = None
+    is_available: Optional[str] = None
     startcost: Optional[float] = None
     turbine_efficiency_curve: Optional[str] = None
 

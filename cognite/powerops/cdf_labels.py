@@ -94,6 +94,7 @@ class RelationshipLabel(CDFLabel):
     OUTLET_LEVEL_TIME_SERIES = "relationship_to.outlet_level_time_series"
     HEAD_DIRECT_TIME_SERIES = "relationship_to.head_direct_time_series"
     START_STOP_COST_TIME_SERIES = "relationship_to.start_stop_cost_time_series"
+    IS_AVAILABLE_TIME_SERIES = "relationship_to.is_available_time_series"
     CASE_FILE = "relationship_to.case_file"
     CUT_FILE = "relationship_to.cut_file"
     MAPPING_FILE = "relationship_to.mapping_file"

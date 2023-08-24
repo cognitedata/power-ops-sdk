@@ -3,9 +3,9 @@ ProductionModel:
     assets: 39
     files: 0
     parent_assets: 6
-    relationships: 72
+    relationships: 74
     sequences: 24
-    time_series: 8
+    time_series: 10
   domain:
     generators: 12
     plants: 9

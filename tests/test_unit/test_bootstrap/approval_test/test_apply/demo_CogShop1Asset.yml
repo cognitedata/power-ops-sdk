@@ -10537,6 +10537,8 @@ labels:
   name: relationship_to.inlet_level_time_series
 - external_id: relationship_to.inlet_reservoir
   name: relationship_to.inlet_reservoir
+- external_id: relationship_to.is_available_time_series
+  name: relationship_to.is_available_time_series
 - external_id: relationship_to.log_file
   name: relationship_to.log_file
 - external_id: relationship_to.mapping_file
