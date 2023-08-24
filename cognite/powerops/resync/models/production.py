@@ -74,7 +74,9 @@ class Watercourse(AssetType):
 
     @field_validator("production_obligation_time_series", mode="before")
     def none_to_empty_list(cls, value) -> list[TimeSeries]:
-        return value or []
+        if value is None or (isinstance(value, list) and value and value[0] is None):
+            return []
+        return value
 
 
 class PriceArea(AssetType):
