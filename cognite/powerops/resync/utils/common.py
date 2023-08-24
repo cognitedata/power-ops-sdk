@@ -1,3 +1,5 @@
+import abc
+import inspect
 import json
 import re
 from hashlib import md5
@@ -41,3 +43,11 @@ def all_subclasses(base: T_Type) -> list[T_Type]:
         ),
         key=str,
     )
+
+
+def all_concrete_subclasses(base: T_Type) -> list[T_Type]:
+    return [
+        sub
+        for sub in all_subclasses(base)
+        if all(base is not abc.ABC for base in sub.__bases__) and not inspect.isabstract(sub)
+    ]

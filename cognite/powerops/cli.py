@@ -50,7 +50,7 @@ def plan(
     market: Annotated[str, typer.Argument(help="Selected power market")],
     models: list[str] = typer.Option(
         default=["all"],
-        help=f"The models to run the plan. Available models: {', '.join(resync.AVAILABLE_MODELS)}",
+        help=f"The models to run the plan. Available models: {', '.join(resync.MODEL_BY_NAME)}",
     ),
     dump_folder: Optional[Path] = typer.Option(
         default=None, help="If present, the local and cdf changes will be dumped to this directory."
@@ -72,7 +72,7 @@ def apply(
     market: Annotated[str, typer.Argument(help="Selected power market")],
     models: list[str] = typer.Option(
         default=["all"],
-        help=f"The models to run apply. Available models: {', '.join(resync.AVAILABLE_MODELS)}",
+        help=f"The models to run apply. Available models: {', '.join(resync.MODEL_BY_NAME)}",
     ),
     auto_yes: bool = typer.Option(False, "--yes", "-y", help="Auto confirm all prompts"),
 ):

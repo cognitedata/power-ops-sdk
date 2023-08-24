@@ -1,3 +1,3 @@
-from ._main import AVAILABLE_MODELS, apply, plan
+from ._main import MODEL_BY_NAME, apply, plan
 
-__all__ = ["apply", "plan", "AVAILABLE_MODELS"]
+__all__ = ["apply", "plan", "MODEL_BY_NAME"]

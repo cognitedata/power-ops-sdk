@@ -72,6 +72,12 @@ class Watercourse(AssetType):
     plants: list[Plant]
     production_obligation_time_series: list[TimeSeries] = Field(default_factory=list)
 
+    @field_validator("production_obligation_time_series", mode="before")
+    def none_to_empty_list(cls, value) -> list[TimeSeries]:
+        if value is None or (isinstance(value, list) and value and value[0] is None):
+            return []
+        return value
+
 
 class PriceArea(AssetType):
     parent_external_id: ClassVar[str] = "price_areas"
