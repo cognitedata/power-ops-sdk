@@ -42,8 +42,10 @@ def plan(
 
     bootstrap_resources, config, models = _load_transform(market, path, client.cdf.config.project, echo, model_names)
     _remove_non_existing_relationship_time_series_targets(client.cdf, models, bootstrap_resources, echo)
+    echo(f"Load transform completed, models {', '.join([type(m).__name__ for m in models])} loaded")
 
     for model in models:
+        echo(f"Retrieving {type(model).__name__} from CDF")
         cdf_model = type(model).from_cdf(client, fetch_metadata=True, fetch_content=False)
 
         summary_diff = model.summary_diff(cdf_model)
