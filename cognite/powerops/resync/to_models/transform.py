@@ -21,7 +21,7 @@ def transform(
     data_models: list[DataModel] = []
 
     # The Production model is a prerequisite for the Market and CogShop models
-    has_asset_model = any(issubclass(m, AssetModel) in m for m in model_types)
+    has_asset_model = any(issubclass(m, AssetModel) for m in model_types)
     if has_asset_model:
         production_model = to_production_model(config.production)
         if models.ProductionModel in model_types:

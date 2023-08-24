@@ -13,6 +13,7 @@ from cognite.powerops.resync._logger import configure_debug_logging
 from cognite.powerops.resync.config.resource_collection import ResourceCollection
 from cognite.powerops.resync.config.resync_config import ReSyncConfig
 from cognite.powerops.resync.models.base import Model, AssetModel
+from cognite.powerops.resync import models
 from cognite.powerops.resync.to_models.transform import transform
 from yaml import safe_dump
 from cognite.powerops.resync.utils.common import all_concrete_subclasses
@@ -21,6 +22,9 @@ MODEL_BY_NAME: dict[str, Type[Model]] = {
     model.__name__: model for model in all_concrete_subclasses(Model)  # type: ignore[type-abstract]
 }
 AVAILABLE_MODELS: frozenset[str] = frozenset(MODEL_BY_NAME)
+DEFAULT_MODELS: frozenset[str] = frozenset(
+    [m.__name__ for m in [models.ProductionModel, models.MarketModel, models.CogShop1Asset]]
+)
 
 
 def plan(
@@ -92,7 +96,7 @@ def apply(
     client = get_powerops_client()
 
     collection, config, models = _load_transform(
-        market, path, client.cdf.config.project, echo, model_names or list(AVAILABLE_MODELS)
+        market, path, client.cdf.config.project, echo, model_names or list(DEFAULT_MODELS)
     )
     collection.add(_create_bootstrap_finished_event(echo))
 
@@ -125,7 +129,7 @@ def _load_transform(
     if isinstance(model_names, str):
         model_names = [model_names]
     elif model_names is None:
-        model_names = list(AVAILABLE_MODELS)
+        model_names = list(DEFAULT_MODELS)
     elif isinstance(model_names, list) and model_names and isinstance(model_names[0], str):
         model_names = model_names
     else:
@@ -140,6 +144,9 @@ def _load_transform(
         f"Running resync for data set {config.settings.data_set_external_id} "
         f"in CDF project {config.settings.cdf_project}"
     )
+    if invalid := set(model_names) - AVAILABLE_MODELS:
+        raise ValueError(f"Invalid model names: {invalid}. Available models: {AVAILABLE_MODELS}")
+
     bootstrap_resources, models = transform(config, market, {MODEL_BY_NAME[model_name] for model_name in model_names})
     return bootstrap_resources, config, models
 
