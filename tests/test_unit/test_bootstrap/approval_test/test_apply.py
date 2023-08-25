@@ -12,7 +12,7 @@ except ModuleNotFoundError:
 
 from cognite.client.testing import monkeypatch_cognite_client
 
-from cognite.powerops.resync._main import MODEL_BY_NAME, apply
+from cognite.powerops.resync._main import DEFAULT_MODELS, apply
 from tests.constants import REPO_ROOT, SENSITIVE_TESTS
 from tests.test_unit.test_bootstrap.approval_test.mock_resource_create_classes import (
     MockAssetsCreate,
@@ -58,7 +58,7 @@ def apply_test_cases():
     "input_dir, market, compare_file_path, cdf_timeseries, model_name",
     list(
         pytest.param(*case.values, model_name, id=f"{case.id} {model_name}")
-        for case, model_name in product(apply_test_cases(), MODEL_BY_NAME)
+        for case, model_name in product(apply_test_cases(), DEFAULT_MODELS)
     ),
 )
 def test_apply_summary(
@@ -105,7 +105,7 @@ def test_apply_summary(
     "input_dir, market, compare_file_path, cdf_timeseries, model_name",
     list(
         pytest.param(*case.values, model_name, id=f"{case.id} {model_name}")
-        for case, model_name in product(apply_test_cases(), MODEL_BY_NAME)
+        for case, model_name in product(apply_test_cases(), DEFAULT_MODELS)
     ),
 )
 def test_apply(

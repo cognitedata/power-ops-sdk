@@ -383,7 +383,6 @@ class AssetType(ResourceType, ABC):
                 fetch_metadata,
                 fetch_content,
             )
-
         instance = cls._from_asset(asset, additional_fields)
         if asset.external_id != instance.external_id:
             # The external id is not set in a standardized way for Market configs.
