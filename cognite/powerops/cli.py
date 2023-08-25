@@ -24,7 +24,7 @@ logging.basicConfig(level="NOTSET", format=FORMAT, datefmt="[%X]", handlers=[Ric
 
 log = logging.getLogger("rich")
 
-app = typer.Typer()
+app = typer.Typer(pretty_exceptions_short=False, pretty_exceptions_show_locals=False, pretty_exceptions_enable=False)
 
 
 def _version_callback(value: bool):
@@ -49,7 +49,7 @@ def plan(
     path: Annotated[Path, typer.Argument(help="Path to configuration files")],
     market: Annotated[str, typer.Argument(help="Selected power market")],
     models: list[str] = typer.Option(
-        default=["all"],
+        default=sorted(resync.DEFAULT_MODELS),
         help=f"The models to run the plan. Available models: {', '.join(resync.MODEL_BY_NAME)}",
     ),
     dump_folder: Optional[Path] = typer.Option(
@@ -71,7 +71,7 @@ def apply(
     path: Annotated[Path, typer.Argument(help="Path to configuration files")],
     market: Annotated[str, typer.Argument(help="Selected power market")],
     models: list[str] = typer.Option(
-        default=["all"],
+        default=sorted(resync.DEFAULT_MODELS),
         help=f"The models to run apply. Available models: {', '.join(resync.MODEL_BY_NAME)}",
     ),
     auto_yes: bool = typer.Option(False, "--yes", "-y", help="Auto confirm all prompts"),

@@ -587,9 +587,110 @@ class Model(BaseModel, ABC):
     ) -> T_Model:
         ...
 
-    @abc.abstractmethod
     def difference(self: T_Model, other: T_Model, print_string: bool = True) -> dict:
-        ...
+        if type(self) != type(other):
+            raise ValueError("Cannot compare these models of different types.")
+
+        self_dump = self._prepare_for_diff()
+        other_dump = other._prepare_for_diff()
+        diff_dict = {}
+        for model_field in self_dump:
+            if deep_diff := DeepDiff(
+                self_dump[model_field],
+                other_dump[model_field],
+                ignore_type_in_groups=[(float, int, type(None))],
+                exclude_regex_paths=[
+                    r"(.+?)._cognite_client",
+                    r"(.+?).last_updated_time",
+                    r"(.+?).parent_id",
+                    r"(.+?).root_id]",
+                    r"(.+?).data_set_id",
+                    r"(.+?).created_time",
+                    r"(.+?)lastUpdatedTime",
+                    r"(.+?)createdTime",
+                    r"(.+?)parentId",
+                    r"(.+?)\.id",
+                    # Relevant metadata should already be included in the model
+                    r"(.+?)metadata",
+                ],
+            ).to_dict():
+                diff_dict[model_field] = deep_diff
+
+        if print_string:
+            _diff_formatter = _DiffFormatter(
+                full_diff_per_field=diff_dict,
+                model_a=self_dump,
+                model_b=other_dump,
+            )
+            print(_diff_formatter.format_as_string())
+
+        return diff_dict
+
+    def difference_external_ids(self: T_Model, other: T_Model) -> dict:
+        this_summary = self.dump_external_ids()
+        other_summary = other.dump_external_ids()
+        output: dict[str, dict[str, dict[str, dict[str, list[str]]]]] = {}
+        for model_name in this_summary:
+            output[model_name] = {}
+            for domain in this_summary[model_name]:
+                output[model_name][domain] = {}
+                for type_ in this_summary[model_name][domain]:
+                    this_ext_ids = set(this_summary[model_name][domain][type_])
+                    other_ext_ids = set(other_summary[model_name][domain][type_])
+                    if not type_ == "nodes":
+                        added = sorted(this_ext_ids - other_ext_ids)
+                        removed = sorted(other_ext_ids - this_ext_ids)
+                        output[model_name][domain][type_] = {
+                            "added": added[: min(len(added), 10)],
+                            "removed": removed[: min(len(removed), 10)],
+                        }
+                        continue
+                    # Todo this is a hack go get more detailed diff for nodes
+                    # To make it not a hack the external id has to be standardized
+                    # and not just assumed to have this format.
+                    output[model_name][domain][type_] = {}
+
+                    this_ext_ids_by_node_type = defaultdict(set)
+                    for node_type, ext_id in groupby(sorted(this_ext_ids), key=lambda x: x.split("_", 1)[0]):
+                        this_ext_ids_by_node_type[node_type].update(ext_id)
+                    other_ext_ids_by_node_type = defaultdict(set)
+                    for node_type, ext_id in groupby(sorted(other_ext_ids), key=lambda x: x.split("_", 1)[0]):
+                        other_ext_ids_by_node_type[node_type].update(ext_id)
+                    for node_type in set(this_ext_ids_by_node_type) | set(other_ext_ids_by_node_type):
+                        if node_type != "BM":
+                            added = sorted(this_ext_ids_by_node_type[node_type] - other_ext_ids_by_node_type[node_type])
+                            removed = sorted(
+                                other_ext_ids_by_node_type[node_type] - this_ext_ids_by_node_type[node_type]
+                            )
+                            output[model_name][domain][type_][node_type] = {
+                                "added": added[: min(len(added), 10)],
+                                "removed": removed[: min(len(removed), 10)],
+                            }
+                            continue
+                        output[model_name][domain][type_][node_type] = {}
+                        this_mapping_by_watercourse = defaultdict(set)
+                        for watercourse, ext_id in groupby(
+                            sorted(this_ext_ids_by_node_type[node_type]), lambda x: x.split("__")[1]
+                        ):
+                            this_mapping_by_watercourse[watercourse].update(ext_id)
+                        other_mapping_by_watercourse = defaultdict(set)
+                        for watercourse, ext_id in groupby(
+                            sorted(other_ext_ids_by_node_type[node_type]), lambda x: x.split("__")[1]
+                        ):
+                            other_mapping_by_watercourse[watercourse].update(ext_id)
+                        for watercourse in set(this_mapping_by_watercourse) | set(other_mapping_by_watercourse):
+                            added = sorted(
+                                this_mapping_by_watercourse[watercourse] - other_mapping_by_watercourse[watercourse]
+                            )
+                            removed = sorted(
+                                other_mapping_by_watercourse[watercourse] - this_mapping_by_watercourse[watercourse]
+                            )
+
+                            output[model_name][domain][type_][node_type][watercourse] = {
+                                "added": added[: min(len(added), 10)],
+                                "removed": removed[: min(len(removed), 10)],
+                            }
+        return output
 
 
 T_Model = TypeVar("T_Model", bound=Model)
@@ -710,7 +811,20 @@ class AssetModel(Model, ABC):
         return cls(**output)
 
     def _prepare_for_diff(self: T_Asset_Model) -> dict[str:dict]:
-        raise NotImplementedError()
+        clone = self.model_copy(deep=True)
+
+        for model_field in clone.model_fields:
+            field_value = getattr(clone, model_field)
+            if isinstance_list(field_value, AssetType):
+                # Sort the asset types to have comparable order for diff
+                _sorted = sorted(field_value, key=lambda x: x.external_id)
+                # Prepare each asset type for diff
+                _prepared = map(lambda x: x._asset_type_prepare_for_diff(), _sorted)
+                setattr(clone, model_field, list(_prepared))
+            elif isinstance(field_value, AssetType):
+                field_value._asset_type_prepare_for_diff()
+        # Some fields are have been set to their external_id which gives a warning we can ignore
+        return clone.model_dump(warnings=False)
 
     def difference(self: T_Asset_Model, other: T_Asset_Model, print_string: bool = True) -> dict:
         if type(self) != type(other):
@@ -809,9 +923,6 @@ class DataModel(Model, ABC):
                     key=self._external_id_key,
                 )
         return output
-
-    def difference(self: T_Model, other: T_Model, print_string: bool = True) -> dict:
-        raise NotImplementedError
 
 
 class _DiffFormatter:

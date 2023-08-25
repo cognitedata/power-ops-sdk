@@ -63,8 +63,9 @@ def plan(
 
             (dump_folder / f"{model.model_name}_local.yaml").write_text(safe_dump(model.dump()))
             (dump_folder / f"{model.model_name}_cdf.yaml").write_text(safe_dump(cdf_model.dump()))
-        else:
-            cdf_model.difference(model, print_string=True)
+        external_ids_diff = model.difference_external_ids(cdf_model)
+        echo(f"External ids diff for {model.model_name}")
+        echo_pretty(external_ids_diff)
 
 
 @overload
