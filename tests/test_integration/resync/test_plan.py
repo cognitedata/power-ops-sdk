@@ -27,6 +27,7 @@ def plan_test_cases():
             test_case["market"],
             test_case["model_name"],
             REPO_ROOT / Path(test_case["dump_folder"]),
+            test_case["config_file"],
             id=f"{test_case['data_path']} {test_case['model_name']}",
         )
 

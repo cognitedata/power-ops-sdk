@@ -282,6 +282,7 @@ class AssetType(ResourceType, ABC):
     def _fetch_and_set_metadata(
         cls,
         client: CogniteClient,
+        data_set_id: int,
         additional_fields: dict[str, Union[list, None]],
         asset_external_id: str,
         fetch_metadata: bool,
@@ -292,6 +293,7 @@ class AssetType(ResourceType, ABC):
             source_external_ids=[asset_external_id],
             source_types=["asset"],
             target_types=["timeseries", "asset", "sequence", "file"],
+            data_set_ids=[data_set_id],
             limit=-1,
         )
         for r in relationships:
@@ -336,6 +338,7 @@ class AssetType(ResourceType, ABC):
     def from_cdf(
         cls,
         client: CogniteClient,
+        data_set_id: int,
         external_id: Optional[str] = "",
         asset: Optional[Asset] = None,
         fetch_metadata: bool = True,
@@ -374,6 +377,7 @@ class AssetType(ResourceType, ABC):
         if fetch_metadata:
             cls._fetch_and_set_metadata(
                 client,
+                data_set_id,
                 additional_fields,
                 asset.external_id,
                 fetch_metadata,
@@ -578,6 +582,7 @@ class Model(BaseModel, ABC):
     def from_cdf(
         cls: TypingType[T_Model],
         client: PowerOpsClient,
+        data_set_id: int,
         fetch_metadata: bool = True,
         fetch_content: bool = False,
     ) -> T_Model:
@@ -678,6 +683,7 @@ class AssetModel(Model, ABC):
     def from_cdf(
         cls: TypingType[T_Asset_Model],
         client: PowerOpsClient,
+        data_set_id: int,
         fetch_metadata: bool = True,
         fetch_content: bool = False,
     ) -> T_Asset_Model:
@@ -695,6 +701,7 @@ class AssetModel(Model, ABC):
                     continue
                 instance = asset_cls.from_cdf(
                     client=cdf,
+                    data_set_id=data_set_id,
                     asset=asset,
                     fetch_metadata=fetch_metadata,
                     fetch_content=fetch_content,
