@@ -7,9 +7,10 @@ def main():
     client = get_powerops_client().cdf
     apis = [client.assets, client.sequences, client.time_series, client.files]
 
-    for target_types, api in zip([["asset"], ["sequence"], ["TIMESERIES", "timeSeries"], ["files"]], apis):
+    for target_types, api in zip([["asset", "ASSET"], ["sequence"], ["TIMESERIES", "timeSeries"], ["file"]], apis):
         relationships = client.relationships.list(
             data_set_external_ids=[settings.powerops.write_dataset],
+            source_types=["asset"],
             target_types=target_types,
             limit=-1,
         )

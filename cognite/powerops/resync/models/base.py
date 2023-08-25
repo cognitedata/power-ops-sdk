@@ -308,6 +308,7 @@ class AssetType(ResourceType, ABC):
                     target_class = [y for x, y in cls._field_name_asset_resource_class() if field == x and y][0]
                     relationship_target = target_class.from_cdf(
                         client=client,
+                        data_set_id=data_set_id,
                         external_id=r.target_external_id,
                         fetch_metadata=fetch_metadata,
                         fetch_content=fetch_content,
@@ -360,7 +361,9 @@ class AssetType(ResourceType, ABC):
             if external_id in AssetType._instantiated_assets:
                 return AssetType._instantiated_assets[external_id]
             else:
-                asset = client.assets.retrieve(external_id=external_id)
+                asset = client.assets.retrieve(
+                    external_id=external_id,
+                )
         if not asset:
             raise ValueError(f"Could not retrieve asset with {external_id=}")
 
