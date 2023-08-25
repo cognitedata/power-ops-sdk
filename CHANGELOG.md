@@ -13,6 +13,12 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.38.3] - 2023-08-25
+### Fixed
+* Fixed bugs when running `powerops plan` some edge case could raise and error as a missing argument
+  to a function.
+
+
 ## [0.38.2] - 2023-08-25
 ### Fixed
 * Fixed bugs when running `powerops plan` without `--dump-folder`. This raised `NotImplementedError`. Now
