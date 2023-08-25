@@ -1,5 +1,5 @@
 from pathlib import Path
-
+import os
 import pytest
 from coverage.tomlconfig import tomllib
 
@@ -7,9 +7,10 @@ from cognite.powerops import resync
 
 from loguru import logger
 
-from cognite.powerops.clients.powerops_client import PowerOpsClient
 from yaml import safe_load
 from tests.constants import SENSITIVE_TESTS, REPO_ROOT
+from tests.utils import chdir
+from cognite.powerops.clients.powerops_client import get_powerops_client
 
 
 def plan_test_cases():
@@ -30,10 +31,15 @@ def plan_test_cases():
         )
 
 
-@pytest.mark.parametrize("data_path, market, model_name, dump_folder", list(plan_test_cases()))
+@pytest.mark.parametrize("data_path, market, model_name, dump_folder, config_file", list(plan_test_cases()))
 def test_plan(
-    data_path: Path, market: str, model_name: str, dump_folder: Path, powerops_client: PowerOpsClient, data_regression
+    data_path: Path, market: str, model_name: str, dump_folder: Path, config_file: str, data_regression
 ) -> None:
+    # Arrange
+    with chdir(REPO_ROOT):
+        os.environ["SETTINGS_FILES"] = config_file
+        powerops_client = get_powerops_client()
+
     # Act
     resync.plan(
         data_path, market, echo=logger.info, model_names=[model_name], dump_folder=dump_folder, client=powerops_client
