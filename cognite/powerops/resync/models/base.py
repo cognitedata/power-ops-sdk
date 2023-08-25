@@ -146,16 +146,21 @@ class AssetType(ResourceType, ABC):
                 relationships.extend(
                     self._create_relationship(sequence.external_id, "SEQUENCE", field_name) for sequence in field_value
                 )
-            elif isinstance(field_value, list) and field_value and isinstance(field_value[0], BaseModel):
-                for target in field_value:
+            elif isinstance(field_value, AssetType) or (
+                isinstance(field_value, list) and field_value and isinstance(field_value[0], AssetType)
+            ):
+                asset_types: list[AssetType] = field_value if isinstance(field_value, list) else [field_value]
+                for target in asset_types:
+                    target_type = target.type_
+                    if self.type_ == "plant" and target.type_ == "reservoir":
+                        target_type = "inlet_reservoir"
+                    relationships.append(self._create_relationship(target.external_id, "ASSET", target_type))
+            elif isinstance(field_value, NonAssetType) or (
+                isinstance(field_value, list) and field_value and isinstance(field_value[0], NonAssetType)
+            ):
+                non_asset_types: list[NonAssetType] = field_value if isinstance(field_value, list) else [field_value]
+                for target in non_asset_types:
                     relationships.extend(self._relationships(target))
-            elif isinstance(field_value, AssetType):
-                target_type = field_value.type_
-                if self.type_ == "plant" and field_value.type_ == "reservoir":
-                    target_type = "inlet_reservoir"
-                relationships.append(self._create_relationship(field_value.external_id, "ASSET", target_type))
-            elif isinstance(field_value, NonAssetType):
-                relationships.extend(self._relationships(field_value))
 
         return relationships
 
@@ -169,7 +174,7 @@ class AssetType(ResourceType, ABC):
 
         # The market model uses the suffix CDF type for the relationship label, while the core model does not.
         try:
-            # Core Model
+            # Production Model
             label = RelationshipLabel(f"relationship_to.{target_type}")
         except ValueError:
             # Market Model
