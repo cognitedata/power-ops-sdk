@@ -63,8 +63,8 @@ def plan(
 
             (dump_folder / f"{model.model_name}_local.yaml").write_text(safe_dump(model.dump()))
             (dump_folder / f"{model.model_name}_cdf.yaml").write_text(safe_dump(cdf_model.dump()))
-        else:
-            cdf_model.difference(model, print_string=True)
+        # else:
+        #     cdf_model.difference(model, print_string=True)
 
 
 @overload

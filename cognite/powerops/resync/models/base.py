@@ -587,9 +587,44 @@ class Model(BaseModel, ABC):
     ) -> T_Model:
         ...
 
-    @abc.abstractmethod
     def difference(self: T_Model, other: T_Model, print_string: bool = True) -> dict:
-        ...
+        if type(self) != type(other):
+            raise ValueError("Cannot compare these models of different types.")
+
+        self_dump = self._prepare_for_diff()
+        other_dump = other._prepare_for_diff()
+        diff_dict = {}
+        for model_field in self_dump:
+            if deep_diff := DeepDiff(
+                self_dump[model_field],
+                other_dump[model_field],
+                ignore_type_in_groups=[(float, int, type(None))],
+                exclude_regex_paths=[
+                    r"(.+?)._cognite_client",
+                    r"(.+?).last_updated_time",
+                    r"(.+?).parent_id",
+                    r"(.+?).root_id]",
+                    r"(.+?).data_set_id",
+                    r"(.+?).created_time",
+                    r"(.+?)lastUpdatedTime",
+                    r"(.+?)createdTime",
+                    r"(.+?)parentId",
+                    r"(.+?)\.id",
+                    # Relevant metadata should already be included in the model
+                    r"(.+?)metadata",
+                ],
+            ).to_dict():
+                diff_dict[model_field] = deep_diff
+
+        if print_string:
+            _diff_formatter = _DiffFormatter(
+                full_diff_per_field=diff_dict,
+                model_a=self_dump,
+                model_b=other_dump,
+            )
+            print(_diff_formatter.format_as_string())
+
+        return diff_dict
 
 
 T_Model = TypeVar("T_Model", bound=Model)
@@ -710,7 +745,20 @@ class AssetModel(Model, ABC):
         return cls(**output)
 
     def _prepare_for_diff(self: T_Asset_Model) -> dict[str:dict]:
-        raise NotImplementedError()
+        clone = self.model_copy(deep=True)
+
+        for model_field in clone.model_fields:
+            field_value = getattr(clone, model_field)
+            if isinstance_list(field_value, AssetType):
+                # Sort the asset types to have comparable order for diff
+                _sorted = sorted(field_value, key=lambda x: x.external_id)
+                # Prepare each asset type for diff
+                _prepared = map(lambda x: x._asset_type_prepare_for_diff(), _sorted)
+                setattr(clone, model_field, list(_prepared))
+            elif isinstance(field_value, AssetType):
+                field_value._asset_type_prepare_for_diff()
+        # Some fields are have been set to their external_id which gives a warning we can ignore
+        return clone.model_dump(warnings=False)
 
     def difference(self: T_Asset_Model, other: T_Asset_Model, print_string: bool = True) -> dict:
         if type(self) != type(other):
@@ -810,8 +858,8 @@ class DataModel(Model, ABC):
                 )
         return output
 
-    def difference(self: T_Model, other: T_Model, print_string: bool = True) -> dict:
-        raise NotImplementedError
+    # def difference(self: T_Model, other: T_Model, print_string: bool = True) -> dict:
+    #     raise NotImplementedError
 
 
 class _DiffFormatter:
