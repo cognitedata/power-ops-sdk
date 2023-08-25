@@ -626,6 +626,72 @@ class Model(BaseModel, ABC):
 
         return diff_dict
 
+    def difference_external_ids(self: T_Model, other: T_Model) -> dict:
+        this_summary = self.dump_external_ids()
+        other_summary = other.dump_external_ids()
+        output: dict[str, dict[str, dict[str, dict[str, list[str]]]]] = {}
+        for model_name in this_summary:
+            output[model_name] = {}
+            for domain in this_summary[model_name]:
+                output[model_name][domain] = {}
+                for type_ in this_summary[model_name][domain]:
+                    this_ext_ids = set(this_summary[model_name][domain][type_])
+                    other_ext_ids = set(other_summary[model_name][domain][type_])
+                    if not type_ == "nodes":
+                        added = sorted(this_ext_ids - other_ext_ids)
+                        removed = sorted(other_ext_ids - this_ext_ids)
+                        output[model_name][domain][type_] = {
+                            "added": added[: min(len(added), 10)],
+                            "removed": removed[: min(len(removed), 10)],
+                        }
+                        continue
+                    # Todo this is a hack go get more detailed diff for nodes
+                    # To make it not a hack the external id has to be standardized
+                    # and not just assumed to have this format.
+                    output[model_name][domain][type_] = {}
+
+                    this_ext_ids_by_node_type = defaultdict(set)
+                    for node_type, ext_id in groupby(sorted(this_ext_ids), key=lambda x: x.split("_", 1)[0]):
+                        this_ext_ids_by_node_type[node_type].update(ext_id)
+                    other_ext_ids_by_node_type = defaultdict(set)
+                    for node_type, ext_id in groupby(sorted(other_ext_ids), key=lambda x: x.split("_", 1)[0]):
+                        other_ext_ids_by_node_type[node_type].update(ext_id)
+                    for node_type in set(this_ext_ids_by_node_type) | set(other_ext_ids_by_node_type):
+                        if node_type != "BM":
+                            added = sorted(this_ext_ids_by_node_type[node_type] - other_ext_ids_by_node_type[node_type])
+                            removed = sorted(
+                                other_ext_ids_by_node_type[node_type] - this_ext_ids_by_node_type[node_type]
+                            )
+                            output[model_name][domain][type_][node_type] = {
+                                "added": added[: min(len(added), 10)],
+                                "removed": removed[: min(len(removed), 10)],
+                            }
+                            continue
+                        output[model_name][domain][type_][node_type] = {}
+                        this_mapping_by_watercourse = defaultdict(set)
+                        for watercourse, ext_id in groupby(
+                            sorted(this_ext_ids_by_node_type[node_type]), lambda x: x.split("__")[1]
+                        ):
+                            this_mapping_by_watercourse[watercourse].update(ext_id)
+                        other_mapping_by_watercourse = defaultdict(set)
+                        for watercourse, ext_id in groupby(
+                            sorted(other_ext_ids_by_node_type[node_type]), lambda x: x.split("__")[1]
+                        ):
+                            other_mapping_by_watercourse[watercourse].update(ext_id)
+                        for watercourse in set(this_mapping_by_watercourse) | set(other_mapping_by_watercourse):
+                            added = sorted(
+                                this_mapping_by_watercourse[watercourse] - other_mapping_by_watercourse[watercourse]
+                            )
+                            removed = sorted(
+                                other_mapping_by_watercourse[watercourse] - this_mapping_by_watercourse[watercourse]
+                            )
+
+                            output[model_name][domain][type_][node_type][watercourse] = {
+                                "added": added[: min(len(added), 10)],
+                                "removed": removed[: min(len(removed), 10)],
+                            }
+        return output
+
 
 T_Model = TypeVar("T_Model", bound=Model)
 
@@ -857,9 +923,6 @@ class DataModel(Model, ABC):
                     key=self._external_id_key,
                 )
         return output
-
-    # def difference(self: T_Model, other: T_Model, print_string: bool = True) -> dict:
-    #     raise NotImplementedError
 
 
 class _DiffFormatter:
