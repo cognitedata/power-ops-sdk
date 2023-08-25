@@ -13,6 +13,13 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.38.1] - 2023-08-25
+### Fixed
+* Fixed bugs when running `powerops plan`:
+  * Handle nested data structures.
+  * Only read from the correct data set.
+
+
 ## [0.38.0] - 2023-08-24
 ### Fixed
 * Fixed bugs when running `powerops plan`.

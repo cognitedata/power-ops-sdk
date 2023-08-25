@@ -121,52 +121,77 @@ class AssetType(ResourceType, ABC):
         return self.parent_external_id.replace("_", " ").title()
 
     def relationships(self) -> list[Relationship]:
-        relationships = []
-        for field_name, field in self.model_fields.items():
-            value = getattr(self, field_name)
-            if not value:
-                continue
-            if isinstance_list(value, AssetType):
-                relationships.extend(
-                    self._create_relationship(target.external_id, "ASSET", target.type_) for target in value
-                )
-            elif isinstance(value, AssetType):
-                target_type = value.type_
-                if self.type_ == "plant" and value.type_ == "reservoir":
-                    target_type = "inlet_reservoir"
-                relationships.append(self._create_relationship(value.external_id, "ASSET", target_type))
-            elif any(
-                cdf_type in str(field.annotation)
-                for cdf_type in [
-                    CDFSequence.__name__,
-                    TimeSeries.__name__,
-                ]
-            ):
-                if TimeSeries.__name__ in str(field.annotation):
-                    target_type = "TIMESERIES"
-                elif CDFSequence.__name__ in str(field.annotation):
-                    target_type = "SEQUENCE"
-                else:
-                    raise ValueError(f"Unexpected type {field.annotation}")
+        return self._relationships(self)
 
-                if isinstance(value, list):
-                    relationships.extend(
-                        self._create_relationship(
-                            target.external_id,
-                            target_type,
-                            field_name,
-                        )
-                        for target in value
-                    )
-                else:
-                    relationships.append(
-                        self._create_relationship(
-                            value.external_id,
-                            target_type,
-                            field_name,
-                        )
-                    )
+    def _relationships(self, to: BaseModel) -> list[Relationship]:
+        relationships = []
+        for field_name, field in to.model_fields.items():
+            field_value = getattr(to, field_name)
+            if not field_value:
+                continue
+            if isinstance(field_value, CDFSequence):
+                relationships.append(self._create_relationship(field_value.external_id, "SEQUENCE", field_name))
+            elif isinstance(field_value, TimeSeries):
+                relationships.append(self._create_relationship(field_value.external_id, "TIMESERIES", field_name))
+            elif isinstance(field_value, list) and field_value and isinstance(field_value[0], TimeSeries):
+                # The string comparison is to avoid circular imports
+                if type(to).__name__ == "ProductionPlanTimeSeries" and field_name == "series":
+                    # For some reason, the production plan time series are not linked to the benchmarking config
+                    continue
+
+                relationships.extend(
+                    self._create_relationship(ts.external_id, "TIMESERIES", field_name) for ts in field_value
+                )
+            elif isinstance(field_value, list) and field_value and isinstance(field_value[0], CDFSequence):
+                relationships.extend(
+                    self._create_relationship(sequence.external_id, "SEQUENCE", field_name) for sequence in field_value
+                )
+            elif isinstance(field_value, AssetType) or (
+                isinstance(field_value, list) and field_value and isinstance(field_value[0], AssetType)
+            ):
+                asset_types: list[AssetType] = field_value if isinstance(field_value, list) else [field_value]
+                for target in asset_types:
+                    target_type = target.type_
+                    if self.type_ == "plant" and target.type_ == "reservoir":
+                        target_type = "inlet_reservoir"
+                    relationships.append(self._create_relationship(target.external_id, "ASSET", target_type))
+            elif isinstance(field_value, NonAssetType) or (
+                isinstance(field_value, list) and field_value and isinstance(field_value[0], NonAssetType)
+            ):
+                non_asset_types: list[NonAssetType] = field_value if isinstance(field_value, list) else [field_value]
+                for target in non_asset_types:
+                    relationships.extend(self._relationships(target))
+
         return relationships
+
+    def _create_relationship(
+        self,
+        target_external_id: str,
+        target_cdf_type: str,
+        target_type: str,
+    ) -> Relationship:
+        source_type = "ASSET"
+
+        # The market model uses the suffix CDF type for the relationship label, while the core model does not.
+        try:
+            # Production Model
+            label = RelationshipLabel(f"relationship_to.{target_type}")
+        except ValueError:
+            # Market Model
+            label = RelationshipLabel(f"relationship_to.{target_type}_{target_cdf_type.lower()}")
+            # In addition, the Market Model uses capitalised CDF types for the relationship type,
+            # while the core model uses all upper cases.
+            source_type = source_type.title()
+            target_cdf_type = target_cdf_type.title()
+
+        return Relationship(
+            external_id=f"{self.external_id}.{target_external_id}",
+            source_external_id=self.external_id,
+            source_type=source_type,
+            target_external_id=target_external_id,
+            target_type=target_cdf_type,
+            labels=[Label(external_id=label.value)],
+        )
 
     def as_asset(self):
         metadata = {}
@@ -201,35 +226,6 @@ class AssetType(ResourceType, ABC):
             labels=[Label(self.label.value)],
             metadata=metadata or None,
             description=self.description,
-        )
-
-    def _create_relationship(
-        self,
-        target_external_id: str,
-        target_cdf_type: str,
-        target_type: str,
-    ) -> Relationship:
-        source_type = "ASSET"
-
-        # The market model uses the suffix CDF type for the relationship label, while the core model does not.
-        try:
-            # Core Model
-            label = RelationshipLabel(f"relationship_to.{target_type}")
-        except ValueError:
-            # Market Model
-            label = RelationshipLabel(f"relationship_to.{target_type}_{target_cdf_type.lower()}")
-            # In addition, the Market Model uses capitalised CDF types for the relationship type,
-            # while the core model uses all upper cases.
-            source_type = source_type.title()
-            target_cdf_type = target_cdf_type.title()
-
-        return Relationship(
-            external_id=f"{self.external_id}.{target_external_id}",
-            source_external_id=self.external_id,
-            source_type=source_type,
-            target_external_id=target_external_id,
-            target_type=target_cdf_type,
-            labels=[Label(external_id=label.value)],
         )
 
     @classmethod
@@ -286,6 +282,7 @@ class AssetType(ResourceType, ABC):
     def _fetch_and_set_metadata(
         cls,
         client: CogniteClient,
+        data_set_id: int,
         additional_fields: dict[str, Union[list, None]],
         asset_external_id: str,
         fetch_metadata: bool,
@@ -296,6 +293,7 @@ class AssetType(ResourceType, ABC):
             source_external_ids=[asset_external_id],
             source_types=["asset"],
             target_types=["timeseries", "asset", "sequence", "file"],
+            data_set_ids=[data_set_id],
             limit=-1,
         )
         for r in relationships:
@@ -340,6 +338,7 @@ class AssetType(ResourceType, ABC):
     def from_cdf(
         cls,
         client: CogniteClient,
+        data_set_id: int,
         external_id: Optional[str] = "",
         asset: Optional[Asset] = None,
         fetch_metadata: bool = True,
@@ -378,12 +377,12 @@ class AssetType(ResourceType, ABC):
         if fetch_metadata:
             cls._fetch_and_set_metadata(
                 client,
+                data_set_id,
                 additional_fields,
                 asset.external_id,
                 fetch_metadata,
                 fetch_content,
             )
-
         instance = cls._from_asset(asset, additional_fields)
         if asset.external_id != instance.external_id:
             # The external id is not set in a standardized way for Market configs.
@@ -582,6 +581,7 @@ class Model(BaseModel, ABC):
     def from_cdf(
         cls: TypingType[T_Model],
         client: PowerOpsClient,
+        data_set_id: int,
         fetch_metadata: bool = True,
         fetch_content: bool = False,
     ) -> T_Model:
@@ -682,6 +682,7 @@ class AssetModel(Model, ABC):
     def from_cdf(
         cls: TypingType[T_Asset_Model],
         client: PowerOpsClient,
+        data_set_id: int,
         fetch_metadata: bool = True,
         fetch_content: bool = False,
     ) -> T_Asset_Model:
@@ -699,6 +700,7 @@ class AssetModel(Model, ABC):
                     continue
                 instance = asset_cls.from_cdf(
                     client=cdf,
+                    data_set_id=data_set_id,
                     asset=asset,
                     fetch_metadata=fetch_metadata,
                     fetch_content=fetch_content,

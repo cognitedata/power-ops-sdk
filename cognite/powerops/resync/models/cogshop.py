@@ -44,7 +44,7 @@ class CogShop1Asset(CogShopCore, DataModel, protected_namespaces=()):
 
     @classmethod
     def from_cdf(
-        cls, client: PowerOpsClient, fetch_metadata: bool = True, fetch_content: bool = False
+        cls, client: PowerOpsClient, data_set_id: int, fetch_metadata: bool = True, fetch_content: bool = False
     ) -> "CogShop1Asset":
         cog_shop = client.cog_shop1
         templates = cog_shop.model_templates.list(limit=-1)
@@ -70,7 +70,8 @@ class CogShop1Asset(CogShopCore, DataModel, protected_namespaces=()):
         for template in templates:
             data = template.model_dump(exclude=readme_fields - {"version"})
             data["version"] = str(data["version"])
-            data["model"] = file_by_id[data["model"]].model_dump(exclude=readme_fields)
+            if data["model"] in file_by_id:
+                data["model"] = file_by_id[data["model"]].model_dump(exclude=readme_fields)
             data["base_mappings"] = [mappings_by_id[m] for m in data["base_mappings"]]
             apply = cogshop_v1.ModelTemplateApply(**data)
             model_templates[apply.external_id] = apply

@@ -5,11 +5,13 @@ from cognite.powerops.utils.cdf import Settings
 def main():
     settings = Settings()
     client = get_powerops_client().cdf
-    apis = [client.assets, client.sequences, client.time_series]
+    apis = [client.assets, client.sequences, client.time_series, client.files]
 
-    for target_types, api in zip([["asset"], ["sequence"], ["TIMESERIES", "timeSeries"]], apis):
+    for target_types, api in zip([["asset"], ["sequence"], ["TIMESERIES", "timeSeries"], ["files"]], apis):
         relationships = client.relationships.list(
-            data_set_external_ids=[settings.powerops.write_dataset], target_types=target_types, limit=-1
+            data_set_external_ids=[settings.powerops.write_dataset],
+            target_types=target_types,
+            limit=-1,
         )
         type_ids = list({r.target_external_id for r in relationships})
         if not type_ids:

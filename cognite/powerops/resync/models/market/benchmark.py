@@ -4,13 +4,13 @@ from __future__ import annotations
 from typing import ClassVar, Union
 
 from cognite.client.data_classes import TimeSeries
-from pydantic import Field, field_validator
+from pydantic import Field, field_validator, model_validator
 
 from cognite.powerops.cdf_labels import AssetLabel
 from cognite.powerops.resync.models.base import NonAssetType
 
 from .base import Bid, Process, ShopTransformation
-from cognite.powerops.resync.utils.serializer import try_load_dict
+from cognite.powerops.resync.utils.serializer import try_load_dict, try_load_list
 
 
 class BenchmarkBid(Bid):
@@ -20,6 +20,13 @@ class BenchmarkBid(Bid):
 class ProductionPlanTimeSeries(NonAssetType):
     name: str
     series: list[TimeSeries]
+
+    @model_validator(mode="before")
+    def parse_dict(cls, value) -> dict:
+        if isinstance(value, dict):
+            name, series = next(iter(value.items()))
+            return {"name": name, "series": [TimeSeries(external_id=s) for s in series]}
+        return value
 
 
 class BenchmarkProcess(Process):
@@ -36,3 +43,9 @@ class BenchmarkProcess(Process):
     @field_validator("benchmarking_metrics", mode="before")
     def parse_str(cls, value) -> dict:
         return try_load_dict(value)
+
+    @field_validator("production_plan_time_series", mode="before")
+    def parse_str_to_list(cls, value) -> list:
+        if isinstance(loaded := try_load_list(value), dict):
+            return [loaded]
+        return loaded

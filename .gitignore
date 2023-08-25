@@ -51,7 +51,7 @@ test-report.xml
 .python-version
 
 # DM client
-.secrets.toml
+.secrets*.toml
 playground
 
 playground

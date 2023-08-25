@@ -17,6 +17,7 @@ from cognite.powerops.resync import models
 from cognite.powerops.resync.to_models.transform import transform
 from yaml import safe_dump
 from cognite.powerops.resync.utils.common import all_concrete_subclasses
+from cognite.powerops.utils.cdf import Settings
 
 MODEL_BY_NAME: dict[str, Type[Model]] = {
     model.__name__: model for model in all_concrete_subclasses(Model)  # type: ignore[type-abstract]
@@ -38,15 +39,20 @@ def plan(
 ) -> None:
     echo = echo or print
     echo_pretty: Callable[[Any], None] = echo_pretty or echo
+    settings = Settings()
     client = client or get_powerops_client()
 
     bootstrap_resources, config, models = _load_transform(market, path, client.cdf.config.project, echo, model_names)
     _remove_non_existing_relationship_time_series_targets(client.cdf, models, bootstrap_resources, echo)
     echo(f"Load transform completed, models {', '.join([type(m).__name__ for m in models])} loaded")
 
+    data_set = client.cdf.data_sets.retrieve(external_id=settings.powerops.read_dataset)
+    if not data_set or not data_set.id:
+        raise ValueError(f"Data set with external_id {settings.powerops.read_dataset} not found in CDF")
+    data_set_id = data_set.id
     for model in models:
         echo(f"Retrieving {type(model).__name__} from CDF")
-        cdf_model = type(model).from_cdf(client, fetch_metadata=True, fetch_content=False)
+        cdf_model = type(model).from_cdf(client, fetch_metadata=True, fetch_content=False, data_set_id=data_set_id)
 
         summary_diff = model.summary_diff(cdf_model)
         echo(f"Summary diff for {model.model_name}")
