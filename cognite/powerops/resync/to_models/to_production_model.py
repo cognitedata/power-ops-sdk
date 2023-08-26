@@ -15,7 +15,7 @@ from cognite.powerops.clients.data_classes import (
     WatercourseShopApply,
 )
 from cognite.powerops.resync.config.production.connections import Connection
-from cognite.powerops.resync.config.resync_config import ProductionConfig, WatercourseConfig
+from cognite.powerops.resync.config.resync_config import ProductionConfig, WatercourseConfig, PlantTimeSeriesMapping
 from cognite.powerops.resync.models import production
 from cognite.powerops.resync.models.cdf_resources import CDFSequence
 from cognite.powerops.resync.models.production_dm import ProductionModelDM
@@ -91,9 +91,9 @@ def to_production_model(config: ProductionConfig) -> production.ProductionModel:
 def _extract_watercourse_data(
     watercourse_config: WatercourseConfig,
     model: production.ProductionModel,
-    plant_time_series_mappings_by_name,
-    start_stop_cost_time_series_by_generator,
-    is_generator_available,
+    plant_time_series_mappings_by_name: dict[str, PlantTimeSeriesMapping],
+    start_stop_cost_time_series_by_generator: dict[str, str],
+    is_generator_available: dict[str, str],
     dayahead_price_timeseries: dict[str, str],
 ) -> None:
     watercourse = production.Watercourse(
