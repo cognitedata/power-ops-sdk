@@ -77,25 +77,43 @@ def to_production_model(config: ProductionConfig) -> production.ProductionModel:
 
     model = production.ProductionModel()
     for watercourse_config in config.watercourses:
-        _extract_watercourse_data(
+        watercourse_model = _extract_watercourse_data(
             watercourse_config,
-            model,
             plant_time_series_mappings_by_name,
             start_stop_cost_time_series_by_generator,
             is_generator_available,
-            config.dayahead_price_timeseries,
         )
+        model.watercourses.extend(watercourse_model.watercourses)
+        model.plants.extend(watercourse_model.plants)
+        model.reservoirs.extend(watercourse_model.reservoirs)
+        model.generators.extend(watercourse_model.generators)
+
+        for plant in watercourse_model.plants:
+            price_area_name = watercourse_config.market_to_price_area[plant.prod_area]
+            price_area = production.PriceArea(name=price_area_name)
+            if price_area_name not in {a.name for a in model.price_areas}:
+                if price_area_name in config.dayahead_price_timeseries:
+                    price_area.dayahead_price_time_series = TimeSeries(
+                        external_id=config.dayahead_price_timeseries[price_area_name]
+                    )
+                model.price_areas.append(price_area)
+
+            price_area = next(a for a in model.price_areas if a.name == price_area_name)
+            price_area.plants.append(plant)
+            watercourse = watercourse_model.watercourses[0]
+            if watercourse.name not in {w.name for w in price_area.watercourses}:
+                price_area.watercourses.append(watercourse)
+
     return model
 
 
 def _extract_watercourse_data(
     watercourse_config: WatercourseConfig,
-    model: production.ProductionModel,
     plant_time_series_mappings_by_name: dict[str, PlantTimeSeriesMapping],
     start_stop_cost_time_series_by_generator: dict[str, str],
     is_generator_available: dict[str, str],
-    dayahead_price_timeseries: dict[str, str],
-) -> None:
+) -> production.ProductionModel:
+    model = production.ProductionModel()
     watercourse = production.Watercourse(
         name=watercourse_config.name,
         shop=production.WaterCourseShop(penalty_limit=str(watercourse_config.shop_penalty_limit)),
@@ -209,24 +227,13 @@ def _extract_watercourse_data(
             for connection in parsed_connections
             if (g := connection.from_to_any(plant.name, plant.type_, generators_by_name))
         ]
-        plants.append(plant)
+        plant.prod_area = str(list(attributes["prod_area"].values())[0])
 
-        prod_area = str(list(attributes["prod_area"].values())[0])
-        price_area_name = watercourse_config.market_to_price_area[prod_area]
-        price_area = production.PriceArea(name=price_area_name)
-        if price_area_name not in {a.name for a in model.price_areas}:
-            if price_area_name in dayahead_price_timeseries:
-                price_area.dayahead_price_time_series = TimeSeries(
-                    external_id=dayahead_price_timeseries[price_area_name]
-                )
-            model.price_areas.append(price_area)
-        price_area = next(a for a in model.price_areas if a.name == price_area_name)
+        plants.append(plant)
         watercourse.plants.append(plant)
-        price_area.plants.append(plant)
-        if watercourse.name not in {w.name for w in price_area.watercourses}:
-            price_area.watercourses.append(watercourse)
 
     model.plants.extend(plants)
+    return model
 
 
 def to_production_data_model(config: ProductionConfig) -> ProductionModelDM:

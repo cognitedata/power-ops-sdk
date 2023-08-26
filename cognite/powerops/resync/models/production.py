@@ -41,6 +41,7 @@ class Plant(AssetType):
     outlet_level: float = 0.0
     p_min: float = 0.0
     p_max: float = 0.0
+    prod_area: str = Field("", exclude=True)
     penstock_head_loss_factors: dict = Field(default_factory=dict)
     generators: list[Generator] = Field(default_factory=list)
     inlet_reservoir: Optional[Reservoir] = None
