@@ -6,8 +6,9 @@ import string
 import warnings
 from pathlib import Path
 from typing import Any
-from yaml import safe_dump, safe_load
+from yaml import safe_dump, CSafeLoader
 from cognite.client.utils._text import to_camel_case
+
 
 # � character is used to represent unrecognizable characters in utf-8.
 UNRECOGNIZABLE_CHARACTER = "�"
@@ -69,7 +70,7 @@ def load_yaml(yaml_path: Path, encoding="utf-8", clean_data: bool = False) -> di
         warnings.warn(
             f"File {yaml_path.parent}/{yaml_path.name} contains invalid characters: {', '.join(invalid_characters)}"
         )
-    return safe_load(data)
+    return CSafeLoader(data).get_data()
 
 
 # Having a single yaml dump function makes it easy to look up all places YaMLs are dumped.
