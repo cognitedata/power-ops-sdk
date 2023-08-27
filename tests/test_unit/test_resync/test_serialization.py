@@ -19,10 +19,12 @@ def test_serialize_production_model_as_cdf(production_model: models.ProductionMo
     # In the first serialization, we do not count the content of sequences and files
     for item in chain(local_production.files(), local_production.sequences()):
         item.content = None
+    local_production.sort_listed_asset_types()
 
     # Act
     serialized = local_production.dump_as_cdf_resource()
     loaded = models.ProductionModel.load_from_cdf_resources(serialized)
 
     # Assert
+    loaded.sort_listed_asset_types()
     assert loaded.model_dump() == local_production.model_dump()

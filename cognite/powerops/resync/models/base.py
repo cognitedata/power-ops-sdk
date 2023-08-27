@@ -264,6 +264,12 @@ class AssetType(ResourceType, ABC, arbitrary_types_allowed=True):
 
         return output
 
+    def sort_listed_asset_types(self) -> None:
+        for field_name, field in self.model_fields.items():
+            annotation, outer = get_pydantic_annotation(field.annotation)
+            if issubclass(annotation, AssetType) and outer is list:
+                getattr(self, field_name).sort(key=lambda x: x.external_id)
+
     @classmethod
     def _from_asset(
         cls,
@@ -892,6 +898,14 @@ class AssetModel(Model, ABC):
                     raise NotImplementedError()
 
         return instance
+
+    def sort_listed_asset_types(self) -> None:
+        for field_name, field in self.model_fields.items():
+            annotation, outer = get_pydantic_annotation(field.annotation)
+            if issubclass(annotation, AssetType) and outer is list:
+                getattr(self, field_name).sort(key=lambda x: x.external_id)
+                for asset_type in getattr(self, field_name):
+                    asset_type.sort_listed_asset_types()
 
     @classmethod
     def from_cdf(
