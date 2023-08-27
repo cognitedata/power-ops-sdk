@@ -74,8 +74,7 @@ def to_production_model(config: ProductionConfig) -> production.ProductionModel:
     is_generator_available = {
         mapping.generator_name: mapping.is_available for mapping in (config.generator_time_series_mappings or [])
     }
-
-    model = production.ProductionModel()
+    watercourse_models: list[production.ProductionModel] = []
     for watercourse_config in config.watercourses:
         watercourse_model = _extract_watercourse_data(
             watercourse_config,
@@ -83,10 +82,41 @@ def to_production_model(config: ProductionConfig) -> production.ProductionModel:
             start_stop_cost_time_series_by_generator,
             is_generator_available,
         )
+        watercourse_models.append(watercourse_model)
+
+    # with Pool(min(len(config.watercourses), 8)) as pool:
+    #     watercourse_models = pool.starmap(
+    #         _extract_watercourse_data,
+    #         [
+    #             (
+    #                 watercourse_config,
+    #                 plant_time_series_mappings_by_name,
+    #                 start_stop_cost_time_series_by_generator,
+    #                 is_generator_available,
+    #             )
+    #             for watercourse_config in config.watercourses
+    #         ],
+    #     )
+
+    model = production.ProductionModel()
+    for watercourse_model in watercourse_models:
         model.watercourses.extend(watercourse_model.watercourses)
         model.plants.extend(watercourse_model.plants)
         model.reservoirs.extend(watercourse_model.reservoirs)
         model.generators.extend(watercourse_model.generators)
+
+        watercourse_config = next(
+            (
+                watercourse_config
+                for watercourse_config in config.watercourses
+                if watercourse_config.name == watercourse_model.watercourses[0].name
+            ),
+            None,
+        )
+        if watercourse_config is None:
+            raise ValueError(
+                f"Could not find watercourse config for watercourse {watercourse_model.watercourses[0].name}"
+            )
 
         for plant in watercourse_model.plants:
             price_area_name = watercourse_config.market_to_price_area[plant.prod_area]

@@ -23,7 +23,7 @@ class ModelTemplate(DomainModel):
     watercourse: Optional[str] = None
 
 
-class ModelTemplateApply(DomainModelApply):
+class ModelTemplateApply(DomainModelApply, protected_namespaces=()):
     space: ClassVar[str] = "cogShop"
     base_mappings: list[Union["MappingApply", str]] = Field(default_factory=list, repr=False)
     model: Optional[Union["FileRefApply", str]] = Field(None, repr=False)
