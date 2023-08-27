@@ -822,6 +822,7 @@ class AssetModel(Model, ABC):
             asset_by_parent_external_id[asset.parent_external_id].append(asset)
 
         parsed = {}
+        source_types_by_external_id = {}
         for field_name, field in cls.model_fields.items():
             annotation, outer = get_pydantic_annotation(field.annotation)
             if issubclass(annotation, AssetType) and annotation.parent_external_id in asset_by_parent_external_id:
@@ -830,15 +831,67 @@ class AssetModel(Model, ABC):
                         annotation.from_asset(asset)
                         for asset in asset_by_parent_external_id[annotation.parent_external_id]
                     ]
-                elif outer is None:
-                    parsed[field_name] = annotation.from_asset(
-                        asset_by_parent_external_id[annotation.parent_external_id][0]
-                    )
+                    for asset_type in parsed[field_name]:
+                        source_types_by_external_id[asset_type.external_id] = asset_type
                 else:
                     raise NotImplementedError()
             else:
                 raise NotImplementedError()
-        return cls(**parsed)
+
+        instance = cls(**parsed)
+
+        relationship_by_source_external_id = defaultdict(list)
+        for relationship in loaded["relationships"]:
+            relationship_by_source_external_id[relationship.source_external_id].append(relationship)
+
+        timeseries_by_id = {ts.external_id: ts for ts in loaded["time_series"]}
+        sequence_by_id = {sequence.external_id: sequence for sequence in loaded["sequences"]}
+        # file_by_id = {file.external_id: file for file in loaded["files"]}
+        for source_id, relationship in relationship_by_source_external_id.items():
+            if source_id not in source_types_by_external_id:
+                # Todo print warning
+                continue
+            source = source_types_by_external_id[source_id]
+            for r in relationship:
+                if r.target_type.casefold() == "timeseries":
+                    if r.target_external_id not in timeseries_by_id:
+                        # Todo print warning
+                        continue
+                    target = timeseries_by_id[r.target_external_id]
+                elif r.target_type.casefold() == "sequence":
+                    if r.target_external_id not in sequence_by_id:
+                        # Todo print warning
+                        continue
+                    target = sequence_by_id[r.target_external_id]
+                elif r.target_type.casefold() == "asset":
+                    if r.target_external_id not in source_types_by_external_id:
+                        # Todo print warning
+                        continue
+                    target = source_types_by_external_id[r.target_external_id]
+                # elif r.target_type.casefold() == "file":
+                #     if r.target_external_id not in file_by_id:
+                #         # Todo print warning
+                #         continue
+                #     target = file_by_id[r.target_external_id]
+                else:
+                    raise ValueError(f"Cannot handle target type {r.target_type}")
+
+                field_name = r.labels[0].external_id.split(".")[1]
+                if field_name not in source.model_fields:
+                    field_name += "s"
+                if field_name not in source.model_fields:
+                    raise ValueError(f"Cannot find field {field_name} in {source}")
+                annotation, outer = get_pydantic_annotation(source.model_fields[field_name].annotation)
+                if outer is list:
+                    getattr(source, field_name).append(target)
+                elif outer is dict:
+                    getattr(source, field_name)[target.external_id] = target
+                elif outer is None:
+                    setattr(source, field_name, target)
+                else:
+                    raise NotImplementedError()
+
+        return instance
 
     @classmethod
     def from_cdf(

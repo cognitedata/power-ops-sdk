@@ -7,7 +7,7 @@ import pandas as pd
 from cognite.client import CogniteClient
 from cognite.client.data_classes import FileMetadata, Sequence
 from cognite.client.exceptions import CogniteNotFoundError
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, model_serializer
 from typing_extensions import Self
 
 from cognite.powerops.resync.utils.serializer import remove_read_only_fields
@@ -15,6 +15,10 @@ from cognite.powerops.resync.utils.serializer import remove_read_only_fields
 
 class _CDFResource(BaseModel, ABC):
     model_config: ClassVar[ConfigDict] = ConfigDict(arbitrary_types_allowed=True)
+
+    @model_serializer
+    def ser_model(self) -> dict[str, Any]:
+        return self._dump(camel_case=False)
 
     @abstractmethod
     def _dump(self, camel_case: bool = False) -> dict[str, Any]:

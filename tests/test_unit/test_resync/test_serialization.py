@@ -1,3 +1,5 @@
+from itertools import chain
+
 import pytest
 from cognite.powerops.resync import models
 from cognite.powerops.resync.config.resync_config import ReSyncConfig
@@ -12,9 +14,15 @@ def production_model() -> models.ProductionModel:
 
 
 def test_serialize_production_model_as_cdf(production_model: models.ProductionModel) -> None:
+    # Arrange
+    local_production = production_model.model_copy(deep=True)
+    # In the first serialization, we do not count the content of sequences and files
+    for item in chain(local_production.files(), local_production.sequences()):
+        item.content = None
+
     # Act
-    serialized = production_model.dump_as_cdf_resource()
+    serialized = local_production.dump_as_cdf_resource()
     loaded = models.ProductionModel.load_from_cdf_resources(serialized)
 
     # Assert
-    assert loaded.model_dump() == production_model.model_dump()
+    assert loaded.model_dump() == local_production.model_dump()

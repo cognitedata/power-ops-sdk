@@ -1,10 +1,10 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import ClassVar, Optional, Union
+from typing import ClassVar, Optional, Union, Any
 
 from cognite.client.data_classes import Asset, TimeSeries
-from pydantic import ConfigDict, Field, field_validator
+from pydantic import ConfigDict, Field, field_validator, field_serializer
 
 from cognite.powerops.cdf_labels import AssetLabel
 from cognite.powerops.resync.models.base import AssetModel, AssetType, NonAssetType
@@ -23,6 +23,12 @@ class Generator(AssetType):
     is_available_time_series: Optional[TimeSeries] = None
     generator_efficiency_curve: Optional[CDFSequence] = None
     turbine_efficiency_curve: Optional[CDFSequence] = None
+
+    @field_serializer("start_stop_cost_time_series", "is_available_time_series")
+    def ser_time_series(self, value) -> dict[str, Any]:
+        if value is None:
+            return {}
+        return {"externalId": value.external_id}
 
 
 class Reservoir(AssetType):
@@ -56,6 +62,20 @@ class Plant(AssetType):
     def parse_str(cls, value) -> dict:
         return try_load_dict(value)
 
+    @field_serializer(
+        "p_min_time_series",
+        "p_max_time_series",
+        "water_value_time_series",
+        "feeding_fee_time_series",
+        "outlet_level_time_series",
+        "inlet_level_time_series",
+        "head_direct_time_series",
+    )
+    def ser_time_series(self, value) -> dict[str, Any]:
+        if value is None:
+            return {}
+        return {"externalId": value.external_id}
+
 
 class WaterCourseShop(NonAssetType):
     penalty_limit: str
@@ -78,6 +98,12 @@ class Watercourse(AssetType):
             return []
         return value
 
+    @field_serializer("production_obligation_time_series")
+    def ser_time_series(self, value) -> dict[str, Any]:
+        if value is None:
+            return []
+        return [{"externalId": ts.external_id} for ts in value]
+
 
 class PriceArea(AssetType):
     parent_external_id: ClassVar[str] = "price_areas"
@@ -85,6 +111,12 @@ class PriceArea(AssetType):
     dayahead_price_time_series: Optional[TimeSeries] = None
     plants: list[Plant] = Field(default_factory=list)
     watercourses: list[Watercourse] = Field(default_factory=list)
+
+    @field_serializer("dayahead_price_time_series")
+    def ser_time_series(self, value) -> dict[str, Any]:
+        if value is None:
+            return {}
+        return {"externalId": value.external_id}
 
 
 class ProductionModel(AssetModel):
