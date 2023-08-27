@@ -8,6 +8,8 @@ from cognite.client import CogniteClient
 from cognite.client.data_classes import FileMetadata, Sequence
 from cognite.client.exceptions import CogniteNotFoundError
 from pydantic import BaseModel, ConfigDict
+from typing_extensions import Self
+
 from cognite.powerops.resync.utils.serializer import remove_read_only_fields
 
 
@@ -42,7 +44,7 @@ class CDFSequence(_CDFResource):
         return f"CDFSequence(external_id={self.external_id})"
 
     def __str__(self) -> str:
-        return self.__repr__()
+        return repr(self)
 
     @property
     def external_id(self):
@@ -55,6 +57,12 @@ class CDFSequence(_CDFResource):
 
     def _dump(self, camel_case: bool = False) -> dict[str, Any]:
         return self.sequence.dump(camel_case=camel_case)
+
+    @classmethod
+    def _load(cls, data: dict[str, Any]) -> Self:
+        return cls(
+            sequence=Sequence._load(data),
+        )
 
     @classmethod
     def from_cdf(
@@ -94,6 +102,12 @@ class CDFFile(_CDFResource):
 
     def _dump(self, camel_case: bool = False) -> dict[str, Any]:
         return self.meta.dump(camel_case=camel_case)
+
+    @classmethod
+    def _load(cls, data: dict[str, Any]) -> Self:
+        return cls(
+            meta=FileMetadata._load(data),
+        )
 
     @classmethod
     def from_cdf(

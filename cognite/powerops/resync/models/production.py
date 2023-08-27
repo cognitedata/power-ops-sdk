@@ -69,7 +69,7 @@ class Watercourse(AssetType):
     config_version: Optional[str] = Field("", exclude=True)
     model_file: Optional[Path] = Field(None, exclude=True)
     processed_model_file: Optional[Path] = Field(None, exclude=True)
-    plants: list[Plant]
+    plants: list[Plant] = Field(default_factory=list)
     production_obligation_time_series: list[TimeSeries] = Field(default_factory=list)
 
     @field_validator("production_obligation_time_series", mode="before")

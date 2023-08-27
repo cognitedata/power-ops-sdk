@@ -39,7 +39,7 @@ from cognite.powerops.resync.models.helpers import (
     pydantic_model_class_candidate,
 )
 from cognite.powerops.resync.utils.common import all_subclasses
-from cognite.powerops.resync.utils.serializer import remove_read_only_fields
+from cognite.powerops.resync.utils.serializer import remove_read_only_fields, get_pydantic_annotation
 
 _T_Type = TypeVar("_T_Type")
 
@@ -207,32 +207,46 @@ class AssetType(ResourceType, ABC, arbitrary_types_allowed=True):
     def _as_metadata(self) -> dict[str, str]:
         metadata = {}
         for field_name, field in self.model_fields.items():
+            annotation, _ = get_pydantic_annotation(field.annotation)
             if (
-                any(cdf_type in str(field.annotation) for cdf_type in [CDFSequence.__name__, TimeSeries.__name__])
+                annotation in [CDFSequence, TimeSeries, CDFFile]
+                or issubclass(annotation, AssetType)
                 or field_name in {"name", "description", "label", "parent_external_id"}
                 or field.exclude
             ):
                 continue
+
             value = getattr(self, field_name)
-            if value is None or isinstance(value, AssetType) or isinstance_list(value, AssetType):
-                continue
-            if isinstance(value, list) and not value:
-                continue
             if isinstance(value, NonAssetType):
                 value = value.model_dump(exclude_unset=True)
                 for k, v in value.items():
                     if isinstance(v, (dict, list)):
                         v = json.dumps(v)
                     metadata[f"{field_name}:{k}"] = v
+            elif isinstance(value, (dict, list)) and value:
+                metadata[field_name] = json.dumps(value)
+            elif isinstance(value, (dict, list)) and not value:
                 continue
-
-            if isinstance(value, (dict, list)):
-                value = json.dumps(value)
-            metadata[field_name] = value
+            elif field.annotation in (str, int, float):
+                metadata[field_name] = str(value)
+            else:
+                raise NotImplementedError(f"Cannot handle metadata of type {field.annotation}")
         return metadata
 
     @classmethod
-    def _parse_asset_metadata(cls, metadata: dict[str, str] | None = None) -> dict[str, dict | str]:
+    def from_asset(cls, asset: Asset) -> Self:
+        instance = cls(
+            name=asset.name,
+            description=asset.description,
+            **cls._load_metadata(asset.metadata),
+        )
+        if instance.external_id != asset.external_id:
+            # The external id is not set in a standardized way for Market configs.
+            instance.external_id = asset.external_id
+        return instance
+
+    @classmethod
+    def _load_metadata(cls, metadata: dict[str, str] | None = None) -> dict[str, dict | str]:
         if not metadata:
             return {}
         output: dict[str, dict | str] = {}
@@ -258,7 +272,7 @@ class AssetType(ResourceType, ABC, arbitrary_types_allowed=True):
     ) -> T_Asset_Type:
         if not additional_fields:
             additional_fields = {}
-        metadata = cls._parse_asset_metadata(asset.metadata)
+        metadata = cls._load_metadata(asset.metadata)
         instance = cls(
             _external_id=asset.external_id,
             name=asset.name,
@@ -784,6 +798,47 @@ class AssetModel(Model, ABC):
                     key=self._external_id_key,
                 )
         return output
+
+    @classmethod
+    def load_from_cdf_resources(cls: TypingType[Self], data: dict[str, Any]) -> Self:
+        loaded = {}
+        for key in data:
+            if key == "parent_assets" or key == "assets":
+                resource_cls = Asset
+            elif key == "relationships":
+                resource_cls = Relationship
+            elif key == "sequences":
+                resource_cls = CDFSequence
+            elif key == "files":
+                resource_cls = CDFFile
+            elif key == "time_series":
+                resource_cls = TimeSeries
+            else:
+                raise ValueError(f"Cannot handle key {key}")
+            loaded[key] = [resource_cls._load(item) if isinstance(item, dict) else item for item in data[key]]
+
+        asset_by_parent_external_id = defaultdict(list)
+        for asset in loaded["assets"]:
+            asset_by_parent_external_id[asset.parent_external_id].append(asset)
+
+        parsed = {}
+        for field_name, field in cls.model_fields.items():
+            annotation, outer = get_pydantic_annotation(field.annotation)
+            if issubclass(annotation, AssetType) and annotation.parent_external_id in asset_by_parent_external_id:
+                if outer is list:
+                    parsed[field_name] = [
+                        annotation.from_asset(asset)
+                        for asset in asset_by_parent_external_id[annotation.parent_external_id]
+                    ]
+                elif outer is None:
+                    parsed[field_name] = annotation.from_asset(
+                        asset_by_parent_external_id[annotation.parent_external_id][0]
+                    )
+                else:
+                    raise NotImplementedError()
+            else:
+                raise NotImplementedError()
+        return cls(**parsed)
 
     @classmethod
     def from_cdf(

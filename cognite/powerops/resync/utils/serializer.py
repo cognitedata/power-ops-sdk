@@ -5,7 +5,7 @@ import re
 import string
 import warnings
 from pathlib import Path
-from typing import Any
+from typing import Any, Union, get_origin, get_args, Type
 from yaml import safe_dump, CSafeLoader
 from cognite.client.utils._text import to_camel_case
 
@@ -78,3 +78,21 @@ def dump_yaml(data: dict, yaml_path: Path, encoding="utf-8"):
     _validate(yaml_path)
     with open(yaml_path, "w", encoding=encoding) as stream:
         safe_dump(data, stream)
+
+
+def get_pydantic_annotation(field_annotation) -> tuple[Any, Type[dict] | Type[list] | None]:
+    outer: Type[dict] | Type[list] | None = None
+    if not (origin := get_origin(field_annotation)):
+        return field_annotation, None
+    if origin is list:
+        annotation, *_ = get_args(field_annotation)
+        outer = list
+    elif origin is dict:
+        _, annotation = get_args(field_annotation)
+        outer = dict
+    elif origin is Union:
+        annotation, *_ = get_args(field_annotation)
+        outer = None
+    else:
+        raise NotImplementedError(f"Cannot handle field_annotation  {field_annotation}")
+    return annotation, outer

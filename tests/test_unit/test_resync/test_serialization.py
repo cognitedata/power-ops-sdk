@@ -17,4 +17,4 @@ def test_serialize_production_model_as_cdf(production_model: models.ProductionMo
     loaded = models.ProductionModel.load_from_cdf_resources(serialized)
 
     # Assert
-    assert loaded == production_model
+    assert loaded.model_dump() == production_model.model_dump()
