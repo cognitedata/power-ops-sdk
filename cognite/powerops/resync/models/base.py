@@ -454,7 +454,7 @@ class Model(BaseModel, ABC):
         time_series.extend(self._fields_of_type(TimeSeries))
         return time_series
 
-    cdf_resources: ClassVar[tuple[Callable, ...]] = (sequences, files, time_series)
+    cdf_resources: ClassVar[dict[Callable, type]] = {sequences: CDFSequence, files: CDFFile, time_series: TimeSeries}
 
     def _resource_types(self) -> Iterable[ResourceType]:
         yield from self._fields_of_type(ResourceType)
@@ -473,7 +473,7 @@ class Model(BaseModel, ABC):
 
     def dump_as_cdf_resource(self) -> dict[str, Any]:
         output: dict[str, Any] = {}
-        for resource_fun in self.cdf_resources:
+        for resource_fun in self.cdf_resources.keys():
             if items := resource_fun(self):
                 if resource_fun.__name__ == "sequences":
                     # Sequences must clean columns as well.
@@ -746,7 +746,12 @@ class AssetModel(Model, ABC):
             for parent_id, description in parent_and_description_ids
         ]
 
-    cdf_resources: ClassVar[tuple[Callable, ...]] = Model.cdf_resources + (assets, relationships, parent_assets)
+    cdf_resources: ClassVar[dict[Callable, type]] = {
+        **dict(Model.cdf_resources.items()),
+        assets: Asset,
+        relationships: Relationship,
+        parent_assets: Asset,
+    }
 
     def _asset_types(self) -> Iterable[AssetType]:
         yield from (item for item in self._resource_types() if isinstance(item, AssetType))
