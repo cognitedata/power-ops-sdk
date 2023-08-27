@@ -4,11 +4,9 @@ import json
 import re
 import string
 import warnings
-from functools import lru_cache
-from io import StringIO
 from pathlib import Path
 from typing import Any
-from yaml import safe_dump, safe_load
+from yaml import safe_dump, CSafeLoader
 from cognite.client.utils._text import to_camel_case
 
 # � character is used to represent unrecognizable characters in utf-8.
@@ -60,7 +58,6 @@ def _validate(yaml_path: Path):
         raise ValueError(f"File {yaml_path.name} not a valid yaml {yaml_path.suffix}")
 
 
-@lru_cache
 def load_yaml(yaml_path: Path, encoding="utf-8", clean_data: bool = False) -> dict:
     _validate(yaml_path)
     # The Windows Cpython implementation seems to guess if encoding is not explicitly set
@@ -72,7 +69,7 @@ def load_yaml(yaml_path: Path, encoding="utf-8", clean_data: bool = False) -> di
         warnings.warn(
             f"File {yaml_path.parent}/{yaml_path.name} contains invalid characters: {', '.join(invalid_characters)}"
         )
-    return safe_load(StringIO(data))
+    return CSafeLoader(data).get_data()
 
 
 # Having a single yaml dump function makes it easy to look up all places YaMLs are dumped.
