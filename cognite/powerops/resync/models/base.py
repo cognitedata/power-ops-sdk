@@ -791,24 +791,16 @@ class AssetModel(Model, ABC):
 
     @classmethod
     def load_from_cdf_resources(cls: TypingType[Self], data: dict[str, Any]) -> Self:
-        loaded = {}
-        for key in data:
-            if key == "parent_assets" or key == "assets":
-                resource_cls = Asset
-            elif key == "relationships":
-                resource_cls = Relationship
-            elif key == "sequences":
-                resource_cls = CDFSequence
-            elif key == "files":
-                resource_cls = CDFFile
-            elif key == "time_series":
-                resource_cls = TimeSeries
-            else:
-                raise ValueError(f"Cannot handle key {key}")
-            loaded[key] = [resource_cls._load(item) if isinstance(item, dict) else item for item in data[key]]
+        loaded: dict[str, dict[str, Any]] = {}
+        for function, resource_cls in cls.cdf_resources.items():
+            if items := data.get(function.__name__):
+                loaded[function.__name__] = {
+                    parsed.external_id: parsed
+                    for parsed in (resource_cls._load(item) if isinstance(item, dict) else item for item in items)
+                }
 
         asset_by_parent_external_id = defaultdict(list)
-        for asset in loaded["assets"]:
+        for asset in loaded["assets"].values():
             asset_by_parent_external_id[asset.parent_external_id].append(asset)
 
         parsed = {}
@@ -831,11 +823,11 @@ class AssetModel(Model, ABC):
         instance = cls(**parsed)
 
         relationship_by_source_external_id = defaultdict(list)
-        for relationship in loaded["relationships"]:
+        for relationship in loaded["relationships"].values():
             relationship_by_source_external_id[relationship.source_external_id].append(relationship)
 
-        timeseries_by_id = {ts.external_id: ts for ts in loaded["time_series"]}
-        sequence_by_id = {sequence.external_id: sequence for sequence in loaded["sequences"]}
+        timeseries_by_id = {ts.external_id: ts for ts in loaded["time_series"].values()}
+        sequence_by_id = {sequence.external_id: sequence for sequence in loaded["sequences"].values()}
         # file_by_id = {file.external_id: file for file in loaded["files"]}
         for source_id, relationship in relationship_by_source_external_id.items():
             if source_id not in source_types_by_external_id:
