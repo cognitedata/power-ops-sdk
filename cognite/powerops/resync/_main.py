@@ -61,8 +61,8 @@ def plan(
         if dump_folder:
             dump_folder.mkdir(parents=True, exist_ok=True)
 
-            (dump_folder / f"{model.model_name}_local.yaml").write_text(safe_dump(model.dump()))
-            (dump_folder / f"{model.model_name}_cdf.yaml").write_text(safe_dump(cdf_model.dump()))
+            (dump_folder / f"{model.model_name}_local.yaml").write_text(safe_dump(model.dump_as_cdf_resource()))
+            (dump_folder / f"{model.model_name}_cdf.yaml").write_text(safe_dump(cdf_model.dump_as_cdf_resource()))
         external_ids_diff = model.difference_external_ids(cdf_model)
         echo(f"External ids diff for {model.model_name}")
         echo_pretty(external_ids_diff)

@@ -14,7 +14,7 @@ from cognite.client.testing import monkeypatch_cognite_client
 
 from cognite.powerops.resync._main import DEFAULT_MODELS, apply
 from tests.constants import REPO_ROOT, SENSITIVE_TESTS
-from tests.test_unit.test_bootstrap.approval_test.mock_resource_create_classes import (
+from tests.test_unit.test_resync.approval_test.mock_resource_create_classes import (
     MockAssetsCreate,
     MockEventsCreate,
     MockFilesUploadBytes,

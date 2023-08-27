@@ -33,7 +33,7 @@ AddableResourceT = Union[
 def dump_cdf_resource(resource, remove_read_fields: bool = False) -> dict[str, Any]:
     """Legacy or DM resource."""
     try:
-        dump_func = resource.dump
+        dump_func = resource.dump_as_cdf_resource
     except AttributeError:
         dump_func = resource.dict
     if not remove_read_fields:

@@ -13,8 +13,8 @@ from deepdiff.model import PrettyOrderedSet
 from pathlib import Path
 from typing import Any, ClassVar, Iterable, Optional, Union, TypeVar, get_args
 from typing import Type as TypingType
-from pydantic import BaseModel, ConfigDict
-
+from pydantic import BaseModel
+from typing_extensions import Self
 from cognite.client import CogniteClient
 from cognite.client.data_classes import Asset, Label, Relationship, TimeSeries
 from cognite.client.data_classes.data_modeling.instances import (
@@ -67,10 +67,9 @@ class ResourceType(BaseModel, ABC):
         return output
 
 
-class AssetType(ResourceType, ABC):
+class AssetType(ResourceType, ABC, arbitrary_types_allowed=True):
     parent_external_id: ClassVar[str]
     label: ClassVar[Union[AssetLabel, str]]
-    model_config: ClassVar[ConfigDict] = ConfigDict(arbitrary_types_allowed=True)
     parent_description: ClassVar[Optional[str]] = None
     _instantiated_assets: ClassVar[dict[str, AssetType]] = defaultdict(dict)
 
@@ -193,7 +192,19 @@ class AssetType(ResourceType, ABC):
             labels=[Label(external_id=label.value)],
         )
 
-    def as_asset(self):
+    def as_asset(self) -> Asset:
+        metadata = self._as_metadata()
+
+        return Asset(
+            external_id=self.external_id,
+            name=self.name,
+            parent_external_id=self.parent_external_id,
+            labels=[Label(str(self.label.value))],
+            metadata=metadata or None,
+            description=self.description,
+        )
+
+    def _as_metadata(self) -> dict[str, str]:
         metadata = {}
         for field_name, field in self.model_fields.items():
             if (
@@ -218,15 +229,7 @@ class AssetType(ResourceType, ABC):
             if isinstance(value, (dict, list)):
                 value = json.dumps(value)
             metadata[field_name] = value
-
-        return Asset(
-            external_id=self.external_id,
-            name=self.name,
-            parent_external_id=self.parent_external_id,
-            labels=[Label(self.label.value)],
-            metadata=metadata or None,
-            description=self.description,
-        )
+        return metadata
 
     @classmethod
     def _parse_asset_metadata(cls, metadata: dict[str, str] | None = None) -> dict[str, dict | str]:
@@ -411,8 +414,8 @@ class AssetType(ResourceType, ABC):
 T_Asset_Type = TypeVar("T_Asset_Type", bound=AssetType)
 
 
-class NonAssetType(BaseModel, ABC):
-    model_config: ClassVar[ConfigDict] = ConfigDict(arbitrary_types_allowed=True)
+class NonAssetType(BaseModel, ABC, arbitrary_types_allowed=True):
+    ...
 
 
 class Model(BaseModel, ABC):
@@ -540,7 +543,7 @@ class Model(BaseModel, ABC):
                             }
         return output
 
-    def dump(self) -> dict[str, Any]:
+    def dump_as_cdf_resource(self) -> dict[str, Any]:
         output: dict[str, Any] = {}
         if time_series := self.time_series():
             output["time_series"] = sorted(
@@ -568,7 +571,7 @@ class Model(BaseModel, ABC):
         return output
 
     @classmethod
-    def load(cls: TypingType[T_Model], data: dict[str, Any]) -> T_Model:
+    def load_from_cdf_resources(cls: TypingType[Self], data: dict[str, Any]) -> Self:
         raise NotImplementedError()
 
     @classmethod
@@ -772,8 +775,8 @@ class AssetModel(Model, ABC):
         output[self.model_name]["cdf"]["parent_assets"] = [asset.external_id for asset in self.parent_assets()]
         return output
 
-    def dump(self) -> dict[str, Any]:
-        output = super().dump()
+    def dump_as_cdf_resource(self) -> dict[str, Any]:
+        output = super().dump_as_cdf_resource()
         for field_method in [self.assets, self.relationships, self.parent_assets]:
             if resources := field_method():
                 output[field_method.__name__] = sorted(
@@ -916,16 +919,23 @@ class DataModel(Model, ABC):
         output[self.model_name]["cdf"]["edges"] = [edge.external_id for edge in instances.edges]
         return output
 
-    def dump(self) -> dict[str, Any]:
-        output = super().dump()
+    def dump_as_cdf_resource(self) -> dict[str, Any]:
+        output = super().dump_as_cdf_resource()
         instances = self.instances()
         for instance_type in ["nodes", "edges"]:
             if resources := getattr(instances, instance_type):
                 output[instance_type] = sorted(
-                    (remove_read_only_fields(resource.dump(camel_case=False)) for resource in resources),
+                    (
+                        remove_read_only_fields(resource.dump_as_cdf_resource(camel_case=False))
+                        for resource in resources
+                    ),
                     key=self._external_id_key,
                 )
         return output
+
+    @classmethod
+    def load_from_cdf_resources(cls: TypingType[Self], data: dict[str, Any]) -> Self:
+        raise NotImplementedError()
 
 
 class _DiffFormatter:
