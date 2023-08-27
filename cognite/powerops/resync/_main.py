@@ -184,7 +184,7 @@ def _remove_non_existing_relationship_time_series_targets(
     for model in models:
         if not isinstance(model, AssetModel):
             continue
-        time_series = model.time_series()
+        time_series = model.timeseries()
         # retrieve_multiple fails if no time series are provided
         if not time_series:
             continue

@@ -449,12 +449,12 @@ class Model(BaseModel, ABC):
         files.extend(self._fields_of_type(CDFFile))
         return files
 
-    def time_series(self) -> list[TimeSeries]:
+    def timeseries(self) -> list[TimeSeries]:
         time_series = [ts for item in self._resource_types() for ts in item.time_series()]
         time_series.extend(self._fields_of_type(TimeSeries))
         return time_series
 
-    cdf_resources: ClassVar[dict[Callable, type]] = {sequences: CDFSequence, files: CDFFile, time_series: TimeSeries}
+    cdf_resources: ClassVar[dict[Callable, type]] = {sequences: CDFSequence, files: CDFFile, timeseries: TimeSeries}
 
     def _resource_types(self) -> Iterable[ResourceType]:
         yield from self._fields_of_type(ResourceType)
@@ -500,7 +500,7 @@ class Model(BaseModel, ABC):
         }
         summary[self.model_name]["cdf"]["files"] = len(self.files())
         summary[self.model_name]["cdf"]["sequences"] = len(self.sequences())
-        summary[self.model_name]["cdf"]["time_series"] = len(self.time_series())
+        summary[self.model_name]["cdf"]["time_series"] = len(self.timeseries())
         return summary
 
     def dump_external_ids(self) -> dict[str, dict, str, dict[str, list[str]]]:
@@ -513,7 +513,7 @@ class Model(BaseModel, ABC):
         }
         output[self.model_name]["cdf"]["files"] = [file.external_id for file in self.files()]
         output[self.model_name]["cdf"]["sequences"] = [sequence.external_id for sequence in self.sequences()]
-        output[self.model_name]["cdf"]["time_series"] = [time_series.external_id for time_series in self.time_series()]
+        output[self.model_name]["cdf"]["time_series"] = [time_series.external_id for time_series in self.timeseries()]
         return output
 
     def summary_diff(self: T_Model, other: T_Model) -> dict[str, dict[str, dict[str, dict[str, int]]]]:
@@ -791,78 +791,75 @@ class AssetModel(Model, ABC):
 
     @classmethod
     def load_from_cdf_resources(cls: TypingType[Self], data: dict[str, Any]) -> Self:
-        loaded: dict[str, dict[str, Any]] = {}
+        loaded_by_type_external_id: dict[str, dict[str, Any]] = {}
         for function, resource_cls in cls.cdf_resources.items():
             if items := data.get(function.__name__):
-                loaded[function.__name__] = {
-                    parsed.external_id: parsed
-                    for parsed in (resource_cls._load(item) if isinstance(item, dict) else item for item in items)
+                loaded_by_type_external_id[function.__name__] = {
+                    loaded.external_id: loaded
+                    for loaded in (resource_cls._load(item) if isinstance(item, dict) else item for item in items)
                 }
 
-        asset_by_parent_external_id = defaultdict(list)
-        for asset in loaded["assets"].values():
-            asset_by_parent_external_id[asset.parent_external_id].append(asset)
+        parsed = cls._create_cls_arguments(loaded_by_type_external_id)
 
-        parsed = {}
-        source_types_by_external_id = {}
+        instance = cls(**parsed)
+
+        cls._set_linked_resources(loaded_by_type_external_id)
+        return instance
+
+    @classmethod
+    def _create_cls_arguments(cls, loaded_by_type_external_id: dict[str, dict[str, Any]]) -> dict[str, Any]:
+        asset_by_parent_external_id = defaultdict(list)
+        for asset in loaded_by_type_external_id["assets"].values():
+            asset_by_parent_external_id[asset.parent_external_id].append(asset)
+        arguments = {}
+        asset_type_by_external_id = {}
         for field_name, field in cls.model_fields.items():
             annotation, outer = get_pydantic_annotation(field.annotation)
-            if issubclass(annotation, AssetType) and annotation.parent_external_id in asset_by_parent_external_id:
+            if issubclass(annotation, AssetType) and (
+                assets := asset_by_parent_external_id.get(annotation.parent_external_id)
+            ):
                 if outer is list:
-                    parsed[field_name] = [
-                        annotation.from_asset(asset)
-                        for asset in asset_by_parent_external_id[annotation.parent_external_id]
-                    ]
-                    for asset_type in parsed[field_name]:
-                        source_types_by_external_id[asset_type.external_id] = asset_type
+                    arguments[field_name] = [annotation.from_asset(asset) for asset in assets]
+                    asset_type_by_external_id.update({asset.external_id: asset for asset in arguments[field_name]})
                 else:
                     raise NotImplementedError()
             else:
                 raise NotImplementedError()
+        loaded_by_type_external_id["assets"] = asset_type_by_external_id
+        return arguments
 
-        instance = cls(**parsed)
+    @classmethod
+    def _set_linked_resources(cls, loaded_by_type_external_id: dict[str, dict[str, Any]]) -> None:
+        relationships_by_source_external_id = defaultdict(list)
+        for relationship in loaded_by_type_external_id["relationships"].values():
+            relationships_by_source_external_id[relationship.source_external_id].append(relationship)
 
-        relationship_by_source_external_id = defaultdict(list)
-        for relationship in loaded["relationships"].values():
-            relationship_by_source_external_id[relationship.source_external_id].append(relationship)
-
-        timeseries_by_id = {ts.external_id: ts for ts in loaded["time_series"].values()}
-        sequence_by_id = {sequence.external_id: sequence for sequence in loaded["sequences"].values()}
-        # file_by_id = {file.external_id: file for file in loaded["files"]}
-        for source_id, relationship in relationship_by_source_external_id.items():
-            if source_id not in source_types_by_external_id:
+        for source_id, relationships in relationships_by_source_external_id.items():
+            if not (source := loaded_by_type_external_id["assets"].get(source_id)):
                 # Todo print warning
+                # Missing source
                 continue
-            source = source_types_by_external_id[source_id]
-            for r in relationship:
-                if r.target_type.casefold() == "timeseries":
-                    if r.target_external_id not in timeseries_by_id:
-                        # Todo print warning
-                        continue
-                    target = timeseries_by_id[r.target_external_id]
-                elif r.target_type.casefold() == "sequence":
-                    if r.target_external_id not in sequence_by_id:
-                        # Todo print warning
-                        continue
-                    target = sequence_by_id[r.target_external_id]
-                elif r.target_type.casefold() == "asset":
-                    if r.target_external_id not in source_types_by_external_id:
-                        # Todo print warning
-                        continue
-                    target = source_types_by_external_id[r.target_external_id]
-                # elif r.target_type.casefold() == "file":
-                #     if r.target_external_id not in file_by_id:
-                #         # Todo print warning
-                #         continue
-                #     target = file_by_id[r.target_external_id]
-                else:
-                    raise ValueError(f"Cannot handle target type {r.target_type}")
 
-                field_name = r.labels[0].external_id.split(".")[1]
+            for relationship in relationships:
+                target_type = relationship.target_type.casefold()
+                for key in (target_type + "s", target_type):
+                    if target_items := loaded_by_type_external_id.get(key):
+                        break
+                else:
+                    # Todo print warning
+                    # Missing target type
+                    continue
+                if not (target := target_items.get(relationship.target_external_id)):
+                    # Todo print warning
+                    # Missing target external id
+                    continue
+
+                field_name = relationship.labels[0].external_id.split(".")[1]
                 if field_name not in source.model_fields:
                     field_name += "s"
                 if field_name not in source.model_fields:
                     raise ValueError(f"Cannot find field {field_name} in {source}")
+
                 annotation, outer = get_pydantic_annotation(source.model_fields[field_name].annotation)
                 if outer is list:
                     getattr(source, field_name).append(target)
@@ -872,8 +869,6 @@ class AssetModel(Model, ABC):
                     setattr(source, field_name, target)
                 else:
                     raise NotImplementedError()
-
-        return instance
 
     def sort_listed_asset_types(self) -> None:
         for field_name, field in self.model_fields.items():

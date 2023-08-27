@@ -5,7 +5,7 @@ from cognite.powerops.utils.cdf import Settings
 def main():
     settings = Settings()
     client = get_powerops_client().cdf
-    apis = [client.assets, client.sequences, client.time_series, client.files]
+    apis = [client.assets, client.sequences, client.timeseries, client.files]
 
     for target_types, api in zip([["asset", "ASSET"], ["sequence"], ["TIMESERIES", "timeSeries"], ["file"]], apis):
         relationships = client.relationships.list(
