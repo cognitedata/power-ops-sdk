@@ -16,7 +16,7 @@ def production_model() -> models.ProductionModel:
 def test_serialize_production_model_as_cdf(production_model: models.ProductionModel) -> None:
     # Arrange
     local_production = production_model.model_copy(deep=True)
-    # In the first serialization, we do not count the content of sequences and files
+    # In the first serialization, we do not support the content of sequences and files
     for item in chain(local_production.files(), local_production.sequences()):
         item.content = None
     local_production.sort_listed_asset_types()

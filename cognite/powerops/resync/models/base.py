@@ -11,7 +11,7 @@ from deepdiff import DeepDiff
 from deepdiff.model import PrettyOrderedSet
 
 from pathlib import Path
-from typing import Any, ClassVar, Iterable, Optional, Union, TypeVar, get_args
+from typing import Any, ClassVar, Iterable, Optional, Union, TypeVar, get_args, Callable
 from typing import Type as TypingType
 from pydantic import BaseModel
 from typing_extensions import Self
@@ -454,17 +454,10 @@ class Model(BaseModel, ABC):
         time_series.extend(self._fields_of_type(TimeSeries))
         return time_series
 
-    def drop_content(self) -> None:
-        for item in self._resource_types():
-            for sequence in item.sequences():
-                sequence.content = None
-            for file in item.files():
-                file.content = None
+    cdf_resources: ClassVar[tuple[Callable, ...]] = (sequences, files, time_series)
 
     def _resource_types(self) -> Iterable[ResourceType]:
-        for f in self.model_fields:
-            if isinstance(items := getattr(self, f), list) and items and isinstance(items[0], ResourceType):
-                yield from items
+        yield from self._fields_of_type(ResourceType)
 
     def _fields_of_type(self, type_: TypingType[_T_Type]) -> Iterable[_T_Type]:
         for field_name in self.model_fields:
@@ -477,6 +470,27 @@ class Model(BaseModel, ABC):
     @property
     def model_name(self) -> str:
         return type(self).__name__
+
+    def dump_as_cdf_resource(self) -> dict[str, Any]:
+        output: dict[str, Any] = {}
+        for resource_fun in self.cdf_resources:
+            if items := resource_fun(self):
+                if resource_fun.__name__ == "sequences":
+                    # Sequences must clean columns as well.
+                    def dump(resource: CDFSequence) -> dict[str, Any]:
+                        output = remove_read_only_fields(resource.dump(camel_case=False))
+                        if (columns := output.get("columns")) and isinstance(columns, list):
+                            for no, column in enumerate(columns):
+                                output["columns"][no] = remove_read_only_fields(column)
+                        return output
+
+                else:
+
+                    def dump(resource: Any) -> dict[str, Any]:
+                        return remove_read_only_fields(resource.dump(camel_case=False))
+
+                output[resource_fun.__name__] = sorted((dump(item) for item in items), key=self._external_id_key)
+        return output
 
     def summary(self) -> dict[str, dict[str, dict[str, int]]]:
         summary: dict[str, dict[str, dict[str, int]]] = {self.model_name: {"domain": {}, "cdf": {}}}
@@ -561,33 +575,6 @@ class Model(BaseModel, ABC):
                                     other_mapping_by_watercourse[watercourse] - this_mapping_by_watercourse[watercourse]
                                 ),
                             }
-        return output
-
-    def dump_as_cdf_resource(self) -> dict[str, Any]:
-        output: dict[str, Any] = {}
-        if time_series := self.time_series():
-            output["time_series"] = sorted(
-                ({"external_id": ts.external_id} if isinstance(ts, TimeSeries) else ts for ts in time_series),
-                key=self._external_id_key,
-            )
-        if files := self.files():
-            output["files"] = sorted(
-                (remove_read_only_fields(file.dump(camel_case=False)) for file in files),
-                key=self._external_id_key,
-            )
-        if sequences := self.sequences():
-
-            def dump_sequence(resource: CDFSequence) -> dict[str, Any]:
-                output = remove_read_only_fields(resource.dump(camel_case=False))
-                if (columns := output.get("columns")) and isinstance(columns, list):
-                    for no, column in enumerate(columns):
-                        output["columns"][no] = remove_read_only_fields(column)
-                return output
-
-            output["sequences"] = sorted(
-                (dump_sequence(sequence) for sequence in sequences),
-                key=self._external_id_key,
-            )
         return output
 
     @classmethod
@@ -759,6 +746,8 @@ class AssetModel(Model, ABC):
             for parent_id, description in parent_and_description_ids
         ]
 
+    cdf_resources: ClassVar[tuple[Callable, ...]] = Model.cdf_resources + (assets, relationships, parent_assets)
+
     def _asset_types(self) -> Iterable[AssetType]:
         yield from (item for item in self._resource_types() if isinstance(item, AssetType))
 
@@ -793,16 +782,6 @@ class AssetModel(Model, ABC):
             relationship.external_id for relationship in self.relationships()
         ]
         output[self.model_name]["cdf"]["parent_assets"] = [asset.external_id for asset in self.parent_assets()]
-        return output
-
-    def dump_as_cdf_resource(self) -> dict[str, Any]:
-        output = super().dump_as_cdf_resource()
-        for field_method in [self.assets, self.relationships, self.parent_assets]:
-            if resources := field_method():
-                output[field_method.__name__] = sorted(
-                    (remove_read_only_fields(resource.dump(camel_case=False)) for resource in resources),
-                    key=self._external_id_key,
-                )
         return output
 
     @classmethod
