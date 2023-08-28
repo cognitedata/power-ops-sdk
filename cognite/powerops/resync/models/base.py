@@ -6,16 +6,14 @@ from itertools import groupby
 import json
 from abc import ABC
 
-from cognite.client.exceptions import CogniteNotFoundError
 from deepdiff import DeepDiff
 from deepdiff.model import PrettyOrderedSet
 
 from pathlib import Path
-from typing import Any, ClassVar, Iterable, Optional, Union, TypeVar, get_args, Callable
+from typing import Any, ClassVar, Iterable, Optional, Union, TypeVar, Callable
 from typing import Type as TypingType
 from pydantic import BaseModel
 from typing_extensions import Self
-from cognite.client import CogniteClient
 from cognite.client.data_classes import Asset, Label, Relationship, TimeSeries, AssetList
 from cognite.client.data_classes.data_modeling.instances import (
     EdgeApply,
@@ -35,10 +33,7 @@ from cognite.powerops.resync.models.helpers import (
     format_value_added,
     format_value_removed,
     isinstance_list,
-    match_field_from_relationship,
-    pydantic_model_class_candidate,
 )
-from cognite.powerops.resync.utils.common import all_subclasses
 from cognite.powerops.resync.utils.serializer import remove_read_only_fields, get_pydantic_annotation
 
 _T_Type = TypeVar("_T_Type")
@@ -269,151 +264,6 @@ class AssetType(ResourceType, ABC, arbitrary_types_allowed=True):
             annotation, outer = get_pydantic_annotation(field.annotation)
             if issubclass(annotation, AssetType) and outer is list:
                 getattr(self, field_name).sort(key=lambda x: x.external_id)
-
-    @classmethod
-    def _from_asset(
-        cls,
-        asset: Asset,
-        additional_fields: Optional[dict[str, Any]] = None,
-    ) -> T_Asset_Type:
-        if not additional_fields:
-            additional_fields = {}
-        metadata = cls._load_metadata(asset.metadata)
-        instance = cls(
-            _external_id=asset.external_id,
-            name=asset.name,
-            description=asset.description,
-            **metadata,
-            **additional_fields,
-        )
-        AssetType._instantiated_assets[asset.external_id] = instance
-        return instance
-
-    @classmethod
-    def _field_name_asset_resource_class(cls) -> Iterable[tuple[str, TypingType[AssetType]]]:
-        """AssetType fields are are of type list[AssetType] or Optional[AssetType]"""
-        # todo? method is identical to _field_name_asset_resource_class in AssetModel
-        # * unsure how to reuse?
-        for field_name in cls.model_fields:
-            class_ = cls.model_fields[field_name].annotation
-            if pydantic_model_class_candidate(class_):
-                asset_resource_class = get_args(class_)[0]
-                if issubclass(asset_resource_class, AssetType):
-                    yield field_name, asset_resource_class
-
-    @classmethod
-    def _fetch_and_set_metadata(
-        cls,
-        client: CogniteClient,
-        data_set_id: int,
-        additional_fields: dict[str, Union[list, None]],
-        asset_external_id: str,
-        fetch_metadata: bool,
-        fetch_content: bool,
-    ) -> dict[str, Any]:
-        """Fetches resources that are linked with relationships to the asset."""
-        relationships = client.relationships.list(
-            source_external_ids=[asset_external_id],
-            source_types=["asset"],
-            target_types=["timeseries", "asset", "sequence", "file"],
-            data_set_ids=[data_set_id],
-            limit=-1,
-        )
-        for r in relationships:
-            field = match_field_from_relationship(cls.model_fields, r)
-            target_type = r.target_type.lower()
-
-            if target_type == "asset":
-                if r.target_external_id in AssetType._instantiated_assets:
-                    relationship_target = AssetType._instantiated_assets[r.target_external_id]
-
-                else:
-                    target_class = [y for x, y in cls._field_name_asset_resource_class() if field == x and y][0]
-                    relationship_target = target_class.from_cdf(
-                        client=client,
-                        data_set_id=data_set_id,
-                        external_id=r.target_external_id,
-                        fetch_metadata=fetch_metadata,
-                        fetch_content=fetch_content,
-                    )
-
-            elif target_type == "timeseries":
-                relationship_target = client.time_series.retrieve(external_id=r.target_external_id)
-            elif target_type == "sequence":
-                try:
-                    relationship_target = CDFSequence.from_cdf(client, r.target_external_id, fetch_content)
-                except CogniteNotFoundError:
-                    relationship_target = None
-            elif target_type == "file":
-                try:
-                    relationship_target = CDFFile.from_cdf(client, r.target_external_id, fetch_content)
-                except CogniteNotFoundError:
-                    relationship_target = None
-            else:
-                raise ValueError(f"Cannot handle target type {r.target_type}")
-
-            # Add relationship target to additional fields in-place
-            if isinstance(additional_fields[field], list):
-                additional_fields[field].append(relationship_target)
-            else:
-                additional_fields[field] = relationship_target
-
-    @classmethod
-    def from_cdf(
-        cls,
-        client: CogniteClient,
-        data_set_id: int,
-        external_id: Optional[str] = "",
-        asset: Optional[Asset] = None,
-        fetch_metadata: bool = True,
-        fetch_content: bool = False,
-    ) -> T_Asset_Type:
-        """
-        Fetch an asset from CDF and convert it to a model instance.
-        Optionally fetch relationships targets and content by setting
-        `fetch_metadata` and optionally `fetch_content`
-
-        By default, content of files/sequences/time series is not fetched.
-        This can be enabled by setting `fetch_content=True`.
-        """
-
-        if asset and external_id:
-            raise ValueError("Only one of asset and external_id can be provided")
-        if external_id:
-            # Check if asset has already been instantiated, eg. by a relationship
-            if external_id in AssetType._instantiated_assets:
-                return AssetType._instantiated_assets[external_id]
-            else:
-                asset = client.assets.retrieve(
-                    external_id=external_id,
-                )
-        if not asset:
-            raise ValueError(f"Could not retrieve asset with {external_id=}")
-
-        # Prepare non-asset metadata fields
-        additional_fields = {
-            field: [] if "list" in str(field_info.annotation) else None
-            for field, field_info in cls.model_fields.items()
-            if field in [x for x, _ in cls._field_name_asset_resource_class()]
-            or any(cdf_type in str(field_info.annotation) for cdf_type in [CDFSequence.__name__, TimeSeries.__name__])
-        }
-
-        # Populate non-asset metadata fields, according to relationships/flags
-        # `Additional_fields`, is modified in-place by `_fetch_metadata`
-        if fetch_metadata:
-            cls._fetch_and_set_metadata(
-                client,
-                data_set_id,
-                additional_fields,
-                asset.external_id,
-                fetch_metadata,
-                fetch_content,
-            )
-        instance = cls._from_asset(asset, additional_fields)
-        if asset.external_id != instance.external_id:
-            # The external id is not set in a standardized way for Market configs.
-            instance.external_id = asset.external_id
-        return instance
 
     def _asset_type_prepare_for_diff(self: T_Asset_Type) -> dict[str, dict]:
         for model_field in self.model_fields:
@@ -762,27 +612,11 @@ class AssetModel(Model, ABC):
         relationships: Relationship,
         parent_assets: Asset,
     }
+    # Need to set classmethod here to have access to the underlying function in cdf_resources
     parent_assets = classmethod(parent_assets)
 
     def _asset_types(self) -> Iterable[AssetType]:
         yield from (item for item in self._resource_types() if isinstance(item, AssetType))
-
-    @classmethod
-    def _field_name_asset_resource_class(cls) -> Iterable[tuple[str, TypingType[AssetType]]]:
-        """AssetType fields are of type list[AssetType] or Optional[AssetType]"""
-        # todo? method is identical to _field_name_asset_resource_class in AssetType
-        # * unsure how to reuse?
-        for field_name in cls.model_fields:
-            class_ = cls.model_fields[field_name].annotation
-            if pydantic_model_class_candidate(class_):
-                asset_resource_class = get_args(class_)[0]
-                if (is_asset_type := issubclass(asset_resource_class, AssetType)) and any(
-                    base is abc.ABC for base in asset_resource_class.__bases__
-                ):
-                    for subclass in all_subclasses(asset_resource_class):
-                        yield field_name, subclass
-                elif is_asset_type:
-                    yield field_name, asset_resource_class
 
     def summary(self) -> dict[str, dict[str, dict[str, int]]]:
         summary = super().summary()
@@ -935,27 +769,6 @@ class AssetModel(Model, ABC):
                 "time_series": time_series,
             }
         )
-
-        # # Use load cdf resource function
-        # output = defaultdict(list)
-        # for field_name, asset_cls in cls._field_name_asset_resource_class():
-        #     try:
-        #         assets = cdf.assets.retrieve_subtree(external_id=asset_cls.parent_external_id)
-        #     except AttributeError:
-        #         raise
-        #     for asset in assets:
-        #         if asset.external_id == asset_cls.parent_external_id:
-        #             continue
-        #         instance = asset_cls.from_cdf(
-        #             client=cdf,
-        #             data_set_id=data_set_id,
-        #             asset=asset,
-        #             fetch_metadata=fetch_metadata,
-        #             fetch_content=fetch_content,
-        #         )
-        #         output[field_name].append(instance)
-        #
-        # return cls(**output)
 
     def _prepare_for_diff(self: T_Asset_Model) -> dict[str:dict]:
         clone = self.model_copy(deep=True)
