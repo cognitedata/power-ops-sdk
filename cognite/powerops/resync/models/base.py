@@ -221,6 +221,8 @@ class AssetType(ResourceType, ABC, arbitrary_types_allowed=True):
                     if isinstance(v, (dict, list)):
                         v = json.dumps(v)
                     metadata[f"{field_name}:{k}"] = v
+            elif isinstance(value, list) and value and isinstance(value[0], NonAssetType):
+                metadata[field_name] = json.dumps([item.model_dump(exclude_unset=True) for item in value])
             elif isinstance(value, (dict, list)) and value:
                 metadata[field_name] = json.dumps(value)
             elif isinstance(value, (dict, list)) and not value:
