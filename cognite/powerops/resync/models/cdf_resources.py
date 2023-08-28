@@ -7,7 +7,7 @@ import pandas as pd
 from cognite.client import CogniteClient
 from cognite.client.data_classes import FileMetadata, Sequence
 from cognite.client.exceptions import CogniteNotFoundError
-from pydantic import BaseModel, ConfigDict, model_serializer
+from pydantic import BaseModel, ConfigDict, model_serializer, model_validator
 from typing_extensions import Self
 
 from cognite.powerops.resync.utils.serializer import remove_read_only_fields
@@ -47,6 +47,12 @@ class CDFSequence(_CDFResource):
 
     def __str__(self) -> str:
         return repr(self)
+
+    @model_validator(mode="before")
+    def parse_dict(cls, value):
+        if isinstance(value, dict) and "sequence" not in value:
+            return {"sequence": Sequence._load(value)}
+        return value
 
     @property
     def external_id(self):
@@ -104,6 +110,12 @@ class CDFFile(_CDFResource):
 
     def __str__(self) -> str:
         return self.__repr__()
+
+    @model_validator(mode="before")
+    def parse_dict(cls, value):
+        if isinstance(value, dict) and "meta" not in value:
+            return {"meta": FileMetadata._load(value)}
+        return value
 
     @property
     def external_id(self):

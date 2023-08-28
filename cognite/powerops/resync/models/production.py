@@ -9,8 +9,8 @@ from pydantic import ConfigDict, Field, field_validator, field_serializer
 from cognite.powerops.cdf_labels import AssetLabel
 from cognite.powerops.resync.models.base import AssetModel, AssetType, NonAssetType
 from cognite.powerops.resync.models.cdf_resources import CDFSequence
-from cognite.powerops.resync.models.helpers import isinstance_list
-from cognite.powerops.resync.utils.serializer import try_load_dict
+
+from cognite.powerops.resync.utils.serializer import try_load_dict, parse_time_series
 
 
 class Generator(AssetType):
@@ -29,6 +29,16 @@ class Generator(AssetType):
         if value is None:
             return {}
         return {"externalId": value.external_id}
+
+    @field_validator("generator_efficiency_curve", "turbine_efficiency_curve", mode="before")
+    def parse_sequences(cls, value):
+        if value == {}:
+            return None
+        return value
+
+    @field_validator("start_stop_cost_time_series", "is_available_time_series", mode="before")
+    def parse_timeseries(cls, value):
+        return parse_time_series(value)
 
 
 class Reservoir(AssetType):
@@ -75,6 +85,19 @@ class Plant(AssetType):
         if value is None:
             return {}
         return {"externalId": value.external_id}
+
+    @field_validator(
+        "p_min_time_series",
+        "p_max_time_series",
+        "water_value_time_series",
+        "feeding_fee_time_series",
+        "outlet_level_time_series",
+        "inlet_level_time_series",
+        "head_direct_time_series",
+        mode="before",
+    )
+    def parse_timeseries(cls, value):
+        return parse_time_series(value)
 
 
 class WaterCourseShop(NonAssetType):
@@ -126,19 +149,3 @@ class ProductionModel(AssetModel):
     reservoirs: list[Reservoir] = Field(default_factory=list)
     watercourses: list[Watercourse] = Field(default_factory=list)
     price_areas: list[PriceArea] = Field(default_factory=list)
-
-    def _prepare_for_diff(self: ProductionModel) -> dict:
-        clone = self.model_copy(deep=True)
-
-        for model_field in clone.model_fields:
-            field_value = getattr(clone, model_field)
-            if isinstance_list(field_value, AssetType):
-                # Sort the asset types to have comparable order for diff
-                _sorted = sorted(field_value, key=lambda x: x.external_id)
-                # Prepare each asset type for diff
-                _prepared = map(lambda x: x._asset_type_prepare_for_diff(), _sorted)
-                setattr(clone, model_field, list(_prepared))
-            elif isinstance(field_value, AssetType):
-                field_value._asset_type_prepare_for_diff()
-        # Some fields are have been set to their external_id which gives a warning we can ignore
-        return clone.model_dump(warnings=False)

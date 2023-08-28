@@ -6,6 +6,8 @@ import string
 import warnings
 from pathlib import Path
 from typing import Any, Union, get_origin, get_args, Type
+
+from cognite.client.data_classes import TimeSeries
 from yaml import safe_dump, CSafeLoader
 from cognite.client.utils._text import to_camel_case
 
@@ -40,6 +42,16 @@ def try_load_dict(value: str | Any) -> Any | dict[str, Any]:
         except json.JSONDecodeError:
             return {}
     return value
+
+
+def parse_time_series(value: str | Any) -> Any | TimeSeries:
+    if isinstance(value, TimeSeries) or value is None:
+        return value
+    elif value == {}:
+        return None
+    elif isinstance(value, dict):
+        return TimeSeries._load(value)
+    raise NotImplementedError()
 
 
 def remove_read_only_fields(cdf_resource: dict[str, Any], remove_empty: bool = True) -> dict[str, Any]:

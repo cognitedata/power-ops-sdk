@@ -3,8 +3,10 @@ from __future__ import annotations
 import abc
 from abc import ABC
 from dataclasses import dataclass, field
-from typing import ClassVar, Callable, Iterable, Type as TypingType, Any, TypeVar, Literal
-from typing_extensions import Self
+from typing import ClassVar, Callable, Iterable, Type as TypingType, Any, TypeVar, Literal, Union
+from itertools import islice
+from cognite.client.data_classes._base import CogniteResource, CogniteResourceList
+from typing_extensions import Self, TypeAlias
 
 from cognite.client.data_classes import TimeSeries
 from pydantic import BaseModel
@@ -13,44 +15,10 @@ from cognite.powerops.clients.powerops_client import PowerOpsClient
 from cognite.powerops.resync.models.cdf_resources import CDFSequence, CDFFile
 from cognite.powerops.resync.models.helpers import isinstance_list
 from cognite.powerops.resync.utils.serializer import remove_read_only_fields
+from cognite.powerops.clients.data_classes._core import DomainModelApply
+from cognite.powerops.cogshop1.data_classes._core import DomainModelApply as DomainModelApplyCogShop1
 
 _T_Type = TypeVar("_T_Type")
-
-
-@dataclass
-class Change:
-    last: dict[str, Any]
-    new: dict[str, Any]
-
-
-@dataclass
-class FieldSummary:
-    group: Literal["CDF", "Domain"]
-    name: str
-    added: int
-    removed: int
-    changed: int
-    unchanged: int
-
-
-@dataclass
-class FieldDifference:
-    group: Literal["CDF", "Domain"]
-    name: str
-    added: list[dict[str, Any]] = field(default_factory=list)
-    removed: list[dict[str, Any]] = field(default_factory=list)
-    changed: list[Change] = field(default_factory=list)
-    unchanged: list[dict[str, Any]] = field(default_factory=list)
-
-    def as_summary(self) -> FieldSummary:
-        return FieldSummary(
-            group=self.group,
-            name=self.name,
-            added=len(self.added),
-            removed=len(self.removed),
-            changed=len(self.changed),
-            unchanged=len(self.unchanged),
-        )
 
 
 class ResourceType(BaseModel, ABC):
@@ -74,6 +42,85 @@ class ResourceType(BaseModel, ABC):
             elif isinstance(value, type_):
                 output.append(value)
         return output
+
+
+Resource: TypeAlias = Union[CogniteResource, ResourceType]
+
+
+@dataclass
+class Change:
+    last: Resource
+    new: Resource
+
+
+@dataclass
+class FieldSummary:
+    group: Literal["CDF", "Domain"]
+    name: str
+    added: int
+    removed: int
+    changed: int
+    unchanged: int
+
+    @property
+    def total(self) -> int:
+        return self.added + self.removed + self.changed + self.unchanged
+
+
+@dataclass
+class FieldIds:
+    group: Literal["CDF", "Domain"]
+    name: str
+    added: list[str] = field(default_factory=list)
+    removed: list[str] = field(default_factory=list)
+    changed: list[str] = field(default_factory=list)
+    unchanged: list[str] = field(default_factory=list)
+
+    @property
+    def total(self) -> int:
+        return len(self.added) + len(self.removed) + len(self.changed) + len(self.unchanged)
+
+
+@dataclass
+class FieldDifference:
+    group: Literal["CDF", "Domain"]
+    name: str
+    added: list[Resource] = field(default_factory=list)
+    removed: list[Resource] = field(default_factory=list)
+    changed: list[Change] = field(default_factory=list)
+    unchanged: list[Resource] = field(default_factory=list)
+
+    @property
+    def total(self) -> int:
+        return len(self.added) + len(self.removed) + len(self.changed) + len(self.unchanged)
+
+    def as_summary(self) -> FieldSummary:
+        return FieldSummary(
+            group=self.group,
+            name=self.name,
+            added=len(self.added),
+            removed=len(self.removed),
+            changed=len(self.changed),
+            unchanged=len(self.unchanged),
+        )
+
+    def as_ids(self, limit: int = -1) -> FieldIds:
+        def get_identifier(item: Resource) -> str:
+            if hasattr(item, "external_id"):
+                return item.external_id
+            elif hasattr(item, "name"):
+                return item.name
+            raise NotImplementedError(f"Could not find external_id or name in {item}")
+
+        limit_ = limit if limit > 0 else None
+        return FieldIds(
+            group=self.group,
+            name=self.name,
+            added=[get_identifier(item) for item in islice(self.added, limit_)],
+            removed=[get_identifier(item) for item in islice(self.removed, limit_)],
+            changed=[get_identifier(item.last) for item in islice(self.changed, limit_)],
+            unchanged=[get_identifier(item) for item in islice(self.unchanged, limit_)],
+        )
 
 
 class Model(BaseModel, ABC):
@@ -169,12 +216,15 @@ class Model(BaseModel, ABC):
     def difference(self, new_model: T_Model) -> list[FieldDifference]:
         if type(self) != type(new_model):
             raise ValueError(f"Cannot compare model of type {type(self)} with {type(new_model)}")
-        self.sort_lists()
-        new_model.sort_lists()
+        # The dump and load calls are to remove all read only fields
+        current_reloaded = self.load_from_cdf_resources(self.dump_as_cdf_resource())
+        new_reloaded = new_model.load_from_cdf_resources(new_model.dump_as_cdf_resource())
+        current_reloaded.sort_lists()
+        new_reloaded.sort_lists()
         diffs = []
         for field_name in self.model_fields:
-            current_value = getattr(self, field_name)
-            new_value = getattr(new_model, field_name)
+            current_value = getattr(current_reloaded, field_name)
+            new_value = getattr(new_reloaded, field_name)
             if type(current_value) != type(new_value):
                 raise ValueError(
                     f"Cannot compare field {field_name} of type {type(current_value)} with {type(new_value)}"
@@ -182,19 +232,17 @@ class Model(BaseModel, ABC):
             diff = self._find_diffs(current_value, new_value, "Domain", field_name)
             diffs.append(diff)
 
-        current_cdf_resources = self.dump_as_cdf_resource()
-        new_cdf_resources = new_model.dump_as_cdf_resource()
-        for field_name in set(current_cdf_resources.keys()) | set(new_cdf_resources.keys()):
-            if field_name in current_cdf_resources and field_name in new_cdf_resources:
-                diff = self._find_diffs(
-                    current_cdf_resources[field_name], new_cdf_resources[field_name], "CDF", field_name
-                )
-            elif field_name in current_cdf_resources:
-                diff = FieldDifference(group="CDF", name=field_name, removed=current_cdf_resources[field_name])
-            elif field_name in new_cdf_resources:
-                diff = FieldDifference(group="CDF", name=field_name, added=new_cdf_resources[field_name])
-            else:
-                raise ValueError(f"Field {field_name} is not in current or new model")
+        for function in self.cdf_resources:
+            current_items = function(current_reloaded)
+            new_items = function(new_reloaded)
+
+            diff = self._find_diffs(
+                current_items,
+                new_items,
+                "CDF",
+                function.__name__,
+            )
+
             diffs.append(diff)
 
         return diffs
@@ -203,23 +251,26 @@ class Model(BaseModel, ABC):
     def _find_diffs(
         current_value: Any, new_value: Any, group: Literal["CDF", "Domain"], field_name: str
     ) -> FieldDifference:
+        if not current_value and not new_value:
+            return FieldDifference(group=group, name=field_name)
+
         if (
-            isinstance(current_value, list)
+            isinstance(current_value, (list, CogniteResourceList))
             and current_value
-            and isinstance(current_value[0], (ResourceType, CDFFile, CDFSequence))
+            and isinstance(current_value[0], (ResourceType, CDFFile, CDFSequence, CogniteResource))
         ):
-            current_value_by_id = {item.external_id: item.model_dump() for item in current_value}
-            new_value_by_id = {item.external_id: item.model_dump() for item in new_value}
-        elif isinstance(current_value, list) and current_value and isinstance(current_value[0], dict):
-            current_value_by_id = {item["externalId"]: item for item in current_value}
-            new_value_by_id = {item["externalId"]: item for item in new_value}
+            current_value_by_id = {item.external_id: item for item in current_value}
+            new_value_by_id = {item.external_id: item for item in new_value}
+        # elif isinstance(current_value, list) and current_value and isinstance(current_value[0], ):
+        #     current_value_by_id = {item["externalId"]: item for item in current_value}
+        #     new_value_by_id = {item["externalId"]: item for item in new_value}
         elif (
             isinstance(current_value, dict)
             and current_value
-            and hasattr(next(iter(current_value.values())), "model_dump")
+            and isinstance(next(iter(current_value.values())), (DomainModelApply, DomainModelApplyCogShop1))
         ):
-            current_value_by_id = {item.external_id: item.model_dump() for item in current_value.values()}
-            new_value_by_id = {item.external_id: item.model_dump() for item in new_value.values()}
+            current_value_by_id = {item.external_id: item for item in current_value.values()}
+            new_value_by_id = {item.external_id: item for item in new_value.values()}
         else:
             raise NotImplementedError(f"Only list of resources are supported, {type(current_value)} is not supported")
 
