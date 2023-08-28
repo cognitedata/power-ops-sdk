@@ -203,14 +203,25 @@ class Model(BaseModel, ABC):
     def _find_diffs(
         current_value: Any, new_value: Any, group: Literal["CDF", "Domain"], field_name: str
     ) -> FieldDifference:
-        if isinstance(current_value, list) and current_value and isinstance(current_value[0], ResourceType):
+        if (
+            isinstance(current_value, list)
+            and current_value
+            and isinstance(current_value[0], (ResourceType, CDFFile, CDFSequence))
+        ):
             current_value_by_id = {item.external_id: item.model_dump() for item in current_value}
             new_value_by_id = {item.external_id: item.model_dump() for item in new_value}
         elif isinstance(current_value, list) and current_value and isinstance(current_value[0], dict):
             current_value_by_id = {item["externalId"]: item for item in current_value}
             new_value_by_id = {item["externalId"]: item for item in new_value}
+        elif (
+            isinstance(current_value, dict)
+            and current_value
+            and hasattr(next(iter(current_value.values())), "model_dump")
+        ):
+            current_value_by_id = {item.external_id: item.model_dump() for item in current_value.values()}
+            new_value_by_id = {item.external_id: item.model_dump() for item in new_value.values()}
         else:
-            raise NotImplementedError("Only list of resources are supported")
+            raise NotImplementedError(f"Only list of resources are supported, {type(current_value)} is not supported")
 
         added_ids = set(new_value_by_id.keys()) - set(current_value_by_id.keys())
         added = [new_value_by_id[external_id] for external_id in sorted(added_ids)]
