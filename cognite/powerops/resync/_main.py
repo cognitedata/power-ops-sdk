@@ -7,6 +7,8 @@ from uuid import uuid4
 
 from cognite.client import CogniteClient
 from cognite.client.data_classes import Event, FileMetadata, Asset, Relationship
+from cognite.client.data_classes.data_modeling import EdgeApply, NodeApply
+from cognite.client.data_classes.data_modeling.instances import InstanceCore
 from yaml import safe_dump
 
 from cognite.powerops.clients.powerops_client import get_powerops_client, PowerOpsClient
@@ -125,12 +127,16 @@ def apply(
             if diff.added:
                 api.create(diff.added)
             elif diff.removed:
-                api.delete([r.external_id for r in diff.removed if r.external_id])
+                api.delete(
+                    [r.as_id() if isinstance(r, InstanceCore) else r.external_id for r in diff.removed if r.external_id]
+                )
             elif diff.changed:
                 api.upsert([c.new for c in diff.changed], mode="replace")
 
 
-T_CogniteResource = TypeVar("T_CogniteResource", bound=Union[Asset, Sequence, FileMetadata, Relationship])
+T_CogniteResource = TypeVar(
+    "T_CogniteResource", bound=Union[Asset, Sequence, FileMetadata, Relationship, NodeApply, EdgeApply]
+)
 
 
 class CogniteAPI(Protocol[T_CogniteResource]):  # type: ignore[misc]
@@ -156,9 +162,33 @@ class FileAdapter(CogniteAPI[FileMetadata]):
             self.client.files.create(item, overwrite=True)
 
     def delete(self, external_ids: str | Sequence[str]) -> Any:
-        self.delete(external_ids)
+        self.client.files.delete(external_id=external_ids)
 
     def upsert(self, item: FileMetadata | Sequence[FileMetadata], mode: Literal["patch", "replace"] = "patch") -> Any:
+        self.client.files.update(item)
+
+
+T_Instance = TypeVar("T_Instance", bound=Union[NodeApply, EdgeApply])
+
+
+class InstanceAdapter(CogniteAPI[T_Instance]):
+    def __init__(self, client: CogniteClient, instance_type: Literal["node", "edge"]):
+        self.instance_type = instance_type
+        self.client = client
+
+    def create(self, items: T_Instance | Sequence[T_Instance]) -> Any:
+        if self.instance_type == "node":
+            self.client.data_modeling.instances.apply(nodes=items)  # type: ignore[arg-type]
+        else:
+            self.client.data_modeling.instances.apply(edges=items)  # type: ignore[arg-type]
+
+    def delete(self, external_ids: str | Sequence[str]) -> Any:
+        if self.instance_type == "node":
+            self.client.data_modeling.instances.delete(nodes=external_ids)  # type: ignore[arg-type]
+        else:
+            self.client.data_modeling.instances.delete(edges=external_ids)  # type: ignore[arg-type]
+
+    def upsert(self, item: T_Instance | Sequence[T_Instance], mode: Literal["patch", "replace"] = "patch") -> Any:
         self.create(item)
 
 
@@ -173,6 +203,10 @@ def _get_api(client: CogniteClient, name: str) -> CogniteAPI:
         return FileAdapter(client)
     elif name == "relationships":
         return client.relationships
+    elif name == "nodes":
+        return InstanceAdapter[NodeApply](client, "node")
+    elif name == "edges":
+        return InstanceAdapter[EdgeApply](client, "edge")
     raise ValueError(f"Unknown resource type {name}")
 
 
