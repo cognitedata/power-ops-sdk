@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 from itertools import product
-from typing import Type
+from typing import Type, ClassVar
 
 from cognite.client import CogniteClient
+from cognite.client.data_classes.data_modeling import ContainerId
 from pydantic import Field
 
 from cognite.powerops.clients.data_classes import (
@@ -16,6 +17,7 @@ import cognite.powerops.cogshop1.data_classes as cogshop_v1
 from .base import DataModel, Model, T_Model
 from .cdf_resources import CDFFile, CDFSequence
 from cognite.powerops.clients.powerops_client import PowerOpsClient
+from cognite.powerops.cogshop1.data_classes._core import DomainModelApply as DomainModelApplyCogShop1
 
 ExternalID = str
 
@@ -38,6 +40,12 @@ class CogShopDataModel(CogShopCore, DataModel):
 
 
 class CogShop1Asset(CogShopCore, DataModel, protected_namespaces=()):
+    cls_by_container: ClassVar[dict[ContainerId, Type[DomainModelApplyCogShop1]]] = {
+        ContainerId("cogShop", "ModelTemplate"): cogshop_v1.ModelTemplateApply,
+        ContainerId("cogShop", "Mapping"): cogshop_v1.MappingApply,
+        ContainerId("cogShop", "FileRef"): cogshop_v1.FileRefApply,
+        ContainerId("cogShop", "Transformation"): cogshop_v1.TransformationApply,
+    }
     model_templates: dict[ExternalID, cogshop_v1.ModelTemplateApply] = Field(default_factory=dict)
     base_mappings: list[CDFSequence] = Field(default_factory=list)
     output_definitions: list[CDFSequence] = Field(default_factory=list)
