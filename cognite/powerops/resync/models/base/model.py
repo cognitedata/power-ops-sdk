@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import abc
 from abc import ABC
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import ClassVar, Callable, Iterable, Type as TypingType, Any, TypeVar, Literal
 from typing_extensions import Self
 
@@ -26,7 +26,7 @@ class Change:
 @dataclass
 class FieldSummary:
     group: Literal["CDF", "Domain"]
-    field: str
+    name: str
     added: int
     removed: int
     changed: int
@@ -36,16 +36,16 @@ class FieldSummary:
 @dataclass
 class FieldDifference:
     group: Literal["CDF", "Domain"]
-    field: str
-    added: list[dict[str, Any]]
-    removed: list[dict[str, Any]]
-    changed: list[Change]
-    unchanged: list[dict[str, Any]]
+    name: str
+    added: list[dict[str, Any]] = field(default_factory=list)
+    removed: list[dict[str, Any]] = field(default_factory=list)
+    changed: list[Change] = field(default_factory=list)
+    unchanged: list[dict[str, Any]] = field(default_factory=list)
 
     def as_summary(self) -> FieldSummary:
         return FieldSummary(
             group=self.group,
-            field=self.field,
+            name=self.name,
             added=len(self.added),
             removed=len(self.removed),
             changed=len(self.changed),
@@ -179,42 +179,64 @@ class Model(BaseModel, ABC):
                 raise ValueError(
                     f"Cannot compare field {field_name} of type {type(current_value)} with {type(new_value)}"
                 )
-            if isinstance(current_value, list) and current_value and isinstance(current_value[0], ResourceType):
-                current_value_by_id = {item.external_id: item.model_dump() for item in current_value}
-                new_value_by_id = {item.external_id: item.model_dump() for item in new_value}
-                added_ids = set(new_value_by_id.keys()) - set(current_value_by_id.keys())
-                added = [new_value_by_id[external_id] for external_id in sorted(added_ids)]
+            diff = self._find_diffs(current_value, new_value, "Domain", field_name)
+            diffs.append(diff)
 
-                removed_ids = set(current_value_by_id.keys()) - set(new_value_by_id.keys())
-                removed = [current_value_by_id[external_id] for external_id in sorted(removed_ids)]
-
-                existing_ids = set(current_value_by_id.keys()) & set(new_value_by_id.keys())
-                changed = []
-                unchanged = []
-                for existing in sorted(existing_ids):
-                    current = current_value_by_id[existing]
-                    new = new_value_by_id[existing]
-                    if current == new:
-                        unchanged.append(current)
-                    else:
-                        changed.append(Change(last=current, new=new))
-            else:
-                raise NotImplementedError("Only list of resources are supported")
-
-            diffs.append(
-                FieldDifference(
-                    group="Domain",
-                    field=field_name,
-                    added=added,
-                    removed=removed,
-                    changed=changed,
-                    unchanged=unchanged,
+        current_cdf_resources = self.dump_as_cdf_resource()
+        new_cdf_resources = new_model.dump_as_cdf_resource()
+        for field_name in set(current_cdf_resources.keys()) | set(new_cdf_resources.keys()):
+            if field_name in current_cdf_resources and field_name in new_cdf_resources:
+                diff = self._find_diffs(
+                    current_cdf_resources[field_name], new_cdf_resources[field_name], "CDF", field_name
                 )
-            )
+            elif field_name in current_cdf_resources:
+                diff = FieldDifference(group="CDF", name=field_name, removed=current_cdf_resources[field_name])
+            elif field_name in new_cdf_resources:
+                diff = FieldDifference(group="CDF", name=field_name, added=new_cdf_resources[field_name])
+            else:
+                raise ValueError(f"Field {field_name} is not in current or new model")
+            diffs.append(diff)
 
-        self.dump_as_cdf_resource()
-        new_model.dump_as_cdf_resource()
         return diffs
+
+    @staticmethod
+    def _find_diffs(
+        current_value: Any, new_value: Any, group: Literal["CDF", "Domain"], field_name: str
+    ) -> FieldDifference:
+        if isinstance(current_value, list) and current_value and isinstance(current_value[0], ResourceType):
+            current_value_by_id = {item.external_id: item.model_dump() for item in current_value}
+            new_value_by_id = {item.external_id: item.model_dump() for item in new_value}
+        elif isinstance(current_value, list) and current_value and isinstance(current_value[0], dict):
+            current_value_by_id = {item["externalId"]: item for item in current_value}
+            new_value_by_id = {item["externalId"]: item for item in new_value}
+        else:
+            raise NotImplementedError("Only list of resources are supported")
+
+        added_ids = set(new_value_by_id.keys()) - set(current_value_by_id.keys())
+        added = [new_value_by_id[external_id] for external_id in sorted(added_ids)]
+
+        removed_ids = set(current_value_by_id.keys()) - set(new_value_by_id.keys())
+        removed = [current_value_by_id[external_id] for external_id in sorted(removed_ids)]
+
+        existing_ids = set(current_value_by_id.keys()) & set(new_value_by_id.keys())
+        changed = []
+        unchanged = []
+        for existing in sorted(existing_ids):
+            current = current_value_by_id[existing]
+            new = new_value_by_id[existing]
+            if current == new:
+                unchanged.append(current)
+            else:
+                changed.append(Change(last=current, new=new))
+
+        return FieldDifference(
+            group=group,
+            name=field_name,
+            added=added,
+            removed=removed,
+            changed=changed,
+            unchanged=unchanged,
+        )
 
 
 T_Model = TypeVar("T_Model", bound=Model)
