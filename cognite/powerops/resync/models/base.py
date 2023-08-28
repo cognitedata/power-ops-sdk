@@ -262,7 +262,7 @@ class AssetType(ResourceType, ABC, arbitrary_types_allowed=True):
     def sort_listed_asset_types(self) -> None:
         for field_name, field in self.model_fields.items():
             annotation, outer = get_pydantic_annotation(field.annotation)
-            if issubclass(annotation, AssetType) and outer is list:
+            if issubclass(annotation, (AssetType, CDFFile, CDFSequence)) and outer is list:
                 getattr(self, field_name).sort(key=lambda x: x.external_id)
 
     def _asset_type_prepare_for_diff(self: T_Asset_Type) -> dict[str, dict]:
@@ -707,6 +707,9 @@ class AssetModel(Model, ABC):
                 if field_name not in source.model_fields:
                     field_name += "s"
                 if field_name not in source.model_fields:
+                    field_name = field_name.rsplit("_", maxsplit=1)[0]
+
+                if field_name not in source.model_fields:
                     raise ValueError(f"Cannot find field {field_name} in {source}")
 
                 annotation, outer = get_pydantic_annotation(source.model_fields[field_name].annotation)
@@ -722,7 +725,7 @@ class AssetModel(Model, ABC):
     def sort_listed_asset_types(self) -> None:
         for field_name, field in self.model_fields.items():
             annotation, outer = get_pydantic_annotation(field.annotation)
-            if issubclass(annotation, AssetType) and outer is list:
+            if issubclass(annotation, (AssetType, CDFFile, CDFSequence)) and outer is list:
                 getattr(self, field_name).sort(key=lambda x: x.external_id)
                 for asset_type in getattr(self, field_name):
                     asset_type.sort_listed_asset_types()

@@ -71,7 +71,9 @@ def to_market_asset_model(config: MarketConfig, price_areas: list[PriceArea], ma
 
     model = MarketModel(
         markets=rkom.markets + [nord_pool],
-        processes=rkom.processes + dayahead_processes + benchmarking_processes,
+        benchmark_processes=benchmarking_processes,
+        dayahead_processes=dayahead_processes,
+        rkom_processes=rkom.rkom_processes,
         combinations=rkom.combinations,
     )
 
@@ -534,7 +536,7 @@ def _to_rkom_market(
         )
         process.external_id = config.external_id
         process.type_ = "POWEROPS"
-        model.processes.append(process)
+        model.rkom_processes.append(process)
 
     for config in rkom_bid_combination_configs or []:
         sequence_external_id = f"RKOM_bid_combination_configuration_{config.auction.value}_{config.name}"
