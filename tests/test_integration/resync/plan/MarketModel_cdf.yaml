@@ -130,12 +130,12 @@ assets:
     bid:method: simple
     bid:minimum_price: '0'
     bid:price_premium: '0'
-    bid:price_scenarios: '[''Cognite'', ''-20pct'', ''+20pct'']'
+    bid:price_scenarios: '["Cognite", "-20pct", "+20pct"]'
     bid:product: down
-    bid:reserve_scenarios: '[0MW, 20MW, 40MW, 60MW, 80MW, 100MW, 120MW, 140MW, 160MW,
-      180MW, 200MW]'
+    bid:reserve_scenarios: '["0MW", "20MW", "40MW", "60MW", "80MW", "100MW", "120MW",
+      "140MW", "160MW", "180MW", "200MW"]'
     bid:watercourse: Fornebu
-    rkom:plants: '[''Dalby'', ''Holen'', ''Landet'', ''Rull1'', ''Rull2'', ''Scott'']'
+    rkom:plants: '["Dalby", "Holen", "Landet", "Rull1", "Rull2", "Scott"]'
     shop:endtime: '[["floor", "week"], ["shift", {"weeks": 2}]]'
     shop:starttime: '[["shift", {"days": 1}], ["floor", "day"]]'
     timezone: Europe/Oslo
@@ -153,12 +153,12 @@ assets:
     bid:method: simple
     bid:minimum_price: '0'
     bid:price_premium: '0'
-    bid:price_scenarios: '[''Cognite'', ''-20pct'', ''+20pct'']'
+    bid:price_scenarios: '["Cognite", "-20pct", "+20pct"]'
     bid:product: up
-    bid:reserve_scenarios: '[0MW, 20MW, 40MW, 60MW, 80MW, 100MW, 120MW, 140MW, 160MW,
-      180MW, 200MW]'
+    bid:reserve_scenarios: '["0MW", "20MW", "40MW", "60MW", "80MW", "100MW", "120MW",
+      "140MW", "160MW", "180MW", "200MW"]'
     bid:watercourse: Fornebu
-    rkom:plants: '[''Dalby'', ''Holen'', ''Landet'', ''Rull1'', ''Rull2'', ''Scott'']'
+    rkom:plants: '["Dalby", "Holen", "Landet", "Rull1", "Rull2", "Scott"]'
     shop:endtime: '[["floor", "week"], ["shift", {"weeks": 2}]]'
     shop:starttime: '[["shift", {"days": 1}], ["floor", "day"]]'
     timezone: Europe/Oslo
@@ -176,12 +176,12 @@ assets:
     bid:method: simple
     bid:minimum_price: '0'
     bid:price_premium: '0'
-    bid:price_scenarios: '[''Cognite'', ''-20pct'', ''+20pct'']'
+    bid:price_scenarios: '["Cognite", "-20pct", "+20pct"]'
     bid:product: down
-    bid:reserve_scenarios: '[0MW, 20MW, 40MW, 60MW, 80MW, 100MW, 120MW, 140MW, 160MW,
-      180MW, 200MW]'
+    bid:reserve_scenarios: '["0MW", "20MW", "40MW", "60MW", "80MW", "100MW", "120MW",
+      "140MW", "160MW", "180MW", "200MW"]'
     bid:watercourse: Fornebu
-    rkom:plants: '[''Dalby'', ''Holen'', ''Landet'', ''Rull1'', ''Rull2'', ''Scott'']'
+    rkom:plants: '["Dalby", "Holen", "Landet", "Rull1", "Rull2", "Scott"]'
     shop:endtime: '[["floor", "week"], ["shift", {"weeks": 2}]]'
     shop:starttime: '[["shift", {"days": 1}], ["floor", "day"]]'
     timezone: Europe/Oslo
@@ -199,12 +199,12 @@ assets:
     bid:method: simple
     bid:minimum_price: '0'
     bid:price_premium: '0'
-    bid:price_scenarios: '[''Cognite'', ''-20pct'', ''+20pct'']'
+    bid:price_scenarios: '["Cognite", "-20pct", "+20pct"]'
     bid:product: up
-    bid:reserve_scenarios: '[0MW, 20MW, 40MW, 60MW, 80MW, 100MW, 120MW, 140MW, 160MW,
-      180MW, 200MW]'
+    bid:reserve_scenarios: '["0MW", "20MW", "40MW", "60MW", "80MW", "100MW", "120MW",
+      "140MW", "160MW", "180MW", "200MW"]'
     bid:watercourse: Fornebu
-    rkom:plants: '[''Dalby'', ''Holen'', ''Landet'', ''Rull1'', ''Rull2'', ''Scott'']'
+    rkom:plants: '["Dalby", "Holen", "Landet", "Rull1", "Rull2", "Scott"]'
     shop:endtime: '[["floor", "week"], ["shift", {"weeks": 2}]]'
     shop:starttime: '[["shift", {"days": 1}], ["floor", "day"]]'
     timezone: Europe/Oslo
@@ -1385,8 +1385,7 @@ relationships:
   targetExternalId: SHOP_Fornebu_incremental_mapping_Fornebu_weekend_up_day_3-prices_20MW-200MW_Cognite_80MW
   targetType: Sequence
 sequences:
-- assetId: 7844977992394559
-  columns:
+- columns:
   - externalId: shop_plant
     valueType: STRING
   - externalId: bid_matrix_generation_method
@@ -1401,8 +1400,7 @@ sequences:
     bid:price_area: price_area_NO2
     shop:type: bid_matrix_generator_config
   name: POWEROPS bid matrix generator config multi_scenario_20_NO2
-- assetId: 958879706384559
-  columns:
+- columns:
   - externalId: shop_plant
     valueType: STRING
   - externalId: bid_matrix_generation_method
@@ -1417,8 +1415,7 @@ sequences:
     bid:price_area: price_area_NO2
     shop:type: bid_matrix_generator_config
   name: POWEROPS bid matrix generator config multi_scenario_2_NO2
-- assetId: 312101356633605
-  columns:
+- columns:
   - externalId: shop_plant
     valueType: STRING
   - externalId: bid_matrix_generation_method
@@ -1433,8 +1430,7 @@ sequences:
     bid:price_area: price_area_NO2
     shop:type: bid_matrix_generator_config
   name: POWEROPS bid matrix generator config price_independent_NO2
-- assetId: 7889966002153095
-  columns:
+- columns:
   - externalId: shop_plant
     valueType: STRING
   - externalId: bid_matrix_generation_method

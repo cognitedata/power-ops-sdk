@@ -57,7 +57,8 @@ def plan(
         differences = cdf_model.difference(new_model)
         _clean_relationships(client.cdf, differences, new_model, echo)
         echo(f"Summary diff for {new_model.model_name}")
-        echo_pretty([diff.as_summary() for diff in differences])
+        for diff in differences:
+            echo_pretty(diff.as_summary())
 
         if dump_folder:
             dump_folder.mkdir(parents=True, exist_ok=True)
@@ -66,7 +67,8 @@ def plan(
             (dump_folder / f"{new_model.model_name}_cdf.yaml").write_text(safe_dump(cdf_model.dump_as_cdf_resource()))
 
         echo(f"External ids diff for {new_model.model_name}")
-        echo_pretty([diff.as_ids(limit=10) for diff in differences])
+        for diff in differences:
+            echo_pretty(diff.as_ids(limit=5))
         model_diff_by_name[new_model.model_name] = differences
     return model_diff_by_name
 
