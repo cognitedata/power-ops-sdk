@@ -43,7 +43,7 @@ class MockAssetsCreate:
         return asset
 
     def serialize(self) -> List[dict]:
-        assets_serialized = [asset.dump_as_cdf_resource(camel_case=False) for asset in self.assets]
+        assets_serialized = [asset.dump(camel_case=False) for asset in self.assets]
         # remove the field "data_set_id" from all the serialized asset dicts
         for asset in assets_serialized:
             asset.pop("data_set_id")
@@ -68,7 +68,7 @@ class MockSequencesCreate:
         return sequence
 
     def serialize(self) -> List[dict]:
-        sequences_serialized = [sequence.dump_as_cdf_resource(camel_case=False) for sequence in self.sequences]
+        sequences_serialized = [sequence.dump(camel_case=False) for sequence in self.sequences]
         for sequence in sequences_serialized:
             sequence.pop("data_set_id")
         return sequences_serialized
@@ -86,9 +86,7 @@ class MockRelationshipsCreate:
         return relationship
 
     def serialize(self) -> List[dict]:
-        relationships_serialized = [
-            relationship.dump_as_cdf_resource(camel_case=False) for relationship in self.relationships
-        ]
+        relationships_serialized = [relationship.dump(camel_case=False) for relationship in self.relationships]
         for relationship in relationships_serialized:
             relationship.pop("data_set_id")
             # do not check source and target as they are checked in assets
@@ -112,9 +110,7 @@ class MockTimeSeriesCreate:
         return time_series
 
     def serialize(self) -> List[dict]:
-        time_series_serialized = [
-            time_series.dump_as_cdf_resource(camel_case=False) for time_series in self.time_series
-        ]
+        time_series_serialized = [time_series.dump(camel_case=False) for time_series in self.time_series]
         for time_series in time_series_serialized:
             time_series.pop("data_set_id")
         return time_series_serialized
@@ -144,7 +140,7 @@ class MockLabelsCreate:
         return label
 
     def serialize(self) -> List[dict]:
-        labels_serialized = [label.dump_as_cdf_resource(camel_case=False) for label in self.labels]
+        labels_serialized = [label.dump(camel_case=False) for label in self.labels]
         for label in labels_serialized:
             label.pop("data_set_id")
         return labels_serialized
@@ -162,7 +158,7 @@ class MockEventsCreate:
         return event
 
     def serialize(self) -> List[dict]:
-        events_serialized = [event.dump_as_cdf_resource(camel_case=False) for event in self.events]
+        events_serialized = [event.dump(camel_case=False) for event in self.events]
         for event in events_serialized:
             event.pop("data_set_id")
             # remove start time,end time, and external id as they depend on the time of creation
@@ -268,7 +264,7 @@ class MockFilesUploadBytes:
 
     def serialize(self) -> list[dict]:
         return [
-            {**file_metadata.dump_as_cdf_resource(camel_case=False), "sha256_hash": hash_}
+            {**file_metadata.dump(camel_case=False), "sha256_hash": hash_}
             for file_metadata, hash_ in sorted(
                 zip(self.file_metadata, self.content_sha256_hash), key=lambda f: f[0].external_id
             )
