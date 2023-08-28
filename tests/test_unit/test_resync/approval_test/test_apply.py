@@ -13,7 +13,7 @@ except ModuleNotFoundError:
 from cognite.client.testing import monkeypatch_cognite_client
 
 from cognite.powerops.resync._main import DEFAULT_MODELS, apply
-from tests.constants import REPO_ROOT, SENSITIVE_TESTS
+from tests.constants import REPO_ROOT, SENSITIVE_TESTS, ReSync
 from tests.test_unit.test_resync.approval_test.mock_resource_create_classes import (
     MockAssetsCreate,
     MockEventsCreate,
@@ -28,14 +28,13 @@ from tests.test_unit.test_resync.approval_test.mock_resource_create_classes impo
 
 APPROVAL_TEST = Path(__file__).resolve().parent
 
-DATA = APPROVAL_TEST.parent / "data"
 DEMO_OUT = APPROVAL_TEST / "test_apply"
 
 
 def apply_test_cases():
     cdf_timeseries = [TimeSeries(external_id=external_id) for external_id in ["6694", "2", "1", "112233"]]
 
-    yield pytest.param(DATA / "demo", "Dayahead", DEMO_OUT / "demo.yml", cdf_timeseries, id="Demo Case")
+    yield pytest.param(ReSync.demo, "Dayahead", DEMO_OUT / "demo.yml", cdf_timeseries, id="Demo Case")
 
     # This test will be skipped if the file sensitive_tests.toml does not exist
     if not SENSITIVE_TESTS.exists():
@@ -93,7 +92,7 @@ def test_apply_summary(
             setattr(api, parts[-1], mock_resource)
 
         # Act
-        model = apply(path=DATA / "demo", market="Dayahead", model_names=model_name, auto_yes=True)
+        model = apply(path=ReSync.demo, market="Dayahead", model_names=model_name, auto_yes=True)
 
     # Assert
     data_regression.check(
@@ -140,7 +139,7 @@ def test_apply(
             setattr(api, parts[-1], mock_resource)
 
         # Act
-        apply(path=DATA / "demo", market="Dayahead", model_names=model_name, auto_yes=True)
+        apply(path=ReSync.demo, market="Dayahead", model_names=model_name, auto_yes=True)
 
     # Assert
     dump = {

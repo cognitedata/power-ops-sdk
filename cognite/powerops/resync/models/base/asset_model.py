@@ -201,6 +201,8 @@ class AssetModel(Model, ABC):
                     field_name += "s"
                 if field_name not in source.model_fields:
                     field_name = field_name.rsplit("_", maxsplit=1)[0]
+                if field_name not in source.model_fields and field_name == "reservoirs":
+                    field_name = "inlet_reservoir"
 
                 if field_name not in source.model_fields:
                     raise ValueError(f"Cannot find field {field_name} in {source}")
