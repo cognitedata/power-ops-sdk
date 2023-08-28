@@ -16,7 +16,7 @@ from typing import Type as TypingType
 from pydantic import BaseModel
 from typing_extensions import Self
 from cognite.client import CogniteClient
-from cognite.client.data_classes import Asset, Label, Relationship, TimeSeries
+from cognite.client.data_classes import Asset, Label, Relationship, TimeSeries, AssetList
 from cognite.client.data_classes.data_modeling.instances import (
     EdgeApply,
     NodeApply,
@@ -228,7 +228,7 @@ class AssetType(ResourceType, ABC, arbitrary_types_allowed=True):
             elif isinstance(value, (dict, list)) and not value:
                 continue
             elif field.annotation in (str, int, float):
-                metadata[field_name] = str(value)
+                metadata[field_name] = value
             else:
                 raise NotImplementedError(f"Cannot handle metadata of type {field.annotation}")
         return metadata
@@ -454,7 +454,11 @@ class Model(BaseModel, ABC):
         time_series.extend(self._fields_of_type(TimeSeries))
         return time_series
 
-    cdf_resources: ClassVar[dict[Callable, type]] = {sequences: CDFSequence, files: CDFFile, timeseries: TimeSeries}
+    cdf_resources: ClassVar[dict[Callable, type]] = {
+        sequences: CDFSequence,
+        files: CDFFile,
+        timeseries: TimeSeries,
+    }
 
     def _resource_types(self) -> Iterable[ResourceType]:
         yield from self._fields_of_type(ResourceType)
@@ -474,8 +478,9 @@ class Model(BaseModel, ABC):
     def dump_as_cdf_resource(self) -> dict[str, Any]:
         output: dict[str, Any] = {}
         for resource_fun in self.cdf_resources.keys():
+            name = resource_fun.__name__
             if items := resource_fun(self):
-                if resource_fun.__name__ == "sequences":
+                if name == "sequences":
                     # Sequences must clean columns as well.
                     def dump(resource: CDFSequence) -> dict[str, Any]:
                         output = remove_read_only_fields(resource.dump(camel_case=False))
@@ -489,7 +494,7 @@ class Model(BaseModel, ABC):
                     def dump(resource: Any) -> dict[str, Any]:
                         return remove_read_only_fields(resource.dump(camel_case=False))
 
-                output[resource_fun.__name__] = sorted((dump(item) for item in items), key=self._external_id_key)
+                output[name] = sorted((dump(item) for item in items), key=self._external_id_key)
         return output
 
     def summary(self) -> dict[str, dict[str, dict[str, int]]]:
@@ -718,9 +723,9 @@ class AssetModel(Model, ABC):
     def relationships(self) -> list[Relationship]:
         return [edge for item in self._asset_types() for edge in item.relationships()]
 
-    def parent_assets(self) -> list[Asset]:
-        if not self.root_asset:
-            return []
+    def parent_assets(cls, include_root: bool = True) -> AssetList:
+        if not cls.root_asset:
+            return AssetList([])
 
         def _to_name(external_id: str) -> str:
             parts = external_id.replace("_", " ").split(" ")
@@ -732,26 +737,32 @@ class AssetModel(Model, ABC):
             # assets.
             return " ".join(parts).replace("Bid process", "Bid").replace("bid process", "bid")
 
-        parent_and_description_ids = {
-            (item.parent_external_id, item.parent_description or "") for item in self._asset_types()
-        }
+        parent_and_description_ids = set()
+        for field_name, field in cls.model_fields.items():
+            annotation, outer = get_pydantic_annotation(field.annotation)
+            if issubclass(annotation, AssetType) and outer is list:
+                parent_and_description_ids.add((annotation.parent_external_id, annotation.parent_description or ""))
 
-        return [self.root_asset] + [
-            Asset(
-                external_id=parent_id,
-                name=_to_name(parent_id),
-                parent_external_id=self.root_asset.external_id,
-                description=description,
-            )
-            for parent_id, description in parent_and_description_ids
-        ]
+        return AssetList(
+            ([cls.root_asset] if include_root else [])
+            + [
+                Asset(
+                    external_id=parent_id,
+                    name=_to_name(parent_id),
+                    parent_external_id=cls.root_asset.external_id,
+                    description=description,
+                )
+                for parent_id, description in parent_and_description_ids
+            ]
+        )
 
-    cdf_resources: ClassVar[dict[Callable, type]] = {
+    cdf_resources: ClassVar[dict[Union[Callable, tuple[Callable, str]], type]] = {
         **dict(Model.cdf_resources.items()),
         assets: Asset,
         relationships: Relationship,
         parent_assets: Asset,
     }
+    parent_assets = classmethod(parent_assets)
 
     def _asset_types(self) -> Iterable[AssetType]:
         yield from (item for item in self._resource_types() if isinstance(item, AssetType))
@@ -793,8 +804,12 @@ class AssetModel(Model, ABC):
     def load_from_cdf_resources(cls: TypingType[Self], data: dict[str, Any]) -> Self:
         loaded_by_type_external_id: dict[str, dict[str, Any]] = {}
         for function, resource_cls in cls.cdf_resources.items():
-            if items := data.get(function.__name__):
-                loaded_by_type_external_id[function.__name__] = {
+            if isinstance(function, tuple):
+                name = function[1]
+            else:
+                name = function.__name__
+            if items := data.get(name):
+                loaded_by_type_external_id[name] = {
                     loaded.external_id: loaded
                     for loaded in (resource_cls._load(item) if isinstance(item, dict) else item for item in items)
                 }
@@ -889,25 +904,58 @@ class AssetModel(Model, ABC):
         if fetch_content and not fetch_metadata:
             raise ValueError("Cannot fetch content without also fetching metadata")
         cdf = client.cdf
-        output = defaultdict(list)
-        for field_name, asset_cls in cls._field_name_asset_resource_class():
-            try:
-                assets = cdf.assets.retrieve_subtree(external_id=asset_cls.parent_external_id)
-            except AttributeError:
-                raise
-            for asset in assets:
-                if asset.external_id == asset_cls.parent_external_id:
-                    continue
-                instance = asset_cls.from_cdf(
-                    client=cdf,
-                    data_set_id=data_set_id,
-                    asset=asset,
-                    fetch_metadata=fetch_metadata,
-                    fetch_content=fetch_content,
-                )
-                output[field_name].append(instance)
+        parent_assets = cls.parent_assets(include_root=False)
 
-        return cls(**output)
+        assets = cdf.assets.list(asset_subtree_external_ids=parent_assets.as_external_ids(), limit=-1)
+        relationships = cdf.relationships.list(
+            source_external_ids=assets.as_external_ids(),
+            source_types=["asset"],
+            target_types=["timeseries", "asset", "sequence"],
+            data_set_ids=[data_set_id],
+            limit=-1,
+        )
+        # TimeSeries are a special case as resync are only referring to them by external id.
+        # So we do not need to fetch them
+        time_series = [
+            TimeSeries(external_id=relationship.target_external_id)
+            for relationship in relationships
+            if relationship.target_type.casefold() == "timeseries"
+        ]
+        sequence_ids = [
+            relationship.target_external_id
+            for relationship in relationships
+            if relationship.target_type.casefold() == "sequence"
+        ]
+        sequences = cdf.sequences.retrieve_multiple(external_ids=sequence_ids)
+        return cls.load_from_cdf_resources(
+            {
+                "assets": assets,
+                "relationships": relationships,
+                "sequences": sequences,
+                "time_series": time_series,
+            }
+        )
+
+        # # Use load cdf resource function
+        # output = defaultdict(list)
+        # for field_name, asset_cls in cls._field_name_asset_resource_class():
+        #     try:
+        #         assets = cdf.assets.retrieve_subtree(external_id=asset_cls.parent_external_id)
+        #     except AttributeError:
+        #         raise
+        #     for asset in assets:
+        #         if asset.external_id == asset_cls.parent_external_id:
+        #             continue
+        #         instance = asset_cls.from_cdf(
+        #             client=cdf,
+        #             data_set_id=data_set_id,
+        #             asset=asset,
+        #             fetch_metadata=fetch_metadata,
+        #             fetch_content=fetch_content,
+        #         )
+        #         output[field_name].append(instance)
+        #
+        # return cls(**output)
 
     def _prepare_for_diff(self: T_Asset_Model) -> dict[str:dict]:
         clone = self.model_copy(deep=True)
