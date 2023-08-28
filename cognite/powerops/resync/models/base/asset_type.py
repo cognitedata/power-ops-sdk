@@ -218,7 +218,7 @@ class AssetType(ResourceType, ABC, arbitrary_types_allowed=True):
 
         return output
 
-    def sort_listed_types(self) -> None:
+    def sort_lists(self) -> None:
         for field_name, field in self.model_fields.items():
             annotation, outer = get_pydantic_annotation(field.annotation)
             if issubclass(annotation, (AssetType, CDFFile, CDFSequence)) and outer is list:

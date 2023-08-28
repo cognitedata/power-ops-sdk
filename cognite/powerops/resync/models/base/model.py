@@ -2,7 +2,8 @@ from __future__ import annotations
 
 import abc
 from abc import ABC
-from typing import ClassVar, Callable, Iterable, Type as TypingType, Any, TypeVar
+from dataclasses import dataclass
+from typing import ClassVar, Callable, Iterable, Type as TypingType, Any, TypeVar, Literal
 from typing_extensions import Self
 
 from cognite.client.data_classes import TimeSeries
@@ -14,6 +15,42 @@ from cognite.powerops.resync.models.helpers import isinstance_list
 from cognite.powerops.resync.utils.serializer import remove_read_only_fields
 
 _T_Type = TypeVar("_T_Type")
+
+
+@dataclass
+class Change:
+    last: dict[str, Any]
+    new: dict[str, Any]
+
+
+@dataclass
+class FieldSummary:
+    group: Literal["CDF", "Domain"]
+    field: str
+    added: int
+    removed: int
+    changed: int
+    unchanged: int
+
+
+@dataclass
+class FieldDifference:
+    group: Literal["CDF", "Domain"]
+    field: str
+    added: list[dict[str, Any]]
+    removed: list[dict[str, Any]]
+    changed: list[Change]
+    unchanged: list[dict[str, Any]]
+
+    def as_summary(self) -> FieldSummary:
+        return FieldSummary(
+            group=self.group,
+            field=self.field,
+            added=len(self.added),
+            removed=len(self.removed),
+            changed=len(self.changed),
+            unchanged=len(self.unchanged),
+        )
 
 
 class ResourceType(BaseModel, ABC):
@@ -76,24 +113,21 @@ class Model(BaseModel, ABC):
     def model_name(self) -> str:
         return type(self).__name__
 
+    @abc.abstractmethod
+    def sort_lists(self) -> None:
+        """
+        This is used to standardize the order of lists in the model, which is useful for comparing models.
+        """
+        raise NotImplementedError()
+
     def dump_as_cdf_resource(self) -> dict[str, Any]:
         output: dict[str, Any] = {}
         for resource_fun in self.cdf_resources.keys():
             name = resource_fun.__name__
             if items := resource_fun(self):
-                if name == "sequences":
-                    # Sequences must clean columns as well.
-                    def dump(resource: CDFSequence) -> dict[str, Any]:
-                        output = remove_read_only_fields(resource.dump(camel_case=True))
-                        if (columns := output.get("columns")) and isinstance(columns, list):
-                            for no, column in enumerate(columns):
-                                output["columns"][no] = remove_read_only_fields(column)
-                        return output
 
-                else:
-
-                    def dump(resource: Any) -> dict[str, Any]:
-                        return remove_read_only_fields(resource.dump(camel_case=True))
+                def dump(resource: Any) -> dict[str, Any]:
+                    return remove_read_only_fields(resource.dump(camel_case=True))
 
                 output[name] = sorted((dump(item) for item in items), key=self._external_id_key)
         return output
@@ -131,6 +165,56 @@ class Model(BaseModel, ABC):
         data_set_external_id: str,
     ) -> T_Model:
         ...
+
+    def difference(self, new_model: T_Model) -> list[FieldDifference]:
+        if type(self) != type(new_model):
+            raise ValueError(f"Cannot compare model of type {type(self)} with {type(new_model)}")
+        self.sort_lists()
+        new_model.sort_lists()
+        diffs = []
+        for field_name in self.model_fields:
+            current_value = getattr(self, field_name)
+            new_value = getattr(new_model, field_name)
+            if type(current_value) != type(new_value):
+                raise ValueError(
+                    f"Cannot compare field {field_name} of type {type(current_value)} with {type(new_value)}"
+                )
+            if isinstance(current_value, list) and current_value and isinstance(current_value[0], ResourceType):
+                current_value_by_id = {item.external_id: item.model_dump() for item in current_value}
+                new_value_by_id = {item.external_id: item.model_dump() for item in new_value}
+                added_ids = set(new_value_by_id.keys()) - set(current_value_by_id.keys())
+                added = [new_value_by_id[external_id] for external_id in sorted(added_ids)]
+
+                removed_ids = set(current_value_by_id.keys()) - set(new_value_by_id.keys())
+                removed = [current_value_by_id[external_id] for external_id in sorted(removed_ids)]
+
+                existing_ids = set(current_value_by_id.keys()) & set(new_value_by_id.keys())
+                changed = []
+                unchanged = []
+                for existing in sorted(existing_ids):
+                    current = current_value_by_id[existing]
+                    new = new_value_by_id[existing]
+                    if current == new:
+                        unchanged.append(current)
+                    else:
+                        changed.append(Change(last=current, new=new))
+            else:
+                raise NotImplementedError("Only list of resources are supported")
+
+            diffs.append(
+                FieldDifference(
+                    group="Domain",
+                    field=field_name,
+                    added=added,
+                    removed=removed,
+                    changed=changed,
+                    unchanged=unchanged,
+                )
+            )
+
+        self.dump_as_cdf_resource()
+        new_model.dump_as_cdf_resource()
+        return diffs
 
 
 T_Model = TypeVar("T_Model", bound=Model)

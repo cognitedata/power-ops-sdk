@@ -78,13 +78,13 @@ class AssetModel(Model, ABC):
         cls._set_linked_resources(loaded_by_type_external_id)
         return instance
 
-    def sort_listed_types(self) -> None:
+    def sort_lists(self) -> None:
         for field_name, field in self.model_fields.items():
             annotation, outer = get_pydantic_annotation(field.annotation)
             if issubclass(annotation, (AssetType, CDFFile, CDFSequence)) and outer is list:
                 getattr(self, field_name).sort(key=lambda x: x.external_id)
                 for asset_type in getattr(self, field_name):
-                    asset_type.sort_listed_types()
+                    asset_type.sort_lists()
 
     @classmethod
     def from_cdf(
@@ -103,7 +103,7 @@ class AssetModel(Model, ABC):
         relationships = cdf.relationships.list(
             source_external_ids=assets.as_external_ids(),
             source_types=["asset"],
-            target_types=["timeseries", "asset", "sequence"],
+            target_types=["timeseries", "asset", "sequence", "file"],
             data_set_external_ids=[data_set_external_id],
             limit=-1,
         )
@@ -119,13 +119,29 @@ class AssetModel(Model, ABC):
             for relationship in relationships
             if relationship.target_type.casefold() == "sequence"
         ]
-        sequences = cdf.sequences.retrieve_multiple(external_ids=sequence_ids)
+        if sequence_ids:
+            sequences = cdf.sequences.retrieve_multiple(external_ids=sequence_ids)
+            cdf_sequences = [CDFSequence(sequence=sequence) for sequence in sequences]
+        else:
+            cdf_sequences = []
+        file_ids = [
+            relationship.target_external_id
+            for relationship in relationships
+            if relationship.target_type.casefold() == "file"
+        ]
+        if file_ids:
+            files = cdf.files.retrieve_multiple(external_ids=file_ids)
+            cdf_files = [CDFFile(meta=file) for file in files]
+        else:
+            cdf_files = []
+
         return cls.load_from_cdf_resources(
             {
                 "assets": assets,
                 "relationships": relationships,
-                "sequences": sequences,
-                "time_series": time_series,
+                "sequences": cdf_sequences,
+                "timeseries": time_series,
+                "files": cdf_files,
             }
         )
 

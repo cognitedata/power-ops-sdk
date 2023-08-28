@@ -70,7 +70,7 @@ class DataModel(Model, ABC):
             ):
                 yield from items.values()
 
-    def sort_listed_types(self) -> None:
+    def sort_lists(self) -> None:
         to_check = [(field, getattr(self, field_name)) for field_name, field in self.model_fields.items()]
         while to_check:
             field, value = to_check.pop()

@@ -18,16 +18,14 @@ class _CDFResource(BaseModel, ABC):
 
     @model_serializer
     def ser_model(self) -> dict[str, Any]:
-        return self._dump(camel_case=False)
+        return self.dump(camel_case=False)
 
     @abstractmethod
     def _dump(self, camel_case: bool = False) -> dict[str, Any]:
         ...
 
     def dump(self, camel_case: bool = False) -> dict[str, Any]:
-        dump = self._dump(camel_case)
-        remove_read_only_fields(dump)
-        return dump
+        return remove_read_only_fields(self._dump(camel_case))
 
     @classmethod
     @abstractmethod
@@ -58,6 +56,13 @@ class CDFSequence(_CDFResource):
         self.sequence.data_set_id = data_set_id
 
     data_set_id = property(None, fset=_set_data_set_id)
+
+    def dump(self, camel_case: bool = False) -> dict[str, Any]:
+        output = super().dump(camel_case)
+        if (columns := output.get("columns")) and isinstance(columns, list):
+            for no, column in enumerate(columns):
+                output["columns"][no] = remove_read_only_fields(column)
+        return output
 
     def _dump(self, camel_case: bool = False) -> dict[str, Any]:
         return self.sequence.dump(camel_case=camel_case)

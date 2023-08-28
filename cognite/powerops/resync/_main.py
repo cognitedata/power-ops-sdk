@@ -6,6 +6,7 @@ from typing import Optional, Callable, overload, Any, Type
 from uuid import uuid4
 
 from cognite.client.data_classes import Event
+from yaml import safe_dump
 
 from cognite.powerops.clients.powerops_client import get_powerops_client, PowerOpsClient
 from cognite.powerops.resync._logger import configure_debug_logging
@@ -37,6 +38,7 @@ def plan(
     echo = echo or print
     echo_pretty: Callable[[Any], None] = echo_pretty or echo
     settings = Settings()
+
     client = client or get_powerops_client()
 
     config, models = _load_transform(market, path, client.cdf.config.project, echo, model_names)
@@ -44,23 +46,23 @@ def plan(
     echo(f"Load transform completed, models {', '.join([type(m).__name__ for m in models])} loaded")
     if settings.powerops.read_dataset is None:
         raise ValueError("No read_dataset configured in settings")
-    raise NotImplementedError()
-    # for model in models:
-    #     echo(f"Retrieving {type(model).__name__} from CDF")
-    #     cdf_model = type(model).from_cdf(client, data_set_external_id=data_set_external_id)
-    #
-    #     summary_diff = model.summary_diff(cdf_model)
-    #     echo(f"Summary diff for {model.model_name}")
-    #     echo_pretty(summary_diff)
-    #
-    #     if dump_folder:
-    #         dump_folder.mkdir(parents=True, exist_ok=True)
-    #
-    #         (dump_folder / f"{model.model_name}_local.yaml").write_text(safe_dump(model.dump_as_cdf_resource()))
-    #         (dump_folder / f"{model.model_name}_cdf.yaml").write_text(safe_dump(cdf_model.dump_as_cdf_resource()))
-    #     external_ids_diff = model.difference_external_ids(cdf_model)
-    #     echo(f"External ids diff for {model.model_name}")
-    #     echo_pretty(external_ids_diff)
+    data_set_external_id = settings.powerops.read_dataset
+    for model in models:
+        echo(f"Retrieving {type(model).__name__} from CDF")
+        cdf_model = type(model).from_cdf(client, data_set_external_id=data_set_external_id)
+
+        differences = model.difference(cdf_model)
+        echo(f"Summary diff for {model.model_name}")
+        echo_pretty([diff.as_summary() for diff in differences])
+
+        if dump_folder:
+            dump_folder.mkdir(parents=True, exist_ok=True)
+
+            (dump_folder / f"{model.model_name}_local.yaml").write_text(safe_dump(model.dump_as_cdf_resource()))
+            (dump_folder / f"{model.model_name}_cdf.yaml").write_text(safe_dump(cdf_model.dump_as_cdf_resource()))
+        # external_ids_diff = model.difference_external_ids(cdf_model)
+        # echo(f"External ids diff for {model.model_name}")
+        # echo_pretty(external_ids_diff)
 
 
 @overload
@@ -100,6 +102,7 @@ def apply(
     client = get_powerops_client()
 
     config, models = _load_transform(market, path, client.cdf.config.project, echo, model_names or list(DEFAULT_MODELS))
+
     raise NotImplementedError()
     # _remove_non_existing_relationship_time_series_targets(client.cdf, models, echo)
 
@@ -136,17 +139,16 @@ def _load_transform(
     else:
         raise ValueError(f"Invalid model_names type: {type(model_names)}")
 
-    echo(f"Loading and transforming {', '.join(model_names)}")
-    # Step 1 - configure and validate config
-    config = ReSyncConfig.from_yamls(path, cdf_project)
-    configure_debug_logging(config.settings.debug_level)
-    # Step 2 - transform from config to CDF resources and preview diffs
-    echo(f"Config Loaded. DataSet: {config.settings.data_set_external_id} used in {config.settings.cdf_project}")
     if invalid := set(model_names) - AVAILABLE_MODELS:
         raise ValueError(f"Invalid model names: {invalid}. Available models: {AVAILABLE_MODELS}")
 
-    models = transform(config, market, {MODEL_BY_NAME[model_name] for model_name in model_names})
-    return config, models
+    echo(f"Loading and transforming {', '.join(model_names)}")
+
+    config = ReSyncConfig.from_yamls(path, cdf_project)
+    configure_debug_logging(config.settings.debug_level)
+
+    transformed_models = transform(config, market, {MODEL_BY_NAME[model_name] for model_name in model_names})
+    return config, transformed_models
 
 
 def _create_bootstrap_finished_event(echo: Callable[[str], None]) -> Event:
