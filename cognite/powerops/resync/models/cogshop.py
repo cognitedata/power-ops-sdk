@@ -14,10 +14,10 @@ from cognite.powerops.clients.data_classes import (
     ScenarioMappingApply,
 )
 import cognite.powerops.cogshop1.data_classes as cogshop_v1
-from .base import DataModel, Model, T_Model
+from .base import DataModel, Model
 from .cdf_resources import CDFFile, CDFSequence
-from cognite.powerops.clients.powerops_client import PowerOpsClient
 from cognite.powerops.cogshop1.data_classes._core import DomainModelApply as DomainModelApplyCogShop1
+from ...clients import PowerOpsClient
 
 ExternalID = str
 
@@ -32,12 +32,6 @@ class CogShopDataModel(CogShopCore, DataModel):
     output_definitions: dict[ExternalID, OutputContainerApply] = Field(default_factory=dict)
     value_transformations: dict[ExternalID, ValueTransformationApply] = Field(default_factory=dict)
 
-    @classmethod
-    def from_cdf(
-        cls: Type[T_Model], client: PowerOpsClient, fetch_metadata: bool = True, fetch_content: bool = False
-    ) -> T_Model:
-        ...
-
 
 class CogShop1Asset(CogShopCore, DataModel, protected_namespaces=()):
     cls_by_container: ClassVar[dict[ContainerId, Type[DomainModelApplyCogShop1]]] = {
@@ -51,9 +45,7 @@ class CogShop1Asset(CogShopCore, DataModel, protected_namespaces=()):
     output_definitions: list[CDFSequence] = Field(default_factory=list)
 
     @classmethod
-    def from_cdf(
-        cls, client: PowerOpsClient, data_set_id: int, fetch_metadata: bool = True, fetch_content: bool = False
-    ) -> "CogShop1Asset":
+    def from_cdf(cls, client: PowerOpsClient, data_set_external_id: str) -> CogShop1Asset:
         cog_shop = client.cog_shop1
         templates = cog_shop.model_templates.list(limit=-1)
         base_mapping_ids = list({mapping for t in templates for mapping in t.base_mappings})
@@ -62,6 +54,7 @@ class CogShop1Asset(CogShopCore, DataModel, protected_namespaces=()):
         transformations = cog_shop.transformations.retrieve(transformations_ids)
         file_ids = list({t.model for t in templates})
         files = cog_shop.file_refs.retrieve(file_ids)
+
         transformation_by_id = {t.external_id: t for t in transformations}
         mappings_by_id = {}
         readme_fields = {"created_time", "deleted_time", "last_updated_time", "version"}

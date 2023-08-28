@@ -26,7 +26,6 @@ from cognite.client.data_classes.data_modeling.instances import (
     NodeApplyList,
     EdgeApplyList,
 )
-
 from cognite.powerops.cdf_labels import AssetLabel, RelationshipLabel
 from cognite.powerops.clients.powerops_client import PowerOpsClient
 from cognite.powerops.clients.data_classes._core import DomainModelApply
@@ -263,7 +262,7 @@ class AssetType(ResourceType, ABC, arbitrary_types_allowed=True):
 
         return output
 
-    def sort_listed_asset_types(self) -> None:
+    def sort_listed_types(self) -> None:
         for field_name, field in self.model_fields.items():
             annotation, outer = get_pydantic_annotation(field.annotation)
             if issubclass(annotation, (AssetType, CDFFile, CDFSequence)) and outer is list:
@@ -363,6 +362,28 @@ class Model(BaseModel, ABC):
                 }
         return loaded_by_type_external_id
 
+    @classmethod
+    @abc.abstractmethod
+    def load_from_cdf_resources(cls: TypingType[Self], data: dict[str, Any]) -> Self:
+        raise NotImplementedError()
+
+    @classmethod
+    def _external_id_key(cls, resource: dict | Any) -> str:
+        if hasattr(resource, "external_id"):
+            return resource.external_id.casefold()
+        elif isinstance(resource, dict) and ("external_id" in resource or "externalId" in resource):
+            return resource.get("external_id", resource.get("externalId")).casefold()
+        raise ValueError(f"Could not find external_id in {resource}")
+
+    @classmethod
+    @abc.abstractmethod
+    def from_cdf(
+        cls: TypingType[T_Model],
+        client: PowerOpsClient,
+        data_set_external_id: str,
+    ) -> T_Model:
+        ...
+
     def summary(self) -> dict[str, dict[str, dict[str, int]]]:
         summary: dict[str, dict[str, dict[str, int]]] = {self.model_name: {"domain": {}, "cdf": {}}}
         summary[self.model_name]["domain"] = {
@@ -447,27 +468,6 @@ class Model(BaseModel, ABC):
                                 ),
                             }
         return output
-
-    @classmethod
-    def load_from_cdf_resources(cls: TypingType[Self], data: dict[str, Any]) -> Self:
-        raise NotImplementedError()
-
-    @classmethod
-    def _external_id_key(cls, resource: dict | Any) -> str:
-        if hasattr(resource, "external_id"):
-            return resource.external_id.casefold()
-        elif isinstance(resource, dict) and ("external_id" in resource or "externalId" in resource):
-            return resource.get("external_id", resource.get("externalId")).casefold()
-        raise ValueError(f"Could not find external_id in {resource}")
-
-    @classmethod
-    @abc.abstractmethod
-    def from_cdf(
-        cls: TypingType[T_Model],
-        client: PowerOpsClient,
-        data_set_external_id: str,
-    ) -> T_Model:
-        ...
 
     def difference(self: T_Model, other: T_Model, print_string: bool = True) -> dict:
         if type(self) != type(other):
@@ -626,27 +626,12 @@ class AssetModel(Model, ABC):
         relationships: Relationship,
         parent_assets: Asset,
     }
+
     # Need to set classmethod here to have access to the underlying function in cdf_resources
     parent_assets = classmethod(parent_assets)
 
     def _asset_types(self) -> Iterable[AssetType]:
         yield from (item for item in self._resource_types() if isinstance(item, AssetType))
-
-    def summary(self) -> dict[str, dict[str, dict[str, int]]]:
-        summary = super().summary()
-        summary[self.model_name]["cdf"]["assets"] = len(self.assets())
-        summary[self.model_name]["cdf"]["relationships"] = len(self.relationships())
-        summary[self.model_name]["cdf"]["parent_assets"] = len(self.parent_assets())
-        return summary
-
-    def dump_external_ids(self) -> dict[str, dict, str, dict[str, list[str]]]:
-        output = super().dump_external_ids()
-        output[self.model_name]["cdf"]["assets"] = [asset.external_id for asset in self.assets()]
-        output[self.model_name]["cdf"]["relationships"] = [
-            relationship.external_id for relationship in self.relationships()
-        ]
-        output[self.model_name]["cdf"]["parent_assets"] = [asset.external_id for asset in self.parent_assets()]
-        return output
 
     @classmethod
     def load_from_cdf_resources(cls: TypingType[Self], data: dict[str, Any]) -> Self:
@@ -777,6 +762,22 @@ class AssetModel(Model, ABC):
             }
         )
 
+    def summary(self) -> dict[str, dict[str, dict[str, int]]]:
+        summary = super().summary()
+        summary[self.model_name]["cdf"]["assets"] = len(self.assets())
+        summary[self.model_name]["cdf"]["relationships"] = len(self.relationships())
+        summary[self.model_name]["cdf"]["parent_assets"] = len(self.parent_assets())
+        return summary
+
+    def dump_external_ids(self) -> dict[str, dict, str, dict[str, list[str]]]:
+        output = super().dump_external_ids()
+        output[self.model_name]["cdf"]["assets"] = [asset.external_id for asset in self.assets()]
+        output[self.model_name]["cdf"]["relationships"] = [
+            relationship.external_id for relationship in self.relationships()
+        ]
+        output[self.model_name]["cdf"]["parent_assets"] = [asset.external_id for asset in self.parent_assets()]
+        return output
+
     def _prepare_for_diff(self: T_Asset_Model) -> dict[str:dict]:
         clone = self.model_copy(deep=True)
 
@@ -838,6 +839,7 @@ T_Asset_Model = TypeVar("T_Asset_Model", bound=AssetModel)
 
 class DataModel(Model, ABC):
     cls_by_container: ClassVar[dict[ContainerId, TypingType[Union[DomainModelApplyCogShop1, DomainModelApply]]]]
+    view_sources: ClassVar[tuple[ViewId, ...]]
 
     def instances(self) -> InstancesApply:
         nodes: dict[str, NodeApply] = {}
@@ -904,20 +906,6 @@ class DataModel(Model, ABC):
             ):
                 for v in value.values():
                     to_check.extend([(field, getattr(v, field_name)) for field_name, field in v.model_fields.items()])
-
-    def summary(self) -> dict[str, dict[str, dict[str, int]]]:
-        summary = super().summary()
-        instances = self.instances()
-        summary[self.model_name]["cdf"]["nodes"] = len(instances.nodes)
-        summary[self.model_name]["cdf"]["edges"] = len(instances.edges)
-        return summary
-
-    def dump_external_ids(self) -> dict[str, dict, str, dict[str, list[str]]]:
-        output = super().dump_external_ids()
-        instances = self.instances()
-        output[self.model_name]["cdf"]["nodes"] = [node.external_id for node in instances.nodes]
-        output[self.model_name]["cdf"]["edges"] = [edge.external_id for edge in instances.edges]
-        return output
 
     @classmethod
     def load_from_cdf_resources(cls: TypingType[Self], data: dict[str, Any]) -> Self:
@@ -1020,6 +1008,20 @@ class DataModel(Model, ABC):
                     setattr(domain_node, field_name, node_by_id[value])
 
         return instance
+
+    def summary(self) -> dict[str, dict[str, dict[str, int]]]:
+        summary = super().summary()
+        instances = self.instances()
+        summary[self.model_name]["cdf"]["nodes"] = len(instances.nodes)
+        summary[self.model_name]["cdf"]["edges"] = len(instances.edges)
+        return summary
+
+    def dump_external_ids(self) -> dict[str, dict, str, dict[str, list[str]]]:
+        output = super().dump_external_ids()
+        instances = self.instances()
+        output[self.model_name]["cdf"]["nodes"] = [node.external_id for node in instances.nodes]
+        output[self.model_name]["cdf"]["edges"] = [edge.external_id for edge in instances.edges]
+        return output
 
 
 T_Domain_model = TypeVar("T_Domain_model", bound=Union[DomainModelApply, DomainModelApplyCogShop1])
