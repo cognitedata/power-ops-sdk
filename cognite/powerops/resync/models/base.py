@@ -2,10 +2,12 @@ from __future__ import annotations
 
 import abc
 from collections import defaultdict, Counter
+
 from itertools import groupby
 import json
 from abc import ABC
 
+from cognite.client.data_classes.data_modeling import ContainerId, ViewId
 from deepdiff import DeepDiff
 from deepdiff.model import PrettyOrderedSet
 
@@ -13,6 +15,7 @@ from pathlib import Path
 from typing import Any, ClassVar, Iterable, Optional, Union, TypeVar, Callable
 from typing import Type as TypingType
 from pydantic import BaseModel
+from pydantic.alias_generators import to_snake, to_pascal
 from typing_extensions import Self
 from cognite.client.data_classes import Asset, Label, Relationship, TimeSeries, AssetList
 from cognite.client.data_classes.data_modeling.instances import (
@@ -333,7 +336,7 @@ class Model(BaseModel, ABC):
                 if name == "sequences":
                     # Sequences must clean columns as well.
                     def dump(resource: CDFSequence) -> dict[str, Any]:
-                        output = remove_read_only_fields(resource.dump(camel_case=False))
+                        output = remove_read_only_fields(resource.dump(camel_case=True))
                         if (columns := output.get("columns")) and isinstance(columns, list):
                             for no, column in enumerate(columns):
                                 output["columns"][no] = remove_read_only_fields(column)
@@ -342,10 +345,22 @@ class Model(BaseModel, ABC):
                 else:
 
                     def dump(resource: Any) -> dict[str, Any]:
-                        return remove_read_only_fields(resource.dump(camel_case=False))
+                        return remove_read_only_fields(resource.dump(camel_case=True))
 
                 output[name] = sorted((dump(item) for item in items), key=self._external_id_key)
         return output
+
+    @classmethod
+    def _load_by_type_external_id(cls, data: dict[str, Any]) -> dict[str, dict[str, Any]]:
+        loaded_by_type_external_id: dict[str, dict[str, Any]] = {}
+        for function, resource_cls in cls.cdf_resources.items():
+            name = function.__name__
+            if items := data.get(name):
+                loaded_by_type_external_id[name] = {
+                    loaded.external_id: loaded
+                    for loaded in (resource_cls._load(item) if isinstance(item, dict) else item for item in items)
+                }
+        return loaded_by_type_external_id
 
     def summary(self) -> dict[str, dict[str, dict[str, int]]]:
         summary: dict[str, dict[str, dict[str, int]]] = {self.model_name: {"domain": {}, "cdf": {}}}
@@ -449,9 +464,7 @@ class Model(BaseModel, ABC):
     def from_cdf(
         cls: TypingType[T_Model],
         client: PowerOpsClient,
-        data_set_id: int,
-        fetch_metadata: bool = True,
-        fetch_content: bool = False,
+        data_set_external_id: str,
     ) -> T_Model:
         ...
 
@@ -636,17 +649,7 @@ class AssetModel(Model, ABC):
 
     @classmethod
     def load_from_cdf_resources(cls: TypingType[Self], data: dict[str, Any]) -> Self:
-        loaded_by_type_external_id: dict[str, dict[str, Any]] = {}
-        for function, resource_cls in cls.cdf_resources.items():
-            if isinstance(function, tuple):
-                name = function[1]
-            else:
-                name = function.__name__
-            if items := data.get(name):
-                loaded_by_type_external_id[name] = {
-                    loaded.external_id: loaded
-                    for loaded in (resource_cls._load(item) if isinstance(item, dict) else item for item in items)
-                }
+        loaded_by_type_external_id = cls._load_by_type_external_id(data)
 
         parsed = cls._create_cls_arguments(loaded_by_type_external_id)
 
@@ -734,21 +737,21 @@ class AssetModel(Model, ABC):
     def from_cdf(
         cls: TypingType[T_Asset_Model],
         client: PowerOpsClient,
-        data_set_id: int,
-        fetch_metadata: bool = True,
-        fetch_content: bool = False,
+        data_set_external_id: str,
     ) -> T_Asset_Model:
-        if fetch_content and not fetch_metadata:
-            raise ValueError("Cannot fetch content without also fetching metadata")
         cdf = client.cdf
         parent_assets = cls.parent_assets(include_root=False)
 
-        assets = cdf.assets.list(asset_subtree_external_ids=parent_assets.as_external_ids(), limit=-1)
+        assets = cdf.assets.list(
+            asset_subtree_external_ids=parent_assets.as_external_ids(),
+            limit=-1,
+            data_set_external_ids=[data_set_external_id],
+        )
         relationships = cdf.relationships.list(
             source_external_ids=assets.as_external_ids(),
             source_types=["asset"],
             target_types=["timeseries", "asset", "sequence"],
-            data_set_ids=[data_set_id],
+            data_set_external_ids=[data_set_external_id],
             limit=-1,
         )
         # TimeSeries are a special case as resync are only referring to them by external id.
@@ -848,6 +851,18 @@ class DataModel(Model, ABC):
 
         return InstancesApply(nodes=NodeApplyList(nodes.values()), edges=EdgeApplyList(edges.values()))
 
+    def nodes(self) -> NodeApplyList:
+        return self.instances().nodes
+
+    def edges(self) -> EdgeApplyList:
+        return self.instances().edges
+
+    cdf_resources: ClassVar[dict[Callable, type]] = {
+        **dict(Model.cdf_resources.items()),
+        nodes: NodeApply,
+        edges: EdgeApply,
+    }
+
     def _domain_models(self) -> Iterable[DomainModelApply]:
         for field_name in self.model_fields:
             items = getattr(self, field_name)
@@ -876,23 +891,81 @@ class DataModel(Model, ABC):
         output[self.model_name]["cdf"]["edges"] = [edge.external_id for edge in instances.edges]
         return output
 
-    def dump_as_cdf_resource(self) -> dict[str, Any]:
-        output = super().dump_as_cdf_resource()
-        instances = self.instances()
-        for instance_type in ["nodes", "edges"]:
-            if resources := getattr(instances, instance_type):
-                output[instance_type] = sorted(
-                    (
-                        remove_read_only_fields(resource.dump_as_cdf_resource(camel_case=False))
-                        for resource in resources
-                    ),
-                    key=self._external_id_key,
-                )
-        return output
-
     @classmethod
     def load_from_cdf_resources(cls: TypingType[Self], data: dict[str, Any]) -> Self:
-        raise NotImplementedError()
+        load_by_type_external_id = cls._load_by_type_external_id(data)
+
+        nodes_by_source_by_id = defaultdict(dict)
+        for node in load_by_type_external_id["nodes"].values():
+            node: NodeApply
+            if len(node.sources) != 1:
+                raise ValueError(f"Node {node.external_id} has more than one source.")
+            source = node.sources[0].source
+            # Todo bug in SDK
+            if isinstance(source, dict):
+                if source.get("type") == "container":
+                    source = ContainerId.load(source)
+                elif source.get("type") == "view":
+                    source = ViewId.load(source)
+                else:
+                    raise NotImplementedError("Cannot handle this source type.")
+            # Assume all in same space
+            nodes_by_source_by_id[source.external_id][node.as_id()] = node
+
+        parsed = {}
+        for field_name, field in cls.model_fields.items():
+            annotation, outer = get_pydantic_annotation(field.annotation)
+            if issubclass(annotation, CDFFile) and outer is list:
+                # Hack to set file names, in newer version files should always be linked to a type
+                parsed[field_name] = list(load_by_type_external_id["files"].values())
+            elif issubclass(annotation, CDFSequence) and outer is list:
+                # Hack to set sequence names, in newer version sequences should always be linked to a type.
+                suffix = field_name.removesuffix("s")
+                parsed[field_name] = [
+                    item for item in load_by_type_external_id["sequences"].values() if item.external_id.endswith(suffix)
+                ]
+            elif issubclass(annotation, (DomainModelApply, DomainModelApplyCogShop1)):
+                name = field_name
+                alternatives = [
+                    name,
+                    name.removesuffix("s"),
+                    to_pascal(name),
+                    to_pascal(name).removesuffix("s"),
+                ]
+                for alternative in alternatives:
+                    if alternative in nodes_by_source_by_id:
+                        name = alternative
+                        break
+                else:
+                    raise ValueError(f"Cannot find {name} in {nodes_by_source_by_id}")
+                items = nodes_by_source_by_id[name].values()
+                if outer is dict:
+                    parsed[field_name] = {(loaded := load_node(annotation, item)).external_id: loaded for item in items}
+                else:
+                    raise NotImplementedError()
+            else:
+                raise NotImplementedError()
+
+        instance = cls(**parsed)
+        return instance
+
+
+T_Domain_model = TypeVar("T_Domain_model", bound=Union[DomainModelApply, DomainModelApplyCogShop1])
+
+
+def load_node(node_cls: TypingType[T_Domain_model], node: NodeApply) -> T_Domain_model:
+    properties = node.sources[0].properties
+    loaded = {}
+    for name, prop in properties.items():
+        snake_name = to_snake(name)
+        if isinstance(prop, dict) and "externalId" in prop:
+            loaded[snake_name] = prop["externalId"]
+        elif isinstance(prop, (float, str, int)):
+            loaded[snake_name] = prop
+        else:
+            raise NotImplementedError(f"Cannot handle {prop=}")
+
+    return node_cls(**loaded, external_id=node.external_id)
 
 
 class _DiffFormatter:

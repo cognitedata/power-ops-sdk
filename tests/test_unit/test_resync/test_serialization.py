@@ -6,6 +6,7 @@ from cognite.powerops.resync.config.resync_config import ReSyncConfig
 from tests.constants import ReSync
 from cognite.powerops.resync.to_models.to_production_model import to_production_model
 from cognite.powerops.resync.to_models.to_market_model import to_market_asset_model
+from cognite.powerops.resync.to_models.to_cogshop_model import to_cogshop_asset_model
 
 
 @pytest.fixture(scope="session")
@@ -21,6 +22,11 @@ def production_model(resync_config: ReSyncConfig) -> models.ProductionModel:
 @pytest.fixture(scope="session")
 def market_model(resync_config: ReSyncConfig, production_model: models.ProductionModel) -> models.MarketModel:
     return to_market_asset_model(resync_config.market, production_model.price_areas, "Dayahead")
+
+
+@pytest.fixture(scope="session")
+def cogshop1_model(resync_config: ReSyncConfig, production_model: models.ProductionModel) -> models.CogShop1Asset:
+    return to_cogshop_asset_model(resync_config.cogshop, production_model.watercourses, "14.4.3.0")
 
 
 def test_serialize_production_model_as_cdf(production_model: models.ProductionModel) -> None:
@@ -55,3 +61,18 @@ def test_serialize_market_model_as_cdf(market_model: models.MarketModel) -> None
     # Assert
     loaded.sort_listed_asset_types()
     assert loaded.model_dump() == local_market.model_dump()
+
+
+def test_serialize_cogshop1_model_as_cdf(cogshop1_model: models.CogShop1Asset) -> None:
+    # Arrange
+    local_cogshop = cogshop1_model.model_copy(deep=True)
+    # In the first serialization, we do not support the content of sequences and files
+    for item in chain(local_cogshop.files(), local_cogshop.sequences()):
+        item.content = None
+
+    # Act
+    serialized = local_cogshop.dump_as_cdf_resource()
+    loaded = models.CogShop1Asset.load_from_cdf_resources(serialized)
+
+    # Assert
+    assert loaded.model_dump() == local_cogshop.model_dump()

@@ -45,14 +45,13 @@ def plan(
     bootstrap_resources, config, models = _load_transform(market, path, client.cdf.config.project, echo, model_names)
     _remove_non_existing_relationship_time_series_targets(client.cdf, models, bootstrap_resources, echo)
     echo(f"Load transform completed, models {', '.join([type(m).__name__ for m in models])} loaded")
+    if settings.powerops.read_dataset is None:
+        raise ValueError("No read_dataset configured in settings")
+    data_set_external_id = settings.powerops.read_dataset
 
-    data_set = client.cdf.data_sets.retrieve(external_id=settings.powerops.read_dataset)
-    if not data_set or not data_set.id:
-        raise ValueError(f"Data set with external_id {settings.powerops.read_dataset} not found in CDF")
-    data_set_id = data_set.id
     for model in models:
         echo(f"Retrieving {type(model).__name__} from CDF")
-        cdf_model = type(model).from_cdf(client, fetch_metadata=True, fetch_content=False, data_set_id=data_set_id)
+        cdf_model = type(model).from_cdf(client, data_set_external_id=data_set_external_id)
 
         summary_diff = model.summary_diff(cdf_model)
         echo(f"Summary diff for {model.model_name}")
