@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 import abc
+import itertools
 from abc import ABC
 from dataclasses import dataclass, field
 from typing import ClassVar, Callable, Iterable, Type as TypingType, Any, TypeVar, Literal, Union
 from itertools import islice
 from cognite.client.data_classes._base import CogniteResource, CogniteResourceList
+from cognite.client.data_classes import TimeSeriesList, Asset, Sequence, FileMetadata
 from typing_extensions import Self, TypeAlias
 
 from cognite.client.data_classes import TimeSeries
@@ -43,8 +45,12 @@ class ResourceType(BaseModel, ABC):
                 output.append(value)
         return output
 
+    @property
+    def external_id(self) -> str:
+        raise NotImplementedError()
 
-Resource: TypeAlias = Union[CogniteResource, ResourceType]
+
+Resource: TypeAlias = Union[Asset, TimeSeries, Sequence, FileMetadata, ResourceType]
 
 
 @dataclass
@@ -122,6 +128,15 @@ class FieldDifference:
             unchanged=[get_identifier(item) for item in islice(self.unchanged, limit_)],
         )
 
+    def set_set_dataset(self, dataset: int) -> None:
+        for item in itertools.chain(self.added, self.removed, self.unchanged):
+            if hasattr(item, "data_set_id"):
+                item.data_set_id = dataset
+        for item in self.changed:
+            if hasattr(item.last, "data_set_id"):
+                item.last.data_set_id = dataset
+                item.new.data_set_id = dataset
+
 
 class Model(BaseModel, ABC):
     def sequences(self) -> list[CDFSequence]:
@@ -134,10 +149,10 @@ class Model(BaseModel, ABC):
         files.extend(self._fields_of_type(CDFFile))
         return files
 
-    def timeseries(self) -> list[TimeSeries]:
+    def timeseries(self) -> TimeSeriesList:
         time_series = [ts for item in self._resource_types() for ts in item.time_series()]
         time_series.extend(self._fields_of_type(TimeSeries))
-        return time_series
+        return TimeSeriesList(time_series)
 
     cdf_resources: ClassVar[dict[Callable, type]] = {
         sequences: CDFSequence,
