@@ -15,7 +15,6 @@ from cognite.powerops.resync.config.resync_config import ReSyncConfig
 from cognite.powerops.resync.models.base import Model, AssetModel
 from cognite.powerops.resync import models
 from cognite.powerops.resync.to_models.transform import transform
-from yaml import safe_dump
 from cognite.powerops.resync.utils.common import all_concrete_subclasses
 from cognite.powerops.utils.cdf import Settings
 
@@ -42,29 +41,28 @@ def plan(
     settings = Settings()
     client = client or get_powerops_client()
 
-    bootstrap_resources, config, models = _load_transform(market, path, client.cdf.config.project, echo, model_names)
-    _remove_non_existing_relationship_time_series_targets(client.cdf, models, bootstrap_resources, echo)
+    config, models = _load_transform(market, path, client.cdf.config.project, echo, model_names)
+
     echo(f"Load transform completed, models {', '.join([type(m).__name__ for m in models])} loaded")
     if settings.powerops.read_dataset is None:
         raise ValueError("No read_dataset configured in settings")
-    data_set_external_id = settings.powerops.read_dataset
-
-    for model in models:
-        echo(f"Retrieving {type(model).__name__} from CDF")
-        cdf_model = type(model).from_cdf(client, data_set_external_id=data_set_external_id)
-
-        summary_diff = model.summary_diff(cdf_model)
-        echo(f"Summary diff for {model.model_name}")
-        echo_pretty(summary_diff)
-
-        if dump_folder:
-            dump_folder.mkdir(parents=True, exist_ok=True)
-
-            (dump_folder / f"{model.model_name}_local.yaml").write_text(safe_dump(model.dump_as_cdf_resource()))
-            (dump_folder / f"{model.model_name}_cdf.yaml").write_text(safe_dump(cdf_model.dump_as_cdf_resource()))
-        external_ids_diff = model.difference_external_ids(cdf_model)
-        echo(f"External ids diff for {model.model_name}")
-        echo_pretty(external_ids_diff)
+    raise NotImplementedError()
+    # for model in models:
+    #     echo(f"Retrieving {type(model).__name__} from CDF")
+    #     cdf_model = type(model).from_cdf(client, data_set_external_id=data_set_external_id)
+    #
+    #     summary_diff = model.summary_diff(cdf_model)
+    #     echo(f"Summary diff for {model.model_name}")
+    #     echo_pretty(summary_diff)
+    #
+    #     if dump_folder:
+    #         dump_folder.mkdir(parents=True, exist_ok=True)
+    #
+    #         (dump_folder / f"{model.model_name}_local.yaml").write_text(safe_dump(model.dump_as_cdf_resource()))
+    #         (dump_folder / f"{model.model_name}_cdf.yaml").write_text(safe_dump(cdf_model.dump_as_cdf_resource()))
+    #     external_ids_diff = model.difference_external_ids(cdf_model)
+    #     echo(f"External ids diff for {model.model_name}")
+    #     echo_pretty(external_ids_diff)
 
 
 @overload
@@ -103,37 +101,34 @@ def apply(
     echo_pretty = echo_pretty or echo
     client = get_powerops_client()
 
-    collection, config, models = _load_transform(
-        market, path, client.cdf.config.project, echo, model_names or list(DEFAULT_MODELS)
-    )
-    collection.add(_create_bootstrap_finished_event(echo))
+    config, models = _load_transform(market, path, client.cdf.config.project, echo, model_names or list(DEFAULT_MODELS))
+    raise NotImplementedError()
+    # _remove_non_existing_relationship_time_series_targets(client.cdf, models, echo)
 
-    _remove_non_existing_relationship_time_series_targets(client.cdf, models, collection, echo)
+    # summaries = {}
+    # for model in models:
+    #     summaries.update(model.summary())
 
-    summaries = {}
-    for model in models:
-        summaries.update(model.summary())
-
-    echo("Models About to be uploaded")
-    echo_pretty(summaries)
-    ans = "y" if auto_yes else input("Continue? (y/n)")
-    if ans.lower() == "y":
-        # Step 3 - write bootstrap resources from diffs to CDF
-        collection.write_to_cdf(
-            client,
-            config.settings.data_set_external_id,
-            config.settings.overwrite_data,
-        )
-        echo("Resync written to CDF")
-    else:
-        echo("Aborting")
-
-    return models[0] if len(models) == 1 else models
+    # echo("Models About to be uploaded")
+    # echo_pretty(summaries)
+    # ans = "y" if auto_yes else input("Continue? (y/n)")
+    # if ans.lower() == "y":
+    #     # Step 3 - write bootstrap resources from diffs to CDF
+    #     collection.write_to_cdf(
+    #         client,
+    #         config.settings.data_set_external_id,
+    #         config.settings.overwrite_data,
+    #     )
+    #     echo("Resync written to CDF")
+    # else:
+    #     echo("Aborting")
+    #
+    # return models[0] if len(models) == 1 else models
 
 
 def _load_transform(
     market: str, path: Path, cdf_project: str, echo: Callable[[str], None], model_names: str | list[str] | None
-) -> tuple[ResourceCollection, ReSyncConfig, list[Model]]:
+) -> tuple[ReSyncConfig, list[Model]]:
     if isinstance(model_names, str):
         model_names = [model_names]
     elif model_names is None:
@@ -155,8 +150,8 @@ def _load_transform(
     if invalid := set(model_names) - AVAILABLE_MODELS:
         raise ValueError(f"Invalid model names: {invalid}. Available models: {AVAILABLE_MODELS}")
 
-    bootstrap_resources, models = transform(config, market, {MODEL_BY_NAME[model_name] for model_name in model_names})
-    return bootstrap_resources, config, models
+    models = transform(config, market, {MODEL_BY_NAME[model_name] for model_name in model_names})
+    return config, models
 
 
 def _create_bootstrap_finished_event(echo: Callable[[str], None]) -> Event:
