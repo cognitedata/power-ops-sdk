@@ -23,7 +23,16 @@ VALID_CHARACTERS = set(
     + "æøåÆØÅ"
 )
 
-_READ_ONLY_FIELDS = ["created_time", "last_updated_time", "uploaded_time", "data_set_id", "id", "parent_id", "root_id"]
+_READ_ONLY_FIELDS = [
+    "created_time",
+    "last_updated_time",
+    "uploaded_time",
+    "data_set_id",
+    "id",
+    "parent_id",
+    "root_id",
+    "uploaded",
+]
 
 
 def try_load_list(value: str | Any) -> Any | list[Any]:

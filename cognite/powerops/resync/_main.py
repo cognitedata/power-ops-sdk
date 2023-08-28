@@ -2,11 +2,11 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Optional, Callable, Any, Type, Protocol, Sequence, Literal
+from typing import Optional, Callable, Any, Type, Protocol, Sequence, Literal, TypeVar, cast, Union
 from uuid import uuid4
 
 from cognite.client import CogniteClient
-from cognite.client.data_classes import Event
+from cognite.client.data_classes import Event, FileMetadata, Asset, Relationship
 from yaml import safe_dump
 
 from cognite.powerops.clients.powerops_client import get_powerops_client, PowerOpsClient
@@ -14,7 +14,7 @@ from cognite.powerops.resync._logger import configure_debug_logging
 from cognite.powerops.resync.config.resync_config import ReSyncConfig
 from cognite.powerops.resync.models.base import Model, AssetModel
 from cognite.powerops.resync import models
-from cognite.powerops.resync.models.base.model import FieldDifference, Resource
+from cognite.powerops.resync.models.base.model import FieldDifference
 from cognite.powerops.resync.to_models.transform import transform
 from cognite.powerops.resync.utils.common import all_concrete_subclasses
 from cognite.powerops.utils.cdf import Settings
@@ -130,28 +130,49 @@ def apply(
                 api.upsert([c.new for c in diff.changed], mode="replace")
 
 
-class CogniteAPI(Protocol):
-    def create(self, items: Resource | Sequence[Resource]) -> Any:
+T_CogniteResource = TypeVar("T_CogniteResource", bound=Union[Asset, Sequence, FileMetadata, Relationship])
+
+
+class CogniteAPI(Protocol[T_CogniteResource]):  # type: ignore[misc]
+    def create(self, items: T_CogniteResource | Sequence[T_CogniteResource]) -> Any:
         ...
 
     def delete(self, external_ids: str | Sequence[str]) -> Any:
         ...
 
-    def upsert(self, item: Resource | Sequence[Resource], mode: Literal["patch", "replace"] = "patch") -> Any:
+    def upsert(
+        self, item: T_CogniteResource | Sequence[T_CogniteResource], mode: Literal["patch", "replace"] = "patch"
+    ) -> Any:
         ...
+
+
+class FileAdapter(CogniteAPI[FileMetadata]):
+    def __init__(self, client: CogniteClient):
+        self.client = client
+
+    def create(self, items: FileMetadata | Sequence[FileMetadata]) -> Any:
+        items = [items] if isinstance(items, FileMetadata) else items
+        for item in items:
+            self.client.files.create(item, overwrite=True)
+
+    def delete(self, external_ids: str | Sequence[str]) -> Any:
+        self.delete(external_ids)
+
+    def upsert(self, item: FileMetadata | Sequence[FileMetadata], mode: Literal["patch", "replace"] = "patch") -> Any:
+        self.create(item)
 
 
 def _get_api(client: CogniteClient, name: str) -> CogniteAPI:
     if name == "assets":
-        return client.assets  # type: ignore[return-value]
+        return cast(CogniteAPI[Asset], client.assets)
     elif name == "time_series":
         raise NotImplementedError("Resync does not create timeseries")
     elif name == "sequences":
-        return client.sequences  # type: ignore[return-value]
+        return cast(CogniteAPI[Sequence], client.sequences)
     elif name == "files":
-        return client.files  # type: ignore[return-value]
+        return FileAdapter(client)
     elif name == "relationships":
-        return client.relationships  # type: ignore[return-value]
+        return client.relationships
     raise ValueError(f"Unknown resource type {name}")
 
 
