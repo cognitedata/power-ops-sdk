@@ -55,6 +55,7 @@ def plan(
         cdf_model = type(new_model).from_cdf(client, data_set_external_id=data_set_external_id)
 
         differences = cdf_model.difference(new_model)
+        _clean_relationships(client.cdf, differences, new_model, echo)
         echo(f"Summary diff for {new_model.model_name}")
         echo_pretty([diff.as_summary() for diff in differences])
 
@@ -110,6 +111,8 @@ def apply(
                 continue
             echo(f"Changes detected for {diff.name} in {new_model.model_name}")
             echo_pretty(diff.as_summary())
+            if diff.changed:
+                echo(f"Sample change for {diff.changed[0].changed_fields}")
             ans = "y" if auto_yes else input("Continue? (y/n)")
             if ans.lower() != "y":
                 echo("Aborting")

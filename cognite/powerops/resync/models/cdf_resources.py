@@ -6,6 +6,7 @@ from typing import Any, ClassVar, Optional
 import pandas as pd
 from cognite.client import CogniteClient
 from cognite.client.data_classes import FileMetadata, Sequence
+from cognite.client.data_classes._base import CogniteResource
 from cognite.client.exceptions import CogniteNotFoundError
 from pydantic import BaseModel, ConfigDict, model_serializer, model_validator
 from typing_extensions import Self
@@ -27,6 +28,10 @@ class _CDFResource(BaseModel, ABC):
     def dump(self, camel_case: bool = False) -> dict[str, Any]:
         return remove_read_only_fields(self._dump(camel_case))
 
+    @property
+    def cdf_resource(self) -> CogniteResource:
+        raise NotImplementedError
+
     @classmethod
     @abstractmethod
     def from_cdf(
@@ -47,6 +52,10 @@ class CDFSequence(_CDFResource):
 
     def __str__(self) -> str:
         return repr(self)
+
+    @property
+    def cdf_resource(self) -> Sequence:
+        return self.sequence
 
     @model_validator(mode="before")
     def parse_dict(cls, value):
@@ -110,6 +119,10 @@ class CDFFile(_CDFResource):
 
     def __str__(self) -> str:
         return self.__repr__()
+
+    @property
+    def cdf_resource(self) -> FileMetadata:
+        return self.meta
 
     @model_validator(mode="before")
     def parse_dict(cls, value):

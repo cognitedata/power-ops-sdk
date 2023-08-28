@@ -12,7 +12,7 @@ from typing_extensions import Self, TypeAlias
 
 from cognite.client.data_classes import TimeSeries
 from pydantic import BaseModel
-
+from deepdiff import DeepDiff
 from cognite.powerops.clients.powerops_client import PowerOpsClient
 from cognite.powerops.resync.models.cdf_resources import CDFSequence, CDFFile
 from cognite.powerops.resync.models.helpers import isinstance_list
@@ -57,6 +57,19 @@ Resource: TypeAlias = Union[Asset, TimeSeries, Sequence, FileMetadata, ResourceT
 class Change:
     last: Resource
     new: Resource
+
+    @property
+    def changed_fields(self) -> str:
+        last_dumped = (
+            self.last.dump(camel_case=True) if isinstance(self.last, CogniteResource) else self.last.model_dump()
+        )
+        new_dumped = self.new.dump(camel_case=True) if isinstance(self.new, CogniteResource) else self.new.model_dump()
+        return (
+            DeepDiff(last_dumped, new_dumped, ignore_string_case=True)
+            .pretty()
+            .replace("added to dictionary.", f"will be added to {self.last.external_id}.")
+            .replace("removed from dictionary.", f"will be removed from {self.last.external_id}.")
+        )
 
 
 @dataclass
@@ -272,13 +285,13 @@ class Model(BaseModel, ABC):
         if (
             isinstance(current_value, (list, CogniteResourceList))
             and current_value
-            and isinstance(current_value[0], (ResourceType, CDFFile, CDFSequence, CogniteResource))
+            and isinstance(current_value[0], (ResourceType, CogniteResource))
         ):
             current_value_by_id = {item.external_id: item for item in current_value}
             new_value_by_id = {item.external_id: item for item in new_value}
-        # elif isinstance(current_value, list) and current_value and isinstance(current_value[0], ):
-        #     current_value_by_id = {item["externalId"]: item for item in current_value}
-        #     new_value_by_id = {item["externalId"]: item for item in new_value}
+        elif isinstance(current_value, list) and current_value and isinstance(current_value[0], (CDFSequence, CDFFile)):
+            current_value_by_id = {item.external_id: item.cdf_resource for item in current_value}
+            new_value_by_id = {item.external_id: item.cdf_resource for item in new_value}
         elif (
             isinstance(current_value, dict)
             and current_value
@@ -287,7 +300,7 @@ class Model(BaseModel, ABC):
             current_value_by_id = {item.external_id: item for item in current_value.values()}
             new_value_by_id = {item.external_id: item for item in new_value.values()}
         else:
-            raise NotImplementedError(f"Only list of resources are supported, {type(current_value)} is not supported")
+            raise NotImplementedError(f"{type(current_value)} is not supported")
 
         added_ids = set(new_value_by_id.keys()) - set(current_value_by_id.keys())
         added = [new_value_by_id[external_id] for external_id in sorted(added_ids)]
