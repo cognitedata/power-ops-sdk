@@ -13,6 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.40.0] - 2023-08-30
+### Changed
+* Removed use of hashing for external ids in `CogShop1Asset` asset model.
+
+
 ## [0.39.1] - 2023-08-29
 ### Fixed
 * Fixed bug when running `powerops plan` or `powerops apply` in a Python `3.11` environment.
