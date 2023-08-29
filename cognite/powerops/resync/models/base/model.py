@@ -14,7 +14,7 @@ from cognite.client.data_classes import TimeSeries
 from pydantic import BaseModel
 from deepdiff import DeepDiff
 from cognite.powerops.clients.powerops_client import PowerOpsClient
-from cognite.powerops.resync.models.cdf_resources import CDFSequence, CDFFile
+from cognite.powerops.resync.models.cdf_resources import CDFSequence, CDFFile, CDFResource
 from cognite.powerops.resync.models.helpers import isinstance_list
 from cognite.powerops.resync.utils.serializer import remove_read_only_fields
 from cognite.powerops.clients.data_classes._core import DomainModelApply
@@ -70,6 +70,14 @@ class Change:
             .replace("added to dictionary.", f"will be added to {self.last.external_id}.")
             .replace("removed from dictionary.", f"will be removed from {self.last.external_id}.")
         )
+
+    @property
+    def is_changed_content(self) -> bool:
+        if not isinstance(self.last, (Sequence, FileMetadata)):
+            return False
+        last_hash = (self.last.metadata or {}).get(CDFResource.content_key_hash)
+        new_hash = (self.new.metadata or {}).get(CDFResource.content_key_hash)
+        return last_hash != new_hash or last_hash is None or new_hash is None
 
 
 @dataclass

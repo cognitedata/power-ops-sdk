@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional, Callable, Any, Type, Protocol, Sequence, Literal, TypeVar, cast, Union
 from uuid import uuid4
-
+from cognite.client.data_classes import Sequence as CogniteSequence, FileMetadataList
 from cognite.client import CogniteClient
 from cognite.client.data_classes import Event, FileMetadata, Asset, Relationship
 from cognite.client.data_classes.data_modeling import EdgeApply, NodeApply
@@ -17,6 +17,7 @@ from cognite.powerops.resync.config.resync_config import ReSyncConfig
 from cognite.powerops.resync.models.base import Model, AssetModel
 from cognite.powerops.resync import models
 from cognite.powerops.resync.models.base.model import FieldDifference
+from cognite.powerops.resync.models.cdf_resources import CDFSequence, CDFFile
 from cognite.powerops.resync.to_models.transform import transform
 from cognite.powerops.resync.utils.common import all_concrete_subclasses
 from cognite.powerops.utils.cdf import Settings
@@ -101,6 +102,9 @@ def apply(
 
     for new_model in loaded_models:
         cdf_model = type(new_model).from_cdf(client, data_set_external_id=read_dataset)
+        new_sequences_by_id = {s.external_id: s for s in new_model.sequences()}
+        new_files_by_id = {f.external_id: f for f in new_model.files()}
+
         differences = cdf_model.difference(new_model)
         _clean_relationships(client.cdf, differences, new_model, echo)
 
@@ -122,7 +126,7 @@ def apply(
                 echo("Aborting")
                 continue
             diff.set_set_dataset(write_dataset)
-            api = _get_api(client.cdf, diff.name)
+            api = _get_api(client.cdf, diff.name, new_sequences_by_id, new_files_by_id)
 
             if diff.added:
                 api.create(diff.added)
@@ -131,11 +135,17 @@ def apply(
                     [r.as_id() if isinstance(r, InstanceCore) else r.external_id for r in diff.removed if r.external_id]
                 )
             elif diff.changed:
-                api.upsert([c.new for c in diff.changed], mode="replace")
+                updates = [c.new for c in diff.changed if not c.is_changed_content]
+                if updates:
+                    api.upsert(updates, mode="replace")
+                content_updates = [c.new for c in diff.changed if c.is_changed_content]
+                if content_updates:
+                    api.delete([c.external_id for c in content_updates if c.external_id])
+                    api.create(content_updates)
 
 
 T_CogniteResource = TypeVar(
-    "T_CogniteResource", bound=Union[Asset, Sequence, FileMetadata, Relationship, NodeApply, EdgeApply]
+    "T_CogniteResource", bound=Union[Asset, CogniteSequence, FileMetadata, Relationship, NodeApply, EdgeApply]
 )
 
 
@@ -153,19 +163,66 @@ class CogniteAPI(Protocol[T_CogniteResource]):  # type: ignore[misc]
 
 
 class FileAdapter(CogniteAPI[FileMetadata]):
-    def __init__(self, client: CogniteClient):
+    def __init__(self, client: CogniteClient, files_by_id: dict[str, CDFFile]):
         self.client = client
+        self.files_by_id = files_by_id
 
     def create(self, items: FileMetadata | Sequence[FileMetadata]) -> Any:
         items = [items] if isinstance(items, FileMetadata) else items
         for item in items:
-            self.client.files.create(item, overwrite=True)
+            if item.external_id is None or item.external_id not in self.files_by_id:
+                raise ValueError("Cannot create new file {item.external_id} missing file content")
+            content = self.files_by_id[item.external_id].content
+            if content is None:
+                raise ValueError(f"Cannot create new file {item.external_id} missing file content")
+            self.client.files.upload_bytes(content, **item.dump())
 
     def delete(self, external_ids: str | Sequence[str]) -> Any:
         self.client.files.delete(external_id=external_ids)
 
     def upsert(self, item: FileMetadata | Sequence[FileMetadata], mode: Literal["patch", "replace"] = "patch") -> Any:
-        self.client.files.update(item)
+        items = [item] if isinstance(item, FileMetadata) else item
+        updated = self.client.files.update(items)
+        update_by_id = {u.external_id: u for u in ([updated] if isinstance(updated, FileMetadata) else updated)}
+
+        # There are not all fields that can be updates for files, for example, name.
+        # Therefore, we need to delete and recreate files that have changed for example name.
+        to_delete_and_recreate = FileMetadataList([])
+        for item in items:
+            if item.external_id not in update_by_id:
+                raise ValueError(f"Could not update file {item.external_id}")
+            if item != update_by_id[item.external_id]:
+                to_delete_and_recreate.append(item)
+        if to_delete_and_recreate:
+            self.delete(to_delete_and_recreate.as_external_ids())
+            self.create(to_delete_and_recreate)
+
+
+class SequenceAdapter(CogniteAPI[CogniteSequence]):
+    def __init__(self, client: CogniteClient, sequence_by_id: dict[str, CDFSequence]):
+        self.client = client
+        self.sequence_by_id = sequence_by_id
+
+    def create(self, items: CogniteSequence | Sequence[CogniteSequence]) -> Any:
+        items = [items] if isinstance(items, CogniteSequence) else items
+        if missing := set(self.sequence_by_id) - {i.external_id for i in items}:
+            raise ValueError(f"Missing sequence content for {missing}")
+        self.client.sequences.create(items)
+        for item in items:
+            if item.external_id is None:
+                raise ValueError("Missing external id for sequence")
+            df = self.sequence_by_id[item.external_id].content
+            if df is None:
+                raise ValueError(f"Missing sequence content for {item.external_id}")
+            self.client.sequences.data.insert_dataframe(df, external_id=item.external_id)
+
+    def delete(self, external_ids: str | Sequence[str]) -> Any:
+        self.client.sequences.delete(external_id=external_ids)
+
+    def upsert(
+        self, item: CogniteSequence | Sequence[CogniteSequence], mode: Literal["patch", "replace"] = "patch"
+    ) -> Any:
+        self.client.sequences.update(item)
 
 
 T_Instance = TypeVar("T_Instance", bound=Union[NodeApply, EdgeApply])
@@ -192,15 +249,17 @@ class InstanceAdapter(CogniteAPI[T_Instance]):
         self.create(item)
 
 
-def _get_api(client: CogniteClient, name: str) -> CogniteAPI:
+def _get_api(
+    client: CogniteClient, name: str, new_sequences_by_id: dict[str, CDFSequence], new_files_by_id: dict[str, CDFFile]
+) -> CogniteAPI:
     if name == "assets":
         return cast(CogniteAPI[Asset], client.assets)
     elif name == "time_series":
         raise NotImplementedError("Resync does not create timeseries")
     elif name == "sequences":
-        return cast(CogniteAPI[Sequence], client.sequences)
+        return SequenceAdapter(client, new_sequences_by_id)
     elif name == "files":
-        return FileAdapter(client)
+        return FileAdapter(client, new_files_by_id)
     elif name == "relationships":
         return client.relationships
     elif name == "nodes":
