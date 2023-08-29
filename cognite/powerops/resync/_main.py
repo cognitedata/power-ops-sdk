@@ -129,12 +129,12 @@ def apply(
             if diff.added:
                 api.create(diff.added)
                 echo(f"Created {len(diff.added)} of {diff.name}")
-            elif diff.removed:
+            if diff.removed:
                 api.delete(
                     [r.as_id() if isinstance(r, InstanceCore) else r.external_id for r in diff.removed if r.external_id]
                 )
                 echo(f"Deleted {len(diff.removed)} of {diff.name}")
-            elif diff.changed:
+            if diff.changed:
                 updates = [c.new for c in diff.changed if not c.is_changed_content]
                 if updates:
                     api.upsert(updates, mode="replace")
