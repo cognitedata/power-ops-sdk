@@ -31,7 +31,7 @@ Changes are grouped as follows
 ### Improved
 * Display of differences when running `powerops plan` or `powerops apply` is now more readable.
 * Significant performance improvements when running `powerops plan` and `powerops apply`. Example,
-  running `powerops plan` for the `ProductionModel` went from 77 secound to 8 seconds for real use case.
+  running `powerops plan` for the `ProductionModel` went from 77 seconds to 8 seconds for real use case.
 
 
 

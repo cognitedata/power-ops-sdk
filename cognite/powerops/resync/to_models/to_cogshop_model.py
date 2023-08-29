@@ -219,6 +219,21 @@ def to_cogshop_asset_model(
         )
         model.model_templates[model_template.external_id] = model_template
 
+    model.mappings.update(
+        {
+            mapping.external_id: mapping
+            for template in model.model_templates.values()
+            for mapping in template.base_mappings
+        }
+    )
+    model.transformations.update(
+        {
+            t.external_id: t
+            for template in model.model_templates.values()
+            for mapping in template.base_mappings
+            for t in mapping.transformations
+        }
+    )
     return model
 
 
