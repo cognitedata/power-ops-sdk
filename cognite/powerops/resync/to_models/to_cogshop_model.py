@@ -204,7 +204,7 @@ def to_cogshop_asset_model(
                     timeseries_external_id=row.time_series_external_id,
                     transformations=[
                         cogshop_v1.TransformationApply(
-                            external_id=f"Tr__{transformation.transformation.name}_"
+                            external_id=f"Tr_{transformation.transformation.name}_"
                             f"{(dumped_kwargs := json.dumps(transformation.kwargs or {}, separators=('', ':')))}",
                             method=transformation.transformation.name,
                             arguments=dumped_kwargs,
