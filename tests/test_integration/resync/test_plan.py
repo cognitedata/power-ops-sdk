@@ -8,12 +8,19 @@ from cognite.powerops import resync
 from loguru import logger
 
 from yaml import safe_load
-from tests.constants import SENSITIVE_TESTS, REPO_ROOT
+from tests.constants import SENSITIVE_TESTS, REPO_ROOT, ReSync
 from tests.utils import chdir
 from cognite.powerops.clients.powerops_client import get_powerops_client
 
+THIS_FOLDER = Path(__file__).resolve().parent
+PLAN = THIS_FOLDER / "plan"
+PLAN.mkdir(exist_ok=True)
+
 
 def plan_test_cases():
+    for model in ["ProductionModel", "MarketModel", "CogShop1Asset"]:
+        yield pytest.param(ReSync.demo, "Dayahead", model, PLAN, "settings.toml", id=f"Demo Data {model}")
+
     # This test will be skipped if the file sensitive_tests.toml does not exist
     if not SENSITIVE_TESTS.exists():
         return
@@ -41,10 +48,15 @@ def test_plan(
         os.environ["SETTINGS_FILES"] = config_file
         powerops_client = get_powerops_client()
 
-    # Act
-    resync.plan(
-        data_path, market, echo=logger.info, model_names=[model_name], dump_folder=dump_folder, client=powerops_client
-    )
+        # Act
+        resync.plan(
+            data_path,
+            market,
+            echo=logger.info,
+            model_names=[model_name],
+            dump_folder=dump_folder,
+            client=powerops_client,
+        )
 
     # Assert
     data = safe_load((dump_folder / f"{model_name}_local.yaml").read_text())

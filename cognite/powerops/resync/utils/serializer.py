@@ -4,11 +4,11 @@ import json
 import re
 import string
 import warnings
-from functools import lru_cache
-from io import StringIO
 from pathlib import Path
-from typing import Any
-from yaml import safe_dump, safe_load
+from typing import Any, Union, get_origin, get_args, Type
+
+from cognite.client.data_classes import TimeSeries
+from yaml import safe_dump, CSafeLoader
 from cognite.client.utils._text import to_camel_case
 
 # � character is used to represent unrecognizable characters in utf-8.
@@ -23,7 +23,16 @@ VALID_CHARACTERS = set(
     + "æøåÆØÅ"
 )
 
-_READ_ONLY_FIELDS = ["created_time", "last_updated_time", "uploaded_time", "data_set_id", "id", "parent_id", "root_id"]
+_READ_ONLY_FIELDS = [
+    "created_time",
+    "last_updated_time",
+    "uploaded_time",
+    "data_set_id",
+    "id",
+    "parent_id",
+    "root_id",
+    "uploaded",
+]
 
 
 def try_load_list(value: str | Any) -> Any | list[Any]:
@@ -44,6 +53,16 @@ def try_load_dict(value: str | Any) -> Any | dict[str, Any]:
     return value
 
 
+def parse_time_series(value: str | Any) -> Any | TimeSeries:
+    if isinstance(value, TimeSeries) or value is None:
+        return value
+    elif value == {}:
+        return None
+    elif isinstance(value, dict):
+        return TimeSeries._load(value)
+    raise NotImplementedError()
+
+
 def remove_read_only_fields(cdf_resource: dict[str, Any], remove_empty: bool = True) -> dict[str, Any]:
     for field in _READ_ONLY_FIELDS:
         cdf_resource.pop(field, None)
@@ -60,7 +79,6 @@ def _validate(yaml_path: Path):
         raise ValueError(f"File {yaml_path.name} not a valid yaml {yaml_path.suffix}")
 
 
-@lru_cache
 def load_yaml(yaml_path: Path, encoding="utf-8", clean_data: bool = False) -> dict:
     _validate(yaml_path)
     # The Windows Cpython implementation seems to guess if encoding is not explicitly set
@@ -72,7 +90,7 @@ def load_yaml(yaml_path: Path, encoding="utf-8", clean_data: bool = False) -> di
         warnings.warn(
             f"File {yaml_path.parent}/{yaml_path.name} contains invalid characters: {', '.join(invalid_characters)}"
         )
-    return safe_load(StringIO(data))
+    return CSafeLoader(data).get_data()
 
 
 # Having a single yaml dump function makes it easy to look up all places YaMLs are dumped.
@@ -81,3 +99,21 @@ def dump_yaml(data: dict, yaml_path: Path, encoding="utf-8"):
     _validate(yaml_path)
     with open(yaml_path, "w", encoding=encoding) as stream:
         safe_dump(data, stream)
+
+
+def get_pydantic_annotation(field_annotation) -> tuple[Any, Type[dict] | Type[list] | None]:
+    outer: Type[dict] | Type[list] | None = None
+    if not (origin := get_origin(field_annotation)):
+        return field_annotation, None
+    if origin is list:
+        annotation, *_ = get_args(field_annotation)
+        outer = list
+    elif origin is dict:
+        _, annotation = get_args(field_annotation)
+        outer = dict
+    elif origin is Union:
+        annotation, *_ = get_args(field_annotation)
+        outer = None
+    else:
+        raise NotImplementedError(f"Cannot handle field_annotation  {field_annotation}")
+    return annotation, outer

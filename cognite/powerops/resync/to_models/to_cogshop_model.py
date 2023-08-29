@@ -265,7 +265,6 @@ def _to_shop_files(watercourses_shop: list[ShopFileConfig]) -> list[cogshop.CDFF
 
 
 def _create_shop_file(file_content: bytes, external_id: str, metadata: dict[str, str]) -> cogshop.CDFFile:
-    metadata["md5_hash"] = md5(file_content.replace(b"\r\n", b"\n")).hexdigest()
     return cogshop.CDFFile(
         meta=FileMetadata(
             external_id=external_id,
