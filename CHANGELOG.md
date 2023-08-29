@@ -13,6 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.39.1] - 2023-08-29
+### Fixed
+* Fixed bug when running `powerops plan` or `powerops apply` in a Python `3.11` environment.
+  This raised `NotImplementedError`. This is now fixed.
+
 ## [0.39.0] - 2023-08-29
 ### Added
 * The `powerops apply` now deletes resource in CDF if they are not present in the configurations.
