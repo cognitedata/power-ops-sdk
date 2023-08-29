@@ -113,7 +113,7 @@ class InstanceAdapter(CogniteAPI[T_Instance]):
         self.create(item)
 
 
-def _get_api(
+def get_cognite_api(
     client: CogniteClient, name: str, new_sequences_by_id: dict[str, CDFSequence], new_files_by_id: dict[str, CDFFile]
 ) -> CogniteAPI:
     if name == "assets":

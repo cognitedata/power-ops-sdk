@@ -16,7 +16,7 @@ from cognite.powerops.resync.models.base import Model
 from cognite.powerops.resync import models
 from cognite.powerops.resync.models.base.model import FieldDifference
 from cognite.powerops.resync.to_models.transform import transform
-from cognite.powerops.resync.utils.cdf import _get_api
+from cognite.powerops.resync.utils.cdf import get_cognite_api
 from cognite.powerops.resync.utils.common import all_concrete_subclasses
 from cognite.powerops.utils.cdf import Settings
 
@@ -124,22 +124,26 @@ def apply(
                 echo("Aborting")
                 continue
             diff.set_set_dataset(write_dataset)
-            api = _get_api(client.cdf, diff.name, new_sequences_by_id, new_files_by_id)
+            api = get_cognite_api(client.cdf, diff.name, new_sequences_by_id, new_files_by_id)
 
             if diff.added:
                 api.create(diff.added)
+                echo(f"Created {len(diff.added)} of {diff.name}")
             elif diff.removed:
                 api.delete(
                     [r.as_id() if isinstance(r, InstanceCore) else r.external_id for r in diff.removed if r.external_id]
                 )
+                echo(f"Deleted {len(diff.removed)} of {diff.name}")
             elif diff.changed:
                 updates = [c.new for c in diff.changed if not c.is_changed_content]
                 if updates:
                     api.upsert(updates, mode="replace")
+                    echo(f"Updated {len(updates)} of {diff.name}")
                 content_updates = [c.new for c in diff.changed if c.is_changed_content]
                 if content_updates:
                     api.delete([c.external_id for c in content_updates if c.external_id])
                     api.create(content_updates)
+                    echo(f"Updated {len(content_updates)} of {diff.name} with content")
 
 
 def _load_transform(
