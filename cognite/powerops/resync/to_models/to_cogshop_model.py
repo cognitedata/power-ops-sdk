@@ -204,14 +204,10 @@ def to_cogshop_asset_model(
                     timeseries_external_id=row.time_series_external_id,
                     transformations=[
                         cogshop_v1.TransformationApply(
-                            external_id=make_ext_id(
-                                watercourse.name,
-                                row.shop_model_path,
-                                transformation.transformation.name,
-                                json.dumps(transformation.kwargs or {}),
-                            ),
+                            external_id=f"Tr__{transformation.transformation.name}_"
+                            f"{(dumped_kwargs := json.dumps(transformation.kwargs or {}, separators=('', ':')))}",
                             method=transformation.transformation.name,
-                            arguments=json.dumps(transformation.kwargs or {}),
+                            arguments=dumped_kwargs,
                         )
                         for transformation in (row.transformations or [])
                     ],
