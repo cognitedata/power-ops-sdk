@@ -5175,6 +5175,7 @@ files:
 - externalId: SHOP_Fornebu_cog_shop_files_config
   metadata:
     md5_hash: ff316235eedd999013fed7ccea27c066
+    sha256_hash: Missing Content
     shop:file_name: cog_shop_files_config
     shop:type: extra_data
     shop:watercourse: Fornebu
@@ -5184,6 +5185,7 @@ files:
 - externalId: SHOP_Fornebu_commands
   metadata:
     md5_hash: f67711a88e0205bb0fde817083d50eb7
+    sha256_hash: Missing Content
     shop:file_name: commands
     shop:type: commands
     shop:watercourse: Fornebu
@@ -5193,6 +5195,7 @@ files:
 - externalId: SHOP_Fornebu_model
   metadata:
     md5_hash: f29c736b8b5b0892635f2a52580b9ed2
+    sha256_hash: Missing Content
     shop:file_name: model
     shop:type: case
     shop:watercourse: Fornebu
@@ -5202,6 +5205,7 @@ files:
 - externalId: SHOP_Fornebu_shop-fornebu1-modul_series
   metadata:
     md5_hash: 16e5d18659b414213c86c9bba9a29e94
+    sha256_hash: Missing Content
     shop:file_name: shop-fornebu1-modul_series
     shop:type: module_series
     shop:watercourse: Fornebu
@@ -5211,6 +5215,7 @@ files:
 - externalId: SHOP_Fornebu_shop-fornebu2-modul_series
   metadata:
     md5_hash: 16e5d18659b414213c86c9bba9a29e94
+    sha256_hash: Missing Content
     shop:file_name: shop-fornebu2-modul_series
     shop:type: module_series
     shop:watercourse: Fornebu
@@ -5220,6 +5225,7 @@ files:
 - externalId: SHOP_Fornebu_water_value_cut_file
   metadata:
     md5_hash: 22af45919c4c37bf1115a7159b11b981
+    sha256_hash: Missing Content
     shop:file_name: water_value_cut_file
     shop:type: water_value_cut_file
     shop:watercourse: Fornebu
@@ -5229,6 +5235,7 @@ files:
 - externalId: SHOP_Fornebu_water_value_cut_file_reservoir_mapping
   metadata:
     md5_hash: bb8c80ddd50fcdb55cabb5b74b4cbefc
+    sha256_hash: Missing Content
     shop:file_name: water_value_cut_file_reservoir_mapping
     shop:type: water_value_cut_file_reservoir_mapping
     shop:watercourse: Fornebu
@@ -10474,6 +10481,7 @@ sequences:
   description: Mapping between SHOP paths and CDF TimeSeries
   externalId: SHOP_Fornebu_base_mapping
   metadata:
+    sha256_hash: Missing Content
     shop:type: base_mapping
     shop:watercourse: Fornebu
   name: SHOP Fornebu base mapping
@@ -10491,6 +10499,7 @@ sequences:
   description: Defining which SHOP results to output to CDF (as time series)
   externalId: SHOP_Fornebu_output_definition
   metadata:
+    sha256_hash: Missing Content
     shop:type: output_definition
     shop:watercourse: Fornebu
   name: SHOP Fornebu output definition

@@ -873,6 +873,8 @@ sequences:
   - externalId: generator_efficiency
     valueType: DOUBLE
   externalId: generator_Dalby_G1_generator_efficiency_curve
+  metadata:
+    sha256_hash: Missing Content
   name: Dalby_G1 generator efficiency curve
 - columns:
   - externalId: head
@@ -882,6 +884,8 @@ sequences:
   - externalId: turbine_efficiency
     valueType: DOUBLE
   externalId: generator_Dalby_G1_turbine_efficiency_curve
+  metadata:
+    sha256_hash: Missing Content
   name: Dalby_G1 turbine efficiency curve
 - columns:
   - externalId: generator_power
@@ -889,6 +893,8 @@ sequences:
   - externalId: generator_efficiency
     valueType: DOUBLE
   externalId: generator_Dalby_G2_generator_efficiency_curve
+  metadata:
+    sha256_hash: Missing Content
   name: Dalby_G2 generator efficiency curve
 - columns:
   - externalId: head
@@ -898,6 +904,8 @@ sequences:
   - externalId: turbine_efficiency
     valueType: DOUBLE
   externalId: generator_Dalby_G2_turbine_efficiency_curve
+  metadata:
+    sha256_hash: Missing Content
   name: Dalby_G2 turbine efficiency curve
 - columns:
   - externalId: generator_power
@@ -905,6 +913,8 @@ sequences:
   - externalId: generator_efficiency
     valueType: DOUBLE
   externalId: generator_Holen_G1_generator_efficiency_curve
+  metadata:
+    sha256_hash: Missing Content
   name: Holen_G1 generator efficiency curve
 - columns:
   - externalId: head
@@ -914,6 +924,8 @@ sequences:
   - externalId: turbine_efficiency
     valueType: DOUBLE
   externalId: generator_Holen_G1_turbine_efficiency_curve
+  metadata:
+    sha256_hash: Missing Content
   name: Holen_G1 turbine efficiency curve
 - columns:
   - externalId: generator_power
@@ -921,6 +933,8 @@ sequences:
   - externalId: generator_efficiency
     valueType: DOUBLE
   externalId: generator_Landet_G1_generator_efficiency_curve
+  metadata:
+    sha256_hash: Missing Content
   name: Landet_G1 generator efficiency curve
 - columns:
   - externalId: head
@@ -930,6 +944,8 @@ sequences:
   - externalId: turbine_efficiency
     valueType: DOUBLE
   externalId: generator_Landet_G1_turbine_efficiency_curve
+  metadata:
+    sha256_hash: Missing Content
   name: Landet_G1 turbine efficiency curve
 - columns:
   - externalId: generator_power
@@ -937,6 +953,8 @@ sequences:
   - externalId: generator_efficiency
     valueType: DOUBLE
   externalId: generator_Lien_krv_G1_generator_efficiency_curve
+  metadata:
+    sha256_hash: Missing Content
   name: Lien_krv_G1 generator efficiency curve
 - columns:
   - externalId: head
@@ -946,6 +964,8 @@ sequences:
   - externalId: turbine_efficiency
     valueType: DOUBLE
   externalId: generator_Lien_krv_G1_turbine_efficiency_curve
+  metadata:
+    sha256_hash: Missing Content
   name: Lien_krv_G1 turbine efficiency curve
 - columns:
   - externalId: generator_power
@@ -953,6 +973,8 @@ sequences:
   - externalId: generator_efficiency
     valueType: DOUBLE
   externalId: generator_Lund_G1_generator_efficiency_curve
+  metadata:
+    sha256_hash: Missing Content
   name: Lund_G1 generator efficiency curve
 - columns:
   - externalId: head
@@ -962,6 +984,8 @@ sequences:
   - externalId: turbine_efficiency
     valueType: DOUBLE
   externalId: generator_Lund_G1_turbine_efficiency_curve
+  metadata:
+    sha256_hash: Missing Content
   name: Lund_G1 turbine efficiency curve
 - columns:
   - externalId: generator_power
@@ -969,6 +993,8 @@ sequences:
   - externalId: generator_efficiency
     valueType: DOUBLE
   externalId: generator_Rull1_G1_generator_efficiency_curve
+  metadata:
+    sha256_hash: Missing Content
   name: Rull1_G1 generator efficiency curve
 - columns:
   - externalId: head
@@ -978,6 +1004,8 @@ sequences:
   - externalId: turbine_efficiency
     valueType: DOUBLE
   externalId: generator_Rull1_G1_turbine_efficiency_curve
+  metadata:
+    sha256_hash: Missing Content
   name: Rull1_G1 turbine efficiency curve
 - columns:
   - externalId: generator_power
@@ -985,6 +1013,8 @@ sequences:
   - externalId: generator_efficiency
     valueType: DOUBLE
   externalId: generator_Rull1_G2_generator_efficiency_curve
+  metadata:
+    sha256_hash: Missing Content
   name: Rull1_G2 generator efficiency curve
 - columns:
   - externalId: head
@@ -994,6 +1024,8 @@ sequences:
   - externalId: turbine_efficiency
     valueType: DOUBLE
   externalId: generator_Rull1_G2_turbine_efficiency_curve
+  metadata:
+    sha256_hash: Missing Content
   name: Rull1_G2 turbine efficiency curve
 - columns:
   - externalId: generator_power
@@ -1001,6 +1033,8 @@ sequences:
   - externalId: generator_efficiency
     valueType: DOUBLE
   externalId: generator_Rull2_G1_generator_efficiency_curve
+  metadata:
+    sha256_hash: Missing Content
   name: Rull2_G1 generator efficiency curve
 - columns:
   - externalId: head
@@ -1010,6 +1044,8 @@ sequences:
   - externalId: turbine_efficiency
     valueType: DOUBLE
   externalId: generator_Rull2_G1_turbine_efficiency_curve
+  metadata:
+    sha256_hash: Missing Content
   name: Rull2_G1 turbine efficiency curve
 - columns:
   - externalId: generator_power
@@ -1017,6 +1053,8 @@ sequences:
   - externalId: generator_efficiency
     valueType: DOUBLE
   externalId: generator_Rull2_G2_generator_efficiency_curve
+  metadata:
+    sha256_hash: Missing Content
   name: Rull2_G2 generator efficiency curve
 - columns:
   - externalId: head
@@ -1026,6 +1064,8 @@ sequences:
   - externalId: turbine_efficiency
     valueType: DOUBLE
   externalId: generator_Rull2_G2_turbine_efficiency_curve
+  metadata:
+    sha256_hash: Missing Content
   name: Rull2_G2 turbine efficiency curve
 - columns:
   - externalId: generator_power
@@ -1033,6 +1073,8 @@ sequences:
   - externalId: generator_efficiency
     valueType: DOUBLE
   externalId: generator_Scott_G1_generator_efficiency_curve
+  metadata:
+    sha256_hash: Missing Content
   name: Scott_G1 generator efficiency curve
 - columns:
   - externalId: head
@@ -1042,6 +1084,8 @@ sequences:
   - externalId: turbine_efficiency
     valueType: DOUBLE
   externalId: generator_Scott_G1_turbine_efficiency_curve
+  metadata:
+    sha256_hash: Missing Content
   name: Scott_G1 turbine efficiency curve
 - columns:
   - externalId: generator_power
@@ -1049,6 +1093,8 @@ sequences:
   - externalId: generator_efficiency
     valueType: DOUBLE
   externalId: generator_Strand_krv_G1_generator_efficiency_curve
+  metadata:
+    sha256_hash: Missing Content
   name: Strand_krv_G1 generator efficiency curve
 - columns:
   - externalId: head
@@ -1058,6 +1104,8 @@ sequences:
   - externalId: turbine_efficiency
     valueType: DOUBLE
   externalId: generator_Strand_krv_G1_turbine_efficiency_curve
+  metadata:
+    sha256_hash: Missing Content
   name: Strand_krv_G1 turbine efficiency curve
 timeseries:
 - externalId: '136120'
