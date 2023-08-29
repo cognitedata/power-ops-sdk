@@ -1,15 +1,17 @@
 from __future__ import annotations
 
+import importlib
 import json
 import re
 import string
 import warnings
 from pathlib import Path
-from typing import Any, Union, get_origin, get_args, Type
-
+from typing import Any, Union, get_origin, get_args, Type, ForwardRef
 from cognite.client.data_classes import TimeSeries
+from pydantic.v1.typing import evaluate_forwardref
 from yaml import safe_dump, CSafeLoader
 from cognite.client.utils._text import to_camel_case
+
 
 # � character is used to represent unrecognizable characters in utf-8.
 UNRECOGNIZABLE_CHARACTER = "�"
@@ -101,7 +103,17 @@ def dump_yaml(data: dict, yaml_path: Path, encoding="utf-8"):
         safe_dump(data, stream)
 
 
-def get_pydantic_annotation(field_annotation: Any) -> tuple[Any, Type[dict] | Type[list] | None]:
+def get_pydantic_annotation(
+    field_annotation: Any, cls_obj: Type[type] | None = None
+) -> tuple[Any, Type[dict] | Type[list] | None]:
+    if isinstance(field_annotation, ForwardRef):
+        if cls_obj is None:
+            raise ValueError("cls_obj must be provided when field_annotation is a ForwardRef")
+        module = vars(importlib.import_module(cls_obj.__module__))
+        parent_module = vars(importlib.import_module(cls_obj.__module__.rsplit(".", maxsplit=1)[0]))
+        module.update(parent_module)
+        field_annotation = evaluate_forwardref(field_annotation, globals(), module)
+
     outer: Type[dict] | Type[list] | None
     if not (origin := get_origin(field_annotation)):
         return field_annotation, None

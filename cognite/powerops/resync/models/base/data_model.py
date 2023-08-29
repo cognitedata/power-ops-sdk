@@ -173,7 +173,7 @@ class DataModel(Model, ABC):
             if prop_name not in source.model_fields:
                 raise ValueError(f"Cannot find {prop_name} in {source}")
             annotation = source.model_fields[prop_name].annotation
-            annotation, outer = get_pydantic_annotation(annotation)
+            annotation, outer = get_pydantic_annotation(annotation, source)
             for edge in edges:
                 if not (target := node_by_id.get(edge.end_node.external_id)):
                     # Todo print warning

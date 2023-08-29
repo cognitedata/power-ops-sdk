@@ -1,4 +1,4 @@
-from typing import Any, Union
+from typing import Any, Union, Type
 
 import pytest
 
@@ -8,13 +8,17 @@ from cognite.powerops.cogshop1.data_classes import MappingApply, TransformationA
 
 def get_pydantic_annotation_test_cases():
     annotation = MappingApply.model_fields["transformations"].annotation
-    yield pytest.param(annotation, Union[TransformationApply, str], list, id="list[TransformationApply]")
+    yield pytest.param(annotation, MappingApply, Union[TransformationApply, str], list, id="list[TransformationApply]")
 
 
-@pytest.mark.parametrize("field_annotation, expected, expected_outer", list(get_pydantic_annotation_test_cases()))
-def test_get_pydantic_annotation(field_annotation: Any, expected: Any, expected_outer: Any) -> None:
+@pytest.mark.parametrize(
+    "field_annotation, cls_object, expected, expected_outer", list(get_pydantic_annotation_test_cases())
+)
+def test_get_pydantic_annotation(
+    field_annotation: Any, cls_object: Type[type], expected: Any, expected_outer: Any
+) -> None:
     # Act
-    annotation, outer = get_pydantic_annotation(field_annotation)
+    annotation, outer = get_pydantic_annotation(field_annotation, cls_object)
 
     # Assert
     assert annotation == expected
