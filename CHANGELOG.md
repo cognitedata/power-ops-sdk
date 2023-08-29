@@ -13,6 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.40.1] - 2023-08-30
+### Fixed
+* `powerops apply` only run `add`, `remove` or `changed` if there are any changes to the models. This is now fixed such
+   that `add`, `remove` or `changed` can all run.
+
 ## [0.40.0] - 2023-08-30
 ### Changed
 * Removed use of hashing for external ids in `CogShop1Asset` asset model.
