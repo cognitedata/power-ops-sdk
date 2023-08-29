@@ -159,7 +159,7 @@ class AssetType(ResourceType, ABC, arbitrary_types_allowed=True):
     def _as_metadata(self) -> dict[str, str]:
         metadata = {}
         for field_name, field in self.model_fields.items():
-            annotation, _ = get_pydantic_annotation(field.annotation)
+            annotation, _ = get_pydantic_annotation(field.annotation, type(self))
             if (
                 annotation in [CDFSequence, TimeSeries, CDFFile]
                 or issubclass(annotation, AssetType)
@@ -220,7 +220,7 @@ class AssetType(ResourceType, ABC, arbitrary_types_allowed=True):
 
     def sort_lists(self) -> None:
         for field_name, field in self.model_fields.items():
-            annotation, outer = get_pydantic_annotation(field.annotation)
+            annotation, outer = get_pydantic_annotation(field.annotation, type(self))
             if issubclass(annotation, (AssetType, CDFFile, CDFSequence)) and outer is list:
                 getattr(self, field_name).sort(key=lambda x: x.external_id)
 

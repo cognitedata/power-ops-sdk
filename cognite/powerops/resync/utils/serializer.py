@@ -103,12 +103,8 @@ def dump_yaml(data: dict, yaml_path: Path, encoding="utf-8"):
         safe_dump(data, stream)
 
 
-def get_pydantic_annotation(
-    field_annotation: Any, cls_obj: Type[type] | None = None
-) -> tuple[Any, Type[dict] | Type[list] | None]:
+def get_pydantic_annotation(field_annotation: Any, cls_obj: Type[object]) -> tuple[Any, Type[dict] | Type[list] | None]:
     if isinstance(field_annotation, ForwardRef):
-        if cls_obj is None:
-            raise ValueError("cls_obj must be provided when field_annotation is a ForwardRef")
         module = vars(importlib.import_module(cls_obj.__module__))
         parent_module = vars(importlib.import_module(cls_obj.__module__.rsplit(".", maxsplit=1)[0]))
         module.update(parent_module)

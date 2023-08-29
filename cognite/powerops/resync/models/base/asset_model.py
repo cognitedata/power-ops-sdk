@@ -40,7 +40,7 @@ class AssetModel(Model, ABC):
 
         parent_and_description_ids = set()
         for field_name, field in cls.model_fields.items():
-            annotation, outer = get_pydantic_annotation(field.annotation)
+            annotation, outer = get_pydantic_annotation(field.annotation, cls)
             if issubclass(annotation, AssetType) and outer is list:
                 parent_and_description_ids.add((annotation.parent_external_id, annotation.parent_description or ""))
 
@@ -80,7 +80,7 @@ class AssetModel(Model, ABC):
 
     def sort_lists(self) -> None:
         for field_name, field in self.model_fields.items():
-            annotation, outer = get_pydantic_annotation(field.annotation)
+            annotation, outer = get_pydantic_annotation(field.annotation, type(self))
             if issubclass(annotation, (AssetType, CDFFile, CDFSequence)) and outer is list:
                 getattr(self, field_name).sort(key=lambda x: x.external_id)
                 for asset_type in getattr(self, field_name):
@@ -159,7 +159,7 @@ class AssetModel(Model, ABC):
         arguments = {}
         asset_type_by_external_id = {}
         for field_name, field in cls.model_fields.items():
-            annotation, outer = get_pydantic_annotation(field.annotation)
+            annotation, outer = get_pydantic_annotation(field.annotation, cls)
             if issubclass(annotation, AssetType) and (
                 assets := asset_by_parent_external_id.get(annotation.parent_external_id)
             ):
@@ -210,7 +210,7 @@ class AssetModel(Model, ABC):
                 if field_name not in source.model_fields:
                     raise ValueError(f"Cannot find field {field_name} in {source}")
 
-                annotation, outer = get_pydantic_annotation(source.model_fields[field_name].annotation)
+                annotation, outer = get_pydantic_annotation(source.model_fields[field_name].annotation, source)
                 if outer is list:
                     getattr(source, field_name).append(target)
                 elif outer is dict:
