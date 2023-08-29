@@ -2,23 +2,21 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Optional, Callable, Any, Type, Protocol, Sequence, Literal, TypeVar, cast, Union
+from typing import Optional, Callable, Any, Type
 from uuid import uuid4
-from cognite.client.data_classes import Sequence as CogniteSequence, FileMetadataList
-from cognite.client import CogniteClient
-from cognite.client.data_classes import Event, FileMetadata, Asset, Relationship
-from cognite.client.data_classes.data_modeling import EdgeApply, NodeApply
+from cognite.client.data_classes import Event
 from cognite.client.data_classes.data_modeling.instances import InstanceCore
 from yaml import safe_dump
 
 from cognite.powerops.clients.powerops_client import get_powerops_client, PowerOpsClient
 from cognite.powerops.resync._logger import configure_debug_logging
+from cognite.powerops.resync._validation import _clean_relationships
 from cognite.powerops.resync.config.resync_config import ReSyncConfig
-from cognite.powerops.resync.models.base import Model, AssetModel
+from cognite.powerops.resync.models.base import Model
 from cognite.powerops.resync import models
 from cognite.powerops.resync.models.base.model import FieldDifference
-from cognite.powerops.resync.models.cdf_resources import CDFSequence, CDFFile
 from cognite.powerops.resync.to_models.transform import transform
+from cognite.powerops.resync.utils.cdf import _get_api
 from cognite.powerops.resync.utils.common import all_concrete_subclasses
 from cognite.powerops.utils.cdf import Settings
 
@@ -144,142 +142,6 @@ def apply(
                     api.create(content_updates)
 
 
-T_CogniteResource = TypeVar(
-    "T_CogniteResource", bound=Union[Asset, CogniteSequence, FileMetadata, Relationship, NodeApply, EdgeApply]
-)
-
-
-class CogniteAPI(Protocol[T_CogniteResource]):  # type: ignore[misc]
-    def create(self, items: T_CogniteResource | Sequence[T_CogniteResource]) -> Any:
-        ...
-
-    def delete(self, external_ids: str | Sequence[str]) -> Any:
-        ...
-
-    def upsert(
-        self, item: T_CogniteResource | Sequence[T_CogniteResource], mode: Literal["patch", "replace"] = "patch"
-    ) -> Any:
-        ...
-
-
-class FileAdapter(CogniteAPI[FileMetadata]):
-    def __init__(self, client: CogniteClient, files_by_id: dict[str, CDFFile]):
-        self.client = client
-        self.files_by_id = files_by_id
-
-    def create(self, items: FileMetadata | Sequence[FileMetadata]) -> Any:
-        items = [items] if isinstance(items, FileMetadata) else items
-        for item in items:
-            if item.external_id is None or item.external_id not in self.files_by_id:
-                raise ValueError("Cannot create new file {item.external_id} missing file content")
-            content = self.files_by_id[item.external_id].content
-            if content is None:
-                raise ValueError(f"Cannot create new file {item.external_id} missing file content")
-            self.client.files.upload_bytes(content, **item.dump())
-
-    def delete(self, external_ids: str | Sequence[str]) -> Any:
-        self.client.files.delete(external_id=external_ids)
-
-    def upsert(self, item: FileMetadata | Sequence[FileMetadata], mode: Literal["patch", "replace"] = "patch") -> Any:
-        items = [item] if isinstance(item, FileMetadata) else item
-        updated = self.client.files.update(items)
-        update_by_id = {u.external_id: u for u in ([updated] if isinstance(updated, FileMetadata) else updated)}
-
-        # There are not all fields that can be updates for files, for example, name.
-        # Therefore, we need to delete and recreate files that have changed for example name.
-        to_delete_and_recreate = FileMetadataList([])
-        for item in items:
-            if item.external_id not in update_by_id:
-                raise ValueError(f"Could not update file {item.external_id}")
-            if item != update_by_id[item.external_id]:
-                to_delete_and_recreate.append(item)
-        if to_delete_and_recreate:
-            self.delete(to_delete_and_recreate.as_external_ids())
-            self.create(to_delete_and_recreate)
-
-
-class SequenceAdapter(CogniteAPI[CogniteSequence]):
-    def __init__(self, client: CogniteClient, sequence_by_id: dict[str, CDFSequence]):
-        self.client = client
-        self.sequence_by_id = sequence_by_id
-
-    def create(self, items: CogniteSequence | Sequence[CogniteSequence]) -> Any:
-        items = [items] if isinstance(items, CogniteSequence) else items
-        if missing := set(self.sequence_by_id) - {i.external_id for i in items}:
-            raise ValueError(f"Missing sequence content for {missing}")
-        self.client.sequences.create(items)
-        for item in items:
-            if item.external_id is None:
-                raise ValueError("Missing external id for sequence")
-            df = self.sequence_by_id[item.external_id].content
-            if df is None:
-                raise ValueError(f"Missing sequence content for {item.external_id}")
-            self.client.sequences.data.insert_dataframe(df, external_id=item.external_id)
-
-    def delete(self, external_ids: str | Sequence[str]) -> Any:
-        self.client.sequences.delete(external_id=external_ids)
-
-    def upsert(
-        self, item: CogniteSequence | Sequence[CogniteSequence], mode: Literal["patch", "replace"] = "patch"
-    ) -> Any:
-        self.client.sequences.update(item)
-
-
-T_Instance = TypeVar("T_Instance", bound=Union[NodeApply, EdgeApply])
-
-
-class InstanceAdapter(CogniteAPI[T_Instance]):
-    def __init__(self, client: CogniteClient, instance_type: Literal["node", "edge"]):
-        self.instance_type = instance_type
-        self.client = client
-
-    def create(self, items: T_Instance | Sequence[T_Instance]) -> Any:
-        if self.instance_type == "node":
-            self.client.data_modeling.instances.apply(nodes=items)  # type: ignore[arg-type]
-        else:
-            self.client.data_modeling.instances.apply(edges=items)  # type: ignore[arg-type]
-
-    def delete(self, external_ids: str | Sequence[str]) -> Any:
-        if self.instance_type == "node":
-            self.client.data_modeling.instances.delete(nodes=external_ids)  # type: ignore[arg-type]
-        else:
-            self.client.data_modeling.instances.delete(edges=external_ids)  # type: ignore[arg-type]
-
-    def upsert(self, item: T_Instance | Sequence[T_Instance], mode: Literal["patch", "replace"] = "patch") -> Any:
-        self.create(item)
-
-
-def _get_api(
-    client: CogniteClient, name: str, new_sequences_by_id: dict[str, CDFSequence], new_files_by_id: dict[str, CDFFile]
-) -> CogniteAPI:
-    if name == "assets":
-        return cast(CogniteAPI[Asset], client.assets)
-    elif name == "time_series":
-        raise NotImplementedError("Resync does not create timeseries")
-    elif name == "sequences":
-        return SequenceAdapter(client, new_sequences_by_id)
-    elif name == "files":
-        return FileAdapter(client, new_files_by_id)
-    elif name == "relationships":
-        return client.relationships
-    elif name == "nodes":
-        return InstanceAdapter[NodeApply](client, "node")
-    elif name == "edges":
-        return InstanceAdapter[EdgeApply](client, "edge")
-    raise ValueError(f"Unknown resource type {name}")
-
-
-def _clean_relationships(
-    client: CogniteClient, differences: list[FieldDifference], new_model: Model, echo: Callable[[str], None]
-):
-    if isinstance(new_model, AssetModel):
-        not_create = _find_relationship_with_missing_time_series_target(client, new_model, echo)
-        relationship_diff = next((d for d in differences if d.name == "relationships"), None)
-        if relationship_diff:
-            relationship_diff.added = [r for r in relationship_diff.added if r.external_id not in not_create]
-            relationship_diff.changed = [c for c in relationship_diff.changed if c.new.external_id not in not_create]
-
-
 def _load_transform(
     market: str, path: Path, cdf_project: str, echo: Callable[[str], None], model_names: str | list[str] | None
 ) -> list[Model]:
@@ -317,38 +179,6 @@ def _create_bootstrap_finished_event(echo: Callable[[str], None]) -> Event:
     echo(f"Created status event '{event.external_id}'")
 
     return event
-
-
-def _find_relationship_with_missing_time_series_target(
-    client: CogniteClient, asset_model: AssetModel, echo: Callable[[str], None]
-) -> set[str]:
-    """Validates that all relationships in the collection have targets that exist in CDF"""
-    time_series = asset_model.timeseries()
-    # retrieve_multiple fails if no time series are provided
-    if not time_series:
-        return set()
-
-    existing_time_series = client.time_series.retrieve_multiple(
-        external_ids=list(set(time_series.as_external_ids())), ignore_unknown_ids=True
-    )
-    existing_timeseries_ids = {ts.external_id: ts for ts in existing_time_series}
-    missing_timeseries = {t.external_id for t in time_series if t.external_id not in existing_timeseries_ids}
-
-    relationships = asset_model.relationships()
-    to_delete = {
-        r.external_id
-        for r in relationships
-        if r.target_type
-        and r.target_type.casefold() == "timeseries"
-        and r.target_external_id in missing_timeseries
-        and r.external_id
-    }
-    if to_delete:
-        echo(
-            f"WARNING: There are {len(to_delete)} relationships in {asset_model.model_name} that have targets "
-            "that do not exist in CDF. These relationships will not be created."
-        )
-    return to_delete
 
 
 if __name__ == "__main__":
