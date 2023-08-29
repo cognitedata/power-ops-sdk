@@ -65,13 +65,15 @@ class CDFSequence(CDFResource):
                 output["columns"][no] = remove_read_only_fields(column)
         return output
 
+    @classmethod
+    def calculate_hash(cls, content: pd.DataFrame) -> str:
+        return sha256(pd.util.hash_pandas_object(content, index=True).values, usedforsecurity=False).hexdigest()
+
     def _dump(self, camel_case: bool = False) -> dict[str, Any]:
         if self.content is None and (self.sequence.metadata or {}).get(self.content_key_hash) is None:
             sha256_hash = "Missing Content"
         elif self.content is not None:
-            sha256_hash = sha256(
-                pd.util.hash_pandas_object(self.content, index=True).values, usedforsecurity=False
-            ).hexdigest()
+            sha256_hash = self.calculate_hash(self.content)
         else:
             sha256_hash = self.sequence.metadata[self.content_key_hash]
         if self.sequence.metadata:
@@ -105,12 +107,16 @@ class CDFFile(CDFResource):
     def external_id(self):
         return self.meta.external_id
 
+    @classmethod
+    def calculate_hash(cls, content: bytes) -> str:
+        # The replacement is used to ensure that the hash is the same on Windows and Linux
+        return sha256(content.replace(b"\r\n", b"\n"), usedforsecurity=False).hexdigest()
+
     def _dump(self, camel_case: bool = False) -> dict[str, Any]:
         if self.content is None and (self.meta.metadata or {}).get(self.content_key_hash) is None:
             sha256_hash = "Missing Content"
         elif self.content is not None:
-            # The replacement is used to ensure that the hash is the same on Windows and Linux
-            sha256_hash = sha256(self.content.replace(b"\r\n", b"\n"), usedforsecurity=False).hexdigest()
+            sha256_hash = self.calculate_hash(self.content)
         else:
             sha256_hash = self.meta.metadata[self.content_key_hash]
         if self.meta.metadata:

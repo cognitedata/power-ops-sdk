@@ -122,8 +122,10 @@ class AssetModel(Model, ABC):
         if sequence_ids:
             sequences = cdf.sequences.retrieve_multiple(external_ids=sequence_ids)
             cdf_sequences = [CDFSequence(sequence=sequence) for sequence in sequences]
+            cls._add_missing_hash(cdf, cdf_sequences)
         else:
             cdf_sequences = []
+
         file_ids = [
             relationship.target_external_id
             for relationship in relationships
@@ -132,6 +134,7 @@ class AssetModel(Model, ABC):
         if file_ids:
             files = cdf.files.retrieve_multiple(external_ids=file_ids)
             cdf_files = [CDFFile(meta=file) for file in files]
+            cls._add_missing_hash(cdf, cdf_files)
         else:
             cdf_files = []
 

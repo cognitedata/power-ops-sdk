@@ -6,8 +6,17 @@ from abc import ABC
 from dataclasses import dataclass, field
 from typing import ClassVar, Callable, Iterable, Type as TypingType, Any, TypeVar, Literal, Union
 from itertools import islice
+
+from cognite.client import CogniteClient
 from cognite.client.data_classes._base import CogniteResource, CogniteResourceList
-from cognite.client.data_classes import TimeSeriesList, Asset, Sequence, FileMetadata
+from cognite.client.data_classes import (
+    TimeSeriesList,
+    Asset,
+    Sequence,
+    FileMetadata,
+    SequenceUpdate,
+    FileMetadataUpdate,
+)
 from typing_extensions import Self, TypeAlias
 
 from cognite.client.data_classes import TimeSeries
@@ -335,6 +344,36 @@ class Model(BaseModel, ABC):
             changed=changed,
             unchanged=unchanged,
         )
+
+    @classmethod
+    def _add_missing_hash(cls, client: CogniteClient, resource: list[CDFResource]):
+        """
+        This function adds the hash to the metadata of the resource if it is missing.
+        The intention is for backwards compatibility with resources that were created before the hash was added.
+        """
+        for item in resource:
+            resource = item.cdf_resource
+            if not resource.metadata:
+                resource.metadata = {}
+            if CDFResource.content_key_hash not in resource.metadata:
+                if isinstance(item, CDFSequence):
+                    content = client.sequences.data.retrieve_dataframe(
+                        start=0, end=-1, external_id=item.external_id, limit=None
+                    )
+                    resource.metadata[CDFResource.content_key_hash] = CDFSequence.calculate_hash(content)
+                    update = SequenceUpdate(external_id=item.external_id).metadata.add(
+                        {CDFSequence.content_key_hash: resource.metadata[CDFResource.content_key_hash]}
+                    )
+                    client.sequences.update(update)
+                elif isinstance(item, CDFFile):
+                    content = client.files.download_bytes(item.external_id)
+                    resource.metadata[CDFResource.content_key_hash] = CDFFile.calculate_hash(content)
+                    update = FileMetadataUpdate(external_id=item.external_id).metadata.add(
+                        {CDFFile.content_key_hash: resource.metadata[CDFResource.content_key_hash]}
+                    )
+                    client.files.update(update)
+                else:
+                    raise NotImplementedError(f"Cannot get content for {item}")
 
 
 T_Model = TypeVar("T_Model", bound=Model)
