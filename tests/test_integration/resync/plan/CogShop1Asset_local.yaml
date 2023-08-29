@@ -1,8 +1,8 @@
 edges:
 - endNode:
-    externalId: Tr__09a38e8692f1da9510bf568b36c15fb9
+    externalId: Tr_ADD_{"value":0}
     space: cogShop
-  externalId: BM__Fornebu__creek_intake.Blakstad.inflow:Tr__09a38e8692f1da9510bf568b36c15fb9
+  externalId: BM__Fornebu__creek_intake.Blakstad.inflow:Tr_ADD_{"value":0}
   instanceType: edge
   space: cogShop
   startNode:
@@ -12,9 +12,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__ac94dc84d1bca0e65d94f6e29ae85337
+    externalId: Tr_MULTIPLY_{"value":0.53}
     space: cogShop
-  externalId: BM__Fornebu__creek_intake.Blakstad.inflow:Tr__ac94dc84d1bca0e65d94f6e29ae85337
+  externalId: BM__Fornebu__creek_intake.Blakstad.inflow:Tr_MULTIPLY_{"value":0.53}
   instanceType: edge
   space: cogShop
   startNode:
@@ -24,9 +24,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__2f9e91b68e7dfda86399bba5ac027ae2
+    externalId: Tr_ADD_{"value":0}
     space: cogShop
-  externalId: BM__Fornebu__creek_intake.Fjerdingby_intake.inflow:Tr__2f9e91b68e7dfda86399bba5ac027ae2
+  externalId: BM__Fornebu__creek_intake.Fjerdingby_intake.inflow:Tr_ADD_{"value":0}
   instanceType: edge
   space: cogShop
   startNode:
@@ -36,9 +36,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__39356bd86af6a2e980455bf0c6e937f9
+    externalId: Tr_MULTIPLY_{"value":0.151}
     space: cogShop
-  externalId: BM__Fornebu__creek_intake.Fjerdingby_intake.inflow:Tr__39356bd86af6a2e980455bf0c6e937f9
+  externalId: BM__Fornebu__creek_intake.Fjerdingby_intake.inflow:Tr_MULTIPLY_{"value":0.151}
   instanceType: edge
   space: cogShop
   startNode:
@@ -48,9 +48,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__2d2de47d744e7af8b69bd7a9faba3396
+    externalId: Tr_STATIC_{"0":100000}
     space: cogShop
-  externalId: BM__Fornebu__creek_intake.Fjerdingby_intake.overflow_cost:Tr__2d2de47d744e7af8b69bd7a9faba3396
+  externalId: BM__Fornebu__creek_intake.Fjerdingby_intake.overflow_cost:Tr_STATIC_{"0":100000}
   instanceType: edge
   space: cogShop
   startNode:
@@ -60,9 +60,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__100b41a376c06040aa2f052166bc1974
+    externalId: Tr_ADD_{"value":0}
     space: cogShop
-  externalId: BM__Fornebu__creek_intake.Golebiowski_intake.inflow:Tr__100b41a376c06040aa2f052166bc1974
+  externalId: BM__Fornebu__creek_intake.Golebiowski_intake.inflow:Tr_ADD_{"value":0}
   instanceType: edge
   space: cogShop
   startNode:
@@ -72,9 +72,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__8e1057cda4449f3306a3c1b50bf5f7be
+    externalId: Tr_MULTIPLY_{"value":0.042}
     space: cogShop
-  externalId: BM__Fornebu__creek_intake.Golebiowski_intake.inflow:Tr__8e1057cda4449f3306a3c1b50bf5f7be
+  externalId: BM__Fornebu__creek_intake.Golebiowski_intake.inflow:Tr_MULTIPLY_{"value":0.042}
   instanceType: edge
   space: cogShop
   startNode:
@@ -84,9 +84,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__d523606ddbf29f85fd2d54b023b3f881
+    externalId: Tr_STATIC_{"0":100000}
     space: cogShop
-  externalId: BM__Fornebu__creek_intake.Golebiowski_intake.overflow_cost:Tr__d523606ddbf29f85fd2d54b023b3f881
+  externalId: BM__Fornebu__creek_intake.Golebiowski_intake.overflow_cost:Tr_STATIC_{"0":100000}
   instanceType: edge
   space: cogShop
   startNode:
@@ -96,9 +96,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__060636ab2aaa4588d7269bbfc2c30e21
+    externalId: Tr_ADD_{"value":0}
     space: cogShop
-  externalId: BM__Fornebu__creek_intake.Gustad.inflow:Tr__060636ab2aaa4588d7269bbfc2c30e21
+  externalId: BM__Fornebu__creek_intake.Gustad.inflow:Tr_ADD_{"value":0}
   instanceType: edge
   space: cogShop
   startNode:
@@ -108,9 +108,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__eda6b7c5cd9e95a16682a05e9f4d57db
+    externalId: Tr_MULTIPLY_{"value":0.14}
     space: cogShop
-  externalId: BM__Fornebu__creek_intake.Gustad.inflow:Tr__eda6b7c5cd9e95a16682a05e9f4d57db
+  externalId: BM__Fornebu__creek_intake.Gustad.inflow:Tr_MULTIPLY_{"value":0.14}
   instanceType: edge
   space: cogShop
   startNode:
@@ -120,9 +120,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__561fd2ca1c4fb2fbdac71cc1b558d355
+    externalId: Tr_ADD_{"value":0}
     space: cogShop
-  externalId: BM__Fornebu__creek_intake.Lont_intake.inflow:Tr__561fd2ca1c4fb2fbdac71cc1b558d355
+  externalId: BM__Fornebu__creek_intake.Lont_intake.inflow:Tr_ADD_{"value":0}
   instanceType: edge
   space: cogShop
   startNode:
@@ -132,9 +132,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__8267e7aef5b045e24e4819188b5f6020
+    externalId: Tr_MULTIPLY_{"value":0.069}
     space: cogShop
-  externalId: BM__Fornebu__creek_intake.Lont_intake.inflow:Tr__8267e7aef5b045e24e4819188b5f6020
+  externalId: BM__Fornebu__creek_intake.Lont_intake.inflow:Tr_MULTIPLY_{"value":0.069}
   instanceType: edge
   space: cogShop
   startNode:
@@ -144,9 +144,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__a92e77e53c02221fe36b91b6f03ede22
+    externalId: Tr_STATIC_{"0":100000}
     space: cogShop
-  externalId: BM__Fornebu__creek_intake.Lont_intake.overflow_cost:Tr__a92e77e53c02221fe36b91b6f03ede22
+  externalId: BM__Fornebu__creek_intake.Lont_intake.overflow_cost:Tr_STATIC_{"0":100000}
   instanceType: edge
   space: cogShop
   startNode:
@@ -156,9 +156,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__02a31f94322892b06ba76966bc5628a4
+    externalId: Tr_ADD_{"value":0}
     space: cogShop
-  externalId: BM__Fornebu__creek_intake.Narvhus.inflow:Tr__02a31f94322892b06ba76966bc5628a4
+  externalId: BM__Fornebu__creek_intake.Narvhus.inflow:Tr_ADD_{"value":0}
   instanceType: edge
   space: cogShop
   startNode:
@@ -168,9 +168,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__5b0ece2f98211d33282049b1c33a1003
+    externalId: Tr_MULTIPLY_{"value":0.078}
     space: cogShop
-  externalId: BM__Fornebu__creek_intake.Narvhus.inflow:Tr__5b0ece2f98211d33282049b1c33a1003
+  externalId: BM__Fornebu__creek_intake.Narvhus.inflow:Tr_MULTIPLY_{"value":0.078}
   instanceType: edge
   space: cogShop
   startNode:
@@ -180,9 +180,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__42d2a7c7a10afc5e3d90147c497c1c03
+    externalId: Tr_STATIC_{"0":100000}
     space: cogShop
-  externalId: BM__Fornebu__creek_intake.Narvhus.overflow_cost:Tr__42d2a7c7a10afc5e3d90147c497c1c03
+  externalId: BM__Fornebu__creek_intake.Narvhus.overflow_cost:Tr_STATIC_{"0":100000}
   instanceType: edge
   space: cogShop
   startNode:
@@ -192,9 +192,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__41ce3a3092df502ccb3a15e50b512869
+    externalId: Tr_STATIC_{"0":0}
     space: cogShop
-  externalId: BM__Fornebu__creek_intake.Sandvika.inflow:Tr__41ce3a3092df502ccb3a15e50b512869
+  externalId: BM__Fornebu__creek_intake.Sandvika.inflow:Tr_STATIC_{"0":0}
   instanceType: edge
   space: cogShop
   startNode:
@@ -204,9 +204,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__5c71160930bfe0a4282490ed57dd9408
+    externalId: Tr_ADD_{"value":0}
     space: cogShop
-  externalId: BM__Fornebu__creek_intake.Vigrestad.inflow:Tr__5c71160930bfe0a4282490ed57dd9408
+  externalId: BM__Fornebu__creek_intake.Vigrestad.inflow:Tr_ADD_{"value":0}
   instanceType: edge
   space: cogShop
   startNode:
@@ -216,9 +216,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__f60df4ed352ec766bd1eb931e8e3e862
+    externalId: Tr_MULTIPLY_{"value":0.08}
     space: cogShop
-  externalId: BM__Fornebu__creek_intake.Vigrestad.inflow:Tr__f60df4ed352ec766bd1eb931e8e3e862
+  externalId: BM__Fornebu__creek_intake.Vigrestad.inflow:Tr_MULTIPLY_{"value":0.08}
   instanceType: edge
   space: cogShop
   startNode:
@@ -228,9 +228,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__d2ad261c11d4b2f0f519492768f477bc
+    externalId: Tr_STATIC_{"0":0}
     space: cogShop
-  externalId: BM__Fornebu__gate.b_Dalbysvatn_Knute_Rullsvatn.max_flow:Tr__d2ad261c11d4b2f0f519492768f477bc
+  externalId: BM__Fornebu__gate.b_Dalbysvatn_Knute_Rullsvatn.max_flow:Tr_STATIC_{"0":0}
   instanceType: edge
   space: cogShop
   startNode:
@@ -240,9 +240,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__4329e4d4c685bb9a83d6e6b6b34b57f8
+    externalId: Tr_STATIC_{"0":1000}
     space: cogShop
-  externalId: BM__Fornebu__gate.b_Danielsen_Lundvann.max_flow:Tr__4329e4d4c685bb9a83d6e6b6b34b57f8
+  externalId: BM__Fornebu__gate.b_Danielsen_Lundvann.max_flow:Tr_STATIC_{"0":1000}
   instanceType: edge
   space: cogShop
   startNode:
@@ -252,9 +252,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__f7d23d0b02248603ecbeaebe6263b62b
+    externalId: Tr_STATIC_{"0":0}
     space: cogShop
-  externalId: BM__Fornebu__gate.b_Hagen_Strand.max_flow:Tr__f7d23d0b02248603ecbeaebe6263b62b
+  externalId: BM__Fornebu__gate.b_Hagen_Strand.max_flow:Tr_STATIC_{"0":0}
   instanceType: edge
   space: cogShop
   startNode:
@@ -264,9 +264,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__64de70b2df7f3f683381dcc7070589b3
+    externalId: Tr_STATIC_{"0":1000}
     space: cogShop
-  externalId: BM__Fornebu__gate.b_Lensvik_Dalbysvatn.max_flow:Tr__64de70b2df7f3f683381dcc7070589b3
+  externalId: BM__Fornebu__gate.b_Lensvik_Dalbysvatn.max_flow:Tr_STATIC_{"0":1000}
   instanceType: edge
   space: cogShop
   startNode:
@@ -276,9 +276,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__7c86dbeb98d0581c0750bd204c3423cd
+    externalId: Tr_STATIC_{"0":0}
     space: cogShop
-  externalId: BM__Fornebu__gate.b_Livincovs_Dalbysvatn.max_flow:Tr__7c86dbeb98d0581c0750bd204c3423cd
+  externalId: BM__Fornebu__gate.b_Livincovs_Dalbysvatn.max_flow:Tr_STATIC_{"0":0}
   instanceType: edge
   space: cogShop
   startNode:
@@ -288,9 +288,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__50cb48c30e0c3c9ee21000a4e842ddf5
+    externalId: Tr_STATIC_{"0":10}
     space: cogShop
-  externalId: BM__Fornebu__gate.b_Nielsen_Blakstadana.max_flow:Tr__50cb48c30e0c3c9ee21000a4e842ddf5
+  externalId: BM__Fornebu__gate.b_Nielsen_Blakstadana.max_flow:Tr_STATIC_{"0":10}
   instanceType: edge
   space: cogShop
   startNode:
@@ -300,9 +300,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__e487f1a7977c08c6d06320d312ffd157
+    externalId: Tr_STATIC_{"0":0}
     space: cogShop
-  externalId: BM__Fornebu__gate.b_Sirefelt_Knute_Rullsvatn.max_flow:Tr__e487f1a7977c08c6d06320d312ffd157
+  externalId: BM__Fornebu__gate.b_Sirefelt_Knute_Rullsvatn.max_flow:Tr_STATIC_{"0":0}
   instanceType: edge
   space: cogShop
   startNode:
@@ -312,9 +312,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__11bfbeca2c49f39631725aba4f5144ab
+    externalId: Tr_STATIC_{"0":1000}
     space: cogShop
-  externalId: BM__Fornebu__gate.f_Blakstadana_Knute_Rullsvatn.max_flow:Tr__11bfbeca2c49f39631725aba4f5144ab
+  externalId: BM__Fornebu__gate.f_Blakstadana_Knute_Rullsvatn.max_flow:Tr_STATIC_{"0":1000}
   instanceType: edge
   space: cogShop
   startNode:
@@ -324,9 +324,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__f80e8fc1c1760a710797b1679111382d
+    externalId: Tr_STATIC_{"0":1000}
     space: cogShop
-  externalId: BM__Fornebu__gate.f_Dalbysvatn_Knute_Rullsvatn.max_flow:Tr__f80e8fc1c1760a710797b1679111382d
+  externalId: BM__Fornebu__gate.f_Dalbysvatn_Knute_Rullsvatn.max_flow:Tr_STATIC_{"0":1000}
   instanceType: edge
   space: cogShop
   startNode:
@@ -336,9 +336,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__7ab5298009859eb84cfb2faf5c6286da
+    externalId: Tr_STATIC_{"0":10}
     space: cogShop
-  externalId: BM__Fornebu__gate.f_Finnvasstol_Dalbysvatn.max_flow:Tr__7ab5298009859eb84cfb2faf5c6286da
+  externalId: BM__Fornebu__gate.f_Finnvasstol_Dalbysvatn.max_flow:Tr_STATIC_{"0":10}
   instanceType: edge
   space: cogShop
   startNode:
@@ -348,9 +348,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__2bbe842c3d3c7355d58510d95ea9d6fb
+    externalId: Tr_STATIC_{"0":1000}
     space: cogShop
-  externalId: BM__Fornebu__gate.f_Fjerdingby_Dalbysvatn.max_flow:Tr__2bbe842c3d3c7355d58510d95ea9d6fb
+  externalId: BM__Fornebu__gate.f_Fjerdingby_Dalbysvatn.max_flow:Tr_STATIC_{"0":1000}
   instanceType: edge
   space: cogShop
   startNode:
@@ -360,9 +360,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__ee30c4e2e6f64bd2d11183904936a2ee
+    externalId: Tr_STATIC_{"0":1000}
     space: cogShop
-  externalId: BM__Fornebu__gate.f_Frosta.max_flow:Tr__ee30c4e2e6f64bd2d11183904936a2ee
+  externalId: BM__Fornebu__gate.f_Frosta.max_flow:Tr_STATIC_{"0":1000}
   instanceType: edge
   space: cogShop
   startNode:
@@ -372,9 +372,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__17e47d02dca31ac0c7406cfd32a76210
+    externalId: Tr_STATIC_{"0":1000}
     space: cogShop
-  externalId: BM__Fornebu__gate.f_Golebiowski_Dalbysvatn.max_flow:Tr__17e47d02dca31ac0c7406cfd32a76210
+  externalId: BM__Fornebu__gate.f_Golebiowski_Dalbysvatn.max_flow:Tr_STATIC_{"0":1000}
   instanceType: edge
   space: cogShop
   startNode:
@@ -384,9 +384,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__ecd991d1de7d01625417f43649d8cf5b
+    externalId: Tr_STATIC_{"0":100}
     space: cogShop
-  externalId: BM__Fornebu__gate.f_Hagen_Strand.max_flow:Tr__ecd991d1de7d01625417f43649d8cf5b
+  externalId: BM__Fornebu__gate.f_Hagen_Strand.max_flow:Tr_STATIC_{"0":100}
   instanceType: edge
   space: cogShop
   startNode:
@@ -396,9 +396,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__8183b3aa1773ace1d8ee771640aa6fe5
+    externalId: Tr_STATIC_{"0":1000}
     space: cogShop
-  externalId: BM__Fornebu__gate.f_Hovden_Hagen.max_flow:Tr__8183b3aa1773ace1d8ee771640aa6fe5
+  externalId: BM__Fornebu__gate.f_Hovden_Hagen.max_flow:Tr_STATIC_{"0":1000}
   instanceType: edge
   space: cogShop
   startNode:
@@ -408,9 +408,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__00565f4836483e4afd66f3f50b094144
+    externalId: Tr_STATIC_{"0":0}
     space: cogShop
-  externalId: BM__Fornebu__gate.f_Lensvik.max_flow:Tr__00565f4836483e4afd66f3f50b094144
+  externalId: BM__Fornebu__gate.f_Lensvik.max_flow:Tr_STATIC_{"0":0}
   instanceType: edge
   space: cogShop
   startNode:
@@ -420,9 +420,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__572fc4400102e3e26dc2f3acdb2a18fa
+    externalId: Tr_STATIC_{"0":1000}
     space: cogShop
-  externalId: BM__Fornebu__gate.f_Livincovs.max_flow:Tr__572fc4400102e3e26dc2f3acdb2a18fa
+  externalId: BM__Fornebu__gate.f_Livincovs.max_flow:Tr_STATIC_{"0":1000}
   instanceType: edge
   space: cogShop
   startNode:
@@ -432,9 +432,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__6e358414229ecde11db0df12529352e9
+    externalId: Tr_STATIC_{"0":1000}
     space: cogShop
-  externalId: BM__Fornebu__gate.f_Lont_Dalbysvatn.max_flow:Tr__6e358414229ecde11db0df12529352e9
+  externalId: BM__Fornebu__gate.f_Lont_Dalbysvatn.max_flow:Tr_STATIC_{"0":1000}
   instanceType: edge
   space: cogShop
   startNode:
@@ -444,9 +444,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__ff07239696f93878fbdd3b8cd763beb0
+    externalId: Tr_STATIC_{"0":1000}
     space: cogShop
-  externalId: BM__Fornebu__gate.f_Lundvann_Lensvik.max_flow:Tr__ff07239696f93878fbdd3b8cd763beb0
+  externalId: BM__Fornebu__gate.f_Lundvann_Lensvik.max_flow:Tr_STATIC_{"0":1000}
   instanceType: edge
   space: cogShop
   startNode:
@@ -456,9 +456,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__d4ea23ec0981f91854ee081d52be6438
+    externalId: Tr_STATIC_{"0":1000}
     space: cogShop
-  externalId: BM__Fornebu__gate.f_Narvhus_Rullsvatn.max_flow:Tr__d4ea23ec0981f91854ee081d52be6438
+  externalId: BM__Fornebu__gate.f_Narvhus_Rullsvatn.max_flow:Tr_STATIC_{"0":1000}
   instanceType: edge
   space: cogShop
   startNode:
@@ -468,9 +468,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__f2105c604db57f7522455e7a333ee4cf
+    externalId: Tr_STATIC_{"0":10}
     space: cogShop
-  externalId: BM__Fornebu__gate.f_Nielsen.max_flow:Tr__f2105c604db57f7522455e7a333ee4cf
+  externalId: BM__Fornebu__gate.f_Nielsen.max_flow:Tr_STATIC_{"0":10}
   instanceType: edge
   space: cogShop
   startNode:
@@ -480,9 +480,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__341d61382a639437acb344fa8b6210fe
+    externalId: Tr_STATIC_{"0":1000}
     space: cogShop
-  externalId: BM__Fornebu__gate.f_Nupstj.max_flow:Tr__341d61382a639437acb344fa8b6210fe
+  externalId: BM__Fornebu__gate.f_Nupstj.max_flow:Tr_STATIC_{"0":1000}
   instanceType: edge
   space: cogShop
   startNode:
@@ -492,9 +492,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__4ad1d5b9a452d768f5ac821f6dd4d1a6
+    externalId: Tr_STATIC_{"0":1000}
     space: cogShop
-  externalId: BM__Fornebu__gate.f_Ranemsletta_1183_Livincovs.max_flow:Tr__4ad1d5b9a452d768f5ac821f6dd4d1a6
+  externalId: BM__Fornebu__gate.f_Ranemsletta_1183_Livincovs.max_flow:Tr_STATIC_{"0":1000}
   instanceType: edge
   space: cogShop
   startNode:
@@ -504,9 +504,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__fa6cea94bffc69e23eea80a46f5f1945
+    externalId: Tr_STATIC_{"0":1000}
     space: cogShop
-  externalId: BM__Fornebu__gate.f_Rullsvatn_Rullslaagen.max_flow:Tr__fa6cea94bffc69e23eea80a46f5f1945
+  externalId: BM__Fornebu__gate.f_Rullsvatn_Rullslaagen.max_flow:Tr_STATIC_{"0":1000}
   instanceType: edge
   space: cogShop
   startNode:
@@ -516,9 +516,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__8a9e3cf2bdc0910b90df8a777c532731
+    externalId: Tr_STATIC_{"0":1000}
     space: cogShop
-  externalId: BM__Fornebu__gate.f_Sirefelt_Knute_Rullsvatn.max_flow:Tr__8a9e3cf2bdc0910b90df8a777c532731
+  externalId: BM__Fornebu__gate.f_Sirefelt_Knute_Rullsvatn.max_flow:Tr_STATIC_{"0":1000}
   instanceType: edge
   space: cogShop
   startNode:
@@ -528,9 +528,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__2f7e06f0e2d3844002801fdf803f2fd3
+    externalId: Tr_STATIC_{"0":1000}
     space: cogShop
-  externalId: BM__Fornebu__gate.f_Tangvall.max_flow:Tr__2f7e06f0e2d3844002801fdf803f2fd3
+  externalId: BM__Fornebu__gate.f_Tangvall.max_flow:Tr_STATIC_{"0":1000}
   instanceType: edge
   space: cogShop
   startNode:
@@ -540,9 +540,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__46b4c850a9539befb88add165b19fb1d
+    externalId: Tr_STATIC_{"0":1000}
     space: cogShop
-  externalId: BM__Fornebu__gate.f_Varhaug.max_flow:Tr__46b4c850a9539befb88add165b19fb1d
+  externalId: BM__Fornebu__gate.f_Varhaug.max_flow:Tr_STATIC_{"0":1000}
   instanceType: edge
   space: cogShop
   startNode:
@@ -552,9 +552,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__3a9828acaf5fd4aa11098166d3eb3c22
+    externalId: Tr_STATIC_{"0":6}
     space: cogShop
-  externalId: BM__Fornebu__gate.w_Finnvasstol_Strand_tunnel.max_flow:Tr__3a9828acaf5fd4aa11098166d3eb3c22
+  externalId: BM__Fornebu__gate.w_Finnvasstol_Strand_tunnel.max_flow:Tr_STATIC_{"0":6}
   instanceType: edge
   space: cogShop
   startNode:
@@ -564,9 +564,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__e25e7c9160d89201aeb636b9623a0fde
+    externalId: Tr_STATIC_{"0":1000}
     space: cogShop
-  externalId: BM__Fornebu__gate.w_Frosta.max_flow:Tr__e25e7c9160d89201aeb636b9623a0fde
+  externalId: BM__Fornebu__gate.w_Frosta.max_flow:Tr_STATIC_{"0":1000}
   instanceType: edge
   space: cogShop
   startNode:
@@ -576,9 +576,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__0333a130b27976dc1550fe3e7c93bb09
+    externalId: Tr_STATIC_{"0":10}
     space: cogShop
-  externalId: BM__Fornebu__gate.w_Hovden_Livincovs.max_flow:Tr__0333a130b27976dc1550fe3e7c93bb09
+  externalId: BM__Fornebu__gate.w_Hovden_Livincovs.max_flow:Tr_STATIC_{"0":10}
   instanceType: edge
   space: cogShop
   startNode:
@@ -588,9 +588,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__d1cae11bc6a62e776846006c0a84cee8
+    externalId: Tr_STATIC_{"0":0}
     space: cogShop
-  externalId: BM__Fornebu__gate.w_Rullsvatn_Rullslaagen.max_flow:Tr__d1cae11bc6a62e776846006c0a84cee8
+  externalId: BM__Fornebu__gate.w_Rullsvatn_Rullslaagen.max_flow:Tr_STATIC_{"0":0}
   instanceType: edge
   space: cogShop
   startNode:
@@ -600,9 +600,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__86f19c26960a446048203d1d9b5bdad5
+    externalId: Tr_STATIC_{"0":1000}
     space: cogShop
-  externalId: BM__Fornebu__gate.w_Tangvall.max_flow:Tr__86f19c26960a446048203d1d9b5bdad5
+  externalId: BM__Fornebu__gate.w_Tangvall.max_flow:Tr_STATIC_{"0":1000}
   instanceType: edge
   space: cogShop
   startNode:
@@ -612,9 +612,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__37ddde5b28af165aef736064dd24071b
+    externalId: Tr_STATIC_{"0":30}
     space: cogShop
-  externalId: BM__Fornebu__gate.w_Varhaug.max_flow:Tr__37ddde5b28af165aef736064dd24071b
+  externalId: BM__Fornebu__gate.w_Varhaug.max_flow:Tr_STATIC_{"0":30}
   instanceType: edge
   space: cogShop
   startNode:
@@ -624,9 +624,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__7a614b810db517a9dcf19b3c1dc04cf5
+    externalId: Tr_STATIC_{"0":50000}
     space: cogShop
-  externalId: BM__Fornebu__generator.Dalby_G1.droop_cost:Tr__7a614b810db517a9dcf19b3c1dc04cf5
+  externalId: BM__Fornebu__generator.Dalby_G1.droop_cost:Tr_STATIC_{"0":50000}
   instanceType: edge
   space: cogShop
   startNode:
@@ -636,9 +636,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__fd63d439820de699fbdffbdd6a49105b
+    externalId: Tr_STATIC_{"0":12}
     space: cogShop
-  externalId: BM__Fornebu__generator.Dalby_G1.droop_max:Tr__fd63d439820de699fbdffbdd6a49105b
+  externalId: BM__Fornebu__generator.Dalby_G1.droop_max:Tr_STATIC_{"0":12}
   instanceType: edge
   space: cogShop
   startNode:
@@ -648,9 +648,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__84aa1594715477119e39d6e74a6da5f2
+    externalId: Tr_STATIC_{"0":2}
     space: cogShop
-  externalId: BM__Fornebu__generator.Dalby_G1.droop_min:Tr__84aa1594715477119e39d6e74a6da5f2
+  externalId: BM__Fornebu__generator.Dalby_G1.droop_min:Tr_STATIC_{"0":2}
   instanceType: edge
   space: cogShop
   startNode:
@@ -660,9 +660,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__3abbf8128c4ce4d31df64d5393d11533
+    externalId: Tr_ADD_{"value":1}
     space: cogShop
-  externalId: BM__Fornebu__generator.Dalby_G1.maintenance_flag:Tr__3abbf8128c4ce4d31df64d5393d11533
+  externalId: BM__Fornebu__generator.Dalby_G1.maintenance_flag:Tr_ADD_{"value":1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -672,9 +672,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__7739df23812916403c89246821203182
+    externalId: Tr_MULTIPLY_{"value":-1}
     space: cogShop
-  externalId: BM__Fornebu__generator.Dalby_G1.maintenance_flag:Tr__7739df23812916403c89246821203182
+  externalId: BM__Fornebu__generator.Dalby_G1.maintenance_flag:Tr_MULTIPLY_{"value":-1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -684,9 +684,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__f4c77636640f867082d30940c33172f3
+    externalId: Tr_STATIC_{"0":85}
     space: cogShop
-  externalId: BM__Fornebu__generator.Dalby_G1.p_fcr_max:Tr__f4c77636640f867082d30940c33172f3
+  externalId: BM__Fornebu__generator.Dalby_G1.p_fcr_max:Tr_STATIC_{"0":85}
   instanceType: edge
   space: cogShop
   startNode:
@@ -696,9 +696,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__29a25af278ee6ae509d5a7ba589ba87b
+    externalId: Tr_STATIC_{"0":38}
     space: cogShop
-  externalId: BM__Fornebu__generator.Dalby_G1.p_fcr_min:Tr__29a25af278ee6ae509d5a7ba589ba87b
+  externalId: BM__Fornebu__generator.Dalby_G1.p_fcr_min:Tr_STATIC_{"0":38}
   instanceType: edge
   space: cogShop
   startNode:
@@ -708,9 +708,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__6f7142d14043eac1c89fb47d0439aabb
+    externalId: Tr_STATIC_{"0":0}
     space: cogShop
-  externalId: BM__Fornebu__generator.Dalby_G1.p_rr_min:Tr__6f7142d14043eac1c89fb47d0439aabb
+  externalId: BM__Fornebu__generator.Dalby_G1.p_rr_min:Tr_STATIC_{"0":0}
   instanceType: edge
   space: cogShop
   startNode:
@@ -720,9 +720,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__eba172af2b308cbd91b38751d168876f
+    externalId: Tr_STATIC_{"0":500}
     space: cogShop
-  externalId: BM__Fornebu__generator.Dalby_G1.startcost:Tr__eba172af2b308cbd91b38751d168876f
+  externalId: BM__Fornebu__generator.Dalby_G1.startcost:Tr_STATIC_{"0":500}
   instanceType: edge
   space: cogShop
   startNode:
@@ -732,9 +732,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__a49bc4456fa5df3b1df2f80ce5b39227
+    externalId: Tr_STATIC_{"0":50000}
     space: cogShop
-  externalId: BM__Fornebu__generator.Dalby_G2.droop_cost:Tr__a49bc4456fa5df3b1df2f80ce5b39227
+  externalId: BM__Fornebu__generator.Dalby_G2.droop_cost:Tr_STATIC_{"0":50000}
   instanceType: edge
   space: cogShop
   startNode:
@@ -744,9 +744,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__184cf8531e7fe4ead5b2d4e78f8f1f60
+    externalId: Tr_STATIC_{"0":12}
     space: cogShop
-  externalId: BM__Fornebu__generator.Dalby_G2.droop_max:Tr__184cf8531e7fe4ead5b2d4e78f8f1f60
+  externalId: BM__Fornebu__generator.Dalby_G2.droop_max:Tr_STATIC_{"0":12}
   instanceType: edge
   space: cogShop
   startNode:
@@ -756,9 +756,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__d4015048aea431583829604716a1171f
+    externalId: Tr_STATIC_{"0":2}
     space: cogShop
-  externalId: BM__Fornebu__generator.Dalby_G2.droop_min:Tr__d4015048aea431583829604716a1171f
+  externalId: BM__Fornebu__generator.Dalby_G2.droop_min:Tr_STATIC_{"0":2}
   instanceType: edge
   space: cogShop
   startNode:
@@ -768,9 +768,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__7e4f592964e6481a7b5be513dc1f76a4
+    externalId: Tr_ADD_{"value":1}
     space: cogShop
-  externalId: BM__Fornebu__generator.Dalby_G2.maintenance_flag:Tr__7e4f592964e6481a7b5be513dc1f76a4
+  externalId: BM__Fornebu__generator.Dalby_G2.maintenance_flag:Tr_ADD_{"value":1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -780,9 +780,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__8d595c7414c74e2bfce26986462a920a
+    externalId: Tr_MULTIPLY_{"value":-1}
     space: cogShop
-  externalId: BM__Fornebu__generator.Dalby_G2.maintenance_flag:Tr__8d595c7414c74e2bfce26986462a920a
+  externalId: BM__Fornebu__generator.Dalby_G2.maintenance_flag:Tr_MULTIPLY_{"value":-1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -792,9 +792,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__9a8733346c00859874168c179002fb0d
+    externalId: Tr_STATIC_{"0":85}
     space: cogShop
-  externalId: BM__Fornebu__generator.Dalby_G2.p_fcr_max:Tr__9a8733346c00859874168c179002fb0d
+  externalId: BM__Fornebu__generator.Dalby_G2.p_fcr_max:Tr_STATIC_{"0":85}
   instanceType: edge
   space: cogShop
   startNode:
@@ -804,9 +804,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__c96890b975dfeb707bbb17729677a416
+    externalId: Tr_STATIC_{"0":38}
     space: cogShop
-  externalId: BM__Fornebu__generator.Dalby_G2.p_fcr_min:Tr__c96890b975dfeb707bbb17729677a416
+  externalId: BM__Fornebu__generator.Dalby_G2.p_fcr_min:Tr_STATIC_{"0":38}
   instanceType: edge
   space: cogShop
   startNode:
@@ -816,9 +816,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__cbd77d7bec7a5287894330d04e0f48ea
+    externalId: Tr_STATIC_{"0":0}
     space: cogShop
-  externalId: BM__Fornebu__generator.Dalby_G2.p_rr_min:Tr__cbd77d7bec7a5287894330d04e0f48ea
+  externalId: BM__Fornebu__generator.Dalby_G2.p_rr_min:Tr_STATIC_{"0":0}
   instanceType: edge
   space: cogShop
   startNode:
@@ -828,9 +828,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__9aea16cbc9d0b4bea2928cb9f84aea16
+    externalId: Tr_STATIC_{"0":250}
     space: cogShop
-  externalId: BM__Fornebu__generator.Dalby_G2.startcost:Tr__9aea16cbc9d0b4bea2928cb9f84aea16
+  externalId: BM__Fornebu__generator.Dalby_G2.startcost:Tr_STATIC_{"0":250}
   instanceType: edge
   space: cogShop
   startNode:
@@ -840,9 +840,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__a9da19b3b0b8010af8b1cfa156ff259c
+    externalId: Tr_STATIC_{"0":6}
     space: cogShop
-  externalId: BM__Fornebu__generator.Holen_G1.droop_max:Tr__a9da19b3b0b8010af8b1cfa156ff259c
+  externalId: BM__Fornebu__generator.Holen_G1.droop_max:Tr_STATIC_{"0":6}
   instanceType: edge
   space: cogShop
   startNode:
@@ -852,9 +852,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__cbde7ba2bcf1ac375100cf6f0d1c282b
+    externalId: Tr_STATIC_{"0":6}
     space: cogShop
-  externalId: BM__Fornebu__generator.Holen_G1.droop_min:Tr__cbde7ba2bcf1ac375100cf6f0d1c282b
+  externalId: BM__Fornebu__generator.Holen_G1.droop_min:Tr_STATIC_{"0":6}
   instanceType: edge
   space: cogShop
   startNode:
@@ -864,9 +864,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__7c3455eadd8616bb65c3642066182e15
+    externalId: Tr_ADD_{"value":1}
     space: cogShop
-  externalId: BM__Fornebu__generator.Holen_G1.maintenance_flag:Tr__7c3455eadd8616bb65c3642066182e15
+  externalId: BM__Fornebu__generator.Holen_G1.maintenance_flag:Tr_ADD_{"value":1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -876,9 +876,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__f2c30284f84905a3300b767455ad95c7
+    externalId: Tr_MULTIPLY_{"value":-1}
     space: cogShop
-  externalId: BM__Fornebu__generator.Holen_G1.maintenance_flag:Tr__f2c30284f84905a3300b767455ad95c7
+  externalId: BM__Fornebu__generator.Holen_G1.maintenance_flag:Tr_MULTIPLY_{"value":-1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -888,9 +888,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__15ef8c7b80056d16ab804aed59d62543
+    externalId: Tr_STATIC_{"0":38}
     space: cogShop
-  externalId: BM__Fornebu__generator.Holen_G1.max_p_constr:Tr__15ef8c7b80056d16ab804aed59d62543
+  externalId: BM__Fornebu__generator.Holen_G1.max_p_constr:Tr_STATIC_{"0":38}
   instanceType: edge
   space: cogShop
   startNode:
@@ -900,9 +900,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__722bce1c6ab2681aa69bd87fbef2a6d5
+    externalId: Tr_STATIC_{"0":28}
     space: cogShop
-  externalId: BM__Fornebu__generator.Holen_G1.min_p_constr:Tr__722bce1c6ab2681aa69bd87fbef2a6d5
+  externalId: BM__Fornebu__generator.Holen_G1.min_p_constr:Tr_STATIC_{"0":28}
   instanceType: edge
   space: cogShop
   startNode:
@@ -912,9 +912,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__408e51f6bf98f6680536aaac541a149c
+    externalId: Tr_STATIC_{"0":45}
     space: cogShop
-  externalId: BM__Fornebu__generator.Holen_G1.p_fcr_max:Tr__408e51f6bf98f6680536aaac541a149c
+  externalId: BM__Fornebu__generator.Holen_G1.p_fcr_max:Tr_STATIC_{"0":45}
   instanceType: edge
   space: cogShop
   startNode:
@@ -924,9 +924,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__b241a430c34dbb6d1d5893a1342f50af
+    externalId: Tr_STATIC_{"0":27}
     space: cogShop
-  externalId: BM__Fornebu__generator.Holen_G1.p_fcr_min:Tr__b241a430c34dbb6d1d5893a1342f50af
+  externalId: BM__Fornebu__generator.Holen_G1.p_fcr_min:Tr_STATIC_{"0":27}
   instanceType: edge
   space: cogShop
   startNode:
@@ -936,9 +936,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__b86711eed297cdccf7379a9a1a572abf
+    externalId: Tr_STATIC_{"0":0}
     space: cogShop
-  externalId: BM__Fornebu__generator.Holen_G1.p_rr_min:Tr__b86711eed297cdccf7379a9a1a572abf
+  externalId: BM__Fornebu__generator.Holen_G1.p_rr_min:Tr_STATIC_{"0":0}
   instanceType: edge
   space: cogShop
   startNode:
@@ -948,9 +948,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__3f9e0956ef1ad5734bffac8c2d279172
+    externalId: Tr_STATIC_{"0":200}
     space: cogShop
-  externalId: BM__Fornebu__generator.Holen_G1.startcost:Tr__3f9e0956ef1ad5734bffac8c2d279172
+  externalId: BM__Fornebu__generator.Holen_G1.startcost:Tr_STATIC_{"0":200}
   instanceType: edge
   space: cogShop
   startNode:
@@ -960,9 +960,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__29a4ea2781f795bc183dbe256d0b1b89
+    externalId: Tr_STATIC_{"0":6}
     space: cogShop
-  externalId: BM__Fornebu__generator.Landet_G1.droop_max:Tr__29a4ea2781f795bc183dbe256d0b1b89
+  externalId: BM__Fornebu__generator.Landet_G1.droop_max:Tr_STATIC_{"0":6}
   instanceType: edge
   space: cogShop
   startNode:
@@ -972,9 +972,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__83f36a32e56b0a4c60a1d7c68ec00fa1
+    externalId: Tr_STATIC_{"0":6}
     space: cogShop
-  externalId: BM__Fornebu__generator.Landet_G1.droop_min:Tr__83f36a32e56b0a4c60a1d7c68ec00fa1
+  externalId: BM__Fornebu__generator.Landet_G1.droop_min:Tr_STATIC_{"0":6}
   instanceType: edge
   space: cogShop
   startNode:
@@ -984,9 +984,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__6f889990c02f76174919ed61cfc6cdc3
+    externalId: Tr_ADD_{"value":1}
     space: cogShop
-  externalId: BM__Fornebu__generator.Landet_G1.maintenance_flag:Tr__6f889990c02f76174919ed61cfc6cdc3
+  externalId: BM__Fornebu__generator.Landet_G1.maintenance_flag:Tr_ADD_{"value":1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -996,9 +996,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__e9daf0c88693347cbe35e9310c204022
+    externalId: Tr_MULTIPLY_{"value":-1}
     space: cogShop
-  externalId: BM__Fornebu__generator.Landet_G1.maintenance_flag:Tr__e9daf0c88693347cbe35e9310c204022
+  externalId: BM__Fornebu__generator.Landet_G1.maintenance_flag:Tr_MULTIPLY_{"value":-1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1008,9 +1008,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__40f6f3e27fd9392f02945fea91db79d6
+    externalId: Tr_STATIC_{"0":48}
     space: cogShop
-  externalId: BM__Fornebu__generator.Landet_G1.max_p_constr:Tr__40f6f3e27fd9392f02945fea91db79d6
+  externalId: BM__Fornebu__generator.Landet_G1.max_p_constr:Tr_STATIC_{"0":48}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1020,9 +1020,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__4732c5ce2f16ec77f69e112782dc382c
+    externalId: Tr_STATIC_{"0":50}
     space: cogShop
-  externalId: BM__Fornebu__generator.Landet_G1.p_fcr_max:Tr__4732c5ce2f16ec77f69e112782dc382c
+  externalId: BM__Fornebu__generator.Landet_G1.p_fcr_max:Tr_STATIC_{"0":50}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1032,9 +1032,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__b983632a2ec1243deaa03177f68c1061
+    externalId: Tr_STATIC_{"0":25}
     space: cogShop
-  externalId: BM__Fornebu__generator.Landet_G1.p_fcr_min:Tr__b983632a2ec1243deaa03177f68c1061
+  externalId: BM__Fornebu__generator.Landet_G1.p_fcr_min:Tr_STATIC_{"0":25}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1044,9 +1044,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__ee7e472d9c97302ce17eaf5f6d3e029a
+    externalId: Tr_STATIC_{"0":0}
     space: cogShop
-  externalId: BM__Fornebu__generator.Landet_G1.p_rr_min:Tr__ee7e472d9c97302ce17eaf5f6d3e029a
+  externalId: BM__Fornebu__generator.Landet_G1.p_rr_min:Tr_STATIC_{"0":0}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1056,9 +1056,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__db89d70f639716175b4ba9a155b01d8c
+    externalId: Tr_STATIC_{"0":200}
     space: cogShop
-  externalId: BM__Fornebu__generator.Landet_G1.startcost:Tr__db89d70f639716175b4ba9a155b01d8c
+  externalId: BM__Fornebu__generator.Landet_G1.startcost:Tr_STATIC_{"0":200}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1068,9 +1068,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__b5536701706fd8cbcdb35101e6aebeb8
+    externalId: Tr_STATIC_{"0":8}
     space: cogShop
-  externalId: BM__Fornebu__generator.Lien_krv_G1.droop_max:Tr__b5536701706fd8cbcdb35101e6aebeb8
+  externalId: BM__Fornebu__generator.Lien_krv_G1.droop_max:Tr_STATIC_{"0":8}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1080,9 +1080,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__0b6f1f1628dcbf5fa0584b99ad0a14b0
+    externalId: Tr_STATIC_{"0":4}
     space: cogShop
-  externalId: BM__Fornebu__generator.Lien_krv_G1.droop_min:Tr__0b6f1f1628dcbf5fa0584b99ad0a14b0
+  externalId: BM__Fornebu__generator.Lien_krv_G1.droop_min:Tr_STATIC_{"0":4}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1092,9 +1092,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__3ccd6d7796c9f3b239c5ed87dd4cbc6a
+    externalId: Tr_ADD_{"value":1}
     space: cogShop
-  externalId: BM__Fornebu__generator.Lien_krv_G1.maintenance_flag:Tr__3ccd6d7796c9f3b239c5ed87dd4cbc6a
+  externalId: BM__Fornebu__generator.Lien_krv_G1.maintenance_flag:Tr_ADD_{"value":1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1104,9 +1104,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__64769605d58ee33037c32dc9505fbe6d
+    externalId: Tr_MULTIPLY_{"value":-1}
     space: cogShop
-  externalId: BM__Fornebu__generator.Lien_krv_G1.maintenance_flag:Tr__64769605d58ee33037c32dc9505fbe6d
+  externalId: BM__Fornebu__generator.Lien_krv_G1.maintenance_flag:Tr_MULTIPLY_{"value":-1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1116,9 +1116,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__53d7bdd38f76b9e87a0e8834b60d4030
+    externalId: Tr_STATIC_{"0":3.1}
     space: cogShop
-  externalId: BM__Fornebu__generator.Lien_krv_G1.max_p_constr:Tr__53d7bdd38f76b9e87a0e8834b60d4030
+  externalId: BM__Fornebu__generator.Lien_krv_G1.max_p_constr:Tr_STATIC_{"0":3.1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1128,9 +1128,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__3da40f3f00e5c1413816c713bff3140c
+    externalId: Tr_STATIC_{"0":2.5}
     space: cogShop
-  externalId: BM__Fornebu__generator.Lien_krv_G1.min_p_constr:Tr__3da40f3f00e5c1413816c713bff3140c
+  externalId: BM__Fornebu__generator.Lien_krv_G1.min_p_constr:Tr_STATIC_{"0":2.5}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1140,9 +1140,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__fd04fb71c058b949288a6b2f7844f3cc
+    externalId: Tr_STATIC_{"0":0}
     space: cogShop
-  externalId: BM__Fornebu__generator.Lien_krv_G1.p_fcr_max:Tr__fd04fb71c058b949288a6b2f7844f3cc
+  externalId: BM__Fornebu__generator.Lien_krv_G1.p_fcr_max:Tr_STATIC_{"0":0}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1152,9 +1152,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__dfbbc00ed09fcc3999d1fc67139eec9d
+    externalId: Tr_STATIC_{"0":0}
     space: cogShop
-  externalId: BM__Fornebu__generator.Lien_krv_G1.p_fcr_min:Tr__dfbbc00ed09fcc3999d1fc67139eec9d
+  externalId: BM__Fornebu__generator.Lien_krv_G1.p_fcr_min:Tr_STATIC_{"0":0}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1164,9 +1164,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__5cac75fa8fd13f4367fe99672ef9de3a
+    externalId: Tr_STATIC_{"0":0}
     space: cogShop
-  externalId: BM__Fornebu__generator.Lien_krv_G1.p_rr_min:Tr__5cac75fa8fd13f4367fe99672ef9de3a
+  externalId: BM__Fornebu__generator.Lien_krv_G1.p_rr_min:Tr_STATIC_{"0":0}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1176,9 +1176,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__0cdddc6c1d2d797971a5848a8cf8fe1e
+    externalId: Tr_STATIC_{"0":150}
     space: cogShop
-  externalId: BM__Fornebu__generator.Lien_krv_G1.startcost:Tr__0cdddc6c1d2d797971a5848a8cf8fe1e
+  externalId: BM__Fornebu__generator.Lien_krv_G1.startcost:Tr_STATIC_{"0":150}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1188,9 +1188,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__13db406f09b047fbef6d5c4da49535a3
+    externalId: Tr_STATIC_{"0":12}
     space: cogShop
-  externalId: BM__Fornebu__generator.Lund_G1.droop_max:Tr__13db406f09b047fbef6d5c4da49535a3
+  externalId: BM__Fornebu__generator.Lund_G1.droop_max:Tr_STATIC_{"0":12}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1200,9 +1200,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__1ef18e33c6e0aba1a21a3ea3793c9686
+    externalId: Tr_STATIC_{"0":4}
     space: cogShop
-  externalId: BM__Fornebu__generator.Lund_G1.droop_min:Tr__1ef18e33c6e0aba1a21a3ea3793c9686
+  externalId: BM__Fornebu__generator.Lund_G1.droop_min:Tr_STATIC_{"0":4}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1212,9 +1212,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__b46d9eb3953f627eedb4843273b97cf4
+    externalId: Tr_ADD_{"value":1}
     space: cogShop
-  externalId: BM__Fornebu__generator.Lund_G1.maintenance_flag:Tr__b46d9eb3953f627eedb4843273b97cf4
+  externalId: BM__Fornebu__generator.Lund_G1.maintenance_flag:Tr_ADD_{"value":1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1224,9 +1224,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__fc706a8e5a566827faa3e63f47e0b67c
+    externalId: Tr_MULTIPLY_{"value":-1}
     space: cogShop
-  externalId: BM__Fornebu__generator.Lund_G1.maintenance_flag:Tr__fc706a8e5a566827faa3e63f47e0b67c
+  externalId: BM__Fornebu__generator.Lund_G1.maintenance_flag:Tr_MULTIPLY_{"value":-1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1236,9 +1236,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__e98ec4e8808e9c1246e3b84d97452a3f
+    externalId: Tr_STATIC_{"0":1}
     space: cogShop
-  externalId: BM__Fornebu__generator.Lund_G1.p_fcr_max:Tr__e98ec4e8808e9c1246e3b84d97452a3f
+  externalId: BM__Fornebu__generator.Lund_G1.p_fcr_max:Tr_STATIC_{"0":1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1248,9 +1248,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__fa774bb5fd70f634f45ab690001f5474
+    externalId: Tr_STATIC_{"0":0.6}
     space: cogShop
-  externalId: BM__Fornebu__generator.Lund_G1.p_fcr_min:Tr__fa774bb5fd70f634f45ab690001f5474
+  externalId: BM__Fornebu__generator.Lund_G1.p_fcr_min:Tr_STATIC_{"0":0.6}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1260,9 +1260,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__49ac4c6f1d0f1ae6a151372b135dd264
+    externalId: Tr_STATIC_{"0":0}
     space: cogShop
-  externalId: BM__Fornebu__generator.Lund_G1.p_rr_min:Tr__49ac4c6f1d0f1ae6a151372b135dd264
+  externalId: BM__Fornebu__generator.Lund_G1.p_rr_min:Tr_STATIC_{"0":0}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1272,9 +1272,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__dce3fcae0308c6a4d3ace37b3171e79f
+    externalId: Tr_STATIC_{"0":100}
     space: cogShop
-  externalId: BM__Fornebu__generator.Lund_G1.startcost:Tr__dce3fcae0308c6a4d3ace37b3171e79f
+  externalId: BM__Fornebu__generator.Lund_G1.startcost:Tr_STATIC_{"0":100}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1284,9 +1284,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__f91bdf72e3074e6e9bcaa15e595046d5
+    externalId: Tr_STATIC_{"0":50000}
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull1_G1.droop_cost:Tr__f91bdf72e3074e6e9bcaa15e595046d5
+  externalId: BM__Fornebu__generator.Rull1_G1.droop_cost:Tr_STATIC_{"0":50000}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1296,9 +1296,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__1c67836104964add81cbcd3deae8e878
+    externalId: Tr_STATIC_{"0":12}
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull1_G1.droop_max:Tr__1c67836104964add81cbcd3deae8e878
+  externalId: BM__Fornebu__generator.Rull1_G1.droop_max:Tr_STATIC_{"0":12}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1308,9 +1308,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__66015728cf1128a11f8c0dc72b976239
+    externalId: Tr_STATIC_{"0":2}
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull1_G1.droop_min:Tr__66015728cf1128a11f8c0dc72b976239
+  externalId: BM__Fornebu__generator.Rull1_G1.droop_min:Tr_STATIC_{"0":2}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1320,9 +1320,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__4b9a154bf4339daf40d9a7ea947a223c
+    externalId: Tr_ADD_{"value":1}
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull1_G1.maintenance_flag:Tr__4b9a154bf4339daf40d9a7ea947a223c
+  externalId: BM__Fornebu__generator.Rull1_G1.maintenance_flag:Tr_ADD_{"value":1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1332,9 +1332,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__eb509d291a111acedeadf537ac3f0a47
+    externalId: Tr_MULTIPLY_{"value":-1}
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull1_G1.maintenance_flag:Tr__eb509d291a111acedeadf537ac3f0a47
+  externalId: BM__Fornebu__generator.Rull1_G1.maintenance_flag:Tr_MULTIPLY_{"value":-1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1344,9 +1344,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__1b925013feb5a38c96550ab0598cf337
+    externalId: Tr_STATIC_{"0":90}
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull1_G1.max_p_constr:Tr__1b925013feb5a38c96550ab0598cf337
+  externalId: BM__Fornebu__generator.Rull1_G1.max_p_constr:Tr_STATIC_{"0":90}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1356,9 +1356,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__cccc29c8bd298633800a74325d22bcc8
+    externalId: Tr_STATIC_{"0":95}
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull1_G1.p_fcr_max:Tr__cccc29c8bd298633800a74325d22bcc8
+  externalId: BM__Fornebu__generator.Rull1_G1.p_fcr_max:Tr_STATIC_{"0":95}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1368,9 +1368,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__b93b84dcea6710fa6a0d8e399d766a9e
+    externalId: Tr_STATIC_{"0":38}
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull1_G1.p_fcr_min:Tr__b93b84dcea6710fa6a0d8e399d766a9e
+  externalId: BM__Fornebu__generator.Rull1_G1.p_fcr_min:Tr_STATIC_{"0":38}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1380,9 +1380,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__55960e678e5825e3c8e14ff817ac342e
+    externalId: Tr_STATIC_{"0":0}
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull1_G1.p_rr_min:Tr__55960e678e5825e3c8e14ff817ac342e
+  externalId: BM__Fornebu__generator.Rull1_G1.p_rr_min:Tr_STATIC_{"0":0}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1392,9 +1392,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__5ae3e5b615e8283e17cf3b3b66498e94
+    externalId: Tr_STATIC_{"0":250}
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull1_G1.startcost:Tr__5ae3e5b615e8283e17cf3b3b66498e94
+  externalId: BM__Fornebu__generator.Rull1_G1.startcost:Tr_STATIC_{"0":250}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1404,9 +1404,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__20e93b8f2df41e846adc68a209150e0e
+    externalId: Tr_STATIC_{"0":50000}
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull1_G2.droop_cost:Tr__20e93b8f2df41e846adc68a209150e0e
+  externalId: BM__Fornebu__generator.Rull1_G2.droop_cost:Tr_STATIC_{"0":50000}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1416,9 +1416,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__befa1eb0cecf6d54da4fef437afa1862
+    externalId: Tr_STATIC_{"0":12}
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull1_G2.droop_max:Tr__befa1eb0cecf6d54da4fef437afa1862
+  externalId: BM__Fornebu__generator.Rull1_G2.droop_max:Tr_STATIC_{"0":12}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1428,9 +1428,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__1c729be21d827825db681cdef01d08ba
+    externalId: Tr_STATIC_{"0":2}
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull1_G2.droop_min:Tr__1c729be21d827825db681cdef01d08ba
+  externalId: BM__Fornebu__generator.Rull1_G2.droop_min:Tr_STATIC_{"0":2}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1440,9 +1440,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__17a2c89d88f53f0128df299df486c970
+    externalId: Tr_ADD_{"value":1}
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull1_G2.maintenance_flag:Tr__17a2c89d88f53f0128df299df486c970
+  externalId: BM__Fornebu__generator.Rull1_G2.maintenance_flag:Tr_ADD_{"value":1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1452,9 +1452,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__1915a0f4a19934c282026ab9ce3b2c38
+    externalId: Tr_MULTIPLY_{"value":-1}
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull1_G2.maintenance_flag:Tr__1915a0f4a19934c282026ab9ce3b2c38
+  externalId: BM__Fornebu__generator.Rull1_G2.maintenance_flag:Tr_MULTIPLY_{"value":-1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1464,9 +1464,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__f13a4be34f7746c9e173894c29fdfa27
+    externalId: Tr_STATIC_{"0":95}
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull1_G2.max_p_constr:Tr__f13a4be34f7746c9e173894c29fdfa27
+  externalId: BM__Fornebu__generator.Rull1_G2.max_p_constr:Tr_STATIC_{"0":95}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1476,9 +1476,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__fad289c561e131e5a2be48a44ceb5d6e
+    externalId: Tr_STATIC_{"0":43}
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull1_G2.min_p_constr:Tr__fad289c561e131e5a2be48a44ceb5d6e
+  externalId: BM__Fornebu__generator.Rull1_G2.min_p_constr:Tr_STATIC_{"0":43}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1488,9 +1488,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__716d58719ac044de6cd60bc5c9c257ba
+    externalId: Tr_STATIC_{"0":85}
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull1_G2.p_fcr_max:Tr__716d58719ac044de6cd60bc5c9c257ba
+  externalId: BM__Fornebu__generator.Rull1_G2.p_fcr_max:Tr_STATIC_{"0":85}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1500,9 +1500,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__ce7d2455ce6f9ae0eed129a142829bc0
+    externalId: Tr_STATIC_{"0":38}
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull1_G2.p_fcr_min:Tr__ce7d2455ce6f9ae0eed129a142829bc0
+  externalId: BM__Fornebu__generator.Rull1_G2.p_fcr_min:Tr_STATIC_{"0":38}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1512,9 +1512,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__33e5d623ea18289c4a583d729b599954
+    externalId: Tr_STATIC_{"0":0}
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull1_G2.p_rr_min:Tr__33e5d623ea18289c4a583d729b599954
+  externalId: BM__Fornebu__generator.Rull1_G2.p_rr_min:Tr_STATIC_{"0":0}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1524,9 +1524,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__6c3119410469b22fb7621434315a4959
+    externalId: Tr_STATIC_{"0":250}
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull1_G2.startcost:Tr__6c3119410469b22fb7621434315a4959
+  externalId: BM__Fornebu__generator.Rull1_G2.startcost:Tr_STATIC_{"0":250}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1536,9 +1536,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__0c08b8990137d1919f0186f70dfd8762
+    externalId: Tr_STATIC_{"0":50000}
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull2_G1.droop_cost:Tr__0c08b8990137d1919f0186f70dfd8762
+  externalId: BM__Fornebu__generator.Rull2_G1.droop_cost:Tr_STATIC_{"0":50000}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1548,9 +1548,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__ff94668c5721f8fa04fc06af1a8475dd
+    externalId: Tr_STATIC_{"0":12}
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull2_G1.droop_max:Tr__ff94668c5721f8fa04fc06af1a8475dd
+  externalId: BM__Fornebu__generator.Rull2_G1.droop_max:Tr_STATIC_{"0":12}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1560,9 +1560,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__e0bcb0b026ce6e512188e20adf904758
+    externalId: Tr_STATIC_{"0":4}
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull2_G1.droop_min:Tr__e0bcb0b026ce6e512188e20adf904758
+  externalId: BM__Fornebu__generator.Rull2_G1.droop_min:Tr_STATIC_{"0":4}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1572,9 +1572,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__1f171480482ba5ceeaf339c37de5c3d7
+    externalId: Tr_ADD_{"value":1}
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull2_G1.maintenance_flag:Tr__1f171480482ba5ceeaf339c37de5c3d7
+  externalId: BM__Fornebu__generator.Rull2_G1.maintenance_flag:Tr_ADD_{"value":1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1584,9 +1584,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__729c31fc3b392b044eb6c2c2b5b7fd09
+    externalId: Tr_MULTIPLY_{"value":-1}
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull2_G1.maintenance_flag:Tr__729c31fc3b392b044eb6c2c2b5b7fd09
+  externalId: BM__Fornebu__generator.Rull2_G1.maintenance_flag:Tr_MULTIPLY_{"value":-1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1596,9 +1596,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__a87f502c2e2d49fec041d43e0aa040fe
+    externalId: Tr_STATIC_{"0":74}
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull2_G1.p_fcr_max:Tr__a87f502c2e2d49fec041d43e0aa040fe
+  externalId: BM__Fornebu__generator.Rull2_G1.p_fcr_max:Tr_STATIC_{"0":74}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1608,9 +1608,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__5fab00fe309dce6d033dd170f89a3df1
+    externalId: Tr_STATIC_{"0":32}
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull2_G1.p_fcr_min:Tr__5fab00fe309dce6d033dd170f89a3df1
+  externalId: BM__Fornebu__generator.Rull2_G1.p_fcr_min:Tr_STATIC_{"0":32}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1620,9 +1620,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__80c8d866a6526757741df78f12c7ad45
+    externalId: Tr_STATIC_{"0":0}
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull2_G1.p_rr_min:Tr__80c8d866a6526757741df78f12c7ad45
+  externalId: BM__Fornebu__generator.Rull2_G1.p_rr_min:Tr_STATIC_{"0":0}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1632,9 +1632,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__5c066144b56751100926fe9078292a05
+    externalId: Tr_STATIC_{"0":250}
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull2_G1.startcost:Tr__5c066144b56751100926fe9078292a05
+  externalId: BM__Fornebu__generator.Rull2_G1.startcost:Tr_STATIC_{"0":250}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1644,9 +1644,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__ee8a545320383d7126ecfa3f41df0f9a
+    externalId: Tr_STATIC_{"0":50000}
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull2_G2.droop_cost:Tr__ee8a545320383d7126ecfa3f41df0f9a
+  externalId: BM__Fornebu__generator.Rull2_G2.droop_cost:Tr_STATIC_{"0":50000}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1656,9 +1656,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__7906c0b7c57205f02bb2e6f21d0e1994
+    externalId: Tr_STATIC_{"0":12}
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull2_G2.droop_max:Tr__7906c0b7c57205f02bb2e6f21d0e1994
+  externalId: BM__Fornebu__generator.Rull2_G2.droop_max:Tr_STATIC_{"0":12}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1668,9 +1668,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__7159cbde6831d974626c941f142367cd
+    externalId: Tr_STATIC_{"0":4}
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull2_G2.droop_min:Tr__7159cbde6831d974626c941f142367cd
+  externalId: BM__Fornebu__generator.Rull2_G2.droop_min:Tr_STATIC_{"0":4}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1680,9 +1680,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__d0321ebc4580a56b6c7b015e15d13a0d
+    externalId: Tr_ADD_{"value":1}
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull2_G2.maintenance_flag:Tr__d0321ebc4580a56b6c7b015e15d13a0d
+  externalId: BM__Fornebu__generator.Rull2_G2.maintenance_flag:Tr_ADD_{"value":1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1692,9 +1692,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__d2f81da3ef19df823c96800627bed92c
+    externalId: Tr_MULTIPLY_{"value":-1}
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull2_G2.maintenance_flag:Tr__d2f81da3ef19df823c96800627bed92c
+  externalId: BM__Fornebu__generator.Rull2_G2.maintenance_flag:Tr_MULTIPLY_{"value":-1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1704,9 +1704,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__d7017be0541c3637e3a9728106ee62b1
+    externalId: Tr_STATIC_{"0":74}
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull2_G2.max_p_constr:Tr__d7017be0541c3637e3a9728106ee62b1
+  externalId: BM__Fornebu__generator.Rull2_G2.max_p_constr:Tr_STATIC_{"0":74}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1716,9 +1716,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__c58e93abe2bc8ac8f53dc669864dd5bc
+    externalId: Tr_STATIC_{"0":76}
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull2_G2.p_fcr_max:Tr__c58e93abe2bc8ac8f53dc669864dd5bc
+  externalId: BM__Fornebu__generator.Rull2_G2.p_fcr_max:Tr_STATIC_{"0":76}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1728,9 +1728,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__cf65f6a5a360b3285136abfeddbd133a
+    externalId: Tr_STATIC_{"0":32}
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull2_G2.p_fcr_min:Tr__cf65f6a5a360b3285136abfeddbd133a
+  externalId: BM__Fornebu__generator.Rull2_G2.p_fcr_min:Tr_STATIC_{"0":32}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1740,9 +1740,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__4881ce16016406e7a5fc5320d6ed297c
+    externalId: Tr_STATIC_{"0":0}
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull2_G2.p_rr_min:Tr__4881ce16016406e7a5fc5320d6ed297c
+  externalId: BM__Fornebu__generator.Rull2_G2.p_rr_min:Tr_STATIC_{"0":0}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1752,9 +1752,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__408f50f4c4badc3307608c59fd89b67a
+    externalId: Tr_STATIC_{"0":250}
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull2_G2.startcost:Tr__408f50f4c4badc3307608c59fd89b67a
+  externalId: BM__Fornebu__generator.Rull2_G2.startcost:Tr_STATIC_{"0":250}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1764,9 +1764,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__ff034cbf6b97ee0975b5a5fad3b7f8b9
+    externalId: Tr_STATIC_{"0":6}
     space: cogShop
-  externalId: BM__Fornebu__generator.Scott_G1.droop_max:Tr__ff034cbf6b97ee0975b5a5fad3b7f8b9
+  externalId: BM__Fornebu__generator.Scott_G1.droop_max:Tr_STATIC_{"0":6}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1776,9 +1776,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__8948d09fc8ef302bed6cdafeb167141f
+    externalId: Tr_STATIC_{"0":6}
     space: cogShop
-  externalId: BM__Fornebu__generator.Scott_G1.droop_min:Tr__8948d09fc8ef302bed6cdafeb167141f
+  externalId: BM__Fornebu__generator.Scott_G1.droop_min:Tr_STATIC_{"0":6}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1788,9 +1788,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__049188eacfe2912053b94f339e6483bf
+    externalId: Tr_ADD_{"value":1}
     space: cogShop
-  externalId: BM__Fornebu__generator.Scott_G1.maintenance_flag:Tr__049188eacfe2912053b94f339e6483bf
+  externalId: BM__Fornebu__generator.Scott_G1.maintenance_flag:Tr_ADD_{"value":1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1800,9 +1800,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__0e5e99fa1a161263a09d0dc2e2f260ac
+    externalId: Tr_MULTIPLY_{"value":-1}
     space: cogShop
-  externalId: BM__Fornebu__generator.Scott_G1.maintenance_flag:Tr__0e5e99fa1a161263a09d0dc2e2f260ac
+  externalId: BM__Fornebu__generator.Scott_G1.maintenance_flag:Tr_MULTIPLY_{"value":-1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1812,9 +1812,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__edd3bb553c8d6cb6c4e4d0dcbcfc308e
+    externalId: Tr_STATIC_{"0":19}
     space: cogShop
-  externalId: BM__Fornebu__generator.Scott_G1.p_fcr_max:Tr__edd3bb553c8d6cb6c4e4d0dcbcfc308e
+  externalId: BM__Fornebu__generator.Scott_G1.p_fcr_max:Tr_STATIC_{"0":19}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1824,9 +1824,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__0a6877294cb46b573071350181574623
+    externalId: Tr_STATIC_{"0":7}
     space: cogShop
-  externalId: BM__Fornebu__generator.Scott_G1.p_fcr_min:Tr__0a6877294cb46b573071350181574623
+  externalId: BM__Fornebu__generator.Scott_G1.p_fcr_min:Tr_STATIC_{"0":7}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1836,9 +1836,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__7396fe0d27c1cdfdb8c6ae002c6daf0f
+    externalId: Tr_STATIC_{"0":0}
     space: cogShop
-  externalId: BM__Fornebu__generator.Scott_G1.p_rr_min:Tr__7396fe0d27c1cdfdb8c6ae002c6daf0f
+  externalId: BM__Fornebu__generator.Scott_G1.p_rr_min:Tr_STATIC_{"0":0}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1848,9 +1848,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__844761285c484b6d82327badf96d3258
+    externalId: Tr_STATIC_{"0":150}
     space: cogShop
-  externalId: BM__Fornebu__generator.Scott_G1.startcost:Tr__844761285c484b6d82327badf96d3258
+  externalId: BM__Fornebu__generator.Scott_G1.startcost:Tr_STATIC_{"0":150}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1860,9 +1860,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__eecc888c4138fb9d0c6a2d50a5ca8c88
+    externalId: Tr_STATIC_{"0":12}
     space: cogShop
-  externalId: BM__Fornebu__generator.Strand_krv_G1.droop_max:Tr__eecc888c4138fb9d0c6a2d50a5ca8c88
+  externalId: BM__Fornebu__generator.Strand_krv_G1.droop_max:Tr_STATIC_{"0":12}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1872,9 +1872,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__b539f49567fb96dacd5d84cccf47dc58
+    externalId: Tr_STATIC_{"0":4}
     space: cogShop
-  externalId: BM__Fornebu__generator.Strand_krv_G1.droop_min:Tr__b539f49567fb96dacd5d84cccf47dc58
+  externalId: BM__Fornebu__generator.Strand_krv_G1.droop_min:Tr_STATIC_{"0":4}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1884,9 +1884,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__7f8eac0230bb6c884cbf858e59d915ec
+    externalId: Tr_ADD_{"value":1}
     space: cogShop
-  externalId: BM__Fornebu__generator.Strand_krv_G1.maintenance_flag:Tr__7f8eac0230bb6c884cbf858e59d915ec
+  externalId: BM__Fornebu__generator.Strand_krv_G1.maintenance_flag:Tr_ADD_{"value":1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1896,9 +1896,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__eff1806507561a8710e746c5fbdc25c6
+    externalId: Tr_MULTIPLY_{"value":-1}
     space: cogShop
-  externalId: BM__Fornebu__generator.Strand_krv_G1.maintenance_flag:Tr__eff1806507561a8710e746c5fbdc25c6
+  externalId: BM__Fornebu__generator.Strand_krv_G1.maintenance_flag:Tr_MULTIPLY_{"value":-1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1908,9 +1908,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__c344c5a6df9dd2c834b9e2f244a08c73
+    externalId: Tr_STATIC_{"0":4.9}
     space: cogShop
-  externalId: BM__Fornebu__generator.Strand_krv_G1.p_fcr_max:Tr__c344c5a6df9dd2c834b9e2f244a08c73
+  externalId: BM__Fornebu__generator.Strand_krv_G1.p_fcr_max:Tr_STATIC_{"0":4.9}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1920,9 +1920,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__3233acc6b5cba9365a0c4eb20ab77310
+    externalId: Tr_STATIC_{"0":4.2}
     space: cogShop
-  externalId: BM__Fornebu__generator.Strand_krv_G1.p_fcr_min:Tr__3233acc6b5cba9365a0c4eb20ab77310
+  externalId: BM__Fornebu__generator.Strand_krv_G1.p_fcr_min:Tr_STATIC_{"0":4.2}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1932,9 +1932,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__f6e7bafeaa33b60c9e66a210eb36a32a
+    externalId: Tr_STATIC_{"0":0}
     space: cogShop
-  externalId: BM__Fornebu__generator.Strand_krv_G1.p_rr_min:Tr__f6e7bafeaa33b60c9e66a210eb36a32a
+  externalId: BM__Fornebu__generator.Strand_krv_G1.p_rr_min:Tr_STATIC_{"0":0}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1944,9 +1944,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__d7839ce6468f9d9a6252817dcc2bfab8
+    externalId: Tr_STATIC_{"0":150}
     space: cogShop
-  externalId: BM__Fornebu__generator.Strand_krv_G1.startcost:Tr__d7839ce6468f9d9a6252817dcc2bfab8
+  externalId: BM__Fornebu__generator.Strand_krv_G1.startcost:Tr_STATIC_{"0":150}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1956,9 +1956,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__9109046e6c8bbf0938587719423ed8c0
+    externalId: Tr_STATIC_{"0":672}
     space: cogShop
-  externalId: BM__Fornebu__junction.Sandvika.min_pressure:Tr__9109046e6c8bbf0938587719423ed8c0
+  externalId: BM__Fornebu__junction.Sandvika.min_pressure:Tr_STATIC_{"0":672}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1968,9 +1968,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__22fb6146d7fba25519abbdec7f51e78a
+    externalId: Tr_ADD_{"value":0}
     space: cogShop
-  externalId: BM__Fornebu__market.Dayahead.buy_price:Tr__22fb6146d7fba25519abbdec7f51e78a
+  externalId: BM__Fornebu__market.Dayahead.buy_price:Tr_ADD_{"value":0}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1980,9 +1980,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__f0c572fe279c0a8818e3117db204b0df
+    externalId: Tr_MULTIPLY_{"value":1}
     space: cogShop
-  externalId: BM__Fornebu__market.Dayahead.buy_price:Tr__f0c572fe279c0a8818e3117db204b0df
+  externalId: BM__Fornebu__market.Dayahead.buy_price:Tr_MULTIPLY_{"value":1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -1992,9 +1992,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__f50837fa59ccebad3d513c3cd96d0710
+    externalId: Tr_STATIC_{"0":0}
     space: cogShop
-  externalId: BM__Fornebu__market.Dayahead.load:Tr__f50837fa59ccebad3d513c3cd96d0710
+  externalId: BM__Fornebu__market.Dayahead.load:Tr_STATIC_{"0":0}
   instanceType: edge
   space: cogShop
   startNode:
@@ -2004,9 +2004,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__461b01daf4330c92383d5ae5edd846ff
+    externalId: Tr_STATIC_{"0":10000}
     space: cogShop
-  externalId: BM__Fornebu__market.Dayahead.max_buy:Tr__461b01daf4330c92383d5ae5edd846ff
+  externalId: BM__Fornebu__market.Dayahead.max_buy:Tr_STATIC_{"0":10000}
   instanceType: edge
   space: cogShop
   startNode:
@@ -2016,9 +2016,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__4c5fb796265342b5cdabbcfa49d5c9f4
+    externalId: Tr_STATIC_{"0":10000}
     space: cogShop
-  externalId: BM__Fornebu__market.Dayahead.max_sale:Tr__4c5fb796265342b5cdabbcfa49d5c9f4
+  externalId: BM__Fornebu__market.Dayahead.max_sale:Tr_STATIC_{"0":10000}
   instanceType: edge
   space: cogShop
   startNode:
@@ -2028,9 +2028,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__4efe15483d6d49f7fd2dafa155abb0ff
+    externalId: Tr_STATIC_{"0":1000}
     space: cogShop
-  externalId: BM__Fornebu__plant.Dalby.max_q_constr:Tr__4efe15483d6d49f7fd2dafa155abb0ff
+  externalId: BM__Fornebu__plant.Dalby.max_q_constr:Tr_STATIC_{"0":1000}
   instanceType: edge
   space: cogShop
   startNode:
@@ -2040,9 +2040,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__501aee238cfd97b145ca989dc9352f03
+    externalId: Tr_STATIC_{"0":1}
     space: cogShop
-  externalId: BM__Fornebu__plant.Dalby.mip_flag:Tr__501aee238cfd97b145ca989dc9352f03
+  externalId: BM__Fornebu__plant.Dalby.mip_flag:Tr_STATIC_{"0":1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -2052,9 +2052,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__44d3a5e55d38613e4311a1e6b34258d5
+    externalId: Tr_STATIC_{"0":1}
     space: cogShop
-  externalId: BM__Fornebu__plant.Dalby.prod_area:Tr__44d3a5e55d38613e4311a1e6b34258d5
+  externalId: BM__Fornebu__plant.Dalby.prod_area:Tr_STATIC_{"0":1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -2064,9 +2064,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__b00c04f96a253185a268473e05a83f08
+    externalId: Tr_STATIC_{"0":42}
     space: cogShop
-  externalId: BM__Fornebu__plant.Holen.max_p_constr:Tr__b00c04f96a253185a268473e05a83f08
+  externalId: BM__Fornebu__plant.Holen.max_p_constr:Tr_STATIC_{"0":42}
   instanceType: edge
   space: cogShop
   startNode:
@@ -2076,9 +2076,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__f6f9046818a3efb2f731a93e008cf0e3
+    externalId: Tr_STATIC_{"0":1000}
     space: cogShop
-  externalId: BM__Fornebu__plant.Holen.max_q_constr:Tr__f6f9046818a3efb2f731a93e008cf0e3
+  externalId: BM__Fornebu__plant.Holen.max_q_constr:Tr_STATIC_{"0":1000}
   instanceType: edge
   space: cogShop
   startNode:
@@ -2088,9 +2088,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__3c2883d903a0ed878475f10b91233425
+    externalId: Tr_STATIC_{"0":1}
     space: cogShop
-  externalId: BM__Fornebu__plant.Holen.mip_flag:Tr__3c2883d903a0ed878475f10b91233425
+  externalId: BM__Fornebu__plant.Holen.mip_flag:Tr_STATIC_{"0":1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -2100,9 +2100,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__2209e5a23827ad3adc00ace16d23edb3
+    externalId: Tr_STATIC_{"0":1}
     space: cogShop
-  externalId: BM__Fornebu__plant.Holen.prod_area:Tr__2209e5a23827ad3adc00ace16d23edb3
+  externalId: BM__Fornebu__plant.Holen.prod_area:Tr_STATIC_{"0":1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -2112,9 +2112,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__f7ffb2ef6efd507edf86ff3841ac1598
+    externalId: Tr_STATIC_{"0":48}
     space: cogShop
-  externalId: BM__Fornebu__plant.Landet.max_p_constr:Tr__f7ffb2ef6efd507edf86ff3841ac1598
+  externalId: BM__Fornebu__plant.Landet.max_p_constr:Tr_STATIC_{"0":48}
   instanceType: edge
   space: cogShop
   startNode:
@@ -2124,9 +2124,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__b97eb30727ff0623b56af7c2dc4b492f
+    externalId: Tr_STATIC_{"0":1000}
     space: cogShop
-  externalId: BM__Fornebu__plant.Landet.max_q_constr:Tr__b97eb30727ff0623b56af7c2dc4b492f
+  externalId: BM__Fornebu__plant.Landet.max_q_constr:Tr_STATIC_{"0":1000}
   instanceType: edge
   space: cogShop
   startNode:
@@ -2136,9 +2136,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__e235bb84cb3aed5ae5aba43fc2e2504b
+    externalId: Tr_STATIC_{"0":1}
     space: cogShop
-  externalId: BM__Fornebu__plant.Landet.mip_flag:Tr__e235bb84cb3aed5ae5aba43fc2e2504b
+  externalId: BM__Fornebu__plant.Landet.mip_flag:Tr_STATIC_{"0":1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -2148,9 +2148,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__b51932a3ec7d7d6981c08a70ff729d51
+    externalId: Tr_STATIC_{"0":1}
     space: cogShop
-  externalId: BM__Fornebu__plant.Landet.prod_area:Tr__b51932a3ec7d7d6981c08a70ff729d51
+  externalId: BM__Fornebu__plant.Landet.prod_area:Tr_STATIC_{"0":1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -2160,9 +2160,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__b73549b202b63484c5208c6f04825601
+    externalId: Tr_STATIC_{"0":2.7}
     space: cogShop
-  externalId: BM__Fornebu__plant.Lien_krv.max_q_constr:Tr__b73549b202b63484c5208c6f04825601
+  externalId: BM__Fornebu__plant.Lien_krv.max_q_constr:Tr_STATIC_{"0":2.7}
   instanceType: edge
   space: cogShop
   startNode:
@@ -2172,9 +2172,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__f6da8a892f6b0d1088116a357b852b80
+    externalId: Tr_STATIC_{"0":1}
     space: cogShop
-  externalId: BM__Fornebu__plant.Lien_krv.mip_flag:Tr__f6da8a892f6b0d1088116a357b852b80
+  externalId: BM__Fornebu__plant.Lien_krv.mip_flag:Tr_STATIC_{"0":1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -2184,9 +2184,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__68330116d4b3bc9a9d93684cc8553d48
+    externalId: Tr_STATIC_{"0":1}
     space: cogShop
-  externalId: BM__Fornebu__plant.Lien_krv.prod_area:Tr__68330116d4b3bc9a9d93684cc8553d48
+  externalId: BM__Fornebu__plant.Lien_krv.prod_area:Tr_STATIC_{"0":1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -2196,9 +2196,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__89ff67a5da0ed6624859bdd4aa87c814
+    externalId: Tr_STATIC_{"0":1000}
     space: cogShop
-  externalId: BM__Fornebu__plant.Lund.max_q_constr:Tr__89ff67a5da0ed6624859bdd4aa87c814
+  externalId: BM__Fornebu__plant.Lund.max_q_constr:Tr_STATIC_{"0":1000}
   instanceType: edge
   space: cogShop
   startNode:
@@ -2208,9 +2208,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__4ad94649e200ae06e61eba88c52c44d7
+    externalId: Tr_STATIC_{"0":0}
     space: cogShop
-  externalId: BM__Fornebu__plant.Lund.mip_flag:Tr__4ad94649e200ae06e61eba88c52c44d7
+  externalId: BM__Fornebu__plant.Lund.mip_flag:Tr_STATIC_{"0":0}
   instanceType: edge
   space: cogShop
   startNode:
@@ -2220,9 +2220,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__f8a9bc2ea0605e2d1f3cc141aa2e4ce0
+    externalId: Tr_STATIC_{"0":1}
     space: cogShop
-  externalId: BM__Fornebu__plant.Lund.prod_area:Tr__f8a9bc2ea0605e2d1f3cc141aa2e4ce0
+  externalId: BM__Fornebu__plant.Lund.prod_area:Tr_STATIC_{"0":1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -2232,9 +2232,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__c73d42bf90f424bf003a990fb83871e9
+    externalId: Tr_STATIC_{"0":184.999}
     space: cogShop
-  externalId: BM__Fornebu__plant.Rull1.max_p_constr:Tr__c73d42bf90f424bf003a990fb83871e9
+  externalId: BM__Fornebu__plant.Rull1.max_p_constr:Tr_STATIC_{"0":184.999}
   instanceType: edge
   space: cogShop
   startNode:
@@ -2244,9 +2244,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__2b7bf6c4799685902cbf25465ec70833
+    externalId: Tr_STATIC_{"0":1000}
     space: cogShop
-  externalId: BM__Fornebu__plant.Rull1.max_q_constr:Tr__2b7bf6c4799685902cbf25465ec70833
+  externalId: BM__Fornebu__plant.Rull1.max_q_constr:Tr_STATIC_{"0":1000}
   instanceType: edge
   space: cogShop
   startNode:
@@ -2256,9 +2256,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__9cb9140e39a772a626d573a13a11d20d
+    externalId: Tr_STATIC_{"0":1}
     space: cogShop
-  externalId: BM__Fornebu__plant.Rull1.mip_flag:Tr__9cb9140e39a772a626d573a13a11d20d
+  externalId: BM__Fornebu__plant.Rull1.mip_flag:Tr_STATIC_{"0":1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -2268,9 +2268,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__6c6c835a8d939f525de1be4db93bf112
+    externalId: Tr_STATIC_{"0":1}
     space: cogShop
-  externalId: BM__Fornebu__plant.Rull1.prod_area:Tr__6c6c835a8d939f525de1be4db93bf112
+  externalId: BM__Fornebu__plant.Rull1.prod_area:Tr_STATIC_{"0":1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -2280,9 +2280,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__5ba0a8de16c87f19668da7e82a7f46e7
+    externalId: Tr_STATIC_{"0":1000}
     space: cogShop
-  externalId: BM__Fornebu__plant.Rull2.max_q_constr:Tr__5ba0a8de16c87f19668da7e82a7f46e7
+  externalId: BM__Fornebu__plant.Rull2.max_q_constr:Tr_STATIC_{"0":1000}
   instanceType: edge
   space: cogShop
   startNode:
@@ -2292,9 +2292,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__413232c3896baaa605ceb6d4b1a25fcf
+    externalId: Tr_STATIC_{"0":1}
     space: cogShop
-  externalId: BM__Fornebu__plant.Rull2.mip_flag:Tr__413232c3896baaa605ceb6d4b1a25fcf
+  externalId: BM__Fornebu__plant.Rull2.mip_flag:Tr_STATIC_{"0":1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -2304,9 +2304,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__36de8edc36aedc69218462038d7bd00a
+    externalId: Tr_STATIC_{"0":1}
     space: cogShop
-  externalId: BM__Fornebu__plant.Rull2.prod_area:Tr__36de8edc36aedc69218462038d7bd00a
+  externalId: BM__Fornebu__plant.Rull2.prod_area:Tr_STATIC_{"0":1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -2316,9 +2316,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__4465a858a9c39f9b9b855cff394f5272
+    externalId: Tr_STATIC_{"0":1000}
     space: cogShop
-  externalId: BM__Fornebu__plant.Scott.max_q_constr:Tr__4465a858a9c39f9b9b855cff394f5272
+  externalId: BM__Fornebu__plant.Scott.max_q_constr:Tr_STATIC_{"0":1000}
   instanceType: edge
   space: cogShop
   startNode:
@@ -2328,9 +2328,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__a21876bb37d43a772e2178b7a88ffb9a
+    externalId: Tr_STATIC_{"0":1}
     space: cogShop
-  externalId: BM__Fornebu__plant.Scott.mip_flag:Tr__a21876bb37d43a772e2178b7a88ffb9a
+  externalId: BM__Fornebu__plant.Scott.mip_flag:Tr_STATIC_{"0":1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -2340,9 +2340,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__d4eaad3bf4532d0124db12b17186b631
+    externalId: Tr_STATIC_{"0":1}
     space: cogShop
-  externalId: BM__Fornebu__plant.Scott.prod_area:Tr__d4eaad3bf4532d0124db12b17186b631
+  externalId: BM__Fornebu__plant.Scott.prod_area:Tr_STATIC_{"0":1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -2352,9 +2352,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__9f81332c3157d951e9d76cee56878e4a
+    externalId: Tr_STATIC_{"0":1000}
     space: cogShop
-  externalId: BM__Fornebu__plant.Strand_krv.max_q_constr:Tr__9f81332c3157d951e9d76cee56878e4a
+  externalId: BM__Fornebu__plant.Strand_krv.max_q_constr:Tr_STATIC_{"0":1000}
   instanceType: edge
   space: cogShop
   startNode:
@@ -2364,9 +2364,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__b0bdc839a2c326ec16d992d6368d6231
+    externalId: Tr_STATIC_{"0":0}
     space: cogShop
-  externalId: BM__Fornebu__plant.Strand_krv.mip_flag:Tr__b0bdc839a2c326ec16d992d6368d6231
+  externalId: BM__Fornebu__plant.Strand_krv.mip_flag:Tr_STATIC_{"0":0}
   instanceType: edge
   space: cogShop
   startNode:
@@ -2376,9 +2376,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__f03c3a72d01871130a6547829a88c8a4
+    externalId: Tr_STATIC_{"0":1}
     space: cogShop
-  externalId: BM__Fornebu__plant.Strand_krv.prod_area:Tr__f03c3a72d01871130a6547829a88c8a4
+  externalId: BM__Fornebu__plant.Strand_krv.prod_area:Tr_STATIC_{"0":1}
   instanceType: edge
   space: cogShop
   startNode:
@@ -2388,9 +2388,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__0044796bfab925ef595070cd8c36657c
+    externalId: Tr_STATIC_{"0":48.6}
     space: cogShop
-  externalId: BM__Fornebu__production_group.T2Landet.max_p_limit:Tr__0044796bfab925ef595070cd8c36657c
+  externalId: BM__Fornebu__production_group.T2Landet.max_p_limit:Tr_STATIC_{"0":48.6}
   instanceType: edge
   space: cogShop
   startNode:
@@ -2400,9 +2400,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__4bcc7c51acb87a86af1a2932612c7220
+    externalId: Tr_STATIC_{"0":0}
     space: cogShop
-  externalId: BM__Fornebu__reserve_group.rkom_up.rr_up_obligation:Tr__4bcc7c51acb87a86af1a2932612c7220
+  externalId: BM__Fornebu__reserve_group.rkom_up.rr_up_obligation:Tr_STATIC_{"0":0}
   instanceType: edge
   space: cogShop
   startNode:
@@ -2412,9 +2412,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__93912d501071ef041f661c82a02f3e74
+    externalId: Tr_STATIC_{"0":109}
     space: cogShop
-  externalId: BM__Fornebu__reservoir.Dalbysvatn.tactical_limit_max:Tr__93912d501071ef041f661c82a02f3e74
+  externalId: BM__Fornebu__reservoir.Dalbysvatn.tactical_limit_max:Tr_STATIC_{"0":109}
   instanceType: edge
   space: cogShop
   startNode:
@@ -2424,9 +2424,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__9b90031867d25948c18836e5f27e3bb2
+    externalId: Tr_STATIC_{"0":9.2}
     space: cogShop
-  externalId: BM__Fornebu__reservoir.Danielsen.tactical_limit_max:Tr__9b90031867d25948c18836e5f27e3bb2
+  externalId: BM__Fornebu__reservoir.Danielsen.tactical_limit_max:Tr_STATIC_{"0":9.2}
   instanceType: edge
   space: cogShop
   startNode:
@@ -2436,9 +2436,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__744654bd678adcbf5d1a61cc544df46c
+    externalId: Tr_ADD_{"value":0}
     space: cogShop
-  externalId: BM__Fornebu__reservoir.Livincovs.inflow:Tr__744654bd678adcbf5d1a61cc544df46c
+  externalId: BM__Fornebu__reservoir.Livincovs.inflow:Tr_ADD_{"value":0}
   instanceType: edge
   space: cogShop
   startNode:
@@ -2448,9 +2448,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__96b2dd88cedbc4564e7d920f074aff60
+    externalId: Tr_MULTIPLY_{"value":0.16}
     space: cogShop
-  externalId: BM__Fornebu__reservoir.Livincovs.inflow:Tr__96b2dd88cedbc4564e7d920f074aff60
+  externalId: BM__Fornebu__reservoir.Livincovs.inflow:Tr_MULTIPLY_{"value":0.16}
   instanceType: edge
   space: cogShop
   startNode:
@@ -2460,9 +2460,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr__8a6f32bfefb7aeeb02b0c9be8a7cefaa
+    externalId: Tr_STATIC_{"0":1.42}
     space: cogShop
-  externalId: BM__Fornebu__reservoir.Sirefelt.tactical_limit_max:Tr__8a6f32bfefb7aeeb02b0c9be8a7cefaa
+  externalId: BM__Fornebu__reservoir.Sirefelt.tactical_limit_max:Tr_STATIC_{"0":1.42}
   instanceType: edge
   space: cogShop
   startNode:
@@ -8187,2266 +8187,649 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__0044796bfab925ef595070cd8c36657c
+- externalId: Tr_ADD_{"value":0}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 48.6}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__00565f4836483e4afd66f3f50b094144
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 0}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__02a31f94322892b06ba76966bc5628a4
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": 0}'
+      arguments: '{"value":0}'
       method: ADD
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__0333a130b27976dc1550fe3e7c93bb09
+- externalId: Tr_ADD_{"value":1}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 10}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__049188eacfe2912053b94f339e6483bf
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": -1}'
-      method: MULTIPLY
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__060636ab2aaa4588d7269bbfc2c30e21
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": 0.14}'
-      method: MULTIPLY
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__09a38e8692f1da9510bf568b36c15fb9
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": 0.53}'
-      method: MULTIPLY
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__0a6877294cb46b573071350181574623
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 7}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__0b6f1f1628dcbf5fa0584b99ad0a14b0
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 4}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__0c08b8990137d1919f0186f70dfd8762
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 50000}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__0cdddc6c1d2d797971a5848a8cf8fe1e
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 150}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__0e5e99fa1a161263a09d0dc2e2f260ac
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": 1}'
+      arguments: '{"value":1}'
       method: ADD
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__100b41a376c06040aa2f052166bc1974
+- externalId: Tr_MULTIPLY_{"value":-1}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"value": 0}'
-      method: ADD
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__11bfbeca2c49f39631725aba4f5144ab
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 1000}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__13db406f09b047fbef6d5c4da49535a3
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 12}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__15ef8c7b80056d16ab804aed59d62543
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 38}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__17a2c89d88f53f0128df299df486c970
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": -1}'
+      arguments: '{"value":-1}'
       method: MULTIPLY
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__17e47d02dca31ac0c7406cfd32a76210
+- externalId: Tr_MULTIPLY_{"value":0.042}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 1000}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__184cf8531e7fe4ead5b2d4e78f8f1f60
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 12}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__1915a0f4a19934c282026ab9ce3b2c38
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": 1}'
-      method: ADD
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__1b925013feb5a38c96550ab0598cf337
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 90}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__1c67836104964add81cbcd3deae8e878
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 12}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__1c729be21d827825db681cdef01d08ba
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 2}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__1ef18e33c6e0aba1a21a3ea3793c9686
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 4}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__1f171480482ba5ceeaf339c37de5c3d7
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": -1}'
+      arguments: '{"value":0.042}'
       method: MULTIPLY
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__20e93b8f2df41e846adc68a209150e0e
+- externalId: Tr_MULTIPLY_{"value":0.069}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 50000}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__2209e5a23827ad3adc00ace16d23edb3
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 1}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__22fb6146d7fba25519abbdec7f51e78a
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": 1}'
+      arguments: '{"value":0.069}'
       method: MULTIPLY
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__29a25af278ee6ae509d5a7ba589ba87b
+- externalId: Tr_MULTIPLY_{"value":0.078}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 38}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__29a4ea2781f795bc183dbe256d0b1b89
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 6}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__2b7bf6c4799685902cbf25465ec70833
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 1000}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__2bbe842c3d3c7355d58510d95ea9d6fb
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 1000}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__2d2de47d744e7af8b69bd7a9faba3396
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 100000}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__2f7e06f0e2d3844002801fdf803f2fd3
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 1000}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__2f9e91b68e7dfda86399bba5ac027ae2
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": 0}'
-      method: ADD
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__3233acc6b5cba9365a0c4eb20ab77310
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 4.2}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__33e5d623ea18289c4a583d729b599954
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 0}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__341d61382a639437acb344fa8b6210fe
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 1000}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__36de8edc36aedc69218462038d7bd00a
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 1}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__37ddde5b28af165aef736064dd24071b
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 30}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__39356bd86af6a2e980455bf0c6e937f9
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": 0.151}'
+      arguments: '{"value":0.078}'
       method: MULTIPLY
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__3a9828acaf5fd4aa11098166d3eb3c22
+- externalId: Tr_MULTIPLY_{"value":0.08}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 6}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__3abbf8128c4ce4d31df64d5393d11533
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": -1}'
+      arguments: '{"value":0.08}'
       method: MULTIPLY
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__3c2883d903a0ed878475f10b91233425
+- externalId: Tr_MULTIPLY_{"value":0.14}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 1}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__3ccd6d7796c9f3b239c5ed87dd4cbc6a
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": 1}'
-      method: ADD
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__3da40f3f00e5c1413816c713bff3140c
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 2.5}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__3f9e0956ef1ad5734bffac8c2d279172
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 200}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__408e51f6bf98f6680536aaac541a149c
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 45}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__408f50f4c4badc3307608c59fd89b67a
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 250}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__40f6f3e27fd9392f02945fea91db79d6
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 48}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__413232c3896baaa605ceb6d4b1a25fcf
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 1}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__41ce3a3092df502ccb3a15e50b512869
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 0}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__42d2a7c7a10afc5e3d90147c497c1c03
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 100000}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__4329e4d4c685bb9a83d6e6b6b34b57f8
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 1000}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__4465a858a9c39f9b9b855cff394f5272
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 1000}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__44d3a5e55d38613e4311a1e6b34258d5
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 1}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__461b01daf4330c92383d5ae5edd846ff
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 10000}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__46b4c850a9539befb88add165b19fb1d
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 1000}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__4732c5ce2f16ec77f69e112782dc382c
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 50}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__4881ce16016406e7a5fc5320d6ed297c
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 0}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__49ac4c6f1d0f1ae6a151372b135dd264
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 0}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__4ad1d5b9a452d768f5ac821f6dd4d1a6
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 1000}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__4ad94649e200ae06e61eba88c52c44d7
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 0}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__4b9a154bf4339daf40d9a7ea947a223c
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": 1}'
-      method: ADD
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__4bcc7c51acb87a86af1a2932612c7220
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 0}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__4c5fb796265342b5cdabbcfa49d5c9f4
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 10000}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__4efe15483d6d49f7fd2dafa155abb0ff
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 1000}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__501aee238cfd97b145ca989dc9352f03
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 1}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__50cb48c30e0c3c9ee21000a4e842ddf5
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 10}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__53d7bdd38f76b9e87a0e8834b60d4030
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 3.1}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__55960e678e5825e3c8e14ff817ac342e
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 0}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__561fd2ca1c4fb2fbdac71cc1b558d355
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": 0.069}'
+      arguments: '{"value":0.14}'
       method: MULTIPLY
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__572fc4400102e3e26dc2f3acdb2a18fa
+- externalId: Tr_MULTIPLY_{"value":0.151}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 1000}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__5ae3e5b615e8283e17cf3b3b66498e94
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 250}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__5b0ece2f98211d33282049b1c33a1003
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": 0.078}'
+      arguments: '{"value":0.151}'
       method: MULTIPLY
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__5ba0a8de16c87f19668da7e82a7f46e7
+- externalId: Tr_MULTIPLY_{"value":0.16}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 1000}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__5c066144b56751100926fe9078292a05
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 250}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__5c71160930bfe0a4282490ed57dd9408
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": 0.08}'
+      arguments: '{"value":0.16}'
       method: MULTIPLY
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__5cac75fa8fd13f4367fe99672ef9de3a
+- externalId: Tr_MULTIPLY_{"value":0.53}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 0}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__5fab00fe309dce6d033dd170f89a3df1
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 32}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__64769605d58ee33037c32dc9505fbe6d
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": -1}'
+      arguments: '{"value":0.53}'
       method: MULTIPLY
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__64de70b2df7f3f683381dcc7070589b3
+- externalId: Tr_MULTIPLY_{"value":1}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 1000}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__66015728cf1128a11f8c0dc72b976239
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 2}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__68330116d4b3bc9a9d93684cc8553d48
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 1}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__6c3119410469b22fb7621434315a4959
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 250}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__6c6c835a8d939f525de1be4db93bf112
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 1}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__6e358414229ecde11db0df12529352e9
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 1000}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__6f7142d14043eac1c89fb47d0439aabb
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 0}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__6f889990c02f76174919ed61cfc6cdc3
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": -1}'
+      arguments: '{"value":1}'
       method: MULTIPLY
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__7159cbde6831d974626c941f142367cd
+- externalId: Tr_STATIC_{"0":0.6}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 4}'
+      arguments: '{"0":0.6}'
       method: STATIC
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__716d58719ac044de6cd60bc5c9c257ba
+- externalId: Tr_STATIC_{"0":0}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 85}'
+      arguments: '{"0":0}'
       method: STATIC
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__722bce1c6ab2681aa69bd87fbef2a6d5
+- externalId: Tr_STATIC_{"0":1.42}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 28}'
+      arguments: '{"0":1.42}'
       method: STATIC
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__729c31fc3b392b044eb6c2c2b5b7fd09
+- externalId: Tr_STATIC_{"0":100000}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"value": 1}'
-      method: ADD
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__7396fe0d27c1cdfdb8c6ae002c6daf0f
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 0}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__744654bd678adcbf5d1a61cc544df46c
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": 0}'
-      method: ADD
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__7739df23812916403c89246821203182
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": 1}'
-      method: ADD
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__7906c0b7c57205f02bb2e6f21d0e1994
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 12}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__7a614b810db517a9dcf19b3c1dc04cf5
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 50000}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__7ab5298009859eb84cfb2faf5c6286da
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 10}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__7c3455eadd8616bb65c3642066182e15
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": 1}'
-      method: ADD
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__7c86dbeb98d0581c0750bd204c3423cd
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 0}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__7e4f592964e6481a7b5be513dc1f76a4
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": 1}'
-      method: ADD
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__7f8eac0230bb6c884cbf858e59d915ec
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": 1}'
-      method: ADD
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__80c8d866a6526757741df78f12c7ad45
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 0}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__8183b3aa1773ace1d8ee771640aa6fe5
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 1000}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__8267e7aef5b045e24e4819188b5f6020
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": 0}'
-      method: ADD
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__83f36a32e56b0a4c60a1d7c68ec00fa1
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 6}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__844761285c484b6d82327badf96d3258
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 150}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__84aa1594715477119e39d6e74a6da5f2
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 2}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__86f19c26960a446048203d1d9b5bdad5
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 1000}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__8948d09fc8ef302bed6cdafeb167141f
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 6}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__89ff67a5da0ed6624859bdd4aa87c814
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 1000}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__8a6f32bfefb7aeeb02b0c9be8a7cefaa
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 1.42}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__8a9e3cf2bdc0910b90df8a777c532731
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 1000}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__8d595c7414c74e2bfce26986462a920a
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": -1}'
-      method: MULTIPLY
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__8e1057cda4449f3306a3c1b50bf5f7be
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": 0.042}'
-      method: MULTIPLY
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__9109046e6c8bbf0938587719423ed8c0
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 672}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__93912d501071ef041f661c82a02f3e74
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 109}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__96b2dd88cedbc4564e7d920f074aff60
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": 0.16}'
-      method: MULTIPLY
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__9a8733346c00859874168c179002fb0d
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 85}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__9aea16cbc9d0b4bea2928cb9f84aea16
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 250}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__9b90031867d25948c18836e5f27e3bb2
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 9.2}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__9cb9140e39a772a626d573a13a11d20d
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 1}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__9f81332c3157d951e9d76cee56878e4a
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 1000}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__a21876bb37d43a772e2178b7a88ffb9a
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 1}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__a49bc4456fa5df3b1df2f80ce5b39227
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 50000}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__a87f502c2e2d49fec041d43e0aa040fe
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 74}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__a92e77e53c02221fe36b91b6f03ede22
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 100000}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__a9da19b3b0b8010af8b1cfa156ff259c
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 6}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__ac94dc84d1bca0e65d94f6e29ae85337
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": 0}'
-      method: ADD
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__b00c04f96a253185a268473e05a83f08
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 42}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__b0bdc839a2c326ec16d992d6368d6231
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 0}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__b241a430c34dbb6d1d5893a1342f50af
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 27}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__b46d9eb3953f627eedb4843273b97cf4
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": 1}'
-      method: ADD
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__b51932a3ec7d7d6981c08a70ff729d51
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 1}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__b539f49567fb96dacd5d84cccf47dc58
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 4}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__b5536701706fd8cbcdb35101e6aebeb8
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 8}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__b73549b202b63484c5208c6f04825601
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 2.7}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__b86711eed297cdccf7379a9a1a572abf
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 0}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__b93b84dcea6710fa6a0d8e399d766a9e
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 38}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__b97eb30727ff0623b56af7c2dc4b492f
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 1000}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__b983632a2ec1243deaa03177f68c1061
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 25}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__befa1eb0cecf6d54da4fef437afa1862
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 12}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__c344c5a6df9dd2c834b9e2f244a08c73
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 4.9}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__c58e93abe2bc8ac8f53dc669864dd5bc
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 76}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__c73d42bf90f424bf003a990fb83871e9
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 184.999}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__c96890b975dfeb707bbb17729677a416
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 38}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__cbd77d7bec7a5287894330d04e0f48ea
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 0}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__cbde7ba2bcf1ac375100cf6f0d1c282b
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 6}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__cccc29c8bd298633800a74325d22bcc8
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 95}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__ce7d2455ce6f9ae0eed129a142829bc0
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 38}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__cf65f6a5a360b3285136abfeddbd133a
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 32}'
-      method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__d0321ebc4580a56b6c7b015e15d13a0d
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": -1}'
-      method: MULTIPLY
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__d1cae11bc6a62e776846006c0a84cee8
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 0}'
+      arguments: '{"0":100000}'
       method: STATIC
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__d2ad261c11d4b2f0f519492768f477bc
+- externalId: Tr_STATIC_{"0":10000}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 0}'
+      arguments: '{"0":10000}'
       method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__d2f81da3ef19df823c96800627bed92c
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": 1}'
-      method: ADD
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__d4015048aea431583829604716a1171f
+- externalId: Tr_STATIC_{"0":1000}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 2}'
+      arguments: '{"0":1000}'
       method: STATIC
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__d4ea23ec0981f91854ee081d52be6438
+- externalId: Tr_STATIC_{"0":100}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 1000}'
+      arguments: '{"0":100}'
       method: STATIC
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__d4eaad3bf4532d0124db12b17186b631
+- externalId: Tr_STATIC_{"0":109}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 1}'
+      arguments: '{"0":109}'
       method: STATIC
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__d523606ddbf29f85fd2d54b023b3f881
+- externalId: Tr_STATIC_{"0":10}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 100000}'
+      arguments: '{"0":10}'
       method: STATIC
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__d7017be0541c3637e3a9728106ee62b1
+- externalId: Tr_STATIC_{"0":12}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 74}'
+      arguments: '{"0":12}'
       method: STATIC
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__d7839ce6468f9d9a6252817dcc2bfab8
+- externalId: Tr_STATIC_{"0":150}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 150}'
+      arguments: '{"0":150}'
       method: STATIC
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__db89d70f639716175b4ba9a155b01d8c
+- externalId: Tr_STATIC_{"0":184.999}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 200}'
+      arguments: '{"0":184.999}'
       method: STATIC
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__dce3fcae0308c6a4d3ace37b3171e79f
+- externalId: Tr_STATIC_{"0":19}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 100}'
+      arguments: '{"0":19}'
       method: STATIC
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__dfbbc00ed09fcc3999d1fc67139eec9d
+- externalId: Tr_STATIC_{"0":1}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 0}'
+      arguments: '{"0":1}'
       method: STATIC
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__e0bcb0b026ce6e512188e20adf904758
+- externalId: Tr_STATIC_{"0":2.5}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 4}'
+      arguments: '{"0":2.5}'
       method: STATIC
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__e235bb84cb3aed5ae5aba43fc2e2504b
+- externalId: Tr_STATIC_{"0":2.7}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 1}'
+      arguments: '{"0":2.7}'
       method: STATIC
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__e25e7c9160d89201aeb636b9623a0fde
+- externalId: Tr_STATIC_{"0":200}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 1000}'
+      arguments: '{"0":200}'
       method: STATIC
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__e487f1a7977c08c6d06320d312ffd157
+- externalId: Tr_STATIC_{"0":250}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 0}'
+      arguments: '{"0":250}'
       method: STATIC
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__e98ec4e8808e9c1246e3b84d97452a3f
+- externalId: Tr_STATIC_{"0":25}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 1}'
+      arguments: '{"0":25}'
       method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__e9daf0c88693347cbe35e9310c204022
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": 1}'
-      method: ADD
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__eb509d291a111acedeadf537ac3f0a47
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": -1}'
-      method: MULTIPLY
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__eba172af2b308cbd91b38751d168876f
+- externalId: Tr_STATIC_{"0":27}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 500}'
+      arguments: '{"0":27}'
       method: STATIC
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__ecd991d1de7d01625417f43649d8cf5b
+- externalId: Tr_STATIC_{"0":28}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 100}'
+      arguments: '{"0":28}'
       method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__eda6b7c5cd9e95a16682a05e9f4d57db
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": 0}'
-      method: ADD
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__edd3bb553c8d6cb6c4e4d0dcbcfc308e
+- externalId: Tr_STATIC_{"0":2}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 19}'
+      arguments: '{"0":2}'
       method: STATIC
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__ee30c4e2e6f64bd2d11183904936a2ee
+- externalId: Tr_STATIC_{"0":3.1}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 1000}'
+      arguments: '{"0":3.1}'
       method: STATIC
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__ee7e472d9c97302ce17eaf5f6d3e029a
+- externalId: Tr_STATIC_{"0":30}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 0}'
+      arguments: '{"0":30}'
       method: STATIC
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__ee8a545320383d7126ecfa3f41df0f9a
+- externalId: Tr_STATIC_{"0":32}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 50000}'
+      arguments: '{"0":32}'
       method: STATIC
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__eecc888c4138fb9d0c6a2d50a5ca8c88
+- externalId: Tr_STATIC_{"0":38}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 12}'
+      arguments: '{"0":38}'
       method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__eff1806507561a8710e746c5fbdc25c6
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": -1}'
-      method: MULTIPLY
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__f03c3a72d01871130a6547829a88c8a4
+- externalId: Tr_STATIC_{"0":4.2}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 1}'
+      arguments: '{"0":4.2}'
       method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__f0c572fe279c0a8818e3117db204b0df
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": 0}'
-      method: ADD
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__f13a4be34f7746c9e173894c29fdfa27
+- externalId: Tr_STATIC_{"0":4.9}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 95}'
+      arguments: '{"0":4.9}'
       method: STATIC
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__f2105c604db57f7522455e7a333ee4cf
+- externalId: Tr_STATIC_{"0":42}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 10}'
+      arguments: '{"0":42}'
       method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__f2c30284f84905a3300b767455ad95c7
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": -1}'
-      method: MULTIPLY
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__f4c77636640f867082d30940c33172f3
+- externalId: Tr_STATIC_{"0":43}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 85}'
+      arguments: '{"0":43}'
       method: STATIC
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__f50837fa59ccebad3d513c3cd96d0710
+- externalId: Tr_STATIC_{"0":45}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 0}'
+      arguments: '{"0":45}'
       method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__f60df4ed352ec766bd1eb931e8e3e862
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": 0}'
-      method: ADD
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__f6da8a892f6b0d1088116a357b852b80
+- externalId: Tr_STATIC_{"0":48.6}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 1}'
+      arguments: '{"0":48.6}'
       method: STATIC
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__f6e7bafeaa33b60c9e66a210eb36a32a
+- externalId: Tr_STATIC_{"0":48}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 0}'
+      arguments: '{"0":48}'
       method: STATIC
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__f6f9046818a3efb2f731a93e008cf0e3
+- externalId: Tr_STATIC_{"0":4}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 1000}'
+      arguments: '{"0":4}'
       method: STATIC
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__f7d23d0b02248603ecbeaebe6263b62b
+- externalId: Tr_STATIC_{"0":50000}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 0}'
+      arguments: '{"0":50000}'
       method: STATIC
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__f7ffb2ef6efd507edf86ff3841ac1598
+- externalId: Tr_STATIC_{"0":500}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 48}'
+      arguments: '{"0":500}'
       method: STATIC
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__f80e8fc1c1760a710797b1679111382d
+- externalId: Tr_STATIC_{"0":50}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 1000}'
+      arguments: '{"0":50}'
       method: STATIC
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__f8a9bc2ea0605e2d1f3cc141aa2e4ce0
+- externalId: Tr_STATIC_{"0":672}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 1}'
+      arguments: '{"0":672}'
       method: STATIC
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__f91bdf72e3074e6e9bcaa15e595046d5
+- externalId: Tr_STATIC_{"0":6}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 50000}'
+      arguments: '{"0":6}'
       method: STATIC
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__fa6cea94bffc69e23eea80a46f5f1945
+- externalId: Tr_STATIC_{"0":74}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 1000}'
+      arguments: '{"0":74}'
       method: STATIC
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__fa774bb5fd70f634f45ab690001f5474
+- externalId: Tr_STATIC_{"0":76}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 0.6}'
+      arguments: '{"0":76}'
       method: STATIC
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__fad289c561e131e5a2be48a44ceb5d6e
+- externalId: Tr_STATIC_{"0":7}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 43}'
+      arguments: '{"0":7}'
       method: STATIC
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr__fc706a8e5a566827faa3e63f47e0b67c
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": -1}'
-      method: MULTIPLY
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__fd04fb71c058b949288a6b2f7844f3cc
+- externalId: Tr_STATIC_{"0":85}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 0}'
+      arguments: '{"0":85}'
       method: STATIC
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__fd63d439820de699fbdffbdd6a49105b
+- externalId: Tr_STATIC_{"0":8}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 12}'
+      arguments: '{"0":8}'
       method: STATIC
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__ff034cbf6b97ee0975b5a5fad3b7f8b9
+- externalId: Tr_STATIC_{"0":9.2}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 6}'
+      arguments: '{"0":9.2}'
       method: STATIC
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__ff07239696f93878fbdd3b8cd763beb0
+- externalId: Tr_STATIC_{"0":90}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 1000}'
+      arguments: '{"0":90}'
       method: STATIC
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr__ff94668c5721f8fa04fc06af1a8475dd
+- externalId: Tr_STATIC_{"0":95}
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 12}'
+      arguments: '{"0":95}'
       method: STATIC
     source:
       externalId: Transformation
