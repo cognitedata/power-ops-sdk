@@ -101,8 +101,8 @@ def dump_yaml(data: dict, yaml_path: Path, encoding="utf-8"):
         safe_dump(data, stream)
 
 
-def get_pydantic_annotation(field_annotation) -> tuple[Any, Type[dict] | Type[list] | None]:
-    outer: Type[dict] | Type[list] | None = None
+def get_pydantic_annotation(field_annotation: Any) -> tuple[Any, Type[dict] | Type[list] | None]:
+    outer: Type[dict] | Type[list] | None
     if not (origin := get_origin(field_annotation)):
         return field_annotation, None
     if origin is list:
