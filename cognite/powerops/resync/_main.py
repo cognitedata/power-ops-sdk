@@ -12,7 +12,7 @@ from cognite.powerops.clients.powerops_client import get_powerops_client, PowerO
 from cognite.powerops.resync._logger import configure_debug_logging
 from cognite.powerops.resync.config.resource_collection import ResourceCollection
 from cognite.powerops.resync.config.resync_config import ReSyncConfig
-from cognite.powerops.resync.models.base import Model, AssetModel
+from cognite.powerops.resync.models.base import Model, AssetModel  # type: ignore[attr-defined]
 from cognite.powerops.resync import models
 from cognite.powerops.resync.to_models.transform import transform
 from yaml import safe_dump
