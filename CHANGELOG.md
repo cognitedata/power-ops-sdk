@@ -13,6 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.41.0] - 2023-08-30
+### Changed
+* Moved `shop_results.ipynb` to `docs\` and updated `mkdocs.yml` to refrence the notebook.
+
+
 ## [0.40.1] - 2023-08-30
 ### Fixed
 * `powerops apply` only run `add`, `remove` or `changed` if there are any changes to the models. This is now fixed such
