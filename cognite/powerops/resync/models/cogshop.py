@@ -69,7 +69,7 @@ class CogShop1Asset(CogShopCore, DataModel, protected_namespaces=()):
         transformations = cog_shop.transformations.list(limit=-1)
         files = cog_shop.file_refs.list(limit=-1)
 
-        transformation_by_id = {t.external_id: t for t in transformations}
+        transformation_by_id: dict[str, cogshop_v1.TransformationApply] = {t.external_id: t for t in transformations}
         mappings_by_id = {}
         readme_fields = {"created_time", "deleted_time", "last_updated_time", "version"}
         for transformation in transformations:
@@ -79,7 +79,9 @@ class CogShop1Asset(CogShopCore, DataModel, protected_namespaces=()):
 
         for mapping in base_mappings:
             data = mapping.model_dump(exclude=readme_fields)
-            data["transformations"] = [transformation_by_id[t] for t in data["transformations"]]
+            data["transformations"] = sorted(
+                [transformation_by_id[t] for t in data["transformations"]], lambda x: x.order
+            )
             apply = cogshop_v1.MappingApply(**data)
             mappings_by_id[apply.external_id] = apply
 
@@ -134,3 +136,6 @@ class CogShop1Asset(CogShopCore, DataModel, protected_namespaces=()):
         self.transformations = self.ordering_dict(self.transformations)
         for template in self.model_templates.values():
             template.base_mappings = sorted(template.base_mappings, key=lambda x: x.external_id)
+
+        for mapping in self.mappings.values():
+            mapping.transformations = sorted(mapping.transformations, key=lambda x: x.order)
