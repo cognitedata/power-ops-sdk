@@ -7,6 +7,8 @@ MarketModel:
     sequences: 160
     time_series: 0
   domain:
+    benchmark_processes: 1
     combinations: 2
+    dayahead_processes: 4
     markets: 2
-    processes: 9
+    rkom_processes: 4

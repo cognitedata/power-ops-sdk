@@ -2,8 +2,6 @@ from __future__ import annotations
 
 from typing import cast, Type
 
-from cognite.powerops.cdf_labels import AssetLabel, RelationshipLabel
-from cognite.powerops.resync.config.resource_collection import ResourceCollection
 from cognite.powerops.resync.config.resync_config import ReSyncConfig
 from cognite.powerops.resync.models.base import AssetModel, DataModel, Model
 from cognite.powerops.resync import models
@@ -16,7 +14,7 @@ def transform(
     config: ReSyncConfig,
     market_name: str,
     model_types: set[Type[Model]],
-) -> tuple[ResourceCollection, list[Model]]:
+) -> list[Model]:
     asset_models: list[AssetModel] = []
     data_models: list[DataModel] = []
 
@@ -68,19 +66,5 @@ def transform(
             rkom_market_model = to_rkom_data_model(config.market, market_name)
             data_models.append(rkom_market_model)
 
-    collection = ResourceCollection()
-    if has_asset_model:
-        labels = AssetLabel.as_label_definitions() + RelationshipLabel.as_label_definitions()
-        collection.add(labels)
     all_models: list[Model] = cast(list[Model], asset_models) + cast(list[Model], data_models)
-    for model in all_models:
-        collection.add(model.sequences())
-        collection.add(model.files())
-
-    for asset_model in asset_models:
-        collection.add(asset_model.parent_assets())
-        collection.add(asset_model.assets())
-        collection.add(asset_model.relationships())
-    for data_model in data_models:
-        collection.add(data_model.instances())
-    return collection, all_models
+    return all_models

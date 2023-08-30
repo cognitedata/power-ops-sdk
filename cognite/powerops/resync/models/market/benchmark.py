@@ -4,7 +4,7 @@ from __future__ import annotations
 from typing import ClassVar, Union
 
 from cognite.client.data_classes import TimeSeries
-from pydantic import Field, field_validator, model_validator
+from pydantic import Field, field_validator, model_validator, model_serializer
 
 from cognite.powerops.cdf_labels import AssetLabel
 from cognite.powerops.resync.models.base import NonAssetType
@@ -27,6 +27,10 @@ class ProductionPlanTimeSeries(NonAssetType):
             name, series = next(iter(value.items()))
             return {"name": name, "series": [TimeSeries(external_id=s) for s in series]}
         return value
+
+    @model_serializer()
+    def ser_dict(self) -> dict:
+        return {self.name: [s.external_id for s in self.series]}
 
 
 class BenchmarkProcess(Process):

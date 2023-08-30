@@ -13,6 +13,33 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.40.1] - 2023-08-30
+### Fixed
+* `powerops apply` only run `add`, `remove` or `changed` if there are any changes to the models. This is now fixed such
+   that `add`, `remove` or `changed` can all run.
+
+## [0.40.0] - 2023-08-30
+### Changed
+* Removed use of hashing for external ids in `CogShop1Asset` asset model.
+
+
+## [0.39.1] - 2023-08-29
+### Fixed
+* Fixed bug when running `powerops plan` or `powerops apply` in a Python `3.11` environment.
+  This raised `NotImplementedError`. This is now fixed.
+
+## [0.39.0] - 2023-08-29
+### Added
+* The `powerops apply` now deletes resource in CDF if they are not present in the configurations.
+* Support for detection changes in the content of `Sequences` and `Files` and update them in CDF if they have changed.
+
+### Improved
+* Display of differences when running `powerops plan` or `powerops apply` is now more readable.
+* Significant performance improvements when running `powerops plan` and `powerops apply`. Example,
+  running `powerops plan` for the `ProductionModel` went from 77 seconds to 8 seconds for real use case.
+
+
+
 ## [0.38.3] - 2023-08-25
 ### Fixed
 * Fixed bugs when running `powerops plan` some edge case could raise and error as a missing argument

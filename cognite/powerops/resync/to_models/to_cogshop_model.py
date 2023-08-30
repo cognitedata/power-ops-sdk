@@ -204,14 +204,10 @@ def to_cogshop_asset_model(
                     timeseries_external_id=row.time_series_external_id,
                     transformations=[
                         cogshop_v1.TransformationApply(
-                            external_id=make_ext_id(
-                                watercourse.name,
-                                row.shop_model_path,
-                                transformation.transformation.name,
-                                json.dumps(transformation.kwargs or {}),
-                            ),
+                            external_id=f"Tr_{transformation.transformation.name}_"
+                            f"{(dumped_kwargs := json.dumps(transformation.kwargs or {}, separators=('', ':')))}",
                             method=transformation.transformation.name,
-                            arguments=json.dumps(transformation.kwargs or {}),
+                            arguments=dumped_kwargs,
                         )
                         for transformation in (row.transformations or [])
                     ],
@@ -223,6 +219,21 @@ def to_cogshop_asset_model(
         )
         model.model_templates[model_template.external_id] = model_template
 
+    model.mappings.update(
+        {
+            mapping.external_id: mapping
+            for template in model.model_templates.values()
+            for mapping in template.base_mappings
+        }
+    )
+    model.transformations.update(
+        {
+            t.external_id: t
+            for template in model.model_templates.values()
+            for mapping in template.base_mappings
+            for t in mapping.transformations
+        }
+    )
     return model
 
 
@@ -265,7 +276,6 @@ def _to_shop_files(watercourses_shop: list[ShopFileConfig]) -> list[cogshop.CDFF
 
 
 def _create_shop_file(file_content: bytes, external_id: str, metadata: dict[str, str]) -> cogshop.CDFFile:
-    metadata["md5_hash"] = md5(file_content.replace(b"\r\n", b"\n")).hexdigest()
     return cogshop.CDFFile(
         meta=FileMetadata(
             external_id=external_id,
