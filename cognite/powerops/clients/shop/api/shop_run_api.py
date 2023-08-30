@@ -142,6 +142,7 @@ class ShopRunsAPI:
         logger.debug(response.json())
 
     def list(self) -> list[ShopRun]:
+        # POWEROPS-1507
         raise NotImplementedError()
 
     def retrieve(self, external_id: str) -> ShopRun:
@@ -155,9 +156,9 @@ class ShopRunsAPI:
     def retrieve_status(self, shop_run_external_id: str) -> ShopRun.Status:
         event = retrieve_event(self._client, shop_run_external_id)
         logger.debug(f"Reading status from event {event.external_id}.")
-
         if relationships := self._client.relationships.list(
-            data_set_ids=[self._data_set_api.write_dataset_id],
+            # At the moment, looking at run whose related event might not be in `uc:000:powerops`
+            # data_set_ids=[self._data_set_api.read_dataset_id],
             source_external_ids=[shop_run_external_id],
             target_types=["event"],
         ):
