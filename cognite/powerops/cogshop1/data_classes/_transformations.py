@@ -13,12 +13,14 @@ class Transformation(DomainModel):
     space: ClassVar[str] = "cogShop"
     arguments: Optional[str] = None
     method: Optional[str] = None
+    order: Optional[int] = None
 
 
 class TransformationApply(DomainModelApply):
     space: ClassVar[str] = "cogShop"
     arguments: str
     method: str
+    order: int
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
@@ -30,6 +32,7 @@ class TransformationApply(DomainModelApply):
             properties={
                 "arguments": self.arguments,
                 "method": self.method,
+                "order": self.order,
             },
         )
         sources.append(source)

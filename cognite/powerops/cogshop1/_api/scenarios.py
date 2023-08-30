@@ -81,7 +81,7 @@ class ScenariosAPI(TypeAPI[Scenario, ScenarioApply, ScenarioList]):
     def __init__(self, client: CogniteClient):
         super().__init__(
             client=client,
-            sources=dm.ViewId("cogShop", "Scenario", "3f195f52332116"),
+            sources=dm.ViewId("cogShop", "Scenario", "7d3086d51c9d6f"),
             class_type=Scenario,
             class_apply_type=ScenarioApply,
             class_list=ScenarioList,

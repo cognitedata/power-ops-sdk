@@ -10,7 +10,7 @@ REPO_ROOT = Path(__file__).parent.parent
 def main():
     client = get_cognite_client()
     top_level = "cognite.powerops.cogshop1"
-    model_id = ("cogShop", "CogShop", "1")
+    model_id = ("cogShop", "CogShop", "2")
 
     generate_sdk(
         client,

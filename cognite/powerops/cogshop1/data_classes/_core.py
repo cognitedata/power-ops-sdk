@@ -31,7 +31,7 @@ class DomainModel(DomainModelCore):
     def from_node(cls: type[T_TypeNode], node: dm.Node) -> T_TypeNode:
         data = node.dump(camel_case=False)
 
-        return cls(**{**data, **unpack_properties(node.properties)})  # type: ignore[arg-type]
+        return cls(**data, **unpack_properties(node.properties))  # type: ignore[arg-type]
 
     @classmethod
     def one_to_many_fields(cls) -> list[str]:
