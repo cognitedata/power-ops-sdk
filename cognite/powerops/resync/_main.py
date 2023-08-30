@@ -12,7 +12,7 @@ from cognite.powerops.clients.powerops_client import get_powerops_client, PowerO
 from cognite.powerops.resync._logger import configure_debug_logging
 from cognite.powerops.resync._validation import _clean_relationships
 from cognite.powerops.resync.config.resync_config import ReSyncConfig
-from cognite.powerops.resync.models.base import Model
+from cognite.powerops.resync.models.base import Model  # type: ignore[attr-defined]
 from cognite.powerops.resync import models
 from cognite.powerops.resync.models.base.model import FieldDifference
 from cognite.powerops.resync.to_models.transform import transform

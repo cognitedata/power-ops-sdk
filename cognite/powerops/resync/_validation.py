@@ -4,7 +4,7 @@ from typing import Callable
 
 from cognite.client import CogniteClient
 
-from cognite.powerops.resync.models.base import Model, AssetModel
+from cognite.powerops.resync.models.base import Model, AssetModel  # type: ignore[attr-defined]
 from cognite.powerops.resync.models.base.model import FieldDifference
 
 
