@@ -12,9 +12,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":100000}
+    externalId: Tr_STATIC_{"0":100000}_0
     space: cogShop
-  externalId: BM__Fornebu__creek_intake.Fjerdingby_intake.overflow_cost:Tr_STATIC_{"0":100000}
+  externalId: BM__Fornebu__creek_intake.Fjerdingby_intake.overflow_cost:Tr_STATIC_{"0":100000}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -36,9 +36,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":0}
+    externalId: Tr_STATIC_{"0":0}_0
     space: cogShop
-  externalId: BM__Fornebu__creek_intake.Sandvika.inflow:Tr_STATIC_{"0":0}
+  externalId: BM__Fornebu__creek_intake.Sandvika.inflow:Tr_STATIC_{"0":0}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -60,9 +60,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":100000}
+    externalId: Tr_STATIC_{"0":100000}_0
     space: cogShop
-  externalId: BM__Fornebu__creek_intake.Golebiowski_intake.overflow_cost:Tr_STATIC_{"0":100000}
+  externalId: BM__Fornebu__creek_intake.Golebiowski_intake.overflow_cost:Tr_STATIC_{"0":100000}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -84,9 +84,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":100000}
+    externalId: Tr_STATIC_{"0":100000}_0
     space: cogShop
-  externalId: BM__Fornebu__creek_intake.Lont_intake.overflow_cost:Tr_STATIC_{"0":100000}
+  externalId: BM__Fornebu__creek_intake.Lont_intake.overflow_cost:Tr_STATIC_{"0":100000}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -108,9 +108,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":100000}
+    externalId: Tr_STATIC_{"0":100000}_0
     space: cogShop
-  externalId: BM__Fornebu__creek_intake.Narvhus.overflow_cost:Tr_STATIC_{"0":100000}
+  externalId: BM__Fornebu__creek_intake.Narvhus.overflow_cost:Tr_STATIC_{"0":100000}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -132,9 +132,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":0}
+    externalId: Tr_STATIC_{"0":0}_0
     space: cogShop
-  externalId: BM__Fornebu__gate.b_Hagen_Strand.max_flow:Tr_STATIC_{"0":0}
+  externalId: BM__Fornebu__gate.b_Hagen_Strand.max_flow:Tr_STATIC_{"0":0}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -156,9 +156,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":0}
+    externalId: Tr_STATIC_{"0":0}_0
     space: cogShop
-  externalId: BM__Fornebu__gate.b_Sirefelt_Knute_Rullsvatn.max_flow:Tr_STATIC_{"0":0}
+  externalId: BM__Fornebu__gate.b_Sirefelt_Knute_Rullsvatn.max_flow:Tr_STATIC_{"0":0}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -180,9 +180,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1000}
+    externalId: Tr_STATIC_{"0":1000}_0
     space: cogShop
-  externalId: BM__Fornebu__gate.b_Danielsen_Lundvann.max_flow:Tr_STATIC_{"0":1000}
+  externalId: BM__Fornebu__gate.b_Danielsen_Lundvann.max_flow:Tr_STATIC_{"0":1000}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -204,9 +204,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":0}
+    externalId: Tr_STATIC_{"0":0}_0
     space: cogShop
-  externalId: BM__Fornebu__gate.b_Dalbysvatn_Knute_Rullsvatn.max_flow:Tr_STATIC_{"0":0}
+  externalId: BM__Fornebu__gate.b_Dalbysvatn_Knute_Rullsvatn.max_flow:Tr_STATIC_{"0":0}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -228,9 +228,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":10}
+    externalId: Tr_STATIC_{"0":10}_0
     space: cogShop
-  externalId: BM__Fornebu__gate.b_Nielsen_Blakstadana.max_flow:Tr_STATIC_{"0":10}
+  externalId: BM__Fornebu__gate.b_Nielsen_Blakstadana.max_flow:Tr_STATIC_{"0":10}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -252,9 +252,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1000}
+    externalId: Tr_STATIC_{"0":1000}_0
     space: cogShop
-  externalId: BM__Fornebu__gate.b_Lensvik_Dalbysvatn.max_flow:Tr_STATIC_{"0":1000}
+  externalId: BM__Fornebu__gate.b_Lensvik_Dalbysvatn.max_flow:Tr_STATIC_{"0":1000}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -276,9 +276,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":0}
+    externalId: Tr_STATIC_{"0":0}_0
     space: cogShop
-  externalId: BM__Fornebu__gate.b_Livincovs_Dalbysvatn.max_flow:Tr_STATIC_{"0":0}
+  externalId: BM__Fornebu__gate.b_Livincovs_Dalbysvatn.max_flow:Tr_STATIC_{"0":0}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -300,9 +300,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1000}
+    externalId: Tr_STATIC_{"0":1000}_0
     space: cogShop
-  externalId: BM__Fornebu__gate.f_Blakstadana_Knute_Rullsvatn.max_flow:Tr_STATIC_{"0":1000}
+  externalId: BM__Fornebu__gate.f_Blakstadana_Knute_Rullsvatn.max_flow:Tr_STATIC_{"0":1000}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -324,9 +324,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":100}
+    externalId: Tr_STATIC_{"0":100}_0
     space: cogShop
-  externalId: BM__Fornebu__gate.f_Hagen_Strand.max_flow:Tr_STATIC_{"0":100}
+  externalId: BM__Fornebu__gate.f_Hagen_Strand.max_flow:Tr_STATIC_{"0":100}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -348,9 +348,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":10}
+    externalId: Tr_STATIC_{"0":10}_0
     space: cogShop
-  externalId: BM__Fornebu__gate.f_Finnvasstol_Dalbysvatn.max_flow:Tr_STATIC_{"0":10}
+  externalId: BM__Fornebu__gate.f_Finnvasstol_Dalbysvatn.max_flow:Tr_STATIC_{"0":10}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -372,9 +372,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1000}
+    externalId: Tr_STATIC_{"0":1000}_0
     space: cogShop
-  externalId: BM__Fornebu__gate.f_Hovden_Hagen.max_flow:Tr_STATIC_{"0":1000}
+  externalId: BM__Fornebu__gate.f_Hovden_Hagen.max_flow:Tr_STATIC_{"0":1000}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -396,9 +396,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1000}
+    externalId: Tr_STATIC_{"0":1000}_0
     space: cogShop
-  externalId: BM__Fornebu__gate.f_Fjerdingby_Dalbysvatn.max_flow:Tr_STATIC_{"0":1000}
+  externalId: BM__Fornebu__gate.f_Fjerdingby_Dalbysvatn.max_flow:Tr_STATIC_{"0":1000}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -420,9 +420,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1000}
+    externalId: Tr_STATIC_{"0":1000}_0
     space: cogShop
-  externalId: BM__Fornebu__gate.f_Frosta.max_flow:Tr_STATIC_{"0":1000}
+  externalId: BM__Fornebu__gate.f_Frosta.max_flow:Tr_STATIC_{"0":1000}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -444,9 +444,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1000}
+    externalId: Tr_STATIC_{"0":1000}_0
     space: cogShop
-  externalId: BM__Fornebu__gate.f_Varhaug.max_flow:Tr_STATIC_{"0":1000}
+  externalId: BM__Fornebu__gate.f_Varhaug.max_flow:Tr_STATIC_{"0":1000}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -468,9 +468,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1000}
+    externalId: Tr_STATIC_{"0":1000}_0
     space: cogShop
-  externalId: BM__Fornebu__gate.f_Tangvall.max_flow:Tr_STATIC_{"0":1000}
+  externalId: BM__Fornebu__gate.f_Tangvall.max_flow:Tr_STATIC_{"0":1000}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -492,9 +492,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1000}
+    externalId: Tr_STATIC_{"0":1000}_0
     space: cogShop
-  externalId: BM__Fornebu__gate.f_Sirefelt_Knute_Rullsvatn.max_flow:Tr_STATIC_{"0":1000}
+  externalId: BM__Fornebu__gate.f_Sirefelt_Knute_Rullsvatn.max_flow:Tr_STATIC_{"0":1000}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -516,9 +516,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1000}
+    externalId: Tr_STATIC_{"0":1000}_0
     space: cogShop
-  externalId: BM__Fornebu__gate.f_Lundvann_Lensvik.max_flow:Tr_STATIC_{"0":1000}
+  externalId: BM__Fornebu__gate.f_Lundvann_Lensvik.max_flow:Tr_STATIC_{"0":1000}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -540,9 +540,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1000}
+    externalId: Tr_STATIC_{"0":1000}_0
     space: cogShop
-  externalId: BM__Fornebu__gate.f_Nupstj.max_flow:Tr_STATIC_{"0":1000}
+  externalId: BM__Fornebu__gate.f_Nupstj.max_flow:Tr_STATIC_{"0":1000}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -564,9 +564,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1000}
+    externalId: Tr_STATIC_{"0":1000}_0
     space: cogShop
-  externalId: BM__Fornebu__gate.f_Golebiowski_Dalbysvatn.max_flow:Tr_STATIC_{"0":1000}
+  externalId: BM__Fornebu__gate.f_Golebiowski_Dalbysvatn.max_flow:Tr_STATIC_{"0":1000}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -588,9 +588,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1000}
+    externalId: Tr_STATIC_{"0":1000}_0
     space: cogShop
-  externalId: BM__Fornebu__gate.f_Lont_Dalbysvatn.max_flow:Tr_STATIC_{"0":1000}
+  externalId: BM__Fornebu__gate.f_Lont_Dalbysvatn.max_flow:Tr_STATIC_{"0":1000}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -612,9 +612,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1000}
+    externalId: Tr_STATIC_{"0":1000}_0
     space: cogShop
-  externalId: BM__Fornebu__gate.f_Dalbysvatn_Knute_Rullsvatn.max_flow:Tr_STATIC_{"0":1000}
+  externalId: BM__Fornebu__gate.f_Dalbysvatn_Knute_Rullsvatn.max_flow:Tr_STATIC_{"0":1000}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -636,9 +636,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":10}
+    externalId: Tr_STATIC_{"0":10}_0
     space: cogShop
-  externalId: BM__Fornebu__gate.f_Nielsen.max_flow:Tr_STATIC_{"0":10}
+  externalId: BM__Fornebu__gate.f_Nielsen.max_flow:Tr_STATIC_{"0":10}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -660,9 +660,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1000}
+    externalId: Tr_STATIC_{"0":1000}_0
     space: cogShop
-  externalId: BM__Fornebu__gate.f_Narvhus_Rullsvatn.max_flow:Tr_STATIC_{"0":1000}
+  externalId: BM__Fornebu__gate.f_Narvhus_Rullsvatn.max_flow:Tr_STATIC_{"0":1000}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -684,9 +684,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1000}
+    externalId: Tr_STATIC_{"0":1000}_0
     space: cogShop
-  externalId: BM__Fornebu__gate.f_Rullsvatn_Rullslaagen.max_flow:Tr_STATIC_{"0":1000}
+  externalId: BM__Fornebu__gate.f_Rullsvatn_Rullslaagen.max_flow:Tr_STATIC_{"0":1000}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -708,9 +708,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1000}
+    externalId: Tr_STATIC_{"0":1000}_0
     space: cogShop
-  externalId: BM__Fornebu__gate.f_Ranemsletta_1183_Livincovs.max_flow:Tr_STATIC_{"0":1000}
+  externalId: BM__Fornebu__gate.f_Ranemsletta_1183_Livincovs.max_flow:Tr_STATIC_{"0":1000}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -732,9 +732,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":0}
+    externalId: Tr_STATIC_{"0":0}_0
     space: cogShop
-  externalId: BM__Fornebu__gate.f_Lensvik.max_flow:Tr_STATIC_{"0":0}
+  externalId: BM__Fornebu__gate.f_Lensvik.max_flow:Tr_STATIC_{"0":0}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -756,9 +756,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1000}
+    externalId: Tr_STATIC_{"0":1000}_0
     space: cogShop
-  externalId: BM__Fornebu__gate.f_Livincovs.max_flow:Tr_STATIC_{"0":1000}
+  externalId: BM__Fornebu__gate.f_Livincovs.max_flow:Tr_STATIC_{"0":1000}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -780,9 +780,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":6}
+    externalId: Tr_STATIC_{"0":6}_0
     space: cogShop
-  externalId: BM__Fornebu__gate.w_Finnvasstol_Strand_tunnel.max_flow:Tr_STATIC_{"0":6}
+  externalId: BM__Fornebu__gate.w_Finnvasstol_Strand_tunnel.max_flow:Tr_STATIC_{"0":6}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -804,9 +804,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":10}
+    externalId: Tr_STATIC_{"0":10}_0
     space: cogShop
-  externalId: BM__Fornebu__gate.w_Hovden_Livincovs.max_flow:Tr_STATIC_{"0":10}
+  externalId: BM__Fornebu__gate.w_Hovden_Livincovs.max_flow:Tr_STATIC_{"0":10}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -828,9 +828,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1000}
+    externalId: Tr_STATIC_{"0":1000}_0
     space: cogShop
-  externalId: BM__Fornebu__gate.w_Frosta.max_flow:Tr_STATIC_{"0":1000}
+  externalId: BM__Fornebu__gate.w_Frosta.max_flow:Tr_STATIC_{"0":1000}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -852,9 +852,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":30}
+    externalId: Tr_STATIC_{"0":30}_0
     space: cogShop
-  externalId: BM__Fornebu__gate.w_Varhaug.max_flow:Tr_STATIC_{"0":30}
+  externalId: BM__Fornebu__gate.w_Varhaug.max_flow:Tr_STATIC_{"0":30}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -876,9 +876,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1000}
+    externalId: Tr_STATIC_{"0":1000}_0
     space: cogShop
-  externalId: BM__Fornebu__gate.w_Tangvall.max_flow:Tr_STATIC_{"0":1000}
+  externalId: BM__Fornebu__gate.w_Tangvall.max_flow:Tr_STATIC_{"0":1000}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -900,9 +900,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":0}
+    externalId: Tr_STATIC_{"0":0}_0
     space: cogShop
-  externalId: BM__Fornebu__gate.w_Rullsvatn_Rullslaagen.max_flow:Tr_STATIC_{"0":0}
+  externalId: BM__Fornebu__gate.w_Rullsvatn_Rullslaagen.max_flow:Tr_STATIC_{"0":0}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -924,9 +924,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":200}
+    externalId: Tr_STATIC_{"0":200}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Holen_G1.startcost:Tr_STATIC_{"0":200}
+  externalId: BM__Fornebu__generator.Holen_G1.startcost:Tr_STATIC_{"0":200}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -948,9 +948,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":28}
+    externalId: Tr_STATIC_{"0":28}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Holen_G1.min_p_constr:Tr_STATIC_{"0":28}
+  externalId: BM__Fornebu__generator.Holen_G1.min_p_constr:Tr_STATIC_{"0":28}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -972,9 +972,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":38}
+    externalId: Tr_STATIC_{"0":38}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Holen_G1.max_p_constr:Tr_STATIC_{"0":38}
+  externalId: BM__Fornebu__generator.Holen_G1.max_p_constr:Tr_STATIC_{"0":38}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -996,9 +996,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":27}
+    externalId: Tr_STATIC_{"0":27}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Holen_G1.p_fcr_min:Tr_STATIC_{"0":27}
+  externalId: BM__Fornebu__generator.Holen_G1.p_fcr_min:Tr_STATIC_{"0":27}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -1020,9 +1020,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":45}
+    externalId: Tr_STATIC_{"0":45}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Holen_G1.p_fcr_max:Tr_STATIC_{"0":45}
+  externalId: BM__Fornebu__generator.Holen_G1.p_fcr_max:Tr_STATIC_{"0":45}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -1044,9 +1044,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":0}
+    externalId: Tr_STATIC_{"0":0}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Holen_G1.p_rr_min:Tr_STATIC_{"0":0}
+  externalId: BM__Fornebu__generator.Holen_G1.p_rr_min:Tr_STATIC_{"0":0}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -1068,9 +1068,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":6}
+    externalId: Tr_STATIC_{"0":6}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Holen_G1.droop_min:Tr_STATIC_{"0":6}
+  externalId: BM__Fornebu__generator.Holen_G1.droop_min:Tr_STATIC_{"0":6}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -1092,9 +1092,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":6}
+    externalId: Tr_STATIC_{"0":6}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Holen_G1.droop_max:Tr_STATIC_{"0":6}
+  externalId: BM__Fornebu__generator.Holen_G1.droop_max:Tr_STATIC_{"0":6}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -1116,9 +1116,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":100}
+    externalId: Tr_STATIC_{"0":100}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Lund_G1.startcost:Tr_STATIC_{"0":100}
+  externalId: BM__Fornebu__generator.Lund_G1.startcost:Tr_STATIC_{"0":100}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -1140,9 +1140,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":0.6}
+    externalId: Tr_STATIC_{"0":0.6}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Lund_G1.p_fcr_min:Tr_STATIC_{"0":0.6}
+  externalId: BM__Fornebu__generator.Lund_G1.p_fcr_min:Tr_STATIC_{"0":0.6}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -1164,9 +1164,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1}
+    externalId: Tr_STATIC_{"0":1}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Lund_G1.p_fcr_max:Tr_STATIC_{"0":1}
+  externalId: BM__Fornebu__generator.Lund_G1.p_fcr_max:Tr_STATIC_{"0":1}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -1188,9 +1188,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":0}
+    externalId: Tr_STATIC_{"0":0}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Lund_G1.p_rr_min:Tr_STATIC_{"0":0}
+  externalId: BM__Fornebu__generator.Lund_G1.p_rr_min:Tr_STATIC_{"0":0}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -1212,9 +1212,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":4}
+    externalId: Tr_STATIC_{"0":4}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Lund_G1.droop_min:Tr_STATIC_{"0":4}
+  externalId: BM__Fornebu__generator.Lund_G1.droop_min:Tr_STATIC_{"0":4}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -1236,9 +1236,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":12}
+    externalId: Tr_STATIC_{"0":12}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Lund_G1.droop_max:Tr_STATIC_{"0":12}
+  externalId: BM__Fornebu__generator.Lund_G1.droop_max:Tr_STATIC_{"0":12}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -1260,9 +1260,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":150}
+    externalId: Tr_STATIC_{"0":150}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Lien_krv_G1.startcost:Tr_STATIC_{"0":150}
+  externalId: BM__Fornebu__generator.Lien_krv_G1.startcost:Tr_STATIC_{"0":150}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -1284,9 +1284,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":2.5}
+    externalId: Tr_STATIC_{"0":2.5}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Lien_krv_G1.min_p_constr:Tr_STATIC_{"0":2.5}
+  externalId: BM__Fornebu__generator.Lien_krv_G1.min_p_constr:Tr_STATIC_{"0":2.5}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -1308,9 +1308,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":3.1}
+    externalId: Tr_STATIC_{"0":3.1}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Lien_krv_G1.max_p_constr:Tr_STATIC_{"0":3.1}
+  externalId: BM__Fornebu__generator.Lien_krv_G1.max_p_constr:Tr_STATIC_{"0":3.1}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -1332,9 +1332,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":0}
+    externalId: Tr_STATIC_{"0":0}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Lien_krv_G1.p_fcr_min:Tr_STATIC_{"0":0}
+  externalId: BM__Fornebu__generator.Lien_krv_G1.p_fcr_min:Tr_STATIC_{"0":0}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -1356,9 +1356,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":0}
+    externalId: Tr_STATIC_{"0":0}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Lien_krv_G1.p_fcr_max:Tr_STATIC_{"0":0}
+  externalId: BM__Fornebu__generator.Lien_krv_G1.p_fcr_max:Tr_STATIC_{"0":0}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -1380,9 +1380,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":0}
+    externalId: Tr_STATIC_{"0":0}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Lien_krv_G1.p_rr_min:Tr_STATIC_{"0":0}
+  externalId: BM__Fornebu__generator.Lien_krv_G1.p_rr_min:Tr_STATIC_{"0":0}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -1404,9 +1404,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":4}
+    externalId: Tr_STATIC_{"0":4}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Lien_krv_G1.droop_min:Tr_STATIC_{"0":4}
+  externalId: BM__Fornebu__generator.Lien_krv_G1.droop_min:Tr_STATIC_{"0":4}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -1428,9 +1428,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":8}
+    externalId: Tr_STATIC_{"0":8}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Lien_krv_G1.droop_max:Tr_STATIC_{"0":8}
+  externalId: BM__Fornebu__generator.Lien_krv_G1.droop_max:Tr_STATIC_{"0":8}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -1452,9 +1452,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":200}
+    externalId: Tr_STATIC_{"0":200}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Landet_G1.startcost:Tr_STATIC_{"0":200}
+  externalId: BM__Fornebu__generator.Landet_G1.startcost:Tr_STATIC_{"0":200}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -1476,9 +1476,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":48}
+    externalId: Tr_STATIC_{"0":48}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Landet_G1.max_p_constr:Tr_STATIC_{"0":48}
+  externalId: BM__Fornebu__generator.Landet_G1.max_p_constr:Tr_STATIC_{"0":48}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -1500,9 +1500,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":25}
+    externalId: Tr_STATIC_{"0":25}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Landet_G1.p_fcr_min:Tr_STATIC_{"0":25}
+  externalId: BM__Fornebu__generator.Landet_G1.p_fcr_min:Tr_STATIC_{"0":25}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -1524,9 +1524,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":50}
+    externalId: Tr_STATIC_{"0":50}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Landet_G1.p_fcr_max:Tr_STATIC_{"0":50}
+  externalId: BM__Fornebu__generator.Landet_G1.p_fcr_max:Tr_STATIC_{"0":50}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -1548,9 +1548,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":0}
+    externalId: Tr_STATIC_{"0":0}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Landet_G1.p_rr_min:Tr_STATIC_{"0":0}
+  externalId: BM__Fornebu__generator.Landet_G1.p_rr_min:Tr_STATIC_{"0":0}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -1572,9 +1572,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":6}
+    externalId: Tr_STATIC_{"0":6}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Landet_G1.droop_min:Tr_STATIC_{"0":6}
+  externalId: BM__Fornebu__generator.Landet_G1.droop_min:Tr_STATIC_{"0":6}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -1596,9 +1596,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":6}
+    externalId: Tr_STATIC_{"0":6}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Landet_G1.droop_max:Tr_STATIC_{"0":6}
+  externalId: BM__Fornebu__generator.Landet_G1.droop_max:Tr_STATIC_{"0":6}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -1620,9 +1620,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":500}
+    externalId: Tr_STATIC_{"0":500}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Dalby_G1.startcost:Tr_STATIC_{"0":500}
+  externalId: BM__Fornebu__generator.Dalby_G1.startcost:Tr_STATIC_{"0":500}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -1644,9 +1644,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":38}
+    externalId: Tr_STATIC_{"0":38}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Dalby_G1.p_fcr_min:Tr_STATIC_{"0":38}
+  externalId: BM__Fornebu__generator.Dalby_G1.p_fcr_min:Tr_STATIC_{"0":38}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -1668,9 +1668,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":85}
+    externalId: Tr_STATIC_{"0":85}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Dalby_G1.p_fcr_max:Tr_STATIC_{"0":85}
+  externalId: BM__Fornebu__generator.Dalby_G1.p_fcr_max:Tr_STATIC_{"0":85}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -1692,9 +1692,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":0}
+    externalId: Tr_STATIC_{"0":0}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Dalby_G1.p_rr_min:Tr_STATIC_{"0":0}
+  externalId: BM__Fornebu__generator.Dalby_G1.p_rr_min:Tr_STATIC_{"0":0}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -1716,9 +1716,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":50000}
+    externalId: Tr_STATIC_{"0":50000}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Dalby_G1.droop_cost:Tr_STATIC_{"0":50000}
+  externalId: BM__Fornebu__generator.Dalby_G1.droop_cost:Tr_STATIC_{"0":50000}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -1740,9 +1740,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":2}
+    externalId: Tr_STATIC_{"0":2}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Dalby_G1.droop_min:Tr_STATIC_{"0":2}
+  externalId: BM__Fornebu__generator.Dalby_G1.droop_min:Tr_STATIC_{"0":2}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -1764,9 +1764,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":12}
+    externalId: Tr_STATIC_{"0":12}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Dalby_G1.droop_max:Tr_STATIC_{"0":12}
+  externalId: BM__Fornebu__generator.Dalby_G1.droop_max:Tr_STATIC_{"0":12}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -1788,9 +1788,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":250}
+    externalId: Tr_STATIC_{"0":250}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Dalby_G2.startcost:Tr_STATIC_{"0":250}
+  externalId: BM__Fornebu__generator.Dalby_G2.startcost:Tr_STATIC_{"0":250}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -1812,9 +1812,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":38}
+    externalId: Tr_STATIC_{"0":38}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Dalby_G2.p_fcr_min:Tr_STATIC_{"0":38}
+  externalId: BM__Fornebu__generator.Dalby_G2.p_fcr_min:Tr_STATIC_{"0":38}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -1836,9 +1836,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":85}
+    externalId: Tr_STATIC_{"0":85}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Dalby_G2.p_fcr_max:Tr_STATIC_{"0":85}
+  externalId: BM__Fornebu__generator.Dalby_G2.p_fcr_max:Tr_STATIC_{"0":85}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -1860,9 +1860,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":0}
+    externalId: Tr_STATIC_{"0":0}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Dalby_G2.p_rr_min:Tr_STATIC_{"0":0}
+  externalId: BM__Fornebu__generator.Dalby_G2.p_rr_min:Tr_STATIC_{"0":0}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -1884,9 +1884,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":50000}
+    externalId: Tr_STATIC_{"0":50000}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Dalby_G2.droop_cost:Tr_STATIC_{"0":50000}
+  externalId: BM__Fornebu__generator.Dalby_G2.droop_cost:Tr_STATIC_{"0":50000}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -1908,9 +1908,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":2}
+    externalId: Tr_STATIC_{"0":2}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Dalby_G2.droop_min:Tr_STATIC_{"0":2}
+  externalId: BM__Fornebu__generator.Dalby_G2.droop_min:Tr_STATIC_{"0":2}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -1932,9 +1932,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":12}
+    externalId: Tr_STATIC_{"0":12}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Dalby_G2.droop_max:Tr_STATIC_{"0":12}
+  externalId: BM__Fornebu__generator.Dalby_G2.droop_max:Tr_STATIC_{"0":12}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -1956,9 +1956,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":250}
+    externalId: Tr_STATIC_{"0":250}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull1_G1.startcost:Tr_STATIC_{"0":250}
+  externalId: BM__Fornebu__generator.Rull1_G1.startcost:Tr_STATIC_{"0":250}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -1980,9 +1980,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":90}
+    externalId: Tr_STATIC_{"0":90}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull1_G1.max_p_constr:Tr_STATIC_{"0":90}
+  externalId: BM__Fornebu__generator.Rull1_G1.max_p_constr:Tr_STATIC_{"0":90}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -2004,9 +2004,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":38}
+    externalId: Tr_STATIC_{"0":38}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull1_G1.p_fcr_min:Tr_STATIC_{"0":38}
+  externalId: BM__Fornebu__generator.Rull1_G1.p_fcr_min:Tr_STATIC_{"0":38}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -2028,9 +2028,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":95}
+    externalId: Tr_STATIC_{"0":95}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull1_G1.p_fcr_max:Tr_STATIC_{"0":95}
+  externalId: BM__Fornebu__generator.Rull1_G1.p_fcr_max:Tr_STATIC_{"0":95}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -2052,9 +2052,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":0}
+    externalId: Tr_STATIC_{"0":0}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull1_G1.p_rr_min:Tr_STATIC_{"0":0}
+  externalId: BM__Fornebu__generator.Rull1_G1.p_rr_min:Tr_STATIC_{"0":0}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -2076,9 +2076,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":50000}
+    externalId: Tr_STATIC_{"0":50000}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull1_G1.droop_cost:Tr_STATIC_{"0":50000}
+  externalId: BM__Fornebu__generator.Rull1_G1.droop_cost:Tr_STATIC_{"0":50000}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -2100,9 +2100,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":2}
+    externalId: Tr_STATIC_{"0":2}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull1_G1.droop_min:Tr_STATIC_{"0":2}
+  externalId: BM__Fornebu__generator.Rull1_G1.droop_min:Tr_STATIC_{"0":2}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -2124,9 +2124,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":12}
+    externalId: Tr_STATIC_{"0":12}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull1_G1.droop_max:Tr_STATIC_{"0":12}
+  externalId: BM__Fornebu__generator.Rull1_G1.droop_max:Tr_STATIC_{"0":12}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -2148,9 +2148,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":250}
+    externalId: Tr_STATIC_{"0":250}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull1_G2.startcost:Tr_STATIC_{"0":250}
+  externalId: BM__Fornebu__generator.Rull1_G2.startcost:Tr_STATIC_{"0":250}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -2172,9 +2172,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":43}
+    externalId: Tr_STATIC_{"0":43}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull1_G2.min_p_constr:Tr_STATIC_{"0":43}
+  externalId: BM__Fornebu__generator.Rull1_G2.min_p_constr:Tr_STATIC_{"0":43}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -2196,9 +2196,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":95}
+    externalId: Tr_STATIC_{"0":95}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull1_G2.max_p_constr:Tr_STATIC_{"0":95}
+  externalId: BM__Fornebu__generator.Rull1_G2.max_p_constr:Tr_STATIC_{"0":95}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -2220,9 +2220,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":38}
+    externalId: Tr_STATIC_{"0":38}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull1_G2.p_fcr_min:Tr_STATIC_{"0":38}
+  externalId: BM__Fornebu__generator.Rull1_G2.p_fcr_min:Tr_STATIC_{"0":38}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -2244,9 +2244,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":85}
+    externalId: Tr_STATIC_{"0":85}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull1_G2.p_fcr_max:Tr_STATIC_{"0":85}
+  externalId: BM__Fornebu__generator.Rull1_G2.p_fcr_max:Tr_STATIC_{"0":85}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -2268,9 +2268,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":0}
+    externalId: Tr_STATIC_{"0":0}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull1_G2.p_rr_min:Tr_STATIC_{"0":0}
+  externalId: BM__Fornebu__generator.Rull1_G2.p_rr_min:Tr_STATIC_{"0":0}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -2292,9 +2292,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":50000}
+    externalId: Tr_STATIC_{"0":50000}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull1_G2.droop_cost:Tr_STATIC_{"0":50000}
+  externalId: BM__Fornebu__generator.Rull1_G2.droop_cost:Tr_STATIC_{"0":50000}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -2316,9 +2316,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":2}
+    externalId: Tr_STATIC_{"0":2}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull1_G2.droop_min:Tr_STATIC_{"0":2}
+  externalId: BM__Fornebu__generator.Rull1_G2.droop_min:Tr_STATIC_{"0":2}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -2340,9 +2340,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":12}
+    externalId: Tr_STATIC_{"0":12}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull1_G2.droop_max:Tr_STATIC_{"0":12}
+  externalId: BM__Fornebu__generator.Rull1_G2.droop_max:Tr_STATIC_{"0":12}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -2364,9 +2364,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":250}
+    externalId: Tr_STATIC_{"0":250}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull2_G1.startcost:Tr_STATIC_{"0":250}
+  externalId: BM__Fornebu__generator.Rull2_G1.startcost:Tr_STATIC_{"0":250}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -2388,9 +2388,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":32}
+    externalId: Tr_STATIC_{"0":32}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull2_G1.p_fcr_min:Tr_STATIC_{"0":32}
+  externalId: BM__Fornebu__generator.Rull2_G1.p_fcr_min:Tr_STATIC_{"0":32}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -2412,9 +2412,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":74}
+    externalId: Tr_STATIC_{"0":74}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull2_G1.p_fcr_max:Tr_STATIC_{"0":74}
+  externalId: BM__Fornebu__generator.Rull2_G1.p_fcr_max:Tr_STATIC_{"0":74}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -2436,9 +2436,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":0}
+    externalId: Tr_STATIC_{"0":0}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull2_G1.p_rr_min:Tr_STATIC_{"0":0}
+  externalId: BM__Fornebu__generator.Rull2_G1.p_rr_min:Tr_STATIC_{"0":0}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -2460,9 +2460,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":50000}
+    externalId: Tr_STATIC_{"0":50000}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull2_G1.droop_cost:Tr_STATIC_{"0":50000}
+  externalId: BM__Fornebu__generator.Rull2_G1.droop_cost:Tr_STATIC_{"0":50000}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -2484,9 +2484,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":4}
+    externalId: Tr_STATIC_{"0":4}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull2_G1.droop_min:Tr_STATIC_{"0":4}
+  externalId: BM__Fornebu__generator.Rull2_G1.droop_min:Tr_STATIC_{"0":4}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -2508,9 +2508,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":12}
+    externalId: Tr_STATIC_{"0":12}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull2_G1.droop_max:Tr_STATIC_{"0":12}
+  externalId: BM__Fornebu__generator.Rull2_G1.droop_max:Tr_STATIC_{"0":12}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -2532,9 +2532,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":250}
+    externalId: Tr_STATIC_{"0":250}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull2_G2.startcost:Tr_STATIC_{"0":250}
+  externalId: BM__Fornebu__generator.Rull2_G2.startcost:Tr_STATIC_{"0":250}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -2556,9 +2556,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":74}
+    externalId: Tr_STATIC_{"0":74}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull2_G2.max_p_constr:Tr_STATIC_{"0":74}
+  externalId: BM__Fornebu__generator.Rull2_G2.max_p_constr:Tr_STATIC_{"0":74}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -2580,9 +2580,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":32}
+    externalId: Tr_STATIC_{"0":32}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull2_G2.p_fcr_min:Tr_STATIC_{"0":32}
+  externalId: BM__Fornebu__generator.Rull2_G2.p_fcr_min:Tr_STATIC_{"0":32}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -2604,9 +2604,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":76}
+    externalId: Tr_STATIC_{"0":76}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull2_G2.p_fcr_max:Tr_STATIC_{"0":76}
+  externalId: BM__Fornebu__generator.Rull2_G2.p_fcr_max:Tr_STATIC_{"0":76}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -2628,9 +2628,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":0}
+    externalId: Tr_STATIC_{"0":0}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull2_G2.p_rr_min:Tr_STATIC_{"0":0}
+  externalId: BM__Fornebu__generator.Rull2_G2.p_rr_min:Tr_STATIC_{"0":0}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -2652,9 +2652,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":50000}
+    externalId: Tr_STATIC_{"0":50000}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull2_G2.droop_cost:Tr_STATIC_{"0":50000}
+  externalId: BM__Fornebu__generator.Rull2_G2.droop_cost:Tr_STATIC_{"0":50000}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -2676,9 +2676,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":4}
+    externalId: Tr_STATIC_{"0":4}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull2_G2.droop_min:Tr_STATIC_{"0":4}
+  externalId: BM__Fornebu__generator.Rull2_G2.droop_min:Tr_STATIC_{"0":4}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -2700,9 +2700,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":12}
+    externalId: Tr_STATIC_{"0":12}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull2_G2.droop_max:Tr_STATIC_{"0":12}
+  externalId: BM__Fornebu__generator.Rull2_G2.droop_max:Tr_STATIC_{"0":12}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -2724,9 +2724,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":150}
+    externalId: Tr_STATIC_{"0":150}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Scott_G1.startcost:Tr_STATIC_{"0":150}
+  externalId: BM__Fornebu__generator.Scott_G1.startcost:Tr_STATIC_{"0":150}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -2748,9 +2748,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":7}
+    externalId: Tr_STATIC_{"0":7}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Scott_G1.p_fcr_min:Tr_STATIC_{"0":7}
+  externalId: BM__Fornebu__generator.Scott_G1.p_fcr_min:Tr_STATIC_{"0":7}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -2772,9 +2772,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":19}
+    externalId: Tr_STATIC_{"0":19}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Scott_G1.p_fcr_max:Tr_STATIC_{"0":19}
+  externalId: BM__Fornebu__generator.Scott_G1.p_fcr_max:Tr_STATIC_{"0":19}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -2796,9 +2796,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":0}
+    externalId: Tr_STATIC_{"0":0}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Scott_G1.p_rr_min:Tr_STATIC_{"0":0}
+  externalId: BM__Fornebu__generator.Scott_G1.p_rr_min:Tr_STATIC_{"0":0}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -2820,9 +2820,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":6}
+    externalId: Tr_STATIC_{"0":6}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Scott_G1.droop_min:Tr_STATIC_{"0":6}
+  externalId: BM__Fornebu__generator.Scott_G1.droop_min:Tr_STATIC_{"0":6}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -2844,9 +2844,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":6}
+    externalId: Tr_STATIC_{"0":6}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Scott_G1.droop_max:Tr_STATIC_{"0":6}
+  externalId: BM__Fornebu__generator.Scott_G1.droop_max:Tr_STATIC_{"0":6}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -2868,9 +2868,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":150}
+    externalId: Tr_STATIC_{"0":150}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Strand_krv_G1.startcost:Tr_STATIC_{"0":150}
+  externalId: BM__Fornebu__generator.Strand_krv_G1.startcost:Tr_STATIC_{"0":150}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -2892,9 +2892,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":4.2}
+    externalId: Tr_STATIC_{"0":4.2}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Strand_krv_G1.p_fcr_min:Tr_STATIC_{"0":4.2}
+  externalId: BM__Fornebu__generator.Strand_krv_G1.p_fcr_min:Tr_STATIC_{"0":4.2}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -2916,9 +2916,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":4.9}
+    externalId: Tr_STATIC_{"0":4.9}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Strand_krv_G1.p_fcr_max:Tr_STATIC_{"0":4.9}
+  externalId: BM__Fornebu__generator.Strand_krv_G1.p_fcr_max:Tr_STATIC_{"0":4.9}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -2940,9 +2940,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":0}
+    externalId: Tr_STATIC_{"0":0}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Strand_krv_G1.p_rr_min:Tr_STATIC_{"0":0}
+  externalId: BM__Fornebu__generator.Strand_krv_G1.p_rr_min:Tr_STATIC_{"0":0}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -2964,9 +2964,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":4}
+    externalId: Tr_STATIC_{"0":4}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Strand_krv_G1.droop_min:Tr_STATIC_{"0":4}
+  externalId: BM__Fornebu__generator.Strand_krv_G1.droop_min:Tr_STATIC_{"0":4}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -2988,9 +2988,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":12}
+    externalId: Tr_STATIC_{"0":12}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Strand_krv_G1.droop_max:Tr_STATIC_{"0":12}
+  externalId: BM__Fornebu__generator.Strand_krv_G1.droop_max:Tr_STATIC_{"0":12}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -3012,9 +3012,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":672}
+    externalId: Tr_STATIC_{"0":672}_0
     space: cogShop
-  externalId: BM__Fornebu__junction.Sandvika.min_pressure:Tr_STATIC_{"0":672}
+  externalId: BM__Fornebu__junction.Sandvika.min_pressure:Tr_STATIC_{"0":672}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -3036,9 +3036,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":0}
+    externalId: Tr_STATIC_{"0":0}_0
     space: cogShop
-  externalId: BM__Fornebu__market.Dayahead.load:Tr_STATIC_{"0":0}
+  externalId: BM__Fornebu__market.Dayahead.load:Tr_STATIC_{"0":0}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -3060,9 +3060,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":10000}
+    externalId: Tr_STATIC_{"0":10000}_0
     space: cogShop
-  externalId: BM__Fornebu__market.Dayahead.max_buy:Tr_STATIC_{"0":10000}
+  externalId: BM__Fornebu__market.Dayahead.max_buy:Tr_STATIC_{"0":10000}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -3084,9 +3084,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":10000}
+    externalId: Tr_STATIC_{"0":10000}_0
     space: cogShop
-  externalId: BM__Fornebu__market.Dayahead.max_sale:Tr_STATIC_{"0":10000}
+  externalId: BM__Fornebu__market.Dayahead.max_sale:Tr_STATIC_{"0":10000}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -3108,9 +3108,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1}
+    externalId: Tr_STATIC_{"0":1}_0
     space: cogShop
-  externalId: BM__Fornebu__plant.Holen.prod_area:Tr_STATIC_{"0":1}
+  externalId: BM__Fornebu__plant.Holen.prod_area:Tr_STATIC_{"0":1}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -3132,9 +3132,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1}
+    externalId: Tr_STATIC_{"0":1}_0
     space: cogShop
-  externalId: BM__Fornebu__plant.Holen.mip_flag:Tr_STATIC_{"0":1}
+  externalId: BM__Fornebu__plant.Holen.mip_flag:Tr_STATIC_{"0":1}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -3156,9 +3156,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":42}
+    externalId: Tr_STATIC_{"0":42}_0
     space: cogShop
-  externalId: BM__Fornebu__plant.Holen.max_p_constr:Tr_STATIC_{"0":42}
+  externalId: BM__Fornebu__plant.Holen.max_p_constr:Tr_STATIC_{"0":42}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -3180,9 +3180,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1000}
+    externalId: Tr_STATIC_{"0":1000}_0
     space: cogShop
-  externalId: BM__Fornebu__plant.Holen.max_q_constr:Tr_STATIC_{"0":1000}
+  externalId: BM__Fornebu__plant.Holen.max_q_constr:Tr_STATIC_{"0":1000}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -3204,9 +3204,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1}
+    externalId: Tr_STATIC_{"0":1}_0
     space: cogShop
-  externalId: BM__Fornebu__plant.Lund.prod_area:Tr_STATIC_{"0":1}
+  externalId: BM__Fornebu__plant.Lund.prod_area:Tr_STATIC_{"0":1}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -3228,9 +3228,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":0}
+    externalId: Tr_STATIC_{"0":0}_0
     space: cogShop
-  externalId: BM__Fornebu__plant.Lund.mip_flag:Tr_STATIC_{"0":0}
+  externalId: BM__Fornebu__plant.Lund.mip_flag:Tr_STATIC_{"0":0}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -3252,9 +3252,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1000}
+    externalId: Tr_STATIC_{"0":1000}_0
     space: cogShop
-  externalId: BM__Fornebu__plant.Lund.max_q_constr:Tr_STATIC_{"0":1000}
+  externalId: BM__Fornebu__plant.Lund.max_q_constr:Tr_STATIC_{"0":1000}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -3276,9 +3276,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1}
+    externalId: Tr_STATIC_{"0":1}_0
     space: cogShop
-  externalId: BM__Fornebu__plant.Lien_krv.prod_area:Tr_STATIC_{"0":1}
+  externalId: BM__Fornebu__plant.Lien_krv.prod_area:Tr_STATIC_{"0":1}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -3300,9 +3300,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1}
+    externalId: Tr_STATIC_{"0":1}_0
     space: cogShop
-  externalId: BM__Fornebu__plant.Lien_krv.mip_flag:Tr_STATIC_{"0":1}
+  externalId: BM__Fornebu__plant.Lien_krv.mip_flag:Tr_STATIC_{"0":1}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -3324,9 +3324,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":2.7}
+    externalId: Tr_STATIC_{"0":2.7}_0
     space: cogShop
-  externalId: BM__Fornebu__plant.Lien_krv.max_q_constr:Tr_STATIC_{"0":2.7}
+  externalId: BM__Fornebu__plant.Lien_krv.max_q_constr:Tr_STATIC_{"0":2.7}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -3348,9 +3348,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1}
+    externalId: Tr_STATIC_{"0":1}_0
     space: cogShop
-  externalId: BM__Fornebu__plant.Landet.prod_area:Tr_STATIC_{"0":1}
+  externalId: BM__Fornebu__plant.Landet.prod_area:Tr_STATIC_{"0":1}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -3372,9 +3372,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1}
+    externalId: Tr_STATIC_{"0":1}_0
     space: cogShop
-  externalId: BM__Fornebu__plant.Landet.mip_flag:Tr_STATIC_{"0":1}
+  externalId: BM__Fornebu__plant.Landet.mip_flag:Tr_STATIC_{"0":1}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -3396,9 +3396,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":48}
+    externalId: Tr_STATIC_{"0":48}_0
     space: cogShop
-  externalId: BM__Fornebu__plant.Landet.max_p_constr:Tr_STATIC_{"0":48}
+  externalId: BM__Fornebu__plant.Landet.max_p_constr:Tr_STATIC_{"0":48}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -3420,9 +3420,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1000}
+    externalId: Tr_STATIC_{"0":1000}_0
     space: cogShop
-  externalId: BM__Fornebu__plant.Landet.max_q_constr:Tr_STATIC_{"0":1000}
+  externalId: BM__Fornebu__plant.Landet.max_q_constr:Tr_STATIC_{"0":1000}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -3444,9 +3444,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1}
+    externalId: Tr_STATIC_{"0":1}_0
     space: cogShop
-  externalId: BM__Fornebu__plant.Dalby.prod_area:Tr_STATIC_{"0":1}
+  externalId: BM__Fornebu__plant.Dalby.prod_area:Tr_STATIC_{"0":1}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -3468,9 +3468,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1}
+    externalId: Tr_STATIC_{"0":1}_0
     space: cogShop
-  externalId: BM__Fornebu__plant.Dalby.mip_flag:Tr_STATIC_{"0":1}
+  externalId: BM__Fornebu__plant.Dalby.mip_flag:Tr_STATIC_{"0":1}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -3492,9 +3492,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1000}
+    externalId: Tr_STATIC_{"0":1000}_0
     space: cogShop
-  externalId: BM__Fornebu__plant.Dalby.max_q_constr:Tr_STATIC_{"0":1000}
+  externalId: BM__Fornebu__plant.Dalby.max_q_constr:Tr_STATIC_{"0":1000}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -3516,9 +3516,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1}
+    externalId: Tr_STATIC_{"0":1}_0
     space: cogShop
-  externalId: BM__Fornebu__plant.Rull1.prod_area:Tr_STATIC_{"0":1}
+  externalId: BM__Fornebu__plant.Rull1.prod_area:Tr_STATIC_{"0":1}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -3540,9 +3540,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1}
+    externalId: Tr_STATIC_{"0":1}_0
     space: cogShop
-  externalId: BM__Fornebu__plant.Rull1.mip_flag:Tr_STATIC_{"0":1}
+  externalId: BM__Fornebu__plant.Rull1.mip_flag:Tr_STATIC_{"0":1}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -3564,9 +3564,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":184.999}
+    externalId: Tr_STATIC_{"0":184.999}_0
     space: cogShop
-  externalId: BM__Fornebu__plant.Rull1.max_p_constr:Tr_STATIC_{"0":184.999}
+  externalId: BM__Fornebu__plant.Rull1.max_p_constr:Tr_STATIC_{"0":184.999}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -3588,9 +3588,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1000}
+    externalId: Tr_STATIC_{"0":1000}_0
     space: cogShop
-  externalId: BM__Fornebu__plant.Rull1.max_q_constr:Tr_STATIC_{"0":1000}
+  externalId: BM__Fornebu__plant.Rull1.max_q_constr:Tr_STATIC_{"0":1000}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -3612,9 +3612,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1}
+    externalId: Tr_STATIC_{"0":1}_0
     space: cogShop
-  externalId: BM__Fornebu__plant.Rull2.prod_area:Tr_STATIC_{"0":1}
+  externalId: BM__Fornebu__plant.Rull2.prod_area:Tr_STATIC_{"0":1}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -3636,9 +3636,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1}
+    externalId: Tr_STATIC_{"0":1}_0
     space: cogShop
-  externalId: BM__Fornebu__plant.Rull2.mip_flag:Tr_STATIC_{"0":1}
+  externalId: BM__Fornebu__plant.Rull2.mip_flag:Tr_STATIC_{"0":1}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -3660,9 +3660,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1000}
+    externalId: Tr_STATIC_{"0":1000}_0
     space: cogShop
-  externalId: BM__Fornebu__plant.Rull2.max_q_constr:Tr_STATIC_{"0":1000}
+  externalId: BM__Fornebu__plant.Rull2.max_q_constr:Tr_STATIC_{"0":1000}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -3684,9 +3684,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1}
+    externalId: Tr_STATIC_{"0":1}_0
     space: cogShop
-  externalId: BM__Fornebu__plant.Scott.prod_area:Tr_STATIC_{"0":1}
+  externalId: BM__Fornebu__plant.Scott.prod_area:Tr_STATIC_{"0":1}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -3708,9 +3708,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1}
+    externalId: Tr_STATIC_{"0":1}_0
     space: cogShop
-  externalId: BM__Fornebu__plant.Scott.mip_flag:Tr_STATIC_{"0":1}
+  externalId: BM__Fornebu__plant.Scott.mip_flag:Tr_STATIC_{"0":1}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -3732,9 +3732,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1000}
+    externalId: Tr_STATIC_{"0":1000}_0
     space: cogShop
-  externalId: BM__Fornebu__plant.Scott.max_q_constr:Tr_STATIC_{"0":1000}
+  externalId: BM__Fornebu__plant.Scott.max_q_constr:Tr_STATIC_{"0":1000}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -3756,9 +3756,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1}
+    externalId: Tr_STATIC_{"0":1}_0
     space: cogShop
-  externalId: BM__Fornebu__plant.Strand_krv.prod_area:Tr_STATIC_{"0":1}
+  externalId: BM__Fornebu__plant.Strand_krv.prod_area:Tr_STATIC_{"0":1}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -3780,9 +3780,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":0}
+    externalId: Tr_STATIC_{"0":0}_0
     space: cogShop
-  externalId: BM__Fornebu__plant.Strand_krv.mip_flag:Tr_STATIC_{"0":0}
+  externalId: BM__Fornebu__plant.Strand_krv.mip_flag:Tr_STATIC_{"0":0}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -3804,9 +3804,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1000}
+    externalId: Tr_STATIC_{"0":1000}_0
     space: cogShop
-  externalId: BM__Fornebu__plant.Strand_krv.max_q_constr:Tr_STATIC_{"0":1000}
+  externalId: BM__Fornebu__plant.Strand_krv.max_q_constr:Tr_STATIC_{"0":1000}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -3828,9 +3828,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":1.42}
+    externalId: Tr_STATIC_{"0":1.42}_0
     space: cogShop
-  externalId: BM__Fornebu__reservoir.Sirefelt.tactical_limit_max:Tr_STATIC_{"0":1.42}
+  externalId: BM__Fornebu__reservoir.Sirefelt.tactical_limit_max:Tr_STATIC_{"0":1.42}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -3852,9 +3852,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":9.2}
+    externalId: Tr_STATIC_{"0":9.2}_0
     space: cogShop
-  externalId: BM__Fornebu__reservoir.Danielsen.tactical_limit_max:Tr_STATIC_{"0":9.2}
+  externalId: BM__Fornebu__reservoir.Danielsen.tactical_limit_max:Tr_STATIC_{"0":9.2}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -3876,9 +3876,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":109}
+    externalId: Tr_STATIC_{"0":109}_0
     space: cogShop
-  externalId: BM__Fornebu__reservoir.Dalbysvatn.tactical_limit_max:Tr_STATIC_{"0":109}
+  externalId: BM__Fornebu__reservoir.Dalbysvatn.tactical_limit_max:Tr_STATIC_{"0":109}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -3900,9 +3900,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":48.6}
+    externalId: Tr_STATIC_{"0":48.6}_0
     space: cogShop
-  externalId: BM__Fornebu__production_group.T2Landet.max_p_limit:Tr_STATIC_{"0":48.6}
+  externalId: BM__Fornebu__production_group.T2Landet.max_p_limit:Tr_STATIC_{"0":48.6}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -3924,9 +3924,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_STATIC_{"0":0}
+    externalId: Tr_STATIC_{"0":0}_0
     space: cogShop
-  externalId: BM__Fornebu__reserve_group.rkom_up.rr_up_obligation:Tr_STATIC_{"0":0}
+  externalId: BM__Fornebu__reserve_group.rkom_up.rr_up_obligation:Tr_STATIC_{"0":0}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -3948,9 +3948,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_MULTIPLY_{"value":0.53}
+    externalId: Tr_MULTIPLY_{"value":0.53}_0
     space: cogShop
-  externalId: BM__Fornebu__creek_intake.Blakstad.inflow:Tr_MULTIPLY_{"value":0.53}
+  externalId: BM__Fornebu__creek_intake.Blakstad.inflow:Tr_MULTIPLY_{"value":0.53}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -3960,9 +3960,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_ADD_{"value":0}
+    externalId: Tr_ADD_{"value":0}_1
     space: cogShop
-  externalId: BM__Fornebu__creek_intake.Blakstad.inflow:Tr_ADD_{"value":0}
+  externalId: BM__Fornebu__creek_intake.Blakstad.inflow:Tr_ADD_{"value":0}_1
   instanceType: edge
   space: cogShop
   startNode:
@@ -3984,9 +3984,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_MULTIPLY_{"value":0.151}
+    externalId: Tr_MULTIPLY_{"value":0.151}_0
     space: cogShop
-  externalId: BM__Fornebu__creek_intake.Fjerdingby_intake.inflow:Tr_MULTIPLY_{"value":0.151}
+  externalId: BM__Fornebu__creek_intake.Fjerdingby_intake.inflow:Tr_MULTIPLY_{"value":0.151}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -3996,9 +3996,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_ADD_{"value":0}
+    externalId: Tr_ADD_{"value":0}_1
     space: cogShop
-  externalId: BM__Fornebu__creek_intake.Fjerdingby_intake.inflow:Tr_ADD_{"value":0}
+  externalId: BM__Fornebu__creek_intake.Fjerdingby_intake.inflow:Tr_ADD_{"value":0}_1
   instanceType: edge
   space: cogShop
   startNode:
@@ -4020,9 +4020,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_MULTIPLY_{"value":0.08}
+    externalId: Tr_MULTIPLY_{"value":0.08}_0
     space: cogShop
-  externalId: BM__Fornebu__creek_intake.Vigrestad.inflow:Tr_MULTIPLY_{"value":0.08}
+  externalId: BM__Fornebu__creek_intake.Vigrestad.inflow:Tr_MULTIPLY_{"value":0.08}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -4032,9 +4032,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_ADD_{"value":0}
+    externalId: Tr_ADD_{"value":0}_1
     space: cogShop
-  externalId: BM__Fornebu__creek_intake.Vigrestad.inflow:Tr_ADD_{"value":0}
+  externalId: BM__Fornebu__creek_intake.Vigrestad.inflow:Tr_ADD_{"value":0}_1
   instanceType: edge
   space: cogShop
   startNode:
@@ -4056,9 +4056,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_MULTIPLY_{"value":0.042}
+    externalId: Tr_MULTIPLY_{"value":0.042}_0
     space: cogShop
-  externalId: BM__Fornebu__creek_intake.Golebiowski_intake.inflow:Tr_MULTIPLY_{"value":0.042}
+  externalId: BM__Fornebu__creek_intake.Golebiowski_intake.inflow:Tr_MULTIPLY_{"value":0.042}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -4068,9 +4068,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_ADD_{"value":0}
+    externalId: Tr_ADD_{"value":0}_1
     space: cogShop
-  externalId: BM__Fornebu__creek_intake.Golebiowski_intake.inflow:Tr_ADD_{"value":0}
+  externalId: BM__Fornebu__creek_intake.Golebiowski_intake.inflow:Tr_ADD_{"value":0}_1
   instanceType: edge
   space: cogShop
   startNode:
@@ -4092,9 +4092,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_MULTIPLY_{"value":0.069}
+    externalId: Tr_MULTIPLY_{"value":0.069}_0
     space: cogShop
-  externalId: BM__Fornebu__creek_intake.Lont_intake.inflow:Tr_MULTIPLY_{"value":0.069}
+  externalId: BM__Fornebu__creek_intake.Lont_intake.inflow:Tr_MULTIPLY_{"value":0.069}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -4104,9 +4104,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_ADD_{"value":0}
+    externalId: Tr_ADD_{"value":0}_1
     space: cogShop
-  externalId: BM__Fornebu__creek_intake.Lont_intake.inflow:Tr_ADD_{"value":0}
+  externalId: BM__Fornebu__creek_intake.Lont_intake.inflow:Tr_ADD_{"value":0}_1
   instanceType: edge
   space: cogShop
   startNode:
@@ -4128,9 +4128,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_MULTIPLY_{"value":0.078}
+    externalId: Tr_MULTIPLY_{"value":0.078}_0
     space: cogShop
-  externalId: BM__Fornebu__creek_intake.Narvhus.inflow:Tr_MULTIPLY_{"value":0.078}
+  externalId: BM__Fornebu__creek_intake.Narvhus.inflow:Tr_MULTIPLY_{"value":0.078}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -4140,9 +4140,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_ADD_{"value":0}
+    externalId: Tr_ADD_{"value":0}_1
     space: cogShop
-  externalId: BM__Fornebu__creek_intake.Narvhus.inflow:Tr_ADD_{"value":0}
+  externalId: BM__Fornebu__creek_intake.Narvhus.inflow:Tr_ADD_{"value":0}_1
   instanceType: edge
   space: cogShop
   startNode:
@@ -4164,9 +4164,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_MULTIPLY_{"value":0.14}
+    externalId: Tr_MULTIPLY_{"value":0.14}_0
     space: cogShop
-  externalId: BM__Fornebu__creek_intake.Gustad.inflow:Tr_MULTIPLY_{"value":0.14}
+  externalId: BM__Fornebu__creek_intake.Gustad.inflow:Tr_MULTIPLY_{"value":0.14}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -4176,9 +4176,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_ADD_{"value":0}
+    externalId: Tr_ADD_{"value":0}_1
     space: cogShop
-  externalId: BM__Fornebu__creek_intake.Gustad.inflow:Tr_ADD_{"value":0}
+  externalId: BM__Fornebu__creek_intake.Gustad.inflow:Tr_ADD_{"value":0}_1
   instanceType: edge
   space: cogShop
   startNode:
@@ -4200,9 +4200,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_MULTIPLY_{"value":-1}
+    externalId: Tr_MULTIPLY_{"value":-1}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Holen_G1.maintenance_flag:Tr_MULTIPLY_{"value":-1}
+  externalId: BM__Fornebu__generator.Holen_G1.maintenance_flag:Tr_MULTIPLY_{"value":-1}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -4212,9 +4212,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_ADD_{"value":1}
+    externalId: Tr_ADD_{"value":1}_1
     space: cogShop
-  externalId: BM__Fornebu__generator.Holen_G1.maintenance_flag:Tr_ADD_{"value":1}
+  externalId: BM__Fornebu__generator.Holen_G1.maintenance_flag:Tr_ADD_{"value":1}_1
   instanceType: edge
   space: cogShop
   startNode:
@@ -4236,9 +4236,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_MULTIPLY_{"value":-1}
+    externalId: Tr_MULTIPLY_{"value":-1}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Lund_G1.maintenance_flag:Tr_MULTIPLY_{"value":-1}
+  externalId: BM__Fornebu__generator.Lund_G1.maintenance_flag:Tr_MULTIPLY_{"value":-1}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -4248,9 +4248,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_ADD_{"value":1}
+    externalId: Tr_ADD_{"value":1}_1
     space: cogShop
-  externalId: BM__Fornebu__generator.Lund_G1.maintenance_flag:Tr_ADD_{"value":1}
+  externalId: BM__Fornebu__generator.Lund_G1.maintenance_flag:Tr_ADD_{"value":1}_1
   instanceType: edge
   space: cogShop
   startNode:
@@ -4272,9 +4272,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_MULTIPLY_{"value":-1}
+    externalId: Tr_MULTIPLY_{"value":-1}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Lien_krv_G1.maintenance_flag:Tr_MULTIPLY_{"value":-1}
+  externalId: BM__Fornebu__generator.Lien_krv_G1.maintenance_flag:Tr_MULTIPLY_{"value":-1}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -4284,9 +4284,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_ADD_{"value":1}
+    externalId: Tr_ADD_{"value":1}_1
     space: cogShop
-  externalId: BM__Fornebu__generator.Lien_krv_G1.maintenance_flag:Tr_ADD_{"value":1}
+  externalId: BM__Fornebu__generator.Lien_krv_G1.maintenance_flag:Tr_ADD_{"value":1}_1
   instanceType: edge
   space: cogShop
   startNode:
@@ -4308,9 +4308,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_MULTIPLY_{"value":-1}
+    externalId: Tr_MULTIPLY_{"value":-1}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Landet_G1.maintenance_flag:Tr_MULTIPLY_{"value":-1}
+  externalId: BM__Fornebu__generator.Landet_G1.maintenance_flag:Tr_MULTIPLY_{"value":-1}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -4320,9 +4320,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_ADD_{"value":1}
+    externalId: Tr_ADD_{"value":1}_1
     space: cogShop
-  externalId: BM__Fornebu__generator.Landet_G1.maintenance_flag:Tr_ADD_{"value":1}
+  externalId: BM__Fornebu__generator.Landet_G1.maintenance_flag:Tr_ADD_{"value":1}_1
   instanceType: edge
   space: cogShop
   startNode:
@@ -4344,9 +4344,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_MULTIPLY_{"value":-1}
+    externalId: Tr_MULTIPLY_{"value":-1}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Dalby_G1.maintenance_flag:Tr_MULTIPLY_{"value":-1}
+  externalId: BM__Fornebu__generator.Dalby_G1.maintenance_flag:Tr_MULTIPLY_{"value":-1}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -4356,9 +4356,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_ADD_{"value":1}
+    externalId: Tr_ADD_{"value":1}_1
     space: cogShop
-  externalId: BM__Fornebu__generator.Dalby_G1.maintenance_flag:Tr_ADD_{"value":1}
+  externalId: BM__Fornebu__generator.Dalby_G1.maintenance_flag:Tr_ADD_{"value":1}_1
   instanceType: edge
   space: cogShop
   startNode:
@@ -4380,9 +4380,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_MULTIPLY_{"value":-1}
+    externalId: Tr_MULTIPLY_{"value":-1}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Dalby_G2.maintenance_flag:Tr_MULTIPLY_{"value":-1}
+  externalId: BM__Fornebu__generator.Dalby_G2.maintenance_flag:Tr_MULTIPLY_{"value":-1}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -4392,9 +4392,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_ADD_{"value":1}
+    externalId: Tr_ADD_{"value":1}_1
     space: cogShop
-  externalId: BM__Fornebu__generator.Dalby_G2.maintenance_flag:Tr_ADD_{"value":1}
+  externalId: BM__Fornebu__generator.Dalby_G2.maintenance_flag:Tr_ADD_{"value":1}_1
   instanceType: edge
   space: cogShop
   startNode:
@@ -4416,9 +4416,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_MULTIPLY_{"value":-1}
+    externalId: Tr_MULTIPLY_{"value":-1}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull1_G1.maintenance_flag:Tr_MULTIPLY_{"value":-1}
+  externalId: BM__Fornebu__generator.Rull1_G1.maintenance_flag:Tr_MULTIPLY_{"value":-1}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -4428,9 +4428,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_ADD_{"value":1}
+    externalId: Tr_ADD_{"value":1}_1
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull1_G1.maintenance_flag:Tr_ADD_{"value":1}
+  externalId: BM__Fornebu__generator.Rull1_G1.maintenance_flag:Tr_ADD_{"value":1}_1
   instanceType: edge
   space: cogShop
   startNode:
@@ -4452,9 +4452,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_MULTIPLY_{"value":-1}
+    externalId: Tr_MULTIPLY_{"value":-1}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull1_G2.maintenance_flag:Tr_MULTIPLY_{"value":-1}
+  externalId: BM__Fornebu__generator.Rull1_G2.maintenance_flag:Tr_MULTIPLY_{"value":-1}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -4464,9 +4464,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_ADD_{"value":1}
+    externalId: Tr_ADD_{"value":1}_1
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull1_G2.maintenance_flag:Tr_ADD_{"value":1}
+  externalId: BM__Fornebu__generator.Rull1_G2.maintenance_flag:Tr_ADD_{"value":1}_1
   instanceType: edge
   space: cogShop
   startNode:
@@ -4488,9 +4488,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_MULTIPLY_{"value":-1}
+    externalId: Tr_MULTIPLY_{"value":-1}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull2_G1.maintenance_flag:Tr_MULTIPLY_{"value":-1}
+  externalId: BM__Fornebu__generator.Rull2_G1.maintenance_flag:Tr_MULTIPLY_{"value":-1}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -4500,9 +4500,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_ADD_{"value":1}
+    externalId: Tr_ADD_{"value":1}_1
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull2_G1.maintenance_flag:Tr_ADD_{"value":1}
+  externalId: BM__Fornebu__generator.Rull2_G1.maintenance_flag:Tr_ADD_{"value":1}_1
   instanceType: edge
   space: cogShop
   startNode:
@@ -4524,9 +4524,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_MULTIPLY_{"value":-1}
+    externalId: Tr_MULTIPLY_{"value":-1}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull2_G2.maintenance_flag:Tr_MULTIPLY_{"value":-1}
+  externalId: BM__Fornebu__generator.Rull2_G2.maintenance_flag:Tr_MULTIPLY_{"value":-1}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -4536,9 +4536,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_ADD_{"value":1}
+    externalId: Tr_ADD_{"value":1}_1
     space: cogShop
-  externalId: BM__Fornebu__generator.Rull2_G2.maintenance_flag:Tr_ADD_{"value":1}
+  externalId: BM__Fornebu__generator.Rull2_G2.maintenance_flag:Tr_ADD_{"value":1}_1
   instanceType: edge
   space: cogShop
   startNode:
@@ -4560,9 +4560,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_MULTIPLY_{"value":-1}
+    externalId: Tr_MULTIPLY_{"value":-1}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Scott_G1.maintenance_flag:Tr_MULTIPLY_{"value":-1}
+  externalId: BM__Fornebu__generator.Scott_G1.maintenance_flag:Tr_MULTIPLY_{"value":-1}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -4572,9 +4572,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_ADD_{"value":1}
+    externalId: Tr_ADD_{"value":1}_1
     space: cogShop
-  externalId: BM__Fornebu__generator.Scott_G1.maintenance_flag:Tr_ADD_{"value":1}
+  externalId: BM__Fornebu__generator.Scott_G1.maintenance_flag:Tr_ADD_{"value":1}_1
   instanceType: edge
   space: cogShop
   startNode:
@@ -4596,9 +4596,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_MULTIPLY_{"value":-1}
+    externalId: Tr_MULTIPLY_{"value":-1}_0
     space: cogShop
-  externalId: BM__Fornebu__generator.Strand_krv_G1.maintenance_flag:Tr_MULTIPLY_{"value":-1}
+  externalId: BM__Fornebu__generator.Strand_krv_G1.maintenance_flag:Tr_MULTIPLY_{"value":-1}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -4608,9 +4608,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_ADD_{"value":1}
+    externalId: Tr_ADD_{"value":1}_1
     space: cogShop
-  externalId: BM__Fornebu__generator.Strand_krv_G1.maintenance_flag:Tr_ADD_{"value":1}
+  externalId: BM__Fornebu__generator.Strand_krv_G1.maintenance_flag:Tr_ADD_{"value":1}_1
   instanceType: edge
   space: cogShop
   startNode:
@@ -5100,9 +5100,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_MULTIPLY_{"value":0.16}
+    externalId: Tr_MULTIPLY_{"value":0.16}_0
     space: cogShop
-  externalId: BM__Fornebu__reservoir.Livincovs.inflow:Tr_MULTIPLY_{"value":0.16}
+  externalId: BM__Fornebu__reservoir.Livincovs.inflow:Tr_MULTIPLY_{"value":0.16}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -5112,9 +5112,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_ADD_{"value":0}
+    externalId: Tr_ADD_{"value":0}_1
     space: cogShop
-  externalId: BM__Fornebu__reservoir.Livincovs.inflow:Tr_ADD_{"value":0}
+  externalId: BM__Fornebu__reservoir.Livincovs.inflow:Tr_ADD_{"value":0}_1
   instanceType: edge
   space: cogShop
   startNode:
@@ -5136,9 +5136,9 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_MULTIPLY_{"value":1}
+    externalId: Tr_MULTIPLY_{"value":1}_0
     space: cogShop
-  externalId: BM__Fornebu__market.Dayahead.buy_price:Tr_MULTIPLY_{"value":1}
+  externalId: BM__Fornebu__market.Dayahead.buy_price:Tr_MULTIPLY_{"value":1}_0
   instanceType: edge
   space: cogShop
   startNode:
@@ -5148,9 +5148,9 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_ADD_{"value":0}
+    externalId: Tr_ADD_{"value":0}_1
     space: cogShop
-  externalId: BM__Fornebu__market.Dayahead.buy_price:Tr_ADD_{"value":0}
+  externalId: BM__Fornebu__market.Dayahead.buy_price:Tr_ADD_{"value":0}_1
   instanceType: edge
   space: cogShop
   startNode:
@@ -5264,12 +5264,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":100000}
+- externalId: Tr_STATIC_{"0":100000}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":100000}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -5288,12 +5289,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":0}
+- externalId: Tr_STATIC_{"0":0}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":0}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -5377,12 +5379,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":1000}
+- externalId: Tr_STATIC_{"0":1000}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":1000}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -5414,12 +5417,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":10}
+- externalId: Tr_STATIC_{"0":10}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":10}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -5477,12 +5481,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":100}
+- externalId: Tr_STATIC_{"0":100}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":100}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -5735,12 +5740,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":6}
+- externalId: Tr_STATIC_{"0":6}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":6}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -5785,12 +5791,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":30}
+- externalId: Tr_STATIC_{"0":30}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":30}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -5835,12 +5842,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":200}
+- externalId: Tr_STATIC_{"0":200}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":200}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -5859,12 +5867,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":28}
+- externalId: Tr_STATIC_{"0":28}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":28}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -5883,12 +5892,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":38}
+- externalId: Tr_STATIC_{"0":38}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":38}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -5907,12 +5917,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":27}
+- externalId: Tr_STATIC_{"0":27}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":27}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -5931,12 +5942,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":45}
+- externalId: Tr_STATIC_{"0":45}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":45}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -6007,12 +6019,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":0.6}
+- externalId: Tr_STATIC_{"0":0.6}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":0.6}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -6031,12 +6044,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":1}
+- externalId: Tr_STATIC_{"0":1}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":1}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -6068,12 +6082,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":4}
+- externalId: Tr_STATIC_{"0":4}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":4}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -6092,12 +6107,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":12}
+- externalId: Tr_STATIC_{"0":12}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":12}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -6116,12 +6132,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":150}
+- externalId: Tr_STATIC_{"0":150}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":150}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -6140,12 +6157,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":2.5}
+- externalId: Tr_STATIC_{"0":2.5}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":2.5}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -6164,12 +6182,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":3.1}
+- externalId: Tr_STATIC_{"0":3.1}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":3.1}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -6240,12 +6259,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":8}
+- externalId: Tr_STATIC_{"0":8}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":8}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -6277,12 +6297,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":48}
+- externalId: Tr_STATIC_{"0":48}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":48}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -6301,12 +6322,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":25}
+- externalId: Tr_STATIC_{"0":25}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":25}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -6325,12 +6347,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":50}
+- externalId: Tr_STATIC_{"0":50}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":50}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -6388,12 +6411,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":500}
+- externalId: Tr_STATIC_{"0":500}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":500}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -6425,12 +6449,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":85}
+- externalId: Tr_STATIC_{"0":85}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":85}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -6462,12 +6487,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":50000}
+- externalId: Tr_STATIC_{"0":50000}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":50000}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -6486,12 +6512,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":2}
+- externalId: Tr_STATIC_{"0":2}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":2}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -6523,12 +6550,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":250}
+- externalId: Tr_STATIC_{"0":250}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":250}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -6638,12 +6666,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":90}
+- externalId: Tr_STATIC_{"0":90}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":90}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -6675,12 +6704,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":95}
+- externalId: Tr_STATIC_{"0":95}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":95}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -6764,12 +6794,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":43}
+- externalId: Tr_STATIC_{"0":43}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":43}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -6892,12 +6923,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":32}
+- externalId: Tr_STATIC_{"0":32}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":32}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -6916,12 +6948,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":74}
+- externalId: Tr_STATIC_{"0":74}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":74}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -7031,12 +7064,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":76}
+- externalId: Tr_STATIC_{"0":76}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":76}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -7120,12 +7154,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":7}
+- externalId: Tr_STATIC_{"0":7}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":7}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -7144,12 +7179,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":19}
+- externalId: Tr_STATIC_{"0":19}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":19}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -7220,12 +7256,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":4.2}
+- externalId: Tr_STATIC_{"0":4.2}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":4.2}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -7244,12 +7281,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":4.9}
+- externalId: Tr_STATIC_{"0":4.9}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":4.9}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -7307,12 +7345,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":672}
+- externalId: Tr_STATIC_{"0":672}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":672}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -7344,12 +7383,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":10000}
+- externalId: Tr_STATIC_{"0":10000}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":10000}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -7407,12 +7447,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":42}
+- externalId: Tr_STATIC_{"0":42}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":42}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -7509,12 +7550,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":2.7}
+- externalId: Tr_STATIC_{"0":2.7}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":2.7}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -7650,12 +7692,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":184.999}
+- externalId: Tr_STATIC_{"0":184.999}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":184.999}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -7804,12 +7847,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":1.42}
+- externalId: Tr_STATIC_{"0":1.42}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":1.42}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -7828,12 +7872,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":9.2}
+- externalId: Tr_STATIC_{"0":9.2}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":9.2}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -7852,12 +7897,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":109}
+- externalId: Tr_STATIC_{"0":109}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":109}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -7876,12 +7922,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_STATIC_{"0":48.6}
+- externalId: Tr_STATIC_{"0":48.6}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"0":48.6}'
       method: STATIC
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -7913,23 +7960,25 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_MULTIPLY_{"value":0.53}
+- externalId: Tr_MULTIPLY_{"value":0.53}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"value":0.53}'
       method: MULTIPLY
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_ADD_{"value":0}
+- externalId: Tr_ADD_{"value":0}_1
   instanceType: node
   sources:
   - properties:
       arguments: '{"value":0}'
       method: ADD
+      order: 1
     source:
       externalId: Transformation
       space: cogShop
@@ -7948,12 +7997,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_MULTIPLY_{"value":0.151}
+- externalId: Tr_MULTIPLY_{"value":0.151}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"value":0.151}'
       method: MULTIPLY
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -7972,12 +8022,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_MULTIPLY_{"value":0.08}
+- externalId: Tr_MULTIPLY_{"value":0.08}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"value":0.08}'
       method: MULTIPLY
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -7996,12 +8047,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_MULTIPLY_{"value":0.042}
+- externalId: Tr_MULTIPLY_{"value":0.042}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"value":0.042}'
       method: MULTIPLY
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -8020,12 +8072,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_MULTIPLY_{"value":0.069}
+- externalId: Tr_MULTIPLY_{"value":0.069}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"value":0.069}'
       method: MULTIPLY
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -8044,12 +8097,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_MULTIPLY_{"value":0.078}
+- externalId: Tr_MULTIPLY_{"value":0.078}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"value":0.078}'
       method: MULTIPLY
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -8068,12 +8122,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_MULTIPLY_{"value":0.14}
+- externalId: Tr_MULTIPLY_{"value":0.14}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"value":0.14}'
       method: MULTIPLY
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -8092,23 +8147,25 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_MULTIPLY_{"value":-1}
+- externalId: Tr_MULTIPLY_{"value":-1}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"value":-1}'
       method: MULTIPLY
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_ADD_{"value":1}
+- externalId: Tr_ADD_{"value":1}_1
   instanceType: node
   sources:
   - properties:
       arguments: '{"value":1}'
       method: ADD
+      order: 1
     source:
       externalId: Transformation
       space: cogShop
@@ -8777,12 +8834,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_MULTIPLY_{"value":0.16}
+- externalId: Tr_MULTIPLY_{"value":0.16}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"value":0.16}'
       method: MULTIPLY
+      order: 0
     source:
       externalId: Transformation
       space: cogShop
@@ -8801,12 +8859,13 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_MULTIPLY_{"value":1}
+- externalId: Tr_MULTIPLY_{"value":1}_0
   instanceType: node
   sources:
   - properties:
       arguments: '{"value":1}'
       method: MULTIPLY
+      order: 0
     source:
       externalId: Transformation
       space: cogShop

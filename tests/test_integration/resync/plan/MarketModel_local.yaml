@@ -250,26 +250,26 @@ parent_assets:
     tenant_id: 431fcc8b-74b8-4171-b7c9-e6fab253913b
   name: Configurations
   parentExternalId: power_ops
-- description: Configurations used for different markets
-  externalId: market_configurations
-  name: Market configurations
+- description: Configurations for which bids should be combined into a total RKOM
+    bid form
+  externalId: rkom_bid_combination_configurations
+  name: RKOM bid combination configurations
   parentExternalId: configurations
 - description: Configurations used in RKOM bid generation processes
   externalId: rkom_bid_process_configurations
   name: RKOM bid configurations
   parentExternalId: configurations
-- description: Configurations used in benchmarking processes
-  externalId: benchmarking_configurations
-  name: Benchmarking configurations
+- description: Configurations used for different markets
+  externalId: market_configurations
+  name: Market configurations
   parentExternalId: configurations
 - description: Configurations used in bid matrix generation processes
   externalId: bid_process_configurations
   name: Bid configurations
   parentExternalId: configurations
-- description: Configurations for which bids should be combined into a total RKOM
-    bid form
-  externalId: rkom_bid_combination_configurations
-  name: RKOM bid combination configurations
+- description: Configurations used in benchmarking processes
+  externalId: benchmarking_configurations
+  name: Benchmarking configurations
   parentExternalId: configurations
 relationships:
 - externalId: POWEROPS_bid_process_configuration_multi_scenario_20_NO2.POWEROPS_bid_matrix_generator_config_multi_scenario_20_NO2

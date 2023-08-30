@@ -370,14 +370,14 @@ parent_assets:
 - externalId: price_areas
   name: Price areas
   parentExternalId: power_ops
-- externalId: reservoirs
-  name: Reservoirs
-  parentExternalId: power_ops
 - externalId: plants
   name: Plants
   parentExternalId: power_ops
 - externalId: generators
   name: Generators
+  parentExternalId: power_ops
+- externalId: reservoirs
+  name: Reservoirs
   parentExternalId: power_ops
 - externalId: watercourses
   name: Watercourses
