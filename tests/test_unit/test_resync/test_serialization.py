@@ -35,14 +35,12 @@ def test_serialize_production_model_as_cdf(production_model: models.ProductionMo
     # In the first serialization, we do not support the content of sequences and files
     for item in chain(local_production.files(), local_production.sequences()):
         item.content = None
-    local_production.sort_lists()
 
     # Act
     serialized = local_production.dump_as_cdf_resource()
     loaded = models.ProductionModel.load_from_cdf_resources(serialized)
 
     # Assert
-    loaded.sort_lists()
     assert loaded.model_dump() == local_production.model_dump()
 
 
@@ -52,14 +50,12 @@ def test_serialize_market_model_as_cdf(market_model: models.MarketModel) -> None
     # In the first serialization, we do not support the content of sequences and files
     for item in chain(local_market.files(), local_market.sequences()):
         item.content = None
-    local_market.sort_lists()
 
     # Act
     serialized = local_market.dump_as_cdf_resource()
     loaded = models.MarketModel.load_from_cdf_resources(serialized)
 
     # Assert
-    loaded.sort_lists()
     assert loaded.model_dump() == local_market.model_dump()
 
 
@@ -69,12 +65,10 @@ def test_serialize_cogshop1_model_as_cdf(cogshop1_model: models.CogShop1Asset) -
     # In the first serialization, we do not support the content of sequences and files
     for item in chain(local_cogshop.files(), local_cogshop.sequences()):
         item.content = None
-    local_cogshop.sort_lists()
 
     # Act
     serialized = local_cogshop.dump_as_cdf_resource()
     loaded = models.CogShop1Asset.load_from_cdf_resources(serialized)
 
     # Assert
-    loaded.sort_lists()
     assert loaded.model_dump() == local_cogshop.model_dump()

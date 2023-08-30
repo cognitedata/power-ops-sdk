@@ -205,13 +205,6 @@ class Model(BaseModel, ABC):
     def model_name(self) -> str:
         return type(self).__name__
 
-    @abc.abstractmethod
-    def sort_lists(self) -> None:
-        """
-        This is used to standardize the order of lists in the model, which is useful for comparing models.
-        """
-        raise NotImplementedError()
-
     def dump_as_cdf_resource(self) -> dict[str, Any]:
         output: dict[str, Any] = {}
         for resource_fun in self.cdf_resources.keys():
@@ -264,8 +257,7 @@ class Model(BaseModel, ABC):
         # The dump and load calls are to remove all read only fields
         current_reloaded = self.load_from_cdf_resources(self.dump_as_cdf_resource())
         new_reloaded = new_model.load_from_cdf_resources(new_model.dump_as_cdf_resource())
-        current_reloaded.sort_lists()
-        new_reloaded.sort_lists()
+
         diffs = []
         for field_name in self.model_fields:
             current_value = getattr(current_reloaded, field_name)

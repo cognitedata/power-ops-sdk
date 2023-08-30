@@ -78,14 +78,6 @@ class AssetModel(Model, ABC):
         cls._set_linked_resources(loaded_by_type_external_id)
         return instance
 
-    def sort_lists(self) -> None:
-        for field_name, field in self.model_fields.items():
-            annotation, outer = get_pydantic_annotation(field.annotation, type(self))
-            if issubclass(annotation, (AssetType, CDFFile, CDFSequence)) and outer is list:
-                getattr(self, field_name).sort(key=lambda x: x.external_id)
-                for asset_type in getattr(self, field_name):
-                    asset_type.sort_lists()
-
     @classmethod
     def from_cdf(
         cls: TypingType[T_Asset_Model],
