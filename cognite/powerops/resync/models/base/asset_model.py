@@ -15,7 +15,7 @@ from cognite.powerops.resync.models.cdf_resources import CDFFile, CDFSequence
 from cognite.powerops.resync.utils.serializer import get_pydantic_annotation
 
 
-class AssetModel(Model, ABC):
+class AssetModel(Model, ABC, validate_assignment=True):
     root_asset: ClassVar[Optional[Asset]] = None
 
     def assets(self) -> list[Asset]:

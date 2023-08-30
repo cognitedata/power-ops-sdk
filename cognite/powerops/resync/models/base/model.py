@@ -58,6 +58,15 @@ class ResourceType(BaseModel, ABC):
     def external_id(self) -> str:
         raise NotImplementedError()
 
+    def standardize(self) -> None:
+        """
+        This ensures that the model is in a standardized form.
+
+        This is useful when doing comparisons between models, as for example, the ordering of the assets in some
+        lists does not matter.
+        """
+        ...
+
 
 Resource: TypeAlias = Union[Asset, TimeSeries, Sequence, FileMetadata, ResourceType]
 
@@ -214,7 +223,7 @@ class Model(BaseModel, ABC):
                 def dump(resource: Any) -> dict[str, Any]:
                     return remove_read_only_fields(resource.dump(camel_case=True))
 
-                output[name] = sorted((dump(item) for item in items), key=self._external_id_key)
+                output[name] = [dump(item) for item in items]
         return output
 
     @classmethod
@@ -250,6 +259,16 @@ class Model(BaseModel, ABC):
         data_set_external_id: str,
     ) -> T_Model:
         ...
+
+    @abc.abstractmethod
+    def standardize(self) -> None:
+        """
+        This ensures that the model is in a standardized form.
+
+        This is useful when doing comparisons between models; as for example, the ordering of the assets in some
+        lists does not matter.
+        """
+        raise NotImplementedError()
 
     def difference(self, new_model: T_Model) -> list[FieldDifference]:
         if type(self) != type(new_model):

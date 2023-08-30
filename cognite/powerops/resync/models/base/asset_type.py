@@ -19,7 +19,7 @@ class NonAssetType(BaseModel, ABC, arbitrary_types_allowed=True):
     ...
 
 
-class AssetType(ResourceType, ABC, arbitrary_types_allowed=True):
+class AssetType(ResourceType, ABC, arbitrary_types_allowed=True, validate_assignment=True):
     parent_external_id: ClassVar[str]
     label: ClassVar[Union[AssetLabel, str]]
     parent_description: ClassVar[Optional[str]] = None
