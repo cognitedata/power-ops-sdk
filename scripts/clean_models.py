@@ -1,14 +1,33 @@
-from typing import Any, Protocol
+from typing import Any, Protocol, Literal
+
+from cognite.client import CogniteClient
 
 from cognite.powerops.clients.powerops_client import get_powerops_client
+from cognite.client.data_classes import filters
 
 
 class API(Protocol):
-    def list(self, space: str) -> list:
+    def list(self, space: str, limit: int) -> list:
         ...
 
     def delete(self, id: Any) -> list:
         ...
+
+
+class InstanceAdapter(API):
+    def __init__(self, client: CogniteClient, instance_type: Literal["node", "edge"]):
+        self.client = client
+        self.instance_type = instance_type
+
+    def list(self, space: str, limit: int) -> list:
+        is_space = filters.Equals([self.instance_type, "space"], space)
+        return self.client.data_modeling.instances.list(filter=is_space, limit=limit, instance_type=self.instance_type)
+
+    def delete(self, id: Any) -> list:
+        if self.instance_type == "node":
+            return self.client.data_modeling.instances.delete(nodes=id).nodes
+        else:
+            return self.client.data_modeling.instances.delete(edges=id).edges
 
 
 def delete_resources(api: API, space: str):
@@ -36,12 +55,15 @@ def delete_resources(api: API, space: str):
 
 
 def main():
-    space = "power-ops"
+    space = "cogShop"
 
     client = get_powerops_client().cdf
+    print(f"Connected to {client.config.project}")
     delete_resources(client.data_modeling.data_models, space)
     delete_resources(client.data_modeling.views, space)
     delete_resources(client.data_modeling.containers, space)
+    delete_resources(InstanceAdapter(client, "edge"), space)
+    delete_resources(InstanceAdapter(client, "node"), space)
 
 
 if __name__ == "__main__":

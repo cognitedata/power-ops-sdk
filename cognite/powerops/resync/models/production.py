@@ -8,6 +8,7 @@ from pydantic import ConfigDict, Field, field_validator, field_serializer
 
 from cognite.powerops.cdf_labels import AssetLabel
 from cognite.powerops.resync.models.base import AssetModel, AssetType, NonAssetType
+from cognite.powerops.resync.models.base.asset_type import T_Asset_Type
 from cognite.powerops.resync.models.cdf_resources import CDFSequence
 
 from cognite.powerops.resync.utils.serializer import try_load_dict, parse_time_series
@@ -68,6 +69,14 @@ class Plant(AssetType):
     inlet_level_time_series: Optional[TimeSeries] = None
     head_direct_time_series: Optional[TimeSeries] = None
 
+    @field_validator("generators", mode="after")
+    def generator_ordering(cls, value: list[Generator]) -> list[Generator]:
+        # To ensure loading the production model always yields the same result, we sort the generators by external_id.
+        return sorted(value, key=lambda x: x.external_id)
+
+    def standardize(self) -> None:
+        self.generators = self.generator_ordering(self.generators)
+
     @field_validator("penstock_head_loss_factors", mode="before")
     def parse_str(cls, value) -> dict:
         return try_load_dict(value)
@@ -115,6 +124,14 @@ class Watercourse(AssetType):
     plants: list[Plant] = Field(default_factory=list)
     production_obligation_time_series: list[TimeSeries] = Field(default_factory=list)
 
+    @field_validator("plants", mode="after")
+    def plant_ordering(cls, value: list[Plant]) -> list[Plant]:
+        # To ensure loading the production model always yields the same result, we sort the plants by external_id.
+        return sorted(value, key=lambda x: x.external_id)
+
+    def standardize(self) -> None:
+        self.plants = self.plant_ordering(self.plants)
+
     @field_validator("production_obligation_time_series", mode="before")
     def none_to_empty_list(cls, value) -> list[TimeSeries]:
         if value is None or (isinstance(value, list) and value and value[0] is None):
@@ -135,6 +152,15 @@ class PriceArea(AssetType):
     plants: list[Plant] = Field(default_factory=list)
     watercourses: list[Watercourse] = Field(default_factory=list)
 
+    @field_validator("plants", "watercourses", mode="after")
+    def ordering(cls, value: list[T_Asset_Type]) -> list[T_Asset_Type]:
+        # To ensure loading the production model always yields the same result, we sort the assets by external_id.
+        return sorted(value, key=lambda x: x.external_id)
+
+    def standardize(self) -> None:
+        self.plants = self.ordering(self.plants)
+        self.watercourses = self.ordering(self.watercourses)
+
     @field_serializer("dayahead_price_time_series")
     def ser_time_series(self, value) -> dict[str, Any]:
         if value is None:
@@ -149,3 +175,18 @@ class ProductionModel(AssetModel):
     reservoirs: list[Reservoir] = Field(default_factory=list)
     watercourses: list[Watercourse] = Field(default_factory=list)
     price_areas: list[PriceArea] = Field(default_factory=list)
+
+    @field_validator("plants", "generators", "reservoirs", "watercourses", "price_areas", mode="after")
+    def ordering(cls, value: list[T_Asset_Type]) -> list[T_Asset_Type]:
+        # To ensure loading the production model always yields the same result, we sort the assets by external_id.
+        return sorted(value, key=lambda x: x.external_id)
+
+    def standardize(self) -> None:
+        self.plants = self.ordering(self.plants)
+        self.generators = self.ordering(self.generators)
+        self.reservoirs = self.ordering(self.reservoirs)
+        self.watercourses = self.ordering(self.watercourses)
+        self.price_areas = self.ordering(self.price_areas)
+        for field in [self.plants, self.generators, self.reservoirs, self.watercourses, self.price_areas]:
+            for item in field:
+                item.standardize()

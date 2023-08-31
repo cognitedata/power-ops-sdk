@@ -1410,6 +1410,506 @@ sequences:
     shop:type: bid_matrix_generator_config
   name: POWEROPS bid matrix generator config multi_scenario_20_NO2
 - columns:
+  - externalId: shop_model_path
+    valueType: STRING
+  - externalId: time_series_external_id
+    valueType: STRING
+  - externalId: transformations
+    valueType: STRING
+  - externalId: transformations1
+    valueType: STRING
+  - externalId: transformations2
+    valueType: STRING
+  - externalId: transformations3
+    valueType: STRING
+  - externalId: retrieve
+    valueType: STRING
+  - externalId: aggregation
+    valueType: STRING
+  description: Mapping between SHOP paths and CDF TimeSeries
+  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_1
+  metadata:
+    bid:scenario_name: scenario_1
+    sha256_hash: 9e8a13ea84a9dc9f385d1fe0d5662ca13f561187be1a7454c782a2e86fa6b022
+    shop:type: incremental_mapping
+    shop:watercourse: Fornebu
+  name: SHOP Fornebu incremental mapping multi scenario 20 NO2 scenario 1
+- columns:
+  - externalId: shop_model_path
+    valueType: STRING
+  - externalId: time_series_external_id
+    valueType: STRING
+  - externalId: transformations
+    valueType: STRING
+  - externalId: transformations1
+    valueType: STRING
+  - externalId: transformations2
+    valueType: STRING
+  - externalId: transformations3
+    valueType: STRING
+  - externalId: retrieve
+    valueType: STRING
+  - externalId: aggregation
+    valueType: STRING
+  description: Mapping between SHOP paths and CDF TimeSeries
+  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_10
+  metadata:
+    bid:scenario_name: scenario_10
+    sha256_hash: 9eb35e3409fb362f5c546de111386ca03222339a29f0d91a5f3b7d5fa99eb646
+    shop:type: incremental_mapping
+    shop:watercourse: Fornebu
+  name: SHOP Fornebu incremental mapping multi scenario 20 NO2 scenario 10
+- columns:
+  - externalId: shop_model_path
+    valueType: STRING
+  - externalId: time_series_external_id
+    valueType: STRING
+  - externalId: transformations
+    valueType: STRING
+  - externalId: transformations1
+    valueType: STRING
+  - externalId: transformations2
+    valueType: STRING
+  - externalId: transformations3
+    valueType: STRING
+  - externalId: retrieve
+    valueType: STRING
+  - externalId: aggregation
+    valueType: STRING
+  description: Mapping between SHOP paths and CDF TimeSeries
+  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_11
+  metadata:
+    bid:scenario_name: scenario_11
+    sha256_hash: 7daf04a40a111e193a1147331993e256402eff54c4910edcc47f4dde10fcc51d
+    shop:type: incremental_mapping
+    shop:watercourse: Fornebu
+  name: SHOP Fornebu incremental mapping multi scenario 20 NO2 scenario 11
+- columns:
+  - externalId: shop_model_path
+    valueType: STRING
+  - externalId: time_series_external_id
+    valueType: STRING
+  - externalId: transformations
+    valueType: STRING
+  - externalId: transformations1
+    valueType: STRING
+  - externalId: transformations2
+    valueType: STRING
+  - externalId: transformations3
+    valueType: STRING
+  - externalId: retrieve
+    valueType: STRING
+  - externalId: aggregation
+    valueType: STRING
+  description: Mapping between SHOP paths and CDF TimeSeries
+  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_12
+  metadata:
+    bid:scenario_name: scenario_12
+    sha256_hash: 9f6bda52d678e7b8c4bacbe49a6555985ad9eb968337c493336c777ee248ac6c
+    shop:type: incremental_mapping
+    shop:watercourse: Fornebu
+  name: SHOP Fornebu incremental mapping multi scenario 20 NO2 scenario 12
+- columns:
+  - externalId: shop_model_path
+    valueType: STRING
+  - externalId: time_series_external_id
+    valueType: STRING
+  - externalId: transformations
+    valueType: STRING
+  - externalId: transformations1
+    valueType: STRING
+  - externalId: transformations2
+    valueType: STRING
+  - externalId: transformations3
+    valueType: STRING
+  - externalId: retrieve
+    valueType: STRING
+  - externalId: aggregation
+    valueType: STRING
+  description: Mapping between SHOP paths and CDF TimeSeries
+  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_13
+  metadata:
+    bid:scenario_name: scenario_13
+    sha256_hash: 9c4856d782fe9ab118a8a49869a8515f5f99dd3271f0020063268a349da8c792
+    shop:type: incremental_mapping
+    shop:watercourse: Fornebu
+  name: SHOP Fornebu incremental mapping multi scenario 20 NO2 scenario 13
+- columns:
+  - externalId: shop_model_path
+    valueType: STRING
+  - externalId: time_series_external_id
+    valueType: STRING
+  - externalId: transformations
+    valueType: STRING
+  - externalId: transformations1
+    valueType: STRING
+  - externalId: transformations2
+    valueType: STRING
+  - externalId: transformations3
+    valueType: STRING
+  - externalId: retrieve
+    valueType: STRING
+  - externalId: aggregation
+    valueType: STRING
+  description: Mapping between SHOP paths and CDF TimeSeries
+  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_14
+  metadata:
+    bid:scenario_name: scenario_14
+    sha256_hash: bade3a9c91019ae9d3117a441fb052c70206eb72ac7b88bb71e8389b4da0b7ec
+    shop:type: incremental_mapping
+    shop:watercourse: Fornebu
+  name: SHOP Fornebu incremental mapping multi scenario 20 NO2 scenario 14
+- columns:
+  - externalId: shop_model_path
+    valueType: STRING
+  - externalId: time_series_external_id
+    valueType: STRING
+  - externalId: transformations
+    valueType: STRING
+  - externalId: transformations1
+    valueType: STRING
+  - externalId: transformations2
+    valueType: STRING
+  - externalId: transformations3
+    valueType: STRING
+  - externalId: retrieve
+    valueType: STRING
+  - externalId: aggregation
+    valueType: STRING
+  description: Mapping between SHOP paths and CDF TimeSeries
+  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_15
+  metadata:
+    bid:scenario_name: scenario_15
+    sha256_hash: c234c524aa0390dba1a96f3fdb8b7b136a9677cc0cedcf018835a3f83ee83f6f
+    shop:type: incremental_mapping
+    shop:watercourse: Fornebu
+  name: SHOP Fornebu incremental mapping multi scenario 20 NO2 scenario 15
+- columns:
+  - externalId: shop_model_path
+    valueType: STRING
+  - externalId: time_series_external_id
+    valueType: STRING
+  - externalId: transformations
+    valueType: STRING
+  - externalId: transformations1
+    valueType: STRING
+  - externalId: transformations2
+    valueType: STRING
+  - externalId: transformations3
+    valueType: STRING
+  - externalId: retrieve
+    valueType: STRING
+  - externalId: aggregation
+    valueType: STRING
+  description: Mapping between SHOP paths and CDF TimeSeries
+  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_16
+  metadata:
+    bid:scenario_name: scenario_16
+    sha256_hash: 8f4de3515cd8748956536f5a68908f4dcc0af160a72cffad7cf994afd6811e0a
+    shop:type: incremental_mapping
+    shop:watercourse: Fornebu
+  name: SHOP Fornebu incremental mapping multi scenario 20 NO2 scenario 16
+- columns:
+  - externalId: shop_model_path
+    valueType: STRING
+  - externalId: time_series_external_id
+    valueType: STRING
+  - externalId: transformations
+    valueType: STRING
+  - externalId: transformations1
+    valueType: STRING
+  - externalId: transformations2
+    valueType: STRING
+  - externalId: transformations3
+    valueType: STRING
+  - externalId: retrieve
+    valueType: STRING
+  - externalId: aggregation
+    valueType: STRING
+  description: Mapping between SHOP paths and CDF TimeSeries
+  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_17
+  metadata:
+    bid:scenario_name: scenario_17
+    sha256_hash: b732b60804e0f0a4c29a3bfc43b424762a2f06dbab752555e767233e744c9134
+    shop:type: incremental_mapping
+    shop:watercourse: Fornebu
+  name: SHOP Fornebu incremental mapping multi scenario 20 NO2 scenario 17
+- columns:
+  - externalId: shop_model_path
+    valueType: STRING
+  - externalId: time_series_external_id
+    valueType: STRING
+  - externalId: transformations
+    valueType: STRING
+  - externalId: transformations1
+    valueType: STRING
+  - externalId: transformations2
+    valueType: STRING
+  - externalId: transformations3
+    valueType: STRING
+  - externalId: retrieve
+    valueType: STRING
+  - externalId: aggregation
+    valueType: STRING
+  description: Mapping between SHOP paths and CDF TimeSeries
+  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_18
+  metadata:
+    bid:scenario_name: scenario_18
+    sha256_hash: 9b39a518f47d27a19cf5fe4125df7d654609cc7602eeeed379191c2d333d85a9
+    shop:type: incremental_mapping
+    shop:watercourse: Fornebu
+  name: SHOP Fornebu incremental mapping multi scenario 20 NO2 scenario 18
+- columns:
+  - externalId: shop_model_path
+    valueType: STRING
+  - externalId: time_series_external_id
+    valueType: STRING
+  - externalId: transformations
+    valueType: STRING
+  - externalId: transformations1
+    valueType: STRING
+  - externalId: transformations2
+    valueType: STRING
+  - externalId: transformations3
+    valueType: STRING
+  - externalId: retrieve
+    valueType: STRING
+  - externalId: aggregation
+    valueType: STRING
+  description: Mapping between SHOP paths and CDF TimeSeries
+  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_19
+  metadata:
+    bid:scenario_name: scenario_19
+    sha256_hash: d42505ee000e93873bce1ad517c635c944c3cb5fbed4303e4af6446545bf7f12
+    shop:type: incremental_mapping
+    shop:watercourse: Fornebu
+  name: SHOP Fornebu incremental mapping multi scenario 20 NO2 scenario 19
+- columns:
+  - externalId: shop_model_path
+    valueType: STRING
+  - externalId: time_series_external_id
+    valueType: STRING
+  - externalId: transformations
+    valueType: STRING
+  - externalId: transformations1
+    valueType: STRING
+  - externalId: transformations2
+    valueType: STRING
+  - externalId: transformations3
+    valueType: STRING
+  - externalId: retrieve
+    valueType: STRING
+  - externalId: aggregation
+    valueType: STRING
+  description: Mapping between SHOP paths and CDF TimeSeries
+  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_2
+  metadata:
+    bid:scenario_name: scenario_2
+    sha256_hash: 0f822545769204be75b3247c21c26ceb2be2b251f557e97fece0b91a5eeaeb38
+    shop:type: incremental_mapping
+    shop:watercourse: Fornebu
+  name: SHOP Fornebu incremental mapping multi scenario 20 NO2 scenario 2
+- columns:
+  - externalId: shop_model_path
+    valueType: STRING
+  - externalId: time_series_external_id
+    valueType: STRING
+  - externalId: transformations
+    valueType: STRING
+  - externalId: transformations1
+    valueType: STRING
+  - externalId: transformations2
+    valueType: STRING
+  - externalId: transformations3
+    valueType: STRING
+  - externalId: retrieve
+    valueType: STRING
+  - externalId: aggregation
+    valueType: STRING
+  description: Mapping between SHOP paths and CDF TimeSeries
+  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_20
+  metadata:
+    bid:scenario_name: scenario_20
+    sha256_hash: a5b2223f3d563635199743e03b0e3f31d6d4c2beaf45b38877af7bb8a81901ae
+    shop:type: incremental_mapping
+    shop:watercourse: Fornebu
+  name: SHOP Fornebu incremental mapping multi scenario 20 NO2 scenario 20
+- columns:
+  - externalId: shop_model_path
+    valueType: STRING
+  - externalId: time_series_external_id
+    valueType: STRING
+  - externalId: transformations
+    valueType: STRING
+  - externalId: transformations1
+    valueType: STRING
+  - externalId: transformations2
+    valueType: STRING
+  - externalId: transformations3
+    valueType: STRING
+  - externalId: retrieve
+    valueType: STRING
+  - externalId: aggregation
+    valueType: STRING
+  description: Mapping between SHOP paths and CDF TimeSeries
+  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_3
+  metadata:
+    bid:scenario_name: scenario_3
+    sha256_hash: 9a4c69efef8c0c717b8fc54e6493eba0203a632d56f60e91eae56c102bb068c1
+    shop:type: incremental_mapping
+    shop:watercourse: Fornebu
+  name: SHOP Fornebu incremental mapping multi scenario 20 NO2 scenario 3
+- columns:
+  - externalId: shop_model_path
+    valueType: STRING
+  - externalId: time_series_external_id
+    valueType: STRING
+  - externalId: transformations
+    valueType: STRING
+  - externalId: transformations1
+    valueType: STRING
+  - externalId: transformations2
+    valueType: STRING
+  - externalId: transformations3
+    valueType: STRING
+  - externalId: retrieve
+    valueType: STRING
+  - externalId: aggregation
+    valueType: STRING
+  description: Mapping between SHOP paths and CDF TimeSeries
+  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_4
+  metadata:
+    bid:scenario_name: scenario_4
+    sha256_hash: 014c08796a71ac0ce5f5ed57cb09fd275842aed6c357ac5e589ff1e3acd02f35
+    shop:type: incremental_mapping
+    shop:watercourse: Fornebu
+  name: SHOP Fornebu incremental mapping multi scenario 20 NO2 scenario 4
+- columns:
+  - externalId: shop_model_path
+    valueType: STRING
+  - externalId: time_series_external_id
+    valueType: STRING
+  - externalId: transformations
+    valueType: STRING
+  - externalId: transformations1
+    valueType: STRING
+  - externalId: transformations2
+    valueType: STRING
+  - externalId: transformations3
+    valueType: STRING
+  - externalId: retrieve
+    valueType: STRING
+  - externalId: aggregation
+    valueType: STRING
+  description: Mapping between SHOP paths and CDF TimeSeries
+  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_5
+  metadata:
+    bid:scenario_name: scenario_5
+    sha256_hash: e30b0e107b5cc59110b92d05fac84d099439d33ad5c953cb035b1b79b0972385
+    shop:type: incremental_mapping
+    shop:watercourse: Fornebu
+  name: SHOP Fornebu incremental mapping multi scenario 20 NO2 scenario 5
+- columns:
+  - externalId: shop_model_path
+    valueType: STRING
+  - externalId: time_series_external_id
+    valueType: STRING
+  - externalId: transformations
+    valueType: STRING
+  - externalId: transformations1
+    valueType: STRING
+  - externalId: transformations2
+    valueType: STRING
+  - externalId: transformations3
+    valueType: STRING
+  - externalId: retrieve
+    valueType: STRING
+  - externalId: aggregation
+    valueType: STRING
+  description: Mapping between SHOP paths and CDF TimeSeries
+  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_6
+  metadata:
+    bid:scenario_name: scenario_6
+    sha256_hash: 422cbbf883eecfda320eed827c0b107b486c40929ee7dfd5164e6904615f955a
+    shop:type: incremental_mapping
+    shop:watercourse: Fornebu
+  name: SHOP Fornebu incremental mapping multi scenario 20 NO2 scenario 6
+- columns:
+  - externalId: shop_model_path
+    valueType: STRING
+  - externalId: time_series_external_id
+    valueType: STRING
+  - externalId: transformations
+    valueType: STRING
+  - externalId: transformations1
+    valueType: STRING
+  - externalId: transformations2
+    valueType: STRING
+  - externalId: transformations3
+    valueType: STRING
+  - externalId: retrieve
+    valueType: STRING
+  - externalId: aggregation
+    valueType: STRING
+  description: Mapping between SHOP paths and CDF TimeSeries
+  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_7
+  metadata:
+    bid:scenario_name: scenario_7
+    sha256_hash: e485b3a19edc7a4dd6e4ae7d1b020200c6e6d0cc6bd9d07bf7ba9e213b1ba11d
+    shop:type: incremental_mapping
+    shop:watercourse: Fornebu
+  name: SHOP Fornebu incremental mapping multi scenario 20 NO2 scenario 7
+- columns:
+  - externalId: shop_model_path
+    valueType: STRING
+  - externalId: time_series_external_id
+    valueType: STRING
+  - externalId: transformations
+    valueType: STRING
+  - externalId: transformations1
+    valueType: STRING
+  - externalId: transformations2
+    valueType: STRING
+  - externalId: transformations3
+    valueType: STRING
+  - externalId: retrieve
+    valueType: STRING
+  - externalId: aggregation
+    valueType: STRING
+  description: Mapping between SHOP paths and CDF TimeSeries
+  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_8
+  metadata:
+    bid:scenario_name: scenario_8
+    sha256_hash: 5489c902cb308b1d70366f693cba4e8abe641415d5d7ac818528af9ac69085ed
+    shop:type: incremental_mapping
+    shop:watercourse: Fornebu
+  name: SHOP Fornebu incremental mapping multi scenario 20 NO2 scenario 8
+- columns:
+  - externalId: shop_model_path
+    valueType: STRING
+  - externalId: time_series_external_id
+    valueType: STRING
+  - externalId: transformations
+    valueType: STRING
+  - externalId: transformations1
+    valueType: STRING
+  - externalId: transformations2
+    valueType: STRING
+  - externalId: transformations3
+    valueType: STRING
+  - externalId: retrieve
+    valueType: STRING
+  - externalId: aggregation
+    valueType: STRING
+  description: Mapping between SHOP paths and CDF TimeSeries
+  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_9
+  metadata:
+    bid:scenario_name: scenario_9
+    sha256_hash: 58e9cf300b7ea60dbde86e72b18a70a61cbf1f91eeb0abddfb68d4627b8966fd
+    shop:type: incremental_mapping
+    shop:watercourse: Fornebu
+  name: SHOP Fornebu incremental mapping multi scenario 20 NO2 scenario 9
+- columns:
   - externalId: shop_plant
     valueType: STRING
   - externalId: bid_matrix_generation_method
@@ -1425,6 +1925,56 @@ sequences:
     sha256_hash: 89ef9a14f4b9562b16d3509274cf7ab5329b9950157b1133c2e261399a42057b
     shop:type: bid_matrix_generator_config
   name: POWEROPS bid matrix generator config multi_scenario_2_NO2
+- columns:
+  - externalId: shop_model_path
+    valueType: STRING
+  - externalId: time_series_external_id
+    valueType: STRING
+  - externalId: transformations
+    valueType: STRING
+  - externalId: transformations1
+    valueType: STRING
+  - externalId: transformations2
+    valueType: STRING
+  - externalId: transformations3
+    valueType: STRING
+  - externalId: retrieve
+    valueType: STRING
+  - externalId: aggregation
+    valueType: STRING
+  description: Mapping between SHOP paths and CDF TimeSeries
+  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_2_NO2_scenario_1
+  metadata:
+    bid:scenario_name: scenario_1
+    sha256_hash: 9eb35e3409fb362f5c546de111386ca03222339a29f0d91a5f3b7d5fa99eb646
+    shop:type: incremental_mapping
+    shop:watercourse: Fornebu
+  name: SHOP Fornebu incremental mapping multi scenario 2 NO2 scenario 1
+- columns:
+  - externalId: shop_model_path
+    valueType: STRING
+  - externalId: time_series_external_id
+    valueType: STRING
+  - externalId: transformations
+    valueType: STRING
+  - externalId: transformations1
+    valueType: STRING
+  - externalId: transformations2
+    valueType: STRING
+  - externalId: transformations3
+    valueType: STRING
+  - externalId: retrieve
+    valueType: STRING
+  - externalId: aggregation
+    valueType: STRING
+  description: Mapping between SHOP paths and CDF TimeSeries
+  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_2_NO2_scenario_2
+  metadata:
+    bid:scenario_name: scenario_2
+    sha256_hash: d08c09d2de1fce2187a9ff8cf1ce0075f3f799c15241cb65fd8dc08c9ba77f8a
+    shop:type: incremental_mapping
+    shop:watercourse: Fornebu
+  name: SHOP Fornebu incremental mapping multi scenario 2 NO2 scenario 2
 - columns:
   - externalId: shop_plant
     valueType: STRING
@@ -1442,6 +1992,31 @@ sequences:
     shop:type: bid_matrix_generator_config
   name: POWEROPS bid matrix generator config price_independent_NO2
 - columns:
+  - externalId: shop_model_path
+    valueType: STRING
+  - externalId: time_series_external_id
+    valueType: STRING
+  - externalId: transformations
+    valueType: STRING
+  - externalId: transformations1
+    valueType: STRING
+  - externalId: transformations2
+    valueType: STRING
+  - externalId: transformations3
+    valueType: STRING
+  - externalId: retrieve
+    valueType: STRING
+  - externalId: aggregation
+    valueType: STRING
+  description: Mapping between SHOP paths and CDF TimeSeries
+  externalId: SHOP_Fornebu_incremental_mapping_price_independent_NO2_scenario_1
+  metadata:
+    bid:scenario_name: scenario_1
+    sha256_hash: 9eb35e3409fb362f5c546de111386ca03222339a29f0d91a5f3b7d5fa99eb646
+    shop:type: incremental_mapping
+    shop:watercourse: Fornebu
+  name: SHOP Fornebu incremental mapping price independent NO2 scenario 1
+- columns:
   - externalId: shop_plant
     valueType: STRING
   - externalId: bid_matrix_generation_method
@@ -1457,6 +2032,32 @@ sequences:
     sha256_hash: 93a88160e26a9b7dc68985c0d5ef93dd8aaa7b91ce2ec87ae7248557b0e6a896
     shop:type: bid_matrix_generator_config
   name: POWEROPS bid matrix generator config water_value_based_with_dummy_SHOP_runNO2
+- columns:
+  - externalId: shop_model_path
+    valueType: STRING
+  - externalId: time_series_external_id
+    valueType: STRING
+  - externalId: transformations
+    valueType: STRING
+  - externalId: transformations1
+    valueType: STRING
+  - externalId: transformations2
+    valueType: STRING
+  - externalId: transformations3
+    valueType: STRING
+  - externalId: retrieve
+    valueType: STRING
+  - externalId: aggregation
+    valueType: STRING
+  description: Mapping between SHOP paths and CDF TimeSeries
+  externalId: SHOP_Fornebu_incremental_mapping_water_value_based_with_dummy_SHOP_runNO2_Main
+  metadata:
+    bid:scenario_name: Main
+    sha256_hash: 9eb35e3409fb362f5c546de111386ca03222339a29f0d91a5f3b7d5fa99eb646
+    shop:type: incremental_mapping
+    shop:watercourse: Fornebu
+  name: SHOP Fornebu incremental mapping water value based with dummy SHOP runNO2
+    Main
 - columns:
   - externalId: shop_model_path
     valueType: STRING
@@ -4889,604 +5490,3 @@ sequences:
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 80 MW
-- columns:
-  - externalId: shop_model_path
-    valueType: STRING
-  - externalId: time_series_external_id
-    valueType: STRING
-  - externalId: transformations
-    valueType: STRING
-  - externalId: transformations1
-    valueType: STRING
-  - externalId: transformations2
-    valueType: STRING
-  - externalId: transformations3
-    valueType: STRING
-  - externalId: retrieve
-    valueType: STRING
-  - externalId: aggregation
-    valueType: STRING
-  description: Mapping between SHOP paths and CDF TimeSeries
-  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_1
-  metadata:
-    bid:scenario_name: scenario_1
-    sha256_hash: 9e8a13ea84a9dc9f385d1fe0d5662ca13f561187be1a7454c782a2e86fa6b022
-    shop:type: incremental_mapping
-    shop:watercourse: Fornebu
-  name: SHOP Fornebu incremental mapping multi scenario 20 NO2 scenario 1
-- columns:
-  - externalId: shop_model_path
-    valueType: STRING
-  - externalId: time_series_external_id
-    valueType: STRING
-  - externalId: transformations
-    valueType: STRING
-  - externalId: transformations1
-    valueType: STRING
-  - externalId: transformations2
-    valueType: STRING
-  - externalId: transformations3
-    valueType: STRING
-  - externalId: retrieve
-    valueType: STRING
-  - externalId: aggregation
-    valueType: STRING
-  description: Mapping between SHOP paths and CDF TimeSeries
-  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_10
-  metadata:
-    bid:scenario_name: scenario_10
-    sha256_hash: 9eb35e3409fb362f5c546de111386ca03222339a29f0d91a5f3b7d5fa99eb646
-    shop:type: incremental_mapping
-    shop:watercourse: Fornebu
-  name: SHOP Fornebu incremental mapping multi scenario 20 NO2 scenario 10
-- columns:
-  - externalId: shop_model_path
-    valueType: STRING
-  - externalId: time_series_external_id
-    valueType: STRING
-  - externalId: transformations
-    valueType: STRING
-  - externalId: transformations1
-    valueType: STRING
-  - externalId: transformations2
-    valueType: STRING
-  - externalId: transformations3
-    valueType: STRING
-  - externalId: retrieve
-    valueType: STRING
-  - externalId: aggregation
-    valueType: STRING
-  description: Mapping between SHOP paths and CDF TimeSeries
-  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_11
-  metadata:
-    bid:scenario_name: scenario_11
-    sha256_hash: 7daf04a40a111e193a1147331993e256402eff54c4910edcc47f4dde10fcc51d
-    shop:type: incremental_mapping
-    shop:watercourse: Fornebu
-  name: SHOP Fornebu incremental mapping multi scenario 20 NO2 scenario 11
-- columns:
-  - externalId: shop_model_path
-    valueType: STRING
-  - externalId: time_series_external_id
-    valueType: STRING
-  - externalId: transformations
-    valueType: STRING
-  - externalId: transformations1
-    valueType: STRING
-  - externalId: transformations2
-    valueType: STRING
-  - externalId: transformations3
-    valueType: STRING
-  - externalId: retrieve
-    valueType: STRING
-  - externalId: aggregation
-    valueType: STRING
-  description: Mapping between SHOP paths and CDF TimeSeries
-  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_12
-  metadata:
-    bid:scenario_name: scenario_12
-    sha256_hash: 9f6bda52d678e7b8c4bacbe49a6555985ad9eb968337c493336c777ee248ac6c
-    shop:type: incremental_mapping
-    shop:watercourse: Fornebu
-  name: SHOP Fornebu incremental mapping multi scenario 20 NO2 scenario 12
-- columns:
-  - externalId: shop_model_path
-    valueType: STRING
-  - externalId: time_series_external_id
-    valueType: STRING
-  - externalId: transformations
-    valueType: STRING
-  - externalId: transformations1
-    valueType: STRING
-  - externalId: transformations2
-    valueType: STRING
-  - externalId: transformations3
-    valueType: STRING
-  - externalId: retrieve
-    valueType: STRING
-  - externalId: aggregation
-    valueType: STRING
-  description: Mapping between SHOP paths and CDF TimeSeries
-  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_13
-  metadata:
-    bid:scenario_name: scenario_13
-    sha256_hash: 9c4856d782fe9ab118a8a49869a8515f5f99dd3271f0020063268a349da8c792
-    shop:type: incremental_mapping
-    shop:watercourse: Fornebu
-  name: SHOP Fornebu incremental mapping multi scenario 20 NO2 scenario 13
-- columns:
-  - externalId: shop_model_path
-    valueType: STRING
-  - externalId: time_series_external_id
-    valueType: STRING
-  - externalId: transformations
-    valueType: STRING
-  - externalId: transformations1
-    valueType: STRING
-  - externalId: transformations2
-    valueType: STRING
-  - externalId: transformations3
-    valueType: STRING
-  - externalId: retrieve
-    valueType: STRING
-  - externalId: aggregation
-    valueType: STRING
-  description: Mapping between SHOP paths and CDF TimeSeries
-  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_14
-  metadata:
-    bid:scenario_name: scenario_14
-    sha256_hash: bade3a9c91019ae9d3117a441fb052c70206eb72ac7b88bb71e8389b4da0b7ec
-    shop:type: incremental_mapping
-    shop:watercourse: Fornebu
-  name: SHOP Fornebu incremental mapping multi scenario 20 NO2 scenario 14
-- columns:
-  - externalId: shop_model_path
-    valueType: STRING
-  - externalId: time_series_external_id
-    valueType: STRING
-  - externalId: transformations
-    valueType: STRING
-  - externalId: transformations1
-    valueType: STRING
-  - externalId: transformations2
-    valueType: STRING
-  - externalId: transformations3
-    valueType: STRING
-  - externalId: retrieve
-    valueType: STRING
-  - externalId: aggregation
-    valueType: STRING
-  description: Mapping between SHOP paths and CDF TimeSeries
-  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_15
-  metadata:
-    bid:scenario_name: scenario_15
-    sha256_hash: c234c524aa0390dba1a96f3fdb8b7b136a9677cc0cedcf018835a3f83ee83f6f
-    shop:type: incremental_mapping
-    shop:watercourse: Fornebu
-  name: SHOP Fornebu incremental mapping multi scenario 20 NO2 scenario 15
-- columns:
-  - externalId: shop_model_path
-    valueType: STRING
-  - externalId: time_series_external_id
-    valueType: STRING
-  - externalId: transformations
-    valueType: STRING
-  - externalId: transformations1
-    valueType: STRING
-  - externalId: transformations2
-    valueType: STRING
-  - externalId: transformations3
-    valueType: STRING
-  - externalId: retrieve
-    valueType: STRING
-  - externalId: aggregation
-    valueType: STRING
-  description: Mapping between SHOP paths and CDF TimeSeries
-  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_16
-  metadata:
-    bid:scenario_name: scenario_16
-    sha256_hash: 8f4de3515cd8748956536f5a68908f4dcc0af160a72cffad7cf994afd6811e0a
-    shop:type: incremental_mapping
-    shop:watercourse: Fornebu
-  name: SHOP Fornebu incremental mapping multi scenario 20 NO2 scenario 16
-- columns:
-  - externalId: shop_model_path
-    valueType: STRING
-  - externalId: time_series_external_id
-    valueType: STRING
-  - externalId: transformations
-    valueType: STRING
-  - externalId: transformations1
-    valueType: STRING
-  - externalId: transformations2
-    valueType: STRING
-  - externalId: transformations3
-    valueType: STRING
-  - externalId: retrieve
-    valueType: STRING
-  - externalId: aggregation
-    valueType: STRING
-  description: Mapping between SHOP paths and CDF TimeSeries
-  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_17
-  metadata:
-    bid:scenario_name: scenario_17
-    sha256_hash: b732b60804e0f0a4c29a3bfc43b424762a2f06dbab752555e767233e744c9134
-    shop:type: incremental_mapping
-    shop:watercourse: Fornebu
-  name: SHOP Fornebu incremental mapping multi scenario 20 NO2 scenario 17
-- columns:
-  - externalId: shop_model_path
-    valueType: STRING
-  - externalId: time_series_external_id
-    valueType: STRING
-  - externalId: transformations
-    valueType: STRING
-  - externalId: transformations1
-    valueType: STRING
-  - externalId: transformations2
-    valueType: STRING
-  - externalId: transformations3
-    valueType: STRING
-  - externalId: retrieve
-    valueType: STRING
-  - externalId: aggregation
-    valueType: STRING
-  description: Mapping between SHOP paths and CDF TimeSeries
-  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_18
-  metadata:
-    bid:scenario_name: scenario_18
-    sha256_hash: 9b39a518f47d27a19cf5fe4125df7d654609cc7602eeeed379191c2d333d85a9
-    shop:type: incremental_mapping
-    shop:watercourse: Fornebu
-  name: SHOP Fornebu incremental mapping multi scenario 20 NO2 scenario 18
-- columns:
-  - externalId: shop_model_path
-    valueType: STRING
-  - externalId: time_series_external_id
-    valueType: STRING
-  - externalId: transformations
-    valueType: STRING
-  - externalId: transformations1
-    valueType: STRING
-  - externalId: transformations2
-    valueType: STRING
-  - externalId: transformations3
-    valueType: STRING
-  - externalId: retrieve
-    valueType: STRING
-  - externalId: aggregation
-    valueType: STRING
-  description: Mapping between SHOP paths and CDF TimeSeries
-  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_19
-  metadata:
-    bid:scenario_name: scenario_19
-    sha256_hash: d42505ee000e93873bce1ad517c635c944c3cb5fbed4303e4af6446545bf7f12
-    shop:type: incremental_mapping
-    shop:watercourse: Fornebu
-  name: SHOP Fornebu incremental mapping multi scenario 20 NO2 scenario 19
-- columns:
-  - externalId: shop_model_path
-    valueType: STRING
-  - externalId: time_series_external_id
-    valueType: STRING
-  - externalId: transformations
-    valueType: STRING
-  - externalId: transformations1
-    valueType: STRING
-  - externalId: transformations2
-    valueType: STRING
-  - externalId: transformations3
-    valueType: STRING
-  - externalId: retrieve
-    valueType: STRING
-  - externalId: aggregation
-    valueType: STRING
-  description: Mapping between SHOP paths and CDF TimeSeries
-  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_2
-  metadata:
-    bid:scenario_name: scenario_2
-    sha256_hash: 0f822545769204be75b3247c21c26ceb2be2b251f557e97fece0b91a5eeaeb38
-    shop:type: incremental_mapping
-    shop:watercourse: Fornebu
-  name: SHOP Fornebu incremental mapping multi scenario 20 NO2 scenario 2
-- columns:
-  - externalId: shop_model_path
-    valueType: STRING
-  - externalId: time_series_external_id
-    valueType: STRING
-  - externalId: transformations
-    valueType: STRING
-  - externalId: transformations1
-    valueType: STRING
-  - externalId: transformations2
-    valueType: STRING
-  - externalId: transformations3
-    valueType: STRING
-  - externalId: retrieve
-    valueType: STRING
-  - externalId: aggregation
-    valueType: STRING
-  description: Mapping between SHOP paths and CDF TimeSeries
-  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_20
-  metadata:
-    bid:scenario_name: scenario_20
-    sha256_hash: a5b2223f3d563635199743e03b0e3f31d6d4c2beaf45b38877af7bb8a81901ae
-    shop:type: incremental_mapping
-    shop:watercourse: Fornebu
-  name: SHOP Fornebu incremental mapping multi scenario 20 NO2 scenario 20
-- columns:
-  - externalId: shop_model_path
-    valueType: STRING
-  - externalId: time_series_external_id
-    valueType: STRING
-  - externalId: transformations
-    valueType: STRING
-  - externalId: transformations1
-    valueType: STRING
-  - externalId: transformations2
-    valueType: STRING
-  - externalId: transformations3
-    valueType: STRING
-  - externalId: retrieve
-    valueType: STRING
-  - externalId: aggregation
-    valueType: STRING
-  description: Mapping between SHOP paths and CDF TimeSeries
-  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_3
-  metadata:
-    bid:scenario_name: scenario_3
-    sha256_hash: 9a4c69efef8c0c717b8fc54e6493eba0203a632d56f60e91eae56c102bb068c1
-    shop:type: incremental_mapping
-    shop:watercourse: Fornebu
-  name: SHOP Fornebu incremental mapping multi scenario 20 NO2 scenario 3
-- columns:
-  - externalId: shop_model_path
-    valueType: STRING
-  - externalId: time_series_external_id
-    valueType: STRING
-  - externalId: transformations
-    valueType: STRING
-  - externalId: transformations1
-    valueType: STRING
-  - externalId: transformations2
-    valueType: STRING
-  - externalId: transformations3
-    valueType: STRING
-  - externalId: retrieve
-    valueType: STRING
-  - externalId: aggregation
-    valueType: STRING
-  description: Mapping between SHOP paths and CDF TimeSeries
-  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_4
-  metadata:
-    bid:scenario_name: scenario_4
-    sha256_hash: 014c08796a71ac0ce5f5ed57cb09fd275842aed6c357ac5e589ff1e3acd02f35
-    shop:type: incremental_mapping
-    shop:watercourse: Fornebu
-  name: SHOP Fornebu incremental mapping multi scenario 20 NO2 scenario 4
-- columns:
-  - externalId: shop_model_path
-    valueType: STRING
-  - externalId: time_series_external_id
-    valueType: STRING
-  - externalId: transformations
-    valueType: STRING
-  - externalId: transformations1
-    valueType: STRING
-  - externalId: transformations2
-    valueType: STRING
-  - externalId: transformations3
-    valueType: STRING
-  - externalId: retrieve
-    valueType: STRING
-  - externalId: aggregation
-    valueType: STRING
-  description: Mapping between SHOP paths and CDF TimeSeries
-  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_5
-  metadata:
-    bid:scenario_name: scenario_5
-    sha256_hash: e30b0e107b5cc59110b92d05fac84d099439d33ad5c953cb035b1b79b0972385
-    shop:type: incremental_mapping
-    shop:watercourse: Fornebu
-  name: SHOP Fornebu incremental mapping multi scenario 20 NO2 scenario 5
-- columns:
-  - externalId: shop_model_path
-    valueType: STRING
-  - externalId: time_series_external_id
-    valueType: STRING
-  - externalId: transformations
-    valueType: STRING
-  - externalId: transformations1
-    valueType: STRING
-  - externalId: transformations2
-    valueType: STRING
-  - externalId: transformations3
-    valueType: STRING
-  - externalId: retrieve
-    valueType: STRING
-  - externalId: aggregation
-    valueType: STRING
-  description: Mapping between SHOP paths and CDF TimeSeries
-  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_6
-  metadata:
-    bid:scenario_name: scenario_6
-    sha256_hash: 422cbbf883eecfda320eed827c0b107b486c40929ee7dfd5164e6904615f955a
-    shop:type: incremental_mapping
-    shop:watercourse: Fornebu
-  name: SHOP Fornebu incremental mapping multi scenario 20 NO2 scenario 6
-- columns:
-  - externalId: shop_model_path
-    valueType: STRING
-  - externalId: time_series_external_id
-    valueType: STRING
-  - externalId: transformations
-    valueType: STRING
-  - externalId: transformations1
-    valueType: STRING
-  - externalId: transformations2
-    valueType: STRING
-  - externalId: transformations3
-    valueType: STRING
-  - externalId: retrieve
-    valueType: STRING
-  - externalId: aggregation
-    valueType: STRING
-  description: Mapping between SHOP paths and CDF TimeSeries
-  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_7
-  metadata:
-    bid:scenario_name: scenario_7
-    sha256_hash: e485b3a19edc7a4dd6e4ae7d1b020200c6e6d0cc6bd9d07bf7ba9e213b1ba11d
-    shop:type: incremental_mapping
-    shop:watercourse: Fornebu
-  name: SHOP Fornebu incremental mapping multi scenario 20 NO2 scenario 7
-- columns:
-  - externalId: shop_model_path
-    valueType: STRING
-  - externalId: time_series_external_id
-    valueType: STRING
-  - externalId: transformations
-    valueType: STRING
-  - externalId: transformations1
-    valueType: STRING
-  - externalId: transformations2
-    valueType: STRING
-  - externalId: transformations3
-    valueType: STRING
-  - externalId: retrieve
-    valueType: STRING
-  - externalId: aggregation
-    valueType: STRING
-  description: Mapping between SHOP paths and CDF TimeSeries
-  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_8
-  metadata:
-    bid:scenario_name: scenario_8
-    sha256_hash: 5489c902cb308b1d70366f693cba4e8abe641415d5d7ac818528af9ac69085ed
-    shop:type: incremental_mapping
-    shop:watercourse: Fornebu
-  name: SHOP Fornebu incremental mapping multi scenario 20 NO2 scenario 8
-- columns:
-  - externalId: shop_model_path
-    valueType: STRING
-  - externalId: time_series_external_id
-    valueType: STRING
-  - externalId: transformations
-    valueType: STRING
-  - externalId: transformations1
-    valueType: STRING
-  - externalId: transformations2
-    valueType: STRING
-  - externalId: transformations3
-    valueType: STRING
-  - externalId: retrieve
-    valueType: STRING
-  - externalId: aggregation
-    valueType: STRING
-  description: Mapping between SHOP paths and CDF TimeSeries
-  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_20_NO2_scenario_9
-  metadata:
-    bid:scenario_name: scenario_9
-    sha256_hash: 58e9cf300b7ea60dbde86e72b18a70a61cbf1f91eeb0abddfb68d4627b8966fd
-    shop:type: incremental_mapping
-    shop:watercourse: Fornebu
-  name: SHOP Fornebu incremental mapping multi scenario 20 NO2 scenario 9
-- columns:
-  - externalId: shop_model_path
-    valueType: STRING
-  - externalId: time_series_external_id
-    valueType: STRING
-  - externalId: transformations
-    valueType: STRING
-  - externalId: transformations1
-    valueType: STRING
-  - externalId: transformations2
-    valueType: STRING
-  - externalId: transformations3
-    valueType: STRING
-  - externalId: retrieve
-    valueType: STRING
-  - externalId: aggregation
-    valueType: STRING
-  description: Mapping between SHOP paths and CDF TimeSeries
-  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_2_NO2_scenario_1
-  metadata:
-    bid:scenario_name: scenario_1
-    sha256_hash: 9eb35e3409fb362f5c546de111386ca03222339a29f0d91a5f3b7d5fa99eb646
-    shop:type: incremental_mapping
-    shop:watercourse: Fornebu
-  name: SHOP Fornebu incremental mapping multi scenario 2 NO2 scenario 1
-- columns:
-  - externalId: shop_model_path
-    valueType: STRING
-  - externalId: time_series_external_id
-    valueType: STRING
-  - externalId: transformations
-    valueType: STRING
-  - externalId: transformations1
-    valueType: STRING
-  - externalId: transformations2
-    valueType: STRING
-  - externalId: transformations3
-    valueType: STRING
-  - externalId: retrieve
-    valueType: STRING
-  - externalId: aggregation
-    valueType: STRING
-  description: Mapping between SHOP paths and CDF TimeSeries
-  externalId: SHOP_Fornebu_incremental_mapping_multi_scenario_2_NO2_scenario_2
-  metadata:
-    bid:scenario_name: scenario_2
-    sha256_hash: d08c09d2de1fce2187a9ff8cf1ce0075f3f799c15241cb65fd8dc08c9ba77f8a
-    shop:type: incremental_mapping
-    shop:watercourse: Fornebu
-  name: SHOP Fornebu incremental mapping multi scenario 2 NO2 scenario 2
-- columns:
-  - externalId: shop_model_path
-    valueType: STRING
-  - externalId: time_series_external_id
-    valueType: STRING
-  - externalId: transformations
-    valueType: STRING
-  - externalId: transformations1
-    valueType: STRING
-  - externalId: transformations2
-    valueType: STRING
-  - externalId: transformations3
-    valueType: STRING
-  - externalId: retrieve
-    valueType: STRING
-  - externalId: aggregation
-    valueType: STRING
-  description: Mapping between SHOP paths and CDF TimeSeries
-  externalId: SHOP_Fornebu_incremental_mapping_price_independent_NO2_scenario_1
-  metadata:
-    bid:scenario_name: scenario_1
-    sha256_hash: 9eb35e3409fb362f5c546de111386ca03222339a29f0d91a5f3b7d5fa99eb646
-    shop:type: incremental_mapping
-    shop:watercourse: Fornebu
-  name: SHOP Fornebu incremental mapping price independent NO2 scenario 1
-- columns:
-  - externalId: shop_model_path
-    valueType: STRING
-  - externalId: time_series_external_id
-    valueType: STRING
-  - externalId: transformations
-    valueType: STRING
-  - externalId: transformations1
-    valueType: STRING
-  - externalId: transformations2
-    valueType: STRING
-  - externalId: transformations3
-    valueType: STRING
-  - externalId: retrieve
-    valueType: STRING
-  - externalId: aggregation
-    valueType: STRING
-  description: Mapping between SHOP paths and CDF TimeSeries
-  externalId: SHOP_Fornebu_incremental_mapping_water_value_based_with_dummy_SHOP_runNO2_Main
-  metadata:
-    bid:scenario_name: Main
-    sha256_hash: 9eb35e3409fb362f5c546de111386ca03222339a29f0d91a5f3b7d5fa99eb646
-    shop:type: incremental_mapping
-    shop:watercourse: Fornebu
-  name: SHOP Fornebu incremental mapping water value based with dummy SHOP runNO2
-    Main

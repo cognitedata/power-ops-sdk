@@ -40,7 +40,7 @@ def transform(
             )
             data_models.append(cogshop_model)
 
-    has_data_model = any(issubclass(m, DataModel) for m in model_types)
+    has_data_model = any(issubclass(m, DataModel) and not issubclass(m, models.CogShop1Asset) for m in model_types)
     if has_data_model:
         # The production model is a prerequisite for the CogShop and Market models
         production__data_model = to_production_data_model(config.production)

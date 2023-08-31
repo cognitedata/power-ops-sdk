@@ -39,9 +39,21 @@ class RKOMProcess(Process):
     rkom: RKOMPlants
     incremental_mapping: list[CDFSequence] = Field(default_factory=list)
 
+    @field_validator("incremental_mapping", mode="after")
+    def ordering(cls, value: list[CDFSequence]) -> list[CDFSequence]:
+        return sorted(value, key=lambda x: x.external_id)
+
+    @field_validator("process_events", mode="before")
+    def ordering_events(cls, value: list[str]) -> list[str]:
+        return sorted(value)
+
     @field_validator("process_events", mode="before")
     def parse_str(cls, value) -> list:
         return try_load_list(value)
+
+    def standardize(self) -> None:
+        self.incremental_mapping = self.ordering(self.incremental_mapping)
+        self.process_events = self.ordering_events(self.process_events)
 
 
 class RKOMCombinationBid(NonAssetType):
@@ -53,12 +65,22 @@ class RKOMCombinationBid(NonAssetType):
     def parse_str(cls, value) -> list:
         return try_load_list(value)
 
+    @field_validator("rkom_bid_configs", mode="after")
+    def ordering(cls, value: list[str]) -> list[str]:
+        return sorted(value)
+
+    def standardize(self) -> None:
+        self.rkom_bid_configs = self.ordering(self.rkom_bid_configs)
+
 
 class RKOMBidCombination(AssetType):
     parent_external_id: ClassVar[str] = "rkom_bid_combination_configurations"
     label: ClassVar[str] = AssetLabel.RKOM_BID_CONFIGURATION
     parent_description: ClassVar[str] = "Configurations for which bids should be combined into a total RKOM bid form"
     bid: RKOMCombinationBid
+
+    def standardize(self) -> None:
+        self.bid.standardize()
 
 
 class RKOMMarket(Market):

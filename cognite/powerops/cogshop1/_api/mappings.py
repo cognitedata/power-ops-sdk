@@ -48,7 +48,7 @@ class MappingsAPI(TypeAPI[Mapping, MappingApply, MappingList]):
     def __init__(self, client: CogniteClient):
         super().__init__(
             client=client,
-            sources=dm.ViewId("cogShop", "Mapping", "930a8d9497a060"),
+            sources=dm.ViewId("cogShop", "Mapping", "623d70ac8b9d1b"),
             class_type=Mapping,
             class_apply_type=MappingApply,
             class_list=MappingList,

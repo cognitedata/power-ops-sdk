@@ -14,7 +14,7 @@ class TransformationsAPI(TypeAPI[Transformation, TransformationApply, Transforma
     def __init__(self, client: CogniteClient):
         super().__init__(
             client=client,
-            sources=dm.ViewId("cogShop", "Transformation", "e18830dc469f30"),
+            sources=dm.ViewId("cogShop", "Transformation", "15ce1f14efe2dc"),
             class_type=Transformation,
             class_apply_type=TransformationApply,
             class_list=TransformationList,

@@ -29,6 +29,9 @@ class DayAheadBid(Bid):
             return {}
         return value
 
+    def standardize(self):
+        ...
+
 
 class DayAheadProcess(Process):
     parent_external_id = "bid_process_configurations"
@@ -39,9 +42,17 @@ class DayAheadProcess(Process):
     bid_matrix_generator_config: Optional[CDFSequence] = None
     incremental_mapping: list[CDFSequence] = Field(default_factory=list)
 
+    @field_validator("incremental_mapping", mode="after")
+    def ordering(cls, value: list[CDFSequence]) -> list[CDFSequence]:
+        return sorted(value, key=lambda x: x.external_id)
+
     @field_validator("bid", mode="before")
     def parse_str(cls, value) -> dict:
         return try_load_dict(value)
+
+    def standardize(self) -> None:
+        self.bid.standardize()
+        self.incremental_mapping = self.ordering(self.incremental_mapping)
 
 
 class NordPoolMarket(Market):

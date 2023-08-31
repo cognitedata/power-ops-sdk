@@ -21,13 +21,13 @@ class CogShop1Client:
 
     Generated with:
         pygen = 0.15.3
-        cognite-sdk = 6.13.3
-        pydantic = 2.1.1
+        cognite-sdk = 6.15.0
+        pydantic = 2.3.0
 
     Data Model:
         space: cogShop
         externalId: CogShop
-        version: 1
+        version: 2
     """
 
     def __init__(self, config_or_client: CogniteClient | ClientConfig):

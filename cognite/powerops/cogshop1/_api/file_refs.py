@@ -14,7 +14,7 @@ class FileRefsAPI(TypeAPI[FileRef, FileRefApply, FileRefList]):
     def __init__(self, client: CogniteClient):
         super().__init__(
             client=client,
-            sources=dm.ViewId("cogShop", "FileRef", "ada67a3568563c"),
+            sources=dm.ViewId("cogShop", "FileRef", "e142e855b593e2"),
             class_type=FileRef,
             class_apply_type=FileRefApply,
             class_list=FileRefList,

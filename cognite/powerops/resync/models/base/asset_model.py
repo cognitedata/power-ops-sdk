@@ -15,7 +15,7 @@ from cognite.powerops.resync.models.cdf_resources import CDFFile, CDFSequence
 from cognite.powerops.resync.utils.serializer import get_pydantic_annotation
 
 
-class AssetModel(Model, ABC):
+class AssetModel(Model, ABC, validate_assignment=True):
     root_asset: ClassVar[Optional[Asset]] = None
 
     def assets(self) -> list[Asset]:
@@ -45,16 +45,19 @@ class AssetModel(Model, ABC):
                 parent_and_description_ids.add((annotation.parent_external_id, annotation.parent_description or ""))
 
         return AssetList(
-            ([cls.root_asset] if include_root else [])
-            + [
-                Asset(
-                    external_id=parent_id,
-                    name=_to_name(parent_id),
-                    parent_external_id=cls.root_asset.external_id,
-                    description=description,
-                )
-                for parent_id, description in parent_and_description_ids
-            ]
+            sorted(
+                ([cls.root_asset] if include_root else [])
+                + [
+                    Asset(
+                        external_id=parent_id,
+                        name=_to_name(parent_id),
+                        parent_external_id=cls.root_asset.external_id,
+                        description=description,
+                    )
+                    for parent_id, description in parent_and_description_ids
+                ],
+                key=lambda asset: asset.external_id,
+            )
         )
 
     cdf_resources: ClassVar[dict[Union[Callable, tuple[Callable, str]], type]] = {
@@ -77,14 +80,6 @@ class AssetModel(Model, ABC):
 
         cls._set_linked_resources(loaded_by_type_external_id)
         return instance
-
-    def sort_lists(self) -> None:
-        for field_name, field in self.model_fields.items():
-            annotation, outer = get_pydantic_annotation(field.annotation, type(self))
-            if issubclass(annotation, (AssetType, CDFFile, CDFSequence)) and outer is list:
-                getattr(self, field_name).sort(key=lambda x: x.external_id)
-                for asset_type in getattr(self, field_name):
-                    asset_type.sort_lists()
 
     @classmethod
     def from_cdf(
