@@ -104,7 +104,15 @@ class CogShop1Asset(CogShopCore, DataModel, protected_namespaces=()):
             for name, suffix in product(watercourse_names, ["_base_mapping", "_output_definition"])
         ]
         cdf_client: CogniteClient = client.cdf
-        sequences = cdf_client.sequences.retrieve_multiple(external_ids=sequence_ids)
+        if sequence_ids:
+            sequences = cdf_client.sequences.retrieve_multiple(external_ids=sequence_ids)
+        else:
+            all_sequences = cdf_client.sequences.list(limit=-1, external_id_prefix="SHOP_")
+            sequences = [
+                s
+                for s in all_sequences
+                if s.external_id.endswith("_base_mapping") or s.external_id.endswith("_output_definition")
+            ]
 
         base_mappings = [CDFSequence(sequence=s) for s in sequences if s.external_id.endswith("_base_mapping")]
         output_definitions = [

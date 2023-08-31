@@ -58,6 +58,7 @@ def main():
     space = "cogShop"
 
     client = get_powerops_client().cdf
+    print(f"Connected to {client.config.project}")
     delete_resources(client.data_modeling.data_models, space)
     delete_resources(client.data_modeling.views, space)
     delete_resources(client.data_modeling.containers, space)
