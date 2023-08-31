@@ -14,8 +14,8 @@ Changes are grouped as follows
 - `Security` in case of vulnerabilities.
 
 ## [0.41.0] - 2023-08-30
-### Changed
-* Moved `shop_results.ipynb` to `docs\` and updated `mkdocs.yml` to refrence the notebook.
+### Added
+* Moved `power_client.shop.runs.list()` method.
 
 
 ## [0.40.1] - 2023-08-30
