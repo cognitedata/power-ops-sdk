@@ -13,6 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.42.0] - 2023-08-31
+### Added
+* Moved `powerops plan` support Markdown output..
+
+
 ## [0.41.0] - 2023-08-30
 ### Added
 * Moved `power_client.shop.runs.list()` method.
