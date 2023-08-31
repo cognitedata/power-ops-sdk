@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 __all__ = ["Scenario", "ScenarioApply", "ScenarioList"]
 
 
-class Scenario(DomainModel):
+class Scenario(DomainModel, protected_namespaces=()):
     space: ClassVar[str] = "cogShop"
     commands: Optional[str] = None
     extra_files: list[str] = Field([], alias="extraFiles")
@@ -25,7 +25,7 @@ class Scenario(DomainModel):
     name: Optional[str] = None
 
 
-class ScenarioApply(DomainModelApply):
+class ScenarioApply(DomainModelApply, protected_namespaces=()):
     space: ClassVar[str] = "cogShop"
     commands: Optional[Union["CommandsConfigApply", str]] = Field(None, repr=False)
     extra_files: list[Union["FileRefApply", str]] = Field(default_factory=list, repr=False)

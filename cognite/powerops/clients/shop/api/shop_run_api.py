@@ -3,11 +3,13 @@ from __future__ import annotations
 import json
 import logging
 import os
+from datetime import datetime, timezone
 from typing import BinaryIO, Literal, TextIO, Union
 
 import requests
 from cognite.client import CogniteClient
 from cognite.client.data_classes import Event, FileMetadata
+from cognite.client.utils._time import time_ago_to_ms, datetime_to_ms
 
 from cognite.powerops.cdf_labels import RelationshipLabel
 from cognite.powerops.clients.data_set_api import DataSetsAPI
@@ -141,8 +143,23 @@ class ShopRunsAPI:
         response.raise_for_status()
         logger.debug(response.json())
 
-    def list(self) -> list[ShopRun]:
-        raise NotImplementedError()
+    def list(self, created_after: int | str | None = None, limit: int | None = 25) -> list[ShopRun]:
+        if isinstance(created_after, str):
+            timespan = time_ago_to_ms(created_after)
+            now = datetime_to_ms(datetime.now(timezone.utc))
+            created_after = now - timespan
+
+        shop_run_events = self._client.events.list(
+            type=ShopRunEvent.event_type,
+            created_time={"min": created_after} if created_after is not None else None,
+            metadata={"process_type": ShopRunEvent.process_type},
+            limit=limit,
+        )
+
+        return [
+            ShopRun(self.retrieve_status, retrieve_results=self._result_api.retrieve, shop_run_event=shop_run_event)
+            for shop_run_event in shop_run_events
+        ]
 
     def retrieve(self, external_id: str) -> ShopRun:
         event = self._client.events.retrieve(external_id=external_id)
@@ -155,9 +172,9 @@ class ShopRunsAPI:
     def retrieve_status(self, shop_run_external_id: str) -> ShopRun.Status:
         event = retrieve_event(self._client, shop_run_external_id)
         logger.debug(f"Reading status from event {event.external_id}.")
-
         if relationships := self._client.relationships.list(
-            data_set_ids=[self._data_set_api.write_dataset_id],
+            # At the moment, looking at run whose related event might not be in `uc:000:powerops`
+            # data_set_ids=[self._data_set_api.read_dataset_id],
             source_external_ids=[shop_run_external_id],
             target_types=["event"],
         ):

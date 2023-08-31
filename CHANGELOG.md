@@ -13,10 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## [0.40.2] - 2023-08-30
-### Fixed
-* `powerops apply` and `powerops plan` caused the transformations in `CogShop1Asset.model_template.base_mappings.transformations` to be
-  reordered compared to the original configuration. This is now fixed.
+## [0.41.0] - 2023-08-30
+### Added
+* Moved `power_client.shop.runs.list()` method.
+
 
 ## [0.40.1] - 2023-08-30
 ### Fixed
