@@ -74,9 +74,6 @@ class CogShop1Asset(CogShopCore, DataModel, protected_namespaces=()):
         readme_fields = {"created_time", "deleted_time", "last_updated_time", "version"}
         for transformation in transformations:
             data = transformation.model_dump(exclude=readme_fields)
-            if data.get("order") is None:
-                # Migration from v1 to v2
-                data["order"] = 0
             apply = cogshop_v1.TransformationApply(**data)
             transformation_by_id[apply.external_id] = apply
 
