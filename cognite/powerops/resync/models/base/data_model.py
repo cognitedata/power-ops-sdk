@@ -73,7 +73,8 @@ class DataModel(Model, ABC):
     @classmethod
     def load_from_cdf_resources(cls: TypingType[Self], data: dict[str, Any]) -> Self:
         load_by_type_external_id = cls._load_by_type_external_id(data)
-
+        if "nodes" not in load_by_type_external_id:
+            return cls()
         nodes_by_source_by_id = defaultdict(dict)
         node_by_id = {}
         for node in load_by_type_external_id["nodes"].values():
@@ -134,7 +135,7 @@ class DataModel(Model, ABC):
 
         # One to many
         edge_by_source_by_id = defaultdict(list)
-        for edge in load_by_type_external_id["edges"].values():
+        for edge in load_by_type_external_id.get("edges", {}).values():
             start_node = edge.start_node.external_id
             source_type, prop_name = edge.type.external_id.split(".", 1)
             edge_by_source_by_id[(start_node, source_type, to_snake(prop_name))].append(edge)

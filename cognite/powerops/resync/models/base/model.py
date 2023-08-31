@@ -314,16 +314,26 @@ class Model(BaseModel, ABC):
             isinstance(current_value, (list, CogniteResourceList))
             and current_value
             and isinstance(current_value[0], (ResourceType, CogniteResource))
+        ) or (
+            isinstance(new_value, (list, CogniteResourceList))
+            and new_value
+            and isinstance(new_value[0], (ResourceType, CogniteResource))
         ):
             current_value_by_id = {item.external_id: item for item in current_value}
             new_value_by_id = {item.external_id: item for item in new_value}
-        elif isinstance(current_value, list) and current_value and isinstance(current_value[0], (CDFSequence, CDFFile)):
+        elif (
+            isinstance(current_value, list) and current_value and isinstance(current_value[0], (CDFSequence, CDFFile))
+        ) or (isinstance(new_value, list) and new_value and isinstance(new_value[0], (CDFSequence, CDFFile))):
             current_value_by_id = {item.external_id: item.cdf_resource for item in current_value}
             new_value_by_id = {item.external_id: item.cdf_resource for item in new_value}
         elif (
             isinstance(current_value, dict)
             and current_value
             and isinstance(next(iter(current_value.values())), (DomainModelApply, DomainModelApplyCogShop1))
+        ) or (
+            isinstance(new_value, dict)
+            and new_value
+            and isinstance(next(iter(new_value.values())), (DomainModelApply, DomainModelApplyCogShop1))
         ):
             current_value_by_id = {item.external_id: item for item in current_value.values()}
             new_value_by_id = {item.external_id: item for item in new_value.values()}
