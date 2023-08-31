@@ -55,6 +55,10 @@ def plan(
     dump_folder: Optional[Path] = typer.Option(
         default=None, help="If present, the local and cdf changes will be dumped to this directory."
     ),
+    format: str = typer.Option(
+        default=None,
+        help="The format of the output. Available formats: markdown",
+    ),
 ):
     if dump_folder and not dump_folder.is_dir():
         raise typer.BadParameter(f"{dump_folder} is not a directory")
@@ -63,7 +67,9 @@ def plan(
     if len(models) == 1 and models[0].lower() == "all":
         models = list(MODEL_BY_NAME.keys())
 
-    resync.plan(path, market, echo=log.info, model_names=models, dump_folder=dump_folder, echo_pretty=pprint)
+    results = resync.plan(path, market, echo=log.info, model_names=models, dump_folder=dump_folder, echo_pretty=pprint)
+    if format == "markdown":
+        typer.echo(resync.reports.as_markdown(results))
 
 
 @app.command("apply", help="Apply the changes from the configuration files to the data model in CDF")
