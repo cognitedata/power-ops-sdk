@@ -13,24 +13,24 @@ files = [
 
 [[package]]
 name = "anyio"
-version = "3.7.1"
+version = "4.0.0"
 description = "High level compatibility layer for multiple asynchronous event loop implementations"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 files = [
-    {file = "anyio-3.7.1-py3-none-any.whl", hash = "sha256:91dee416e570e92c64041bd18b900d1d6fa78dff7048769ce5ac5ddad004fbb5"},
-    {file = "anyio-3.7.1.tar.gz", hash = "sha256:44a3c9aba0f5defa43261a8b3efb97891f2bd7d804e0e1f56419befa1adfc780"},
+    {file = "anyio-4.0.0-py3-none-any.whl", hash = "sha256:cfdb2b588b9fc25ede96d8db56ed50848b0b649dca3dd1df0b11f683bb9e0b5f"},
+    {file = "anyio-4.0.0.tar.gz", hash = "sha256:f7ed51751b2c2add651e5747c891b47e26d2a21be5d32d9311dfe9692f3e5d7a"},
 ]
 
 [package.dependencies]
-exceptiongroup = {version = "*", markers = "python_version < \"3.11\""}
+exceptiongroup = {version = ">=1.0.2", markers = "python_version < \"3.11\""}
 idna = ">=2.8"
 sniffio = ">=1.1"
 
 [package.extras]
-doc = ["Sphinx", "packaging", "sphinx-autodoc-typehints (>=1.2.0)", "sphinx-rtd-theme (>=1.2.2)", "sphinxcontrib-jquery"]
-test = ["anyio[trio]", "coverage[toml] (>=4.5)", "hypothesis (>=4.0)", "mock (>=4)", "psutil (>=5.9)", "pytest (>=7.0)", "pytest-mock (>=3.6.1)", "trustme", "uvloop (>=0.17)"]
-trio = ["trio (<0.22)"]
+doc = ["Sphinx (>=7)", "packaging", "sphinx-autodoc-typehints (>=1.2.0)"]
+test = ["anyio[trio]", "coverage[toml] (>=7)", "hypothesis (>=4.0)", "psutil (>=5.9)", "pytest (>=7.0)", "pytest-mock (>=3.6.1)", "trustme", "uvloop (>=0.17)"]
+trio = ["trio (>=0.22)"]
 
 [[package]]
 name = "appnope"
@@ -503,13 +503,13 @@ format = ["black (>=23.7.0)"]
 
 [[package]]
 name = "cognite-sdk"
-version = "6.15.2"
+version = "6.15.3"
 description = "Cognite Python SDK"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "cognite_sdk-6.15.2-py3-none-any.whl", hash = "sha256:5a72dbe29e1a22d4f8b0f34633a2f5ddc2cc317da3c388f17f49d18478debe01"},
-    {file = "cognite_sdk-6.15.2.tar.gz", hash = "sha256:694d726526c196cdd8311fab87326de91b599b880a058871d9d565deaf10a590"},
+    {file = "cognite_sdk-6.15.3-py3-none-any.whl", hash = "sha256:75badc01b3c9a05c588b1344fc5edddaab277fdfc25993df567f99bbcb35c922"},
+    {file = "cognite_sdk-6.15.3.tar.gz", hash = "sha256:13955131290753a892e43b4219023295e082c044f01bc4f2a7caf32f969f1bf1"},
 ]
 
 [package.dependencies]
@@ -2303,13 +2303,13 @@ test = ["coverage[toml]", "pymdown-extensions", "pytest", "pytest-cov"]
 
 [[package]]
 name = "mkdocs-material"
-version = "9.2.5"
+version = "9.2.6"
 description = "Documentation that simply works"
 optional = true
 python-versions = ">=3.7"
 files = [
-    {file = "mkdocs_material-9.2.5-py3-none-any.whl", hash = "sha256:315a59725f0565bccfec7f9d1313beae7658bf874a176264b98f804a0cbc1298"},
-    {file = "mkdocs_material-9.2.5.tar.gz", hash = "sha256:02b4d1f662bc022e9497411e679323c30185e031a08a7004c763aa8d47ae9a29"},
+    {file = "mkdocs_material-9.2.6-py3-none-any.whl", hash = "sha256:84bc7e79c1d0bae65a77123efd5ef74731b8c3671601c7962c5db8dba50a65ad"},
+    {file = "mkdocs_material-9.2.6.tar.gz", hash = "sha256:3806c58dd112e7b9677225e2021035ddbe3220fbd29d9dc812aa7e01f70b5e0a"},
 ]
 
 [package.dependencies]
@@ -3289,13 +3289,13 @@ tests = ["coverage[toml] (==5.0.4)", "pytest (>=6.0.0,<7.0.0)"]
 
 [[package]]
 name = "pymdown-extensions"
-version = "10.2"
+version = "10.2.1"
 description = "Extension pack for Python Markdown."
 optional = true
 python-versions = ">=3.7"
 files = [
-    {file = "pymdown_extensions-10.2-py3-none-any.whl", hash = "sha256:fbb86243db9a681602e3b869deef000211c55d0261015a5cc41d6f34d2afc57f"},
-    {file = "pymdown_extensions-10.2.tar.gz", hash = "sha256:06042274876eb4267f12a389daf505eabaebc38bdca26725560c9afda5867549"},
+    {file = "pymdown_extensions-10.2.1-py3-none-any.whl", hash = "sha256:bded105eb8d93f88f2f821f00108cb70cef1269db6a40128c09c5f48bfc60ea4"},
+    {file = "pymdown_extensions-10.2.1.tar.gz", hash = "sha256:d0c534b4a5725a4be7ccef25d65a4c97dba58b54ad7c813babf0eb5ba9c81591"},
 ]
 
 [package.dependencies]
@@ -3410,13 +3410,13 @@ dev = ["pre-commit", "pytest-asyncio", "tox"]
 
 [[package]]
 name = "pytest-regressions"
-version = "2.4.2"
+version = "2.4.3"
 description = "Easy to use fixtures to write regression tests."
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "pytest-regressions-2.4.2.tar.gz", hash = "sha256:eab89e7ba4aa339bdfe07b31047e8e6a70b1e7846e74a8bbfc31a588d01e7303"},
-    {file = "pytest_regressions-2.4.2-py3-none-any.whl", hash = "sha256:b47f92c39d5dd2faa90716ee74c584d705c08e14f435a947f67706c4e5b8ef9a"},
+    {file = "pytest-regressions-2.4.3.tar.gz", hash = "sha256:7238036bbd17c62944bff55d73edb4993eea3f5dbb835c332ec7bc0ddeb027ed"},
+    {file = "pytest_regressions-2.4.3-py3-none-any.whl", hash = "sha256:a0fd84e45d2c3b43d2b36157045ebca8b85185d3dc7b014a62b2954a05d8e07d"},
 ]
 
 [package.dependencies]
