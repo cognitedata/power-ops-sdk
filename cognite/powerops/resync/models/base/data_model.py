@@ -70,42 +70,11 @@ class DataModel(Model, ABC):
             ):
                 yield from items.values()
 
-    def sort_lists(self) -> None:
-        to_check = [(field, getattr(self, field_name), type(self)) for field_name, field in self.model_fields.items()]
-        while to_check:
-            field, value, cls_obj = to_check.pop()
-            annotation, outer = get_pydantic_annotation(field.annotation, cls_obj)
-            if outer is list:
-                value.sort(key=lambda x: x.external_id)
-
-            if isinstance(value, (DomainModelApply, DomainModelApplyCogShop1)):
-                to_check.extend(
-                    [
-                        (field, getattr(value, field_name), type(value))
-                        for field_name, field in value.model_fields.items()
-                    ]
-                )
-            elif (
-                isinstance(value, list) and value and isinstance(value[0], (DomainModelApply, DomainModelApplyCogShop1))
-            ):
-                for v in value:
-                    to_check.extend(
-                        [(field, getattr(v, field_name), type(v)) for field_name, field in v.model_fields.items()]
-                    )
-            elif (
-                isinstance(value, dict)
-                and value
-                and isinstance(next(iter(value.values())), (DomainModelApply, DomainModelApplyCogShop1))
-            ):
-                for v in value.values():
-                    to_check.extend(
-                        [(field, getattr(v, field_name), type(v)) for field_name, field in v.model_fields.items()]
-                    )
-
     @classmethod
     def load_from_cdf_resources(cls: TypingType[Self], data: dict[str, Any]) -> Self:
         load_by_type_external_id = cls._load_by_type_external_id(data)
-
+        if "nodes" not in load_by_type_external_id:
+            return cls()
         nodes_by_source_by_id = defaultdict(dict)
         node_by_id = {}
         for node in load_by_type_external_id["nodes"].values():
@@ -166,7 +135,7 @@ class DataModel(Model, ABC):
 
         # One to many
         edge_by_source_by_id = defaultdict(list)
-        for edge in load_by_type_external_id["edges"].values():
+        for edge in load_by_type_external_id.get("edges", {}).values():
             start_node = edge.start_node.external_id
             source_type, prop_name = edge.type.external_id.split(".", 1)
             edge_by_source_by_id[(start_node, source_type, to_snake(prop_name))].append(edge)

@@ -14,7 +14,7 @@ class ProcessingLogsAPI(TypeAPI[ProcessingLog, ProcessingLogApply, ProcessingLog
     def __init__(self, client: CogniteClient):
         super().__init__(
             client=client,
-            sources=dm.ViewId("cogShop", "ProcessingLog", "806a9435a2f2df"),
+            sources=dm.ViewId("cogShop", "ProcessingLog", "4ce8cb3b9632df"),
             class_type=ProcessingLog,
             class_apply_type=ProcessingLogApply,
             class_list=ProcessingLogList,

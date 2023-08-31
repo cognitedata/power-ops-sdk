@@ -63,6 +63,9 @@ def plan(
 
         if dump_folder:
             dump_folder.mkdir(parents=True, exist_ok=True)
+            # Standardize models for easy comparison
+            new_model.standardize()
+            cdf_model.standardize()
 
             (dump_folder / f"{new_model.model_name}_local.yaml").write_text(safe_dump(new_model.dump_as_cdf_resource()))
             (dump_folder / f"{new_model.model_name}_cdf.yaml").write_text(safe_dump(cdf_model.dump_as_cdf_resource()))
@@ -106,7 +109,7 @@ def apply(
         differences = cdf_model.difference(new_model)
         _clean_relationships(client.cdf, differences, new_model, echo)
 
-        for diff in differences:
+        for diff in sorted(differences, key=_edges_before_nodes):
             if diff.group == "Domain":
                 continue
             if len(diff.unchanged) == diff.total:
@@ -144,6 +147,19 @@ def apply(
                     api.delete([c.external_id for c in content_updates if c.external_id])
                     api.create(content_updates)
                     echo(f"Updated {len(content_updates)} of {diff.name} with content")
+
+
+def _edges_before_nodes(diff: FieldDifference) -> int:
+    if diff.group == "Domain":
+        return 0
+    elif diff.group == "CDF" and diff.name not in {"edges", "nodes"}:
+        return 1
+    elif diff.group == "CDF" and diff.name == "edges":
+        return 2
+    elif diff.group == "Local" and diff.name == "nodes":
+        return 3
+    else:
+        return 4
 
 
 def _load_transform(

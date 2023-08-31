@@ -19,7 +19,7 @@ class NonAssetType(BaseModel, ABC, arbitrary_types_allowed=True):
     ...
 
 
-class AssetType(ResourceType, ABC, arbitrary_types_allowed=True):
+class AssetType(ResourceType, ABC, arbitrary_types_allowed=True, validate_assignment=True):
     parent_external_id: ClassVar[str]
     label: ClassVar[Union[AssetLabel, str]]
     parent_description: ClassVar[Optional[str]] = None
@@ -217,12 +217,6 @@ class AssetType(ResourceType, ABC, arbitrary_types_allowed=True):
                 raise NotImplementedError("Nested keys more than one level is not supported")
 
         return output
-
-    def sort_lists(self) -> None:
-        for field_name, field in self.model_fields.items():
-            annotation, outer = get_pydantic_annotation(field.annotation, type(self))
-            if issubclass(annotation, (AssetType, CDFFile, CDFSequence)) and outer is list:
-                getattr(self, field_name).sort(key=lambda x: x.external_id)
 
 
 T_Asset_Type = TypeVar("T_Asset_Type", bound=AssetType)

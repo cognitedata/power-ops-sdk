@@ -58,6 +58,15 @@ class ResourceType(BaseModel, ABC):
     def external_id(self) -> str:
         raise NotImplementedError()
 
+    def standardize(self) -> None:
+        """
+        This ensures that the model is in a standardized form.
+
+        This is useful when doing comparisons between models, as for example, the ordering of the assets in some
+        lists does not matter.
+        """
+        ...
+
 
 Resource: TypeAlias = Union[Asset, TimeSeries, Sequence, FileMetadata, ResourceType]
 
@@ -205,13 +214,6 @@ class Model(BaseModel, ABC):
     def model_name(self) -> str:
         return type(self).__name__
 
-    @abc.abstractmethod
-    def sort_lists(self) -> None:
-        """
-        This is used to standardize the order of lists in the model, which is useful for comparing models.
-        """
-        raise NotImplementedError()
-
     def dump_as_cdf_resource(self) -> dict[str, Any]:
         output: dict[str, Any] = {}
         for resource_fun in self.cdf_resources.keys():
@@ -221,7 +223,7 @@ class Model(BaseModel, ABC):
                 def dump(resource: Any) -> dict[str, Any]:
                     return remove_read_only_fields(resource.dump(camel_case=True))
 
-                output[name] = sorted((dump(item) for item in items), key=self._external_id_key)
+                output[name] = [dump(item) for item in items]
         return output
 
     @classmethod
@@ -258,14 +260,23 @@ class Model(BaseModel, ABC):
     ) -> T_Model:
         ...
 
+    @abc.abstractmethod
+    def standardize(self) -> None:
+        """
+        This ensures that the model is in a standardized form.
+
+        This is useful when doing comparisons between models; as for example, the ordering of the assets in some
+        lists does not matter.
+        """
+        raise NotImplementedError()
+
     def difference(self, new_model: T_Model) -> list[FieldDifference]:
         if type(self) != type(new_model):
             raise ValueError(f"Cannot compare model of type {type(self)} with {type(new_model)}")
         # The dump and load calls are to remove all read only fields
         current_reloaded = self.load_from_cdf_resources(self.dump_as_cdf_resource())
         new_reloaded = new_model.load_from_cdf_resources(new_model.dump_as_cdf_resource())
-        current_reloaded.sort_lists()
-        new_reloaded.sort_lists()
+
         diffs = []
         for field_name in self.model_fields:
             current_value = getattr(current_reloaded, field_name)
@@ -303,16 +314,26 @@ class Model(BaseModel, ABC):
             isinstance(current_value, (list, CogniteResourceList))
             and current_value
             and isinstance(current_value[0], (ResourceType, CogniteResource))
+        ) or (
+            isinstance(new_value, (list, CogniteResourceList))
+            and new_value
+            and isinstance(new_value[0], (ResourceType, CogniteResource))
         ):
             current_value_by_id = {item.external_id: item for item in current_value}
             new_value_by_id = {item.external_id: item for item in new_value}
-        elif isinstance(current_value, list) and current_value and isinstance(current_value[0], (CDFSequence, CDFFile)):
+        elif (
+            isinstance(current_value, list) and current_value and isinstance(current_value[0], (CDFSequence, CDFFile))
+        ) or (isinstance(new_value, list) and new_value and isinstance(new_value[0], (CDFSequence, CDFFile))):
             current_value_by_id = {item.external_id: item.cdf_resource for item in current_value}
             new_value_by_id = {item.external_id: item.cdf_resource for item in new_value}
         elif (
             isinstance(current_value, dict)
             and current_value
             and isinstance(next(iter(current_value.values())), (DomainModelApply, DomainModelApplyCogShop1))
+        ) or (
+            isinstance(new_value, dict)
+            and new_value
+            and isinstance(next(iter(new_value.values())), (DomainModelApply, DomainModelApplyCogShop1))
         ):
             current_value_by_id = {item.external_id: item for item in current_value.values()}
             new_value_by_id = {item.external_id: item for item in new_value.values()}

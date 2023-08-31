@@ -48,7 +48,7 @@ class CasesAPI(TypeAPI[Case, CaseApply, CaseList]):
     def __init__(self, client: CogniteClient):
         super().__init__(
             client=client,
-            sources=dm.ViewId("cogShop", "Case", "ed83a1fc90224d"),
+            sources=dm.ViewId("cogShop", "Case", "c2306c3b68fad6"),
             class_type=Case,
             class_apply_type=CaseApply,
             class_list=CaseList,

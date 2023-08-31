@@ -2,6 +2,7 @@ from typing import ClassVar, Optional
 
 
 from cognite.client.data_classes import Asset
+from pydantic import field_validator
 from pydantic.dataclasses import Field
 
 from cognite.powerops.resync.models.base import AssetModel
@@ -10,6 +11,7 @@ from .base import Bid, DateTransformation, Market, Process, ShopTransformation
 from .benchmark import BenchmarkBid, BenchmarkProcess, ProductionPlanTimeSeries
 from .dayahead import DayAheadBid, DayAheadProcess, NordPoolMarket
 from .rkom import RKOMBid, RKOMBidCombination, RKOMCombinationBid, RKOMMarket, RKOMPlants, RKOMProcess
+from ..base.asset_type import T_Asset_Type
 
 
 class MarketModel(AssetModel):
@@ -19,6 +21,13 @@ class MarketModel(AssetModel):
     benchmark_processes: list[BenchmarkProcess] = Field(default_factory=list)
     rkom_processes: list[RKOMProcess] = Field(default_factory=list)
     combinations: list[RKOMBidCombination] = Field(default_factory=list)
+
+    @field_validator(
+        "markets", "dayahead_processes", "benchmark_processes", "rkom_processes", "combinations", mode="after"
+    )
+    def ordering(cls, value: list[T_Asset_Type]) -> list[T_Asset_Type]:
+        # To ensure loading the production model always yields the same result, we sort the assets by external_id.
+        return sorted(value, key=lambda x: x.external_id)
 
     @classmethod
     def set_root_asset(
@@ -41,6 +50,22 @@ class MarketModel(AssetModel):
                 "tenant_id": tenant_id,
             },
         )
+
+    def standardize(self) -> None:
+        self.markets = self.ordering(self.markets)
+        self.dayahead_processes = self.ordering(self.dayahead_processes)
+        self.benchmark_processes = self.ordering(self.benchmark_processes)
+        self.rkom_processes = self.ordering(self.rkom_processes)
+        self.combinations = self.ordering(self.combinations)
+        for field in [
+            self.markets,
+            self.dayahead_processes,
+            self.benchmark_processes,
+            self.rkom_processes,
+            self.combinations,
+        ]:
+            for item in field:
+                item.standardize()
 
 
 __all__ = [

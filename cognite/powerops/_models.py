@@ -58,6 +58,12 @@ MODEL_BY_NAME: dict[str, PowerOpsModel] = {
             _ExtraTypes.scenario_mapping,
         ],
     ),
+    "cogshop1": PowerOpsModel(
+        name="CogShop",
+        description="This is the first iteration of the cogshop model",
+        graphql_file=GRAPHQL_SCHEMAS / "cogshop1.graphql",
+        id_=DataModelId("cogShop", "CogShop", "2"),
+    ),
     "dayahead": PowerOpsModel(
         name="DayAhead",
         description="The DayAhead model describes the day-ahead market.",

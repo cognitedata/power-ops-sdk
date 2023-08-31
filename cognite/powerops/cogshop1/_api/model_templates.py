@@ -52,7 +52,7 @@ class ModelTemplatesAPI(TypeAPI[ModelTemplate, ModelTemplateApply, ModelTemplate
     def __init__(self, client: CogniteClient):
         super().__init__(
             client=client,
-            sources=dm.ViewId("cogShop", "ModelTemplate", "d5ec6bd344c88d"),
+            sources=dm.ViewId("cogShop", "ModelTemplate", "8ae35635bb3f8a"),
             class_type=ModelTemplate,
             class_apply_type=ModelTemplateApply,
             class_list=ModelTemplateList,

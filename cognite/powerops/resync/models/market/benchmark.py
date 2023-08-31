@@ -21,6 +21,10 @@ class ProductionPlanTimeSeries(NonAssetType):
     name: str
     series: list[TimeSeries]
 
+    @field_validator("series", mode="after")
+    def ordering(cls, value: list[TimeSeries]) -> list[TimeSeries]:
+        return sorted(value, key=lambda x: x.external_id)
+
     @model_validator(mode="before")
     def parse_dict(cls, value) -> dict:
         if isinstance(value, dict):
@@ -31,6 +35,9 @@ class ProductionPlanTimeSeries(NonAssetType):
     @model_serializer()
     def ser_dict(self) -> dict:
         return {self.name: [s.external_id for s in self.series]}
+
+    def standardize(self) -> None:
+        self.series = self.ordering(self.series)
 
 
 class BenchmarkProcess(Process):
@@ -44,6 +51,14 @@ class BenchmarkProcess(Process):
     benchmarking_metrics: dict[str, str] = Field(default_factory=dict)
     run_events: list[str] = Field(default_factory=list)
 
+    @field_validator("production_plan_time_series", mode="after")
+    def ordering(cls, value: list[ProductionPlanTimeSeries]) -> list[ProductionPlanTimeSeries]:
+        return sorted(value, key=lambda x: x.name)
+
+    @field_validator("run_events", mode="after")
+    def ordering_events(cls, value: list[str]) -> list[str]:
+        return sorted(value)
+
     @field_validator("benchmarking_metrics", mode="before")
     def parse_str(cls, value) -> dict:
         return try_load_dict(value)
@@ -53,3 +68,7 @@ class BenchmarkProcess(Process):
         if isinstance(loaded := try_load_list(value), dict):
             return [loaded]
         return loaded
+
+    def standardize(self) -> None:
+        self.production_plan_time_series = self.ordering(self.production_plan_time_series)
+        self.run_events = self.ordering_events(self.run_events)
