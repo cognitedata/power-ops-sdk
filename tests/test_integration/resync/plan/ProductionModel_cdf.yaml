@@ -365,16 +365,16 @@ assets:
   name: NO2
   parentExternalId: price_areas
 parent_assets:
-- externalId: power_ops
-  name: PowerOps
-- externalId: price_areas
-  name: Price areas
+- externalId: generators
+  name: Generators
   parentExternalId: power_ops
 - externalId: plants
   name: Plants
   parentExternalId: power_ops
-- externalId: generators
-  name: Generators
+- externalId: power_ops
+  name: PowerOps
+- externalId: price_areas
+  name: Price areas
   parentExternalId: power_ops
 - externalId: reservoirs
   name: Reservoirs
@@ -726,26 +726,19 @@ relationships:
   sourceType: ASSET
   targetExternalId: generator_Strand_krv_G1_turbine_efficiency_curve
   targetType: SEQUENCE
+- externalId: watercourse_Fornebu.plant_Dalby
+  labels:
+  - externalId: relationship_to.plant
+  sourceExternalId: watercourse_Fornebu
+  sourceType: ASSET
+  targetExternalId: plant_Dalby
+  targetType: ASSET
 - externalId: watercourse_Fornebu.plant_Holen
   labels:
   - externalId: relationship_to.plant
   sourceExternalId: watercourse_Fornebu
   sourceType: ASSET
   targetExternalId: plant_Holen
-  targetType: ASSET
-- externalId: watercourse_Fornebu.plant_Lund
-  labels:
-  - externalId: relationship_to.plant
-  sourceExternalId: watercourse_Fornebu
-  sourceType: ASSET
-  targetExternalId: plant_Lund
-  targetType: ASSET
-- externalId: watercourse_Fornebu.plant_Lien_krv
-  labels:
-  - externalId: relationship_to.plant
-  sourceExternalId: watercourse_Fornebu
-  sourceType: ASSET
-  targetExternalId: plant_Lien_krv
   targetType: ASSET
 - externalId: watercourse_Fornebu.plant_Landet
   labels:
@@ -754,12 +747,19 @@ relationships:
   sourceType: ASSET
   targetExternalId: plant_Landet
   targetType: ASSET
-- externalId: watercourse_Fornebu.plant_Dalby
+- externalId: watercourse_Fornebu.plant_Lien_krv
   labels:
   - externalId: relationship_to.plant
   sourceExternalId: watercourse_Fornebu
   sourceType: ASSET
-  targetExternalId: plant_Dalby
+  targetExternalId: plant_Lien_krv
+  targetType: ASSET
+- externalId: watercourse_Fornebu.plant_Lund
+  labels:
+  - externalId: relationship_to.plant
+  sourceExternalId: watercourse_Fornebu
+  sourceType: ASSET
+  targetExternalId: plant_Lund
   targetType: ASSET
 - externalId: watercourse_Fornebu.plant_Rull1
   labels:
@@ -796,26 +796,19 @@ relationships:
   sourceType: ASSET
   targetExternalId: '6694'
   targetType: TIMESERIES
+- externalId: price_area_NO2.plant_Dalby
+  labels:
+  - externalId: relationship_to.plant
+  sourceExternalId: price_area_NO2
+  sourceType: ASSET
+  targetExternalId: plant_Dalby
+  targetType: ASSET
 - externalId: price_area_NO2.plant_Holen
   labels:
   - externalId: relationship_to.plant
   sourceExternalId: price_area_NO2
   sourceType: ASSET
   targetExternalId: plant_Holen
-  targetType: ASSET
-- externalId: price_area_NO2.plant_Lund
-  labels:
-  - externalId: relationship_to.plant
-  sourceExternalId: price_area_NO2
-  sourceType: ASSET
-  targetExternalId: plant_Lund
-  targetType: ASSET
-- externalId: price_area_NO2.plant_Lien_krv
-  labels:
-  - externalId: relationship_to.plant
-  sourceExternalId: price_area_NO2
-  sourceType: ASSET
-  targetExternalId: plant_Lien_krv
   targetType: ASSET
 - externalId: price_area_NO2.plant_Landet
   labels:
@@ -824,12 +817,19 @@ relationships:
   sourceType: ASSET
   targetExternalId: plant_Landet
   targetType: ASSET
-- externalId: price_area_NO2.plant_Dalby
+- externalId: price_area_NO2.plant_Lien_krv
   labels:
   - externalId: relationship_to.plant
   sourceExternalId: price_area_NO2
   sourceType: ASSET
-  targetExternalId: plant_Dalby
+  targetExternalId: plant_Lien_krv
+  targetType: ASSET
+- externalId: price_area_NO2.plant_Lund
+  labels:
+  - externalId: relationship_to.plant
+  sourceExternalId: price_area_NO2
+  sourceType: ASSET
+  targetExternalId: plant_Lund
   targetType: ASSET
 - externalId: price_area_NO2.plant_Rull1
   labels:

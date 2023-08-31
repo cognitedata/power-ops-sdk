@@ -1,4 +1,17 @@
 assets:
+- externalId: plant_Dalby
+  labels:
+  - externalId: plant
+  metadata:
+    display_name: Dalby
+    head_loss_factor: 0.002105
+    ordering: '999'
+    outlet_level: 365.0
+    p_max: 1.0e+19
+    p_min: 0.0
+    penstock_head_loss_factors: '{"1": 0.0006}'
+  name: Dalby
+  parentExternalId: plants
 - externalId: plant_Holen
   labels:
   - externalId: plant
@@ -11,32 +24,6 @@ assets:
     p_min: 0.0
     penstock_head_loss_factors: '{"1": 0.0113}'
   name: Holen
-  parentExternalId: plants
-- externalId: plant_Lund
-  labels:
-  - externalId: plant
-  metadata:
-    display_name: Lund
-    head_loss_factor: 0.002
-    ordering: '999'
-    outlet_level: 1240.0
-    p_max: 1.0e+19
-    p_min: 0.0
-    penstock_head_loss_factors: '{"1": 0.022}'
-  name: Lund
-  parentExternalId: plants
-- externalId: plant_Lien_krv
-  labels:
-  - externalId: plant
-  metadata:
-    display_name: Lien_krv
-    head_loss_factor: 0.8
-    ordering: '999'
-    outlet_level: 1030.0
-    p_max: 1.0e+19
-    p_min: 0.0
-    penstock_head_loss_factors: '{"1": 0.0}'
-  name: Lien_krv
   parentExternalId: plants
 - externalId: plant_Landet
   labels:
@@ -51,18 +38,31 @@ assets:
     penstock_head_loss_factors: '{"1": 0.0}'
   name: Landet
   parentExternalId: plants
-- externalId: plant_Dalby
+- externalId: plant_Lien_krv
   labels:
   - externalId: plant
   metadata:
-    display_name: Dalby
-    head_loss_factor: 0.002105
+    display_name: Lien_krv
+    head_loss_factor: 0.8
     ordering: '999'
-    outlet_level: 365.0
+    outlet_level: 1030.0
     p_max: 1.0e+19
     p_min: 0.0
-    penstock_head_loss_factors: '{"1": 0.0006}'
-  name: Dalby
+    penstock_head_loss_factors: '{"1": 0.0}'
+  name: Lien_krv
+  parentExternalId: plants
+- externalId: plant_Lund
+  labels:
+  - externalId: plant
+  metadata:
+    display_name: Lund
+    head_loss_factor: 0.002
+    ordering: '999'
+    outlet_level: 1240.0
+    p_max: 1.0e+19
+    p_min: 0.0
+    penstock_head_loss_factors: '{"1": 0.022}'
+  name: Lund
   parentExternalId: plants
 - externalId: plant_Rull1
   labels:
@@ -116,42 +116,6 @@ assets:
     penstock_head_loss_factors: '{"1": 0.3125}'
   name: Strand_krv
   parentExternalId: plants
-- externalId: generator_Holen_G1
-  labels:
-  - externalId: generator
-  metadata:
-    p_min: 27.0
-    penstock: '1'
-    startcost: 200.0
-  name: Holen_G1
-  parentExternalId: generators
-- externalId: generator_Lund_G1
-  labels:
-  - externalId: generator
-  metadata:
-    p_min: 0.6
-    penstock: '1'
-    startcost: 100.0
-  name: Lund_G1
-  parentExternalId: generators
-- externalId: generator_Lien_krv_G1
-  labels:
-  - externalId: generator
-  metadata:
-    p_min: 0.0
-    penstock: '1'
-    startcost: 150.0
-  name: Lien_krv_G1
-  parentExternalId: generators
-- externalId: generator_Landet_G1
-  labels:
-  - externalId: generator
-  metadata:
-    p_min: 25.0
-    penstock: '1'
-    startcost: 200.0
-  name: Landet_G1
-  parentExternalId: generators
 - externalId: generator_Dalby_G1
   labels:
   - externalId: generator
@@ -169,6 +133,42 @@ assets:
     penstock: '1'
     startcost: 250.0
   name: Dalby_G2
+  parentExternalId: generators
+- externalId: generator_Holen_G1
+  labels:
+  - externalId: generator
+  metadata:
+    p_min: 27.0
+    penstock: '1'
+    startcost: 200.0
+  name: Holen_G1
+  parentExternalId: generators
+- externalId: generator_Landet_G1
+  labels:
+  - externalId: generator
+  metadata:
+    p_min: 25.0
+    penstock: '1'
+    startcost: 200.0
+  name: Landet_G1
+  parentExternalId: generators
+- externalId: generator_Lien_krv_G1
+  labels:
+  - externalId: generator
+  metadata:
+    p_min: 0.0
+    penstock: '1'
+    startcost: 150.0
+  name: Lien_krv_G1
+  parentExternalId: generators
+- externalId: generator_Lund_G1
+  labels:
+  - externalId: generator
+  metadata:
+    p_min: 0.6
+    penstock: '1'
+    startcost: 100.0
+  name: Lund_G1
   parentExternalId: generators
 - externalId: generator_Rull1_G1
   labels:
@@ -224,6 +224,30 @@ assets:
     startcost: 150.0
   name: Strand_krv_G1
   parentExternalId: generators
+- externalId: reservoir_Dalbysvatn
+  labels:
+  - externalId: reservoir
+  metadata:
+    display_name: Dalbysvatn
+    ordering: '999'
+  name: Dalbysvatn
+  parentExternalId: reservoirs
+- externalId: reservoir_Danielsen
+  labels:
+  - externalId: reservoir
+  metadata:
+    display_name: Danielsen
+    ordering: '999'
+  name: Danielsen
+  parentExternalId: reservoirs
+- externalId: reservoir_Frosta
+  labels:
+  - externalId: reservoir
+  metadata:
+    display_name: Frosta
+    ordering: '999'
+  name: Frosta
+  parentExternalId: reservoirs
 - externalId: reservoir_Hagen
   labels:
   - externalId: reservoir
@@ -240,37 +264,21 @@ assets:
     ordering: '999'
   name: Hovden
   parentExternalId: reservoirs
-- externalId: reservoir_Frosta
+- externalId: reservoir_Lensvik
   labels:
   - externalId: reservoir
   metadata:
-    display_name: Frosta
+    display_name: Lensvik
     ordering: '999'
-  name: Frosta
+  name: Lensvik
   parentExternalId: reservoirs
-- externalId: reservoir_Varhaug
+- externalId: reservoir_Livincovs
   labels:
   - externalId: reservoir
   metadata:
-    display_name: Varhaug
+    display_name: Livincovs
     ordering: '999'
-  name: Varhaug
-  parentExternalId: reservoirs
-- externalId: reservoir_Tangvall
-  labels:
-  - externalId: reservoir
-  metadata:
-    display_name: Tangvall
-    ordering: '999'
-  name: Tangvall
-  parentExternalId: reservoirs
-- externalId: reservoir_Sirefelt
-  labels:
-  - externalId: reservoir
-  metadata:
-    display_name: Sirefelt
-    ordering: '999'
-  name: Sirefelt
+  name: Livincovs
   parentExternalId: reservoirs
 - externalId: reservoir_Lundvann
   labels:
@@ -280,22 +288,6 @@ assets:
     ordering: '999'
   name: Lundvann
   parentExternalId: reservoirs
-- externalId: reservoir_Danielsen
-  labels:
-  - externalId: reservoir
-  metadata:
-    display_name: Danielsen
-    ordering: '999'
-  name: Danielsen
-  parentExternalId: reservoirs
-- externalId: reservoir_Dalbysvatn
-  labels:
-  - externalId: reservoir
-  metadata:
-    display_name: Dalbysvatn
-    ordering: '999'
-  name: Dalbysvatn
-  parentExternalId: reservoirs
 - externalId: reservoir_Nielsen
   labels:
   - externalId: reservoir
@@ -303,14 +295,6 @@ assets:
     display_name: Nielsen
     ordering: '999'
   name: Nielsen
-  parentExternalId: reservoirs
-- externalId: reservoir_Rullsvatn
-  labels:
-  - externalId: reservoir
-  metadata:
-    display_name: Rullsvatn
-    ordering: '999'
-  name: Rullsvatn
   parentExternalId: reservoirs
 - externalId: reservoir_Ranemsletta_1183
   labels:
@@ -320,13 +304,21 @@ assets:
     ordering: '999'
   name: Ranemsletta_1183
   parentExternalId: reservoirs
-- externalId: reservoir_Lensvik
+- externalId: reservoir_Rullsvatn
   labels:
   - externalId: reservoir
   metadata:
-    display_name: Lensvik
+    display_name: Rullsvatn
     ordering: '999'
-  name: Lensvik
+  name: Rullsvatn
+  parentExternalId: reservoirs
+- externalId: reservoir_Sirefelt
+  labels:
+  - externalId: reservoir
+  metadata:
+    display_name: Sirefelt
+    ordering: '999'
+  name: Sirefelt
   parentExternalId: reservoirs
 - externalId: reservoir_Strand
   labels:
@@ -344,13 +336,21 @@ assets:
     ordering: '999'
   name: Strand_tunnel
   parentExternalId: reservoirs
-- externalId: reservoir_Livincovs
+- externalId: reservoir_Tangvall
   labels:
   - externalId: reservoir
   metadata:
-    display_name: Livincovs
+    display_name: Tangvall
     ordering: '999'
-  name: Livincovs
+  name: Tangvall
+  parentExternalId: reservoirs
+- externalId: reservoir_Varhaug
+  labels:
+  - externalId: reservoir
+  metadata:
+    display_name: Varhaug
+    ordering: '999'
+  name: Varhaug
   parentExternalId: reservoirs
 - externalId: watercourse_Fornebu
   labels:
@@ -365,16 +365,16 @@ assets:
   name: NO2
   parentExternalId: price_areas
 parent_assets:
-- externalId: power_ops
-  name: PowerOps
-- externalId: price_areas
-  name: Price areas
+- externalId: generators
+  name: Generators
   parentExternalId: power_ops
 - externalId: plants
   name: Plants
   parentExternalId: power_ops
-- externalId: generators
-  name: Generators
+- externalId: power_ops
+  name: PowerOps
+- externalId: price_areas
+  name: Price areas
   parentExternalId: power_ops
 - externalId: reservoirs
   name: Reservoirs
@@ -383,6 +383,27 @@ parent_assets:
   name: Watercourses
   parentExternalId: power_ops
 relationships:
+- externalId: plant_Dalby.generator_Dalby_G1
+  labels:
+  - externalId: relationship_to.generator
+  sourceExternalId: plant_Dalby
+  sourceType: ASSET
+  targetExternalId: generator_Dalby_G1
+  targetType: ASSET
+- externalId: plant_Dalby.generator_Dalby_G2
+  labels:
+  - externalId: relationship_to.generator
+  sourceExternalId: plant_Dalby
+  sourceType: ASSET
+  targetExternalId: generator_Dalby_G2
+  targetType: ASSET
+- externalId: plant_Dalby.reservoir_Lensvik
+  labels:
+  - externalId: relationship_to.inlet_reservoir
+  sourceExternalId: plant_Dalby
+  sourceType: ASSET
+  targetExternalId: reservoir_Lensvik
+  targetType: ASSET
 - externalId: plant_Holen.generator_Holen_G1
   labels:
   - externalId: relationship_to.generator
@@ -396,6 +417,34 @@ relationships:
   sourceExternalId: plant_Holen
   sourceType: ASSET
   targetExternalId: reservoir_Nielsen
+  targetType: ASSET
+- externalId: plant_Landet.generator_Landet_G1
+  labels:
+  - externalId: relationship_to.generator
+  sourceExternalId: plant_Landet
+  sourceType: ASSET
+  targetExternalId: generator_Landet_G1
+  targetType: ASSET
+- externalId: plant_Landet.reservoir_Livincovs
+  labels:
+  - externalId: relationship_to.inlet_reservoir
+  sourceExternalId: plant_Landet
+  sourceType: ASSET
+  targetExternalId: reservoir_Livincovs
+  targetType: ASSET
+- externalId: plant_Lien_krv.generator_Lien_krv_G1
+  labels:
+  - externalId: relationship_to.generator
+  sourceExternalId: plant_Lien_krv
+  sourceType: ASSET
+  targetExternalId: generator_Lien_krv_G1
+  targetType: ASSET
+- externalId: plant_Lien_krv.reservoir_Ranemsletta_1183
+  labels:
+  - externalId: relationship_to.inlet_reservoir
+  sourceExternalId: plant_Lien_krv
+  sourceType: ASSET
+  targetExternalId: reservoir_Ranemsletta_1183
   targetType: ASSET
 - externalId: plant_Lund.generator_Lund_G1
   labels:
@@ -439,55 +488,6 @@ relationships:
   sourceType: ASSET
   targetExternalId: '907230'
   targetType: TIMESERIES
-- externalId: plant_Lien_krv.generator_Lien_krv_G1
-  labels:
-  - externalId: relationship_to.generator
-  sourceExternalId: plant_Lien_krv
-  sourceType: ASSET
-  targetExternalId: generator_Lien_krv_G1
-  targetType: ASSET
-- externalId: plant_Lien_krv.reservoir_Ranemsletta_1183
-  labels:
-  - externalId: relationship_to.inlet_reservoir
-  sourceExternalId: plant_Lien_krv
-  sourceType: ASSET
-  targetExternalId: reservoir_Ranemsletta_1183
-  targetType: ASSET
-- externalId: plant_Landet.generator_Landet_G1
-  labels:
-  - externalId: relationship_to.generator
-  sourceExternalId: plant_Landet
-  sourceType: ASSET
-  targetExternalId: generator_Landet_G1
-  targetType: ASSET
-- externalId: plant_Landet.reservoir_Livincovs
-  labels:
-  - externalId: relationship_to.inlet_reservoir
-  sourceExternalId: plant_Landet
-  sourceType: ASSET
-  targetExternalId: reservoir_Livincovs
-  targetType: ASSET
-- externalId: plant_Dalby.generator_Dalby_G1
-  labels:
-  - externalId: relationship_to.generator
-  sourceExternalId: plant_Dalby
-  sourceType: ASSET
-  targetExternalId: generator_Dalby_G1
-  targetType: ASSET
-- externalId: plant_Dalby.generator_Dalby_G2
-  labels:
-  - externalId: relationship_to.generator
-  sourceExternalId: plant_Dalby
-  sourceType: ASSET
-  targetExternalId: generator_Dalby_G2
-  targetType: ASSET
-- externalId: plant_Dalby.reservoir_Lensvik
-  labels:
-  - externalId: relationship_to.inlet_reservoir
-  sourceExternalId: plant_Dalby
-  sourceType: ASSET
-  targetExternalId: reservoir_Lensvik
-  targetType: ASSET
 - externalId: plant_Rull1.generator_Rull1_G1
   labels:
   - externalId: relationship_to.generator
@@ -558,90 +558,6 @@ relationships:
   sourceType: ASSET
   targetExternalId: reservoir_Hagen
   targetType: ASSET
-- externalId: generator_Holen_G1.112233
-  labels:
-  - externalId: relationship_to.start_stop_cost_time_series
-  sourceExternalId: generator_Holen_G1
-  sourceType: ASSET
-  targetExternalId: '112233'
-  targetType: TIMESERIES
-- externalId: generator_Holen_G1.332211
-  labels:
-  - externalId: relationship_to.is_available_time_series
-  sourceExternalId: generator_Holen_G1
-  sourceType: ASSET
-  targetExternalId: '332211'
-  targetType: TIMESERIES
-- externalId: generator_Holen_G1.generator_Holen_G1_generator_efficiency_curve
-  labels:
-  - externalId: relationship_to.generator_efficiency_curve
-  sourceExternalId: generator_Holen_G1
-  sourceType: ASSET
-  targetExternalId: generator_Holen_G1_generator_efficiency_curve
-  targetType: SEQUENCE
-- externalId: generator_Holen_G1.generator_Holen_G1_turbine_efficiency_curve
-  labels:
-  - externalId: relationship_to.turbine_efficiency_curve
-  sourceExternalId: generator_Holen_G1
-  sourceType: ASSET
-  targetExternalId: generator_Holen_G1_turbine_efficiency_curve
-  targetType: SEQUENCE
-- externalId: generator_Lund_G1.112233
-  labels:
-  - externalId: relationship_to.start_stop_cost_time_series
-  sourceExternalId: generator_Lund_G1
-  sourceType: ASSET
-  targetExternalId: '112233'
-  targetType: TIMESERIES
-- externalId: generator_Lund_G1.332211
-  labels:
-  - externalId: relationship_to.is_available_time_series
-  sourceExternalId: generator_Lund_G1
-  sourceType: ASSET
-  targetExternalId: '332211'
-  targetType: TIMESERIES
-- externalId: generator_Lund_G1.generator_Lund_G1_generator_efficiency_curve
-  labels:
-  - externalId: relationship_to.generator_efficiency_curve
-  sourceExternalId: generator_Lund_G1
-  sourceType: ASSET
-  targetExternalId: generator_Lund_G1_generator_efficiency_curve
-  targetType: SEQUENCE
-- externalId: generator_Lund_G1.generator_Lund_G1_turbine_efficiency_curve
-  labels:
-  - externalId: relationship_to.turbine_efficiency_curve
-  sourceExternalId: generator_Lund_G1
-  sourceType: ASSET
-  targetExternalId: generator_Lund_G1_turbine_efficiency_curve
-  targetType: SEQUENCE
-- externalId: generator_Lien_krv_G1.generator_Lien_krv_G1_generator_efficiency_curve
-  labels:
-  - externalId: relationship_to.generator_efficiency_curve
-  sourceExternalId: generator_Lien_krv_G1
-  sourceType: ASSET
-  targetExternalId: generator_Lien_krv_G1_generator_efficiency_curve
-  targetType: SEQUENCE
-- externalId: generator_Lien_krv_G1.generator_Lien_krv_G1_turbine_efficiency_curve
-  labels:
-  - externalId: relationship_to.turbine_efficiency_curve
-  sourceExternalId: generator_Lien_krv_G1
-  sourceType: ASSET
-  targetExternalId: generator_Lien_krv_G1_turbine_efficiency_curve
-  targetType: SEQUENCE
-- externalId: generator_Landet_G1.generator_Landet_G1_generator_efficiency_curve
-  labels:
-  - externalId: relationship_to.generator_efficiency_curve
-  sourceExternalId: generator_Landet_G1
-  sourceType: ASSET
-  targetExternalId: generator_Landet_G1_generator_efficiency_curve
-  targetType: SEQUENCE
-- externalId: generator_Landet_G1.generator_Landet_G1_turbine_efficiency_curve
-  labels:
-  - externalId: relationship_to.turbine_efficiency_curve
-  sourceExternalId: generator_Landet_G1
-  sourceType: ASSET
-  targetExternalId: generator_Landet_G1_turbine_efficiency_curve
-  targetType: SEQUENCE
 - externalId: generator_Dalby_G1.112233
   labels:
   - externalId: relationship_to.start_stop_cost_time_series
@@ -676,6 +592,90 @@ relationships:
   sourceExternalId: generator_Dalby_G2
   sourceType: ASSET
   targetExternalId: generator_Dalby_G2_turbine_efficiency_curve
+  targetType: SEQUENCE
+- externalId: generator_Holen_G1.112233
+  labels:
+  - externalId: relationship_to.start_stop_cost_time_series
+  sourceExternalId: generator_Holen_G1
+  sourceType: ASSET
+  targetExternalId: '112233'
+  targetType: TIMESERIES
+- externalId: generator_Holen_G1.332211
+  labels:
+  - externalId: relationship_to.is_available_time_series
+  sourceExternalId: generator_Holen_G1
+  sourceType: ASSET
+  targetExternalId: '332211'
+  targetType: TIMESERIES
+- externalId: generator_Holen_G1.generator_Holen_G1_generator_efficiency_curve
+  labels:
+  - externalId: relationship_to.generator_efficiency_curve
+  sourceExternalId: generator_Holen_G1
+  sourceType: ASSET
+  targetExternalId: generator_Holen_G1_generator_efficiency_curve
+  targetType: SEQUENCE
+- externalId: generator_Holen_G1.generator_Holen_G1_turbine_efficiency_curve
+  labels:
+  - externalId: relationship_to.turbine_efficiency_curve
+  sourceExternalId: generator_Holen_G1
+  sourceType: ASSET
+  targetExternalId: generator_Holen_G1_turbine_efficiency_curve
+  targetType: SEQUENCE
+- externalId: generator_Landet_G1.generator_Landet_G1_generator_efficiency_curve
+  labels:
+  - externalId: relationship_to.generator_efficiency_curve
+  sourceExternalId: generator_Landet_G1
+  sourceType: ASSET
+  targetExternalId: generator_Landet_G1_generator_efficiency_curve
+  targetType: SEQUENCE
+- externalId: generator_Landet_G1.generator_Landet_G1_turbine_efficiency_curve
+  labels:
+  - externalId: relationship_to.turbine_efficiency_curve
+  sourceExternalId: generator_Landet_G1
+  sourceType: ASSET
+  targetExternalId: generator_Landet_G1_turbine_efficiency_curve
+  targetType: SEQUENCE
+- externalId: generator_Lien_krv_G1.generator_Lien_krv_G1_generator_efficiency_curve
+  labels:
+  - externalId: relationship_to.generator_efficiency_curve
+  sourceExternalId: generator_Lien_krv_G1
+  sourceType: ASSET
+  targetExternalId: generator_Lien_krv_G1_generator_efficiency_curve
+  targetType: SEQUENCE
+- externalId: generator_Lien_krv_G1.generator_Lien_krv_G1_turbine_efficiency_curve
+  labels:
+  - externalId: relationship_to.turbine_efficiency_curve
+  sourceExternalId: generator_Lien_krv_G1
+  sourceType: ASSET
+  targetExternalId: generator_Lien_krv_G1_turbine_efficiency_curve
+  targetType: SEQUENCE
+- externalId: generator_Lund_G1.112233
+  labels:
+  - externalId: relationship_to.start_stop_cost_time_series
+  sourceExternalId: generator_Lund_G1
+  sourceType: ASSET
+  targetExternalId: '112233'
+  targetType: TIMESERIES
+- externalId: generator_Lund_G1.332211
+  labels:
+  - externalId: relationship_to.is_available_time_series
+  sourceExternalId: generator_Lund_G1
+  sourceType: ASSET
+  targetExternalId: '332211'
+  targetType: TIMESERIES
+- externalId: generator_Lund_G1.generator_Lund_G1_generator_efficiency_curve
+  labels:
+  - externalId: relationship_to.generator_efficiency_curve
+  sourceExternalId: generator_Lund_G1
+  sourceType: ASSET
+  targetExternalId: generator_Lund_G1_generator_efficiency_curve
+  targetType: SEQUENCE
+- externalId: generator_Lund_G1.generator_Lund_G1_turbine_efficiency_curve
+  labels:
+  - externalId: relationship_to.turbine_efficiency_curve
+  sourceExternalId: generator_Lund_G1
+  sourceType: ASSET
+  targetExternalId: generator_Lund_G1_turbine_efficiency_curve
   targetType: SEQUENCE
 - externalId: generator_Rull1_G1.generator_Rull1_G1_generator_efficiency_curve
   labels:
@@ -761,26 +761,19 @@ relationships:
   sourceType: ASSET
   targetExternalId: generator_Strand_krv_G1_turbine_efficiency_curve
   targetType: SEQUENCE
+- externalId: watercourse_Fornebu.plant_Dalby
+  labels:
+  - externalId: relationship_to.plant
+  sourceExternalId: watercourse_Fornebu
+  sourceType: ASSET
+  targetExternalId: plant_Dalby
+  targetType: ASSET
 - externalId: watercourse_Fornebu.plant_Holen
   labels:
   - externalId: relationship_to.plant
   sourceExternalId: watercourse_Fornebu
   sourceType: ASSET
   targetExternalId: plant_Holen
-  targetType: ASSET
-- externalId: watercourse_Fornebu.plant_Lund
-  labels:
-  - externalId: relationship_to.plant
-  sourceExternalId: watercourse_Fornebu
-  sourceType: ASSET
-  targetExternalId: plant_Lund
-  targetType: ASSET
-- externalId: watercourse_Fornebu.plant_Lien_krv
-  labels:
-  - externalId: relationship_to.plant
-  sourceExternalId: watercourse_Fornebu
-  sourceType: ASSET
-  targetExternalId: plant_Lien_krv
   targetType: ASSET
 - externalId: watercourse_Fornebu.plant_Landet
   labels:
@@ -789,12 +782,19 @@ relationships:
   sourceType: ASSET
   targetExternalId: plant_Landet
   targetType: ASSET
-- externalId: watercourse_Fornebu.plant_Dalby
+- externalId: watercourse_Fornebu.plant_Lien_krv
   labels:
   - externalId: relationship_to.plant
   sourceExternalId: watercourse_Fornebu
   sourceType: ASSET
-  targetExternalId: plant_Dalby
+  targetExternalId: plant_Lien_krv
+  targetType: ASSET
+- externalId: watercourse_Fornebu.plant_Lund
+  labels:
+  - externalId: relationship_to.plant
+  sourceExternalId: watercourse_Fornebu
+  sourceType: ASSET
+  targetExternalId: plant_Lund
   targetType: ASSET
 - externalId: watercourse_Fornebu.plant_Rull1
   labels:
@@ -831,26 +831,19 @@ relationships:
   sourceType: ASSET
   targetExternalId: '6694'
   targetType: TIMESERIES
+- externalId: price_area_NO2.plant_Dalby
+  labels:
+  - externalId: relationship_to.plant
+  sourceExternalId: price_area_NO2
+  sourceType: ASSET
+  targetExternalId: plant_Dalby
+  targetType: ASSET
 - externalId: price_area_NO2.plant_Holen
   labels:
   - externalId: relationship_to.plant
   sourceExternalId: price_area_NO2
   sourceType: ASSET
   targetExternalId: plant_Holen
-  targetType: ASSET
-- externalId: price_area_NO2.plant_Lund
-  labels:
-  - externalId: relationship_to.plant
-  sourceExternalId: price_area_NO2
-  sourceType: ASSET
-  targetExternalId: plant_Lund
-  targetType: ASSET
-- externalId: price_area_NO2.plant_Lien_krv
-  labels:
-  - externalId: relationship_to.plant
-  sourceExternalId: price_area_NO2
-  sourceType: ASSET
-  targetExternalId: plant_Lien_krv
   targetType: ASSET
 - externalId: price_area_NO2.plant_Landet
   labels:
@@ -859,12 +852,19 @@ relationships:
   sourceType: ASSET
   targetExternalId: plant_Landet
   targetType: ASSET
-- externalId: price_area_NO2.plant_Dalby
+- externalId: price_area_NO2.plant_Lien_krv
   labels:
   - externalId: relationship_to.plant
   sourceExternalId: price_area_NO2
   sourceType: ASSET
-  targetExternalId: plant_Dalby
+  targetExternalId: plant_Lien_krv
+  targetType: ASSET
+- externalId: price_area_NO2.plant_Lund
+  labels:
+  - externalId: relationship_to.plant
+  sourceExternalId: price_area_NO2
+  sourceType: ASSET
+  targetExternalId: plant_Lund
   targetType: ASSET
 - externalId: price_area_NO2.plant_Rull1
   labels:
@@ -907,86 +907,6 @@ sequences:
     valueType: DOUBLE
   - externalId: generator_efficiency
     valueType: DOUBLE
-  externalId: generator_Holen_G1_generator_efficiency_curve
-  metadata:
-    sha256_hash: a94dbac2e9c512f9dab8feffeba02ac5382a386b57a785eb1769837a1a517c75
-  name: Holen_G1 generator efficiency curve
-- columns:
-  - externalId: head
-    valueType: DOUBLE
-  - externalId: flow
-    valueType: DOUBLE
-  - externalId: turbine_efficiency
-    valueType: DOUBLE
-  externalId: generator_Holen_G1_turbine_efficiency_curve
-  metadata:
-    sha256_hash: 96506e8a30e56142b9fec035edbe7fc1df197518b41dc3c0011d10b799813d64
-  name: Holen_G1 turbine efficiency curve
-- columns:
-  - externalId: generator_power
-    valueType: DOUBLE
-  - externalId: generator_efficiency
-    valueType: DOUBLE
-  externalId: generator_Lund_G1_generator_efficiency_curve
-  metadata:
-    sha256_hash: 9a2f039fb07a4489c2a2e27c9abc5f4cf8c2245926dfcc13750f6fb8615803fb
-  name: Lund_G1 generator efficiency curve
-- columns:
-  - externalId: head
-    valueType: DOUBLE
-  - externalId: flow
-    valueType: DOUBLE
-  - externalId: turbine_efficiency
-    valueType: DOUBLE
-  externalId: generator_Lund_G1_turbine_efficiency_curve
-  metadata:
-    sha256_hash: d781ea83273f7fbd8ce46f96a514abc7407dacbf4cf2ff1b64fd1a33ba80c414
-  name: Lund_G1 turbine efficiency curve
-- columns:
-  - externalId: generator_power
-    valueType: DOUBLE
-  - externalId: generator_efficiency
-    valueType: DOUBLE
-  externalId: generator_Lien_krv_G1_generator_efficiency_curve
-  metadata:
-    sha256_hash: 20a302c96fd866c212048dd9740105ec50f870aa1397bd2201ecf9fabf4b8397
-  name: Lien_krv_G1 generator efficiency curve
-- columns:
-  - externalId: head
-    valueType: DOUBLE
-  - externalId: flow
-    valueType: DOUBLE
-  - externalId: turbine_efficiency
-    valueType: DOUBLE
-  externalId: generator_Lien_krv_G1_turbine_efficiency_curve
-  metadata:
-    sha256_hash: 7ad3f0fe1816e808b358b3c3ac5bb3f5ff03d1c108224b9f9d79e7d67267c18b
-  name: Lien_krv_G1 turbine efficiency curve
-- columns:
-  - externalId: generator_power
-    valueType: DOUBLE
-  - externalId: generator_efficiency
-    valueType: DOUBLE
-  externalId: generator_Landet_G1_generator_efficiency_curve
-  metadata:
-    sha256_hash: cfc6d059f9cc743cf6468c797f266c03343f8e5dccf8a7dd5ad14785f7b1bf87
-  name: Landet_G1 generator efficiency curve
-- columns:
-  - externalId: head
-    valueType: DOUBLE
-  - externalId: flow
-    valueType: DOUBLE
-  - externalId: turbine_efficiency
-    valueType: DOUBLE
-  externalId: generator_Landet_G1_turbine_efficiency_curve
-  metadata:
-    sha256_hash: f0ee12d881a27392c16cc9f671320e88ace3837c78cf6de561e3f1ecdf6bed4d
-  name: Landet_G1 turbine efficiency curve
-- columns:
-  - externalId: generator_power
-    valueType: DOUBLE
-  - externalId: generator_efficiency
-    valueType: DOUBLE
   externalId: generator_Dalby_G1_generator_efficiency_curve
   metadata:
     sha256_hash: 389c764520b8c2de9a8d54e52efbff9c2fc9cbf78eb865c2d43a64166fa9120a
@@ -1022,6 +942,86 @@ sequences:
   metadata:
     sha256_hash: 3c9a9f07e2c9ea810556858639bf66b59c19d2b2304267962b140aebe5fa9239
   name: Dalby_G2 turbine efficiency curve
+- columns:
+  - externalId: generator_power
+    valueType: DOUBLE
+  - externalId: generator_efficiency
+    valueType: DOUBLE
+  externalId: generator_Holen_G1_generator_efficiency_curve
+  metadata:
+    sha256_hash: a94dbac2e9c512f9dab8feffeba02ac5382a386b57a785eb1769837a1a517c75
+  name: Holen_G1 generator efficiency curve
+- columns:
+  - externalId: head
+    valueType: DOUBLE
+  - externalId: flow
+    valueType: DOUBLE
+  - externalId: turbine_efficiency
+    valueType: DOUBLE
+  externalId: generator_Holen_G1_turbine_efficiency_curve
+  metadata:
+    sha256_hash: 96506e8a30e56142b9fec035edbe7fc1df197518b41dc3c0011d10b799813d64
+  name: Holen_G1 turbine efficiency curve
+- columns:
+  - externalId: generator_power
+    valueType: DOUBLE
+  - externalId: generator_efficiency
+    valueType: DOUBLE
+  externalId: generator_Landet_G1_generator_efficiency_curve
+  metadata:
+    sha256_hash: cfc6d059f9cc743cf6468c797f266c03343f8e5dccf8a7dd5ad14785f7b1bf87
+  name: Landet_G1 generator efficiency curve
+- columns:
+  - externalId: head
+    valueType: DOUBLE
+  - externalId: flow
+    valueType: DOUBLE
+  - externalId: turbine_efficiency
+    valueType: DOUBLE
+  externalId: generator_Landet_G1_turbine_efficiency_curve
+  metadata:
+    sha256_hash: f0ee12d881a27392c16cc9f671320e88ace3837c78cf6de561e3f1ecdf6bed4d
+  name: Landet_G1 turbine efficiency curve
+- columns:
+  - externalId: generator_power
+    valueType: DOUBLE
+  - externalId: generator_efficiency
+    valueType: DOUBLE
+  externalId: generator_Lien_krv_G1_generator_efficiency_curve
+  metadata:
+    sha256_hash: 20a302c96fd866c212048dd9740105ec50f870aa1397bd2201ecf9fabf4b8397
+  name: Lien_krv_G1 generator efficiency curve
+- columns:
+  - externalId: head
+    valueType: DOUBLE
+  - externalId: flow
+    valueType: DOUBLE
+  - externalId: turbine_efficiency
+    valueType: DOUBLE
+  externalId: generator_Lien_krv_G1_turbine_efficiency_curve
+  metadata:
+    sha256_hash: 7ad3f0fe1816e808b358b3c3ac5bb3f5ff03d1c108224b9f9d79e7d67267c18b
+  name: Lien_krv_G1 turbine efficiency curve
+- columns:
+  - externalId: generator_power
+    valueType: DOUBLE
+  - externalId: generator_efficiency
+    valueType: DOUBLE
+  externalId: generator_Lund_G1_generator_efficiency_curve
+  metadata:
+    sha256_hash: 9a2f039fb07a4489c2a2e27c9abc5f4cf8c2245926dfcc13750f6fb8615803fb
+  name: Lund_G1 generator efficiency curve
+- columns:
+  - externalId: head
+    valueType: DOUBLE
+  - externalId: flow
+    valueType: DOUBLE
+  - externalId: turbine_efficiency
+    valueType: DOUBLE
+  externalId: generator_Lund_G1_turbine_efficiency_curve
+  metadata:
+    sha256_hash: d781ea83273f7fbd8ce46f96a514abc7407dacbf4cf2ff1b64fd1a33ba80c414
+  name: Lund_G1 turbine efficiency curve
 - columns:
   - externalId: generator_power
     valueType: DOUBLE
@@ -1148,8 +1148,8 @@ timeseries:
 - externalId: '907223'
 - externalId: '907230'
 - externalId: '112233'
-- externalId: '332211'
 - externalId: '112233'
 - externalId: '332211'
 - externalId: '112233'
+- externalId: '332211'
 - externalId: '6694'

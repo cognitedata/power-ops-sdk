@@ -63,6 +63,9 @@ def plan(
 
         if dump_folder:
             dump_folder.mkdir(parents=True, exist_ok=True)
+            # Standardize models for easy comparison
+            new_model.standardize()
+            cdf_model.standardize()
 
             (dump_folder / f"{new_model.model_name}_local.yaml").write_text(safe_dump(new_model.dump_as_cdf_resource()))
             (dump_folder / f"{new_model.model_name}_cdf.yaml").write_text(safe_dump(cdf_model.dump_as_cdf_resource()))

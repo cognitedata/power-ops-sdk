@@ -45,16 +45,19 @@ class AssetModel(Model, ABC, validate_assignment=True):
                 parent_and_description_ids.add((annotation.parent_external_id, annotation.parent_description or ""))
 
         return AssetList(
-            ([cls.root_asset] if include_root else [])
-            + [
-                Asset(
-                    external_id=parent_id,
-                    name=_to_name(parent_id),
-                    parent_external_id=cls.root_asset.external_id,
-                    description=description,
-                )
-                for parent_id, description in parent_and_description_ids
-            ]
+            sorted(
+                ([cls.root_asset] if include_root else [])
+                + [
+                    Asset(
+                        external_id=parent_id,
+                        name=_to_name(parent_id),
+                        parent_external_id=cls.root_asset.external_id,
+                        description=description,
+                    )
+                    for parent_id, description in parent_and_description_ids
+                ],
+                key=lambda asset: asset.external_id,
+            )
         )
 
     cdf_resources: ClassVar[dict[Union[Callable, tuple[Callable, str]], type]] = {
