@@ -62,7 +62,7 @@ def plan(
         default=None,
         help="The format of the output. Available formats: markdown",
     ),
-    is_extraction_pipeline_run: bool = typer.Option(
+    as_extraction_pipeline_run: bool = typer.Option(
         default=False,
         help="If true, the command will be registered as an extraction pipeline run. With the configuration"
         "fetched from the settings.toml [powerops] section.",
@@ -81,7 +81,7 @@ def plan(
     if format == "markdown":
         typer.echo(changes.as_markdown())
 
-    if is_extraction_pipeline_run is True:
+    if as_extraction_pipeline_run is True:
         settings = Settings()
         if settings.powerops.monitor_dataset is None:
             raise ValueError("No monitor_dataset configured in settings")
