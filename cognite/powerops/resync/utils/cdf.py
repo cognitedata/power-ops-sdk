@@ -69,7 +69,7 @@ class SequenceAdapter(CogniteAPI[CogniteSequence]):
 
     def create(self, items: CogniteSequence | Sequence[CogniteSequence]) -> Any:
         items = [items] if isinstance(items, CogniteSequence) else items
-        if missing := set(self.sequence_by_id) - {i.external_id for i in items}:
+        if missing := {i.external_id for i in items} - set(self.sequence_by_id):
             raise ValueError(f"Missing sequence content for {missing}")
         self.client.sequences.create(items)
         for item in items:
