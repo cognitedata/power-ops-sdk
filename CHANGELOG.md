@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.42.3] - 2023-09-01
+### Fixed
+* The CLI commands `powerops plan` and `powerops apply` used a custom logger configuration instead of default.
+
 ## [0.42.2] - 2023-09-01
 ### Fixed
 * The CLI commands `powerops plan` and `powerops apply` failed with `ValueError` if there were new sequences added
