@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.43.0] - 2023-09-01
+### Added
+* The CLI command `powerops plan` with option `as_extraction_pipeline_run`.
+
 ## [0.42.3] - 2023-09-01
 ### Fixed
 * The CLI commands `powerops plan` and `powerops apply` used a custom logger configuration instead of default.
