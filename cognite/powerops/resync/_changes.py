@@ -11,7 +11,7 @@ from cognite.client.data_classes import Sequence, FileMetadata
 from cognite.client.data_classes._base import CogniteResource
 from deepdiff import DeepDiff  # type: ignore[import]
 
-from cognite.powerops.resync.models.base.model import Resource
+from cognite.powerops.resync.models.base.resource_type import Resource
 from cognite.powerops.resync.models.cdf_resources import CDFResource
 
 
