@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 import tomli_w
 from cognite.client import CogniteClient
-from cognite.client.data_classes import DataSet, FileMetadata
+from cognite.client.data_classes import DataSet, FileMetadata, ExtractionPipelineRun
 from cognite.client.testing import monkeypatch_cognite_client
 from cognite.powerops.utils.cdf import Settings
 from cognite.powerops.utils.cdf.extraction_pipelines import ExtractionPipelineCreate, RunStatus, MSG_CHAR_LIMIT
@@ -149,3 +149,23 @@ def test_create_pipeline_run_truncate_multiple_keys(
     assert json.loads(message)
     assert len(message) < MSG_CHAR_LIMIT
     assert "..." in message
+
+
+def test_create_pipeline_run_raise_exception(
+    extraction_pipeline: ExtractionPipelineCreate, cognite_client: CogniteClient
+):
+    # Act
+    try:
+        with extraction_pipeline.create_pipeline_run(cognite_client) as run:
+            raise ValueError("Massive Error" * MSG_CHAR_LIMIT)
+    except ValueError:
+        ...
+
+    # Assert
+    file_content = cognite_client.files.upload_bytes.call_args.kwargs["content"]
+    assert "exception" in file_content
+    run: ExtractionPipelineRun
+    run, *_ = cognite_client.extraction_pipelines.runs.create.call_args.args
+    assert run.status == "failure"
+    assert "..." in run.message
+    assert len(run.message) <= MSG_CHAR_LIMIT

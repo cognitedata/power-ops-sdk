@@ -5,6 +5,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
 from typing import Any, Optional, ClassVar, Callable
+import traceback
 
 
 from cognite.client._constants import MAX_VALID_INTERNAL_ID
@@ -99,12 +100,12 @@ class PipelineRun:
             raise TypeError(f"Data must be a dict, got {type(data)}")
         return self
 
-    def __exit__(self, exc_type=None, exc_value=None, traceback=None) -> bool:
+    def __exit__(self, exc_type=None, exc_value=None, traceback_=None) -> bool:
         suppress_exception = False
 
-        if any((exc_type, exc_value, traceback)):
+        if any((exc_type, exc_value, traceback_)):
             self.status = RunStatus.FAILURE
-            self.data[self.exception] = f"{exc_type}: {exc_value} {traceback}"
+            self.data[self.exception] = traceback.format_exc()
 
         message = self.get_message(self.config.dump_truncated_to_file)
         run = ExtractionPipelineRun(
@@ -137,19 +138,21 @@ class PipelineRun:
     def _create_run_data_and_file_content(
         self, file_external_id: str, dump_truncated_to_file: bool
     ) -> tuple[dict, str]:
-        dumped = self._as_json(self.data.data)
         file_content = []
         data = self.data.data.copy()
         if dump_truncated_to_file:
             data["log_file_external_id"] = file_external_id
             data["log_file_id"] = MAX_VALID_INTERNAL_ID
 
+        dumped = self._as_json(data)
         if (above_limit := len(dumped) - MSG_CHAR_LIMIT) > 0:
             # In case, truncating the specified keys is not enough, we also start to truncate everything else.
             truncate_keys = self.config.truncate_keys + list(
                 set(data) - {self.log_file_id, self.log_file_external_id} - set(self.config.truncate_keys)
             )
             for key in truncate_keys:
+                if key not in data:
+                    continue
                 file_content.append(
                     f"{'='*70}\n{key}\n{'='*70}\n{self.data[key]}\n{'='*70}",
                 )
