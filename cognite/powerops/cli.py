@@ -13,6 +13,9 @@ from cognite import powerops
 from cognite.powerops import resync
 from cognite.powerops._models import MODEL_BY_NAME
 from cognite.powerops.clients.powerops_client import get_powerops_client
+from cognite.powerops.utils.cdf import Settings
+
+from cognite.powerops.utils.cdf.extraction_pipelines import ExtractionPipelineCreate, RunStatus
 
 logging.getLogger("requests").setLevel(logging.WARNING)
 logging.getLogger("urllib3").setLevel(logging.WARNING)
@@ -59,6 +62,11 @@ def plan(
         default=None,
         help="The format of the output. Available formats: markdown",
     ),
+    is_extraction_pipeline_run: bool = typer.Option(
+        default=False,
+        help="If true, the command will be registered as an extraction pipeline run. With the configuration"
+        "fetched from the settings.toml [powerops] section.",
+    ),
 ):
     if dump_folder and not dump_folder.is_dir():
         raise typer.BadParameter(f"{dump_folder} is not a directory")
@@ -67,9 +75,35 @@ def plan(
     if len(models) == 1 and models[0].lower() == "all":
         models = list(MODEL_BY_NAME.keys())
 
-    results = resync.plan(path, market, echo=log.info, model_names=models, dump_folder=dump_folder, echo_pretty=pprint)
+    power = get_powerops_client()
+
+    changes = resync.plan(path, market, echo=log.info, model_names=models, dump_folder=dump_folder, client=power)
     if format == "markdown":
-        typer.echo(resync.reports.as_markdown(results))
+        typer.echo(changes.as_markdown())
+
+    if is_extraction_pipeline_run is True:
+        settings = Settings()
+        if settings.powerops.monitor_dataset is None:
+            raise ValueError("No monitor_dataset configured in settings")
+        client = power.cdf
+
+        pipeline = ExtractionPipelineCreate(
+            external_id="resync/plan",
+            data_set_external_id=settings.powerops.monitor_dataset,
+            dump_truncated_to_file=True,
+            truncate_keys=["plan"],
+            log_file_prefix="powerops_function_loss/",
+            description="The resync/plan function checks that the configuration files are matching "
+            "the expected resources in CDF. If there are any differences, the run will report as failed",
+        ).get_or_create(client)
+
+        with pipeline.create_pipeline_run(client) as run:
+            status = RunStatus.FAILURE if changes.has_changes() else RunStatus.SUCCESS
+            run.update_data(
+                status=status,
+                plan=changes.as_markdown() if changes.has_changes() else "No changes",
+            )
+        typer.echo("Extraction pipeline run executed")
 
 
 @app.command("apply", help="Apply the changes from the configuration files to the data model in CDF")

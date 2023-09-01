@@ -51,6 +51,7 @@ class CogniteSettings(BaseModel):
 class PoweropsRunSettings(pydantic.BaseModel):
     read_dataset: Optional[str] = None
     write_dataset: Optional[str] = None
+    monitor_dataset: Optional[str] = None
     cogshop_version: Optional[str] = None
 
     @field_validator("cogshop_version", mode="before")
