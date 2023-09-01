@@ -9,7 +9,6 @@ from cognite.client.data_classes.data_modeling.instances import InstanceCore
 from yaml import safe_dump
 
 from cognite.powerops.clients.powerops_client import get_powerops_client, PowerOpsClient
-from cognite.powerops.resync._logger import configure_debug_logging
 from cognite.powerops.resync._validation import _clean_relationships
 from cognite.powerops.resync.config.resync_config import ReSyncConfig
 from cognite.powerops.resync.models.base import Model  # type: ignore[attr-defined]
@@ -180,7 +179,6 @@ def _load_transform(
     echo(f"Loading and transforming {', '.join(model_names)}")
 
     config = ReSyncConfig.from_yamls(path, cdf_project)
-    configure_debug_logging(config.settings.debug_level)
 
     return transform(config, market, {MODEL_BY_NAME[model_name] for model_name in model_names})
 
