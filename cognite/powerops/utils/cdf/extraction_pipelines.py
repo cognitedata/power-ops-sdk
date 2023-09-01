@@ -11,6 +11,7 @@ import traceback
 from cognite.client._constants import MAX_VALID_INTERNAL_ID
 from cognite.client import CogniteClient
 from cognite.client.data_classes import ExtractionPipeline, ExtractionPipelineRun
+from cognite.client.exceptions import CogniteAPIError
 
 MSG_CHAR_LIMIT = 1000
 
@@ -110,13 +111,18 @@ class PipelineRun:
         )
         data, file_content = self._create_run_data_and_file_content(file_external_id, dump_truncated_to_file)
         if dump_truncated_to_file and file_content:
-            file_id = self.client.files.upload_bytes(
-                content=file_content,
-                name=f"{file_external_id.lower()}.log".replace("/", "_"),
-                external_id=file_external_id,
-                mime_type="text/plain",
-                data_set_id=self.data_set_id,
-            ).id
+            try:
+                file_id = self.client.files.upload_bytes(
+                    content=file_content,
+                    name=f"{file_external_id.lower()}.log".replace("/", "_"),
+                    external_id=file_external_id,
+                    mime_type="text/plain",
+                    data_set_id=self.data_set_id,
+                ).id
+            except CogniteAPIError as e:
+                self.error_logger(f"Failed to upload log file {file_external_id}: {e}")
+                file_id = ""
+
             data[self.log_file_id] = file_id
 
         return self._as_json(data)
