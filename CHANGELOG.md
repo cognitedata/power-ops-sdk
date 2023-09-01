@@ -13,6 +13,12 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.42.1] - 2023-09-01
+### Fixed
+* The CLI commands `powerops plan` and `powerops apply` failed with `CogniteAPIError` if there were new
+  sequences added. This is now fixed.
+
+
 ## [0.42.0] - 2023-08-31
 ### Added
 * Moved `powerops plan` support Markdown output..
