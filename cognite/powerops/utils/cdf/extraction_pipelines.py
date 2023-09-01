@@ -1,7 +1,7 @@
 from __future__ import annotations
 import json
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import datetime, timezone
 from enum import Enum
 from typing import Any, Optional, ClassVar, Callable
@@ -26,20 +26,6 @@ class _Config:
     dump_truncated_to_file: bool = True
     truncate_keys: list[str] = None
     log_file_prefix: str | None = None
-
-
-@dataclass
-class RunData:
-    data: dict = field(default_factory=dict)
-
-    def update(self, data: dict[str, Any]) -> None:
-        self.data.update(data)
-
-    def __setitem__(self, key, value):
-        self.data[key] = value
-
-    def __getitem__(self, key):
-        return self.data[key]
 
 
 class PipelineRun:
@@ -78,7 +64,7 @@ class PipelineRun:
         self.data_set_id = data_set_id
         self.error_logger = error_logger
 
-        self.data = RunData()
+        self.data = {}
         self.status = self.init_status
 
     def __enter__(self) -> "PipelineRun":
@@ -131,7 +117,7 @@ class PipelineRun:
                 mime_type="text/plain",
                 data_set_id=self.data_set_id,
             ).id
-            data["log_file_id"] = file_id
+            data[self.log_file_id] = file_id
 
         return self._as_json(data)
 
@@ -139,10 +125,11 @@ class PipelineRun:
         self, file_external_id: str, dump_truncated_to_file: bool
     ) -> tuple[dict, str]:
         file_content = []
-        data = self.data.data.copy()
+        data = self.data.copy()
         if dump_truncated_to_file:
-            data["log_file_external_id"] = file_external_id
-            data["log_file_id"] = MAX_VALID_INTERNAL_ID
+            data[self.log_file_external_id] = file_external_id
+            # Need a dummy id as we do not know the id before the file is uploaded
+            data[self.log_file_id] = MAX_VALID_INTERNAL_ID
 
         dumped = self._as_json(data)
         if (above_limit := len(dumped) - MSG_CHAR_LIMIT) > 0:
@@ -156,9 +143,9 @@ class PipelineRun:
                 file_content.append(
                     f"{'='*70}\n{key}\n{'='*70}\n{self.data[key]}\n{'='*70}",
                 )
-                entry_length = len(self.data[key])
+                entry_length = len(data[key])
                 if entry_length >= above_limit + 3:
-                    data[key] = self.data[key][: entry_length - (above_limit + 3)] + "..."
+                    data[key] = data[key][: entry_length - (above_limit + 3)] + "..."
                     break
                 elif entry_length < 3:
                     continue
