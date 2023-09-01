@@ -1,11 +1,8 @@
 from __future__ import annotations
 
 import abc
-import itertools
 from abc import ABC
-from dataclasses import dataclass, field
 from typing import ClassVar, Callable, Iterable, Type as TypingType, Any, TypeVar, Literal, Union
-from itertools import islice
 
 from cognite.client import CogniteClient
 from cognite.client.data_classes._base import CogniteResource, CogniteResourceList
@@ -21,8 +18,8 @@ from typing_extensions import Self, TypeAlias
 
 from cognite.client.data_classes import TimeSeries
 from pydantic import BaseModel
-from deepdiff import DeepDiff
 from cognite.powerops.clients.powerops_client import PowerOpsClient
+from cognite.powerops.resync._changes import Change, FieldDifference, ModelDifference
 from cognite.powerops.resync.models.cdf_resources import CDFSequence, CDFFile, CDFResource
 from cognite.powerops.resync.models.helpers import isinstance_list
 from cognite.powerops.resync.utils.serializer import remove_read_only_fields
@@ -69,112 +66,6 @@ class ResourceType(BaseModel, ABC):
 
 
 Resource: TypeAlias = Union[Asset, TimeSeries, Sequence, FileMetadata, ResourceType]
-
-
-@dataclass
-class Change:
-    last: Resource
-    new: Resource
-
-    @property
-    def changed_fields(self) -> str:
-        last_dumped = (
-            self.last.dump(camel_case=True) if isinstance(self.last, CogniteResource) else self.last.model_dump()
-        )
-        new_dumped = self.new.dump(camel_case=True) if isinstance(self.new, CogniteResource) else self.new.model_dump()
-        return (
-            DeepDiff(last_dumped, new_dumped, ignore_string_case=True)
-            .pretty()
-            .replace("added to dictionary.", f"will be added to {self.last.external_id}.")
-            .replace("removed from dictionary.", f"will be removed from {self.last.external_id}.")
-        )
-
-    @property
-    def is_changed_content(self) -> bool:
-        if not isinstance(self.last, (Sequence, FileMetadata)):
-            return False
-        last_hash = (self.last.metadata or {}).get(CDFResource.content_key_hash)
-        new_hash = (self.new.metadata or {}).get(CDFResource.content_key_hash)
-        return last_hash != new_hash or last_hash is None or new_hash is None
-
-
-@dataclass
-class FieldSummary:
-    group: Literal["CDF", "Domain"]
-    name: str
-    added: int
-    removed: int
-    changed: int
-    unchanged: int
-
-    @property
-    def total(self) -> int:
-        return self.added + self.removed + self.changed + self.unchanged
-
-
-@dataclass
-class FieldIds:
-    group: Literal["CDF", "Domain"]
-    name: str
-    added: list[str] = field(default_factory=list)
-    removed: list[str] = field(default_factory=list)
-    changed: list[str] = field(default_factory=list)
-    unchanged: list[str] = field(default_factory=list)
-
-    @property
-    def total(self) -> int:
-        return len(self.added) + len(self.removed) + len(self.changed) + len(self.unchanged)
-
-
-@dataclass
-class FieldDifference:
-    group: Literal["CDF", "Domain"]
-    name: str
-    added: list[Resource] = field(default_factory=list)
-    removed: list[Resource] = field(default_factory=list)
-    changed: list[Change] = field(default_factory=list)
-    unchanged: list[Resource] = field(default_factory=list)
-
-    @property
-    def total(self) -> int:
-        return len(self.added) + len(self.removed) + len(self.changed) + len(self.unchanged)
-
-    def as_summary(self) -> FieldSummary:
-        return FieldSummary(
-            group=self.group,
-            name=self.name,
-            added=len(self.added),
-            removed=len(self.removed),
-            changed=len(self.changed),
-            unchanged=len(self.unchanged),
-        )
-
-    def as_ids(self, limit: int = -1) -> FieldIds:
-        def get_identifier(item: Resource) -> str:
-            if hasattr(item, "external_id"):
-                return item.external_id
-            elif hasattr(item, "name"):
-                return item.name
-            raise NotImplementedError(f"Could not find external_id or name in {item}")
-
-        limit_ = limit if limit > 0 else None
-        return FieldIds(
-            group=self.group,
-            name=self.name,
-            added=[get_identifier(item) for item in islice(self.added, limit_)],
-            removed=[get_identifier(item) for item in islice(self.removed, limit_)],
-            changed=[get_identifier(item.last) for item in islice(self.changed, limit_)],
-            unchanged=[get_identifier(item) for item in islice(self.unchanged, limit_)],
-        )
-
-    def set_set_dataset(self, dataset: int) -> None:
-        for item in itertools.chain(self.added, self.removed, self.unchanged):
-            if hasattr(item, "data_set_id"):
-                item.data_set_id = dataset
-        for item in self.changed:
-            if hasattr(item.last, "data_set_id"):
-                item.last.data_set_id = dataset
-                item.new.data_set_id = dataset
 
 
 class Model(BaseModel, ABC):
@@ -270,7 +161,7 @@ class Model(BaseModel, ABC):
         """
         raise NotImplementedError()
 
-    def difference(self, new_model: T_Model) -> list[FieldDifference]:
+    def difference(self, new_model: T_Model) -> ModelDifference:
         if type(self) != type(new_model):
             raise ValueError(f"Cannot compare model of type {type(self)} with {type(new_model)}")
         # The dump and load calls are to remove all read only fields
@@ -301,7 +192,7 @@ class Model(BaseModel, ABC):
 
             diffs.append(diff)
 
-        return diffs
+        return ModelDifference(name=self.model_name, changes=diffs)
 
     @staticmethod
     def _find_diffs(
