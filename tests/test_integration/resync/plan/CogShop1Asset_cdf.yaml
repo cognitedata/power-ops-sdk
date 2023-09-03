@@ -5171,6 +5171,570 @@ edges:
   type:
     externalId: ModelTemplate.baseMappings
     space: cogShop
+- endNode:
+    externalId: Tr_Scenario_1681c884-60a0-4107-ae63-860932fb08c6_0_0
+    space: cogShop
+  externalId: Mapping_Scenario_1681c884-60a0-4107-ae63-860932fb08c6_0:Tr_Scenario_1681c884-60a0-4107-ae63-860932fb08c6_0_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_1681c884-60a0-4107-ae63-860932fb08c6_0
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_1681c884-60a0-4107-ae63-860932fb08c6_1_0
+    space: cogShop
+  externalId: Mapping_Scenario_1681c884-60a0-4107-ae63-860932fb08c6_1:Tr_Scenario_1681c884-60a0-4107-ae63-860932fb08c6_1_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_1681c884-60a0-4107-ae63-860932fb08c6_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_1681c884-60a0-4107-ae63-860932fb08c6_1_1
+    space: cogShop
+  externalId: Mapping_Scenario_1681c884-60a0-4107-ae63-860932fb08c6_1:Tr_Scenario_1681c884-60a0-4107-ae63-860932fb08c6_1_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_1681c884-60a0-4107-ae63-860932fb08c6_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_0_0
+    space: cogShop
+  externalId: Mapping_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_0:Tr_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_0_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_0
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_0_1
+    space: cogShop
+  externalId: Mapping_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_0:Tr_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_0_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_0
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_1_0
+    space: cogShop
+  externalId: Mapping_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_1:Tr_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_1_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_1_1
+    space: cogShop
+  externalId: Mapping_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_1:Tr_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_1_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_1_2
+    space: cogShop
+  externalId: Mapping_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_1:Tr_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_1_2
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_4aeff8e7-1977-4294-938b-d76256f372bf_1_0
+    space: cogShop
+  externalId: Mapping_Scenario_4aeff8e7-1977-4294-938b-d76256f372bf_1:Tr_Scenario_4aeff8e7-1977-4294-938b-d76256f372bf_1_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_4aeff8e7-1977-4294-938b-d76256f372bf_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_0_0
+    space: cogShop
+  externalId: Mapping_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_0:Tr_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_0_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_0
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_0_1
+    space: cogShop
+  externalId: Mapping_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_0:Tr_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_0_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_0
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_1_0
+    space: cogShop
+  externalId: Mapping_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_1:Tr_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_1_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_1_1
+    space: cogShop
+  externalId: Mapping_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_1:Tr_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_1_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_1_2
+    space: cogShop
+  externalId: Mapping_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_1:Tr_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_1_2
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_0_0
+    space: cogShop
+  externalId: Mapping_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_0:Tr_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_0_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_0
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_0_1
+    space: cogShop
+  externalId: Mapping_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_0:Tr_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_0_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_0
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_1_0
+    space: cogShop
+  externalId: Mapping_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_1:Tr_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_1_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_1_1
+    space: cogShop
+  externalId: Mapping_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_1:Tr_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_1_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_1_2
+    space: cogShop
+  externalId: Mapping_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_1:Tr_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_1_2
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_0_0
+    space: cogShop
+  externalId: Mapping_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_0:Tr_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_0_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_0
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_0_1
+    space: cogShop
+  externalId: Mapping_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_0:Tr_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_0_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_0
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_1_0
+    space: cogShop
+  externalId: Mapping_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_1:Tr_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_1_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_1_1
+    space: cogShop
+  externalId: Mapping_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_1:Tr_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_1_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_1_2
+    space: cogShop
+  externalId: Mapping_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_1:Tr_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_1_2
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_6fca0f9a-d28d-4e29-831d-f229227c7f02_1_0
+    space: cogShop
+  externalId: Mapping_Scenario_6fca0f9a-d28d-4e29-831d-f229227c7f02_1:Tr_Scenario_6fca0f9a-d28d-4e29-831d-f229227c7f02_1_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_6fca0f9a-d28d-4e29-831d-f229227c7f02_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_0_0
+    space: cogShop
+  externalId: Mapping_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_0:Tr_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_0_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_0
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_0_1
+    space: cogShop
+  externalId: Mapping_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_0:Tr_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_0_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_0
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_1_0
+    space: cogShop
+  externalId: Mapping_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_1:Tr_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_1_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_1_1
+    space: cogShop
+  externalId: Mapping_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_1:Tr_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_1_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_1_2
+    space: cogShop
+  externalId: Mapping_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_1:Tr_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_1_2
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_0_0
+    space: cogShop
+  externalId: Mapping_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_0:Tr_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_0_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_0
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_0_1
+    space: cogShop
+  externalId: Mapping_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_0:Tr_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_0_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_0
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_1_0
+    space: cogShop
+  externalId: Mapping_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_1:Tr_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_1_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_1_1
+    space: cogShop
+  externalId: Mapping_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_1:Tr_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_1_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_1_2
+    space: cogShop
+  externalId: Mapping_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_1:Tr_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_1_2
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_86088339-9d84-4a4f-b76c-92a322745469_0_0
+    space: cogShop
+  externalId: Mapping_Scenario_86088339-9d84-4a4f-b76c-92a322745469_0:Tr_Scenario_86088339-9d84-4a4f-b76c-92a322745469_0_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_86088339-9d84-4a4f-b76c-92a322745469_0
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_86088339-9d84-4a4f-b76c-92a322745469_1_0
+    space: cogShop
+  externalId: Mapping_Scenario_86088339-9d84-4a4f-b76c-92a322745469_1:Tr_Scenario_86088339-9d84-4a4f-b76c-92a322745469_1_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_86088339-9d84-4a4f-b76c-92a322745469_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_86088339-9d84-4a4f-b76c-92a322745469_1_1
+    space: cogShop
+  externalId: Mapping_Scenario_86088339-9d84-4a4f-b76c-92a322745469_1:Tr_Scenario_86088339-9d84-4a4f-b76c-92a322745469_1_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_86088339-9d84-4a4f-b76c-92a322745469_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_a816b553-b785-42ce-b101-506a8f34fbcf_0_0
+    space: cogShop
+  externalId: Mapping_Scenario_a816b553-b785-42ce-b101-506a8f34fbcf_0:Tr_Scenario_a816b553-b785-42ce-b101-506a8f34fbcf_0_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_a816b553-b785-42ce-b101-506a8f34fbcf_0
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_a816b553-b785-42ce-b101-506a8f34fbcf_1_0
+    space: cogShop
+  externalId: Mapping_Scenario_a816b553-b785-42ce-b101-506a8f34fbcf_1:Tr_Scenario_a816b553-b785-42ce-b101-506a8f34fbcf_1_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_a816b553-b785-42ce-b101-506a8f34fbcf_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_a816b553-b785-42ce-b101-506a8f34fbcf_1_1
+    space: cogShop
+  externalId: Mapping_Scenario_a816b553-b785-42ce-b101-506a8f34fbcf_1:Tr_Scenario_a816b553-b785-42ce-b101-506a8f34fbcf_1_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_a816b553-b785-42ce-b101-506a8f34fbcf_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_b007691a-fe64-4533-a7cd-b7b3a1cd0ada_0_0
+    space: cogShop
+  externalId: Mapping_Scenario_b007691a-fe64-4533-a7cd-b7b3a1cd0ada_0:Tr_Scenario_b007691a-fe64-4533-a7cd-b7b3a1cd0ada_0_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_b007691a-fe64-4533-a7cd-b7b3a1cd0ada_0
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_b007691a-fe64-4533-a7cd-b7b3a1cd0ada_1_0
+    space: cogShop
+  externalId: Mapping_Scenario_b007691a-fe64-4533-a7cd-b7b3a1cd0ada_1:Tr_Scenario_b007691a-fe64-4533-a7cd-b7b3a1cd0ada_1_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_b007691a-fe64-4533-a7cd-b7b3a1cd0ada_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_b007691a-fe64-4533-a7cd-b7b3a1cd0ada_1_1
+    space: cogShop
+  externalId: Mapping_Scenario_b007691a-fe64-4533-a7cd-b7b3a1cd0ada_1:Tr_Scenario_b007691a-fe64-4533-a7cd-b7b3a1cd0ada_1_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_b007691a-fe64-4533-a7cd-b7b3a1cd0ada_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_b2c24eed-11d9-4c62-9f9c-36bdf765b956_0_0
+    space: cogShop
+  externalId: Mapping_Scenario_b2c24eed-11d9-4c62-9f9c-36bdf765b956_0:Tr_Scenario_b2c24eed-11d9-4c62-9f9c-36bdf765b956_0_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_b2c24eed-11d9-4c62-9f9c-36bdf765b956_0
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_b2c24eed-11d9-4c62-9f9c-36bdf765b956_1_0
+    space: cogShop
+  externalId: Mapping_Scenario_b2c24eed-11d9-4c62-9f9c-36bdf765b956_1:Tr_Scenario_b2c24eed-11d9-4c62-9f9c-36bdf765b956_1_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_b2c24eed-11d9-4c62-9f9c-36bdf765b956_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_b2c24eed-11d9-4c62-9f9c-36bdf765b956_1_1
+    space: cogShop
+  externalId: Mapping_Scenario_b2c24eed-11d9-4c62-9f9c-36bdf765b956_1:Tr_Scenario_b2c24eed-11d9-4c62-9f9c-36bdf765b956_1_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_b2c24eed-11d9-4c62-9f9c-36bdf765b956_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
 files:
 - externalId: SHOP_Fornebu_cog_shop_files_config
   metadata:
@@ -8892,6 +9456,908 @@ nodes:
       type: case
     source:
       externalId: FileRef
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_1681c884-60a0-4107-ae63-860932fb08c6_0
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.sale_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_1681c884-60a0-4107-ae63-860932fb08c6_0_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 0.75, "1440": 1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_1681c884-60a0-4107-ae63-860932fb08c6_1
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.buy_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_1681c884-60a0-4107-ae63-860932fb08c6_1_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 0.75, "1440": 1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_1681c884-60a0-4107-ae63-860932fb08c6_1_1
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"value": 0.01}'
+      method: ADD
+      order: 1
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_0
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.sale_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_0_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 0, "720": 0, "1440": 0}'
+      method: ADD_FROM_OFFSET
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_0_1
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 1, "1440": 1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 1
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_1
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.buy_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_1_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 0, "720": 0, "1440": 0}'
+      method: ADD_FROM_OFFSET
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_1_1
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 1, "1440": 1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 1
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_1_2
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"value": 0.01}'
+      method: ADD
+      order: 2
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_4aeff8e7-1977-4294-938b-d76256f372bf_0
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.sale_price
+      retrieve: RANGE
+      timeseriesExternalId: '907678'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_4aeff8e7-1977-4294-938b-d76256f372bf_1
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.buy_price
+      retrieve: RANGE
+      timeseriesExternalId: '907678'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_4aeff8e7-1977-4294-938b-d76256f372bf_1_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"value": 0.01}'
+      method: ADD
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_0
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.sale_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_0_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 9, "720": 17, "1440": 0}'
+      method: ADD_FROM_OFFSET
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_0_1
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 1.35, "1440": 1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 1
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_1
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.buy_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_1_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 9, "720": 17, "1440": 0}'
+      method: ADD_FROM_OFFSET
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_1_1
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 1.35, "1440": 1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 1
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_1_2
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"value": 0.01}'
+      method: ADD
+      order: 2
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_0
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.sale_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_0_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 4, "720": 10, "1440": 0}'
+      method: ADD_FROM_OFFSET
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_0_1
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 1.15, "1440": 1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 1
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_1
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.buy_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_1_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 4, "720": 10, "1440": 0}'
+      method: ADD_FROM_OFFSET
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_1_1
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 1.15, "1440": 1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 1
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_1_2
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"value": 0.01}'
+      method: ADD
+      order: 2
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_0
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.sale_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_0_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 2, "720": 5, "1440": 0}'
+      method: ADD_FROM_OFFSET
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_0_1
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 1.05, "1440": 1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 1
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_1
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.buy_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_1_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 2, "720": 5, "1440": 0}'
+      method: ADD_FROM_OFFSET
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_1_1
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 1.05, "1440": 1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 1
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_1_2
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"value": 0.01}'
+      method: ADD
+      order: 2
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_6fca0f9a-d28d-4e29-831d-f229227c7f02_0
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.sale_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_6fca0f9a-d28d-4e29-831d-f229227c7f02_1
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.buy_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_6fca0f9a-d28d-4e29-831d-f229227c7f02_1_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"value": 0.01}'
+      method: ADD
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_0
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.sale_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_0_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 15, "720": 29, "1440": 0}'
+      method: ADD_FROM_OFFSET
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_0_1
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 1.45, "1440": 1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 1
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_1
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.buy_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_1_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 15, "720": 29, "1440": 0}'
+      method: ADD_FROM_OFFSET
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_1_1
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 1.45, "1440": 1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 1
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_1_2
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"value": 0.01}'
+      method: ADD
+      order: 2
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_0
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.sale_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_0_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 6, "720": 11, "1440": 0}'
+      method: ADD_FROM_OFFSET
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_0_1
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 1.25, "1440": 1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 1
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_1
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.buy_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_1_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 6, "720": 11, "1440": 0}'
+      method: ADD_FROM_OFFSET
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_1_1
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 1.25, "1440": 1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 1
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_1_2
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"value": 0.01}'
+      method: ADD
+      order: 2
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_86088339-9d84-4a4f-b76c-92a322745469_0
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.sale_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_86088339-9d84-4a4f-b76c-92a322745469_0_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 0.55, "1440": 1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_86088339-9d84-4a4f-b76c-92a322745469_1
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.buy_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_86088339-9d84-4a4f-b76c-92a322745469_1_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 0.55, "1440": 1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_86088339-9d84-4a4f-b76c-92a322745469_1_1
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"value": 0.01}'
+      method: ADD
+      order: 1
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_a816b553-b785-42ce-b101-506a8f34fbcf_0
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.sale_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_a816b553-b785-42ce-b101-506a8f34fbcf_0_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 0.95, "1440": 1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_a816b553-b785-42ce-b101-506a8f34fbcf_1
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.buy_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_a816b553-b785-42ce-b101-506a8f34fbcf_1_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 0.95, "1440": 1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_a816b553-b785-42ce-b101-506a8f34fbcf_1_1
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"value": 0.01}'
+      method: ADD
+      order: 1
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_b007691a-fe64-4533-a7cd-b7b3a1cd0ada_0
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.sale_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_b007691a-fe64-4533-a7cd-b7b3a1cd0ada_0_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 0.65, "1440": 1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_b007691a-fe64-4533-a7cd-b7b3a1cd0ada_1
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.buy_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_b007691a-fe64-4533-a7cd-b7b3a1cd0ada_1_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 0.65, "1440": 1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_b007691a-fe64-4533-a7cd-b7b3a1cd0ada_1_1
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"value": 0.01}'
+      method: ADD
+      order: 1
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_b2c24eed-11d9-4c62-9f9c-36bdf765b956_0
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.sale_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_b2c24eed-11d9-4c62-9f9c-36bdf765b956_0_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 0.85, "1440": 1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_b2c24eed-11d9-4c62-9f9c-36bdf765b956_1
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.buy_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_b2c24eed-11d9-4c62-9f9c-36bdf765b956_1_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 0.85, "1440": 1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_b2c24eed-11d9-4c62-9f9c-36bdf765b956_1_1
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"value": 0.01}'
+      method: ADD
+      order: 1
+    source:
+      externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
