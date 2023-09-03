@@ -35,13 +35,6 @@ class PipelineRun:
     Run status defaults to SEEN and FAILURE if an exception is raised. To set a custom
     status and message, use the `update_data` method.
 
-    Usage:
-    >>> ext_pipeline = ExtPipeline(client, "extpipe-external-id").get_or_create()
-    >>> with ext_pipeline.create_pipeline_run() as run:
-    ...     # do work and get status and results, e.g. from a main() function
-    ...     success, result = True, {"extracted": {"time_series": 42, "files": 7}, "errors": 0}
-    ...     status = RunStatus.SUCCESS if success else RunStatus.FAILURE
-    ...     run.update_data(status, result)
     """
 
     init_status: ClassVar[RunStatus] = RunStatus.SEEN
