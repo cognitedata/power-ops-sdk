@@ -13,7 +13,7 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## [0.43.2] - 2023-09-03
+## [0.43.3] - 2023-09-03
 ### Fixed
 * Third party logger not propagate when runnning CLI.
 
