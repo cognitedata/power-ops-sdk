@@ -17,11 +17,10 @@ from cognite.powerops.utils.cdf import Settings
 
 from cognite.powerops.utils.cdf.extraction_pipelines import ExtractionPipelineCreate, RunStatus
 
-logging.getLogger("requests").setLevel(logging.WARNING)
-logging.getLogger("urllib3").setLevel(logging.WARNING)
-logging.getLogger("msal").setLevel(logging.WARNING)
-logging.getLogger("cognite-sdk").setLevel(logging.WARNING)
-logging.getLogger("requests-oauthlib").setLevel(logging.WARNING)
+for third_party in ["cognite-sdk", "requests", "urllib3", "msal", "requests_oauthlib"]:
+    third_party_logger = logging.getLogger(third_party)
+    third_party_logger.setLevel(logging.WARNING)
+    third_party_logger.propagate = False
 
 FORMAT = "%(message)s"
 logging.basicConfig(level="NOTSET", format=FORMAT, datefmt="[%X]", handlers=[RichHandler()])
