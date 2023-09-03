@@ -13,7 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## [0.43.0] - 2023-09-01
+## [0.43.1] - 2023-09-03
+### Fixed
+* Key used for error logging when running the CLI command `powerops plan` with option `as_extraction_pipeline_run`.
+
+## [0.43.0] - 2023-09-03
 ### Added
 * The CLI command `powerops plan` with option `as_extraction_pipeline_run`.
 
