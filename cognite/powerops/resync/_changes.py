@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import itertools
 from dataclasses import dataclass, field, asdict
-from functools import lru_cache
 from itertools import islice
 from typing import Literal
 
@@ -134,7 +133,6 @@ class ModelDifference:
 class ModelDifferences:
     models: list[ModelDifference]
 
-    @lru_cache(maxsize=1)
     def has_changes(self, exclude: set | frozenset = frozenset({"timeseries"})) -> bool:
         return any(m.has_changes(exclude) for m in self.models)
 
@@ -181,11 +179,11 @@ class ModelDifferences:
             report.append(
                 f"""## {model.name}
 
-    {table.T.to_markdown()}
+{table.T.to_markdown()}
 
     **NOTE** Timeseries are not updated by `resync`
 
-    {samples}
+{samples}
     """
             )
         return "\n".join(report)

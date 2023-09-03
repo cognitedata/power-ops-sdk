@@ -213,6 +213,6 @@ class ExtractionPipelineCreate:
         Returns:
             Return a pipeline run that can be used as a context manager.
         """
-        data_set_id = self._data_set_id or client.data_sets.retrieve(external_id=self.dataset_external_id).id
+        self._data_set_id = self._data_set_id or client.data_sets.retrieve(external_id=self.dataset_external_id).id
 
-        return PipelineRun(client, self.external_id, self.config, data_set_id, error_logger or print)
+        return PipelineRun(client, self.external_id, self.config, self._data_set_id, error_logger or print)
