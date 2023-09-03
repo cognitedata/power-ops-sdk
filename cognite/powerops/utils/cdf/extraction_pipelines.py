@@ -100,7 +100,7 @@ class PipelineRun:
     def get_message(self, dump_truncated_to_file: bool = None) -> str:
         file_external_id = (
             f"{self.config.log_file_prefix}/{self.pipeline_external_id}/"
-            f"{datetime.now(timezone.utc).isoformat().replace(':', '_')}"
+            f"{datetime.now(timezone.utc).isoformat().replace(':', '')}"
         )
         data, file_content = self._create_run_data_and_file_content(file_external_id, dump_truncated_to_file)
         if dump_truncated_to_file and file_content:
