@@ -15,6 +15,10 @@ Changes are grouped as follows
 
 ## [0.43.2] - 2023-09-03
 ### Fixed
+* Third party logger not propagate when runnning CLI.
+
+## [0.43.2] - 2023-09-03
+### Fixed
 * Log level of `requests-oauthlib` set to `WARNING` when runnning CLI.
 
 ## [0.43.1] - 2023-09-03
