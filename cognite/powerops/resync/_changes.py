@@ -181,7 +181,7 @@ class ModelDifferences:
 
 {table.T.to_markdown()}
 
-    **NOTE** Timeseries are not updated by `resync`
+**NOTE** Timeseries are not updated by `resync`
 
 {samples}
     """
