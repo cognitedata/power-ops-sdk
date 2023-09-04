@@ -3,6 +3,7 @@ from itertools import chain
 import pytest
 from cognite.powerops.resync import models
 from cognite.powerops.resync.config.resync_config import ReSyncConfig
+from cognite.powerops.resync.models.cdf_resources import CDFSequence
 from tests.constants import ReSync
 from cognite.powerops.resync.to_models.to_production_model import to_production_model
 from cognite.powerops.resync.to_models.to_market_model import to_market_asset_model
@@ -98,3 +99,17 @@ def test_serialize_cogshop1_model_as_cdf(cogshop1_model: models.CogShop1Asset) -
             assert False, f"Comparison failed for field {field}"
 
     assert loaded.model_dump() == local_cogshop.model_dump()
+
+
+def test_sha256_hash_sequences_market_model(market_model: models.MarketModel, data_regression) -> None:
+    # Arrange
+    sequences = market_model.sequences()
+
+    # Act
+    sha256_by_external_id = {
+        sequence.external_id: CDFSequence.calculate_hash(sequence.content)
+        for sequence in sorted(sequences, key=lambda x: x.external_id)
+    }
+
+    # Assert
+    data_regression.check(sha256_by_external_id)

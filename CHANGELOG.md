@@ -13,6 +13,45 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.43.5] - 2023-09-04
+### Fixed
+* Deletion of assets raised a `ValueError`. This is now fixed.
+
+## [0.43.4] - 2023-09-04
+### Fixed
+* Missing comma in `json` dumped in `CogShop1Asset.transformations` `arguments` argument.
+
+## [0.43.3] - 2023-09-03
+### Fixed
+* Third party logger not propagate when runnning CLI.
+
+## [0.43.2] - 2023-09-03
+### Fixed
+* Log level of `requests-oauthlib` set to `WARNING` when runnning CLI.
+
+## [0.43.1] - 2023-09-03
+### Fixed
+* Key used for error logging when running the CLI command `powerops plan` with option `as_extraction_pipeline_run`.
+
+## [0.43.0] - 2023-09-03
+### Added
+* The CLI command `powerops plan` with option `as_extraction_pipeline_run`.
+
+## [0.42.3] - 2023-09-01
+### Fixed
+* The CLI commands `powerops plan` and `powerops apply` used a custom logger configuration instead of default.
+
+## [0.42.2] - 2023-09-01
+### Fixed
+* The CLI commands `powerops plan` and `powerops apply` failed with `ValueError` if there were new sequences added
+  and while there were still some unchanged. This is now fixed.
+
+## [0.42.1] - 2023-09-01
+### Fixed
+* The CLI commands `powerops plan` and `powerops apply` failed with `CogniteAPIError` if there were new
+  sequences added. This is now fixed.
+
+
 ## [0.42.0] - 2023-08-31
 ### Added
 * Moved `powerops plan` support Markdown output..

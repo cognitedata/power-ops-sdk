@@ -1,21 +1,17 @@
 import getpass
 import logging
 import os
-from pathlib import Path
 from typing import Any, Literal, Optional, Type
 
 import pydantic
 
-try:
-    import tomllib
-except ModuleNotFoundError:
-    import tomli as tomllib  # py < 3.11
 
 from pydantic import BaseModel, Field, field_validator
 from pydantic_settings import BaseSettings, PydanticBaseSettingsSource, SettingsConfigDict
 
 __all__ = ["Settings", "CogniteSettings", "PoweropsRunSettings"]
 
+from cognite.powerops.utils.io_file import read_toml_file
 
 logger = logging.getLogger(__name__)
 
@@ -51,6 +47,7 @@ class CogniteSettings(BaseModel):
 class PoweropsRunSettings(pydantic.BaseModel):
     read_dataset: Optional[str] = None
     write_dataset: Optional[str] = None
+    monitor_dataset: Optional[str] = None
     cogshop_version: Optional[str] = None
 
     @field_validator("cogshop_version", mode="before")
@@ -81,7 +78,7 @@ def _file_settings() -> dict[str, Any]:
     collected_data = {}
     for file_path in settings_files:
         try:
-            data = tomllib.loads(Path(file_path).read_text())
+            data = read_toml_file(file_path)
         except FileNotFoundError:
             pass
         else:

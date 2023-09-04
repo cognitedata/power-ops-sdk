@@ -5,15 +5,15 @@ from typing import Callable
 from cognite.client import CogniteClient
 
 from cognite.powerops.resync.models.base import Model, AssetModel  # type: ignore[attr-defined]
-from cognite.powerops.resync.models.base.model import FieldDifference
+from cognite.powerops.resync._changes import ModelDifference
 
 
 def _clean_relationships(
-    client: CogniteClient, differences: list[FieldDifference], new_model: Model, echo: Callable[[str], None]
+    client: CogniteClient, differences: ModelDifference, new_model: Model, echo: Callable[[str], None]
 ):
     if isinstance(new_model, AssetModel):
         not_create = _find_relationship_with_missing_time_series_target(client, new_model, echo)
-        relationship_diff = next((d for d in differences if d.name == "relationships"), None)
+        relationship_diff = next((d for d in differences.changes if d.name == "relationships"), None)
         if relationship_diff:
             relationship_diff.added = [r for r in relationship_diff.added if r.external_id not in not_create]
             relationship_diff.changed = [c for c in relationship_diff.changed if c.new.external_id not in not_create]

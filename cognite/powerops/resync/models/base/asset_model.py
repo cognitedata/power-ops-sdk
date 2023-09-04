@@ -115,7 +115,7 @@ class AssetModel(Model, ABC, validate_assignment=True):
             if relationship.target_type.casefold() == "sequence"
         ]
         if sequence_ids:
-            sequences = cdf.sequences.retrieve_multiple(external_ids=sequence_ids)
+            sequences = cdf.sequences.retrieve_multiple(external_ids=sequence_ids, ignore_unknown_ids=True)
             cdf_sequences = [CDFSequence(sequence=sequence) for sequence in sequences]
             cls._add_missing_hash(cdf, cdf_sequences)
         else:
@@ -127,7 +127,7 @@ class AssetModel(Model, ABC, validate_assignment=True):
             if relationship.target_type.casefold() == "file"
         ]
         if file_ids:
-            files = cdf.files.retrieve_multiple(external_ids=file_ids)
+            files = cdf.files.retrieve_multiple(external_ids=file_ids, ignore_unknown_ids=True)
             cdf_files = [CDFFile(meta=file) for file in files]
             cls._add_missing_hash(cdf, cdf_files)
         else:

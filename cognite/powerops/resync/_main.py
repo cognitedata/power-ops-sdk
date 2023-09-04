@@ -9,12 +9,11 @@ from cognite.client.data_classes.data_modeling.instances import InstanceCore
 from yaml import safe_dump
 
 from cognite.powerops.clients.powerops_client import get_powerops_client, PowerOpsClient
-from cognite.powerops.resync._logger import configure_debug_logging
 from cognite.powerops.resync._validation import _clean_relationships
 from cognite.powerops.resync.config.resync_config import ReSyncConfig
 from cognite.powerops.resync.models.base import Model  # type: ignore[attr-defined]
 from cognite.powerops.resync import models
-from cognite.powerops.resync.models.base.model import FieldDifference
+from cognite.powerops.resync._changes import FieldDifference, ModelDifferences
 from cognite.powerops.resync.to_models.transform import transform
 from cognite.powerops.resync.utils.cdf import get_cognite_api
 from cognite.powerops.resync.utils.common import all_concrete_subclasses
@@ -35,11 +34,9 @@ def plan(
     echo: Optional[Callable[[str], None]] = None,
     model_names: Optional[str | list[str]] = None,
     dump_folder: Optional[Path] = None,
-    echo_pretty: Optional[Callable[[Any], None]] = None,
     client: PowerOpsClient | None = None,
-) -> dict[str, list[FieldDifference]]:
+) -> ModelDifferences:
     echo = echo or print
-    echo_pretty: Callable[[Any], None] = echo_pretty or echo
     settings = Settings()
 
     client = client or get_powerops_client()
@@ -50,16 +47,13 @@ def plan(
     if settings.powerops.read_dataset is None:
         raise ValueError("No read_dataset configured in settings")
     data_set_external_id = settings.powerops.read_dataset
-    model_diff_by_name = {}
+    all_differences = []
     for new_model in loaded_models:
         echo(f"Retrieving {new_model.model_name} from CDF")
         cdf_model = type(new_model).from_cdf(client, data_set_external_id=data_set_external_id)
 
         differences = cdf_model.difference(new_model)
         _clean_relationships(client.cdf, differences, new_model, echo)
-        # echo(f"Summary diff for {new_model.model_name}")
-        # for diff in differences:
-        #     echo_pretty(diff.as_summary())
 
         if dump_folder:
             dump_folder.mkdir(parents=True, exist_ok=True)
@@ -70,11 +64,8 @@ def plan(
             (dump_folder / f"{new_model.model_name}_local.yaml").write_text(safe_dump(new_model.dump_as_cdf_resource()))
             (dump_folder / f"{new_model.model_name}_cdf.yaml").write_text(safe_dump(cdf_model.dump_as_cdf_resource()))
 
-        # echo(f"External ids diff for {new_model.model_name}")
-        # for diff in differences:
-        #     echo_pretty(diff.as_ids(limit=5))
-        model_diff_by_name[new_model.model_name] = differences
-    return model_diff_by_name
+        all_differences.append(differences)
+    return ModelDifferences(all_differences)
 
 
 def apply(
@@ -109,7 +100,7 @@ def apply(
         differences = cdf_model.difference(new_model)
         _clean_relationships(client.cdf, differences, new_model, echo)
 
-        for diff in sorted(differences, key=_edges_before_nodes):
+        for diff in sorted(differences.changes, key=_edges_before_nodes):
             if diff.group == "Domain":
                 continue
             if len(diff.unchanged) == diff.total:
@@ -134,7 +125,11 @@ def apply(
                 echo(f"Created {len(diff.added)} of {diff.name}")
             if diff.removed:
                 api.delete(
-                    [r.as_id() if isinstance(r, InstanceCore) else r.external_id for r in diff.removed if r.external_id]
+                    external_id=[
+                        r.as_id() if isinstance(r, InstanceCore) else r.external_id
+                        for r in diff.removed
+                        if r.external_id
+                    ]
                 )
                 echo(f"Deleted {len(diff.removed)} of {diff.name}")
             if diff.changed:
@@ -180,7 +175,6 @@ def _load_transform(
     echo(f"Loading and transforming {', '.join(model_names)}")
 
     config = ReSyncConfig.from_yamls(path, cdf_project)
-    configure_debug_logging(config.settings.debug_level)
 
     return transform(config, market, {MODEL_BY_NAME[model_name] for model_name in model_names})
 
