@@ -18,10 +18,18 @@ class ShopRunEvent:
     """
 
     event_type: ClassVar[str] = "POWEROPS_PROCESS_REQUESTED"
+    event_subtype: ClassVar[str] = "POWEROPS_SHOP_RUN"
     process_type: ClassVar[str] = "POWEROPS_SHOP_RUN"
+    # Add event timestamps
+    event_start_time: int
+    event_end_time: int
+
     watercourse: str
+    # metadata remains unchanged
     starttime: str
     endtime: str
+
+    source: str
     timeresolution: Optional[dict[str, int]] = None
     dynamic_minute_offset: Optional[int] = None
     dm_case: Optional[str] = None
@@ -35,6 +43,7 @@ class ShopRunEvent:
             self.endtime = str(self.endtime)
         if self.timeresolution:
             self.timeresolution = {str(k): v for k, v in self.timeresolution.items()}
+        self.source = "manual" if self.manual_run else "workflow"
 
     @cached_property
     def external_id(self) -> str:
@@ -64,7 +73,11 @@ class ShopRunEvent:
             "external_id": self.external_id,
             "data_set_id": dataset_id,
             "type": self.event_type,
+            "subtype": self.event_subtype,
+            "event_start_time": self.event_start_time,
+            "event_end_time": self.event_end_time,
             "metadata": self.metadata,
+            "source": self.source or ("manual" if self.manual_run else "workflow"),
         }
 
     def to_event(self: ShopRunEvent, dataset_id: int) -> Event:
@@ -73,6 +86,8 @@ class ShopRunEvent:
     @classmethod
     def from_event(cls, event: Event) -> ShopRunEvent:
         instance = ShopRunEvent(
+            event_start_time=event.start_time,
+            event_end_time=event.end_time,
             watercourse=event.metadata["shop:watercourse"],
             starttime=event.metadata["shop:starttime"],
             endtime=event.metadata["shop:endtime"],

@@ -3,26 +3,31 @@ from pprint import pprint
 
 import yaml
 
-from cognite.powerops import PowerOpsClient
+from cognite.powerops.clients.powerops_client import PowerOpsClient, get_powerops_client
+
 from cognite.powerops.resync._logger import configure_debug_logging
 
-configure_debug_logging("DEBUG")
 
-p = PowerOpsClient.from_settings()
+def main():
+    # todo: move examples to docs/notebooks/
+    configure_debug_logging("DEBUG")
 
-run = p.shop.runs.retrieve(external_id="POWEROPS_SHOP_RUN_ede8c4c0-18b1-41b1-ae40-ea20e037645c")
+    p: PowerOpsClient = get_powerops_client()
 
-print(run.in_progress)
-print(run.status)
+    run = p.shop.runs.retrieve(external_id="POWEROPS_SHOP_RUN_1662548743204")
 
-res = run.get_results()
+    print(run.in_progress)
+    print(run.status)
 
-tmp_dir = tempfile.mkdtemp(prefix="power-ops-sdk-usage")
-print(res.post_run.save_to_disk(tmp_dir))
+    res = run.get_results()
 
-print(res.post_run.data["model"]["objective"]["average_objective"]["solver_status"])
-pprint(res.post_run.data["model"]["objective"]["average_objective"])
-print(yaml.dump(res.post_run.data["model"]["objective"]["average_objective"]))
-# res.plot(
-#     "model.creek_intake.Golebiowski_intake.net_head",
-# )
+    tmp_dir = tempfile.mkdtemp(prefix="power-ops-sdk-usage")
+    print(res.post_run.save_to_disk(tmp_dir))
+
+    print(res.post_run.data["model"]["objective"]["average_objective"]["solver_status"])
+    pprint(res.post_run.data["model"]["objective"]["average_objective"])
+    print(yaml.dump(res.post_run.data["model"]["objective"]["average_objective"]))
+
+
+if __name__ == "__main__":
+    main()
