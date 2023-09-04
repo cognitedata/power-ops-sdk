@@ -26,6 +26,16 @@ def main():
                     continue
                 print(f"Upgrading repo: {customer_repo.name} from {customer_sdk_version} to {sdk_version}")
 
+                default_branch = (
+                    subprocess.run(
+                        "git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@'".split(),
+                        capture_output=True,
+                    )
+                    .stdout.decode("utf-8")
+                    .strip()
+                )
+                subprocess.run(["git", "checkout", default_branch])
+                subprocess.run(["git", "pull"])
                 subprocess.run(["git", "checkout", "-b", f"upgrade-sdk-{sdk_version}"])
                 customer_project_config["tool"]["poetry"]["dependencies"]["cognite-power-ops"] = sdk_version
                 write_toml_file(customer_pyproject_toml, customer_project_config)
@@ -33,6 +43,7 @@ def main():
                 subprocess.run(["poetry", "update"])
                 subprocess.run(["git", "commit", "-m", f"Upgrade SDK to {sdk_version}", "-a"])
                 subprocess.run(["git", "push", "-u", "origin", f"upgrade-sdk-{sdk_version}"])
+                subprocess.run(["git", "checkout", default_branch])
 
 
 if __name__ == "__main__":
