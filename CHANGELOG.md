@@ -19,7 +19,7 @@ Changes are grouped as follows
 
 ## [0.43.3] - 2023-09-03
 ### Fixed
-* Third party logger not propagate when runnning CLI.**
+* Third party logger not propagate when runnning CLI.
 
 ## [0.43.2] - 2023-09-03
 ### Fixed
