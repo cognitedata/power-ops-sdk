@@ -205,7 +205,7 @@ def to_cogshop_asset_model(
                     transformations=[
                         cogshop_v1.TransformationApply(
                             external_id=f"Tr_{transformation.transformation.name}_"
-                            f"{(dumped_kwargs := json.dumps(transformation.kwargs or {}, separators=('', ':')))}"
+                            f"{(dumped_kwargs := json.dumps(transformation.kwargs or {}, separators=(',', ':')))}"
                             f"_{order}",
                             method=transformation.transformation.name,
                             arguments=dumped_kwargs,
