@@ -71,7 +71,7 @@ class ShopRunResultsAPI:
 
             try:
                 penalty_breakdown = json.loads(seq.metadata.get("shop:penalty_breakdown", "{}"))
-                if type(penalty_breakdown) != dict:
+                if not isinstance(penalty_breakdown, dict):
                     penalty_breakdown = {}
             except JSONDecodeError:
                 penalty_breakdown = {}
