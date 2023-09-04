@@ -13,9 +13,13 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## [0.43.3] - 2023-09-03
+## [0.43.4] - 2023-09-04
 ### Fixed
-* Third party logger not propagate when runnning CLI.
+* Missing comma in `json` dumped in `CogShop1Asset.transformations` `arguments` argument.
+
+**## [0.43.3] - 2023-09-03
+### Fixed
+* Third party logger not propagate when runnning CLI.**
 
 ## [0.43.2] - 2023-09-03
 ### Fixed
