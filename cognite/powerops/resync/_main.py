@@ -125,7 +125,11 @@ def apply(
                 echo(f"Created {len(diff.added)} of {diff.name}")
             if diff.removed:
                 api.delete(
-                    [r.as_id() if isinstance(r, InstanceCore) else r.external_id for r in diff.removed if r.external_id]
+                    external_id=[
+                        r.as_id() if isinstance(r, InstanceCore) else r.external_id
+                        for r in diff.removed
+                        if r.external_id
+                    ]
                 )
                 echo(f"Deleted {len(diff.removed)} of {diff.name}")
             if diff.changed:
