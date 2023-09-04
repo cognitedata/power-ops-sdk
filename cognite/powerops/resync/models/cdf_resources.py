@@ -70,12 +70,13 @@ class CDFSequence(CDFResource):
         return sha256(pd.util.hash_pandas_object(content, index=True).values, usedforsecurity=False).hexdigest()
 
     def _dump(self, camel_case: bool = False) -> dict[str, Any]:
-        if self.content is None and (self.sequence.metadata or {}).get(self.content_key_hash) is None:
-            sha256_hash = "Missing Content"
-        elif self.content is not None:
+        if self.content is not None:
             sha256_hash = self.calculate_hash(self.content)
-        else:
+        elif self.sequence.metadata and self.sequence.metadata.get(self.content_key_hash) is not None:
             sha256_hash = self.sequence.metadata[self.content_key_hash]
+        else:
+            sha256_hash = "Missing Content"
+
         if self.sequence.metadata:
             self.sequence.metadata[self.content_key_hash] = sha256_hash
         else:
