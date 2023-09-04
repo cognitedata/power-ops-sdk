@@ -21,19 +21,21 @@ def main():
                 customer_pyproject_toml = customer_repo / "pyproject.toml"
                 customer_project_config = read_toml_file(customer_pyproject_toml)
                 customer_sdk_version = customer_project_config["tool"]["poetry"]["dependencies"]["cognite-power-ops"]
+
                 if customer_sdk_version.endswith(sdk_version):
                     print(f"Repo {customer_repo.name} has version {customer_sdk_version} == {sdk_version}. Skipping.")
                     continue
                 print(f"Upgrading repo: {customer_repo.name} from {customer_sdk_version} to {sdk_version}")
 
-                default_branch = (
+                default_branch_origin = (
                     subprocess.run(
-                        "git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@'".split(),
+                        ["git", "symbolic-ref", "refs/remotes/origin/HEAD"],
                         capture_output=True,
                     )
                     .stdout.decode("utf-8")
                     .strip()
                 )
+                default_branch = default_branch_origin.split("/")[-1]
                 subprocess.run(["git", "checkout", default_branch])
                 subprocess.run(["git", "pull"])
                 subprocess.run(["git", "checkout", "-b", f"upgrade-sdk-{sdk_version}"])
