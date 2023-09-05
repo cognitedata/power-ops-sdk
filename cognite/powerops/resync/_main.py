@@ -100,7 +100,8 @@ def apply(
         differences = cdf_model.difference(new_model)
         _clean_relationships(client.cdf, differences, new_model, echo)
 
-        for diff in sorted(differences.changes, key=_edges_before_nodes):
+        changed = []
+        for diff in differences.changes:
             if diff.group == "Domain":
                 continue
             if len(diff.unchanged) == diff.total:
@@ -109,29 +110,54 @@ def apply(
             elif diff.name == "timeseries":
                 echo("Found timeseries changes, skipping. These are not updated by resync")
                 continue
-            echo(f"Changes detected for {diff.name} in {new_model.model_name}")
-            echo_pretty(diff.as_summary())
-            if diff.changed:
-                echo(f"Sample change for {diff.changed[0].changed_fields}")
+            changed.append(diff)
+
+        for diff in sorted(changed, key=_edges_before_nodes):
+            if not diff.removed:
+                continue
+            echo(f"Removals detected for {diff.name} in {new_model.model_name}")
+            echo(f"Remove count: {diff.as_summary().removed}")
+            diff_ids = diff.as_ids(5)
+            echo(f"Sample removed for {diff_ids.name}: {diff_ids.removed}")
             ans = "y" if auto_yes else input("Continue? (y/n)")
             if ans.lower() != "y":
                 echo("Aborting")
                 continue
+
+            api = get_cognite_api(client.cdf, diff.name, new_sequences_by_id, new_files_by_id)
+            api.delete(
+                external_id=[
+                    r.as_id() if isinstance(r, InstanceCore) else r.external_id for r in diff.removed if r.external_id
+                ]
+            )
+            echo(f"Deleted {len(diff.removed)} of {diff.name}")
+
+        for diff in sorted(changed, key=_nodes_before_edges):
+            if not diff.added or not diff.changed:
+                continue
+            echo(f"Changes/Additions detected for {diff.name} in {new_model.model_name}")
+            summary_count = diff.as_summary()
+            echo(f"Change count: {summary_count.changed}")
+            echo(f"Addition count: {summary_count.added}")
+            diff_ids = diff.as_ids(5)
+            if diff_ids.changed:
+                echo(f"Sample changed for {diff_ids.name}:")
+                for change in diff.changed[:3]:
+                    echo(change.changed_fields)
+            if diff_ids.added:
+                echo(f"Sample added for {diff_ids.name}: {diff_ids.added}")
+            ans = "y" if auto_yes else input("Continue? (y/n)")
+            if ans.lower() != "y":
+                echo("Aborting")
+                continue
+
             diff.set_set_dataset(write_dataset)
             api = get_cognite_api(client.cdf, diff.name, new_sequences_by_id, new_files_by_id)
 
             if diff.added:
                 api.create(diff.added)
                 echo(f"Created {len(diff.added)} of {diff.name}")
-            if diff.removed:
-                api.delete(
-                    external_id=[
-                        r.as_id() if isinstance(r, InstanceCore) else r.external_id
-                        for r in diff.removed
-                        if r.external_id
-                    ]
-                )
-                echo(f"Deleted {len(diff.removed)} of {diff.name}")
+
             if diff.changed:
                 updates = [c.new for c in diff.changed if not c.is_changed_content]
                 if updates:
@@ -152,6 +178,19 @@ def _edges_before_nodes(diff: FieldDifference) -> int:
     elif diff.group == "CDF" and diff.name == "edges":
         return 2
     elif diff.group == "Local" and diff.name == "nodes":
+        return 3
+    else:
+        return 4
+
+
+def _nodes_before_edges(diff: FieldDifference) -> int:
+    if diff.group == "Domain":
+        return 0
+    elif diff.group == "CDF" and diff.name not in {"edges", "nodes"}:
+        return 1
+    elif diff.group == "CDF" and diff.name == "nodes":
+        return 2
+    elif diff.group == "Local" and diff.name == "edges":
         return 3
     else:
         return 4

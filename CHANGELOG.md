@@ -13,6 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.44.1] - 2023-09-05
+### Fixed
+* `resync apply` fails with if there are changes in the `CogShop1Asset` models due to nodes and edges have to be
+  added with nodes first, while when removing edges must be first. This is now fixed.
+
 ## [0.44.0] - 2023-09-05
 ### Added
 * `resync` now generates Scenarios for `CogShop1Asset` models.
