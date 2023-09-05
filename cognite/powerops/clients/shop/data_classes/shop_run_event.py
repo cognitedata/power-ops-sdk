@@ -18,7 +18,6 @@ class ShopRunEvent:
     """
 
     event_type: ClassVar[str] = "POWEROPS_PROCESS_REQUESTED"
-    event_subtype: ClassVar[str] = "POWEROPS_SHOP_RUN"
     process_type: ClassVar[str] = "POWEROPS_SHOP_RUN"
     # Add event timestamps
     event_start_time: int
@@ -73,7 +72,7 @@ class ShopRunEvent:
             "external_id": self.external_id,
             "data_set_id": dataset_id,
             "type": self.event_type,
-            "subtype": self.event_subtype,
+            "subtype": self.process_type,
             "event_start_time": self.event_start_time,
             "event_end_time": self.event_end_time,
             "metadata": self.metadata,
