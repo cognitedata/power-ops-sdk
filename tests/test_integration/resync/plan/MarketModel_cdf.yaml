@@ -2072,7 +2072,7 @@ sequences:
   metadata:
     bid:reserve_volume: '0'
     bid:scenario_name: +20pct
-    sha256_hash: d0c62c76c2e23131d32f8f2e7545ab693769f540ece24612f10923a7bb1b7765
+    sha256_hash: 5fd4b4dc08d6009be93bc3ef3a89e48029b99b15831a52e6d6e971747d3d2fdf
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 0 MW
@@ -2098,7 +2098,7 @@ sequences:
   metadata:
     bid:reserve_volume: '100'
     bid:scenario_name: +20pct
-    sha256_hash: 1a2016eeb048d727823fc7b1891449e5a94e3a4258e7a54253f27b8e079fdcd2
+    sha256_hash: e8dd6e357d56101bb18e97b7bcc826481bca24b972720b345ba40187af273479
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 100 MW
@@ -2124,7 +2124,7 @@ sequences:
   metadata:
     bid:reserve_volume: '120'
     bid:scenario_name: +20pct
-    sha256_hash: 46d5a0f6b075fcc2914960927ad7afcc36804e1a6b2846d2243db9a042ae1607
+    sha256_hash: de97154904a23678968bfd5add43f68f66fe25321af78b5428d3470ffbb52caa
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 120 MW
@@ -2150,7 +2150,7 @@ sequences:
   metadata:
     bid:reserve_volume: '140'
     bid:scenario_name: +20pct
-    sha256_hash: a5dc2002eded0f11509a689b8c1b51fa801ffc58638d0b9d0d5947af5725724e
+    sha256_hash: 8949a22f69a9932c5c1246ac2a59940dcd1efe3b1b4fd67c43bbfec7970cf45b
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 140 MW
@@ -2176,7 +2176,7 @@ sequences:
   metadata:
     bid:reserve_volume: '160'
     bid:scenario_name: +20pct
-    sha256_hash: f520ffe26cac99ba6e570554c8e47a2a837870b831536026a8591058c1b3982b
+    sha256_hash: 139176e41084b6ee0a337f70879d4bb046981d8b449985db19a08ffb5ec5e9cb
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 160 MW
@@ -2202,7 +2202,7 @@ sequences:
   metadata:
     bid:reserve_volume: '180'
     bid:scenario_name: +20pct
-    sha256_hash: 7ad49c814ccb1b12c84a6f8c5d0a86b7ea67dccadee1b6c28e3b9adfdf16744b
+    sha256_hash: a4b912a46e96b88b96a467af29f1b9538a3f1522c9e09bf0ef408af1cbaf7fa7
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 180 MW
@@ -2228,7 +2228,7 @@ sequences:
   metadata:
     bid:reserve_volume: '200'
     bid:scenario_name: +20pct
-    sha256_hash: 5a4a04f41196a8215a91c5b4c356a8324df4a15f02381b31325ddab9a4c22ae5
+    sha256_hash: bd76ee097d96e632c72e0f2ed406cb2d488084804e53002e755e9a8f257c2b41
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 200 MW
@@ -2254,7 +2254,7 @@ sequences:
   metadata:
     bid:reserve_volume: '20'
     bid:scenario_name: +20pct
-    sha256_hash: 3952b00a9cb1804ce056de35826f8e08df00309b9c1c77c0f050897e9b231e2a
+    sha256_hash: de17f26ad4e3dc7f322435ece653727eb13c85e6106031c083f8d1fd9d4d125b
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 20 MW
@@ -2280,7 +2280,7 @@ sequences:
   metadata:
     bid:reserve_volume: '40'
     bid:scenario_name: +20pct
-    sha256_hash: f19efcc4c4ed2278a5718e4f449dc7cf08c895990229e6fc4585e69319d93025
+    sha256_hash: c662a82030ac38acc6a0bac5d5258c0744feb40e7115bd70859046811f716c97
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 40 MW
@@ -2306,7 +2306,7 @@ sequences:
   metadata:
     bid:reserve_volume: '60'
     bid:scenario_name: +20pct
-    sha256_hash: 55f117d8e1e1dedfb6ae6707789769517ef7808b061c966728ea93b494efe7f1
+    sha256_hash: 3afe24dafdf81b8f0cac0d168a0876404978a79d0f1f54504c28902fef4fa816
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 60 MW
@@ -2332,7 +2332,7 @@ sequences:
   metadata:
     bid:reserve_volume: '80'
     bid:scenario_name: +20pct
-    sha256_hash: a8d8d9f0fdd9bb366f18765ad63e7303456757735e757dcbd7de1c5f5593b4fa
+    sha256_hash: 3cb7b9c1a1aee6306155dc6c4586ac9dd4fbaf06d9240083267c10163529ad1e
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 80 MW
@@ -2358,7 +2358,7 @@ sequences:
   metadata:
     bid:reserve_volume: '0'
     bid:scenario_name: -20pct
-    sha256_hash: d0c62c76c2e23131d32f8f2e7545ab693769f540ece24612f10923a7bb1b7765
+    sha256_hash: 5fd4b4dc08d6009be93bc3ef3a89e48029b99b15831a52e6d6e971747d3d2fdf
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 0 MW
@@ -2384,7 +2384,7 @@ sequences:
   metadata:
     bid:reserve_volume: '100'
     bid:scenario_name: -20pct
-    sha256_hash: 1a2016eeb048d727823fc7b1891449e5a94e3a4258e7a54253f27b8e079fdcd2
+    sha256_hash: e8dd6e357d56101bb18e97b7bcc826481bca24b972720b345ba40187af273479
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 100 MW
@@ -2410,7 +2410,7 @@ sequences:
   metadata:
     bid:reserve_volume: '120'
     bid:scenario_name: -20pct
-    sha256_hash: 46d5a0f6b075fcc2914960927ad7afcc36804e1a6b2846d2243db9a042ae1607
+    sha256_hash: de97154904a23678968bfd5add43f68f66fe25321af78b5428d3470ffbb52caa
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 120 MW
@@ -2436,7 +2436,7 @@ sequences:
   metadata:
     bid:reserve_volume: '140'
     bid:scenario_name: -20pct
-    sha256_hash: a5dc2002eded0f11509a689b8c1b51fa801ffc58638d0b9d0d5947af5725724e
+    sha256_hash: 8949a22f69a9932c5c1246ac2a59940dcd1efe3b1b4fd67c43bbfec7970cf45b
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 140 MW
@@ -2462,7 +2462,7 @@ sequences:
   metadata:
     bid:reserve_volume: '160'
     bid:scenario_name: -20pct
-    sha256_hash: f520ffe26cac99ba6e570554c8e47a2a837870b831536026a8591058c1b3982b
+    sha256_hash: 139176e41084b6ee0a337f70879d4bb046981d8b449985db19a08ffb5ec5e9cb
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 160 MW
@@ -2488,7 +2488,7 @@ sequences:
   metadata:
     bid:reserve_volume: '180'
     bid:scenario_name: -20pct
-    sha256_hash: 7ad49c814ccb1b12c84a6f8c5d0a86b7ea67dccadee1b6c28e3b9adfdf16744b
+    sha256_hash: a4b912a46e96b88b96a467af29f1b9538a3f1522c9e09bf0ef408af1cbaf7fa7
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 180 MW
@@ -2514,7 +2514,7 @@ sequences:
   metadata:
     bid:reserve_volume: '200'
     bid:scenario_name: -20pct
-    sha256_hash: 5a4a04f41196a8215a91c5b4c356a8324df4a15f02381b31325ddab9a4c22ae5
+    sha256_hash: bd76ee097d96e632c72e0f2ed406cb2d488084804e53002e755e9a8f257c2b41
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 200 MW
@@ -2540,7 +2540,7 @@ sequences:
   metadata:
     bid:reserve_volume: '20'
     bid:scenario_name: -20pct
-    sha256_hash: 3952b00a9cb1804ce056de35826f8e08df00309b9c1c77c0f050897e9b231e2a
+    sha256_hash: de17f26ad4e3dc7f322435ece653727eb13c85e6106031c083f8d1fd9d4d125b
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 20 MW
@@ -2566,7 +2566,7 @@ sequences:
   metadata:
     bid:reserve_volume: '40'
     bid:scenario_name: -20pct
-    sha256_hash: f19efcc4c4ed2278a5718e4f449dc7cf08c895990229e6fc4585e69319d93025
+    sha256_hash: c662a82030ac38acc6a0bac5d5258c0744feb40e7115bd70859046811f716c97
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 40 MW
@@ -2592,7 +2592,7 @@ sequences:
   metadata:
     bid:reserve_volume: '60'
     bid:scenario_name: -20pct
-    sha256_hash: 55f117d8e1e1dedfb6ae6707789769517ef7808b061c966728ea93b494efe7f1
+    sha256_hash: 3afe24dafdf81b8f0cac0d168a0876404978a79d0f1f54504c28902fef4fa816
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 60 MW
@@ -2618,7 +2618,7 @@ sequences:
   metadata:
     bid:reserve_volume: '80'
     bid:scenario_name: -20pct
-    sha256_hash: a8d8d9f0fdd9bb366f18765ad63e7303456757735e757dcbd7de1c5f5593b4fa
+    sha256_hash: 3cb7b9c1a1aee6306155dc6c4586ac9dd4fbaf06d9240083267c10163529ad1e
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 80 MW
@@ -2644,7 +2644,7 @@ sequences:
   metadata:
     bid:reserve_volume: '0'
     bid:scenario_name: Cognite
-    sha256_hash: 4c243caf2f8b05d6746f14c227434d22c4886bcce7b3bc3e5dc1c40659787c38
+    sha256_hash: a600f920e52220cdfd891cd784004191b51b012cdd3fe189ec5d7936dbed1fe3
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 0 MW
@@ -2670,7 +2670,7 @@ sequences:
   metadata:
     bid:reserve_volume: '100'
     bid:scenario_name: Cognite
-    sha256_hash: fd639eb858c70b60b60de52b90508aabb7ce48f47aa3d196ab6114ba7e2f9f3e
+    sha256_hash: 5a54d6624bcb3902cc104bc13c2511ef50e3f72804c30646dbedaad169f1e01e
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 100 MW
@@ -2696,7 +2696,7 @@ sequences:
   metadata:
     bid:reserve_volume: '120'
     bid:scenario_name: Cognite
-    sha256_hash: 9f790caab4b0933f8580517eef3710420a054693bf0fc01834b00491990e6c08
+    sha256_hash: a1a21e27957ccffd733a0c8ea9a8381cbb7222cbb07afe759821ae1ee73e1d0e
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 120 MW
@@ -2722,7 +2722,7 @@ sequences:
   metadata:
     bid:reserve_volume: '140'
     bid:scenario_name: Cognite
-    sha256_hash: 6cec21ca008b3c57a04f110f4f05a9ad763e0db4f7c72b001408f0ee98f04304
+    sha256_hash: ec9e230e2ea2cd58b2e1c28b744fdc6d649edaa72631d430628ef661b29fb8a0
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 140 MW
@@ -2748,7 +2748,7 @@ sequences:
   metadata:
     bid:reserve_volume: '160'
     bid:scenario_name: Cognite
-    sha256_hash: 4ca4c05e8eebfbe1cdba230113b88f6bc709b926de3c691cf568cd83e6115f7f
+    sha256_hash: 53a90471371074f09b09120934adb201f86e0714e8be27207faeb1ca0982a9a1
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 160 MW
@@ -2774,7 +2774,7 @@ sequences:
   metadata:
     bid:reserve_volume: '180'
     bid:scenario_name: Cognite
-    sha256_hash: f558fe7b083836973d3a913628d60405967da958aba5a4a1e0ea664fe4a25e73
+    sha256_hash: bd13cb51bd08caa74b085d182367deb2f95fe6caf1d50c6dd8e6ddfe61f231aa
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 180 MW
@@ -2800,7 +2800,7 @@ sequences:
   metadata:
     bid:reserve_volume: '200'
     bid:scenario_name: Cognite
-    sha256_hash: 62b220a197dc72607ed12ffacdb135ba50e61921e88e54fe7cac4a2b5c85e53a
+    sha256_hash: f6d0b4481a853bf58b1dd41ed98dc5a4b2911f056e65c10ff0ddc31e3b7dc0bd
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 200 MW
@@ -2826,7 +2826,7 @@ sequences:
   metadata:
     bid:reserve_volume: '20'
     bid:scenario_name: Cognite
-    sha256_hash: 51c7ddd9496f2fa467fdd200118a9b7db555afadf4981d5ee504b19c10ffe8ee
+    sha256_hash: 6a7301d5687f7191ae250d75da4be184defd4d72149070786145dfbfbf5131c5
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 20 MW
@@ -2852,7 +2852,7 @@ sequences:
   metadata:
     bid:reserve_volume: '40'
     bid:scenario_name: Cognite
-    sha256_hash: fd8623b892845e25c3226ace0638e2b8a40691fb39f4470ff99d1701d42eae06
+    sha256_hash: e7c81845473ba63acf8123202363a0e26ba73e90ec1ad176c12da912baa2b342
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 40 MW
@@ -2878,7 +2878,7 @@ sequences:
   metadata:
     bid:reserve_volume: '60'
     bid:scenario_name: Cognite
-    sha256_hash: 19715ceefaaeacc3d33f158beaf0580ade7e933f0c26faa44478bc4f4ae29111
+    sha256_hash: 09f6df910a65498b06757012fef25627e676f26bd6942589e942033a880984f2
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 60 MW
@@ -2904,7 +2904,7 @@ sequences:
   metadata:
     bid:reserve_volume: '80'
     bid:scenario_name: Cognite
-    sha256_hash: b3cf04081275e24256956e7f758387fb7a5d0df3ac2e80d57b4aabc2038eb4db
+    sha256_hash: 90b13c1db95409601411f74ef8df6d0dfc2c3f8af418744da48111a42350b974
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 80 MW
@@ -2930,7 +2930,7 @@ sequences:
   metadata:
     bid:reserve_volume: '0'
     bid:scenario_name: +20pct
-    sha256_hash: c216e4ea4bcc025e5bbffd3f6660a846d2b9e7920c9a085c7b94c02e08bde873
+    sha256_hash: adfb43788167b4a2ebccb5d11a0a8533aeca914bde12d7f73b8c3c24c12758e3
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 0 MW
@@ -2956,7 +2956,7 @@ sequences:
   metadata:
     bid:reserve_volume: '100'
     bid:scenario_name: +20pct
-    sha256_hash: 268affd09918f20d7f363f71b1b7bf80d94ee9751b5b6debdd2822b60937137c
+    sha256_hash: 391c99e6780a3a8c0d4541f5c4c6f41ffe3f8bd0ea32259fb83167fa8dc877a0
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 100 MW
@@ -2982,7 +2982,7 @@ sequences:
   metadata:
     bid:reserve_volume: '120'
     bid:scenario_name: +20pct
-    sha256_hash: 113f08721bc63e0eb8db240d7234bbea5009076dda6e4eaaea79c8173d878e2f
+    sha256_hash: a97ee773f8ce256f693d773afb312db4118cc9cc4b8ba82acd64a1791e108653
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 120 MW
@@ -3008,7 +3008,7 @@ sequences:
   metadata:
     bid:reserve_volume: '140'
     bid:scenario_name: +20pct
-    sha256_hash: 19020afb3340b3085e1a044909b63934713f49d0ad96d86b9443b7fdeeab82ad
+    sha256_hash: 2a05b61db5f244cd64de732ec59589202fdfe59a95a7be4f229319ddf9b95381
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 140 MW
@@ -3034,7 +3034,7 @@ sequences:
   metadata:
     bid:reserve_volume: '160'
     bid:scenario_name: +20pct
-    sha256_hash: 2c955e2375fe4a2cd6231d39fc5197f6300966b7699650272f4007863228fc28
+    sha256_hash: 18eedb00fba440622fc2167cf8387c5b36186385312068aa60a3035b64843e39
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 160 MW
@@ -3060,7 +3060,7 @@ sequences:
   metadata:
     bid:reserve_volume: '180'
     bid:scenario_name: +20pct
-    sha256_hash: c091d7a27244ce827975a69e295ac18b6245516ce2c92d3c488baeaf1ae9d764
+    sha256_hash: 60bd7a7a51ed0ea1e359f5d79fe357c23498f43a173afcf416d53b67301d8e73
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 180 MW
@@ -3086,7 +3086,7 @@ sequences:
   metadata:
     bid:reserve_volume: '200'
     bid:scenario_name: +20pct
-    sha256_hash: 799edbaaea61cd35872adcacda3730446635ca9bab7871053bbf16e74bb699ef
+    sha256_hash: 4ae7322fd6730b0c1b18b3b6c02dbdc4e9d2e3862d88927aea758e78f4f0f0d8
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 200 MW
@@ -3112,7 +3112,7 @@ sequences:
   metadata:
     bid:reserve_volume: '20'
     bid:scenario_name: +20pct
-    sha256_hash: 02fd55ac7ab68da953488007d90276a90abdb90bfefffc4ca2faca5fde16474c
+    sha256_hash: a010439be7b5b133d1d9e62d6cc5aeba7937af96c90374e074771ac954b58bb0
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 20 MW
@@ -3138,7 +3138,7 @@ sequences:
   metadata:
     bid:reserve_volume: '40'
     bid:scenario_name: +20pct
-    sha256_hash: 8df3fa72f84db39b78e12725e7e08c8b377a814930dfacb53905a07f2e475066
+    sha256_hash: b80c837b20a50f5033b93faa4ba46e8e1af89d2ec47ad4c1b845a33588e16caf
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 40 MW
@@ -3164,7 +3164,7 @@ sequences:
   metadata:
     bid:reserve_volume: '60'
     bid:scenario_name: +20pct
-    sha256_hash: af2b3cf1976b3982276d0ce4099552c381c821096cb80ee3936341ff9c1c6700
+    sha256_hash: ce00de6c5609f3c7ddb64f98738d8949ea280506fb18ed10fdb942f9b9133a9f
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 60 MW
@@ -3190,7 +3190,7 @@ sequences:
   metadata:
     bid:reserve_volume: '80'
     bid:scenario_name: +20pct
-    sha256_hash: 790d78af27607e7ac1118b071af19fc8902e37e1d0d300f68ae6eaa29718fcf5
+    sha256_hash: ad4ac1203b7e143d1c5ea218955bc661b824e6f2a66d04ad91f7eb730af09735
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 80 MW
@@ -3216,7 +3216,7 @@ sequences:
   metadata:
     bid:reserve_volume: '0'
     bid:scenario_name: -20pct
-    sha256_hash: d884d9f3e11a7bbde2b620de6166b26eb9be73fbab0d21eb284058c0b330e2d3
+    sha256_hash: f0d19f3be734aff61badc132a06e06793d20f9f1243c4f4efc244621bdba6b69
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 0 MW
@@ -3242,7 +3242,7 @@ sequences:
   metadata:
     bid:reserve_volume: '100'
     bid:scenario_name: -20pct
-    sha256_hash: 79fb7cb8a9d4ee44b8b35b5dcbcaaf4d9895e45a6180d060a9c9fff9d50d50ea
+    sha256_hash: 9e971527a41d9bd1255f19e616cbc2e18ed1f6764cadfa3367e21f8ccf90ddc2
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 100 MW
@@ -3268,7 +3268,7 @@ sequences:
   metadata:
     bid:reserve_volume: '120'
     bid:scenario_name: -20pct
-    sha256_hash: d01535edee89e8384867fb65e908c545c0ba379dea3a02e659e0259eca73c937
+    sha256_hash: bb2b975170ba5454cbfc59654085ce4fdf0d9acc0513564aaf18e9c9ea093515
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 120 MW
@@ -3294,7 +3294,7 @@ sequences:
   metadata:
     bid:reserve_volume: '140'
     bid:scenario_name: -20pct
-    sha256_hash: 3c84d34a6e4025c63156bdb34cca0e4348f8dd7a29d1e7cff2ac98f4a8013e39
+    sha256_hash: 06ad3ca5968c8809ed3200db80d25d01266f297cc8a2e2729a11c80222ae6e2a
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 140 MW
@@ -3320,7 +3320,7 @@ sequences:
   metadata:
     bid:reserve_volume: '160'
     bid:scenario_name: -20pct
-    sha256_hash: b6dc0bfc0ab975ffdf482d5a2e402d1f10ecb292328769763d7a6d67b9e4f06a
+    sha256_hash: f07ecce33e0accc64f6abb02c28717b5d042f921c6c2df5024807be91faa8622
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 160 MW
@@ -3346,7 +3346,7 @@ sequences:
   metadata:
     bid:reserve_volume: '180'
     bid:scenario_name: -20pct
-    sha256_hash: 6595b85fbfef94cafefe8ada899b40c77ac2def156a52140fd059f8bbf48025e
+    sha256_hash: f691cd4a256786aabd962af8e66f31b2ad72a8a2ea9d3e71728dd300518dec8f
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 180 MW
@@ -3372,7 +3372,7 @@ sequences:
   metadata:
     bid:reserve_volume: '200'
     bid:scenario_name: -20pct
-    sha256_hash: 6282ef06a44d7422a6d8f3769566b4efef5f1d8122a81a21937917416235742c
+    sha256_hash: 8ac8ce6469eb85af0d864d7800d35283be3ad606b6151590e4501b66f197b7ad
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 200 MW
@@ -3398,7 +3398,7 @@ sequences:
   metadata:
     bid:reserve_volume: '20'
     bid:scenario_name: -20pct
-    sha256_hash: 21efd69b89a9a7294f271da5be1052ef8ad82f3d69ddb29541b8c6c3ff8e394e
+    sha256_hash: 7cd7ab73397c10b1565de8db6f707147f37ee2fb033c14edefe3ee2ab6c57cbb
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 20 MW
@@ -3424,7 +3424,7 @@ sequences:
   metadata:
     bid:reserve_volume: '40'
     bid:scenario_name: -20pct
-    sha256_hash: b7ebfbdc6822c4c373f30e08e17387c5ad684aa649d9f5ec2657e35eb5501a85
+    sha256_hash: 5205e7751de8f4cc7470cbcf16b611dedca907b920e3d2f2b94a19e13b5a5f99
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 40 MW
@@ -3450,7 +3450,7 @@ sequences:
   metadata:
     bid:reserve_volume: '60'
     bid:scenario_name: -20pct
-    sha256_hash: 22c743be3acb30897a2a8d42f9f1ad5d7164808ded0db7e99858f55902b1042d
+    sha256_hash: e5ac530547f0c1f851719d9a4faf7261a8b8bd7bd04ead4fbf83290a19cab256
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 60 MW
@@ -3476,7 +3476,7 @@ sequences:
   metadata:
     bid:reserve_volume: '80'
     bid:scenario_name: -20pct
-    sha256_hash: 705a6d6c0ba1af63e47b8fa7d6fdc59e5944c88e102b3e8c6d33acd5fa5c231d
+    sha256_hash: 5657086aea83bbed94607ef1dbf3312da4bc34b1f628ca19916065dee464df8b
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 80 MW
@@ -3502,7 +3502,7 @@ sequences:
   metadata:
     bid:reserve_volume: '0'
     bid:scenario_name: Cognite
-    sha256_hash: 42eb5a6dfa30c55def95bd700974fc62eb080f1ca5a3694ef94c5b7f5d2aca6d
+    sha256_hash: ac5279c007ffa25cf468827b810790bfec0f33e167d37f4e77a4b8f1eb1bcaab
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 0 MW
@@ -3528,7 +3528,7 @@ sequences:
   metadata:
     bid:reserve_volume: '100'
     bid:scenario_name: Cognite
-    sha256_hash: 0c17e027a774406ad2789de8aca234d510165733e4b8bfcef6799c6ad8147745
+    sha256_hash: c23f109f92e5c802614b2c767c0348f10603b2fd509cbd36bc04a3703df968f6
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 100 MW
@@ -3554,7 +3554,7 @@ sequences:
   metadata:
     bid:reserve_volume: '120'
     bid:scenario_name: Cognite
-    sha256_hash: 39ec7859ace5a7ad759d879ddbda977d77c784eeb988578857286eba49b40e18
+    sha256_hash: 05c36967e8efd2007d5ce4cce3e380805684c32ec469b81aa50e4533b8bad04a
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 120 MW
@@ -3580,7 +3580,7 @@ sequences:
   metadata:
     bid:reserve_volume: '140'
     bid:scenario_name: Cognite
-    sha256_hash: 3197739f9bf622037b7a7113962e8709c47a76f3d5a4bd3bf3c01de77a72ef41
+    sha256_hash: 78746d62df34597c2fbdf18dc201fdc699e08aae38d0c8be3d5f3d7e9f7b4e99
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 140 MW
@@ -3606,7 +3606,7 @@ sequences:
   metadata:
     bid:reserve_volume: '160'
     bid:scenario_name: Cognite
-    sha256_hash: 2bf97dc8a48591eae493ac58466bd529cccc496901b1418f4459ad55a360d9f9
+    sha256_hash: 04f80f3be05c861d83947d0facb8105c42b1a4b677e37ef8c72bddc10bb51431
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 160 MW
@@ -3632,7 +3632,7 @@ sequences:
   metadata:
     bid:reserve_volume: '180'
     bid:scenario_name: Cognite
-    sha256_hash: ce24d9f81a2d524c617a62fd5b70b1699f190f57a0c3dc694d11bc68c566c64f
+    sha256_hash: a28ad7c3efa3ee880c122e764323f8cb2b4da34a41d9b466f47a1efee51c56b9
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 180 MW
@@ -3658,7 +3658,7 @@ sequences:
   metadata:
     bid:reserve_volume: '200'
     bid:scenario_name: Cognite
-    sha256_hash: e75a167bef44a13db65fa1eaabfadbf8efff8c15b3f5d723bc2d1c597c2566a4
+    sha256_hash: af8e6e286c8c7599d63190adbec370436d72d6d1b7f3b0a33aa14e34a9fa60d7
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 200 MW
@@ -3684,7 +3684,7 @@ sequences:
   metadata:
     bid:reserve_volume: '20'
     bid:scenario_name: Cognite
-    sha256_hash: cc36820ca158ac01fe21746b03af6cf476955ea806b09815e2bfc32df302e9f1
+    sha256_hash: 83f1dfac5bdafcf329fdaf3365494397cd79909a984e5b259860fca3176e363f
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 20 MW
@@ -3710,7 +3710,7 @@ sequences:
   metadata:
     bid:reserve_volume: '40'
     bid:scenario_name: Cognite
-    sha256_hash: 412f2336742a465bc3a0496c0138e4b0fddd7a45553b1f063784c816800ae421
+    sha256_hash: aa5c987d92996dba62cf204f9f67cd9b06a0deb064eecf0058c3914aa2f4d3e5
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 40 MW
@@ -3736,7 +3736,7 @@ sequences:
   metadata:
     bid:reserve_volume: '60'
     bid:scenario_name: Cognite
-    sha256_hash: 5776f4d154504dddaab2a7a00efd5f083ef8de674cea7e7375712f738c087895
+    sha256_hash: 6230ad5215e77d47aafe7e2026f8b623e34ab5c9bba726ac11b564045fd5cc61
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 60 MW
@@ -3762,7 +3762,7 @@ sequences:
   metadata:
     bid:reserve_volume: '80'
     bid:scenario_name: Cognite
-    sha256_hash: 2562f6373ca76cd6518412f889ab9b0fab4587a06c7c37ab0cb045070f4be0ea
+    sha256_hash: 4ebe43184ddbfd443db6ee1739407584589323f14baf02a5ff7451d956df3996
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 80 MW
@@ -3788,7 +3788,7 @@ sequences:
   metadata:
     bid:reserve_volume: '0'
     bid:scenario_name: +20pct
-    sha256_hash: 22ed7c2ebe6c97b66c2fae73870b96ea191fca1b1fc7738cda969c02c9c27cb8
+    sha256_hash: 52f6e400487f771f32dac32bdec27fcbf1ab68e3c6ead4292a11ee8aa8376b45
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 0 MW
@@ -3814,7 +3814,7 @@ sequences:
   metadata:
     bid:reserve_volume: '100'
     bid:scenario_name: +20pct
-    sha256_hash: 205ff3f04a6a2efa13535be097b5483013e417e08a866419c536b6cd3859e9d7
+    sha256_hash: 5383acff1fb205c36bda4548076eed243b577747ff4b9fb959e83fbe998e5590
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 100 MW
@@ -3840,7 +3840,7 @@ sequences:
   metadata:
     bid:reserve_volume: '120'
     bid:scenario_name: +20pct
-    sha256_hash: 7948105f8d5ca459e970c24cdc63ac575e77cfe873ca810786c61d1118dddbe8
+    sha256_hash: df6169a3e4c7db7b70e4862638f1bf9f394b49750bc1c1000432caf3e2dd8ad1
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 120 MW
@@ -3866,7 +3866,7 @@ sequences:
   metadata:
     bid:reserve_volume: '140'
     bid:scenario_name: +20pct
-    sha256_hash: 3a74d0bddc7bdb53ed46de215a28c5632d2c4f7caecdf223989d49ce3c080e69
+    sha256_hash: 9a1ff5559af47fb21c379b3b021e7cbe87c978f22c4d73bb0ac3df7b53002e77
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 140 MW
@@ -3892,7 +3892,7 @@ sequences:
   metadata:
     bid:reserve_volume: '160'
     bid:scenario_name: +20pct
-    sha256_hash: 7c7a7edc36280c56f6f87241c4a503351158dc3286675954749dfa649181d1b4
+    sha256_hash: 2a19bff96509394bed1845584dd47d23e7e45943d7df4ea16aa95123c87ebfca
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 160 MW
@@ -3918,7 +3918,7 @@ sequences:
   metadata:
     bid:reserve_volume: '180'
     bid:scenario_name: +20pct
-    sha256_hash: 15788ba4c333b5935b7f1c641a2ae61d158baacf829ed9c29298d79aef29d3f0
+    sha256_hash: 5918fa81d874460f8fa00a355b307da8b803d22ad77141a959c525897192c886
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 180 MW
@@ -3944,7 +3944,7 @@ sequences:
   metadata:
     bid:reserve_volume: '200'
     bid:scenario_name: +20pct
-    sha256_hash: 35baa28584df95fa02dcc7eec5262175fbf33209bf44ef7902e11210b6954533
+    sha256_hash: 840d85da40b06e44916587ae2f316d6096b9472f896baff2b66d9250f6fb3bc1
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 200 MW
@@ -3970,7 +3970,7 @@ sequences:
   metadata:
     bid:reserve_volume: '20'
     bid:scenario_name: +20pct
-    sha256_hash: 6212ec7b962a36943eab74ebbc3d9de5bced968e117d8adce746153687bf7cd9
+    sha256_hash: 8584ec59b356e22b13f95d4db4498ca29b9b85d240d38f4ba0216441e80e8741
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 20 MW
@@ -3996,7 +3996,7 @@ sequences:
   metadata:
     bid:reserve_volume: '40'
     bid:scenario_name: +20pct
-    sha256_hash: b5030419e61a99638d1409bd63f7aec9b956c6c16b83aa441f9ba749f7f1ee2c
+    sha256_hash: 51640ab96c675cd278eb2f4ac83003f0aa229de3877bfd8fd8a8c107cdfef2cc
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 40 MW
@@ -4022,7 +4022,7 @@ sequences:
   metadata:
     bid:reserve_volume: '60'
     bid:scenario_name: +20pct
-    sha256_hash: 6638e0a9f3a7c379c4803520f8437579d9210d37e0164d80b404dc24e6a4d328
+    sha256_hash: b93af11e9cb5e6d91d03361bf529e823a3365e276fb75ec689f579e6be4a1b5d
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 60 MW
@@ -4048,7 +4048,7 @@ sequences:
   metadata:
     bid:reserve_volume: '80'
     bid:scenario_name: +20pct
-    sha256_hash: dda12b9cf1d066a025e17b0df7f36790c6ee9d269ed061c3f41cea138e12c34f
+    sha256_hash: 8cd8490732ebecc2a11bd3020e6803278356775415483b22bccb2933b1fbf6a8
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 80 MW
@@ -4074,7 +4074,7 @@ sequences:
   metadata:
     bid:reserve_volume: '0'
     bid:scenario_name: -20pct
-    sha256_hash: acc1cf6e3a2b0b5befcc2689118b16572462cc0264d34aa5708312c3e6d25345
+    sha256_hash: 8ab84305db078eeb257e8349192e0bd83de7005894b88e430dfaf496404dcca8
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 0 MW
@@ -4100,7 +4100,7 @@ sequences:
   metadata:
     bid:reserve_volume: '100'
     bid:scenario_name: -20pct
-    sha256_hash: a0bfe4db7e83477b8d40a0c36050246b826d597acec6b0e8261c9c0cd8ebbaa4
+    sha256_hash: 18643a429df4a642b47cf09af12a50f43d95a35bb43d4bae8df91652aaa88b33
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 100 MW
@@ -4126,7 +4126,7 @@ sequences:
   metadata:
     bid:reserve_volume: '120'
     bid:scenario_name: -20pct
-    sha256_hash: 327630dcb3e9e7a2054428920089ee538ff23f4c35fd3f0efa8df8d0f9349530
+    sha256_hash: 1a75fe06588b0faecbc0faa06efe9138739698430870a4f9c7838f823d06e41d
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 120 MW
@@ -4152,7 +4152,7 @@ sequences:
   metadata:
     bid:reserve_volume: '140'
     bid:scenario_name: -20pct
-    sha256_hash: 03c537e9a5a95d57e126b74eed331e4db3ab9a963521e962822fce633303959b
+    sha256_hash: 5f9d6fcb30640cd15b2304f718e008d2718f443e1ce93b7f4a0f849fdc60f30e
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 140 MW
@@ -4178,7 +4178,7 @@ sequences:
   metadata:
     bid:reserve_volume: '160'
     bid:scenario_name: -20pct
-    sha256_hash: 4194ef774750974a331cdf0b3bfedda9aa255796a6d325323d043fb6e85f9586
+    sha256_hash: 8dd387a8b7d51e797e6e82341552f2ec29e874f7d2b30d48e6f539adb594fb3e
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 160 MW
@@ -4204,7 +4204,7 @@ sequences:
   metadata:
     bid:reserve_volume: '180'
     bid:scenario_name: -20pct
-    sha256_hash: 8798d72bf5c2a2cc170031e830ef76ef9a89c3289c1aa4841d5daa99eb4b62da
+    sha256_hash: 4f533f6d77416b364e171a0f1ef56a6d0cec432c37077e98cd4f9b641693a047
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 180 MW
@@ -4230,7 +4230,7 @@ sequences:
   metadata:
     bid:reserve_volume: '200'
     bid:scenario_name: -20pct
-    sha256_hash: bad03170bae6382fb121d812492496b5ca3460ffbe2e5891d67972c3460c6384
+    sha256_hash: 19ce2b2b2734d21d5cace286dccf54d9e24186246087ec9b1748f58e192740f3
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 200 MW
@@ -4256,7 +4256,7 @@ sequences:
   metadata:
     bid:reserve_volume: '20'
     bid:scenario_name: -20pct
-    sha256_hash: 80826fb0eb6fbe5f31d33f20a8b036a60dd902c92bc5f5256866769e40906e78
+    sha256_hash: 1d4473906077493646b6752e20b3607041edc0bf066d177cf01bfde2142521c8
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 20 MW
@@ -4282,7 +4282,7 @@ sequences:
   metadata:
     bid:reserve_volume: '40'
     bid:scenario_name: -20pct
-    sha256_hash: ecfcc63f3e5dacbf672daf21804cc7db4f5a0b4e8546696de8a8ff6a2c3821f8
+    sha256_hash: 56edefd4466b6d37d5a1bfb9be46e35302f75e114713aa0f759defe56d1deaea
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 40 MW
@@ -4308,7 +4308,7 @@ sequences:
   metadata:
     bid:reserve_volume: '60'
     bid:scenario_name: -20pct
-    sha256_hash: 573fa8330946fced42af3490d7c4f8930273fd0f1d511219334727048dc4fb4a
+    sha256_hash: dbda8cb63524e18a669a0608b07d6eed31be10a9774b5963244bb8bf0b3fbf16
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 60 MW
@@ -4334,7 +4334,7 @@ sequences:
   metadata:
     bid:reserve_volume: '80'
     bid:scenario_name: -20pct
-    sha256_hash: 1766616a4e3dc33032fc9e3225bf9f460f89751420aa154b6d48b56922007f85
+    sha256_hash: e8273f451037c799b4c5dd7738bddde817336a1ffce458bce9dbef22069180fd
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 80 MW
@@ -4360,7 +4360,7 @@ sequences:
   metadata:
     bid:reserve_volume: '0'
     bid:scenario_name: Cognite
-    sha256_hash: 4c243caf2f8b05d6746f14c227434d22c4886bcce7b3bc3e5dc1c40659787c38
+    sha256_hash: a600f920e52220cdfd891cd784004191b51b012cdd3fe189ec5d7936dbed1fe3
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 0 MW
@@ -4386,7 +4386,7 @@ sequences:
   metadata:
     bid:reserve_volume: '100'
     bid:scenario_name: Cognite
-    sha256_hash: b2c96f7f2af07579f49ef6f45042e4f5967d796b534a62af6d79366a8735d9aa
+    sha256_hash: 79a1963f8b7c5778539d6ac9dfe9efacf63f0e84931102ac704675402312a7a5
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 100 MW
@@ -4412,7 +4412,7 @@ sequences:
   metadata:
     bid:reserve_volume: '120'
     bid:scenario_name: Cognite
-    sha256_hash: 3fed3fcebe0d1b89adc12fd1698af56373ff546011fe2b24630ec354bf47a26a
+    sha256_hash: 3a3b868d18e2a721ae616312bf2f013b76ad48d8df3aa49e6ebf883f4bf60fe5
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 120 MW
@@ -4438,7 +4438,7 @@ sequences:
   metadata:
     bid:reserve_volume: '140'
     bid:scenario_name: Cognite
-    sha256_hash: 728ea48944da398bf23559c17d91fe1a9e37b616fdf0d5fa0cdaf9ab0a7dee68
+    sha256_hash: 8a26ae680c8eeef2fcf9c12ad759bceed3c6f590772405efbf8a7f59d7d3fded
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 140 MW
@@ -4464,7 +4464,7 @@ sequences:
   metadata:
     bid:reserve_volume: '160'
     bid:scenario_name: Cognite
-    sha256_hash: 5ba1358c1eb5875865b094bf88dcb8d7036493c930909e1f62aa887b86010908
+    sha256_hash: c3329dcbe31f21e3e94c19581249cba81a96c77696ad38318fb24d2c232400a5
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 160 MW
@@ -4490,7 +4490,7 @@ sequences:
   metadata:
     bid:reserve_volume: '180'
     bid:scenario_name: Cognite
-    sha256_hash: eedcfa7fbb0281f4f4eca6d1aee05a442c9a5504a2b018fc13ccd21155152bd7
+    sha256_hash: 5602b26fced5a72b4f6bf2b76f01268d867fdbb727d29ed1131cf55cecaee78c
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 180 MW
@@ -4516,7 +4516,7 @@ sequences:
   metadata:
     bid:reserve_volume: '200'
     bid:scenario_name: Cognite
-    sha256_hash: e524dfd5f49236437250a70da1d64f7cd02a7272f1a381de73ffd944cb324cb1
+    sha256_hash: 2ad14f82e11f082494fc5f356b957c38a055b68a0d6e8d41f15e29c38a70932b
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 200 MW
@@ -4542,7 +4542,7 @@ sequences:
   metadata:
     bid:reserve_volume: '20'
     bid:scenario_name: Cognite
-    sha256_hash: fda04152141c235e9126898b2f51127d6508071a445d5d6ee1783aac5cb8b86b
+    sha256_hash: 05535328d827ffa1bbc8a19cba4beb66781f65a8f6b7a25351d2f76bda1df866
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 20 MW
@@ -4568,7 +4568,7 @@ sequences:
   metadata:
     bid:reserve_volume: '40'
     bid:scenario_name: Cognite
-    sha256_hash: 0b246376e9ab79366f88fb0d881ac8c67b4d090c6c3865e80e5626478e754542
+    sha256_hash: 748eb5d4c8e03402ddf8ca1777aaa3b041c01eba2f34171984e2b04188aa912c
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 40 MW
@@ -4594,7 +4594,7 @@ sequences:
   metadata:
     bid:reserve_volume: '60'
     bid:scenario_name: Cognite
-    sha256_hash: e7a9feeeb425a5c3c10451b22abc73cd4cf99c33552a08d11abf7eb211092211
+    sha256_hash: 4234b4acb0f4fc19d8c4886cd792b2069d98e232aaa7638b519e772d80d20e31
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 60 MW
@@ -4620,7 +4620,7 @@ sequences:
   metadata:
     bid:reserve_volume: '80'
     bid:scenario_name: Cognite
-    sha256_hash: e97017f404ced09e6aa0114ceb055dd30ff3b287d9ee2b4f500b8be157536527
+    sha256_hash: 7ef8e1268c394d1a6cee2cb1a1bc82ac79aa899f692a3a5b5e2a4d82338126dd
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 80 MW
@@ -4646,7 +4646,7 @@ sequences:
   metadata:
     bid:reserve_volume: '0'
     bid:scenario_name: +20pct
-    sha256_hash: c216e4ea4bcc025e5bbffd3f6660a846d2b9e7920c9a085c7b94c02e08bde873
+    sha256_hash: adfb43788167b4a2ebccb5d11a0a8533aeca914bde12d7f73b8c3c24c12758e3
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 0 MW
@@ -4672,7 +4672,7 @@ sequences:
   metadata:
     bid:reserve_volume: '100'
     bid:scenario_name: +20pct
-    sha256_hash: 0d9dd5f2a69f6fcf62a16c7d0c176bc7de472eb8680e638493882e646ecd9601
+    sha256_hash: 0dca87cf79004f01f8d8970a11c7899fc43308d21c5fa0dbbb74d99cd7be0672
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 100 MW
@@ -4698,7 +4698,7 @@ sequences:
   metadata:
     bid:reserve_volume: '120'
     bid:scenario_name: +20pct
-    sha256_hash: 6814fb9a08df44682c9cf8e5eb4f2723e0e19f8ca0f1c8f513b085cb0fe9ec15
+    sha256_hash: a2f10f893dd268934765328607b6de4eba0ab5528b7d2f2fac8e2d88672d9896
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 120 MW
@@ -4724,7 +4724,7 @@ sequences:
   metadata:
     bid:reserve_volume: '140'
     bid:scenario_name: +20pct
-    sha256_hash: afbd14dbaa8c1bff3c10de5b87e1e0efe91773c68955ff760e577fe52da30e0d
+    sha256_hash: 28d4c710997369a1c808a855ddb2bbff33a4fb9a1770b7681767e3c147f74d4c
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 140 MW
@@ -4750,7 +4750,7 @@ sequences:
   metadata:
     bid:reserve_volume: '160'
     bid:scenario_name: +20pct
-    sha256_hash: 20763b687f78efa22454190a371a87d7ef9c7bb51f970f5d4a80bdad1b215b2e
+    sha256_hash: 93c5d93cf20fd2e87dfcc48f125ac50d4a205eb815b80c3c16f67ba6856bcdcc
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 160 MW
@@ -4776,7 +4776,7 @@ sequences:
   metadata:
     bid:reserve_volume: '180'
     bid:scenario_name: +20pct
-    sha256_hash: 19fea06a4c5bb8bcbf9b01e99ae4b8b50de123dfeb63fb13cd13b837b6c05717
+    sha256_hash: 306608b67517ff4a9b2f7e8d307e968d0e012feb51e35a07f9573caf2d819b1a
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 180 MW
@@ -4802,7 +4802,7 @@ sequences:
   metadata:
     bid:reserve_volume: '200'
     bid:scenario_name: +20pct
-    sha256_hash: 67a8499ad71b809b4a3c0a0c1d6efe539e55662544347440dc038ed6e73bb04a
+    sha256_hash: ef84ac9c255b909b8af2b45fc0720fcdf523fe54293eb817bb16c808913629c6
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 200 MW
@@ -4828,7 +4828,7 @@ sequences:
   metadata:
     bid:reserve_volume: '20'
     bid:scenario_name: +20pct
-    sha256_hash: c6ac4336e7d378932fe310197307ec0fe0e9e5e795a644575361778af3a15409
+    sha256_hash: df4086b360f4560b159ca6a7e52b1819e3776b811caf00074ca4c0700dc9ceca
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 20 MW
@@ -4854,7 +4854,7 @@ sequences:
   metadata:
     bid:reserve_volume: '40'
     bid:scenario_name: +20pct
-    sha256_hash: ca8fe7aa813126b95b7e8b244dfb6e1c21c443b55779cdee5d2788f403f7079f
+    sha256_hash: 959c7364357ea978261c62e7f9fb36d8680153bc43507ccd50205a2cb80b28cd
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 40 MW
@@ -4880,7 +4880,7 @@ sequences:
   metadata:
     bid:reserve_volume: '60'
     bid:scenario_name: +20pct
-    sha256_hash: 2b90cbd3cd315d2ba4cd66d1d7678a4661b78a0f22ecb3fa8a84543a8c45b041
+    sha256_hash: 284be6747a0604dee52aa0cc5d41a8d8582ffd51ea346cc9bc7e475c1307cc0e
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 60 MW
@@ -4906,7 +4906,7 @@ sequences:
   metadata:
     bid:reserve_volume: '80'
     bid:scenario_name: +20pct
-    sha256_hash: 343224c8593cfccbf9048fff74f9e4c985b0fc453a18f50aa1fd10a2a2f29ff3
+    sha256_hash: 1bfce295161719fc4a4ae3ca9b41efd3aa838b9cebf88fd398c32704a9aa491c
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu +20pct 80 MW
@@ -4932,7 +4932,7 @@ sequences:
   metadata:
     bid:reserve_volume: '0'
     bid:scenario_name: -20pct
-    sha256_hash: d884d9f3e11a7bbde2b620de6166b26eb9be73fbab0d21eb284058c0b330e2d3
+    sha256_hash: f0d19f3be734aff61badc132a06e06793d20f9f1243c4f4efc244621bdba6b69
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 0 MW
@@ -4958,7 +4958,7 @@ sequences:
   metadata:
     bid:reserve_volume: '100'
     bid:scenario_name: -20pct
-    sha256_hash: 4091663fe7abe51283f08a56b00965a16a371ec71fb186466818707d768a56ee
+    sha256_hash: 4409ea86d86a0eac699688b5e2ed2763e9f8f60e366ba44affad4e39f46140b8
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 100 MW
@@ -4984,7 +4984,7 @@ sequences:
   metadata:
     bid:reserve_volume: '120'
     bid:scenario_name: -20pct
-    sha256_hash: d83eb981fb4032673d1875aa9073abfa4d830ab13bc3994f8f2370db64daf226
+    sha256_hash: 5c724a337b278fb916c4959ec8565c352f3db4f204c616cc38e72417fc8ce852
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 120 MW
@@ -5010,7 +5010,7 @@ sequences:
   metadata:
     bid:reserve_volume: '140'
     bid:scenario_name: -20pct
-    sha256_hash: 2019d3c824d8ab42face2e6db372443c8d77488e2aa3b2c988180fbc30b33240
+    sha256_hash: 754a8d9605bb1b1f89e19977cdddb8dd92cbb3a4c4c3952fc39614638039fcc8
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 140 MW
@@ -5036,7 +5036,7 @@ sequences:
   metadata:
     bid:reserve_volume: '160'
     bid:scenario_name: -20pct
-    sha256_hash: 9b7f4b7d146b6a457307b3b0a442287fb7c3d8925bc7f71caff70c3106c81f79
+    sha256_hash: 0df8d5a63937754c77b027fda2a1089ddd23f93399ee0430cf6e9cb6077e33a7
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 160 MW
@@ -5062,7 +5062,7 @@ sequences:
   metadata:
     bid:reserve_volume: '180'
     bid:scenario_name: -20pct
-    sha256_hash: cc8fc7e5ac308db731f29de2ea62282789f35a7508413a7c55c0d992097ca8b8
+    sha256_hash: d774ab60dacbaad6647d7bf0cf9929f64a1ce4a6fa5ba9f407aa34216ee22a75
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 180 MW
@@ -5088,7 +5088,7 @@ sequences:
   metadata:
     bid:reserve_volume: '200'
     bid:scenario_name: -20pct
-    sha256_hash: 46dbc1dc07ed4c00ee967cfeb1b071254a5093e372c6af6721e5d19c21e50d88
+    sha256_hash: a2fe6319b34e634124fefe8ce960bf69745da3b4537318d3bb700a94b32d1550
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 200 MW
@@ -5114,7 +5114,7 @@ sequences:
   metadata:
     bid:reserve_volume: '20'
     bid:scenario_name: -20pct
-    sha256_hash: faacb9083bc8bc014dc1cdb8c4d83ca84cb21a75ad1c76fb54b1aeb053a8c5ef
+    sha256_hash: 778e5112216379d3defae50ff3c2a88b62c825682f42def06b6c071aa8419fc7
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 20 MW
@@ -5140,7 +5140,7 @@ sequences:
   metadata:
     bid:reserve_volume: '40'
     bid:scenario_name: -20pct
-    sha256_hash: 23a0ddd9b28d5e0c3420a1b47d0dff68404fe78a378b7c06e620bded5e203ef4
+    sha256_hash: b1065902a553ec7b06ba34105541a1824c8d7aeb9992297859bad8d3cabc0764
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 40 MW
@@ -5166,7 +5166,7 @@ sequences:
   metadata:
     bid:reserve_volume: '60'
     bid:scenario_name: -20pct
-    sha256_hash: 58035a9ca5b123bf30557261f11427b6c1bacf0c5ece8c88ea21d213d339faf2
+    sha256_hash: 5fc492f84aba9731bc19622aea9eb30d2aa978bbd1515137661b7c2eb5d2238b
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 60 MW
@@ -5192,7 +5192,7 @@ sequences:
   metadata:
     bid:reserve_volume: '80'
     bid:scenario_name: -20pct
-    sha256_hash: 7fa729a9ff543228802c491f4e22745fdfba3d562219653e301dbad8ce0b7118
+    sha256_hash: ef55d02eca211c187c3a6fd577677da2b8d88ca56aef47db7b769b2f7153eefd
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu -20pct 80 MW
@@ -5218,7 +5218,7 @@ sequences:
   metadata:
     bid:reserve_volume: '0'
     bid:scenario_name: Cognite
-    sha256_hash: 42eb5a6dfa30c55def95bd700974fc62eb080f1ca5a3694ef94c5b7f5d2aca6d
+    sha256_hash: ac5279c007ffa25cf468827b810790bfec0f33e167d37f4e77a4b8f1eb1bcaab
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 0 MW
@@ -5244,7 +5244,7 @@ sequences:
   metadata:
     bid:reserve_volume: '100'
     bid:scenario_name: Cognite
-    sha256_hash: 147a12b56fb5a17dd2284d4cf2dce7a423982c0e8fd54e73eb300885385cad2f
+    sha256_hash: f206c8b5f204a311098262899a85906968888e20d5bc338ff9463fa4ca084f12
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 100 MW
@@ -5270,7 +5270,7 @@ sequences:
   metadata:
     bid:reserve_volume: '120'
     bid:scenario_name: Cognite
-    sha256_hash: 2779bd5b1f358a3538b17f270c5935c422f76e5f5b2466af36b0cd80e662a6a6
+    sha256_hash: dfb2c20e921f1f945c7557d46ef6f10b5cafff70bcb4cecaf3a15bc903735d98
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 120 MW
@@ -5296,7 +5296,7 @@ sequences:
   metadata:
     bid:reserve_volume: '140'
     bid:scenario_name: Cognite
-    sha256_hash: 98c2f9d2250a4a051d5552949a6923d4783a73d81c24d8160525be897a5a1857
+    sha256_hash: 9314aff9fcfb5b2f906549a8f89d9800bd8207fdb5d9d5cedb237b99a4ce3fb6
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 140 MW
@@ -5322,7 +5322,7 @@ sequences:
   metadata:
     bid:reserve_volume: '160'
     bid:scenario_name: Cognite
-    sha256_hash: 4d32fac0ea8b1e69fb3d0f11c9683aeaae3d5634c82cb22d4c4ed79ec5fdbb9f
+    sha256_hash: 848e0786d4a18fcb2b45c6c7f4e7dffd13edc8d2f7ad30e2f44cb363fab10a83
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 160 MW
@@ -5348,7 +5348,7 @@ sequences:
   metadata:
     bid:reserve_volume: '180'
     bid:scenario_name: Cognite
-    sha256_hash: c338e5cb5d8c75dc9aa96a96538ef52da6a5c16d8b7c972b6d8347c9100f0f1c
+    sha256_hash: f6d42f8fac3e4789bdbf24fa75a018fbef7bf8289201d33a8e5d18c28d5231f6
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 180 MW
@@ -5374,7 +5374,7 @@ sequences:
   metadata:
     bid:reserve_volume: '200'
     bid:scenario_name: Cognite
-    sha256_hash: e8345d349378a6b88fb7b9700712766576ee97124485b5cb94ad9503d3a15442
+    sha256_hash: b3a8b32c4178fa0daf9db28896a779e4e9fba4da4031e4cc7f71a278e9c0efe6
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 200 MW
@@ -5400,7 +5400,7 @@ sequences:
   metadata:
     bid:reserve_volume: '20'
     bid:scenario_name: Cognite
-    sha256_hash: 83256805fbb18078b7a05d2b9dbf19d8910deec779cb0f82e9d2680688ed022a
+    sha256_hash: eb73d4fdf9b0c9217c99fd8d005120221f06c1f5d552fad10bbcb66a1c7aeef7
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 20 MW
@@ -5426,7 +5426,7 @@ sequences:
   metadata:
     bid:reserve_volume: '40'
     bid:scenario_name: Cognite
-    sha256_hash: 6a494fead331668c3283245e4349c916ed2e4eeb37dfac00514bc19913aaec6a
+    sha256_hash: a0a5913072d43c423b23ed4f8cd8e3b500a1c51886fc303a416719800774e51e
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 40 MW
@@ -5452,7 +5452,7 @@ sequences:
   metadata:
     bid:reserve_volume: '60'
     bid:scenario_name: Cognite
-    sha256_hash: f5aa1af88ef823d93687bde70aa530b32d0baf22b2c8a23465977784350f3507
+    sha256_hash: fb29db86126ffb1d96f80c56b8334500fe1c3bcb9d10495ead9e77f7def071d3
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 60 MW
@@ -5478,7 +5478,7 @@ sequences:
   metadata:
     bid:reserve_volume: '80'
     bid:scenario_name: Cognite
-    sha256_hash: 084dbdb93201160881c0224bb2f173bb7670783956495f304bee8ca85eb27e3e
+    sha256_hash: 5006296535dab44ef56e250e715e10467f8b0f5e98cc4512662d83a95a58ba90
     shop:type: rkom_incremental_mapping
     shop:watercourse: Fornebu
   name: Fornebu Cognite 80 MW
