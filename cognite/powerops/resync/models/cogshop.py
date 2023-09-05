@@ -52,6 +52,7 @@ class CogShop1Asset(CogShopCore, DataModel, protected_namespaces=()):
     transformations: dict[ExternalID, cogshop_v1.TransformationApply] = Field(default_factory=dict)
     base_mappings: list[CDFSequence] = Field(default_factory=list)
     output_definitions: list[CDFSequence] = Field(default_factory=list)
+    scenarios: dict[ExternalID, cogshop_v1.ScenarioApply] = Field(default_factory=dict)
 
     @field_validator("base_mappings", mode="after")
     def ordering_sequences(cls, value: list[CDFSequence]) -> list[CDFSequence]:
@@ -68,6 +69,7 @@ class CogShop1Asset(CogShopCore, DataModel, protected_namespaces=()):
         base_mappings = cog_shop.mappings.list(limit=-1)
         transformations = cog_shop.transformations.list(limit=-1)
         files = cog_shop.file_refs.list(limit=-1)
+        scenarios = cog_shop.scenarios.list(limit=-1)
 
         transformation_by_id: dict[str, cogshop_v1.TransformationApply] = {t.external_id: t for t in transformations}
         mappings_by_id = {}
@@ -95,6 +97,13 @@ class CogShop1Asset(CogShopCore, DataModel, protected_namespaces=()):
             data["base_mappings"] = [mappings_by_id[m] for m in data["base_mappings"]]
             apply = cogshop_v1.ModelTemplateApply(**data)
             model_templates[apply.external_id] = apply
+
+        scenarios_by_id = {}
+        for scenario in scenarios:
+            data = scenario.model_dump(exclude=readme_fields)
+            data["mappings_override"] = [mappings_by_id[m] for m in data["mappings_override"]]
+            apply = cogshop_v1.ScenarioApply(**data)
+            scenarios_by_id[apply.external_id] = apply
 
         # There files and sequences are not linked to the model templates
         # (this should be done in the next version of Cogshop).
@@ -133,6 +142,7 @@ class CogShop1Asset(CogShopCore, DataModel, protected_namespaces=()):
             base_mappings=base_mappings,
             output_definitions=output_definitions,
             shop_files=shop_files,
+            scenarios=scenarios_by_id,
         )
 
     def standardize(self) -> None:

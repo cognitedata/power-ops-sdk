@@ -3,7 +3,6 @@ from __future__ import annotations
 import json
 import logging
 from datetime import datetime
-from hashlib import md5
 from pathlib import Path
 
 import pandas as pd
@@ -29,6 +28,8 @@ from cognite.powerops.resync.utils.serializer import load_yaml
 import cognite.powerops.cogshop1.data_classes as cogshop_v1
 
 from ._to_instances import _to_input_timeseries_mapping
+from ..config.shared import Transformation
+from ..models.market import DayAheadProcess
 
 logger = logging.getLogger(__name__)
 
@@ -111,8 +112,21 @@ def to_cogshop_data_model(
     return model
 
 
+def _create_transformation(order: int, transformation: dict | Transformation) -> cogshop_v1.TransformationApply:
+    if isinstance(transformation, dict):
+        transformation = Transformation(**transformation)
+    dumped_kwargs = json.dumps(transformation.kwargs or {}, separators=(",", ":"))
+    external_id = f"Tr_{transformation.transformation.name}_{dumped_kwargs}_{order}"
+    return cogshop_v1.TransformationApply(
+        external_id=external_id,
+        method=transformation.transformation.name,
+        arguments=dumped_kwargs,
+        order=order,
+    )
+
+
 def to_cogshop_asset_model(
-    config: CogShopConfig, watercourses: list[Watercourse], shop_version: str
+    config: CogShopConfig, watercourses: list[Watercourse], shop_version: str, dayahead_processes: list[DayAheadProcess]
 ) -> cogshop.CogShop1Asset:
     model = cogshop.CogShop1Asset()
 
@@ -181,12 +195,6 @@ def to_cogshop_asset_model(
         model.base_mappings.append(output_definition)
 
         ### Model Template ###
-        def make_ext_id(watercourse_name: str, *args: str) -> str:
-            hash_value = md5(watercourse_name.encode())
-            for arg in args:
-                hash_value.update(arg.encode())
-            return f"Tr__{hash_value.hexdigest()}"
-
         model_template = cogshop_v1.ModelTemplateApply(
             external_id=f"ModelTemplate_{watercourse.name}",
             version="1",
@@ -199,18 +207,11 @@ def to_cogshop_asset_model(
             ),
             base_mappings=[
                 cogshop_v1.MappingApply(
-                    external_id=f"BM__{watercourse.name}__{row.shop_model_path}",
+                    external_id=f"BM_{watercourse.name}_{row.shop_model_path}",
                     path=row.shop_model_path,
                     timeseries_external_id=row.time_series_external_id,
                     transformations=[
-                        cogshop_v1.TransformationApply(
-                            external_id=f"Tr_{transformation.transformation.name}_"
-                            f"{(dumped_kwargs := json.dumps(transformation.kwargs or {}, separators=(',', ':')))}"
-                            f"_{order}",
-                            method=transformation.transformation.name,
-                            arguments=dumped_kwargs,
-                            order=order,
-                        )
+                        _create_transformation(order, transformation)
                         for order, transformation in enumerate((row.transformations or []))
                     ],
                     retrieve=row.retrieve.name if row.retrieve else None,
@@ -236,6 +237,57 @@ def to_cogshop_asset_model(
             for t in mapping.transformations
         }
     )
+
+    for process in dayahead_processes:
+        for incremental_mapping in process.incremental_mapping:
+            incremental_mapping: CDFSequence
+            watercourse = incremental_mapping.sequence.metadata["shop:watercourse"]
+            scenario_name = incremental_mapping.sequence.metadata["bid:scenario_name"]
+            external_id = f"Scenario_{watercourse}_{scenario_name}"
+            command_file = next((f for f in model.shop_files if f.meta.metadata.get("shop:type") == "commands"), None)
+            if command_file is None:
+                raise ValueError(f"Could not find commands file for watercourse {watercourse}")
+            scenario = cogshop_v1.ScenarioApply(
+                external_id=external_id,
+                name=f"Scenario {watercourse} {scenario_name}",
+                model_template=f"ModelTemplate_{watercourse}",
+                mappings_override=[
+                    cogshop_v1.MappingApply(
+                        external_id=f"Mapping_{external_id}_{i}",
+                        path=mapping["shop_model_path"],
+                        timeseries_external_id=mapping["time_series_external_id"],
+                        transformations=[
+                            _create_transformation(j, transformation_data)
+                            for j, transformation_data in enumerate(json.loads(mapping.get("transformations", "")))
+                        ],
+                        retrieve=mapping.get("retrieve"),
+                        aggregation=mapping.get("aggregation"),
+                    )
+                    for i, mapping in enumerate(incremental_mapping.content.to_dict(orient="records"))
+                ],
+                commands=cogshop_v1.CommandsConfigApply(
+                    external_id=f"Commands_{watercourse}",
+                    commands=yaml.safe_load(command_file.content.decode()).get("commands", []),
+                ),
+            )
+            model.scenarios[scenario.external_id] = scenario
+
+    model.mappings.update(
+        {
+            mapping.external_id: mapping
+            for scenario in model.scenarios.values()
+            for mapping in scenario.mappings_override
+        }
+    )
+    model.transformations.update(
+        {
+            t.external_id: t
+            for scenario in model.scenarios.values()
+            for mapping in scenario.mappings_override
+            for t in mapping.transformations
+        }
+    )
+
     return model
 
 
