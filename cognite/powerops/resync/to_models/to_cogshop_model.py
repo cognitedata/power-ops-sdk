@@ -250,7 +250,7 @@ def to_cogshop_asset_model(
             scenario = cogshop_v1.ScenarioApply(
                 external_id=external_id,
                 name=f"Scenario {watercourse} {scenario_name}",
-                model_template=f"ModelTemplate_{watercourse}",
+                model_template=model.model_templates[f"ModelTemplate_{watercourse}"],
                 mappings_override=[
                     cogshop_v1.MappingApply(
                         external_id=f"Mapping_{external_id}_{i}",
@@ -286,6 +286,9 @@ def to_cogshop_asset_model(
             for mapping in scenario.mappings_override
             for t in mapping.transformations
         }
+    )
+    model.commands_configs.update(
+        {scenario.commands.external_id: scenario.commands for scenario in model.scenarios.values()}
     )
 
     return model

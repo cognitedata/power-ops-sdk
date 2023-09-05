@@ -164,6 +164,11 @@ class CogShop1Asset(CogShopCore, DataModel, protected_namespaces=()):
         self.model_templates = self.ordering_dict(self.model_templates)
         self.mappings = self.ordering_dict(self.mappings)
         self.transformations = self.ordering_dict(self.transformations)
+        self.scenarios = self.ordering_dict(self.scenarios)
+        self.commands_configs = self.ordering_dict(self.commands_configs)
+        for scenario in self.scenarios.values():
+            scenario.mappings_override = sorted(scenario.mappings_override, key=lambda x: x.external_id)
+
         for template in self.model_templates.values():
             template.base_mappings = sorted(template.base_mappings, key=lambda x: x.external_id)
 

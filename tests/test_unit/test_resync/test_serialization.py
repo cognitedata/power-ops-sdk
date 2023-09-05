@@ -26,8 +26,12 @@ def market_model(resync_config: ReSyncConfig, production_model: models.Productio
 
 
 @pytest.fixture(scope="session")
-def cogshop1_model(resync_config: ReSyncConfig, production_model: models.ProductionModel) -> models.CogShop1Asset:
-    return to_cogshop_asset_model(resync_config.cogshop, production_model.watercourses, "14.4.3.0")
+def cogshop1_model(
+    resync_config: ReSyncConfig, production_model: models.ProductionModel, market_model: models.MarketModel
+) -> models.CogShop1Asset:
+    return to_cogshop_asset_model(
+        resync_config.cogshop, production_model.watercourses, "14.4.3.0", market_model.dayahead_processes
+    )
 
 
 def test_serialize_production_model_as_cdf(production_model: models.ProductionModel) -> None:
@@ -92,9 +96,14 @@ def test_serialize_cogshop1_model_as_cdf(cogshop1_model: models.CogShop1Asset) -
                 item.model_dump() for item in local_value
             ], f"Comparison failed for field {field}"
         elif isinstance(loaded_value, dict):
-            assert {k: v.model_dump() for k, v in loaded_value.items()} == {
-                k: v.model_dump() for k, v in local_value.items()
-            }, f"Comparison failed for field {field}"
+            removed_keys = set(local_value.keys()) - set(loaded_value.keys())
+            assert not removed_keys, f"Removed ids {removed_keys} for field {field}"
+            added_keys = set(loaded_value.keys()) - set(local_value.keys())
+            assert not added_keys, f"Extra ids {added_keys} for field {field}"
+            for key in loaded_value:
+                assert (
+                    loaded_value[key].model_dump() == local_value[key].model_dump()
+                ), f"Comparison failed for field {field} {key}"
         else:
             assert False, f"Comparison failed for field {field}"
 
