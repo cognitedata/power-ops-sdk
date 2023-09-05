@@ -28,8 +28,8 @@ from cognite.powerops.resync.utils.serializer import load_yaml
 import cognite.powerops.cogshop1.data_classes as cogshop_v1
 
 from ._to_instances import _to_input_timeseries_mapping
-from ..config.shared import Transformation
-from ..models.market import DayAheadProcess
+from cognite.powerops.resync.config.shared import Transformation
+from cognite.powerops.resync.models.market import DayAheadProcess
 
 logger = logging.getLogger(__name__)
 
