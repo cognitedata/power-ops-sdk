@@ -13,10 +13,6 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## [0.44.0] - 2023-09-04
-### Improved
-* Added a script will update SHOP run events for clarity
-
 
 ## [0.43.5] - 2023-09-04
 ### Fixed
