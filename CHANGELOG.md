@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.44.0] - 2023-09-05
+### Added
+* `resync` now generates Scenarios for `CogShop1Asset` models.
+
 ## [0.43.5] - 2023-09-04
 ### Fixed
 * Deletion of assets raised a `ValueError`. This is now fixed.
