@@ -31,14 +31,33 @@ class ShopResultFile(abc.ABC, Generic[FileContentTypeT]):
 
     @property
     def encoding(self) -> str:
+        """
+        Encoding of the file.
+
+        Returns:
+            Encoding of the file.
+        """
         return self._encoding
 
     @property
     def external_id(self):
+        """
+        External ID of the file.
+
+        Returns:
+            External ID of the file.
+        """
         return self._file_metadata.external_id
 
     @property
     def name(self):
+        """
+        Name of the file.
+
+        Returns:
+            Name of the file.
+        """
+
         return self._file_metadata.name
 
     def save_to_disk(self, dir_path: str = "") -> str:
@@ -56,18 +75,28 @@ class ShopResultFile(abc.ABC, Generic[FileContentTypeT]):
 
 
 class ShopLogFile(ShopResultFile[str]):
-    """Plain text result file (for SHOP messages and CPlex logs)."""
+    """
+    Plain text result file (for SHOP messages and CPlex logs).
+    """
 
     @property
     def file_content(self) -> str:
+        """
+        Data encoded for writing to local filesystem.
+        """
         return self.data
 
 
 class ShopYamlFile(ShopResultFile[dict]):
-    """Yaml-formatted results file (for post_run.yaml file created by SHOP)."""
+    """
+    Yaml-formatted results file (for post_run.yaml file created by SHOP).
+    """
 
     @property
     def file_content(self) -> str:
+        """
+        Data encoded for writing to local filesystem.
+        """
         return yaml.safe_dump(self.data, sort_keys=False)
 
     def _retrieve_time_series_dict(self, key: str) -> dict[datetime, float]:
@@ -98,7 +127,17 @@ class ShopYamlFile(ShopResultFile[dict]):
         matches_object_names: Sequence[str] | str = "",
         matches_attribute_names: Sequence[str] | str = "",
     ) -> list[str]:
-        """Find time series in the results file"""
+        """
+        Find time series in the results file.
+
+        Args:
+            matches_object_types: Object types to match.
+            matches_object_names: Object names to match.
+            matches_attribute_names: Attribute names to match.
+
+        Returns:
+            List of dot separated strings of nested keys to the time series data.
+        """
         if matches_object_types and isinstance(matches_object_types, str):
             matches_object_types = [matches_object_types]
 
@@ -132,6 +171,14 @@ class ShopYamlFile(ShopResultFile[dict]):
         return keys
 
     def plot(self, keys=Union[str, Sequence[str]]):
+        """
+        Visualize time series data in the results file.
+
+        Args:
+            keys: Dot separated string of nested keys to the time series data to plot.
+
+        """
+
         if time_series := self._prepare_plot_time_series(keys):
             ax = create_time_series_plot()
             for key, ts_data in time_series.items():

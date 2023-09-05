@@ -9,9 +9,11 @@ theme:
 
 nav:
     - Home: index.md
-    - API: reference.md
     - Notebooks:
       - Shop results: notebooks/shop_results.ipynb
+    - Reference:
+      - SHOP API: reference/client/shop_api.md
+      - SHOP API Classes: reference/client/shop_api_classes.md
 
 markdown_extensions:
   - pymdownx.superfences
@@ -26,6 +28,9 @@ markdown_extensions:
   - tables
   - abbr
   - attr_list
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
 
 plugins:
   - mkdocs-jupyter:
@@ -40,4 +45,6 @@ plugins:
       handlers:
         python:
           options:
-            show_source: false
+            show_root_heading: true
+            show_source: true
+            members_order: source

@@ -31,6 +31,18 @@ class ShopRunResult:
 
     @cached_property
     def files(self) -> dict[str, Optional[ShopResultFile]]:
+        """
+        Returns a dictionary of the files associated with the shop run.
+
+        The dictionary keys are:
+            - post_run
+            - shop_messages
+            - cplex
+
+        Returns:
+            Dictionary of files associated with the shop run.
+        """
+
         return {
             "post_run": self._post_run,
             "shop_messages": self._shop_messages,
@@ -39,23 +51,53 @@ class ShopRunResult:
 
     @cached_property
     def objective_function(self) -> ObjectiveFunction:
+        """
+        Returns the objective function of the shop run.
+
+        Returns:
+            The objective function of the shop run.
+        """
         return self._retrieve_objective_function(self._shop_run)
 
-    def error_message(self) -> Optional[str]:
+    def error_message(self) -> str | None:
+        """
+        Returns the error message of the shop run.
+
+        Returns:
+            The error message of the shop run.
+        """
         if not self._shop_run.succeeded:
             return "(sample) Error: invalid configuration"
         return None
 
     @property
     def post_run(self) -> Optional[ShopYamlFile]:
+        """
+        Returns the post run yaml file of the shop run.
+
+        Returns:
+            The post run yaml file of the shop run.
+        """
         return self._post_run
 
     @property
-    def cplex(self) -> Optional[ShopLogFile]:  # TODO rename to cplex_messages? _logs?
+    def cplex(self) -> ShopLogFile | None:  # TODO rename to cplex_messages? _logs?
+        """
+        Returns the cplex log file of the shop run.
+
+        Returns:
+            The cplex log file of the shop run.
+        """
         return self._cplex
 
     @property
     def shop_messages(self) -> Optional[ShopLogFile]:  # TODO rename to _logs?
+        """
+        Returns the shop messages log file of the shop run.
+
+        Returns:
+            The shop messages log file of the shop run.
+        """
         return self._shop_messages
 
     def __repr__(self):
@@ -82,24 +124,62 @@ class ObjectiveFunction:
 
     @property
     def watercourse(self) -> str:
+        """
+        Returns the watercourse of the objective function.
+
+        Returns:
+            The watercourse of the objective function.
+        """
         return self._watercourse
 
     @property
     def data(self) -> dict:
+        """
+        Returns the data of the objective function.
+
+        Returns:
+            The data of the objective function.
+        """
         return self._data
 
     @property
     def penalty_breakdown(self) -> dict:
+        """
+        Returns the penalty breakdown of the objective function.
+
+        Returns:
+            The penalty breakdown of the objective function.
+        """
         return self._penalty_breakdown
 
     @property
     def field_definitions_df(self) -> pd.DataFrame:
+        """
+        The field definitions of the objective function.
+
+        Returns:
+            The field definitions of the objective function.
+        """
         return self._field_definitions_df
 
     def data_as_str(self) -> str:
+        """
+        Returns the data of the objective function as a string representation.
+
+        Returns:
+            String representation of the data of the objective function.
+
+        """
         return "\n".join([f"{k}= {v}" for k, v in self.data.items()])
 
     def penalty_breakdown_as_str(self) -> str:
+        """
+        Returns the penalty breakdown of the objective function as a string.
+
+        Returns:
+            Markdown string of the penalty breakdown.
+        """
+
         # return the penalty breakdown as markdown string some time in future?
         separator = "--------------------------\n"
 

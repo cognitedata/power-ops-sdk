@@ -27,7 +27,14 @@ class ShopFilesAPI:
         self.yaml_files = ShopYamlFilesAPI(self)
 
     def download_to_disk(self, shop_file_id: str, dir_path: Path) -> None:
-        """Download a file from CDF to local filesystem."""
+        """
+        Download a file from CDF to local filesystem.
+
+        Args:
+            shop_file_id: The external id of the file to download.
+            dir_path: The location to download the file to.
+
+        """
         self._client.files.download_to_path(path=dir_path / shop_file_id, external_id=shop_file_id)
 
     def retrieve_related_files_metadata(
@@ -36,6 +43,14 @@ class ShopFilesAPI:
         """
         Retrieve metadata of files that have a relationship to specified source (externalId).
         Optionally restrict the results by relationship labels.
+
+        Args:
+            source_external_id: The external id of the source.
+            label_ext_id: The external id of the relationship label(s) to filter by.
+
+        Returns:
+            Sequence[FileMetadata]: The metadata of the related files.
+
         """
         if relationships := retrieve_relationships_from_source_ext_id(
             self._client,
