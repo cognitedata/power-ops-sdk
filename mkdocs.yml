@@ -13,6 +13,7 @@ nav:
       - Shop results: notebooks/shop_results.ipynb
     - Reference:
       - SHOP API: reference/client/shop_api.md
+      - SHOP API Classes: reference/client/shop_api_classes.md
 
 markdown_extensions:
   - pymdownx.superfences

@@ -1,22 +1,11 @@
 from __future__ import annotations
 
 import logging
-import random
 
 from cognite.powerops.clients._api_client import CogShopAPIs
+from cognite.powerops.clients.shop.data_classes.shop_model import ShopModel
 
 logger = logging.getLogger(__name__)
-
-
-class ShopModel:
-    def __init__(self) -> None:
-        self.model_id = random.randint(1000, 9999)
-
-    def render_yaml(self) -> str:
-        return "sintef_shop_model_yaml_representation"
-
-    def update(self):
-        raise NotImplementedError
 
 
 class ShopModelsAPI:
