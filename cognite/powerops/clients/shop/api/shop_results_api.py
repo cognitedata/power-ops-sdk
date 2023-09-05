@@ -26,6 +26,15 @@ class ShopRunResultsAPI:
         self.compare = ShopResultsCompare()
 
     def retrieve(self, shop_run: ShopRun) -> ShopRunResult:
+        """
+        Retrieve the results of a SHOP run.
+
+        Args:
+            shop_run: The SHOP run to retrieve results for.
+
+        Returns:
+            The results of the SHOP run.
+        """
         if shop_run.in_progress:
             raise ValueError("ShopRun not completed.")
 
@@ -50,6 +59,16 @@ class ShopRunResultsAPI:
         return ShopRunResult(self.retrieve_objective_function, shop_run, cplex, shop_messages, post_run)
 
     def retrieve_objective_function(self, shop_run: ShopRun) -> ObjectiveFunction:
+        """
+        Retrieve the objective function of a SHOP run.
+
+        Args:
+            shop_run: The SHOP run to retrieve the objective function for.
+
+        Returns:
+            The objective function of the SHOP run.
+
+        """
         # TODO: ability to retrieve the objective function from the post run yaml file
         relationships = retrieve_relationships_from_source_ext_id(
             self._client,

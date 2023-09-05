@@ -37,6 +37,15 @@ class ShopRunsAPI:
         self._cogshop_version = cogshop_version
 
     def trigger(self, case: Case) -> ShopRun:
+        """
+        Trigger a SHOP run for a given case.
+
+        Args:
+            case: The case to run.
+
+        Returns:
+            The SHOP run.
+        """
         logger.info("Triggering SHOP run...")
         shop_run = self._upload_to_cdf(case)
         self._post_shop_run(shop_run.shop_run_event.external_id)
@@ -144,6 +153,22 @@ class ShopRunsAPI:
         logger.debug(response.json())
 
     def list(self, created_after: int | str | None = None, limit: int | None = 25) -> list[ShopRun]:
+        """
+        List SHOP runs.
+
+        Args:
+            created_after: Only list runs created after this time. Can be a datetime, a time ago string, or a timestamp.
+                           For more information about time ago strings, see the tip below.
+            limit: The maximum number of runs to return.
+
+        !!! tip "created_after parameter, time ago string"
+            The created after parameter supports arguments given on the format `<integer>(s|m|h|d|w)-ago`.
+            For example, `12h-ago`, which will be parsed to `now - 12h-ago`.
+
+        Returns:
+            List of SHOP runs.
+        """
+
         if isinstance(created_after, str):
             timespan = time_ago_to_ms(created_after)
             now = datetime_to_ms(datetime.now(timezone.utc))
@@ -162,6 +187,15 @@ class ShopRunsAPI:
         ]
 
     def retrieve(self, external_id: str) -> ShopRun:
+        """
+        Retrieve a SHOP run.
+
+        Args:
+            external_id: The external id of the SHOP run.
+
+        Returns:
+            The SHOP run.
+        """
         event = self._client.events.retrieve(external_id=external_id)
         return ShopRun(
             self.retrieve_status,
@@ -170,6 +204,16 @@ class ShopRunsAPI:
         )
 
     def retrieve_status(self, shop_run_external_id: str) -> ShopRun.Status:
+        """
+        Retrieve the status of a SHOP run.
+
+        Args:
+            shop_run_external_id: The external id of the SHOP run.
+
+        Returns:
+            The status of the SHOP run.
+        """
+
         event = retrieve_event(self._client, shop_run_external_id)
         logger.debug(f"Reading status from event {event.external_id}.")
         if relationships := self._client.relationships.list(
