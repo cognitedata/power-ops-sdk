@@ -91,7 +91,7 @@ class DataModel(Model, ABC):
                 else:
                     raise NotImplementedError("Cannot handle this source type.")
             if source not in cls.cls_by_container:
-                raise AttributeError(f"Please specify the domain model for this container {source}.")
+                raise AttributeError(f"Please specify the domain model for this container {source} in {cls.__name__}")
 
             domain_node = _load_domain_node(cls.cls_by_container[source], node)
             nodes_by_source_by_id[source.external_id][domain_node.external_id] = domain_node
@@ -185,6 +185,8 @@ def _load_domain_node(node_cls: TypingType[T_Domain_model], node: NodeApply) -> 
         if isinstance(prop, dict) and "externalId" in prop:
             loaded[snake_name] = prop["externalId"]
         elif isinstance(prop, (float, str, int)) or prop is None:
+            loaded[snake_name] = prop
+        elif isinstance(prop, list) and all(isinstance(p, (float, str, int)) for p in prop):
             loaded[snake_name] = prop
         else:
             raise NotImplementedError(f"Cannot handle {prop=}")

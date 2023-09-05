@@ -24,7 +24,7 @@ def transform(
         production_model = to_production_model(config.production)
         if models.ProductionModel in model_types:
             asset_models.append(production_model)
-        if models.MarketModel in model_types:
+        if models.MarketModel in model_types or models.CogShop1Asset in model_types:
             market_model = to_market_asset_model(config.market, production_model.price_areas, market_name)
             settings = config.settings
             market_model.set_root_asset(
@@ -33,12 +33,16 @@ def transform(
                 settings.tenant_id,
                 production_model.root_asset.external_id,
             )
-            asset_models.append(market_model)
-        if models.CogShop1Asset in model_types:
-            cogshop_model = to_cogshop_asset_model(
-                config.cogshop, production_model.watercourses, config.settings.shop_version
-            )
-            data_models.append(cogshop_model)
+            if models.MarketModel in model_types:
+                asset_models.append(market_model)
+            if models.CogShop1Asset in model_types:
+                cogshop_model = to_cogshop_asset_model(
+                    config.cogshop,
+                    production_model.watercourses,
+                    config.settings.shop_version,
+                    market_model.dayahead_processes,
+                )
+                data_models.append(cogshop_model)
 
     has_data_model = any(issubclass(m, DataModel) and not issubclass(m, models.CogShop1Asset) for m in model_types)
     if has_data_model:

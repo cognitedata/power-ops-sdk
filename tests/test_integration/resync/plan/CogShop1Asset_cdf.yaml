@@ -5172,568 +5172,1024 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_1681c884-60a0-4107-ae63-860932fb08c6_0_0
+    externalId: Tr_Scenario_08867e97-b989-4569-8baf-a4fd4a74d892_0_0
     space: cogShop
-  externalId: Mapping_Scenario_1681c884-60a0-4107-ae63-860932fb08c6_0:Tr_Scenario_1681c884-60a0-4107-ae63-860932fb08c6_0_0
+  externalId: Mapping_Scenario_08867e97-b989-4569-8baf-a4fd4a74d892_0:Tr_Scenario_08867e97-b989-4569-8baf-a4fd4a74d892_0_0
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_1681c884-60a0-4107-ae63-860932fb08c6_0
+    externalId: Mapping_Scenario_08867e97-b989-4569-8baf-a4fd4a74d892_0
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_1681c884-60a0-4107-ae63-860932fb08c6_1_0
+    externalId: Tr_Scenario_08867e97-b989-4569-8baf-a4fd4a74d892_1_0
     space: cogShop
-  externalId: Mapping_Scenario_1681c884-60a0-4107-ae63-860932fb08c6_1:Tr_Scenario_1681c884-60a0-4107-ae63-860932fb08c6_1_0
+  externalId: Mapping_Scenario_08867e97-b989-4569-8baf-a4fd4a74d892_1:Tr_Scenario_08867e97-b989-4569-8baf-a4fd4a74d892_1_0
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_1681c884-60a0-4107-ae63-860932fb08c6_1
+    externalId: Mapping_Scenario_08867e97-b989-4569-8baf-a4fd4a74d892_1
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_1681c884-60a0-4107-ae63-860932fb08c6_1_1
+    externalId: Tr_Scenario_08867e97-b989-4569-8baf-a4fd4a74d892_1_1
     space: cogShop
-  externalId: Mapping_Scenario_1681c884-60a0-4107-ae63-860932fb08c6_1:Tr_Scenario_1681c884-60a0-4107-ae63-860932fb08c6_1_1
+  externalId: Mapping_Scenario_08867e97-b989-4569-8baf-a4fd4a74d892_1:Tr_Scenario_08867e97-b989-4569-8baf-a4fd4a74d892_1_1
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_1681c884-60a0-4107-ae63-860932fb08c6_1
+    externalId: Mapping_Scenario_08867e97-b989-4569-8baf-a4fd4a74d892_1
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_0_0
+    externalId: Tr_Scenario_14e8cd32-342c-43d5-a067-d85f7b4fe40b_0_0
     space: cogShop
-  externalId: Mapping_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_0:Tr_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_0_0
+  externalId: Mapping_Scenario_14e8cd32-342c-43d5-a067-d85f7b4fe40b_0:Tr_Scenario_14e8cd32-342c-43d5-a067-d85f7b4fe40b_0_0
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_0
+    externalId: Mapping_Scenario_14e8cd32-342c-43d5-a067-d85f7b4fe40b_0
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_0_1
+    externalId: Tr_Scenario_14e8cd32-342c-43d5-a067-d85f7b4fe40b_0_1
     space: cogShop
-  externalId: Mapping_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_0:Tr_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_0_1
+  externalId: Mapping_Scenario_14e8cd32-342c-43d5-a067-d85f7b4fe40b_0:Tr_Scenario_14e8cd32-342c-43d5-a067-d85f7b4fe40b_0_1
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_0
+    externalId: Mapping_Scenario_14e8cd32-342c-43d5-a067-d85f7b4fe40b_0
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_1_0
+    externalId: Tr_Scenario_14e8cd32-342c-43d5-a067-d85f7b4fe40b_1_0
     space: cogShop
-  externalId: Mapping_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_1:Tr_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_1_0
+  externalId: Mapping_Scenario_14e8cd32-342c-43d5-a067-d85f7b4fe40b_1:Tr_Scenario_14e8cd32-342c-43d5-a067-d85f7b4fe40b_1_0
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_1
+    externalId: Mapping_Scenario_14e8cd32-342c-43d5-a067-d85f7b4fe40b_1
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_1_1
+    externalId: Tr_Scenario_14e8cd32-342c-43d5-a067-d85f7b4fe40b_1_1
     space: cogShop
-  externalId: Mapping_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_1:Tr_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_1_1
+  externalId: Mapping_Scenario_14e8cd32-342c-43d5-a067-d85f7b4fe40b_1:Tr_Scenario_14e8cd32-342c-43d5-a067-d85f7b4fe40b_1_1
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_1
+    externalId: Mapping_Scenario_14e8cd32-342c-43d5-a067-d85f7b4fe40b_1
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_1_2
+    externalId: Tr_Scenario_14e8cd32-342c-43d5-a067-d85f7b4fe40b_1_2
     space: cogShop
-  externalId: Mapping_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_1:Tr_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_1_2
+  externalId: Mapping_Scenario_14e8cd32-342c-43d5-a067-d85f7b4fe40b_1:Tr_Scenario_14e8cd32-342c-43d5-a067-d85f7b4fe40b_1_2
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_1
+    externalId: Mapping_Scenario_14e8cd32-342c-43d5-a067-d85f7b4fe40b_1
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_4aeff8e7-1977-4294-938b-d76256f372bf_1_0
+    externalId: Tr_Scenario_40839b5b-8afc-4000-a0e9-b9137d9c1313_0_0
     space: cogShop
-  externalId: Mapping_Scenario_4aeff8e7-1977-4294-938b-d76256f372bf_1:Tr_Scenario_4aeff8e7-1977-4294-938b-d76256f372bf_1_0
+  externalId: Mapping_Scenario_40839b5b-8afc-4000-a0e9-b9137d9c1313_0:Tr_Scenario_40839b5b-8afc-4000-a0e9-b9137d9c1313_0_0
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_4aeff8e7-1977-4294-938b-d76256f372bf_1
+    externalId: Mapping_Scenario_40839b5b-8afc-4000-a0e9-b9137d9c1313_0
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_0_0
+    externalId: Tr_Scenario_40839b5b-8afc-4000-a0e9-b9137d9c1313_1_0
     space: cogShop
-  externalId: Mapping_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_0:Tr_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_0_0
+  externalId: Mapping_Scenario_40839b5b-8afc-4000-a0e9-b9137d9c1313_1:Tr_Scenario_40839b5b-8afc-4000-a0e9-b9137d9c1313_1_0
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_0
+    externalId: Mapping_Scenario_40839b5b-8afc-4000-a0e9-b9137d9c1313_1
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_0_1
+    externalId: Tr_Scenario_40839b5b-8afc-4000-a0e9-b9137d9c1313_1_1
     space: cogShop
-  externalId: Mapping_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_0:Tr_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_0_1
+  externalId: Mapping_Scenario_40839b5b-8afc-4000-a0e9-b9137d9c1313_1:Tr_Scenario_40839b5b-8afc-4000-a0e9-b9137d9c1313_1_1
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_0
+    externalId: Mapping_Scenario_40839b5b-8afc-4000-a0e9-b9137d9c1313_1
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_1_0
+    externalId: Tr_Scenario_44d19dc1-b807-4ecb-848b-6a97c18ced4e_1_0
     space: cogShop
-  externalId: Mapping_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_1:Tr_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_1_0
+  externalId: Mapping_Scenario_44d19dc1-b807-4ecb-848b-6a97c18ced4e_1:Tr_Scenario_44d19dc1-b807-4ecb-848b-6a97c18ced4e_1_0
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_1
+    externalId: Mapping_Scenario_44d19dc1-b807-4ecb-848b-6a97c18ced4e_1
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_1_1
+    externalId: Tr_Scenario_5b665e55-4874-4408-912a-44c984a3a25e_0_0
     space: cogShop
-  externalId: Mapping_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_1:Tr_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_1_1
+  externalId: Mapping_Scenario_5b665e55-4874-4408-912a-44c984a3a25e_0:Tr_Scenario_5b665e55-4874-4408-912a-44c984a3a25e_0_0
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_1
+    externalId: Mapping_Scenario_5b665e55-4874-4408-912a-44c984a3a25e_0
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_1_2
+    externalId: Tr_Scenario_5b665e55-4874-4408-912a-44c984a3a25e_0_1
     space: cogShop
-  externalId: Mapping_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_1:Tr_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_1_2
+  externalId: Mapping_Scenario_5b665e55-4874-4408-912a-44c984a3a25e_0:Tr_Scenario_5b665e55-4874-4408-912a-44c984a3a25e_0_1
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_1
+    externalId: Mapping_Scenario_5b665e55-4874-4408-912a-44c984a3a25e_0
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_0_0
+    externalId: Tr_Scenario_5b665e55-4874-4408-912a-44c984a3a25e_1_0
     space: cogShop
-  externalId: Mapping_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_0:Tr_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_0_0
+  externalId: Mapping_Scenario_5b665e55-4874-4408-912a-44c984a3a25e_1:Tr_Scenario_5b665e55-4874-4408-912a-44c984a3a25e_1_0
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_0
+    externalId: Mapping_Scenario_5b665e55-4874-4408-912a-44c984a3a25e_1
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_0_1
+    externalId: Tr_Scenario_5b665e55-4874-4408-912a-44c984a3a25e_1_1
     space: cogShop
-  externalId: Mapping_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_0:Tr_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_0_1
+  externalId: Mapping_Scenario_5b665e55-4874-4408-912a-44c984a3a25e_1:Tr_Scenario_5b665e55-4874-4408-912a-44c984a3a25e_1_1
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_0
+    externalId: Mapping_Scenario_5b665e55-4874-4408-912a-44c984a3a25e_1
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_1_0
+    externalId: Tr_Scenario_5b665e55-4874-4408-912a-44c984a3a25e_1_2
     space: cogShop
-  externalId: Mapping_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_1:Tr_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_1_0
+  externalId: Mapping_Scenario_5b665e55-4874-4408-912a-44c984a3a25e_1:Tr_Scenario_5b665e55-4874-4408-912a-44c984a3a25e_1_2
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_1
+    externalId: Mapping_Scenario_5b665e55-4874-4408-912a-44c984a3a25e_1
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_1_1
+    externalId: Tr_Scenario_6f6dd34f-d365-4563-9ee1-f0fa363d07bd_0_0
     space: cogShop
-  externalId: Mapping_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_1:Tr_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_1_1
+  externalId: Mapping_Scenario_6f6dd34f-d365-4563-9ee1-f0fa363d07bd_0:Tr_Scenario_6f6dd34f-d365-4563-9ee1-f0fa363d07bd_0_0
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_1
+    externalId: Mapping_Scenario_6f6dd34f-d365-4563-9ee1-f0fa363d07bd_0
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_1_2
+    externalId: Tr_Scenario_6f6dd34f-d365-4563-9ee1-f0fa363d07bd_0_1
     space: cogShop
-  externalId: Mapping_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_1:Tr_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_1_2
+  externalId: Mapping_Scenario_6f6dd34f-d365-4563-9ee1-f0fa363d07bd_0:Tr_Scenario_6f6dd34f-d365-4563-9ee1-f0fa363d07bd_0_1
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_1
+    externalId: Mapping_Scenario_6f6dd34f-d365-4563-9ee1-f0fa363d07bd_0
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_0_0
+    externalId: Tr_Scenario_6f6dd34f-d365-4563-9ee1-f0fa363d07bd_1_0
     space: cogShop
-  externalId: Mapping_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_0:Tr_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_0_0
+  externalId: Mapping_Scenario_6f6dd34f-d365-4563-9ee1-f0fa363d07bd_1:Tr_Scenario_6f6dd34f-d365-4563-9ee1-f0fa363d07bd_1_0
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_0
+    externalId: Mapping_Scenario_6f6dd34f-d365-4563-9ee1-f0fa363d07bd_1
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_0_1
+    externalId: Tr_Scenario_6f6dd34f-d365-4563-9ee1-f0fa363d07bd_1_1
     space: cogShop
-  externalId: Mapping_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_0:Tr_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_0_1
+  externalId: Mapping_Scenario_6f6dd34f-d365-4563-9ee1-f0fa363d07bd_1:Tr_Scenario_6f6dd34f-d365-4563-9ee1-f0fa363d07bd_1_1
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_0
+    externalId: Mapping_Scenario_6f6dd34f-d365-4563-9ee1-f0fa363d07bd_1
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_1_0
+    externalId: Tr_Scenario_6f6dd34f-d365-4563-9ee1-f0fa363d07bd_1_2
     space: cogShop
-  externalId: Mapping_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_1:Tr_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_1_0
+  externalId: Mapping_Scenario_6f6dd34f-d365-4563-9ee1-f0fa363d07bd_1:Tr_Scenario_6f6dd34f-d365-4563-9ee1-f0fa363d07bd_1_2
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_1
+    externalId: Mapping_Scenario_6f6dd34f-d365-4563-9ee1-f0fa363d07bd_1
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_1_1
+    externalId: Tr_Scenario_774c3e5c-1583-4e93-b63a-d71edbc487b3_1_0
     space: cogShop
-  externalId: Mapping_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_1:Tr_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_1_1
+  externalId: Mapping_Scenario_774c3e5c-1583-4e93-b63a-d71edbc487b3_1:Tr_Scenario_774c3e5c-1583-4e93-b63a-d71edbc487b3_1_0
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_1
+    externalId: Mapping_Scenario_774c3e5c-1583-4e93-b63a-d71edbc487b3_1
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_1_2
+    externalId: Tr_Scenario_7d2ab3f6-33ac-4f5c-817a-dd4fe328497a_1_0
     space: cogShop
-  externalId: Mapping_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_1:Tr_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_1_2
+  externalId: Mapping_Scenario_7d2ab3f6-33ac-4f5c-817a-dd4fe328497a_1:Tr_Scenario_7d2ab3f6-33ac-4f5c-817a-dd4fe328497a_1_0
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_1
+    externalId: Mapping_Scenario_7d2ab3f6-33ac-4f5c-817a-dd4fe328497a_1
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_6fca0f9a-d28d-4e29-831d-f229227c7f02_1_0
+    externalId: Tr_Scenario_7e88dcf5-fb1d-444e-b1c3-28c54cb808e8_0_0
     space: cogShop
-  externalId: Mapping_Scenario_6fca0f9a-d28d-4e29-831d-f229227c7f02_1:Tr_Scenario_6fca0f9a-d28d-4e29-831d-f229227c7f02_1_0
+  externalId: Mapping_Scenario_7e88dcf5-fb1d-444e-b1c3-28c54cb808e8_0:Tr_Scenario_7e88dcf5-fb1d-444e-b1c3-28c54cb808e8_0_0
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_6fca0f9a-d28d-4e29-831d-f229227c7f02_1
+    externalId: Mapping_Scenario_7e88dcf5-fb1d-444e-b1c3-28c54cb808e8_0
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_0_0
+    externalId: Tr_Scenario_7e88dcf5-fb1d-444e-b1c3-28c54cb808e8_0_1
     space: cogShop
-  externalId: Mapping_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_0:Tr_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_0_0
+  externalId: Mapping_Scenario_7e88dcf5-fb1d-444e-b1c3-28c54cb808e8_0:Tr_Scenario_7e88dcf5-fb1d-444e-b1c3-28c54cb808e8_0_1
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_0
+    externalId: Mapping_Scenario_7e88dcf5-fb1d-444e-b1c3-28c54cb808e8_0
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_0_1
+    externalId: Tr_Scenario_7e88dcf5-fb1d-444e-b1c3-28c54cb808e8_1_0
     space: cogShop
-  externalId: Mapping_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_0:Tr_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_0_1
+  externalId: Mapping_Scenario_7e88dcf5-fb1d-444e-b1c3-28c54cb808e8_1:Tr_Scenario_7e88dcf5-fb1d-444e-b1c3-28c54cb808e8_1_0
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_0
+    externalId: Mapping_Scenario_7e88dcf5-fb1d-444e-b1c3-28c54cb808e8_1
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_1_0
+    externalId: Tr_Scenario_7e88dcf5-fb1d-444e-b1c3-28c54cb808e8_1_1
     space: cogShop
-  externalId: Mapping_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_1:Tr_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_1_0
+  externalId: Mapping_Scenario_7e88dcf5-fb1d-444e-b1c3-28c54cb808e8_1:Tr_Scenario_7e88dcf5-fb1d-444e-b1c3-28c54cb808e8_1_1
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_1
+    externalId: Mapping_Scenario_7e88dcf5-fb1d-444e-b1c3-28c54cb808e8_1
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_1_1
+    externalId: Tr_Scenario_7e88dcf5-fb1d-444e-b1c3-28c54cb808e8_1_2
     space: cogShop
-  externalId: Mapping_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_1:Tr_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_1_1
+  externalId: Mapping_Scenario_7e88dcf5-fb1d-444e-b1c3-28c54cb808e8_1:Tr_Scenario_7e88dcf5-fb1d-444e-b1c3-28c54cb808e8_1_2
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_1
+    externalId: Mapping_Scenario_7e88dcf5-fb1d-444e-b1c3-28c54cb808e8_1
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_1_2
+    externalId: Tr_Scenario_7f5dae37-0184-43ae-9af3-a6623cb49cd4_1_0
     space: cogShop
-  externalId: Mapping_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_1:Tr_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_1_2
+  externalId: Mapping_Scenario_7f5dae37-0184-43ae-9af3-a6623cb49cd4_1:Tr_Scenario_7f5dae37-0184-43ae-9af3-a6623cb49cd4_1_0
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_1
+    externalId: Mapping_Scenario_7f5dae37-0184-43ae-9af3-a6623cb49cd4_1
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_0_0
+    externalId: Tr_Scenario_9a2fa7ca-4662-4a8e-b30e-1f100b70e710_0_0
     space: cogShop
-  externalId: Mapping_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_0:Tr_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_0_0
+  externalId: Mapping_Scenario_9a2fa7ca-4662-4a8e-b30e-1f100b70e710_0:Tr_Scenario_9a2fa7ca-4662-4a8e-b30e-1f100b70e710_0_0
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_0
+    externalId: Mapping_Scenario_9a2fa7ca-4662-4a8e-b30e-1f100b70e710_0
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_0_1
+    externalId: Tr_Scenario_9a2fa7ca-4662-4a8e-b30e-1f100b70e710_1_0
     space: cogShop
-  externalId: Mapping_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_0:Tr_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_0_1
+  externalId: Mapping_Scenario_9a2fa7ca-4662-4a8e-b30e-1f100b70e710_1:Tr_Scenario_9a2fa7ca-4662-4a8e-b30e-1f100b70e710_1_0
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_0
+    externalId: Mapping_Scenario_9a2fa7ca-4662-4a8e-b30e-1f100b70e710_1
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_1_0
+    externalId: Tr_Scenario_9a2fa7ca-4662-4a8e-b30e-1f100b70e710_1_1
     space: cogShop
-  externalId: Mapping_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_1:Tr_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_1_0
+  externalId: Mapping_Scenario_9a2fa7ca-4662-4a8e-b30e-1f100b70e710_1:Tr_Scenario_9a2fa7ca-4662-4a8e-b30e-1f100b70e710_1_1
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_1
+    externalId: Mapping_Scenario_9a2fa7ca-4662-4a8e-b30e-1f100b70e710_1
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_1_1
+    externalId: Tr_Scenario_c27017ab-62f0-452e-92d2-fbadce74c435_1_0
     space: cogShop
-  externalId: Mapping_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_1:Tr_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_1_1
+  externalId: Mapping_Scenario_c27017ab-62f0-452e-92d2-fbadce74c435_1:Tr_Scenario_c27017ab-62f0-452e-92d2-fbadce74c435_1_0
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_1
+    externalId: Mapping_Scenario_c27017ab-62f0-452e-92d2-fbadce74c435_1
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_1_2
+    externalId: Tr_Scenario_d3c3839a-d473-409e-8053-3f84c7fc97a8_0_0
     space: cogShop
-  externalId: Mapping_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_1:Tr_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_1_2
+  externalId: Mapping_Scenario_d3c3839a-d473-409e-8053-3f84c7fc97a8_0:Tr_Scenario_d3c3839a-d473-409e-8053-3f84c7fc97a8_0_0
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_1
+    externalId: Mapping_Scenario_d3c3839a-d473-409e-8053-3f84c7fc97a8_0
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_86088339-9d84-4a4f-b76c-92a322745469_0_0
+    externalId: Tr_Scenario_d3c3839a-d473-409e-8053-3f84c7fc97a8_0_1
     space: cogShop
-  externalId: Mapping_Scenario_86088339-9d84-4a4f-b76c-92a322745469_0:Tr_Scenario_86088339-9d84-4a4f-b76c-92a322745469_0_0
+  externalId: Mapping_Scenario_d3c3839a-d473-409e-8053-3f84c7fc97a8_0:Tr_Scenario_d3c3839a-d473-409e-8053-3f84c7fc97a8_0_1
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_86088339-9d84-4a4f-b76c-92a322745469_0
+    externalId: Mapping_Scenario_d3c3839a-d473-409e-8053-3f84c7fc97a8_0
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_86088339-9d84-4a4f-b76c-92a322745469_1_0
+    externalId: Tr_Scenario_d3c3839a-d473-409e-8053-3f84c7fc97a8_1_0
     space: cogShop
-  externalId: Mapping_Scenario_86088339-9d84-4a4f-b76c-92a322745469_1:Tr_Scenario_86088339-9d84-4a4f-b76c-92a322745469_1_0
+  externalId: Mapping_Scenario_d3c3839a-d473-409e-8053-3f84c7fc97a8_1:Tr_Scenario_d3c3839a-d473-409e-8053-3f84c7fc97a8_1_0
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_86088339-9d84-4a4f-b76c-92a322745469_1
+    externalId: Mapping_Scenario_d3c3839a-d473-409e-8053-3f84c7fc97a8_1
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_86088339-9d84-4a4f-b76c-92a322745469_1_1
+    externalId: Tr_Scenario_d3c3839a-d473-409e-8053-3f84c7fc97a8_1_1
     space: cogShop
-  externalId: Mapping_Scenario_86088339-9d84-4a4f-b76c-92a322745469_1:Tr_Scenario_86088339-9d84-4a4f-b76c-92a322745469_1_1
+  externalId: Mapping_Scenario_d3c3839a-d473-409e-8053-3f84c7fc97a8_1:Tr_Scenario_d3c3839a-d473-409e-8053-3f84c7fc97a8_1_1
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_86088339-9d84-4a4f-b76c-92a322745469_1
+    externalId: Mapping_Scenario_d3c3839a-d473-409e-8053-3f84c7fc97a8_1
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_a816b553-b785-42ce-b101-506a8f34fbcf_0_0
+    externalId: Tr_Scenario_d3c3839a-d473-409e-8053-3f84c7fc97a8_1_2
     space: cogShop
-  externalId: Mapping_Scenario_a816b553-b785-42ce-b101-506a8f34fbcf_0:Tr_Scenario_a816b553-b785-42ce-b101-506a8f34fbcf_0_0
+  externalId: Mapping_Scenario_d3c3839a-d473-409e-8053-3f84c7fc97a8_1:Tr_Scenario_d3c3839a-d473-409e-8053-3f84c7fc97a8_1_2
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_a816b553-b785-42ce-b101-506a8f34fbcf_0
+    externalId: Mapping_Scenario_d3c3839a-d473-409e-8053-3f84c7fc97a8_1
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_a816b553-b785-42ce-b101-506a8f34fbcf_1_0
+    externalId: Tr_Scenario_d91425b0-c77e-4fe4-a300-0bf0f599ac89_0_0
     space: cogShop
-  externalId: Mapping_Scenario_a816b553-b785-42ce-b101-506a8f34fbcf_1:Tr_Scenario_a816b553-b785-42ce-b101-506a8f34fbcf_1_0
+  externalId: Mapping_Scenario_d91425b0-c77e-4fe4-a300-0bf0f599ac89_0:Tr_Scenario_d91425b0-c77e-4fe4-a300-0bf0f599ac89_0_0
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_a816b553-b785-42ce-b101-506a8f34fbcf_1
+    externalId: Mapping_Scenario_d91425b0-c77e-4fe4-a300-0bf0f599ac89_0
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_a816b553-b785-42ce-b101-506a8f34fbcf_1_1
+    externalId: Tr_Scenario_d91425b0-c77e-4fe4-a300-0bf0f599ac89_0_1
     space: cogShop
-  externalId: Mapping_Scenario_a816b553-b785-42ce-b101-506a8f34fbcf_1:Tr_Scenario_a816b553-b785-42ce-b101-506a8f34fbcf_1_1
+  externalId: Mapping_Scenario_d91425b0-c77e-4fe4-a300-0bf0f599ac89_0:Tr_Scenario_d91425b0-c77e-4fe4-a300-0bf0f599ac89_0_1
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_a816b553-b785-42ce-b101-506a8f34fbcf_1
+    externalId: Mapping_Scenario_d91425b0-c77e-4fe4-a300-0bf0f599ac89_0
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_b007691a-fe64-4533-a7cd-b7b3a1cd0ada_0_0
+    externalId: Tr_Scenario_d91425b0-c77e-4fe4-a300-0bf0f599ac89_1_0
     space: cogShop
-  externalId: Mapping_Scenario_b007691a-fe64-4533-a7cd-b7b3a1cd0ada_0:Tr_Scenario_b007691a-fe64-4533-a7cd-b7b3a1cd0ada_0_0
+  externalId: Mapping_Scenario_d91425b0-c77e-4fe4-a300-0bf0f599ac89_1:Tr_Scenario_d91425b0-c77e-4fe4-a300-0bf0f599ac89_1_0
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_b007691a-fe64-4533-a7cd-b7b3a1cd0ada_0
+    externalId: Mapping_Scenario_d91425b0-c77e-4fe4-a300-0bf0f599ac89_1
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_b007691a-fe64-4533-a7cd-b7b3a1cd0ada_1_0
+    externalId: Tr_Scenario_d91425b0-c77e-4fe4-a300-0bf0f599ac89_1_1
     space: cogShop
-  externalId: Mapping_Scenario_b007691a-fe64-4533-a7cd-b7b3a1cd0ada_1:Tr_Scenario_b007691a-fe64-4533-a7cd-b7b3a1cd0ada_1_0
+  externalId: Mapping_Scenario_d91425b0-c77e-4fe4-a300-0bf0f599ac89_1:Tr_Scenario_d91425b0-c77e-4fe4-a300-0bf0f599ac89_1_1
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_b007691a-fe64-4533-a7cd-b7b3a1cd0ada_1
+    externalId: Mapping_Scenario_d91425b0-c77e-4fe4-a300-0bf0f599ac89_1
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_b007691a-fe64-4533-a7cd-b7b3a1cd0ada_1_1
+    externalId: Tr_Scenario_d91425b0-c77e-4fe4-a300-0bf0f599ac89_1_2
     space: cogShop
-  externalId: Mapping_Scenario_b007691a-fe64-4533-a7cd-b7b3a1cd0ada_1:Tr_Scenario_b007691a-fe64-4533-a7cd-b7b3a1cd0ada_1_1
+  externalId: Mapping_Scenario_d91425b0-c77e-4fe4-a300-0bf0f599ac89_1:Tr_Scenario_d91425b0-c77e-4fe4-a300-0bf0f599ac89_1_2
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_b007691a-fe64-4533-a7cd-b7b3a1cd0ada_1
+    externalId: Mapping_Scenario_d91425b0-c77e-4fe4-a300-0bf0f599ac89_1
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_b2c24eed-11d9-4c62-9f9c-36bdf765b956_0_0
+    externalId: Tr_Scenario_e209b82e-0bf6-4888-aec5-2ea3152d451c_0_0
     space: cogShop
-  externalId: Mapping_Scenario_b2c24eed-11d9-4c62-9f9c-36bdf765b956_0:Tr_Scenario_b2c24eed-11d9-4c62-9f9c-36bdf765b956_0_0
+  externalId: Mapping_Scenario_e209b82e-0bf6-4888-aec5-2ea3152d451c_0:Tr_Scenario_e209b82e-0bf6-4888-aec5-2ea3152d451c_0_0
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_b2c24eed-11d9-4c62-9f9c-36bdf765b956_0
+    externalId: Mapping_Scenario_e209b82e-0bf6-4888-aec5-2ea3152d451c_0
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_b2c24eed-11d9-4c62-9f9c-36bdf765b956_1_0
+    externalId: Tr_Scenario_e209b82e-0bf6-4888-aec5-2ea3152d451c_1_0
     space: cogShop
-  externalId: Mapping_Scenario_b2c24eed-11d9-4c62-9f9c-36bdf765b956_1:Tr_Scenario_b2c24eed-11d9-4c62-9f9c-36bdf765b956_1_0
+  externalId: Mapping_Scenario_e209b82e-0bf6-4888-aec5-2ea3152d451c_1:Tr_Scenario_e209b82e-0bf6-4888-aec5-2ea3152d451c_1_0
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_b2c24eed-11d9-4c62-9f9c-36bdf765b956_1
+    externalId: Mapping_Scenario_e209b82e-0bf6-4888-aec5-2ea3152d451c_1
     space: cogShop
   type:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
-    externalId: Tr_Scenario_b2c24eed-11d9-4c62-9f9c-36bdf765b956_1_1
+    externalId: Tr_Scenario_e209b82e-0bf6-4888-aec5-2ea3152d451c_1_1
     space: cogShop
-  externalId: Mapping_Scenario_b2c24eed-11d9-4c62-9f9c-36bdf765b956_1:Tr_Scenario_b2c24eed-11d9-4c62-9f9c-36bdf765b956_1_1
+  externalId: Mapping_Scenario_e209b82e-0bf6-4888-aec5-2ea3152d451c_1:Tr_Scenario_e209b82e-0bf6-4888-aec5-2ea3152d451c_1_1
   instanceType: edge
   space: cogShop
   startNode:
-    externalId: Mapping_Scenario_b2c24eed-11d9-4c62-9f9c-36bdf765b956_1
+    externalId: Mapping_Scenario_e209b82e-0bf6-4888-aec5-2ea3152d451c_1
     space: cogShop
   type:
     externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_f72108c7-9076-4626-ae98-a566b254013d_1_0
+    space: cogShop
+  externalId: Mapping_Scenario_f72108c7-9076-4626-ae98-a566b254013d_1:Tr_Scenario_f72108c7-9076-4626-ae98-a566b254013d_1_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_f72108c7-9076-4626-ae98-a566b254013d_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_fd31a759-8686-4387-ab8c-f993945e2e8f_0_0
+    space: cogShop
+  externalId: Mapping_Scenario_fd31a759-8686-4387-ab8c-f993945e2e8f_0:Tr_Scenario_fd31a759-8686-4387-ab8c-f993945e2e8f_0_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_fd31a759-8686-4387-ab8c-f993945e2e8f_0
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_fd31a759-8686-4387-ab8c-f993945e2e8f_1_0
+    space: cogShop
+  externalId: Mapping_Scenario_fd31a759-8686-4387-ab8c-f993945e2e8f_1:Tr_Scenario_fd31a759-8686-4387-ab8c-f993945e2e8f_1_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_fd31a759-8686-4387-ab8c-f993945e2e8f_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_Scenario_fd31a759-8686-4387-ab8c-f993945e2e8f_1_1
+    space: cogShop
+  externalId: Mapping_Scenario_fd31a759-8686-4387-ab8c-f993945e2e8f_1:Tr_Scenario_fd31a759-8686-4387-ab8c-f993945e2e8f_1_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_fd31a759-8686-4387-ab8c-f993945e2e8f_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_08867e97-b989-4569-8baf-a4fd4a74d892_0
+    space: cogShop
+  externalId: Scenario_08867e97-b989-4569-8baf-a4fd4a74d892:Mapping_Scenario_08867e97-b989-4569-8baf-a4fd4a74d892_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_08867e97-b989-4569-8baf-a4fd4a74d892
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_08867e97-b989-4569-8baf-a4fd4a74d892_1
+    space: cogShop
+  externalId: Scenario_08867e97-b989-4569-8baf-a4fd4a74d892:Mapping_Scenario_08867e97-b989-4569-8baf-a4fd4a74d892_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_08867e97-b989-4569-8baf-a4fd4a74d892
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_14e8cd32-342c-43d5-a067-d85f7b4fe40b_0
+    space: cogShop
+  externalId: Scenario_14e8cd32-342c-43d5-a067-d85f7b4fe40b:Mapping_Scenario_14e8cd32-342c-43d5-a067-d85f7b4fe40b_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_14e8cd32-342c-43d5-a067-d85f7b4fe40b
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_14e8cd32-342c-43d5-a067-d85f7b4fe40b_1
+    space: cogShop
+  externalId: Scenario_14e8cd32-342c-43d5-a067-d85f7b4fe40b:Mapping_Scenario_14e8cd32-342c-43d5-a067-d85f7b4fe40b_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_14e8cd32-342c-43d5-a067-d85f7b4fe40b
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_40839b5b-8afc-4000-a0e9-b9137d9c1313_0
+    space: cogShop
+  externalId: Scenario_40839b5b-8afc-4000-a0e9-b9137d9c1313:Mapping_Scenario_40839b5b-8afc-4000-a0e9-b9137d9c1313_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_40839b5b-8afc-4000-a0e9-b9137d9c1313
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_40839b5b-8afc-4000-a0e9-b9137d9c1313_1
+    space: cogShop
+  externalId: Scenario_40839b5b-8afc-4000-a0e9-b9137d9c1313:Mapping_Scenario_40839b5b-8afc-4000-a0e9-b9137d9c1313_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_40839b5b-8afc-4000-a0e9-b9137d9c1313
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_44d19dc1-b807-4ecb-848b-6a97c18ced4e_0
+    space: cogShop
+  externalId: Scenario_44d19dc1-b807-4ecb-848b-6a97c18ced4e:Mapping_Scenario_44d19dc1-b807-4ecb-848b-6a97c18ced4e_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_44d19dc1-b807-4ecb-848b-6a97c18ced4e
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_44d19dc1-b807-4ecb-848b-6a97c18ced4e_1
+    space: cogShop
+  externalId: Scenario_44d19dc1-b807-4ecb-848b-6a97c18ced4e:Mapping_Scenario_44d19dc1-b807-4ecb-848b-6a97c18ced4e_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_44d19dc1-b807-4ecb-848b-6a97c18ced4e
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_5b665e55-4874-4408-912a-44c984a3a25e_0
+    space: cogShop
+  externalId: Scenario_5b665e55-4874-4408-912a-44c984a3a25e:Mapping_Scenario_5b665e55-4874-4408-912a-44c984a3a25e_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_5b665e55-4874-4408-912a-44c984a3a25e
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_5b665e55-4874-4408-912a-44c984a3a25e_1
+    space: cogShop
+  externalId: Scenario_5b665e55-4874-4408-912a-44c984a3a25e:Mapping_Scenario_5b665e55-4874-4408-912a-44c984a3a25e_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_5b665e55-4874-4408-912a-44c984a3a25e
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_6f6dd34f-d365-4563-9ee1-f0fa363d07bd_0
+    space: cogShop
+  externalId: Scenario_6f6dd34f-d365-4563-9ee1-f0fa363d07bd:Mapping_Scenario_6f6dd34f-d365-4563-9ee1-f0fa363d07bd_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_6f6dd34f-d365-4563-9ee1-f0fa363d07bd
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_6f6dd34f-d365-4563-9ee1-f0fa363d07bd_1
+    space: cogShop
+  externalId: Scenario_6f6dd34f-d365-4563-9ee1-f0fa363d07bd:Mapping_Scenario_6f6dd34f-d365-4563-9ee1-f0fa363d07bd_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_6f6dd34f-d365-4563-9ee1-f0fa363d07bd
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_774c3e5c-1583-4e93-b63a-d71edbc487b3_0
+    space: cogShop
+  externalId: Scenario_774c3e5c-1583-4e93-b63a-d71edbc487b3:Mapping_Scenario_774c3e5c-1583-4e93-b63a-d71edbc487b3_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_774c3e5c-1583-4e93-b63a-d71edbc487b3
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_774c3e5c-1583-4e93-b63a-d71edbc487b3_1
+    space: cogShop
+  externalId: Scenario_774c3e5c-1583-4e93-b63a-d71edbc487b3:Mapping_Scenario_774c3e5c-1583-4e93-b63a-d71edbc487b3_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_774c3e5c-1583-4e93-b63a-d71edbc487b3
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_7d2ab3f6-33ac-4f5c-817a-dd4fe328497a_0
+    space: cogShop
+  externalId: Scenario_7d2ab3f6-33ac-4f5c-817a-dd4fe328497a:Mapping_Scenario_7d2ab3f6-33ac-4f5c-817a-dd4fe328497a_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_7d2ab3f6-33ac-4f5c-817a-dd4fe328497a
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_7d2ab3f6-33ac-4f5c-817a-dd4fe328497a_1
+    space: cogShop
+  externalId: Scenario_7d2ab3f6-33ac-4f5c-817a-dd4fe328497a:Mapping_Scenario_7d2ab3f6-33ac-4f5c-817a-dd4fe328497a_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_7d2ab3f6-33ac-4f5c-817a-dd4fe328497a
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_7e88dcf5-fb1d-444e-b1c3-28c54cb808e8_0
+    space: cogShop
+  externalId: Scenario_7e88dcf5-fb1d-444e-b1c3-28c54cb808e8:Mapping_Scenario_7e88dcf5-fb1d-444e-b1c3-28c54cb808e8_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_7e88dcf5-fb1d-444e-b1c3-28c54cb808e8
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_7e88dcf5-fb1d-444e-b1c3-28c54cb808e8_1
+    space: cogShop
+  externalId: Scenario_7e88dcf5-fb1d-444e-b1c3-28c54cb808e8:Mapping_Scenario_7e88dcf5-fb1d-444e-b1c3-28c54cb808e8_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_7e88dcf5-fb1d-444e-b1c3-28c54cb808e8
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_7f5dae37-0184-43ae-9af3-a6623cb49cd4_0
+    space: cogShop
+  externalId: Scenario_7f5dae37-0184-43ae-9af3-a6623cb49cd4:Mapping_Scenario_7f5dae37-0184-43ae-9af3-a6623cb49cd4_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_7f5dae37-0184-43ae-9af3-a6623cb49cd4
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_7f5dae37-0184-43ae-9af3-a6623cb49cd4_1
+    space: cogShop
+  externalId: Scenario_7f5dae37-0184-43ae-9af3-a6623cb49cd4:Mapping_Scenario_7f5dae37-0184-43ae-9af3-a6623cb49cd4_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_7f5dae37-0184-43ae-9af3-a6623cb49cd4
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_9a2fa7ca-4662-4a8e-b30e-1f100b70e710_0
+    space: cogShop
+  externalId: Scenario_9a2fa7ca-4662-4a8e-b30e-1f100b70e710:Mapping_Scenario_9a2fa7ca-4662-4a8e-b30e-1f100b70e710_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_9a2fa7ca-4662-4a8e-b30e-1f100b70e710
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_9a2fa7ca-4662-4a8e-b30e-1f100b70e710_1
+    space: cogShop
+  externalId: Scenario_9a2fa7ca-4662-4a8e-b30e-1f100b70e710:Mapping_Scenario_9a2fa7ca-4662-4a8e-b30e-1f100b70e710_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_9a2fa7ca-4662-4a8e-b30e-1f100b70e710
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_c27017ab-62f0-452e-92d2-fbadce74c435_0
+    space: cogShop
+  externalId: Scenario_c27017ab-62f0-452e-92d2-fbadce74c435:Mapping_Scenario_c27017ab-62f0-452e-92d2-fbadce74c435_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_c27017ab-62f0-452e-92d2-fbadce74c435
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_c27017ab-62f0-452e-92d2-fbadce74c435_1
+    space: cogShop
+  externalId: Scenario_c27017ab-62f0-452e-92d2-fbadce74c435:Mapping_Scenario_c27017ab-62f0-452e-92d2-fbadce74c435_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_c27017ab-62f0-452e-92d2-fbadce74c435
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_d3c3839a-d473-409e-8053-3f84c7fc97a8_0
+    space: cogShop
+  externalId: Scenario_d3c3839a-d473-409e-8053-3f84c7fc97a8:Mapping_Scenario_d3c3839a-d473-409e-8053-3f84c7fc97a8_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_d3c3839a-d473-409e-8053-3f84c7fc97a8
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_d3c3839a-d473-409e-8053-3f84c7fc97a8_1
+    space: cogShop
+  externalId: Scenario_d3c3839a-d473-409e-8053-3f84c7fc97a8:Mapping_Scenario_d3c3839a-d473-409e-8053-3f84c7fc97a8_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_d3c3839a-d473-409e-8053-3f84c7fc97a8
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_d91425b0-c77e-4fe4-a300-0bf0f599ac89_0
+    space: cogShop
+  externalId: Scenario_d91425b0-c77e-4fe4-a300-0bf0f599ac89:Mapping_Scenario_d91425b0-c77e-4fe4-a300-0bf0f599ac89_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_d91425b0-c77e-4fe4-a300-0bf0f599ac89
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_d91425b0-c77e-4fe4-a300-0bf0f599ac89_1
+    space: cogShop
+  externalId: Scenario_d91425b0-c77e-4fe4-a300-0bf0f599ac89:Mapping_Scenario_d91425b0-c77e-4fe4-a300-0bf0f599ac89_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_d91425b0-c77e-4fe4-a300-0bf0f599ac89
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_e209b82e-0bf6-4888-aec5-2ea3152d451c_0
+    space: cogShop
+  externalId: Scenario_e209b82e-0bf6-4888-aec5-2ea3152d451c:Mapping_Scenario_e209b82e-0bf6-4888-aec5-2ea3152d451c_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_e209b82e-0bf6-4888-aec5-2ea3152d451c
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_e209b82e-0bf6-4888-aec5-2ea3152d451c_1
+    space: cogShop
+  externalId: Scenario_e209b82e-0bf6-4888-aec5-2ea3152d451c:Mapping_Scenario_e209b82e-0bf6-4888-aec5-2ea3152d451c_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_e209b82e-0bf6-4888-aec5-2ea3152d451c
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_f72108c7-9076-4626-ae98-a566b254013d_0
+    space: cogShop
+  externalId: Scenario_f72108c7-9076-4626-ae98-a566b254013d:Mapping_Scenario_f72108c7-9076-4626-ae98-a566b254013d_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_f72108c7-9076-4626-ae98-a566b254013d
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_f72108c7-9076-4626-ae98-a566b254013d_1
+    space: cogShop
+  externalId: Scenario_f72108c7-9076-4626-ae98-a566b254013d:Mapping_Scenario_f72108c7-9076-4626-ae98-a566b254013d_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_f72108c7-9076-4626-ae98-a566b254013d
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_fd31a759-8686-4387-ab8c-f993945e2e8f_0
+    space: cogShop
+  externalId: Scenario_fd31a759-8686-4387-ab8c-f993945e2e8f:Mapping_Scenario_fd31a759-8686-4387-ab8c-f993945e2e8f_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_fd31a759-8686-4387-ab8c-f993945e2e8f
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_fd31a759-8686-4387-ab8c-f993945e2e8f_1
+    space: cogShop
+  externalId: Scenario_fd31a759-8686-4387-ab8c-f993945e2e8f:Mapping_Scenario_fd31a759-8686-4387-ab8c-f993945e2e8f_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_fd31a759-8686-4387-ab8c-f993945e2e8f
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
     space: cogShop
 files:
 - externalId: SHOP_Fornebu_cog_shop_files_config
@@ -9459,7 +9915,7 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Mapping_Scenario_1681c884-60a0-4107-ae63-860932fb08c6_0
+- externalId: Mapping_Scenario_08867e97-b989-4569-8baf-a4fd4a74d892_0
   instanceType: node
   sources:
   - properties:
@@ -9472,11 +9928,11 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_Scenario_1681c884-60a0-4107-ae63-860932fb08c6_0_0
+- externalId: Tr_Scenario_08867e97-b989-4569-8baf-a4fd4a74d892_0_0
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 0.75, "1440": 1}'
+      arguments: '{"0": 0.85, "1440": 1}'
       method: MULTIPLY_FROM_OFFSET
       order: 0
     source:
@@ -9484,7 +9940,7 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Mapping_Scenario_1681c884-60a0-4107-ae63-860932fb08c6_1
+- externalId: Mapping_Scenario_08867e97-b989-4569-8baf-a4fd4a74d892_1
   instanceType: node
   sources:
   - properties:
@@ -9497,11 +9953,11 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_Scenario_1681c884-60a0-4107-ae63-860932fb08c6_1_0
+- externalId: Tr_Scenario_08867e97-b989-4569-8baf-a4fd4a74d892_1_0
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 0.75, "1440": 1}'
+      arguments: '{"0": 0.85, "1440": 1}'
       method: MULTIPLY_FROM_OFFSET
       order: 0
     source:
@@ -9509,7 +9965,7 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_Scenario_1681c884-60a0-4107-ae63-860932fb08c6_1_1
+- externalId: Tr_Scenario_08867e97-b989-4569-8baf-a4fd4a74d892_1_1
   instanceType: node
   sources:
   - properties:
@@ -9521,7 +9977,7 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Mapping_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_0
+- externalId: Mapping_Scenario_14e8cd32-342c-43d5-a067-d85f7b4fe40b_0
   instanceType: node
   sources:
   - properties:
@@ -9534,11 +9990,11 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_0_0
+- externalId: Tr_Scenario_14e8cd32-342c-43d5-a067-d85f7b4fe40b_0_0
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 0, "720": 0, "1440": 0}'
+      arguments: '{"0": 2, "720": 5, "1440": 0}'
       method: ADD_FROM_OFFSET
       order: 0
     source:
@@ -9546,11 +10002,11 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_0_1
+- externalId: Tr_Scenario_14e8cd32-342c-43d5-a067-d85f7b4fe40b_0_1
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 1, "1440": 1}'
+      arguments: '{"0": 1.05, "1440": 1}'
       method: MULTIPLY_FROM_OFFSET
       order: 1
     source:
@@ -9558,7 +10014,7 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Mapping_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_1
+- externalId: Mapping_Scenario_14e8cd32-342c-43d5-a067-d85f7b4fe40b_1
   instanceType: node
   sources:
   - properties:
@@ -9571,11 +10027,11 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_1_0
+- externalId: Tr_Scenario_14e8cd32-342c-43d5-a067-d85f7b4fe40b_1_0
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 0, "720": 0, "1440": 0}'
+      arguments: '{"0": 2, "720": 5, "1440": 0}'
       method: ADD_FROM_OFFSET
       order: 0
     source:
@@ -9583,11 +10039,11 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_1_1
+- externalId: Tr_Scenario_14e8cd32-342c-43d5-a067-d85f7b4fe40b_1_1
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 1, "1440": 1}'
+      arguments: '{"0": 1.05, "1440": 1}'
       method: MULTIPLY_FROM_OFFSET
       order: 1
     source:
@@ -9595,7 +10051,7 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6_1_2
+- externalId: Tr_Scenario_14e8cd32-342c-43d5-a067-d85f7b4fe40b_1_2
   instanceType: node
   sources:
   - properties:
@@ -9607,7 +10063,69 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Mapping_Scenario_4aeff8e7-1977-4294-938b-d76256f372bf_0
+- externalId: Mapping_Scenario_40839b5b-8afc-4000-a0e9-b9137d9c1313_0
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.sale_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_40839b5b-8afc-4000-a0e9-b9137d9c1313_0_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 0.65, "1440": 1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_40839b5b-8afc-4000-a0e9-b9137d9c1313_1
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.buy_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_40839b5b-8afc-4000-a0e9-b9137d9c1313_1_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 0.65, "1440": 1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_40839b5b-8afc-4000-a0e9-b9137d9c1313_1_1
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"value": 0.01}'
+      method: ADD
+      order: 1
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_44d19dc1-b807-4ecb-848b-6a97c18ced4e_0
   instanceType: node
   sources:
   - properties:
@@ -9620,7 +10138,7 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Mapping_Scenario_4aeff8e7-1977-4294-938b-d76256f372bf_1
+- externalId: Mapping_Scenario_44d19dc1-b807-4ecb-848b-6a97c18ced4e_1
   instanceType: node
   sources:
   - properties:
@@ -9633,7 +10151,7 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_Scenario_4aeff8e7-1977-4294-938b-d76256f372bf_1_0
+- externalId: Tr_Scenario_44d19dc1-b807-4ecb-848b-6a97c18ced4e_1_0
   instanceType: node
   sources:
   - properties:
@@ -9645,7 +10163,7 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Mapping_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_0
+- externalId: Mapping_Scenario_5b665e55-4874-4408-912a-44c984a3a25e_0
   instanceType: node
   sources:
   - properties:
@@ -9658,303 +10176,7 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_0_0
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 9, "720": 17, "1440": 0}'
-      method: ADD_FROM_OFFSET
-      order: 0
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_0_1
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 1.35, "1440": 1}'
-      method: MULTIPLY_FROM_OFFSET
-      order: 1
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Mapping_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_1
-  instanceType: node
-  sources:
-  - properties:
-      aggregation: mean
-      path: market.Dayahead.buy_price
-      retrieve: RANGE
-      timeseriesExternalId: '907677'
-    source:
-      externalId: Mapping
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_1_0
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 9, "720": 17, "1440": 0}'
-      method: ADD_FROM_OFFSET
-      order: 0
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_1_1
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 1.35, "1440": 1}'
-      method: MULTIPLY_FROM_OFFSET
-      order: 1
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr_Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b_1_2
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": 0.01}'
-      method: ADD
-      order: 2
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Mapping_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_0
-  instanceType: node
-  sources:
-  - properties:
-      aggregation: mean
-      path: market.Dayahead.sale_price
-      retrieve: RANGE
-      timeseriesExternalId: '907677'
-    source:
-      externalId: Mapping
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_0_0
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 4, "720": 10, "1440": 0}'
-      method: ADD_FROM_OFFSET
-      order: 0
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_0_1
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 1.15, "1440": 1}'
-      method: MULTIPLY_FROM_OFFSET
-      order: 1
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Mapping_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_1
-  instanceType: node
-  sources:
-  - properties:
-      aggregation: mean
-      path: market.Dayahead.buy_price
-      retrieve: RANGE
-      timeseriesExternalId: '907677'
-    source:
-      externalId: Mapping
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_1_0
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 4, "720": 10, "1440": 0}'
-      method: ADD_FROM_OFFSET
-      order: 0
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_1_1
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 1.15, "1440": 1}'
-      method: MULTIPLY_FROM_OFFSET
-      order: 1
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr_Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7_1_2
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": 0.01}'
-      method: ADD
-      order: 2
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Mapping_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_0
-  instanceType: node
-  sources:
-  - properties:
-      aggregation: mean
-      path: market.Dayahead.sale_price
-      retrieve: RANGE
-      timeseriesExternalId: '907677'
-    source:
-      externalId: Mapping
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_0_0
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 2, "720": 5, "1440": 0}'
-      method: ADD_FROM_OFFSET
-      order: 0
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_0_1
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 1.05, "1440": 1}'
-      method: MULTIPLY_FROM_OFFSET
-      order: 1
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Mapping_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_1
-  instanceType: node
-  sources:
-  - properties:
-      aggregation: mean
-      path: market.Dayahead.buy_price
-      retrieve: RANGE
-      timeseriesExternalId: '907677'
-    source:
-      externalId: Mapping
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_1_0
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 2, "720": 5, "1440": 0}'
-      method: ADD_FROM_OFFSET
-      order: 0
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_1_1
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"0": 1.05, "1440": 1}'
-      method: MULTIPLY_FROM_OFFSET
-      order: 1
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr_Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d_1_2
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": 0.01}'
-      method: ADD
-      order: 2
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Mapping_Scenario_6fca0f9a-d28d-4e29-831d-f229227c7f02_0
-  instanceType: node
-  sources:
-  - properties:
-      aggregation: mean
-      path: market.Dayahead.sale_price
-      retrieve: RANGE
-      timeseriesExternalId: '907677'
-    source:
-      externalId: Mapping
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Mapping_Scenario_6fca0f9a-d28d-4e29-831d-f229227c7f02_1
-  instanceType: node
-  sources:
-  - properties:
-      aggregation: mean
-      path: market.Dayahead.buy_price
-      retrieve: RANGE
-      timeseriesExternalId: '907677'
-    source:
-      externalId: Mapping
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr_Scenario_6fca0f9a-d28d-4e29-831d-f229227c7f02_1_0
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value": 0.01}'
-      method: ADD
-      order: 0
-    source:
-      externalId: Transformation
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Mapping_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_0
-  instanceType: node
-  sources:
-  - properties:
-      aggregation: mean
-      path: market.Dayahead.sale_price
-      retrieve: RANGE
-      timeseriesExternalId: '907677'
-    source:
-      externalId: Mapping
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_0_0
+- externalId: Tr_Scenario_5b665e55-4874-4408-912a-44c984a3a25e_0_0
   instanceType: node
   sources:
   - properties:
@@ -9966,7 +10188,7 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_0_1
+- externalId: Tr_Scenario_5b665e55-4874-4408-912a-44c984a3a25e_0_1
   instanceType: node
   sources:
   - properties:
@@ -9978,7 +10200,7 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Mapping_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_1
+- externalId: Mapping_Scenario_5b665e55-4874-4408-912a-44c984a3a25e_1
   instanceType: node
   sources:
   - properties:
@@ -9991,7 +10213,7 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_1_0
+- externalId: Tr_Scenario_5b665e55-4874-4408-912a-44c984a3a25e_1_0
   instanceType: node
   sources:
   - properties:
@@ -10003,7 +10225,7 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_1_1
+- externalId: Tr_Scenario_5b665e55-4874-4408-912a-44c984a3a25e_1_1
   instanceType: node
   sources:
   - properties:
@@ -10015,7 +10237,7 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322_1_2
+- externalId: Tr_Scenario_5b665e55-4874-4408-912a-44c984a3a25e_1_2
   instanceType: node
   sources:
   - properties:
@@ -10027,7 +10249,7 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Mapping_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_0
+- externalId: Mapping_Scenario_6f6dd34f-d365-4563-9ee1-f0fa363d07bd_0
   instanceType: node
   sources:
   - properties:
@@ -10040,11 +10262,11 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_0_0
+- externalId: Tr_Scenario_6f6dd34f-d365-4563-9ee1-f0fa363d07bd_0_0
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 6, "720": 11, "1440": 0}'
+      arguments: '{"0": 0, "720": 0, "1440": 0}'
       method: ADD_FROM_OFFSET
       order: 0
     source:
@@ -10052,11 +10274,11 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_0_1
+- externalId: Tr_Scenario_6f6dd34f-d365-4563-9ee1-f0fa363d07bd_0_1
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 1.25, "1440": 1}'
+      arguments: '{"0": 1, "1440": 1}'
       method: MULTIPLY_FROM_OFFSET
       order: 1
     source:
@@ -10064,7 +10286,7 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Mapping_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_1
+- externalId: Mapping_Scenario_6f6dd34f-d365-4563-9ee1-f0fa363d07bd_1
   instanceType: node
   sources:
   - properties:
@@ -10077,11 +10299,11 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_1_0
+- externalId: Tr_Scenario_6f6dd34f-d365-4563-9ee1-f0fa363d07bd_1_0
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 6, "720": 11, "1440": 0}'
+      arguments: '{"0": 0, "720": 0, "1440": 0}'
       method: ADD_FROM_OFFSET
       order: 0
     source:
@@ -10089,11 +10311,11 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_1_1
+- externalId: Tr_Scenario_6f6dd34f-d365-4563-9ee1-f0fa363d07bd_1_1
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 1.25, "1440": 1}'
+      arguments: '{"0": 1, "1440": 1}'
       method: MULTIPLY_FROM_OFFSET
       order: 1
     source:
@@ -10101,7 +10323,7 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b_1_2
+- externalId: Tr_Scenario_6f6dd34f-d365-4563-9ee1-f0fa363d07bd_1_2
   instanceType: node
   sources:
   - properties:
@@ -10113,7 +10335,7 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Mapping_Scenario_86088339-9d84-4a4f-b76c-92a322745469_0
+- externalId: Mapping_Scenario_774c3e5c-1583-4e93-b63a-d71edbc487b3_0
   instanceType: node
   sources:
   - properties:
@@ -10126,7 +10348,479 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_Scenario_86088339-9d84-4a4f-b76c-92a322745469_0_0
+- externalId: Mapping_Scenario_774c3e5c-1583-4e93-b63a-d71edbc487b3_1
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.buy_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_774c3e5c-1583-4e93-b63a-d71edbc487b3_1_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"value": 0.01}'
+      method: ADD
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_7d2ab3f6-33ac-4f5c-817a-dd4fe328497a_0
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.sale_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_7d2ab3f6-33ac-4f5c-817a-dd4fe328497a_1
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.buy_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_7d2ab3f6-33ac-4f5c-817a-dd4fe328497a_1_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"value": 0.01}'
+      method: ADD
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_7e88dcf5-fb1d-444e-b1c3-28c54cb808e8_0
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.sale_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_7e88dcf5-fb1d-444e-b1c3-28c54cb808e8_0_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 6, "720": 11, "1440": 0}'
+      method: ADD_FROM_OFFSET
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_7e88dcf5-fb1d-444e-b1c3-28c54cb808e8_0_1
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 1.25, "1440": 1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 1
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_7e88dcf5-fb1d-444e-b1c3-28c54cb808e8_1
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.buy_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_7e88dcf5-fb1d-444e-b1c3-28c54cb808e8_1_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 6, "720": 11, "1440": 0}'
+      method: ADD_FROM_OFFSET
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_7e88dcf5-fb1d-444e-b1c3-28c54cb808e8_1_1
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 1.25, "1440": 1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 1
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_7e88dcf5-fb1d-444e-b1c3-28c54cb808e8_1_2
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"value": 0.01}'
+      method: ADD
+      order: 2
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_7f5dae37-0184-43ae-9af3-a6623cb49cd4_0
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.sale_price
+      retrieve: RANGE
+      timeseriesExternalId: '907678'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_7f5dae37-0184-43ae-9af3-a6623cb49cd4_1
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.buy_price
+      retrieve: RANGE
+      timeseriesExternalId: '907678'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_7f5dae37-0184-43ae-9af3-a6623cb49cd4_1_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"value": 0.01}'
+      method: ADD
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_9a2fa7ca-4662-4a8e-b30e-1f100b70e710_0
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.sale_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_9a2fa7ca-4662-4a8e-b30e-1f100b70e710_0_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 0.75, "1440": 1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_9a2fa7ca-4662-4a8e-b30e-1f100b70e710_1
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.buy_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_9a2fa7ca-4662-4a8e-b30e-1f100b70e710_1_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 0.75, "1440": 1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_9a2fa7ca-4662-4a8e-b30e-1f100b70e710_1_1
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"value": 0.01}'
+      method: ADD
+      order: 1
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_c27017ab-62f0-452e-92d2-fbadce74c435_0
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.sale_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_c27017ab-62f0-452e-92d2-fbadce74c435_1
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.buy_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_c27017ab-62f0-452e-92d2-fbadce74c435_1_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"value": 0.01}'
+      method: ADD
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_d3c3839a-d473-409e-8053-3f84c7fc97a8_0
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.sale_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_d3c3839a-d473-409e-8053-3f84c7fc97a8_0_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 4, "720": 10, "1440": 0}'
+      method: ADD_FROM_OFFSET
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_d3c3839a-d473-409e-8053-3f84c7fc97a8_0_1
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 1.15, "1440": 1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 1
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_d3c3839a-d473-409e-8053-3f84c7fc97a8_1
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.buy_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_d3c3839a-d473-409e-8053-3f84c7fc97a8_1_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 4, "720": 10, "1440": 0}'
+      method: ADD_FROM_OFFSET
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_d3c3839a-d473-409e-8053-3f84c7fc97a8_1_1
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 1.15, "1440": 1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 1
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_d3c3839a-d473-409e-8053-3f84c7fc97a8_1_2
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"value": 0.01}'
+      method: ADD
+      order: 2
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_d91425b0-c77e-4fe4-a300-0bf0f599ac89_0
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.sale_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_d91425b0-c77e-4fe4-a300-0bf0f599ac89_0_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 9, "720": 17, "1440": 0}'
+      method: ADD_FROM_OFFSET
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_d91425b0-c77e-4fe4-a300-0bf0f599ac89_0_1
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 1.35, "1440": 1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 1
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_d91425b0-c77e-4fe4-a300-0bf0f599ac89_1
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.buy_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_d91425b0-c77e-4fe4-a300-0bf0f599ac89_1_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 9, "720": 17, "1440": 0}'
+      method: ADD_FROM_OFFSET
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_d91425b0-c77e-4fe4-a300-0bf0f599ac89_1_1
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0": 1.35, "1440": 1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 1
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_d91425b0-c77e-4fe4-a300-0bf0f599ac89_1_2
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"value": 0.01}'
+      method: ADD
+      order: 2
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_e209b82e-0bf6-4888-aec5-2ea3152d451c_0
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.sale_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_e209b82e-0bf6-4888-aec5-2ea3152d451c_0_0
   instanceType: node
   sources:
   - properties:
@@ -10138,7 +10832,7 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Mapping_Scenario_86088339-9d84-4a4f-b76c-92a322745469_1
+- externalId: Mapping_Scenario_e209b82e-0bf6-4888-aec5-2ea3152d451c_1
   instanceType: node
   sources:
   - properties:
@@ -10151,7 +10845,7 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_Scenario_86088339-9d84-4a4f-b76c-92a322745469_1_0
+- externalId: Tr_Scenario_e209b82e-0bf6-4888-aec5-2ea3152d451c_1_0
   instanceType: node
   sources:
   - properties:
@@ -10163,7 +10857,7 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_Scenario_86088339-9d84-4a4f-b76c-92a322745469_1_1
+- externalId: Tr_Scenario_e209b82e-0bf6-4888-aec5-2ea3152d451c_1_1
   instanceType: node
   sources:
   - properties:
@@ -10175,7 +10869,7 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Mapping_Scenario_a816b553-b785-42ce-b101-506a8f34fbcf_0
+- externalId: Mapping_Scenario_f72108c7-9076-4626-ae98-a566b254013d_0
   instanceType: node
   sources:
   - properties:
@@ -10188,7 +10882,45 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_Scenario_a816b553-b785-42ce-b101-506a8f34fbcf_0_0
+- externalId: Mapping_Scenario_f72108c7-9076-4626-ae98-a566b254013d_1
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.buy_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_f72108c7-9076-4626-ae98-a566b254013d_1_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"value": 0.01}'
+      method: ADD
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_fd31a759-8686-4387-ab8c-f993945e2e8f_0
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.sale_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_Scenario_fd31a759-8686-4387-ab8c-f993945e2e8f_0_0
   instanceType: node
   sources:
   - properties:
@@ -10200,7 +10932,7 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Mapping_Scenario_a816b553-b785-42ce-b101-506a8f34fbcf_1
+- externalId: Mapping_Scenario_fd31a759-8686-4387-ab8c-f993945e2e8f_1
   instanceType: node
   sources:
   - properties:
@@ -10213,7 +10945,7 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_Scenario_a816b553-b785-42ce-b101-506a8f34fbcf_1_0
+- externalId: Tr_Scenario_fd31a759-8686-4387-ab8c-f993945e2e8f_1_0
   instanceType: node
   sources:
   - properties:
@@ -10225,7 +10957,7 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_Scenario_a816b553-b785-42ce-b101-506a8f34fbcf_1_1
+- externalId: Tr_Scenario_fd31a759-8686-4387-ab8c-f993945e2e8f_1_1
   instanceType: node
   sources:
   - properties:
@@ -10237,127 +10969,845 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Mapping_Scenario_b007691a-fe64-4533-a7cd-b7b3a1cd0ada_0
+- externalId: Scenario_08867e97-b989-4569-8baf-a4fd4a74d892
   instanceType: node
   sources:
   - properties:
-      aggregation: mean
-      path: market.Dayahead.sale_price
-      retrieve: RANGE
-      timeseriesExternalId: '907677'
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
     source:
-      externalId: Mapping
+      externalId: Scenario
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_Scenario_b007691a-fe64-4533-a7cd-b7b3a1cd0ada_0_0
+- externalId: Commands_Fornebu
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 0.65, "1440": 1}'
-      method: MULTIPLY_FROM_OFFSET
-      order: 0
+      commands:
+      - set time_delay_unit MINUTE
+      - set ramping /on
+      - set stop_cost_from_start_cost /on
+      - set bypass_loss /on
+      - set mipgap 0.001000
+      - set timelimit 600.000
+      - set reserve_ramping_cost 1
+      - set fcr_n_equality /on
+      - set reserve_slack_cost 1
+      - set reserve_min_capacity 0.02
+      - set dyn_seg /on
+      - set dyn_juncloss /on
+      - penalty flag /on /plant /schedule
+      - start sim 3
+      - set code /inc
+      - start sim 4
     source:
-      externalId: Transformation
+      externalId: CommandsConfig
       space: cogShop
       type: container
   space: cogShop
-- externalId: Mapping_Scenario_b007691a-fe64-4533-a7cd-b7b3a1cd0ada_1
+- externalId: Scenario_0baea163-da70-4359-b1b3-4e438e3fc8c5
   instanceType: node
   sources:
   - properties:
-      aggregation: mean
-      path: market.Dayahead.buy_price
-      retrieve: RANGE
-      timeseriesExternalId: '907677'
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
     source:
-      externalId: Mapping
+      externalId: Scenario
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_Scenario_b007691a-fe64-4533-a7cd-b7b3a1cd0ada_1_0
+- externalId: Scenario_0c8d3ba2-efee-4c90-9ca1-aafc795b1c1b
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 0.65, "1440": 1}'
-      method: MULTIPLY_FROM_OFFSET
-      order: 0
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
     source:
-      externalId: Transformation
+      externalId: Scenario
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_Scenario_b007691a-fe64-4533-a7cd-b7b3a1cd0ada_1_1
+- externalId: Scenario_10d24bf9-3f1f-4f01-bce0-69db8dc66ccc
   instanceType: node
   sources:
   - properties:
-      arguments: '{"value": 0.01}'
-      method: ADD
-      order: 1
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
     source:
-      externalId: Transformation
+      externalId: Scenario
       space: cogShop
       type: container
   space: cogShop
-- externalId: Mapping_Scenario_b2c24eed-11d9-4c62-9f9c-36bdf765b956_0
+- externalId: Scenario_123ac02a-5f4e-4f8d-a1de-5dde3759cc85
   instanceType: node
   sources:
   - properties:
-      aggregation: mean
-      path: market.Dayahead.sale_price
-      retrieve: RANGE
-      timeseriesExternalId: '907677'
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
     source:
-      externalId: Mapping
+      externalId: Scenario
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_Scenario_b2c24eed-11d9-4c62-9f9c-36bdf765b956_0_0
+- externalId: Scenario_14e8cd32-342c-43d5-a067-d85f7b4fe40b
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 0.85, "1440": 1}'
-      method: MULTIPLY_FROM_OFFSET
-      order: 0
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
     source:
-      externalId: Transformation
+      externalId: Scenario
       space: cogShop
       type: container
   space: cogShop
-- externalId: Mapping_Scenario_b2c24eed-11d9-4c62-9f9c-36bdf765b956_1
+- externalId: Scenario_1681c884-60a0-4107-ae63-860932fb08c6
   instanceType: node
   sources:
   - properties:
-      aggregation: mean
-      path: market.Dayahead.buy_price
-      retrieve: RANGE
-      timeseriesExternalId: '907677'
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
     source:
-      externalId: Mapping
+      externalId: Scenario
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_Scenario_b2c24eed-11d9-4c62-9f9c-36bdf765b956_1_0
+- externalId: Scenario_1a30c353-67df-4e84-bf6b-3e7a41959e01
   instanceType: node
   sources:
   - properties:
-      arguments: '{"0": 0.85, "1440": 1}'
-      method: MULTIPLY_FROM_OFFSET
-      order: 0
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
     source:
-      externalId: Transformation
+      externalId: Scenario
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_Scenario_b2c24eed-11d9-4c62-9f9c-36bdf765b956_1_1
+- externalId: Scenario_1c0c01a7-1a7f-43f1-8815-76a48c942203
   instanceType: node
   sources:
   - properties:
-      arguments: '{"value": 0.01}'
-      method: ADD
-      order: 1
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
     source:
-      externalId: Transformation
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_1d160d46-1446-4bbc-b149-5e7e24a0742b
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_3aa87fe7-8e9e-4241-a80c-3d6831945362
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_40839b5b-8afc-4000-a0e9-b9137d9c1313
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_4318285f-b4d9-470a-849e-dbcdc35933c4
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_43c74f50-1464-4a65-82ad-a6301a6951a6
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_44d19dc1-b807-4ecb-848b-6a97c18ced4e
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_47ec0e4d-0002-4fc2-bb00-59da41d11a89
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_4980aa6b-9d0e-4eb6-b81c-bb1843312310
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_4aeff8e7-1977-4294-938b-d76256f372bf
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_5b665e55-4874-4408-912a-44c984a3a25e
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_5dab451a-4c08-4375-8b85-a9aa0fb83ab6
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_5dc1111d-81a5-4a35-b672-d58f54ea712b
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_651c74f3-f4c1-4a3a-837f-677e88fd41f7
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_6dbd4154-a4a8-4cdb-8016-d6616be0d67e
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_6e7df72f-0b24-49d9-943f-4ee84c17fd0d
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_6f6dd34f-d365-4563-9ee1-f0fa363d07bd
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_6fb71981-7c9e-497f-bd2b-8e18553d0946
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_6fca0f9a-d28d-4e29-831d-f229227c7f02
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_774c3e5c-1583-4e93-b63a-d71edbc487b3
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_7ce23c50-8c87-49fc-ae16-acb7073e6322
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_7d2ab3f6-33ac-4f5c-817a-dd4fe328497a
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_7e88dcf5-fb1d-444e-b1c3-28c54cb808e8
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_7f5dae37-0184-43ae-9af3-a6623cb49cd4
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_7fc7c84d-0067-4a03-9325-526a0b0fa346
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_80c1029e-5e93-4fbc-8335-400653f8f47b
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_86088339-9d84-4a4f-b76c-92a322745469
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_99646e8c-c7fe-4087-978a-da613217d7b8
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_99f3ea59-32be-4255-af83-9b57ca3683a0
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_9a2fa7ca-4662-4a8e-b30e-1f100b70e710
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_a816b553-b785-42ce-b101-506a8f34fbcf
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_b00653fc-4162-48f9-ba72-00739671b391
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_b007691a-fe64-4533-a7cd-b7b3a1cd0ada
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_b2c24eed-11d9-4c62-9f9c-36bdf765b956
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_b8abf83b-1995-4583-af29-1e078103e74a
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_c27017ab-62f0-452e-92d2-fbadce74c435
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_d0f8e8d5-a729-447b-a867-86cc3012766e
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_d3c3839a-d473-409e-8053-3f84c7fc97a8
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_d91425b0-c77e-4fe4-a300-0bf0f599ac89
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_e209b82e-0bf6-4888-aec5-2ea3152d451c
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_ec2b7e08-fa84-4876-bfe2-1a472aaaa95c
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_f72108c7-9076-4626-ae98-a566b254013d
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_fd31a759-8686-4387-ab8c-f993945e2e8f
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario_Fornebu
+    source:
+      externalId: Scenario
       space: cogShop
       type: container
   space: cogShop

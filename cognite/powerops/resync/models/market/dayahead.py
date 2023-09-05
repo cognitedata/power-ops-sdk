@@ -50,6 +50,10 @@ class DayAheadProcess(Process):
     def parse_str(cls, value) -> dict:
         return try_load_dict(value)
 
+    @property
+    def watercourses(self) -> list[str]:
+        return list({i.sequence.metadata.get("shop:watercourse") for i in self.incremental_mapping})
+
     def standardize(self) -> None:
         self.bid.standardize()
         self.incremental_mapping = self.ordering(self.incremental_mapping)

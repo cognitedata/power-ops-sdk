@@ -14,10 +14,10 @@ from cognite.powerops.clients.data_classes import (
     ScenarioMappingApply,
 )
 import cognite.powerops.cogshop1.data_classes as cogshop_v1
-from .base import DataModel, Model
-from .cdf_resources import CDFFile, CDFSequence
+from cognite.powerops.resync.models.base import DataModel, Model
+from cognite.powerops.resync.models.cdf_resources import CDFFile, CDFSequence
 from cognite.powerops.cogshop1.data_classes._core import DomainModelApply as DomainModelApplyCogShop1
-from ...clients import PowerOpsClient
+from cognite.powerops.clients.powerops_client import PowerOpsClient
 
 ExternalID = str
 
@@ -46,12 +46,16 @@ class CogShop1Asset(CogShopCore, DataModel, protected_namespaces=()):
         ContainerId("cogShop", "Mapping"): cogshop_v1.MappingApply,
         ContainerId("cogShop", "FileRef"): cogshop_v1.FileRefApply,
         ContainerId("cogShop", "Transformation"): cogshop_v1.TransformationApply,
+        ContainerId("cogShop", "Scenario"): cogshop_v1.ScenarioApply,
+        ContainerId("cogShop", "CommandsConfig"): cogshop_v1.CommandsConfigApply,
     }
     model_templates: dict[ExternalID, cogshop_v1.ModelTemplateApply] = Field(default_factory=dict)
     mappings: dict[ExternalID, cogshop_v1.MappingApply] = Field(default_factory=dict)
     transformations: dict[ExternalID, cogshop_v1.TransformationApply] = Field(default_factory=dict)
     base_mappings: list[CDFSequence] = Field(default_factory=list)
     output_definitions: list[CDFSequence] = Field(default_factory=list)
+    scenarios: dict[ExternalID, cogshop_v1.ScenarioApply] = Field(default_factory=dict)
+    commands_configs: dict[ExternalID, cogshop_v1.CommandsConfigApply] = Field(default_factory=dict)
 
     @field_validator("base_mappings", mode="after")
     def ordering_sequences(cls, value: list[CDFSequence]) -> list[CDFSequence]:
@@ -68,6 +72,8 @@ class CogShop1Asset(CogShopCore, DataModel, protected_namespaces=()):
         base_mappings = cog_shop.mappings.list(limit=-1)
         transformations = cog_shop.transformations.list(limit=-1)
         files = cog_shop.file_refs.list(limit=-1)
+        scenarios = cog_shop.scenarios.list(limit=-1)
+        commands_configs = cog_shop.commands_configs.list(limit=-1)
 
         transformation_by_id: dict[str, cogshop_v1.TransformationApply] = {t.external_id: t for t in transformations}
         mappings_by_id = {}
@@ -85,6 +91,12 @@ class CogShop1Asset(CogShopCore, DataModel, protected_namespaces=()):
             apply = cogshop_v1.MappingApply(**data)
             mappings_by_id[apply.external_id] = apply
 
+        command_configs_by_id = {}
+        for commands_config in commands_configs:
+            data = commands_config.model_dump(exclude=readme_fields)
+            apply = cogshop_v1.CommandsConfigApply(**data)
+            command_configs_by_id[apply.external_id] = apply
+
         file_by_id = {f.external_id: f for f in files}
         model_templates = {}
         for template in templates:
@@ -95,6 +107,14 @@ class CogShop1Asset(CogShopCore, DataModel, protected_namespaces=()):
             data["base_mappings"] = [mappings_by_id[m] for m in data["base_mappings"]]
             apply = cogshop_v1.ModelTemplateApply(**data)
             model_templates[apply.external_id] = apply
+
+        scenarios_by_id = {}
+        for scenario in scenarios:
+            data = scenario.model_dump(exclude=readme_fields)
+            data["mappings_override"] = [mappings_by_id[m] for m in data["mappings_override"]]
+            data["commands"] = command_configs_by_id[data["commands"]]
+            apply = cogshop_v1.ScenarioApply(**data)
+            scenarios_by_id[apply.external_id] = apply
 
         # There files and sequences are not linked to the model templates
         # (this should be done in the next version of Cogshop).
@@ -133,6 +153,8 @@ class CogShop1Asset(CogShopCore, DataModel, protected_namespaces=()):
             base_mappings=base_mappings,
             output_definitions=output_definitions,
             shop_files=shop_files,
+            scenarios=scenarios_by_id,
+            commands_configs=command_configs_by_id,
         )
 
     def standardize(self) -> None:
@@ -142,6 +164,11 @@ class CogShop1Asset(CogShopCore, DataModel, protected_namespaces=()):
         self.model_templates = self.ordering_dict(self.model_templates)
         self.mappings = self.ordering_dict(self.mappings)
         self.transformations = self.ordering_dict(self.transformations)
+        self.scenarios = self.ordering_dict(self.scenarios)
+        self.commands_configs = self.ordering_dict(self.commands_configs)
+        for scenario in self.scenarios.values():
+            scenario.mappings_override = sorted(scenario.mappings_override, key=lambda x: x.external_id)
+
         for template in self.model_templates.values():
             template.base_mappings = sorted(template.base_mappings, key=lambda x: x.external_id)
 
