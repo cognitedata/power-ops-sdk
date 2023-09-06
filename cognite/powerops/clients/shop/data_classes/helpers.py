@@ -4,6 +4,8 @@ import re
 from functools import reduce
 from typing import Any
 
+from cognite.client.utils._time import datetime_to_ms
+
 
 def format_deep_diff_path(path: str) -> str:
     """
@@ -54,3 +56,30 @@ def is_time_series_dict(data: Any) -> bool:
         and all(isinstance(k, datetime.datetime) for k in data.keys())
         and all(isinstance(v, (float, int)) for v in data.values())
     )
+
+
+def str_datetime_to_ms(str_datetime: str, str_format=None) -> int:
+    """
+    Convert a string datetime to milliseconds since epoch.
+    If no format is provided, the function will try to guess the format.
+
+    >>> str_datetime_to_ms("2021-01-01 00:00:00")
+    1609455600000
+    >>> str_datetime_to_ms("2021-01-01 00:00")
+    1609455600000
+    >>> str_datetime_to_ms("2021-01-01")
+    1609455600000
+    >>> str_datetime_to_ms("2021-01-01 00:00:00", str_format="%Y-%m-%d %H:%M:%S")
+    1609455600000
+
+    """
+    DATE_FORMAT = "%Y-%m-%d"
+    date_time_formats = {
+        0: DATE_FORMAT,
+        1: f"{DATE_FORMAT} %H:%M",
+        2: f"{DATE_FORMAT} %H:%M:%S",
+    }
+
+    if not str_format:
+        str_format = date_time_formats[str_datetime.count(":")]
+    return datetime_to_ms(datetime.datetime.strptime(str_datetime, str_format))
