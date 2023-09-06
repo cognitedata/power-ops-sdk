@@ -13,6 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.45.0] - 2023-09-05
+### Added
+* `Events` connected to shop run will set its start and time to that of the shop run.
+   If manually triggered, the source of the event will say "manual".
+
 ## [0.44.1] - 2023-09-05
 ### Fixed
 * `resync apply` fails with if there are changes in the `CogShop1Asset` models due to nodes and edges have to be
