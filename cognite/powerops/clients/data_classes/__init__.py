@@ -9,13 +9,7 @@ from cognite.powerops.clients.data_classes._bid_matrix_generators import (
     BidMatrixGeneratorApply,
     BidMatrixGeneratorList,
 )
-from cognite.powerops.clients.data_classes._cases import Case, CaseApply, CaseList
 from cognite.powerops.clients.data_classes._command_configs import CommandConfig, CommandConfigApply, CommandConfigList
-from cognite.powerops.clients.data_classes._commands_configs import (
-    CommandsConfig,
-    CommandsConfigApply,
-    CommandsConfigList,
-)
 from cognite.powerops.clients.data_classes._date_transformations import (
     DateTransformation,
     DateTransformationApply,
@@ -27,15 +21,12 @@ from cognite.powerops.clients.data_classes._day_ahead_process import (
     DayAheadProcesApply,
     DayAheadProcesList,
 )
-from cognite.powerops.clients.data_classes._file_refs import FileRef, FileRefApply, FileRefList
 from cognite.powerops.clients.data_classes._generators import Generator, GeneratorApply, GeneratorList
 from cognite.powerops.clients.data_classes._input_time_series_mappings import (
     InputTimeSeriesMapping,
     InputTimeSeriesMappingApply,
     InputTimeSeriesMappingList,
 )
-from cognite.powerops.clients.data_classes._mappings import Mapping, MappingApply, MappingList
-from cognite.powerops.clients.data_classes._model_templates import ModelTemplate, ModelTemplateApply, ModelTemplateList
 from cognite.powerops.clients.data_classes._nord_pool_markets import (
     NordPoolMarket,
     NordPoolMarketApply,
@@ -49,7 +40,6 @@ from cognite.powerops.clients.data_classes._output_containers import (
 from cognite.powerops.clients.data_classes._output_mappings import OutputMapping, OutputMappingApply, OutputMappingList
 from cognite.powerops.clients.data_classes._plants import Plant, PlantApply, PlantList
 from cognite.powerops.clients.data_classes._price_areas import PriceArea, PriceAreaApply, PriceAreaList
-from cognite.powerops.clients.data_classes._processing_logs import ProcessingLog, ProcessingLogApply, ProcessingLogList
 from cognite.powerops.clients.data_classes._production_plan_time_series import (
     ProductionPlanTimeSeries,
     ProductionPlanTimeSeriesApply,
@@ -90,11 +80,6 @@ from cognite.powerops.clients.data_classes._shop_transformations import (
     ShopTransformationApply,
     ShopTransformationList,
 )
-from cognite.powerops.clients.data_classes._transformations import (
-    Transformation,
-    TransformationApply,
-    TransformationList,
-)
 from cognite.powerops.clients.data_classes._value_transformations import (
     ValueTransformation,
     ValueTransformationApply,
@@ -109,12 +94,9 @@ from cognite.powerops.clients.data_classes._watercourse_shops import (
 
 BenchmarkBidApply.model_rebuild()
 BenchmarkProcesApply.model_rebuild()
-CaseApply.model_rebuild()
 DayAheadBidApply.model_rebuild()
 DayAheadProcesApply.model_rebuild()
 InputTimeSeriesMappingApply.model_rebuild()
-MappingApply.model_rebuild()
-ModelTemplateApply.model_rebuild()
 OutputContainerApply.model_rebuild()
 PlantApply.model_rebuild()
 PriceAreaApply.model_rebuild()
@@ -137,15 +119,9 @@ __all__ = [
     "BidMatrixGenerator",
     "BidMatrixGeneratorApply",
     "BidMatrixGeneratorList",
-    "Case",
-    "CaseApply",
-    "CaseList",
     "CommandConfig",
     "CommandConfigApply",
     "CommandConfigList",
-    "CommandsConfig",
-    "CommandsConfigApply",
-    "CommandsConfigList",
     "DateTransformation",
     "DateTransformationApply",
     "DateTransformationList",
@@ -155,21 +131,12 @@ __all__ = [
     "DayAheadProces",
     "DayAheadProcesApply",
     "DayAheadProcesList",
-    "FileRef",
-    "FileRefApply",
-    "FileRefList",
     "Generator",
     "GeneratorApply",
     "GeneratorList",
     "InputTimeSeriesMapping",
     "InputTimeSeriesMappingApply",
     "InputTimeSeriesMappingList",
-    "Mapping",
-    "MappingApply",
-    "MappingList",
-    "ModelTemplate",
-    "ModelTemplateApply",
-    "ModelTemplateList",
     "NordPoolMarket",
     "NordPoolMarketApply",
     "NordPoolMarketList",
@@ -185,9 +152,6 @@ __all__ = [
     "PriceArea",
     "PriceAreaApply",
     "PriceAreaList",
-    "ProcessingLog",
-    "ProcessingLogApply",
-    "ProcessingLogList",
     "ProductionPlanTimeSeries",
     "ProductionPlanTimeSeriesApply",
     "ProductionPlanTimeSeriesList",
@@ -215,9 +179,6 @@ __all__ = [
     "Scenario",
     "ScenarioApply",
     "ScenarioList",
-    "Scenario",
-    "ScenarioApply",
-    "ScenarioList",
     "ScenarioMapping",
     "ScenarioMappingApply",
     "ScenarioMappingList",
@@ -227,9 +188,6 @@ __all__ = [
     "ShopTransformation",
     "ShopTransformationApply",
     "ShopTransformationList",
-    "Transformation",
-    "TransformationApply",
-    "TransformationList",
     "ValueTransformation",
     "ValueTransformationApply",
     "ValueTransformationList",
