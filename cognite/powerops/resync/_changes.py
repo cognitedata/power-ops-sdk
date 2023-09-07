@@ -216,8 +216,7 @@ class ModelDifferences:
             change_count = sum(len(change.changed) for change in changes)
             report.append(f"* **{name}**: {added} added, {removed} removed, {change_count} changed")
         list_ = "\n".join(report)
-        return f"""
-{'**' if no_headers else '##'} Summary {'**' if no_headers else ''}
+        return f"""{'**' if no_headers else '##'} Summary {'**' if no_headers else ''}
 {list_ if list_ else 'No changes'}
 """
 

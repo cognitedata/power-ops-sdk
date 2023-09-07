@@ -55,6 +55,7 @@
     - floor: day
   shop_start:
     relative_time_string: tomorrow
+# This is used for testing resync apply.
 #- bid_matrix_generator: price_independent
 #  is_default_config_for_price_area: false
 #  main_scenario: scenario_1
