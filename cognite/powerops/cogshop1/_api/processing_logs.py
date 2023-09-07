@@ -4,7 +4,7 @@ from typing import Sequence, overload
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
-from cognite.client._constants import INSTANCES_LIST_LIMIT_DEFAULT
+from cognite.client._constants import DEFAULT_LIMIT_READ
 
 from cognite.powerops.cogshop1._api._core import TypeAPI
 from cognite.powerops.cogshop1.data_classes import ProcessingLog, ProcessingLogApply, ProcessingLogList
@@ -46,5 +46,5 @@ class ProcessingLogsAPI(TypeAPI[ProcessingLog, ProcessingLogApply, ProcessingLog
         else:
             return self._retrieve([(self.sources.space, ext_id) for ext_id in external_id])
 
-    def list(self, limit: int = INSTANCES_LIST_LIMIT_DEFAULT) -> ProcessingLogList:
+    def list(self, limit: int = DEFAULT_LIMIT_READ) -> ProcessingLogList:
         return self._list(limit=limit)

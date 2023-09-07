@@ -5,7 +5,7 @@ from typing import Dict, List, Sequence, Tuple, overload
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
-from cognite.client._constants import INSTANCES_LIST_LIMIT_DEFAULT
+from cognite.client._constants import DEFAULT_LIMIT_READ
 
 from cognite.powerops.cogshop1._api._core import TypeAPI
 from cognite.powerops.cogshop1.data_classes import Mapping, MappingApply, MappingList
@@ -35,7 +35,7 @@ class MappingTransformationsAPI:
             )
             return self._client.data_modeling.instances.list("edge", limit=-1, filter=f.And(is_edge_type, is_mappings))
 
-    def list(self, limit=INSTANCES_LIST_LIMIT_DEFAULT) -> dm.EdgeList:
+    def list(self, limit=DEFAULT_LIMIT_READ) -> dm.EdgeList:
         f = dm.filters
         is_edge_type = f.Equals(
             ["edge", "type"],
@@ -91,7 +91,7 @@ class MappingsAPI(TypeAPI[Mapping, MappingApply, MappingList]):
 
             return mappings
 
-    def list(self, limit: int = INSTANCES_LIST_LIMIT_DEFAULT) -> MappingList:
+    def list(self, limit: int = DEFAULT_LIMIT_READ) -> MappingList:
         mappings = self._list(limit=limit)
 
         transformation_edges = self.transformations.list(limit=-1)

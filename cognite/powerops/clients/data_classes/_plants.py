@@ -63,41 +63,59 @@ class PlantApply(DomainModelApply):
             return dm.InstancesApply(dm.NodeApplyList([]), dm.EdgeApplyList([]))
 
         sources = []
-        source = dm.NodeOrEdgeData(
-            source=dm.ContainerId("power-ops", "Plant"),
-            properties={
-                "displayName": self.display_name,
-                "feedingFee": self.feeding_fee,
-                "headDirectTimeSeries": self.head_direct_time_series,
-                "headLossFactor": self.head_loss_factor,
-                "inletLevel": self.inlet_level,
-                "name": self.name,
-                "ordering": self.ordering,
-                "outletLevel": self.outlet_level,
-                "outletLevelTimeSeries": self.outlet_level_time_series,
-                "pMax": self.p_max,
-                "pMaxTimeSeries": self.p_max_time_series,
-                "pMin": self.p_min,
-                "pMinTimeSeries": self.p_min_time_series,
-                "penstockHeadLossFactors": self.penstock_head_loss_factors,
-                "waterValue": self.water_value,
-                "watercourse": {
-                    "space": "power-ops",
-                    "externalId": self.watercourse
-                    if isinstance(self.watercourse, str)
-                    else self.watercourse.external_id,
-                },
-            },
-        )
-        sources.append(source)
+        properties = {}
+        if self.display_name is not None:
+            properties["displayName"] = self.display_name
+        if self.feeding_fee is not None:
+            properties["feedingFee"] = self.feeding_fee
+        if self.head_direct_time_series is not None:
+            properties["headDirectTimeSeries"] = self.head_direct_time_series
+        if self.head_loss_factor is not None:
+            properties["headLossFactor"] = self.head_loss_factor
+        if self.inlet_level is not None:
+            properties["inletLevel"] = self.inlet_level
+        if self.name is not None:
+            properties["name"] = self.name
+        if self.ordering is not None:
+            properties["ordering"] = self.ordering
+        if self.outlet_level is not None:
+            properties["outletLevel"] = self.outlet_level
+        if self.outlet_level_time_series is not None:
+            properties["outletLevelTimeSeries"] = self.outlet_level_time_series
+        if self.p_max is not None:
+            properties["pMax"] = self.p_max
+        if self.p_max_time_series is not None:
+            properties["pMaxTimeSeries"] = self.p_max_time_series
+        if self.p_min is not None:
+            properties["pMin"] = self.p_min
+        if self.p_min_time_series is not None:
+            properties["pMinTimeSeries"] = self.p_min_time_series
+        if self.penstock_head_loss_factors is not None:
+            properties["penstockHeadLossFactors"] = self.penstock_head_loss_factors
+        if self.water_value is not None:
+            properties["waterValue"] = self.water_value
+        if self.watercourse is not None:
+            properties["watercourse"] = {
+                "space": "power-ops",
+                "externalId": self.watercourse if isinstance(self.watercourse, str) else self.watercourse.external_id,
+            }
+        if properties:
+            source = dm.NodeOrEdgeData(
+                source=dm.ContainerId("power-ops", "Plant"),
+                properties=properties,
+            )
+            sources.append(source)
+        if sources:
+            this_node = dm.NodeApply(
+                space=self.space,
+                external_id=self.external_id,
+                existing_version=self.existing_version,
+                sources=sources,
+            )
+            nodes = [this_node]
+        else:
+            nodes = []
 
-        this_node = dm.NodeApply(
-            space=self.space,
-            external_id=self.external_id,
-            existing_version=self.existing_version,
-            sources=sources,
-        )
-        nodes = [this_node]
         edges = []
         cache.add(self.external_id)
 

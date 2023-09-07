@@ -11,7 +11,7 @@ REPO_ROOT = Path(__file__).parent.parent
 def main():
     client = get_cognite_client()
     top_level = "cognite.powerops.clients"
-    model_ids = [model.id_ for model in MODEL_BY_NAME.values()]
+    model_ids = [model.id_ for model in MODEL_BY_NAME.values() if model.id_.space == "power-ops"]
 
     generate_sdk(
         client,

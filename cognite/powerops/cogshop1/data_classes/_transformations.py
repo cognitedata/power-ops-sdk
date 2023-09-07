@@ -27,23 +27,30 @@ class TransformationApply(DomainModelApply):
             return dm.InstancesApply(dm.NodeApplyList([]), dm.EdgeApplyList([]))
 
         sources = []
-        source = dm.NodeOrEdgeData(
-            source=dm.ContainerId("cogShop", "Transformation"),
-            properties={
-                "arguments": self.arguments,
-                "method": self.method,
-                "order": self.order,
-            },
-        )
-        sources.append(source)
+        properties = {}
+        if self.arguments is not None:
+            properties["arguments"] = self.arguments
+        if self.method is not None:
+            properties["method"] = self.method
+        if self.order is not None:
+            properties["order"] = self.order
+        if properties:
+            source = dm.NodeOrEdgeData(
+                source=dm.ContainerId("cogShop", "Transformation"),
+                properties=properties,
+            )
+            sources.append(source)
+        if sources:
+            this_node = dm.NodeApply(
+                space=self.space,
+                external_id=self.external_id,
+                existing_version=self.existing_version,
+                sources=sources,
+            )
+            nodes = [this_node]
+        else:
+            nodes = []
 
-        this_node = dm.NodeApply(
-            space=self.space,
-            external_id=self.external_id,
-            existing_version=self.existing_version,
-            sources=sources,
-        )
-        nodes = [this_node]
         edges = []
         cache.add(self.external_id)
 

@@ -28,23 +28,30 @@ class BidMatrixGeneratorApply(DomainModelApply):
             return dm.InstancesApply(dm.NodeApplyList([]), dm.EdgeApplyList([]))
 
         sources = []
-        source = dm.NodeOrEdgeData(
-            source=dm.ContainerId("power-ops", "BidMatrixGenerator"),
-            properties={
-                "functionExternalId": self.function_external_id,
-                "methods": self.methods,
-                "shopPlant": self.shop_plant,
-            },
-        )
-        sources.append(source)
+        properties = {}
+        if self.function_external_id is not None:
+            properties["functionExternalId"] = self.function_external_id
+        if self.methods is not None:
+            properties["methods"] = self.methods
+        if self.shop_plant is not None:
+            properties["shopPlant"] = self.shop_plant
+        if properties:
+            source = dm.NodeOrEdgeData(
+                source=dm.ContainerId("power-ops", "BidMatrixGenerator"),
+                properties=properties,
+            )
+            sources.append(source)
+        if sources:
+            this_node = dm.NodeApply(
+                space=self.space,
+                external_id=self.external_id,
+                existing_version=self.existing_version,
+                sources=sources,
+            )
+            nodes = [this_node]
+        else:
+            nodes = []
 
-        this_node = dm.NodeApply(
-            space=self.space,
-            external_id=self.external_id,
-            existing_version=self.existing_version,
-            sources=sources,
-        )
-        nodes = [this_node]
         edges = []
         cache.add(self.external_id)
 

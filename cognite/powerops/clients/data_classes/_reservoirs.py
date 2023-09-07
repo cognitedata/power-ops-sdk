@@ -28,23 +28,30 @@ class ReservoirApply(DomainModelApply):
             return dm.InstancesApply(dm.NodeApplyList([]), dm.EdgeApplyList([]))
 
         sources = []
-        source = dm.NodeOrEdgeData(
-            source=dm.ContainerId("power-ops", "Reservoir"),
-            properties={
-                "displayName": self.display_name,
-                "name": self.name,
-                "ordering": self.ordering,
-            },
-        )
-        sources.append(source)
+        properties = {}
+        if self.display_name is not None:
+            properties["displayName"] = self.display_name
+        if self.name is not None:
+            properties["name"] = self.name
+        if self.ordering is not None:
+            properties["ordering"] = self.ordering
+        if properties:
+            source = dm.NodeOrEdgeData(
+                source=dm.ContainerId("power-ops", "Reservoir"),
+                properties=properties,
+            )
+            sources.append(source)
+        if sources:
+            this_node = dm.NodeApply(
+                space=self.space,
+                external_id=self.external_id,
+                existing_version=self.existing_version,
+                sources=sources,
+            )
+            nodes = [this_node]
+        else:
+            nodes = []
 
-        this_node = dm.NodeApply(
-            space=self.space,
-            external_id=self.external_id,
-            existing_version=self.existing_version,
-            sources=sources,
-        )
-        nodes = [this_node]
         edges = []
         cache.add(self.external_id)
 

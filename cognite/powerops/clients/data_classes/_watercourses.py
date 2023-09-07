@@ -34,26 +34,33 @@ class WatercourseApply(DomainModelApply):
             return dm.InstancesApply(dm.NodeApplyList([]), dm.EdgeApplyList([]))
 
         sources = []
-        source = dm.NodeOrEdgeData(
-            source=dm.ContainerId("power-ops", "Watercourse"),
-            properties={
-                "name": self.name,
-                "productionObligation": self.production_obligation,
-                "shop": {
-                    "space": "power-ops",
-                    "externalId": self.shop if isinstance(self.shop, str) else self.shop.external_id,
-                },
-            },
-        )
-        sources.append(source)
+        properties = {}
+        if self.name is not None:
+            properties["name"] = self.name
+        if self.production_obligation is not None:
+            properties["productionObligation"] = self.production_obligation
+        if self.shop is not None:
+            properties["shop"] = {
+                "space": "power-ops",
+                "externalId": self.shop if isinstance(self.shop, str) else self.shop.external_id,
+            }
+        if properties:
+            source = dm.NodeOrEdgeData(
+                source=dm.ContainerId("power-ops", "Watercourse"),
+                properties=properties,
+            )
+            sources.append(source)
+        if sources:
+            this_node = dm.NodeApply(
+                space=self.space,
+                external_id=self.external_id,
+                existing_version=self.existing_version,
+                sources=sources,
+            )
+            nodes = [this_node]
+        else:
+            nodes = []
 
-        this_node = dm.NodeApply(
-            space=self.space,
-            external_id=self.external_id,
-            existing_version=self.existing_version,
-            sources=sources,
-        )
-        nodes = [this_node]
         edges = []
         cache.add(self.external_id)
 

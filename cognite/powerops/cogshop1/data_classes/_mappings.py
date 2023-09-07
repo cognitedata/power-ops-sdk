@@ -35,24 +35,32 @@ class MappingApply(DomainModelApply):
             return dm.InstancesApply(dm.NodeApplyList([]), dm.EdgeApplyList([]))
 
         sources = []
-        source = dm.NodeOrEdgeData(
-            source=dm.ContainerId("cogShop", "Mapping"),
-            properties={
-                "aggregation": self.aggregation,
-                "path": self.path,
-                "retrieve": self.retrieve,
-                "timeseriesExternalId": self.timeseries_external_id,
-            },
-        )
-        sources.append(source)
+        properties = {}
+        if self.aggregation is not None:
+            properties["aggregation"] = self.aggregation
+        if self.path is not None:
+            properties["path"] = self.path
+        if self.retrieve is not None:
+            properties["retrieve"] = self.retrieve
+        if self.timeseries_external_id is not None:
+            properties["timeseriesExternalId"] = self.timeseries_external_id
+        if properties:
+            source = dm.NodeOrEdgeData(
+                source=dm.ContainerId("cogShop", "Mapping"),
+                properties=properties,
+            )
+            sources.append(source)
+        if sources:
+            this_node = dm.NodeApply(
+                space=self.space,
+                external_id=self.external_id,
+                existing_version=self.existing_version,
+                sources=sources,
+            )
+            nodes = [this_node]
+        else:
+            nodes = []
 
-        this_node = dm.NodeApply(
-            space=self.space,
-            external_id=self.external_id,
-            existing_version=self.existing_version,
-            sources=sources,
-        )
-        nodes = [this_node]
         edges = []
         cache.add(self.external_id)
 

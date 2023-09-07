@@ -34,26 +34,33 @@ class CaseApply(DomainModelApply):
             return dm.InstancesApply(dm.NodeApplyList([]), dm.EdgeApplyList([]))
 
         sources = []
-        source = dm.NodeOrEdgeData(
-            source=dm.ContainerId("cogShop", "Case"),
-            properties={
-                "endTime": self.end_time,
-                "scenario": {
-                    "space": "cogShop",
-                    "externalId": self.scenario if isinstance(self.scenario, str) else self.scenario.external_id,
-                },
-                "startTime": self.start_time,
-            },
-        )
-        sources.append(source)
+        properties = {}
+        if self.end_time is not None:
+            properties["endTime"] = self.end_time
+        if self.scenario is not None:
+            properties["scenario"] = {
+                "space": "cogShop",
+                "externalId": self.scenario if isinstance(self.scenario, str) else self.scenario.external_id,
+            }
+        if self.start_time is not None:
+            properties["startTime"] = self.start_time
+        if properties:
+            source = dm.NodeOrEdgeData(
+                source=dm.ContainerId("cogShop", "Case"),
+                properties=properties,
+            )
+            sources.append(source)
+        if sources:
+            this_node = dm.NodeApply(
+                space=self.space,
+                external_id=self.external_id,
+                existing_version=self.existing_version,
+                sources=sources,
+            )
+            nodes = [this_node]
+        else:
+            nodes = []
 
-        this_node = dm.NodeApply(
-            space=self.space,
-            external_id=self.external_id,
-            existing_version=self.existing_version,
-            sources=sources,
-        )
-        nodes = [this_node]
         edges = []
         cache.add(self.external_id)
 

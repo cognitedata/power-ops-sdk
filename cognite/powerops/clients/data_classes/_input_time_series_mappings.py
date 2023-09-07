@@ -39,26 +39,36 @@ class InputTimeSeriesMappingApply(DomainModelApply):
             return dm.InstancesApply(dm.NodeApplyList([]), dm.EdgeApplyList([]))
 
         sources = []
-        source = dm.NodeOrEdgeData(
-            source=dm.ContainerId("power-ops", "InputTimeSeriesMapping"),
-            properties={
-                "aggregation": self.aggregation,
-                "cdfTimeSeries": self.cdf_time_series,
-                "retrieve": self.retrieve,
-                "shopAttributeName": self.shop_attribute_name,
-                "shopObjectName": self.shop_object_name,
-                "shopObjectType": self.shop_object_type,
-            },
-        )
-        sources.append(source)
+        properties = {}
+        if self.aggregation is not None:
+            properties["aggregation"] = self.aggregation
+        if self.cdf_time_series is not None:
+            properties["cdfTimeSeries"] = self.cdf_time_series
+        if self.retrieve is not None:
+            properties["retrieve"] = self.retrieve
+        if self.shop_attribute_name is not None:
+            properties["shopAttributeName"] = self.shop_attribute_name
+        if self.shop_object_name is not None:
+            properties["shopObjectName"] = self.shop_object_name
+        if self.shop_object_type is not None:
+            properties["shopObjectType"] = self.shop_object_type
+        if properties:
+            source = dm.NodeOrEdgeData(
+                source=dm.ContainerId("power-ops", "InputTimeSeriesMapping"),
+                properties=properties,
+            )
+            sources.append(source)
+        if sources:
+            this_node = dm.NodeApply(
+                space=self.space,
+                external_id=self.external_id,
+                existing_version=self.existing_version,
+                sources=sources,
+            )
+            nodes = [this_node]
+        else:
+            nodes = []
 
-        this_node = dm.NodeApply(
-            space=self.space,
-            external_id=self.external_id,
-            existing_version=self.existing_version,
-            sources=sources,
-        )
-        nodes = [this_node]
         edges = []
         cache.add(self.external_id)
 

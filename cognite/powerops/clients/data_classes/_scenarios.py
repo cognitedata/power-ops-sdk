@@ -35,33 +35,41 @@ class ScenarioApply(DomainModelApply):
             return dm.InstancesApply(dm.NodeApplyList([]), dm.EdgeApplyList([]))
 
         sources = []
-        source = dm.NodeOrEdgeData(
-            source=dm.ContainerId("power-ops", "Scenario"),
-            properties={
-                "commands": {
-                    "space": "power-ops",
-                    "externalId": self.commands if isinstance(self.commands, str) else self.commands.external_id,
-                },
-                "mapping": {
-                    "space": "power-ops",
-                    "externalId": self.mapping if isinstance(self.mapping, str) else self.mapping.external_id,
-                },
-                "name": self.name,
-                "template": {
-                    "space": "power-ops",
-                    "externalId": self.template if isinstance(self.template, str) else self.template.external_id,
-                },
-            },
-        )
-        sources.append(source)
+        properties = {}
+        if self.commands is not None:
+            properties["commands"] = {
+                "space": "power-ops",
+                "externalId": self.commands if isinstance(self.commands, str) else self.commands.external_id,
+            }
+        if self.mapping is not None:
+            properties["mapping"] = {
+                "space": "power-ops",
+                "externalId": self.mapping if isinstance(self.mapping, str) else self.mapping.external_id,
+            }
+        if self.name is not None:
+            properties["name"] = self.name
+        if self.template is not None:
+            properties["template"] = {
+                "space": "power-ops",
+                "externalId": self.template if isinstance(self.template, str) else self.template.external_id,
+            }
+        if properties:
+            source = dm.NodeOrEdgeData(
+                source=dm.ContainerId("power-ops", "Scenario"),
+                properties=properties,
+            )
+            sources.append(source)
+        if sources:
+            this_node = dm.NodeApply(
+                space=self.space,
+                external_id=self.external_id,
+                existing_version=self.existing_version,
+                sources=sources,
+            )
+            nodes = [this_node]
+        else:
+            nodes = []
 
-        this_node = dm.NodeApply(
-            space=self.space,
-            external_id=self.external_id,
-            existing_version=self.existing_version,
-            sources=sources,
-        )
-        nodes = [this_node]
         edges = []
         cache.add(self.external_id)
 

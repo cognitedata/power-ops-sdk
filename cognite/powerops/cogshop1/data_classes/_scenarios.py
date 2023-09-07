@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 __all__ = ["Scenario", "ScenarioApply", "ScenarioList"]
 
 
-class Scenario(DomainModel, protected_namespaces=()):
+class Scenario(DomainModel):
     space: ClassVar[str] = "cogShop"
     commands: Optional[str] = None
     extra_files: list[str] = Field([], alias="extraFiles")
@@ -25,7 +25,7 @@ class Scenario(DomainModel, protected_namespaces=()):
     name: Optional[str] = None
 
 
-class ScenarioApply(DomainModelApply, protected_namespaces=()):
+class ScenarioApply(DomainModelApply):
     space: ClassVar[str] = "cogShop"
     commands: Optional[Union["CommandsConfigApply", str]] = Field(None, repr=False)
     extra_files: list[Union["FileRefApply", str]] = Field(default_factory=list, repr=False)
@@ -38,31 +38,38 @@ class ScenarioApply(DomainModelApply, protected_namespaces=()):
             return dm.InstancesApply(dm.NodeApplyList([]), dm.EdgeApplyList([]))
 
         sources = []
-        source = dm.NodeOrEdgeData(
-            source=dm.ContainerId("cogShop", "Scenario"),
-            properties={
-                "commands": {
-                    "space": "cogShop",
-                    "externalId": self.commands if isinstance(self.commands, str) else self.commands.external_id,
-                },
-                "modelTemplate": {
-                    "space": "cogShop",
-                    "externalId": self.model_template
-                    if isinstance(self.model_template, str)
-                    else self.model_template.external_id,
-                },
-                "name": self.name,
-            },
-        )
-        sources.append(source)
+        properties = {}
+        if self.commands is not None:
+            properties["commands"] = {
+                "space": "cogShop",
+                "externalId": self.commands if isinstance(self.commands, str) else self.commands.external_id,
+            }
+        if self.model_template is not None:
+            properties["modelTemplate"] = {
+                "space": "cogShop",
+                "externalId": self.model_template
+                if isinstance(self.model_template, str)
+                else self.model_template.external_id,
+            }
+        if self.name is not None:
+            properties["name"] = self.name
+        if properties:
+            source = dm.NodeOrEdgeData(
+                source=dm.ContainerId("cogShop", "Scenario"),
+                properties=properties,
+            )
+            sources.append(source)
+        if sources:
+            this_node = dm.NodeApply(
+                space=self.space,
+                external_id=self.external_id,
+                existing_version=self.existing_version,
+                sources=sources,
+            )
+            nodes = [this_node]
+        else:
+            nodes = []
 
-        this_node = dm.NodeApply(
-            space=self.space,
-            external_id=self.external_id,
-            existing_version=self.existing_version,
-            sources=sources,
-        )
-        nodes = [this_node]
         edges = []
         cache.add(self.external_id)
 
