@@ -13,6 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.46.0] - 2023-09-07
+### Added
+* `Events` connected to shop run will set its start and time to that of the shop run.
+   If manually triggered, the source of the event will say "manual".
+
 ## [0.45.0] - 2023-09-07
 ### Added
 * Markdown output option for `powerops apply`.

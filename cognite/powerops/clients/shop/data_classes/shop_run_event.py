@@ -8,6 +8,8 @@ from uuid import uuid4
 
 from cognite.client.data_classes import Event
 
+from cognite.powerops.clients.shop.data_classes.helpers import str_datetime_to_ms
+
 
 @dataclass
 class ShopRunEvent:
@@ -18,6 +20,7 @@ class ShopRunEvent:
     """
 
     event_type: ClassVar[str] = "POWEROPS_PROCESS_REQUESTED"
+    event_subtype: ClassVar[str] = "POWEROPS_SHOP_RUN"
     process_type: ClassVar[str] = "POWEROPS_SHOP_RUN"
     watercourse: str
     starttime: str
@@ -28,13 +31,21 @@ class ShopRunEvent:
     dm_space: Optional[str] = None
     manual_run: bool = False
 
+    event_start_time: Optional[int] = None
+    event_end_time: Optional[int] = None
+    source: Optional[str] = None
+
     def __post_init__(self):
         if self.starttime:
             self.starttime = str(self.starttime)
+            self.event_start_time = str_datetime_to_ms(self.starttime)
         if self.endtime:
             self.endtime = str(self.endtime)
+            self.event_end_time = str_datetime_to_ms(self.endtime)
         if self.timeresolution:
             self.timeresolution = {str(k): v for k, v in self.timeresolution.items()}
+        if self.manual_run:
+            self.source = "manual"
 
     @cached_property
     def external_id(self) -> str:
@@ -64,7 +75,11 @@ class ShopRunEvent:
             "external_id": self.external_id,
             "data_set_id": dataset_id,
             "type": self.event_type,
+            "subtype": self.event_subtype,
             "metadata": self.metadata,
+            "start_time": self.event_start_time,
+            "end_time": self.event_end_time,
+            "source": self.source,
         }
 
     def to_event(self: ShopRunEvent, dataset_id: int) -> Event:
@@ -79,6 +94,9 @@ class ShopRunEvent:
             timeresolution=json.loads(event.metadata.get("shop:timeresolution", "null")),
             dynamic_minute_offset=event.metadata.get("shop:dynamic_minute_offset"),
             manual_run=event.metadata.get("manual_run", False),
+            event_start_time=event.start_time,
+            event_end_time=event.end_time,
+            source=event.source,
         )
         if event.external_id:
             instance.external_id = event.external_id
