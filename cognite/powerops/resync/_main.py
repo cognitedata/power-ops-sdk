@@ -135,7 +135,7 @@ def apply(
             )
 
         for diff in sorted(changed, key=_nodes_before_edges):
-            if not diff.added or not diff.changed:
+            if not diff.added and not diff.changed:
                 continue
             echo(f"Changes/Additions detected for {diff.name} in {new_model.model_name}")
             summary_count = diff.as_summary()
