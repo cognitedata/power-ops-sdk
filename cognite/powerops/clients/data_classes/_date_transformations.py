@@ -27,23 +27,30 @@ class DateTransformationApply(DomainModelApply):
             return dm.InstancesApply(dm.NodeApplyList([]), dm.EdgeApplyList([]))
 
         sources = []
-        source = dm.NodeOrEdgeData(
-            source=dm.ContainerId("power-ops", "DateTransformation"),
-            properties={
-                "args": self.args,
-                "kwargs": self.kwargs,
-                "transformation": self.transformation,
-            },
-        )
-        sources.append(source)
+        properties = {}
+        if self.args is not None:
+            properties["args"] = self.args
+        if self.kwargs is not None:
+            properties["kwargs"] = self.kwargs
+        if self.transformation is not None:
+            properties["transformation"] = self.transformation
+        if properties:
+            source = dm.NodeOrEdgeData(
+                source=dm.ContainerId("power-ops", "DateTransformation"),
+                properties=properties,
+            )
+            sources.append(source)
+        if sources:
+            this_node = dm.NodeApply(
+                space=self.space,
+                external_id=self.external_id,
+                existing_version=self.existing_version,
+                sources=sources,
+            )
+            nodes = [this_node]
+        else:
+            nodes = []
 
-        this_node = dm.NodeApply(
-            space=self.space,
-            external_id=self.external_id,
-            existing_version=self.existing_version,
-            sources=sources,
-        )
-        nodes = [this_node]
         edges = []
         cache.add(self.external_id)
 

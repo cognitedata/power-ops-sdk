@@ -36,27 +36,35 @@ class ModelTemplateApply(DomainModelApply):
             return dm.InstancesApply(dm.NodeApplyList([]), dm.EdgeApplyList([]))
 
         sources = []
-        source = dm.NodeOrEdgeData(
-            source=dm.ContainerId("cogShop", "ModelTemplate"),
-            properties={
-                "model": {
-                    "space": "cogShop",
-                    "externalId": self.model if isinstance(self.model, str) else self.model.external_id,
-                },
-                "shopVersion": self.shop_version,
-                "version": self.version,
-                "watercourse": self.watercourse,
-            },
-        )
-        sources.append(source)
+        properties = {}
+        if self.model is not None:
+            properties["model"] = {
+                "space": "cogShop",
+                "externalId": self.model if isinstance(self.model, str) else self.model.external_id,
+            }
+        if self.shop_version is not None:
+            properties["shopVersion"] = self.shop_version
+        if self.version is not None:
+            properties["version"] = self.version
+        if self.watercourse is not None:
+            properties["watercourse"] = self.watercourse
+        if properties:
+            source = dm.NodeOrEdgeData(
+                source=dm.ContainerId("cogShop", "ModelTemplate"),
+                properties=properties,
+            )
+            sources.append(source)
+        if sources:
+            this_node = dm.NodeApply(
+                space=self.space,
+                external_id=self.external_id,
+                existing_version=self.existing_version,
+                sources=sources,
+            )
+            nodes = [this_node]
+        else:
+            nodes = []
 
-        this_node = dm.NodeApply(
-            space=self.space,
-            external_id=self.external_id,
-            existing_version=self.existing_version,
-            sources=sources,
-        )
-        nodes = [this_node]
         edges = []
         cache.add(self.external_id)
 

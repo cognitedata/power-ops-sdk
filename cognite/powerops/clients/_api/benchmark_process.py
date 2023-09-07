@@ -5,7 +5,7 @@ from typing import Dict, List, Sequence, Tuple, overload
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
-from cognite.client._constants import INSTANCES_LIST_LIMIT_DEFAULT
+from cognite.client._constants import DEFAULT_LIMIT_READ
 
 from cognite.powerops.clients._api._core import TypeAPI
 from cognite.powerops.clients.data_classes import BenchmarkProces, BenchmarkProcesApply, BenchmarkProcesList
@@ -39,7 +39,7 @@ class BenchmarkProcesProductionPlanTimeSeriesAPI:
                 "edge", limit=-1, filter=f.And(is_edge_type, is_benchmark_process)
             )
 
-    def list(self, limit=INSTANCES_LIST_LIMIT_DEFAULT) -> dm.EdgeList:
+    def list(self, limit=DEFAULT_LIMIT_READ) -> dm.EdgeList:
         f = dm.filters
         is_edge_type = f.Equals(
             ["edge", "type"],
@@ -97,7 +97,7 @@ class BenchmarkProcessAPI(TypeAPI[BenchmarkProces, BenchmarkProcesApply, Benchma
 
             return benchmark_process
 
-    def list(self, limit: int = INSTANCES_LIST_LIMIT_DEFAULT) -> BenchmarkProcesList:
+    def list(self, limit: int = DEFAULT_LIMIT_READ) -> BenchmarkProcesList:
         benchmark_process = self._list(limit=limit)
 
         production_plan_time_series_edges = self.production_plan_time_series.list(limit=-1)

@@ -5,7 +5,7 @@ from typing import Dict, List, Sequence, Tuple, overload
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
-from cognite.client._constants import INSTANCES_LIST_LIMIT_DEFAULT
+from cognite.client._constants import DEFAULT_LIMIT_READ
 
 from cognite.powerops.clients._api._core import TypeAPI
 from cognite.powerops.clients.data_classes import ScenarioMapping, ScenarioMappingApply, ScenarioMappingList
@@ -39,7 +39,7 @@ class ScenarioMappingMappingOverridesAPI:
                 "edge", limit=-1, filter=f.And(is_edge_type, is_scenario_mappings)
             )
 
-    def list(self, limit=INSTANCES_LIST_LIMIT_DEFAULT) -> dm.EdgeList:
+    def list(self, limit=DEFAULT_LIMIT_READ) -> dm.EdgeList:
         f = dm.filters
         is_edge_type = f.Equals(
             ["edge", "type"],
@@ -95,7 +95,7 @@ class ScenarioMappingsAPI(TypeAPI[ScenarioMapping, ScenarioMappingApply, Scenari
 
             return scenario_mappings
 
-    def list(self, limit: int = INSTANCES_LIST_LIMIT_DEFAULT) -> ScenarioMappingList:
+    def list(self, limit: int = DEFAULT_LIMIT_READ) -> ScenarioMappingList:
         scenario_mappings = self._list(limit=limit)
 
         mapping_override_edges = self.mapping_overrides.list(limit=-1)

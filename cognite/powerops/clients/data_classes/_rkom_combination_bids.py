@@ -28,23 +28,30 @@ class RKOMCombinationBidApply(DomainModelApply):
             return dm.InstancesApply(dm.NodeApplyList([]), dm.EdgeApplyList([]))
 
         sources = []
-        source = dm.NodeOrEdgeData(
-            source=dm.ContainerId("power-ops", "RKOMCombinationBid"),
-            properties={
-                "auction": self.auction,
-                "name": self.name,
-                "rkomBidConfigs": self.rkom_bid_configs,
-            },
-        )
-        sources.append(source)
+        properties = {}
+        if self.auction is not None:
+            properties["auction"] = self.auction
+        if self.name is not None:
+            properties["name"] = self.name
+        if self.rkom_bid_configs is not None:
+            properties["rkomBidConfigs"] = self.rkom_bid_configs
+        if properties:
+            source = dm.NodeOrEdgeData(
+                source=dm.ContainerId("power-ops", "RKOMCombinationBid"),
+                properties=properties,
+            )
+            sources.append(source)
+        if sources:
+            this_node = dm.NodeApply(
+                space=self.space,
+                external_id=self.external_id,
+                existing_version=self.existing_version,
+                sources=sources,
+            )
+            nodes = [this_node]
+        else:
+            nodes = []
 
-        this_node = dm.NodeApply(
-            space=self.space,
-            external_id=self.external_id,
-            existing_version=self.existing_version,
-            sources=sources,
-        )
-        nodes = [this_node]
         edges = []
         cache.add(self.external_id)
 

@@ -32,25 +32,34 @@ class ReserveScenarioApply(DomainModelApply):
             return dm.InstancesApply(dm.NodeApplyList([]), dm.EdgeApplyList([]))
 
         sources = []
-        source = dm.NodeOrEdgeData(
-            source=dm.ContainerId("power-ops", "ReserveScenario"),
-            properties={
-                "auction": self.auction,
-                "block": self.block,
-                "product": self.product,
-                "reserveGroup": self.reserve_group,
-                "volume": self.volume,
-            },
-        )
-        sources.append(source)
+        properties = {}
+        if self.auction is not None:
+            properties["auction"] = self.auction
+        if self.block is not None:
+            properties["block"] = self.block
+        if self.product is not None:
+            properties["product"] = self.product
+        if self.reserve_group is not None:
+            properties["reserveGroup"] = self.reserve_group
+        if self.volume is not None:
+            properties["volume"] = self.volume
+        if properties:
+            source = dm.NodeOrEdgeData(
+                source=dm.ContainerId("power-ops", "ReserveScenario"),
+                properties=properties,
+            )
+            sources.append(source)
+        if sources:
+            this_node = dm.NodeApply(
+                space=self.space,
+                external_id=self.external_id,
+                existing_version=self.existing_version,
+                sources=sources,
+            )
+            nodes = [this_node]
+        else:
+            nodes = []
 
-        this_node = dm.NodeApply(
-            space=self.space,
-            external_id=self.external_id,
-            existing_version=self.existing_version,
-            sources=sources,
-        )
-        nodes = [this_node]
         edges = []
         cache.add(self.external_id)
 

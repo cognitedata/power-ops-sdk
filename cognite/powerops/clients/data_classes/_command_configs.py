@@ -23,21 +23,26 @@ class CommandConfigApply(DomainModelApply):
             return dm.InstancesApply(dm.NodeApplyList([]), dm.EdgeApplyList([]))
 
         sources = []
-        source = dm.NodeOrEdgeData(
-            source=dm.ContainerId("power-ops", "CommandConfig"),
-            properties={
-                "commands": self.commands,
-            },
-        )
-        sources.append(source)
+        properties = {}
+        if self.commands is not None:
+            properties["commands"] = self.commands
+        if properties:
+            source = dm.NodeOrEdgeData(
+                source=dm.ContainerId("power-ops", "CommandConfig"),
+                properties=properties,
+            )
+            sources.append(source)
+        if sources:
+            this_node = dm.NodeApply(
+                space=self.space,
+                external_id=self.external_id,
+                existing_version=self.existing_version,
+                sources=sources,
+            )
+            nodes = [this_node]
+        else:
+            nodes = []
 
-        this_node = dm.NodeApply(
-            space=self.space,
-            external_id=self.external_id,
-            existing_version=self.existing_version,
-            sources=sources,
-        )
-        nodes = [this_node]
         edges = []
         cache.add(self.external_id)
 

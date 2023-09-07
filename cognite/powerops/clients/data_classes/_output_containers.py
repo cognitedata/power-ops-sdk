@@ -33,23 +33,30 @@ class OutputContainerApply(DomainModelApply):
             return dm.InstancesApply(dm.NodeApplyList([]), dm.EdgeApplyList([]))
 
         sources = []
-        source = dm.NodeOrEdgeData(
-            source=dm.ContainerId("power-ops", "OutputContainer"),
-            properties={
-                "name": self.name,
-                "shopType": self.shop_type,
-                "watercourse": self.watercourse,
-            },
-        )
-        sources.append(source)
+        properties = {}
+        if self.name is not None:
+            properties["name"] = self.name
+        if self.shop_type is not None:
+            properties["shopType"] = self.shop_type
+        if self.watercourse is not None:
+            properties["watercourse"] = self.watercourse
+        if properties:
+            source = dm.NodeOrEdgeData(
+                source=dm.ContainerId("power-ops", "OutputContainer"),
+                properties=properties,
+            )
+            sources.append(source)
+        if sources:
+            this_node = dm.NodeApply(
+                space=self.space,
+                external_id=self.external_id,
+                existing_version=self.existing_version,
+                sources=sources,
+            )
+            nodes = [this_node]
+        else:
+            nodes = []
 
-        this_node = dm.NodeApply(
-            space=self.space,
-            external_id=self.external_id,
-            existing_version=self.existing_version,
-            sources=sources,
-        )
-        nodes = [this_node]
         edges = []
         cache.add(self.external_id)
 

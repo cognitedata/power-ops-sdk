@@ -41,32 +41,42 @@ class RKOMProcesApply(DomainModelApply):
             return dm.InstancesApply(dm.NodeApplyList([]), dm.EdgeApplyList([]))
 
         sources = []
-        source = dm.NodeOrEdgeData(
-            source=dm.ContainerId("power-ops", "RKOMProcess"),
-            properties={
-                "bid": {
-                    "space": "power-ops",
-                    "externalId": self.bid if isinstance(self.bid, str) else self.bid.external_id,
-                },
-                "name": self.name,
-                "plants": self.plants,
-                "processEvents": self.process_events,
-                "shop": {
-                    "space": "power-ops",
-                    "externalId": self.shop if isinstance(self.shop, str) else self.shop.external_id,
-                },
-                "timezone": self.timezone,
-            },
-        )
-        sources.append(source)
+        properties = {}
+        if self.bid is not None:
+            properties["bid"] = {
+                "space": "power-ops",
+                "externalId": self.bid if isinstance(self.bid, str) else self.bid.external_id,
+            }
+        if self.name is not None:
+            properties["name"] = self.name
+        if self.plants is not None:
+            properties["plants"] = self.plants
+        if self.process_events is not None:
+            properties["processEvents"] = self.process_events
+        if self.shop is not None:
+            properties["shop"] = {
+                "space": "power-ops",
+                "externalId": self.shop if isinstance(self.shop, str) else self.shop.external_id,
+            }
+        if self.timezone is not None:
+            properties["timezone"] = self.timezone
+        if properties:
+            source = dm.NodeOrEdgeData(
+                source=dm.ContainerId("power-ops", "RKOMProcess"),
+                properties=properties,
+            )
+            sources.append(source)
+        if sources:
+            this_node = dm.NodeApply(
+                space=self.space,
+                external_id=self.external_id,
+                existing_version=self.existing_version,
+                sources=sources,
+            )
+            nodes = [this_node]
+        else:
+            nodes = []
 
-        this_node = dm.NodeApply(
-            space=self.space,
-            external_id=self.external_id,
-            existing_version=self.existing_version,
-            sources=sources,
-        )
-        nodes = [this_node]
         edges = []
         cache.add(self.external_id)
 

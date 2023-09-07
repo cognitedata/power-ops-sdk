@@ -32,25 +32,34 @@ class OutputMappingApply(DomainModelApply):
             return dm.InstancesApply(dm.NodeApplyList([]), dm.EdgeApplyList([]))
 
         sources = []
-        source = dm.NodeOrEdgeData(
-            source=dm.ContainerId("power-ops", "OutputMapping"),
-            properties={
-                "cdfAttributeName": self.cdf_attribute_name,
-                "isStep": self.is_step,
-                "shopAttributeName": self.shop_attribute_name,
-                "shopObjectType": self.shop_object_type,
-                "unit": self.unit,
-            },
-        )
-        sources.append(source)
+        properties = {}
+        if self.cdf_attribute_name is not None:
+            properties["cdfAttributeName"] = self.cdf_attribute_name
+        if self.is_step is not None:
+            properties["isStep"] = self.is_step
+        if self.shop_attribute_name is not None:
+            properties["shopAttributeName"] = self.shop_attribute_name
+        if self.shop_object_type is not None:
+            properties["shopObjectType"] = self.shop_object_type
+        if self.unit is not None:
+            properties["unit"] = self.unit
+        if properties:
+            source = dm.NodeOrEdgeData(
+                source=dm.ContainerId("power-ops", "OutputMapping"),
+                properties=properties,
+            )
+            sources.append(source)
+        if sources:
+            this_node = dm.NodeApply(
+                space=self.space,
+                external_id=self.external_id,
+                existing_version=self.existing_version,
+                sources=sources,
+            )
+            nodes = [this_node]
+        else:
+            nodes = []
 
-        this_node = dm.NodeApply(
-            space=self.space,
-            external_id=self.external_id,
-            existing_version=self.existing_version,
-            sources=sources,
-        )
-        nodes = [this_node]
         edges = []
         cache.add(self.external_id)
 

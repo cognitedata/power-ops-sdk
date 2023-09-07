@@ -20,8 +20,8 @@ class CogShop1Client:
     CogShop1Client
 
     Generated with:
-        pygen = 0.15.3
-        cognite-sdk = 6.15.0
+        pygen = 0.17.7
+        cognite-sdk = 6.21.1
         pydantic = 2.3.0
 
     Data Model:

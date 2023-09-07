@@ -26,22 +26,28 @@ class FileRefApply(DomainModelApply):
             return dm.InstancesApply(dm.NodeApplyList([]), dm.EdgeApplyList([]))
 
         sources = []
-        source = dm.NodeOrEdgeData(
-            source=dm.ContainerId("cogShop", "FileRef"),
-            properties={
-                "fileExternalId": self.file_external_id,
-                "type": self.type,
-            },
-        )
-        sources.append(source)
+        properties = {}
+        if self.file_external_id is not None:
+            properties["fileExternalId"] = self.file_external_id
+        if self.type is not None:
+            properties["type"] = self.type
+        if properties:
+            source = dm.NodeOrEdgeData(
+                source=dm.ContainerId("cogShop", "FileRef"),
+                properties=properties,
+            )
+            sources.append(source)
+        if sources:
+            this_node = dm.NodeApply(
+                space=self.space,
+                external_id=self.external_id,
+                existing_version=self.existing_version,
+                sources=sources,
+            )
+            nodes = [this_node]
+        else:
+            nodes = []
 
-        this_node = dm.NodeApply(
-            space=self.space,
-            external_id=self.external_id,
-            existing_version=self.existing_version,
-            sources=sources,
-        )
-        nodes = [this_node]
         edges = []
         cache.add(self.external_id)
 

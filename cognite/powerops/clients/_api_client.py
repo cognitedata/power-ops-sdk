@@ -20,20 +20,20 @@ from cognite.powerops.clients._api.output_mappings import OutputMappingsAPI
 from cognite.powerops.clients._api.plants import PlantsAPI
 from cognite.powerops.clients._api.price_areas import PriceAreasAPI
 from cognite.powerops.clients._api.production_plan_time_series import ProductionPlanTimeSeriesAPI
-from cognite.powerops.clients._api.rkom_bids import RKOMBidsAPI
+from cognite.powerops.clients._api.reserve_scenarios import ReserveScenariosAPI
+from cognite.powerops.clients._api.reservoirs import ReservoirsAPI
 from cognite.powerops.clients._api.rkom_bid_combinations import RKOMBidCombinationsAPI
+from cognite.powerops.clients._api.rkom_bids import RKOMBidsAPI
 from cognite.powerops.clients._api.rkom_combination_bids import RKOMCombinationBidsAPI
 from cognite.powerops.clients._api.rkom_markets import RKOMMarketsAPI
 from cognite.powerops.clients._api.rkom_process import RKOMProcessAPI
-from cognite.powerops.clients._api.reserve_scenarios import ReserveScenariosAPI
-from cognite.powerops.clients._api.reservoirs import ReservoirsAPI
-from cognite.powerops.clients._api.scenarios import ScenariosAPI
 from cognite.powerops.clients._api.scenario_mappings import ScenarioMappingsAPI
 from cognite.powerops.clients._api.scenario_templates import ScenarioTemplatesAPI
+from cognite.powerops.clients._api.scenarios import ScenariosAPI
 from cognite.powerops.clients._api.shop_transformations import ShopTransformationsAPI
 from cognite.powerops.clients._api.value_transformations import ValueTransformationsAPI
-from cognite.powerops.clients._api.watercourses import WatercoursesAPI
 from cognite.powerops.clients._api.watercourse_shops import WatercourseShopsAPI
+from cognite.powerops.clients._api.watercourses import WatercoursesAPI
 
 
 class BenchmarkAPIs:
@@ -154,9 +154,9 @@ class PowerOpsClient:
     PowerOpsClient
 
     Generated with:
-        pygen = 0.15.2
-        cognite-sdk = 6.13.3
-        pydantic = 2.1.1
+        pygen = 0.17.7
+        cognite-sdk = 6.21.1
+        pydantic = 2.3.0
 
     """
 
@@ -168,6 +168,7 @@ class PowerOpsClient:
         else:
             raise ValueError(f"Expected CogniteClient or ClientConfig, got {type(config_or_client)}")
         self.benchmark = BenchmarkAPIs(client)
+        self.cog_shop = CogShopAPIs(client)
         self.cog_shop = CogShopAPIs(client)
         self.day_ahead = DayAheadAPIs(client)
         self.production = ProductionAPIs(client)

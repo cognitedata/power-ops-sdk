@@ -40,37 +40,48 @@ class ScenarioTemplateApply(DomainModelApply):
             return dm.InstancesApply(dm.NodeApplyList([]), dm.EdgeApplyList([]))
 
         sources = []
-        source = dm.NodeOrEdgeData(
-            source=dm.ContainerId("power-ops", "ScenarioTemplate"),
-            properties={
-                "baseMapping": {
-                    "space": "power-ops",
-                    "externalId": self.base_mapping
-                    if isinstance(self.base_mapping, str)
-                    else self.base_mapping.external_id,
-                },
-                "model": self.model,
-                "outputDefinitions": {
-                    "space": "power-ops",
-                    "externalId": self.output_definitions
-                    if isinstance(self.output_definitions, str)
-                    else self.output_definitions.external_id,
-                },
-                "shopFiles": self.shop_files,
-                "shopVersion": self.shop_version,
-                "templateVersion": self.template_version,
-                "watercourse": self.watercourse,
-            },
-        )
-        sources.append(source)
+        properties = {}
+        if self.base_mapping is not None:
+            properties["baseMapping"] = {
+                "space": "power-ops",
+                "externalId": self.base_mapping
+                if isinstance(self.base_mapping, str)
+                else self.base_mapping.external_id,
+            }
+        if self.model is not None:
+            properties["model"] = self.model
+        if self.output_definitions is not None:
+            properties["outputDefinitions"] = {
+                "space": "power-ops",
+                "externalId": self.output_definitions
+                if isinstance(self.output_definitions, str)
+                else self.output_definitions.external_id,
+            }
+        if self.shop_files is not None:
+            properties["shopFiles"] = self.shop_files
+        if self.shop_version is not None:
+            properties["shopVersion"] = self.shop_version
+        if self.template_version is not None:
+            properties["templateVersion"] = self.template_version
+        if self.watercourse is not None:
+            properties["watercourse"] = self.watercourse
+        if properties:
+            source = dm.NodeOrEdgeData(
+                source=dm.ContainerId("power-ops", "ScenarioTemplate"),
+                properties=properties,
+            )
+            sources.append(source)
+        if sources:
+            this_node = dm.NodeApply(
+                space=self.space,
+                external_id=self.external_id,
+                existing_version=self.existing_version,
+                sources=sources,
+            )
+            nodes = [this_node]
+        else:
+            nodes = []
 
-        this_node = dm.NodeApply(
-            space=self.space,
-            external_id=self.external_id,
-            existing_version=self.existing_version,
-            sources=sources,
-        )
-        nodes = [this_node]
         edges = []
         cache.add(self.external_id)
 

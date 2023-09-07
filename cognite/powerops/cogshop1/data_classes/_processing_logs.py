@@ -28,23 +28,30 @@ class ProcessingLogApply(DomainModelApply):
             return dm.InstancesApply(dm.NodeApplyList([]), dm.EdgeApplyList([]))
 
         sources = []
-        source = dm.NodeOrEdgeData(
-            source=dm.ContainerId("cogShop", "ProcessingLog"),
-            properties={
-                "errorMessage": self.error_message,
-                "state": self.state,
-                "timestamp": self.timestamp,
-            },
-        )
-        sources.append(source)
+        properties = {}
+        if self.error_message is not None:
+            properties["errorMessage"] = self.error_message
+        if self.state is not None:
+            properties["state"] = self.state
+        if self.timestamp is not None:
+            properties["timestamp"] = self.timestamp
+        if properties:
+            source = dm.NodeOrEdgeData(
+                source=dm.ContainerId("cogShop", "ProcessingLog"),
+                properties=properties,
+            )
+            sources.append(source)
+        if sources:
+            this_node = dm.NodeApply(
+                space=self.space,
+                external_id=self.external_id,
+                existing_version=self.existing_version,
+                sources=sources,
+            )
+            nodes = [this_node]
+        else:
+            nodes = []
 
-        this_node = dm.NodeApply(
-            space=self.space,
-            external_id=self.external_id,
-            existing_version=self.existing_version,
-            sources=sources,
-        )
-        nodes = [this_node]
         edges = []
         cache.add(self.external_id)
 

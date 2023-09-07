@@ -17,7 +17,6 @@ class Generator(DomainModel):
     p_min: Optional[float] = Field(None, alias="pMin")
     penstock: Optional[int] = None
     start_stop_cost: Optional[str] = Field(None, alias="startStopCost")
-    is_available: Optional[str] = Field(None, alias="isAvailable")
     startcost: Optional[float] = None
     turbine_efficiency_curve: Optional[str] = Field(None, alias="turbineEfficiencyCurve")
 
@@ -29,7 +28,6 @@ class GeneratorApply(DomainModelApply):
     p_min: Optional[float] = None
     penstock: Optional[int] = None
     start_stop_cost: Optional[str] = None
-    is_available: Optional[str] = None
     startcost: Optional[float] = None
     turbine_efficiency_curve: Optional[str] = None
 
@@ -38,27 +36,38 @@ class GeneratorApply(DomainModelApply):
             return dm.InstancesApply(dm.NodeApplyList([]), dm.EdgeApplyList([]))
 
         sources = []
-        source = dm.NodeOrEdgeData(
-            source=dm.ContainerId("power-ops", "Generator"),
-            properties={
-                "generatorEfficiencyCurve": self.generator_efficiency_curve,
-                "name": self.name,
-                "pMin": self.p_min,
-                "penstock": self.penstock,
-                "startStopCost": self.start_stop_cost,
-                "startcost": self.startcost,
-                "turbineEfficiencyCurve": self.turbine_efficiency_curve,
-            },
-        )
-        sources.append(source)
+        properties = {}
+        if self.generator_efficiency_curve is not None:
+            properties["generatorEfficiencyCurve"] = self.generator_efficiency_curve
+        if self.name is not None:
+            properties["name"] = self.name
+        if self.p_min is not None:
+            properties["pMin"] = self.p_min
+        if self.penstock is not None:
+            properties["penstock"] = self.penstock
+        if self.start_stop_cost is not None:
+            properties["startStopCost"] = self.start_stop_cost
+        if self.startcost is not None:
+            properties["startcost"] = self.startcost
+        if self.turbine_efficiency_curve is not None:
+            properties["turbineEfficiencyCurve"] = self.turbine_efficiency_curve
+        if properties:
+            source = dm.NodeOrEdgeData(
+                source=dm.ContainerId("power-ops", "Generator"),
+                properties=properties,
+            )
+            sources.append(source)
+        if sources:
+            this_node = dm.NodeApply(
+                space=self.space,
+                external_id=self.external_id,
+                existing_version=self.existing_version,
+                sources=sources,
+            )
+            nodes = [this_node]
+        else:
+            nodes = []
 
-        this_node = dm.NodeApply(
-            space=self.space,
-            external_id=self.external_id,
-            existing_version=self.existing_version,
-            sources=sources,
-        )
-        nodes = [this_node]
         edges = []
         cache.add(self.external_id)
 

@@ -49,32 +49,45 @@ class DayAheadBidApply(DomainModelApply):
             return dm.InstancesApply(dm.NodeApplyList([]), dm.EdgeApplyList([]))
 
         sources = []
-        source = dm.NodeOrEdgeData(
-            source=dm.ContainerId("power-ops", "DayAheadBid"),
-            properties={
-                "bidMatrixGeneratorConfigExternalId": self.bid_matrix_generator_config_external_id,
-                "bidProcessConfigurationName": self.bid_process_configuration_name,
-                "isDefaultConfigForPriceArea": self.is_default_config_for_price_area,
-                "mainScenario": self.main_scenario,
-                "market": {
-                    "space": "power-ops",
-                    "externalId": self.market if isinstance(self.market, str) else self.market.external_id,
-                },
-                "name": self.name,
-                "noShop": self.no_shop,
-                "priceArea": self.price_area,
-                "watercourse": self.watercourse,
-            },
-        )
-        sources.append(source)
+        properties = {}
+        if self.bid_matrix_generator_config_external_id is not None:
+            properties["bidMatrixGeneratorConfigExternalId"] = self.bid_matrix_generator_config_external_id
+        if self.bid_process_configuration_name is not None:
+            properties["bidProcessConfigurationName"] = self.bid_process_configuration_name
+        if self.is_default_config_for_price_area is not None:
+            properties["isDefaultConfigForPriceArea"] = self.is_default_config_for_price_area
+        if self.main_scenario is not None:
+            properties["mainScenario"] = self.main_scenario
+        if self.market is not None:
+            properties["market"] = {
+                "space": "power-ops",
+                "externalId": self.market if isinstance(self.market, str) else self.market.external_id,
+            }
+        if self.name is not None:
+            properties["name"] = self.name
+        if self.no_shop is not None:
+            properties["noShop"] = self.no_shop
+        if self.price_area is not None:
+            properties["priceArea"] = self.price_area
+        if self.watercourse is not None:
+            properties["watercourse"] = self.watercourse
+        if properties:
+            source = dm.NodeOrEdgeData(
+                source=dm.ContainerId("power-ops", "DayAheadBid"),
+                properties=properties,
+            )
+            sources.append(source)
+        if sources:
+            this_node = dm.NodeApply(
+                space=self.space,
+                external_id=self.external_id,
+                existing_version=self.existing_version,
+                sources=sources,
+            )
+            nodes = [this_node]
+        else:
+            nodes = []
 
-        this_node = dm.NodeApply(
-            space=self.space,
-            external_id=self.external_id,
-            existing_version=self.existing_version,
-            sources=sources,
-        )
-        nodes = [this_node]
         edges = []
         cache.add(self.external_id)
 
