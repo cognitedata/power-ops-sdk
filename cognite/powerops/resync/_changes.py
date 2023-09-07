@@ -218,8 +218,7 @@ class ModelDifferences:
         list_ = "\n".join(report)
         return f"""
 {'**' if no_headers else '##'} Summary {'**' if no_headers else ''}
-
-{list_}
+{list_ if list_ else 'No changes'}
 """
 
 

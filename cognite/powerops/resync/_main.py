@@ -74,6 +74,7 @@ def apply(
     model_names: list[str] | str | None = None,
     echo: Optional[Callable[[Any], None]] = None,
     auto_yes: bool = False,
+    verbose: bool = False,
 ) -> ModelDifferences:
     echo = echo or print
     client = get_powerops_client()
@@ -104,23 +105,27 @@ def apply(
             if diff.group == "Domain":
                 continue
             if len(diff.unchanged) == diff.total:
-                echo(f"No changes detected for {diff.name} in {new_model.model_name}")
+                if verbose:
+                    echo(f"No changes detected for {diff.name} in {new_model.model_name}")
                 continue
             elif diff.name == "timeseries":
-                echo("Found timeseries changes, skipping. These are not updated by resync")
+                if verbose:
+                    echo("Found timeseries changes, skipping. These are not updated by resync")
                 continue
             changed.append(diff)
 
         for diff in sorted(changed, key=_edges_before_nodes):
             if not diff.removed:
                 continue
-            echo(f"Removals detected for {diff.name} in {new_model.model_name}")
-            echo(f"Remove count: {diff.as_summary().removed}")
-            diff_ids = diff.as_ids(5)
-            echo(f"Sample removed for {diff_ids.name}: {diff_ids.removed}")
+            if verbose:
+                echo(f"Removals detected for {diff.name} in {new_model.model_name}")
+                echo(f"Remove count: {diff.as_summary().removed}")
+                diff_ids = diff.as_ids(5)
+                echo(f"Sample removed for {diff_ids.name}: {diff_ids.removed}")
             ans = "y" if auto_yes else input("Continue? (y/n)")
             if ans.lower() != "y":
-                echo("Aborting")
+                if verbose:
+                    echo("Aborting")
                 continue
 
             api = get_cognite_api(client.cdf, diff.name, new_sequences_by_id, new_files_by_id)
@@ -129,28 +134,36 @@ def apply(
                     r.as_id() if isinstance(r, InstanceCore) else r.external_id for r in diff.removed if r.external_id
                 ]
             )
-            echo(f"Deleted {len(diff.removed)} of {diff.name}")
+            if verbose:
+                echo(f"Deleted {len(diff.removed)} of {diff.name}")
             written_model_changes.changes[diff.name] = FieldDifference(
-                group=diff.group, name=diff.name, added=[], removed=diff.removed, changed=[], unchanged=diff.unchanged
+                group=diff.group,
+                name=diff.name,
+                added=[],
+                removed=diff.removed.copy(),
+                changed=[],
+                unchanged=diff.unchanged,
             )
 
         for diff in sorted(changed, key=_nodes_before_edges):
             if not diff.added and not diff.changed:
                 continue
-            echo(f"Changes/Additions detected for {diff.name} in {new_model.model_name}")
-            summary_count = diff.as_summary()
-            echo(f"Change count: {summary_count.changed}")
-            echo(f"Addition count: {summary_count.added}")
+            if verbose:
+                echo(f"Changes/Additions detected for {diff.name} in {new_model.model_name}")
+                summary_count = diff.as_summary()
+                echo(f"Change count: {summary_count.changed}")
+                echo(f"Addition count: {summary_count.added}")
             diff_ids = diff.as_ids(5)
-            if diff_ids.changed:
+            if diff_ids.changed and verbose:
                 echo(f"Sample changed for {diff_ids.name}:")
                 for change in diff.changed[:3]:
                     echo(change.changed_fields)
-            if diff_ids.added:
+            if diff_ids.added and verbose:
                 echo(f"Sample added for {diff_ids.name}: {diff_ids.added}")
             ans = "y" if auto_yes else input("Continue? (y/n)")
             if ans.lower() != "y":
-                echo("Aborting")
+                if verbose:
+                    echo("Aborting")
                 continue
 
             diff.set_set_dataset(write_dataset)
@@ -158,7 +171,8 @@ def apply(
 
             if diff.added:
                 api.create(diff.added)
-                echo(f"Created {len(diff.added)} of {diff.name}")
+                if verbose:
+                    echo(f"Created {len(diff.added)} of {diff.name}")
                 if diff.name in written_model_changes:
                     written_model_changes[diff.name].added.extend(diff.added)
                 else:
@@ -170,19 +184,21 @@ def apply(
                 updates = [c.new for c in diff.changed if not c.is_changed_content]
                 if updates:
                     api.upsert(updates, mode="replace")
-                    echo(f"Updated {len(updates)} of {diff.name}")
+                    if verbose:
+                        echo(f"Updated {len(updates)} of {diff.name}")
                 content_updates = [c.new for c in diff.changed if c.is_changed_content]
                 if content_updates:
                     api.delete([c.external_id for c in content_updates if c.external_id])
                     api.create(content_updates)
-                    echo(f"Updated {len(content_updates)} of {diff.name} with content")
+                    if verbose:
+                        echo(f"Updated {len(content_updates)} of {diff.name} with content")
                 if diff.name in written_model_changes:
                     written_model_changes[diff.name].changed.extend(diff.changed)
                 else:
                     written_model_changes[diff.name] = FieldDifference(
                         group=diff.group, name=diff.name, added=[], removed=[], changed=diff.changed, unchanged=[]
                     )
-            written_changes.models.append(written_model_changes)
+        written_changes.models.append(written_model_changes)
     return written_changes
 
 

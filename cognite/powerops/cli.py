@@ -108,10 +108,11 @@ def apply(
     ),
     auto_yes: bool = typer.Option(False, "--yes", "-y", help="Auto confirm all prompts"),
     format: str = typer.Option(default=None, help="The format of the output. Available formats: markdown"),
+    verbose: bool = typer.Option(False, "--verbose", "-v", help="Whether to print verbose output"),
 ):
     log.info(f"Running apply on configuration files located in {path}")
 
-    changed = resync.apply(path, market, model_names=models, echo=log.info, auto_yes=auto_yes)
+    changed = resync.apply(path, market, model_names=models, echo=log.info, auto_yes=auto_yes, verbose=verbose)
     if format == "markdown":
         typer.echo(changed.as_markdown_summary())
 

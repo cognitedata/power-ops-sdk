@@ -55,3 +55,11 @@
     - floor: day
   shop_start:
     relative_time_string: tomorrow
+#- bid_matrix_generator: price_independent
+#  is_default_config_for_price_area: false
+#  main_scenario: scenario_1
+#  name: my_dummy_price_independent_NO2
+#  price_area_name: NO2
+#  price_scenarios:
+#    - rename: scenario_1
+#      id: scenario_10
