@@ -1,7 +1,7 @@
 import pytest
 
-from cognite.powerops.clients.powerops_client import get_powerops_client
-from cognite.powerops.clients.powerops_client import PowerOpsClient
+from cognite.powerops.client.powerops_client import get_powerops_client
+from cognite.powerops.client.powerops_client import PowerOpsClient
 from pathlib import Path
 from tests.constants import REPO_ROOT
 from tests.utils import chdir

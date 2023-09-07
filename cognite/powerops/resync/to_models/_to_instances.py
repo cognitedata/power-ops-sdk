@@ -7,7 +7,7 @@ transformations.
 
 from __future__ import annotations
 
-from cognite.powerops.clients.data_classes import (
+from cognite.powerops.client.data_classes import (
     DateTransformationApply,
     InputTimeSeriesMappingApply,
     ScenarioMappingApply,
@@ -83,8 +83,4 @@ def _to_value_transformation(transformation: Transformation) -> ValueTransformat
 def _to_scenario_mapping(external_id: str, name: str, time_series_mapping: TimeSeriesMapping) -> ScenarioMappingApply:
     mappings = [_to_input_timeseries_mapping(entry) for entry in time_series_mapping]
 
-    return ScenarioMappingApply(
-        external_id=external_id,
-        mapping_override=mappings,
-        name=name,
-    )
+    return ScenarioMappingApply(external_id=external_id, mapping_override=mappings, name=name)

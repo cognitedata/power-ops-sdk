@@ -1,4 +1,4 @@
-from cognite.powerops.cli import apply
+from cognite.powerops._cli import apply
 from tests.constants import REPO_ROOT
 
 

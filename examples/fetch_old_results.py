@@ -4,7 +4,7 @@ from pprint import pprint
 import yaml
 
 
-from cognite.powerops.clients.powerops_client import PowerOpsClient, get_powerops_client
+from cognite.powerops.client.powerops_client import PowerOpsClient, get_powerops_client
 from cognite.powerops.resync._logger import configure_debug_logging
 
 

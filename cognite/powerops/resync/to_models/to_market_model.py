@@ -5,7 +5,7 @@ import json
 import pandas as pd
 from cognite.client.data_classes import Sequence
 
-from cognite.powerops.clients.data_classes import (
+from cognite.powerops.client.data_classes import (
     BenchmarkBidApply,
     BenchmarkProcesApply,
     BidMatrixGeneratorApply,
@@ -101,9 +101,7 @@ def to_benchmark_data_model(configs: list[BenchmarkingConfig]) -> BenchmarkMarke
             shop=_to_shop_transformation(config.shop_start, config.shop_end),
             production_plan_time_series=[
                 ProductionPlanTimeSeriesApply(
-                    external_id=make_ext_id([name, series], ProductionPlanTimeSeriesApply),
-                    name=name,
-                    series=series,
+                    external_id=make_ext_id([name, series], ProductionPlanTimeSeriesApply), name=name, series=series
                 )
                 for name, series in config.production_plan_time_series
             ],
@@ -231,9 +229,7 @@ def to_rkom_data_model(config: MarketConfig, market_name: str) -> RKOMMarketData
 
     for process in config.rkom_bid_process:
         price_scenarios_by_name = _map_price_scenarios_by_name(
-            process.price_scenarios,
-            config.price_scenario_by_id,
-            market_name,
+            process.price_scenarios, config.price_scenario_by_id, market_name
         )
 
         incremental_mappings = []
@@ -451,8 +447,7 @@ def _to_dayahead_process(
                 endtime=str(process.shop_end or benchmarking.shop.endtime),
             ),
             bid_matrix_generator_config=CDFSequence(
-                sequence=bid_matrix_generator_sequence,
-                content=bid_matrix_generator_sequence_content,
+                sequence=bid_matrix_generator_sequence, content=bid_matrix_generator_sequence_content
             ),
             incremental_mapping=incremental_mapping_sequences,
         )
@@ -480,9 +475,7 @@ def _to_rkom_market(
 
     for config in rkom_bid_process:
         price_scenarios_by_name = _map_price_scenarios_by_name(
-            config.price_scenarios,
-            price_scenarios_by_id,
-            market_name,
+            config.price_scenarios, price_scenarios_by_id, market_name
         )
         incremental_mapping_sequences = []
         for scenario_name, price_scenario in price_scenarios_by_name.items():
@@ -526,10 +519,7 @@ def _to_rkom_market(
                 price_scenarios=json.dumps(list(price_scenarios_by_name)),
                 reserve_scenarios=str(config.reserve_scenarios),
             ),
-            shop=market_models.ShopTransformation(
-                starttime=str(config.shop_start),
-                endtime=str(config.shop_end),
-            ),
+            shop=market_models.ShopTransformation(starttime=str(config.shop_start), endtime=str(config.shop_end)),
             timezone=config.timezone,
             rkom=market_models.RKOMPlants(plants=json.dumps(sorted(config.rkom_plants))),
             incremental_mapping=incremental_mapping_sequences,

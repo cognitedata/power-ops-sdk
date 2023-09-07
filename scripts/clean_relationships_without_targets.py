@@ -1,4 +1,4 @@
-from cognite.powerops.clients.powerops_client import get_powerops_client
+from cognite.powerops.client.powerops_client import get_powerops_client
 from cognite.powerops.utils.cdf import Settings
 
 

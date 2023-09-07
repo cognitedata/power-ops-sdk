@@ -6,7 +6,7 @@ from typing import Optional
 import pandas as pd
 from cognite.client.data_classes import Sequence, TimeSeries
 
-from cognite.powerops.clients.data_classes import (
+from cognite.powerops.client.data_classes import (
     GeneratorApply,
     PlantApply,
     PriceAreaApply,
@@ -351,10 +351,7 @@ def to_production_data_model(config: ProductionConfig) -> ProductionModelDM:
 
             prod_area = str(list(attributes["prod_area"].values())[0])
             price_area_name = watercourse_config.market_to_price_area[prod_area]
-            price_area = PriceAreaApply(
-                name=price_area_name,
-                external_id=f"price_area:{price_area_name}",
-            )
+            price_area = PriceAreaApply(name=price_area_name, external_id=f"price_area:{price_area_name}")
             if price_area_name not in {a.name for a in model.price_areas}:
                 if price_area_name in config.dayahead_price_timeseries:
                     price_area.day_ahead_price = config.dayahead_price_timeseries[price_area_name]
@@ -376,21 +373,11 @@ def _create_generator_efficiency_curve(generator_attributes, generator_name, gen
     sequence = Sequence(
         external_id=f"{generator_external_id}_generator_efficiency_curve",
         name=f"{generator_name} generator efficiency curve",
-        columns=[
-            {"valueType": "DOUBLE", "externalId": x_col_name},
-            {"valueType": "DOUBLE", "externalId": y_col_name},
-        ],
+        columns=[{"valueType": "DOUBLE", "externalId": x_col_name}, {"valueType": "DOUBLE", "externalId": y_col_name}],
     )
     data = generator_attributes["gen_eff_curve"]
     efficiency_curve = CDFSequence(
-        sequence=sequence,
-        content=pd.DataFrame(
-            {
-                x_col_name: data["x"],
-                y_col_name: data["y"],
-            },
-            dtype=float,
-        ),
+        sequence=sequence, content=pd.DataFrame({x_col_name: data["x"], y_col_name: data["y"]}, dtype=float)
     )
     return efficiency_curve
 
@@ -417,10 +404,7 @@ def _create_turbine_efficency_curve(generator_attributes, generator_name, genera
         },
         dtype=float,
     )
-    turbine_efficiency_curve = CDFSequence(
-        sequence=sequence,
-        content=df,
-    )
+    turbine_efficiency_curve = CDFSequence(sequence=sequence, content=df)
     return turbine_efficiency_curve
 
 
@@ -439,9 +423,7 @@ def _get_single_value(value_or_time_series: float | dict) -> float:
 
 
 def _plant_to_inlet_reservoir_breadth_first_search(
-    plant_name: str,
-    all_connections: list[dict],
-    reservoirs: set[str],
+    plant_name: str, all_connections: list[dict], reservoirs: set[str]
 ) -> Optional[str]:
     """Search for a reservoir connected to a plant, starting from the plant and searching breadth first.
 

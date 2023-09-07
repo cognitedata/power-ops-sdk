@@ -7,7 +7,7 @@ from cognite.client import CogniteClient
 from cognite.client.data_classes.data_modeling import ContainerId
 from pydantic import Field, field_validator
 
-from cognite.powerops.clients.data_classes import (
+from cognite.powerops.client.data_classes import (
     ScenarioTemplateApply,
     ValueTransformationApply,
     OutputContainerApply,
@@ -17,7 +17,7 @@ import cognite.powerops.cogshop1.data_classes as cogshop_v1
 from cognite.powerops.resync.models.base import DataModel, Model
 from cognite.powerops.resync.models.cdf_resources import CDFFile, CDFSequence
 from cognite.powerops.cogshop1.data_classes._core import DomainModelApply as DomainModelApplyCogShop1
-from cognite.powerops.clients.powerops_client import PowerOpsClient
+from cognite.powerops.client.powerops_client import PowerOpsClient
 
 ExternalID = str
 
@@ -139,11 +139,7 @@ class CogShop1Asset(CogShopCore, DataModel, protected_namespaces=()):
             CDFSequence(sequence=s) for s in sequences if s.external_id.endswith("_output_definition")
         ]
 
-        files = cdf_client.files.list(
-            limit=-1,
-            source="PowerOps bootstrap",
-            mime_type="text/plain",
-        )
+        files = cdf_client.files.list(limit=-1, source="PowerOps bootstrap", mime_type="text/plain")
         shop_files = [CDFFile(meta=f) for f in files]
 
         return cls(

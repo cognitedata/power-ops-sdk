@@ -3,8 +3,8 @@ import os
 import tempfile
 from pprint import pprint
 
-from cognite.powerops.clients.powerops_client import PowerOpsClient, get_powerops_client
-from cognite.powerops.clients.shop.data_classes import Case
+from cognite.powerops.client.powerops_client import PowerOpsClient, get_powerops_client
+from cognite.powerops.client.shop.data_classes import Case
 from cognite.powerops.resync._logger import configure_debug_logging
 
 
@@ -20,10 +20,7 @@ def main():
 
     # get a file:
     file_meta = powerops.cdf.files.retrieve(external_id="SHOP_Fornebu_model")
-    powerops.cdf.files.download(
-        directory=tmp_dir,
-        external_id="SHOP_Fornebu_model",
-    )
+    powerops.cdf.files.download(directory=tmp_dir, external_id="SHOP_Fornebu_model")
     case_file = os.path.join(tmp_dir, file_meta.name)
 
     # load the file:

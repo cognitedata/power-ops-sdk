@@ -2,8 +2,8 @@ import logging
 
 from pprint import pprint
 
-from cognite.powerops.clients.powerops_client import PowerOpsClient, get_powerops_client
-from cognite.powerops.clients.shop.data_classes import Case
+from cognite.powerops.client.powerops_client import PowerOpsClient, get_powerops_client
+from cognite.powerops.client.shop.data_classes import Case
 
 from cognite.powerops.resync._logger import configure_debug_logging
 

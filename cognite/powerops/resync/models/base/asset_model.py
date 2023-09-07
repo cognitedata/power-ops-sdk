@@ -8,7 +8,7 @@ from typing_extensions import Self
 
 from cognite.client.data_classes import Asset, Relationship, AssetList, TimeSeries
 
-from cognite.powerops.clients.powerops_client import PowerOpsClient
+from cognite.powerops.client.powerops_client import PowerOpsClient
 from cognite.powerops.resync.models.base.asset_type import AssetType
 from cognite.powerops.resync.models.base.model import Model
 from cognite.powerops.resync.models.cdf_resources import CDFFile, CDFSequence
@@ -82,11 +82,7 @@ class AssetModel(Model, ABC, validate_assignment=True):
         return instance
 
     @classmethod
-    def from_cdf(
-        cls: TypingType[T_Asset_Model],
-        client: PowerOpsClient,
-        data_set_external_id: str,
-    ) -> T_Asset_Model:
+    def from_cdf(cls: TypingType[T_Asset_Model], client: PowerOpsClient, data_set_external_id: str) -> T_Asset_Model:
         cdf = client.cdf
         parent_assets = cls.parent_assets(include_root=False)
 

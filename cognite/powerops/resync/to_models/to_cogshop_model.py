@@ -9,7 +9,7 @@ import pandas as pd
 import yaml
 from cognite.client.data_classes import FileMetadata, Sequence
 
-from cognite.powerops.clients.data_classes import (
+from cognite.powerops.client.data_classes import (
     OutputMappingApply,
     ScenarioTemplateApply,
     ValueTransformationApply,
@@ -118,10 +118,7 @@ def _create_transformation(order: int, transformation: dict | Transformation) ->
     dumped_kwargs = json.dumps(transformation.kwargs or {}, separators=(",", ":"))
     external_id = f"Tr_{transformation.transformation.name}_{dumped_kwargs}_{order}"
     return cogshop_v1.TransformationApply(
-        external_id=external_id,
-        method=transformation.transformation.name,
-        arguments=dumped_kwargs,
-        order=order,
+        external_id=external_id, method=transformation.transformation.name, arguments=dumped_kwargs, order=order
     )
 
 
@@ -151,10 +148,7 @@ def to_cogshop_asset_model(
                 {"valueType": "STRING", "externalId": "unit"},
                 {"valueType": "STRING", "externalId": "is_step"},
             ],
-            metadata={
-                "shop:watercourse": watercourse.name,
-                "shop:type": "output_definition",
-            },
+            metadata={"shop:watercourse": watercourse.name, "shop:type": "output_definition"},
         )
         # Only default mapping is used
         df = pd.DataFrame(
@@ -169,10 +163,7 @@ def to_cogshop_asset_model(
             columns=[c["externalId"] for c in sequence.columns],
         )
 
-        output_definition = CDFSequence(
-            sequence=sequence,
-            content=df,
-        )
+        output_definition = CDFSequence(sequence=sequence, content=df)
 
         model.output_definitions.append(output_definition)
 
@@ -183,15 +174,9 @@ def to_cogshop_asset_model(
             external_id=external_id,
             description="Mapping between SHOP paths and CDF TimeSeries",
             columns=mapping.column_definitions,
-            metadata={
-                "shop:watercourse": watercourse.name,
-                "shop:type": "base_mapping",
-            },
+            metadata={"shop:watercourse": watercourse.name, "shop:type": "base_mapping"},
         )
-        output_definition = CDFSequence(
-            sequence=sequence,
-            content=mapping.to_dataframe(),
-        )
+        output_definition = CDFSequence(sequence=sequence, content=mapping.to_dataframe())
         model.base_mappings.append(output_definition)
 
         ### Model Template ###
@@ -307,11 +292,7 @@ def _to_shop_model_file(watercourse_name, model_file: Path, processed_model_file
     return _create_shop_file(
         file_content,
         external_id,
-        {
-            "shop:type": "case",
-            "shop:watercourse": watercourse_name,
-            "shop:file_name": processed_model_file.stem,
-        },
+        {"shop:type": "case", "shop:watercourse": watercourse_name, "shop:file_name": processed_model_file.stem},
     )
 
 
@@ -350,9 +331,7 @@ def _is_time_series(shop_attribute_value) -> bool:
 
 
 def _to_model_without_timeseries(
-    yaml_raw_path: str,
-    non_time_series_attributes_to_remove: set[str] | None = None,
-    encoding=None,
+    yaml_raw_path: str, non_time_series_attributes_to_remove: set[str] | None = None, encoding=None
 ) -> dict:
     non_time_series_attributes_to_remove = non_time_series_attributes_to_remove or set()
 

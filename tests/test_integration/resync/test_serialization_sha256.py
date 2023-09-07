@@ -1,7 +1,7 @@
 import pandas as pd
 import pytest
 
-from cognite.powerops.clients.powerops_client import PowerOpsClient
+from cognite.powerops.client.powerops_client import PowerOpsClient
 from cognite.powerops.resync import models
 from cognite.powerops.resync.config.resync_config import ReSyncConfig
 from cognite.powerops.resync.models.cdf_resources import CDFSequence

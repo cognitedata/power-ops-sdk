@@ -10,7 +10,7 @@ from loguru import logger
 from yaml import safe_load
 from tests.constants import SENSITIVE_TESTS, REPO_ROOT, ReSync
 from tests.utils import chdir
-from cognite.powerops.clients.powerops_client import get_powerops_client
+from cognite.powerops.client.powerops_client import get_powerops_client
 
 THIS_FOLDER = Path(__file__).resolve().parent
 PLAN = THIS_FOLDER / "plan"

@@ -2,14 +2,14 @@ from __future__ import annotations
 
 from pydantic import Field
 from typing import Type
-from cognite.powerops.clients.data_classes import (
+from cognite.powerops.client.data_classes import (
     GeneratorApply,
     PlantApply,
     PriceAreaApply,
     ReservoirApply,
     WatercourseApply,
 )
-from cognite.powerops.clients.powerops_client import PowerOpsClient
+from cognite.powerops.client.powerops_client import PowerOpsClient
 from cognite.powerops.resync.models.base import DataModel, T_Model
 from cognite.powerops.resync.models.cdf_resources import CDFSequence
 

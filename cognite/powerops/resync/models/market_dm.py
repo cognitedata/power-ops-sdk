@@ -4,7 +4,7 @@ from typing import Optional, Type
 
 from pydantic import Field
 
-from cognite.powerops.clients.data_classes import (
+from cognite.powerops.client.data_classes import (
     BenchmarkBidApply,
     BenchmarkProcesApply,
     BidMatrixGeneratorApply,
@@ -16,7 +16,7 @@ from cognite.powerops.clients.data_classes import (
     RKOMMarketApply,
     RKOMProcesApply,
 )
-from cognite.powerops.clients.powerops_client import PowerOpsClient
+from cognite.powerops.client.powerops_client import PowerOpsClient
 from cognite.powerops.resync.models.base import DataModel, T_Model
 
 ExternalID = str
