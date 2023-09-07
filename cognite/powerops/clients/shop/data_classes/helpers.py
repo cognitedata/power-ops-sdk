@@ -64,13 +64,13 @@ def str_datetime_to_ms(str_datetime: str, str_format=None) -> int:
     If no format is provided, the function will try to guess the format.
 
     >>> str_datetime_to_ms("2021-01-01 00:00:00")
-    1609455600000
+    1609459200000
     >>> str_datetime_to_ms("2021-01-01 00:00")
-    1609455600000
+    1609459200000
     >>> str_datetime_to_ms("2021-01-01")
-    1609455600000
+    1609459200000
     >>> str_datetime_to_ms("2021-01-01 00:00:00", str_format="%Y-%m-%d %H:%M:%S")
-    1609455600000
+    1609459200000
 
     """
     DATE_FORMAT = "%Y-%m-%d"
@@ -82,4 +82,7 @@ def str_datetime_to_ms(str_datetime: str, str_format=None) -> int:
 
     if not str_format:
         str_format = date_time_formats[str_datetime.count(":")]
-    return datetime_to_ms(datetime.datetime.strptime(str_datetime, str_format))
+    datetime_ = datetime.datetime.strptime(str_datetime, str_format)
+    if datetime_.tzinfo is None:
+        datetime_ = datetime_.replace(tzinfo=datetime.timezone.utc)
+    return datetime_to_ms(datetime_)
