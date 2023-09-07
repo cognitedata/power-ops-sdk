@@ -6,11 +6,7 @@ from typing import ClassVar, Callable, Iterable, Type as TypingType, Any, TypeVa
 
 from cognite.client import CogniteClient
 from cognite.client.data_classes._base import CogniteResource, CogniteResourceList
-from cognite.client.data_classes import (
-    TimeSeriesList,
-    SequenceUpdate,
-    FileMetadataUpdate,
-)
+from cognite.client.data_classes import TimeSeriesList, SequenceUpdate, FileMetadataUpdate
 from typing_extensions import Self
 
 from cognite.client.data_classes import TimeSeries
@@ -41,11 +37,7 @@ class Model(BaseModel, ABC):
         time_series.extend(self._fields_of_type(TimeSeries))
         return TimeSeriesList(time_series)
 
-    cdf_resources: ClassVar[dict[Callable, type]] = {
-        sequences: CDFSequence,
-        files: CDFFile,
-        timeseries: TimeSeries,
-    }
+    cdf_resources: ClassVar[dict[Callable, type]] = {sequences: CDFSequence, files: CDFFile, timeseries: TimeSeries}
 
     def _resource_types(self) -> Iterable[ResourceType]:
         yield from self._fields_of_type(ResourceType)
@@ -101,11 +93,7 @@ class Model(BaseModel, ABC):
 
     @classmethod
     @abc.abstractmethod
-    def from_cdf(
-        cls: TypingType[T_Model],
-        client: PowerOpsClient,
-        data_set_external_id: str,
-    ) -> T_Model:
+    def from_cdf(cls: TypingType[T_Model], client: PowerOpsClient, data_set_external_id: str) -> T_Model:
         ...
 
     @abc.abstractmethod
@@ -140,16 +128,11 @@ class Model(BaseModel, ABC):
             current_items = function(current_reloaded)
             new_items = function(new_reloaded)
 
-            diff = self._find_diffs(
-                current_items,
-                new_items,
-                "CDF",
-                function.__name__,
-            )
+            diff = self._find_diffs(current_items, new_items, "CDF", function.__name__)
 
             diffs.append(diff)
 
-        return ModelDifference(name=self.model_name, changes=diffs)
+        return ModelDifference(name=self.model_name, changes={d.name: d for d in diffs})
 
     @staticmethod
     def _find_diffs(
@@ -206,12 +189,7 @@ class Model(BaseModel, ABC):
                 changed.append(Change(last=current, new=new))
 
         return FieldDifference(
-            group=group,
-            name=field_name,
-            added=added,
-            removed=removed,
-            changed=changed,
-            unchanged=unchanged,
+            group=group, name=field_name, added=added, removed=removed, changed=changed, unchanged=unchanged
         )
 
     @classmethod

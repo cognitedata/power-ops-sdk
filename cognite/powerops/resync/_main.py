@@ -13,7 +13,7 @@ from cognite.powerops.resync._validation import _clean_relationships
 from cognite.powerops.resync.config.resync_config import ReSyncConfig
 from cognite.powerops.resync.models.base import Model  # type: ignore[attr-defined]
 from cognite.powerops.resync import models
-from cognite.powerops.resync._changes import FieldDifference, ModelDifferences
+from cognite.powerops.resync._changes import FieldDifference, ModelDifferences, ModelDifference
 from cognite.powerops.resync.to_models.transform import transform
 from cognite.powerops.resync.utils.cdf import get_cognite_api
 from cognite.powerops.resync.utils.common import all_concrete_subclasses
@@ -74,10 +74,8 @@ def apply(
     model_names: list[str] | str | None = None,
     echo: Optional[Callable[[Any], None]] = None,
     auto_yes: bool = False,
-    echo_pretty: Optional[Callable[[Any], None]] = None,
-) -> None:
+) -> ModelDifferences:
     echo = echo or print
-    echo_pretty = echo_pretty or echo
     client = get_powerops_client()
 
     loaded_models = _load_transform(market, path, client.cdf.config.project, echo, model_names or list(DEFAULT_MODELS))
@@ -92,6 +90,7 @@ def apply(
 
     write_dataset = retrieved.id
 
+    written_changes = ModelDifferences([])
     for new_model in loaded_models:
         cdf_model = type(new_model).from_cdf(client, data_set_external_id=read_dataset)
         new_sequences_by_id = {s.external_id: s for s in new_model.sequences()}
@@ -99,9 +98,9 @@ def apply(
 
         differences = cdf_model.difference(new_model)
         _clean_relationships(client.cdf, differences, new_model, echo)
-
+        written_model_changes = ModelDifference(new_model.model_name)
         changed = []
-        for diff in differences.changes:
+        for diff in differences:
             if diff.group == "Domain":
                 continue
             if len(diff.unchanged) == diff.total:
@@ -131,6 +130,9 @@ def apply(
                 ]
             )
             echo(f"Deleted {len(diff.removed)} of {diff.name}")
+            written_model_changes.changes[diff.name] = FieldDifference(
+                group=diff.group, name=diff.name, added=[], removed=diff.removed, changed=[], unchanged=diff.unchanged
+            )
 
         for diff in sorted(changed, key=_nodes_before_edges):
             if not diff.added or not diff.changed:
@@ -157,6 +159,12 @@ def apply(
             if diff.added:
                 api.create(diff.added)
                 echo(f"Created {len(diff.added)} of {diff.name}")
+                if diff.name in written_model_changes:
+                    written_model_changes[diff.name].added.extend(diff.added)
+                else:
+                    written_model_changes[diff.name] = FieldDifference(
+                        group=diff.group, name=diff.name, added=diff.added, removed=[], changed=[], unchanged=[]
+                    )
 
             if diff.changed:
                 updates = [c.new for c in diff.changed if not c.is_changed_content]
@@ -168,6 +176,14 @@ def apply(
                     api.delete([c.external_id for c in content_updates if c.external_id])
                     api.create(content_updates)
                     echo(f"Updated {len(content_updates)} of {diff.name} with content")
+                if diff.name in written_model_changes:
+                    written_model_changes[diff.name].changed.extend(diff.changed)
+                else:
+                    written_model_changes[diff.name] = FieldDifference(
+                        group=diff.group, name=diff.name, added=[], removed=[], changed=diff.changed, unchanged=[]
+                    )
+            written_changes.models.append(written_model_changes)
+    return written_changes
 
 
 def _edges_before_nodes(diff: FieldDifference) -> int:

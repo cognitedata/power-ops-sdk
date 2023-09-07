@@ -7,7 +7,6 @@ from typing import Annotated, Optional
 import typer
 from rich.console import Console
 from rich.logging import RichHandler
-from rich.pretty import pprint
 
 from cognite import powerops
 from cognite.powerops import resync
@@ -37,10 +36,7 @@ def _version_callback(value: bool):
 
 
 @app.callback()
-def common(
-    ctx: typer.Context,
-    version: bool = typer.Option(None, "--version", callback=_version_callback),
-):
+def common(ctx: typer.Context, version: bool = typer.Option(None, "--version", callback=_version_callback)):
     ...
 
 
@@ -58,10 +54,7 @@ def plan(
     dump_folder: Optional[Path] = typer.Option(
         default=None, help="If present, the local and cdf changes will be dumped to this directory."
     ),
-    format: str = typer.Option(
-        default=None,
-        help="The format of the output. Available formats: markdown",
-    ),
+    format: str = typer.Option(default=None, help="The format of the output. Available formats: markdown"),
     as_extraction_pipeline_run: bool = typer.Option(
         default=False,
         help="If true, the command will be registered as an extraction pipeline run. With the configuration"
@@ -99,7 +92,7 @@ def plan(
 
         with pipeline.create_pipeline_run(client) as run:
             if changes.has_changes():
-                run.update_data(RunStatus.FAILURE, error=changes.as_markdown())
+                run.update_data(RunStatus.FAILURE, error=changes.as_markdown_summary(no_headers=True))
             else:
                 run.update_data(RunStatus.SUCCESS)
         typer.echo("Extraction pipeline run executed")
@@ -114,10 +107,13 @@ def apply(
         help=f"The models to run apply. Available models: {', '.join(resync.MODEL_BY_NAME)}",
     ),
     auto_yes: bool = typer.Option(False, "--yes", "-y", help="Auto confirm all prompts"),
+    format: str = typer.Option(default=None, help="The format of the output. Available formats: markdown"),
 ):
     log.info(f"Running apply on configuration files located in {path}")
 
-    resync.apply(path, market, model_names=models, echo=log.info, auto_yes=auto_yes, echo_pretty=pprint)
+    changed = resync.apply(path, market, model_names=models, echo=log.info, auto_yes=auto_yes)
+    if format == "markdown":
+        typer.echo(changed.as_markdown_summary())
 
 
 @app.command(
@@ -125,9 +121,7 @@ def apply(
     help=f"Deploy the data model in CDF. Available models: {list(MODEL_BY_NAME.keys())}. "
     f"Use 'all' to deploy all models.",
 )
-def deploy(
-    models: Annotated[list[str], typer.Argument(help="The models to deploy")],
-):
+def deploy(models: Annotated[list[str], typer.Argument(help="The models to deploy")]):
     if len(models) == 1 and models[0].lower() == "all":
         models = list(MODEL_BY_NAME.keys())
 
@@ -139,12 +133,7 @@ def deploy(
         log.info(f"Deploying {model_name} model...")
 
         model = MODEL_BY_NAME[model_name]
-        result = client.cdf.data_modeling.graphql.apply_dml(
-            model.id_,
-            model.graphql,
-            model.name,
-            model.description,
-        )
+        result = client.cdf.data_modeling.graphql.apply_dml(model.id_, model.graphql, model.name, model.description)
         log.info(f"Deployed {model_name} model ({result.space}, {result.external_id}, {result.version})")
 
 
