@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import itertools
+from collections import defaultdict
+from collections.abc import Iterator
 from dataclasses import dataclass, field, asdict
 from itertools import islice
 from typing import Literal
@@ -123,10 +125,22 @@ class FieldDifference:
 @dataclass
 class ModelDifference:
     name: str
-    changes: list[FieldDifference]
+    changes: dict[str, FieldDifference] = field(default_factory=dict)
+
+    def __iter__(self) -> Iterator[FieldDifference]:
+        return iter(self.changes.values())
+
+    def __contains__(self, item):
+        return item in self.changes
+
+    def __getitem__(self, item):
+        return self.changes[item]
+
+    def __setitem__(self, key, value):
+        self.changes[key] = value
 
     def has_changes(self, exclude: set | frozenset = frozenset({"timeseries"})) -> bool:
-        return any(change.total != change.unchanged for change in self.changes if change.name not in exclude)
+        return any(change.total != change.unchanged for change in self.changes.values() if change.name not in exclude)
 
 
 @dataclass
@@ -139,7 +153,7 @@ class ModelDifferences:
     def as_markdown(self) -> str:
         report = []
         for model in self.models:
-            summaries = [change.as_summary() for change in model.changes]
+            summaries = [change.as_summary() for change in model]
             table = pd.DataFrame(
                 [
                     _exclude_keys(asdict(summary), keys=["group", "name"])
@@ -148,7 +162,7 @@ class ModelDifferences:
                 ],
                 index=[summary.name for summary in summaries if summary.group == "CDF"],
             )
-            ids = [change.as_ids(limit=5) for change in model.changes if change.group == "CDF"]
+            ids = [change.as_ids(limit=5) for change in model if change.group == "CDF"]
             added_ids = []
             for id_ in ids:
                 if id_.added:
@@ -158,7 +172,7 @@ class ModelDifferences:
                 if id_.removed:
                     removed_ids.append(f"#### Removed {id_.name}\n{id_.removed}")
             changed_samples = []
-            for change, id_ in zip((c for c in model.changes if c.group == "CDF"), ids):
+            for change, id_ in zip((c for c in model if c.group == "CDF"), ids):
                 if change.changed:
                     new_line = "\n * "
                     sample_line = new_line.join(
@@ -187,6 +201,24 @@ class ModelDifferences:
     """
             )
         return "\n".join(report)
+
+    def as_markdown_summary(self, no_headers: bool = False, skip_domain: bool = True) -> str:
+        by_name = defaultdict(list)
+        for model in self.models:
+            for change in model:
+                if skip_domain and change.group == "Domain":
+                    continue
+                by_name[change.name].append(change)
+        report = []
+        for name, changes in by_name.items():
+            added = sum(len(change.added) for change in changes)
+            removed = sum(len(change.removed) for change in changes)
+            change_count = sum(len(change.changed) for change in changes)
+            report.append(f"* **{name}**: {added} added, {removed} removed, {change_count} changed")
+        list_ = "\n".join(report)
+        return f"""{'**' if no_headers else '##'} Summary {'**' if no_headers else ''}
+{list_ if list_ else 'No changes'}
+"""
 
 
 def _exclude_keys(d: dict, keys: list[str]) -> dict:
