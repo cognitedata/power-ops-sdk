@@ -90,7 +90,7 @@ def to_production_model(config: ProductionConfig) -> production.ProductionModel:
         )
         model.watercourses.append(watercourse)
 
-        shop_case = load_yaml(watercourse_config.yaml_raw_path, clean_data=True)
+        shop_case = load_yaml(watercourse_config.yaml_raw_path, clean_data=False)
 
         for reservoir_name in shop_case["model"]["reservoir"]:
             reservoir = production.Reservoir(
