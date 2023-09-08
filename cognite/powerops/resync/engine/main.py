@@ -9,23 +9,22 @@ from cognite.client.data_classes.data_modeling.instances import InstanceCore
 from yaml import safe_dump
 
 from cognite.powerops.client.powerops_client import get_powerops_client, PowerOpsClient
-from cognite.powerops.resync._validation import _clean_relationships
-from cognite.powerops.resync.config._main import ReSyncConfig
+from .validation import _clean_relationships
+from cognite.powerops.resync.config import ReSyncConfig
 from cognite.powerops.resync.models.base import Model  # type: ignore[attr-defined]
-from cognite.powerops.resync import models
-from cognite.powerops.resync._changes import FieldDifference, ModelDifferences, ModelDifference
-from cognite.powerops.resync.to_models.transform import transform
-from cognite.powerops.resync.utils.cdf import get_cognite_api
+from cognite.powerops.resync.models.diff import FieldDifference, ModelDifferences, ModelDifference
 from cognite.powerops.utils.navigation import all_concrete_subclasses
+from cognite.powerops.resync import models
 from cognite.powerops.utils.cdf import Settings
+from .cdf import get_cognite_api
+from .transform import transform
+
 
 MODEL_BY_NAME: dict[str, Type[Model]] = {
     model.__name__: model for model in all_concrete_subclasses(Model)  # type: ignore[type-abstract]
 }
 AVAILABLE_MODELS: frozenset[str] = frozenset(MODEL_BY_NAME)
-DEFAULT_MODELS: frozenset[str] = frozenset(
-    [m.__name__ for m in [models.ProductionModel, models.MarketModel, models.CogShop1Asset]]
-)
+DEFAULT_MODELS: frozenset[str] = frozenset([m.__name__ for m in models.V1_MODELS])
 
 
 def plan(

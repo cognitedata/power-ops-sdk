@@ -11,4 +11,15 @@ are based on Data Modeling in CDF.
 
 from .graphql_schemas.__init__ import GRAPHQL_MODELS
 
-__all__ = ["GRAPHQL_MODELS"]
+from .cogshop import CogShopDataModel
+from .production_dm import ProductionModelDM
+from .market_dm import DayAheadMarketDataModel, RKOMMarketDataModel, BenchmarkMarketDataModel
+
+__all__ = [
+    "GRAPHQL_MODELS",
+    "CogShopDataModel",
+    "ProductionModelDM",
+    "DayAheadMarketDataModel",
+    "RKOMMarketDataModel",
+    "BenchmarkMarketDataModel",
+]

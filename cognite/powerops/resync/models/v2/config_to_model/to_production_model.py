@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import re
 
-from cognite.client.data_classes import TimeSeries
 
 from cognite.powerops.resync.models._shared_v1_v2.production_model import (
     p_min_fallback,

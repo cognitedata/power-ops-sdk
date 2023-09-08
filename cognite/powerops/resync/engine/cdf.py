@@ -6,7 +6,7 @@ from cognite.client import CogniteClient
 from cognite.client.data_classes import Asset, Sequence as CogniteSequence, FileMetadata, Relationship, FileMetadataList
 from cognite.client.data_classes.data_modeling import NodeApply, EdgeApply
 
-from cognite.powerops.resync.models.cdf_resources import CDFFile, CDFSequence
+from cognite.powerops.resync.models.base import CDFFile, CDFSequence
 
 T_CogniteResource = TypeVar(
     "T_CogniteResource", bound=Union[Asset, CogniteSequence, FileMetadata, Relationship, NodeApply, EdgeApply]
