@@ -1,3 +1,3 @@
-from .engine import apply, plan, DEFAULT_MODELS, AVAILABLE_MODELS, MODEL_BY_NAME
+from .core import apply, plan, DEFAULT_MODELS, AVAILABLE_MODELS, MODEL_BY_NAME
 
 __all__ = ["apply", "plan", "DEFAULT_MODELS", "AVAILABLE_MODELS", "MODEL_BY_NAME"]

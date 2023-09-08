@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.47.0] - 2023-09-08
+### Changed
+* Structure of repo.
+
 ## [0.46.1] - 2023-09-07
 ### Fixed
 * Generated clients were regenerated to be compatible with `python-sdk` `6.20`.
