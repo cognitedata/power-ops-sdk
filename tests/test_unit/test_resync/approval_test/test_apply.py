@@ -93,7 +93,7 @@ def test_apply_summary(
             setattr(api, parts[-1], mock_resource)
 
         # Act
-        model = apply(path=ReSync.demo, market="Dayahead", model_names=model_name, auto_yes=True)
+        model = apply(config_dir=ReSync.demo, market="Dayahead", model_names=model_name, auto_yes=True)
 
     # Assert
     data_regression.check(
@@ -141,7 +141,7 @@ def test_apply(
             setattr(api, parts[-1], mock_resource)
 
         # Act
-        apply(path=ReSync.demo, market="Dayahead", model_names=model_name, auto_yes=True)
+        apply(config_dir=ReSync.demo, market="Dayahead", model_names=model_name, auto_yes=True)
 
     # Assert
     dump = {

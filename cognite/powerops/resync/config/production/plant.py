@@ -49,8 +49,11 @@ class Plant(BaseModel):
     def from_cdf_resources(cls, asset: Asset, relationships: list[Relationship], **kwargs) -> "Plant":
         """Initialise a Plant from CDF Asset and Relationships
 
-        Args: asset (Asset): The plant Asset relationships (list[Relationship]): Relationships to related resources (
-        will be mapped to attributes based on labels) **kwargs: Any other attributes that are not part of the Asset
+        Args:
+            asset: The plant Asset relationships
+            relationships: Relationships to related resources (will be mapped to attributes based on labels)
+            kwargs: Any other attributes that are not part of the Asset
+
         """
         # Initialise plant from Asset
         plant = cls(

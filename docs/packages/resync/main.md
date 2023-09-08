@@ -27,7 +27,7 @@ flowchart LR
     E -->|Upload Diff| G(CDF)
 ```
 
-## `resync` `plan` and `apply`
+## Main `resync` functions
 
 
 ::: cognite.powerops.resync.plan
