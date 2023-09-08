@@ -5,7 +5,7 @@ from typing import ClassVar, Optional
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
-from cognite.powerops.cogshop1.data_classes._core import DomainModel, DomainModelApply, TypeList
+from cognite.powerops.client._generated.cogshop1.data_classes._core import DomainModel, DomainModelApply, TypeList
 
 __all__ = ["FileRef", "FileRefApply", "FileRefList"]
 

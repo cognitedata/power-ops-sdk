@@ -5,13 +5,13 @@ from typing import TYPE_CHECKING, ClassVar, Optional, Union
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
-from cognite.powerops.client.data_classes._core import DomainModel, DomainModelApply, TypeList
+from cognite.powerops.client._generated.data_classes._core import DomainModel, DomainModelApply, TypeList
 
 if TYPE_CHECKING:
-    from cognite.powerops.client.data_classes._bid_matrix_generators import BidMatrixGeneratorApply
-    from cognite.powerops.client.data_classes._day_ahead_bids import DayAheadBidApply
-    from cognite.powerops.client.data_classes._scenario_mappings import ScenarioMappingApply
-    from cognite.powerops.client.data_classes._shop_transformations import ShopTransformationApply
+    from cognite.powerops.client._generated.data_classes._bid_matrix_generators import BidMatrixGeneratorApply
+    from cognite.powerops.client._generated.data_classes._day_ahead_bids import DayAheadBidApply
+    from cognite.powerops.client._generated.data_classes._scenario_mappings import ScenarioMappingApply
+    from cognite.powerops.client._generated.data_classes._shop_transformations import ShopTransformationApply
 
 __all__ = ["DayAheadProces", "DayAheadProcesApply", "DayAheadProcesList"]
 
@@ -52,11 +52,17 @@ class DayAheadProcesApply(DomainModelApply):
                 "externalId": self.shop if isinstance(self.shop, str) else self.shop.external_id,
             }
         if properties:
-            source = dm.NodeOrEdgeData(source=dm.ContainerId("power-ops", "DayAheadProcess"), properties=properties)
+            source = dm.NodeOrEdgeData(
+                source=dm.ContainerId("power-ops", "DayAheadProcess"),
+                properties=properties,
+            )
             sources.append(source)
         if sources:
             this_node = dm.NodeApply(
-                space=self.space, external_id=self.external_id, existing_version=self.existing_version, sources=sources
+                space=self.space,
+                external_id=self.external_id,
+                existing_version=self.existing_version,
+                sources=sources,
             )
             nodes = [this_node]
         else:

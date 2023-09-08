@@ -4,7 +4,7 @@ from typing import ClassVar, Optional  # noqa: F401
 
 from cognite.client import data_modeling as dm
 
-from cognite.powerops.client.data_classes._core import DomainModel, DomainModelApply, TypeList
+from cognite.powerops.client._generated.data_classes._core import DomainModel, DomainModelApply, TypeList
 
 __all__ = ["CommandConfig", "CommandConfigApply", "CommandConfigList"]
 
@@ -27,11 +27,17 @@ class CommandConfigApply(DomainModelApply):
         if self.commands is not None:
             properties["commands"] = self.commands
         if properties:
-            source = dm.NodeOrEdgeData(source=dm.ContainerId("power-ops", "CommandConfig"), properties=properties)
+            source = dm.NodeOrEdgeData(
+                source=dm.ContainerId("power-ops", "CommandConfig"),
+                properties=properties,
+            )
             sources.append(source)
         if sources:
             this_node = dm.NodeApply(
-                space=self.space, external_id=self.external_id, existing_version=self.existing_version, sources=sources
+                space=self.space,
+                external_id=self.external_id,
+                existing_version=self.existing_version,
+                sources=sources,
             )
             nodes = [this_node]
         else:

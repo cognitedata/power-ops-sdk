@@ -7,7 +7,7 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client._constants import DEFAULT_LIMIT_READ
 
-from cognite.powerops.client.data_classes._core import T_TypeApplyNode, T_TypeNode, T_TypeNodeList
+from cognite.powerops.client._generated.data_classes._core import T_TypeApplyNode, T_TypeNode, T_TypeNodeList
 
 
 class TypeAPI(Generic[T_TypeNode, T_TypeApplyNode, T_TypeNodeList]):

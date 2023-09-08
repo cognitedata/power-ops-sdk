@@ -7,8 +7,8 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client._constants import DEFAULT_LIMIT_READ
 
-from cognite.powerops.client._api._core import TypeAPI
-from cognite.powerops.client.data_classes import RKOMProces, RKOMProcesApply, RKOMProcesList
+from cognite.powerops.client._generated._api._core import TypeAPI
+from cognite.powerops.client._generated.data_classes import RKOMProces, RKOMProcesApply, RKOMProcesList
 
 
 class RKOMProcesIncrementalMappingsAPI:
@@ -18,17 +18,22 @@ class RKOMProcesIncrementalMappingsAPI:
     def retrieve(self, external_id: str | Sequence[str]) -> dm.EdgeList:
         f = dm.filters
         is_edge_type = f.Equals(
-            ["edge", "type"], {"space": "power-ops", "externalId": "RKOMProcess.incremental_mappings"}
+            ["edge", "type"],
+            {"space": "power-ops", "externalId": "RKOMProcess.incremental_mappings"},
         )
         if isinstance(external_id, str):
-            is_rkom_proces = f.Equals(["edge", "startNode"], {"space": "power-ops", "externalId": external_id})
+            is_rkom_proces = f.Equals(
+                ["edge", "startNode"],
+                {"space": "power-ops", "externalId": external_id},
+            )
             return self._client.data_modeling.instances.list(
                 "edge", limit=-1, filter=f.And(is_edge_type, is_rkom_proces)
             )
 
         else:
             is_rkom_process = f.In(
-                ["edge", "startNode"], [{"space": "power-ops", "externalId": ext_id} for ext_id in external_id]
+                ["edge", "startNode"],
+                [{"space": "power-ops", "externalId": ext_id} for ext_id in external_id],
             )
             return self._client.data_modeling.instances.list(
                 "edge", limit=-1, filter=f.And(is_edge_type, is_rkom_process)
@@ -37,7 +42,8 @@ class RKOMProcesIncrementalMappingsAPI:
     def list(self, limit=DEFAULT_LIMIT_READ) -> dm.EdgeList:
         f = dm.filters
         is_edge_type = f.Equals(
-            ["edge", "type"], {"space": "power-ops", "externalId": "RKOMProcess.incremental_mappings"}
+            ["edge", "type"],
+            {"space": "power-ops", "externalId": "RKOMProcess.incremental_mappings"},
         )
         return self._client.data_modeling.instances.list("edge", limit=limit, filter=is_edge_type)
 
@@ -62,7 +68,7 @@ class RKOMProcessAPI(TypeAPI[RKOMProces, RKOMProcesApply, RKOMProcesList]):
             return self._client.data_modeling.instances.delete(nodes=(RKOMProcesApply.space, external_id))
         else:
             return self._client.data_modeling.instances.delete(
-                nodes=[(RKOMProcesApply.space, id) for id in external_id]
+                nodes=[(RKOMProcesApply.space, id) for id in external_id],
             )
 
     @overload

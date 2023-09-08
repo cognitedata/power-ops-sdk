@@ -5,14 +5,14 @@ from pathlib import Path
 from cognite.client import ClientConfig, CogniteClient
 from cognite.client.credentials import OAuthClientCredentials
 
-from cognite.powerops.cogshop1._api.cases import CasesAPI
-from cognite.powerops.cogshop1._api.commands_configs import CommandsConfigsAPI
-from cognite.powerops.cogshop1._api.file_refs import FileRefsAPI
-from cognite.powerops.cogshop1._api.mappings import MappingsAPI
-from cognite.powerops.cogshop1._api.model_templates import ModelTemplatesAPI
-from cognite.powerops.cogshop1._api.processing_logs import ProcessingLogsAPI
-from cognite.powerops.cogshop1._api.scenarios import ScenariosAPI
-from cognite.powerops.cogshop1._api.transformations import TransformationsAPI
+from cognite.powerops.client._generated.cogshop1._api.cases import CasesAPI
+from cognite.powerops.client._generated.cogshop1._api.commands_configs import CommandsConfigsAPI
+from cognite.powerops.client._generated.cogshop1._api.file_refs import FileRefsAPI
+from cognite.powerops.client._generated.cogshop1._api.mappings import MappingsAPI
+from cognite.powerops.client._generated.cogshop1._api.model_templates import ModelTemplatesAPI
+from cognite.powerops.client._generated.cogshop1._api.processing_logs import ProcessingLogsAPI
+from cognite.powerops.client._generated.cogshop1._api.scenarios import ScenariosAPI
+from cognite.powerops.client._generated.cogshop1._api.transformations import TransformationsAPI
 
 
 class CogShop1Client:

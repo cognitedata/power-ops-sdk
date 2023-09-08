@@ -5,10 +5,10 @@ from typing import TYPE_CHECKING, ClassVar, Optional, Union
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
-from cognite.powerops.cogshop1.data_classes._core import DomainModel, DomainModelApply, TypeList
+from cognite.powerops.client._generated.cogshop1.data_classes._core import DomainModel, DomainModelApply, TypeList
 
 if TYPE_CHECKING:
-    from cognite.powerops.cogshop1.data_classes._transformations import TransformationApply
+    from cognite.powerops.client._generated.cogshop1.data_classes._transformations import TransformationApply
 
 __all__ = ["Mapping", "MappingApply", "MappingList"]
 

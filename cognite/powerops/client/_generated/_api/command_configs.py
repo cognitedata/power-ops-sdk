@@ -6,8 +6,8 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client._constants import DEFAULT_LIMIT_READ
 
-from cognite.powerops.client._api._core import TypeAPI
-from cognite.powerops.client.data_classes import CommandConfig, CommandConfigApply, CommandConfigList
+from cognite.powerops.client._generated._api._core import TypeAPI
+from cognite.powerops.client._generated.data_classes import CommandConfig, CommandConfigApply, CommandConfigList
 
 
 class CommandConfigsAPI(TypeAPI[CommandConfig, CommandConfigApply, CommandConfigList]):
@@ -29,7 +29,7 @@ class CommandConfigsAPI(TypeAPI[CommandConfig, CommandConfigApply, CommandConfig
             return self._client.data_modeling.instances.delete(nodes=(CommandConfigApply.space, external_id))
         else:
             return self._client.data_modeling.instances.delete(
-                nodes=[(CommandConfigApply.space, id) for id in external_id]
+                nodes=[(CommandConfigApply.space, id) for id in external_id],
             )
 
     @overload

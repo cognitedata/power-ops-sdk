@@ -5,13 +5,13 @@ from typing import TYPE_CHECKING, ClassVar, Optional, Union
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
-from cognite.powerops.client.data_classes._core import DomainModel, DomainModelApply, TypeList
+from cognite.powerops.client._generated.data_classes._core import DomainModel, DomainModelApply, TypeList
 
 if TYPE_CHECKING:
-    from cognite.powerops.client.data_classes._date_transformations import DateTransformationApply
-    from cognite.powerops.client.data_classes._reserve_scenarios import ReserveScenarioApply
-    from cognite.powerops.client.data_classes._rkom_markets import RKOMMarketApply
-    from cognite.powerops.client.data_classes._scenario_mappings import ScenarioMappingApply
+    from cognite.powerops.client._generated.data_classes._date_transformations import DateTransformationApply
+    from cognite.powerops.client._generated.data_classes._reserve_scenarios import ReserveScenarioApply
+    from cognite.powerops.client._generated.data_classes._rkom_markets import RKOMMarketApply
+    from cognite.powerops.client._generated.data_classes._scenario_mappings import ScenarioMappingApply
 
 __all__ = ["RKOMBid", "RKOMBidApply", "RKOMBidList"]
 
@@ -63,11 +63,17 @@ class RKOMBidApply(DomainModelApply):
         if self.watercourse is not None:
             properties["watercourse"] = self.watercourse
         if properties:
-            source = dm.NodeOrEdgeData(source=dm.ContainerId("power-ops", "RKOMBid"), properties=properties)
+            source = dm.NodeOrEdgeData(
+                source=dm.ContainerId("power-ops", "RKOMBid"),
+                properties=properties,
+            )
             sources.append(source)
         if sources:
             this_node = dm.NodeApply(
-                space=self.space, external_id=self.external_id, existing_version=self.existing_version, sources=sources
+                space=self.space,
+                external_id=self.external_id,
+                existing_version=self.existing_version,
+                sources=sources,
             )
             nodes = [this_node]
         else:

@@ -6,8 +6,8 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client._constants import DEFAULT_LIMIT_READ
 
-from cognite.powerops.client._api._core import TypeAPI
-from cognite.powerops.client.data_classes import Generator, GeneratorApply, GeneratorList
+from cognite.powerops.client._generated._api._core import TypeAPI
+from cognite.powerops.client._generated.data_classes import Generator, GeneratorApply, GeneratorList
 
 
 class GeneratorsAPI(TypeAPI[Generator, GeneratorApply, GeneratorList]):
@@ -28,7 +28,9 @@ class GeneratorsAPI(TypeAPI[Generator, GeneratorApply, GeneratorList]):
         if isinstance(external_id, str):
             return self._client.data_modeling.instances.delete(nodes=(GeneratorApply.space, external_id))
         else:
-            return self._client.data_modeling.instances.delete(nodes=[(GeneratorApply.space, id) for id in external_id])
+            return self._client.data_modeling.instances.delete(
+                nodes=[(GeneratorApply.space, id) for id in external_id],
+            )
 
     @overload
     def retrieve(self, external_id: str) -> Generator:

@@ -5,12 +5,12 @@ from typing import TYPE_CHECKING, ClassVar, Optional, Union
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
-from cognite.powerops.client.data_classes._core import DomainModel, DomainModelApply, TypeList
+from cognite.powerops.client._generated.data_classes._core import DomainModel, DomainModelApply, TypeList
 
 if TYPE_CHECKING:
-    from cognite.powerops.client.data_classes._generators import GeneratorApply
-    from cognite.powerops.client.data_classes._reservoirs import ReservoirApply
-    from cognite.powerops.client.data_classes._watercourses import WatercourseApply
+    from cognite.powerops.client._generated.data_classes._generators import GeneratorApply
+    from cognite.powerops.client._generated.data_classes._reservoirs import ReservoirApply
+    from cognite.powerops.client._generated.data_classes._watercourses import WatercourseApply
 
 __all__ = ["Plant", "PlantApply", "PlantList"]
 
@@ -100,11 +100,17 @@ class PlantApply(DomainModelApply):
                 "externalId": self.watercourse if isinstance(self.watercourse, str) else self.watercourse.external_id,
             }
         if properties:
-            source = dm.NodeOrEdgeData(source=dm.ContainerId("power-ops", "Plant"), properties=properties)
+            source = dm.NodeOrEdgeData(
+                source=dm.ContainerId("power-ops", "Plant"),
+                properties=properties,
+            )
             sources.append(source)
         if sources:
             this_node = dm.NodeApply(
-                space=self.space, external_id=self.external_id, existing_version=self.existing_version, sources=sources
+                space=self.space,
+                external_id=self.external_id,
+                existing_version=self.existing_version,
+                sources=sources,
             )
             nodes = [this_node]
         else:

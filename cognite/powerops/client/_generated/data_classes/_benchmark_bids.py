@@ -5,11 +5,11 @@ from typing import TYPE_CHECKING, ClassVar, Optional, Union
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
-from cognite.powerops.client.data_classes._core import DomainModel, DomainModelApply, TypeList
+from cognite.powerops.client._generated.data_classes._core import DomainModel, DomainModelApply, TypeList
 
 if TYPE_CHECKING:
-    from cognite.powerops.client.data_classes._date_transformations import DateTransformationApply
-    from cognite.powerops.client.data_classes._nord_pool_markets import NordPoolMarketApply
+    from cognite.powerops.client._generated.data_classes._date_transformations import DateTransformationApply
+    from cognite.powerops.client._generated.data_classes._nord_pool_markets import NordPoolMarketApply
 
 __all__ = ["BenchmarkBid", "BenchmarkBidApply", "BenchmarkBidList"]
 
@@ -41,11 +41,17 @@ class BenchmarkBidApply(DomainModelApply):
         if self.name is not None:
             properties["name"] = self.name
         if properties:
-            source = dm.NodeOrEdgeData(source=dm.ContainerId("power-ops", "BenchmarkBid"), properties=properties)
+            source = dm.NodeOrEdgeData(
+                source=dm.ContainerId("power-ops", "BenchmarkBid"),
+                properties=properties,
+            )
             sources.append(source)
         if sources:
             this_node = dm.NodeApply(
-                space=self.space, external_id=self.external_id, existing_version=self.existing_version, sources=sources
+                space=self.space,
+                external_id=self.external_id,
+                existing_version=self.existing_version,
+                sources=sources,
             )
             nodes = [this_node]
         else:

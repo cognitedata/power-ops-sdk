@@ -7,8 +7,8 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client._constants import DEFAULT_LIMIT_READ
 
-from cognite.powerops.client._api._core import TypeAPI
-from cognite.powerops.client.data_classes import PriceArea, PriceAreaApply, PriceAreaList
+from cognite.powerops.client._generated._api._core import TypeAPI
+from cognite.powerops.client._generated.data_classes import PriceArea, PriceAreaApply, PriceAreaList
 
 
 class PriceAreaPlantsAPI:
@@ -17,16 +17,23 @@ class PriceAreaPlantsAPI:
 
     def retrieve(self, external_id: str | Sequence[str]) -> dm.EdgeList:
         f = dm.filters
-        is_edge_type = f.Equals(["edge", "type"], {"space": "power-ops", "externalId": "PriceArea.plants"})
+        is_edge_type = f.Equals(
+            ["edge", "type"],
+            {"space": "power-ops", "externalId": "PriceArea.plants"},
+        )
         if isinstance(external_id, str):
-            is_price_area = f.Equals(["edge", "startNode"], {"space": "power-ops", "externalId": external_id})
+            is_price_area = f.Equals(
+                ["edge", "startNode"],
+                {"space": "power-ops", "externalId": external_id},
+            )
             return self._client.data_modeling.instances.list(
                 "edge", limit=-1, filter=f.And(is_edge_type, is_price_area)
             )
 
         else:
             is_price_areas = f.In(
-                ["edge", "startNode"], [{"space": "power-ops", "externalId": ext_id} for ext_id in external_id]
+                ["edge", "startNode"],
+                [{"space": "power-ops", "externalId": ext_id} for ext_id in external_id],
             )
             return self._client.data_modeling.instances.list(
                 "edge", limit=-1, filter=f.And(is_edge_type, is_price_areas)
@@ -34,7 +41,10 @@ class PriceAreaPlantsAPI:
 
     def list(self, limit=DEFAULT_LIMIT_READ) -> dm.EdgeList:
         f = dm.filters
-        is_edge_type = f.Equals(["edge", "type"], {"space": "power-ops", "externalId": "PriceArea.plants"})
+        is_edge_type = f.Equals(
+            ["edge", "type"],
+            {"space": "power-ops", "externalId": "PriceArea.plants"},
+        )
         return self._client.data_modeling.instances.list("edge", limit=limit, filter=is_edge_type)
 
 
@@ -44,16 +54,23 @@ class PriceAreaWatercoursesAPI:
 
     def retrieve(self, external_id: str | Sequence[str]) -> dm.EdgeList:
         f = dm.filters
-        is_edge_type = f.Equals(["edge", "type"], {"space": "power-ops", "externalId": "PriceArea.watercourses"})
+        is_edge_type = f.Equals(
+            ["edge", "type"],
+            {"space": "power-ops", "externalId": "PriceArea.watercourses"},
+        )
         if isinstance(external_id, str):
-            is_price_area = f.Equals(["edge", "startNode"], {"space": "power-ops", "externalId": external_id})
+            is_price_area = f.Equals(
+                ["edge", "startNode"],
+                {"space": "power-ops", "externalId": external_id},
+            )
             return self._client.data_modeling.instances.list(
                 "edge", limit=-1, filter=f.And(is_edge_type, is_price_area)
             )
 
         else:
             is_price_areas = f.In(
-                ["edge", "startNode"], [{"space": "power-ops", "externalId": ext_id} for ext_id in external_id]
+                ["edge", "startNode"],
+                [{"space": "power-ops", "externalId": ext_id} for ext_id in external_id],
             )
             return self._client.data_modeling.instances.list(
                 "edge", limit=-1, filter=f.And(is_edge_type, is_price_areas)
@@ -61,7 +78,10 @@ class PriceAreaWatercoursesAPI:
 
     def list(self, limit=DEFAULT_LIMIT_READ) -> dm.EdgeList:
         f = dm.filters
-        is_edge_type = f.Equals(["edge", "type"], {"space": "power-ops", "externalId": "PriceArea.watercourses"})
+        is_edge_type = f.Equals(
+            ["edge", "type"],
+            {"space": "power-ops", "externalId": "PriceArea.watercourses"},
+        )
         return self._client.data_modeling.instances.list("edge", limit=limit, filter=is_edge_type)
 
 
@@ -85,7 +105,9 @@ class PriceAreasAPI(TypeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
         if isinstance(external_id, str):
             return self._client.data_modeling.instances.delete(nodes=(PriceAreaApply.space, external_id))
         else:
-            return self._client.data_modeling.instances.delete(nodes=[(PriceAreaApply.space, id) for id in external_id])
+            return self._client.data_modeling.instances.delete(
+                nodes=[(PriceAreaApply.space, id) for id in external_id],
+            )
 
     @overload
     def retrieve(self, external_id: str) -> PriceArea:

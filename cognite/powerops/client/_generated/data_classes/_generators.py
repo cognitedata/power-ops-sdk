@@ -5,7 +5,7 @@ from typing import ClassVar, Optional
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
-from cognite.powerops.client.data_classes._core import DomainModel, DomainModelApply, TypeList
+from cognite.powerops.client._generated.data_classes._core import DomainModel, DomainModelApply, TypeList
 
 __all__ = ["Generator", "GeneratorApply", "GeneratorList"]
 
@@ -52,11 +52,17 @@ class GeneratorApply(DomainModelApply):
         if self.turbine_efficiency_curve is not None:
             properties["turbineEfficiencyCurve"] = self.turbine_efficiency_curve
         if properties:
-            source = dm.NodeOrEdgeData(source=dm.ContainerId("power-ops", "Generator"), properties=properties)
+            source = dm.NodeOrEdgeData(
+                source=dm.ContainerId("power-ops", "Generator"),
+                properties=properties,
+            )
             sources.append(source)
         if sources:
             this_node = dm.NodeApply(
-                space=self.space, external_id=self.external_id, existing_version=self.existing_version, sources=sources
+                space=self.space,
+                external_id=self.external_id,
+                existing_version=self.existing_version,
+                sources=sources,
             )
             nodes = [this_node]
         else:

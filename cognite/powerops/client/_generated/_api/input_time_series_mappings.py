@@ -7,8 +7,8 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client._constants import DEFAULT_LIMIT_READ
 
-from cognite.powerops.client._api._core import TypeAPI
-from cognite.powerops.client.data_classes import (
+from cognite.powerops.client._generated._api._core import TypeAPI
+from cognite.powerops.client._generated.data_classes import (
     InputTimeSeriesMapping,
     InputTimeSeriesMappingApply,
     InputTimeSeriesMappingList,
@@ -22,11 +22,13 @@ class InputTimeSeriesMappingTransformationsAPI:
     def retrieve(self, external_id: str | Sequence[str]) -> dm.EdgeList:
         f = dm.filters
         is_edge_type = f.Equals(
-            ["edge", "type"], {"space": "power-ops", "externalId": "InputTimeSeriesMapping.transformations"}
+            ["edge", "type"],
+            {"space": "power-ops", "externalId": "InputTimeSeriesMapping.transformations"},
         )
         if isinstance(external_id, str):
             is_input_time_series_mapping = f.Equals(
-                ["edge", "startNode"], {"space": "power-ops", "externalId": external_id}
+                ["edge", "startNode"],
+                {"space": "power-ops", "externalId": external_id},
             )
             return self._client.data_modeling.instances.list(
                 "edge", limit=-1, filter=f.And(is_edge_type, is_input_time_series_mapping)
@@ -34,7 +36,8 @@ class InputTimeSeriesMappingTransformationsAPI:
 
         else:
             is_input_time_series_mappings = f.In(
-                ["edge", "startNode"], [{"space": "power-ops", "externalId": ext_id} for ext_id in external_id]
+                ["edge", "startNode"],
+                [{"space": "power-ops", "externalId": ext_id} for ext_id in external_id],
             )
             return self._client.data_modeling.instances.list(
                 "edge", limit=-1, filter=f.And(is_edge_type, is_input_time_series_mappings)
@@ -43,7 +46,8 @@ class InputTimeSeriesMappingTransformationsAPI:
     def list(self, limit=DEFAULT_LIMIT_READ) -> dm.EdgeList:
         f = dm.filters
         is_edge_type = f.Equals(
-            ["edge", "type"], {"space": "power-ops", "externalId": "InputTimeSeriesMapping.transformations"}
+            ["edge", "type"],
+            {"space": "power-ops", "externalId": "InputTimeSeriesMapping.transformations"},
         )
         return self._client.data_modeling.instances.list("edge", limit=limit, filter=is_edge_type)
 
@@ -72,7 +76,7 @@ class InputTimeSeriesMappingsAPI(
             return self._client.data_modeling.instances.delete(nodes=(InputTimeSeriesMappingApply.space, external_id))
         else:
             return self._client.data_modeling.instances.delete(
-                nodes=[(InputTimeSeriesMappingApply.space, id) for id in external_id]
+                nodes=[(InputTimeSeriesMappingApply.space, id) for id in external_id],
             )
 
     @overload

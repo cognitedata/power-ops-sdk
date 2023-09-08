@@ -5,7 +5,7 @@ from typing import ClassVar, Optional
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
-from cognite.powerops.client.data_classes._core import DomainModel, DomainModelApply, TypeList
+from cognite.powerops.client._generated.data_classes._core import DomainModel, DomainModelApply, TypeList
 
 __all__ = ["OutputMapping", "OutputMappingApply", "OutputMappingList"]
 
@@ -44,11 +44,17 @@ class OutputMappingApply(DomainModelApply):
         if self.unit is not None:
             properties["unit"] = self.unit
         if properties:
-            source = dm.NodeOrEdgeData(source=dm.ContainerId("power-ops", "OutputMapping"), properties=properties)
+            source = dm.NodeOrEdgeData(
+                source=dm.ContainerId("power-ops", "OutputMapping"),
+                properties=properties,
+            )
             sources.append(source)
         if sources:
             this_node = dm.NodeApply(
-                space=self.space, external_id=self.external_id, existing_version=self.existing_version, sources=sources
+                space=self.space,
+                external_id=self.external_id,
+                existing_version=self.existing_version,
+                sources=sources,
             )
             nodes = [this_node]
         else:

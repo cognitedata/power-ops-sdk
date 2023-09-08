@@ -7,8 +7,8 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client._constants import DEFAULT_LIMIT_READ
 
-from cognite.powerops.client._api._core import TypeAPI
-from cognite.powerops.client.data_classes import DayAheadBid, DayAheadBidApply, DayAheadBidList
+from cognite.powerops.client._generated._api._core import TypeAPI
+from cognite.powerops.client._generated.data_classes import DayAheadBid, DayAheadBidApply, DayAheadBidList
 
 
 class DayAheadBidDatesAPI:
@@ -17,16 +17,23 @@ class DayAheadBidDatesAPI:
 
     def retrieve(self, external_id: str | Sequence[str]) -> dm.EdgeList:
         f = dm.filters
-        is_edge_type = f.Equals(["edge", "type"], {"space": "power-ops", "externalId": "DayAheadBid.date"})
+        is_edge_type = f.Equals(
+            ["edge", "type"],
+            {"space": "power-ops", "externalId": "DayAheadBid.date"},
+        )
         if isinstance(external_id, str):
-            is_day_ahead_bid = f.Equals(["edge", "startNode"], {"space": "power-ops", "externalId": external_id})
+            is_day_ahead_bid = f.Equals(
+                ["edge", "startNode"],
+                {"space": "power-ops", "externalId": external_id},
+            )
             return self._client.data_modeling.instances.list(
                 "edge", limit=-1, filter=f.And(is_edge_type, is_day_ahead_bid)
             )
 
         else:
             is_day_ahead_bids = f.In(
-                ["edge", "startNode"], [{"space": "power-ops", "externalId": ext_id} for ext_id in external_id]
+                ["edge", "startNode"],
+                [{"space": "power-ops", "externalId": ext_id} for ext_id in external_id],
             )
             return self._client.data_modeling.instances.list(
                 "edge", limit=-1, filter=f.And(is_edge_type, is_day_ahead_bids)
@@ -34,7 +41,10 @@ class DayAheadBidDatesAPI:
 
     def list(self, limit=DEFAULT_LIMIT_READ) -> dm.EdgeList:
         f = dm.filters
-        is_edge_type = f.Equals(["edge", "type"], {"space": "power-ops", "externalId": "DayAheadBid.date"})
+        is_edge_type = f.Equals(
+            ["edge", "type"],
+            {"space": "power-ops", "externalId": "DayAheadBid.date"},
+        )
         return self._client.data_modeling.instances.list("edge", limit=limit, filter=is_edge_type)
 
 
@@ -44,16 +54,23 @@ class DayAheadBidPriceScenariosAPI:
 
     def retrieve(self, external_id: str | Sequence[str]) -> dm.EdgeList:
         f = dm.filters
-        is_edge_type = f.Equals(["edge", "type"], {"space": "power-ops", "externalId": "DayAheadBid.priceScenarios"})
+        is_edge_type = f.Equals(
+            ["edge", "type"],
+            {"space": "power-ops", "externalId": "DayAheadBid.priceScenarios"},
+        )
         if isinstance(external_id, str):
-            is_day_ahead_bid = f.Equals(["edge", "startNode"], {"space": "power-ops", "externalId": external_id})
+            is_day_ahead_bid = f.Equals(
+                ["edge", "startNode"],
+                {"space": "power-ops", "externalId": external_id},
+            )
             return self._client.data_modeling.instances.list(
                 "edge", limit=-1, filter=f.And(is_edge_type, is_day_ahead_bid)
             )
 
         else:
             is_day_ahead_bids = f.In(
-                ["edge", "startNode"], [{"space": "power-ops", "externalId": ext_id} for ext_id in external_id]
+                ["edge", "startNode"],
+                [{"space": "power-ops", "externalId": ext_id} for ext_id in external_id],
             )
             return self._client.data_modeling.instances.list(
                 "edge", limit=-1, filter=f.And(is_edge_type, is_day_ahead_bids)
@@ -61,7 +78,10 @@ class DayAheadBidPriceScenariosAPI:
 
     def list(self, limit=DEFAULT_LIMIT_READ) -> dm.EdgeList:
         f = dm.filters
-        is_edge_type = f.Equals(["edge", "type"], {"space": "power-ops", "externalId": "DayAheadBid.priceScenarios"})
+        is_edge_type = f.Equals(
+            ["edge", "type"],
+            {"space": "power-ops", "externalId": "DayAheadBid.priceScenarios"},
+        )
         return self._client.data_modeling.instances.list("edge", limit=limit, filter=is_edge_type)
 
 
@@ -86,7 +106,7 @@ class DayAheadBidsAPI(TypeAPI[DayAheadBid, DayAheadBidApply, DayAheadBidList]):
             return self._client.data_modeling.instances.delete(nodes=(DayAheadBidApply.space, external_id))
         else:
             return self._client.data_modeling.instances.delete(
-                nodes=[(DayAheadBidApply.space, id) for id in external_id]
+                nodes=[(DayAheadBidApply.space, id) for id in external_id],
             )
 
     @overload

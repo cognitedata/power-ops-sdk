@@ -1,15 +1,23 @@
-from cognite.powerops.cogshop1.data_classes._cases import Case, CaseApply, CaseList
-from cognite.powerops.cogshop1.data_classes._commands_configs import (
+from cognite.powerops.client._generated.cogshop1.data_classes._cases import Case, CaseApply, CaseList
+from cognite.powerops.client._generated.cogshop1.data_classes._commands_configs import (
     CommandsConfig,
     CommandsConfigApply,
     CommandsConfigList,
 )
-from cognite.powerops.cogshop1.data_classes._file_refs import FileRef, FileRefApply, FileRefList
-from cognite.powerops.cogshop1.data_classes._mappings import Mapping, MappingApply, MappingList
-from cognite.powerops.cogshop1.data_classes._model_templates import ModelTemplate, ModelTemplateApply, ModelTemplateList
-from cognite.powerops.cogshop1.data_classes._processing_logs import ProcessingLog, ProcessingLogApply, ProcessingLogList
-from cognite.powerops.cogshop1.data_classes._scenarios import Scenario, ScenarioApply, ScenarioList
-from cognite.powerops.cogshop1.data_classes._transformations import (
+from cognite.powerops.client._generated.cogshop1.data_classes._file_refs import FileRef, FileRefApply, FileRefList
+from cognite.powerops.client._generated.cogshop1.data_classes._mappings import Mapping, MappingApply, MappingList
+from cognite.powerops.client._generated.cogshop1.data_classes._model_templates import (
+    ModelTemplate,
+    ModelTemplateApply,
+    ModelTemplateList,
+)
+from cognite.powerops.client._generated.cogshop1.data_classes._processing_logs import (
+    ProcessingLog,
+    ProcessingLogApply,
+    ProcessingLogList,
+)
+from cognite.powerops.client._generated.cogshop1.data_classes._scenarios import Scenario, ScenarioApply, ScenarioList
+from cognite.powerops.client._generated.cogshop1.data_classes._transformations import (
     Transformation,
     TransformationApply,
     TransformationList,

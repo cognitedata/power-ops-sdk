@@ -7,8 +7,8 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client._constants import DEFAULT_LIMIT_READ
 
-from cognite.powerops.client._api._core import TypeAPI
-from cognite.powerops.client.data_classes import ScenarioMapping, ScenarioMappingApply, ScenarioMappingList
+from cognite.powerops.client._generated._api._core import TypeAPI
+from cognite.powerops.client._generated.data_classes import ScenarioMapping, ScenarioMappingApply, ScenarioMappingList
 
 
 class ScenarioMappingMappingOverridesAPI:
@@ -18,17 +18,22 @@ class ScenarioMappingMappingOverridesAPI:
     def retrieve(self, external_id: str | Sequence[str]) -> dm.EdgeList:
         f = dm.filters
         is_edge_type = f.Equals(
-            ["edge", "type"], {"space": "power-ops", "externalId": "ScenarioMapping.mappingOverride"}
+            ["edge", "type"],
+            {"space": "power-ops", "externalId": "ScenarioMapping.mappingOverride"},
         )
         if isinstance(external_id, str):
-            is_scenario_mapping = f.Equals(["edge", "startNode"], {"space": "power-ops", "externalId": external_id})
+            is_scenario_mapping = f.Equals(
+                ["edge", "startNode"],
+                {"space": "power-ops", "externalId": external_id},
+            )
             return self._client.data_modeling.instances.list(
                 "edge", limit=-1, filter=f.And(is_edge_type, is_scenario_mapping)
             )
 
         else:
             is_scenario_mappings = f.In(
-                ["edge", "startNode"], [{"space": "power-ops", "externalId": ext_id} for ext_id in external_id]
+                ["edge", "startNode"],
+                [{"space": "power-ops", "externalId": ext_id} for ext_id in external_id],
             )
             return self._client.data_modeling.instances.list(
                 "edge", limit=-1, filter=f.And(is_edge_type, is_scenario_mappings)
@@ -37,7 +42,8 @@ class ScenarioMappingMappingOverridesAPI:
     def list(self, limit=DEFAULT_LIMIT_READ) -> dm.EdgeList:
         f = dm.filters
         is_edge_type = f.Equals(
-            ["edge", "type"], {"space": "power-ops", "externalId": "ScenarioMapping.mappingOverride"}
+            ["edge", "type"],
+            {"space": "power-ops", "externalId": "ScenarioMapping.mappingOverride"},
         )
         return self._client.data_modeling.instances.list("edge", limit=limit, filter=is_edge_type)
 
@@ -62,7 +68,7 @@ class ScenarioMappingsAPI(TypeAPI[ScenarioMapping, ScenarioMappingApply, Scenari
             return self._client.data_modeling.instances.delete(nodes=(ScenarioMappingApply.space, external_id))
         else:
             return self._client.data_modeling.instances.delete(
-                nodes=[(ScenarioMappingApply.space, id) for id in external_id]
+                nodes=[(ScenarioMappingApply.space, id) for id in external_id],
             )
 
     @overload

@@ -7,8 +7,8 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client._constants import DEFAULT_LIMIT_READ
 
-from cognite.powerops.client._api._core import TypeAPI
-from cognite.powerops.client.data_classes import OutputContainer, OutputContainerApply, OutputContainerList
+from cognite.powerops.client._generated._api._core import TypeAPI
+from cognite.powerops.client._generated.data_classes import OutputContainer, OutputContainerApply, OutputContainerList
 
 
 class OutputContainerMappingsAPI:
@@ -17,16 +17,23 @@ class OutputContainerMappingsAPI:
 
     def retrieve(self, external_id: str | Sequence[str]) -> dm.EdgeList:
         f = dm.filters
-        is_edge_type = f.Equals(["edge", "type"], {"space": "power-ops", "externalId": "OutputContainer.mappings"})
+        is_edge_type = f.Equals(
+            ["edge", "type"],
+            {"space": "power-ops", "externalId": "OutputContainer.mappings"},
+        )
         if isinstance(external_id, str):
-            is_output_container = f.Equals(["edge", "startNode"], {"space": "power-ops", "externalId": external_id})
+            is_output_container = f.Equals(
+                ["edge", "startNode"],
+                {"space": "power-ops", "externalId": external_id},
+            )
             return self._client.data_modeling.instances.list(
                 "edge", limit=-1, filter=f.And(is_edge_type, is_output_container)
             )
 
         else:
             is_output_containers = f.In(
-                ["edge", "startNode"], [{"space": "power-ops", "externalId": ext_id} for ext_id in external_id]
+                ["edge", "startNode"],
+                [{"space": "power-ops", "externalId": ext_id} for ext_id in external_id],
             )
             return self._client.data_modeling.instances.list(
                 "edge", limit=-1, filter=f.And(is_edge_type, is_output_containers)
@@ -34,7 +41,10 @@ class OutputContainerMappingsAPI:
 
     def list(self, limit=DEFAULT_LIMIT_READ) -> dm.EdgeList:
         f = dm.filters
-        is_edge_type = f.Equals(["edge", "type"], {"space": "power-ops", "externalId": "OutputContainer.mappings"})
+        is_edge_type = f.Equals(
+            ["edge", "type"],
+            {"space": "power-ops", "externalId": "OutputContainer.mappings"},
+        )
         return self._client.data_modeling.instances.list("edge", limit=limit, filter=is_edge_type)
 
 
@@ -58,7 +68,7 @@ class OutputContainersAPI(TypeAPI[OutputContainer, OutputContainerApply, OutputC
             return self._client.data_modeling.instances.delete(nodes=(OutputContainerApply.space, external_id))
         else:
             return self._client.data_modeling.instances.delete(
-                nodes=[(OutputContainerApply.space, id) for id in external_id]
+                nodes=[(OutputContainerApply.space, id) for id in external_id],
             )
 
     @overload

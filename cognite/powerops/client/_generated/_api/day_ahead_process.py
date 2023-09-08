@@ -7,8 +7,8 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client._constants import DEFAULT_LIMIT_READ
 
-from cognite.powerops.client._api._core import TypeAPI
-from cognite.powerops.client.data_classes import DayAheadProces, DayAheadProcesApply, DayAheadProcesList
+from cognite.powerops.client._generated._api._core import TypeAPI
+from cognite.powerops.client._generated.data_classes import DayAheadProces, DayAheadProcesApply, DayAheadProcesList
 
 
 class DayAheadProcesBidMatrixGeneratorConfigsAPI:
@@ -18,17 +18,22 @@ class DayAheadProcesBidMatrixGeneratorConfigsAPI:
     def retrieve(self, external_id: str | Sequence[str]) -> dm.EdgeList:
         f = dm.filters
         is_edge_type = f.Equals(
-            ["edge", "type"], {"space": "power-ops", "externalId": "DayAheadProcess.bidMatrixGeneratorConfig"}
+            ["edge", "type"],
+            {"space": "power-ops", "externalId": "DayAheadProcess.bidMatrixGeneratorConfig"},
         )
         if isinstance(external_id, str):
-            is_day_ahead_proces = f.Equals(["edge", "startNode"], {"space": "power-ops", "externalId": external_id})
+            is_day_ahead_proces = f.Equals(
+                ["edge", "startNode"],
+                {"space": "power-ops", "externalId": external_id},
+            )
             return self._client.data_modeling.instances.list(
                 "edge", limit=-1, filter=f.And(is_edge_type, is_day_ahead_proces)
             )
 
         else:
             is_day_ahead_process = f.In(
-                ["edge", "startNode"], [{"space": "power-ops", "externalId": ext_id} for ext_id in external_id]
+                ["edge", "startNode"],
+                [{"space": "power-ops", "externalId": ext_id} for ext_id in external_id],
             )
             return self._client.data_modeling.instances.list(
                 "edge", limit=-1, filter=f.And(is_edge_type, is_day_ahead_process)
@@ -37,7 +42,8 @@ class DayAheadProcesBidMatrixGeneratorConfigsAPI:
     def list(self, limit=DEFAULT_LIMIT_READ) -> dm.EdgeList:
         f = dm.filters
         is_edge_type = f.Equals(
-            ["edge", "type"], {"space": "power-ops", "externalId": "DayAheadProcess.bidMatrixGeneratorConfig"}
+            ["edge", "type"],
+            {"space": "power-ops", "externalId": "DayAheadProcess.bidMatrixGeneratorConfig"},
         )
         return self._client.data_modeling.instances.list("edge", limit=limit, filter=is_edge_type)
 
@@ -49,17 +55,22 @@ class DayAheadProcesIncrementalMappingsAPI:
     def retrieve(self, external_id: str | Sequence[str]) -> dm.EdgeList:
         f = dm.filters
         is_edge_type = f.Equals(
-            ["edge", "type"], {"space": "power-ops", "externalId": "DayAheadProcess.incremental_mappings"}
+            ["edge", "type"],
+            {"space": "power-ops", "externalId": "DayAheadProcess.incremental_mappings"},
         )
         if isinstance(external_id, str):
-            is_day_ahead_proces = f.Equals(["edge", "startNode"], {"space": "power-ops", "externalId": external_id})
+            is_day_ahead_proces = f.Equals(
+                ["edge", "startNode"],
+                {"space": "power-ops", "externalId": external_id},
+            )
             return self._client.data_modeling.instances.list(
                 "edge", limit=-1, filter=f.And(is_edge_type, is_day_ahead_proces)
             )
 
         else:
             is_day_ahead_process = f.In(
-                ["edge", "startNode"], [{"space": "power-ops", "externalId": ext_id} for ext_id in external_id]
+                ["edge", "startNode"],
+                [{"space": "power-ops", "externalId": ext_id} for ext_id in external_id],
             )
             return self._client.data_modeling.instances.list(
                 "edge", limit=-1, filter=f.And(is_edge_type, is_day_ahead_process)
@@ -68,7 +79,8 @@ class DayAheadProcesIncrementalMappingsAPI:
     def list(self, limit=DEFAULT_LIMIT_READ) -> dm.EdgeList:
         f = dm.filters
         is_edge_type = f.Equals(
-            ["edge", "type"], {"space": "power-ops", "externalId": "DayAheadProcess.incremental_mappings"}
+            ["edge", "type"],
+            {"space": "power-ops", "externalId": "DayAheadProcess.incremental_mappings"},
         )
         return self._client.data_modeling.instances.list("edge", limit=limit, filter=is_edge_type)
 
@@ -94,7 +106,7 @@ class DayAheadProcessAPI(TypeAPI[DayAheadProces, DayAheadProcesApply, DayAheadPr
             return self._client.data_modeling.instances.delete(nodes=(DayAheadProcesApply.space, external_id))
         else:
             return self._client.data_modeling.instances.delete(
-                nodes=[(DayAheadProcesApply.space, id) for id in external_id]
+                nodes=[(DayAheadProcesApply.space, id) for id in external_id],
             )
 
     @overload

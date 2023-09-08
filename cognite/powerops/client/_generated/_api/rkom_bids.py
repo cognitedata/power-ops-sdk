@@ -7,8 +7,8 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client._constants import DEFAULT_LIMIT_READ
 
-from cognite.powerops.clients._api._core import TypeAPI
-from cognite.powerops.clients.data_classes import RKOMBid, RKOMBidApply, RKOMBidList
+from cognite.powerops.client._generated._api._core import TypeAPI
+from cognite.powerops.client._generated.data_classes import RKOMBid, RKOMBidApply, RKOMBidList
 
 
 class RKOMBidDatesAPI:
@@ -17,20 +17,30 @@ class RKOMBidDatesAPI:
 
     def retrieve(self, external_id: str | Sequence[str]) -> dm.EdgeList:
         f = dm.filters
-        is_edge_type = f.Equals(["edge", "type"], {"space": "power-ops", "externalId": "RKOMBid.date"})
+        is_edge_type = f.Equals(
+            ["edge", "type"],
+            {"space": "power-ops", "externalId": "RKOMBid.date"},
+        )
         if isinstance(external_id, str):
-            is_rkom_bid = f.Equals(["edge", "startNode"], {"space": "power-ops", "externalId": external_id})
+            is_rkom_bid = f.Equals(
+                ["edge", "startNode"],
+                {"space": "power-ops", "externalId": external_id},
+            )
             return self._client.data_modeling.instances.list("edge", limit=-1, filter=f.And(is_edge_type, is_rkom_bid))
 
         else:
             is_rkom_bids = f.In(
-                ["edge", "startNode"], [{"space": "power-ops", "externalId": ext_id} for ext_id in external_id]
+                ["edge", "startNode"],
+                [{"space": "power-ops", "externalId": ext_id} for ext_id in external_id],
             )
             return self._client.data_modeling.instances.list("edge", limit=-1, filter=f.And(is_edge_type, is_rkom_bids))
 
     def list(self, limit=DEFAULT_LIMIT_READ) -> dm.EdgeList:
         f = dm.filters
-        is_edge_type = f.Equals(["edge", "type"], {"space": "power-ops", "externalId": "RKOMBid.date"})
+        is_edge_type = f.Equals(
+            ["edge", "type"],
+            {"space": "power-ops", "externalId": "RKOMBid.date"},
+        )
         return self._client.data_modeling.instances.list("edge", limit=limit, filter=is_edge_type)
 
 
@@ -40,20 +50,30 @@ class RKOMBidPriceScenariosAPI:
 
     def retrieve(self, external_id: str | Sequence[str]) -> dm.EdgeList:
         f = dm.filters
-        is_edge_type = f.Equals(["edge", "type"], {"space": "power-ops", "externalId": "RKOMBid.priceScenarios"})
+        is_edge_type = f.Equals(
+            ["edge", "type"],
+            {"space": "power-ops", "externalId": "RKOMBid.priceScenarios"},
+        )
         if isinstance(external_id, str):
-            is_rkom_bid = f.Equals(["edge", "startNode"], {"space": "power-ops", "externalId": external_id})
+            is_rkom_bid = f.Equals(
+                ["edge", "startNode"],
+                {"space": "power-ops", "externalId": external_id},
+            )
             return self._client.data_modeling.instances.list("edge", limit=-1, filter=f.And(is_edge_type, is_rkom_bid))
 
         else:
             is_rkom_bids = f.In(
-                ["edge", "startNode"], [{"space": "power-ops", "externalId": ext_id} for ext_id in external_id]
+                ["edge", "startNode"],
+                [{"space": "power-ops", "externalId": ext_id} for ext_id in external_id],
             )
             return self._client.data_modeling.instances.list("edge", limit=-1, filter=f.And(is_edge_type, is_rkom_bids))
 
     def list(self, limit=DEFAULT_LIMIT_READ) -> dm.EdgeList:
         f = dm.filters
-        is_edge_type = f.Equals(["edge", "type"], {"space": "power-ops", "externalId": "RKOMBid.priceScenarios"})
+        is_edge_type = f.Equals(
+            ["edge", "type"],
+            {"space": "power-ops", "externalId": "RKOMBid.priceScenarios"},
+        )
         return self._client.data_modeling.instances.list("edge", limit=limit, filter=is_edge_type)
 
 
@@ -63,20 +83,30 @@ class RKOMBidReserveScenariosAPI:
 
     def retrieve(self, external_id: str | Sequence[str]) -> dm.EdgeList:
         f = dm.filters
-        is_edge_type = f.Equals(["edge", "type"], {"space": "power-ops", "externalId": "RKOMBid.reserveScenarios"})
+        is_edge_type = f.Equals(
+            ["edge", "type"],
+            {"space": "power-ops", "externalId": "RKOMBid.reserveScenarios"},
+        )
         if isinstance(external_id, str):
-            is_rkom_bid = f.Equals(["edge", "startNode"], {"space": "power-ops", "externalId": external_id})
+            is_rkom_bid = f.Equals(
+                ["edge", "startNode"],
+                {"space": "power-ops", "externalId": external_id},
+            )
             return self._client.data_modeling.instances.list("edge", limit=-1, filter=f.And(is_edge_type, is_rkom_bid))
 
         else:
             is_rkom_bids = f.In(
-                ["edge", "startNode"], [{"space": "power-ops", "externalId": ext_id} for ext_id in external_id]
+                ["edge", "startNode"],
+                [{"space": "power-ops", "externalId": ext_id} for ext_id in external_id],
             )
             return self._client.data_modeling.instances.list("edge", limit=-1, filter=f.And(is_edge_type, is_rkom_bids))
 
     def list(self, limit=DEFAULT_LIMIT_READ) -> dm.EdgeList:
         f = dm.filters
-        is_edge_type = f.Equals(["edge", "type"], {"space": "power-ops", "externalId": "RKOMBid.reserveScenarios"})
+        is_edge_type = f.Equals(
+            ["edge", "type"],
+            {"space": "power-ops", "externalId": "RKOMBid.reserveScenarios"},
+        )
         return self._client.data_modeling.instances.list("edge", limit=limit, filter=is_edge_type)
 
 
@@ -101,7 +131,9 @@ class RKOMBidsAPI(TypeAPI[RKOMBid, RKOMBidApply, RKOMBidList]):
         if isinstance(external_id, str):
             return self._client.data_modeling.instances.delete(nodes=(RKOMBidApply.space, external_id))
         else:
-            return self._client.data_modeling.instances.delete(nodes=[(RKOMBidApply.space, id) for id in external_id])
+            return self._client.data_modeling.instances.delete(
+                nodes=[(RKOMBidApply.space, id) for id in external_id],
+            )
 
     @overload
     def retrieve(self, external_id: str) -> RKOMBid:

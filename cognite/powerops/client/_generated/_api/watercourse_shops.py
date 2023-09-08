@@ -6,8 +6,8 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client._constants import DEFAULT_LIMIT_READ
 
-from cognite.powerops.client._api._core import TypeAPI
-from cognite.powerops.client.data_classes import WatercourseShop, WatercourseShopApply, WatercourseShopList
+from cognite.powerops.client._generated._api._core import TypeAPI
+from cognite.powerops.client._generated.data_classes import WatercourseShop, WatercourseShopApply, WatercourseShopList
 
 
 class WatercourseShopsAPI(TypeAPI[WatercourseShop, WatercourseShopApply, WatercourseShopList]):
@@ -29,7 +29,7 @@ class WatercourseShopsAPI(TypeAPI[WatercourseShop, WatercourseShopApply, Waterco
             return self._client.data_modeling.instances.delete(nodes=(WatercourseShopApply.space, external_id))
         else:
             return self._client.data_modeling.instances.delete(
-                nodes=[(WatercourseShopApply.space, id) for id in external_id]
+                nodes=[(WatercourseShopApply.space, id) for id in external_id],
             )
 
     @overload

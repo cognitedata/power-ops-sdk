@@ -7,8 +7,12 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client._constants import DEFAULT_LIMIT_READ
 
-from cognite.powerops.client._api._core import TypeAPI
-from cognite.powerops.client.data_classes import ShopTransformation, ShopTransformationApply, ShopTransformationList
+from cognite.powerops.client._generated._api._core import TypeAPI
+from cognite.powerops.client._generated.data_classes import (
+    ShopTransformation,
+    ShopTransformationApply,
+    ShopTransformationList,
+)
 
 
 class ShopTransformationEndsAPI:
@@ -17,16 +21,23 @@ class ShopTransformationEndsAPI:
 
     def retrieve(self, external_id: str | Sequence[str]) -> dm.EdgeList:
         f = dm.filters
-        is_edge_type = f.Equals(["edge", "type"], {"space": "power-ops", "externalId": "ShopTransformation.end"})
+        is_edge_type = f.Equals(
+            ["edge", "type"],
+            {"space": "power-ops", "externalId": "ShopTransformation.end"},
+        )
         if isinstance(external_id, str):
-            is_shop_transformation = f.Equals(["edge", "startNode"], {"space": "power-ops", "externalId": external_id})
+            is_shop_transformation = f.Equals(
+                ["edge", "startNode"],
+                {"space": "power-ops", "externalId": external_id},
+            )
             return self._client.data_modeling.instances.list(
                 "edge", limit=-1, filter=f.And(is_edge_type, is_shop_transformation)
             )
 
         else:
             is_shop_transformations = f.In(
-                ["edge", "startNode"], [{"space": "power-ops", "externalId": ext_id} for ext_id in external_id]
+                ["edge", "startNode"],
+                [{"space": "power-ops", "externalId": ext_id} for ext_id in external_id],
             )
             return self._client.data_modeling.instances.list(
                 "edge", limit=-1, filter=f.And(is_edge_type, is_shop_transformations)
@@ -34,7 +45,10 @@ class ShopTransformationEndsAPI:
 
     def list(self, limit=DEFAULT_LIMIT_READ) -> dm.EdgeList:
         f = dm.filters
-        is_edge_type = f.Equals(["edge", "type"], {"space": "power-ops", "externalId": "ShopTransformation.end"})
+        is_edge_type = f.Equals(
+            ["edge", "type"],
+            {"space": "power-ops", "externalId": "ShopTransformation.end"},
+        )
         return self._client.data_modeling.instances.list("edge", limit=limit, filter=is_edge_type)
 
 
@@ -44,16 +58,23 @@ class ShopTransformationStartsAPI:
 
     def retrieve(self, external_id: str | Sequence[str]) -> dm.EdgeList:
         f = dm.filters
-        is_edge_type = f.Equals(["edge", "type"], {"space": "power-ops", "externalId": "ShopTransformation.start"})
+        is_edge_type = f.Equals(
+            ["edge", "type"],
+            {"space": "power-ops", "externalId": "ShopTransformation.start"},
+        )
         if isinstance(external_id, str):
-            is_shop_transformation = f.Equals(["edge", "startNode"], {"space": "power-ops", "externalId": external_id})
+            is_shop_transformation = f.Equals(
+                ["edge", "startNode"],
+                {"space": "power-ops", "externalId": external_id},
+            )
             return self._client.data_modeling.instances.list(
                 "edge", limit=-1, filter=f.And(is_edge_type, is_shop_transformation)
             )
 
         else:
             is_shop_transformations = f.In(
-                ["edge", "startNode"], [{"space": "power-ops", "externalId": ext_id} for ext_id in external_id]
+                ["edge", "startNode"],
+                [{"space": "power-ops", "externalId": ext_id} for ext_id in external_id],
             )
             return self._client.data_modeling.instances.list(
                 "edge", limit=-1, filter=f.And(is_edge_type, is_shop_transformations)
@@ -61,7 +82,10 @@ class ShopTransformationStartsAPI:
 
     def list(self, limit=DEFAULT_LIMIT_READ) -> dm.EdgeList:
         f = dm.filters
-        is_edge_type = f.Equals(["edge", "type"], {"space": "power-ops", "externalId": "ShopTransformation.start"})
+        is_edge_type = f.Equals(
+            ["edge", "type"],
+            {"space": "power-ops", "externalId": "ShopTransformation.start"},
+        )
         return self._client.data_modeling.instances.list("edge", limit=limit, filter=is_edge_type)
 
 
@@ -86,7 +110,7 @@ class ShopTransformationsAPI(TypeAPI[ShopTransformation, ShopTransformationApply
             return self._client.data_modeling.instances.delete(nodes=(ShopTransformationApply.space, external_id))
         else:
             return self._client.data_modeling.instances.delete(
-                nodes=[(ShopTransformationApply.space, id) for id in external_id]
+                nodes=[(ShopTransformationApply.space, id) for id in external_id],
             )
 
     @overload

@@ -6,8 +6,12 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client._constants import DEFAULT_LIMIT_READ
 
-from cognite.powerops.client._api._core import TypeAPI
-from cognite.powerops.client.data_classes import ScenarioTemplate, ScenarioTemplateApply, ScenarioTemplateList
+from cognite.powerops.client._generated._api._core import TypeAPI
+from cognite.powerops.client._generated.data_classes import (
+    ScenarioTemplate,
+    ScenarioTemplateApply,
+    ScenarioTemplateList,
+)
 
 
 class ScenarioTemplatesAPI(TypeAPI[ScenarioTemplate, ScenarioTemplateApply, ScenarioTemplateList]):
@@ -29,7 +33,7 @@ class ScenarioTemplatesAPI(TypeAPI[ScenarioTemplate, ScenarioTemplateApply, Scen
             return self._client.data_modeling.instances.delete(nodes=(ScenarioTemplateApply.space, external_id))
         else:
             return self._client.data_modeling.instances.delete(
-                nodes=[(ScenarioTemplateApply.space, id) for id in external_id]
+                nodes=[(ScenarioTemplateApply.space, id) for id in external_id],
             )
 
     @overload

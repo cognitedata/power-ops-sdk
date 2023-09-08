@@ -7,8 +7,8 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client._constants import DEFAULT_LIMIT_READ
 
-from cognite.powerops.cogshop1._api._core import TypeAPI
-from cognite.powerops.cogshop1.data_classes import Scenario, ScenarioApply, ScenarioList
+from cognite.powerops.client._generated.cogshop1._api._core import TypeAPI
+from cognite.powerops.client._generated.cogshop1.data_classes import Scenario, ScenarioApply, ScenarioList
 
 
 class ScenarioExtraFilesAPI:
