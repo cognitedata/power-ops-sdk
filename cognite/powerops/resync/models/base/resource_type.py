@@ -7,8 +7,8 @@ from typing_extensions import TypeAlias
 from cognite.client.data_classes import TimeSeries, Asset, Sequence, FileMetadata
 from pydantic import BaseModel
 
-from cognite.powerops.resync.models.cdf_resources import CDFSequence, CDFFile
-from cognite.powerops.resync.models.helpers import isinstance_list
+from .cdf_resources import CDFSequence, CDFFile
+from .helpers import isinstance_list
 
 _T_Type = TypeVar("_T_Type")
 

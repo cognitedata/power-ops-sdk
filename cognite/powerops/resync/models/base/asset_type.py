@@ -11,7 +11,7 @@ from pydantic import BaseModel
 
 from cognite.powerops.cdf_labels import AssetLabel, RelationshipLabel
 from .resource_type import ResourceType
-from cognite.powerops.resync.models.cdf_resources import CDFSequence, CDFFile
+from .cdf_resources import CDFSequence, CDFFile
 from cognite.powerops.resync.utils.serializer import get_pydantic_annotation
 
 

@@ -18,10 +18,10 @@ from cognite.client.data_classes.data_modeling import (
     EdgeApplyList,
 )
 
-from cognite.powerops.client.data_classes._core import DomainModelApply
-from cognite.powerops.cogshop1.data_classes._core import DomainModelApply as DomainModelApplyCogShop1
-from cognite.powerops.resync.models.base.model import Model
-from cognite.powerops.resync.models.cdf_resources import CDFFile, CDFSequence
+from cognite.powerops.client._generated.data_classes._core import DomainModelApply
+from cognite.powerops.client._generated.cogshop1.data_classes._core import DomainModelApply as DomainModelApplyCogShop1
+from .model import Model
+from .cdf_resources import CDFFile, CDFSequence
 from cognite.powerops.resync.utils.serializer import get_pydantic_annotation
 
 
