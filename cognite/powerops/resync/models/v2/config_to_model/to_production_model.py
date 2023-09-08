@@ -4,7 +4,6 @@ import re
 
 from cognite.client.data_classes import TimeSeries
 
-from cognite.powerops.resync.config import ProductionConfig, Connection
 from cognite.powerops.resync.models._shared_v1_v2.production_model import (
     p_min_fallback,
     p_max_fallback,
@@ -14,22 +13,35 @@ from cognite.powerops.resync.models._shared_v1_v2.production_model import (
     _get_single_value,
     _plant_to_inlet_reservoir_breadth_first_search,
 )
+from cognite.powerops.resync import config
+from cognite.powerops.resync.models.v2.production_dm import ProductionModelDM
+from cognite.powerops.client.data_classes import (
+    WatercourseApply,
+    ReservoirApply,
+    GeneratorApply,
+    PlantApply,
+    PriceAreaApply,
+    WatercourseShopApply,
+)
+from cognite.powerops.resync.utils.common import make_ext_id
+
 from cognite.powerops.resync.utils.serializer import load_yaml
 
 
-def to_production_data_model(config: ProductionConfig) -> ProductionModelDM:
+def to_production_data_model(configuration: config.ProductionConfig) -> ProductionModelDM:
     model = ProductionModelDM()
     plant_time_series_mappings_by_name = {
-        mapping.plant_name: mapping for mapping in (config.plant_time_series_mappings or [])
+        mapping.plant_name: mapping for mapping in (configuration.plant_time_series_mappings or [])
     }
     start_stop_cost_time_series_by_generator = {
-        mapping.generator_name: mapping.start_stop_cost for mapping in (config.generator_time_series_mappings or [])
+        mapping.generator_name: mapping.start_stop_cost
+        for mapping in (configuration.generator_time_series_mappings or [])
     }
     is_generator_available = {
-        mapping.generator_name: mapping.is_available for mapping in (config.generator_time_series_mappings or [])
+        mapping.generator_name: mapping.is_available for mapping in (configuration.generator_time_series_mappings or [])
     }
 
-    for watercourse_config in config.watercourses:
+    for watercourse_config in configuration.watercourses:
         watercourse = WatercourseApply(
             external_id=f"watercourse:{watercourse_config.name}",
             name=watercourse_config.name,
@@ -136,7 +148,7 @@ def to_production_data_model(config: ProductionConfig) -> ProductionModelDM:
             selected_reservoir = next((r for r in model.reservoirs if r.name == inlet_reservoir_name), None)
             plant.inlet_reservoirs = [selected_reservoir]
 
-            parsed_connections = [Connection(**connection) for connection in all_connections]
+            parsed_connections = [config.Connection(**connection) for connection in all_connections]
             # Add the generators to the plant
             plant.generators = [
                 g
@@ -153,8 +165,8 @@ def to_production_data_model(config: ProductionConfig) -> ProductionModelDM:
             price_area_name = watercourse_config.market_to_price_area[prod_area]
             price_area = PriceAreaApply(name=price_area_name, external_id=f"price_area:{price_area_name}")
             if price_area_name not in {a.name for a in model.price_areas}:
-                if price_area_name in config.dayahead_price_timeseries:
-                    price_area.day_ahead_price = config.dayahead_price_timeseries[price_area_name]
+                if price_area_name in configuration.dayahead_price_timeseries:
+                    price_area.day_ahead_price = configuration.dayahead_price_timeseries[price_area_name]
                 model.price_areas.append(price_area)
             price_area = next(a for a in model.price_areas if a.name == price_area_name)
 

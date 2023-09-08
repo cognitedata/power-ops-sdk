@@ -7,14 +7,38 @@ from cognite.powerops.resync.config.market.market import MARKET_BY_PRICE_AREA
 from cognite.powerops.resync.config._main import MarketConfig
 
 from cognite.powerops.resync.utils.common import make_ext_id
-
-from ._to_instances import (
+from cognite.powerops.client.data_classes import (
+    BenchmarkBidApply,
+    BenchmarkProcesApply,
+    BidMatrixGeneratorApply,
+    DayAheadBidApply,
+    DayAheadProcesApply,
+    NordPoolMarketApply,
+    RKOMBidApply,
+    RKOMBidCombinationApply,
+    RKOMMarketApply,
+    RKOMProcesApply,
+    PriceAreaApply,
+    ProductionPlanTimeSeriesApply,
+    ReserveScenarioApply,
+    ScenarioMappingApply,
+    ShopTransformationApply,
+    InputTimeSeriesMappingApply,
+    RKOMCombinationBidApply,
+)
+from cognite.powerops.resync.models._shared_v1_v2._to_instances import (
     _to_date_transformations,
     _to_scenario_mapping,
     _to_shop_transformation,
     _to_input_timeseries_mapping,
 )
-from ..._shared_v1_v2.market_model import _map_price_scenarios_by_name
+from cognite.powerops.resync.models._shared_v1_v2.market_model import _map_price_scenarios_by_name
+
+from cognite.powerops.resync.models.v2.market_dm import (
+    BenchmarkMarketDataModel,
+    DayAheadMarketDataModel,
+    RKOMMarketDataModel,
+)
 
 
 def to_benchmark_data_model(configs: list[BenchmarkingConfig]) -> BenchmarkMarketDataModel:

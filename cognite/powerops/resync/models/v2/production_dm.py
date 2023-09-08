@@ -11,7 +11,7 @@ from cognite.powerops.client.data_classes import (
 )
 from cognite.powerops.client.powerops_client import PowerOpsClient
 from cognite.powerops.resync.models.base import DataModel, T_Model
-from cognite.powerops.resync.models.cdf_resources import CDFSequence
+from cognite.powerops.resync.models.base import CDFSequence
 
 
 class ProductionModelDM(DataModel):

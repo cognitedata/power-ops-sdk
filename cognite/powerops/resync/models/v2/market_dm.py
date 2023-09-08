@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import Optional, Type
 
 from pydantic import Field
+from typing_extensions import TypeAlias
 
 from cognite.powerops.client.data_classes import (
     BenchmarkBidApply,
@@ -19,7 +20,7 @@ from cognite.powerops.client.data_classes import (
 from cognite.powerops.client.powerops_client import PowerOpsClient
 from cognite.powerops.resync.models.base import DataModel, T_Model
 
-ExternalID = str
+ExternalID: TypeAlias = str
 
 
 class BenchmarkMarketDataModel(DataModel):
