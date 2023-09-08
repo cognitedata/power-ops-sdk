@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 
-from cognite.powerops.client._api_client import CogShopAPIs
+from cognite.powerops.client._generated._api_client import CogShopAPIs
 from cognite.powerops.client.shop.data_classes.shop_model import ShopModel
 
 logger = logging.getLogger(__name__)

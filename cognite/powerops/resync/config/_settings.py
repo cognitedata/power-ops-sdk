@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from cognite.powerops.resync._logger import LoggingLevelT
+from cognite.powerops.client._logger import LoggingLevelT
 
 
 class Settings(BaseModel):

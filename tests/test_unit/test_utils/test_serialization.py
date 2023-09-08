@@ -3,12 +3,18 @@ from typing import Any, Union, Type
 import pytest
 
 from cognite.powerops.utils.serialization import get_pydantic_annotation
-from cognite.powerops.cogshop1.data_classes import MappingApply, TransformationApply
+from cognite.powerops.client.data_classes import cogshop1
 
 
 def get_pydantic_annotation_test_cases():
-    annotation = MappingApply.model_fields["transformations"].annotation
-    yield pytest.param(annotation, MappingApply, Union[TransformationApply, str], list, id="list[TransformationApply]")
+    annotation = cogshop1.MappingApply.model_fields["transformations"].annotation
+    yield pytest.param(
+        annotation,
+        cogshop1.MappingApply,
+        Union[cogshop1.TransformationApply, str],
+        list,
+        id="list[TransformationApply]",
+    )
 
 
 @pytest.mark.parametrize(

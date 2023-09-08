@@ -11,7 +11,7 @@ from cognite.client.data_classes import Asset, Relationship, AssetList, TimeSeri
 from cognite.powerops.client.powerops_client import PowerOpsClient
 from cognite.powerops.resync.models.base.asset_type import AssetType
 from cognite.powerops.resync.models.base.model import Model
-from cognite.powerops.resync.models.cdf_resources import CDFFile, CDFSequence
+from cognite.powerops.resync.models.base.cdf_resources import CDFFile, CDFSequence
 from cognite.powerops.utils.serialization import get_pydantic_annotation
 
 

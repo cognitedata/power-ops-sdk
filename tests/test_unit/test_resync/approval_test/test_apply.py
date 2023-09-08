@@ -12,7 +12,7 @@ except ModuleNotFoundError:
 
 from cognite.client.testing import monkeypatch_cognite_client
 
-from cognite.powerops.resync._main import DEFAULT_MODELS, apply
+from cognite.powerops.resync import DEFAULT_MODELS, apply
 from tests.constants import REPO_ROOT, SENSITIVE_TESTS, ReSync
 from tests.test_unit.test_resync.approval_test.mock_resource_create_classes import (
     MockAssetsCreate,

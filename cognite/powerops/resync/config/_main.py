@@ -7,16 +7,20 @@ from typing import Any, Dict, Literal, Optional, overload
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 from pydantic_core.core_schema import FieldValidationInfo
 
-from cognite.powerops.resync._settings import Settings
-from cognite.powerops.resync.config.cogshop.shop_file_config import ShopFileConfig
-from cognite.powerops.resync.config.market import BenchmarkingConfig, PriceScenario
-from cognite.powerops.resync.config.market.dayahead import BidMatrixGeneratorConfig, BidProcessConfig
-from cognite.powerops.resync.config.market.market import Market
-from cognite.powerops.resync.config.market.rkom import RKOMBidCombinationConfig, RKOMBidProcessConfig, RkomMarketConfig
-from cognite.powerops.resync.config.production.generator import GeneratorTimeSeriesMapping
-from cognite.powerops.resync.config.production.plant import PlantTimeSeriesMapping
-from cognite.powerops.resync.config.production.watercourse import WatercourseConfig
-from cognite.powerops.resync.config._shared import TimeSeriesMapping
+from ._settings import Settings
+from .cogshop.shop_file_config import ShopFileConfig
+from .market import (
+    BenchmarkingConfig,
+    PriceScenario,
+    BidMatrixGeneratorConfig,
+    BidProcessConfig,
+    Market,
+    RkomMarketConfig,
+    RKOMBidCombinationConfig,
+    RKOMBidProcessConfig,
+)
+from .production import GeneratorTimeSeriesMapping, PlantTimeSeriesMapping, WatercourseConfig
+from ._shared import TimeSeriesMapping
 from cognite.powerops.utils.serialization import load_yaml
 
 

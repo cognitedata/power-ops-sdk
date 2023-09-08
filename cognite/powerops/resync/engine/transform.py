@@ -32,6 +32,8 @@ def transform(config: ReSyncConfig, market_name: str, model_types: set[Type[Mode
         if models.MarketModel in model_types or models.CogShop1Asset in model_types:
             market_model = to_market_asset_model(config.market, production_model.price_areas, market_name)
             settings = config.settings
+            if production_model.root_asset.external_id is None:
+                raise ValueError("The production model must have an external_id")
             market_model.set_root_asset(
                 settings.shop_service_url,
                 settings.organization_subdomain,

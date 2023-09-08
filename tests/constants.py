@@ -6,7 +6,7 @@ SENSITIVE_TESTS = REPO_ROOT / "sensitive_tests.toml"
 
 
 class ReSync:
-    data = REPO_ROOT / "tests" / "test_unit" / "test_resync" / "data"
+    data = REPO_ROOT / "data"
     demo = data / "demo"
     production = demo / "production"
     market = demo / "market"

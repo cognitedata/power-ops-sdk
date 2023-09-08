@@ -1,6 +1,6 @@
 from cognite.client import CogniteClient
 
-from cognite.powerops.client._api_client import CogShopAPIs
+from cognite.powerops.client._generated._api_client import CogShopAPIs
 from cognite.powerops.client.data_set_api import DataSetsAPI
 
 from .api.shop_api import ShopModelsAPI
@@ -23,7 +23,7 @@ class ShopClient:
 
     Initialization of SHOP client:
 
-        >>> from cognite.powerops.clients import PowerOpsClient
+        >>> from cognite.powerops.client import PowerOpsClient
         >>> client = PowerOpsClient()
         >>> shop_client = client.shop
 
