@@ -102,7 +102,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.pytest.ini_options]
-addopts = "--doctest-modules --ignore=customers/ --ignore=examples/ --ignore=playground/ --ignore=cognite/powerops/clients"
+addopts = "--doctest-modules --ignore=customers/ --ignore=examples/ --ignore=playground/ --ignore=cognite/powerops/client"
 testpaths = [
     "tests",
     "cognite",
