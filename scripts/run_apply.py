@@ -11,7 +11,7 @@ def main():
             ["ProductionModel", "MarketModel", "CogShop1Asset"],
             auto_yes=True,
             format="markdown",
-            verbose=False,
+            verbose=True,
         )
 
 

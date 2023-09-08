@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 __all__ = ["ModelTemplate", "ModelTemplateApply", "ModelTemplateList"]
 
 
-class ModelTemplate(DomainModel):
+class ModelTemplate(DomainModel, protected_namespaces=()):
     space: ClassVar[str] = "cogShop"
     base_mappings: list[str] = Field([], alias="baseMappings")
     model: Optional[str] = None
@@ -23,7 +23,7 @@ class ModelTemplate(DomainModel):
     watercourse: Optional[str] = None
 
 
-class ModelTemplateApply(DomainModelApply):
+class ModelTemplateApply(DomainModelApply, protected_namespaces=()):
     space: ClassVar[str] = "cogShop"
     base_mappings: list[Union["MappingApply", str]] = Field(default_factory=list, repr=False)
     model: Optional[Union["FileRefApply", str]] = Field(None, repr=False)
@@ -49,17 +49,11 @@ class ModelTemplateApply(DomainModelApply):
         if self.watercourse is not None:
             properties["watercourse"] = self.watercourse
         if properties:
-            source = dm.NodeOrEdgeData(
-                source=dm.ContainerId("cogShop", "ModelTemplate"),
-                properties=properties,
-            )
+            source = dm.NodeOrEdgeData(source=dm.ContainerId("cogShop", "ModelTemplate"), properties=properties)
             sources.append(source)
         if sources:
             this_node = dm.NodeApply(
-                space=self.space,
-                external_id=self.external_id,
-                existing_version=self.existing_version,
-                sources=sources,
+                space=self.space, external_id=self.external_id, existing_version=self.existing_version, sources=sources
             )
             nodes = [this_node]
         else:
