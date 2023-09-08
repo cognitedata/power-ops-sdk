@@ -5,7 +5,7 @@ import re
 from hashlib import md5
 from typing import Any, Type, TypeVar
 
-from cognite.powerops.client.data_classes._core import DomainModelApply
+from cognite.powerops.client._generated.data_classes._core import DomainModelApply
 
 
 def special_case_handle_gate_number(name: str) -> None:
