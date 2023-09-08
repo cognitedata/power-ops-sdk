@@ -8,6 +8,7 @@ from .asset_type import AssetType, NonAssetType
 from .data_model import DataModel
 from .model import Model, T_Model
 from .cdf_resources import CDFSequence, CDFFile, CDFResource
+from .graph_ql import PowerOpsGraphQLModel
 
 __all__ = [
     "AssetModel",
@@ -19,4 +20,5 @@ __all__ = [
     "CDFSequence",
     "CDFFile",
     "CDFResource",
+    "PowerOpsGraphQLModel",
 ]

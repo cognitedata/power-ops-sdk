@@ -3,9 +3,8 @@ Assumes all customer repos are in checked out in a customer folder in the root o
 """
 
 import subprocess
-from tests.utils import chdir
 from tests.constants import REPO_ROOT
-from cognite.powerops.utils.io_file import read_toml_file, dump_toml_file
+from cognite.powerops.utils.io_file import read_toml_file, dump_toml_file, chdir
 
 
 def main():

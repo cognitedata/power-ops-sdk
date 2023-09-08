@@ -9,7 +9,7 @@ from loguru import logger
 
 from yaml import safe_load
 from tests.constants import SENSITIVE_TESTS, REPO_ROOT, ReSync
-from tests.utils import chdir
+from cognite.powerops.utils.io_file import chdir
 from cognite.powerops.client.powerops_client import get_powerops_client
 
 THIS_FOLDER = Path(__file__).resolve().parent
