@@ -9,7 +9,7 @@ from cognite.powerops.resync.models.base import AssetType, NonAssetType
 from cognite.powerops.resync.models.base import CDFSequence
 
 from .base import Bid, Market, Process, ShopTransformation
-from cognite.powerops.resync.utils.serializer import try_load_list
+from cognite.powerops.utils.serialization import try_load_list
 
 
 class RKOMBid(Bid):

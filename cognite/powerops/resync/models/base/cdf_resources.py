@@ -11,7 +11,7 @@ from cognite.client.data_classes._base import CogniteResource
 from pydantic import BaseModel, ConfigDict, model_serializer, model_validator
 from typing_extensions import Self
 
-from cognite.powerops.resync.utils.serializer import remove_read_only_fields
+from cognite.powerops.utils.serialization import remove_read_only_fields
 
 
 class CDFResource(BaseModel, ABC):
@@ -85,9 +85,7 @@ class CDFSequence(CDFResource):
 
     @classmethod
     def _load(cls, data: dict[str, Any]) -> Self:
-        return cls(
-            sequence=Sequence._load(data),
-        )
+        return cls(sequence=Sequence._load(data))
 
 
 class CDFFile(CDFResource):
@@ -128,6 +126,4 @@ class CDFFile(CDFResource):
 
     @classmethod
     def _load(cls, data: dict[str, Any]) -> Self:
-        return cls(
-            meta=FileMetadata._load(data),
-        )
+        return cls(meta=FileMetadata._load(data))

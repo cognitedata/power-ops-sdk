@@ -4,7 +4,7 @@ from cognite.powerops.client.powerops_client import get_powerops_client
 from cognite.powerops.client.powerops_client import PowerOpsClient
 from pathlib import Path
 from tests.constants import REPO_ROOT
-from cognite.powerops.utils.io_file import chdir
+from cognite.powerops.utils.serialization import chdir
 
 
 @pytest.fixture(scope="session")

@@ -12,7 +12,7 @@ from typing_extensions import TypeAlias
 from cognite.powerops.client._generated.cogshop1 import data_classes as cogshop_v1
 from cognite.powerops.resync import config
 from cognite.powerops.resync.models.base import Model, CDFFile
-from cognite.powerops.resync.utils.serializer import load_yaml
+from cognite.powerops.utils.serialization import load_yaml
 
 ExternalID: TypeAlias = str
 

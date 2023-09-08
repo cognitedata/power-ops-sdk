@@ -23,7 +23,7 @@ from cognite.powerops.resync.models.v1.production import (
     PriceArea,
     WaterCourseShop,
 )
-from cognite.powerops.resync.utils.serializer import load_yaml
+from cognite.powerops.utils.serialization import load_yaml
 
 
 def to_production_model(configuration: config.ProductionConfig) -> ProductionModel:

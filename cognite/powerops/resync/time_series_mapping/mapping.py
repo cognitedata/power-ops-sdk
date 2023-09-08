@@ -1,7 +1,8 @@
+import re
+
 from cognite.client import CogniteClient
 
 from cognite.powerops.resync.config._shared import TimeSeriesMapping
-from cognite.powerops.resync.utils.common import print_warning
 
 
 def filter_time_series_mappings(mapping: TimeSeriesMapping, client: CogniteClient) -> TimeSeriesMapping:
@@ -42,3 +43,15 @@ def merge_and_keep_last_mapping_if_overlap(*mappings: TimeSeriesMapping) -> Time
     keep_last_across_lists = {entry.shop_model_path: entry for mapping in mappings for entry in mapping}
 
     return TimeSeriesMapping(rows=list(keep_last_across_lists.values()))
+
+
+def special_case_handle_gate_number(name: str) -> None:
+    """Must handle any gate numbers above 1 if found in other sources than YAML"""
+    # TODO: extend to handle special case if needed
+    if re.search(pattern=r"L[2-9]", string=name):
+        print_warning(f"Potential gate {name} not in YAML!")
+
+
+def print_warning(s: str) -> None:
+    """Adds some nice colors to the printed text :)"""
+    print(f"\033[91m[WARNING] {s}\033[0m")

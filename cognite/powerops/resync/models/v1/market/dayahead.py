@@ -9,7 +9,7 @@ from cognite.powerops.cdf_labels import AssetLabel
 from cognite.powerops.resync.models.base import CDFSequence
 
 from .base import Bid, Market, Process, ShopTransformation
-from cognite.powerops.resync.utils.serializer import try_load_dict
+from cognite.powerops.utils.serialization import try_load_dict
 
 
 class DayAheadBid(Bid):

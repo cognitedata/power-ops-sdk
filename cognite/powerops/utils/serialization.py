@@ -1,19 +1,59 @@
 from __future__ import annotations
 
+import contextlib
 import importlib
 import json
+import os
 import re
 import string
 import warnings
 from pathlib import Path
-from typing import Any, Union, get_origin, get_args, Type, ForwardRef
+from typing import Any, Type, ForwardRef, get_origin, get_args, Union
+import tomli_w
 from cognite.client.data_classes import TimeSeries
-from pydantic.v1.typing import evaluate_forwardref
-from yaml import safe_dump, CSafeLoader
 from cognite.client.utils._text import to_camel_case
+from pydantic.v1.typing import evaluate_forwardref
+from yaml import CSafeLoader, safe_dump
+
+try:
+    import tomllib
+except ModuleNotFoundError:
+    import tomli as tomllib  # py < 3.11
+
+
+def read_toml_file(toml_file: Path | str) -> dict[str, Any]:
+    return tomllib.loads(Path(toml_file).read_text())
+
+
+def dump_toml_file(toml_file: Path | str, data: dict[str, Any]) -> None:
+    Path(toml_file).write_text(tomli_w.dumps(data))
+
+
+@contextlib.contextmanager
+def chdir(new_dir: Path) -> None:
+    """
+    Change directory to new_dir and return to the original directory when exiting the context.
+
+    Args:
+        new_dir: The new directory to change to.
+
+    """
+    current_working_dir = os.getcwd()
+    os.chdir(new_dir)
+
+    try:
+        yield
+
+    finally:
+        os.chdir(current_working_dir)
 
 
 # � character is used to represent unrecognizable characters in utf-8.
+
+
+# Having a single yaml dump function makes it easy to look up all places YaMLs are dumped.
+# It also enables one place to set the default encoding.
+
 UNRECOGNIZABLE_CHARACTER = "�"
 VALID_CHARACTERS = set(
     string.ascii_lowercase
@@ -24,7 +64,6 @@ VALID_CHARACTERS = set(
     + string.whitespace
     + "æøåÆØÅ"
 )
-
 _READ_ONLY_FIELDS = [
     "created_time",
     "last_updated_time",
@@ -95,8 +134,6 @@ def load_yaml(yaml_path: Path, encoding="utf-8", clean_data: bool = False) -> di
     return CSafeLoader(data).get_data()
 
 
-# Having a single yaml dump function makes it easy to look up all places YaMLs are dumped.
-# It also enables one place to set the default encoding.
 def dump_yaml(data: dict, yaml_path: Path, encoding="utf-8"):
     _validate(yaml_path)
     with open(yaml_path, "w", encoding=encoding) as stream:

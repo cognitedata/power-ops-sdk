@@ -11,7 +11,7 @@ from pydantic_settings import BaseSettings, PydanticBaseSettingsSource, Settings
 
 __all__ = ["Settings", "CogniteSettings", "PoweropsRunSettings"]
 
-from cognite.powerops.utils.io_file import read_toml_file
+from cognite.powerops.utils.serialization import read_toml_file
 
 logger = logging.getLogger(__name__)
 

@@ -16,7 +16,7 @@ from cognite.powerops.resync import models
 from cognite.powerops.resync._changes import FieldDifference, ModelDifferences, ModelDifference
 from cognite.powerops.resync.to_models.transform import transform
 from cognite.powerops.resync.utils.cdf import get_cognite_api
-from cognite.powerops.resync.utils.common import all_concrete_subclasses
+from cognite.powerops.utils.navigation import all_concrete_subclasses
 from cognite.powerops.utils.cdf import Settings
 
 MODEL_BY_NAME: dict[str, Type[Model]] = {

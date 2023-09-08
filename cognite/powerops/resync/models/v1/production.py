@@ -9,7 +9,7 @@ from pydantic import ConfigDict, Field, field_validator, field_serializer
 from cognite.powerops.cdf_labels import AssetLabel
 from cognite.powerops.resync.models.base import AssetType, NonAssetType, AssetModel, T_Asset_Type, CDFSequence
 
-from cognite.powerops.resync.utils.serializer import try_load_dict, parse_time_series
+from cognite.powerops.utils.serialization import try_load_dict, parse_time_series
 
 
 class Generator(AssetType):

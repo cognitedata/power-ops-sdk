@@ -12,7 +12,7 @@ from pydantic import BaseModel
 from cognite.powerops.cdf_labels import AssetLabel, RelationshipLabel
 from .resource_type import ResourceType
 from .cdf_resources import CDFSequence, CDFFile
-from cognite.powerops.resync.utils.serializer import get_pydantic_annotation
+from cognite.powerops.utils.serialization import get_pydantic_annotation
 
 
 class NonAssetType(BaseModel, ABC, arbitrary_types_allowed=True):

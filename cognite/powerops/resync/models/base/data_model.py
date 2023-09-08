@@ -22,7 +22,7 @@ from cognite.powerops.client._generated.data_classes._core import DomainModelApp
 from cognite.powerops.client._generated.cogshop1.data_classes._core import DomainModelApply as DomainModelApplyCogShop1
 from .model import Model
 from .cdf_resources import CDFFile, CDFSequence
-from cognite.powerops.resync.utils.serializer import get_pydantic_annotation
+from cognite.powerops.utils.serialization import get_pydantic_annotation
 
 
 class DataModel(Model, ABC):

@@ -6,7 +6,6 @@ from cognite.powerops.resync.config.market.dayahead import BidMatrixGeneratorCon
 from cognite.powerops.resync.config.market.market import MARKET_BY_PRICE_AREA
 from cognite.powerops.resync.config._main import MarketConfig
 
-from cognite.powerops.resync.utils.common import make_ext_id
 from cognite.powerops.client.data_classes import (
     BenchmarkBidApply,
     BenchmarkProcesApply,
@@ -30,7 +29,7 @@ from cognite.powerops.resync.models._shared_v1_v2._to_instances import (
     _to_date_transformations,
     _to_scenario_mapping,
     _to_shop_transformation,
-    _to_input_timeseries_mapping,
+    _to_input_timeseries_mapping, make_ext_id,
 )
 from cognite.powerops.resync.models._shared_v1_v2.market_model import _map_price_scenarios_by_name
 

@@ -16,7 +16,7 @@ from cognite.powerops.resync.models.diff import Change, FieldDifference, ModelDi
 from cognite.powerops.resync.models.base.resource_type import _T_Type, ResourceType
 from .cdf_resources import CDFSequence, CDFFile, CDFResource
 from .helpers import isinstance_list
-from cognite.powerops.resync.utils.serializer import remove_read_only_fields
+from cognite.powerops.utils.serialization import remove_read_only_fields
 
 from cognite.powerops.client._generated.data_classes._core import DomainModelApply
 from cognite.powerops.client._generated.cogshop1.data_classes._core import DomainModelApply as DomainModelApplyCogShop1

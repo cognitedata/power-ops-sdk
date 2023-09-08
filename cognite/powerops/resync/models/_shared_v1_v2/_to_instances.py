@@ -7,6 +7,11 @@ transformations.
 
 from __future__ import annotations
 
+import json
+from hashlib import md5
+from typing import Any, Type
+
+from cognite.powerops.client._generated.data_classes._core import DomainModelApply
 from cognite.powerops.client.data_classes import (
     DateTransformationApply,
     InputTimeSeriesMappingApply,
@@ -16,7 +21,6 @@ from cognite.powerops.client.data_classes import (
 )
 from cognite.powerops.resync.config.market._core import RelativeTime
 from cognite.powerops.resync.config._shared import TimeSeriesMapping, TimeSeriesMappingEntry, Transformation
-from cognite.powerops.resync.utils.common import make_ext_id
 
 
 def _to_date_transformations(time: RelativeTime | list[DateTransformationApply]) -> list[DateTransformationApply]:
@@ -84,3 +88,12 @@ def _to_scenario_mapping(external_id: str, name: str, time_series_mapping: TimeS
     mappings = [_to_input_timeseries_mapping(entry) for entry in time_series_mapping]
 
     return ScenarioMappingApply(external_id=external_id, mapping_override=mappings, name=name)
+
+
+def make_ext_id(arg: Any, class_: Type[DomainModelApply]) -> str:
+    hash_value = md5()
+    if isinstance(arg, (str, int, float, bool)):
+        hash_value.update(str(arg).encode())
+    elif isinstance(arg, (list, dict, tuple)):
+        hash_value.update(json.dumps(arg).encode())
+    return f"{class_.__name__.removesuffix('Apply')}__{hash_value.hexdigest()}"

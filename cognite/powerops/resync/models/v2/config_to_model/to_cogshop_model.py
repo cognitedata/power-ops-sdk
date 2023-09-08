@@ -8,9 +8,8 @@ from cognite.powerops.client._generated.data_classes import (
     ScenarioTemplateApply,
 )
 from cognite.powerops.resync.config import CogShopConfig, WatercourseConfig
-from cognite.powerops.resync.models._shared_v1_v2._to_instances import _to_input_timeseries_mapping
+from cognite.powerops.resync.models._shared_v1_v2._to_instances import _to_input_timeseries_mapping, make_ext_id
 from cognite.powerops.resync.models._shared_v1_v2.cogshop_model import _to_shop_model_file, _to_shop_files
-from cognite.powerops.resync.utils.common import make_ext_id
 from cognite.powerops.resync.models.v2.cogshop import CogShopDataModel
 
 

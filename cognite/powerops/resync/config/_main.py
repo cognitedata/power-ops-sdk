@@ -17,7 +17,7 @@ from cognite.powerops.resync.config.production.generator import GeneratorTimeSer
 from cognite.powerops.resync.config.production.plant import PlantTimeSeriesMapping
 from cognite.powerops.resync.config.production.watercourse import WatercourseConfig
 from cognite.powerops.resync.config._shared import TimeSeriesMapping
-from cognite.powerops.resync.utils.serializer import load_yaml
+from cognite.powerops.utils.serialization import load_yaml
 
 
 class Config(BaseModel):

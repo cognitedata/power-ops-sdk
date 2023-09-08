@@ -2,7 +2,7 @@ from typing import Any, Union, Type
 
 import pytest
 
-from cognite.powerops.resync.utils.serializer import get_pydantic_annotation
+from cognite.powerops.utils.serialization import get_pydantic_annotation
 from cognite.powerops.cogshop1.data_classes import MappingApply, TransformationApply
 
 

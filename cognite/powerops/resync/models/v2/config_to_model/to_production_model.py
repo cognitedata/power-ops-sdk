@@ -23,9 +23,9 @@ from cognite.powerops.client.data_classes import (
     PriceAreaApply,
     WatercourseShopApply,
 )
-from cognite.powerops.resync.utils.common import make_ext_id
+from cognite.powerops.resync.models._shared_v1_v2._to_instances import make_ext_id
 
-from cognite.powerops.resync.utils.serializer import load_yaml
+from cognite.powerops.utils.serialization import load_yaml
 
 
 def to_production_data_model(configuration: config.ProductionConfig) -> ProductionModelDM:

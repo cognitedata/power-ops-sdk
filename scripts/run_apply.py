@@ -1,6 +1,6 @@
 from cognite.powerops.cli import apply
 from tests.constants import ReSync, REPO_ROOT
-from cognite.powerops.utils.io_file import chdir
+from cognite.powerops.utils.serialization import chdir
 
 
 def main():
