@@ -28,19 +28,45 @@ DEFAULT_MODELS: frozenset[str] = frozenset([m.__name__ for m in models.V1_MODELS
 
 
 def plan(
-    path: Path,
+    config_dir: Path,
     market: str,
     echo: Optional[Callable[[str], None]] = None,
     model_names: Optional[str | list[str]] = None,
     dump_folder: Optional[Path] = None,
     client: PowerOpsClient | None = None,
 ) -> ModelDifferences:
+    """
+    Loads the local configuration files, transform them into Resync models, and compares them to the downloaded
+    CDF Resync models.
+
+    Args:
+        config_dir: Local path to the configuration files. Needs to follow a specific structure. See below.
+        market: The market to load the configuration for.
+        echo: Function to use for printing. Defaults to print.
+        model_names: The models to run the plan.
+        dump_folder: If present, the local and CDF changes will be dumped to this directory. This is done so that
+                    you can use local tools (for example PyCharm or VS Code) to compare the detailed changes
+                    between the local and CDF configuration.
+        client: The PowerOpsClient to use. If not provided, a new client will be created.
+
+    Returns:
+        A ModelDifferences object containing the differences between the local and CDF configuration.
+
+    Configuration file structure:
+    ```
+    📦config_dir
+     ┣ 📂cogshop - The CogSHOP configuration
+     ┣ 📂market - The Market configuration for DayAhead, RKOM, and benchmarking.
+     ┣ 📂production - The physical assets configuration, Watercourse, PriceArea, Genertor, Plant  (SHOP centered)
+     ┗ 📜settings.yaml - Settings for resync.
+    ```
+    """
     echo = echo or print
     settings = Settings()
 
     client = client or get_powerops_client()
 
-    loaded_models = _load_transform(market, path, client.cdf.config.project, echo, model_names)
+    loaded_models = _load_transform(market, config_dir, client.cdf.config.project, echo, model_names)
 
     echo(f"Load transform completed, models {', '.join([type(m).__name__ for m in loaded_models])} loaded")
     if settings.powerops.read_dataset is None:
@@ -68,17 +94,43 @@ def plan(
 
 
 def apply(
-    path: Path,
+    config_dir: Path,
     market: str,
     model_names: list[str] | str | None = None,
     echo: Optional[Callable[[Any], None]] = None,
     auto_yes: bool = False,
     verbose: bool = False,
 ) -> ModelDifferences:
+    """
+    Loads the local configuration files, transform them into Resync models, and uploads it to CDF. Any deviations
+    of the existing CDF configuration will be overwritten.
+
+    Args:
+        config_dir: Local path to the configuration files. Needs to follow a specific structure. See below.
+        market: The market to load the configuration for.
+        echo: Function to use for printing. Defaults to print.
+        model_names: The models to run the plan.
+        auto_yes: If true, all prompts will be auto confirmed.
+
+    Returns:
+        A ModelDifferences object containing the differences between the local and CDF configuration which have been
+        written to CDF.
+
+    Configuration file structure:
+    ```
+    📦config_dir
+     ┣ 📂cogshop - The CogSHOP configuration
+     ┣ 📂market - The Market configuration for DayAhead, RKOM, and benchmarking.
+     ┣ 📂production - The physical assets configuration, Watercourse, PriceArea, Genertor, Plant  (SHOP centered)
+     ┗ 📜settings.yaml - Settings for resync.
+    ```
+    """
     echo = echo or print
     client = get_powerops_client()
 
-    loaded_models = _load_transform(market, path, client.cdf.config.project, echo, model_names or list(DEFAULT_MODELS))
+    loaded_models = _load_transform(
+        market, config_dir, client.cdf.config.project, echo, model_names or list(DEFAULT_MODELS)
+    )
 
     settings = Settings()
     if settings.powerops.read_dataset is None or settings.powerops.write_dataset is None:

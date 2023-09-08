@@ -22,10 +22,27 @@ except ModuleNotFoundError:
 
 
 def read_toml_file(toml_file: Path | str) -> dict[str, Any]:
+    """
+    Read a toml file and return a dictionary.
+
+    Args:
+        toml_file: The path to the toml file.
+
+    Returns:
+        A dictionary with the toml data.
+    """
     return tomllib.loads(Path(toml_file).read_text())
 
 
 def dump_toml_file(toml_file: Path | str, data: dict[str, Any]) -> None:
+    """
+    Dump a dictionary to a toml file.
+
+    Args:
+        toml_file: The path to the toml file.
+        data: The data to dump.
+
+    """
     Path(toml_file).write_text(tomli_w.dumps(data))
 
 
@@ -121,6 +138,18 @@ def _validate(yaml_path: Path):
 
 
 def load_yaml(yaml_path: Path, encoding="utf-8", clean_data: bool = False) -> dict:
+    """
+    Fast loading of a yaml file.
+
+    Args:
+        yaml_path: The path to the yaml file.
+        encoding: The encoding of the yaml file. Defaults to utf-8.
+        clean_data: Whether to clean the data from invalid characters. Defaults to False.
+
+    Returns:
+        The data in the yaml file as a dictionary.
+    """
+
     _validate(yaml_path)
     # The Windows Cpython implementation seems to guess if encoding is not explicitly set
     # This turns out to be a problem as it guesses wrong, which is not the case for Unix systems.
@@ -134,7 +163,16 @@ def load_yaml(yaml_path: Path, encoding="utf-8", clean_data: bool = False) -> di
     return CSafeLoader(data).get_data()
 
 
-def dump_yaml(data: dict, yaml_path: Path, encoding="utf-8"):
+def dump_yaml(yaml_path: Path, data: dict, encoding="utf-8") -> None:
+    """
+    Dump a dictionary to a yaml file.
+
+    Args:
+        yaml_path: The path to the yaml file.
+        data: The data to dump.
+        encoding: The encoding of the yaml file. Defaults to utf-8.
+
+    """
     _validate(yaml_path)
     with open(yaml_path, "w", encoding=encoding) as stream:
         safe_dump(data, stream)

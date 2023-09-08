@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.47.1] - 2023-09-08
+### Removed
+* Removed some unused utils functions.
+
 ## [0.47.0] - 2023-09-08
 ### Changed
 * Structure of repo.

@@ -17,7 +17,13 @@ nav:
           - SHOP API Classes: packages/client/shop_api_classes.md
       - resync:
           - resync: packages/resync/main.md
-          - config: packages/resync/config.md
+          - config:
+            - main: packages/resync/config/config.md
+            - settings: packages/resync/config/settings.md
+            - production: packages/resync/config/production.md
+            - market: packages/resync/config/market.md
+            - cogshop: packages/resync/config/cogshop.md
+            - shared: packages/resync/config/shared.md
           - models:
             - Version 1: packages/resync/models/v1.md
             - Version 2: packages/resync/models/v2.md
@@ -26,8 +32,6 @@ nav:
           - serialization: packages/utils/serialization.md
           - CDF:
             - extraction pipeline: packages/utils/cdf_extraction_pipeline.md
-            - calls: packages/utils/cdf_calls.md
-          - retry: packages/utils/retry.md
 
 markdown_extensions:
   - pymdownx.superfences
