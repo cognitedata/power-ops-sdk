@@ -9,128 +9,29 @@ import pandas as pd
 import yaml
 from cognite.client.data_classes import FileMetadata, Sequence
 
-from cognite.powerops.client.data_classes import (
-    OutputMappingApply,
-    ScenarioTemplateApply,
-    ValueTransformationApply,
-    OutputContainerApply,
-    ScenarioMappingApply,
-)
-from cognite.powerops.resync.config.cogshop.shop_file_config import ShopFileConfig
-from cognite.powerops.resync.config.production.watercourse import WatercourseConfig
-from cognite.powerops.resync.config._main import CogShopConfig
-from cognite.powerops.resync.models import cogshop
-from cognite.powerops.resync.models.cdf_resources import CDFSequence
-from cognite.powerops.resync.models.cogshop import CogShopDataModel
-from cognite.powerops.resync.models.production import Watercourse
-from cognite.powerops.resync.utils.common import make_ext_id
+from cognite.powerops.resync import config
+from cognite.powerops.resync.models.v1.production import Watercourse
+from cognite.powerops.resync.models.v1.market import DayAheadProcess
+from cognite.powerops.resync.models.v1.cogshop import CogShop1Asset
+from cognite.powerops.resync.models.base import CDFSequence, CDFFile
+from cognite.powerops.client.data_classes import cogshop1 as cogshop_v1
 from cognite.powerops.resync.utils.serializer import load_yaml
-import cognite.powerops.cogshop1.data_classes as cogshop_v1
-
-from ._to_instances import _to_input_timeseries_mapping
-from cognite.powerops.resync.config._shared import Transformation
-from cognite.powerops.resync.models.market import DayAheadProcess
 
 logger = logging.getLogger(__name__)
 
 
-def to_cogshop_data_model(
-    config: CogShopConfig, watercourse_configs: list[WatercourseConfig], shop_version: str
-) -> CogShopDataModel:
-    model = CogShopDataModel()
-
-    model.shop_files.extend(_to_shop_files(config.watercourses_shop))
-
-    # TODO Fix the assumption that timeseries mappings and watercourses are in the same order
-    for watercourse, mapping in zip(watercourse_configs, config.time_series_mappings):
-        model_file = _to_shop_model_file(watercourse.name, watercourse.yaml_raw_path, watercourse.yaml_processed_path)
-        model.shop_files.append(model_file)
-
-        ##### Output Definitions #####
-        # Only default mapping is used
-        output_definitions = [
-            OutputMappingApply(
-                external_id=make_ext_id(values, class_=OutputMappingApply),
-                shop_object_type=values[0],
-                shop_attribute_name=values[1],
-                cdf_attribute_name=values[2],
-                unit=values[3],
-                is_step=values[4],
-            )
-            for values in [
-                ("market", "sale_price", "price", "EUR/MWh", True),
-                ("market", "sale", "sales", "MWh", True),
-                ("plant", "production", "production", "MW", True),
-                ("plant", "consumption", "consumption", "MW", True),
-                ("reservoir", "water_value_global_result", "water_value", "EUR/Mm3", True),
-                ("reservoir", "energy_conversion_factor", "energy_conversion_factor", "MWh/Mm3", True),
-            ]
-        ]
-        external_id = f"SHOP_{watercourse.name.replace(' ', '_')}_output_definition"
-        output_container = OutputContainerApply(
-            external_id=external_id,
-            name=external_id.replace("_", " "),
-            watercourse=watercourse.name,
-            shop_type="output_definition",
-            mappings=output_definitions,
-        )
-
-        model.output_definitions[external_id] = output_container
-
-        ##### Base Mapping #####
-        base_mappings = []
-        transformations = {}
-        for entry in mapping:
-            base_mapping = _to_input_timeseries_mapping(entry)
-            base_mappings.append(base_mapping)
-
-            transformations.update(
-                {t.external_id: t for t in base_mapping.transformations if isinstance(t, ValueTransformationApply)}
-            )
-        scenario_mapping = ScenarioMappingApply(
-            external_id=f"SHOP_{watercourse.name}_base_mapping",
-            watercourse=watercourse.name,
-            shop_type="base_mapping",
-            mapping_override=base_mappings,
-        )
-
-        model.value_transformations.update(transformations)
-
-        model.scenario_templates.append(
-            ScenarioTemplateApply(
-                external_id=f"{ScenarioTemplateApply.__name__.removesuffix('Apply')}_{watercourse.name}",
-                model=model_file.external_id,
-                shop_version=shop_version,
-                template_version="1",
-                output_definitions=output_container,
-                shop_files=[f.external_id for f in model.shop_files],
-                watercourse=watercourse.name,
-                base_mapping=scenario_mapping,
-            )
-        )
-
-    return model
-
-
-def _create_transformation(order: int, transformation: dict | Transformation) -> cogshop_v1.TransformationApply:
-    if isinstance(transformation, dict):
-        transformation = Transformation(**transformation)
-    dumped_kwargs = json.dumps(transformation.kwargs or {}, separators=(",", ":"))
-    external_id = f"Tr_{transformation.transformation.name}_{dumped_kwargs}_{order}"
-    return cogshop_v1.TransformationApply(
-        external_id=external_id, method=transformation.transformation.name, arguments=dumped_kwargs, order=order
-    )
-
-
 def to_cogshop_asset_model(
-    config: CogShopConfig, watercourses: list[Watercourse], shop_version: str, dayahead_processes: list[DayAheadProcess]
-) -> cogshop.CogShop1Asset:
-    model = cogshop.CogShop1Asset()
+    configuration: config.CogShopConfig,
+    watercourses: list[Watercourse],
+    shop_version: str,
+    dayahead_processes: list[DayAheadProcess],
+) -> CogShop1Asset:
+    model = CogShop1Asset()
 
-    model.shop_files.extend(_to_shop_files(config.watercourses_shop))
+    model.shop_files.extend(_to_shop_files(configuration.watercourses_shop))
 
     # TODO Fix the assumption that timeseries mappings and watercourses are in the same order
-    for watercourse, mapping in zip(watercourses, config.time_series_mappings):
+    for watercourse, mapping in zip(watercourses, configuration.time_series_mappings):
         model_file = _to_shop_model_file(watercourse.name, watercourse.model_file, watercourse.processed_model_file)
         model.shop_files.append(model_file)
 
@@ -279,7 +180,7 @@ def to_cogshop_asset_model(
     return model
 
 
-def _to_shop_model_file(watercourse_name, model_file: Path, processed_model_file: Path) -> cogshop.CDFFile:
+def _to_shop_model_file(watercourse_name, model_file: Path, processed_model_file: Path) -> CDFFile:
     processed_model = _to_model_without_timeseries(
         yaml_raw_path=str(model_file),
         # Todo Move this hardcoded configuration to a config file
@@ -296,7 +197,7 @@ def _to_shop_model_file(watercourse_name, model_file: Path, processed_model_file
     )
 
 
-def _to_shop_files(watercourses_shop: list[ShopFileConfig]) -> list[cogshop.CDFFile]:
+def _to_shop_files(watercourses_shop: list[config.ShopFileConfig]) -> list[CDFFile]:
     shop_files = []
     for shop_config in watercourses_shop:
         file_content = Path(shop_config.file_path).read_bytes()
@@ -313,8 +214,8 @@ def _to_shop_files(watercourses_shop: list[ShopFileConfig]) -> list[cogshop.CDFF
     return shop_files
 
 
-def _create_shop_file(file_content: bytes, external_id: str, metadata: dict[str, str]) -> cogshop.CDFFile:
-    return cogshop.CDFFile(
+def _create_shop_file(file_content: bytes, external_id: str, metadata: dict[str, str]) -> CDFFile:
+    return CDFFile(
         meta=FileMetadata(
             external_id=external_id,
             name=external_id,
@@ -357,3 +258,13 @@ def _to_model_without_timeseries(
         model_dict["connections"] = model_incl_time_and_connections["connections"]
 
     return model_dict
+
+
+def _create_transformation(order: int, transformation: dict | config.Transformation) -> cogshop_v1.TransformationApply:
+    if isinstance(transformation, dict):
+        transformation = config.Transformation(**transformation)
+    dumped_kwargs = json.dumps(transformation.kwargs or {}, separators=(",", ":"))
+    external_id = f"Tr_{transformation.transformation.name}_{dumped_kwargs}_{order}"
+    return cogshop_v1.TransformationApply(
+        external_id=external_id, method=transformation.transformation.name, arguments=dumped_kwargs, order=order
+    )

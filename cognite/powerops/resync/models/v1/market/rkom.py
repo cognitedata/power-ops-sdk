@@ -6,10 +6,10 @@ from pydantic import Field, field_validator
 
 from cognite.powerops.cdf_labels import AssetLabel
 from cognite.powerops.resync.models.base import AssetType, NonAssetType
-from cognite.powerops.resync.models.cdf_resources import CDFSequence
+from cognite.powerops.resync.models.base import CDFSequence
 
 from .base import Bid, Market, Process, ShopTransformation
-from ...utils.serializer import try_load_list
+from cognite.powerops.resync.utils.serializer import try_load_list
 
 
 class RKOMBid(Bid):

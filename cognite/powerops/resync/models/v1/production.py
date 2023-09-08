@@ -7,9 +7,7 @@ from cognite.client.data_classes import Asset, TimeSeries
 from pydantic import ConfigDict, Field, field_validator, field_serializer
 
 from cognite.powerops.cdf_labels import AssetLabel
-from cognite.powerops.resync.models.base import AssetModel, AssetType, NonAssetType
-from cognite.powerops.resync.models.base.asset_type import T_Asset_Type
-from cognite.powerops.resync.models.cdf_resources import CDFSequence
+from cognite.powerops.resync.models.base import AssetType, NonAssetType, AssetModel, T_Asset_Type, CDFSequence
 
 from cognite.powerops.resync.utils.serializer import try_load_dict, parse_time_series
 

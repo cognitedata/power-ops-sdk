@@ -6,7 +6,7 @@ from typing import ClassVar, Optional, Union
 from pydantic import Field, field_validator
 
 from cognite.powerops.cdf_labels import AssetLabel
-from cognite.powerops.resync.models.cdf_resources import CDFSequence
+from cognite.powerops.resync.models.base import CDFSequence
 
 from .base import Bid, Market, Process, ShopTransformation
 from cognite.powerops.resync.utils.serializer import try_load_dict

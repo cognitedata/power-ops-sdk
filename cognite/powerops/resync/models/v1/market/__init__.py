@@ -5,13 +5,12 @@ from cognite.client.data_classes import Asset
 from pydantic import field_validator
 from pydantic.dataclasses import Field
 
-from cognite.powerops.resync.models.base import AssetModel
+from cognite.powerops.resync.models.base import AssetModel, T_Asset_Type
 
 from .base import Bid, DateTransformation, Market, Process, ShopTransformation
 from .benchmark import BenchmarkBid, BenchmarkProcess, ProductionPlanTimeSeries
 from .dayahead import DayAheadBid, DayAheadProcess, NordPoolMarket
 from .rkom import RKOMBid, RKOMBidCombination, RKOMCombinationBid, RKOMMarket, RKOMPlants, RKOMProcess
-from ..base.asset_type import T_Asset_Type
 
 
 class MarketModel(AssetModel):
