@@ -42,10 +42,8 @@ explicit_package_bases = true
 exclude = [
     # The plan is to gradually add mypy to the code base. As of 18. Juli 2023,
     # the following packages are not type checked:
-    "^cognite/powerops/preprocessor/",
     "^cognite/powerops/client/",
     "^cognite/powerops/utils/",
-    "^cognite/powerops/resync/to_models/",
     "^cognite/powerops/resync/config/",
     "^cognite/powerops/resync/models/",
 ]
