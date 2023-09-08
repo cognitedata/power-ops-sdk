@@ -11,8 +11,8 @@ from yaml import safe_dump
 from cognite.powerops.client.powerops_client import get_powerops_client, PowerOpsClient
 from .validation import _clean_relationships
 from cognite.powerops.resync.config import ReSyncConfig
-from cognite.powerops.resync.models.base import Model  # type: ignore[attr-defined]
-from cognite.powerops.resync.models.diff import FieldDifference, ModelDifferences, ModelDifference
+from cognite.powerops.resync.models.base import Model
+from cognite.powerops.resync.diff import FieldDifference, ModelDifferences, ModelDifference, model_difference
 from cognite.powerops.utils.navigation import all_concrete_subclasses
 from cognite.powerops.resync import models
 from cognite.powerops.utils.cdf import Settings
@@ -77,7 +77,7 @@ def plan(
         echo(f"Retrieving {new_model.model_name} from CDF")
         cdf_model = type(new_model).from_cdf(client, data_set_external_id=data_set_external_id)
 
-        differences = cdf_model.difference(new_model)
+        differences = model_difference(cdf_model, new_model)
         _clean_relationships(client.cdf, differences, new_model, echo)
 
         if dump_folder:
@@ -145,10 +145,11 @@ def apply(
     written_changes = ModelDifferences([])
     for new_model in loaded_models:
         cdf_model = type(new_model).from_cdf(client, data_set_external_id=read_dataset)
+
         new_sequences_by_id = {s.external_id: s for s in new_model.sequences()}
         new_files_by_id = {f.external_id: f for f in new_model.files()}
 
-        differences = cdf_model.difference(new_model)
+        differences = model_difference(cdf_model, new_model)
         _clean_relationships(client.cdf, differences, new_model, echo)
         written_model_changes = ModelDifference(new_model.model_name)
         changed = []
