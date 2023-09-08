@@ -21,15 +21,14 @@ from cognite.powerops.client.data_classes import (
     ProductionPlanTimeSeriesApply,
     ReserveScenarioApply,
     ScenarioMappingApply,
-    ShopTransformationApply,
-    InputTimeSeriesMappingApply,
     RKOMCombinationBidApply,
 )
 from cognite.powerops.resync.models._shared_v1_v2._to_instances import (
     _to_date_transformations,
     _to_scenario_mapping,
     _to_shop_transformation,
-    _to_input_timeseries_mapping, make_ext_id,
+    _to_input_timeseries_mapping,
+    make_ext_id,
 )
 from cognite.powerops.resync.models._shared_v1_v2.market_model import _map_price_scenarios_by_name
 
