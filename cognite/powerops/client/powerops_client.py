@@ -2,11 +2,11 @@ from __future__ import annotations
 
 from cognite.client import ClientConfig, CogniteClient
 
-from cognite.powerops.client._api_client import BenchmarkAPIs, CogShopAPIs, DayAheadAPIs, ProductionAPIs, RKOMMarketAPIs
-from cognite.powerops.client.data_set_api import DataSetsAPI
-from cognite.powerops.client.shop import ShopClient
+from ._generated._api_client import BenchmarkAPIs, CogShopAPIs, DayAheadAPIs, ProductionAPIs, RKOMMarketAPIs
+from .data_set_api import DataSetsAPI
+from ._generated.cogshop1 import CogShop1Client
+from .shop import ShopClient
 from cognite.powerops.utils.cdf import Settings, get_client_config
-from cognite.powerops.cogshop1 import CogShop1Client
 
 
 class PowerOpsClient:
