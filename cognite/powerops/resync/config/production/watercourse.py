@@ -5,7 +5,7 @@ from typing import ClassVar, Dict, List, Optional
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from cognite.powerops.resync.config.shared import TimeSeriesMapping
+from cognite.powerops.resync.config._shared import TimeSeriesMapping
 from cognite.powerops.resync.utils.serializer import load_yaml
 
 

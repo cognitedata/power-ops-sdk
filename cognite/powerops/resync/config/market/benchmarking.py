@@ -40,6 +40,7 @@ class BenchmarkingConfig(Configuration):
 
     # TODO: Consider adding relationships to bid process config
     #  assets (or remove the optional part that uses those relationships in power-ops-functions)
+
     @field_validator("shop_start", "shop_end", "bid_date", mode="before")
     def json_loads(cls, value):
         return {"operations": json.loads(value)} if isinstance(value, str) else value

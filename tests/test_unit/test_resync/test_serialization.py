@@ -2,7 +2,7 @@ from itertools import chain
 
 import pytest
 from cognite.powerops.resync import models
-from cognite.powerops.resync.config.resync_config import ReSyncConfig
+from cognite.powerops.resync.config._main import ReSyncConfig
 from cognite.powerops.resync.models.cdf_resources import CDFSequence
 from tests.constants import ReSync
 from cognite.powerops.resync.to_models.to_production_model import to_production_model

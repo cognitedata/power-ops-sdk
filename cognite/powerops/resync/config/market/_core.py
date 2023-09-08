@@ -5,7 +5,7 @@ from typing import Dict, List, Optional, Union
 
 from pydantic import BaseModel, ConfigDict, validator
 
-from cognite.powerops.resync.config.shared import (
+from cognite.powerops.resync.config._shared import (
     AggregationMethod,
     RetrievalType,
     TimeSeriesMapping,

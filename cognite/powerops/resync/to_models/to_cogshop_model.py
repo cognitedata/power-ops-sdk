@@ -18,7 +18,7 @@ from cognite.powerops.client.data_classes import (
 )
 from cognite.powerops.resync.config.cogshop.shop_file_config import ShopFileConfig
 from cognite.powerops.resync.config.production.watercourse import WatercourseConfig
-from cognite.powerops.resync.config.resync_config import CogShopConfig
+from cognite.powerops.resync.config._main import CogShopConfig
 from cognite.powerops.resync.models import cogshop
 from cognite.powerops.resync.models.cdf_resources import CDFSequence
 from cognite.powerops.resync.models.cogshop import CogShopDataModel
@@ -28,7 +28,7 @@ from cognite.powerops.resync.utils.serializer import load_yaml
 import cognite.powerops.cogshop1.data_classes as cogshop_v1
 
 from ._to_instances import _to_input_timeseries_mapping
-from cognite.powerops.resync.config.shared import Transformation
+from cognite.powerops.resync.config._shared import Transformation
 from cognite.powerops.resync.models.market import DayAheadProcess
 
 logger = logging.getLogger(__name__)

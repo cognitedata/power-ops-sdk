@@ -5,7 +5,7 @@ Assumes all customer repos are in checked out in a customer folder in the root o
 import subprocess
 from tests.utils import chdir
 from tests.constants import REPO_ROOT
-from cognite.powerops.utils.io_file import read_toml_file, write_toml_file
+from cognite.powerops.utils.io_file import read_toml_file, dump_toml_file
 
 
 def main():
@@ -28,10 +28,7 @@ def main():
                 print(f"Upgrading repo: {customer_repo.name} from {customer_sdk_version} to {sdk_version}")
 
                 default_branch_origin = (
-                    subprocess.run(
-                        ["git", "symbolic-ref", "refs/remotes/origin/HEAD"],
-                        capture_output=True,
-                    )
+                    subprocess.run(["git", "symbolic-ref", "refs/remotes/origin/HEAD"], capture_output=True)
                     .stdout.decode("utf-8")
                     .strip()
                 )
@@ -40,7 +37,7 @@ def main():
                 subprocess.run(["git", "pull"])
                 subprocess.run(["git", "checkout", "-b", f"upgrade-sdk-{sdk_version}"])
                 customer_project_config["tool"]["poetry"]["dependencies"]["cognite-power-ops"] = sdk_version
-                write_toml_file(customer_pyproject_toml, customer_project_config)
+                dump_toml_file(customer_pyproject_toml, customer_project_config)
                 subprocess.run(["poetry", "run", "pip", "install", f"cognite-power-ops=={sdk_version}"])
                 subprocess.run(["poetry", "update"])
                 subprocess.run(["git", "commit", "-m", f"Upgrade SDK to {sdk_version}", "-a"])

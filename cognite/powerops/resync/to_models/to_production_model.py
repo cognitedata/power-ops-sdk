@@ -15,7 +15,7 @@ from cognite.powerops.client.data_classes import (
     WatercourseShopApply,
 )
 from cognite.powerops.resync.config.production.connections import Connection
-from cognite.powerops.resync.config.resync_config import ProductionConfig
+from cognite.powerops.resync.config._main import ProductionConfig
 from cognite.powerops.resync.models import production
 from cognite.powerops.resync.models.cdf_resources import CDFSequence
 from cognite.powerops.resync.models.production_dm import ProductionModelDM

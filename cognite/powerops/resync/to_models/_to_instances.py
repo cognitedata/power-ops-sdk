@@ -15,7 +15,7 @@ from cognite.powerops.client.data_classes import (
     ValueTransformationApply,
 )
 from cognite.powerops.resync.config.market._core import RelativeTime
-from cognite.powerops.resync.config.shared import TimeSeriesMapping, TimeSeriesMappingEntry, Transformation
+from cognite.powerops.resync.config._shared import TimeSeriesMapping, TimeSeriesMappingEntry, Transformation
 from cognite.powerops.resync.utils.common import make_ext_id
 
 

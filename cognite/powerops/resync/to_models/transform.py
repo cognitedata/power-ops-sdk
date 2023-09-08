@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import cast, Type
 
-from cognite.powerops.resync.config.resync_config import ReSyncConfig
+from cognite.powerops.resync.config._main import ReSyncConfig
 from cognite.powerops.resync.models.base import AssetModel, DataModel, Model
 from cognite.powerops.resync import models
 from .to_cogshop_model import to_cogshop_asset_model, to_cogshop_data_model
@@ -10,11 +10,7 @@ from .to_market_model import to_benchmark_data_model, to_dayahead_data_model, to
 from .to_production_model import to_production_data_model, to_production_model
 
 
-def transform(
-    config: ReSyncConfig,
-    market_name: str,
-    model_types: set[Type[Model]],
-) -> list[Model]:
+def transform(config: ReSyncConfig, market_name: str, model_types: set[Type[Model]]) -> list[Model]:
     asset_models: list[AssetModel] = []
     data_models: list[DataModel] = []
 

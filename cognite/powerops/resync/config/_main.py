@@ -16,7 +16,7 @@ from cognite.powerops.resync.config.market.rkom import RKOMBidCombinationConfig,
 from cognite.powerops.resync.config.production.generator import GeneratorTimeSeriesMapping
 from cognite.powerops.resync.config.production.plant import PlantTimeSeriesMapping
 from cognite.powerops.resync.config.production.watercourse import WatercourseConfig
-from cognite.powerops.resync.config.shared import TimeSeriesMapping
+from cognite.powerops.resync.config._shared import TimeSeriesMapping
 from cognite.powerops.resync.utils.serializer import load_yaml
 
 

@@ -5,12 +5,12 @@ import json
 import typing
 from dataclasses import dataclass
 from typing import ClassVar, Dict, Generator, List, Literal, Optional, Tuple
-
+from typing_extensions import TypeAlias
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from cognite.powerops.resync.config.market import PriceScenarioID
 from cognite.powerops.resync.config.market._core import Configuration, RelativeTime
-from cognite.powerops.resync.config.shared import (
+from cognite.powerops.resync.config._shared import (
     AggregationMethod,
     Auction,
     RetrievalType,
@@ -21,11 +21,11 @@ from cognite.powerops.resync.config.shared import (
 )
 
 # TODO: Switch to class inheriting from str and Enum, or 3.11 strEnum?
-Product = Literal["up", "down"]
-Block = Literal["day", "night"]
+Product: TypeAlias = Literal["up", "down"]
+Block: TypeAlias = Literal["day", "night"]
 
-PlantExternalId = str
-TimeSeriesExeteralId = str
+PlantExternalId: TypeAlias = str
+TimeSeriesExternalId: TypeAlias = str
 
 
 @dataclass
@@ -36,7 +36,7 @@ class ReserveScenario:
     block: Block
     reserve_group: str
     mip_plant_time_series: List[
-        Tuple[PlantExternalId, Optional[TimeSeriesExeteralId]]
+        Tuple[PlantExternalId, Optional[TimeSeriesExternalId]]
     ]  # (plant, mip_flag_time_series) for plants with generators that are in the reserve group
     obligation_external_id: Optional[str] = None
 
@@ -147,7 +147,7 @@ class ReserveScenarios(BaseModel):
     product: Product
     block: Block
     reserve_group: str
-    mip_plant_time_series: List[Tuple[PlantExternalId, Optional[TimeSeriesExeteralId]]]
+    mip_plant_time_series: List[Tuple[PlantExternalId, Optional[TimeSeriesExternalId]]]
     obligation_external_id: Optional[str]
 
     @field_validator("auction", mode="before")
