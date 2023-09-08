@@ -34,14 +34,14 @@ class DayAheadBidApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
     bid_matrix_generator_config_external_id: Optional[str] = None
     bid_process_configuration_name: Optional[str] = None
-    date: list[Union["DateTransformationApply", str]] = Field(default_factory=list, repr=False)
+    date: list[Union[DateTransformationApply, str]] = Field(default_factory=list, repr=False)
     is_default_config_for_price_area: Optional[bool] = None
     main_scenario: Optional[str] = None
-    market: Optional[Union["NordPoolMarketApply", str]] = Field(None, repr=False)
+    market: Optional[Union[NordPoolMarketApply, str]] = Field(None, repr=False)
     name: Optional[str] = None
     no_shop: Optional[bool] = None
     price_area: Optional[str] = None
-    price_scenarios: list[Union["ScenarioMappingApply", str]] = Field(default_factory=list, repr=False)
+    price_scenarios: list[Union[ScenarioMappingApply, str]] = Field(default_factory=list, repr=False)
     watercourse: Optional[str] = None
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
@@ -120,7 +120,7 @@ class DayAheadBidApply(DomainModelApply):
 
         return dm.InstancesApply(dm.NodeApplyList(nodes), dm.EdgeApplyList(edges))
 
-    def _create_date_edge(self, date: Union[str, "DateTransformationApply"]) -> dm.EdgeApply:
+    def _create_date_edge(self, date: Union[str, DateTransformationApply]) -> dm.EdgeApply:
         if isinstance(date, str):
             end_node_ext_id = date
         elif isinstance(date, DomainModelApply):
@@ -136,7 +136,7 @@ class DayAheadBidApply(DomainModelApply):
             end_node=dm.DirectRelationReference("power-ops", end_node_ext_id),
         )
 
-    def _create_price_scenario_edge(self, price_scenario: Union[str, "ScenarioMappingApply"]) -> dm.EdgeApply:
+    def _create_price_scenario_edge(self, price_scenario: Union[str, ScenarioMappingApply]) -> dm.EdgeApply:
         if isinstance(price_scenario, str):
             end_node_ext_id = price_scenario
         elif isinstance(price_scenario, DomainModelApply):

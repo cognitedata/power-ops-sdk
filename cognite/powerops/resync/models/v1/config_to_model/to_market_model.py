@@ -6,24 +6,24 @@ import pandas as pd
 from cognite.client.data_classes import Sequence
 
 from cognite.powerops.resync import config
+from cognite.powerops.resync.models._shared_v1_v2.market_model import _map_price_scenarios_by_name
+from cognite.powerops.resync.models.base import CDFSequence
 from cognite.powerops.resync.models.v1.market import (
+    BenchmarkBid,
+    BenchmarkProcess,
+    DayAheadBid,
+    DayAheadProcess,
     MarketModel,
-    RKOMMarket,
+    NordPoolMarket,
     RKOMBid,
     RKOMBidCombination,
     RKOMCombinationBid,
-    RKOMProcess,
+    RKOMMarket,
     RKOMPlants,
-    NordPoolMarket,
-    BenchmarkProcess,
-    BenchmarkBid,
-    DayAheadProcess,
-    DayAheadBid,
+    RKOMProcess,
     ShopTransformation,
 )
 from cognite.powerops.resync.models.v1.production import PriceArea
-from cognite.powerops.resync.models.base import CDFSequence
-from cognite.powerops.resync.models._shared_v1_v2.market_model import _map_price_scenarios_by_name
 
 
 def to_market_asset_model(
@@ -52,7 +52,7 @@ def to_market_asset_model(
     )
 
     model = MarketModel(
-        markets=rkom.markets + [nord_pool],
+        markets=[*rkom.markets, nord_pool],
         benchmark_processes=benchmarking_processes,
         dayahead_processes=dayahead_processes,
         rkom_processes=rkom.rkom_processes,

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from cognite.powerops.resync.config import PriceScenarioID, PriceScenario
+from cognite.powerops.resync.config import PriceScenario, PriceScenarioID
 
 
 def _map_price_scenarios_by_name(

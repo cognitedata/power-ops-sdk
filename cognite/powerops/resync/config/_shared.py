@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 import json
+from collections.abc import Iterator
 from enum import Enum, auto
-from typing import Any, ClassVar, Iterator, Optional
-from typing_extensions import TypeAlias, Annotated
+from typing import Annotated, Any, ClassVar, Optional
+
 import pandas as pd
 from pydantic import BaseModel, constr, validator
+from typing_extensions import TypeAlias
 
 ExternalId: TypeAlias = Annotated[str, constr(min_length=1, max_length=255)]
 
@@ -170,13 +172,13 @@ class TimeSeriesMapping(BaseModel):
     def __len__(self) -> int:
         return len(self.rows)
 
-    def __add__(self, other: "TimeSeriesMapping") -> "TimeSeriesMapping":
+    def __add__(self, other: TimeSeriesMapping) -> TimeSeriesMapping:
         return TimeSeriesMapping(rows=self.rows + other.rows)
 
     def append(self, element: TimeSeriesMappingEntry) -> None:
         self.rows.append(element)
 
-    def extend(self, other: "TimeSeriesMapping") -> None:
+    def extend(self, other: TimeSeriesMapping) -> None:
         self.rows.extend(other.rows)
 
     @property

@@ -1,15 +1,15 @@
 from __future__ import annotations
 
 from cognite.powerops.client._generated.data_classes import (
-    OutputMappingApply,
     OutputContainerApply,
-    ValueTransformationApply,
+    OutputMappingApply,
     ScenarioMappingApply,
     ScenarioTemplateApply,
+    ValueTransformationApply,
 )
 from cognite.powerops.resync.config import CogShopConfig, WatercourseConfig
 from cognite.powerops.resync.models._shared_v1_v2._to_instances import _to_input_timeseries_mapping, make_ext_id
-from cognite.powerops.resync.models._shared_v1_v2.cogshop_model import _to_shop_model_file, _to_shop_files
+from cognite.powerops.resync.models._shared_v1_v2.cogshop_model import _to_shop_files, _to_shop_model_file
 from cognite.powerops.resync.models.v2.cogshop import CogShopDataModel
 
 

@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 from collections import defaultdict
-from typing import Dict, List, Sequence, Tuple, overload
+from collections.abc import Sequence
+from typing import overload
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
@@ -153,7 +154,7 @@ class ShopTransformationsAPI(TypeAPI[ShopTransformation, ShopTransformationApply
 
     @staticmethod
     def _set_end(shop_transformations: Sequence[ShopTransformation], end_edges: Sequence[dm.Edge]):
-        edges_by_start_node: Dict[Tuple, List] = defaultdict(list)
+        edges_by_start_node: dict[tuple, list] = defaultdict(list)
         for edge in end_edges:
             edges_by_start_node[edge.start_node.as_tuple()].append(edge)
 
@@ -164,7 +165,7 @@ class ShopTransformationsAPI(TypeAPI[ShopTransformation, ShopTransformationApply
 
     @staticmethod
     def _set_start(shop_transformations: Sequence[ShopTransformation], start_edges: Sequence[dm.Edge]):
-        edges_by_start_node: Dict[Tuple, List] = defaultdict(list)
+        edges_by_start_node: dict[tuple, list] = defaultdict(list)
         for edge in start_edges:
             edges_by_start_node[edge.start_node.as_tuple()].append(edge)
 

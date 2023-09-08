@@ -3,8 +3,9 @@ from __future__ import annotations
 import contextlib
 import logging
 import tempfile
+from collections.abc import Sequence
 from pathlib import Path
-from typing import Any, Generic, NewType, Optional, Sequence, TextIO, Tuple, TypeVar, Union, cast
+from typing import Any, Generic, NewType, Optional, TextIO, TypeVar, Union, cast
 
 import yaml
 from cognite.client import CogniteClient
@@ -72,15 +73,15 @@ class ShopResultFilesAPI(Generic[ShopResultFileT]):
     def _parse_file(self, file: TextIO) -> Any:
         raise NotImplementedError()
 
-    def _download(self, file_metadata: FileMetadata) -> Tuple[Any, EncodingT]:
+    def _download(self, file_metadata: FileMetadata) -> tuple[Any, EncodingT]:
         """Download the file, parse it and return the content and encoding used to open the file."""
         encoding: EncodingT = file_metadata.metadata.get("encoding", "utf-8")
         with tempfile.TemporaryDirectory() as tmp_dir:
             self._shop_files.download_to_disk(file_metadata.external_id, Path(tmp_dir))
             tmp_path = Path(tmp_dir) / file_metadata.external_id
-            content_and_encoding: Optional[Tuple[Any, EncodingT]]
+            content_and_encoding: Optional[tuple[Any, EncodingT]]
             try:
-                with open(tmp_path, "r", encoding=encoding) as downloaded_file:
+                with tmp_path.open(encoding=encoding) as downloaded_file:
                     content_and_encoding = self._parse_file(downloaded_file), encoding
             except UnicodeDecodeError:
                 content_and_encoding = self._download_w_wrong_encoding(encoding, tmp_path)
@@ -88,14 +89,14 @@ class ShopResultFilesAPI(Generic[ShopResultFileT]):
                     raise
             return content_and_encoding
 
-    def _download_w_wrong_encoding(self, encoding: EncodingT, tmp_path: Path) -> Optional[Tuple[Any, EncodingT]]:
+    def _download_w_wrong_encoding(self, encoding: EncodingT, tmp_path: Path) -> Optional[tuple[Any, EncodingT]]:
         """
         Some files are uploaded to CDF with latin-1 encoding, most with utf-8.
         When utf-8 fails, we try latin-1.
         """
         if encoding != "latin1":
             encoding = cast(EncodingT, "latin-1")
-            with open(tmp_path, "r", encoding=encoding) as downloaded_file:
+            with tmp_path.open(encoding=encoding) as downloaded_file:
                 with contextlib.suppress(ValueError, TypeError):
                     return self._parse_file(downloaded_file), encoding
         return None

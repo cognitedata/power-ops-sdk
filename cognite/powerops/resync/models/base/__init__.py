@@ -5,12 +5,11 @@ methods for working with the models, and also provide a standardized interface f
 
 from .asset_model import AssetModel
 from .asset_type import AssetType, NonAssetType, T_Asset_Type
+from .cdf_resources import CDFFile, CDFResource, CDFSequence
 from .data_model import DataModel
-from .model import Model, T_Model
-from .cdf_resources import CDFSequence, CDFFile, CDFResource
 from .graph_ql import PowerOpsGraphQLModel
+from .model import Model, T_Model
 from .resource_type import ResourceType
-
 
 __all__ = [
     "AssetModel",

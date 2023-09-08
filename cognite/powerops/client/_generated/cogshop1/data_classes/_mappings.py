@@ -28,7 +28,7 @@ class MappingApply(DomainModelApply):
     path: str
     retrieve: Optional[str] = None
     timeseries_external_id: Optional[str] = None
-    transformations: list[Union["TransformationApply", str]] = Field(default_factory=list, repr=False)
+    transformations: list[Union[TransformationApply, str]] = Field(default_factory=list, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
@@ -77,7 +77,7 @@ class MappingApply(DomainModelApply):
 
         return dm.InstancesApply(dm.NodeApplyList(nodes), dm.EdgeApplyList(edges))
 
-    def _create_transformation_edge(self, transformation: Union[str, "TransformationApply"]) -> dm.EdgeApply:
+    def _create_transformation_edge(self, transformation: Union[str, TransformationApply]) -> dm.EdgeApply:
         if isinstance(transformation, str):
             end_node_ext_id = transformation
         elif isinstance(transformation, DomainModelApply):

@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import json
 from hashlib import md5
-from typing import Any, Type
+from typing import Any
 
 from cognite.powerops.client._generated.data_classes._core import DomainModelApply
 from cognite.powerops.client.data_classes import (
@@ -19,8 +19,8 @@ from cognite.powerops.client.data_classes import (
     ShopTransformationApply,
     ValueTransformationApply,
 )
-from cognite.powerops.resync.config.market._core import RelativeTime
 from cognite.powerops.resync.config._shared import TimeSeriesMapping, TimeSeriesMappingEntry, Transformation
+from cognite.powerops.resync.config.market._core import RelativeTime
 
 
 def _to_date_transformations(time: RelativeTime | list[DateTransformationApply]) -> list[DateTransformationApply]:
@@ -90,7 +90,7 @@ def _to_scenario_mapping(external_id: str, name: str, time_series_mapping: TimeS
     return ScenarioMappingApply(external_id=external_id, mapping_override=mappings, name=name)
 
 
-def make_ext_id(arg: Any, class_: Type[DomainModelApply]) -> str:
+def make_ext_id(arg: Any, class_: type[DomainModelApply]) -> str:
     hash_value = md5()
     if isinstance(arg, (str, int, float, bool)):
         hash_value.update(str(arg).encode())

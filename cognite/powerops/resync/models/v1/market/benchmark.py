@@ -1,16 +1,15 @@
 from __future__ import annotations
 
-
 from typing import ClassVar, Union
 
 from cognite.client.data_classes import TimeSeries
-from pydantic import Field, field_validator, model_validator, model_serializer
+from pydantic import Field, field_validator, model_serializer, model_validator
 
 from cognite.powerops.cdf_labels import AssetLabel
 from cognite.powerops.resync.models.base import NonAssetType
+from cognite.powerops.utils.serialization import try_load_dict, try_load_list
 
 from .base import Bid, Process, ShopTransformation
-from cognite.powerops.utils.serialization import try_load_list, try_load_dict
 
 
 class BenchmarkBid(Bid):

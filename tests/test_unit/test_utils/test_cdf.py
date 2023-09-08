@@ -5,10 +5,11 @@ from pathlib import Path
 import pytest
 import tomli_w
 from cognite.client import CogniteClient
-from cognite.client.data_classes import DataSet, FileMetadata, ExtractionPipelineRun
+from cognite.client.data_classes import DataSet, ExtractionPipelineRun, FileMetadata
 from cognite.client.testing import monkeypatch_cognite_client
+
 from cognite.powerops.utils.cdf import Settings
-from cognite.powerops.utils.cdf.extraction_pipelines import ExtractionPipelineCreate, RunStatus, MSG_CHAR_LIMIT
+from cognite.powerops.utils.cdf.extraction_pipelines import MSG_CHAR_LIMIT, ExtractionPipelineCreate, RunStatus
 
 
 def env_vars_to_vars(env_vars: dict[str, str]) -> dict[str, str]:

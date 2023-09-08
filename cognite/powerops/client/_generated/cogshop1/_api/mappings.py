@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 from collections import defaultdict
-from typing import Dict, List, Sequence, Tuple, overload
+from collections.abc import Sequence
+from typing import overload
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
@@ -101,7 +102,7 @@ class MappingsAPI(TypeAPI[Mapping, MappingApply, MappingList]):
 
     @staticmethod
     def _set_transformations(mappings: Sequence[Mapping], transformation_edges: Sequence[dm.Edge]):
-        edges_by_start_node: Dict[Tuple, List] = defaultdict(list)
+        edges_by_start_node: dict[tuple, list] = defaultdict(list)
         for edge in transformation_edges:
             edges_by_start_node[edge.start_node.as_tuple()].append(edge)
 

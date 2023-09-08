@@ -23,7 +23,7 @@ class ScenarioMapping(DomainModel):
 
 class ScenarioMappingApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
-    mapping_override: list[Union["InputTimeSeriesMappingApply", str]] = Field(default_factory=list, repr=False)
+    mapping_override: list[Union[InputTimeSeriesMappingApply, str]] = Field(default_factory=list, repr=False)
     name: Optional[str] = None
     shop_type: Optional[str] = None
     watercourse: Optional[str] = None
@@ -73,9 +73,7 @@ class ScenarioMappingApply(DomainModelApply):
 
         return dm.InstancesApply(dm.NodeApplyList(nodes), dm.EdgeApplyList(edges))
 
-    def _create_mapping_override_edge(
-        self, mapping_override: Union[str, "InputTimeSeriesMappingApply"]
-    ) -> dm.EdgeApply:
+    def _create_mapping_override_edge(self, mapping_override: Union[str, InputTimeSeriesMappingApply]) -> dm.EdgeApply:
         if isinstance(mapping_override, str):
             end_node_ext_id = mapping_override
         elif isinstance(mapping_override, DomainModelApply):

@@ -8,7 +8,8 @@ import re
 import string
 import warnings
 from pathlib import Path
-from typing import Any, Type, ForwardRef, get_origin, get_args, Union
+from typing import Any, ForwardRef, Union, get_args, get_origin
+
 import tomli_w
 from cognite.client.data_classes import TimeSeries
 from cognite.client.utils._text import to_camel_case
@@ -55,7 +56,7 @@ def chdir(new_dir: Path) -> None:
         new_dir: The new directory to change to.
 
     """
-    current_working_dir = os.getcwd()
+    current_working_dir = Path.cwd()
     os.chdir(new_dir)
 
     try:
@@ -158,7 +159,8 @@ def load_yaml(yaml_path: Path, encoding="utf-8", clean_data: bool = False) -> di
     if clean_data and (invalid_characters := (set(data) - VALID_CHARACTERS)):
         data = re.sub(rf"[{'|'.join(invalid_characters)}]", UNRECOGNIZABLE_CHARACTER, data)
         warnings.warn(
-            f"File {yaml_path.parent}/{yaml_path.name} contains invalid characters: {', '.join(invalid_characters)}"
+            f"File {yaml_path.parent}/{yaml_path.name} contains invalid characters: {', '.join(invalid_characters)}",
+            stacklevel=2,
         )
     return CSafeLoader(data).get_data()
 
@@ -174,18 +176,18 @@ def dump_yaml(yaml_path: Path, data: dict, encoding="utf-8") -> None:
 
     """
     _validate(yaml_path)
-    with open(yaml_path, "w", encoding=encoding) as stream:
+    with yaml_path.open("w", encoding=encoding) as stream:
         safe_dump(data, stream)
 
 
-def get_pydantic_annotation(field_annotation: Any, cls_obj: Type[object]) -> tuple[Any, Type[dict] | Type[list] | None]:
+def get_pydantic_annotation(field_annotation: Any, cls_obj: type[object]) -> tuple[Any, type[dict] | type[list] | None]:
     if isinstance(field_annotation, ForwardRef):
         module = vars(importlib.import_module(cls_obj.__module__))
         parent_module = vars(importlib.import_module(cls_obj.__module__.rsplit(".", maxsplit=1)[0]))
         module.update(parent_module)
         field_annotation = evaluate_forwardref(field_annotation, globals(), module)
 
-    outer: Type[dict] | Type[list] | None
+    outer: type[dict] | type[list] | None
     if not (origin := get_origin(field_annotation)):
         return field_annotation, None
     if origin is list:

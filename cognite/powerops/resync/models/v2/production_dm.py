@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from pydantic import Field
-from typing import Type
+
 from cognite.powerops.client.data_classes import (
     GeneratorApply,
     PlantApply,
@@ -10,8 +10,7 @@ from cognite.powerops.client.data_classes import (
     WatercourseApply,
 )
 from cognite.powerops.client.powerops_client import PowerOpsClient
-from cognite.powerops.resync.models.base import DataModel, T_Model
-from cognite.powerops.resync.models.base import CDFSequence
+from cognite.powerops.resync.models.base import CDFSequence, DataModel, T_Model
 
 
 class ProductionModelDM(DataModel):
@@ -24,6 +23,6 @@ class ProductionModelDM(DataModel):
 
     @classmethod
     def from_cdf(
-        cls: Type[T_Model], client: PowerOpsClient, fetch_metadata: bool = True, fetch_content: bool = False
+        cls: type[T_Model], client: PowerOpsClient, fetch_metadata: bool = True, fetch_content: bool = False
     ) -> T_Model:
         ...

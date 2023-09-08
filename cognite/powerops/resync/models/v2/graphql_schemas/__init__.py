@@ -4,7 +4,6 @@ from cognite.client.data_classes.data_modeling import DataModelId
 
 from cognite.powerops.resync.models.base import PowerOpsGraphQLModel
 
-
 GRAPHQL_FILES = Path(__file__).parent / "graphql_files"
 _SHARED_TYPES = GRAPHQL_FILES / "shared"
 

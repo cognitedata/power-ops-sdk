@@ -27,11 +27,11 @@ class DayAheadProces(DomainModel):
 
 class DayAheadProcesApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
-    bid: Optional[Union["DayAheadBidApply", str]] = Field(None, repr=False)
-    bid_matrix_generator_config: list[Union["BidMatrixGeneratorApply", str]] = Field(default_factory=list, repr=False)
-    incremental_mappings: list[Union["ScenarioMappingApply", str]] = Field(default_factory=list, repr=False)
+    bid: Optional[Union[DayAheadBidApply, str]] = Field(None, repr=False)
+    bid_matrix_generator_config: list[Union[BidMatrixGeneratorApply, str]] = Field(default_factory=list, repr=False)
+    incremental_mappings: list[Union[ScenarioMappingApply, str]] = Field(default_factory=list, repr=False)
     name: Optional[str] = None
-    shop: Optional[Union["ShopTransformationApply", str]] = Field(None, repr=False)
+    shop: Optional[Union[ShopTransformationApply, str]] = Field(None, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
@@ -106,7 +106,7 @@ class DayAheadProcesApply(DomainModelApply):
         return dm.InstancesApply(dm.NodeApplyList(nodes), dm.EdgeApplyList(edges))
 
     def _create_bid_matrix_generator_config_edge(
-        self, bid_matrix_generator_config: Union[str, "BidMatrixGeneratorApply"]
+        self, bid_matrix_generator_config: Union[str, BidMatrixGeneratorApply]
     ) -> dm.EdgeApply:
         if isinstance(bid_matrix_generator_config, str):
             end_node_ext_id = bid_matrix_generator_config
@@ -123,7 +123,7 @@ class DayAheadProcesApply(DomainModelApply):
             end_node=dm.DirectRelationReference("power-ops", end_node_ext_id),
         )
 
-    def _create_incremental_mapping_edge(self, incremental_mapping: Union[str, "ScenarioMappingApply"]) -> dm.EdgeApply:
+    def _create_incremental_mapping_edge(self, incremental_mapping: Union[str, ScenarioMappingApply]) -> dm.EdgeApply:
         if isinstance(incremental_mapping, str):
             end_node_ext_id = incremental_mapping
         elif isinstance(incremental_mapping, DomainModelApply):

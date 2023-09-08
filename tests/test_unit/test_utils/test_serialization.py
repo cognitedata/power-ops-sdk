@@ -1,9 +1,9 @@
-from typing import Any, Union, Type
+from typing import Any, Union
 
 import pytest
 
-from cognite.powerops.utils.serialization import get_pydantic_annotation
 from cognite.powerops.client.data_classes import cogshop1
+from cognite.powerops.utils.serialization import get_pydantic_annotation
 
 
 def get_pydantic_annotation_test_cases():
@@ -21,7 +21,7 @@ def get_pydantic_annotation_test_cases():
     "field_annotation, cls_object, expected, expected_outer", list(get_pydantic_annotation_test_cases())
 )
 def test_get_pydantic_annotation(
-    field_annotation: Any, cls_object: Type[type], expected: Any, expected_outer: Any
+    field_annotation: Any, cls_object: type[type], expected: Any, expected_outer: Any
 ) -> None:
     # Act
     annotation, outer = get_pydantic_annotation(field_annotation, cls_object)

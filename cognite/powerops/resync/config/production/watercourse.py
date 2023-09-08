@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import ClassVar, Dict, List, Optional
+from typing import ClassVar, Optional
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -25,7 +25,7 @@ class WatercourseConfig(Watercourse):
 
     model_config: ClassVar[ConfigDict] = ConfigDict(protected_namespaces=tuple())
     version: str
-    market_to_price_area: Dict[str, str]
+    market_to_price_area: dict[str, str]
     directory: str
     model_raw: str
     # ------------------------------------------------------------------
@@ -34,16 +34,16 @@ class WatercourseConfig(Watercourse):
     yaml_mapping_path: str = ""
     model_processed: str  # TODO: not used here
     model_mapping: Optional[str] = None
-    tco_paths: Optional[List[str]] = None  # TODO: not used here - HEV specific
-    rrs_ids: Optional[List[str]] = None
+    tco_paths: Optional[list[str]] = None  # TODO: not used here - HEV specific
+    rrs_ids: Optional[list[str]] = None
     hardcoded_mapping: Optional[TimeSeriesMapping] = None  # TODO: not used here
-    hist_flow_timeseries: Optional[Dict[str, str]] = None  # TODO: not used here
+    hist_flow_timeseries: Optional[dict[str, str]] = None  # TODO: not used here
     # ------------------------------------------------------------------
-    production_obligation_ts_ext_ids: List[str] = Field(default_factory=list)
-    plant_display_names_and_order: Dict[str, tuple[str, int]] = Field(default_factory=dict)
-    reservoir_display_names_and_order: Dict[str, tuple[str, int]] = Field(default_factory=dict)
+    production_obligation_ts_ext_ids: list[str] = Field(default_factory=list)
+    plant_display_names_and_order: dict[str, tuple[str, int]] = Field(default_factory=dict)
+    reservoir_display_names_and_order: dict[str, tuple[str, int]] = Field(default_factory=dict)
     water_value_based_method_time_series_csv_filename: Optional[str] = None
 
     @classmethod
-    def from_yaml(cls, yaml_path: Path) -> list["WatercourseConfig"]:
+    def from_yaml(cls, yaml_path: Path) -> list[WatercourseConfig]:
         return [cls(**watercourse_raw) for watercourse_raw in load_yaml(yaml_path)]

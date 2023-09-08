@@ -46,9 +46,7 @@ def is_constant_valued_dict(attribute_value: Any) -> bool:
 def get_static_mapping(shop_model: dict) -> TimeSeriesMapping:
     # sourcery skip: for-append-to-extend, merge-nested-ifs
     static_mapping = TimeSeriesMapping()
-    # e.g. reservoir: [reservoir_A, reservoir_B]
     for object_type, objects in shop_model.items():
-        # e.g. reservoir_A: [maintenance_flag, max_vol, ...]
         for object_name, object_attributes in objects.items():
             # e.g. max_vol: 42 or maintenance_flag: {<date>: 1, <other_date>: 0}
             for attribute_name, attribute_value in object_attributes.items():
@@ -56,7 +54,7 @@ def get_static_mapping(shop_model: dict) -> TimeSeriesMapping:
                     continue
 
                 if is_constant_valued_dict(attribute_value):
-                    static_value = {0: list(attribute_value.values())[0]}  # TODO: clean up
+                    static_value = {0: next(iter(attribute_value.values()))}  # TODO: clean up
                     static_mapping.append(
                         TimeSeriesMappingEntry(
                             object_type=object_type,

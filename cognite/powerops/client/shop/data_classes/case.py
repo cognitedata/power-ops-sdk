@@ -2,7 +2,8 @@ from __future__ import annotations
 
 import logging
 import tempfile
-from typing import List, Optional, TypedDict
+from pathlib import Path
+from typing import Optional, TypedDict
 
 import yaml
 
@@ -55,7 +56,7 @@ class Case:
             self.data = yaml_docs[0]
             self._handle_additional_yaml_documents(yaml_docs[1:])
 
-    def _handle_additional_yaml_documents(self, extra_yaml_docs: List[str]) -> None:
+    def _handle_additional_yaml_documents(self, extra_yaml_docs: list[str]) -> None:
         """
         If `Case.__init__` gets a yaml string which has multiple documents (separated by "---"),
         only the first document is parsed and set to `self.data`. Any subsequent documents are stored
@@ -64,15 +65,10 @@ class Case:
         if extra_yaml_docs:
             logger.warning(
                 f"Case file contains {len(extra_yaml_docs) + 1} YAML documents. Only the first document is parsed,"
-                f' additional documents will be passed to SHOP verbatim as "extra files".',
+                f' additional documents will be passed to SHOP verbatim as "extra files".'
             )
         for yaml_doc in extra_yaml_docs:
-            tmp_file = tempfile.NamedTemporaryFile(
-                mode="w",
-                delete=False,
-                prefix="powerops-sdk-tmp-",
-                suffix=".yaml",
-            )
+            tmp_file = tempfile.NamedTemporaryFile(mode="w", delete=False, prefix="powerops-sdk-tmp-", suffix=".yaml")
             tmp_file.write(yaml.dump(yaml_doc))
             tmp_file.close()
             self.add_extra_file(tmp_file.name)
@@ -80,7 +76,7 @@ class Case:
     @classmethod
     def from_yaml_file(cls, yaml_path: str, encoding: str = "utf-8") -> Case:
         logger.info(f"loading case file: {yaml_path}")
-        with open(yaml_path, "r", encoding=encoding) as yaml_file:
+        with Path(yaml_path).open(encoding=encoding) as yaml_file:
             return cls(yaml_file.read())
 
     def add_extra_file(self, file_path: str, encoding: str = "utf-8") -> None:
@@ -113,5 +109,5 @@ class Case:
 
     def save_yaml(self, path: str, encoding: str = "utf-8") -> None:
         logger.info(f"Saving case file to: {path}")
-        with open(path, "w", encoding=encoding) as output_file:
+        with Path(path).open("w", encoding=encoding) as output_file:
             output_file.write(yaml.dump(self.data, sort_keys=False))

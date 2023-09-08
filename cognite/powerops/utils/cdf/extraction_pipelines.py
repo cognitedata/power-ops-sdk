@@ -1,15 +1,14 @@
 from __future__ import annotations
-import json
 
+import json
+import traceback
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from enum import Enum
-from typing import Any, Optional, ClassVar, Callable
-import traceback
+from typing import Any, Callable, ClassVar, Optional
 
-
-from cognite.client._constants import MAX_VALID_INTERNAL_ID
 from cognite.client import CogniteClient
+from cognite.client._constants import MAX_VALID_INTERNAL_ID
 from cognite.client.data_classes import ExtractionPipeline, ExtractionPipelineRun
 from cognite.client.exceptions import CogniteAPIError
 
@@ -61,14 +60,14 @@ class PipelineRun:
         self.data = {}
         self.status = self.init_status
 
-    def __enter__(self) -> "PipelineRun":
+    def __enter__(self) -> PipelineRun:
         return self
 
     def update_data(
         self,
         status: RunStatus = init_status,
         **data: Any,
-    ) -> "PipelineRun":
+    ) -> PipelineRun:
         self.status = status
         if isinstance(data, dict):
             for key in self.reserved_keys:
@@ -97,7 +96,7 @@ class PipelineRun:
 
         return suppress_exception
 
-    def get_message(self, dump_truncated_to_file: bool = None) -> str:
+    def get_message(self, dump_truncated_to_file: Optional[bool] = None) -> str:
         file_external_id = (
             f"{self.config.log_file_prefix}/{self.pipeline_external_id}/"
             f"{datetime.now(timezone.utc).isoformat().replace(':', '')}"
@@ -175,7 +174,7 @@ class ExtractionPipelineCreate:
         data_set_external_id: str,
         description: str | None = None,
         dump_truncated_to_file: bool = True,
-        truncate_keys: list[str] = None,
+        truncate_keys: Optional[list[str]] = None,
         log_file_prefix: str | None = None,
     ) -> None:
         self.external_id = external_id
@@ -203,7 +202,9 @@ class ExtractionPipelineCreate:
             )
         return self
 
-    def create_pipeline_run(self, client: CogniteClient, error_logger: Callable[[str], None] = None) -> PipelineRun:
+    def create_pipeline_run(
+        self, client: CogniteClient, error_logger: Optional[Callable[[str], None]] = None
+    ) -> PipelineRun:
         """
 
         Args:

@@ -1,11 +1,5 @@
 from __future__ import annotations
 
-
-from cognite.powerops.resync.config.market import BenchmarkingConfig, PriceScenario
-from cognite.powerops.resync.config.market.dayahead import BidMatrixGeneratorConfig
-from cognite.powerops.resync.config.market.market import MARKET_BY_PRICE_AREA
-from cognite.powerops.resync.config._main import MarketConfig
-
 from cognite.powerops.client.data_classes import (
     BenchmarkBidApply,
     BenchmarkProcesApply,
@@ -13,25 +7,28 @@ from cognite.powerops.client.data_classes import (
     DayAheadBidApply,
     DayAheadProcesApply,
     NordPoolMarketApply,
-    RKOMBidApply,
-    RKOMBidCombinationApply,
-    RKOMMarketApply,
-    RKOMProcesApply,
     PriceAreaApply,
     ProductionPlanTimeSeriesApply,
     ReserveScenarioApply,
-    ScenarioMappingApply,
+    RKOMBidApply,
+    RKOMBidCombinationApply,
     RKOMCombinationBidApply,
+    RKOMMarketApply,
+    RKOMProcesApply,
+    ScenarioMappingApply,
 )
+from cognite.powerops.resync.config._main import MarketConfig
+from cognite.powerops.resync.config.market import BenchmarkingConfig, PriceScenario
+from cognite.powerops.resync.config.market.dayahead import BidMatrixGeneratorConfig
+from cognite.powerops.resync.config.market.market import MARKET_BY_PRICE_AREA
 from cognite.powerops.resync.models._shared_v1_v2._to_instances import (
     _to_date_transformations,
+    _to_input_timeseries_mapping,
     _to_scenario_mapping,
     _to_shop_transformation,
-    _to_input_timeseries_mapping,
     make_ext_id,
 )
 from cognite.powerops.resync.models._shared_v1_v2.market_model import _map_price_scenarios_by_name
-
 from cognite.powerops.resync.models.v2.market_dm import (
     BenchmarkMarketDataModel,
     DayAheadMarketDataModel,
@@ -128,7 +125,6 @@ def to_dayahead_data_model(
             is_default_config_for_price_area=process.is_default_config_for_price_area,
             main_scenario=process.main_scenario,
             price_area=f"price_area_{process.price_area_name}",
-            # watercourse=process.watercourse,
             price_scenarios=[
                 ScenarioMappingApply(
                     external_id=f"SHOP_incremental_mapping_{process.name}_{scenario_name}",
@@ -168,9 +164,7 @@ def _to_bid_matrix_generator(
         (
             external_id := f"POWEROPS_bid_matrix_generator_config_{process_name}"
             # make_ext_id(
-            #     [plant.name, bid_gen_config.default_method, bid_gen_config.default_function_external_id],
             #     BidMatrixGeneratorApply,
-            # )
         ): BidMatrixGeneratorApply(
             external_id=external_id,
             shop_plant=plant.name,
@@ -258,7 +252,7 @@ def to_rkom_data_model(config: MarketConfig, market_name: str) -> RKOMMarketData
 
         bid = RKOMCombinationBidApply(
             external_id=make_ext_id(
-                [comb.auction.value, comb.name] + comb.rkom_bid_config_external_ids, RKOMCombinationBidApply
+                [comb.auction.value, comb.name, *comb.rkom_bid_config_external_ids], RKOMCombinationBidApply
             ),
             auction=comb.auction.value,
             name=comb.name,

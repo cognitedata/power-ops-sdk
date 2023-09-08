@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 from collections import defaultdict
-from typing import Dict, List, Sequence, Tuple, overload
+from collections.abc import Sequence
+from typing import overload
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
@@ -181,7 +182,7 @@ class RKOMBidsAPI(TypeAPI[RKOMBid, RKOMBidApply, RKOMBidList]):
 
     @staticmethod
     def _set_date(rkom_bids: Sequence[RKOMBid], date_edges: Sequence[dm.Edge]):
-        edges_by_start_node: Dict[Tuple, List] = defaultdict(list)
+        edges_by_start_node: dict[tuple, list] = defaultdict(list)
         for edge in date_edges:
             edges_by_start_node[edge.start_node.as_tuple()].append(edge)
 
@@ -192,7 +193,7 @@ class RKOMBidsAPI(TypeAPI[RKOMBid, RKOMBidApply, RKOMBidList]):
 
     @staticmethod
     def _set_price_scenarios(rkom_bids: Sequence[RKOMBid], price_scenario_edges: Sequence[dm.Edge]):
-        edges_by_start_node: Dict[Tuple, List] = defaultdict(list)
+        edges_by_start_node: dict[tuple, list] = defaultdict(list)
         for edge in price_scenario_edges:
             edges_by_start_node[edge.start_node.as_tuple()].append(edge)
 
@@ -203,7 +204,7 @@ class RKOMBidsAPI(TypeAPI[RKOMBid, RKOMBidApply, RKOMBidList]):
 
     @staticmethod
     def _set_reserve_scenarios(rkom_bids: Sequence[RKOMBid], reserve_scenario_edges: Sequence[dm.Edge]):
-        edges_by_start_node: Dict[Tuple, List] = defaultdict(list)
+        edges_by_start_node: dict[tuple, list] = defaultdict(list)
         for edge in reserve_scenario_edges:
             edges_by_start_node[edge.start_node.as_tuple()].append(edge)
 

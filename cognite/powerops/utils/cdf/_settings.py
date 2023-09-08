@@ -1,11 +1,9 @@
 import getpass
 import logging
 import os
-from typing import Any, Literal, Optional, Type
+from typing import Any, Literal, Optional
 
 import pydantic
-
-
 from pydantic import BaseModel, Field, field_validator
 from pydantic_settings import BaseSettings, PydanticBaseSettingsSource, SettingsConfigDict
 
@@ -57,13 +55,13 @@ class PoweropsRunSettings(pydantic.BaseModel):
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_prefix="SETTINGS__", env_nested_delimiter="__")
-    cognite: CogniteSettings = {}
-    powerops: PoweropsRunSettings = {}
+    cognite: CogniteSettings = Field(default_factory=dict)
+    powerops: PoweropsRunSettings = Field(default_factory=dict)
 
     @classmethod
     def settings_customise_sources(
         cls,
-        settings_cls: Type[BaseSettings],
+        settings_cls: type[BaseSettings],
         init_settings: PydanticBaseSettingsSource,
         env_settings: PydanticBaseSettingsSource,
         dotenv_settings: PydanticBaseSettingsSource,

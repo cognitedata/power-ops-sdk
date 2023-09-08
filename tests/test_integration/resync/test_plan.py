@@ -1,16 +1,15 @@
-from pathlib import Path
 import os
+from pathlib import Path
+
 import pytest
 from coverage.tomlconfig import tomllib
+from loguru import logger
+from yaml import safe_load
 
 from cognite.powerops import resync
-
-from loguru import logger
-
-from yaml import safe_load
-from tests.constants import SENSITIVE_TESTS, REPO_ROOT, ReSync
-from cognite.powerops.utils.serialization import chdir
 from cognite.powerops.client.powerops_client import get_powerops_client
+from cognite.powerops.utils.serialization import chdir
+from tests.constants import REPO_ROOT, SENSITIVE_TESTS, ReSync
 
 THIS_FOLDER = Path(__file__).resolve().parent
 PLAN = THIS_FOLDER / "plan"

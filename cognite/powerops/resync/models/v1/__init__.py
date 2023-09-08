@@ -5,14 +5,14 @@ This package contains the v1 version of the models in the resync package. There 
 * MarketModel - This is an asset-based model for the physical assets in the market system.
 * CogShop1Asset - This is the first iteration of the data model for CogShop. It is expected to be deprecated soon.
 """
+from .cogshop import CogShop1Asset
 from .graphql_schemas import GRAPHQL_MODELS
-from .production import ProductionModel, Generator, Plant, PriceArea, Reservoir, Watercourse
 from .market import (
-    MarketModel,
     BenchmarkBid,
     BenchmarkProcess,
     DayAheadBid,
     DayAheadProcess,
+    MarketModel,
     NordPoolMarket,
     RKOMBid,
     RKOMBidCombination,
@@ -21,7 +21,7 @@ from .market import (
     RKOMPlants,
     RKOMProcess,
 )
-from .cogshop import CogShop1Asset
+from .production import Generator, Plant, PriceArea, ProductionModel, Reservoir, Watercourse
 
 __all__ = [
     "GRAPHQL_MODELS",

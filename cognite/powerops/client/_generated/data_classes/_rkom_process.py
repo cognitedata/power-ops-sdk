@@ -28,12 +28,12 @@ class RKOMProces(DomainModel):
 
 class RKOMProcesApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
-    bid: Optional[Union["RKOMBidApply", str]] = Field(None, repr=False)
-    incremental_mappings: list[Union["ScenarioMappingApply", str]] = Field(default_factory=list, repr=False)
+    bid: Optional[Union[RKOMBidApply, str]] = Field(None, repr=False)
+    incremental_mappings: list[Union[ScenarioMappingApply, str]] = Field(default_factory=list, repr=False)
     name: Optional[str] = None
     plants: list[str] = []
     process_events: list[str] = []
-    shop: Optional[Union["ShopTransformationApply", str]] = Field(None, repr=False)
+    shop: Optional[Union[ShopTransformationApply, str]] = Field(None, repr=False)
     timezone: Optional[str] = None
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
@@ -103,7 +103,7 @@ class RKOMProcesApply(DomainModelApply):
 
         return dm.InstancesApply(dm.NodeApplyList(nodes), dm.EdgeApplyList(edges))
 
-    def _create_incremental_mapping_edge(self, incremental_mapping: Union[str, "ScenarioMappingApply"]) -> dm.EdgeApply:
+    def _create_incremental_mapping_edge(self, incremental_mapping: Union[str, ScenarioMappingApply]) -> dm.EdgeApply:
         if isinstance(incremental_mapping, str):
             end_node_ext_id = incremental_mapping
         elif isinstance(incremental_mapping, DomainModelApply):

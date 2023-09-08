@@ -7,17 +7,17 @@ import pandas as pd
 import yaml
 from cognite.client.data_classes import Sequence
 
+from cognite.powerops.client.data_classes import cogshop1 as cogshop_v1
 from cognite.powerops.resync import config
 from cognite.powerops.resync.models._shared_v1_v2.cogshop_model import (
-    _to_shop_model_file,
-    _to_shop_files,
     _create_transformation,
+    _to_shop_files,
+    _to_shop_model_file,
 )
-from cognite.powerops.resync.models.v1.production import Watercourse
-from cognite.powerops.resync.models.v1.market import DayAheadProcess
-from cognite.powerops.resync.models.v1.cogshop import CogShop1Asset
 from cognite.powerops.resync.models.base import CDFSequence
-from cognite.powerops.client.data_classes import cogshop1 as cogshop_v1
+from cognite.powerops.resync.models.v1.cogshop import CogShop1Asset
+from cognite.powerops.resync.models.v1.market import DayAheadProcess
+from cognite.powerops.resync.models.v1.production import Watercourse
 
 logger = logging.getLogger(__name__)
 
@@ -100,7 +100,7 @@ def to_cogshop_asset_model(
                     timeseries_external_id=row.time_series_external_id,
                     transformations=[
                         _create_transformation(order, transformation)
-                        for order, transformation in enumerate((row.transformations or []))
+                        for order, transformation in enumerate(row.transformations or [])
                     ],
                     retrieve=row.retrieve.name if row.retrieve else None,
                     aggregation=row.aggregation.name if row.aggregation else None,

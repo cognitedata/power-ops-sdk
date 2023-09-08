@@ -1,6 +1,5 @@
 from typing import ClassVar, Optional
 
-
 from cognite.client.data_classes import Asset
 from pydantic import field_validator
 from pydantic.dataclasses import Field

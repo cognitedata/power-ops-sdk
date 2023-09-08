@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 from typing import Optional
-from typing_extensions import TypeAlias
+
 from pydantic import BaseModel, field_validator
+from typing_extensions import TypeAlias
 
 from cognite.powerops.resync.config._shared import ExternalId
 

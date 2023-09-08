@@ -1,5 +1,6 @@
 from functools import cached_property
 from typing import Union
+
 from cognite.client import CogniteClient
 
 

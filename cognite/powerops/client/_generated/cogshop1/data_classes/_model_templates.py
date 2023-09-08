@@ -25,8 +25,8 @@ class ModelTemplate(DomainModel, protected_namespaces=()):
 
 class ModelTemplateApply(DomainModelApply, protected_namespaces=()):
     space: ClassVar[str] = "cogShop"
-    base_mappings: list[Union["MappingApply", str]] = Field(default_factory=list, repr=False)
-    model: Optional[Union["FileRefApply", str]] = Field(None, repr=False)
+    base_mappings: list[Union[MappingApply, str]] = Field(default_factory=list, repr=False)
+    model: Optional[Union[FileRefApply, str]] = Field(None, repr=False)
     shop_version: str
     version: str
     watercourse: str
@@ -80,7 +80,7 @@ class ModelTemplateApply(DomainModelApply, protected_namespaces=()):
 
         return dm.InstancesApply(dm.NodeApplyList(nodes), dm.EdgeApplyList(edges))
 
-    def _create_base_mapping_edge(self, base_mapping: Union[str, "MappingApply"]) -> dm.EdgeApply:
+    def _create_base_mapping_edge(self, base_mapping: Union[str, MappingApply]) -> dm.EdgeApply:
         if isinstance(base_mapping, str):
             end_node_ext_id = base_mapping
         elif isinstance(base_mapping, DomainModelApply):

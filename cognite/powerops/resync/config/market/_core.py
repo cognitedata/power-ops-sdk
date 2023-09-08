@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import json
-from typing import Dict, List, Optional, Union
+from typing import Optional, Union
 
 from pydantic import BaseModel, ConfigDict, validator
 
@@ -27,15 +27,16 @@ class PriceScenarioID(BaseModel):
 class PriceScenario(BaseModel):
     name: str
     time_series_external_id: Optional[str] = None
-    transformations: Optional[List[Transformation]] = None
+    transformations: Optional[list[Transformation]] = None
 
     def to_time_series_mapping(self) -> TimeSeriesMapping:
         retrieve = RetrievalType.RANGE if self.time_series_external_id else None
         transformations = self.transformations or []
 
         # to make buy price slightly higher than sale price in SHOP
-        transformations_buy_price = transformations + [
-            Transformation(transformation=TransformationType.ADD, kwargs={"value": 0.01})
+        transformations_buy_price = [
+            *transformations,
+            Transformation(transformation=TransformationType.ADD, kwargs={"value": 0.01}),
         ]
 
         sale_price_row = TimeSeriesMappingEntry(
@@ -63,7 +64,7 @@ class PriceScenario(BaseModel):
 
 class RelativeTime(BaseModel):
     relative_time_string: Optional[str] = None
-    operations: Optional[list[tuple[str, Union[str, Dict[str, int]]]]] = None
+    operations: Optional[list[tuple[str, Union[str, dict[str, int]]]]] = None
 
     @validator("operations", pre=True, always=True)
     def to_old_format(cls, value):

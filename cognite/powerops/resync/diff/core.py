@@ -1,8 +1,11 @@
 from typing import Any, Literal
-from cognite.powerops.resync.models.base import Model, CDFFile, CDFSequence, ResourceType
-from cognite.powerops.client._generated.data_classes._core import DomainModelApply
-from cognite.powerops.client._generated.cogshop1.data_classes._core import DomainModelApply as DomainModelApplyCogShop1
+
 from cognite.client.data_classes._base import CogniteResource, CogniteResourceList
+
+from cognite.powerops.client._generated.cogshop1.data_classes._core import DomainModelApply as DomainModelApplyCogShop1
+from cognite.powerops.client._generated.data_classes._core import DomainModelApply
+from cognite.powerops.resync.models.base import CDFFile, CDFSequence, Model, ResourceType
+
 from .data_classes import Change, FieldDifference, ModelDifference
 
 

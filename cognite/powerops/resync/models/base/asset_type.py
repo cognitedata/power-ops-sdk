@@ -2,17 +2,18 @@ from __future__ import annotations
 
 import json
 from abc import ABC
-from collections import defaultdict, Counter
-from typing import ClassVar, Union, Optional, TypeVar
+from collections import Counter, defaultdict
+from typing import ClassVar, Optional, TypeVar, Union
+
+from cognite.client.data_classes import Asset, Label, Relationship, TimeSeries
+from pydantic import BaseModel
 from typing_extensions import Self
 
-from cognite.client.data_classes import Relationship, TimeSeries, Label, Asset
-from pydantic import BaseModel
-
 from cognite.powerops.cdf_labels import AssetLabel, RelationshipLabel
-from .resource_type import ResourceType
-from .cdf_resources import CDFSequence, CDFFile
 from cognite.powerops.utils.serialization import get_pydantic_annotation
+
+from .cdf_resources import CDFFile, CDFSequence
+from .resource_type import ResourceType
 
 
 class NonAssetType(BaseModel, ABC, arbitrary_types_allowed=True):
@@ -76,7 +77,7 @@ class AssetType(ResourceType, ABC, arbitrary_types_allowed=True, validate_assign
 
     def _relationships(self, to: BaseModel) -> list[Relationship]:
         relationships = []
-        for field_name, field in to.model_fields.items():
+        for field_name, _field in to.model_fields.items():
             field_value = getattr(to, field_name)
             if not field_value:
                 continue

@@ -5,7 +5,7 @@ from cognite.powerops.client.powerops_client import PowerOpsClient
 from cognite.powerops.resync import models
 from cognite.powerops.resync.config._main import ReSyncConfig
 from cognite.powerops.resync.models.base import CDFSequence
-from cognite.powerops.resync.models.v1.config_to_model import to_production_model, to_market_asset_model
+from cognite.powerops.resync.models.v1.config_to_model import to_market_asset_model, to_production_model
 from tests.constants import ReSync
 
 

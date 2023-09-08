@@ -75,7 +75,7 @@ def test_serialize_cogshop1_model_as_cdf(cogshop1_model: models.CogShop1Asset) -
                     loaded_value[key].model_dump() == local_value[key].model_dump()
                 ), f"Comparison failed for field {field} {key}"
         else:
-            assert False, f"Comparison failed for field {field}"
+            raise AssertionError(f"Comparison failed for field {field}")
 
     assert loaded.model_dump() == local_cogshop.model_dump()
 
