@@ -13,6 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.47.2] - 2023-09-08
+### Fixed
+* Fixed bug where comparison of two equal models resulted in change detected. This cause
+  the `powerops plan --as-extraction-pipeline-run` to report an incorrect failed run.
+
 ## [0.47.1] - 2023-09-08
 ### Removed
 * Removed some unused utils functions.

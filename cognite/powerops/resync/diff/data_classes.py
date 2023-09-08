@@ -140,7 +140,9 @@ class ModelDifference:
         self.changes[key] = value
 
     def has_changes(self, exclude: set | frozenset = frozenset({"timeseries"})) -> bool:
-        return any(change.total != change.unchanged for change in self.changes.values() if change.name not in exclude)
+        return any(
+            change.total != len(change.unchanged) for change in self.changes.values() if change.name not in exclude
+        )
 
 
 @dataclass
