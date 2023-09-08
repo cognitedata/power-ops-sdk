@@ -1,4 +1,4 @@
-from cognite.powerops._cli import apply
+from cognite.powerops.cli import apply
 from tests.constants import ReSync, REPO_ROOT
 from tests.utils import chdir
 
