@@ -18,11 +18,11 @@ from cognite.client.data_classes.data_modeling import (
     EdgeApplyList,
 )
 
-from cognite.powerops.clients.data_classes._core import DomainModelApply
-from cognite.powerops.cogshop1.data_classes._core import DomainModelApply as DomainModelApplyCogShop1
-from cognite.powerops.resync.models.base.model import Model
-from cognite.powerops.resync.models.cdf_resources import CDFFile, CDFSequence
-from cognite.powerops.resync.utils.serializer import get_pydantic_annotation
+from cognite.powerops.client._generated.data_classes._core import DomainModelApply
+from cognite.powerops.client._generated.cogshop1.data_classes._core import DomainModelApply as DomainModelApplyCogShop1
+from .model import Model
+from .cdf_resources import CDFFile, CDFSequence
+from cognite.powerops.utils.serialization import get_pydantic_annotation
 
 
 class DataModel(Model, ABC):
@@ -111,12 +111,7 @@ class DataModel(Model, ABC):
                 ]
             elif issubclass(annotation, (DomainModelApply, DomainModelApplyCogShop1)):
                 name = field_name
-                alternatives = [
-                    name,
-                    name.removesuffix("s"),
-                    to_pascal(name),
-                    to_pascal(name).removesuffix("s"),
-                ]
+                alternatives = [name, name.removesuffix("s"), to_pascal(name), to_pascal(name).removesuffix("s")]
                 for alternative in alternatives:
                     if alternative in nodes_by_source_by_id:
                         name = alternative

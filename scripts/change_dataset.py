@@ -1,10 +1,10 @@
 from cognite.client.utils._identifier import IdentifierSequence
 
-from cognite.powerops.clients.powerops_client import get_powerops_client
+from cognite.powerops._clients.powerops_client import get_powerops_client
 from cognite.client.data_classes import SequenceUpdate, RelationshipList, Relationship, RelationshipUpdate
 from cognite.powerops.resync._main import _load_transform
 from tests.constants import ReSync, REPO_ROOT
-from tests.utils import chdir
+from cognite.powerops.utils.serialization import chdir
 
 
 def main():

@@ -11,8 +11,8 @@ from pydantic import BaseModel
 
 from cognite.powerops.cdf_labels import AssetLabel, RelationshipLabel
 from .resource_type import ResourceType
-from cognite.powerops.resync.models.cdf_resources import CDFSequence, CDFFile
-from cognite.powerops.resync.utils.serializer import get_pydantic_annotation
+from .cdf_resources import CDFSequence, CDFFile
+from cognite.powerops.utils.serialization import get_pydantic_annotation
 
 
 class NonAssetType(BaseModel, ABC, arbitrary_types_allowed=True):
@@ -115,12 +115,7 @@ class AssetType(ResourceType, ABC, arbitrary_types_allowed=True, validate_assign
 
         return relationships
 
-    def _create_relationship(
-        self,
-        target_external_id: str,
-        target_cdf_type: str,
-        target_type: str,
-    ) -> Relationship:
+    def _create_relationship(self, target_external_id: str, target_cdf_type: str, target_type: str) -> Relationship:
         source_type = "ASSET"
 
         # The market model uses the suffix CDF type for the relationship label, while the core model does not.
@@ -189,11 +184,7 @@ class AssetType(ResourceType, ABC, arbitrary_types_allowed=True, validate_assign
 
     @classmethod
     def from_asset(cls, asset: Asset) -> Self:
-        instance = cls(
-            name=asset.name,
-            description=asset.description,
-            **cls._load_metadata(asset.metadata),
-        )
+        instance = cls(name=asset.name, description=asset.description, **cls._load_metadata(asset.metadata))
         if instance.external_id != asset.external_id:
             # The external id is not set in a standardized way for Market configs.
             instance.external_id = asset.external_id

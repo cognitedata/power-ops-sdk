@@ -6419,7 +6419,6 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: creek_intake.Blakstad.inflow
       retrieve: RANGE
       timeseriesExternalId: '649835'
@@ -6456,7 +6455,6 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: creek_intake.Fjerdingby_intake.inflow
       retrieve: RANGE
       timeseriesExternalId: '649792'
@@ -6481,10 +6479,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: creek_intake.Fjerdingby_intake.overflow_cost
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -6506,7 +6501,6 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: creek_intake.Golebiowski_intake.inflow
       retrieve: RANGE
       timeseriesExternalId: '649792'
@@ -6531,10 +6525,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: creek_intake.Golebiowski_intake.overflow_cost
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -6544,7 +6535,6 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: creek_intake.Gustad.inflow
       retrieve: RANGE
       timeseriesExternalId: '649835'
@@ -6569,7 +6559,6 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: creek_intake.Lont_intake.inflow
       retrieve: RANGE
       timeseriesExternalId: '649792'
@@ -6594,10 +6583,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: creek_intake.Lont_intake.overflow_cost
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -6607,7 +6593,6 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: creek_intake.Narvhus.inflow
       retrieve: RANGE
       timeseriesExternalId: '624330'
@@ -6632,10 +6617,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: creek_intake.Narvhus.overflow_cost
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -6645,10 +6627,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: creek_intake.Sandvika.inflow
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -6670,7 +6649,6 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: creek_intake.Vigrestad.inflow
       retrieve: RANGE
       timeseriesExternalId: '649835'
@@ -6697,8 +6675,6 @@ nodes:
   - properties:
       aggregation: min
       path: gate.b_Dalbysvatn_Knute_Rullsvatn.max_flow
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -6710,8 +6686,6 @@ nodes:
   - properties:
       aggregation: min
       path: gate.b_Danielsen_Lundvann.max_flow
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -6735,8 +6709,6 @@ nodes:
   - properties:
       aggregation: min
       path: gate.b_Hagen_Strand.max_flow
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -6748,8 +6720,6 @@ nodes:
   - properties:
       aggregation: min
       path: gate.b_Lensvik_Dalbysvatn.max_flow
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -6761,8 +6731,6 @@ nodes:
   - properties:
       aggregation: min
       path: gate.b_Livincovs_Dalbysvatn.max_flow
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -6774,8 +6742,6 @@ nodes:
   - properties:
       aggregation: min
       path: gate.b_Nielsen_Blakstadana.max_flow
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -6799,8 +6765,6 @@ nodes:
   - properties:
       aggregation: min
       path: gate.b_Sirefelt_Knute_Rullsvatn.max_flow
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -6812,8 +6776,6 @@ nodes:
   - properties:
       aggregation: min
       path: gate.f_Blakstadana_Knute_Rullsvatn.max_flow
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -6825,8 +6787,6 @@ nodes:
   - properties:
       aggregation: min
       path: gate.f_Dalbysvatn_Knute_Rullsvatn.max_flow
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -6838,8 +6798,6 @@ nodes:
   - properties:
       aggregation: min
       path: gate.f_Finnvasstol_Dalbysvatn.max_flow
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -6851,8 +6809,6 @@ nodes:
   - properties:
       aggregation: min
       path: gate.f_Fjerdingby_Dalbysvatn.max_flow
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -6864,8 +6820,6 @@ nodes:
   - properties:
       aggregation: min
       path: gate.f_Frosta.max_flow
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -6877,8 +6831,6 @@ nodes:
   - properties:
       aggregation: min
       path: gate.f_Golebiowski_Dalbysvatn.max_flow
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -6890,8 +6842,6 @@ nodes:
   - properties:
       aggregation: min
       path: gate.f_Hagen_Strand.max_flow
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -6915,8 +6865,6 @@ nodes:
   - properties:
       aggregation: min
       path: gate.f_Hovden_Hagen.max_flow
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -6928,8 +6876,6 @@ nodes:
   - properties:
       aggregation: min
       path: gate.f_Lensvik.max_flow
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -6941,8 +6887,6 @@ nodes:
   - properties:
       aggregation: min
       path: gate.f_Livincovs.max_flow
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -6954,8 +6898,6 @@ nodes:
   - properties:
       aggregation: min
       path: gate.f_Lont_Dalbysvatn.max_flow
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -6967,8 +6909,6 @@ nodes:
   - properties:
       aggregation: min
       path: gate.f_Lundvann_Lensvik.max_flow
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -6980,8 +6920,6 @@ nodes:
   - properties:
       aggregation: min
       path: gate.f_Narvhus_Rullsvatn.max_flow
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -6993,8 +6931,6 @@ nodes:
   - properties:
       aggregation: min
       path: gate.f_Nielsen.max_flow
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7006,8 +6942,6 @@ nodes:
   - properties:
       aggregation: min
       path: gate.f_Nupstj.max_flow
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7019,8 +6953,6 @@ nodes:
   - properties:
       aggregation: min
       path: gate.f_Ranemsletta_1183_Livincovs.max_flow
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7032,8 +6964,6 @@ nodes:
   - properties:
       aggregation: min
       path: gate.f_Rullsvatn_Rullslaagen.max_flow
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7045,8 +6975,6 @@ nodes:
   - properties:
       aggregation: min
       path: gate.f_Sirefelt_Knute_Rullsvatn.max_flow
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7058,8 +6986,6 @@ nodes:
   - properties:
       aggregation: min
       path: gate.f_Tangvall.max_flow
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7071,8 +6997,6 @@ nodes:
   - properties:
       aggregation: min
       path: gate.f_Varhaug.max_flow
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7084,8 +7008,6 @@ nodes:
   - properties:
       aggregation: min
       path: gate.w_Finnvasstol_Strand_tunnel.max_flow
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7109,8 +7031,6 @@ nodes:
   - properties:
       aggregation: min
       path: gate.w_Frosta.max_flow
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7122,8 +7042,6 @@ nodes:
   - properties:
       aggregation: min
       path: gate.w_Hovden_Livincovs.max_flow
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7135,8 +7053,6 @@ nodes:
   - properties:
       aggregation: min
       path: gate.w_Rullsvatn_Rullslaagen.max_flow
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7148,8 +7064,6 @@ nodes:
   - properties:
       aggregation: min
       path: gate.w_Tangvall.max_flow
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7161,8 +7075,6 @@ nodes:
   - properties:
       aggregation: min
       path: gate.w_Varhaug.max_flow
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7184,10 +7096,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Dalby_G1.droop_cost
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7209,10 +7118,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Dalby_G1.droop_max
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7234,10 +7140,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Dalby_G1.droop_min
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7296,10 +7199,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Dalby_G1.p_fcr_max
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7321,10 +7221,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Dalby_G1.p_fcr_min
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7346,10 +7243,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Dalby_G1.p_rr_min
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7359,10 +7253,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Dalby_G1.startcost
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7384,10 +7275,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Dalby_G2.droop_cost
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7397,10 +7285,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Dalby_G2.droop_max
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7410,10 +7295,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Dalby_G2.droop_min
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7436,10 +7318,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Dalby_G2.p_fcr_max
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7449,10 +7328,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Dalby_G2.p_fcr_min
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7462,10 +7338,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Dalby_G2.p_rr_min
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7475,10 +7348,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Dalby_G2.startcost
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7500,10 +7370,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Holen_G1.droop_max
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7513,10 +7380,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Holen_G1.droop_min
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7541,8 +7405,6 @@ nodes:
   - properties:
       aggregation: min
       path: generator.Holen_G1.max_p_constr
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7554,8 +7416,6 @@ nodes:
   - properties:
       aggregation: max
       path: generator.Holen_G1.min_p_constr
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7577,10 +7437,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Holen_G1.p_fcr_max
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7602,10 +7459,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Holen_G1.p_fcr_min
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7627,10 +7481,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Holen_G1.p_rr_min
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7640,10 +7491,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Holen_G1.startcost
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7665,10 +7513,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Landet_G1.droop_max
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7678,10 +7523,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Landet_G1.droop_min
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7706,8 +7548,6 @@ nodes:
   - properties:
       aggregation: min
       path: generator.Landet_G1.max_p_constr
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7729,10 +7569,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Landet_G1.p_fcr_max
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7754,10 +7591,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Landet_G1.p_fcr_min
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7779,10 +7613,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Landet_G1.p_rr_min
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7792,10 +7623,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Landet_G1.startcost
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7805,10 +7633,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Lien_krv_G1.droop_max
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7830,10 +7655,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Lien_krv_G1.droop_min
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7870,8 +7692,6 @@ nodes:
   - properties:
       aggregation: min
       path: generator.Lien_krv_G1.max_p_constr
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7895,8 +7715,6 @@ nodes:
   - properties:
       aggregation: max
       path: generator.Lien_krv_G1.min_p_constr
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7918,10 +7736,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Lien_krv_G1.p_fcr_max
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7931,10 +7746,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Lien_krv_G1.p_fcr_min
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7944,10 +7756,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Lien_krv_G1.p_rr_min
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7957,10 +7766,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Lien_krv_G1.startcost
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7982,10 +7788,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Lund_G1.droop_max
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -7995,10 +7798,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Lund_G1.droop_min
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8021,10 +7821,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Lund_G1.p_fcr_max
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8046,10 +7843,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Lund_G1.p_fcr_min
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8071,10 +7865,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Lund_G1.p_rr_min
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8084,10 +7875,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Lund_G1.startcost
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8097,10 +7885,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Rull1_G1.droop_cost
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8110,10 +7895,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Rull1_G1.droop_max
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8123,10 +7905,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Rull1_G1.droop_min
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8151,8 +7930,6 @@ nodes:
   - properties:
       aggregation: min
       path: generator.Rull1_G1.max_p_constr
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8174,10 +7951,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Rull1_G1.p_fcr_max
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8199,10 +7973,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Rull1_G1.p_fcr_min
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8212,10 +7983,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Rull1_G1.p_rr_min
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8225,10 +7993,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Rull1_G1.startcost
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8238,10 +8003,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Rull1_G2.droop_cost
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8251,10 +8013,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Rull1_G2.droop_max
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8264,10 +8023,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Rull1_G2.droop_min
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8292,8 +8048,6 @@ nodes:
   - properties:
       aggregation: min
       path: generator.Rull1_G2.max_p_constr
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8305,8 +8059,6 @@ nodes:
   - properties:
       aggregation: max
       path: generator.Rull1_G2.min_p_constr
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8328,10 +8080,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Rull1_G2.p_fcr_max
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8341,10 +8090,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Rull1_G2.p_fcr_min
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8354,10 +8100,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Rull1_G2.p_rr_min
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8367,10 +8110,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Rull1_G2.startcost
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8380,10 +8120,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Rull2_G1.droop_cost
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8393,10 +8130,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Rull2_G1.droop_max
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8406,10 +8140,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Rull2_G1.droop_min
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8432,10 +8163,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Rull2_G1.p_fcr_max
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8457,10 +8185,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Rull2_G1.p_fcr_min
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8482,10 +8207,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Rull2_G1.p_rr_min
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8495,10 +8217,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Rull2_G1.startcost
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8508,10 +8227,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Rull2_G2.droop_cost
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8521,10 +8237,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Rull2_G2.droop_max
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8534,10 +8247,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Rull2_G2.droop_min
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8562,8 +8272,6 @@ nodes:
   - properties:
       aggregation: min
       path: generator.Rull2_G2.max_p_constr
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8573,10 +8281,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Rull2_G2.p_fcr_max
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8598,10 +8303,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Rull2_G2.p_fcr_min
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8611,10 +8313,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Rull2_G2.p_rr_min
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8624,10 +8323,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Rull2_G2.startcost
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8637,10 +8333,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Scott_G1.droop_max
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8650,10 +8343,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Scott_G1.droop_min
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8676,10 +8366,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Scott_G1.p_fcr_max
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8701,10 +8388,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Scott_G1.p_fcr_min
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8726,10 +8410,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Scott_G1.p_rr_min
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8739,10 +8420,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Scott_G1.startcost
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8752,10 +8430,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Strand_krv_G1.droop_max
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8765,10 +8440,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Strand_krv_G1.droop_min
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8791,10 +8463,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Strand_krv_G1.p_fcr_max
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8816,10 +8485,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Strand_krv_G1.p_fcr_min
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8841,10 +8507,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Strand_krv_G1.p_rr_min
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8854,10 +8517,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: generator.Strand_krv_G1.startcost
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8867,10 +8527,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: junction.Sandvika.min_pressure
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8917,10 +8574,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: market.Dayahead.load
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8930,10 +8584,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: market.Dayahead.max_buy
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8955,10 +8606,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: market.Dayahead.max_sale
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8983,8 +8631,6 @@ nodes:
   - properties:
       aggregation: min
       path: plant.Dalby.max_q_constr
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -8996,8 +8642,6 @@ nodes:
   - properties:
       aggregation: first
       path: plant.Dalby.mip_flag
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -9007,10 +8651,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: plant.Dalby.prod_area
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -9035,8 +8676,6 @@ nodes:
   - properties:
       aggregation: min
       path: plant.Holen.max_p_constr
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -9060,8 +8699,6 @@ nodes:
   - properties:
       aggregation: min
       path: plant.Holen.max_q_constr
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -9073,8 +8710,6 @@ nodes:
   - properties:
       aggregation: first
       path: plant.Holen.mip_flag
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -9084,10 +8719,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: plant.Holen.prod_area
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -9112,8 +8744,6 @@ nodes:
   - properties:
       aggregation: min
       path: plant.Landet.max_p_constr
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -9125,8 +8755,6 @@ nodes:
   - properties:
       aggregation: min
       path: plant.Landet.max_q_constr
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -9138,8 +8766,6 @@ nodes:
   - properties:
       aggregation: first
       path: plant.Landet.mip_flag
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -9149,10 +8775,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: plant.Landet.prod_area
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -9177,8 +8800,6 @@ nodes:
   - properties:
       aggregation: min
       path: plant.Lien_krv.max_q_constr
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -9202,8 +8823,6 @@ nodes:
   - properties:
       aggregation: first
       path: plant.Lien_krv.mip_flag
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -9213,10 +8832,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: plant.Lien_krv.prod_area
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -9241,8 +8857,6 @@ nodes:
   - properties:
       aggregation: min
       path: plant.Lund.max_q_constr
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -9254,8 +8868,6 @@ nodes:
   - properties:
       aggregation: first
       path: plant.Lund.mip_flag
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -9265,10 +8877,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: plant.Lund.prod_area
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -9293,8 +8902,6 @@ nodes:
   - properties:
       aggregation: min
       path: plant.Rull1.max_p_constr
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -9318,8 +8925,6 @@ nodes:
   - properties:
       aggregation: min
       path: plant.Rull1.max_q_constr
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -9331,8 +8936,6 @@ nodes:
   - properties:
       aggregation: first
       path: plant.Rull1.mip_flag
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -9342,10 +8945,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: plant.Rull1.prod_area
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -9370,8 +8970,6 @@ nodes:
   - properties:
       aggregation: min
       path: plant.Rull2.max_q_constr
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -9383,8 +8981,6 @@ nodes:
   - properties:
       aggregation: first
       path: plant.Rull2.mip_flag
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -9394,10 +8990,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: plant.Rull2.prod_area
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -9422,8 +9015,6 @@ nodes:
   - properties:
       aggregation: min
       path: plant.Scott.max_q_constr
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -9435,8 +9026,6 @@ nodes:
   - properties:
       aggregation: first
       path: plant.Scott.mip_flag
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -9446,10 +9035,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: plant.Scott.prod_area
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -9474,8 +9060,6 @@ nodes:
   - properties:
       aggregation: min
       path: plant.Strand_krv.max_q_constr
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -9487,8 +9071,6 @@ nodes:
   - properties:
       aggregation: first
       path: plant.Strand_krv.mip_flag
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -9498,10 +9080,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: plant.Strand_krv.prod_area
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -9524,10 +9103,7 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: production_group.T2Landet.max_p_limit
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -9551,8 +9127,6 @@ nodes:
   - properties:
       aggregation: max
       path: reserve_group.rkom_up.rr_up_obligation
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -9575,7 +9149,6 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: reservoir.Dalbysvatn.max_head_constr
       retrieve: RANGE
       timeseriesExternalId: '603779'
@@ -9588,7 +9161,6 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: reservoir.Dalbysvatn.min_head_constr
       retrieve: RANGE
       timeseriesExternalId: '582116'
@@ -9601,7 +9173,6 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: reservoir.Dalbysvatn.start_head
       retrieve: START
       timeseriesExternalId: '501440'
@@ -9616,8 +9187,6 @@ nodes:
   - properties:
       aggregation: mean
       path: reservoir.Dalbysvatn.tactical_limit_max
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -9652,7 +9221,6 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: reservoir.Danielsen.start_head
       retrieve: START
       timeseriesExternalId: '501439'
@@ -9667,8 +9235,6 @@ nodes:
   - properties:
       aggregation: mean
       path: reservoir.Danielsen.tactical_limit_max
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -9703,7 +9269,6 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: reservoir.Frosta.start_head
       retrieve: START
       timeseriesExternalId: '501437'
@@ -9729,7 +9294,6 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: reservoir.Hagen.start_head
       retrieve: START
       timeseriesExternalId: '501436'
@@ -9755,7 +9319,6 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: reservoir.Hovden.start_vol
       retrieve: START
       timeseriesExternalId: '601729'
@@ -9781,7 +9344,6 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: reservoir.Lensvik.start_head
       retrieve: START
       timeseriesExternalId: '501428'
@@ -9819,7 +9381,6 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: reservoir.Livincovs.start_head
       retrieve: START
       timeseriesExternalId: '501438'
@@ -9845,7 +9406,6 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: reservoir.Lundvann.start_vol
       retrieve: START
       timeseriesExternalId: '601728'
@@ -9871,7 +9431,6 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: reservoir.Nielsen.start_head
       retrieve: START
       timeseriesExternalId: '501431'
@@ -9897,7 +9456,6 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: reservoir.Ranemsletta_1183.start_head
       retrieve: START
       timeseriesExternalId: '770346'
@@ -9923,7 +9481,6 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: reservoir.Sirefelt.start_head
       retrieve: START
       timeseriesExternalId: '501433'
@@ -9938,8 +9495,6 @@ nodes:
   - properties:
       aggregation: mean
       path: reservoir.Sirefelt.tactical_limit_max
-      retrieve: null
-      timeseriesExternalId: null
     source:
       externalId: Mapping
       space: cogShop
@@ -9974,7 +9529,6 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: reservoir.Strand.start_head
       retrieve: START
       timeseriesExternalId: '501430'
@@ -9987,7 +9541,6 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: reservoir.Strand_tunnel.start_head
       retrieve: START
       timeseriesExternalId: '501428'
@@ -10013,7 +9566,6 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: reservoir.Tangvall.start_head
       retrieve: START
       timeseriesExternalId: '501441'
@@ -10039,7 +9591,6 @@ nodes:
   instanceType: node
   sources:
   - properties:
-      aggregation: null
       path: reservoir.Varhaug.start_head
       retrieve: START
       timeseriesExternalId: '740791'

@@ -2,7 +2,7 @@ from typing import Any, Protocol, Literal
 
 from cognite.client import CogniteClient
 
-from cognite.powerops.clients.powerops_client import get_powerops_client
+from cognite.powerops.client.powerops_client import get_powerops_client
 from cognite.client.data_classes import filters
 
 

@@ -11,14 +11,15 @@ from typing_extensions import Self
 
 from cognite.client.data_classes import TimeSeries
 from pydantic import BaseModel
-from cognite.powerops.clients.powerops_client import PowerOpsClient
-from cognite.powerops.resync._changes import Change, FieldDifference, ModelDifference
+from cognite.powerops.client.powerops_client import PowerOpsClient
+from cognite.powerops.resync.models.diff import Change, FieldDifference, ModelDifference
 from cognite.powerops.resync.models.base.resource_type import _T_Type, ResourceType
-from cognite.powerops.resync.models.cdf_resources import CDFSequence, CDFFile, CDFResource
-from cognite.powerops.resync.models.helpers import isinstance_list
-from cognite.powerops.resync.utils.serializer import remove_read_only_fields
-from cognite.powerops.clients.data_classes._core import DomainModelApply
-from cognite.powerops.cogshop1.data_classes._core import DomainModelApply as DomainModelApplyCogShop1
+from .cdf_resources import CDFSequence, CDFFile, CDFResource
+from .helpers import isinstance_list
+from cognite.powerops.utils.serialization import remove_read_only_fields
+
+from cognite.powerops.client._generated.data_classes._core import DomainModelApply
+from cognite.powerops.client._generated.cogshop1.data_classes._core import DomainModelApply as DomainModelApplyCogShop1
 
 
 class Model(BaseModel, ABC):

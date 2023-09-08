@@ -1,12 +1,12 @@
 from __future__ import annotations
 
 from typing import Optional
-
+from typing_extensions import TypeAlias
 from pydantic import BaseModel, field_validator
 
-from cognite.powerops.resync.config.shared import ExternalId
+from cognite.powerops.resync.config._shared import ExternalId
 
-GeneratorName = str
+GeneratorName: TypeAlias = str
 
 
 class Generator(BaseModel):
@@ -24,7 +24,7 @@ class Generator(BaseModel):
 
 
 class GeneratorTimeSeriesMapping(BaseModel):
-    generator_name: str
+    generator_name: GeneratorName
     start_stop_cost: Optional[ExternalId] = None
     is_available: Optional[ExternalId] = None
 

@@ -1,6 +1,6 @@
 from cognite.powerops.cli import apply
 from tests.constants import ReSync, REPO_ROOT
-from tests.utils import chdir
+from cognite.powerops.utils.serialization import chdir
 
 
 def main():
@@ -11,7 +11,7 @@ def main():
             ["ProductionModel", "MarketModel", "CogShop1Asset"],
             auto_yes=True,
             format="markdown",
-            verbose=False,
+            verbose=True,
         )
 
 

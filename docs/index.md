@@ -16,50 +16,61 @@ The PowerOps SDK is a domain-specific SDK for interacting with Cognite Data Fusi
 ## Main Features
 
 * `cognite.powerops.client.PowerOpsClient` used to interact with CDF in a domain-specific language.
-* The CLI tool `powerops` used to populate CDF from configuration files.
+* Resource Sync, `resync`, used to sync configuration files with CDF through the CLI tool `powerops`.
 
 ## Installation
 
 ```bash
-pip install  cognite-power-ops
+pip install cognite-power-ops
 ```
 
 ## Configuration
 
+Configuration of the `PowerOpsClient` and `resync` is done through settings files.
+
+
 ### Settings Files
+The settings file are in `.toml` format. By default, the SDK will look for two settings files:
+  1. `settings.toml` in the current directory.
+  2. `.secrets.toml` in the current directory.
 
-Settings files are optional, but some features of the SDK rely on them being present.
+The motivation for splitting them is to avoid checking in secrets into Git.
 
-By default, `settings.toml` is configured for `power-ops-staging` project on CDF. To change this:
-  1. Copy `settings.toml` to `.secrets.toml` (create it).
-  2. Edit `.secrets.toml` as needed.
+Example of settings files:
 
-Values from the two files are merged together, with those from `.secrets.toml` taking precedence.
+`settings.toml`:
+```toml
+[cognite]
+  login_flow = "interactive"
+  project = "<cdf-project>"
+  tenant_id = "<tenant-id>"
+  cdf_cluster = "<cdf-cluster>"
+  client_id = "<client-id>"
 
-`.secrets.toml` is ignored by Git, but `settings.toml` is not.
-
-
-### Environment Variables
-
-Settings values can be set via environment variables, e.g:
-
+[powerops]
+  read_dataset = "uc:000:powerops"
+  write_dataset = "uc:000:powerops"
+  monitor_dataset = "uc:po:monitoring"
+  cogshop_version = ""
 ```
-SETTINGS__COGNITE__CLIENT_SECRET=abcdefghijklm...
+
+`.secrets.toml`
+```toml
+[cognite]
+  client_secret = "<client-secret>"
 ```
 
-Names of the variables follow the structure from [settings.toml](settings.toml).
+**Note:** You can configure which settings files to use by setting the environment variable `SETTINGS__FILES` to a semicolon-separated list of file names.
 
-Environment vars take precedence over settings files.
+```python
+import os
 
-
-### Current Directory
-
-SDK will look for the settings files in the current directory, so make sure to run code from the repository root.
-
+os.environ["SETTINGS_FILES"] = ".my_settings.toml;.secrets.my_secrets.toml"
+```
 
 ## Usage
 
-### Run Bootstrap
+### Run Resync
 
 See available commands:
 
@@ -70,10 +81,17 @@ $ powerops --help
 Example of showing planed changes:
 
 ```bash
-$ powerops plan tests/test_bootstrap/data/demo Dayahead
+$ powerops plan tests/data/demo Dayahead
 ```
 
+### PowerOpsClient
 
-### Other
+```python
+from cognite.powerops.client import get_powerops_client
 
-See [examples](examples).
+client = get_powerops_client()
+
+client.shop.runs.trigger()
+```
+
+For more examples, see the examples section of the documentation.

@@ -7,7 +7,7 @@ from cognite.client.data_classes import Asset, Label, Relationship
 from pydantic import BaseModel, field_validator
 
 from cognite.powerops.cdf_labels import RelationshipLabel as rl
-from cognite.powerops.resync.config.shared import ExternalId
+from cognite.powerops.resync.config._shared import ExternalId
 
 p_min_fallback = 0
 p_max_fallback = 1e20

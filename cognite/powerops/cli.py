@@ -10,8 +10,8 @@ from rich.logging import RichHandler
 
 from cognite import powerops
 from cognite.powerops import resync
-from cognite.powerops._models import MODEL_BY_NAME
-from cognite.powerops.clients.powerops_client import get_powerops_client
+from cognite.powerops.resync import MODEL_BY_NAME
+from cognite.powerops.client.powerops_client import get_powerops_client
 from cognite.powerops.utils.cdf import Settings
 
 from cognite.powerops.utils.cdf.extraction_pipelines import ExtractionPipelineCreate, RunStatus
@@ -162,7 +162,3 @@ def show(
 
 def main():
     app()
-
-
-if __name__ == "__main__":
-    deploy(["dayahead"])

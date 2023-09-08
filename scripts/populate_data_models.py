@@ -12,12 +12,7 @@ def main():
         "RKOMMarketDataModel",
     ]
     for model in models:
-        apply(
-            demo_data,
-            "dayahead",
-            [model],
-            auto_yes=True,
-        )
+        apply(demo_data, "dayahead", [model], auto_yes=True)
 
 
 if __name__ == "__main__":

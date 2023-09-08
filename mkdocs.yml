@@ -12,8 +12,22 @@ nav:
     - Notebooks:
       - Shop results: notebooks/shop_results.ipynb
     - Reference:
-      - SHOP API: reference/client/shop_api.md
-      - SHOP API Classes: reference/client/shop_api_classes.md
+      - client:
+          - SHOP API: packages/client/shop_api.md
+          - SHOP API Classes: packages/client/shop_api_classes.md
+      - resync:
+          - resync: packages/resync/main.md
+          - config: packages/resync/config.md
+          - models:
+            - Version 1: packages/resync/models/v1.md
+            - Version 2: packages/resync/models/v2.md
+          - time series mapping: packages/resync/time_series_mapping.md
+      - utils:
+          - serialization: packages/utils/serialization.md
+          - CDF:
+            - extraction pipeline: packages/utils/cdf_extraction_pipeline.md
+            - calls: packages/utils/cdf_calls.md
+          - retry: packages/utils/retry.md
 
 markdown_extensions:
   - pymdownx.superfences
@@ -31,6 +45,11 @@ markdown_extensions:
   - admonition
   - pymdownx.details
   - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format ''
 
 plugins:
   - mkdocs-jupyter:

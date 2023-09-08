@@ -1,12 +1,11 @@
 import pandas as pd
 import pytest
 
-from cognite.powerops.clients.powerops_client import PowerOpsClient
+from cognite.powerops.client.powerops_client import PowerOpsClient
 from cognite.powerops.resync import models
-from cognite.powerops.resync.config.resync_config import ReSyncConfig
-from cognite.powerops.resync.models.cdf_resources import CDFSequence
-from cognite.powerops.resync.to_models.to_market_model import to_market_asset_model
-from cognite.powerops.resync.to_models.to_production_model import to_production_model
+from cognite.powerops.resync.config._main import ReSyncConfig
+from cognite.powerops.resync.models.base import CDFSequence
+from cognite.powerops.resync.models.v1.config_to_model import to_production_model, to_market_asset_model
 from tests.constants import ReSync
 
 
@@ -39,4 +38,5 @@ def test_sha256_difference(market_model: models.MarketModel, powerops_client: Po
     # Arrange
     pd.testing.assert_frame_equal(cdf_content, sequence.content)
     key = CDFSequence.content_key_hash
-    assert cdf_sequence.metadata[key] == sequence.content.metadata[key]
+    local_hash = sequence.calculate_hash(sequence.content)
+    assert cdf_sequence.metadata[key] == local_hash

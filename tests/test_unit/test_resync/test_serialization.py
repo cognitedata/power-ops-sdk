@@ -2,12 +2,14 @@ from itertools import chain
 
 import pytest
 from cognite.powerops.resync import models
-from cognite.powerops.resync.config.resync_config import ReSyncConfig
-from cognite.powerops.resync.models.cdf_resources import CDFSequence
+from cognite.powerops.resync.config._main import ReSyncConfig
+from cognite.powerops.resync.models.base import CDFSequence
 from tests.constants import ReSync
-from cognite.powerops.resync.to_models.to_production_model import to_production_model
-from cognite.powerops.resync.to_models.to_market_model import to_market_asset_model
-from cognite.powerops.resync.to_models.to_cogshop_model import to_cogshop_asset_model
+from cognite.powerops.resync.models.v1.config_to_model import (
+    to_production_model,
+    to_market_asset_model,
+    to_cogshop_asset_model,
+)
 
 
 @pytest.fixture(scope="session")
