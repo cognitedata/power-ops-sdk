@@ -140,7 +140,9 @@ class ModelDifference:
         self.changes[key] = value
 
     def has_changes(self, exclude: set | frozenset = frozenset({"timeseries"})) -> bool:
-        return any(change.total != change.unchanged for change in self.changes.values() if change.name not in exclude)
+        return any(
+            change.total != len(change.unchanged) for change in self.changes.values() if change.name not in exclude
+        )
 
 
 @dataclass
@@ -216,7 +218,11 @@ class ModelDifferences:
             change_count = sum(len(change.changed) for change in changes)
             report.append(f"* **{name}**: {added} added, {removed} removed, {change_count} changed")
         list_ = "\n".join(report)
-        return f"""{'**' if no_headers else '##'} Summary {'**' if no_headers else ''}
+        if no_headers:
+            top_row = "**Summary**"
+        else:
+            top_row = "## Summary"
+        return f"""{top_row}
 {list_ if list_ else 'No changes'}
 """
 
