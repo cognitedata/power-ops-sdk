@@ -32,8 +32,6 @@ nav:
           - serialization: packages/utils/serialization.md
           - CDF:
             - extraction pipeline: packages/utils/cdf_extraction_pipeline.md
-            - calls: packages/utils/cdf_calls.md
-          - retry: packages/utils/retry.md
 
 markdown_extensions:
   - pymdownx.superfences
