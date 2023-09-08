@@ -11,7 +11,7 @@ from typing_extensions import TypeAlias
 
 from cognite.powerops.client._generated.cogshop1 import data_classes as cogshop_v1
 from cognite.powerops.resync import config
-from cognite.powerops.resync.models.base import Model, CDFFile
+from cognite.powerops.resync.models.base import CDFFile, Model
 from cognite.powerops.utils.serialization import load_yaml
 
 ExternalID: TypeAlias = str
@@ -76,7 +76,7 @@ def _create_shop_file(file_content: bytes, external_id: str, metadata: dict[str,
 
 
 def _is_time_series(shop_attribute_value) -> bool:
-    return isinstance(shop_attribute_value, dict) and isinstance(list(shop_attribute_value)[0], datetime)
+    return isinstance(shop_attribute_value, dict) and isinstance(next(iter(shop_attribute_value)), datetime)
 
 
 def _to_model_without_timeseries(

@@ -2,26 +2,27 @@ from __future__ import annotations
 
 from collections import Counter, defaultdict
 from pathlib import Path
-from typing import Any, Dict, Literal, Optional, overload
+from typing import Any, Literal, Optional, overload
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 from pydantic_core.core_schema import FieldValidationInfo
 
+from cognite.powerops.utils.serialization import load_yaml
+
 from ._settings import Settings
+from ._shared import TimeSeriesMapping
 from .cogshop.shop_file_config import ShopFileConfig
 from .market import (
     BenchmarkingConfig,
-    PriceScenario,
     BidMatrixGeneratorConfig,
     BidProcessConfig,
     Market,
-    RkomMarketConfig,
+    PriceScenario,
     RKOMBidCombinationConfig,
     RKOMBidProcessConfig,
+    RkomMarketConfig,
 )
 from .production import GeneratorTimeSeriesMapping, PlantTimeSeriesMapping, WatercourseConfig
-from ._shared import TimeSeriesMapping
-from cognite.powerops.utils.serialization import load_yaml
 
 
 class Config(BaseModel):
@@ -93,7 +94,7 @@ class MarketConfig(Config):
     @field_validator("bidprocess", mode="after")
     def one_default_per_price_area(cls, value: list[BidProcessConfig]):
         default_configs = Counter(
-            (bid_config.price_area_name for bid_config in value if bid_config.is_default_config_for_price_area)
+            bid_config.price_area_name for bid_config in value if bid_config.is_default_config_for_price_area
         )
 
         if price_areas_with_multiple_default_configs := [
@@ -106,7 +107,7 @@ class MarketConfig(Config):
 
 
 class ProductionConfig(Config):
-    dayahead_price_timeseries: Dict[str, str]
+    dayahead_price_timeseries: dict[str, str]
     watercourses: list[WatercourseConfig]
     generator_time_series_mappings: Optional[list[GeneratorTimeSeriesMapping]] = None
     plant_time_series_mappings: Optional[list[PlantTimeSeriesMapping]] = None
@@ -158,7 +159,7 @@ class ReSyncConfig(BaseModel):
     cogshop: CogShopConfig
 
     @classmethod
-    def from_yamls(cls, config_dir_path: Path, cdf_project: str) -> "ReSyncConfig":
+    def from_yamls(cls, config_dir_path: Path, cdf_project: str) -> ReSyncConfig:
         configs: dict[str, Any] = {}
         for field in cls.model_fields:
             if (config_file_path := config_dir_path / f"{field}.yaml").exists():

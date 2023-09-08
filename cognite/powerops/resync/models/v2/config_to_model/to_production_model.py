@@ -2,28 +2,26 @@ from __future__ import annotations
 
 import re
 
-
+from cognite.powerops.client.data_classes import (
+    GeneratorApply,
+    PlantApply,
+    PriceAreaApply,
+    ReservoirApply,
+    WatercourseApply,
+    WatercourseShopApply,
+)
+from cognite.powerops.resync import config
+from cognite.powerops.resync.models._shared_v1_v2._to_instances import make_ext_id
 from cognite.powerops.resync.models._shared_v1_v2.production_model import (
-    p_min_fallback,
-    p_max_fallback,
-    head_loss_factor_fallback,
     _create_generator_efficiency_curve,
     _create_turbine_efficiency_curve,
     _get_single_value,
     _plant_to_inlet_reservoir_breadth_first_search,
+    head_loss_factor_fallback,
+    p_max_fallback,
+    p_min_fallback,
 )
-from cognite.powerops.resync import config
 from cognite.powerops.resync.models.v2.production_dm import ProductionModelDM
-from cognite.powerops.client.data_classes import (
-    WatercourseApply,
-    ReservoirApply,
-    GeneratorApply,
-    PlantApply,
-    PriceAreaApply,
-    WatercourseShopApply,
-)
-from cognite.powerops.resync.models._shared_v1_v2._to_instances import make_ext_id
-
 from cognite.powerops.utils.serialization import load_yaml
 
 
@@ -52,9 +50,6 @@ def to_production_data_model(configuration: config.ProductionConfig) -> Producti
             production_obligation=watercourse_config.production_obligation_ts_ext_ids,
         )
         model.watercourses.append(watercourse)
-        # config_version = watercourse_config.version,
-        # model_file = watercourse_config.yaml_raw_path,
-        # processed_model_file = watercourse_config.yaml_processed_path,
 
         shop_case = load_yaml(watercourse_config.yaml_raw_path, clean_data=True)
 
@@ -160,7 +155,7 @@ def to_production_data_model(configuration: config.ProductionConfig) -> Producti
             ]
             plants.append(plant)
 
-            prod_area = str(list(attributes["prod_area"].values())[0])
+            prod_area = str(next(iter(attributes["prod_area"].values())))
             price_area_name = watercourse_config.market_to_price_area[prod_area]
             price_area = PriceAreaApply(name=price_area_name, external_id=f"price_area:{price_area_name}")
             if price_area_name not in {a.name for a in model.price_areas}:

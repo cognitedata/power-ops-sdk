@@ -2,9 +2,10 @@ from __future__ import annotations
 
 import contextlib
 import logging
+from collections.abc import Sequence
 from datetime import datetime
 from pprint import pformat
-from typing import Callable, Optional, Sequence
+from typing import Callable, Optional
 
 import matplotlib.pyplot as plt
 from deepdiff import DeepDiff

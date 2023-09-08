@@ -1,13 +1,13 @@
 from __future__ import annotations
 
 from abc import ABC
-from typing import TypeVar, Type as TypingType, Union
+from typing import TypeVar, Union
+
+from cognite.client.data_classes import Asset, FileMetadata, Sequence, TimeSeries
+from pydantic import BaseModel
 from typing_extensions import TypeAlias
 
-from cognite.client.data_classes import TimeSeries, Asset, Sequence, FileMetadata
-from pydantic import BaseModel
-
-from .cdf_resources import CDFSequence, CDFFile
+from .cdf_resources import CDFFile, CDFSequence
 from .helpers import isinstance_list
 
 _T_Type = TypeVar("_T_Type")
@@ -23,7 +23,7 @@ class ResourceType(BaseModel, ABC):
     def time_series(self) -> list[TimeSeries]:
         return self._fields_of_type(TimeSeries)
 
-    def _fields_of_type(self, type_: TypingType[_T_Type]) -> list[_T_Type]:
+    def _fields_of_type(self, type_: type[_T_Type]) -> list[_T_Type]:
         output: list[_T_Type] = []
         for field_name in self.model_fields:
             value = getattr(self, field_name)

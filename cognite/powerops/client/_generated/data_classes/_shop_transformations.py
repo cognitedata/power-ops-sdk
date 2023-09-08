@@ -22,8 +22,8 @@ class ShopTransformation(DomainModel):
 
 class ShopTransformationApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
-    end: list[Union["DateTransformationApply", str]] = Field(default_factory=list, repr=False)
-    start: list[Union["DateTransformationApply", str]] = Field(default_factory=list, repr=False)
+    end: list[Union[DateTransformationApply, str]] = Field(default_factory=list, repr=False)
+    start: list[Union[DateTransformationApply, str]] = Field(default_factory=list, repr=False)
     type_name: Optional[str] = None
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
@@ -78,7 +78,7 @@ class ShopTransformationApply(DomainModelApply):
 
         return dm.InstancesApply(dm.NodeApplyList(nodes), dm.EdgeApplyList(edges))
 
-    def _create_end_edge(self, end: Union[str, "DateTransformationApply"]) -> dm.EdgeApply:
+    def _create_end_edge(self, end: Union[str, DateTransformationApply]) -> dm.EdgeApply:
         if isinstance(end, str):
             end_node_ext_id = end
         elif isinstance(end, DomainModelApply):
@@ -94,7 +94,7 @@ class ShopTransformationApply(DomainModelApply):
             end_node=dm.DirectRelationReference("power-ops", end_node_ext_id),
         )
 
-    def _create_start_edge(self, start: Union[str, "DateTransformationApply"]) -> dm.EdgeApply:
+    def _create_start_edge(self, start: Union[str, DateTransformationApply]) -> dm.EdgeApply:
         if isinstance(start, str):
             end_node_ext_id = start
         elif isinstance(start, DomainModelApply):

@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 from collections import defaultdict
-from typing import Dict, List, Sequence, Tuple, overload
+from collections.abc import Sequence
+from typing import overload
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
@@ -153,7 +154,7 @@ class DayAheadProcessAPI(TypeAPI[DayAheadProces, DayAheadProcesApply, DayAheadPr
     def _set_bid_matrix_generator_config(
         day_ahead_process: Sequence[DayAheadProces], bid_matrix_generator_config_edges: Sequence[dm.Edge]
     ):
-        edges_by_start_node: Dict[Tuple, List] = defaultdict(list)
+        edges_by_start_node: dict[tuple, list] = defaultdict(list)
         for edge in bid_matrix_generator_config_edges:
             edges_by_start_node[edge.start_node.as_tuple()].append(edge)
 
@@ -168,7 +169,7 @@ class DayAheadProcessAPI(TypeAPI[DayAheadProces, DayAheadProcesApply, DayAheadPr
     def _set_incremental_mappings(
         day_ahead_process: Sequence[DayAheadProces], incremental_mapping_edges: Sequence[dm.Edge]
     ):
-        edges_by_start_node: Dict[Tuple, List] = defaultdict(list)
+        edges_by_start_node: dict[tuple, list] = defaultdict(list)
         for edge in incremental_mapping_edges:
             edges_by_start_node[edge.start_node.as_tuple()].append(edge)
 

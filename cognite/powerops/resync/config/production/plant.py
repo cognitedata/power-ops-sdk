@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import json
-from typing import Optional, Sequence
+from collections.abc import Sequence
+from typing import Optional
 
 from cognite.client.data_classes import Asset, Label, Relationship
 from pydantic import BaseModel, field_validator
@@ -46,7 +47,7 @@ class Plant(BaseModel):
         return value
 
     @classmethod
-    def from_cdf_resources(cls, asset: Asset, relationships: list[Relationship], **kwargs) -> "Plant":
+    def from_cdf_resources(cls, asset: Asset, relationships: list[Relationship], **kwargs) -> Plant:
         """Initialise a Plant from CDF Asset and Relationships
 
         Args:

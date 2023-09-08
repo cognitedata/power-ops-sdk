@@ -4,8 +4,8 @@ from typing import Callable
 
 from cognite.client import CogniteClient
 
-from cognite.powerops.resync.models.base import Model, AssetModel  # type: ignore[attr-defined]
 from cognite.powerops.resync.diff import ModelDifference
+from cognite.powerops.resync.models.base import AssetModel, Model  # type: ignore[attr-defined]
 
 
 def _clean_relationships(

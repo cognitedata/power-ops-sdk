@@ -2,10 +2,10 @@ from __future__ import annotations
 
 import abc
 import logging
-import os
+from collections.abc import Sequence
 from datetime import datetime
 from pathlib import Path
-from typing import Generic, Sequence, TypeVar, Union
+from typing import Generic, TypeVar, Union
 
 import yaml
 from cognite.client.data_classes import FileMetadata
@@ -60,11 +60,11 @@ class ShopResultFile(abc.ABC, Generic[FileContentTypeT]):
 
         return self._file_metadata.name
 
-    def save_to_disk(self, dir_path: str = "") -> str:
+    def save_to_disk(self, dir_path: str = "") -> Path:
         """Save file to local filesystem."""
-        file_path = os.path.join(dir_path or os.getcwd(), self._file_metadata.external_id)
+        file_path = (Path(dir_path) or Path.cwd()) / self._file_metadata.external_id
         Path(dir_path).mkdir(parents=True, exist_ok=True)
-        with open(file_path, "w", encoding=self.encoding) as out_file:
+        with file_path.open("w", encoding=self.encoding) as out_file:
             out_file.write(self.file_content)
         return file_path
 

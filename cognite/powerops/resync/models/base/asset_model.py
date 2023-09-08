@@ -2,16 +2,16 @@ from __future__ import annotations
 
 from abc import ABC
 from collections import defaultdict
+from collections.abc import Iterable
+from typing import Any, Callable, ClassVar, Optional, TypeVar, Union
 
-from typing import TypeVar, ClassVar, Optional, Union, Callable, Iterable, Type as TypingType, Any
+from cognite.client.data_classes import Asset, AssetList, Relationship, TimeSeries
 from typing_extensions import Self
-
-from cognite.client.data_classes import Asset, Relationship, AssetList, TimeSeries
 
 from cognite.powerops.client.powerops_client import PowerOpsClient
 from cognite.powerops.resync.models.base.asset_type import AssetType
-from cognite.powerops.resync.models.base.model import Model
 from cognite.powerops.resync.models.base.cdf_resources import CDFFile, CDFSequence
+from cognite.powerops.resync.models.base.model import Model
 from cognite.powerops.utils.serialization import get_pydantic_annotation
 
 
@@ -39,7 +39,7 @@ class AssetModel(Model, ABC, validate_assignment=True):
             return " ".join(parts).replace("Bid process", "Bid").replace("bid process", "bid")
 
         parent_and_description_ids = set()
-        for field_name, field in cls.model_fields.items():
+        for _field_name, field in cls.model_fields.items():
             annotation, outer = get_pydantic_annotation(field.annotation, cls)
             if issubclass(annotation, AssetType) and outer is list:
                 parent_and_description_ids.add((annotation.parent_external_id, annotation.parent_description or ""))
@@ -71,7 +71,7 @@ class AssetModel(Model, ABC, validate_assignment=True):
     parent_assets = classmethod(parent_assets)
 
     @classmethod
-    def load_from_cdf_resources(cls: TypingType[Self], data: dict[str, Any]) -> Self:
+    def load_from_cdf_resources(cls: type[Self], data: dict[str, Any]) -> Self:
         loaded_by_type_external_id = cls._load_by_type_external_id(data)
 
         parsed = cls._create_cls_arguments(loaded_by_type_external_id)
@@ -82,7 +82,7 @@ class AssetModel(Model, ABC, validate_assignment=True):
         return instance
 
     @classmethod
-    def from_cdf(cls: TypingType[T_Asset_Model], client: PowerOpsClient, data_set_external_id: str) -> T_Asset_Model:
+    def from_cdf(cls: type[T_Asset_Model], client: PowerOpsClient, data_set_external_id: str) -> T_Asset_Model:
         cdf = client.cdf
         parent_assets = cls.parent_assets(include_root=False)
 

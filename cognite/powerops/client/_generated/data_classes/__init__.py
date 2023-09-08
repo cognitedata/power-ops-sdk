@@ -61,12 +61,18 @@ from cognite.powerops.client._generated.data_classes._production_plan_time_serie
     ProductionPlanTimeSeriesApply,
     ProductionPlanTimeSeriesList,
 )
-from cognite.powerops.client._generated.data_classes._rkom_bids import RKOMBid, RKOMBidApply, RKOMBidList
+from cognite.powerops.client._generated.data_classes._reserve_scenarios import (
+    ReserveScenario,
+    ReserveScenarioApply,
+    ReserveScenarioList,
+)
+from cognite.powerops.client._generated.data_classes._reservoirs import Reservoir, ReservoirApply, ReservoirList
 from cognite.powerops.client._generated.data_classes._rkom_bid_combinations import (
     RKOMBidCombination,
     RKOMBidCombinationApply,
     RKOMBidCombinationList,
 )
+from cognite.powerops.client._generated.data_classes._rkom_bids import RKOMBid, RKOMBidApply, RKOMBidList
 from cognite.powerops.client._generated.data_classes._rkom_combination_bids import (
     RKOMCombinationBid,
     RKOMCombinationBidApply,
@@ -74,13 +80,6 @@ from cognite.powerops.client._generated.data_classes._rkom_combination_bids impo
 )
 from cognite.powerops.client._generated.data_classes._rkom_markets import RKOMMarket, RKOMMarketApply, RKOMMarketList
 from cognite.powerops.client._generated.data_classes._rkom_process import RKOMProces, RKOMProcesApply, RKOMProcesList
-from cognite.powerops.client._generated.data_classes._reserve_scenarios import (
-    ReserveScenario,
-    ReserveScenarioApply,
-    ReserveScenarioList,
-)
-from cognite.powerops.client._generated.data_classes._reservoirs import Reservoir, ReservoirApply, ReservoirList
-from cognite.powerops.client._generated.data_classes._scenarios import Scenario, ScenarioApply, ScenarioList
 from cognite.powerops.client._generated.data_classes._scenario_mappings import (
     ScenarioMapping,
     ScenarioMappingApply,
@@ -91,6 +90,7 @@ from cognite.powerops.client._generated.data_classes._scenario_templates import 
     ScenarioTemplateApply,
     ScenarioTemplateList,
 )
+from cognite.powerops.client._generated.data_classes._scenarios import Scenario, ScenarioApply, ScenarioList
 from cognite.powerops.client._generated.data_classes._shop_transformations import (
     ShopTransformation,
     ShopTransformationApply,
@@ -101,12 +101,12 @@ from cognite.powerops.client._generated.data_classes._value_transformations impo
     ValueTransformationApply,
     ValueTransformationList,
 )
-from cognite.powerops.client._generated.data_classes._watercourses import Watercourse, WatercourseApply, WatercourseList
 from cognite.powerops.client._generated.data_classes._watercourse_shops import (
     WatercourseShop,
     WatercourseShopApply,
     WatercourseShopList,
 )
+from cognite.powerops.client._generated.data_classes._watercourses import Watercourse, WatercourseApply, WatercourseList
 
 BenchmarkBidApply.model_rebuild()
 BenchmarkProcesApply.model_rebuild()

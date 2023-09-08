@@ -2,14 +2,14 @@ from __future__ import annotations
 
 import json
 import logging
-import os
 from datetime import datetime, timezone
+from pathlib import Path
 from typing import BinaryIO, Literal, TextIO, Union
 
 import requests
 from cognite.client import CogniteClient
 from cognite.client.data_classes import Event, FileMetadata
-from cognite.client.utils._time import time_ago_to_ms, datetime_to_ms
+from cognite.client.utils._time import datetime_to_ms, time_ago_to_ms
 
 from cognite.powerops.cdf_labels import RelationshipLabel
 from cognite.powerops.client.data_set_api import DataSetsAPI
@@ -98,9 +98,8 @@ class ShopRunsAPI:
     def _upload_input_file(
         self, file: str, shop_run_event: ShopRunEvent, input_file_type: InputFileTypeT
     ) -> FileMetadata:
-        _, input_file_ext = os.path.splitext(file)
-        with open(file, "rb") as file_stream:
-            return self._upload_input_file_bytes(file_stream.read(), shop_run_event, input_file_type, input_file_ext)
+        with Path(file).open("rb") as file_stream:
+            return self._upload_input_file_bytes(file_stream.read(), shop_run_event, input_file_type, Path(file).suffix)
 
     def _upload_input_file_bytes(
         self,
@@ -211,7 +210,6 @@ class ShopRunsAPI:
         logger.debug(f"Reading status from event {event.external_id}.")
         if relationships := self._client.relationships.list(
             # At the moment, looking at run whose related event might not be in `uc:000:powerops`
-            # data_set_ids=[self._data_set_api.read_dataset_id],
             source_external_ids=[shop_run_external_id],
             target_types=["event"],
         ):

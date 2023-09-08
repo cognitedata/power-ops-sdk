@@ -25,8 +25,8 @@ class Case(DomainModel):
 class CaseApply(DomainModelApply):
     space: ClassVar[str] = "cogShop"
     end_time: str
-    processing_log: list[Union["ProcessingLogApply", str]] = Field(default_factory=list, repr=False)
-    scenario: Optional[Union["ScenarioApply", str]] = Field(None, repr=False)
+    processing_log: list[Union[ProcessingLogApply, str]] = Field(default_factory=list, repr=False)
+    scenario: Optional[Union[ScenarioApply, str]] = Field(None, repr=False)
     start_time: str
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
@@ -82,7 +82,7 @@ class CaseApply(DomainModelApply):
 
         return dm.InstancesApply(dm.NodeApplyList(nodes), dm.EdgeApplyList(edges))
 
-    def _create_processing_log_edge(self, processing_log: Union[str, "ProcessingLogApply"]) -> dm.EdgeApply:
+    def _create_processing_log_edge(self, processing_log: Union[str, ProcessingLogApply]) -> dm.EdgeApply:
         if isinstance(processing_log, str):
             end_node_ext_id = processing_log
         elif isinstance(processing_log, DomainModelApply):

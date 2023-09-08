@@ -2,19 +2,20 @@ from __future__ import annotations
 
 import abc
 from abc import ABC
-from typing import ClassVar, Callable, Iterable, Type as TypingType, Any, TypeVar
+from collections.abc import Iterable
+from typing import Any, Callable, ClassVar, TypeVar
 
 from cognite.client import CogniteClient
-from cognite.client.data_classes import TimeSeriesList, SequenceUpdate, FileMetadataUpdate
+from cognite.client.data_classes import FileMetadataUpdate, SequenceUpdate, TimeSeries, TimeSeriesList
+from pydantic import BaseModel
 from typing_extensions import Self
 
-from cognite.client.data_classes import TimeSeries
-from pydantic import BaseModel
 from cognite.powerops.client.powerops_client import PowerOpsClient
-from cognite.powerops.resync.models.base.resource_type import _T_Type, ResourceType
-from .cdf_resources import CDFSequence, CDFFile, CDFResource
-from .helpers import isinstance_list
+from cognite.powerops.resync.models.base.resource_type import ResourceType, _T_Type
 from cognite.powerops.utils.serialization import remove_read_only_fields
+
+from .cdf_resources import CDFFile, CDFResource, CDFSequence
+from .helpers import isinstance_list
 
 
 class Model(BaseModel, ABC):
@@ -38,7 +39,7 @@ class Model(BaseModel, ABC):
     def _resource_types(self) -> Iterable[ResourceType]:
         yield from self._fields_of_type(ResourceType)
 
-    def _fields_of_type(self, type_: TypingType[_T_Type]) -> Iterable[_T_Type]:
+    def _fields_of_type(self, type_: type[_T_Type]) -> Iterable[_T_Type]:
         for field_name in self.model_fields:
             value = getattr(self, field_name)
             if isinstance(value, type_):
@@ -76,7 +77,7 @@ class Model(BaseModel, ABC):
 
     @classmethod
     @abc.abstractmethod
-    def load_from_cdf_resources(cls: TypingType[Self], data: dict[str, Any]) -> Self:
+    def load_from_cdf_resources(cls: type[Self], data: dict[str, Any]) -> Self:
         raise NotImplementedError()
 
     @classmethod
@@ -89,7 +90,7 @@ class Model(BaseModel, ABC):
 
     @classmethod
     @abc.abstractmethod
-    def from_cdf(cls: TypingType[T_Model], client: PowerOpsClient, data_set_external_id: str) -> T_Model:
+    def from_cdf(cls: type[T_Model], client: PowerOpsClient, data_set_external_id: str) -> T_Model:
         ...
 
     @abc.abstractmethod

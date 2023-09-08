@@ -1,4 +1,4 @@
-from cognite.powerops.resync import models, diff
+from cognite.powerops.resync import diff, models
 
 
 def test_models_differences_has_changes(production_model: models.ProductionModel) -> None:

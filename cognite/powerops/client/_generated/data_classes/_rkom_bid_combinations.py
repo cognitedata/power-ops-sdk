@@ -23,7 +23,7 @@ class RKOMBidCombination(DomainModel):
 class RKOMBidCombinationApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
     auction: Optional[str] = None
-    bid: Optional[Union["RKOMCombinationBidApply", str]] = Field(None, repr=False)
+    bid: Optional[Union[RKOMCombinationBidApply, str]] = Field(None, repr=False)
     name: Optional[str] = None
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:

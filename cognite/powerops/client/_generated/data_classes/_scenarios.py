@@ -25,10 +25,10 @@ class Scenario(DomainModel):
 
 class ScenarioApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
-    commands: Optional[Union["CommandConfigApply", str]] = Field(None, repr=False)
-    mapping: Optional[Union["ScenarioMappingApply", str]] = Field(None, repr=False)
+    commands: Optional[Union[CommandConfigApply, str]] = Field(None, repr=False)
+    mapping: Optional[Union[ScenarioMappingApply, str]] = Field(None, repr=False)
     name: Optional[str] = None
-    template: Optional[Union["ScenarioTemplateApply", str]] = Field(None, repr=False)
+    template: Optional[Union[ScenarioTemplateApply, str]] = Field(None, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:

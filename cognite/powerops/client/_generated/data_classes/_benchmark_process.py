@@ -29,14 +29,14 @@ class BenchmarkProces(DomainModel):
 
 class BenchmarkProcesApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
-    bid: Optional[Union["BenchmarkBidApply", str]] = Field(None, repr=False)
+    bid: Optional[Union[BenchmarkBidApply, str]] = Field(None, repr=False)
     metrics: Optional[dict] = None
     name: Optional[str] = None
-    production_plan_time_series: list[Union["ProductionPlanTimeSeriesApply", str]] = Field(
+    production_plan_time_series: list[Union[ProductionPlanTimeSeriesApply, str]] = Field(
         default_factory=list, repr=False
     )
     run_events: list[str] = []
-    shop: Optional[Union["ShopTransformationApply", str]] = Field(None, repr=False)
+    shop: Optional[Union[ShopTransformationApply, str]] = Field(None, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
@@ -104,7 +104,7 @@ class BenchmarkProcesApply(DomainModelApply):
         return dm.InstancesApply(dm.NodeApplyList(nodes), dm.EdgeApplyList(edges))
 
     def _create_production_plan_time_series_edge(
-        self, production_plan_time_series: Union[str, "ProductionPlanTimeSeriesApply"]
+        self, production_plan_time_series: Union[str, ProductionPlanTimeSeriesApply]
     ) -> dm.EdgeApply:
         if isinstance(production_plan_time_series, str):
             end_node_ext_id = production_plan_time_series

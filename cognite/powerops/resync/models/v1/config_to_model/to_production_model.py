@@ -4,23 +4,23 @@ import re
 
 from cognite.client.data_classes import TimeSeries
 
+from cognite.powerops.resync import config
 from cognite.powerops.resync.models._shared_v1_v2.production_model import (
-    p_min_fallback,
-    p_max_fallback,
-    head_loss_factor_fallback,
     _create_generator_efficiency_curve,
     _create_turbine_efficiency_curve,
     _get_single_value,
     _plant_to_inlet_reservoir_breadth_first_search,
+    head_loss_factor_fallback,
+    p_max_fallback,
+    p_min_fallback,
 )
-from cognite.powerops.resync import config
 from cognite.powerops.resync.models.v1.production import (
-    ProductionModel,
-    Watercourse,
-    Reservoir,
     Generator,
     Plant,
     PriceArea,
+    ProductionModel,
+    Reservoir,
+    Watercourse,
     WaterCourseShop,
 )
 from cognite.powerops.utils.serialization import load_yaml
@@ -197,7 +197,7 @@ def to_production_model(configuration: config.ProductionConfig) -> ProductionMod
             ]
             plants.append(plant)
 
-            prod_area = str(list(attributes["prod_area"].values())[0])
+            prod_area = str(next(iter(attributes["prod_area"].values())))
             price_area_name = watercourse_config.market_to_price_area[prod_area]
             price_area = PriceArea(name=price_area_name)
             if price_area_name not in {a.name for a in model.price_areas}:

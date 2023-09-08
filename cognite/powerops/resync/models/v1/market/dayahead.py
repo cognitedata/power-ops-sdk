@@ -1,15 +1,14 @@
 from __future__ import annotations
 
-
 from typing import ClassVar, Optional, Union
 
 from pydantic import Field, field_validator
 
 from cognite.powerops.cdf_labels import AssetLabel
 from cognite.powerops.resync.models.base import CDFSequence
+from cognite.powerops.utils.serialization import try_load_dict
 
 from .base import Bid, Market, Process, ShopTransformation
-from cognite.powerops.utils.serialization import try_load_dict
 
 
 class DayAheadBid(Bid):

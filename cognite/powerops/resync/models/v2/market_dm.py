@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Optional, Type
+from typing import Optional
 
 from pydantic import Field
 from typing_extensions import TypeAlias
@@ -29,7 +29,7 @@ class BenchmarkMarketDataModel(DataModel):
 
     @classmethod
     def from_cdf(
-        cls: Type[T_Model], client: PowerOpsClient, fetch_metadata: bool = True, fetch_content: bool = False
+        cls: type[T_Model], client: PowerOpsClient, fetch_metadata: bool = True, fetch_content: bool = False
     ) -> T_Model:
         ...
 
@@ -42,7 +42,7 @@ class DayAheadMarketDataModel(DataModel):
 
     @classmethod
     def from_cdf(
-        cls: Type[T_Model], client: PowerOpsClient, fetch_metadata: bool = True, fetch_content: bool = False
+        cls: type[T_Model], client: PowerOpsClient, fetch_metadata: bool = True, fetch_content: bool = False
     ) -> T_Model:
         ...
 
@@ -55,6 +55,6 @@ class RKOMMarketDataModel(DataModel):
 
     @classmethod
     def from_cdf(
-        cls: Type[T_Model], client: PowerOpsClient, fetch_metadata: bool = True, fetch_content: bool = False
+        cls: type[T_Model], client: PowerOpsClient, fetch_metadata: bool = True, fetch_content: bool = False
     ) -> T_Model:
         ...

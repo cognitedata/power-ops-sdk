@@ -1,13 +1,14 @@
 from __future__ import annotations
 
 from pydantic import Field
+
 from cognite.powerops.client.data_classes import (
-    ScenarioTemplateApply,
-    ValueTransformationApply,
     OutputContainerApply,
     ScenarioMappingApply,
+    ScenarioTemplateApply,
+    ValueTransformationApply,
 )
-from cognite.powerops.resync.models._shared_v1_v2.cogshop_model import ExternalID, CogShopCore
+from cognite.powerops.resync.models._shared_v1_v2.cogshop_model import CogShopCore, ExternalID
 from cognite.powerops.resync.models.base import DataModel
 
 

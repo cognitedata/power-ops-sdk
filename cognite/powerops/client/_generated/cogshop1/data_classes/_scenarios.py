@@ -27,10 +27,10 @@ class Scenario(DomainModel, protected_namespaces=()):
 
 class ScenarioApply(DomainModelApply, protected_namespaces=()):
     space: ClassVar[str] = "cogShop"
-    commands: Optional[Union["CommandsConfigApply", str]] = Field(None, repr=False)
-    extra_files: list[Union["FileRefApply", str]] = Field(default_factory=list, repr=False)
-    mappings_override: list[Union["MappingApply", str]] = Field(default_factory=list, repr=False)
-    model_template: Optional[Union["ModelTemplateApply", str]] = Field(None, repr=False)
+    commands: Optional[Union[CommandsConfigApply, str]] = Field(None, repr=False)
+    extra_files: list[Union[FileRefApply, str]] = Field(default_factory=list, repr=False)
+    mappings_override: list[Union[MappingApply, str]] = Field(default_factory=list, repr=False)
+    model_template: Optional[Union[ModelTemplateApply, str]] = Field(None, repr=False)
     name: str
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
@@ -101,7 +101,7 @@ class ScenarioApply(DomainModelApply, protected_namespaces=()):
 
         return dm.InstancesApply(dm.NodeApplyList(nodes), dm.EdgeApplyList(edges))
 
-    def _create_extra_file_edge(self, extra_file: Union[str, "FileRefApply"]) -> dm.EdgeApply:
+    def _create_extra_file_edge(self, extra_file: Union[str, FileRefApply]) -> dm.EdgeApply:
         if isinstance(extra_file, str):
             end_node_ext_id = extra_file
         elif isinstance(extra_file, DomainModelApply):
@@ -117,7 +117,7 @@ class ScenarioApply(DomainModelApply, protected_namespaces=()):
             end_node=dm.DirectRelationReference("cogShop", end_node_ext_id),
         )
 
-    def _create_mappings_override_edge(self, mappings_override: Union[str, "MappingApply"]) -> dm.EdgeApply:
+    def _create_mappings_override_edge(self, mappings_override: Union[str, MappingApply]) -> dm.EdgeApply:
         if isinstance(mappings_override, str):
             end_node_ext_id = mappings_override
         elif isinstance(mappings_override, DomainModelApply):

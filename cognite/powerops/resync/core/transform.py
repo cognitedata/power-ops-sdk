@@ -1,26 +1,25 @@
 from __future__ import annotations
 
-from typing import cast, Type
+from typing import cast
 
+from cognite.powerops.resync import models
 from cognite.powerops.resync.config._main import ReSyncConfig
 from cognite.powerops.resync.models.base import AssetModel, DataModel, Model
-from cognite.powerops.resync import models
-
 from cognite.powerops.resync.models.v1.config_to_model import (
-    to_production_model,
-    to_market_asset_model,
     to_cogshop_asset_model,
+    to_market_asset_model,
+    to_production_model,
 )
 from cognite.powerops.resync.models.v2.config_to_model import (
-    to_production_data_model,
-    to_cogshop_data_model,
     to_benchmark_data_model,
+    to_cogshop_data_model,
     to_dayahead_data_model,
+    to_production_data_model,
     to_rkom_data_model,
 )
 
 
-def transform(config: ReSyncConfig, market_name: str, model_types: set[Type[Model]]) -> list[Model]:
+def transform(config: ReSyncConfig, market_name: str, model_types: set[type[Model]]) -> list[Model]:
     all_models: list[Model] = []
 
     # The Production model is a prerequisite for the Market and CogShop models

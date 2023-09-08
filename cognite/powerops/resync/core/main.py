@@ -2,25 +2,26 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Optional, Callable, Any, Type
+from typing import Any, Callable, Optional
 from uuid import uuid4
+
 from cognite.client.data_classes import Event
 from cognite.client.data_classes.data_modeling.instances import InstanceCore
 from yaml import safe_dump
 
-from cognite.powerops.client.powerops_client import get_powerops_client, PowerOpsClient
-from .validation import _clean_relationships
-from cognite.powerops.resync.config import ReSyncConfig
-from cognite.powerops.resync.models.base import Model
-from cognite.powerops.resync.diff import FieldDifference, ModelDifferences, ModelDifference, model_difference
-from cognite.powerops.utils.navigation import all_concrete_subclasses
+from cognite.powerops.client.powerops_client import PowerOpsClient, get_powerops_client
 from cognite.powerops.resync import models
+from cognite.powerops.resync.config import ReSyncConfig
+from cognite.powerops.resync.diff import FieldDifference, ModelDifference, ModelDifferences, model_difference
+from cognite.powerops.resync.models.base import Model
 from cognite.powerops.utils.cdf import Settings
+from cognite.powerops.utils.navigation import all_concrete_subclasses
+
 from .cdf import get_cognite_api
 from .transform import transform
+from .validation import _clean_relationships
 
-
-MODEL_BY_NAME: dict[str, Type[Model]] = {
+MODEL_BY_NAME: dict[str, type[Model]] = {
     model.__name__: model for model in all_concrete_subclasses(Model)  # type: ignore[type-abstract]
 }
 AVAILABLE_MODELS: frozenset[str] = frozenset(MODEL_BY_NAME)
@@ -308,7 +309,7 @@ def _create_bootstrap_finished_event(echo: Callable[[str], None]) -> Event:
     event = Event(
         start_time=current_time,
         end_time=current_time,
-        external_id=f"POWEROPS_BOOTSTRAP_FINISHED_{str(uuid4())}",
+        external_id=f"POWEROPS_BOOTSTRAP_FINISHED_{uuid4()!s}",
         type="POWEROPS_BOOTSTRAP_FINISHED",
         source="PowerOps bootstrap",
         description="Manual run of bootstrap scripts finished",

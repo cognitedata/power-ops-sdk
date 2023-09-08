@@ -20,20 +20,20 @@ from cognite.powerops.client._generated._api.output_mappings import OutputMappin
 from cognite.powerops.client._generated._api.plants import PlantsAPI
 from cognite.powerops.client._generated._api.price_areas import PriceAreasAPI
 from cognite.powerops.client._generated._api.production_plan_time_series import ProductionPlanTimeSeriesAPI
-from cognite.powerops.client._generated._api.rkom_bids import RKOMBidsAPI
+from cognite.powerops.client._generated._api.reserve_scenarios import ReserveScenariosAPI
+from cognite.powerops.client._generated._api.reservoirs import ReservoirsAPI
 from cognite.powerops.client._generated._api.rkom_bid_combinations import RKOMBidCombinationsAPI
+from cognite.powerops.client._generated._api.rkom_bids import RKOMBidsAPI
 from cognite.powerops.client._generated._api.rkom_combination_bids import RKOMCombinationBidsAPI
 from cognite.powerops.client._generated._api.rkom_markets import RKOMMarketsAPI
 from cognite.powerops.client._generated._api.rkom_process import RKOMProcessAPI
-from cognite.powerops.client._generated._api.reserve_scenarios import ReserveScenariosAPI
-from cognite.powerops.client._generated._api.reservoirs import ReservoirsAPI
-from cognite.powerops.client._generated._api.scenarios import ScenariosAPI
 from cognite.powerops.client._generated._api.scenario_mappings import ScenarioMappingsAPI
 from cognite.powerops.client._generated._api.scenario_templates import ScenarioTemplatesAPI
+from cognite.powerops.client._generated._api.scenarios import ScenariosAPI
 from cognite.powerops.client._generated._api.shop_transformations import ShopTransformationsAPI
 from cognite.powerops.client._generated._api.value_transformations import ValueTransformationsAPI
-from cognite.powerops.client._generated._api.watercourses import WatercoursesAPI
 from cognite.powerops.client._generated._api.watercourse_shops import WatercourseShopsAPI
+from cognite.powerops.client._generated._api.watercourses import WatercoursesAPI
 
 
 class BenchmarkAPIs:
@@ -190,7 +190,7 @@ class GeneratedPowerOpsClient:
         if section is not None:
             try:
                 toml_content = toml_content[section]
-            except KeyError:
-                raise ValueError(f"Could not find section '{section}' in {file_path}")
+            except KeyError as e:
+                raise ValueError(f"Could not find section '{section}' in {file_path}") from e
 
         return cls.azure_project(**toml_content)

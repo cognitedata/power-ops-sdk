@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 from collections import defaultdict
-from typing import Dict, List, Sequence, Tuple, overload
+from collections.abc import Sequence
+from typing import overload
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
@@ -105,7 +106,7 @@ class ScenarioMappingsAPI(TypeAPI[ScenarioMapping, ScenarioMappingApply, Scenari
 
     @staticmethod
     def _set_mapping_override(scenario_mappings: Sequence[ScenarioMapping], mapping_override_edges: Sequence[dm.Edge]):
-        edges_by_start_node: Dict[Tuple, List] = defaultdict(list)
+        edges_by_start_node: dict[tuple, list] = defaultdict(list)
         for edge in mapping_override_edges:
             edges_by_start_node[edge.start_node.as_tuple()].append(edge)
 

@@ -1,10 +1,12 @@
 from __future__ import annotations
 
-from typing import TypeVar, Union, Protocol, Sequence, Any, Literal, cast
+from collections.abc import Sequence
+from typing import Any, Literal, Protocol, TypeVar, Union, cast
 
 from cognite.client import CogniteClient
-from cognite.client.data_classes import Asset, Sequence as CogniteSequence, FileMetadata, Relationship, FileMetadataList
-from cognite.client.data_classes.data_modeling import NodeApply, EdgeApply
+from cognite.client.data_classes import Asset, FileMetadata, FileMetadataList, Relationship
+from cognite.client.data_classes import Sequence as CogniteSequence
+from cognite.client.data_classes.data_modeling import EdgeApply, NodeApply
 
 from cognite.powerops.resync.models.base import CDFFile, CDFSequence
 

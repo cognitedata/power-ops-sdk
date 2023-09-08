@@ -1,7 +1,7 @@
-from .watercourse import WatercourseConfig, Watercourse, TimeSeriesMapping
+from .connections import Connection
 from .generator import Generator, GeneratorTimeSeriesMapping
 from .plant import Plant, PlantTimeSeriesMapping
-from .connections import Connection
+from .watercourse import TimeSeriesMapping, Watercourse, WatercourseConfig
 
 __all__ = [
     "WatercourseConfig",

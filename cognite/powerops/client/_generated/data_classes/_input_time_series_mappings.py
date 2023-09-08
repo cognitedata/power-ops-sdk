@@ -32,7 +32,7 @@ class InputTimeSeriesMappingApply(DomainModelApply):
     shop_attribute_name: Optional[str] = None
     shop_object_name: Optional[str] = None
     shop_object_type: Optional[str] = None
-    transformations: list[Union["ValueTransformationApply", str]] = Field(default_factory=list, repr=False)
+    transformations: list[Union[ValueTransformationApply, str]] = Field(default_factory=list, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
@@ -85,7 +85,7 @@ class InputTimeSeriesMappingApply(DomainModelApply):
 
         return dm.InstancesApply(dm.NodeApplyList(nodes), dm.EdgeApplyList(edges))
 
-    def _create_transformation_edge(self, transformation: Union[str, "ValueTransformationApply"]) -> dm.EdgeApply:
+    def _create_transformation_edge(self, transformation: Union[str, ValueTransformationApply]) -> dm.EdgeApply:
         if isinstance(transformation, str):
             end_node_ext_id = transformation
         elif isinstance(transformation, DomainModelApply):

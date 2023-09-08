@@ -23,7 +23,7 @@ class OutputContainer(DomainModel):
 
 class OutputContainerApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
-    mappings: list[Union["OutputMappingApply", str]] = Field(default_factory=list, repr=False)
+    mappings: list[Union[OutputMappingApply, str]] = Field(default_factory=list, repr=False)
     name: Optional[str] = None
     shop_type: Optional[str] = None
     watercourse: Optional[str] = None
@@ -73,7 +73,7 @@ class OutputContainerApply(DomainModelApply):
 
         return dm.InstancesApply(dm.NodeApplyList(nodes), dm.EdgeApplyList(edges))
 
-    def _create_mapping_edge(self, mapping: Union[str, "OutputMappingApply"]) -> dm.EdgeApply:
+    def _create_mapping_edge(self, mapping: Union[str, OutputMappingApply]) -> dm.EdgeApply:
         if isinstance(mapping, str):
             end_node_ext_id = mapping
         elif isinstance(mapping, DomainModelApply):

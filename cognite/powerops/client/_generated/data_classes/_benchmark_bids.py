@@ -23,8 +23,8 @@ class BenchmarkBid(DomainModel):
 
 class BenchmarkBidApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
-    date: list[Union["DateTransformationApply", str]] = Field(default_factory=list, repr=False)
-    market: Optional[Union["NordPoolMarketApply", str]] = Field(None, repr=False)
+    date: list[Union[DateTransformationApply, str]] = Field(default_factory=list, repr=False)
+    market: Optional[Union[NordPoolMarketApply, str]] = Field(None, repr=False)
     name: Optional[str] = None
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
@@ -78,7 +78,7 @@ class BenchmarkBidApply(DomainModelApply):
 
         return dm.InstancesApply(dm.NodeApplyList(nodes), dm.EdgeApplyList(edges))
 
-    def _create_date_edge(self, date: Union[str, "DateTransformationApply"]) -> dm.EdgeApply:
+    def _create_date_edge(self, date: Union[str, DateTransformationApply]) -> dm.EdgeApply:
         if isinstance(date, str):
             end_node_ext_id = date
         elif isinstance(date, DomainModelApply):

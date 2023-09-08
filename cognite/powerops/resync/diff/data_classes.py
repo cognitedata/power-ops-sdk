@@ -3,17 +3,17 @@ from __future__ import annotations
 import itertools
 from collections import defaultdict
 from collections.abc import Iterator
-from dataclasses import dataclass, field, asdict
+from dataclasses import asdict, dataclass, field
 from itertools import islice
 from typing import Literal
 
 import pandas as pd
-from cognite.client.data_classes import Sequence, FileMetadata
+from cognite.client.data_classes import FileMetadata, Sequence
 from cognite.client.data_classes._base import CogniteResource
 from deepdiff import DeepDiff  # type: ignore[import]
 
-from cognite.powerops.resync.models.base.resource_type import Resource
 from cognite.powerops.resync.models.base.cdf_resources import CDFResource
+from cognite.powerops.resync.models.base.resource_type import Resource
 
 
 @dataclass

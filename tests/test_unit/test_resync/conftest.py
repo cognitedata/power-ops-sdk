@@ -1,12 +1,13 @@
 import pytest
+
 from cognite.powerops.resync import models
 from cognite.powerops.resync.config._main import ReSyncConfig
-from tests.constants import ReSync
 from cognite.powerops.resync.models.v1.config_to_model import (
-    to_production_model,
-    to_market_asset_model,
     to_cogshop_asset_model,
+    to_market_asset_model,
+    to_production_model,
 )
+from tests.constants import ReSync
 
 
 @pytest.fixture(scope="session")

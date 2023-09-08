@@ -31,14 +31,14 @@ class RKOMBid(DomainModel):
 
 class RKOMBidApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
-    date: list[Union["DateTransformationApply", str]] = Field(default_factory=list, repr=False)
-    market: Optional[Union["RKOMMarketApply", str]] = Field(None, repr=False)
+    date: list[Union[DateTransformationApply, str]] = Field(default_factory=list, repr=False)
+    market: Optional[Union[RKOMMarketApply, str]] = Field(None, repr=False)
     method: Optional[str] = None
     minimum_price: Optional[float] = None
     name: Optional[str] = None
     price_premium: Optional[float] = None
-    price_scenarios: list[Union["ScenarioMappingApply", str]] = Field(default_factory=list, repr=False)
-    reserve_scenarios: list[Union["ReserveScenarioApply", str]] = Field(default_factory=list, repr=False)
+    price_scenarios: list[Union[ScenarioMappingApply, str]] = Field(default_factory=list, repr=False)
+    reserve_scenarios: list[Union[ReserveScenarioApply, str]] = Field(default_factory=list, repr=False)
     watercourse: Optional[str] = None
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
@@ -122,7 +122,7 @@ class RKOMBidApply(DomainModelApply):
 
         return dm.InstancesApply(dm.NodeApplyList(nodes), dm.EdgeApplyList(edges))
 
-    def _create_date_edge(self, date: Union[str, "DateTransformationApply"]) -> dm.EdgeApply:
+    def _create_date_edge(self, date: Union[str, DateTransformationApply]) -> dm.EdgeApply:
         if isinstance(date, str):
             end_node_ext_id = date
         elif isinstance(date, DomainModelApply):
@@ -138,7 +138,7 @@ class RKOMBidApply(DomainModelApply):
             end_node=dm.DirectRelationReference("power-ops", end_node_ext_id),
         )
 
-    def _create_price_scenario_edge(self, price_scenario: Union[str, "ScenarioMappingApply"]) -> dm.EdgeApply:
+    def _create_price_scenario_edge(self, price_scenario: Union[str, ScenarioMappingApply]) -> dm.EdgeApply:
         if isinstance(price_scenario, str):
             end_node_ext_id = price_scenario
         elif isinstance(price_scenario, DomainModelApply):
@@ -154,7 +154,7 @@ class RKOMBidApply(DomainModelApply):
             end_node=dm.DirectRelationReference("power-ops", end_node_ext_id),
         )
 
-    def _create_reserve_scenario_edge(self, reserve_scenario: Union[str, "ReserveScenarioApply"]) -> dm.EdgeApply:
+    def _create_reserve_scenario_edge(self, reserve_scenario: Union[str, ReserveScenarioApply]) -> dm.EdgeApply:
         if isinstance(reserve_scenario, str):
             end_node_ext_id = reserve_scenario
         elif isinstance(reserve_scenario, DomainModelApply):

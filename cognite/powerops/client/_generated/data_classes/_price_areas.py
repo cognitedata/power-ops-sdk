@@ -28,8 +28,8 @@ class PriceAreaApply(DomainModelApply):
     day_ahead_price: Optional[str] = None
     description: Optional[str] = None
     name: Optional[str] = None
-    plants: list[Union["PlantApply", str]] = Field(default_factory=list, repr=False)
-    watercourses: list[Union["WatercourseApply", str]] = Field(default_factory=list, repr=False)
+    plants: list[Union[PlantApply, str]] = Field(default_factory=list, repr=False)
+    watercourses: list[Union[WatercourseApply, str]] = Field(default_factory=list, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
@@ -87,7 +87,7 @@ class PriceAreaApply(DomainModelApply):
 
         return dm.InstancesApply(dm.NodeApplyList(nodes), dm.EdgeApplyList(edges))
 
-    def _create_plant_edge(self, plant: Union[str, "PlantApply"]) -> dm.EdgeApply:
+    def _create_plant_edge(self, plant: Union[str, PlantApply]) -> dm.EdgeApply:
         if isinstance(plant, str):
             end_node_ext_id = plant
         elif isinstance(plant, DomainModelApply):
@@ -103,7 +103,7 @@ class PriceAreaApply(DomainModelApply):
             end_node=dm.DirectRelationReference("power-ops", end_node_ext_id),
         )
 
-    def _create_watercourse_edge(self, watercourse: Union[str, "WatercourseApply"]) -> dm.EdgeApply:
+    def _create_watercourse_edge(self, watercourse: Union[str, WatercourseApply]) -> dm.EdgeApply:
         if isinstance(watercourse, str):
             end_node_ext_id = watercourse
         elif isinstance(watercourse, DomainModelApply):

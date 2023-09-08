@@ -27,9 +27,9 @@ class ScenarioTemplate(DomainModel):
 
 class ScenarioTemplateApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
-    base_mapping: Optional[Union["ScenarioMappingApply", str]] = Field(None, repr=False)
+    base_mapping: Optional[Union[ScenarioMappingApply, str]] = Field(None, repr=False)
     model: Optional[str] = None
-    output_definitions: Optional[Union["OutputContainerApply", str]] = Field(None, repr=False)
+    output_definitions: Optional[Union[OutputContainerApply, str]] = Field(None, repr=False)
     shop_files: list[str] = []
     shop_version: Optional[str] = None
     template_version: Optional[str] = None

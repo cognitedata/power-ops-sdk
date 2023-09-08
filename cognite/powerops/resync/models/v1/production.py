@@ -1,15 +1,14 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import ClassVar, Optional, Union, Any
+from typing import Any, ClassVar, Optional, Union
 
 from cognite.client.data_classes import Asset, TimeSeries
-from pydantic import ConfigDict, Field, field_validator, field_serializer
+from pydantic import ConfigDict, Field, field_serializer, field_validator
 
 from cognite.powerops.cdf_labels import AssetLabel
-from cognite.powerops.resync.models.base import AssetType, NonAssetType, AssetModel, T_Asset_Type, CDFSequence
-
-from cognite.powerops.utils.serialization import try_load_dict, parse_time_series
+from cognite.powerops.resync.models.base import AssetModel, AssetType, CDFSequence, NonAssetType, T_Asset_Type
+from cognite.powerops.utils.serialization import parse_time_series, try_load_dict
 
 
 class Generator(AssetType):

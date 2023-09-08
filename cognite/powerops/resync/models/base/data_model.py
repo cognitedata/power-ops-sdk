@@ -3,30 +3,31 @@ from __future__ import annotations
 import inspect
 from abc import ABC
 from collections import defaultdict
-from typing import ClassVar, Type as TypingType, Union, Callable, Iterable, Any, TypeVar
-
-from pydantic.alias_generators import to_pascal, to_snake
-from typing_extensions import Self
+from collections.abc import Iterable
+from typing import Any, Callable, ClassVar, TypeVar, Union
 
 from cognite.client.data_classes.data_modeling import (
     ContainerId,
-    ViewId,
+    EdgeApply,
+    EdgeApplyList,
     InstancesApply,
     NodeApply,
-    EdgeApply,
     NodeApplyList,
-    EdgeApplyList,
+    ViewId,
 )
+from pydantic.alias_generators import to_pascal, to_snake
+from typing_extensions import Self
 
-from cognite.powerops.client._generated.data_classes._core import DomainModelApply
 from cognite.powerops.client._generated.cogshop1.data_classes._core import DomainModelApply as DomainModelApplyCogShop1
-from .model import Model
-from .cdf_resources import CDFFile, CDFSequence
+from cognite.powerops.client._generated.data_classes._core import DomainModelApply
 from cognite.powerops.utils.serialization import get_pydantic_annotation
+
+from .cdf_resources import CDFFile, CDFSequence
+from .model import Model
 
 
 class DataModel(Model, ABC):
-    cls_by_container: ClassVar[dict[ContainerId, TypingType[Union[DomainModelApplyCogShop1, DomainModelApply]]]]
+    cls_by_container: ClassVar[dict[ContainerId, type[Union[DomainModelApplyCogShop1, DomainModelApply]]]]
     view_sources: ClassVar[tuple[ViewId, ...]]
 
     def instances(self) -> InstancesApply:
@@ -71,7 +72,7 @@ class DataModel(Model, ABC):
                 yield from items.values()
 
     @classmethod
-    def load_from_cdf_resources(cls: TypingType[Self], data: dict[str, Any]) -> Self:
+    def load_from_cdf_resources(cls: type[Self], data: dict[str, Any]) -> Self:
         load_by_type_external_id = cls._load_by_type_external_id(data)
         if "nodes" not in load_by_type_external_id:
             return cls()
@@ -172,7 +173,7 @@ class DataModel(Model, ABC):
 T_Domain_model = TypeVar("T_Domain_model", bound=Union[DomainModelApply, DomainModelApplyCogShop1])
 
 
-def _load_domain_node(node_cls: TypingType[T_Domain_model], node: NodeApply) -> T_Domain_model:
+def _load_domain_node(node_cls: type[T_Domain_model], node: NodeApply) -> T_Domain_model:
     properties = node.sources[0].properties
     loaded = {}
     for name, prop in properties.items():

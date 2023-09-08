@@ -7,7 +7,6 @@ from typing import Any, ClassVar, Optional
 import pandas as pd
 from cognite.client.data_classes import FileMetadata, Sequence
 from cognite.client.data_classes._base import CogniteResource
-
 from pydantic import BaseModel, ConfigDict, model_serializer, model_validator
 from typing_extensions import Self
 

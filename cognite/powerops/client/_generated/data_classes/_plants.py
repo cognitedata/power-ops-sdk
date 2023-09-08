@@ -41,11 +41,11 @@ class PlantApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
     display_name: Optional[str] = None
     feeding_fee: Optional[str] = None
-    generators: list[Union["GeneratorApply", str]] = Field(default_factory=list, repr=False)
+    generators: list[Union[GeneratorApply, str]] = Field(default_factory=list, repr=False)
     head_direct_time_series: Optional[str] = None
     head_loss_factor: Optional[float] = None
     inlet_level: Optional[str] = None
-    inlet_reservoirs: list[Union["ReservoirApply", str]] = Field(default_factory=list, repr=False)
+    inlet_reservoirs: list[Union[ReservoirApply, str]] = Field(default_factory=list, repr=False)
     name: Optional[str] = None
     ordering: Optional[int] = None
     outlet_level: Optional[float] = None
@@ -56,7 +56,7 @@ class PlantApply(DomainModelApply):
     p_min_time_series: Optional[str] = None
     penstock_head_loss_factors: Optional[dict] = None
     water_value: Optional[str] = None
-    watercourse: Optional[Union["WatercourseApply", str]] = Field(None, repr=False)
+    watercourse: Optional[Union[WatercourseApply, str]] = Field(None, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
@@ -148,7 +148,7 @@ class PlantApply(DomainModelApply):
 
         return dm.InstancesApply(dm.NodeApplyList(nodes), dm.EdgeApplyList(edges))
 
-    def _create_generator_edge(self, generator: Union[str, "GeneratorApply"]) -> dm.EdgeApply:
+    def _create_generator_edge(self, generator: Union[str, GeneratorApply]) -> dm.EdgeApply:
         if isinstance(generator, str):
             end_node_ext_id = generator
         elif isinstance(generator, DomainModelApply):
@@ -164,7 +164,7 @@ class PlantApply(DomainModelApply):
             end_node=dm.DirectRelationReference("power-ops", end_node_ext_id),
         )
 
-    def _create_inlet_reservoir_edge(self, inlet_reservoir: Union[str, "ReservoirApply"]) -> dm.EdgeApply:
+    def _create_inlet_reservoir_edge(self, inlet_reservoir: Union[str, ReservoirApply]) -> dm.EdgeApply:
         if isinstance(inlet_reservoir, str):
             end_node_ext_id = inlet_reservoir
         elif isinstance(inlet_reservoir, DomainModelApply):
