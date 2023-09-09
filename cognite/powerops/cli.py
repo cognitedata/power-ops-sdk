@@ -21,7 +21,7 @@ for third_party in ["cognite-sdk", "requests", "urllib3", "msal", "requests_oaut
     third_party_logger.propagate = False
 
 FORMAT = "%(message)s"
-logging.basicConfig(level="NOTSET", format=FORMAT, datefmt="[%X]", handlers=[RichHandler()])
+logging.basicConfig(level=logging.INFO, format=FORMAT, datefmt="[%X]", handlers=[RichHandler()])
 
 log = logging.getLogger("rich")
 
@@ -59,17 +59,25 @@ def plan(
         help="If true, the command will be registered as an extraction pipeline run. With the configuration"
         "fetched from the settings.toml [powerops] section.",
     ),
+    verbose: bool = typer.Option(True, "--verbose", "-v", help="Whether to print verbose output"),
 ):
     if dump_folder and not dump_folder.is_dir():
         raise typer.BadParameter(f"{dump_folder} is not a directory")
 
-    log.info(f"Running plan on configuration files located in {path}")
+    if verbose:
+        echo = log.info
+    else:
+
+        def echo(_: str) -> None:
+            ...
+
+    echo(f"Running plan on configuration files located in {path}")
     if len(models) == 1 and models[0].lower() == "all":
         models = list(MODEL_BY_NAME.keys())
 
     power = get_powerops_client()
 
-    changes = resync.plan(path, market, echo=log.info, model_names=models, dump_folder=dump_folder, client=power)
+    changes = resync.plan(path, market, echo=echo, model_names=models, dump_folder=dump_folder, client=power)
     if format == "markdown":
         typer.echo(changes.as_markdown())
 
@@ -109,9 +117,16 @@ def apply(
     format: str = typer.Option(default=None, help="The format of the output. Available formats: markdown"),
     verbose: bool = typer.Option(True, "--verbose", "-v", help="Whether to print verbose output"),
 ):
-    log.info(f"Running apply on configuration files located in {path}")
+    if verbose:
+        echo = log.info
+    else:
 
-    changed = resync.apply(path, market, model_names=models, echo=log.info, auto_yes=auto_yes, verbose=verbose)
+        def echo(_: str) -> None:
+            ...
+
+    echo(f"Running apply on configuration files located in {path}")
+
+    changed = resync.apply(path, market, model_names=models, echo=echo, auto_yes=auto_yes)
     if format == "markdown":
         typer.echo(changed.as_markdown_summary())
 

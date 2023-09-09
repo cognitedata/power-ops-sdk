@@ -9,9 +9,9 @@ def main():
             ReSync.demo,
             "Dayahead",
             ["ProductionModel", "MarketModel", "CogShop1Asset"],
-            auto_yes=True,
+            auto_yes=False,
             format="markdown",
-            verbose=True,
+            verbose=False,
         )
 
 
