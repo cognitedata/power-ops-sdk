@@ -1,6 +1,6 @@
 What we mean with a data engineer is a person with the following type of responsibilities:
 
-* Setup Cognite Data Fusion capabilities for the power ops opertaions.
+* Setup Cognite Data Fusion capabilities for the power ops operations.
 * Populate Cognite Data Fusion with the configuration that is used to run power ops.
 
 The main tool from this SDK to help the data engineer to accomplish these tasks is the `powerops` CLI tool,
