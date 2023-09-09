@@ -100,7 +100,6 @@ def apply(
     model_names: list[str] | str | None = None,
     echo: Optional[Callable[[Any], None]] = None,
     auto_yes: bool = False,
-    verbose: bool = False,
 ) -> ModelDifferences:
     """
     Loads the local configuration files, transform them into Resync models, and uploads it to CDF. Any deviations
@@ -158,27 +157,23 @@ def apply(
             if diff.group == "Domain":
                 continue
             if len(diff.unchanged) == diff.total:
-                if verbose:
-                    echo(f"No changes detected for {diff.name} in {new_model.model_name}")
+                echo(f"No changes detected for {diff.name} in {new_model.model_name}")
                 continue
             elif diff.name == "timeseries":
-                if verbose:
-                    echo("Found timeseries changes, skipping. These are not updated by resync")
+                echo("Found timeseries changes, skipping. These are not updated by resync")
                 continue
             changed.append(diff)
 
         for diff in sorted(changed, key=_edges_before_nodes):
             if not diff.removed:
                 continue
-            if verbose:
-                echo(f"Removals detected for {diff.name} in {new_model.model_name}")
-                echo(f"Remove count: {diff.as_summary().removed}")
-                diff_ids = diff.as_ids(5)
-                echo(f"Sample removed for {diff_ids.name}: {diff_ids.removed}")
+            echo(f"Removals detected for {diff.name} in {new_model.model_name}")
+            echo(f"Remove count: {diff.as_summary().removed}")
+            diff_ids = diff.as_ids(5)
+            echo(f"Sample removed for {diff_ids.name}: {diff_ids.removed}")
             ans = "y" if auto_yes else input("Continue? (y/n)")
             if ans.lower() != "y":
-                if verbose:
-                    echo("Aborting")
+                echo("Aborting")
                 continue
 
             api = get_cognite_api(client.cdf, diff.name, new_sequences_by_id, new_files_by_id)
@@ -187,8 +182,7 @@ def apply(
                     r.as_id() if isinstance(r, InstanceCore) else r.external_id for r in diff.removed if r.external_id
                 ]
             )
-            if verbose:
-                echo(f"Deleted {len(diff.removed)} of {diff.name}")
+            echo(f"Deleted {len(diff.removed)} of {diff.name}")
             written_model_changes.changes[diff.name] = FieldDifference(
                 group=diff.group,
                 name=diff.name,
@@ -201,22 +195,20 @@ def apply(
         for diff in sorted(changed, key=_nodes_before_edges):
             if not diff.added and not diff.changed:
                 continue
-            if verbose:
-                echo(f"Changes/Additions detected for {diff.name} in {new_model.model_name}")
-                summary_count = diff.as_summary()
-                echo(f"Change count: {summary_count.changed}")
-                echo(f"Addition count: {summary_count.added}")
+            echo(f"Changes/Additions detected for {diff.name} in {new_model.model_name}")
+            summary_count = diff.as_summary()
+            echo(f"Change count: {summary_count.changed}")
+            echo(f"Addition count: {summary_count.added}")
             diff_ids = diff.as_ids(5)
-            if diff_ids.changed and verbose:
+            if diff_ids.changed:
                 echo(f"Sample changed for {diff_ids.name}:")
                 for change in diff.changed[:3]:
                     echo(change.changed_fields)
-            if diff_ids.added and verbose:
+            if diff_ids.added:
                 echo(f"Sample added for {diff_ids.name}: {diff_ids.added}")
             ans = "y" if auto_yes else input("Continue? (y/n)")
             if ans.lower() != "y":
-                if verbose:
-                    echo("Aborting")
+                echo("Aborting")
                 continue
 
             diff.set_set_dataset(write_dataset)
@@ -224,8 +216,7 @@ def apply(
 
             if diff.added:
                 api.create(diff.added)
-                if verbose:
-                    echo(f"Created {len(diff.added)} of {diff.name}")
+                echo(f"Created {len(diff.added)} of {diff.name}")
                 if diff.name in written_model_changes:
                     written_model_changes[diff.name].added.extend(diff.added)
                 else:
@@ -237,14 +228,12 @@ def apply(
                 updates = [c.new for c in diff.changed if not c.is_changed_content]
                 if updates:
                     api.upsert(updates, mode="replace")
-                    if verbose:
-                        echo(f"Updated {len(updates)} of {diff.name}")
+                    echo(f"Updated {len(updates)} of {diff.name}")
                 content_updates = [c.new for c in diff.changed if c.is_changed_content]
                 if content_updates:
                     api.delete([c.external_id for c in content_updates if c.external_id])
                     api.create(content_updates)
-                    if verbose:
-                        echo(f"Updated {len(content_updates)} of {diff.name} with content")
+                    echo(f"Updated {len(content_updates)} of {diff.name} with content")
                 if diff.name in written_model_changes:
                     written_model_changes[diff.name].changed.extend(diff.changed)
                 else:
@@ -317,9 +306,3 @@ def _create_bootstrap_finished_event(echo: Callable[[str], None]) -> Event:
     echo(f"Created status event '{event.external_id}'")
 
     return event
-
-
-if __name__ == "__main__":
-    demo_data = Path(__file__).parent.parent.parent.parent / "tests" / "test_unit" / "test_bootstrap" / "data" / "demo"
-
-    apply(demo_data, "DayAhead", echo=print)
