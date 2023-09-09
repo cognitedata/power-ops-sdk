@@ -79,7 +79,7 @@ def plan(
 
     changes = resync.plan(path, market, echo=echo, model_names=models, dump_folder=dump_folder, client=power)
     if format == "markdown":
-        typer.echo(changes.as_markdown())
+        typer.echo(changes.as_github_markdown())
 
     if as_extraction_pipeline_run is True:
         settings = Settings()
@@ -128,7 +128,7 @@ def apply(
 
     changed = resync.apply(path, market, model_names=models, echo=echo, auto_yes=auto_yes)
     if format == "markdown":
-        typer.echo(changed.as_markdown_summary())
+        typer.echo(changed.as_github_markdown())
 
 
 @app.command(

@@ -152,7 +152,7 @@ class ModelDifferences:
     def has_changes(self, exclude: set | frozenset = frozenset({"timeseries"})) -> bool:
         return any(m.has_changes(exclude) for m in self.models)
 
-    def as_markdown(self) -> str:
+    def as_markdown_detailed(self) -> str:
         report = []
         for model in self.models:
             summaries = [change.as_summary() for change in model]
@@ -212,18 +212,44 @@ class ModelDifferences:
                     continue
                 by_name[change.name].append(change)
         report = []
+        total_added = 0
+        total_removed = 0
+        total_changed = 0
         for name, changes in by_name.items():
             added = sum(len(change.added) for change in changes)
             removed = sum(len(change.removed) for change in changes)
             change_count = sum(len(change.changed) for change in changes)
-            report.append(f"* **{name}**: {added} added, {removed} removed, {change_count} changed")
+            counts = []
+            for count_name, count in zip(("added", "removed", "changed"), (added, removed, change_count)):
+                if count > 0:
+                    counts.append(f"**{count} {count_name}**")
+                else:
+                    counts.append(f"{count} {count_name}")
+            counts_str = ", ".join(counts)
+            report.append(f"* **{name}**: {counts_str}")
+            total_added += added
+            total_removed += removed
+            total_changed += change_count
+
         list_ = "\n".join(report)
+        totals = f"{total_added} added, {total_removed} removed, {total_changed} changed"
         if no_headers:
-            top_row = "**Summary**"
+            top_row = f"**Summary:** {totals}"
         else:
-            top_row = "## Summary"
+            top_row = f"## Summary: {totals}"
         return f"""{top_row}
 {list_ if list_ else 'No changes'}
+"""
+
+    def as_github_markdown(self) -> str:
+        summary = self.as_markdown_summary()
+        detailed = self.as_markdown_detailed()
+        return f"""{summary}
+<details>
+<summary>Details</summary>
+
+{detailed}
+</details>
 """
 
 
