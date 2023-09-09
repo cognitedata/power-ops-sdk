@@ -244,8 +244,11 @@ def destroy(
             echo(f"Skipping {model_type.__name__}, currently only data models are supported.", is_warning=True)
             continue
 
+        remove_data_model = _get_data_model_view_containers(client.cdf, model_type.graph_ql.id_, model_type.__name__)
+        if not remove_data_model.changes:
+            echo(f"Skipping {model_type.__name__}, no data model found", is_warning=True)
+            continue
         cdf_model = model_type.from_cdf(client, data_set_external_id=client.datasets.read_dataset)
-        remove_data_model = _get_data_model_view_containers(client.cdf, cdf_model.graph_ql.id_, cdf_model.model_name)
 
         remove_data = diff.remove_only(cdf_model)
         remove_data.filter_out(group="Domain", field_names={"timeseries"})
@@ -458,7 +461,10 @@ def _to_models(model_names: str | list[str] | None) -> list[type[Model]]:
 
 
 def _get_data_model_view_containers(cdf: CogniteClient, data_model_id: DataModelId, model_name: str) -> ModelDifference:
-    data_model = cdf.data_modeling.data_models.retrieve(ids=data_model_id, inline_views=True).latest_version()
+    data_model = cdf.data_modeling.data_models.retrieve(ids=data_model_id, inline_views=True)
+    if not data_model:
+        return ModelDifference(model_name=model_name, changes={})
+    data_model = data_model.latest_version()
     views = data_model.views
 
     changes = {

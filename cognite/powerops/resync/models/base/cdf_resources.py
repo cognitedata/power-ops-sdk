@@ -130,8 +130,16 @@ class CDFFile(CDFResource):
         return cls(meta=FileMetadata._load(data))
 
 
+# The extra class is because the AbstractDataClass does allow it
+# subclasses to be instantiated. This is a private implementation detail in the Python-SDK, but it is useful
+# for us here in the adapter methods of the CDF API.
 @dataclass(frozen=True)
-class SpaceId(AbstractDataclass):
+class _Dummy(AbstractDataclass):
+    ...
+
+
+@dataclass(frozen=True)
+class SpaceId(_Dummy):
     space: str
 
     @property
