@@ -37,9 +37,6 @@ def init(client: PowerOpsClient | None, echo: Echo | None = None, model_names: s
         echo: Function to use for printing. Defaults to print.
         model_names: The models to deploy. If not provided, all models will be deployed.
 
-    Raises:
-        ReSyncDataModelsExists: If the data models already exist.
-
     """
     client = client or PowerOpsClient.from_settings()
     cdf = client.cdf
@@ -287,8 +284,25 @@ def apply(
     return written_changes
 
 
-def destroy():
-    ...
+def destroy(
+    client: PowerOpsClient | None,
+    echo: Echo | None = None,
+    model_names: str | list[str] | None = None,
+    auto_yes: bool = False,
+) -> ModelDifferences:
+    """
+    Destroys all resync models in CDF. This will also delete all data in the models.
+
+    Args:
+        client: The PowerOpsClient to use. If not provided, a new client will be created.
+        echo: Function to use for printing. Defaults to print.
+        model_names: The models to destroy.
+        auto_yes: If true, all prompts will be auto confirmed.
+
+    Returns:
+        A ModelDifferences object containing the resources that has been destroyed.
+    """
+    raise NotImplementedError()
 
 
 def _edges_before_nodes(diff: FieldDifference) -> int:
