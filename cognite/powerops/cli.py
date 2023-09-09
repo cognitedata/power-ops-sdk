@@ -142,12 +142,13 @@ def destroy(
     dry_run: bool = typer.Option(
         False, "--dry-run", help="Whether to run the command as a dry run, meaning no resources will be destroyed."
     ),
+    auto_yes: bool = typer.Option(False, "--yes", "-y", help="Auto confirm all prompts"),
     format: str = typer.Option(default=None, help="The format of the output. Available formats: markdown"),
     verbose: bool = typer.Option(True, "--verbose", "-v", help="Whether to print verbose output"),
 ):
     client = PowerOpsClient.from_settings()
 
-    destroyed = resync.destroy(client, echo=_to_echo(verbose), model_names=models, dry_run=dry_run)
+    destroyed = resync.destroy(client, echo=_to_echo(verbose), model_names=models, auto_yes=auto_yes, dry_run=dry_run)
     if format == "markdown":
         typer.echo(destroyed.as_github_markdown())
 

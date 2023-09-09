@@ -8,6 +8,7 @@ from typing import Any, ClassVar, Optional
 import pandas as pd
 from cognite.client.data_classes import FileMetadata, Sequence
 from cognite.client.data_classes._base import CogniteResource
+from cognite.client.data_classes.data_modeling.ids import AbstractDataclass
 from pydantic import BaseModel, ConfigDict, model_serializer, model_validator
 from typing_extensions import Self
 
@@ -129,9 +130,13 @@ class CDFFile(CDFResource):
         return cls(meta=FileMetadata._load(data))
 
 
-@dataclass
-class SpaceId:
+@dataclass(frozen=True)
+class SpaceId(AbstractDataclass):
     space: str
+
+    @property
+    def external_id(self) -> str:
+        return self.space
 
     def dump(self, camel_case: bool = True) -> dict[str, Any]:
         return {"space": self.space}

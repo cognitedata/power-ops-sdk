@@ -15,7 +15,7 @@ from cognite.powerops.client.powerops_client import PowerOpsClient
 from cognite.powerops.resync import diff, models
 from cognite.powerops.resync.config import ReSyncConfig
 from cognite.powerops.resync.diff import FieldDifference, ModelDifference, ModelDifferences
-from cognite.powerops.resync.models.base import CDFFile, CDFSequence, DataModel, Model
+from cognite.powerops.resync.models.base import CDFFile, CDFSequence, DataModel, Model, SpaceId
 
 from . import Echo
 from .cdf import get_cognite_api
@@ -256,8 +256,11 @@ def destroy(
             removed = _remove_resources(remove_data + remove_data_model, echo, client.cdf, auto_yes)
             destroyed.append(removed)
 
+    # Spaces are deleted last, as they might contain other resources.
     spaces = set(d.graph_ql.id_.space for d in model_types if issubclass(d, DataModel))
     if spaces and not dry_run:
+        deleted_space: list[SpaceId] = []
+        # One at a time, in case there are other resources in the space that will prevent deletion.
         for space in spaces:
             echo(f"Deleting space {space}..")
             try:
@@ -266,6 +269,23 @@ def destroy(
                 echo(f"Failed to delete space {space} with error {e}", is_warning=True)
             else:
                 echo(f"... deleted space {space}")
+                deleted_space.append(SpaceId(space))
+        if deleted_space:
+            destroyed.append(
+                ModelDifference(
+                    model_name="All Models",
+                    changes={
+                        "spaces": FieldDifference(
+                            group="CDF",
+                            field_name="spaces",
+                            removed=list(deleted_space),
+                            added=[],
+                            changed=[],
+                            unchanged=[],
+                        )
+                    },
+                )
+            )
     return destroyed
 
 
