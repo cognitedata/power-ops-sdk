@@ -156,7 +156,7 @@ def plan(
 def apply(
     config_dir: Path,
     market: str,
-    client: PowerOpsClient | None,
+    client: PowerOpsClient | None = None,
     echo: Echo | None = None,
     model_names: str | list[str] | None = None,
     auto_yes: bool = False,

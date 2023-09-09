@@ -105,9 +105,10 @@ def apply(
     verbose: bool = typer.Option(True, "--verbose", "-v", help="Whether to print verbose output"),
 ):
     echo = _to_echo(verbose)
+    client = PowerOpsClient.from_settings()
 
     echo(f"Running apply on configuration files located in {path}")
-    changed = resync.apply(path, market, model_names=models, echo=_to_echo(verbose), auto_yes=auto_yes)
+    changed = resync.apply(path, market, client, model_names=models, echo=_to_echo(verbose), auto_yes=auto_yes)
     if format == "markdown":
         typer.echo(changed.as_github_markdown())
 
