@@ -4,14 +4,11 @@ from pprint import pprint
 import yaml
 
 
-from cognite.powerops.client.powerops_client import PowerOpsClient, get_powerops_client
-from cognite.powerops.resync._logger import configure_debug_logging
+from cognite.powerops.client.powerops_client import PowerOpsClient
 
 
 def main():
-    configure_debug_logging("DEBUG")
-
-    p: PowerOpsClient = get_powerops_client()
+    p: PowerOpsClient = PowerOpsClient.from_settings()
 
     run = p.shop.runs.retrieve(external_id="POWEROPS_SHOP_RUN_ede8c4c0-18b1-41b1-ae40-ea20e037645c")
 

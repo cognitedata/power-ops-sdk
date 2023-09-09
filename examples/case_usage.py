@@ -3,17 +3,13 @@ import os
 import tempfile
 from pprint import pprint
 
-from cognite.powerops.client.powerops_client import PowerOpsClient, get_powerops_client
+from cognite.powerops.client.powerops_client import PowerOpsClient
 from cognite.powerops.client.shop.data_classes import Case
-from cognite.powerops.resync._logger import configure_debug_logging
 
 
 def main():
-    # some nice logging:
-    configure_debug_logging(level=logging.INFO)
-
     # init the SDK:
-    powerops: PowerOpsClient = get_powerops_client()
+    powerops: PowerOpsClient = PowerOpsClient.from_settings()
     # we'll be downloading files, need a dir:
     # (using tempfile here, but anything works)
     tmp_dir = tempfile.mkdtemp(prefix="power-ops-sdk-usage")

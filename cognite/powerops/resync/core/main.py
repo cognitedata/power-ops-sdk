@@ -9,7 +9,7 @@ from cognite.client.data_classes import Event
 from cognite.client.data_classes.data_modeling.instances import InstanceCore
 from yaml import safe_dump
 
-from cognite.powerops.client.powerops_client import PowerOpsClient, get_powerops_client
+from cognite.powerops.client.powerops_client import PowerOpsClient
 from cognite.powerops.resync import models
 from cognite.powerops.resync.config import ReSyncConfig
 from cognite.powerops.resync.diff import FieldDifference, ModelDifference, ModelDifferences, model_difference
@@ -126,13 +126,12 @@ def apply(
     ```
     """
     echo = echo or print
-    client = get_powerops_client()
 
     loaded_models = _load_transform(
         market, config_dir, client.cdf.config.project, echo, model_names or list(DEFAULT_MODELS)
     )
 
-    settings = Settings()
+    # settings = Settings()
     if settings.powerops.read_dataset is None or settings.powerops.write_dataset is None:
         raise ValueError("No read_dataset or write_dataset configured in settings")
     read_dataset = settings.powerops.read_dataset

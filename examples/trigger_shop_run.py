@@ -2,16 +2,16 @@ import logging
 
 from pprint import pprint
 
-from cognite.powerops.client.powerops_client import PowerOpsClient, get_powerops_client
+from cognite.powerops.client.powerops_client import PowerOpsClient
 from cognite.powerops.client.shop.data_classes import Case
 
-from cognite.powerops.resync._logger import configure_debug_logging
+# from cognite.powerops.resync._logger import configure_debug_logging
 
 
 def main():
-    configure_debug_logging(level=logging.DEBUG)
+    # configure_debug_logging(level=logging.DEBUG)
 
-    p: PowerOpsClient = get_powerops_client()
+    p: PowerOpsClient = PowerOpsClient.from_settings()
 
     case = Case.from_yaml_file("/path/to/cogshop/test_cogshopsession/test_inputs/run.yaml")
     case.add_cut_file("/path/to/cogshop/test_cogshopsession/test_inputs/cut.txt")

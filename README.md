@@ -87,9 +87,9 @@ $ powerops plan tests/data/demo Dayahead
 ### PowerOpsClient
 
 ```python
-from cognite.powerops.client import get_powerops_client
+from cognite.powerops.client import PowerOpsClient
 
-client = get_powerops_client()
+client = PowerOpsClient.from_settings()
 
 client.shop.runs.trigger()
 ```

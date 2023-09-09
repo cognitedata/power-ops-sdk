@@ -10,7 +10,7 @@ from rich.logging import RichHandler
 
 from cognite import powerops
 from cognite.powerops import resync
-from cognite.powerops.client.powerops_client import get_powerops_client
+from cognite.powerops.client import PowerOpsClient
 from cognite.powerops.resync import MODEL_BY_NAME
 from cognite.powerops.utils.cdf import Settings
 from cognite.powerops.utils.cdf.extraction_pipelines import ExtractionPipelineCreate, RunStatus
@@ -75,7 +75,7 @@ def plan(
     if len(models) == 1 and models[0].lower() == "all":
         models = list(MODEL_BY_NAME.keys())
 
-    power = get_powerops_client()
+    power = PowerOpsClient.from_settings()
 
     changes = resync.plan(path, market, echo=echo, model_names=models, dump_folder=dump_folder, client=power)
     if format == "markdown":
@@ -111,7 +111,7 @@ def apply(
     market: Annotated[str, typer.Argument(help="Selected power market")],
     models: list[str] = typer.Option(
         default=sorted(resync.DEFAULT_MODELS),
-        help=f"The models to run apply. Available models: {', '.join(resync.MODEL_BY_NAME)}",
+        help=f"The models to run apply. Available models: {', '.join(resync.DEFAULT_MODELS)}",
     ),
     auto_yes: bool = typer.Option(False, "--yes", "-y", help="Auto confirm all prompts"),
     format: str = typer.Option(default=None, help="The format of the output. Available formats: markdown"),
@@ -131,16 +131,13 @@ def apply(
         typer.echo(changed.as_github_markdown())
 
 
-@app.command(
-    "deploy",
-    help=f"Deploy the data model in CDF. Available models: {list(MODEL_BY_NAME.keys())}. "
-    f"Use 'all' to deploy all models.",
-)
-def deploy(models: Annotated[list[str], typer.Argument(help="The models to deploy")]):
+@app.command("init", help=f"Setup necessary data models in CDF")
+def init():
     if len(models) == 1 and models[0].lower() == "all":
         models = list(MODEL_BY_NAME.keys())
 
     client = get_powerops_client()
+
     for model_name in models:
         if model_name not in MODEL_BY_NAME:
             log.warning(f"Model {model_name} not found, skipping. Available models: {list(MODEL_BY_NAME.keys())}")
@@ -150,6 +147,16 @@ def deploy(models: Annotated[list[str], typer.Argument(help="The models to deplo
         model = MODEL_BY_NAME[model_name]
         result = client.cdf.data_modeling.graphql.apply_dml(model.id_, model.graphql, model.name, model.description)
         log.info(f"Deployed {model_name} model ({result.space}, {result.external_id}, {result.version})")
+
+
+@app.command("destroy", help="Destroy all the data models created ")
+def destroy():
+    ...
+
+
+@app.command("validate", help="Validate the configuration files")
+def validate():
+    ...
 
 
 @app.command("show", help=f"Show the graphql schema of Power Ops model. Available models: {list(MODEL_BY_NAME.keys())}")
