@@ -10436,7 +10436,11 @@ nodes:
       modelTemplate:
         externalId: ModelTemplate_Fornebu
         space: cogShop
-      name: Scenario Fornebu scenario_1
+      name: Scenario Fornebu <bound method ShopRun.scenario_name of ShopRun(workflow_event=<cognite.client.data_classes.events.Event
+        object at 0x7ff9a0ab4910>, watercourse='Fornebu', starttime='2021-05-21 22:00:00',
+        endtime='2021-05-30 22:00:00', incremental_mapping=<cognite.client.data_classes.sequences.Sequence
+        object at 0x7ff9a0ab4160>, dm_case='Case_2023-09-09T09:56:11.283404Z_c5f04e',
+        dm_space='cogShop', dm_model='CogShop', timeresolution=None, dynamic_minute_offset=None)>
     source:
       externalId: Scenario
       space: cogShop
@@ -10612,7 +10616,11 @@ nodes:
       modelTemplate:
         externalId: ModelTemplate_Fornebu
         space: cogShop
-      name: Scenario Fornebu scenario_2
+      name: Scenario Fornebu <bound method ShopRun.scenario_name of ShopRun(workflow_event=<cognite.client.data_classes.events.Event
+        object at 0x7ff9a0ab4910>, watercourse='Fornebu', starttime='2021-05-21 22:00:00',
+        endtime='2021-05-30 22:00:00', incremental_mapping=<cognite.client.data_classes.sequences.Sequence
+        object at 0x7ff9a0ab49a0>, dm_case='Case_2023-09-09T09:56:11.284030Z_5fa733',
+        dm_space='cogShop', dm_model='CogShop', timeresolution=None, dynamic_minute_offset=None)>
     source:
       externalId: Scenario
       space: cogShop
