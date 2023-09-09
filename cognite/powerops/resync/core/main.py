@@ -1,11 +1,11 @@
+"""
+This module contains the main functions for the resync tool.
+"""
 from __future__ import annotations
 
-from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Callable, Optional
-from uuid import uuid4
+from typing import Optional
 
-from cognite.client.data_classes import Event
 from cognite.client.data_classes.data_modeling.instances import InstanceCore
 from yaml import safe_dump
 
@@ -13,28 +13,81 @@ from cognite.powerops.client.powerops_client import PowerOpsClient
 from cognite.powerops.resync import models
 from cognite.powerops.resync.config import ReSyncConfig
 from cognite.powerops.resync.diff import FieldDifference, ModelDifference, ModelDifferences, model_difference
-from cognite.powerops.resync.models.base import Model
-from cognite.powerops.utils.cdf import Settings
-from cognite.powerops.utils.navigation import all_concrete_subclasses
+from cognite.powerops.resync.models.base import DataModel, Model
 
+from . import Echo
 from .cdf import get_cognite_api
 from .transform import transform
 from .validation import _clean_relationships
 
-MODEL_BY_NAME: dict[str, type[Model]] = {
-    model.__name__: model for model in all_concrete_subclasses(Model)  # type: ignore[type-abstract]
-}
-AVAILABLE_MODELS: frozenset[str] = frozenset(MODEL_BY_NAME)
-DEFAULT_MODELS: frozenset[str] = frozenset([m.__name__ for m in models.V1_MODELS])
+MODELS_BY_NAME = {m.__name__: m for m in models.V1_MODELS}
+
+
+def _default_echo(message: str, is_warning: bool = False) -> None:
+    print(message)
+
+
+def init(client: PowerOpsClient | None, echo: Echo | None = None, model_names: str | list[str] | None = None) -> None:
+    """
+    This function will create the data models in CDF that are required for resync to work. It will not overwrite
+    existing models.
+
+    Args:
+        client: The PowerOpsClient to use. If not provided, a new client will be created.
+        echo: Function to use for printing. Defaults to print.
+        model_names: The models to deploy. If not provided, all models will be deployed.
+
+    Raises:
+        ReSyncDataModelsExists: If the data models already exist.
+
+    """
+    client = client or PowerOpsClient.from_settings()
+    cdf = client.cdf
+    echo = echo or _default_echo
+    model_classes = _to_models(model_names)
+    data_models = [model.graph_ql for model in model_classes if issubclass(model, DataModel)]
+
+    existing = set(cdf.data_modeling.data_models.retrieve([d.id_ for d in data_models]).as_ids())
+
+    for model in data_models:
+        if model.id_ in existing:
+            echo(f"Skipping {model.name} data model with {model.id_}, is already exists", is_warning=True)
+            continue
+        echo(f"Deploying {model.name} data model with {model.id_}")
+        result = cdf.data_modeling.graphql.apply_dml(model.id_, model.graphql, model.name, model.description)
+        echo(f"Deployed {model.name} model ({result.space}, {result.external_id}, {result.version})")
+
+
+def validate(config_dir: str | Path, echo: Echo | None = None) -> None:
+    """
+    Validates the local configuration files.
+
+    Args:
+        config_dir: Local path to the configuration files. Needs to follow a specific structure. See below.
+        echo: Function to use for printing. Defaults to print.
+
+    Configuration file structure:
+    ```
+    📦config_dir
+     ┣ 📂cogshop - The CogSHOP configuration
+     ┣ 📂market - The Market configuration for DayAhead, RKOM, and benchmarking.
+     ┣ 📂production - The physical assets configuration, Watercourse, PriceArea, Genertor, Plant  (SHOP centered)
+     ┗ 📜settings.yaml - Settings for resync.
+    ```
+    """
+    echo = echo or _default_echo
+    echo(f"Validating configuration in {config_dir}")
+    _ = ReSyncConfig.from_yamls(Path(config_dir), "dummy")
+    echo("Validation successful")
 
 
 def plan(
     config_dir: Path,
     market: str,
-    echo: Optional[Callable[[str], None]] = None,
-    model_names: Optional[str | list[str]] = None,
+    client: PowerOpsClient | None,
+    echo: Echo | None = None,
+    model_names: str | list[str] | None = None,
     dump_folder: Optional[Path] = None,
-    client: PowerOpsClient | None = None,
 ) -> ModelDifferences:
     """
     Loads the local configuration files, transform them into Resync models, and compares them to the downloaded
@@ -43,12 +96,13 @@ def plan(
     Args:
         config_dir: Local path to the configuration files. Needs to follow a specific structure. See below.
         market: The market to load the configuration for.
+        client: The PowerOpsClient to use. If not provided, a new client will be created.
         echo: Function to use for printing. Defaults to print.
         model_names: The models to run the plan.
         dump_folder: If present, the local and CDF changes will be dumped to this directory. This is done so that
-                    you can use local tools (for example PyCharm or VS Code) to compare the detailed changes
+                    you can use local tools (for example, PyCharm or VS Code) to compare the detailed changes
                     between the local and CDF configuration.
-        client: The PowerOpsClient to use. If not provided, a new client will be created.
+
 
     Returns:
         A ModelDifferences object containing the differences between the local and CDF configuration.
@@ -62,17 +116,15 @@ def plan(
      ┗ 📜settings.yaml - Settings for resync.
     ```
     """
-    echo = echo or print
-    settings = Settings()
-
-    client = client or get_powerops_client()
+    echo = echo or _default_echo
+    client = client or PowerOpsClient.from_settings()
 
     loaded_models = _load_transform(market, config_dir, client.cdf.config.project, echo, model_names)
 
     echo(f"Load transform completed, models {', '.join([type(m).__name__ for m in loaded_models])} loaded")
-    if settings.powerops.read_dataset is None:
+    if client.datasets.read_dataset is None:
         raise ValueError("No read_dataset configured in settings")
-    data_set_external_id = settings.powerops.read_dataset
+    data_set_external_id = client.datasets.read_dataset
     all_differences = []
     for new_model in loaded_models:
         echo(f"Retrieving {new_model.model_name} from CDF")
@@ -97,8 +149,9 @@ def plan(
 def apply(
     config_dir: Path,
     market: str,
-    model_names: list[str] | str | None = None,
-    echo: Optional[Callable[[Any], None]] = None,
+    client: PowerOpsClient | None,
+    echo: Echo | None = None,
+    model_names: str | list[str] | None = None,
     auto_yes: bool = False,
 ) -> ModelDifferences:
     """
@@ -108,6 +161,7 @@ def apply(
     Args:
         config_dir: Local path to the configuration files. Needs to follow a specific structure. See below.
         market: The market to load the configuration for.
+        client: The PowerOpsClient to use. If not provided, a new client will be created.
         echo: Function to use for printing. Defaults to print.
         model_names: The models to run the plan.
         auto_yes: If true, all prompts will be auto confirmed.
@@ -125,25 +179,15 @@ def apply(
      ┗ 📜settings.yaml - Settings for resync.
     ```
     """
-    echo = echo or print
+    echo = echo or _default_echo
+    client = client or PowerOpsClient.from_settings()
+    loaded_models = _load_transform(market, config_dir, client.cdf.config.project, echo, model_names)
 
-    loaded_models = _load_transform(
-        market, config_dir, client.cdf.config.project, echo, model_names or list(DEFAULT_MODELS)
-    )
-
-    # settings = Settings()
-    if settings.powerops.read_dataset is None or settings.powerops.write_dataset is None:
-        raise ValueError("No read_dataset or write_dataset configured in settings")
-    read_dataset = settings.powerops.read_dataset
-    retrieved = client.cdf.data_sets.retrieve(external_id=settings.powerops.write_dataset)
-    if retrieved is None or retrieved.id is None:
-        raise ValueError(f"Could not find write_dataset {settings.powerops.write_dataset}")
-
-    write_dataset = retrieved.id
+    write_dataset = client.datasets.write_dataset_id
 
     written_changes = ModelDifferences([])
     for new_model in loaded_models:
-        cdf_model = type(new_model).from_cdf(client, data_set_external_id=read_dataset)
+        cdf_model = type(new_model).from_cdf(client, data_set_external_id=client.datasets.read_dataset)
 
         new_sequences_by_id = {s.external_id: s for s in new_model.sequences()}
         new_files_by_id = {f.external_id: f for f in new_model.files()}
@@ -243,6 +287,10 @@ def apply(
     return written_changes
 
 
+def destroy():
+    ...
+
+
 def _edges_before_nodes(diff: FieldDifference) -> int:
     if diff.group == "Domain":
         return 0
@@ -270,38 +318,27 @@ def _nodes_before_edges(diff: FieldDifference) -> int:
 
 
 def _load_transform(
-    market: str, path: Path, cdf_project: str, echo: Callable[[str], None], model_names: str | list[str] | None
+    market: str, path: Path, cdf_project: str, echo: Echo, model_names: str | list[str] | None
 ) -> list[Model]:
+    model_types = _to_models(model_names)
+    echo(f"Loading and transforming {', '.join([m.__name__ for m in model_types])}")
+
+    config = ReSyncConfig.from_yamls(path, cdf_project)
+
+    return transform(config, market, set(model_types))
+
+
+def _to_models(model_names: str | list[str] | None) -> list[type[Model]]:
     if isinstance(model_names, str):
         model_names = [model_names]
     elif model_names is None:
-        model_names = list(DEFAULT_MODELS)
+        model_names = list(MODELS_BY_NAME)
     elif isinstance(model_names, list) and model_names and isinstance(model_names[0], str):
         model_names = model_names
     else:
         raise ValueError(f"Invalid model_names type: {type(model_names)}")
 
-    if invalid := set(model_names) - AVAILABLE_MODELS:
-        raise ValueError(f"Invalid model names: {invalid}. Available models: {AVAILABLE_MODELS}")
+    if invalid := set(model_names) - set(MODELS_BY_NAME):
+        raise ValueError(f"Invalid model names: {invalid}. Available models: {list(MODELS_BY_NAME)}")
 
-    echo(f"Loading and transforming {', '.join(model_names)}")
-
-    config = ReSyncConfig.from_yamls(path, cdf_project)
-
-    return transform(config, market, {MODEL_BY_NAME[model_name] for model_name in model_names})
-
-
-def _create_bootstrap_finished_event(echo: Callable[[str], None]) -> Event:
-    """Creating a POWEROPS_BOOTSTRAP_FINISHED Event in CDF to signal that bootstrap scripts have been ran"""
-    current_time = int(datetime.now(timezone.utc).timestamp() * 1000)  # in milliseconds
-    event = Event(
-        start_time=current_time,
-        end_time=current_time,
-        external_id=f"POWEROPS_BOOTSTRAP_FINISHED_{uuid4()!s}",
-        type="POWEROPS_BOOTSTRAP_FINISHED",
-        source="PowerOps bootstrap",
-        description="Manual run of bootstrap scripts finished",
-    )
-    echo(f"Created status event '{event.external_id}'")
-
-    return event
+    return [MODELS_BY_NAME[model_name] for model_name in model_names]
