@@ -3,7 +3,7 @@ import os
 import tempfile
 from pprint import pprint
 
-from cognite.powerops.client.powerops_client import PowerOpsClient
+from cognite.powerops import PowerOpsClient
 from cognite.powerops.client.shop.data_classes import Case
 
 
