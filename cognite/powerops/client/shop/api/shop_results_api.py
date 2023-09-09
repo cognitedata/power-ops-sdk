@@ -78,7 +78,7 @@ class ShopRunResultsAPI:
         sequences = self._client.sequences.retrieve_multiple(external_ids=[r.target_external_id for r in relationships])
         for seq in sequences:
             # sometimes the label is given to the non-objective sequence too
-            if "objective" not in seq.field_name.lower():
+            if "objective" not in seq.name.lower():
                 continue
             # Data is inserted as a single row DataFrame
             seq_data = self._client.sequences.data.retrieve_dataframe(

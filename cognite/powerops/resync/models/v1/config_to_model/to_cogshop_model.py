@@ -34,13 +34,11 @@ def to_cogshop_asset_model(
 
     # TODO Fix the assumption that timeseries mappings and watercourses are in the same order
     for watercourse, mapping in zip(watercourses, configuration.time_series_mappings):
-        model_file = _to_shop_model_file(
-            watercourse.field_name, watercourse.model_file, watercourse.processed_model_file
-        )
+        model_file = _to_shop_model_file(watercourse.name, watercourse.model_file, watercourse.processed_model_file)
         model.shop_files.append(model_file)
 
         ##### Output definition #####
-        external_id = f"SHOP_{watercourse.field_name.replace(' ', '_')}_output_definition"
+        external_id = f"SHOP_{watercourse.name.replace(' ', '_')}_output_definition"
 
         sequence = Sequence(
             name=external_id.replace("_", " "),
@@ -53,7 +51,7 @@ def to_cogshop_asset_model(
                 {"valueType": "STRING", "externalId": "unit"},
                 {"valueType": "STRING", "externalId": "is_step"},
             ],
-            metadata={"shop:watercourse": watercourse.field_name, "shop:type": "output_definition"},
+            metadata={"shop:watercourse": watercourse.name, "shop:type": "output_definition"},
         )
         # Only default mapping is used
         df = pd.DataFrame(
@@ -73,39 +71,39 @@ def to_cogshop_asset_model(
         model.output_definitions.append(output_definition)
 
         ##### Base Mapping #####
-        external_id = f"SHOP_{watercourse.field_name}_base_mapping"
+        external_id = f"SHOP_{watercourse.name}_base_mapping"
         sequence = Sequence(
             name=external_id.replace("_", " "),
             external_id=external_id,
             description="Mapping between SHOP paths and CDF TimeSeries",
             columns=mapping.column_definitions,
-            metadata={"shop:watercourse": watercourse.field_name, "shop:type": "base_mapping"},
+            metadata={"shop:watercourse": watercourse.name, "shop:type": "base_mapping"},
         )
         output_definition = CDFSequence(sequence=sequence, content=mapping.to_dataframe())
         model.base_mappings.append(output_definition)
 
         ### Model Template ###
         model_template = cogshop_v1.ModelTemplateApply(
-            external_id=f"ModelTemplate_{watercourse.field_name}",
+            external_id=f"ModelTemplate_{watercourse.name}",
             version="1",
             shop_version=shop_version,
-            watercourse=watercourse.field_name,
+            watercourse=watercourse.name,
             model=cogshop_v1.FileRefApply(
-                external_id=f"ModelTemplate_{watercourse.field_name}__FileRef_model",
+                external_id=f"ModelTemplate_{watercourse.name}__FileRef_model",
                 type="case",
                 file_external_id=model_file.external_id,
             ),
             base_mappings=[
                 cogshop_v1.MappingApply(
-                    external_id=f"BM_{watercourse.field_name}_{row.shop_model_path}",
+                    external_id=f"BM_{watercourse.name}_{row.shop_model_path}",
                     path=row.shop_model_path,
                     timeseries_external_id=row.time_series_external_id,
                     transformations=[
                         _create_transformation(order, transformation)
                         for order, transformation in enumerate(row.transformations or [])
                     ],
-                    retrieve=row.retrieve.field_name if row.retrieve else None,
-                    aggregation=row.aggregation.field_name if row.aggregation else None,
+                    retrieve=row.retrieve.name if row.retrieve else None,
+                    aggregation=row.aggregation.name if row.aggregation else None,
                 )
                 for row in mapping
             ],

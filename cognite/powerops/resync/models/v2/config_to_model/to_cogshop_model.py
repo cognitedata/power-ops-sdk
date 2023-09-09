@@ -22,9 +22,7 @@ def to_cogshop_data_model(
 
     # TODO Fix the assumption that timeseries mappings and watercourses are in the same order
     for watercourse, mapping in zip(watercourse_configs, config.time_series_mappings):
-        model_file = _to_shop_model_file(
-            watercourse.field_name, watercourse.yaml_raw_path, watercourse.yaml_processed_path
-        )
+        model_file = _to_shop_model_file(watercourse.name, watercourse.yaml_raw_path, watercourse.yaml_processed_path)
         model.shop_files.append(model_file)
 
         ##### Output Definitions #####
@@ -47,11 +45,11 @@ def to_cogshop_data_model(
                 ("reservoir", "energy_conversion_factor", "energy_conversion_factor", "MWh/Mm3", True),
             ]
         ]
-        external_id = f"SHOP_{watercourse.field_name.replace(' ', '_')}_output_definition"
+        external_id = f"SHOP_{watercourse.name.replace(' ', '_')}_output_definition"
         output_container = OutputContainerApply(
             external_id=external_id,
             name=external_id.replace("_", " "),
-            watercourse=watercourse.field_name,
+            watercourse=watercourse.name,
             shop_type="output_definition",
             mappings=output_definitions,
         )
@@ -69,8 +67,8 @@ def to_cogshop_data_model(
                 {t.external_id: t for t in base_mapping.transformations if isinstance(t, ValueTransformationApply)}
             )
         scenario_mapping = ScenarioMappingApply(
-            external_id=f"SHOP_{watercourse.field_name}_base_mapping",
-            watercourse=watercourse.field_name,
+            external_id=f"SHOP_{watercourse.name}_base_mapping",
+            watercourse=watercourse.name,
             shop_type="base_mapping",
             mapping_override=base_mappings,
         )
@@ -79,13 +77,13 @@ def to_cogshop_data_model(
 
         model.scenario_templates.append(
             ScenarioTemplateApply(
-                external_id=f"{ScenarioTemplateApply.__name__.removesuffix('Apply')}_{watercourse.field_name}",
+                external_id=f"{ScenarioTemplateApply.__name__.removesuffix('Apply')}_{watercourse.name}",
                 model=model_file.external_id,
                 shop_version=shop_version,
                 template_version="1",
                 output_definitions=output_container,
                 shop_files=[f.external_id for f in model.shop_files],
-                watercourse=watercourse.field_name,
+                watercourse=watercourse.name,
                 base_mapping=scenario_mapping,
             )
         )

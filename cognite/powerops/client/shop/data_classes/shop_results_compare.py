@@ -36,7 +36,7 @@ class ShopResultsCompare:
 
         for i, shop_yaml in enumerate(post_run_list):
             if time_series := shop_yaml._retrieve_time_series_dict(comparison_key):
-                plot_label = labels[i] if labels else shop_yaml.field_name
+                plot_label = labels[i] if labels else shop_yaml.name
                 plots[plot_label] = time_series
 
         ax = create_time_series_plot()

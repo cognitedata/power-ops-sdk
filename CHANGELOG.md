@@ -19,6 +19,13 @@ Changes are grouped as follows
 
 ### Added
 * `verbose` option to `plan` command.
+* `powerops init` command and resync method.
+* `powerops validate` command and resync method.
+* `powerops destroy` command and resync method.
+* `dataset` API to `PowerOpsClient`.
+
+### Removed
+* `get_powerops_client` this has been replaced by `PowerOpsClient.from_settings`.
 
 ## [0.47.2] - 2023-09-08
 ### Fixed

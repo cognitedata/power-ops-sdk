@@ -25,9 +25,9 @@ class InstanceAdapter(API):
 
     def delete(self, id: Any) -> list:
         if self.instance_type == "node":
-            return self.client.data_modeling.instances.filter_out(nodes=id).nodes
+            return self.client.data_modeling.instances.delete(nodes=id).nodes
         else:
-            return self.client.data_modeling.instances.filter_out(edges=id).edges
+            return self.client.data_modeling.instances.delete(edges=id).edges
 
 
 def delete_resources(api: API, space: str):
