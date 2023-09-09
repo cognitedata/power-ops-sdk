@@ -37,6 +37,26 @@ def common(ctx: typer.Context, version: bool = typer.Option(None, "--version", c
     ...
 
 
+@app.command("init", help="Setup necessary data models in CDF for ReSync to run")
+def init(
+    models: list[str] = typer.Option(
+        default=sorted(resync.MODELS_BY_NAME),
+        help=f"The models to initialize. Available models: {', '.join(resync.MODELS_BY_NAME)}",
+    ),
+    verbose: bool = typer.Option(True, "--verbose", "-v", help="Whether to print verbose output"),
+):
+    client = PowerOpsClient.from_settings()
+    resync.init(client, echo=_to_echo(verbose), model_names=models)
+
+
+@app.command("validate", help="Validate the configuration files")
+def validate(
+    path: Annotated[Path, typer.Argument(help="Path to configuration files")],
+    verbose: bool = typer.Option(True, "--verbose", "-v", help="Whether to print verbose output"),
+):
+    resync.validate(path, echo=_to_echo(verbose))
+
+
 @app.command(
     "plan",
     help="Preview the changes from the configuration files that `powerops apply` would make to the data model in CDF",
@@ -113,18 +133,6 @@ def apply(
         typer.echo(changed.as_github_markdown())
 
 
-@app.command("init", help="Setup necessary data models in CDF for ReSync to run")
-def init(
-    models: list[str] = typer.Option(
-        default=sorted(resync.MODELS_BY_NAME),
-        help=f"The models to initialize. Available models: {', '.join(resync.MODELS_BY_NAME)}",
-    ),
-    verbose: bool = typer.Option(True, "--verbose", "-v", help="Whether to print verbose output"),
-):
-    client = PowerOpsClient.from_settings()
-    resync.init(client, echo=_to_echo(verbose), model_names=models)
-
-
 @app.command("destroy", help="Destroy all the data models created by resync and remove all the data.")
 def destroy(
     models: list[str] = typer.Option(
@@ -142,14 +150,6 @@ def destroy(
     destroyed = resync.destroy(client, echo=_to_echo(verbose), model_names=models, dry_run=dry_run)
     if format == "markdown":
         typer.echo(destroyed.as_github_markdown())
-
-
-@app.command("validate", help="Validate the configuration files")
-def validate(
-    path: Annotated[Path, typer.Argument(help="Path to configuration files")],
-    verbose: bool = typer.Option(True, "--verbose", "-v", help="Whether to print verbose output"),
-):
-    resync.validate(path, echo=_to_echo(verbose))
 
 
 def main():
