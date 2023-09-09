@@ -438,7 +438,7 @@ def _to_models(model_names: str | list[str] | None) -> list[type[Model]]:
 
 
 def _get_data_model_view_containers(cdf: CogniteClient, data_model_id: DataModelId, model_name: str) -> ModelDifference:
-    data_model = cdf.data_modeling.data_models.retrieve(ids=data_model_id, inline_views=True)
+    data_model = cdf.data_modeling.data_models.retrieve(ids=data_model_id, inline_views=True).latest_version()
     views = data_model.views
 
     changes = {
@@ -446,7 +446,14 @@ def _get_data_model_view_containers(cdf: CogniteClient, data_model_id: DataModel
         "containers": FieldDifference(
             group="CDF",
             field_name="containers",
-            removed=list(set(prop.container for prop in views.properties if isinstance(prop, MappedProperty))),
+            removed=list(
+                {
+                    prop.container
+                    for view in views
+                    for prop in view.properties.values()
+                    if isinstance(prop, MappedProperty)
+                }
+            ),
         ),
         "data_models": FieldDifference(group="CDF", field_name="data_models", removed=[data_model.as_id()]),
     }
