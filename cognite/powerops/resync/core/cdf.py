@@ -6,12 +6,15 @@ from typing import Any, Literal, Protocol, TypeVar, Union, cast
 from cognite.client import CogniteClient
 from cognite.client.data_classes import Asset, FileMetadata, FileMetadataList, Relationship
 from cognite.client.data_classes import Sequence as CogniteSequence
-from cognite.client.data_classes.data_modeling import EdgeApply, NodeApply
+from cognite.client.data_classes.data_modeling import ContainerId, DataModelId, EdgeApply, NodeApply, ViewId
 
 from cognite.powerops.resync.models.base import CDFFile, CDFSequence
 
 T_CogniteResource = TypeVar(
-    "T_CogniteResource", bound=Union[Asset, CogniteSequence, FileMetadata, Relationship, NodeApply, EdgeApply]
+    "T_CogniteResource",
+    bound=Union[
+        Asset, CogniteSequence, FileMetadata, Relationship, NodeApply, EdgeApply, ContainerId, ViewId, DataModelId
+    ],
 )
 
 
@@ -120,6 +123,22 @@ class InstanceAdapter(CogniteAPI[T_Instance]):
         self.create(item)
 
 
+class DataModelingAdapter(CogniteAPI[T_CogniteResource]):
+    def __init__(self, api: Any) -> None:
+        self.api = api
+
+    def create(self, items: T_CogniteResource | Sequence[T_CogniteResource]) -> Any:
+        self.api.apply(items)
+
+    def delete(self, external_id: str | Sequence[str]) -> Any:
+        self.api.delete(external_id)
+
+    def upsert(
+        self, item: T_CogniteResource | Sequence[T_CogniteResource], mode: Literal["patch", "replace"] = "patch"
+    ) -> Any:
+        raise NotImplementedError("Upsert not implemented for data modeling")
+
+
 def get_cognite_api(
     client: CogniteClient,
     name: str,
@@ -140,4 +159,10 @@ def get_cognite_api(
         return InstanceAdapter[NodeApply](client, "node")
     elif name == "edges":
         return InstanceAdapter[EdgeApply](client, "edge")
+    elif name == "data_models":
+        return DataModelingAdapter[DataModelId](client.data_modeling.data_models)
+    elif name == "views":
+        return DataModelingAdapter[ViewId](client.data_modeling.views)
+    elif name == "containers":
+        return DataModelingAdapter[ContainerId](client.data_modeling.containers)
     raise ValueError(f"Unknown resource type {name}")

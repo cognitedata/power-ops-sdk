@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+from dataclasses import dataclass
 from hashlib import sha256
 from typing import Any, ClassVar, Optional
 
@@ -126,3 +127,11 @@ class CDFFile(CDFResource):
     @classmethod
     def _load(cls, data: dict[str, Any]) -> Self:
         return cls(meta=FileMetadata._load(data))
+
+
+@dataclass
+class SpaceId:
+    space: str
+
+    def dump(self, camel_case: bool = True) -> dict[str, Any]:
+        return {"space": self.space}

@@ -7,20 +7,14 @@ from pathlib import Path
 from typing import Optional
 
 from cognite.client import CogniteClient
-from cognite.client.data_classes.data_modeling import SpaceApply, SpaceList
+from cognite.client.data_classes.data_modeling import DataModelId, MappedProperty, SpaceApply, SpaceList, ViewList
 from cognite.client.data_classes.data_modeling.instances import InstanceCore
 from yaml import safe_dump
 
 from cognite.powerops.client.powerops_client import PowerOpsClient
-from cognite.powerops.resync import models
+from cognite.powerops.resync import diff, models
 from cognite.powerops.resync.config import ReSyncConfig
-from cognite.powerops.resync.diff import (
-    FieldDifference,
-    ModelDifference,
-    ModelDifferences,
-    model_difference,
-    remove_all,
-)
+from cognite.powerops.resync.diff import FieldDifference, ModelDifference, ModelDifferences
 from cognite.powerops.resync.models.base import CDFFile, CDFSequence, DataModel, Model
 
 from . import Echo
@@ -144,7 +138,7 @@ def plan(
         echo(f"Retrieving {new_model.model_name} from CDF")
         cdf_model = type(new_model).from_cdf(client, data_set_external_id=data_set_external_id)
 
-        differences = model_difference(cdf_model, new_model)
+        differences = diff.model_difference(cdf_model, new_model)
         _clean_relationships(client.cdf, differences, new_model, echo)
 
         if dump_folder:
@@ -201,13 +195,13 @@ def apply(
     for new_model in loaded_models:
         cdf_model = type(new_model).from_cdf(client, data_set_external_id=client.datasets.read_dataset)
 
-        differences = model_difference(cdf_model, new_model)
+        differences = diff.model_difference(cdf_model, new_model)
 
         # Do not create relationships to time series that does not exist.
         _clean_relationships(client.cdf, differences, new_model, echo)
         # Remove the domain model as this is not CDF resources
         # TimeSeries are not updated by resync.
-        differences.delete(group="Domain", field_names={"timeseries"})
+        differences.filter_out(group="Domain", field_names={"timeseries"})
 
         new_sequences_by_id = {s.external_id: s for s in new_model.sequences()}
         new_files_by_id = {f.external_id: f for f in new_model.files()}
@@ -247,44 +241,48 @@ def destroy(
         if not issubclass(model_type, DataModel):
             echo(f"Skipping {model_type.__name__}, currently only data models are supported.", is_warning=True)
             continue
+
         cdf_model = model_type.from_cdf(client, data_set_external_id=client.datasets.read_dataset)
+        remove_data_model = _get_data_model_view_containers(client.cdf, cdf_model.graph_ql.id_, cdf_model.model_name)
 
-        removals = remove_all(cdf_model)
-        removals.delete(group="Domain", field_names={"timeseries"})
+        remove_data = diff.remove_only(cdf_model)
+        remove_data.filter_out(group="Domain", field_names={"timeseries"})
 
-        _remove_resources(removals, echo, client.cdf, auto_yes)
+        removed = _remove_resources(remove_data + remove_data_model, echo, client.cdf, auto_yes)
+
+        destroyed.append(removed)
 
     return destroyed
 
 
 def _remove_resources(differences: ModelDifference, echo: Echo, cdf: CogniteClient, auto_yes: bool) -> ModelDifference:
     removed = ModelDifference(model_name=differences.model_name, changes={})
-    for diff in sorted(differences, key=_edges_before_nodes):
-        if not diff.removed:
+    for difference in sorted(differences, key=_edges_before_nodes):
+        if not difference.removed:
             continue
-        echo(f"Removals detected for {diff.field_name} in {differences.model_name}")
-        echo(f"Remove count: {diff.as_summary().removed}")
-        diff_ids = diff.as_ids(5)
+        echo(f"Removals detected for {difference.field_name} in {differences.model_name}")
+        echo(f"Remove count: {difference.as_summary().removed}")
+        diff_ids = difference.as_ids(5)
         echo(f"Sample removed for {diff_ids.field_name}: {diff_ids.removed}")
         ans = "y" if auto_yes else input("Continue? (y/n)")
         if ans.lower() != "y":
             echo("Aborting")
             continue
 
-        api = get_cognite_api(cdf, diff.field_name)
+        api = get_cognite_api(cdf, difference.field_name)
         api.delete(
             external_id=[
-                r.as_id() if isinstance(r, InstanceCore) else r.external_id for r in diff.removed if r.external_id
+                r.as_id() if isinstance(r, InstanceCore) else r.external_id for r in difference.removed if r.external_id
             ]
         )
-        echo(f"Deleted {len(diff.removed)} of {diff.field_name}")
-        removed.changes[diff.field_name] = FieldDifference(
-            group=diff.group,
-            field_name=diff.field_name,
+        echo(f"Deleted {len(difference.removed)} of {difference.field_name}")
+        removed.changes[difference.field_name] = FieldDifference(
+            group=difference.group,
+            field_name=difference.field_name,
             added=[],
-            removed=diff.removed,
+            removed=difference.removed,
             changed=[],
-            unchanged=diff.unchanged,
+            unchanged=difference.unchanged,
         )
     return removed
 
@@ -298,17 +296,17 @@ def _add_update_resources(
     files_by_id: dict[str, CDFFile],
 ) -> ModelDifference:
     added_updated = ModelDifference(model_name=differences.model_name, changes={})
-    for diff in sorted(differences, key=_nodes_before_edges):
-        if not diff.added and not diff.changed:
+    for difference in sorted(differences, key=_nodes_before_edges):
+        if not difference.added and not difference.changed:
             continue
-        echo(f"Changes/Additions detected for {diff.field_name} in {differences.model_name}")
-        summary_count = diff.as_summary()
+        echo(f"Changes/Additions detected for {difference.field_name} in {differences.model_name}")
+        summary_count = difference.as_summary()
         echo(f"Change count: {summary_count.changed}")
         echo(f"Addition count: {summary_count.added}")
-        diff_ids = diff.as_ids(5)
+        diff_ids = difference.as_ids(5)
         if diff_ids.changed:
             echo(f"Sample changed for {diff_ids.field_name}:")
-            for change in diff.changed[:3]:
+            for change in difference.changed[:3]:
                 echo(change.changed_fields)
         if diff_ids.added:
             echo(f"Sample added for {diff_ids.field_name}: {diff_ids.added}")
@@ -317,38 +315,43 @@ def _add_update_resources(
             echo("Aborting")
             continue
 
-        diff.set_set_dataset(client.datasets.write_dataset_id)
-        api = get_cognite_api(client.cdf, diff.field_name, sequences_by_id, files_by_id)
+        difference.set_set_dataset(client.datasets.write_dataset_id)
+        api = get_cognite_api(client.cdf, difference.field_name, sequences_by_id, files_by_id)
 
-        if diff.added:
-            api.create(diff.added)
-            echo(f"Created {len(diff.added)} of {diff.field_name}")
-            if diff.field_name in added_updated:
-                added_updated[diff.field_name].added.extend(diff.added)
+        if difference.added:
+            api.create(difference.added)
+            echo(f"Created {len(difference.added)} of {difference.field_name}")
+            if difference.field_name in added_updated:
+                added_updated[difference.field_name].added.extend(difference.added)
             else:
-                added_updated[diff.field_name] = FieldDifference(
-                    group=diff.group, field_name=diff.field_name, added=diff.added, removed=[], changed=[], unchanged=[]
+                added_updated[difference.field_name] = FieldDifference(
+                    group=difference.group,
+                    field_name=difference.field_name,
+                    added=difference.added,
+                    removed=[],
+                    changed=[],
+                    unchanged=[],
                 )
 
-        if diff.changed:
-            updates = [c.new for c in diff.changed if not c.is_changed_content]
+        if difference.changed:
+            updates = [c.new for c in difference.changed if not c.is_changed_content]
             if updates:
                 api.upsert(updates, mode="replace")
-                echo(f"Updated {len(updates)} of {diff.field_name}")
-            content_updates = [c.new for c in diff.changed if c.is_changed_content]
+                echo(f"Updated {len(updates)} of {difference.field_name}")
+            content_updates = [c.new for c in difference.changed if c.is_changed_content]
             if content_updates:
                 api.delete([c.external_id for c in content_updates if c.external_id])
                 api.create(content_updates)
-                echo(f"Updated {len(content_updates)} of {diff.field_name} with content")
-            if diff.field_name in added_updated:
-                added_updated[diff.field_name].changed.extend(diff.changed)
+                echo(f"Updated {len(content_updates)} of {difference.field_name} with content")
+            if difference.field_name in added_updated:
+                added_updated[difference.field_name].changed.extend(difference.changed)
             else:
-                added_updated[diff.field_name] = FieldDifference(
-                    group=diff.group,
-                    field_name=diff.field_name,
+                added_updated[difference.field_name] = FieldDifference(
+                    group=difference.group,
+                    field_name=difference.field_name,
                     added=[],
                     removed=[],
-                    changed=diff.changed,
+                    changed=difference.changed,
                     unchanged=[],
                 )
     return added_updated
@@ -357,14 +360,29 @@ def _add_update_resources(
 def _edges_before_nodes(diff: FieldDifference) -> int:
     if diff.group == "Domain":
         return 0
-    elif diff.group == "CDF" and diff.field_name not in {"edges", "nodes"}:
+    elif diff.group == "CDF" and diff.field_name not in {
+        "edges",
+        "nodes",
+        "containers",
+        "views",
+        "data_models",
+        "spaces",
+    }:
         return 1
     elif diff.group == "CDF" and diff.field_name == "edges":
         return 2
-    elif diff.group == "Local" and diff.field_name == "nodes":
+    elif diff.group == "CDF" and diff.field_name == "nodes":
         return 3
-    else:
+    elif diff.group == "CDF" and diff.field_name == "data_models":
         return 4
+    elif diff.group == "CDF" and diff.field_name == "views":
+        return 5
+    elif diff.group == "CDF" and diff.field_name == "containers":
+        return 6
+    elif diff.group == "CDF" and diff.field_name == "spaces":
+        return 7
+    else:
+        return 8
 
 
 def _nodes_before_edges(diff: FieldDifference) -> int:
@@ -405,3 +423,20 @@ def _to_models(model_names: str | list[str] | None) -> list[type[Model]]:
         raise ValueError(f"Invalid model names: {invalid}. Available models: {list(MODELS_BY_NAME)}")
 
     return [MODELS_BY_NAME[model_name] for model_name in model_names]
+
+
+def _get_data_model_view_containers(cdf: CogniteClient, data_model_id: DataModelId, model_name: str) -> ModelDifference:
+    data_model = cdf.data_modeling.data_models.retrieve(ids=data_model_id, inline_views=True)
+    views = data_model.views
+
+    changes = {
+        "views": FieldDifference(group="CDF", field_name="views", removed=list(ViewList(views).as_ids())),
+        "containers": FieldDifference(
+            group="CDF",
+            field_name="containers",
+            removed=list(set(prop.container for prop in views.properties if isinstance(prop, MappedProperty))),
+        ),
+        "data_models": FieldDifference(group="CDF", field_name="data_models", removed=[data_model.as_id()]),
+    }
+
+    return ModelDifference(model_name=model_name, changes=changes)

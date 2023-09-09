@@ -117,7 +117,7 @@ def apply(
 def init(
     models: list[str] = typer.Option(
         default=sorted(resync.MODELS_BY_NAME),
-        help=f"The models to run apply. Available models: {', '.join(resync.MODELS_BY_NAME)}",
+        help=f"The models to initialize. Available models: {', '.join(resync.MODELS_BY_NAME)}",
     ),
     verbose: bool = typer.Option(True, "--verbose", "-v", help="Whether to print verbose output"),
 ):
@@ -126,8 +126,19 @@ def init(
 
 
 @app.command("destroy", help="Destroy all the data models created by resync and remove all the data.")
-def destroy():
-    ...
+def destroy(
+    models: list[str] = typer.Option(
+        default=sorted(resync.MODELS_BY_NAME),
+        help=f"The models to destroy. Available models: {', '.join(resync.MODELS_BY_NAME)}",
+    ),
+    format: str = typer.Option(default=None, help="The format of the output. Available formats: markdown"),
+    verbose: bool = typer.Option(True, "--verbose", "-v", help="Whether to print verbose output"),
+):
+    client = PowerOpsClient.from_settings()
+
+    destroyed = resync.destroy(client, echo=_to_echo(verbose), model_names=models)
+    if format == "markdown":
+        typer.echo(destroyed.as_github_markdown())
 
 
 @app.command("validate", help="Validate the configuration files")

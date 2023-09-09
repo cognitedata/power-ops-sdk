@@ -30,7 +30,7 @@ def main():
             continue
         answer = input("Do you want to delete them? (y/n)\n")
         if answer.casefold() == "y":
-            client.relationships.delete([r.external_id for r in relationships_to_delete])
+            client.relationships.filter_out([r.external_id for r in relationships_to_delete])
             print(f"Deleted {len(relationships_to_delete)} relationships.")
         else:
             print("Aborting.")

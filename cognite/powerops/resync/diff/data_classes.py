@@ -10,6 +10,7 @@ from typing import Literal
 import pandas as pd
 from cognite.client.data_classes import FileMetadata, Sequence
 from cognite.client.data_classes._base import CogniteResource
+from cognite.client.data_classes.data_modeling.ids import AbstractDataclass
 from deepdiff import DeepDiff  # type: ignore[import]
 from typing_extensions import TypeAlias
 
@@ -27,9 +28,15 @@ class Change:
     @property
     def changed_fields(self) -> str:
         last_dumped = (
-            self.last.dump(camel_case=True) if isinstance(self.last, CogniteResource) else self.last.model_dump()
+            self.last.dump(camel_case=True)
+            if isinstance(self.last, (CogniteResource, AbstractDataclass))
+            else self.last.model_dump()
         )
-        new_dumped = self.new.dump(camel_case=True) if isinstance(self.new, CogniteResource) else self.new.model_dump()
+        new_dumped = (
+            self.new.dump(camel_case=True)
+            if isinstance(self.new, (CogniteResource, AbstractDataclass))
+            else self.new.model_dump()
+        )
         return (
             DeepDiff(last_dumped, new_dumped, ignore_string_case=True)
             .pretty()
@@ -134,6 +141,7 @@ class FieldDifference:
         for item in self.changed:
             if hasattr(item.last, "data_set_id"):
                 item.last.data_set_id = dataset
+            if hasattr(item.new, "data_set_id"):
                 item.new.data_set_id = dataset
 
 
@@ -174,7 +182,7 @@ class ModelDifference:
             if change.field_name not in exclude
         )
 
-    def delete(self, group: Group | None = None, field_names: set | frozenset = frozenset({"timeseries"})) -> bool:
+    def filter_out(self, group: Group | None = None, field_names: set | frozenset = frozenset({"timeseries"})) -> bool:
         """
         Removes the field differences which match the filter criteria.
 
