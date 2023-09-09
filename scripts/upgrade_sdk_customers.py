@@ -14,7 +14,7 @@ def main():
         print(f"Current version: {sdk_version}")
 
         for customer_repo in (REPO_ROOT / "customers").iterdir():
-            if not customer_repo.is_dir() or not customer_repo.name.startswith("resync"):
+            if not customer_repo.is_dir() or not customer_repo.field_name.startswith("resync"):
                 continue
             with chdir(customer_repo):
                 customer_pyproject_toml = customer_repo / "pyproject.toml"
@@ -22,9 +22,11 @@ def main():
                 customer_sdk_version = customer_project_config["tool"]["poetry"]["dependencies"]["cognite-power-ops"]
 
                 if customer_sdk_version.endswith(sdk_version):
-                    print(f"Repo {customer_repo.name} has version {customer_sdk_version} == {sdk_version}. Skipping.")
+                    print(
+                        f"Repo {customer_repo.field_name} has version {customer_sdk_version} == {sdk_version}. Skipping."
+                    )
                     continue
-                print(f"Upgrading repo: {customer_repo.name} from {customer_sdk_version} to {sdk_version}")
+                print(f"Upgrading repo: {customer_repo.field_name} from {customer_sdk_version} to {sdk_version}")
 
                 default_branch_origin = (
                     subprocess.run(["git", "symbolic-ref", "refs/remotes/origin/HEAD"], capture_output=True)

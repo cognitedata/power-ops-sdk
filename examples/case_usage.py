@@ -17,7 +17,7 @@ def main():
     # get a file:
     file_meta = powerops.cdf.files.retrieve(external_id="SHOP_Fornebu_model")
     powerops.cdf.files.download(directory=tmp_dir, external_id="SHOP_Fornebu_model")
-    case_file = os.path.join(tmp_dir, file_meta.name)
+    case_file = os.path.join(tmp_dir, file_meta.field_name)
 
     # load the file:
     case = Case.from_yaml_file(case_file)

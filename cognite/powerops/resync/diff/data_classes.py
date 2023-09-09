@@ -11,9 +11,12 @@ import pandas as pd
 from cognite.client.data_classes import FileMetadata, Sequence
 from cognite.client.data_classes._base import CogniteResource
 from deepdiff import DeepDiff  # type: ignore[import]
+from typing_extensions import TypeAlias
 
 from cognite.powerops.resync.models.base.cdf_resources import CDFResource
 from cognite.powerops.resync.models.base.resource_type import Resource
+
+Group: TypeAlias = Literal["CDF", "Domain"]
 
 
 @dataclass
@@ -45,8 +48,8 @@ class Change:
 
 @dataclass
 class FieldSummary:
-    group: Literal["CDF", "Domain"]
-    name: str
+    group: Group
+    field_name: str
     added: int
     removed: int
     changed: int
@@ -59,8 +62,8 @@ class FieldSummary:
 
 @dataclass
 class FieldIds:
-    group: Literal["CDF", "Domain"]
-    name: str
+    group: Group
+    field_name: str
     added: list[str] = field(default_factory=list)
     removed: list[str] = field(default_factory=list)
     changed: list[str] = field(default_factory=list)
@@ -73,8 +76,8 @@ class FieldIds:
 
 @dataclass
 class FieldDifference:
-    group: Literal["CDF", "Domain"]
-    name: str
+    group: Group
+    field_name: str
     added: list[Resource] = field(default_factory=list)
     removed: list[Resource] = field(default_factory=list)
     changed: list[Change] = field(default_factory=list)
@@ -84,10 +87,22 @@ class FieldDifference:
     def total(self) -> int:
         return len(self.added) + len(self.removed) + len(self.changed) + len(self.unchanged)
 
+    def __add__(self, other: FieldDifference) -> FieldDifference:
+        if self.field_name != other.field_name or self.group != other.group or not isinstance(other, FieldDifference):
+            return NotImplemented
+        return FieldDifference(
+            group=self.group,
+            field_name=self.field_name,
+            added=self.added + other.added,
+            removed=self.removed + other.removed,
+            changed=self.changed + other.changed,
+            unchanged=self.unchanged + other.unchanged,
+        )
+
     def as_summary(self) -> FieldSummary:
         return FieldSummary(
             group=self.group,
-            name=self.name,
+            field_name=self.field_name,
             added=len(self.added),
             removed=len(self.removed),
             changed=len(self.changed),
@@ -105,7 +120,7 @@ class FieldDifference:
         limit_ = limit if limit > 0 else None
         return FieldIds(
             group=self.group,
-            name=self.name,
+            field_name=self.field_name,
             added=[get_identifier(item) for item in islice(self.added, limit_)],
             removed=[get_identifier(item) for item in islice(self.removed, limit_)],
             changed=[get_identifier(item.last) for item in islice(self.changed, limit_)],
@@ -124,7 +139,7 @@ class FieldDifference:
 
 @dataclass
 class ModelDifference:
-    name: str
+    model_name: str
     changes: dict[str, FieldDifference] = field(default_factory=dict)
 
     def __iter__(self) -> Iterator[FieldDifference]:
@@ -139,15 +154,51 @@ class ModelDifference:
     def __setitem__(self, key, value):
         self.changes[key] = value
 
+    def __add__(self, other: ModelDifference) -> ModelDifference:
+        if self.model_name != other.model_name or not isinstance(other, ModelDifference):
+            return NotImplemented
+        changes = {}
+        for field_name in set(self.changes.keys()) | set(other.changes.keys()):
+            if field_name not in self.changes:
+                changes[field_name] = other.changes[field_name]
+            elif field_name not in other.changes:
+                changes[field_name] = self.changes[field_name]
+            else:
+                changes[field_name] = self.changes[field_name] + other.changes[field_name]
+        return ModelDifference(model_name=self.model_name, changes=changes)
+
     def has_changes(self, exclude: set | frozenset = frozenset({"timeseries"})) -> bool:
         return any(
-            change.total != len(change.unchanged) for change in self.changes.values() if change.name not in exclude
+            change.total != len(change.unchanged)
+            for change in self.changes.values()
+            if change.field_name not in exclude
         )
+
+    def delete(self, group: Group | None = None, field_names: set | frozenset = frozenset({"timeseries"})) -> bool:
+        """
+        Removes the field differences which match the filter criteria.
+
+        Args:
+            group: The name of the group to remove
+            field_names: The field names to remove
+
+        Returns:
+            True if any field differences were removed, False otherwise
+        """
+        has_removed = False
+        for field_name in list(self.changes.keys()):
+            if field_name in field_names or self.changes[field_name].group == group:
+                del self.changes[field_name]
+                has_removed = True
+        return has_removed
 
 
 @dataclass
 class ModelDifferences:
     models: list[ModelDifference]
+
+    def append(self, model: ModelDifference) -> None:
+        self.models.append(model)
 
     def has_changes(self, exclude: set | frozenset = frozenset({"timeseries"})) -> bool:
         return any(m.has_changes(exclude) for m in self.models)
@@ -162,17 +213,17 @@ class ModelDifferences:
                     for summary in summaries
                     if summary.group == "CDF"
                 ],
-                index=[summary.name for summary in summaries if summary.group == "CDF"],
+                index=[summary.field_name for summary in summaries if summary.group == "CDF"],
             )
             ids = [change.as_ids(limit=5) for change in model if change.group == "CDF"]
             added_ids = []
             for id_ in ids:
                 if id_.added:
-                    added_ids.append(f"#### Added {id_.name}\n{id_.added}")
+                    added_ids.append(f"#### Added {id_.field_name}\n{id_.added}")
             removed_ids = []
             for id_ in ids:
                 if id_.removed:
-                    removed_ids.append(f"#### Removed {id_.name}\n{id_.removed}")
+                    removed_ids.append(f"#### Removed {id_.field_name}\n{id_.removed}")
             changed_samples = []
             for change, id_ in zip((c for c in model if c.group == "CDF"), ids):
                 if change.changed:
@@ -180,7 +231,7 @@ class ModelDifferences:
                     sample_line = new_line.join(
                         f"{i}: {c.changed_fields}" for c, i in zip(change.changed[:3], id_.changed[:3])
                     )
-                    changed_samples.append(f"#### Changed {change.name}\n{sample_line}")
+                    changed_samples.append(f"#### Changed {change.field_name}\n{sample_line}")
             samples = []
             if added_ids:
                 samples.append("\n".join(added_ids))
@@ -193,7 +244,7 @@ class ModelDifferences:
             samples = "\n".join(samples)
 
             report.append(
-                f"""## {model.name}
+                f"""## {model.model_name}
 
 {table.T.to_markdown()}
 
@@ -210,7 +261,7 @@ class ModelDifferences:
             for change in model:
                 if skip_domain and change.group == "Domain":
                     continue
-                by_name[change.name].append(change)
+                by_name[change.field_name].append(change)
         report = []
         total_added = 0
         total_removed = 0

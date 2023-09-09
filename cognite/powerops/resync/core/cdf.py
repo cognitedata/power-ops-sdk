@@ -29,11 +29,13 @@ class CogniteAPI(Protocol[T_CogniteResource]):  # type: ignore[misc]
 
 
 class FileAdapter(CogniteAPI[FileMetadata]):
-    def __init__(self, client: CogniteClient, files_by_id: dict[str, CDFFile]):
+    def __init__(self, client: CogniteClient, files_by_id: dict[str, CDFFile] | None = None):
         self.client = client
         self.files_by_id = files_by_id
 
     def create(self, items: FileMetadata | Sequence[FileMetadata]) -> Any:
+        if self.files_by_id is None:
+            raise ValueError("Missing file content need to be provided")
         items = [items] if isinstance(items, FileMetadata) else items
         for item in items:
             if item.external_id is None or item.external_id not in self.files_by_id:
@@ -65,11 +67,14 @@ class FileAdapter(CogniteAPI[FileMetadata]):
 
 
 class SequenceAdapter(CogniteAPI[CogniteSequence]):
-    def __init__(self, client: CogniteClient, sequence_by_id: dict[str, CDFSequence]):
+    def __init__(self, client: CogniteClient, sequence_by_id: dict[str, CDFSequence] | None = None):
         self.client = client
         self.sequence_by_id = sequence_by_id
 
     def create(self, items: CogniteSequence | Sequence[CogniteSequence]) -> Any:
+        if self.sequence_by_id is None:
+            raise ValueError("Missing sequence content need to be provided")
+
         items = [items] if isinstance(items, CogniteSequence) else items
         if missing := {i.external_id for i in items} - set(self.sequence_by_id):
             raise ValueError(f"Missing sequence content for {missing}")
@@ -116,7 +121,10 @@ class InstanceAdapter(CogniteAPI[T_Instance]):
 
 
 def get_cognite_api(
-    client: CogniteClient, name: str, new_sequences_by_id: dict[str, CDFSequence], new_files_by_id: dict[str, CDFFile]
+    client: CogniteClient,
+    name: str,
+    new_sequences_by_id: dict[str, CDFSequence] | None = None,
+    new_files_by_id: dict[str, CDFFile] | None = None,
 ) -> CogniteAPI:
     if name == "assets":
         return cast(CogniteAPI[Asset], client.assets)

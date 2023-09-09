@@ -33,14 +33,22 @@ def model_difference(current_model: Model, new_model: Model) -> ModelDifference:
 
         diffs.append(diff)
 
-    return ModelDifference(name=current_model.model_name, changes={d.name: d for d in diffs})
+    return ModelDifference(model_name=current_model.model_name, changes={d.field_name: d for d in diffs})
+
+
+def remove_all(model: Model) -> ModelDifference:
+    # The dump and load calls are to remove all read only fields
+    current_reloaded = model.load_from_cdf_resources(model.dump_as_cdf_resource())
+    diffs = []
+
+    return ModelDifference(model_name=model.model_name, changes={d.field_name: d for d in diffs})
 
 
 def _find_diffs(
     current_value: Any, new_value: Any, group: Literal["CDF", "Domain"], field_name: str
 ) -> FieldDifference:
     if not current_value and not new_value:
-        return FieldDifference(group=group, name=field_name)
+        return FieldDifference(group=group, field_name=field_name)
 
     if (
         isinstance(current_value, (list, CogniteResourceList))
@@ -90,5 +98,5 @@ def _find_diffs(
             changed.append(Change(last=current, new=new))
 
     return FieldDifference(
-        group=group, name=field_name, added=added, removed=removed, changed=changed, unchanged=unchanged
+        group=group, field_name=field_name, added=added, removed=removed, changed=changed, unchanged=unchanged
     )

@@ -52,7 +52,7 @@ class BenchmarkProcess(Process):
 
     @field_validator("production_plan_time_series", mode="after")
     def ordering(cls, value: list[ProductionPlanTimeSeries]) -> list[ProductionPlanTimeSeries]:
-        return sorted(value, key=lambda x: x.name)
+        return sorted(value, key=lambda x: x.field_name)
 
     @field_validator("run_events", mode="after")
     def ordering_events(cls, value: list[str]) -> list[str]:
