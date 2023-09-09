@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+from dataclasses import dataclass
 from hashlib import sha256
 from typing import Any, ClassVar, Optional
 
 import pandas as pd
 from cognite.client.data_classes import FileMetadata, Sequence
 from cognite.client.data_classes._base import CogniteResource
+from cognite.client.data_classes.data_modeling.ids import AbstractDataclass
 from pydantic import BaseModel, ConfigDict, model_serializer, model_validator
 from typing_extensions import Self
 
@@ -126,3 +128,23 @@ class CDFFile(CDFResource):
     @classmethod
     def _load(cls, data: dict[str, Any]) -> Self:
         return cls(meta=FileMetadata._load(data))
+
+
+# The extra class is because the AbstractDataClass does allow it
+# subclasses to be instantiated. This is a private implementation detail in the Python-SDK, but it is useful
+# for us here in the adapter methods of the CDF API.
+@dataclass(frozen=True)
+class _Dummy(AbstractDataclass):
+    ...
+
+
+@dataclass(frozen=True)
+class SpaceId(_Dummy):
+    space: str
+
+    @property
+    def external_id(self) -> str:
+        return self.space
+
+    def dump(self, camel_case: bool = True) -> dict[str, Any]:
+        return {"space": self.space}

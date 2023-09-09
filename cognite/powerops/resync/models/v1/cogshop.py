@@ -11,7 +11,9 @@ from cognite.powerops.client import PowerOpsClient
 from cognite.powerops.client._generated.cogshop1.data_classes._core import DomainModelApply as DomainModelApplyCogShop1
 from cognite.powerops.client.data_classes import cogshop1 as cogshop_v1
 from cognite.powerops.resync.models._shared_v1_v2.cogshop_model import CogShopCore, ExternalID
-from cognite.powerops.resync.models.base import CDFFile, CDFSequence, DataModel
+from cognite.powerops.resync.models.base import CDFFile, CDFSequence, DataModel, PowerOpsGraphQLModel
+
+from .graphql_schemas import cogshop1_graphql
 
 
 class CogShop1Asset(CogShopCore, DataModel, protected_namespaces=()):
@@ -23,6 +25,7 @@ class CogShop1Asset(CogShopCore, DataModel, protected_namespaces=()):
         ContainerId("cogShop", "Scenario"): cogshop_v1.ScenarioApply,
         ContainerId("cogShop", "CommandsConfig"): cogshop_v1.CommandsConfigApply,
     }
+    graph_ql: ClassVar[PowerOpsGraphQLModel] = cogshop1_graphql
     model_templates: dict[ExternalID, cogshop_v1.ModelTemplateApply] = Field(default_factory=dict)
     mappings: dict[ExternalID, cogshop_v1.MappingApply] = Field(default_factory=dict)
     transformations: dict[ExternalID, cogshop_v1.TransformationApply] = Field(default_factory=dict)

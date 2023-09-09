@@ -4,10 +4,11 @@ from abc import ABC
 from typing import TypeVar, Union
 
 from cognite.client.data_classes import Asset, FileMetadata, Sequence, TimeSeries
+from cognite.client.data_classes.data_modeling import ContainerId, DataModelId, ViewId
 from pydantic import BaseModel
 from typing_extensions import TypeAlias
 
-from .cdf_resources import CDFFile, CDFSequence
+from .cdf_resources import CDFFile, CDFSequence, SpaceId
 from .helpers import isinstance_list
 
 _T_Type = TypeVar("_T_Type")
@@ -49,4 +50,6 @@ class ResourceType(BaseModel, ABC):
         ...
 
 
-Resource: TypeAlias = Union[Asset, TimeSeries, Sequence, FileMetadata, ResourceType]
+Resource: TypeAlias = Union[
+    Asset, TimeSeries, Sequence, FileMetadata, ResourceType, ContainerId, ViewId, DataModelId, SpaceId
+]

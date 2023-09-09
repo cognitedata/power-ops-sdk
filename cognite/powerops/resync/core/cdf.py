@@ -6,12 +6,15 @@ from typing import Any, Literal, Protocol, TypeVar, Union, cast
 from cognite.client import CogniteClient
 from cognite.client.data_classes import Asset, FileMetadata, FileMetadataList, Relationship
 from cognite.client.data_classes import Sequence as CogniteSequence
-from cognite.client.data_classes.data_modeling import EdgeApply, NodeApply
+from cognite.client.data_classes.data_modeling import ContainerId, DataModelId, EdgeApply, NodeApply, ViewId
 
 from cognite.powerops.resync.models.base import CDFFile, CDFSequence
 
 T_CogniteResource = TypeVar(
-    "T_CogniteResource", bound=Union[Asset, CogniteSequence, FileMetadata, Relationship, NodeApply, EdgeApply]
+    "T_CogniteResource",
+    bound=Union[
+        Asset, CogniteSequence, FileMetadata, Relationship, NodeApply, EdgeApply, ContainerId, ViewId, DataModelId
+    ],
 )
 
 
@@ -29,11 +32,13 @@ class CogniteAPI(Protocol[T_CogniteResource]):  # type: ignore[misc]
 
 
 class FileAdapter(CogniteAPI[FileMetadata]):
-    def __init__(self, client: CogniteClient, files_by_id: dict[str, CDFFile]):
+    def __init__(self, client: CogniteClient, files_by_id: dict[str, CDFFile] | None = None):
         self.client = client
         self.files_by_id = files_by_id
 
     def create(self, items: FileMetadata | Sequence[FileMetadata]) -> Any:
+        if self.files_by_id is None:
+            raise ValueError("Missing file content need to be provided")
         items = [items] if isinstance(items, FileMetadata) else items
         for item in items:
             if item.external_id is None or item.external_id not in self.files_by_id:
@@ -65,11 +70,14 @@ class FileAdapter(CogniteAPI[FileMetadata]):
 
 
 class SequenceAdapter(CogniteAPI[CogniteSequence]):
-    def __init__(self, client: CogniteClient, sequence_by_id: dict[str, CDFSequence]):
+    def __init__(self, client: CogniteClient, sequence_by_id: dict[str, CDFSequence] | None = None):
         self.client = client
         self.sequence_by_id = sequence_by_id
 
     def create(self, items: CogniteSequence | Sequence[CogniteSequence]) -> Any:
+        if self.sequence_by_id is None:
+            raise ValueError("Missing sequence content need to be provided")
+
         items = [items] if isinstance(items, CogniteSequence) else items
         if missing := {i.external_id for i in items} - set(self.sequence_by_id):
             raise ValueError(f"Missing sequence content for {missing}")
@@ -115,8 +123,27 @@ class InstanceAdapter(CogniteAPI[T_Instance]):
         self.create(item)
 
 
+class DataModelingAdapter(CogniteAPI[T_CogniteResource]):
+    def __init__(self, api: Any) -> None:
+        self.api = api
+
+    def create(self, items: T_CogniteResource | Sequence[T_CogniteResource]) -> Any:
+        self.api.apply(items)
+
+    def delete(self, external_id: str | Sequence[str]) -> Any:
+        self.api.delete(external_id)
+
+    def upsert(
+        self, item: T_CogniteResource | Sequence[T_CogniteResource], mode: Literal["patch", "replace"] = "patch"
+    ) -> Any:
+        self.api.apply(item)
+
+
 def get_cognite_api(
-    client: CogniteClient, name: str, new_sequences_by_id: dict[str, CDFSequence], new_files_by_id: dict[str, CDFFile]
+    client: CogniteClient,
+    name: str,
+    new_sequences_by_id: dict[str, CDFSequence] | None = None,
+    new_files_by_id: dict[str, CDFFile] | None = None,
 ) -> CogniteAPI:
     if name == "assets":
         return cast(CogniteAPI[Asset], client.assets)
@@ -132,4 +159,10 @@ def get_cognite_api(
         return InstanceAdapter[NodeApply](client, "node")
     elif name == "edges":
         return InstanceAdapter[EdgeApply](client, "edge")
+    elif name == "data_models":
+        return DataModelingAdapter[DataModelId](client.data_modeling.data_models)
+    elif name == "views":
+        return DataModelingAdapter[ViewId](client.data_modeling.views)
+    elif name == "containers":
+        return DataModelingAdapter[ContainerId](client.data_modeling.containers)
     raise ValueError(f"Unknown resource type {name}")

@@ -33,44 +33,32 @@ def model_difference(current_model: Model, new_model: Model) -> ModelDifference:
 
         diffs.append(diff)
 
-    return ModelDifference(name=current_model.model_name, changes={d.name: d for d in diffs})
+    return ModelDifference(model_name=current_model.model_name, changes={d.field_name: d for d in diffs})
+
+
+def remove_only(model: Model) -> ModelDifference:
+    # The dump and load calls are to remove all read only fields
+    current_reloaded = model.load_from_cdf_resources(model.dump_as_cdf_resource())
+    diffs = []
+    for field_name in current_reloaded.model_fields:
+        diff = _as_removals(getattr(current_reloaded, field_name), "Domain", field_name)
+        diffs.append(diff)
+
+    for function in current_reloaded.cdf_resources:
+        diff = _as_removals(function(current_reloaded), "CDF", function.__name__)
+        diffs.append(diff)
+
+    return ModelDifference(model_name=model.model_name, changes={d.field_name: d for d in diffs})
 
 
 def _find_diffs(
     current_value: Any, new_value: Any, group: Literal["CDF", "Domain"], field_name: str
 ) -> FieldDifference:
     if not current_value and not new_value:
-        return FieldDifference(group=group, name=field_name)
+        return FieldDifference(group=group, field_name=field_name)
 
-    if (
-        isinstance(current_value, (list, CogniteResourceList))
-        and current_value
-        and isinstance(current_value[0], (ResourceType, CogniteResource))
-    ) or (
-        isinstance(new_value, (list, CogniteResourceList))
-        and new_value
-        and isinstance(new_value[0], (ResourceType, CogniteResource))
-    ):
-        current_value_by_id = {item.external_id: item for item in current_value}
-        new_value_by_id = {item.external_id: item for item in new_value}
-    elif (
-        isinstance(current_value, list) and current_value and isinstance(current_value[0], (CDFSequence, CDFFile))
-    ) or (isinstance(new_value, list) and new_value and isinstance(new_value[0], (CDFSequence, CDFFile))):
-        current_value_by_id = {item.external_id: item.cdf_resource for item in current_value}
-        new_value_by_id = {item.external_id: item.cdf_resource for item in new_value}
-    elif (
-        isinstance(current_value, dict)
-        and current_value
-        and isinstance(next(iter(current_value.values())), (DomainModelApply, DomainModelApplyCogShop1))
-    ) or (
-        isinstance(new_value, dict)
-        and new_value
-        and isinstance(next(iter(new_value.values())), (DomainModelApply, DomainModelApplyCogShop1))
-    ):
-        current_value_by_id = {item.external_id: item for item in current_value.values()}
-        new_value_by_id = {item.external_id: item for item in new_value.values()}
-    else:
-        raise NotImplementedError(f"{type(current_value)} is not supported")
+    current_value_by_id = _to_value_by_id(current_value)
+    new_value_by_id = _to_value_by_id(new_value)
 
     added_ids = set(new_value_by_id.keys()) - set(current_value_by_id.keys())
     added = [new_value_by_id[external_id] for external_id in sorted(added_ids)]
@@ -90,5 +78,35 @@ def _find_diffs(
             changed.append(Change(last=current, new=new))
 
     return FieldDifference(
-        group=group, name=field_name, added=added, removed=removed, changed=changed, unchanged=unchanged
+        group=group, field_name=field_name, added=added, removed=removed, changed=changed, unchanged=unchanged
     )
+
+
+def _as_removals(value: Any, group: Literal["CDF", "Domain"], field_name: str) -> FieldDifference:
+    if not value:
+        return FieldDifference(group=group, field_name=field_name)
+
+    value_by_id = _to_value_by_id(value)
+    removed = [value_by_id[external_id] for external_id in sorted(value_by_id.keys())]
+    return FieldDifference(group=group, field_name=field_name, removed=removed)
+
+
+def _to_value_by_id(value: Any) -> dict[str, Any]:
+    if (
+        isinstance(value, (list, CogniteResourceList))
+        and value
+        and isinstance(value[0], (ResourceType, CogniteResource))
+    ):
+        return {item.external_id: item for item in value}
+    elif isinstance(value, list) and value and isinstance(value[0], (CDFSequence, CDFFile)):
+        return {item.external_id: item.cdf_resource for item in value}
+    elif (
+        isinstance(value, dict)
+        and value
+        and isinstance(next(iter(value.values())), (DomainModelApply, DomainModelApplyCogShop1))
+    ):
+        return {item.external_id: item for item in value.values()}
+    elif isinstance(value, (dict, list, CogniteResourceList)) and not value:
+        return {}
+
+    raise NotImplementedError(f"{type(value)} is not supported")

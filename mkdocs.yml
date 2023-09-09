@@ -9,8 +9,12 @@ theme:
 
 nav:
     - Home: index.md
-    - Notebooks:
-      - Shop results: notebooks/shop_results.ipynb
+    - Installation: installation.md
+    - QuickStart:
+        - Data Engineer: quickstart/data_engineer.md
+        - Data Scientist: quickstart/data_scientist.ipynb
+    - Tutorials:
+      - Shop results: tutorials/shop_results.ipynb
     - Reference:
       - client:
           - SHOP API: packages/client/shop_api.md

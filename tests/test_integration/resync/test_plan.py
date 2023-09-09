@@ -7,7 +7,7 @@ from loguru import logger
 from yaml import safe_load
 
 from cognite.powerops import resync
-from cognite.powerops.client.powerops_client import get_powerops_client
+from cognite.powerops.client.powerops_client import PowerOpsClient
 from cognite.powerops.utils.serialization import chdir
 from tests.constants import REPO_ROOT, SENSITIVE_TESTS, ReSync
 
@@ -45,7 +45,7 @@ def test_plan(
     # Arrange
     with chdir(REPO_ROOT):
         os.environ["SETTINGS_FILES"] = config_file
-        powerops_client = get_powerops_client()
+        powerops_client = PowerOpsClient.from_settings()
 
         # Act
         resync.plan(

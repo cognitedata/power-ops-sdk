@@ -6,7 +6,7 @@
 ## Why `resync`?
 
 The problem `resync` is solving is to have confidence through traceability and reproducibility of the configuration
-files used to create the resources in CDF. The user interface is inspired by `terraform` with `plan` and `apply`
+files used to create the resources in CDF. The user interface is inspired by `terraform` with `init`, `validate`, `plan`, `apply`, `destroy`
 commands. The `plan` command will compare CDF with the local configuration files and output the changes that will be
 applied if the `apply` command is run. The `apply` command will apply the changes to CDF. `resync` is intended to be
 run in a CI/CD pipeline, but can also be run locally.
@@ -29,7 +29,12 @@ flowchart LR
 
 ## Main `resync` functions
 
+::: cognite.powerops.resync.init
+
+::: cognite.powerops.resync.validate
 
 ::: cognite.powerops.resync.plan
 
 ::: cognite.powerops.resync.apply
+
+::: cognite.powerops.resync.destroy

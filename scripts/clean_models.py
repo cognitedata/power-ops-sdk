@@ -2,8 +2,11 @@ from typing import Any, Protocol, Literal
 
 from cognite.client import CogniteClient
 
-from cognite.powerops.client.powerops_client import get_powerops_client
+from cognite.powerops.client.powerops_client import PowerOpsClient
 from cognite.client.data_classes import filters
+import os
+from tests.constants import REPO_ROOT
+from cognite.powerops.utils.serialization import chdir
 
 
 class API(Protocol):
@@ -56,14 +59,15 @@ def delete_resources(api: API, space: str):
 
 def main():
     space = "cogShop"
-
-    client = get_powerops_client().cdf
-    print(f"Connected to {client.config.project}")
-    delete_resources(client.data_modeling.data_models, space)
-    delete_resources(client.data_modeling.views, space)
-    delete_resources(client.data_modeling.containers, space)
-    delete_resources(InstanceAdapter(client, "edge"), space)
-    delete_resources(InstanceAdapter(client, "node"), space)
+    with chdir(REPO_ROOT):
+        os.environ["SETTINGS_FILES"] = ".secrets.pygen.toml"
+        client = PowerOpsClient.from_settings().cdf
+        print(f"Connected to {client.config.project}")
+        delete_resources(client.data_modeling.data_models, space)
+        delete_resources(client.data_modeling.views, space)
+        delete_resources(client.data_modeling.containers, space)
+        delete_resources(InstanceAdapter(client, "edge"), space)
+        delete_resources(InstanceAdapter(client, "node"), space)
 
 
 if __name__ == "__main__":

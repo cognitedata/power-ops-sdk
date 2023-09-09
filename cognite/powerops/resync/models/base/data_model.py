@@ -23,12 +23,13 @@ from cognite.powerops.client._generated.data_classes._core import DomainModelApp
 from cognite.powerops.utils.serialization import get_pydantic_annotation
 
 from .cdf_resources import CDFFile, CDFSequence
+from .graph_ql import PowerOpsGraphQLModel
 from .model import Model
 
 
 class DataModel(Model, ABC):
     cls_by_container: ClassVar[dict[ContainerId, type[Union[DomainModelApplyCogShop1, DomainModelApply]]]]
-    view_sources: ClassVar[tuple[ViewId, ...]]
+    graph_ql: ClassVar[PowerOpsGraphQLModel]
 
     def instances(self) -> InstancesApply:
         nodes: dict[str, NodeApply] = {}

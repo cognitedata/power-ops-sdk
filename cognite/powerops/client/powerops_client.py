@@ -11,26 +11,47 @@ from .shop import ShopClient
 
 
 class PowerOpsClient:
-    def __init__(self, read_dataset: str, write_dataset: str, cogshop_version: str, config: ClientConfig):
+    def __init__(
+        self,
+        read_dataset: str,
+        write_dataset: str,
+        cogshop_version: str,
+        config: ClientConfig,
+        monitor_dataset: str | None = None,
+    ):
         self.cdf = CogniteClient(config)
-        data_set_api = DataSetsAPI(self.cdf, read_dataset, write_dataset)
-
+        self.datasets = DataSetsAPI(self.cdf, read_dataset, write_dataset, monitor_dataset)
         self.production = ProductionAPIs(self.cdf)
         self.dayahead = DayAheadAPIs(self.cdf)
         self.rkom = RKOMMarketAPIs(self.cdf)
         self.benchmark = BenchmarkAPIs(self.cdf)
         self.cog_shop = CogShopAPIs(self.cdf)
-        self.shop = ShopClient(self.cdf, self.cog_shop, data_set_api, cogshop_version)
+        self.shop = ShopClient(self.cdf, self.cog_shop, self.datasets, cogshop_version)
         self.cog_shop1 = CogShop1Client(self.cdf)
 
+    @classmethod
+    def from_settings(cls, settings: Settings | None = None) -> PowerOpsClient:
+        """
+        Create a PowerOpsClient from a Settings object.
 
-def get_powerops_client(write_dataset: str | None = None) -> PowerOpsClient:
-    settings = Settings(**{"powerops": {"write_dataset": write_dataset}})
-    client_config = get_client_config(settings.cognite)
 
-    return PowerOpsClient(
-        settings.powerops.read_dataset,
-        settings.powerops.write_dataset,
-        settings.powerops.cogshop_version,
-        config=client_config,
-    )
+        Args:
+            settings: The settings object. If no settings object is provided, the settings object is loaded from
+                the environment. When loading the Settings object from the environment,
+                the environment variable `SETTINGS_FILES` is used to
+                specify which files to load. The default value is `settings.toml;.secrets.toml`.
+
+        Returns:
+            A PowerOpsClient object.
+        """
+        settings = settings or Settings()
+
+        client_config = get_client_config(settings.cognite)
+
+        return PowerOpsClient(
+            settings.powerops.read_dataset,
+            settings.powerops.write_dataset,
+            settings.powerops.cogshop_version,
+            config=client_config,
+            monitor_dataset=settings.powerops.monitor_dataset,
+        )

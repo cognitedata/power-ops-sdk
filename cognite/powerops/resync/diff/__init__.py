@@ -3,7 +3,7 @@ This package is used to compare instances of models. It is used to determine if 
 has changed.
 """
 
-from .core import model_difference
+from .core import model_difference, remove_only
 from .data_classes import Change, FieldDifference, FieldIds, FieldSummary, ModelDifference, ModelDifferences
 
 __all__ = [
@@ -14,4 +14,5 @@ __all__ = [
     "FieldSummary",
     "Change",
     "model_difference",
+    "remove_only",
 ]
