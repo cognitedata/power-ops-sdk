@@ -6,6 +6,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Optional
 
+from cognite.client.data_classes.data_modeling import SpaceApply, SpaceList
 from cognite.client.data_classes.data_modeling.instances import InstanceCore
 from yaml import safe_dump
 
@@ -44,8 +45,17 @@ def init(client: PowerOpsClient | None, echo: Echo | None = None, model_names: s
     model_classes = _to_models(model_names)
     data_models = [model.graph_ql for model in model_classes if issubclass(model, DataModel)]
 
-    existing = set(cdf.data_modeling.data_models.retrieve([d.id_ for d in data_models]).as_ids())
+    spaces = set(d.id_.space for d in data_models)
+    existing_spaces = set((cdf.data_modeling.spaces.retrieve(list(spaces)) or SpaceList([])).as_ids())
 
+    if new_spaces := spaces - existing_spaces:
+        echo(f"Creating {len(new_spaces)} new spaces: {new_spaces}")
+        cdf.data_modeling.spaces.apply(
+            [SpaceApply(space, description="PowerOps Configuration Space", name=space.title()) for space in new_spaces]
+        )
+        echo(f"Spaces {new_spaces} created")
+
+    existing = set(cdf.data_modeling.data_models.retrieve([d.id_ for d in data_models]).as_ids())
     for model in data_models:
         if model.id_ in existing:
             echo(f"Skipping {model.name} data model with {model.id_}, is already exists", is_warning=True)

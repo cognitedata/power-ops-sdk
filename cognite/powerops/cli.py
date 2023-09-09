@@ -45,7 +45,7 @@ def plan(
     path: Annotated[Path, typer.Argument(help="Path to configuration files")],
     market: Annotated[str, typer.Argument(help="Selected power market")],
     models: list[str] = typer.Option(
-        default=sorted(resync.DEFAULT_MODELS),
+        default=sorted(resync.MODELS_BY_NAME),
         help=f"The models to run the plan. Available models: {', '.join(resync.MODELS_BY_NAME)}",
     ),
     dump_folder: Optional[Path] = typer.Option(

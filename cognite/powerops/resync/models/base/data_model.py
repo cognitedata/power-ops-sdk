@@ -22,8 +22,8 @@ from cognite.powerops.client._generated.cogshop1.data_classes._core import Domai
 from cognite.powerops.client._generated.data_classes._core import DomainModelApply
 from cognite.powerops.utils.serialization import get_pydantic_annotation
 
-from . import PowerOpsGraphQLModel
 from .cdf_resources import CDFFile, CDFSequence
+from .graph_ql import PowerOpsGraphQLModel
 from .model import Model
 
 

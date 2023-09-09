@@ -12,3 +12,5 @@ cogshop1_graphql = PowerOpsGraphQLModel(
     graphql_file=graphql_file,
     id_=DataModelId("cogShop", "CogShop", "2"),
 )
+
+GRAPHQL_MODELS = {"cogshop1": cogshop1_graphql}
