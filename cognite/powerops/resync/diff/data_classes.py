@@ -11,6 +11,7 @@ import pandas as pd
 from cognite.client.data_classes import FileMetadata, Sequence
 from cognite.client.data_classes._base import CogniteResource
 from cognite.client.data_classes.data_modeling.ids import AbstractDataclass
+from cognite.client.data_classes.data_modeling.instances import InstanceCore
 from deepdiff import DeepDiff  # type: ignore[import]
 from typing_extensions import TypeAlias
 
@@ -93,6 +94,20 @@ class FieldDifference:
     @property
     def total(self) -> int:
         return len(self.added) + len(self.removed) + len(self.changed) + len(self.unchanged)
+
+    @property
+    def removed_ids(self) -> list[str]:
+        output = []
+        for item in self.removed:
+            if isinstance(item, InstanceCore):
+                output.append(item.as_id())
+            elif isinstance(item, AbstractDataclass):
+                output.append(item)
+            elif hasattr(item, "external_id"):
+                output.append(item.external_id)
+            else:
+                raise NotImplementedError(f"Could not find identifier of {item}")
+        return output
 
     def __add__(self, other: FieldDifference) -> FieldDifference:
         if self.field_name != other.field_name or self.group != other.group or not isinstance(other, FieldDifference):

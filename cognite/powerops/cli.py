@@ -131,12 +131,15 @@ def destroy(
         default=sorted(resync.MODELS_BY_NAME),
         help=f"The models to destroy. Available models: {', '.join(resync.MODELS_BY_NAME)}",
     ),
+    dry_run: bool = typer.Option(
+        False, "--dry-run", help="Whether to run the command as a dry run, meaning no resources will be destroyed."
+    ),
     format: str = typer.Option(default=None, help="The format of the output. Available formats: markdown"),
     verbose: bool = typer.Option(True, "--verbose", "-v", help="Whether to print verbose output"),
 ):
     client = PowerOpsClient.from_settings()
 
-    destroyed = resync.destroy(client, echo=_to_echo(verbose), model_names=models)
+    destroyed = resync.destroy(client, echo=_to_echo(verbose), model_names=models, dry_run=dry_run)
     if format == "markdown":
         typer.echo(destroyed.as_github_markdown())
 
@@ -147,20 +150,6 @@ def validate(
     verbose: bool = typer.Option(True, "--verbose", "-v", help="Whether to print verbose output"),
 ):
     resync.validate(path, echo=_to_echo(verbose))
-
-
-# @app.command("show", help=f"Show the graphql schema of Power Ops model.
-# Available models: {list(MODELS_BY_NAME.keys())}")
-# def show(
-#     model: Annotated[str, typer.Argument(help="The models to deploy")],
-#     remove_newlines: bool = typer.Option(
-#         False,
-#         "--remove-newlines",
-#     ),
-# ):
-#     if model not in MODELS_BY_NAME:
-#
-#     if remove_newlines:
 
 
 def main():

@@ -136,7 +136,7 @@ class DataModelingAdapter(CogniteAPI[T_CogniteResource]):
     def upsert(
         self, item: T_CogniteResource | Sequence[T_CogniteResource], mode: Literal["patch", "replace"] = "patch"
     ) -> Any:
-        raise NotImplementedError("Upsert not implemented for data modeling")
+        self.api.apply(item)
 
 
 def get_cognite_api(

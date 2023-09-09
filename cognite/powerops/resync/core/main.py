@@ -8,7 +8,7 @@ from typing import Optional
 
 from cognite.client import CogniteClient
 from cognite.client.data_classes.data_modeling import DataModelId, MappedProperty, SpaceApply, SpaceList, ViewList
-from cognite.client.data_classes.data_modeling.instances import InstanceCore
+from cognite.client.exceptions import CogniteAPIError
 from yaml import safe_dump
 
 from cognite.powerops.client.powerops_client import PowerOpsClient
@@ -219,6 +219,7 @@ def destroy(
     echo: Echo | None = None,
     model_names: str | list[str] | None = None,
     auto_yes: bool = False,
+    dry_run: bool = False,
 ) -> ModelDifferences:
     """
     Destroys all resync models in CDF. This will also delete all data in the models.
@@ -228,6 +229,7 @@ def destroy(
         echo: Function to use for printing. Defaults to print.
         model_names: The models to destroy.
         auto_yes: If true, all prompts will be auto confirmed.
+        dry_run: If true, the models will not be deleted, but the changes will be printed.
 
     Returns:
         A ModelDifferences object containing the resources that has been destroyed.
@@ -248,10 +250,22 @@ def destroy(
         remove_data = diff.remove_only(cdf_model)
         remove_data.filter_out(group="Domain", field_names={"timeseries"})
 
-        removed = _remove_resources(remove_data + remove_data_model, echo, client.cdf, auto_yes)
+        if dry_run:
+            destroyed.append(remove_data + remove_data_model)
+        else:
+            removed = _remove_resources(remove_data + remove_data_model, echo, client.cdf, auto_yes)
+            destroyed.append(removed)
 
-        destroyed.append(removed)
-
+    spaces = set(d.graph_ql.id_.space for d in model_types if issubclass(d, DataModel))
+    if spaces and not dry_run:
+        for space in spaces:
+            echo(f"Deleting space {space}..")
+            try:
+                client.cdf.data_modeling.spaces.delete(list(spaces))
+            except CogniteAPIError as e:
+                echo(f"Failed to delete space {space} with error {e}", is_warning=True)
+            else:
+                echo(f"... deleted space {space}")
     return destroyed
 
 
@@ -270,11 +284,9 @@ def _remove_resources(differences: ModelDifference, echo: Echo, cdf: CogniteClie
             continue
 
         api = get_cognite_api(cdf, difference.field_name)
-        api.delete(
-            external_id=[
-                r.as_id() if isinstance(r, InstanceCore) else r.external_id for r in difference.removed if r.external_id
-            ]
-        )
+
+        api.delete(external_id=difference.removed_ids)
+
         echo(f"Deleted {len(difference.removed)} of {difference.field_name}")
         removed.changes[difference.field_name] = FieldDifference(
             group=difference.group,
