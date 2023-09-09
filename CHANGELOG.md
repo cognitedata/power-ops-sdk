@@ -13,6 +13,13 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.48.0] - 2023-09-09
+### Changed
+* Markdown output of `plan` and `apply` is now standardized.
+
+### Added
+* `verbose` option to `plan` command.
+
 ## [0.47.2] - 2023-09-08
 ### Fixed
 * Fixed bug where comparison of two equal models resulted in change detected. This cause
