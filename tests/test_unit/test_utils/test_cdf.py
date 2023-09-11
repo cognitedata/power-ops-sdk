@@ -48,13 +48,7 @@ def settings_files(tmp_path: Path):
             }
         )
     )
-    secrets_file.write_text(
-        tomli_w.dumps(
-            {
-                "cognite": {"client_secret": file_contents["cognite"]["client_secret"]},
-            }
-        )
-    )
+    secrets_file.write_text(tomli_w.dumps({"cognite": {"client_secret": file_contents["cognite"]["client_secret"]}}))
     os.environ["SETTINGS_FILES"] = ";".join([str(settings_file), str(secrets_file)])
     yield file_contents
 
@@ -116,10 +110,7 @@ def test_create_pipeline_run_truncate_message(
 ):
     # Act
     with extraction_pipeline.create_pipeline_run(cognite_client) as run:
-        run.update_data(
-            status=RunStatus.FAILURE,
-            plan="too large" * MSG_CHAR_LIMIT,
-        )
+        run.update_data(status=RunStatus.FAILURE, plan="too large" * MSG_CHAR_LIMIT)
         message = run.get_message(dump_truncated_to_file=False)
 
     # Assert
@@ -131,16 +122,11 @@ def test_create_pipeline_run_truncate_message(
 
 
 def test_create_pipeline_run_truncate_multiple_keys(
-    extraction_pipeline: ExtractionPipelineCreate,
-    cognite_client: CogniteClient,
+    extraction_pipeline: ExtractionPipelineCreate, cognite_client: CogniteClient
 ):
     # Act
     with extraction_pipeline.create_pipeline_run(cognite_client) as run:
-        run.update_data(
-            status=RunStatus.FAILURE,
-            plan="too large" * MSG_CHAR_LIMIT,
-            error="too large" * MSG_CHAR_LIMIT,
-        )
+        run.update_data(status=RunStatus.FAILURE, plan="too large" * MSG_CHAR_LIMIT, error="too large" * MSG_CHAR_LIMIT)
         message = run.get_message(dump_truncated_to_file=False)
 
     # Assert

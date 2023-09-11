@@ -63,11 +63,7 @@ class PipelineRun:
     def __enter__(self) -> PipelineRun:
         return self
 
-    def update_data(
-        self,
-        status: RunStatus = init_status,
-        **data: Any,
-    ) -> PipelineRun:
+    def update_data(self, status: RunStatus = init_status, **data: Any) -> PipelineRun:
         self.status = status
         if isinstance(data, dict):
             for key in self.reserved_keys:
@@ -88,9 +84,7 @@ class PipelineRun:
 
         message = self.get_message(self.config.dump_truncated_to_file)
         run = ExtractionPipelineRun(
-            status=self.status.value,
-            extpipe_external_id=self.pipeline_external_id,
-            message=message,
+            status=self.status.value, extpipe_external_id=self.pipeline_external_id, message=message
         )
         self.client.extraction_pipelines.runs.create(run)
 
@@ -138,9 +132,7 @@ class PipelineRun:
             for key in truncate_keys:
                 if key not in data:
                     continue
-                file_content.append(
-                    f"{'='*70}\n{key}\n{'='*70}\n{self.data[key]}\n{'='*70}",
-                )
+
                 entry_length = len(data[key])
                 if entry_length >= above_limit + 3:
                     data[key] = data[key][: entry_length - (above_limit + 3)] + "..."
@@ -151,8 +143,11 @@ class PipelineRun:
                     reduction = min((above_limit + 3) - entry_length, entry_length)
                     data[key] = "..."
                     above_limit = above_limit - reduction
+            # We dump all data to the file, even the keys which are not truncated.
+            for key in truncate_keys:
+                file_content.append(f"{'='*70}\n{key}\n{'='*70}\n{self.data[key]}\n")
 
-        return data, "\n\n".join(file_content)
+        return data, "\n\n".join(file_content) if above_limit else ""
 
     @staticmethod
     def _as_json(data: dict) -> str:
@@ -165,6 +160,16 @@ class ExtractionPipelineCreate:
     This is a simplified write version of an Extraction pipeline.
 
     This ensures that the Extraction Pipeline exists when calling the `create_pipeline_run` method.
+
+    Args:
+        external_id: The external id of the extraction pipeline.
+        data_set_external_id: The external id of the dataset to use.
+        description: The description of the extraction pipeline.
+        dump_truncated_to_file: Whether to dump truncated data to a file. This is used when the data is too large to
+            be stored in the message field of the extraction pipeline run.
+        truncate_keys_first: The keys to truncate first. This is useful when expect the data to be too large to
+            to be stored in a message field of the extraction pipeline run, and you want to select which keys
+            to truncate first.
 
     """
 
