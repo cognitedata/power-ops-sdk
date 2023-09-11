@@ -104,7 +104,7 @@ def extraction_pipeline() -> ExtractionPipelineCreate:
         external_id="resync/plan",
         data_set_external_id="powerops",
         dump_truncated_to_file=True,
-        truncate_keys=["plan"],
+        truncate_keys_first=["plan"],
         log_file_prefix="resync_loss",
         description="The resync/plan function checks that the configuration files are matching "
         "the expected resources in CDF. If there are any differences, the run will report as failed",

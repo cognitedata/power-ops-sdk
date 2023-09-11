@@ -174,7 +174,7 @@ class ExtractionPipelineCreate:
         data_set_external_id: str,
         description: str | None = None,
         dump_truncated_to_file: bool = True,
-        truncate_keys: Optional[list[str]] = None,
+        truncate_keys_first: Optional[list[str]] = None,
         log_file_prefix: str | None = None,
     ) -> None:
         self.external_id = external_id
@@ -184,7 +184,7 @@ class ExtractionPipelineCreate:
 
         self.config = _Config(
             dump_truncated_to_file=dump_truncated_to_file,
-            truncate_keys=truncate_keys,
+            truncate_keys=truncate_keys_first,
             log_file_prefix=log_file_prefix,
         )
 

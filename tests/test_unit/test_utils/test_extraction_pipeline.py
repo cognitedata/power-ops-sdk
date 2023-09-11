@@ -14,7 +14,7 @@ def test_pipeline_run_upload_file() -> None:
             external_id="test_pipeline",
             data_set_external_id="test_dataset",
             dump_truncated_to_file=True,
-            truncate_keys=["error"],
+            truncate_keys_first=["error"],
             log_file_prefix="test",
         )
 
