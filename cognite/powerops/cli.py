@@ -43,7 +43,7 @@ def init(
         default=sorted(resync.MODELS_BY_NAME),
         help=f"The models to initialize. Available models: {', '.join(resync.MODELS_BY_NAME)}",
     ),
-    verbose: bool = typer.Option(True, "--verbose", "-v", help="Whether to print verbose output"),
+    verbose: bool = typer.Option(False, "--verbose", "-v", help="Whether to print verbose output"),
 ):
     client = PowerOpsClient.from_settings()
     resync.init(client, echo=_to_echo(verbose), model_names=models)
@@ -52,7 +52,7 @@ def init(
 @app.command("validate", help="Validate the configuration files")
 def validate(
     path: Annotated[Path, typer.Argument(help="Path to configuration files")],
-    verbose: bool = typer.Option(True, "--verbose", "-v", help="Whether to print verbose output"),
+    verbose: bool = typer.Option(False, "--verbose", "-v", help="Whether to print verbose output"),
 ):
     resync.validate(path, echo=_to_echo(verbose))
 
@@ -77,7 +77,7 @@ def plan(
         help="If true, the command will be registered as an extraction pipeline run. With the configuration"
         "fetched from the settings.toml [powerops] section.",
     ),
-    verbose: bool = typer.Option(True, "--verbose", "-v", help="Whether to print verbose output"),
+    verbose: bool = typer.Option(False, "--verbose", "-v", help="Whether to print verbose output"),
 ):
     if dump_folder and not dump_folder.is_dir():
         raise typer.BadParameter(f"{dump_folder} is not a directory")
@@ -122,7 +122,7 @@ def apply(
     ),
     auto_yes: bool = typer.Option(False, "--yes", "-y", help="Auto confirm all prompts"),
     format: str = typer.Option(default=None, help="The format of the output. Available formats: markdown"),
-    verbose: bool = typer.Option(True, "--verbose", "-v", help="Whether to print verbose output"),
+    verbose: bool = typer.Option(False, "--verbose", "-v", help="Whether to print verbose output"),
 ):
     echo = _to_echo(verbose)
     client = PowerOpsClient.from_settings()
@@ -144,7 +144,7 @@ def destroy(
     ),
     auto_yes: bool = typer.Option(False, "--yes", "-y", help="Auto confirm all prompts"),
     format: str = typer.Option(default=None, help="The format of the output. Available formats: markdown"),
-    verbose: bool = typer.Option(True, "--verbose", "-v", help="Whether to print verbose output"),
+    verbose: bool = typer.Option(False, "--verbose", "-v", help="Whether to print verbose output"),
 ):
     client = PowerOpsClient.from_settings()
 
@@ -160,15 +160,15 @@ def main():
 def _to_echo(verbose: bool) -> cognite.powerops.resync.core.echo.Echo:
     if verbose:
 
-        def echo(msg: str, is_warning: bool = False) -> None:
+        def echo(message: str, is_warning: bool = False) -> None:
             if is_warning:
-                log.warning(msg)
+                log.warning(message)
             else:
-                log.info(msg)
+                log.info(message)
 
     else:
 
-        def echo(_: str, __: bool = False) -> None:
+        def echo(message: str, is_warning: bool = False) -> None:
             ...
 
     return echo

@@ -15,6 +15,13 @@ Changes are grouped as follows
 
 ## [0.48.0] - 2023-09-09
 ### Changed
+* Default verbose from `True` to `False` for all CLI commands
+
+### Fixed
+* Bug when running any `CLI` command with `--verbose` option. This is now fixed.
+
+## [0.48.0] - 2023-09-09
+### Changed
 * Markdown output of `plan` and `apply` is now standardized.
 
 ### Added
