@@ -52,12 +52,14 @@ class PipelineRun:
         config: _Config,
         data_set_id: int,
         error_logger: Callable[[str], None],
+        is_try_run: bool,
     ) -> None:
         self.client = client
         self.pipeline_external_id = pipeline_external_id
         self.config = config
         self.data_set_id = data_set_id
         self.error_logger = error_logger
+        self.is_dry_run = is_try_run
 
         self.data = {}
         self.status = self.init_status
@@ -88,7 +90,8 @@ class PipelineRun:
         run = ExtractionPipelineRun(
             status=self.status.value, extpipe_external_id=self.pipeline_external_id, message=message
         )
-        self.client.extraction_pipelines.runs.create(run)
+        if not self.is_dry_run:
+            self.client.extraction_pipelines.runs.create(run)
 
         return suppress_exception
 
@@ -98,7 +101,7 @@ class PipelineRun:
             f"{datetime.now(timezone.utc).isoformat().replace(':', '')}"
         )
         data, file_content = self._create_run_data_and_file_content(file_external_id, dump_truncated_to_file)
-        if dump_truncated_to_file and file_content:
+        if dump_truncated_to_file and file_content and not self.is_dry_run:
             try:
                 file_id = self.client.files.upload_bytes(
                     content=file_content,
@@ -217,12 +220,13 @@ class ExtractionPipelineCreate:
         return self
 
     def create_pipeline_run(
-        self, client: CogniteClient, error_logger: Optional[Callable[[str], None]] = None
+        self, client: CogniteClient, is_dry_run: bool = False, error_logger: Optional[Callable[[str], None]] = None
     ) -> PipelineRun:
         """
 
         Args:
             client: An instance of the CogniteClient.
+            is_dry_run: Whether to run the pipeline as a dry run. This will not create a pipeline run.
             error_logger: The function to use for logging errors. Defaults to print.
 
         Returns:
@@ -230,4 +234,4 @@ class ExtractionPipelineCreate:
         """
         self._data_set_id = self._data_set_id or client.data_sets.retrieve(external_id=self.dataset_external_id).id
 
-        return PipelineRun(client, self.external_id, self.config, self._data_set_id, error_logger or print)
+        return PipelineRun(client, self.external_id, self.config, self._data_set_id, error_logger or print, is_dry_run)
