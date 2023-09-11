@@ -13,7 +13,7 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## [0.48.0] - 2023-09-09
+## [0.49.0] - 2023-09-09
 ### Changed
 * Default verbose from `True` to `False` for all CLI commands
 
