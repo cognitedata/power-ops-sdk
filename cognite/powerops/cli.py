@@ -106,7 +106,7 @@ def plan(
 
         with pipeline.create_pipeline_run(client) as run:
             if changes.has_changes():
-                run.update_data(RunStatus.FAILURE, error=changes.as_markdown_summary(no_headers=True))
+                run.update_data(RunStatus.FAILURE, error=changes.as_markdown_detailed())
             else:
                 run.update_data(RunStatus.SUCCESS)
         typer.echo("Extraction pipeline run executed")
