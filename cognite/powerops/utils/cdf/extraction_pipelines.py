@@ -2,7 +2,8 @@ from __future__ import annotations
 
 import json
 import traceback
-from dataclasses import dataclass
+from collections.abc import Iterable
+from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
 from typing import Any, Callable, ClassVar, Optional
@@ -24,7 +25,8 @@ class RunStatus(str, Enum):
 @dataclass
 class _Config:
     dump_truncated_to_file: bool = True
-    truncate_keys: list[str] = None
+    message_keys_skip: list[str] = field(default_factory=list)
+    truncate_keys: list[str] = field(default_factory=list)
     log_file_prefix: str | None = None
 
 
@@ -111,7 +113,7 @@ class PipelineRun:
 
             data[self.log_file_id] = file_id
 
-        return self._as_json(data)
+        return self._as_json(data, self.config.message_keys_skip)
 
     def _create_run_data_and_file_content(
         self, file_external_id: str, dump_truncated_to_file: bool
@@ -144,15 +146,18 @@ class PipelineRun:
                     data[key] = "..."
                     above_limit = above_limit - reduction
             # We dump all data to the file, even the keys which are not truncated.
-            for key in truncate_keys:
-                file_content.append(f"{'='*70}\n{key}\n{'='*70}\n{self.data[key]}\n")
+            for key, value in self.data.items():
+                if key in {self.log_file_id, self.log_file_external_id}:
+                    continue
+                file_content.append(f"{'='*70}\n{key}\n{'='*70}\n{value}\n")
 
         return data, "\n\n".join(file_content) if above_limit else ""
 
     @staticmethod
-    def _as_json(data: dict) -> str:
+    def _as_json(data: dict, exclude_keys: Iterable[str] | None = None) -> str:
+        exclude_keys = set(exclude_keys or [])
         # Removing space to use as little space as possible
-        return json.dumps(data, separators=(",", ":"))
+        return json.dumps({k: v for k, v in data.items() if k not in exclude_keys}, separators=(",", ":"))
 
 
 class ExtractionPipelineCreate:
@@ -167,7 +172,9 @@ class ExtractionPipelineCreate:
         description: The description of the extraction pipeline.
         dump_truncated_to_file: Whether to dump truncated data to a file. This is used when the data is too large to
             be stored in the message field of the extraction pipeline run.
-        truncate_keys_first: The keys to truncate first. This is useful when expect the data to be too large to
+        message_keys_skip: The keys that should not be part of the pipeline run message, and instead only
+            be dumped to a file.
+        truncate_keys_first: The keys to truncate first. This is useful when you expect the data to be too large too
             to be stored in a message field of the extraction pipeline run, and you want to select which keys
             to truncate first.
 
@@ -179,6 +186,7 @@ class ExtractionPipelineCreate:
         data_set_external_id: str,
         description: str | None = None,
         dump_truncated_to_file: bool = True,
+        message_keys_skip: Optional[list[str]] = None,
         truncate_keys_first: Optional[list[str]] = None,
         log_file_prefix: str | None = None,
     ) -> None:
@@ -189,6 +197,7 @@ class ExtractionPipelineCreate:
 
         self.config = _Config(
             dump_truncated_to_file=dump_truncated_to_file,
+            message_keys_skip=message_keys_skip,
             truncate_keys=truncate_keys_first,
             log_file_prefix=log_file_prefix,
         )

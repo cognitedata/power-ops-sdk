@@ -13,6 +13,13 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.50.0] - 2023-09-09
+### Improved
+* Extraction Pipeline dump for `powerops plan --as-extraction-pipeline-run`
+
+### Added
+* Options for skipping keys to include in PipelineRun in `cognite.powerops.utils.cdf.extraction_pipeline.ExtractionPipelineCreate`
+
 ## [0.49.0] - 2023-09-09
 ### Changed
 * Default verbose from `True` to `False` for all CLI commands

@@ -1,3 +1,5 @@
+import json
+
 from cognite.client.data_classes import FileMetadata
 from cognite.client.testing import monkeypatch_cognite_client
 
@@ -14,6 +16,7 @@ def test_pipeline_run_upload_file() -> None:
             external_id="test_pipeline",
             data_set_external_id="test_dataset",
             dump_truncated_to_file=True,
+            message_keys_skip=["error"],
             truncate_keys_first=["error"],
             log_file_prefix="test",
         )
@@ -23,7 +26,9 @@ def test_pipeline_run_upload_file() -> None:
             run.update_data(RunStatus.FAILURE, error=long_error_message, error_short=short_error_message)
 
         file_content = client.files.upload_bytes.call_args.kwargs["content"]
+        message = client.extraction_pipelines.runs.create.call_args[0][0].message
 
     # Assert
     assert long_error_message in file_content
     assert short_error_message in file_content
+    assert "error" not in json.loads(message)
