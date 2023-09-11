@@ -151,7 +151,7 @@ class PipelineRun:
                     continue
                 file_content.append(f"{'='*70}\n{key}\n{'='*70}\n{value}\n")
 
-        return data, "\n\n".join(file_content) if above_limit else ""
+        return data, "\n\n".join(file_content)
 
     @staticmethod
     def _as_json(data: dict, exclude_keys: Iterable[str] | None = None) -> str:
