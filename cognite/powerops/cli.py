@@ -98,7 +98,8 @@ def plan(
             external_id="resync/plan",
             data_set_external_id=power.datasets.monitor_dataset,
             dump_truncated_to_file=True,
-            truncate_keys=["error"],
+            message_keys_skip=["error"],
+            truncate_keys_first=["error"],
             log_file_prefix="powerops_function_loss",
             description="The resync/plan function checks that the configuration files are matching "
             "the expected resources in CDF. If there are any differences, the run will report as failed",
@@ -106,7 +107,11 @@ def plan(
 
         with pipeline.create_pipeline_run(client) as run:
             if changes.has_changes():
-                run.update_data(RunStatus.FAILURE, error=changes.as_markdown_summary(no_headers=True))
+                run.update_data(
+                    RunStatus.FAILURE,
+                    summary=changes.as_markdown_summary(no_headers=True),
+                    error=changes.as_markdown_detailed(),
+                )
             else:
                 run.update_data(RunStatus.SUCCESS)
         typer.echo("Extraction pipeline run executed")

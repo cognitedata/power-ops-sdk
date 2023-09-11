@@ -2,7 +2,8 @@ from __future__ import annotations
 
 import json
 import traceback
-from dataclasses import dataclass
+from collections.abc import Iterable
+from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
 from typing import Any, Callable, ClassVar, Optional
@@ -24,7 +25,8 @@ class RunStatus(str, Enum):
 @dataclass
 class _Config:
     dump_truncated_to_file: bool = True
-    truncate_keys: list[str] = None
+    message_keys_skip: list[str] = field(default_factory=list)
+    truncate_keys: list[str] = field(default_factory=list)
     log_file_prefix: str | None = None
 
 
@@ -63,11 +65,7 @@ class PipelineRun:
     def __enter__(self) -> PipelineRun:
         return self
 
-    def update_data(
-        self,
-        status: RunStatus = init_status,
-        **data: Any,
-    ) -> PipelineRun:
+    def update_data(self, status: RunStatus = init_status, **data: Any) -> PipelineRun:
         self.status = status
         if isinstance(data, dict):
             for key in self.reserved_keys:
@@ -88,9 +86,7 @@ class PipelineRun:
 
         message = self.get_message(self.config.dump_truncated_to_file)
         run = ExtractionPipelineRun(
-            status=self.status.value,
-            extpipe_external_id=self.pipeline_external_id,
-            message=message,
+            status=self.status.value, extpipe_external_id=self.pipeline_external_id, message=message
         )
         self.client.extraction_pipelines.runs.create(run)
 
@@ -117,7 +113,7 @@ class PipelineRun:
 
             data[self.log_file_id] = file_id
 
-        return self._as_json(data)
+        return self._as_json(data, self.config.message_keys_skip)
 
     def _create_run_data_and_file_content(
         self, file_external_id: str, dump_truncated_to_file: bool
@@ -138,9 +134,7 @@ class PipelineRun:
             for key in truncate_keys:
                 if key not in data:
                     continue
-                file_content.append(
-                    f"{'='*70}\n{key}\n{'='*70}\n{self.data[key]}\n{'='*70}",
-                )
+
                 entry_length = len(data[key])
                 if entry_length >= above_limit + 3:
                     data[key] = data[key][: entry_length - (above_limit + 3)] + "..."
@@ -151,13 +145,19 @@ class PipelineRun:
                     reduction = min((above_limit + 3) - entry_length, entry_length)
                     data[key] = "..."
                     above_limit = above_limit - reduction
+            # We dump all data to the file, even the keys which are not truncated.
+            for key, value in self.data.items():
+                if key in {self.log_file_id, self.log_file_external_id}:
+                    continue
+                file_content.append(f"{'='*70}\n{key}\n{'='*70}\n{value}\n")
 
         return data, "\n\n".join(file_content)
 
     @staticmethod
-    def _as_json(data: dict) -> str:
+    def _as_json(data: dict, exclude_keys: Iterable[str] | None = None) -> str:
+        exclude_keys = set(exclude_keys or [])
         # Removing space to use as little space as possible
-        return json.dumps(data, separators=(",", ":"))
+        return json.dumps({k: v for k, v in data.items() if k not in exclude_keys}, separators=(",", ":"))
 
 
 class ExtractionPipelineCreate:
@@ -165,6 +165,18 @@ class ExtractionPipelineCreate:
     This is a simplified write version of an Extraction pipeline.
 
     This ensures that the Extraction Pipeline exists when calling the `create_pipeline_run` method.
+
+    Args:
+        external_id: The external id of the extraction pipeline.
+        data_set_external_id: The external id of the dataset to use.
+        description: The description of the extraction pipeline.
+        dump_truncated_to_file: Whether to dump truncated data to a file. This is used when the data is too large to
+            be stored in the message field of the extraction pipeline run.
+        message_keys_skip: The keys that should not be part of the pipeline run message, and instead only
+            be dumped to a file.
+        truncate_keys_first: The keys to truncate first. This is useful when you expect the data to be too large too
+            to be stored in a message field of the extraction pipeline run, and you want to select which keys
+            to truncate first.
 
     """
 
@@ -174,7 +186,8 @@ class ExtractionPipelineCreate:
         data_set_external_id: str,
         description: str | None = None,
         dump_truncated_to_file: bool = True,
-        truncate_keys: Optional[list[str]] = None,
+        message_keys_skip: Optional[list[str]] = None,
+        truncate_keys_first: Optional[list[str]] = None,
         log_file_prefix: str | None = None,
     ) -> None:
         self.external_id = external_id
@@ -184,7 +197,8 @@ class ExtractionPipelineCreate:
 
         self.config = _Config(
             dump_truncated_to_file=dump_truncated_to_file,
-            truncate_keys=truncate_keys,
+            message_keys_skip=message_keys_skip,
+            truncate_keys=truncate_keys_first,
             log_file_prefix=log_file_prefix,
         )
 
