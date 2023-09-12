@@ -1,17 +1,20 @@
+from __future__ import annotations
+
+import json
 from collections import UserList
 from dataclasses import dataclass
 from datetime import datetime
 from typing import ClassVar
 
 import pandas as pd
+from cognite.client import CogniteClient
 from cognite.client.data_classes.events import Event, EventList
 from cognite.client.utils import ms_to_datetime
 from typing_extensions import Self
 
 
 class ShopRunEvent:
-    event_type: ClassVar[str] = "POWEROPS_PROCESS_REQUESTED"
-    event_subtype: ClassVar[str] = "POWEROPS_SHOP_RUN"
+    event_type: ClassVar[str] = "POWEROPS_SHOP_RUN"
     watercourse: ClassVar[str] = "shop:watercourse"
 
 
@@ -33,6 +36,10 @@ class SHOPRun:
     watercourse: str
     start: datetime
     end: datetime
+    shop_version: str
+    _case_file_external_id: str
+    _shop_files_external_ids: list[str]
+    _client: CogniteClient | None = None
 
     @classmethod
     def load(cls, event: Event) -> Self:
@@ -46,15 +53,30 @@ class SHOPRun:
 
         """
         metadata = event.metadata or {}
+        if event.type != ShopRunEvent.event_type or "shop:preprocessor_data" not in metadata:
+            raise ValueError(f"Event {event.external_id} is not a SHOP run event!")
+        preprocessor_data = json.loads(metadata["shop:preprocessor_data"])
+
+        # TODO: Validate the preprocessor data
         return cls(
             external_id=event.external_id,
             watercourse=metadata.get(ShopRunEvent.watercourse, ""),
             start=ms_to_datetime(event.start_time),
             end=ms_to_datetime(event.end_time),
+            shop_version=preprocessor_data["shop_version"],
+            _case_file_external_id=preprocessor_data["cog_shop_case_file"]["external_id"],
+            _shop_files_external_ids=[item["external_id"] for item in preprocessor_data["cog_shop_file_list"]],
+            _client=event._cognite_client,
         )
 
     def dump(self) -> dict[str, str]:
         return {"external_id": self.external_id, "watercourse": self.watercourse, "start": self.start, "end": self.end}
+
+    def case_file(self) -> str:
+        raise NotImplementedError()
+
+    def shop_files(self) -> list[str]:
+        raise NotImplementedError()
 
 
 class SHOPRunList(UserList):
