@@ -11,6 +11,7 @@ from cognite.client.data_classes.data_modeling import DataModelId, MappedPropert
 from cognite.client.exceptions import CogniteAPIError
 from yaml import safe_dump
 
+from cognite.powerops.cdf_labels import AssetLabel, RelationshipLabel
 from cognite.powerops.client.powerops_client import PowerOpsClient
 from cognite.powerops.resync import diff, models
 from cognite.powerops.resync.config import ReSyncConfig
@@ -304,6 +305,10 @@ def destroy(
                     },
                 )
             )
+
+    labels = AssetLabel.as_label_definitions() + RelationshipLabel.as_label_definitions()
+    client.cdf.labels.delete([label.external_id for label in labels if label.external_id])
+
     return destroyed
 
 
