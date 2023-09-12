@@ -16,8 +16,8 @@ from cognite.powerops.client.shop.data_classes.helpers import (
     get_data_from_nested_dict,
     is_time_series_dict,
 )
+from cognite.powerops.client.shop.data_classes.plotting import ax_plot_time_series, create_time_series_plot
 from cognite.powerops.client.shop.data_classes.shop_result_files import ShopYamlFile
-from cognite.powerops.client.shop.plotting import ax_plot_time_series, create_time_series_plot
 
 logger = logging.getLogger(__name__)
 
