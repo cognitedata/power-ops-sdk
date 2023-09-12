@@ -3,9 +3,9 @@ from __future__ import annotations
 import json
 from collections import UserList
 from collections.abc import Iterable
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime
-from typing import ClassVar
+from typing import Any, ClassVar, overload
 
 import pandas as pd
 from cognite.client import CogniteClient
@@ -40,7 +40,7 @@ class SHOPRun:
     shop_version: str
     _case_file_external_id: str
     _shop_files_external_ids: list[str]
-    _client: CogniteClient | None = None
+    _client: CogniteClient = field(repr=False)
 
     @classmethod
     def load(cls, event: Event) -> Self:
@@ -56,6 +56,10 @@ class SHOPRun:
         metadata = event.metadata or {}
         if event.type != ShopRunEvent.event_type or "shop:preprocessor_data" not in metadata:
             raise ValueError(f"Event {event.external_id} is not a SHOP run event!")
+
+        if event._cognite_client is None:
+            raise ValueError(f"Event {event.external_id} is not loaded with a cognite client!")
+
         preprocessor_data = json.loads(metadata["shop:preprocessor_data"])
 
         # TODO: Validate the preprocessor data
@@ -70,8 +74,15 @@ class SHOPRun:
             _client=event._cognite_client,
         )
 
-    def dump(self) -> dict[str, str]:
-        return {"external_id": self.external_id, "watercourse": self.watercourse, "start": self.start, "end": self.end}
+    def dump(self) -> dict[str, Any]:
+        return {
+            "external_id": self.external_id,
+            "watercourse": self.watercourse,
+            "start": self.start,
+            "end": self.end,
+            "case_file_external_id": self._case_file_external_id,
+            "_shop_files_external_ids": self._shop_files_external_ids,
+        }
 
     def get_case_file(self) -> str:
         bytes = self._client.files.download_bytes(external_id=self._case_file_external_id)
@@ -87,6 +98,19 @@ class SHOPRunList(UserList):
     """
     This represents a list of SHOP runs.
     """
+
+    @overload
+    def __getitem__(self, item: int) -> SHOPRun:
+        ...
+
+    @overload
+    def __getitem__(self, item: slice) -> SHOPRunList:
+        ...
+
+    def __getitem__(self, item: int | slice) -> SHOPRunList | SHOPRun:
+        if isinstance(item, slice):
+            return type(self)(self.data[item])
+        return self.data[item]
 
     @classmethod
     def load(cls, events: EventList) -> Self:

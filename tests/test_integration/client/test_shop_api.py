@@ -22,7 +22,6 @@ def test_list_shop_runs(powerops_client: PowerOpsClient) -> None:
     assert isinstance(runs.to_pandas(), pd.DataFrame)
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_retrieve_shop_run(powerops_client: PowerOpsClient, shop_run_list: SHOPRunList) -> None:
     run = powerops_client.shop.retrieve(shop_run_list[0].external_id)
 
