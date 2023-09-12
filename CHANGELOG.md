@@ -18,7 +18,7 @@ Changes are grouped as follows
 * Support for destroying `MarketModel` and `ProductionModel`.
 
 ### Fixed
-* Creation of parent assets and labels wthen runhing `powerops init`
+* Creation of parent assets and labels wthen running `powerops init`
 * Overwriting initial status on each update `extraction pipeline` in `cognite.powerops.utils.cdf.extraction_pipeline`
 
 ## [0.51.0] - 2023-09-09
