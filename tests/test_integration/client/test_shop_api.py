@@ -2,7 +2,7 @@ import pandas as pd
 import pytest
 
 from cognite.powerops import PowerOpsClient
-from cognite.powerops.client.data_classes import SHOPRun, SHOPRunList
+from cognite.powerops.client.data_classes import SHOPRun, SHOPRunList, SHOPRunStatus
 
 
 @pytest.fixture(scope="session")
@@ -42,3 +42,9 @@ def test_get_shop_files(shop_run: SHOPRun) -> None:
     assert shop_files, "No shop files found"
     for shop_file in shop_files:
         assert isinstance(shop_file, str)
+
+
+def test_check_status(shop_run: SHOPRun) -> None:
+    status = shop_run.check_status()
+
+    assert isinstance(status, SHOPRunStatus)

@@ -5,13 +5,30 @@ from collections import UserList
 from collections.abc import Iterable
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
-from typing import Any, ClassVar, overload
+from typing import Any, ClassVar, cast, overload
 
 import pandas as pd
 from cognite.client import CogniteClient
 from cognite.client.data_classes.events import Event, EventList
 from cognite.client.utils import datetime_to_ms, ms_to_datetime
 from typing_extensions import Self
+
+try:
+    from enum import StrEnum
+except ImportError:
+    from strenum import StrEnum
+
+
+class SHOPRunStatus(StrEnum):
+    SUCCESS = "success"
+    FAILED = "failed"
+    IN_PROGRESS = "in_progress"
+
+
+class SHOPProcessEvents:
+    finished: str = "POWEROPS_PROCESS_FINISHED"
+    failed: str = "POWEROPS_PROCESS_FAILED"
+    started: str = "POWEROPS_PROCESS_STARTED"
 
 
 class ShopRunEvent:
@@ -62,6 +79,7 @@ class SHOPRun:
     _case_file_external_id: str
     _shop_files: list[SHOPFile]
     _client: CogniteClient = field(repr=False)
+    _run_event_types: set[str] = field(init=False, default_factory=set)
 
     @classmethod
     def load(cls, event: Event) -> Self:
@@ -130,14 +148,46 @@ class SHOPRun:
             "shop_files_external_ids": [shop_file.dump() for shop_file in self._shop_files],
         }
 
-    def get_case_file(self) -> str:
-        bytes = self._client.files.download_bytes(external_id=self._case_file_external_id)
+    def _download_file(self, external_id: str) -> str:
+        bytes = self._client.files.download_bytes(external_id=external_id)
         return bytes.decode("utf-8")
+
+    def get_case_file(self) -> str:
+        return self._download_file(self._case_file_external_id)
 
     def get_shop_files(self) -> Iterable[str]:
         for shop_file in self._shop_files:
-            bytes = self._client.files.download_bytes(external_id=shop_file)
-            yield bytes.decode("utf-8")
+            yield self._download_file(shop_file.external_id)
+
+    def get_cplex_file(self) -> str:
+        raise NotImplementedError()
+
+    def get_shop_messages(self) -> str:
+        raise NotImplementedError()
+
+    def get_post_run(self) -> str:
+        raise NotImplementedError()
+
+    def check_status(self) -> SHOPRunStatus:
+        return self._check_status(update_events=True)
+
+    def _check_status(self, update_events: bool = False) -> SHOPRunStatus:
+        # If the run is finished or failed, we don't need to check the events.
+        if SHOPProcessEvents.failed in self._run_event_types:
+            return SHOPRunStatus.FAILED
+        elif SHOPProcessEvents.finished in self._run_event_types:
+            return SHOPRunStatus.SUCCESS
+
+        if update_events:
+            self._update_run_events()
+            self._check_status(update_events=False)
+        return SHOPRunStatus.IN_PROGRESS
+
+    def _update_run_events(self) -> None:
+        relationships = self._client.relationships.list(
+            source_external_ids=[self.external_id], target_types=["event"], fetch_resources=True
+        )
+        self._run_event_types |= {cast(Event, rel.target).type for rel in relationships}
 
 
 class SHOPRunList(UserList):
