@@ -5,7 +5,7 @@ from collections import defaultdict
 from collections.abc import Iterable
 from typing import Any, Callable, ClassVar, Optional, TypeVar, Union
 
-from cognite.client.data_classes import Asset, AssetList, Relationship, TimeSeries
+from cognite.client.data_classes import Asset, AssetList, LabelDefinition, Relationship, TimeSeries
 from typing_extensions import Self
 
 from cognite.powerops.client.powerops_client import PowerOpsClient
@@ -60,11 +60,25 @@ class AssetModel(Model, ABC, validate_assignment=True):
             )
         )
 
+    def labels(self) -> list[LabelDefinition]:
+        assets = self.assets()
+        label_external_ids = set()
+        for asset in assets:
+            label_external_ids |= {label.external_id for label in asset.labels}
+        relationships = self.relationships()
+        for relationship in relationships:
+            label_external_ids |= {label.external_id for label in relationship.labels}
+
+        return [
+            LabelDefinition(external_id=external_id, name=external_id) for external_id in sorted(label_external_ids)
+        ]
+
     cdf_resources: ClassVar[dict[Union[Callable, tuple[Callable, str]], type]] = {
         **dict(Model.cdf_resources.items()),
         assets: Asset,
         relationships: Relationship,
         parent_assets: Asset,
+        labels: LabelDefinition,
     }
 
     # Need to set classmethod here to have access to the underlying function in cdf_resources
