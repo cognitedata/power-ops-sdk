@@ -156,14 +156,14 @@ class LabelsAdapter(CogniteAPI[LabelDefinition]):
         self.client.labels.create(items)
 
     def delete(self, external_id: str | Sequence[str]) -> Any:
-        self.client.labels.delete(external_id)
+        # Labels are not deleted.
+        ...
 
     def upsert(
         self, item: LabelDefinition | Sequence[LabelDefinition], mode: Literal["patch", "replace"] = "patch"
     ) -> Any:
-        items = [item] if isinstance(item, LabelDefinition) else item
-        self.delete([label.external_id for label in items if label.external_id])
-        self.create(items)
+        # Labels are not changes
+        ...
 
 
 def get_cognite_api(

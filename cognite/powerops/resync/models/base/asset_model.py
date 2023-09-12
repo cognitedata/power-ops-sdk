@@ -8,6 +8,7 @@ from typing import Any, Callable, ClassVar, Optional, TypeVar, Union
 from cognite.client.data_classes import Asset, AssetList, LabelDefinition, LabelDefinitionList, Relationship, TimeSeries
 from typing_extensions import Self
 
+from cognite.powerops.cdf_labels import AssetLabel, RelationshipLabel
 from cognite.powerops.client.powerops_client import PowerOpsClient
 from cognite.powerops.resync.models.base.asset_type import AssetType
 from cognite.powerops.resync.models.base.cdf_resources import CDFFile, CDFSequence
@@ -61,17 +62,12 @@ class AssetModel(Model, ABC, validate_assignment=True):
         )
 
     def labels(self) -> list[LabelDefinition]:
-        assets = self.assets()
-        label_external_ids = set()
-        for asset in assets:
-            label_external_ids |= {label.external_id for label in asset.labels}
-        relationships = self.relationships()
-        for relationship in relationships:
-            label_external_ids |= {label.external_id for label in relationship.labels}
-
-        return [
-            LabelDefinition(external_id=external_id, name=external_id) for external_id in sorted(label_external_ids)
-        ]
+        # for asset in assets:
+        # for relationship in relationships:
+        # return [
+        #     LabelDefinition(external_id=external_id, name=external_id) for external_id in sorted(label_external_ids)
+        # Labels are for the entire resync.
+        return AssetLabel.as_label_definitions() + RelationshipLabel.as_label_definitions()
 
     cdf_resources: ClassVar[dict[Union[Callable, tuple[Callable, str]], type]] = {
         **dict(Model.cdf_resources.items()),
