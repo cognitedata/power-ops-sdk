@@ -4,19 +4,39 @@ import json
 from collections import UserList
 from collections.abc import Iterable
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Any, ClassVar, overload
 
 import pandas as pd
 from cognite.client import CogniteClient
 from cognite.client.data_classes.events import Event, EventList
-from cognite.client.utils import ms_to_datetime
+from cognite.client.utils import datetime_to_ms, ms_to_datetime
 from typing_extensions import Self
 
 
 class ShopRunEvent:
     event_type: ClassVar[str] = "POWEROPS_SHOP_RUN"
     watercourse: ClassVar[str] = "shop:watercourse"
+    manual_run: str = "shop:manual_run"
+    preprocessor_data: str = "shop:preprocessor_data"
+    shop_version: str = "shop_version"
+    case_file: str = "cog_shop_case_file"
+    shop_files: str = "cog_shop_file_list"
+    shopstart: str = "shop:starttime"
+    shopend: str = "shop:endtime"
+
+
+@dataclass
+class SHOPFile:
+    external_id: str
+    file_type: str
+
+    @classmethod
+    def load(cls, data: dict[str, Any]) -> Self:
+        return cls(external_id=data["external_id"], file_type=data["file_type"])
+
+    def dump(self) -> dict[str, Any]:
+        return {"external_id": self.external_id, "file_type": self.file_type}
 
 
 @dataclass
@@ -36,10 +56,10 @@ class SHOPRun:
     external_id: str
     watercourse: str
     start: datetime
-    end: datetime
+    end: datetime | None
     shop_version: str
     _case_file_external_id: str
-    _shop_files_external_ids: list[str]
+    _shop_files: list[SHOPFile]
     _client: CogniteClient = field(repr=False)
 
     @classmethod
@@ -54,13 +74,13 @@ class SHOPRun:
 
         """
         metadata = event.metadata or {}
-        if event.type != ShopRunEvent.event_type or "shop:preprocessor_data" not in metadata:
+        if event.type != ShopRunEvent.event_type or ShopRunEvent.preprocessor_data not in metadata:
             raise ValueError(f"Event {event.external_id} is not a SHOP run event!")
 
         if event._cognite_client is None:
             raise ValueError(f"Event {event.external_id} is not loaded with a cognite client!")
 
-        preprocessor_data = json.loads(metadata["shop:preprocessor_data"])
+        preprocessor_data = json.loads(metadata[ShopRunEvent.preprocessor_data])
 
         # TODO: Validate the preprocessor data
         return cls(
@@ -68,10 +88,34 @@ class SHOPRun:
             watercourse=metadata.get(ShopRunEvent.watercourse, ""),
             start=ms_to_datetime(event.start_time),
             end=ms_to_datetime(event.end_time),
-            shop_version=preprocessor_data["shop_version"],
-            _case_file_external_id=preprocessor_data["cog_shop_case_file"]["external_id"],
-            _shop_files_external_ids=[item["external_id"] for item in preprocessor_data["cog_shop_file_list"]],
+            shop_version=preprocessor_data[ShopRunEvent.shop_version],
+            _case_file_external_id=preprocessor_data[ShopRunEvent.case_file]["external_id"],
+            _shop_files=[SHOPFile.load(item) for item in preprocessor_data[ShopRunEvent.shop_files]],
             _client=event._cognite_client,
+        )
+
+    def as_cdf_event(self, data_set_id: int) -> Event:
+        return Event(
+            external_id=self.external_id,
+            type=ShopRunEvent.event_type,
+            data_set_id=data_set_id,
+            start_time=datetime_to_ms(self.start),
+            end_time=datetime_to_ms(self.end) if self.end else None,
+            metadata={
+                ShopRunEvent.watercourse: self.watercourse,
+                ShopRunEvent.manual_run: "",
+                ShopRunEvent.preprocessor_data: json.dumps(
+                    {
+                        ShopRunEvent.shop_version: self.shop_version,
+                        ShopRunEvent.case_file: {"external_id": self._case_file_external_id},
+                        ShopRunEvent.shop_files: [shop_file.dump() for shop_file in self._shop_files],
+                    }
+                ),
+                # These are required by the SHOP container
+                # In the functions, create_bid_process_event the end is by default 2 weeks into the future.
+                ShopRunEvent.shopstart: self.start.isoformat(),
+                ShopRunEvent.shopend: (self.start + timedelta(days=14)).isoformat(),
+            },
         )
 
     def dump(self) -> dict[str, Any]:
@@ -81,7 +125,7 @@ class SHOPRun:
             "start": self.start,
             "end": self.end,
             "case_file_external_id": self._case_file_external_id,
-            "_shop_files_external_ids": self._shop_files_external_ids,
+            "shop_files_external_ids": [shop_file.dump() for shop_file in self._shop_files],
         }
 
     def get_case_file(self) -> str:
@@ -89,7 +133,7 @@ class SHOPRun:
         return bytes.decode("utf-8")
 
     def get_shop_files(self) -> Iterable[str]:
-        for shop_file in self._shop_files_external_ids:
+        for shop_file in self._shop_files:
             bytes = self._client.files.download_bytes(external_id=shop_file)
             yield bytes.decode("utf-8")
 
