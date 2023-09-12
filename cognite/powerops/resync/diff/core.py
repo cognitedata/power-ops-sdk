@@ -1,15 +1,20 @@
+from __future__ import annotations
+
 from typing import Any, Literal
 
+from cognite.client.data_classes import AssetList, LabelDefinitionList
 from cognite.client.data_classes._base import CogniteResource, CogniteResourceList
 
 from cognite.powerops.client._generated.cogshop1.data_classes._core import DomainModelApply as DomainModelApplyCogShop1
 from cognite.powerops.client._generated.data_classes._core import DomainModelApply
-from cognite.powerops.resync.models.base import CDFFile, CDFSequence, Model, ResourceType
+from cognite.powerops.resync.models.base import AssetModel, CDFFile, CDFSequence, Model, ResourceType
 
 from .data_classes import Change, FieldDifference, ModelDifference
 
 
-def model_difference(current_model: Model, new_model: Model) -> ModelDifference:
+def model_difference(
+    current_model: Model, new_model: Model, static_resources: dict[str, AssetList | LabelDefinitionList] | None = None
+) -> ModelDifference:
     if type(current_model) != type(new_model):
         raise ValueError(f"Cannot compare model of type {type(current_model)} with {type(new_model)}")
     # The dump and load calls are to remove all read only fields
@@ -32,6 +37,11 @@ def model_difference(current_model: Model, new_model: Model) -> ModelDifference:
         diff = _find_diffs(current_items, new_items, "CDF", function.__name__)
 
         diffs.append(diff)
+
+    if isinstance(new_model, AssetModel) and static_resources:
+        for field_name, static_resource in static_resources.items():
+            diff = _find_diffs(static_resources, static_resource, "CDF", field_name)
+            diffs.append(diff)
 
     return ModelDifference(model_name=current_model.model_name, changes={d.field_name: d for d in diffs})
 

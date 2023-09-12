@@ -5,7 +5,7 @@ from collections import defaultdict
 from collections.abc import Iterable
 from typing import Any, Callable, ClassVar, Optional, TypeVar, Union
 
-from cognite.client.data_classes import Asset, AssetList, LabelDefinition, Relationship, TimeSeries
+from cognite.client.data_classes import Asset, AssetList, LabelDefinition, LabelDefinitionList, Relationship, TimeSeries
 from typing_extensions import Self
 
 from cognite.powerops.client.powerops_client import PowerOpsClient
@@ -157,6 +157,12 @@ class AssetModel(Model, ABC, validate_assignment=True):
                 "files": cdf_files,
             }
         )
+
+    @classmethod
+    def static_resources_from_cdf(cls, client: PowerOpsClient) -> dict[str, AssetList | LabelDefinitionList]:
+        parent_assets = cls.parent_assets(include_root=False)
+        labels = client.cdf.labels.list(data_set_external_ids=[client.datasets.read_dataset], limit=-1)
+        return {"parent_assets": parent_assets, "labels": labels}
 
     def _asset_types(self) -> Iterable[AssetType]:
         yield from (item for item in self._resource_types() if isinstance(item, AssetType))

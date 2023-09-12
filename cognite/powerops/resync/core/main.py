@@ -15,7 +15,7 @@ from cognite.powerops.client.powerops_client import PowerOpsClient
 from cognite.powerops.resync import diff, models
 from cognite.powerops.resync.config import ReSyncConfig
 from cognite.powerops.resync.diff import FieldDifference, ModelDifference, ModelDifferences
-from cognite.powerops.resync.models.base import CDFFile, CDFSequence, DataModel, Model, SpaceId
+from cognite.powerops.resync.models.base import AssetModel, CDFFile, CDFSequence, DataModel, Model, SpaceId
 
 from . import Echo
 from .cdf import get_cognite_api
@@ -194,8 +194,12 @@ def apply(
     written_changes = ModelDifferences([])
     for new_model in loaded_models:
         cdf_model = type(new_model).from_cdf(client, data_set_external_id=client.datasets.read_dataset)
+        if isinstance(new_model, AssetModel):
+            static_resources = new_model.static_resources_from_cdf(client)
+        else:
+            static_resources = {}
 
-        differences = diff.model_difference(cdf_model, new_model)
+        differences = diff.model_difference(cdf_model, new_model, static_resources)
 
         # Do not create relationships to time series that does not exist.
         _clean_relationships(client.cdf, differences, new_model, echo)
@@ -248,7 +252,7 @@ def destroy(
                 echo(f"Skipping {model_type.__name__}, no data model found", is_warning=True)
                 continue
         else:
-            remove_data_model = []
+            remove_data_model = ModelDifference(model_type.__name__, {})
 
         cdf_model = model_type.from_cdf(client, data_set_external_id=client.datasets.read_dataset)
 
@@ -296,7 +300,7 @@ def destroy(
 
 def _remove_resources(differences: ModelDifference, echo: Echo, cdf: CogniteClient, auto_yes: bool) -> ModelDifference:
     removed = ModelDifference(model_name=differences.model_name, changes={})
-    for difference in sorted(differences, key=_edges_before_nodes):
+    for difference in sorted(differences, key=_remove_order):
         if not difference.removed:
             continue
         echo(f"Removals detected for {difference.field_name} in {differences.model_name}")
@@ -333,7 +337,7 @@ def _add_update_resources(
     files_by_id: dict[str, CDFFile],
 ) -> ModelDifference:
     added_updated = ModelDifference(model_name=differences.model_name, changes={})
-    for difference in sorted(differences, key=_nodes_before_edges):
+    for difference in sorted(differences, key=_adding_order):
         if not difference.added and not difference.changed:
             continue
         echo(f"Changes/Additions detected for {difference.field_name} in {differences.model_name}")
@@ -394,7 +398,7 @@ def _add_update_resources(
     return added_updated
 
 
-def _edges_before_nodes(diff: FieldDifference) -> int:
+def _remove_order(diff: FieldDifference) -> int:
     if diff.group == "Domain":
         return 0
     elif diff.group == "CDF" and diff.field_name not in {
@@ -404,6 +408,8 @@ def _edges_before_nodes(diff: FieldDifference) -> int:
         "views",
         "data_models",
         "spaces",
+        "parent_assets",
+        "labels",
     }:
         return 1
     elif diff.group == "CDF" and diff.field_name == "edges":
@@ -418,21 +424,27 @@ def _edges_before_nodes(diff: FieldDifference) -> int:
         return 6
     elif diff.group == "CDF" and diff.field_name == "spaces":
         return 7
+    elif diff.group == "CDF" and diff.field_name == "parent_assets":
+        return 8
+    elif diff.group == "CDF" and diff.field_name == "labels":
+        return 9
     else:
         return 8
 
 
-def _nodes_before_edges(diff: FieldDifference) -> int:
+def _adding_order(diff: FieldDifference) -> int:
     if diff.group == "Domain":
         return 0
-    elif diff.group == "CDF" and diff.field_name not in {"edges", "nodes"}:
+    elif diff.group == "CDF" and diff.field_name in {"parent_assets", "labels"}:
         return 1
-    elif diff.group == "CDF" and diff.field_name == "nodes":
+    elif diff.group == "CDF" and diff.field_name not in {"edges", "nodes"}:
         return 2
-    elif diff.group == "Local" and diff.field_name == "edges":
+    elif diff.group == "CDF" and diff.field_name == "nodes":
         return 3
-    else:
+    elif diff.group == "CDF" and diff.field_name == "edges":
         return 4
+    else:
+        return 5
 
 
 def _load_transform(
