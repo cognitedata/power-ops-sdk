@@ -13,6 +13,14 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.52.0] - 2023-09-09
+### Added
+* Support for destroying `MarketModel` and `ProductionModel`.
+
+### Fixed
+* Creation of parent assets and labels wthen runhing `powerops init`
+* Overwriting initial status on each update `extraction pipeline` in `cognite.powerops.utils.cdf.extraction_pipeline`
+
 ## [0.51.0] - 2023-09-09
 ### Added
 * `dry-run` option for `extraction pipeline` in `cognite.powerops.utils.cdf.extraction_pipeline.ExtractionPipelineCreate`
