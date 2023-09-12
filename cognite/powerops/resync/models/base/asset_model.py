@@ -179,14 +179,11 @@ class AssetModel(Model, ABC, validate_assignment=True):
         asset_type_by_external_id = {}
         for field_name, field in cls.model_fields.items():
             annotation, outer = get_pydantic_annotation(field.annotation, cls)
-            if issubclass(annotation, AssetType) and (
-                assets := asset_by_parent_external_id.get(annotation.parent_external_id)
-            ):
-                if outer is list:
-                    arguments[field_name] = [annotation.from_asset(asset) for asset in assets]
-                    asset_type_by_external_id.update({asset.external_id: asset for asset in arguments[field_name]})
-                else:
-                    raise NotImplementedError()
+            if issubclass(annotation, AssetType) and outer is list:
+                assets = asset_by_parent_external_id.get(annotation.parent_external_id, [])
+
+                arguments[field_name] = [annotation.from_asset(asset) for asset in assets]
+                asset_type_by_external_id.update({asset.external_id: asset for asset in arguments[field_name]})
             else:
                 raise NotImplementedError()
         loaded_by_type_external_id["assets"] = asset_type_by_external_id
@@ -195,7 +192,7 @@ class AssetModel(Model, ABC, validate_assignment=True):
     @classmethod
     def _set_linked_resources(cls, loaded_by_type_external_id: dict[str, dict[str, Any]]) -> None:
         relationships_by_source_external_id = defaultdict(list)
-        for relationship in loaded_by_type_external_id["relationships"].values():
+        for relationship in loaded_by_type_external_id.get("relationships", {}).values():
             relationships_by_source_external_id[relationship.source_external_id].append(relationship)
 
         for source_id, relationships in relationships_by_source_external_id.items():

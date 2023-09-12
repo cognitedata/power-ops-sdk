@@ -90,7 +90,7 @@ class SequenceAdapter(CogniteAPI[CogniteSequence]):
         items = [items] if isinstance(items, CogniteSequence) else items
         if missing := {i.external_id for i in items} - set(self.sequence_by_id):
             raise ValueError(f"Missing sequence content for {missing}")
-        self.client.sequences.create(items)
+        self.client.sequences.upsert(items, mode="replace")
         for item in items:
             if item.external_id is None:
                 raise ValueError("Missing external id for sequence")
