@@ -72,6 +72,8 @@ class AssetModel(Model, ABC, validate_assignment=True):
 
     @classmethod
     def load_from_cdf_resources(cls: type[Self], data: dict[str, Any]) -> Self:
+        if not data.get("assets"):
+            return cls()
         loaded_by_type_external_id = cls._load_by_type_external_id(data)
 
         parsed = cls._create_cls_arguments(loaded_by_type_external_id)
@@ -91,6 +93,9 @@ class AssetModel(Model, ABC, validate_assignment=True):
             limit=-1,
             data_set_external_ids=[data_set_external_id],
         )
+        if not assets:
+            return cls()
+
         relationships = cdf.relationships.list(
             source_external_ids=assets.as_external_ids(),
             source_types=["asset"],

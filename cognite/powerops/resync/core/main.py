@@ -240,14 +240,16 @@ def destroy(
     model_types = _to_models(model_names)
     destroyed = ModelDifferences([])
     for model_type in model_types:
-        if not issubclass(model_type, DataModel):
-            echo(f"Skipping {model_type.__name__}, currently only data models are supported.", is_warning=True)
-            continue
+        if issubclass(model_type, DataModel):
+            remove_data_model = _get_data_model_view_containers(
+                client.cdf, model_type.graph_ql.id_, model_type.__name__
+            )
+            if not remove_data_model.changes:
+                echo(f"Skipping {model_type.__name__}, no data model found", is_warning=True)
+                continue
+        else:
+            remove_data_model = []
 
-        remove_data_model = _get_data_model_view_containers(client.cdf, model_type.graph_ql.id_, model_type.__name__)
-        if not remove_data_model.changes:
-            echo(f"Skipping {model_type.__name__}, no data model found", is_warning=True)
-            continue
         cdf_model = model_type.from_cdf(client, data_set_external_id=client.datasets.read_dataset)
 
         remove_data = diff.remove_only(cdf_model)
