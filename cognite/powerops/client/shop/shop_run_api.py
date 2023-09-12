@@ -88,10 +88,10 @@ class SHOPRunAPI:
 
         cluster = urlparse(self._cdf.config.base_url).netloc.split(".", 1)[0]
 
-        enviroment = project.split("-")[-1]
-        if enviroment in {"dev", "staging"}:
+        environment = project.split("-")[-1]
+        if environment in {"dev", "staging"}:
             stage = ".staging"
-        elif enviroment == "prod":
+        elif environment == "prod":
             stage = ""
         else:
             raise ValueError(f"Can't detect prod/staging from project name: {project!r}")
