@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 from collections import UserList
+from collections.abc import Iterable
 from dataclasses import dataclass
 from datetime import datetime
 from typing import ClassVar
@@ -72,11 +73,14 @@ class SHOPRun:
     def dump(self) -> dict[str, str]:
         return {"external_id": self.external_id, "watercourse": self.watercourse, "start": self.start, "end": self.end}
 
-    def case_file(self) -> str:
-        raise NotImplementedError()
+    def get_case_file(self) -> str:
+        bytes = self._client.files.download_bytes(external_id=self._case_file_external_id)
+        return bytes.decode("utf-8")
 
-    def shop_files(self) -> list[str]:
-        raise NotImplementedError()
+    def get_shop_files(self) -> Iterable[str]:
+        for shop_file in self._shop_files_external_ids:
+            bytes = self._client.files.download_bytes(external_id=shop_file)
+            yield bytes.decode("utf-8")
 
 
 class SHOPRunList(UserList):
