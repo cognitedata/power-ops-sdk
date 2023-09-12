@@ -14,7 +14,7 @@ nav:
         - Data Engineer: quickstart/data_engineer.md
         - Data Scientist: quickstart/data_scientist.ipynb
     - Tutorials:
-      - Shop results: tutorials/shop_results.ipynb
+      - Shop API: tutorials/shop_results.ipynb
     - Reference:
       - client:
           - SHOP API: packages/client/shop_api.md
