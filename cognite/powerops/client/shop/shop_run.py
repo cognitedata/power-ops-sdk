@@ -24,6 +24,7 @@ class ShopRunEvent:
     shop_files: str = "cog_shop_file_list"
     shopstart: str = "shop:starttime"
     shopend: str = "shop:endtime"
+    user_id: str = "user:identifier"
 
 
 @dataclass
@@ -115,6 +116,7 @@ class SHOPRun:
                 # In the functions, create_bid_process_event the end is by default 2 weeks into the future.
                 ShopRunEvent.shopstart: self.start.isoformat(),
                 ShopRunEvent.shopend: (self.start + timedelta(days=14)).isoformat(),
+                ShopRunEvent.user_id: self._client.iam.user_profiles.me().user_identifier,
             },
         )
 
