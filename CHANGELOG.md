@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.52.0] - 2023-09-10
+### Changes
+* `PowerOpsClient.shop` API. Rewritten to be `SHOPRun` centric
+
 ## [0.51.0] - 2023-09-09
 ### Added
 * `dry-run` option for `extraction pipeline` in `cognite.powerops.utils.cdf.extraction_pipeline.ExtractionPipelineCreate`

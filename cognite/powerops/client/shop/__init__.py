@@ -1,3 +1,3 @@
-from ._api_client import ShopClient
+from ._api_client import SHOPRunAPI
 
-__all__ = ["ShopClient"]
+__all__ = ["SHOPRunAPI"]

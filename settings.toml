@@ -11,4 +11,4 @@
   read_dataset = "uc:000:powerops"
   write_dataset = "uc:000:powerops"
   monitor_dataset = "uc:po:monitoring"
-  cogshop_version = ""
+  cogshop_version = "CogShop2-20230710T163856Z"
