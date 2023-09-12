@@ -106,7 +106,7 @@ class SHOPRun:
             external_id=event.external_id,
             watercourse=metadata.get(ShopRunEvent.watercourse, ""),
             start=ms_to_datetime(event.start_time),
-            end=ms_to_datetime(event.end_time),
+            end=ms_to_datetime(event.end_time) if event.end_time else None,
             shop_version=preprocessor_data[ShopRunEvent.shop_version],
             _case_file_external_id=preprocessor_data[ShopRunEvent.case_file]["external_id"],
             _shop_files=[SHOPFile.load(item) for item in preprocessor_data[ShopRunEvent.shop_files]],
@@ -153,22 +153,47 @@ class SHOPRun:
         return bytes.decode("utf-8")
 
     def get_case_file(self) -> str:
+        """
+        Get the case file for the SHOP run.
+
+        Returns:
+            The case file as a string.
+        """
         return self._download_file(self._case_file_external_id)
 
     def get_shop_files(self) -> Iterable[str]:
+        """
+        Get the SHOP files for the SHOP run.
+
+        Returns:
+            A generator of strings, where each string is a SHOP file.
+        """
         for shop_file in self._shop_files:
             yield self._download_file(shop_file.external_id)
 
-    def get_cplex_file(self) -> str:
-        raise NotImplementedError()
+    def get_log_files(self) -> Iterable[tuple[str, str]]:
+        """
+        Get the log files for the SHOP run. This is, for exampl,e the CPLEX output.
 
-    def get_shop_messages(self) -> str:
-        raise NotImplementedError()
-
-    def get_post_run(self) -> str:
-        raise NotImplementedError()
+        Returns:
+            A generator of tuples of the form (external_id, file_content).
+        """
+        if self.check_status() is not SHOPRunStatus.SUCCESS:
+            raise ValueError("Cannot retrieve result files for a SHOP run that has not finished successfully.")
+        relationship = self._client.relationships.list(source_external_ids=[self.external_id], target_types=["file"])
+        for rel in relationship:
+            yield rel.target_external_id, self._download_file(rel.target_external_id)
 
     def check_status(self) -> SHOPRunStatus:
+        """
+        Check the status of the SHOP run.
+
+        This does a request to CDF to check whether the SHOP run has finished or failed.
+
+        Returns:
+            A SHOP run status.
+
+        """
         return self._check_status(update_events=True)
 
     def _check_status(self, update_events: bool = False) -> SHOPRunStatus:
@@ -178,10 +203,11 @@ class SHOPRun:
         elif SHOPProcessEvents.finished in self._run_event_types:
             return SHOPRunStatus.SUCCESS
 
-        if update_events:
-            self._update_run_events()
-            self._check_status(update_events=False)
-        return SHOPRunStatus.IN_PROGRESS
+        if not update_events:
+            return SHOPRunStatus.IN_PROGRESS
+
+        self._update_run_events()
+        return self._check_status(update_events=False)
 
     def _update_run_events(self) -> None:
         relationships = self._client.relationships.list(
@@ -210,9 +236,24 @@ class SHOPRunList(UserList):
 
     @classmethod
     def load(cls, events: EventList) -> Self:
+        """
+        Load a SHOP run list from a list of events.
+
+        Args:
+            events: The events to load from. Must be SHOP run events.
+
+        Returns:
+            A SHOP run list.
+        """
         return cls([SHOPRun.load(event) for event in events])
 
     def to_pandas(self) -> pd.DataFrame:
+        """
+        Convert the SHOP run list to a pandas DataFrame.
+
+        Returns:
+            A pandas DataFrame.
+        """
         return pd.DataFrame([run.dump() for run in self.data])
 
     def _repr_html_(self) -> str:
