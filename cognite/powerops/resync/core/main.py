@@ -138,7 +138,12 @@ def plan(
         echo(f"Retrieving {new_model.model_name} from CDF")
         cdf_model = type(new_model).from_cdf(client, data_set_external_id=data_set_external_id)
 
-        differences = diff.model_difference(cdf_model, new_model)
+        if isinstance(new_model, AssetModel):
+            static_resources = new_model.static_resources_from_cdf(client)
+        else:
+            static_resources = {}
+
+        differences = diff.model_difference(cdf_model, new_model, static_resources)
         _clean_relationships(client.cdf, differences, new_model, echo)
 
         if dump_folder:
@@ -251,12 +256,16 @@ def destroy(
             if not remove_data_model.changes:
                 echo(f"Skipping {model_type.__name__}, no data model found", is_warning=True)
                 continue
-        else:
+            static_resources = {}
+        elif issubclass(model_type, AssetModel):
             remove_data_model = ModelDifference(model_type.__name__, {})
+            static_resources = model_type.static_resources_from_cdf(client)
+        else:
+            raise ValueError(f"Unknown model type {model_type}")
 
         cdf_model = model_type.from_cdf(client, data_set_external_id=client.datasets.read_dataset)
 
-        remove_data = diff.remove_only(cdf_model)
+        remove_data = diff.remove_only(cdf_model, static_resources)
         remove_data.filter_out(group="Domain", field_names={"timeseries"})
 
         if dry_run:

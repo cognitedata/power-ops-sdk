@@ -46,7 +46,9 @@ def model_difference(
     return ModelDifference(model_name=current_model.model_name, changes={d.field_name: d for d in diffs})
 
 
-def remove_only(model: Model) -> ModelDifference:
+def remove_only(
+    model: Model, static_resources: dict[str, LabelDefinitionList | AssetList] | None = None
+) -> ModelDifference:
     # The dump and load calls are to remove all read only fields
     current_reloaded = model.load_from_cdf_resources(model.dump_as_cdf_resource())
     diffs = []
@@ -56,6 +58,10 @@ def remove_only(model: Model) -> ModelDifference:
 
     for function in current_reloaded.cdf_resources:
         diff = _as_removals(function(current_reloaded), "CDF", function.__name__)
+        diffs.append(diff)
+
+    for field_name, resources in (static_resources or {}).items():
+        diff = _as_removals(resources, "CDF", field_name)
         diffs.append(diff)
 
     return ModelDifference(model_name=model.model_name, changes={d.field_name: d for d in diffs})
