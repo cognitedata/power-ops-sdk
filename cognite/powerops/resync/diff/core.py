@@ -40,7 +40,8 @@ def model_difference(
 
     if isinstance(new_model, AssetModel) and static_resources:
         for field_name, static_resource in static_resources.items():
-            diff = _find_diffs(static_resources, static_resource, "CDF", field_name)
+            new_resources = getattr(new_reloaded, field_name)()
+            diff = _find_diffs(static_resource, new_resources, "CDF", field_name)
             diffs.append(diff)
 
     return ModelDifference(model_name=current_model.model_name, changes={d.field_name: d for d in diffs})

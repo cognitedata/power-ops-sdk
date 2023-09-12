@@ -160,7 +160,10 @@ class AssetModel(Model, ABC, validate_assignment=True):
 
     @classmethod
     def static_resources_from_cdf(cls, client: PowerOpsClient) -> dict[str, AssetList | LabelDefinitionList]:
-        parent_assets = cls.parent_assets(include_root=False)
+        local_parent_assets = cls.parent_assets(include_root=False)
+        parent_assets = client.cdf.assets.retrieve_multiple(
+            external_ids=local_parent_assets.as_external_ids(), ignore_unknown_ids=True
+        )
         labels = client.cdf.labels.list(data_set_external_ids=[client.datasets.read_dataset], limit=-1)
         return {"parent_assets": parent_assets, "labels": labels}
 
