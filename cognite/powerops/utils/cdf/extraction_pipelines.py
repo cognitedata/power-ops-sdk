@@ -43,7 +43,7 @@ class PipelineRun:
     log_file_id: ClassVar[str] = "log_file_id"
     exception: ClassVar[str] = "exception"
 
-    reserved_keys: ClassVar[tuple[str]] = [log_file_external_id, log_file_id, exception]
+    reserved_keys: ClassVar[tuple[str, ...]] = (log_file_external_id, log_file_id, exception)
 
     def __init__(
         self,
@@ -61,13 +61,13 @@ class PipelineRun:
         self.error_logger = error_logger
         self.is_dry_run = is_try_run
 
-        self.data = {}
+        self.data: dict[str, Any] = {}
         self.status = self.init_status
 
     def __enter__(self) -> PipelineRun:
         return self
 
-    def update_data(self, status: RunStatus | None = None, **data: Any) -> PipelineRun:
+    def update_data(self, status: RunStatus | None = None, **data: dict[str, Any]) -> PipelineRun:
         if status is not None:
             self.status = status
         if isinstance(data, dict):
@@ -96,7 +96,7 @@ class PipelineRun:
 
         return suppress_exception
 
-    def get_message(self, dump_truncated_to_file: Optional[bool] = None) -> str:
+    def get_message(self, dump_truncated_to_file: bool) -> str:
         file_external_id = (
             f"{self.config.log_file_prefix}/{self.pipeline_external_id}/"
             f"{datetime.now(timezone.utc).isoformat().replace(':', '')}"
@@ -113,7 +113,7 @@ class PipelineRun:
                 ).id
             except CogniteAPIError as e:
                 self.error_logger(f"Failed to upload log file {file_external_id}: {e}")
-                file_id = ""
+                file_id = None
 
             data[self.log_file_id] = file_id
 
@@ -201,15 +201,15 @@ class ExtractionPipelineCreate:
 
         self.config = _Config(
             dump_truncated_to_file=dump_truncated_to_file,
-            message_keys_skip=message_keys_skip,
-            truncate_keys=truncate_keys_first,
+            message_keys_skip=message_keys_skip or [],
+            truncate_keys=truncate_keys_first or [],
             log_file_prefix=log_file_prefix,
         )
 
     def get_or_create(self, client: CogniteClient):
         extraction_pipeline = client.extraction_pipelines.retrieve(external_id=self.external_id)
         if extraction_pipeline is None:
-            self._data_set_id = client.data_sets.retrieve(external_id=self.dataset_external_id).id
+            self._data_set_id = self._get_data_set_it(client)
             client.extraction_pipelines.create(
                 ExtractionPipeline(
                     external_id=self.external_id,
@@ -233,6 +233,14 @@ class ExtractionPipelineCreate:
         Returns:
             Return a pipeline run that can be used as a context manager.
         """
-        self._data_set_id = self._data_set_id or client.data_sets.retrieve(external_id=self.dataset_external_id).id
+        self._data_set_id = self._data_set_id or self._get_data_set_it(client)
 
         return PipelineRun(client, self.external_id, self.config, self._data_set_id, error_logger or print, is_dry_run)
+
+    def _get_data_set_it(self, client: CogniteClient) -> int:
+        data_set = client.data_sets.retrieve(external_id=self.dataset_external_id)
+        if data_set is None:
+            raise ValueError(f"Dataset {self.dataset_external_id} does not exist")
+        if data_set.id is None:
+            raise ValueError(f"Dataset {self.dataset_external_id} does not have an id")
+        return data_set.id

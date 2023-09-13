@@ -68,12 +68,12 @@ class Settings(BaseSettings):
         file_secret_settings: PydanticBaseSettingsSource,
     ) -> tuple[PydanticBaseSettingsSource, ...]:
         """Add `file_settings` to sources (loads settings.toml and .secrets.toml)."""
-        return init_settings, env_settings, _file_settings, file_secret_settings
+        return init_settings, env_settings, _file_settings, file_secret_settings  # type: ignore[return-value]
 
 
 def _file_settings() -> dict[str, Any]:
     settings_files = filter(None, os.environ.get("SETTINGS_FILES", "settings.toml;.secrets.toml").split(";"))
-    collected_data = {}
+    collected_data: dict[str, Any] = {}
     for file_path in settings_files:
         try:
             data = read_toml_file(file_path)

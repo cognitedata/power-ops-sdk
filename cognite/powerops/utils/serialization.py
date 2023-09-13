@@ -7,6 +7,7 @@ import os
 import re
 import string
 import warnings
+from collections.abc import Iterator
 from pathlib import Path
 from typing import Any, ForwardRef, Union, get_args, get_origin
 
@@ -17,7 +18,7 @@ from pydantic.v1.typing import evaluate_forwardref
 from yaml import CSafeLoader, safe_dump
 
 try:
-    import tomllib
+    import tomllib  # type: ignore[import]
 except ModuleNotFoundError:
     import tomli as tomllib  # py < 3.11
 
@@ -48,7 +49,7 @@ def dump_toml_file(toml_file: Path | str, data: dict[str, Any]) -> None:
 
 
 @contextlib.contextmanager
-def chdir(new_dir: Path) -> None:
+def chdir(new_dir: Path) -> Iterator[None]:
     """
     Change directory to new_dir and return to the original directory when exiting the context.
 
