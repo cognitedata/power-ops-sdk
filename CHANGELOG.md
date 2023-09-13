@@ -13,9 +13,13 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## [0.52.0] - 2023-09-09
+## [0.53.0] - 2023-09-13
 ### Added
 * Support for destroying `MarketModel` and `ProductionModel`.
+
+## [0.52.0] - 2023-09-10
+### Changes
+* `PowerOpsClient.shop` API. Rewritten to be `SHOPRun` centric
 
 ### Fixed
 * Creation of parent assets and labels wthen running `powerops init`
