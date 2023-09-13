@@ -9,7 +9,8 @@ from uuid import uuid4
 
 import requests
 from cognite.client import CogniteClient
-from cognite.client.data_classes import filters
+from cognite.client.data_classes import UserProfile, filters
+from cognite.client.exceptions import CogniteAPIError
 
 from .shop_run import SHOPRun, ShopRunEvent, SHOPRunList
 
@@ -31,26 +32,45 @@ class SHOPRunAPI:
         self._dataset_id = dataset_id
         self.cogshop_version = cogshop_version
 
-    def trigger_case(self, case_file: str, watercourse: str) -> SHOPRun:
+    def trigger_case(self, case_file: str, watercourse: str, source: str | None) -> SHOPRun:
         """
         Trigger SHOP for a given case file.
 
         Args:
             case_file: Case file as a string. Expected to be YAML.
             watercourse: The watercourse to run SHOP this case file is for.
+            source: The source of the SHOP trigger. If nothing is passed, the method will
+                try to detect the service principal of the current user.
 
         Returns:
             The new SHOP run created.
         """
-        user = self._cdf.iam.user_profiles.me()
+        user: UserProfile | None
+        try:
+            user = self._cdf.iam.user_profiles.me()
+        except CogniteAPIError as e:
+            if e.code == 404:
+                user = None
+            else:
+                raise
+        if source is None and user:
+            source = user.user_identifier
+        elif source is None:
+            source = "manual"
+
+        if user:
+            display_name = user.display_name
+        else:
+            display_name = "Unknown"
 
         meta = self._cdf.files.upload_bytes(
             content=case_file,
-            name=f"Manual Case by {user.display_name}",
+            name=f"Manual Case by {display_name}",
             mime_type="application/yaml",
             external_id=f"cog_shop_manual/{uuid4()!s}",
-            metadata={"shop:type": "cog_shop_case", "user": user.user_identifier},
+            metadata={"shop:type": "cog_shop_case", "user": display_name},
             data_set_id=self._dataset_id,
+            source=source,
         )
         now = datetime.now(timezone.utc)
         now_isoformat = now.isoformat().replace("+00:00", "Z")

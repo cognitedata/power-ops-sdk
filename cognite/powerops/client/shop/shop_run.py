@@ -78,11 +78,11 @@ class SHOPRun:
     start: datetime | None
     end: datetime | None
     shop_version: str
+    source: str | None
     _case_file_external_id: str
     _shop_files: list[SHOPFile]
     _client: CogniteClient = field(repr=False)
     _run_event_types: set[str] = field(init=False, default_factory=set)
-    user_id: str = ""
 
     @classmethod
     def load(cls, event: Event) -> Self:
@@ -116,7 +116,7 @@ class SHOPRun:
             _case_file_external_id=preprocessor_data.get(ShopRunEvent.case_file, {}).get("external_id"),
             _shop_files=[SHOPFile.load(item) for item in preprocessor_data.get(ShopRunEvent.shop_files, [])],
             _client=event._cognite_client,
-            user_id=metadata.get(ShopRunEvent.user_id, ""),
+            source=event.source,
         )
 
     def as_cdf_event(self, data_set_id: int) -> Event:
@@ -140,8 +140,8 @@ class SHOPRun:
                 # In the functions, create_bid_process_event the end is by default 2 weeks into the future.
                 ShopRunEvent.shopstart: self.start.isoformat(),
                 ShopRunEvent.shopend: (self.start + timedelta(days=14)).isoformat(),
-                ShopRunEvent.user_id: self.user_id or self._client.iam.user_profiles.me().user_identifier,
             },
+            source=self.source,
         )
 
     def dump(self) -> dict[str, Any]:
