@@ -1,15 +1,20 @@
+from __future__ import annotations
+
 from typing import Any, Literal
 
+from cognite.client.data_classes import AssetList, LabelDefinitionList
 from cognite.client.data_classes._base import CogniteResource, CogniteResourceList
 
 from cognite.powerops.client._generated.cogshop1.data_classes._core import DomainModelApply as DomainModelApplyCogShop1
 from cognite.powerops.client._generated.data_classes._core import DomainModelApply
-from cognite.powerops.resync.models.base import CDFFile, CDFSequence, Model, ResourceType
+from cognite.powerops.resync.models.base import AssetModel, CDFFile, CDFSequence, Model, ResourceType
 
 from .data_classes import Change, FieldDifference, ModelDifference
 
 
-def model_difference(current_model: Model, new_model: Model) -> ModelDifference:
+def model_difference(
+    current_model: Model, new_model: Model, static_resources: dict[str, AssetList | LabelDefinitionList] | None = None
+) -> ModelDifference:
     if type(current_model) != type(new_model):
         raise ValueError(f"Cannot compare model of type {type(current_model)} with {type(new_model)}")
     # The dump and load calls are to remove all read only fields
@@ -33,10 +38,18 @@ def model_difference(current_model: Model, new_model: Model) -> ModelDifference:
 
         diffs.append(diff)
 
+    if isinstance(new_model, AssetModel) and static_resources:
+        for field_name, static_resource in static_resources.items():
+            new_resources = getattr(new_reloaded, field_name)()
+            diff = _find_diffs(static_resource, new_resources, "CDF", field_name)
+            diffs.append(diff)
+
     return ModelDifference(model_name=current_model.model_name, changes={d.field_name: d for d in diffs})
 
 
-def remove_only(model: Model) -> ModelDifference:
+def remove_only(
+    model: Model, static_resources: dict[str, LabelDefinitionList | AssetList] | None = None
+) -> ModelDifference:
     # The dump and load calls are to remove all read only fields
     current_reloaded = model.load_from_cdf_resources(model.dump_as_cdf_resource())
     diffs = []
@@ -46,6 +59,10 @@ def remove_only(model: Model) -> ModelDifference:
 
     for function in current_reloaded.cdf_resources:
         diff = _as_removals(function(current_reloaded), "CDF", function.__name__)
+        diffs.append(diff)
+
+    for field_name, resources in (static_resources or {}).items():
+        diff = _as_removals(resources, "CDF", field_name)
         diffs.append(diff)
 
     return ModelDifference(model_name=model.model_name, changes={d.field_name: d for d in diffs})

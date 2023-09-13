@@ -106,7 +106,7 @@ def plan(
         ).get_or_create(client)
 
         with pipeline.create_pipeline_run(client) as run:
-            if changes.has_changes():
+            if changes.has_changes(exclude={"timeseries", "parent_assets", "labels"}):
                 run.update_data(
                     RunStatus.FAILURE,
                     summary=changes.as_markdown_summary(no_headers=True),

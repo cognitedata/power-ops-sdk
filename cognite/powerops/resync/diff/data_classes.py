@@ -223,7 +223,7 @@ class ModelDifferences:
     def append(self, model: ModelDifference) -> None:
         self.models.append(model)
 
-    def has_changes(self, exclude: set | frozenset = frozenset({"timeseries"})) -> bool:
+    def has_changes(self, exclude: set | frozenset = frozenset({"timeseries", "labels"})) -> bool:
         return any(m.has_changes(exclude) for m in self.models)
 
     def as_markdown_detailed(self) -> str:

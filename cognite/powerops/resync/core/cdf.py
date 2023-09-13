@@ -4,7 +4,7 @@ from collections.abc import Sequence
 from typing import Any, Literal, Protocol, TypeVar, Union, cast
 
 from cognite.client import CogniteClient
-from cognite.client.data_classes import Asset, FileMetadata, FileMetadataList, Relationship
+from cognite.client.data_classes import Asset, FileMetadata, FileMetadataList, LabelDefinition, Relationship
 from cognite.client.data_classes import Sequence as CogniteSequence
 from cognite.client.data_classes.data_modeling import ContainerId, DataModelId, EdgeApply, NodeApply, ViewId
 
@@ -13,7 +13,16 @@ from cognite.powerops.resync.models.base import CDFFile, CDFSequence
 T_CogniteResource = TypeVar(
     "T_CogniteResource",
     bound=Union[
-        Asset, CogniteSequence, FileMetadata, Relationship, NodeApply, EdgeApply, ContainerId, ViewId, DataModelId
+        Asset,
+        CogniteSequence,
+        FileMetadata,
+        Relationship,
+        NodeApply,
+        EdgeApply,
+        ContainerId,
+        ViewId,
+        DataModelId,
+        LabelDefinition,
     ],
 )
 
@@ -46,7 +55,7 @@ class FileAdapter(CogniteAPI[FileMetadata]):
             content = self.files_by_id[item.external_id].content
             if content is None:
                 raise ValueError(f"Cannot create new file {item.external_id} missing file content")
-            self.client.files.upload_bytes(content, **item.dump())
+            self.client.files.upload_bytes(content, **item.dump(), overwrite=True)
 
     def delete(self, external_id: str | Sequence[str]) -> Any:
         self.client.files.delete(external_id=external_id)
@@ -81,7 +90,7 @@ class SequenceAdapter(CogniteAPI[CogniteSequence]):
         items = [items] if isinstance(items, CogniteSequence) else items
         if missing := {i.external_id for i in items} - set(self.sequence_by_id):
             raise ValueError(f"Missing sequence content for {missing}")
-        self.client.sequences.create(items)
+        self.client.sequences.upsert(items, mode="replace")
         for item in items:
             if item.external_id is None:
                 raise ValueError("Missing external id for sequence")
@@ -139,14 +148,34 @@ class DataModelingAdapter(CogniteAPI[T_CogniteResource]):
         self.api.apply(item)
 
 
+class LabelsAdapter(CogniteAPI[LabelDefinition]):
+    def __init__(self, client: CogniteClient):
+        self.client = client
+
+    def create(self, items: LabelDefinition | Sequence[LabelDefinition]) -> Any:
+        self.client.labels.create(items)
+
+    def delete(self, external_id: str | Sequence[str]) -> Any:
+        # Labels are not deleted.
+        ...
+
+    def upsert(
+        self, item: LabelDefinition | Sequence[LabelDefinition], mode: Literal["patch", "replace"] = "patch"
+    ) -> Any:
+        # Labels are not changes
+        ...
+
+
 def get_cognite_api(
     client: CogniteClient,
     name: str,
     new_sequences_by_id: dict[str, CDFSequence] | None = None,
     new_files_by_id: dict[str, CDFFile] | None = None,
 ) -> CogniteAPI:
-    if name == "assets":
+    if name == "assets" or name == "parent_assets":
         return cast(CogniteAPI[Asset], client.assets)
+    elif name == "labels":
+        return LabelsAdapter(client)
     elif name == "time_series":
         raise NotImplementedError("Resync does not create timeseries")
     elif name == "sequences":

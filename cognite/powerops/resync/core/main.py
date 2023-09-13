@@ -11,11 +11,12 @@ from cognite.client.data_classes.data_modeling import DataModelId, MappedPropert
 from cognite.client.exceptions import CogniteAPIError
 from yaml import safe_dump
 
+from cognite.powerops.cdf_labels import AssetLabel, RelationshipLabel
 from cognite.powerops.client.powerops_client import PowerOpsClient
 from cognite.powerops.resync import diff, models
 from cognite.powerops.resync.config import ReSyncConfig
 from cognite.powerops.resync.diff import FieldDifference, ModelDifference, ModelDifferences
-from cognite.powerops.resync.models.base import CDFFile, CDFSequence, DataModel, Model, SpaceId
+from cognite.powerops.resync.models.base import AssetModel, CDFFile, CDFSequence, DataModel, Model, SpaceId
 
 from . import Echo
 from .cdf import get_cognite_api
@@ -138,7 +139,12 @@ def plan(
         echo(f"Retrieving {new_model.model_name} from CDF")
         cdf_model = type(new_model).from_cdf(client, data_set_external_id=data_set_external_id)
 
-        differences = diff.model_difference(cdf_model, new_model)
+        if isinstance(new_model, AssetModel):
+            static_resources = new_model.static_resources_from_cdf(client)
+        else:
+            static_resources = {}
+
+        differences = diff.model_difference(cdf_model, new_model, static_resources)
         _clean_relationships(client.cdf, differences, new_model, echo)
 
         if dump_folder:
@@ -194,8 +200,12 @@ def apply(
     written_changes = ModelDifferences([])
     for new_model in loaded_models:
         cdf_model = type(new_model).from_cdf(client, data_set_external_id=client.datasets.read_dataset)
+        if isinstance(new_model, AssetModel):
+            static_resources = new_model.static_resources_from_cdf(client)
+        else:
+            static_resources = {}
 
-        differences = diff.model_difference(cdf_model, new_model)
+        differences = diff.model_difference(cdf_model, new_model, static_resources)
 
         # Do not create relationships to time series that does not exist.
         _clean_relationships(client.cdf, differences, new_model, echo)
@@ -240,17 +250,23 @@ def destroy(
     model_types = _to_models(model_names)
     destroyed = ModelDifferences([])
     for model_type in model_types:
-        if not issubclass(model_type, DataModel):
-            echo(f"Skipping {model_type.__name__}, currently only data models are supported.", is_warning=True)
-            continue
+        if issubclass(model_type, DataModel):
+            remove_data_model = _get_data_model_view_containers(
+                client.cdf, model_type.graph_ql.id_, model_type.__name__
+            )
+            if not remove_data_model.changes:
+                echo(f"Skipping {model_type.__name__}, no data model found", is_warning=True)
+                continue
+            static_resources = {}
+        elif issubclass(model_type, AssetModel):
+            remove_data_model = ModelDifference(model_type.__name__, {})
+            static_resources = model_type.static_resources_from_cdf(client)
+        else:
+            raise ValueError(f"Unknown model type {model_type}")
 
-        remove_data_model = _get_data_model_view_containers(client.cdf, model_type.graph_ql.id_, model_type.__name__)
-        if not remove_data_model.changes:
-            echo(f"Skipping {model_type.__name__}, no data model found", is_warning=True)
-            continue
         cdf_model = model_type.from_cdf(client, data_set_external_id=client.datasets.read_dataset)
 
-        remove_data = diff.remove_only(cdf_model)
+        remove_data = diff.remove_only(cdf_model, static_resources)
         remove_data.filter_out(group="Domain", field_names={"timeseries"})
 
         if dry_run:
@@ -289,12 +305,16 @@ def destroy(
                     },
                 )
             )
+
+    labels = AssetLabel.as_label_definitions() + RelationshipLabel.as_label_definitions()
+    client.cdf.labels.delete([label.external_id for label in labels if label.external_id])
+
     return destroyed
 
 
 def _remove_resources(differences: ModelDifference, echo: Echo, cdf: CogniteClient, auto_yes: bool) -> ModelDifference:
     removed = ModelDifference(model_name=differences.model_name, changes={})
-    for difference in sorted(differences, key=_edges_before_nodes):
+    for difference in sorted(differences, key=_remove_order):
         if not difference.removed:
             continue
         echo(f"Removals detected for {difference.field_name} in {differences.model_name}")
@@ -331,7 +351,7 @@ def _add_update_resources(
     files_by_id: dict[str, CDFFile],
 ) -> ModelDifference:
     added_updated = ModelDifference(model_name=differences.model_name, changes={})
-    for difference in sorted(differences, key=_nodes_before_edges):
+    for difference in sorted(differences, key=_adding_order):
         if not difference.added and not difference.changed:
             continue
         echo(f"Changes/Additions detected for {difference.field_name} in {differences.model_name}")
@@ -392,7 +412,7 @@ def _add_update_resources(
     return added_updated
 
 
-def _edges_before_nodes(diff: FieldDifference) -> int:
+def _remove_order(diff: FieldDifference) -> int:
     if diff.group == "Domain":
         return 0
     elif diff.group == "CDF" and diff.field_name not in {
@@ -402,6 +422,8 @@ def _edges_before_nodes(diff: FieldDifference) -> int:
         "views",
         "data_models",
         "spaces",
+        "parent_assets",
+        "labels",
     }:
         return 1
     elif diff.group == "CDF" and diff.field_name == "edges":
@@ -416,21 +438,27 @@ def _edges_before_nodes(diff: FieldDifference) -> int:
         return 6
     elif diff.group == "CDF" and diff.field_name == "spaces":
         return 7
+    elif diff.group == "CDF" and diff.field_name == "parent_assets":
+        return 8
+    elif diff.group == "CDF" and diff.field_name == "labels":
+        return 9
     else:
         return 8
 
 
-def _nodes_before_edges(diff: FieldDifference) -> int:
+def _adding_order(diff: FieldDifference) -> int:
     if diff.group == "Domain":
         return 0
-    elif diff.group == "CDF" and diff.field_name not in {"edges", "nodes"}:
+    elif diff.group == "CDF" and diff.field_name in {"parent_assets", "labels"}:
         return 1
-    elif diff.group == "CDF" and diff.field_name == "nodes":
+    elif diff.group == "CDF" and diff.field_name not in {"edges", "nodes"}:
         return 2
-    elif diff.group == "Local" and diff.field_name == "edges":
+    elif diff.group == "CDF" and diff.field_name == "nodes":
         return 3
-    else:
+    elif diff.group == "CDF" and diff.field_name == "edges":
         return 4
+    else:
+        return 5
 
 
 def _load_transform(

@@ -67,8 +67,9 @@ class PipelineRun:
     def __enter__(self) -> PipelineRun:
         return self
 
-    def update_data(self, status: RunStatus = init_status, **data: Any) -> PipelineRun:
-        self.status = status
+    def update_data(self, status: RunStatus | None = None, **data: Any) -> PipelineRun:
+        if status is not None:
+            self.status = status
         if isinstance(data, dict):
             for key in self.reserved_keys:
                 if key in data:

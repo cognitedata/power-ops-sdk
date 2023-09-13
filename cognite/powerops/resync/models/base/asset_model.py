@@ -5,9 +5,10 @@ from collections import defaultdict
 from collections.abc import Iterable
 from typing import Any, Callable, ClassVar, Optional, TypeVar, Union
 
-from cognite.client.data_classes import Asset, AssetList, Relationship, TimeSeries
+from cognite.client.data_classes import Asset, AssetList, LabelDefinition, LabelDefinitionList, Relationship, TimeSeries
 from typing_extensions import Self
 
+from cognite.powerops.cdf_labels import AssetLabel, RelationshipLabel
 from cognite.powerops.client.powerops_client import PowerOpsClient
 from cognite.powerops.resync.models.base.asset_type import AssetType
 from cognite.powerops.resync.models.base.cdf_resources import CDFFile, CDFSequence
@@ -60,11 +61,20 @@ class AssetModel(Model, ABC, validate_assignment=True):
             )
         )
 
+    def labels(self) -> list[LabelDefinition]:
+        # for asset in assets:
+        # for relationship in relationships:
+        # return [
+        #     LabelDefinition(external_id=external_id, name=external_id) for external_id in sorted(label_external_ids)
+        # Labels are for the entire resync.
+        return AssetLabel.as_label_definitions() + RelationshipLabel.as_label_definitions()
+
     cdf_resources: ClassVar[dict[Union[Callable, tuple[Callable, str]], type]] = {
         **dict(Model.cdf_resources.items()),
         assets: Asset,
         relationships: Relationship,
         parent_assets: Asset,
+        labels: LabelDefinition,
     }
 
     # Need to set classmethod here to have access to the underlying function in cdf_resources
@@ -72,6 +82,8 @@ class AssetModel(Model, ABC, validate_assignment=True):
 
     @classmethod
     def load_from_cdf_resources(cls: type[Self], data: dict[str, Any]) -> Self:
+        if not data.get("assets"):
+            return cls()
         loaded_by_type_external_id = cls._load_by_type_external_id(data)
 
         parsed = cls._create_cls_arguments(loaded_by_type_external_id)
@@ -91,6 +103,9 @@ class AssetModel(Model, ABC, validate_assignment=True):
             limit=-1,
             data_set_external_ids=[data_set_external_id],
         )
+        if not assets:
+            return cls()
+
         relationships = cdf.relationships.list(
             source_external_ids=assets.as_external_ids(),
             source_types=["asset"],
@@ -139,6 +154,15 @@ class AssetModel(Model, ABC, validate_assignment=True):
             }
         )
 
+    @classmethod
+    def static_resources_from_cdf(cls, client: PowerOpsClient) -> dict[str, AssetList | LabelDefinitionList]:
+        local_parent_assets = cls.parent_assets(include_root=True)
+        parent_assets = client.cdf.assets.retrieve_multiple(
+            external_ids=local_parent_assets.as_external_ids(), ignore_unknown_ids=True
+        )
+        labels = client.cdf.labels.list(data_set_external_ids=[client.datasets.read_dataset], limit=-1)
+        return {"parent_assets": parent_assets, "labels": labels}
+
     def _asset_types(self) -> Iterable[AssetType]:
         yield from (item for item in self._resource_types() if isinstance(item, AssetType))
 
@@ -151,14 +175,11 @@ class AssetModel(Model, ABC, validate_assignment=True):
         asset_type_by_external_id = {}
         for field_name, field in cls.model_fields.items():
             annotation, outer = get_pydantic_annotation(field.annotation, cls)
-            if issubclass(annotation, AssetType) and (
-                assets := asset_by_parent_external_id.get(annotation.parent_external_id)
-            ):
-                if outer is list:
-                    arguments[field_name] = [annotation.from_asset(asset) for asset in assets]
-                    asset_type_by_external_id.update({asset.external_id: asset for asset in arguments[field_name]})
-                else:
-                    raise NotImplementedError()
+            if issubclass(annotation, AssetType) and outer is list:
+                assets = asset_by_parent_external_id.get(annotation.parent_external_id, [])
+
+                arguments[field_name] = [annotation.from_asset(asset) for asset in assets]
+                asset_type_by_external_id.update({asset.external_id: asset for asset in arguments[field_name]})
             else:
                 raise NotImplementedError()
         loaded_by_type_external_id["assets"] = asset_type_by_external_id
@@ -167,7 +188,7 @@ class AssetModel(Model, ABC, validate_assignment=True):
     @classmethod
     def _set_linked_resources(cls, loaded_by_type_external_id: dict[str, dict[str, Any]]) -> None:
         relationships_by_source_external_id = defaultdict(list)
-        for relationship in loaded_by_type_external_id["relationships"].values():
+        for relationship in loaded_by_type_external_id.get("relationships", {}).values():
             relationships_by_source_external_id[relationship.source_external_id].append(relationship)
 
         for source_id, relationships in relationships_by_source_external_id.items():
