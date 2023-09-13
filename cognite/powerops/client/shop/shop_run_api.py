@@ -32,7 +32,7 @@ class SHOPRunAPI:
         self._dataset_id = dataset_id
         self.cogshop_version = cogshop_version
 
-    def trigger_case(self, case_file: str, watercourse: str, source: str | None) -> SHOPRun:
+    def trigger_case(self, case_file: str, watercourse: str, source: str | None = None) -> SHOPRun:
         """
         Trigger SHOP for a given case file.
 
@@ -53,6 +53,7 @@ class SHOPRunAPI:
                 user = None
             else:
                 raise
+
         if source is None and user:
             source = user.user_identifier
         elif source is None:
@@ -84,6 +85,7 @@ class SHOPRunAPI:
             _shop_files=[],
             shop_version=self.cogshop_version,
             _client=self._cdf,
+            source=source,
         )
         self._cdf.events.create(new_event.as_cdf_event(self._dataset_id))
 

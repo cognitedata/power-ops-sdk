@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 from collections import UserList
-from collections.abc import Iterable, Sequence
+from collections.abc import Iterable, Iterator, Sequence
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from typing import Any, cast, overload
@@ -242,10 +242,14 @@ class SHOPRunList(UserList):
     def __getitem__(self, item: slice) -> SHOPRunList:
         ...
 
+    # The dunder implementations is to get proper type hints
     def __getitem__(self, item: int | slice) -> SHOPRunList | SHOPRun:
         if isinstance(item, slice):
             return type(self)(self.data[item])
         return self.data[item]
+
+    def __iter__(self) -> Iterator[SHOPRun]:
+        return super().__iter__()
 
     @classmethod
     def load(cls, events: Sequence[Event]) -> Self:
