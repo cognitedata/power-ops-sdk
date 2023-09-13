@@ -6,11 +6,11 @@ from cognite.client.credentials import OAuthClientCredentials, OAuthDeviceCode
 from ._settings import CogniteSettings, Settings
 
 
-def get_client_config(
-    settings: CogniteSettings,
-) -> ClientConfig:
+def get_client_config(settings: CogniteSettings) -> ClientConfig:
     credentials: Union[OAuthClientCredentials, OAuthDeviceCode]
     if settings.login_flow == "client_credentials":
+        if settings.client_secret is None:
+            raise ValueError("Client secret must be set for client_credentials flow")
         credentials = OAuthClientCredentials(
             token_url=settings.token_url,
             client_id=settings.client_id,
@@ -19,18 +19,13 @@ def get_client_config(
         )
     elif settings.login_flow == "interactive":
         credentials = OAuthDeviceCode(
-            authority_url=settings.authority_uri,
-            client_id=settings.client_id,
-            scopes=settings.scopes,
+            authority_url=settings.authority_uri, client_id=settings.client_id, scopes=settings.scopes
         )
     else:
         raise NotImplementedError(f"Unsupported login flow: {settings.login_flow!r}")
 
     return ClientConfig(
-        client_name=settings.client_name,
-        project=settings.project,
-        base_url=settings.base_url,
-        credentials=credentials,
+        client_name=settings.client_name, project=settings.project, base_url=settings.base_url, credentials=credentials
     )
 
 

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cognite-power-ops"
-version = "0.53.1"
+version = "0.53.2"
 description = "SDK for power markets operations on Cognite Data Fusion"
 readme = "README.md"
 authors = ["Cognite <support@cognite.com>"]
@@ -43,7 +43,6 @@ exclude = [
     # The plan is to gradually add mypy to the code base. As of 18. Juli 2023,
     # the following packages are not type checked:
     "^cognite/powerops/client/",
-    "^cognite/powerops/utils/",
     "^cognite/powerops/resync/config/",
     "^cognite/powerops/resync/models/",
 ]

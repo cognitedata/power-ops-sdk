@@ -32,3 +32,23 @@ def test_pipeline_run_upload_file() -> None:
     assert long_error_message in file_content
     assert short_error_message in file_content
     assert "error" not in json.loads(message)
+
+
+def test_pipeline_minimum_input_files() -> None:
+    with monkeypatch_cognite_client() as client:
+        client.files.upload_bytes.return_value = FileMetadata(id=1, external_id="test_file")
+        pipeline = ExtractionPipelineCreate(external_id="test_pipeline", data_set_external_id="test_dataset")
+        massive_logs = "massive_logs" * 1000
+        # Act
+        with pipeline.create_pipeline_run(client) as run:
+            run.update_data(some_data="here is some data")
+
+            run.update_data(RunStatus.SUCCESS, some_more="here is some more data", logs=massive_logs)
+
+        file_content = client.files.upload_bytes.call_args.kwargs["content"]
+        message = json.loads(client.extraction_pipelines.runs.create.call_args[0][0].message)
+
+    # Assert
+    assert "some_data" in message
+    assert "some_more" in message
+    assert "logs" in file_content
