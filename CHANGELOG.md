@@ -13,6 +13,14 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.53.1] - 2023-09-13
+### Fixed
+* `PowerOpsClient.power.shop.trigger_case()` raise a `CogniteAPIError: Requesting principal has no user identifier`.
+  This is now fixed.
+
+### Changed
+* `user_id` is replaced by `source` in the `ShopRun` model.
+
 ## [0.53.0] - 2023-09-13
 ### Added
 * Support for destroying `MarketModel` and `ProductionModel`.
