@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.53.3] - 2023-09-14
+### Improved
+* Better logging when running `powerops plan` with `--as-extraction-pipeline-run` option.
+
 ## [0.53.2] - 2023-09-13
 ### Fixed
 * `ExtractionPipeline` with `truncation_keys` specified fails with `TypeError`. This is now fixed.
