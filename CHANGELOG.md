@@ -13,6 +13,14 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.54.0] - 2023-09-14
+### Added
+* Creation of `RKOM` scenarios in `resync`.
+
+### Fixed
+* Difference for `labels` when running `powerops plan` or `powerops apply`.
+* Difference for `parent_assets` when running `powerops plan` or `powerops apply`.
+
 ## [0.53.3] - 2023-09-14
 ### Improved
 * Better logging when running `powerops plan` with `--as-extraction-pipeline-run` option.

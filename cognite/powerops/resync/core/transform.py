@@ -47,6 +47,7 @@ def transform(config: ReSyncConfig, market_name: str, model_types: set[type[Mode
                     production_model.watercourses,
                     config.settings.shop_version,
                     market_model.dayahead_processes,
+                    market_model.rkom_processes,
                 )
                 all_models.append(cogshop_model)
 

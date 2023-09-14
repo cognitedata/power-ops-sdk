@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import itertools
 import json
 import logging
 
@@ -16,7 +17,7 @@ from cognite.powerops.resync.models._shared_v1_v2.cogshop_model import (
 )
 from cognite.powerops.resync.models.base import CDFSequence
 from cognite.powerops.resync.models.v1.cogshop import CogShop1Asset
-from cognite.powerops.resync.models.v1.market import DayAheadProcess
+from cognite.powerops.resync.models.v1.market import DayAheadProcess, RKOMProcess
 from cognite.powerops.resync.models.v1.production import Watercourse
 
 logger = logging.getLogger(__name__)
@@ -27,6 +28,7 @@ def to_cogshop_asset_model(
     watercourses: list[Watercourse],
     shop_version: str,
     dayahead_processes: list[DayAheadProcess],
+    rkom_processes: list[RKOMProcess],
 ) -> CogShop1Asset:
     model = CogShop1Asset()
 
@@ -126,7 +128,7 @@ def to_cogshop_asset_model(
         }
     )
 
-    for process in dayahead_processes:
+    for process in itertools.chain(dayahead_processes, rkom_processes):
         for incremental_mapping in process.incremental_mapping:
             incremental_mapping: CDFSequence
             watercourse = incremental_mapping.sequence.metadata["shop:watercourse"]
@@ -143,7 +145,7 @@ def to_cogshop_asset_model(
                     cogshop_v1.MappingApply(
                         external_id=f"Mapping_{external_id}_{i}",
                         path=mapping["shop_model_path"],
-                        timeseries_external_id=mapping["time_series_external_id"],
+                        timeseries_external_id=mapping.get("time_series_external_id"),
                         transformations=[
                             _create_transformation(j, transformation_data)
                             for j, transformation_data in enumerate(json.loads(mapping.get("transformations", "")))
@@ -151,7 +153,9 @@ def to_cogshop_asset_model(
                         retrieve=mapping.get("retrieve"),
                         aggregation=mapping.get("aggregation"),
                     )
-                    for i, mapping in enumerate(incremental_mapping.content.to_dict(orient="records"))
+                    for i, mapping in enumerate(
+                        incremental_mapping.content.replace(float("nan"), None).to_dict(orient="records")
+                    )
                 ],
                 commands=cogshop_v1.CommandsConfigApply(
                     external_id=f"Commands_{watercourse}",
