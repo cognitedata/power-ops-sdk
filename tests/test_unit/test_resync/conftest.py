@@ -30,5 +30,9 @@ def cogshop1_model(
     resync_config: ReSyncConfig, production_model: models.ProductionModel, market_model: models.MarketModel
 ) -> models.CogShop1Asset:
     return to_cogshop_asset_model(
-        resync_config.cogshop, production_model.watercourses, "14.4.3.0", market_model.dayahead_processes
+        resync_config.cogshop,
+        production_model.watercourses,
+        "14.4.3.0",
+        market_model.dayahead_processes,
+        market_model.rkom_processes,
     )
