@@ -58,3 +58,4 @@ playground
 customers/
 sensitive_tests.toml
 .dmypy.json
+demo/
