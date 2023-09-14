@@ -114,7 +114,7 @@ def plan(
                 )
             else:
                 run.update_data(RunStatus.SUCCESS)
-        typer.echo("Extraction pipeline run executed")
+        typer.echo(f"Extraction pipeline run executed with status: {run.status}")
 
 
 @app.command("apply", help="Apply the changes from the configuration files to the data model in CDF")
