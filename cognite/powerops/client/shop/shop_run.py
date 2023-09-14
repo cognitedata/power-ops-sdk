@@ -228,8 +228,8 @@ class SHOPRun:
         )
         self._run_event_types |= {cast(Event, rel.target).type for rel in relationships}
 
-    def _repr_html_(self) -> pd.DataFrame:
-        return pd.Series(self.dump()).to_frame().rename(columns={0: "Value"})
+    def _repr_html_(self) -> str:
+        return pd.Series(self.dump()).to_frame().rename(columns={0: "Value"})._repr_html_()
 
 
 class SHOPRunList(UserList):
