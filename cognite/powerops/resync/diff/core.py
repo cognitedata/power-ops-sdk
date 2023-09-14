@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from itertools import zip_longest
 from typing import Any, Literal
 
 from cognite.client.data_classes import AssetList, LabelDefinitionList
@@ -8,6 +9,7 @@ from cognite.client.data_classes._base import CogniteResource, CogniteResourceLi
 from cognite.powerops.client._generated.cogshop1.data_classes._core import DomainModelApply as DomainModelApplyCogShop1
 from cognite.powerops.client._generated.data_classes._core import DomainModelApply
 from cognite.powerops.resync.models.base import AssetModel, CDFFile, CDFSequence, Model, ResourceType
+from cognite.powerops.utils.serialization import remove_read_only_fields
 
 from .data_classes import Change, FieldDifference, ModelDifference
 
@@ -20,6 +22,10 @@ def model_difference(
     # The dump and load calls are to remove all read only fields
     current_reloaded = current_model.load_from_cdf_resources(current_model.dump_as_cdf_resource())
     new_reloaded = new_model.load_from_cdf_resources(new_model.dump_as_cdf_resource())
+    static_resources = {
+        k: type(v)._load([remove_read_only_fields(resource.dump()) for resource in v])
+        for k, v in (static_resources or {}).items()
+    }
 
     diffs = []
     for field_name in current_model.model_fields:
@@ -42,6 +48,10 @@ def model_difference(
         for field_name, static_resource in static_resources.items():
             new_resources = getattr(new_reloaded, field_name)()
             diff = _find_diffs(static_resource, new_resources, "CDF", field_name)
+            if field_name == "labels":
+                # Labels are not removed, only added
+                diff.unchanged.extend(diff.removed)
+                diff.removed = []
             diffs.append(diff)
 
     return ModelDifference(model_name=current_model.model_name, changes={d.field_name: d for d in diffs})
@@ -89,7 +99,7 @@ def _find_diffs(
     for existing in sorted(existing_ids):
         current = current_value_by_id[existing]
         new = new_value_by_id[existing]
-        if current == new:
+        if _is_equals(current, new):
             unchanged.append(current)
         else:
             changed.append(Change(last=current, new=new))
@@ -97,6 +107,18 @@ def _find_diffs(
     return FieldDifference(
         group=group, field_name=field_name, added=added, removed=removed, changed=changed, unchanged=unchanged
     )
+
+
+def _is_equals(current: Any, new: Any) -> bool:
+    if current == new:
+        return True
+    sentinel = (object(), object())
+    for (k1, v1), (k2, v2) in zip_longest(vars(current).items(), vars(new).items(), fillvalue=sentinel):
+        if k1 != k2:
+            return False
+        if v1 != v2 and (v1 and v2):
+            return False
+    return True
 
 
 def _as_removals(value: Any, group: Literal["CDF", "Domain"], field_name: str) -> FieldDifference:
