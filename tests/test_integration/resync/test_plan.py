@@ -18,7 +18,7 @@ PLAN.mkdir(exist_ok=True)
 
 def plan_test_cases():
     for model in ["ProductionModel", "MarketModel", "CogShop1Asset"]:
-        yield pytest.param(ReSync.demo, "Dayahead", model, PLAN, "settings.toml", id=f"Demo Data {model}")
+        yield pytest.param(ReSync.demo, "Dayahead", model, PLAN, "settings.toml;.secrets.toml", id=f"Demo Data {model}")
 
     # This test will be skipped if the file sensitive_tests.toml does not exist
     if not SENSITIVE_TESTS.exists():
