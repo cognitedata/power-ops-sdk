@@ -12,7 +12,7 @@ def test_models_differences_has_changes(production_model: models.ProductionModel
     changes = diff.model_difference(model_a, model_b)
 
     # Assert
-    assert changes.has_changes()
+    assert changes.has_changes("CDF")
 
 
 def test_model_difference_no_changes(production_model: models.ProductionModel) -> None:
@@ -24,4 +24,4 @@ def test_model_difference_no_changes(production_model: models.ProductionModel) -
     changes = diff.model_difference(model_a, model_b)
 
     # Assert
-    assert not changes.has_changes()
+    assert not changes.has_changes("CDF")

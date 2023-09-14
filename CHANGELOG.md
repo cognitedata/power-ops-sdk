@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.54.1] - 2023-09-14
+### Fixed
+* Running `powerops plan --as-extraction-pipeline-run` triggered change on not changed models.
+
 ## [0.54.0] - 2023-09-14
 ### Added
 * Creation of `RKOM` scenarios in `resync`.
