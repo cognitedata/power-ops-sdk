@@ -190,11 +190,11 @@ class ModelDifference:
                 changes[field_name] = self.changes[field_name] + other.changes[field_name]
         return ModelDifference(model_name=self.model_name, changes=changes)
 
-    def has_changes(self, exclude: set | frozenset = frozenset({"timeseries"})) -> bool:
+    def has_changes(self, group: str, exclude: set | frozenset = frozenset({"timeseries"})) -> bool:
         return any(
             change.total != len(change.unchanged)
             for change in self.changes.values()
-            if change.field_name not in exclude
+            if change.field_name not in exclude and change.group == group
         )
 
     def filter_out(self, group: Group | None = None, field_names: set | frozenset = frozenset({"timeseries"})) -> bool:
@@ -223,8 +223,8 @@ class ModelDifferences:
     def append(self, model: ModelDifference) -> None:
         self.models.append(model)
 
-    def has_changes(self, exclude: set | frozenset = frozenset({"timeseries", "labels"})) -> bool:
-        return any(m.has_changes(exclude) for m in self.models)
+    def has_changes(self, group: str, exclude: set | frozenset = frozenset({"timeseries", "labels"})) -> bool:
+        return any(m.has_changes(group, exclude) for m in self.models)
 
     def as_markdown_detailed(self) -> str:
         report = []
