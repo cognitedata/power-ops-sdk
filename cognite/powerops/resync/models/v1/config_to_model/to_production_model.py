@@ -23,7 +23,6 @@ from cognite.powerops.resync.models.v1.production import (
     Watercourse,
     WaterCourseShop,
 )
-from cognite.powerops.utils.serialization import load_yaml
 
 
 def to_production_model(configuration: config.ProductionConfig) -> ProductionModel:
@@ -89,7 +88,9 @@ def to_production_model(configuration: config.ProductionConfig) -> ProductionMod
         )
         model.watercourses.append(watercourse)
 
-        shop_case = load_yaml(watercourse_config.yaml_raw_path, clean_data=False)
+        shop_case = (
+            watercourse_config.shop_model_template
+        )  # load_yaml(watercourse_config.yaml_raw_path, clean_data=False)
 
         for reservoir_name in shop_case["model"]["reservoir"]:
             reservoir = Reservoir(

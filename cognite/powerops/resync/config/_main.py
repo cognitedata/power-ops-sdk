@@ -136,6 +136,7 @@ class ProductionConfig(Config):
                         watercourse["yaml_raw_path"] = (
                             config_dir_path / watercourse["directory"] / watercourse["model_raw"]
                         )
+                        watercourse["shop_model_template"] = load_yaml(watercourse["yaml_raw_path"], encoding="utf-8")
                     if all(key in watercourse for key in ["directory", "model_processed"]):
                         watercourse["yaml_processed_path"] = (
                             config_dir_path / watercourse["directory"] / watercourse["model_processed"]

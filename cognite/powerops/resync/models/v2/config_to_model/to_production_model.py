@@ -22,7 +22,6 @@ from cognite.powerops.resync.models._shared_v1_v2.production_model import (
     p_min_fallback,
 )
 from cognite.powerops.resync.models.v2.production_dm import ProductionModelDM
-from cognite.powerops.utils.serialization import load_yaml
 
 
 def to_production_data_model(configuration: config.ProductionConfig) -> ProductionModelDM:
@@ -51,7 +50,7 @@ def to_production_data_model(configuration: config.ProductionConfig) -> Producti
         )
         model.watercourses.append(watercourse)
 
-        shop_case = load_yaml(watercourse_config.yaml_raw_path, clean_data=True)
+        shop_case = watercourse_config.shop_model_template
 
         reservoirs = []
         for reservoir_name in shop_case["model"]["reservoir"]:
