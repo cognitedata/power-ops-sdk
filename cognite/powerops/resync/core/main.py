@@ -67,7 +67,7 @@ def init(client: PowerOpsClient | None, echo: Echo | None = None, model_names: s
         echo(f"Deployed {model.name} model ({result.space}, {result.external_id}, {result.version})")
 
 
-def validate(config_dir: str | Path, echo: Echo | None = None) -> None:
+def validate(config_dir: str | Path, market: str, echo: Echo | None = None) -> None:
     """
     Validates the local configuration files.
 
@@ -86,7 +86,7 @@ def validate(config_dir: str | Path, echo: Echo | None = None) -> None:
     """
     echo = echo or _default_echo
     echo(f"Validating configuration in {config_dir}")
-    _ = ReSyncConfig.from_yamls(Path(config_dir), "dummy")
+    _ = _load_transform(market, Path(config_dir), "dummy", echo, list(MODELS_BY_NAME))
     echo("Validation successful")
 
 
