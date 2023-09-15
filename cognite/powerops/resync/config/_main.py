@@ -4,8 +4,9 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any, Literal, Optional, overload
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 from pydantic_core.core_schema import FieldValidationInfo
+from typing_extensions import Self
 
 from cognite.powerops.utils.serialization import load_yaml
 
@@ -136,6 +137,7 @@ class ProductionConfig(Config):
                         watercourse["yaml_raw_path"] = (
                             config_dir_path / watercourse["directory"] / watercourse["model_raw"]
                         )
+                        watercourse["shop_model_template"] = load_yaml(watercourse["yaml_raw_path"], encoding="utf-8")
                     if all(key in watercourse for key in ["directory", "model_processed"]):
                         watercourse["yaml_processed_path"] = (
                             config_dir_path / watercourse["directory"] / watercourse["model_processed"]
@@ -195,3 +197,40 @@ class ReSyncConfig(BaseModel):
             configs["constants"]["cdf_project"] = cdf_project
 
         return cls(**configs)
+
+    @model_validator(mode="after")
+    def object_exists_in_shop_template_model(self) -> Self:
+        production = self.production
+        time_series_mappings = self.cogshop.time_series_mappings or []
+        # TODO Fix the assumption that timeseries mappings and watercourses are in the same order
+        invalid_mappings_by_watercourse: dict[str, list[str]] = defaultdict(list)
+        seen: set[tuple[str, str]] = set()
+        for watercourse, timeseries_mapping in zip(production.watercourses, time_series_mappings):
+            model = watercourse.shop_model_template["model"]
+            valid_mappings = _get_valid_shop_objects(model)
+            for mapping in timeseries_mapping:
+                entry = (mapping.object_type.lower(), mapping.object_name.lower())
+                if entry not in valid_mappings and entry not in seen:
+                    invalid_mappings_by_watercourse[watercourse.name].append(
+                        f"{mapping.object_type}.{mapping.object_name}"
+                    )
+                    seen.add(entry)
+        if invalid_mappings_by_watercourse:
+            raise ValueError(
+                "Timeseries mapping for watercourses not found in respective SHOP files: "
+                f"{dict(invalid_mappings_by_watercourse)}"
+            )
+
+        return self
+
+
+def _get_valid_shop_objects(model: dict[str, Any]) -> set[tuple[str, str]]:
+    valid_mappings: set[tuple[str, str]] = set()
+    for object_type, objects in model.items():
+        if not isinstance(objects, dict):
+            raise ValueError("Invalid SHOP yaml")
+        for object_name, attributes in objects.items():
+            if not isinstance(attributes, dict):
+                raise ValueError("Invalid SHOP yaml")
+            valid_mappings.add((str(object_type).lower(), str(object_name).lower()))
+    return valid_mappings

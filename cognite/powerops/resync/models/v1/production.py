@@ -123,7 +123,7 @@ class Watercourse(AssetType):
 
     @field_validator("plants", mode="after")
     def plant_ordering(cls, value: list[Plant]) -> list[Plant]:
-        # To ensure loading the production model always yields the same result, we sort the plants by external_id.
+        # To ensure loading the production model, always yields the same result; we sort the plants by external_id.
         return sorted(value, key=lambda x: x.external_id)
 
     def standardize(self) -> None:
