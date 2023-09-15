@@ -13,6 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.55.0] - 2023-09-15
+### Added
+* `resync` now validates the TimeSeries Mappings against the shop model file.
+* Extended `resync validate` to also run the transformations.
+
 ## [0.54.1] - 2023-09-14
 ### Fixed
 * Running `powerops plan --as-extraction-pipeline-run` triggered change on not changed models.
