@@ -135,8 +135,9 @@ class SHOPRunAPI:
         extra_filters = []
         if watercourse:
             watercourses = watercourse if isinstance(watercourse, list) else [watercourse]
-            is_watercourse = filters.ContainsAny(["metadata", ShopRunEvent.watercourse], [watercourses])
-            extra_filters.append(is_watercourse)
+            extra_filters.append(
+                filters.Or(*[filters.Equals(["metadata", ShopRunEvent.watercourse], w) for w in watercourses])
+            )
 
         selected = filters.And(is_type, *extra_filters)
         events = self._cdf.events.filter(selected, limit=limit)
