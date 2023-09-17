@@ -1,7 +1,7 @@
 - bid_matrix_generator: multi_scenario
   main_scenario: scenario_10
   name: multi_scenario_20_NO2
-  no_shop: true
+  no_shop: false
   price_area_name: NO2
   price_scenarios:
     - id: scenario_1
