@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import ClassVar, Optional
+from typing import Any, ClassVar, Optional
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -29,6 +29,7 @@ class WatercourseConfig(Watercourse):
     directory: str
     model_raw: str
     # ------------------------------------------------------------------
+    shop_model_template: dict[str, Any]
     yaml_raw_path: Path
     yaml_processed_path: Path  # TODO: not used here
     yaml_mapping_path: str = ""
