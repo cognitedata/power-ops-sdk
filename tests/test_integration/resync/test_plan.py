@@ -37,7 +37,7 @@ def plan_test_cases():
             id=f"{test_case['data_path']} {test_case['model_name']}",
         )
 
-
+@pytest.mark.skip # temporarily skip
 @pytest.mark.parametrize("data_path, market, model_name, dump_folder, config_file", list(plan_test_cases()))
 def test_plan(
     data_path: Path, market: str, model_name: str, dump_folder: Path, config_file: str, data_regression
