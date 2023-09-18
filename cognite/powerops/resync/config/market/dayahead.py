@@ -39,13 +39,10 @@ class BidProcessConfig(Configuration):
         return {"operations": json.loads(value)} if isinstance(value, str) else value
 
     @field_validator("price_scenarios", mode="after")
-    def literal_eval_and_uniqueness(cls, value):
-        literal_price_scenarios = [{"id": id_} for id_ in value] if isinstance(value, str) else value
-        seen = set()
-        unique_price_scenarios = []
-        for price_scenario in literal_price_scenarios:
-            if price_scenario.id in seen:
-                raise ValueError("Duplicate price scenarios for bidprocess was found.")
-            seen.add(price_scenario.id)
-            unique_price_scenarios.append(price_scenario)
-        return unique_price_scenarios
+    def ensure_no_duplicates(cls, value: list[PriceScenarioID], info: FieldValidationInfo):
+        scenario_ids = Counter(scenario.id for scenario in value)
+        duplicates = [scenario_id for scenario_id, count in scenario_ids.items() if count > 1]
+        if duplicates:
+            bidprocess_name = info.data.get("name", "unknown")
+            raise ValueError(f"Duplicate price scenarios for bidprocess {bidprocess_name} was found: {list(duplicates)}")
+        return value
