@@ -1,10 +1,11 @@
 from __future__ import annotations
 
-import ast
 import json
+from collections import Counter
 from typing import ClassVar, Optional
 
 from pydantic import BaseModel, Field, field_validator
+from pydantic_core.core_schema import FieldValidationInfo
 
 from cognite.powerops.resync.config.market import PriceScenarioID
 from cognite.powerops.resync.config.market._core import Configuration, RelativeTime
@@ -41,8 +42,9 @@ class BidProcessConfig(Configuration):
     @field_validator("price_scenarios", mode="after")
     def ensure_no_duplicates(cls, value: list[PriceScenarioID], info: FieldValidationInfo):
         scenario_ids = Counter(scenario.id for scenario in value)
-        duplicates = [scenario_id for scenario_id, count in scenario_ids.items() if count > 1]
-        if duplicates:
+        if duplicates := [
+            scenario_id for scenario_id, count in scenario_ids.items() if count > 1
+        ]:
             bidprocess_name = info.data.get("name", "unknown")
             raise ValueError(f"Duplicate price scenarios for bidprocess {bidprocess_name} was found: {list(duplicates)}")
         return value
