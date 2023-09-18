@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.55.2] - 2023-09-18
+### Added
+* Validation of price scenarios to ensure no duplicated price scenarios
+
 ## [0.55.1] - 2023-09-18
 ### Added
 * Property `valid_shop_objects` to `WatercourseConfig` in `resync`. This is useful when creating time series
