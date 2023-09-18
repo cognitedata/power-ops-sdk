@@ -15,7 +15,7 @@ Changes are grouped as follows
 
 ## [0.55.2] - 2023-09-18
 ### Added
-* Validation of price scenarios to ensure no duplicated price scenarios 
+* Validation of price scenarios to ensure no duplicated price scenarios
 
 ## [0.55.1] - 2023-09-18
 ### Added

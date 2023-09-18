@@ -5172,6 +5172,762 @@ edges:
     externalId: ModelTemplate.baseMappings
     space: cogShop
 - endNode:
+    externalId: Tr_MULTIPLY_{"value":1.2}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_+20pct_0:Tr_MULTIPLY_{"value":1.2}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_+20pct_0
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_MULTIPLY_{"value":1.2}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_+20pct_1:Tr_MULTIPLY_{"value":1.2}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_+20pct_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_ADD_{"value":0.01}_1
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_+20pct_1:Tr_ADD_{"value":0.01}_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_+20pct_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_DYNAMIC_STATIC_{"0":0,"300":80,"1440":0,"1740":80,"2880":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_+20pct_2:Tr_DYNAMIC_STATIC_{"0":0,"300":80,"1440":0,"1740":80,"2880":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_+20pct_2
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_DYNAMIC_STATIC_{"0":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_+20pct_2:Tr_DYNAMIC_STATIC_{"0":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_+20pct_2
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_DYNAMIC_STATIC_{"0":0,"300":160,"1440":0,"1740":160,"2880":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_+20pct_2:Tr_DYNAMIC_STATIC_{"0":0,"300":160,"1440":0,"1740":160,"2880":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_+20pct_2
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_DYNAMIC_STATIC_{"0":0,"300":100,"1440":0,"1740":100,"2880":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_+20pct_2:Tr_DYNAMIC_STATIC_{"0":0,"300":100,"1440":0,"1740":100,"2880":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_+20pct_2
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_DYNAMIC_STATIC_{"0":0,"300":40,"1440":0,"1740":40,"2880":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_+20pct_2:Tr_DYNAMIC_STATIC_{"0":0,"300":40,"1440":0,"1740":40,"2880":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_+20pct_2
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_DYNAMIC_STATIC_{"0":0,"300":200,"1440":0,"1740":200,"2880":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_+20pct_2:Tr_DYNAMIC_STATIC_{"0":0,"300":200,"1440":0,"1740":200,"2880":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_+20pct_2
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_DYNAMIC_STATIC_{"0":0,"300":140,"1440":0,"1740":140,"2880":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_+20pct_2:Tr_DYNAMIC_STATIC_{"0":0,"300":140,"1440":0,"1740":140,"2880":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_+20pct_2
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_DYNAMIC_STATIC_{"0":0,"300":20,"1440":0,"1740":20,"2880":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_+20pct_2:Tr_DYNAMIC_STATIC_{"0":0,"300":20,"1440":0,"1740":20,"2880":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_+20pct_2
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_DYNAMIC_STATIC_{"0":0,"300":180,"1440":0,"1740":180,"2880":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_+20pct_2:Tr_DYNAMIC_STATIC_{"0":0,"300":180,"1440":0,"1740":180,"2880":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_+20pct_2
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_DYNAMIC_STATIC_{"0":0,"300":120,"1440":0,"1740":120,"2880":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_+20pct_2:Tr_DYNAMIC_STATIC_{"0":0,"300":120,"1440":0,"1740":120,"2880":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_+20pct_2
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_DYNAMIC_STATIC_{"0":0,"300":60,"1440":0,"1740":60,"2880":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_+20pct_2:Tr_DYNAMIC_STATIC_{"0":0,"300":60,"1440":0,"1740":60,"2880":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_+20pct_2
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_STATIC_{"0":1}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_+20pct_3:Tr_STATIC_{"0":1}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_+20pct_3
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_STATIC_{"0":1}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_+20pct_4:Tr_STATIC_{"0":1}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_+20pct_4
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_STATIC_{"0":1}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_+20pct_5:Tr_STATIC_{"0":1}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_+20pct_5
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_STATIC_{"0":1}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_+20pct_6:Tr_STATIC_{"0":1}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_+20pct_6
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_STATIC_{"0":1}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_+20pct_7:Tr_STATIC_{"0":1}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_+20pct_7
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_STATIC_{"0":1}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_+20pct_8:Tr_STATIC_{"0":1}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_+20pct_8
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_MULTIPLY_{"value":0.8}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_-20pct_0:Tr_MULTIPLY_{"value":0.8}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_-20pct_0
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_MULTIPLY_{"value":0.8}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_-20pct_1:Tr_MULTIPLY_{"value":0.8}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_-20pct_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_ADD_{"value":0.01}_1
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_-20pct_1:Tr_ADD_{"value":0.01}_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_-20pct_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_DYNAMIC_STATIC_{"0":0,"300":80,"1440":0,"1740":80,"2880":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_-20pct_2:Tr_DYNAMIC_STATIC_{"0":0,"300":80,"1440":0,"1740":80,"2880":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_-20pct_2
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_DYNAMIC_STATIC_{"0":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_-20pct_2:Tr_DYNAMIC_STATIC_{"0":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_-20pct_2
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_DYNAMIC_STATIC_{"0":0,"300":160,"1440":0,"1740":160,"2880":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_-20pct_2:Tr_DYNAMIC_STATIC_{"0":0,"300":160,"1440":0,"1740":160,"2880":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_-20pct_2
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_DYNAMIC_STATIC_{"0":0,"300":100,"1440":0,"1740":100,"2880":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_-20pct_2:Tr_DYNAMIC_STATIC_{"0":0,"300":100,"1440":0,"1740":100,"2880":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_-20pct_2
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_DYNAMIC_STATIC_{"0":0,"300":40,"1440":0,"1740":40,"2880":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_-20pct_2:Tr_DYNAMIC_STATIC_{"0":0,"300":40,"1440":0,"1740":40,"2880":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_-20pct_2
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_DYNAMIC_STATIC_{"0":0,"300":200,"1440":0,"1740":200,"2880":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_-20pct_2:Tr_DYNAMIC_STATIC_{"0":0,"300":200,"1440":0,"1740":200,"2880":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_-20pct_2
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_DYNAMIC_STATIC_{"0":0,"300":140,"1440":0,"1740":140,"2880":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_-20pct_2:Tr_DYNAMIC_STATIC_{"0":0,"300":140,"1440":0,"1740":140,"2880":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_-20pct_2
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_DYNAMIC_STATIC_{"0":0,"300":20,"1440":0,"1740":20,"2880":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_-20pct_2:Tr_DYNAMIC_STATIC_{"0":0,"300":20,"1440":0,"1740":20,"2880":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_-20pct_2
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_DYNAMIC_STATIC_{"0":0,"300":180,"1440":0,"1740":180,"2880":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_-20pct_2:Tr_DYNAMIC_STATIC_{"0":0,"300":180,"1440":0,"1740":180,"2880":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_-20pct_2
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_DYNAMIC_STATIC_{"0":0,"300":120,"1440":0,"1740":120,"2880":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_-20pct_2:Tr_DYNAMIC_STATIC_{"0":0,"300":120,"1440":0,"1740":120,"2880":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_-20pct_2
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_DYNAMIC_STATIC_{"0":0,"300":60,"1440":0,"1740":60,"2880":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_-20pct_2:Tr_DYNAMIC_STATIC_{"0":0,"300":60,"1440":0,"1740":60,"2880":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_-20pct_2
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_STATIC_{"0":1}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_-20pct_3:Tr_STATIC_{"0":1}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_-20pct_3
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_STATIC_{"0":1}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_-20pct_4:Tr_STATIC_{"0":1}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_-20pct_4
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_STATIC_{"0":1}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_-20pct_5:Tr_STATIC_{"0":1}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_-20pct_5
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_STATIC_{"0":1}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_-20pct_6:Tr_STATIC_{"0":1}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_-20pct_6
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_STATIC_{"0":1}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_-20pct_7:Tr_STATIC_{"0":1}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_-20pct_7
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_STATIC_{"0":1}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_-20pct_8:Tr_STATIC_{"0":1}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_-20pct_8
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_ADD_FROM_OFFSET_{"0":0,"720":0,"1440":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Base Scenario_0:Tr_ADD_FROM_OFFSET_{"0":0,"720":0,"1440":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Base Scenario_0
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_MULTIPLY_FROM_OFFSET_{"0":1,"1440":1}_1
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Base Scenario_0:Tr_MULTIPLY_FROM_OFFSET_{"0":1,"1440":1}_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Base Scenario_0
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_ADD_FROM_OFFSET_{"0":0,"720":0,"1440":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Base Scenario_1:Tr_ADD_FROM_OFFSET_{"0":0,"720":0,"1440":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Base Scenario_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_MULTIPLY_FROM_OFFSET_{"0":1,"1440":1}_1
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Base Scenario_1:Tr_MULTIPLY_FROM_OFFSET_{"0":1,"1440":1}_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Base Scenario_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_ADD_{"value":0.01}_2
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Base Scenario_1:Tr_ADD_{"value":0.01}_2
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Base Scenario_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_ADD_{"value":0.01}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Cognite_1:Tr_ADD_{"value":0.01}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Cognite_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_DYNAMIC_STATIC_{"0":0,"300":80,"1440":0,"1740":80,"2880":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Cognite_2:Tr_DYNAMIC_STATIC_{"0":0,"300":80,"1440":0,"1740":80,"2880":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Cognite_2
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_DYNAMIC_STATIC_{"0":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Cognite_2:Tr_DYNAMIC_STATIC_{"0":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Cognite_2
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_DYNAMIC_STATIC_{"0":0,"300":160,"1440":0,"1740":160,"2880":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Cognite_2:Tr_DYNAMIC_STATIC_{"0":0,"300":160,"1440":0,"1740":160,"2880":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Cognite_2
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_DYNAMIC_STATIC_{"0":0,"300":100,"1440":0,"1740":100,"2880":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Cognite_2:Tr_DYNAMIC_STATIC_{"0":0,"300":100,"1440":0,"1740":100,"2880":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Cognite_2
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_DYNAMIC_STATIC_{"0":0,"300":40,"1440":0,"1740":40,"2880":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Cognite_2:Tr_DYNAMIC_STATIC_{"0":0,"300":40,"1440":0,"1740":40,"2880":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Cognite_2
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_DYNAMIC_STATIC_{"0":0,"300":200,"1440":0,"1740":200,"2880":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Cognite_2:Tr_DYNAMIC_STATIC_{"0":0,"300":200,"1440":0,"1740":200,"2880":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Cognite_2
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_DYNAMIC_STATIC_{"0":0,"300":140,"1440":0,"1740":140,"2880":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Cognite_2:Tr_DYNAMIC_STATIC_{"0":0,"300":140,"1440":0,"1740":140,"2880":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Cognite_2
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_DYNAMIC_STATIC_{"0":0,"300":20,"1440":0,"1740":20,"2880":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Cognite_2:Tr_DYNAMIC_STATIC_{"0":0,"300":20,"1440":0,"1740":20,"2880":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Cognite_2
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_DYNAMIC_STATIC_{"0":0,"300":180,"1440":0,"1740":180,"2880":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Cognite_2:Tr_DYNAMIC_STATIC_{"0":0,"300":180,"1440":0,"1740":180,"2880":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Cognite_2
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_DYNAMIC_STATIC_{"0":0,"300":120,"1440":0,"1740":120,"2880":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Cognite_2:Tr_DYNAMIC_STATIC_{"0":0,"300":120,"1440":0,"1740":120,"2880":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Cognite_2
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_DYNAMIC_STATIC_{"0":0,"300":60,"1440":0,"1740":60,"2880":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Cognite_2:Tr_DYNAMIC_STATIC_{"0":0,"300":60,"1440":0,"1740":60,"2880":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Cognite_2
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_STATIC_{"0":1}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Cognite_3:Tr_STATIC_{"0":1}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Cognite_3
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_STATIC_{"0":1}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Cognite_4:Tr_STATIC_{"0":1}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Cognite_4
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_STATIC_{"0":1}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Cognite_5:Tr_STATIC_{"0":1}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Cognite_5
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_STATIC_{"0":1}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Cognite_6:Tr_STATIC_{"0":1}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Cognite_6
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_STATIC_{"0":1}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Cognite_7:Tr_STATIC_{"0":1}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Cognite_7
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_STATIC_{"0":1}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Cognite_8:Tr_STATIC_{"0":1}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Cognite_8
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
     externalId: Tr_ADD_{"value":0.01}_0
     space: cogShop
   externalId: Mapping_Scenario_Fornebu_Main_1:Tr_ADD_{"value":0.01}_0
@@ -5179,6 +5935,486 @@ edges:
   space: cogShop
   startNode:
     externalId: Mapping_Scenario_Fornebu_Main_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_ADD_FROM_OFFSET_{"0":15,"720":29,"1440":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Scenario 10_0:Tr_ADD_FROM_OFFSET_{"0":15,"720":29,"1440":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 10_0
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_MULTIPLY_FROM_OFFSET_{"0":1.45,"1440":1}_1
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Scenario 10_0:Tr_MULTIPLY_FROM_OFFSET_{"0":1.45,"1440":1}_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 10_0
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_ADD_FROM_OFFSET_{"0":15,"720":29,"1440":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Scenario 10_1:Tr_ADD_FROM_OFFSET_{"0":15,"720":29,"1440":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 10_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_MULTIPLY_FROM_OFFSET_{"0":1.45,"1440":1}_1
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Scenario 10_1:Tr_MULTIPLY_FROM_OFFSET_{"0":1.45,"1440":1}_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 10_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_ADD_{"value":0.01}_2
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Scenario 10_1:Tr_ADD_{"value":0.01}_2
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 10_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_MULTIPLY_FROM_OFFSET_{"0":0.55,"1440":1}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Scenario 1_0:Tr_MULTIPLY_FROM_OFFSET_{"0":0.55,"1440":1}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 1_0
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_MULTIPLY_FROM_OFFSET_{"0":0.55,"1440":1}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Scenario 1_1:Tr_MULTIPLY_FROM_OFFSET_{"0":0.55,"1440":1}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 1_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_ADD_{"value":0.01}_1
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Scenario 1_1:Tr_ADD_{"value":0.01}_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 1_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_MULTIPLY_FROM_OFFSET_{"0":0.65,"1440":1}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Scenario 2_0:Tr_MULTIPLY_FROM_OFFSET_{"0":0.65,"1440":1}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 2_0
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_MULTIPLY_FROM_OFFSET_{"0":0.65,"1440":1}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Scenario 2_1:Tr_MULTIPLY_FROM_OFFSET_{"0":0.65,"1440":1}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 2_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_ADD_{"value":0.01}_1
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Scenario 2_1:Tr_ADD_{"value":0.01}_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 2_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_MULTIPLY_FROM_OFFSET_{"0":0.75,"1440":1}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Scenario 3_0:Tr_MULTIPLY_FROM_OFFSET_{"0":0.75,"1440":1}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 3_0
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_MULTIPLY_FROM_OFFSET_{"0":0.75,"1440":1}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Scenario 3_1:Tr_MULTIPLY_FROM_OFFSET_{"0":0.75,"1440":1}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 3_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_ADD_{"value":0.01}_1
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Scenario 3_1:Tr_ADD_{"value":0.01}_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 3_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_MULTIPLY_FROM_OFFSET_{"0":0.85,"1440":1}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Scenario 4_0:Tr_MULTIPLY_FROM_OFFSET_{"0":0.85,"1440":1}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 4_0
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_MULTIPLY_FROM_OFFSET_{"0":0.85,"1440":1}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Scenario 4_1:Tr_MULTIPLY_FROM_OFFSET_{"0":0.85,"1440":1}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 4_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_ADD_{"value":0.01}_1
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Scenario 4_1:Tr_ADD_{"value":0.01}_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 4_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_MULTIPLY_FROM_OFFSET_{"0":0.95,"1440":1}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Scenario 5_0:Tr_MULTIPLY_FROM_OFFSET_{"0":0.95,"1440":1}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 5_0
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_MULTIPLY_FROM_OFFSET_{"0":0.95,"1440":1}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Scenario 5_1:Tr_MULTIPLY_FROM_OFFSET_{"0":0.95,"1440":1}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 5_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_ADD_{"value":0.01}_1
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Scenario 5_1:Tr_ADD_{"value":0.01}_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 5_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_ADD_FROM_OFFSET_{"0":2,"720":5,"1440":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Scenario 6_0:Tr_ADD_FROM_OFFSET_{"0":2,"720":5,"1440":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 6_0
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_MULTIPLY_FROM_OFFSET_{"0":1.05,"1440":1}_1
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Scenario 6_0:Tr_MULTIPLY_FROM_OFFSET_{"0":1.05,"1440":1}_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 6_0
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_ADD_FROM_OFFSET_{"0":2,"720":5,"1440":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Scenario 6_1:Tr_ADD_FROM_OFFSET_{"0":2,"720":5,"1440":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 6_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_MULTIPLY_FROM_OFFSET_{"0":1.05,"1440":1}_1
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Scenario 6_1:Tr_MULTIPLY_FROM_OFFSET_{"0":1.05,"1440":1}_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 6_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_ADD_{"value":0.01}_2
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Scenario 6_1:Tr_ADD_{"value":0.01}_2
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 6_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_ADD_FROM_OFFSET_{"0":4,"720":10,"1440":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Scenario 7_0:Tr_ADD_FROM_OFFSET_{"0":4,"720":10,"1440":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 7_0
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_MULTIPLY_FROM_OFFSET_{"0":1.15,"1440":1}_1
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Scenario 7_0:Tr_MULTIPLY_FROM_OFFSET_{"0":1.15,"1440":1}_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 7_0
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_ADD_FROM_OFFSET_{"0":4,"720":10,"1440":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Scenario 7_1:Tr_ADD_FROM_OFFSET_{"0":4,"720":10,"1440":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 7_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_MULTIPLY_FROM_OFFSET_{"0":1.15,"1440":1}_1
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Scenario 7_1:Tr_MULTIPLY_FROM_OFFSET_{"0":1.15,"1440":1}_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 7_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_ADD_{"value":0.01}_2
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Scenario 7_1:Tr_ADD_{"value":0.01}_2
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 7_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_ADD_FROM_OFFSET_{"0":6,"720":11,"1440":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Scenario 8_0:Tr_ADD_FROM_OFFSET_{"0":6,"720":11,"1440":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 8_0
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_MULTIPLY_FROM_OFFSET_{"0":1.25,"1440":1}_1
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Scenario 8_0:Tr_MULTIPLY_FROM_OFFSET_{"0":1.25,"1440":1}_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 8_0
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_ADD_FROM_OFFSET_{"0":6,"720":11,"1440":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Scenario 8_1:Tr_ADD_FROM_OFFSET_{"0":6,"720":11,"1440":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 8_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_MULTIPLY_FROM_OFFSET_{"0":1.25,"1440":1}_1
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Scenario 8_1:Tr_MULTIPLY_FROM_OFFSET_{"0":1.25,"1440":1}_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 8_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_ADD_{"value":0.01}_2
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Scenario 8_1:Tr_ADD_{"value":0.01}_2
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 8_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_ADD_FROM_OFFSET_{"0":9,"720":17,"1440":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Scenario 9_0:Tr_ADD_FROM_OFFSET_{"0":9,"720":17,"1440":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 9_0
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_MULTIPLY_FROM_OFFSET_{"0":1.35,"1440":1}_1
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Scenario 9_0:Tr_MULTIPLY_FROM_OFFSET_{"0":1.35,"1440":1}_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 9_0
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_ADD_FROM_OFFSET_{"0":9,"720":17,"1440":0}_0
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Scenario 9_1:Tr_ADD_FROM_OFFSET_{"0":9,"720":17,"1440":0}_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 9_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_MULTIPLY_FROM_OFFSET_{"0":1.35,"1440":1}_1
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Scenario 9_1:Tr_MULTIPLY_FROM_OFFSET_{"0":1.35,"1440":1}_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 9_1
+    space: cogShop
+  type:
+    externalId: Mapping.transformations
+    space: cogShop
+- endNode:
+    externalId: Tr_ADD_{"value":0.01}_2
+    space: cogShop
+  externalId: Mapping_Scenario_Fornebu_Scenario 9_1:Tr_ADD_{"value":0.01}_2
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 9_1
     space: cogShop
   type:
     externalId: Mapping.transformations
@@ -5832,6 +7068,354 @@ edges:
     externalId: Mapping.transformations
     space: cogShop
 - endNode:
+    externalId: Mapping_Scenario_Fornebu_+20pct_0
+    space: cogShop
+  externalId: Scenario_Fornebu_+20pct:Mapping_Scenario_Fornebu_+20pct_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_+20pct
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_+20pct_1
+    space: cogShop
+  externalId: Scenario_Fornebu_+20pct:Mapping_Scenario_Fornebu_+20pct_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_+20pct
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_+20pct_2
+    space: cogShop
+  externalId: Scenario_Fornebu_+20pct:Mapping_Scenario_Fornebu_+20pct_2
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_+20pct
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_+20pct_3
+    space: cogShop
+  externalId: Scenario_Fornebu_+20pct:Mapping_Scenario_Fornebu_+20pct_3
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_+20pct
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_+20pct_4
+    space: cogShop
+  externalId: Scenario_Fornebu_+20pct:Mapping_Scenario_Fornebu_+20pct_4
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_+20pct
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_+20pct_5
+    space: cogShop
+  externalId: Scenario_Fornebu_+20pct:Mapping_Scenario_Fornebu_+20pct_5
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_+20pct
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_+20pct_6
+    space: cogShop
+  externalId: Scenario_Fornebu_+20pct:Mapping_Scenario_Fornebu_+20pct_6
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_+20pct
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_+20pct_7
+    space: cogShop
+  externalId: Scenario_Fornebu_+20pct:Mapping_Scenario_Fornebu_+20pct_7
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_+20pct
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_+20pct_8
+    space: cogShop
+  externalId: Scenario_Fornebu_+20pct:Mapping_Scenario_Fornebu_+20pct_8
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_+20pct
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_-20pct_0
+    space: cogShop
+  externalId: Scenario_Fornebu_-20pct:Mapping_Scenario_Fornebu_-20pct_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_-20pct
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_-20pct_1
+    space: cogShop
+  externalId: Scenario_Fornebu_-20pct:Mapping_Scenario_Fornebu_-20pct_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_-20pct
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_-20pct_2
+    space: cogShop
+  externalId: Scenario_Fornebu_-20pct:Mapping_Scenario_Fornebu_-20pct_2
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_-20pct
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_-20pct_3
+    space: cogShop
+  externalId: Scenario_Fornebu_-20pct:Mapping_Scenario_Fornebu_-20pct_3
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_-20pct
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_-20pct_4
+    space: cogShop
+  externalId: Scenario_Fornebu_-20pct:Mapping_Scenario_Fornebu_-20pct_4
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_-20pct
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_-20pct_5
+    space: cogShop
+  externalId: Scenario_Fornebu_-20pct:Mapping_Scenario_Fornebu_-20pct_5
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_-20pct
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_-20pct_6
+    space: cogShop
+  externalId: Scenario_Fornebu_-20pct:Mapping_Scenario_Fornebu_-20pct_6
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_-20pct
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_-20pct_7
+    space: cogShop
+  externalId: Scenario_Fornebu_-20pct:Mapping_Scenario_Fornebu_-20pct_7
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_-20pct
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_-20pct_8
+    space: cogShop
+  externalId: Scenario_Fornebu_-20pct:Mapping_Scenario_Fornebu_-20pct_8
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_-20pct
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_Base Scenario_0
+    space: cogShop
+  externalId: Scenario_Fornebu_Base Scenario:Mapping_Scenario_Fornebu_Base Scenario_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_Base Scenario
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_Base Scenario_1
+    space: cogShop
+  externalId: Scenario_Fornebu_Base Scenario:Mapping_Scenario_Fornebu_Base Scenario_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_Base Scenario
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_Cognite_0
+    space: cogShop
+  externalId: Scenario_Fornebu_Cognite:Mapping_Scenario_Fornebu_Cognite_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_Cognite
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_Cognite_1
+    space: cogShop
+  externalId: Scenario_Fornebu_Cognite:Mapping_Scenario_Fornebu_Cognite_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_Cognite
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_Cognite_2
+    space: cogShop
+  externalId: Scenario_Fornebu_Cognite:Mapping_Scenario_Fornebu_Cognite_2
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_Cognite
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_Cognite_3
+    space: cogShop
+  externalId: Scenario_Fornebu_Cognite:Mapping_Scenario_Fornebu_Cognite_3
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_Cognite
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_Cognite_4
+    space: cogShop
+  externalId: Scenario_Fornebu_Cognite:Mapping_Scenario_Fornebu_Cognite_4
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_Cognite
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_Cognite_5
+    space: cogShop
+  externalId: Scenario_Fornebu_Cognite:Mapping_Scenario_Fornebu_Cognite_5
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_Cognite
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_Cognite_6
+    space: cogShop
+  externalId: Scenario_Fornebu_Cognite:Mapping_Scenario_Fornebu_Cognite_6
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_Cognite
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_Cognite_7
+    space: cogShop
+  externalId: Scenario_Fornebu_Cognite:Mapping_Scenario_Fornebu_Cognite_7
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_Cognite
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_Cognite_8
+    space: cogShop
+  externalId: Scenario_Fornebu_Cognite:Mapping_Scenario_Fornebu_Cognite_8
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_Cognite
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
     externalId: Mapping_Scenario_Fornebu_Main_0
     space: cogShop
   externalId: Scenario_Fornebu_Main:Mapping_Scenario_Fornebu_Main_0
@@ -5851,6 +7435,246 @@ edges:
   space: cogShop
   startNode:
     externalId: Scenario_Fornebu_Main
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 1_0
+    space: cogShop
+  externalId: Scenario_Fornebu_Scenario 1:Mapping_Scenario_Fornebu_Scenario 1_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_Scenario 1
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 1_1
+    space: cogShop
+  externalId: Scenario_Fornebu_Scenario 1:Mapping_Scenario_Fornebu_Scenario 1_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_Scenario 1
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 10_0
+    space: cogShop
+  externalId: Scenario_Fornebu_Scenario 10:Mapping_Scenario_Fornebu_Scenario 10_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_Scenario 10
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 10_1
+    space: cogShop
+  externalId: Scenario_Fornebu_Scenario 10:Mapping_Scenario_Fornebu_Scenario 10_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_Scenario 10
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 2_0
+    space: cogShop
+  externalId: Scenario_Fornebu_Scenario 2:Mapping_Scenario_Fornebu_Scenario 2_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_Scenario 2
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 2_1
+    space: cogShop
+  externalId: Scenario_Fornebu_Scenario 2:Mapping_Scenario_Fornebu_Scenario 2_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_Scenario 2
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 3_0
+    space: cogShop
+  externalId: Scenario_Fornebu_Scenario 3:Mapping_Scenario_Fornebu_Scenario 3_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_Scenario 3
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 3_1
+    space: cogShop
+  externalId: Scenario_Fornebu_Scenario 3:Mapping_Scenario_Fornebu_Scenario 3_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_Scenario 3
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 4_0
+    space: cogShop
+  externalId: Scenario_Fornebu_Scenario 4:Mapping_Scenario_Fornebu_Scenario 4_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_Scenario 4
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 4_1
+    space: cogShop
+  externalId: Scenario_Fornebu_Scenario 4:Mapping_Scenario_Fornebu_Scenario 4_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_Scenario 4
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 5_0
+    space: cogShop
+  externalId: Scenario_Fornebu_Scenario 5:Mapping_Scenario_Fornebu_Scenario 5_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_Scenario 5
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 5_1
+    space: cogShop
+  externalId: Scenario_Fornebu_Scenario 5:Mapping_Scenario_Fornebu_Scenario 5_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_Scenario 5
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 6_0
+    space: cogShop
+  externalId: Scenario_Fornebu_Scenario 6:Mapping_Scenario_Fornebu_Scenario 6_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_Scenario 6
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 6_1
+    space: cogShop
+  externalId: Scenario_Fornebu_Scenario 6:Mapping_Scenario_Fornebu_Scenario 6_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_Scenario 6
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 7_0
+    space: cogShop
+  externalId: Scenario_Fornebu_Scenario 7:Mapping_Scenario_Fornebu_Scenario 7_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_Scenario 7
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 7_1
+    space: cogShop
+  externalId: Scenario_Fornebu_Scenario 7:Mapping_Scenario_Fornebu_Scenario 7_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_Scenario 7
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 8_0
+    space: cogShop
+  externalId: Scenario_Fornebu_Scenario 8:Mapping_Scenario_Fornebu_Scenario 8_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_Scenario 8
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 8_1
+    space: cogShop
+  externalId: Scenario_Fornebu_Scenario 8:Mapping_Scenario_Fornebu_Scenario 8_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_Scenario 8
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 9_0
+    space: cogShop
+  externalId: Scenario_Fornebu_Scenario 9:Mapping_Scenario_Fornebu_Scenario 9_0
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_Scenario 9
+    space: cogShop
+  type:
+    externalId: Scenario.mappingsOverride
+    space: cogShop
+- endNode:
+    externalId: Mapping_Scenario_Fornebu_Scenario 9_1
+    space: cogShop
+  externalId: Scenario_Fornebu_Scenario 9:Mapping_Scenario_Fornebu_Scenario 9_1
+  instanceType: edge
+  space: cogShop
+  startNode:
+    externalId: Scenario_Fornebu_Scenario 9
     space: cogShop
   type:
     externalId: Scenario.mappingsOverride
@@ -9610,6 +11434,557 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
+- externalId: Mapping_Scenario_Fornebu_+20pct_0
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.sale_price
+      retrieve: RANGE
+      timeseriesExternalId: '907748'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_MULTIPLY_{"value":1.2}_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"value":1.2}'
+      method: MULTIPLY
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_+20pct_1
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.buy_price
+      retrieve: RANGE
+      timeseriesExternalId: '907748'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_ADD_{"value":0.01}_1
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"value":0.01}'
+      method: ADD
+      order: 1
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_+20pct_2
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: max
+      path: reserve_group.rkom_up.rr_up_obligation
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_DYNAMIC_STATIC_{"0":0,"300":80,"1440":0,"1740":80,"2880":0}_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0":0,"300":80,"1440":0,"1740":80,"2880":0}'
+      method: DYNAMIC_STATIC
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_DYNAMIC_STATIC_{"0":0}_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0":0}'
+      method: DYNAMIC_STATIC
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_DYNAMIC_STATIC_{"0":0,"300":160,"1440":0,"1740":160,"2880":0}_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0":0,"300":160,"1440":0,"1740":160,"2880":0}'
+      method: DYNAMIC_STATIC
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_DYNAMIC_STATIC_{"0":0,"300":100,"1440":0,"1740":100,"2880":0}_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0":0,"300":100,"1440":0,"1740":100,"2880":0}'
+      method: DYNAMIC_STATIC
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_DYNAMIC_STATIC_{"0":0,"300":40,"1440":0,"1740":40,"2880":0}_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0":0,"300":40,"1440":0,"1740":40,"2880":0}'
+      method: DYNAMIC_STATIC
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_DYNAMIC_STATIC_{"0":0,"300":200,"1440":0,"1740":200,"2880":0}_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0":0,"300":200,"1440":0,"1740":200,"2880":0}'
+      method: DYNAMIC_STATIC
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_DYNAMIC_STATIC_{"0":0,"300":140,"1440":0,"1740":140,"2880":0}_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0":0,"300":140,"1440":0,"1740":140,"2880":0}'
+      method: DYNAMIC_STATIC
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_DYNAMIC_STATIC_{"0":0,"300":20,"1440":0,"1740":20,"2880":0}_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0":0,"300":20,"1440":0,"1740":20,"2880":0}'
+      method: DYNAMIC_STATIC
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_DYNAMIC_STATIC_{"0":0,"300":180,"1440":0,"1740":180,"2880":0}_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0":0,"300":180,"1440":0,"1740":180,"2880":0}'
+      method: DYNAMIC_STATIC
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_DYNAMIC_STATIC_{"0":0,"300":120,"1440":0,"1740":120,"2880":0}_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0":0,"300":120,"1440":0,"1740":120,"2880":0}'
+      method: DYNAMIC_STATIC
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_DYNAMIC_STATIC_{"0":0,"300":60,"1440":0,"1740":60,"2880":0}_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0":0,"300":60,"1440":0,"1740":60,"2880":0}'
+      method: DYNAMIC_STATIC
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_+20pct_3
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: max
+      path: plant.Rull2.mip_flag
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_+20pct_4
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: max
+      path: plant.Rull1.mip_flag
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_+20pct_5
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: max
+      path: plant.Scott.mip_flag
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_+20pct_6
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: max
+      path: plant.Holen.mip_flag
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_+20pct_7
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: max
+      path: plant.Dalby.mip_flag
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_+20pct_8
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: max
+      path: plant.Landet.mip_flag
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_-20pct_0
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.sale_price
+      retrieve: RANGE
+      timeseriesExternalId: '907748'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_MULTIPLY_{"value":0.8}_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"value":0.8}'
+      method: MULTIPLY
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_-20pct_1
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.buy_price
+      retrieve: RANGE
+      timeseriesExternalId: '907748'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_-20pct_2
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: max
+      path: reserve_group.rkom_up.rr_up_obligation
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_-20pct_3
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: max
+      path: plant.Rull2.mip_flag
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_-20pct_4
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: max
+      path: plant.Rull1.mip_flag
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_-20pct_5
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: max
+      path: plant.Scott.mip_flag
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_-20pct_6
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: max
+      path: plant.Holen.mip_flag
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_-20pct_7
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: max
+      path: plant.Dalby.mip_flag
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_-20pct_8
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: max
+      path: plant.Landet.mip_flag
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_Base Scenario_0
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.sale_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_ADD_FROM_OFFSET_{"0":0,"720":0,"1440":0}_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0":0,"720":0,"1440":0}'
+      method: ADD_FROM_OFFSET
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_MULTIPLY_FROM_OFFSET_{"0":1,"1440":1}_1
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0":1,"1440":1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 1
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_Base Scenario_1
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.buy_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_ADD_{"value":0.01}_2
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"value":0.01}'
+      method: ADD
+      order: 2
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_Cognite_0
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.sale_price
+      retrieve: RANGE
+      timeseriesExternalId: '907748'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_Cognite_1
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.buy_price
+      retrieve: RANGE
+      timeseriesExternalId: '907748'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_ADD_{"value":0.01}_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"value":0.01}'
+      method: ADD
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_Cognite_2
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: max
+      path: reserve_group.rkom_up.rr_up_obligation
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_Cognite_3
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: max
+      path: plant.Rull2.mip_flag
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_Cognite_4
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: max
+      path: plant.Rull1.mip_flag
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_Cognite_5
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: max
+      path: plant.Scott.mip_flag
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_Cognite_6
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: max
+      path: plant.Holen.mip_flag
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_Cognite_7
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: max
+      path: plant.Dalby.mip_flag
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_Cognite_8
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: max
+      path: plant.Landet.mip_flag
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
 - externalId: Mapping_Scenario_Fornebu_Main_0
   instanceType: node
   sources:
@@ -9636,15 +12011,443 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Tr_ADD_{"value":0.01}_0
+- externalId: Mapping_Scenario_Fornebu_Scenario 10_0
   instanceType: node
   sources:
   - properties:
-      arguments: '{"value":0.01}'
-      method: ADD
+      aggregation: mean
+      path: market.Dayahead.sale_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_ADD_FROM_OFFSET_{"0":15,"720":29,"1440":0}_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0":15,"720":29,"1440":0}'
+      method: ADD_FROM_OFFSET
       order: 0
     source:
       externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_MULTIPLY_FROM_OFFSET_{"0":1.45,"1440":1}_1
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0":1.45,"1440":1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 1
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_Scenario 10_1
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.buy_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_Scenario 1_0
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.sale_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_MULTIPLY_FROM_OFFSET_{"0":0.55,"1440":1}_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0":0.55,"1440":1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_Scenario 1_1
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.buy_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_Scenario 2_0
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.sale_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_MULTIPLY_FROM_OFFSET_{"0":0.65,"1440":1}_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0":0.65,"1440":1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_Scenario 2_1
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.buy_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_Scenario 3_0
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.sale_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_MULTIPLY_FROM_OFFSET_{"0":0.75,"1440":1}_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0":0.75,"1440":1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_Scenario 3_1
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.buy_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_Scenario 4_0
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.sale_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_MULTIPLY_FROM_OFFSET_{"0":0.85,"1440":1}_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0":0.85,"1440":1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_Scenario 4_1
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.buy_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_Scenario 5_0
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.sale_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_MULTIPLY_FROM_OFFSET_{"0":0.95,"1440":1}_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0":0.95,"1440":1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_Scenario 5_1
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.buy_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_Scenario 6_0
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.sale_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_ADD_FROM_OFFSET_{"0":2,"720":5,"1440":0}_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0":2,"720":5,"1440":0}'
+      method: ADD_FROM_OFFSET
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_MULTIPLY_FROM_OFFSET_{"0":1.05,"1440":1}_1
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0":1.05,"1440":1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 1
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_Scenario 6_1
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.buy_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_Scenario 7_0
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.sale_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_ADD_FROM_OFFSET_{"0":4,"720":10,"1440":0}_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0":4,"720":10,"1440":0}'
+      method: ADD_FROM_OFFSET
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_MULTIPLY_FROM_OFFSET_{"0":1.15,"1440":1}_1
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0":1.15,"1440":1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 1
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_Scenario 7_1
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.buy_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_Scenario 8_0
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.sale_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_ADD_FROM_OFFSET_{"0":6,"720":11,"1440":0}_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0":6,"720":11,"1440":0}'
+      method: ADD_FROM_OFFSET
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_MULTIPLY_FROM_OFFSET_{"0":1.25,"1440":1}_1
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0":1.25,"1440":1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 1
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_Scenario 8_1
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.buy_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_Scenario 9_0
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.sale_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_ADD_FROM_OFFSET_{"0":9,"720":17,"1440":0}_0
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0":9,"720":17,"1440":0}'
+      method: ADD_FROM_OFFSET
+      order: 0
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Tr_MULTIPLY_FROM_OFFSET_{"0":1.35,"1440":1}_1
+  instanceType: node
+  sources:
+  - properties:
+      arguments: '{"0":1.35,"1440":1}'
+      method: MULTIPLY_FROM_OFFSET
+      order: 1
+    source:
+      externalId: Transformation
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Mapping_Scenario_Fornebu_Scenario 9_1
+  instanceType: node
+  sources:
+  - properties:
+      aggregation: mean
+      path: market.Dayahead.buy_price
+      retrieve: RANGE
+      timeseriesExternalId: '907677'
+    source:
+      externalId: Mapping
       space: cogShop
       type: container
   space: cogShop
@@ -9709,18 +12512,6 @@ nodes:
       timeseriesExternalId: '907677'
     source:
       externalId: Mapping
-      space: cogShop
-      type: container
-  space: cogShop
-- externalId: Tr_ADD_{"value":0.01}_1
-  instanceType: node
-  sources:
-  - properties:
-      arguments: '{"value":0.01}'
-      method: ADD
-      order: 1
-    source:
-      externalId: Transformation
       space: cogShop
       type: container
   space: cogShop
@@ -10384,7 +13175,7 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
-- externalId: Scenario_Fornebu_Main
+- externalId: Scenario_Fornebu_+20pct
   instanceType: node
   sources:
   - properties:
@@ -10394,7 +13185,7 @@ nodes:
       modelTemplate:
         externalId: ModelTemplate_Fornebu
         space: cogShop
-      name: Scenario Fornebu Main
+      name: Scenario Fornebu +20pct
     source:
       externalId: Scenario
       space: cogShop
@@ -10426,6 +13217,230 @@ nodes:
       space: cogShop
       type: container
   space: cogShop
+- externalId: Scenario_Fornebu_-20pct
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario Fornebu -20pct
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_Fornebu_Base Scenario
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario Fornebu Base Scenario
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_Fornebu_Cognite
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario Fornebu Cognite
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_Fornebu_Main
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario Fornebu Main
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_Fornebu_Scenario 1
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario Fornebu Scenario 1
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_Fornebu_Scenario 10
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario Fornebu Scenario 10
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_Fornebu_Scenario 2
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario Fornebu Scenario 2
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_Fornebu_Scenario 3
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario Fornebu Scenario 3
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_Fornebu_Scenario 4
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario Fornebu Scenario 4
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_Fornebu_Scenario 5
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario Fornebu Scenario 5
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_Fornebu_Scenario 6
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario Fornebu Scenario 6
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_Fornebu_Scenario 7
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario Fornebu Scenario 7
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_Fornebu_Scenario 8
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario Fornebu Scenario 8
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
+- externalId: Scenario_Fornebu_Scenario 9
+  instanceType: node
+  sources:
+  - properties:
+      commands:
+        externalId: Commands_Fornebu
+        space: cogShop
+      modelTemplate:
+        externalId: ModelTemplate_Fornebu
+        space: cogShop
+      name: Scenario Fornebu Scenario 9
+    source:
+      externalId: Scenario
+      space: cogShop
+      type: container
+  space: cogShop
 - externalId: Scenario_Fornebu_scenario_1
   instanceType: node
   sources:
@@ -10436,11 +13451,7 @@ nodes:
       modelTemplate:
         externalId: ModelTemplate_Fornebu
         space: cogShop
-      name: Scenario Fornebu <bound method ShopRun.scenario_name of ShopRun(workflow_event=<cognite.client.data_classes.events.Event
-        object at 0x7ff9a0ab4910>, watercourse='Fornebu', starttime='2021-05-21 22:00:00',
-        endtime='2021-05-30 22:00:00', incremental_mapping=<cognite.client.data_classes.sequences.Sequence
-        object at 0x7ff9a0ab4160>, dm_case='Case_2023-09-09T09:56:11.283404Z_c5f04e',
-        dm_space='cogShop', dm_model='CogShop', timeresolution=None, dynamic_minute_offset=None)>
+      name: Scenario Fornebu scenario_1
     source:
       externalId: Scenario
       space: cogShop
@@ -10616,11 +13627,7 @@ nodes:
       modelTemplate:
         externalId: ModelTemplate_Fornebu
         space: cogShop
-      name: Scenario Fornebu <bound method ShopRun.scenario_name of ShopRun(workflow_event=<cognite.client.data_classes.events.Event
-        object at 0x7ff9a0ab4910>, watercourse='Fornebu', starttime='2021-05-21 22:00:00',
-        endtime='2021-05-30 22:00:00', incremental_mapping=<cognite.client.data_classes.sequences.Sequence
-        object at 0x7ff9a0ab49a0>, dm_case='Case_2023-09-09T09:56:11.284030Z_5fa733',
-        dm_space='cogShop', dm_model='CogShop', timeresolution=None, dynamic_minute_offset=None)>
+      name: Scenario Fornebu scenario_2
     source:
       externalId: Scenario
       space: cogShop
