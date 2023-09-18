@@ -13,6 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.55.1] - 2023-09-18
+### Added
+* Property `valid_shop_objects` to `WatercourseConfig` in `resync`. This is useful when creating time series
+  mapping scripts.
+
 ## [0.55.0] - 2023-09-15
 ### Added
 * `resync` now validates the TimeSeries Mappings against the shop model file.
