@@ -206,11 +206,9 @@ class ReSyncConfig(BaseModel):
         invalid_mappings_by_watercourse: dict[str, list[str]] = defaultdict(list)
         seen: set[tuple[str, str]] = set()
         for watercourse, timeseries_mapping in zip(production.watercourses, time_series_mappings):
-            model = watercourse.shop_model_template["model"]
-            valid_mappings = _get_valid_shop_objects(model)
             for mapping in timeseries_mapping:
                 entry = (mapping.object_type.lower(), mapping.object_name.lower())
-                if entry not in valid_mappings and entry not in seen:
+                if entry not in watercourse.valid_shop_objects and entry not in seen:
                     invalid_mappings_by_watercourse[watercourse.name].append(
                         f"{mapping.object_type}.{mapping.object_name}"
                     )
@@ -222,15 +220,3 @@ class ReSyncConfig(BaseModel):
             )
 
         return self
-
-
-def _get_valid_shop_objects(model: dict[str, Any]) -> set[tuple[str, str]]:
-    valid_mappings: set[tuple[str, str]] = set()
-    for object_type, objects in model.items():
-        if not isinstance(objects, dict):
-            raise ValueError("Invalid SHOP yaml")
-        for object_name, attributes in objects.items():
-            if not isinstance(attributes, dict):
-                raise ValueError("Invalid SHOP yaml")
-            valid_mappings.add((str(object_type).lower(), str(object_name).lower()))
-    return valid_mappings

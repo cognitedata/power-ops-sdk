@@ -1,7 +1,8 @@
 from __future__ import annotations
 
+from functools import cached_property
 from pathlib import Path
-from typing import Any, ClassVar, Optional
+from typing import Any, ClassVar, Optional, cast
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -48,3 +49,18 @@ class WatercourseConfig(Watercourse):
     @classmethod
     def from_yaml(cls, yaml_path: Path) -> list[WatercourseConfig]:
         return [cls(**watercourse_raw) for watercourse_raw in load_yaml(yaml_path)]
+
+    @cached_property
+    def valid_shop_objects(self) -> set[tuple[str, str]]:
+        if "model" not in self.shop_model_template:
+            raise ValueError("Invalid SHOP yaml: Missing 'model' key")
+        model = cast(dict[str, Any], self.shop_model_template["model"])
+        valid_mappings: set[tuple[str, str]] = set()
+        for object_type, objects in model.items():
+            if not isinstance(objects, dict):
+                raise ValueError("Invalid SHOP yaml")
+            for object_name, attributes in objects.items():
+                if not isinstance(attributes, dict):
+                    raise ValueError("Invalid SHOP yaml")
+                valid_mappings.add((str(object_type).lower(), str(object_name).lower()))
+        return valid_mappings
