@@ -39,5 +39,15 @@ class BidProcessConfig(Configuration):
         return {"operations": json.loads(value)} if isinstance(value, str) else value
 
     @field_validator("price_scenarios", mode="before")
-    def literal_eval(cls, value):
-        return [{"id": id_} for id_ in ast.literal_eval(value)] if isinstance(value, str) else value
+    def literal_eval_and_uniqueness(cls, value):
+        literal_price_scenarios = [{"id": id_} for id_ in ast.literal_eval(value)] if isinstance(value, str) else value
+        seen = set()
+        unique_price_scenarios = []
+        for d in literal_price_scenarios:
+            t = tuple(d.items())
+            if t not in seen:
+                seen.add(t)
+                unique_price_scenarios.append(d)
+        if unique_price_scenarios != literal_price_scenarios:
+            raise ValueError("Ensure no duplicate price scenarios in bidprocess.")
+        return unique_price_scenarios
