@@ -38,7 +38,7 @@ class BidProcessConfig(Configuration):
     def json_loads(cls, value):
         return {"operations": json.loads(value)} if isinstance(value, str) else value
 
-    @field_validator("price_scenarios", mode="before")
+    @field_validator("price_scenarios", mode="after")
     def literal_eval_and_uniqueness(cls, value):
         literal_price_scenarios = [{"id": id_} for id_ in ast.literal_eval(value)] if isinstance(value, str) else value
         seen = set()
