@@ -161,7 +161,7 @@ class PipelineRun:
     def _as_json(data: dict, exclude_keys: Iterable[str] | None = None) -> str:
         exclude_keys = set(exclude_keys or [])
         # Removing space to use as little space as possible
-        return json.dumps({k: v for k, v in data.items() if k not in exclude_keys}, separators=(",", ":"))
+        return json.dumps({k: v for k, v in data.items() if k not in exclude_keys}, separators=(",", ":"), default=str)
 
 
 class ExtractionPipelineCreate:
