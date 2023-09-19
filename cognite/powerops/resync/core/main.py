@@ -4,7 +4,7 @@ This module contains the main functions for the resync tool.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Optional
+from typing import Optional, cast
 
 from cognite.client import CogniteClient
 from cognite.client.data_classes.data_modeling import DataModelId, MappedProperty, SpaceApply, SpaceList, ViewList
@@ -260,6 +260,10 @@ def destroy(
             static_resources = {}
         elif issubclass(model_type, AssetModel):
             remove_data_model = ModelDifference(model_type.__name__, {})
+            if issubclass(model_type, models.MarketModel):
+                # We only need the root asset to be set.
+                production_external_id = cast(str, models.ProductionModel.root_asset.external_id)
+                model_type.set_root_asset("", "", "", production_external_id)
             static_resources = model_type.static_resources_from_cdf(client)
         else:
             raise ValueError(f"Unknown model type {model_type}")
@@ -305,9 +309,9 @@ def destroy(
                     },
                 )
             )
-
-    labels = AssetLabel.as_label_definitions() + RelationshipLabel.as_label_definitions()
-    client.cdf.labels.delete([label.external_id for label in labels if label.external_id])
+    if not dry_run:
+        labels = AssetLabel.as_label_definitions() + RelationshipLabel.as_label_definitions()
+        client.cdf.labels.delete([label.external_id for label in labels if label.external_id])
 
     return destroyed
 
