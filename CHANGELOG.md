@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.55.5] - 2023-09-19
+### Fixed
+* `ShopRun.get_log_files()` such that it handles non `utf-8` output from `SHOP`.
+
 ## [0.55.4] - 2023-09-19
 ### Fixed
 * Fix JSON serialization in `utils.cdf.extraction_pipelines.PipelineRun`.
