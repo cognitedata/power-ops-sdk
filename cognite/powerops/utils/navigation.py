@@ -1,5 +1,6 @@
 import abc
 import inspect
+from collections.abc import Iterable, Sequence
 from typing import TypeVar
 
 T_Type = TypeVar("T_Type", bound=type)
@@ -24,3 +25,9 @@ def all_concrete_subclasses(base: T_Type) -> list[T_Type]:
         for sub in all_subclasses(base)
         if all(base is not abc.ABC for base in sub.__bases__) and not inspect.isabstract(sub)
     ]
+
+
+def chunks(sequence: Sequence[T_Type], chunk_size: int) -> Iterable[Sequence[T_Type]]:
+    """Yield successive n-sized chunks from lst."""
+    for i in range(0, len(sequence), chunk_size):
+        yield sequence[i : i + chunk_size]
