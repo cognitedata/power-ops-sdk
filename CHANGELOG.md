@@ -13,6 +13,12 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.55.3] - 2023-09-19
+### Fixed
+* `powerops destroy` failed for `MarketModel` due to
+* Some minor issues when running `powerops plan/apply` on an empty CDF project with only `powerops init
+* Chunked writing of nodes and edges to maximum 1000 at a time.
+
 ## [0.55.2] - 2023-09-18
 ### Added
 * Validation of price scenarios to ensure no duplicated price scenarios
