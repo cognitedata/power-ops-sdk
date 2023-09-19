@@ -119,7 +119,8 @@ class DataModel(Model, ABC):
                         name = alternative
                         break
                 else:
-                    raise ValueError(f"Cannot find {name} in {nodes_by_source_by_id}")
+                    # This means that there are no nodes for this field.
+                    continue
                 items = nodes_by_source_by_id[name]
                 if outer is dict:
                     parsed[field_name] = dict(items)

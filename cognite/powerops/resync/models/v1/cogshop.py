@@ -63,7 +63,8 @@ class CogShop1Asset(CogShopCore, DataModel, protected_namespaces=()):
         for mapping in base_mappings:
             data = mapping.model_dump(exclude=readme_fields)
             data["transformations"] = sorted(
-                [transformation_by_id[t] for t in data["transformations"]], key=lambda x: x.order
+                (transformation_by_id[t] for t in data["transformations"] if t in transformation_by_id),
+                key=lambda x: x.order,
             )
             apply = cogshop_v1.MappingApply(**data)
             mappings_by_id[apply.external_id] = apply
@@ -81,7 +82,7 @@ class CogShop1Asset(CogShopCore, DataModel, protected_namespaces=()):
             data["version"] = str(data["version"])
             if data["model"] in file_by_id:
                 data["model"] = file_by_id[data["model"]].model_dump(exclude=readme_fields)
-            data["base_mappings"] = [mappings_by_id[m] for m in data["base_mappings"]]
+            data["base_mappings"] = [mappings_by_id[m] for m in data["base_mappings"] if m in mappings_by_id]
             apply = cogshop_v1.ModelTemplateApply(**data)
             model_templates[apply.external_id] = apply
 
@@ -89,7 +90,9 @@ class CogShop1Asset(CogShopCore, DataModel, protected_namespaces=()):
         for scenario in scenarios:
             data = scenario.model_dump(exclude=readme_fields)
             data["mappings_override"] = [mappings_by_id[m] for m in data["mappings_override"]]
-            data["commands"] = command_configs_by_id[data["commands"]]
+            commands = command_configs_by_id.get(data["commands"])
+            if commands:
+                data["commands"] = commands
             apply = cogshop_v1.ScenarioApply(**data)
             scenarios_by_id[apply.external_id] = apply
 
