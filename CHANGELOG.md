@@ -15,7 +15,7 @@ Changes are grouped as follows
 
 ## [0.55.4] - 2023-09-19
 ### Fixed
-* fix json serialization in `utils.cdf.extraction_pipelines.PipelineRun`
+* Fix JSON serialization in `utils.cdf.extraction_pipelines.PipelineRun`.
 
 ## [0.55.3] - 2023-09-19
 ### Fixed
