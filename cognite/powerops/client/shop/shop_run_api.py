@@ -1,16 +1,19 @@
 from __future__ import annotations
 
+import datetime
 import secrets
 from collections.abc import Sequence
-from datetime import datetime, timezone
 from typing import overload
 from urllib.parse import urlparse
 from uuid import uuid4
 
+import arrow
 import requests
 from cognite.client import CogniteClient
 from cognite.client.data_classes import UserProfile, filters
 from cognite.client.exceptions import CogniteAPIError
+
+from cognite.powerops.client.shop.utils import _time_to_ms, custom_contains_any, custom_time_filter
 
 from .shop_run import SHOPRun, ShopRunEvent, SHOPRunList
 
@@ -19,7 +22,7 @@ DEFAULT_READ_LIMIT = 25
 
 def _now_isoformat() -> str:
     """Current time in ISO format"""
-    return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+    return datetime.datetime.now(datetime.timezone.utc).isoformat().replace("+00:00", "Z")
 
 
 def _unique_short_str(nbytes: int) -> str:
@@ -73,7 +76,7 @@ class SHOPRunAPI:
             data_set_id=self._dataset_id,
             source=source,
         )
-        now = datetime.now(timezone.utc)
+        now = datetime.datetime.now(datetime.timezone.utc)
         now_isoformat = now.isoformat().replace("+00:00", "Z")
 
         new_event = SHOPRun(
@@ -120,12 +123,23 @@ class SHOPRunAPI:
 
         return f"https://power-ops-api{stage}.{cluster}.cognite.ai/{project}/run-shop"
 
-    def list(self, watercourse: str | list[str] | None = None, limit: int = DEFAULT_READ_LIMIT) -> SHOPRunList:
+    def list(
+        self,
+        watercourse: str | list[str] | None = None,
+        source: str | list[str] | None = None,
+        start_after: str | arrow.Arrow | datetime.datetime | None = None,
+        start_before: str | arrow.Arrow | datetime.datetime | None = None,
+        end_after: str | arrow.Arrow | datetime.datetime | None = None,
+        end_before: str | arrow.Arrow | datetime.datetime | None = None,
+        limit: int = DEFAULT_READ_LIMIT,
+    ) -> SHOPRunList:
         """List the filtered SHOP runs.
+        Provide time stamps strings as YYYY-MM-DD) or otherwise something parsable by `arrow.get()` can parse.
 
         Args:
-            watercourse: The watercourse to filter on.
-            limit: The maximum number of SHOP runs to return. D
+            watercourse: The watercourse(s) to filter on.
+            source: The source(s) to filter on.
+            limit: The maximum number of SHOP runs to return.
 
         Returns:
             A list of SHOP runs.
@@ -133,11 +147,23 @@ class SHOPRunAPI:
 
         is_type = filters.Equals("type", ShopRunEvent.event_type)
         extra_filters = []
+
         if watercourse:
-            watercourses = watercourse if isinstance(watercourse, list) else [watercourse]
-            extra_filters.append(
-                filters.Or(*[filters.Equals(["metadata", ShopRunEvent.watercourse], w) for w in watercourses])
-            )
+            extra_filters.append(custom_contains_any(["metadata", ShopRunEvent.watercourse], watercourse))
+
+        if source:
+            extra_filters.append(custom_contains_any(source, source))
+
+        if start_before and end_before and _time_to_ms(start_before) > _time_to_ms(end_before):
+            raise ValueError(f"Events cannot occur after {start_before} and before {end_before}")
+
+        if start_after and end_after and _time_to_ms(start_after) > _time_to_ms(end_after):
+            raise ValueError(f"Events cannot occur after {start_after} and before {end_after}")
+
+        if start_after or start_before:
+            extra_filters.append(custom_time_filter("start_time", start_after, start_before))
+        if end_after or end_before:
+            extra_filters.append(custom_time_filter("end_time", end_after, end_before))
 
         selected = filters.And(is_type, *extra_filters)
         events = self._cdf.events.filter(selected, limit=limit)
