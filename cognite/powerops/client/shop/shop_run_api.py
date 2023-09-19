@@ -13,16 +13,11 @@ from cognite.client import CogniteClient
 from cognite.client.data_classes import UserProfile, filters
 from cognite.client.exceptions import CogniteAPIError
 
-from cognite.powerops.client.shop.utils import _time_to_ms, custom_contains_any, custom_time_filter
+from cognite.powerops.client.shop.utils import custom_contains_any, custom_time_filter
 
 from .shop_run import SHOPRun, ShopRunEvent, SHOPRunList
 
 DEFAULT_READ_LIMIT = 25
-
-
-def _now_isoformat() -> str:
-    """Current time in ISO format"""
-    return datetime.datetime.now(datetime.timezone.utc).isoformat().replace("+00:00", "Z")
 
 
 def _unique_short_str(nbytes: int) -> str:
@@ -139,6 +134,10 @@ class SHOPRunAPI:
         Args:
             watercourse: The watercourse(s) to filter on.
             source: The source(s) to filter on.
+            start_after: The start time after which the SHOP run must have started.
+            start_before: The start time before which the SHOP run must have started.
+            end_after: The end time after which the SHOP run must have ended.
+            end_before: The end time before which the SHOP run must have ended.
             limit: The maximum number of SHOP runs to return.
 
         Returns:
@@ -150,20 +149,17 @@ class SHOPRunAPI:
 
         if watercourse:
             extra_filters.append(custom_contains_any(["metadata", ShopRunEvent.watercourse], watercourse))
-
         if source:
             extra_filters.append(custom_contains_any(source, source))
-
-        if start_before and end_before and _time_to_ms(start_before) > _time_to_ms(end_before):
-            raise ValueError(f"Events cannot occur after {start_before} and before {end_before}")
-
-        if start_after and end_after and _time_to_ms(start_after) > _time_to_ms(end_after):
-            raise ValueError(f"Events cannot occur after {start_after} and before {end_after}")
-
-        if start_after or start_before:
-            extra_filters.append(custom_time_filter("start_time", start_after, start_before))
-        if end_after or end_before:
-            extra_filters.append(custom_time_filter("end_time", end_after, end_before))
+        if any((start_after, start_before, end_after, end_before)):
+            extra_filters.append(
+                custom_time_filter(
+                    start_after=start_after,
+                    start_before=start_before,
+                    end_after=end_after,
+                    end_before=end_before,
+                )
+            )
 
         selected = filters.And(is_type, *extra_filters)
         events = self._cdf.events.filter(selected, limit=limit)
@@ -202,3 +198,24 @@ class SHOPRunAPI:
             )
         else:
             raise TypeError(f"Invalid type {type(external_id)} for external_id.")
+
+    def retrieve_latest(
+        self,
+        watercourse: str | list[str] | None = None,
+        start_after: str | arrow.Arrow | datetime.datetime | None = None,
+        start_before: str | arrow.Arrow | datetime.datetime | None = None,
+        end_after: str | arrow.Arrow | datetime.datetime | None = None,
+        end_before: str | arrow.Arrow | datetime.datetime | None = None,
+        n: int = DEFAULT_READ_LIMIT,
+    ) -> SHOPRun | SHOPRunList | None:
+        """
+        Retrieves the latest shop runs
+
+        Args:
+            n: The number of SHOP runs to retrieve.
+
+        Returns:
+            The most recent SHOP run, None if nothing matched the filter
+        """
+
+    ...
