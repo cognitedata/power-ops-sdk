@@ -13,6 +13,34 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.55.5] - 2023-09-19
+### Fixed
+* `ShopRun.get_log_files()` such that it handles non `utf-8` output from `SHOP`.
+
+## [0.55.4] - 2023-09-19
+### Fixed
+* Fix JSON serialization in `utils.cdf.extraction_pipelines.PipelineRun`.
+
+## [0.55.3] - 2023-09-19
+### Fixed
+* `powerops destroy` failed for `MarketModel` due to
+* Some minor issues when running `powerops plan/apply` on an empty CDF project with only `powerops init
+* Chunked writing of nodes and edges to maximum 1000 at a time.
+
+## [0.55.2] - 2023-09-18
+### Added
+* Validation of price scenarios to ensure no duplicated price scenarios
+
+## [0.55.1] - 2023-09-18
+### Added
+* Property `valid_shop_objects` to `WatercourseConfig` in `resync`. This is useful when creating time series
+  mapping scripts.
+
+## [0.55.0] - 2023-09-15
+### Added
+* `resync` now validates the TimeSeries Mappings against the shop model file.
+* Extended `resync validate` to also run the transformations.
+
 ## [0.54.1] - 2023-09-14
 ### Fixed
 * Running `powerops plan --as-extraction-pipeline-run` triggered change on not changed models.

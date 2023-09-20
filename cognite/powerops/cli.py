@@ -52,9 +52,10 @@ def init(
 @app.command("validate", help="Validate the configuration files")
 def validate(
     path: Annotated[Path, typer.Argument(help="Path to configuration files")],
+    market: Annotated[str, typer.Argument(help="Selected power market")],
     verbose: bool = typer.Option(False, "--verbose", "-v", help="Whether to print verbose output"),
 ):
-    resync.validate(path, echo=_to_echo(verbose))
+    resync.validate(path, market, echo=_to_echo(verbose))
 
 
 @app.command(

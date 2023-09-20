@@ -9,6 +9,7 @@ from cognite.client.data_classes import Sequence as CogniteSequence
 from cognite.client.data_classes.data_modeling import ContainerId, DataModelId, EdgeApply, NodeApply, ViewId
 
 from cognite.powerops.resync.models.base import CDFFile, CDFSequence
+from cognite.powerops.utils.navigation import chunks
 
 T_CogniteResource = TypeVar(
     "T_CogniteResource",
@@ -112,15 +113,24 @@ T_Instance = TypeVar("T_Instance", bound=Union[NodeApply, EdgeApply])
 
 
 class InstanceAdapter(CogniteAPI[T_Instance]):
+    instance_limit = 1000
+
     def __init__(self, client: CogniteClient, instance_type: Literal["node", "edge"]):
         self.instance_type = instance_type
         self.client = client
 
     def create(self, items: T_Instance | Sequence[T_Instance]) -> Any:
-        if self.instance_type == "node":
-            self.client.data_modeling.instances.apply(nodes=items)  # type: ignore[arg-type]
+        item_sequence: Sequence[T_Instance]
+        if not isinstance(items, Sequence):
+            item_sequence = [items]
         else:
-            self.client.data_modeling.instances.apply(edges=items)  # type: ignore[arg-type]
+            item_sequence = items
+
+        for chunk in chunks(item_sequence, self.instance_limit):  # type: ignore[type-var]
+            if self.instance_type == "node":
+                self.client.data_modeling.instances.apply(nodes=chunk)  # type: ignore[arg-type]
+            else:
+                self.client.data_modeling.instances.apply(edges=chunk)  # type: ignore[arg-type]
 
     def delete(self, external_id: str | Sequence[str]) -> Any:
         if self.instance_type == "node":

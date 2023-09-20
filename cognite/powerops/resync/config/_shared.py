@@ -166,7 +166,7 @@ class TimeSeriesMapping(BaseModel):
     def transformations_cols(self) -> list[str]:
         return [col for col in self.columns if col.startswith("transformations")]
 
-    def __iter__(self) -> Iterator[TimeSeriesMappingEntry]:  # type: ignore[override]
+    def __iter__(self) -> Iterator[TimeSeriesMappingEntry]:
         yield from self.rows
 
     def __len__(self) -> int:
