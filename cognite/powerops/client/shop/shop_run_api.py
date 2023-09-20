@@ -144,7 +144,7 @@ class SHOPRunAPI:
 
         Args:
             watercourse: The watercourse(s) to filter on.
-            source: The source(s) to filter on.
+            source: The source(s) to filter on. WARNING: Most
             start_after: The start time after which the SHOP run must have started.
             start_before: The start time before which the SHOP run must have started.
             end_after: The end time after which the SHOP run must have ended.
@@ -161,6 +161,7 @@ class SHOPRunAPI:
             start_after=start_after,
             start_before=start_before,
             end_after=end_after,
+            end_before=end_before,
         )
         return self._load_cdf_event_shop_runs(extra_filters=extra_filters, limit=limit)
 
@@ -211,8 +212,7 @@ class SHOPRunAPI:
             "created_time",
             "last_updated_time",
         ] = "last_updated_time",
-        limit: int = DEFAULT_READ_LIMIT,
-    ) -> SHOPRunList | None:
+    ) -> SHOPRun | None:
         """
         Retrieves the latest shop runs
 
@@ -224,7 +224,7 @@ class SHOPRunAPI:
             end_after: The end time after which the SHOP run must have ended.
             end_before: The end time before which the SHOP run must have ended.
             sort_property: The property to sort by. The most reliable is `last_updated_time`.
-            limit: The maximum number of SHOP runs to return.
+            limit: The maximum number of SHOP runs to return. Defaults to 1.
 
         Returns:
             The most recent SHOP run, None if nothing matched the filter
@@ -239,4 +239,8 @@ class SHOPRunAPI:
         )
         event_sort = EventSort(property=sort_property, order="desc")
 
-        return self._load_cdf_event_shop_runs(extra_filters=extra_filters, limit=limit, event_sort=event_sort)
+        shop_runs = self._load_cdf_event_shop_runs(extra_filters=extra_filters, limit=1, event_sort=event_sort)
+        if len(shop_runs) == 0:
+            return None
+
+        return shop_runs[0]
