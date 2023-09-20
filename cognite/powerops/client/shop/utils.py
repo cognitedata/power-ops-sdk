@@ -6,6 +6,8 @@ import arrow
 from cognite.client.data_classes import filters
 from cognite.client.utils._time import datetime_to_ms
 
+from cognite.powerops.client.shop.shop_run import ShopRunEvent
+
 
 def custom_contains_any(
     keys: str | list[str],
@@ -79,3 +81,28 @@ def custom_time_filter(
         time_filter.append(_get_time_range_filter("end_time", end_after, end_before))
 
     return time_filter[0] if len(time_filter) == 1 else filters.And(*time_filter)
+
+
+def generate_shop_run_filters(
+    watercourse: str | list[str] | None = None,
+    source: str | list[str] | None = None,
+    start_after: str | arrow.Arrow | datetime.datetime | None = None,
+    start_before: str | arrow.Arrow | datetime.datetime | None = None,
+    end_after: str | arrow.Arrow | datetime.datetime | None = None,
+    end_before: str | arrow.Arrow | datetime.datetime | None = None,
+) -> list[filters.Filter]:
+    _filters = []
+    if watercourse:
+        _filters.append(custom_contains_any(["metadata", ShopRunEvent.watercourse], watercourse))
+    if source:
+        _filters.append(custom_contains_any("source", source))
+    if any((start_after, start_before, end_after, end_before)):
+        _filters.append(
+            custom_time_filter(
+                start_after=start_after,
+                start_before=start_before,
+                end_after=end_after,
+                end_before=end_before,
+            )
+        )
+    return _filters

@@ -3,7 +3,7 @@ from __future__ import annotations
 import datetime
 import secrets
 from collections.abc import Sequence
-from typing import overload
+from typing import Literal, Optional, overload
 from urllib.parse import urlparse
 from uuid import uuid4
 
@@ -11,9 +11,10 @@ import arrow
 import requests
 from cognite.client import CogniteClient
 from cognite.client.data_classes import UserProfile, filters
+from cognite.client.data_classes.events import EventSort
 from cognite.client.exceptions import CogniteAPIError
 
-from cognite.powerops.client.shop.utils import custom_contains_any, custom_time_filter
+from cognite.powerops.client.shop.utils import generate_shop_run_filters
 
 from .shop_run import SHOPRun, ShopRunEvent, SHOPRunList
 
@@ -118,6 +119,16 @@ class SHOPRunAPI:
 
         return f"https://power-ops-api{stage}.{cluster}.cognite.ai/{project}/run-shop"
 
+    def _load_cdf_event_shop_runs(
+        self,
+        extra_filters: Optional[list[filters.Filter]] = None,
+        limit: int = DEFAULT_READ_LIMIT,
+        event_sort: EventSort = None,
+    ) -> SHOPRunList:
+        is_type = filters.Equals("type", ShopRunEvent.event_type)
+        events = self._cdf.events.filter(filters.And(is_type, *extra_filters), limit=limit, sort=event_sort)
+        return SHOPRunList.load(events)
+
     def list(
         self,
         watercourse: str | list[str] | None = None,
@@ -144,27 +155,14 @@ class SHOPRunAPI:
             A list of SHOP runs.
         """
 
-        is_type = filters.Equals("type", ShopRunEvent.event_type)
-        extra_filters = []
-
-        if watercourse:
-            extra_filters.append(custom_contains_any(["metadata", ShopRunEvent.watercourse], watercourse))
-        if source:
-            extra_filters.append(custom_contains_any(source, source))
-        if any((start_after, start_before, end_after, end_before)):
-            extra_filters.append(
-                custom_time_filter(
-                    start_after=start_after,
-                    start_before=start_before,
-                    end_after=end_after,
-                    end_before=end_before,
-                )
-            )
-
-        selected = filters.And(is_type, *extra_filters)
-        events = self._cdf.events.filter(selected, limit=limit)
-
-        return SHOPRunList.load(events)
+        extra_filters = generate_shop_run_filters(
+            watercourse=watercourse,
+            source=source,
+            start_after=start_after,
+            start_before=start_before,
+            end_after=end_after,
+        )
+        return self._load_cdf_event_shop_runs(extra_filters=extra_filters, limit=limit)
 
     @overload
     def retrieve(self, external_id: str) -> SHOPRun | None:
@@ -202,20 +200,43 @@ class SHOPRunAPI:
     def retrieve_latest(
         self,
         watercourse: str | list[str] | None = None,
+        source: str | list[str] | None = None,
         start_after: str | arrow.Arrow | datetime.datetime | None = None,
         start_before: str | arrow.Arrow | datetime.datetime | None = None,
         end_after: str | arrow.Arrow | datetime.datetime | None = None,
         end_before: str | arrow.Arrow | datetime.datetime | None = None,
-        n: int = DEFAULT_READ_LIMIT,
-    ) -> SHOPRun | SHOPRunList | None:
+        sort_property: Literal[
+            "start_time",
+            "end_time",
+            "created_time",
+            "last_updated_time",
+        ] = "last_updated_time",
+        limit: int = DEFAULT_READ_LIMIT,
+    ) -> SHOPRunList | None:
         """
         Retrieves the latest shop runs
 
-        Args:
-            n: The number of SHOP runs to retrieve.
+         Args:
+            watercourse: The watercourse(s) to filter on.
+            source: The source(s) to filter on.
+            start_after: The start time after which the SHOP run must have started.
+            start_before: The start time before which the SHOP run must have started.
+            end_after: The end time after which the SHOP run must have ended.
+            end_before: The end time before which the SHOP run must have ended.
+            sort_property: The property to sort by. The most reliable is `last_updated_time`.
+            limit: The maximum number of SHOP runs to return.
 
         Returns:
             The most recent SHOP run, None if nothing matched the filter
         """
+        extra_filters = generate_shop_run_filters(
+            watercourse=watercourse,
+            source=source,
+            start_after=start_after,
+            start_before=start_before,
+            end_after=end_after,
+            end_before=end_before,
+        )
+        event_sort = EventSort(property=sort_property, order="desc")
 
-    ...
+        return self._load_cdf_event_shop_runs(extra_filters=extra_filters, limit=limit, event_sort=event_sort)
