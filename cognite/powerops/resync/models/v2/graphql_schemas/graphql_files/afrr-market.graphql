@@ -1,0 +1,91 @@
+# Manually written from UML diagram https://docstore.entsoe.eu/Documents/EDI/Library/cim_based/schema/Reserve_bid_document_UML_model_and_schema_v1.1.pdf
+# Page 8 - Reserve Bid Assembly Model
+
+type MBADomain {
+    mRID: String # Area String
+}
+
+type Duration {
+    duration: Int
+    unit: String
+}
+
+type DateTimeInterval {
+    start: Timestamp
+    end: Timestamp
+}
+
+type Reason {
+    code: String
+    text: String
+}
+
+type Point {
+    position: Int
+    quantity: Float
+    minimumQuantity: Float
+    priceAmount: Float
+    energyPriceAmount: Float
+}
+
+type Series {
+    points: [Point]
+    timeIntervalStart: Timestamp
+    timeIntervalEnd: Timestamp
+    resolution: Duration
+}
+
+type MarketParticipant {
+    mRID: String
+    role: String
+}
+
+type ReserveBid {
+    mRID: String
+    revisionNumber: String
+    type: String
+    processType: String
+    sender: MarketParticipant
+    receiver: MarketParticipant
+    createdDateTime: Timestamp
+    domain: MBADomain
+    subject: MarketParticipant
+}
+
+type MarketAgreement {
+    mRID: String
+    type: String
+    createdTimestamp: Timestamp
+}
+
+
+type BidTimeSeries {
+    mRID: String
+    auction: String
+    acquiringDomain: MBADomain
+    connectingDomain: MBADomain
+    providerMarketParticipant: MarketParticipant
+    quantityMeasureUnitName: String
+    currencyUnitName: String
+    priceMeasureUnitName: String
+    divisible: Boolean
+    linkedBid: ReserveBid
+    multipartBid: ReserveBid
+    exclusiveBid: ReserveBid
+    blockBid: Boolean
+    status: Int
+    priority: Int
+    registeredResourcesMRID: String
+    flowDirection: String
+    stepIncrementQuantity: Float
+    energyPriceMeasureUnit: String
+    marketAgreement: MarketAgreement
+    activationConstraint: Duration
+    restingConstraint: Duration
+    minimumConstraint: Duration
+    maximumConstraint: Duration
+    standardMarketProductType: String
+    originalMarketProductType: String
+    validityPeriod: DateTimeInterval
+    reason: Reason
+}
