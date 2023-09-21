@@ -492,7 +492,7 @@ def _to_models(model_names: str | list[str] | None) -> list[type[Model]]:
         raise ValueError(f"Invalid model names: {invalid}. Available models: {list(MODELS_BY_NAME)}")
 
     return [
-        MODELS_BY_NAME[model_name] if model_names in MODELS_BY_NAME else V2_MODELS_BY_NAME[model_name]
+        MODELS_BY_NAME[model_name] if model_name in MODELS_BY_NAME else V2_MODELS_BY_NAME[model_name]
         for model_name in model_names
     ]
 
