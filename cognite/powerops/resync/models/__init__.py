@@ -4,6 +4,7 @@ from cognite.powerops.resync.models.base import Model
 
 from .v1 import CogShop1Asset, MarketModel, ProductionModel
 from .v2 import (
+    AFRRMarket,
     BenchmarkMarketDataModel,
     CogShopDataModel,
     DayAheadMarketDataModel,
@@ -18,6 +19,7 @@ V2_MODELS: list[type[Model]] = [
     BenchmarkMarketDataModel,
     DayAheadMarketDataModel,
     RKOMMarketDataModel,
+    AFRRMarket,
 ]
 
 __all__ = [
