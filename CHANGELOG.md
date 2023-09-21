@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.57.0] - 2023-09-21
+### Added
+* A model for the `aFRR` market bids. Available under `v2` models.
+
 ## [0.56.0] - 2023-09-21
 ### Added
 * Support for deploying `v2` of `resync` models.
