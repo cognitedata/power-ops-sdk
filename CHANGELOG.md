@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.56.0] - 2023-09-21
+### Added
+* Support for deploying `v2` of `resync` models.
+
 ## [0.55.5] - 2023-09-19
 ### Fixed
 * `ShopRun.get_log_files()` such that it handles non `utf-8` output from `SHOP`.
