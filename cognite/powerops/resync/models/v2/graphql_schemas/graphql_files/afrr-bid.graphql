@@ -55,7 +55,7 @@ type ReserveBid {
 type MarketAgreement {
     mRID: String
     type: String
-    createdTime: Timestamp
+    createdTimestamp: Timestamp
 }
 
 
@@ -87,4 +87,5 @@ type BidTimeSeries {
     standardMarketProductType: String
     originalMarketProductType: String
     validityPeriod: DateTimeInterval
+    reason: Reason
 }
