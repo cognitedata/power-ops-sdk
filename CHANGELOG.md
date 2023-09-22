@@ -15,7 +15,8 @@ Changes are grouped as follows
 
 ## [0.58.1] - 2023-09-22
 ### Fixed
-*
+* On Windows machines, calling `power.shop.trigger_case()` could cause the `case` file not bo be uploaded to CDF correctly
+  due to a specific Windows encoding issue. This is now fixed.
 
 ## [0.58.0] - 2023-09-22
 ### Added
