@@ -37,19 +37,20 @@ def test_pipeline_run_upload_file() -> None:
 def test_pipeline_run_upload_file_nested_structure() -> None:
     # Arrange
     nested_structure = {"nested": "Long error message" * 1000}
+    a_list = ["listItem", "longMessage" * 100]
     with monkeypatch_cognite_client() as client:
         client.files.upload_bytes.return_value = FileMetadata(id=1, external_id="test_file")
         pipeline = ExtractionPipelineCreate(
             external_id="test_pipeline",
             data_set_external_id="test_dataset",
             dump_truncated_to_file=True,
-            truncate_keys_first=["output"],
+            truncate_keys_first=["output", "empty", "long"],
             log_file_prefix="test",
         )
 
         # Act
         with pipeline.create_pipeline_run(client) as run:
-            run.update_data(RunStatus.FAILURE, output=nested_structure)
+            run.update_data(RunStatus.FAILURE, output=nested_structure, empty=None, long=a_list)
 
         message = client.extraction_pipelines.runs.create.call_args[0][0].message
 

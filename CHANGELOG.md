@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.58.3] - 2023-09-22
+### Fixed
+* Last fix had bugs. These new bugs are now now fixed.
+
 ## [0.58.2] - 2023-09-22
 ### Fixed
 * The extraction pipeline run, `utils.cdf.extraction_pipelines.PipelineRun`, could produce messages above API limit
