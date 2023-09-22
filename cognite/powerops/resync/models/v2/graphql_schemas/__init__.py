@@ -82,4 +82,11 @@ GRAPHQL_MODELS: dict[str, PowerOpsGraphQLModel] = {
             _ExtraTypes.nordpool_market,
         ],
     ),
+    "aFRR": PowerOpsGraphQLModel(
+        name="AFRR",
+        description="The AFRR model describes the aFRR market.",
+        graphql_file=GRAPHQL_FILES / "afrr-market.graphql",
+        id_=DataModelId(_SPACE, "afrrMarket", "1"),
+        extra_types=[],
+    ),
 }

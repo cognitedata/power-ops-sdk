@@ -13,10 +13,18 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## [0.56.0] - 2023-09-20
+## [0.58.0] - 2023-09-22
 ### Added
 * Extended options for `SHOPRun.list()`.
 * Added `SHOPRun.retrieve_latest()`
+
+## [0.57.0] - 2023-09-21
+### Added
+* A model for the `aFRR` market bids. Available under `v2` models.
+
+## [0.56.0] - 2023-09-21
+### Added
+* Support for deploying `v2` of `resync` models.
 
 ## [0.55.5] - 2023-09-19
 ### Fixed
