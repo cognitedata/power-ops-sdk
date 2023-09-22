@@ -128,6 +128,10 @@ class PipelineRun:
             data[self.log_file_external_id] = file_external_id
             # Need a dummy id as we do not know the id before the file is uploaded
             data[self.log_file_id] = MAX_VALID_INTERNAL_ID
+        # Ensure we get a dict[str, str]
+        for key in list(data):
+            value = data[key]
+            data[key] = str(value) if isinstance(value, (str, int, float, bool)) else self._as_json(value)
 
         dumped = self._as_json(data)
         if (above_limit := len(dumped) - MSG_CHAR_LIMIT) > 0:
