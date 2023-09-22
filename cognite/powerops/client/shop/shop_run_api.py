@@ -64,7 +64,9 @@ class SHOPRunAPI:
             display_name = "Unknown"
 
         meta = self._cdf.files.upload_bytes(
-            content=case_file,
+            # On Windows machines, some bytes can get lost in the encoding process
+            # when uploading a string to CDF. This is a workaround.
+            content=case_file.encode("utf-8"),
             name=f"Manual Case by {display_name}",
             mime_type="application/yaml",
             external_id=f"cog_shop_manual/{uuid4()!s}",

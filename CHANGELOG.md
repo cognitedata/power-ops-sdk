@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.58.1] - 2023-09-22
+### Fixed
+*
+
 ## [0.58.0] - 2023-09-22
 ### Added
 * Extended options for `SHOPRun.list()`.
