@@ -11,7 +11,7 @@ BACKUP_FILE = Path("backup.json")
 def main():
     client = get_cognite_client()
     backup = client.assets.retrieve(external_id="POWEROPS_bid_process_configuration_multi_scenario_10_NO2")
-    BACKUP_FILE.write_text(json.dumps(backup.dump(), indent=4))
+    BACKUP_FILE.write_text(json.dumps(backup.dump_as_cdf_resource(), indent=4))
 
     update = AssetUpdate(external_id="POWEROPS_bid_process_configuration_multi_scenario_10_NO2").metadata.add(
         {"bid:is_default_config_for_price_area": "true"}

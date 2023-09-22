@@ -4,15 +4,17 @@ from the power-ops-functions repo.
 """
 # TODO refactor the power-ops-functions repo to use this module and get rid of duplicated code.
 
-from typing import Iterable, Optional
+import logging
+from collections.abc import Iterable
+from typing import Optional
 
 import arrow
 import numpy as np
 import pandas as pd
-
-import logging
 from cognite.client import CogniteClient
+from cognite.client.data_classes import Datapoint, DatapointsList
 
+from cognite.powerops.utils.require import require
 
 logger = logging.getLogger(__name__)
 
@@ -59,14 +61,15 @@ def retrieve_latest(client: CogniteClient, external_ids: list[Optional[str]], be
         return {}
     external_ids = remove_duplicates(external_ids)
     logger.debug(f"Retrieving {external_ids} before '{ms_to_datetime(before)}'")
-    time_series = client.time_series.data.retrieve_latest(
-        external_id=external_ids, before=before, ignore_unknown_ids=True
+    time_series = require(
+        client.time_series.data.retrieve_latest(external_id=external_ids, before=before, ignore_unknown_ids=True),
+        as_type=list[Datapoint],
     )
 
     # For (Cog)Datapoints in (Cog)DatapointsList
     for datapoints in time_series:
         if len(datapoints) > 0:  # TODO: what to do about ts with no datapoints?
-            datapoints.timestamp[0] = before  # align timestamps
+            datapoints.timestamp[0] = before  # align timestamps  # type: ignore
 
     res = {
         datapoints.external_id: datapoints.to_pandas().iloc[:, 0]  # iloc to convert DataFrame to Series
@@ -87,13 +90,15 @@ def _retrieve_range(client: CogniteClient, external_ids: list[str], start: int, 
     # Retrieve raw datapoints
     external_ids = remove_duplicates(external_ids)
     logger.debug(f"Retrieving {external_ids} between '{ms_to_datetime(start)}' and '{ms_to_datetime(end)}'")
-    df_range = client.time_series.data.retrieve(
-        external_id=external_ids, start=start, end=end, ignore_unknown_ids=True
+    df_range = require(
+        client.time_series.data.retrieve(external_id=external_ids, start=start, end=end, ignore_unknown_ids=True),
+        as_type=DatapointsList,
     ).to_pandas()
 
     # Retrieve latest datapoints before start
-    df_latest = client.time_series.data.retrieve_latest(
-        external_id=external_ids, before=start, ignore_unknown_ids=True
+    df_latest = require(
+        client.time_series.data.retrieve_latest(external_id=external_ids, before=start, ignore_unknown_ids=True),
+        as_type=DatapointsList,
     ).to_pandas()
 
     # Make sure we have a start timestamp in range

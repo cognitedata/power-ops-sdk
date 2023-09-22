@@ -23,7 +23,7 @@ def test_retry(monkeypatch):
     @retry(tries=tries, delay=delay, backoff=backoff)
     def f():
         hit[0] += 1
-        1 / 0
+        print(1 / 0)
 
     with pytest.raises(ZeroDivisionError):
         f()
@@ -79,7 +79,7 @@ def test_max_delay(monkeypatch):
     @retry(tries=tries, delay=delay, max_delay=max_delay, backoff=backoff)
     def f():
         hit[0] += 1
-        1 / 0
+        print(1 / 0)
 
     with pytest.raises(ZeroDivisionError):
         f()
@@ -103,7 +103,7 @@ def test_fixed_jitter(monkeypatch):
     @retry(tries=tries, jitter=jitter)
     def f():
         hit[0] += 1
-        1 / 0
+        print(1 / 0)
 
     with pytest.raises(ZeroDivisionError):
         f()

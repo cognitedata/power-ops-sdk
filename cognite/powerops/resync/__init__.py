@@ -1,3 +1,4 @@
-from ._main import AVAILABLE_MODELS, apply, plan, validate
+from .core import MODELS_BY_NAME, V2_MODELS_BY_NAME, apply, destroy, init, plan, validate
+from .core.echo import Echo
 
-__all__ = ["apply", "plan", "validate", "AVAILABLE_MODELS"]
+__all__ = ["apply", "plan", "init", "destroy", "validate", "MODELS_BY_NAME", "Echo", "V2_MODELS_BY_NAME"]

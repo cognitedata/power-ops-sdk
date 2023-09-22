@@ -7,24 +7,22 @@ from __future__ import annotations
 
 import logging
 from collections import defaultdict
+from typing import Optional, Union, cast
 
 import arrow
-from typing import Optional, Union, List, cast, Dict
-
 from pydantic import BaseModel, ConfigDict
 
-from cognite.powerops.clients.powerops_client import PowerOpsClient
-from cognite.powerops.clients.data_classes import (
+from cognite.powerops import PowerOpsClient
+from cognite.powerops.client._generated.data_classes import (
     DateTransformation,
     DateTransformationApply,
     InputTimeSeriesMapping,
     InputTimeSeriesMappingApply,
 )
-from cognite.powerops.utils.preprocessor_utils import retrieve_time_series_datapoints, arrow_to_ms
 from cognite.powerops.resync.models.base import Model
+from cognite.powerops.utils.preprocessor_utils import arrow_to_ms, retrieve_time_series_datapoints
 from cognite.powerops.utils.require import require
 from cognite.powerops.utils.time import relative_time_specification_to_arrow
-
 
 logger = logging.getLogger(__name__)
 
@@ -57,7 +55,7 @@ class ValidationRange(BaseModel):
 
 
 def date_transformations_to_arrow(
-    date_transformations: List[Union[DateTransformation, DateTransformationApply]]
+    date_transformations: list[Union[DateTransformation, DateTransformationApply]]
 ) -> arrow.Arrow:
     return relative_time_specification_to_arrow(
         [
@@ -70,7 +68,7 @@ def date_transformations_to_arrow(
     )
 
 
-def find_all_mappings(process) -> List[InputTimeSeriesMappingApply]:
+def find_all_mappings(process) -> list[InputTimeSeriesMappingApply]:
     def attr_values(value, attr_subpath):
         if len(attr_subpath) == 0 or value is None:
             yield value
@@ -89,14 +87,14 @@ def find_all_mappings(process) -> List[InputTimeSeriesMappingApply]:
         ["incremental_mappings", each, "mapping_override", each],
     ]
 
-    mappings: List[InputTimeSeriesMappingApply] = []
+    mappings: list[InputTimeSeriesMappingApply] = []
     for attr_path in possible_attrs:
         mappings.extend(filter(None, attr_values(process, attr_path)))
     return mappings
 
 
-PreparedValidationsT = Dict[str, Dict[str, TimeSeriesValidation]]
-ValidationRangesT = Dict[str, ValidationRange]
+PreparedValidationsT = dict[str, dict[str, TimeSeriesValidation]]
+ValidationRangesT = dict[str, ValidationRange]
 
 
 def prepare_validation(models: list[Model]) -> tuple[PreparedValidationsT, ValidationRangesT]:
@@ -111,7 +109,6 @@ def prepare_validation(models: list[Model]) -> tuple[PreparedValidationsT, Valid
             )
             validation_ranges[str(validation_range)] = validation_range
 
-            # time_series = model.time_series()  # TODO returns []
             mappings = find_all_mappings(process)
 
             for mapping in mappings:

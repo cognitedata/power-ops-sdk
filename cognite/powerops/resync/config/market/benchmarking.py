@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import json
-from typing import Dict, List, Optional
+from typing import Optional
 
 from pydantic import ConfigDict, Field, field_validator
 
@@ -13,11 +13,11 @@ class BenchmarkingConfig(Configuration):
     bid_date: RelativeTime
     shop_start: RelativeTime = Field(alias="shop_starttime")
     shop_end: RelativeTime = Field(alias="shop_endtime")
-    production_plan_time_series: Optional[Dict[str, List[str]]] = Field(
+    production_plan_time_series: Optional[dict[str, list[str]]] = Field(
         default_factory=dict, alias="bid_production_plan_time_series"
     )
     market_config_external_id: str = Field(alias="bid_market_config_external_id")
-    relevant_shop_objective_metrics: Dict[str, str] = {
+    relevant_shop_objective_metrics: dict[str, str] = {
         "grand_total": "Grand Total",
         "total": "Total",
         "sum_penalties": "Sum Penalties",
@@ -40,6 +40,7 @@ class BenchmarkingConfig(Configuration):
 
     # TODO: Consider adding relationships to bid process config
     #  assets (or remove the optional part that uses those relationships in power-ops-functions)
+
     @field_validator("shop_start", "shop_end", "bid_date", mode="before")
     def json_loads(cls, value):
         return {"operations": json.loads(value)} if isinstance(value, str) else value

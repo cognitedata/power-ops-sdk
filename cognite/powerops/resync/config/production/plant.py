@@ -1,13 +1,14 @@
 from __future__ import annotations
 
 import json
-from typing import Optional, Sequence
+from collections.abc import Sequence
+from typing import Optional
 
 from cognite.client.data_classes import Asset, Label, Relationship
 from pydantic import BaseModel, field_validator
 
 from cognite.powerops.cdf_labels import RelationshipLabel as rl
-from cognite.powerops.resync.config.shared import ExternalId
+from cognite.powerops.resync.config._shared import ExternalId
 
 p_min_fallback = 0
 p_max_fallback = 1e20
@@ -46,11 +47,14 @@ class Plant(BaseModel):
         return value
 
     @classmethod
-    def from_cdf_resources(cls, asset: Asset, relationships: list[Relationship], **kwargs) -> "Plant":
+    def from_cdf_resources(cls, asset: Asset, relationships: list[Relationship], **kwargs) -> Plant:
         """Initialise a Plant from CDF Asset and Relationships
 
-        Args: asset (Asset): The plant Asset relationships (list[Relationship]): Relationships to related resources (
-        will be mapped to attributes based on labels) **kwargs: Any other attributes that are not part of the Asset
+        Args:
+            asset: The plant Asset relationships
+            relationships: Relationships to related resources (will be mapped to attributes based on labels)
+            kwargs: Any other attributes that are not part of the Asset
+
         """
         # Initialise plant from Asset
         plant = cls(

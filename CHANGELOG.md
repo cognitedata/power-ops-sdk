@@ -13,27 +13,294 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.58.3] - 2023-09-22
+### Fixed
+* Last fix had bugs. These new bugs are now now fixed.
+
+## [0.58.2] - 2023-09-22
+### Fixed
+* The extraction pipeline run, `utils.cdf.extraction_pipelines.PipelineRun`, could produce messages above API limit
+  with nested data structures. This is now fixed.
+
+## [0.58.1] - 2023-09-22
+### Fixed
+* On Windows machines, calling `power.shop.trigger_case()` could cause the `case` file not bo be uploaded to CDF correctly
+  due to a specific Windows encoding issue. This is now fixed.
+
+## [0.58.0] - 2023-09-22
+### Added
+* Extended options for `SHOPRun.list()`.
+* Added `SHOPRun.retrieve_latest()`
+
+## [0.57.0] - 2023-09-21
+### Added
+* A model for the `aFRR` market bids. Available under `v2` models.
+
+## [0.56.0] - 2023-09-21
+### Added
+* Support for deploying `v2` of `resync` models.
+
+## [0.55.5] - 2023-09-19
+### Fixed
+* `ShopRun.get_log_files()` such that it handles non `utf-8` output from `SHOP`.
+
+## [0.55.4] - 2023-09-19
+### Fixed
+* Fix JSON serialization in `utils.cdf.extraction_pipelines.PipelineRun`.
+
+## [0.55.3] - 2023-09-19
+### Fixed
+* `powerops destroy` failed for `MarketModel` due to
+* Some minor issues when running `powerops plan/apply` on an empty CDF project with only `powerops init
+* Chunked writing of nodes and edges to maximum 1000 at a time.
+
+## [0.55.2] - 2023-09-18
+### Added
+* Validation of price scenarios to ensure no duplicated price scenarios
+
+## [0.55.1] - 2023-09-18
+### Added
+* Property `valid_shop_objects` to `WatercourseConfig` in `resync`. This is useful when creating time series
+  mapping scripts.
+
+## [0.55.0] - 2023-09-15
+### Added
+* `resync` now validates the TimeSeries Mappings against the shop model file.
+* Extended `resync validate` to also run the transformations.
+
+## [0.54.1] - 2023-09-14
+### Fixed
+* Running `powerops plan --as-extraction-pipeline-run` triggered change on not changed models.
+
+## [0.54.0] - 2023-09-14
+### Added
+* Creation of `RKOM` scenarios in `resync`.
+
+### Fixed
+* Difference for `labels` when running `powerops plan` or `powerops apply`.
+* Difference for `parent_assets` when running `powerops plan` or `powerops apply`.
+
+## [0.53.3] - 2023-09-14
+### Improved
+* Better logging when running `powerops plan` with `--as-extraction-pipeline-run` option.
+
+## [0.53.2] - 2023-09-13
+### Fixed
+* `ExtractionPipeline` with `truncation_keys` specified fails with `TypeError`. This is now fixed.
+
+## [0.53.1] - 2023-09-13
+### Fixed
+* `PowerOpsClient.power.shop.trigger_case()` raise a `CogniteAPIError: Requesting principal has no user identifier`.
+  This is now fixed.
+
+### Changed
+* `user_id` is replaced by `source` in the `ShopRun` model.
+
+## [0.53.0] - 2023-09-13
+### Added
+* Support for destroying `MarketModel` and `ProductionModel`.
+
+### Fixed
+* Creation of parent assets and labels wthen running `powerops init`
+* Overwriting initial status on each update `extraction pipeline` in `cognite.powerops.utils.cdf.extraction_pipeline`
+
+## [0.52.0] - 2023-09-10
+### Changes
+* `PowerOpsClient.shop` API. Rewritten to be `SHOPRun` centric
+
+## [0.51.0] - 2023-09-09
+### Added
+* `dry-run` option for `extraction pipeline` in `cognite.powerops.utils.cdf.extraction_pipeline.ExtractionPipelineCreate`
+
+## [0.50.0] - 2023-09-09
+### Improved
+* Extraction Pipeline dump for `powerops plan --as-extraction-pipeline-run`
+
+### Added
+* Options for skipping keys to include in PipelineRun in `cognite.powerops.utils.cdf.extraction_pipeline.ExtractionPipelineCreate`
+
+## [0.49.0] - 2023-09-09
+### Changed
+* Default verbose from `True` to `False` for all CLI commands
+
+### Fixed
+* Bug when running any `CLI` command with `--verbose` option. This is now fixed.
+
+## [0.48.0] - 2023-09-09
+### Changed
+* Markdown output of `plan` and `apply` is now standardized.
+
+### Added
+* `verbose` option to `plan` command.
+* `powerops init` command and resync method.
+* `powerops validate` command and resync method.
+* `powerops destroy` command and resync method.
+* `dataset` API to `PowerOpsClient`.
+
+### Removed
+* `get_powerops_client` this has been replaced by `PowerOpsClient.from_settings`.
+
+## [0.47.2] - 2023-09-08
+### Fixed
+* Fixed bug where comparison of two equal models resulted in change detected. This cause
+  the `powerops plan --as-extraction-pipeline-run` to report an incorrect failed run.
+
+## [0.47.1] - 2023-09-08
+### Removed
+* Removed some unused utils functions.
+
+## [0.47.0] - 2023-09-08
+### Changed
+* Structure of repo.
+
+## [0.46.1] - 2023-09-07
+### Fixed
+* Generated clients were regenerated to be compatible with `python-sdk` `6.20`.
+
+
+## [0.46.0] - 2023-09-07
+### Added
+* `Events` connected to shop run will set its start and time to that of the shop run.
+   If manually triggered, the source of the event will say "manual".
+
+## [0.45.0] - 2023-09-07
+### Added
+* Markdown output option for `powerops apply`.
+
+### Fixed
+* `resync apply` fails to apply changes if there were either `added` or `changed`. This is now fixed.
+
+## [0.44.1] - 2023-09-05
+### Fixed
+* `resync apply` fails with if there are changes in the `CogShop1Asset` models due to nodes and edges have to be
+  added with nodes first, while when removing edges must be first. This is now fixed.
+
+## [0.44.0] - 2023-09-05
+### Added
+* `resync` now generates Scenarios for `CogShop1Asset` models.
+
+## [0.43.5] - 2023-09-04
+### Fixed
+* Deletion of assets raised a `ValueError`. This is now fixed.
+
+## [0.43.4] - 2023-09-04
+### Fixed
+* Missing comma in `json` dumped in `CogShop1Asset.transformations` `arguments` argument.
+
+## [0.43.3] - 2023-09-03
+### Fixed
+* Third party logger not propagate when runnning CLI.
+
+## [0.43.2] - 2023-09-03
+### Fixed
+* Log level of `requests-oauthlib` set to `WARNING` when runnning CLI.
+
+## [0.43.1] - 2023-09-03
+### Fixed
+* Key used for error logging when running the CLI command `powerops plan` with option `as_extraction_pipeline_run`.
+
+## [0.43.0] - 2023-09-03
+### Added
+* The CLI command `powerops plan` with option `as_extraction_pipeline_run`.
+
+## [0.42.3] - 2023-09-01
+### Fixed
+* The CLI commands `powerops plan` and `powerops apply` used a custom logger configuration instead of default.
+
+## [0.42.2] - 2023-09-01
+### Fixed
+* The CLI commands `powerops plan` and `powerops apply` failed with `ValueError` if there were new sequences added
+  and while there were still some unchanged. This is now fixed.
+
+## [0.42.1] - 2023-09-01
+### Fixed
+* The CLI commands `powerops plan` and `powerops apply` failed with `CogniteAPIError` if there were new
+  sequences added. This is now fixed.
+
+
+## [0.42.0] - 2023-08-31
+### Added
+* Moved `powerops plan` support Markdown output..
+
+
+## [0.41.0] - 2023-08-30
+### Added
+* Moved `power_client.shop.runs.list()` method.
+
+
+## [0.40.1] - 2023-08-30
+### Fixed
+* `powerops apply` only run `add`, `remove` or `changed` if there are any changes to the models. This is now fixed such
+   that `add`, `remove` or `changed` can all run.
+
+## [0.40.0] - 2023-08-30
+### Changed
+* Removed use of hashing for external ids in `CogShop1Asset` asset model.
+
+
+## [0.39.1] - 2023-08-29
+### Fixed
+* Fixed bug when running `powerops plan` or `powerops apply` in a Python `3.11` environment.
+  This raised `NotImplementedError`. This is now fixed.
+
+## [0.39.0] - 2023-08-29
+### Added
+* The `powerops apply` now deletes resource in CDF if they are not present in the configurations.
+* Support for detection changes in the content of `Sequences` and `Files` and update them in CDF if they have changed.
+
+### Improved
+* Display of differences when running `powerops plan` or `powerops apply` is now more readable.
+* Significant performance improvements when running `powerops plan` and `powerops apply`. Example,
+  running `powerops plan` for the `ProductionModel` went from 77 seconds to 8 seconds for real use case.
+
+
+
+## [0.38.3] - 2023-08-25
+### Fixed
+* Fixed bugs when running `powerops plan` some edge case could raise and error as a missing argument
+  to a function.
+
+
+## [0.38.2] - 2023-08-25
+### Fixed
+* Fixed bugs when running `powerops plan` without `--dump-folder`. This raised `NotImplementedError`. Now
+  difference between the models in CDF and the models generated by `resync` is printed to the terminal.
+
+
+## [0.38.1] - 2023-08-25
+### Fixed
+* Fixed bugs when running `powerops plan`:
+  * Handle nested data structures.
+  * Only read from the correct data set.
+
+
+## [0.38.0] - 2023-08-24
+### Fixed
+* Fixed bugs when running `powerops plan`.
+
+### Changed
+* Running `powerops plan` or `powerops apply` will now run the default models `CogShop1Asset`, `ProductionModel`, and
+  `MarketModel` if no models are specified in the CLI call.
+
+## [0.37.0] - 2023-08-23
+### Added
+* Added generator availability time series to the generator class
+
 ## [0.36.0] - 2023-08-18
 ### Added
-
 * Extended the `powerops plan` options. Now you can dump the entire models to file with the argument `--dump-folder`.
 * Summary difference between the models in CDF and the models generated by `resync` is now printed to the terminal.
 
-
 ## [0.35.0] - 2023-08-11
-
 ### Added
 * Extended the `Production` data model with a relation from `Plant`to `Watercourse`.
 
-
 ## [0.34.1] - 2023-08-11
-
 ### Fixed
 * Mapping of models names accepted by the CLI and the models names' in `resync`.
 
 
 ## [0.34.0] - 2023-08-03
-
 ### Added
 * Ability to retrieve production data model from CDF with relationships to other resources.
 * Ability to compare production data model in CDF with production data models generated by `resync`.

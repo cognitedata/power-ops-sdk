@@ -3,14 +3,14 @@ from __future__ import annotations
 import ast
 import json
 import typing
+from collections.abc import Generator
 from dataclasses import dataclass
-from typing import ClassVar, Dict, Generator, List, Literal, Optional, Tuple
+from typing import ClassVar, Literal, Optional
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+from typing_extensions import TypeAlias
 
-from cognite.powerops.resync.config.market import PriceScenarioID
-from cognite.powerops.resync.config.market._core import Configuration, RelativeTime
-from cognite.powerops.resync.config.shared import (
+from cognite.powerops.resync.config._shared import (
     AggregationMethod,
     Auction,
     RetrievalType,
@@ -19,13 +19,15 @@ from cognite.powerops.resync.config.shared import (
     Transformation,
     TransformationType,
 )
+from cognite.powerops.resync.config.market import PriceScenarioID
+from cognite.powerops.resync.config.market._core import Configuration, RelativeTime
 
 # TODO: Switch to class inheriting from str and Enum, or 3.11 strEnum?
-Product = Literal["up", "down"]
-Block = Literal["day", "night"]
+Product: TypeAlias = Literal["up", "down"]
+Block: TypeAlias = Literal["day", "night"]
 
-PlantExternalId = str
-TimeSeriesExeteralId = str
+PlantExternalId: TypeAlias = str
+TimeSeriesExternalId: TypeAlias = str
 
 
 @dataclass
@@ -35,8 +37,8 @@ class ReserveScenario:
     product: Product
     block: Block
     reserve_group: str
-    mip_plant_time_series: List[
-        Tuple[PlantExternalId, Optional[TimeSeriesExeteralId]]
+    mip_plant_time_series: list[
+        tuple[PlantExternalId, Optional[TimeSeriesExternalId]]
     ]  # (plant, mip_flag_time_series) for plants with generators that are in the reserve group
     obligation_external_id: Optional[str] = None
 
@@ -45,7 +47,7 @@ class ReserveScenario:
             raise ValueError("No `mip_plants` specified!")
 
     @property
-    def obligation_transformations(self) -> List[Transformation]:
+    def obligation_transformations(self) -> list[Transformation]:
         # TODO: move some of this logic
         n_days = 5 if self.auction == "week" else 2
         night = self.block == "night"
@@ -55,7 +57,7 @@ class ReserveScenario:
         else:
             return [Transformation(transformation=TransformationType.DYNAMIC_STATIC, kwargs=kwargs)]
 
-    def mip_flag_transformations(self, mip_time_series: Optional[str]) -> List[Transformation]:
+    def mip_flag_transformations(self, mip_time_series: Optional[str]) -> list[Transformation]:
         if not mip_time_series:
             # Just run with_mip flag the entire period
             return [Transformation(transformation=TransformationType.STATIC, kwargs={"0": 1})]
@@ -107,7 +109,7 @@ class ReserveScenario:
 
 
 # ! TODO: what about daylight saving ??
-def _generate_reserve_schedule(volume: int, n_days: int, night: bool = False) -> Dict[str, int]:
+def _generate_reserve_schedule(volume: int, n_days: int, night: bool = False) -> dict[str, int]:
     """Creates the argument for the mapping transformation function for RKOM reserve obligation.
         Some examples:
             {"0": 10, "60": 0}
@@ -147,7 +149,7 @@ class ReserveScenarios(BaseModel):
     product: Product
     block: Block
     reserve_group: str
-    mip_plant_time_series: List[Tuple[PlantExternalId, Optional[TimeSeriesExeteralId]]]
+    mip_plant_time_series: list[tuple[PlantExternalId, Optional[TimeSeriesExternalId]]]
     obligation_external_id: Optional[str]
 
     @field_validator("auction", mode="before")
@@ -171,7 +173,7 @@ class ReserveScenarios(BaseModel):
     def __iter__(self) -> Generator[ReserveScenario, None, None]:  # type: ignore
         yield from self.list_scenarios()
 
-    def list_scenarios(self) -> List[ReserveScenario]:
+    def list_scenarios(self) -> list[ReserveScenario]:
         return [
             ReserveScenario(
                 volume=volume,
@@ -193,7 +195,7 @@ class RkomMarketConfig(BaseModel):
     start_of_week: int
 
     @classmethod
-    def default(cls) -> "RkomMarketConfig":
+    def default(cls) -> RkomMarketConfig:
         return cls(
             name="RKOM weekly (Statnett)",
             timezone="Europe/Oslo",
@@ -221,7 +223,7 @@ class RKOMBidCombinationConfig(Configuration):
 class RKOMBidProcessConfig(Configuration):
     watercourse: str = Field(alias="bid_watercourse")
 
-    price_scenarios: List[PriceScenarioID] = Field(alias="bid_price_scenarios")
+    price_scenarios: list[PriceScenarioID] = Field(alias="bid_price_scenarios")
     reserve_scenarios: ReserveScenarios = Field(alias="bid_reserve_scenarios")
 
     shop_start: RelativeTime = Field(alias="shop_starttime")
@@ -261,7 +263,7 @@ class RKOMBidProcessConfig(Configuration):
         return [{"id": id_} for id_ in ast.literal_eval(value)] if isinstance(value, str) else value
 
     @property
-    def sorted_volumes(self) -> List[int]:
+    def sorted_volumes(self) -> list[int]:
         return sorted(self.reserve_scenarios.volumes)
 
     @property
@@ -287,5 +289,5 @@ class RKOMBidProcessConfig(Configuration):
             return RelativeTime(relative_time_string="saturday")
 
     @property
-    def rkom_plants(self) -> List[str]:
+    def rkom_plants(self) -> list[str]:
         return [plant for plant, _ in self.reserve_scenarios.mip_plant_time_series]

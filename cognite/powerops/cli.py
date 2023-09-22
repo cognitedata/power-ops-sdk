@@ -5,26 +5,25 @@ from pathlib import Path
 from typing import Annotated, Optional
 
 import typer
-from rich.console import Console
 from rich.logging import RichHandler
-from rich.pretty import pprint
 
+import cognite.powerops.resync.core.echo
 from cognite import powerops
 from cognite.powerops import resync
-from cognite.powerops._models import MODEL_BY_NAME
-from cognite.powerops.clients.powerops_client import get_powerops_client
+from cognite.powerops.client import PowerOpsClient
+from cognite.powerops.utils.cdf.extraction_pipelines import ExtractionPipelineCreate, RunStatus
 
-logging.getLogger("requests").setLevel(logging.WARNING)
-logging.getLogger("urllib3").setLevel(logging.WARNING)
-logging.getLogger("msal").setLevel(logging.WARNING)
-logging.getLogger("cognite-sdk").setLevel(logging.WARNING)
+for third_party in ["cognite-sdk", "requests", "urllib3", "msal", "requests_oauthlib"]:
+    third_party_logger = logging.getLogger(third_party)
+    third_party_logger.setLevel(logging.WARNING)
+    third_party_logger.propagate = False
 
 FORMAT = "%(message)s"
-logging.basicConfig(level="NOTSET", format=FORMAT, datefmt="[%X]", handlers=[RichHandler()])
+logging.basicConfig(level=logging.INFO, format=FORMAT, datefmt="[%X]", handlers=[RichHandler()])
 
 log = logging.getLogger("rich")
 
-app = typer.Typer()
+app = typer.Typer(pretty_exceptions_short=False, pretty_exceptions_show_locals=False, pretty_exceptions_enable=False)
 
 
 def _version_callback(value: bool):
@@ -34,11 +33,37 @@ def _version_callback(value: bool):
 
 
 @app.callback()
-def common(
-    ctx: typer.Context,
-    version: bool = typer.Option(None, "--version", callback=_version_callback),
-):
+def common(ctx: typer.Context, version: bool = typer.Option(None, "--version", callback=_version_callback)):
     ...
+
+
+@app.command("init", help="Setup necessary data models in CDF for ReSync to run")
+def init(
+    models: list[str] = typer.Option(
+        default=sorted(resync.MODELS_BY_NAME),
+        help=f"The models to initialize. Available models: {', '.join(resync.MODELS_BY_NAME)}, v2",
+    ),
+    verbose: bool = typer.Option(False, "--verbose", "-v", help="Whether to print verbose output"),
+):
+    client = PowerOpsClient.from_settings()
+
+    if "v2" in models:
+        models.remove("v2")
+        models.extend(resync.V2_MODELS_BY_NAME)
+
+    resync.init(client, echo=_to_echo(verbose), model_names=models)
+
+
+@app.command(
+    "validate",
+    help="Check that all time series used in mappings are present and have datapoints for the specified time range",
+)
+def validate(
+    path: Annotated[Path, typer.Argument(help="Path to configuration files")],
+    market: Annotated[str, typer.Argument(help="Selected power market")],
+):
+    log.info(f"Running validate on configuration files located in {path}")
+    resync.validate(path, market, echo=log.info)
 
 
 @app.command(
@@ -49,21 +74,56 @@ def plan(
     path: Annotated[Path, typer.Argument(help="Path to configuration files")],
     market: Annotated[str, typer.Argument(help="Selected power market")],
     models: list[str] = typer.Option(
-        default=["all"],
-        help=f"The models to run the plan. Available models: {', '.join(resync.AVAILABLE_MODELS)}",
+        default=sorted(resync.MODELS_BY_NAME),
+        help=f"The models to run the plan. Available models: {', '.join(resync.MODELS_BY_NAME)}",
     ),
     dump_folder: Optional[Path] = typer.Option(
         default=None, help="If present, the local and cdf changes will be dumped to this directory."
     ),
+    format: str = typer.Option(default=None, help="The format of the output. Available formats: markdown"),
+    as_extraction_pipeline_run: bool = typer.Option(
+        default=False,
+        help="If true, the command will be registered as an extraction pipeline run. With the configuration"
+        "fetched from the settings.toml [powerops] section.",
+    ),
+    verbose: bool = typer.Option(False, "--verbose", "-v", help="Whether to print verbose output"),
 ):
     if dump_folder and not dump_folder.is_dir():
         raise typer.BadParameter(f"{dump_folder} is not a directory")
 
-    log.info(f"Running plan on configuration files located in {path}")
-    if len(models) == 1 and models[0].lower() == "all":
-        models = list(MODEL_BY_NAME.keys())
+    echo = _to_echo(verbose)
+    echo(f"Running plan on configuration files located in {path}")
+    power = PowerOpsClient.from_settings()
 
-    resync.plan(path, market, echo=log.info, model_names=models, dump_folder=dump_folder, echo_pretty=pprint)
+    changes = resync.plan(path, market, echo=echo, model_names=models, dump_folder=dump_folder, client=power)
+
+    if format == "markdown":
+        typer.echo(changes.as_github_markdown())
+
+    if as_extraction_pipeline_run is True:
+        client = power.cdf
+
+        pipeline = ExtractionPipelineCreate(
+            external_id="resync/plan",
+            data_set_external_id=power.datasets.monitor_dataset,
+            dump_truncated_to_file=True,
+            message_keys_skip=["error"],
+            truncate_keys_first=["error"],
+            log_file_prefix="powerops_function_loss",
+            description="The resync/plan function checks that the configuration files are matching "
+            "the expected resources in CDF. If there are any differences, the run will report as failed",
+        ).get_or_create(client)
+
+        with pipeline.create_pipeline_run(client) as run:
+            if changes.has_changes("CDF", exclude={"timeseries", "parent_assets", "labels"}):
+                run.update_data(
+                    RunStatus.FAILURE,
+                    summary=changes.as_markdown_summary(no_headers=True),
+                    error=changes.as_markdown_detailed(),
+                )
+            else:
+                run.update_data(RunStatus.SUCCESS)
+        typer.echo(f"Extraction pipeline run executed with status: {run.status}")
 
 
 @app.command("apply", help="Apply the changes from the configuration files to the data model in CDF")
@@ -71,86 +131,61 @@ def apply(
     path: Annotated[Path, typer.Argument(help="Path to configuration files")],
     market: Annotated[str, typer.Argument(help="Selected power market")],
     models: list[str] = typer.Option(
-        default=["all"],
-        help=f"The models to run apply. Available models: {', '.join(resync.AVAILABLE_MODELS)}",
+        default=sorted(resync.MODELS_BY_NAME),
+        help=f"The models to run apply. Available models: {', '.join(resync.MODELS_BY_NAME)}",
     ),
     auto_yes: bool = typer.Option(False, "--yes", "-y", help="Auto confirm all prompts"),
+    format: str = typer.Option(default=None, help="The format of the output. Available formats: markdown"),
+    verbose: bool = typer.Option(False, "--verbose", "-v", help="Whether to print verbose output"),
 ):
-    log.info(f"Running apply on configuration files located in {path}")
+    echo = _to_echo(verbose)
+    client = PowerOpsClient.from_settings()
 
-    resync.apply(path, market, model_names=models, echo=log.info, auto_yes=auto_yes, echo_pretty=pprint)
+    echo(f"Running apply on configuration files located in {path}")
+    changed = resync.apply(path, market, client, model_names=models, echo=_to_echo(verbose), auto_yes=auto_yes)
+    if format == "markdown":
+        typer.echo(changed.as_github_markdown())
 
 
-@app.command(
-    "validate",
-    help="Check that all time series used in mappings are present and have datapoints for the specified time range",
-)
-def validate(
-    path: Annotated[Path, typer.Argument(help="Path to configuration files")],
-    market: Annotated[str, typer.Argument(help="Selected power market")],
+@app.command("destroy", help="Destroy all the data models created by resync and remove all the data.")
+def destroy(
     models: list[str] = typer.Option(
-        default=["all"],
-        help=f"The models to run apply. Available models: {', '.join(resync.AVAILABLE_MODELS)}",
+        default=sorted(resync.MODELS_BY_NAME),
+        help=f"The models to destroy. Available models: {', '.join(resync.MODELS_BY_NAME)}",
     ),
-):
-    log.info(f"Running validate on configuration files located in {path}")
-    if len(models) == 1 and models[0].lower() == "all":
-        models = list(MODEL_BY_NAME.keys())
-    resync.validate(path, market, model_names=models, echo=log.info)
-
-
-@app.command(
-    "deploy",
-    help=f"Deploy the data model in CDF. Available models: {list(MODEL_BY_NAME.keys())}. "
-    f"Use 'all' to deploy all models.",
-)
-def deploy(
-    models: Annotated[list[str], typer.Argument(help="The models to deploy")],
-):
-    if len(models) == 1 and models[0].lower() == "all":
-        models = list(MODEL_BY_NAME.keys())
-
-    client = get_powerops_client()
-    for model_name in models:
-        if model_name not in MODEL_BY_NAME:
-            log.warning(f"Model {model_name} not found, skipping. Available models: {list(MODEL_BY_NAME.keys())}")
-            continue
-        log.info(f"Deploying {model_name} model...")
-
-        model = MODEL_BY_NAME[model_name]
-        result = client.cdf.data_modeling.graphql.apply_dml(
-            model.id_,
-            model.graphql,
-            model.name,
-            model.description,
-        )
-        log.info(f"Deployed {model_name} model ({result.space}, {result.external_id}, {result.version})")
-
-
-@app.command("show", help=f"Show the graphql schema of Power Ops model. Available models: {list(MODEL_BY_NAME.keys())}")
-def show(
-    model: Annotated[str, typer.Argument(help="The models to deploy")],
-    remove_newlines: bool = typer.Option(
-        False,
-        "--remove-newlines",
-        help="Remove newlines from the graphql schema. This is done when deploying the schema.",
+    dry_run: bool = typer.Option(
+        False, "--dry-run", help="Whether to run the command as a dry run, meaning no resources will be destroyed."
     ),
+    auto_yes: bool = typer.Option(False, "--yes", "-y", help="Auto confirm all prompts"),
+    format: str = typer.Option(default=None, help="The format of the output. Available formats: markdown"),
+    verbose: bool = typer.Option(False, "--verbose", "-v", help="Whether to print verbose output"),
 ):
-    if model not in MODEL_BY_NAME:
-        log.warning(f"Model {model} not found. Available models: {list(MODEL_BY_NAME.keys())}")
-        typer.Exit()
+    client = PowerOpsClient.from_settings()
 
-    console = Console()
-    graphql = MODEL_BY_NAME[model].graphql
-    if remove_newlines:
-        graphql = graphql.replace("\n", "")
-        console.print(f"{graphql!r}")
-    else:
-        console.print(graphql)
+    destroyed = resync.destroy(client, echo=_to_echo(verbose), model_names=models, auto_yes=auto_yes, dry_run=dry_run)
+    if format == "markdown":
+        typer.echo(destroyed.as_github_markdown())
 
 
 def main():
     app()
+
+
+def _to_echo(verbose: bool) -> cognite.powerops.resync.core.echo.Echo:
+    if verbose:
+
+        def echo(message: str, is_warning: bool = False) -> None:
+            if is_warning:
+                log.warning(message)
+            else:
+                log.info(message)
+
+    else:
+
+        def echo(message: str, is_warning: bool = False) -> None:
+            ...
+
+    return echo
 
 
 if __name__ == "__main__":

@@ -1,13 +1,13 @@
 ---
 repos:
   - repo: https://github.com/psf/black
-    rev: 23.7.0
+    rev: 23.9.1
     hooks:
       - id: black
 
   - repo: https://github.com/charliermarsh/ruff-pre-commit
     # Ruff version.
-    rev: 'v0.0.284'
+    rev: 'v0.0.290'
     hooks:
       - id: ruff
         args:
@@ -36,7 +36,7 @@ repos:
       name: mypy
       # Gradually the entire codebase should be checked by mypy, plan is to gradually add mypy for each
       # module as we refactor it.
-      entry: dmypy run -- cognite/powerops/resync
+      entry: dmypy run -- cognite/powerops/resync cognite/powerops/utils
       files: ^.*.(py|pyi)$
       language: system
       pass_filenames: false

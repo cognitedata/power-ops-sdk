@@ -1,15 +1,17 @@
-from cognite.powerops.clients.powerops_client import get_powerops_client
-from cognite.powerops.utils.cdf import Settings
+from cognite.powerops.client import PowerOpsClient
 
 
 def main():
-    settings = Settings()
-    client = get_powerops_client().cdf
-    apis = [client.assets, client.sequences, client.time_series]
+    power = PowerOpsClient.from_settings()
+    client = power.cdf
+    apis = [client.assets, client.sequences, client.timeseries, client.files]
 
-    for target_types, api in zip([["asset"], ["sequence"], ["TIMESERIES", "timeSeries"]], apis):
+    for target_types, api in zip([["asset", "ASSET"], ["sequence"], ["TIMESERIES", "timeSeries"], ["file"]], apis):
         relationships = client.relationships.list(
-            data_set_external_ids=[settings.powerops.write_dataset], target_types=target_types, limit=-1
+            data_set_external_ids=[power.datasets.write_dataset],
+            source_types=["asset"],
+            target_types=target_types,
+            limit=-1,
         )
         type_ids = list({r.target_external_id for r in relationships})
         if not type_ids:

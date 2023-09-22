@@ -1,21 +1,15 @@
 import getpass
 import logging
 import os
-from pathlib import Path
-from typing import Any, Literal, Optional, Type
+from typing import Any, Literal, Optional
 
 import pydantic
-
-try:
-    import tomllib
-except ModuleNotFoundError:
-    import tomli as tomllib  # py < 3.11
-
 from pydantic import BaseModel, Field, field_validator
 from pydantic_settings import BaseSettings, PydanticBaseSettingsSource, SettingsConfigDict
 
 __all__ = ["Settings", "CogniteSettings", "PoweropsRunSettings"]
 
+from cognite.powerops.utils.serialization import read_toml_file
 
 logger = logging.getLogger(__name__)
 
@@ -51,6 +45,7 @@ class CogniteSettings(BaseModel):
 class PoweropsRunSettings(pydantic.BaseModel):
     read_dataset: Optional[str] = None
     write_dataset: Optional[str] = None
+    monitor_dataset: Optional[str] = None
     cogshop_version: Optional[str] = None
 
     @field_validator("cogshop_version", mode="before")
@@ -60,28 +55,28 @@ class PoweropsRunSettings(pydantic.BaseModel):
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_prefix="SETTINGS__", env_nested_delimiter="__")
-    cognite: CogniteSettings = {}
-    powerops: PoweropsRunSettings = {}
+    cognite: CogniteSettings = Field(default_factory=dict)
+    powerops: PoweropsRunSettings = Field(default_factory=dict)
 
     @classmethod
     def settings_customise_sources(
         cls,
-        settings_cls: Type[BaseSettings],
+        settings_cls: type[BaseSettings],
         init_settings: PydanticBaseSettingsSource,
         env_settings: PydanticBaseSettingsSource,
         dotenv_settings: PydanticBaseSettingsSource,
         file_secret_settings: PydanticBaseSettingsSource,
     ) -> tuple[PydanticBaseSettingsSource, ...]:
         """Add `file_settings` to sources (loads settings.toml and .secrets.toml)."""
-        return init_settings, env_settings, _file_settings, file_secret_settings
+        return init_settings, env_settings, _file_settings, file_secret_settings  # type: ignore[return-value]
 
 
 def _file_settings() -> dict[str, Any]:
     settings_files = filter(None, os.environ.get("SETTINGS_FILES", "settings.toml;.secrets.toml").split(";"))
-    collected_data = {}
+    collected_data: dict[str, Any] = {}
     for file_path in settings_files:
         try:
-            data = tomllib.loads(Path(file_path).read_text())
+            data = read_toml_file(file_path)
         except FileNotFoundError:
             pass
         else:

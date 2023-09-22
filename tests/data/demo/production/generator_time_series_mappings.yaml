@@ -1,0 +1,12 @@
+- generator_name: Lund_G1
+  start_stop_cost: 112233
+  is_available: 332211
+- generator_name: Holen_G1
+  start_stop_cost: 112233
+  is_available: 332211
+- generator_name: Rull_G1
+  start_stop_cost:
+  is_available: 332211
+- generator_name: Dalby_G1
+  start_stop_cost: 112233
+  is_available:

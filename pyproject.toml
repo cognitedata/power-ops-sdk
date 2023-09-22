@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cognite-power-ops"
-version = "0.36.0"
+version = "0.58.3"
 description = "SDK for power markets operations on Cognite Data Fusion"
 readme = "README.md"
 authors = ["Cognite <support@cognite.com>"]
@@ -15,15 +15,24 @@ line-length = 120
 target_version = ['py39']
 include = '\.py$'
 
-[tool.isort]
-line_length=120                # corresponds to -w  flag
-multi_line_output=3            # corresponds to -m  flag
-include_trailing_comma=true    # corresponds to -tc flag
-skip_glob = '^((?!py$).)*$'    # this makes sort all Python files
+[tool.ruff.isort]
+known-third-party = ["cognite.client"]
 
 [tool.ruff]
+# See https://beta.ruff.rs/docs/rules for an overview of ruff rules
 line-length = 120
-target-version = 'py39'
+target-version = "py39"
+exclude = ["examples", "scripts"]
+select = ["E","W","F","I","RUF","TID","UP", "B", "FLY", "PTH", "ERA"]
+fixable = ["E","W","F","I","RUF","TID","UP", "B", "FLY", "PTH", "ERA"]
+fix = true
+ignore = [
+    # This is causing issues for pydantic which does not support use of X | Y for type annotations before 3.10
+    "UP007", # Use X | Y for type annotations
+    # Typer do function calls when setting up the CLI.
+    "B008", # Do not perform function call {name} in argument defaults,
+    "RUF012", # Insistance on using ClassVar to mark class variables
+]
 
 [tool.ruff.per-file-ignores]
 "__init__.py" = ["F401"]  # unused import
@@ -33,10 +42,7 @@ explicit_package_bases = true
 exclude = [
     # The plan is to gradually add mypy to the code base. As of 18. Juli 2023,
     # the following packages are not type checked:
-    "^cognite/powerops/preprocessor/",
-    "^cognite/powerops/clients/",
-    "^cognite/powerops/utils/",
-    "^cognite/powerops/resync/to_models/",
+    "^cognite/powerops/client/",
     "^cognite/powerops/resync/config/",
     "^cognite/powerops/resync/models/",
 ]
@@ -47,7 +53,7 @@ allow_redefinition = true
 python = "^3.9"
 typer = {version="^0.9.0", extras=["rich"]}
 PyYAML = "^6.0"
-cognite-sdk = {version = ">= 6.13.0, < 7.0", extras = ["pandas"]}
+cognite-sdk = {version = ">= 6.15.0, < 7.0", extras = ["pandas"]}
 pydantic = "^2.0"
 pydantic-settings = "^2.0"
 cachelib = "^0.10.2"
@@ -57,9 +63,11 @@ matplotlib = "^3.7.1"
 dacite = "^1.8.1"
 python-dotenv = "^1.0.0"
 arrow = "^1.2.0"
+typing_extensions = ">= 4"
 tomli = {version = "^2.0.1", python = "<3.11"}
 StrEnum = {version = "^0.4.15", python = "<3.11"}
 tomli-w = "^1.0.0"
+tabulate = "^0.9"
 
 
 mkdocs =  {version="*", optional=true}
@@ -90,7 +98,7 @@ pytest-regressions = "^2.4.2"
 ipykernel="6.24.0"
 twine = "^4.0.2"
 jupyter = "^1.0.0"
-cognite-pygen = {version = "^0.15.2", extras = ["all"]}
+cognite-pygen = {version = "^0.17.7", extras = ["all"]}
 mypy = "^1.4"
 pandas-stubs = "^2"
 types-PyYAML = "^6"
@@ -100,8 +108,9 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.pytest.ini_options]
-addopts = "--doctest-modules --ignore=customers/ --ignore=examples/ --ignore=playground/"
+addopts = "--doctest-modules --ignore=customers/ --ignore=examples/ --ignore=playground/ --ignore=cognite/powerops/client"
 testpaths = [
     "tests",
     "cognite",
 ]
+log_cli = true

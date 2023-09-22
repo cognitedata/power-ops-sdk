@@ -1,0 +1,51 @@
+type Case {
+  scenario: Scenario
+  startTime: String!
+  endTime: String!
+  processingLog: [ProcessingLog]
+}
+
+type CommandsConfig {
+  commands: [String!]!
+}
+
+type FileRef {
+  type: String!
+  fileExternalId: String!
+}
+
+type Mapping {
+  path: String!
+  timeseriesExternalId: String
+  transformations: [Transformation]
+  retrieve: String
+  aggregation: String
+}
+
+type ModelTemplate {
+  version: String!
+  shopVersion: String!
+  watercourse: String!
+  model: FileRef
+  baseMappings: [Mapping]
+}
+
+type ProcessingLog {
+  state: String
+  timestamp: String
+  errorMessage: String
+}
+
+type Scenario {
+  name: String!
+  modelTemplate: ModelTemplate
+  mappingsOverride: [Mapping]
+  commands: CommandsConfig
+  extraFiles: [FileRef]
+}
+
+type Transformation {
+  method: String!
+  arguments: String!
+  order: Int!
+}
