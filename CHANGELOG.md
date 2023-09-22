@@ -13,6 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.58.0] - 2023-09-22
+### Added
+* Extended options for `SHOPRun.list()`.
+* Added `SHOPRun.retrieve_latest()`
+
 ## [0.57.0] - 2023-09-21
 ### Added
 * A model for the `aFRR` market bids. Available under `v2` models.
