@@ -1,14 +1,32 @@
-ProductionModel:
-  cdf:
-    assets: 39
-    files: 0
-    parent_assets: 6
-    relationships: 74
-    sequences: 24
-    time_series: 10
-  domain:
-    generators: 12
-    plants: 9
-    price_areas: 1
-    reservoirs: 16
-    watercourses: 1
+changes:
+- added: 39
+  changed: 0
+  field_name: assets
+  group: CDF
+  removed: 0
+  unchanged: 0
+- added: 77
+  changed: 0
+  field_name: labels
+  group: CDF
+  removed: 0
+  unchanged: 0
+- added: 6
+  changed: 0
+  field_name: parent_assets
+  group: CDF
+  removed: 0
+  unchanged: 0
+- added: 68
+  changed: 0
+  field_name: relationships
+  group: CDF
+  removed: 0
+  unchanged: 0
+- added: 24
+  changed: 0
+  field_name: sequences
+  group: CDF
+  removed: 0
+  unchanged: 0
+model_name: ProductionModel
