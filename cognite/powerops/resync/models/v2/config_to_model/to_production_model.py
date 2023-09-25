@@ -33,7 +33,6 @@ def to_production_data_model(configuration: config.ProductionConfig) -> Producti
         mapping.generator_name: mapping.start_stop_cost
         for mapping in (configuration.generator_time_series_mappings or [])
     }
-    {mapping.generator_name: mapping.is_available for mapping in (configuration.generator_time_series_mappings or [])}
 
     for watercourse_config in configuration.watercourses:
         watercourse = WatercourseApply(

@@ -27,9 +27,15 @@ class ProductionModelDM(DataModel):
     reservoirs: list[ReservoirApply] = Field(default_factory=list)
 
     @classmethod
-    def from_cdf(
-        cls: type[T_Model], client: PowerOpsClient, fetch_metadata: bool = True, fetch_content: bool = False
-    ) -> T_Model:
+    def from_cdf(cls: type[T_Model], client: PowerOpsClient, data_set_external_id: str) -> T_Model:
+        production = client.production
+        production.price_areas.list(limit=-1)
+        production.watercourses.list(limit=-1)
+        production.plants.list(limit=-1)
+        production.generators.list(limit=-1)
+        production.reservoirs.list(limit=-1)
+        production.watercourse_shops.list(limit=-1)
+
         raise NotImplementedError()
 
     def standardize(self) -> None:
