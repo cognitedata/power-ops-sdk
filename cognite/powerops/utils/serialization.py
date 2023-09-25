@@ -199,7 +199,7 @@ def get_pydantic_annotation(field_annotation: Any, cls_obj: type[object]) -> tup
         outer = dict
     elif origin is Union:
         annotation, *_ = get_args(field_annotation)
-        outer = None
+        return get_pydantic_annotation(annotation, cls_obj)
     else:
         raise NotImplementedError(f"Cannot handle field_annotation  {field_annotation}")
     return annotation, outer

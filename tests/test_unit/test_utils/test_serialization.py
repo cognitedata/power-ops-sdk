@@ -1,4 +1,4 @@
-from typing import Any, Union
+from typing import Any
 
 import pytest
 
@@ -11,7 +11,7 @@ def get_pydantic_annotation_test_cases():
     yield pytest.param(
         annotation,
         cogshop1.MappingApply,
-        Union[cogshop1.TransformationApply, str],
+        cogshop1.TransformationApply,
         list,
         id="list[TransformationApply]",
     )
