@@ -33,9 +33,7 @@ def to_production_data_model(configuration: config.ProductionConfig) -> Producti
         mapping.generator_name: mapping.start_stop_cost
         for mapping in (configuration.generator_time_series_mappings or [])
     }
-    is_generator_available = {
-        mapping.generator_name: mapping.is_available for mapping in (configuration.generator_time_series_mappings or [])
-    }
+    {mapping.generator_name: mapping.is_available for mapping in (configuration.generator_time_series_mappings or [])}
 
     for watercourse_config in configuration.watercourses:
         watercourse = WatercourseApply(
@@ -71,7 +69,6 @@ def to_production_data_model(configuration: config.ProductionConfig) -> Producti
 
         for generator_name, generator_attributes in shop_case["model"]["generator"].items():
             start_stop_cost = start_stop_cost_time_series_by_generator.get(generator_name)
-            is_available = is_generator_available.get(generator_name)
             generator = GeneratorApply(
                 external_id=f"generator:{generator_name}",
                 name=generator_name,
@@ -79,7 +76,6 @@ def to_production_data_model(configuration: config.ProductionConfig) -> Producti
                 p_min=float(generator_attributes.get("p_min", 0.0)),
                 startcost=float(_get_single_value(generator_attributes.get("startcost", 0.0))),
                 start_stop_cost=start_stop_cost,
-                is_available=is_available,
             )
             efficiency_curve = _create_generator_efficiency_curve(
                 generator_attributes, generator.name, generator.external_id
