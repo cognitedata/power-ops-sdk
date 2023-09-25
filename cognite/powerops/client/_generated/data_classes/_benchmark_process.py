@@ -5,38 +5,47 @@ from typing import TYPE_CHECKING, ClassVar, Optional, Union
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
-from cognite.powerops.client._generated.data_classes._core import DomainModel, DomainModelApply, TypeList
+from ._core import DomainModel, DomainModelApply, TypeList, TypeApplyList
 
 if TYPE_CHECKING:
-    from cognite.powerops.client._generated.data_classes._benchmark_bids import BenchmarkBidApply
-    from cognite.powerops.client._generated.data_classes._production_plan_time_series import (
-        ProductionPlanTimeSeriesApply,
-    )
-    from cognite.powerops.client._generated.data_classes._shop_transformations import ShopTransformationApply
+    from ._benchmark_bid import BenchmarkBidApply
+    from ._production_plan_time_series import ProductionPlanTimeSeriesApply
+    from ._shop_transformation import ShopTransformationApply
 
-__all__ = ["BenchmarkProces", "BenchmarkProcesApply", "BenchmarkProcesList"]
+__all__ = ["BenchmarkProcess", "BenchmarkProcessApply", "BenchmarkProcessList", "BenchmarkProcessApplyList"]
 
 
-class BenchmarkProces(DomainModel):
+class BenchmarkProcess(DomainModel):
     space: ClassVar[str] = "power-ops"
+    name: Optional[str] = None
+    metrics: Optional[dict] = None
     bid: Optional[str] = None
-    metrics: Optional[dict] = None
-    name: Optional[str] = None
-    production_plan_time_series: list[str] = Field([], alias="productionPlanTimeSeries")
-    run_events: list[str] = Field([], alias="runEvents")
     shop: Optional[str] = None
+    run_events: list[str] = Field(default_factory=list, alias="runEvents")
+    production_plan_time_series: list[str] = []
+
+    def as_apply(self) -> BenchmarkProcessApply:
+        return BenchmarkProcessApply(
+            external_id=self.external_id,
+            name=self.name,
+            metrics=self.metrics,
+            bid=self.bid,
+            shop=self.shop,
+            run_events=self.run_events,
+            production_plan_time_series=self.production_plan_time_series,
+        )
 
 
-class BenchmarkProcesApply(DomainModelApply):
+class BenchmarkProcessApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
-    bid: Optional[Union[BenchmarkBidApply, str]] = Field(None, repr=False)
-    metrics: Optional[dict] = None
     name: Optional[str] = None
-    production_plan_time_series: list[Union[ProductionPlanTimeSeriesApply, str]] = Field(
+    metrics: Optional[dict] = None
+    bid: Union[BenchmarkBidApply, str, None] = Field(None, repr=False)
+    shop: Union[ShopTransformationApply, str, None] = Field(None, repr=False)
+    run_events: list[str] = []
+    production_plan_time_series: Union[list[ProductionPlanTimeSeriesApply], list[str]] = Field(
         default_factory=list, repr=False
     )
-    run_events: list[str] = []
-    shop: Optional[Union[ShopTransformationApply, str]] = Field(None, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
@@ -44,22 +53,22 @@ class BenchmarkProcesApply(DomainModelApply):
 
         sources = []
         properties = {}
+        if self.name is not None:
+            properties["name"] = self.name
+        if self.metrics is not None:
+            properties["metrics"] = self.metrics
         if self.bid is not None:
             properties["bid"] = {
                 "space": "power-ops",
                 "externalId": self.bid if isinstance(self.bid, str) else self.bid.external_id,
             }
-        if self.metrics is not None:
-            properties["metrics"] = self.metrics
-        if self.name is not None:
-            properties["name"] = self.name
-        if self.run_events is not None:
-            properties["runEvents"] = self.run_events
         if self.shop is not None:
             properties["shop"] = {
                 "space": "power-ops",
                 "externalId": self.shop if isinstance(self.shop, str) else self.shop.external_id,
             }
+        if self.run_events is not None:
+            properties["runEvents"] = self.run_events
         if properties:
             source = dm.NodeOrEdgeData(
                 source=dm.ContainerId("power-ops", "BenchmarkProcess"),
@@ -122,5 +131,12 @@ class BenchmarkProcesApply(DomainModelApply):
         )
 
 
-class BenchmarkProcesList(TypeList[BenchmarkProces]):
-    _NODE = BenchmarkProces
+class BenchmarkProcessList(TypeList[BenchmarkProcess]):
+    _NODE = BenchmarkProcess
+
+    def as_apply(self) -> BenchmarkProcessApplyList:
+        return BenchmarkProcessApplyList([node.as_apply() for node in self.data])
+
+
+class BenchmarkProcessApplyList(TypeApplyList[BenchmarkProcessApply]):
+    _NODE = BenchmarkProcessApply

@@ -4,15 +4,27 @@ from typing import ClassVar, Optional
 
 from cognite.client import data_modeling as dm
 
-from cognite.powerops.client._generated.data_classes._core import DomainModel, DomainModelApply, TypeList
+from ._core import DomainModel, DomainModelApply, TypeList, TypeApplyList
 
-__all__ = ["ProductionPlanTimeSeries", "ProductionPlanTimeSeriesApply", "ProductionPlanTimeSeriesList"]
+__all__ = [
+    "ProductionPlanTimeSeries",
+    "ProductionPlanTimeSeriesApply",
+    "ProductionPlanTimeSeriesList",
+    "ProductionPlanTimeSeriesApplyList",
+]
 
 
 class ProductionPlanTimeSeries(DomainModel):
     space: ClassVar[str] = "power-ops"
     name: Optional[str] = None
     series: list[str] = []
+
+    def as_apply(self) -> ProductionPlanTimeSeriesApply:
+        return ProductionPlanTimeSeriesApply(
+            external_id=self.external_id,
+            name=self.name,
+            series=self.series,
+        )
 
 
 class ProductionPlanTimeSeriesApply(DomainModelApply):
@@ -55,3 +67,10 @@ class ProductionPlanTimeSeriesApply(DomainModelApply):
 
 class ProductionPlanTimeSeriesList(TypeList[ProductionPlanTimeSeries]):
     _NODE = ProductionPlanTimeSeries
+
+    def as_apply(self) -> ProductionPlanTimeSeriesApplyList:
+        return ProductionPlanTimeSeriesApplyList([node.as_apply() for node in self.data])
+
+
+class ProductionPlanTimeSeriesApplyList(TypeApplyList[ProductionPlanTimeSeriesApply]):
+    _NODE = ProductionPlanTimeSeriesApply

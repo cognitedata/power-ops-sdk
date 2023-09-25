@@ -2,17 +2,17 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from cognite.client import ClientConfig, CogniteClient
+from cognite.client import ClientConfig, CogniteClient, data_modeling as dm
 from cognite.client.credentials import OAuthClientCredentials
 
-from cognite.powerops.client._generated.cogshop1._api.cases import CasesAPI
-from cognite.powerops.client._generated.cogshop1._api.commands_configs import CommandsConfigsAPI
-from cognite.powerops.client._generated.cogshop1._api.file_refs import FileRefsAPI
-from cognite.powerops.client._generated.cogshop1._api.mappings import MappingsAPI
-from cognite.powerops.client._generated.cogshop1._api.model_templates import ModelTemplatesAPI
-from cognite.powerops.client._generated.cogshop1._api.processing_logs import ProcessingLogsAPI
-from cognite.powerops.client._generated.cogshop1._api.scenarios import ScenariosAPI
-from cognite.powerops.client._generated.cogshop1._api.transformations import TransformationsAPI
+from ._api.case import CaseAPI
+from ._api.commands_config import CommandsConfigAPI
+from ._api.file_ref import FileRefAPI
+from ._api.mapping import MappingAPI
+from ._api.model_template import ModelTemplateAPI
+from ._api.processing_log import ProcessingLogAPI
+from ._api.scenario import ScenarioAPI
+from ._api.transformation import TransformationAPI
 
 
 class CogShop1Client:
@@ -20,9 +20,9 @@ class CogShop1Client:
     CogShop1Client
 
     Generated with:
-        pygen = 0.17.7
-        cognite-sdk = 6.21.1
-        pydantic = 2.3.0
+        pygen = 0.20.3
+        cognite-sdk = 6.26.0
+        pydantic = 2.4.0
 
     Data Model:
         space: cogShop
@@ -37,14 +37,14 @@ class CogShop1Client:
             client = CogniteClient(config_or_client)
         else:
             raise ValueError(f"Expected CogniteClient or ClientConfig, got {type(config_or_client)}")
-        self.cases = CasesAPI(client)
-        self.commands_configs = CommandsConfigsAPI(client)
-        self.file_refs = FileRefsAPI(client)
-        self.mappings = MappingsAPI(client)
-        self.model_templates = ModelTemplatesAPI(client)
-        self.processing_logs = ProcessingLogsAPI(client)
-        self.scenarios = ScenariosAPI(client)
-        self.transformations = TransformationsAPI(client)
+        self.case = CaseAPI(client, dm.ViewId("cogShop", "Case", "c2306c3b68fad6"))
+        self.commands_config = CommandsConfigAPI(client, dm.ViewId("cogShop", "CommandsConfig", "a165239c84ffa9"))
+        self.file_ref = FileRefAPI(client, dm.ViewId("cogShop", "FileRef", "e142e855b593e2"))
+        self.mapping = MappingAPI(client, dm.ViewId("cogShop", "Mapping", "623d70ac8b9d1b"))
+        self.model_template = ModelTemplateAPI(client, dm.ViewId("cogShop", "ModelTemplate", "8ae35635bb3f8a"))
+        self.processing_log = ProcessingLogAPI(client, dm.ViewId("cogShop", "ProcessingLog", "4ce8cb3b9632df"))
+        self.scenario = ScenarioAPI(client, dm.ViewId("cogShop", "Scenario", "7d3086d51c9d6f"))
+        self.transformation = TransformationAPI(client, dm.ViewId("cogShop", "Transformation", "15ce1f14efe2dc"))
 
     @classmethod
     def azure_project(
@@ -63,7 +63,7 @@ class CogShop1Client:
         if section is not None:
             try:
                 toml_content = toml_content[section]
-            except KeyError as e:
-                raise ValueError(f"Could not find section '{section}' in {file_path}") from e
+            except KeyError:
+                raise ValueError(f"Could not find section '{section}' in {file_path}")
 
         return cls.azure_project(**toml_content)

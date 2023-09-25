@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from cognite.powerops.client.data_classes import (
     BenchmarkBidApply,
-    BenchmarkProcesApply,
+    BenchmarkProcessApply,
     BidMatrixGeneratorApply,
     DayAheadBidApply,
-    DayAheadProcesApply,
+    DayAheadProcessApply,
     NordPoolMarketApply,
     PriceAreaApply,
     ProductionPlanTimeSeriesApply,
@@ -14,7 +14,7 @@ from cognite.powerops.client.data_classes import (
     RKOMBidCombinationApply,
     RKOMCombinationBidApply,
     RKOMMarketApply,
-    RKOMProcesApply,
+    RKOMProcessApply,
     ScenarioMappingApply,
 )
 from cognite.powerops.resync.config._main import MarketConfig
