@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 __all__ = ["Scenario", "ScenarioApply", "ScenarioList", "ScenarioApplyList"]
 
 
-class Scenario(DomainModel, protected_namespaces=()):
+class Scenario(DomainModel):
     space: ClassVar[str] = "cogShop"
     name: Optional[str] = None
     model_template: Optional[str] = None
@@ -35,7 +35,7 @@ class Scenario(DomainModel, protected_namespaces=()):
         )
 
 
-class ScenarioApply(DomainModelApply, protected_namespaces=()):
+class ScenarioApply(DomainModelApply):
     space: ClassVar[str] = "cogShop"
     name: str
     model_template: Union[ModelTemplateApply, str, None] = Field(None, repr=False)
