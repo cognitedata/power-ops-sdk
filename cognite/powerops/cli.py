@@ -54,12 +54,13 @@ def init(
     resync.init(client, echo=_to_echo(verbose), model_names=models)
 
 
-@app.command("validate", help="Validate the configuration files")
+@app.command("validate", help="Validate the configuration files and timeseries")
 def validate(
     path: Annotated[Path, typer.Argument(help="Path to configuration files")],
     market: Annotated[str, typer.Argument(help="Selected power market")],
     verbose: bool = typer.Option(False, "--verbose", "-v", help="Whether to print verbose output"),
 ):
+    log.info(f"Running validate on configuration files located in {path}")
     resync.validate(path, market, echo=_to_echo(verbose))
 
 
@@ -183,3 +184,7 @@ def _to_echo(verbose: bool) -> cognite.powerops.resync.core.echo.Echo:
             ...
 
     return echo
+
+
+if __name__ == "__main__":
+    main()

@@ -17,6 +17,7 @@ from cognite.powerops.resync import diff, models
 from cognite.powerops.resync.config import ReSyncConfig
 from cognite.powerops.resync.diff import FieldDifference, ModelDifference, ModelDifferences
 from cognite.powerops.resync.models.base import AssetModel, CDFFile, CDFSequence, DataModel, Model, SpaceId
+from cognite.powerops.resync.validation import perform_validation, prepare_validation
 
 from . import Echo
 from .cdf import get_cognite_api
@@ -87,9 +88,20 @@ def validate(config_dir: str | Path, market: str, echo: Echo | None = None) -> N
     ```
     """
     echo = echo or _default_echo
-    echo(f"Validating configuration in {config_dir}")
-    _ = _load_transform(market, Path(config_dir), "dummy", echo, list(MODELS_BY_NAME))
-    echo("Validation successful")
+    market = market.lower()
+    po_client = PowerOpsClient.from_settings()
+    echo(f"Validating configuration in {config_dir}..")
+    loaded_models = _load_transform(market, Path(config_dir), po_client.cdf.config.project, echo, list(MODELS_BY_NAME))
+
+    echo("Validating time series...")
+    models = [
+        model for model in loaded_models if type(model).__name__ in MODELS_BY_NAME and hasattr(model, "processes")
+    ]
+    additional_timeseries = [ts for model in loaded_models for ts in model.timeseries()]
+    ts_validations, validation_ranges = prepare_validation(models, additional_timeseries)
+    perform_validation(po_client, ts_validations, validation_ranges)
+
+    echo("Validations complete")
 
 
 def plan(
