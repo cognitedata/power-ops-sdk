@@ -147,5 +147,6 @@ def _to_value_by_id(value: Any) -> dict[str, Any]:
         return {item.external_id: item for item in value.values()}
     elif isinstance(value, (dict, list, CogniteResourceList)) and not value:
         return {}
-
+    elif isinstance(value, list) and value and isinstance(value[0], (DomainModelApply, DomainModelApplyCogShop1)):
+        return {item.external_id: item for item in value}
     raise NotImplementedError(f"{type(value)} is not supported")

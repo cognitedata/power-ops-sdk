@@ -124,6 +124,8 @@ class DataModel(Model, ABC):
                 items = nodes_by_source_by_id[name]
                 if outer is dict:
                     parsed[field_name] = dict(items)
+                elif outer is list:
+                    parsed[field_name] = list(items.values())
                 else:
                     raise NotImplementedError()
             else:
@@ -189,6 +191,8 @@ def _load_domain_node(node_cls: type[T_Domain_model], node: NodeApply) -> T_Doma
         elif isinstance(prop, (float, str, int)) or prop is None:
             loaded[snake_name] = prop
         elif isinstance(prop, list) and all(isinstance(p, (float, str, int)) for p in prop):
+            loaded[snake_name] = prop
+        elif isinstance(prop, dict):
             loaded[snake_name] = prop
         else:
             raise NotImplementedError(f"Cannot handle {prop=}")
