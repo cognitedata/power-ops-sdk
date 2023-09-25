@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.58.4] - 2023-09-25
+### Fixed
+* External id format in `CogSHOP.Scenario` `view`, this is set to match the format used in functions.
+
 ## [0.58.3] - 2023-09-22
 ### Fixed
 * Last fix had bugs. These new bugs are now now fixed.
