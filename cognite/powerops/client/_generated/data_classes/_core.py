@@ -145,11 +145,12 @@ def unpack_properties(properties: Properties) -> Mapping[str, PropertyValue]:
             if isinstance(prop_value, (str, int, float, bool, list)):
                 unpacked[prop_name] = prop_value
             elif isinstance(prop_value, dict):
-                # Dicts are assumed to be reference properties
                 if "space" in prop_value and "externalId" in prop_value:
+                    # Reference to another node.
                     unpacked[prop_name] = prop_value["externalId"]
                 else:
-                    raise ValueError(f"Unexpected reference property {prop_value}")
+                    # JSON property.
+                    unpacked[prop_name] = prop_value
             else:
                 raise ValueError(f"Unexpected property value type {type(prop_value)}")
     return unpacked
