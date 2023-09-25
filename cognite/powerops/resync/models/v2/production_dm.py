@@ -29,12 +29,12 @@ class ProductionModelDM(DataModel):
     @classmethod
     def from_cdf(cls: type[T_Model], client: PowerOpsClient, data_set_external_id: str) -> T_Model:
         production = client.production
-        production.price_areas.list(limit=-1)
-        production.watercourses.list(limit=-1)
-        production.plants.list(limit=-1)
-        production.generators.list(limit=-1)
-        production.reservoirs.list(limit=-1)
-        production.watercourse_shops.list(limit=-1)
+        production.price_area.list(limit=-1)
+        production.watercourse.list(limit=-1)
+        production.plant.list(limit=-1)
+        production.generator.list(limit=-1)
+        production.reservoir.list(limit=-1)
+        production.watercourse_shop.list(limit=-1)
 
         raise NotImplementedError()
 
