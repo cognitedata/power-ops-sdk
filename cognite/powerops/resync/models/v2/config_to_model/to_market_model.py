@@ -50,7 +50,7 @@ def to_benchmark_data_model(configs: list[BenchmarkingConfig]) -> BenchmarkMarke
             market=config.market_config_external_id,
         )
         model.bids[bid.external_id] = bid
-        process = BenchmarkProcesApply(
+        process = BenchmarkProcessApply(
             external_id="benchmarking_config_day_ahead",
             name="Benchmarking config DayAhead",
             bid=bid.external_id,
@@ -70,7 +70,7 @@ def to_benchmark_data_model(configs: list[BenchmarkingConfig]) -> BenchmarkMarke
 
 def to_dayahead_data_model(
     config: MarketConfig,
-    dayahead_benchmark: BenchmarkProcesApply,
+    dayahead_benchmark: BenchmarkProcessApply,
     benchmark_bid: BenchmarkBidApply,
     price_areas: list[PriceAreaApply],
 ) -> DayAheadMarketDataModel:
@@ -143,7 +143,7 @@ def to_dayahead_data_model(
         model.bids[bid.external_id] = bid
 
         # Create the DayAheadBidProcess Data Class
-        dayahead_process = DayAheadProcesApply(
+        dayahead_process = DayAheadProcessApply(
             name=f"Bid process configuration {process.name}",
             external_id=f"POWEROPS_bid_process_configuration_{process.name}",
             bid=bid.external_id,
@@ -236,7 +236,7 @@ def to_rkom_data_model(config: MarketConfig, market_name: str) -> RKOMMarketData
         model.bids[bid.external_id] = bid
         shop = _to_shop_transformation(process.shop_start, process.shop_end)
 
-        apply = RKOMProcesApply(
+        apply = RKOMProcessApply(
             external_id=process.external_id,
             name=process.name,
             bid=bid.external_id,

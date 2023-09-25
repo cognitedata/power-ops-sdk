@@ -2,13 +2,15 @@ from __future__ import annotations
 
 import datetime
 from collections import defaultdict
-from typing import Dict, List, Sequence, Tuple, overload
+from collections.abc import Sequence
+from typing import overload
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 
+from cognite.powerops.client._generated.data_classes import Series, SeriesApply, SeriesApplyList, SeriesList
+
 from ._core import DEFAULT_LIMIT_READ, TypeAPI
-from cognite.powerops.client._generated.data_classes import Series, SeriesApply, SeriesList, SeriesApplyList
 
 
 class SeriesPointsAPI:
@@ -29,11 +31,13 @@ class SeriesPointsAPI:
             return self._client.data_modeling.instances.list("edge", limit=-1, filter=f.And(is_edge_type, is_series))
 
         else:
-            is_series = f.In(
+            is_series_list = f.In(
                 ["edge", "startNode"],
                 [{"space": "power-ops", "externalId": ext_id} for ext_id in external_id],
             )
-            return self._client.data_modeling.instances.list("edge", limit=-1, filter=f.And(is_edge_type, is_series))
+            return self._client.data_modeling.instances.list(
+                "edge", limit=-1, filter=f.And(is_edge_type, is_series_list)
+            )
 
     def list(self, series_id: str | list[str] | None = None, limit=DEFAULT_LIMIT_READ) -> dm.EdgeList:
         f = dm.filters
@@ -45,11 +49,11 @@ class SeriesPointsAPI:
         filters.append(is_edge_type)
         if series_id:
             series_ids = [series_id] if isinstance(series_id, str) else series_id
-            is_series = f.In(
+            is_series_list = f.In(
                 ["edge", "startNode"],
                 [{"space": "power-ops", "externalId": ext_id} for ext_id in series_ids],
             )
-            filters.append(is_series)
+            filters.append(is_series_list)
 
         return self._client.data_modeling.instances.list("edge", limit=limit, filter=f.And(*filters))
 
@@ -98,12 +102,12 @@ class SeriesAPI(TypeAPI[Series, SeriesApply, SeriesList]):
 
             return series
         else:
-            series = self._retrieve([(self.sources.space, ext_id) for ext_id in external_id])
+            series_list = self._retrieve([(self.sources.space, ext_id) for ext_id in external_id])
 
             point_edges = self.points.retrieve(external_id)
-            self._set_points(series, point_edges)
+            self._set_points(series_list, point_edges)
 
-            return series
+            return series_list
 
     def list(
         self,
@@ -126,21 +130,21 @@ class SeriesAPI(TypeAPI[Series, SeriesApply, SeriesList]):
             filter,
         )
 
-        series = self._list(limit=limit, filter=filter_)
+        series_list = self._list(limit=limit, filter=filter_)
 
         if retrieve_edges:
-            point_edges = self.points.list(series.as_external_ids(), limit=-1)
-            self._set_points(series, point_edges)
+            point_edges = self.points.list(series_list.as_external_ids(), limit=-1)
+            self._set_points(series_list, point_edges)
 
-        return series
+        return series_list
 
     @staticmethod
-    def _set_points(series: Sequence[Series], point_edges: Sequence[dm.Edge]):
-        edges_by_start_node: Dict[Tuple, List] = defaultdict(list)
+    def _set_points(series_list: Sequence[Series], point_edges: Sequence[dm.Edge]):
+        edges_by_start_node: dict[tuple, list] = defaultdict(list)
         for edge in point_edges:
             edges_by_start_node[edge.start_node.as_tuple()].append(edge)
 
-        for series in series:
+        for series in series_list:
             node_id = series.id_tuple()
             if node_id in edges_by_start_node:
                 series.points = [edge.end_node.external_id for edge in edges_by_start_node[node_id]]

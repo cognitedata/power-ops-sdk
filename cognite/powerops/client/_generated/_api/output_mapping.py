@@ -1,17 +1,19 @@
 from __future__ import annotations
 
-from typing import Sequence, overload
+from collections.abc import Sequence
+from typing import overload
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 
-from ._core import DEFAULT_LIMIT_READ, TypeAPI
 from cognite.powerops.client._generated.data_classes import (
     OutputMapping,
     OutputMappingApply,
-    OutputMappingList,
     OutputMappingApplyList,
+    OutputMappingList,
 )
+
+from ._core import DEFAULT_LIMIT_READ, TypeAPI
 
 
 class OutputMappingAPI(TypeAPI[OutputMapping, OutputMappingApply, OutputMappingList]):

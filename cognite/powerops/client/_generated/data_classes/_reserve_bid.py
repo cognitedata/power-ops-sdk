@@ -6,11 +6,11 @@ from typing import TYPE_CHECKING, ClassVar, Optional, Union
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
-from ._core import DomainModel, DomainModelApply, TypeList, TypeApplyList
+from ._core import DomainModel, DomainModelApply, TypeApplyList, TypeList
 
 if TYPE_CHECKING:
-    from ._mba_domain import MBADomainApply
     from ._market_participant import MarketParticipantApply
+    from ._mba_domain import MBADomainApply
 
 __all__ = ["ReserveBid", "ReserveBidApply", "ReserveBidList", "ReserveBidApplyList"]
 

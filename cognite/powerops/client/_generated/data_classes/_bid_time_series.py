@@ -5,14 +5,14 @@ from typing import TYPE_CHECKING, ClassVar, Optional, Union
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
-from ._core import DomainModel, DomainModelApply, TypeList, TypeApplyList
+from ._core import DomainModel, DomainModelApply, TypeApplyList, TypeList
 
 if TYPE_CHECKING:
     from ._date_time_interval import DateTimeIntervalApply
     from ._duration import DurationApply
-    from ._mba_domain import MBADomainApply
     from ._market_agreement import MarketAgreementApply
     from ._market_participant import MarketParticipantApply
+    from ._mba_domain import MBADomainApply
     from ._reason import ReasonApply
     from ._reserve_bid import ReserveBidApply
 

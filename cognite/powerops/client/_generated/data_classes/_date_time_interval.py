@@ -5,7 +5,7 @@ from typing import ClassVar, Optional
 
 from cognite.client import data_modeling as dm
 
-from ._core import DomainModel, DomainModelApply, TypeList, TypeApplyList
+from ._core import DomainModel, DomainModelApply, TypeApplyList, TypeList
 
 __all__ = ["DateTimeInterval", "DateTimeIntervalApply", "DateTimeIntervalList", "DateTimeIntervalApplyList"]
 

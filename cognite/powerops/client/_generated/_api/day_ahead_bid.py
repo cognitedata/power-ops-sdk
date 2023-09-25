@@ -1,18 +1,20 @@
 from __future__ import annotations
 
 from collections import defaultdict
-from typing import Dict, List, Sequence, Tuple, overload
+from collections.abc import Sequence
+from typing import overload
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 
-from ._core import DEFAULT_LIMIT_READ, TypeAPI
 from cognite.powerops.client._generated.data_classes import (
     DayAheadBid,
     DayAheadBidApply,
-    DayAheadBidList,
     DayAheadBidApplyList,
+    DayAheadBidList,
 )
+
+from ._core import DEFAULT_LIMIT_READ, TypeAPI
 
 
 class DayAheadBidDateAPI:
@@ -220,7 +222,7 @@ class DayAheadBidAPI(TypeAPI[DayAheadBid, DayAheadBidApply, DayAheadBidList]):
 
     @staticmethod
     def _set_date(day_ahead_bids: Sequence[DayAheadBid], date_edges: Sequence[dm.Edge]):
-        edges_by_start_node: Dict[Tuple, List] = defaultdict(list)
+        edges_by_start_node: dict[tuple, list] = defaultdict(list)
         for edge in date_edges:
             edges_by_start_node[edge.start_node.as_tuple()].append(edge)
 
@@ -231,7 +233,7 @@ class DayAheadBidAPI(TypeAPI[DayAheadBid, DayAheadBidApply, DayAheadBidList]):
 
     @staticmethod
     def _set_price_scenarios(day_ahead_bids: Sequence[DayAheadBid], price_scenario_edges: Sequence[dm.Edge]):
-        edges_by_start_node: Dict[Tuple, List] = defaultdict(list)
+        edges_by_start_node: dict[tuple, list] = defaultdict(list)
         for edge in price_scenario_edges:
             edges_by_start_node[edge.start_node.as_tuple()].append(edge)
 

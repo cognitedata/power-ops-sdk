@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, ClassVar, Optional, Union
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
-from ._core import DomainModel, DomainModelApply, TypeList, TypeApplyList
+from ._core import DomainModel, DomainModelApply, TypeApplyList, TypeList
 
 if TYPE_CHECKING:
     from ._commands_config import CommandsConfigApply

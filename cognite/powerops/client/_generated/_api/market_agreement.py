@@ -1,18 +1,20 @@
 from __future__ import annotations
 
 import datetime
-from typing import Sequence, overload
+from collections.abc import Sequence
+from typing import overload
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 
-from ._core import DEFAULT_LIMIT_READ, TypeAPI
 from cognite.powerops.client._generated.data_classes import (
     MarketAgreement,
     MarketAgreementApply,
-    MarketAgreementList,
     MarketAgreementApplyList,
+    MarketAgreementList,
 )
+
+from ._core import DEFAULT_LIMIT_READ, TypeAPI
 
 
 class MarketAgreementAPI(TypeAPI[MarketAgreement, MarketAgreementApply, MarketAgreementList]):

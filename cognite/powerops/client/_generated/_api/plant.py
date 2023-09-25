@@ -1,17 +1,20 @@
 from __future__ import annotations
 
+import datetime
 import warnings
 from collections import defaultdict
-from typing import Dict, List, Sequence, Tuple, overload, Literal
+from collections.abc import Sequence
+from typing import Literal, overload
 
 import pandas as pd
 from cognite.client import CogniteClient
-from cognite.client.data_classes import TimeSeriesList, DatapointsList, Datapoints, DatapointsArrayList
-from cognite.client.data_classes.datapoints import Aggregate
 from cognite.client import data_modeling as dm
+from cognite.client.data_classes import Datapoints, DatapointsArrayList, DatapointsList, TimeSeriesList
+from cognite.client.data_classes.datapoints import Aggregate
 
-from ._core import DEFAULT_LIMIT_READ, TypeAPI, INSTANCE_QUERY_LIMIT
-from cognite.powerops.client._generated.data_classes import Plant, PlantApply, PlantList, PlantApplyList
+from cognite.powerops.client._generated.data_classes import Plant, PlantApply, PlantApplyList, PlantList
+
+from ._core import DEFAULT_LIMIT_READ, INSTANCE_QUERY_LIMIT, TypeAPI
 
 ColumnNames = Literal[
     "name",
@@ -47,8 +50,8 @@ class PlantPMaxTimeSeriesQuery:
 
     def retrieve(
         self,
-        start: int | str | datetime | None = None,
-        end: int | str | datetime | None = None,
+        start: int | str | datetime.datetime | None = None,
+        end: int | str | datetime.datetime | None = None,
         *,
         aggregates: Aggregate | list[Aggregate] | None = None,
         granularity: str | None = None,
@@ -71,8 +74,8 @@ class PlantPMaxTimeSeriesQuery:
 
     def retrieve_arrays(
         self,
-        start: int | str | datetime | None = None,
-        end: int | str | datetime | None = None,
+        start: int | str | datetime.datetime | None = None,
+        end: int | str | datetime.datetime | None = None,
         *,
         aggregates: Aggregate | list[Aggregate] | None = None,
         granularity: str | None = None,
@@ -95,8 +98,8 @@ class PlantPMaxTimeSeriesQuery:
 
     def retrieve_dataframe(
         self,
-        start: int | str | datetime | None = None,
-        end: int | str | datetime | None = None,
+        start: int | str | datetime.datetime | None = None,
+        end: int | str | datetime.datetime | None = None,
         *,
         aggregates: Aggregate | list[Aggregate] | None = None,
         granularity: str | None = None,
@@ -134,8 +137,8 @@ class PlantPMaxTimeSeriesQuery:
 
     def retrieve_dataframe_in_tz(
         self,
-        start: datetime,
-        end: datetime,
+        start: datetime.datetime,
+        end: datetime.datetime,
         *,
         aggregates: Aggregate | Sequence[Aggregate] | None = None,
         granularity: str | None = None,
@@ -169,7 +172,7 @@ class PlantPMaxTimeSeriesQuery:
 
     def retrieve_latest(
         self,
-        before: None | int | str | datetime = None,
+        before: None | int | str | datetime.datetime = None,
     ) -> Datapoints | DatapointsList | None:
         external_ids = self._retrieve_timeseries_external_ids_with_extra()
         if external_ids:
@@ -182,8 +185,8 @@ class PlantPMaxTimeSeriesQuery:
 
     def plot(
         self,
-        start: int | str | datetime | None = None,
-        end: int | str | datetime | None = None,
+        start: int | str | datetime.datetime | None = None,
+        end: int | str | datetime.datetime | None = None,
         *,
         aggregates: Aggregate | Sequence[Aggregate] | None = None,
         granularity: str | None = None,
@@ -423,8 +426,8 @@ class PlantPMinTimeSeriesQuery:
 
     def retrieve(
         self,
-        start: int | str | datetime | None = None,
-        end: int | str | datetime | None = None,
+        start: int | str | datetime.datetime | None = None,
+        end: int | str | datetime.datetime | None = None,
         *,
         aggregates: Aggregate | list[Aggregate] | None = None,
         granularity: str | None = None,
@@ -447,8 +450,8 @@ class PlantPMinTimeSeriesQuery:
 
     def retrieve_arrays(
         self,
-        start: int | str | datetime | None = None,
-        end: int | str | datetime | None = None,
+        start: int | str | datetime.datetime | None = None,
+        end: int | str | datetime.datetime | None = None,
         *,
         aggregates: Aggregate | list[Aggregate] | None = None,
         granularity: str | None = None,
@@ -471,8 +474,8 @@ class PlantPMinTimeSeriesQuery:
 
     def retrieve_dataframe(
         self,
-        start: int | str | datetime | None = None,
-        end: int | str | datetime | None = None,
+        start: int | str | datetime.datetime | None = None,
+        end: int | str | datetime.datetime | None = None,
         *,
         aggregates: Aggregate | list[Aggregate] | None = None,
         granularity: str | None = None,
@@ -510,8 +513,8 @@ class PlantPMinTimeSeriesQuery:
 
     def retrieve_dataframe_in_tz(
         self,
-        start: datetime,
-        end: datetime,
+        start: datetime.datetime,
+        end: datetime.datetime,
         *,
         aggregates: Aggregate | Sequence[Aggregate] | None = None,
         granularity: str | None = None,
@@ -545,7 +548,7 @@ class PlantPMinTimeSeriesQuery:
 
     def retrieve_latest(
         self,
-        before: None | int | str | datetime = None,
+        before: None | int | str | datetime.datetime = None,
     ) -> Datapoints | DatapointsList | None:
         external_ids = self._retrieve_timeseries_external_ids_with_extra()
         if external_ids:
@@ -558,8 +561,8 @@ class PlantPMinTimeSeriesQuery:
 
     def plot(
         self,
-        start: int | str | datetime | None = None,
-        end: int | str | datetime | None = None,
+        start: int | str | datetime.datetime | None = None,
+        end: int | str | datetime.datetime | None = None,
         *,
         aggregates: Aggregate | Sequence[Aggregate] | None = None,
         granularity: str | None = None,
@@ -799,8 +802,8 @@ class PlantWaterValueQuery:
 
     def retrieve(
         self,
-        start: int | str | datetime | None = None,
-        end: int | str | datetime | None = None,
+        start: int | str | datetime.datetime | None = None,
+        end: int | str | datetime.datetime | None = None,
         *,
         aggregates: Aggregate | list[Aggregate] | None = None,
         granularity: str | None = None,
@@ -823,8 +826,8 @@ class PlantWaterValueQuery:
 
     def retrieve_arrays(
         self,
-        start: int | str | datetime | None = None,
-        end: int | str | datetime | None = None,
+        start: int | str | datetime.datetime | None = None,
+        end: int | str | datetime.datetime | None = None,
         *,
         aggregates: Aggregate | list[Aggregate] | None = None,
         granularity: str | None = None,
@@ -847,8 +850,8 @@ class PlantWaterValueQuery:
 
     def retrieve_dataframe(
         self,
-        start: int | str | datetime | None = None,
-        end: int | str | datetime | None = None,
+        start: int | str | datetime.datetime | None = None,
+        end: int | str | datetime.datetime | None = None,
         *,
         aggregates: Aggregate | list[Aggregate] | None = None,
         granularity: str | None = None,
@@ -886,8 +889,8 @@ class PlantWaterValueQuery:
 
     def retrieve_dataframe_in_tz(
         self,
-        start: datetime,
-        end: datetime,
+        start: datetime.datetime,
+        end: datetime.datetime,
         *,
         aggregates: Aggregate | Sequence[Aggregate] | None = None,
         granularity: str | None = None,
@@ -921,7 +924,7 @@ class PlantWaterValueQuery:
 
     def retrieve_latest(
         self,
-        before: None | int | str | datetime = None,
+        before: None | int | str | datetime.datetime = None,
     ) -> Datapoints | DatapointsList | None:
         external_ids = self._retrieve_timeseries_external_ids_with_extra()
         if external_ids:
@@ -934,8 +937,8 @@ class PlantWaterValueQuery:
 
     def plot(
         self,
-        start: int | str | datetime | None = None,
-        end: int | str | datetime | None = None,
+        start: int | str | datetime.datetime | None = None,
+        end: int | str | datetime.datetime | None = None,
         *,
         aggregates: Aggregate | Sequence[Aggregate] | None = None,
         granularity: str | None = None,
@@ -1175,8 +1178,8 @@ class PlantFeedingFeeQuery:
 
     def retrieve(
         self,
-        start: int | str | datetime | None = None,
-        end: int | str | datetime | None = None,
+        start: int | str | datetime.datetime | None = None,
+        end: int | str | datetime.datetime | None = None,
         *,
         aggregates: Aggregate | list[Aggregate] | None = None,
         granularity: str | None = None,
@@ -1199,8 +1202,8 @@ class PlantFeedingFeeQuery:
 
     def retrieve_arrays(
         self,
-        start: int | str | datetime | None = None,
-        end: int | str | datetime | None = None,
+        start: int | str | datetime.datetime | None = None,
+        end: int | str | datetime.datetime | None = None,
         *,
         aggregates: Aggregate | list[Aggregate] | None = None,
         granularity: str | None = None,
@@ -1223,8 +1226,8 @@ class PlantFeedingFeeQuery:
 
     def retrieve_dataframe(
         self,
-        start: int | str | datetime | None = None,
-        end: int | str | datetime | None = None,
+        start: int | str | datetime.datetime | None = None,
+        end: int | str | datetime.datetime | None = None,
         *,
         aggregates: Aggregate | list[Aggregate] | None = None,
         granularity: str | None = None,
@@ -1262,8 +1265,8 @@ class PlantFeedingFeeQuery:
 
     def retrieve_dataframe_in_tz(
         self,
-        start: datetime,
-        end: datetime,
+        start: datetime.datetime,
+        end: datetime.datetime,
         *,
         aggregates: Aggregate | Sequence[Aggregate] | None = None,
         granularity: str | None = None,
@@ -1297,7 +1300,7 @@ class PlantFeedingFeeQuery:
 
     def retrieve_latest(
         self,
-        before: None | int | str | datetime = None,
+        before: None | int | str | datetime.datetime = None,
     ) -> Datapoints | DatapointsList | None:
         external_ids = self._retrieve_timeseries_external_ids_with_extra()
         if external_ids:
@@ -1310,8 +1313,8 @@ class PlantFeedingFeeQuery:
 
     def plot(
         self,
-        start: int | str | datetime | None = None,
-        end: int | str | datetime | None = None,
+        start: int | str | datetime.datetime | None = None,
+        end: int | str | datetime.datetime | None = None,
         *,
         aggregates: Aggregate | Sequence[Aggregate] | None = None,
         granularity: str | None = None,
@@ -1551,8 +1554,8 @@ class PlantOutletLevelTimeSeriesQuery:
 
     def retrieve(
         self,
-        start: int | str | datetime | None = None,
-        end: int | str | datetime | None = None,
+        start: int | str | datetime.datetime | None = None,
+        end: int | str | datetime.datetime | None = None,
         *,
         aggregates: Aggregate | list[Aggregate] | None = None,
         granularity: str | None = None,
@@ -1575,8 +1578,8 @@ class PlantOutletLevelTimeSeriesQuery:
 
     def retrieve_arrays(
         self,
-        start: int | str | datetime | None = None,
-        end: int | str | datetime | None = None,
+        start: int | str | datetime.datetime | None = None,
+        end: int | str | datetime.datetime | None = None,
         *,
         aggregates: Aggregate | list[Aggregate] | None = None,
         granularity: str | None = None,
@@ -1599,8 +1602,8 @@ class PlantOutletLevelTimeSeriesQuery:
 
     def retrieve_dataframe(
         self,
-        start: int | str | datetime | None = None,
-        end: int | str | datetime | None = None,
+        start: int | str | datetime.datetime | None = None,
+        end: int | str | datetime.datetime | None = None,
         *,
         aggregates: Aggregate | list[Aggregate] | None = None,
         granularity: str | None = None,
@@ -1638,8 +1641,8 @@ class PlantOutletLevelTimeSeriesQuery:
 
     def retrieve_dataframe_in_tz(
         self,
-        start: datetime,
-        end: datetime,
+        start: datetime.datetime,
+        end: datetime.datetime,
         *,
         aggregates: Aggregate | Sequence[Aggregate] | None = None,
         granularity: str | None = None,
@@ -1673,7 +1676,7 @@ class PlantOutletLevelTimeSeriesQuery:
 
     def retrieve_latest(
         self,
-        before: None | int | str | datetime = None,
+        before: None | int | str | datetime.datetime = None,
     ) -> Datapoints | DatapointsList | None:
         external_ids = self._retrieve_timeseries_external_ids_with_extra()
         if external_ids:
@@ -1686,8 +1689,8 @@ class PlantOutletLevelTimeSeriesQuery:
 
     def plot(
         self,
-        start: int | str | datetime | None = None,
-        end: int | str | datetime | None = None,
+        start: int | str | datetime.datetime | None = None,
+        end: int | str | datetime.datetime | None = None,
         *,
         aggregates: Aggregate | Sequence[Aggregate] | None = None,
         granularity: str | None = None,
@@ -1929,8 +1932,8 @@ class PlantInletLevelQuery:
 
     def retrieve(
         self,
-        start: int | str | datetime | None = None,
-        end: int | str | datetime | None = None,
+        start: int | str | datetime.datetime | None = None,
+        end: int | str | datetime.datetime | None = None,
         *,
         aggregates: Aggregate | list[Aggregate] | None = None,
         granularity: str | None = None,
@@ -1953,8 +1956,8 @@ class PlantInletLevelQuery:
 
     def retrieve_arrays(
         self,
-        start: int | str | datetime | None = None,
-        end: int | str | datetime | None = None,
+        start: int | str | datetime.datetime | None = None,
+        end: int | str | datetime.datetime | None = None,
         *,
         aggregates: Aggregate | list[Aggregate] | None = None,
         granularity: str | None = None,
@@ -1977,8 +1980,8 @@ class PlantInletLevelQuery:
 
     def retrieve_dataframe(
         self,
-        start: int | str | datetime | None = None,
-        end: int | str | datetime | None = None,
+        start: int | str | datetime.datetime | None = None,
+        end: int | str | datetime.datetime | None = None,
         *,
         aggregates: Aggregate | list[Aggregate] | None = None,
         granularity: str | None = None,
@@ -2016,8 +2019,8 @@ class PlantInletLevelQuery:
 
     def retrieve_dataframe_in_tz(
         self,
-        start: datetime,
-        end: datetime,
+        start: datetime.datetime,
+        end: datetime.datetime,
         *,
         aggregates: Aggregate | Sequence[Aggregate] | None = None,
         granularity: str | None = None,
@@ -2051,7 +2054,7 @@ class PlantInletLevelQuery:
 
     def retrieve_latest(
         self,
-        before: None | int | str | datetime = None,
+        before: None | int | str | datetime.datetime = None,
     ) -> Datapoints | DatapointsList | None:
         external_ids = self._retrieve_timeseries_external_ids_with_extra()
         if external_ids:
@@ -2064,8 +2067,8 @@ class PlantInletLevelQuery:
 
     def plot(
         self,
-        start: int | str | datetime | None = None,
-        end: int | str | datetime | None = None,
+        start: int | str | datetime.datetime | None = None,
+        end: int | str | datetime.datetime | None = None,
         *,
         aggregates: Aggregate | Sequence[Aggregate] | None = None,
         granularity: str | None = None,
@@ -2305,8 +2308,8 @@ class PlantHeadDirectTimeSeriesQuery:
 
     def retrieve(
         self,
-        start: int | str | datetime | None = None,
-        end: int | str | datetime | None = None,
+        start: int | str | datetime.datetime | None = None,
+        end: int | str | datetime.datetime | None = None,
         *,
         aggregates: Aggregate | list[Aggregate] | None = None,
         granularity: str | None = None,
@@ -2329,8 +2332,8 @@ class PlantHeadDirectTimeSeriesQuery:
 
     def retrieve_arrays(
         self,
-        start: int | str | datetime | None = None,
-        end: int | str | datetime | None = None,
+        start: int | str | datetime.datetime | None = None,
+        end: int | str | datetime.datetime | None = None,
         *,
         aggregates: Aggregate | list[Aggregate] | None = None,
         granularity: str | None = None,
@@ -2353,8 +2356,8 @@ class PlantHeadDirectTimeSeriesQuery:
 
     def retrieve_dataframe(
         self,
-        start: int | str | datetime | None = None,
-        end: int | str | datetime | None = None,
+        start: int | str | datetime.datetime | None = None,
+        end: int | str | datetime.datetime | None = None,
         *,
         aggregates: Aggregate | list[Aggregate] | None = None,
         granularity: str | None = None,
@@ -2392,8 +2395,8 @@ class PlantHeadDirectTimeSeriesQuery:
 
     def retrieve_dataframe_in_tz(
         self,
-        start: datetime,
-        end: datetime,
+        start: datetime.datetime,
+        end: datetime.datetime,
         *,
         aggregates: Aggregate | Sequence[Aggregate] | None = None,
         granularity: str | None = None,
@@ -2427,7 +2430,7 @@ class PlantHeadDirectTimeSeriesQuery:
 
     def retrieve_latest(
         self,
-        before: None | int | str | datetime = None,
+        before: None | int | str | datetime.datetime = None,
     ) -> Datapoints | DatapointsList | None:
         external_ids = self._retrieve_timeseries_external_ids_with_extra()
         if external_ids:
@@ -2440,8 +2443,8 @@ class PlantHeadDirectTimeSeriesQuery:
 
     def plot(
         self,
-        start: int | str | datetime | None = None,
-        end: int | str | datetime | None = None,
+        start: int | str | datetime.datetime | None = None,
+        end: int | str | datetime.datetime | None = None,
         *,
         aggregates: Aggregate | Sequence[Aggregate] | None = None,
         granularity: str | None = None,
@@ -2870,7 +2873,7 @@ class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
 
     @staticmethod
     def _set_generators(plants: Sequence[Plant], generator_edges: Sequence[dm.Edge]):
-        edges_by_start_node: Dict[Tuple, List] = defaultdict(list)
+        edges_by_start_node: dict[tuple, list] = defaultdict(list)
         for edge in generator_edges:
             edges_by_start_node[edge.start_node.as_tuple()].append(edge)
 
@@ -2881,7 +2884,7 @@ class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
 
     @staticmethod
     def _set_inlet_reservoirs(plants: Sequence[Plant], inlet_reservoir_edges: Sequence[dm.Edge]):
-        edges_by_start_node: Dict[Tuple, List] = defaultdict(list)
+        edges_by_start_node: dict[tuple, list] = defaultdict(list)
         for edge in inlet_reservoir_edges:
             edges_by_start_node[edge.start_node.as_tuple()].append(edge)
 

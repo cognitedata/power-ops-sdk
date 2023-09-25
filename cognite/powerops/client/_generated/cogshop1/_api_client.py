@@ -2,7 +2,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from cognite.client import ClientConfig, CogniteClient, data_modeling as dm
+from cognite.client import ClientConfig, CogniteClient
+from cognite.client import data_modeling as dm
 from cognite.client.credentials import OAuthClientCredentials
 
 from ._api.case import CaseAPI
@@ -20,7 +21,7 @@ class CogShop1Client:
     CogShop1Client
 
     Generated with:
-        pygen = 0.20.3
+        pygen = 0.20.4
         cognite-sdk = 6.26.0
         pydantic = 2.4.0
 
@@ -63,7 +64,7 @@ class CogShop1Client:
         if section is not None:
             try:
                 toml_content = toml_content[section]
-            except KeyError:
-                raise ValueError(f"Could not find section '{section}' in {file_path}")
+            except KeyError as e:
+                raise ValueError(f"Could not find section '{section}' in {file_path}") from e
 
         return cls.azure_project(**toml_content)

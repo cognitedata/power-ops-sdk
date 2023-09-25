@@ -100,7 +100,7 @@ class FieldDifference:
         output = []
         for item in self.removed:
             if isinstance(item, InstanceCore):
-                output.append(item.as_id())
+                output.append(item.as_id())  # type: ignore[union-attr]
             elif isinstance(item, AbstractDataclass):
                 output.append(item)
             elif hasattr(item, "external_id"):

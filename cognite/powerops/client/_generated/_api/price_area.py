@@ -1,17 +1,20 @@
 from __future__ import annotations
 
+import datetime
 import warnings
 from collections import defaultdict
-from typing import Dict, List, Sequence, Tuple, overload, Literal
+from collections.abc import Sequence
+from typing import Literal, overload
 
 import pandas as pd
 from cognite.client import CogniteClient
-from cognite.client.data_classes import TimeSeriesList, DatapointsList, Datapoints, DatapointsArrayList
-from cognite.client.data_classes.datapoints import Aggregate
 from cognite.client import data_modeling as dm
+from cognite.client.data_classes import Datapoints, DatapointsArrayList, DatapointsList, TimeSeriesList
+from cognite.client.data_classes.datapoints import Aggregate
 
-from ._core import DEFAULT_LIMIT_READ, TypeAPI, INSTANCE_QUERY_LIMIT
-from cognite.powerops.client._generated.data_classes import PriceArea, PriceAreaApply, PriceAreaList, PriceAreaApplyList
+from cognite.powerops.client._generated.data_classes import PriceArea, PriceAreaApply, PriceAreaApplyList, PriceAreaList
+
+from ._core import DEFAULT_LIMIT_READ, INSTANCE_QUERY_LIMIT, TypeAPI
 
 ColumnNames = Literal["name", "description", "dayAheadPrice"]
 
@@ -31,8 +34,8 @@ class PriceAreaDayAheadPriceQuery:
 
     def retrieve(
         self,
-        start: int | str | datetime | None = None,
-        end: int | str | datetime | None = None,
+        start: int | str | datetime.datetime | None = None,
+        end: int | str | datetime.datetime | None = None,
         *,
         aggregates: Aggregate | list[Aggregate] | None = None,
         granularity: str | None = None,
@@ -55,8 +58,8 @@ class PriceAreaDayAheadPriceQuery:
 
     def retrieve_arrays(
         self,
-        start: int | str | datetime | None = None,
-        end: int | str | datetime | None = None,
+        start: int | str | datetime.datetime | None = None,
+        end: int | str | datetime.datetime | None = None,
         *,
         aggregates: Aggregate | list[Aggregate] | None = None,
         granularity: str | None = None,
@@ -79,8 +82,8 @@ class PriceAreaDayAheadPriceQuery:
 
     def retrieve_dataframe(
         self,
-        start: int | str | datetime | None = None,
-        end: int | str | datetime | None = None,
+        start: int | str | datetime.datetime | None = None,
+        end: int | str | datetime.datetime | None = None,
         *,
         aggregates: Aggregate | list[Aggregate] | None = None,
         granularity: str | None = None,
@@ -118,8 +121,8 @@ class PriceAreaDayAheadPriceQuery:
 
     def retrieve_dataframe_in_tz(
         self,
-        start: datetime,
-        end: datetime,
+        start: datetime.datetime,
+        end: datetime.datetime,
         *,
         aggregates: Aggregate | Sequence[Aggregate] | None = None,
         granularity: str | None = None,
@@ -153,7 +156,7 @@ class PriceAreaDayAheadPriceQuery:
 
     def retrieve_latest(
         self,
-        before: None | int | str | datetime = None,
+        before: None | int | str | datetime.datetime = None,
     ) -> Datapoints | DatapointsList | None:
         external_ids = self._retrieve_timeseries_external_ids_with_extra()
         if external_ids:
@@ -166,8 +169,8 @@ class PriceAreaDayAheadPriceQuery:
 
     def plot(
         self,
-        start: int | str | datetime | None = None,
-        end: int | str | datetime | None = None,
+        start: int | str | datetime.datetime | None = None,
+        end: int | str | datetime.datetime | None = None,
         *,
         aggregates: Aggregate | Sequence[Aggregate] | None = None,
         granularity: str | None = None,
@@ -538,7 +541,7 @@ class PriceAreaAPI(TypeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
 
     @staticmethod
     def _set_plants(price_areas: Sequence[PriceArea], plant_edges: Sequence[dm.Edge]):
-        edges_by_start_node: Dict[Tuple, List] = defaultdict(list)
+        edges_by_start_node: dict[tuple, list] = defaultdict(list)
         for edge in plant_edges:
             edges_by_start_node[edge.start_node.as_tuple()].append(edge)
 
@@ -549,7 +552,7 @@ class PriceAreaAPI(TypeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
 
     @staticmethod
     def _set_watercourses(price_areas: Sequence[PriceArea], watercourse_edges: Sequence[dm.Edge]):
-        edges_by_start_node: Dict[Tuple, List] = defaultdict(list)
+        edges_by_start_node: dict[tuple, list] = defaultdict(list)
         for edge in watercourse_edges:
             edges_by_start_node[edge.start_node.as_tuple()].append(edge)
 

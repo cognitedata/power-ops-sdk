@@ -8,7 +8,6 @@ from cognite.client import data_modeling as dm
 
 from cognite.powerops.client._generated.cogshop1.data_classes._core import T_TypeApplyNode, T_TypeNode, T_TypeNodeList
 
-
 DEFAULT_LIMIT_READ = 25
 
 INSTANCE_QUERY_LIMIT = 1_000

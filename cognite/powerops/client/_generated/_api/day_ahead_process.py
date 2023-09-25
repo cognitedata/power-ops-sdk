@@ -1,18 +1,20 @@
 from __future__ import annotations
 
 from collections import defaultdict
-from typing import Dict, List, Sequence, Tuple, overload
+from collections.abc import Sequence
+from typing import overload
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 
-from ._core import DEFAULT_LIMIT_READ, TypeAPI
 from cognite.powerops.client._generated.data_classes import (
     DayAheadProcess,
     DayAheadProcessApply,
-    DayAheadProcessList,
     DayAheadProcessApplyList,
+    DayAheadProcessList,
 )
+
+from ._core import DEFAULT_LIMIT_READ, TypeAPI
 
 
 class DayAheadProcessIncrementalMappingsAPI:
@@ -206,7 +208,7 @@ class DayAheadProcessAPI(TypeAPI[DayAheadProcess, DayAheadProcessApply, DayAhead
     def _set_incremental_mappings(
         day_ahead_process: Sequence[DayAheadProcess], incremental_mapping_edges: Sequence[dm.Edge]
     ):
-        edges_by_start_node: Dict[Tuple, List] = defaultdict(list)
+        edges_by_start_node: dict[tuple, list] = defaultdict(list)
         for edge in incremental_mapping_edges:
             edges_by_start_node[edge.start_node.as_tuple()].append(edge)
 
@@ -221,7 +223,7 @@ class DayAheadProcessAPI(TypeAPI[DayAheadProcess, DayAheadProcessApply, DayAhead
     def _set_bid_matrix_generator_config(
         day_ahead_process: Sequence[DayAheadProcess], bid_matrix_generator_config_edges: Sequence[dm.Edge]
     ):
-        edges_by_start_node: Dict[Tuple, List] = defaultdict(list)
+        edges_by_start_node: dict[tuple, list] = defaultdict(list)
         for edge in bid_matrix_generator_config_edges:
             edges_by_start_node[edge.start_node.as_tuple()].append(edge)
 

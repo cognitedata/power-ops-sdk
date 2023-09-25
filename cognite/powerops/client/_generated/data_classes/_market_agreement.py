@@ -6,7 +6,7 @@ from typing import ClassVar, Optional
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
-from ._core import DomainModel, DomainModelApply, TypeList, TypeApplyList
+from ._core import DomainModel, DomainModelApply, TypeApplyList, TypeList
 
 __all__ = ["MarketAgreement", "MarketAgreementApply", "MarketAgreementList", "MarketAgreementApplyList"]
 

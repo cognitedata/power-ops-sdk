@@ -1,11 +1,11 @@
-from ._case import Case, CaseApply, CaseList, CaseApplyList
-from ._commands_config import CommandsConfig, CommandsConfigApply, CommandsConfigList, CommandsConfigApplyList
-from ._file_ref import FileRef, FileRefApply, FileRefList, FileRefApplyList
-from ._mapping import Mapping, MappingApply, MappingList, MappingApplyList
-from ._model_template import ModelTemplate, ModelTemplateApply, ModelTemplateList, ModelTemplateApplyList
-from ._processing_log import ProcessingLog, ProcessingLogApply, ProcessingLogList, ProcessingLogApplyList
-from ._scenario import Scenario, ScenarioApply, ScenarioList, ScenarioApplyList
-from ._transformation import Transformation, TransformationApply, TransformationList, TransformationApplyList
+from ._case import Case, CaseApply, CaseApplyList, CaseList
+from ._commands_config import CommandsConfig, CommandsConfigApply, CommandsConfigApplyList, CommandsConfigList
+from ._file_ref import FileRef, FileRefApply, FileRefApplyList, FileRefList
+from ._mapping import Mapping, MappingApply, MappingApplyList, MappingList
+from ._model_template import ModelTemplate, ModelTemplateApply, ModelTemplateApplyList, ModelTemplateList
+from ._processing_log import ProcessingLog, ProcessingLogApply, ProcessingLogApplyList, ProcessingLogList
+from ._scenario import Scenario, ScenarioApply, ScenarioApplyList, ScenarioList
+from ._transformation import Transformation, TransformationApply, TransformationApplyList, TransformationList
 
 CaseApply.model_rebuild()
 MappingApply.model_rebuild()

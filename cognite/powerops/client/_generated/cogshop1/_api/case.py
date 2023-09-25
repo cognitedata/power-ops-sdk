@@ -1,13 +1,15 @@
 from __future__ import annotations
 
 from collections import defaultdict
-from typing import Dict, List, Sequence, Tuple, overload
+from collections.abc import Sequence
+from typing import overload
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 
+from cognite.powerops.client._generated.cogshop1.data_classes import Case, CaseApply, CaseApplyList, CaseList
+
 from ._core import DEFAULT_LIMIT_READ, TypeAPI
-from cognite.powerops.client._generated.cogshop1.data_classes import Case, CaseApply, CaseList, CaseApplyList
 
 
 class CaseProcessingLogAPI:
@@ -135,7 +137,7 @@ class CaseAPI(TypeAPI[Case, CaseApply, CaseList]):
 
     @staticmethod
     def _set_processing_log(cases: Sequence[Case], processing_log_edges: Sequence[dm.Edge]):
-        edges_by_start_node: Dict[Tuple, List] = defaultdict(list)
+        edges_by_start_node: dict[tuple, list] = defaultdict(list)
         for edge in processing_log_edges:
             edges_by_start_node[edge.start_node.as_tuple()].append(edge)
 

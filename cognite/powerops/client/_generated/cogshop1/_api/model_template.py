@@ -1,18 +1,20 @@
 from __future__ import annotations
 
 from collections import defaultdict
-from typing import Dict, List, Sequence, Tuple, overload
+from collections.abc import Sequence
+from typing import overload
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 
-from ._core import DEFAULT_LIMIT_READ, TypeAPI
 from cognite.powerops.client._generated.cogshop1.data_classes import (
     ModelTemplate,
     ModelTemplateApply,
-    ModelTemplateList,
     ModelTemplateApplyList,
+    ModelTemplateList,
 )
+
+from ._core import DEFAULT_LIMIT_READ, TypeAPI
 
 
 class ModelTemplateBaseMappingsAPI:
@@ -150,7 +152,7 @@ class ModelTemplateAPI(TypeAPI[ModelTemplate, ModelTemplateApply, ModelTemplateL
 
     @staticmethod
     def _set_base_mappings(model_templates: Sequence[ModelTemplate], base_mapping_edges: Sequence[dm.Edge]):
-        edges_by_start_node: Dict[Tuple, List] = defaultdict(list)
+        edges_by_start_node: dict[tuple, list] = defaultdict(list)
         for edge in base_mapping_edges:
             edges_by_start_node[edge.start_node.as_tuple()].append(edge)
 
