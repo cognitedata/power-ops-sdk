@@ -162,12 +162,16 @@ class DataModel(Model, ABC):
         for domain_node in node_by_id.values():
             for field_name, field in domain_node.model_fields.items():
                 annotation, outer = get_pydantic_annotation(field.annotation, domain_node)
-                if (
-                    inspect.isclass(annotation)
-                    and issubclass(annotation, (DomainModelApply, DomainModelApplyCogShop1))
-                    and (value := getattr(domain_node, field_name)) in node_by_id
-                ):
-                    setattr(domain_node, field_name, node_by_id[value])
+                try:
+                    if (
+                        inspect.isclass(annotation)
+                        and issubclass(annotation, (DomainModelApply, DomainModelApplyCogShop1))
+                        and (value := getattr(domain_node, field_name)) is not None
+                    ):
+                        if isinstance(value, str) and value in node_by_id:
+                            setattr(domain_node, field_name, node_by_id[value])
+                except TypeError:
+                    raise
 
         return instance
 
