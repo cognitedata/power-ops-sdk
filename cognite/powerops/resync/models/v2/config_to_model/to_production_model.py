@@ -134,8 +134,11 @@ def to_production_data_model(configuration: config.ProductionConfig) -> Producti
                 plant_name, all_connections, {r.name for r in model.reservoirs}
             )
             selected_reservoir = next((r for r in model.reservoirs if r.name == inlet_reservoir_name), None)
-            plant.inlet_reservoirs = [selected_reservoir]
-
+            if selected_reservoir is not None:
+                plant.inlet_reservoirs = [selected_reservoir]
+            else:
+                # Todo Raise Exception?
+                ...
             parsed_connections = [config.Connection(**connection) for connection in all_connections]
             # Add the generators to the plant
             plant.generators = [
