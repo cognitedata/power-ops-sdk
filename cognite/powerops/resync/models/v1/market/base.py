@@ -33,3 +33,5 @@ class Bid(NonAssetType):
 
 class Process(AssetType, ABC):
     ...
+    # # TODO extract common fields:
+    # # probably also:

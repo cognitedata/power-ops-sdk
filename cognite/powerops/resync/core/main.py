@@ -70,11 +70,7 @@ def init(client: PowerOpsClient | None, echo: Echo | None = None, model_names: s
         echo(f"Deployed {model.name} model ({result.space}, {result.external_id}, {result.version})")
 
 
-def validate(
-    config_dir: str | Path,
-    market: str,
-    echo: Echo | None = None,
-) -> None:
+def validate(config_dir: str | Path, market: str, echo: Echo | None = None) -> None:
     """
     Validates the local configuration files.
 
@@ -95,18 +91,13 @@ def validate(
     market = market.lower()
     po_client = PowerOpsClient.from_settings()
     echo(f"Validating configuration in {config_dir}..")
-    loaded_models = _load_transform(
-        market, Path(config_dir), po_client.cdf.config.project, echo, list(V2_MODELS_BY_NAME)
-    )
+    loaded_models = _load_transform(market, Path(config_dir), po_client.cdf.config.project, echo, list(MODELS_BY_NAME))
 
     echo("Validating time series...")
-    models = [
-        model for model in loaded_models if type(model).__name__ in V2_MODELS_BY_NAME and hasattr(model, "processes")
-    ]
-    ts_validations, validation_ranges = prepare_validation(models)
+    ts_validations, validation_ranges = prepare_validation(loaded_models)
     perform_validation(po_client, ts_validations, validation_ranges)
 
-    echo("Validations successful")
+    echo("Validations complete")
 
 
 def plan(

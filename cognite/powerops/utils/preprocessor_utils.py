@@ -6,13 +6,13 @@ from the power-ops-functions repo.
 
 import logging
 from collections.abc import Iterable
-from typing import Optional
+from typing import Optional, cast
 
 import arrow
 import numpy as np
 import pandas as pd
 from cognite.client import CogniteClient
-from cognite.client.data_classes import Datapoint, DatapointsList
+from cognite.client.data_classes import DatapointsList
 
 from cognite.powerops.utils.require import require
 
@@ -61,18 +61,18 @@ def retrieve_latest(client: CogniteClient, external_ids: list[Optional[str]], be
         return {}
     external_ids = remove_duplicates(external_ids)
     logger.debug(f"Retrieving {external_ids} before '{ms_to_datetime(before)}'")
-    time_series = require(
+    time_series = cast(
+        DatapointsList,
         client.time_series.data.retrieve_latest(external_id=external_ids, before=before, ignore_unknown_ids=True),
-        as_type=list[Datapoint],
     )
 
     # For (Cog)Datapoints in (Cog)DatapointsList
     for datapoints in time_series:
         if len(datapoints) > 0:  # TODO: what to do about ts with no datapoints?
-            datapoints.timestamp[0] = before  # align timestamps  # type: ignore
+            datapoints.timestamp[0] = before  # type: ignore[index]
 
     res = {
-        datapoints.external_id: datapoints.to_pandas().iloc[:, 0]  # iloc to convert DataFrame to Series
+        require(datapoints.external_id): datapoints.to_pandas().iloc[:, 0]  # iloc to convert DataFrame to Series
         for datapoints in time_series
         if len(datapoints) > 0
     }
@@ -114,8 +114,8 @@ def _retrieve_range(client: CogniteClient, external_ids: list[str], start: int, 
 
     # Must retrieve time series metadata to correctly resample and aggregate datapoints
     time_series = client.time_series.retrieve_multiple(external_ids=external_ids, ignore_unknown_ids=True)
-    step_columns = [ts.external_id for ts in time_series if ts.is_step]
-    linear_columns = [ts.external_id for ts in time_series if not ts.is_step]
+    step_columns = [require(ts.external_id) for ts in time_series if ts.is_step]
+    linear_columns = [require(ts.external_id) for ts in time_series if not ts.is_step]
     logger.debug(f"time_series.is_step: True [{len(step_columns)}] False [{len(linear_columns)}]")
 
     # Step interpolation of time series with .is_step=False
@@ -164,7 +164,11 @@ def retrieve_time_series_datapoints(
         start=start,
         end=end,
     )
-    _time_series_none = [mapping.shop_model_path for mapping in mappings if not mapping.retrieve]
+    _time_series_none = [
+        ".".join(filter(None, [mapping.shop_object_type, mapping.shop_object_name, mapping.shop_attribute_name]))
+        for mapping in mappings
+        if not mapping.retrieve
+    ]
     logger.debug(f"Not retrieving datapoints for {_time_series_none}")
 
     return merge_dicts(time_series_start, time_series_end, time_series_range)
