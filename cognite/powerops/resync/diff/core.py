@@ -20,8 +20,8 @@ def model_difference(
     if type(current_model) != type(new_model):
         raise ValueError(f"Cannot compare model of type {type(current_model)} with {type(new_model)}")
     # The dump and load calls are to remove all read only fields
-    current_reloaded = current_model.load_from_cdf_resources(current_model.dump_as_cdf_resource())
-    new_reloaded = new_model.load_from_cdf_resources(new_model.dump_as_cdf_resource())
+    current_reloaded = current_model.load_from_cdf_resources(current_model.dump_as_cdf_resource(), link="external_id")
+    new_reloaded = new_model.load_from_cdf_resources(new_model.dump_as_cdf_resource(), link="external_id")
     static_resources = {
         k: type(v)._load([remove_read_only_fields(resource.dump()) for resource in v])
         for k, v in (static_resources or {}).items()

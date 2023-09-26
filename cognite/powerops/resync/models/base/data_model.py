@@ -135,6 +135,16 @@ class DataModel(Model, ABC):
 
         instance = cls(**parsed)
 
+        instance_annotations = (
+            get_pydantic_annotation(instance.model_fields[field_name].annotation, type(instance))[0]
+            for field_name in instance.model_fields
+        )
+        model_types: set[Union[DomainModelApply, DomainModelApplyCogShop1]] = {
+            annotation
+            for annotation in instance_annotations
+            if issubclass(annotation, (DomainModelApply, DomainModelApplyCogShop1))
+        }
+
         # One to many edges
         edge_by_source_by_id = defaultdict(list)
         for edge in load_by_type_external_id.get("edges", {}).values():
@@ -158,7 +168,10 @@ class DataModel(Model, ABC):
                     # Missing target
                     continue
                 if outer is list:
-                    getattr(source, prop_name).append(target)
+                    if link == "external_id" and annotation in model_types:
+                        getattr(source, prop_name).append(target.external_id)
+                    else:
+                        getattr(source, prop_name).append(target)
                 else:
                     raise NotImplementedError()
 
@@ -166,16 +179,16 @@ class DataModel(Model, ABC):
         for domain_node in node_by_id.values():
             for field_name, field in domain_node.model_fields.items():
                 annotation, outer = get_pydantic_annotation(field.annotation, domain_node)
-                try:
-                    if (
-                        inspect.isclass(annotation)
-                        and issubclass(annotation, (DomainModelApply, DomainModelApplyCogShop1))
-                        and (value := getattr(domain_node, field_name)) is not None
-                    ):
-                        if isinstance(value, str) and value in node_by_id:
+                if (
+                    inspect.isclass(annotation)
+                    and issubclass(annotation, (DomainModelApply, DomainModelApplyCogShop1))
+                    and (value := getattr(domain_node, field_name)) is not None
+                ):
+                    if isinstance(value, str) and value in node_by_id:
+                        if link == "external_id" and annotation in model_types:
+                            setattr(domain_node, field_name, value)
+                        else:
                             setattr(domain_node, field_name, node_by_id[value])
-                except TypeError:
-                    raise
 
         return instance
 
