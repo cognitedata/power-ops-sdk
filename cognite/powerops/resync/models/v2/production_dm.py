@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import ClassVar
 
 from cognite.client.data_classes.data_modeling import ContainerId
-from pydantic import Field
+from pydantic import Field, field_validator
 
 from cognite.powerops.client._generated.data_classes._core import DomainModelApply
 from cognite.powerops.client.data_classes import (
@@ -36,6 +36,10 @@ class ProductionModelDM(DataModel):
     plants: list[PlantApply] = Field(default_factory=list)
     generators: list[GeneratorApply] = Field(default_factory=list)
     reservoirs: list[ReservoirApply] = Field(default_factory=list)
+
+    @field_validator("cdf_sequences", "price_areas", "watercourses", "plants", "generators", "reservoirs", mode="after")
+    def ordering_list(cls, value: list) -> list:
+        return sorted(value, key=lambda x: x.external_id)
 
     @classmethod
     def from_cdf(cls: type[T_Model], client: PowerOpsClient, data_set_external_id: str) -> T_Model:
@@ -72,4 +76,9 @@ class ProductionModelDM(DataModel):
         )
 
     def standardize(self) -> None:
-        raise NotImplementedError()
+        self.cdf_sequences = self.ordering_list(self.cdf_sequences)
+        self.price_areas = self.ordering_list(self.price_areas)
+        self.watercourses = self.ordering_list(self.watercourses)
+        self.plants = self.ordering_list(self.plants)
+        self.generators = self.ordering_list(self.generators)
+        self.reservoirs = self.ordering_list(self.reservoirs)
