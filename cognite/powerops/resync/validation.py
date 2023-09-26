@@ -20,7 +20,6 @@ from cognite.powerops.client._generated.data_classes import (
     InputTimeSeriesMappingApply,
 )
 from cognite.powerops.resync.models.base import Model
-from cognite.powerops.utils.lookup import attr_lookup, dict_values, each
 from cognite.powerops.utils.preprocessor_utils import arrow_to_ms, retrieve_time_series_datapoints
 from cognite.powerops.utils.require import require
 from cognite.powerops.utils.time import relative_time_specification_to_arrow
@@ -56,13 +55,13 @@ class ValidationRange(BaseModel):
 
 
 def find_mappings(obj, lookup: Literal["base", "process"]) -> list[InputTimeSeriesMappingApply]:
-    def df_to_dict_records(item, attr_path):
-        yield from attr_lookup(item.replace(np.nan, None).to_dict("records"), attr_path)
+    def df_to_dict_records(item):
+        return item.replace(np.nan, None).to_dict("records")
 
-    def to_input_time_series_mapping_apply(item, _attr_path):
+    def to_input_time_series_mapping_apply(item):
         if item.get("time_series_external_id") is not None:
             shop_obj_type, shop_obj_name, shop_attr_name = item["shop_model_path"].split(".")
-            yield InputTimeSeriesMappingApply(
+            return InputTimeSeriesMappingApply(
                 external_id=item["time_series_external_id"],
                 aggregation=item["aggregation"],
                 retrieve=item["retrieve"],
@@ -73,10 +72,10 @@ def find_mappings(obj, lookup: Literal["base", "process"]) -> list[InputTimeSeri
                 shop_attribute_name=shop_attr_name,
             )
 
-    def from_mapping_to_input_time_series_mapping_apply(item, _attr_path):
+    def from_mapping_to_input_time_series_mapping_apply(item):
         if item.timeseries_external_id is not None:
             shop_obj_type, shop_obj_name, shop_attr_name = item.path.split(".")
-            yield InputTimeSeriesMappingApply(
+            return InputTimeSeriesMappingApply(
                 external_id=item.timeseries_external_id,
                 aggregation=item.aggregation,
                 retrieve=item.retrieve,
@@ -87,19 +86,26 @@ def find_mappings(obj, lookup: Literal["base", "process"]) -> list[InputTimeSeri
                 shop_attribute_name=shop_attr_name,
             )
 
-    lookup_paths = {
+    lookups = {
         "process": [
-            ["incremental_mapping", each, "content", df_to_dict_records, each, to_input_time_series_mapping_apply],
+            lambda process: [
+                to_input_time_series_mapping_apply(record)
+                for mapping in process.incremental_mapping
+                for record in df_to_dict_records(mapping.content)
+            ],
         ],
         "base": [
-            ["mappings", dict_values, each, from_mapping_to_input_time_series_mapping_apply],
+            lambda base: [from_mapping_to_input_time_series_mapping_apply(value) for value in base.mappings.values()]
             #  ^ includes scenario mappings
         ],
     }
 
     mappings: list[InputTimeSeriesMappingApply] = []
-    for lookup_path in lookup_paths[lookup]:
-        mappings.extend(filter(None, list(attr_lookup(obj, lookup_path))))
+    for lookup_func in lookups[lookup]:
+        try:
+            mappings.extend(filter(None, lookup_func(obj)))
+        except AttributeError:
+            pass
     return mappings
 
 
