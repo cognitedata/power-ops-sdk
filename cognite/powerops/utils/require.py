@@ -1,6 +1,6 @@
 # TODO DRY up with power-ops-functions
 
-from typing import overload, TypeVar, Optional, Any, Type
+from typing import Any, Optional, TypeVar, overload
 
 _T = TypeVar("_T")
 
@@ -11,7 +11,7 @@ def require(value: Optional[_T]) -> _T:
 
 
 @overload
-def require(value: Any, as_type: Type[_T]) -> _T:
+def require(value: Any, as_type: type[_T]) -> _T:
     ...
 
 

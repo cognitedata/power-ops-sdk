@@ -1,6 +1,5 @@
-from typing import Union, List, Tuple, Any, Optional
-
 import json
+from typing import Any, Optional, Union
 
 import arrow
 
@@ -8,7 +7,7 @@ from cognite.powerops.resync.config.market._core import RelativeTime
 
 
 def relative_time_specification_to_arrow(
-    relative_time_specification: Union[str, List[Tuple[str, Any]]],
+    relative_time_specification: Union[str, list[tuple[str, Any]]],
     floor_timezone: Optional[str] = None,
     result_timezone: str = "UTC",
 ) -> arrow.Arrow:
