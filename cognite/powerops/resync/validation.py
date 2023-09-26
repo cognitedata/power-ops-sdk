@@ -7,12 +7,11 @@ from __future__ import annotations
 
 import logging
 from collections import defaultdict
-from typing import Optional, Union, cast
+from typing import Literal, Optional, Union, cast
 
 import arrow
 import numpy as np
 import pandas as pd
-from cognite.client.data_classes import TimeSeries
 from pydantic import BaseModel, ConfigDict
 
 from cognite.powerops import PowerOpsClient
@@ -21,6 +20,7 @@ from cognite.powerops.client._generated.data_classes import (
     InputTimeSeriesMappingApply,
 )
 from cognite.powerops.resync.models.base import Model
+from cognite.powerops.utils.lookup import attr_lookup, dict_values, each
 from cognite.powerops.utils.preprocessor_utils import arrow_to_ms, retrieve_time_series_datapoints
 from cognite.powerops.utils.require import require
 from cognite.powerops.utils.time import relative_time_specification_to_arrow
@@ -55,34 +55,14 @@ class ValidationRange(BaseModel):
         return super().__eq__(other)
 
 
-def find_all_mappings(process) -> list[InputTimeSeriesMappingApply]:
-    def attr_values(value, attr_subpath):
-        if len(attr_subpath) == 0 or value is None:
-            yield value
-        else:
-            subattr = attr_subpath[0]
-            if callable(subattr):
-                yield from subattr(value, attr_subpath[1:])
-            else:
-                if isinstance(value, dict):
-                    val = value.get(subattr)
-                else:
-                    val = getattr(value, subattr, None)
-                yield from attr_values(val, attr_subpath[1:])
+def find_mappings(obj, lookup: Literal["base", "process"]) -> list[InputTimeSeriesMappingApply]:
+    def df_to_dict_records(item, attr_path):
+        yield from attr_lookup(item.replace(np.nan, None).to_dict("records"), attr_path)
 
-    def each(items, attr_subpath):
-        for item in items:
-            yield from attr_values(item, attr_subpath)
-
-    def to_dict_records(item, attr_subpath):
-        return attr_values(item.replace(np.nan, None).to_dict("records"), attr_subpath)
-
-    def to_input_time_series_mapping_apply(item, attr_subpath):
-        if item.get("time_series_external_id") is None:
-            return None, attr_subpath
-        shop_obj_type, shop_obj_name, shop_attr_name = item["shop_model_path"].split(".")
-        return (
-            InputTimeSeriesMappingApply(
+    def to_input_time_series_mapping_apply(item, _attr_path):
+        if item.get("time_series_external_id") is not None:
+            shop_obj_type, shop_obj_name, shop_attr_name = item["shop_model_path"].split(".")
+            yield InputTimeSeriesMappingApply(
                 external_id=item["time_series_external_id"],
                 aggregation=item["aggregation"],
                 retrieve=item["retrieve"],
@@ -91,17 +71,35 @@ def find_all_mappings(process) -> list[InputTimeSeriesMappingApply]:
                 shop_object_type=shop_obj_type,
                 shop_object_name=shop_obj_name,
                 shop_attribute_name=shop_attr_name,
-            ),
-            attr_subpath,
-        )
+            )
 
-    possible_attrs = [
-        ["incremental_mapping", each, "content", to_dict_records, each, to_input_time_series_mapping_apply],
-    ]
+    def from_mapping_to_input_time_series_mapping_apply(item, _attr_path):
+        if item.timeseries_external_id is not None:
+            shop_obj_type, shop_obj_name, shop_attr_name = item.path.split(".")
+            yield InputTimeSeriesMappingApply(
+                external_id=item.timeseries_external_id,
+                aggregation=item.aggregation,
+                retrieve=item.retrieve,
+                cdf_time_series=item.timeseries_external_id,
+                transformations=[],  # TODO fill out rom item.transformations
+                shop_object_type=shop_obj_type,
+                shop_object_name=shop_obj_name,
+                shop_attribute_name=shop_attr_name,
+            )
+
+    lookup_paths = {
+        "process": [
+            ["incremental_mapping", each, "content", df_to_dict_records, each, to_input_time_series_mapping_apply],
+        ],
+        "base": [
+            ["mappings", dict_values, each, from_mapping_to_input_time_series_mapping_apply],
+            #  ^ includes scenario mappings
+        ],
+    }
 
     mappings: list[InputTimeSeriesMappingApply] = []
-    for attr_path in possible_attrs:
-        mappings.extend(filter(None, attr_values(process, attr_path)))
+    for lookup_path in lookup_paths[lookup]:
+        mappings.extend(filter(None, list(attr_lookup(obj, lookup_path))))
     return mappings
 
 
@@ -109,22 +107,26 @@ PreparedValidationsT = dict[str, dict[str, TimeSeriesValidation]]
 ValidationRangesT = dict[str, ValidationRange]
 
 
-def prepare_validation(
-    models: list[Model], additional_timeseries: list[TimeSeries]
-) -> tuple[PreparedValidationsT, ValidationRangesT]:
+def prepare_validation(models: list[Model]) -> tuple[PreparedValidationsT, ValidationRangesT]:
+    # data containers:
     ts_validations = cast(PreparedValidationsT, defaultdict(lambda: defaultdict(dict)))
     validation_ranges: dict[str, ValidationRange] = {}
 
+    # Find processes (i.e. configuration for actual SHOP runs, with start and end times)
+    # Without this we don't know what time ranges to query from CDF.
     for model in models:
-        for process in model.processes:  # type: ignore[attr-defined]
-            starttime = relative_time_specification_to_arrow(process.shop.starttime)
-            endtime = relative_time_specification_to_arrow(process.shop.endtime)
-            validation_range = ValidationRange(start=starttime, end=endtime)
+        if not hasattr(model, "processes"):
+            continue
+        for process in model.processes:
+            start_time = relative_time_specification_to_arrow(process.shop.starttime)
+            end_time = relative_time_specification_to_arrow(process.shop.endtime)
+            validation_range = ValidationRange(start=start_time, end=end_time)
             validation_ranges[str(validation_range)] = validation_range
 
-            mappings = find_all_mappings(process)
-
-            for mapping in mappings:
+            # Find mappings that are configured within processes.
+            # For these mapping we only validate time ranges of the process.
+            process_mappings = find_mappings(process, "process")
+            for mapping in process_mappings:
                 ts_validation = ts_validations[f"{validation_range}"].get(mapping.external_id)
                 if ts_validation is None:
                     ts_validation = TimeSeriesValidation(
@@ -135,11 +137,27 @@ def prepare_validation(
                     ts_validation.data_models.append(model.model_name)
                 ts_validations[f"{validation_range}"][mapping.external_id] = ts_validation
 
-    # Add validations for "additional_timeseries".
-    # Assume these are needed in all validation ranges.
+    # Find base mappings.
+    # For these mappings we don't know the time ranges, so we validate all time ranges.
+    # Overwrite any process-mappings from above.
+    for model in models:
+        base_mappings = find_mappings(model, "base")
+        for mapping in base_mappings:
+            for validation_range_str, validation_range in validation_ranges.items():
+                ts_validation = TimeSeriesValidation(
+                    mapping=mapping,
+                    validation_range=validation_range,
+                )
+                if model.model_name not in ts_validation.data_models:
+                    ts_validation.data_models.append(model.model_name)
+                ts_validations[validation_range_str][mapping.external_id] = ts_validation
+
+    # Get any additional timeseries that are part of the models but are not part of the mappings.
+    # These are ambiguous... TODO Overwrite previous mappings or not? These are hard to connect back to SHOP path.
+    additional_timeseries = [ts for model in models for ts in model.timeseries()]
     for additional_ts in additional_timeseries:
-        for validation_range_str, ts_validations_in_range in ts_validations.items():
-            ts_validations_in_range[require(additional_ts.external_id)] = TimeSeriesValidation(
+        for validation_range_str in validation_ranges:
+            ts_validations[validation_range_str][require(additional_ts.external_id)] = TimeSeriesValidation(
                 validation_range=validation_ranges[validation_range_str],
                 mapping=InputTimeSeriesMappingApply(  # dummy mapping, for validation only
                     external_id=require(additional_ts.external_id),

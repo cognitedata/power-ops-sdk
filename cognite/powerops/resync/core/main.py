@@ -94,11 +94,7 @@ def validate(config_dir: str | Path, market: str, echo: Echo | None = None) -> N
     loaded_models = _load_transform(market, Path(config_dir), po_client.cdf.config.project, echo, list(MODELS_BY_NAME))
 
     echo("Validating time series...")
-    models = [
-        model for model in loaded_models if type(model).__name__ in MODELS_BY_NAME and hasattr(model, "processes")
-    ]
-    additional_timeseries = [ts for model in loaded_models for ts in model.timeseries()]
-    ts_validations, validation_ranges = prepare_validation(models, additional_timeseries)
+    ts_validations, validation_ranges = prepare_validation(loaded_models)
     perform_validation(po_client, ts_validations, validation_ranges)
 
     echo("Validations complete")
