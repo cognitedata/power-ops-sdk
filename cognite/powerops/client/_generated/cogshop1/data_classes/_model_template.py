@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 __all__ = ["ModelTemplate", "ModelTemplateApply", "ModelTemplateList", "ModelTemplateApplyList"]
 
 
-class ModelTemplate(DomainModel):
+class ModelTemplate(DomainModel, protected_namespaces=()):
     space: ClassVar[str] = "cogShop"
     version: Optional[str] = None
     shop_version: Optional[str] = Field(None, alias="shopVersion")
@@ -33,7 +33,7 @@ class ModelTemplate(DomainModel):
         )
 
 
-class ModelTemplateApply(DomainModelApply):
+class ModelTemplateApply(DomainModelApply, protected_namespaces=()):
     space: ClassVar[str] = "cogShop"
     version: str
     shop_version: str
