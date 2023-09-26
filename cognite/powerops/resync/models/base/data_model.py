@@ -4,7 +4,7 @@ import inspect
 from abc import ABC
 from collections import defaultdict
 from collections.abc import Iterable
-from typing import Any, Callable, ClassVar, TypeVar, Union
+from typing import Any, Callable, ClassVar, Literal, TypeVar, Union
 
 from cognite.client.data_classes.data_modeling import (
     ContainerId,
@@ -73,7 +73,9 @@ class DataModel(Model, ABC):
                 yield from items.values()
 
     @classmethod
-    def load_from_cdf_resources(cls: type[Self], data: dict[str, Any]) -> Self:
+    def load_from_cdf_resources(
+        cls: type[Self], data: dict[str, Any], link: Literal["external_id", "object"] = "object"
+    ) -> Self:
         load_by_type_external_id = cls._load_by_type_external_id(data)
         if "nodes" not in load_by_type_external_id:
             return cls()
@@ -133,7 +135,7 @@ class DataModel(Model, ABC):
 
         instance = cls(**parsed)
 
-        # One to many
+        # One to many edges
         edge_by_source_by_id = defaultdict(list)
         for edge in load_by_type_external_id.get("edges", {}).values():
             start_node = edge.start_node.external_id
@@ -159,8 +161,8 @@ class DataModel(Model, ABC):
                     getattr(source, prop_name).append(target)
                 else:
                     raise NotImplementedError()
-        # One to one
 
+        # One to one edge
         for domain_node in node_by_id.values():
             for field_name, field in domain_node.model_fields.items():
                 annotation, outer = get_pydantic_annotation(field.annotation, domain_node)
