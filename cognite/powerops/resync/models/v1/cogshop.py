@@ -45,12 +45,12 @@ class CogShop1Asset(CogShopCore, DataModel, protected_namespaces=()):
     @classmethod
     def from_cdf(cls, client: PowerOpsClient, data_set_external_id: str) -> CogShop1Asset:
         cog_shop = client.cog_shop1
-        templates = cog_shop.model_templates.list(limit=-1)
-        base_mappings = cog_shop.mappings.list(limit=-1)
-        transformations = cog_shop.transformations.list(limit=-1)
-        files = cog_shop.file_refs.list(limit=-1)
-        scenarios = cog_shop.scenarios.list(limit=-1)
-        commands_configs = cog_shop.commands_configs.list(limit=-1)
+        templates = cog_shop.model_template.list(limit=-1)
+        base_mappings = cog_shop.mapping.list(limit=-1)
+        transformations = cog_shop.transformation.list(limit=-1)
+        files = cog_shop.file_ref.list(limit=-1)
+        scenarios = cog_shop.scenario.list(limit=-1)
+        commands_configs = cog_shop.commands_config.list(limit=-1)
 
         transformation_by_id: dict[str, cogshop_v1.TransformationApply] = {t.external_id: t for t in transformations}
         mappings_by_id = {}
