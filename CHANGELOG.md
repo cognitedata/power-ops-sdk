@@ -13,6 +13,16 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.59.0] - 2023-09-26
+### Added
+* Support for loading `ProductionDM` from CDF.
+
+# Changed
+* `cognite.powerops.client._generated` has been regenerated with `pygen` `0.20.5`.
+
+### Fixed
+* Handle circular dependencies in data model when checcking diffs.
+
 ## [0.58.4] - 2023-09-25
 ### Fixed
 * External id format in `CogSHOP.Scenario` `view`, this is set to match the format used in functions.
