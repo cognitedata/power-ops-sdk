@@ -13,6 +13,47 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.59.0] - 2023-09-26
+### Added
+* Support for loading `ProductionDM` from CDF.
+
+# Changed
+* `cognite.powerops.client._generated` has been regenerated with `pygen` `0.20.5`.
+
+### Fixed
+* Handle circular dependencies in data model when checcking diffs.
+
+## [0.58.4] - 2023-09-25
+### Fixed
+* External id format in `CogSHOP.Scenario` `view`, this is set to match the format used in functions.
+
+## [0.58.3] - 2023-09-22
+### Fixed
+* Last fix had bugs. These new bugs are now now fixed.
+
+## [0.58.2] - 2023-09-22
+### Fixed
+* The extraction pipeline run, `utils.cdf.extraction_pipelines.PipelineRun`, could produce messages above API limit
+  with nested data structures. This is now fixed.
+
+## [0.58.1] - 2023-09-22
+### Fixed
+* On Windows machines, calling `power.shop.trigger_case()` could cause the `case` file not bo be uploaded to CDF correctly
+  due to a specific Windows encoding issue. This is now fixed.
+
+## [0.58.0] - 2023-09-22
+### Added
+* Extended options for `SHOPRun.list()`.
+* Added `SHOPRun.retrieve_latest()`
+
+## [0.57.0] - 2023-09-21
+### Added
+* A model for the `aFRR` market bids. Available under `v2` models.
+
+## [0.56.0] - 2023-09-21
+### Added
+* Support for deploying `v2` of `resync` models.
+
 ## [0.55.5] - 2023-09-19
 ### Fixed
 * `ShopRun.get_log_files()` such that it handles non `utf-8` output from `SHOP`.

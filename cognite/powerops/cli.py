@@ -41,11 +41,16 @@ def common(ctx: typer.Context, version: bool = typer.Option(None, "--version", c
 def init(
     models: list[str] = typer.Option(
         default=sorted(resync.MODELS_BY_NAME),
-        help=f"The models to initialize. Available models: {', '.join(resync.MODELS_BY_NAME)}",
+        help=f"The models to initialize. Available models: {', '.join(resync.MODELS_BY_NAME)}, v2",
     ),
     verbose: bool = typer.Option(False, "--verbose", "-v", help="Whether to print verbose output"),
 ):
     client = PowerOpsClient.from_settings()
+
+    if "v2" in models:
+        models.remove("v2")
+        models.extend(resync.V2_MODELS_BY_NAME)
+
     resync.init(client, echo=_to_echo(verbose), model_names=models)
 
 
