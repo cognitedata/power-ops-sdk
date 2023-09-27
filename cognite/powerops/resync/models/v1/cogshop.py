@@ -93,6 +93,7 @@ class CogShop1Asset(CogShopCore, DataModel, protected_namespaces=()):
             commands = command_configs_by_id.get(data["commands"])
             if commands:
                 data["commands"] = commands
+            data["model_template"] = model_templates[data["model_template"]]
             apply = cogshop_v1.ScenarioApply(**data)
             scenarios_by_id[apply.external_id] = apply
 
