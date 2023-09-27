@@ -2,14 +2,11 @@ from abc import ABC, abstractmethod
 from datetime import datetime, timedelta
 from itertools import chain
 from logging import getLogger
-from typing import Any, Literal, Optional
+from typing import Any, Literal
 
 import numpy as np
 import pandas as pd
-import yaml
-from arrow import arrow
-from cognite.client import CogniteClient, ClientConfig
-from cognite.client.credentials import OAuthClientCredentials
+from cognite.client import CogniteClient
 from cognite.client.utils import ms_to_datetime
 from pydantic import BaseModel
 from typing_extensions import Self
@@ -233,6 +230,7 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
     @property
     def start(self):
         return self._start
+
     @start.setter
     def start(self, value: int):
         self._start = value

@@ -44,6 +44,7 @@ def retrieve_relationships_from_source_ext_id(
         source_external_ids=[source_ext_id], labels=_labels, limit=-1, target_types=target_types
     )
 
+
 def _retrieve_range(client: CogniteClient, external_ids: list[str], start: int, end: int) -> pd.DataFrame:
     # TODO: Upgrade cognite-sdk to v5 (or later), and see how much of the code we can replace with direct SDK calls
     # - client.time_series.data.retrieve_dataframe(…, uniform_index=True) should give us almost what we want,
@@ -56,12 +57,12 @@ def _retrieve_range(client: CogniteClient, external_ids: list[str], start: int, 
     if not external_ids:
         return pd.DataFrame()
     logger.debug(f"Retrieving {external_ids} between '{ms_to_datetime(start)}' and '{ms_to_datetime(end)}'")
-    df_range = client.time_series.data.retrieve(
+    df_range = client.time_series.data.retrieve(  # type: ignore[union-attr]
         external_id=external_ids, start=start, end=end, ignore_unknown_ids=True
     ).to_pandas()
 
     # Retrieve latest datapoints before start
-    df_latest = client.time_series.data.retrieve_latest(
+    df_latest = client.time_series.data.retrieve_latest(  # type: ignore[union-attr]
         external_id=external_ids, before=start, ignore_unknown_ids=True
     ).to_pandas()
 
@@ -85,12 +86,12 @@ def _retrieve_range(client: CogniteClient, external_ids: list[str], start: int, 
     # Step interpolation of time series with .is_step=False
     # NOTE: do not need to upsample when forward filling
     # TODO: note 2x ffill()
-    df_step = df_raw[step_columns].ffill().resample("1h").ffill()
+    df_step = df_raw[step_columns].ffill().resample("1h").ffill()  # type: ignore[type-var]
 
     # Linear interpolation of time series with .is_step=False
     # TODO: must upsample before downsampling?
     # TODO: confirm operations
-    df_linear = df_raw[linear_columns].resample("1min").interpolate().resample("1h").interpolate()
+    df_linear = df_raw[linear_columns].resample("1min").interpolate().resample("1h").interpolate()  # type: ignore[type-var]
 
     # Merge the step interpolated and linearly interpolated DataFrames
     df_combined = df_step.combine_first(df_linear)
