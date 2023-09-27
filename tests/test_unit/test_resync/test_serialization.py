@@ -40,7 +40,7 @@ def test_serialize_market_model_as_cdf(market_model: models.MarketModel) -> None
     assert loaded.model_dump() == local_market.model_dump()
 
 
-@pytest.skip("Some issues with object vs external id comparison")
+@pytest.mark.skip("Some issues with object vs external id comparison")
 def test_serialize_cogshop1_model_as_cdf(cogshop1_model: models.CogShop1Asset) -> None:
     # Arrange
     local_cogshop = cogshop1_model.model_copy(deep=True)
