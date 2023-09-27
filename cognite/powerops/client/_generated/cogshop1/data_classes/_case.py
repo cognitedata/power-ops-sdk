@@ -19,7 +19,7 @@ class Case(DomainModel):
     scenario: Optional[str] = None
     start_time: Optional[str] = Field(None, alias="startTime")
     end_time: Optional[str] = Field(None, alias="endTime")
-    processing_log: list[str] = []
+    processing_log: Optional[list[str]] = Field(None, alias="processingLog")
 
     def as_apply(self) -> CaseApply:
         return CaseApply(
@@ -36,7 +36,7 @@ class CaseApply(DomainModelApply):
     scenario: Union[ScenarioApply, str, None] = Field(None, repr=False)
     start_time: str
     end_time: str
-    processing_log: Union[list[ProcessingLogApply], list[str]] = Field(default_factory=list, repr=False)
+    processing_log: Union[list[ProcessingLogApply], list[str], None] = Field(default=None, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
@@ -73,7 +73,7 @@ class CaseApply(DomainModelApply):
         edges = []
         cache.add(self.external_id)
 
-        for processing_log in self.processing_log:
+        for processing_log in self.processing_log or []:
             edge = self._create_processing_log_edge(processing_log)
             if edge.external_id not in cache:
                 edges.append(edge)

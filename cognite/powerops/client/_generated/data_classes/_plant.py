@@ -33,8 +33,8 @@ class Plant(DomainModel):
     outlet_level_time_series: Optional[str] = Field(None, alias="outletLevelTimeSeries")
     inlet_level: Optional[str] = Field(None, alias="inletLevel")
     head_direct_time_series: Optional[str] = Field(None, alias="headDirectTimeSeries")
-    generators: list[str] = []
-    inlet_reservoirs: list[str] = []
+    generators: Optional[list[str]] = None
+    inlet_reservoirs: Optional[list[str]] = Field(None, alias="inletReservoirs")
 
     def as_apply(self) -> PlantApply:
         return PlantApply(
@@ -78,8 +78,8 @@ class PlantApply(DomainModelApply):
     outlet_level_time_series: Optional[str] = None
     inlet_level: Optional[str] = None
     head_direct_time_series: Optional[str] = None
-    generators: Union[list[GeneratorApply], list[str]] = Field(default_factory=list, repr=False)
-    inlet_reservoirs: Union[list[ReservoirApply], list[str]] = Field(default_factory=list, repr=False)
+    generators: Union[list[GeneratorApply], list[str], None] = Field(default=None, repr=False)
+    inlet_reservoirs: Union[list[ReservoirApply], list[str], None] = Field(default=None, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
@@ -142,7 +142,7 @@ class PlantApply(DomainModelApply):
         edges = []
         cache.add(self.external_id)
 
-        for generator in self.generators:
+        for generator in self.generators or []:
             edge = self._create_generator_edge(generator)
             if edge.external_id not in cache:
                 edges.append(edge)
@@ -153,7 +153,7 @@ class PlantApply(DomainModelApply):
                 nodes.extend(instances.nodes)
                 edges.extend(instances.edges)
 
-        for inlet_reservoir in self.inlet_reservoirs:
+        for inlet_reservoir in self.inlet_reservoirs or []:
             edge = self._create_inlet_reservoir_edge(inlet_reservoir)
             if edge.external_id not in cache:
                 edges.append(edge)

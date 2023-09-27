@@ -14,7 +14,7 @@ class RKOMCombinationBid(DomainModel):
     space: ClassVar[str] = "power-ops"
     name: Optional[str] = None
     auction: Optional[str] = None
-    rkom_bid_configs: list[str] = Field(default_factory=list, alias="rkomBidConfigs")
+    rkom_bid_configs: Optional[list[str]] = Field(None, alias="rkomBidConfigs")
 
     def as_apply(self) -> RKOMCombinationBidApply:
         return RKOMCombinationBidApply(
@@ -29,7 +29,7 @@ class RKOMCombinationBidApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
     name: Optional[str] = None
     auction: Optional[str] = None
-    rkom_bid_configs: list[str] = []
+    rkom_bid_configs: Optional[list[str]] = None
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:

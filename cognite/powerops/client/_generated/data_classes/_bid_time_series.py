@@ -23,16 +23,16 @@ class BidTimeSeries(DomainModel):
     space: ClassVar[str] = "power-ops"
     m_rid: Optional[str] = Field(None, alias="mRID")
     auction: Optional[str] = None
-    acquiring_domain: Optional[str] = None
-    connecting_domain: Optional[str] = None
-    provider_market_participant: Optional[str] = None
+    acquiring_domain: Optional[str] = Field(None, alias="acquiringDomain")
+    connecting_domain: Optional[str] = Field(None, alias="connectingDomain")
+    provider_market_participant: Optional[str] = Field(None, alias="providerMarketParticipant")
     quantity_measure_unit_name: Optional[str] = Field(None, alias="quantityMeasureUnitName")
     currency_unit_name: Optional[str] = Field(None, alias="currencyUnitName")
     price_measure_unit_name: Optional[str] = Field(None, alias="priceMeasureUnitName")
     divisible: Optional[bool] = None
-    linked_bid: Optional[str] = None
-    multipart_bid: Optional[str] = None
-    exclusive_bid: Optional[str] = None
+    linked_bid: Optional[str] = Field(None, alias="linkedBid")
+    multipart_bid: Optional[str] = Field(None, alias="multipartBid")
+    exclusive_bid: Optional[str] = Field(None, alias="exclusiveBid")
     block_bid: Optional[bool] = Field(None, alias="blockBid")
     status: Optional[int] = None
     priority: Optional[int] = None
@@ -40,14 +40,14 @@ class BidTimeSeries(DomainModel):
     flow_direction: Optional[str] = Field(None, alias="flowDirection")
     step_increment_quantity: Optional[float] = Field(None, alias="stepIncrementQuantity")
     energy_price_measure_unit: Optional[str] = Field(None, alias="energyPriceMeasureUnit")
-    market_agreement: Optional[str] = None
-    activation_constraint: Optional[str] = None
-    resting_constraint: Optional[str] = None
-    minimum_constraint: Optional[str] = None
-    maximum_constraint: Optional[str] = None
+    market_agreement: Optional[str] = Field(None, alias="marketAgreement")
+    activation_constraint: Optional[str] = Field(None, alias="activationConstraint")
+    resting_constraint: Optional[str] = Field(None, alias="restingConstraint")
+    minimum_constraint: Optional[str] = Field(None, alias="minimumConstraint")
+    maximum_constraint: Optional[str] = Field(None, alias="maximumConstraint")
     standard_market_product_type: Optional[str] = Field(None, alias="standardMarketProductType")
     original_market_product_type: Optional[str] = Field(None, alias="originalMarketProductType")
-    validity_period: Optional[str] = None
+    validity_period: Optional[str] = Field(None, alias="validityPeriod")
     reason: Optional[str] = None
 
     def as_apply(self) -> BidTimeSeriesApply:

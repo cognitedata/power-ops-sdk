@@ -19,7 +19,7 @@ class Mapping(DomainModel):
     timeseries_external_id: Optional[str] = Field(None, alias="timeseriesExternalId")
     retrieve: Optional[str] = None
     aggregation: Optional[str] = None
-    transformations: list[str] = []
+    transformations: Optional[list[str]] = None
 
     def as_apply(self) -> MappingApply:
         return MappingApply(
@@ -38,7 +38,7 @@ class MappingApply(DomainModelApply):
     timeseries_external_id: Optional[str] = None
     retrieve: Optional[str] = None
     aggregation: Optional[str] = None
-    transformations: Union[list[TransformationApply], list[str]] = Field(default_factory=list, repr=False)
+    transformations: Union[list[TransformationApply], list[str], None] = Field(default=None, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
@@ -74,7 +74,7 @@ class MappingApply(DomainModelApply):
         edges = []
         cache.add(self.external_id)
 
-        for transformation in self.transformations:
+        for transformation in self.transformations or []:
             edge = self._create_transformation_edge(transformation)
             if edge.external_id not in cache:
                 edges.append(edge)

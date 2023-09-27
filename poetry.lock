@@ -476,13 +476,13 @@ colorama = {version = "*", markers = "platform_system == \"Windows\""}
 
 [[package]]
 name = "cognite-pygen"
-version = "0.20.5"
+version = "0.21.1"
 description = "Cognite Python SDK Generator"
 optional = false
 python-versions = ">=3.9,<4.0"
 files = [
-    {file = "cognite_pygen-0.20.5-py3-none-any.whl", hash = "sha256:69dba8255dfff1ea4c508aa8caed07ed2e7e580bbbd984255778bf0ebe462c85"},
-    {file = "cognite_pygen-0.20.5.tar.gz", hash = "sha256:a7006aa77df20f9ea0a243ae76b4654abd1d5c7b51e6fc6b0240e0f75ff2b375"},
+    {file = "cognite_pygen-0.21.1-py3-none-any.whl", hash = "sha256:321267a98a519f7e037f54fabc0e0189ba390f2e85a6f0ad9446a9472cf8c1f9"},
+    {file = "cognite_pygen-0.21.1.tar.gz", hash = "sha256:5c0fec021600d941558adebd9a667e82c339cd7e56e752aa8a5d31ec4f87c435"},
 ]
 
 [package.dependencies]
@@ -4637,4 +4637,4 @@ docs = ["mkdocs", "mkdocs-git-authors-plugin", "mkdocs-git-revision-date-localiz
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "7c4cf6cfeaa402bf067004429830d480bbb8c467a2e78ca376384cb4b8a599fe"
+content-hash = "6a4035482df524f43acd931e6f753b407df4021bf654f7762e29e92cdf39704f"

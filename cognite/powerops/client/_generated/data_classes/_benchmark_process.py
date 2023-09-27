@@ -21,8 +21,8 @@ class BenchmarkProcess(DomainModel):
     metrics: Optional[dict] = None
     bid: Optional[str] = None
     shop: Optional[str] = None
-    run_events: list[str] = Field(default_factory=list, alias="runEvents")
-    production_plan_time_series: list[str] = []
+    run_events: Optional[list[str]] = Field(None, alias="runEvents")
+    production_plan_time_series: Optional[list[str]] = Field(None, alias="productionPlanTimeSeries")
 
     def as_apply(self) -> BenchmarkProcessApply:
         return BenchmarkProcessApply(
@@ -42,9 +42,9 @@ class BenchmarkProcessApply(DomainModelApply):
     metrics: Optional[dict] = None
     bid: Union[BenchmarkBidApply, str, None] = Field(None, repr=False)
     shop: Union[ShopTransformationApply, str, None] = Field(None, repr=False)
-    run_events: list[str] = []
-    production_plan_time_series: Union[list[ProductionPlanTimeSeriesApply], list[str]] = Field(
-        default_factory=list, repr=False
+    run_events: Optional[list[str]] = None
+    production_plan_time_series: Union[list[ProductionPlanTimeSeriesApply], list[str], None] = Field(
+        default=None, repr=False
     )
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
@@ -89,7 +89,7 @@ class BenchmarkProcessApply(DomainModelApply):
         edges = []
         cache.add(self.external_id)
 
-        for production_plan_time_series in self.production_plan_time_series:
+        for production_plan_time_series in self.production_plan_time_series or []:
             edge = self._create_production_plan_time_series_edge(production_plan_time_series)
             if edge.external_id not in cache:
                 edges.append(edge)

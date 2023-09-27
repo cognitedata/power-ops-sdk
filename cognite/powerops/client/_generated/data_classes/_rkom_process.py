@@ -20,10 +20,10 @@ class RKOMProcess(DomainModel):
     name: Optional[str] = None
     bid: Optional[str] = None
     shop: Optional[str] = None
-    process_events: list[str] = Field(default_factory=list, alias="processEvents")
+    process_events: Optional[list[str]] = Field(None, alias="processEvents")
     timezone: Optional[str] = None
-    plants: list[str] = []
-    incremental_mappings: list[str] = []
+    plants: Optional[list[str]] = None
+    incremental_mappings: Optional[list[str]] = None
 
     def as_apply(self) -> RKOMProcessApply:
         return RKOMProcessApply(
@@ -43,10 +43,10 @@ class RKOMProcessApply(DomainModelApply):
     name: Optional[str] = None
     bid: Union[RKOMBidApply, str, None] = Field(None, repr=False)
     shop: Union[ShopTransformationApply, str, None] = Field(None, repr=False)
-    process_events: list[str] = []
+    process_events: Optional[list[str]] = None
     timezone: Optional[str] = None
-    plants: list[str] = []
-    incremental_mappings: Union[list[ScenarioMappingApply], list[str]] = Field(default_factory=list, repr=False)
+    plants: Optional[list[str]] = None
+    incremental_mappings: Union[list[ScenarioMappingApply], list[str], None] = Field(default=None, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
@@ -92,7 +92,7 @@ class RKOMProcessApply(DomainModelApply):
         edges = []
         cache.add(self.external_id)
 
-        for incremental_mapping in self.incremental_mappings:
+        for incremental_mapping in self.incremental_mappings or []:
             edge = self._create_incremental_mapping_edge(incremental_mapping)
             if edge.external_id not in cache:
                 edges.append(edge)

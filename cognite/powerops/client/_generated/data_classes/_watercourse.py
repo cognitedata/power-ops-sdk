@@ -18,8 +18,8 @@ class Watercourse(DomainModel):
     space: ClassVar[str] = "power-ops"
     name: Optional[str] = None
     shop: Optional[str] = None
-    production_obligation: list[str] = Field(default_factory=list, alias="productionObligation")
-    plants: list[str] = []
+    production_obligation: Optional[list[str]] = Field(None, alias="productionObligation")
+    plants: Optional[list[str]] = None
 
     def as_apply(self) -> WatercourseApply:
         return WatercourseApply(
@@ -35,8 +35,8 @@ class WatercourseApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
     name: Optional[str] = None
     shop: Union[WatercourseShopApply, str, None] = Field(None, repr=False)
-    production_obligation: list[str] = []
-    plants: Union[list[PlantApply], list[str]] = Field(default_factory=list, repr=False)
+    production_obligation: Optional[list[str]] = None
+    plants: Union[list[PlantApply], list[str], None] = Field(default=None, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
@@ -73,7 +73,7 @@ class WatercourseApply(DomainModelApply):
         edges = []
         cache.add(self.external_id)
 
-        for plant in self.plants:
+        for plant in self.plants or []:
             edge = self._create_plant_edge(plant)
             if edge.external_id not in cache:
                 edges.append(edge)

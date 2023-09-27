@@ -24,9 +24,9 @@ class RKOMBid(DomainModel):
     minimum_price: Optional[float] = Field(None, alias="minimumPrice")
     price_premium: Optional[float] = Field(None, alias="pricePremium")
     watercourse: Optional[str] = None
-    date: list[str] = []
-    price_scenarios: list[str] = []
-    reserve_scenarios: list[str] = []
+    date: Optional[list[str]] = None
+    price_scenarios: Optional[list[str]] = Field(None, alias="priceScenarios")
+    reserve_scenarios: Optional[list[str]] = Field(None, alias="reserveScenarios")
 
     def as_apply(self) -> RKOMBidApply:
         return RKOMBidApply(
@@ -51,9 +51,9 @@ class RKOMBidApply(DomainModelApply):
     minimum_price: Optional[float] = None
     price_premium: Optional[float] = None
     watercourse: Optional[str] = None
-    date: Union[list[DateTransformationApply], list[str]] = Field(default_factory=list, repr=False)
-    price_scenarios: Union[list[ScenarioMappingApply], list[str]] = Field(default_factory=list, repr=False)
-    reserve_scenarios: Union[list[ReserveScenarioApply], list[str]] = Field(default_factory=list, repr=False)
+    date: Union[list[DateTransformationApply], list[str], None] = Field(default=None, repr=False)
+    price_scenarios: Union[list[ScenarioMappingApply], list[str], None] = Field(default=None, repr=False)
+    reserve_scenarios: Union[list[ReserveScenarioApply], list[str], None] = Field(default=None, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
@@ -96,7 +96,7 @@ class RKOMBidApply(DomainModelApply):
         edges = []
         cache.add(self.external_id)
 
-        for date in self.date:
+        for date in self.date or []:
             edge = self._create_date_edge(date)
             if edge.external_id not in cache:
                 edges.append(edge)
@@ -107,7 +107,7 @@ class RKOMBidApply(DomainModelApply):
                 nodes.extend(instances.nodes)
                 edges.extend(instances.edges)
 
-        for price_scenario in self.price_scenarios:
+        for price_scenario in self.price_scenarios or []:
             edge = self._create_price_scenario_edge(price_scenario)
             if edge.external_id not in cache:
                 edges.append(edge)
@@ -118,7 +118,7 @@ class RKOMBidApply(DomainModelApply):
                 nodes.extend(instances.nodes)
                 edges.extend(instances.edges)
 
-        for reserve_scenario in self.reserve_scenarios:
+        for reserve_scenario in self.reserve_scenarios or []:
             edge = self._create_reserve_scenario_edge(reserve_scenario)
             if edge.external_id not in cache:
                 edges.append(edge)

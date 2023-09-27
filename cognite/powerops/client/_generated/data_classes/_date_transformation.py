@@ -12,7 +12,7 @@ __all__ = ["DateTransformation", "DateTransformationApply", "DateTransformationL
 class DateTransformation(DomainModel):
     space: ClassVar[str] = "power-ops"
     transformation: Optional[str] = None
-    args: list[str] = []
+    args: Optional[list[str]] = None
     kwargs: Optional[dict] = None
 
     def as_apply(self) -> DateTransformationApply:
@@ -27,7 +27,7 @@ class DateTransformation(DomainModel):
 class DateTransformationApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
     transformation: Optional[str] = None
-    args: list[str] = []
+    args: Optional[list[str]] = None
     kwargs: Optional[dict] = None
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
