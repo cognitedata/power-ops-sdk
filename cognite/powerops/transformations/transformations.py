@@ -1,3 +1,5 @@
+import inspect
+import sys
 from abc import ABC, abstractmethod
 from datetime import datetime, timedelta
 from logging import getLogger
@@ -13,17 +15,6 @@ from typing_extensions import Self
 from cognite.powerops.utils.cdf.calls import retrieve_range
 
 logger = getLogger(__name__)
-
-
-def _get_transformation_classes_dict() -> dict:
-    import inspect
-    import sys
-
-    return dict(
-        inspect.getmembers(
-            sys.modules[__name__], lambda member: inspect.isclass(member) and member.__module__ == __name__
-        )
-    )
 
 
 class RelativeDatapoint(BaseModel):
@@ -60,11 +51,10 @@ class Transformation(BaseModel, ABC):
     @classmethod
     def load(cls, transformation_: dict[str, Any]) -> Self:
         (transformation_name,) = transformation_
-        subclasses = _get_transformation_classes_dict()
         if transformation_body := transformation_.get(transformation_name):
-            return subclasses[transformation_name].__call__(**transformation_body["input"])
+            return _TRANSFORMATIONS_BY_CLASS_NAME[transformation_name].__call__(**transformation_body["input"])
         else:
-            return subclasses[transformation_name].__call__()
+            return _TRANSFORMATIONS_BY_CLASS_NAME[transformation_name].__call__()
 
     @abstractmethod
     def apply(
@@ -360,10 +350,8 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
             )
         else:
             raise ValueError("pre_apply function has not run - missing neccessary properties to run transformation")
-            
-           
+
+
 _TRANSFORMATIONS_BY_CLASS_NAME = dict(
-        inspect.getmembers(
-            sys.modules[__name__], lambda member: inspect.isclass(member) and member.__module__ == __name__
-        )
-    )
+    inspect.getmembers(sys.modules[__name__], lambda member: inspect.isclass(member) and member.__module__ == __name__)
+)
