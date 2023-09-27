@@ -6,7 +6,10 @@ from typing import Any, Literal, Optional
 
 import numpy as np
 import pandas as pd
-from cognite.client import CogniteClient
+import yaml
+from arrow import arrow
+from cognite.client import CogniteClient, ClientConfig
+from cognite.client.credentials import OAuthClientCredentials
 from cognite.client.utils import ms_to_datetime
 from pydantic import BaseModel
 from typing_extensions import Self
@@ -99,13 +102,23 @@ class Multiply(Transformation):
 class StaticValues(DynamicTransformation):
     shift_minutes: int = 0  # This could be given at runtime - looks like default value of 0 is always used for now
     relative_datapoints: list[RelativeDatapoint]
-    start: Optional[int] = None
+    pre_apply_has_run: bool = False
+    _start: int
+
+    @property
+    def start(self):
+        return self._start
+
+    @start.setter
+    def start(self, value: int):
+        self._start = value
 
     def pre_apply(self, client: CogniteClient, shop_model: dict, start: int, end: int):
         self.start = start
+        self.pre_apply_has_run = True
 
     def apply(self, _: pd.Series) -> pd.Series:
-        if not self.start:
+        if not self.pre_apply_has_run:
             raise ValueError("pre_apply function has not run - missing neccessary properties to run transformation")
         return _relative_datapoints_to_series(self.relative_datapoints, ms_to_datetime(self.start), self.shift_minutes)
 
@@ -128,8 +141,25 @@ class OneIfTwo(Transformation):
 class HeightToVolume(DynamicTransformation):
     object_type: str
     object_name: str
-    volumes: Optional[list[float]] = None
-    heights: Optional[list[float]] = None
+    pre_apply_has_run: bool = False
+    _volumes: list[float]
+    _heights: list[float]
+
+    @property
+    def volumes(self):
+        return self._volumes
+
+    @volumes.setter
+    def volumes(self, value: list[float]):
+        self._volumes = value
+
+    @property
+    def heights(self):
+        return self._volumes
+
+    @heights.setter
+    def heights(self, value: list[float]):
+        self._heights = value
 
     @staticmethod
     def height_to_volume(time_series_data: pd.Series, heights: list[float], volumes: list[float]) -> pd.Series:
@@ -144,9 +174,10 @@ class HeightToVolume(DynamicTransformation):
     def pre_apply(self, client: CogniteClient, shop_model: dict, start: int, end: int):
         self.volumes = shop_model[self.object_type][self.object_name]["vol_head"]["x"]
         self.heights = shop_model[self.object_type][self.object_name]["vol_head"]["y"]
+        self.pre_apply_has_run = True
 
     def apply(self, time_series_data: pd.Series) -> pd.Series:
-        if self.volumes and self.heights:
+        if self.pre_apply_has_run:
             return self.height_to_volume(time_series_data, self.heights, self.volumes)
         else:
             raise ValueError("pre_apply function has not run - missing neccessary properties to run transformation")
@@ -193,13 +224,42 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
     discharge_ts_external_id: str
     transit_object_type: Literal["plant", "gate"]
     transit_object_name: str
-    shape: Optional[dict[int, float]] = None
-    discharge: Optional[pd.Series] = None
-    start: Optional[int] = None
-    end: Optional[int] = None
+    pre_apply_has_run: bool = False
+    _start: int
+    _end: int
+    _shape: dict[int, float]
+    _discharge: pd.Series
 
-    class Config:
-        arbitrary_types_allowed = True
+    @property
+    def start(self):
+        return self._start
+    @start.setter
+    def start(self, value: int):
+        self._start = value
+
+    @property
+    def end(self):
+        return self._end
+
+    @end.setter
+    def end(self, value: int):
+        self._end = value
+
+    @property
+    def shape(self):
+        return self._shape
+
+    @shape.setter
+    def shape(self, value: dict[int, float]):
+        self._shape = value
+
+    @property
+    def discharge(self):
+        return self._discharge
+
+    @discharge.setter
+    def discharge(self, value: pd.Series):
+        self._discharge = value
 
     @staticmethod
     def get_shape(model: dict, transit_object_type: str, transit_object_name: str) -> dict[int, float]:
@@ -240,6 +300,7 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
             logger.warning("Cannot add 'water in transit' - did not get any 'discharge' datapoints!")
 
         self.discharge = discharge
+        self.pre_apply_has_run = True
 
     @staticmethod
     def add_water_in_transit(
@@ -287,7 +348,7 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
         if time_series_data.empty:
             return time_series_data
 
-        if self.discharge and self.shape and self.start and self.end:
+        if self.pre_apply_has_run:
             return self.add_water_in_transit(
                 inflow=time_series_data,
                 discharge=self.discharge,
