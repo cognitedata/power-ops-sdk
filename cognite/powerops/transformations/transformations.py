@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 from datetime import datetime, timedelta
-from itertools import chain
 from logging import getLogger
 from typing import Any, Literal
 
@@ -14,6 +13,17 @@ from typing_extensions import Self
 from cognite.powerops.utils.cdf.calls import retrieve_range
 
 logger = getLogger(__name__)
+
+
+def _get_transformation_classes_dict() -> dict:
+    import inspect
+    import sys
+
+    return dict(
+        inspect.getmembers(
+            sys.modules[__name__], lambda member: inspect.isclass(member) and member.__module__ == __name__
+        )
+    )
 
 
 class RelativeDatapoint(BaseModel):
@@ -50,17 +60,11 @@ class Transformation(BaseModel, ABC):
     @classmethod
     def load(cls, transformation_: dict[str, Any]) -> Self:
         (transformation_name,) = transformation_
-        subclasses = list(
-            chain(
-                [sub for cls in Transformation.__subclasses__() for sub in cls.__subclasses__()],
-                Transformation.__subclasses__(),
-            )
-        )
-        class_index = [cls.__name__ for cls in subclasses].index(transformation_name)
+        subclasses = _get_transformation_classes_dict()
         if transformation_body := transformation_.get(transformation_name):
-            return subclasses[class_index].__call__(**transformation_body["input"])
+            return subclasses[transformation_name].__call__(**transformation_body["input"])
         else:
-            return Transformation.__subclasses__()[class_index].__call__()
+            return subclasses[transformation_name].__call__()
 
     @abstractmethod
     def apply(
