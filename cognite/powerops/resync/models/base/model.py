@@ -3,7 +3,7 @@ from __future__ import annotations
 import abc
 from abc import ABC
 from collections.abc import Iterable
-from typing import Any, Callable, ClassVar, TypeVar
+from typing import Any, Callable, ClassVar, Literal, TypeVar
 
 from cognite.client import CogniteClient
 from cognite.client.data_classes import FileMetadataUpdate, SequenceUpdate, TimeSeries, TimeSeriesList
@@ -77,7 +77,21 @@ class Model(BaseModel, ABC):
 
     @classmethod
     @abc.abstractmethod
-    def load_from_cdf_resources(cls: type[Self], data: dict[str, Any]) -> Self:
+    def load_from_cdf_resources(
+        cls: type[Self], data: dict[str, Any], link: Literal["external_id", "object"] = "object"
+    ) -> Self:
+        """
+        This function loads the model from the data retrieved from CDF.
+
+        Args:
+            data: The data retrieved from CDF.
+            link: (Only data models) Whether to link the data model using external IDs or objects. Linking
+                objects directly can lead to circular dependencies, thus if this is a concern you should link
+                by "external_id".
+
+        Returns:
+            Instance of the model.
+        """
         raise NotImplementedError()
 
     @classmethod

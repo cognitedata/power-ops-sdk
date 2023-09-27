@@ -13,6 +13,27 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.60.0] - 2023-09-27
+### Added
+* Transformations module that holds all time series transformations.
+* Two types of transformation classes:
+  * **Transformation**: static - can be fully configured from a static configuration file
+  * **DynamicTransformation**: dynamic - can be partly configured dynamically at runtime by rynning `pre_apply` function with neccessary input parameters, before running `apply` on time series data
+
+## [0.59.0] - 2023-09-26
+### Added
+* Support for loading `ProductionDM` from CDF.
+
+# Changed
+* `cognite.powerops.client._generated` has been regenerated with `pygen` `0.20.5`.
+
+### Fixed
+* Handle circular dependencies in data model when checcking diffs.
+
+## [0.58.4] - 2023-09-25
+### Fixed
+* External id format in `CogSHOP.Scenario` `view`, this is set to match the format used in functions.
+
 ## [0.58.3] - 2023-09-22
 ### Fixed
 * Last fix had bugs. These new bugs are now now fixed.
