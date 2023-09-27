@@ -19,8 +19,8 @@ class PriceArea(DomainModel):
     name: Optional[str] = None
     description: Optional[str] = None
     day_ahead_price: Optional[str] = Field(None, alias="dayAheadPrice")
-    plants: list[str] = []
-    watercourses: list[str] = []
+    plants: Optional[list[str]] = None
+    watercourses: Optional[list[str]] = None
 
     def as_apply(self) -> PriceAreaApply:
         return PriceAreaApply(
@@ -38,8 +38,8 @@ class PriceAreaApply(DomainModelApply):
     name: Optional[str] = None
     description: Optional[str] = None
     day_ahead_price: Optional[str] = None
-    plants: Union[list[PlantApply], list[str]] = Field(default_factory=list, repr=False)
-    watercourses: Union[list[WatercourseApply], list[str]] = Field(default_factory=list, repr=False)
+    plants: Union[list[PlantApply], list[str], None] = Field(default=None, repr=False)
+    watercourses: Union[list[WatercourseApply], list[str], None] = Field(default=None, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
@@ -73,7 +73,7 @@ class PriceAreaApply(DomainModelApply):
         edges = []
         cache.add(self.external_id)
 
-        for plant in self.plants:
+        for plant in self.plants or []:
             edge = self._create_plant_edge(plant)
             if edge.external_id not in cache:
                 edges.append(edge)
@@ -84,7 +84,7 @@ class PriceAreaApply(DomainModelApply):
                 nodes.extend(instances.nodes)
                 edges.extend(instances.edges)
 
-        for watercourse in self.watercourses:
+        for watercourse in self.watercourses or []:
             edge = self._create_watercourse_edge(watercourse)
             if edge.external_id not in cache:
                 edges.append(edge)

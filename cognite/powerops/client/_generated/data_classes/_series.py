@@ -20,7 +20,7 @@ class Series(DomainModel):
     time_interval_start: Optional[datetime.datetime] = Field(None, alias="timeIntervalStart")
     time_interval_end: Optional[datetime.datetime] = Field(None, alias="timeIntervalEnd")
     resolution: Optional[str] = None
-    points: list[str] = []
+    points: Optional[list[str]] = None
 
     def as_apply(self) -> SeriesApply:
         return SeriesApply(
@@ -37,7 +37,7 @@ class SeriesApply(DomainModelApply):
     time_interval_start: Optional[datetime.datetime] = None
     time_interval_end: Optional[datetime.datetime] = None
     resolution: Union[DurationApply, str, None] = Field(None, repr=False)
-    points: Union[list[PointApply], list[str]] = Field(default_factory=list, repr=False)
+    points: Union[list[PointApply], list[str], None] = Field(default=None, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
@@ -74,7 +74,7 @@ class SeriesApply(DomainModelApply):
         edges = []
         cache.add(self.external_id)
 
-        for point in self.points:
+        for point in self.points or []:
             edge = self._create_point_edge(point)
             if edge.external_id not in cache:
                 edges.append(edge)

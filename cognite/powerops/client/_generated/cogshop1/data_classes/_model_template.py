@@ -20,7 +20,7 @@ class ModelTemplate(DomainModel, protected_namespaces=()):
     shop_version: Optional[str] = Field(None, alias="shopVersion")
     watercourse: Optional[str] = None
     model: Optional[str] = None
-    base_mappings: list[str] = []
+    base_mappings: Optional[list[str]] = Field(None, alias="baseMappings")
 
     def as_apply(self) -> ModelTemplateApply:
         return ModelTemplateApply(
@@ -39,7 +39,7 @@ class ModelTemplateApply(DomainModelApply, protected_namespaces=()):
     shop_version: str
     watercourse: str
     model: Union[FileRefApply, str, None] = Field(None, repr=False)
-    base_mappings: Union[list[MappingApply], list[str]] = Field(default_factory=list, repr=False)
+    base_mappings: Union[list[MappingApply], list[str], None] = Field(default=None, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
@@ -78,7 +78,7 @@ class ModelTemplateApply(DomainModelApply, protected_namespaces=()):
         edges = []
         cache.add(self.external_id)
 
-        for base_mapping in self.base_mappings:
+        for base_mapping in self.base_mappings or []:
             edge = self._create_base_mapping_edge(base_mapping)
             if edge.external_id not in cache:
                 edges.append(edge)

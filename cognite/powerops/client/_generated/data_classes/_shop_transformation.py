@@ -16,8 +16,8 @@ __all__ = ["ShopTransformation", "ShopTransformationApply", "ShopTransformationL
 class ShopTransformation(DomainModel):
     space: ClassVar[str] = "power-ops"
     type_name: Optional[str] = Field(None, alias="typeName")
-    end: list[str] = []
-    start: list[str] = []
+    end: Optional[list[str]] = None
+    start: Optional[list[str]] = None
 
     def as_apply(self) -> ShopTransformationApply:
         return ShopTransformationApply(
@@ -31,8 +31,8 @@ class ShopTransformation(DomainModel):
 class ShopTransformationApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
     type_name: Optional[str] = None
-    end: Union[list[DateTransformationApply], list[str]] = Field(default_factory=list, repr=False)
-    start: Union[list[DateTransformationApply], list[str]] = Field(default_factory=list, repr=False)
+    end: Union[list[DateTransformationApply], list[str], None] = Field(default=None, repr=False)
+    start: Union[list[DateTransformationApply], list[str], None] = Field(default=None, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
@@ -62,7 +62,7 @@ class ShopTransformationApply(DomainModelApply):
         edges = []
         cache.add(self.external_id)
 
-        for end in self.end:
+        for end in self.end or []:
             edge = self._create_end_edge(end)
             if edge.external_id not in cache:
                 edges.append(edge)
@@ -73,7 +73,7 @@ class ShopTransformationApply(DomainModelApply):
                 nodes.extend(instances.nodes)
                 edges.extend(instances.edges)
 
-        for start in self.start:
+        for start in self.start or []:
             edge = self._create_start_edge(start)
             if edge.external_id not in cache:
                 edges.append(edge)

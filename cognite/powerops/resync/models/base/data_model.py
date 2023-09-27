@@ -168,6 +168,8 @@ class DataModel(Model, ABC):
                     # Missing target
                     continue
                 if outer is list:
+                    if getattr(source, prop_name) is None:
+                        setattr(source, prop_name, [])
                     if link == "external_id" and annotation in model_types:
                         getattr(source, prop_name).append(target.external_id)
                     else:

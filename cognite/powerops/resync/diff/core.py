@@ -23,7 +23,7 @@ def model_difference(
     current_reloaded = current_model.load_from_cdf_resources(current_model.dump_as_cdf_resource(), link="external_id")
     new_reloaded = new_model.load_from_cdf_resources(new_model.dump_as_cdf_resource(), link="external_id")
     static_resources = {
-        k: type(v)._load([remove_read_only_fields(resource.dump()) for resource in v])
+        k: type(v)._load([remove_read_only_fields(resource.dump(camel_case=True)) for resource in v])
         for k, v in (static_resources or {}).items()
     }
 

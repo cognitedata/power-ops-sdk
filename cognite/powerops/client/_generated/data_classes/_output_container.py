@@ -18,7 +18,7 @@ class OutputContainer(DomainModel):
     name: Optional[str] = None
     watercourse: Optional[str] = None
     shop_type: Optional[str] = Field(None, alias="shopType")
-    mappings: list[str] = []
+    mappings: Optional[list[str]] = None
 
     def as_apply(self) -> OutputContainerApply:
         return OutputContainerApply(
@@ -35,7 +35,7 @@ class OutputContainerApply(DomainModelApply):
     name: Optional[str] = None
     watercourse: Optional[str] = None
     shop_type: Optional[str] = None
-    mappings: Union[list[OutputMappingApply], list[str]] = Field(default_factory=list, repr=False)
+    mappings: Union[list[OutputMappingApply], list[str], None] = Field(default=None, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
@@ -69,7 +69,7 @@ class OutputContainerApply(DomainModelApply):
         edges = []
         cache.add(self.external_id)
 
-        for mapping in self.mappings:
+        for mapping in self.mappings or []:
             edge = self._create_mapping_edge(mapping)
             if edge.external_id not in cache:
                 edges.append(edge)
