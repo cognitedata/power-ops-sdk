@@ -52,49 +52,36 @@ class CogShop1Asset(CogShopCore, DataModel, protected_namespaces=()):
         scenarios = cog_shop.scenario.list(limit=-1)
         commands_configs = cog_shop.commands_config.list(limit=-1)
 
-        transformation_by_id: dict[str, cogshop_v1.TransformationApply] = {t.external_id: t for t in transformations}
-        mappings_by_id = {}
-        readme_fields = {"created_time", "deleted_time", "last_updated_time", "version"}
-        for transformation in transformations:
-            data = transformation.model_dump(exclude=readme_fields)
-            apply = cogshop_v1.TransformationApply(**data)
-            transformation_by_id[apply.external_id] = apply
+        transformation_by_id: dict[str, cogshop_v1.TransformationApply] = {
+            t.external_id: t.as_apply() for t in transformations
+        }
 
+        mappings_by_id: dict[str, cogshop_v1.MappingApply] = {}
         for mapping in base_mappings:
-            data = mapping.model_dump(exclude=readme_fields)
-            data["transformations"] = sorted(
-                (transformation_by_id[t] for t in data["transformations"] if t in transformation_by_id),
+            apply = mapping.as_apply()
+            apply.transformations = sorted(
+                (transformation_by_id[t] for t in apply.transformations or [] if t in transformation_by_id),
                 key=lambda x: x.order,
             )
-            apply = cogshop_v1.MappingApply(**data)
             mappings_by_id[apply.external_id] = apply
 
-        command_configs_by_id = {}
-        for commands_config in commands_configs:
-            data = commands_config.model_dump(exclude=readme_fields)
-            apply = cogshop_v1.CommandsConfigApply(**data)
-            command_configs_by_id[apply.external_id] = apply
+        command_configs_by_id = {commands.external_id: commands.as_apply() for commands in commands_configs}
 
-        file_by_id = {f.external_id: f for f in files}
-        model_templates = {}
+        file_by_id: dict[str, cogshop_v1.FileRefApply] = {f.external_id: f.as_apply() for f in files}
+        model_templates: dict[str, cogshop_v1.ModelTemplateApply] = {}
         for template in templates:
-            data = template.model_dump(exclude=readme_fields - {"version"})
-            data["version"] = str(data["version"])
-            if data["model"] in file_by_id:
-                data["model"] = file_by_id[data["model"]].model_dump(exclude=readme_fields)
-            data["base_mappings"] = [mappings_by_id[m] for m in data["base_mappings"] if m in mappings_by_id]
-            apply = cogshop_v1.ModelTemplateApply(**data)
+            apply = template.as_apply()
+            if apply.model in file_by_id:
+                apply.model = file_by_id[apply.model]
+            apply.base_mappings = [mappings_by_id[m] for m in apply.base_mappings or [] if m in mappings_by_id]
             model_templates[apply.external_id] = apply
 
         scenarios_by_id = {}
         for scenario in scenarios:
-            data = scenario.model_dump(exclude=readme_fields)
-            data["mappings_override"] = [mappings_by_id[m] for m in data["mappings_override"]]
-            commands = command_configs_by_id.get(data["commands"])
-            if commands:
-                data["commands"] = commands
-            data["model_template"] = model_templates[data["model_template"]]
-            apply = cogshop_v1.ScenarioApply(**data)
+            apply = scenario.as_apply()
+            apply.mappings_override = [mappings_by_id[m] for m in apply.mappings_override or []]
+            apply.commands = command_configs_by_id.get(apply.commands)
+            apply.model_template = model_templates.get(apply.model_template)
             scenarios_by_id[apply.external_id] = apply
 
         # There files and sequences are not linked to the model templates
