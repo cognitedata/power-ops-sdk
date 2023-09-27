@@ -360,3 +360,10 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
             )
         else:
             raise ValueError("pre_apply function has not run - missing neccessary properties to run transformation")
+            
+           
+_TRANSFORMATIONS_BY_CLASS_NAME = dict(
+        inspect.getmembers(
+            sys.modules[__name__], lambda member: inspect.isclass(member) and member.__module__ == __name__
+        )
+    )
