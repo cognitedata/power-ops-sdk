@@ -91,8 +91,8 @@ def _retrieve_range(client: CogniteClient, external_ids: list[str], start: int, 
     # Linear interpolation of time series with .is_step=False
     # TODO: must upsample before downsampling?
     # TODO: confirm operations
-    df_linear = df_raw[linear_columns].resample("1min").interpolate().resample("1h").interpolate()  # type: ignore[type-var]
-
+    intermediate_df = df_raw[linear_columns].resample("1min").interpolate()  # type: ignore[type-var]
+    df_linear = intermediate_df.resample("1h").interpolate()
     # Merge the step interpolated and linearly interpolated DataFrames
     df_combined = df_step.combine_first(df_linear)
 
