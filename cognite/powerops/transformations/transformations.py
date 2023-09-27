@@ -189,7 +189,7 @@ class MultiplyFromOffset(Transformation):
         return time_series_data.reindex(union_index).ffill() * non_relative_datapoints
 
 
-class AddWaterInTransit(DynamicTransformation):
+class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
     discharge_ts_external_id: str
     transit_object_type: Literal["plant", "gate"]
     transit_object_name: str
