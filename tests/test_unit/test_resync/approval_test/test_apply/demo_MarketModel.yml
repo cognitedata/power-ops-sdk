@@ -20,13 +20,21 @@ assets:
   labels:
   - externalId: market
   metadata:
+    max_price: 4000.0
+    min_price: -500.0
+    price_steps: 200
+    price_unit: EUR/MWh
+    tick_size: 0.1
+    time_unit: 1h
     timezone: Europe/Oslo
+    trade_lot: 0.1
   name: Nord Pool Day-ahead
   parent_external_id: market_configurations
 - external_id: market_configuration_statnett_rkom_weekly
   labels:
   - externalId: market
   metadata:
+    start_of_week: 1
     timezone: Europe/Oslo
   name: RKOM weekly (Statnett)
   parent_external_id: market_configurations

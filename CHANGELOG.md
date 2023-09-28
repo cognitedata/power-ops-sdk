@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.60.2] - 2023-09-28
+### Fixed
+* `powerops plan/apply` did not handle the config for `NordPool` and `RKOM` correctly, leading these not to be updated. This is now fixed.
+
 ## [0.60.1] - 2023-09-27
 ### Fixed
 * `powerops plan` showed differences for models when there were none due to faulty download of CDF model. This is now fixed.
