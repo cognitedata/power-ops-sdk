@@ -46,7 +46,7 @@ jobs:
       - name: Test
         env:
           CI: 1
-        run: pytest tests/test_unit
+        run: pytest --skipcdf
 
       - uses: codecov/codecov-action@v3
         with:
