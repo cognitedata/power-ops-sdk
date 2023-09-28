@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import ClassVar, Union
+from typing import ClassVar, Optional, Union
 
 from pydantic import Field, field_validator
 
@@ -83,4 +83,5 @@ class RKOMBidCombination(AssetType):
 
 
 class RKOMMarket(Market):
-    start_of_week: int
+    # Temporary optional to fix that this is missing in CDF.
+    start_of_week: Optional[int] = None

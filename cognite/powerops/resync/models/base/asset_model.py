@@ -179,8 +179,21 @@ class AssetModel(Model, ABC, validate_assignment=True):
             annotation, outer = get_pydantic_annotation(field.annotation, cls)
             if issubclass(annotation, AssetType) and outer is list:
                 assets = asset_by_parent_external_id.get(annotation.parent_external_id, [])
-
-                arguments[field_name] = [annotation.from_asset(asset) for asset in assets]
+                # Hack to handle market case where two different asset types have the same parent
+                if field_name == "nordpool_market":
+                    arguments[field_name] = [
+                        annotation.from_asset(asset)
+                        for asset in assets
+                        if asset.external_id == "market_configuration_nordpool_dayahead"
+                    ]
+                elif field_name == "rkom_market":
+                    arguments[field_name] = [
+                        annotation.from_asset(asset)
+                        for asset in assets
+                        if asset.external_id == "market_configuration_statnett_rkom_weekly"
+                    ]
+                else:
+                    arguments[field_name] = [annotation.from_asset(asset) for asset in assets]
                 asset_type_by_external_id.update({asset.external_id: asset for asset in arguments[field_name]})
             else:
                 raise NotImplementedError()
