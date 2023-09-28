@@ -11,7 +11,7 @@ are based on Data Modeling in CDF.
 
 from .cogshop import CogShopDataModel
 from .graphql_schemas import GRAPHQL_MODELS
-from .market_dm import BenchmarkMarketDataModel, DayAheadMarketDataModel, RKOMMarketDataModel
+from .market_dm import AFRRMarket, BenchmarkMarketDataModel, DayAheadMarketDataModel, RKOMMarketDataModel
 from .production_dm import ProductionModelDM
 
 __all__ = [
@@ -21,4 +21,5 @@ __all__ = [
     "DayAheadMarketDataModel",
     "RKOMMarketDataModel",
     "BenchmarkMarketDataModel",
+    "AFRRMarket",
 ]

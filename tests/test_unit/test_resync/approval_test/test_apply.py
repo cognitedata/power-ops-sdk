@@ -1,9 +1,10 @@
 import contextlib
+from dataclasses import asdict
 from itertools import product
 from pathlib import Path
 
 import pytest
-from cognite.client.data_classes import TimeSeries
+from cognite.client.data_classes import AssetList, LabelDefinitionList, TimeSeries
 
 try:
     import tomllib
@@ -53,7 +54,6 @@ def apply_test_cases():
         )
 
 
-@pytest.mark.skip("Requires a upgrade of Mock client to support CDF read")
 @pytest.mark.parametrize(
     "input_dir, market, compare_file_path, cdf_timeseries, model_name",
     list(
@@ -81,6 +81,9 @@ def test_apply_summary(
         "data_modeling.instances.apply": MockInstancesApply(),
         "files.upload_bytes": MockFilesUploadBytes(),
         "time_series.retrieve_multiple": MockTimeSeriesRetrieveMultiple(cdf_timeseries),
+        "assets.list": lambda *_, **__: AssetList([]),
+        "assets.retrieve_multiple": lambda *_, **__: AssetList([]),
+        "labels.list": lambda *_, **__: LabelDefinitionList([]),
     }
 
     with monkeypatch_cognite_client() as client:
@@ -93,15 +96,15 @@ def test_apply_summary(
             setattr(api, parts[-1], mock_resource)
 
         # Act
-        model = apply(config_dir=ReSync.demo, market="Dayahead", model_names=model_name, auto_yes=True)
+        models = apply(config_dir=ReSync.demo, market="Dayahead", model_names=model_name, auto_yes=True)
 
     # Assert
     data_regression.check(
-        model.summary(), fullpath=compare_file_path.parent / f"{compare_file_path.stem}_{model_name}_summary.yml"
+        asdict(models.models[0].as_summary()),
+        fullpath=compare_file_path.parent / f"{compare_file_path.stem}_{model_name}_summary.yml",
     )
 
 
-@pytest.mark.skip("Requires a upgrade of Mock client to support CDF read")
 @pytest.mark.parametrize(
     "input_dir, market, compare_file_path, cdf_timeseries, model_name",
     list(
@@ -129,6 +132,9 @@ def test_apply(
         "data_modeling.instances.apply": MockInstancesApply(),
         "files.upload_bytes": MockFilesUploadBytes(),
         "time_series.retrieve_multiple": MockTimeSeriesRetrieveMultiple(cdf_timeseries),
+        "assets.list": lambda *_, **__: AssetList([]),
+        "assets.retrieve_multiple": lambda *_, **__: AssetList([]),
+        "labels.list": lambda *_, **__: LabelDefinitionList([]),
     }
 
     with monkeypatch_cognite_client() as client:

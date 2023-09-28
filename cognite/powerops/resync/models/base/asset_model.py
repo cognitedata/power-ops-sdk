@@ -3,7 +3,7 @@ from __future__ import annotations
 from abc import ABC
 from collections import defaultdict
 from collections.abc import Iterable
-from typing import Any, Callable, ClassVar, Optional, TypeVar, Union
+from typing import Any, Callable, ClassVar, Literal, Optional, TypeVar, Union
 
 from cognite.client.data_classes import Asset, AssetList, LabelDefinition, LabelDefinitionList, Relationship, TimeSeries
 from typing_extensions import Self
@@ -81,7 +81,9 @@ class AssetModel(Model, ABC, validate_assignment=True):
     parent_assets = classmethod(parent_assets)
 
     @classmethod
-    def load_from_cdf_resources(cls: type[Self], data: dict[str, Any]) -> Self:
+    def load_from_cdf_resources(
+        cls: type[Self], data: dict[str, Any], link: Literal["external_id", "object"] = "object"
+    ) -> Self:
         if not data.get("assets"):
             return cls()
         loaded_by_type_external_id = cls._load_by_type_external_id(data)

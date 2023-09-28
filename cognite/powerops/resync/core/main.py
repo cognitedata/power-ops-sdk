@@ -4,7 +4,7 @@ This module contains the main functions for the resync tool.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Optional
+from typing import Optional, cast
 
 from cognite.client import CogniteClient
 from cognite.client.data_classes.data_modeling import DataModelId, MappedProperty, SpaceApply, SpaceList, ViewList
@@ -24,6 +24,8 @@ from .transform import transform
 from .validation import _clean_relationships
 
 MODELS_BY_NAME = {m.__name__: m for m in models.V1_MODELS}
+
+V2_MODELS_BY_NAME = {m.__name__: m for m in models.V2_MODELS}
 
 
 def _default_echo(message: str, is_warning: bool = False) -> None:
@@ -260,6 +262,10 @@ def destroy(
             static_resources = {}
         elif issubclass(model_type, AssetModel):
             remove_data_model = ModelDifference(model_type.__name__, {})
+            if issubclass(model_type, models.MarketModel):
+                # We only need the root asset to be set.
+                production_external_id = cast(str, models.ProductionModel.root_asset.external_id)
+                model_type.set_root_asset("", "", "", production_external_id)
             static_resources = model_type.static_resources_from_cdf(client)
         else:
             raise ValueError(f"Unknown model type {model_type}")
@@ -305,9 +311,9 @@ def destroy(
                     },
                 )
             )
-
-    labels = AssetLabel.as_label_definitions() + RelationshipLabel.as_label_definitions()
-    client.cdf.labels.delete([label.external_id for label in labels if label.external_id])
+    if not dry_run:
+        labels = AssetLabel.as_label_definitions() + RelationshipLabel.as_label_definitions()
+        client.cdf.labels.delete([label.external_id for label in labels if label.external_id])
 
     return destroyed
 
@@ -482,10 +488,13 @@ def _to_models(model_names: str | list[str] | None) -> list[type[Model]]:
     else:
         raise ValueError(f"Invalid model_names type: {type(model_names)}")
 
-    if invalid := set(model_names) - set(MODELS_BY_NAME):
+    if invalid := set(model_names) - (set(MODELS_BY_NAME) | set(V2_MODELS_BY_NAME)):
         raise ValueError(f"Invalid model names: {invalid}. Available models: {list(MODELS_BY_NAME)}")
 
-    return [MODELS_BY_NAME[model_name] for model_name in model_names]
+    return [
+        MODELS_BY_NAME[model_name] if model_name in MODELS_BY_NAME else V2_MODELS_BY_NAME[model_name]
+        for model_name in model_names
+    ]
 
 
 def _get_data_model_view_containers(cdf: CogniteClient, data_model_id: DataModelId, model_name: str) -> ModelDifference:

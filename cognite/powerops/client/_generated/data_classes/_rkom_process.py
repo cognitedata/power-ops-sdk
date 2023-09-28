@@ -5,36 +5,48 @@ from typing import TYPE_CHECKING, ClassVar, Optional, Union
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
-from cognite.powerops.client._generated.data_classes._core import DomainModel, DomainModelApply, TypeList
+from ._core import DomainModel, DomainModelApply, TypeApplyList, TypeList
 
 if TYPE_CHECKING:
-    from cognite.powerops.client._generated.data_classes._rkom_bids import RKOMBidApply
-    from cognite.powerops.client._generated.data_classes._scenario_mappings import ScenarioMappingApply
-    from cognite.powerops.client._generated.data_classes._shop_transformations import ShopTransformationApply
+    from ._rkom_bid import RKOMBidApply
+    from ._scenario_mapping import ScenarioMappingApply
+    from ._shop_transformation import ShopTransformationApply
 
-__all__ = ["RKOMProces", "RKOMProcesApply", "RKOMProcesList"]
+__all__ = ["RKOMProcess", "RKOMProcessApply", "RKOMProcessList", "RKOMProcessApplyList"]
 
 
-class RKOMProces(DomainModel):
+class RKOMProcess(DomainModel):
     space: ClassVar[str] = "power-ops"
+    name: Optional[str] = None
     bid: Optional[str] = None
-    incremental_mappings: list[str] = []
-    name: Optional[str] = None
-    plants: list[str] = []
-    process_events: list[str] = Field([], alias="processEvents")
     shop: Optional[str] = None
+    process_events: Optional[list[str]] = Field(None, alias="processEvents")
     timezone: Optional[str] = None
+    plants: Optional[list[str]] = None
+    incremental_mappings: Optional[list[str]] = None
+
+    def as_apply(self) -> RKOMProcessApply:
+        return RKOMProcessApply(
+            external_id=self.external_id,
+            name=self.name,
+            bid=self.bid,
+            shop=self.shop,
+            process_events=self.process_events,
+            timezone=self.timezone,
+            plants=self.plants,
+            incremental_mappings=self.incremental_mappings,
+        )
 
 
-class RKOMProcesApply(DomainModelApply):
+class RKOMProcessApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
-    bid: Optional[Union[RKOMBidApply, str]] = Field(None, repr=False)
-    incremental_mappings: list[Union[ScenarioMappingApply, str]] = Field(default_factory=list, repr=False)
     name: Optional[str] = None
-    plants: list[str] = []
-    process_events: list[str] = []
-    shop: Optional[Union[ShopTransformationApply, str]] = Field(None, repr=False)
+    bid: Union[RKOMBidApply, str, None] = Field(None, repr=False)
+    shop: Union[ShopTransformationApply, str, None] = Field(None, repr=False)
+    process_events: Optional[list[str]] = None
     timezone: Optional[str] = None
+    plants: Optional[list[str]] = None
+    incremental_mappings: Union[list[ScenarioMappingApply], list[str], None] = Field(default=None, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
@@ -42,24 +54,24 @@ class RKOMProcesApply(DomainModelApply):
 
         sources = []
         properties = {}
+        if self.name is not None:
+            properties["name"] = self.name
         if self.bid is not None:
             properties["bid"] = {
                 "space": "power-ops",
                 "externalId": self.bid if isinstance(self.bid, str) else self.bid.external_id,
             }
-        if self.name is not None:
-            properties["name"] = self.name
-        if self.plants is not None:
-            properties["plants"] = self.plants
-        if self.process_events is not None:
-            properties["processEvents"] = self.process_events
         if self.shop is not None:
             properties["shop"] = {
                 "space": "power-ops",
                 "externalId": self.shop if isinstance(self.shop, str) else self.shop.external_id,
             }
+        if self.process_events is not None:
+            properties["processEvents"] = self.process_events
         if self.timezone is not None:
             properties["timezone"] = self.timezone
+        if self.plants is not None:
+            properties["plants"] = self.plants
         if properties:
             source = dm.NodeOrEdgeData(
                 source=dm.ContainerId("power-ops", "RKOMProcess"),
@@ -80,7 +92,7 @@ class RKOMProcesApply(DomainModelApply):
         edges = []
         cache.add(self.external_id)
 
-        for incremental_mapping in self.incremental_mappings:
+        for incremental_mapping in self.incremental_mappings or []:
             edge = self._create_incremental_mapping_edge(incremental_mapping)
             if edge.external_id not in cache:
                 edges.append(edge)
@@ -120,5 +132,12 @@ class RKOMProcesApply(DomainModelApply):
         )
 
 
-class RKOMProcesList(TypeList[RKOMProces]):
-    _NODE = RKOMProces
+class RKOMProcessList(TypeList[RKOMProcess]):
+    _NODE = RKOMProcess
+
+    def as_apply(self) -> RKOMProcessApplyList:
+        return RKOMProcessApplyList([node.as_apply() for node in self.data])
+
+
+class RKOMProcessApplyList(TypeApplyList[RKOMProcessApply]):
+    _NODE = RKOMProcessApply

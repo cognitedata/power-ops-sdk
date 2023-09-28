@@ -119,6 +119,14 @@ class SHOPRun:
             source=event.source,
         )
 
+    @property
+    def case_file_external_id(self) -> str:
+        return self._case_file_external_id
+
+    @property
+    def shop_files_external_ids(self) -> list[dict[str, Any]]:
+        return [shop_file.dump() for shop_file in self._shop_files]
+
     def as_cdf_event(self, data_set_id: int) -> Event:
         return Event(
             external_id=self.external_id,
@@ -156,14 +164,19 @@ class SHOPRun:
             "watercourse": self.watercourse,
             "start": self.start,
             "end": self.end,
-            "case_file_external_id": self._case_file_external_id,
-            "shop_files_external_ids": [shop_file.dump() for shop_file in self._shop_files],
+            "case_file_external_id": self.case_file_external_id,
+            "shop_files_external_ids": self.shop_files_external_ids,
             "shop_version": self.shop_version,
         }
 
     def _download_file(self, external_id: str) -> str:
         bytes = self._client.files.download_bytes(external_id=external_id)
-        return bytes.decode("utf-8")
+        try:
+            return bytes.decode("utf-8")
+        except UnicodeDecodeError:
+            # SHOP sometimes writes files with Windows-1252 encoding (ASCII)
+            # Trying to recover.
+            return bytes.decode("Windows-1252")
 
     def get_case_file(self) -> str:
         """

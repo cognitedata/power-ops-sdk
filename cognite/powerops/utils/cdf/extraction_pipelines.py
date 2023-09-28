@@ -128,6 +128,10 @@ class PipelineRun:
             data[self.log_file_external_id] = file_external_id
             # Need a dummy id as we do not know the id before the file is uploaded
             data[self.log_file_id] = MAX_VALID_INTERNAL_ID
+        # Ensure we get a dict[str, str]
+        for key in list(data):
+            value = data[key]
+            data[key] = self._as_json(value) if isinstance(value, (dict, list)) else str(value)
 
         dumped = self._as_json(data)
         if (above_limit := len(dumped) - MSG_CHAR_LIMIT) > 0:
@@ -158,10 +162,17 @@ class PipelineRun:
         return data, "\n\n".join(file_content)
 
     @staticmethod
-    def _as_json(data: dict, exclude_keys: Iterable[str] | None = None) -> str:
+    def _as_json(data: dict | list, exclude_keys: Iterable[str] | None = None) -> str:
         exclude_keys = set(exclude_keys or [])
+        cleaned: dict[str, Any] | list[Any]
         # Removing space to use as little space as possible
-        return json.dumps({k: v for k, v in data.items() if k not in exclude_keys}, separators=(",", ":"))
+        if isinstance(data, dict):
+            cleaned = {k: v for k, v in data.items() if k not in exclude_keys}
+        elif isinstance(data, list):
+            cleaned = data
+        else:
+            raise TypeError(f"Data must be a dict or list, got {type(data)}")
+        return json.dumps(cleaned, separators=(",", ":"), default=str)
 
 
 class ExtractionPipelineCreate:

@@ -4,7 +4,7 @@ import inspect
 from abc import ABC
 from collections import defaultdict
 from collections.abc import Iterable
-from typing import Any, Callable, ClassVar, TypeVar, Union
+from typing import Any, Callable, ClassVar, Literal, TypeVar, Union
 
 from cognite.client.data_classes.data_modeling import (
     ContainerId,
@@ -73,7 +73,9 @@ class DataModel(Model, ABC):
                 yield from items.values()
 
     @classmethod
-    def load_from_cdf_resources(cls: type[Self], data: dict[str, Any]) -> Self:
+    def load_from_cdf_resources(
+        cls: type[Self], data: dict[str, Any], link: Literal["external_id", "object"] = "object"
+    ) -> Self:
         load_by_type_external_id = cls._load_by_type_external_id(data)
         if "nodes" not in load_by_type_external_id:
             return cls()
@@ -119,10 +121,13 @@ class DataModel(Model, ABC):
                         name = alternative
                         break
                 else:
-                    raise ValueError(f"Cannot find {name} in {nodes_by_source_by_id}")
+                    # This means that there are no nodes for this field.
+                    continue
                 items = nodes_by_source_by_id[name]
                 if outer is dict:
                     parsed[field_name] = dict(items)
+                elif outer is list:
+                    parsed[field_name] = list(items.values())
                 else:
                     raise NotImplementedError()
             else:
@@ -130,7 +135,17 @@ class DataModel(Model, ABC):
 
         instance = cls(**parsed)
 
-        # One to many
+        instance_annotations = (
+            get_pydantic_annotation(instance.model_fields[field_name].annotation, type(instance))[0]
+            for field_name in instance.model_fields
+        )
+        model_types: set[Union[DomainModelApply, DomainModelApplyCogShop1]] = {
+            annotation
+            for annotation in instance_annotations
+            if issubclass(annotation, (DomainModelApply, DomainModelApplyCogShop1))
+        }
+
+        # One to many edges
         edge_by_source_by_id = defaultdict(list)
         for edge in load_by_type_external_id.get("edges", {}).values():
             start_node = edge.start_node.external_id
@@ -153,20 +168,29 @@ class DataModel(Model, ABC):
                     # Missing target
                     continue
                 if outer is list:
-                    getattr(source, prop_name).append(target)
+                    if getattr(source, prop_name) is None:
+                        setattr(source, prop_name, [])
+                    if link == "external_id" and annotation in model_types:
+                        getattr(source, prop_name).append(target.external_id)
+                    else:
+                        getattr(source, prop_name).append(target)
                 else:
                     raise NotImplementedError()
-        # One to one
 
+        # One to one edge
         for domain_node in node_by_id.values():
             for field_name, field in domain_node.model_fields.items():
                 annotation, outer = get_pydantic_annotation(field.annotation, domain_node)
                 if (
                     inspect.isclass(annotation)
                     and issubclass(annotation, (DomainModelApply, DomainModelApplyCogShop1))
-                    and (value := getattr(domain_node, field_name)) in node_by_id
+                    and (value := getattr(domain_node, field_name)) is not None
                 ):
-                    setattr(domain_node, field_name, node_by_id[value])
+                    if isinstance(value, str) and value in node_by_id:
+                        if link == "external_id" and annotation in model_types:
+                            setattr(domain_node, field_name, value)
+                        else:
+                            setattr(domain_node, field_name, node_by_id[value])
 
         return instance
 
@@ -184,6 +208,8 @@ def _load_domain_node(node_cls: type[T_Domain_model], node: NodeApply) -> T_Doma
         elif isinstance(prop, (float, str, int)) or prop is None:
             loaded[snake_name] = prop
         elif isinstance(prop, list) and all(isinstance(p, (float, str, int)) for p in prop):
+            loaded[snake_name] = prop
+        elif isinstance(prop, dict):
             loaded[snake_name] = prop
         else:
             raise NotImplementedError(f"Cannot handle {prop=}")
