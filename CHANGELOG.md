@@ -13,6 +13,14 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.62.0] - 2023-09-29
+### Change
+* Validation of generators by `resync`, made `p_min` optional. This is because it is only required by the water
+  based methods.
+### Fixed
+* `resync` used wrong `command` file when updating the command node in the `CogSHOP` model.
+* Standardize naming for scenarios uploaded in the `CogSHOP` model.
+
 ## [0.61.0] - 2023-09-29
 ### Added
 * Validation of generators by `resync`, they now require `p_min`, `startcost`, and `penstock`.
