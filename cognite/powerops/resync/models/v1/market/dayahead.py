@@ -59,10 +59,11 @@ class DayAheadProcess(Process):
 
 
 class NordPoolMarket(Market):
-    max_price: float
-    min_price: float
-    price_steps: int
-    price_unit: str
-    tick_size: float
-    time_unit: str
-    trade_lot: float
+    # Temporary optional to fix that this is missing in CDF.
+    max_price: Optional[float] = None
+    min_price: Optional[float] = None
+    price_steps: Optional[int] = None
+    price_unit: Optional[str] = None
+    tick_size: Optional[float] = None
+    time_unit: Optional[str] = None
+    trade_lot: Optional[float] = None

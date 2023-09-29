@@ -100,7 +100,7 @@ class FieldDifference:
         output = []
         for item in self.removed:
             if isinstance(item, InstanceCore):
-                output.append(item.as_id())
+                output.append(item.as_id())  # type: ignore[union-attr]
             elif isinstance(item, AbstractDataclass):
                 output.append(item)
             elif hasattr(item, "external_id"):
@@ -161,6 +161,12 @@ class FieldDifference:
 
 
 @dataclass
+class ModelDifferenceSummary:
+    model_name: str
+    changes: list[FieldSummary]
+
+
+@dataclass
 class ModelDifference:
     model_name: str
     changes: dict[str, FieldDifference] = field(default_factory=dict)
@@ -214,6 +220,12 @@ class ModelDifference:
                 del self.changes[field_name]
                 has_removed = True
         return has_removed
+
+    def as_summary(self) -> ModelDifferenceSummary:
+        return ModelDifferenceSummary(
+            model_name=self.model_name,
+            changes=[change.as_summary() for _, change in sorted(self.changes.items(), key=lambda k: k[0])],
+        )
 
 
 @dataclass

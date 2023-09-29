@@ -13,6 +13,66 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.62.0] - 2023-09-29
+### Change
+* Validation of generators by `resync`, made `p_min` optional. This is because it is only required by the water
+  based methods.
+### Fixed
+* `resync` used wrong `command` file when updating the command node in the `CogSHOP` model.
+* Standardize naming for scenarios uploaded in the `CogSHOP` model.
+
+## [0.61.0] - 2023-09-29
+### Added
+* Validation of generators by `resync`, they now require `p_min`, `startcost`, and `penstock`.
+
+## [0.60.2] - 2023-09-28
+### Fixed
+* `powerops plan/apply` did not handle the config for `NordPool` and `RKOM` correctly, leading these not to be updated. This is now fixed.
+
+## [0.60.1] - 2023-09-27
+### Fixed
+* `powerops plan` showed differences for models when there were none due to faulty download of CDF model. This is now fixed.
+
+## [0.60.0] - 2023-09-27
+### Added
+* Transformations module that holds all time series transformations.
+* Two types of transformation classes:
+  * **Transformation**: static - can be fully configured from a static configuration file
+  * **DynamicTransformation**: dynamic - can be partly configured dynamically at runtime by rynning `pre_apply` function with neccessary input parameters, before running `apply` on time series data
+
+## [0.59.0] - 2023-09-26
+### Added
+* Support for loading `ProductionDM` from CDF.
+
+# Changed
+* `cognite.powerops.client._generated` has been regenerated with `pygen` `0.20.5`.
+
+### Fixed
+* Handle circular dependencies in data model when checcking diffs.
+
+## [0.58.4] - 2023-09-25
+### Fixed
+* External id format in `CogSHOP.Scenario` `view`, this is set to match the format used in functions.
+
+## [0.58.3] - 2023-09-22
+### Fixed
+* Last fix had bugs. These new bugs are now now fixed.
+
+## [0.58.2] - 2023-09-22
+### Fixed
+* The extraction pipeline run, `utils.cdf.extraction_pipelines.PipelineRun`, could produce messages above API limit
+  with nested data structures. This is now fixed.
+
+## [0.58.1] - 2023-09-22
+### Fixed
+* On Windows machines, calling `power.shop.trigger_case()` could cause the `case` file not bo be uploaded to CDF correctly
+  due to a specific Windows encoding issue. This is now fixed.
+
+## [0.58.0] - 2023-09-22
+### Added
+* Extended options for `SHOPRun.list()`.
+* Added `SHOPRun.retrieve_latest()`
+
 ## [0.57.0] - 2023-09-21
 ### Added
 * A model for the `aFRR` market bids. Available under `v2` models.

@@ -3,7 +3,7 @@ from __future__ import annotations
 from abc import ABC
 from collections import defaultdict
 from collections.abc import Iterable
-from typing import Any, Callable, ClassVar, Optional, TypeVar, Union
+from typing import Any, Callable, ClassVar, Literal, Optional, TypeVar, Union
 
 from cognite.client.data_classes import Asset, AssetList, LabelDefinition, LabelDefinitionList, Relationship, TimeSeries
 from typing_extensions import Self
@@ -81,7 +81,9 @@ class AssetModel(Model, ABC, validate_assignment=True):
     parent_assets = classmethod(parent_assets)
 
     @classmethod
-    def load_from_cdf_resources(cls: type[Self], data: dict[str, Any]) -> Self:
+    def load_from_cdf_resources(
+        cls: type[Self], data: dict[str, Any], link: Literal["external_id", "object"] = "object"
+    ) -> Self:
         if not data.get("assets"):
             return cls()
         loaded_by_type_external_id = cls._load_by_type_external_id(data)
@@ -177,8 +179,21 @@ class AssetModel(Model, ABC, validate_assignment=True):
             annotation, outer = get_pydantic_annotation(field.annotation, cls)
             if issubclass(annotation, AssetType) and outer is list:
                 assets = asset_by_parent_external_id.get(annotation.parent_external_id, [])
-
-                arguments[field_name] = [annotation.from_asset(asset) for asset in assets]
+                # Hack to handle market case where two different asset types have the same parent
+                if field_name == "nordpool_market":
+                    arguments[field_name] = [
+                        annotation.from_asset(asset)
+                        for asset in assets
+                        if asset.external_id == "market_configuration_nordpool_dayahead"
+                    ]
+                elif field_name == "rkom_market":
+                    arguments[field_name] = [
+                        annotation.from_asset(asset)
+                        for asset in assets
+                        if asset.external_id == "market_configuration_statnett_rkom_weekly"
+                    ]
+                else:
+                    arguments[field_name] = [annotation.from_asset(asset) for asset in assets]
                 asset_type_by_external_id.update({asset.external_id: asset for asset in arguments[field_name]})
             else:
                 raise NotImplementedError()

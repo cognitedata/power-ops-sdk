@@ -3,37 +3,76 @@ from __future__ import annotations
 from pathlib import Path
 
 from cognite.client import ClientConfig, CogniteClient
+from cognite.client import data_modeling as dm
 from cognite.client.credentials import OAuthClientCredentials
 
-from cognite.powerops.client._generated._api.benchmark_bids import BenchmarkBidsAPI
-from cognite.powerops.client._generated._api.benchmark_process import BenchmarkProcessAPI
-from cognite.powerops.client._generated._api.bid_matrix_generators import BidMatrixGeneratorsAPI
-from cognite.powerops.client._generated._api.command_configs import CommandConfigsAPI
-from cognite.powerops.client._generated._api.date_transformations import DateTransformationsAPI
-from cognite.powerops.client._generated._api.day_ahead_bids import DayAheadBidsAPI
-from cognite.powerops.client._generated._api.day_ahead_process import DayAheadProcessAPI
-from cognite.powerops.client._generated._api.generators import GeneratorsAPI
-from cognite.powerops.client._generated._api.input_time_series_mappings import InputTimeSeriesMappingsAPI
-from cognite.powerops.client._generated._api.nord_pool_markets import NordPoolMarketsAPI
-from cognite.powerops.client._generated._api.output_containers import OutputContainersAPI
-from cognite.powerops.client._generated._api.output_mappings import OutputMappingsAPI
-from cognite.powerops.client._generated._api.plants import PlantsAPI
-from cognite.powerops.client._generated._api.price_areas import PriceAreasAPI
-from cognite.powerops.client._generated._api.production_plan_time_series import ProductionPlanTimeSeriesAPI
-from cognite.powerops.client._generated._api.reserve_scenarios import ReserveScenariosAPI
-from cognite.powerops.client._generated._api.reservoirs import ReservoirsAPI
-from cognite.powerops.client._generated._api.rkom_bid_combinations import RKOMBidCombinationsAPI
-from cognite.powerops.client._generated._api.rkom_bids import RKOMBidsAPI
-from cognite.powerops.client._generated._api.rkom_combination_bids import RKOMCombinationBidsAPI
-from cognite.powerops.client._generated._api.rkom_markets import RKOMMarketsAPI
-from cognite.powerops.client._generated._api.rkom_process import RKOMProcessAPI
-from cognite.powerops.client._generated._api.scenario_mappings import ScenarioMappingsAPI
-from cognite.powerops.client._generated._api.scenario_templates import ScenarioTemplatesAPI
-from cognite.powerops.client._generated._api.scenarios import ScenariosAPI
-from cognite.powerops.client._generated._api.shop_transformations import ShopTransformationsAPI
-from cognite.powerops.client._generated._api.value_transformations import ValueTransformationsAPI
-from cognite.powerops.client._generated._api.watercourse_shops import WatercourseShopsAPI
-from cognite.powerops.client._generated._api.watercourses import WatercoursesAPI
+from ._api.benchmark_bid import BenchmarkBidAPI
+from ._api.benchmark_process import BenchmarkProcessAPI
+from ._api.bid_matrix_generator import BidMatrixGeneratorAPI
+from ._api.bid_time_series import BidTimeSeriesAPI
+from ._api.command_config import CommandConfigAPI
+from ._api.date_time_interval import DateTimeIntervalAPI
+from ._api.date_transformation import DateTransformationAPI
+from ._api.day_ahead_bid import DayAheadBidAPI
+from ._api.day_ahead_process import DayAheadProcessAPI
+from ._api.duration import DurationAPI
+from ._api.generator import GeneratorAPI
+from ._api.input_time_series_mapping import InputTimeSeriesMappingAPI
+from ._api.market_agreement import MarketAgreementAPI
+from ._api.market_participant import MarketParticipantAPI
+from ._api.mba_domain import MBADomainAPI
+from ._api.nord_pool_market import NordPoolMarketAPI
+from ._api.output_container import OutputContainerAPI
+from ._api.output_mapping import OutputMappingAPI
+from ._api.plant import PlantAPI
+from ._api.point import PointAPI
+from ._api.price_area import PriceAreaAPI
+from ._api.production_plan_time_series import ProductionPlanTimeSeriesAPI
+from ._api.reason import ReasonAPI
+from ._api.reserve_bid import ReserveBidAPI
+from ._api.reserve_scenario import ReserveScenarioAPI
+from ._api.reservoir import ReservoirAPI
+from ._api.rkom_bid import RKOMBidAPI
+from ._api.rkom_bid_combination import RKOMBidCombinationAPI
+from ._api.rkom_combination_bid import RKOMCombinationBidAPI
+from ._api.rkom_market import RKOMMarketAPI
+from ._api.rkom_process import RKOMProcessAPI
+from ._api.scenario import ScenarioAPI
+from ._api.scenario_mapping import ScenarioMappingAPI
+from ._api.scenario_template import ScenarioTemplateAPI
+from ._api.series import SeriesAPI
+from ._api.shop_transformation import ShopTransformationAPI
+from ._api.value_transformation import ValueTransformationAPI
+from ._api.watercourse import WatercourseAPI
+from ._api.watercourse_shop import WatercourseShopAPI
+
+
+class AFRRAPIs:
+    """
+    AFRRAPIs
+
+    Data Model:
+        space: power-ops
+        externalId: afrrMarket
+        version: 1
+
+    """
+
+    def __init__(self, client: CogniteClient):
+        self.bid_time_series = BidTimeSeriesAPI(client, dm.ViewId("power-ops", "BidTimeSeries", "2c1787140841fd"))
+        self.date_time_interval = DateTimeIntervalAPI(
+            client, dm.ViewId("power-ops", "DateTimeInterval", "18f6639083458b")
+        )
+        self.duration = DurationAPI(client, dm.ViewId("power-ops", "Duration", "7433a3f6ac2be0"))
+        self.mba_domain = MBADomainAPI(client, dm.ViewId("power-ops", "MarketAgreement", "815d42dc6e008d"))
+        self.market_agreement = MarketAgreementAPI(
+            client, dm.ViewId("power-ops", "MarketParticipant", "8c47d7b03faeda")
+        )
+        self.market_participant = MarketParticipantAPI(client, dm.ViewId("power-ops", "MBADomain", "9ac70d436c3313"))
+        self.point = PointAPI(client, dm.ViewId("power-ops", "Point", "791cb15b0ae9e1"))
+        self.reason = ReasonAPI(client, dm.ViewId("power-ops", "Reason", "d064355f848186"))
+        self.reserve_bid = ReserveBidAPI(client, dm.ViewId("power-ops", "ReserveBid", "dfb50d1e05d2e5"))
+        self.series = SeriesAPI(client, dm.ViewId("power-ops", "Series", "59d189398e78be"))
 
 
 class BenchmarkAPIs:
@@ -48,15 +87,27 @@ class BenchmarkAPIs:
     """
 
     def __init__(self, client: CogniteClient):
-        self.benchmark_bids = BenchmarkBidsAPI(client)
-        self.benchmark_process = BenchmarkProcessAPI(client)
-        self.date_transformations = DateTransformationsAPI(client)
-        self.input_time_series_mappings = InputTimeSeriesMappingsAPI(client)
-        self.nord_pool_markets = NordPoolMarketsAPI(client)
-        self.production_plan_time_series = ProductionPlanTimeSeriesAPI(client)
-        self.scenario_mappings = ScenarioMappingsAPI(client)
-        self.shop_transformations = ShopTransformationsAPI(client)
-        self.value_transformations = ValueTransformationsAPI(client)
+        self.benchmark_bid = BenchmarkBidAPI(client, dm.ViewId("power-ops", "BenchmarkBid", "cd2ea6a54b92a6"))
+        self.benchmark_process = BenchmarkProcessAPI(
+            client, dm.ViewId("power-ops", "BenchmarkProcess", "3c3a0761a5f084")
+        )
+        self.date_transformation = DateTransformationAPI(
+            client, dm.ViewId("power-ops", "DateTransformation", "a7c71305ba1288")
+        )
+        self.input_time_series_mapping = InputTimeSeriesMappingAPI(
+            client, dm.ViewId("power-ops", "InputTimeSeriesMapping", "2426123a688e61")
+        )
+        self.nord_pool_market = NordPoolMarketAPI(client, dm.ViewId("power-ops", "NordPoolMarket", "88c86032b9ac9c"))
+        self.production_plan_time_series = ProductionPlanTimeSeriesAPI(
+            client, dm.ViewId("power-ops", "ProductionPlanTimeSeries", "ca7ffcb6f63d3f")
+        )
+        self.scenario_mapping = ScenarioMappingAPI(client, dm.ViewId("power-ops", "ScenarioMapping", "e65d4465699308"))
+        self.shop_transformation = ShopTransformationAPI(
+            client, dm.ViewId("power-ops", "ShopTransformation", "a74d706d1bda99")
+        )
+        self.value_transformation = ValueTransformationAPI(
+            client, dm.ViewId("power-ops", "ValueTransformation", "acd34e005f1986")
+        )
 
 
 class CogShopAPIs:
@@ -71,14 +122,20 @@ class CogShopAPIs:
     """
 
     def __init__(self, client: CogniteClient):
-        self.command_configs = CommandConfigsAPI(client)
-        self.input_time_series_mappings = InputTimeSeriesMappingsAPI(client)
-        self.output_containers = OutputContainersAPI(client)
-        self.output_mappings = OutputMappingsAPI(client)
-        self.scenarios = ScenariosAPI(client)
-        self.scenario_mappings = ScenarioMappingsAPI(client)
-        self.scenario_templates = ScenarioTemplatesAPI(client)
-        self.value_transformations = ValueTransformationsAPI(client)
+        self.command_config = CommandConfigAPI(client, dm.ViewId("power-ops", "CommandConfig", "128f1e0abfc7c5"))
+        self.input_time_series_mapping = InputTimeSeriesMappingAPI(
+            client, dm.ViewId("power-ops", "InputTimeSeriesMapping", "39f0e93d6b2bc1")
+        )
+        self.output_container = OutputContainerAPI(client, dm.ViewId("power-ops", "OutputContainer", "ad054c0f19ea87"))
+        self.output_mapping = OutputMappingAPI(client, dm.ViewId("power-ops", "OutputMapping", "58e6e8f0dadecc"))
+        self.scenario = ScenarioAPI(client, dm.ViewId("power-ops", "Scenario", "eb6cd945bd1400"))
+        self.scenario_mapping = ScenarioMappingAPI(client, dm.ViewId("power-ops", "ScenarioMapping", "1cd399b3faffc4"))
+        self.scenario_template = ScenarioTemplateAPI(
+            client, dm.ViewId("power-ops", "ScenarioTemplate", "77579c65a8cdf9")
+        )
+        self.value_transformation = ValueTransformationAPI(
+            client, dm.ViewId("power-ops", "ValueTransformation", "1b641fef1e0a83")
+        )
 
 
 class DayAheadAPIs:
@@ -93,15 +150,25 @@ class DayAheadAPIs:
     """
 
     def __init__(self, client: CogniteClient):
-        self.bid_matrix_generators = BidMatrixGeneratorsAPI(client)
-        self.date_transformations = DateTransformationsAPI(client)
-        self.day_ahead_bids = DayAheadBidsAPI(client)
-        self.day_ahead_process = DayAheadProcessAPI(client)
-        self.input_time_series_mappings = InputTimeSeriesMappingsAPI(client)
-        self.nord_pool_markets = NordPoolMarketsAPI(client)
-        self.scenario_mappings = ScenarioMappingsAPI(client)
-        self.shop_transformations = ShopTransformationsAPI(client)
-        self.value_transformations = ValueTransformationsAPI(client)
+        self.bid_matrix_generator = BidMatrixGeneratorAPI(
+            client, dm.ViewId("power-ops", "BidMatrixGenerator", "98145498689f24")
+        )
+        self.date_transformation = DateTransformationAPI(
+            client, dm.ViewId("power-ops", "DateTransformation", "78995d48b59c57")
+        )
+        self.day_ahead_bid = DayAheadBidAPI(client, dm.ViewId("power-ops", "DayAheadBid", "bd0768f04d3708"))
+        self.day_ahead_process = DayAheadProcessAPI(client, dm.ViewId("power-ops", "DayAheadProcess", "dd1bf62feefc9a"))
+        self.input_time_series_mapping = InputTimeSeriesMappingAPI(
+            client, dm.ViewId("power-ops", "InputTimeSeriesMapping", "9532a47c052eca")
+        )
+        self.nord_pool_market = NordPoolMarketAPI(client, dm.ViewId("power-ops", "NordPoolMarket", "919be6b14f829d"))
+        self.scenario_mapping = ScenarioMappingAPI(client, dm.ViewId("power-ops", "ScenarioMapping", "7d1c17ee79d79d"))
+        self.shop_transformation = ShopTransformationAPI(
+            client, dm.ViewId("power-ops", "ShopTransformation", "2dd4c9f8e072b6")
+        )
+        self.value_transformation = ValueTransformationAPI(
+            client, dm.ViewId("power-ops", "ValueTransformation", "72f3a548b93c67")
+        )
 
 
 class ProductionAPIs:
@@ -116,12 +183,12 @@ class ProductionAPIs:
     """
 
     def __init__(self, client: CogniteClient):
-        self.generators = GeneratorsAPI(client)
-        self.plants = PlantsAPI(client)
-        self.price_areas = PriceAreasAPI(client)
-        self.reservoirs = ReservoirsAPI(client)
-        self.watercourses = WatercoursesAPI(client)
-        self.watercourse_shops = WatercourseShopsAPI(client)
+        self.generator = GeneratorAPI(client, dm.ViewId("power-ops", "Generator", "9178931bbaac71"))
+        self.plant = PlantAPI(client, dm.ViewId("power-ops", "Plant", "836dcb3f5da1df"))
+        self.price_area = PriceAreaAPI(client, dm.ViewId("power-ops", "PriceArea", "6849ae787cd368"))
+        self.reservoir = ReservoirAPI(client, dm.ViewId("power-ops", "Reservoir", "3c822b0c3d68f7"))
+        self.watercourse = WatercourseAPI(client, dm.ViewId("power-ops", "Watercourse", "96f5170f35ef70"))
+        self.watercourse_shop = WatercourseShopAPI(client, dm.ViewId("power-ops", "WatercourseShop", "4b5321b1fccd06"))
 
 
 class RKOMMarketAPIs:
@@ -136,17 +203,27 @@ class RKOMMarketAPIs:
     """
 
     def __init__(self, client: CogniteClient):
-        self.date_transformations = DateTransformationsAPI(client)
-        self.input_time_series_mappings = InputTimeSeriesMappingsAPI(client)
-        self.rkom_bids = RKOMBidsAPI(client)
-        self.rkom_bid_combinations = RKOMBidCombinationsAPI(client)
-        self.rkom_combination_bids = RKOMCombinationBidsAPI(client)
-        self.rkom_markets = RKOMMarketsAPI(client)
-        self.rkom_process = RKOMProcessAPI(client)
-        self.reserve_scenarios = ReserveScenariosAPI(client)
-        self.scenario_mappings = ScenarioMappingsAPI(client)
-        self.shop_transformations = ShopTransformationsAPI(client)
-        self.value_transformations = ValueTransformationsAPI(client)
+        self.date_transformation = DateTransformationAPI(
+            client, dm.ViewId("power-ops", "DateTransformation", "13820c127c31c0")
+        )
+        self.input_time_series_mapping = InputTimeSeriesMappingAPI(
+            client, dm.ViewId("power-ops", "InputTimeSeriesMapping", "7fce8483d52568")
+        )
+        self.rkom_bid = RKOMBidAPI(client, dm.ViewId("power-ops", "ReserveScenario", "e971c10bd1e893"))
+        self.rkom_bid_combination = RKOMBidCombinationAPI(client, dm.ViewId("power-ops", "RKOMBid", "5c1a2ba06aa41f"))
+        self.rkom_combination_bid = RKOMCombinationBidAPI(
+            client, dm.ViewId("power-ops", "RKOMBidCombination", "b8c2faf6e35abe")
+        )
+        self.rkom_market = RKOMMarketAPI(client, dm.ViewId("power-ops", "RKOMCombinationBid", "a81dbcbbcd26de"))
+        self.rkom_process = RKOMProcessAPI(client, dm.ViewId("power-ops", "RKOMMarket", "c362cd4abb3d4e"))
+        self.reserve_scenario = ReserveScenarioAPI(client, dm.ViewId("power-ops", "RKOMProcess", "268dee7a04a5c3"))
+        self.scenario_mapping = ScenarioMappingAPI(client, dm.ViewId("power-ops", "ScenarioMapping", "2b5b1f6fa4f53d"))
+        self.shop_transformation = ShopTransformationAPI(
+            client, dm.ViewId("power-ops", "ShopTransformation", "d0a6c80379e55b")
+        )
+        self.value_transformation = ValueTransformationAPI(
+            client, dm.ViewId("power-ops", "ValueTransformation", "894c9c530a1c1d")
+        )
 
 
 class GeneratedPowerOpsClient:
@@ -154,9 +231,9 @@ class GeneratedPowerOpsClient:
     GeneratedPowerOpsClient
 
     Generated with:
-        pygen = 0.17.7
-        cognite-sdk = 6.21.1
-        pydantic = 2.3.0
+        pygen = 0.21.1
+        cognite-sdk = 6.27.0
+        pydantic = 2.4.1
 
     """
 
@@ -167,6 +244,7 @@ class GeneratedPowerOpsClient:
             client = CogniteClient(config_or_client)
         else:
             raise ValueError(f"Expected CogniteClient or ClientConfig, got {type(config_or_client)}")
+        self.afrr = AFRRAPIs(client)
         self.benchmark = BenchmarkAPIs(client)
         self.cog_shop = CogShopAPIs(client)
         self.day_ahead = DayAheadAPIs(client)

@@ -20,6 +20,7 @@ def shop_run_success(powerops_client: PowerOpsClient) -> SHOPRun:
     return powerops_client.shop.retrieve("SHOP_RUN_2023-09-12T16:19:14.342892Z_110802")
 
 
+@pytest.mark.cdf
 def test_list_shop_runs(powerops_client: PowerOpsClient) -> None:
     runs = powerops_client.shop.list(limit=5)
 
@@ -27,6 +28,7 @@ def test_list_shop_runs(powerops_client: PowerOpsClient) -> None:
     assert isinstance(runs.to_pandas(), pd.DataFrame)
 
 
+@pytest.mark.cdf
 def test_retrieve_shop_run(powerops_client: PowerOpsClient, shop_run_list: SHOPRunList) -> None:
     run = powerops_client.shop.retrieve(shop_run_list[0].external_id)
 
@@ -34,12 +36,14 @@ def test_retrieve_shop_run(powerops_client: PowerOpsClient, shop_run_list: SHOPR
     assert run == shop_run_list[0]
 
 
+@pytest.mark.cdf
 def test_get_case_file(shop_run: SHOPRun) -> None:
     case_file = shop_run.get_case_file()
 
     assert isinstance(case_file, str)
 
 
+@pytest.mark.cdf
 def test_get_shop_files(shop_run: SHOPRun) -> None:
     shop_files = list(shop_run.get_shop_files())
 
@@ -49,12 +53,14 @@ def test_get_shop_files(shop_run: SHOPRun) -> None:
         assert isinstance(shop_file, str)
 
 
+@pytest.mark.cdf
 def test_check_status(shop_run: SHOPRun) -> None:
     status = shop_run.check_status()
 
     assert isinstance(status, SHOPRunStatus)
 
 
+@pytest.mark.cdf
 def test_get_log_files(shop_run_success: SHOPRun) -> None:
     result_files = list(shop_run_success.get_log_files())
 
