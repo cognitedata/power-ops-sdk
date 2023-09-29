@@ -39,7 +39,7 @@ assets:
   labels:
   - externalId: generator
   metadata:
-    p_min: 0.0
+    p_min: 1.2
     penstock: '1'
     startcost: 150.0
   name: Lien_krv_G1

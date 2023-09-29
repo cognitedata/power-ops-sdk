@@ -11759,13 +11759,13 @@ files:
   source: PowerOps bootstrap
 - external_id: SHOP_Fornebu_model
   metadata:
-    sha256_hash: c083862174094aa3a24d5abcc8ddeb4431cebeb1db3c12584f19f61369920bb0
+    sha256_hash: d71fdb898a2904109c7521469994e772bcec20f0fc469f393305b0176c0e83a7
     shop:file_name: model
     shop:type: case
     shop:watercourse: Fornebu
   mime_type: text/plain
   name: SHOP_Fornebu_model
-  sha256_hash: c083862174094aa3a24d5abcc8ddeb4431cebeb1db3c12584f19f61369920bb0
+  sha256_hash: d71fdb898a2904109c7521469994e772bcec20f0fc469f393305b0176c0e83a7
   source: PowerOps bootstrap
 - external_id: SHOP_Fornebu_shop-fornebu1-modul_series
   metadata:
