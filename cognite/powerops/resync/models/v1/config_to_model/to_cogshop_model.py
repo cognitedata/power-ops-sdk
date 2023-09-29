@@ -128,6 +128,12 @@ def to_cogshop_asset_model(
         }
     )
 
+    command_file_by_watercourse = {
+        f.meta.metadata["shop:watercourse"]: f
+        for f in model.shop_files
+        if f.meta.metadata.get("shop:type") == "commands"
+    }
+
     for process in itertools.chain(dayahead_processes, rkom_processes):
         for incremental_mapping in process.incremental_mapping:
             incremental_mapping: CDFSequence
@@ -136,7 +142,8 @@ def to_cogshop_asset_model(
             # This change is done to match how the scenarios are created in the functions' repo.
             scenario_name_space_title = scenario_name.replace("_", " ").replace("scenario", "Scenario")
             external_id = f"Scenario_{watercourse}_{scenario_name_space_title}"
-            command_file = next((f for f in model.shop_files if f.meta.metadata.get("shop:type") == "commands"), None)
+            command_file = command_file_by_watercourse.get(watercourse)
+
             if command_file is None:
                 raise ValueError(f"Could not find commands file for watercourse {watercourse}")
             scenario = cogshop_v1.ScenarioApply(
