@@ -139,16 +139,14 @@ def to_cogshop_asset_model(
             incremental_mapping: CDFSequence
             watercourse = incremental_mapping.sequence.metadata["shop:watercourse"]
             scenario_name = incremental_mapping.sequence.metadata["bid:scenario_name"]
-            # This change is done to match how the scenarios are created in the functions' repo.
-            scenario_name_space_title = scenario_name.replace("_", " ").replace("scenario", "Scenario")
-            external_id = f"Scenario_{watercourse}_{scenario_name_space_title}"
+            external_id = f"Scenario_{watercourse}_{scenario_name}"
             command_file = command_file_by_watercourse.get(watercourse)
 
             if command_file is None:
                 raise ValueError(f"Could not find commands file for watercourse {watercourse}")
             scenario = cogshop_v1.ScenarioApply(
                 external_id=external_id,
-                name=f"Scenario {watercourse} {scenario_name_space_title}",
+                name=f"Scenario {watercourse} {scenario_name}",
                 model_template=model.model_templates[f"ModelTemplate_{watercourse}"].external_id,
                 mappings_override=[
                     cogshop_v1.MappingApply(
