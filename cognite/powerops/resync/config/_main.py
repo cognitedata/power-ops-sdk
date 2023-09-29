@@ -137,7 +137,9 @@ class ProductionConfig(Config):
                         watercourse["yaml_raw_path"] = (
                             config_dir_path / watercourse["directory"] / watercourse["model_raw"]
                         )
-                        watercourse["shop_model_template"] = load_yaml(watercourse["yaml_raw_path"], encoding="utf-8")
+                        shop_model_template = load_yaml(watercourse["yaml_raw_path"], encoding="utf-8")
+                        watercourse["shop_model_template"] = shop_model_template
+                        watercourse["generators"] = _read_generators_from_shop_model_template(shop_model_template)
                     if all(key in watercourse for key in ["directory", "model_processed"]):
                         watercourse["yaml_processed_path"] = (
                             config_dir_path / watercourse["directory"] / watercourse["model_processed"]
@@ -220,3 +222,12 @@ class ReSyncConfig(BaseModel):
             )
 
         return self
+
+
+def _read_generators_from_shop_model_template(shop_model_template: dict[str, Any]) -> list[dict[str, Any]]:
+    generators: list[dict[str, Any]] = []
+    for generator_name, generator_attributes in shop_model_template.get("model", {}).get("generator", {}).items():
+        attributes = generator_attributes.copy()
+        attributes["name"] = generator_name
+        generators.append(attributes)
+    return generators

@@ -9,6 +9,8 @@ from pydantic import BaseModel, ConfigDict, Field
 from cognite.powerops.resync.config._shared import TimeSeriesMapping
 from cognite.powerops.utils.serialization import load_yaml
 
+from .generator import Generator
+
 
 class Watercourse(BaseModel):
     name: str
@@ -45,6 +47,7 @@ class WatercourseConfig(Watercourse):
     plant_display_names_and_order: dict[str, tuple[str, int]] = Field(default_factory=dict)
     reservoir_display_names_and_order: dict[str, tuple[str, int]] = Field(default_factory=dict)
     water_value_based_method_time_series_csv_filename: Optional[str] = None
+    generators: list[Generator] = Field(default_factory=list)
 
     @classmethod
     def from_yaml(cls, yaml_path: Path) -> list[WatercourseConfig]:

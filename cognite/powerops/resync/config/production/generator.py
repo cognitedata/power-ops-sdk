@@ -23,6 +23,18 @@ class Generator(BaseModel):
     def external_id(self) -> ExternalId:
         return f"generator_{self.name}"
 
+    @field_validator("penstock", mode="before")
+    def to_string(cls, value):
+        return str(value)
+
+    @field_validator("startcost", mode="before")
+    def to_float(cls, value):
+        if isinstance(value, dict) and len(value) >= 1:
+            # Timeseries with one value
+            _, value = next(iter(value.items()))
+            return float(value)
+        return value
+
 
 class GeneratorTimeSeriesMapping(BaseModel):
     generator_name: GeneratorName
