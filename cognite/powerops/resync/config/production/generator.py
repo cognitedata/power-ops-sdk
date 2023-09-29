@@ -14,7 +14,7 @@ class Generator(BaseModel):
     name: GeneratorName
     penstock: str
     startcost: float
-    p_min: float
+    p_min: float = 0.0
 
     start_stop_cost_time_series: Optional[ExternalId] = None  # external ID of time series with values in m
     is_available_time_series: Optional[ExternalId] = None  # external ID of boolean time series
