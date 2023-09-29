@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.61.0] - 2023-09-29
+### Added
+* Validation of generators by `resync`, they now require `p_min`, `startcost`, and `penstock`.
+
 ## [0.60.2] - 2023-09-28
 ### Fixed
 * `powerops plan/apply` did not handle the config for `NordPool` and `RKOM` correctly, leading these not to be updated. This is now fixed.
