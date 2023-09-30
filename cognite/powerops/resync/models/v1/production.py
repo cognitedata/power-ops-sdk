@@ -14,9 +14,9 @@ from cognite.powerops.utils.serialization import parse_time_series, try_load_dic
 class Generator(AssetType):
     parent_external_id: ClassVar[str] = "generators"
     label: ClassVar[Union[AssetLabel, str]] = AssetLabel.GENERATOR
-    p_min: float = 0.0
-    penstock: str = ""
-    startcost: float = 0.0
+    p_min: float
+    penstock: str
+    startcost: float
     start_stop_cost_time_series: Optional[TimeSeries] = None
     is_available_time_series: Optional[TimeSeries] = None
     generator_efficiency_curve: Optional[CDFSequence] = None
@@ -42,19 +42,19 @@ class Generator(AssetType):
 class Reservoir(AssetType):
     parent_external_id: ClassVar[str] = "reservoirs"
     label: ClassVar[Union[AssetLabel, str]] = AssetLabel.RESERVOIR
-    display_name: str = ""
-    ordering: str = ""
+    display_name: str
+    ordering: str
 
 
 class Plant(AssetType):
     parent_external_id: ClassVar[str] = "plants"
     label: ClassVar[Union[AssetLabel, str]] = AssetLabel.PLANT
-    display_name: str = ""
-    ordering: str = ""
-    head_loss_factor: float = 0.0
-    outlet_level: float = 0.0
-    p_min: float = 0.0
-    p_max: float = 0.0
+    display_name: str
+    ordering: str
+    head_loss_factor: float
+    outlet_level: float
+    p_min: float
+    p_max: float
     penstock_head_loss_factors: dict = Field(default_factory=dict)
     generators: list[Generator] = Field(default_factory=list)
     inlet_reservoir: Optional[Reservoir] = None
