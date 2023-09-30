@@ -20,21 +20,21 @@ assets:
   labels:
   - externalId: market
   metadata:
-    max_price: 4000.0
-    min_price: -500.0
-    price_steps: 200
+    max_price: '4000.0'
+    min_price: '-500.0'
+    price_steps: '200'
     price_unit: EUR/MWh
-    tick_size: 0.1
+    tick_size: '0.1'
     time_unit: 1h
     timezone: Europe/Oslo
-    trade_lot: 0.1
+    trade_lot: '0.1'
   name: Nord Pool Day-ahead
   parent_external_id: market_configurations
 - external_id: market_configuration_statnett_rkom_weekly
   labels:
   - externalId: market
   metadata:
-    start_of_week: 1
+    start_of_week: '1'
     timezone: Europe/Oslo
   name: RKOM weekly (Statnett)
   parent_external_id: market_configurations
@@ -51,10 +51,10 @@ assets:
     bid:bid_matrix_generator_config_external_id: POWEROPS_bid_matrix_generator_config_multi_scenario_20_NO2
     bid:bid_process_configuration_name: multi_scenario_20_NO2
     bid:date: '[["shift", {"days": -400}], ["floor", "day"]]'
-    bid:is_default_config_for_price_area: false
+    bid:is_default_config_for_price_area: 'False'
     bid:main_scenario: scenario_10
     bid:market_config_external_id: market_configuration_nordpool_dayahead
-    bid:no_shop: false
+    bid:no_shop: 'False'
     bid:price_area: price_area_NO2
     bid:price_scenarios: '{"scenario_1": "907677", "scenario_2": "907677", "scenario_3":
       "907677", "scenario_4": "907677", "scenario_5": "907677", "scenario_6": "907677",
@@ -76,10 +76,10 @@ assets:
     bid:bid_matrix_generator_config_external_id: POWEROPS_bid_matrix_generator_config_multi_scenario_2_NO2
     bid:bid_process_configuration_name: multi_scenario_2_NO2
     bid:date: '[["shift", {"days": -400}], ["floor", "day"]]'
-    bid:is_default_config_for_price_area: false
+    bid:is_default_config_for_price_area: 'False'
     bid:main_scenario: scenario_1
     bid:market_config_external_id: market_configuration_nordpool_dayahead
-    bid:no_shop: false
+    bid:no_shop: 'False'
     bid:price_area: price_area_NO2
     bid:price_scenarios: '{"scenario_1": "907677", "scenario_2": "907678"}'
     shop:endtime: '[["shift", {"days": -400}], ["floor", "week"], ["shift", {"weeks":
@@ -96,10 +96,10 @@ assets:
     bid:bid_matrix_generator_config_external_id: POWEROPS_bid_matrix_generator_config_price_independent_NO2
     bid:bid_process_configuration_name: price_independent_NO2
     bid:date: '[["shift", {"days": -400}], ["floor", "day"]]'
-    bid:is_default_config_for_price_area: true
+    bid:is_default_config_for_price_area: 'True'
     bid:main_scenario: scenario_1
     bid:market_config_external_id: market_configuration_nordpool_dayahead
-    bid:no_shop: false
+    bid:no_shop: 'False'
     bid:price_area: price_area_NO2
     bid:price_scenarios: '{"scenario_1": "907677"}'
     shop:endtime: '[["shift", {"days": -400}], ["floor", "week"], ["shift", {"weeks":
@@ -116,10 +116,10 @@ assets:
     bid:bid_matrix_generator_config_external_id: POWEROPS_bid_matrix_generator_config_water_value_based_with_dummy_SHOP_runNO2
     bid:bid_process_configuration_name: water_value_based_with_dummy_SHOP_runNO2
     bid:date: '[["shift", {"days": -400}], ["floor", "day"]]'
-    bid:is_default_config_for_price_area: false
+    bid:is_default_config_for_price_area: 'False'
     bid:main_scenario: Main
     bid:market_config_external_id: market_configuration_nordpool_dayahead
-    bid:no_shop: false
+    bid:no_shop: 'False'
     bid:price_area: price_area_NO2
     bid:price_scenarios: '{"Main": "907677"}'
     shop:endtime: '[["shift", {"days": 2}], ["floor", "day"]]'

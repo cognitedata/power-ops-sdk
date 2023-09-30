@@ -3,108 +3,108 @@ assets:
   labels:
   - externalId: generator
   metadata:
-    p_min: 40.0
+    p_min: '40.0'
     penstock: '1'
-    startcost: 500.0
+    startcost: '500.0'
   name: Dalby_G1
   parent_external_id: generators
 - external_id: generator_Dalby_G2
   labels:
   - externalId: generator
   metadata:
-    p_min: 40.0
+    p_min: '40.0'
     penstock: '1'
-    startcost: 250.0
+    startcost: '250.0'
   name: Dalby_G2
   parent_external_id: generators
 - external_id: generator_Holen_G1
   labels:
   - externalId: generator
   metadata:
-    p_min: 27.0
+    p_min: '27.0'
     penstock: '1'
-    startcost: 200.0
+    startcost: '200.0'
   name: Holen_G1
   parent_external_id: generators
 - external_id: generator_Landet_G1
   labels:
   - externalId: generator
   metadata:
-    p_min: 25.0
+    p_min: '25.0'
     penstock: '1'
-    startcost: 200.0
+    startcost: '200.0'
   name: Landet_G1
   parent_external_id: generators
 - external_id: generator_Lien_krv_G1
   labels:
   - externalId: generator
   metadata:
-    p_min: 1.2
+    p_min: '1.2'
     penstock: '1'
-    startcost: 150.0
+    startcost: '150.0'
   name: Lien_krv_G1
   parent_external_id: generators
 - external_id: generator_Lund_G1
   labels:
   - externalId: generator
   metadata:
-    p_min: 0.6
+    p_min: '0.6'
     penstock: '1'
-    startcost: 100.0
+    startcost: '100.0'
   name: Lund_G1
   parent_external_id: generators
 - external_id: generator_Rull1_G1
   labels:
   - externalId: generator
   metadata:
-    p_min: 40.0
+    p_min: '40.0'
     penstock: '1'
-    startcost: 250.0
+    startcost: '250.0'
   name: Rull1_G1
   parent_external_id: generators
 - external_id: generator_Rull1_G2
   labels:
   - externalId: generator
   metadata:
-    p_min: 40.0
+    p_min: '40.0'
     penstock: '2'
-    startcost: 250.0
+    startcost: '250.0'
   name: Rull1_G2
   parent_external_id: generators
 - external_id: generator_Rull2_G1
   labels:
   - externalId: generator
   metadata:
-    p_min: 32.0
+    p_min: '32.0'
     penstock: '1'
-    startcost: 250.0
+    startcost: '250.0'
   name: Rull2_G1
   parent_external_id: generators
 - external_id: generator_Rull2_G2
   labels:
   - externalId: generator
   metadata:
-    p_min: 32.0
+    p_min: '32.0'
     penstock: '2'
-    startcost: 250.0
+    startcost: '250.0'
   name: Rull2_G2
   parent_external_id: generators
 - external_id: generator_Scott_G1
   labels:
   - externalId: generator
   metadata:
-    p_min: 8.0
+    p_min: '8.0'
     penstock: '1'
-    startcost: 150.0
+    startcost: '150.0'
   name: Scott_G1
   parent_external_id: generators
 - external_id: generator_Strand_krv_G1
   labels:
   - externalId: generator
   metadata:
-    p_min: 4.2
+    p_min: '4.2'
     penstock: '1'
-    startcost: 150.0
+    startcost: '150.0'
   name: Strand_krv_G1
   parent_external_id: generators
 - description: ''
@@ -116,11 +116,11 @@ assets:
   - externalId: plant
   metadata:
     display_name: Dalby
-    head_loss_factor: 0.002105
+    head_loss_factor: '0.002105'
     ordering: '999'
-    outlet_level: 365.0
-    p_max: 1.0e+19
-    p_min: 0.0
+    outlet_level: '365.0'
+    p_max: 1e+19
+    p_min: '0.0'
     penstock_head_loss_factors: '{"1": 0.0006}'
   name: Dalby
   parent_external_id: plants
@@ -129,11 +129,11 @@ assets:
   - externalId: plant
   metadata:
     display_name: Holen
-    head_loss_factor: 0.0339
+    head_loss_factor: '0.0339'
     ordering: '999'
-    outlet_level: 628.0
-    p_max: 1.0e+19
-    p_min: 0.0
+    outlet_level: '628.0'
+    p_max: 1e+19
+    p_min: '0.0'
     penstock_head_loss_factors: '{"1": 0.0113}'
   name: Holen
   parent_external_id: plants
@@ -142,11 +142,11 @@ assets:
   - externalId: plant
   metadata:
     display_name: Landet
-    head_loss_factor: 0.02007
+    head_loss_factor: '0.02007'
     ordering: '999'
-    outlet_level: 670.0
-    p_max: 1.0e+19
-    p_min: 0.0
+    outlet_level: '670.0'
+    p_max: 1e+19
+    p_min: '0.0'
     penstock_head_loss_factors: '{"1": 0.0}'
   name: Landet
   parent_external_id: plants
@@ -155,11 +155,11 @@ assets:
   - externalId: plant
   metadata:
     display_name: Lien_krv
-    head_loss_factor: 0.8
+    head_loss_factor: '0.8'
     ordering: '999'
-    outlet_level: 1030.0
-    p_max: 1.0e+19
-    p_min: 0.0
+    outlet_level: '1030.0'
+    p_max: 1e+19
+    p_min: '0.0'
     penstock_head_loss_factors: '{"1": 0.0}'
   name: Lien_krv
   parent_external_id: plants
@@ -168,11 +168,11 @@ assets:
   - externalId: plant
   metadata:
     display_name: Lund
-    head_loss_factor: 0.002
+    head_loss_factor: '0.002'
     ordering: '999'
-    outlet_level: 1240.0
-    p_max: 1.0e+19
-    p_min: 0.0
+    outlet_level: '1240.0'
+    p_max: 1e+19
+    p_min: '0.0'
     penstock_head_loss_factors: '{"1": 0.022}'
   name: Lund
   parent_external_id: plants
@@ -181,11 +181,11 @@ assets:
   - externalId: plant
   metadata:
     display_name: Rull1
-    head_loss_factor: 0.00107
+    head_loss_factor: '0.00107'
     ordering: '999'
-    outlet_level: 68.0
-    p_max: 1.0e+19
-    p_min: 0.0
+    outlet_level: '68.0'
+    p_max: 1e+19
+    p_min: '0.0'
     penstock_head_loss_factors: '{"1": 0.0007, "2": 0.0005}'
   name: Rull1
   parent_external_id: plants
@@ -194,11 +194,11 @@ assets:
   - externalId: plant
   metadata:
     display_name: Rull2
-    head_loss_factor: 0.0225
+    head_loss_factor: '0.0225'
     ordering: '999'
-    outlet_level: 68.0
-    p_max: 1.0e+19
-    p_min: 0.0
+    outlet_level: '68.0'
+    p_max: 1e+19
+    p_min: '0.0'
     penstock_head_loss_factors: '{"1": 0.0018, "2": 0.0041}'
   name: Rull2
   parent_external_id: plants
@@ -207,11 +207,11 @@ assets:
   - externalId: plant
   metadata:
     display_name: Scott
-    head_loss_factor: 0.003399
+    head_loss_factor: '0.003399'
     ordering: '999'
-    outlet_level: 1013.0
-    p_max: 1.0e+19
-    p_min: 0.0
+    outlet_level: '1013.0'
+    p_max: 1e+19
+    p_min: '0.0'
     penstock_head_loss_factors: '{"1": 0.022}'
   name: Scott
   parent_external_id: plants
@@ -220,11 +220,11 @@ assets:
   - externalId: plant
   metadata:
     display_name: Strand_krv
-    head_loss_factor: 0.0
+    head_loss_factor: '0.0'
     ordering: '999'
-    outlet_level: 753.06
-    p_max: 1.0e+19
-    p_min: 0.0
+    outlet_level: '753.06'
+    p_max: 1e+19
+    p_min: '0.0'
     penstock_head_loss_factors: '{"1": 0.3125}'
   name: Strand_krv
   parent_external_id: plants
