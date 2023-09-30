@@ -13,6 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.62.1] - 2023-09-30
+### Fixed
+* Remove defaults on `resync` `Produciton` model. This caused changes to be hidden from `recync` and thus
+  the CDF Assest not been updated.
+
 ## [0.62.0] - 2023-09-29
 ### Change
 * Validation of generators by `resync`, made `p_min` optional. This is because it is only required by the water

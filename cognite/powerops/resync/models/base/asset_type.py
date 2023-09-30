@@ -170,7 +170,7 @@ class AssetType(ResourceType, ABC, arbitrary_types_allowed=True, validate_assign
                 for k, v in value.items():
                     if isinstance(v, (dict, list)):
                         v = json.dumps(v)
-                    metadata[f"{field_name}:{k}"] = v
+                    metadata[f"{field_name}:{k}"] = str(v)
             elif isinstance(value, list) and value and isinstance(value[0], NonAssetType):
                 metadata[field_name] = json.dumps([item.model_dump(exclude_unset=True) for item in value])
             elif isinstance(value, (dict, list)) and value:
@@ -178,9 +178,9 @@ class AssetType(ResourceType, ABC, arbitrary_types_allowed=True, validate_assign
             elif isinstance(value, (dict, list)) and not value:
                 continue
             elif field.annotation in (str, int, float):
-                metadata[field_name] = value
+                metadata[field_name] = str(value)
             elif field.annotation in (Optional[str], Optional[int], Optional[float]):
-                metadata[field_name] = value
+                metadata[field_name] = str(value) if value is not None else ""
             else:
                 raise NotImplementedError(f"Cannot handle metadata of type {field.annotation}")
         return metadata
