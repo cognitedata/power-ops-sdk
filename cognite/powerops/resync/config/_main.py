@@ -172,7 +172,7 @@ class CogShopConfig(Config):
         file_names = [file.file_path.stem for file in value]
         has_cog_shop_files_config= "cog_shop_files_config" in file_names
         if len(files_to_check) > 1 and not seen:  # one of the files is the cog_shop_files_config itself
-            raise ValueError("Ensure that cog_shop_files_config with files order is added to watercourse directory")
+            raise ValueError("Missing 'cog_shop_files_config.yaml'. This is needed to for CogSHOP to know which order and type to load extra SHOP files.")
         elif len(files_to_check) == 1 and seen:
             raise ValueError("Ensure that extra shop files to accompany cog_shop_files_config is added to watercourse")
         return value
