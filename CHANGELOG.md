@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.62.2] - 2023-10-02
+### Changed
+* `from_type` and `to_type` as optional fields in Connections class to match file format in model_raw source files
+
 ## [0.62.1] - 2023-09-30
 ### Fixed
 * Remove defaults on `resync` `Produciton` model. This caused changes to be hidden from `recync` and thus
