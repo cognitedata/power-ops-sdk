@@ -90,6 +90,7 @@ def to_cogshop_asset_model(
             version="1",
             shop_version=shop_version,
             watercourse=watercourse.name,
+            source="resync",
             model=cogshop_v1.FileRefApply(
                 external_id=f"ModelTemplate_{watercourse.name}__FileRef_model",
                 type="case",
@@ -168,6 +169,7 @@ def to_cogshop_asset_model(
                     external_id=f"Commands_{watercourse}",
                     commands=yaml.safe_load(command_file.content.decode()).get("commands", []),
                 ),
+                source="resync",
             )
             model.scenarios[scenario.external_id] = scenario
 

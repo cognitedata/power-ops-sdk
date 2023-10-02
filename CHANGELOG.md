@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.63.0] - 2023-10-02
+### Added
+* Field `source` to `Scenario` and `ModelTemplate` in `CogSHOP` model.
+
 ## [0.62.2] - 2023-10-02
 ### Changed
 * `from_type` and `to_type` as optional fields in Connections class to match file format in model_raw source files
