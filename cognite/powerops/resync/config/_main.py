@@ -170,7 +170,7 @@ class CogShopConfig(Config):
         if not files_to_check:
             return value
         file_names = [file.file_path.stem for file in value]
-        seen = "cog_shop_files_config" in file_names
+        has_cog_shop_files_config= "cog_shop_files_config" in file_names
         if len(files_to_check) > 1 and not seen:  # one of the files is the cog_shop_files_config itself
             raise ValueError("Ensure that cog_shop_files_config with files order is added to watercourse directory")
         elif len(files_to_check) == 1 and seen:
