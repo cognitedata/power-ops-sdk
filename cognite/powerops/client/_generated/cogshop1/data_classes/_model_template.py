@@ -20,6 +20,7 @@ class ModelTemplate(DomainModel, protected_namespaces=()):
     shop_version: Optional[str] = Field(None, alias="shopVersion")
     watercourse: Optional[str] = None
     model: Optional[str] = None
+    source: Optional[str] = None
     base_mappings: Optional[list[str]] = Field(None, alias="baseMappings")
 
     def as_apply(self) -> ModelTemplateApply:
@@ -29,6 +30,7 @@ class ModelTemplate(DomainModel, protected_namespaces=()):
             shop_version=self.shop_version,
             watercourse=self.watercourse,
             model=self.model,
+            source=self.source,
             base_mappings=self.base_mappings,
         )
 
@@ -39,6 +41,7 @@ class ModelTemplateApply(DomainModelApply, protected_namespaces=()):
     shop_version: str
     watercourse: str
     model: Union[FileRefApply, str, None] = Field(None, repr=False)
+    source: Optional[str] = None
     base_mappings: Union[list[MappingApply], list[str], None] = Field(default=None, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
@@ -58,6 +61,8 @@ class ModelTemplateApply(DomainModelApply, protected_namespaces=()):
                 "space": "cogShop",
                 "externalId": self.model if isinstance(self.model, str) else self.model.external_id,
             }
+        if self.source is not None:
+            properties["source"] = self.source
         if properties:
             source = dm.NodeOrEdgeData(
                 source=dm.ContainerId("cogShop", "ModelTemplate"),

@@ -21,6 +21,7 @@ class Scenario(DomainModel, protected_namespaces=()):
     name: Optional[str] = None
     model_template: Optional[str] = Field(None, alias="modelTemplate")
     commands: Optional[str] = None
+    source: Optional[str] = None
     extra_files: Optional[list[str]] = Field(None, alias="extraFiles")
     mappings_override: Optional[list[str]] = Field(None, alias="mappingsOverride")
 
@@ -30,6 +31,7 @@ class Scenario(DomainModel, protected_namespaces=()):
             name=self.name,
             model_template=self.model_template,
             commands=self.commands,
+            source=self.source,
             extra_files=self.extra_files,
             mappings_override=self.mappings_override,
         )
@@ -40,6 +42,7 @@ class ScenarioApply(DomainModelApply, protected_namespaces=()):
     name: str
     model_template: Union[ModelTemplateApply, str, None] = Field(None, repr=False)
     commands: Union[CommandsConfigApply, str, None] = Field(None, repr=False)
+    source: Optional[str] = None
     extra_files: Union[list[FileRefApply], list[str], None] = Field(default=None, repr=False)
     mappings_override: Union[list[MappingApply], list[str], None] = Field(default=None, repr=False)
 
@@ -63,6 +66,8 @@ class ScenarioApply(DomainModelApply, protected_namespaces=()):
                 "space": "cogShop",
                 "externalId": self.commands if isinstance(self.commands, str) else self.commands.external_id,
             }
+        if self.source is not None:
+            properties["source"] = self.source
         if properties:
             source = dm.NodeOrEdgeData(
                 source=dm.ContainerId("cogShop", "Scenario"),
