@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.63.0] - 2023-10-02
+### Added
+* Field `source` to `Scenario` and `ModelTemplate` in `CogSHOP` model.
+
 ## [0.62.1] - 2023-09-30
 ### Fixed
 * Remove defaults on `resync` `Produciton` model. This caused changes to be hidden from `recync` and thus
