@@ -165,6 +165,8 @@ class ScenarioAPI(TypeAPI[Scenario, ScenarioApply, ScenarioList]):
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
+        source: str | list[str] | None = None,
+        source_prefix: str | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -174,6 +176,8 @@ class ScenarioAPI(TypeAPI[Scenario, ScenarioApply, ScenarioList]):
             self.view_id,
             name,
             name_prefix,
+            source,
+            source_prefix,
             external_id_prefix,
             filter,
         )
@@ -215,6 +219,8 @@ def _create_filter(
     view_id: dm.ViewId,
     name: str | list[str] | None = None,
     name_prefix: str | None = None,
+    source: str | list[str] | None = None,
+    source_prefix: str | None = None,
     external_id_prefix: str | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
@@ -225,6 +231,12 @@ def _create_filter(
         filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
     if name_prefix:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
+    if source and isinstance(source, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("source"), value=source))
+    if source and isinstance(source, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("source"), values=source))
+    if source_prefix:
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("source"), value=source_prefix))
     if external_id_prefix:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if filter:

@@ -125,6 +125,8 @@ class ModelTemplateAPI(TypeAPI[ModelTemplate, ModelTemplateApply, ModelTemplateL
         shop_version_prefix: str | None = None,
         watercourse: str | list[str] | None = None,
         watercourse_prefix: str | None = None,
+        source: str | list[str] | None = None,
+        source_prefix: str | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -138,6 +140,8 @@ class ModelTemplateAPI(TypeAPI[ModelTemplate, ModelTemplateApply, ModelTemplateL
             shop_version_prefix,
             watercourse,
             watercourse_prefix,
+            source,
+            source_prefix,
             external_id_prefix,
             filter,
         )
@@ -170,6 +174,8 @@ def _create_filter(
     shop_version_prefix: str | None = None,
     watercourse: str | list[str] | None = None,
     watercourse_prefix: str | None = None,
+    source: str | list[str] | None = None,
+    source_prefix: str | None = None,
     external_id_prefix: str | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
@@ -192,6 +198,12 @@ def _create_filter(
         filters.append(dm.filters.In(view_id.as_property_ref("watercourse"), values=watercourse))
     if watercourse_prefix:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("watercourse"), value=watercourse_prefix))
+    if source and isinstance(source, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("source"), value=source))
+    if source and isinstance(source, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("source"), values=source))
+    if source_prefix:
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("source"), value=source_prefix))
     if external_id_prefix:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if filter:
