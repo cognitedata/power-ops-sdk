@@ -152,31 +152,31 @@ class ProductionConfig(Config):
 
 class CogShopConfig(Config):
     time_series_mappings: Optional[list[TimeSeriesMapping]] = None
-    watercourses_shop: list[ShopFileConfig] # validation needs to happen here. If any of the files
-    _dependent_shop_files = ["extra_data",
-                             "water_value_cut_file_reservoir_mapping",
-                             "water_value_cut_file",
-                             "module_series"]
-    @root_validator
-    def validate_shop_related_files(cls, values):
+    watercourses_shop: list[ShopFileConfig]  # validation needs to happen here. If any of the files
+    _dependent_shop_files: set = {
+        "extra_data",
+        "water_value_cut_file_reservoir_mapping",
+        "water_value_cut_file",
+        "module_series",
+    }
+
+    @field_validator("watercourses_shop")
+    @classmethod
+    def validate_shop_related_files(cls, value):
         """
         If user has added any of the files above to the configuration, then the "cog_shop_files_config" file
         must exist among the files to be uploaded
         """
-        files_list = values.get("watercourses_shop")
-        run_check = any(
-            (file.cog_shop_file_type for file in files_list),
-            cls._dependent_shop_files,
-        )
-        if run_check:
-            seen = "cog_shop_files_config" in [file.file_path.stem for file in files_list]
-        else:
-            return values
-        if run_check and not seen:
-            raise ValueError("")
-        return values
-
-
+        files_to_check = cls._dependent_shop_files.default.intersection({file.cogshop_file_type for file in value})
+        if not files_to_check:
+            return value
+        file_names = [file.file_path.stem for file in value]
+        seen = "cog_shop_files_config" in file_names
+        if len(files_to_check) > 1 and not seen:  # one of the files is the cog_shop_files_config itself
+            raise ValueError("Ensure that cog_shop_files_config with files order is added to watercourse directory")
+        elif len(files_to_check) == 1 and seen:
+            raise ValueError("Ensure that extra shop files to accompany cog_shop_files_config is added to watercourse")
+        return value
 
 
 class ReSyncConfig(BaseModel):
