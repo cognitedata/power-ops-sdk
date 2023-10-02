@@ -169,12 +169,21 @@ class CogShopConfig(Config):
         files_to_check = cls._dependent_shop_files.default.intersection({file.cogshop_file_type for file in value})
         if not files_to_check:
             return value
-        file_names = [file.file_path.stem for file in value]
-        has_cog_shop_files_config= "cog_shop_files_config" in file_names
-        if len(files_to_check) > 1 and not seen:  # one of the files is the cog_shop_files_config itself
-            raise ValueError("Missing 'cog_shop_files_config.yaml'. This is needed to for CogSHOP to know which order and type to load extra SHOP files.")
-        elif len(files_to_check) == 1 and seen:
-            raise ValueError("Ensure that extra shop files to accompany cog_shop_files_config is added to watercourse")
+        extra_shop_files = [
+            file.file_path.stem for file in value if file.cogshop_file_type in cls._dependent_shop_files.default
+        ]
+        has_cog_shop_files_config = "cog_shop_files_config" in extra_shop_files
+        if has_cog_shop_files_config:
+            extra_shop_files.remove("cog_shop_files_config")
+            if not extra_shop_files:
+                raise ValueError(
+                    "Ensure that extra shop files to accompany cog_shop_files_config is added to watercourse"
+                )
+        elif extra_shop_files:
+            raise ValueError(
+                "Missing 'cog_shop_files_config.yaml'. "
+                "This is needed for CogSHOP to know which order and type to load extra SHOP files."
+            )
         return value
 
 
