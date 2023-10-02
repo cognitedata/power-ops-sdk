@@ -45,12 +45,33 @@ class CogShop1Asset(CogShopCore, DataModel, protected_namespaces=()):
     @classmethod
     def from_cdf(cls, client: PowerOpsClient, data_set_external_id: str) -> CogShop1Asset:
         cog_shop = client.cog_shop1
-        templates = cog_shop.model_template.list(limit=-1)
-        base_mappings = cog_shop.mapping.list(limit=-1)
-        transformations = cog_shop.transformation.list(limit=-1)
-        files = cog_shop.file_ref.list(limit=-1)
-        scenarios = cog_shop.scenario.list(limit=-1)
-        commands_configs = cog_shop.commands_config.list(limit=-1)
+        templates = cog_shop.model_template.list(limit=-1, source="resync")
+        scenarios = cog_shop.scenario.list(limit=-1, source="resync")
+
+        base_mapping_ids = list(
+            {m for t in templates for m in t.base_mappings or []}
+            | {m for s in scenarios for m in s.mappings_override or []}
+        )
+
+        if base_mapping_ids:
+            base_mappings = cog_shop.mapping.retrieve(external_id=base_mapping_ids)
+        else:
+            base_mappings = []
+
+        if transformation_ids := list({t for m in base_mappings for t in m.transformations or []}):
+            transformations = cog_shop.transformation.retrieve(transformation_ids)
+        else:
+            transformations = []
+
+        if file_ids := list({t.model for t in templates} | {f for s in scenarios for f in s.extra_files or []}):
+            files = cog_shop.file_ref.retrieve(file_ids)
+        else:
+            files = []
+
+        if command_ids := list({s.commands for s in scenarios}):
+            commands_configs = cog_shop.commands_config.retrieve(command_ids)
+        else:
+            commands_configs = []
 
         transformation_by_id: dict[str, cogshop_v1.TransformationApply] = {
             t.external_id: t.as_apply() for t in transformations
