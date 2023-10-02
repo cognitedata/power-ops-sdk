@@ -13,6 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.63.0] - 2023-10-02
+### Added
+* Validation to shop related files. Shop files that need to be loaded in a specific order, needs to be accompanied by a 
+cog shop config. Validation will require this of the user.
+
 ## [0.62.2] - 2023-10-02
 ### Changed
 * `from_type` and `to_type` as optional fields in Connections class to match file format in model_raw source files
