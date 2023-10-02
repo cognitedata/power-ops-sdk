@@ -15,7 +15,7 @@ Changes are grouped as follows
 
 ## [0.63.0] - 2023-10-02
 ### Added
-* Validation to shop related files. Shop files that need to be loaded in a specific order, needs to be accompanied by a 
+* Validation to shop related files. Shop files that need to be loaded in a specific order, needs to be accompanied by a
 cog shop config. Validation will require this of the user.
 
 ## [0.62.2] - 2023-10-02
