@@ -26,13 +26,7 @@ def main():
                     continue
                 print(f"Upgrading repo: {customer_repo.name} from {customer_sdk_version} to {sdk_version}")
 
-                default_branch_origin = (
-                    subprocess.run(["git", "symbolic-ref", "refs/remotes/origin/HEAD"], capture_output=True)
-                    .stdout.decode("utf-8")
-                    .strip()
-                )
-                default_branch = default_branch_origin.split("/")[-1]
-                subprocess.run(["git", "checkout", default_branch])
+                subprocess.run(["git", "checkout", "main"])
                 subprocess.run(["git", "pull"])
                 subprocess.run(["git", "checkout", "-b", f"upgrade-sdk-{sdk_version}"])
                 customer_project_config["tool"]["poetry"]["dependencies"]["cognite-power-ops"] = sdk_version
@@ -41,7 +35,7 @@ def main():
                 subprocess.run(["poetry", "update"])
                 subprocess.run(["git", "commit", "-m", f"Upgrade SDK to {sdk_version}", "-a"])
                 subprocess.run(["git", "push", "-u", "origin", f"upgrade-sdk-{sdk_version}"])
-                subprocess.run(["git", "checkout", default_branch])
+                subprocess.run(["git", "checkout", "main"])
 
 
 if __name__ == "__main__":
