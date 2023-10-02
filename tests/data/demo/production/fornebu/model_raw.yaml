@@ -5229,9 +5229,9 @@ model:
 connections:
   - connection_type: connection_bypass
     from: Hagen
-    from_type: reservoir
+    #from_type: reservoir
     to: b_Hagen_Strand
-    to_type: gate
+    #to_type: gate
   - connection_type: connection_bypass
     from: Sirefelt
     from_type: reservoir
