@@ -28,6 +28,7 @@ type ModelTemplate {
   watercourse: String!
   model: FileRef
   baseMappings: [Mapping]
+  source: String
 }
 
 type ProcessingLog {
@@ -42,6 +43,7 @@ type Scenario {
   mappingsOverride: [Mapping]
   commands: CommandsConfig
   extraFiles: [FileRef]
+  source: String
 }
 
 type Transformation {
