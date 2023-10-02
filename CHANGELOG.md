@@ -13,6 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.65.0] - 2023-10-02
+### Added
+* `resync` support having scenarios and model templates set outside itself in the `CogSHOP` model. This is achieved by
+  `resync` filtering on the `source` field in the `Scenario` and `ModelTemplate` models.
+
 ## [0.64.0] - 2023-10-02
 ### Added
 * Validation to shop related files. Shop files that need to be loaded in a specific order, needs to be accompanied by a
