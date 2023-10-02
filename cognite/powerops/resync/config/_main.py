@@ -161,7 +161,6 @@ class CogShopConfig(Config):
     }
 
     @field_validator("watercourses_shop")
-    @classmethod
     def validate_shop_related_files(cls, value):
         """
         If user has added any of the files above to the configuration, then the "cog_shop_files_config" file
