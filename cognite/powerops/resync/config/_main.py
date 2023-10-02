@@ -152,7 +152,31 @@ class ProductionConfig(Config):
 
 class CogShopConfig(Config):
     time_series_mappings: Optional[list[TimeSeriesMapping]] = None
-    watercourses_shop: list[ShopFileConfig]
+    watercourses_shop: list[ShopFileConfig] # validation needs to happen here. If any of the files
+    _dependent_shop_files = ["extra_data",
+                             "water_value_cut_file_reservoir_mapping",
+                             "water_value_cut_file",
+                             "module_series"]
+    @root_validator
+    def validate_shop_related_files(cls, values):
+        """
+        If user has added any of the files above to the configuration, then the "cog_shop_files_config" file
+        must exist among the files to be uploaded
+        """
+        files_list = values.get("watercourses_shop")
+        run_check = any(
+            (file.cog_shop_file_type for file in files_list),
+            cls._dependent_shop_files,
+        )
+        if run_check:
+            seen = "cog_shop_files_config" in [file.file_path.stem for file in files_list]
+        else:
+            return values
+        if run_check and not seen:
+            raise ValueError("")
+        return values
+
+
 
 
 class ReSyncConfig(BaseModel):
