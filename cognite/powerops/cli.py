@@ -164,6 +164,21 @@ def destroy(
         typer.echo(destroyed.as_github_markdown())
 
 
+@app.command("migrate", help="Migrate from asset to data model")
+def migrate(
+    models: list[str] = typer.Option(
+        default=("Production",),
+        help="The model to migrate",
+    )
+):
+    power = PowerOpsClient.from_settings()
+
+    changes = resync.migration(power, model_names=models, echo=_to_echo(True))
+
+    if format == "markdown":
+        typer.echo(changes.as_github_markdown())
+
+
 def main():
     app()
 

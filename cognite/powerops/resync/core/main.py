@@ -4,7 +4,7 @@ This module contains the main functions for the resync tool.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Optional, cast
+from typing import Literal, Optional, cast
 
 from cognite.client import CogniteClient
 from cognite.client.data_classes.data_modeling import DataModelId, MappedProperty, SpaceApply, SpaceList, ViewList
@@ -316,6 +316,24 @@ def destroy(
         client.cdf.labels.delete([label.external_id for label in labels if label.external_id])
 
     return destroyed
+
+
+def migration(
+    client: PowerOpsClient | None,
+    model: Literal["Production"] = "Production",
+    echo: Echo | None = None,
+) -> ModelDifferences:
+    if model != "Production":
+        raise ValueError(f"Unknown model {model}")
+    echo = echo or _default_echo
+    client = client or PowerOpsClient.from_settings()
+
+    production_dm = models.v2.ProductionModelDM.from_cdf(client, data_set_external_id=client.datasets.read_dataset)
+    production_dm_as_asset = models.migration.production_as_asset(production_dm)
+    echo("Retrieved data model")
+    production_asset = models.v1.ProductionModel.from_cdf(client, data_set_external_id=client.datasets.read_dataset)
+    echo("Retrieved asset model")
+    return ModelDifferences([diff.model_difference(current_model=production_asset, new_model=production_dm_as_asset)])
 
 
 def _remove_resources(differences: ModelDifference, echo: Echo, cdf: CogniteClient, auto_yes: bool) -> ModelDifference:
