@@ -38,6 +38,7 @@ class WatercourseConfig(Watercourse):
     yaml_mapping_path: str = ""
     model_processed: str  # TODO: not used here
     model_mapping: Optional[str] = None
+    write_back_model_file: Optional[bool] = True
     tco_paths: Optional[list[str]] = None  # TODO: not used here - HEV specific
     rrs_ids: Optional[list[str]] = None
     hardcoded_mapping: Optional[TimeSeriesMapping] = None  # TODO: not used here

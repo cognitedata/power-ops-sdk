@@ -120,6 +120,7 @@ class Watercourse(AssetType):
     processed_model_file: Optional[Path] = Field(None, exclude=True)
     plants: list[Plant] = Field(default_factory=list)
     production_obligation_time_series: list[TimeSeries] = Field(default_factory=list)
+    write_back_model_file: Optional[bool] = Field(True, exclude=True)
 
     @field_validator("plants", mode="after")
     def plant_ordering(cls, value: list[Plant]) -> list[Plant]:

@@ -22,7 +22,12 @@ def to_cogshop_data_model(
 
     # TODO Fix the assumption that timeseries mappings and watercourses are in the same order
     for watercourse, mapping in zip(watercourse_configs, config.time_series_mappings):
-        model_file = _to_shop_model_file(watercourse.name, watercourse.yaml_raw_path, watercourse.yaml_processed_path)
+        model_file = _to_shop_model_file(
+            watercourse.name,
+            watercourse.yaml_raw_path,
+            watercourse.yaml_processed_path,
+            watercourse.write_back_model_file,
+        )
         model.shop_files.append(model_file)
 
         ##### Output Definitions #####

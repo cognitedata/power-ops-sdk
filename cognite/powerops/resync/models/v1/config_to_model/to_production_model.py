@@ -84,6 +84,7 @@ def to_production_model(configuration: config.ProductionConfig) -> ProductionMod
             production_obligation_time_series=[
                 TimeSeries(external_id=id_) for id_ in watercourse_config.production_obligation_ts_ext_ids
             ],
+            write_back_model_file=watercourse_config.write_back_model_file,
         )
         model.watercourses.append(watercourse)
 
