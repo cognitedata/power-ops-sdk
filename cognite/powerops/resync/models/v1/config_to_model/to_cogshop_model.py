@@ -36,7 +36,12 @@ def to_cogshop_asset_model(
 
     # TODO Fix the assumption that timeseries mappings and watercourses are in the same order
     for watercourse, mapping in zip(watercourses, configuration.time_series_mappings):
-        model_file = _to_shop_model_file(watercourse.name, watercourse.model_file, watercourse.processed_model_file)
+        model_file = _to_shop_model_file(
+            watercourse.name,
+            watercourse.model_file,
+            watercourse.processed_model_file,
+            watercourse.write_back_model_file,
+        )
         model.shop_files.append(model_file)
 
         ##### Output definition #####

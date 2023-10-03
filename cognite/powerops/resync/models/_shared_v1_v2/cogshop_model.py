@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from datetime import datetime
 from pathlib import Path
+from typing import Optional
 
 import yaml
 from cognite.client.data_classes import FileMetadata
@@ -28,7 +29,9 @@ class CogShopCore(Model):
         self.shop_files = self.ordering(self.shop_files)
 
 
-def _to_shop_model_file(watercourse_name, model_file: Path, processed_model_file: Path) -> CDFFile:
+def _to_shop_model_file(
+    watercourse_name, model_file: Path, processed_model_file: Path, write_to_local: Optional[bool] = True
+) -> CDFFile:
     processed_model = _to_model_without_timeseries(
         yaml_raw_path=str(model_file),
         # Todo Move this hardcoded configuration to a config file
@@ -37,6 +40,9 @@ def _to_shop_model_file(watercourse_name, model_file: Path, processed_model_file
     )
     yaml_content = yaml.safe_dump(processed_model, allow_unicode=True, sort_keys=False)
     file_content = yaml_content.encode("utf-8")
+    if write_to_local:
+        dumped = yaml.dump(processed_model, allow_unicode=True, sort_keys=False)
+        processed_model_file.write_text(dumped, encoding="utf-8")
     external_id = f"SHOP_{watercourse_name}_{processed_model_file.stem}"
     return _create_shop_file(
         file_content,

@@ -13,6 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.66.0] - 2023-10-03
+### Added
+* `resync` support for writng back the processed shop model_raw file to local disk based on configuration parameter
+in watercourse configuration
+
 ## [0.65.0] - 2023-10-02
 ### Added
 * `resync` support having scenarios and model templates set outside itself in the `CogSHOP` model. This is achieved by
