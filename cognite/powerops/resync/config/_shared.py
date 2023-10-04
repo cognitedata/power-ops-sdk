@@ -41,6 +41,7 @@ class TransformationType(Enum):
     PLANT_PRODUCTION_SCHEDULE_FLAG_VALUE_MAPPING = auto()
     GATE_OPENING_METER_TO_PERCENT = auto()
     TO_BOOL = auto()
+    TO_INT = auto()
     ZERO_IF_NOT_ONE = auto()
     MULTIPLY = auto()
     MULTIPLY_FROM_OFFSET = auto()
