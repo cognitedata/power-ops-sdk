@@ -5657,7 +5657,7 @@ data_modeling.instances:
   type:
     external_id: Mapping.transformations
     space: cogShop
-- external_id: Mapping_Scenario_Fornebu_Scenario 10_0
+- external_id: Mapping_Scenario_Fornebu_scenario_10_0
   instance_type: node
   sources:
   - properties:
@@ -5670,7 +5670,7 @@ data_modeling.instances:
       space: cogShop
       type: container
   space: cogShop
-- external_id: Mapping_Scenario_Fornebu_Scenario 10_1
+- external_id: Mapping_Scenario_Fornebu_scenario_10_1
   instance_type: node
   sources:
   - properties:
@@ -5686,16 +5686,16 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_{"value":0.01}_0
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 10_1:Tr_ADD_{"value":0.01}_0
+  external_id: Mapping_Scenario_Fornebu_scenario_10_1:Tr_ADD_{"value":0.01}_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 10_1
+    external_id: Mapping_Scenario_Fornebu_scenario_10_1
     space: cogShop
   type:
     external_id: Mapping.transformations
     space: cogShop
-- external_id: Mapping_Scenario_Fornebu_Scenario 11_0
+- external_id: Mapping_Scenario_Fornebu_scenario_11_0
   instance_type: node
   sources:
   - properties:
@@ -5711,16 +5711,16 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_FROM_OFFSET_{"0":5,"1440":0}_0
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 11_0:Tr_ADD_FROM_OFFSET_{"0":5,"1440":0}_0
+  external_id: Mapping_Scenario_Fornebu_scenario_11_0:Tr_ADD_FROM_OFFSET_{"0":5,"1440":0}_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 11_0
+    external_id: Mapping_Scenario_Fornebu_scenario_11_0
     space: cogShop
   type:
     external_id: Mapping.transformations
     space: cogShop
-- external_id: Mapping_Scenario_Fornebu_Scenario 11_1
+- external_id: Mapping_Scenario_Fornebu_scenario_11_1
   instance_type: node
   sources:
   - properties:
@@ -5736,11 +5736,11 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_FROM_OFFSET_{"0":5,"1440":0}_0
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 11_1:Tr_ADD_FROM_OFFSET_{"0":5,"1440":0}_0
+  external_id: Mapping_Scenario_Fornebu_scenario_11_1:Tr_ADD_FROM_OFFSET_{"0":5,"1440":0}_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 11_1
+    external_id: Mapping_Scenario_Fornebu_scenario_11_1
     space: cogShop
   type:
     external_id: Mapping.transformations
@@ -5748,16 +5748,16 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_{"value":0.01}_1
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 11_1:Tr_ADD_{"value":0.01}_1
+  external_id: Mapping_Scenario_Fornebu_scenario_11_1:Tr_ADD_{"value":0.01}_1
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 11_1
+    external_id: Mapping_Scenario_Fornebu_scenario_11_1
     space: cogShop
   type:
     external_id: Mapping.transformations
     space: cogShop
-- external_id: Mapping_Scenario_Fornebu_Scenario 12_0
+- external_id: Mapping_Scenario_Fornebu_scenario_12_0
   instance_type: node
   sources:
   - properties:
@@ -5773,16 +5773,16 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_FROM_OFFSET_{"0":10,"1440":0}_0
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 12_0:Tr_ADD_FROM_OFFSET_{"0":10,"1440":0}_0
+  external_id: Mapping_Scenario_Fornebu_scenario_12_0:Tr_ADD_FROM_OFFSET_{"0":10,"1440":0}_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 12_0
+    external_id: Mapping_Scenario_Fornebu_scenario_12_0
     space: cogShop
   type:
     external_id: Mapping.transformations
     space: cogShop
-- external_id: Mapping_Scenario_Fornebu_Scenario 12_1
+- external_id: Mapping_Scenario_Fornebu_scenario_12_1
   instance_type: node
   sources:
   - properties:
@@ -5798,11 +5798,11 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_FROM_OFFSET_{"0":10,"1440":0}_0
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 12_1:Tr_ADD_FROM_OFFSET_{"0":10,"1440":0}_0
+  external_id: Mapping_Scenario_Fornebu_scenario_12_1:Tr_ADD_FROM_OFFSET_{"0":10,"1440":0}_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 12_1
+    external_id: Mapping_Scenario_Fornebu_scenario_12_1
     space: cogShop
   type:
     external_id: Mapping.transformations
@@ -5810,16 +5810,16 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_{"value":0.01}_1
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 12_1:Tr_ADD_{"value":0.01}_1
+  external_id: Mapping_Scenario_Fornebu_scenario_12_1:Tr_ADD_{"value":0.01}_1
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 12_1
+    external_id: Mapping_Scenario_Fornebu_scenario_12_1
     space: cogShop
   type:
     external_id: Mapping.transformations
     space: cogShop
-- external_id: Mapping_Scenario_Fornebu_Scenario 13_0
+- external_id: Mapping_Scenario_Fornebu_scenario_13_0
   instance_type: node
   sources:
   - properties:
@@ -5835,16 +5835,16 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_FROM_OFFSET_{"0":15,"1440":0}_0
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 13_0:Tr_ADD_FROM_OFFSET_{"0":15,"1440":0}_0
+  external_id: Mapping_Scenario_Fornebu_scenario_13_0:Tr_ADD_FROM_OFFSET_{"0":15,"1440":0}_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 13_0
+    external_id: Mapping_Scenario_Fornebu_scenario_13_0
     space: cogShop
   type:
     external_id: Mapping.transformations
     space: cogShop
-- external_id: Mapping_Scenario_Fornebu_Scenario 13_1
+- external_id: Mapping_Scenario_Fornebu_scenario_13_1
   instance_type: node
   sources:
   - properties:
@@ -5860,11 +5860,11 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_FROM_OFFSET_{"0":15,"1440":0}_0
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 13_1:Tr_ADD_FROM_OFFSET_{"0":15,"1440":0}_0
+  external_id: Mapping_Scenario_Fornebu_scenario_13_1:Tr_ADD_FROM_OFFSET_{"0":15,"1440":0}_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 13_1
+    external_id: Mapping_Scenario_Fornebu_scenario_13_1
     space: cogShop
   type:
     external_id: Mapping.transformations
@@ -5872,16 +5872,16 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_{"value":0.01}_1
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 13_1:Tr_ADD_{"value":0.01}_1
+  external_id: Mapping_Scenario_Fornebu_scenario_13_1:Tr_ADD_{"value":0.01}_1
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 13_1
+    external_id: Mapping_Scenario_Fornebu_scenario_13_1
     space: cogShop
   type:
     external_id: Mapping.transformations
     space: cogShop
-- external_id: Mapping_Scenario_Fornebu_Scenario 14_0
+- external_id: Mapping_Scenario_Fornebu_scenario_14_0
   instance_type: node
   sources:
   - properties:
@@ -5897,16 +5897,16 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_FROM_OFFSET_{"0":20,"1440":0}_0
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 14_0:Tr_ADD_FROM_OFFSET_{"0":20,"1440":0}_0
+  external_id: Mapping_Scenario_Fornebu_scenario_14_0:Tr_ADD_FROM_OFFSET_{"0":20,"1440":0}_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 14_0
+    external_id: Mapping_Scenario_Fornebu_scenario_14_0
     space: cogShop
   type:
     external_id: Mapping.transformations
     space: cogShop
-- external_id: Mapping_Scenario_Fornebu_Scenario 14_1
+- external_id: Mapping_Scenario_Fornebu_scenario_14_1
   instance_type: node
   sources:
   - properties:
@@ -5922,11 +5922,11 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_FROM_OFFSET_{"0":20,"1440":0}_0
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 14_1:Tr_ADD_FROM_OFFSET_{"0":20,"1440":0}_0
+  external_id: Mapping_Scenario_Fornebu_scenario_14_1:Tr_ADD_FROM_OFFSET_{"0":20,"1440":0}_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 14_1
+    external_id: Mapping_Scenario_Fornebu_scenario_14_1
     space: cogShop
   type:
     external_id: Mapping.transformations
@@ -5934,16 +5934,16 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_{"value":0.01}_1
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 14_1:Tr_ADD_{"value":0.01}_1
+  external_id: Mapping_Scenario_Fornebu_scenario_14_1:Tr_ADD_{"value":0.01}_1
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 14_1
+    external_id: Mapping_Scenario_Fornebu_scenario_14_1
     space: cogShop
   type:
     external_id: Mapping.transformations
     space: cogShop
-- external_id: Mapping_Scenario_Fornebu_Scenario 15_0
+- external_id: Mapping_Scenario_Fornebu_scenario_15_0
   instance_type: node
   sources:
   - properties:
@@ -5959,16 +5959,16 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_FROM_OFFSET_{"0":30,"1440":0}_0
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 15_0:Tr_ADD_FROM_OFFSET_{"0":30,"1440":0}_0
+  external_id: Mapping_Scenario_Fornebu_scenario_15_0:Tr_ADD_FROM_OFFSET_{"0":30,"1440":0}_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 15_0
+    external_id: Mapping_Scenario_Fornebu_scenario_15_0
     space: cogShop
   type:
     external_id: Mapping.transformations
     space: cogShop
-- external_id: Mapping_Scenario_Fornebu_Scenario 15_1
+- external_id: Mapping_Scenario_Fornebu_scenario_15_1
   instance_type: node
   sources:
   - properties:
@@ -5984,11 +5984,11 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_FROM_OFFSET_{"0":30,"1440":0}_0
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 15_1:Tr_ADD_FROM_OFFSET_{"0":30,"1440":0}_0
+  external_id: Mapping_Scenario_Fornebu_scenario_15_1:Tr_ADD_FROM_OFFSET_{"0":30,"1440":0}_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 15_1
+    external_id: Mapping_Scenario_Fornebu_scenario_15_1
     space: cogShop
   type:
     external_id: Mapping.transformations
@@ -5996,16 +5996,16 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_{"value":0.01}_1
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 15_1:Tr_ADD_{"value":0.01}_1
+  external_id: Mapping_Scenario_Fornebu_scenario_15_1:Tr_ADD_{"value":0.01}_1
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 15_1
+    external_id: Mapping_Scenario_Fornebu_scenario_15_1
     space: cogShop
   type:
     external_id: Mapping.transformations
     space: cogShop
-- external_id: Mapping_Scenario_Fornebu_Scenario 16_0
+- external_id: Mapping_Scenario_Fornebu_scenario_16_0
   instance_type: node
   sources:
   - properties:
@@ -6021,16 +6021,16 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_FROM_OFFSET_{"0":40,"1440":0}_0
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 16_0:Tr_ADD_FROM_OFFSET_{"0":40,"1440":0}_0
+  external_id: Mapping_Scenario_Fornebu_scenario_16_0:Tr_ADD_FROM_OFFSET_{"0":40,"1440":0}_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 16_0
+    external_id: Mapping_Scenario_Fornebu_scenario_16_0
     space: cogShop
   type:
     external_id: Mapping.transformations
     space: cogShop
-- external_id: Mapping_Scenario_Fornebu_Scenario 16_1
+- external_id: Mapping_Scenario_Fornebu_scenario_16_1
   instance_type: node
   sources:
   - properties:
@@ -6046,11 +6046,11 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_FROM_OFFSET_{"0":40,"1440":0}_0
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 16_1:Tr_ADD_FROM_OFFSET_{"0":40,"1440":0}_0
+  external_id: Mapping_Scenario_Fornebu_scenario_16_1:Tr_ADD_FROM_OFFSET_{"0":40,"1440":0}_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 16_1
+    external_id: Mapping_Scenario_Fornebu_scenario_16_1
     space: cogShop
   type:
     external_id: Mapping.transformations
@@ -6058,16 +6058,16 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_{"value":0.01}_1
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 16_1:Tr_ADD_{"value":0.01}_1
+  external_id: Mapping_Scenario_Fornebu_scenario_16_1:Tr_ADD_{"value":0.01}_1
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 16_1
+    external_id: Mapping_Scenario_Fornebu_scenario_16_1
     space: cogShop
   type:
     external_id: Mapping.transformations
     space: cogShop
-- external_id: Mapping_Scenario_Fornebu_Scenario 17_0
+- external_id: Mapping_Scenario_Fornebu_scenario_17_0
   instance_type: node
   sources:
   - properties:
@@ -6083,16 +6083,16 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_FROM_OFFSET_{"0":50,"1440":0}_0
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 17_0:Tr_ADD_FROM_OFFSET_{"0":50,"1440":0}_0
+  external_id: Mapping_Scenario_Fornebu_scenario_17_0:Tr_ADD_FROM_OFFSET_{"0":50,"1440":0}_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 17_0
+    external_id: Mapping_Scenario_Fornebu_scenario_17_0
     space: cogShop
   type:
     external_id: Mapping.transformations
     space: cogShop
-- external_id: Mapping_Scenario_Fornebu_Scenario 17_1
+- external_id: Mapping_Scenario_Fornebu_scenario_17_1
   instance_type: node
   sources:
   - properties:
@@ -6108,11 +6108,11 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_FROM_OFFSET_{"0":50,"1440":0}_0
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 17_1:Tr_ADD_FROM_OFFSET_{"0":50,"1440":0}_0
+  external_id: Mapping_Scenario_Fornebu_scenario_17_1:Tr_ADD_FROM_OFFSET_{"0":50,"1440":0}_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 17_1
+    external_id: Mapping_Scenario_Fornebu_scenario_17_1
     space: cogShop
   type:
     external_id: Mapping.transformations
@@ -6120,16 +6120,16 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_{"value":0.01}_1
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 17_1:Tr_ADD_{"value":0.01}_1
+  external_id: Mapping_Scenario_Fornebu_scenario_17_1:Tr_ADD_{"value":0.01}_1
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 17_1
+    external_id: Mapping_Scenario_Fornebu_scenario_17_1
     space: cogShop
   type:
     external_id: Mapping.transformations
     space: cogShop
-- external_id: Mapping_Scenario_Fornebu_Scenario 18_0
+- external_id: Mapping_Scenario_Fornebu_scenario_18_0
   instance_type: node
   sources:
   - properties:
@@ -6145,16 +6145,16 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_FROM_OFFSET_{"0":70,"1440":0}_0
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 18_0:Tr_ADD_FROM_OFFSET_{"0":70,"1440":0}_0
+  external_id: Mapping_Scenario_Fornebu_scenario_18_0:Tr_ADD_FROM_OFFSET_{"0":70,"1440":0}_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 18_0
+    external_id: Mapping_Scenario_Fornebu_scenario_18_0
     space: cogShop
   type:
     external_id: Mapping.transformations
     space: cogShop
-- external_id: Mapping_Scenario_Fornebu_Scenario 18_1
+- external_id: Mapping_Scenario_Fornebu_scenario_18_1
   instance_type: node
   sources:
   - properties:
@@ -6170,11 +6170,11 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_FROM_OFFSET_{"0":70,"1440":0}_0
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 18_1:Tr_ADD_FROM_OFFSET_{"0":70,"1440":0}_0
+  external_id: Mapping_Scenario_Fornebu_scenario_18_1:Tr_ADD_FROM_OFFSET_{"0":70,"1440":0}_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 18_1
+    external_id: Mapping_Scenario_Fornebu_scenario_18_1
     space: cogShop
   type:
     external_id: Mapping.transformations
@@ -6182,16 +6182,16 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_{"value":0.01}_1
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 18_1:Tr_ADD_{"value":0.01}_1
+  external_id: Mapping_Scenario_Fornebu_scenario_18_1:Tr_ADD_{"value":0.01}_1
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 18_1
+    external_id: Mapping_Scenario_Fornebu_scenario_18_1
     space: cogShop
   type:
     external_id: Mapping.transformations
     space: cogShop
-- external_id: Mapping_Scenario_Fornebu_Scenario 19_0
+- external_id: Mapping_Scenario_Fornebu_scenario_19_0
   instance_type: node
   sources:
   - properties:
@@ -6207,16 +6207,16 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_FROM_OFFSET_{"0":100,"1440":0}_0
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 19_0:Tr_ADD_FROM_OFFSET_{"0":100,"1440":0}_0
+  external_id: Mapping_Scenario_Fornebu_scenario_19_0:Tr_ADD_FROM_OFFSET_{"0":100,"1440":0}_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 19_0
+    external_id: Mapping_Scenario_Fornebu_scenario_19_0
     space: cogShop
   type:
     external_id: Mapping.transformations
     space: cogShop
-- external_id: Mapping_Scenario_Fornebu_Scenario 19_1
+- external_id: Mapping_Scenario_Fornebu_scenario_19_1
   instance_type: node
   sources:
   - properties:
@@ -6232,11 +6232,11 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_FROM_OFFSET_{"0":100,"1440":0}_0
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 19_1:Tr_ADD_FROM_OFFSET_{"0":100,"1440":0}_0
+  external_id: Mapping_Scenario_Fornebu_scenario_19_1:Tr_ADD_FROM_OFFSET_{"0":100,"1440":0}_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 19_1
+    external_id: Mapping_Scenario_Fornebu_scenario_19_1
     space: cogShop
   type:
     external_id: Mapping.transformations
@@ -6244,16 +6244,16 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_{"value":0.01}_1
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 19_1:Tr_ADD_{"value":0.01}_1
+  external_id: Mapping_Scenario_Fornebu_scenario_19_1:Tr_ADD_{"value":0.01}_1
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 19_1
+    external_id: Mapping_Scenario_Fornebu_scenario_19_1
     space: cogShop
   type:
     external_id: Mapping.transformations
     space: cogShop
-- external_id: Mapping_Scenario_Fornebu_Scenario 1_0
+- external_id: Mapping_Scenario_Fornebu_scenario_1_0
   instance_type: node
   sources:
   - properties:
@@ -6266,7 +6266,7 @@ data_modeling.instances:
       space: cogShop
       type: container
   space: cogShop
-- external_id: Mapping_Scenario_Fornebu_Scenario 1_1
+- external_id: Mapping_Scenario_Fornebu_scenario_1_1
   instance_type: node
   sources:
   - properties:
@@ -6282,16 +6282,16 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_{"value":0.01}_0
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 1_1:Tr_ADD_{"value":0.01}_0
+  external_id: Mapping_Scenario_Fornebu_scenario_1_1:Tr_ADD_{"value":0.01}_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 1_1
+    external_id: Mapping_Scenario_Fornebu_scenario_1_1
     space: cogShop
   type:
     external_id: Mapping.transformations
     space: cogShop
-- external_id: Mapping_Scenario_Fornebu_Scenario 20_0
+- external_id: Mapping_Scenario_Fornebu_scenario_20_0
   instance_type: node
   sources:
   - properties:
@@ -6307,16 +6307,16 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_FROM_OFFSET_{"0":2000,"1440":0}_0
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 20_0:Tr_ADD_FROM_OFFSET_{"0":2000,"1440":0}_0
+  external_id: Mapping_Scenario_Fornebu_scenario_20_0:Tr_ADD_FROM_OFFSET_{"0":2000,"1440":0}_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 20_0
+    external_id: Mapping_Scenario_Fornebu_scenario_20_0
     space: cogShop
   type:
     external_id: Mapping.transformations
     space: cogShop
-- external_id: Mapping_Scenario_Fornebu_Scenario 20_1
+- external_id: Mapping_Scenario_Fornebu_scenario_20_1
   instance_type: node
   sources:
   - properties:
@@ -6332,11 +6332,11 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_FROM_OFFSET_{"0":2000,"1440":0}_0
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 20_1:Tr_ADD_FROM_OFFSET_{"0":2000,"1440":0}_0
+  external_id: Mapping_Scenario_Fornebu_scenario_20_1:Tr_ADD_FROM_OFFSET_{"0":2000,"1440":0}_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 20_1
+    external_id: Mapping_Scenario_Fornebu_scenario_20_1
     space: cogShop
   type:
     external_id: Mapping.transformations
@@ -6344,16 +6344,16 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_{"value":0.01}_1
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 20_1:Tr_ADD_{"value":0.01}_1
+  external_id: Mapping_Scenario_Fornebu_scenario_20_1:Tr_ADD_{"value":0.01}_1
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 20_1
+    external_id: Mapping_Scenario_Fornebu_scenario_20_1
     space: cogShop
   type:
     external_id: Mapping.transformations
     space: cogShop
-- external_id: Mapping_Scenario_Fornebu_Scenario 2_0
+- external_id: Mapping_Scenario_Fornebu_scenario_2_0
   instance_type: node
   sources:
   - properties:
@@ -6366,7 +6366,7 @@ data_modeling.instances:
       space: cogShop
       type: container
   space: cogShop
-- external_id: Mapping_Scenario_Fornebu_Scenario 2_1
+- external_id: Mapping_Scenario_Fornebu_scenario_2_1
   instance_type: node
   sources:
   - properties:
@@ -6382,16 +6382,16 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_{"value":0.01}_0
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 2_1:Tr_ADD_{"value":0.01}_0
+  external_id: Mapping_Scenario_Fornebu_scenario_2_1:Tr_ADD_{"value":0.01}_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 2_1
+    external_id: Mapping_Scenario_Fornebu_scenario_2_1
     space: cogShop
   type:
     external_id: Mapping.transformations
     space: cogShop
-- external_id: Mapping_Scenario_Fornebu_Scenario 3_0
+- external_id: Mapping_Scenario_Fornebu_scenario_3_0
   instance_type: node
   sources:
   - properties:
@@ -6407,16 +6407,16 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_FROM_OFFSET_{"0":-50,"1440":0}_0
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 3_0:Tr_ADD_FROM_OFFSET_{"0":-50,"1440":0}_0
+  external_id: Mapping_Scenario_Fornebu_scenario_3_0:Tr_ADD_FROM_OFFSET_{"0":-50,"1440":0}_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 3_0
+    external_id: Mapping_Scenario_Fornebu_scenario_3_0
     space: cogShop
   type:
     external_id: Mapping.transformations
     space: cogShop
-- external_id: Mapping_Scenario_Fornebu_Scenario 3_1
+- external_id: Mapping_Scenario_Fornebu_scenario_3_1
   instance_type: node
   sources:
   - properties:
@@ -6432,11 +6432,11 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_FROM_OFFSET_{"0":-50,"1440":0}_0
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 3_1:Tr_ADD_FROM_OFFSET_{"0":-50,"1440":0}_0
+  external_id: Mapping_Scenario_Fornebu_scenario_3_1:Tr_ADD_FROM_OFFSET_{"0":-50,"1440":0}_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 3_1
+    external_id: Mapping_Scenario_Fornebu_scenario_3_1
     space: cogShop
   type:
     external_id: Mapping.transformations
@@ -6444,16 +6444,16 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_{"value":0.01}_1
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 3_1:Tr_ADD_{"value":0.01}_1
+  external_id: Mapping_Scenario_Fornebu_scenario_3_1:Tr_ADD_{"value":0.01}_1
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 3_1
+    external_id: Mapping_Scenario_Fornebu_scenario_3_1
     space: cogShop
   type:
     external_id: Mapping.transformations
     space: cogShop
-- external_id: Mapping_Scenario_Fornebu_Scenario 4_0
+- external_id: Mapping_Scenario_Fornebu_scenario_4_0
   instance_type: node
   sources:
   - properties:
@@ -6469,16 +6469,16 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_FROM_OFFSET_{"0":-40,"1440":0}_0
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 4_0:Tr_ADD_FROM_OFFSET_{"0":-40,"1440":0}_0
+  external_id: Mapping_Scenario_Fornebu_scenario_4_0:Tr_ADD_FROM_OFFSET_{"0":-40,"1440":0}_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 4_0
+    external_id: Mapping_Scenario_Fornebu_scenario_4_0
     space: cogShop
   type:
     external_id: Mapping.transformations
     space: cogShop
-- external_id: Mapping_Scenario_Fornebu_Scenario 4_1
+- external_id: Mapping_Scenario_Fornebu_scenario_4_1
   instance_type: node
   sources:
   - properties:
@@ -6494,11 +6494,11 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_FROM_OFFSET_{"0":-40,"1440":0}_0
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 4_1:Tr_ADD_FROM_OFFSET_{"0":-40,"1440":0}_0
+  external_id: Mapping_Scenario_Fornebu_scenario_4_1:Tr_ADD_FROM_OFFSET_{"0":-40,"1440":0}_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 4_1
+    external_id: Mapping_Scenario_Fornebu_scenario_4_1
     space: cogShop
   type:
     external_id: Mapping.transformations
@@ -6506,16 +6506,16 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_{"value":0.01}_1
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 4_1:Tr_ADD_{"value":0.01}_1
+  external_id: Mapping_Scenario_Fornebu_scenario_4_1:Tr_ADD_{"value":0.01}_1
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 4_1
+    external_id: Mapping_Scenario_Fornebu_scenario_4_1
     space: cogShop
   type:
     external_id: Mapping.transformations
     space: cogShop
-- external_id: Mapping_Scenario_Fornebu_Scenario 5_0
+- external_id: Mapping_Scenario_Fornebu_scenario_5_0
   instance_type: node
   sources:
   - properties:
@@ -6531,16 +6531,16 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_FROM_OFFSET_{"0":-30,"1440":0}_0
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 5_0:Tr_ADD_FROM_OFFSET_{"0":-30,"1440":0}_0
+  external_id: Mapping_Scenario_Fornebu_scenario_5_0:Tr_ADD_FROM_OFFSET_{"0":-30,"1440":0}_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 5_0
+    external_id: Mapping_Scenario_Fornebu_scenario_5_0
     space: cogShop
   type:
     external_id: Mapping.transformations
     space: cogShop
-- external_id: Mapping_Scenario_Fornebu_Scenario 5_1
+- external_id: Mapping_Scenario_Fornebu_scenario_5_1
   instance_type: node
   sources:
   - properties:
@@ -6556,11 +6556,11 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_FROM_OFFSET_{"0":-30,"1440":0}_0
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 5_1:Tr_ADD_FROM_OFFSET_{"0":-30,"1440":0}_0
+  external_id: Mapping_Scenario_Fornebu_scenario_5_1:Tr_ADD_FROM_OFFSET_{"0":-30,"1440":0}_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 5_1
+    external_id: Mapping_Scenario_Fornebu_scenario_5_1
     space: cogShop
   type:
     external_id: Mapping.transformations
@@ -6568,16 +6568,16 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_{"value":0.01}_1
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 5_1:Tr_ADD_{"value":0.01}_1
+  external_id: Mapping_Scenario_Fornebu_scenario_5_1:Tr_ADD_{"value":0.01}_1
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 5_1
+    external_id: Mapping_Scenario_Fornebu_scenario_5_1
     space: cogShop
   type:
     external_id: Mapping.transformations
     space: cogShop
-- external_id: Mapping_Scenario_Fornebu_Scenario 6_0
+- external_id: Mapping_Scenario_Fornebu_scenario_6_0
   instance_type: node
   sources:
   - properties:
@@ -6593,16 +6593,16 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_FROM_OFFSET_{"0":-20,"1440":0}_0
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 6_0:Tr_ADD_FROM_OFFSET_{"0":-20,"1440":0}_0
+  external_id: Mapping_Scenario_Fornebu_scenario_6_0:Tr_ADD_FROM_OFFSET_{"0":-20,"1440":0}_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 6_0
+    external_id: Mapping_Scenario_Fornebu_scenario_6_0
     space: cogShop
   type:
     external_id: Mapping.transformations
     space: cogShop
-- external_id: Mapping_Scenario_Fornebu_Scenario 6_1
+- external_id: Mapping_Scenario_Fornebu_scenario_6_1
   instance_type: node
   sources:
   - properties:
@@ -6618,11 +6618,11 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_FROM_OFFSET_{"0":-20,"1440":0}_0
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 6_1:Tr_ADD_FROM_OFFSET_{"0":-20,"1440":0}_0
+  external_id: Mapping_Scenario_Fornebu_scenario_6_1:Tr_ADD_FROM_OFFSET_{"0":-20,"1440":0}_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 6_1
+    external_id: Mapping_Scenario_Fornebu_scenario_6_1
     space: cogShop
   type:
     external_id: Mapping.transformations
@@ -6630,16 +6630,16 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_{"value":0.01}_1
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 6_1:Tr_ADD_{"value":0.01}_1
+  external_id: Mapping_Scenario_Fornebu_scenario_6_1:Tr_ADD_{"value":0.01}_1
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 6_1
+    external_id: Mapping_Scenario_Fornebu_scenario_6_1
     space: cogShop
   type:
     external_id: Mapping.transformations
     space: cogShop
-- external_id: Mapping_Scenario_Fornebu_Scenario 7_0
+- external_id: Mapping_Scenario_Fornebu_scenario_7_0
   instance_type: node
   sources:
   - properties:
@@ -6655,16 +6655,16 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_FROM_OFFSET_{"0":-15,"1440":0}_0
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 7_0:Tr_ADD_FROM_OFFSET_{"0":-15,"1440":0}_0
+  external_id: Mapping_Scenario_Fornebu_scenario_7_0:Tr_ADD_FROM_OFFSET_{"0":-15,"1440":0}_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 7_0
+    external_id: Mapping_Scenario_Fornebu_scenario_7_0
     space: cogShop
   type:
     external_id: Mapping.transformations
     space: cogShop
-- external_id: Mapping_Scenario_Fornebu_Scenario 7_1
+- external_id: Mapping_Scenario_Fornebu_scenario_7_1
   instance_type: node
   sources:
   - properties:
@@ -6680,11 +6680,11 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_FROM_OFFSET_{"0":-15,"1440":0}_0
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 7_1:Tr_ADD_FROM_OFFSET_{"0":-15,"1440":0}_0
+  external_id: Mapping_Scenario_Fornebu_scenario_7_1:Tr_ADD_FROM_OFFSET_{"0":-15,"1440":0}_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 7_1
+    external_id: Mapping_Scenario_Fornebu_scenario_7_1
     space: cogShop
   type:
     external_id: Mapping.transformations
@@ -6692,16 +6692,16 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_{"value":0.01}_1
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 7_1:Tr_ADD_{"value":0.01}_1
+  external_id: Mapping_Scenario_Fornebu_scenario_7_1:Tr_ADD_{"value":0.01}_1
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 7_1
+    external_id: Mapping_Scenario_Fornebu_scenario_7_1
     space: cogShop
   type:
     external_id: Mapping.transformations
     space: cogShop
-- external_id: Mapping_Scenario_Fornebu_Scenario 8_0
+- external_id: Mapping_Scenario_Fornebu_scenario_8_0
   instance_type: node
   sources:
   - properties:
@@ -6717,16 +6717,16 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_FROM_OFFSET_{"0":-10,"1440":0}_0
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 8_0:Tr_ADD_FROM_OFFSET_{"0":-10,"1440":0}_0
+  external_id: Mapping_Scenario_Fornebu_scenario_8_0:Tr_ADD_FROM_OFFSET_{"0":-10,"1440":0}_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 8_0
+    external_id: Mapping_Scenario_Fornebu_scenario_8_0
     space: cogShop
   type:
     external_id: Mapping.transformations
     space: cogShop
-- external_id: Mapping_Scenario_Fornebu_Scenario 8_1
+- external_id: Mapping_Scenario_Fornebu_scenario_8_1
   instance_type: node
   sources:
   - properties:
@@ -6742,11 +6742,11 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_FROM_OFFSET_{"0":-10,"1440":0}_0
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 8_1:Tr_ADD_FROM_OFFSET_{"0":-10,"1440":0}_0
+  external_id: Mapping_Scenario_Fornebu_scenario_8_1:Tr_ADD_FROM_OFFSET_{"0":-10,"1440":0}_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 8_1
+    external_id: Mapping_Scenario_Fornebu_scenario_8_1
     space: cogShop
   type:
     external_id: Mapping.transformations
@@ -6754,16 +6754,16 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_{"value":0.01}_1
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 8_1:Tr_ADD_{"value":0.01}_1
+  external_id: Mapping_Scenario_Fornebu_scenario_8_1:Tr_ADD_{"value":0.01}_1
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 8_1
+    external_id: Mapping_Scenario_Fornebu_scenario_8_1
     space: cogShop
   type:
     external_id: Mapping.transformations
     space: cogShop
-- external_id: Mapping_Scenario_Fornebu_Scenario 9_0
+- external_id: Mapping_Scenario_Fornebu_scenario_9_0
   instance_type: node
   sources:
   - properties:
@@ -6779,16 +6779,16 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_FROM_OFFSET_{"0":-5,"1440":0}_0
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 9_0:Tr_ADD_FROM_OFFSET_{"0":-5,"1440":0}_0
+  external_id: Mapping_Scenario_Fornebu_scenario_9_0:Tr_ADD_FROM_OFFSET_{"0":-5,"1440":0}_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 9_0
+    external_id: Mapping_Scenario_Fornebu_scenario_9_0
     space: cogShop
   type:
     external_id: Mapping.transformations
     space: cogShop
-- external_id: Mapping_Scenario_Fornebu_Scenario 9_1
+- external_id: Mapping_Scenario_Fornebu_scenario_9_1
   instance_type: node
   sources:
   - properties:
@@ -6804,11 +6804,11 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_FROM_OFFSET_{"0":-5,"1440":0}_0
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 9_1:Tr_ADD_FROM_OFFSET_{"0":-5,"1440":0}_0
+  external_id: Mapping_Scenario_Fornebu_scenario_9_1:Tr_ADD_FROM_OFFSET_{"0":-5,"1440":0}_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 9_1
+    external_id: Mapping_Scenario_Fornebu_scenario_9_1
     space: cogShop
   type:
     external_id: Mapping.transformations
@@ -6816,11 +6816,11 @@ data_modeling.instances:
 - end_node:
     external_id: Tr_ADD_{"value":0.01}_1
     space: cogShop
-  external_id: Mapping_Scenario_Fornebu_Scenario 9_1:Tr_ADD_{"value":0.01}_1
+  external_id: Mapping_Scenario_Fornebu_scenario_9_1:Tr_ADD_{"value":0.01}_1
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 9_1
+    external_id: Mapping_Scenario_Fornebu_scenario_9_1
     space: cogShop
   type:
     external_id: Mapping.transformations
@@ -6833,6 +6833,7 @@ data_modeling.instances:
         externalId: ModelTemplate_Fornebu__FileRef_model
         space: cogShop
       shopVersion: 14.4.3.0
+      source: resync
       version: '1'
       watercourse: Fornebu
     source:
@@ -9562,6 +9563,7 @@ data_modeling.instances:
         externalId: ModelTemplate_Fornebu
         space: cogShop
       name: Scenario Fornebu +20pct
+      source: resync
     source:
       external_id: Scenario
       space: cogShop
@@ -9686,6 +9688,7 @@ data_modeling.instances:
         externalId: ModelTemplate_Fornebu
         space: cogShop
       name: Scenario Fornebu -20pct
+      source: resync
     source:
       external_id: Scenario
       space: cogShop
@@ -9810,6 +9813,7 @@ data_modeling.instances:
         externalId: ModelTemplate_Fornebu
         space: cogShop
       name: Scenario Fornebu Cognite
+      source: resync
     source:
       external_id: Scenario
       space: cogShop
@@ -9934,6 +9938,7 @@ data_modeling.instances:
         externalId: ModelTemplate_Fornebu
         space: cogShop
       name: Scenario Fornebu Main
+      source: resync
     source:
       external_id: Scenario
       space: cogShop
@@ -9963,7 +9968,7 @@ data_modeling.instances:
   type:
     external_id: Scenario.mappingsOverride
     space: cogShop
-- external_id: Scenario_Fornebu_Scenario 1
+- external_id: Scenario_Fornebu_scenario_1
   instance_type: node
   sources:
   - properties:
@@ -9973,13 +9978,14 @@ data_modeling.instances:
       modelTemplate:
         externalId: ModelTemplate_Fornebu
         space: cogShop
-      name: Scenario Fornebu Scenario 1
+      name: Scenario Fornebu scenario_1
+      source: resync
     source:
       external_id: Scenario
       space: cogShop
       type: container
   space: cogShop
-- external_id: Scenario_Fornebu_Scenario 10
+- external_id: Scenario_Fornebu_scenario_10
   instance_type: node
   sources:
   - properties:
@@ -9989,37 +9995,38 @@ data_modeling.instances:
       modelTemplate:
         externalId: ModelTemplate_Fornebu
         space: cogShop
-      name: Scenario Fornebu Scenario 10
+      name: Scenario Fornebu scenario_10
+      source: resync
     source:
       external_id: Scenario
       space: cogShop
       type: container
   space: cogShop
 - end_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 10_0
+    external_id: Mapping_Scenario_Fornebu_scenario_10_0
     space: cogShop
-  external_id: Scenario_Fornebu_Scenario 10:Mapping_Scenario_Fornebu_Scenario 10_0
+  external_id: Scenario_Fornebu_scenario_10:Mapping_Scenario_Fornebu_scenario_10_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Scenario_Fornebu_Scenario 10
+    external_id: Scenario_Fornebu_scenario_10
     space: cogShop
   type:
     external_id: Scenario.mappingsOverride
     space: cogShop
 - end_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 10_1
+    external_id: Mapping_Scenario_Fornebu_scenario_10_1
     space: cogShop
-  external_id: Scenario_Fornebu_Scenario 10:Mapping_Scenario_Fornebu_Scenario 10_1
+  external_id: Scenario_Fornebu_scenario_10:Mapping_Scenario_Fornebu_scenario_10_1
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Scenario_Fornebu_Scenario 10
+    external_id: Scenario_Fornebu_scenario_10
     space: cogShop
   type:
     external_id: Scenario.mappingsOverride
     space: cogShop
-- external_id: Scenario_Fornebu_Scenario 11
+- external_id: Scenario_Fornebu_scenario_11
   instance_type: node
   sources:
   - properties:
@@ -10029,37 +10036,38 @@ data_modeling.instances:
       modelTemplate:
         externalId: ModelTemplate_Fornebu
         space: cogShop
-      name: Scenario Fornebu Scenario 11
+      name: Scenario Fornebu scenario_11
+      source: resync
     source:
       external_id: Scenario
       space: cogShop
       type: container
   space: cogShop
 - end_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 11_0
+    external_id: Mapping_Scenario_Fornebu_scenario_11_0
     space: cogShop
-  external_id: Scenario_Fornebu_Scenario 11:Mapping_Scenario_Fornebu_Scenario 11_0
+  external_id: Scenario_Fornebu_scenario_11:Mapping_Scenario_Fornebu_scenario_11_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Scenario_Fornebu_Scenario 11
+    external_id: Scenario_Fornebu_scenario_11
     space: cogShop
   type:
     external_id: Scenario.mappingsOverride
     space: cogShop
 - end_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 11_1
+    external_id: Mapping_Scenario_Fornebu_scenario_11_1
     space: cogShop
-  external_id: Scenario_Fornebu_Scenario 11:Mapping_Scenario_Fornebu_Scenario 11_1
+  external_id: Scenario_Fornebu_scenario_11:Mapping_Scenario_Fornebu_scenario_11_1
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Scenario_Fornebu_Scenario 11
+    external_id: Scenario_Fornebu_scenario_11
     space: cogShop
   type:
     external_id: Scenario.mappingsOverride
     space: cogShop
-- external_id: Scenario_Fornebu_Scenario 12
+- external_id: Scenario_Fornebu_scenario_12
   instance_type: node
   sources:
   - properties:
@@ -10069,37 +10077,38 @@ data_modeling.instances:
       modelTemplate:
         externalId: ModelTemplate_Fornebu
         space: cogShop
-      name: Scenario Fornebu Scenario 12
+      name: Scenario Fornebu scenario_12
+      source: resync
     source:
       external_id: Scenario
       space: cogShop
       type: container
   space: cogShop
 - end_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 12_0
+    external_id: Mapping_Scenario_Fornebu_scenario_12_0
     space: cogShop
-  external_id: Scenario_Fornebu_Scenario 12:Mapping_Scenario_Fornebu_Scenario 12_0
+  external_id: Scenario_Fornebu_scenario_12:Mapping_Scenario_Fornebu_scenario_12_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Scenario_Fornebu_Scenario 12
+    external_id: Scenario_Fornebu_scenario_12
     space: cogShop
   type:
     external_id: Scenario.mappingsOverride
     space: cogShop
 - end_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 12_1
+    external_id: Mapping_Scenario_Fornebu_scenario_12_1
     space: cogShop
-  external_id: Scenario_Fornebu_Scenario 12:Mapping_Scenario_Fornebu_Scenario 12_1
+  external_id: Scenario_Fornebu_scenario_12:Mapping_Scenario_Fornebu_scenario_12_1
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Scenario_Fornebu_Scenario 12
+    external_id: Scenario_Fornebu_scenario_12
     space: cogShop
   type:
     external_id: Scenario.mappingsOverride
     space: cogShop
-- external_id: Scenario_Fornebu_Scenario 13
+- external_id: Scenario_Fornebu_scenario_13
   instance_type: node
   sources:
   - properties:
@@ -10109,37 +10118,38 @@ data_modeling.instances:
       modelTemplate:
         externalId: ModelTemplate_Fornebu
         space: cogShop
-      name: Scenario Fornebu Scenario 13
+      name: Scenario Fornebu scenario_13
+      source: resync
     source:
       external_id: Scenario
       space: cogShop
       type: container
   space: cogShop
 - end_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 13_0
+    external_id: Mapping_Scenario_Fornebu_scenario_13_0
     space: cogShop
-  external_id: Scenario_Fornebu_Scenario 13:Mapping_Scenario_Fornebu_Scenario 13_0
+  external_id: Scenario_Fornebu_scenario_13:Mapping_Scenario_Fornebu_scenario_13_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Scenario_Fornebu_Scenario 13
+    external_id: Scenario_Fornebu_scenario_13
     space: cogShop
   type:
     external_id: Scenario.mappingsOverride
     space: cogShop
 - end_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 13_1
+    external_id: Mapping_Scenario_Fornebu_scenario_13_1
     space: cogShop
-  external_id: Scenario_Fornebu_Scenario 13:Mapping_Scenario_Fornebu_Scenario 13_1
+  external_id: Scenario_Fornebu_scenario_13:Mapping_Scenario_Fornebu_scenario_13_1
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Scenario_Fornebu_Scenario 13
+    external_id: Scenario_Fornebu_scenario_13
     space: cogShop
   type:
     external_id: Scenario.mappingsOverride
     space: cogShop
-- external_id: Scenario_Fornebu_Scenario 14
+- external_id: Scenario_Fornebu_scenario_14
   instance_type: node
   sources:
   - properties:
@@ -10149,37 +10159,38 @@ data_modeling.instances:
       modelTemplate:
         externalId: ModelTemplate_Fornebu
         space: cogShop
-      name: Scenario Fornebu Scenario 14
+      name: Scenario Fornebu scenario_14
+      source: resync
     source:
       external_id: Scenario
       space: cogShop
       type: container
   space: cogShop
 - end_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 14_0
+    external_id: Mapping_Scenario_Fornebu_scenario_14_0
     space: cogShop
-  external_id: Scenario_Fornebu_Scenario 14:Mapping_Scenario_Fornebu_Scenario 14_0
+  external_id: Scenario_Fornebu_scenario_14:Mapping_Scenario_Fornebu_scenario_14_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Scenario_Fornebu_Scenario 14
+    external_id: Scenario_Fornebu_scenario_14
     space: cogShop
   type:
     external_id: Scenario.mappingsOverride
     space: cogShop
 - end_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 14_1
+    external_id: Mapping_Scenario_Fornebu_scenario_14_1
     space: cogShop
-  external_id: Scenario_Fornebu_Scenario 14:Mapping_Scenario_Fornebu_Scenario 14_1
+  external_id: Scenario_Fornebu_scenario_14:Mapping_Scenario_Fornebu_scenario_14_1
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Scenario_Fornebu_Scenario 14
+    external_id: Scenario_Fornebu_scenario_14
     space: cogShop
   type:
     external_id: Scenario.mappingsOverride
     space: cogShop
-- external_id: Scenario_Fornebu_Scenario 15
+- external_id: Scenario_Fornebu_scenario_15
   instance_type: node
   sources:
   - properties:
@@ -10189,37 +10200,38 @@ data_modeling.instances:
       modelTemplate:
         externalId: ModelTemplate_Fornebu
         space: cogShop
-      name: Scenario Fornebu Scenario 15
+      name: Scenario Fornebu scenario_15
+      source: resync
     source:
       external_id: Scenario
       space: cogShop
       type: container
   space: cogShop
 - end_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 15_0
+    external_id: Mapping_Scenario_Fornebu_scenario_15_0
     space: cogShop
-  external_id: Scenario_Fornebu_Scenario 15:Mapping_Scenario_Fornebu_Scenario 15_0
+  external_id: Scenario_Fornebu_scenario_15:Mapping_Scenario_Fornebu_scenario_15_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Scenario_Fornebu_Scenario 15
+    external_id: Scenario_Fornebu_scenario_15
     space: cogShop
   type:
     external_id: Scenario.mappingsOverride
     space: cogShop
 - end_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 15_1
+    external_id: Mapping_Scenario_Fornebu_scenario_15_1
     space: cogShop
-  external_id: Scenario_Fornebu_Scenario 15:Mapping_Scenario_Fornebu_Scenario 15_1
+  external_id: Scenario_Fornebu_scenario_15:Mapping_Scenario_Fornebu_scenario_15_1
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Scenario_Fornebu_Scenario 15
+    external_id: Scenario_Fornebu_scenario_15
     space: cogShop
   type:
     external_id: Scenario.mappingsOverride
     space: cogShop
-- external_id: Scenario_Fornebu_Scenario 16
+- external_id: Scenario_Fornebu_scenario_16
   instance_type: node
   sources:
   - properties:
@@ -10229,37 +10241,38 @@ data_modeling.instances:
       modelTemplate:
         externalId: ModelTemplate_Fornebu
         space: cogShop
-      name: Scenario Fornebu Scenario 16
+      name: Scenario Fornebu scenario_16
+      source: resync
     source:
       external_id: Scenario
       space: cogShop
       type: container
   space: cogShop
 - end_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 16_0
+    external_id: Mapping_Scenario_Fornebu_scenario_16_0
     space: cogShop
-  external_id: Scenario_Fornebu_Scenario 16:Mapping_Scenario_Fornebu_Scenario 16_0
+  external_id: Scenario_Fornebu_scenario_16:Mapping_Scenario_Fornebu_scenario_16_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Scenario_Fornebu_Scenario 16
+    external_id: Scenario_Fornebu_scenario_16
     space: cogShop
   type:
     external_id: Scenario.mappingsOverride
     space: cogShop
 - end_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 16_1
+    external_id: Mapping_Scenario_Fornebu_scenario_16_1
     space: cogShop
-  external_id: Scenario_Fornebu_Scenario 16:Mapping_Scenario_Fornebu_Scenario 16_1
+  external_id: Scenario_Fornebu_scenario_16:Mapping_Scenario_Fornebu_scenario_16_1
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Scenario_Fornebu_Scenario 16
+    external_id: Scenario_Fornebu_scenario_16
     space: cogShop
   type:
     external_id: Scenario.mappingsOverride
     space: cogShop
-- external_id: Scenario_Fornebu_Scenario 17
+- external_id: Scenario_Fornebu_scenario_17
   instance_type: node
   sources:
   - properties:
@@ -10269,37 +10282,38 @@ data_modeling.instances:
       modelTemplate:
         externalId: ModelTemplate_Fornebu
         space: cogShop
-      name: Scenario Fornebu Scenario 17
+      name: Scenario Fornebu scenario_17
+      source: resync
     source:
       external_id: Scenario
       space: cogShop
       type: container
   space: cogShop
 - end_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 17_0
+    external_id: Mapping_Scenario_Fornebu_scenario_17_0
     space: cogShop
-  external_id: Scenario_Fornebu_Scenario 17:Mapping_Scenario_Fornebu_Scenario 17_0
+  external_id: Scenario_Fornebu_scenario_17:Mapping_Scenario_Fornebu_scenario_17_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Scenario_Fornebu_Scenario 17
+    external_id: Scenario_Fornebu_scenario_17
     space: cogShop
   type:
     external_id: Scenario.mappingsOverride
     space: cogShop
 - end_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 17_1
+    external_id: Mapping_Scenario_Fornebu_scenario_17_1
     space: cogShop
-  external_id: Scenario_Fornebu_Scenario 17:Mapping_Scenario_Fornebu_Scenario 17_1
+  external_id: Scenario_Fornebu_scenario_17:Mapping_Scenario_Fornebu_scenario_17_1
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Scenario_Fornebu_Scenario 17
+    external_id: Scenario_Fornebu_scenario_17
     space: cogShop
   type:
     external_id: Scenario.mappingsOverride
     space: cogShop
-- external_id: Scenario_Fornebu_Scenario 18
+- external_id: Scenario_Fornebu_scenario_18
   instance_type: node
   sources:
   - properties:
@@ -10309,37 +10323,38 @@ data_modeling.instances:
       modelTemplate:
         externalId: ModelTemplate_Fornebu
         space: cogShop
-      name: Scenario Fornebu Scenario 18
+      name: Scenario Fornebu scenario_18
+      source: resync
     source:
       external_id: Scenario
       space: cogShop
       type: container
   space: cogShop
 - end_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 18_0
+    external_id: Mapping_Scenario_Fornebu_scenario_18_0
     space: cogShop
-  external_id: Scenario_Fornebu_Scenario 18:Mapping_Scenario_Fornebu_Scenario 18_0
+  external_id: Scenario_Fornebu_scenario_18:Mapping_Scenario_Fornebu_scenario_18_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Scenario_Fornebu_Scenario 18
+    external_id: Scenario_Fornebu_scenario_18
     space: cogShop
   type:
     external_id: Scenario.mappingsOverride
     space: cogShop
 - end_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 18_1
+    external_id: Mapping_Scenario_Fornebu_scenario_18_1
     space: cogShop
-  external_id: Scenario_Fornebu_Scenario 18:Mapping_Scenario_Fornebu_Scenario 18_1
+  external_id: Scenario_Fornebu_scenario_18:Mapping_Scenario_Fornebu_scenario_18_1
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Scenario_Fornebu_Scenario 18
+    external_id: Scenario_Fornebu_scenario_18
     space: cogShop
   type:
     external_id: Scenario.mappingsOverride
     space: cogShop
-- external_id: Scenario_Fornebu_Scenario 19
+- external_id: Scenario_Fornebu_scenario_19
   instance_type: node
   sources:
   - properties:
@@ -10349,61 +10364,62 @@ data_modeling.instances:
       modelTemplate:
         externalId: ModelTemplate_Fornebu
         space: cogShop
-      name: Scenario Fornebu Scenario 19
+      name: Scenario Fornebu scenario_19
+      source: resync
     source:
       external_id: Scenario
       space: cogShop
       type: container
   space: cogShop
 - end_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 19_0
+    external_id: Mapping_Scenario_Fornebu_scenario_19_0
     space: cogShop
-  external_id: Scenario_Fornebu_Scenario 19:Mapping_Scenario_Fornebu_Scenario 19_0
+  external_id: Scenario_Fornebu_scenario_19:Mapping_Scenario_Fornebu_scenario_19_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Scenario_Fornebu_Scenario 19
+    external_id: Scenario_Fornebu_scenario_19
     space: cogShop
   type:
     external_id: Scenario.mappingsOverride
     space: cogShop
 - end_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 19_1
+    external_id: Mapping_Scenario_Fornebu_scenario_19_1
     space: cogShop
-  external_id: Scenario_Fornebu_Scenario 19:Mapping_Scenario_Fornebu_Scenario 19_1
+  external_id: Scenario_Fornebu_scenario_19:Mapping_Scenario_Fornebu_scenario_19_1
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Scenario_Fornebu_Scenario 19
+    external_id: Scenario_Fornebu_scenario_19
     space: cogShop
   type:
     external_id: Scenario.mappingsOverride
     space: cogShop
 - end_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 1_0
+    external_id: Mapping_Scenario_Fornebu_scenario_1_0
     space: cogShop
-  external_id: Scenario_Fornebu_Scenario 1:Mapping_Scenario_Fornebu_Scenario 1_0
+  external_id: Scenario_Fornebu_scenario_1:Mapping_Scenario_Fornebu_scenario_1_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Scenario_Fornebu_Scenario 1
+    external_id: Scenario_Fornebu_scenario_1
     space: cogShop
   type:
     external_id: Scenario.mappingsOverride
     space: cogShop
 - end_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 1_1
+    external_id: Mapping_Scenario_Fornebu_scenario_1_1
     space: cogShop
-  external_id: Scenario_Fornebu_Scenario 1:Mapping_Scenario_Fornebu_Scenario 1_1
+  external_id: Scenario_Fornebu_scenario_1:Mapping_Scenario_Fornebu_scenario_1_1
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Scenario_Fornebu_Scenario 1
+    external_id: Scenario_Fornebu_scenario_1
     space: cogShop
   type:
     external_id: Scenario.mappingsOverride
     space: cogShop
-- external_id: Scenario_Fornebu_Scenario 2
+- external_id: Scenario_Fornebu_scenario_2
   instance_type: node
   sources:
   - properties:
@@ -10413,13 +10429,14 @@ data_modeling.instances:
       modelTemplate:
         externalId: ModelTemplate_Fornebu
         space: cogShop
-      name: Scenario Fornebu Scenario 2
+      name: Scenario Fornebu scenario_2
+      source: resync
     source:
       external_id: Scenario
       space: cogShop
       type: container
   space: cogShop
-- external_id: Scenario_Fornebu_Scenario 20
+- external_id: Scenario_Fornebu_scenario_20
   instance_type: node
   sources:
   - properties:
@@ -10429,61 +10446,62 @@ data_modeling.instances:
       modelTemplate:
         externalId: ModelTemplate_Fornebu
         space: cogShop
-      name: Scenario Fornebu Scenario 20
+      name: Scenario Fornebu scenario_20
+      source: resync
     source:
       external_id: Scenario
       space: cogShop
       type: container
   space: cogShop
 - end_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 20_0
+    external_id: Mapping_Scenario_Fornebu_scenario_20_0
     space: cogShop
-  external_id: Scenario_Fornebu_Scenario 20:Mapping_Scenario_Fornebu_Scenario 20_0
+  external_id: Scenario_Fornebu_scenario_20:Mapping_Scenario_Fornebu_scenario_20_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Scenario_Fornebu_Scenario 20
+    external_id: Scenario_Fornebu_scenario_20
     space: cogShop
   type:
     external_id: Scenario.mappingsOverride
     space: cogShop
 - end_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 20_1
+    external_id: Mapping_Scenario_Fornebu_scenario_20_1
     space: cogShop
-  external_id: Scenario_Fornebu_Scenario 20:Mapping_Scenario_Fornebu_Scenario 20_1
+  external_id: Scenario_Fornebu_scenario_20:Mapping_Scenario_Fornebu_scenario_20_1
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Scenario_Fornebu_Scenario 20
+    external_id: Scenario_Fornebu_scenario_20
     space: cogShop
   type:
     external_id: Scenario.mappingsOverride
     space: cogShop
 - end_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 2_0
+    external_id: Mapping_Scenario_Fornebu_scenario_2_0
     space: cogShop
-  external_id: Scenario_Fornebu_Scenario 2:Mapping_Scenario_Fornebu_Scenario 2_0
+  external_id: Scenario_Fornebu_scenario_2:Mapping_Scenario_Fornebu_scenario_2_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Scenario_Fornebu_Scenario 2
+    external_id: Scenario_Fornebu_scenario_2
     space: cogShop
   type:
     external_id: Scenario.mappingsOverride
     space: cogShop
 - end_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 2_1
+    external_id: Mapping_Scenario_Fornebu_scenario_2_1
     space: cogShop
-  external_id: Scenario_Fornebu_Scenario 2:Mapping_Scenario_Fornebu_Scenario 2_1
+  external_id: Scenario_Fornebu_scenario_2:Mapping_Scenario_Fornebu_scenario_2_1
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Scenario_Fornebu_Scenario 2
+    external_id: Scenario_Fornebu_scenario_2
     space: cogShop
   type:
     external_id: Scenario.mappingsOverride
     space: cogShop
-- external_id: Scenario_Fornebu_Scenario 3
+- external_id: Scenario_Fornebu_scenario_3
   instance_type: node
   sources:
   - properties:
@@ -10493,37 +10511,38 @@ data_modeling.instances:
       modelTemplate:
         externalId: ModelTemplate_Fornebu
         space: cogShop
-      name: Scenario Fornebu Scenario 3
+      name: Scenario Fornebu scenario_3
+      source: resync
     source:
       external_id: Scenario
       space: cogShop
       type: container
   space: cogShop
 - end_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 3_0
+    external_id: Mapping_Scenario_Fornebu_scenario_3_0
     space: cogShop
-  external_id: Scenario_Fornebu_Scenario 3:Mapping_Scenario_Fornebu_Scenario 3_0
+  external_id: Scenario_Fornebu_scenario_3:Mapping_Scenario_Fornebu_scenario_3_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Scenario_Fornebu_Scenario 3
+    external_id: Scenario_Fornebu_scenario_3
     space: cogShop
   type:
     external_id: Scenario.mappingsOverride
     space: cogShop
 - end_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 3_1
+    external_id: Mapping_Scenario_Fornebu_scenario_3_1
     space: cogShop
-  external_id: Scenario_Fornebu_Scenario 3:Mapping_Scenario_Fornebu_Scenario 3_1
+  external_id: Scenario_Fornebu_scenario_3:Mapping_Scenario_Fornebu_scenario_3_1
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Scenario_Fornebu_Scenario 3
+    external_id: Scenario_Fornebu_scenario_3
     space: cogShop
   type:
     external_id: Scenario.mappingsOverride
     space: cogShop
-- external_id: Scenario_Fornebu_Scenario 4
+- external_id: Scenario_Fornebu_scenario_4
   instance_type: node
   sources:
   - properties:
@@ -10533,37 +10552,38 @@ data_modeling.instances:
       modelTemplate:
         externalId: ModelTemplate_Fornebu
         space: cogShop
-      name: Scenario Fornebu Scenario 4
+      name: Scenario Fornebu scenario_4
+      source: resync
     source:
       external_id: Scenario
       space: cogShop
       type: container
   space: cogShop
 - end_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 4_0
+    external_id: Mapping_Scenario_Fornebu_scenario_4_0
     space: cogShop
-  external_id: Scenario_Fornebu_Scenario 4:Mapping_Scenario_Fornebu_Scenario 4_0
+  external_id: Scenario_Fornebu_scenario_4:Mapping_Scenario_Fornebu_scenario_4_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Scenario_Fornebu_Scenario 4
+    external_id: Scenario_Fornebu_scenario_4
     space: cogShop
   type:
     external_id: Scenario.mappingsOverride
     space: cogShop
 - end_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 4_1
+    external_id: Mapping_Scenario_Fornebu_scenario_4_1
     space: cogShop
-  external_id: Scenario_Fornebu_Scenario 4:Mapping_Scenario_Fornebu_Scenario 4_1
+  external_id: Scenario_Fornebu_scenario_4:Mapping_Scenario_Fornebu_scenario_4_1
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Scenario_Fornebu_Scenario 4
+    external_id: Scenario_Fornebu_scenario_4
     space: cogShop
   type:
     external_id: Scenario.mappingsOverride
     space: cogShop
-- external_id: Scenario_Fornebu_Scenario 5
+- external_id: Scenario_Fornebu_scenario_5
   instance_type: node
   sources:
   - properties:
@@ -10573,37 +10593,38 @@ data_modeling.instances:
       modelTemplate:
         externalId: ModelTemplate_Fornebu
         space: cogShop
-      name: Scenario Fornebu Scenario 5
+      name: Scenario Fornebu scenario_5
+      source: resync
     source:
       external_id: Scenario
       space: cogShop
       type: container
   space: cogShop
 - end_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 5_0
+    external_id: Mapping_Scenario_Fornebu_scenario_5_0
     space: cogShop
-  external_id: Scenario_Fornebu_Scenario 5:Mapping_Scenario_Fornebu_Scenario 5_0
+  external_id: Scenario_Fornebu_scenario_5:Mapping_Scenario_Fornebu_scenario_5_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Scenario_Fornebu_Scenario 5
+    external_id: Scenario_Fornebu_scenario_5
     space: cogShop
   type:
     external_id: Scenario.mappingsOverride
     space: cogShop
 - end_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 5_1
+    external_id: Mapping_Scenario_Fornebu_scenario_5_1
     space: cogShop
-  external_id: Scenario_Fornebu_Scenario 5:Mapping_Scenario_Fornebu_Scenario 5_1
+  external_id: Scenario_Fornebu_scenario_5:Mapping_Scenario_Fornebu_scenario_5_1
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Scenario_Fornebu_Scenario 5
+    external_id: Scenario_Fornebu_scenario_5
     space: cogShop
   type:
     external_id: Scenario.mappingsOverride
     space: cogShop
-- external_id: Scenario_Fornebu_Scenario 6
+- external_id: Scenario_Fornebu_scenario_6
   instance_type: node
   sources:
   - properties:
@@ -10613,37 +10634,38 @@ data_modeling.instances:
       modelTemplate:
         externalId: ModelTemplate_Fornebu
         space: cogShop
-      name: Scenario Fornebu Scenario 6
+      name: Scenario Fornebu scenario_6
+      source: resync
     source:
       external_id: Scenario
       space: cogShop
       type: container
   space: cogShop
 - end_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 6_0
+    external_id: Mapping_Scenario_Fornebu_scenario_6_0
     space: cogShop
-  external_id: Scenario_Fornebu_Scenario 6:Mapping_Scenario_Fornebu_Scenario 6_0
+  external_id: Scenario_Fornebu_scenario_6:Mapping_Scenario_Fornebu_scenario_6_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Scenario_Fornebu_Scenario 6
+    external_id: Scenario_Fornebu_scenario_6
     space: cogShop
   type:
     external_id: Scenario.mappingsOverride
     space: cogShop
 - end_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 6_1
+    external_id: Mapping_Scenario_Fornebu_scenario_6_1
     space: cogShop
-  external_id: Scenario_Fornebu_Scenario 6:Mapping_Scenario_Fornebu_Scenario 6_1
+  external_id: Scenario_Fornebu_scenario_6:Mapping_Scenario_Fornebu_scenario_6_1
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Scenario_Fornebu_Scenario 6
+    external_id: Scenario_Fornebu_scenario_6
     space: cogShop
   type:
     external_id: Scenario.mappingsOverride
     space: cogShop
-- external_id: Scenario_Fornebu_Scenario 7
+- external_id: Scenario_Fornebu_scenario_7
   instance_type: node
   sources:
   - properties:
@@ -10653,37 +10675,38 @@ data_modeling.instances:
       modelTemplate:
         externalId: ModelTemplate_Fornebu
         space: cogShop
-      name: Scenario Fornebu Scenario 7
+      name: Scenario Fornebu scenario_7
+      source: resync
     source:
       external_id: Scenario
       space: cogShop
       type: container
   space: cogShop
 - end_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 7_0
+    external_id: Mapping_Scenario_Fornebu_scenario_7_0
     space: cogShop
-  external_id: Scenario_Fornebu_Scenario 7:Mapping_Scenario_Fornebu_Scenario 7_0
+  external_id: Scenario_Fornebu_scenario_7:Mapping_Scenario_Fornebu_scenario_7_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Scenario_Fornebu_Scenario 7
+    external_id: Scenario_Fornebu_scenario_7
     space: cogShop
   type:
     external_id: Scenario.mappingsOverride
     space: cogShop
 - end_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 7_1
+    external_id: Mapping_Scenario_Fornebu_scenario_7_1
     space: cogShop
-  external_id: Scenario_Fornebu_Scenario 7:Mapping_Scenario_Fornebu_Scenario 7_1
+  external_id: Scenario_Fornebu_scenario_7:Mapping_Scenario_Fornebu_scenario_7_1
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Scenario_Fornebu_Scenario 7
+    external_id: Scenario_Fornebu_scenario_7
     space: cogShop
   type:
     external_id: Scenario.mappingsOverride
     space: cogShop
-- external_id: Scenario_Fornebu_Scenario 8
+- external_id: Scenario_Fornebu_scenario_8
   instance_type: node
   sources:
   - properties:
@@ -10693,37 +10716,38 @@ data_modeling.instances:
       modelTemplate:
         externalId: ModelTemplate_Fornebu
         space: cogShop
-      name: Scenario Fornebu Scenario 8
+      name: Scenario Fornebu scenario_8
+      source: resync
     source:
       external_id: Scenario
       space: cogShop
       type: container
   space: cogShop
 - end_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 8_0
+    external_id: Mapping_Scenario_Fornebu_scenario_8_0
     space: cogShop
-  external_id: Scenario_Fornebu_Scenario 8:Mapping_Scenario_Fornebu_Scenario 8_0
+  external_id: Scenario_Fornebu_scenario_8:Mapping_Scenario_Fornebu_scenario_8_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Scenario_Fornebu_Scenario 8
+    external_id: Scenario_Fornebu_scenario_8
     space: cogShop
   type:
     external_id: Scenario.mappingsOverride
     space: cogShop
 - end_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 8_1
+    external_id: Mapping_Scenario_Fornebu_scenario_8_1
     space: cogShop
-  external_id: Scenario_Fornebu_Scenario 8:Mapping_Scenario_Fornebu_Scenario 8_1
+  external_id: Scenario_Fornebu_scenario_8:Mapping_Scenario_Fornebu_scenario_8_1
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Scenario_Fornebu_Scenario 8
+    external_id: Scenario_Fornebu_scenario_8
     space: cogShop
   type:
     external_id: Scenario.mappingsOverride
     space: cogShop
-- external_id: Scenario_Fornebu_Scenario 9
+- external_id: Scenario_Fornebu_scenario_9
   instance_type: node
   sources:
   - properties:
@@ -10733,32 +10757,33 @@ data_modeling.instances:
       modelTemplate:
         externalId: ModelTemplate_Fornebu
         space: cogShop
-      name: Scenario Fornebu Scenario 9
+      name: Scenario Fornebu scenario_9
+      source: resync
     source:
       external_id: Scenario
       space: cogShop
       type: container
   space: cogShop
 - end_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 9_0
+    external_id: Mapping_Scenario_Fornebu_scenario_9_0
     space: cogShop
-  external_id: Scenario_Fornebu_Scenario 9:Mapping_Scenario_Fornebu_Scenario 9_0
+  external_id: Scenario_Fornebu_scenario_9:Mapping_Scenario_Fornebu_scenario_9_0
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Scenario_Fornebu_Scenario 9
+    external_id: Scenario_Fornebu_scenario_9
     space: cogShop
   type:
     external_id: Scenario.mappingsOverride
     space: cogShop
 - end_node:
-    external_id: Mapping_Scenario_Fornebu_Scenario 9_1
+    external_id: Mapping_Scenario_Fornebu_scenario_9_1
     space: cogShop
-  external_id: Scenario_Fornebu_Scenario 9:Mapping_Scenario_Fornebu_Scenario 9_1
+  external_id: Scenario_Fornebu_scenario_9:Mapping_Scenario_Fornebu_scenario_9_1
   instance_type: edge
   space: cogShop
   start_node:
-    external_id: Scenario_Fornebu_Scenario 9
+    external_id: Scenario_Fornebu_scenario_9
     space: cogShop
   type:
     external_id: Scenario.mappingsOverride
@@ -11759,13 +11784,13 @@ files:
   source: PowerOps bootstrap
 - external_id: SHOP_Fornebu_model
   metadata:
-    sha256_hash: c083862174094aa3a24d5abcc8ddeb4431cebeb1db3c12584f19f61369920bb0
+    sha256_hash: 6711275d780ffd6ea1156675544055c56989c3484d6572f0f9d4d4e8d8f8b2d1
     shop:file_name: model
     shop:type: case
     shop:watercourse: Fornebu
   mime_type: text/plain
   name: SHOP_Fornebu_model
-  sha256_hash: c083862174094aa3a24d5abcc8ddeb4431cebeb1db3c12584f19f61369920bb0
+  sha256_hash: 6711275d780ffd6ea1156675544055c56989c3484d6572f0f9d4d4e8d8f8b2d1
   source: PowerOps bootstrap
 - external_id: SHOP_Fornebu_shop-fornebu1-modul_series
   metadata:

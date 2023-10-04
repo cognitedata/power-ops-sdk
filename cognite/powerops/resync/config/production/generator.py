@@ -14,7 +14,7 @@ class Generator(BaseModel):
     name: GeneratorName
     penstock: str
     startcost: float
-    p_min: float
+    p_min: float = 0.0
 
     start_stop_cost_time_series: Optional[ExternalId] = None  # external ID of time series with values in m
     is_available_time_series: Optional[ExternalId] = None  # external ID of boolean time series
@@ -22,6 +22,18 @@ class Generator(BaseModel):
     @property
     def external_id(self) -> ExternalId:
         return f"generator_{self.name}"
+
+    @field_validator("penstock", mode="before")
+    def to_string(cls, value):
+        return str(value)
+
+    @field_validator("startcost", mode="before")
+    def to_float(cls, value):
+        if isinstance(value, dict) and len(value) >= 1:
+            # Timeseries with one value
+            _, value = next(iter(value.items()))
+            return float(value)
+        return value
 
 
 class GeneratorTimeSeriesMapping(BaseModel):

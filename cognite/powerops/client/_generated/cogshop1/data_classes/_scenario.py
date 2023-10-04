@@ -19,10 +19,11 @@ __all__ = ["Scenario", "ScenarioApply", "ScenarioList", "ScenarioApplyList"]
 class Scenario(DomainModel, protected_namespaces=()):
     space: ClassVar[str] = "cogShop"
     name: Optional[str] = None
-    model_template: Optional[str] = None
+    model_template: Optional[str] = Field(None, alias="modelTemplate")
     commands: Optional[str] = None
-    extra_files: list[str] = []
-    mappings_override: list[str] = []
+    source: Optional[str] = None
+    extra_files: Optional[list[str]] = Field(None, alias="extraFiles")
+    mappings_override: Optional[list[str]] = Field(None, alias="mappingsOverride")
 
     def as_apply(self) -> ScenarioApply:
         return ScenarioApply(
@@ -30,6 +31,7 @@ class Scenario(DomainModel, protected_namespaces=()):
             name=self.name,
             model_template=self.model_template,
             commands=self.commands,
+            source=self.source,
             extra_files=self.extra_files,
             mappings_override=self.mappings_override,
         )
@@ -40,8 +42,9 @@ class ScenarioApply(DomainModelApply, protected_namespaces=()):
     name: str
     model_template: Union[ModelTemplateApply, str, None] = Field(None, repr=False)
     commands: Union[CommandsConfigApply, str, None] = Field(None, repr=False)
-    extra_files: Union[list[FileRefApply], list[str]] = Field(default_factory=list, repr=False)
-    mappings_override: Union[list[MappingApply], list[str]] = Field(default_factory=list, repr=False)
+    source: Optional[str] = None
+    extra_files: Union[list[FileRefApply], list[str], None] = Field(default=None, repr=False)
+    mappings_override: Union[list[MappingApply], list[str], None] = Field(default=None, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
@@ -63,6 +66,8 @@ class ScenarioApply(DomainModelApply, protected_namespaces=()):
                 "space": "cogShop",
                 "externalId": self.commands if isinstance(self.commands, str) else self.commands.external_id,
             }
+        if self.source is not None:
+            properties["source"] = self.source
         if properties:
             source = dm.NodeOrEdgeData(
                 source=dm.ContainerId("cogShop", "Scenario"),
@@ -83,7 +88,7 @@ class ScenarioApply(DomainModelApply, protected_namespaces=()):
         edges = []
         cache.add(self.external_id)
 
-        for extra_file in self.extra_files:
+        for extra_file in self.extra_files or []:
             edge = self._create_extra_file_edge(extra_file)
             if edge.external_id not in cache:
                 edges.append(edge)
@@ -94,7 +99,7 @@ class ScenarioApply(DomainModelApply, protected_namespaces=()):
                 nodes.extend(instances.nodes)
                 edges.extend(instances.edges)
 
-        for mappings_override in self.mappings_override:
+        for mappings_override in self.mappings_override or []:
             edge = self._create_mappings_override_edge(mappings_override)
             if edge.external_id not in cache:
                 edges.append(edge)

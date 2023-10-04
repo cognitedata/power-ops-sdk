@@ -13,6 +13,58 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.67.0] - 2023-10-03
+### Added
+* `TO_INT` transformation
+
+## [0.66.0] - 2023-10-03
+### Added
+* `resync` support for writng back the processed shop model_raw file to local disk based on configuration parameter
+in watercourse configuration
+
+## [0.65.0] - 2023-10-02
+### Added
+* `resync` support having scenarios and model templates set outside itself in the `CogSHOP` model. This is achieved by
+  `resync` filtering on the `source` field in the `Scenario` and `ModelTemplate` models.
+
+## [0.64.0] - 2023-10-02
+### Added
+* Validation to shop related files. Shop files that need to be loaded in a specific order, needs to be accompanied by a
+cog shop config. Validation will require this of the user.
+
+## [0.63.0] - 2023-10-02
+### Added
+* Field `source` to `Scenario` and `ModelTemplate` in `CogSHOP` model.
+
+## [0.62.2] - 2023-10-02
+### Changed
+* `from_type` and `to_type` as optional fields in Connections class to match file format in model_raw source files
+
+## [0.62.1] - 2023-09-30
+### Fixed
+* Remove defaults on `resync` `Produciton` model. This caused changes to be hidden from `recync` and thus
+  the CDF Assest not been updated.
+
+## [0.62.0] - 2023-09-29
+### Change
+* Validation of generators by `resync`, made `p_min` optional. This is because it is only required by the water
+  based methods.
+### Fixed
+* `resync` used wrong `command` file when updating the command node in the `CogSHOP` model.
+* Standardize naming for scenarios uploaded in the `CogSHOP` model.
+
+## [0.61.0] - 2023-09-29
+### Added
+* Validation of generators by `resync`, they now require `p_min`, `startcost`, and `penstock`.
+
+## [0.60.2] - 2023-09-28
+### Fixed
+* `powerops plan/apply` did not handle the config for `NordPool` and `RKOM` correctly, leading these not to be updated. This is now fixed.
+
+## [0.60.1] - 2023-09-27
+### Fixed
+* `powerops plan` showed differences for models when there were none due to faulty download of CDF model. This is now fixed.
+
 ## [0.60.0] - 2023-09-27
 ### Added
 * Transformations module that holds all time series transformations.

@@ -20,9 +20,9 @@ class ScenarioTemplate(DomainModel):
     shop_version: Optional[str] = Field(None, alias="shopVersion")
     template_version: Optional[str] = Field(None, alias="templateVersion")
     model: Optional[str] = None
-    shop_files: list[str] = Field(default_factory=list, alias="shopFiles")
-    base_mapping: Optional[str] = None
-    output_definitions: Optional[str] = None
+    shop_files: Optional[list[str]] = Field(None, alias="shopFiles")
+    base_mapping: Optional[str] = Field(None, alias="baseMapping")
+    output_definitions: Optional[str] = Field(None, alias="outputDefinitions")
 
     def as_apply(self) -> ScenarioTemplateApply:
         return ScenarioTemplateApply(
@@ -43,7 +43,7 @@ class ScenarioTemplateApply(DomainModelApply):
     shop_version: Optional[str] = None
     template_version: Optional[str] = None
     model: Optional[str] = None
-    shop_files: list[str] = []
+    shop_files: Optional[list[str]] = None
     base_mapping: Union[ScenarioMappingApply, str, None] = Field(None, repr=False)
     output_definitions: Union[OutputContainerApply, str, None] = Field(None, repr=False)
 

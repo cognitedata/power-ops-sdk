@@ -18,7 +18,7 @@ class ScenarioMapping(DomainModel):
     name: Optional[str] = None
     watercourse: Optional[str] = None
     shop_type: Optional[str] = Field(None, alias="shopType")
-    mapping_override: list[str] = []
+    mapping_override: Optional[list[str]] = Field(None, alias="mappingOverride")
 
     def as_apply(self) -> ScenarioMappingApply:
         return ScenarioMappingApply(
@@ -35,7 +35,7 @@ class ScenarioMappingApply(DomainModelApply):
     name: Optional[str] = None
     watercourse: Optional[str] = None
     shop_type: Optional[str] = None
-    mapping_override: Union[list[InputTimeSeriesMappingApply], list[str]] = Field(default_factory=list, repr=False)
+    mapping_override: Union[list[InputTimeSeriesMappingApply], list[str], None] = Field(default=None, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
@@ -69,7 +69,7 @@ class ScenarioMappingApply(DomainModelApply):
         edges = []
         cache.add(self.external_id)
 
-        for mapping_override in self.mapping_override:
+        for mapping_override in self.mapping_override or []:
             edge = self._create_mapping_override_edge(mapping_override)
             if edge.external_id not in cache:
                 edges.append(edge)

@@ -21,8 +21,8 @@ class DayAheadProcess(DomainModel):
     name: Optional[str] = None
     bid: Optional[str] = None
     shop: Optional[str] = None
-    incremental_mappings: list[str] = []
-    bid_matrix_generator_config: list[str] = []
+    incremental_mappings: Optional[list[str]] = None
+    bid_matrix_generator_config: Optional[list[str]] = Field(None, alias="bidMatrixGeneratorConfig")
 
     def as_apply(self) -> DayAheadProcessApply:
         return DayAheadProcessApply(
@@ -40,10 +40,8 @@ class DayAheadProcessApply(DomainModelApply):
     name: Optional[str] = None
     bid: Union[DayAheadBidApply, str, None] = Field(None, repr=False)
     shop: Union[ShopTransformationApply, str, None] = Field(None, repr=False)
-    incremental_mappings: Union[list[ScenarioMappingApply], list[str]] = Field(default_factory=list, repr=False)
-    bid_matrix_generator_config: Union[list[BidMatrixGeneratorApply], list[str]] = Field(
-        default_factory=list, repr=False
-    )
+    incremental_mappings: Union[list[ScenarioMappingApply], list[str], None] = Field(default=None, repr=False)
+    bid_matrix_generator_config: Union[list[BidMatrixGeneratorApply], list[str], None] = Field(default=None, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
@@ -83,7 +81,7 @@ class DayAheadProcessApply(DomainModelApply):
         edges = []
         cache.add(self.external_id)
 
-        for incremental_mapping in self.incremental_mappings:
+        for incremental_mapping in self.incremental_mappings or []:
             edge = self._create_incremental_mapping_edge(incremental_mapping)
             if edge.external_id not in cache:
                 edges.append(edge)
@@ -94,7 +92,7 @@ class DayAheadProcessApply(DomainModelApply):
                 nodes.extend(instances.nodes)
                 edges.extend(instances.edges)
 
-        for bid_matrix_generator_config in self.bid_matrix_generator_config:
+        for bid_matrix_generator_config in self.bid_matrix_generator_config or []:
             edge = self._create_bid_matrix_generator_config_edge(bid_matrix_generator_config)
             if edge.external_id not in cache:
                 edges.append(edge)

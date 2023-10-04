@@ -8,7 +8,6 @@ from cognite.powerops.resync import config
 from cognite.powerops.resync.models._shared_v1_v2.production_model import (
     _create_generator_efficiency_curve,
     _create_turbine_efficiency_curve,
-    _get_single_value,
     _plant_to_inlet_reservoir_breadth_first_search,
     head_loss_factor_fallback,
     p_max_fallback,
@@ -85,6 +84,7 @@ def to_production_model(configuration: config.ProductionConfig) -> ProductionMod
             production_obligation_time_series=[
                 TimeSeries(external_id=id_) for id_ in watercourse_config.production_obligation_ts_ext_ids
             ],
+            write_back_model_file=watercourse_config.write_back_model_file,
         )
         model.watercourses.append(watercourse)
 
@@ -104,18 +104,20 @@ def to_production_model(configuration: config.ProductionConfig) -> ProductionMod
             )
             model.reservoirs.append(reservoir)
 
-        for generator_name, generator_attributes in shop_case["model"]["generator"].items():
+        generator_attributes_by_name = watercourse_config.shop_model_template["model"]["generator"]
+        for generator_config in watercourse_config.generators:
+            generator_name = generator_config.name
             start_stop_cost = start_stop_cost_time_series_by_generator.get(generator_name)
             is_available = is_generator_available.get(generator_name)
             generator = Generator(
                 name=generator_name,
-                penstock=str(generator_attributes.get("penstock", "1")),
-                p_min=float(generator_attributes.get("p_min", 0.0)),
-                startcost=float(_get_single_value(generator_attributes.get("startcost", 0.0))),
+                penstock=generator_config.penstock,
+                p_min=generator_config.p_min,
+                startcost=generator_config.startcost,
                 start_stop_cost_time_series=TimeSeries(external_id=start_stop_cost) if start_stop_cost else None,
                 is_available_time_series=TimeSeries(external_id=is_available) if is_available else None,
             )
-
+            generator_attributes = generator_attributes_by_name[generator_name]
             efficiency_curve = _create_generator_efficiency_curve(
                 generator_attributes, generator.name, generator.external_id
             )

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import ClassVar, Optional  # noqa: F401
+from typing import ClassVar, Optional
 
 from cognite.client import data_modeling as dm
 
@@ -11,7 +11,7 @@ __all__ = ["CommandConfig", "CommandConfigApply", "CommandConfigList", "CommandC
 
 class CommandConfig(DomainModel):
     space: ClassVar[str] = "power-ops"
-    commands: list[str] = []
+    commands: Optional[list[str]] = None
 
     def as_apply(self) -> CommandConfigApply:
         return CommandConfigApply(
@@ -22,7 +22,7 @@ class CommandConfig(DomainModel):
 
 class CommandConfigApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
-    commands: list[str] = []
+    commands: Optional[list[str]] = None
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:

@@ -137,7 +137,9 @@ class ProductionConfig(Config):
                         watercourse["yaml_raw_path"] = (
                             config_dir_path / watercourse["directory"] / watercourse["model_raw"]
                         )
-                        watercourse["shop_model_template"] = load_yaml(watercourse["yaml_raw_path"], encoding="utf-8")
+                        shop_model_template = load_yaml(watercourse["yaml_raw_path"], encoding="utf-8")
+                        watercourse["shop_model_template"] = shop_model_template
+                        watercourse["generators"] = _read_generators_from_shop_model_template(shop_model_template)
                     if all(key in watercourse for key in ["directory", "model_processed"]):
                         watercourse["yaml_processed_path"] = (
                             config_dir_path / watercourse["directory"] / watercourse["model_processed"]
@@ -150,7 +152,39 @@ class ProductionConfig(Config):
 
 class CogShopConfig(Config):
     time_series_mappings: Optional[list[TimeSeriesMapping]] = None
-    watercourses_shop: list[ShopFileConfig]
+    watercourses_shop: list[ShopFileConfig]  # validation needs to happen here. If any of the files
+    _dependent_shop_files: set = {
+        "extra_data",
+        "water_value_cut_file_reservoir_mapping",
+        "water_value_cut_file",
+        "module_series",
+    }
+
+    @field_validator("watercourses_shop")
+    def validate_shop_related_files(cls, value):
+        """
+        If user has added any of the files above to the configuration, then the "cog_shop_files_config" file
+        must exist among the files to be uploaded
+        """
+        files_to_check = cls._dependent_shop_files.default.intersection({file.cogshop_file_type for file in value})
+        if not files_to_check:
+            return value
+        extra_shop_files = [
+            file.file_path.stem for file in value if file.cogshop_file_type in cls._dependent_shop_files.default
+        ]
+        has_cog_shop_files_config = "cog_shop_files_config" in extra_shop_files
+        if has_cog_shop_files_config:
+            extra_shop_files.remove("cog_shop_files_config")
+            if not extra_shop_files:
+                raise ValueError(
+                    "Ensure that extra shop files to accompany cog_shop_files_config is added to watercourse"
+                )
+        elif extra_shop_files:
+            raise ValueError(
+                "Missing 'cog_shop_files_config.yaml'. "
+                "This is needed for CogSHOP to know which order and type to load extra SHOP files."
+            )
+        return value
 
 
 class ReSyncConfig(BaseModel):
@@ -220,3 +254,12 @@ class ReSyncConfig(BaseModel):
             )
 
         return self
+
+
+def _read_generators_from_shop_model_template(shop_model_template: dict[str, Any]) -> list[dict[str, Any]]:
+    generators: list[dict[str, Any]] = []
+    for generator_name, generator_attributes in shop_model_template.get("model", {}).get("generator", {}).items():
+        attributes = generator_attributes.copy()
+        attributes["name"] = generator_name
+        generators.append(attributes)
+    return generators

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import ClassVar, Optional  # noqa: F401
+from typing import ClassVar, Optional
 
 from cognite.client import data_modeling as dm
 
@@ -11,7 +11,7 @@ __all__ = ["CommandsConfig", "CommandsConfigApply", "CommandsConfigList", "Comma
 
 class CommandsConfig(DomainModel):
     space: ClassVar[str] = "cogShop"
-    commands: list[str] = []
+    commands: Optional[list[str]] = None
 
     def as_apply(self) -> CommandsConfigApply:
         return CommandsConfigApply(

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TypeVar
+from typing import Optional, TypeVar
 
 from pydantic import BaseModel, Field
 
@@ -10,9 +10,9 @@ T = TypeVar("T")
 class Connection(BaseModel):
     connection_type: str
     from_: str = Field(alias="from")
-    from_type: str
+    from_type: Optional[str] = None
     to: str
-    to_type: str
+    to_type: Optional[str] = None
 
     def to_from_any(self, from_: dict[str, T], to_name: str, to_type: str) -> T | None:
         if self.to != to_name or self.to_type != to_type:

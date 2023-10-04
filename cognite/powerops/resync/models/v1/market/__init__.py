@@ -14,14 +14,21 @@ from .rkom import RKOMBid, RKOMBidCombination, RKOMCombinationBid, RKOMMarket, R
 
 class MarketModel(AssetModel):
     root_asset: ClassVar[Optional[Asset]] = None
-    markets: list[Market] = Field(default_factory=list)
+    nordpool_market: list[NordPoolMarket] = Field(default_factory=list)
+    rkom_market: list[RKOMMarket] = Field(default_factory=list)
     dayahead_processes: list[DayAheadProcess] = Field(default_factory=list)
     benchmark_processes: list[BenchmarkProcess] = Field(default_factory=list)
     rkom_processes: list[RKOMProcess] = Field(default_factory=list)
     combinations: list[RKOMBidCombination] = Field(default_factory=list)
 
     @field_validator(
-        "markets", "dayahead_processes", "benchmark_processes", "rkom_processes", "combinations", mode="after"
+        "nordpool_market",
+        "rkom_market",
+        "dayahead_processes",
+        "benchmark_processes",
+        "rkom_processes",
+        "combinations",
+        mode="after",
     )
     def ordering(cls, value: list[T_Asset_Type]) -> list[T_Asset_Type]:
         # To ensure loading the production model always yields the same result, we sort the assets by external_id.
@@ -50,17 +57,17 @@ class MarketModel(AssetModel):
         )
 
     def standardize(self) -> None:
-        self.markets = self.ordering(self.markets)
         self.dayahead_processes = self.ordering(self.dayahead_processes)
         self.benchmark_processes = self.ordering(self.benchmark_processes)
         self.rkom_processes = self.ordering(self.rkom_processes)
         self.combinations = self.ordering(self.combinations)
         for field in [
-            self.markets,
             self.dayahead_processes,
             self.benchmark_processes,
             self.rkom_processes,
             self.combinations,
+            self.nordpool_market,
+            self.rkom_market,
         ]:
             for item in field:
                 item.standardize()

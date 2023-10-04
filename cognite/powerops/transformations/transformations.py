@@ -29,16 +29,16 @@ def _relative_datapoints_to_series(
 
     Example:
         >>> start_time = datetime(2000, 1, 1, 12)
-        >>> relative_datapoints = {
-        ...     0: 42,
-        ...     60: 420,
-        ...     1440: 4200,
-        ... }
+        >>> relative_datapoints = [
+        ...     RelativeDatapoint(offset_minute=0, offset_value=42),
+        ...     RelativeDatapoint(offset_minute=60, offset_value=420),
+        ...     RelativeDatapoint(offset_minute=1440, offset_value=4200),
+        ... ]
         >>> _relative_datapoints_to_series(relative_datapoints, start_time)
-        2000-01-01 12:00:00      42
-        2000-01-01 13:00:00     420
-        2000-01-02 12:00:00    4200
-        dtype: int64
+        2000-01-01 12:00:00      42.0
+        2000-01-01 13:00:00     420.0
+        2000-01-02 12:00:00    4200.0
+        dtype: float64
     """
     datapoint_values = [dp.offset_value for dp in relative_datapoints]  # consider creating class method for this
     return pd.Series(
@@ -117,6 +117,11 @@ class StaticValues(DynamicTransformation):
 class ToBool(Transformation):
     def apply(self, time_series_data: pd.Series) -> pd.Series:
         return (time_series_data > 0).astype(int)
+
+
+class ToInt(Transformation):
+    def apply(self, time_series_data: pd.Series) -> pd.Series:
+        return time_series_data.apply(round)
 
 
 class ZeroIfNotOne(Transformation):

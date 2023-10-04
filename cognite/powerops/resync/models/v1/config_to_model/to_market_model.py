@@ -52,7 +52,8 @@ def to_market_asset_model(
     )
 
     model = MarketModel(
-        markets=[*rkom.markets, nord_pool],
+        nordpool_market=[nord_pool],
+        rkom_market=rkom.rkom_market,
         benchmark_processes=benchmarking_processes,
         dayahead_processes=dayahead_processes,
         rkom_processes=rkom.rkom_processes,
@@ -216,7 +217,7 @@ def _to_rkom_market(
 
     rkom_market = RKOMMarket(**rkom_market_config.model_dump())
     rkom_market.external_id = rkom_market_config.external_id
-    model.markets.append(rkom_market)
+    model.rkom_market.append(rkom_market)
 
     for configuration in rkom_bid_process:
         price_scenarios_by_name = _map_price_scenarios_by_name(

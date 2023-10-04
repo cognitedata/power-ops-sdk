@@ -36,7 +36,12 @@ def to_cogshop_asset_model(
 
     # TODO Fix the assumption that timeseries mappings and watercourses are in the same order
     for watercourse, mapping in zip(watercourses, configuration.time_series_mappings):
-        model_file = _to_shop_model_file(watercourse.name, watercourse.model_file, watercourse.processed_model_file)
+        model_file = _to_shop_model_file(
+            watercourse.name,
+            watercourse.model_file,
+            watercourse.processed_model_file,
+            watercourse.write_back_model_file,
+        )
         model.shop_files.append(model_file)
 
         ##### Output definition #####
@@ -90,6 +95,7 @@ def to_cogshop_asset_model(
             version="1",
             shop_version=shop_version,
             watercourse=watercourse.name,
+            source="resync",
             model=cogshop_v1.FileRefApply(
                 external_id=f"ModelTemplate_{watercourse.name}__FileRef_model",
                 type="case",
@@ -128,21 +134,26 @@ def to_cogshop_asset_model(
         }
     )
 
+    command_file_by_watercourse = {
+        f.meta.metadata["shop:watercourse"]: f
+        for f in model.shop_files
+        if f.meta.metadata.get("shop:type") == "commands"
+    }
+
     for process in itertools.chain(dayahead_processes, rkom_processes):
         for incremental_mapping in process.incremental_mapping:
             incremental_mapping: CDFSequence
             watercourse = incremental_mapping.sequence.metadata["shop:watercourse"]
             scenario_name = incremental_mapping.sequence.metadata["bid:scenario_name"]
-            # This change is done to match how the scenarios are created in the functions' repo.
-            scenario_name_space_title = scenario_name.replace("_", " ").replace("scenario", "Scenario")
-            external_id = f"Scenario_{watercourse}_{scenario_name_space_title}"
-            command_file = next((f for f in model.shop_files if f.meta.metadata.get("shop:type") == "commands"), None)
+            external_id = f"Scenario_{watercourse}_{scenario_name}"
+            command_file = command_file_by_watercourse.get(watercourse)
+
             if command_file is None:
                 raise ValueError(f"Could not find commands file for watercourse {watercourse}")
             scenario = cogshop_v1.ScenarioApply(
                 external_id=external_id,
-                name=f"Scenario {watercourse} {scenario_name_space_title}",
-                model_template=model.model_templates[f"ModelTemplate_{watercourse}"],
+                name=f"Scenario {watercourse} {scenario_name}",
+                model_template=model.model_templates[f"ModelTemplate_{watercourse}"].external_id,
                 mappings_override=[
                     cogshop_v1.MappingApply(
                         external_id=f"Mapping_{external_id}_{i}",
@@ -163,6 +174,7 @@ def to_cogshop_asset_model(
                     external_id=f"Commands_{watercourse}",
                     commands=yaml.safe_load(command_file.content.decode()).get("commands", []),
                 ),
+                source="resync",
             )
             model.scenarios[scenario.external_id] = scenario
 

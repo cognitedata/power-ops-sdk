@@ -18,7 +18,7 @@ class BenchmarkBid(DomainModel):
     space: ClassVar[str] = "power-ops"
     name: Optional[str] = None
     market: Optional[str] = None
-    date: list[str] = []
+    date: Optional[list[str]] = None
 
     def as_apply(self) -> BenchmarkBidApply:
         return BenchmarkBidApply(
@@ -33,7 +33,7 @@ class BenchmarkBidApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
     name: Optional[str] = None
     market: Union[NordPoolMarketApply, str, None] = Field(None, repr=False)
-    date: Union[list[DateTransformationApply], list[str]] = Field(default_factory=list, repr=False)
+    date: Union[list[DateTransformationApply], list[str], None] = Field(default=None, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
@@ -68,7 +68,7 @@ class BenchmarkBidApply(DomainModelApply):
         edges = []
         cache.add(self.external_id)
 
-        for date in self.date:
+        for date in self.date or []:
             edge = self._create_date_edge(date)
             if edge.external_id not in cache:
                 edges.append(edge)

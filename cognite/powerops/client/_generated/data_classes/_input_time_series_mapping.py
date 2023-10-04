@@ -26,7 +26,7 @@ class InputTimeSeriesMapping(DomainModel):
     cdf_time_series: Optional[str] = Field(None, alias="cdfTimeSeries")
     retrieve: Optional[str] = None
     aggregation: Optional[str] = None
-    transformations: list[str] = []
+    transformations: Optional[list[str]] = None
 
     def as_apply(self) -> InputTimeSeriesMappingApply:
         return InputTimeSeriesMappingApply(
@@ -49,7 +49,7 @@ class InputTimeSeriesMappingApply(DomainModelApply):
     cdf_time_series: Optional[str] = None
     retrieve: Optional[str] = None
     aggregation: Optional[str] = None
-    transformations: Union[list[ValueTransformationApply], list[str]] = Field(default_factory=list, repr=False)
+    transformations: Union[list[ValueTransformationApply], list[str], None] = Field(default=None, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
@@ -89,7 +89,7 @@ class InputTimeSeriesMappingApply(DomainModelApply):
         edges = []
         cache.add(self.external_id)
 
-        for transformation in self.transformations:
+        for transformation in self.transformations or []:
             edge = self._create_transformation_edge(transformation)
             if edge.external_id not in cache:
                 edges.append(edge)

@@ -1074,6 +1074,7 @@ model:
         2022-03-27 22:00:00: 12
     Lien_krv_G1:
       penstock: 1
+      p_min: 1.2
       p_max: 3.4
       p_nom: 3.4
       gen_eff_curve:
@@ -5228,9 +5229,9 @@ model:
 connections:
   - connection_type: connection_bypass
     from: Hagen
-    from_type: reservoir
+    #from_type: reservoir
     to: b_Hagen_Strand
-    to_type: gate
+    #to_type: gate
   - connection_type: connection_bypass
     from: Sirefelt
     from_type: reservoir

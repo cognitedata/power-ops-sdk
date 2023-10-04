@@ -17,7 +17,7 @@ __all__ = [
 class ProductionPlanTimeSeries(DomainModel):
     space: ClassVar[str] = "power-ops"
     name: Optional[str] = None
-    series: list[str] = []
+    series: Optional[list[str]] = None
 
     def as_apply(self) -> ProductionPlanTimeSeriesApply:
         return ProductionPlanTimeSeriesApply(
@@ -30,7 +30,7 @@ class ProductionPlanTimeSeries(DomainModel):
 class ProductionPlanTimeSeriesApply(DomainModelApply):
     space: ClassVar[str] = "power-ops"
     name: Optional[str] = None
-    series: list[str] = []
+    series: Optional[list[str]] = None
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
