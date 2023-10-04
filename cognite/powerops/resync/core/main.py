@@ -323,6 +323,8 @@ def migration(
     model: Literal["Production"] = "Production",
     echo: Echo | None = None,
 ) -> ModelDifferences:
+    if isinstance(model, list):
+        model = model[0]
     if model != "Production":
         raise ValueError(f"Unknown model {model}")
     echo = echo or _default_echo

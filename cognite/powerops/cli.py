@@ -173,7 +173,7 @@ def migrate(
 ):
     power = PowerOpsClient.from_settings()
 
-    changes = resync.migration(power, model_names=models, echo=_to_echo(True))
+    changes = resync.migration(power, model=models, echo=_to_echo(True))
 
     if format == "markdown":
         typer.echo(changes.as_github_markdown())
