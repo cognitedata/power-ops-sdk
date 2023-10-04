@@ -5,7 +5,6 @@ and have data in the required time ranges.
 
 from __future__ import annotations
 
-import logging
 from collections import defaultdict
 from typing import Literal, Optional, Union, cast
 
@@ -19,13 +18,12 @@ from cognite.powerops.client._generated.data_classes import (
     InputTimeSeriesMapping,
     InputTimeSeriesMappingApply,
 )
+from cognite.powerops.resync.core.echo import Echo
 from cognite.powerops.resync.models.base import Model
 from cognite.powerops.utils.lookup import attr_lookup, dict_values, each
 from cognite.powerops.utils.preprocessor_utils import arrow_to_ms, retrieve_time_series_datapoints
 from cognite.powerops.utils.require import require
 from cognite.powerops.utils.time import relative_time_specification_to_arrow
-
-logger = logging.getLogger(__name__)
 
 
 class ValidationSpec(BaseModel):
@@ -171,14 +169,14 @@ def prepare_validation(models: list[Model]) -> tuple[PreparedValidationsT, Valid
 
 
 def perform_validation(
-    po_client: PowerOpsClient, ts_validations: PreparedValidationsT, validation_ranges: ValidationRangesT
+    po_client: PowerOpsClient, ts_validations: PreparedValidationsT, validation_ranges: ValidationRangesT, echo: Echo
 ) -> None:
     for range_str, validations_in_range in ts_validations.items():
         validation_range = validation_ranges[range_str]
         all_mappings = [validation.mapping for validation in validations_in_range.values()]
         ts_mappings = list(filter(lambda row: row.cdf_time_series, all_mappings))
 
-        logger.info(f"Retrieving datapoints for {len(ts_mappings)} mappings from range {range_str}")
+        echo(f"Retrieving datapoints for {len(ts_mappings)} mappings from range {range_str}")
         datapoints = retrieve_time_series_datapoints(
             po_client.cdf,
             ts_mappings,
@@ -190,20 +188,21 @@ def perform_validation(
             data: pd.Series = datapoints.get(require(ts_mapping.cdf_time_series), pd.Series())
             if not len(data):
                 ts_validation: TimeSeriesValidation = ts_validations[range_str][ts_mapping.external_id]
-                logger.warning(
+                echo(
                     f"No datapoints found for range {range_str} in timeseries '{ts_mapping.cdf_time_series}',"
-                    f" used in models: {', '.join(ts_validation.data_models)}."
+                    f" used in models: {', '.join(ts_validation.data_models)}.",
+                    is_warning=True,
                 )
                 warnings_n += 1
                 continue
             if ts_mapping.retrieve == "RANGE" and len(data) < 2:
                 ts_validation = ts_validations[range_str][ts_mapping.external_id]
-                logger.warning(
+                echo(
                     f"Only one datapoint found for range {range_str} in timeseries '{ts_mapping.cdf_time_series}',"
-                    f" used in models: {', '.join(ts_validation.data_models)}."
+                    f" used in models: {', '.join(ts_validation.data_models)}.",
+                    is_warning=True,
                 )
                 warnings_n += 1
                 continue
-            logger.debug(f"Validated timeseries {ts_mapping.cdf_time_series} in range {range_str}.")
         if warnings_n:
-            logger.warning(f"Total warnings for range {range_str}: {warnings_n}.")
+            echo(f"Total warnings for range {range_str}: {warnings_n}.", is_warning=True)

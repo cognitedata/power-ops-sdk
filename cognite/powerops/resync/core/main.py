@@ -95,7 +95,7 @@ def validate(config_dir: str | Path, market: str, echo: Echo | None = None) -> N
 
     echo("Validating time series...")
     ts_validations, validation_ranges = prepare_validation(loaded_models)
-    perform_validation(po_client, ts_validations, validation_ranges)
+    perform_validation(po_client, ts_validations, validation_ranges, echo)
 
     echo("Validations complete")
 
