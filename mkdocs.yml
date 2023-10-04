@@ -17,7 +17,7 @@ nav:
       - Shop API: tutorials/shop_results.ipynb
     - Reference:
       - client:
-          - SHOP API: packages/client/shop_api.md
+          - SHOP API: packages/client/transformations.md
           - SHOP API Classes: packages/client/shop_api_classes.md
       - resync:
           - resync: packages/resync/main.md

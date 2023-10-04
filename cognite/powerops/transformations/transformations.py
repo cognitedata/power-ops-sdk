@@ -18,6 +18,19 @@ logger = getLogger(__name__)
 
 
 class RelativeDatapoint(BaseModel):
+    """
+    This represents a single SHOP run.
+
+    A SHOP run is represented by an event in CDF. This class is a wrapper around the event.
+
+    Args:
+        external_id: The external ID of the SHOP run. This matches the external ID of the event in CDF.
+        watercourse: The watercourse of the SHOP run.
+        start: The start time of the SHOP run.
+        end: The end time of the SHOP run.
+        shop_version: The version of SHOP used for the SHOP run.
+        user_id: The user ID of the user that triggered the SHOP run.
+    """
     offset_minute: float
     offset_value: float
 
