@@ -159,6 +159,7 @@ class StaticValues(DynamicTransformation):
             shop_model: _ not used in this transformation, but needs to be provided
             start: datetime of SHOP start time
         Example:
+        >>> from cognite.client import CogniteClient
         >>> start_time = datetime(2000, 1, 1, 12)
         >>> end_time = datetime(2000, 1, 5, 12)
         >>> client = CogniteClient()
@@ -335,6 +336,7 @@ class HeightToVolume(DynamicTransformation):
             start: _ not used in this transformation
             end: _ not used in this transformation
         Example:
+        >>> from cognite.client import CogniteClient
         >>> start_time = datetime(2000, 1, 1, 12)
         >>> end_time = datetime(2000, 1, 10, 12)
         >>> model = {"reservoir": {"Lundevatn": {"vol_head": {"x": [10, 20, 40, 80, 160], "y": [2, 4, 6, 8, 10]}}}}
@@ -581,6 +583,7 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
             start: SHOP start time
             end: SHOP end time
         Example:
+        >>> from cognite.client import CogniteClient
         >>> start_time = datetime(2000, 1, 1, 12)
         >>> end_time = datetime(2000, 1, 5, 12)
         >>> client = CogniteClient()
