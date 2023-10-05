@@ -184,7 +184,6 @@ class StaticValues(DynamicTransformation):
         ...     RelativeDatapoint(offset_minute=1440, offset_value=4200),
         ... ]
         >>> s = StaticValues(relative_datapoints=relative_datapoints)
-        >>> s.pre_apply()
         >>> s.apply()
         2000-01-01 12:00:00      42.0
         2000-01-01 13:00:00      42.0
@@ -193,7 +192,7 @@ class StaticValues(DynamicTransformation):
         """
         if not self.pre_apply_has_run:
             raise ValueError("pre_apply function has not run - missing neccessary properties to run transformation")
-        return _relative_datapoints_to_series(self.relative_datapoints, ms_to_datetime(self.start), self.shift_minutes)
+        return _relative_datapoints_to_series(self.relative_datapoints, self.start, self.shift_minutes)
 
 
 class ToBool(Transformation):
