@@ -19,18 +19,14 @@ logger = getLogger(__name__)
 
 class RelativeDatapoint(BaseModel):
     """
-    This represents a single SHOP run.
-
-    A SHOP run is represented by an event in CDF. This class is a wrapper around the event.
+    A relative datapoint that states from what minute to apply an offset value. To be used when for instance adding
+    different offset values at different points in time from start time of an array of time series data.
 
     Args:
-        external_id: The external ID of the SHOP run. This matches the external ID of the event in CDF.
-        watercourse: The watercourse of the SHOP run.
-        start: The start time of the SHOP run.
-        end: The end time of the SHOP run.
-        shop_version: The version of SHOP used for the SHOP run.
-        user_id: The user ID of the user that triggered the SHOP run.
+        offset_minute: The number of minutes from start time of an input array of time series data to apply a value
+        offset_value: The value to apply to the existing value at the offset_minute point in time
     """
+
     offset_minute: float
     offset_value: float
 
@@ -79,73 +75,221 @@ class Transformation(BaseModel, ABC):
 
 class DynamicTransformation(Transformation):
     @abstractmethod
-    def pre_apply(self, client: CogniteClient, shop_model: dict, start: int, end: int):
+    def pre_apply(self, client: CogniteClient, shop_model: dict, start: datetime, end: datetime):
         ...
 
 
 class Add(Transformation):
+    """
+    Args:
+        value: The value to add to the time series data
+    """
+
     value: float
 
     def apply(
         self,
         time_series_data: pd.Series,
     ):
+        """
+        Add value to input time series
+        Args:
+            time_series_data: The time series data to add the value to
+        Returns:
+            The transformed time series
+        """
         return time_series_data + self.value
 
 
 class Multiply(Transformation):
+    """
+    Args:
+        value: The value to multiply the time series data with
+    """
+
     value: float
 
     def apply(
         self,
         time_series_data: pd.Series,
     ):
+        """
+        Multiply value to input time series
+        Args:
+            time_series_data: The time series data to add the value to
+        Returns:
+            The transformed time series
+        """
         return time_series_data * self.value
 
 
 class StaticValues(DynamicTransformation):
+    """
+    Provides a list of static values from SHOP start time.
+    Args:
+        relative_datapoints: The relative datapoints to apply to
+    """
+
     shift_minutes: int = 0  # This could be given at runtime - looks like default value of 0 is always used for now
     relative_datapoints: list[RelativeDatapoint]
-    pre_apply_has_run: bool = False
-    _start: int
+    _pre_apply_has_run: bool = False
+    _start: datetime
 
     @property
     def start(self):
         return self._start
 
     @start.setter
-    def start(self, value: int):
+    def start(self, value: datetime):
         self._start = value
 
-    def pre_apply(self, client: CogniteClient, shop_model: dict, start: int, end: int):
+    @property
+    def pre_apply_has_run(self):
+        return self._pre_apply_has_run
+
+    @pre_apply_has_run.setter
+    def pre_apply_has_run(self, value: bool):
+        self._pre_apply_has_run = value
+
+    def pre_apply(self, client: CogniteClient, shop_model: dict, start: datetime, end: datetime):
+        """
+        Preprocessing step that needs to run before `apply()` to set the shop start time.
+        Args:
+            client: _ not used in this transformation, but needs to be provided
+            shop_model: _ not used in this transformation, but needs to be provided
+            start: datetime of SHOP start time
+        Example:
+        >>> start_time = datetime(2000, 1, 1, 12)
+        >>> end_time = datetime(2000, 1, 5, 12)
+        >>> client = CogniteClient()
+        >>> model = {}
+        >>> relative_datapoints = [
+        ...     RelativeDatapoint(offset_minute=0, offset_value=42),
+        ...     RelativeDatapoint(offset_minute=1440, offset_value=4200),
+        ... ]
+        >>> s = StaticValues(relative_datapoints=relative_datapoints)
+        >>> s.pre_apply(client=client, shop_model=model, start=start_time, end=end_time)
+        """
         self.start = start
         self.pre_apply_has_run = True
 
     def apply(self, _: pd.Series) -> pd.Series:
+        """
+        Returns:
+            Pandas Series based from SHOP start time
+        Example:
+
+        >>> relative_datapoints = [
+        ...     RelativeDatapoint(offset_minute=0, offset_value=42),
+        ...     RelativeDatapoint(offset_minute=1440, offset_value=4200),
+        ... ]
+        >>> s = StaticValues(relative_datapoints=relative_datapoints)
+        >>> s.pre_apply()
+        >>> s.apply()
+        2000-01-01 12:00:00      42.0
+        2000-01-01 13:00:00      42.0
+        2000-01-02 12:00:00    4200.0
+        dtype: float64
+        """
         if not self.pre_apply_has_run:
             raise ValueError("pre_apply function has not run - missing neccessary properties to run transformation")
         return _relative_datapoints_to_series(self.relative_datapoints, ms_to_datetime(self.start), self.shift_minutes)
 
 
 class ToBool(Transformation):
+    """
+    Transforms time series data to a series of 0s and 1s. 1s if the value is > 0.
+    """
+
     def apply(self, time_series_data: pd.Series) -> pd.Series:
+        """
+        Args:
+            time_series_data: The time series data to transform
+
+        Returns:
+            The transformed time series
+        Example:
+        >>> values = [0, 1, 2, -1]
+        >>> time_series_data = pd.Series(
+        ...            values,
+        ...            index=pd.date_range(start='25/05/2021', periods = len(values)),
+        ...        )
+        >>> b = ToBool()
+        >>> b.apply(time_series_data=time_series_data)
+        2021-05-25    0
+        2021-05-26    1
+        2021-05-27    1
+        2021-05-28    0
+        Freq: D, dtype: int64
+        """
         return (time_series_data > 0).astype(int)
 
 
 class ZeroIfNotOne(Transformation):
+    """
+    Transforms time series data to a series of 0s and 1s. 1s if the value is exactly 1.
+    """
+
     def apply(self, time_series_data: pd.Series) -> pd.Series:
+        """
+        Args:
+            time_series_data: The time series data to transform
+
+        Returns:
+            The transformed time series
+        Example:
+        >>> values = [0, 1, 2, -1]
+        >>> time_series_data = pd.Series(
+        ...            values,
+        ...            index=pd.date_range(start='25/05/2021', periods = len(values)),
+        ...        )
+        >>> b = ZeroIfNotOne()
+        >>> b.apply(time_series_data=time_series_data)
+        2021-05-25    0
+        2021-05-26    1
+        2021-05-27    0
+        2021-05-28    0
+        Freq: D, dtype: int64
+        """
         return (time_series_data == 1).astype(int)
 
 
 class OneIfTwo(Transformation):
+    """
+    Transforms time series data to a series of 0s and 1s. 1s if the value is exactly 1.
+    """
+
     def apply(self, time_series_data: pd.Series) -> pd.Series:
+        """
+        Args:
+            time_series_data: The time series data to transform
+        Returns:
+            The transformed time series
+        Example:
+        >>> values = [0, 1, 2, -1]
+        >>> time_series_data = pd.Series(
+        ...            values,
+        ...            index=pd.date_range(start='25/05/2021', periods = len(values)),
+        ...        )
+        >>> b = OneIfTwo()
+        >>> b.apply(time_series_data=time_series_data)
+        2021-05-25    0
+        2021-05-26    0
+        2021-05-27    1
+        2021-05-28    0
+        Freq: D, dtype: int64
+        """
         return (time_series_data == 2).astype(int)
 
 
 class HeightToVolume(DynamicTransformation):
+    """
+    TODO
+    """
+
     object_type: str
     object_name: str
-    pre_apply_has_run: bool = False
+    _pre_apply_has_run: bool = False
     _volumes: list[float]
     _heights: list[float]
 
@@ -165,6 +309,14 @@ class HeightToVolume(DynamicTransformation):
     def heights(self, value: list[float]):
         self._heights = value
 
+    @property
+    def pre_apply_has_run(self):
+        return self._pre_apply_has_run
+
+    @pre_apply_has_run.setter
+    def pre_apply_has_run(self, value: bool):
+        self._pre_apply_has_run = value
+
     @staticmethod
     def height_to_volume(time_series_data: pd.Series, heights: list[float], volumes: list[float]) -> pd.Series:
         def interpolate(height: float) -> float:
@@ -175,12 +327,53 @@ class HeightToVolume(DynamicTransformation):
 
         return time_series_data.map(interpolate)
 
-    def pre_apply(self, client: CogniteClient, shop_model: dict, start: int, end: int):
+    def pre_apply(self, client: CogniteClient, shop_model: dict, start: datetime, end: datetime):
+        """
+        Preprocessing step that needs to run before `apply()` to set the volumes and heights from shop case file.
+        Args:
+            client: _ not used in this transformation
+            shop_model: SHOP model file
+            start: _ not used in this transformation
+            end: _ not used in this transformation
+        Example:
+        >>> start_time = datetime(2000, 1, 1, 12)
+        >>> end_time = datetime(2000, 1, 10, 12)
+        >>> model = {"reservoir": {"Lundevatn": {"vol_head": {"x": [10, 20, 40, 80, 160], "y": [2, 4, 6, 8, 10]}}}}
+        >>> client = CogniteClient()
+        >>> h = HeightToVolume(object_type="reservoir", object_name="Lundevatn")
+        >>> h.pre_apply(client=client, shop_model=model, start=start_time, end=end_time)
+        >>> h.volumes
+        Out[4]: [10, 20, 40, 80, 160]
+        """
         self.volumes = shop_model[self.object_type][self.object_name]["vol_head"]["x"]
         self.heights = shop_model[self.object_type][self.object_name]["vol_head"]["y"]
         self.pre_apply_has_run = True
 
     def apply(self, time_series_data: pd.Series) -> pd.Series:
+        """
+        Args:
+            time_series_data: The time series data to transform
+        Returns:
+            The transformed time series
+        Example:
+        >>> time_series_data = pd.Series(
+        ...        {
+        ...            1: 1,  # below interpolation bounds
+        ...            2: 4,
+        ...            3: 6,
+        ...            4: 7,  # interpolated
+        ...            5: 11,  # above interpolation bounds
+        ...        }
+        ...    )
+        >>> h = HeightToVolume()
+        >>> h.apply(time_series_data=time_series_data)
+        1     10.0
+        2     20.0
+        3     40.0
+        4     60.0
+        5    160.0
+        dtype: float64
+        """
         if self.pre_apply_has_run:
             return self.height_to_volume(time_series_data, self.heights, self.volumes)
         else:
@@ -193,10 +386,54 @@ class DoNothing(Transformation):
 
 
 class AddFromOffset(Transformation):
+    """
+    Adds values to input timeseries based on a list of relative datapoints with values to be added to corresponding
+    offset minute from start time
+    Args:
+        relative_datapoints: The values to add to existing time series based at offset minute times from time series
+    """
+
     shift_minutes: int = 0
     relative_datapoints: list[RelativeDatapoint]
 
     def apply(self, time_series_data: pd.Series) -> pd.Series:
+        """
+        Example:
+        >>> timestamps = [
+        ...        datetime(2022, 1, 1, 0),
+        ...        datetime(2022, 1, 1, 1),
+        ...        datetime(2022, 1, 1, 2),
+        ...        datetime(2022, 1, 1, 3),
+        ...        datetime(2022, 1, 1, 4),
+        ...        datetime(2022, 1, 1, 5),
+        ...    ]
+        >>> values = [42] * len(timestamps)
+        >>> time_series_data = pd.Series(values, index=timestamps)
+        >>> time_series_data
+        2022-01-01 00:00:00    42
+        2022-01-01 01:00:00    42
+        2022-01-01 02:00:00    42
+        2022-01-01 03:00:00    42
+        2022-01-01 04:00:00    42
+        2022-01-01 05:00:00    42
+        dtype: int64
+        >>> relative_datapoints = [
+        ...     RelativeDatapoint(offset_minute=0, offset_value=1),
+        ...     RelativeDatapoint(offset_minute=20, offset_value=-2),
+        ...     RelativeDatapoint(offset_minute=230, offset_value=3),
+        ... ]
+        >>> a = AddFromOffset(relative_datapoints=relative_datapoints)
+        >>> a.apply(time_series_data)
+        2022-01-01 00:00:00    43.0
+        2022-01-01 00:20:00    40.0
+        2022-01-01 01:00:00    40.0
+        2022-01-01 02:00:00    40.0
+        2022-01-01 03:00:00    40.0
+        2022-01-01 03:50:00    45.0
+        2022-01-01 04:00:00    45.0
+        2022-01-01 05:00:00    45.0
+        dtype: float64
+        """
         first_timestamp = min(time_series_data.index)
         non_relative_datapoints = _relative_datapoints_to_series(
             self.relative_datapoints, first_timestamp, self.shift_minutes
@@ -209,10 +446,46 @@ class AddFromOffset(Transformation):
 
 
 class MultiplyFromOffset(Transformation):
+    """
+    Multiplies values to input timeseries based on a list of relative datapoints with
+    values to be added to corresponding offset minute from start time
+    Args:
+        relative_datapoints: The values to multiply to existing time series based at
+                             offset minute times from time series
+    """
+
     shift_minutes: int = 0
     relative_datapoints: list[RelativeDatapoint]
 
     def apply(self, time_series_data: pd.Series) -> pd.Series:
+        """
+        Example:
+        >>> timestamps = [datetime(2022, 1, 1) + timedelta(minutes=i) for i in range(6)]
+        >>> values = [10] * 6
+        >>> time_series_data = pd.Series(values, index=timestamps)
+        >>> time_series_data
+        2022-01-01 00:00:00    10
+        2022-01-01 00:01:00    10
+        2022-01-01 00:02:00    10
+        2022-01-01 00:03:00    10
+        2022-01-01 00:04:00    10
+        2022-01-01 00:05:00    10
+        dtype: int64
+        >>> relative_datapoints = [
+        ...     RelativeDatapoint(offset_minute=1, offset_value=2),
+        ...     RelativeDatapoint(offset_minute=2, offset_value=0),
+        ...     RelativeDatapoint(offset_minute=4, offset_value=1.5),
+        ... ]
+        >>> m = MultiplyFromOffset(relative_datapoints=relative_datapoints)
+        >>> m.apply(time_series_data)
+        2022-01-01 00:00:00    10.0
+        2022-01-01 00:01:00    20.0
+        2022-01-01 00:02:00     0.0
+        2022-01-01 00:03:00     0.0
+        2022-01-01 00:04:00    15.0
+        2022-01-01 00:05:00    15.0
+        Freq: T, dtype: float64
+        """
         first_timestamp = min(time_series_data.index)
         non_relative_datapoints = _relative_datapoints_to_series(
             self.relative_datapoints, first_timestamp, self.shift_minutes
@@ -225,10 +498,18 @@ class MultiplyFromOffset(Transformation):
 
 
 class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
+    """
+    Adds water in transit (previously discharged water) to the inflow time series.
+    Args:
+        discharge_ts_external_id: external id of discharge timeseries to retrieve from CDF
+        transit_object_type: gate or plant
+        transit_object_name: name of gate or plant
+    """
+
     discharge_ts_external_id: str
     transit_object_type: Literal["plant", "gate"]
     transit_object_name: str
-    pre_apply_has_run: bool = False
+    _pre_apply_has_run: bool = False
     _start: int
     _end: int
     _shape: dict[int, float]
@@ -266,6 +547,14 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
     def discharge(self, value: pd.Series):
         self._discharge = value
 
+    @property
+    def pre_apply_has_run(self):
+        return self._pre_apply_has_run
+
+    @pre_apply_has_run.setter
+    def pre_apply_has_run(self, value: bool):
+        self._pre_apply_has_run = value
+
     @staticmethod
     def get_shape(model: dict, transit_object_type: str, transit_object_name: str) -> dict[int, float]:
         """object_type must be plant or gate"""
@@ -283,7 +572,27 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
 
         return shape
 
-    def pre_apply(self, client: CogniteClient, shop_model: dict, start: int, end: int):
+    def pre_apply(self, client: CogniteClient, shop_model: dict, start: datetime, end: datetime):
+        """
+        Preprocessing step that needs to run before `apply()` to set the shape, retrieve and set discharge time series
+        data, and set SHOP start and end times
+        Args:
+            client: CogniteClient authenticated to project to retrieve discharge timeseries from
+            shop_model: SHOP model dict
+            start: SHOP start time
+            end: SHOP end time
+        Example:
+        >>> start_time = datetime(2000, 1, 1, 12)
+        >>> end_time = datetime(2000, 1, 5, 12)
+        >>> client = CogniteClient()
+        >>> model = {"gate": {"gate1": {"shape_discharge": {"ref": 0, "x": [0, 60, 120], "y": [0.1, 0.5, 0.4]}}}}
+        >>> t = AddWaterInTransit(discharge_ts_external_id="discharge_ts",
+        ...                       transit_object_type="gate",
+        ...                       transit_object_name="Holen(01)")
+        >>> t.pre_apply(client=client, shop_model=model, start=start_time, end=end_time)
+        >>> t.shape
+        {0: 0.1, 60: 0.5, 120: 0.4}
+        """
         self.start = start
         self.end = end
 
@@ -350,6 +659,35 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
         self,
         time_series_data: pd.Series,
     ) -> pd.Series:
+        """
+        Run `apply()` after preprocessing step to add water in transit to add water in transit (doscharge water) to
+        inflow time series
+        Args:
+            time_series_data: inflow time series data
+        Example:
+        >>> start = datetime(year=2022, month=5, day=20, hour=22)
+        >>> end = start + timedelta(days=5)
+
+        >>> # Inflow with **2h** granularity
+        >>> inflow = [1, 2, 3, 2, 4, 5, 3, 1, 2, 0, 7, 5, 9, 0, 0, 9, 8, 7, 6, 5, 4, 7, 8, 9]
+        >>> timestamps = [start + timedelta(hours=2 * i) for i in range(len(inflow))]
+        >>> time_series_data = pd.Series(inflow, index=timestamps)
+        >>> t = AddWaterInTransit(discharge_ts_external_id="discharge_ts",
+        ...                       transit_object_type="gate",
+        ...                       transit_object_name="Holen(01)")
+        2022-05-20 22:00:00    3.5
+        2022-05-20 23:00:00    3.5
+        2022-05-21 00:00:00    3.0
+        2022-05-21 01:00:00    3.0
+        2022-05-21 02:00:00    4.5
+                              ...
+        2022-05-25 17:00:00    9.0
+        2022-05-25 18:00:00    9.0
+        2022-05-25 19:00:00    9.0
+        2022-05-25 20:00:00    9.0
+        2022-05-25 21:00:00    9.0
+        Freq: H, Length: 120, dtype: float64
+        """
         if time_series_data.empty:
             return time_series_data
 
