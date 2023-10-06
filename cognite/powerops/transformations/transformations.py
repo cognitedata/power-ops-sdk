@@ -3,7 +3,7 @@ import sys
 from abc import ABC, abstractmethod
 from datetime import datetime, timedelta
 from logging import getLogger
-from typing import Any, Literal
+from typing import Any, Literal, Tuple
 
 import numpy as np
 import pandas as pd
@@ -68,7 +68,7 @@ class Transformation(BaseModel, ABC):
     @abstractmethod
     def apply(
         self,
-        *time_series_data: pd.Series,
+        time_series_data: Tuple[pd.Series],
     ):
         ...
 
@@ -79,17 +79,17 @@ class DynamicTransformation(Transformation):
         ...
 
 
-class Add(Transformation):
+class AddConstant(Transformation):
     """
     Args:
-        value: The value to add to the time series data
+        constant: The value to add to the time series data
     """
 
-    value: float
+    constant: float
 
     def apply(
         self,
-        time_series_data: pd.Series,
+        time_series_data: Tuple[pd.Series],
     ):
         """Add value to input time series
 
@@ -99,13 +99,14 @@ class Add(Transformation):
         Returns:
             The transformed time series
         """
-        return time_series_data + self.value
+        single_ts, _ = (*time_series_data,)
+        return single_ts + self.constant
 
 
-class Concatenate(Transformation):
+class SumTimeseries(Transformation):
     def apply(
         self,
-        *time_series_data: tuple[pd.Series],
+        time_series_data: Tuple[pd.Series],
     ):
         """Add value to input time series
 
@@ -147,7 +148,7 @@ class Concatenate(Transformation):
         2022-01-01 10:00:00    20.0
         dtype: float64
         >>> time_series_data = (pd.Series(values, index=timestamps), pd.Series(values2, index=timestamps2))
-        >>> c = Concatenate()
+        >>> c = SumTimeseries()
         >>> c.apply(time_series_data)
         2022-01-01 00:00:00    62.0
         2022-01-01 01:00:00    42.0
@@ -166,17 +167,17 @@ class Concatenate(Transformation):
         return concatenated_df.sum(axis=1)
 
 
-class Multiply(Transformation):
+class MultiplyConstant(Transformation):
     """
     Args:
-        value: The value to multiply the time series data with
+        constant: The value to multiply the time series data with
     """
 
-    value: float
+    constant: float
 
     def apply(
         self,
-        time_series_data: pd.Series,
+        time_series_data: Tuple[pd.Series],
     ):
         """Multiply value to input time series
 
@@ -186,7 +187,8 @@ class Multiply(Transformation):
         Returns:
             The transformed time series
         """
-        return time_series_data * self.value
+        single_ts, _ = (*time_series_data,)
+        return single_ts * self.constant
 
 
 class StaticValues(DynamicTransformation):
@@ -278,7 +280,7 @@ class ToBool(Transformation):
     Transforms time series data to a series of 0s and 1s. 1s if the value is > 0.
     """
 
-    def apply(self, time_series_data: pd.Series) -> pd.Series:
+    def apply(self, time_series_data: Tuple[pd.Series]) -> pd.Series:
         """
         Args:
             time_series_data: The time series data to transform
@@ -289,10 +291,10 @@ class ToBool(Transformation):
         Example:
         ```python
         >>> values = [0, 1, 2, -1]
-        >>> time_series_data = pd.Series(
+        >>> time_series_data = (pd.Series(
         ...            values,
         ...            index=pd.date_range(start='25/05/2021', periods = len(values)),
-        ...        )
+        ...        ),)
         >>> b = ToBool()
         >>> b.apply(time_series_data=time_series_data)
         2021-05-25    0
@@ -303,12 +305,14 @@ class ToBool(Transformation):
 
         ```
         """
-        return (time_series_data > 0).astype(int)
+        single_ts, _ = (*time_series_data,)
+        return (single_ts > 0).astype(int)
 
 
 class ToInt(Transformation):
-    def apply(self, time_series_data: pd.Series) -> pd.Series:
-        return time_series_data.apply(round)
+    def apply(self, time_series_data: Tuple[pd.Series]) -> pd.Series:
+        single_ts, _ = (*time_series_data,)
+        return single_ts.apply(round)
 
 
 class ZeroIfNotOne(Transformation):
@@ -316,7 +320,7 @@ class ZeroIfNotOne(Transformation):
     Transforms time series data to a series of 0s and 1s. 1s if the value is exactly 1.
     """
 
-    def apply(self, time_series_data: pd.Series) -> pd.Series:
+    def apply(self, time_series_data: Tuple[pd.Series]) -> pd.Series:
         """
         Args:
             time_series_data: The time series data to transform
@@ -327,10 +331,10 @@ class ZeroIfNotOne(Transformation):
         Example:
         ```python
         >>> values = [0, 1, 2, -1]
-        >>> time_series_data = pd.Series(
+        >>> time_series_data = (pd.Series(
         ...            values,
         ...            index=pd.date_range(start='25/05/2021', periods = len(values)),
-        ...        )
+        ...        ),)
         >>> b = ZeroIfNotOne()
         >>> b.apply(time_series_data=time_series_data)
         2021-05-25    0
@@ -341,7 +345,8 @@ class ZeroIfNotOne(Transformation):
 
         ```
         """
-        return (time_series_data == 1).astype(int)
+        single_ts, _ = (*time_series_data,)
+        return (single_ts == 1).astype(int)
 
 
 class OneIfTwo(Transformation):
@@ -349,7 +354,7 @@ class OneIfTwo(Transformation):
     Transforms time series data to a series of 0s and 1s. 1s if the value is exactly 2.
     """
 
-    def apply(self, time_series_data: pd.Series) -> pd.Series:
+    def apply(self, time_series_data: Tuple[pd.Series]) -> pd.Series:
         """
         Args:
             time_series_data: The time series data to transform
@@ -360,10 +365,10 @@ class OneIfTwo(Transformation):
         Example:
         ```python
         >>> values = [0, 1, 2, -1]
-        >>> time_series_data = pd.Series(
+        >>> time_series_data = (pd.Series(
         ...            values,
         ...            index=pd.date_range(start='25/05/2021', periods = len(values)),
-        ...        )
+        ...        ),)
         >>> b = OneIfTwo()
         >>> b.apply(time_series_data=time_series_data)
         2021-05-25    0
@@ -374,7 +379,8 @@ class OneIfTwo(Transformation):
 
         ```
         """
-        return (time_series_data == 2).astype(int)
+        single_ts, _ = (*time_series_data,)
+        return (single_ts == 2).astype(int)
 
 
 class HeightToVolume(DynamicTransformation):
@@ -448,7 +454,7 @@ class HeightToVolume(DynamicTransformation):
         self.heights = shop_model[self.object_type][self.object_name]["vol_head"]["y"]
         self.pre_apply_has_run = True
 
-    def apply(self, time_series_data: pd.Series) -> pd.Series:
+    def apply(self, time_series_data: Tuple[pd.Series]) -> pd.Series:
         """
         Args:
             time_series_data: The time series data to transform
@@ -463,7 +469,7 @@ class HeightToVolume(DynamicTransformation):
         end_time = datetime(2000, 1, 10, 12)
         model = {"reservoir": {"Lundevatn": {"vol_head": {"x": [10, 20, 40, 80, 160], "y": [2, 4, 6, 8, 10]}}}}
         client = CogniteClient()
-        time_series_data = pd.Series(
+        time_series_data = (pd.Series(
                 {
                     1: 1,  # below interpolation bounds
                     2: 4,
@@ -471,7 +477,7 @@ class HeightToVolume(DynamicTransformation):
                     4: 7,  # interpolated
                     5: 11,  # above interpolation bounds
                 }
-            )
+            ),)
         h = HeightToVolume(object_type="reservoir", object_name="Lundevatn")
         h.pre_apply(client=client, shop_model=model, start=start_time, end=end_time)
         h.apply(time_series_data=time_series_data)
@@ -484,14 +490,16 @@ class HeightToVolume(DynamicTransformation):
         ```
         """
         if self.pre_apply_has_run:
-            return self.height_to_volume(time_series_data, self.heights, self.volumes)
+            single_ts, _ = (*time_series_data,)
+            return self.height_to_volume(single_ts, self.heights, self.volumes)
         else:
             raise ValueError("pre_apply function has not run - missing neccessary properties to run transformation")
 
 
 class DoNothing(Transformation):
-    def apply(self, time_series_data: pd.Series) -> pd.Series:
-        return time_series_data
+    def apply(self, time_series_data: Tuple[pd.Series]) -> pd.Series:
+        single_ts, _ = (*time_series_data,)
+        return single_ts
 
 
 class AddFromOffset(Transformation):
@@ -506,7 +514,7 @@ class AddFromOffset(Transformation):
     shift_minutes: int = 0
     relative_datapoints: list[RelativeDatapoint]
 
-    def apply(self, time_series_data: pd.Series) -> pd.Series:
+    def apply(self, time_series_data: Tuple[pd.Series]) -> pd.Series:
         """
         Args:
             time_series_data: The timseries to perform transformation on
@@ -522,15 +530,15 @@ class AddFromOffset(Transformation):
         ...        datetime(2022, 1, 1, 5),
         ...    ]
         >>> values = [42.0] * len(timestamps)
-        >>> time_series_data = pd.Series(values, index=timestamps)
+        >>> time_series_data = (pd.Series(values, index=timestamps),)
         >>> time_series_data
-        2022-01-01 00:00:00    42.0
+        (2022-01-01 00:00:00    42.0
         2022-01-01 01:00:00    42.0
         2022-01-01 02:00:00    42.0
         2022-01-01 03:00:00    42.0
         2022-01-01 04:00:00    42.0
         2022-01-01 05:00:00    42.0
-        dtype: float64
+        dtype: float64)
         >>> relative_datapoints = [
         ...     RelativeDatapoint(offset_minute=0, offset_value=1),
         ...     RelativeDatapoint(offset_minute=20, offset_value=-2),
@@ -550,15 +558,16 @@ class AddFromOffset(Transformation):
 
         ```
         """
-        first_timestamp = min(time_series_data.index)
+        single_ts, _ = (*time_series_data,)
+        first_timestamp = min(single_ts.index)
         non_relative_datapoints = _relative_datapoints_to_series(
             self.relative_datapoints, first_timestamp, self.shift_minutes
         )
-        union_index = time_series_data.index.union(non_relative_datapoints.index)
+        union_index = single_ts.index.union(non_relative_datapoints.index)
         # fillna(0) since we are adding
         non_relative_datapoints = non_relative_datapoints.reindex(union_index).ffill().fillna(0)
         # If a timestamp does not exist in the original datapoints we add that timestamp with a forwardfilled value
-        return time_series_data.reindex(union_index).ffill() + non_relative_datapoints
+        return single_ts.reindex(union_index).ffill() + non_relative_datapoints
 
 
 class MultiplyFromOffset(Transformation):
@@ -572,21 +581,21 @@ class MultiplyFromOffset(Transformation):
     shift_minutes: int = 0
     relative_datapoints: list[RelativeDatapoint]
 
-    def apply(self, time_series_data: pd.Series) -> pd.Series:
+    def apply(self, time_series_data: Tuple[pd.Series]) -> pd.Series:
         """
         Example:
         ```python
         >>> timestamps = [datetime(2022, 1, 1) + timedelta(minutes=i) for i in range(6)]
         >>> values = [10.0] * 6
-        >>> time_series_data = pd.Series(values, index=timestamps)
+        >>> time_series_data = (pd.Series(values, index=timestamps),)
         >>> time_series_data
-        2022-01-01 00:00:00    10.0
+        (2022-01-01 00:00:00    10.0
         2022-01-01 00:01:00    10.0
         2022-01-01 00:02:00    10.0
         2022-01-01 00:03:00    10.0
         2022-01-01 00:04:00    10.0
         2022-01-01 00:05:00    10.0
-        dtype: float64
+        dtype: float64)
         >>> relative_datapoints = [
         ...     RelativeDatapoint(offset_minute=1, offset_value=2),
         ...     RelativeDatapoint(offset_minute=2, offset_value=0),
@@ -604,15 +613,16 @@ class MultiplyFromOffset(Transformation):
 
         ```
         """
-        first_timestamp = min(time_series_data.index)
+        single_ts, _ = (*time_series_data,)
+        first_timestamp = min(single_ts.index)
         non_relative_datapoints = _relative_datapoints_to_series(
             self.relative_datapoints, first_timestamp, self.shift_minutes
         )
-        union_index = time_series_data.index.union(non_relative_datapoints.index)
+        union_index = single_ts.index.union(non_relative_datapoints.index)
         # fillna(1) since we are multiplying
         non_relative_datapoints = non_relative_datapoints.reindex(union_index).ffill().fillna(1)
         # If a timestamp does not exist in the original datapoints we add that timestamp with a forwardfilled value
-        return time_series_data.reindex(union_index).ffill() * non_relative_datapoints
+        return single_ts.reindex(union_index).ffill() * non_relative_datapoints
 
 
 class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
@@ -766,7 +776,7 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
 
     def apply(
         self,
-        time_series_data: pd.Series,
+        time_series_data: Tuple[pd.Series],
     ) -> pd.Series:
         """Run `apply()` after preprocessing step to add water in transit to add water in transit (doscharge water) to
            inflow time series
@@ -787,7 +797,7 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
         t.pre_apply(client=client, shop_model=model, start=start_time, end=end_time)
         inflow = [1, 2, 3, 2, 4, 5, 3, 1, 2, 0, 7, 5, 9, 0, 0, 9, 8, 7, 6, 5, 4, 7, 8, 9]
         timestamps = [start + timedelta(hours=2 * i) for i in range(len(inflow))]
-        time_series_data = pd.Series(inflow, index=timestamps)
+        time_series_data = (pd.Series(inflow, index=timestamps),)
         t.apply(time_series_data)
         Out[1]:
         2022-05-20 22:00:00    3.5
@@ -805,12 +815,13 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
 
         ```
         """
-        if time_series_data.empty:
-            return time_series_data
+        single_ts, _ = (*time_series_data,)
+        if single_ts.empty:
+            return single_ts
 
         if self.pre_apply_has_run:
             return self.add_water_in_transit(
-                inflow=time_series_data,
+                inflow=single_ts,
                 discharge=self.discharge,
                 shape=self.shape,
                 start=ms_to_datetime(self.start),
