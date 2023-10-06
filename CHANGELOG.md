@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.67.1] - 2023-10-06
+### Added
+* Documentation of transformations module
+
 ## [0.67.0] - 2023-10-03
 ### Added
 * `TO_INT` transformation
