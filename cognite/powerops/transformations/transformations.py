@@ -102,6 +102,70 @@ class Add(Transformation):
         return time_series_data + self.value
 
 
+class Concatenate(Transformation):
+    def apply(
+        self,
+        *time_series_data: tuple[pd.Series],
+    ):
+        """Add value to input time series
+
+        Args:
+            time_series_data: The time series data to add together/concatenate
+
+        Returns:
+            Concatenated timeseries with values added together
+
+        Example:
+        ```python
+        >>> timestamps = [
+        ... datetime(2022, 1, 1, 0),
+        ... datetime(2022, 1, 1, 1),
+        ... datetime(2022, 1, 1, 2),
+        ... datetime(2022, 1, 1, 3),
+        ... datetime(2022, 1, 1, 4),
+        ... datetime(2022, 1, 1, 5),
+        ... ]
+        >>> values = [42.0] * len(timestamps)
+        >>> time_series_data1 = pd.Series(values, index=timestamps)
+        >>> time_series_data1
+        2022-01-01 00:00:00    42.0
+        2022-01-01 01:00:00    42.0
+        2022-01-01 02:00:00    42.0
+        2022-01-01 03:00:00    42.0
+        2022-01-01 04:00:00    42.0
+        2022-01-01 05:00:00    42.0
+        dtype: float64
+        >>> timestamps2 = [t + timedelta(hours=timestamps.index(t)) for t in timestamps]
+        >>> values2 = [20.0] * len(timestamps)
+        >>> time_series_data2 = pd.Series(values2, index=timestamps2)
+        >>> time_series_data2
+        2022-01-01 00:00:00    20.0
+        2022-01-01 02:00:00    20.0
+        2022-01-01 04:00:00    20.0
+        2022-01-01 06:00:00    20.0
+        2022-01-01 08:00:00    20.0
+        2022-01-01 10:00:00    20.0
+        dtype: float64
+        >>> time_series_data = (pd.Series(values, index=timestamps), pd.Series(values2, index=timestamps2))
+        >>> c = Concatenate()
+        >>> c.apply(*time_series_data)
+        2022-01-01 00:00:00    62.0
+        2022-01-01 01:00:00    42.0
+        2022-01-01 02:00:00    62.0
+        2022-01-01 03:00:00    42.0
+        2022-01-01 04:00:00    62.0
+        2022-01-01 05:00:00    42.0
+        2022-01-01 06:00:00    20.0
+        2022-01-01 08:00:00    20.0
+        2022-01-01 10:00:00    20.0
+        dtype: float64
+
+        ```
+        """
+        concatenated_df = pd.concat(*time_series_data, axis=1).fillna(0)
+        return concatenated_df.sum(axis=1)
+
+
 class Multiply(Transformation):
     """
     Args:
@@ -654,7 +718,7 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
         self.end = end
 
         self.shape = self.get_shape(
-            model=shop_model, object_type=self.transit_object_type, object_name=self.transit_object_name
+            model=shop_model, transit_object_type=self.transit_object_type, transit_object_name=self.transit_object_name
         )
 
         longest_delay = max(self.shape)  # longest delay in minutes
