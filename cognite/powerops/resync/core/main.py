@@ -17,7 +17,7 @@ from cognite.powerops.resync import diff, models
 from cognite.powerops.resync.config import ReSyncConfig
 from cognite.powerops.resync.diff import FieldDifference, ModelDifference, ModelDifferences
 from cognite.powerops.resync.models.base import AssetModel, CDFFile, CDFSequence, DataModel, Model, SpaceId
-from cognite.powerops.resync.validation import perform_validation, prepare_validation
+from cognite.powerops.resync.validation import ValidationResult, perform_validation, prepare_validation
 
 from . import Echo
 from .cdf import get_cognite_api
@@ -95,7 +95,10 @@ def validate(config_dir: str | Path, market: str, echo: Echo | None = None) -> N
 
     echo("Validating time series...")
     ts_validations, validation_ranges = prepare_validation(loaded_models)
-    perform_validation(po_client, ts_validations, validation_ranges, echo)
+    validation_results: list[ValidationResult] = perform_validation(po_client, ts_validations, validation_ranges)
+
+    for result in validation_results:
+        echo(str(result), is_warning=not result.valid)
 
     echo("Validations complete")
 

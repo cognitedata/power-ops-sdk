@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Annotated, Optional
 
 import typer
-from rich.logging import RichHandler
+from rich.logging import Console, RichHandler
 
 import cognite.powerops.resync.core.echo
 from cognite import powerops
@@ -19,7 +19,9 @@ for third_party in ["cognite-sdk", "requests", "urllib3", "msal", "requests_oaut
     third_party_logger.propagate = False
 
 FORMAT = "%(message)s"
-logging.basicConfig(level=logging.INFO, format=FORMAT, datefmt="[%X]", handlers=[RichHandler()])
+logging.basicConfig(
+    level=logging.INFO, format=FORMAT, datefmt="[%X]", handlers=[RichHandler(console=Console(stderr=True))]
+)
 
 log = logging.getLogger("rich")
 
@@ -45,13 +47,14 @@ def init(
     ),
     verbose: bool = typer.Option(False, "--verbose", "-v", help="Whether to print verbose output"),
 ):
+    echo = _to_echo(verbose)
     client = PowerOpsClient.from_settings()
 
     if "v2" in models:
         models.remove("v2")
         models.extend(resync.V2_MODELS_BY_NAME)
 
-    resync.init(client, echo=_to_echo(verbose), model_names=models)
+    resync.init(client, echo=echo, model_names=models)
 
 
 @app.command("validate", help="Validate the configuration files and timeseries")
@@ -60,8 +63,9 @@ def validate(
     market: Annotated[str, typer.Argument(help="Selected power market")],
     verbose: bool = typer.Option(False, "--verbose", "-v", help="Whether to print verbose output"),
 ):
+    echo = _to_echo(verbose)
     log.info(f"Running validate on configuration files located in {path}")
-    resync.validate(path, market, echo=_to_echo(verbose))
+    resync.validate(path, market, echo=echo)
 
 
 @app.command(
@@ -140,7 +144,7 @@ def apply(
     client = PowerOpsClient.from_settings()
 
     echo(f"Running apply on configuration files located in {path}")
-    changed = resync.apply(path, market, client, model_names=models, echo=_to_echo(verbose), auto_yes=auto_yes)
+    changed = resync.apply(path, market, client, model_names=models, echo=echo, auto_yes=auto_yes)
     if format == "markdown":
         typer.echo(changed.as_github_markdown())
 
@@ -158,9 +162,10 @@ def destroy(
     format: str = typer.Option(default=None, help="The format of the output. Available formats: markdown"),
     verbose: bool = typer.Option(False, "--verbose", "-v", help="Whether to print verbose output"),
 ):
+    echo = _to_echo(verbose)
     client = PowerOpsClient.from_settings()
 
-    destroyed = resync.destroy(client, echo=_to_echo(verbose), model_names=models, auto_yes=auto_yes, dry_run=dry_run)
+    destroyed = resync.destroy(client, echo=echo, model_names=models, auto_yes=auto_yes, dry_run=dry_run)
     if format == "markdown":
         typer.echo(destroyed.as_github_markdown())
 
@@ -173,15 +178,14 @@ def _to_echo(verbose: bool) -> cognite.powerops.resync.core.echo.Echo:
     if verbose:
 
         def echo(message: str, is_warning: bool = False) -> None:
-            if is_warning:
-                log.warning(message)
-            else:
-                log.info(message)
+            typer.echo(message)
 
     else:
+        logging.disable(logging.WARNING)  # disable logs for WARNING and below
 
         def echo(message: str, is_warning: bool = False) -> None:
-            ...
+            if is_warning:
+                typer.echo(message)
 
     return echo
 

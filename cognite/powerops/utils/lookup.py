@@ -19,13 +19,13 @@ def attr_lookup(value, attr_path):
     [1, 2]
 
     >>> list(attr_lookup(a, []))  # doctest: +ELLIPSIS
-    [<lookup.A object at 0x...>]
+    [<powerops.utils.lookup.A object at 0x...>]
     >>> list(attr_lookup(a, ["b"]))  # doctest: +ELLIPSIS
-    [<lookup.B object at 0x...>]
+    [<powerops.utils.lookup.B object at 0x...>]
     >>> list(attr_lookup(a, ["b", "cs"]))  # doctest: +ELLIPSIS
-    [[<lookup.C object at 0x...>, <lookup.C object at 0x...>]]
+    [[<powerops.utils.lookup.C object at 0x...>, <powerops.utils.lookup.C object at 0x...>]]
     >>> list(attr_lookup(a, ["b", "cs", each]))  # doctest: +ELLIPSIS
-    [<lookup.C object at 0x...>, <lookup.C object at 0x...>]
+    [<powerops.utils.lookup.C object at 0x...>, <powerops.utils.lookup.C object at 0x...>]
 
     Dicts are supported via special getter:
     >>> a.foo = {"bar": 11, "baz": 22}
