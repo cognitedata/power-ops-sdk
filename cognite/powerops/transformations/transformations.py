@@ -91,10 +91,11 @@ class Add(Transformation):
         self,
         time_series_data: pd.Series,
     ):
-        """
-        Add value to input time series
+        """Add value to input time series
+
         Args:
             time_series_data: The time series data to add the value to
+
         Returns:
             The transformed time series
         """
@@ -113,10 +114,11 @@ class Multiply(Transformation):
         self,
         time_series_data: pd.Series,
     ):
-        """
-        Multiply value to input time series
+        """Multiply value to input time series
+
         Args:
             time_series_data: The time series data to add the value to
+
         Returns:
             The transformed time series
         """
@@ -124,8 +126,8 @@ class Multiply(Transformation):
 
 
 class StaticValues(DynamicTransformation):
-    """
-    Provides a list of static values from SHOP start time.
+    """Provides a list of static values from SHOP start time.
+
     Args:
         relative_datapoints: The relative datapoints to apply to
     """
@@ -152,24 +154,27 @@ class StaticValues(DynamicTransformation):
         self._pre_apply_has_run = value
 
     def pre_apply(self, client: CogniteClient, shop_model: dict, start: datetime, end: datetime):
-        """
-        Preprocessing step that needs to run before `apply()` to set the shop start time.
+        """Preprocessing step that needs to run before `apply()` to set the shop start time.
+
         Args:
             client: _ not used in this transformation, but needs to be provided
             shop_model: _ not used in this transformation, but needs to be provided
             start: datetime of SHOP start time
+
         Example:
-        >>> from cognite.client import CogniteClient
-        >>> start_time = datetime(2000, 1, 1, 12)
-        >>> end_time = datetime(2000, 1, 5, 12)
-        >>> client = CogniteClient()
-        >>> model = {}
-        >>> relative_datapoints = [
+        ```python
+        from cognite.client import CogniteClient
+        start_time = datetime(2000, 1, 1, 12)
+        end_time = datetime(2000, 1, 5, 12)
+        client = CogniteClient()
+        model = {}
+        relative_datapoints = [
         ...     RelativeDatapoint(offset_minute=0, offset_value=42),
         ...     RelativeDatapoint(offset_minute=1440, offset_value=4200),
         ... ]
-        >>> s = StaticValues(relative_datapoints=relative_datapoints)
-        >>> s.pre_apply(client=client, shop_model=model, start=start_time, end=end_time)
+        s = StaticValues(relative_datapoints=relative_datapoints)
+        s.pre_apply(client=client, shop_model=model, start=start_time, end=end_time)
+        ```
         """
         self.start = start
         self.pre_apply_has_run = True
@@ -178,8 +183,9 @@ class StaticValues(DynamicTransformation):
         """
         Returns:
             Pandas Series based from SHOP start time
-        Example:
 
+        Example:
+        ```python
         >>> relative_datapoints = [
         ...     RelativeDatapoint(offset_minute=0, offset_value=42),
         ...     RelativeDatapoint(offset_minute=1440, offset_value=4200),
@@ -190,6 +196,7 @@ class StaticValues(DynamicTransformation):
         2000-01-01 13:00:00      42.0
         2000-01-02 12:00:00    4200.0
         dtype: float64
+        ```
         """
         if not self.pre_apply_has_run:
             raise ValueError("pre_apply function has not run - missing neccessary properties to run transformation")
@@ -208,7 +215,9 @@ class ToBool(Transformation):
 
         Returns:
             The transformed time series
+
         Example:
+        ```python
         >>> values = [0, 1, 2, -1]
         >>> time_series_data = pd.Series(
         ...            values,
@@ -221,6 +230,7 @@ class ToBool(Transformation):
         2021-05-27    1
         2021-05-28    0
         Freq: D, dtype: int64
+        ```
         """
         return (time_series_data > 0).astype(int)
 
@@ -237,7 +247,9 @@ class ZeroIfNotOne(Transformation):
 
         Returns:
             The transformed time series
+
         Example:
+        ```python
         >>> values = [0, 1, 2, -1]
         >>> time_series_data = pd.Series(
         ...            values,
@@ -250,22 +262,26 @@ class ZeroIfNotOne(Transformation):
         2021-05-27    0
         2021-05-28    0
         Freq: D, dtype: int64
+        ```
         """
         return (time_series_data == 1).astype(int)
 
 
 class OneIfTwo(Transformation):
     """
-    Transforms time series data to a series of 0s and 1s. 1s if the value is exactly 1.
+    Transforms time series data to a series of 0s and 1s. 1s if the value is exactly 2.
     """
 
     def apply(self, time_series_data: pd.Series) -> pd.Series:
         """
         Args:
             time_series_data: The time series data to transform
+
         Returns:
             The transformed time series
+
         Example:
+        ```python
         >>> values = [0, 1, 2, -1]
         >>> time_series_data = pd.Series(
         ...            values,
@@ -278,6 +294,7 @@ class OneIfTwo(Transformation):
         2021-05-27    1
         2021-05-28    0
         Freq: D, dtype: int64
+        ```
         """
         return (time_series_data == 2).astype(int)
 
@@ -328,23 +345,26 @@ class HeightToVolume(DynamicTransformation):
         return time_series_data.map(interpolate)
 
     def pre_apply(self, client: CogniteClient, shop_model: dict, start: datetime, end: datetime):
-        """
-        Preprocessing step that needs to run before `apply()` to set the volumes and heights from shop case file.
+        """Preprocessing step that needs to run before `apply()` to set the volumes and heights from shop case file.
+
         Args:
             client: _ not used in this transformation
             shop_model: SHOP model file
             start: _ not used in this transformation
             end: _ not used in this transformation
+
         Example:
-        >>> from cognite.client import CogniteClient
-        >>> start_time = datetime(2000, 1, 1, 12)
-        >>> end_time = datetime(2000, 1, 10, 12)
-        >>> model = {"reservoir": {"Lundevatn": {"vol_head": {"x": [10, 20, 40, 80, 160], "y": [2, 4, 6, 8, 10]}}}}
-        >>> client = CogniteClient()
-        >>> h = HeightToVolume(object_type="reservoir", object_name="Lundevatn")
-        >>> h.pre_apply(client=client, shop_model=model, start=start_time, end=end_time)
-        >>> h.volumes
+        ```python
+        from cognite.client import CogniteClient
+        start_time = datetime(2000, 1, 1, 12)
+        end_time = datetime(2000, 1, 10, 12)
+        model = {"reservoir": {"Lundevatn": {"vol_head": {"x": [10, 20, 40, 80, 160], "y": [2, 4, 6, 8, 10]}}}}
+        client = CogniteClient()
+        h = HeightToVolume(object_type="reservoir", object_name="Lundevatn")
+        h.pre_apply(client=client, shop_model=model, start=start_time, end=end_time)
+        h.volumes
         Out[4]: [10, 20, 40, 80, 160]
+        ```
         """
         self.volumes = shop_model[self.object_type][self.object_name]["vol_head"]["x"]
         self.heights = shop_model[self.object_type][self.object_name]["vol_head"]["y"]
@@ -354,9 +374,12 @@ class HeightToVolume(DynamicTransformation):
         """
         Args:
             time_series_data: The time series data to transform
+
         Returns:
             The transformed time series
+
         Example:
+        ```python
         >>> time_series_data = pd.Series(
         ...        {
         ...            1: 1,  # below interpolation bounds
@@ -366,7 +389,7 @@ class HeightToVolume(DynamicTransformation):
         ...            5: 11,  # above interpolation bounds
         ...        }
         ...    )
-        >>> h = HeightToVolume()
+        >>> h = HeightToVolume(object_type="reservoir", object_name="Lundevatn")
         >>> h.apply(time_series_data=time_series_data)
         1     10.0
         2     20.0
@@ -374,6 +397,7 @@ class HeightToVolume(DynamicTransformation):
         4     60.0
         5    160.0
         dtype: float64
+        ```
         """
         if self.pre_apply_has_run:
             return self.height_to_volume(time_series_data, self.heights, self.volumes)
@@ -390,6 +414,7 @@ class AddFromOffset(Transformation):
     """
     Adds values to input timeseries based on a list of relative datapoints with values to be added to corresponding
     offset minute from start time
+
     Args:
         relative_datapoints: The values to add to existing time series based at offset minute times from time series
     """
@@ -399,7 +424,11 @@ class AddFromOffset(Transformation):
 
     def apply(self, time_series_data: pd.Series) -> pd.Series:
         """
+        Args:
+            time_series_data: The timseries to perform transformation on
+
         Example:
+        ```python
         >>> timestamps = [
         ...        datetime(2022, 1, 1, 0),
         ...        datetime(2022, 1, 1, 1),
@@ -434,6 +463,7 @@ class AddFromOffset(Transformation):
         2022-01-01 04:00:00    45.0
         2022-01-01 05:00:00    45.0
         dtype: float64
+        ```
         """
         first_timestamp = min(time_series_data.index)
         non_relative_datapoints = _relative_datapoints_to_series(
@@ -447,12 +477,11 @@ class AddFromOffset(Transformation):
 
 
 class MultiplyFromOffset(Transformation):
-    """
-    Multiplies values to input timeseries based on a list of relative datapoints with
-    values to be added to corresponding offset minute from start time
+    """Multiplies values to input timeseries based on a list of relative datapoints
+
     Args:
-        relative_datapoints: The values to multiply to existing time series based at
-                             offset minute times from time series
+        relative_datapoints: The values to multiply to existing time series at specified
+                             offset minutes from time series start time
     """
 
     shift_minutes: int = 0
@@ -461,17 +490,10 @@ class MultiplyFromOffset(Transformation):
     def apply(self, time_series_data: pd.Series) -> pd.Series:
         """
         Example:
+        ```python
         >>> timestamps = [datetime(2022, 1, 1) + timedelta(minutes=i) for i in range(6)]
         >>> values = [10] * 6
         >>> time_series_data = pd.Series(values, index=timestamps)
-        >>> time_series_data
-        2022-01-01 00:00:00    10
-        2022-01-01 00:01:00    10
-        2022-01-01 00:02:00    10
-        2022-01-01 00:03:00    10
-        2022-01-01 00:04:00    10
-        2022-01-01 00:05:00    10
-        dtype: int64
         >>> relative_datapoints = [
         ...     RelativeDatapoint(offset_minute=1, offset_value=2),
         ...     RelativeDatapoint(offset_minute=2, offset_value=0),
@@ -486,6 +508,7 @@ class MultiplyFromOffset(Transformation):
         2022-01-01 00:04:00    15.0
         2022-01-01 00:05:00    15.0
         Freq: T, dtype: float64
+        ```
         """
         first_timestamp = min(time_series_data.index)
         non_relative_datapoints = _relative_datapoints_to_series(
@@ -499,8 +522,8 @@ class MultiplyFromOffset(Transformation):
 
 
 class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
-    """
-    Adds water in transit (previously discharged water) to the inflow time series.
+    """Adds water in transit (previously discharged water) to the inflow time series.
+
     Args:
         discharge_ts_external_id: external id of discharge timeseries to retrieve from CDF
         transit_object_type: gate or plant
@@ -558,7 +581,6 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
 
     @staticmethod
     def get_shape(model: dict, transit_object_type: str, transit_object_name: str) -> dict[int, float]:
-        """object_type must be plant or gate"""
         gate_or_plant = model[transit_object_type][transit_object_name]  # Get description of gate/plant
 
         # Get shape and time_delay values as Dict[delay,water_percentage]
@@ -574,26 +596,29 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
         return shape
 
     def pre_apply(self, client: CogniteClient, shop_model: dict, start: datetime, end: datetime):
-        """
-        Preprocessing step that needs to run before `apply()` to set the shape, retrieve and set discharge time series
-        data, and set SHOP start and end times
+        """Preprocessing step that needs to run before `apply()` to set the shape,
+           retrieve and set discharge time series data, and set SHOP start and end times
+
         Args:
             client: CogniteClient authenticated to project to retrieve discharge timeseries from
             shop_model: SHOP model dict
             start: SHOP start time
             end: SHOP end time
+
         Example:
-        >>> from cognite.client import CogniteClient
-        >>> start_time = datetime(2000, 1, 1, 12)
-        >>> end_time = datetime(2000, 1, 5, 12)
-        >>> client = CogniteClient()
-        >>> model = {"gate": {"gate1": {"shape_discharge": {"ref": 0, "x": [0, 60, 120], "y": [0.1, 0.5, 0.4]}}}}
-        >>> t = AddWaterInTransit(discharge_ts_external_id="discharge_ts",
+        ```python
+        from cognite.client import CogniteClient
+        start_time = datetime(2000, 1, 1, 12)
+        end_time = datetime(2000, 1, 5, 12)
+        client = CogniteClient()
+        model = {"gate": {"gate1": {"shape_discharge": {"ref": 0, "x": [0, 60, 120], "y": [0.1, 0.5, 0.4]}}}}
+        t = AddWaterInTransit(discharge_ts_external_id="discharge_ts",
         ...                       transit_object_type="gate",
         ...                       transit_object_name="Holen(01)")
-        >>> t.pre_apply(client=client, shop_model=model, start=start_time, end=end_time)
-        >>> t.shape
+        t.pre_apply(client=client, shop_model=model, start=start_time, end=end_time)
+        t.shape
         {0: 0.1, 60: 0.5, 120: 0.4}
+        ```
         """
         self.start = start
         self.end = end
@@ -626,18 +651,6 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
         start: datetime,
         end: datetime,
     ) -> pd.Series:
-        """Adds water in transit (previously discharged water) to the inflow time series.
-
-        Args:
-            shape (Dict[int, float]): Description of "how much water is delayed by what amount of time".
-                e.g.
-                shape = {
-                    0: 0,       # 0% instantly
-                    120: 0.5,   # 50% delayed for 2h
-                    1320: 0.5,  # 50% delayed for 22h
-                }
-
-        """
         # Forward fill discharge for all (hour) timestamps until start
         one_hour = pd.Timedelta("1h")
         if start - one_hour not in discharge.index:
@@ -661,19 +674,27 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
         self,
         time_series_data: pd.Series,
     ) -> pd.Series:
-        """
-        Run `apply()` after preprocessing step to add water in transit to add water in transit (doscharge water) to
-        inflow time series
+        """Run `apply()` after preprocessing step to add water in transit to add water in transit (doscharge water) to
+           inflow time series
+
         Args:
             time_series_data: inflow time series data
+
         Example:
+        ```python
         >>> start = datetime(year=2022, month=5, day=20, hour=22)
         >>> end = start + timedelta(days=5)
-
-        >>> # Inflow with **2h** granularity
         >>> inflow = [1, 2, 3, 2, 4, 5, 3, 1, 2, 0, 7, 5, 9, 0, 0, 9, 8, 7, 6, 5, 4, 7, 8, 9]
         >>> timestamps = [start + timedelta(hours=2 * i) for i in range(len(inflow))]
         >>> time_series_data = pd.Series(inflow, index=timestamps)
+        >>> time_series_data
+        2022-01-01 00:00:00    10
+        2022-01-01 00:01:00    10
+        2022-01-01 00:02:00    10
+        2022-01-01 00:03:00    10
+        2022-01-01 00:04:00    10
+        2022-01-01 00:05:00    10
+        dtype: int64
         >>> t = AddWaterInTransit(discharge_ts_external_id="discharge_ts",
         ...                       transit_object_type="gate",
         ...                       transit_object_name="Holen(01)")
@@ -689,6 +710,7 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
         2022-05-25 20:00:00    9.0
         2022-05-25 21:00:00    9.0
         Freq: H, Length: 120, dtype: float64
+        ```
         """
         if time_series_data.empty:
             return time_series_data
