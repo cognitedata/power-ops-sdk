@@ -711,7 +711,7 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
             time_series_data: inflow time series data
 
         Example:
-         ```python
+        ```python
         from cognite.client import CogniteClient
         start_time = datetime(year=2022, month=5, day=20, hour=22)
         end_time = start + timedelta(days=5)
@@ -738,6 +738,7 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
         2022-05-25 20:00:00    9.0
         2022-05-25 21:00:00    9.0
         Freq: H, Length: 120, dtype: float64
+
         ```
         """
         if time_series_data.empty:
