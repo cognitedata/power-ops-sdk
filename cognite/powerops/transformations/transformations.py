@@ -394,6 +394,11 @@ class HeightToVolume(DynamicTransformation):
 
         Example:
         ```python
+        from cognite.client import CogniteClient
+        start_time = datetime(2000, 1, 1, 12)
+        end_time = datetime(2000, 1, 10, 12)
+        model = {"reservoir": {"Lundevatn": {"vol_head": {"x": [10, 20, 40, 80, 160], "y": [2, 4, 6, 8, 10]}}}}
+        client = CogniteClient()
         time_series_data = pd.Series(
                 {
                     1: 1,  # below interpolation bounds
@@ -404,6 +409,7 @@ class HeightToVolume(DynamicTransformation):
                 }
             )
         h = HeightToVolume(object_type="reservoir", object_name="Lundevatn")
+        h.pre_apply(client=client, shop_model=model, start=start_time, end=end_time)
         h.apply(time_series_data=time_series_data)
         1     10.0
         2     20.0
@@ -705,23 +711,21 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
             time_series_data: inflow time series data
 
         Example:
-        ```python
-        >>> start = datetime(year=2022, month=5, day=20, hour=22)
-        >>> end = start + timedelta(days=5)
-        >>> inflow = [1, 2, 3, 2, 4, 5, 3, 1, 2, 0, 7, 5, 9, 0, 0, 9, 8, 7, 6, 5, 4, 7, 8, 9]
-        >>> timestamps = [start + timedelta(hours=2 * i) for i in range(len(inflow))]
-        >>> time_series_data = pd.Series(inflow, index=timestamps)
-        >>> time_series_data
-        2022-01-01 00:00:00    10
-        2022-01-01 00:01:00    10
-        2022-01-01 00:02:00    10
-        2022-01-01 00:03:00    10
-        2022-01-01 00:04:00    10
-        2022-01-01 00:05:00    10
-        dtype: int64
-        >>> t = AddWaterInTransit(discharge_ts_external_id="discharge_ts",
+         ```python
+        from cognite.client import CogniteClient
+        start_time = datetime(year=2022, month=5, day=20, hour=22)
+        end_time = start + timedelta(days=5)
+        client = CogniteClient()
+        model = {"gate": {"gate1": {"shape_discharge": {"ref": 0, "x": [0, 60, 120], "y": [0.1, 0.5, 0.4]}}}}
+        t = AddWaterInTransit(discharge_ts_external_id="discharge_ts",
         ...                       transit_object_type="gate",
         ...                       transit_object_name="Holen(01)")
+        t.pre_apply(client=client, shop_model=model, start=start_time, end=end_time)
+        inflow = [1, 2, 3, 2, 4, 5, 3, 1, 2, 0, 7, 5, 9, 0, 0, 9, 8, 7, 6, 5, 4, 7, 8, 9]
+        timestamps = [start + timedelta(hours=2 * i) for i in range(len(inflow))]
+        time_series_data = pd.Series(inflow, index=timestamps)
+        t.apply(time_series_data)
+        Out[1]:
         2022-05-20 22:00:00    3.5
         2022-05-20 23:00:00    3.5
         2022-05-21 00:00:00    3.0
@@ -734,7 +738,6 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
         2022-05-25 20:00:00    9.0
         2022-05-25 21:00:00    9.0
         Freq: H, Length: 120, dtype: float64
-
         ```
         """
         if time_series_data.empty:
