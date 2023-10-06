@@ -186,12 +186,18 @@ class StaticValues(DynamicTransformation):
 
         Example:
         ```python
-        >>> relative_datapoints = [
+        from cognite.client import CogniteClient
+        start_time = datetime(2000, 1, 1, 12)
+        end_time = datetime(2000, 1, 5, 12)
+        client = CogniteClient()
+        model = {}
+        relative_datapoints = [
         ...     RelativeDatapoint(offset_minute=0, offset_value=42),
         ...     RelativeDatapoint(offset_minute=1440, offset_value=4200),
         ... ]
-        >>> s = StaticValues(relative_datapoints=relative_datapoints)
-        >>> s.apply()
+        s = StaticValues(relative_datapoints=relative_datapoints)
+        s.pre_apply(client=client, shop_model=model, start=start_time, end=end_time)
+        s.apply(_)
         2000-01-01 12:00:00      42.0
         2000-01-01 13:00:00      42.0
         2000-01-02 12:00:00    4200.0
@@ -230,6 +236,7 @@ class ToBool(Transformation):
         2021-05-27    1
         2021-05-28    0
         Freq: D, dtype: int64
+
         ```
         """
         return (time_series_data > 0).astype(int)
@@ -267,6 +274,7 @@ class ZeroIfNotOne(Transformation):
         2021-05-27    0
         2021-05-28    0
         Freq: D, dtype: int64
+
         ```
         """
         return (time_series_data == 1).astype(int)
@@ -299,6 +307,7 @@ class OneIfTwo(Transformation):
         2021-05-27    1
         2021-05-28    0
         Freq: D, dtype: int64
+
         ```
         """
         return (time_series_data == 2).astype(int)
@@ -385,17 +394,17 @@ class HeightToVolume(DynamicTransformation):
 
         Example:
         ```python
-        >>> time_series_data = pd.Series(
-        ...        {
-        ...            1: 1,  # below interpolation bounds
-        ...            2: 4,
-        ...            3: 6,
-        ...            4: 7,  # interpolated
-        ...            5: 11,  # above interpolation bounds
-        ...        }
-        ...    )
-        >>> h = HeightToVolume(object_type="reservoir", object_name="Lundevatn")
-        >>> h.apply(time_series_data=time_series_data)
+        time_series_data = pd.Series(
+                {
+                    1: 1,  # below interpolation bounds
+                    2: 4,
+                    3: 6,
+                    4: 7,  # interpolated
+                    5: 11,  # above interpolation bounds
+                }
+            )
+        h = HeightToVolume(object_type="reservoir", object_name="Lundevatn")
+        h.apply(time_series_data=time_series_data)
         1     10.0
         2     20.0
         3     40.0
@@ -442,16 +451,16 @@ class AddFromOffset(Transformation):
         ...        datetime(2022, 1, 1, 4),
         ...        datetime(2022, 1, 1, 5),
         ...    ]
-        >>> values = [42] * len(timestamps)
+        >>> values = [42.0] * len(timestamps)
         >>> time_series_data = pd.Series(values, index=timestamps)
         >>> time_series_data
-        2022-01-01 00:00:00    42
-        2022-01-01 01:00:00    42
-        2022-01-01 02:00:00    42
-        2022-01-01 03:00:00    42
-        2022-01-01 04:00:00    42
-        2022-01-01 05:00:00    42
-        dtype: int64
+        2022-01-01 00:00:00    42.0
+        2022-01-01 01:00:00    42.0
+        2022-01-01 02:00:00    42.0
+        2022-01-01 03:00:00    42.0
+        2022-01-01 04:00:00    42.0
+        2022-01-01 05:00:00    42.0
+        dtype: float64
         >>> relative_datapoints = [
         ...     RelativeDatapoint(offset_minute=0, offset_value=1),
         ...     RelativeDatapoint(offset_minute=20, offset_value=-2),
@@ -468,6 +477,7 @@ class AddFromOffset(Transformation):
         2022-01-01 04:00:00    45.0
         2022-01-01 05:00:00    45.0
         dtype: float64
+
         ```
         """
         first_timestamp = min(time_series_data.index)
@@ -497,8 +507,16 @@ class MultiplyFromOffset(Transformation):
         Example:
         ```python
         >>> timestamps = [datetime(2022, 1, 1) + timedelta(minutes=i) for i in range(6)]
-        >>> values = [10] * 6
+        >>> values = [10.0] * 6
         >>> time_series_data = pd.Series(values, index=timestamps)
+        >>> time_series_data
+        2022-01-01 00:00:00    10.0
+        2022-01-01 00:01:00    10.0
+        2022-01-01 00:02:00    10.0
+        2022-01-01 00:03:00    10.0
+        2022-01-01 00:04:00    10.0
+        2022-01-01 00:05:00    10.0
+        dtype: float64
         >>> relative_datapoints = [
         ...     RelativeDatapoint(offset_minute=1, offset_value=2),
         ...     RelativeDatapoint(offset_minute=2, offset_value=0),
@@ -513,6 +531,7 @@ class MultiplyFromOffset(Transformation):
         2022-01-01 00:04:00    15.0
         2022-01-01 00:05:00    15.0
         Freq: T, dtype: float64
+
         ```
         """
         first_timestamp = min(time_series_data.index)
@@ -715,6 +734,7 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
         2022-05-25 20:00:00    9.0
         2022-05-25 21:00:00    9.0
         Freq: H, Length: 120, dtype: float64
+
         ```
         """
         if time_series_data.empty:
