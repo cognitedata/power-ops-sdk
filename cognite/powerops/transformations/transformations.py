@@ -68,7 +68,7 @@ class Transformation(BaseModel, ABC):
     @abstractmethod
     def apply(
         self,
-        time_series_data: pd.Series,
+        *time_series_data: pd.Series,
     ):
         ...
 
@@ -148,7 +148,7 @@ class Concatenate(Transformation):
         dtype: float64
         >>> time_series_data = (pd.Series(values, index=timestamps), pd.Series(values2, index=timestamps2))
         >>> c = Concatenate()
-        >>> c.apply(*time_series_data)
+        >>> c.apply(time_series_data)
         2022-01-01 00:00:00    62.0
         2022-01-01 01:00:00    42.0
         2022-01-01 02:00:00    62.0
