@@ -3,7 +3,7 @@ import sys
 from abc import ABC, abstractmethod
 from datetime import datetime, timedelta
 from logging import getLogger
-from typing import Any, Literal, Tuple
+from typing import Any, Literal
 
 import numpy as np
 import pandas as pd
@@ -68,7 +68,7 @@ class Transformation(BaseModel, ABC):
     @abstractmethod
     def apply(
         self,
-        time_series_data: Tuple[pd.Series],
+        time_series_data: tuple[pd.Series],
     ):
         ...
 
@@ -89,7 +89,7 @@ class AddConstant(Transformation):
 
     def apply(
         self,
-        time_series_data: Tuple[pd.Series],
+        time_series_data: tuple[pd.Series],
     ):
         """Add value to input time series
 
@@ -106,7 +106,7 @@ class AddConstant(Transformation):
 class SumTimeseries(Transformation):
     def apply(
         self,
-        time_series_data: Tuple[pd.Series],
+        time_series_data: tuple[pd.Series],
     ):
         """Add value to input time series
 
@@ -177,7 +177,7 @@ class MultiplyConstant(Transformation):
 
     def apply(
         self,
-        time_series_data: Tuple[pd.Series],
+        time_series_data: tuple[pd.Series],
     ):
         """Multiply value to input time series
 
@@ -280,7 +280,7 @@ class ToBool(Transformation):
     Transforms time series data to a series of 0s and 1s. 1s if the value is > 0.
     """
 
-    def apply(self, time_series_data: Tuple[pd.Series]) -> pd.Series:
+    def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
         """
         Args:
             time_series_data: The time series data to transform
@@ -310,7 +310,7 @@ class ToBool(Transformation):
 
 
 class ToInt(Transformation):
-    def apply(self, time_series_data: Tuple[pd.Series]) -> pd.Series:
+    def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
         single_ts, _ = (*time_series_data,)
         return single_ts.apply(round)
 
@@ -320,7 +320,7 @@ class ZeroIfNotOne(Transformation):
     Transforms time series data to a series of 0s and 1s. 1s if the value is exactly 1.
     """
 
-    def apply(self, time_series_data: Tuple[pd.Series]) -> pd.Series:
+    def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
         """
         Args:
             time_series_data: The time series data to transform
@@ -354,7 +354,7 @@ class OneIfTwo(Transformation):
     Transforms time series data to a series of 0s and 1s. 1s if the value is exactly 2.
     """
 
-    def apply(self, time_series_data: Tuple[pd.Series]) -> pd.Series:
+    def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
         """
         Args:
             time_series_data: The time series data to transform
@@ -454,7 +454,7 @@ class HeightToVolume(DynamicTransformation):
         self.heights = shop_model[self.object_type][self.object_name]["vol_head"]["y"]
         self.pre_apply_has_run = True
 
-    def apply(self, time_series_data: Tuple[pd.Series]) -> pd.Series:
+    def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
         """
         Args:
             time_series_data: The time series data to transform
@@ -497,7 +497,7 @@ class HeightToVolume(DynamicTransformation):
 
 
 class DoNothing(Transformation):
-    def apply(self, time_series_data: Tuple[pd.Series]) -> pd.Series:
+    def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
         single_ts, _ = (*time_series_data,)
         return single_ts
 
@@ -514,7 +514,7 @@ class AddFromOffset(Transformation):
     shift_minutes: int = 0
     relative_datapoints: list[RelativeDatapoint]
 
-    def apply(self, time_series_data: Tuple[pd.Series]) -> pd.Series:
+    def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
         """
         Args:
             time_series_data: The timseries to perform transformation on
@@ -581,7 +581,7 @@ class MultiplyFromOffset(Transformation):
     shift_minutes: int = 0
     relative_datapoints: list[RelativeDatapoint]
 
-    def apply(self, time_series_data: Tuple[pd.Series]) -> pd.Series:
+    def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
         """
         Example:
         ```python
@@ -776,7 +776,7 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
 
     def apply(
         self,
-        time_series_data: Tuple[pd.Series],
+        time_series_data: tuple[pd.Series],
     ) -> pd.Series:
         """Run `apply()` after preprocessing step to add water in transit to add water in transit (doscharge water) to
            inflow time series
