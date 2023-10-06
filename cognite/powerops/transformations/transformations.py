@@ -235,6 +235,11 @@ class ToBool(Transformation):
         return (time_series_data > 0).astype(int)
 
 
+class ToInt(Transformation):
+    def apply(self, time_series_data: pd.Series) -> pd.Series:
+        return time_series_data.apply(round)
+
+
 class ZeroIfNotOne(Transformation):
     """
     Transforms time series data to a series of 0s and 1s. 1s if the value is exactly 1.
