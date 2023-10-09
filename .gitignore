@@ -58,4 +58,5 @@ playground
 customers/
 sensitive_tests.toml
 .dmypy.json
-demo/
+demo/*
+!demo/cogshop/time_series_mappings_new.yaml

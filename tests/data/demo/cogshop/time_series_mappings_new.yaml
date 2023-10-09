@@ -1,0 +1,75 @@
+### A FEW EXAMPLES OF TIME SERIES MAPPINGS WITH THE NEW TRANSFORMATIONS ###
+
+- rows:
+  - attribute_name: overflow_cost
+    object_name: Fjerdingby_intake
+    object_type: creek_intake
+    time_series_external_id: null
+    transformations:
+    - "StaticValues":
+        "input":
+          "relative_datapoints":
+          - "offset_minute": 0
+            "offset_value": 100000
+  - attribute_name: inflow
+    object_name: Sandvika
+    object_type: creek_intake
+    time_series_external_id: null
+    transformations:
+    - "StaticValues":
+        "input":
+          "relative_datapoints":
+          - "offset_minute": 0
+            "offset_value": 0
+  - attribute_name: overflow_cost
+    object_name: Golebiowski_intake
+    object_type: creek_intake
+    time_series_external_id: null
+    transformations:
+    - "StaticValues":
+        "input":
+          "relative_datapoints":
+          - "offset_minute": 0
+            "offset_value": 100000
+  - attribute_name: overflow_cost
+    object_name: Lont_intake
+    object_type: creek_intake
+    time_series_external_id: null
+    transformations:
+    - "StaticValues":
+        "input":
+          "relative_datapoints":
+          - "offset_minute": 0
+            "offset_value": 100000
+  - attribute_name: overflow_cost
+    object_name: Narvhus
+    object_type: creek_intake
+    time_series_external_id: null
+    transformations:
+    - "StaticValues":
+        "input":
+          "relative_datapoints":
+          - "offset_minute": 0
+            "offset_value": 100000
+  - aggregation: min
+    attribute_name: max_flow
+    object_name: b_Hagen_Strand
+    object_type: gate
+    time_series_external_id: null
+    transformations:
+    - StaticValues:
+        input:
+          relative_datapoints:
+          - offset_minute: 0
+            offset_value: 100000
+  - attribute_name: inflow
+    object_name: Blakstad
+    object_type: creek_intake
+    retrieve: RANGE
+    time_series_external_id: '649835'
+    transformations:
+    - MultiplyConstant:
+      input:
+        constant: 0.53
+    - AddConstant:
+        constant: 0
