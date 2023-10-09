@@ -1,6 +1,6 @@
 ::: cognite.powerops.transformations.transformations.RelativeDatapoint
 
-::: cognite.powerops.transformations.transformations.Add
+::: cognite.powerops.transformations.transformations.AddConstant
 
 ::: cognite.powerops.transformations.transformations.Multiply
 
@@ -11,6 +11,8 @@
 ::: cognite.powerops.transformations.transformations.ZeroIfNotOne
 
 ::: cognite.powerops.transformations.transformations.OneIfTwo
+
+::: cognite.powerops.transformations.transformations.SumTimeseries
 
 ::: cognite.powerops.transformations.transformations.HeightToVolume
 
