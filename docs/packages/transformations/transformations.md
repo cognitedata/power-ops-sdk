@@ -2,7 +2,7 @@
 
 ::: cognite.powerops.transformations.transformations.AddConstant
 
-::: cognite.powerops.transformations.transformations.Multiply
+::: cognite.powerops.transformations.transformations.MultiplyConstant
 
 ::: cognite.powerops.transformations.transformations.StaticValues
 
