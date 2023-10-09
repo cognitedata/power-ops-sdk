@@ -9,6 +9,9 @@ import pandas as pd
 from pydantic import BaseModel, constr, validator
 from typing_extensions import TypeAlias
 
+# TODO: Use the new transformations with the time series mappings ->
+#  from cognite.powerops.transformations.transformations import Transformation as TransformationV2  # noqa
+
 ExternalId: TypeAlias = Annotated[str, constr(min_length=1, max_length=255)]
 
 
@@ -107,7 +110,7 @@ class TimeSeriesMappingEntry(BaseModel):
     object_name: str
     attribute_name: str
     time_series_external_id: Optional[str] = None
-    transformations: Optional[list[Transformation]] = None
+    transformations: Optional[list[Transformation]] = None  # Optional[list[TransformationV2]] = None
     retrieve: Optional[RetrievalType] = None
     aggregation: Optional[AggregationMethod] = None
 
