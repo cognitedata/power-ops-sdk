@@ -1,25 +1,25 @@
 from __future__ import annotations
 
+import logging
+
 from cognite.client import CogniteClient
 
 from cognite.powerops.resync.diff import ModelDifference
 from cognite.powerops.resync.models.base import AssetModel, Model  # type: ignore[attr-defined]
 
-from .echo import Echo
+logger = logging.getLogger(__name__)
 
 
-def _clean_relationships(client: CogniteClient, differences: ModelDifference, new_model: Model, echo: Echo):
+def _clean_relationships(client: CogniteClient, differences: ModelDifference, new_model: Model):
     if isinstance(new_model, AssetModel):
-        not_create = _find_relationship_with_missing_time_series_target(client, new_model, echo)
+        not_create = _find_relationship_with_missing_time_series_target(client, new_model)
         relationship_diff = next((d for d in differences if d.field_name == "relationships"), None)
         if relationship_diff:
             relationship_diff.added = [r for r in relationship_diff.added if r.external_id not in not_create]
             relationship_diff.changed = [c for c in relationship_diff.changed if c.new.external_id not in not_create]
 
 
-def _find_relationship_with_missing_time_series_target(
-    client: CogniteClient, asset_model: AssetModel, echo: Echo
-) -> set[str]:
+def _find_relationship_with_missing_time_series_target(client: CogniteClient, asset_model: AssetModel) -> set[str]:
     """Validates that all relationships in the collection have targets that exist in CDF"""
     time_series = asset_model.timeseries()
     # retrieve_multiple fails if no time series are provided
@@ -42,9 +42,8 @@ def _find_relationship_with_missing_time_series_target(
         and r.external_id
     }
     if to_delete:
-        echo(
+        logger.warning(
             f"There are {len(to_delete)} relationships in {asset_model.model_name} that have targets "
             f"that do not exist in CDF. Examples {list(to_delete)[:3]}. These relationships will not be created.",
-            is_warning=True,
         )
     return to_delete

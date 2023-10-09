@@ -5,15 +5,17 @@ and have data in the required time ranges.
 
 from __future__ import annotations
 
+import json
 import logging
 from collections import defaultdict
+from collections.abc import Sequence
 from enum import Enum
 from typing import Literal, Optional, Union, cast
 
 import arrow
 import numpy as np
 import pandas as pd
-from pydantic import BaseModel, ConfigDict, model_validator
+from pydantic import BaseModel, ConfigDict, field_serializer, model_validator
 
 from cognite.powerops import PowerOpsClient
 from cognite.powerops.client._generated.data_classes import (
@@ -56,6 +58,10 @@ class ValidationRange(BaseModel):
             return self.start == other.start and self.end == other.end
         return super().__eq__(other)
 
+    @field_serializer("start", "end")
+    def serialize_arrow(self, value: arrow.Arrow, _info):
+        return value.isoformat()
+
 
 class TimeSeriesValidationFailures(str, Enum):
     NO_DATAPOINTS = "NO_DATAPOINTS"
@@ -64,6 +70,39 @@ class TimeSeriesValidationFailures(str, Enum):
 
 class ValidationResult(BaseModel):
     valid: bool = False
+
+
+class ValidationResults(BaseModel):
+    results: Sequence[ValidationResult]
+
+    def as_markdown(self, include_valid: bool) -> str:
+        raise NotImplementedError()
+
+    def as_json(self, include_valid: bool) -> str:
+        results = self.results
+        if not include_valid:
+            results = [result for result in results if not result.valid]
+        return json.dumps([result.model_dump(mode="json") for result in results], ensure_ascii=False)
+
+
+class TimeSeriesValidationResults(ValidationResults):
+    results: Sequence[TimeSeriesValidationResult]
+
+    def as_markdown(self, include_valid: bool) -> str:
+        lines = [
+            "| Time Range                                            | Valid | models | reason | ExternalID |",
+            "|-------------------------------------------------------|-------|--------|--------|------------|",
+        ]
+        for result in self.results:
+            if result.valid and not include_valid:
+                continue
+            time_range = str(result.validation.validation_range)
+            valid = str(result.valid)
+            models = ",".join(result.validation.data_models)
+            reason = result.reason
+            external_id = result.validation.mapping.cdf_time_series
+            lines.append(f"| {time_range} | {valid:5} | {models} | {reason} | {external_id} |")
+        return "\n".join(lines)
 
 
 class TimeSeriesValidationResult(ValidationResult):
@@ -81,13 +120,9 @@ class TimeSeriesValidationResult(ValidationResult):
             data["valid"] = not bool(data.get("failure"))
         return data
 
-    def __str__(self):
-        valid = str(self.valid)
-        external_id = self.validation.mapping.cdf_time_series
-        time_range = str(self.validation.validation_range)
-        models = ",".join(self.validation.data_models)
-        reason = "" if self.valid else self.failure.name
-        return f"{time_range=} {valid=:5} {models=} {reason=} {external_id=}, "
+    @property
+    def reason(self) -> str:
+        return "" if self.valid else require(self.failure).value
 
 
 def find_mappings(obj, lookup: Literal["base", "process"]) -> list[InputTimeSeriesMappingApply]:
@@ -207,8 +242,8 @@ def prepare_validation(models: list[Model]) -> tuple[PreparedValidationsT, Valid
 
 def perform_validation(
     po_client: PowerOpsClient, ts_validations: PreparedValidationsT, validation_ranges: ValidationRangesT
-) -> list[ValidationResult]:
-    results: list[ValidationResult] = []
+) -> ValidationResults:
+    results: list[TimeSeriesValidationResult] = []
     for range_str, validations_in_range in ts_validations.items():
         validation_range = validation_ranges[range_str]
         all_mappings = [validation.mapping for validation in validations_in_range.values()]
@@ -226,9 +261,9 @@ def perform_validation(
             data: pd.Series = datapoints.get(require(ts_mapping.cdf_time_series), pd.Series())
             ts_validation: TimeSeriesValidation = ts_validations[range_str][ts_mapping.external_id]
             if not len(data):
-                logger.warning(
-                    f"No datapoints found for range {range_str} in timeseries '{ts_mapping.cdf_time_series}',"
-                    f" used in models: {', '.join(ts_validation.data_models)}.",
+                logger.info(
+                    f"VALIDATION FAIL: No datapoints found for range {range_str} in timeseries "
+                    f"'{ts_mapping.cdf_time_series}', used in models: {', '.join(ts_validation.data_models)}.",
                 )
                 results.append(
                     TimeSeriesValidationResult(
@@ -237,9 +272,9 @@ def perform_validation(
                 )
                 warnings_n += 1
             elif ts_mapping.retrieve == "RANGE" and len(data) < 2:
-                logger.warning(
-                    f"Only one datapoint found for range {range_str} in timeseries '{ts_mapping.cdf_time_series}',"
-                    f" used in models: {', '.join(ts_validation.data_models)}.",
+                logger.info(
+                    f"VALIDATION FAIL: Only one datapoint found for range {range_str} in timeseries "
+                    f"'{ts_mapping.cdf_time_series}', used in models: {', '.join(ts_validation.data_models)}.",
                 )
                 results.append(
                     TimeSeriesValidationResult(
@@ -251,4 +286,4 @@ def perform_validation(
                 results.append(TimeSeriesValidationResult(validation=ts_validation, valid=True))
         if warnings_n:
             logger.info(f"Total warnings for range {range_str}: {warnings_n}.")
-    return results
+    return TimeSeriesValidationResults(results=results)
