@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.68.1] - 2023-10-10
+### Added
+* `resync` support for benchmarking relationships to bid configurations
+
 ## [0.68.0] - 2023-10-10
 ### Added
 * `validate` CLI command

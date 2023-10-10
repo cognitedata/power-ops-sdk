@@ -17,6 +17,7 @@ class BenchmarkingConfig(Configuration):
         default_factory=dict, alias="bid_production_plan_time_series"
     )
     market_config_external_id: str = Field(alias="bid_market_config_external_id")
+    bid_process_configuration_assets: list[str] = []
     relevant_shop_objective_metrics: dict[str, str] = {
         "grand_total": "Grand Total",
         "total": "Total",
