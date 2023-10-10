@@ -13,6 +13,12 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.68.0] - 2023-10-10
+### Added
+* `validate` CLI command
+### Changed
+* Logs now write to stderr when running CLI commands
+
 ## [0.67.1] - 2023-10-06
 ### Added
 * Documentation of transformations module

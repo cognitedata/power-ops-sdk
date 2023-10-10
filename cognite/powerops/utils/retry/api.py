@@ -1,3 +1,8 @@
+"""
+This is a local copy of the retry package from https://github.com/invl/retry.
+Perhaps replace it with something more standard, like tenacity?
+"""
+
 import logging
 import random
 import time
