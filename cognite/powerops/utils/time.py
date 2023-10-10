@@ -66,3 +66,8 @@ def relative_time_specification_to_arrow(
         else:
             print(f"Invalid relative time specification method: {method}")
     return arw.to(result_timezone)
+
+
+def arrow_to_ms(value: arrow.Arrow) -> int:
+    """Arrow datetime to milliseconds since Epoch."""
+    return int(value.float_timestamp * 1000)

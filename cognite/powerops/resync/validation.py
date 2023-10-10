@@ -25,9 +25,8 @@ from cognite.powerops.client._generated.data_classes import (
 from cognite.powerops.resync.models.base import Model
 from cognite.powerops.utils.cdf.calls import retrieve_time_series_datapoints
 from cognite.powerops.utils.lookup import attr_lookup, dict_values, each
-from cognite.powerops.utils.preprocessor_utils import arrow_to_ms
 from cognite.powerops.utils.require import require
-from cognite.powerops.utils.time import relative_time_specification_to_arrow
+from cognite.powerops.utils.time import arrow_to_ms, relative_time_specification_to_arrow
 
 logger = logging.getLogger(__name__)
 
