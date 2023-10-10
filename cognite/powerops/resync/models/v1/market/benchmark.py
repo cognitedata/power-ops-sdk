@@ -49,6 +49,7 @@ class BenchmarkProcess(Process):
     production_plan_time_series: list[ProductionPlanTimeSeries] = Field(default_factory=list)
     benchmarking_metrics: dict[str, str] = Field(default_factory=dict)
     run_events: list[str] = Field(default_factory=list)
+    bid_process_configuration_assets: list[Process] = Field(default_factory=list)
 
     @field_validator("production_plan_time_series", mode="after")
     def ordering(cls, value: list[ProductionPlanTimeSeries]) -> list[ProductionPlanTimeSeries]:
@@ -57,6 +58,10 @@ class BenchmarkProcess(Process):
     @field_validator("run_events", mode="after")
     def ordering_events(cls, value: list[str]) -> list[str]:
         return sorted(value)
+
+    @field_validator("bid_process_configuration_assets", mode="after")
+    def ordering_processes(cls, value: list[Process]) -> list[Process]:
+        return sorted(value, key=lambda x: x.name)
 
     @field_validator("benchmarking_metrics", mode="before")
     def parse_str(cls, value) -> dict:
@@ -71,3 +76,4 @@ class BenchmarkProcess(Process):
     def standardize(self) -> None:
         self.production_plan_time_series = self.ordering(self.production_plan_time_series)
         self.run_events = self.ordering_events(self.run_events)
+        self.bid_process_configuration_assets = self.ordering_processes(self.bid_process_configuration_assets)

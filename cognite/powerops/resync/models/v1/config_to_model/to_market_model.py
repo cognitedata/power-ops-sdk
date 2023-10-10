@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from typing import Any
 
 import pandas as pd
 from cognite.client.data_classes import Sequence
@@ -33,7 +34,7 @@ def to_market_asset_model(
     # The external_id is not following the naming convention, so we need to set it manually
     nord_pool.external_id = configuration.market.external_id
 
-    benchmarking_processes = _to_benchmarking_process(configuration.benchmarks)
+    benchmarking_processes, benchmarking_deferred_attrs = _to_benchmarking_process(configuration.benchmarks)
 
     dayahead_processes = _to_dayahead_process(
         bid_process_configs=configuration.bidprocess,
@@ -41,6 +42,12 @@ def to_market_asset_model(
         price_scenarios_by_id=configuration.price_scenario_by_id,
         benchmarking=benchmarking_processes[0],
         price_areas=price_areas,
+    )
+
+    benchmarking_processes = _resolve_deferred_attrs(
+        benchmarking_processes=benchmarking_processes,
+        deferred_attrs=benchmarking_deferred_attrs,
+        dayahead_processes=dayahead_processes,
     )
 
     rkom = _to_rkom_market(
@@ -63,11 +70,17 @@ def to_market_asset_model(
     return model
 
 
-def _to_benchmarking_process(benchmarks: list[config.BenchmarkingConfig]) -> list[BenchmarkProcess]:
+_DeferredAttrsT = dict[str, dict[str, Any]]
+
+
+def _to_benchmarking_process(
+    benchmarks: list[config.BenchmarkingConfig],
+) -> tuple[list[BenchmarkProcess], _DeferredAttrsT]:
     benchmarkings: list[BenchmarkProcess] = []
     if len(benchmarks) > 1:
         # The external id for the benchmarking is hardcoded and thus there can be only one.
         raise NotImplementedError("Only one benchmarking config is supported")
+    deferred_attrs = {}
     for benchmarking_config in benchmarks:
         bid = BenchmarkBid(
             date=json.dumps(benchmarking_config.bid_date.operations),
@@ -84,11 +97,35 @@ def _to_benchmarking_process(benchmarks: list[config.BenchmarkingConfig]) -> lis
             if benchmarking_config.production_plan_time_series
             else [],  # ensure_ascii=False to treat Nordic letters properly,
             benchmarking_metrics=benchmarking_config.relevant_shop_objective_metrics,
+            bid_process_configuration_assets=[],
         )
         # The external_id is not following the naming convention, so we need to set it manually
         process.external_id = "POWEROPS_dayahead_bidding_benchmarking_config"
         benchmarkings.append(process)
-    return benchmarkings
+        deferred_attrs[process.external_id] = {
+            "bid_process_configuration_assets": [
+                f"POWEROPS_bid_process_configuration_{name}"
+                for name in benchmarking_config.bid_process_configuration_assets
+            ],
+        }
+
+    return benchmarkings, deferred_attrs
+
+
+def _resolve_deferred_attrs(
+    benchmarking_processes: list[BenchmarkProcess],
+    deferred_attrs: _DeferredAttrsT,
+    dayahead_processes: list[DayAheadProcess],
+) -> list[BenchmarkProcess]:
+    for external_id, attrs in deferred_attrs.items():
+        benchmarking_process = next(p for p in benchmarking_processes if p.external_id == external_id)
+        for attr, deferred_value in attrs.items():
+            if attr == "bid_process_configuration_assets":
+                value = [p for ext_id in deferred_value for p in dayahead_processes if p.external_id == ext_id]
+            else:
+                raise NotImplementedError()
+            setattr(benchmarking_process, attr, value)
+    return benchmarking_processes
 
 
 def _to_dayahead_process(

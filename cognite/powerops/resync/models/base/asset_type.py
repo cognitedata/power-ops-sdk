@@ -106,6 +106,8 @@ class AssetType(ResourceType, ABC, arbitrary_types_allowed=True, validate_assign
                     target_type = target.type_
                     if self.type_ == "plant" and target.type_ == "reservoir":
                         target_type = "inlet_reservoir"
+                    elif self.type_ == "benchmarking_configuration":
+                        target_type = "bid_process_configuration_asset"
                     relationships.append(self._create_relationship(target.external_id, "ASSET", target_type))
             elif isinstance(field_value, NonAssetType) or (
                 isinstance(field_value, list) and field_value and isinstance(field_value[0], NonAssetType)
