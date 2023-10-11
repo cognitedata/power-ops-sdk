@@ -10,6 +10,7 @@ are based on Data Modeling in CDF.
 """
 
 from .cogshop import CogShopDataModel
+from .dms import CapacityModel, CapacitySourceModel
 from .graphql_schemas import GRAPHQL_MODELS
 from .market_dm import AFRRMarket, BenchmarkMarketDataModel, DayAheadMarketDataModel, RKOMMarketDataModel
 from .production_dm import ProductionModelDM
@@ -22,4 +23,6 @@ __all__ = [
     "RKOMMarketDataModel",
     "BenchmarkMarketDataModel",
     "AFRRMarket",
+    "CapacityModel",
+    "CapacitySourceModel",
 ]

@@ -1,0 +1,238 @@
+- space: PowerOps
+  externalId: BidDocumentHeader
+  name: BidDocumentHeader
+  version: '0_1'
+  properties:
+    DocumentTypeName:
+      container:
+        space: PowerOps
+        externalId: BidDocumentHeader
+        type: container
+      containerPropertyIdentifier: DocumentTypeName
+      name: DocumentTypeName
+      description: missing
+    ProcessTypeName:
+      container:
+        space: PowerOps
+        externalId: BidDocumentHeader
+        type: container
+      containerPropertyIdentifier: ProcessTypeName
+      name: ProcessTypeName
+      description: missing
+    TSO:
+      container:
+        space: PowerOps
+        externalId: BidDocumentHeader
+        type: container
+      containerPropertyIdentifier: TSO
+      name: TSO
+      description: missing
+    Owner:
+      container:
+        space: PowerOps
+        externalId: BidDocumentHeader
+        type: container
+      containerPropertyIdentifier: Owner
+      name: Owner
+      description: missing
+    CreatedDateTime:
+      container:
+        space: PowerOps
+        externalId: BidDocumentHeader
+        type: container
+      containerPropertyIdentifier: CreatedDateTime
+      name: CreatedDateTime
+      description: missing
+    Country:
+      container:
+        space: PowerOps
+        externalId: BidDocumentHeader
+        type: container
+      containerPropertyIdentifier: Country
+      name: Country
+      description: missing
+    Origin:
+      container:
+        space: PowerOps
+        externalId: BidDocumentHeader
+        type: container
+      containerPropertyIdentifier: Origin
+      name: Origin
+      description: missing
+- space: PowerOps
+  externalId: BidInterval
+  name: BidInterval
+  version: '0_1'
+  properties:
+    parent:
+      type:
+        space: PowerOps
+        externalId: BidInterval.parent
+      source:
+        space: PowerOps
+        externalId: BidDocumentHeader
+        version: '0_1'
+        type: view
+      direction: outwards
+      name: parent
+      description: missing
+    Start:
+      container:
+        space: PowerOps
+        externalId: BidInterval
+        type: container
+      containerPropertyIdentifier: Start
+      name: Start
+      description: missing
+    End:
+      container:
+        space: PowerOps
+        externalId: BidInterval
+        type: container
+      containerPropertyIdentifier: End
+      name: End
+      description: missing
+- space: PowerOps
+  externalId: ReserveBidTimeSeries
+  name: ReserveBidTimeSeries
+  version: '0_1'
+  properties:
+    BidType:
+      container:
+        space: PowerOps
+        externalId: ReserveBidTimeSeries
+        type: container
+      containerPropertyIdentifier: BidType
+      name: BidType
+      description: missing
+    MeasureUnit:
+      container:
+        space: PowerOps
+        externalId: ReserveBidTimeSeries
+        type: container
+      containerPropertyIdentifier: MeasureUnit
+      name: MeasureUnit
+      description: missing
+    Currency:
+      container:
+        space: PowerOps
+        externalId: ReserveBidTimeSeries
+        type: container
+      containerPropertyIdentifier: Currency
+      name: Currency
+      description: missing
+    Price:
+      container:
+        space: PowerOps
+        externalId: ReserveBidTimeSeries
+        type: container
+      containerPropertyIdentifier: Price
+      name: Price
+      description: missing
+    DirectionName:
+      container:
+        space: PowerOps
+        externalId: ReserveBidTimeSeries
+        type: container
+      containerPropertyIdentifier: DirectionName
+      name: DirectionName
+      description: missing
+    ReserveObject:
+      container:
+        space: PowerOps
+        externalId: ReserveBidTimeSeries
+        type: container
+      containerPropertyIdentifier: ReserveObject
+      name: ReserveObject
+      description: missing
+- space: PowerOps
+  externalId: Periods
+  name: Periods
+  version: '0_1'
+  properties:
+    parent:
+      type:
+        space: PowerOps
+        externalId: Periods.parent
+      source:
+        space: PowerOps
+        externalId: ReserveBidTimeSeries
+        version: '0_1'
+        type: view
+      direction: outwards
+      name: parent
+      description: missing
+    Resolution:
+      container:
+        space: PowerOps
+        externalId: Periods
+        type: container
+      containerPropertyIdentifier: Resolution
+      name: Resolution
+      description: missing
+- space: PowerOps
+  externalId: TimeInterval
+  name: TimeInterval
+  version: '0_1'
+  properties:
+    parent:
+      type:
+        space: PowerOps
+        externalId: TimeInterval.parent
+      source:
+        space: PowerOps
+        externalId: Periods
+        version: '0_1'
+        type: view
+      direction: outwards
+      name: parent
+      description: missing
+    Start:
+      container:
+        space: PowerOps
+        externalId: TimeInterval
+        type: container
+      containerPropertyIdentifier: Start
+      name: Start
+      description: missing
+    End:
+      container:
+        space: PowerOps
+        externalId: TimeInterval
+        type: container
+      containerPropertyIdentifier: End
+      name: End
+      description: missing
+- space: PowerOps
+  externalId: BidCurves
+  name: BidCurves
+  version: '0_1'
+  properties:
+    parent:
+      type:
+        space: PowerOps
+        externalId: BidCurves.parent
+      source:
+        space: PowerOps
+        externalId: Periods
+        version: '0_1'
+        type: view
+      direction: outwards
+      name: parent
+      description: missing
+    ReserveObject:
+      container:
+        space: PowerOps
+        externalId: BidCurves
+        type: container
+      containerPropertyIdentifier: ReserveObject
+      name: ReserveObject
+      description: missing
+    Qty:
+      container:
+        space: PowerOps
+        externalId: BidCurves
+        type: container
+      containerPropertyIdentifier: Qty
+      name: Qty
+      description: missing
