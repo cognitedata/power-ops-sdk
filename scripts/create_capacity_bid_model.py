@@ -1,5 +1,5 @@
 """
-Depends on cognite-neat, needs to be installed manually 'pip install cognite-neat'.
+Depends on cognite-neat, needs to be installed manually 'pip install cognite-neat[excel]'.
 It cannot be set in the pyproject.toml because it requires Python 3.10, pyproject toml
 seems to ignore 'cognite-neat = {version = "^0.30.0", python = ">3.9"}.
 """
@@ -16,7 +16,7 @@ CAPACITY_MARKET_JSON = ROOT / "customers" / "data" / "970_0ca0c919-046a-4940-b19
 
 def main():
     rules = importer.JSONImporter(CAPACITY_MARKET_JSON).to_rules()
-
+    rules.metadata.cdf_space_name = "power-ops"
     dm = DataModel.from_rules(rules)
 
     CapacitySourceModel.container_file.write_text(

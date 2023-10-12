@@ -1,5 +1,6 @@
 - space: power-ops
   externalId: BidDocumentHeader
+  description: missing
   name: BidDocumentHeader
   properties:
     DocumentTypeName:
@@ -74,6 +75,7 @@
       description: missing
 - space: power-ops
   externalId: BidInterval
+  description: missing
   name: BidInterval
   properties:
     parent:
@@ -107,6 +109,7 @@
       description: missing
 - space: power-ops
   externalId: ReserveBidTimeSeries
+  description: missing
   name: ReserveBidTimeSeries
   properties:
     BidType:
@@ -170,6 +173,7 @@
       description: missing
 - space: power-ops
   externalId: Periods
+  description: missing
   name: Periods
   properties:
     parent:
@@ -193,6 +197,7 @@
       description: missing
 - space: power-ops
   externalId: TimeInterval
+  description: missing
   name: TimeInterval
   properties:
     parent:
@@ -226,6 +231,7 @@
       description: missing
 - space: power-ops
   externalId: BidCurves
+  description: missing
   name: BidCurves
   properties:
     parent:
