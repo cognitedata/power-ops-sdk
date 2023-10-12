@@ -1,0 +1,264 @@
+- space: power-ops
+  externalId: BidDocumentHeader
+  description: missing
+  name: BidDocumentHeader
+  properties:
+    DocumentTypeName:
+      type:
+        list: true
+        collation: ucs_basic
+        type: text
+      nullable: true
+      autoIncrement: false
+      name: DocumentTypeName
+      defaultValue: null
+      description: missing
+    ProcessTypeName:
+      type:
+        list: true
+        collation: ucs_basic
+        type: text
+      nullable: true
+      autoIncrement: false
+      name: ProcessTypeName
+      defaultValue: null
+      description: missing
+    TSO:
+      type:
+        list: true
+        collation: ucs_basic
+        type: text
+      nullable: true
+      autoIncrement: false
+      name: TSO
+      defaultValue: null
+      description: missing
+    Owner:
+      type:
+        list: true
+        collation: ucs_basic
+        type: text
+      nullable: true
+      autoIncrement: false
+      name: Owner
+      defaultValue: null
+      description: missing
+    CreatedDateTime:
+      type:
+        list: true
+        collation: ucs_basic
+        type: text
+      nullable: true
+      autoIncrement: false
+      name: CreatedDateTime
+      defaultValue: null
+      description: missing
+    Country:
+      type:
+        list: true
+        collation: ucs_basic
+        type: text
+      nullable: true
+      autoIncrement: false
+      name: Country
+      defaultValue: null
+      description: missing
+    Origin:
+      type:
+        list: true
+        collation: ucs_basic
+        type: text
+      nullable: true
+      autoIncrement: false
+      name: Origin
+      defaultValue: null
+      description: missing
+- space: power-ops
+  externalId: BidInterval
+  description: missing
+  name: BidInterval
+  properties:
+    parent:
+      type:
+        container: null
+        type: direct
+      nullable: true
+      autoIncrement: false
+      name: parent
+      defaultValue: null
+      description: missing
+    Start:
+      type:
+        list: true
+        collation: ucs_basic
+        type: text
+      nullable: true
+      autoIncrement: false
+      name: Start
+      defaultValue: null
+      description: missing
+    End:
+      type:
+        list: true
+        collation: ucs_basic
+        type: text
+      nullable: true
+      autoIncrement: false
+      name: End
+      defaultValue: null
+      description: missing
+- space: power-ops
+  externalId: ReserveBidTimeSeries
+  description: missing
+  name: ReserveBidTimeSeries
+  properties:
+    BidType:
+      type:
+        list: true
+        collation: ucs_basic
+        type: text
+      nullable: true
+      autoIncrement: false
+      name: BidType
+      defaultValue: null
+      description: missing
+    MeasureUnit:
+      type:
+        list: true
+        collation: ucs_basic
+        type: text
+      nullable: true
+      autoIncrement: false
+      name: MeasureUnit
+      defaultValue: null
+      description: missing
+    Currency:
+      type:
+        list: true
+        collation: ucs_basic
+        type: text
+      nullable: true
+      autoIncrement: false
+      name: Currency
+      defaultValue: null
+      description: missing
+    Price:
+      type:
+        list: true
+        type: float64
+      nullable: true
+      autoIncrement: false
+      name: Price
+      defaultValue: null
+      description: missing
+    DirectionName:
+      type:
+        list: true
+        collation: ucs_basic
+        type: text
+      nullable: true
+      autoIncrement: false
+      name: DirectionName
+      defaultValue: null
+      description: missing
+    ReserveObject:
+      type:
+        list: true
+        collation: ucs_basic
+        type: text
+      nullable: true
+      autoIncrement: false
+      name: ReserveObject
+      defaultValue: null
+      description: missing
+- space: power-ops
+  externalId: Periods
+  description: missing
+  name: Periods
+  properties:
+    parent:
+      type:
+        container: null
+        type: direct
+      nullable: true
+      autoIncrement: false
+      name: parent
+      defaultValue: null
+      description: missing
+    Resolution:
+      type:
+        list: true
+        collation: ucs_basic
+        type: text
+      nullable: true
+      autoIncrement: false
+      name: Resolution
+      defaultValue: null
+      description: missing
+- space: power-ops
+  externalId: TimeInterval
+  description: missing
+  name: TimeInterval
+  properties:
+    parent:
+      type:
+        container: null
+        type: direct
+      nullable: true
+      autoIncrement: false
+      name: parent
+      defaultValue: null
+      description: missing
+    Start:
+      type:
+        list: true
+        collation: ucs_basic
+        type: text
+      nullable: true
+      autoIncrement: false
+      name: Start
+      defaultValue: null
+      description: missing
+    End:
+      type:
+        list: true
+        collation: ucs_basic
+        type: text
+      nullable: true
+      autoIncrement: false
+      name: End
+      defaultValue: null
+      description: missing
+- space: power-ops
+  externalId: BidCurves
+  description: missing
+  name: BidCurves
+  properties:
+    parent:
+      type:
+        container: null
+        type: direct
+      nullable: true
+      autoIncrement: false
+      name: parent
+      defaultValue: null
+      description: missing
+    ReserveObject:
+      type:
+        list: true
+        collation: ucs_basic
+        type: text
+      nullable: true
+      autoIncrement: false
+      name: ReserveObject
+      defaultValue: null
+      description: missing
+    Qty:
+      type:
+        list: true
+        type: float64
+      nullable: true
+      autoIncrement: false
+      name: Qty
+      defaultValue: null
+      description: missing
