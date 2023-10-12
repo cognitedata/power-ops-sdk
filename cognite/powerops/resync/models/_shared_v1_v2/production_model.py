@@ -91,7 +91,7 @@ def _plant_to_inlet_reservoir_with_losses(
                 connection_path_index = visited_paths.index(connection)
                 return visited_paths[connection_path_index]
 
-    def calculate_losses_from_conncetion_path(all_junctions, all_tunnels, connection_by_id, connection_path):
+    def calculate_losses_from_connection_path(all_junctions, all_tunnels, connection_by_id, connection_path):
         sum_losses = 0
         order_to_loss_factor_key = {0: "loss_factor_1", 1: "loss_factor_2"}
         for connection_id in connection_path:
@@ -148,6 +148,6 @@ def _plant_to_inlet_reservoir_with_losses(
 
     connection_path = get_connection_path_from_last_visited(track_connection_paths, last_connection_id)
 
-    sum_losses = calculate_losses_from_conncetion_path(all_junctions, all_tunnels, connection_by_id, connection_path)
+    sum_losses = calculate_losses_from_connection_path(all_junctions, all_tunnels, connection_by_id, connection_path)
 
     return (inlet_reservoir, sum_losses)
