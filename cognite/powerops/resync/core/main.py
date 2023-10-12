@@ -48,9 +48,10 @@ def init(client: PowerOpsClient | None, model_names: str | list[str] | None = No
     client = client or PowerOpsClient.from_settings()
     cdf = client.cdf
     model_classes = _to_models(model_names)
-    data_models = [model.graph_ql for model in model_classes if issubclass(model, DataModel)]
 
-    spaces = set(d.id_.space for d in data_models)
+    data_models = [model for model in model_classes if issubclass(model, DataModel)]
+
+    spaces = {space for model in data_models for space in model.spaces()}
     existing_spaces = set((cdf.data_modeling.spaces.retrieve(list(spaces)) or SpaceList([])).as_ids())
 
     if new_spaces := spaces - existing_spaces:
@@ -60,17 +61,54 @@ def init(client: PowerOpsClient | None, model_names: str | list[str] | None = No
         )
         logger.info(f"Spaces {new_spaces} created")
 
-    existing = set(cdf.data_modeling.data_models.retrieve([d.id_ for d in data_models]).as_ids())
-    results = []
+    new_data_model_ids = [model_id for m in data_models for model_id in m.data_model_ids()]
+
+    if new_data_model_ids:
+        existing = set(cdf.data_modeling.data_models.retrieve(new_data_model_ids).as_ids())
+    else:
+        existing = set()
+
+    results: list[dict[str, str]] = []
     for model in data_models:
-        if model.id_ in existing:
-            logger.warning(f"Skipping {model.name} data model with {model.id_}, is already exists")
-            results.append({"model": model.name, "action": "skipped"})
-            continue
-        logger.info(f"Deploying {model.name} data model with {model.id_}")
-        result = cdf.data_modeling.graphql.apply_dml(model.id_, model.graphql, model.name, model.description)
-        results.append({"model": model.name, "action": "deployed"})
-        logger.info(f"Deployed {model.name} model ({result.space}, {result.external_id}, {result.version})")
+        if model.graph_ql is not None:
+            graphql = model.graph_ql
+            if graphql.id_ in existing:
+                logger.warning(f"Skipping {model.name} data model with {model.graph_ql.id_}, is already exists")
+                results.append(
+                    {"model": model.name, "action": "skipped"}  # type: ignore[dict-item]
+                )  # Ref https://github.com/python/mypy/issues/1465
+                continue
+            logger.info(f"Deploying {model.name} data model with {model.graph_ql.id_}")
+            result = cdf.data_modeling.graphql.apply_dml(
+                model.graph_ql.id_, model.graph_ql.graphql, model.graph_ql.name, model.graph_ql.description
+            )
+            results.append({"model": model.name, "action": "deployed"})  # type: ignore[dict-item]
+            logger.info(f"Deployed {model.name} model ({result.space}, {result.external_id}, {result.version})")
+        if model.source_model is not None:
+            existing_containers = set(
+                cdf.data_modeling.containers.retrieve(model.source_model.containers.as_ids()).as_ids()
+            )
+            new_containers = [
+                container for container in model.source_model.containers if container.as_id() not in existing_containers
+            ]
+            if new_containers:
+                logger.info(f"Creating {len(new_containers)} new containers for {model.name}: {new_containers}")
+                cdf.data_modeling.containers.apply(new_containers)
+                logger.info(f"Containers {new_containers} created")
+        if model.dms_model is not None:
+            existing_views = set(cdf.data_modeling.views.retrieve(model.dms_model.views.as_ids()).as_ids())
+            new_views = [view for view in model.dms_model.views if view.as_id() not in existing_views]
+            if new_views:
+                logger.info(f"Creating {len(new_views)} new views for {model.name}: {new_views}")
+                cdf.data_modeling.views.apply(new_views)
+                logger.info(f"Views {new_views} created")
+            if model.dms_model.id_ in existing:
+                logger.warning(f"Skipping {model.name} data model with {model.dms_model.id_}, is already exists")
+                results.append({"model": model.name, "action": "skipped"})  # type: ignore[dict-item]
+                continue
+            logger.info(f"Deploying {model.name} data model with {model.dms_model.id_}")
+            cdf.data_modeling.data_models.apply(model.dms_model.data_model)
+            results.append({"model": model.name, "action": "deployed"})  # type: ignore[dict-item]
     return results
 
 
@@ -254,7 +292,7 @@ def destroy(
     model_types = _to_models(model_names)
     destroyed = ModelDifferences([])
     for model_type in model_types:
-        if issubclass(model_type, DataModel):
+        if issubclass(model_type, DataModel) and model_type.graph_ql:
             remove_data_model = _get_data_model_view_containers(
                 client.cdf, model_type.graph_ql.id_, model_type.__name__
             )
@@ -262,6 +300,10 @@ def destroy(
                 logger.warning(f"Skipping {model_type.__name__}, no data model found")
                 continue
             static_resources = {}
+        elif issubclass(model_type, DataModel) and model_type.dms_model:
+            raise NotImplementedError()
+        elif issubclass(model_type, DataModel) and model_type.source_model:
+            raise NotImplementedError()
         elif issubclass(model_type, AssetModel):
             remove_data_model = ModelDifference(model_type.__name__, {})
             if issubclass(model_type, models.MarketModel):
@@ -284,7 +326,7 @@ def destroy(
             destroyed.append(removed)
 
     # Spaces are deleted last, as they might contain other resources.
-    spaces = set(d.graph_ql.id_.space for d in model_types if issubclass(d, DataModel))
+    spaces = set(space for d in model_types if issubclass(d, DataModel) for space in d.spaces())
     if spaces and not dry_run:
         deleted_space: list[SpaceId] = []
         # One at a time, in case there are other resources in the space that will prevent deletion.

@@ -4,7 +4,7 @@ from cognite.client.data_classes.data_modeling import DataModelId
 
 from cognite.powerops.resync.models.base.dms_models import PowerOpsDMSModel, PowerOpsDMSSourceModel
 
-_DMS_DIR = Path(__file__)
+_DMS_DIR = Path(__file__).parent
 
 
 CapacitySourceModel = PowerOpsDMSSourceModel(

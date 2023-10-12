@@ -1,4 +1,4 @@
-- space: PowerOps
+- space: power-ops
   externalId: BidDocumentHeader
   name: BidDocumentHeader
   properties:
@@ -72,7 +72,7 @@
       name: Origin
       defaultValue: null
       description: missing
-- space: PowerOps
+- space: power-ops
   externalId: BidInterval
   name: BidInterval
   properties:
@@ -105,7 +105,7 @@
       name: End
       defaultValue: null
       description: missing
-- space: PowerOps
+- space: power-ops
   externalId: ReserveBidTimeSeries
   name: ReserveBidTimeSeries
   properties:
@@ -168,7 +168,7 @@
       name: ReserveObject
       defaultValue: null
       description: missing
-- space: PowerOps
+- space: power-ops
   externalId: Periods
   name: Periods
   properties:
@@ -191,7 +191,7 @@
       name: Resolution
       defaultValue: null
       description: missing
-- space: PowerOps
+- space: power-ops
   externalId: TimeInterval
   name: TimeInterval
   properties:
@@ -224,7 +224,7 @@
       name: End
       defaultValue: null
       description: missing
-- space: PowerOps
+- space: power-ops
   externalId: BidCurves
   name: BidCurves
   properties:

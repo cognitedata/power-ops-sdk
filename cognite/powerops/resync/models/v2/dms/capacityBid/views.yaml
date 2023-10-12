@@ -1,11 +1,11 @@
-- space: PowerOps
+- space: power-ops
   externalId: BidDocumentHeader
   name: BidDocumentHeader
   version: '0_1'
   properties:
     DocumentTypeName:
       container:
-        space: PowerOps
+        space: power-ops
         externalId: BidDocumentHeader
         type: container
       containerPropertyIdentifier: DocumentTypeName
@@ -13,7 +13,7 @@
       description: missing
     ProcessTypeName:
       container:
-        space: PowerOps
+        space: power-ops
         externalId: BidDocumentHeader
         type: container
       containerPropertyIdentifier: ProcessTypeName
@@ -21,7 +21,7 @@
       description: missing
     TSO:
       container:
-        space: PowerOps
+        space: power-ops
         externalId: BidDocumentHeader
         type: container
       containerPropertyIdentifier: TSO
@@ -29,7 +29,7 @@
       description: missing
     Owner:
       container:
-        space: PowerOps
+        space: power-ops
         externalId: BidDocumentHeader
         type: container
       containerPropertyIdentifier: Owner
@@ -37,7 +37,7 @@
       description: missing
     CreatedDateTime:
       container:
-        space: PowerOps
+        space: power-ops
         externalId: BidDocumentHeader
         type: container
       containerPropertyIdentifier: CreatedDateTime
@@ -45,7 +45,7 @@
       description: missing
     Country:
       container:
-        space: PowerOps
+        space: power-ops
         externalId: BidDocumentHeader
         type: container
       containerPropertyIdentifier: Country
@@ -53,23 +53,23 @@
       description: missing
     Origin:
       container:
-        space: PowerOps
+        space: power-ops
         externalId: BidDocumentHeader
         type: container
       containerPropertyIdentifier: Origin
       name: Origin
       description: missing
-- space: PowerOps
+- space: power-ops
   externalId: BidInterval
   name: BidInterval
   version: '0_1'
   properties:
     parent:
       type:
-        space: PowerOps
+        space: power-ops
         externalId: BidInterval.parent
       source:
-        space: PowerOps
+        space: power-ops
         externalId: BidDocumentHeader
         version: '0_1'
         type: view
@@ -78,7 +78,7 @@
       description: missing
     Start:
       container:
-        space: PowerOps
+        space: power-ops
         externalId: BidInterval
         type: container
       containerPropertyIdentifier: Start
@@ -86,20 +86,20 @@
       description: missing
     End:
       container:
-        space: PowerOps
+        space: power-ops
         externalId: BidInterval
         type: container
       containerPropertyIdentifier: End
       name: End
       description: missing
-- space: PowerOps
+- space: power-ops
   externalId: ReserveBidTimeSeries
   name: ReserveBidTimeSeries
   version: '0_1'
   properties:
     BidType:
       container:
-        space: PowerOps
+        space: power-ops
         externalId: ReserveBidTimeSeries
         type: container
       containerPropertyIdentifier: BidType
@@ -107,7 +107,7 @@
       description: missing
     MeasureUnit:
       container:
-        space: PowerOps
+        space: power-ops
         externalId: ReserveBidTimeSeries
         type: container
       containerPropertyIdentifier: MeasureUnit
@@ -115,7 +115,7 @@
       description: missing
     Currency:
       container:
-        space: PowerOps
+        space: power-ops
         externalId: ReserveBidTimeSeries
         type: container
       containerPropertyIdentifier: Currency
@@ -123,7 +123,7 @@
       description: missing
     Price:
       container:
-        space: PowerOps
+        space: power-ops
         externalId: ReserveBidTimeSeries
         type: container
       containerPropertyIdentifier: Price
@@ -131,7 +131,7 @@
       description: missing
     DirectionName:
       container:
-        space: PowerOps
+        space: power-ops
         externalId: ReserveBidTimeSeries
         type: container
       containerPropertyIdentifier: DirectionName
@@ -139,23 +139,23 @@
       description: missing
     ReserveObject:
       container:
-        space: PowerOps
+        space: power-ops
         externalId: ReserveBidTimeSeries
         type: container
       containerPropertyIdentifier: ReserveObject
       name: ReserveObject
       description: missing
-- space: PowerOps
+- space: power-ops
   externalId: Periods
   name: Periods
   version: '0_1'
   properties:
     parent:
       type:
-        space: PowerOps
+        space: power-ops
         externalId: Periods.parent
       source:
-        space: PowerOps
+        space: power-ops
         externalId: ReserveBidTimeSeries
         version: '0_1'
         type: view
@@ -164,23 +164,23 @@
       description: missing
     Resolution:
       container:
-        space: PowerOps
+        space: power-ops
         externalId: Periods
         type: container
       containerPropertyIdentifier: Resolution
       name: Resolution
       description: missing
-- space: PowerOps
+- space: power-ops
   externalId: TimeInterval
   name: TimeInterval
   version: '0_1'
   properties:
     parent:
       type:
-        space: PowerOps
+        space: power-ops
         externalId: TimeInterval.parent
       source:
-        space: PowerOps
+        space: power-ops
         externalId: Periods
         version: '0_1'
         type: view
@@ -189,7 +189,7 @@
       description: missing
     Start:
       container:
-        space: PowerOps
+        space: power-ops
         externalId: TimeInterval
         type: container
       containerPropertyIdentifier: Start
@@ -197,23 +197,23 @@
       description: missing
     End:
       container:
-        space: PowerOps
+        space: power-ops
         externalId: TimeInterval
         type: container
       containerPropertyIdentifier: End
       name: End
       description: missing
-- space: PowerOps
+- space: power-ops
   externalId: BidCurves
   name: BidCurves
   version: '0_1'
   properties:
     parent:
       type:
-        space: PowerOps
+        space: power-ops
         externalId: BidCurves.parent
       source:
-        space: PowerOps
+        space: power-ops
         externalId: Periods
         version: '0_1'
         type: view
@@ -222,7 +222,7 @@
       description: missing
     ReserveObject:
       container:
-        space: PowerOps
+        space: power-ops
         externalId: BidCurves
         type: container
       containerPropertyIdentifier: ReserveObject
@@ -230,7 +230,7 @@
       description: missing
     Qty:
       container:
-        space: PowerOps
+        space: power-ops
         externalId: BidCurves
         type: container
       containerPropertyIdentifier: Qty
