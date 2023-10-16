@@ -182,7 +182,8 @@ class AssetType(ResourceType, ABC, arbitrary_types_allowed=True, validate_assign
             elif field.annotation in (str, int, float):
                 metadata[field_name] = str(value)
             elif field.annotation in (Optional[str], Optional[int], Optional[float]):
-                metadata[field_name] = str(value) if value is not None else ""
+                if value:
+                    metadata[field_name] = str(value)
             else:
                 raise NotImplementedError(f"Cannot handle metadata of type {field.annotation}")
         return metadata

@@ -25,8 +25,8 @@ class Plant(BaseModel):
     p_min: float = p_min_fallback
     p_max: float = p_max_fallback  # arbitrary max power output if not specified
     head_loss_factor: float = 0.0
-    penstock_head_loss_factors: Optional[dict[str, float]] = None
     connections_losses: Optional[float] = None
+    penstock_head_loss_factors: Optional[dict[str, float]] = None
     display_name: Optional[str] = None
     ordering_key: Optional[float] = None
 
@@ -65,7 +65,7 @@ class Plant(BaseModel):
             p_min=float(asset.metadata["p_min"]),
             p_max=float(asset.metadata["p_max"]),
             head_loss_factor=float(asset.metadata["head_loss_factor"]),
-            connection_losses=asset.metadata.get("connection_losses") or None,
+            connection_losses=asset.metadata.get("connection_losses"),
             penstock_head_loss_factors=json.loads(asset.metadata.get("penstock_head_loss_factors") or "{}"),
             **kwargs,  # kwargs to set any other attributes that are not part of the Asset
         )

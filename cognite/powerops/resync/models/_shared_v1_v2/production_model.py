@@ -117,7 +117,7 @@ def _plant_to_inlet_reservoir_with_losses(
 
     def calculate_losses_from_connection_path(
         all_junctions: dict, all_tunnels: dict, connection_by_id: int, connection_path: list[int]
-    ):
+    ) -> float:
         """Loop through connections in connection path, retrieve the losses for that connection among the all_juntions
         or all_tunnels based on the type of connection, and sum up the total losses from the connection path
         """
@@ -132,13 +132,14 @@ def _plant_to_inlet_reservoir_with_losses(
                     loss_order = connection["order"]
                     sum_losses += junction_losses[order_to_loss_factor_key[loss_order]]
             elif connection_name in all_tunnels:
-                tunnel_loss = all_tunnels[connection_name]["loss_factor"]
+                tunnel_loss = all_tunnels[connection_name].get("loss_factor", 0)
                 sum_losses += tunnel_loss
         return sum_losses
 
     queue = []
     connection_by_id = dict(enumerate(all_connections))
     track_connection_paths = []
+    last_connection_id = None
 
     for connection_id, connection in connection_by_id.items():
         if (
@@ -174,10 +175,13 @@ def _plant_to_inlet_reservoir_with_losses(
                     new_path_list = get_connection_path_from_last_visited(track_connection_paths, connection_id)
                     track_connection_paths.append([*new_path_list, candidate_connection_id])
 
-    connection_path = get_connection_path_from_last_visited(track_connection_paths, last_connection_id)
+    if last_connection_id is not None:
+        connection_path = get_connection_path_from_last_visited(track_connection_paths, last_connection_id)
 
-    connection_losses = calculate_losses_from_connection_path(
-        all_junctions, all_tunnels, connection_by_id, connection_path
-    )
+        connection_losses = calculate_losses_from_connection_path(
+            all_junctions, all_tunnels, connection_by_id, connection_path
+        )
 
-    return (inlet_reservoir, round_sig(connection_losses, 4) if connection_losses else connection_losses)
+        return (inlet_reservoir, round_sig(connection_losses, 4) if connection_losses else connection_losses)
+    else:
+        return ("", 0.0)  # TODO: raise an error here if no inlet reservoir is found?
