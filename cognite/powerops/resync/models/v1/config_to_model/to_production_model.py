@@ -160,8 +160,8 @@ def to_production_model(configuration: config.ProductionConfig) -> ProductionMod
                 mappings = {}
 
             all_connections = shop_case["connections"]
-            all_junctions = shop_case["model"].get("junction")
-            all_tunnels = shop_case["model"].get("tunnel")
+            all_junctions = shop_case["model"].get("junction", {})
+            all_tunnels = shop_case["model"].get("tunnel", {})
             inlet_reservoir_name, connection_losses = _plant_to_inlet_reservoir_with_losses(
                 plant_name, all_connections, all_junctions, all_tunnels, {r.name for r in model.reservoirs}
             )
