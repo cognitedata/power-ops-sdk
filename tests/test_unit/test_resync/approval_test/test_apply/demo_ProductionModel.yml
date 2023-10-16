@@ -117,7 +117,7 @@ assets:
   metadata:
     connection_losses: '0.00892'
     display_name: Dalby
-    head_loss_factor: '0.011025'
+    head_loss_factor: '0.002105'
     ordering: '999'
     outlet_level: '365.0'
     p_max: 1e+19
@@ -187,7 +187,7 @@ assets:
   metadata:
     connection_losses: '0.00231'
     display_name: Rull1
-    head_loss_factor: '0.00338'
+    head_loss_factor: '0.00107'
     ordering: '999'
     outlet_level: '68.0'
     p_max: 1e+19
@@ -201,7 +201,7 @@ assets:
   metadata:
     connection_losses: '0.0052'
     display_name: Rull2
-    head_loss_factor: '0.0277'
+    head_loss_factor: '0.0225'
     ordering: '999'
     outlet_level: '68.0'
     p_max: 1e+19

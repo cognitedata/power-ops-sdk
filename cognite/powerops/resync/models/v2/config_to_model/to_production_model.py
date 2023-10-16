@@ -115,8 +115,9 @@ def to_production_data_model(configuration: config.ProductionConfig) -> Producti
             inlet_reservoir_name, connection_losses = _plant_to_inlet_reservoir_with_losses(
                 plant_name, all_connections, all_junctions, all_tunnels, {r.name for r in model.reservoirs}
             )
-            sum_losses = float(attributes.get("main_loss", [head_loss_factor_fallback])[0]) + connection_losses
 
+            # TODO: In next iteration of production data model,
+            # we will have to add field connection losses and regenerate pygen sdk
             plant = PlantApply(
                 external_id=f"plant:{plant_name}",
                 name=plant_name,
@@ -126,7 +127,7 @@ def to_production_data_model(configuration: config.ProductionConfig) -> Producti
                 outlet_level=float(attributes.get("outlet_line", 0)),
                 p_min=float(attributes.get("p_min", p_min_fallback)),
                 p_max=float(attributes.get("p_max", p_max_fallback)),
-                head_loss_factor=sum_losses,
+                head_loss_factor=float(attributes.get("main_loss", [head_loss_factor_fallback])[0]),
                 penstock_head_loss_factors={
                     str(penstock_number): float(loss_factor)
                     for penstock_number, loss_factor in enumerate(

@@ -165,7 +165,6 @@ def to_production_model(configuration: config.ProductionConfig) -> ProductionMod
             inlet_reservoir_name, connection_losses = _plant_to_inlet_reservoir_with_losses(
                 plant_name, all_connections, all_junctions, all_tunnels, {r.name for r in model.reservoirs}
             )
-            sum_plant_losses = float(attributes.get("main_loss", [head_loss_factor_fallback])[0]) + connection_losses
 
             plant = Plant(
                 name=plant_name,
@@ -174,7 +173,7 @@ def to_production_model(configuration: config.ProductionConfig) -> ProductionMod
                 outlet_level=float(attributes.get("outlet_line", 0)),
                 p_min=float(attributes.get("p_min", p_min_fallback)),
                 p_max=float(attributes.get("p_max", p_max_fallback)),
-                head_loss_factor=sum_plant_losses,
+                head_loss_factor=float(attributes.get("main_loss", [head_loss_factor_fallback])[0]),
                 connection_losses=connection_losses,
                 penstock_head_loss_factors={
                     str(penstock_number): float(loss_factor)
