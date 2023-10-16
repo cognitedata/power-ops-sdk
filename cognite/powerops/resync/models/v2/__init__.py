@@ -9,6 +9,7 @@ are based on Data Modeling in CDF.
 * CogSHOP - This is the updated version of the CogShop1Asset in v1.
 """
 
+from .capacity_bids import CapacityBidModel
 from .cogshop import CogShopDataModel
 from .graphql_schemas import GRAPHQL_MODELS
 from .market_dm import AFRRMarket, BenchmarkMarketDataModel, DayAheadMarketDataModel, RKOMMarketDataModel
@@ -22,4 +23,5 @@ __all__ = [
     "RKOMMarketDataModel",
     "BenchmarkMarketDataModel",
     "AFRRMarket",
+    "CapacityBidModel",
 ]

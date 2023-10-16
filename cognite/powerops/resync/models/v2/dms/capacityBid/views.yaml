@@ -1,0 +1,244 @@
+- space: power-ops
+  externalId: BidDocumentHeader
+  description: missing
+  name: BidDocumentHeader
+  version: '0_1'
+  properties:
+    DocumentTypeName:
+      container:
+        space: power-ops
+        externalId: BidDocumentHeader
+        type: container
+      containerPropertyIdentifier: DocumentTypeName
+      name: DocumentTypeName
+      description: missing
+    ProcessTypeName:
+      container:
+        space: power-ops
+        externalId: BidDocumentHeader
+        type: container
+      containerPropertyIdentifier: ProcessTypeName
+      name: ProcessTypeName
+      description: missing
+    TSO:
+      container:
+        space: power-ops
+        externalId: BidDocumentHeader
+        type: container
+      containerPropertyIdentifier: TSO
+      name: TSO
+      description: missing
+    Owner:
+      container:
+        space: power-ops
+        externalId: BidDocumentHeader
+        type: container
+      containerPropertyIdentifier: Owner
+      name: Owner
+      description: missing
+    CreatedDateTime:
+      container:
+        space: power-ops
+        externalId: BidDocumentHeader
+        type: container
+      containerPropertyIdentifier: CreatedDateTime
+      name: CreatedDateTime
+      description: missing
+    Country:
+      container:
+        space: power-ops
+        externalId: BidDocumentHeader
+        type: container
+      containerPropertyIdentifier: Country
+      name: Country
+      description: missing
+    Origin:
+      container:
+        space: power-ops
+        externalId: BidDocumentHeader
+        type: container
+      containerPropertyIdentifier: Origin
+      name: Origin
+      description: missing
+- space: power-ops
+  externalId: BidInterval
+  description: missing
+  name: BidInterval
+  version: '0_1'
+  properties:
+    parent:
+      type:
+        space: power-ops
+        externalId: BidInterval.parent
+      source:
+        space: power-ops
+        externalId: BidDocumentHeader
+        version: '0_1'
+        type: view
+      direction: outwards
+      name: parent
+      description: missing
+    Start:
+      container:
+        space: power-ops
+        externalId: BidInterval
+        type: container
+      containerPropertyIdentifier: Start
+      name: Start
+      description: missing
+    End:
+      container:
+        space: power-ops
+        externalId: BidInterval
+        type: container
+      containerPropertyIdentifier: End
+      name: End
+      description: missing
+- space: power-ops
+  externalId: ReserveBidTimeSeries
+  description: missing
+  name: ReserveBidTimeSeries
+  version: '0_1'
+  properties:
+    BidType:
+      container:
+        space: power-ops
+        externalId: ReserveBidTimeSeries
+        type: container
+      containerPropertyIdentifier: BidType
+      name: BidType
+      description: missing
+    MeasureUnit:
+      container:
+        space: power-ops
+        externalId: ReserveBidTimeSeries
+        type: container
+      containerPropertyIdentifier: MeasureUnit
+      name: MeasureUnit
+      description: missing
+    Currency:
+      container:
+        space: power-ops
+        externalId: ReserveBidTimeSeries
+        type: container
+      containerPropertyIdentifier: Currency
+      name: Currency
+      description: missing
+    Price:
+      container:
+        space: power-ops
+        externalId: ReserveBidTimeSeries
+        type: container
+      containerPropertyIdentifier: Price
+      name: Price
+      description: missing
+    DirectionName:
+      container:
+        space: power-ops
+        externalId: ReserveBidTimeSeries
+        type: container
+      containerPropertyIdentifier: DirectionName
+      name: DirectionName
+      description: missing
+    ReserveObject:
+      container:
+        space: power-ops
+        externalId: ReserveBidTimeSeries
+        type: container
+      containerPropertyIdentifier: ReserveObject
+      name: ReserveObject
+      description: missing
+- space: power-ops
+  externalId: Periods
+  description: missing
+  name: Periods
+  version: '0_1'
+  properties:
+    parent:
+      type:
+        space: power-ops
+        externalId: Periods.parent
+      source:
+        space: power-ops
+        externalId: ReserveBidTimeSeries
+        version: '0_1'
+        type: view
+      direction: outwards
+      name: parent
+      description: missing
+    Resolution:
+      container:
+        space: power-ops
+        externalId: Periods
+        type: container
+      containerPropertyIdentifier: Resolution
+      name: Resolution
+      description: missing
+- space: power-ops
+  externalId: TimeInterval
+  description: missing
+  name: TimeInterval
+  version: '0_1'
+  properties:
+    parent:
+      type:
+        space: power-ops
+        externalId: TimeInterval.parent
+      source:
+        space: power-ops
+        externalId: Periods
+        version: '0_1'
+        type: view
+      direction: outwards
+      name: parent
+      description: missing
+    Start:
+      container:
+        space: power-ops
+        externalId: TimeInterval
+        type: container
+      containerPropertyIdentifier: Start
+      name: Start
+      description: missing
+    End:
+      container:
+        space: power-ops
+        externalId: TimeInterval
+        type: container
+      containerPropertyIdentifier: End
+      name: End
+      description: missing
+- space: power-ops
+  externalId: BidCurves
+  description: missing
+  name: BidCurves
+  version: '0_1'
+  properties:
+    parent:
+      type:
+        space: power-ops
+        externalId: BidCurves.parent
+      source:
+        space: power-ops
+        externalId: Periods
+        version: '0_1'
+        type: view
+      direction: outwards
+      name: parent
+      description: missing
+    ReserveObject:
+      container:
+        space: power-ops
+        externalId: BidCurves
+        type: container
+      containerPropertyIdentifier: ReserveObject
+      name: ReserveObject
+      description: missing
+    Qty:
+      container:
+        space: power-ops
+        externalId: BidCurves
+        type: container
+      containerPropertyIdentifier: Qty
+      name: Qty
+      description: missing
