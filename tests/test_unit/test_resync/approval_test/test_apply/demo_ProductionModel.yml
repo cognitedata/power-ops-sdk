@@ -115,7 +115,7 @@ assets:
   labels:
   - externalId: plant
   metadata:
-    connection_losses: '0.008919999999999999'
+    connection_losses: '0.00892'
     display_name: Dalby
     head_loss_factor: '0.011025'
     ordering: '999'
