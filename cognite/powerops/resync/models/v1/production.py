@@ -57,6 +57,7 @@ class Plant(AssetType):
     p_max: float
     penstock_head_loss_factors: dict = Field(default_factory=dict)
     generators: list[Generator] = Field(default_factory=list)
+    connection_losses: Optional[float] = None
     inlet_reservoir: Optional[Reservoir] = None
     p_min_time_series: Optional[TimeSeries] = None
     p_max_time_series: Optional[TimeSeries] = None

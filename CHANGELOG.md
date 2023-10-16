@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.70.0] - 2023-10-16
+### Added
+* Extended the plant production model to include losses from water running between plant and inlet reservoir
+
 ## [0.69.0] - 2023-10-12
 ### Added
 * `capacityBid` Model

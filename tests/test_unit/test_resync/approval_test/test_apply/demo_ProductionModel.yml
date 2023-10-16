@@ -115,6 +115,7 @@ assets:
   labels:
   - externalId: plant
   metadata:
+    connection_losses: '0.00892'
     display_name: Dalby
     head_loss_factor: '0.002105'
     ordering: '999'
@@ -128,6 +129,7 @@ assets:
   labels:
   - externalId: plant
   metadata:
+    connection_losses: '0.0'
     display_name: Holen
     head_loss_factor: '0.0339'
     ordering: '999'
@@ -141,6 +143,7 @@ assets:
   labels:
   - externalId: plant
   metadata:
+    connection_losses: '0.0'
     display_name: Landet
     head_loss_factor: '0.02007'
     ordering: '999'
@@ -154,6 +157,7 @@ assets:
   labels:
   - externalId: plant
   metadata:
+    connection_losses: '0.0'
     display_name: Lien_krv
     head_loss_factor: '0.8'
     ordering: '999'
@@ -167,6 +171,7 @@ assets:
   labels:
   - externalId: plant
   metadata:
+    connection_losses: '0.0'
     display_name: Lund
     head_loss_factor: '0.002'
     ordering: '999'
@@ -180,6 +185,7 @@ assets:
   labels:
   - externalId: plant
   metadata:
+    connection_losses: '0.00231'
     display_name: Rull1
     head_loss_factor: '0.00107'
     ordering: '999'
@@ -193,6 +199,7 @@ assets:
   labels:
   - externalId: plant
   metadata:
+    connection_losses: '0.0052'
     display_name: Rull2
     head_loss_factor: '0.0225'
     ordering: '999'
@@ -206,6 +213,7 @@ assets:
   labels:
   - externalId: plant
   metadata:
+    connection_losses: '0.0'
     display_name: Scott
     head_loss_factor: '0.003399'
     ordering: '999'
@@ -219,6 +227,7 @@ assets:
   labels:
   - externalId: plant
   metadata:
+    connection_losses: '0.0'
     display_name: Strand_krv
     head_loss_factor: '0.0'
     ordering: '999'
