@@ -10,6 +10,8 @@ from cognite.powerops.resync.models.base import CDFSequence
 p_min_fallback = 0.0
 p_max_fallback = 100_000_000_000_000_000_00.0
 head_loss_factor_fallback = 0.0
+connection_losses_fallback = 0.0
+inlet_reservoir_fallback = ""
 
 
 def round_sig(x: float, sig: int = 2):
@@ -132,13 +134,14 @@ def _plant_to_inlet_reservoir_with_losses(
                     loss_order = connection["order"]
                     sum_losses += junction_losses[order_to_loss_factor_key[loss_order]]
             elif connection_name in all_tunnels:
-                tunnel_loss = all_tunnels[connection_name]["loss_factor"]
+                tunnel_loss = all_tunnels[connection_name].get("loss_factor", 0)
                 sum_losses += tunnel_loss
         return sum_losses
 
     queue = []
     connection_by_id = dict(enumerate(all_connections))
     track_connection_paths = []
+    last_connection_id = None
 
     for connection_id, connection in connection_by_id.items():
         if (
@@ -173,6 +176,9 @@ def _plant_to_inlet_reservoir_with_losses(
                     queue.append((candidate_connection_id, candidate_connection))
                     new_path_list = get_connection_path_from_last_visited(track_connection_paths, connection_id)
                     track_connection_paths.append([*new_path_list, candidate_connection_id])
+
+    if last_connection_id is None:
+        return (inlet_reservoir_fallback, connection_losses_fallback)  # TODO: raise an error here instead?
 
     connection_path = get_connection_path_from_last_visited(track_connection_paths, last_connection_id)
 
