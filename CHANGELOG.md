@@ -13,6 +13,12 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.70.1] - 2023-10-17
+### Fixed
+* Return default value for `loss_factor` when the field is missing in model_raw file for a plant
+* Add default value for a plant's `connection_losses`
+* Safe return when no inlet reservoir is found for a plant
+
 ## [0.70.0] - 2023-10-16
 ### Added
 * Extended the plant production model to include losses from water running between plant and inlet reservoir
