@@ -12,6 +12,7 @@ from typing_extensions import TypeAlias
 
 from cognite.powerops.client._generated.cogshop1 import data_classes as cogshop_v1
 from cognite.powerops.resync import config
+from cognite.powerops.prerun_transformations.transformations import Transformation as TransformationV2
 from cognite.powerops.resync.models.base import CDFFile, Model
 from cognite.powerops.utils.serialization import load_yaml
 
@@ -121,4 +122,15 @@ def _create_transformation(order: int, transformation: dict | config.Transformat
     external_id = f"Tr_{transformation.transformation.name}_{dumped_kwargs}_{order}"
     return cogshop_v1.TransformationApply(
         external_id=external_id, method=transformation.transformation.name, arguments=dumped_kwargs, order=order
+    )
+
+def _create_transformationV2(order: int, transformation: dict | TransformationV2) -> cogshop_v1.TransformationApply:
+    if isinstance(transformation, dict):
+        transformation = TransformationV2.load(transformation)
+    dumped_input_args = json.dumps(transformation.input_to_dict() or {}, separators=(",", ":"), ensure_ascii=False)
+    external_id = f"Tr_{transformation.name()}_{dumped_input_args}_{order}"
+    if len(external_id) > 255:
+        external_id = f"Tr_{transformation.name()}_{dumped_input_args[:len(dumped_input_args) // 2]}_{order}"
+    return cogshop_v1.TransformationApply(
+        external_id=external_id, method=transformation.name(), arguments=dumped_input_args, order=order
     )
