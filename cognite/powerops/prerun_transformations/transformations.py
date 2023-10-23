@@ -605,9 +605,7 @@ class MultiplyFromOffset(Transformation):
     relative_datapoints: list[RelativeDatapoint]
 
     def input_to_dict(self) -> dict:
-        return {
-            f"minute_{r_point.offset_minute}": f"value_{r_point.offset_value}" for r_point in self.relative_datapoints
-        }
+        return {f"{int(r_point.offset_minute)}": f"{r_point.offset_value}" for r_point in self.relative_datapoints}
 
     def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
         """
