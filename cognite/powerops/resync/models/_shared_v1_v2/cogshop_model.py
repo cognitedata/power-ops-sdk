@@ -11,8 +11,8 @@ from pydantic import Field, field_validator
 from typing_extensions import TypeAlias
 
 from cognite.powerops.client._generated.cogshop1 import data_classes as cogshop_v1
-from cognite.powerops.resync import config
 from cognite.powerops.prerun_transformations.transformations import Transformation as TransformationV2
+from cognite.powerops.resync import config
 from cognite.powerops.resync.models.base import CDFFile, Model
 from cognite.powerops.utils.serialization import load_yaml
 
@@ -123,6 +123,7 @@ def _create_transformation(order: int, transformation: dict | config.Transformat
     return cogshop_v1.TransformationApply(
         external_id=external_id, method=transformation.transformation.name, arguments=dumped_kwargs, order=order
     )
+
 
 def _create_transformationV2(order: int, transformation: dict | TransformationV2) -> cogshop_v1.TransformationApply:
     if isinstance(transformation, dict):

@@ -14,7 +14,6 @@ from typing_extensions import Self
 
 from cognite.powerops.utils.cdf.calls import retrieve_range
 
-
 logger = getLogger(__name__)
 
 
@@ -58,7 +57,6 @@ def _relative_datapoints_to_series(
 
 
 class Transformation(BaseModel, ABC):
-
     @property
     def name(self):
         return self.__repr_name__
@@ -71,7 +69,7 @@ class Transformation(BaseModel, ABC):
         else:
             return _TRANSFORMATIONS_BY_CLASS_NAME[transformation_name].__call__()
 
-    #TODO: have  validator that checks that this dict (later json)
+    # TODO: have  validator that checks that this dict (later json)
     # does not exceed the DM limit of 255 characters for a string?
     def input_to_dict(self) -> dict:
         return {}
@@ -192,7 +190,6 @@ class MultiplyConstant(Transformation):
     def input_to_dict(self) -> dict:
         return {"constant": self.constant}
 
-
     def apply(
         self,
         time_series_data: tuple[pd.Series],
@@ -222,8 +219,7 @@ class StaticValues(DynamicTransformation):
     _start: datetime
 
     def input_to_dict(self) -> dict:
-        return {f"{int(r_point.offset_minute)}": f"{r_point.offset_value}"
-                for r_point in self.relative_datapoints}
+        return {f"{int(r_point.offset_minute)}": f"{r_point.offset_value}" for r_point in self.relative_datapoints}
 
     @property
     def start(self):
@@ -441,8 +437,7 @@ class HeightToVolume(DynamicTransformation):
         self._pre_apply_has_run = value
 
     def input_to_dict(self) -> dict:
-        return {"object_type": self.object_type,
-                "object_name": self.object_name}
+        return {"object_type": self.object_type, "object_name": self.object_name}
 
     @staticmethod
     def height_to_volume(time_series_data: pd.Series, heights: list[float], volumes: list[float]) -> pd.Series:
@@ -540,8 +535,7 @@ class AddFromOffset(Transformation):
     relative_datapoints: list[RelativeDatapoint]
 
     def input_to_dict(self) -> dict:
-        return {f"{int(r_point.offset_minute)}": f"{r_point.offset_value}"
-                for r_point in self.relative_datapoints}
+        return {f"{int(r_point.offset_minute)}": f"{r_point.offset_value}" for r_point in self.relative_datapoints}
 
     def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
         """
@@ -611,8 +605,9 @@ class MultiplyFromOffset(Transformation):
     relative_datapoints: list[RelativeDatapoint]
 
     def input_to_dict(self) -> dict:
-        return {f"minute_{r_point.offset_minute}": f"value_{r_point.offset_value}"
-                for r_point in self.relative_datapoints}
+        return {
+            f"minute_{r_point.offset_minute}": f"value_{r_point.offset_value}" for r_point in self.relative_datapoints
+        }
 
     def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
         """
@@ -717,9 +712,11 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
         self._pre_apply_has_run = value
 
     def input_to_dict(self) -> dict:
-        return {"discharge": self.discharge_ts_external_id,
-                "transit_object": self.transit_object_type,
-                "transit_name": self.transit_object_name}
+        return {
+            "discharge": self.discharge_ts_external_id,
+            "transit_object": self.transit_object_type,
+            "transit_name": self.transit_object_name,
+        }
 
     @staticmethod
     def get_shape(model: dict, transit_object_type: str, transit_object_name: str) -> dict[int, float]:
