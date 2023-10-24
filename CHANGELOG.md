@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.70.2] - 2023-10-24
+### Improved
+* API call to create execution pipeline run will now be retried 5 times.
+
 ## [0.70.1] - 2023-10-17
 ### Fixed
 * Return default value for `loss_factor` when the field is missing in model_raw file for a plant
