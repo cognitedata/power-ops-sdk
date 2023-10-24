@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import logging
 import traceback
 from collections.abc import Iterable
 from dataclasses import dataclass, field
@@ -12,6 +13,10 @@ from cognite.client import CogniteClient
 from cognite.client._constants import MAX_VALID_INTERNAL_ID
 from cognite.client.data_classes import ExtractionPipeline, ExtractionPipelineRun
 from cognite.client.exceptions import CogniteAPIError
+
+from cognite.powerops.utils.retry import retry
+
+logger = logging.getLogger(__name__)
 
 MSG_CHAR_LIMIT = 1000
 
@@ -92,7 +97,7 @@ class PipelineRun:
             status=self.status.value, extpipe_external_id=self.pipeline_external_id, message=message
         )
         if not self.is_dry_run:
-            self.client.extraction_pipelines.runs.create(run)
+            retry(tries=5, delay=1, backoff=3, logger=logger)(self.client.extraction_pipelines.runs.create)(run)
 
         return suppress_exception
 
