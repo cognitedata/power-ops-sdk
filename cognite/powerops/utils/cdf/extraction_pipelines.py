@@ -32,6 +32,7 @@ class _Config:
     dump_truncated_to_file: bool = True
     message_keys_skip: list[str] = field(default_factory=list)
     truncate_keys: list[str] = field(default_factory=list)
+    reverse_truncate_keys: list[str] = field(default_factory=list)
     log_file_prefix: str | None = None
 
 
@@ -138,26 +139,30 @@ class PipelineRun:
             value = data[key]
             data[key] = self._as_json(value) if isinstance(value, (dict, list)) else str(value)
 
-        dumped = self._as_json(data)
-        if (above_limit := len(dumped) - MSG_CHAR_LIMIT) > 0:
+        truncating = len(self._as_json(data)) - MSG_CHAR_LIMIT > 0
+        truncate_keys = self.config.truncate_keys + list(
+            set(data) - {self.log_file_id, self.log_file_external_id} - set(self.config.truncate_keys)
+        )
+        while truncate_keys and (above_limit := len(self._as_json(data)) - MSG_CHAR_LIMIT) > 0:
             # In case, truncating the specified keys is not enough, we also start to truncate everything else.
-            truncate_keys = self.config.truncate_keys + list(
-                set(data) - {self.log_file_id, self.log_file_external_id} - set(self.config.truncate_keys)
-            )
-            for key in truncate_keys:
-                if key not in data:
-                    continue
+            key = truncate_keys.pop(0)
+            if key not in data:
+                continue
 
-                entry_length = len(data[key])
-                if entry_length >= above_limit + 3:
-                    data[key] = data[key][: entry_length - (above_limit + 3)] + "..."
-                    break
-                elif entry_length < 3:
-                    continue
+            entry_length = len(data[key])
+            if entry_length < 3:
+                continue
+
+            if entry_length >= above_limit + 3:
+                trim_len = entry_length - (above_limit + 3)
+                if key in self.config.reverse_truncate_keys:
+                    data[key] = "..." + data[key][-trim_len:]
                 else:
-                    reduction = min((above_limit + 3) - entry_length, entry_length)
-                    data[key] = "..."
-                    above_limit = above_limit - reduction
+                    data[key] = data[key][:trim_len] + "..."
+            else:
+                data[key] = "..."
+
+        if truncating:
             # We dump all data to the file, even the keys which are not truncated.
             for key, value in self.data.items():
                 if key in {self.log_file_id, self.log_file_external_id}:
@@ -197,7 +202,7 @@ class ExtractionPipelineCreate:
         truncate_keys_first: The keys to truncate first. This is useful when you expect the data to be too large too
             to be stored in a message field of the extraction pipeline run, and you want to select which keys
             to truncate first.
-
+        reverse_truncate_keys: Keys with important content at the end, so trim the start of the content.
     """
 
     def __init__(
@@ -208,6 +213,7 @@ class ExtractionPipelineCreate:
         dump_truncated_to_file: bool = True,
         message_keys_skip: Optional[list[str]] = None,
         truncate_keys_first: Optional[list[str]] = None,
+        reverse_truncate_keys: Optional[list[str]] = None,
         log_file_prefix: str | None = None,
     ) -> None:
         self.external_id = external_id
@@ -219,6 +225,7 @@ class ExtractionPipelineCreate:
             dump_truncated_to_file=dump_truncated_to_file,
             message_keys_skip=message_keys_skip or [],
             truncate_keys=truncate_keys_first or [],
+            reverse_truncate_keys=reverse_truncate_keys or [],
             log_file_prefix=log_file_prefix,
         )
 
