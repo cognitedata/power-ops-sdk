@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.70.3] - 2023-10-25
+### Improved
+* Tweaked the logic for trimming of error messages for extraction pipeline runs.
+
 ## [0.70.2] - 2023-10-24
 ### Improved
 * API call to create execution pipeline run will now be retried 5 times.
