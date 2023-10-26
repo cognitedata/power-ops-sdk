@@ -11,7 +11,7 @@ import yaml
 from cognite.client import CogniteClient
 from cognite.client.data_classes import FileMetadata
 
-from cognite.powerops.client.shop.data_classes import ShopLogFile, ShopResultFile, ShopYamlFile
+from cognite.powerops.client.shop.data_classes.shop_result_files import ShopLogFile, ShopResultFile, ShopYamlFile
 from cognite.powerops.utils.cdf.calls import retrieve_relationships_from_source_ext_id
 
 logger = logging.getLogger(__name__)

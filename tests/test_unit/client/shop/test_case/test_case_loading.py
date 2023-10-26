@@ -3,12 +3,12 @@ from pathlib import Path
 import pytest
 import yaml
 
-from cognite.powerops.client.shop.data_classes import Case
+from cognite.powerops.client.shop.data_classes import ShopCase
 
 
 @pytest.fixture
 def case():
-    return Case(
+    return ShopCase(
         """
         foo:
           bar:
@@ -20,12 +20,12 @@ def case():
 
 
 def test_case_loading():
-    case = Case("""foo: bar""")
+    case = ShopCase("""foo: bar""")
     assert case.data == {"foo": "bar"}
 
 
 def test_multipart_case_loading():
-    case = Case(
+    case = ShopCase(
         """
 foo: bar
 ---
@@ -34,9 +34,8 @@ baz: zzz
     )
     assert case.data == {"foo": "bar"}
 
-    assert len(case.extra_files) == 1
-    with Path(case.extra_files[0]["file"]).open() as fh:
-        extra = fh.read()
+    assert len(case.excess_yaml_parts) == 1
+    extra = case.excess_yaml_parts[0]
     assert extra == "baz: zzz\n"
 
 
@@ -50,6 +49,18 @@ def test_yaml(case):
     assert expected == case.yaml
 
 
+def test_yaml_keep_excess_parts(case):
+    case = ShopCase(
+        """
+foo: bar
+---
+baz: zzz
+"""
+    )
+    full_case = case.yaml
+    assert full_case == "foo: bar\n---\nbaz: zzz\n"
+
+
 def test_save_yaml(case, tmp_path: Path):
     tmp_file = tmp_path / "test_save.yaml"
     case.save_yaml(tmp_file)
@@ -61,5 +72,5 @@ def test_load_yaml(tmp_path: Path):
     with (tmp_path / "test_load.yaml").open("w") as fh:
         fh.write("foo:\n  bar")
         fh.flush()
-        case = Case.from_yaml_file(fh.name)
+        case = ShopCase().load_case_file(fh.name)
     assert case.data == {"foo": "bar"}

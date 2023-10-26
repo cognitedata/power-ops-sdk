@@ -70,3 +70,10 @@ def test_get_log_files(shop_run_success: SHOPRun) -> None:
         assert isinstance(result_file, tuple)
         assert isinstance(result_file[0], str)
         assert isinstance(result_file[1], str)
+
+
+@pytest.mark.cdf
+def test_case_from_event(powerops_client: PowerOpsClient) -> None:
+    shop_run = powerops_client.shop.retrieve("POWEROPS_SHOP_RUN_2023-10-26T09:56:27.964670Z_efc805")
+    case = shop_run.to_case()
+    assert all(key in case.data for key in ["commands", "time", "model", "connections"])

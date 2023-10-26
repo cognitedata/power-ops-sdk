@@ -13,6 +13,9 @@ from cognite.client.data_classes.events import Event
 from cognite.client.utils import datetime_to_ms, ms_to_datetime
 from typing_extensions import Self
 
+from cognite.powerops.client.shop.data_classes import ShopCase
+from cognite.powerops.client.shop.data_classes.shop_file import SHOPFileReference
+
 try:
     from enum import StrEnum
 except ImportError:
@@ -45,19 +48,6 @@ class ShopRunEvent:
 
 
 @dataclass
-class SHOPFile:
-    external_id: str
-    file_type: str
-
-    @classmethod
-    def load(cls, data: dict[str, Any]) -> Self:
-        return cls(external_id=data["external_id"], file_type=data["file_type"])
-
-    def dump(self) -> dict[str, Any]:
-        return {"external_id": self.external_id, "file_type": self.file_type}
-
-
-@dataclass
 class SHOPRun:
     """
     This represents a single SHOP run.
@@ -75,12 +65,13 @@ class SHOPRun:
 
     external_id: str
     watercourse: str
+    data_set_id: int
     start: datetime | None
     end: datetime | None
     shop_version: str
     source: str | None
     _case_file_external_id: str
-    _shop_files: list[SHOPFile]
+    _shop_files: list[SHOPFileReference]
     _client: CogniteClient = field(repr=False)
     _run_event_types: set[str] = field(init=False, default_factory=set)
 
@@ -109,12 +100,13 @@ class SHOPRun:
 
         return cls(
             external_id=event.external_id,
+            data_set_id=event.data_set_id,
             watercourse=metadata.get(ShopRunEvent.watercourse, ""),
             start=ms_to_datetime(event.start_time) if event.start_time else None,
             end=ms_to_datetime(event.end_time) if event.end_time else None,
             shop_version=preprocessor_data.get(ShopRunEvent.shop_version, ""),
             _case_file_external_id=preprocessor_data.get(ShopRunEvent.case_file, {}).get("external_id"),
-            _shop_files=[SHOPFile.load(item) for item in preprocessor_data.get(ShopRunEvent.shop_files, [])],
+            _shop_files=[SHOPFileReference.load(item) for item in preprocessor_data.get(ShopRunEvent.shop_files, [])],
             _client=event._cognite_client,
             source=event.source,
         )
@@ -127,11 +119,11 @@ class SHOPRun:
     def shop_files_external_ids(self) -> list[dict[str, Any]]:
         return [shop_file.dump() for shop_file in self._shop_files]
 
-    def as_cdf_event(self, data_set_id: int) -> Event:
+    def as_cdf_event(self) -> Event:
         return Event(
             external_id=self.external_id,
             type=ShopRunEvent.event_type,
-            data_set_id=data_set_id,
+            data_set_id=self.data_set_id,
             start_time=datetime_to_ms(self.start),
             end_time=datetime_to_ms(self.end) if self.end else None,
             metadata={
@@ -169,14 +161,18 @@ class SHOPRun:
             "shop_version": self.shop_version,
         }
 
+    def to_case(self):
+        """Make a new ShopCase from this SHOPRun."""
+        return ShopCase(data=self.get_case_file(), shop_files=self._shop_files.copy(), watercourse=self.watercourse)
+
     def _download_file(self, external_id: str) -> str:
-        bytes = self._client.files.download_bytes(external_id=external_id)
+        content_bytes = self._client.files.download_bytes(external_id=external_id)
         try:
-            return bytes.decode("utf-8")
+            return content_bytes.decode("utf-8")
         except UnicodeDecodeError:
             # SHOP sometimes writes files with Windows-1252 encoding (ASCII)
             # Trying to recover.
-            return bytes.decode("Windows-1252")
+            return content_bytes.decode("Windows-1252")
 
     def get_case_file(self) -> str:
         """
@@ -243,6 +239,12 @@ class SHOPRun:
 
     def _repr_html_(self) -> str:
         return pd.Series(self.dump()).to_frame().rename(columns={0: "Value"})._repr_html_()
+
+    def __str__(self) -> str:
+        """
+        Returns a human-readable dump of the SHOP run.
+        """
+        return json.dumps(self.dump(), indent=4, default=str)
 
 
 class SHOPRunList(UserList):
