@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.71.0] - 2023-10-25
+### Changed
+* Triggering a SHOP run from local environment is now easier, using `ShopCase`.
+
 ## [0.70.3] - 2023-10-25
 ### Improved
 * Tweaked the logic for trimming of error messages for extraction pipeline runs.
