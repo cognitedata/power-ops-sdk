@@ -231,6 +231,19 @@ class SHOPRun:
         self._update_run_events()
         return self._check_status(update_events=False)
 
+    def get_failure_info(self) -> dict | None:
+        relationships = self._client.relationships.list(
+            source_external_ids=[self.external_id], target_types=["event"], fetch_resources=True
+        )
+        failure_events = [rel.target for rel in relationships if rel.target.type == SHOPProcessEvents.failed]
+        if not failure_events:
+            return None
+        failure_event = sorted(failure_events, key=lambda event: -event.created_time)[0]
+        return {
+            "error": failure_event.metadata.get("errorStackTrace"),
+            "failures": failure_event.metadata.get("failures"),
+        }
+
     def _update_run_events(self) -> None:
         relationships = self._client.relationships.list(
             source_external_ids=[self.external_id], target_types=["event"], fetch_resources=True
