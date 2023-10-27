@@ -12,7 +12,7 @@ from cognite.powerops.client.shop.data_classes.shop_file import SHOPFileReferenc
 logger = logging.getLogger(__name__)
 
 
-class ShopCase:
+class SHOPCase:
     r"""
     Wrapper around YAML file for SHOP, describing a case.
 
@@ -25,7 +25,7 @@ class ShopCase:
 
     Examples:
       * load a case from string
-          >>> case = ShopCase('''
+          >>> case = SHOPCase('''
           ... foo:
           ...   bar1: 11
           ...   bar2: 22

@@ -13,7 +13,7 @@ from cognite.client.data_classes.events import Event
 from cognite.client.utils import datetime_to_ms, ms_to_datetime
 from typing_extensions import Self
 
-from cognite.powerops.client.shop.data_classes import ShopCase
+from cognite.powerops.client.shop.data_classes import SHOPCase
 from cognite.powerops.client.shop.data_classes.shop_file import SHOPFileReference
 
 try:
@@ -162,8 +162,8 @@ class SHOPRun:
         }
 
     def to_case(self):
-        """Make a new ShopCase from this SHOPRun."""
-        return ShopCase(data=self.get_case_file(), shop_files=self._shop_files.copy(), watercourse=self.watercourse)
+        """Make a new SHOPCase from this SHOPRun."""
+        return SHOPCase(data=self.get_case_file(), shop_files=self._shop_files.copy(), watercourse=self.watercourse)
 
     def _download_file(self, external_id: str) -> str:
         content_bytes = self._client.files.download_bytes(external_id=external_id)

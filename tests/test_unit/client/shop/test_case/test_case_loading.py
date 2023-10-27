@@ -3,12 +3,12 @@ from pathlib import Path
 import pytest
 import yaml
 
-from cognite.powerops.client.shop.data_classes import ShopCase
+from cognite.powerops.client.shop.data_classes import SHOPCase
 
 
 @pytest.fixture
 def case():
-    return ShopCase(
+    return SHOPCase(
         """
         foo:
           bar:
@@ -20,12 +20,12 @@ def case():
 
 
 def test_case_loading():
-    case = ShopCase("""foo: bar""")
+    case = SHOPCase("""foo: bar""")
     assert case.data == {"foo": "bar"}
 
 
 def test_multipart_case_loading():
-    case = ShopCase(
+    case = SHOPCase(
         """
 foo: bar
 ---
@@ -50,7 +50,7 @@ def test_yaml(case):
 
 
 def test_yaml_keep_excess_parts(case):
-    case = ShopCase(
+    case = SHOPCase(
         """
 foo: bar
 ---
@@ -72,5 +72,5 @@ def test_load_yaml(tmp_path: Path):
     with (tmp_path / "test_load.yaml").open("w") as fh:
         fh.write("foo:\n  bar")
         fh.flush()
-        case = ShopCase().load_case_file(fh.name)
+        case = SHOPCase().load_case_file(fh.name)
     assert case.data == {"foo": "bar"}

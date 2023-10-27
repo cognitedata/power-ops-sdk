@@ -16,7 +16,7 @@ from cognite.powerops.cdf_labels import RelationshipLabel
 from cognite.powerops.client.shop.shop_run_filter import SHOPRunFilter
 from cognite.powerops.utils.cdf.resource_creation import simple_relationship
 
-from .data_classes import ShopCase
+from .data_classes import SHOPCase
 from .shop_run import SHOPRun, ShopRunEvent, SHOPRunList
 from .utils import new_external_id
 
@@ -31,12 +31,12 @@ class SHOPRunAPI:
         self._dataset_id = dataset_id
         self.cogshop_version = cogshop_version
 
-    def trigger_case(self, case: ShopCase, source: str | None = None) -> SHOPRun:
+    def trigger_case(self, case: SHOPCase, source: str | None = None) -> SHOPRun:
         """
         Trigger SHOP for a given case file.
 
         Args:
-            case: ShopCase instance, contains data for the main case file and references to additional SHOP input files.
+            case: SHOPCase instance, contains data for the main case file and references to additional SHOP input files.
             source: The source of the SHOP trigger. If nothing is passed, the method will
                 try to detect the service principal of the current user.
 

@@ -15,7 +15,7 @@ Changes are grouped as follows
 
 ## [0.71.0] - 2023-10-25
 ### Changed
-* Triggering a SHOP run from local environment is now easier, using `ShopCase`.
+* Triggering a SHOP run from local environment is now easier, using `SHOPCase`.
 
 ## [0.70.3] - 2023-10-25
 ### Improved
