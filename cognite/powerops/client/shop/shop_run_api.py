@@ -16,7 +16,7 @@ from cognite.powerops.cdf_labels import RelationshipLabel
 from cognite.powerops.client.shop.shop_run_filter import SHOPRunFilter
 from cognite.powerops.utils.cdf.resource_creation import simple_relationship
 
-from .data_classes import SHOPCase
+from .shop_case import SHOPCase
 from .shop_run import SHOPRun, ShopRunEvent, SHOPRunList
 from .utils import new_external_id
 

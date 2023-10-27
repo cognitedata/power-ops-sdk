@@ -3,7 +3,7 @@ from pathlib import Path
 import pytest
 import yaml
 
-from cognite.powerops.client.shop.data_classes import SHOPCase
+from cognite.powerops.client.shop.shop_case import SHOPCase
 
 
 @pytest.fixture

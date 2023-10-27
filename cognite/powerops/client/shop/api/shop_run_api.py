@@ -14,7 +14,7 @@ from cognite.client.utils._time import datetime_to_ms, time_ago_to_ms
 from cognite.powerops.cdf_labels import RelationshipLabel
 from cognite.powerops.client.data_set_api import DataSetsAPI
 from cognite.powerops.client.shop.api.shop_results_api import ShopRunResultsAPI
-from cognite.powerops.client.shop.data_classes import SHOPCase, ShopRun, ShopRunEvent
+from cognite.powerops.client.shop.data_classes import Case, ShopRun, ShopRunEvent
 from cognite.powerops.utils.cdf.calls import retrieve_event
 from cognite.powerops.utils.cdf.resource_creation import simple_relationship
 
@@ -36,7 +36,7 @@ class ShopRunsAPI:
         self._result_api = result_api
         self._cogshop_version = cogshop_version
 
-    def trigger(self, case: SHOPCase) -> ShopRun:
+    def trigger(self, case: Case) -> ShopRun:
         """
         Trigger a SHOP run for a given case.
 
@@ -51,7 +51,7 @@ class ShopRunsAPI:
         self._post_shop_run(shop_run.shop_run_event.external_id)
         return shop_run
 
-    def _upload_to_cdf(self, case: SHOPCase) -> ShopRun:
+    def _upload_to_cdf(self, case: Case) -> ShopRun:
         shop_run_event = ShopRunEvent(
             watercourse="",
             starttime=case.data["time"]["starttime"],
