@@ -16,6 +16,7 @@ from cognite.client.exceptions import CogniteAPIError
 
 from cognite.powerops.client.shop.shop_run_filter import SHOPRunFilter
 
+from .data_classes.workflow import ShopCase
 from .shop_run import SHOPRun, ShopRunEvent, SHOPRunList
 
 DEFAULT_READ_LIMIT = 25
@@ -30,6 +31,12 @@ class SHOPRunAPI:
         self._cdf = client
         self._dataset_id = dataset_id
         self.cogshop_version = cogshop_version
+
+    def trigger_prerun_files(self, pre_runs: list[ShopCase]) -> list[SHOPRun]:
+        """
+        Trigger a shop run for each ShopCase
+        """
+        ...
 
     def trigger_case(self, case_file: str, watercourse: str, source: str | None = None) -> SHOPRun:
         """
