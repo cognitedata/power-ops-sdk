@@ -24,4 +24,5 @@ def simple_relationship(
         source_external_id=source.external_id,
         target_external_id=target.external_id,
         labels=[label_external_id],
+        data_set_id=source.data_set_id,
     )
