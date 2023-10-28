@@ -60,7 +60,9 @@
       name: BidInterval
       nullable: true
       type:
-        container: null
+        container:
+          space: power-ops
+          externalId: TimeInterval
         type: direct
     Country:
       type:
@@ -153,7 +155,9 @@
   properties:
     TimeInterval:
       type:
-        container: null
+        container:
+          space: power-ops
+          externalId: TimeInterval
         type: direct
       nullable: true
       autoIncrement: false
