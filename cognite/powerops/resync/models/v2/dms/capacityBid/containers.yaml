@@ -177,9 +177,8 @@
   properties:
     Start:
       type:
-        list: true
-        collation: ucs_basic
-        type: text
+        list: false
+        type: timestamp
       nullable: true
       autoIncrement: false
       name: Start
@@ -187,9 +186,8 @@
       description: missing
     End:
       type:
-        list: true
-        collation: ucs_basic
-        type: text
+        list: false
+        type: timestamp
       nullable: true
       autoIncrement: false
       name: End
