@@ -5,7 +5,7 @@
   properties:
     DocumentTypeName:
       type:
-        list: true
+        list: false
         collation: ucs_basic
         type: text
       nullable: true
@@ -15,7 +15,7 @@
       description: missing
     ProcessTypeName:
       type:
-        list: true
+        list: false
         collation: ucs_basic
         type: text
       nullable: true
@@ -25,7 +25,7 @@
       description: missing
     TSO:
       type:
-        list: true
+        list: false
         collation: ucs_basic
         type: text
       nullable: true
@@ -35,7 +35,7 @@
       description: missing
     Owner:
       type:
-        list: true
+        list: false
         collation: ucs_basic
         type: text
       nullable: true
@@ -45,9 +45,8 @@
       description: missing
     CreatedDateTime:
       type:
-        list: true
-        collation: ucs_basic
-        type: text
+        list: false
+        type: timestamp
       nullable: true
       autoIncrement: false
       name: CreatedDateTime
@@ -64,7 +63,7 @@
         type: direct
     Country:
       type:
-        list: true
+        list: false
         collation: ucs_basic
         type: text
       nullable: true
@@ -74,7 +73,7 @@
       description: missing
     Origin:
       type:
-        list: true
+        list: false
         collation: ucs_basic
         type: text
       nullable: true
@@ -89,7 +88,7 @@
   properties:
     BidType:
       type:
-        list: true
+        list: false
         collation: ucs_basic
         type: text
       nullable: true
@@ -99,7 +98,7 @@
       description: missing
     MeasureUnit:
       type:
-        list: true
+        list: false
         collation: ucs_basic
         type: text
       nullable: true
@@ -109,7 +108,7 @@
       description: missing
     Currency:
       type:
-        list: true
+        list: false
         collation: ucs_basic
         type: text
       nullable: true
@@ -119,7 +118,7 @@
       description: missing
     Price:
       type:
-        list: true
+        list: false
         type: float64
       nullable: true
       autoIncrement: false
@@ -128,7 +127,7 @@
       description: missing
     DirectionName:
       type:
-        list: true
+        list: false
         collation: ucs_basic
         type: text
       nullable: true
@@ -138,7 +137,7 @@
       description: missing
     ReserveObject:
       type:
-        list: true
+        list: false
         collation: ucs_basic
         type: text
       nullable: true
@@ -162,7 +161,7 @@
       description: missing
     Resolution:
       type:
-        list: true
+        list: false
         collation: ucs_basic
         type: text
       nullable: true
@@ -200,7 +199,7 @@
   properties:
     ReserveObject:
       type:
-        list: true
+        list: false
         collation: ucs_basic
         type: text
       nullable: true
