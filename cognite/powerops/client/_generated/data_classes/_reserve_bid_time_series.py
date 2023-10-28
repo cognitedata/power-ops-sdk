@@ -37,12 +37,12 @@ _RESERVEBIDTIMESERIES_PROPERTIES_BY_FIELD = {
 
 class ReserveBidTimeSeries(DomainModel):
     space: str = "power-ops"
-    bid_type: Optional[list[str]] = Field(None, alias="BidType")
-    measure_unit: Optional[list[str]] = Field(None, alias="MeasureUnit")
-    currency: Optional[list[str]] = Field(None, alias="Currency")
-    price: Optional[list[float]] = Field(None, alias="Price")
-    direction_name: Optional[list[str]] = Field(None, alias="DirectionName")
-    reserve_object: Optional[list[str]] = Field(None, alias="ReserveObject")
+    bid_type: Optional[str] = Field(None, alias="BidType")
+    measure_unit: Optional[str] = Field(None, alias="MeasureUnit")
+    currency: Optional[str] = Field(None, alias="Currency")
+    price: Optional[float] = Field(None, alias="Price")
+    direction_name: Optional[str] = Field(None, alias="DirectionName")
+    reserve_object: Optional[str] = Field(None, alias="ReserveObject")
     periods: Optional[list[str]] = Field(None, alias="Periods")
 
     def as_apply(self) -> ReserveBidTimeSeriesApply:
@@ -60,12 +60,12 @@ class ReserveBidTimeSeries(DomainModel):
 
 class ReserveBidTimeSeriesApply(DomainModelApply):
     space: str = "power-ops"
-    bid_type: Optional[list[str]] = Field(None, alias="BidType")
-    measure_unit: Optional[list[str]] = Field(None, alias="MeasureUnit")
-    currency: Optional[list[str]] = Field(None, alias="Currency")
-    price: Optional[list[float]] = Field(None, alias="Price")
-    direction_name: Optional[list[str]] = Field(None, alias="DirectionName")
-    reserve_object: Optional[list[str]] = Field(None, alias="ReserveObject")
+    bid_type: Optional[str] = Field(None, alias="BidType")
+    measure_unit: Optional[str] = Field(None, alias="MeasureUnit")
+    currency: Optional[str] = Field(None, alias="Currency")
+    price: Optional[float] = Field(None, alias="Price")
+    direction_name: Optional[str] = Field(None, alias="DirectionName")
+    reserve_object: Optional[str] = Field(None, alias="ReserveObject")
     periods: Union[list[PeriodsApply], list[str], None] = Field(default=None, repr=False, alias="Periods")
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:

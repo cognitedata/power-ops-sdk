@@ -127,6 +127,8 @@ class PeriodsAPI(TypeAPI[Periods, PeriodsApply, PeriodsList]):
         self,
         query: str,
         properties: PeriodsTextFields | Sequence[PeriodsTextFields] | None = None,
+        resolution: str | list[str] | None = None,
+        resolution_prefix: str | None = None,
         time_interval: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -134,6 +136,8 @@ class PeriodsAPI(TypeAPI[Periods, PeriodsApply, PeriodsList]):
     ) -> PeriodsList:
         filter_ = _create_filter(
             self._view_id,
+            resolution,
+            resolution_prefix,
             time_interval,
             external_id_prefix,
             filter,
@@ -151,6 +155,8 @@ class PeriodsAPI(TypeAPI[Periods, PeriodsApply, PeriodsList]):
         group_by: None = None,
         query: str | None = None,
         search_properties: PeriodsTextFields | Sequence[PeriodsTextFields] | None = None,
+        resolution: str | list[str] | None = None,
+        resolution_prefix: str | None = None,
         time_interval: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -169,6 +175,8 @@ class PeriodsAPI(TypeAPI[Periods, PeriodsApply, PeriodsList]):
         group_by: PeriodsFields | Sequence[PeriodsFields] = None,
         query: str | None = None,
         search_properties: PeriodsTextFields | Sequence[PeriodsTextFields] | None = None,
+        resolution: str | list[str] | None = None,
+        resolution_prefix: str | None = None,
         time_interval: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -186,6 +194,8 @@ class PeriodsAPI(TypeAPI[Periods, PeriodsApply, PeriodsList]):
         group_by: PeriodsFields | Sequence[PeriodsFields] | None = None,
         query: str | None = None,
         search_property: PeriodsTextFields | Sequence[PeriodsTextFields] | None = None,
+        resolution: str | list[str] | None = None,
+        resolution_prefix: str | None = None,
         time_interval: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -193,6 +203,8 @@ class PeriodsAPI(TypeAPI[Periods, PeriodsApply, PeriodsList]):
     ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
         filter_ = _create_filter(
             self._view_id,
+            resolution,
+            resolution_prefix,
             time_interval,
             external_id_prefix,
             filter,
@@ -215,6 +227,8 @@ class PeriodsAPI(TypeAPI[Periods, PeriodsApply, PeriodsList]):
         interval: float,
         query: str | None = None,
         search_property: PeriodsTextFields | Sequence[PeriodsTextFields] | None = None,
+        resolution: str | list[str] | None = None,
+        resolution_prefix: str | None = None,
         time_interval: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -222,6 +236,8 @@ class PeriodsAPI(TypeAPI[Periods, PeriodsApply, PeriodsList]):
     ) -> dm.aggregations.HistogramValue:
         filter_ = _create_filter(
             self._view_id,
+            resolution,
+            resolution_prefix,
             time_interval,
             external_id_prefix,
             filter,
@@ -239,6 +255,8 @@ class PeriodsAPI(TypeAPI[Periods, PeriodsApply, PeriodsList]):
 
     def list(
         self,
+        resolution: str | list[str] | None = None,
+        resolution_prefix: str | None = None,
         time_interval: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -247,6 +265,8 @@ class PeriodsAPI(TypeAPI[Periods, PeriodsApply, PeriodsList]):
     ) -> PeriodsList:
         filter_ = _create_filter(
             self._view_id,
+            resolution,
+            resolution_prefix,
             time_interval,
             external_id_prefix,
             filter,
@@ -277,11 +297,19 @@ class PeriodsAPI(TypeAPI[Periods, PeriodsApply, PeriodsList]):
 
 def _create_filter(
     view_id: dm.ViewId,
+    resolution: str | list[str] | None = None,
+    resolution_prefix: str | None = None,
     time_interval: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     external_id_prefix: str | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
+    if resolution and isinstance(resolution, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("Resolution"), value=resolution))
+    if resolution and isinstance(resolution, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("Resolution"), values=resolution))
+    if resolution_prefix:
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("Resolution"), value=resolution_prefix))
     if time_interval and isinstance(time_interval, str):
         filters.append(
             dm.filters.Equals(

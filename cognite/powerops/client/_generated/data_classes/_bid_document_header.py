@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import datetime
 from typing import TYPE_CHECKING, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
@@ -20,9 +21,7 @@ __all__ = [
 ]
 
 
-BidDocumentHeaderTextFields = Literal[
-    "document_type_name", "process_type_name", "tso", "owner", "created_date_time", "country", "origin"
-]
+BidDocumentHeaderTextFields = Literal["document_type_name", "process_type_name", "tso", "owner", "country", "origin"]
 BidDocumentHeaderFields = Literal[
     "document_type_name", "process_type_name", "tso", "owner", "created_date_time", "country", "origin"
 ]
@@ -40,14 +39,14 @@ _BIDDOCUMENTHEADER_PROPERTIES_BY_FIELD = {
 
 class BidDocumentHeader(DomainModel):
     space: str = "power-ops"
-    document_type_name: Optional[list[str]] = Field(None, alias="DocumentTypeName")
-    process_type_name: Optional[list[str]] = Field(None, alias="ProcessTypeName")
-    tso: Optional[list[str]] = Field(None, alias="TSO")
-    owner: Optional[list[str]] = Field(None, alias="Owner")
-    created_date_time: Optional[list[str]] = Field(None, alias="CreatedDateTime")
+    document_type_name: Optional[str] = Field(None, alias="DocumentTypeName")
+    process_type_name: Optional[str] = Field(None, alias="ProcessTypeName")
+    tso: Optional[str] = Field(None, alias="TSO")
+    owner: Optional[str] = Field(None, alias="Owner")
+    created_date_time: Optional[datetime.datetime] = Field(None, alias="CreatedDateTime")
     bid_interval: Optional[str] = Field(None, alias="BidInterval")
-    country: Optional[list[str]] = Field(None, alias="Country")
-    origin: Optional[list[str]] = Field(None, alias="Origin")
+    country: Optional[str] = Field(None, alias="Country")
+    origin: Optional[str] = Field(None, alias="Origin")
 
     def as_apply(self) -> BidDocumentHeaderApply:
         return BidDocumentHeaderApply(
@@ -65,14 +64,14 @@ class BidDocumentHeader(DomainModel):
 
 class BidDocumentHeaderApply(DomainModelApply):
     space: str = "power-ops"
-    document_type_name: Optional[list[str]] = Field(None, alias="DocumentTypeName")
-    process_type_name: Optional[list[str]] = Field(None, alias="ProcessTypeName")
-    tso: Optional[list[str]] = Field(None, alias="TSO")
-    owner: Optional[list[str]] = Field(None, alias="Owner")
-    created_date_time: Optional[list[str]] = Field(None, alias="CreatedDateTime")
+    document_type_name: Optional[str] = Field(None, alias="DocumentTypeName")
+    process_type_name: Optional[str] = Field(None, alias="ProcessTypeName")
+    tso: Optional[str] = Field(None, alias="TSO")
+    owner: Optional[str] = Field(None, alias="Owner")
+    created_date_time: Optional[datetime.datetime] = Field(None, alias="CreatedDateTime")
     bid_interval: Union[TimeIntervalApply, str, None] = Field(None, repr=False, alias="BidInterval")
-    country: Optional[list[str]] = Field(None, alias="Country")
-    origin: Optional[list[str]] = Field(None, alias="Origin")
+    country: Optional[str] = Field(None, alias="Country")
+    origin: Optional[str] = Field(None, alias="Origin")
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
@@ -89,7 +88,7 @@ class BidDocumentHeaderApply(DomainModelApply):
         if self.owner is not None:
             properties["Owner"] = self.owner
         if self.created_date_time is not None:
-            properties["CreatedDateTime"] = self.created_date_time
+            properties["CreatedDateTime"] = self.created_date_time.isoformat()
         if self.bid_interval is not None:
             properties["BidInterval"] = {
                 "space": "power-ops",

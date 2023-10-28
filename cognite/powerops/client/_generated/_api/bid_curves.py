@@ -72,12 +72,16 @@ class BidCurvesAPI(TypeAPI[BidCurves, BidCurvesApply, BidCurvesList]):
         self,
         query: str,
         properties: BidCurvesTextFields | Sequence[BidCurvesTextFields] | None = None,
+        reserve_object: str | list[str] | None = None,
+        reserve_object_prefix: str | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> BidCurvesList:
         filter_ = _create_filter(
             self._view_id,
+            reserve_object,
+            reserve_object_prefix,
             external_id_prefix,
             filter,
         )
@@ -94,6 +98,8 @@ class BidCurvesAPI(TypeAPI[BidCurves, BidCurvesApply, BidCurvesList]):
         group_by: None = None,
         query: str | None = None,
         search_properties: BidCurvesTextFields | Sequence[BidCurvesTextFields] | None = None,
+        reserve_object: str | list[str] | None = None,
+        reserve_object_prefix: str | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -111,6 +117,8 @@ class BidCurvesAPI(TypeAPI[BidCurves, BidCurvesApply, BidCurvesList]):
         group_by: BidCurvesFields | Sequence[BidCurvesFields] = None,
         query: str | None = None,
         search_properties: BidCurvesTextFields | Sequence[BidCurvesTextFields] | None = None,
+        reserve_object: str | list[str] | None = None,
+        reserve_object_prefix: str | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -127,12 +135,16 @@ class BidCurvesAPI(TypeAPI[BidCurves, BidCurvesApply, BidCurvesList]):
         group_by: BidCurvesFields | Sequence[BidCurvesFields] | None = None,
         query: str | None = None,
         search_property: BidCurvesTextFields | Sequence[BidCurvesTextFields] | None = None,
+        reserve_object: str | list[str] | None = None,
+        reserve_object_prefix: str | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
         filter_ = _create_filter(
             self._view_id,
+            reserve_object,
+            reserve_object_prefix,
             external_id_prefix,
             filter,
         )
@@ -154,12 +166,16 @@ class BidCurvesAPI(TypeAPI[BidCurves, BidCurvesApply, BidCurvesList]):
         interval: float,
         query: str | None = None,
         search_property: BidCurvesTextFields | Sequence[BidCurvesTextFields] | None = None,
+        reserve_object: str | list[str] | None = None,
+        reserve_object_prefix: str | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         filter_ = _create_filter(
             self._view_id,
+            reserve_object,
+            reserve_object_prefix,
             external_id_prefix,
             filter,
         )
@@ -176,12 +192,16 @@ class BidCurvesAPI(TypeAPI[BidCurves, BidCurvesApply, BidCurvesList]):
 
     def list(
         self,
+        reserve_object: str | list[str] | None = None,
+        reserve_object_prefix: str | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> BidCurvesList:
         filter_ = _create_filter(
             self._view_id,
+            reserve_object,
+            reserve_object_prefix,
             external_id_prefix,
             filter,
         )
@@ -191,10 +211,18 @@ class BidCurvesAPI(TypeAPI[BidCurves, BidCurvesApply, BidCurvesList]):
 
 def _create_filter(
     view_id: dm.ViewId,
+    reserve_object: str | list[str] | None = None,
+    reserve_object_prefix: str | None = None,
     external_id_prefix: str | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
+    if reserve_object and isinstance(reserve_object, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("ReserveObject"), value=reserve_object))
+    if reserve_object and isinstance(reserve_object, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("ReserveObject"), values=reserve_object))
+    if reserve_object_prefix:
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("ReserveObject"), value=reserve_object_prefix))
     if external_id_prefix:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if filter:

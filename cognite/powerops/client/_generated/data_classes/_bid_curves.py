@@ -28,7 +28,7 @@ _BIDCURVES_PROPERTIES_BY_FIELD = {
 
 class BidCurves(DomainModel):
     space: str = "power-ops"
-    reserve_object: Optional[list[str]] = Field(None, alias="ReserveObject")
+    reserve_object: Optional[str] = Field(None, alias="ReserveObject")
     qty: Optional[list[float]] = Field(None, alias="Qty")
 
     def as_apply(self) -> BidCurvesApply:
@@ -41,7 +41,7 @@ class BidCurves(DomainModel):
 
 class BidCurvesApply(DomainModelApply):
     space: str = "power-ops"
-    reserve_object: Optional[list[str]] = Field(None, alias="ReserveObject")
+    reserve_object: Optional[str] = Field(None, alias="ReserveObject")
     qty: Optional[list[float]] = Field(None, alias="Qty")
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:

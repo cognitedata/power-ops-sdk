@@ -141,12 +141,36 @@ class ReserveBidTimeSeriesAPI(TypeAPI[ReserveBidTimeSeries, ReserveBidTimeSeries
         self,
         query: str,
         properties: ReserveBidTimeSeriesTextFields | Sequence[ReserveBidTimeSeriesTextFields] | None = None,
+        bid_type: str | list[str] | None = None,
+        bid_type_prefix: str | None = None,
+        measure_unit: str | list[str] | None = None,
+        measure_unit_prefix: str | None = None,
+        currency: str | list[str] | None = None,
+        currency_prefix: str | None = None,
+        min_price: float | None = None,
+        max_price: float | None = None,
+        direction_name: str | list[str] | None = None,
+        direction_name_prefix: str | None = None,
+        reserve_object: str | list[str] | None = None,
+        reserve_object_prefix: str | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> ReserveBidTimeSeriesList:
         filter_ = _create_filter(
             self._view_id,
+            bid_type,
+            bid_type_prefix,
+            measure_unit,
+            measure_unit_prefix,
+            currency,
+            currency_prefix,
+            min_price,
+            max_price,
+            direction_name,
+            direction_name_prefix,
+            reserve_object,
+            reserve_object_prefix,
             external_id_prefix,
             filter,
         )
@@ -163,6 +187,18 @@ class ReserveBidTimeSeriesAPI(TypeAPI[ReserveBidTimeSeries, ReserveBidTimeSeries
         group_by: None = None,
         query: str | None = None,
         search_properties: ReserveBidTimeSeriesTextFields | Sequence[ReserveBidTimeSeriesTextFields] | None = None,
+        bid_type: str | list[str] | None = None,
+        bid_type_prefix: str | None = None,
+        measure_unit: str | list[str] | None = None,
+        measure_unit_prefix: str | None = None,
+        currency: str | list[str] | None = None,
+        currency_prefix: str | None = None,
+        min_price: float | None = None,
+        max_price: float | None = None,
+        direction_name: str | list[str] | None = None,
+        direction_name_prefix: str | None = None,
+        reserve_object: str | list[str] | None = None,
+        reserve_object_prefix: str | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -180,6 +216,18 @@ class ReserveBidTimeSeriesAPI(TypeAPI[ReserveBidTimeSeries, ReserveBidTimeSeries
         group_by: ReserveBidTimeSeriesFields | Sequence[ReserveBidTimeSeriesFields] = None,
         query: str | None = None,
         search_properties: ReserveBidTimeSeriesTextFields | Sequence[ReserveBidTimeSeriesTextFields] | None = None,
+        bid_type: str | list[str] | None = None,
+        bid_type_prefix: str | None = None,
+        measure_unit: str | list[str] | None = None,
+        measure_unit_prefix: str | None = None,
+        currency: str | list[str] | None = None,
+        currency_prefix: str | None = None,
+        min_price: float | None = None,
+        max_price: float | None = None,
+        direction_name: str | list[str] | None = None,
+        direction_name_prefix: str | None = None,
+        reserve_object: str | list[str] | None = None,
+        reserve_object_prefix: str | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -196,12 +244,36 @@ class ReserveBidTimeSeriesAPI(TypeAPI[ReserveBidTimeSeries, ReserveBidTimeSeries
         group_by: ReserveBidTimeSeriesFields | Sequence[ReserveBidTimeSeriesFields] | None = None,
         query: str | None = None,
         search_property: ReserveBidTimeSeriesTextFields | Sequence[ReserveBidTimeSeriesTextFields] | None = None,
+        bid_type: str | list[str] | None = None,
+        bid_type_prefix: str | None = None,
+        measure_unit: str | list[str] | None = None,
+        measure_unit_prefix: str | None = None,
+        currency: str | list[str] | None = None,
+        currency_prefix: str | None = None,
+        min_price: float | None = None,
+        max_price: float | None = None,
+        direction_name: str | list[str] | None = None,
+        direction_name_prefix: str | None = None,
+        reserve_object: str | list[str] | None = None,
+        reserve_object_prefix: str | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
         filter_ = _create_filter(
             self._view_id,
+            bid_type,
+            bid_type_prefix,
+            measure_unit,
+            measure_unit_prefix,
+            currency,
+            currency_prefix,
+            min_price,
+            max_price,
+            direction_name,
+            direction_name_prefix,
+            reserve_object,
+            reserve_object_prefix,
             external_id_prefix,
             filter,
         )
@@ -223,12 +295,36 @@ class ReserveBidTimeSeriesAPI(TypeAPI[ReserveBidTimeSeries, ReserveBidTimeSeries
         interval: float,
         query: str | None = None,
         search_property: ReserveBidTimeSeriesTextFields | Sequence[ReserveBidTimeSeriesTextFields] | None = None,
+        bid_type: str | list[str] | None = None,
+        bid_type_prefix: str | None = None,
+        measure_unit: str | list[str] | None = None,
+        measure_unit_prefix: str | None = None,
+        currency: str | list[str] | None = None,
+        currency_prefix: str | None = None,
+        min_price: float | None = None,
+        max_price: float | None = None,
+        direction_name: str | list[str] | None = None,
+        direction_name_prefix: str | None = None,
+        reserve_object: str | list[str] | None = None,
+        reserve_object_prefix: str | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         filter_ = _create_filter(
             self._view_id,
+            bid_type,
+            bid_type_prefix,
+            measure_unit,
+            measure_unit_prefix,
+            currency,
+            currency_prefix,
+            min_price,
+            max_price,
+            direction_name,
+            direction_name_prefix,
+            reserve_object,
+            reserve_object_prefix,
             external_id_prefix,
             filter,
         )
@@ -245,6 +341,18 @@ class ReserveBidTimeSeriesAPI(TypeAPI[ReserveBidTimeSeries, ReserveBidTimeSeries
 
     def list(
         self,
+        bid_type: str | list[str] | None = None,
+        bid_type_prefix: str | None = None,
+        measure_unit: str | list[str] | None = None,
+        measure_unit_prefix: str | None = None,
+        currency: str | list[str] | None = None,
+        currency_prefix: str | None = None,
+        min_price: float | None = None,
+        max_price: float | None = None,
+        direction_name: str | list[str] | None = None,
+        direction_name_prefix: str | None = None,
+        reserve_object: str | list[str] | None = None,
+        reserve_object_prefix: str | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -252,6 +360,18 @@ class ReserveBidTimeSeriesAPI(TypeAPI[ReserveBidTimeSeries, ReserveBidTimeSeries
     ) -> ReserveBidTimeSeriesList:
         filter_ = _create_filter(
             self._view_id,
+            bid_type,
+            bid_type_prefix,
+            measure_unit,
+            measure_unit_prefix,
+            currency,
+            currency_prefix,
+            min_price,
+            max_price,
+            direction_name,
+            direction_name_prefix,
+            reserve_object,
+            reserve_object_prefix,
             external_id_prefix,
             filter,
         )
@@ -281,10 +401,54 @@ class ReserveBidTimeSeriesAPI(TypeAPI[ReserveBidTimeSeries, ReserveBidTimeSeries
 
 def _create_filter(
     view_id: dm.ViewId,
+    bid_type: str | list[str] | None = None,
+    bid_type_prefix: str | None = None,
+    measure_unit: str | list[str] | None = None,
+    measure_unit_prefix: str | None = None,
+    currency: str | list[str] | None = None,
+    currency_prefix: str | None = None,
+    min_price: float | None = None,
+    max_price: float | None = None,
+    direction_name: str | list[str] | None = None,
+    direction_name_prefix: str | None = None,
+    reserve_object: str | list[str] | None = None,
+    reserve_object_prefix: str | None = None,
     external_id_prefix: str | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
+    if bid_type and isinstance(bid_type, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("BidType"), value=bid_type))
+    if bid_type and isinstance(bid_type, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("BidType"), values=bid_type))
+    if bid_type_prefix:
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("BidType"), value=bid_type_prefix))
+    if measure_unit and isinstance(measure_unit, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("MeasureUnit"), value=measure_unit))
+    if measure_unit and isinstance(measure_unit, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("MeasureUnit"), values=measure_unit))
+    if measure_unit_prefix:
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("MeasureUnit"), value=measure_unit_prefix))
+    if currency and isinstance(currency, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("Currency"), value=currency))
+    if currency and isinstance(currency, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("Currency"), values=currency))
+    if currency_prefix:
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("Currency"), value=currency_prefix))
+    if min_price or max_price:
+        filters.append(dm.filters.Range(view_id.as_property_ref("Price"), gte=min_price, lte=max_price))
+    if direction_name and isinstance(direction_name, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("DirectionName"), value=direction_name))
+    if direction_name and isinstance(direction_name, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("DirectionName"), values=direction_name))
+    if direction_name_prefix:
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("DirectionName"), value=direction_name_prefix))
+    if reserve_object and isinstance(reserve_object, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("ReserveObject"), value=reserve_object))
+    if reserve_object and isinstance(reserve_object, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("ReserveObject"), values=reserve_object))
+    if reserve_object_prefix:
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("ReserveObject"), value=reserve_object_prefix))
     if external_id_prefix:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if filter:

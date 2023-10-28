@@ -24,7 +24,7 @@ _PERIODS_PROPERTIES_BY_FIELD = {
 
 class Periods(DomainModel):
     space: str = "power-ops"
-    resolution: Optional[list[str]] = Field(None, alias="Resolution")
+    resolution: Optional[str] = Field(None, alias="Resolution")
     time_interval: Optional[str] = Field(None, alias="TimeInterval")
     bid_curves: Optional[list[str]] = Field(None, alias="BidCurves")
 
@@ -39,7 +39,7 @@ class Periods(DomainModel):
 
 class PeriodsApply(DomainModelApply):
     space: str = "power-ops"
-    resolution: Optional[list[str]] = Field(None, alias="Resolution")
+    resolution: Optional[str] = Field(None, alias="Resolution")
     time_interval: Union[TimeIntervalApply, str, None] = Field(None, repr=False, alias="TimeInterval")
     bid_curves: Union[list[BidCurvesApply], list[str], None] = Field(default=None, repr=False, alias="BidCurves")
 
