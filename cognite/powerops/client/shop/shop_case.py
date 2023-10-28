@@ -44,10 +44,22 @@ class SHOPCase:
           case.save_yaml("path/to/same_or_different.yaml")
     """
 
-    def __init__(self, data: str = "", shop_files: SequenceType[SHOPFileReference] = (), watercourse: str = "") -> None:
+    def __init__(
+        self,
+        data: str = "",
+        *,
+        file_path: str = "",
+        shop_files: SequenceType[SHOPFileReference] = (),
+        watercourse: str = "",
+    ) -> None:
+        if data and file_path:
+            raise ValueError("Cannot specify both data and file_path")
         self.data = {}
         self.excess_yaml_parts: list[str] = []
-        self.load_case_data(data)
+        if data:
+            self.load_case_data(data)
+        elif file_path:
+            self.load_case_file(file_path)
         self._shop_files: list[SHOPFileReference] = list(shop_files)
         self.watercourse = watercourse
 
