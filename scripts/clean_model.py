@@ -1,3 +1,4 @@
+import os
 from time import sleep
 
 from cognite.client import CogniteClient
@@ -64,7 +65,7 @@ def delete_model(cdf: CogniteClient, space: str):
 def main():
     space = "power-ops"
     with chdir(REPO_ROOT):
-        # os.environ["SETTINGS_FILES"] = ".secrets.toml"
+        os.environ["SETTINGS_FILES"] = ".secrets.lyse.toml"
         client = PowerOpsClient.from_settings().cdf
         print(f"Connected to {client.config.project}")
         delete_model(client, space)
