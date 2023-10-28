@@ -49,17 +49,12 @@
         external_id: BidDocumentHeader
         space: power-ops
       container_property_identifier: BidInterval
-      default_value: null
       description: null
       name: BidInterval
-      nullable: true
-      type:
-        container: null
-        source:
-          external_id: TimeInterval
-          space: power-ops
-          version: '0_1'
-        type: direct
+      source:
+        external_id: TimeInterval
+        space: power-ops
+        version: '0_1'
     Country:
       container:
         space: power-ops
@@ -161,17 +156,12 @@
         external_id: Periods
         space: power-ops
       container_property_identifier: TimeInterval
-      default_value: null
       description: null
       name: TimeInterval
-      nullable: true
-      type:
-        container: null
-        source:
-          external_id: TimeInterval
-          space: power-ops
-          version: '0_1'
-        type: direct
+      source:
+        external_id: TimeInterval
+        space: power-ops
+        version: '0_1'
     BidCurves:
       type:
         space: power-ops
