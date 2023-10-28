@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections import defaultdict
 from collections.abc import Sequence
 from typing import overload
 
@@ -19,7 +20,60 @@ from cognite.powerops.client._generated.data_classes._reserve_bid_time_series im
     _RESERVEBIDTIMESERIES_PROPERTIES_BY_FIELD,
 )
 
-from ._core import DEFAULT_LIMIT_READ, Aggregations, TypeAPI
+from ._core import DEFAULT_LIMIT_READ, IN_FILTER_LIMIT, Aggregations, TypeAPI
+
+
+class ReserveBidTimeSeriesPeriodsAPI:
+    def __init__(self, client: CogniteClient):
+        self._client = client
+
+    def retrieve(self, external_id: str | Sequence[str], space="power-ops") -> dm.EdgeList:
+        f = dm.filters
+        is_edge_type = f.Equals(
+            ["edge", "type"],
+            {"space": space, "externalId": "ReserveBidTimeSeries.Periods"},
+        )
+        if isinstance(external_id, str):
+            is_reserve_bid_time_series = f.Equals(
+                ["edge", "startNode"],
+                {"space": space, "externalId": external_id},
+            )
+            return self._client.data_modeling.instances.list(
+                "edge", limit=-1, filter=f.And(is_edge_type, is_reserve_bid_time_series)
+            )
+
+        else:
+            is_reserve_bid_time_series_list = f.In(
+                ["edge", "startNode"],
+                [{"space": space, "externalId": ext_id} for ext_id in external_id],
+            )
+            return self._client.data_modeling.instances.list(
+                "edge", limit=-1, filter=f.And(is_edge_type, is_reserve_bid_time_series_list)
+            )
+
+    def list(
+        self, reserve_bid_time_series_id: str | list[str] | None = None, limit=DEFAULT_LIMIT_READ, space="power-ops"
+    ) -> dm.EdgeList:
+        f = dm.filters
+        filters = []
+        is_edge_type = f.Equals(
+            ["edge", "type"],
+            {"space": space, "externalId": "ReserveBidTimeSeries.Periods"},
+        )
+        filters.append(is_edge_type)
+        if reserve_bid_time_series_id:
+            reserve_bid_time_series_ids = (
+                [reserve_bid_time_series_id]
+                if isinstance(reserve_bid_time_series_id, str)
+                else reserve_bid_time_series_id
+            )
+            is_reserve_bid_time_series_list = f.In(
+                ["edge", "startNode"],
+                [{"space": space, "externalId": ext_id} for ext_id in reserve_bid_time_series_ids],
+            )
+            filters.append(is_reserve_bid_time_series_list)
+
+        return self._client.data_modeling.instances.list("edge", limit=limit, filter=f.And(*filters))
 
 
 class ReserveBidTimeSeriesAPI(TypeAPI[ReserveBidTimeSeries, ReserveBidTimeSeriesApply, ReserveBidTimeSeriesList]):
@@ -32,6 +86,7 @@ class ReserveBidTimeSeriesAPI(TypeAPI[ReserveBidTimeSeries, ReserveBidTimeSeries
             class_list=ReserveBidTimeSeriesList,
         )
         self._view_id = view_id
+        self.periods = ReserveBidTimeSeriesPeriodsAPI(client)
 
     def apply(
         self,
@@ -68,9 +123,19 @@ class ReserveBidTimeSeriesAPI(TypeAPI[ReserveBidTimeSeries, ReserveBidTimeSeries
 
     def retrieve(self, external_id: str | Sequence[str]) -> ReserveBidTimeSeries | ReserveBidTimeSeriesList:
         if isinstance(external_id, str):
-            return self._retrieve((self._sources.space, external_id))
+            reserve_bid_time_series = self._retrieve((self._sources.space, external_id))
+
+            period_edges = self.periods.retrieve(external_id)
+            reserve_bid_time_series.periods = [edge.end_node.external_id for edge in period_edges]
+
+            return reserve_bid_time_series
         else:
-            return self._retrieve([(self._sources.space, ext_id) for ext_id in external_id])
+            reserve_bid_time_series_list = self._retrieve([(self._sources.space, ext_id) for ext_id in external_id])
+
+            period_edges = self.periods.retrieve(external_id)
+            self._set_periods(reserve_bid_time_series_list, period_edges)
+
+            return reserve_bid_time_series_list
 
     def search(
         self,
@@ -183,6 +248,7 @@ class ReserveBidTimeSeriesAPI(TypeAPI[ReserveBidTimeSeries, ReserveBidTimeSeries
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
+        retrieve_edges: bool = True,
     ) -> ReserveBidTimeSeriesList:
         filter_ = _create_filter(
             self._view_id,
@@ -190,7 +256,27 @@ class ReserveBidTimeSeriesAPI(TypeAPI[ReserveBidTimeSeries, ReserveBidTimeSeries
             filter,
         )
 
-        return self._list(limit=limit, filter=filter_)
+        reserve_bid_time_series_list = self._list(limit=limit, filter=filter_)
+
+        if retrieve_edges:
+            if len(external_ids := reserve_bid_time_series_list.as_external_ids()) > IN_FILTER_LIMIT:
+                period_edges = self.periods.list(limit=-1)
+            else:
+                period_edges = self.periods.list(external_ids, limit=-1)
+            self._set_periods(reserve_bid_time_series_list, period_edges)
+
+        return reserve_bid_time_series_list
+
+    @staticmethod
+    def _set_periods(reserve_bid_time_series_list: Sequence[ReserveBidTimeSeries], period_edges: Sequence[dm.Edge]):
+        edges_by_start_node: dict[tuple, list] = defaultdict(list)
+        for edge in period_edges:
+            edges_by_start_node[edge.start_node.as_tuple()].append(edge)
+
+        for reserve_bid_time_series in reserve_bid_time_series_list:
+            node_id = reserve_bid_time_series.id_tuple()
+            if node_id in edges_by_start_node:
+                reserve_bid_time_series.periods = [edge.end_node.external_id for edge in edges_by_start_node[node_id]]
 
 
 def _create_filter(

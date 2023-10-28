@@ -97,11 +97,17 @@ class ScenarioTemplateApply(DomainModelApply):
                 else self.output_definitions.external_id,
             }
         if properties:
-            source = dm.NodeOrEdgeData(source=dm.ContainerId("power-ops", "ScenarioTemplate"), properties=properties)
+            source = dm.NodeOrEdgeData(
+                source=dm.ContainerId("power-ops", "ScenarioTemplate"),
+                properties=properties,
+            )
             sources.append(source)
         if sources:
             this_node = dm.NodeApply(
-                space=self.space, external_id=self.external_id, existing_version=self.existing_version, sources=sources
+                space=self.space,
+                external_id=self.external_id,
+                existing_version=self.existing_version,
+                sources=sources,
             )
             nodes = [this_node]
         else:

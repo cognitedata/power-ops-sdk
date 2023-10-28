@@ -58,6 +58,7 @@ def delete_model(cdf: CogniteClient, space: str):
         deleted = cdf.data_modeling.containers.delete(containers)
         if deleted:
             print(f"Deleted {', '.join((d.external_id for d in deleted))} containers")
+        break
 
 
 def main():

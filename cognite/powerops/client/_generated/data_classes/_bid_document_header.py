@@ -1,11 +1,14 @@
 from __future__ import annotations
 
-from typing import Literal, Optional
+from typing import TYPE_CHECKING, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
 from ._core import DomainModel, DomainModelApply, TypeApplyList, TypeList
+
+if TYPE_CHECKING:
+    from ._time_interval import TimeIntervalApply
 
 __all__ = [
     "BidDocumentHeader",
@@ -42,6 +45,7 @@ class BidDocumentHeader(DomainModel):
     tso: Optional[list[str]] = Field(None, alias="TSO")
     owner: Optional[list[str]] = Field(None, alias="Owner")
     created_date_time: Optional[list[str]] = Field(None, alias="CreatedDateTime")
+    bid_interval: Optional[str] = Field(None, alias="BidInterval")
     country: Optional[list[str]] = Field(None, alias="Country")
     origin: Optional[list[str]] = Field(None, alias="Origin")
 
@@ -53,6 +57,7 @@ class BidDocumentHeader(DomainModel):
             tso=self.tso,
             owner=self.owner,
             created_date_time=self.created_date_time,
+            bid_interval=self.bid_interval,
             country=self.country,
             origin=self.origin,
         )
@@ -65,6 +70,7 @@ class BidDocumentHeaderApply(DomainModelApply):
     tso: Optional[list[str]] = Field(None, alias="TSO")
     owner: Optional[list[str]] = Field(None, alias="Owner")
     created_date_time: Optional[list[str]] = Field(None, alias="CreatedDateTime")
+    bid_interval: Union[TimeIntervalApply, str, None] = Field(None, repr=False, alias="BidInterval")
     country: Optional[list[str]] = Field(None, alias="Country")
     origin: Optional[list[str]] = Field(None, alias="Origin")
 
@@ -84,6 +90,13 @@ class BidDocumentHeaderApply(DomainModelApply):
             properties["Owner"] = self.owner
         if self.created_date_time is not None:
             properties["CreatedDateTime"] = self.created_date_time
+        if self.bid_interval is not None:
+            properties["BidInterval"] = {
+                "space": "power-ops",
+                "externalId": self.bid_interval
+                if isinstance(self.bid_interval, str)
+                else self.bid_interval.external_id,
+            }
         if self.country is not None:
             properties["Country"] = self.country
         if self.origin is not None:
@@ -107,6 +120,11 @@ class BidDocumentHeaderApply(DomainModelApply):
 
         edges = []
         cache.add(self.external_id)
+
+        if isinstance(self.bid_interval, DomainModelApply):
+            instances = self.bid_interval._to_instances_apply(cache)
+            nodes.extend(instances.nodes)
+            edges.extend(instances.edges)
 
         return dm.InstancesApply(dm.NodeApplyList(nodes), dm.EdgeApplyList(edges))
 

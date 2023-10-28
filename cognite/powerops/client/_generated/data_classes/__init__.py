@@ -30,14 +30,6 @@ from ._bid_document_header import (
     BidDocumentHeaderList,
     BidDocumentHeaderTextFields,
 )
-from ._bid_interval import (
-    BidInterval,
-    BidIntervalApply,
-    BidIntervalApplyList,
-    BidIntervalFields,
-    BidIntervalList,
-    BidIntervalTextFields,
-)
 from ._bid_matrix_generator import (
     BidMatrixGenerator,
     BidMatrixGeneratorApply,
@@ -270,14 +262,7 @@ from ._shop_transformation import (
     ShopTransformationList,
     ShopTransformationTextFields,
 )
-from ._time_interval import (
-    TimeInterval,
-    TimeIntervalApply,
-    TimeIntervalApplyList,
-    TimeIntervalFields,
-    TimeIntervalList,
-    TimeIntervalTextFields,
-)
+from ._time_interval import TimeInterval, TimeIntervalApply, TimeIntervalApplyList, TimeIntervalFields, TimeIntervalList
 from ._value_transformation import (
     ValueTransformation,
     ValueTransformationApply,
@@ -304,8 +289,7 @@ from ._watercourse_shop import (
 
 BenchmarkBidApply.model_rebuild()
 BenchmarkProcessApply.model_rebuild()
-BidCurvesApply.model_rebuild()
-BidIntervalApply.model_rebuild()
+BidDocumentHeaderApply.model_rebuild()
 BidTimeSeriesApply.model_rebuild()
 DayAheadBidApply.model_rebuild()
 DayAheadProcessApply.model_rebuild()
@@ -318,12 +302,12 @@ RKOMBidApply.model_rebuild()
 RKOMBidCombinationApply.model_rebuild()
 RKOMProcessApply.model_rebuild()
 ReserveBidApply.model_rebuild()
+ReserveBidTimeSeriesApply.model_rebuild()
 ScenarioApply.model_rebuild()
 ScenarioMappingApply.model_rebuild()
 ScenarioTemplateApply.model_rebuild()
 SeriesApply.model_rebuild()
 ShopTransformationApply.model_rebuild()
-TimeIntervalApply.model_rebuild()
 WatercourseApply.model_rebuild()
 
 __all__ = [
@@ -353,12 +337,6 @@ __all__ = [
     "BidDocumentHeaderApplyList",
     "BidDocumentHeaderFields",
     "BidDocumentHeaderTextFields",
-    "BidInterval",
-    "BidIntervalApply",
-    "BidIntervalList",
-    "BidIntervalApplyList",
-    "BidIntervalFields",
-    "BidIntervalTextFields",
     "BidMatrixGenerator",
     "BidMatrixGeneratorApply",
     "BidMatrixGeneratorList",
@@ -577,7 +555,6 @@ __all__ = [
     "TimeIntervalList",
     "TimeIntervalApplyList",
     "TimeIntervalFields",
-    "TimeIntervalTextFields",
     "ValueTransformation",
     "ValueTransformationApply",
     "ValueTransformationList",

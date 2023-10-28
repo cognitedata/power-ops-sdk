@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from collections import defaultdict
 from collections.abc import Sequence
 from typing import overload
 
@@ -18,54 +17,7 @@ from cognite.powerops.client._generated.data_classes import (
 )
 from cognite.powerops.client._generated.data_classes._bid_curves import _BIDCURVES_PROPERTIES_BY_FIELD
 
-from ._core import DEFAULT_LIMIT_READ, IN_FILTER_LIMIT, Aggregations, TypeAPI
-
-
-class BidCurvesParentAPI:
-    def __init__(self, client: CogniteClient):
-        self._client = client
-
-    def retrieve(self, external_id: str | Sequence[str], space="power-ops") -> dm.EdgeList:
-        f = dm.filters
-        is_edge_type = f.Equals(
-            ["edge", "type"],
-            {"space": space, "externalId": "BidCurves.parent"},
-        )
-        if isinstance(external_id, str):
-            is_bid_curve = f.Equals(
-                ["edge", "startNode"],
-                {"space": space, "externalId": external_id},
-            )
-            return self._client.data_modeling.instances.list("edge", limit=-1, filter=f.And(is_edge_type, is_bid_curve))
-
-        else:
-            is_bid_curves = f.In(
-                ["edge", "startNode"],
-                [{"space": space, "externalId": ext_id} for ext_id in external_id],
-            )
-            return self._client.data_modeling.instances.list(
-                "edge", limit=-1, filter=f.And(is_edge_type, is_bid_curves)
-            )
-
-    def list(
-        self, bid_curve_id: str | list[str] | None = None, limit=DEFAULT_LIMIT_READ, space="power-ops"
-    ) -> dm.EdgeList:
-        f = dm.filters
-        filters = []
-        is_edge_type = f.Equals(
-            ["edge", "type"],
-            {"space": space, "externalId": "BidCurves.parent"},
-        )
-        filters.append(is_edge_type)
-        if bid_curve_id:
-            bid_curve_ids = [bid_curve_id] if isinstance(bid_curve_id, str) else bid_curve_id
-            is_bid_curves = f.In(
-                ["edge", "startNode"],
-                [{"space": space, "externalId": ext_id} for ext_id in bid_curve_ids],
-            )
-            filters.append(is_bid_curves)
-
-        return self._client.data_modeling.instances.list("edge", limit=limit, filter=f.And(*filters))
+from ._core import DEFAULT_LIMIT_READ, Aggregations, TypeAPI
 
 
 class BidCurvesAPI(TypeAPI[BidCurves, BidCurvesApply, BidCurvesList]):
@@ -78,7 +30,6 @@ class BidCurvesAPI(TypeAPI[BidCurves, BidCurvesApply, BidCurvesList]):
             class_list=BidCurvesList,
         )
         self._view_id = view_id
-        self.parent = BidCurvesParentAPI(client)
 
     def apply(
         self, bid_curve: BidCurvesApply | Sequence[BidCurvesApply], replace: bool = False
@@ -113,19 +64,9 @@ class BidCurvesAPI(TypeAPI[BidCurves, BidCurvesApply, BidCurvesList]):
 
     def retrieve(self, external_id: str | Sequence[str]) -> BidCurves | BidCurvesList:
         if isinstance(external_id, str):
-            bid_curve = self._retrieve((self._sources.space, external_id))
-
-            parent_edges = self.parent.retrieve(external_id)
-            bid_curve.parent = [edge.end_node.external_id for edge in parent_edges]
-
-            return bid_curve
+            return self._retrieve((self._sources.space, external_id))
         else:
-            bid_curves = self._retrieve([(self._sources.space, ext_id) for ext_id in external_id])
-
-            parent_edges = self.parent.retrieve(external_id)
-            self._set_parent(bid_curves, parent_edges)
-
-            return bid_curves
+            return self._retrieve([(self._sources.space, ext_id) for ext_id in external_id])
 
     def search(
         self,
@@ -238,7 +179,6 @@ class BidCurvesAPI(TypeAPI[BidCurves, BidCurvesApply, BidCurvesList]):
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-        retrieve_edges: bool = True,
     ) -> BidCurvesList:
         filter_ = _create_filter(
             self._view_id,
@@ -246,27 +186,7 @@ class BidCurvesAPI(TypeAPI[BidCurves, BidCurvesApply, BidCurvesList]):
             filter,
         )
 
-        bid_curves = self._list(limit=limit, filter=filter_)
-
-        if retrieve_edges:
-            if len(external_ids := bid_curves.as_external_ids()) > IN_FILTER_LIMIT:
-                parent_edges = self.parent.list(limit=-1)
-            else:
-                parent_edges = self.parent.list(external_ids, limit=-1)
-            self._set_parent(bid_curves, parent_edges)
-
-        return bid_curves
-
-    @staticmethod
-    def _set_parent(bid_curves: Sequence[BidCurves], parent_edges: Sequence[dm.Edge]):
-        edges_by_start_node: dict[tuple, list] = defaultdict(list)
-        for edge in parent_edges:
-            edges_by_start_node[edge.start_node.as_tuple()].append(edge)
-
-        for bid_curve in bid_curves:
-            node_id = bid_curve.id_tuple()
-            if node_id in edges_by_start_node:
-                bid_curve.parent = [edge.end_node.external_id for edge in edges_by_start_node[node_id]]
+        return self._list(limit=limit, filter=filter_)
 
 
 def _create_filter(

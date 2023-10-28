@@ -21,7 +21,7 @@ from cognite.powerops.client._generated.data_classes._periods import _PERIODS_PR
 from ._core import DEFAULT_LIMIT_READ, IN_FILTER_LIMIT, Aggregations, TypeAPI
 
 
-class PeriodsParentAPI:
+class PeriodsBidCurvesAPI:
     def __init__(self, client: CogniteClient):
         self._client = client
 
@@ -29,7 +29,7 @@ class PeriodsParentAPI:
         f = dm.filters
         is_edge_type = f.Equals(
             ["edge", "type"],
-            {"space": space, "externalId": "Periods.parent"},
+            {"space": space, "externalId": "ReserveBidTimeSeries.BidCurves"},
         )
         if isinstance(external_id, str):
             is_period = f.Equals(
@@ -52,7 +52,7 @@ class PeriodsParentAPI:
         filters = []
         is_edge_type = f.Equals(
             ["edge", "type"],
-            {"space": space, "externalId": "Periods.parent"},
+            {"space": space, "externalId": "ReserveBidTimeSeries.BidCurves"},
         )
         filters.append(is_edge_type)
         if period_id:
@@ -76,7 +76,7 @@ class PeriodsAPI(TypeAPI[Periods, PeriodsApply, PeriodsList]):
             class_list=PeriodsList,
         )
         self._view_id = view_id
-        self.parent = PeriodsParentAPI(client)
+        self.bid_curves = PeriodsBidCurvesAPI(client)
 
     def apply(self, period: PeriodsApply | Sequence[PeriodsApply], replace: bool = False) -> dm.InstancesApplyResult:
         if isinstance(period, PeriodsApply):
@@ -111,15 +111,15 @@ class PeriodsAPI(TypeAPI[Periods, PeriodsApply, PeriodsList]):
         if isinstance(external_id, str):
             period = self._retrieve((self._sources.space, external_id))
 
-            parent_edges = self.parent.retrieve(external_id)
-            period.parent = [edge.end_node.external_id for edge in parent_edges]
+            bid_curve_edges = self.bid_curves.retrieve(external_id)
+            period.bid_curves = [edge.end_node.external_id for edge in bid_curve_edges]
 
             return period
         else:
             periods = self._retrieve([(self._sources.space, ext_id) for ext_id in external_id])
 
-            parent_edges = self.parent.retrieve(external_id)
-            self._set_parent(periods, parent_edges)
+            bid_curve_edges = self.bid_curves.retrieve(external_id)
+            self._set_bid_curves(periods, bid_curve_edges)
 
             return periods
 
@@ -127,12 +127,14 @@ class PeriodsAPI(TypeAPI[Periods, PeriodsApply, PeriodsList]):
         self,
         query: str,
         properties: PeriodsTextFields | Sequence[PeriodsTextFields] | None = None,
+        time_interval: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> PeriodsList:
         filter_ = _create_filter(
             self._view_id,
+            time_interval,
             external_id_prefix,
             filter,
         )
@@ -149,6 +151,7 @@ class PeriodsAPI(TypeAPI[Periods, PeriodsApply, PeriodsList]):
         group_by: None = None,
         query: str | None = None,
         search_properties: PeriodsTextFields | Sequence[PeriodsTextFields] | None = None,
+        time_interval: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -166,6 +169,7 @@ class PeriodsAPI(TypeAPI[Periods, PeriodsApply, PeriodsList]):
         group_by: PeriodsFields | Sequence[PeriodsFields] = None,
         query: str | None = None,
         search_properties: PeriodsTextFields | Sequence[PeriodsTextFields] | None = None,
+        time_interval: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -182,12 +186,14 @@ class PeriodsAPI(TypeAPI[Periods, PeriodsApply, PeriodsList]):
         group_by: PeriodsFields | Sequence[PeriodsFields] | None = None,
         query: str | None = None,
         search_property: PeriodsTextFields | Sequence[PeriodsTextFields] | None = None,
+        time_interval: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
         filter_ = _create_filter(
             self._view_id,
+            time_interval,
             external_id_prefix,
             filter,
         )
@@ -209,12 +215,14 @@ class PeriodsAPI(TypeAPI[Periods, PeriodsApply, PeriodsList]):
         interval: float,
         query: str | None = None,
         search_property: PeriodsTextFields | Sequence[PeriodsTextFields] | None = None,
+        time_interval: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         filter_ = _create_filter(
             self._view_id,
+            time_interval,
             external_id_prefix,
             filter,
         )
@@ -231,6 +239,7 @@ class PeriodsAPI(TypeAPI[Periods, PeriodsApply, PeriodsList]):
 
     def list(
         self,
+        time_interval: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -238,6 +247,7 @@ class PeriodsAPI(TypeAPI[Periods, PeriodsApply, PeriodsList]):
     ) -> PeriodsList:
         filter_ = _create_filter(
             self._view_id,
+            time_interval,
             external_id_prefix,
             filter,
         )
@@ -246,31 +256,59 @@ class PeriodsAPI(TypeAPI[Periods, PeriodsApply, PeriodsList]):
 
         if retrieve_edges:
             if len(external_ids := periods.as_external_ids()) > IN_FILTER_LIMIT:
-                parent_edges = self.parent.list(limit=-1)
+                bid_curve_edges = self.bid_curves.list(limit=-1)
             else:
-                parent_edges = self.parent.list(external_ids, limit=-1)
-            self._set_parent(periods, parent_edges)
+                bid_curve_edges = self.bid_curves.list(external_ids, limit=-1)
+            self._set_bid_curves(periods, bid_curve_edges)
 
         return periods
 
     @staticmethod
-    def _set_parent(periods: Sequence[Periods], parent_edges: Sequence[dm.Edge]):
+    def _set_bid_curves(periods: Sequence[Periods], bid_curve_edges: Sequence[dm.Edge]):
         edges_by_start_node: dict[tuple, list] = defaultdict(list)
-        for edge in parent_edges:
+        for edge in bid_curve_edges:
             edges_by_start_node[edge.start_node.as_tuple()].append(edge)
 
         for period in periods:
             node_id = period.id_tuple()
             if node_id in edges_by_start_node:
-                period.parent = [edge.end_node.external_id for edge in edges_by_start_node[node_id]]
+                period.bid_curves = [edge.end_node.external_id for edge in edges_by_start_node[node_id]]
 
 
 def _create_filter(
     view_id: dm.ViewId,
+    time_interval: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     external_id_prefix: str | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
+    if time_interval and isinstance(time_interval, str):
+        filters.append(
+            dm.filters.Equals(
+                view_id.as_property_ref("TimeInterval"), value={"space": "power-ops", "externalId": time_interval}
+            )
+        )
+    if time_interval and isinstance(time_interval, tuple):
+        filters.append(
+            dm.filters.Equals(
+                view_id.as_property_ref("TimeInterval"),
+                value={"space": time_interval[0], "externalId": time_interval[1]},
+            )
+        )
+    if time_interval and isinstance(time_interval, list) and isinstance(time_interval[0], str):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("TimeInterval"),
+                values=[{"space": "power-ops", "externalId": item} for item in time_interval],
+            )
+        )
+    if time_interval and isinstance(time_interval, list) and isinstance(time_interval[0], tuple):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("TimeInterval"),
+                values=[{"space": item[0], "externalId": item[1]} for item in time_interval],
+            )
+        )
     if external_id_prefix:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if filter:

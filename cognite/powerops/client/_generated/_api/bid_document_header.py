@@ -72,12 +72,14 @@ class BidDocumentHeaderAPI(TypeAPI[BidDocumentHeader, BidDocumentHeaderApply, Bi
         self,
         query: str,
         properties: BidDocumentHeaderTextFields | Sequence[BidDocumentHeaderTextFields] | None = None,
+        bid_interval: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> BidDocumentHeaderList:
         filter_ = _create_filter(
             self._view_id,
+            bid_interval,
             external_id_prefix,
             filter,
         )
@@ -94,6 +96,7 @@ class BidDocumentHeaderAPI(TypeAPI[BidDocumentHeader, BidDocumentHeaderApply, Bi
         group_by: None = None,
         query: str | None = None,
         search_properties: BidDocumentHeaderTextFields | Sequence[BidDocumentHeaderTextFields] | None = None,
+        bid_interval: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -111,6 +114,7 @@ class BidDocumentHeaderAPI(TypeAPI[BidDocumentHeader, BidDocumentHeaderApply, Bi
         group_by: BidDocumentHeaderFields | Sequence[BidDocumentHeaderFields] = None,
         query: str | None = None,
         search_properties: BidDocumentHeaderTextFields | Sequence[BidDocumentHeaderTextFields] | None = None,
+        bid_interval: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -127,12 +131,14 @@ class BidDocumentHeaderAPI(TypeAPI[BidDocumentHeader, BidDocumentHeaderApply, Bi
         group_by: BidDocumentHeaderFields | Sequence[BidDocumentHeaderFields] | None = None,
         query: str | None = None,
         search_property: BidDocumentHeaderTextFields | Sequence[BidDocumentHeaderTextFields] | None = None,
+        bid_interval: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
         filter_ = _create_filter(
             self._view_id,
+            bid_interval,
             external_id_prefix,
             filter,
         )
@@ -154,12 +160,14 @@ class BidDocumentHeaderAPI(TypeAPI[BidDocumentHeader, BidDocumentHeaderApply, Bi
         interval: float,
         query: str | None = None,
         search_property: BidDocumentHeaderTextFields | Sequence[BidDocumentHeaderTextFields] | None = None,
+        bid_interval: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         filter_ = _create_filter(
             self._view_id,
+            bid_interval,
             external_id_prefix,
             filter,
         )
@@ -176,12 +184,14 @@ class BidDocumentHeaderAPI(TypeAPI[BidDocumentHeader, BidDocumentHeaderApply, Bi
 
     def list(
         self,
+        bid_interval: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> BidDocumentHeaderList:
         filter_ = _create_filter(
             self._view_id,
+            bid_interval,
             external_id_prefix,
             filter,
         )
@@ -191,10 +201,37 @@ class BidDocumentHeaderAPI(TypeAPI[BidDocumentHeader, BidDocumentHeaderApply, Bi
 
 def _create_filter(
     view_id: dm.ViewId,
+    bid_interval: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     external_id_prefix: str | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
+    if bid_interval and isinstance(bid_interval, str):
+        filters.append(
+            dm.filters.Equals(
+                view_id.as_property_ref("BidInterval"), value={"space": "power-ops", "externalId": bid_interval}
+            )
+        )
+    if bid_interval and isinstance(bid_interval, tuple):
+        filters.append(
+            dm.filters.Equals(
+                view_id.as_property_ref("BidInterval"), value={"space": bid_interval[0], "externalId": bid_interval[1]}
+            )
+        )
+    if bid_interval and isinstance(bid_interval, list) and isinstance(bid_interval[0], str):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("BidInterval"),
+                values=[{"space": "power-ops", "externalId": item} for item in bid_interval],
+            )
+        )
+    if bid_interval and isinstance(bid_interval, list) and isinstance(bid_interval[0], tuple):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("BidInterval"),
+                values=[{"space": item[0], "externalId": item[1]} for item in bid_interval],
+            )
+        )
     if external_id_prefix:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if filter:

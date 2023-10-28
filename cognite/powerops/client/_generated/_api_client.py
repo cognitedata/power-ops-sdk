@@ -10,7 +10,6 @@ from ._api.benchmark_bid import BenchmarkBidAPI
 from ._api.benchmark_process import BenchmarkProcessAPI
 from ._api.bid_curves import BidCurvesAPI
 from ._api.bid_document_header import BidDocumentHeaderAPI
-from ._api.bid_interval import BidIntervalAPI
 from ._api.bid_matrix_generator import BidMatrixGeneratorAPI
 from ._api.bid_time_series import BidTimeSeriesAPI
 from ._api.command_config import CommandConfigAPI
@@ -130,7 +129,6 @@ class CapacityBidAPIs:
     def __init__(self, client: CogniteClient):
         self.bid_curves = BidCurvesAPI(client, dm.ViewId("power-ops", "BidCurves", "0_1"))
         self.bid_document_header = BidDocumentHeaderAPI(client, dm.ViewId("power-ops", "BidDocumentHeader", "0_1"))
-        self.bid_interval = BidIntervalAPI(client, dm.ViewId("power-ops", "BidInterval", "0_1"))
         self.periods = PeriodsAPI(client, dm.ViewId("power-ops", "Periods", "0_1"))
         self.reserve_bid_time_series = ReserveBidTimeSeriesAPI(
             client, dm.ViewId("power-ops", "ReserveBidTimeSeries", "0_1")

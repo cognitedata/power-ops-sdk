@@ -19,7 +19,10 @@ __all__ = ["Scenario", "ScenarioApply", "ScenarioList", "ScenarioApplyList", "Sc
 ScenarioTextFields = Literal["name", "source"]
 ScenarioFields = Literal["name", "source"]
 
-_SCENARIO_PROPERTIES_BY_FIELD = {"name": "name", "source": "source"}
+_SCENARIO_PROPERTIES_BY_FIELD = {
+    "name": "name",
+    "source": "source",
+}
 
 
 class Scenario(DomainModel):
@@ -77,11 +80,17 @@ class ScenarioApply(DomainModelApply):
         if self.source is not None:
             properties["source"] = self.source
         if properties:
-            source = dm.NodeOrEdgeData(source=dm.ContainerId("cogShop", "Scenario"), properties=properties)
+            source = dm.NodeOrEdgeData(
+                source=dm.ContainerId("cogShop", "Scenario"),
+                properties=properties,
+            )
             sources.append(source)
         if sources:
             this_node = dm.NodeApply(
-                space=self.space, external_id=self.external_id, existing_version=self.existing_version, sources=sources
+                space=self.space,
+                external_id=self.external_id,
+                existing_version=self.existing_version,
+                sources=sources,
             )
             nodes = [this_node]
         else:

@@ -1,11 +1,14 @@
 from __future__ import annotations
 
-from typing import Literal, Optional
+from typing import TYPE_CHECKING, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
 from ._core import DomainModel, DomainModelApply, TypeApplyList, TypeList
+
+if TYPE_CHECKING:
+    from ._periods import PeriodsApply
 
 __all__ = [
     "ReserveBidTimeSeries",
@@ -40,6 +43,7 @@ class ReserveBidTimeSeries(DomainModel):
     price: Optional[list[float]] = Field(None, alias="Price")
     direction_name: Optional[list[str]] = Field(None, alias="DirectionName")
     reserve_object: Optional[list[str]] = Field(None, alias="ReserveObject")
+    periods: Optional[list[str]] = Field(None, alias="Periods")
 
     def as_apply(self) -> ReserveBidTimeSeriesApply:
         return ReserveBidTimeSeriesApply(
@@ -50,6 +54,7 @@ class ReserveBidTimeSeries(DomainModel):
             price=self.price,
             direction_name=self.direction_name,
             reserve_object=self.reserve_object,
+            periods=self.periods,
         )
 
 
@@ -61,6 +66,7 @@ class ReserveBidTimeSeriesApply(DomainModelApply):
     price: Optional[list[float]] = Field(None, alias="Price")
     direction_name: Optional[list[str]] = Field(None, alias="DirectionName")
     reserve_object: Optional[list[str]] = Field(None, alias="ReserveObject")
+    periods: Union[list[PeriodsApply], list[str], None] = Field(default=None, repr=False, alias="Periods")
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
@@ -100,7 +106,34 @@ class ReserveBidTimeSeriesApply(DomainModelApply):
         edges = []
         cache.add(self.external_id)
 
+        for period in self.periods or []:
+            edge = self._create_period_edge(period)
+            if edge.external_id not in cache:
+                edges.append(edge)
+                cache.add(edge.external_id)
+
+            if isinstance(period, DomainModelApply):
+                instances = period._to_instances_apply(cache)
+                nodes.extend(instances.nodes)
+                edges.extend(instances.edges)
+
         return dm.InstancesApply(dm.NodeApplyList(nodes), dm.EdgeApplyList(edges))
+
+    def _create_period_edge(self, period: Union[str, PeriodsApply]) -> dm.EdgeApply:
+        if isinstance(period, str):
+            end_node_ext_id = period
+        elif isinstance(period, DomainModelApply):
+            end_node_ext_id = period.external_id
+        else:
+            raise TypeError(f"Expected str or PeriodsApply, got {type(period)}")
+
+        return dm.EdgeApply(
+            space="power-ops",
+            external_id=f"{self.external_id}:{end_node_ext_id}",
+            type=dm.DirectRelationReference("power-ops", "ReserveBidTimeSeries.Periods"),
+            start_node=dm.DirectRelationReference(self.space, self.external_id),
+            end_node=dm.DirectRelationReference("power-ops", end_node_ext_id),
+        )
 
 
 class ReserveBidTimeSeriesList(TypeList[ReserveBidTimeSeries]):
