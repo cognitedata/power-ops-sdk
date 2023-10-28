@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, ClassVar, Optional, Union
+from typing import TYPE_CHECKING, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -10,11 +10,27 @@ from ._core import DomainModel, DomainModelApply, TypeApplyList, TypeList
 if TYPE_CHECKING:
     from ._rkom_combination_bid import RKOMCombinationBidApply
 
-__all__ = ["RKOMBidCombination", "RKOMBidCombinationApply", "RKOMBidCombinationList", "RKOMBidCombinationApplyList"]
+__all__ = [
+    "RKOMBidCombination",
+    "RKOMBidCombinationApply",
+    "RKOMBidCombinationList",
+    "RKOMBidCombinationApplyList",
+    "RKOMBidCombinationFields",
+    "RKOMBidCombinationTextFields",
+]
+
+
+RKOMBidCombinationTextFields = Literal["name", "auction"]
+RKOMBidCombinationFields = Literal["name", "auction"]
+
+_RKOMBIDCOMBINATION_PROPERTIES_BY_FIELD = {
+    "name": "name",
+    "auction": "auction",
+}
 
 
 class RKOMBidCombination(DomainModel):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     name: Optional[str] = None
     auction: Optional[str] = None
     bid: Optional[str] = None
@@ -29,7 +45,7 @@ class RKOMBidCombination(DomainModel):
 
 
 class RKOMBidCombinationApply(DomainModelApply):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     name: Optional[str] = None
     auction: Optional[str] = None
     bid: Union[RKOMCombinationBidApply, str, None] = Field(None, repr=False)

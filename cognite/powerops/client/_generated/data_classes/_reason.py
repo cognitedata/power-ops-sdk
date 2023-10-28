@@ -1,16 +1,25 @@
 from __future__ import annotations
 
-from typing import ClassVar, Optional
+from typing import Literal, Optional
 
 from cognite.client import data_modeling as dm
 
 from ._core import DomainModel, DomainModelApply, TypeApplyList, TypeList
 
-__all__ = ["Reason", "ReasonApply", "ReasonList", "ReasonApplyList"]
+__all__ = ["Reason", "ReasonApply", "ReasonList", "ReasonApplyList", "ReasonFields", "ReasonTextFields"]
+
+
+ReasonTextFields = Literal["code", "text"]
+ReasonFields = Literal["code", "text"]
+
+_REASON_PROPERTIES_BY_FIELD = {
+    "code": "code",
+    "text": "text",
+}
 
 
 class Reason(DomainModel):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     code: Optional[str] = None
     text: Optional[str] = None
 
@@ -23,7 +32,7 @@ class Reason(DomainModel):
 
 
 class ReasonApply(DomainModelApply):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     code: Optional[str] = None
     text: Optional[str] = None
 

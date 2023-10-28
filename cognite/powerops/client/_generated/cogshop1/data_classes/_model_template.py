@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, ClassVar, Optional, Union
+from typing import TYPE_CHECKING, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -11,11 +11,29 @@ if TYPE_CHECKING:
     from ._file_ref import FileRefApply
     from ._mapping import MappingApply
 
-__all__ = ["ModelTemplate", "ModelTemplateApply", "ModelTemplateList", "ModelTemplateApplyList"]
+__all__ = [
+    "ModelTemplate",
+    "ModelTemplateApply",
+    "ModelTemplateList",
+    "ModelTemplateApplyList",
+    "ModelTemplateFields",
+    "ModelTemplateTextFields",
+]
 
 
-class ModelTemplate(DomainModel, protected_namespaces=()):
-    space: ClassVar[str] = "cogShop"
+ModelTemplateTextFields = Literal["version", "shop_version", "watercourse", "source"]
+ModelTemplateFields = Literal["version", "shop_version", "watercourse", "source"]
+
+_MODELTEMPLATE_PROPERTIES_BY_FIELD = {
+    "version": "version",
+    "shop_version": "shopVersion",
+    "watercourse": "watercourse",
+    "source": "source",
+}
+
+
+class ModelTemplate(DomainModel):
+    space: str = "cogShop"
     version: Optional[str] = None
     shop_version: Optional[str] = Field(None, alias="shopVersion")
     watercourse: Optional[str] = None
@@ -35,14 +53,14 @@ class ModelTemplate(DomainModel, protected_namespaces=()):
         )
 
 
-class ModelTemplateApply(DomainModelApply, protected_namespaces=()):
-    space: ClassVar[str] = "cogShop"
+class ModelTemplateApply(DomainModelApply):
+    space: str = "cogShop"
     version: str
-    shop_version: str
+    shop_version: str = Field(alias="shopVersion")
     watercourse: str
     model: Union[FileRefApply, str, None] = Field(None, repr=False)
     source: Optional[str] = None
-    base_mappings: Union[list[MappingApply], list[str], None] = Field(default=None, repr=False)
+    base_mappings: Union[list[MappingApply], list[str], None] = Field(default=None, repr=False, alias="baseMappings")
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cognite-power-ops"
-version = "0.70.3"
+version = "0.71.0"
 description = "SDK for power markets operations on Cognite Data Fusion"
 readme = "README.md"
 authors = ["Cognite <support@cognite.com>"]
@@ -98,7 +98,7 @@ pytest-regressions = "^2.4.2"
 ipykernel="6.24.0"
 twine = "^4.0.2"
 jupyter = "^1.0.0"
-cognite-pygen = {version = "^0.21.1", extras = ["all"]}
+cognite-pygen = {version = "^0.27.0", extras = ["all"]}
 mypy = "^1.4"
 pandas-stubs = "^2"
 types-PyYAML = "^6"

@@ -1,17 +1,28 @@
 from __future__ import annotations
 
-from typing import ClassVar, Optional
+from typing import Literal, Optional
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
 from ._core import DomainModel, DomainModelApply, TypeApplyList, TypeList
 
-__all__ = ["WatercourseShop", "WatercourseShopApply", "WatercourseShopList", "WatercourseShopApplyList"]
+__all__ = [
+    "WatercourseShop",
+    "WatercourseShopApply",
+    "WatercourseShopList",
+    "WatercourseShopApplyList",
+    "WatercourseShopFields",
+]
+WatercourseShopFields = Literal["penalty_limit"]
+
+_WATERCOURSESHOP_PROPERTIES_BY_FIELD = {
+    "penalty_limit": "penaltyLimit",
+}
 
 
 class WatercourseShop(DomainModel):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     penalty_limit: Optional[float] = Field(None, alias="penaltyLimit")
 
     def as_apply(self) -> WatercourseShopApply:
@@ -22,8 +33,8 @@ class WatercourseShop(DomainModel):
 
 
 class WatercourseShopApply(DomainModelApply):
-    space: ClassVar[str] = "power-ops"
-    penalty_limit: Optional[float] = None
+    space: str = "power-ops"
+    penalty_limit: Optional[float] = Field(None, alias="penaltyLimit")
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:

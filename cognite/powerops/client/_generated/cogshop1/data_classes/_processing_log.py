@@ -1,17 +1,34 @@
 from __future__ import annotations
 
-from typing import ClassVar, Optional
+from typing import Literal, Optional
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
 from ._core import DomainModel, DomainModelApply, TypeApplyList, TypeList
 
-__all__ = ["ProcessingLog", "ProcessingLogApply", "ProcessingLogList", "ProcessingLogApplyList"]
+__all__ = [
+    "ProcessingLog",
+    "ProcessingLogApply",
+    "ProcessingLogList",
+    "ProcessingLogApplyList",
+    "ProcessingLogFields",
+    "ProcessingLogTextFields",
+]
+
+
+ProcessingLogTextFields = Literal["state", "timestamp", "error_message"]
+ProcessingLogFields = Literal["state", "timestamp", "error_message"]
+
+_PROCESSINGLOG_PROPERTIES_BY_FIELD = {
+    "state": "state",
+    "timestamp": "timestamp",
+    "error_message": "errorMessage",
+}
 
 
 class ProcessingLog(DomainModel):
-    space: ClassVar[str] = "cogShop"
+    space: str = "cogShop"
     state: Optional[str] = None
     timestamp: Optional[str] = None
     error_message: Optional[str] = Field(None, alias="errorMessage")
@@ -26,10 +43,10 @@ class ProcessingLog(DomainModel):
 
 
 class ProcessingLogApply(DomainModelApply):
-    space: ClassVar[str] = "cogShop"
+    space: str = "cogShop"
     state: Optional[str] = None
     timestamp: Optional[str] = None
-    error_message: Optional[str] = None
+    error_message: Optional[str] = Field(None, alias="errorMessage")
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:

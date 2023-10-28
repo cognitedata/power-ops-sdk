@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, ClassVar, Optional, Union
+from typing import TYPE_CHECKING, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -11,11 +11,26 @@ if TYPE_CHECKING:
     from ._date_transformation import DateTransformationApply
     from ._nord_pool_market import NordPoolMarketApply
 
-__all__ = ["BenchmarkBid", "BenchmarkBidApply", "BenchmarkBidList", "BenchmarkBidApplyList"]
+__all__ = [
+    "BenchmarkBid",
+    "BenchmarkBidApply",
+    "BenchmarkBidList",
+    "BenchmarkBidApplyList",
+    "BenchmarkBidFields",
+    "BenchmarkBidTextFields",
+]
+
+
+BenchmarkBidTextFields = Literal["name"]
+BenchmarkBidFields = Literal["name"]
+
+_BENCHMARKBID_PROPERTIES_BY_FIELD = {
+    "name": "name",
+}
 
 
 class BenchmarkBid(DomainModel):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     name: Optional[str] = None
     market: Optional[str] = None
     date: Optional[list[str]] = None
@@ -30,7 +45,7 @@ class BenchmarkBid(DomainModel):
 
 
 class BenchmarkBidApply(DomainModelApply):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     name: Optional[str] = None
     market: Union[NordPoolMarketApply, str, None] = Field(None, repr=False)
     date: Union[list[DateTransformationApply], list[str], None] = Field(default=None, repr=False)

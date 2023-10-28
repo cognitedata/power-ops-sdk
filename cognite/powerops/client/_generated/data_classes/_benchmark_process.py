@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, ClassVar, Optional, Union
+from typing import TYPE_CHECKING, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -12,11 +12,28 @@ if TYPE_CHECKING:
     from ._production_plan_time_series import ProductionPlanTimeSeriesApply
     from ._shop_transformation import ShopTransformationApply
 
-__all__ = ["BenchmarkProcess", "BenchmarkProcessApply", "BenchmarkProcessList", "BenchmarkProcessApplyList"]
+__all__ = [
+    "BenchmarkProcess",
+    "BenchmarkProcessApply",
+    "BenchmarkProcessList",
+    "BenchmarkProcessApplyList",
+    "BenchmarkProcessFields",
+    "BenchmarkProcessTextFields",
+]
+
+
+BenchmarkProcessTextFields = Literal["name", "run_events"]
+BenchmarkProcessFields = Literal["name", "metrics", "run_events"]
+
+_BENCHMARKPROCESS_PROPERTIES_BY_FIELD = {
+    "name": "name",
+    "metrics": "metrics",
+    "run_events": "runEvents",
+}
 
 
 class BenchmarkProcess(DomainModel):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     name: Optional[str] = None
     metrics: Optional[dict] = None
     bid: Optional[str] = None
@@ -37,14 +54,14 @@ class BenchmarkProcess(DomainModel):
 
 
 class BenchmarkProcessApply(DomainModelApply):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     name: Optional[str] = None
     metrics: Optional[dict] = None
     bid: Union[BenchmarkBidApply, str, None] = Field(None, repr=False)
     shop: Union[ShopTransformationApply, str, None] = Field(None, repr=False)
-    run_events: Optional[list[str]] = None
+    run_events: Optional[list[str]] = Field(None, alias="runEvents")
     production_plan_time_series: Union[list[ProductionPlanTimeSeriesApply], list[str], None] = Field(
-        default=None, repr=False
+        default=None, repr=False, alias="productionPlanTimeSeries"
     )
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:

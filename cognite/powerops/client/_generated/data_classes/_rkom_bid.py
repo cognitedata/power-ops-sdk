@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, ClassVar, Optional, Union
+from typing import TYPE_CHECKING, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -13,11 +13,23 @@ if TYPE_CHECKING:
     from ._rkom_market import RKOMMarketApply
     from ._scenario_mapping import ScenarioMappingApply
 
-__all__ = ["RKOMBid", "RKOMBidApply", "RKOMBidList", "RKOMBidApplyList"]
+__all__ = ["RKOMBid", "RKOMBidApply", "RKOMBidList", "RKOMBidApplyList", "RKOMBidFields", "RKOMBidTextFields"]
+
+
+RKOMBidTextFields = Literal["name", "method", "watercourse"]
+RKOMBidFields = Literal["name", "method", "minimum_price", "price_premium", "watercourse"]
+
+_RKOMBID_PROPERTIES_BY_FIELD = {
+    "name": "name",
+    "method": "method",
+    "minimum_price": "minimumPrice",
+    "price_premium": "pricePremium",
+    "watercourse": "watercourse",
+}
 
 
 class RKOMBid(DomainModel):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     name: Optional[str] = None
     market: Optional[str] = None
     method: Optional[str] = None
@@ -44,16 +56,20 @@ class RKOMBid(DomainModel):
 
 
 class RKOMBidApply(DomainModelApply):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     name: Optional[str] = None
     market: Union[RKOMMarketApply, str, None] = Field(None, repr=False)
     method: Optional[str] = None
-    minimum_price: Optional[float] = None
-    price_premium: Optional[float] = None
+    minimum_price: Optional[float] = Field(None, alias="minimumPrice")
+    price_premium: Optional[float] = Field(None, alias="pricePremium")
     watercourse: Optional[str] = None
     date: Union[list[DateTransformationApply], list[str], None] = Field(default=None, repr=False)
-    price_scenarios: Union[list[ScenarioMappingApply], list[str], None] = Field(default=None, repr=False)
-    reserve_scenarios: Union[list[ReserveScenarioApply], list[str], None] = Field(default=None, repr=False)
+    price_scenarios: Union[list[ScenarioMappingApply], list[str], None] = Field(
+        default=None, repr=False, alias="priceScenarios"
+    )
+    reserve_scenarios: Union[list[ReserveScenarioApply], list[str], None] = Field(
+        default=None, repr=False, alias="reserveScenarios"
+    )
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:

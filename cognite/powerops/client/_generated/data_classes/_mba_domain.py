@@ -1,17 +1,32 @@
 from __future__ import annotations
 
-from typing import ClassVar, Optional
+from typing import Literal, Optional
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
 from ._core import DomainModel, DomainModelApply, TypeApplyList, TypeList
 
-__all__ = ["MBADomain", "MBADomainApply", "MBADomainList", "MBADomainApplyList"]
+__all__ = [
+    "MBADomain",
+    "MBADomainApply",
+    "MBADomainList",
+    "MBADomainApplyList",
+    "MBADomainFields",
+    "MBADomainTextFields",
+]
+
+
+MBADomainTextFields = Literal["m_rid"]
+MBADomainFields = Literal["m_rid"]
+
+_MBADOMAIN_PROPERTIES_BY_FIELD = {
+    "m_rid": "mRID",
+}
 
 
 class MBADomain(DomainModel):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     m_rid: Optional[str] = Field(None, alias="mRID")
 
     def as_apply(self) -> MBADomainApply:
@@ -22,8 +37,8 @@ class MBADomain(DomainModel):
 
 
 class MBADomainApply(DomainModelApply):
-    space: ClassVar[str] = "power-ops"
-    m_rid: Optional[str] = None
+    space: str = "power-ops"
+    m_rid: Optional[str] = Field(None, alias="mRID")
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
