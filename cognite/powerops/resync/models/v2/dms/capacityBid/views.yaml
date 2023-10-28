@@ -46,11 +46,20 @@
       description: missing
     BidInterval:
       container:
-        externalId: BidDocumentHeader
+        external_id: BidDocumentHeader
         space: power-ops
-        type: container
-      containerPropertyIdentifier: BidInterval
+      container_property_identifier: BidInterval
+      default_value: null
+      description: null
       name: BidInterval
+      nullable: true
+      type:
+        container: null
+        source:
+          external_id: TimeInterval
+          space: power-ops
+          version: '0_1'
+        type: direct
     Country:
       container:
         space: power-ops
@@ -149,11 +158,20 @@
       description: missing
     TimeInterval:
       container:
-        externalId: Periods
+        external_id: Periods
         space: power-ops
-        type: container
-      containerPropertyIdentifier: TimeInterval
+      container_property_identifier: TimeInterval
+      default_value: null
+      description: null
       name: TimeInterval
+      nullable: true
+      type:
+        container: null
+        source:
+          external_id: TimeInterval
+          space: power-ops
+          version: '0_1'
+        type: direct
     BidCurves:
       type:
         space: power-ops
