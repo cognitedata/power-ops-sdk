@@ -44,6 +44,13 @@
       containerPropertyIdentifier: CreatedDateTime
       name: CreatedDateTime
       description: missing
+    BidInterval:
+      container:
+        externalId: BidDocumentHeader
+        space: power-ops
+        type: container
+      containerPropertyIdentifier: BidInterval
+      name: BidInterval
     Country:
       container:
         space: power-ops
@@ -59,40 +66,6 @@
         type: container
       containerPropertyIdentifier: Origin
       name: Origin
-      description: missing
-- space: power-ops
-  externalId: BidInterval
-  description: missing
-  name: BidInterval
-  version: '0_1'
-  properties:
-    parent:
-      type:
-        space: power-ops
-        externalId: BidInterval.parent
-      source:
-        space: power-ops
-        externalId: BidDocumentHeader
-        version: '0_1'
-        type: view
-      direction: outwards
-      name: parent
-      description: missing
-    Start:
-      container:
-        space: power-ops
-        externalId: BidInterval
-        type: container
-      containerPropertyIdentifier: Start
-      name: Start
-      description: missing
-    End:
-      container:
-        space: power-ops
-        externalId: BidInterval
-        type: container
-      containerPropertyIdentifier: End
-      name: End
       description: missing
 - space: power-ops
   externalId: ReserveBidTimeSeries
@@ -148,24 +121,24 @@
       containerPropertyIdentifier: ReserveObject
       name: ReserveObject
       description: missing
+    Periods:
+      type:
+        space: power-ops
+        externalId: ReserveBidTimeSeries.Periods
+      source:
+        space: power-ops
+        externalId: Periods
+        version: '0_1'
+        type: view
+      direction: outwards
+      name: Periods
+      description: missing
 - space: power-ops
   externalId: Periods
   description: missing
   name: Periods
   version: '0_1'
   properties:
-    parent:
-      type:
-        space: power-ops
-        externalId: Periods.parent
-      source:
-        space: power-ops
-        externalId: ReserveBidTimeSeries
-        version: '0_1'
-        type: view
-      direction: outwards
-      name: parent
-      description: missing
     Resolution:
       container:
         space: power-ops
@@ -174,24 +147,31 @@
       containerPropertyIdentifier: Resolution
       name: Resolution
       description: missing
+    TimeInterval:
+      container:
+        externalId: BidDocumentHeader
+        space: power-ops
+        type: container
+      containerPropertyIdentifier: TimeInterval
+      name: TimeInterval
+    BidCurves:
+      type:
+        space: power-ops
+        externalId: ReserveBidTimeSeries.BidCurves
+      source:
+        space: power-ops
+        externalId: BidCurves
+        version: '0_1'
+        type: view
+      direction: outwards
+      name: Periods
+      description: missing
 - space: power-ops
   externalId: TimeInterval
   description: missing
   name: TimeInterval
   version: '0_1'
   properties:
-    parent:
-      type:
-        space: power-ops
-        externalId: TimeInterval.parent
-      source:
-        space: power-ops
-        externalId: Periods
-        version: '0_1'
-        type: view
-      direction: outwards
-      name: parent
-      description: missing
     Start:
       container:
         space: power-ops
@@ -214,18 +194,6 @@
   name: BidCurves
   version: '0_1'
   properties:
-    parent:
-      type:
-        space: power-ops
-        externalId: BidCurves.parent
-      source:
-        space: power-ops
-        externalId: Periods
-        version: '0_1'
-        type: view
-      direction: outwards
-      name: parent
-      description: missing
     ReserveObject:
       container:
         space: power-ops

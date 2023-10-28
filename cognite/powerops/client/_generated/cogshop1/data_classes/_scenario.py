@@ -22,7 +22,7 @@ ScenarioFields = Literal["name", "source"]
 _SCENARIO_PROPERTIES_BY_FIELD = {"name": "name", "source": "source"}
 
 
-class Scenario(DomainModel, protected_namespace=()):
+class Scenario(DomainModel):
     space: str = "cogShop"
     name: Optional[str] = None
     model_template: Optional[str] = Field(None, alias="modelTemplate")
@@ -43,7 +43,7 @@ class Scenario(DomainModel, protected_namespace=()):
         )
 
 
-class ScenarioApply(DomainModelApply, protected_namespace=()):
+class ScenarioApply(DomainModelApply):
     space: str = "cogShop"
     name: str
     model_template: Union[ModelTemplateApply, str, None] = Field(None, repr=False, alias="modelTemplate")

@@ -33,7 +33,7 @@ _SCENARIOTEMPLATE_PROPERTIES_BY_FIELD = {
 }
 
 
-class ScenarioTemplate(DomainModel, protected_namespace=()):
+class ScenarioTemplate(DomainModel):
     space: str = "power-ops"
     watercourse: Optional[str] = None
     shop_version: Optional[str] = Field(None, alias="shopVersion")
@@ -56,7 +56,7 @@ class ScenarioTemplate(DomainModel, protected_namespace=()):
         )
 
 
-class ScenarioTemplateApply(DomainModelApply, protected_namespace=()):
+class ScenarioTemplateApply(DomainModelApply):
     space: str = "power-ops"
     watercourse: Optional[str] = None
     shop_version: Optional[str] = Field(None, alias="shopVersion")
