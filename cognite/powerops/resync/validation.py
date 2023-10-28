@@ -229,8 +229,8 @@ def prepare_validation(models: list[Model]) -> tuple[PreparedValidationsT, Valid
             ts_validations[validation_range_str][require(additional_ts.external_id)] = TimeSeriesValidation(
                 validation_range=validation_ranges[validation_range_str],
                 mapping=InputTimeSeriesMappingApply(  # dummy mapping, for validation only
-                    external_id=require(additional_ts.external_id),
-                    cdf_time_series=require(additional_ts.external_id),
+                    external_id=require(additional_ts.external_id),  # type: ignore[call-arg]
+                    cdf_time_series=require(additional_ts.external_id),  # type: ignore[call-arg]
                     retrieve="RANGE",
                     shop_attribute_name="N/A",  # could get this from the model, possibly enhance .timeseries()
                 ),

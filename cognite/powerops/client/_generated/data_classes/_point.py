@@ -1,17 +1,26 @@
 from __future__ import annotations
 
-from typing import ClassVar, Optional
+from typing import Literal, Optional
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
 from ._core import DomainModel, DomainModelApply, TypeApplyList, TypeList
 
-__all__ = ["Point", "PointApply", "PointList", "PointApplyList"]
+__all__ = ["Point", "PointApply", "PointList", "PointApplyList", "PointFields"]
+PointFields = Literal["position", "quantity", "minimum_quantity", "price_amount", "energy_price_amount"]
+
+_POINT_PROPERTIES_BY_FIELD = {
+    "position": "position",
+    "quantity": "quantity",
+    "minimum_quantity": "minimumQuantity",
+    "price_amount": "priceAmount",
+    "energy_price_amount": "energyPriceAmount",
+}
 
 
 class Point(DomainModel):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     position: Optional[int] = None
     quantity: Optional[float] = None
     minimum_quantity: Optional[float] = Field(None, alias="minimumQuantity")
@@ -30,12 +39,12 @@ class Point(DomainModel):
 
 
 class PointApply(DomainModelApply):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     position: Optional[int] = None
     quantity: Optional[float] = None
-    minimum_quantity: Optional[float] = None
-    price_amount: Optional[float] = None
-    energy_price_amount: Optional[float] = None
+    minimum_quantity: Optional[float] = Field(None, alias="minimumQuantity")
+    price_amount: Optional[float] = Field(None, alias="priceAmount")
+    energy_price_amount: Optional[float] = Field(None, alias="energyPriceAmount")
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:

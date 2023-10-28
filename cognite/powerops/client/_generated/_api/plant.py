@@ -10,11 +10,20 @@ import pandas as pd
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes import Datapoints, DatapointsArrayList, DatapointsList, TimeSeriesList
+from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
 from cognite.client.data_classes.datapoints import Aggregate
 
-from cognite.powerops.client._generated.data_classes import Plant, PlantApply, PlantApplyList, PlantList
+from cognite.powerops.client._generated.data_classes import (
+    Plant,
+    PlantApply,
+    PlantApplyList,
+    PlantFields,
+    PlantList,
+    PlantTextFields,
+)
+from cognite.powerops.client._generated.data_classes._plant import _PLANT_PROPERTIES_BY_FIELD
 
-from ._core import DEFAULT_LIMIT_READ, INSTANCE_QUERY_LIMIT, TypeAPI
+from ._core import DEFAULT_LIMIT_READ, IN_FILTER_LIMIT, INSTANCE_QUERY_LIMIT, Aggregations, TypeAPI
 
 ColumnNames = Literal[
     "name",
@@ -278,6 +287,7 @@ class PlantPMaxTimeSeriesAPI:
         max_p_max: float | None = None,
         min_p_min: float | None = None,
         max_p_min: float | None = None,
+        watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -298,6 +308,7 @@ class PlantPMaxTimeSeriesAPI:
             max_p_max,
             min_p_min,
             max_p_min,
+            watercourse,
             external_id_prefix,
             filter,
         )
@@ -325,6 +336,7 @@ class PlantPMaxTimeSeriesAPI:
         max_p_max: float | None = None,
         min_p_min: float | None = None,
         max_p_min: float | None = None,
+        watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -345,6 +357,7 @@ class PlantPMaxTimeSeriesAPI:
             max_p_max,
             min_p_min,
             max_p_min,
+            watercourse,
             external_id_prefix,
             filter,
         )
@@ -654,6 +667,7 @@ class PlantPMinTimeSeriesAPI:
         max_p_max: float | None = None,
         min_p_min: float | None = None,
         max_p_min: float | None = None,
+        watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -674,6 +688,7 @@ class PlantPMinTimeSeriesAPI:
             max_p_max,
             min_p_min,
             max_p_min,
+            watercourse,
             external_id_prefix,
             filter,
         )
@@ -701,6 +716,7 @@ class PlantPMinTimeSeriesAPI:
         max_p_max: float | None = None,
         min_p_min: float | None = None,
         max_p_min: float | None = None,
+        watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -721,6 +737,7 @@ class PlantPMinTimeSeriesAPI:
             max_p_max,
             min_p_min,
             max_p_min,
+            watercourse,
             external_id_prefix,
             filter,
         )
@@ -1030,6 +1047,7 @@ class PlantWaterValueAPI:
         max_p_max: float | None = None,
         min_p_min: float | None = None,
         max_p_min: float | None = None,
+        watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -1050,6 +1068,7 @@ class PlantWaterValueAPI:
             max_p_max,
             min_p_min,
             max_p_min,
+            watercourse,
             external_id_prefix,
             filter,
         )
@@ -1077,6 +1096,7 @@ class PlantWaterValueAPI:
         max_p_max: float | None = None,
         min_p_min: float | None = None,
         max_p_min: float | None = None,
+        watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -1097,6 +1117,7 @@ class PlantWaterValueAPI:
             max_p_max,
             min_p_min,
             max_p_min,
+            watercourse,
             external_id_prefix,
             filter,
         )
@@ -1406,6 +1427,7 @@ class PlantFeedingFeeAPI:
         max_p_max: float | None = None,
         min_p_min: float | None = None,
         max_p_min: float | None = None,
+        watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -1426,6 +1448,7 @@ class PlantFeedingFeeAPI:
             max_p_max,
             min_p_min,
             max_p_min,
+            watercourse,
             external_id_prefix,
             filter,
         )
@@ -1453,6 +1476,7 @@ class PlantFeedingFeeAPI:
         max_p_max: float | None = None,
         min_p_min: float | None = None,
         max_p_min: float | None = None,
+        watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -1473,6 +1497,7 @@ class PlantFeedingFeeAPI:
             max_p_max,
             min_p_min,
             max_p_min,
+            watercourse,
             external_id_prefix,
             filter,
         )
@@ -1782,6 +1807,7 @@ class PlantOutletLevelTimeSeriesAPI:
         max_p_max: float | None = None,
         min_p_min: float | None = None,
         max_p_min: float | None = None,
+        watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -1802,6 +1828,7 @@ class PlantOutletLevelTimeSeriesAPI:
             max_p_max,
             min_p_min,
             max_p_min,
+            watercourse,
             external_id_prefix,
             filter,
         )
@@ -1829,6 +1856,7 @@ class PlantOutletLevelTimeSeriesAPI:
         max_p_max: float | None = None,
         min_p_min: float | None = None,
         max_p_min: float | None = None,
+        watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -1849,6 +1877,7 @@ class PlantOutletLevelTimeSeriesAPI:
             max_p_max,
             min_p_min,
             max_p_min,
+            watercourse,
             external_id_prefix,
             filter,
         )
@@ -2160,6 +2189,7 @@ class PlantInletLevelAPI:
         max_p_max: float | None = None,
         min_p_min: float | None = None,
         max_p_min: float | None = None,
+        watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -2180,6 +2210,7 @@ class PlantInletLevelAPI:
             max_p_max,
             min_p_min,
             max_p_min,
+            watercourse,
             external_id_prefix,
             filter,
         )
@@ -2207,6 +2238,7 @@ class PlantInletLevelAPI:
         max_p_max: float | None = None,
         min_p_min: float | None = None,
         max_p_min: float | None = None,
+        watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -2227,6 +2259,7 @@ class PlantInletLevelAPI:
             max_p_max,
             min_p_min,
             max_p_min,
+            watercourse,
             external_id_prefix,
             filter,
         )
@@ -2536,6 +2569,7 @@ class PlantHeadDirectTimeSeriesAPI:
         max_p_max: float | None = None,
         min_p_min: float | None = None,
         max_p_min: float | None = None,
+        watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -2556,6 +2590,7 @@ class PlantHeadDirectTimeSeriesAPI:
             max_p_max,
             min_p_min,
             max_p_min,
+            watercourse,
             external_id_prefix,
             filter,
         )
@@ -2583,6 +2618,7 @@ class PlantHeadDirectTimeSeriesAPI:
         max_p_max: float | None = None,
         min_p_min: float | None = None,
         max_p_min: float | None = None,
+        watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -2603,6 +2639,7 @@ class PlantHeadDirectTimeSeriesAPI:
             max_p_max,
             min_p_min,
             max_p_min,
+            watercourse,
             external_id_prefix,
             filter,
         )
@@ -2675,39 +2712,39 @@ class PlantGeneratorsAPI:
     def __init__(self, client: CogniteClient):
         self._client = client
 
-    def retrieve(self, external_id: str | Sequence[str]) -> dm.EdgeList:
+    def retrieve(self, external_id: str | Sequence[str], space="power-ops") -> dm.EdgeList:
         f = dm.filters
         is_edge_type = f.Equals(
             ["edge", "type"],
-            {"space": "power-ops", "externalId": "Plant.generators"},
+            {"space": space, "externalId": "Plant.generators"},
         )
         if isinstance(external_id, str):
             is_plant = f.Equals(
                 ["edge", "startNode"],
-                {"space": "power-ops", "externalId": external_id},
+                {"space": space, "externalId": external_id},
             )
             return self._client.data_modeling.instances.list("edge", limit=-1, filter=f.And(is_edge_type, is_plant))
 
         else:
             is_plants = f.In(
                 ["edge", "startNode"],
-                [{"space": "power-ops", "externalId": ext_id} for ext_id in external_id],
+                [{"space": space, "externalId": ext_id} for ext_id in external_id],
             )
             return self._client.data_modeling.instances.list("edge", limit=-1, filter=f.And(is_edge_type, is_plants))
 
-    def list(self, plant_id: str | list[str] | None = None, limit=DEFAULT_LIMIT_READ) -> dm.EdgeList:
+    def list(self, plant_id: str | list[str] | None = None, limit=DEFAULT_LIMIT_READ, space="power-ops") -> dm.EdgeList:
         f = dm.filters
         filters = []
         is_edge_type = f.Equals(
             ["edge", "type"],
-            {"space": "power-ops", "externalId": "Plant.generators"},
+            {"space": space, "externalId": "Plant.generators"},
         )
         filters.append(is_edge_type)
         if plant_id:
             plant_ids = [plant_id] if isinstance(plant_id, str) else plant_id
             is_plants = f.In(
                 ["edge", "startNode"],
-                [{"space": "power-ops", "externalId": ext_id} for ext_id in plant_ids],
+                [{"space": space, "externalId": ext_id} for ext_id in plant_ids],
             )
             filters.append(is_plants)
 
@@ -2718,39 +2755,39 @@ class PlantInletReservoirsAPI:
     def __init__(self, client: CogniteClient):
         self._client = client
 
-    def retrieve(self, external_id: str | Sequence[str]) -> dm.EdgeList:
+    def retrieve(self, external_id: str | Sequence[str], space="power-ops") -> dm.EdgeList:
         f = dm.filters
         is_edge_type = f.Equals(
             ["edge", "type"],
-            {"space": "power-ops", "externalId": "Plant.inletReservoirs"},
+            {"space": space, "externalId": "Plant.inletReservoirs"},
         )
         if isinstance(external_id, str):
             is_plant = f.Equals(
                 ["edge", "startNode"],
-                {"space": "power-ops", "externalId": external_id},
+                {"space": space, "externalId": external_id},
             )
             return self._client.data_modeling.instances.list("edge", limit=-1, filter=f.And(is_edge_type, is_plant))
 
         else:
             is_plants = f.In(
                 ["edge", "startNode"],
-                [{"space": "power-ops", "externalId": ext_id} for ext_id in external_id],
+                [{"space": space, "externalId": ext_id} for ext_id in external_id],
             )
             return self._client.data_modeling.instances.list("edge", limit=-1, filter=f.And(is_edge_type, is_plants))
 
-    def list(self, plant_id: str | list[str] | None = None, limit=DEFAULT_LIMIT_READ) -> dm.EdgeList:
+    def list(self, plant_id: str | list[str] | None = None, limit=DEFAULT_LIMIT_READ, space="power-ops") -> dm.EdgeList:
         f = dm.filters
         filters = []
         is_edge_type = f.Equals(
             ["edge", "type"],
-            {"space": "power-ops", "externalId": "Plant.inletReservoirs"},
+            {"space": space, "externalId": "Plant.inletReservoirs"},
         )
         filters.append(is_edge_type)
         if plant_id:
             plant_ids = [plant_id] if isinstance(plant_id, str) else plant_id
             is_plants = f.In(
                 ["edge", "startNode"],
-                [{"space": "power-ops", "externalId": ext_id} for ext_id in plant_ids],
+                [{"space": space, "externalId": ext_id} for ext_id in plant_ids],
             )
             filters.append(is_plants)
 
@@ -2766,7 +2803,7 @@ class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
             class_apply_type=PlantApply,
             class_list=PlantList,
         )
-        self.view_id = view_id
+        self._view_id = view_id
         self.generators = PlantGeneratorsAPI(client)
         self.inlet_reservoirs = PlantInletReservoirsAPI(client)
         self.p_max_time_series = PlantPMaxTimeSeriesAPI(client, view_id)
@@ -2782,14 +2819,20 @@ class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
             instances = plant.to_instances_apply()
         else:
             instances = PlantApplyList(plant).to_instances_apply()
-        return self._client.data_modeling.instances.apply(nodes=instances.nodes, edges=instances.edges, replace=replace)
+        return self._client.data_modeling.instances.apply(
+            nodes=instances.nodes,
+            edges=instances.edges,
+            auto_create_start_nodes=True,
+            auto_create_end_nodes=True,
+            replace=replace,
+        )
 
-    def delete(self, external_id: str | Sequence[str]) -> dm.InstancesDeleteResult:
+    def delete(self, external_id: str | Sequence[str], space="power-ops") -> dm.InstancesDeleteResult:
         if isinstance(external_id, str):
-            return self._client.data_modeling.instances.delete(nodes=(PlantApply.space, external_id))
+            return self._client.data_modeling.instances.delete(nodes=(space, external_id))
         else:
             return self._client.data_modeling.instances.delete(
-                nodes=[(PlantApply.space, id) for id in external_id],
+                nodes=[(space, id) for id in external_id],
             )
 
     @overload
@@ -2802,7 +2845,7 @@ class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
 
     def retrieve(self, external_id: str | Sequence[str]) -> Plant | PlantList:
         if isinstance(external_id, str):
-            plant = self._retrieve((self.sources.space, external_id))
+            plant = self._retrieve((self._sources.space, external_id))
 
             generator_edges = self.generators.retrieve(external_id)
             plant.generators = [edge.end_node.external_id for edge in generator_edges]
@@ -2811,7 +2854,7 @@ class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
 
             return plant
         else:
-            plants = self._retrieve([(self.sources.space, ext_id) for ext_id in external_id])
+            plants = self._retrieve([(self._sources.space, ext_id) for ext_id in external_id])
 
             generator_edges = self.generators.retrieve(external_id)
             self._set_generators(plants, generator_edges)
@@ -2819,6 +2862,232 @@ class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
             self._set_inlet_reservoirs(plants, inlet_reservoir_edges)
 
             return plants
+
+    def search(
+        self,
+        query: str,
+        properties: PlantTextFields | Sequence[PlantTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        display_name: str | list[str] | None = None,
+        display_name_prefix: str | None = None,
+        min_ordering: int | None = None,
+        max_ordering: int | None = None,
+        min_head_loss_factor: float | None = None,
+        max_head_loss_factor: float | None = None,
+        min_outlet_level: float | None = None,
+        max_outlet_level: float | None = None,
+        min_p_max: float | None = None,
+        max_p_max: float | None = None,
+        min_p_min: float | None = None,
+        max_p_min: float | None = None,
+        watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> PlantList:
+        filter_ = _create_filter(
+            self._view_id,
+            name,
+            name_prefix,
+            display_name,
+            display_name_prefix,
+            min_ordering,
+            max_ordering,
+            min_head_loss_factor,
+            max_head_loss_factor,
+            min_outlet_level,
+            max_outlet_level,
+            min_p_max,
+            max_p_max,
+            min_p_min,
+            max_p_min,
+            watercourse,
+            external_id_prefix,
+            filter,
+        )
+        return self._search(self._view_id, query, _PLANT_PROPERTIES_BY_FIELD, properties, filter_, limit)
+
+    @overload
+    def aggregate(
+        self,
+        aggregations: Aggregations
+        | dm.aggregations.MetricAggregation
+        | Sequence[Aggregations]
+        | Sequence[dm.aggregations.MetricAggregation],
+        property: PlantFields | Sequence[PlantFields] | None = None,
+        group_by: None = None,
+        query: str | None = None,
+        search_properties: PlantTextFields | Sequence[PlantTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        display_name: str | list[str] | None = None,
+        display_name_prefix: str | None = None,
+        min_ordering: int | None = None,
+        max_ordering: int | None = None,
+        min_head_loss_factor: float | None = None,
+        max_head_loss_factor: float | None = None,
+        min_outlet_level: float | None = None,
+        max_outlet_level: float | None = None,
+        min_p_max: float | None = None,
+        max_p_max: float | None = None,
+        min_p_min: float | None = None,
+        max_p_min: float | None = None,
+        watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> list[dm.aggregations.AggregatedNumberedValue]:
+        ...
+
+    @overload
+    def aggregate(
+        self,
+        aggregations: Aggregations
+        | dm.aggregations.MetricAggregation
+        | Sequence[Aggregations]
+        | Sequence[dm.aggregations.MetricAggregation],
+        property: PlantFields | Sequence[PlantFields] | None = None,
+        group_by: PlantFields | Sequence[PlantFields] = None,
+        query: str | None = None,
+        search_properties: PlantTextFields | Sequence[PlantTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        display_name: str | list[str] | None = None,
+        display_name_prefix: str | None = None,
+        min_ordering: int | None = None,
+        max_ordering: int | None = None,
+        min_head_loss_factor: float | None = None,
+        max_head_loss_factor: float | None = None,
+        min_outlet_level: float | None = None,
+        max_outlet_level: float | None = None,
+        min_p_max: float | None = None,
+        max_p_max: float | None = None,
+        min_p_min: float | None = None,
+        max_p_min: float | None = None,
+        watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> InstanceAggregationResultList:
+        ...
+
+    def aggregate(
+        self,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | Sequence[Aggregations]
+        | Sequence[dm.aggregations.MetricAggregation],
+        property: PlantFields | Sequence[PlantFields] | None = None,
+        group_by: PlantFields | Sequence[PlantFields] | None = None,
+        query: str | None = None,
+        search_property: PlantTextFields | Sequence[PlantTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        display_name: str | list[str] | None = None,
+        display_name_prefix: str | None = None,
+        min_ordering: int | None = None,
+        max_ordering: int | None = None,
+        min_head_loss_factor: float | None = None,
+        max_head_loss_factor: float | None = None,
+        min_outlet_level: float | None = None,
+        max_outlet_level: float | None = None,
+        min_p_max: float | None = None,
+        max_p_max: float | None = None,
+        min_p_min: float | None = None,
+        max_p_min: float | None = None,
+        watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
+        filter_ = _create_filter(
+            self._view_id,
+            name,
+            name_prefix,
+            display_name,
+            display_name_prefix,
+            min_ordering,
+            max_ordering,
+            min_head_loss_factor,
+            max_head_loss_factor,
+            min_outlet_level,
+            max_outlet_level,
+            min_p_max,
+            max_p_max,
+            min_p_min,
+            max_p_min,
+            watercourse,
+            external_id_prefix,
+            filter,
+        )
+        return self._aggregate(
+            self._view_id,
+            aggregate,
+            _PLANT_PROPERTIES_BY_FIELD,
+            property,
+            group_by,
+            query,
+            search_property,
+            limit,
+            filter_,
+        )
+
+    def histogram(
+        self,
+        property: PlantFields,
+        interval: float,
+        query: str | None = None,
+        search_property: PlantTextFields | Sequence[PlantTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        display_name: str | list[str] | None = None,
+        display_name_prefix: str | None = None,
+        min_ordering: int | None = None,
+        max_ordering: int | None = None,
+        min_head_loss_factor: float | None = None,
+        max_head_loss_factor: float | None = None,
+        min_outlet_level: float | None = None,
+        max_outlet_level: float | None = None,
+        min_p_max: float | None = None,
+        max_p_max: float | None = None,
+        min_p_min: float | None = None,
+        max_p_min: float | None = None,
+        watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> dm.aggregations.HistogramValue:
+        filter_ = _create_filter(
+            self._view_id,
+            name,
+            name_prefix,
+            display_name,
+            display_name_prefix,
+            min_ordering,
+            max_ordering,
+            min_head_loss_factor,
+            max_head_loss_factor,
+            min_outlet_level,
+            max_outlet_level,
+            min_p_max,
+            max_p_max,
+            min_p_min,
+            max_p_min,
+            watercourse,
+            external_id_prefix,
+            filter,
+        )
+        return self._histogram(
+            self._view_id,
+            property,
+            interval,
+            _PLANT_PROPERTIES_BY_FIELD,
+            query,
+            search_property,
+            limit,
+            filter_,
+        )
 
     def list(
         self,
@@ -2836,13 +3105,14 @@ class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
         max_p_max: float | None = None,
         min_p_min: float | None = None,
         max_p_min: float | None = None,
+        watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
         retrieve_edges: bool = True,
     ) -> PlantList:
         filter_ = _create_filter(
-            self.view_id,
+            self._view_id,
             name,
             name_prefix,
             display_name,
@@ -2857,6 +3127,7 @@ class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
             max_p_max,
             min_p_min,
             max_p_min,
+            watercourse,
             external_id_prefix,
             filter,
         )
@@ -2864,9 +3135,15 @@ class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
         plants = self._list(limit=limit, filter=filter_)
 
         if retrieve_edges:
-            generator_edges = self.generators.list(plants.as_external_ids(), limit=-1)
+            if len(external_ids := plants.as_external_ids()) > IN_FILTER_LIMIT:
+                generator_edges = self.generators.list(limit=-1)
+            else:
+                generator_edges = self.generators.list(external_ids, limit=-1)
             self._set_generators(plants, generator_edges)
-            inlet_reservoir_edges = self.inlet_reservoirs.list(plants.as_external_ids(), limit=-1)
+            if len(external_ids := plants.as_external_ids()) > IN_FILTER_LIMIT:
+                inlet_reservoir_edges = self.inlet_reservoirs.list(limit=-1)
+            else:
+                inlet_reservoir_edges = self.inlet_reservoirs.list(external_ids, limit=-1)
             self._set_inlet_reservoirs(plants, inlet_reservoir_edges)
 
         return plants
@@ -2910,6 +3187,7 @@ def _create_filter(
     max_p_max: float | None = None,
     min_p_min: float | None = None,
     max_p_min: float | None = None,
+    watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     external_id_prefix: str | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
@@ -2942,6 +3220,32 @@ def _create_filter(
         filters.append(dm.filters.Range(view_id.as_property_ref("pMax"), gte=min_p_max, lte=max_p_max))
     if min_p_min or max_p_min:
         filters.append(dm.filters.Range(view_id.as_property_ref("pMin"), gte=min_p_min, lte=max_p_min))
+    if watercourse and isinstance(watercourse, str):
+        filters.append(
+            dm.filters.Equals(
+                view_id.as_property_ref("watercourse"), value={"space": "power-ops", "externalId": watercourse}
+            )
+        )
+    if watercourse and isinstance(watercourse, tuple):
+        filters.append(
+            dm.filters.Equals(
+                view_id.as_property_ref("watercourse"), value={"space": watercourse[0], "externalId": watercourse[1]}
+            )
+        )
+    if watercourse and isinstance(watercourse, list) and isinstance(watercourse[0], str):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("watercourse"),
+                values=[{"space": "power-ops", "externalId": item} for item in watercourse],
+            )
+        )
+    if watercourse and isinstance(watercourse, list) and isinstance(watercourse[0], tuple):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("watercourse"),
+                values=[{"space": item[0], "externalId": item[1]} for item in watercourse],
+            )
+        )
     if external_id_prefix:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if filter:

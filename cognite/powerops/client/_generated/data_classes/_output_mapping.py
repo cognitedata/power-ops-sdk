@@ -1,17 +1,36 @@
 from __future__ import annotations
 
-from typing import ClassVar, Optional
+from typing import Literal, Optional
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
 from ._core import DomainModel, DomainModelApply, TypeApplyList, TypeList
 
-__all__ = ["OutputMapping", "OutputMappingApply", "OutputMappingList", "OutputMappingApplyList"]
+__all__ = [
+    "OutputMapping",
+    "OutputMappingApply",
+    "OutputMappingList",
+    "OutputMappingApplyList",
+    "OutputMappingFields",
+    "OutputMappingTextFields",
+]
+
+
+OutputMappingTextFields = Literal["shop_object_type", "shop_attribute_name", "cdf_attribute_name", "unit"]
+OutputMappingFields = Literal["shop_object_type", "shop_attribute_name", "cdf_attribute_name", "unit", "is_step"]
+
+_OUTPUTMAPPING_PROPERTIES_BY_FIELD = {
+    "shop_object_type": "shopObjectType",
+    "shop_attribute_name": "shopAttributeName",
+    "cdf_attribute_name": "cdfAttributeName",
+    "unit": "unit",
+    "is_step": "isStep",
+}
 
 
 class OutputMapping(DomainModel):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     shop_object_type: Optional[str] = Field(None, alias="shopObjectType")
     shop_attribute_name: Optional[str] = Field(None, alias="shopAttributeName")
     cdf_attribute_name: Optional[str] = Field(None, alias="cdfAttributeName")
@@ -30,12 +49,12 @@ class OutputMapping(DomainModel):
 
 
 class OutputMappingApply(DomainModelApply):
-    space: ClassVar[str] = "power-ops"
-    shop_object_type: Optional[str] = None
-    shop_attribute_name: Optional[str] = None
-    cdf_attribute_name: Optional[str] = None
+    space: str = "power-ops"
+    shop_object_type: Optional[str] = Field(None, alias="shopObjectType")
+    shop_attribute_name: Optional[str] = Field(None, alias="shopAttributeName")
+    cdf_attribute_name: Optional[str] = Field(None, alias="cdfAttributeName")
     unit: Optional[str] = None
-    is_step: Optional[bool] = None
+    is_step: Optional[bool] = Field(None, alias="isStep")
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:

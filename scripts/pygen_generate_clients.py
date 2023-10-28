@@ -23,8 +23,8 @@ def main():
         os.environ["SETTINGS_FILES"] = "settings.toml"
         client = get_cognite_client()
         generate_sdk(
-            client,
             model_ids,
+            client,
             top_level_package=top_level,
             client_name="GeneratedPowerOpsClient",
             output_dir=REPO_ROOT,
@@ -37,8 +37,8 @@ def main():
         # The cogshop1 model must be in a different package as it has overlapping names with the CogShop model in
         # the power-ops space.
         generate_sdk(
-            client,
             v1["cogshop1"].id_,
+            client,
             top_level_package=f"{top_level}.cogshop1",
             client_name="CogShop1Client",
             output_dir=REPO_ROOT,

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, ClassVar, Optional, Union
+from typing import TYPE_CHECKING, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -13,11 +13,26 @@ if TYPE_CHECKING:
     from ._scenario_mapping import ScenarioMappingApply
     from ._shop_transformation import ShopTransformationApply
 
-__all__ = ["DayAheadProcess", "DayAheadProcessApply", "DayAheadProcessList", "DayAheadProcessApplyList"]
+__all__ = [
+    "DayAheadProcess",
+    "DayAheadProcessApply",
+    "DayAheadProcessList",
+    "DayAheadProcessApplyList",
+    "DayAheadProcessFields",
+    "DayAheadProcessTextFields",
+]
+
+
+DayAheadProcessTextFields = Literal["name"]
+DayAheadProcessFields = Literal["name"]
+
+_DAYAHEADPROCESS_PROPERTIES_BY_FIELD = {
+    "name": "name",
+}
 
 
 class DayAheadProcess(DomainModel):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     name: Optional[str] = None
     bid: Optional[str] = None
     shop: Optional[str] = None
@@ -36,12 +51,14 @@ class DayAheadProcess(DomainModel):
 
 
 class DayAheadProcessApply(DomainModelApply):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     name: Optional[str] = None
     bid: Union[DayAheadBidApply, str, None] = Field(None, repr=False)
     shop: Union[ShopTransformationApply, str, None] = Field(None, repr=False)
     incremental_mappings: Union[list[ScenarioMappingApply], list[str], None] = Field(default=None, repr=False)
-    bid_matrix_generator_config: Union[list[BidMatrixGeneratorApply], list[str], None] = Field(default=None, repr=False)
+    bid_matrix_generator_config: Union[list[BidMatrixGeneratorApply], list[str], None] = Field(
+        default=None, repr=False, alias="bidMatrixGeneratorConfig"
+    )
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:

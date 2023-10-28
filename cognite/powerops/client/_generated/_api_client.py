@@ -231,8 +231,8 @@ class GeneratedPowerOpsClient:
     GeneratedPowerOpsClient
 
     Generated with:
-        pygen = 0.21.1
-        cognite-sdk = 6.28.0
+        pygen = 0.27.0
+        cognite-sdk = 6.37.0
         pydantic = 2.4.2
 
     """

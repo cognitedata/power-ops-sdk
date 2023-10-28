@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, ClassVar, Optional, Union
+from typing import TYPE_CHECKING, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -10,11 +10,28 @@ from ._core import DomainModel, DomainModelApply, TypeApplyList, TypeList
 if TYPE_CHECKING:
     from ._input_time_series_mapping import InputTimeSeriesMappingApply
 
-__all__ = ["ScenarioMapping", "ScenarioMappingApply", "ScenarioMappingList", "ScenarioMappingApplyList"]
+__all__ = [
+    "ScenarioMapping",
+    "ScenarioMappingApply",
+    "ScenarioMappingList",
+    "ScenarioMappingApplyList",
+    "ScenarioMappingFields",
+    "ScenarioMappingTextFields",
+]
+
+
+ScenarioMappingTextFields = Literal["name", "watercourse", "shop_type"]
+ScenarioMappingFields = Literal["name", "watercourse", "shop_type"]
+
+_SCENARIOMAPPING_PROPERTIES_BY_FIELD = {
+    "name": "name",
+    "watercourse": "watercourse",
+    "shop_type": "shopType",
+}
 
 
 class ScenarioMapping(DomainModel):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     name: Optional[str] = None
     watercourse: Optional[str] = None
     shop_type: Optional[str] = Field(None, alias="shopType")
@@ -31,11 +48,13 @@ class ScenarioMapping(DomainModel):
 
 
 class ScenarioMappingApply(DomainModelApply):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     name: Optional[str] = None
     watercourse: Optional[str] = None
-    shop_type: Optional[str] = None
-    mapping_override: Union[list[InputTimeSeriesMappingApply], list[str], None] = Field(default=None, repr=False)
+    shop_type: Optional[str] = Field(None, alias="shopType")
+    mapping_override: Union[list[InputTimeSeriesMappingApply], list[str], None] = Field(
+        default=None, repr=False, alias="mappingOverride"
+    )
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:

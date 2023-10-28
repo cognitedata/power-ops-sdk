@@ -1,17 +1,34 @@
 from __future__ import annotations
 
-from typing import ClassVar, Optional
+from typing import Literal, Optional
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
 from ._core import DomainModel, DomainModelApply, TypeApplyList, TypeList
 
-__all__ = ["BidMatrixGenerator", "BidMatrixGeneratorApply", "BidMatrixGeneratorList", "BidMatrixGeneratorApplyList"]
+__all__ = [
+    "BidMatrixGenerator",
+    "BidMatrixGeneratorApply",
+    "BidMatrixGeneratorList",
+    "BidMatrixGeneratorApplyList",
+    "BidMatrixGeneratorFields",
+    "BidMatrixGeneratorTextFields",
+]
+
+
+BidMatrixGeneratorTextFields = Literal["shop_plant", "methods", "function_external_id"]
+BidMatrixGeneratorFields = Literal["shop_plant", "methods", "function_external_id"]
+
+_BIDMATRIXGENERATOR_PROPERTIES_BY_FIELD = {
+    "shop_plant": "shopPlant",
+    "methods": "methods",
+    "function_external_id": "functionExternalId",
+}
 
 
 class BidMatrixGenerator(DomainModel):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     shop_plant: Optional[str] = Field(None, alias="shopPlant")
     methods: Optional[str] = None
     function_external_id: Optional[str] = Field(None, alias="functionExternalId")
@@ -26,10 +43,10 @@ class BidMatrixGenerator(DomainModel):
 
 
 class BidMatrixGeneratorApply(DomainModelApply):
-    space: ClassVar[str] = "power-ops"
-    shop_plant: Optional[str] = None
+    space: str = "power-ops"
+    shop_plant: Optional[str] = Field(None, alias="shopPlant")
     methods: Optional[str] = None
-    function_external_id: Optional[str] = None
+    function_external_id: Optional[str] = Field(None, alias="functionExternalId")
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:

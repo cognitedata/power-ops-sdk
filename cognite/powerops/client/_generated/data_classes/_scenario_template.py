@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, ClassVar, Optional, Union
+from typing import TYPE_CHECKING, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -11,11 +11,30 @@ if TYPE_CHECKING:
     from ._output_container import OutputContainerApply
     from ._scenario_mapping import ScenarioMappingApply
 
-__all__ = ["ScenarioTemplate", "ScenarioTemplateApply", "ScenarioTemplateList", "ScenarioTemplateApplyList"]
+__all__ = [
+    "ScenarioTemplate",
+    "ScenarioTemplateApply",
+    "ScenarioTemplateList",
+    "ScenarioTemplateApplyList",
+    "ScenarioTemplateFields",
+    "ScenarioTemplateTextFields",
+]
+
+
+ScenarioTemplateTextFields = Literal["watercourse", "shop_version", "template_version", "model", "shop_files"]
+ScenarioTemplateFields = Literal["watercourse", "shop_version", "template_version", "model", "shop_files"]
+
+_SCENARIOTEMPLATE_PROPERTIES_BY_FIELD = {
+    "watercourse": "watercourse",
+    "shop_version": "shopVersion",
+    "template_version": "templateVersion",
+    "model": "model",
+    "shop_files": "shopFiles",
+}
 
 
 class ScenarioTemplate(DomainModel):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     watercourse: Optional[str] = None
     shop_version: Optional[str] = Field(None, alias="shopVersion")
     template_version: Optional[str] = Field(None, alias="templateVersion")
@@ -38,14 +57,14 @@ class ScenarioTemplate(DomainModel):
 
 
 class ScenarioTemplateApply(DomainModelApply):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     watercourse: Optional[str] = None
-    shop_version: Optional[str] = None
-    template_version: Optional[str] = None
+    shop_version: Optional[str] = Field(None, alias="shopVersion")
+    template_version: Optional[str] = Field(None, alias="templateVersion")
     model: Optional[str] = None
-    shop_files: Optional[list[str]] = None
-    base_mapping: Union[ScenarioMappingApply, str, None] = Field(None, repr=False)
-    output_definitions: Union[OutputContainerApply, str, None] = Field(None, repr=False)
+    shop_files: Optional[list[str]] = Field(None, alias="shopFiles")
+    base_mapping: Union[ScenarioMappingApply, str, None] = Field(None, repr=False, alias="baseMapping")
+    output_definitions: Union[OutputContainerApply, str, None] = Field(None, repr=False, alias="outputDefinitions")
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:

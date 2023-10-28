@@ -5,10 +5,19 @@ from typing import overload
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
+from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
 
-from cognite.powerops.client._generated.data_classes import Reservoir, ReservoirApply, ReservoirApplyList, ReservoirList
+from cognite.powerops.client._generated.data_classes import (
+    Reservoir,
+    ReservoirApply,
+    ReservoirApplyList,
+    ReservoirFields,
+    ReservoirList,
+    ReservoirTextFields,
+)
+from cognite.powerops.client._generated.data_classes._reservoir import _RESERVOIR_PROPERTIES_BY_FIELD
 
-from ._core import DEFAULT_LIMIT_READ, TypeAPI
+from ._core import DEFAULT_LIMIT_READ, Aggregations, TypeAPI
 
 
 class ReservoirAPI(TypeAPI[Reservoir, ReservoirApply, ReservoirList]):
@@ -20,7 +29,7 @@ class ReservoirAPI(TypeAPI[Reservoir, ReservoirApply, ReservoirList]):
             class_apply_type=ReservoirApply,
             class_list=ReservoirList,
         )
-        self.view_id = view_id
+        self._view_id = view_id
 
     def apply(
         self, reservoir: ReservoirApply | Sequence[ReservoirApply], replace: bool = False
@@ -29,14 +38,20 @@ class ReservoirAPI(TypeAPI[Reservoir, ReservoirApply, ReservoirList]):
             instances = reservoir.to_instances_apply()
         else:
             instances = ReservoirApplyList(reservoir).to_instances_apply()
-        return self._client.data_modeling.instances.apply(nodes=instances.nodes, edges=instances.edges, replace=replace)
+        return self._client.data_modeling.instances.apply(
+            nodes=instances.nodes,
+            edges=instances.edges,
+            auto_create_start_nodes=True,
+            auto_create_end_nodes=True,
+            replace=replace,
+        )
 
-    def delete(self, external_id: str | Sequence[str]) -> dm.InstancesDeleteResult:
+    def delete(self, external_id: str | Sequence[str], space="power-ops") -> dm.InstancesDeleteResult:
         if isinstance(external_id, str):
-            return self._client.data_modeling.instances.delete(nodes=(ReservoirApply.space, external_id))
+            return self._client.data_modeling.instances.delete(nodes=(space, external_id))
         else:
             return self._client.data_modeling.instances.delete(
-                nodes=[(ReservoirApply.space, id) for id in external_id],
+                nodes=[(space, id) for id in external_id],
             )
 
     @overload
@@ -49,9 +64,163 @@ class ReservoirAPI(TypeAPI[Reservoir, ReservoirApply, ReservoirList]):
 
     def retrieve(self, external_id: str | Sequence[str]) -> Reservoir | ReservoirList:
         if isinstance(external_id, str):
-            return self._retrieve((self.sources.space, external_id))
+            return self._retrieve((self._sources.space, external_id))
         else:
-            return self._retrieve([(self.sources.space, ext_id) for ext_id in external_id])
+            return self._retrieve([(self._sources.space, ext_id) for ext_id in external_id])
+
+    def search(
+        self,
+        query: str,
+        properties: ReservoirTextFields | Sequence[ReservoirTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        display_name: str | list[str] | None = None,
+        display_name_prefix: str | None = None,
+        min_ordering: int | None = None,
+        max_ordering: int | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> ReservoirList:
+        filter_ = _create_filter(
+            self._view_id,
+            name,
+            name_prefix,
+            display_name,
+            display_name_prefix,
+            min_ordering,
+            max_ordering,
+            external_id_prefix,
+            filter,
+        )
+        return self._search(self._view_id, query, _RESERVOIR_PROPERTIES_BY_FIELD, properties, filter_, limit)
+
+    @overload
+    def aggregate(
+        self,
+        aggregations: Aggregations
+        | dm.aggregations.MetricAggregation
+        | Sequence[Aggregations]
+        | Sequence[dm.aggregations.MetricAggregation],
+        property: ReservoirFields | Sequence[ReservoirFields] | None = None,
+        group_by: None = None,
+        query: str | None = None,
+        search_properties: ReservoirTextFields | Sequence[ReservoirTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        display_name: str | list[str] | None = None,
+        display_name_prefix: str | None = None,
+        min_ordering: int | None = None,
+        max_ordering: int | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> list[dm.aggregations.AggregatedNumberedValue]:
+        ...
+
+    @overload
+    def aggregate(
+        self,
+        aggregations: Aggregations
+        | dm.aggregations.MetricAggregation
+        | Sequence[Aggregations]
+        | Sequence[dm.aggregations.MetricAggregation],
+        property: ReservoirFields | Sequence[ReservoirFields] | None = None,
+        group_by: ReservoirFields | Sequence[ReservoirFields] = None,
+        query: str | None = None,
+        search_properties: ReservoirTextFields | Sequence[ReservoirTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        display_name: str | list[str] | None = None,
+        display_name_prefix: str | None = None,
+        min_ordering: int | None = None,
+        max_ordering: int | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> InstanceAggregationResultList:
+        ...
+
+    def aggregate(
+        self,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | Sequence[Aggregations]
+        | Sequence[dm.aggregations.MetricAggregation],
+        property: ReservoirFields | Sequence[ReservoirFields] | None = None,
+        group_by: ReservoirFields | Sequence[ReservoirFields] | None = None,
+        query: str | None = None,
+        search_property: ReservoirTextFields | Sequence[ReservoirTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        display_name: str | list[str] | None = None,
+        display_name_prefix: str | None = None,
+        min_ordering: int | None = None,
+        max_ordering: int | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
+        filter_ = _create_filter(
+            self._view_id,
+            name,
+            name_prefix,
+            display_name,
+            display_name_prefix,
+            min_ordering,
+            max_ordering,
+            external_id_prefix,
+            filter,
+        )
+        return self._aggregate(
+            self._view_id,
+            aggregate,
+            _RESERVOIR_PROPERTIES_BY_FIELD,
+            property,
+            group_by,
+            query,
+            search_property,
+            limit,
+            filter_,
+        )
+
+    def histogram(
+        self,
+        property: ReservoirFields,
+        interval: float,
+        query: str | None = None,
+        search_property: ReservoirTextFields | Sequence[ReservoirTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        display_name: str | list[str] | None = None,
+        display_name_prefix: str | None = None,
+        min_ordering: int | None = None,
+        max_ordering: int | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> dm.aggregations.HistogramValue:
+        filter_ = _create_filter(
+            self._view_id,
+            name,
+            name_prefix,
+            display_name,
+            display_name_prefix,
+            min_ordering,
+            max_ordering,
+            external_id_prefix,
+            filter,
+        )
+        return self._histogram(
+            self._view_id,
+            property,
+            interval,
+            _RESERVOIR_PROPERTIES_BY_FIELD,
+            query,
+            search_property,
+            limit,
+            filter_,
+        )
 
     def list(
         self,
@@ -66,7 +235,7 @@ class ReservoirAPI(TypeAPI[Reservoir, ReservoirApply, ReservoirList]):
         filter: dm.Filter | None = None,
     ) -> ReservoirList:
         filter_ = _create_filter(
-            self.view_id,
+            self._view_id,
             name,
             name_prefix,
             display_name,

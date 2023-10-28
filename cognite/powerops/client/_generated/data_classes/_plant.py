@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, ClassVar, Optional, Union
+from typing import TYPE_CHECKING, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -12,11 +12,59 @@ if TYPE_CHECKING:
     from ._reservoir import ReservoirApply
     from ._watercourse import WatercourseApply
 
-__all__ = ["Plant", "PlantApply", "PlantList", "PlantApplyList"]
+__all__ = ["Plant", "PlantApply", "PlantList", "PlantApplyList", "PlantFields", "PlantTextFields"]
+
+
+PlantTextFields = Literal[
+    "name",
+    "display_name",
+    "p_max_time_series",
+    "p_min_time_series",
+    "water_value",
+    "feeding_fee",
+    "outlet_level_time_series",
+    "inlet_level",
+    "head_direct_time_series",
+]
+PlantFields = Literal[
+    "name",
+    "display_name",
+    "ordering",
+    "head_loss_factor",
+    "outlet_level",
+    "p_max",
+    "p_min",
+    "penstock_head_loss_factors",
+    "p_max_time_series",
+    "p_min_time_series",
+    "water_value",
+    "feeding_fee",
+    "outlet_level_time_series",
+    "inlet_level",
+    "head_direct_time_series",
+]
+
+_PLANT_PROPERTIES_BY_FIELD = {
+    "name": "name",
+    "display_name": "displayName",
+    "ordering": "ordering",
+    "head_loss_factor": "headLossFactor",
+    "outlet_level": "outletLevel",
+    "p_max": "pMax",
+    "p_min": "pMin",
+    "penstock_head_loss_factors": "penstockHeadLossFactors",
+    "p_max_time_series": "pMaxTimeSeries",
+    "p_min_time_series": "pMinTimeSeries",
+    "water_value": "waterValue",
+    "feeding_fee": "feedingFee",
+    "outlet_level_time_series": "outletLevelTimeSeries",
+    "inlet_level": "inletLevel",
+    "head_direct_time_series": "headDirectTimeSeries",
+}
 
 
 class Plant(DomainModel):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     name: Optional[str] = None
     display_name: Optional[str] = Field(None, alias="displayName")
     ordering: Optional[int] = None
@@ -61,25 +109,27 @@ class Plant(DomainModel):
 
 
 class PlantApply(DomainModelApply):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     name: Optional[str] = None
-    display_name: Optional[str] = None
+    display_name: Optional[str] = Field(None, alias="displayName")
     ordering: Optional[int] = None
-    head_loss_factor: Optional[float] = None
-    outlet_level: Optional[float] = None
-    p_max: Optional[float] = None
-    p_min: Optional[float] = None
-    penstock_head_loss_factors: Optional[dict] = None
+    head_loss_factor: Optional[float] = Field(None, alias="headLossFactor")
+    outlet_level: Optional[float] = Field(None, alias="outletLevel")
+    p_max: Optional[float] = Field(None, alias="pMax")
+    p_min: Optional[float] = Field(None, alias="pMin")
+    penstock_head_loss_factors: Optional[dict] = Field(None, alias="penstockHeadLossFactors")
     watercourse: Union[WatercourseApply, str, None] = Field(None, repr=False)
-    p_max_time_series: Optional[str] = None
-    p_min_time_series: Optional[str] = None
-    water_value: Optional[str] = None
-    feeding_fee: Optional[str] = None
-    outlet_level_time_series: Optional[str] = None
-    inlet_level: Optional[str] = None
-    head_direct_time_series: Optional[str] = None
+    p_max_time_series: Optional[str] = Field(None, alias="pMaxTimeSeries")
+    p_min_time_series: Optional[str] = Field(None, alias="pMinTimeSeries")
+    water_value: Optional[str] = Field(None, alias="waterValue")
+    feeding_fee: Optional[str] = Field(None, alias="feedingFee")
+    outlet_level_time_series: Optional[str] = Field(None, alias="outletLevelTimeSeries")
+    inlet_level: Optional[str] = Field(None, alias="inletLevel")
+    head_direct_time_series: Optional[str] = Field(None, alias="headDirectTimeSeries")
     generators: Union[list[GeneratorApply], list[str], None] = Field(default=None, repr=False)
-    inlet_reservoirs: Union[list[ReservoirApply], list[str], None] = Field(default=None, repr=False)
+    inlet_reservoirs: Union[list[ReservoirApply], list[str], None] = Field(
+        default=None, repr=False, alias="inletReservoirs"
+    )
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:

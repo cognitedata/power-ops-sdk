@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, ClassVar, Optional, Union
+from typing import TYPE_CHECKING, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -12,11 +12,29 @@ if TYPE_CHECKING:
     from ._scenario_mapping import ScenarioMappingApply
     from ._shop_transformation import ShopTransformationApply
 
-__all__ = ["RKOMProcess", "RKOMProcessApply", "RKOMProcessList", "RKOMProcessApplyList"]
+__all__ = [
+    "RKOMProcess",
+    "RKOMProcessApply",
+    "RKOMProcessList",
+    "RKOMProcessApplyList",
+    "RKOMProcessFields",
+    "RKOMProcessTextFields",
+]
+
+
+RKOMProcessTextFields = Literal["name", "process_events", "timezone", "plants"]
+RKOMProcessFields = Literal["name", "process_events", "timezone", "plants"]
+
+_RKOMPROCESS_PROPERTIES_BY_FIELD = {
+    "name": "name",
+    "process_events": "processEvents",
+    "timezone": "timezone",
+    "plants": "plants",
+}
 
 
 class RKOMProcess(DomainModel):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     name: Optional[str] = None
     bid: Optional[str] = None
     shop: Optional[str] = None
@@ -39,11 +57,11 @@ class RKOMProcess(DomainModel):
 
 
 class RKOMProcessApply(DomainModelApply):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     name: Optional[str] = None
     bid: Union[RKOMBidApply, str, None] = Field(None, repr=False)
     shop: Union[ShopTransformationApply, str, None] = Field(None, repr=False)
-    process_events: Optional[list[str]] = None
+    process_events: Optional[list[str]] = Field(None, alias="processEvents")
     timezone: Optional[str] = None
     plants: Optional[list[str]] = None
     incremental_mappings: Union[list[ScenarioMappingApply], list[str], None] = Field(default=None, repr=False)

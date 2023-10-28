@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, ClassVar, Optional, Union
+from typing import TYPE_CHECKING, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -16,11 +16,67 @@ if TYPE_CHECKING:
     from ._reason import ReasonApply
     from ._reserve_bid import ReserveBidApply
 
-__all__ = ["BidTimeSeries", "BidTimeSeriesApply", "BidTimeSeriesList", "BidTimeSeriesApplyList"]
+__all__ = [
+    "BidTimeSeries",
+    "BidTimeSeriesApply",
+    "BidTimeSeriesList",
+    "BidTimeSeriesApplyList",
+    "BidTimeSeriesFields",
+    "BidTimeSeriesTextFields",
+]
+
+
+BidTimeSeriesTextFields = Literal[
+    "m_rid",
+    "auction",
+    "quantity_measure_unit_name",
+    "currency_unit_name",
+    "price_measure_unit_name",
+    "registered_resources_mrid",
+    "flow_direction",
+    "energy_price_measure_unit",
+    "standard_market_product_type",
+    "original_market_product_type",
+]
+BidTimeSeriesFields = Literal[
+    "m_rid",
+    "auction",
+    "quantity_measure_unit_name",
+    "currency_unit_name",
+    "price_measure_unit_name",
+    "divisible",
+    "block_bid",
+    "status",
+    "priority",
+    "registered_resources_mrid",
+    "flow_direction",
+    "step_increment_quantity",
+    "energy_price_measure_unit",
+    "standard_market_product_type",
+    "original_market_product_type",
+]
+
+_BIDTIMESERIES_PROPERTIES_BY_FIELD = {
+    "m_rid": "mRID",
+    "auction": "auction",
+    "quantity_measure_unit_name": "quantityMeasureUnitName",
+    "currency_unit_name": "currencyUnitName",
+    "price_measure_unit_name": "priceMeasureUnitName",
+    "divisible": "divisible",
+    "block_bid": "blockBid",
+    "status": "status",
+    "priority": "priority",
+    "registered_resources_mrid": "registeredResourcesMRID",
+    "flow_direction": "flowDirection",
+    "step_increment_quantity": "stepIncrementQuantity",
+    "energy_price_measure_unit": "energyPriceMeasureUnit",
+    "standard_market_product_type": "standardMarketProductType",
+    "original_market_product_type": "originalMarketProductType",
+}
 
 
 class BidTimeSeries(DomainModel):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     m_rid: Optional[str] = Field(None, alias="mRID")
     auction: Optional[str] = None
     acquiring_domain: Optional[str] = Field(None, alias="acquiringDomain")
@@ -85,34 +141,36 @@ class BidTimeSeries(DomainModel):
 
 
 class BidTimeSeriesApply(DomainModelApply):
-    space: ClassVar[str] = "power-ops"
-    m_rid: Optional[str] = None
+    space: str = "power-ops"
+    m_rid: Optional[str] = Field(None, alias="mRID")
     auction: Optional[str] = None
-    acquiring_domain: Union[MBADomainApply, str, None] = Field(None, repr=False)
-    connecting_domain: Union[MBADomainApply, str, None] = Field(None, repr=False)
-    provider_market_participant: Union[MarketParticipantApply, str, None] = Field(None, repr=False)
-    quantity_measure_unit_name: Optional[str] = None
-    currency_unit_name: Optional[str] = None
-    price_measure_unit_name: Optional[str] = None
+    acquiring_domain: Union[MBADomainApply, str, None] = Field(None, repr=False, alias="acquiringDomain")
+    connecting_domain: Union[MBADomainApply, str, None] = Field(None, repr=False, alias="connectingDomain")
+    provider_market_participant: Union[MarketParticipantApply, str, None] = Field(
+        None, repr=False, alias="providerMarketParticipant"
+    )
+    quantity_measure_unit_name: Optional[str] = Field(None, alias="quantityMeasureUnitName")
+    currency_unit_name: Optional[str] = Field(None, alias="currencyUnitName")
+    price_measure_unit_name: Optional[str] = Field(None, alias="priceMeasureUnitName")
     divisible: Optional[bool] = None
-    linked_bid: Union[ReserveBidApply, str, None] = Field(None, repr=False)
-    multipart_bid: Union[ReserveBidApply, str, None] = Field(None, repr=False)
-    exclusive_bid: Union[ReserveBidApply, str, None] = Field(None, repr=False)
-    block_bid: Optional[bool] = None
+    linked_bid: Union[ReserveBidApply, str, None] = Field(None, repr=False, alias="linkedBid")
+    multipart_bid: Union[ReserveBidApply, str, None] = Field(None, repr=False, alias="multipartBid")
+    exclusive_bid: Union[ReserveBidApply, str, None] = Field(None, repr=False, alias="exclusiveBid")
+    block_bid: Optional[bool] = Field(None, alias="blockBid")
     status: Optional[int] = None
     priority: Optional[int] = None
-    registered_resources_mrid: Optional[str] = None
-    flow_direction: Optional[str] = None
-    step_increment_quantity: Optional[float] = None
-    energy_price_measure_unit: Optional[str] = None
-    market_agreement: Union[MarketAgreementApply, str, None] = Field(None, repr=False)
-    activation_constraint: Union[DurationApply, str, None] = Field(None, repr=False)
-    resting_constraint: Union[DurationApply, str, None] = Field(None, repr=False)
-    minimum_constraint: Union[DurationApply, str, None] = Field(None, repr=False)
-    maximum_constraint: Union[DurationApply, str, None] = Field(None, repr=False)
-    standard_market_product_type: Optional[str] = None
-    original_market_product_type: Optional[str] = None
-    validity_period: Union[DateTimeIntervalApply, str, None] = Field(None, repr=False)
+    registered_resources_mrid: Optional[str] = Field(None, alias="registeredResourcesMRID")
+    flow_direction: Optional[str] = Field(None, alias="flowDirection")
+    step_increment_quantity: Optional[float] = Field(None, alias="stepIncrementQuantity")
+    energy_price_measure_unit: Optional[str] = Field(None, alias="energyPriceMeasureUnit")
+    market_agreement: Union[MarketAgreementApply, str, None] = Field(None, repr=False, alias="marketAgreement")
+    activation_constraint: Union[DurationApply, str, None] = Field(None, repr=False, alias="activationConstraint")
+    resting_constraint: Union[DurationApply, str, None] = Field(None, repr=False, alias="restingConstraint")
+    minimum_constraint: Union[DurationApply, str, None] = Field(None, repr=False, alias="minimumConstraint")
+    maximum_constraint: Union[DurationApply, str, None] = Field(None, repr=False, alias="maximumConstraint")
+    standard_market_product_type: Optional[str] = Field(None, alias="standardMarketProductType")
+    original_market_product_type: Optional[str] = Field(None, alias="originalMarketProductType")
+    validity_period: Union[DateTimeIntervalApply, str, None] = Field(None, repr=False, alias="validityPeriod")
     reason: Union[ReasonApply, str, None] = Field(None, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:

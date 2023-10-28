@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, ClassVar, Optional, Union
+from typing import TYPE_CHECKING, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -11,11 +11,20 @@ if TYPE_CHECKING:
     from ._processing_log import ProcessingLogApply
     from ._scenario import ScenarioApply
 
-__all__ = ["Case", "CaseApply", "CaseList", "CaseApplyList"]
+__all__ = ["Case", "CaseApply", "CaseList", "CaseApplyList", "CaseFields", "CaseTextFields"]
+
+
+CaseTextFields = Literal["start_time", "end_time"]
+CaseFields = Literal["start_time", "end_time"]
+
+_CASE_PROPERTIES_BY_FIELD = {
+    "start_time": "startTime",
+    "end_time": "endTime",
+}
 
 
 class Case(DomainModel):
-    space: ClassVar[str] = "cogShop"
+    space: str = "cogShop"
     scenario: Optional[str] = None
     start_time: Optional[str] = Field(None, alias="startTime")
     end_time: Optional[str] = Field(None, alias="endTime")
@@ -32,11 +41,13 @@ class Case(DomainModel):
 
 
 class CaseApply(DomainModelApply):
-    space: ClassVar[str] = "cogShop"
+    space: str = "cogShop"
     scenario: Union[ScenarioApply, str, None] = Field(None, repr=False)
-    start_time: str
-    end_time: str
-    processing_log: Union[list[ProcessingLogApply], list[str], None] = Field(default=None, repr=False)
+    start_time: str = Field(alias="startTime")
+    end_time: str = Field(alias="endTime")
+    processing_log: Union[list[ProcessingLogApply], list[str], None] = Field(
+        default=None, repr=False, alias="processingLog"
+    )
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
