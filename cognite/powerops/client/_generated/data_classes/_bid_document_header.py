@@ -88,7 +88,7 @@ class BidDocumentHeaderApply(DomainModelApply):
         if self.owner is not None:
             properties["Owner"] = self.owner
         if self.created_date_time is not None:
-            properties["CreatedDateTime"] = self.created_date_time.isoformat()
+            properties["CreatedDateTime"] = self.created_date_time.isoformat(timespec="milliseconds")
         if self.bid_interval is not None:
             properties["BidInterval"] = {
                 "space": "power-ops",
@@ -101,17 +101,11 @@ class BidDocumentHeaderApply(DomainModelApply):
         if self.origin is not None:
             properties["Origin"] = self.origin
         if properties:
-            source = dm.NodeOrEdgeData(
-                source=dm.ContainerId("power-ops", "BidDocumentHeader"),
-                properties=properties,
-            )
+            source = dm.NodeOrEdgeData(source=dm.ContainerId("power-ops", "BidDocumentHeader"), properties=properties)
             sources.append(source)
         if sources:
             this_node = dm.NodeApply(
-                space=self.space,
-                external_id=self.external_id,
-                existing_version=self.existing_version,
-                sources=sources,
+                space=self.space, external_id=self.external_id, existing_version=self.existing_version, sources=sources
             )
             nodes = [this_node]
         else:
