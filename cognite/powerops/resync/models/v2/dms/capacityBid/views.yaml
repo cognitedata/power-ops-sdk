@@ -149,7 +149,7 @@
       description: missing
     TimeInterval:
       container:
-        externalId: BidDocumentHeader
+        externalId: Periods
         space: power-ops
         type: container
       containerPropertyIdentifier: TimeInterval
