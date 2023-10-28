@@ -33,7 +33,7 @@ _SCENARIOTEMPLATE_PROPERTIES_BY_FIELD = {
 }
 
 
-class ScenarioTemplate(DomainModel):
+class ScenarioTemplate(DomainModel, protected_namespace=()):
     space: str = "power-ops"
     watercourse: Optional[str] = None
     shop_version: Optional[str] = Field(None, alias="shopVersion")
@@ -56,7 +56,7 @@ class ScenarioTemplate(DomainModel):
         )
 
 
-class ScenarioTemplateApply(DomainModelApply):
+class ScenarioTemplateApply(DomainModelApply, protected_namespace=()):
     space: str = "power-ops"
     watercourse: Optional[str] = None
     shop_version: Optional[str] = Field(None, alias="shopVersion")
@@ -97,17 +97,11 @@ class ScenarioTemplateApply(DomainModelApply):
                 else self.output_definitions.external_id,
             }
         if properties:
-            source = dm.NodeOrEdgeData(
-                source=dm.ContainerId("power-ops", "ScenarioTemplate"),
-                properties=properties,
-            )
+            source = dm.NodeOrEdgeData(source=dm.ContainerId("power-ops", "ScenarioTemplate"), properties=properties)
             sources.append(source)
         if sources:
             this_node = dm.NodeApply(
-                space=self.space,
-                external_id=self.external_id,
-                existing_version=self.existing_version,
-                sources=sources,
+                space=self.space, external_id=self.external_id, existing_version=self.existing_version, sources=sources
             )
             nodes = [this_node]
         else:
