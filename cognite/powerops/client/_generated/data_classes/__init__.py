@@ -14,6 +14,30 @@ from ._benchmark_process import (
     BenchmarkProcessList,
     BenchmarkProcessTextFields,
 )
+from ._bid_curves import (
+    BidCurves,
+    BidCurvesApply,
+    BidCurvesApplyList,
+    BidCurvesFields,
+    BidCurvesList,
+    BidCurvesTextFields,
+)
+from ._bid_document_header import (
+    BidDocumentHeader,
+    BidDocumentHeaderApply,
+    BidDocumentHeaderApplyList,
+    BidDocumentHeaderFields,
+    BidDocumentHeaderList,
+    BidDocumentHeaderTextFields,
+)
+from ._bid_interval import (
+    BidInterval,
+    BidIntervalApply,
+    BidIntervalApplyList,
+    BidIntervalFields,
+    BidIntervalList,
+    BidIntervalTextFields,
+)
 from ._bid_matrix_generator import (
     BidMatrixGenerator,
     BidMatrixGeneratorApply,
@@ -135,6 +159,7 @@ from ._output_mapping import (
     OutputMappingList,
     OutputMappingTextFields,
 )
+from ._periods import Periods, PeriodsApply, PeriodsApplyList, PeriodsFields, PeriodsList, PeriodsTextFields
 from ._plant import Plant, PlantApply, PlantApplyList, PlantFields, PlantList, PlantTextFields
 from ._point import Point, PointApply, PointApplyList, PointFields, PointList
 from ._price_area import (
@@ -161,6 +186,14 @@ from ._reserve_bid import (
     ReserveBidFields,
     ReserveBidList,
     ReserveBidTextFields,
+)
+from ._reserve_bid_time_series import (
+    ReserveBidTimeSeries,
+    ReserveBidTimeSeriesApply,
+    ReserveBidTimeSeriesApplyList,
+    ReserveBidTimeSeriesFields,
+    ReserveBidTimeSeriesList,
+    ReserveBidTimeSeriesTextFields,
 )
 from ._reserve_scenario import (
     ReserveScenario,
@@ -237,6 +270,14 @@ from ._shop_transformation import (
     ShopTransformationList,
     ShopTransformationTextFields,
 )
+from ._time_interval import (
+    TimeInterval,
+    TimeIntervalApply,
+    TimeIntervalApplyList,
+    TimeIntervalFields,
+    TimeIntervalList,
+    TimeIntervalTextFields,
+)
 from ._value_transformation import (
     ValueTransformation,
     ValueTransformationApply,
@@ -263,11 +304,14 @@ from ._watercourse_shop import (
 
 BenchmarkBidApply.model_rebuild()
 BenchmarkProcessApply.model_rebuild()
+BidCurvesApply.model_rebuild()
+BidIntervalApply.model_rebuild()
 BidTimeSeriesApply.model_rebuild()
 DayAheadBidApply.model_rebuild()
 DayAheadProcessApply.model_rebuild()
 InputTimeSeriesMappingApply.model_rebuild()
 OutputContainerApply.model_rebuild()
+PeriodsApply.model_rebuild()
 PlantApply.model_rebuild()
 PriceAreaApply.model_rebuild()
 RKOMBidApply.model_rebuild()
@@ -279,6 +323,7 @@ ScenarioMappingApply.model_rebuild()
 ScenarioTemplateApply.model_rebuild()
 SeriesApply.model_rebuild()
 ShopTransformationApply.model_rebuild()
+TimeIntervalApply.model_rebuild()
 WatercourseApply.model_rebuild()
 
 __all__ = [
@@ -296,6 +341,24 @@ __all__ = [
     "BenchmarkProcessApplyList",
     "BenchmarkProcessFields",
     "BenchmarkProcessTextFields",
+    "BidCurves",
+    "BidCurvesApply",
+    "BidCurvesList",
+    "BidCurvesApplyList",
+    "BidCurvesFields",
+    "BidCurvesTextFields",
+    "BidDocumentHeader",
+    "BidDocumentHeaderApply",
+    "BidDocumentHeaderList",
+    "BidDocumentHeaderApplyList",
+    "BidDocumentHeaderFields",
+    "BidDocumentHeaderTextFields",
+    "BidInterval",
+    "BidIntervalApply",
+    "BidIntervalList",
+    "BidIntervalApplyList",
+    "BidIntervalFields",
+    "BidIntervalTextFields",
     "BidMatrixGenerator",
     "BidMatrixGeneratorApply",
     "BidMatrixGeneratorList",
@@ -391,6 +454,12 @@ __all__ = [
     "OutputMappingApplyList",
     "OutputMappingFields",
     "OutputMappingTextFields",
+    "Periods",
+    "PeriodsApply",
+    "PeriodsList",
+    "PeriodsApplyList",
+    "PeriodsFields",
+    "PeriodsTextFields",
     "Plant",
     "PlantApply",
     "PlantList",
@@ -456,6 +525,12 @@ __all__ = [
     "ReserveBidApplyList",
     "ReserveBidFields",
     "ReserveBidTextFields",
+    "ReserveBidTimeSeries",
+    "ReserveBidTimeSeriesApply",
+    "ReserveBidTimeSeriesList",
+    "ReserveBidTimeSeriesApplyList",
+    "ReserveBidTimeSeriesFields",
+    "ReserveBidTimeSeriesTextFields",
     "ReserveScenario",
     "ReserveScenarioApply",
     "ReserveScenarioList",
@@ -497,6 +572,12 @@ __all__ = [
     "ShopTransformationApplyList",
     "ShopTransformationFields",
     "ShopTransformationTextFields",
+    "TimeInterval",
+    "TimeIntervalApply",
+    "TimeIntervalList",
+    "TimeIntervalApplyList",
+    "TimeIntervalFields",
+    "TimeIntervalTextFields",
     "ValueTransformation",
     "ValueTransformationApply",
     "ValueTransformationList",

@@ -8,6 +8,9 @@ from cognite.client.credentials import OAuthClientCredentials
 
 from ._api.benchmark_bid import BenchmarkBidAPI
 from ._api.benchmark_process import BenchmarkProcessAPI
+from ._api.bid_curves import BidCurvesAPI
+from ._api.bid_document_header import BidDocumentHeaderAPI
+from ._api.bid_interval import BidIntervalAPI
 from ._api.bid_matrix_generator import BidMatrixGeneratorAPI
 from ._api.bid_time_series import BidTimeSeriesAPI
 from ._api.command_config import CommandConfigAPI
@@ -24,12 +27,14 @@ from ._api.mba_domain import MBADomainAPI
 from ._api.nord_pool_market import NordPoolMarketAPI
 from ._api.output_container import OutputContainerAPI
 from ._api.output_mapping import OutputMappingAPI
+from ._api.periods import PeriodsAPI
 from ._api.plant import PlantAPI
 from ._api.point import PointAPI
 from ._api.price_area import PriceAreaAPI
 from ._api.production_plan_time_series import ProductionPlanTimeSeriesAPI
 from ._api.reason import ReasonAPI
 from ._api.reserve_bid import ReserveBidAPI
+from ._api.reserve_bid_time_series import ReserveBidTimeSeriesAPI
 from ._api.reserve_scenario import ReserveScenarioAPI
 from ._api.reservoir import ReservoirAPI
 from ._api.rkom_bid import RKOMBidAPI
@@ -42,6 +47,7 @@ from ._api.scenario_mapping import ScenarioMappingAPI
 from ._api.scenario_template import ScenarioTemplateAPI
 from ._api.series import SeriesAPI
 from ._api.shop_transformation import ShopTransformationAPI
+from ._api.time_interval import TimeIntervalAPI
 from ._api.value_transformation import ValueTransformationAPI
 from ._api.watercourse import WatercourseAPI
 from ._api.watercourse_shop import WatercourseShopAPI
@@ -108,6 +114,28 @@ class BenchmarkAPIs:
         self.value_transformation = ValueTransformationAPI(
             client, dm.ViewId("power-ops", "ValueTransformation", "acd34e005f1986")
         )
+
+
+class CapacityBidAPIs:
+    """
+    CapacityBidAPIs
+
+    Data Model:
+        space: power-ops
+        externalId: capacityBid
+        version: 1
+
+    """
+
+    def __init__(self, client: CogniteClient):
+        self.bid_curves = BidCurvesAPI(client, dm.ViewId("power-ops", "BidCurves", "0_1"))
+        self.bid_document_header = BidDocumentHeaderAPI(client, dm.ViewId("power-ops", "BidDocumentHeader", "0_1"))
+        self.bid_interval = BidIntervalAPI(client, dm.ViewId("power-ops", "BidInterval", "0_1"))
+        self.periods = PeriodsAPI(client, dm.ViewId("power-ops", "Periods", "0_1"))
+        self.reserve_bid_time_series = ReserveBidTimeSeriesAPI(
+            client, dm.ViewId("power-ops", "ReserveBidTimeSeries", "0_1")
+        )
+        self.time_interval = TimeIntervalAPI(client, dm.ViewId("power-ops", "TimeInterval", "0_1"))
 
 
 class CogShopAPIs:
@@ -246,6 +274,7 @@ class GeneratedPowerOpsClient:
             raise ValueError(f"Expected CogniteClient or ClientConfig, got {type(config_or_client)}")
         self.afrr = AFRRAPIs(client)
         self.benchmark = BenchmarkAPIs(client)
+        self.capacity_bid = CapacityBidAPIs(client)
         self.cog_shop = CogShopAPIs(client)
         self.day_ahead = DayAheadAPIs(client)
         self.production = ProductionAPIs(client)
