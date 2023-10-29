@@ -97,8 +97,8 @@ def production_as_asset(dm: ProductionModelDM) -> ProductionModel:
             name=price_area.name,
             watercourses=[watercourses_by_external_id.get(w) for w in price_area.watercourses],
             plants=[plants_by_external_id.get(p) for p in price_area.plants],
-            dayahead_price_time_series=price_area.day_ahead_price_time_series
-            and TimeSeries(external_id=price_area.day_ahead_price_time_series),
+            dayahead_price_time_series=price_area.dayahead_price_time_series
+            and TimeSeries(external_id=price_area.dayahead_price_time_series),
         )
         price_area_asset.external_id = price_area.external_id
         price_areas.append(price_area_asset)

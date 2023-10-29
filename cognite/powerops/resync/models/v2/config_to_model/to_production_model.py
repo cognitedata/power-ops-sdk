@@ -161,7 +161,7 @@ def to_production_data_model(configuration: config.ProductionConfig) -> Producti
             price_area = PriceAreaApply(name=price_area_name, external_id=f"price_area:{price_area_name}")
             if price_area_name not in {a.name for a in model.price_areas}:
                 if price_area_name in configuration.dayahead_price_timeseries:
-                    price_area.day_ahead_price_time_series = configuration.dayahead_price_timeseries[price_area_name]
+                    price_area.dayahead_price_time_series = configuration.dayahead_price_timeseries[price_area_name]
                 model.price_areas.append(price_area)
             price_area = next(a for a in model.price_areas if a.name == price_area_name)
 
