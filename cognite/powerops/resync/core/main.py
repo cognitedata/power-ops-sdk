@@ -3,6 +3,7 @@ This module contains the main functions for the resync tool.
 """
 from __future__ import annotations
 
+import logging
 from pathlib import Path
 from typing import Literal, Optional, cast
 
@@ -17,65 +18,107 @@ from cognite.powerops.resync import diff, models
 from cognite.powerops.resync.config import ReSyncConfig
 from cognite.powerops.resync.diff import FieldDifference, ModelDifference, ModelDifferences
 from cognite.powerops.resync.models.base import AssetModel, CDFFile, CDFSequence, DataModel, Model, SpaceId
+from cognite.powerops.resync.validation import (
+    ValidationResults,
+    perform_validation,
+    prepare_validation,
+)
 
-from . import Echo
 from .cdf import get_cognite_api
 from .transform import transform
 from .validation import _clean_relationships
+
+logger = logging.getLogger(__name__)
 
 MODELS_BY_NAME = {m.__name__: m for m in models.V1_MODELS}
 
 V2_MODELS_BY_NAME = {m.__name__: m for m in models.V2_MODELS}
 
 
-def _default_echo(message: str, is_warning: bool = False) -> None:
-    print(message)
-
-
-def init(client: PowerOpsClient | None, echo: Echo | None = None, model_names: str | list[str] | None = None) -> None:
+def init(client: PowerOpsClient | None, model_names: str | list[str] | None = None) -> list[dict[str, str]]:
     """
     This function will create the data models in CDF that are required for resync to work. It will not overwrite
     existing models.
 
     Args:
         client: The PowerOpsClient to use. If not provided, a new client will be created.
-        echo: Function to use for printing. Defaults to print.
         model_names: The models to deploy. If not provided, all models will be deployed.
 
     """
     client = client or PowerOpsClient.from_settings()
     cdf = client.cdf
-    echo = echo or _default_echo
     model_classes = _to_models(model_names)
-    data_models = [model.graph_ql for model in model_classes if issubclass(model, DataModel)]
 
-    spaces = set(d.id_.space for d in data_models)
+    data_models = [model for model in model_classes if issubclass(model, DataModel)]
+
+    spaces = {space for model in data_models for space in model.spaces()}
     existing_spaces = set((cdf.data_modeling.spaces.retrieve(list(spaces)) or SpaceList([])).as_ids())
 
     if new_spaces := spaces - existing_spaces:
-        echo(f"Creating {len(new_spaces)} new spaces: {new_spaces}")
+        logger.info(f"Creating {len(new_spaces)} new spaces: {new_spaces}")
         cdf.data_modeling.spaces.apply(
             [SpaceApply(space, description="PowerOps Configuration Space", name=space.title()) for space in new_spaces]
         )
-        echo(f"Spaces {new_spaces} created")
+        logger.info(f"Spaces {new_spaces} created")
 
-    existing = set(cdf.data_modeling.data_models.retrieve([d.id_ for d in data_models]).as_ids())
+    new_data_model_ids = [model_id for m in data_models for model_id in m.data_model_ids()]
+
+    if new_data_model_ids:
+        existing = set(cdf.data_modeling.data_models.retrieve(new_data_model_ids).as_ids())
+    else:
+        existing = set()
+
+    results: list[dict[str, str]] = []
     for model in data_models:
-        if model.id_ in existing:
-            echo(f"Skipping {model.name} data model with {model.id_}, is already exists", is_warning=True)
-            continue
-        echo(f"Deploying {model.name} data model with {model.id_}")
-        result = cdf.data_modeling.graphql.apply_dml(model.id_, model.graphql, model.name, model.description)
-        echo(f"Deployed {model.name} model ({result.space}, {result.external_id}, {result.version})")
+        if model.graph_ql is not None:
+            graphql = model.graph_ql
+            if graphql.id_ in existing:
+                logger.warning(f"Skipping {model.name} data model with {model.graph_ql.id_}, is already exists")
+                results.append(
+                    {"model": model.name, "action": "skipped"}  # type: ignore[dict-item]
+                )  # Ref https://github.com/python/mypy/issues/1465
+                continue
+            logger.info(f"Deploying {model.name} data model with {model.graph_ql.id_}")
+            result = cdf.data_modeling.graphql.apply_dml(
+                model.graph_ql.id_, model.graph_ql.graphql, model.graph_ql.name, model.graph_ql.description
+            )
+            results.append({"model": model.name, "action": "deployed"})  # type: ignore[dict-item]
+            logger.info(f"Deployed {model.name} model ({result.space}, {result.external_id}, {result.version})")
+        if model.source_model is not None:
+            existing_containers = set(
+                cdf.data_modeling.containers.retrieve(model.source_model.containers.as_ids()).as_ids()
+            )
+            new_containers = [
+                container for container in model.source_model.containers if container.as_id() not in existing_containers
+            ]
+            if new_containers:
+                logger.info(f"Creating {len(new_containers)} new containers for {model.name}: {new_containers}")
+                cdf.data_modeling.containers.apply(new_containers)
+                logger.info(f"Containers {new_containers} created")
+        if model.dms_model is not None:
+            existing_views = set(cdf.data_modeling.views.retrieve(model.dms_model.views.as_ids()).as_ids())
+            new_views = [view for view in model.dms_model.views if view.as_id() not in existing_views]
+            if new_views:
+                logger.info(f"Creating {len(new_views)} new views for {model.name}: {new_views}")
+                cdf.data_modeling.views.apply(new_views)
+                logger.info(f"Views {new_views} created")
+            if model.dms_model.id_ in existing:
+                logger.warning(f"Skipping {model.name} data model with {model.dms_model.id_}, is already exists")
+                results.append({"model": model.name, "action": "skipped"})  # type: ignore[dict-item]
+                continue
+            logger.info(f"Deploying {model.name} data model with {model.dms_model.id_}")
+            cdf.data_modeling.data_models.apply(model.dms_model.data_model)
+            results.append({"model": model.name, "action": "deployed"})  # type: ignore[dict-item]
+    return results
 
 
-def validate(config_dir: str | Path, market: str, echo: Echo | None = None) -> None:
+def validate(config_dir: str | Path, market: str) -> ValidationResults:
     """
     Validates the local configuration files.
 
     Args:
         config_dir: Local path to the configuration files. Needs to follow a specific structure. See below.
-        echo: Function to use for printing. Defaults to print.
+        market: The market to load the configuration for.
 
     Configuration file structure:
     ```
@@ -86,17 +129,22 @@ def validate(config_dir: str | Path, market: str, echo: Echo | None = None) -> N
      ┗ 📜settings.yaml - Settings for resync.
     ```
     """
-    echo = echo or _default_echo
-    echo(f"Validating configuration in {config_dir}")
-    _ = _load_transform(market, Path(config_dir), "dummy", echo, list(MODELS_BY_NAME))
-    echo("Validation successful")
+    market = market.lower()
+    po_client = PowerOpsClient.from_settings()
+    logger.info(f"Validating configuration in {config_dir}..")
+    loaded_models = _load_transform(market, Path(config_dir), po_client.cdf.config.project, list(MODELS_BY_NAME))
+
+    logger.info("Validating time series...")
+    ts_validations, validation_ranges = prepare_validation(loaded_models)
+    validation_results = perform_validation(po_client, ts_validations, validation_ranges)
+    logger.info("Validations complete")
+    return validation_results
 
 
 def plan(
     config_dir: Path,
     market: str,
     client: PowerOpsClient | None,
-    echo: Echo | None = None,
     model_names: str | list[str] | None = None,
     dump_folder: Optional[Path] = None,
 ) -> ModelDifferences:
@@ -108,7 +156,6 @@ def plan(
         config_dir: Local path to the configuration files. Needs to follow a specific structure. See below.
         market: The market to load the configuration for.
         client: The PowerOpsClient to use. If not provided, a new client will be created.
-        echo: Function to use for printing. Defaults to print.
         model_names: The models to run the plan.
         dump_folder: If present, the local and CDF changes will be dumped to this directory. This is done so that
                     you can use local tools (for example, PyCharm or VS Code) to compare the detailed changes
@@ -127,18 +174,17 @@ def plan(
      ┗ 📜settings.yaml - Settings for resync.
     ```
     """
-    echo = echo or _default_echo
     client = client or PowerOpsClient.from_settings()
 
-    loaded_models = _load_transform(market, config_dir, client.cdf.config.project, echo, model_names)
+    loaded_models = _load_transform(market, config_dir, client.cdf.config.project, model_names)
 
-    echo(f"Load transform completed, models {', '.join([type(m).__name__ for m in loaded_models])} loaded")
+    logger.info(f"Load transform completed, models {', '.join([type(m).__name__ for m in loaded_models])} loaded")
     if client.datasets.read_dataset is None:
         raise ValueError("No read_dataset configured in settings")
     data_set_external_id = client.datasets.read_dataset
     all_differences = []
     for new_model in loaded_models:
-        echo(f"Retrieving {new_model.model_name} from CDF")
+        logger.info(f"Retrieving {new_model.model_name} from CDF")
         cdf_model = type(new_model).from_cdf(client, data_set_external_id=data_set_external_id)
 
         if isinstance(new_model, AssetModel):
@@ -147,7 +193,7 @@ def plan(
             static_resources = {}
 
         differences = diff.model_difference(cdf_model, new_model, static_resources)
-        _clean_relationships(client.cdf, differences, new_model, echo)
+        _clean_relationships(client.cdf, differences, new_model)
 
         if dump_folder:
             dump_folder.mkdir(parents=True, exist_ok=True)
@@ -166,7 +212,6 @@ def apply(
     config_dir: Path,
     market: str,
     client: PowerOpsClient | None = None,
-    echo: Echo | None = None,
     model_names: str | list[str] | None = None,
     auto_yes: bool = False,
 ) -> ModelDifferences:
@@ -178,7 +223,6 @@ def apply(
         config_dir: Local path to the configuration files. Needs to follow a specific structure. See below.
         market: The market to load the configuration for.
         client: The PowerOpsClient to use. If not provided, a new client will be created.
-        echo: Function to use for printing. Defaults to print.
         model_names: The models to run the plan.
         auto_yes: If true, all prompts will be auto confirmed.
 
@@ -195,9 +239,8 @@ def apply(
      ┗ 📜settings.yaml - Settings for resync.
     ```
     """
-    echo = echo or _default_echo
     client = client or PowerOpsClient.from_settings()
-    loaded_models = _load_transform(market, config_dir, client.cdf.config.project, echo, model_names)
+    loaded_models = _load_transform(market, config_dir, client.cdf.config.project, model_names)
 
     written_changes = ModelDifferences([])
     for new_model in loaded_models:
@@ -210,7 +253,7 @@ def apply(
         differences = diff.model_difference(cdf_model, new_model, static_resources)
 
         # Do not create relationships to time series that does not exist.
-        _clean_relationships(client.cdf, differences, new_model, echo)
+        _clean_relationships(client.cdf, differences, new_model)
         # Remove the domain model as this is not CDF resources
         # TimeSeries are not updated by resync.
         differences.filter_out(group="Domain", field_names={"timeseries"})
@@ -218,8 +261,8 @@ def apply(
         new_sequences_by_id = {s.external_id: s for s in new_model.sequences()}
         new_files_by_id = {f.external_id: f for f in new_model.files()}
 
-        removed = _remove_resources(differences, echo, client.cdf, auto_yes)
-        added_updated = _add_update_resources(differences, echo, client, auto_yes, new_sequences_by_id, new_files_by_id)
+        removed = _remove_resources(differences, client.cdf, auto_yes)
+        added_updated = _add_update_resources(differences, client, auto_yes, new_sequences_by_id, new_files_by_id)
 
         written_changes.append(removed + added_updated)
 
@@ -228,7 +271,6 @@ def apply(
 
 def destroy(
     client: PowerOpsClient | None,
-    echo: Echo | None = None,
     model_names: str | list[str] | None = None,
     auto_yes: bool = False,
     dry_run: bool = False,
@@ -238,7 +280,6 @@ def destroy(
 
     Args:
         client: The PowerOpsClient to use. If not provided, a new client will be created.
-        echo: Function to use for printing. Defaults to print.
         model_names: The models to destroy.
         auto_yes: If true, all prompts will be auto confirmed.
         dry_run: If true, the models will not be deleted, but the changes will be printed.
@@ -246,20 +287,23 @@ def destroy(
     Returns:
         A ModelDifferences object containing the resources that has been destroyed.
     """
-    echo = echo or _default_echo
     client = client or PowerOpsClient.from_settings()
 
     model_types = _to_models(model_names)
     destroyed = ModelDifferences([])
     for model_type in model_types:
-        if issubclass(model_type, DataModel):
+        if issubclass(model_type, DataModel) and model_type.graph_ql:
             remove_data_model = _get_data_model_view_containers(
                 client.cdf, model_type.graph_ql.id_, model_type.__name__
             )
             if not remove_data_model.changes:
-                echo(f"Skipping {model_type.__name__}, no data model found", is_warning=True)
+                logger.warning(f"Skipping {model_type.__name__}, no data model found")
                 continue
             static_resources = {}
+        elif issubclass(model_type, DataModel) and model_type.dms_model:
+            raise NotImplementedError()
+        elif issubclass(model_type, DataModel) and model_type.source_model:
+            raise NotImplementedError()
         elif issubclass(model_type, AssetModel):
             remove_data_model = ModelDifference(model_type.__name__, {})
             if issubclass(model_type, models.MarketModel):
@@ -278,22 +322,22 @@ def destroy(
         if dry_run:
             destroyed.append(remove_data + remove_data_model)
         else:
-            removed = _remove_resources(remove_data + remove_data_model, echo, client.cdf, auto_yes)
+            removed = _remove_resources(remove_data + remove_data_model, client.cdf, auto_yes)
             destroyed.append(removed)
 
     # Spaces are deleted last, as they might contain other resources.
-    spaces = set(d.graph_ql.id_.space for d in model_types if issubclass(d, DataModel))
+    spaces = set(space for d in model_types if issubclass(d, DataModel) for space in d.spaces())
     if spaces and not dry_run:
         deleted_space: list[SpaceId] = []
         # One at a time, in case there are other resources in the space that will prevent deletion.
         for space in spaces:
-            echo(f"Deleting space {space}..")
+            logger.info(f"Deleting space {space}..")
             try:
                 client.cdf.data_modeling.spaces.delete(list(spaces))
             except CogniteAPIError as e:
-                echo(f"Failed to delete space {space} with error {e}", is_warning=True)
+                logger.warning(f"Failed to delete space {space} with error {e}")
             else:
-                echo(f"... deleted space {space}")
+                logger.info(f"... deleted space {space}")
                 deleted_space.append(SpaceId(space))
         if deleted_space:
             destroyed.append(
@@ -321,42 +365,40 @@ def destroy(
 def migration(
     client: PowerOpsClient | None,
     model: Literal["Production"] = "Production",
-    echo: Echo | None = None,
 ) -> ModelDifferences:
     if isinstance(model, list):
         model = model[0]
     if model != "Production":
         raise ValueError(f"Unknown model {model}")
-    echo = echo or _default_echo
     client = client or PowerOpsClient.from_settings()
 
     production_dm = models.v2.ProductionModelDM.from_cdf(client, data_set_external_id=client.datasets.read_dataset)
     production_dm_as_asset = models.migration.production_as_asset(production_dm)
-    echo("Retrieved data model")
+    logger.info("Retrieved data model")
     production_asset = models.v1.ProductionModel.from_cdf(client, data_set_external_id=client.datasets.read_dataset)
-    echo("Retrieved asset model")
+    logger.info("Retrieved asset model")
     return ModelDifferences([diff.model_difference(current_model=production_asset, new_model=production_dm_as_asset)])
 
 
-def _remove_resources(differences: ModelDifference, echo: Echo, cdf: CogniteClient, auto_yes: bool) -> ModelDifference:
+def _remove_resources(differences: ModelDifference, cdf: CogniteClient, auto_yes: bool) -> ModelDifference:
     removed = ModelDifference(model_name=differences.model_name, changes={})
     for difference in sorted(differences, key=_remove_order):
         if not difference.removed:
             continue
-        echo(f"Removals detected for {difference.field_name} in {differences.model_name}")
-        echo(f"Remove count: {difference.as_summary().removed}")
+        logger.info(f"Removals detected for {difference.field_name} in {differences.model_name}")
+        logger.info(f"Remove count: {difference.as_summary().removed}")
         diff_ids = difference.as_ids(5)
-        echo(f"Sample removed for {diff_ids.field_name}: {diff_ids.removed}")
+        logger.info(f"Sample removed for {diff_ids.field_name}: {diff_ids.removed}")
         ans = "y" if auto_yes else input("Continue? (y/n)")
         if ans.lower() != "y":
-            echo("Aborting")
+            logger.info("Aborting")
             continue
 
         api = get_cognite_api(cdf, difference.field_name)
 
         api.delete(external_id=difference.removed_ids)
 
-        echo(f"Deleted {len(difference.removed)} of {difference.field_name}")
+        logger.info(f"Deleted {len(difference.removed)} of {difference.field_name}")
         removed.changes[difference.field_name] = FieldDifference(
             group=difference.group,
             field_name=difference.field_name,
@@ -370,7 +412,6 @@ def _remove_resources(differences: ModelDifference, echo: Echo, cdf: CogniteClie
 
 def _add_update_resources(
     differences: ModelDifference,
-    echo: Echo,
     client: PowerOpsClient,
     auto_yes: bool,
     sequences_by_id: dict[str, CDFSequence],
@@ -380,20 +421,20 @@ def _add_update_resources(
     for difference in sorted(differences, key=_adding_order):
         if not difference.added and not difference.changed:
             continue
-        echo(f"Changes/Additions detected for {difference.field_name} in {differences.model_name}")
+        logger.info(f"Changes/Additions detected for {difference.field_name} in {differences.model_name}")
         summary_count = difference.as_summary()
-        echo(f"Change count: {summary_count.changed}")
-        echo(f"Addition count: {summary_count.added}")
+        logger.info(f"Change count: {summary_count.changed}")
+        logger.info(f"Addition count: {summary_count.added}")
         diff_ids = difference.as_ids(5)
         if diff_ids.changed:
-            echo(f"Sample changed for {diff_ids.field_name}:")
+            logger.info(f"Sample changed for {diff_ids.field_name}:")
             for change in difference.changed[:3]:
-                echo(change.changed_fields)
+                logger.info(change.changed_fields)
         if diff_ids.added:
-            echo(f"Sample added for {diff_ids.field_name}: {diff_ids.added}")
+            logger.info(f"Sample added for {diff_ids.field_name}: {diff_ids.added}")
         ans = "y" if auto_yes else input("Continue? (y/n)")
         if ans.lower() != "y":
-            echo("Aborting")
+            logger.info("Aborting")
             continue
 
         difference.set_set_dataset(client.datasets.write_dataset_id)
@@ -401,7 +442,7 @@ def _add_update_resources(
 
         if difference.added:
             api.create(difference.added)
-            echo(f"Created {len(difference.added)} of {difference.field_name}")
+            logger.info(f"Created {len(difference.added)} of {difference.field_name}")
             if difference.field_name in added_updated:
                 added_updated[difference.field_name].added.extend(difference.added)
             else:
@@ -418,12 +459,12 @@ def _add_update_resources(
             updates = [c.new for c in difference.changed if not c.is_changed_content]
             if updates:
                 api.upsert(updates, mode="replace")
-                echo(f"Updated {len(updates)} of {difference.field_name}")
+                logger.info(f"Updated {len(updates)} of {difference.field_name}")
             content_updates = [c.new for c in difference.changed if c.is_changed_content]
             if content_updates:
                 api.delete([c.external_id for c in content_updates if c.external_id])
                 api.create(content_updates)
-                echo(f"Updated {len(content_updates)} of {difference.field_name} with content")
+                logger.info(f"Updated {len(content_updates)} of {difference.field_name} with content")
             if difference.field_name in added_updated:
                 added_updated[difference.field_name].changed.extend(difference.changed)
             else:
@@ -487,11 +528,9 @@ def _adding_order(diff: FieldDifference) -> int:
         return 5
 
 
-def _load_transform(
-    market: str, path: Path, cdf_project: str, echo: Echo, model_names: str | list[str] | None
-) -> list[Model]:
+def _load_transform(market: str, path: Path, cdf_project: str, model_names: str | list[str] | None) -> list[Model]:
     model_types = _to_models(model_names)
-    echo(f"Loading and transforming {', '.join([m.__name__ for m in model_types])}")
+    logger.info(f"Loading and transforming {', '.join([m.__name__ for m in model_types])}")
 
     config = ReSyncConfig.from_yamls(path, cdf_project)
 

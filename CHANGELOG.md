@@ -13,6 +13,44 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.71.0] - 2023-10-28
+### Added
+* SDK for `CapacityBid` Model
+### Fixed
+* Bug in the DMS of `CapacityBid` Model
+
+## [0.70.3] - 2023-10-25
+### Improved
+* Tweaked the logic for trimming of error messages for extraction pipeline runs.
+
+## [0.70.2] - 2023-10-24
+### Improved
+* API call to create execution pipeline run will now be retried 5 times.
+
+## [0.70.1] - 2023-10-17
+### Fixed
+* Return default value for `loss_factor` when the field is missing in model_raw file for a plant
+* Add default value for a plant's `connection_losses`
+* Safe return when no inlet reservoir is found for a plant
+
+## [0.70.0] - 2023-10-16
+### Added
+* Extended the plant production model to include losses from water running between plant and inlet reservoir
+
+## [0.69.0] - 2023-10-12
+### Added
+* `capacityBid` Model
+
+## [0.68.1] - 2023-10-10
+### Added
+* `resync` support for benchmarking relationships to bid configurations
+
+## [0.68.0] - 2023-10-10
+### Added
+* `validate` CLI command
+### Changed
+* Logs now write to stderr when running CLI commands
+
 ## [0.67.1] - 2023-10-06
 ### Added
 * Documentation of transformations module

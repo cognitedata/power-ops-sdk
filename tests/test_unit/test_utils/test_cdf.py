@@ -102,6 +102,7 @@ def extraction_pipeline() -> ExtractionPipelineCreate:
         log_file_prefix="resync_loss",
         description="The resync/plan function checks that the configuration files are matching "
         "the expected resources in CDF. If there are any differences, the run will report as failed",
+        reverse_truncate_keys=["exception"],
     )
 
 
@@ -134,7 +135,7 @@ def test_create_pipeline_run_truncate_multiple_keys(
     assert "plan" in file_content
     assert "error" in file_content
     assert json.loads(message)
-    assert len(message) < MSG_CHAR_LIMIT
+    assert len(message) <= MSG_CHAR_LIMIT
     assert "..." in message
 
 
@@ -154,5 +155,5 @@ def test_create_pipeline_run_raise_exception(
     run: ExtractionPipelineRun
     run, *_ = cognite_client.extraction_pipelines.runs.create.call_args.args
     assert run.status == "failure"
-    assert "..." in run.message
+    assert '"exception":"...' in run.message
     assert len(run.message) <= MSG_CHAR_LIMIT

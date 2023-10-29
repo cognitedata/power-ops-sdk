@@ -1,17 +1,33 @@
 from __future__ import annotations
 
-from typing import ClassVar, Optional
+from typing import Literal, Optional
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
 from ._core import DomainModel, DomainModelApply, TypeApplyList, TypeList
 
-__all__ = ["MarketParticipant", "MarketParticipantApply", "MarketParticipantList", "MarketParticipantApplyList"]
+__all__ = [
+    "MarketParticipant",
+    "MarketParticipantApply",
+    "MarketParticipantList",
+    "MarketParticipantApplyList",
+    "MarketParticipantFields",
+    "MarketParticipantTextFields",
+]
+
+
+MarketParticipantTextFields = Literal["m_rid", "role"]
+MarketParticipantFields = Literal["m_rid", "role"]
+
+_MARKETPARTICIPANT_PROPERTIES_BY_FIELD = {
+    "m_rid": "mRID",
+    "role": "role",
+}
 
 
 class MarketParticipant(DomainModel):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     m_rid: Optional[str] = Field(None, alias="mRID")
     role: Optional[str] = None
 
@@ -24,8 +40,8 @@ class MarketParticipant(DomainModel):
 
 
 class MarketParticipantApply(DomainModelApply):
-    space: ClassVar[str] = "power-ops"
-    m_rid: Optional[str] = None
+    space: str = "power-ops"
+    m_rid: Optional[str] = Field(None, alias="mRID")
     role: Optional[str] = None
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:

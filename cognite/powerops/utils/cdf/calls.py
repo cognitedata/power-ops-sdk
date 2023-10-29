@@ -2,13 +2,15 @@ from __future__ import annotations
 
 import logging
 from collections.abc import Sequence
-from typing import Optional, Union
+from typing import Optional, Union, cast
 
 import numpy as np
 import pandas as pd
 from cognite.client import CogniteClient
-from cognite.client.data_classes import Event, LabelFilter, RelationshipList
+from cognite.client.data_classes import DatapointsList, Event, LabelFilter, RelationshipList
 from cognite.client.utils import ms_to_datetime
+
+from cognite.powerops.utils.require import require
 
 logger = logging.getLogger(__name__)
 
@@ -22,6 +24,21 @@ def retrieve_event(client: CogniteClient, external_id: str) -> Event:
 
 def remove_duplicates(lst: list) -> list:
     return list(set(lst))
+
+
+def _overlapping_keys(dict_: dict, other: dict) -> list[str]:
+    return list(set(dict_.keys()).intersection(other.keys()))
+
+
+def merge_dicts(*args: dict) -> dict:
+    merged: dict = {}
+    for dict_ in args:
+        assert isinstance(dict_, dict), f"Expected dict, got {type(dict_)}!"
+        overlap = _overlapping_keys(dict_, merged)
+        if overlap:
+            raise Exception(f"Key collision on '{overlap}' when merging dictionaries!")
+        merged = {**merged, **dict_}
+    return merged
 
 
 def retrieve_relationships_from_source_ext_id(
@@ -56,7 +73,9 @@ def _retrieve_range(client: CogniteClient, external_ids: list[str], start: int, 
     external_ids = remove_duplicates(external_ids)
     if not external_ids:
         return pd.DataFrame()
-    logger.debug(f"Retrieving {external_ids} between '{ms_to_datetime(start)}' and '{ms_to_datetime(end)}'")
+    start_dt = ms_to_datetime(start).replace(tzinfo=None)  # UTC implied
+    end_dt = ms_to_datetime(end).replace(tzinfo=None)  # UTC implied
+    logger.debug(f"Retrieving {external_ids} between '{start_dt}' and '{end_dt}'")
     df_range = client.time_series.data.retrieve(  # type: ignore[union-attr]
         external_id=external_ids, start=start, end=end, ignore_unknown_ids=True
     ).to_pandas()
@@ -97,7 +116,7 @@ def _retrieve_range(client: CogniteClient, external_ids: list[str], start: int, 
     df_combined = df_step.combine_first(df_linear)
 
     # Only return datapoints within the range
-    df_filtered = df_combined[ms_to_datetime(start) : ms_to_datetime(end + 1)]  # type: ignore[misc]
+    df_filtered = df_combined[start_dt:end_dt]  # type: ignore[misc]
 
     return df_filtered
 
@@ -105,3 +124,59 @@ def _retrieve_range(client: CogniteClient, external_ids: list[str], start: int, 
 def retrieve_range(client: CogniteClient, external_ids: list[str], start: int, end: int) -> dict[str, pd.Series]:
     df = _retrieve_range(client=client, external_ids=external_ids, start=start, end=end)
     return {col: df[col].dropna() for col in df.columns}
+
+
+# TODO: refactor
+# TODO: naming: time_series vs. datapoints
+def retrieve_latest(client: CogniteClient, external_ids: list[Optional[str]], before: int) -> dict[str, pd.Series]:
+    if not external_ids:
+        return {}
+    external_ids = remove_duplicates(external_ids)
+    logger.debug(f"Retrieving {external_ids} before '{ms_to_datetime(before)}'")
+    time_series = cast(
+        DatapointsList,
+        client.time_series.data.retrieve_latest(external_id=external_ids, before=before, ignore_unknown_ids=True),
+    )
+
+    # For (Cog)Datapoints in (Cog)DatapointsList
+    for datapoints in time_series:
+        if len(datapoints) > 0:  # TODO: what to do about ts with no datapoints?
+            datapoints.timestamp[0] = before  # type: ignore[index]
+
+    res = {
+        require(datapoints.external_id): datapoints.to_pandas().iloc[:, 0]  # iloc to convert DataFrame to Series
+        for datapoints in time_series
+        if len(datapoints) > 0
+    }
+    if missing := set(external_ids).difference(res):
+        logger.warning(f"Missing: {', '.join(map(str, missing))}")
+    return res
+
+
+def retrieve_time_series_datapoints(
+    client: CogniteClient, mappings, start, end  # : List[TimeSeriesMapping]
+) -> dict[str, pd.Series]:
+    time_series_start = retrieve_latest(
+        client=client,
+        external_ids=[mapping.cdf_time_series for mapping in mappings if mapping.retrieve == "START"],
+        before=start,
+    )
+    time_series_end = retrieve_latest(
+        client=client,
+        external_ids=[mapping.cdf_time_series for mapping in mappings if mapping.retrieve == "END"],
+        before=end,
+    )
+    time_series_range = retrieve_range(
+        client=client,
+        external_ids=[mapping.cdf_time_series for mapping in mappings if mapping.retrieve == "RANGE"],
+        start=start,
+        end=end,
+    )
+    _time_series_none = [
+        ".".join(filter(None, [mapping.shop_object_type, mapping.shop_object_name, mapping.shop_attribute_name]))
+        for mapping in mappings
+        if not mapping.retrieve
+    ]
+    logger.debug(f"Not retrieving datapoints for {_time_series_none}")
+
+    return merge_dicts(time_series_start, time_series_end, time_series_range)

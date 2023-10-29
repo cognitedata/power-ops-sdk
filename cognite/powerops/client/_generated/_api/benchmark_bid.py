@@ -6,31 +6,35 @@ from typing import overload
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
+from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
 
 from cognite.powerops.client._generated.data_classes import (
     BenchmarkBid,
     BenchmarkBidApply,
     BenchmarkBidApplyList,
+    BenchmarkBidFields,
     BenchmarkBidList,
+    BenchmarkBidTextFields,
 )
+from cognite.powerops.client._generated.data_classes._benchmark_bid import _BENCHMARKBID_PROPERTIES_BY_FIELD
 
-from ._core import DEFAULT_LIMIT_READ, TypeAPI
+from ._core import DEFAULT_LIMIT_READ, IN_FILTER_LIMIT, Aggregations, TypeAPI
 
 
 class BenchmarkBidDateAPI:
     def __init__(self, client: CogniteClient):
         self._client = client
 
-    def retrieve(self, external_id: str | Sequence[str]) -> dm.EdgeList:
+    def retrieve(self, external_id: str | Sequence[str], space="power-ops") -> dm.EdgeList:
         f = dm.filters
         is_edge_type = f.Equals(
             ["edge", "type"],
-            {"space": "power-ops", "externalId": "BenchmarkBid.date"},
+            {"space": space, "externalId": "BenchmarkBid.date"},
         )
         if isinstance(external_id, str):
             is_benchmark_bid = f.Equals(
                 ["edge", "startNode"],
-                {"space": "power-ops", "externalId": external_id},
+                {"space": space, "externalId": external_id},
             )
             return self._client.data_modeling.instances.list(
                 "edge", limit=-1, filter=f.And(is_edge_type, is_benchmark_bid)
@@ -39,25 +43,27 @@ class BenchmarkBidDateAPI:
         else:
             is_benchmark_bids = f.In(
                 ["edge", "startNode"],
-                [{"space": "power-ops", "externalId": ext_id} for ext_id in external_id],
+                [{"space": space, "externalId": ext_id} for ext_id in external_id],
             )
             return self._client.data_modeling.instances.list(
                 "edge", limit=-1, filter=f.And(is_edge_type, is_benchmark_bids)
             )
 
-    def list(self, benchmark_bid_id: str | list[str] | None = None, limit=DEFAULT_LIMIT_READ) -> dm.EdgeList:
+    def list(
+        self, benchmark_bid_id: str | list[str] | None = None, limit=DEFAULT_LIMIT_READ, space="power-ops"
+    ) -> dm.EdgeList:
         f = dm.filters
         filters = []
         is_edge_type = f.Equals(
             ["edge", "type"],
-            {"space": "power-ops", "externalId": "BenchmarkBid.date"},
+            {"space": space, "externalId": "BenchmarkBid.date"},
         )
         filters.append(is_edge_type)
         if benchmark_bid_id:
             benchmark_bid_ids = [benchmark_bid_id] if isinstance(benchmark_bid_id, str) else benchmark_bid_id
             is_benchmark_bids = f.In(
                 ["edge", "startNode"],
-                [{"space": "power-ops", "externalId": ext_id} for ext_id in benchmark_bid_ids],
+                [{"space": space, "externalId": ext_id} for ext_id in benchmark_bid_ids],
             )
             filters.append(is_benchmark_bids)
 
@@ -73,7 +79,7 @@ class BenchmarkBidAPI(TypeAPI[BenchmarkBid, BenchmarkBidApply, BenchmarkBidList]
             class_apply_type=BenchmarkBidApply,
             class_list=BenchmarkBidList,
         )
-        self.view_id = view_id
+        self._view_id = view_id
         self.date = BenchmarkBidDateAPI(client)
 
     def apply(
@@ -83,14 +89,20 @@ class BenchmarkBidAPI(TypeAPI[BenchmarkBid, BenchmarkBidApply, BenchmarkBidList]
             instances = benchmark_bid.to_instances_apply()
         else:
             instances = BenchmarkBidApplyList(benchmark_bid).to_instances_apply()
-        return self._client.data_modeling.instances.apply(nodes=instances.nodes, edges=instances.edges, replace=replace)
+        return self._client.data_modeling.instances.apply(
+            nodes=instances.nodes,
+            edges=instances.edges,
+            auto_create_start_nodes=True,
+            auto_create_end_nodes=True,
+            replace=replace,
+        )
 
-    def delete(self, external_id: str | Sequence[str]) -> dm.InstancesDeleteResult:
+    def delete(self, external_id: str | Sequence[str], space="power-ops") -> dm.InstancesDeleteResult:
         if isinstance(external_id, str):
-            return self._client.data_modeling.instances.delete(nodes=(BenchmarkBidApply.space, external_id))
+            return self._client.data_modeling.instances.delete(nodes=(space, external_id))
         else:
             return self._client.data_modeling.instances.delete(
-                nodes=[(BenchmarkBidApply.space, id) for id in external_id],
+                nodes=[(space, id) for id in external_id],
             )
 
     @overload
@@ -103,33 +115,165 @@ class BenchmarkBidAPI(TypeAPI[BenchmarkBid, BenchmarkBidApply, BenchmarkBidList]
 
     def retrieve(self, external_id: str | Sequence[str]) -> BenchmarkBid | BenchmarkBidList:
         if isinstance(external_id, str):
-            benchmark_bid = self._retrieve((self.sources.space, external_id))
+            benchmark_bid = self._retrieve((self._sources.space, external_id))
 
             date_edges = self.date.retrieve(external_id)
             benchmark_bid.date = [edge.end_node.external_id for edge in date_edges]
 
             return benchmark_bid
         else:
-            benchmark_bids = self._retrieve([(self.sources.space, ext_id) for ext_id in external_id])
+            benchmark_bids = self._retrieve([(self._sources.space, ext_id) for ext_id in external_id])
 
             date_edges = self.date.retrieve(external_id)
             self._set_date(benchmark_bids, date_edges)
 
             return benchmark_bids
 
+    def search(
+        self,
+        query: str,
+        properties: BenchmarkBidTextFields | Sequence[BenchmarkBidTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        market: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> BenchmarkBidList:
+        filter_ = _create_filter(
+            self._view_id,
+            name,
+            name_prefix,
+            market,
+            external_id_prefix,
+            filter,
+        )
+        return self._search(self._view_id, query, _BENCHMARKBID_PROPERTIES_BY_FIELD, properties, filter_, limit)
+
+    @overload
+    def aggregate(
+        self,
+        aggregations: Aggregations
+        | dm.aggregations.MetricAggregation
+        | Sequence[Aggregations]
+        | Sequence[dm.aggregations.MetricAggregation],
+        property: BenchmarkBidFields | Sequence[BenchmarkBidFields] | None = None,
+        group_by: None = None,
+        query: str | None = None,
+        search_properties: BenchmarkBidTextFields | Sequence[BenchmarkBidTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        market: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> list[dm.aggregations.AggregatedNumberedValue]:
+        ...
+
+    @overload
+    def aggregate(
+        self,
+        aggregations: Aggregations
+        | dm.aggregations.MetricAggregation
+        | Sequence[Aggregations]
+        | Sequence[dm.aggregations.MetricAggregation],
+        property: BenchmarkBidFields | Sequence[BenchmarkBidFields] | None = None,
+        group_by: BenchmarkBidFields | Sequence[BenchmarkBidFields] = None,
+        query: str | None = None,
+        search_properties: BenchmarkBidTextFields | Sequence[BenchmarkBidTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        market: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> InstanceAggregationResultList:
+        ...
+
+    def aggregate(
+        self,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | Sequence[Aggregations]
+        | Sequence[dm.aggregations.MetricAggregation],
+        property: BenchmarkBidFields | Sequence[BenchmarkBidFields] | None = None,
+        group_by: BenchmarkBidFields | Sequence[BenchmarkBidFields] | None = None,
+        query: str | None = None,
+        search_property: BenchmarkBidTextFields | Sequence[BenchmarkBidTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        market: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
+        filter_ = _create_filter(
+            self._view_id,
+            name,
+            name_prefix,
+            market,
+            external_id_prefix,
+            filter,
+        )
+        return self._aggregate(
+            self._view_id,
+            aggregate,
+            _BENCHMARKBID_PROPERTIES_BY_FIELD,
+            property,
+            group_by,
+            query,
+            search_property,
+            limit,
+            filter_,
+        )
+
+    def histogram(
+        self,
+        property: BenchmarkBidFields,
+        interval: float,
+        query: str | None = None,
+        search_property: BenchmarkBidTextFields | Sequence[BenchmarkBidTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        market: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> dm.aggregations.HistogramValue:
+        filter_ = _create_filter(
+            self._view_id,
+            name,
+            name_prefix,
+            market,
+            external_id_prefix,
+            filter,
+        )
+        return self._histogram(
+            self._view_id,
+            property,
+            interval,
+            _BENCHMARKBID_PROPERTIES_BY_FIELD,
+            query,
+            search_property,
+            limit,
+            filter_,
+        )
+
     def list(
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
+        market: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
         retrieve_edges: bool = True,
     ) -> BenchmarkBidList:
         filter_ = _create_filter(
-            self.view_id,
+            self._view_id,
             name,
             name_prefix,
+            market,
             external_id_prefix,
             filter,
         )
@@ -137,7 +281,10 @@ class BenchmarkBidAPI(TypeAPI[BenchmarkBid, BenchmarkBidApply, BenchmarkBidList]
         benchmark_bids = self._list(limit=limit, filter=filter_)
 
         if retrieve_edges:
-            date_edges = self.date.list(benchmark_bids.as_external_ids(), limit=-1)
+            if len(external_ids := benchmark_bids.as_external_ids()) > IN_FILTER_LIMIT:
+                date_edges = self.date.list(limit=-1)
+            else:
+                date_edges = self.date.list(external_ids, limit=-1)
             self._set_date(benchmark_bids, date_edges)
 
         return benchmark_bids
@@ -158,6 +305,7 @@ def _create_filter(
     view_id: dm.ViewId,
     name: str | list[str] | None = None,
     name_prefix: str | None = None,
+    market: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     external_id_prefix: str | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
@@ -168,6 +316,27 @@ def _create_filter(
         filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
     if name_prefix:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
+    if market and isinstance(market, str):
+        filters.append(
+            dm.filters.Equals(view_id.as_property_ref("market"), value={"space": "power-ops", "externalId": market})
+        )
+    if market and isinstance(market, tuple):
+        filters.append(
+            dm.filters.Equals(view_id.as_property_ref("market"), value={"space": market[0], "externalId": market[1]})
+        )
+    if market and isinstance(market, list) and isinstance(market[0], str):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("market"),
+                values=[{"space": "power-ops", "externalId": item} for item in market],
+            )
+        )
+    if market and isinstance(market, list) and isinstance(market[0], tuple):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("market"), values=[{"space": item[0], "externalId": item[1]} for item in market]
+            )
+        )
     if external_id_prefix:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if filter:

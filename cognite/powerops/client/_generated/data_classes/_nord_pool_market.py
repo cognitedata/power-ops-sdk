@@ -1,17 +1,42 @@
 from __future__ import annotations
 
-from typing import ClassVar, Optional
+from typing import Literal, Optional
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
 from ._core import DomainModel, DomainModelApply, TypeApplyList, TypeList
 
-__all__ = ["NordPoolMarket", "NordPoolMarketApply", "NordPoolMarketList", "NordPoolMarketApplyList"]
+__all__ = [
+    "NordPoolMarket",
+    "NordPoolMarketApply",
+    "NordPoolMarketList",
+    "NordPoolMarketApplyList",
+    "NordPoolMarketFields",
+    "NordPoolMarketTextFields",
+]
+
+
+NordPoolMarketTextFields = Literal["name", "timezone", "price_unit", "time_unit"]
+NordPoolMarketFields = Literal[
+    "name", "timezone", "max_price", "min_price", "price_steps", "price_unit", "tick_size", "time_unit", "trade_lot"
+]
+
+_NORDPOOLMARKET_PROPERTIES_BY_FIELD = {
+    "name": "name",
+    "timezone": "timezone",
+    "max_price": "maxPrice",
+    "min_price": "minPrice",
+    "price_steps": "priceSteps",
+    "price_unit": "priceUnit",
+    "tick_size": "tickSize",
+    "time_unit": "timeUnit",
+    "trade_lot": "tradeLot",
+}
 
 
 class NordPoolMarket(DomainModel):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     name: Optional[str] = None
     timezone: Optional[str] = None
     max_price: Optional[float] = Field(None, alias="maxPrice")
@@ -38,16 +63,16 @@ class NordPoolMarket(DomainModel):
 
 
 class NordPoolMarketApply(DomainModelApply):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     name: Optional[str] = None
     timezone: Optional[str] = None
-    max_price: Optional[float] = None
-    min_price: Optional[float] = None
-    price_steps: Optional[int] = None
-    price_unit: Optional[str] = None
-    tick_size: Optional[float] = None
-    time_unit: Optional[str] = None
-    trade_lot: Optional[float] = None
+    max_price: Optional[float] = Field(None, alias="maxPrice")
+    min_price: Optional[float] = Field(None, alias="minPrice")
+    price_steps: Optional[int] = Field(None, alias="priceSteps")
+    price_unit: Optional[str] = Field(None, alias="priceUnit")
+    tick_size: Optional[float] = Field(None, alias="tickSize")
+    time_unit: Optional[str] = Field(None, alias="timeUnit")
+    trade_lot: Optional[float] = Field(None, alias="tradeLot")
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:

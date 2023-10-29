@@ -19,3 +19,6 @@ class PowerOpsGraphQLModel:
             graphql = "\n\n".join([extra.read_text() for extra in self.extra_types] + [graphql])
 
         return graphql
+
+    def spaces(self) -> list[str]:
+        return [self.id_.space]

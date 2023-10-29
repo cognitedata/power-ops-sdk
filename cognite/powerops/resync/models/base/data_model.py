@@ -4,10 +4,11 @@ import inspect
 from abc import ABC
 from collections import defaultdict
 from collections.abc import Iterable
-from typing import Any, Callable, ClassVar, Literal, TypeVar, Union
+from typing import Any, Callable, ClassVar, Literal, Optional, TypeVar, Union
 
 from cognite.client.data_classes.data_modeling import (
     ContainerId,
+    DataModelId,
     EdgeApply,
     EdgeApplyList,
     InstancesApply,
@@ -23,13 +24,31 @@ from cognite.powerops.client._generated.data_classes._core import DomainModelApp
 from cognite.powerops.utils.serialization import get_pydantic_annotation
 
 from .cdf_resources import CDFFile, CDFSequence
+from .dms_models import PowerOpsDMSModel, PowerOpsDMSSourceModel
 from .graph_ql import PowerOpsGraphQLModel
 from .model import Model
 
 
 class DataModel(Model, ABC):
     cls_by_container: ClassVar[dict[ContainerId, type[Union[DomainModelApplyCogShop1, DomainModelApply]]]]
-    graph_ql: ClassVar[PowerOpsGraphQLModel]
+    graph_ql: ClassVar[Optional[PowerOpsGraphQLModel]] = None
+    source_model: ClassVar[Optional[PowerOpsDMSSourceModel]] = None
+    dms_model: ClassVar[Optional[PowerOpsDMSModel]] = None
+
+    @classmethod
+    def spaces(cls) -> list[str]:
+        return list(
+            {
+                space
+                for model in [cls.graph_ql, cls.source_model, cls.dms_model]
+                if model is not None
+                for space in model.spaces()
+            }
+        )
+
+    @classmethod
+    def data_model_ids(cls) -> list[DataModelId]:
+        return list({model.id_ for model in [cls.graph_ql, cls.dms_model] if model is not None})
 
     def instances(self) -> InstancesApply:
         nodes: dict[str, NodeApply] = {}

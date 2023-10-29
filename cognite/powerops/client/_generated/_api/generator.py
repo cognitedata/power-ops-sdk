@@ -9,11 +9,20 @@ import pandas as pd
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes import Datapoints, DatapointsArrayList, DatapointsList, TimeSeriesList
+from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
 from cognite.client.data_classes.datapoints import Aggregate
 
-from cognite.powerops.client._generated.data_classes import Generator, GeneratorApply, GeneratorApplyList, GeneratorList
+from cognite.powerops.client._generated.data_classes import (
+    Generator,
+    GeneratorApply,
+    GeneratorApplyList,
+    GeneratorFields,
+    GeneratorList,
+    GeneratorTextFields,
+)
+from cognite.powerops.client._generated.data_classes._generator import _GENERATOR_PROPERTIES_BY_FIELD
 
-from ._core import DEFAULT_LIMIT_READ, INSTANCE_QUERY_LIMIT, TypeAPI
+from ._core import DEFAULT_LIMIT_READ, INSTANCE_QUERY_LIMIT, Aggregations, TypeAPI
 
 ColumnNames = Literal[
     "name", "pMin", "penstock", "startcost", "startStopCost", "generatorEfficiencyCurve", "turbineEfficiencyCurve"
@@ -381,7 +390,7 @@ class GeneratorAPI(TypeAPI[Generator, GeneratorApply, GeneratorList]):
             class_apply_type=GeneratorApply,
             class_list=GeneratorList,
         )
-        self.view_id = view_id
+        self._view_id = view_id
         self.start_stop_cost = GeneratorStartStopCostAPI(client, view_id)
 
     def apply(
@@ -391,14 +400,20 @@ class GeneratorAPI(TypeAPI[Generator, GeneratorApply, GeneratorList]):
             instances = generator.to_instances_apply()
         else:
             instances = GeneratorApplyList(generator).to_instances_apply()
-        return self._client.data_modeling.instances.apply(nodes=instances.nodes, edges=instances.edges, replace=replace)
+        return self._client.data_modeling.instances.apply(
+            nodes=instances.nodes,
+            edges=instances.edges,
+            auto_create_start_nodes=True,
+            auto_create_end_nodes=True,
+            replace=replace,
+        )
 
-    def delete(self, external_id: str | Sequence[str]) -> dm.InstancesDeleteResult:
+    def delete(self, external_id: str | Sequence[str], space="power-ops") -> dm.InstancesDeleteResult:
         if isinstance(external_id, str):
-            return self._client.data_modeling.instances.delete(nodes=(GeneratorApply.space, external_id))
+            return self._client.data_modeling.instances.delete(nodes=(space, external_id))
         else:
             return self._client.data_modeling.instances.delete(
-                nodes=[(GeneratorApply.space, id) for id in external_id],
+                nodes=[(space, id) for id in external_id],
             )
 
     @overload
@@ -411,9 +426,179 @@ class GeneratorAPI(TypeAPI[Generator, GeneratorApply, GeneratorList]):
 
     def retrieve(self, external_id: str | Sequence[str]) -> Generator | GeneratorList:
         if isinstance(external_id, str):
-            return self._retrieve((self.sources.space, external_id))
+            return self._retrieve((self._sources.space, external_id))
         else:
-            return self._retrieve([(self.sources.space, ext_id) for ext_id in external_id])
+            return self._retrieve([(self._sources.space, ext_id) for ext_id in external_id])
+
+    def search(
+        self,
+        query: str,
+        properties: GeneratorTextFields | Sequence[GeneratorTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        min_p_min: float | None = None,
+        max_p_min: float | None = None,
+        min_penstock: int | None = None,
+        max_penstock: int | None = None,
+        min_startcost: float | None = None,
+        max_startcost: float | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> GeneratorList:
+        filter_ = _create_filter(
+            self._view_id,
+            name,
+            name_prefix,
+            min_p_min,
+            max_p_min,
+            min_penstock,
+            max_penstock,
+            min_startcost,
+            max_startcost,
+            external_id_prefix,
+            filter,
+        )
+        return self._search(self._view_id, query, _GENERATOR_PROPERTIES_BY_FIELD, properties, filter_, limit)
+
+    @overload
+    def aggregate(
+        self,
+        aggregations: Aggregations
+        | dm.aggregations.MetricAggregation
+        | Sequence[Aggregations]
+        | Sequence[dm.aggregations.MetricAggregation],
+        property: GeneratorFields | Sequence[GeneratorFields] | None = None,
+        group_by: None = None,
+        query: str | None = None,
+        search_properties: GeneratorTextFields | Sequence[GeneratorTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        min_p_min: float | None = None,
+        max_p_min: float | None = None,
+        min_penstock: int | None = None,
+        max_penstock: int | None = None,
+        min_startcost: float | None = None,
+        max_startcost: float | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> list[dm.aggregations.AggregatedNumberedValue]:
+        ...
+
+    @overload
+    def aggregate(
+        self,
+        aggregations: Aggregations
+        | dm.aggregations.MetricAggregation
+        | Sequence[Aggregations]
+        | Sequence[dm.aggregations.MetricAggregation],
+        property: GeneratorFields | Sequence[GeneratorFields] | None = None,
+        group_by: GeneratorFields | Sequence[GeneratorFields] = None,
+        query: str | None = None,
+        search_properties: GeneratorTextFields | Sequence[GeneratorTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        min_p_min: float | None = None,
+        max_p_min: float | None = None,
+        min_penstock: int | None = None,
+        max_penstock: int | None = None,
+        min_startcost: float | None = None,
+        max_startcost: float | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> InstanceAggregationResultList:
+        ...
+
+    def aggregate(
+        self,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | Sequence[Aggregations]
+        | Sequence[dm.aggregations.MetricAggregation],
+        property: GeneratorFields | Sequence[GeneratorFields] | None = None,
+        group_by: GeneratorFields | Sequence[GeneratorFields] | None = None,
+        query: str | None = None,
+        search_property: GeneratorTextFields | Sequence[GeneratorTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        min_p_min: float | None = None,
+        max_p_min: float | None = None,
+        min_penstock: int | None = None,
+        max_penstock: int | None = None,
+        min_startcost: float | None = None,
+        max_startcost: float | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
+        filter_ = _create_filter(
+            self._view_id,
+            name,
+            name_prefix,
+            min_p_min,
+            max_p_min,
+            min_penstock,
+            max_penstock,
+            min_startcost,
+            max_startcost,
+            external_id_prefix,
+            filter,
+        )
+        return self._aggregate(
+            self._view_id,
+            aggregate,
+            _GENERATOR_PROPERTIES_BY_FIELD,
+            property,
+            group_by,
+            query,
+            search_property,
+            limit,
+            filter_,
+        )
+
+    def histogram(
+        self,
+        property: GeneratorFields,
+        interval: float,
+        query: str | None = None,
+        search_property: GeneratorTextFields | Sequence[GeneratorTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        min_p_min: float | None = None,
+        max_p_min: float | None = None,
+        min_penstock: int | None = None,
+        max_penstock: int | None = None,
+        min_startcost: float | None = None,
+        max_startcost: float | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> dm.aggregations.HistogramValue:
+        filter_ = _create_filter(
+            self._view_id,
+            name,
+            name_prefix,
+            min_p_min,
+            max_p_min,
+            min_penstock,
+            max_penstock,
+            min_startcost,
+            max_startcost,
+            external_id_prefix,
+            filter,
+        )
+        return self._histogram(
+            self._view_id,
+            property,
+            interval,
+            _GENERATOR_PROPERTIES_BY_FIELD,
+            query,
+            search_property,
+            limit,
+            filter_,
+        )
 
     def list(
         self,
@@ -430,7 +615,7 @@ class GeneratorAPI(TypeAPI[Generator, GeneratorApply, GeneratorList]):
         filter: dm.Filter | None = None,
     ) -> GeneratorList:
         filter_ = _create_filter(
-            self.view_id,
+            self._view_id,
             name,
             name_prefix,
             min_p_min,

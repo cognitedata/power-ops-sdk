@@ -7,6 +7,7 @@ from .v1 import CogShop1Asset, MarketModel, ProductionModel
 from .v2 import (
     AFRRMarket,
     BenchmarkMarketDataModel,
+    CapacityBidModel,
     CogShopDataModel,
     DayAheadMarketDataModel,
     ProductionModelDM,
@@ -21,6 +22,7 @@ V2_MODELS: list[type[Model]] = [
     DayAheadMarketDataModel,
     RKOMMarketDataModel,
     AFRRMarket,
+    CapacityBidModel,
 ]
 
 __all__ = [

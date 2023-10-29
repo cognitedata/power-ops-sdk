@@ -72,6 +72,10 @@ class MarketModel(AssetModel):
             for item in field:
                 item.standardize()
 
+    @property
+    def processes(self):
+        return self.dayahead_processes + self.benchmark_processes + self.rkom_processes
+
 
 __all__ = [
     "RKOMBid",

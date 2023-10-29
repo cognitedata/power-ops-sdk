@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, ClassVar, Optional, Union
+from typing import TYPE_CHECKING, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -12,11 +12,49 @@ if TYPE_CHECKING:
     from ._nord_pool_market import NordPoolMarketApply
     from ._scenario_mapping import ScenarioMappingApply
 
-__all__ = ["DayAheadBid", "DayAheadBidApply", "DayAheadBidList", "DayAheadBidApplyList"]
+__all__ = [
+    "DayAheadBid",
+    "DayAheadBidApply",
+    "DayAheadBidList",
+    "DayAheadBidApplyList",
+    "DayAheadBidFields",
+    "DayAheadBidTextFields",
+]
+
+
+DayAheadBidTextFields = Literal[
+    "name",
+    "main_scenario",
+    "price_area",
+    "watercourse",
+    "bid_process_configuration_name",
+    "bid_matrix_generator_config_external_id",
+]
+DayAheadBidFields = Literal[
+    "name",
+    "is_default_config_for_price_area",
+    "main_scenario",
+    "price_area",
+    "watercourse",
+    "no_shop",
+    "bid_process_configuration_name",
+    "bid_matrix_generator_config_external_id",
+]
+
+_DAYAHEADBID_PROPERTIES_BY_FIELD = {
+    "name": "name",
+    "is_default_config_for_price_area": "isDefaultConfigForPriceArea",
+    "main_scenario": "mainScenario",
+    "price_area": "priceArea",
+    "watercourse": "watercourse",
+    "no_shop": "noShop",
+    "bid_process_configuration_name": "bidProcessConfigurationName",
+    "bid_matrix_generator_config_external_id": "bidMatrixGeneratorConfigExternalId",
+}
 
 
 class DayAheadBid(DomainModel):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     name: Optional[str] = None
     market: Optional[str] = None
     is_default_config_for_price_area: Optional[bool] = Field(None, alias="isDefaultConfigForPriceArea")
@@ -47,18 +85,20 @@ class DayAheadBid(DomainModel):
 
 
 class DayAheadBidApply(DomainModelApply):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     name: Optional[str] = None
     market: Union[NordPoolMarketApply, str, None] = Field(None, repr=False)
-    is_default_config_for_price_area: Optional[bool] = None
-    main_scenario: Optional[str] = None
-    price_area: Optional[str] = None
+    is_default_config_for_price_area: Optional[bool] = Field(None, alias="isDefaultConfigForPriceArea")
+    main_scenario: Optional[str] = Field(None, alias="mainScenario")
+    price_area: Optional[str] = Field(None, alias="priceArea")
     watercourse: Optional[str] = None
-    no_shop: Optional[bool] = None
-    bid_process_configuration_name: Optional[str] = None
-    bid_matrix_generator_config_external_id: Optional[str] = None
+    no_shop: Optional[bool] = Field(None, alias="noShop")
+    bid_process_configuration_name: Optional[str] = Field(None, alias="bidProcessConfigurationName")
+    bid_matrix_generator_config_external_id: Optional[str] = Field(None, alias="bidMatrixGeneratorConfigExternalId")
     date: Union[list[DateTransformationApply], list[str], None] = Field(default=None, repr=False)
-    price_scenarios: Union[list[ScenarioMappingApply], list[str], None] = Field(default=None, repr=False)
+    price_scenarios: Union[list[ScenarioMappingApply], list[str], None] = Field(
+        default=None, repr=False, alias="priceScenarios"
+    )
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:

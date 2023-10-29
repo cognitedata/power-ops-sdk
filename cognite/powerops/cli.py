@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Annotated, Optional
 
 import typer
-from rich.logging import RichHandler
+from rich.logging import Console, RichHandler
 
 import cognite.powerops.resync.core.echo
 from cognite import powerops
@@ -19,7 +19,9 @@ for third_party in ["cognite-sdk", "requests", "urllib3", "msal", "requests_oaut
     third_party_logger.propagate = False
 
 FORMAT = "%(message)s"
-logging.basicConfig(level=logging.INFO, format=FORMAT, datefmt="[%X]", handlers=[RichHandler()])
+logging.basicConfig(
+    level=logging.INFO, format=FORMAT, datefmt="[%X]", handlers=[RichHandler(console=Console(stderr=True))]
+)
 
 log = logging.getLogger("rich")
 
@@ -45,22 +47,41 @@ def init(
     ),
     verbose: bool = typer.Option(False, "--verbose", "-v", help="Whether to print verbose output"),
 ):
+    echo = _setup_echo(verbose, typer.echo)
     client = PowerOpsClient.from_settings()
 
     if "v2" in models:
         models.remove("v2")
         models.extend(resync.V2_MODELS_BY_NAME)
 
-    resync.init(client, echo=_to_echo(verbose), model_names=models)
+    results = resync.init(client, model_names=models)
+    if verbose:
+        for result in results:
+            model, action = result["model"], result["action"]
+            echo(f"{model=} {action=}")
 
 
-@app.command("validate", help="Validate the configuration files")
+@app.command("validate", help="Validate the configuration files and timeseries")
 def validate(
     path: Annotated[Path, typer.Argument(help="Path to configuration files")],
     market: Annotated[str, typer.Argument(help="Selected power market")],
-    verbose: bool = typer.Option(False, "--verbose", "-v", help="Whether to print verbose output"),
+    verbose: bool = typer.Option(
+        False, "--verbose", "-v", help="Include valid results in output (specify --format), and enable INFO logs"
+    ),
+    format: str = typer.Option(default=None, help="The format of the output. Available formats: markdown, json"),
+    error_code: bool = typer.Option(False, "--error-code", "-e", help="Exit with error code if validation fails"),
 ):
-    resync.validate(path, market, echo=_to_echo(verbose))
+    echo = _setup_echo(verbose, typer.echo)
+    log.info(f"Running validate on configuration files located in {path}")
+    validation_results = resync.validate(path, market)
+
+    if format == "markdown":
+        echo(validation_results.as_markdown(include_valid=verbose))
+    elif format == "json":
+        echo(validation_results.as_json(include_valid=verbose))
+
+    if error_code and not all(result.valid for result in validation_results.results):
+        raise typer.Exit(code=1)
 
 
 @app.command(
@@ -88,14 +109,14 @@ def plan(
     if dump_folder and not dump_folder.is_dir():
         raise typer.BadParameter(f"{dump_folder} is not a directory")
 
-    echo = _to_echo(verbose)
-    echo(f"Running plan on configuration files located in {path}")
+    echo = _setup_echo(verbose, typer.echo)
+    log.info(f"Running plan on configuration files located in {path}")
     power = PowerOpsClient.from_settings()
 
-    changes = resync.plan(path, market, echo=echo, model_names=models, dump_folder=dump_folder, client=power)
+    changes = resync.plan(path, market, model_names=models, dump_folder=dump_folder, client=power)
 
     if format == "markdown":
-        typer.echo(changes.as_github_markdown())
+        echo(changes.as_github_markdown())
 
     if as_extraction_pipeline_run is True:
         client = power.cdf
@@ -120,7 +141,7 @@ def plan(
                 )
             else:
                 run.update_data(RunStatus.SUCCESS)
-        typer.echo(f"Extraction pipeline run executed with status: {run.status}")
+        echo(f"Extraction pipeline run executed with status: {run.status}")
 
 
 @app.command("apply", help="Apply the changes from the configuration files to the data model in CDF")
@@ -135,13 +156,13 @@ def apply(
     format: str = typer.Option(default=None, help="The format of the output. Available formats: markdown"),
     verbose: bool = typer.Option(False, "--verbose", "-v", help="Whether to print verbose output"),
 ):
-    echo = _to_echo(verbose)
+    echo = _setup_echo(verbose, typer.echo)
     client = PowerOpsClient.from_settings()
 
-    echo(f"Running apply on configuration files located in {path}")
-    changed = resync.apply(path, market, client, model_names=models, echo=_to_echo(verbose), auto_yes=auto_yes)
+    logging.info(f"Running apply on configuration files located in {path}")
+    changed = resync.apply(path, market, client, model_names=models, auto_yes=auto_yes)
     if format == "markdown":
-        typer.echo(changed.as_github_markdown())
+        echo(changed.as_github_markdown())
 
 
 @app.command("destroy", help="Destroy all the data models created by resync and remove all the data.")
@@ -157,11 +178,12 @@ def destroy(
     format: str = typer.Option(default=None, help="The format of the output. Available formats: markdown"),
     verbose: bool = typer.Option(False, "--verbose", "-v", help="Whether to print verbose output"),
 ):
+    echo = _setup_echo(verbose, typer.echo)
     client = PowerOpsClient.from_settings()
 
-    destroyed = resync.destroy(client, echo=_to_echo(verbose), model_names=models, auto_yes=auto_yes, dry_run=dry_run)
+    destroyed = resync.destroy(client, model_names=models, auto_yes=auto_yes, dry_run=dry_run)
     if format == "markdown":
-        typer.echo(destroyed.as_github_markdown())
+        echo(destroyed.as_github_markdown())
 
 
 @app.command("migrate", help="Migrate from asset to data model")
@@ -173,7 +195,7 @@ def migrate(
 ):
     power = PowerOpsClient.from_settings()
 
-    changes = resync.migration(power, model=models, echo=_to_echo(True))
+    changes = resync.migration(power, model=models)
 
     if format == "markdown":
         typer.echo(changes.as_github_markdown())
@@ -183,18 +205,14 @@ def main():
     app()
 
 
-def _to_echo(verbose: bool) -> cognite.powerops.resync.core.echo.Echo:
-    if verbose:
+def _setup_echo(
+    verbose: bool, echo_func: Optional[cognite.powerops.resync.core.echo.Echo] = None
+) -> cognite.powerops.resync.core.echo.Echo:
+    if not verbose:
+        logging.disable(logging.INFO)  # disable logs for INFO and below
 
-        def echo(message: str, is_warning: bool = False) -> None:
-            if is_warning:
-                log.warning(message)
-            else:
-                log.info(message)
+    return echo_func or print
 
-    else:
 
-        def echo(message: str, is_warning: bool = False) -> None:
-            ...
-
-    return echo
+if __name__ == "__main__":
+    main()

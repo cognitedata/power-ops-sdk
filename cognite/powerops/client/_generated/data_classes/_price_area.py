@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, ClassVar, Optional, Union
+from typing import TYPE_CHECKING, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -11,11 +11,28 @@ if TYPE_CHECKING:
     from ._plant import PlantApply
     from ._watercourse import WatercourseApply
 
-__all__ = ["PriceArea", "PriceAreaApply", "PriceAreaList", "PriceAreaApplyList"]
+__all__ = [
+    "PriceArea",
+    "PriceAreaApply",
+    "PriceAreaList",
+    "PriceAreaApplyList",
+    "PriceAreaFields",
+    "PriceAreaTextFields",
+]
+
+
+PriceAreaTextFields = Literal["name", "description", "day_ahead_price"]
+PriceAreaFields = Literal["name", "description", "day_ahead_price"]
+
+_PRICEAREA_PROPERTIES_BY_FIELD = {
+    "name": "name",
+    "description": "description",
+    "day_ahead_price": "dayAheadPrice",
+}
 
 
 class PriceArea(DomainModel):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     name: Optional[str] = None
     description: Optional[str] = None
     day_ahead_price: Optional[str] = Field(None, alias="dayAheadPrice")
@@ -34,10 +51,10 @@ class PriceArea(DomainModel):
 
 
 class PriceAreaApply(DomainModelApply):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     name: Optional[str] = None
     description: Optional[str] = None
-    day_ahead_price: Optional[str] = None
+    day_ahead_price: Optional[str] = Field(None, alias="dayAheadPrice")
     plants: Union[list[PlantApply], list[str], None] = Field(default=None, repr=False)
     watercourses: Union[list[WatercourseApply], list[str], None] = Field(default=None, repr=False)
 

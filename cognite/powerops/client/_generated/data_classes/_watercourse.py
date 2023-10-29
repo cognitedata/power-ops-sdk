@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, ClassVar, Optional, Union
+from typing import TYPE_CHECKING, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -11,11 +11,27 @@ if TYPE_CHECKING:
     from ._plant import PlantApply
     from ._watercourse_shop import WatercourseShopApply
 
-__all__ = ["Watercourse", "WatercourseApply", "WatercourseList", "WatercourseApplyList"]
+__all__ = [
+    "Watercourse",
+    "WatercourseApply",
+    "WatercourseList",
+    "WatercourseApplyList",
+    "WatercourseFields",
+    "WatercourseTextFields",
+]
+
+
+WatercourseTextFields = Literal["name", "production_obligation"]
+WatercourseFields = Literal["name", "production_obligation"]
+
+_WATERCOURSE_PROPERTIES_BY_FIELD = {
+    "name": "name",
+    "production_obligation": "productionObligation",
+}
 
 
 class Watercourse(DomainModel):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     name: Optional[str] = None
     shop: Optional[str] = None
     production_obligation: Optional[list[str]] = Field(None, alias="productionObligation")
@@ -32,10 +48,10 @@ class Watercourse(DomainModel):
 
 
 class WatercourseApply(DomainModelApply):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     name: Optional[str] = None
     shop: Union[WatercourseShopApply, str, None] = Field(None, repr=False)
-    production_obligation: Optional[list[str]] = None
+    production_obligation: Optional[list[str]] = Field(None, alias="productionObligation")
     plants: Union[list[PlantApply], list[str], None] = Field(default=None, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, ClassVar, Optional, Union
+from typing import TYPE_CHECKING, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -12,11 +12,19 @@ if TYPE_CHECKING:
     from ._scenario_mapping import ScenarioMappingApply
     from ._scenario_template import ScenarioTemplateApply
 
-__all__ = ["Scenario", "ScenarioApply", "ScenarioList", "ScenarioApplyList"]
+__all__ = ["Scenario", "ScenarioApply", "ScenarioList", "ScenarioApplyList", "ScenarioFields", "ScenarioTextFields"]
+
+
+ScenarioTextFields = Literal["name"]
+ScenarioFields = Literal["name"]
+
+_SCENARIO_PROPERTIES_BY_FIELD = {
+    "name": "name",
+}
 
 
 class Scenario(DomainModel):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     name: Optional[str] = None
     template: Optional[str] = None
     mapping: Optional[str] = None
@@ -33,7 +41,7 @@ class Scenario(DomainModel):
 
 
 class ScenarioApply(DomainModelApply):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     name: Optional[str] = None
     template: Union[ScenarioTemplateApply, str, None] = Field(None, repr=False)
     mapping: Union[ScenarioMappingApply, str, None] = Field(None, repr=False)

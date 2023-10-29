@@ -58,9 +58,9 @@ def delete_resources(api: API, space: str):
 
 
 def main():
-    space = "cogShop"
+    space = "power-ops"
     with chdir(REPO_ROOT):
-        os.environ["SETTINGS_FILES"] = ".secrets.pygen.toml"
+        # os.environ["SETTINGS_FILES"] = ".secrets.toml"
         client = PowerOpsClient.from_settings().cdf
         print(f"Connected to {client.config.project}")
         delete_resources(client.data_modeling.data_models, space)

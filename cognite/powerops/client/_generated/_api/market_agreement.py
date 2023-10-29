@@ -6,15 +6,19 @@ from typing import overload
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
+from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
 
 from cognite.powerops.client._generated.data_classes import (
     MarketAgreement,
     MarketAgreementApply,
     MarketAgreementApplyList,
+    MarketAgreementFields,
     MarketAgreementList,
+    MarketAgreementTextFields,
 )
+from cognite.powerops.client._generated.data_classes._market_agreement import _MARKETAGREEMENT_PROPERTIES_BY_FIELD
 
-from ._core import DEFAULT_LIMIT_READ, TypeAPI
+from ._core import DEFAULT_LIMIT_READ, Aggregations, TypeAPI
 
 
 class MarketAgreementAPI(TypeAPI[MarketAgreement, MarketAgreementApply, MarketAgreementList]):
@@ -26,7 +30,7 @@ class MarketAgreementAPI(TypeAPI[MarketAgreement, MarketAgreementApply, MarketAg
             class_apply_type=MarketAgreementApply,
             class_list=MarketAgreementList,
         )
-        self.view_id = view_id
+        self._view_id = view_id
 
     def apply(
         self, market_agreement: MarketAgreementApply | Sequence[MarketAgreementApply], replace: bool = False
@@ -35,14 +39,20 @@ class MarketAgreementAPI(TypeAPI[MarketAgreement, MarketAgreementApply, MarketAg
             instances = market_agreement.to_instances_apply()
         else:
             instances = MarketAgreementApplyList(market_agreement).to_instances_apply()
-        return self._client.data_modeling.instances.apply(nodes=instances.nodes, edges=instances.edges, replace=replace)
+        return self._client.data_modeling.instances.apply(
+            nodes=instances.nodes,
+            edges=instances.edges,
+            auto_create_start_nodes=True,
+            auto_create_end_nodes=True,
+            replace=replace,
+        )
 
-    def delete(self, external_id: str | Sequence[str]) -> dm.InstancesDeleteResult:
+    def delete(self, external_id: str | Sequence[str], space="power-ops") -> dm.InstancesDeleteResult:
         if isinstance(external_id, str):
-            return self._client.data_modeling.instances.delete(nodes=(MarketAgreementApply.space, external_id))
+            return self._client.data_modeling.instances.delete(nodes=(space, external_id))
         else:
             return self._client.data_modeling.instances.delete(
-                nodes=[(MarketAgreementApply.space, id) for id in external_id],
+                nodes=[(space, id) for id in external_id],
             )
 
     @overload
@@ -55,9 +65,163 @@ class MarketAgreementAPI(TypeAPI[MarketAgreement, MarketAgreementApply, MarketAg
 
     def retrieve(self, external_id: str | Sequence[str]) -> MarketAgreement | MarketAgreementList:
         if isinstance(external_id, str):
-            return self._retrieve((self.sources.space, external_id))
+            return self._retrieve((self._sources.space, external_id))
         else:
-            return self._retrieve([(self.sources.space, ext_id) for ext_id in external_id])
+            return self._retrieve([(self._sources.space, ext_id) for ext_id in external_id])
+
+    def search(
+        self,
+        query: str,
+        properties: MarketAgreementTextFields | Sequence[MarketAgreementTextFields] | None = None,
+        m_rid: str | list[str] | None = None,
+        m_rid_prefix: str | None = None,
+        type: str | list[str] | None = None,
+        type_prefix: str | None = None,
+        min_created_timestamp: datetime.datetime | None = None,
+        max_created_timestamp: datetime.datetime | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> MarketAgreementList:
+        filter_ = _create_filter(
+            self._view_id,
+            m_rid,
+            m_rid_prefix,
+            type,
+            type_prefix,
+            min_created_timestamp,
+            max_created_timestamp,
+            external_id_prefix,
+            filter,
+        )
+        return self._search(self._view_id, query, _MARKETAGREEMENT_PROPERTIES_BY_FIELD, properties, filter_, limit)
+
+    @overload
+    def aggregate(
+        self,
+        aggregations: Aggregations
+        | dm.aggregations.MetricAggregation
+        | Sequence[Aggregations]
+        | Sequence[dm.aggregations.MetricAggregation],
+        property: MarketAgreementFields | Sequence[MarketAgreementFields] | None = None,
+        group_by: None = None,
+        query: str | None = None,
+        search_properties: MarketAgreementTextFields | Sequence[MarketAgreementTextFields] | None = None,
+        m_rid: str | list[str] | None = None,
+        m_rid_prefix: str | None = None,
+        type: str | list[str] | None = None,
+        type_prefix: str | None = None,
+        min_created_timestamp: datetime.datetime | None = None,
+        max_created_timestamp: datetime.datetime | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> list[dm.aggregations.AggregatedNumberedValue]:
+        ...
+
+    @overload
+    def aggregate(
+        self,
+        aggregations: Aggregations
+        | dm.aggregations.MetricAggregation
+        | Sequence[Aggregations]
+        | Sequence[dm.aggregations.MetricAggregation],
+        property: MarketAgreementFields | Sequence[MarketAgreementFields] | None = None,
+        group_by: MarketAgreementFields | Sequence[MarketAgreementFields] = None,
+        query: str | None = None,
+        search_properties: MarketAgreementTextFields | Sequence[MarketAgreementTextFields] | None = None,
+        m_rid: str | list[str] | None = None,
+        m_rid_prefix: str | None = None,
+        type: str | list[str] | None = None,
+        type_prefix: str | None = None,
+        min_created_timestamp: datetime.datetime | None = None,
+        max_created_timestamp: datetime.datetime | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> InstanceAggregationResultList:
+        ...
+
+    def aggregate(
+        self,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | Sequence[Aggregations]
+        | Sequence[dm.aggregations.MetricAggregation],
+        property: MarketAgreementFields | Sequence[MarketAgreementFields] | None = None,
+        group_by: MarketAgreementFields | Sequence[MarketAgreementFields] | None = None,
+        query: str | None = None,
+        search_property: MarketAgreementTextFields | Sequence[MarketAgreementTextFields] | None = None,
+        m_rid: str | list[str] | None = None,
+        m_rid_prefix: str | None = None,
+        type: str | list[str] | None = None,
+        type_prefix: str | None = None,
+        min_created_timestamp: datetime.datetime | None = None,
+        max_created_timestamp: datetime.datetime | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
+        filter_ = _create_filter(
+            self._view_id,
+            m_rid,
+            m_rid_prefix,
+            type,
+            type_prefix,
+            min_created_timestamp,
+            max_created_timestamp,
+            external_id_prefix,
+            filter,
+        )
+        return self._aggregate(
+            self._view_id,
+            aggregate,
+            _MARKETAGREEMENT_PROPERTIES_BY_FIELD,
+            property,
+            group_by,
+            query,
+            search_property,
+            limit,
+            filter_,
+        )
+
+    def histogram(
+        self,
+        property: MarketAgreementFields,
+        interval: float,
+        query: str | None = None,
+        search_property: MarketAgreementTextFields | Sequence[MarketAgreementTextFields] | None = None,
+        m_rid: str | list[str] | None = None,
+        m_rid_prefix: str | None = None,
+        type: str | list[str] | None = None,
+        type_prefix: str | None = None,
+        min_created_timestamp: datetime.datetime | None = None,
+        max_created_timestamp: datetime.datetime | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> dm.aggregations.HistogramValue:
+        filter_ = _create_filter(
+            self._view_id,
+            m_rid,
+            m_rid_prefix,
+            type,
+            type_prefix,
+            min_created_timestamp,
+            max_created_timestamp,
+            external_id_prefix,
+            filter,
+        )
+        return self._histogram(
+            self._view_id,
+            property,
+            interval,
+            _MARKETAGREEMENT_PROPERTIES_BY_FIELD,
+            query,
+            search_property,
+            limit,
+            filter_,
+        )
 
     def list(
         self,
@@ -72,7 +236,7 @@ class MarketAgreementAPI(TypeAPI[MarketAgreement, MarketAgreementApply, MarketAg
         filter: dm.Filter | None = None,
     ) -> MarketAgreementList:
         filter_ = _create_filter(
-            self.view_id,
+            self._view_id,
             m_rid,
             m_rid_prefix,
             type,

@@ -16,7 +16,7 @@ from cognite.powerops.resync.models._shared_v1_v2.production_model import (
     _create_generator_efficiency_curve,
     _create_turbine_efficiency_curve,
     _get_single_value,
-    _plant_to_inlet_reservoir_breadth_first_search,
+    _plant_to_inlet_reservoir_with_losses,
     head_loss_factor_fallback,
     p_max_fallback,
     p_min_fallback,
@@ -109,6 +109,15 @@ def to_production_data_model(configuration: config.ProductionConfig) -> Producti
             else:
                 mappings = {}
 
+            all_connections = shop_case["connections"]
+            all_junctions = shop_case["model"].get("junction")
+            all_tunnels = shop_case["model"].get("tunnel")
+            inlet_reservoir_name, connection_losses = _plant_to_inlet_reservoir_with_losses(
+                plant_name, all_connections, all_junctions, all_tunnels, {r.name for r in model.reservoirs}
+            )
+
+            # TODO: In next iteration of production data model,
+            # we will have to add field connection losses and regenerate pygen sdk
             plant = PlantApply(
                 external_id=f"plant:{plant_name}",
                 name=plant_name,
@@ -118,9 +127,7 @@ def to_production_data_model(configuration: config.ProductionConfig) -> Producti
                 outlet_level=float(attributes.get("outlet_line", 0)),
                 p_min=float(attributes.get("p_min", p_min_fallback)),
                 p_max=float(attributes.get("p_max", p_max_fallback)),
-                head_loss_factor=float(
-                    attributes.get("main_loss", [head_loss_factor_fallback])[0]
-                ),  # For some reason, SHOP defines this as a list, but we only need the first (and only) value
+                head_loss_factor=float(attributes.get("main_loss", [head_loss_factor_fallback])[0]),
                 penstock_head_loss_factors={
                     str(penstock_number): float(loss_factor)
                     for penstock_number, loss_factor in enumerate(
@@ -129,10 +136,7 @@ def to_production_data_model(configuration: config.ProductionConfig) -> Producti
                 },
                 **mappings,
             )
-            all_connections = shop_case["connections"]
-            inlet_reservoir_name = _plant_to_inlet_reservoir_breadth_first_search(
-                plant_name, all_connections, {r.name for r in model.reservoirs}
-            )
+
             selected_reservoir = next((r for r in model.reservoirs if r.name == inlet_reservoir_name), None)
             if selected_reservoir is not None:
                 plant.inlet_reservoirs = [selected_reservoir]
