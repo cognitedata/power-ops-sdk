@@ -51,7 +51,7 @@ type Watercourse {
 type PriceArea {
     name: String
     description: String
-    dayAheadPriceTimeSeries: TimeSeries
+    dayaheadPriceTimeSeries: TimeSeries
     plants: [Plant]
     watercourses: [Watercourse]
 }
