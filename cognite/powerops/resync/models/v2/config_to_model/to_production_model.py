@@ -110,8 +110,8 @@ def to_production_data_model(configuration: config.ProductionConfig) -> Producti
                 mappings = {}
 
             all_connections = shop_case["connections"]
-            all_junctions = shop_case["model"].get("junction")
-            all_tunnels = shop_case["model"].get("tunnel")
+            all_junctions = shop_case["model"].get("junction", {})
+            all_tunnels = shop_case["model"].get("tunnel", {})
             inlet_reservoir_name, connection_losses = _plant_to_inlet_reservoir_with_losses(
                 plant_name, all_connections, all_junctions, all_tunnels, {r.name for r in model.reservoirs}
             )
@@ -139,7 +139,7 @@ def to_production_data_model(configuration: config.ProductionConfig) -> Producti
 
             selected_reservoir = next((r for r in model.reservoirs if r.name == inlet_reservoir_name), None)
             if selected_reservoir is not None:
-                plant.inlet_reservoirs = [selected_reservoir]
+                plant.inlet_reservoir = selected_reservoir
             else:
                 # Todo Raise Exception?
                 ...
@@ -165,10 +165,19 @@ def to_production_data_model(configuration: config.ProductionConfig) -> Producti
                 model.price_areas.append(price_area)
             price_area = next(a for a in model.price_areas if a.name == price_area_name)
 
-            watercourse.plants.append(plant)
-            price_area.plants.append(plant)
-            if watercourse.name not in {w.name for w in price_area.watercourses}:
-                price_area.watercourses.append(watercourse)
+            if watercourse.plants is None:
+                watercourse.plants = [plant]
+            else:
+                watercourse.plants.append(plant)
+            if price_area.plants is None:
+                price_area.plants = [plant]
+            else:
+                price_area.plants.append(plant)
+            if watercourse.name not in {w.name for w in price_area.watercourses or []}:
+                if price_area.watercourses is None:
+                    price_area.watercourses = [watercourse]
+                else:
+                    price_area.watercourses.append(watercourse)
         model.plants.extend(plants)
 
     return model
