@@ -45,13 +45,13 @@ type Watercourse {
     name: String
     shop: WatercourseShop
     plants: [Plant]
-    productionObligation: [TimeSeries]
+    productionObligationTimeSeries: [TimeSeries]
 }
 
 type PriceArea {
     name: String
     description: String
-    dayAheadPrice: TimeSeries
+    dayAheadPriceTimeSeries: TimeSeries
     plants: [Plant]
     watercourses: [Watercourse]
 }
