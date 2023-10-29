@@ -187,14 +187,8 @@ def destroy(
 
 
 @app.command("migrate", help="Migrate from asset to data model")
-def migrate(
-    models: list[str] = typer.Option(
-        default=("Production",),
-        help="The model to migrate",
-    )
-):
+def migrate(models: list[str] = typer.Option(default=("Production",), help="The model to migrate")):
     power = PowerOpsClient.from_settings()
-
     changes = resync.migration(power, model=models)
 
     if format == "markdown":

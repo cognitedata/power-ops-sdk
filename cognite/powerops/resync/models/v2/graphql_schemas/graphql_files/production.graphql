@@ -27,7 +27,7 @@ type Plant {
     inletLevel: TimeSeries
     headDirectTimeSeries: TimeSeries
 
-    inletReservoirs: [Reservoir]
+    inletReservoir: Reservoir
     generators: [Generator]
 }
 

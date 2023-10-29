@@ -65,7 +65,7 @@ def delete_model(cdf: CogniteClient, space: str):
 def main():
     space = "power-ops"
     with chdir(REPO_ROOT):
-        os.environ["SETTINGS_FILES"] = ".secrets.lyse.toml"
+        # os.environ["SETTINGS_FILES"] = ".secrets.toml"
         client = PowerOpsClient.from_settings().cdf
         print(f"Connected to {client.config.project}")
         delete_model(client, space)
