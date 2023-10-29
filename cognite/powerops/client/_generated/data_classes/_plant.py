@@ -81,8 +81,8 @@ class Plant(DomainModel):
     outlet_level_time_series: Optional[str] = Field(None, alias="outletLevelTimeSeries")
     inlet_level: Optional[str] = Field(None, alias="inletLevel")
     head_direct_time_series: Optional[str] = Field(None, alias="headDirectTimeSeries")
+    inlet_reservoir: Optional[str] = Field(None, alias="inletReservoir")
     generators: Optional[list[str]] = None
-    inlet_reservoirs: Optional[list[str]] = Field(None, alias="inletReservoirs")
 
     def as_apply(self) -> PlantApply:
         return PlantApply(
@@ -103,8 +103,8 @@ class Plant(DomainModel):
             outlet_level_time_series=self.outlet_level_time_series,
             inlet_level=self.inlet_level,
             head_direct_time_series=self.head_direct_time_series,
+            inlet_reservoir=self.inlet_reservoir,
             generators=self.generators,
-            inlet_reservoirs=self.inlet_reservoirs,
         )
 
 
@@ -126,10 +126,8 @@ class PlantApply(DomainModelApply):
     outlet_level_time_series: Optional[str] = Field(None, alias="outletLevelTimeSeries")
     inlet_level: Optional[str] = Field(None, alias="inletLevel")
     head_direct_time_series: Optional[str] = Field(None, alias="headDirectTimeSeries")
+    inlet_reservoir: Union[ReservoirApply, str, None] = Field(None, repr=False, alias="inletReservoir")
     generators: Union[list[GeneratorApply], list[str], None] = Field(default=None, repr=False)
-    inlet_reservoirs: Union[list[ReservoirApply], list[str], None] = Field(
-        default=None, repr=False, alias="inletReservoirs"
-    )
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
@@ -172,6 +170,13 @@ class PlantApply(DomainModelApply):
             properties["inletLevel"] = self.inlet_level
         if self.head_direct_time_series is not None:
             properties["headDirectTimeSeries"] = self.head_direct_time_series
+        if self.inlet_reservoir is not None:
+            properties["inletReservoir"] = {
+                "space": "power-ops",
+                "externalId": self.inlet_reservoir
+                if isinstance(self.inlet_reservoir, str)
+                else self.inlet_reservoir.external_id,
+            }
         if properties:
             source = dm.NodeOrEdgeData(
                 source=dm.ContainerId("power-ops", "Plant"),
@@ -203,19 +208,13 @@ class PlantApply(DomainModelApply):
                 nodes.extend(instances.nodes)
                 edges.extend(instances.edges)
 
-        for inlet_reservoir in self.inlet_reservoirs or []:
-            edge = self._create_inlet_reservoir_edge(inlet_reservoir)
-            if edge.external_id not in cache:
-                edges.append(edge)
-                cache.add(edge.external_id)
-
-            if isinstance(inlet_reservoir, DomainModelApply):
-                instances = inlet_reservoir._to_instances_apply(cache)
-                nodes.extend(instances.nodes)
-                edges.extend(instances.edges)
-
         if isinstance(self.watercourse, DomainModelApply):
             instances = self.watercourse._to_instances_apply(cache)
+            nodes.extend(instances.nodes)
+            edges.extend(instances.edges)
+
+        if isinstance(self.inlet_reservoir, DomainModelApply):
+            instances = self.inlet_reservoir._to_instances_apply(cache)
             nodes.extend(instances.nodes)
             edges.extend(instances.edges)
 
@@ -233,22 +232,6 @@ class PlantApply(DomainModelApply):
             space="power-ops",
             external_id=f"{self.external_id}:{end_node_ext_id}",
             type=dm.DirectRelationReference("power-ops", "Plant.generators"),
-            start_node=dm.DirectRelationReference(self.space, self.external_id),
-            end_node=dm.DirectRelationReference("power-ops", end_node_ext_id),
-        )
-
-    def _create_inlet_reservoir_edge(self, inlet_reservoir: Union[str, ReservoirApply]) -> dm.EdgeApply:
-        if isinstance(inlet_reservoir, str):
-            end_node_ext_id = inlet_reservoir
-        elif isinstance(inlet_reservoir, DomainModelApply):
-            end_node_ext_id = inlet_reservoir.external_id
-        else:
-            raise TypeError(f"Expected str or ReservoirApply, got {type(inlet_reservoir)}")
-
-        return dm.EdgeApply(
-            space="power-ops",
-            external_id=f"{self.external_id}:{end_node_ext_id}",
-            type=dm.DirectRelationReference("power-ops", "Plant.inletReservoirs"),
             start_node=dm.DirectRelationReference(self.space, self.external_id),
             end_node=dm.DirectRelationReference("power-ops", end_node_ext_id),
         )

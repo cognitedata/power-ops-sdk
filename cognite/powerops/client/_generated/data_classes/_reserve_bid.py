@@ -98,7 +98,7 @@ class ReserveBidApply(DomainModelApply):
                 "externalId": self.receiver if isinstance(self.receiver, str) else self.receiver.external_id,
             }
         if self.created_date_time is not None:
-            properties["createdDateTime"] = self.created_date_time.isoformat()
+            properties["createdDateTime"] = self.created_date_time.isoformat(timespec="milliseconds")
         if self.domain is not None:
             properties["domain"] = {
                 "space": "power-ops",

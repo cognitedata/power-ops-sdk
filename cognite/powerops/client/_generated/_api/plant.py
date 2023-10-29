@@ -288,6 +288,7 @@ class PlantPMaxTimeSeriesAPI:
         min_p_min: float | None = None,
         max_p_min: float | None = None,
         watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -309,6 +310,7 @@ class PlantPMaxTimeSeriesAPI:
             min_p_min,
             max_p_min,
             watercourse,
+            inlet_reservoir,
             external_id_prefix,
             filter,
         )
@@ -337,6 +339,7 @@ class PlantPMaxTimeSeriesAPI:
         min_p_min: float | None = None,
         max_p_min: float | None = None,
         watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -358,6 +361,7 @@ class PlantPMaxTimeSeriesAPI:
             min_p_min,
             max_p_min,
             watercourse,
+            inlet_reservoir,
             external_id_prefix,
             filter,
         )
@@ -668,6 +672,7 @@ class PlantPMinTimeSeriesAPI:
         min_p_min: float | None = None,
         max_p_min: float | None = None,
         watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -689,6 +694,7 @@ class PlantPMinTimeSeriesAPI:
             min_p_min,
             max_p_min,
             watercourse,
+            inlet_reservoir,
             external_id_prefix,
             filter,
         )
@@ -717,6 +723,7 @@ class PlantPMinTimeSeriesAPI:
         min_p_min: float | None = None,
         max_p_min: float | None = None,
         watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -738,6 +745,7 @@ class PlantPMinTimeSeriesAPI:
             min_p_min,
             max_p_min,
             watercourse,
+            inlet_reservoir,
             external_id_prefix,
             filter,
         )
@@ -1048,6 +1056,7 @@ class PlantWaterValueAPI:
         min_p_min: float | None = None,
         max_p_min: float | None = None,
         watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -1069,6 +1078,7 @@ class PlantWaterValueAPI:
             min_p_min,
             max_p_min,
             watercourse,
+            inlet_reservoir,
             external_id_prefix,
             filter,
         )
@@ -1097,6 +1107,7 @@ class PlantWaterValueAPI:
         min_p_min: float | None = None,
         max_p_min: float | None = None,
         watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -1118,6 +1129,7 @@ class PlantWaterValueAPI:
             min_p_min,
             max_p_min,
             watercourse,
+            inlet_reservoir,
             external_id_prefix,
             filter,
         )
@@ -1428,6 +1440,7 @@ class PlantFeedingFeeAPI:
         min_p_min: float | None = None,
         max_p_min: float | None = None,
         watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -1449,6 +1462,7 @@ class PlantFeedingFeeAPI:
             min_p_min,
             max_p_min,
             watercourse,
+            inlet_reservoir,
             external_id_prefix,
             filter,
         )
@@ -1477,6 +1491,7 @@ class PlantFeedingFeeAPI:
         min_p_min: float | None = None,
         max_p_min: float | None = None,
         watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -1498,6 +1513,7 @@ class PlantFeedingFeeAPI:
             min_p_min,
             max_p_min,
             watercourse,
+            inlet_reservoir,
             external_id_prefix,
             filter,
         )
@@ -1808,6 +1824,7 @@ class PlantOutletLevelTimeSeriesAPI:
         min_p_min: float | None = None,
         max_p_min: float | None = None,
         watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -1829,6 +1846,7 @@ class PlantOutletLevelTimeSeriesAPI:
             min_p_min,
             max_p_min,
             watercourse,
+            inlet_reservoir,
             external_id_prefix,
             filter,
         )
@@ -1857,6 +1875,7 @@ class PlantOutletLevelTimeSeriesAPI:
         min_p_min: float | None = None,
         max_p_min: float | None = None,
         watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -1878,6 +1897,7 @@ class PlantOutletLevelTimeSeriesAPI:
             min_p_min,
             max_p_min,
             watercourse,
+            inlet_reservoir,
             external_id_prefix,
             filter,
         )
@@ -2190,6 +2210,7 @@ class PlantInletLevelAPI:
         min_p_min: float | None = None,
         max_p_min: float | None = None,
         watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -2211,6 +2232,7 @@ class PlantInletLevelAPI:
             min_p_min,
             max_p_min,
             watercourse,
+            inlet_reservoir,
             external_id_prefix,
             filter,
         )
@@ -2239,6 +2261,7 @@ class PlantInletLevelAPI:
         min_p_min: float | None = None,
         max_p_min: float | None = None,
         watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -2260,6 +2283,7 @@ class PlantInletLevelAPI:
             min_p_min,
             max_p_min,
             watercourse,
+            inlet_reservoir,
             external_id_prefix,
             filter,
         )
@@ -2570,6 +2594,7 @@ class PlantHeadDirectTimeSeriesAPI:
         min_p_min: float | None = None,
         max_p_min: float | None = None,
         watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -2591,6 +2616,7 @@ class PlantHeadDirectTimeSeriesAPI:
             min_p_min,
             max_p_min,
             watercourse,
+            inlet_reservoir,
             external_id_prefix,
             filter,
         )
@@ -2619,6 +2645,7 @@ class PlantHeadDirectTimeSeriesAPI:
         min_p_min: float | None = None,
         max_p_min: float | None = None,
         watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -2640,6 +2667,7 @@ class PlantHeadDirectTimeSeriesAPI:
             min_p_min,
             max_p_min,
             watercourse,
+            inlet_reservoir,
             external_id_prefix,
             filter,
         )
@@ -2751,49 +2779,6 @@ class PlantGeneratorsAPI:
         return self._client.data_modeling.instances.list("edge", limit=limit, filter=f.And(*filters))
 
 
-class PlantInletReservoirsAPI:
-    def __init__(self, client: CogniteClient):
-        self._client = client
-
-    def retrieve(self, external_id: str | Sequence[str], space="power-ops") -> dm.EdgeList:
-        f = dm.filters
-        is_edge_type = f.Equals(
-            ["edge", "type"],
-            {"space": space, "externalId": "Plant.inletReservoirs"},
-        )
-        if isinstance(external_id, str):
-            is_plant = f.Equals(
-                ["edge", "startNode"],
-                {"space": space, "externalId": external_id},
-            )
-            return self._client.data_modeling.instances.list("edge", limit=-1, filter=f.And(is_edge_type, is_plant))
-
-        else:
-            is_plants = f.In(
-                ["edge", "startNode"],
-                [{"space": space, "externalId": ext_id} for ext_id in external_id],
-            )
-            return self._client.data_modeling.instances.list("edge", limit=-1, filter=f.And(is_edge_type, is_plants))
-
-    def list(self, plant_id: str | list[str] | None = None, limit=DEFAULT_LIMIT_READ, space="power-ops") -> dm.EdgeList:
-        f = dm.filters
-        filters = []
-        is_edge_type = f.Equals(
-            ["edge", "type"],
-            {"space": space, "externalId": "Plant.inletReservoirs"},
-        )
-        filters.append(is_edge_type)
-        if plant_id:
-            plant_ids = [plant_id] if isinstance(plant_id, str) else plant_id
-            is_plants = f.In(
-                ["edge", "startNode"],
-                [{"space": space, "externalId": ext_id} for ext_id in plant_ids],
-            )
-            filters.append(is_plants)
-
-        return self._client.data_modeling.instances.list("edge", limit=limit, filter=f.And(*filters))
-
-
 class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
     def __init__(self, client: CogniteClient, view_id: dm.ViewId):
         super().__init__(
@@ -2805,7 +2790,6 @@ class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
         )
         self._view_id = view_id
         self.generators = PlantGeneratorsAPI(client)
-        self.inlet_reservoirs = PlantInletReservoirsAPI(client)
         self.p_max_time_series = PlantPMaxTimeSeriesAPI(client, view_id)
         self.p_min_time_series = PlantPMinTimeSeriesAPI(client, view_id)
         self.water_value = PlantWaterValueAPI(client, view_id)
@@ -2849,8 +2833,6 @@ class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
 
             generator_edges = self.generators.retrieve(external_id)
             plant.generators = [edge.end_node.external_id for edge in generator_edges]
-            inlet_reservoir_edges = self.inlet_reservoirs.retrieve(external_id)
-            plant.inlet_reservoirs = [edge.end_node.external_id for edge in inlet_reservoir_edges]
 
             return plant
         else:
@@ -2858,8 +2840,6 @@ class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
 
             generator_edges = self.generators.retrieve(external_id)
             self._set_generators(plants, generator_edges)
-            inlet_reservoir_edges = self.inlet_reservoirs.retrieve(external_id)
-            self._set_inlet_reservoirs(plants, inlet_reservoir_edges)
 
             return plants
 
@@ -2882,6 +2862,7 @@ class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
         min_p_min: float | None = None,
         max_p_min: float | None = None,
         watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -2903,6 +2884,7 @@ class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
             min_p_min,
             max_p_min,
             watercourse,
+            inlet_reservoir,
             external_id_prefix,
             filter,
         )
@@ -2934,6 +2916,7 @@ class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
         min_p_min: float | None = None,
         max_p_min: float | None = None,
         watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -2966,6 +2949,7 @@ class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
         min_p_min: float | None = None,
         max_p_min: float | None = None,
         watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -2997,6 +2981,7 @@ class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
         min_p_min: float | None = None,
         max_p_min: float | None = None,
         watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -3018,6 +3003,7 @@ class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
             min_p_min,
             max_p_min,
             watercourse,
+            inlet_reservoir,
             external_id_prefix,
             filter,
         )
@@ -3054,6 +3040,7 @@ class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
         min_p_min: float | None = None,
         max_p_min: float | None = None,
         watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -3075,6 +3062,7 @@ class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
             min_p_min,
             max_p_min,
             watercourse,
+            inlet_reservoir,
             external_id_prefix,
             filter,
         )
@@ -3106,6 +3094,7 @@ class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
         min_p_min: float | None = None,
         max_p_min: float | None = None,
         watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -3128,6 +3117,7 @@ class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
             min_p_min,
             max_p_min,
             watercourse,
+            inlet_reservoir,
             external_id_prefix,
             filter,
         )
@@ -3140,11 +3130,6 @@ class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
             else:
                 generator_edges = self.generators.list(external_ids, limit=-1)
             self._set_generators(plants, generator_edges)
-            if len(external_ids := plants.as_external_ids()) > IN_FILTER_LIMIT:
-                inlet_reservoir_edges = self.inlet_reservoirs.list(limit=-1)
-            else:
-                inlet_reservoir_edges = self.inlet_reservoirs.list(external_ids, limit=-1)
-            self._set_inlet_reservoirs(plants, inlet_reservoir_edges)
 
         return plants
 
@@ -3158,17 +3143,6 @@ class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
             node_id = plant.id_tuple()
             if node_id in edges_by_start_node:
                 plant.generators = [edge.end_node.external_id for edge in edges_by_start_node[node_id]]
-
-    @staticmethod
-    def _set_inlet_reservoirs(plants: Sequence[Plant], inlet_reservoir_edges: Sequence[dm.Edge]):
-        edges_by_start_node: dict[tuple, list] = defaultdict(list)
-        for edge in inlet_reservoir_edges:
-            edges_by_start_node[edge.start_node.as_tuple()].append(edge)
-
-        for plant in plants:
-            node_id = plant.id_tuple()
-            if node_id in edges_by_start_node:
-                plant.inlet_reservoirs = [edge.end_node.external_id for edge in edges_by_start_node[node_id]]
 
 
 def _create_filter(
@@ -3188,6 +3162,7 @@ def _create_filter(
     min_p_min: float | None = None,
     max_p_min: float | None = None,
     watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+    inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     external_id_prefix: str | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
@@ -3244,6 +3219,33 @@ def _create_filter(
             dm.filters.In(
                 view_id.as_property_ref("watercourse"),
                 values=[{"space": item[0], "externalId": item[1]} for item in watercourse],
+            )
+        )
+    if inlet_reservoir and isinstance(inlet_reservoir, str):
+        filters.append(
+            dm.filters.Equals(
+                view_id.as_property_ref("inletReservoir"), value={"space": "power-ops", "externalId": inlet_reservoir}
+            )
+        )
+    if inlet_reservoir and isinstance(inlet_reservoir, tuple):
+        filters.append(
+            dm.filters.Equals(
+                view_id.as_property_ref("inletReservoir"),
+                value={"space": inlet_reservoir[0], "externalId": inlet_reservoir[1]},
+            )
+        )
+    if inlet_reservoir and isinstance(inlet_reservoir, list) and isinstance(inlet_reservoir[0], str):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("inletReservoir"),
+                values=[{"space": "power-ops", "externalId": item} for item in inlet_reservoir],
+            )
+        )
+    if inlet_reservoir and isinstance(inlet_reservoir, list) and isinstance(inlet_reservoir[0], tuple):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("inletReservoir"),
+                values=[{"space": item[0], "externalId": item[1]} for item in inlet_reservoir],
             )
         )
     if external_id_prefix:
