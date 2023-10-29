@@ -29,6 +29,8 @@ def production_as_asset(dm: ProductionModelDM) -> ProductionModel:
                 generator.generator_efficiency_curve
             ),
             turbine_efficiency_curve=turbine_efficiency_curve_by_external_id.get(generator.turbine_efficiency_curve),
+            is_available_time_series=generator.is_available_time_series
+            and TimeSeries(external_id=generator.is_available_time_series),
         )
         # External ID is automatically set in Asset classes, so need to manually
         # overwrite to check that the data class uses the same.
