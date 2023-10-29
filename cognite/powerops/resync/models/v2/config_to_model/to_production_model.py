@@ -36,7 +36,7 @@ def to_production_data_model(configuration: config.ProductionConfig) -> Producti
 
     for watercourse_config in configuration.watercourses:
         watercourse = WatercourseApply(
-            external_id=f"watercourse:{watercourse_config.name}",
+            external_id=f"watercourse_{watercourse_config.name}",
             name=watercourse_config.name,
             shop=WatercourseShopApply(
                 external_id=make_ext_id(watercourse_config.shop_penalty_limit, WatercourseShopApply),
@@ -69,7 +69,7 @@ def to_production_data_model(configuration: config.ProductionConfig) -> Producti
         for generator_name, generator_attributes in shop_case["model"]["generator"].items():
             start_stop_cost = start_stop_cost_time_series_by_generator.get(generator_name)
             generator = GeneratorApply(
-                external_id=f"generator:{generator_name}",
+                external_id=f"generator_{generator_name}",
                 name=generator_name,
                 penstock=int(generator_attributes.get("penstock", 1)),
                 p_min=float(generator_attributes.get("p_min", 0.0)),
@@ -119,7 +119,7 @@ def to_production_data_model(configuration: config.ProductionConfig) -> Producti
             # TODO: In next iteration of production data model,
             # we will have to add field connection losses and regenerate pygen sdk
             plant = PlantApply(
-                external_id=f"plant:{plant_name}",
+                external_id=f"plant_{plant_name}",
                 name=plant_name,
                 display_name=display_name,
                 ordering=order,
@@ -158,7 +158,7 @@ def to_production_data_model(configuration: config.ProductionConfig) -> Producti
 
             prod_area = str(next(iter(attributes["prod_area"].values())))
             price_area_name = watercourse_config.market_to_price_area[prod_area]
-            price_area = PriceAreaApply(name=price_area_name, external_id=f"price_area:{price_area_name}")
+            price_area = PriceAreaApply(name=price_area_name, external_id=f"price_area_{price_area_name}")
             if price_area_name not in {a.name for a in model.price_areas}:
                 if price_area_name in configuration.dayahead_price_timeseries:
                     price_area.dayahead_price_time_series = configuration.dayahead_price_timeseries[price_area_name]
