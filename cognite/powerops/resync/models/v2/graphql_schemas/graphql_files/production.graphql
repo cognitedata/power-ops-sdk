@@ -21,10 +21,10 @@ type Plant {
 
     pMaxTimeSeries: TimeSeries
     pMinTimeSeries: TimeSeries
-    waterValue: TimeSeries
-    feedingFee: TimeSeries
+    waterValueTimeSeries: TimeSeries
+    feedingFeeTimeSeries: TimeSeries
     outletLevelTimeSeries: TimeSeries
-    inletLevel: TimeSeries
+    inletLevelTimeSeries: TimeSeries
     headDirectTimeSeries: TimeSeries
 
     inletReservoir: Reservoir

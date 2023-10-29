@@ -1,5 +1,6 @@
 from cognite.client.data_classes import TimeSeries
 
+from cognite.powerops.client.data_classes import PlantApply
 from cognite.powerops.resync.models.v1 import Generator, Plant, PriceArea, ProductionModel, Reservoir, Watercourse
 from cognite.powerops.resync.models.v1.production import WaterCourseShop
 from cognite.powerops.resync.models.v2 import ProductionModelDM
@@ -36,11 +37,7 @@ def production_as_asset(dm: ProductionModelDM) -> ProductionModel:
 
     reservoirs = []
     for reservoir in dm.reservoirs:
-        res = Reservoir(
-            name=reservoir.name,
-            display_name=reservoir.display_name,
-            ordering=str(reservoir.ordering),
-        )
+        res = Reservoir(name=reservoir.name, display_name=reservoir.display_name, ordering=str(reservoir.ordering))
         res.external_id = reservoir.external_id
         reservoirs.append(res)
 
@@ -49,6 +46,7 @@ def production_as_asset(dm: ProductionModelDM) -> ProductionModel:
 
     plants = []
     for plant in dm.plants:
+        plant: PlantApply
         asset_plant = Plant(
             name=plant.name,
             display_name=plant.display_name,
@@ -77,9 +75,7 @@ def production_as_asset(dm: ProductionModelDM) -> ProductionModel:
     for watercourse in dm.watercourses:
         water = Watercourse(
             name=watercourse.name,
-            shop=WaterCourseShop(
-                penalty_limit=str(watercourse.shop.penalty_limit),
-            ),
+            shop=WaterCourseShop(penalty_limit=str(watercourse.shop.penalty_limit)),
             plants=[plants_by_external_id.get(p) for p in watercourse.plants],
             production_obligation_time_series=[
                 TimeSeries(external_id=wa) for wa in watercourse.production_obligation_time_series
@@ -102,9 +98,5 @@ def production_as_asset(dm: ProductionModelDM) -> ProductionModel:
         price_areas.append(price_area_asset)
 
     return ProductionModel(
-        plants=plants,
-        generators=generators,
-        reservoirs=reservoirs,
-        watercourses=watercourses,
-        price_areas=price_areas,
+        plants=plants, generators=generators, reservoirs=reservoirs, watercourses=watercourses, price_areas=price_areas
     )
