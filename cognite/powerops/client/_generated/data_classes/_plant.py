@@ -20,10 +20,10 @@ PlantTextFields = Literal[
     "display_name",
     "p_max_time_series",
     "p_min_time_series",
-    "water_value",
-    "feeding_fee",
+    "water_value_time_series",
+    "feeding_fee_time_series",
     "outlet_level_time_series",
-    "inlet_level",
+    "inlet_level_time_series",
     "head_direct_time_series",
 ]
 PlantFields = Literal[
@@ -37,10 +37,10 @@ PlantFields = Literal[
     "penstock_head_loss_factors",
     "p_max_time_series",
     "p_min_time_series",
-    "water_value",
-    "feeding_fee",
+    "water_value_time_series",
+    "feeding_fee_time_series",
     "outlet_level_time_series",
-    "inlet_level",
+    "inlet_level_time_series",
     "head_direct_time_series",
 ]
 
@@ -55,10 +55,10 @@ _PLANT_PROPERTIES_BY_FIELD = {
     "penstock_head_loss_factors": "penstockHeadLossFactors",
     "p_max_time_series": "pMaxTimeSeries",
     "p_min_time_series": "pMinTimeSeries",
-    "water_value": "waterValue",
-    "feeding_fee": "feedingFee",
+    "water_value_time_series": "waterValueTimeSeries",
+    "feeding_fee_time_series": "feedingFeeTimeSeries",
     "outlet_level_time_series": "outletLevelTimeSeries",
-    "inlet_level": "inletLevel",
+    "inlet_level_time_series": "inletLevelTimeSeries",
     "head_direct_time_series": "headDirectTimeSeries",
 }
 
@@ -76,10 +76,10 @@ class Plant(DomainModel):
     watercourse: Optional[str] = None
     p_max_time_series: Optional[str] = Field(None, alias="pMaxTimeSeries")
     p_min_time_series: Optional[str] = Field(None, alias="pMinTimeSeries")
-    water_value: Optional[str] = Field(None, alias="waterValue")
-    feeding_fee: Optional[str] = Field(None, alias="feedingFee")
+    water_value_time_series: Optional[str] = Field(None, alias="waterValueTimeSeries")
+    feeding_fee_time_series: Optional[str] = Field(None, alias="feedingFeeTimeSeries")
     outlet_level_time_series: Optional[str] = Field(None, alias="outletLevelTimeSeries")
-    inlet_level: Optional[str] = Field(None, alias="inletLevel")
+    inlet_level_time_series: Optional[str] = Field(None, alias="inletLevelTimeSeries")
     head_direct_time_series: Optional[str] = Field(None, alias="headDirectTimeSeries")
     inlet_reservoir: Optional[str] = Field(None, alias="inletReservoir")
     generators: Optional[list[str]] = None
@@ -98,10 +98,10 @@ class Plant(DomainModel):
             watercourse=self.watercourse,
             p_max_time_series=self.p_max_time_series,
             p_min_time_series=self.p_min_time_series,
-            water_value=self.water_value,
-            feeding_fee=self.feeding_fee,
+            water_value_time_series=self.water_value_time_series,
+            feeding_fee_time_series=self.feeding_fee_time_series,
             outlet_level_time_series=self.outlet_level_time_series,
-            inlet_level=self.inlet_level,
+            inlet_level_time_series=self.inlet_level_time_series,
             head_direct_time_series=self.head_direct_time_series,
             inlet_reservoir=self.inlet_reservoir,
             generators=self.generators,
@@ -121,10 +121,10 @@ class PlantApply(DomainModelApply):
     watercourse: Union[WatercourseApply, str, None] = Field(None, repr=False)
     p_max_time_series: Optional[str] = Field(None, alias="pMaxTimeSeries")
     p_min_time_series: Optional[str] = Field(None, alias="pMinTimeSeries")
-    water_value: Optional[str] = Field(None, alias="waterValue")
-    feeding_fee: Optional[str] = Field(None, alias="feedingFee")
+    water_value_time_series: Optional[str] = Field(None, alias="waterValueTimeSeries")
+    feeding_fee_time_series: Optional[str] = Field(None, alias="feedingFeeTimeSeries")
     outlet_level_time_series: Optional[str] = Field(None, alias="outletLevelTimeSeries")
-    inlet_level: Optional[str] = Field(None, alias="inletLevel")
+    inlet_level_time_series: Optional[str] = Field(None, alias="inletLevelTimeSeries")
     head_direct_time_series: Optional[str] = Field(None, alias="headDirectTimeSeries")
     inlet_reservoir: Union[ReservoirApply, str, None] = Field(None, repr=False, alias="inletReservoir")
     generators: Union[list[GeneratorApply], list[str], None] = Field(default=None, repr=False)
@@ -160,14 +160,14 @@ class PlantApply(DomainModelApply):
             properties["pMaxTimeSeries"] = self.p_max_time_series
         if self.p_min_time_series is not None:
             properties["pMinTimeSeries"] = self.p_min_time_series
-        if self.water_value is not None:
-            properties["waterValue"] = self.water_value
-        if self.feeding_fee is not None:
-            properties["feedingFee"] = self.feeding_fee
+        if self.water_value_time_series is not None:
+            properties["waterValueTimeSeries"] = self.water_value_time_series
+        if self.feeding_fee_time_series is not None:
+            properties["feedingFeeTimeSeries"] = self.feeding_fee_time_series
         if self.outlet_level_time_series is not None:
             properties["outletLevelTimeSeries"] = self.outlet_level_time_series
-        if self.inlet_level is not None:
-            properties["inletLevel"] = self.inlet_level
+        if self.inlet_level_time_series is not None:
+            properties["inletLevelTimeSeries"] = self.inlet_level_time_series
         if self.head_direct_time_series is not None:
             properties["headDirectTimeSeries"] = self.head_direct_time_series
         if self.inlet_reservoir is not None:

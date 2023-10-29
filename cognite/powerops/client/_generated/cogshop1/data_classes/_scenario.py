@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
-from pydantic import ConfigDict, Field
+from pydantic import Field
 
 from ._core import DomainModel, DomainModelApply, TypeApplyList, TypeList
 
@@ -19,11 +19,13 @@ __all__ = ["Scenario", "ScenarioApply", "ScenarioList", "ScenarioApplyList", "Sc
 ScenarioTextFields = Literal["name", "source"]
 ScenarioFields = Literal["name", "source"]
 
-_SCENARIO_PROPERTIES_BY_FIELD = {"name": "name", "source": "source"}
+_SCENARIO_PROPERTIES_BY_FIELD = {
+    "name": "name",
+    "source": "source",
+}
 
 
 class Scenario(DomainModel):
-    model_config = ConfigDict(protected_namespaces=())
     space: str = "cogShop"
     name: Optional[str] = None
     model_template: Optional[str] = Field(None, alias="modelTemplate")
@@ -45,7 +47,6 @@ class Scenario(DomainModel):
 
 
 class ScenarioApply(DomainModelApply):
-    model_config = ConfigDict(protected_namespaces=())
     space: str = "cogShop"
     name: str
     model_template: Union[ModelTemplateApply, str, None] = Field(None, repr=False, alias="modelTemplate")
@@ -79,11 +80,17 @@ class ScenarioApply(DomainModelApply):
         if self.source is not None:
             properties["source"] = self.source
         if properties:
-            source = dm.NodeOrEdgeData(source=dm.ContainerId("cogShop", "Scenario"), properties=properties)
+            source = dm.NodeOrEdgeData(
+                source=dm.ContainerId("cogShop", "Scenario"),
+                properties=properties,
+            )
             sources.append(source)
         if sources:
             this_node = dm.NodeApply(
-                space=self.space, external_id=self.external_id, existing_version=self.existing_version, sources=sources
+                space=self.space,
+                external_id=self.external_id,
+                existing_version=self.existing_version,
+                sources=sources,
             )
             nodes = [this_node]
         else:

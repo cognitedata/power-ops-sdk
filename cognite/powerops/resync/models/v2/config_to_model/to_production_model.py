@@ -98,10 +98,10 @@ def to_production_data_model(configuration: config.ProductionConfig) -> Producti
             mapping = plant_time_series_mappings_by_name.get(plant_name)
             if mapping:
                 mappings = dict(
-                    water_value=mapping.water_value,
-                    inlet_level=mapping.inlet_reservoir_level,
+                    water_value_time_series=mapping.water_value,
+                    inlet_level_time_series=mapping.inlet_reservoir_level,
                     outlet_level_time_series=mapping.outlet_reservoir_level,
-                    feeding_fee=mapping.feeding_fee,
+                    feeding_fee_time_series=mapping.feeding_fee,
                     p_min_time_series=mapping.p_min,
                     p_max_time_series=mapping.p_max,
                     head_direct_time_series=mapping.head_direct,

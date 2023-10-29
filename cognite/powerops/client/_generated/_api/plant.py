@@ -36,10 +36,10 @@ ColumnNames = Literal[
     "penstockHeadLossFactors",
     "pMaxTimeSeries",
     "pMinTimeSeries",
-    "waterValue",
-    "feedingFee",
+    "waterValueTimeSeries",
+    "feedingFeeTimeSeries",
     "outletLevelTimeSeries",
-    "inletLevel",
+    "inletLevelTimeSeries",
     "headDirectTimeSeries",
 ]
 
@@ -812,7 +812,7 @@ def _retrieve_timeseries_external_ids_with_extra_p_min_time_series(
     return external_ids
 
 
-class PlantWaterValueQuery:
+class PlantWaterValueTimeSeriesQuery:
     def __init__(
         self,
         client: CogniteClient,
@@ -885,7 +885,7 @@ class PlantWaterValueQuery:
         uniform_index: bool = False,
         include_aggregate_name: bool = True,
         include_granularity_name: bool = False,
-        column_names: ColumnNames | list[ColumnNames] = "waterValue",
+        column_names: ColumnNames | list[ColumnNames] = "waterValueTimeSeries",
     ) -> pd.DataFrame:
         external_ids = self._retrieve_timeseries_external_ids_with_extra(column_names)
         if external_ids:
@@ -922,7 +922,7 @@ class PlantWaterValueQuery:
         uniform_index: bool = False,
         include_aggregate_name: bool = True,
         include_granularity_name: bool = False,
-        column_names: ColumnNames | list[ColumnNames] = "waterValue",
+        column_names: ColumnNames | list[ColumnNames] = "waterValueTimeSeries",
     ) -> pd.DataFrame:
         external_ids = self._retrieve_timeseries_external_ids_with_extra(column_names)
         if external_ids:
@@ -970,7 +970,7 @@ class PlantWaterValueQuery:
         uniform_index: bool = False,
         include_aggregate_name: bool = True,
         include_granularity_name: bool = False,
-        column_names: ColumnNames | list[ColumnNames] = "waterValue",
+        column_names: ColumnNames | list[ColumnNames] = "waterValueTimeSeries",
         warning: bool = True,
         **kwargs,
     ) -> None:
@@ -1003,9 +1003,9 @@ class PlantWaterValueQuery:
         df.plot(**kwargs)
 
     def _retrieve_timeseries_external_ids_with_extra(
-        self, extra_properties: ColumnNames | list[ColumnNames] = "waterValue"
+        self, extra_properties: ColumnNames | list[ColumnNames] = "waterValueTimeSeries"
     ) -> dict[str, list[str]]:
-        return _retrieve_timeseries_external_ids_with_extra_water_value(
+        return _retrieve_timeseries_external_ids_with_extra_water_value_time_series(
             self._client,
             self._view_id,
             self._filter,
@@ -1021,7 +1021,7 @@ class PlantWaterValueQuery:
         include_aggregate_name: bool,
         include_granularity_name: bool,
     ) -> pd.DataFrame:
-        if isinstance(column_names, str) and column_names == "waterValue":
+        if isinstance(column_names, str) and column_names == "waterValueTimeSeries":
             return df
         splits = sum(included for included in [include_aggregate_name, include_granularity_name])
         if splits == 0:
@@ -1034,7 +1034,7 @@ class PlantWaterValueQuery:
         return df
 
 
-class PlantWaterValueAPI:
+class PlantWaterValueTimeSeriesAPI:
     def __init__(self, client: CogniteClient, view_id: dm.ViewId):
         self._client = client
         self._view_id = view_id
@@ -1060,7 +1060,7 @@ class PlantWaterValueAPI:
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> PlantWaterValueQuery:
+    ) -> PlantWaterValueTimeSeriesQuery:
         filter_ = _create_filter(
             self._view_id,
             name,
@@ -1083,7 +1083,7 @@ class PlantWaterValueAPI:
             filter,
         )
 
-        return PlantWaterValueQuery(
+        return PlantWaterValueTimeSeriesQuery(
             client=self._client,
             view_id=self._view_id,
             timeseries_limit=limit,
@@ -1133,7 +1133,7 @@ class PlantWaterValueAPI:
             external_id_prefix,
             filter,
         )
-        external_ids = _retrieve_timeseries_external_ids_with_extra_water_value(
+        external_ids = _retrieve_timeseries_external_ids_with_extra_water_value_time_series(
             self._client, self._view_id, filter_, limit
         )
         if external_ids:
@@ -1142,20 +1142,20 @@ class PlantWaterValueAPI:
             return TimeSeriesList([])
 
 
-def _retrieve_timeseries_external_ids_with_extra_water_value(
+def _retrieve_timeseries_external_ids_with_extra_water_value_time_series(
     client: CogniteClient,
     view_id: dm.ViewId,
     filter_: dm.Filter | None,
     limit: int,
-    extra_properties: ColumnNames | list[ColumnNames] = "waterValue",
+    extra_properties: ColumnNames | list[ColumnNames] = "waterValueTimeSeries",
 ) -> dict[str, list[str]]:
-    properties = ["waterValue"]
-    if extra_properties == "waterValue":
+    properties = ["waterValueTimeSeries"]
+    if extra_properties == "waterValueTimeSeries":
         ...
-    elif isinstance(extra_properties, str) and extra_properties != "waterValue":
+    elif isinstance(extra_properties, str) and extra_properties != "waterValueTimeSeries":
         properties.append(extra_properties)
     elif isinstance(extra_properties, list):
-        properties.extend([prop for prop in extra_properties if prop != "waterValue"])
+        properties.extend([prop for prop in extra_properties if prop != "waterValueTimeSeries"])
     else:
         raise ValueError(f"Invalid value for extra_properties: {extra_properties}")
 
@@ -1185,7 +1185,9 @@ def _retrieve_timeseries_external_ids_with_extra_water_value(
         )
         result = client.data_modeling.instances.query(query)
         batch_external_ids = {
-            node.properties[view_id]["waterValue"]: [node.properties[view_id].get(prop, "") for prop in extra_list]
+            node.properties[view_id]["waterValueTimeSeries"]: [
+                node.properties[view_id].get(prop, "") for prop in extra_list
+            ]
             for node in result.data["nodes"].data
         }
         total_retrieved += len(batch_external_ids)
@@ -1196,7 +1198,7 @@ def _retrieve_timeseries_external_ids_with_extra_water_value(
     return external_ids
 
 
-class PlantFeedingFeeQuery:
+class PlantFeedingFeeTimeSeriesQuery:
     def __init__(
         self,
         client: CogniteClient,
@@ -1269,7 +1271,7 @@ class PlantFeedingFeeQuery:
         uniform_index: bool = False,
         include_aggregate_name: bool = True,
         include_granularity_name: bool = False,
-        column_names: ColumnNames | list[ColumnNames] = "feedingFee",
+        column_names: ColumnNames | list[ColumnNames] = "feedingFeeTimeSeries",
     ) -> pd.DataFrame:
         external_ids = self._retrieve_timeseries_external_ids_with_extra(column_names)
         if external_ids:
@@ -1306,7 +1308,7 @@ class PlantFeedingFeeQuery:
         uniform_index: bool = False,
         include_aggregate_name: bool = True,
         include_granularity_name: bool = False,
-        column_names: ColumnNames | list[ColumnNames] = "feedingFee",
+        column_names: ColumnNames | list[ColumnNames] = "feedingFeeTimeSeries",
     ) -> pd.DataFrame:
         external_ids = self._retrieve_timeseries_external_ids_with_extra(column_names)
         if external_ids:
@@ -1354,7 +1356,7 @@ class PlantFeedingFeeQuery:
         uniform_index: bool = False,
         include_aggregate_name: bool = True,
         include_granularity_name: bool = False,
-        column_names: ColumnNames | list[ColumnNames] = "feedingFee",
+        column_names: ColumnNames | list[ColumnNames] = "feedingFeeTimeSeries",
         warning: bool = True,
         **kwargs,
     ) -> None:
@@ -1387,9 +1389,9 @@ class PlantFeedingFeeQuery:
         df.plot(**kwargs)
 
     def _retrieve_timeseries_external_ids_with_extra(
-        self, extra_properties: ColumnNames | list[ColumnNames] = "feedingFee"
+        self, extra_properties: ColumnNames | list[ColumnNames] = "feedingFeeTimeSeries"
     ) -> dict[str, list[str]]:
-        return _retrieve_timeseries_external_ids_with_extra_feeding_fee(
+        return _retrieve_timeseries_external_ids_with_extra_feeding_fee_time_series(
             self._client,
             self._view_id,
             self._filter,
@@ -1405,7 +1407,7 @@ class PlantFeedingFeeQuery:
         include_aggregate_name: bool,
         include_granularity_name: bool,
     ) -> pd.DataFrame:
-        if isinstance(column_names, str) and column_names == "feedingFee":
+        if isinstance(column_names, str) and column_names == "feedingFeeTimeSeries":
             return df
         splits = sum(included for included in [include_aggregate_name, include_granularity_name])
         if splits == 0:
@@ -1418,7 +1420,7 @@ class PlantFeedingFeeQuery:
         return df
 
 
-class PlantFeedingFeeAPI:
+class PlantFeedingFeeTimeSeriesAPI:
     def __init__(self, client: CogniteClient, view_id: dm.ViewId):
         self._client = client
         self._view_id = view_id
@@ -1444,7 +1446,7 @@ class PlantFeedingFeeAPI:
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> PlantFeedingFeeQuery:
+    ) -> PlantFeedingFeeTimeSeriesQuery:
         filter_ = _create_filter(
             self._view_id,
             name,
@@ -1467,7 +1469,7 @@ class PlantFeedingFeeAPI:
             filter,
         )
 
-        return PlantFeedingFeeQuery(
+        return PlantFeedingFeeTimeSeriesQuery(
             client=self._client,
             view_id=self._view_id,
             timeseries_limit=limit,
@@ -1517,7 +1519,7 @@ class PlantFeedingFeeAPI:
             external_id_prefix,
             filter,
         )
-        external_ids = _retrieve_timeseries_external_ids_with_extra_feeding_fee(
+        external_ids = _retrieve_timeseries_external_ids_with_extra_feeding_fee_time_series(
             self._client, self._view_id, filter_, limit
         )
         if external_ids:
@@ -1526,20 +1528,20 @@ class PlantFeedingFeeAPI:
             return TimeSeriesList([])
 
 
-def _retrieve_timeseries_external_ids_with_extra_feeding_fee(
+def _retrieve_timeseries_external_ids_with_extra_feeding_fee_time_series(
     client: CogniteClient,
     view_id: dm.ViewId,
     filter_: dm.Filter | None,
     limit: int,
-    extra_properties: ColumnNames | list[ColumnNames] = "feedingFee",
+    extra_properties: ColumnNames | list[ColumnNames] = "feedingFeeTimeSeries",
 ) -> dict[str, list[str]]:
-    properties = ["feedingFee"]
-    if extra_properties == "feedingFee":
+    properties = ["feedingFeeTimeSeries"]
+    if extra_properties == "feedingFeeTimeSeries":
         ...
-    elif isinstance(extra_properties, str) and extra_properties != "feedingFee":
+    elif isinstance(extra_properties, str) and extra_properties != "feedingFeeTimeSeries":
         properties.append(extra_properties)
     elif isinstance(extra_properties, list):
-        properties.extend([prop for prop in extra_properties if prop != "feedingFee"])
+        properties.extend([prop for prop in extra_properties if prop != "feedingFeeTimeSeries"])
     else:
         raise ValueError(f"Invalid value for extra_properties: {extra_properties}")
 
@@ -1569,7 +1571,9 @@ def _retrieve_timeseries_external_ids_with_extra_feeding_fee(
         )
         result = client.data_modeling.instances.query(query)
         batch_external_ids = {
-            node.properties[view_id]["feedingFee"]: [node.properties[view_id].get(prop, "") for prop in extra_list]
+            node.properties[view_id]["feedingFeeTimeSeries"]: [
+                node.properties[view_id].get(prop, "") for prop in extra_list
+            ]
             for node in result.data["nodes"].data
         }
         total_retrieved += len(batch_external_ids)
@@ -1966,7 +1970,7 @@ def _retrieve_timeseries_external_ids_with_extra_outlet_level_time_series(
     return external_ids
 
 
-class PlantInletLevelQuery:
+class PlantInletLevelTimeSeriesQuery:
     def __init__(
         self,
         client: CogniteClient,
@@ -2039,7 +2043,7 @@ class PlantInletLevelQuery:
         uniform_index: bool = False,
         include_aggregate_name: bool = True,
         include_granularity_name: bool = False,
-        column_names: ColumnNames | list[ColumnNames] = "inletLevel",
+        column_names: ColumnNames | list[ColumnNames] = "inletLevelTimeSeries",
     ) -> pd.DataFrame:
         external_ids = self._retrieve_timeseries_external_ids_with_extra(column_names)
         if external_ids:
@@ -2076,7 +2080,7 @@ class PlantInletLevelQuery:
         uniform_index: bool = False,
         include_aggregate_name: bool = True,
         include_granularity_name: bool = False,
-        column_names: ColumnNames | list[ColumnNames] = "inletLevel",
+        column_names: ColumnNames | list[ColumnNames] = "inletLevelTimeSeries",
     ) -> pd.DataFrame:
         external_ids = self._retrieve_timeseries_external_ids_with_extra(column_names)
         if external_ids:
@@ -2124,7 +2128,7 @@ class PlantInletLevelQuery:
         uniform_index: bool = False,
         include_aggregate_name: bool = True,
         include_granularity_name: bool = False,
-        column_names: ColumnNames | list[ColumnNames] = "inletLevel",
+        column_names: ColumnNames | list[ColumnNames] = "inletLevelTimeSeries",
         warning: bool = True,
         **kwargs,
     ) -> None:
@@ -2157,9 +2161,9 @@ class PlantInletLevelQuery:
         df.plot(**kwargs)
 
     def _retrieve_timeseries_external_ids_with_extra(
-        self, extra_properties: ColumnNames | list[ColumnNames] = "inletLevel"
+        self, extra_properties: ColumnNames | list[ColumnNames] = "inletLevelTimeSeries"
     ) -> dict[str, list[str]]:
-        return _retrieve_timeseries_external_ids_with_extra_inlet_level(
+        return _retrieve_timeseries_external_ids_with_extra_inlet_level_time_series(
             self._client,
             self._view_id,
             self._filter,
@@ -2175,7 +2179,7 @@ class PlantInletLevelQuery:
         include_aggregate_name: bool,
         include_granularity_name: bool,
     ) -> pd.DataFrame:
-        if isinstance(column_names, str) and column_names == "inletLevel":
+        if isinstance(column_names, str) and column_names == "inletLevelTimeSeries":
             return df
         splits = sum(included for included in [include_aggregate_name, include_granularity_name])
         if splits == 0:
@@ -2188,7 +2192,7 @@ class PlantInletLevelQuery:
         return df
 
 
-class PlantInletLevelAPI:
+class PlantInletLevelTimeSeriesAPI:
     def __init__(self, client: CogniteClient, view_id: dm.ViewId):
         self._client = client
         self._view_id = view_id
@@ -2214,7 +2218,7 @@ class PlantInletLevelAPI:
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> PlantInletLevelQuery:
+    ) -> PlantInletLevelTimeSeriesQuery:
         filter_ = _create_filter(
             self._view_id,
             name,
@@ -2237,7 +2241,7 @@ class PlantInletLevelAPI:
             filter,
         )
 
-        return PlantInletLevelQuery(
+        return PlantInletLevelTimeSeriesQuery(
             client=self._client,
             view_id=self._view_id,
             timeseries_limit=limit,
@@ -2287,7 +2291,7 @@ class PlantInletLevelAPI:
             external_id_prefix,
             filter,
         )
-        external_ids = _retrieve_timeseries_external_ids_with_extra_inlet_level(
+        external_ids = _retrieve_timeseries_external_ids_with_extra_inlet_level_time_series(
             self._client, self._view_id, filter_, limit
         )
         if external_ids:
@@ -2296,20 +2300,20 @@ class PlantInletLevelAPI:
             return TimeSeriesList([])
 
 
-def _retrieve_timeseries_external_ids_with_extra_inlet_level(
+def _retrieve_timeseries_external_ids_with_extra_inlet_level_time_series(
     client: CogniteClient,
     view_id: dm.ViewId,
     filter_: dm.Filter | None,
     limit: int,
-    extra_properties: ColumnNames | list[ColumnNames] = "inletLevel",
+    extra_properties: ColumnNames | list[ColumnNames] = "inletLevelTimeSeries",
 ) -> dict[str, list[str]]:
-    properties = ["inletLevel"]
-    if extra_properties == "inletLevel":
+    properties = ["inletLevelTimeSeries"]
+    if extra_properties == "inletLevelTimeSeries":
         ...
-    elif isinstance(extra_properties, str) and extra_properties != "inletLevel":
+    elif isinstance(extra_properties, str) and extra_properties != "inletLevelTimeSeries":
         properties.append(extra_properties)
     elif isinstance(extra_properties, list):
-        properties.extend([prop for prop in extra_properties if prop != "inletLevel"])
+        properties.extend([prop for prop in extra_properties if prop != "inletLevelTimeSeries"])
     else:
         raise ValueError(f"Invalid value for extra_properties: {extra_properties}")
 
@@ -2339,7 +2343,9 @@ def _retrieve_timeseries_external_ids_with_extra_inlet_level(
         )
         result = client.data_modeling.instances.query(query)
         batch_external_ids = {
-            node.properties[view_id]["inletLevel"]: [node.properties[view_id].get(prop, "") for prop in extra_list]
+            node.properties[view_id]["inletLevelTimeSeries"]: [
+                node.properties[view_id].get(prop, "") for prop in extra_list
+            ]
             for node in result.data["nodes"].data
         }
         total_retrieved += len(batch_external_ids)
@@ -2792,10 +2798,10 @@ class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
         self.generators = PlantGeneratorsAPI(client)
         self.p_max_time_series = PlantPMaxTimeSeriesAPI(client, view_id)
         self.p_min_time_series = PlantPMinTimeSeriesAPI(client, view_id)
-        self.water_value = PlantWaterValueAPI(client, view_id)
-        self.feeding_fee = PlantFeedingFeeAPI(client, view_id)
+        self.water_value_time_series = PlantWaterValueTimeSeriesAPI(client, view_id)
+        self.feeding_fee_time_series = PlantFeedingFeeTimeSeriesAPI(client, view_id)
         self.outlet_level_time_series = PlantOutletLevelTimeSeriesAPI(client, view_id)
-        self.inlet_level = PlantInletLevelAPI(client, view_id)
+        self.inlet_level_time_series = PlantInletLevelTimeSeriesAPI(client, view_id)
         self.head_direct_time_series = PlantHeadDirectTimeSeriesAPI(client, view_id)
 
     def apply(self, plant: PlantApply | Sequence[PlantApply], replace: bool = False) -> dm.InstancesApplyResult:
