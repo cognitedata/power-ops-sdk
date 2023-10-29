@@ -35,6 +35,7 @@ PlantFields = Literal[
     "p_max",
     "p_min",
     "penstock_head_loss_factors",
+    "connection_losses",
     "p_max_time_series",
     "p_min_time_series",
     "water_value_time_series",
@@ -53,6 +54,7 @@ _PLANT_PROPERTIES_BY_FIELD = {
     "p_max": "pMax",
     "p_min": "pMin",
     "penstock_head_loss_factors": "penstockHeadLossFactors",
+    "connection_losses": "connectionLosses",
     "p_max_time_series": "pMaxTimeSeries",
     "p_min_time_series": "pMinTimeSeries",
     "water_value_time_series": "waterValueTimeSeries",
@@ -74,6 +76,7 @@ class Plant(DomainModel):
     p_min: Optional[float] = Field(None, alias="pMin")
     penstock_head_loss_factors: Optional[dict] = Field(None, alias="penstockHeadLossFactors")
     watercourse: Optional[str] = None
+    connection_losses: Optional[float] = Field(None, alias="connectionLosses")
     p_max_time_series: Optional[str] = Field(None, alias="pMaxTimeSeries")
     p_min_time_series: Optional[str] = Field(None, alias="pMinTimeSeries")
     water_value_time_series: Optional[str] = Field(None, alias="waterValueTimeSeries")
@@ -96,6 +99,7 @@ class Plant(DomainModel):
             p_min=self.p_min,
             penstock_head_loss_factors=self.penstock_head_loss_factors,
             watercourse=self.watercourse,
+            connection_losses=self.connection_losses,
             p_max_time_series=self.p_max_time_series,
             p_min_time_series=self.p_min_time_series,
             water_value_time_series=self.water_value_time_series,
@@ -119,6 +123,7 @@ class PlantApply(DomainModelApply):
     p_min: Optional[float] = Field(None, alias="pMin")
     penstock_head_loss_factors: Optional[dict] = Field(None, alias="penstockHeadLossFactors")
     watercourse: Union[WatercourseApply, str, None] = Field(None, repr=False)
+    connection_losses: Optional[float] = Field(None, alias="connectionLosses")
     p_max_time_series: Optional[str] = Field(None, alias="pMaxTimeSeries")
     p_min_time_series: Optional[str] = Field(None, alias="pMinTimeSeries")
     water_value_time_series: Optional[str] = Field(None, alias="waterValueTimeSeries")
@@ -156,6 +161,8 @@ class PlantApply(DomainModelApply):
                 "space": "power-ops",
                 "externalId": self.watercourse if isinstance(self.watercourse, str) else self.watercourse.external_id,
             }
+        if self.connection_losses is not None:
+            properties["connectionLosses"] = self.connection_losses
         if self.p_max_time_series is not None:
             properties["pMaxTimeSeries"] = self.p_max_time_series
         if self.p_min_time_series is not None:

@@ -128,6 +128,7 @@ def to_production_data_model(configuration: config.ProductionConfig) -> Producti
                 p_min=float(attributes.get("p_min", p_min_fallback)),
                 p_max=float(attributes.get("p_max", p_max_fallback)),
                 head_loss_factor=float(attributes.get("main_loss", [head_loss_factor_fallback])[0]),
+                connection_losses=connection_losses,
                 penstock_head_loss_factors={
                     str(penstock_number): float(loss_factor)
                     for penstock_number, loss_factor in enumerate(
