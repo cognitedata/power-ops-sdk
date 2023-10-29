@@ -3,6 +3,7 @@ This module contains the main functions for the resync tool.
 """
 from __future__ import annotations
 
+import itertools
 import logging
 from pathlib import Path
 from typing import Literal, Optional, cast
@@ -18,11 +19,7 @@ from cognite.powerops.resync import diff, models
 from cognite.powerops.resync.config import ReSyncConfig
 from cognite.powerops.resync.diff import FieldDifference, ModelDifference, ModelDifferences
 from cognite.powerops.resync.models.base import AssetModel, CDFFile, CDFSequence, DataModel, Model, SpaceId
-from cognite.powerops.resync.validation import (
-    ValidationResults,
-    perform_validation,
-    prepare_validation,
-)
+from cognite.powerops.resync.validation import ValidationResults, perform_validation, prepare_validation
 
 from .cdf import get_cognite_api
 from .transform import transform
@@ -33,6 +30,12 @@ logger = logging.getLogger(__name__)
 MODELS_BY_NAME = {m.__name__: m for m in models.V1_MODELS}
 
 V2_MODELS_BY_NAME = {m.__name__: m for m in models.V2_MODELS}
+
+DATAMODEL_ID_TO_RESYNC_NAME: dict[DataModelId, str] = {
+    m.data_model_ids()[0]: m.__name__
+    for m in itertools.chain(models.V1_MODELS, models.V2_MODELS)
+    if issubclass(m, DataModel)
+}
 
 
 def init(client: PowerOpsClient | None, model_names: str | list[str] | None = None) -> list[dict[str, str]]:
@@ -362,10 +365,7 @@ def destroy(
     return destroyed
 
 
-def migration(
-    client: PowerOpsClient | None,
-    model: Literal["Production"] = "Production",
-) -> ModelDifferences:
+def migration(client: PowerOpsClient | None, model: Literal["Production"] = "Production") -> ModelDifferences:
     if isinstance(model, list):
         model = model[0]
     if model != "Production":
