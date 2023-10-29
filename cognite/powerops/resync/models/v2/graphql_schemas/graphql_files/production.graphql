@@ -4,6 +4,7 @@ type Generator {
     penstock: Int
     startcost: Float
     startStopCost: TimeSeries
+    isAvailableTimeSeries: TimeSeries
     generatorEfficiencyCurve: Sequence
     turbineEfficiencyCurve: Sequence
 }

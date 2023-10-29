@@ -57,7 +57,7 @@ def production_as_asset(dm: ProductionModelDM) -> ProductionModel:
             p_max=plant.p_max,
             penstock_head_loss_factors=plant.penstock_head_loss_factors,
             connection_losses=plant.connection_losses,
-            generators=[generators_by_external_id.get(g) for g in plant.generators],
+            generators=[generators_by_external_id.get(g) for g in plant.generators or []],
             inlet_reservoir=reservoirs_by_external_id.get(plant.inlet_reservoir),
             p_min_time_series=plant.p_min_time_series and TimeSeries(external_id=plant.p_min_time_series),
             p_max_time_series=plant.p_max_time_series and TimeSeries(external_id=plant.p_max_time_series),
