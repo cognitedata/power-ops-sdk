@@ -60,7 +60,7 @@ class MarketAgreementApply(DomainModelApply):
         if self.type is not None:
             properties["type"] = self.type
         if self.created_timestamp is not None:
-            properties["createdTimestamp"] = self.created_timestamp.isoformat()
+            properties["createdTimestamp"] = self.created_timestamp.isoformat(timespec="milliseconds")
         if properties:
             source = dm.NodeOrEdgeData(
                 source=dm.ContainerId("power-ops", "MarketAgreement"),

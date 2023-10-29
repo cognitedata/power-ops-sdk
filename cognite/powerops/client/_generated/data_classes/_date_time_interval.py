@@ -47,9 +47,9 @@ class DateTimeIntervalApply(DomainModelApply):
         sources = []
         properties = {}
         if self.start is not None:
-            properties["start"] = self.start.isoformat()
+            properties["start"] = self.start.isoformat(timespec="milliseconds")
         if self.end is not None:
-            properties["end"] = self.end.isoformat()
+            properties["end"] = self.end.isoformat(timespec="milliseconds")
         if properties:
             source = dm.NodeOrEdgeData(
                 source=dm.ContainerId("power-ops", "DateTimeInterval"),

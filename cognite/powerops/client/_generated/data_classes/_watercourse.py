@@ -21,12 +21,12 @@ __all__ = [
 ]
 
 
-WatercourseTextFields = Literal["name", "production_obligation"]
-WatercourseFields = Literal["name", "production_obligation"]
+WatercourseTextFields = Literal["name", "production_obligation_time_series"]
+WatercourseFields = Literal["name", "production_obligation_time_series"]
 
 _WATERCOURSE_PROPERTIES_BY_FIELD = {
     "name": "name",
-    "production_obligation": "productionObligation",
+    "production_obligation_time_series": "productionObligationTimeSeries",
 }
 
 
@@ -34,7 +34,7 @@ class Watercourse(DomainModel):
     space: str = "power-ops"
     name: Optional[str] = None
     shop: Optional[str] = None
-    production_obligation: Optional[list[str]] = Field(None, alias="productionObligation")
+    production_obligation_time_series: Optional[list[str]] = Field(None, alias="productionObligationTimeSeries")
     plants: Optional[list[str]] = None
 
     def as_apply(self) -> WatercourseApply:
@@ -42,7 +42,7 @@ class Watercourse(DomainModel):
             external_id=self.external_id,
             name=self.name,
             shop=self.shop,
-            production_obligation=self.production_obligation,
+            production_obligation_time_series=self.production_obligation_time_series,
             plants=self.plants,
         )
 
@@ -51,7 +51,7 @@ class WatercourseApply(DomainModelApply):
     space: str = "power-ops"
     name: Optional[str] = None
     shop: Union[WatercourseShopApply, str, None] = Field(None, repr=False)
-    production_obligation: Optional[list[str]] = Field(None, alias="productionObligation")
+    production_obligation_time_series: Optional[list[str]] = Field(None, alias="productionObligationTimeSeries")
     plants: Union[list[PlantApply], list[str], None] = Field(default=None, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
@@ -67,8 +67,8 @@ class WatercourseApply(DomainModelApply):
                 "space": "power-ops",
                 "externalId": self.shop if isinstance(self.shop, str) else self.shop.external_id,
             }
-        if self.production_obligation is not None:
-            properties["productionObligation"] = self.production_obligation
+        if self.production_obligation_time_series is not None:
+            properties["productionObligationTimeSeries"] = self.production_obligation_time_series
         if properties:
             source = dm.NodeOrEdgeData(
                 source=dm.ContainerId("power-ops", "Watercourse"),

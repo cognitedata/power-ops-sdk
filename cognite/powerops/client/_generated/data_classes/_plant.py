@@ -20,10 +20,10 @@ PlantTextFields = Literal[
     "display_name",
     "p_max_time_series",
     "p_min_time_series",
-    "water_value",
-    "feeding_fee",
+    "water_value_time_series",
+    "feeding_fee_time_series",
     "outlet_level_time_series",
-    "inlet_level",
+    "inlet_level_time_series",
     "head_direct_time_series",
 ]
 PlantFields = Literal[
@@ -35,12 +35,13 @@ PlantFields = Literal[
     "p_max",
     "p_min",
     "penstock_head_loss_factors",
+    "connection_losses",
     "p_max_time_series",
     "p_min_time_series",
-    "water_value",
-    "feeding_fee",
+    "water_value_time_series",
+    "feeding_fee_time_series",
     "outlet_level_time_series",
-    "inlet_level",
+    "inlet_level_time_series",
     "head_direct_time_series",
 ]
 
@@ -53,12 +54,13 @@ _PLANT_PROPERTIES_BY_FIELD = {
     "p_max": "pMax",
     "p_min": "pMin",
     "penstock_head_loss_factors": "penstockHeadLossFactors",
+    "connection_losses": "connectionLosses",
     "p_max_time_series": "pMaxTimeSeries",
     "p_min_time_series": "pMinTimeSeries",
-    "water_value": "waterValue",
-    "feeding_fee": "feedingFee",
+    "water_value_time_series": "waterValueTimeSeries",
+    "feeding_fee_time_series": "feedingFeeTimeSeries",
     "outlet_level_time_series": "outletLevelTimeSeries",
-    "inlet_level": "inletLevel",
+    "inlet_level_time_series": "inletLevelTimeSeries",
     "head_direct_time_series": "headDirectTimeSeries",
 }
 
@@ -74,15 +76,16 @@ class Plant(DomainModel):
     p_min: Optional[float] = Field(None, alias="pMin")
     penstock_head_loss_factors: Optional[dict] = Field(None, alias="penstockHeadLossFactors")
     watercourse: Optional[str] = None
+    connection_losses: Optional[float] = Field(None, alias="connectionLosses")
     p_max_time_series: Optional[str] = Field(None, alias="pMaxTimeSeries")
     p_min_time_series: Optional[str] = Field(None, alias="pMinTimeSeries")
-    water_value: Optional[str] = Field(None, alias="waterValue")
-    feeding_fee: Optional[str] = Field(None, alias="feedingFee")
+    water_value_time_series: Optional[str] = Field(None, alias="waterValueTimeSeries")
+    feeding_fee_time_series: Optional[str] = Field(None, alias="feedingFeeTimeSeries")
     outlet_level_time_series: Optional[str] = Field(None, alias="outletLevelTimeSeries")
-    inlet_level: Optional[str] = Field(None, alias="inletLevel")
+    inlet_level_time_series: Optional[str] = Field(None, alias="inletLevelTimeSeries")
     head_direct_time_series: Optional[str] = Field(None, alias="headDirectTimeSeries")
+    inlet_reservoir: Optional[str] = Field(None, alias="inletReservoir")
     generators: Optional[list[str]] = None
-    inlet_reservoirs: Optional[list[str]] = Field(None, alias="inletReservoirs")
 
     def as_apply(self) -> PlantApply:
         return PlantApply(
@@ -96,15 +99,16 @@ class Plant(DomainModel):
             p_min=self.p_min,
             penstock_head_loss_factors=self.penstock_head_loss_factors,
             watercourse=self.watercourse,
+            connection_losses=self.connection_losses,
             p_max_time_series=self.p_max_time_series,
             p_min_time_series=self.p_min_time_series,
-            water_value=self.water_value,
-            feeding_fee=self.feeding_fee,
+            water_value_time_series=self.water_value_time_series,
+            feeding_fee_time_series=self.feeding_fee_time_series,
             outlet_level_time_series=self.outlet_level_time_series,
-            inlet_level=self.inlet_level,
+            inlet_level_time_series=self.inlet_level_time_series,
             head_direct_time_series=self.head_direct_time_series,
+            inlet_reservoir=self.inlet_reservoir,
             generators=self.generators,
-            inlet_reservoirs=self.inlet_reservoirs,
         )
 
 
@@ -119,17 +123,16 @@ class PlantApply(DomainModelApply):
     p_min: Optional[float] = Field(None, alias="pMin")
     penstock_head_loss_factors: Optional[dict] = Field(None, alias="penstockHeadLossFactors")
     watercourse: Union[WatercourseApply, str, None] = Field(None, repr=False)
+    connection_losses: Optional[float] = Field(None, alias="connectionLosses")
     p_max_time_series: Optional[str] = Field(None, alias="pMaxTimeSeries")
     p_min_time_series: Optional[str] = Field(None, alias="pMinTimeSeries")
-    water_value: Optional[str] = Field(None, alias="waterValue")
-    feeding_fee: Optional[str] = Field(None, alias="feedingFee")
+    water_value_time_series: Optional[str] = Field(None, alias="waterValueTimeSeries")
+    feeding_fee_time_series: Optional[str] = Field(None, alias="feedingFeeTimeSeries")
     outlet_level_time_series: Optional[str] = Field(None, alias="outletLevelTimeSeries")
-    inlet_level: Optional[str] = Field(None, alias="inletLevel")
+    inlet_level_time_series: Optional[str] = Field(None, alias="inletLevelTimeSeries")
     head_direct_time_series: Optional[str] = Field(None, alias="headDirectTimeSeries")
+    inlet_reservoir: Union[ReservoirApply, str, None] = Field(None, repr=False, alias="inletReservoir")
     generators: Union[list[GeneratorApply], list[str], None] = Field(default=None, repr=False)
-    inlet_reservoirs: Union[list[ReservoirApply], list[str], None] = Field(
-        default=None, repr=False, alias="inletReservoirs"
-    )
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
@@ -158,20 +161,29 @@ class PlantApply(DomainModelApply):
                 "space": "power-ops",
                 "externalId": self.watercourse if isinstance(self.watercourse, str) else self.watercourse.external_id,
             }
+        if self.connection_losses is not None:
+            properties["connectionLosses"] = self.connection_losses
         if self.p_max_time_series is not None:
             properties["pMaxTimeSeries"] = self.p_max_time_series
         if self.p_min_time_series is not None:
             properties["pMinTimeSeries"] = self.p_min_time_series
-        if self.water_value is not None:
-            properties["waterValue"] = self.water_value
-        if self.feeding_fee is not None:
-            properties["feedingFee"] = self.feeding_fee
+        if self.water_value_time_series is not None:
+            properties["waterValueTimeSeries"] = self.water_value_time_series
+        if self.feeding_fee_time_series is not None:
+            properties["feedingFeeTimeSeries"] = self.feeding_fee_time_series
         if self.outlet_level_time_series is not None:
             properties["outletLevelTimeSeries"] = self.outlet_level_time_series
-        if self.inlet_level is not None:
-            properties["inletLevel"] = self.inlet_level
+        if self.inlet_level_time_series is not None:
+            properties["inletLevelTimeSeries"] = self.inlet_level_time_series
         if self.head_direct_time_series is not None:
             properties["headDirectTimeSeries"] = self.head_direct_time_series
+        if self.inlet_reservoir is not None:
+            properties["inletReservoir"] = {
+                "space": "power-ops",
+                "externalId": self.inlet_reservoir
+                if isinstance(self.inlet_reservoir, str)
+                else self.inlet_reservoir.external_id,
+            }
         if properties:
             source = dm.NodeOrEdgeData(
                 source=dm.ContainerId("power-ops", "Plant"),
@@ -203,19 +215,13 @@ class PlantApply(DomainModelApply):
                 nodes.extend(instances.nodes)
                 edges.extend(instances.edges)
 
-        for inlet_reservoir in self.inlet_reservoirs or []:
-            edge = self._create_inlet_reservoir_edge(inlet_reservoir)
-            if edge.external_id not in cache:
-                edges.append(edge)
-                cache.add(edge.external_id)
-
-            if isinstance(inlet_reservoir, DomainModelApply):
-                instances = inlet_reservoir._to_instances_apply(cache)
-                nodes.extend(instances.nodes)
-                edges.extend(instances.edges)
-
         if isinstance(self.watercourse, DomainModelApply):
             instances = self.watercourse._to_instances_apply(cache)
+            nodes.extend(instances.nodes)
+            edges.extend(instances.edges)
+
+        if isinstance(self.inlet_reservoir, DomainModelApply):
+            instances = self.inlet_reservoir._to_instances_apply(cache)
             nodes.extend(instances.nodes)
             edges.extend(instances.edges)
 
@@ -233,22 +239,6 @@ class PlantApply(DomainModelApply):
             space="power-ops",
             external_id=f"{self.external_id}:{end_node_ext_id}",
             type=dm.DirectRelationReference("power-ops", "Plant.generators"),
-            start_node=dm.DirectRelationReference(self.space, self.external_id),
-            end_node=dm.DirectRelationReference("power-ops", end_node_ext_id),
-        )
-
-    def _create_inlet_reservoir_edge(self, inlet_reservoir: Union[str, ReservoirApply]) -> dm.EdgeApply:
-        if isinstance(inlet_reservoir, str):
-            end_node_ext_id = inlet_reservoir
-        elif isinstance(inlet_reservoir, DomainModelApply):
-            end_node_ext_id = inlet_reservoir.external_id
-        else:
-            raise TypeError(f"Expected str or ReservoirApply, got {type(inlet_reservoir)}")
-
-        return dm.EdgeApply(
-            space="power-ops",
-            external_id=f"{self.external_id}:{end_node_ext_id}",
-            type=dm.DirectRelationReference("power-ops", "Plant.inletReservoirs"),
             start_node=dm.DirectRelationReference(self.space, self.external_id),
             end_node=dm.DirectRelationReference("power-ops", end_node_ext_id),
         )

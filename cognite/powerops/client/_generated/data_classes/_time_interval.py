@@ -42,9 +42,9 @@ class TimeIntervalApply(DomainModelApply):
         sources = []
         properties = {}
         if self.start is not None:
-            properties["Start"] = self.start.isoformat()
+            properties["Start"] = self.start.isoformat(timespec="milliseconds")
         if self.end is not None:
-            properties["End"] = self.end.isoformat()
+            properties["End"] = self.end.isoformat(timespec="milliseconds")
         if properties:
             source = dm.NodeOrEdgeData(
                 source=dm.ContainerId("power-ops", "TimeInterval"),

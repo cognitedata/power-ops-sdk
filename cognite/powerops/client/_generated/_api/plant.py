@@ -34,12 +34,13 @@ ColumnNames = Literal[
     "pMax",
     "pMin",
     "penstockHeadLossFactors",
+    "connectionLosses",
     "pMaxTimeSeries",
     "pMinTimeSeries",
-    "waterValue",
-    "feedingFee",
+    "waterValueTimeSeries",
+    "feedingFeeTimeSeries",
     "outletLevelTimeSeries",
-    "inletLevel",
+    "inletLevelTimeSeries",
     "headDirectTimeSeries",
 ]
 
@@ -288,6 +289,9 @@ class PlantPMaxTimeSeriesAPI:
         min_p_min: float | None = None,
         max_p_min: float | None = None,
         watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_connection_losses: float | None = None,
+        max_connection_losses: float | None = None,
+        inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -309,6 +313,9 @@ class PlantPMaxTimeSeriesAPI:
             min_p_min,
             max_p_min,
             watercourse,
+            min_connection_losses,
+            max_connection_losses,
+            inlet_reservoir,
             external_id_prefix,
             filter,
         )
@@ -337,6 +344,9 @@ class PlantPMaxTimeSeriesAPI:
         min_p_min: float | None = None,
         max_p_min: float | None = None,
         watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_connection_losses: float | None = None,
+        max_connection_losses: float | None = None,
+        inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -358,6 +368,9 @@ class PlantPMaxTimeSeriesAPI:
             min_p_min,
             max_p_min,
             watercourse,
+            min_connection_losses,
+            max_connection_losses,
+            inlet_reservoir,
             external_id_prefix,
             filter,
         )
@@ -668,6 +681,9 @@ class PlantPMinTimeSeriesAPI:
         min_p_min: float | None = None,
         max_p_min: float | None = None,
         watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_connection_losses: float | None = None,
+        max_connection_losses: float | None = None,
+        inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -689,6 +705,9 @@ class PlantPMinTimeSeriesAPI:
             min_p_min,
             max_p_min,
             watercourse,
+            min_connection_losses,
+            max_connection_losses,
+            inlet_reservoir,
             external_id_prefix,
             filter,
         )
@@ -717,6 +736,9 @@ class PlantPMinTimeSeriesAPI:
         min_p_min: float | None = None,
         max_p_min: float | None = None,
         watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_connection_losses: float | None = None,
+        max_connection_losses: float | None = None,
+        inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -738,6 +760,9 @@ class PlantPMinTimeSeriesAPI:
             min_p_min,
             max_p_min,
             watercourse,
+            min_connection_losses,
+            max_connection_losses,
+            inlet_reservoir,
             external_id_prefix,
             filter,
         )
@@ -804,7 +829,7 @@ def _retrieve_timeseries_external_ids_with_extra_p_min_time_series(
     return external_ids
 
 
-class PlantWaterValueQuery:
+class PlantWaterValueTimeSeriesQuery:
     def __init__(
         self,
         client: CogniteClient,
@@ -877,7 +902,7 @@ class PlantWaterValueQuery:
         uniform_index: bool = False,
         include_aggregate_name: bool = True,
         include_granularity_name: bool = False,
-        column_names: ColumnNames | list[ColumnNames] = "waterValue",
+        column_names: ColumnNames | list[ColumnNames] = "waterValueTimeSeries",
     ) -> pd.DataFrame:
         external_ids = self._retrieve_timeseries_external_ids_with_extra(column_names)
         if external_ids:
@@ -914,7 +939,7 @@ class PlantWaterValueQuery:
         uniform_index: bool = False,
         include_aggregate_name: bool = True,
         include_granularity_name: bool = False,
-        column_names: ColumnNames | list[ColumnNames] = "waterValue",
+        column_names: ColumnNames | list[ColumnNames] = "waterValueTimeSeries",
     ) -> pd.DataFrame:
         external_ids = self._retrieve_timeseries_external_ids_with_extra(column_names)
         if external_ids:
@@ -962,7 +987,7 @@ class PlantWaterValueQuery:
         uniform_index: bool = False,
         include_aggregate_name: bool = True,
         include_granularity_name: bool = False,
-        column_names: ColumnNames | list[ColumnNames] = "waterValue",
+        column_names: ColumnNames | list[ColumnNames] = "waterValueTimeSeries",
         warning: bool = True,
         **kwargs,
     ) -> None:
@@ -995,9 +1020,9 @@ class PlantWaterValueQuery:
         df.plot(**kwargs)
 
     def _retrieve_timeseries_external_ids_with_extra(
-        self, extra_properties: ColumnNames | list[ColumnNames] = "waterValue"
+        self, extra_properties: ColumnNames | list[ColumnNames] = "waterValueTimeSeries"
     ) -> dict[str, list[str]]:
-        return _retrieve_timeseries_external_ids_with_extra_water_value(
+        return _retrieve_timeseries_external_ids_with_extra_water_value_time_series(
             self._client,
             self._view_id,
             self._filter,
@@ -1013,7 +1038,7 @@ class PlantWaterValueQuery:
         include_aggregate_name: bool,
         include_granularity_name: bool,
     ) -> pd.DataFrame:
-        if isinstance(column_names, str) and column_names == "waterValue":
+        if isinstance(column_names, str) and column_names == "waterValueTimeSeries":
             return df
         splits = sum(included for included in [include_aggregate_name, include_granularity_name])
         if splits == 0:
@@ -1026,7 +1051,7 @@ class PlantWaterValueQuery:
         return df
 
 
-class PlantWaterValueAPI:
+class PlantWaterValueTimeSeriesAPI:
     def __init__(self, client: CogniteClient, view_id: dm.ViewId):
         self._client = client
         self._view_id = view_id
@@ -1048,10 +1073,13 @@ class PlantWaterValueAPI:
         min_p_min: float | None = None,
         max_p_min: float | None = None,
         watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_connection_losses: float | None = None,
+        max_connection_losses: float | None = None,
+        inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> PlantWaterValueQuery:
+    ) -> PlantWaterValueTimeSeriesQuery:
         filter_ = _create_filter(
             self._view_id,
             name,
@@ -1069,11 +1097,14 @@ class PlantWaterValueAPI:
             min_p_min,
             max_p_min,
             watercourse,
+            min_connection_losses,
+            max_connection_losses,
+            inlet_reservoir,
             external_id_prefix,
             filter,
         )
 
-        return PlantWaterValueQuery(
+        return PlantWaterValueTimeSeriesQuery(
             client=self._client,
             view_id=self._view_id,
             timeseries_limit=limit,
@@ -1097,6 +1128,9 @@ class PlantWaterValueAPI:
         min_p_min: float | None = None,
         max_p_min: float | None = None,
         watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_connection_losses: float | None = None,
+        max_connection_losses: float | None = None,
+        inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -1118,10 +1152,13 @@ class PlantWaterValueAPI:
             min_p_min,
             max_p_min,
             watercourse,
+            min_connection_losses,
+            max_connection_losses,
+            inlet_reservoir,
             external_id_prefix,
             filter,
         )
-        external_ids = _retrieve_timeseries_external_ids_with_extra_water_value(
+        external_ids = _retrieve_timeseries_external_ids_with_extra_water_value_time_series(
             self._client, self._view_id, filter_, limit
         )
         if external_ids:
@@ -1130,20 +1167,20 @@ class PlantWaterValueAPI:
             return TimeSeriesList([])
 
 
-def _retrieve_timeseries_external_ids_with_extra_water_value(
+def _retrieve_timeseries_external_ids_with_extra_water_value_time_series(
     client: CogniteClient,
     view_id: dm.ViewId,
     filter_: dm.Filter | None,
     limit: int,
-    extra_properties: ColumnNames | list[ColumnNames] = "waterValue",
+    extra_properties: ColumnNames | list[ColumnNames] = "waterValueTimeSeries",
 ) -> dict[str, list[str]]:
-    properties = ["waterValue"]
-    if extra_properties == "waterValue":
+    properties = ["waterValueTimeSeries"]
+    if extra_properties == "waterValueTimeSeries":
         ...
-    elif isinstance(extra_properties, str) and extra_properties != "waterValue":
+    elif isinstance(extra_properties, str) and extra_properties != "waterValueTimeSeries":
         properties.append(extra_properties)
     elif isinstance(extra_properties, list):
-        properties.extend([prop for prop in extra_properties if prop != "waterValue"])
+        properties.extend([prop for prop in extra_properties if prop != "waterValueTimeSeries"])
     else:
         raise ValueError(f"Invalid value for extra_properties: {extra_properties}")
 
@@ -1173,7 +1210,9 @@ def _retrieve_timeseries_external_ids_with_extra_water_value(
         )
         result = client.data_modeling.instances.query(query)
         batch_external_ids = {
-            node.properties[view_id]["waterValue"]: [node.properties[view_id].get(prop, "") for prop in extra_list]
+            node.properties[view_id]["waterValueTimeSeries"]: [
+                node.properties[view_id].get(prop, "") for prop in extra_list
+            ]
             for node in result.data["nodes"].data
         }
         total_retrieved += len(batch_external_ids)
@@ -1184,7 +1223,7 @@ def _retrieve_timeseries_external_ids_with_extra_water_value(
     return external_ids
 
 
-class PlantFeedingFeeQuery:
+class PlantFeedingFeeTimeSeriesQuery:
     def __init__(
         self,
         client: CogniteClient,
@@ -1257,7 +1296,7 @@ class PlantFeedingFeeQuery:
         uniform_index: bool = False,
         include_aggregate_name: bool = True,
         include_granularity_name: bool = False,
-        column_names: ColumnNames | list[ColumnNames] = "feedingFee",
+        column_names: ColumnNames | list[ColumnNames] = "feedingFeeTimeSeries",
     ) -> pd.DataFrame:
         external_ids = self._retrieve_timeseries_external_ids_with_extra(column_names)
         if external_ids:
@@ -1294,7 +1333,7 @@ class PlantFeedingFeeQuery:
         uniform_index: bool = False,
         include_aggregate_name: bool = True,
         include_granularity_name: bool = False,
-        column_names: ColumnNames | list[ColumnNames] = "feedingFee",
+        column_names: ColumnNames | list[ColumnNames] = "feedingFeeTimeSeries",
     ) -> pd.DataFrame:
         external_ids = self._retrieve_timeseries_external_ids_with_extra(column_names)
         if external_ids:
@@ -1342,7 +1381,7 @@ class PlantFeedingFeeQuery:
         uniform_index: bool = False,
         include_aggregate_name: bool = True,
         include_granularity_name: bool = False,
-        column_names: ColumnNames | list[ColumnNames] = "feedingFee",
+        column_names: ColumnNames | list[ColumnNames] = "feedingFeeTimeSeries",
         warning: bool = True,
         **kwargs,
     ) -> None:
@@ -1375,9 +1414,9 @@ class PlantFeedingFeeQuery:
         df.plot(**kwargs)
 
     def _retrieve_timeseries_external_ids_with_extra(
-        self, extra_properties: ColumnNames | list[ColumnNames] = "feedingFee"
+        self, extra_properties: ColumnNames | list[ColumnNames] = "feedingFeeTimeSeries"
     ) -> dict[str, list[str]]:
-        return _retrieve_timeseries_external_ids_with_extra_feeding_fee(
+        return _retrieve_timeseries_external_ids_with_extra_feeding_fee_time_series(
             self._client,
             self._view_id,
             self._filter,
@@ -1393,7 +1432,7 @@ class PlantFeedingFeeQuery:
         include_aggregate_name: bool,
         include_granularity_name: bool,
     ) -> pd.DataFrame:
-        if isinstance(column_names, str) and column_names == "feedingFee":
+        if isinstance(column_names, str) and column_names == "feedingFeeTimeSeries":
             return df
         splits = sum(included for included in [include_aggregate_name, include_granularity_name])
         if splits == 0:
@@ -1406,7 +1445,7 @@ class PlantFeedingFeeQuery:
         return df
 
 
-class PlantFeedingFeeAPI:
+class PlantFeedingFeeTimeSeriesAPI:
     def __init__(self, client: CogniteClient, view_id: dm.ViewId):
         self._client = client
         self._view_id = view_id
@@ -1428,10 +1467,13 @@ class PlantFeedingFeeAPI:
         min_p_min: float | None = None,
         max_p_min: float | None = None,
         watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_connection_losses: float | None = None,
+        max_connection_losses: float | None = None,
+        inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> PlantFeedingFeeQuery:
+    ) -> PlantFeedingFeeTimeSeriesQuery:
         filter_ = _create_filter(
             self._view_id,
             name,
@@ -1449,11 +1491,14 @@ class PlantFeedingFeeAPI:
             min_p_min,
             max_p_min,
             watercourse,
+            min_connection_losses,
+            max_connection_losses,
+            inlet_reservoir,
             external_id_prefix,
             filter,
         )
 
-        return PlantFeedingFeeQuery(
+        return PlantFeedingFeeTimeSeriesQuery(
             client=self._client,
             view_id=self._view_id,
             timeseries_limit=limit,
@@ -1477,6 +1522,9 @@ class PlantFeedingFeeAPI:
         min_p_min: float | None = None,
         max_p_min: float | None = None,
         watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_connection_losses: float | None = None,
+        max_connection_losses: float | None = None,
+        inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -1498,10 +1546,13 @@ class PlantFeedingFeeAPI:
             min_p_min,
             max_p_min,
             watercourse,
+            min_connection_losses,
+            max_connection_losses,
+            inlet_reservoir,
             external_id_prefix,
             filter,
         )
-        external_ids = _retrieve_timeseries_external_ids_with_extra_feeding_fee(
+        external_ids = _retrieve_timeseries_external_ids_with_extra_feeding_fee_time_series(
             self._client, self._view_id, filter_, limit
         )
         if external_ids:
@@ -1510,20 +1561,20 @@ class PlantFeedingFeeAPI:
             return TimeSeriesList([])
 
 
-def _retrieve_timeseries_external_ids_with_extra_feeding_fee(
+def _retrieve_timeseries_external_ids_with_extra_feeding_fee_time_series(
     client: CogniteClient,
     view_id: dm.ViewId,
     filter_: dm.Filter | None,
     limit: int,
-    extra_properties: ColumnNames | list[ColumnNames] = "feedingFee",
+    extra_properties: ColumnNames | list[ColumnNames] = "feedingFeeTimeSeries",
 ) -> dict[str, list[str]]:
-    properties = ["feedingFee"]
-    if extra_properties == "feedingFee":
+    properties = ["feedingFeeTimeSeries"]
+    if extra_properties == "feedingFeeTimeSeries":
         ...
-    elif isinstance(extra_properties, str) and extra_properties != "feedingFee":
+    elif isinstance(extra_properties, str) and extra_properties != "feedingFeeTimeSeries":
         properties.append(extra_properties)
     elif isinstance(extra_properties, list):
-        properties.extend([prop for prop in extra_properties if prop != "feedingFee"])
+        properties.extend([prop for prop in extra_properties if prop != "feedingFeeTimeSeries"])
     else:
         raise ValueError(f"Invalid value for extra_properties: {extra_properties}")
 
@@ -1553,7 +1604,9 @@ def _retrieve_timeseries_external_ids_with_extra_feeding_fee(
         )
         result = client.data_modeling.instances.query(query)
         batch_external_ids = {
-            node.properties[view_id]["feedingFee"]: [node.properties[view_id].get(prop, "") for prop in extra_list]
+            node.properties[view_id]["feedingFeeTimeSeries"]: [
+                node.properties[view_id].get(prop, "") for prop in extra_list
+            ]
             for node in result.data["nodes"].data
         }
         total_retrieved += len(batch_external_ids)
@@ -1808,6 +1861,9 @@ class PlantOutletLevelTimeSeriesAPI:
         min_p_min: float | None = None,
         max_p_min: float | None = None,
         watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_connection_losses: float | None = None,
+        max_connection_losses: float | None = None,
+        inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -1829,6 +1885,9 @@ class PlantOutletLevelTimeSeriesAPI:
             min_p_min,
             max_p_min,
             watercourse,
+            min_connection_losses,
+            max_connection_losses,
+            inlet_reservoir,
             external_id_prefix,
             filter,
         )
@@ -1857,6 +1916,9 @@ class PlantOutletLevelTimeSeriesAPI:
         min_p_min: float | None = None,
         max_p_min: float | None = None,
         watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_connection_losses: float | None = None,
+        max_connection_losses: float | None = None,
+        inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -1878,6 +1940,9 @@ class PlantOutletLevelTimeSeriesAPI:
             min_p_min,
             max_p_min,
             watercourse,
+            min_connection_losses,
+            max_connection_losses,
+            inlet_reservoir,
             external_id_prefix,
             filter,
         )
@@ -1946,7 +2011,7 @@ def _retrieve_timeseries_external_ids_with_extra_outlet_level_time_series(
     return external_ids
 
 
-class PlantInletLevelQuery:
+class PlantInletLevelTimeSeriesQuery:
     def __init__(
         self,
         client: CogniteClient,
@@ -2019,7 +2084,7 @@ class PlantInletLevelQuery:
         uniform_index: bool = False,
         include_aggregate_name: bool = True,
         include_granularity_name: bool = False,
-        column_names: ColumnNames | list[ColumnNames] = "inletLevel",
+        column_names: ColumnNames | list[ColumnNames] = "inletLevelTimeSeries",
     ) -> pd.DataFrame:
         external_ids = self._retrieve_timeseries_external_ids_with_extra(column_names)
         if external_ids:
@@ -2056,7 +2121,7 @@ class PlantInletLevelQuery:
         uniform_index: bool = False,
         include_aggregate_name: bool = True,
         include_granularity_name: bool = False,
-        column_names: ColumnNames | list[ColumnNames] = "inletLevel",
+        column_names: ColumnNames | list[ColumnNames] = "inletLevelTimeSeries",
     ) -> pd.DataFrame:
         external_ids = self._retrieve_timeseries_external_ids_with_extra(column_names)
         if external_ids:
@@ -2104,7 +2169,7 @@ class PlantInletLevelQuery:
         uniform_index: bool = False,
         include_aggregate_name: bool = True,
         include_granularity_name: bool = False,
-        column_names: ColumnNames | list[ColumnNames] = "inletLevel",
+        column_names: ColumnNames | list[ColumnNames] = "inletLevelTimeSeries",
         warning: bool = True,
         **kwargs,
     ) -> None:
@@ -2137,9 +2202,9 @@ class PlantInletLevelQuery:
         df.plot(**kwargs)
 
     def _retrieve_timeseries_external_ids_with_extra(
-        self, extra_properties: ColumnNames | list[ColumnNames] = "inletLevel"
+        self, extra_properties: ColumnNames | list[ColumnNames] = "inletLevelTimeSeries"
     ) -> dict[str, list[str]]:
-        return _retrieve_timeseries_external_ids_with_extra_inlet_level(
+        return _retrieve_timeseries_external_ids_with_extra_inlet_level_time_series(
             self._client,
             self._view_id,
             self._filter,
@@ -2155,7 +2220,7 @@ class PlantInletLevelQuery:
         include_aggregate_name: bool,
         include_granularity_name: bool,
     ) -> pd.DataFrame:
-        if isinstance(column_names, str) and column_names == "inletLevel":
+        if isinstance(column_names, str) and column_names == "inletLevelTimeSeries":
             return df
         splits = sum(included for included in [include_aggregate_name, include_granularity_name])
         if splits == 0:
@@ -2168,7 +2233,7 @@ class PlantInletLevelQuery:
         return df
 
 
-class PlantInletLevelAPI:
+class PlantInletLevelTimeSeriesAPI:
     def __init__(self, client: CogniteClient, view_id: dm.ViewId):
         self._client = client
         self._view_id = view_id
@@ -2190,10 +2255,13 @@ class PlantInletLevelAPI:
         min_p_min: float | None = None,
         max_p_min: float | None = None,
         watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_connection_losses: float | None = None,
+        max_connection_losses: float | None = None,
+        inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> PlantInletLevelQuery:
+    ) -> PlantInletLevelTimeSeriesQuery:
         filter_ = _create_filter(
             self._view_id,
             name,
@@ -2211,11 +2279,14 @@ class PlantInletLevelAPI:
             min_p_min,
             max_p_min,
             watercourse,
+            min_connection_losses,
+            max_connection_losses,
+            inlet_reservoir,
             external_id_prefix,
             filter,
         )
 
-        return PlantInletLevelQuery(
+        return PlantInletLevelTimeSeriesQuery(
             client=self._client,
             view_id=self._view_id,
             timeseries_limit=limit,
@@ -2239,6 +2310,9 @@ class PlantInletLevelAPI:
         min_p_min: float | None = None,
         max_p_min: float | None = None,
         watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_connection_losses: float | None = None,
+        max_connection_losses: float | None = None,
+        inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -2260,10 +2334,13 @@ class PlantInletLevelAPI:
             min_p_min,
             max_p_min,
             watercourse,
+            min_connection_losses,
+            max_connection_losses,
+            inlet_reservoir,
             external_id_prefix,
             filter,
         )
-        external_ids = _retrieve_timeseries_external_ids_with_extra_inlet_level(
+        external_ids = _retrieve_timeseries_external_ids_with_extra_inlet_level_time_series(
             self._client, self._view_id, filter_, limit
         )
         if external_ids:
@@ -2272,20 +2349,20 @@ class PlantInletLevelAPI:
             return TimeSeriesList([])
 
 
-def _retrieve_timeseries_external_ids_with_extra_inlet_level(
+def _retrieve_timeseries_external_ids_with_extra_inlet_level_time_series(
     client: CogniteClient,
     view_id: dm.ViewId,
     filter_: dm.Filter | None,
     limit: int,
-    extra_properties: ColumnNames | list[ColumnNames] = "inletLevel",
+    extra_properties: ColumnNames | list[ColumnNames] = "inletLevelTimeSeries",
 ) -> dict[str, list[str]]:
-    properties = ["inletLevel"]
-    if extra_properties == "inletLevel":
+    properties = ["inletLevelTimeSeries"]
+    if extra_properties == "inletLevelTimeSeries":
         ...
-    elif isinstance(extra_properties, str) and extra_properties != "inletLevel":
+    elif isinstance(extra_properties, str) and extra_properties != "inletLevelTimeSeries":
         properties.append(extra_properties)
     elif isinstance(extra_properties, list):
-        properties.extend([prop for prop in extra_properties if prop != "inletLevel"])
+        properties.extend([prop for prop in extra_properties if prop != "inletLevelTimeSeries"])
     else:
         raise ValueError(f"Invalid value for extra_properties: {extra_properties}")
 
@@ -2315,7 +2392,9 @@ def _retrieve_timeseries_external_ids_with_extra_inlet_level(
         )
         result = client.data_modeling.instances.query(query)
         batch_external_ids = {
-            node.properties[view_id]["inletLevel"]: [node.properties[view_id].get(prop, "") for prop in extra_list]
+            node.properties[view_id]["inletLevelTimeSeries"]: [
+                node.properties[view_id].get(prop, "") for prop in extra_list
+            ]
             for node in result.data["nodes"].data
         }
         total_retrieved += len(batch_external_ids)
@@ -2570,6 +2649,9 @@ class PlantHeadDirectTimeSeriesAPI:
         min_p_min: float | None = None,
         max_p_min: float | None = None,
         watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_connection_losses: float | None = None,
+        max_connection_losses: float | None = None,
+        inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -2591,6 +2673,9 @@ class PlantHeadDirectTimeSeriesAPI:
             min_p_min,
             max_p_min,
             watercourse,
+            min_connection_losses,
+            max_connection_losses,
+            inlet_reservoir,
             external_id_prefix,
             filter,
         )
@@ -2619,6 +2704,9 @@ class PlantHeadDirectTimeSeriesAPI:
         min_p_min: float | None = None,
         max_p_min: float | None = None,
         watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_connection_losses: float | None = None,
+        max_connection_losses: float | None = None,
+        inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -2640,6 +2728,9 @@ class PlantHeadDirectTimeSeriesAPI:
             min_p_min,
             max_p_min,
             watercourse,
+            min_connection_losses,
+            max_connection_losses,
+            inlet_reservoir,
             external_id_prefix,
             filter,
         )
@@ -2751,49 +2842,6 @@ class PlantGeneratorsAPI:
         return self._client.data_modeling.instances.list("edge", limit=limit, filter=f.And(*filters))
 
 
-class PlantInletReservoirsAPI:
-    def __init__(self, client: CogniteClient):
-        self._client = client
-
-    def retrieve(self, external_id: str | Sequence[str], space="power-ops") -> dm.EdgeList:
-        f = dm.filters
-        is_edge_type = f.Equals(
-            ["edge", "type"],
-            {"space": space, "externalId": "Plant.inletReservoirs"},
-        )
-        if isinstance(external_id, str):
-            is_plant = f.Equals(
-                ["edge", "startNode"],
-                {"space": space, "externalId": external_id},
-            )
-            return self._client.data_modeling.instances.list("edge", limit=-1, filter=f.And(is_edge_type, is_plant))
-
-        else:
-            is_plants = f.In(
-                ["edge", "startNode"],
-                [{"space": space, "externalId": ext_id} for ext_id in external_id],
-            )
-            return self._client.data_modeling.instances.list("edge", limit=-1, filter=f.And(is_edge_type, is_plants))
-
-    def list(self, plant_id: str | list[str] | None = None, limit=DEFAULT_LIMIT_READ, space="power-ops") -> dm.EdgeList:
-        f = dm.filters
-        filters = []
-        is_edge_type = f.Equals(
-            ["edge", "type"],
-            {"space": space, "externalId": "Plant.inletReservoirs"},
-        )
-        filters.append(is_edge_type)
-        if plant_id:
-            plant_ids = [plant_id] if isinstance(plant_id, str) else plant_id
-            is_plants = f.In(
-                ["edge", "startNode"],
-                [{"space": space, "externalId": ext_id} for ext_id in plant_ids],
-            )
-            filters.append(is_plants)
-
-        return self._client.data_modeling.instances.list("edge", limit=limit, filter=f.And(*filters))
-
-
 class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
     def __init__(self, client: CogniteClient, view_id: dm.ViewId):
         super().__init__(
@@ -2805,13 +2853,12 @@ class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
         )
         self._view_id = view_id
         self.generators = PlantGeneratorsAPI(client)
-        self.inlet_reservoirs = PlantInletReservoirsAPI(client)
         self.p_max_time_series = PlantPMaxTimeSeriesAPI(client, view_id)
         self.p_min_time_series = PlantPMinTimeSeriesAPI(client, view_id)
-        self.water_value = PlantWaterValueAPI(client, view_id)
-        self.feeding_fee = PlantFeedingFeeAPI(client, view_id)
+        self.water_value_time_series = PlantWaterValueTimeSeriesAPI(client, view_id)
+        self.feeding_fee_time_series = PlantFeedingFeeTimeSeriesAPI(client, view_id)
         self.outlet_level_time_series = PlantOutletLevelTimeSeriesAPI(client, view_id)
-        self.inlet_level = PlantInletLevelAPI(client, view_id)
+        self.inlet_level_time_series = PlantInletLevelTimeSeriesAPI(client, view_id)
         self.head_direct_time_series = PlantHeadDirectTimeSeriesAPI(client, view_id)
 
     def apply(self, plant: PlantApply | Sequence[PlantApply], replace: bool = False) -> dm.InstancesApplyResult:
@@ -2849,8 +2896,6 @@ class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
 
             generator_edges = self.generators.retrieve(external_id)
             plant.generators = [edge.end_node.external_id for edge in generator_edges]
-            inlet_reservoir_edges = self.inlet_reservoirs.retrieve(external_id)
-            plant.inlet_reservoirs = [edge.end_node.external_id for edge in inlet_reservoir_edges]
 
             return plant
         else:
@@ -2858,8 +2903,6 @@ class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
 
             generator_edges = self.generators.retrieve(external_id)
             self._set_generators(plants, generator_edges)
-            inlet_reservoir_edges = self.inlet_reservoirs.retrieve(external_id)
-            self._set_inlet_reservoirs(plants, inlet_reservoir_edges)
 
             return plants
 
@@ -2882,6 +2925,9 @@ class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
         min_p_min: float | None = None,
         max_p_min: float | None = None,
         watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_connection_losses: float | None = None,
+        max_connection_losses: float | None = None,
+        inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -2903,6 +2949,9 @@ class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
             min_p_min,
             max_p_min,
             watercourse,
+            min_connection_losses,
+            max_connection_losses,
+            inlet_reservoir,
             external_id_prefix,
             filter,
         )
@@ -2934,6 +2983,9 @@ class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
         min_p_min: float | None = None,
         max_p_min: float | None = None,
         watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_connection_losses: float | None = None,
+        max_connection_losses: float | None = None,
+        inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -2966,6 +3018,9 @@ class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
         min_p_min: float | None = None,
         max_p_min: float | None = None,
         watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_connection_losses: float | None = None,
+        max_connection_losses: float | None = None,
+        inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -2997,6 +3052,9 @@ class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
         min_p_min: float | None = None,
         max_p_min: float | None = None,
         watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_connection_losses: float | None = None,
+        max_connection_losses: float | None = None,
+        inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -3018,6 +3076,9 @@ class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
             min_p_min,
             max_p_min,
             watercourse,
+            min_connection_losses,
+            max_connection_losses,
+            inlet_reservoir,
             external_id_prefix,
             filter,
         )
@@ -3054,6 +3115,9 @@ class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
         min_p_min: float | None = None,
         max_p_min: float | None = None,
         watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_connection_losses: float | None = None,
+        max_connection_losses: float | None = None,
+        inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -3075,6 +3139,9 @@ class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
             min_p_min,
             max_p_min,
             watercourse,
+            min_connection_losses,
+            max_connection_losses,
+            inlet_reservoir,
             external_id_prefix,
             filter,
         )
@@ -3106,6 +3173,9 @@ class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
         min_p_min: float | None = None,
         max_p_min: float | None = None,
         watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_connection_losses: float | None = None,
+        max_connection_losses: float | None = None,
+        inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
@@ -3128,6 +3198,9 @@ class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
             min_p_min,
             max_p_min,
             watercourse,
+            min_connection_losses,
+            max_connection_losses,
+            inlet_reservoir,
             external_id_prefix,
             filter,
         )
@@ -3140,11 +3213,6 @@ class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
             else:
                 generator_edges = self.generators.list(external_ids, limit=-1)
             self._set_generators(plants, generator_edges)
-            if len(external_ids := plants.as_external_ids()) > IN_FILTER_LIMIT:
-                inlet_reservoir_edges = self.inlet_reservoirs.list(limit=-1)
-            else:
-                inlet_reservoir_edges = self.inlet_reservoirs.list(external_ids, limit=-1)
-            self._set_inlet_reservoirs(plants, inlet_reservoir_edges)
 
         return plants
 
@@ -3158,17 +3226,6 @@ class PlantAPI(TypeAPI[Plant, PlantApply, PlantList]):
             node_id = plant.id_tuple()
             if node_id in edges_by_start_node:
                 plant.generators = [edge.end_node.external_id for edge in edges_by_start_node[node_id]]
-
-    @staticmethod
-    def _set_inlet_reservoirs(plants: Sequence[Plant], inlet_reservoir_edges: Sequence[dm.Edge]):
-        edges_by_start_node: dict[tuple, list] = defaultdict(list)
-        for edge in inlet_reservoir_edges:
-            edges_by_start_node[edge.start_node.as_tuple()].append(edge)
-
-        for plant in plants:
-            node_id = plant.id_tuple()
-            if node_id in edges_by_start_node:
-                plant.inlet_reservoirs = [edge.end_node.external_id for edge in edges_by_start_node[node_id]]
 
 
 def _create_filter(
@@ -3188,6 +3245,9 @@ def _create_filter(
     min_p_min: float | None = None,
     max_p_min: float | None = None,
     watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+    min_connection_losses: float | None = None,
+    max_connection_losses: float | None = None,
+    inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     external_id_prefix: str | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
@@ -3244,6 +3304,39 @@ def _create_filter(
             dm.filters.In(
                 view_id.as_property_ref("watercourse"),
                 values=[{"space": item[0], "externalId": item[1]} for item in watercourse],
+            )
+        )
+    if min_connection_losses or max_connection_losses:
+        filters.append(
+            dm.filters.Range(
+                view_id.as_property_ref("connectionLosses"), gte=min_connection_losses, lte=max_connection_losses
+            )
+        )
+    if inlet_reservoir and isinstance(inlet_reservoir, str):
+        filters.append(
+            dm.filters.Equals(
+                view_id.as_property_ref("inletReservoir"), value={"space": "power-ops", "externalId": inlet_reservoir}
+            )
+        )
+    if inlet_reservoir and isinstance(inlet_reservoir, tuple):
+        filters.append(
+            dm.filters.Equals(
+                view_id.as_property_ref("inletReservoir"),
+                value={"space": inlet_reservoir[0], "externalId": inlet_reservoir[1]},
+            )
+        )
+    if inlet_reservoir and isinstance(inlet_reservoir, list) and isinstance(inlet_reservoir[0], str):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("inletReservoir"),
+                values=[{"space": "power-ops", "externalId": item} for item in inlet_reservoir],
+            )
+        )
+    if inlet_reservoir and isinstance(inlet_reservoir, list) and isinstance(inlet_reservoir[0], tuple):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("inletReservoir"),
+                values=[{"space": item[0], "externalId": item[1]} for item in inlet_reservoir],
             )
         )
     if external_id_prefix:

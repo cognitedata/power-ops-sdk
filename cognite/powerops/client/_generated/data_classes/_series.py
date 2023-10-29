@@ -52,9 +52,9 @@ class SeriesApply(DomainModelApply):
         sources = []
         properties = {}
         if self.time_interval_start is not None:
-            properties["timeIntervalStart"] = self.time_interval_start.isoformat()
+            properties["timeIntervalStart"] = self.time_interval_start.isoformat(timespec="milliseconds")
         if self.time_interval_end is not None:
-            properties["timeIntervalEnd"] = self.time_interval_end.isoformat()
+            properties["timeIntervalEnd"] = self.time_interval_end.isoformat(timespec="milliseconds")
         if self.resolution is not None:
             properties["resolution"] = {
                 "space": "power-ops",

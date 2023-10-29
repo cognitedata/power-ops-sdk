@@ -17,13 +17,16 @@ __all__ = [
 ]
 
 
-GeneratorTextFields = Literal["name", "start_stop_cost", "generator_efficiency_curve", "turbine_efficiency_curve"]
+GeneratorTextFields = Literal[
+    "name", "start_stop_cost", "is_available_time_series", "generator_efficiency_curve", "turbine_efficiency_curve"
+]
 GeneratorFields = Literal[
     "name",
     "p_min",
     "penstock",
     "startcost",
     "start_stop_cost",
+    "is_available_time_series",
     "generator_efficiency_curve",
     "turbine_efficiency_curve",
 ]
@@ -34,6 +37,7 @@ _GENERATOR_PROPERTIES_BY_FIELD = {
     "penstock": "penstock",
     "startcost": "startcost",
     "start_stop_cost": "startStopCost",
+    "is_available_time_series": "isAvailableTimeSeries",
     "generator_efficiency_curve": "generatorEfficiencyCurve",
     "turbine_efficiency_curve": "turbineEfficiencyCurve",
 }
@@ -46,6 +50,7 @@ class Generator(DomainModel):
     penstock: Optional[int] = None
     startcost: Optional[float] = None
     start_stop_cost: Optional[str] = Field(None, alias="startStopCost")
+    is_available_time_series: Optional[str] = Field(None, alias="isAvailableTimeSeries")
     generator_efficiency_curve: Optional[str] = Field(None, alias="generatorEfficiencyCurve")
     turbine_efficiency_curve: Optional[str] = Field(None, alias="turbineEfficiencyCurve")
 
@@ -57,6 +62,7 @@ class Generator(DomainModel):
             penstock=self.penstock,
             startcost=self.startcost,
             start_stop_cost=self.start_stop_cost,
+            is_available_time_series=self.is_available_time_series,
             generator_efficiency_curve=self.generator_efficiency_curve,
             turbine_efficiency_curve=self.turbine_efficiency_curve,
         )
@@ -69,6 +75,7 @@ class GeneratorApply(DomainModelApply):
     penstock: Optional[int] = None
     startcost: Optional[float] = None
     start_stop_cost: Optional[str] = Field(None, alias="startStopCost")
+    is_available_time_series: Optional[str] = Field(None, alias="isAvailableTimeSeries")
     generator_efficiency_curve: Optional[str] = Field(None, alias="generatorEfficiencyCurve")
     turbine_efficiency_curve: Optional[str] = Field(None, alias="turbineEfficiencyCurve")
 
@@ -88,6 +95,8 @@ class GeneratorApply(DomainModelApply):
             properties["startcost"] = self.startcost
         if self.start_stop_cost is not None:
             properties["startStopCost"] = self.start_stop_cost
+        if self.is_available_time_series is not None:
+            properties["isAvailableTimeSeries"] = self.is_available_time_series
         if self.generator_efficiency_curve is not None:
             properties["generatorEfficiencyCurve"] = self.generator_efficiency_curve
         if self.turbine_efficiency_curve is not None:

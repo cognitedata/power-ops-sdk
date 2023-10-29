@@ -25,10 +25,10 @@ from cognite.powerops.client._generated.data_classes._price_area import _PRICEAR
 
 from ._core import DEFAULT_LIMIT_READ, IN_FILTER_LIMIT, INSTANCE_QUERY_LIMIT, Aggregations, TypeAPI
 
-ColumnNames = Literal["name", "description", "dayAheadPrice"]
+ColumnNames = Literal["name", "description", "dayaheadPriceTimeSeries"]
 
 
-class PriceAreaDayAheadPriceQuery:
+class PriceAreaDayaheadPriceTimeSeriesQuery:
     def __init__(
         self,
         client: CogniteClient,
@@ -101,7 +101,7 @@ class PriceAreaDayAheadPriceQuery:
         uniform_index: bool = False,
         include_aggregate_name: bool = True,
         include_granularity_name: bool = False,
-        column_names: ColumnNames | list[ColumnNames] = "dayAheadPrice",
+        column_names: ColumnNames | list[ColumnNames] = "dayaheadPriceTimeSeries",
     ) -> pd.DataFrame:
         external_ids = self._retrieve_timeseries_external_ids_with_extra(column_names)
         if external_ids:
@@ -138,7 +138,7 @@ class PriceAreaDayAheadPriceQuery:
         uniform_index: bool = False,
         include_aggregate_name: bool = True,
         include_granularity_name: bool = False,
-        column_names: ColumnNames | list[ColumnNames] = "dayAheadPrice",
+        column_names: ColumnNames | list[ColumnNames] = "dayaheadPriceTimeSeries",
     ) -> pd.DataFrame:
         external_ids = self._retrieve_timeseries_external_ids_with_extra(column_names)
         if external_ids:
@@ -186,7 +186,7 @@ class PriceAreaDayAheadPriceQuery:
         uniform_index: bool = False,
         include_aggregate_name: bool = True,
         include_granularity_name: bool = False,
-        column_names: ColumnNames | list[ColumnNames] = "dayAheadPrice",
+        column_names: ColumnNames | list[ColumnNames] = "dayaheadPriceTimeSeries",
         warning: bool = True,
         **kwargs,
     ) -> None:
@@ -219,9 +219,9 @@ class PriceAreaDayAheadPriceQuery:
         df.plot(**kwargs)
 
     def _retrieve_timeseries_external_ids_with_extra(
-        self, extra_properties: ColumnNames | list[ColumnNames] = "dayAheadPrice"
+        self, extra_properties: ColumnNames | list[ColumnNames] = "dayaheadPriceTimeSeries"
     ) -> dict[str, list[str]]:
-        return _retrieve_timeseries_external_ids_with_extra_day_ahead_price(
+        return _retrieve_timeseries_external_ids_with_extra_dayahead_price_time_series(
             self._client,
             self._view_id,
             self._filter,
@@ -237,7 +237,7 @@ class PriceAreaDayAheadPriceQuery:
         include_aggregate_name: bool,
         include_granularity_name: bool,
     ) -> pd.DataFrame:
-        if isinstance(column_names, str) and column_names == "dayAheadPrice":
+        if isinstance(column_names, str) and column_names == "dayaheadPriceTimeSeries":
             return df
         splits = sum(included for included in [include_aggregate_name, include_granularity_name])
         if splits == 0:
@@ -250,7 +250,7 @@ class PriceAreaDayAheadPriceQuery:
         return df
 
 
-class PriceAreaDayAheadPriceAPI:
+class PriceAreaDayaheadPriceTimeSeriesAPI:
     def __init__(self, client: CogniteClient, view_id: dm.ViewId):
         self._client = client
         self._view_id = view_id
@@ -264,7 +264,7 @@ class PriceAreaDayAheadPriceAPI:
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> PriceAreaDayAheadPriceQuery:
+    ) -> PriceAreaDayaheadPriceTimeSeriesQuery:
         filter_ = _create_filter(
             self._view_id,
             name,
@@ -275,7 +275,7 @@ class PriceAreaDayAheadPriceAPI:
             filter,
         )
 
-        return PriceAreaDayAheadPriceQuery(
+        return PriceAreaDayaheadPriceTimeSeriesQuery(
             client=self._client,
             view_id=self._view_id,
             timeseries_limit=limit,
@@ -301,7 +301,7 @@ class PriceAreaDayAheadPriceAPI:
             external_id_prefix,
             filter,
         )
-        external_ids = _retrieve_timeseries_external_ids_with_extra_day_ahead_price(
+        external_ids = _retrieve_timeseries_external_ids_with_extra_dayahead_price_time_series(
             self._client, self._view_id, filter_, limit
         )
         if external_ids:
@@ -310,20 +310,20 @@ class PriceAreaDayAheadPriceAPI:
             return TimeSeriesList([])
 
 
-def _retrieve_timeseries_external_ids_with_extra_day_ahead_price(
+def _retrieve_timeseries_external_ids_with_extra_dayahead_price_time_series(
     client: CogniteClient,
     view_id: dm.ViewId,
     filter_: dm.Filter | None,
     limit: int,
-    extra_properties: ColumnNames | list[ColumnNames] = "dayAheadPrice",
+    extra_properties: ColumnNames | list[ColumnNames] = "dayaheadPriceTimeSeries",
 ) -> dict[str, list[str]]:
-    properties = ["dayAheadPrice"]
-    if extra_properties == "dayAheadPrice":
+    properties = ["dayaheadPriceTimeSeries"]
+    if extra_properties == "dayaheadPriceTimeSeries":
         ...
-    elif isinstance(extra_properties, str) and extra_properties != "dayAheadPrice":
+    elif isinstance(extra_properties, str) and extra_properties != "dayaheadPriceTimeSeries":
         properties.append(extra_properties)
     elif isinstance(extra_properties, list):
-        properties.extend([prop for prop in extra_properties if prop != "dayAheadPrice"])
+        properties.extend([prop for prop in extra_properties if prop != "dayaheadPriceTimeSeries"])
     else:
         raise ValueError(f"Invalid value for extra_properties: {extra_properties}")
 
@@ -353,7 +353,9 @@ def _retrieve_timeseries_external_ids_with_extra_day_ahead_price(
         )
         result = client.data_modeling.instances.query(query)
         batch_external_ids = {
-            node.properties[view_id]["dayAheadPrice"]: [node.properties[view_id].get(prop, "") for prop in extra_list]
+            node.properties[view_id]["dayaheadPriceTimeSeries"]: [
+                node.properties[view_id].get(prop, "") for prop in extra_list
+            ]
             for node in result.data["nodes"].data
         }
         total_retrieved += len(batch_external_ids)
@@ -474,7 +476,7 @@ class PriceAreaAPI(TypeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
         self._view_id = view_id
         self.plants = PriceAreaPlantsAPI(client)
         self.watercourses = PriceAreaWatercoursesAPI(client)
-        self.day_ahead_price = PriceAreaDayAheadPriceAPI(client, view_id)
+        self.dayahead_price_time_series = PriceAreaDayaheadPriceTimeSeriesAPI(client, view_id)
 
     def apply(
         self, price_area: PriceAreaApply | Sequence[PriceAreaApply], replace: bool = False
