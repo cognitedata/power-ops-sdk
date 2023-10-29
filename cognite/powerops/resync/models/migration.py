@@ -24,7 +24,7 @@ def production_as_asset(dm: ProductionModelDM) -> ProductionModel:
             p_min=generator.p_min,
             penstock=str(generator.penstock),
             startcost=generator.startcost,
-            start_stop_cost_time_series=TimeSeries(external_id=generator.start_stop_cost),
+            start_stop_cost_time_series=generator.start_stop_cost and TimeSeries(external_id=generator.start_stop_cost),
             generator_efficiency_curve=generator_efficiency_curve_by_external_id.get(
                 generator.generator_efficiency_curve
             ),
@@ -58,13 +58,18 @@ def production_as_asset(dm: ProductionModelDM) -> ProductionModel:
             penstock_head_loss_factors=plant.penstock_head_loss_factors,
             generators=[generators_by_external_id.get(g) for g in plant.generators],
             inlet_reservoir=reservoirs_by_external_id.get(plant.inlet_reservoir),
-            p_min_time_series=TimeSeries(external_id=plant.p_min_time_series),
-            p_max_time_series=TimeSeries(external_id=plant.p_max_time_series),
-            water_value_time_series=TimeSeries(external_id=plant.water_value_time_series),
-            feeding_fee_time_series=TimeSeries(external_id=plant.feeding_fee_time_series),
-            outlet_level_time_series=TimeSeries(external_id=plant.outlet_level_time_series),
-            inlet_level_time_series=TimeSeries(external_id=plant.inlet_level_time_series),
-            head_direct_time_series=TimeSeries(external_id=plant.head_direct_time_series),
+            p_min_time_series=plant.p_min_time_series and TimeSeries(external_id=plant.p_min_time_series),
+            p_max_time_series=plant.p_max_time_series and TimeSeries(external_id=plant.p_max_time_series),
+            water_value_time_series=plant.water_value_time_series
+            and TimeSeries(external_id=plant.water_value_time_series),
+            feeding_fee_time_series=plant.feeding_fee_time_series
+            and TimeSeries(external_id=plant.feeding_fee_time_series),
+            outlet_level_time_series=plant.outlet_level_time_series
+            and TimeSeries(external_id=plant.outlet_level_time_series),
+            inlet_level_time_series=plant.inlet_level_time_series
+            and TimeSeries(external_id=plant.inlet_level_time_series),
+            head_direct_time_series=plant.head_direct_time_series
+            and TimeSeries(external_id=plant.head_direct_time_series),
         )
         asset_plant.external_id = plant.external_id
         plants.append(asset_plant)
@@ -78,7 +83,7 @@ def production_as_asset(dm: ProductionModelDM) -> ProductionModel:
             shop=WaterCourseShop(penalty_limit=str(watercourse.shop.penalty_limit)),
             plants=[plants_by_external_id.get(p) for p in watercourse.plants],
             production_obligation_time_series=[
-                TimeSeries(external_id=wa) for wa in watercourse.production_obligation_time_series
+                TimeSeries(external_id=wa) for wa in watercourse.production_obligation_time_series if wa is not None
             ],
         )
         water.external_id = watercourse.external_id
@@ -92,7 +97,8 @@ def production_as_asset(dm: ProductionModelDM) -> ProductionModel:
             name=price_area.name,
             watercourses=[watercourses_by_external_id.get(w) for w in price_area.watercourses],
             plants=[plants_by_external_id.get(p) for p in price_area.plants],
-            dayahead_price_time_series=TimeSeries(external_id=price_area.dayahead_price_time_series),
+            dayahead_price_time_series=price_area.day_ahead_price_time_series
+            and TimeSeries(external_id=price_area.day_ahead_price_time_series),
         )
         price_area_asset.external_id = price_area.external_id
         price_areas.append(price_area_asset)
