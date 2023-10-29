@@ -68,7 +68,8 @@ def delete_model(cdf: CogniteClient, space: str) -> list[DataModelId]:
 def main():
     space = "power-ops"
     with chdir(REPO_ROOT):
-        # os.environ["SETTINGS_FILES"] = ".secrets.toml"
+        os.environ["SETTINGS_FILES"] = "settings.toml"
+        customer = ("my_customer", "data_dir", "market")
         power = PowerOpsClient.from_settings()
         print(f"Connected to {power.cdf.config.project}")
         data_models = delete_model(power.cdf, space)
@@ -84,8 +85,8 @@ def main():
             if input("Run resync.apply? (y/n)").casefold() == "y":
                 print("Running resync.apply")
                 resync.apply(
-                    config_dir=REPO_ROOT / "customers",
-                    market="dayahead",
+                    config_dir=REPO_ROOT / "customers" / f"resync-{customer[0]}" / customer[1],
+                    market=customer[2],
                     client=power,
                     model_names=resync_models,
                     auto_yes=True,
