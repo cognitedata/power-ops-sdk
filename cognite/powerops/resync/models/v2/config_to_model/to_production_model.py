@@ -52,7 +52,7 @@ def to_production_data_model(configuration: config.ProductionConfig) -> Producti
         reservoirs = []
         for reservoir_name in shop_case["model"]["reservoir"]:
             reservoir = ReservoirApply(
-                external_id=f"reservoir:{reservoir_name}",
+                external_id=f"reservoir_{reservoir_name}",
                 name=reservoir_name,
                 **dict(
                     zip(
