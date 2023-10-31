@@ -7,7 +7,7 @@ from pathlib import Path
 import yaml
 from typing_extensions import Self
 
-from cognite.powerops.client.shop.data_classes.shop_file import SHOPFileReference, SHOPFileType
+from cognite.powerops.client.shop.shop_file_reference import SHOPFileReference, SHOPFileType
 
 logger = logging.getLogger(__name__)
 
@@ -19,8 +19,8 @@ class SHOPCase:
     Main features:
      * Values can be retrieved or set / changed like with a dict.
      * Can hold references to additional files ("extra files").
-        * These are just paths to files, their content is not accessed here.
-     * Loading from string or file (with `Case.from_yaml_file(path_to_yaml)`).
+        * These are just externalID values of files in CDF, their content is not accessed here.
+     * Loading from string or file (with `SHOPCase(filepath=path_to_yaml)`).
      * Saving to yaml (with `case.save_yaml(path_to_file)`).
 
     Examples:
@@ -39,7 +39,7 @@ class SHOPCase:
           'foo:\n  bar1: 11\n  bar2: 202\n'
 
       * load from and save to a file:
-          case = ShopCase.from_yaml_file("path/to/my_case.yaml")
+          case = SHOPCase(file_path="path/to/my_case.yaml")
           case[...] = ...  # edit data
           case.save_yaml("path/to/same_or_different.yaml")
     """

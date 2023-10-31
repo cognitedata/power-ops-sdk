@@ -1,10 +1,8 @@
 from __future__ import annotations
 
-import secrets
 from dataclasses import dataclass
 from typing import Any
 
-import arrow
 from cognite.client.data_classes import FileMetadata
 from typing_extensions import Self
 
@@ -14,15 +12,6 @@ try:
     from enum import StrEnum
 except ImportError:
     from strenum import StrEnum
-
-
-def _unique_short_str(nbytes: int) -> str:
-    return secrets.token_hex(nbytes=nbytes)
-
-
-def _ext_id_factory() -> str:
-    now_isoformat = arrow.utcnow().isoformat().replace("+00:00", "Z")
-    return f"SHOP_RUN_{now_isoformat}_{_unique_short_str(3)}"
 
 
 class SHOPFileType(StrEnum):

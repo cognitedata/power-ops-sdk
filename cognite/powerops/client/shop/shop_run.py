@@ -13,8 +13,8 @@ from cognite.client.data_classes.events import Event
 from cognite.client.utils import datetime_to_ms, ms_to_datetime
 from typing_extensions import Self
 
-from cognite.powerops.client.shop.data_classes.shop_file import SHOPFileReference
 from cognite.powerops.client.shop.shop_case import SHOPCase
+from cognite.powerops.client.shop.shop_file_reference import SHOPFileReference
 
 try:
     from enum import StrEnum
