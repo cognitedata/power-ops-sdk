@@ -7,7 +7,7 @@ from cognite.powerops.utils.cdf import Settings, get_client_config
 from ._generated._api_client import BenchmarkAPIs, CogShopAPIs, DayAheadAPIs, ProductionAPIs, RKOMMarketAPIs
 from ._generated.cogshop1 import CogShop1Client
 from .data_set_api import DataSetsAPI
-from .shop.api.workflow_api import WorkflowAPI
+from .shop.api.dayaheadworkflow_api import WorkflowAPI
 from .shop.shop_run_api import SHOPRunAPI
 
 

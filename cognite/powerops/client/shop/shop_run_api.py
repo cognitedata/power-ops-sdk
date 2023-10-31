@@ -3,6 +3,8 @@ from __future__ import annotations
 import datetime
 import secrets
 from collections.abc import Sequence
+from concurrent.futures import ThreadPoolExecutor
+from pathlib import Path
 from typing import Literal, Optional, overload
 from urllib.parse import urlparse
 from uuid import uuid4
@@ -10,13 +12,13 @@ from uuid import uuid4
 import arrow
 import requests
 from cognite.client import CogniteClient
-from cognite.client.data_classes import UserProfile, filters
+from cognite.client.data_classes import FileMetadata, UserProfile, filters
 from cognite.client.data_classes.events import EventSort
 from cognite.client.exceptions import CogniteAPIError
 
 from cognite.powerops.client.shop.shop_run_filter import SHOPRunFilter
 
-from .data_classes.workflow import ShopCase
+from .data_classes.dayaheadworkflow import Case
 from .shop_run import SHOPRun, ShopRunEvent, SHOPRunList
 
 DEFAULT_READ_LIMIT = 25
@@ -32,13 +34,82 @@ class SHOPRunAPI:
         self._dataset_id = dataset_id
         self.cogshop_version = cogshop_version
 
-    def trigger_prerun_files(self, pre_runs: list[ShopCase]) -> list[SHOPRun]:
+    def upload_shop_file(self, shop_file: Path | str, metadata: dict, file_name: str, source: str) -> FileMetadata:
         """
-        Trigger a shop run for each ShopCase
+        Upload either case or prerun file
         """
-        ...
+        if isinstance(shop_file, str):
+            meta = self._cdf.files.upload_bytes(
+                content=shop_file.encode("utf-8"),
+                name=file_name,
+                mime_type="application/yaml",
+                external_id=f"cog_shop_manual/{uuid4()!s}",
+                metadata=metadata,
+                data_set_id=self._dataset_id,
+                source=source,
+            )
+        elif isinstance(shop_file, Path):
+            meta = self._cdf.files.upload(
+                path=str(shop_file),
+                name=file_name,
+                mime_type="application/yaml",
+                external_id=f"cog_shop_manual/{uuid4()!s}",
+                metadata=metadata,
+                data_set_id=self._dataset_id,
+                source=source,
+            )
+        return meta
 
-    def trigger_case(self, case_file: str, watercourse: str, source: str | None = None) -> SHOPRun:
+    def trigger_case(self, case: Case) -> list[SHOPRun]:
+        """
+        Trigger a collection of shop runs related to one Case (also referred to as watercourse).
+        For each ShopCase the prerun file will be used to trigger a shop run event in cdf,
+        and used to trigger the CogShop container.
+        """
+        shop_files = []
+        for pre_run_file in case.pre_runs:
+            if pre_run_file.pre_run_path:
+                meta = self.upload_shop_file(
+                    shop_file=pre_run_file.pre_run_path,
+                    file_name="SHOP PreRun file",
+                    metadata={
+                        "shop:type": "cog_shop_prerun",
+                        "shop:plants": ";".join(pre_run_file.plants),
+                        "shop:price_scenario": pre_run_file.price_scenario,
+                    },
+                    source="DayaheadWorkflow",
+                )
+            elif pre_run_file.pre_run_external_id:
+                meta = self._cdf.files.retrieve(external_id=pre_run_file.pre_run_external_id)
+            shop_files.append(meta)
+
+        shop_events = []
+        for file in shop_files:
+            now = datetime.datetime.now(datetime.timezone.utc)
+            now_isoformat = now.isoformat().replace("+00:00", "Z")
+
+            shop_events.append(
+                SHOPRun(
+                    external_id=f"SHOP_RUN_{now_isoformat}_{_unique_short_str(3)}",
+                    watercourse=case.case_name,
+                    start=now,
+                    end=None,
+                    _case_file_external_id=file.external_id,
+                    _shop_files=[],
+                    shop_version=self.cogshop_version,
+                    _client=self._cdf,
+                    source=file.source,
+                )
+            )
+        self._cdf.events.create([new_event.as_cdf_event(self._dataset_id) for new_event in shop_events])
+
+        with ThreadPoolExecutor(max_workers=5) as executor:
+            for shop_event in shop_events:
+                executor.submit(self._trigger_shop_container, shop_event)
+
+        return shop_events
+
+    def trigger_with_casefile(self, case_file: str, watercourse: str, source: str | None = None) -> SHOPRun:
         """
         Trigger SHOP for a given case file.
 
@@ -70,17 +141,13 @@ class SHOPRunAPI:
         else:
             display_name = "Unknown"
 
-        meta = self._cdf.files.upload_bytes(
-            # On Windows machines, some bytes can get lost in the encoding process
-            # when uploading a string to CDF. This is a workaround.
-            content=case_file.encode("utf-8"),
-            name=f"Manual Case by {display_name}",
-            mime_type="application/yaml",
-            external_id=f"cog_shop_manual/{uuid4()!s}",
+        meta = self.upload_shop_file(
+            shop_file=case_file,
+            file_name=f"Manual Case by {display_name}",
             metadata={"shop:type": "cog_shop_case", "user": display_name},
-            data_set_id=self._dataset_id,
             source=source,
         )
+
         now = datetime.datetime.now(datetime.timezone.utc)
         now_isoformat = now.isoformat().replace("+00:00", "Z")
 
@@ -96,7 +163,6 @@ class SHOPRunAPI:
             source=source,
         )
         self._cdf.events.create(new_event.as_cdf_event(self._dataset_id))
-
         self._trigger_shop_container(new_event)
         return new_event
 
