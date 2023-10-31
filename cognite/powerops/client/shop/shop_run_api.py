@@ -26,7 +26,7 @@ _APICallableForSHOPRunT = Callable[[Union[SHOPRun, Sequence[SHOPRun]]], Union[SH
 
 
 class SHOPRunAPI:
-    def __init__(self, client: CogniteClient, dataset_id: int, cogshop_version: str):
+    def __init__(self, client: CogniteClient, dataset_id: int, cogshop_version: str = ""):
         self._cdf = client
         self._dataset_id = dataset_id
         self.cogshop_version = cogshop_version
@@ -87,7 +87,7 @@ class SHOPRunAPI:
             end=None,
             _case_file_external_id=case_file_meta.external_id,
             _shop_files=case.shop_files,
-            shop_version=self.cogshop_version,
+            shop_version=case.shop_version,
             _client=self._cdf,
             source=source,
         )

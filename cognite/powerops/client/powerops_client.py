@@ -27,7 +27,7 @@ class PowerOpsClient:
         self.benchmark = BenchmarkAPIs(self.cdf)
         self.cog_shop = CogShopAPIs(self.cdf)
         self.cog_shop1 = CogShop1Client(self.cdf)
-        self.shop = SHOPRunAPI(self.cdf, self.datasets.write_dataset_id, cogshop_version)
+        self.shop = SHOPRunAPI(self.cdf, self.datasets.write_dataset_id, cogshop_version=cogshop_version)
 
     @classmethod
     def from_settings(cls, settings: Settings | None = None) -> PowerOpsClient:

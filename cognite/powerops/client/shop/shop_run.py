@@ -120,6 +120,7 @@ class SHOPRun:
         return [shop_file.dump() for shop_file in self._shop_files]
 
     def as_cdf_event(self) -> Event:
+        shop_version_spec = {ShopRunEvent.shop_version: self.shop_version} if self.shop_version else {}
         return Event(
             external_id=self.external_id,
             type=ShopRunEvent.event_type,
@@ -131,7 +132,7 @@ class SHOPRun:
                 ShopRunEvent.manual_run: "",
                 ShopRunEvent.preprocessor_data: json.dumps(
                     {
-                        ShopRunEvent.shop_version: self.shop_version,
+                        **shop_version_spec,
                         ShopRunEvent.case_file: {"external_id": self._case_file_external_id},
                         ShopRunEvent.shop_files: [shop_file.dump() for shop_file in self._shop_files],
                     }
@@ -163,7 +164,12 @@ class SHOPRun:
 
     def to_case(self):
         """Make a new SHOPCase from this SHOPRun."""
-        return SHOPCase(data=self.get_case_file(), shop_files=self._shop_files.copy(), watercourse=self.watercourse)
+        return SHOPCase(
+            data=self.get_case_file(),
+            shop_files=self._shop_files.copy(),
+            watercourse=self.watercourse.lower(),
+            shop_version=self.shop_version,
+        )
 
     def _download_file(self, external_id: str) -> str:
         content_bytes = self._client.files.download_bytes(external_id=external_id)
@@ -238,14 +244,21 @@ class SHOPRun:
         failure_events = [rel.target for rel in relationships if rel.target.type == SHOPProcessEvents.failed]
         if not failure_events:
             return None
-        failure_event = sorted(failure_events, key=lambda event: -event.created_time)[0]
-        failures_json = failure_event.metadata.get("failures")
-        try:
-            failures = json.loads(failures_json)
-        except (json.JSONDecodeError, TypeError):
-            failures = failures_json
+        failure_events = sorted(failure_events, key=lambda event: -event.created_time)
+        cogshop_failure_events = [event for event in failure_events if event.source == "CogShop"]
+        argo_failure_events = [event for event in failure_events if event.source == "CogShopExitHandler"]
+        error = None
+        failures = None
+        if cogshop_failure_events:
+            error = cogshop_failure_events[0].metadata.get("errorStackTrace")
+        if argo_failure_events:
+            failures_json = argo_failure_events[0].metadata.get("failures")
+            try:
+                failures = json.loads(failures_json)
+            except (json.JSONDecodeError, TypeError):
+                failures = failures_json
         return {
-            "error": failure_event.metadata.get("errorStackTrace"),
+            "error": error,
             "failures": failures,
         }
 

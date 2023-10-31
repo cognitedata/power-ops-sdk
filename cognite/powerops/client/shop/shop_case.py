@@ -51,6 +51,7 @@ class SHOPCase:
         file_path: str = "",
         shop_files: SequenceType[SHOPFileReference] = (),
         watercourse: str = "",
+        shop_version: str = "",
     ) -> None:
         if data and file_path:
             raise ValueError("Cannot specify both data and file_path")
@@ -62,6 +63,7 @@ class SHOPCase:
             self.load_case_file(file_path)
         self._shop_files: list[SHOPFileReference] = list(shop_files)
         self.watercourse = watercourse
+        self.shop_version = shop_version
 
     def load_case_data(self, data: str) -> None:
         self.data = {}
