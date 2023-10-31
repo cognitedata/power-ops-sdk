@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import ClassVar, Optional
+from typing import Literal, Optional
 
 from cognite.client import data_modeling as dm
 
@@ -11,11 +11,22 @@ __all__ = [
     "ProductionPlanTimeSeriesApply",
     "ProductionPlanTimeSeriesList",
     "ProductionPlanTimeSeriesApplyList",
+    "ProductionPlanTimeSeriesFields",
+    "ProductionPlanTimeSeriesTextFields",
 ]
 
 
+ProductionPlanTimeSeriesTextFields = Literal["name", "series"]
+ProductionPlanTimeSeriesFields = Literal["name", "series"]
+
+_PRODUCTIONPLANTIMESERIES_PROPERTIES_BY_FIELD = {
+    "name": "name",
+    "series": "series",
+}
+
+
 class ProductionPlanTimeSeries(DomainModel):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     name: Optional[str] = None
     series: Optional[list[str]] = None
 
@@ -28,7 +39,7 @@ class ProductionPlanTimeSeries(DomainModel):
 
 
 class ProductionPlanTimeSeriesApply(DomainModelApply):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     name: Optional[str] = None
     series: Optional[list[str]] = None
 

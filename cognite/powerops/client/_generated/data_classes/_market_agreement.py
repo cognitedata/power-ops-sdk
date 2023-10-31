@@ -1,18 +1,35 @@
 from __future__ import annotations
 
 import datetime
-from typing import ClassVar, Optional
+from typing import Literal, Optional
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
 from ._core import DomainModel, DomainModelApply, TypeApplyList, TypeList
 
-__all__ = ["MarketAgreement", "MarketAgreementApply", "MarketAgreementList", "MarketAgreementApplyList"]
+__all__ = [
+    "MarketAgreement",
+    "MarketAgreementApply",
+    "MarketAgreementList",
+    "MarketAgreementApplyList",
+    "MarketAgreementFields",
+    "MarketAgreementTextFields",
+]
+
+
+MarketAgreementTextFields = Literal["m_rid", "type"]
+MarketAgreementFields = Literal["m_rid", "type", "created_timestamp"]
+
+_MARKETAGREEMENT_PROPERTIES_BY_FIELD = {
+    "m_rid": "mRID",
+    "type": "type",
+    "created_timestamp": "createdTimestamp",
+}
 
 
 class MarketAgreement(DomainModel):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     m_rid: Optional[str] = Field(None, alias="mRID")
     type: Optional[str] = None
     created_timestamp: Optional[datetime.datetime] = Field(None, alias="createdTimestamp")
@@ -27,10 +44,10 @@ class MarketAgreement(DomainModel):
 
 
 class MarketAgreementApply(DomainModelApply):
-    space: ClassVar[str] = "power-ops"
-    m_rid: Optional[str] = None
+    space: str = "power-ops"
+    m_rid: Optional[str] = Field(None, alias="mRID")
     type: Optional[str] = None
-    created_timestamp: Optional[datetime.datetime] = None
+    created_timestamp: Optional[datetime.datetime] = Field(None, alias="createdTimestamp")
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:
@@ -43,7 +60,7 @@ class MarketAgreementApply(DomainModelApply):
         if self.type is not None:
             properties["type"] = self.type
         if self.created_timestamp is not None:
-            properties["createdTimestamp"] = self.created_timestamp.isoformat()
+            properties["createdTimestamp"] = self.created_timestamp.isoformat(timespec="milliseconds")
         if properties:
             source = dm.NodeOrEdgeData(
                 source=dm.ContainerId("power-ops", "MarketAgreement"),

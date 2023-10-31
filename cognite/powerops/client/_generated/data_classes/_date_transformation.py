@@ -1,16 +1,33 @@
 from __future__ import annotations
 
-from typing import ClassVar, Optional
+from typing import Literal, Optional
 
 from cognite.client import data_modeling as dm
 
 from ._core import DomainModel, DomainModelApply, TypeApplyList, TypeList
 
-__all__ = ["DateTransformation", "DateTransformationApply", "DateTransformationList", "DateTransformationApplyList"]
+__all__ = [
+    "DateTransformation",
+    "DateTransformationApply",
+    "DateTransformationList",
+    "DateTransformationApplyList",
+    "DateTransformationFields",
+    "DateTransformationTextFields",
+]
+
+
+DateTransformationTextFields = Literal["transformation", "args"]
+DateTransformationFields = Literal["transformation", "args", "kwargs"]
+
+_DATETRANSFORMATION_PROPERTIES_BY_FIELD = {
+    "transformation": "transformation",
+    "args": "args",
+    "kwargs": "kwargs",
+}
 
 
 class DateTransformation(DomainModel):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     transformation: Optional[str] = None
     args: Optional[list[str]] = None
     kwargs: Optional[dict] = None
@@ -25,7 +42,7 @@ class DateTransformation(DomainModel):
 
 
 class DateTransformationApply(DomainModelApply):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     transformation: Optional[str] = None
     args: Optional[list[str]] = None
     kwargs: Optional[dict] = None

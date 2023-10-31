@@ -1,16 +1,25 @@
 from __future__ import annotations
 
-from typing import ClassVar, Optional
+from typing import Literal, Optional
 
 from cognite.client import data_modeling as dm
 
 from ._core import DomainModel, DomainModelApply, TypeApplyList, TypeList
 
-__all__ = ["Duration", "DurationApply", "DurationList", "DurationApplyList"]
+__all__ = ["Duration", "DurationApply", "DurationList", "DurationApplyList", "DurationFields", "DurationTextFields"]
+
+
+DurationTextFields = Literal["unit"]
+DurationFields = Literal["duration", "unit"]
+
+_DURATION_PROPERTIES_BY_FIELD = {
+    "duration": "duration",
+    "unit": "unit",
+}
 
 
 class Duration(DomainModel):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     duration: Optional[int] = None
     unit: Optional[str] = None
 
@@ -23,7 +32,7 @@ class Duration(DomainModel):
 
 
 class DurationApply(DomainModelApply):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     duration: Optional[int] = None
     unit: Optional[str] = None
 

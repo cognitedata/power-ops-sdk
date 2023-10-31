@@ -13,9 +13,21 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## [0.71.0] - 2023-10-25
+## [0.73.0] - 2023-10-25
 ### Changed
 * Triggering a SHOP run from local environment is now easier, using `SHOPCase`.
+
+## [0.72.0] - 2023-10-29
+### Added
+* Migration option for `resync` with support for the `Production` model
+### Fixed
+* Several inconsistencies in the `Production` v2 compared to v1 model
+
+## [0.71.0] - 2023-10-28
+### Added
+* SDK for `CapacityBid` Model
+### Fixed
+* Bug in the DMS of `CapacityBid` Model
 
 ## [0.70.3] - 2023-10-25
 ### Improved

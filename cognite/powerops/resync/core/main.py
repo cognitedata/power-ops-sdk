@@ -3,9 +3,10 @@ This module contains the main functions for the resync tool.
 """
 from __future__ import annotations
 
+import itertools
 import logging
 from pathlib import Path
-from typing import Optional, cast
+from typing import Literal, Optional, cast
 
 from cognite.client import CogniteClient
 from cognite.client.data_classes.data_modeling import DataModelId, MappedProperty, SpaceApply, SpaceList, ViewList
@@ -18,11 +19,7 @@ from cognite.powerops.resync import diff, models
 from cognite.powerops.resync.config import ReSyncConfig
 from cognite.powerops.resync.diff import FieldDifference, ModelDifference, ModelDifferences
 from cognite.powerops.resync.models.base import AssetModel, CDFFile, CDFSequence, DataModel, Model, SpaceId
-from cognite.powerops.resync.validation import (
-    ValidationResults,
-    perform_validation,
-    prepare_validation,
-)
+from cognite.powerops.resync.validation import ValidationResults, perform_validation, prepare_validation
 
 from .cdf import get_cognite_api
 from .transform import transform
@@ -33,6 +30,12 @@ logger = logging.getLogger(__name__)
 MODELS_BY_NAME = {m.__name__: m for m in models.V1_MODELS}
 
 V2_MODELS_BY_NAME = {m.__name__: m for m in models.V2_MODELS}
+
+DATAMODEL_ID_TO_RESYNC_NAME: dict[DataModelId, str] = {
+    m.data_model_ids()[0]: m.__name__
+    for m in itertools.chain(models.V1_MODELS, models.V2_MODELS)
+    if issubclass(m, DataModel)
+}
 
 
 def init(client: PowerOpsClient | None, model_names: str | list[str] | None = None) -> list[dict[str, str]]:
@@ -360,6 +363,21 @@ def destroy(
         client.cdf.labels.delete([label.external_id for label in labels if label.external_id])
 
     return destroyed
+
+
+def migration(client: PowerOpsClient | None, model: Literal["Production"] = "Production") -> ModelDifferences:
+    if isinstance(model, list):
+        model = model[0]
+    if model != "Production":
+        raise ValueError(f"Unknown model {model}")
+    client = client or PowerOpsClient.from_settings()
+
+    production_dm = models.v2.ProductionModelDM.from_cdf(client, data_set_external_id=client.datasets.read_dataset)
+    production_dm_as_asset = models.migration.production_as_asset(production_dm)
+    logger.info("Retrieved data model")
+    production_asset = models.v1.ProductionModel.from_cdf(client, data_set_external_id=client.datasets.read_dataset)
+    logger.info("Retrieved asset model")
+    return ModelDifferences([diff.model_difference(current_model=production_asset, new_model=production_dm_as_asset)])
 
 
 def _remove_resources(differences: ModelDifference, cdf: CogniteClient, auto_yes: bool) -> ModelDifference:

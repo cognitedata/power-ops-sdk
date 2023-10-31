@@ -1,106 +1,308 @@
-from ._benchmark_bid import BenchmarkBid, BenchmarkBidApply, BenchmarkBidApplyList, BenchmarkBidList
-from ._benchmark_process import BenchmarkProcess, BenchmarkProcessApply, BenchmarkProcessApplyList, BenchmarkProcessList
+from ._benchmark_bid import (
+    BenchmarkBid,
+    BenchmarkBidApply,
+    BenchmarkBidApplyList,
+    BenchmarkBidFields,
+    BenchmarkBidList,
+    BenchmarkBidTextFields,
+)
+from ._benchmark_process import (
+    BenchmarkProcess,
+    BenchmarkProcessApply,
+    BenchmarkProcessApplyList,
+    BenchmarkProcessFields,
+    BenchmarkProcessList,
+    BenchmarkProcessTextFields,
+)
+from ._bid_curves import (
+    BidCurves,
+    BidCurvesApply,
+    BidCurvesApplyList,
+    BidCurvesFields,
+    BidCurvesList,
+    BidCurvesTextFields,
+)
+from ._bid_document_header import (
+    BidDocumentHeader,
+    BidDocumentHeaderApply,
+    BidDocumentHeaderApplyList,
+    BidDocumentHeaderFields,
+    BidDocumentHeaderList,
+    BidDocumentHeaderTextFields,
+)
 from ._bid_matrix_generator import (
     BidMatrixGenerator,
     BidMatrixGeneratorApply,
     BidMatrixGeneratorApplyList,
+    BidMatrixGeneratorFields,
     BidMatrixGeneratorList,
+    BidMatrixGeneratorTextFields,
 )
-from ._bid_time_series import BidTimeSeries, BidTimeSeriesApply, BidTimeSeriesApplyList, BidTimeSeriesList
-from ._command_config import CommandConfig, CommandConfigApply, CommandConfigApplyList, CommandConfigList
+from ._bid_time_series import (
+    BidTimeSeries,
+    BidTimeSeriesApply,
+    BidTimeSeriesApplyList,
+    BidTimeSeriesFields,
+    BidTimeSeriesList,
+    BidTimeSeriesTextFields,
+)
+from ._command_config import (
+    CommandConfig,
+    CommandConfigApply,
+    CommandConfigApplyList,
+    CommandConfigFields,
+    CommandConfigList,
+    CommandConfigTextFields,
+)
+from ._core import DomainModel, DomainModelApply
 from ._date_time_interval import (
     DateTimeInterval,
     DateTimeIntervalApply,
     DateTimeIntervalApplyList,
+    DateTimeIntervalFields,
     DateTimeIntervalList,
 )
 from ._date_transformation import (
     DateTransformation,
     DateTransformationApply,
     DateTransformationApplyList,
+    DateTransformationFields,
     DateTransformationList,
+    DateTransformationTextFields,
 )
-from ._day_ahead_bid import DayAheadBid, DayAheadBidApply, DayAheadBidApplyList, DayAheadBidList
-from ._day_ahead_process import DayAheadProcess, DayAheadProcessApply, DayAheadProcessApplyList, DayAheadProcessList
-from ._duration import Duration, DurationApply, DurationApplyList, DurationList
-from ._generator import Generator, GeneratorApply, GeneratorApplyList, GeneratorList
+from ._day_ahead_bid import (
+    DayAheadBid,
+    DayAheadBidApply,
+    DayAheadBidApplyList,
+    DayAheadBidFields,
+    DayAheadBidList,
+    DayAheadBidTextFields,
+)
+from ._day_ahead_process import (
+    DayAheadProcess,
+    DayAheadProcessApply,
+    DayAheadProcessApplyList,
+    DayAheadProcessFields,
+    DayAheadProcessList,
+    DayAheadProcessTextFields,
+)
+from ._duration import Duration, DurationApply, DurationApplyList, DurationFields, DurationList, DurationTextFields
+from ._generator import (
+    Generator,
+    GeneratorApply,
+    GeneratorApplyList,
+    GeneratorFields,
+    GeneratorList,
+    GeneratorTextFields,
+)
 from ._input_time_series_mapping import (
     InputTimeSeriesMapping,
     InputTimeSeriesMappingApply,
     InputTimeSeriesMappingApplyList,
+    InputTimeSeriesMappingFields,
     InputTimeSeriesMappingList,
+    InputTimeSeriesMappingTextFields,
 )
-from ._market_agreement import MarketAgreement, MarketAgreementApply, MarketAgreementApplyList, MarketAgreementList
+from ._market_agreement import (
+    MarketAgreement,
+    MarketAgreementApply,
+    MarketAgreementApplyList,
+    MarketAgreementFields,
+    MarketAgreementList,
+    MarketAgreementTextFields,
+)
 from ._market_participant import (
     MarketParticipant,
     MarketParticipantApply,
     MarketParticipantApplyList,
+    MarketParticipantFields,
     MarketParticipantList,
+    MarketParticipantTextFields,
 )
-from ._mba_domain import MBADomain, MBADomainApply, MBADomainApplyList, MBADomainList
-from ._nord_pool_market import NordPoolMarket, NordPoolMarketApply, NordPoolMarketApplyList, NordPoolMarketList
-from ._output_container import OutputContainer, OutputContainerApply, OutputContainerApplyList, OutputContainerList
-from ._output_mapping import OutputMapping, OutputMappingApply, OutputMappingApplyList, OutputMappingList
-from ._plant import Plant, PlantApply, PlantApplyList, PlantList
-from ._point import Point, PointApply, PointApplyList, PointList
-from ._price_area import PriceArea, PriceAreaApply, PriceAreaApplyList, PriceAreaList
+from ._mba_domain import (
+    MBADomain,
+    MBADomainApply,
+    MBADomainApplyList,
+    MBADomainFields,
+    MBADomainList,
+    MBADomainTextFields,
+)
+from ._nord_pool_market import (
+    NordPoolMarket,
+    NordPoolMarketApply,
+    NordPoolMarketApplyList,
+    NordPoolMarketFields,
+    NordPoolMarketList,
+    NordPoolMarketTextFields,
+)
+from ._output_container import (
+    OutputContainer,
+    OutputContainerApply,
+    OutputContainerApplyList,
+    OutputContainerFields,
+    OutputContainerList,
+    OutputContainerTextFields,
+)
+from ._output_mapping import (
+    OutputMapping,
+    OutputMappingApply,
+    OutputMappingApplyList,
+    OutputMappingFields,
+    OutputMappingList,
+    OutputMappingTextFields,
+)
+from ._periods import Periods, PeriodsApply, PeriodsApplyList, PeriodsFields, PeriodsList, PeriodsTextFields
+from ._plant import Plant, PlantApply, PlantApplyList, PlantFields, PlantList, PlantTextFields
+from ._point import Point, PointApply, PointApplyList, PointFields, PointList
+from ._price_area import (
+    PriceArea,
+    PriceAreaApply,
+    PriceAreaApplyList,
+    PriceAreaFields,
+    PriceAreaList,
+    PriceAreaTextFields,
+)
 from ._production_plan_time_series import (
     ProductionPlanTimeSeries,
     ProductionPlanTimeSeriesApply,
     ProductionPlanTimeSeriesApplyList,
+    ProductionPlanTimeSeriesFields,
     ProductionPlanTimeSeriesList,
+    ProductionPlanTimeSeriesTextFields,
 )
-from ._reason import Reason, ReasonApply, ReasonApplyList, ReasonList
-from ._reserve_bid import ReserveBid, ReserveBidApply, ReserveBidApplyList, ReserveBidList
-from ._reserve_scenario import ReserveScenario, ReserveScenarioApply, ReserveScenarioApplyList, ReserveScenarioList
-from ._reservoir import Reservoir, ReservoirApply, ReservoirApplyList, ReservoirList
-from ._rkom_bid import RKOMBid, RKOMBidApply, RKOMBidApplyList, RKOMBidList
+from ._reason import Reason, ReasonApply, ReasonApplyList, ReasonFields, ReasonList, ReasonTextFields
+from ._reserve_bid import (
+    ReserveBid,
+    ReserveBidApply,
+    ReserveBidApplyList,
+    ReserveBidFields,
+    ReserveBidList,
+    ReserveBidTextFields,
+)
+from ._reserve_bid_time_series import (
+    ReserveBidTimeSeries,
+    ReserveBidTimeSeriesApply,
+    ReserveBidTimeSeriesApplyList,
+    ReserveBidTimeSeriesFields,
+    ReserveBidTimeSeriesList,
+    ReserveBidTimeSeriesTextFields,
+)
+from ._reserve_scenario import (
+    ReserveScenario,
+    ReserveScenarioApply,
+    ReserveScenarioApplyList,
+    ReserveScenarioFields,
+    ReserveScenarioList,
+    ReserveScenarioTextFields,
+)
+from ._reservoir import (
+    Reservoir,
+    ReservoirApply,
+    ReservoirApplyList,
+    ReservoirFields,
+    ReservoirList,
+    ReservoirTextFields,
+)
+from ._rkom_bid import RKOMBid, RKOMBidApply, RKOMBidApplyList, RKOMBidFields, RKOMBidList, RKOMBidTextFields
 from ._rkom_bid_combination import (
     RKOMBidCombination,
     RKOMBidCombinationApply,
     RKOMBidCombinationApplyList,
+    RKOMBidCombinationFields,
     RKOMBidCombinationList,
+    RKOMBidCombinationTextFields,
 )
 from ._rkom_combination_bid import (
     RKOMCombinationBid,
     RKOMCombinationBidApply,
     RKOMCombinationBidApplyList,
+    RKOMCombinationBidFields,
     RKOMCombinationBidList,
+    RKOMCombinationBidTextFields,
 )
-from ._rkom_market import RKOMMarket, RKOMMarketApply, RKOMMarketApplyList, RKOMMarketList
-from ._rkom_process import RKOMProcess, RKOMProcessApply, RKOMProcessApplyList, RKOMProcessList
-from ._scenario import Scenario, ScenarioApply, ScenarioApplyList, ScenarioList
-from ._scenario_mapping import ScenarioMapping, ScenarioMappingApply, ScenarioMappingApplyList, ScenarioMappingList
-from ._scenario_template import ScenarioTemplate, ScenarioTemplateApply, ScenarioTemplateApplyList, ScenarioTemplateList
-from ._series import Series, SeriesApply, SeriesApplyList, SeriesList
+from ._rkom_market import (
+    RKOMMarket,
+    RKOMMarketApply,
+    RKOMMarketApplyList,
+    RKOMMarketFields,
+    RKOMMarketList,
+    RKOMMarketTextFields,
+)
+from ._rkom_process import (
+    RKOMProcess,
+    RKOMProcessApply,
+    RKOMProcessApplyList,
+    RKOMProcessFields,
+    RKOMProcessList,
+    RKOMProcessTextFields,
+)
+from ._scenario import Scenario, ScenarioApply, ScenarioApplyList, ScenarioFields, ScenarioList, ScenarioTextFields
+from ._scenario_mapping import (
+    ScenarioMapping,
+    ScenarioMappingApply,
+    ScenarioMappingApplyList,
+    ScenarioMappingFields,
+    ScenarioMappingList,
+    ScenarioMappingTextFields,
+)
+from ._scenario_template import (
+    ScenarioTemplate,
+    ScenarioTemplateApply,
+    ScenarioTemplateApplyList,
+    ScenarioTemplateFields,
+    ScenarioTemplateList,
+    ScenarioTemplateTextFields,
+)
+from ._series import Series, SeriesApply, SeriesApplyList, SeriesFields, SeriesList
 from ._shop_transformation import (
     ShopTransformation,
     ShopTransformationApply,
     ShopTransformationApplyList,
+    ShopTransformationFields,
     ShopTransformationList,
+    ShopTransformationTextFields,
 )
+from ._time_interval import TimeInterval, TimeIntervalApply, TimeIntervalApplyList, TimeIntervalFields, TimeIntervalList
 from ._value_transformation import (
     ValueTransformation,
     ValueTransformationApply,
     ValueTransformationApplyList,
+    ValueTransformationFields,
     ValueTransformationList,
+    ValueTransformationTextFields,
 )
-from ._watercourse import Watercourse, WatercourseApply, WatercourseApplyList, WatercourseList
-from ._watercourse_shop import WatercourseShop, WatercourseShopApply, WatercourseShopApplyList, WatercourseShopList
+from ._watercourse import (
+    Watercourse,
+    WatercourseApply,
+    WatercourseApplyList,
+    WatercourseFields,
+    WatercourseList,
+    WatercourseTextFields,
+)
+from ._watercourse_shop import (
+    WatercourseShop,
+    WatercourseShopApply,
+    WatercourseShopApplyList,
+    WatercourseShopFields,
+    WatercourseShopList,
+)
 
 BenchmarkBidApply.model_rebuild()
 BenchmarkProcessApply.model_rebuild()
+BidDocumentHeaderApply.model_rebuild()
 BidTimeSeriesApply.model_rebuild()
 DayAheadBidApply.model_rebuild()
 DayAheadProcessApply.model_rebuild()
 InputTimeSeriesMappingApply.model_rebuild()
 OutputContainerApply.model_rebuild()
+PeriodsApply.model_rebuild()
 PlantApply.model_rebuild()
 PriceAreaApply.model_rebuild()
 RKOMBidApply.model_rebuild()
 RKOMBidCombinationApply.model_rebuild()
 RKOMProcessApply.model_rebuild()
 ReserveBidApply.model_rebuild()
+ReserveBidTimeSeriesApply.model_rebuild()
 ScenarioApply.model_rebuild()
 ScenarioMappingApply.model_rebuild()
 ScenarioTemplateApply.model_rebuild()
@@ -109,160 +311,265 @@ ShopTransformationApply.model_rebuild()
 WatercourseApply.model_rebuild()
 
 __all__ = [
+    "DomainModel",
+    "DomainModelApply",
     "BenchmarkBid",
     "BenchmarkBidApply",
     "BenchmarkBidList",
     "BenchmarkBidApplyList",
+    "BenchmarkBidFields",
+    "BenchmarkBidTextFields",
     "BenchmarkProcess",
     "BenchmarkProcessApply",
     "BenchmarkProcessList",
     "BenchmarkProcessApplyList",
+    "BenchmarkProcessFields",
+    "BenchmarkProcessTextFields",
+    "BidCurves",
+    "BidCurvesApply",
+    "BidCurvesList",
+    "BidCurvesApplyList",
+    "BidCurvesFields",
+    "BidCurvesTextFields",
+    "BidDocumentHeader",
+    "BidDocumentHeaderApply",
+    "BidDocumentHeaderList",
+    "BidDocumentHeaderApplyList",
+    "BidDocumentHeaderFields",
+    "BidDocumentHeaderTextFields",
     "BidMatrixGenerator",
     "BidMatrixGeneratorApply",
     "BidMatrixGeneratorList",
     "BidMatrixGeneratorApplyList",
+    "BidMatrixGeneratorFields",
+    "BidMatrixGeneratorTextFields",
     "BidTimeSeries",
     "BidTimeSeriesApply",
     "BidTimeSeriesList",
     "BidTimeSeriesApplyList",
+    "BidTimeSeriesFields",
+    "BidTimeSeriesTextFields",
     "CommandConfig",
     "CommandConfigApply",
     "CommandConfigList",
     "CommandConfigApplyList",
+    "CommandConfigFields",
+    "CommandConfigTextFields",
     "DateTimeInterval",
     "DateTimeIntervalApply",
     "DateTimeIntervalList",
     "DateTimeIntervalApplyList",
+    "DateTimeIntervalFields",
     "DateTransformation",
     "DateTransformationApply",
     "DateTransformationList",
     "DateTransformationApplyList",
+    "DateTransformationFields",
+    "DateTransformationTextFields",
     "DayAheadBid",
     "DayAheadBidApply",
     "DayAheadBidList",
     "DayAheadBidApplyList",
+    "DayAheadBidFields",
+    "DayAheadBidTextFields",
     "DayAheadProcess",
     "DayAheadProcessApply",
     "DayAheadProcessList",
     "DayAheadProcessApplyList",
+    "DayAheadProcessFields",
+    "DayAheadProcessTextFields",
     "Duration",
     "DurationApply",
     "DurationList",
     "DurationApplyList",
+    "DurationFields",
+    "DurationTextFields",
     "Generator",
     "GeneratorApply",
     "GeneratorList",
     "GeneratorApplyList",
+    "GeneratorFields",
+    "GeneratorTextFields",
     "InputTimeSeriesMapping",
     "InputTimeSeriesMappingApply",
     "InputTimeSeriesMappingList",
     "InputTimeSeriesMappingApplyList",
+    "InputTimeSeriesMappingFields",
+    "InputTimeSeriesMappingTextFields",
     "MBADomain",
     "MBADomainApply",
     "MBADomainList",
     "MBADomainApplyList",
+    "MBADomainFields",
+    "MBADomainTextFields",
     "MarketAgreement",
     "MarketAgreementApply",
     "MarketAgreementList",
     "MarketAgreementApplyList",
+    "MarketAgreementFields",
+    "MarketAgreementTextFields",
     "MarketParticipant",
     "MarketParticipantApply",
     "MarketParticipantList",
     "MarketParticipantApplyList",
+    "MarketParticipantFields",
+    "MarketParticipantTextFields",
     "NordPoolMarket",
     "NordPoolMarketApply",
     "NordPoolMarketList",
     "NordPoolMarketApplyList",
+    "NordPoolMarketFields",
+    "NordPoolMarketTextFields",
     "OutputContainer",
     "OutputContainerApply",
     "OutputContainerList",
     "OutputContainerApplyList",
+    "OutputContainerFields",
+    "OutputContainerTextFields",
     "OutputMapping",
     "OutputMappingApply",
     "OutputMappingList",
     "OutputMappingApplyList",
+    "OutputMappingFields",
+    "OutputMappingTextFields",
+    "Periods",
+    "PeriodsApply",
+    "PeriodsList",
+    "PeriodsApplyList",
+    "PeriodsFields",
+    "PeriodsTextFields",
     "Plant",
     "PlantApply",
     "PlantList",
     "PlantApplyList",
+    "PlantFields",
+    "PlantTextFields",
     "Point",
     "PointApply",
     "PointList",
     "PointApplyList",
+    "PointFields",
     "PriceArea",
     "PriceAreaApply",
     "PriceAreaList",
     "PriceAreaApplyList",
+    "PriceAreaFields",
+    "PriceAreaTextFields",
     "ProductionPlanTimeSeries",
     "ProductionPlanTimeSeriesApply",
     "ProductionPlanTimeSeriesList",
     "ProductionPlanTimeSeriesApplyList",
+    "ProductionPlanTimeSeriesFields",
+    "ProductionPlanTimeSeriesTextFields",
     "RKOMBid",
     "RKOMBidApply",
     "RKOMBidList",
     "RKOMBidApplyList",
+    "RKOMBidFields",
+    "RKOMBidTextFields",
     "RKOMBidCombination",
     "RKOMBidCombinationApply",
     "RKOMBidCombinationList",
     "RKOMBidCombinationApplyList",
+    "RKOMBidCombinationFields",
+    "RKOMBidCombinationTextFields",
     "RKOMCombinationBid",
     "RKOMCombinationBidApply",
     "RKOMCombinationBidList",
     "RKOMCombinationBidApplyList",
+    "RKOMCombinationBidFields",
+    "RKOMCombinationBidTextFields",
     "RKOMMarket",
     "RKOMMarketApply",
     "RKOMMarketList",
     "RKOMMarketApplyList",
+    "RKOMMarketFields",
+    "RKOMMarketTextFields",
     "RKOMProcess",
     "RKOMProcessApply",
     "RKOMProcessList",
     "RKOMProcessApplyList",
+    "RKOMProcessFields",
+    "RKOMProcessTextFields",
     "Reason",
     "ReasonApply",
     "ReasonList",
     "ReasonApplyList",
+    "ReasonFields",
+    "ReasonTextFields",
     "ReserveBid",
     "ReserveBidApply",
     "ReserveBidList",
     "ReserveBidApplyList",
+    "ReserveBidFields",
+    "ReserveBidTextFields",
+    "ReserveBidTimeSeries",
+    "ReserveBidTimeSeriesApply",
+    "ReserveBidTimeSeriesList",
+    "ReserveBidTimeSeriesApplyList",
+    "ReserveBidTimeSeriesFields",
+    "ReserveBidTimeSeriesTextFields",
     "ReserveScenario",
     "ReserveScenarioApply",
     "ReserveScenarioList",
     "ReserveScenarioApplyList",
+    "ReserveScenarioFields",
+    "ReserveScenarioTextFields",
     "Reservoir",
     "ReservoirApply",
     "ReservoirList",
     "ReservoirApplyList",
+    "ReservoirFields",
+    "ReservoirTextFields",
     "Scenario",
     "ScenarioApply",
     "ScenarioList",
     "ScenarioApplyList",
+    "ScenarioFields",
+    "ScenarioTextFields",
     "ScenarioMapping",
     "ScenarioMappingApply",
     "ScenarioMappingList",
     "ScenarioMappingApplyList",
+    "ScenarioMappingFields",
+    "ScenarioMappingTextFields",
     "ScenarioTemplate",
     "ScenarioTemplateApply",
     "ScenarioTemplateList",
     "ScenarioTemplateApplyList",
+    "ScenarioTemplateFields",
+    "ScenarioTemplateTextFields",
     "Series",
     "SeriesApply",
     "SeriesList",
     "SeriesApplyList",
+    "SeriesFields",
     "ShopTransformation",
     "ShopTransformationApply",
     "ShopTransformationList",
     "ShopTransformationApplyList",
+    "ShopTransformationFields",
+    "ShopTransformationTextFields",
+    "TimeInterval",
+    "TimeIntervalApply",
+    "TimeIntervalList",
+    "TimeIntervalApplyList",
+    "TimeIntervalFields",
     "ValueTransformation",
     "ValueTransformationApply",
     "ValueTransformationList",
     "ValueTransformationApplyList",
+    "ValueTransformationFields",
+    "ValueTransformationTextFields",
     "Watercourse",
     "WatercourseApply",
     "WatercourseList",
     "WatercourseApplyList",
+    "WatercourseFields",
+    "WatercourseTextFields",
     "WatercourseShop",
     "WatercourseShopApply",
     "WatercourseShopList",
     "WatercourseShopApplyList",
+    "WatercourseShopFields",
 ]

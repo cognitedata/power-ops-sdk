@@ -1,17 +1,34 @@
 from __future__ import annotations
 
-from typing import ClassVar, Optional
+from typing import Literal, Optional
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
 from ._core import DomainModel, DomainModelApply, TypeApplyList, TypeList
 
-__all__ = ["RKOMCombinationBid", "RKOMCombinationBidApply", "RKOMCombinationBidList", "RKOMCombinationBidApplyList"]
+__all__ = [
+    "RKOMCombinationBid",
+    "RKOMCombinationBidApply",
+    "RKOMCombinationBidList",
+    "RKOMCombinationBidApplyList",
+    "RKOMCombinationBidFields",
+    "RKOMCombinationBidTextFields",
+]
+
+
+RKOMCombinationBidTextFields = Literal["name", "auction", "rkom_bid_configs"]
+RKOMCombinationBidFields = Literal["name", "auction", "rkom_bid_configs"]
+
+_RKOMCOMBINATIONBID_PROPERTIES_BY_FIELD = {
+    "name": "name",
+    "auction": "auction",
+    "rkom_bid_configs": "rkomBidConfigs",
+}
 
 
 class RKOMCombinationBid(DomainModel):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     name: Optional[str] = None
     auction: Optional[str] = None
     rkom_bid_configs: Optional[list[str]] = Field(None, alias="rkomBidConfigs")
@@ -26,10 +43,10 @@ class RKOMCombinationBid(DomainModel):
 
 
 class RKOMCombinationBidApply(DomainModelApply):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     name: Optional[str] = None
     auction: Optional[str] = None
-    rkom_bid_configs: Optional[list[str]] = None
+    rkom_bid_configs: Optional[list[str]] = Field(None, alias="rkomBidConfigs")
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:

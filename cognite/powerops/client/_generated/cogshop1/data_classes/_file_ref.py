@@ -1,17 +1,26 @@
 from __future__ import annotations
 
-from typing import ClassVar, Optional
+from typing import Literal, Optional
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
 from ._core import DomainModel, DomainModelApply, TypeApplyList, TypeList
 
-__all__ = ["FileRef", "FileRefApply", "FileRefList", "FileRefApplyList"]
+__all__ = ["FileRef", "FileRefApply", "FileRefList", "FileRefApplyList", "FileRefFields", "FileRefTextFields"]
+
+
+FileRefTextFields = Literal["type", "file_external_id"]
+FileRefFields = Literal["type", "file_external_id"]
+
+_FILEREF_PROPERTIES_BY_FIELD = {
+    "type": "type",
+    "file_external_id": "fileExternalId",
+}
 
 
 class FileRef(DomainModel):
-    space: ClassVar[str] = "cogShop"
+    space: str = "cogShop"
     type: Optional[str] = None
     file_external_id: Optional[str] = Field(None, alias="fileExternalId")
 
@@ -24,9 +33,9 @@ class FileRef(DomainModel):
 
 
 class FileRefApply(DomainModelApply):
-    space: ClassVar[str] = "cogShop"
+    space: str = "cogShop"
     type: str
-    file_external_id: str
+    file_external_id: str = Field(alias="fileExternalId")
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, ClassVar, Optional, Union
+from typing import TYPE_CHECKING, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -15,11 +15,30 @@ __all__ = [
     "InputTimeSeriesMappingApply",
     "InputTimeSeriesMappingList",
     "InputTimeSeriesMappingApplyList",
+    "InputTimeSeriesMappingFields",
+    "InputTimeSeriesMappingTextFields",
 ]
 
 
+InputTimeSeriesMappingTextFields = Literal[
+    "shop_object_type", "shop_object_name", "shop_attribute_name", "cdf_time_series", "retrieve", "aggregation"
+]
+InputTimeSeriesMappingFields = Literal[
+    "shop_object_type", "shop_object_name", "shop_attribute_name", "cdf_time_series", "retrieve", "aggregation"
+]
+
+_INPUTTIMESERIESMAPPING_PROPERTIES_BY_FIELD = {
+    "shop_object_type": "shopObjectType",
+    "shop_object_name": "shopObjectName",
+    "shop_attribute_name": "shopAttributeName",
+    "cdf_time_series": "cdfTimeSeries",
+    "retrieve": "retrieve",
+    "aggregation": "aggregation",
+}
+
+
 class InputTimeSeriesMapping(DomainModel):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     shop_object_type: Optional[str] = Field(None, alias="shopObjectType")
     shop_object_name: Optional[str] = Field(None, alias="shopObjectName")
     shop_attribute_name: Optional[str] = Field(None, alias="shopAttributeName")
@@ -42,11 +61,11 @@ class InputTimeSeriesMapping(DomainModel):
 
 
 class InputTimeSeriesMappingApply(DomainModelApply):
-    space: ClassVar[str] = "power-ops"
-    shop_object_type: Optional[str] = None
-    shop_object_name: Optional[str] = None
-    shop_attribute_name: Optional[str] = None
-    cdf_time_series: Optional[str] = None
+    space: str = "power-ops"
+    shop_object_type: Optional[str] = Field(None, alias="shopObjectType")
+    shop_object_name: Optional[str] = Field(None, alias="shopObjectName")
+    shop_attribute_name: Optional[str] = Field(None, alias="shopAttributeName")
+    cdf_time_series: Optional[str] = Field(None, alias="cdfTimeSeries")
     retrieve: Optional[str] = None
     aggregation: Optional[str] = None
     transformations: Union[list[ValueTransformationApply], list[str], None] = Field(default=None, repr=False)

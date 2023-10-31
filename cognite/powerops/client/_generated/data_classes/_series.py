@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import datetime
-from typing import TYPE_CHECKING, ClassVar, Optional, Union
+from typing import TYPE_CHECKING, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -12,11 +12,17 @@ if TYPE_CHECKING:
     from ._duration import DurationApply
     from ._point import PointApply
 
-__all__ = ["Series", "SeriesApply", "SeriesList", "SeriesApplyList"]
+__all__ = ["Series", "SeriesApply", "SeriesList", "SeriesApplyList", "SeriesFields"]
+SeriesFields = Literal["time_interval_start", "time_interval_end"]
+
+_SERIES_PROPERTIES_BY_FIELD = {
+    "time_interval_start": "timeIntervalStart",
+    "time_interval_end": "timeIntervalEnd",
+}
 
 
 class Series(DomainModel):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     time_interval_start: Optional[datetime.datetime] = Field(None, alias="timeIntervalStart")
     time_interval_end: Optional[datetime.datetime] = Field(None, alias="timeIntervalEnd")
     resolution: Optional[str] = None
@@ -33,9 +39,9 @@ class Series(DomainModel):
 
 
 class SeriesApply(DomainModelApply):
-    space: ClassVar[str] = "power-ops"
-    time_interval_start: Optional[datetime.datetime] = None
-    time_interval_end: Optional[datetime.datetime] = None
+    space: str = "power-ops"
+    time_interval_start: Optional[datetime.datetime] = Field(None, alias="timeIntervalStart")
+    time_interval_end: Optional[datetime.datetime] = Field(None, alias="timeIntervalEnd")
     resolution: Union[DurationApply, str, None] = Field(None, repr=False)
     points: Union[list[PointApply], list[str], None] = Field(default=None, repr=False)
 
@@ -46,9 +52,9 @@ class SeriesApply(DomainModelApply):
         sources = []
         properties = {}
         if self.time_interval_start is not None:
-            properties["timeIntervalStart"] = self.time_interval_start.isoformat()
+            properties["timeIntervalStart"] = self.time_interval_start.isoformat(timespec="milliseconds")
         if self.time_interval_end is not None:
-            properties["timeIntervalEnd"] = self.time_interval_end.isoformat()
+            properties["timeIntervalEnd"] = self.time_interval_end.isoformat(timespec="milliseconds")
         if self.resolution is not None:
             properties["resolution"] = {
                 "space": "power-ops",

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, ClassVar, Optional, Union
+from typing import TYPE_CHECKING, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -10,11 +10,28 @@ from ._core import DomainModel, DomainModelApply, TypeApplyList, TypeList
 if TYPE_CHECKING:
     from ._output_mapping import OutputMappingApply
 
-__all__ = ["OutputContainer", "OutputContainerApply", "OutputContainerList", "OutputContainerApplyList"]
+__all__ = [
+    "OutputContainer",
+    "OutputContainerApply",
+    "OutputContainerList",
+    "OutputContainerApplyList",
+    "OutputContainerFields",
+    "OutputContainerTextFields",
+]
+
+
+OutputContainerTextFields = Literal["name", "watercourse", "shop_type"]
+OutputContainerFields = Literal["name", "watercourse", "shop_type"]
+
+_OUTPUTCONTAINER_PROPERTIES_BY_FIELD = {
+    "name": "name",
+    "watercourse": "watercourse",
+    "shop_type": "shopType",
+}
 
 
 class OutputContainer(DomainModel):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     name: Optional[str] = None
     watercourse: Optional[str] = None
     shop_type: Optional[str] = Field(None, alias="shopType")
@@ -31,10 +48,10 @@ class OutputContainer(DomainModel):
 
 
 class OutputContainerApply(DomainModelApply):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     name: Optional[str] = None
     watercourse: Optional[str] = None
-    shop_type: Optional[str] = None
+    shop_type: Optional[str] = Field(None, alias="shopType")
     mappings: Union[list[OutputMappingApply], list[str], None] = Field(default=None, repr=False)
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:

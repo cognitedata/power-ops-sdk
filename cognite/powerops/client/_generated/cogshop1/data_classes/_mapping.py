@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, ClassVar, Optional, Union
+from typing import TYPE_CHECKING, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -10,11 +10,22 @@ from ._core import DomainModel, DomainModelApply, TypeApplyList, TypeList
 if TYPE_CHECKING:
     from ._transformation import TransformationApply
 
-__all__ = ["Mapping", "MappingApply", "MappingList", "MappingApplyList"]
+__all__ = ["Mapping", "MappingApply", "MappingList", "MappingApplyList", "MappingFields", "MappingTextFields"]
+
+
+MappingTextFields = Literal["path", "timeseries_external_id", "retrieve", "aggregation"]
+MappingFields = Literal["path", "timeseries_external_id", "retrieve", "aggregation"]
+
+_MAPPING_PROPERTIES_BY_FIELD = {
+    "path": "path",
+    "timeseries_external_id": "timeseriesExternalId",
+    "retrieve": "retrieve",
+    "aggregation": "aggregation",
+}
 
 
 class Mapping(DomainModel):
-    space: ClassVar[str] = "cogShop"
+    space: str = "cogShop"
     path: Optional[str] = None
     timeseries_external_id: Optional[str] = Field(None, alias="timeseriesExternalId")
     retrieve: Optional[str] = None
@@ -33,9 +44,9 @@ class Mapping(DomainModel):
 
 
 class MappingApply(DomainModelApply):
-    space: ClassVar[str] = "cogShop"
+    space: str = "cogShop"
     path: str
-    timeseries_external_id: Optional[str] = None
+    timeseries_external_id: Optional[str] = Field(None, alias="timeseriesExternalId")
     retrieve: Optional[str] = None
     aggregation: Optional[str] = None
     transformations: Union[list[TransformationApply], list[str], None] = Field(default=None, repr=False)

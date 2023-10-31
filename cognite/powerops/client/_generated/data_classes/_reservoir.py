@@ -1,17 +1,34 @@
 from __future__ import annotations
 
-from typing import ClassVar, Optional
+from typing import Literal, Optional
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
 from ._core import DomainModel, DomainModelApply, TypeApplyList, TypeList
 
-__all__ = ["Reservoir", "ReservoirApply", "ReservoirList", "ReservoirApplyList"]
+__all__ = [
+    "Reservoir",
+    "ReservoirApply",
+    "ReservoirList",
+    "ReservoirApplyList",
+    "ReservoirFields",
+    "ReservoirTextFields",
+]
+
+
+ReservoirTextFields = Literal["name", "display_name"]
+ReservoirFields = Literal["name", "display_name", "ordering"]
+
+_RESERVOIR_PROPERTIES_BY_FIELD = {
+    "name": "name",
+    "display_name": "displayName",
+    "ordering": "ordering",
+}
 
 
 class Reservoir(DomainModel):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     name: Optional[str] = None
     display_name: Optional[str] = Field(None, alias="displayName")
     ordering: Optional[int] = None
@@ -26,9 +43,9 @@ class Reservoir(DomainModel):
 
 
 class ReservoirApply(DomainModelApply):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     name: Optional[str] = None
-    display_name: Optional[str] = None
+    display_name: Optional[str] = Field(None, alias="displayName")
     ordering: Optional[int] = None
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:

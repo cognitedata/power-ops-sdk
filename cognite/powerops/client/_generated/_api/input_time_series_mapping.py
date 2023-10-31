@@ -10,16 +10,22 @@ import pandas as pd
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes import Datapoints, DatapointsArrayList, DatapointsList, TimeSeriesList
+from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
 from cognite.client.data_classes.datapoints import Aggregate
 
 from cognite.powerops.client._generated.data_classes import (
     InputTimeSeriesMapping,
     InputTimeSeriesMappingApply,
     InputTimeSeriesMappingApplyList,
+    InputTimeSeriesMappingFields,
     InputTimeSeriesMappingList,
+    InputTimeSeriesMappingTextFields,
+)
+from cognite.powerops.client._generated.data_classes._input_time_series_mapping import (
+    _INPUTTIMESERIESMAPPING_PROPERTIES_BY_FIELD,
 )
 
-from ._core import DEFAULT_LIMIT_READ, INSTANCE_QUERY_LIMIT, TypeAPI
+from ._core import DEFAULT_LIMIT_READ, IN_FILTER_LIMIT, INSTANCE_QUERY_LIMIT, Aggregations, TypeAPI
 
 ColumnNames = Literal[
     "shopObjectType", "shopObjectName", "shopAttributeName", "cdfTimeSeries", "retrieve", "aggregation"
@@ -390,16 +396,16 @@ class InputTimeSeriesMappingTransformationsAPI:
     def __init__(self, client: CogniteClient):
         self._client = client
 
-    def retrieve(self, external_id: str | Sequence[str]) -> dm.EdgeList:
+    def retrieve(self, external_id: str | Sequence[str], space="power-ops") -> dm.EdgeList:
         f = dm.filters
         is_edge_type = f.Equals(
             ["edge", "type"],
-            {"space": "power-ops", "externalId": "InputTimeSeriesMapping.transformations"},
+            {"space": space, "externalId": "InputTimeSeriesMapping.transformations"},
         )
         if isinstance(external_id, str):
             is_input_time_series_mapping = f.Equals(
                 ["edge", "startNode"],
-                {"space": "power-ops", "externalId": external_id},
+                {"space": space, "externalId": external_id},
             )
             return self._client.data_modeling.instances.list(
                 "edge", limit=-1, filter=f.And(is_edge_type, is_input_time_series_mapping)
@@ -408,20 +414,20 @@ class InputTimeSeriesMappingTransformationsAPI:
         else:
             is_input_time_series_mappings = f.In(
                 ["edge", "startNode"],
-                [{"space": "power-ops", "externalId": ext_id} for ext_id in external_id],
+                [{"space": space, "externalId": ext_id} for ext_id in external_id],
             )
             return self._client.data_modeling.instances.list(
                 "edge", limit=-1, filter=f.And(is_edge_type, is_input_time_series_mappings)
             )
 
     def list(
-        self, input_time_series_mapping_id: str | list[str] | None = None, limit=DEFAULT_LIMIT_READ
+        self, input_time_series_mapping_id: str | list[str] | None = None, limit=DEFAULT_LIMIT_READ, space="power-ops"
     ) -> dm.EdgeList:
         f = dm.filters
         filters = []
         is_edge_type = f.Equals(
             ["edge", "type"],
-            {"space": "power-ops", "externalId": "InputTimeSeriesMapping.transformations"},
+            {"space": space, "externalId": "InputTimeSeriesMapping.transformations"},
         )
         filters.append(is_edge_type)
         if input_time_series_mapping_id:
@@ -432,7 +438,7 @@ class InputTimeSeriesMappingTransformationsAPI:
             )
             is_input_time_series_mappings = f.In(
                 ["edge", "startNode"],
-                [{"space": "power-ops", "externalId": ext_id} for ext_id in input_time_series_mapping_ids],
+                [{"space": space, "externalId": ext_id} for ext_id in input_time_series_mapping_ids],
             )
             filters.append(is_input_time_series_mappings)
 
@@ -450,7 +456,7 @@ class InputTimeSeriesMappingAPI(
             class_apply_type=InputTimeSeriesMappingApply,
             class_list=InputTimeSeriesMappingList,
         )
-        self.view_id = view_id
+        self._view_id = view_id
         self.transformations = InputTimeSeriesMappingTransformationsAPI(client)
         self.cdf_time_series = InputTimeSeriesMappingCdfTimeSeriesAPI(client, view_id)
 
@@ -463,14 +469,20 @@ class InputTimeSeriesMappingAPI(
             instances = input_time_series_mapping.to_instances_apply()
         else:
             instances = InputTimeSeriesMappingApplyList(input_time_series_mapping).to_instances_apply()
-        return self._client.data_modeling.instances.apply(nodes=instances.nodes, edges=instances.edges, replace=replace)
+        return self._client.data_modeling.instances.apply(
+            nodes=instances.nodes,
+            edges=instances.edges,
+            auto_create_start_nodes=True,
+            auto_create_end_nodes=True,
+            replace=replace,
+        )
 
-    def delete(self, external_id: str | Sequence[str]) -> dm.InstancesDeleteResult:
+    def delete(self, external_id: str | Sequence[str], space="power-ops") -> dm.InstancesDeleteResult:
         if isinstance(external_id, str):
-            return self._client.data_modeling.instances.delete(nodes=(InputTimeSeriesMappingApply.space, external_id))
+            return self._client.data_modeling.instances.delete(nodes=(space, external_id))
         else:
             return self._client.data_modeling.instances.delete(
-                nodes=[(InputTimeSeriesMappingApply.space, id) for id in external_id],
+                nodes=[(space, id) for id in external_id],
             )
 
     @overload
@@ -483,19 +495,207 @@ class InputTimeSeriesMappingAPI(
 
     def retrieve(self, external_id: str | Sequence[str]) -> InputTimeSeriesMapping | InputTimeSeriesMappingList:
         if isinstance(external_id, str):
-            input_time_series_mapping = self._retrieve((self.sources.space, external_id))
+            input_time_series_mapping = self._retrieve((self._sources.space, external_id))
 
             transformation_edges = self.transformations.retrieve(external_id)
             input_time_series_mapping.transformations = [edge.end_node.external_id for edge in transformation_edges]
 
             return input_time_series_mapping
         else:
-            input_time_series_mappings = self._retrieve([(self.sources.space, ext_id) for ext_id in external_id])
+            input_time_series_mappings = self._retrieve([(self._sources.space, ext_id) for ext_id in external_id])
 
             transformation_edges = self.transformations.retrieve(external_id)
             self._set_transformations(input_time_series_mappings, transformation_edges)
 
             return input_time_series_mappings
+
+    def search(
+        self,
+        query: str,
+        properties: InputTimeSeriesMappingTextFields | Sequence[InputTimeSeriesMappingTextFields] | None = None,
+        shop_object_type: str | list[str] | None = None,
+        shop_object_type_prefix: str | None = None,
+        shop_object_name: str | list[str] | None = None,
+        shop_object_name_prefix: str | None = None,
+        shop_attribute_name: str | list[str] | None = None,
+        shop_attribute_name_prefix: str | None = None,
+        retrieve: str | list[str] | None = None,
+        retrieve_prefix: str | None = None,
+        aggregation: str | list[str] | None = None,
+        aggregation_prefix: str | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> InputTimeSeriesMappingList:
+        filter_ = _create_filter(
+            self._view_id,
+            shop_object_type,
+            shop_object_type_prefix,
+            shop_object_name,
+            shop_object_name_prefix,
+            shop_attribute_name,
+            shop_attribute_name_prefix,
+            retrieve,
+            retrieve_prefix,
+            aggregation,
+            aggregation_prefix,
+            external_id_prefix,
+            filter,
+        )
+        return self._search(
+            self._view_id, query, _INPUTTIMESERIESMAPPING_PROPERTIES_BY_FIELD, properties, filter_, limit
+        )
+
+    @overload
+    def aggregate(
+        self,
+        aggregations: Aggregations
+        | dm.aggregations.MetricAggregation
+        | Sequence[Aggregations]
+        | Sequence[dm.aggregations.MetricAggregation],
+        property: InputTimeSeriesMappingFields | Sequence[InputTimeSeriesMappingFields] | None = None,
+        group_by: None = None,
+        query: str | None = None,
+        search_properties: InputTimeSeriesMappingTextFields | Sequence[InputTimeSeriesMappingTextFields] | None = None,
+        shop_object_type: str | list[str] | None = None,
+        shop_object_type_prefix: str | None = None,
+        shop_object_name: str | list[str] | None = None,
+        shop_object_name_prefix: str | None = None,
+        shop_attribute_name: str | list[str] | None = None,
+        shop_attribute_name_prefix: str | None = None,
+        retrieve: str | list[str] | None = None,
+        retrieve_prefix: str | None = None,
+        aggregation: str | list[str] | None = None,
+        aggregation_prefix: str | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> list[dm.aggregations.AggregatedNumberedValue]:
+        ...
+
+    @overload
+    def aggregate(
+        self,
+        aggregations: Aggregations
+        | dm.aggregations.MetricAggregation
+        | Sequence[Aggregations]
+        | Sequence[dm.aggregations.MetricAggregation],
+        property: InputTimeSeriesMappingFields | Sequence[InputTimeSeriesMappingFields] | None = None,
+        group_by: InputTimeSeriesMappingFields | Sequence[InputTimeSeriesMappingFields] = None,
+        query: str | None = None,
+        search_properties: InputTimeSeriesMappingTextFields | Sequence[InputTimeSeriesMappingTextFields] | None = None,
+        shop_object_type: str | list[str] | None = None,
+        shop_object_type_prefix: str | None = None,
+        shop_object_name: str | list[str] | None = None,
+        shop_object_name_prefix: str | None = None,
+        shop_attribute_name: str | list[str] | None = None,
+        shop_attribute_name_prefix: str | None = None,
+        retrieve: str | list[str] | None = None,
+        retrieve_prefix: str | None = None,
+        aggregation: str | list[str] | None = None,
+        aggregation_prefix: str | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> InstanceAggregationResultList:
+        ...
+
+    def aggregate(
+        self,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | Sequence[Aggregations]
+        | Sequence[dm.aggregations.MetricAggregation],
+        property: InputTimeSeriesMappingFields | Sequence[InputTimeSeriesMappingFields] | None = None,
+        group_by: InputTimeSeriesMappingFields | Sequence[InputTimeSeriesMappingFields] | None = None,
+        query: str | None = None,
+        search_property: InputTimeSeriesMappingTextFields | Sequence[InputTimeSeriesMappingTextFields] | None = None,
+        shop_object_type: str | list[str] | None = None,
+        shop_object_type_prefix: str | None = None,
+        shop_object_name: str | list[str] | None = None,
+        shop_object_name_prefix: str | None = None,
+        shop_attribute_name: str | list[str] | None = None,
+        shop_attribute_name_prefix: str | None = None,
+        retrieve: str | list[str] | None = None,
+        retrieve_prefix: str | None = None,
+        aggregation: str | list[str] | None = None,
+        aggregation_prefix: str | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
+        filter_ = _create_filter(
+            self._view_id,
+            shop_object_type,
+            shop_object_type_prefix,
+            shop_object_name,
+            shop_object_name_prefix,
+            shop_attribute_name,
+            shop_attribute_name_prefix,
+            retrieve,
+            retrieve_prefix,
+            aggregation,
+            aggregation_prefix,
+            external_id_prefix,
+            filter,
+        )
+        return self._aggregate(
+            self._view_id,
+            aggregate,
+            _INPUTTIMESERIESMAPPING_PROPERTIES_BY_FIELD,
+            property,
+            group_by,
+            query,
+            search_property,
+            limit,
+            filter_,
+        )
+
+    def histogram(
+        self,
+        property: InputTimeSeriesMappingFields,
+        interval: float,
+        query: str | None = None,
+        search_property: InputTimeSeriesMappingTextFields | Sequence[InputTimeSeriesMappingTextFields] | None = None,
+        shop_object_type: str | list[str] | None = None,
+        shop_object_type_prefix: str | None = None,
+        shop_object_name: str | list[str] | None = None,
+        shop_object_name_prefix: str | None = None,
+        shop_attribute_name: str | list[str] | None = None,
+        shop_attribute_name_prefix: str | None = None,
+        retrieve: str | list[str] | None = None,
+        retrieve_prefix: str | None = None,
+        aggregation: str | list[str] | None = None,
+        aggregation_prefix: str | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> dm.aggregations.HistogramValue:
+        filter_ = _create_filter(
+            self._view_id,
+            shop_object_type,
+            shop_object_type_prefix,
+            shop_object_name,
+            shop_object_name_prefix,
+            shop_attribute_name,
+            shop_attribute_name_prefix,
+            retrieve,
+            retrieve_prefix,
+            aggregation,
+            aggregation_prefix,
+            external_id_prefix,
+            filter,
+        )
+        return self._histogram(
+            self._view_id,
+            property,
+            interval,
+            _INPUTTIMESERIESMAPPING_PROPERTIES_BY_FIELD,
+            query,
+            search_property,
+            limit,
+            filter_,
+        )
 
     def list(
         self,
@@ -515,7 +715,7 @@ class InputTimeSeriesMappingAPI(
         retrieve_edges: bool = True,
     ) -> InputTimeSeriesMappingList:
         filter_ = _create_filter(
-            self.view_id,
+            self._view_id,
             shop_object_type,
             shop_object_type_prefix,
             shop_object_name,
@@ -533,7 +733,10 @@ class InputTimeSeriesMappingAPI(
         input_time_series_mappings = self._list(limit=limit, filter=filter_)
 
         if retrieve_edges:
-            transformation_edges = self.transformations.list(input_time_series_mappings.as_external_ids(), limit=-1)
+            if len(external_ids := input_time_series_mappings.as_external_ids()) > IN_FILTER_LIMIT:
+                transformation_edges = self.transformations.list(limit=-1)
+            else:
+                transformation_edges = self.transformations.list(external_ids, limit=-1)
             self._set_transformations(input_time_series_mappings, transformation_edges)
 
         return input_time_series_mappings

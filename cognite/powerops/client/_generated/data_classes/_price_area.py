@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, ClassVar, Optional, Union
+from typing import TYPE_CHECKING, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -11,14 +11,31 @@ if TYPE_CHECKING:
     from ._plant import PlantApply
     from ._watercourse import WatercourseApply
 
-__all__ = ["PriceArea", "PriceAreaApply", "PriceAreaList", "PriceAreaApplyList"]
+__all__ = [
+    "PriceArea",
+    "PriceAreaApply",
+    "PriceAreaList",
+    "PriceAreaApplyList",
+    "PriceAreaFields",
+    "PriceAreaTextFields",
+]
+
+
+PriceAreaTextFields = Literal["name", "description", "dayahead_price_time_series"]
+PriceAreaFields = Literal["name", "description", "dayahead_price_time_series"]
+
+_PRICEAREA_PROPERTIES_BY_FIELD = {
+    "name": "name",
+    "description": "description",
+    "dayahead_price_time_series": "dayaheadPriceTimeSeries",
+}
 
 
 class PriceArea(DomainModel):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     name: Optional[str] = None
     description: Optional[str] = None
-    day_ahead_price: Optional[str] = Field(None, alias="dayAheadPrice")
+    dayahead_price_time_series: Optional[str] = Field(None, alias="dayaheadPriceTimeSeries")
     plants: Optional[list[str]] = None
     watercourses: Optional[list[str]] = None
 
@@ -27,17 +44,17 @@ class PriceArea(DomainModel):
             external_id=self.external_id,
             name=self.name,
             description=self.description,
-            day_ahead_price=self.day_ahead_price,
+            dayahead_price_time_series=self.dayahead_price_time_series,
             plants=self.plants,
             watercourses=self.watercourses,
         )
 
 
 class PriceAreaApply(DomainModelApply):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     name: Optional[str] = None
     description: Optional[str] = None
-    day_ahead_price: Optional[str] = None
+    dayahead_price_time_series: Optional[str] = Field(None, alias="dayaheadPriceTimeSeries")
     plants: Union[list[PlantApply], list[str], None] = Field(default=None, repr=False)
     watercourses: Union[list[WatercourseApply], list[str], None] = Field(default=None, repr=False)
 
@@ -51,8 +68,8 @@ class PriceAreaApply(DomainModelApply):
             properties["name"] = self.name
         if self.description is not None:
             properties["description"] = self.description
-        if self.day_ahead_price is not None:
-            properties["dayAheadPrice"] = self.day_ahead_price
+        if self.dayahead_price_time_series is not None:
+            properties["dayaheadPriceTimeSeries"] = self.dayahead_price_time_series
         if properties:
             source = dm.NodeOrEdgeData(
                 source=dm.ContainerId("power-ops", "PriceArea"),
