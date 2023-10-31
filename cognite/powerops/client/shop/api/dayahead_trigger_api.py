@@ -3,19 +3,19 @@ import datetime
 from cognite.client import CogniteClient
 from cognite.client.data_classes import Event, Relationship
 
-from cognite.powerops.client.shop.data_classes.dayaheadworkflow import DayaheadWorkflow
+from cognite.powerops.client.shop.data_classes.dayahead_trigger import DayaheadTrigger
 from cognite.powerops.client.shop.shop_run import SHOPRun
 from cognite.powerops.client.shop.shop_run_api import SHOPRunAPI, _unique_short_str
 
 
-class WorkflowAPI:
+class DayaheadTriggerAPI:
     def __init__(self, client: CogniteClient, data_set: int, cogshop_version: str):
         self._client = client
         self._data_set_api = data_set
         self._cogshop_version = cogshop_version
         self.shop_run = SHOPRunAPI(client, data_set, cogshop_version)
 
-    def create_trigger_event(self, workflow: DayaheadWorkflow, shop_runs: list[SHOPRun]):
+    def create_trigger_event(self, workflow: DayaheadTrigger, shop_runs: list[SHOPRun]):
         """
         Create a workflow trigger event and link the shop runs to this event.
         (needs method, price scenarios and plant for calculating total bid matrix per plant later on)
@@ -56,7 +56,7 @@ class WorkflowAPI:
         self._client.relationships.create(related_events)
         return workflow_event
 
-    def trigger_workflow(self, workflow: DayaheadWorkflow) -> dict:
+    def trigger_workflow(self, workflow: DayaheadTrigger) -> dict:
         """
         Creates shop runs for all prerun files referenced in each case.
         Creates a workflow trigger event to link all shop runs to.

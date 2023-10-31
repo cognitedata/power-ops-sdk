@@ -41,15 +41,16 @@ class Case(BaseModel):
     pre_runs: list[ShopRun]
 
 
-class DayaheadWorkflow(BaseModel):
+class DayaheadTrigger(BaseModel):
     price_scenarios: list[str] = []
     main_scenario: str = ""
     price_area: str
     method: Literal["multi_scenario", "price_independent"]
     cases: list[Case]
 
-    @field_validator("price_scenarios")  # validate that pricescenarios are available for a given method and price area
-    def price_scenario_available_for_method(self, value):
+    @field_validator("price_scenarios")
+    @classmethod
+    def price_scenario_available_for_method(cls, value):
         ...
 
     @property

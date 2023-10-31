@@ -18,7 +18,7 @@ from cognite.client.exceptions import CogniteAPIError
 
 from cognite.powerops.client.shop.shop_run_filter import SHOPRunFilter
 
-from .data_classes.dayaheadworkflow import Case
+from .data_classes.dayahead_trigger import Case
 from .shop_run import SHOPRun, ShopRunEvent, SHOPRunList
 
 DEFAULT_READ_LIMIT = 25
