@@ -5,15 +5,19 @@ from typing import overload
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
+from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
 
 from cognite.powerops.client._generated.data_classes import (
     OutputMapping,
     OutputMappingApply,
     OutputMappingApplyList,
+    OutputMappingFields,
     OutputMappingList,
+    OutputMappingTextFields,
 )
+from cognite.powerops.client._generated.data_classes._output_mapping import _OUTPUTMAPPING_PROPERTIES_BY_FIELD
 
-from ._core import DEFAULT_LIMIT_READ, TypeAPI
+from ._core import DEFAULT_LIMIT_READ, Aggregations, TypeAPI
 
 
 class OutputMappingAPI(TypeAPI[OutputMapping, OutputMappingApply, OutputMappingList]):
@@ -25,7 +29,7 @@ class OutputMappingAPI(TypeAPI[OutputMapping, OutputMappingApply, OutputMappingL
             class_apply_type=OutputMappingApply,
             class_list=OutputMappingList,
         )
-        self.view_id = view_id
+        self._view_id = view_id
 
     def apply(
         self, output_mapping: OutputMappingApply | Sequence[OutputMappingApply], replace: bool = False
@@ -34,14 +38,20 @@ class OutputMappingAPI(TypeAPI[OutputMapping, OutputMappingApply, OutputMappingL
             instances = output_mapping.to_instances_apply()
         else:
             instances = OutputMappingApplyList(output_mapping).to_instances_apply()
-        return self._client.data_modeling.instances.apply(nodes=instances.nodes, edges=instances.edges, replace=replace)
+        return self._client.data_modeling.instances.apply(
+            nodes=instances.nodes,
+            edges=instances.edges,
+            auto_create_start_nodes=True,
+            auto_create_end_nodes=True,
+            replace=replace,
+        )
 
-    def delete(self, external_id: str | Sequence[str]) -> dm.InstancesDeleteResult:
+    def delete(self, external_id: str | Sequence[str], space="power-ops") -> dm.InstancesDeleteResult:
         if isinstance(external_id, str):
-            return self._client.data_modeling.instances.delete(nodes=(OutputMappingApply.space, external_id))
+            return self._client.data_modeling.instances.delete(nodes=(space, external_id))
         else:
             return self._client.data_modeling.instances.delete(
-                nodes=[(OutputMappingApply.space, id) for id in external_id],
+                nodes=[(space, id) for id in external_id],
             )
 
     @overload
@@ -54,9 +64,187 @@ class OutputMappingAPI(TypeAPI[OutputMapping, OutputMappingApply, OutputMappingL
 
     def retrieve(self, external_id: str | Sequence[str]) -> OutputMapping | OutputMappingList:
         if isinstance(external_id, str):
-            return self._retrieve((self.sources.space, external_id))
+            return self._retrieve((self._sources.space, external_id))
         else:
-            return self._retrieve([(self.sources.space, ext_id) for ext_id in external_id])
+            return self._retrieve([(self._sources.space, ext_id) for ext_id in external_id])
+
+    def search(
+        self,
+        query: str,
+        properties: OutputMappingTextFields | Sequence[OutputMappingTextFields] | None = None,
+        shop_object_type: str | list[str] | None = None,
+        shop_object_type_prefix: str | None = None,
+        shop_attribute_name: str | list[str] | None = None,
+        shop_attribute_name_prefix: str | None = None,
+        cdf_attribute_name: str | list[str] | None = None,
+        cdf_attribute_name_prefix: str | None = None,
+        unit: str | list[str] | None = None,
+        unit_prefix: str | None = None,
+        is_step: bool | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> OutputMappingList:
+        filter_ = _create_filter(
+            self._view_id,
+            shop_object_type,
+            shop_object_type_prefix,
+            shop_attribute_name,
+            shop_attribute_name_prefix,
+            cdf_attribute_name,
+            cdf_attribute_name_prefix,
+            unit,
+            unit_prefix,
+            is_step,
+            external_id_prefix,
+            filter,
+        )
+        return self._search(self._view_id, query, _OUTPUTMAPPING_PROPERTIES_BY_FIELD, properties, filter_, limit)
+
+    @overload
+    def aggregate(
+        self,
+        aggregations: Aggregations
+        | dm.aggregations.MetricAggregation
+        | Sequence[Aggregations]
+        | Sequence[dm.aggregations.MetricAggregation],
+        property: OutputMappingFields | Sequence[OutputMappingFields] | None = None,
+        group_by: None = None,
+        query: str | None = None,
+        search_properties: OutputMappingTextFields | Sequence[OutputMappingTextFields] | None = None,
+        shop_object_type: str | list[str] | None = None,
+        shop_object_type_prefix: str | None = None,
+        shop_attribute_name: str | list[str] | None = None,
+        shop_attribute_name_prefix: str | None = None,
+        cdf_attribute_name: str | list[str] | None = None,
+        cdf_attribute_name_prefix: str | None = None,
+        unit: str | list[str] | None = None,
+        unit_prefix: str | None = None,
+        is_step: bool | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> list[dm.aggregations.AggregatedNumberedValue]:
+        ...
+
+    @overload
+    def aggregate(
+        self,
+        aggregations: Aggregations
+        | dm.aggregations.MetricAggregation
+        | Sequence[Aggregations]
+        | Sequence[dm.aggregations.MetricAggregation],
+        property: OutputMappingFields | Sequence[OutputMappingFields] | None = None,
+        group_by: OutputMappingFields | Sequence[OutputMappingFields] = None,
+        query: str | None = None,
+        search_properties: OutputMappingTextFields | Sequence[OutputMappingTextFields] | None = None,
+        shop_object_type: str | list[str] | None = None,
+        shop_object_type_prefix: str | None = None,
+        shop_attribute_name: str | list[str] | None = None,
+        shop_attribute_name_prefix: str | None = None,
+        cdf_attribute_name: str | list[str] | None = None,
+        cdf_attribute_name_prefix: str | None = None,
+        unit: str | list[str] | None = None,
+        unit_prefix: str | None = None,
+        is_step: bool | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> InstanceAggregationResultList:
+        ...
+
+    def aggregate(
+        self,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | Sequence[Aggregations]
+        | Sequence[dm.aggregations.MetricAggregation],
+        property: OutputMappingFields | Sequence[OutputMappingFields] | None = None,
+        group_by: OutputMappingFields | Sequence[OutputMappingFields] | None = None,
+        query: str | None = None,
+        search_property: OutputMappingTextFields | Sequence[OutputMappingTextFields] | None = None,
+        shop_object_type: str | list[str] | None = None,
+        shop_object_type_prefix: str | None = None,
+        shop_attribute_name: str | list[str] | None = None,
+        shop_attribute_name_prefix: str | None = None,
+        cdf_attribute_name: str | list[str] | None = None,
+        cdf_attribute_name_prefix: str | None = None,
+        unit: str | list[str] | None = None,
+        unit_prefix: str | None = None,
+        is_step: bool | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
+        filter_ = _create_filter(
+            self._view_id,
+            shop_object_type,
+            shop_object_type_prefix,
+            shop_attribute_name,
+            shop_attribute_name_prefix,
+            cdf_attribute_name,
+            cdf_attribute_name_prefix,
+            unit,
+            unit_prefix,
+            is_step,
+            external_id_prefix,
+            filter,
+        )
+        return self._aggregate(
+            self._view_id,
+            aggregate,
+            _OUTPUTMAPPING_PROPERTIES_BY_FIELD,
+            property,
+            group_by,
+            query,
+            search_property,
+            limit,
+            filter_,
+        )
+
+    def histogram(
+        self,
+        property: OutputMappingFields,
+        interval: float,
+        query: str | None = None,
+        search_property: OutputMappingTextFields | Sequence[OutputMappingTextFields] | None = None,
+        shop_object_type: str | list[str] | None = None,
+        shop_object_type_prefix: str | None = None,
+        shop_attribute_name: str | list[str] | None = None,
+        shop_attribute_name_prefix: str | None = None,
+        cdf_attribute_name: str | list[str] | None = None,
+        cdf_attribute_name_prefix: str | None = None,
+        unit: str | list[str] | None = None,
+        unit_prefix: str | None = None,
+        is_step: bool | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> dm.aggregations.HistogramValue:
+        filter_ = _create_filter(
+            self._view_id,
+            shop_object_type,
+            shop_object_type_prefix,
+            shop_attribute_name,
+            shop_attribute_name_prefix,
+            cdf_attribute_name,
+            cdf_attribute_name_prefix,
+            unit,
+            unit_prefix,
+            is_step,
+            external_id_prefix,
+            filter,
+        )
+        return self._histogram(
+            self._view_id,
+            property,
+            interval,
+            _OUTPUTMAPPING_PROPERTIES_BY_FIELD,
+            query,
+            search_property,
+            limit,
+            filter_,
+        )
 
     def list(
         self,
@@ -74,7 +262,7 @@ class OutputMappingAPI(TypeAPI[OutputMapping, OutputMappingApply, OutputMappingL
         filter: dm.Filter | None = None,
     ) -> OutputMappingList:
         filter_ = _create_filter(
-            self.view_id,
+            self._view_id,
             shop_object_type,
             shop_object_type_prefix,
             shop_attribute_name,

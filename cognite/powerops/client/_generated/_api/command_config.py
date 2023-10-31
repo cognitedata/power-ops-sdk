@@ -5,15 +5,19 @@ from typing import overload
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
+from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
 
 from cognite.powerops.client._generated.data_classes import (
     CommandConfig,
     CommandConfigApply,
     CommandConfigApplyList,
+    CommandConfigFields,
     CommandConfigList,
+    CommandConfigTextFields,
 )
+from cognite.powerops.client._generated.data_classes._command_config import _COMMANDCONFIG_PROPERTIES_BY_FIELD
 
-from ._core import DEFAULT_LIMIT_READ, TypeAPI
+from ._core import DEFAULT_LIMIT_READ, Aggregations, TypeAPI
 
 
 class CommandConfigAPI(TypeAPI[CommandConfig, CommandConfigApply, CommandConfigList]):
@@ -25,7 +29,7 @@ class CommandConfigAPI(TypeAPI[CommandConfig, CommandConfigApply, CommandConfigL
             class_apply_type=CommandConfigApply,
             class_list=CommandConfigList,
         )
-        self.view_id = view_id
+        self._view_id = view_id
 
     def apply(
         self, command_config: CommandConfigApply | Sequence[CommandConfigApply], replace: bool = False
@@ -34,14 +38,20 @@ class CommandConfigAPI(TypeAPI[CommandConfig, CommandConfigApply, CommandConfigL
             instances = command_config.to_instances_apply()
         else:
             instances = CommandConfigApplyList(command_config).to_instances_apply()
-        return self._client.data_modeling.instances.apply(nodes=instances.nodes, edges=instances.edges, replace=replace)
+        return self._client.data_modeling.instances.apply(
+            nodes=instances.nodes,
+            edges=instances.edges,
+            auto_create_start_nodes=True,
+            auto_create_end_nodes=True,
+            replace=replace,
+        )
 
-    def delete(self, external_id: str | Sequence[str]) -> dm.InstancesDeleteResult:
+    def delete(self, external_id: str | Sequence[str], space="power-ops") -> dm.InstancesDeleteResult:
         if isinstance(external_id, str):
-            return self._client.data_modeling.instances.delete(nodes=(CommandConfigApply.space, external_id))
+            return self._client.data_modeling.instances.delete(nodes=(space, external_id))
         else:
             return self._client.data_modeling.instances.delete(
-                nodes=[(CommandConfigApply.space, id) for id in external_id],
+                nodes=[(space, id) for id in external_id],
             )
 
     @overload
@@ -54,9 +64,115 @@ class CommandConfigAPI(TypeAPI[CommandConfig, CommandConfigApply, CommandConfigL
 
     def retrieve(self, external_id: str | Sequence[str]) -> CommandConfig | CommandConfigList:
         if isinstance(external_id, str):
-            return self._retrieve((self.sources.space, external_id))
+            return self._retrieve((self._sources.space, external_id))
         else:
-            return self._retrieve([(self.sources.space, ext_id) for ext_id in external_id])
+            return self._retrieve([(self._sources.space, ext_id) for ext_id in external_id])
+
+    def search(
+        self,
+        query: str,
+        properties: CommandConfigTextFields | Sequence[CommandConfigTextFields] | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> CommandConfigList:
+        filter_ = _create_filter(
+            self._view_id,
+            external_id_prefix,
+            filter,
+        )
+        return self._search(self._view_id, query, _COMMANDCONFIG_PROPERTIES_BY_FIELD, properties, filter_, limit)
+
+    @overload
+    def aggregate(
+        self,
+        aggregations: Aggregations
+        | dm.aggregations.MetricAggregation
+        | Sequence[Aggregations]
+        | Sequence[dm.aggregations.MetricAggregation],
+        property: CommandConfigFields | Sequence[CommandConfigFields] | None = None,
+        group_by: None = None,
+        query: str | None = None,
+        search_properties: CommandConfigTextFields | Sequence[CommandConfigTextFields] | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> list[dm.aggregations.AggregatedNumberedValue]:
+        ...
+
+    @overload
+    def aggregate(
+        self,
+        aggregations: Aggregations
+        | dm.aggregations.MetricAggregation
+        | Sequence[Aggregations]
+        | Sequence[dm.aggregations.MetricAggregation],
+        property: CommandConfigFields | Sequence[CommandConfigFields] | None = None,
+        group_by: CommandConfigFields | Sequence[CommandConfigFields] = None,
+        query: str | None = None,
+        search_properties: CommandConfigTextFields | Sequence[CommandConfigTextFields] | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> InstanceAggregationResultList:
+        ...
+
+    def aggregate(
+        self,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | Sequence[Aggregations]
+        | Sequence[dm.aggregations.MetricAggregation],
+        property: CommandConfigFields | Sequence[CommandConfigFields] | None = None,
+        group_by: CommandConfigFields | Sequence[CommandConfigFields] | None = None,
+        query: str | None = None,
+        search_property: CommandConfigTextFields | Sequence[CommandConfigTextFields] | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
+        filter_ = _create_filter(
+            self._view_id,
+            external_id_prefix,
+            filter,
+        )
+        return self._aggregate(
+            self._view_id,
+            aggregate,
+            _COMMANDCONFIG_PROPERTIES_BY_FIELD,
+            property,
+            group_by,
+            query,
+            search_property,
+            limit,
+            filter_,
+        )
+
+    def histogram(
+        self,
+        property: CommandConfigFields,
+        interval: float,
+        query: str | None = None,
+        search_property: CommandConfigTextFields | Sequence[CommandConfigTextFields] | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> dm.aggregations.HistogramValue:
+        filter_ = _create_filter(
+            self._view_id,
+            external_id_prefix,
+            filter,
+        )
+        return self._histogram(
+            self._view_id,
+            property,
+            interval,
+            _COMMANDCONFIG_PROPERTIES_BY_FIELD,
+            query,
+            search_property,
+            limit,
+            filter_,
+        )
 
     def list(
         self,
@@ -65,7 +181,7 @@ class CommandConfigAPI(TypeAPI[CommandConfig, CommandConfigApply, CommandConfigL
         filter: dm.Filter | None = None,
     ) -> CommandConfigList:
         filter_ = _create_filter(
-            self.view_id,
+            self._view_id,
             external_id_prefix,
             filter,
         )

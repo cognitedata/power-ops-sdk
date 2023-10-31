@@ -1,17 +1,29 @@
 from __future__ import annotations
 
 import datetime
-from typing import ClassVar, Optional
+from typing import Literal, Optional
 
 from cognite.client import data_modeling as dm
 
 from ._core import DomainModel, DomainModelApply, TypeApplyList, TypeList
 
-__all__ = ["DateTimeInterval", "DateTimeIntervalApply", "DateTimeIntervalList", "DateTimeIntervalApplyList"]
+__all__ = [
+    "DateTimeInterval",
+    "DateTimeIntervalApply",
+    "DateTimeIntervalList",
+    "DateTimeIntervalApplyList",
+    "DateTimeIntervalFields",
+]
+DateTimeIntervalFields = Literal["start", "end"]
+
+_DATETIMEINTERVAL_PROPERTIES_BY_FIELD = {
+    "start": "start",
+    "end": "end",
+}
 
 
 class DateTimeInterval(DomainModel):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     start: Optional[datetime.datetime] = None
     end: Optional[datetime.datetime] = None
 
@@ -24,7 +36,7 @@ class DateTimeInterval(DomainModel):
 
 
 class DateTimeIntervalApply(DomainModelApply):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     start: Optional[datetime.datetime] = None
     end: Optional[datetime.datetime] = None
 
@@ -35,9 +47,9 @@ class DateTimeIntervalApply(DomainModelApply):
         sources = []
         properties = {}
         if self.start is not None:
-            properties["start"] = self.start.isoformat()
+            properties["start"] = self.start.isoformat(timespec="milliseconds")
         if self.end is not None:
-            properties["end"] = self.end.isoformat()
+            properties["end"] = self.end.isoformat(timespec="milliseconds")
         if properties:
             source = dm.NodeOrEdgeData(
                 source=dm.ContainerId("power-ops", "DateTimeInterval"),

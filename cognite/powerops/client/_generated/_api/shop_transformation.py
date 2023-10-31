@@ -6,31 +6,35 @@ from typing import overload
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
+from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
 
 from cognite.powerops.client._generated.data_classes import (
     ShopTransformation,
     ShopTransformationApply,
     ShopTransformationApplyList,
+    ShopTransformationFields,
     ShopTransformationList,
+    ShopTransformationTextFields,
 )
+from cognite.powerops.client._generated.data_classes._shop_transformation import _SHOPTRANSFORMATION_PROPERTIES_BY_FIELD
 
-from ._core import DEFAULT_LIMIT_READ, TypeAPI
+from ._core import DEFAULT_LIMIT_READ, IN_FILTER_LIMIT, Aggregations, TypeAPI
 
 
 class ShopTransformationEndAPI:
     def __init__(self, client: CogniteClient):
         self._client = client
 
-    def retrieve(self, external_id: str | Sequence[str]) -> dm.EdgeList:
+    def retrieve(self, external_id: str | Sequence[str], space="power-ops") -> dm.EdgeList:
         f = dm.filters
         is_edge_type = f.Equals(
             ["edge", "type"],
-            {"space": "power-ops", "externalId": "ShopTransformation.end"},
+            {"space": space, "externalId": "ShopTransformation.end"},
         )
         if isinstance(external_id, str):
             is_shop_transformation = f.Equals(
                 ["edge", "startNode"],
-                {"space": "power-ops", "externalId": external_id},
+                {"space": space, "externalId": external_id},
             )
             return self._client.data_modeling.instances.list(
                 "edge", limit=-1, filter=f.And(is_edge_type, is_shop_transformation)
@@ -39,18 +43,20 @@ class ShopTransformationEndAPI:
         else:
             is_shop_transformations = f.In(
                 ["edge", "startNode"],
-                [{"space": "power-ops", "externalId": ext_id} for ext_id in external_id],
+                [{"space": space, "externalId": ext_id} for ext_id in external_id],
             )
             return self._client.data_modeling.instances.list(
                 "edge", limit=-1, filter=f.And(is_edge_type, is_shop_transformations)
             )
 
-    def list(self, shop_transformation_id: str | list[str] | None = None, limit=DEFAULT_LIMIT_READ) -> dm.EdgeList:
+    def list(
+        self, shop_transformation_id: str | list[str] | None = None, limit=DEFAULT_LIMIT_READ, space="power-ops"
+    ) -> dm.EdgeList:
         f = dm.filters
         filters = []
         is_edge_type = f.Equals(
             ["edge", "type"],
-            {"space": "power-ops", "externalId": "ShopTransformation.end"},
+            {"space": space, "externalId": "ShopTransformation.end"},
         )
         filters.append(is_edge_type)
         if shop_transformation_id:
@@ -59,7 +65,7 @@ class ShopTransformationEndAPI:
             )
             is_shop_transformations = f.In(
                 ["edge", "startNode"],
-                [{"space": "power-ops", "externalId": ext_id} for ext_id in shop_transformation_ids],
+                [{"space": space, "externalId": ext_id} for ext_id in shop_transformation_ids],
             )
             filters.append(is_shop_transformations)
 
@@ -70,16 +76,16 @@ class ShopTransformationStartAPI:
     def __init__(self, client: CogniteClient):
         self._client = client
 
-    def retrieve(self, external_id: str | Sequence[str]) -> dm.EdgeList:
+    def retrieve(self, external_id: str | Sequence[str], space="power-ops") -> dm.EdgeList:
         f = dm.filters
         is_edge_type = f.Equals(
             ["edge", "type"],
-            {"space": "power-ops", "externalId": "ShopTransformation.start"},
+            {"space": space, "externalId": "ShopTransformation.start"},
         )
         if isinstance(external_id, str):
             is_shop_transformation = f.Equals(
                 ["edge", "startNode"],
-                {"space": "power-ops", "externalId": external_id},
+                {"space": space, "externalId": external_id},
             )
             return self._client.data_modeling.instances.list(
                 "edge", limit=-1, filter=f.And(is_edge_type, is_shop_transformation)
@@ -88,18 +94,20 @@ class ShopTransformationStartAPI:
         else:
             is_shop_transformations = f.In(
                 ["edge", "startNode"],
-                [{"space": "power-ops", "externalId": ext_id} for ext_id in external_id],
+                [{"space": space, "externalId": ext_id} for ext_id in external_id],
             )
             return self._client.data_modeling.instances.list(
                 "edge", limit=-1, filter=f.And(is_edge_type, is_shop_transformations)
             )
 
-    def list(self, shop_transformation_id: str | list[str] | None = None, limit=DEFAULT_LIMIT_READ) -> dm.EdgeList:
+    def list(
+        self, shop_transformation_id: str | list[str] | None = None, limit=DEFAULT_LIMIT_READ, space="power-ops"
+    ) -> dm.EdgeList:
         f = dm.filters
         filters = []
         is_edge_type = f.Equals(
             ["edge", "type"],
-            {"space": "power-ops", "externalId": "ShopTransformation.start"},
+            {"space": space, "externalId": "ShopTransformation.start"},
         )
         filters.append(is_edge_type)
         if shop_transformation_id:
@@ -108,7 +116,7 @@ class ShopTransformationStartAPI:
             )
             is_shop_transformations = f.In(
                 ["edge", "startNode"],
-                [{"space": "power-ops", "externalId": ext_id} for ext_id in shop_transformation_ids],
+                [{"space": space, "externalId": ext_id} for ext_id in shop_transformation_ids],
             )
             filters.append(is_shop_transformations)
 
@@ -124,7 +132,7 @@ class ShopTransformationAPI(TypeAPI[ShopTransformation, ShopTransformationApply,
             class_apply_type=ShopTransformationApply,
             class_list=ShopTransformationList,
         )
-        self.view_id = view_id
+        self._view_id = view_id
         self.end = ShopTransformationEndAPI(client)
         self.start = ShopTransformationStartAPI(client)
 
@@ -135,14 +143,20 @@ class ShopTransformationAPI(TypeAPI[ShopTransformation, ShopTransformationApply,
             instances = shop_transformation.to_instances_apply()
         else:
             instances = ShopTransformationApplyList(shop_transformation).to_instances_apply()
-        return self._client.data_modeling.instances.apply(nodes=instances.nodes, edges=instances.edges, replace=replace)
+        return self._client.data_modeling.instances.apply(
+            nodes=instances.nodes,
+            edges=instances.edges,
+            auto_create_start_nodes=True,
+            auto_create_end_nodes=True,
+            replace=replace,
+        )
 
-    def delete(self, external_id: str | Sequence[str]) -> dm.InstancesDeleteResult:
+    def delete(self, external_id: str | Sequence[str], space="power-ops") -> dm.InstancesDeleteResult:
         if isinstance(external_id, str):
-            return self._client.data_modeling.instances.delete(nodes=(ShopTransformationApply.space, external_id))
+            return self._client.data_modeling.instances.delete(nodes=(space, external_id))
         else:
             return self._client.data_modeling.instances.delete(
-                nodes=[(ShopTransformationApply.space, id) for id in external_id],
+                nodes=[(space, id) for id in external_id],
             )
 
     @overload
@@ -155,7 +169,7 @@ class ShopTransformationAPI(TypeAPI[ShopTransformation, ShopTransformationApply,
 
     def retrieve(self, external_id: str | Sequence[str]) -> ShopTransformation | ShopTransformationList:
         if isinstance(external_id, str):
-            shop_transformation = self._retrieve((self.sources.space, external_id))
+            shop_transformation = self._retrieve((self._sources.space, external_id))
 
             end_edges = self.end.retrieve(external_id)
             shop_transformation.end = [edge.end_node.external_id for edge in end_edges]
@@ -164,7 +178,7 @@ class ShopTransformationAPI(TypeAPI[ShopTransformation, ShopTransformationApply,
 
             return shop_transformation
         else:
-            shop_transformations = self._retrieve([(self.sources.space, ext_id) for ext_id in external_id])
+            shop_transformations = self._retrieve([(self._sources.space, ext_id) for ext_id in external_id])
 
             end_edges = self.end.retrieve(external_id)
             self._set_end(shop_transformations, end_edges)
@@ -172,6 +186,128 @@ class ShopTransformationAPI(TypeAPI[ShopTransformation, ShopTransformationApply,
             self._set_start(shop_transformations, start_edges)
 
             return shop_transformations
+
+    def search(
+        self,
+        query: str,
+        properties: ShopTransformationTextFields | Sequence[ShopTransformationTextFields] | None = None,
+        type_name: str | list[str] | None = None,
+        type_name_prefix: str | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> ShopTransformationList:
+        filter_ = _create_filter(
+            self._view_id,
+            type_name,
+            type_name_prefix,
+            external_id_prefix,
+            filter,
+        )
+        return self._search(self._view_id, query, _SHOPTRANSFORMATION_PROPERTIES_BY_FIELD, properties, filter_, limit)
+
+    @overload
+    def aggregate(
+        self,
+        aggregations: Aggregations
+        | dm.aggregations.MetricAggregation
+        | Sequence[Aggregations]
+        | Sequence[dm.aggregations.MetricAggregation],
+        property: ShopTransformationFields | Sequence[ShopTransformationFields] | None = None,
+        group_by: None = None,
+        query: str | None = None,
+        search_properties: ShopTransformationTextFields | Sequence[ShopTransformationTextFields] | None = None,
+        type_name: str | list[str] | None = None,
+        type_name_prefix: str | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> list[dm.aggregations.AggregatedNumberedValue]:
+        ...
+
+    @overload
+    def aggregate(
+        self,
+        aggregations: Aggregations
+        | dm.aggregations.MetricAggregation
+        | Sequence[Aggregations]
+        | Sequence[dm.aggregations.MetricAggregation],
+        property: ShopTransformationFields | Sequence[ShopTransformationFields] | None = None,
+        group_by: ShopTransformationFields | Sequence[ShopTransformationFields] = None,
+        query: str | None = None,
+        search_properties: ShopTransformationTextFields | Sequence[ShopTransformationTextFields] | None = None,
+        type_name: str | list[str] | None = None,
+        type_name_prefix: str | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> InstanceAggregationResultList:
+        ...
+
+    def aggregate(
+        self,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | Sequence[Aggregations]
+        | Sequence[dm.aggregations.MetricAggregation],
+        property: ShopTransformationFields | Sequence[ShopTransformationFields] | None = None,
+        group_by: ShopTransformationFields | Sequence[ShopTransformationFields] | None = None,
+        query: str | None = None,
+        search_property: ShopTransformationTextFields | Sequence[ShopTransformationTextFields] | None = None,
+        type_name: str | list[str] | None = None,
+        type_name_prefix: str | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
+        filter_ = _create_filter(
+            self._view_id,
+            type_name,
+            type_name_prefix,
+            external_id_prefix,
+            filter,
+        )
+        return self._aggregate(
+            self._view_id,
+            aggregate,
+            _SHOPTRANSFORMATION_PROPERTIES_BY_FIELD,
+            property,
+            group_by,
+            query,
+            search_property,
+            limit,
+            filter_,
+        )
+
+    def histogram(
+        self,
+        property: ShopTransformationFields,
+        interval: float,
+        query: str | None = None,
+        search_property: ShopTransformationTextFields | Sequence[ShopTransformationTextFields] | None = None,
+        type_name: str | list[str] | None = None,
+        type_name_prefix: str | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> dm.aggregations.HistogramValue:
+        filter_ = _create_filter(
+            self._view_id,
+            type_name,
+            type_name_prefix,
+            external_id_prefix,
+            filter,
+        )
+        return self._histogram(
+            self._view_id,
+            property,
+            interval,
+            _SHOPTRANSFORMATION_PROPERTIES_BY_FIELD,
+            query,
+            search_property,
+            limit,
+            filter_,
+        )
 
     def list(
         self,
@@ -183,7 +319,7 @@ class ShopTransformationAPI(TypeAPI[ShopTransformation, ShopTransformationApply,
         retrieve_edges: bool = True,
     ) -> ShopTransformationList:
         filter_ = _create_filter(
-            self.view_id,
+            self._view_id,
             type_name,
             type_name_prefix,
             external_id_prefix,
@@ -193,9 +329,15 @@ class ShopTransformationAPI(TypeAPI[ShopTransformation, ShopTransformationApply,
         shop_transformations = self._list(limit=limit, filter=filter_)
 
         if retrieve_edges:
-            end_edges = self.end.list(shop_transformations.as_external_ids(), limit=-1)
+            if len(external_ids := shop_transformations.as_external_ids()) > IN_FILTER_LIMIT:
+                end_edges = self.end.list(limit=-1)
+            else:
+                end_edges = self.end.list(external_ids, limit=-1)
             self._set_end(shop_transformations, end_edges)
-            start_edges = self.start.list(shop_transformations.as_external_ids(), limit=-1)
+            if len(external_ids := shop_transformations.as_external_ids()) > IN_FILTER_LIMIT:
+                start_edges = self.start.list(limit=-1)
+            else:
+                start_edges = self.start.list(external_ids, limit=-1)
             self._set_start(shop_transformations, start_edges)
 
         return shop_transformations

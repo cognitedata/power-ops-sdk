@@ -4,7 +4,14 @@ from cognite.client import ClientConfig, CogniteClient
 
 from cognite.powerops.utils.cdf import Settings, get_client_config
 
-from ._generated._api_client import BenchmarkAPIs, CogShopAPIs, DayAheadAPIs, ProductionAPIs, RKOMMarketAPIs
+from ._generated._api_client import (
+    BenchmarkAPIs,
+    CapacityBidAPIs,
+    CogShopAPIs,
+    DayAheadAPIs,
+    ProductionAPIs,
+    RKOMMarketAPIs,
+)
 from ._generated.cogshop1 import CogShop1Client
 from .data_set_api import DataSetsAPI
 from .shop.api.dayaheadworkflow_api import WorkflowAPI
@@ -28,6 +35,7 @@ class PowerOpsClient:
         self.benchmark = BenchmarkAPIs(self.cdf)
         self.cog_shop = CogShopAPIs(self.cdf)
         self.cog_shop1 = CogShop1Client(self.cdf)
+        self.capacity_bid = CapacityBidAPIs(self.cdf)
         self.shop = SHOPRunAPI(self.cdf, self.datasets.write_dataset_id, cogshop_version)
         self.workflow = WorkflowAPI(self.cdf, self.datasets.write_dataset_id, cogshop_version)
 

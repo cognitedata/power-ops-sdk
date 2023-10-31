@@ -1,16 +1,31 @@
 from __future__ import annotations
 
-from typing import ClassVar, Optional
+from typing import Literal, Optional
 
 from cognite.client import data_modeling as dm
 
 from ._core import DomainModel, DomainModelApply, TypeApplyList, TypeList
 
-__all__ = ["CommandsConfig", "CommandsConfigApply", "CommandsConfigList", "CommandsConfigApplyList"]
+__all__ = [
+    "CommandsConfig",
+    "CommandsConfigApply",
+    "CommandsConfigList",
+    "CommandsConfigApplyList",
+    "CommandsConfigFields",
+    "CommandsConfigTextFields",
+]
+
+
+CommandsConfigTextFields = Literal["commands"]
+CommandsConfigFields = Literal["commands"]
+
+_COMMANDSCONFIG_PROPERTIES_BY_FIELD = {
+    "commands": "commands",
+}
 
 
 class CommandsConfig(DomainModel):
-    space: ClassVar[str] = "cogShop"
+    space: str = "cogShop"
     commands: Optional[list[str]] = None
 
     def as_apply(self) -> CommandsConfigApply:
@@ -21,7 +36,7 @@ class CommandsConfig(DomainModel):
 
 
 class CommandsConfigApply(DomainModelApply):
-    space: ClassVar[str] = "cogShop"
+    space: str = "cogShop"
     commands: list[str]
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:

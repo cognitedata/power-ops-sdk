@@ -22,6 +22,8 @@ def main():
     rules.metadata.cdf_space_name = "power-ops"
     dm = DataModel.from_rules(rules)
 
+    # This model has been manually fixed later as neat generates edges from children to parents,
+    # but we want edges from parents to children.
     CapacitySourceModel.container_file.write_text(
         yaml.dump(ContainerApplyList(dm.containers.values()).dump(camel_case=True), sort_keys=False)
     )

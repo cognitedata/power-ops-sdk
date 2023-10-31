@@ -1,17 +1,36 @@
 from __future__ import annotations
 
-from typing import ClassVar, Optional
+from typing import Literal, Optional
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
 from ._core import DomainModel, DomainModelApply, TypeApplyList, TypeList
 
-__all__ = ["ReserveScenario", "ReserveScenarioApply", "ReserveScenarioList", "ReserveScenarioApplyList"]
+__all__ = [
+    "ReserveScenario",
+    "ReserveScenarioApply",
+    "ReserveScenarioList",
+    "ReserveScenarioApplyList",
+    "ReserveScenarioFields",
+    "ReserveScenarioTextFields",
+]
+
+
+ReserveScenarioTextFields = Literal["auction", "product", "block", "reserve_group"]
+ReserveScenarioFields = Literal["volume", "auction", "product", "block", "reserve_group"]
+
+_RESERVESCENARIO_PROPERTIES_BY_FIELD = {
+    "volume": "volume",
+    "auction": "auction",
+    "product": "product",
+    "block": "block",
+    "reserve_group": "reserveGroup",
+}
 
 
 class ReserveScenario(DomainModel):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     volume: Optional[int] = None
     auction: Optional[str] = None
     product: Optional[str] = None
@@ -30,12 +49,12 @@ class ReserveScenario(DomainModel):
 
 
 class ReserveScenarioApply(DomainModelApply):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     volume: Optional[int] = None
     auction: Optional[str] = None
     product: Optional[str] = None
     block: Optional[str] = None
-    reserve_group: Optional[str] = None
+    reserve_group: Optional[str] = Field(None, alias="reserveGroup")
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:

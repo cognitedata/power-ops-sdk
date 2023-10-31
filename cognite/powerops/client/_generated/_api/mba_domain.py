@@ -5,10 +5,19 @@ from typing import overload
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
+from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
 
-from cognite.powerops.client._generated.data_classes import MBADomain, MBADomainApply, MBADomainApplyList, MBADomainList
+from cognite.powerops.client._generated.data_classes import (
+    MBADomain,
+    MBADomainApply,
+    MBADomainApplyList,
+    MBADomainFields,
+    MBADomainList,
+    MBADomainTextFields,
+)
+from cognite.powerops.client._generated.data_classes._mba_domain import _MBADOMAIN_PROPERTIES_BY_FIELD
 
-from ._core import DEFAULT_LIMIT_READ, TypeAPI
+from ._core import DEFAULT_LIMIT_READ, Aggregations, TypeAPI
 
 
 class MBADomainAPI(TypeAPI[MBADomain, MBADomainApply, MBADomainList]):
@@ -20,7 +29,7 @@ class MBADomainAPI(TypeAPI[MBADomain, MBADomainApply, MBADomainList]):
             class_apply_type=MBADomainApply,
             class_list=MBADomainList,
         )
-        self.view_id = view_id
+        self._view_id = view_id
 
     def apply(
         self, mba_domain: MBADomainApply | Sequence[MBADomainApply], replace: bool = False
@@ -29,14 +38,20 @@ class MBADomainAPI(TypeAPI[MBADomain, MBADomainApply, MBADomainList]):
             instances = mba_domain.to_instances_apply()
         else:
             instances = MBADomainApplyList(mba_domain).to_instances_apply()
-        return self._client.data_modeling.instances.apply(nodes=instances.nodes, edges=instances.edges, replace=replace)
+        return self._client.data_modeling.instances.apply(
+            nodes=instances.nodes,
+            edges=instances.edges,
+            auto_create_start_nodes=True,
+            auto_create_end_nodes=True,
+            replace=replace,
+        )
 
-    def delete(self, external_id: str | Sequence[str]) -> dm.InstancesDeleteResult:
+    def delete(self, external_id: str | Sequence[str], space="power-ops") -> dm.InstancesDeleteResult:
         if isinstance(external_id, str):
-            return self._client.data_modeling.instances.delete(nodes=(MBADomainApply.space, external_id))
+            return self._client.data_modeling.instances.delete(nodes=(space, external_id))
         else:
             return self._client.data_modeling.instances.delete(
-                nodes=[(MBADomainApply.space, id) for id in external_id],
+                nodes=[(space, id) for id in external_id],
             )
 
     @overload
@@ -49,9 +64,131 @@ class MBADomainAPI(TypeAPI[MBADomain, MBADomainApply, MBADomainList]):
 
     def retrieve(self, external_id: str | Sequence[str]) -> MBADomain | MBADomainList:
         if isinstance(external_id, str):
-            return self._retrieve((self.sources.space, external_id))
+            return self._retrieve((self._sources.space, external_id))
         else:
-            return self._retrieve([(self.sources.space, ext_id) for ext_id in external_id])
+            return self._retrieve([(self._sources.space, ext_id) for ext_id in external_id])
+
+    def search(
+        self,
+        query: str,
+        properties: MBADomainTextFields | Sequence[MBADomainTextFields] | None = None,
+        m_rid: str | list[str] | None = None,
+        m_rid_prefix: str | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> MBADomainList:
+        filter_ = _create_filter(
+            self._view_id,
+            m_rid,
+            m_rid_prefix,
+            external_id_prefix,
+            filter,
+        )
+        return self._search(self._view_id, query, _MBADOMAIN_PROPERTIES_BY_FIELD, properties, filter_, limit)
+
+    @overload
+    def aggregate(
+        self,
+        aggregations: Aggregations
+        | dm.aggregations.MetricAggregation
+        | Sequence[Aggregations]
+        | Sequence[dm.aggregations.MetricAggregation],
+        property: MBADomainFields | Sequence[MBADomainFields] | None = None,
+        group_by: None = None,
+        query: str | None = None,
+        search_properties: MBADomainTextFields | Sequence[MBADomainTextFields] | None = None,
+        m_rid: str | list[str] | None = None,
+        m_rid_prefix: str | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> list[dm.aggregations.AggregatedNumberedValue]:
+        ...
+
+    @overload
+    def aggregate(
+        self,
+        aggregations: Aggregations
+        | dm.aggregations.MetricAggregation
+        | Sequence[Aggregations]
+        | Sequence[dm.aggregations.MetricAggregation],
+        property: MBADomainFields | Sequence[MBADomainFields] | None = None,
+        group_by: MBADomainFields | Sequence[MBADomainFields] = None,
+        query: str | None = None,
+        search_properties: MBADomainTextFields | Sequence[MBADomainTextFields] | None = None,
+        m_rid: str | list[str] | None = None,
+        m_rid_prefix: str | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> InstanceAggregationResultList:
+        ...
+
+    def aggregate(
+        self,
+        aggregate: Aggregations
+        | dm.aggregations.MetricAggregation
+        | Sequence[Aggregations]
+        | Sequence[dm.aggregations.MetricAggregation],
+        property: MBADomainFields | Sequence[MBADomainFields] | None = None,
+        group_by: MBADomainFields | Sequence[MBADomainFields] | None = None,
+        query: str | None = None,
+        search_property: MBADomainTextFields | Sequence[MBADomainTextFields] | None = None,
+        m_rid: str | list[str] | None = None,
+        m_rid_prefix: str | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
+        filter_ = _create_filter(
+            self._view_id,
+            m_rid,
+            m_rid_prefix,
+            external_id_prefix,
+            filter,
+        )
+        return self._aggregate(
+            self._view_id,
+            aggregate,
+            _MBADOMAIN_PROPERTIES_BY_FIELD,
+            property,
+            group_by,
+            query,
+            search_property,
+            limit,
+            filter_,
+        )
+
+    def histogram(
+        self,
+        property: MBADomainFields,
+        interval: float,
+        query: str | None = None,
+        search_property: MBADomainTextFields | Sequence[MBADomainTextFields] | None = None,
+        m_rid: str | list[str] | None = None,
+        m_rid_prefix: str | None = None,
+        external_id_prefix: str | None = None,
+        limit: int = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> dm.aggregations.HistogramValue:
+        filter_ = _create_filter(
+            self._view_id,
+            m_rid,
+            m_rid_prefix,
+            external_id_prefix,
+            filter,
+        )
+        return self._histogram(
+            self._view_id,
+            property,
+            interval,
+            _MBADOMAIN_PROPERTIES_BY_FIELD,
+            query,
+            search_property,
+            limit,
+            filter_,
+        )
 
     def list(
         self,
@@ -62,7 +199,7 @@ class MBADomainAPI(TypeAPI[MBADomain, MBADomainApply, MBADomainList]):
         filter: dm.Filter | None = None,
     ) -> MBADomainList:
         filter_ = _create_filter(
-            self.view_id,
+            self._view_id,
             m_rid,
             m_rid_prefix,
             external_id_prefix,

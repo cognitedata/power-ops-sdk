@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, ClassVar, Optional, Union
+from typing import TYPE_CHECKING, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -13,11 +13,20 @@ if TYPE_CHECKING:
     from ._mapping import MappingApply
     from ._model_template import ModelTemplateApply
 
-__all__ = ["Scenario", "ScenarioApply", "ScenarioList", "ScenarioApplyList"]
+__all__ = ["Scenario", "ScenarioApply", "ScenarioList", "ScenarioApplyList", "ScenarioFields", "ScenarioTextFields"]
 
 
-class Scenario(DomainModel, protected_namespaces=()):
-    space: ClassVar[str] = "cogShop"
+ScenarioTextFields = Literal["name", "source"]
+ScenarioFields = Literal["name", "source"]
+
+_SCENARIO_PROPERTIES_BY_FIELD = {
+    "name": "name",
+    "source": "source",
+}
+
+
+class Scenario(DomainModel):
+    space: str = "cogShop"
     name: Optional[str] = None
     model_template: Optional[str] = Field(None, alias="modelTemplate")
     commands: Optional[str] = None
@@ -37,14 +46,16 @@ class Scenario(DomainModel, protected_namespaces=()):
         )
 
 
-class ScenarioApply(DomainModelApply, protected_namespaces=()):
-    space: ClassVar[str] = "cogShop"
+class ScenarioApply(DomainModelApply):
+    space: str = "cogShop"
     name: str
-    model_template: Union[ModelTemplateApply, str, None] = Field(None, repr=False)
+    model_template: Union[ModelTemplateApply, str, None] = Field(None, repr=False, alias="modelTemplate")
     commands: Union[CommandsConfigApply, str, None] = Field(None, repr=False)
     source: Optional[str] = None
-    extra_files: Union[list[FileRefApply], list[str], None] = Field(default=None, repr=False)
-    mappings_override: Union[list[MappingApply], list[str], None] = Field(default=None, repr=False)
+    extra_files: Union[list[FileRefApply], list[str], None] = Field(default=None, repr=False, alias="extraFiles")
+    mappings_override: Union[list[MappingApply], list[str], None] = Field(
+        default=None, repr=False, alias="mappingsOverride"
+    )
 
     def _to_instances_apply(self, cache: set[str]) -> dm.InstancesApply:
         if self.external_id in cache:

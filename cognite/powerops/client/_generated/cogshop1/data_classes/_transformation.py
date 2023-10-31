@@ -1,16 +1,33 @@
 from __future__ import annotations
 
-from typing import ClassVar, Optional
+from typing import Literal, Optional
 
 from cognite.client import data_modeling as dm
 
 from ._core import DomainModel, DomainModelApply, TypeApplyList, TypeList
 
-__all__ = ["Transformation", "TransformationApply", "TransformationList", "TransformationApplyList"]
+__all__ = [
+    "Transformation",
+    "TransformationApply",
+    "TransformationList",
+    "TransformationApplyList",
+    "TransformationFields",
+    "TransformationTextFields",
+]
+
+
+TransformationTextFields = Literal["method", "arguments"]
+TransformationFields = Literal["method", "arguments", "order"]
+
+_TRANSFORMATION_PROPERTIES_BY_FIELD = {
+    "method": "method",
+    "arguments": "arguments",
+    "order": "order",
+}
 
 
 class Transformation(DomainModel):
-    space: ClassVar[str] = "cogShop"
+    space: str = "cogShop"
     method: Optional[str] = None
     arguments: Optional[str] = None
     order: Optional[int] = None
@@ -25,7 +42,7 @@ class Transformation(DomainModel):
 
 
 class TransformationApply(DomainModelApply):
-    space: ClassVar[str] = "cogShop"
+    space: str = "cogShop"
     method: str
     arguments: str
     order: int

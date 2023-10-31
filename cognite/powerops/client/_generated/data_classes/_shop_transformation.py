@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, ClassVar, Optional, Union
+from typing import TYPE_CHECKING, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -10,11 +10,26 @@ from ._core import DomainModel, DomainModelApply, TypeApplyList, TypeList
 if TYPE_CHECKING:
     from ._date_transformation import DateTransformationApply
 
-__all__ = ["ShopTransformation", "ShopTransformationApply", "ShopTransformationList", "ShopTransformationApplyList"]
+__all__ = [
+    "ShopTransformation",
+    "ShopTransformationApply",
+    "ShopTransformationList",
+    "ShopTransformationApplyList",
+    "ShopTransformationFields",
+    "ShopTransformationTextFields",
+]
+
+
+ShopTransformationTextFields = Literal["type_name"]
+ShopTransformationFields = Literal["type_name"]
+
+_SHOPTRANSFORMATION_PROPERTIES_BY_FIELD = {
+    "type_name": "typeName",
+}
 
 
 class ShopTransformation(DomainModel):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     type_name: Optional[str] = Field(None, alias="typeName")
     end: Optional[list[str]] = None
     start: Optional[list[str]] = None
@@ -29,8 +44,8 @@ class ShopTransformation(DomainModel):
 
 
 class ShopTransformationApply(DomainModelApply):
-    space: ClassVar[str] = "power-ops"
-    type_name: Optional[str] = None
+    space: str = "power-ops"
+    type_name: Optional[str] = Field(None, alias="typeName")
     end: Union[list[DateTransformationApply], list[str], None] = Field(default=None, repr=False)
     start: Union[list[DateTransformationApply], list[str], None] = Field(default=None, repr=False)
 

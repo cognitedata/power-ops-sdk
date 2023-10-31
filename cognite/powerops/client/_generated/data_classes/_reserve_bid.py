@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import datetime
-from typing import TYPE_CHECKING, ClassVar, Optional, Union
+from typing import TYPE_CHECKING, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -12,11 +12,30 @@ if TYPE_CHECKING:
     from ._market_participant import MarketParticipantApply
     from ._mba_domain import MBADomainApply
 
-__all__ = ["ReserveBid", "ReserveBidApply", "ReserveBidList", "ReserveBidApplyList"]
+__all__ = [
+    "ReserveBid",
+    "ReserveBidApply",
+    "ReserveBidList",
+    "ReserveBidApplyList",
+    "ReserveBidFields",
+    "ReserveBidTextFields",
+]
+
+
+ReserveBidTextFields = Literal["m_rid", "revision_number", "type", "process_type"]
+ReserveBidFields = Literal["m_rid", "revision_number", "type", "process_type", "created_date_time"]
+
+_RESERVEBID_PROPERTIES_BY_FIELD = {
+    "m_rid": "mRID",
+    "revision_number": "revisionNumber",
+    "type": "type",
+    "process_type": "processType",
+    "created_date_time": "createdDateTime",
+}
 
 
 class ReserveBid(DomainModel):
-    space: ClassVar[str] = "power-ops"
+    space: str = "power-ops"
     m_rid: Optional[str] = Field(None, alias="mRID")
     revision_number: Optional[str] = Field(None, alias="revisionNumber")
     type: Optional[str] = None
@@ -43,14 +62,14 @@ class ReserveBid(DomainModel):
 
 
 class ReserveBidApply(DomainModelApply):
-    space: ClassVar[str] = "power-ops"
-    m_rid: Optional[str] = None
-    revision_number: Optional[str] = None
+    space: str = "power-ops"
+    m_rid: Optional[str] = Field(None, alias="mRID")
+    revision_number: Optional[str] = Field(None, alias="revisionNumber")
     type: Optional[str] = None
-    process_type: Optional[str] = None
+    process_type: Optional[str] = Field(None, alias="processType")
     sender: Union[MarketParticipantApply, str, None] = Field(None, repr=False)
     receiver: Union[MarketParticipantApply, str, None] = Field(None, repr=False)
-    created_date_time: Optional[datetime.datetime] = None
+    created_date_time: Optional[datetime.datetime] = Field(None, alias="createdDateTime")
     domain: Union[MBADomainApply, str, None] = Field(None, repr=False)
     subject: Union[MarketParticipantApply, str, None] = Field(None, repr=False)
 
@@ -79,7 +98,7 @@ class ReserveBidApply(DomainModelApply):
                 "externalId": self.receiver if isinstance(self.receiver, str) else self.receiver.external_id,
             }
         if self.created_date_time is not None:
-            properties["createdDateTime"] = self.created_date_time.isoformat()
+            properties["createdDateTime"] = self.created_date_time.isoformat(timespec="milliseconds")
         if self.domain is not None:
             properties["domain"] = {
                 "space": "power-ops",
