@@ -5,7 +5,8 @@ from cognite.client.data_classes import Event, Relationship
 
 from cognite.powerops.client.shop.data_classes.dayahead_trigger import DayaheadTrigger
 from cognite.powerops.client.shop.shop_run import SHOPRun
-from cognite.powerops.client.shop.shop_run_api import SHOPRunAPI, _unique_short_str
+from cognite.powerops.client.shop.shop_run_api import SHOPRunAPI
+from cognite.powerops.client.shop.utils import unique_short_str
 
 
 class DayaheadTriggerAPI:
@@ -24,7 +25,7 @@ class DayaheadTriggerAPI:
         now = datetime.datetime.now(datetime.timezone.utc)
         workflow_event = Event(
             external_id=f"POWEROPS_BID_PROCESS_{workflow.method}_{workflow.num_price_areas}"
-            f"_{workflow.price_area}_{_unique_short_str(3)}",
+            f"_{workflow.price_area}_{unique_short_str(3)}",
             type="POWEROPS_BID_PROCESS_FROM_PRERUNS",
             data_set_id=self._data_set_api,
             start_time=int(now.timestamp()) * 1000,
