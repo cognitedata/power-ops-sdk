@@ -124,6 +124,7 @@ class SHOPRun:
         return Event(
             external_id=self.external_id,
             type=ShopRunEvent.event_type,
+            subtype=ShopRunEvent.event_type,
             data_set_id=self.data_set_id,
             start_time=datetime_to_ms(self.start),
             end_time=datetime_to_ms(self.end) if self.end else None,
