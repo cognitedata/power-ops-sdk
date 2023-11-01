@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.73.0] - 2023-10-25
+### Changed
+* Triggering a SHOP run from local environment is now easier, using `SHOPCase`.
+
 ## [0.72.0] - 2023-10-29
 ### Added
 * Migration option for `resync` with support for the `Production` model

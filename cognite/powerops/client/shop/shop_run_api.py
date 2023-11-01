@@ -1,127 +1,51 @@
 from __future__ import annotations
 
 import datetime
-import secrets
 from collections.abc import Sequence
-from concurrent.futures import ThreadPoolExecutor
-from pathlib import Path
-from typing import Literal, Optional, overload
+from typing import Callable, Literal, Optional, Union, overload
 from urllib.parse import urlparse
-from uuid import uuid4
 
 import arrow
 import requests
 from cognite.client import CogniteClient
-from cognite.client.data_classes import FileMetadata, UserProfile, filters
+from cognite.client.data_classes import UserProfile, filters
 from cognite.client.data_classes.events import EventSort
 from cognite.client.exceptions import CogniteAPIError
 
+from cognite.powerops.cdf_labels import RelationshipLabel
 from cognite.powerops.client.shop.shop_run_filter import SHOPRunFilter
+from cognite.powerops.utils.cdf.resource_creation import simple_relationship
 
-from .data_classes.dayahead_trigger import Case
+from .shop_case import SHOPCase
 from .shop_run import SHOPRun, ShopRunEvent, SHOPRunList
+from .utils import new_external_id
 
 DEFAULT_READ_LIMIT = 25
 
-
-def _unique_short_str(nbytes: int) -> str:
-    return secrets.token_hex(nbytes=nbytes)
+_APICallableForSHOPRunT = Callable[[Union[SHOPRun, Sequence[SHOPRun]]], Union[SHOPRun, Sequence[SHOPRun]]]
 
 
 class SHOPRunAPI:
-    def __init__(self, client: CogniteClient, dataset_id: int, cogshop_version: str):
+    def __init__(self, client: CogniteClient, dataset_id: int, cogshop_version: str = ""):
         self._cdf = client
         self._dataset_id = dataset_id
         self.cogshop_version = cogshop_version
 
-    def upload_shop_file(self, shop_file: Path | str, metadata: dict, file_name: str, source: str) -> FileMetadata:
-        """
-        Upload either case or prerun file
-        """
-        if isinstance(shop_file, str):
-            meta = self._cdf.files.upload_bytes(
-                content=shop_file.encode("utf-8"),
-                name=file_name,
-                mime_type="application/yaml",
-                external_id=f"cog_shop_manual/{uuid4()!s}",
-                metadata=metadata,
-                data_set_id=self._dataset_id,
-                source=source,
-            )
-        elif isinstance(shop_file, Path):
-            meta = self._cdf.files.upload(
-                path=str(shop_file),
-                name=file_name,
-                mime_type="application/yaml",
-                external_id=f"cog_shop_manual/{uuid4()!s}",
-                metadata=metadata,
-                data_set_id=self._dataset_id,
-                source=source,
-            )
-        return meta
-
-    def trigger_case(self, case: Case) -> list[SHOPRun]:
-        """
-        Trigger a collection of shop runs related to one Case (also referred to as watercourse).
-        For each ShopCase the prerun file will be used to trigger a shop run event in cdf,
-        and used to trigger the CogShop container.
-        """
-        shop_files = []
-        for pre_run_file in case.pre_runs:
-            if pre_run_file.pre_run_path:
-                meta = self.upload_shop_file(
-                    shop_file=pre_run_file.pre_run_path,
-                    file_name="SHOP PreRun file",
-                    metadata={
-                        "shop:type": "cog_shop_prerun",
-                        "shop:plants": ";".join(pre_run_file.plants),
-                        "shop:price_scenario": pre_run_file.price_scenario,
-                    },
-                    source="DayaheadWorkflow",
-                )
-            elif pre_run_file.pre_run_external_id:
-                meta = self._cdf.files.retrieve(external_id=pre_run_file.pre_run_external_id)
-            shop_files.append(meta)
-
-        shop_events = []
-        for file in shop_files:
-            now = datetime.datetime.now(datetime.timezone.utc)
-            now_isoformat = now.isoformat().replace("+00:00", "Z")
-
-            shop_events.append(
-                SHOPRun(
-                    external_id=f"SHOP_RUN_{now_isoformat}_{_unique_short_str(3)}",
-                    watercourse=case.case_name,
-                    start=now,
-                    end=None,
-                    _case_file_external_id=file.external_id,
-                    _shop_files=[],
-                    shop_version=self.cogshop_version,
-                    _client=self._cdf,
-                    source=file.source,
-                )
-            )
-        self._cdf.events.create([new_event.as_cdf_event(self._dataset_id) for new_event in shop_events])
-
-        with ThreadPoolExecutor(max_workers=5) as executor:
-            for shop_event in shop_events:
-                executor.submit(self._trigger_shop_container, shop_event)
-
-        return shop_events
-
-    def trigger_with_casefile(self, case_file: str, watercourse: str, source: str | None = None) -> SHOPRun:
+    def trigger_case(self, case: SHOPCase, source: str | None = None) -> SHOPRun:
         """
         Trigger SHOP for a given case file.
 
         Args:
-            case_file: Case file as a string. Expected to be YAML.
-            watercourse: The watercourse to run SHOP this case file is for.
+            case: SHOPCase instance, contains data for the main case file and references to additional SHOP input files.
             source: The source of the SHOP trigger. If nothing is passed, the method will
                 try to detect the service principal of the current user.
 
         Returns:
             The new SHOP run created.
         """
+        if not case.watercourse:
+            raise ValueError("Set watercourse on case before triggering.")
+
         user: UserProfile | None
         try:
             user = self._cdf.iam.user_profiles.me()
@@ -141,32 +65,54 @@ class SHOPRunAPI:
         else:
             display_name = "Unknown"
 
-        meta = self.upload_shop_file(
-            shop_file=case_file,
-            file_name=f"Manual Case by {display_name}",
+        now = datetime.datetime.now(datetime.timezone.utc)
+
+        case_file_meta = self._cdf.files.upload_bytes(
+            # On Windows machines, some bytes can get lost in the encoding process
+            # when uploading a string to CDF. This is a workaround.
+            content=case.yaml.encode("utf-8"),
+            name=f"Manual Case by {display_name}",
+            mime_type="application/yaml",
+            external_id=new_external_id(prefix="cog_shop_manual", now=now),
             metadata={"shop:type": "cog_shop_case", "user": display_name},
+            data_set_id=self._dataset_id,
             source=source,
         )
 
-        now = datetime.datetime.now(datetime.timezone.utc)
-        now_isoformat = now.isoformat().replace("+00:00", "Z")
-
-        new_event = SHOPRun(
-            external_id=f"SHOP_RUN_{now_isoformat}_{_unique_short_str(3)}",
-            watercourse=watercourse,
+        shop_run = SHOPRun(
+            external_id=new_external_id(now=now),
+            watercourse=case.watercourse,
+            data_set_id=self._dataset_id,
             start=now,
             end=None,
-            _case_file_external_id=meta.external_id,
-            _shop_files=[],
-            shop_version=self.cogshop_version,
+            _case_file_external_id=case_file_meta.external_id,
+            _shop_files=case.shop_files,
+            shop_version=case.shop_version,
             _client=self._cdf,
             source=source,
         )
-        self._cdf.events.create(new_event.as_cdf_event(self._dataset_id))
-        self._trigger_shop_container(new_event)
-        return new_event
+        event = shop_run.as_cdf_event()
+        self._cdf.events.create(shop_run.as_cdf_event())
+        relationships = [
+            simple_relationship(source=event, target=case_file_meta, label_external_id=RelationshipLabel.CASE_FILE)
+        ]
 
-    def _trigger_shop_container(self, event: SHOPRun):
+        for shop_file_reference in case.shop_files:
+            cdf_file = shop_file_reference.as_cdf_file_metadata()
+            relationships.append(
+                simple_relationship(source=event, target=cdf_file, label_external_id=RelationshipLabel.EXTRA_FILE)
+            )
+        self._cdf.relationships.create(relationships)
+
+        self._trigger_shop_container(shop_run)
+        return shop_run
+
+    def trigger_shop_run(self, shop_run: SHOPRun) -> SHOPRun:
+        self._create(shop_run)
+        self._trigger_shop_container(shop_run)
+        return shop_run
+
+    def _trigger_shop_container(self, shop_run: SHOPRun):
         def auth(r: requests.PreparedRequest) -> requests.PreparedRequest:
             auth_header_name, auth_header_value = self._cdf._config.credentials.authorization_header()
             r.headers[auth_header_name] = auth_header_value
@@ -174,7 +120,7 @@ class SHOPRunAPI:
 
         response = requests.post(
             url=self._shop_url(),
-            json={"shopEventExternalId": event.external_id, "cogShopVersion": self.cogshop_version},
+            json={"shopEventExternalId": shop_run.external_id, "cogShopVersion": self.cogshop_version},
             auth=auth,
         )
         response.raise_for_status()
@@ -317,3 +263,49 @@ class SHOPRunAPI:
             end_before=end_before,
         ).get_filters()
         return self._load_cdf_event_shop_runs(extra_filters=extra_filters, limit=limit)
+
+    @overload
+    def _create(self, shop_run: SHOPRun | Sequence[SHOPRun]) -> SHOPRun | Sequence[SHOPRun]:
+        ...
+
+    @overload
+    def _create(self, shop_run: Sequence[SHOPRun]) -> Sequence[SHOPRun]:
+        ...
+
+    def _create(self, shop_run: SHOPRun | Sequence[SHOPRun]) -> SHOPRun | Sequence[SHOPRun]:
+        api_method = self._wrap_event_api(self._cdf.events.create)
+        return api_method(shop_run)
+
+    @overload
+    def _update(self, shop_run: SHOPRun | Sequence[SHOPRun]) -> SHOPRun | Sequence[SHOPRun]:
+        ...
+
+    @overload
+    def _update(self, shop_run: Sequence[SHOPRun]) -> Sequence[SHOPRun]:
+        ...
+
+    def _update(self, shop_run: SHOPRun | Sequence[SHOPRun]) -> SHOPRun | Sequence[SHOPRun]:
+        api_method = self._wrap_event_api(self._cdf.events.update)
+        return api_method(shop_run)
+
+    @overload
+    def _upsert(self, shop_run: SHOPRun | Sequence[SHOPRun]) -> SHOPRun | Sequence[SHOPRun]:
+        ...
+
+    @overload
+    def _upsert(self, shop_run: Sequence[SHOPRun]) -> Sequence[SHOPRun]:
+        ...
+
+    def _upsert(self, shop_run: SHOPRun | Sequence[SHOPRun]) -> SHOPRun | Sequence[SHOPRun]:
+        api_method = self._wrap_event_api(self._cdf.events.update)
+        return api_method(shop_run)
+
+    def _wrap_event_api(self, api_method: Callable) -> _APICallableForSHOPRunT:
+        def wrapped(shop_run: SHOPRun | Sequence[SHOPRun]) -> SHOPRun | Sequence[SHOPRun]:
+            is_single = isinstance(shop_run, SHOPRun)
+            shop_runs = [shop_run] if is_single else shop_run
+            new_events = api_method([shop_run.as_cdf_event() for shop_run in shop_runs])
+            loaded_shop_runs = [SHOPRun.load(new_event) for new_event in new_events]
+            return loaded_shop_runs[0] if is_single else loaded_shop_runs
+
+        return wrapped
