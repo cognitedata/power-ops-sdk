@@ -125,6 +125,7 @@ def to_cogshop_asset_model(
             for mapping in template.base_mappings
         }
     )
+    # TODO: extend here to use adapter to translate to new transformations and extend the model with those
     model.transformations.update(
         {
             t.external_id: t

@@ -57,6 +57,10 @@ def _relative_datapoints_to_series(
 
 
 class Transformation(BaseModel, ABC):
+    @property
+    def name(self):
+        return self.__repr_name__
+
     @classmethod
     def load(cls, transformation_: dict[str, Any]) -> Self:
         (transformation_name,) = transformation_
@@ -64,6 +68,11 @@ class Transformation(BaseModel, ABC):
             return _TRANSFORMATIONS_BY_CLASS_NAME[transformation_name].__call__(**transformation_body["input"])
         else:
             return _TRANSFORMATIONS_BY_CLASS_NAME[transformation_name].__call__()
+
+    # TODO: have  validator that checks that this dict (later json)
+    # does not exceed the DM limit of 255 characters for a string?
+    def input_to_dict(self) -> dict:
+        return {}
 
     @abstractmethod
     def apply(
@@ -86,6 +95,9 @@ class AddConstant(Transformation):
     """
 
     constant: float
+
+    def input_to_dict(self) -> dict:
+        return {"constant": self.constant}
 
     def apply(
         self,
@@ -175,6 +187,9 @@ class MultiplyConstant(Transformation):
 
     constant: float
 
+    def input_to_dict(self) -> dict:
+        return {"constant": self.constant}
+
     def apply(
         self,
         time_series_data: tuple[pd.Series],
@@ -202,6 +217,9 @@ class StaticValues(DynamicTransformation):
     relative_datapoints: list[RelativeDatapoint]
     _pre_apply_has_run: bool = False
     _start: datetime
+
+    def input_to_dict(self) -> dict:
+        return {f"{int(r_point.offset_minute)}": f"{r_point.offset_value}" for r_point in self.relative_datapoints}
 
     @property
     def start(self):
@@ -418,6 +436,9 @@ class HeightToVolume(DynamicTransformation):
     def pre_apply_has_run(self, value: bool):
         self._pre_apply_has_run = value
 
+    def input_to_dict(self) -> dict:
+        return {"object_type": self.object_type, "object_name": self.object_name}
+
     @staticmethod
     def height_to_volume(time_series_data: pd.Series, heights: list[float], volumes: list[float]) -> pd.Series:
         def interpolate(height: float) -> float:
@@ -513,6 +534,9 @@ class AddFromOffset(Transformation):
     shift_minutes: int = 0
     relative_datapoints: list[RelativeDatapoint]
 
+    def input_to_dict(self) -> dict:
+        return {f"{int(r_point.offset_minute)}": f"{r_point.offset_value}" for r_point in self.relative_datapoints}
+
     def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
         """
         Args:
@@ -579,6 +603,9 @@ class MultiplyFromOffset(Transformation):
 
     shift_minutes: int = 0
     relative_datapoints: list[RelativeDatapoint]
+
+    def input_to_dict(self) -> dict:
+        return {f"{int(r_point.offset_minute)}": f"{r_point.offset_value}" for r_point in self.relative_datapoints}
 
     def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
         """
@@ -681,6 +708,13 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
     @pre_apply_has_run.setter
     def pre_apply_has_run(self, value: bool):
         self._pre_apply_has_run = value
+
+    def input_to_dict(self) -> dict:
+        return {
+            "discharge": self.discharge_ts_external_id,
+            "transit_object": self.transit_object_type,
+            "transit_name": self.transit_object_name,
+        }
 
     @staticmethod
     def get_shape(model: dict, transit_object_type: str, transit_object_name: str) -> dict[int, float]:

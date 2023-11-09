@@ -36,8 +36,8 @@ nav:
           - serialization: packages/utils/serialization.md
           - CDF:
             - extraction pipeline: packages/utils/cdf_extraction_pipeline.md
-      - Time Series Transformations:
-          - transformations: packages/transformations/transformations.md
+      - Prerun Time Series Transformations:
+          - transformations: packages/prerun_transformations/transformations.md
 
 markdown_extensions:
   - pymdownx.superfences
