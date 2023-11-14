@@ -41,6 +41,7 @@ class ShopRunEvent:
     preprocessor_data: str = "shop:preprocessor_data"
     shop_version: str = "shop_version"
     case_file: str = "cog_shop_case_file"
+    pre_run_file = "shop:prerun_file"
     shop_files: str = "cog_shop_file_list"
     shopstart: str = "shop:starttime"
     shopend: str = "shop:endtime"
@@ -70,7 +71,8 @@ class SHOPRun:
     end: datetime | None
     shop_version: str
     source: str | None
-    _case_file_external_id: str
+    _shop_prerun_file: str | None
+    _case_file_external_id: str | None
     _shop_files: list[SHOPFileReference]
     _client: CogniteClient = field(repr=False)
     _run_event_types: set[str] = field(init=False, default_factory=set)
@@ -106,6 +108,7 @@ class SHOPRun:
             end=ms_to_datetime(event.end_time) if event.end_time else None,
             shop_version=preprocessor_data.get(ShopRunEvent.shop_version, ""),
             _case_file_external_id=preprocessor_data.get(ShopRunEvent.case_file, {}).get("external_id"),
+            _shop_prerun_file=metadata.get(ShopRunEvent.preprocessor_data),
             _shop_files=[SHOPFileReference.load(item) for item in preprocessor_data.get(ShopRunEvent.shop_files, [])],
             _client=event._cognite_client,
             source=event.source,
@@ -131,6 +134,7 @@ class SHOPRun:
             metadata={
                 ShopRunEvent.watercourse: self.watercourse,
                 ShopRunEvent.manual_run: "",
+                ShopRunEvent.pre_run_file: self._shop_prerun_file,
                 ShopRunEvent.preprocessor_data: json.dumps(
                     {
                         **shop_version_spec,

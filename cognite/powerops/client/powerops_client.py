@@ -28,6 +28,7 @@ class PowerOpsClient:
         monitor_dataset: str | None = None,
     ):
         self.cdf = CogniteClient(config)
+        self.cogshop_version = cogshop_version
         self.datasets = DataSetsAPI(self.cdf, read_dataset, write_dataset, monitor_dataset)
         self.production = ProductionAPIs(self.cdf)
         self.dayahead = DayAheadAPIs(self.cdf)
