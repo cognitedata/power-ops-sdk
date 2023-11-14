@@ -41,10 +41,10 @@ class ShopRunEvent:
     preprocessor_data: str = "shop:preprocessor_data"
     shop_version: str = "shop_version"
     case_file: str = "cog_shop_case_file"
-    pre_run_file = "shop:prerun_file"
     shop_files: str = "cog_shop_file_list"
     shopstart: str = "shop:starttime"
     shopend: str = "shop:endtime"
+    file_source: str = "shop:file_source"
     user_id: str = "user:identifier"
 
 
@@ -71,7 +71,6 @@ class SHOPRun:
     end: datetime | None
     shop_version: str
     source: str | None
-    _shop_prerun_file: str | None
     _case_file_external_id: str | None
     _shop_files: list[SHOPFileReference]
     _client: CogniteClient = field(repr=False)
@@ -108,7 +107,6 @@ class SHOPRun:
             end=ms_to_datetime(event.end_time) if event.end_time else None,
             shop_version=preprocessor_data.get(ShopRunEvent.shop_version, ""),
             _case_file_external_id=preprocessor_data.get(ShopRunEvent.case_file, {}).get("external_id"),
-            _shop_prerun_file=metadata.get(ShopRunEvent.preprocessor_data),
             _shop_files=[SHOPFileReference.load(item) for item in preprocessor_data.get(ShopRunEvent.shop_files, [])],
             _client=event._cognite_client,
             source=event.source,
@@ -134,7 +132,6 @@ class SHOPRun:
             metadata={
                 ShopRunEvent.watercourse: self.watercourse,
                 ShopRunEvent.manual_run: "",
-                ShopRunEvent.pre_run_file: self._shop_prerun_file,
                 ShopRunEvent.preprocessor_data: json.dumps(
                     {
                         **shop_version_spec,
@@ -144,6 +141,7 @@ class SHOPRun:
                 ),
                 # These are required by the SHOP container
                 # In the functions, create_bid_process_event the end is by default 2 weeks into the future.
+                ShopRunEvent.file_source: self.source,
                 ShopRunEvent.shopstart: self.start.isoformat(),
                 ShopRunEvent.shopend: (self.start + timedelta(days=14)).isoformat(),
             },

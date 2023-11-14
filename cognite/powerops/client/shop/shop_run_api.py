@@ -18,7 +18,7 @@ from cognite.powerops.client.shop.shop_run_filter import SHOPRunFilter
 from cognite.powerops.utils.cdf.resource_creation import simple_relationship
 
 from .data_classes.dayahead_trigger import Case
-from .shop_case import SHOPCase
+from .shop_case import SHOPCase, SHOPFileReference, SHOPFileType
 from .shop_run import SHOPRun, ShopRunEvent, SHOPRunList
 from .utils import new_external_id
 
@@ -50,9 +50,8 @@ class SHOPRunAPI:
                     start=now,
                     end=None,
                     data_set_id=self._dataset_id,
-                    _shop_prerun_file=shop_run.pre_run_external_id,
-                    _case_file_external_id=None,
-                    _shop_files=[],
+                    _case_file_external_id=shop_run.pre_run_external_id,
+                    _shop_files=[SHOPFileReference(external_id=case.commands_file, file_type=SHOPFileType.ASCII.value)],
                     shop_version=self.cogshop_version,
                     _client=self._cdf,
                     source="DayaheadTrigger",
@@ -115,7 +114,6 @@ class SHOPRunAPI:
             start=now,
             end=None,
             _case_file_external_id=case_file_meta.external_id,
-            _shop_prerun_file=None,
             _shop_files=case.shop_files,
             shop_version=case.shop_version,
             _client=self._cdf,

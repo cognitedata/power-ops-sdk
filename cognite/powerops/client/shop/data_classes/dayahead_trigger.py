@@ -35,6 +35,7 @@ class Case(BaseModel):
     case_name: str  # e.g. Glomma
     pre_runs: list[ShopRun]
     plants: list[str] = []
+    commands_file: Optional[str] = None  # most prerun files do not have commands. Provide this as extra files
     pre_runs_external_id_prefix: Optional[str] = None
 
 
