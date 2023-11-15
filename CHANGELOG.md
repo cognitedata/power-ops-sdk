@@ -13,6 +13,13 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+
+## [0.73.2] - 2023-11-15
+### Changed
+* Changes to the shop api for triggering a shop run with a single casefile, and triggering a set of prerunfiles related
+to a Case. 
+* Updates to DayaheadTrigger and DayaheadTriggerAPI classes to accomodate this
+
 ## [0.73.1] - 2023-11-07
 ### Changed
 * Allow `v7` of `cognite-sdk`.
