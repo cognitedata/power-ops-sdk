@@ -32,8 +32,9 @@ class SHOPRunAPI:
         self._cdf = client
         self._dataset_id = dataset_id
         self.cogshop_version = cogshop_version
+        self._CONCURRENT_CALLS = 5
 
-    def trigger_case(self, case: Case, concurrent_calls: int = 5) -> list[SHOPRun]:
+    def trigger_case(self, case: Case) -> list[SHOPRun]:
         """
         Trigger a collection of shop runs related to one Case (also referred to as watercourse).
         For each ShopCase the prerun file will be used to trigger a shop run event in cdf,
@@ -41,8 +42,8 @@ class SHOPRunAPI:
         Prerun files must exist in CDF.
         """
         shop_events = []
+        now = datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0)
         for shop_run in case.pre_runs:
-            now = datetime.datetime.now(datetime.timezone.utc)
             shop_events.append(
                 SHOPRun(
                     external_id=new_external_id(now=now),
@@ -59,7 +60,7 @@ class SHOPRunAPI:
             )
         self._cdf.events.create([new_event.as_cdf_event() for new_event in shop_events])
 
-        with ThreadPoolExecutor(max_workers=concurrent_calls) as executor:
+        with ThreadPoolExecutor(max_workers=self._CONCURRENT_CALLS) as executor:
             for shop_event in shop_events:
                 # TODO: make cogshop accept this event with the prerunfile in the metadata of the event
                 executor.submit(self._trigger_shop_container, shop_event)
