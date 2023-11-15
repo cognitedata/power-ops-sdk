@@ -44,6 +44,7 @@ class ShopRunEvent:
     shop_files: str = "cog_shop_file_list"
     shopstart: str = "shop:starttime"
     shopend: str = "shop:endtime"
+    file_source: str = "shop:file_source"
     user_id: str = "user:identifier"
 
 
@@ -70,7 +71,7 @@ class SHOPRun:
     end: datetime | None
     shop_version: str
     source: str | None
-    _case_file_external_id: str
+    _case_file_external_id: str | None
     _shop_files: list[SHOPFileReference]
     _client: CogniteClient = field(repr=False)
     _run_event_types: set[str] = field(init=False, default_factory=set)
@@ -140,6 +141,7 @@ class SHOPRun:
                 ),
                 # These are required by the SHOP container
                 # In the functions, create_bid_process_event the end is by default 2 weeks into the future.
+                ShopRunEvent.file_source: self.source,
                 ShopRunEvent.shopstart: self.start.isoformat(),
                 ShopRunEvent.shopend: (self.start + timedelta(days=14)).isoformat(),
             },

@@ -1,8 +1,17 @@
-from pathlib import Path
 from typing import Literal, Optional
-from uuid import uuid4
 
-from pydantic import BaseModel, field_validator, model_validator
+from pydantic import BaseModel
+
+
+class DayaheadTriggerEvent:
+    event_type: str = "POWEROPS_BID_PROCESS_FROM_PRERUNS"
+    external_id_prefix: str = "POWEROPS_BID_PROCESS_"
+    market: str = "bid:market"
+    main_scenario: str = "bid:main_scenario"
+    price_scenarios: str = "bid:price_scenarios"
+    method: str = "bid:method"
+    price_area: str = "bid:price_area"
+    relationship_label_to_shop_run_events: str = "relationship_to.shop_run_event"
 
 
 class ShopRun(BaseModel):
@@ -13,22 +22,9 @@ class ShopRun(BaseModel):
               or beprovided directly by the user although file existst in cdf?
     """
 
-    pre_run_path: Optional[Path]
-    pre_run_external_id: Optional[str]
-    plants: list[str]
-    price_scenario: str
-
-    @property
-    def file_external_id_prefix(self) -> str:
-        return f"cog_shop_manual/{uuid4()!s}"
-
-    @model_validator(mode="after")
-    def one_prerun_file_reference(self) -> "ShopRun":
-        if (self.pre_run_path and self.pre_run_external_id) or (
-            self.pre_run_path is None and self.pre_run_external_id is None
-        ):
-            raise ValueError("Specify one of either path to prerun file or external_id of file in CDF!")
-        return self
+    pre_run_external_id: str
+    plants: Optional[list[str]] = None  # all the plants included in this ShopRun
+    price_scenario: Optional[str] = None
 
 
 class Case(BaseModel):
@@ -36,22 +32,19 @@ class Case(BaseModel):
     Case definition based on a set of prerun files to run for certain plants that are used in the set of prerun files
     """
 
-    case_name: Optional[str]  # e.g. Glomma
-    plants: list[str]  # list of all plants that are in case
+    case_name: str  # e.g. Glomma
     pre_runs: list[ShopRun]
+    plants: list[str] = []
+    commands_file: Optional[str] = None  # most prerun files do not have commands. Provide this as extra files
+    pre_runs_external_id_prefix: Optional[str] = None
 
 
 class DayaheadTrigger(BaseModel):
-    price_scenarios: list[str] = []
+    price_scenarios: list[str]
     main_scenario: str = ""
     price_area: str
-    method: Literal["multi_scenario", "price_independent"]
+    method: Literal["multi_scenario", "price_independent", "Gajas superawesome bid config"]
     cases: list[Case]
-
-    @field_validator("price_scenarios")
-    @classmethod
-    def price_scenario_available_for_method(cls, value):
-        ...
 
     @property
     def num_price_areas(self) -> int:

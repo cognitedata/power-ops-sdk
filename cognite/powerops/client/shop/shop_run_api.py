@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import datetime
 from collections.abc import Sequence
+from concurrent.futures import ThreadPoolExecutor
 from typing import Callable, Literal, Optional, Union, overload
 from urllib.parse import urlparse
 
@@ -16,7 +17,8 @@ from cognite.powerops.cdf_labels import RelationshipLabel
 from cognite.powerops.client.shop.shop_run_filter import SHOPRunFilter
 from cognite.powerops.utils.cdf.resource_creation import simple_relationship
 
-from .shop_case import SHOPCase
+from .data_classes.dayahead_trigger import Case
+from .shop_case import SHOPCase, SHOPFileReference, SHOPFileType
 from .shop_run import SHOPRun, ShopRunEvent, SHOPRunList
 from .utils import new_external_id
 
@@ -30,8 +32,42 @@ class SHOPRunAPI:
         self._cdf = client
         self._dataset_id = dataset_id
         self.cogshop_version = cogshop_version
+        self._CONCURRENT_CALLS = 5
 
-    def trigger_case(self, case: SHOPCase, source: str | None = None) -> SHOPRun:
+    def trigger_case(self, case: Case) -> list[SHOPRun]:
+        """
+        Trigger a collection of shop runs related to one Case (also referred to as watercourse).
+        For each ShopCase the prerun file will be used to trigger a shop run event in cdf,
+        and used to trigger the CogShop container.
+        Prerun files must exist in CDF.
+        """
+        shop_events = []
+        now = datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0)
+        for shop_run in case.pre_runs:
+            shop_events.append(
+                SHOPRun(
+                    external_id=new_external_id(now=now),
+                    watercourse=case.case_name,
+                    start=now,
+                    end=None,
+                    data_set_id=self._dataset_id,
+                    _case_file_external_id=shop_run.pre_run_external_id,
+                    _shop_files=[SHOPFileReference(external_id=case.commands_file, file_type=SHOPFileType.ASCII.value)],
+                    shop_version=self.cogshop_version,
+                    _client=self._cdf,
+                    source="DayaheadTrigger",
+                )
+            )
+        self._cdf.events.create([new_event.as_cdf_event() for new_event in shop_events])
+
+        with ThreadPoolExecutor(max_workers=self._CONCURRENT_CALLS) as executor:
+            for shop_event in shop_events:
+                # TODO: make cogshop accept this event with the prerunfile in the metadata of the event
+                executor.submit(self._trigger_shop_container, shop_event)
+
+        return shop_events
+
+    def trigger_single_casefile(self, case: SHOPCase, source: str | None = None) -> SHOPRun:
         """
         Trigger SHOP for a given case file.
 
@@ -55,16 +91,9 @@ class SHOPRunAPI:
             else:
                 raise
 
-        if source is None and user:
-            source = user.user_identifier
-        elif source is None:
-            source = "manual"
-
-        if user:
-            display_name = user.display_name
-        else:
-            display_name = "Unknown"
-
+        if source is None:
+            source = user.user_identifier if user else "manual"
+        display_name = user.display_name if user else "Unknown"
         now = datetime.datetime.now(datetime.timezone.utc)
 
         case_file_meta = self._cdf.files.upload_bytes(
@@ -173,9 +202,7 @@ class SHOPRunAPI:
         """
         if isinstance(external_id, str):
             event = self._cdf.events.retrieve(external_id=external_id)
-            if event is None:
-                return None
-            return SHOPRun.load(event)
+            return None if event is None else SHOPRun.load(event)
         elif isinstance(external_id, Sequence):
             return SHOPRunList.load(
                 self._cdf.events.retrieve_multiple(external_ids=external_id, ignore_unknown_ids=ignore_unknown_ids)
