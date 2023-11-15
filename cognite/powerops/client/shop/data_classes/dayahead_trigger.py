@@ -1,4 +1,4 @@
-from typing import Literal, Optional
+from typing import Optional
 
 from pydantic import BaseModel
 
@@ -43,7 +43,7 @@ class DayaheadTrigger(BaseModel):
     price_scenarios: list[str]
     main_scenario: str = ""
     price_area: str
-    method: Literal["multi_scenario", "price_independent", "Gajas superawesome bid config"]
+    method: str
     cases: list[Case]
 
     @property
