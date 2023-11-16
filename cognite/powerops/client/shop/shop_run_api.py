@@ -34,7 +34,7 @@ class SHOPRunAPI:
         self.cogshop_version = cogshop_version
         self._CONCURRENT_CALLS = 5
 
-    def trigger_case(self, case: Case) -> list[SHOPRun]:
+    def trigger_case(self, case: Case, shop_version: str) -> list[SHOPRun]:
         """
         Trigger a collection of shop runs related to one Case (also referred to as watercourse).
         For each ShopCase the prerun file will be used to trigger a shop run event in cdf,
@@ -52,8 +52,10 @@ class SHOPRunAPI:
                     end=None,
                     data_set_id=self._dataset_id,
                     _case_file_external_id=shop_run.pre_run_external_id,
-                    _shop_files=[SHOPFileReference(external_id=case.commands_file, file_type=SHOPFileType.ASCII.value)],
-                    shop_version=self.cogshop_version,
+                    _shop_files=[SHOPFileReference(external_id=case.commands_file, file_type=SHOPFileType.ASCII.value)]
+                    if case.commands_file
+                    else [],
+                    shop_version=shop_version,
                     _client=self._cdf,
                     source="DayaheadTrigger",
                 )
@@ -62,7 +64,6 @@ class SHOPRunAPI:
 
         with ThreadPoolExecutor(max_workers=self._CONCURRENT_CALLS) as executor:
             for shop_event in shop_events:
-                # TODO: make cogshop accept this event with the prerunfile in the metadata of the event
                 executor.submit(self._trigger_shop_container, shop_event)
 
         return shop_events

@@ -10,10 +10,10 @@ from cognite.powerops.client.shop.utils import unique_short_str
 
 
 class DayaheadTriggerAPI:
-    def __init__(self, client: CogniteClient, data_set: int, cogshop_version: str):
+    def __init__(self, client: CogniteClient, data_set: int):
         self._client = client
         self._data_set_api = data_set
-        self.shop_run = SHOPRunAPI(client, data_set, cogshop_version)
+        self.shop_run = SHOPRunAPI(client, data_set)
 
     def get_plants_for_case(
         self, case_pre_run_files: list[str], metadata_key: str = "shop_plants", delimiter: str = ","
@@ -78,7 +78,7 @@ class DayaheadTriggerAPI:
         """
         shop_cases = []
         for case in workflow.cases:
-            shop_cases.extend(self.shop_run.trigger_case(case))
+            shop_cases.extend(self.shop_run.trigger_case(case, workflow.shop_version))
 
         workflow_event = self.create_trigger_event(workflow, shop_cases)
         shop_runs_as_external_ids = [shop_run.as_cdf_event().external_id for shop_run in shop_cases]

@@ -2,6 +2,8 @@ from typing import Optional
 
 from pydantic import BaseModel
 
+_SHOP_VERSION_FALLBACK = "15.3.3.2"
+
 
 class DayaheadTriggerEvent:
     event_type: str = "POWEROPS_BID_PROCESS_FROM_PRERUNS"
@@ -42,6 +44,7 @@ class Case(BaseModel):
 class DayaheadTrigger(BaseModel):
     price_scenarios: list[str]
     main_scenario: str = ""
+    shop_version: Optional[str] = _SHOP_VERSION_FALLBACK
     price_area: str
     method: str
     cases: list[Case]

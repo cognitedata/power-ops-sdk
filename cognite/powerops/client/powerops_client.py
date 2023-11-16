@@ -38,7 +38,7 @@ class PowerOpsClient:
         self.cog_shop1 = CogShop1Client(self.cdf)
         self.capacity_bid = CapacityBidAPIs(self.cdf)
         self.shop = SHOPRunAPI(self.cdf, self.datasets.write_dataset_id, cogshop_version)
-        self.workflow = DayaheadTriggerAPI(self.cdf, self.datasets.write_dataset_id, cogshop_version)
+        self.workflow = DayaheadTriggerAPI(self.cdf, self.datasets.write_dataset_id)
 
     @classmethod
     def from_settings(cls, settings: Settings | None = None) -> PowerOpsClient:
