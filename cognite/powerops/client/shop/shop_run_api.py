@@ -9,7 +9,7 @@ from urllib.parse import urlparse
 import arrow
 import requests
 from cognite.client import CogniteClient
-from cognite.client.data_classes import UserProfile, filters
+from cognite.client.data_classes import FileMetadata, UserProfile, filters
 from cognite.client.data_classes.events import EventSort
 from cognite.client.exceptions import CogniteAPIError
 
@@ -17,7 +17,7 @@ from cognite.powerops.cdf_labels import RelationshipLabel
 from cognite.powerops.client.shop.shop_run_filter import SHOPRunFilter
 from cognite.powerops.utils.cdf.resource_creation import simple_relationship
 
-from .data_classes.dayahead_trigger import Case
+from .data_classes.dayahead_trigger import Case, PrerunFileMetadata, ShopRun
 from .shop_case import SHOPCase, SHOPFileReference, SHOPFileType
 from .shop_run import SHOPRun, ShopRunEvent, SHOPRunList
 from .utils import new_external_id
@@ -34,6 +34,9 @@ class SHOPRunAPI:
         self.cogshop_version = cogshop_version
         self._CONCURRENT_CALLS = 5
 
+    def _get_shopfile_metadata(self, file_external_id: str) -> FileMetadata:
+        return self._cdf.files.retrieve(external_id=file_external_id)
+
     def trigger_case(self, case: Case, shop_version: str) -> list[SHOPRun]:
         """
         Trigger a collection of shop runs related to one Case (also referred to as watercourse).
@@ -44,6 +47,9 @@ class SHOPRunAPI:
         shop_events = []
         now = datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0)
         for shop_run in case.pre_runs:
+            if not shop_run.plants or shop_run.price_scenario:
+                file_meta = self._get_shopfile_metadata(shop_run.pre_run_external_id)
+                shop_run = ShopRun.load_from_metadata(shop_run.pre_run_external_id, file_meta.metadata)
             shop_events.append(
                 SHOPRun(
                     external_id=new_external_id(now=now),
@@ -56,6 +62,8 @@ class SHOPRunAPI:
                     if case.commands_file
                     else [],
                     shop_version=shop_version,
+                    plants=PrerunFileMetadata._plants_delimiter.join(shop_run.plants),
+                    price_scenario=shop_run.price_scenario,
                     _client=self._cdf,
                     source="DayaheadTrigger",
                 )

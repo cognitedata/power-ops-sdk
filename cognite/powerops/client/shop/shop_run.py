@@ -45,6 +45,8 @@ class ShopRunEvent:
     shopstart: str = "shop:starttime"
     shopend: str = "shop:endtime"
     file_source: str = "shop:file_source"
+    plants: str = "shop:plants"
+    price_scenario: str = "shop:price_scenario"
     user_id: str = "user:identifier"
 
 
@@ -71,6 +73,8 @@ class SHOPRun:
     end: datetime | None
     shop_version: str
     source: str | None
+    plants: str | None
+    price_scenario: str | None
     _case_file_external_id: str | None
     _shop_files: list[SHOPFileReference]
     _client: CogniteClient = field(repr=False)
@@ -110,6 +114,8 @@ class SHOPRun:
             _shop_files=[SHOPFileReference.load(item) for item in preprocessor_data.get(ShopRunEvent.shop_files, [])],
             _client=event._cognite_client,
             source=event.source,
+            plants=metadata.get(ShopRunEvent.plants),
+            price_scenario=metadata.get(ShopRunEvent.price_scenario),
         )
 
     @property
@@ -132,6 +138,8 @@ class SHOPRun:
             metadata={
                 ShopRunEvent.watercourse: self.watercourse,
                 ShopRunEvent.manual_run: "",
+                ShopRunEvent.plants: self.plants or "",
+                ShopRunEvent.price_scenario: self.price_scenario or "",
                 ShopRunEvent.preprocessor_data: json.dumps(
                     {
                         **shop_version_spec,

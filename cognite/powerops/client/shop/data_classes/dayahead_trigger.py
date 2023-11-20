@@ -1,8 +1,15 @@
 from typing import Optional
 
 from pydantic import BaseModel
+from typing_extensions import Self
 
 _SHOP_VERSION_FALLBACK = "15.3.3.2"
+
+
+class PrerunFileMetadata:
+    plants: str = "shop:plants"
+    price_scenario: str = "shop:price_scenario"
+    _plants_delimiter: str = ","
 
 
 class DayaheadTriggerEvent:
@@ -25,8 +32,18 @@ class ShopRun(BaseModel):
     """
 
     pre_run_external_id: str
-    plants: Optional[list[str]] = None  # all the plants included in this ShopRun
+    plants: Optional[list[str]] = None
     price_scenario: Optional[str] = None
+
+    @classmethod
+    def load_from_metadata(cls, file_external_id: str, file_metadata: dict) -> Self:
+        plants_as_string = file_metadata.get(PrerunFileMetadata.plants)
+        plants = [plant.lstrip() for plant in plants_as_string.split(PrerunFileMetadata._plants_delimiter)]
+        return cls(
+            pre_run_external_id=file_external_id,
+            plants=plants,
+            price_scenario=file_metadata.get(PrerunFileMetadata.price_scenario),
+        )
 
 
 class Case(BaseModel):
