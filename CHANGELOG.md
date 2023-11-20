@@ -13,6 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.73.3] - 2023-11-20
+### Added
+* Noebook with basic usage of DayaheadTrigger
+* Ability to fetch metadata info from prerun files that needs to go into SHOP run events in case the user does not
+provide this with the instantiation of a DayaheadTrigger
 
 ## [0.73.2] - 2023-11-15
 ### Changed
