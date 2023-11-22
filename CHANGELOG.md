@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.73.4] - 2023-11-22
+### Added
+* New release workflow.zs
+
 ## [0.73.3] - 2023-11-20
 ### Added
 * Noebook with basic usage of DayaheadTrigger
