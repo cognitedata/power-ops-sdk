@@ -37,7 +37,7 @@ class SHOPRunAPI:
     def _get_shopfile_metadata(self, file_external_id: str) -> FileMetadata:
         return self._cdf.files.retrieve(external_id=file_external_id)
 
-    def trigger_case(self, case: Case, shop_version: str) -> list[SHOPRun]:
+    def trigger_case(self, case: Case, shop_version: str) -> tuple[list, list[SHOPRun]]:
         """
         Trigger a collection of shop runs related to one Case (also referred to as watercourse).
         For each ShopCase the prerun file will be used to trigger a shop run event in cdf,
@@ -46,10 +46,12 @@ class SHOPRunAPI:
         """
         shop_events = []
         now = datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0)
+        plants_per_case = []
         for shop_run in case.pre_runs:
             if not shop_run.plants or shop_run.price_scenario:
                 file_meta = self._get_shopfile_metadata(shop_run.pre_run_external_id)
                 shop_run = ShopRun.load_from_metadata(shop_run.pre_run_external_id, file_meta.metadata)
+            plants_per_case.extend(shop_run.plants)
             shop_events.append(
                 SHOPRun(
                     external_id=new_external_id(now=now),
@@ -74,7 +76,7 @@ class SHOPRunAPI:
             for shop_event in shop_events:
                 executor.submit(self._trigger_shop_container, shop_event)
 
-        return shop_events
+        return list(set(plants_per_case)), shop_events
 
     def trigger_single_casefile(self, case: SHOPCase, source: str | None = None) -> SHOPRun:
         """
