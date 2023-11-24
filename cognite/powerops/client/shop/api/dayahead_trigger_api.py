@@ -9,6 +9,7 @@ from cognite.client.data_classes import Event, Relationship
 from cognite.powerops.client.shop.data_classes.dayahead_trigger import (
     DayaheadTrigger,
     DayaheadTriggerEvent,
+    DayaheadWorkflowRun,
     PartialFunctionEvent,
     TotalFunctionEvent,
 )
@@ -22,15 +23,14 @@ class DayaheadTriggerAPI:
         self._data_set_api = data_set
         self.shop_run = SHOPRunAPI(client, data_set, cogshop_version=cogshop_version)
 
-    def _create_function_events(
-        self, workflow: DayaheadTrigger, workflow_event_external_id: str, bid_date: str
+    def _create_partial_function_events(
+        self, workflow: DayaheadTrigger, workflow_event_external_id: str, bid_date: str, short_id: str
     ) -> dict:
         """
         Create the partial and total bid matrix calculation events that are needed for the partial and total bid
         matrix calculations in the Cognite Functions.
         """
         events_and_relationships: defaultdict = defaultdict(list, {k: [] for k in ("events", "relationships")})
-        short_id = unique_short_str(3)
 
         for plant in workflow.plants_per_workflow:
             partial_matrix_event_external_id = f"{PartialFunctionEvent.external_id_prefix}{short_id}_{plant}"
@@ -56,37 +56,40 @@ class DayaheadTriggerAPI:
                     labels=[PartialFunctionEvent.relationship_label_to_trigger_event],
                 )
             )
-        total_event_external_id = f"{TotalFunctionEvent.external_id_prefix}{short_id}"
-        events_and_relationships["events"].append(
-            TotalFunctionEvent.as_cdf_event(
-                data_set=self._data_set_api,
-                bid_date=bid_date,
-                workflow_event_external_id=workflow_event_external_id,
-                event_external_id=total_event_external_id,
-                function_name="calculate_total_bid_matrix",
-                additional_metadata={
-                    TotalFunctionEvent.portfolio: f"price_area_{workflow.price_area}",
-                    TotalFunctionEvent.bid_process_configuration_name: f"{workflow.method}_"
-                    f"{len(workflow.price_scenarios)}_"
-                    f"{workflow.price_area}",
-                },
-            )
-        )
-        events_and_relationships["relationships"].append(
-            Relationship(
-                external_id=f"{workflow_event_external_id}.{total_event_external_id}",
-                source_external_id=workflow_event_external_id,
-                source_type="event",
-                target_external_id=total_event_external_id,
-                target_type="event",
-                data_set_id=self._data_set_api,
-                labels=[TotalFunctionEvent.relationship_label_to_trigger_event],
-            )
-        )
-
         return events_and_relationships
 
-    def _create_trigger_event(self, workflow: DayaheadTrigger, start_time: datetime, bid_date: str) -> Event:
+    def _create_total_matrix_event(
+        self, workflow: DayaheadTrigger, workflow_event_external_id: str, bid_date: str, short_id: str
+    ) -> tuple[Event, Relationship]:
+        total_event_external_id = f"{TotalFunctionEvent.external_id_prefix}{short_id}"
+        total_event = TotalFunctionEvent.as_cdf_event(
+            data_set=self._data_set_api,
+            bid_date=bid_date,
+            workflow_event_external_id=workflow_event_external_id,
+            event_external_id=total_event_external_id,
+            function_name="calculate_total_bid_matrix",
+            additional_metadata={
+                TotalFunctionEvent.portfolio: f"price_area_{workflow.price_area}",
+                TotalFunctionEvent.bid_process_configuration_name: f"{workflow.method}_"
+                f"{len(workflow.price_scenarios)}_"
+                f"{workflow.price_area}",
+            },
+        )
+        total_event_relationship = Relationship(
+            external_id=f"{workflow_event_external_id}.{total_event_external_id}",
+            source_external_id=workflow_event_external_id,
+            source_type="event",
+            target_external_id=total_event_external_id,
+            target_type="event",
+            data_set_id=self._data_set_api,
+            labels=[TotalFunctionEvent.relationship_label_to_trigger_event],
+        )
+
+        return (total_event, total_event_relationship)
+
+    def _create_trigger_event(
+        self, workflow: DayaheadTrigger, start_time: datetime, bid_date: str, short_id: str
+    ) -> Event:
         """
         Create a workflow trigger event and link the shop runs to this event.
         (needs method, price scenarios and plant for calculating total bid matrix per plant later on)
@@ -95,22 +98,34 @@ class DayaheadTriggerAPI:
         """
         return DayaheadTriggerEvent.as_cdf_event(
             data_set=self._data_set_api,
+            event_external_id=f"{DayaheadTriggerEvent.external_id_prefix}{workflow.bid_configuration_name}_{short_id}",
             start_time=start_time,
             bid_date=bid_date,
             price_area=workflow.price_area,
             price_scenarios=workflow.price_scenarios,
-            method=workflow.method,
+            bid_configuration_name=workflow.bid_configuration_name,
+            market_configuration_nordpool_dayahead=workflow.dayahead_configuration_external_id,
         )
 
     def _create_and_wire_workflow_events(
         self, workflow: DayaheadTrigger, shop_runs_as_cdf_events: list[Event], start_time: datetime, bid_date: str
-    ) -> dict[str, Event | list[Event]]:
-        workflow_event = self._create_trigger_event(workflow, start_time, bid_date)
-        events_and_relationships = self._create_function_events(
-            workflow=workflow, workflow_event_external_id=workflow_event.external_id, bid_date=bid_date
-        )
-        self._client.events.create([workflow_event, *events_and_relationships["events"]])
+    ) -> DayaheadWorkflowRun:
+        short_id = unique_short_str(3)
 
+        workflow_event = self._create_trigger_event(workflow, start_time, bid_date, short_id)
+        partial_events_and_relationships = self._create_partial_function_events(
+            workflow=workflow,
+            workflow_event_external_id=workflow_event.external_id,
+            bid_date=bid_date,
+            short_id=short_id,
+        )
+        total_event, total_event_relationship = self._create_total_matrix_event(
+            workflow=workflow,
+            workflow_event_external_id=workflow_event.external_id,
+            bid_date=bid_date,
+            short_id=short_id,
+        )
+        self._client.events.create([workflow_event, *partial_events_and_relationships["events"], total_event])
         shop_relationships = [
             Relationship(
                 external_id=f"{workflow_event.external_id}.{shop_event.external_id}",
@@ -123,15 +138,18 @@ class DayaheadTriggerAPI:
             )
             for shop_event in shop_runs_as_cdf_events
         ]
-        self._client.relationships.create([*events_and_relationships["relationships"], *shop_relationships])
+        self._client.relationships.create(
+            [*partial_events_and_relationships["relationships"], total_event_relationship, *shop_relationships]
+        )
 
-        return {
-            "workflow_trigger_event": workflow_event,
-            "bid_matrix_function_events": events_and_relationships["events"],
-            "shop_run_events": shop_runs_as_cdf_events,
-        }
+        return DayaheadWorkflowRun(
+            workflow_trigger_event=workflow_event,
+            total_bid_event=total_event,
+            partial_bid_events=partial_events_and_relationships["events"],
+            shop_run_events=shop_runs_as_cdf_events,
+        )
 
-    def trigger_workflow(self, workflow: DayaheadTrigger) -> dict[str, Event | list[Event]]:
+    def trigger_workflow(self, workflow: DayaheadTrigger) -> DayaheadWorkflowRun:
         """
         Creates shop runs for all prerun files referenced in each case.
         Creates a workflow trigger event that gets linked to all shop runs.

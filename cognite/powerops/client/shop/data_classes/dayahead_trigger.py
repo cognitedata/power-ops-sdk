@@ -1,11 +1,9 @@
 import datetime
-from typing import Optional
+from typing import Literal, Optional
 
 from cognite.client.data_classes import Event
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from typing_extensions import Self
-
-from cognite.powerops.client.shop.utils import unique_short_str
 
 _SHOP_VERSION_FALLBACK = "15.3.3.2"
 
@@ -33,9 +31,9 @@ class DayaheadFunctionEvent:
             data_set_id=data_set,
             metadata={
                 **additional_metadata,
-                DayaheadTriggerEvent.bid_date: bid_date,
-                DayaheadFunctionEvent.workflow_event_external_id: workflow_event_external_id,
-                DayaheadFunctionEvent.function_external_id: function_name,
+                cls.bid_date: bid_date,
+                cls.workflow_event_external_id: workflow_event_external_id,
+                cls.function_external_id: function_name,
                 "process_type": DayaheadFunctionEvent.event_type,
                 "processed": "true",
             },
@@ -65,8 +63,10 @@ class DayaheadTriggerEvent:
     external_id_prefix: str = "POWEROPS_BID_PROCESS_"
     market: str = "bid:market"
     main_scenario: str = "bid:main_scenario"
+    market_configuration_nordpool_dayahead: str = "bid:market_config_external_id"
     combine_bid_matrix_tasks: str = "bid:combine_bid_matrix_tasks"
     bid_process_configuration_name: str = "bid:bid_process_configuration_name"
+    bid_matrix_generator_config_external_id: str = "bid:bid_matrix_generator_config_external_id"
     price_scenarios: str = "bid:price_scenarios"
     method: str = "bid:bid_process_configuration_name"
     price_area: str = "bid:price_area"
@@ -76,30 +76,33 @@ class DayaheadTriggerEvent:
     @classmethod
     def as_cdf_event(
         cls,
+        event_external_id: str,
         data_set: int,
         start_time: datetime,
         bid_date: str,
         price_scenarios: list[str],
         price_area: str,
-        method: str,
+        market_configuration_nordpool_dayahead: str,
+        bid_configuration_name,
         main_scenario: str = "",
     ) -> Event:
         return Event(
-            external_id=f"{DayaheadTriggerEvent.external_id_prefix}{method}_{len(price_scenarios)}"
-            f"_{price_area}_{unique_short_str(3)}",
+            external_id=event_external_id,
             type=DayaheadTriggerEvent.event_type,
             data_set_id=data_set,
             start_time=int(start_time.timestamp()) * 1000,
             end_time=None,
             metadata={
-                DayaheadTriggerEvent.market: "Dayahead",
-                DayaheadTriggerEvent.main_scenario: main_scenario,
-                DayaheadTriggerEvent.price_scenarios: ",".join(price_scenarios),
-                DayaheadTriggerEvent.method: f"{method}_{len(price_scenarios)}_{price_area}",
-                DayaheadTriggerEvent.bid_date: bid_date,
-                DayaheadTriggerEvent.bid_process_configuration_name: f"{method}_{len(price_scenarios)}_{price_area}",
-                DayaheadTriggerEvent.price_area: f"price_area_{price_area}",
-                DayaheadTriggerEvent.combine_bid_matrix_tasks: "true",
+                cls.market: "Dayahead",
+                cls.main_scenario: main_scenario,
+                cls.price_scenarios: ",".join(price_scenarios),
+                cls.bid_date: bid_date,
+                cls.market_configuration_nordpool_dayahead: market_configuration_nordpool_dayahead,
+                cls.bid_process_configuration_name: bid_configuration_name,
+                cls.bid_matrix_generator_config_external_id: f"POWEROPS_bid_matrix_generator_config_"
+                f"{bid_configuration_name}",
+                cls.price_area: f"price_area_{price_area}",
+                cls.combine_bid_matrix_tasks: "true",
                 "processed": "true",
             },
         )
@@ -147,8 +150,10 @@ class DayaheadTrigger(BaseModel):
     main_scenario: str = ""
     shop_version: Optional[str] = _SHOP_VERSION_FALLBACK
     price_area: str
-    method: str
+    method: Literal["multi_scenario", "price_independent"]
+    bid_configuration_name: str
     cases: list[Case]
+    dayahead_configuration_external_id: Optional[str] = "market_configuration_nordpool_dayahead"
     _plants_per_workflow: list[str]
 
     @property
@@ -156,5 +161,18 @@ class DayaheadTrigger(BaseModel):
         return self._plants_per_workflow
 
     @plants_per_workflow.setter
-    def plants_per_workflow(self, value):
+    def plants_per_workflow(self, value: list[str]):
         self._plants_per_workflow = value
+
+
+class DayaheadWorkflowRun(BaseModel):
+    """
+    Return object when triggering a DayaheadTrigger workflow via the API.
+    """
+
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    workflow_trigger_event: Event
+    total_bid_event: Event
+    partial_bid_events: list[Event]
+    shop_run_events: list[Event]
