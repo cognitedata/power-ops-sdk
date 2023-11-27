@@ -13,6 +13,7 @@ from ._generated._api_client import (
     RKOMMarketAPIs,
 )
 from ._generated.cogshop1 import CogShop1Client
+from ._generated.day_ahead_frontend_contract import DayAheadFrontendContractAPI
 from .data_set_api import DataSetsAPI
 from .shop.api.dayahead_trigger_api import DayaheadTriggerAPI
 from .shop.shop_run_api import SHOPRunAPI
@@ -39,6 +40,7 @@ class PowerOpsClient:
         self.capacity_bid = CapacityBidAPIs(self.cdf)
         self.shop = SHOPRunAPI(self.cdf, self.datasets.write_dataset_id, cogshop_version)
         self.workflow = DayaheadTriggerAPI(self.cdf, self.datasets.write_dataset_id, cogshop_version)
+        self.day_ahead_frontend_contract = DayAheadFrontendContractAPI(self.cdf)
 
     @classmethod
     def from_settings(cls, settings: Settings | None = None) -> PowerOpsClient:

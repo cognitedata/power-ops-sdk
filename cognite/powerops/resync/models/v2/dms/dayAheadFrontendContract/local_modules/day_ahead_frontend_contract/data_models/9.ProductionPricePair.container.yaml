@@ -1,0 +1,23 @@
+space: {{model_space}}
+externalId: ProductionPricePair
+name: ProductionPricePair
+usedFor: node
+properties:
+  production:
+    type:
+      list: false
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: production
+    defaultValue: null
+    description: null
+  price:
+    type:
+      list: false
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: price
+    defaultValue: null
+    description: null

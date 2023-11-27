@@ -1,0 +1,59 @@
+space: {{model_space}}
+externalId: MarketPriceArea
+name: MarketPriceArea
+usedFor: node
+properties:
+  name:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: name
+    defaultValue: null
+  priceArea:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: priceArea
+    defaultValue: null
+  defaultMethod:
+    type:
+      container:
+        space: {{model_space}}
+        externalId: BidMethod
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: defaultMethod
+    defaultValue: null
+    description: null
+  timezone:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: timezone
+    defaultValue: null
+  mainScenario:
+    type:
+      list: false
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: timezone
+    defaultValue: null
+  priceScenarios:
+    type:
+      list: true
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: timezone
+    defaultValue: null

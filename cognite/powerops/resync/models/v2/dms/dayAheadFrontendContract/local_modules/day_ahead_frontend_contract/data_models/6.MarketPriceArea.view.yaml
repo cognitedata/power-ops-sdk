@@ -1,0 +1,57 @@
+space: {{model_space}}
+externalId: MarketPriceArea
+name: MarketPriceArea
+version: '{{view_MarketPriceArea_version}}'
+properties:
+  name:
+    container:
+      space: {{model_space}}
+      externalId: MarketPriceArea
+      type: container
+    containerPropertyIdentifier: name
+    name: name
+    description: null
+  priceArea:
+    container:
+      space: {{model_space}}
+      externalId: MarketPriceArea
+      type: container
+    containerPropertyIdentifier: priceArea
+    name: priceArea
+    description: null
+  defaultMethod:
+    container:
+      space: {{model_space}}
+      externalId: MarketPriceArea
+      type: container
+    source:
+      type: view
+      space: {{model_space}}
+      externalId: BidMethod
+      version: '{{view_BidMethod_version}}'
+    containerPropertyIdentifier: defaultMethod
+    name: defaultMethod
+  timezone:
+    container:
+      space: {{model_space}}
+      externalId: MarketPriceArea
+      type: container
+    containerPropertyIdentifier: timezone
+    name: timezone
+    description: null
+  mainScenario:
+    container:
+      space: {{model_space}}
+      externalId: MarketPriceArea
+      type: container
+    containerPropertyIdentifier: mainScenario
+    name: mainScenario
+    description: null
+  priceScenarios:
+    container:
+      space: {{model_space}}
+      externalId: MarketPriceArea
+      type: container
+    containerPropertyIdentifier: priceScenarios
+    name: priceScenarios
+    description: null

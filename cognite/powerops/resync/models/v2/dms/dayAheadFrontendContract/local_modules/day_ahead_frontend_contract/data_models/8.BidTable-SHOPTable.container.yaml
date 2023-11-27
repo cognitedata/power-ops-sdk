@@ -1,0 +1,15 @@
+space: {{model_space}}
+externalId: SHOPTable
+name: SHOPTable
+usedFor: node
+properties:
+  productionPricePair:
+    type:
+      container:
+        space: {{model_space}}
+        externalId: ProductionPricePair
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: productionPricePair
+    defaultValue: null
