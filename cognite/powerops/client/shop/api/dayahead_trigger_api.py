@@ -10,24 +10,10 @@ from cognite.powerops.client.shop.utils import unique_short_str
 
 
 class DayaheadTriggerAPI:
-    def __init__(self, client: CogniteClient, data_set: int, cogshop_version: str):
+    def __init__(self, client: CogniteClient, data_set: int, cogshop_version: str = ""):
         self._client = client
         self._data_set_api = data_set
-        self.shop_run = SHOPRunAPI(client, data_set, cogshop_version)
-
-    def get_plants_for_case(
-        self, case_pre_run_files: list[str], metadata_key: str = "shop_plants", delimiter: str = ","
-    ):
-        """
-        NOT USED ATM
-        If case has not been instantiated with plants, fetch the plants from pre run file metadata from cdf. Or update
-        this from cogshop?
-        """
-        pre_run_files_meta = self._client.files.list(external_id=case_pre_run_files, limit=None)
-        plants_from_meta = [
-            file_meta.metadata.get(metadata_key, "").split(delimiter) for file_meta in pre_run_files_meta
-        ]
-        return [plant for plants_per_prerun in plants_from_meta for plant in plants_per_prerun]
+        self.shop_run = SHOPRunAPI(client, data_set, cogshop_version=cogshop_version)
 
     def create_trigger_event(self, trigger: DayaheadTrigger, shop_runs: list[SHOPRun]):
         """
@@ -78,7 +64,7 @@ class DayaheadTriggerAPI:
         """
         shop_cases = []
         for case in workflow.cases:
-            shop_cases.extend(self.shop_run.trigger_case(case))
+            shop_cases.extend(self.shop_run.trigger_case(case, workflow.shop_version))
 
         workflow_event = self.create_trigger_event(workflow, shop_cases)
         shop_runs_as_external_ids = [shop_run.as_cdf_event().external_id for shop_run in shop_cases]
