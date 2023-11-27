@@ -72,8 +72,11 @@ class SHOPRunAPI:
         self._cdf.events.create([new_event.as_cdf_event() for new_event in shop_events])
 
         with ThreadPoolExecutor(max_workers=self._CONCURRENT_CALLS) as executor:
-            for shop_event in shop_events:
-                executor.submit(self._trigger_shop_container, shop_event)
+            futures = [executor.submit(self._trigger_shop_container, shop_event) for shop_event in shop_events]
+
+            for future in futures:
+                if exc := future.exception():
+                    raise (exc)
 
         return list(set(plants_per_case)), shop_events
 

@@ -23,7 +23,11 @@ class DayaheadTriggerAPI:
         self.shop_run = SHOPRunAPI(client, data_set, cogshop_version=cogshop_version)
 
     def _create_partial_function_events(
-        self, workflow: DayaheadTrigger, workflow_event_external_id: str, short_id: str, plants_per_workflow: list[str]
+        self,
+        workflow: DayaheadTrigger,
+        workflow_event_external_id: str,
+        suffix_run_id: str,
+        plants_per_workflow: list[str],
     ) -> dict:
         """
         Create the partial and total bid matrix calculation events that are needed for the partial and total bid
@@ -32,7 +36,7 @@ class DayaheadTriggerAPI:
         events_and_relationships: defaultdict = defaultdict(list, {k: [] for k in ("events", "relationships")})
 
         for plant in plants_per_workflow:
-            partial_matrix_event_external_id = f"{PartialFunctionEvent.external_id_prefix}{short_id}_{plant}"
+            partial_matrix_event_external_id = f"{PartialFunctionEvent.external_id_prefix}{suffix_run_id}_{plant}"
             metadata = {PartialFunctionEvent.plant: plant, PartialFunctionEvent.method: workflow.method}
             events_and_relationships["events"].append(
                 PartialFunctionEvent.as_cdf_event(
@@ -58,9 +62,9 @@ class DayaheadTriggerAPI:
         return events_and_relationships
 
     def _create_total_matrix_event(
-        self, workflow: DayaheadTrigger, workflow_event_external_id: str, short_id: str
+        self, workflow: DayaheadTrigger, workflow_event_external_id: str, suffix_run_id: str
     ) -> tuple[Event, Relationship]:
-        total_event_external_id = f"{TotalFunctionEvent.external_id_prefix}{short_id}"
+        total_event_external_id = f"{TotalFunctionEvent.external_id_prefix}{suffix_run_id}"
         total_event = TotalFunctionEvent.as_cdf_event(
             data_set=self._data_set_api,
             bid_date=workflow.bid_time_frame.bid_date,
@@ -86,7 +90,7 @@ class DayaheadTriggerAPI:
 
         return (total_event, total_event_relationship)
 
-    def _create_trigger_event(self, workflow: DayaheadTrigger, short_id: str) -> Event:
+    def _create_trigger_event(self, workflow: DayaheadTrigger, suffix_run_id: str) -> Event:
         """
         Create a workflow trigger event and link the shop runs to this event.
         (needs method, price scenarios and plant for calculating total bid matrix per plant later on)
@@ -95,7 +99,7 @@ class DayaheadTriggerAPI:
         """
         return DayaheadTriggerEvent.as_cdf_event(
             data_set=self._data_set_api,
-            event_external_id=f"{DayaheadTriggerEvent.external_id_prefix}{workflow.bid_configuration_name}_{short_id}",
+            event_external_id=f"{DayaheadTriggerEvent.external_id_prefix}{workflow.bid_configuration_name}_{suffix_run_id}",
             start_time=workflow.bid_time_frame.start_time_string,
             end_time=workflow.bid_time_frame.end_time_string,
             bid_date=workflow.bid_time_frame.bid_date,
@@ -108,19 +112,19 @@ class DayaheadTriggerAPI:
     def _create_and_wire_workflow_events(
         self, workflow: DayaheadTrigger, shop_runs_as_cdf_events: list[Event], plants_per_workflow: list[str]
     ) -> DayaheadWorkflowRun:
-        short_id = unique_short_str(3)
+        suffix_run_id = unique_short_str(3)
 
-        workflow_event = self._create_trigger_event(workflow, short_id)
+        workflow_event = self._create_trigger_event(workflow, suffix_run_id)
         partial_events_and_relationships = self._create_partial_function_events(
             workflow=workflow,
             plants_per_workflow=plants_per_workflow,
             workflow_event_external_id=workflow_event.external_id,
-            short_id=short_id,
+            suffix_run_id=suffix_run_id,
         )
         total_event, total_event_relationship = self._create_total_matrix_event(
             workflow=workflow,
             workflow_event_external_id=workflow_event.external_id,
-            short_id=short_id,
+            suffix_run_id=suffix_run_id,
         )
         self._client.events.create([workflow_event, *partial_events_and_relationships["events"], total_event])
         shop_relationships = [
