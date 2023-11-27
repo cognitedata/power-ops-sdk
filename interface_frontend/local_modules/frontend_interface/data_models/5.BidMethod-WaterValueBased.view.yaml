@@ -1,0 +1,18 @@
+space: {{model_space}}
+externalId: WaterValueBased
+description: missing
+name: WaterValueBased
+version: '{{view_WaterValueBased_version}}'
+implements:
+  - type: view
+    space: {{model_space}}
+    externalId: BidMethod
+    version: {{view_BidMethod_version}}
+#properties:
+  #  name: (inherited)
+filter:
+  prefix:
+    property:
+      - node
+      - externalId
+    value: "WVB"

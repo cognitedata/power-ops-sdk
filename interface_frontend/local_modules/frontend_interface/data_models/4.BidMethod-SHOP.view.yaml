@@ -1,0 +1,32 @@
+space: {{model_space}}
+externalId: SHOP
+description: missing
+name: SHOP
+version: '{{view_SHOP_version}}'
+implements:
+  - type: view
+    space: {{model_space}}
+    externalId: BidMethod
+    version: {{view_BidMethod_version}}
+properties:
+  #  name: (inherited)
+  shopCases:
+    container:
+      space: {{model_space}}
+      externalId: SHOP
+      type: container
+    containerPropertyIdentifier: shopCases
+    name: shopCases
+    description: null
+  priceScenarios:
+    container:
+      space: {{model_space}}
+      externalId: SHOP
+      type: container
+    containerPropertyIdentifier: priceScenarios
+    name: priceScenarios
+    description: null
+filter:
+  prefix:
+    property: ['node', 'externalId']
+    value: "SHOP"

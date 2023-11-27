@@ -50,7 +50,7 @@ allow_redefinition = true
 
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = ">=3.9,<3.12"
 typer = {version="^0.9.0", extras=["rich"]}
 PyYAML = "^6.0"
 cognite-sdk = {version = ">= 6.15.0, < 8.0", extras = ["pandas"]}
@@ -80,6 +80,7 @@ mkdocs-gitbook = {version="*", optional=true}
 mkdocs-glightbox = {version="*", optional=true}
 pymdown-extensions = {version="*", optional=true}
 mkdocstrings = {version="*", optional=true, extras=["python"]}
+cognite-toolkit = "^0.1.0a2"
 
 [tool.poetry.extras]
 docs = ["mkdocs", "mkdocs-jupyter", "mkdocs-material", "mkdocs-material-extensions", "mkdocs-git-revision-date-localized-plugin",

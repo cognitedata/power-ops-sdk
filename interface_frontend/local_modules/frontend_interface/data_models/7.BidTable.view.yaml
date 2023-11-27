@@ -1,0 +1,49 @@
+space: {{model_space}}
+externalId: BidTable
+description: missing
+name: BidTable
+version: '{{view_BidTable_version}}'
+properties:
+  resourceCost:
+    container:
+      space: {{model_space}}
+      externalId: BidTable
+      type: container
+    containerPropertyIdentifier: resourceCost
+    name: resourceCost
+    description: null
+  table:
+    container:
+      space: {{model_space}}
+      externalId: BidTable
+      type: container
+    containerPropertyIdentifier: table
+    name: table
+    description: null
+  assetType:
+    container:
+      space: {{model_space}}
+      externalId: BidTable
+      type: container
+    containerPropertyIdentifier: assetType
+    name: assetType
+    description: null
+  asset_id:
+    container:
+      space: {{model_space}}
+      externalId: BidTable
+      type: container
+    containerPropertyIdentifier: asset_id
+    name: asset_id
+    description: null
+  alerts:
+    type:
+      space: {{model_space}}
+      externalId: BidTable.alerts
+    source:
+      space: {{model_space}}
+      externalId: Alert
+      version: {{view_Alert_version}}
+      type: view
+    direction: outwards
+    name: alerts

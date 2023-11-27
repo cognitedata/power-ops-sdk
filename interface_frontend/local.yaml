@@ -1,0 +1,5 @@
+local:
+  project: power-ops-staging
+  type: dev
+  deploy:
+    - frontend_interface

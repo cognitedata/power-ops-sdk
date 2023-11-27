@@ -1,0 +1,16 @@
+space: {{model_space}}
+externalId: BidMethod
+description: missing
+name: BidMethod
+usedFor: node
+properties:
+  name:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: name
+    defaultValue: null
+    description: null

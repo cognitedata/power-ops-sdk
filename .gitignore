@@ -31,7 +31,7 @@ wheels/
 # Other
 test.py
 do_release.py
-.env
+interface_frontend/.env
 
 # Coverage
 .coverage
