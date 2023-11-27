@@ -1,8 +1,8 @@
-import datetime
 from typing import Literal, Optional
 
-from cognite.client.data_classes import Event
-from pydantic import BaseModel, ConfigDict
+import arrow
+from cognite.client.data_classes import Event, FileMetadata
+from pydantic import BaseModel, ConfigDict, field_validator
 from typing_extensions import Self
 
 _SHOP_VERSION_FALLBACK = "15.3.3.2"
@@ -52,12 +52,6 @@ class TotalFunctionEvent(DayaheadFunctionEvent):
     relationship_label_to_trigger_event: str = "relationship_to.calculate_total_bid_matrix_event"
 
 
-class PrerunFileMetadata:
-    plants: str = "shop:plants"
-    price_scenario: str = "shop:price_scenario"
-    _plants_delimiter: str = ","
-
-
 class DayaheadTriggerEvent:
     event_type: str = "POWEROPS_BID_PROCESS_FROM_PRERUNS"
     external_id_prefix: str = "POWEROPS_BID_PROCESS_"
@@ -71,6 +65,8 @@ class DayaheadTriggerEvent:
     method: str = "bid:bid_process_configuration_name"
     price_area: str = "bid:price_area"
     bid_date: str = "bid:date"
+    start_time: str = "shop:starttime"
+    end_time: str = "shop:endtime"
     relationship_label_to_shop_run_events: str = "relationship_to.shop_run_event"
 
     @classmethod
@@ -78,7 +74,8 @@ class DayaheadTriggerEvent:
         cls,
         event_external_id: str,
         data_set: int,
-        start_time: datetime,
+        start_time: str,
+        end_time: str,
         bid_date: str,
         price_scenarios: list[str],
         price_area: str,
@@ -90,13 +87,13 @@ class DayaheadTriggerEvent:
             external_id=event_external_id,
             type=DayaheadTriggerEvent.event_type,
             data_set_id=data_set,
-            start_time=int(start_time.timestamp()) * 1000,
-            end_time=None,
             metadata={
                 cls.market: "Dayahead",
                 cls.main_scenario: main_scenario,
                 cls.price_scenarios: ",".join(price_scenarios),
                 cls.bid_date: bid_date,
+                cls.start_time: start_time,
+                cls.end_time: end_time,
                 cls.market_configuration_nordpool_dayahead: market_configuration_nordpool_dayahead,
                 cls.bid_process_configuration_name: bid_configuration_name,
                 cls.bid_matrix_generator_config_external_id: f"POWEROPS_bid_matrix_generator_config_"
@@ -108,24 +105,29 @@ class DayaheadTriggerEvent:
         )
 
 
-class ShopRun(BaseModel):
+class PrerunFileMetadata:
+    plants: str = "shop:plants"
+    price_scenario: str = "shop:price_scenario"
+    _plants_delimiter: str = ","
+
+
+class ShopPreRunFile(BaseModel):
     """
     Represents a single shop run based on a pre-run file.
-
     """
 
     pre_run_external_id: str
-    plants: Optional[list[str]] = None
-    price_scenario: Optional[str] = None
+    plants: list[str]
+    price_scenario: str
 
     @classmethod
-    def load_from_metadata(cls, file_external_id: str, file_metadata: dict) -> Self:
-        plants_as_string = file_metadata.get(PrerunFileMetadata.plants)
+    def load_from_metadata(cls, file_metadata: FileMetadata) -> Self:
+        plants_as_string = file_metadata.metadata.get(PrerunFileMetadata.plants)
         plants = [plant.lstrip() for plant in plants_as_string.split(PrerunFileMetadata._plants_delimiter)]
         return cls(
-            pre_run_external_id=file_external_id,
+            pre_run_external_id=file_metadata.external_id,
             plants=plants,
-            price_scenario=file_metadata.get(PrerunFileMetadata.price_scenario),
+            price_scenario=file_metadata.metadata.get(PrerunFileMetadata.price_scenario),
         )
 
 
@@ -135,9 +137,54 @@ class Case(BaseModel):
     """
 
     case_name: str  # e.g. Glomma
-    pre_runs: list[ShopRun]
+    pre_run_file_external_ids: list[str]
     commands_file: Optional[str] = None
     pre_runs_external_id_prefix: Optional[str] = None
+
+
+class BidTimeFrame(BaseModel):
+    """
+    Used to dynamically specify what times to run the Dayahead bid process for in local time
+    :shift_start_from_today: number of days from the current local time to shift the start time of the bid
+    :timezone: the local timezone to use when creating shop times
+    :bid_period_in_days: the number of days the bid is valid for. This number is used to produce the bid end time by
+    shifting the start time with this number
+    """
+
+    model_config = ConfigDict(frozen=True)
+
+    shift_start_from_today: int
+    timezone: Optional[str] = "Europe/Oslo"
+    bid_period_in_days: Optional[int] = 14
+    _datetime_string_format: str = "YYYY-MM-DD HH:mm:ss"
+    _date_string_format: str = "YYYY-MM-DD"
+    _start_time_arrow: arrow.Arrow
+
+    @field_validator("bid_period_in_days")
+    @classmethod
+    def positive_bid_period_in_days(cls, value):
+        if value < 0:
+            raise ValueError("Bid period must be a positive number")
+
+    @property
+    def start_time_arrow(self):
+        return (
+            arrow.now(self.timezone).shift(days=self.shift_start_from_today).floor("day")
+        )  # should floor be hour instead?
+
+    @property
+    def start_time_string(self) -> str:
+        return self.start_time_arrow.format(self._datetime_string_format)
+
+    @property
+    def end_time_string(self) -> str:
+        return (
+            self.start_time_arrow.shift(days=self.bid_period_in_days).floor("week").format(self._datetime_string_format)
+        )
+
+    @property
+    def bid_date(self) -> str:
+        return self.start_time_arrow.shift(days=1).format(self._date_string_format)
 
 
 class DayaheadTrigger(BaseModel):
@@ -153,16 +200,8 @@ class DayaheadTrigger(BaseModel):
     method: Literal["multi_scenario", "price_independent"]
     bid_configuration_name: str
     cases: list[Case]
+    bid_time_frame: Optional[BidTimeFrame] = BidTimeFrame(shift_start_from_today=0)
     dayahead_configuration_external_id: Optional[str] = "market_configuration_nordpool_dayahead"
-    _plants_per_workflow: list[str]
-
-    @property
-    def plants_per_workflow(self):
-        return self._plants_per_workflow
-
-    @plants_per_workflow.setter
-    def plants_per_workflow(self, value: list[str]):
-        self._plants_per_workflow = value
 
 
 class DayaheadWorkflowRun(BaseModel):

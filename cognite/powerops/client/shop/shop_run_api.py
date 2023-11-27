@@ -9,7 +9,7 @@ from urllib.parse import urlparse
 import arrow
 import requests
 from cognite.client import CogniteClient
-from cognite.client.data_classes import FileMetadata, UserProfile, filters
+from cognite.client.data_classes import UserProfile, filters
 from cognite.client.data_classes.events import EventSort
 from cognite.client.exceptions import CogniteAPIError
 
@@ -17,7 +17,7 @@ from cognite.powerops.cdf_labels import RelationshipLabel
 from cognite.powerops.client.shop.shop_run_filter import SHOPRunFilter
 from cognite.powerops.utils.cdf.resource_creation import simple_relationship
 
-from .data_classes.dayahead_trigger import Case, PrerunFileMetadata, ShopRun
+from .data_classes.dayahead_trigger import Case, PrerunFileMetadata, ShopPreRunFile
 from .shop_case import SHOPCase, SHOPFileReference, SHOPFileType
 from .shop_run import SHOPRun, ShopRunEvent, SHOPRunList
 from .utils import new_external_id
@@ -34,8 +34,9 @@ class SHOPRunAPI:
         self.cogshop_version = cogshop_version
         self._CONCURRENT_CALLS = 5
 
-    def _get_shopfile_metadata(self, file_external_id: str) -> FileMetadata:
-        return self._cdf.files.retrieve(external_id=file_external_id)
+    def _get_shop_prerun_files(self, file_external_ids: list[str]) -> list[ShopPreRunFile]:
+        prerun_files = self._cdf.files.retrieve_multiple(external_ids=file_external_ids)
+        return [ShopPreRunFile.load_from_metadata(file) for file in prerun_files]
 
     def trigger_case(self, case: Case, shop_version: str) -> tuple[list, list[SHOPRun]]:
         """
@@ -47,10 +48,8 @@ class SHOPRunAPI:
         shop_events = []
         now = datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0)
         plants_per_case = []
-        for shop_run in case.pre_runs:
-            if not shop_run.plants or shop_run.price_scenario:
-                file_meta = self._get_shopfile_metadata(shop_run.pre_run_external_id)
-                shop_run = ShopRun.load_from_metadata(shop_run.pre_run_external_id, file_meta.metadata)
+        pre_runs = self._get_shop_prerun_files(case.pre_run_file_external_ids)
+        for shop_run in pre_runs:
             plants_per_case.extend(shop_run.plants)
             shop_events.append(
                 SHOPRun(
