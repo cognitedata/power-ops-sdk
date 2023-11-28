@@ -5,7 +5,7 @@ from collections import UserList
 from collections.abc import Iterable, Iterator, Sequence
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
-from typing import Any, cast, overload
+from typing import Any, Optional, cast, overload
 
 import pandas as pd
 from cognite.client import CogniteClient
@@ -73,12 +73,12 @@ class SHOPRun:
     end: datetime | None
     shop_version: str
     source: str | None
-    plants: str | None
-    price_scenario: str | None
     _case_file_external_id: str | None
     _shop_files: list[SHOPFileReference]
     _client: CogniteClient = field(repr=False)
     _run_event_types: set[str] = field(init=False, default_factory=set)
+    plants: Optional[str] = ""
+    price_scenario: Optional[str] = ""
 
     @classmethod
     def load(cls, event: Event) -> Self:
@@ -138,8 +138,8 @@ class SHOPRun:
             metadata={
                 ShopRunEvent.watercourse: self.watercourse,
                 ShopRunEvent.manual_run: "",
-                ShopRunEvent.plants: self.plants or "",
-                ShopRunEvent.price_scenario: self.price_scenario or "",
+                ShopRunEvent.plants: self.plants,
+                ShopRunEvent.price_scenario: self.price_scenario,
                 ShopRunEvent.preprocessor_data: json.dumps(
                     {
                         **shop_version_spec,
