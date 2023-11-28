@@ -9,8 +9,8 @@ from .v2 import (
     BenchmarkMarketDataModel,
     CapacityBidModel,
     CogShopDataModel,
-    DayAheadMarketDataModel,
     DayAheadFrontendContractModel,
+    DayAheadMarketDataModel,
     ProductionModelDM,
     RKOMMarketDataModel,
 )
