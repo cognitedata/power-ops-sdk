@@ -1,3 +1,0 @@
-space: {{model_space}}
-name: {{model_space}}
-description: Space for the data model for {{data_model}}

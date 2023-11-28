@@ -1,5 +1,0 @@
-local:
-  project: power-ops-staging
-  type: dev
-  deploy:
-    - day_ahead_frontend_contract

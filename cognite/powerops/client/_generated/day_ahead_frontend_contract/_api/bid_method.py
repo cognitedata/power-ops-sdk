@@ -8,22 +8,24 @@ from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
 
 from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes import (
+    DomainModelApply,
+    ResourcesApplyResult,
     BidMethod,
     BidMethodApply,
-    BidMethodApplyList,
     BidMethodFields,
     BidMethodList,
+    BidMethodApplyList,
     BidMethodTextFields,
-    DomainModelApply,
 )
 from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes._bid_method import (
     _BIDMETHOD_PROPERTIES_BY_FIELD,
+    _create_bid_method_filter,
 )
+from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
+from .bid_method_query import BidMethodQueryAPI
 
-from ._core import DEFAULT_LIMIT_READ, Aggregations, TypeAPI
 
-
-class BidMethodAPI(TypeAPI[BidMethod, BidMethodApply, BidMethodList]):
+class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
     def __init__(self, client: CogniteClient, view_by_write_class: dict[type[DomainModelApply], dm.ViewId]):
         view_id = view_by_write_class[BidMethodApply]
         super().__init__(
@@ -32,13 +34,63 @@ class BidMethodAPI(TypeAPI[BidMethod, BidMethodApply, BidMethodList]):
             class_type=BidMethod,
             class_apply_type=BidMethodApply,
             class_list=BidMethodList,
+            class_apply_list=BidMethodApplyList,
+            view_by_write_class=view_by_write_class,
         )
         self._view_id = view_id
-        self._view_by_write_class = view_by_write_class
 
-    def apply(
-        self, bid_method: BidMethodApply | Sequence[BidMethodApply], replace: bool = False
-    ) -> dm.InstancesApplyResult:
+    def __call__(
+            self,
+            name: str | list[str] | None = None,
+            name_prefix: str | None = None,
+            external_id_prefix: str | None = None,
+            space: str | list[str] | None = None,
+            limit: int = DEFAULT_QUERY_LIMIT,
+            filter: dm.Filter | None = None,
+    ) -> BidMethodQueryAPI[BidMethodList]:
+        """Query starting at bid methods.
+
+        Args:
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
+            external_id_prefix: The prefix of the external ID to filter on.
+            space: The space to filter on.
+            limit: Maximum number of bid methods to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+
+        Returns:
+            A query API for bid methods.
+
+        """
+        filter_ = _create_bid_method_filter(
+            self._view_id,
+            name,
+            name_prefix,
+            external_id_prefix,
+            space,
+            filter,
+        )
+        builder = QueryBuilder(
+            BidMethodList,
+            [
+                QueryStep(
+                    name="bid_method",
+                    expression=dm.query.NodeResultSetExpression(
+                        from_=None,
+                        filter=filter_,
+                    ),
+                    select=dm.query.Select(
+                        [dm.query.SourceSelector(self._view_id, list(_BIDMETHOD_PROPERTIES_BY_FIELD.values()))]
+                    ),
+                    result_cls= BidMethod,
+                    max_retrieve_limit=limit,
+                )
+            ],
+        )
+        return BidMethodQueryAPI(self._client, builder, self._view_by_write_class)
+
+
+    def apply(self, bid_method: BidMethodApply | Sequence[BidMethodApply], replace: bool = False) -> ResourcesApplyResult:
         """Add or update (upsert) bid methods.
 
         Args:
@@ -46,7 +98,7 @@ class BidMethodAPI(TypeAPI[BidMethod, BidMethodApply, BidMethodList]):
             replace (bool): How do we behave when a property value exists? Do we replace all matching and existing values with the supplied values (true)?
                 Or should we merge in new values for properties together with the existing values (false)? Note: This setting applies for all nodes or edges specified in the ingestion call.
         Returns:
-            Created instance(s), i.e., nodes and edges.
+            Created instance(s), i.e., nodes, edges, and time series.
 
         Examples:
 
@@ -59,21 +111,9 @@ class BidMethodAPI(TypeAPI[BidMethod, BidMethodApply, BidMethodList]):
                 >>> result = client.bid_method.apply(bid_method)
 
         """
-        if isinstance(bid_method, BidMethodApply):
-            instances = bid_method.to_instances_apply(self._view_by_write_class)
-        else:
-            instances = BidMethodApplyList(bid_method).to_instances_apply(self._view_by_write_class)
-        return self._client.data_modeling.instances.apply(
-            nodes=instances.nodes,
-            edges=instances.edges,
-            auto_create_start_nodes=True,
-            auto_create_end_nodes=True,
-            replace=replace,
-        )
+        return self._apply(bid_method, replace)
 
-    def delete(
-        self, external_id: str | Sequence[str], space: str = "dayAheadFrontendContractModel"
-    ) -> dm.InstancesDeleteResult:
+    def delete(self, external_id: str | SequenceNotStr[str], space: str ="dayAheadFrontendContractModel") -> dm.InstancesDeleteResult:
         """Delete one or more bid method.
 
         Args:
@@ -91,24 +131,17 @@ class BidMethodAPI(TypeAPI[BidMethod, BidMethodApply, BidMethodList]):
                 >>> client = DayAheadFrontendContractAPI()
                 >>> client.bid_method.delete("my_bid_method")
         """
-        if isinstance(external_id, str):
-            return self._client.data_modeling.instances.delete(nodes=(space, external_id))
-        else:
-            return self._client.data_modeling.instances.delete(
-                nodes=[(space, id) for id in external_id],
-            )
+        return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str) -> BidMethod:
+    def retrieve(self, external_id: str) -> BidMethod | None:
         ...
 
     @overload
-    def retrieve(self, external_id: Sequence[str]) -> BidMethodList:
+    def retrieve(self, external_id: SequenceNotStr[str]) -> BidMethodList:
         ...
 
-    def retrieve(
-        self, external_id: str | Sequence[str], space: str = "dayAheadFrontendContractModel"
-    ) -> BidMethod | BidMethodList:
+    def retrieve(self, external_id: str | SequenceNotStr[str], space: str ="dayAheadFrontendContractModel") -> BidMethod | BidMethodList | None:
         """Retrieve one or more bid methods by id(s).
 
         Args:
@@ -127,10 +160,7 @@ class BidMethodAPI(TypeAPI[BidMethod, BidMethodApply, BidMethodList]):
                 >>> bid_method = client.bid_method.retrieve("my_bid_method")
 
         """
-        if isinstance(external_id, str):
-            return self._retrieve((space, external_id))
-        else:
-            return self._retrieve([(space, ext_id) for ext_id in external_id])
+        return self._retrieve(external_id, space)
 
     def search(
         self,
@@ -167,7 +197,7 @@ class BidMethodAPI(TypeAPI[BidMethod, BidMethodApply, BidMethodList]):
                 >>> bid_methods = client.bid_method.search('my_bid_method')
 
         """
-        filter_ = _create_filter(
+        filter_ = _create_bid_method_filter(
             self._view_id,
             name,
             name_prefix,
@@ -262,7 +292,7 @@ class BidMethodAPI(TypeAPI[BidMethod, BidMethodApply, BidMethodList]):
 
         """
 
-        filter_ = _create_filter(
+        filter_ = _create_bid_method_filter(
             self._view_id,
             name,
             name_prefix,
@@ -313,7 +343,7 @@ class BidMethodAPI(TypeAPI[BidMethod, BidMethodApply, BidMethodList]):
             Bucketed histogram results.
 
         """
-        filter_ = _create_filter(
+        filter_ = _create_bid_method_filter(
             self._view_id,
             name,
             name_prefix,
@@ -332,6 +362,7 @@ class BidMethodAPI(TypeAPI[BidMethod, BidMethodApply, BidMethodList]):
             filter_,
         )
 
+
     def list(
         self,
         name: str | list[str] | None = None,
@@ -349,7 +380,7 @@ class BidMethodAPI(TypeAPI[BidMethod, BidMethodApply, BidMethodList]):
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of bid methods to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above. 
 
         Returns:
             List of requested bid methods
@@ -363,7 +394,7 @@ class BidMethodAPI(TypeAPI[BidMethod, BidMethodApply, BidMethodList]):
                 >>> bid_methods = client.bid_method.list(limit=5)
 
         """
-        filter_ = _create_filter(
+        filter_ = _create_bid_method_filter(
             self._view_id,
             name,
             name_prefix,
@@ -371,31 +402,4 @@ class BidMethodAPI(TypeAPI[BidMethod, BidMethodApply, BidMethodList]):
             space,
             filter,
         )
-
         return self._list(limit=limit, filter=filter_)
-
-
-def _create_filter(
-    view_id: dm.ViewId,
-    name: str | list[str] | None = None,
-    name_prefix: str | None = None,
-    external_id_prefix: str | None = None,
-    space: str | list[str] | None = None,
-    filter: dm.Filter | None = None,
-) -> dm.Filter | None:
-    filters = []
-    if name and isinstance(name, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
-    if name and isinstance(name, list):
-        filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
-    if name_prefix:
-        filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
-    if external_id_prefix:
-        filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
-    if space and isinstance(space, str):
-        filters.append(dm.filters.Equals(["node", "space"], value=space))
-    if space and isinstance(space, list):
-        filters.append(dm.filters.In(["node", "space"], values=space))
-    if filter:
-        filters.append(filter)
-    return dm.filters.And(*filters) if filters else None

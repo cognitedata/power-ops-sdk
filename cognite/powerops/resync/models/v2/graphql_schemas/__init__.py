@@ -3,6 +3,7 @@ from pathlib import Path
 from cognite.client.data_classes.data_modeling import DataModelId
 
 from cognite.powerops.resync.models.base import PowerOpsGraphQLModel
+from cognite.powerops.resync.models.v2.dms import DayAheadFrontendContractDMSModel
 
 GRAPHQL_FILES = Path(__file__).parent / "graphql_files"
 _SHARED_TYPES = GRAPHQL_FILES / "shared"
@@ -87,6 +88,13 @@ GRAPHQL_MODELS: dict[str, PowerOpsGraphQLModel] = {
         description="The AFRR model describes the aFRR market.",
         graphql_file=GRAPHQL_FILES / "afrr-market.graphql",
         id_=DataModelId(_SPACE, "afrrMarket", "1"),
+        extra_types=[],
+    ),
+    "day_ahead_frontend_contract": PowerOpsGraphQLModel(
+        name=DayAheadFrontendContractDMSModel.name,
+        description=DayAheadFrontendContractDMSModel.description,
+        graphql_file=GRAPHQL_FILES / "day_ahead_frontend_contract.graphql",
+        id_=DayAheadFrontendContractDMSModel.id_,
         extra_types=[],
     ),
 }

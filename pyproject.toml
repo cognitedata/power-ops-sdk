@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cognite-power-ops"
-version = "0.73.5"
+version = "0.74.0"
 description = "SDK for power markets operations on Cognite Data Fusion"
 readme = "README.md"
 authors = ["Cognite <support@cognite.com>"]
@@ -53,7 +53,7 @@ allow_redefinition = true
 python = ">=3.9,<3.12"
 typer = {version="^0.9.0", extras=["rich"]}
 PyYAML = "^6.0"
-cognite-sdk = {version = ">= 6.15.0, < 8.0", extras = ["pandas"]}
+cognite-sdk = {version = ">=7.3,<8", extras = ["pandas"]}
 pydantic = "^2.0"
 pydantic-settings = "^2.0"
 cachelib = "^0.10.2"
@@ -81,6 +81,7 @@ mkdocs-glightbox = {version="*", optional=true}
 pymdown-extensions = {version="*", optional=true}
 mkdocstrings = {version="*", optional=true, extras=["python"]}
 cognite-toolkit = "^0.1.0a2"
+cognite-pygen = ">=0.31.0"
 
 [tool.poetry.extras]
 docs = ["mkdocs", "mkdocs-jupyter", "mkdocs-material", "mkdocs-material-extensions", "mkdocs-git-revision-date-localized-plugin",
@@ -99,7 +100,6 @@ pytest-regressions = "^2.4.2"
 ipykernel="6.24.0"
 twine = "^4.0.2"
 jupyter = "^1.0.0"
-cognite-pygen = {version = "^0.27.1", extras = ["all"]}
 mypy = "^1.4"
 pandas-stubs = "^2"
 types-PyYAML = "^6"

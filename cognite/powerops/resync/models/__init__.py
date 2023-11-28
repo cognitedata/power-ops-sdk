@@ -10,6 +10,7 @@ from .v2 import (
     CapacityBidModel,
     CogShopDataModel,
     DayAheadMarketDataModel,
+    DayAheadFrontendContractModel,
     ProductionModelDM,
     RKOMMarketDataModel,
 )
@@ -23,6 +24,7 @@ V2_MODELS: list[type[Model]] = [
     RKOMMarketDataModel,
     AFRRMarket,
     CapacityBidModel,
+    DayAheadFrontendContractModel,
 ]
 
 __all__ = [

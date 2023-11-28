@@ -1,0 +1,363 @@
+- space: dayAheadFrontendContractModel
+  externalId: Alert
+  name: Alert
+  usedFor: node
+  properties:
+    time:
+      type:
+        list: false
+        type: timestamp
+      nullable: false
+      autoIncrement: false
+      name: time
+      defaultValue: null
+      description: null
+    title:
+      type:
+        list: false
+        collation: ucs_basic
+        type: text
+      nullable: false
+      autoIncrement: false
+      name: title
+      defaultValue: null
+      description: null
+    description:
+      type:
+        list: false
+        collation: ucs_basic
+        type: text
+      nullable: true
+      autoIncrement: false
+      name: description
+      defaultValue: null
+      description: null
+    severity:
+      type:
+        list: false
+        collation: ucs_basic
+        type: text
+      nullable: true
+      autoIncrement: false
+      name: severity
+      defaultValue: null
+      description: null
+    alertType:
+      type:
+        list: false
+        collation: ucs_basic
+        type: text
+      nullable: true
+      autoIncrement: false
+      name: alertType
+      defaultValue: null
+      description: null
+    statusCode:
+      type:
+        list: false
+        collation: ucs_basic
+        type: int32
+      nullable: true
+      autoIncrement: false
+      name: statusCode
+      defaultValue: null
+      description: null
+    eventIds:
+      type:
+        list: true
+        collation: ucs_basic
+        type: int64
+      nullable: true
+      autoIncrement: false
+      name: eventIds
+      defaultValue: null
+      description: null
+    calculationRun:
+      type:
+        list: false
+        collation: ucs_basic
+        type: text
+      nullable: true
+      autoIncrement: false
+      name: calculationRun
+      defaultValue: null
+      description: null
+- space: dayAheadFrontendContractModel
+  externalId: Bid
+  name: Bid
+  usedFor: node
+  properties:
+    name:
+      type:
+        list: false
+        collation: ucs_basic
+        type: text
+      nullable: true
+      autoIncrement: false
+      name: name
+      defaultValue: null
+      description: null
+    method:
+      type:
+        container:
+          space: dayAheadFrontendContractModel
+          externalId: BidMethod
+        type: direct
+      nullable: true
+      autoIncrement: false
+      name: method
+      defaultValue: null
+    priceArea:
+      type:
+        list: false
+        collation: ucs_basic
+        type: text
+      nullable: true
+      autoIncrement: false
+      name: priceArea
+      defaultValue: null
+      description: null
+    date:
+      type:
+        list: false
+        type: date
+      nullable: true
+      autoIncrement: false
+      name: date
+      defaultValue: null
+      description: null
+    total:
+      type:
+        container:
+          space: dayAheadFrontendContractModel
+          externalId: BidTable
+        type: direct
+      nullable: true
+      autoIncrement: false
+      name: total
+      defaultValue: null
+    startCalculation:
+      type:
+        list: false
+        type: timestamp
+      nullable: false
+      autoIncrement: false
+      name: startCalculation
+      defaultValue: null
+      description: null
+    endCalculation:
+      type:
+        list: false
+        type: timestamp
+      nullable: true
+      autoIncrement: false
+      name: endCalculation
+      defaultValue: null
+      description: null
+    market:
+      type:
+        container:
+          space: dayAheadFrontendContractModel
+          externalId: MarketPriceArea
+        type: direct
+      nullable: true
+      autoIncrement: false
+      name: market
+      defaultValue: null
+  indexes:
+    # TODO probably need only the index on "date", depends on FE queries
+    startCalculation:
+      indexType: btree
+      properties:
+        - startCalculation
+    endCalculation:
+      indexType: btree
+      properties:
+        - endCalculation
+    date:
+      indexType: btree
+      properties:
+        - date
+- space: dayAheadFrontendContractModel
+  externalId: BidMethod
+  name: BidMethod
+  usedFor: node
+  properties:
+    name:
+      type:
+        list: false
+        collation: ucs_basic
+        type: text
+      nullable: false
+      autoIncrement: false
+      name: name
+      defaultValue: null
+      description: null
+- space: dayAheadFrontendContractModel
+  externalId: SHOP
+  name: SHOP
+  usedFor: node
+  properties:
+    shopCases:
+      type:
+        list: true
+        collation: ucs_basic
+        type: text
+      nullable: true
+      autoIncrement: false
+      name: shopCases
+      defaultValue: null
+      description: 'external id linked to production data'
+    priceScenarios:
+      type:
+        list: false
+        type: timeseries
+      nullable: true
+      autoIncrement: false
+      name: priceScenarios
+      defaultValue: null
+      description: null
+  constraints:
+    requiredBidMethod:
+      constraintType: requires
+      require:
+        type: container
+        space: dayAheadFrontendContractModel
+        externalId: BidMethod
+- space: dayAheadFrontendContractModel
+  externalId: MarketPriceArea
+  name: MarketPriceArea
+  usedFor: node
+  properties:
+    name:
+      type:
+        list: false
+        collation: ucs_basic
+        type: text
+      nullable: true
+      autoIncrement: false
+      name: name
+      defaultValue: null
+    priceArea:
+      type:
+        list: false
+        collation: ucs_basic
+        type: text
+      nullable: true
+      autoIncrement: false
+      name: priceArea
+      defaultValue: null
+    defaultMethod:
+      type:
+        container:
+          space: dayAheadFrontendContractModel
+          externalId: BidMethod
+        type: direct
+      nullable: true
+      autoIncrement: false
+      name: defaultMethod
+      defaultValue: null
+      description: null
+    timezone:
+      type:
+        list: false
+        collation: ucs_basic
+        type: text
+      nullable: true
+      autoIncrement: false
+      name: timezone
+      defaultValue: null
+    mainScenario:
+      type:
+        list: false
+        type: timeseries
+      nullable: true
+      autoIncrement: false
+      name: timezone
+      defaultValue: null
+    priceScenarios:
+      type:
+        list: true
+        type: timeseries
+      nullable: true
+      autoIncrement: false
+      name: timezone
+      defaultValue: null
+- space: dayAheadFrontendContractModel
+  externalId: BidTable
+  name: BidTable
+  usedFor: node
+  properties:
+    resourceCost:
+      type:
+        list: false
+        collation: ucs_basic
+        type: text
+      nullable: true
+      autoIncrement: false
+      name: resourceCost
+      defaultValue: null
+    table:
+      type:
+        list: false
+        type: sequence
+      nullable: true
+      autoIncrement: false
+      name: table
+      defaultValue: null
+    assetType:
+      type:
+        list: false
+        collation: ucs_basic
+        type: text
+      nullable: true
+      autoIncrement: false
+      name: assetType
+      defaultValue: null
+    asset_id:
+      type:
+        list: false
+        collation: ucs_basic
+        type: text
+      nullable: true
+      autoIncrement: false
+      name: timezone
+      defaultValue: null
+- space: dayAheadFrontendContractModel
+  externalId: SHOPTable
+  name: SHOPTable
+  usedFor: node
+  properties:
+    productionPricePair:
+      type:
+        container:
+          space: dayAheadFrontendContractModel
+          externalId: ProductionPricePair
+        type: direct
+      nullable: true
+      autoIncrement: false
+      name: productionPricePair
+      defaultValue: null
+- space: dayAheadFrontendContractModel
+  externalId: ProductionPricePair
+  name: ProductionPricePair
+  usedFor: node
+  properties:
+    production:
+      type:
+        list: false
+        type: timeseries
+      nullable: true
+      autoIncrement: false
+      name: production
+      defaultValue: null
+      description: null
+    price:
+      type:
+        list: false
+        type: timeseries
+      nullable: true
+      autoIncrement: false
+      name: price
+      defaultValue: null
+      description: null

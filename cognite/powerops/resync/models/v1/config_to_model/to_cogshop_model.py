@@ -70,7 +70,7 @@ def to_cogshop_asset_model(
                 ("reservoir", "water_value_global_result", "water_value", "EUR/Mm3", "True"),
                 ("reservoir", "energy_conversion_factor", "energy_conversion_factor", "MWh/Mm3", "True"),
             ],
-            columns=[c["externalId"] for c in sequence.columns],
+            columns=[c.external_id for c in sequence.columns],
         )
 
         output_definition = CDFSequence(sequence=sequence, content=df)

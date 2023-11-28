@@ -1,4 +1,3 @@
-import pandas as pd
 import pytest
 
 from cognite.powerops.client.powerops_client import PowerOpsClient
@@ -37,7 +36,7 @@ def test_sha256_difference(market_model: models.MarketModel, powerops_client: Po
     cdf_content = cdf.sequences.data.retrieve_dataframe(0, None, external_id=sequence.external_id)
 
     # Arrange
-    pd.testing.assert_frame_equal(cdf_content, sequence.content)
+    assert cdf_content.to_json() == sequence.content.to_json()
     key = CDFSequence.content_key_hash
     local_hash = sequence.calculate_hash(sequence.content)
     assert cdf_sequence.metadata[key] == local_hash

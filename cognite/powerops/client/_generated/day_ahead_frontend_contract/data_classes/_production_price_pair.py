@@ -1,22 +1,22 @@
 from __future__ import annotations
 
-from typing import Literal, Optional
+from typing import Literal, Optional, Union  # noqa: F401
 
 from cognite.client import data_modeling as dm
+from cognite.client.data_classes import TimeSeries as CogniteTimeSeries
 
-from ._core import DomainModel, DomainModelApply, TypeApplyList, TypeList
+from ._core import (
+    DomainModel,
+    DomainModelApply,
+    DomainModelApplyList,
+    DomainModelList,
+    DomainRelationApply,
+    ResourcesApply,
+    TimeSeries,
+)
 
-__all__ = [
-    "ProductionPricePair",
-    "ProductionPricePairApply",
-    "ProductionPricePairList",
-    "ProductionPricePairApplyList",
-    "ProductionPricePairFields",
-    "ProductionPricePairTextFields",
-]
 
-
-ProductionPricePairTextFields = Literal["production", "price"]
+__all__ = ["ProductionPricePair", "ProductionPricePairApply", "ProductionPricePairList", "ProductionPricePairApplyList", "ProductionPricePairFields"]
 ProductionPricePairFields = Literal["production", "price"]
 
 _PRODUCTIONPRICEPAIR_PROPERTIES_BY_FIELD = {
@@ -26,7 +26,7 @@ _PRODUCTIONPRICEPAIR_PROPERTIES_BY_FIELD = {
 
 
 class ProductionPricePair(DomainModel):
-    """This represent a read version of production price pair.
+    """This represents the reading version of production price pair.
 
     It is used to when data is retrieved from CDF.
 
@@ -40,13 +40,12 @@ class ProductionPricePair(DomainModel):
         deleted_time: If present, the deleted time of the production price pair node.
         version: The version of the production price pair node.
     """
-
     space: str = "dayAheadFrontendContractModel"
-    production: Optional[str] = None
-    price: Optional[str] = None
+    production: Union[TimeSeries, str, None] = None
+    price: Union[TimeSeries, str, None] = None
 
     def as_apply(self) -> ProductionPricePairApply:
-        """Convert this read version of production price pair to a write version."""
+        """Convert this read version of production price pair to the writing version."""
         return ProductionPricePairApply(
             space=self.space,
             external_id=self.external_id,
@@ -56,7 +55,7 @@ class ProductionPricePair(DomainModel):
 
 
 class ProductionPricePairApply(DomainModelApply):
-    """This represent a write version of production price pair.
+    """This represents the writing version of production price pair.
 
     It is used to when data is sent to CDF.
 
@@ -65,60 +64,88 @@ class ProductionPricePairApply(DomainModelApply):
         external_id: The external id of the production price pair.
         production: The production field.
         price: The price field.
-        existing_version: Fail the ingestion request if the  version is greater than or equal to this value.
+        existing_version: Fail the ingestion request if the production price pair version is greater than or equal to this value.
             If no existingVersion is specified, the ingestion will always overwrite any existing data for the edge (for the specified container or instance).
             If existingVersion is set to 0, the upsert will behave as an insert, so it will fail the bulk if the item already exists.
             If skipOnVersionConflict is set on the ingestion request, then the item will be skipped instead of failing the ingestion request.
     """
-
     space: str = "dayAheadFrontendContractModel"
-    production: Optional[str] = None
-    price: Optional[str] = None
+    production: Union[TimeSeries, str, None] = None
+    price: Union[TimeSeries, str, None] = None
 
     def _to_instances_apply(
-        self, cache: set[str], view_by_write_class: dict[type[DomainModelApply], dm.ViewId] | None
-    ) -> dm.InstancesApply:
-        if self.external_id in cache:
-            return dm.InstancesApply(dm.NodeApplyList([]), dm.EdgeApplyList([]))
-        write_view = view_by_write_class and view_by_write_class.get(type(self))
+        self,
+        cache: set[tuple[str, str]],
+        view_by_write_class: dict[type[DomainModelApply | DomainRelationApply], dm.ViewId] | None,
+    ) -> ResourcesApply:
+        resources = ResourcesApply()
+        if self.as_tuple_id() in cache:
+            return resources
+
+        write_view = (view_by_write_class and view_by_write_class.get(type(self))) or dm.ViewId(
+            "dayAheadFrontendContractModel", "ProductionPricePair", "1"
+        )
 
         properties = {}
         if self.production is not None:
-            properties["production"] = self.production
+            properties["production"] = self.production if isinstance(self.production, str) else self.production.external_id
         if self.price is not None:
-            properties["price"] = self.price
+            properties["price"] = self.price if isinstance(self.price, str) else self.price.external_id
+
         if properties:
-            source = dm.NodeOrEdgeData(
-                source=write_view or dm.ViewId("dayAheadFrontendContractModel", "ProductionPricePair", "1"),
-                properties=properties,
-            )
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
-                sources=[source],
+                sources=[
+                    dm.NodeOrEdgeData(
+                        source=write_view,
+                        properties=properties,
+                )],
             )
-            nodes = [this_node]
-        else:
-            nodes = []
-
-        edges = []
-        cache.add(self.external_id)
-
-        return dm.InstancesApply(dm.NodeApplyList(nodes), dm.EdgeApplyList(edges))
+            resources.nodes.append(this_node)
+            cache.add(self.as_tuple_id())
+        
 
 
-class ProductionPricePairList(TypeList[ProductionPricePair]):
-    """List of production price pairs in read version."""
+        if isinstance(self.production, CogniteTimeSeries):
+            resources.time_series.append(self.production)
 
-    _NODE = ProductionPricePair
+        if isinstance(self.price, CogniteTimeSeries):
+            resources.time_series.append(self.price)
+
+        return resources
+
+
+class ProductionPricePairList(DomainModelList[ProductionPricePair]):
+    """List of production price pairs in the read version."""
+
+    _INSTANCE = ProductionPricePair
 
     def as_apply(self) -> ProductionPricePairApplyList:
-        """Convert this read version of production price pair to a write version."""
+        """Convert these read versions of production price pair to the writing versions."""
         return ProductionPricePairApplyList([node.as_apply() for node in self.data])
 
 
-class ProductionPricePairApplyList(TypeApplyList[ProductionPricePairApply]):
-    """List of production price pairs in write version."""
+class ProductionPricePairApplyList(DomainModelApplyList[ProductionPricePairApply]):
+    """List of production price pairs in the writing version."""
 
-    _NODE = ProductionPricePairApply
+    _INSTANCE = ProductionPricePairApply
+
+
+def _create_production_price_pair_filter(
+    view_id: dm.ViewId,
+    external_id_prefix: str | None = None,
+    space: str | list[str] | None = None,
+    filter: dm.Filter | None = None,
+) -> dm.Filter | None:
+    filters = []
+    if external_id_prefix:
+        filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
+    if space and isinstance(space, str):
+        filters.append(dm.filters.Equals(["node", "space"], value=space))
+    if space and isinstance(space, list):
+        filters.append(dm.filters.In(["node", "space"], values=space))
+    if filter:
+        filters.append(filter)
+    return dm.filters.And(*filters) if filters else None

@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.74.0] - 2023-11-28
+### Changed
+* Upgraded cognite-sdk requirement to 7.x
+
 ## [0.73.5] - 2023-11-22
 ### Added
 * Workflow events and relationships neccessary to trigger a Dayahead workflow

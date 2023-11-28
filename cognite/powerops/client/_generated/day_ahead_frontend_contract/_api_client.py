@@ -2,11 +2,9 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from cognite.client import ClientConfig, CogniteClient
-from cognite.client import data_modeling as dm
+from cognite.client import ClientConfig, CogniteClient, data_modeling as dm
 from cognite.client.credentials import OAuthClientCredentials
 
-from . import data_classes
 from ._api.alert import AlertAPI
 from ._api.bid import BidAPI
 from ._api.bid_method import BidMethodAPI
@@ -16,6 +14,7 @@ from ._api.production_price_pair import ProductionPricePairAPI
 from ._api.shop import SHOPAPI
 from ._api.shop_table import SHOPTableAPI
 from ._api.water_value_based import WaterValueBasedAPI
+from . import data_classes
 
 
 class DayAheadFrontendContractAPI:
@@ -23,9 +22,9 @@ class DayAheadFrontendContractAPI:
     DayAheadFrontendContractAPI
 
     Generated with:
-        pygen = 0.30.5
-        cognite-sdk = 7.3.3
-        pydantic = 2.4.2
+        pygen = 0.31.0
+        cognite-sdk = 7.4.0
+        pydantic = 2.5.2
 
     Data Model:
         space: dayAheadFrontendContractModel
@@ -46,14 +45,12 @@ class DayAheadFrontendContractAPI:
             data_classes.BidMethodApply: dm.ViewId("dayAheadFrontendContractModel", "BidMethod", "1"),
             data_classes.BidTableApply: dm.ViewId("dayAheadFrontendContractModel", "BidTable", "1"),
             data_classes.MarketPriceAreaApply: dm.ViewId("dayAheadFrontendContractModel", "MarketPriceArea", "1"),
-            data_classes.ProductionPricePairApply: dm.ViewId(
-                "dayAheadFrontendContractModel", "ProductionPricePair", "1"
-            ),
+            data_classes.ProductionPricePairApply: dm.ViewId("dayAheadFrontendContractModel", "ProductionPricePair", "1"),
             data_classes.SHOPApply: dm.ViewId("dayAheadFrontendContractModel", "SHOP", "1"),
             data_classes.SHOPTableApply: dm.ViewId("dayAheadFrontendContractModel", "SHOPTable", "1"),
             data_classes.WaterValueBasedApply: dm.ViewId("dayAheadFrontendContractModel", "WaterValueBased", "1"),
         }
-
+        
         self.alert = AlertAPI(client, view_by_write_class)
         self.bid = BidAPI(client, view_by_write_class)
         self.bid_method = BidMethodAPI(client, view_by_write_class)

@@ -1,0 +1,387 @@
+- space: dayAheadFrontendContractModel
+  externalId: Bid
+  name: Bid
+  version: '1'
+  properties:
+    name:
+      container:
+        space: dayAheadFrontendContractModel
+        externalId: Bid
+        type: container
+      containerPropertyIdentifier: name
+      name: name
+      description: null
+    method:
+      container:
+        space: dayAheadFrontendContractModel
+        externalId: Bid
+        type: container
+      source:
+        type: view
+        space: dayAheadFrontendContractModel
+        externalId: BidMethod
+        version: '1'
+      containerPropertyIdentifier: method
+      name: method
+      description: null
+    priceArea:
+      container:
+        space: dayAheadFrontendContractModel
+        externalId: Bid
+        type: container
+      containerPropertyIdentifier: priceArea
+      name: priceArea
+      description: null
+    date:
+      container:
+        space: dayAheadFrontendContractModel
+        externalId: Bid
+        type: container
+      containerPropertyIdentifier: date
+      name: date
+      description: null
+    total:
+      container:
+        space: dayAheadFrontendContractModel
+        externalId: Bid
+        type: container
+      containerPropertyIdentifier: total
+      name: total
+      description: null
+    startCalculation:
+      container:
+        space: dayAheadFrontendContractModel
+        externalId: Bid
+        type: container
+      containerPropertyIdentifier: startCalculation
+      name: startCalculation
+      description: null
+    endCalculation:
+      container:
+        space: dayAheadFrontendContractModel
+        externalId: Bid
+        type: container
+      containerPropertyIdentifier: endCalculation
+      name: endCalculation
+      description: null
+    market:
+      container:
+        space: dayAheadFrontendContractModel
+        externalId: Bid
+        type: container
+      source:
+        type: view
+        space: dayAheadFrontendContractModel
+        externalId: MarketPriceArea
+        version: '1'
+      containerPropertyIdentifier: market
+      name: market
+      description: null
+    partials:
+      type:
+        space: dayAheadFrontendContractModel
+        externalId: Bid.partials
+      source:
+        space: dayAheadFrontendContractModel
+        externalId: BidTable
+        version: 1
+        type: view
+      direction: outwards
+      name: partials
+    alerts:
+      type:
+        space: dayAheadFrontendContractModel
+        externalId: Bid.alerts
+      source:
+        space: dayAheadFrontendContractModel
+        externalId: Alert
+        version: 1
+        type: view
+      direction: outwards
+      name: alerts
+- space: dayAheadFrontendContractModel
+  externalId: Alert
+  name: Alert
+  version: '1'
+  properties:
+    time:
+      container:
+        space: dayAheadFrontendContractModel
+        externalId: Alert
+        type: container
+      containerPropertyIdentifier: time
+      name: time
+      description: null
+    title:
+      container:
+        space: dayAheadFrontendContractModel
+        externalId: Alert
+        type: container
+      containerPropertyIdentifier: title
+      name: title
+      description: null
+    description:
+      container:
+        space: dayAheadFrontendContractModel
+        externalId: Alert
+        type: container
+      containerPropertyIdentifier: description
+      name: description
+      description: null
+    severity:
+      container:
+        space: dayAheadFrontendContractModel
+        externalId: Alert
+        type: container
+      containerPropertyIdentifier: severity
+      name: severity
+      description: null
+    alertType:
+      container:
+        space: dayAheadFrontendContractModel
+        externalId: Alert
+        type: container
+      containerPropertyIdentifier: alertType
+      name: alertType
+      description: null
+    statusCode:
+      container:
+        space: dayAheadFrontendContractModel
+        externalId: Alert
+        type: container
+      containerPropertyIdentifier: statusCode
+      name: statusCode
+      description: null
+    eventIds:
+      container:
+        space: dayAheadFrontendContractModel
+        externalId: Alert
+        type: container
+      containerPropertyIdentifier: eventIds
+      name: eventIds
+      description: null
+    calculationRun:
+      container:
+        space: dayAheadFrontendContractModel
+        externalId: Alert
+        type: container
+      containerPropertyIdentifier: calculationRun
+      name: calculationRun
+      description: null
+- space: dayAheadFrontendContractModel
+  externalId: BidMethod
+  name: BidMethod
+  version: '1'
+  properties:
+    name:
+      container:
+        space: dayAheadFrontendContractModel
+        externalId: BidMethod
+        type: container
+      containerPropertyIdentifier: name
+      name: name
+      description: null
+- space: dayAheadFrontendContractModel
+  externalId: SHOP
+  name: SHOP
+  version: '1'
+  implements:
+    - type: view
+      space: dayAheadFrontendContractModel
+      externalId: BidMethod
+      version: 1
+  properties:
+    #  name: (inherited)
+    shopCases:
+      container:
+        space: dayAheadFrontendContractModel
+        externalId: SHOP
+        type: container
+      containerPropertyIdentifier: shopCases
+      name: shopCases
+      description: null
+    priceScenarios:
+      container:
+        space: dayAheadFrontendContractModel
+        externalId: SHOP
+        type: container
+      containerPropertyIdentifier: priceScenarios
+      name: priceScenarios
+      description: null
+  filter:
+    prefix:
+      property: [ 'node', 'externalId' ]
+      value: "SHOP"
+- space: dayAheadFrontendContractModel
+  externalId: WaterValueBased
+  name: WaterValueBased
+  version: '1'
+  implements:
+    - type: view
+      space: dayAheadFrontendContractModel
+      externalId: BidMethod
+      version: 1
+  properties: {}
+  filter:
+    prefix:
+      property:
+        - node
+        - externalId
+      value: "WVB"
+- space: dayAheadFrontendContractModel
+  externalId: MarketPriceArea
+  name: MarketPriceArea
+  version: '1'
+  properties:
+    name:
+      container:
+        space: dayAheadFrontendContractModel
+        externalId: MarketPriceArea
+        type: container
+      containerPropertyIdentifier: name
+      name: name
+      description: null
+    priceArea:
+      container:
+        space: dayAheadFrontendContractModel
+        externalId: MarketPriceArea
+        type: container
+      containerPropertyIdentifier: priceArea
+      name: priceArea
+      description: null
+    defaultMethod:
+      container:
+        space: dayAheadFrontendContractModel
+        externalId: MarketPriceArea
+        type: container
+      source:
+        type: view
+        space: dayAheadFrontendContractModel
+        externalId: BidMethod
+        version: '1'
+      containerPropertyIdentifier: defaultMethod
+      name: defaultMethod
+    timezone:
+      container:
+        space: dayAheadFrontendContractModel
+        externalId: MarketPriceArea
+        type: container
+      containerPropertyIdentifier: timezone
+      name: timezone
+      description: null
+    mainScenario:
+      container:
+        space: dayAheadFrontendContractModel
+        externalId: MarketPriceArea
+        type: container
+      containerPropertyIdentifier: mainScenario
+      name: mainScenario
+      description: null
+    priceScenarios:
+      container:
+        space: dayAheadFrontendContractModel
+        externalId: MarketPriceArea
+        type: container
+      containerPropertyIdentifier: priceScenarios
+      name: priceScenarios
+      description: null
+- space: dayAheadFrontendContractModel
+  externalId: BidTable
+  name: BidTable
+  version: '1'
+  properties:
+    resourceCost:
+      container:
+        space: dayAheadFrontendContractModel
+        externalId: BidTable
+        type: container
+      containerPropertyIdentifier: resourceCost
+      name: resourceCost
+      description: null
+    table:
+      container:
+        space: dayAheadFrontendContractModel
+        externalId: BidTable
+        type: container
+      containerPropertyIdentifier: table
+      name: table
+      description: null
+    assetType:
+      container:
+        space: dayAheadFrontendContractModel
+        externalId: BidTable
+        type: container
+      containerPropertyIdentifier: assetType
+      name: assetType
+      description: null
+    asset_id:
+      container:
+        space: dayAheadFrontendContractModel
+        externalId: BidTable
+        type: container
+      containerPropertyIdentifier: asset_id
+      name: asset_id
+      description: null
+    alerts:
+      type:
+        space: dayAheadFrontendContractModel
+        externalId: BidTable.alerts
+      source:
+        space: dayAheadFrontendContractModel
+        externalId: Alert
+        version: 1
+        type: view
+      direction: outwards
+      name: alerts
+- space: dayAheadFrontendContractModel
+  externalId: SHOPTable
+  name: SHOPTable
+  version: '1'
+  implements:
+    - type: view
+      space: dayAheadFrontendContractModel
+      externalId: BidTable
+      version: 1
+  properties:
+    #  resourceCost: (inherited)
+    #  table: (inherited)
+    #  assetType: (inherited)
+    #  asset_id: (inherited)
+    #  alerts: (inherited)
+    productionPricePair:
+      container:
+        space: dayAheadFrontendContractModel
+        externalId: SHOPTable
+        type: container
+      source:
+        type: view
+        space: dayAheadFrontendContractModel
+        externalId: ProductionPricePair
+        version: '1'
+      containerPropertyIdentifier: productionPricePair
+      name: productionPricePair
+  filter:
+    prefix:
+      property: [ 'node', 'externalId' ]
+      value: "SHOP"
+- space: dayAheadFrontendContractModel
+  externalId: ProductionPricePair
+  name: ProductionPricePair
+  version: '1'
+  properties:
+    production:
+      container:
+        space: dayAheadFrontendContractModel
+        externalId: ProductionPricePair
+        type: container
+      containerPropertyIdentifier: production
+      name: production
+      description: null
+    price:
+      container:
+        space: dayAheadFrontendContractModel
+        externalId: ProductionPricePair
+        type: container
+      containerPropertyIdentifier: price
+      name: price
+      description: null
