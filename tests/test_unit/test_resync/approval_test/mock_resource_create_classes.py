@@ -248,11 +248,11 @@ class MockFilesUploadBytes:
         **_,
     ) -> FileMetadata:
         file_metadata = FileMetadata(
-            external_id=external_id,
+            external_id=external_id or name,
             name=name,
             metadata=metadata,
             source=source,
-            mime_type=mime_type,
+            mime_type=mime_type or "text/plain",
         )
         self.file_metadata.append(file_metadata)
         if isinstance(content, str):
