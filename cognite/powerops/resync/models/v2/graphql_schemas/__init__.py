@@ -90,11 +90,4 @@ GRAPHQL_MODELS: dict[str, PowerOpsGraphQLModel] = {
         id_=DataModelId(_SPACE, "afrrMarket", "1"),
         extra_types=[],
     ),
-    "day_ahead_frontend_contract": PowerOpsGraphQLModel(
-        name=DayAheadFrontendContractDMSModel.name,
-        description=DayAheadFrontendContractDMSModel.description,
-        graphql_file=GRAPHQL_FILES / "day_ahead_frontend_contract.graphql",
-        id_=DayAheadFrontendContractDMSModel.id_,
-        extra_types=[],
-    ),
 }

@@ -8,7 +8,7 @@ from cognite.pygen import generate_sdk
 
 from cognite.powerops.resync.models.v1.graphql_schemas import GRAPHQL_MODELS as v1
 from cognite.powerops.resync.models.v2.graphql_schemas import GRAPHQL_MODELS as v2
-from cognite.powerops.resync.models.v2.dms import CapacityModel
+from cognite.powerops.resync.models.v2.dms import CapacityModel, DayAheadFrontendContractDMSModel
 from cognite.powerops.utils.cdf import get_cognite_client
 from cognite.powerops.utils.serialization import chdir
 
@@ -49,18 +49,17 @@ def main():
             format_code=True,
         )
 
-        #
-        # generate_sdk(
-        #     DayAheadFrontendContractDMSModel.id_,
-        #     client,
-        #     top_level_package=f"{top_level}.day_ahead_frontend_contract",
-        #     client_name="DayAheadFrontendContractAPI",
-        #     output_dir=REPO_ROOT,
-        #     logger=print,
-        #     pydantic_version="v2",
-        #     overwrite=True,
-        #     format_code=True,
-        # )
+        generate_sdk(
+            DayAheadFrontendContractDMSModel.id_,
+            client,
+            top_level_package=f"{top_level}.day_ahead_frontend_contract",
+            client_name="DayAheadFrontendContractAPI",
+            output_dir=REPO_ROOT,
+            logger=print,
+            pydantic_version="v2",
+            overwrite=True,
+            format_code=True,
+        )
 
 
 if __name__ == "__main__":
