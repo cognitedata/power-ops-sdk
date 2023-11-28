@@ -21,7 +21,15 @@ from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes
     _MARKETPRICEAREA_PROPERTIES_BY_FIELD,
     _create_market_price_area_filter,
 )
-from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
+from ._core import (
+    DEFAULT_LIMIT_READ,
+    DEFAULT_QUERY_LIMIT,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+    QueryStep,
+    QueryBuilder,
+)
 from .market_price_area_main_scenario import MarketPriceAreaMainScenarioAPI
 from .market_price_area_query import MarketPriceAreaQueryAPI
 
@@ -42,18 +50,18 @@ class MarketPriceAreaAPI(NodeAPI[MarketPriceArea, MarketPriceAreaApply, MarketPr
         self.main_scenario = MarketPriceAreaMainScenarioAPI(client, view_id)
 
     def __call__(
-            self,
-            name: str | list[str] | None = None,
-            name_prefix: str | None = None,
-            price_area: str | list[str] | None = None,
-            price_area_prefix: str | None = None,
-            default_method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-            timezone: str | list[str] | None = None,
-            timezone_prefix: str | None = None,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit: int = DEFAULT_QUERY_LIMIT,
-            filter: dm.Filter | None = None,
+        self,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        price_area: str | list[str] | None = None,
+        price_area_prefix: str | None = None,
+        default_method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        timezone: str | list[str] | None = None,
+        timezone_prefix: str | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_QUERY_LIMIT,
+        filter: dm.Filter | None = None,
     ) -> MarketPriceAreaQueryAPI[MarketPriceAreaList]:
         """Query starting at market price areas.
 
@@ -99,15 +107,16 @@ class MarketPriceAreaAPI(NodeAPI[MarketPriceArea, MarketPriceAreaApply, MarketPr
                     select=dm.query.Select(
                         [dm.query.SourceSelector(self._view_id, list(_MARKETPRICEAREA_PROPERTIES_BY_FIELD.values()))]
                     ),
-                    result_cls= MarketPriceArea,
+                    result_cls=MarketPriceArea,
                     max_retrieve_limit=limit,
                 )
             ],
         )
         return MarketPriceAreaQueryAPI(self._client, builder, self._view_by_write_class)
 
-
-    def apply(self, market_price_area: MarketPriceAreaApply | Sequence[MarketPriceAreaApply], replace: bool = False) -> ResourcesApplyResult:
+    def apply(
+        self, market_price_area: MarketPriceAreaApply | Sequence[MarketPriceAreaApply], replace: bool = False
+    ) -> ResourcesApplyResult:
         """Add or update (upsert) market price areas.
 
         Args:
@@ -130,7 +139,9 @@ class MarketPriceAreaAPI(NodeAPI[MarketPriceArea, MarketPriceAreaApply, MarketPr
         """
         return self._apply(market_price_area, replace)
 
-    def delete(self, external_id: str | SequenceNotStr[str], space: str ="dayAheadFrontendContractModel") -> dm.InstancesDeleteResult:
+    def delete(
+        self, external_id: str | SequenceNotStr[str], space: str = "dayAheadFrontendContractModel"
+    ) -> dm.InstancesDeleteResult:
         """Delete one or more market price area.
 
         Args:
@@ -158,7 +169,9 @@ class MarketPriceAreaAPI(NodeAPI[MarketPriceArea, MarketPriceAreaApply, MarketPr
     def retrieve(self, external_id: SequenceNotStr[str]) -> MarketPriceAreaList:
         ...
 
-    def retrieve(self, external_id: str | SequenceNotStr[str], space: str ="dayAheadFrontendContractModel") -> MarketPriceArea | MarketPriceAreaList | None:
+    def retrieve(
+        self, external_id: str | SequenceNotStr[str], space: str = "dayAheadFrontendContractModel"
+    ) -> MarketPriceArea | MarketPriceAreaList | None:
         """Retrieve one or more market price areas by id(s).
 
         Args:
@@ -434,7 +447,6 @@ class MarketPriceAreaAPI(NodeAPI[MarketPriceArea, MarketPriceAreaApply, MarketPr
             filter_,
         )
 
-
     def list(
         self,
         name: str | list[str] | None = None,
@@ -462,7 +474,7 @@ class MarketPriceAreaAPI(NodeAPI[MarketPriceArea, MarketPriceAreaApply, MarketPr
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of market price areas to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above. 
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
             List of requested market price areas

@@ -61,6 +61,7 @@ class Bid(DomainModel):
         deleted_time: If present, the deleted time of the bid node.
         version: The version of the bid node.
     """
+
     space: str = "dayAheadFrontendContractModel"
     name: Optional[str] = None
     method: Union[BidMethod, str, None] = Field(None, repr=False)
@@ -87,7 +88,9 @@ class Bid(DomainModel):
             end_calculation=self.end_calculation,
             market=self.market.as_apply() if isinstance(self.market, DomainModel) else self.market,
             alerts=[alert.as_apply() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
-            partials=[partial.as_apply() if isinstance(partial, DomainModel) else partial for partial in self.partials or []],
+            partials=[
+                partial.as_apply() if isinstance(partial, DomainModel) else partial for partial in self.partials or []
+            ],
         )
 
 
@@ -114,6 +117,7 @@ class BidApply(DomainModelApply):
             If existingVersion is set to 0, the upsert will behave as an insert, so it will fail the bulk if the item already exists.
             If skipOnVersionConflict is set on the ingestion request, then the item will be skipped instead of failing the ingestion request.
     """
+
     space: str = "dayAheadFrontendContractModel"
     name: Optional[str] = None
     method: Union[BidMethodApply, str, None] = Field(None, repr=False)
@@ -144,7 +148,7 @@ class BidApply(DomainModelApply):
             properties["name"] = self.name
         if self.method is not None:
             properties["method"] = {
-                "space":  self.space if isinstance(self.method, str) else self.method.space,
+                "space": self.space if isinstance(self.method, str) else self.method.space,
                 "externalId": self.method if isinstance(self.method, str) else self.method.external_id,
             }
         if self.price_area is not None:
@@ -153,7 +157,7 @@ class BidApply(DomainModelApply):
             properties["date"] = self.date.isoformat()
         if self.total is not None:
             properties["total"] = {
-                "space":  self.space if isinstance(self.total, str) else self.total.space,
+                "space": self.space if isinstance(self.total, str) else self.total.space,
                 "externalId": self.total if isinstance(self.total, str) else self.total.external_id,
             }
         if self.start_calculation is not None:
@@ -162,7 +166,7 @@ class BidApply(DomainModelApply):
             properties["endCalculation"] = self.end_calculation.isoformat(timespec="milliseconds")
         if self.market is not None:
             properties["market"] = {
-                "space":  self.space if isinstance(self.market, str) else self.market.space,
+                "space": self.space if isinstance(self.market, str) else self.market.space,
                 "externalId": self.market if isinstance(self.market, str) else self.market.external_id,
             }
 
@@ -175,12 +179,11 @@ class BidApply(DomainModelApply):
                     dm.NodeOrEdgeData(
                         source=write_view,
                         properties=properties,
-                )],
+                    )
+                ],
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-        
-
 
         edge_type = dm.DirectRelationReference("dayAheadFrontendContractModel", "Bid.alerts")
         for alert in self.alerts or []:
@@ -254,13 +257,29 @@ def _create_bid_filter(
     if name_prefix:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
     if method and isinstance(method, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("method"), value={"space": "dayAheadFrontendContractModel", "externalId": method}))
+        filters.append(
+            dm.filters.Equals(
+                view_id.as_property_ref("method"),
+                value={"space": "dayAheadFrontendContractModel", "externalId": method},
+            )
+        )
     if method and isinstance(method, tuple):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("method"), value={"space": method[0], "externalId": method[1]}))
+        filters.append(
+            dm.filters.Equals(view_id.as_property_ref("method"), value={"space": method[0], "externalId": method[1]})
+        )
     if method and isinstance(method, list) and isinstance(method[0], str):
-        filters.append(dm.filters.In(view_id.as_property_ref("method"), values=[{"space": "dayAheadFrontendContractModel", "externalId": item} for item in method]))
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("method"),
+                values=[{"space": "dayAheadFrontendContractModel", "externalId": item} for item in method],
+            )
+        )
     if method and isinstance(method, list) and isinstance(method[0], tuple):
-        filters.append(dm.filters.In(view_id.as_property_ref("method"), values=[{"space": item[0], "externalId": item[1]} for item in method]))
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("method"), values=[{"space": item[0], "externalId": item[1]} for item in method]
+            )
+        )
     if price_area and isinstance(price_area, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("priceArea"), value=price_area))
     if price_area and isinstance(price_area, list):
@@ -268,27 +287,76 @@ def _create_bid_filter(
     if price_area_prefix:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("priceArea"), value=price_area_prefix))
     if min_date or max_date:
-        filters.append(dm.filters.Range(view_id.as_property_ref("date"), gte=min_date.isoformat() if min_date else None, lte=max_date.isoformat() if max_date else None))
+        filters.append(
+            dm.filters.Range(
+                view_id.as_property_ref("date"),
+                gte=min_date.isoformat() if min_date else None,
+                lte=max_date.isoformat() if max_date else None,
+            )
+        )
     if total and isinstance(total, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("total"), value={"space": "dayAheadFrontendContractModel", "externalId": total}))
+        filters.append(
+            dm.filters.Equals(
+                view_id.as_property_ref("total"), value={"space": "dayAheadFrontendContractModel", "externalId": total}
+            )
+        )
     if total and isinstance(total, tuple):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("total"), value={"space": total[0], "externalId": total[1]}))
+        filters.append(
+            dm.filters.Equals(view_id.as_property_ref("total"), value={"space": total[0], "externalId": total[1]})
+        )
     if total and isinstance(total, list) and isinstance(total[0], str):
-        filters.append(dm.filters.In(view_id.as_property_ref("total"), values=[{"space": "dayAheadFrontendContractModel", "externalId": item} for item in total]))
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("total"),
+                values=[{"space": "dayAheadFrontendContractModel", "externalId": item} for item in total],
+            )
+        )
     if total and isinstance(total, list) and isinstance(total[0], tuple):
-        filters.append(dm.filters.In(view_id.as_property_ref("total"), values=[{"space": item[0], "externalId": item[1]} for item in total]))
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("total"), values=[{"space": item[0], "externalId": item[1]} for item in total]
+            )
+        )
     if min_start_calculation or max_start_calculation:
-        filters.append(dm.filters.Range(view_id.as_property_ref("startCalculation"), gte=min_start_calculation.isoformat(timespec="milliseconds") if min_start_calculation else None, lte=max_start_calculation.isoformat(timespec="milliseconds") if max_start_calculation else None))
+        filters.append(
+            dm.filters.Range(
+                view_id.as_property_ref("startCalculation"),
+                gte=min_start_calculation.isoformat(timespec="milliseconds") if min_start_calculation else None,
+                lte=max_start_calculation.isoformat(timespec="milliseconds") if max_start_calculation else None,
+            )
+        )
     if min_end_calculation or max_end_calculation:
-        filters.append(dm.filters.Range(view_id.as_property_ref("endCalculation"), gte=min_end_calculation.isoformat(timespec="milliseconds") if min_end_calculation else None, lte=max_end_calculation.isoformat(timespec="milliseconds") if max_end_calculation else None))
+        filters.append(
+            dm.filters.Range(
+                view_id.as_property_ref("endCalculation"),
+                gte=min_end_calculation.isoformat(timespec="milliseconds") if min_end_calculation else None,
+                lte=max_end_calculation.isoformat(timespec="milliseconds") if max_end_calculation else None,
+            )
+        )
     if market and isinstance(market, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("market"), value={"space": "dayAheadFrontendContractModel", "externalId": market}))
+        filters.append(
+            dm.filters.Equals(
+                view_id.as_property_ref("market"),
+                value={"space": "dayAheadFrontendContractModel", "externalId": market},
+            )
+        )
     if market and isinstance(market, tuple):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("market"), value={"space": market[0], "externalId": market[1]}))
+        filters.append(
+            dm.filters.Equals(view_id.as_property_ref("market"), value={"space": market[0], "externalId": market[1]})
+        )
     if market and isinstance(market, list) and isinstance(market[0], str):
-        filters.append(dm.filters.In(view_id.as_property_ref("market"), values=[{"space": "dayAheadFrontendContractModel", "externalId": item} for item in market]))
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("market"),
+                values=[{"space": "dayAheadFrontendContractModel", "externalId": item} for item in market],
+            )
+        )
     if market and isinstance(market, list) and isinstance(market[0], tuple):
-        filters.append(dm.filters.In(view_id.as_property_ref("market"), values=[{"space": item[0], "externalId": item[1]} for item in market]))
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("market"), values=[{"space": item[0], "externalId": item[1]} for item in market]
+            )
+        )
     if external_id_prefix:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if space and isinstance(space, str):

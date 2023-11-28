@@ -14,7 +14,14 @@ from ._core import (
 )
 
 
-__all__ = ["WaterValueBased", "WaterValueBasedApply", "WaterValueBasedList", "WaterValueBasedApplyList", "WaterValueBasedFields", "WaterValueBasedTextFields"]
+__all__ = [
+    "WaterValueBased",
+    "WaterValueBasedApply",
+    "WaterValueBasedList",
+    "WaterValueBasedApplyList",
+    "WaterValueBasedFields",
+    "WaterValueBasedTextFields",
+]
 
 
 WaterValueBasedTextFields = Literal["name"]
@@ -39,6 +46,7 @@ class WaterValueBased(DomainModel):
         deleted_time: If present, the deleted time of the water value based node.
         version: The version of the water value based node.
     """
+
     space: str = "dayAheadFrontendContractModel"
     name: Optional[str] = None
 
@@ -65,6 +73,7 @@ class WaterValueBasedApply(DomainModelApply):
             If existingVersion is set to 0, the upsert will behave as an insert, so it will fail the bulk if the item already exists.
             If skipOnVersionConflict is set on the ingestion request, then the item will be skipped instead of failing the ingestion request.
     """
+
     space: str = "dayAheadFrontendContractModel"
     name: str
 
@@ -94,12 +103,11 @@ class WaterValueBasedApply(DomainModelApply):
                     dm.NodeOrEdgeData(
                         source=write_view,
                         properties=properties,
-                )],
+                    )
+                ],
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-        
-
 
         return resources
 

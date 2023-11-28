@@ -21,7 +21,15 @@ from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes
     _BIDTABLE_PROPERTIES_BY_FIELD,
     _create_bid_table_filter,
 )
-from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
+from ._core import (
+    DEFAULT_LIMIT_READ,
+    DEFAULT_QUERY_LIMIT,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+    QueryStep,
+    QueryBuilder,
+)
 from .bid_table_alerts import BidTableAlertsAPI
 from .bid_table_query import BidTableQueryAPI
 
@@ -39,22 +47,20 @@ class BidTableAPI(NodeAPI[BidTable, BidTableApply, BidTableList]):
             view_by_write_class=view_by_write_class,
         )
         self._view_id = view_id
-        self.alerts_edge = BidTableAlertsAPI(
-            client
-        )
+        self.alerts_edge = BidTableAlertsAPI(client)
 
     def __call__(
-            self,
-            resource_cost: str | list[str] | None = None,
-            resource_cost_prefix: str | None = None,
-            asset_type: str | list[str] | None = None,
-            asset_type_prefix: str | None = None,
-            asset_id: str | list[str] | None = None,
-            asset_id_prefix: str | None = None,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit: int = DEFAULT_QUERY_LIMIT,
-            filter: dm.Filter | None = None,
+        self,
+        resource_cost: str | list[str] | None = None,
+        resource_cost_prefix: str | None = None,
+        asset_type: str | list[str] | None = None,
+        asset_type_prefix: str | None = None,
+        asset_id: str | list[str] | None = None,
+        asset_id_prefix: str | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_QUERY_LIMIT,
+        filter: dm.Filter | None = None,
     ) -> BidTableQueryAPI[BidTableList]:
         """Query starting at bid tables.
 
@@ -98,13 +104,12 @@ class BidTableAPI(NodeAPI[BidTable, BidTableApply, BidTableList]):
                     select=dm.query.Select(
                         [dm.query.SourceSelector(self._view_id, list(_BIDTABLE_PROPERTIES_BY_FIELD.values()))]
                     ),
-                    result_cls= BidTable,
+                    result_cls=BidTable,
                     max_retrieve_limit=limit,
                 )
             ],
         )
         return BidTableQueryAPI(self._client, builder, self._view_by_write_class)
-
 
     def apply(self, bid_table: BidTableApply | Sequence[BidTableApply], replace: bool = False) -> ResourcesApplyResult:
         """Add or update (upsert) bid tables.
@@ -133,7 +138,9 @@ class BidTableAPI(NodeAPI[BidTable, BidTableApply, BidTableList]):
         """
         return self._apply(bid_table, replace)
 
-    def delete(self, external_id: str | SequenceNotStr[str], space: str ="dayAheadFrontendContractModel") -> dm.InstancesDeleteResult:
+    def delete(
+        self, external_id: str | SequenceNotStr[str], space: str = "dayAheadFrontendContractModel"
+    ) -> dm.InstancesDeleteResult:
         """Delete one or more bid table.
 
         Args:
@@ -161,7 +168,9 @@ class BidTableAPI(NodeAPI[BidTable, BidTableApply, BidTableList]):
     def retrieve(self, external_id: SequenceNotStr[str]) -> BidTableList:
         ...
 
-    def retrieve(self, external_id: str | SequenceNotStr[str], space: str ="dayAheadFrontendContractModel") -> BidTable | BidTableList | None:
+    def retrieve(
+        self, external_id: str | SequenceNotStr[str], space: str = "dayAheadFrontendContractModel"
+    ) -> BidTable | BidTableList | None:
         """Retrieve one or more bid tables by id(s).
 
         Args:
@@ -185,10 +194,13 @@ class BidTableAPI(NodeAPI[BidTable, BidTableApply, BidTableList]):
             space,
             retrieve_edges=True,
             edge_api_name_type_triple=[
-                (self.alerts_edge, "alerts", dm.DirectRelationReference("dayAheadFrontendContractModel", "BidTable.alerts")),
-            ]
+                (
+                    self.alerts_edge,
+                    "alerts",
+                    dm.DirectRelationReference("dayAheadFrontendContractModel", "BidTable.alerts"),
+                ),
+            ],
         )
-        
 
     def search(
         self,
@@ -434,7 +446,6 @@ class BidTableAPI(NodeAPI[BidTable, BidTableApply, BidTableList]):
             filter_,
         )
 
-
     def list(
         self,
         resource_cost: str | list[str] | None = None,
@@ -461,7 +472,7 @@ class BidTableAPI(NodeAPI[BidTable, BidTableApply, BidTableList]):
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of bid tables to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above. 
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             retrieve_edges: Whether to retrieve `alerts` external ids for the bid tables. Defaults to True.
 
         Returns:
@@ -488,13 +499,16 @@ class BidTableAPI(NodeAPI[BidTable, BidTableApply, BidTableList]):
             space,
             filter,
         )
-        
+
         return self._list(
             limit=limit,
             filter=filter_,
             retrieve_edges=retrieve_edges,
             edge_api_name_type_triple=[
-                (self.alerts_edge, "alerts", dm.DirectRelationReference("dayAheadFrontendContractModel", "BidTable.alerts")),
-            ]
+                (
+                    self.alerts_edge,
+                    "alerts",
+                    dm.DirectRelationReference("dayAheadFrontendContractModel", "BidTable.alerts"),
+                ),
+            ],
         )
-        

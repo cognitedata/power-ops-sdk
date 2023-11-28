@@ -15,9 +15,9 @@ from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes
 from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes._alert import (
     _ALERT_PROPERTIES_BY_FIELD,
 )
+
 if TYPE_CHECKING:
     from .alert_query import AlertQueryAPI
-
 
 
 class SHOPTableQueryAPI(QueryAPI[T_DomainModelList]):
@@ -42,7 +42,6 @@ class SHOPTableQueryAPI(QueryAPI[T_DomainModelList]):
 
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("dayAheadFrontendContractModel", "BidTable.alerts"),
-            
             external_id_prefix=external_id_prefix,
             space=space,
         )
@@ -77,7 +76,7 @@ class SHOPTableQueryAPI(QueryAPI[T_DomainModelList]):
             ),
         )
         return AlertQueryAPI(self._client, self._builder, self._view_by_write_class)
-    
+
     def query(
         self,
         retrieve_shop_table: bool = True,

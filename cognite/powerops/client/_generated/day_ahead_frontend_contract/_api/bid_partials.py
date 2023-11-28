@@ -6,18 +6,17 @@ from cognite.client import data_modeling as dm
 from ._core import DEFAULT_LIMIT_READ, EdgeAPI, _create_edge_filter
 
 
-
 class BidPartialsAPI(EdgeAPI):
     def list(
-            self,
-            bid: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-            bid_space: str = "dayAheadFrontendContractModel",
-            bid_table: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-            bid_table_space: str = "dayAheadFrontendContractModel",
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit=DEFAULT_LIMIT_READ,
-    ) ->dm.EdgeList:
+        self,
+        bid: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
+        bid_space: str = "dayAheadFrontendContractModel",
+        bid_table: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
+        bid_table_space: str = "dayAheadFrontendContractModel",
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit=DEFAULT_LIMIT_READ,
+    ) -> dm.EdgeList:
         """List partial edges of a bid.
 
         Args:
@@ -44,7 +43,6 @@ class BidPartialsAPI(EdgeAPI):
         """
         filter_ = _create_edge_filter(
             dm.DirectRelationReference("dayAheadFrontendContractModel", "Bid.partials"),
-            
             bid,
             bid_space,
             bid_table,

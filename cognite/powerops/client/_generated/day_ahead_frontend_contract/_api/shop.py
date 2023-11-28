@@ -21,7 +21,15 @@ from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes
     _SHOP_PROPERTIES_BY_FIELD,
     _create_shop_filter,
 )
-from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
+from ._core import (
+    DEFAULT_LIMIT_READ,
+    DEFAULT_QUERY_LIMIT,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+    QueryStep,
+    QueryBuilder,
+)
 from .shop_price_scenarios import SHOPPriceScenariosAPI
 from .shop_query import SHOPQueryAPI
 
@@ -42,13 +50,13 @@ class SHOPAPI(NodeAPI[SHOP, SHOPApply, SHOPList]):
         self.price_scenarios = SHOPPriceScenariosAPI(client, view_id)
 
     def __call__(
-            self,
-            name: str | list[str] | None = None,
-            name_prefix: str | None = None,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit: int = DEFAULT_QUERY_LIMIT,
-            filter: dm.Filter | None = None,
+        self,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_QUERY_LIMIT,
+        filter: dm.Filter | None = None,
     ) -> SHOPQueryAPI[SHOPList]:
         """Query starting at shops.
 
@@ -84,13 +92,12 @@ class SHOPAPI(NodeAPI[SHOP, SHOPApply, SHOPList]):
                     select=dm.query.Select(
                         [dm.query.SourceSelector(self._view_id, list(_SHOP_PROPERTIES_BY_FIELD.values()))]
                     ),
-                    result_cls= SHOP,
+                    result_cls=SHOP,
                     max_retrieve_limit=limit,
                 )
             ],
         )
         return SHOPQueryAPI(self._client, builder, self._view_by_write_class)
-
 
     def apply(self, shop: SHOPApply | Sequence[SHOPApply], replace: bool = False) -> ResourcesApplyResult:
         """Add or update (upsert) shops.
@@ -115,7 +122,9 @@ class SHOPAPI(NodeAPI[SHOP, SHOPApply, SHOPList]):
         """
         return self._apply(shop, replace)
 
-    def delete(self, external_id: str | SequenceNotStr[str], space: str ="dayAheadFrontendContractModel") -> dm.InstancesDeleteResult:
+    def delete(
+        self, external_id: str | SequenceNotStr[str], space: str = "dayAheadFrontendContractModel"
+    ) -> dm.InstancesDeleteResult:
         """Delete one or more shop.
 
         Args:
@@ -143,7 +152,9 @@ class SHOPAPI(NodeAPI[SHOP, SHOPApply, SHOPList]):
     def retrieve(self, external_id: SequenceNotStr[str]) -> SHOPList:
         ...
 
-    def retrieve(self, external_id: str | SequenceNotStr[str], space: str ="dayAheadFrontendContractModel") -> SHOP | SHOPList | None:
+    def retrieve(
+        self, external_id: str | SequenceNotStr[str], space: str = "dayAheadFrontendContractModel"
+    ) -> SHOP | SHOPList | None:
         """Retrieve one or more shops by id(s).
 
         Args:
@@ -364,7 +375,6 @@ class SHOPAPI(NodeAPI[SHOP, SHOPApply, SHOPList]):
             filter_,
         )
 
-
     def list(
         self,
         name: str | list[str] | None = None,
@@ -382,7 +392,7 @@ class SHOPAPI(NodeAPI[SHOP, SHOPApply, SHOPList]):
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shops to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above. 
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
             List of requested shops

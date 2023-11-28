@@ -20,7 +20,14 @@ if TYPE_CHECKING:
     from ._bid_method import BidMethod, BidMethodApply
 
 
-__all__ = ["MarketPriceArea", "MarketPriceAreaApply", "MarketPriceAreaList", "MarketPriceAreaApplyList", "MarketPriceAreaFields", "MarketPriceAreaTextFields"]
+__all__ = [
+    "MarketPriceArea",
+    "MarketPriceAreaApply",
+    "MarketPriceAreaList",
+    "MarketPriceAreaApplyList",
+    "MarketPriceAreaFields",
+    "MarketPriceAreaTextFields",
+]
 
 
 MarketPriceAreaTextFields = Literal["name", "price_area", "timezone"]
@@ -54,6 +61,7 @@ class MarketPriceArea(DomainModel):
         deleted_time: If present, the deleted time of the market price area node.
         version: The version of the market price area node.
     """
+
     space: str = "dayAheadFrontendContractModel"
     name: Optional[str] = None
     price_area: Optional[str] = Field(None, alias="priceArea")
@@ -69,7 +77,9 @@ class MarketPriceArea(DomainModel):
             external_id=self.external_id,
             name=self.name,
             price_area=self.price_area,
-            default_method=self.default_method.as_apply() if isinstance(self.default_method, DomainModel) else self.default_method,
+            default_method=self.default_method.as_apply()
+            if isinstance(self.default_method, DomainModel)
+            else self.default_method,
             timezone=self.timezone,
             main_scenario=self.main_scenario,
             price_scenarios=self.price_scenarios,
@@ -95,6 +105,7 @@ class MarketPriceAreaApply(DomainModelApply):
             If existingVersion is set to 0, the upsert will behave as an insert, so it will fail the bulk if the item already exists.
             If skipOnVersionConflict is set on the ingestion request, then the item will be skipped instead of failing the ingestion request.
     """
+
     space: str = "dayAheadFrontendContractModel"
     name: Optional[str] = None
     price_area: Optional[str] = Field(None, alias="priceArea")
@@ -123,13 +134,17 @@ class MarketPriceAreaApply(DomainModelApply):
             properties["priceArea"] = self.price_area
         if self.default_method is not None:
             properties["defaultMethod"] = {
-                "space":  self.space if isinstance(self.default_method, str) else self.default_method.space,
-                "externalId": self.default_method if isinstance(self.default_method, str) else self.default_method.external_id,
+                "space": self.space if isinstance(self.default_method, str) else self.default_method.space,
+                "externalId": self.default_method
+                if isinstance(self.default_method, str)
+                else self.default_method.external_id,
             }
         if self.timezone is not None:
             properties["timezone"] = self.timezone
         if self.main_scenario is not None:
-            properties["mainScenario"] = self.main_scenario if isinstance(self.main_scenario, str) else self.main_scenario.external_id
+            properties["mainScenario"] = (
+                self.main_scenario if isinstance(self.main_scenario, str) else self.main_scenario.external_id
+            )
         if self.price_scenarios is not None:
             properties["priceScenarios"] = self.price_scenarios
 
@@ -142,12 +157,11 @@ class MarketPriceAreaApply(DomainModelApply):
                     dm.NodeOrEdgeData(
                         source=write_view,
                         properties=properties,
-                )],
+                    )
+                ],
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-        
-
 
         if isinstance(self.default_method, DomainModelApply):
             other_resources = self.default_method._to_instances_apply(cache, view_by_write_class)
@@ -202,13 +216,33 @@ def _create_market_price_area_filter(
     if price_area_prefix:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("priceArea"), value=price_area_prefix))
     if default_method and isinstance(default_method, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("defaultMethod"), value={"space": "dayAheadFrontendContractModel", "externalId": default_method}))
+        filters.append(
+            dm.filters.Equals(
+                view_id.as_property_ref("defaultMethod"),
+                value={"space": "dayAheadFrontendContractModel", "externalId": default_method},
+            )
+        )
     if default_method and isinstance(default_method, tuple):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("defaultMethod"), value={"space": default_method[0], "externalId": default_method[1]}))
+        filters.append(
+            dm.filters.Equals(
+                view_id.as_property_ref("defaultMethod"),
+                value={"space": default_method[0], "externalId": default_method[1]},
+            )
+        )
     if default_method and isinstance(default_method, list) and isinstance(default_method[0], str):
-        filters.append(dm.filters.In(view_id.as_property_ref("defaultMethod"), values=[{"space": "dayAheadFrontendContractModel", "externalId": item} for item in default_method]))
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("defaultMethod"),
+                values=[{"space": "dayAheadFrontendContractModel", "externalId": item} for item in default_method],
+            )
+        )
     if default_method and isinstance(default_method, list) and isinstance(default_method[0], tuple):
-        filters.append(dm.filters.In(view_id.as_property_ref("defaultMethod"), values=[{"space": item[0], "externalId": item[1]} for item in default_method]))
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("defaultMethod"),
+                values=[{"space": item[0], "externalId": item[1]} for item in default_method],
+            )
+        )
     if timezone and isinstance(timezone, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("timezone"), value=timezone))
     if timezone and isinstance(timezone, list):

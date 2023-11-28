@@ -19,7 +19,14 @@ if TYPE_CHECKING:
     from ._production_price_pair import ProductionPricePair, ProductionPricePairApply
 
 
-__all__ = ["SHOPTable", "SHOPTableApply", "SHOPTableList", "SHOPTableApplyList", "SHOPTableFields", "SHOPTableTextFields"]
+__all__ = [
+    "SHOPTable",
+    "SHOPTableApply",
+    "SHOPTableList",
+    "SHOPTableApplyList",
+    "SHOPTableFields",
+    "SHOPTableTextFields",
+]
 
 
 SHOPTableTextFields = Literal["resource_cost", "table", "asset_type", "asset_id"]
@@ -52,6 +59,7 @@ class SHOPTable(DomainModel):
         deleted_time: If present, the deleted time of the shop table node.
         version: The version of the shop table node.
     """
+
     space: str = "dayAheadFrontendContractModel"
     resource_cost: Optional[str] = Field(None, alias="resourceCost")
     table: Union[str, None] = None
@@ -70,7 +78,9 @@ class SHOPTable(DomainModel):
             asset_type=self.asset_type,
             asset_id=self.asset_id,
             alerts=[alert.as_apply() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
-            production_price_pair=self.production_price_pair.as_apply() if isinstance(self.production_price_pair, DomainModel) else self.production_price_pair,
+            production_price_pair=self.production_price_pair.as_apply()
+            if isinstance(self.production_price_pair, DomainModel)
+            else self.production_price_pair,
         )
 
 
@@ -93,13 +103,16 @@ class SHOPTableApply(DomainModelApply):
             If existingVersion is set to 0, the upsert will behave as an insert, so it will fail the bulk if the item already exists.
             If skipOnVersionConflict is set on the ingestion request, then the item will be skipped instead of failing the ingestion request.
     """
+
     space: str = "dayAheadFrontendContractModel"
     resource_cost: Optional[str] = Field(None, alias="resourceCost")
     table: Union[str, None] = None
     asset_type: Optional[str] = Field(None, alias="assetType")
     asset_id: Optional[str] = None
     alerts: Union[list[AlertApply], list[str], None] = Field(default=None, repr=False)
-    production_price_pair: Union[ProductionPricePairApply, str, None] = Field(None, repr=False, alias="productionPricePair")
+    production_price_pair: Union[ProductionPricePairApply, str, None] = Field(
+        None, repr=False, alias="productionPricePair"
+    )
 
     def _to_instances_apply(
         self,
@@ -125,8 +138,12 @@ class SHOPTableApply(DomainModelApply):
             properties["asset_id"] = self.asset_id
         if self.production_price_pair is not None:
             properties["productionPricePair"] = {
-                "space":  self.space if isinstance(self.production_price_pair, str) else self.production_price_pair.space,
-                "externalId": self.production_price_pair if isinstance(self.production_price_pair, str) else self.production_price_pair.external_id,
+                "space": self.space
+                if isinstance(self.production_price_pair, str)
+                else self.production_price_pair.space,
+                "externalId": self.production_price_pair
+                if isinstance(self.production_price_pair, str)
+                else self.production_price_pair.external_id,
             }
 
         if properties:
@@ -138,12 +155,11 @@ class SHOPTableApply(DomainModelApply):
                     dm.NodeOrEdgeData(
                         source=write_view,
                         properties=properties,
-                )],
+                    )
+                ],
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-        
-
 
         edge_type = dm.DirectRelationReference("dayAheadFrontendContractModel", "BidTable.alerts")
         for alert in self.alerts or []:
@@ -208,13 +224,39 @@ def _create_shop_table_filter(
     if asset_id_prefix:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("asset_id"), value=asset_id_prefix))
     if production_price_pair and isinstance(production_price_pair, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("productionPricePair"), value={"space": "dayAheadFrontendContractModel", "externalId": production_price_pair}))
+        filters.append(
+            dm.filters.Equals(
+                view_id.as_property_ref("productionPricePair"),
+                value={"space": "dayAheadFrontendContractModel", "externalId": production_price_pair},
+            )
+        )
     if production_price_pair and isinstance(production_price_pair, tuple):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("productionPricePair"), value={"space": production_price_pair[0], "externalId": production_price_pair[1]}))
+        filters.append(
+            dm.filters.Equals(
+                view_id.as_property_ref("productionPricePair"),
+                value={"space": production_price_pair[0], "externalId": production_price_pair[1]},
+            )
+        )
     if production_price_pair and isinstance(production_price_pair, list) and isinstance(production_price_pair[0], str):
-        filters.append(dm.filters.In(view_id.as_property_ref("productionPricePair"), values=[{"space": "dayAheadFrontendContractModel", "externalId": item} for item in production_price_pair]))
-    if production_price_pair and isinstance(production_price_pair, list) and isinstance(production_price_pair[0], tuple):
-        filters.append(dm.filters.In(view_id.as_property_ref("productionPricePair"), values=[{"space": item[0], "externalId": item[1]} for item in production_price_pair]))
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("productionPricePair"),
+                values=[
+                    {"space": "dayAheadFrontendContractModel", "externalId": item} for item in production_price_pair
+                ],
+            )
+        )
+    if (
+        production_price_pair
+        and isinstance(production_price_pair, list)
+        and isinstance(production_price_pair[0], tuple)
+    ):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("productionPricePair"),
+                values=[{"space": item[0], "externalId": item[1]} for item in production_price_pair],
+            )
+        )
     if external_id_prefix:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if space and isinstance(space, str):

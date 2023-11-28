@@ -45,12 +45,14 @@ class DayAheadFrontendContractAPI:
             data_classes.BidMethodApply: dm.ViewId("dayAheadFrontendContractModel", "BidMethod", "1"),
             data_classes.BidTableApply: dm.ViewId("dayAheadFrontendContractModel", "BidTable", "1"),
             data_classes.MarketPriceAreaApply: dm.ViewId("dayAheadFrontendContractModel", "MarketPriceArea", "1"),
-            data_classes.ProductionPricePairApply: dm.ViewId("dayAheadFrontendContractModel", "ProductionPricePair", "1"),
+            data_classes.ProductionPricePairApply: dm.ViewId(
+                "dayAheadFrontendContractModel", "ProductionPricePair", "1"
+            ),
             data_classes.SHOPApply: dm.ViewId("dayAheadFrontendContractModel", "SHOP", "1"),
             data_classes.SHOPTableApply: dm.ViewId("dayAheadFrontendContractModel", "SHOPTable", "1"),
             data_classes.WaterValueBasedApply: dm.ViewId("dayAheadFrontendContractModel", "WaterValueBased", "1"),
         }
-        
+
         self.alert = AlertAPI(client, view_by_write_class)
         self.bid = BidAPI(client, view_by_write_class)
         self.bid_method = BidMethodAPI(client, view_by_write_class)

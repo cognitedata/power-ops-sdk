@@ -20,7 +20,15 @@ from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes
     _PRODUCTIONPRICEPAIR_PROPERTIES_BY_FIELD,
     _create_production_price_pair_filter,
 )
-from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
+from ._core import (
+    DEFAULT_LIMIT_READ,
+    DEFAULT_QUERY_LIMIT,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+    QueryStep,
+    QueryBuilder,
+)
 from .production_price_pair_production import ProductionPricePairProductionAPI
 from .production_price_pair_price import ProductionPricePairPriceAPI
 from .production_price_pair_query import ProductionPricePairQueryAPI
@@ -43,11 +51,11 @@ class ProductionPricePairAPI(NodeAPI[ProductionPricePair, ProductionPricePairApp
         self.price = ProductionPricePairPriceAPI(client, view_id)
 
     def __call__(
-            self,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit: int = DEFAULT_QUERY_LIMIT,
-            filter: dm.Filter | None = None,
+        self,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_QUERY_LIMIT,
+        filter: dm.Filter | None = None,
     ) -> ProductionPricePairQueryAPI[ProductionPricePairList]:
         """Query starting at production price pairs.
 
@@ -77,17 +85,24 @@ class ProductionPricePairAPI(NodeAPI[ProductionPricePair, ProductionPricePairApp
                         filter=filter_,
                     ),
                     select=dm.query.Select(
-                        [dm.query.SourceSelector(self._view_id, list(_PRODUCTIONPRICEPAIR_PROPERTIES_BY_FIELD.values()))]
+                        [
+                            dm.query.SourceSelector(
+                                self._view_id, list(_PRODUCTIONPRICEPAIR_PROPERTIES_BY_FIELD.values())
+                            )
+                        ]
                     ),
-                    result_cls= ProductionPricePair,
+                    result_cls=ProductionPricePair,
                     max_retrieve_limit=limit,
                 )
             ],
         )
         return ProductionPricePairQueryAPI(self._client, builder, self._view_by_write_class)
 
-
-    def apply(self, production_price_pair: ProductionPricePairApply | Sequence[ProductionPricePairApply], replace: bool = False) -> ResourcesApplyResult:
+    def apply(
+        self,
+        production_price_pair: ProductionPricePairApply | Sequence[ProductionPricePairApply],
+        replace: bool = False,
+    ) -> ResourcesApplyResult:
         """Add or update (upsert) production price pairs.
 
         Args:
@@ -110,7 +125,9 @@ class ProductionPricePairAPI(NodeAPI[ProductionPricePair, ProductionPricePairApp
         """
         return self._apply(production_price_pair, replace)
 
-    def delete(self, external_id: str | SequenceNotStr[str], space: str ="dayAheadFrontendContractModel") -> dm.InstancesDeleteResult:
+    def delete(
+        self, external_id: str | SequenceNotStr[str], space: str = "dayAheadFrontendContractModel"
+    ) -> dm.InstancesDeleteResult:
         """Delete one or more production price pair.
 
         Args:
@@ -138,7 +155,9 @@ class ProductionPricePairAPI(NodeAPI[ProductionPricePair, ProductionPricePairApp
     def retrieve(self, external_id: SequenceNotStr[str]) -> ProductionPricePairList:
         ...
 
-    def retrieve(self, external_id: str | SequenceNotStr[str], space: str ="dayAheadFrontendContractModel") -> ProductionPricePair | ProductionPricePairList | None:
+    def retrieve(
+        self, external_id: str | SequenceNotStr[str], space: str = "dayAheadFrontendContractModel"
+    ) -> ProductionPricePair | ProductionPricePairList | None:
         """Retrieve one or more production price pairs by id(s).
 
         Args:
@@ -158,7 +177,6 @@ class ProductionPricePairAPI(NodeAPI[ProductionPricePair, ProductionPricePairApp
 
         """
         return self._retrieve(external_id, space)
-
 
     @overload
     def aggregate(
@@ -287,7 +305,6 @@ class ProductionPricePairAPI(NodeAPI[ProductionPricePair, ProductionPricePairApp
             filter_,
         )
 
-
     def list(
         self,
         external_id_prefix: str | None = None,
@@ -301,7 +318,7 @@ class ProductionPricePairAPI(NodeAPI[ProductionPricePair, ProductionPricePairApp
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of production price pairs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above. 
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
             List of requested production price pairs

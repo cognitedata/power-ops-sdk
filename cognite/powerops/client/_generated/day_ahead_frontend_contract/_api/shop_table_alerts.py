@@ -6,18 +6,17 @@ from cognite.client import data_modeling as dm
 from ._core import DEFAULT_LIMIT_READ, EdgeAPI, _create_edge_filter
 
 
-
 class SHOPTableAlertsAPI(EdgeAPI):
     def list(
-            self,
-            shop_table: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-            shop_table_space: str = "dayAheadFrontendContractModel",
-            alert: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-            alert_space: str = "dayAheadFrontendContractModel",
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit=DEFAULT_LIMIT_READ,
-    ) ->dm.EdgeList:
+        self,
+        shop_table: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
+        shop_table_space: str = "dayAheadFrontendContractModel",
+        alert: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
+        alert_space: str = "dayAheadFrontendContractModel",
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit=DEFAULT_LIMIT_READ,
+    ) -> dm.EdgeList:
         """List alert edges of a shop table.
 
         Args:
@@ -44,7 +43,6 @@ class SHOPTableAlertsAPI(EdgeAPI):
         """
         filter_ = _create_edge_filter(
             dm.DirectRelationReference("dayAheadFrontendContractModel", "BidTable.alerts"),
-            
             shop_table,
             shop_table_space,
             alert,

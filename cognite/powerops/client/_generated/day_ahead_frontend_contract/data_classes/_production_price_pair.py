@@ -16,7 +16,13 @@ from ._core import (
 )
 
 
-__all__ = ["ProductionPricePair", "ProductionPricePairApply", "ProductionPricePairList", "ProductionPricePairApplyList", "ProductionPricePairFields"]
+__all__ = [
+    "ProductionPricePair",
+    "ProductionPricePairApply",
+    "ProductionPricePairList",
+    "ProductionPricePairApplyList",
+    "ProductionPricePairFields",
+]
 ProductionPricePairFields = Literal["production", "price"]
 
 _PRODUCTIONPRICEPAIR_PROPERTIES_BY_FIELD = {
@@ -40,6 +46,7 @@ class ProductionPricePair(DomainModel):
         deleted_time: If present, the deleted time of the production price pair node.
         version: The version of the production price pair node.
     """
+
     space: str = "dayAheadFrontendContractModel"
     production: Union[TimeSeries, str, None] = None
     price: Union[TimeSeries, str, None] = None
@@ -69,6 +76,7 @@ class ProductionPricePairApply(DomainModelApply):
             If existingVersion is set to 0, the upsert will behave as an insert, so it will fail the bulk if the item already exists.
             If skipOnVersionConflict is set on the ingestion request, then the item will be skipped instead of failing the ingestion request.
     """
+
     space: str = "dayAheadFrontendContractModel"
     production: Union[TimeSeries, str, None] = None
     price: Union[TimeSeries, str, None] = None
@@ -88,7 +96,9 @@ class ProductionPricePairApply(DomainModelApply):
 
         properties = {}
         if self.production is not None:
-            properties["production"] = self.production if isinstance(self.production, str) else self.production.external_id
+            properties["production"] = (
+                self.production if isinstance(self.production, str) else self.production.external_id
+            )
         if self.price is not None:
             properties["price"] = self.price if isinstance(self.price, str) else self.price.external_id
 
@@ -101,12 +111,11 @@ class ProductionPricePairApply(DomainModelApply):
                     dm.NodeOrEdgeData(
                         source=write_view,
                         properties=properties,
-                )],
+                    )
+                ],
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-        
-
 
         if isinstance(self.production, CogniteTimeSeries):
             resources.time_series.append(self.production)

@@ -14,6 +14,7 @@ from ._core import DEFAULT_LIMIT_READ, INSTANCE_QUERY_LIMIT
 
 ColumnNames = Literal["name", "priceScenarios"]
 
+
 class SHOPPriceScenariosQuery:
     def __init__(
         self,
@@ -310,7 +311,6 @@ class SHOPPriceScenariosQuery:
         self,
         before: None | int | str | datetime.datetime = None,
     ) -> Datapoints | DatapointsList | None:
-
         external_ids = self._retrieve_timeseries_external_ids_with_extra()
         if external_ids:
             return self._client.time_series.data.retrieve_latest(
@@ -444,7 +444,9 @@ class SHOPPriceScenariosAPI:
             space,
             filter,
         )
-        external_ids = _retrieve_timeseries_external_ids_with_extra_price_scenarios(self._client, self._view_id, filter_, limit)
+        external_ids = _retrieve_timeseries_external_ids_with_extra_price_scenarios(
+            self._client, self._view_id, filter_, limit
+        )
         if external_ids:
             return self._client.time_series.retrieve_multiple(external_ids=list(external_ids))
         else:

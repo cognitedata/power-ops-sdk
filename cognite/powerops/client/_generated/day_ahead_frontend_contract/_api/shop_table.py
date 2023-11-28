@@ -21,7 +21,15 @@ from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes
     _SHOPTABLE_PROPERTIES_BY_FIELD,
     _create_shop_table_filter,
 )
-from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
+from ._core import (
+    DEFAULT_LIMIT_READ,
+    DEFAULT_QUERY_LIMIT,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+    QueryStep,
+    QueryBuilder,
+)
 from .shop_table_alerts import SHOPTableAlertsAPI
 from .shop_table_query import SHOPTableQueryAPI
 
@@ -39,23 +47,21 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
             view_by_write_class=view_by_write_class,
         )
         self._view_id = view_id
-        self.alerts_edge = SHOPTableAlertsAPI(
-            client
-        )
+        self.alerts_edge = SHOPTableAlertsAPI(client)
 
     def __call__(
-            self,
-            resource_cost: str | list[str] | None = None,
-            resource_cost_prefix: str | None = None,
-            asset_type: str | list[str] | None = None,
-            asset_type_prefix: str | None = None,
-            asset_id: str | list[str] | None = None,
-            asset_id_prefix: str | None = None,
-            production_price_pair: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit: int = DEFAULT_QUERY_LIMIT,
-            filter: dm.Filter | None = None,
+        self,
+        resource_cost: str | list[str] | None = None,
+        resource_cost_prefix: str | None = None,
+        asset_type: str | list[str] | None = None,
+        asset_type_prefix: str | None = None,
+        asset_id: str | list[str] | None = None,
+        asset_id_prefix: str | None = None,
+        production_price_pair: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_QUERY_LIMIT,
+        filter: dm.Filter | None = None,
     ) -> SHOPTableQueryAPI[SHOPTableList]:
         """Query starting at shop tables.
 
@@ -101,15 +107,16 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
                     select=dm.query.Select(
                         [dm.query.SourceSelector(self._view_id, list(_SHOPTABLE_PROPERTIES_BY_FIELD.values()))]
                     ),
-                    result_cls= SHOPTable,
+                    result_cls=SHOPTable,
                     max_retrieve_limit=limit,
                 )
             ],
         )
         return SHOPTableQueryAPI(self._client, builder, self._view_by_write_class)
 
-
-    def apply(self, shop_table: SHOPTableApply | Sequence[SHOPTableApply], replace: bool = False) -> ResourcesApplyResult:
+    def apply(
+        self, shop_table: SHOPTableApply | Sequence[SHOPTableApply], replace: bool = False
+    ) -> ResourcesApplyResult:
         """Add or update (upsert) shop tables.
 
         Note: This method iterates through all nodes and timeseries linked to shop_table and creates them including the edges
@@ -136,7 +143,9 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
         """
         return self._apply(shop_table, replace)
 
-    def delete(self, external_id: str | SequenceNotStr[str], space: str ="dayAheadFrontendContractModel") -> dm.InstancesDeleteResult:
+    def delete(
+        self, external_id: str | SequenceNotStr[str], space: str = "dayAheadFrontendContractModel"
+    ) -> dm.InstancesDeleteResult:
         """Delete one or more shop table.
 
         Args:
@@ -164,7 +173,9 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
     def retrieve(self, external_id: SequenceNotStr[str]) -> SHOPTableList:
         ...
 
-    def retrieve(self, external_id: str | SequenceNotStr[str], space: str ="dayAheadFrontendContractModel") -> SHOPTable | SHOPTableList | None:
+    def retrieve(
+        self, external_id: str | SequenceNotStr[str], space: str = "dayAheadFrontendContractModel"
+    ) -> SHOPTable | SHOPTableList | None:
         """Retrieve one or more shop tables by id(s).
 
         Args:
@@ -188,10 +199,13 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
             space,
             retrieve_edges=True,
             edge_api_name_type_triple=[
-                (self.alerts_edge, "alerts", dm.DirectRelationReference("dayAheadFrontendContractModel", "BidTable.alerts")),
-            ]
+                (
+                    self.alerts_edge,
+                    "alerts",
+                    dm.DirectRelationReference("dayAheadFrontendContractModel", "BidTable.alerts"),
+                ),
+            ],
         )
-        
 
     def search(
         self,
@@ -448,7 +462,6 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
             filter_,
         )
 
-
     def list(
         self,
         resource_cost: str | list[str] | None = None,
@@ -477,7 +490,7 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop tables to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above. 
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             retrieve_edges: Whether to retrieve `alerts` external ids for the shop tables. Defaults to True.
 
         Returns:
@@ -505,13 +518,16 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
             space,
             filter,
         )
-        
+
         return self._list(
             limit=limit,
             filter=filter_,
             retrieve_edges=retrieve_edges,
             edge_api_name_type_triple=[
-                (self.alerts_edge, "alerts", dm.DirectRelationReference("dayAheadFrontendContractModel", "BidTable.alerts")),
-            ]
+                (
+                    self.alerts_edge,
+                    "alerts",
+                    dm.DirectRelationReference("dayAheadFrontendContractModel", "BidTable.alerts"),
+                ),
+            ],
         )
-        

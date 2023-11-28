@@ -20,10 +20,10 @@ from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes
 from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes._bid_table import (
     _BIDTABLE_PROPERTIES_BY_FIELD,
 )
+
 if TYPE_CHECKING:
     from .alert_query import AlertQueryAPI
     from .bid_table_query import BidTableQueryAPI
-
 
 
 class BidQueryAPI(QueryAPI[T_DomainModelList]):
@@ -48,7 +48,6 @@ class BidQueryAPI(QueryAPI[T_DomainModelList]):
 
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("dayAheadFrontendContractModel", "Bid.alerts"),
-            
             external_id_prefix=external_id_prefix,
             space=space,
         )
@@ -83,7 +82,7 @@ class BidQueryAPI(QueryAPI[T_DomainModelList]):
             ),
         )
         return AlertQueryAPI(self._client, self._builder, self._view_by_write_class)
-    
+
     def partials(
         self,
         external_id_prefix: str | None = None,
@@ -105,7 +104,6 @@ class BidQueryAPI(QueryAPI[T_DomainModelList]):
 
         edge_filter = _create_edge_filter(
             dm.DirectRelationReference("dayAheadFrontendContractModel", "Bid.partials"),
-            
             external_id_prefix=external_id_prefix,
             space=space,
         )
@@ -140,7 +138,7 @@ class BidQueryAPI(QueryAPI[T_DomainModelList]):
             ),
         )
         return BidTableQueryAPI(self._client, self._builder, self._view_by_write_class)
-    
+
     def query(
         self,
         retrieve_bid: bool = True,

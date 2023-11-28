@@ -14,7 +14,14 @@ from ._core import (
 )
 
 
-__all__ = ["BidMethod", "BidMethodApply", "BidMethodList", "BidMethodApplyList", "BidMethodFields", "BidMethodTextFields"]
+__all__ = [
+    "BidMethod",
+    "BidMethodApply",
+    "BidMethodList",
+    "BidMethodApplyList",
+    "BidMethodFields",
+    "BidMethodTextFields",
+]
 
 
 BidMethodTextFields = Literal["name"]
@@ -39,6 +46,7 @@ class BidMethod(DomainModel):
         deleted_time: If present, the deleted time of the bid method node.
         version: The version of the bid method node.
     """
+
     space: str = "dayAheadFrontendContractModel"
     name: Optional[str] = None
 
@@ -65,6 +73,7 @@ class BidMethodApply(DomainModelApply):
             If existingVersion is set to 0, the upsert will behave as an insert, so it will fail the bulk if the item already exists.
             If skipOnVersionConflict is set on the ingestion request, then the item will be skipped instead of failing the ingestion request.
     """
+
     space: str = "dayAheadFrontendContractModel"
     name: str
 
@@ -94,12 +103,11 @@ class BidMethodApply(DomainModelApply):
                     dm.NodeOrEdgeData(
                         source=write_view,
                         properties=properties,
-                )],
+                    )
+                ],
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-        
-
 
         return resources
 

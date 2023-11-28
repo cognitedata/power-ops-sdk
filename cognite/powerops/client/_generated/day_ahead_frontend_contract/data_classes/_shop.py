@@ -46,6 +46,7 @@ class SHOP(DomainModel):
         deleted_time: If present, the deleted time of the shop node.
         version: The version of the shop node.
     """
+
     space: str = "dayAheadFrontendContractModel"
     name: Optional[str] = None
     shop_cases: Optional[list[str]] = Field(None, alias="shopCases")
@@ -78,6 +79,7 @@ class SHOPApply(DomainModelApply):
             If existingVersion is set to 0, the upsert will behave as an insert, so it will fail the bulk if the item already exists.
             If skipOnVersionConflict is set on the ingestion request, then the item will be skipped instead of failing the ingestion request.
     """
+
     space: str = "dayAheadFrontendContractModel"
     name: str
     shop_cases: Optional[list[str]] = Field(None, alias="shopCases")
@@ -102,7 +104,9 @@ class SHOPApply(DomainModelApply):
         if self.shop_cases is not None:
             properties["shopCases"] = self.shop_cases
         if self.price_scenarios is not None:
-            properties["priceScenarios"] = self.price_scenarios if isinstance(self.price_scenarios, str) else self.price_scenarios.external_id
+            properties["priceScenarios"] = (
+                self.price_scenarios if isinstance(self.price_scenarios, str) else self.price_scenarios.external_id
+            )
 
         if properties:
             this_node = dm.NodeApply(
@@ -113,12 +117,11 @@ class SHOPApply(DomainModelApply):
                     dm.NodeOrEdgeData(
                         source=write_view,
                         properties=properties,
-                )],
+                    )
+                ],
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-        
-
 
         if isinstance(self.price_scenarios, CogniteTimeSeries):
             resources.time_series.append(self.price_scenarios)

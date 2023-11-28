@@ -22,7 +22,15 @@ from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes
     _BID_PROPERTIES_BY_FIELD,
     _create_bid_filter,
 )
-from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
+from ._core import (
+    DEFAULT_LIMIT_READ,
+    DEFAULT_QUERY_LIMIT,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+    QueryStep,
+    QueryBuilder,
+)
 from .bid_alerts import BidAlertsAPI
 from .bid_partials import BidPartialsAPI
 from .bid_query import BidQueryAPI
@@ -41,32 +49,28 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
             view_by_write_class=view_by_write_class,
         )
         self._view_id = view_id
-        self.alerts_edge = BidAlertsAPI(
-            client
-        )
-        self.partials_edge = BidPartialsAPI(
-            client
-        )
+        self.alerts_edge = BidAlertsAPI(client)
+        self.partials_edge = BidPartialsAPI(client)
 
     def __call__(
-            self,
-            name: str | list[str] | None = None,
-            name_prefix: str | None = None,
-            method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-            price_area: str | list[str] | None = None,
-            price_area_prefix: str | None = None,
-            min_date: datetime.date | None = None,
-            max_date: datetime.date | None = None,
-            total: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-            min_start_calculation: datetime.datetime | None = None,
-            max_start_calculation: datetime.datetime | None = None,
-            min_end_calculation: datetime.datetime | None = None,
-            max_end_calculation: datetime.datetime | None = None,
-            market: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit: int = DEFAULT_QUERY_LIMIT,
-            filter: dm.Filter | None = None,
+        self,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        price_area: str | list[str] | None = None,
+        price_area_prefix: str | None = None,
+        min_date: datetime.date | None = None,
+        max_date: datetime.date | None = None,
+        total: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_start_calculation: datetime.datetime | None = None,
+        max_start_calculation: datetime.datetime | None = None,
+        min_end_calculation: datetime.datetime | None = None,
+        max_end_calculation: datetime.datetime | None = None,
+        market: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_QUERY_LIMIT,
+        filter: dm.Filter | None = None,
     ) -> BidQueryAPI[BidList]:
         """Query starting at bids.
 
@@ -124,13 +128,12 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
                     select=dm.query.Select(
                         [dm.query.SourceSelector(self._view_id, list(_BID_PROPERTIES_BY_FIELD.values()))]
                     ),
-                    result_cls= Bid,
+                    result_cls=Bid,
                     max_retrieve_limit=limit,
                 )
             ],
         )
         return BidQueryAPI(self._client, builder, self._view_by_write_class)
-
 
     def apply(self, bid: BidApply | Sequence[BidApply], replace: bool = False) -> ResourcesApplyResult:
         """Add or update (upsert) bids.
@@ -159,7 +162,9 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
         """
         return self._apply(bid, replace)
 
-    def delete(self, external_id: str | SequenceNotStr[str], space: str ="dayAheadFrontendContractModel") -> dm.InstancesDeleteResult:
+    def delete(
+        self, external_id: str | SequenceNotStr[str], space: str = "dayAheadFrontendContractModel"
+    ) -> dm.InstancesDeleteResult:
         """Delete one or more bid.
 
         Args:
@@ -187,7 +192,9 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
     def retrieve(self, external_id: SequenceNotStr[str]) -> BidList:
         ...
 
-    def retrieve(self, external_id: str | SequenceNotStr[str], space: str ="dayAheadFrontendContractModel") -> Bid | BidList | None:
+    def retrieve(
+        self, external_id: str | SequenceNotStr[str], space: str = "dayAheadFrontendContractModel"
+    ) -> Bid | BidList | None:
         """Retrieve one or more bids by id(s).
 
         Args:
@@ -212,10 +219,13 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
             retrieve_edges=True,
             edge_api_name_type_triple=[
                 (self.alerts_edge, "alerts", dm.DirectRelationReference("dayAheadFrontendContractModel", "Bid.alerts")),
-                (self.partials_edge, "partials", dm.DirectRelationReference("dayAheadFrontendContractModel", "Bid.partials")),
-            ]
+                (
+                    self.partials_edge,
+                    "partials",
+                    dm.DirectRelationReference("dayAheadFrontendContractModel", "Bid.partials"),
+                ),
+            ],
         )
-        
 
     def search(
         self,
@@ -538,7 +548,6 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
             filter_,
         )
 
-
     def list(
         self,
         name: str | list[str] | None = None,
@@ -579,7 +588,7 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of bids to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above. 
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
             retrieve_edges: Whether to retrieve `alerts` or `partials` external ids for the bids. Defaults to True.
 
         Returns:
@@ -613,14 +622,17 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
             space,
             filter,
         )
-        
+
         return self._list(
             limit=limit,
             filter=filter_,
             retrieve_edges=retrieve_edges,
             edge_api_name_type_triple=[
                 (self.alerts_edge, "alerts", dm.DirectRelationReference("dayAheadFrontendContractModel", "Bid.alerts")),
-                (self.partials_edge, "partials", dm.DirectRelationReference("dayAheadFrontendContractModel", "Bid.partials")),
-            ]
+                (
+                    self.partials_edge,
+                    "partials",
+                    dm.DirectRelationReference("dayAheadFrontendContractModel", "Bid.partials"),
+                ),
+            ],
         )
-        

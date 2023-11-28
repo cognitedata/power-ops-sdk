@@ -21,7 +21,15 @@ from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes
     _BIDMETHOD_PROPERTIES_BY_FIELD,
     _create_bid_method_filter,
 )
-from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
+from ._core import (
+    DEFAULT_LIMIT_READ,
+    DEFAULT_QUERY_LIMIT,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+    QueryStep,
+    QueryBuilder,
+)
 from .bid_method_query import BidMethodQueryAPI
 
 
@@ -40,13 +48,13 @@ class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
         self._view_id = view_id
 
     def __call__(
-            self,
-            name: str | list[str] | None = None,
-            name_prefix: str | None = None,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit: int = DEFAULT_QUERY_LIMIT,
-            filter: dm.Filter | None = None,
+        self,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_QUERY_LIMIT,
+        filter: dm.Filter | None = None,
     ) -> BidMethodQueryAPI[BidMethodList]:
         """Query starting at bid methods.
 
@@ -82,15 +90,16 @@ class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
                     select=dm.query.Select(
                         [dm.query.SourceSelector(self._view_id, list(_BIDMETHOD_PROPERTIES_BY_FIELD.values()))]
                     ),
-                    result_cls= BidMethod,
+                    result_cls=BidMethod,
                     max_retrieve_limit=limit,
                 )
             ],
         )
         return BidMethodQueryAPI(self._client, builder, self._view_by_write_class)
 
-
-    def apply(self, bid_method: BidMethodApply | Sequence[BidMethodApply], replace: bool = False) -> ResourcesApplyResult:
+    def apply(
+        self, bid_method: BidMethodApply | Sequence[BidMethodApply], replace: bool = False
+    ) -> ResourcesApplyResult:
         """Add or update (upsert) bid methods.
 
         Args:
@@ -113,7 +122,9 @@ class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
         """
         return self._apply(bid_method, replace)
 
-    def delete(self, external_id: str | SequenceNotStr[str], space: str ="dayAheadFrontendContractModel") -> dm.InstancesDeleteResult:
+    def delete(
+        self, external_id: str | SequenceNotStr[str], space: str = "dayAheadFrontendContractModel"
+    ) -> dm.InstancesDeleteResult:
         """Delete one or more bid method.
 
         Args:
@@ -141,7 +152,9 @@ class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
     def retrieve(self, external_id: SequenceNotStr[str]) -> BidMethodList:
         ...
 
-    def retrieve(self, external_id: str | SequenceNotStr[str], space: str ="dayAheadFrontendContractModel") -> BidMethod | BidMethodList | None:
+    def retrieve(
+        self, external_id: str | SequenceNotStr[str], space: str = "dayAheadFrontendContractModel"
+    ) -> BidMethod | BidMethodList | None:
         """Retrieve one or more bid methods by id(s).
 
         Args:
@@ -362,7 +375,6 @@ class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
             filter_,
         )
 
-
     def list(
         self,
         name: str | list[str] | None = None,
@@ -380,7 +392,7 @@ class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of bid methods to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above. 
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
             List of requested bid methods

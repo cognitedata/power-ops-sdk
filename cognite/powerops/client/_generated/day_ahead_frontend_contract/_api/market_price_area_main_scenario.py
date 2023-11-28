@@ -9,10 +9,13 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes import Datapoints, DatapointsArrayList, DatapointsList, TimeSeriesList
 from cognite.client.data_classes.datapoints import Aggregate
-from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes._market_price_area import _create_market_price_area_filter
+from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes._market_price_area import (
+    _create_market_price_area_filter,
+)
 from ._core import DEFAULT_LIMIT_READ, INSTANCE_QUERY_LIMIT
 
 ColumnNames = Literal["name", "priceArea", "timezone", "mainScenario"]
+
 
 class MarketPriceAreaMainScenarioQuery:
     def __init__(
@@ -310,7 +313,6 @@ class MarketPriceAreaMainScenarioQuery:
         self,
         before: None | int | str | datetime.datetime = None,
     ) -> Datapoints | DatapointsList | None:
-
         external_ids = self._retrieve_timeseries_external_ids_with_extra()
         if external_ids:
             return self._client.time_series.data.retrieve_latest(
@@ -474,7 +476,9 @@ class MarketPriceAreaMainScenarioAPI:
             space,
             filter,
         )
-        external_ids = _retrieve_timeseries_external_ids_with_extra_main_scenario(self._client, self._view_id, filter_, limit)
+        external_ids = _retrieve_timeseries_external_ids_with_extra_main_scenario(
+            self._client, self._view_id, filter_, limit
+        )
         if external_ids:
             return self._client.time_series.retrieve_multiple(external_ids=list(external_ids))
         else:

@@ -22,7 +22,15 @@ from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes
     _ALERT_PROPERTIES_BY_FIELD,
     _create_alert_filter,
 )
-from ._core import DEFAULT_LIMIT_READ, DEFAULT_QUERY_LIMIT, Aggregations, NodeAPI, SequenceNotStr, QueryStep, QueryBuilder
+from ._core import (
+    DEFAULT_LIMIT_READ,
+    DEFAULT_QUERY_LIMIT,
+    Aggregations,
+    NodeAPI,
+    SequenceNotStr,
+    QueryStep,
+    QueryBuilder,
+)
 from .alert_query import AlertQueryAPI
 
 
@@ -41,25 +49,25 @@ class AlertAPI(NodeAPI[Alert, AlertApply, AlertList]):
         self._view_id = view_id
 
     def __call__(
-            self,
-            min_time: datetime.datetime | None = None,
-            max_time: datetime.datetime | None = None,
-            title: str | list[str] | None = None,
-            title_prefix: str | None = None,
-            description: str | list[str] | None = None,
-            description_prefix: str | None = None,
-            severity: str | list[str] | None = None,
-            severity_prefix: str | None = None,
-            alert_type: str | list[str] | None = None,
-            alert_type_prefix: str | None = None,
-            min_status_code: int | None = None,
-            max_status_code: int | None = None,
-            calculation_run: str | list[str] | None = None,
-            calculation_run_prefix: str | None = None,
-            external_id_prefix: str | None = None,
-            space: str | list[str] | None = None,
-            limit: int = DEFAULT_QUERY_LIMIT,
-            filter: dm.Filter | None = None,
+        self,
+        min_time: datetime.datetime | None = None,
+        max_time: datetime.datetime | None = None,
+        title: str | list[str] | None = None,
+        title_prefix: str | None = None,
+        description: str | list[str] | None = None,
+        description_prefix: str | None = None,
+        severity: str | list[str] | None = None,
+        severity_prefix: str | None = None,
+        alert_type: str | list[str] | None = None,
+        alert_type_prefix: str | None = None,
+        min_status_code: int | None = None,
+        max_status_code: int | None = None,
+        calculation_run: str | list[str] | None = None,
+        calculation_run_prefix: str | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int = DEFAULT_QUERY_LIMIT,
+        filter: dm.Filter | None = None,
     ) -> AlertQueryAPI[AlertList]:
         """Query starting at alerts.
 
@@ -119,13 +127,12 @@ class AlertAPI(NodeAPI[Alert, AlertApply, AlertList]):
                     select=dm.query.Select(
                         [dm.query.SourceSelector(self._view_id, list(_ALERT_PROPERTIES_BY_FIELD.values()))]
                     ),
-                    result_cls= Alert,
+                    result_cls=Alert,
                     max_retrieve_limit=limit,
                 )
             ],
         )
         return AlertQueryAPI(self._client, builder, self._view_by_write_class)
-
 
     def apply(self, alert: AlertApply | Sequence[AlertApply], replace: bool = False) -> ResourcesApplyResult:
         """Add or update (upsert) alerts.
@@ -150,7 +157,9 @@ class AlertAPI(NodeAPI[Alert, AlertApply, AlertList]):
         """
         return self._apply(alert, replace)
 
-    def delete(self, external_id: str | SequenceNotStr[str], space: str ="dayAheadFrontendContractModel") -> dm.InstancesDeleteResult:
+    def delete(
+        self, external_id: str | SequenceNotStr[str], space: str = "dayAheadFrontendContractModel"
+    ) -> dm.InstancesDeleteResult:
         """Delete one or more alert.
 
         Args:
@@ -178,7 +187,9 @@ class AlertAPI(NodeAPI[Alert, AlertApply, AlertList]):
     def retrieve(self, external_id: SequenceNotStr[str]) -> AlertList:
         ...
 
-    def retrieve(self, external_id: str | SequenceNotStr[str], space: str ="dayAheadFrontendContractModel") -> Alert | AlertList | None:
+    def retrieve(
+        self, external_id: str | SequenceNotStr[str], space: str = "dayAheadFrontendContractModel"
+    ) -> Alert | AlertList | None:
         """Retrieve one or more alerts by id(s).
 
         Args:
@@ -531,7 +542,6 @@ class AlertAPI(NodeAPI[Alert, AlertApply, AlertList]):
             filter_,
         )
 
-
     def list(
         self,
         min_time: datetime.datetime | None = None,
@@ -573,7 +583,7 @@ class AlertAPI(NodeAPI[Alert, AlertApply, AlertList]):
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of alerts to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
-            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above. 
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
             List of requested alerts

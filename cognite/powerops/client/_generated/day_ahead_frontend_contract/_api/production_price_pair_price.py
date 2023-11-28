@@ -9,10 +9,13 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes import Datapoints, DatapointsArrayList, DatapointsList, TimeSeriesList
 from cognite.client.data_classes.datapoints import Aggregate
-from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes._production_price_pair import _create_production_price_pair_filter
+from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes._production_price_pair import (
+    _create_production_price_pair_filter,
+)
 from ._core import DEFAULT_LIMIT_READ, INSTANCE_QUERY_LIMIT
 
 ColumnNames = Literal["production", "price"]
+
 
 class ProductionPricePairPriceQuery:
     def __init__(
@@ -310,7 +313,6 @@ class ProductionPricePairPriceQuery:
         self,
         before: None | int | str | datetime.datetime = None,
     ) -> Datapoints | DatapointsList | None:
-
         external_ids = self._retrieve_timeseries_external_ids_with_extra()
         if external_ids:
             return self._client.time_series.data.retrieve_latest(

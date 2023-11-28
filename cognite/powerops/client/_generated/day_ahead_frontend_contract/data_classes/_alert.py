@@ -20,7 +20,9 @@ __all__ = ["Alert", "AlertApply", "AlertList", "AlertApplyList", "AlertFields", 
 
 
 AlertTextFields = Literal["title", "description", "severity", "alert_type", "calculation_run"]
-AlertFields = Literal["time", "title", "description", "severity", "alert_type", "status_code", "event_ids", "calculation_run"]
+AlertFields = Literal[
+    "time", "title", "description", "severity", "alert_type", "status_code", "event_ids", "calculation_run"
+]
 
 _ALERT_PROPERTIES_BY_FIELD = {
     "time": "time",
@@ -55,6 +57,7 @@ class Alert(DomainModel):
         deleted_time: If present, the deleted time of the alert node.
         version: The version of the alert node.
     """
+
     space: str = "dayAheadFrontendContractModel"
     time: Optional[datetime.datetime] = None
     title: Optional[str] = None
@@ -102,6 +105,7 @@ class AlertApply(DomainModelApply):
             If existingVersion is set to 0, the upsert will behave as an insert, so it will fail the bulk if the item already exists.
             If skipOnVersionConflict is set on the ingestion request, then the item will be skipped instead of failing the ingestion request.
     """
+
     space: str = "dayAheadFrontendContractModel"
     time: datetime.datetime
     title: str
@@ -152,12 +156,11 @@ class AlertApply(DomainModelApply):
                     dm.NodeOrEdgeData(
                         source=write_view,
                         properties=properties,
-                )],
+                    )
+                ],
             )
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
-        
-
 
         return resources
 
@@ -200,7 +203,13 @@ def _create_alert_filter(
 ) -> dm.Filter | None:
     filters = []
     if min_time or max_time:
-        filters.append(dm.filters.Range(view_id.as_property_ref("time"), gte=min_time.isoformat(timespec="milliseconds") if min_time else None, lte=max_time.isoformat(timespec="milliseconds") if max_time else None))
+        filters.append(
+            dm.filters.Range(
+                view_id.as_property_ref("time"),
+                gte=min_time.isoformat(timespec="milliseconds") if min_time else None,
+                lte=max_time.isoformat(timespec="milliseconds") if max_time else None,
+            )
+        )
     if title and isinstance(title, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("title"), value=title))
     if title and isinstance(title, list):
@@ -226,7 +235,9 @@ def _create_alert_filter(
     if alert_type_prefix:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("alertType"), value=alert_type_prefix))
     if min_status_code or max_status_code:
-        filters.append(dm.filters.Range(view_id.as_property_ref("statusCode"), gte=min_status_code, lte=max_status_code))
+        filters.append(
+            dm.filters.Range(view_id.as_property_ref("statusCode"), gte=min_status_code, lte=max_status_code)
+        )
     if calculation_run and isinstance(calculation_run, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("calculationRun"), value=calculation_run))
     if calculation_run and isinstance(calculation_run, list):
