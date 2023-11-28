@@ -1,7 +1,7 @@
 assets:
 - external_id: generator_Dalby_G1
   labels:
-  - externalId: generator
+  - external_id: generator
   metadata:
     p_min: '40.0'
     penstock: '1'
@@ -10,7 +10,7 @@ assets:
   parent_external_id: generators
 - external_id: generator_Dalby_G2
   labels:
-  - externalId: generator
+  - external_id: generator
   metadata:
     p_min: '40.0'
     penstock: '1'
@@ -19,7 +19,7 @@ assets:
   parent_external_id: generators
 - external_id: generator_Holen_G1
   labels:
-  - externalId: generator
+  - external_id: generator
   metadata:
     p_min: '27.0'
     penstock: '1'
@@ -28,7 +28,7 @@ assets:
   parent_external_id: generators
 - external_id: generator_Landet_G1
   labels:
-  - externalId: generator
+  - external_id: generator
   metadata:
     p_min: '25.0'
     penstock: '1'
@@ -37,7 +37,7 @@ assets:
   parent_external_id: generators
 - external_id: generator_Lien_krv_G1
   labels:
-  - externalId: generator
+  - external_id: generator
   metadata:
     p_min: '1.2'
     penstock: '1'
@@ -46,7 +46,7 @@ assets:
   parent_external_id: generators
 - external_id: generator_Lund_G1
   labels:
-  - externalId: generator
+  - external_id: generator
   metadata:
     p_min: '0.6'
     penstock: '1'
@@ -55,7 +55,7 @@ assets:
   parent_external_id: generators
 - external_id: generator_Rull1_G1
   labels:
-  - externalId: generator
+  - external_id: generator
   metadata:
     p_min: '40.0'
     penstock: '1'
@@ -64,7 +64,7 @@ assets:
   parent_external_id: generators
 - external_id: generator_Rull1_G2
   labels:
-  - externalId: generator
+  - external_id: generator
   metadata:
     p_min: '40.0'
     penstock: '2'
@@ -73,7 +73,7 @@ assets:
   parent_external_id: generators
 - external_id: generator_Rull2_G1
   labels:
-  - externalId: generator
+  - external_id: generator
   metadata:
     p_min: '32.0'
     penstock: '1'
@@ -82,7 +82,7 @@ assets:
   parent_external_id: generators
 - external_id: generator_Rull2_G2
   labels:
-  - externalId: generator
+  - external_id: generator
   metadata:
     p_min: '32.0'
     penstock: '2'
@@ -91,7 +91,7 @@ assets:
   parent_external_id: generators
 - external_id: generator_Scott_G1
   labels:
-  - externalId: generator
+  - external_id: generator
   metadata:
     p_min: '8.0'
     penstock: '1'
@@ -100,7 +100,7 @@ assets:
   parent_external_id: generators
 - external_id: generator_Strand_krv_G1
   labels:
-  - externalId: generator
+  - external_id: generator
   metadata:
     p_min: '4.2'
     penstock: '1'
@@ -113,7 +113,7 @@ assets:
   parent_external_id: power_ops
 - external_id: plant_Dalby
   labels:
-  - externalId: plant
+  - external_id: plant
   metadata:
     connection_losses: '0.00892'
     display_name: Dalby
@@ -127,7 +127,7 @@ assets:
   parent_external_id: plants
 - external_id: plant_Holen
   labels:
-  - externalId: plant
+  - external_id: plant
   metadata:
     connection_losses: '0.0'
     display_name: Holen
@@ -141,7 +141,7 @@ assets:
   parent_external_id: plants
 - external_id: plant_Landet
   labels:
-  - externalId: plant
+  - external_id: plant
   metadata:
     connection_losses: '0.0'
     display_name: Landet
@@ -155,7 +155,7 @@ assets:
   parent_external_id: plants
 - external_id: plant_Lien_krv
   labels:
-  - externalId: plant
+  - external_id: plant
   metadata:
     connection_losses: '0.0'
     display_name: Lien_krv
@@ -169,7 +169,7 @@ assets:
   parent_external_id: plants
 - external_id: plant_Lund
   labels:
-  - externalId: plant
+  - external_id: plant
   metadata:
     connection_losses: '0.0'
     display_name: Lund
@@ -183,7 +183,7 @@ assets:
   parent_external_id: plants
 - external_id: plant_Rull1
   labels:
-  - externalId: plant
+  - external_id: plant
   metadata:
     connection_losses: '0.00231'
     display_name: Rull1
@@ -197,7 +197,7 @@ assets:
   parent_external_id: plants
 - external_id: plant_Rull2
   labels:
-  - externalId: plant
+  - external_id: plant
   metadata:
     connection_losses: '0.0052'
     display_name: Rull2
@@ -211,7 +211,7 @@ assets:
   parent_external_id: plants
 - external_id: plant_Scott
   labels:
-  - externalId: plant
+  - external_id: plant
   metadata:
     connection_losses: '0.0'
     display_name: Scott
@@ -225,7 +225,7 @@ assets:
   parent_external_id: plants
 - external_id: plant_Strand_krv
   labels:
-  - externalId: plant
+  - external_id: plant
   metadata:
     connection_losses: '0.0'
     display_name: Strand_krv
@@ -245,7 +245,7 @@ assets:
   name: PowerOps
 - external_id: price_area_NO2
   labels:
-  - externalId: price_area
+  - external_id: price_area
   name: NO2
   parent_external_id: price_areas
 - description: ''
@@ -254,7 +254,7 @@ assets:
   parent_external_id: power_ops
 - external_id: reservoir_Dalbysvatn
   labels:
-  - externalId: reservoir
+  - external_id: reservoir
   metadata:
     display_name: Dalbysvatn
     ordering: '999'
@@ -262,7 +262,7 @@ assets:
   parent_external_id: reservoirs
 - external_id: reservoir_Danielsen
   labels:
-  - externalId: reservoir
+  - external_id: reservoir
   metadata:
     display_name: Danielsen
     ordering: '999'
@@ -270,7 +270,7 @@ assets:
   parent_external_id: reservoirs
 - external_id: reservoir_Frosta
   labels:
-  - externalId: reservoir
+  - external_id: reservoir
   metadata:
     display_name: Frosta
     ordering: '999'
@@ -278,7 +278,7 @@ assets:
   parent_external_id: reservoirs
 - external_id: reservoir_Hagen
   labels:
-  - externalId: reservoir
+  - external_id: reservoir
   metadata:
     display_name: Hagen
     ordering: '999'
@@ -286,7 +286,7 @@ assets:
   parent_external_id: reservoirs
 - external_id: reservoir_Hovden
   labels:
-  - externalId: reservoir
+  - external_id: reservoir
   metadata:
     display_name: Hovden
     ordering: '999'
@@ -294,7 +294,7 @@ assets:
   parent_external_id: reservoirs
 - external_id: reservoir_Lensvik
   labels:
-  - externalId: reservoir
+  - external_id: reservoir
   metadata:
     display_name: Lensvik
     ordering: '999'
@@ -302,7 +302,7 @@ assets:
   parent_external_id: reservoirs
 - external_id: reservoir_Livincovs
   labels:
-  - externalId: reservoir
+  - external_id: reservoir
   metadata:
     display_name: Livincovs
     ordering: '999'
@@ -310,7 +310,7 @@ assets:
   parent_external_id: reservoirs
 - external_id: reservoir_Lundvann
   labels:
-  - externalId: reservoir
+  - external_id: reservoir
   metadata:
     display_name: Lundvann
     ordering: '999'
@@ -318,7 +318,7 @@ assets:
   parent_external_id: reservoirs
 - external_id: reservoir_Nielsen
   labels:
-  - externalId: reservoir
+  - external_id: reservoir
   metadata:
     display_name: Nielsen
     ordering: '999'
@@ -326,7 +326,7 @@ assets:
   parent_external_id: reservoirs
 - external_id: reservoir_Ranemsletta_1183
   labels:
-  - externalId: reservoir
+  - external_id: reservoir
   metadata:
     display_name: Ranemsletta_1183
     ordering: '999'
@@ -334,7 +334,7 @@ assets:
   parent_external_id: reservoirs
 - external_id: reservoir_Rullsvatn
   labels:
-  - externalId: reservoir
+  - external_id: reservoir
   metadata:
     display_name: Rullsvatn
     ordering: '999'
@@ -342,7 +342,7 @@ assets:
   parent_external_id: reservoirs
 - external_id: reservoir_Sirefelt
   labels:
-  - externalId: reservoir
+  - external_id: reservoir
   metadata:
     display_name: Sirefelt
     ordering: '999'
@@ -350,7 +350,7 @@ assets:
   parent_external_id: reservoirs
 - external_id: reservoir_Strand
   labels:
-  - externalId: reservoir
+  - external_id: reservoir
   metadata:
     display_name: Strand
     ordering: '999'
@@ -358,7 +358,7 @@ assets:
   parent_external_id: reservoirs
 - external_id: reservoir_Strand_tunnel
   labels:
-  - externalId: reservoir
+  - external_id: reservoir
   metadata:
     display_name: Strand_tunnel
     ordering: '999'
@@ -366,7 +366,7 @@ assets:
   parent_external_id: reservoirs
 - external_id: reservoir_Tangvall
   labels:
-  - externalId: reservoir
+  - external_id: reservoir
   metadata:
     display_name: Tangvall
     ordering: '999'
@@ -374,7 +374,7 @@ assets:
   parent_external_id: reservoirs
 - external_id: reservoir_Varhaug
   labels:
-  - externalId: reservoir
+  - external_id: reservoir
   metadata:
     display_name: Varhaug
     ordering: '999'
@@ -386,7 +386,7 @@ assets:
   parent_external_id: power_ops
 - external_id: watercourse_Fornebu
   labels:
-  - externalId: watercourse
+  - external_id: watercourse
   metadata:
     shop:penalty_limit: '42000'
   name: Fornebu
@@ -555,409 +555,409 @@ labels:
   name: watercourse
 relationships:
 - external_id: generator_Dalby_G1.112233
-  labels: '[{''externalId'': ''relationship_to.start_stop_cost_time_series''}]'
+  labels: '[{''external_id'': ''relationship_to.start_stop_cost_time_series''}]'
   source_external_id: generator_Dalby_G1
   source_type: ASSET
   target_external_id: '112233'
   target_type: TIMESERIES
 - external_id: generator_Dalby_G1.generator_Dalby_G1_generator_efficiency_curve
-  labels: '[{''externalId'': ''relationship_to.generator_efficiency_curve''}]'
+  labels: '[{''external_id'': ''relationship_to.generator_efficiency_curve''}]'
   source_external_id: generator_Dalby_G1
   source_type: ASSET
   target_external_id: generator_Dalby_G1_generator_efficiency_curve
   target_type: SEQUENCE
 - external_id: generator_Dalby_G1.generator_Dalby_G1_turbine_efficiency_curve
-  labels: '[{''externalId'': ''relationship_to.turbine_efficiency_curve''}]'
+  labels: '[{''external_id'': ''relationship_to.turbine_efficiency_curve''}]'
   source_external_id: generator_Dalby_G1
   source_type: ASSET
   target_external_id: generator_Dalby_G1_turbine_efficiency_curve
   target_type: SEQUENCE
 - external_id: generator_Dalby_G2.generator_Dalby_G2_generator_efficiency_curve
-  labels: '[{''externalId'': ''relationship_to.generator_efficiency_curve''}]'
+  labels: '[{''external_id'': ''relationship_to.generator_efficiency_curve''}]'
   source_external_id: generator_Dalby_G2
   source_type: ASSET
   target_external_id: generator_Dalby_G2_generator_efficiency_curve
   target_type: SEQUENCE
 - external_id: generator_Dalby_G2.generator_Dalby_G2_turbine_efficiency_curve
-  labels: '[{''externalId'': ''relationship_to.turbine_efficiency_curve''}]'
+  labels: '[{''external_id'': ''relationship_to.turbine_efficiency_curve''}]'
   source_external_id: generator_Dalby_G2
   source_type: ASSET
   target_external_id: generator_Dalby_G2_turbine_efficiency_curve
   target_type: SEQUENCE
 - external_id: generator_Holen_G1.112233
-  labels: '[{''externalId'': ''relationship_to.start_stop_cost_time_series''}]'
+  labels: '[{''external_id'': ''relationship_to.start_stop_cost_time_series''}]'
   source_external_id: generator_Holen_G1
   source_type: ASSET
   target_external_id: '112233'
   target_type: TIMESERIES
 - external_id: generator_Holen_G1.generator_Holen_G1_generator_efficiency_curve
-  labels: '[{''externalId'': ''relationship_to.generator_efficiency_curve''}]'
+  labels: '[{''external_id'': ''relationship_to.generator_efficiency_curve''}]'
   source_external_id: generator_Holen_G1
   source_type: ASSET
   target_external_id: generator_Holen_G1_generator_efficiency_curve
   target_type: SEQUENCE
 - external_id: generator_Holen_G1.generator_Holen_G1_turbine_efficiency_curve
-  labels: '[{''externalId'': ''relationship_to.turbine_efficiency_curve''}]'
+  labels: '[{''external_id'': ''relationship_to.turbine_efficiency_curve''}]'
   source_external_id: generator_Holen_G1
   source_type: ASSET
   target_external_id: generator_Holen_G1_turbine_efficiency_curve
   target_type: SEQUENCE
 - external_id: generator_Landet_G1.generator_Landet_G1_generator_efficiency_curve
-  labels: '[{''externalId'': ''relationship_to.generator_efficiency_curve''}]'
+  labels: '[{''external_id'': ''relationship_to.generator_efficiency_curve''}]'
   source_external_id: generator_Landet_G1
   source_type: ASSET
   target_external_id: generator_Landet_G1_generator_efficiency_curve
   target_type: SEQUENCE
 - external_id: generator_Landet_G1.generator_Landet_G1_turbine_efficiency_curve
-  labels: '[{''externalId'': ''relationship_to.turbine_efficiency_curve''}]'
+  labels: '[{''external_id'': ''relationship_to.turbine_efficiency_curve''}]'
   source_external_id: generator_Landet_G1
   source_type: ASSET
   target_external_id: generator_Landet_G1_turbine_efficiency_curve
   target_type: SEQUENCE
 - external_id: generator_Lien_krv_G1.generator_Lien_krv_G1_generator_efficiency_curve
-  labels: '[{''externalId'': ''relationship_to.generator_efficiency_curve''}]'
+  labels: '[{''external_id'': ''relationship_to.generator_efficiency_curve''}]'
   source_external_id: generator_Lien_krv_G1
   source_type: ASSET
   target_external_id: generator_Lien_krv_G1_generator_efficiency_curve
   target_type: SEQUENCE
 - external_id: generator_Lien_krv_G1.generator_Lien_krv_G1_turbine_efficiency_curve
-  labels: '[{''externalId'': ''relationship_to.turbine_efficiency_curve''}]'
+  labels: '[{''external_id'': ''relationship_to.turbine_efficiency_curve''}]'
   source_external_id: generator_Lien_krv_G1
   source_type: ASSET
   target_external_id: generator_Lien_krv_G1_turbine_efficiency_curve
   target_type: SEQUENCE
 - external_id: generator_Lund_G1.112233
-  labels: '[{''externalId'': ''relationship_to.start_stop_cost_time_series''}]'
+  labels: '[{''external_id'': ''relationship_to.start_stop_cost_time_series''}]'
   source_external_id: generator_Lund_G1
   source_type: ASSET
   target_external_id: '112233'
   target_type: TIMESERIES
 - external_id: generator_Lund_G1.generator_Lund_G1_generator_efficiency_curve
-  labels: '[{''externalId'': ''relationship_to.generator_efficiency_curve''}]'
+  labels: '[{''external_id'': ''relationship_to.generator_efficiency_curve''}]'
   source_external_id: generator_Lund_G1
   source_type: ASSET
   target_external_id: generator_Lund_G1_generator_efficiency_curve
   target_type: SEQUENCE
 - external_id: generator_Lund_G1.generator_Lund_G1_turbine_efficiency_curve
-  labels: '[{''externalId'': ''relationship_to.turbine_efficiency_curve''}]'
+  labels: '[{''external_id'': ''relationship_to.turbine_efficiency_curve''}]'
   source_external_id: generator_Lund_G1
   source_type: ASSET
   target_external_id: generator_Lund_G1_turbine_efficiency_curve
   target_type: SEQUENCE
 - external_id: generator_Rull1_G1.generator_Rull1_G1_generator_efficiency_curve
-  labels: '[{''externalId'': ''relationship_to.generator_efficiency_curve''}]'
+  labels: '[{''external_id'': ''relationship_to.generator_efficiency_curve''}]'
   source_external_id: generator_Rull1_G1
   source_type: ASSET
   target_external_id: generator_Rull1_G1_generator_efficiency_curve
   target_type: SEQUENCE
 - external_id: generator_Rull1_G1.generator_Rull1_G1_turbine_efficiency_curve
-  labels: '[{''externalId'': ''relationship_to.turbine_efficiency_curve''}]'
+  labels: '[{''external_id'': ''relationship_to.turbine_efficiency_curve''}]'
   source_external_id: generator_Rull1_G1
   source_type: ASSET
   target_external_id: generator_Rull1_G1_turbine_efficiency_curve
   target_type: SEQUENCE
 - external_id: generator_Rull1_G2.generator_Rull1_G2_generator_efficiency_curve
-  labels: '[{''externalId'': ''relationship_to.generator_efficiency_curve''}]'
+  labels: '[{''external_id'': ''relationship_to.generator_efficiency_curve''}]'
   source_external_id: generator_Rull1_G2
   source_type: ASSET
   target_external_id: generator_Rull1_G2_generator_efficiency_curve
   target_type: SEQUENCE
 - external_id: generator_Rull1_G2.generator_Rull1_G2_turbine_efficiency_curve
-  labels: '[{''externalId'': ''relationship_to.turbine_efficiency_curve''}]'
+  labels: '[{''external_id'': ''relationship_to.turbine_efficiency_curve''}]'
   source_external_id: generator_Rull1_G2
   source_type: ASSET
   target_external_id: generator_Rull1_G2_turbine_efficiency_curve
   target_type: SEQUENCE
 - external_id: generator_Rull2_G1.generator_Rull2_G1_generator_efficiency_curve
-  labels: '[{''externalId'': ''relationship_to.generator_efficiency_curve''}]'
+  labels: '[{''external_id'': ''relationship_to.generator_efficiency_curve''}]'
   source_external_id: generator_Rull2_G1
   source_type: ASSET
   target_external_id: generator_Rull2_G1_generator_efficiency_curve
   target_type: SEQUENCE
 - external_id: generator_Rull2_G1.generator_Rull2_G1_turbine_efficiency_curve
-  labels: '[{''externalId'': ''relationship_to.turbine_efficiency_curve''}]'
+  labels: '[{''external_id'': ''relationship_to.turbine_efficiency_curve''}]'
   source_external_id: generator_Rull2_G1
   source_type: ASSET
   target_external_id: generator_Rull2_G1_turbine_efficiency_curve
   target_type: SEQUENCE
 - external_id: generator_Rull2_G2.generator_Rull2_G2_generator_efficiency_curve
-  labels: '[{''externalId'': ''relationship_to.generator_efficiency_curve''}]'
+  labels: '[{''external_id'': ''relationship_to.generator_efficiency_curve''}]'
   source_external_id: generator_Rull2_G2
   source_type: ASSET
   target_external_id: generator_Rull2_G2_generator_efficiency_curve
   target_type: SEQUENCE
 - external_id: generator_Rull2_G2.generator_Rull2_G2_turbine_efficiency_curve
-  labels: '[{''externalId'': ''relationship_to.turbine_efficiency_curve''}]'
+  labels: '[{''external_id'': ''relationship_to.turbine_efficiency_curve''}]'
   source_external_id: generator_Rull2_G2
   source_type: ASSET
   target_external_id: generator_Rull2_G2_turbine_efficiency_curve
   target_type: SEQUENCE
 - external_id: generator_Scott_G1.generator_Scott_G1_generator_efficiency_curve
-  labels: '[{''externalId'': ''relationship_to.generator_efficiency_curve''}]'
+  labels: '[{''external_id'': ''relationship_to.generator_efficiency_curve''}]'
   source_external_id: generator_Scott_G1
   source_type: ASSET
   target_external_id: generator_Scott_G1_generator_efficiency_curve
   target_type: SEQUENCE
 - external_id: generator_Scott_G1.generator_Scott_G1_turbine_efficiency_curve
-  labels: '[{''externalId'': ''relationship_to.turbine_efficiency_curve''}]'
+  labels: '[{''external_id'': ''relationship_to.turbine_efficiency_curve''}]'
   source_external_id: generator_Scott_G1
   source_type: ASSET
   target_external_id: generator_Scott_G1_turbine_efficiency_curve
   target_type: SEQUENCE
 - external_id: generator_Strand_krv_G1.generator_Strand_krv_G1_generator_efficiency_curve
-  labels: '[{''externalId'': ''relationship_to.generator_efficiency_curve''}]'
+  labels: '[{''external_id'': ''relationship_to.generator_efficiency_curve''}]'
   source_external_id: generator_Strand_krv_G1
   source_type: ASSET
   target_external_id: generator_Strand_krv_G1_generator_efficiency_curve
   target_type: SEQUENCE
 - external_id: generator_Strand_krv_G1.generator_Strand_krv_G1_turbine_efficiency_curve
-  labels: '[{''externalId'': ''relationship_to.turbine_efficiency_curve''}]'
+  labels: '[{''external_id'': ''relationship_to.turbine_efficiency_curve''}]'
   source_external_id: generator_Strand_krv_G1
   source_type: ASSET
   target_external_id: generator_Strand_krv_G1_turbine_efficiency_curve
   target_type: SEQUENCE
 - external_id: plant_Dalby.generator_Dalby_G1
-  labels: '[{''externalId'': ''relationship_to.generator''}]'
+  labels: '[{''external_id'': ''relationship_to.generator''}]'
   source_external_id: plant_Dalby
   source_type: ASSET
   target_external_id: generator_Dalby_G1
   target_type: ASSET
 - external_id: plant_Dalby.generator_Dalby_G2
-  labels: '[{''externalId'': ''relationship_to.generator''}]'
+  labels: '[{''external_id'': ''relationship_to.generator''}]'
   source_external_id: plant_Dalby
   source_type: ASSET
   target_external_id: generator_Dalby_G2
   target_type: ASSET
 - external_id: plant_Dalby.reservoir_Lensvik
-  labels: '[{''externalId'': ''relationship_to.inlet_reservoir''}]'
+  labels: '[{''external_id'': ''relationship_to.inlet_reservoir''}]'
   source_external_id: plant_Dalby
   source_type: ASSET
   target_external_id: reservoir_Lensvik
   target_type: ASSET
 - external_id: plant_Holen.generator_Holen_G1
-  labels: '[{''externalId'': ''relationship_to.generator''}]'
+  labels: '[{''external_id'': ''relationship_to.generator''}]'
   source_external_id: plant_Holen
   source_type: ASSET
   target_external_id: generator_Holen_G1
   target_type: ASSET
 - external_id: plant_Holen.reservoir_Nielsen
-  labels: '[{''externalId'': ''relationship_to.inlet_reservoir''}]'
+  labels: '[{''external_id'': ''relationship_to.inlet_reservoir''}]'
   source_external_id: plant_Holen
   source_type: ASSET
   target_external_id: reservoir_Nielsen
   target_type: ASSET
 - external_id: plant_Landet.generator_Landet_G1
-  labels: '[{''externalId'': ''relationship_to.generator''}]'
+  labels: '[{''external_id'': ''relationship_to.generator''}]'
   source_external_id: plant_Landet
   source_type: ASSET
   target_external_id: generator_Landet_G1
   target_type: ASSET
 - external_id: plant_Landet.reservoir_Livincovs
-  labels: '[{''externalId'': ''relationship_to.inlet_reservoir''}]'
+  labels: '[{''external_id'': ''relationship_to.inlet_reservoir''}]'
   source_external_id: plant_Landet
   source_type: ASSET
   target_external_id: reservoir_Livincovs
   target_type: ASSET
 - external_id: plant_Lien_krv.generator_Lien_krv_G1
-  labels: '[{''externalId'': ''relationship_to.generator''}]'
+  labels: '[{''external_id'': ''relationship_to.generator''}]'
   source_external_id: plant_Lien_krv
   source_type: ASSET
   target_external_id: generator_Lien_krv_G1
   target_type: ASSET
 - external_id: plant_Lien_krv.reservoir_Ranemsletta_1183
-  labels: '[{''externalId'': ''relationship_to.inlet_reservoir''}]'
+  labels: '[{''external_id'': ''relationship_to.inlet_reservoir''}]'
   source_external_id: plant_Lien_krv
   source_type: ASSET
   target_external_id: reservoir_Ranemsletta_1183
   target_type: ASSET
 - external_id: plant_Lund.generator_Lund_G1
-  labels: '[{''externalId'': ''relationship_to.generator''}]'
+  labels: '[{''external_id'': ''relationship_to.generator''}]'
   source_external_id: plant_Lund
   source_type: ASSET
   target_external_id: generator_Lund_G1
   target_type: ASSET
 - external_id: plant_Lund.reservoir_Danielsen
-  labels: '[{''externalId'': ''relationship_to.inlet_reservoir''}]'
+  labels: '[{''external_id'': ''relationship_to.inlet_reservoir''}]'
   source_external_id: plant_Lund
   source_type: ASSET
   target_external_id: reservoir_Danielsen
   target_type: ASSET
 - external_id: plant_Rull1.generator_Rull1_G1
-  labels: '[{''externalId'': ''relationship_to.generator''}]'
+  labels: '[{''external_id'': ''relationship_to.generator''}]'
   source_external_id: plant_Rull1
   source_type: ASSET
   target_external_id: generator_Rull1_G1
   target_type: ASSET
 - external_id: plant_Rull1.generator_Rull1_G2
-  labels: '[{''externalId'': ''relationship_to.generator''}]'
+  labels: '[{''external_id'': ''relationship_to.generator''}]'
   source_external_id: plant_Rull1
   source_type: ASSET
   target_external_id: generator_Rull1_G2
   target_type: ASSET
 - external_id: plant_Rull1.reservoir_Dalbysvatn
-  labels: '[{''externalId'': ''relationship_to.inlet_reservoir''}]'
+  labels: '[{''external_id'': ''relationship_to.inlet_reservoir''}]'
   source_external_id: plant_Rull1
   source_type: ASSET
   target_external_id: reservoir_Dalbysvatn
   target_type: ASSET
 - external_id: plant_Rull2.generator_Rull2_G1
-  labels: '[{''externalId'': ''relationship_to.generator''}]'
+  labels: '[{''external_id'': ''relationship_to.generator''}]'
   source_external_id: plant_Rull2
   source_type: ASSET
   target_external_id: generator_Rull2_G1
   target_type: ASSET
 - external_id: plant_Rull2.generator_Rull2_G2
-  labels: '[{''externalId'': ''relationship_to.generator''}]'
+  labels: '[{''external_id'': ''relationship_to.generator''}]'
   source_external_id: plant_Rull2
   source_type: ASSET
   target_external_id: generator_Rull2_G2
   target_type: ASSET
 - external_id: plant_Rull2.reservoir_Sirefelt
-  labels: '[{''externalId'': ''relationship_to.inlet_reservoir''}]'
+  labels: '[{''external_id'': ''relationship_to.inlet_reservoir''}]'
   source_external_id: plant_Rull2
   source_type: ASSET
   target_external_id: reservoir_Sirefelt
   target_type: ASSET
 - external_id: plant_Scott.generator_Scott_G1
-  labels: '[{''externalId'': ''relationship_to.generator''}]'
+  labels: '[{''external_id'': ''relationship_to.generator''}]'
   source_external_id: plant_Scott
   source_type: ASSET
   target_external_id: generator_Scott_G1
   target_type: ASSET
 - external_id: plant_Scott.reservoir_Lundvann
-  labels: '[{''externalId'': ''relationship_to.inlet_reservoir''}]'
+  labels: '[{''external_id'': ''relationship_to.inlet_reservoir''}]'
   source_external_id: plant_Scott
   source_type: ASSET
   target_external_id: reservoir_Lundvann
   target_type: ASSET
 - external_id: plant_Strand_krv.generator_Strand_krv_G1
-  labels: '[{''externalId'': ''relationship_to.generator''}]'
+  labels: '[{''external_id'': ''relationship_to.generator''}]'
   source_external_id: plant_Strand_krv
   source_type: ASSET
   target_external_id: generator_Strand_krv_G1
   target_type: ASSET
 - external_id: plant_Strand_krv.reservoir_Hagen
-  labels: '[{''externalId'': ''relationship_to.inlet_reservoir''}]'
+  labels: '[{''external_id'': ''relationship_to.inlet_reservoir''}]'
   source_external_id: plant_Strand_krv
   source_type: ASSET
   target_external_id: reservoir_Hagen
   target_type: ASSET
 - external_id: price_area_NO2.6694
-  labels: '[{''externalId'': ''relationship_to.dayahead_price_time_series''}]'
+  labels: '[{''external_id'': ''relationship_to.dayahead_price_time_series''}]'
   source_external_id: price_area_NO2
   source_type: ASSET
   target_external_id: '6694'
   target_type: TIMESERIES
 - external_id: price_area_NO2.plant_Dalby
-  labels: '[{''externalId'': ''relationship_to.plant''}]'
+  labels: '[{''external_id'': ''relationship_to.plant''}]'
   source_external_id: price_area_NO2
   source_type: ASSET
   target_external_id: plant_Dalby
   target_type: ASSET
 - external_id: price_area_NO2.plant_Holen
-  labels: '[{''externalId'': ''relationship_to.plant''}]'
+  labels: '[{''external_id'': ''relationship_to.plant''}]'
   source_external_id: price_area_NO2
   source_type: ASSET
   target_external_id: plant_Holen
   target_type: ASSET
 - external_id: price_area_NO2.plant_Landet
-  labels: '[{''externalId'': ''relationship_to.plant''}]'
+  labels: '[{''external_id'': ''relationship_to.plant''}]'
   source_external_id: price_area_NO2
   source_type: ASSET
   target_external_id: plant_Landet
   target_type: ASSET
 - external_id: price_area_NO2.plant_Lien_krv
-  labels: '[{''externalId'': ''relationship_to.plant''}]'
+  labels: '[{''external_id'': ''relationship_to.plant''}]'
   source_external_id: price_area_NO2
   source_type: ASSET
   target_external_id: plant_Lien_krv
   target_type: ASSET
 - external_id: price_area_NO2.plant_Lund
-  labels: '[{''externalId'': ''relationship_to.plant''}]'
+  labels: '[{''external_id'': ''relationship_to.plant''}]'
   source_external_id: price_area_NO2
   source_type: ASSET
   target_external_id: plant_Lund
   target_type: ASSET
 - external_id: price_area_NO2.plant_Rull1
-  labels: '[{''externalId'': ''relationship_to.plant''}]'
+  labels: '[{''external_id'': ''relationship_to.plant''}]'
   source_external_id: price_area_NO2
   source_type: ASSET
   target_external_id: plant_Rull1
   target_type: ASSET
 - external_id: price_area_NO2.plant_Rull2
-  labels: '[{''externalId'': ''relationship_to.plant''}]'
+  labels: '[{''external_id'': ''relationship_to.plant''}]'
   source_external_id: price_area_NO2
   source_type: ASSET
   target_external_id: plant_Rull2
   target_type: ASSET
 - external_id: price_area_NO2.plant_Scott
-  labels: '[{''externalId'': ''relationship_to.plant''}]'
+  labels: '[{''external_id'': ''relationship_to.plant''}]'
   source_external_id: price_area_NO2
   source_type: ASSET
   target_external_id: plant_Scott
   target_type: ASSET
 - external_id: price_area_NO2.plant_Strand_krv
-  labels: '[{''externalId'': ''relationship_to.plant''}]'
+  labels: '[{''external_id'': ''relationship_to.plant''}]'
   source_external_id: price_area_NO2
   source_type: ASSET
   target_external_id: plant_Strand_krv
   target_type: ASSET
 - external_id: price_area_NO2.watercourse_Fornebu
-  labels: '[{''externalId'': ''relationship_to.watercourse''}]'
+  labels: '[{''external_id'': ''relationship_to.watercourse''}]'
   source_external_id: price_area_NO2
   source_type: ASSET
   target_external_id: watercourse_Fornebu
   target_type: ASSET
 - external_id: watercourse_Fornebu.plant_Dalby
-  labels: '[{''externalId'': ''relationship_to.plant''}]'
+  labels: '[{''external_id'': ''relationship_to.plant''}]'
   source_external_id: watercourse_Fornebu
   source_type: ASSET
   target_external_id: plant_Dalby
   target_type: ASSET
 - external_id: watercourse_Fornebu.plant_Holen
-  labels: '[{''externalId'': ''relationship_to.plant''}]'
+  labels: '[{''external_id'': ''relationship_to.plant''}]'
   source_external_id: watercourse_Fornebu
   source_type: ASSET
   target_external_id: plant_Holen
   target_type: ASSET
 - external_id: watercourse_Fornebu.plant_Landet
-  labels: '[{''externalId'': ''relationship_to.plant''}]'
+  labels: '[{''external_id'': ''relationship_to.plant''}]'
   source_external_id: watercourse_Fornebu
   source_type: ASSET
   target_external_id: plant_Landet
   target_type: ASSET
 - external_id: watercourse_Fornebu.plant_Lien_krv
-  labels: '[{''externalId'': ''relationship_to.plant''}]'
+  labels: '[{''external_id'': ''relationship_to.plant''}]'
   source_external_id: watercourse_Fornebu
   source_type: ASSET
   target_external_id: plant_Lien_krv
   target_type: ASSET
 - external_id: watercourse_Fornebu.plant_Lund
-  labels: '[{''externalId'': ''relationship_to.plant''}]'
+  labels: '[{''external_id'': ''relationship_to.plant''}]'
   source_external_id: watercourse_Fornebu
   source_type: ASSET
   target_external_id: plant_Lund
   target_type: ASSET
 - external_id: watercourse_Fornebu.plant_Rull1
-  labels: '[{''externalId'': ''relationship_to.plant''}]'
+  labels: '[{''external_id'': ''relationship_to.plant''}]'
   source_external_id: watercourse_Fornebu
   source_type: ASSET
   target_external_id: plant_Rull1
   target_type: ASSET
 - external_id: watercourse_Fornebu.plant_Rull2
-  labels: '[{''externalId'': ''relationship_to.plant''}]'
+  labels: '[{''external_id'': ''relationship_to.plant''}]'
   source_external_id: watercourse_Fornebu
   source_type: ASSET
   target_external_id: plant_Rull2
   target_type: ASSET
 - external_id: watercourse_Fornebu.plant_Scott
-  labels: '[{''externalId'': ''relationship_to.plant''}]'
+  labels: '[{''external_id'': ''relationship_to.plant''}]'
   source_external_id: watercourse_Fornebu
   source_type: ASSET
   target_external_id: plant_Scott
   target_type: ASSET
 - external_id: watercourse_Fornebu.plant_Strand_krv
-  labels: '[{''externalId'': ''relationship_to.plant''}]'
+  labels: '[{''external_id'': ''relationship_to.plant''}]'
   source_external_id: watercourse_Fornebu
   source_type: ASSET
   target_external_id: plant_Strand_krv
