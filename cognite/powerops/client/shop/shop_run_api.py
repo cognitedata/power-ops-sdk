@@ -9,7 +9,7 @@ from urllib.parse import urlparse
 import arrow
 import requests
 from cognite.client import CogniteClient
-from cognite.client.data_classes import FileMetadata, UserProfile, filters
+from cognite.client.data_classes import UserProfile, filters
 from cognite.client.data_classes.events import EventSort
 from cognite.client.exceptions import CogniteAPIError
 
@@ -17,7 +17,7 @@ from cognite.powerops.cdf_labels import RelationshipLabel
 from cognite.powerops.client.shop.shop_run_filter import SHOPRunFilter
 from cognite.powerops.utils.cdf.resource_creation import simple_relationship
 
-from .data_classes.dayahead_trigger import Case, PrerunFileMetadata, ShopRun
+from .data_classes.dayahead_trigger import Case, PrerunFileMetadata, ShopPreRunFile
 from .shop_case import SHOPCase, SHOPFileReference, SHOPFileType
 from .shop_run import SHOPRun, ShopRunEvent, SHOPRunList
 from .utils import new_external_id
@@ -34,10 +34,11 @@ class SHOPRunAPI:
         self.cogshop_version = cogshop_version
         self._CONCURRENT_CALLS = 5
 
-    def _get_shopfile_metadata(self, file_external_id: str) -> FileMetadata:
-        return self._cdf.files.retrieve(external_id=file_external_id)
+    def _get_shop_prerun_files(self, file_external_ids: list[str]) -> list[ShopPreRunFile]:
+        prerun_files = self._cdf.files.retrieve_multiple(external_ids=file_external_ids)
+        return [ShopPreRunFile.load_from_metadata(file) for file in prerun_files]
 
-    def trigger_case(self, case: Case, shop_version: str) -> list[SHOPRun]:
+    def trigger_case(self, case: Case, shop_version: str) -> tuple[list, list[SHOPRun]]:
         """
         Trigger a collection of shop runs related to one Case (also referred to as watercourse).
         For each ShopCase the prerun file will be used to trigger a shop run event in cdf,
@@ -46,10 +47,10 @@ class SHOPRunAPI:
         """
         shop_events = []
         now = datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0)
-        for shop_run in case.pre_runs:
-            if not shop_run.plants or shop_run.price_scenario:
-                file_meta = self._get_shopfile_metadata(shop_run.pre_run_external_id)
-                shop_run = ShopRun.load_from_metadata(shop_run.pre_run_external_id, file_meta.metadata)
+        plants_per_case = []
+        pre_runs = self._get_shop_prerun_files(case.pre_run_file_external_ids)
+        for shop_run in pre_runs:
+            plants_per_case.extend(shop_run.plants)
             shop_events.append(
                 SHOPRun(
                     external_id=new_external_id(now=now),
@@ -71,10 +72,13 @@ class SHOPRunAPI:
         self._cdf.events.create([new_event.as_cdf_event() for new_event in shop_events])
 
         with ThreadPoolExecutor(max_workers=self._CONCURRENT_CALLS) as executor:
-            for shop_event in shop_events:
-                executor.submit(self._trigger_shop_container, shop_event)
+            futures = [executor.submit(self._trigger_shop_container, shop_event) for shop_event in shop_events]
 
-        return shop_events
+            for future in futures:
+                if exc := future.exception():
+                    raise (exc)
+
+        return list(set(plants_per_case)), shop_events
 
     def trigger_single_casefile(self, case: SHOPCase, source: str | None = None) -> SHOPRun:
         """
