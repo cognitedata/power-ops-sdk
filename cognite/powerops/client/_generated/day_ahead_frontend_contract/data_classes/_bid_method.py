@@ -47,7 +47,7 @@ class BidMethod(DomainModel):
         version: The version of the bid method node.
     """
 
-    space: str = "dayAheadFrontendContractModel"
+    space: str = "poweropsDayAheadFrontendContractModel"
     name: Optional[str] = None
 
     def as_apply(self) -> BidMethodApply:
@@ -74,7 +74,7 @@ class BidMethodApply(DomainModelApply):
             If skipOnVersionConflict is set on the ingestion request, then the item will be skipped instead of failing the ingestion request.
     """
 
-    space: str = "dayAheadFrontendContractModel"
+    space: str = "poweropsDayAheadFrontendContractModel"
     name: str
 
     def _to_instances_apply(
@@ -87,7 +87,7 @@ class BidMethodApply(DomainModelApply):
             return resources
 
         write_view = (view_by_write_class and view_by_write_class.get(type(self))) or dm.ViewId(
-            "dayAheadFrontendContractModel", "BidMethod", "1"
+            "poweropsDayAheadFrontendContractModel", "BidMethod", "1"
         )
 
         properties = {}

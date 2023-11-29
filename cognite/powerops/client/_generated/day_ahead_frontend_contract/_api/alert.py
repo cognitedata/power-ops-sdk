@@ -158,7 +158,7 @@ class AlertAPI(NodeAPI[Alert, AlertApply, AlertList]):
         return self._apply(alert, replace)
 
     def delete(
-        self, external_id: str | SequenceNotStr[str], space: str = "dayAheadFrontendContractModel"
+        self, external_id: str | SequenceNotStr[str], space: str = "poweropsDayAheadFrontendContractModel"
     ) -> dm.InstancesDeleteResult:
         """Delete one or more alert.
 
@@ -188,7 +188,7 @@ class AlertAPI(NodeAPI[Alert, AlertApply, AlertList]):
         ...
 
     def retrieve(
-        self, external_id: str | SequenceNotStr[str], space: str = "dayAheadFrontendContractModel"
+        self, external_id: str | SequenceNotStr[str], space: str = "poweropsDayAheadFrontendContractModel"
     ) -> Alert | AlertList | None:
         """Retrieve one or more alerts by id(s).
 

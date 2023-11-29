@@ -19,6 +19,18 @@ CapacityModel = PowerOpsDMSModel(
 )
 
 
+FrontendContractSourceDMSModel = PowerOpsDMSSourceModel(
+    container_file=_DMS_DIR / "frontendContract" / "containers.yaml",
+)
+
+FrontendContractDMSModel = PowerOpsDMSModel(
+    name="FrontendContract",
+    description="Stores common exported data from different markets, for consumption by the PowerOps UI app.",
+    id_=DataModelId("poweropsFrontendContractModel", "FrontendContract", "1"),
+    view_file=_DMS_DIR / "frontendContract" / "views.yaml",
+)
+
+
 DayAheadFrontendContractSourceDMSModel = PowerOpsDMSSourceModel(
     container_file=_DMS_DIR / "dayAheadFrontendContract" / "containers.yaml",
 )
@@ -26,6 +38,6 @@ DayAheadFrontendContractSourceDMSModel = PowerOpsDMSSourceModel(
 DayAheadFrontendContractDMSModel = PowerOpsDMSModel(
     name="DayAheadFrontendContract",
     description="Stores exported data for consumption by the PowerOps UI app.",
-    id_=DataModelId("dayAheadFrontendContractModel", "DayAheadFrontendContract", "1"),
+    id_=DataModelId("poweropsDayAheadFrontendContractModel", "DayAheadFrontendContract", "1"),
     view_file=_DMS_DIR / "dayAheadFrontendContract" / "views.yaml",
 )

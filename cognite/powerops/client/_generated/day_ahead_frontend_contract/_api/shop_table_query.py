@@ -41,7 +41,7 @@ class SHOPTableQueryAPI(QueryAPI[T_DomainModelList]):
         from .alert_query import AlertQueryAPI
 
         edge_filter = _create_edge_filter(
-            dm.DirectRelationReference("dayAheadFrontendContractModel", "BidTable.alerts"),
+            dm.DirectRelationReference("poweropsDayAheadFrontendContractModel", "SHOPTable.alerts"),
             external_id_prefix=external_id_prefix,
             space=space,
         )

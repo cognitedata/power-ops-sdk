@@ -140,7 +140,7 @@ class MarketPriceAreaAPI(NodeAPI[MarketPriceArea, MarketPriceAreaApply, MarketPr
         return self._apply(market_price_area, replace)
 
     def delete(
-        self, external_id: str | SequenceNotStr[str], space: str = "dayAheadFrontendContractModel"
+        self, external_id: str | SequenceNotStr[str], space: str = "poweropsDayAheadFrontendContractModel"
     ) -> dm.InstancesDeleteResult:
         """Delete one or more market price area.
 
@@ -170,7 +170,7 @@ class MarketPriceAreaAPI(NodeAPI[MarketPriceArea, MarketPriceAreaApply, MarketPr
         ...
 
     def retrieve(
-        self, external_id: str | SequenceNotStr[str], space: str = "dayAheadFrontendContractModel"
+        self, external_id: str | SequenceNotStr[str], space: str = "poweropsDayAheadFrontendContractModel"
     ) -> MarketPriceArea | MarketPriceAreaList | None:
         """Retrieve one or more market price areas by id(s).
 

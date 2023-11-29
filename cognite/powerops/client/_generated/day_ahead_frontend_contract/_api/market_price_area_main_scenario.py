@@ -507,7 +507,9 @@ def _retrieve_timeseries_external_ids_with_extra_main_scenario(
         extra_list = [extra_properties]
     else:
         extra_list = extra_properties
-    has_data = dm.filters.HasData([dm.ContainerId("dayAheadFrontendContractModel", "MarketPriceArea")], [view_id])
+    has_data = dm.filters.HasData(
+        [dm.ContainerId("poweropsDayAheadFrontendContractModel", "MarketPriceArea")], [view_id]
+    )
     filter_ = dm.filters.And(filter_, has_data) if filter_ else has_data
 
     cursor = None

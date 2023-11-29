@@ -62,7 +62,7 @@ class Bid(DomainModel):
         version: The version of the bid node.
     """
 
-    space: str = "dayAheadFrontendContractModel"
+    space: str = "poweropsDayAheadFrontendContractModel"
     name: Optional[str] = None
     method: Union[BidMethod, str, None] = Field(None, repr=False)
     price_area: Optional[str] = Field(None, alias="priceArea")
@@ -118,7 +118,7 @@ class BidApply(DomainModelApply):
             If skipOnVersionConflict is set on the ingestion request, then the item will be skipped instead of failing the ingestion request.
     """
 
-    space: str = "dayAheadFrontendContractModel"
+    space: str = "poweropsDayAheadFrontendContractModel"
     name: Optional[str] = None
     method: Union[BidMethodApply, str, None] = Field(None, repr=False)
     price_area: Optional[str] = Field(None, alias="priceArea")
@@ -140,7 +140,7 @@ class BidApply(DomainModelApply):
             return resources
 
         write_view = (view_by_write_class and view_by_write_class.get(type(self))) or dm.ViewId(
-            "dayAheadFrontendContractModel", "Bid", "1"
+            "poweropsDayAheadFrontendContractModel", "Bid", "1"
         )
 
         properties = {}
@@ -185,14 +185,14 @@ class BidApply(DomainModelApply):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("dayAheadFrontendContractModel", "Bid.alerts")
+        edge_type = dm.DirectRelationReference("poweropsDayAheadFrontendContractModel", "Bid.alerts")
         for alert in self.alerts or []:
             other_resources = DomainRelationApply.from_edge_to_resources(
                 cache, self, alert, edge_type, view_by_write_class
             )
             resources.extend(other_resources)
 
-        edge_type = dm.DirectRelationReference("dayAheadFrontendContractModel", "Bid.partials")
+        edge_type = dm.DirectRelationReference("poweropsDayAheadFrontendContractModel", "Bid.partials")
         for partial in self.partials or []:
             other_resources = DomainRelationApply.from_edge_to_resources(
                 cache, self, partial, edge_type, view_by_write_class
@@ -260,7 +260,7 @@ def _create_bid_filter(
         filters.append(
             dm.filters.Equals(
                 view_id.as_property_ref("method"),
-                value={"space": "dayAheadFrontendContractModel", "externalId": method},
+                value={"space": "poweropsDayAheadFrontendContractModel", "externalId": method},
             )
         )
     if method and isinstance(method, tuple):
@@ -271,7 +271,7 @@ def _create_bid_filter(
         filters.append(
             dm.filters.In(
                 view_id.as_property_ref("method"),
-                values=[{"space": "dayAheadFrontendContractModel", "externalId": item} for item in method],
+                values=[{"space": "poweropsDayAheadFrontendContractModel", "externalId": item} for item in method],
             )
         )
     if method and isinstance(method, list) and isinstance(method[0], tuple):
@@ -297,7 +297,8 @@ def _create_bid_filter(
     if total and isinstance(total, str):
         filters.append(
             dm.filters.Equals(
-                view_id.as_property_ref("total"), value={"space": "dayAheadFrontendContractModel", "externalId": total}
+                view_id.as_property_ref("total"),
+                value={"space": "poweropsDayAheadFrontendContractModel", "externalId": total},
             )
         )
     if total and isinstance(total, tuple):
@@ -308,7 +309,7 @@ def _create_bid_filter(
         filters.append(
             dm.filters.In(
                 view_id.as_property_ref("total"),
-                values=[{"space": "dayAheadFrontendContractModel", "externalId": item} for item in total],
+                values=[{"space": "poweropsDayAheadFrontendContractModel", "externalId": item} for item in total],
             )
         )
     if total and isinstance(total, list) and isinstance(total[0], tuple):
@@ -337,7 +338,7 @@ def _create_bid_filter(
         filters.append(
             dm.filters.Equals(
                 view_id.as_property_ref("market"),
-                value={"space": "dayAheadFrontendContractModel", "externalId": market},
+                value={"space": "poweropsDayAheadFrontendContractModel", "externalId": market},
             )
         )
     if market and isinstance(market, tuple):
@@ -348,7 +349,7 @@ def _create_bid_filter(
         filters.append(
             dm.filters.In(
                 view_id.as_property_ref("market"),
-                values=[{"space": "dayAheadFrontendContractModel", "externalId": item} for item in market],
+                values=[{"space": "poweropsDayAheadFrontendContractModel", "externalId": item} for item in market],
             )
         )
     if market and isinstance(market, list) and isinstance(market[0], tuple):

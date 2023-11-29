@@ -58,7 +58,7 @@ class Alert(DomainModel):
         version: The version of the alert node.
     """
 
-    space: str = "dayAheadFrontendContractModel"
+    space: str = "poweropsDayAheadFrontendContractModel"
     time: Optional[datetime.datetime] = None
     title: Optional[str] = None
     description: Optional[str] = None
@@ -106,7 +106,7 @@ class AlertApply(DomainModelApply):
             If skipOnVersionConflict is set on the ingestion request, then the item will be skipped instead of failing the ingestion request.
     """
 
-    space: str = "dayAheadFrontendContractModel"
+    space: str = "poweropsDayAheadFrontendContractModel"
     time: datetime.datetime
     title: str
     description: Optional[str] = None
@@ -126,7 +126,7 @@ class AlertApply(DomainModelApply):
             return resources
 
         write_view = (view_by_write_class and view_by_write_class.get(type(self))) or dm.ViewId(
-            "dayAheadFrontendContractModel", "Alert", "1"
+            "poweropsDayAheadFrontendContractModel", "Alert", "1"
         )
 
         properties = {}

@@ -27,7 +27,7 @@ class DayAheadFrontendContractAPI:
         pydantic = 2.5.2
 
     Data Model:
-        space: dayAheadFrontendContractModel
+        space: poweropsDayAheadFrontendContractModel
         externalId: DayAheadFrontendContract
         version: 1
     """
@@ -40,17 +40,21 @@ class DayAheadFrontendContractAPI:
         else:
             raise ValueError(f"Expected CogniteClient or ClientConfig, got {type(config_or_client)}")
         view_by_write_class = {
-            data_classes.AlertApply: dm.ViewId("dayAheadFrontendContractModel", "Alert", "1"),
-            data_classes.BidApply: dm.ViewId("dayAheadFrontendContractModel", "Bid", "1"),
-            data_classes.BidMethodApply: dm.ViewId("dayAheadFrontendContractModel", "BidMethod", "1"),
-            data_classes.BidTableApply: dm.ViewId("dayAheadFrontendContractModel", "BidTable", "1"),
-            data_classes.MarketPriceAreaApply: dm.ViewId("dayAheadFrontendContractModel", "MarketPriceArea", "1"),
-            data_classes.ProductionPricePairApply: dm.ViewId(
-                "dayAheadFrontendContractModel", "ProductionPricePair", "1"
+            data_classes.AlertApply: dm.ViewId("poweropsDayAheadFrontendContractModel", "Alert", "1"),
+            data_classes.BidApply: dm.ViewId("poweropsDayAheadFrontendContractModel", "Bid", "1"),
+            data_classes.BidMethodApply: dm.ViewId("poweropsDayAheadFrontendContractModel", "BidMethod", "1"),
+            data_classes.BidTableApply: dm.ViewId("poweropsDayAheadFrontendContractModel", "BidTable", "1"),
+            data_classes.MarketPriceAreaApply: dm.ViewId(
+                "poweropsDayAheadFrontendContractModel", "MarketPriceArea", "1"
             ),
-            data_classes.SHOPApply: dm.ViewId("dayAheadFrontendContractModel", "SHOP", "1"),
-            data_classes.SHOPTableApply: dm.ViewId("dayAheadFrontendContractModel", "SHOPTable", "1"),
-            data_classes.WaterValueBasedApply: dm.ViewId("dayAheadFrontendContractModel", "WaterValueBased", "1"),
+            data_classes.ProductionPricePairApply: dm.ViewId(
+                "poweropsDayAheadFrontendContractModel", "ProductionPricePair", "1"
+            ),
+            data_classes.SHOPApply: dm.ViewId("poweropsDayAheadFrontendContractModel", "SHOP", "1"),
+            data_classes.SHOPTableApply: dm.ViewId("poweropsDayAheadFrontendContractModel", "SHOPTable", "1"),
+            data_classes.WaterValueBasedApply: dm.ViewId(
+                "poweropsDayAheadFrontendContractModel", "WaterValueBased", "1"
+            ),
         }
 
         self.alert = AlertAPI(client, view_by_write_class)

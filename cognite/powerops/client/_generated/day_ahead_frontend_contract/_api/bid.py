@@ -163,7 +163,7 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
         return self._apply(bid, replace)
 
     def delete(
-        self, external_id: str | SequenceNotStr[str], space: str = "dayAheadFrontendContractModel"
+        self, external_id: str | SequenceNotStr[str], space: str = "poweropsDayAheadFrontendContractModel"
     ) -> dm.InstancesDeleteResult:
         """Delete one or more bid.
 
@@ -193,7 +193,7 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
         ...
 
     def retrieve(
-        self, external_id: str | SequenceNotStr[str], space: str = "dayAheadFrontendContractModel"
+        self, external_id: str | SequenceNotStr[str], space: str = "poweropsDayAheadFrontendContractModel"
     ) -> Bid | BidList | None:
         """Retrieve one or more bids by id(s).
 
@@ -218,11 +218,15 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
             space,
             retrieve_edges=True,
             edge_api_name_type_triple=[
-                (self.alerts_edge, "alerts", dm.DirectRelationReference("dayAheadFrontendContractModel", "Bid.alerts")),
+                (
+                    self.alerts_edge,
+                    "alerts",
+                    dm.DirectRelationReference("poweropsDayAheadFrontendContractModel", "Bid.alerts"),
+                ),
                 (
                     self.partials_edge,
                     "partials",
-                    dm.DirectRelationReference("dayAheadFrontendContractModel", "Bid.partials"),
+                    dm.DirectRelationReference("poweropsDayAheadFrontendContractModel", "Bid.partials"),
                 ),
             ],
         )
@@ -628,11 +632,15 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
             filter=filter_,
             retrieve_edges=retrieve_edges,
             edge_api_name_type_triple=[
-                (self.alerts_edge, "alerts", dm.DirectRelationReference("dayAheadFrontendContractModel", "Bid.alerts")),
+                (
+                    self.alerts_edge,
+                    "alerts",
+                    dm.DirectRelationReference("poweropsDayAheadFrontendContractModel", "Bid.alerts"),
+                ),
                 (
                     self.partials_edge,
                     "partials",
-                    dm.DirectRelationReference("dayAheadFrontendContractModel", "Bid.partials"),
+                    dm.DirectRelationReference("poweropsDayAheadFrontendContractModel", "Bid.partials"),
                 ),
             ],
         )

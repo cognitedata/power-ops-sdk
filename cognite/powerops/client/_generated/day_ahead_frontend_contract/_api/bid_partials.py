@@ -10,9 +10,9 @@ class BidPartialsAPI(EdgeAPI):
     def list(
         self,
         bid: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-        bid_space: str = "dayAheadFrontendContractModel",
+        bid_space: str = "poweropsDayAheadFrontendContractModel",
         bid_table: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-        bid_table_space: str = "dayAheadFrontendContractModel",
+        bid_table_space: str = "poweropsDayAheadFrontendContractModel",
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit=DEFAULT_LIMIT_READ,
@@ -42,7 +42,7 @@ class BidPartialsAPI(EdgeAPI):
 
         """
         filter_ = _create_edge_filter(
-            dm.DirectRelationReference("dayAheadFrontendContractModel", "Bid.partials"),
+            dm.DirectRelationReference("poweropsDayAheadFrontendContractModel", "Bid.partials"),
             bid,
             bid_space,
             bid_table,

@@ -62,7 +62,7 @@ class MarketPriceArea(DomainModel):
         version: The version of the market price area node.
     """
 
-    space: str = "dayAheadFrontendContractModel"
+    space: str = "poweropsDayAheadFrontendContractModel"
     name: Optional[str] = None
     price_area: Optional[str] = Field(None, alias="priceArea")
     default_method: Union[BidMethod, str, None] = Field(None, repr=False, alias="defaultMethod")
@@ -106,7 +106,7 @@ class MarketPriceAreaApply(DomainModelApply):
             If skipOnVersionConflict is set on the ingestion request, then the item will be skipped instead of failing the ingestion request.
     """
 
-    space: str = "dayAheadFrontendContractModel"
+    space: str = "poweropsDayAheadFrontendContractModel"
     name: Optional[str] = None
     price_area: Optional[str] = Field(None, alias="priceArea")
     default_method: Union[BidMethodApply, str, None] = Field(None, repr=False, alias="defaultMethod")
@@ -124,7 +124,7 @@ class MarketPriceAreaApply(DomainModelApply):
             return resources
 
         write_view = (view_by_write_class and view_by_write_class.get(type(self))) or dm.ViewId(
-            "dayAheadFrontendContractModel", "MarketPriceArea", "1"
+            "poweropsDayAheadFrontendContractModel", "MarketPriceArea", "1"
         )
 
         properties = {}
@@ -219,7 +219,7 @@ def _create_market_price_area_filter(
         filters.append(
             dm.filters.Equals(
                 view_id.as_property_ref("defaultMethod"),
-                value={"space": "dayAheadFrontendContractModel", "externalId": default_method},
+                value={"space": "poweropsDayAheadFrontendContractModel", "externalId": default_method},
             )
         )
     if default_method and isinstance(default_method, tuple):
@@ -233,7 +233,9 @@ def _create_market_price_area_filter(
         filters.append(
             dm.filters.In(
                 view_id.as_property_ref("defaultMethod"),
-                values=[{"space": "dayAheadFrontendContractModel", "externalId": item} for item in default_method],
+                values=[
+                    {"space": "poweropsDayAheadFrontendContractModel", "externalId": item} for item in default_method
+                ],
             )
         )
     if default_method and isinstance(default_method, list) and isinstance(default_method[0], tuple):

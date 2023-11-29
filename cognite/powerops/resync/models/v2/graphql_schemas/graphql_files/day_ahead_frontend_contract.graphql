@@ -7,26 +7,15 @@ type Bid @container(indexes: [{identifier : "startCalculation", fields : ["start
   startCalculation: Timestamp!
   endCalculation: Timestamp
   market: MarketPriceArea
-  alerts: [Alert]
+  alerts: [Alert] @relation(type: {space : "poweropsFrontendContractModel", externalId : "Bid.alerts"})
   partials: [BidTable]
-}
-
-type Alert {
-  time: Timestamp!
-  title: String!
-  description: String
-  severity: String
-  alertType: String
-  statusCode: Int
-  eventIds: [Int64]
-  calculationRun: String
 }
 
 interface BidMethod {
   name: String!
 }
 
-type SHOP implements BidMethod @view(rawFilter: {prefix : {property : ["node", "externalId"], value : "SHOP"}}) @container(constraints: [{identifier : "requiredBidMethod", constraintType : REQUIRES, require : {space : "dayAheadFrontendContractModel", externalId : "BidMethod"}}]) {
+type SHOP implements BidMethod @view(rawFilter: {prefix : {property : ["node", "externalId"], value : "SHOP"}}) @container(constraints: [{identifier : "requiredBidMethod", constraintType : REQUIRES, require : {space : "poweropsDayAheadFrontendContractModel", externalId : "BidMethod"}}]) {
   name: String!
   shopCases: [String]
   priceScenarios: TimeSeries
@@ -50,7 +39,7 @@ interface BidTable {
   table: Sequence
   assetType: String
   asset_id: String
-  alerts: [Alert]
+  alerts: [Alert] @relation(type: {space : "poweropsFrontendContractModel", externalId : "BidTable.alerts"})
 }
 
 type SHOPTable implements BidTable @view(rawFilter: {prefix : {property : ["node", "externalId"], value : "SHOP"}}) {
@@ -58,7 +47,7 @@ type SHOPTable implements BidTable @view(rawFilter: {prefix : {property : ["node
   table: Sequence
   assetType: String
   asset_id: String
-  alerts: [Alert]
+  alerts: [Alert] @relation(type: {space : "poweropsFrontendContractModel", externalId : "SHOPTable.alerts"})
   productionPricePair: ProductionPricePair
 }
 

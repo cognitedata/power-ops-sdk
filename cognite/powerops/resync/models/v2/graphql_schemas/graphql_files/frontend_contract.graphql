@@ -1,0 +1,10 @@
+type Alert {
+  time: Timestamp!
+  title: String!
+  description: String
+  severity: String
+  alertType: String
+  statusCode: Int
+  eventIds: [Int64]
+  calculationRun: String
+}

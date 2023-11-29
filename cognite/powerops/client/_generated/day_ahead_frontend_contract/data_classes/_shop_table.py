@@ -60,7 +60,7 @@ class SHOPTable(DomainModel):
         version: The version of the shop table node.
     """
 
-    space: str = "dayAheadFrontendContractModel"
+    space: str = "poweropsDayAheadFrontendContractModel"
     resource_cost: Optional[str] = Field(None, alias="resourceCost")
     table: Union[str, None] = None
     asset_type: Optional[str] = Field(None, alias="assetType")
@@ -104,7 +104,7 @@ class SHOPTableApply(DomainModelApply):
             If skipOnVersionConflict is set on the ingestion request, then the item will be skipped instead of failing the ingestion request.
     """
 
-    space: str = "dayAheadFrontendContractModel"
+    space: str = "poweropsDayAheadFrontendContractModel"
     resource_cost: Optional[str] = Field(None, alias="resourceCost")
     table: Union[str, None] = None
     asset_type: Optional[str] = Field(None, alias="assetType")
@@ -124,7 +124,7 @@ class SHOPTableApply(DomainModelApply):
             return resources
 
         write_view = (view_by_write_class and view_by_write_class.get(type(self))) or dm.ViewId(
-            "dayAheadFrontendContractModel", "SHOPTable", "1"
+            "poweropsDayAheadFrontendContractModel", "SHOPTable", "1"
         )
 
         properties = {}
@@ -161,7 +161,7 @@ class SHOPTableApply(DomainModelApply):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("dayAheadFrontendContractModel", "BidTable.alerts")
+        edge_type = dm.DirectRelationReference("poweropsDayAheadFrontendContractModel", "SHOPTable.alerts")
         for alert in self.alerts or []:
             other_resources = DomainRelationApply.from_edge_to_resources(
                 cache, self, alert, edge_type, view_by_write_class
@@ -227,7 +227,7 @@ def _create_shop_table_filter(
         filters.append(
             dm.filters.Equals(
                 view_id.as_property_ref("productionPricePair"),
-                value={"space": "dayAheadFrontendContractModel", "externalId": production_price_pair},
+                value={"space": "poweropsDayAheadFrontendContractModel", "externalId": production_price_pair},
             )
         )
     if production_price_pair and isinstance(production_price_pair, tuple):
@@ -242,7 +242,8 @@ def _create_shop_table_filter(
             dm.filters.In(
                 view_id.as_property_ref("productionPricePair"),
                 values=[
-                    {"space": "dayAheadFrontendContractModel", "externalId": item} for item in production_price_pair
+                    {"space": "poweropsDayAheadFrontendContractModel", "externalId": item}
+                    for item in production_price_pair
                 ],
             )
         )

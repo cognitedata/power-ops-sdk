@@ -123,7 +123,7 @@ class WaterValueBasedAPI(NodeAPI[WaterValueBased, WaterValueBasedApply, WaterVal
         return self._apply(water_value_based, replace)
 
     def delete(
-        self, external_id: str | SequenceNotStr[str], space: str = "dayAheadFrontendContractModel"
+        self, external_id: str | SequenceNotStr[str], space: str = "poweropsDayAheadFrontendContractModel"
     ) -> dm.InstancesDeleteResult:
         """Delete one or more water value based.
 
@@ -153,7 +153,7 @@ class WaterValueBasedAPI(NodeAPI[WaterValueBased, WaterValueBasedApply, WaterVal
         ...
 
     def retrieve(
-        self, external_id: str | SequenceNotStr[str], space: str = "dayAheadFrontendContractModel"
+        self, external_id: str | SequenceNotStr[str], space: str = "poweropsDayAheadFrontendContractModel"
     ) -> WaterValueBased | WaterValueBasedList | None:
         """Retrieve one or more water value baseds by id(s).
 
