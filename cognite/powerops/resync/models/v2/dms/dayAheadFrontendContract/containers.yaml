@@ -81,15 +81,6 @@
       name: market
       defaultValue: null
   indexes:
-    # TODO probably need only the index on "date", depends on FE queries
-    startCalculation:
-      indexType: btree
-      properties:
-        - startCalculation
-    endCalculation:
-      indexType: btree
-      properties:
-        - endCalculation
     date:
       indexType: btree
       properties:

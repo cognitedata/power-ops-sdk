@@ -82,3 +82,12 @@
       name: calculationRun
       defaultValue: null
       description: null
+  indexes:
+    time:
+      indexType: btree
+      properties:
+        - time
+    alertType:
+      indexType: btree
+      properties:
+        - alertType

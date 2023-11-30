@@ -112,6 +112,8 @@ def init(client: PowerOpsClient | None, model_names: str | list[str] | None = No
             logger.info(f"Deploying {model.name} data model with {model.dms_model.id_}")
             cdf.data_modeling.data_models.apply(model.dms_model.data_model)
             results.append({"model": model.name, "action": "deployed"})  # type: ignore[dict-item]
+
+        # TODO deploy manually via client
     return results
 
 
