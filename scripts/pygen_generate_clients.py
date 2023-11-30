@@ -6,13 +6,10 @@ from pathlib import Path
 
 from cognite.pygen import generate_sdk
 
+from cognite.powerops.resync.models import DayAheadFrontendContractModel
 from cognite.powerops.resync.models.v1.graphql_schemas import GRAPHQL_MODELS as v1
 from cognite.powerops.resync.models.v2.graphql_schemas import GRAPHQL_MODELS as v2
-from cognite.powerops.resync.models.v2.dms import (
-    CapacityModel,
-    DayAheadFrontendContractDMSModel,
-    FrontendContractDMSModel,
-)
+from cognite.powerops.resync.models.v2.dms import CapacityModel
 from cognite.powerops.utils.cdf import get_cognite_client
 from cognite.powerops.utils.serialization import chdir
 
@@ -54,8 +51,7 @@ def main():
         # )
 
         generate_sdk(
-            # [FrontendContractDMSModel.id_, DayAheadFrontendContractDMSModel.id_,],
-            DayAheadFrontendContractDMSModel.id_,
+            DayAheadFrontendContractModel.data_model().as_id(),
             client,
             top_level_package=f"{top_level}.day_ahead_frontend_contract",
             client_name="DayAheadFrontendContractAPI",
