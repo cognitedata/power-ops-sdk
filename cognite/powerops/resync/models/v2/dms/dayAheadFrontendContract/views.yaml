@@ -364,18 +364,17 @@
         type: view
       direction: outwards
       name: alerts
-    productionPricePair:
-      container:
+    productionPricePairs:
+      type:
         space: '{{model_space}}'
-        externalId: SHOPTable
-        type: container
+        externalId: SHOPTable.productionPricePairs
       source:
         type: view
         space: '{{model_space}}'
         externalId: ProductionPricePair
         version: '{{view_ProductionPricePair_version}}'
-      containerPropertyIdentifier: productionPricePair
-      name: productionPricePair
+      direction: outwards
+      name: productionPricePairs
   filter:
     prefix:
       property: [ 'node', 'externalId' ]
