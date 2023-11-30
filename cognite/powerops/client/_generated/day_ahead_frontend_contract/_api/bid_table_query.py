@@ -41,7 +41,7 @@ class BidTableQueryAPI(QueryAPI[T_DomainModelList]):
         from .alert_query import AlertQueryAPI
 
         edge_filter = _create_edge_filter(
-            dm.DirectRelationReference("poweropsDayAheadFrontendContractModel", "BidTable.alerts"),
+            dm.DirectRelationReference("power-ops-day-ahead-frontend-contract-model", "BidTable.alerts"),
             external_id_prefix=external_id_prefix,
             space=space,
         )

@@ -10,16 +10,16 @@ from cognite.client.data_classes.data_modeling.instances import InstanceAggregat
 from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes import (
     DomainModelApply,
     ResourcesApplyResult,
-    SHOP,
-    SHOPApply,
-    SHOPFields,
-    SHOPList,
-    SHOPApplyList,
-    SHOPTextFields,
+    SHOPMultiScenario,
+    SHOPMultiScenarioApply,
+    SHOPMultiScenarioFields,
+    SHOPMultiScenarioList,
+    SHOPMultiScenarioApplyList,
+    SHOPMultiScenarioTextFields,
 )
-from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes._shop import (
-    _SHOP_PROPERTIES_BY_FIELD,
-    _create_shop_filter,
+from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes._shop_multi_scenario import (
+    _SHOPMULTISCENARIO_PROPERTIES_BY_FIELD,
+    _create_shop_multi_scenario_filter,
 )
 from ._core import (
     DEFAULT_LIMIT_READ,
@@ -30,24 +30,22 @@ from ._core import (
     QueryStep,
     QueryBuilder,
 )
-from .shop_price_scenarios import SHOPPriceScenariosAPI
-from .shop_query import SHOPQueryAPI
+from .shop_multi_scenario_query import SHOPMultiScenarioQueryAPI
 
 
-class SHOPAPI(NodeAPI[SHOP, SHOPApply, SHOPList]):
+class SHOPMultiScenarioAPI(NodeAPI[SHOPMultiScenario, SHOPMultiScenarioApply, SHOPMultiScenarioList]):
     def __init__(self, client: CogniteClient, view_by_write_class: dict[type[DomainModelApply], dm.ViewId]):
-        view_id = view_by_write_class[SHOPApply]
+        view_id = view_by_write_class[SHOPMultiScenarioApply]
         super().__init__(
             client=client,
             sources=view_id,
-            class_type=SHOP,
-            class_apply_type=SHOPApply,
-            class_list=SHOPList,
-            class_apply_list=SHOPApplyList,
+            class_type=SHOPMultiScenario,
+            class_apply_type=SHOPMultiScenarioApply,
+            class_list=SHOPMultiScenarioList,
+            class_apply_list=SHOPMultiScenarioApplyList,
             view_by_write_class=view_by_write_class,
         )
         self._view_id = view_id
-        self.price_scenarios = SHOPPriceScenariosAPI(client, view_id)
 
     def __call__(
         self,
@@ -57,22 +55,22 @@ class SHOPAPI(NodeAPI[SHOP, SHOPApply, SHOPList]):
         space: str | list[str] | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
         filter: dm.Filter | None = None,
-    ) -> SHOPQueryAPI[SHOPList]:
-        """Query starting at shops.
+    ) -> SHOPMultiScenarioQueryAPI[SHOPMultiScenarioList]:
+        """Query starting at shop multi scenarios.
 
         Args:
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of shops to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of shop multi scenarios to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
-            A query API for shops.
+            A query API for shop multi scenarios.
 
         """
-        filter_ = _create_shop_filter(
+        filter_ = _create_shop_multi_scenario_filter(
             self._view_id,
             name,
             name_prefix,
@@ -81,29 +79,31 @@ class SHOPAPI(NodeAPI[SHOP, SHOPApply, SHOPList]):
             filter,
         )
         builder = QueryBuilder(
-            SHOPList,
+            SHOPMultiScenarioList,
             [
                 QueryStep(
-                    name="shop",
+                    name="shop_multi_scenario",
                     expression=dm.query.NodeResultSetExpression(
                         from_=None,
                         filter=filter_,
                     ),
                     select=dm.query.Select(
-                        [dm.query.SourceSelector(self._view_id, list(_SHOP_PROPERTIES_BY_FIELD.values()))]
+                        [dm.query.SourceSelector(self._view_id, list(_SHOPMULTISCENARIO_PROPERTIES_BY_FIELD.values()))]
                     ),
-                    result_cls=SHOP,
+                    result_cls=SHOPMultiScenario,
                     max_retrieve_limit=limit,
                 )
             ],
         )
-        return SHOPQueryAPI(self._client, builder, self._view_by_write_class)
+        return SHOPMultiScenarioQueryAPI(self._client, builder, self._view_by_write_class)
 
-    def apply(self, shop: SHOPApply | Sequence[SHOPApply], replace: bool = False) -> ResourcesApplyResult:
-        """Add or update (upsert) shops.
+    def apply(
+        self, shop_multi_scenario: SHOPMultiScenarioApply | Sequence[SHOPMultiScenarioApply], replace: bool = False
+    ) -> ResourcesApplyResult:
+        """Add or update (upsert) shop multi scenarios.
 
         Args:
-            shop: Shop or sequence of shops to upsert.
+            shop_multi_scenario: Shop multi scenario or sequence of shop multi scenarios to upsert.
             replace (bool): How do we behave when a property value exists? Do we replace all matching and existing values with the supplied values (true)?
                 Or should we merge in new values for properties together with the existing values (false)? Note: This setting applies for all nodes or edges specified in the ingestion call.
         Returns:
@@ -111,66 +111,66 @@ class SHOPAPI(NodeAPI[SHOP, SHOPApply, SHOPList]):
 
         Examples:
 
-            Create a new shop:
+            Create a new shop_multi_scenario:
 
                 >>> from cognite.powerops.client._generated.day_ahead_frontend_contract import DayAheadFrontendContractAPI
-                >>> from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes import SHOPApply
+                >>> from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes import SHOPMultiScenarioApply
                 >>> client = DayAheadFrontendContractAPI()
-                >>> shop = SHOPApply(external_id="my_shop", ...)
-                >>> result = client.shop.apply(shop)
+                >>> shop_multi_scenario = SHOPMultiScenarioApply(external_id="my_shop_multi_scenario", ...)
+                >>> result = client.shop_multi_scenario.apply(shop_multi_scenario)
 
         """
-        return self._apply(shop, replace)
+        return self._apply(shop_multi_scenario, replace)
 
     def delete(
-        self, external_id: str | SequenceNotStr[str], space: str = "poweropsDayAheadFrontendContractModel"
+        self, external_id: str | SequenceNotStr[str], space: str = "power-ops-day-ahead-frontend-contract-model"
     ) -> dm.InstancesDeleteResult:
-        """Delete one or more shop.
+        """Delete one or more shop multi scenario.
 
         Args:
-            external_id: External id of the shop to delete.
-            space: The space where all the shop are located.
+            external_id: External id of the shop multi scenario to delete.
+            space: The space where all the shop multi scenario are located.
 
         Returns:
             The instance(s), i.e., nodes and edges which has been deleted. Empty list if nothing was deleted.
 
         Examples:
 
-            Delete shop by id:
+            Delete shop_multi_scenario by id:
 
                 >>> from cognite.powerops.client._generated.day_ahead_frontend_contract import DayAheadFrontendContractAPI
                 >>> client = DayAheadFrontendContractAPI()
-                >>> client.shop.delete("my_shop")
+                >>> client.shop_multi_scenario.delete("my_shop_multi_scenario")
         """
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str) -> SHOP | None:
+    def retrieve(self, external_id: str) -> SHOPMultiScenario | None:
         ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str]) -> SHOPList:
+    def retrieve(self, external_id: SequenceNotStr[str]) -> SHOPMultiScenarioList:
         ...
 
     def retrieve(
-        self, external_id: str | SequenceNotStr[str], space: str = "poweropsDayAheadFrontendContractModel"
-    ) -> SHOP | SHOPList | None:
-        """Retrieve one or more shops by id(s).
+        self, external_id: str | SequenceNotStr[str], space: str = "power-ops-day-ahead-frontend-contract-model"
+    ) -> SHOPMultiScenario | SHOPMultiScenarioList | None:
+        """Retrieve one or more shop multi scenarios by id(s).
 
         Args:
-            external_id: External id or list of external ids of the shops.
-            space: The space where all the shops are located.
+            external_id: External id or list of external ids of the shop multi scenarios.
+            space: The space where all the shop multi scenarios are located.
 
         Returns:
-            The requested shops.
+            The requested shop multi scenarios.
 
         Examples:
 
-            Retrieve shop by id:
+            Retrieve shop_multi_scenario by id:
 
                 >>> from cognite.powerops.client._generated.day_ahead_frontend_contract import DayAheadFrontendContractAPI
                 >>> client = DayAheadFrontendContractAPI()
-                >>> shop = client.shop.retrieve("my_shop")
+                >>> shop_multi_scenario = client.shop_multi_scenario.retrieve("my_shop_multi_scenario")
 
         """
         return self._retrieve(external_id, space)
@@ -178,15 +178,15 @@ class SHOPAPI(NodeAPI[SHOP, SHOPApply, SHOPList]):
     def search(
         self,
         query: str,
-        properties: SHOPTextFields | Sequence[SHOPTextFields] | None = None,
+        properties: SHOPMultiScenarioTextFields | Sequence[SHOPMultiScenarioTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> SHOPList:
-        """Search shops
+    ) -> SHOPMultiScenarioList:
+        """Search shop multi scenarios
 
         Args:
             query: The search query,
@@ -195,22 +195,22 @@ class SHOPAPI(NodeAPI[SHOP, SHOPApply, SHOPList]):
             name_prefix: The prefix of the name to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of shops to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of shop multi scenarios to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
-            Search results shops matching the query.
+            Search results shop multi scenarios matching the query.
 
         Examples:
 
-           Search for 'my_shop' in all text properties:
+           Search for 'my_shop_multi_scenario' in all text properties:
 
                 >>> from cognite.powerops.client._generated.day_ahead_frontend_contract import DayAheadFrontendContractAPI
                 >>> client = DayAheadFrontendContractAPI()
-                >>> shops = client.shop.search('my_shop')
+                >>> shop_multi_scenarios = client.shop_multi_scenario.search('my_shop_multi_scenario')
 
         """
-        filter_ = _create_shop_filter(
+        filter_ = _create_shop_multi_scenario_filter(
             self._view_id,
             name,
             name_prefix,
@@ -218,7 +218,7 @@ class SHOPAPI(NodeAPI[SHOP, SHOPApply, SHOPList]):
             space,
             filter,
         )
-        return self._search(self._view_id, query, _SHOP_PROPERTIES_BY_FIELD, properties, filter_, limit)
+        return self._search(self._view_id, query, _SHOPMULTISCENARIO_PROPERTIES_BY_FIELD, properties, filter_, limit)
 
     @overload
     def aggregate(
@@ -227,10 +227,10 @@ class SHOPAPI(NodeAPI[SHOP, SHOPApply, SHOPList]):
         | dm.aggregations.MetricAggregation
         | Sequence[Aggregations]
         | Sequence[dm.aggregations.MetricAggregation],
-        property: SHOPFields | Sequence[SHOPFields] | None = None,
+        property: SHOPMultiScenarioFields | Sequence[SHOPMultiScenarioFields] | None = None,
         group_by: None = None,
         query: str | None = None,
-        search_properties: SHOPTextFields | Sequence[SHOPTextFields] | None = None,
+        search_properties: SHOPMultiScenarioTextFields | Sequence[SHOPMultiScenarioTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
@@ -247,10 +247,10 @@ class SHOPAPI(NodeAPI[SHOP, SHOPApply, SHOPList]):
         | dm.aggregations.MetricAggregation
         | Sequence[Aggregations]
         | Sequence[dm.aggregations.MetricAggregation],
-        property: SHOPFields | Sequence[SHOPFields] | None = None,
-        group_by: SHOPFields | Sequence[SHOPFields] = None,
+        property: SHOPMultiScenarioFields | Sequence[SHOPMultiScenarioFields] | None = None,
+        group_by: SHOPMultiScenarioFields | Sequence[SHOPMultiScenarioFields] = None,
         query: str | None = None,
-        search_properties: SHOPTextFields | Sequence[SHOPTextFields] | None = None,
+        search_properties: SHOPMultiScenarioTextFields | Sequence[SHOPMultiScenarioTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
@@ -266,10 +266,10 @@ class SHOPAPI(NodeAPI[SHOP, SHOPApply, SHOPList]):
         | dm.aggregations.MetricAggregation
         | Sequence[Aggregations]
         | Sequence[dm.aggregations.MetricAggregation],
-        property: SHOPFields | Sequence[SHOPFields] | None = None,
-        group_by: SHOPFields | Sequence[SHOPFields] | None = None,
+        property: SHOPMultiScenarioFields | Sequence[SHOPMultiScenarioFields] | None = None,
+        group_by: SHOPMultiScenarioFields | Sequence[SHOPMultiScenarioFields] | None = None,
         query: str | None = None,
-        search_property: SHOPTextFields | Sequence[SHOPTextFields] | None = None,
+        search_property: SHOPMultiScenarioTextFields | Sequence[SHOPMultiScenarioTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
@@ -277,7 +277,7 @@ class SHOPAPI(NodeAPI[SHOP, SHOPApply, SHOPList]):
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
-        """Aggregate data across shops
+        """Aggregate data across shop multi scenarios
 
         Args:
             aggregate: The aggregation to perform.
@@ -289,7 +289,7 @@ class SHOPAPI(NodeAPI[SHOP, SHOPApply, SHOPList]):
             name_prefix: The prefix of the name to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of shops to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of shop multi scenarios to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
@@ -297,15 +297,15 @@ class SHOPAPI(NodeAPI[SHOP, SHOPApply, SHOPList]):
 
         Examples:
 
-            Count shops in space `my_space`:
+            Count shop multi scenarios in space `my_space`:
 
                 >>> from cognite.powerops.client._generated.day_ahead_frontend_contract import DayAheadFrontendContractAPI
                 >>> client = DayAheadFrontendContractAPI()
-                >>> result = client.shop.aggregate("count", space="my_space")
+                >>> result = client.shop_multi_scenario.aggregate("count", space="my_space")
 
         """
 
-        filter_ = _create_shop_filter(
+        filter_ = _create_shop_multi_scenario_filter(
             self._view_id,
             name,
             name_prefix,
@@ -316,7 +316,7 @@ class SHOPAPI(NodeAPI[SHOP, SHOPApply, SHOPList]):
         return self._aggregate(
             self._view_id,
             aggregate,
-            _SHOP_PROPERTIES_BY_FIELD,
+            _SHOPMULTISCENARIO_PROPERTIES_BY_FIELD,
             property,
             group_by,
             query,
@@ -327,10 +327,10 @@ class SHOPAPI(NodeAPI[SHOP, SHOPApply, SHOPList]):
 
     def histogram(
         self,
-        property: SHOPFields,
+        property: SHOPMultiScenarioFields,
         interval: float,
         query: str | None = None,
-        search_property: SHOPTextFields | Sequence[SHOPTextFields] | None = None,
+        search_property: SHOPMultiScenarioTextFields | Sequence[SHOPMultiScenarioTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
@@ -338,7 +338,7 @@ class SHOPAPI(NodeAPI[SHOP, SHOPApply, SHOPList]):
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
-        """Produces histograms for shops
+        """Produces histograms for shop multi scenarios
 
         Args:
             property: The property to use as the value in the histogram.
@@ -349,14 +349,14 @@ class SHOPAPI(NodeAPI[SHOP, SHOPApply, SHOPList]):
             name_prefix: The prefix of the name to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of shops to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of shop multi scenarios to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
             Bucketed histogram results.
 
         """
-        filter_ = _create_shop_filter(
+        filter_ = _create_shop_multi_scenario_filter(
             self._view_id,
             name,
             name_prefix,
@@ -368,7 +368,7 @@ class SHOPAPI(NodeAPI[SHOP, SHOPApply, SHOPList]):
             self._view_id,
             property,
             interval,
-            _SHOP_PROPERTIES_BY_FIELD,
+            _SHOPMULTISCENARIO_PROPERTIES_BY_FIELD,
             query,
             search_property,
             limit,
@@ -383,30 +383,30 @@ class SHOPAPI(NodeAPI[SHOP, SHOPApply, SHOPList]):
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> SHOPList:
-        """List/filter shops
+    ) -> SHOPMultiScenarioList:
+        """List/filter shop multi scenarios
 
         Args:
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of shops to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of shop multi scenarios to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
-            List of requested shops
+            List of requested shop multi scenarios
 
         Examples:
 
-            List shops and limit to 5:
+            List shop multi scenarios and limit to 5:
 
                 >>> from cognite.powerops.client._generated.day_ahead_frontend_contract import DayAheadFrontendContractAPI
                 >>> client = DayAheadFrontendContractAPI()
-                >>> shops = client.shop.list(limit=5)
+                >>> shop_multi_scenarios = client.shop_multi_scenario.list(limit=5)
 
         """
-        filter_ = _create_shop_filter(
+        filter_ = _create_shop_multi_scenario_filter(
             self._view_id,
             name,
             name_prefix,

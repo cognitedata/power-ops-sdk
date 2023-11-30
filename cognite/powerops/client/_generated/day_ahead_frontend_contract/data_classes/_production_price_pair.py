@@ -47,7 +47,7 @@ class ProductionPricePair(DomainModel):
         version: The version of the production price pair node.
     """
 
-    space: str = "poweropsDayAheadFrontendContractModel"
+    space: str = "power-ops-day-ahead-frontend-contract-model"
     production: Union[TimeSeries, str, None] = None
     price: Union[TimeSeries, str, None] = None
 
@@ -77,7 +77,7 @@ class ProductionPricePairApply(DomainModelApply):
             If skipOnVersionConflict is set on the ingestion request, then the item will be skipped instead of failing the ingestion request.
     """
 
-    space: str = "poweropsDayAheadFrontendContractModel"
+    space: str = "power-ops-day-ahead-frontend-contract-model"
     production: Union[TimeSeries, str, None] = None
     price: Union[TimeSeries, str, None] = None
 
@@ -91,7 +91,7 @@ class ProductionPricePairApply(DomainModelApply):
             return resources
 
         write_view = (view_by_write_class and view_by_write_class.get(type(self))) or dm.ViewId(
-            "poweropsDayAheadFrontendContractModel", "ProductionPricePair", "1"
+            "power-ops-day-ahead-frontend-contract-model", "ProductionPricePair", "1"
         )
 
         properties = {}

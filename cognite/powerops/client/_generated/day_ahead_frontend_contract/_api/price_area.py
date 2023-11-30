@@ -10,16 +10,16 @@ from cognite.client.data_classes.data_modeling.instances import InstanceAggregat
 from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes import (
     DomainModelApply,
     ResourcesApplyResult,
-    MarketPriceArea,
-    MarketPriceAreaApply,
-    MarketPriceAreaFields,
-    MarketPriceAreaList,
-    MarketPriceAreaApplyList,
-    MarketPriceAreaTextFields,
+    PriceArea,
+    PriceAreaApply,
+    PriceAreaFields,
+    PriceAreaList,
+    PriceAreaApplyList,
+    PriceAreaTextFields,
 )
-from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes._market_price_area import (
-    _MARKETPRICEAREA_PROPERTIES_BY_FIELD,
-    _create_market_price_area_filter,
+from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes._price_area import (
+    _PRICEAREA_PROPERTIES_BY_FIELD,
+    _create_price_area_filter,
 )
 from ._core import (
     DEFAULT_LIMIT_READ,
@@ -30,24 +30,24 @@ from ._core import (
     QueryStep,
     QueryBuilder,
 )
-from .market_price_area_main_scenario import MarketPriceAreaMainScenarioAPI
-from .market_price_area_query import MarketPriceAreaQueryAPI
+from .price_area_main_scenario import PriceAreaMainScenarioAPI
+from .price_area_query import PriceAreaQueryAPI
 
 
-class MarketPriceAreaAPI(NodeAPI[MarketPriceArea, MarketPriceAreaApply, MarketPriceAreaList]):
+class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
     def __init__(self, client: CogniteClient, view_by_write_class: dict[type[DomainModelApply], dm.ViewId]):
-        view_id = view_by_write_class[MarketPriceAreaApply]
+        view_id = view_by_write_class[PriceAreaApply]
         super().__init__(
             client=client,
             sources=view_id,
-            class_type=MarketPriceArea,
-            class_apply_type=MarketPriceAreaApply,
-            class_list=MarketPriceAreaList,
-            class_apply_list=MarketPriceAreaApplyList,
+            class_type=PriceArea,
+            class_apply_type=PriceAreaApply,
+            class_list=PriceAreaList,
+            class_apply_list=PriceAreaApplyList,
             view_by_write_class=view_by_write_class,
         )
         self._view_id = view_id
-        self.main_scenario = MarketPriceAreaMainScenarioAPI(client, view_id)
+        self.main_scenario = PriceAreaMainScenarioAPI(client, view_id)
 
     def __call__(
         self,
@@ -62,8 +62,8 @@ class MarketPriceAreaAPI(NodeAPI[MarketPriceArea, MarketPriceAreaApply, MarketPr
         space: str | list[str] | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
         filter: dm.Filter | None = None,
-    ) -> MarketPriceAreaQueryAPI[MarketPriceAreaList]:
-        """Query starting at market price areas.
+    ) -> PriceAreaQueryAPI[PriceAreaList]:
+        """Query starting at price areas.
 
         Args:
             name: The name to filter on.
@@ -75,14 +75,14 @@ class MarketPriceAreaAPI(NodeAPI[MarketPriceArea, MarketPriceAreaApply, MarketPr
             timezone_prefix: The prefix of the timezone to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of market price areas to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of price areas to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
-            A query API for market price areas.
+            A query API for price areas.
 
         """
-        filter_ = _create_market_price_area_filter(
+        filter_ = _create_price_area_filter(
             self._view_id,
             name,
             name_prefix,
@@ -96,31 +96,31 @@ class MarketPriceAreaAPI(NodeAPI[MarketPriceArea, MarketPriceAreaApply, MarketPr
             filter,
         )
         builder = QueryBuilder(
-            MarketPriceAreaList,
+            PriceAreaList,
             [
                 QueryStep(
-                    name="market_price_area",
+                    name="price_area",
                     expression=dm.query.NodeResultSetExpression(
                         from_=None,
                         filter=filter_,
                     ),
                     select=dm.query.Select(
-                        [dm.query.SourceSelector(self._view_id, list(_MARKETPRICEAREA_PROPERTIES_BY_FIELD.values()))]
+                        [dm.query.SourceSelector(self._view_id, list(_PRICEAREA_PROPERTIES_BY_FIELD.values()))]
                     ),
-                    result_cls=MarketPriceArea,
+                    result_cls=PriceArea,
                     max_retrieve_limit=limit,
                 )
             ],
         )
-        return MarketPriceAreaQueryAPI(self._client, builder, self._view_by_write_class)
+        return PriceAreaQueryAPI(self._client, builder, self._view_by_write_class)
 
     def apply(
-        self, market_price_area: MarketPriceAreaApply | Sequence[MarketPriceAreaApply], replace: bool = False
+        self, price_area: PriceAreaApply | Sequence[PriceAreaApply], replace: bool = False
     ) -> ResourcesApplyResult:
-        """Add or update (upsert) market price areas.
+        """Add or update (upsert) price areas.
 
         Args:
-            market_price_area: Market price area or sequence of market price areas to upsert.
+            price_area: Price area or sequence of price areas to upsert.
             replace (bool): How do we behave when a property value exists? Do we replace all matching and existing values with the supplied values (true)?
                 Or should we merge in new values for properties together with the existing values (false)? Note: This setting applies for all nodes or edges specified in the ingestion call.
         Returns:
@@ -128,66 +128,66 @@ class MarketPriceAreaAPI(NodeAPI[MarketPriceArea, MarketPriceAreaApply, MarketPr
 
         Examples:
 
-            Create a new market_price_area:
+            Create a new price_area:
 
                 >>> from cognite.powerops.client._generated.day_ahead_frontend_contract import DayAheadFrontendContractAPI
-                >>> from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes import MarketPriceAreaApply
+                >>> from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes import PriceAreaApply
                 >>> client = DayAheadFrontendContractAPI()
-                >>> market_price_area = MarketPriceAreaApply(external_id="my_market_price_area", ...)
-                >>> result = client.market_price_area.apply(market_price_area)
+                >>> price_area = PriceAreaApply(external_id="my_price_area", ...)
+                >>> result = client.price_area.apply(price_area)
 
         """
-        return self._apply(market_price_area, replace)
+        return self._apply(price_area, replace)
 
     def delete(
-        self, external_id: str | SequenceNotStr[str], space: str = "poweropsDayAheadFrontendContractModel"
+        self, external_id: str | SequenceNotStr[str], space: str = "power-ops-day-ahead-frontend-contract-model"
     ) -> dm.InstancesDeleteResult:
-        """Delete one or more market price area.
+        """Delete one or more price area.
 
         Args:
-            external_id: External id of the market price area to delete.
-            space: The space where all the market price area are located.
+            external_id: External id of the price area to delete.
+            space: The space where all the price area are located.
 
         Returns:
             The instance(s), i.e., nodes and edges which has been deleted. Empty list if nothing was deleted.
 
         Examples:
 
-            Delete market_price_area by id:
+            Delete price_area by id:
 
                 >>> from cognite.powerops.client._generated.day_ahead_frontend_contract import DayAheadFrontendContractAPI
                 >>> client = DayAheadFrontendContractAPI()
-                >>> client.market_price_area.delete("my_market_price_area")
+                >>> client.price_area.delete("my_price_area")
         """
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str) -> MarketPriceArea | None:
+    def retrieve(self, external_id: str) -> PriceArea | None:
         ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str]) -> MarketPriceAreaList:
+    def retrieve(self, external_id: SequenceNotStr[str]) -> PriceAreaList:
         ...
 
     def retrieve(
-        self, external_id: str | SequenceNotStr[str], space: str = "poweropsDayAheadFrontendContractModel"
-    ) -> MarketPriceArea | MarketPriceAreaList | None:
-        """Retrieve one or more market price areas by id(s).
+        self, external_id: str | SequenceNotStr[str], space: str = "power-ops-day-ahead-frontend-contract-model"
+    ) -> PriceArea | PriceAreaList | None:
+        """Retrieve one or more price areas by id(s).
 
         Args:
-            external_id: External id or list of external ids of the market price areas.
-            space: The space where all the market price areas are located.
+            external_id: External id or list of external ids of the price areas.
+            space: The space where all the price areas are located.
 
         Returns:
-            The requested market price areas.
+            The requested price areas.
 
         Examples:
 
-            Retrieve market_price_area by id:
+            Retrieve price_area by id:
 
                 >>> from cognite.powerops.client._generated.day_ahead_frontend_contract import DayAheadFrontendContractAPI
                 >>> client = DayAheadFrontendContractAPI()
-                >>> market_price_area = client.market_price_area.retrieve("my_market_price_area")
+                >>> price_area = client.price_area.retrieve("my_price_area")
 
         """
         return self._retrieve(external_id, space)
@@ -195,7 +195,7 @@ class MarketPriceAreaAPI(NodeAPI[MarketPriceArea, MarketPriceAreaApply, MarketPr
     def search(
         self,
         query: str,
-        properties: MarketPriceAreaTextFields | Sequence[MarketPriceAreaTextFields] | None = None,
+        properties: PriceAreaTextFields | Sequence[PriceAreaTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         price_area: str | list[str] | None = None,
@@ -207,8 +207,8 @@ class MarketPriceAreaAPI(NodeAPI[MarketPriceArea, MarketPriceAreaApply, MarketPr
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> MarketPriceAreaList:
-        """Search market price areas
+    ) -> PriceAreaList:
+        """Search price areas
 
         Args:
             query: The search query,
@@ -222,22 +222,22 @@ class MarketPriceAreaAPI(NodeAPI[MarketPriceArea, MarketPriceAreaApply, MarketPr
             timezone_prefix: The prefix of the timezone to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of market price areas to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of price areas to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
-            Search results market price areas matching the query.
+            Search results price areas matching the query.
 
         Examples:
 
-           Search for 'my_market_price_area' in all text properties:
+           Search for 'my_price_area' in all text properties:
 
                 >>> from cognite.powerops.client._generated.day_ahead_frontend_contract import DayAheadFrontendContractAPI
                 >>> client = DayAheadFrontendContractAPI()
-                >>> market_price_areas = client.market_price_area.search('my_market_price_area')
+                >>> price_areas = client.price_area.search('my_price_area')
 
         """
-        filter_ = _create_market_price_area_filter(
+        filter_ = _create_price_area_filter(
             self._view_id,
             name,
             name_prefix,
@@ -250,7 +250,7 @@ class MarketPriceAreaAPI(NodeAPI[MarketPriceArea, MarketPriceAreaApply, MarketPr
             space,
             filter,
         )
-        return self._search(self._view_id, query, _MARKETPRICEAREA_PROPERTIES_BY_FIELD, properties, filter_, limit)
+        return self._search(self._view_id, query, _PRICEAREA_PROPERTIES_BY_FIELD, properties, filter_, limit)
 
     @overload
     def aggregate(
@@ -259,10 +259,10 @@ class MarketPriceAreaAPI(NodeAPI[MarketPriceArea, MarketPriceAreaApply, MarketPr
         | dm.aggregations.MetricAggregation
         | Sequence[Aggregations]
         | Sequence[dm.aggregations.MetricAggregation],
-        property: MarketPriceAreaFields | Sequence[MarketPriceAreaFields] | None = None,
+        property: PriceAreaFields | Sequence[PriceAreaFields] | None = None,
         group_by: None = None,
         query: str | None = None,
-        search_properties: MarketPriceAreaTextFields | Sequence[MarketPriceAreaTextFields] | None = None,
+        search_properties: PriceAreaTextFields | Sequence[PriceAreaTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         price_area: str | list[str] | None = None,
@@ -284,10 +284,10 @@ class MarketPriceAreaAPI(NodeAPI[MarketPriceArea, MarketPriceAreaApply, MarketPr
         | dm.aggregations.MetricAggregation
         | Sequence[Aggregations]
         | Sequence[dm.aggregations.MetricAggregation],
-        property: MarketPriceAreaFields | Sequence[MarketPriceAreaFields] | None = None,
-        group_by: MarketPriceAreaFields | Sequence[MarketPriceAreaFields] = None,
+        property: PriceAreaFields | Sequence[PriceAreaFields] | None = None,
+        group_by: PriceAreaFields | Sequence[PriceAreaFields] = None,
         query: str | None = None,
-        search_properties: MarketPriceAreaTextFields | Sequence[MarketPriceAreaTextFields] | None = None,
+        search_properties: PriceAreaTextFields | Sequence[PriceAreaTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         price_area: str | list[str] | None = None,
@@ -308,10 +308,10 @@ class MarketPriceAreaAPI(NodeAPI[MarketPriceArea, MarketPriceAreaApply, MarketPr
         | dm.aggregations.MetricAggregation
         | Sequence[Aggregations]
         | Sequence[dm.aggregations.MetricAggregation],
-        property: MarketPriceAreaFields | Sequence[MarketPriceAreaFields] | None = None,
-        group_by: MarketPriceAreaFields | Sequence[MarketPriceAreaFields] | None = None,
+        property: PriceAreaFields | Sequence[PriceAreaFields] | None = None,
+        group_by: PriceAreaFields | Sequence[PriceAreaFields] | None = None,
         query: str | None = None,
-        search_property: MarketPriceAreaTextFields | Sequence[MarketPriceAreaTextFields] | None = None,
+        search_property: PriceAreaTextFields | Sequence[PriceAreaTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         price_area: str | list[str] | None = None,
@@ -324,7 +324,7 @@ class MarketPriceAreaAPI(NodeAPI[MarketPriceArea, MarketPriceAreaApply, MarketPr
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
-        """Aggregate data across market price areas
+        """Aggregate data across price areas
 
         Args:
             aggregate: The aggregation to perform.
@@ -341,7 +341,7 @@ class MarketPriceAreaAPI(NodeAPI[MarketPriceArea, MarketPriceAreaApply, MarketPr
             timezone_prefix: The prefix of the timezone to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of market price areas to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of price areas to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
@@ -349,15 +349,15 @@ class MarketPriceAreaAPI(NodeAPI[MarketPriceArea, MarketPriceAreaApply, MarketPr
 
         Examples:
 
-            Count market price areas in space `my_space`:
+            Count price areas in space `my_space`:
 
                 >>> from cognite.powerops.client._generated.day_ahead_frontend_contract import DayAheadFrontendContractAPI
                 >>> client = DayAheadFrontendContractAPI()
-                >>> result = client.market_price_area.aggregate("count", space="my_space")
+                >>> result = client.price_area.aggregate("count", space="my_space")
 
         """
 
-        filter_ = _create_market_price_area_filter(
+        filter_ = _create_price_area_filter(
             self._view_id,
             name,
             name_prefix,
@@ -373,7 +373,7 @@ class MarketPriceAreaAPI(NodeAPI[MarketPriceArea, MarketPriceAreaApply, MarketPr
         return self._aggregate(
             self._view_id,
             aggregate,
-            _MARKETPRICEAREA_PROPERTIES_BY_FIELD,
+            _PRICEAREA_PROPERTIES_BY_FIELD,
             property,
             group_by,
             query,
@@ -384,10 +384,10 @@ class MarketPriceAreaAPI(NodeAPI[MarketPriceArea, MarketPriceAreaApply, MarketPr
 
     def histogram(
         self,
-        property: MarketPriceAreaFields,
+        property: PriceAreaFields,
         interval: float,
         query: str | None = None,
-        search_property: MarketPriceAreaTextFields | Sequence[MarketPriceAreaTextFields] | None = None,
+        search_property: PriceAreaTextFields | Sequence[PriceAreaTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         price_area: str | list[str] | None = None,
@@ -400,7 +400,7 @@ class MarketPriceAreaAPI(NodeAPI[MarketPriceArea, MarketPriceAreaApply, MarketPr
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
-        """Produces histograms for market price areas
+        """Produces histograms for price areas
 
         Args:
             property: The property to use as the value in the histogram.
@@ -416,14 +416,14 @@ class MarketPriceAreaAPI(NodeAPI[MarketPriceArea, MarketPriceAreaApply, MarketPr
             timezone_prefix: The prefix of the timezone to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of market price areas to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of price areas to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
             Bucketed histogram results.
 
         """
-        filter_ = _create_market_price_area_filter(
+        filter_ = _create_price_area_filter(
             self._view_id,
             name,
             name_prefix,
@@ -440,7 +440,7 @@ class MarketPriceAreaAPI(NodeAPI[MarketPriceArea, MarketPriceAreaApply, MarketPr
             self._view_id,
             property,
             interval,
-            _MARKETPRICEAREA_PROPERTIES_BY_FIELD,
+            _PRICEAREA_PROPERTIES_BY_FIELD,
             query,
             search_property,
             limit,
@@ -460,8 +460,8 @@ class MarketPriceAreaAPI(NodeAPI[MarketPriceArea, MarketPriceAreaApply, MarketPr
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> MarketPriceAreaList:
-        """List/filter market price areas
+    ) -> PriceAreaList:
+        """List/filter price areas
 
         Args:
             name: The name to filter on.
@@ -473,22 +473,22 @@ class MarketPriceAreaAPI(NodeAPI[MarketPriceArea, MarketPriceAreaApply, MarketPr
             timezone_prefix: The prefix of the timezone to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of market price areas to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of price areas to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
-            List of requested market price areas
+            List of requested price areas
 
         Examples:
 
-            List market price areas and limit to 5:
+            List price areas and limit to 5:
 
                 >>> from cognite.powerops.client._generated.day_ahead_frontend_contract import DayAheadFrontendContractAPI
                 >>> client = DayAheadFrontendContractAPI()
-                >>> market_price_areas = client.market_price_area.list(limit=5)
+                >>> price_areas = client.price_area.list(limit=5)
 
         """
-        filter_ = _create_market_price_area_filter(
+        filter_ = _create_price_area_filter(
             self._view_id,
             name,
             name_prefix,

@@ -139,7 +139,7 @@ class BidTableAPI(NodeAPI[BidTable, BidTableApply, BidTableList]):
         return self._apply(bid_table, replace)
 
     def delete(
-        self, external_id: str | SequenceNotStr[str], space: str = "poweropsDayAheadFrontendContractModel"
+        self, external_id: str | SequenceNotStr[str], space: str = "power-ops-day-ahead-frontend-contract-model"
     ) -> dm.InstancesDeleteResult:
         """Delete one or more bid table.
 
@@ -169,7 +169,7 @@ class BidTableAPI(NodeAPI[BidTable, BidTableApply, BidTableList]):
         ...
 
     def retrieve(
-        self, external_id: str | SequenceNotStr[str], space: str = "poweropsDayAheadFrontendContractModel"
+        self, external_id: str | SequenceNotStr[str], space: str = "power-ops-day-ahead-frontend-contract-model"
     ) -> BidTable | BidTableList | None:
         """Retrieve one or more bid tables by id(s).
 
@@ -197,7 +197,7 @@ class BidTableAPI(NodeAPI[BidTable, BidTableApply, BidTableList]):
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("poweropsDayAheadFrontendContractModel", "BidTable.alerts"),
+                    dm.DirectRelationReference("power-ops-day-ahead-frontend-contract-model", "BidTable.alerts"),
                 ),
             ],
         )
@@ -508,7 +508,7 @@ class BidTableAPI(NodeAPI[BidTable, BidTableApply, BidTableList]):
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("poweropsDayAheadFrontendContractModel", "BidTable.alerts"),
+                    dm.DirectRelationReference("power-ops-day-ahead-frontend-contract-model", "BidTable.alerts"),
                 ),
             ],
         )

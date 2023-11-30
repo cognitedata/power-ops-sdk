@@ -9,13 +9,15 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes import Datapoints, DatapointsArrayList, DatapointsList, TimeSeriesList
 from cognite.client.data_classes.datapoints import Aggregate
-from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes._shop import _create_shop_filter
+from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes._price_area import (
+    _create_price_area_filter,
+)
 from ._core import DEFAULT_LIMIT_READ, INSTANCE_QUERY_LIMIT
 
-ColumnNames = Literal["name", "priceScenarios"]
+ColumnNames = Literal["name", "priceArea", "timezone", "mainScenario"]
 
 
-class SHOPPriceScenariosQuery:
+class PriceAreaMainScenarioQuery:
     def __init__(
         self,
         client: CogniteClient,
@@ -40,7 +42,7 @@ class SHOPPriceScenariosQuery:
         limit: int | None = None,
         include_outside_points: bool = False,
     ) -> DatapointsList:
-        """`Retrieve datapoints for the `shop.price_scenarios` timeseries.
+        """`Retrieve datapoints for the `price_area.main_scenario` timeseries.
 
         **Performance guide**:
             In order to retrieve millions of datapoints as efficiently as possible, here are a few guidelines:
@@ -65,11 +67,11 @@ class SHOPPriceScenariosQuery:
         Examples:
 
             In this example,
-            we are using the time-ago format to get raw data for the 'my_price_scenarios' from 2 weeks ago up until now::
+            we are using the time-ago format to get raw data for the 'my_main_scenario' from 2 weeks ago up until now::
 
                 >>> from cognite.powerops.client._generated.day_ahead_frontend_contract import DayAheadFrontendContractAPI
                 >>> client = DayAheadFrontendContractAPI()
-                >>> shop_datapoints = client.shop.price_scenarios(external_id="my_price_scenarios").retrieve(start="2w-ago")
+                >>> price_area_datapoints = client.price_area.main_scenario(external_id="my_main_scenario").retrieve(start="2w-ago")
         """
         external_ids = self._retrieve_timeseries_external_ids_with_extra()
         if external_ids:
@@ -99,7 +101,7 @@ class SHOPPriceScenariosQuery:
         limit: int | None = None,
         include_outside_points: bool = False,
     ) -> DatapointsArrayList:
-        """`Retrieve numpy arrays for the `shop.price_scenarios` timeseries.
+        """`Retrieve numpy arrays for the `price_area.main_scenario` timeseries.
 
         **Performance guide**:
             In order to retrieve millions of datapoints as efficiently as possible, here are a few guidelines:
@@ -124,11 +126,11 @@ class SHOPPriceScenariosQuery:
         Examples:
 
             In this example,
-            we are using the time-ago format to get raw data for the 'my_price_scenarios' from 2 weeks ago up until now::
+            we are using the time-ago format to get raw data for the 'my_main_scenario' from 2 weeks ago up until now::
 
                 >>> from cognite.powerops.client._generated.day_ahead_frontend_contract import DayAheadFrontendContractAPI
                 >>> client = DayAheadFrontendContractAPI()
-                >>> shop_datapoints = client.shop.price_scenarios(external_id="my_price_scenarios").retrieve_array(start="2w-ago")
+                >>> price_area_datapoints = client.price_area.main_scenario(external_id="my_main_scenario").retrieve_array(start="2w-ago")
         """
         external_ids = self._retrieve_timeseries_external_ids_with_extra()
         if external_ids:
@@ -160,9 +162,9 @@ class SHOPPriceScenariosQuery:
         uniform_index: bool = False,
         include_aggregate_name: bool = True,
         include_granularity_name: bool = False,
-        column_names: ColumnNames | list[ColumnNames] = "priceScenarios",
+        column_names: ColumnNames | list[ColumnNames] = "mainScenario",
     ) -> pd.DataFrame:
-        """`Retrieve DataFrames for the `shop.price_scenarios` timeseries.
+        """`Retrieve DataFrames for the `price_area.main_scenario` timeseries.
 
         **Performance guide**:
             In order to retrieve millions of datapoints as efficiently as possible, here are a few guidelines:
@@ -183,7 +185,7 @@ class SHOPPriceScenariosQuery:
             uniform_index: If only querying aggregates AND a single granularity is used, AND no limit is used, specifying `uniform_index=True` will return a dataframe with an equidistant datetime index from the earliest `start` to the latest `end` (missing values will be NaNs). If these requirements are not met, a ValueError is raised. Default: False
             include_aggregate_name: Include 'aggregate' in the column name, e.g. `my-ts|average`. Ignored for raw time series. Default: True
             include_granularity_name: Include 'granularity' in the column name, e.g. `my-ts|12h`. Added after 'aggregate' when present. Ignored for raw time series. Default: False
-            column_names: Which property to use for column names. Defauts to priceScenarios
+            column_names: Which property to use for column names. Defauts to mainScenario
 
 
         Returns:
@@ -192,11 +194,11 @@ class SHOPPriceScenariosQuery:
         Examples:
 
             In this example,
-            we are using the time-ago format to get raw data for the 'my_price_scenarios' from 2 weeks ago up until now::
+            we are using the time-ago format to get raw data for the 'my_main_scenario' from 2 weeks ago up until now::
 
                 >>> from cognite.powerops.client._generated.day_ahead_frontend_contract import DayAheadFrontendContractAPI
                 >>> client = DayAheadFrontendContractAPI()
-                >>> shop_datapoints = client.shop.price_scenarios(external_id="my_price_scenarios").retrieve_dataframe(start="2w-ago")
+                >>> price_area_datapoints = client.price_area.main_scenario(external_id="my_main_scenario").retrieve_dataframe(start="2w-ago")
         """
         external_ids = self._retrieve_timeseries_external_ids_with_extra(column_names)
         if external_ids:
@@ -237,9 +239,9 @@ class SHOPPriceScenariosQuery:
         uniform_index: bool = False,
         include_aggregate_name: bool = True,
         include_granularity_name: bool = False,
-        column_names: ColumnNames | list[ColumnNames] = "priceScenarios",
+        column_names: ColumnNames | list[ColumnNames] = "mainScenario",
     ) -> pd.DataFrame:
-        """Retrieve DataFrames for the `shop.price_scenarios` timeseries in Timezone.
+        """Retrieve DataFrames for the `price_area.main_scenario` timeseries in Timezone.
 
         **Performance guide**:
             In order to retrieve millions of datapoints as efficiently as possible, here are a few guidelines:
@@ -260,7 +262,7 @@ class SHOPPriceScenariosQuery:
             uniform_index: If only querying aggregates AND a single granularity is used, AND no limit is used, specifying `uniform_index=True` will return a dataframe with an equidistant datetime index from the earliest `start` to the latest `end` (missing values will be NaNs). If these requirements are not met, a ValueError is raised. Default: False
             include_aggregate_name: Include 'aggregate' in the column name, e.g. `my-ts|average`. Ignored for raw time series. Default: True
             include_granularity_name: Include 'granularity' in the column name, e.g. `my-ts|12h`. Added after 'aggregate' when present. Ignored for raw time series. Default: False
-            column_names: Which property to use for column names. Defauts to priceScenarios
+            column_names: Which property to use for column names. Defauts to mainScenario
 
 
         Returns:
@@ -269,13 +271,13 @@ class SHOPPriceScenariosQuery:
         Examples:
 
             In this example,
-            get weekly aggregates for the 'my_price_scenarios' for the first month of 2023 in Oslo time:
+            get weekly aggregates for the 'my_main_scenario' for the first month of 2023 in Oslo time:
 
                 >>> from cognite.powerops.client._generated.day_ahead_frontend_contract import DayAheadFrontendContractAPI
                 >>> from datetime import datetime, timezone
                 >>> client = DayAheadFrontendContractAPI()
-                >>> shop_datapoints = client.shop.price_scenarios(
-                ...     external_id="my_price_scenarios").retrieve_dataframe_in_timezone(
+                >>> price_area_datapoints = client.price_area.main_scenario(
+                ...     external_id="my_main_scenario").retrieve_dataframe_in_timezone(
                 ...         datetime(2023, 1, 1, tzinfo=ZoneInfo("Europe/Oslo")),
                 ...         datetime(2023, 1, 2, tzinfo=ZoneInfo("Europe/Oslo")),
                 ...         aggregates="average",
@@ -321,9 +323,9 @@ class SHOPPriceScenariosQuery:
             return None
 
     def _retrieve_timeseries_external_ids_with_extra(
-        self, extra_properties: ColumnNames | list[ColumnNames] = "priceScenarios"
+        self, extra_properties: ColumnNames | list[ColumnNames] = "mainScenario"
     ) -> dict[str, list[str]]:
-        return _retrieve_timeseries_external_ids_with_extra_price_scenarios(
+        return _retrieve_timeseries_external_ids_with_extra_main_scenario(
             self._client,
             self._view_id,
             self._filter,
@@ -339,7 +341,7 @@ class SHOPPriceScenariosQuery:
         include_aggregate_name: bool,
         include_granularity_name: bool,
     ) -> pd.DataFrame:
-        if isinstance(column_names, str) and column_names == "priceScenarios":
+        if isinstance(column_names, str) and column_names == "mainScenario":
             return df
         splits = sum(included for included in [include_aggregate_name, include_granularity_name])
         if splits == 0:
@@ -352,7 +354,7 @@ class SHOPPriceScenariosQuery:
         return df
 
 
-class SHOPPriceScenariosAPI:
+class PriceAreaMainScenarioAPI:
     def __init__(self, client: CogniteClient, view_id: dm.ViewId):
         self._client = client
         self._view_id = view_id
@@ -361,44 +363,59 @@ class SHOPPriceScenariosAPI:
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
+        price_area: str | list[str] | None = None,
+        price_area_prefix: str | None = None,
+        default_method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        timezone: str | list[str] | None = None,
+        timezone_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> SHOPPriceScenariosQuery:
-        """Query timeseries `shop.price_scenarios`
+    ) -> PriceAreaMainScenarioQuery:
+        """Query timeseries `price_area.main_scenario`
 
         Args:
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
+            price_area: The price area to filter on.
+            price_area_prefix: The prefix of the price area to filter on.
+            default_method: The default method to filter on.
+            timezone: The timezone to filter on.
+            timezone_prefix: The prefix of the timezone to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of shops to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of price areas to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
-            A query object that can be used to retrieve datapoins for the shop.price_scenarios timeseries
+            A query object that can be used to retrieve datapoins for the price_area.main_scenario timeseries
             selected in this method.
 
         Examples:
 
-            Retrieve all data for 5 shop.price_scenarios timeseries:
+            Retrieve all data for 5 price_area.main_scenario timeseries:
 
                 >>> from cognite.powerops.client._generated.day_ahead_frontend_contract import DayAheadFrontendContractAPI
                 >>> client = DayAheadFrontendContractAPI()
-                >>> shops = client.shop.price_scenarios(limit=5).retrieve()
+                >>> price_areas = client.price_area.main_scenario(limit=5).retrieve()
 
         """
-        filter_ = _create_shop_filter(
+        filter_ = _create_price_area_filter(
             self._view_id,
             name,
             name_prefix,
+            price_area,
+            price_area_prefix,
+            default_method,
+            timezone,
+            timezone_prefix,
             external_id_prefix,
             space,
             filter,
         )
 
-        return SHOPPriceScenariosQuery(
+        return PriceAreaMainScenarioQuery(
             client=self._client,
             view_id=self._view_id,
             timeseries_limit=limit,
@@ -409,42 +426,57 @@ class SHOPPriceScenariosAPI:
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
+        price_area: str | list[str] | None = None,
+        price_area_prefix: str | None = None,
+        default_method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        timezone: str | list[str] | None = None,
+        timezone_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> TimeSeriesList:
-        """List timeseries `shop.price_scenarios`
+        """List timeseries `price_area.main_scenario`
 
         Args:
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
+            price_area: The price area to filter on.
+            price_area_prefix: The prefix of the price area to filter on.
+            default_method: The default method to filter on.
+            timezone: The timezone to filter on.
+            timezone_prefix: The prefix of the timezone to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of shops to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of price areas to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
-            List of Timeseries shop.price_scenarios.
+            List of Timeseries price_area.main_scenario.
 
         Examples:
 
-            List shop.price_scenarios and limit to 5:
+            List price_area.main_scenario and limit to 5:
 
                 >>> from cognite.powerops.client._generated.day_ahead_frontend_contract import DayAheadFrontendContractAPI
                 >>> client = DayAheadFrontendContractAPI()
-                >>> shops = client.shop.price_scenarios.list(limit=5)
+                >>> price_areas = client.price_area.main_scenario.list(limit=5)
 
         """
-        filter_ = _create_shop_filter(
+        filter_ = _create_price_area_filter(
             self._view_id,
             name,
             name_prefix,
+            price_area,
+            price_area_prefix,
+            default_method,
+            timezone,
+            timezone_prefix,
             external_id_prefix,
             space,
             filter,
         )
-        external_ids = _retrieve_timeseries_external_ids_with_extra_price_scenarios(
+        external_ids = _retrieve_timeseries_external_ids_with_extra_main_scenario(
             self._client, self._view_id, filter_, limit
         )
         if external_ids:
@@ -453,21 +485,21 @@ class SHOPPriceScenariosAPI:
             return TimeSeriesList([])
 
 
-def _retrieve_timeseries_external_ids_with_extra_price_scenarios(
+def _retrieve_timeseries_external_ids_with_extra_main_scenario(
     client: CogniteClient,
     view_id: dm.ViewId,
     filter_: dm.Filter | None,
     limit: int,
-    extra_properties: ColumnNames | list[ColumnNames] = "priceScenarios",
+    extra_properties: ColumnNames | list[ColumnNames] = "mainScenario",
 ) -> dict[str, list[str]]:
     limit = float("inf") if limit is None or limit == -1 else limit
-    properties = ["priceScenarios"]
-    if extra_properties == "priceScenarios":
+    properties = ["mainScenario"]
+    if extra_properties == "mainScenario":
         ...
-    elif isinstance(extra_properties, str) and extra_properties != "priceScenarios":
+    elif isinstance(extra_properties, str) and extra_properties != "mainScenario":
         properties.append(extra_properties)
     elif isinstance(extra_properties, list):
-        properties.extend([prop for prop in extra_properties if prop != "priceScenarios"])
+        properties.extend([prop for prop in extra_properties if prop != "mainScenario"])
     else:
         raise ValueError(f"Invalid value for extra_properties: {extra_properties}")
 
@@ -475,7 +507,9 @@ def _retrieve_timeseries_external_ids_with_extra_price_scenarios(
         extra_list = [extra_properties]
     else:
         extra_list = extra_properties
-    has_data = dm.filters.HasData([dm.ContainerId("poweropsDayAheadFrontendContractModel", "SHOP")], [view_id])
+    has_data = dm.filters.HasData(
+        [dm.ContainerId("power-ops-day-ahead-frontend-contract-model", "PriceArea")], [view_id]
+    )
     filter_ = dm.filters.And(filter_, has_data) if filter_ else has_data
 
     cursor = None
@@ -497,7 +531,7 @@ def _retrieve_timeseries_external_ids_with_extra_price_scenarios(
         )
         result = client.data_modeling.instances.query(query)
         batch_external_ids = {
-            node.properties[view_id]["priceScenarios"]: [node.properties[view_id].get(prop, "") for prop in extra_list]
+            node.properties[view_id]["mainScenario"]: [node.properties[view_id].get(prop, "") for prop in extra_list]
             for node in result.data["nodes"].data
         }
         total_retrieved += len(batch_external_ids)

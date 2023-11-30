@@ -6,22 +6,22 @@ from cognite.client import data_modeling as dm
 from ._core import DEFAULT_LIMIT_READ, EdgeAPI, _create_edge_filter
 
 
-class BidPartialsAPI(EdgeAPI):
+class BidDocumentPartialsAPI(EdgeAPI):
     def list(
         self,
-        bid: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-        bid_space: str = "poweropsDayAheadFrontendContractModel",
+        bid_document: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
+        bid_document_space: str = "power-ops-day-ahead-frontend-contract-model",
         bid_table: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-        bid_table_space: str = "poweropsDayAheadFrontendContractModel",
+        bid_table_space: str = "power-ops-day-ahead-frontend-contract-model",
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit=DEFAULT_LIMIT_READ,
     ) -> dm.EdgeList:
-        """List partial edges of a bid.
+        """List partial edges of a bid document.
 
         Args:
-            bid: ID of the source bids.
-            bid_space: Location of the bids.
+            bid_document: ID of the source bid documents.
+            bid_document_space: Location of the bid documents.
             bid_table: ID of the target bid tables.
             bid_table_space: Location of the bid tables.
             external_id_prefix: The prefix of the external ID to filter on.
@@ -34,17 +34,17 @@ class BidPartialsAPI(EdgeAPI):
 
         Examples:
 
-            List 5 partial edges connected to "my_bid":
+            List 5 partial edges connected to "my_bid_document":
 
                 >>> from cognite.powerops.client._generated.day_ahead_frontend_contract import DayAheadFrontendContractAPI
                 >>> client = DayAheadFrontendContractAPI()
-                >>> bid = client.bid.partials_edge.list("my_bid", limit=5)
+                >>> bid_document = client.bid_document.partials_edge.list("my_bid_document", limit=5)
 
         """
         filter_ = _create_edge_filter(
-            dm.DirectRelationReference("poweropsDayAheadFrontendContractModel", "Bid.partials"),
-            bid,
-            bid_space,
+            dm.DirectRelationReference("power-ops-day-ahead-frontend-contract-model", "Bid.partials"),
+            bid_document,
+            bid_document_space,
             bid_table,
             bid_table_space,
             external_id_prefix,

@@ -4,15 +4,15 @@ from typing import TYPE_CHECKING
 from cognite.client import data_modeling as dm
 from ._core import DEFAULT_QUERY_LIMIT, QueryStep, QueryAPI, T_DomainModelList, _create_edge_filter
 from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes import (
-    Bid,
-    BidApply,
+    BidDocument,
+    BidDocumentApply,
     Alert,
     AlertApply,
     BidTable,
     BidTableApply,
 )
-from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes._bid import (
-    _BID_PROPERTIES_BY_FIELD,
+from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes._bid_document import (
+    _BIDDOCUMENT_PROPERTIES_BY_FIELD,
 )
 from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes._alert import (
     _ALERT_PROPERTIES_BY_FIELD,
@@ -26,14 +26,14 @@ if TYPE_CHECKING:
     from .bid_table_query import BidTableQueryAPI
 
 
-class BidQueryAPI(QueryAPI[T_DomainModelList]):
+class BidDocumentQueryAPI(QueryAPI[T_DomainModelList]):
     def alerts(
         self,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
     ) -> AlertQueryAPI[T_DomainModelList]:
-        """Query along the alert edges of the bid.
+        """Query along the alert edges of the bid document.
 
         Args:
             external_id_prefix: The prefix of the external ID to filter on.
@@ -47,7 +47,7 @@ class BidQueryAPI(QueryAPI[T_DomainModelList]):
         from .alert_query import AlertQueryAPI
 
         edge_filter = _create_edge_filter(
-            dm.DirectRelationReference("poweropsDayAheadFrontendContractModel", "Bid.alerts"),
+            dm.DirectRelationReference("power-ops-day-ahead-frontend-contract-model", "Bid.alerts"),
             external_id_prefix=external_id_prefix,
             space=space,
         )
@@ -89,7 +89,7 @@ class BidQueryAPI(QueryAPI[T_DomainModelList]):
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
     ) -> BidTableQueryAPI[T_DomainModelList]:
-        """Query along the partial edges of the bid.
+        """Query along the partial edges of the bid document.
 
         Args:
             external_id_prefix: The prefix of the external ID to filter on.
@@ -103,7 +103,7 @@ class BidQueryAPI(QueryAPI[T_DomainModelList]):
         from .bid_table_query import BidTableQueryAPI
 
         edge_filter = _create_edge_filter(
-            dm.DirectRelationReference("poweropsDayAheadFrontendContractModel", "Bid.partials"),
+            dm.DirectRelationReference("power-ops-day-ahead-frontend-contract-model", "Bid.partials"),
             external_id_prefix=external_id_prefix,
             space=space,
         )
@@ -141,22 +141,22 @@ class BidQueryAPI(QueryAPI[T_DomainModelList]):
 
     def query(
         self,
-        retrieve_bid: bool = True,
+        retrieve_bid_document: bool = True,
     ) -> T_DomainModelList:
         """Execute query and return the result.
 
         Args:
-            retrieve_bid: Whether to retrieve the bid or not.
+            retrieve_bid_document: Whether to retrieve the bid document or not.
 
         Returns:
             The list of the source nodes of the query.
 
         """
         from_ = self._builder[-1].name
-        if retrieve_bid and not self._builder[-1].name.startswith("bid"):
+        if retrieve_bid_document and not self._builder[-1].name.startswith("bid_document"):
             self._builder.append(
                 QueryStep(
-                    name=self._builder.next_name("bid"),
+                    name=self._builder.next_name("bid_document"),
                     expression=dm.query.NodeResultSetExpression(
                         filter=None,
                         from_=from_,
@@ -164,12 +164,12 @@ class BidQueryAPI(QueryAPI[T_DomainModelList]):
                     select=dm.query.Select(
                         [
                             dm.query.SourceSelector(
-                                self._view_by_write_class[BidApply],
-                                list(_BID_PROPERTIES_BY_FIELD.values()),
+                                self._view_by_write_class[BidDocumentApply],
+                                list(_BIDDOCUMENT_PROPERTIES_BY_FIELD.values()),
                             )
                         ]
                     ),
-                    result_cls=Bid,
+                    result_cls=BidDocument,
                     max_retrieve_limit=-1,
                 ),
             )

@@ -17,35 +17,41 @@ from ._core import (
 
 if TYPE_CHECKING:
     from ._alert import Alert, AlertApply
-    from ._bid import Bid, BidApply
     from ._bid_method import BidMethod, BidMethodApply
     from ._bid_table import BidTable, BidTableApply
-    from ._market_price_area import MarketPriceArea, MarketPriceAreaApply
+    from ._price_area import PriceArea, PriceAreaApply
 
 
-__all__ = ["Bid", "BidApply", "BidList", "BidApplyList", "BidFields", "BidTextFields"]
+__all__ = [
+    "BidDocument",
+    "BidDocumentApply",
+    "BidDocumentList",
+    "BidDocumentApplyList",
+    "BidDocumentFields",
+    "BidDocumentTextFields",
+]
 
 
-BidTextFields = Literal["name", "price_area"]
-BidFields = Literal["name", "price_area", "date", "start_calculation", "end_calculation"]
+BidDocumentTextFields = Literal["name"]
+BidDocumentFields = Literal["name", "date", "start_calculation", "end_calculation", "is_complete"]
 
-_BID_PROPERTIES_BY_FIELD = {
+_BIDDOCUMENT_PROPERTIES_BY_FIELD = {
     "name": "name",
-    "price_area": "priceArea",
     "date": "date",
     "start_calculation": "startCalculation",
     "end_calculation": "endCalculation",
+    "is_complete": "isComplete",
 }
 
 
-class Bid(DomainModel):
-    """This represents the reading version of bid.
+class BidDocument(DomainModel):
+    """This represents the reading version of bid document.
 
     It is used to when data is retrieved from CDF.
 
     Args:
         space: The space where the node is located.
-        external_id: The external id of the bid.
+        external_id: The external id of the bid document.
         name: The name field.
         method: The method field.
         price_area: The price area field.
@@ -53,40 +59,40 @@ class Bid(DomainModel):
         total: The total field.
         start_calculation: The start calculation field.
         end_calculation: The end calculation field.
-        market: The market field.
+        is_complete: The is complete field.
         alerts: The alert field.
         partials: The partial field.
-        created_time: The created time of the bid node.
-        last_updated_time: The last updated time of the bid node.
-        deleted_time: If present, the deleted time of the bid node.
-        version: The version of the bid node.
+        created_time: The created time of the bid document node.
+        last_updated_time: The last updated time of the bid document node.
+        deleted_time: If present, the deleted time of the bid document node.
+        version: The version of the bid document node.
     """
 
-    space: str = "poweropsDayAheadFrontendContractModel"
+    space: str = "power-ops-day-ahead-frontend-contract-model"
     name: Optional[str] = None
     method: Union[BidMethod, str, None] = Field(None, repr=False)
-    price_area: Optional[str] = Field(None, alias="priceArea")
+    price_area: Union[PriceArea, str, None] = Field(None, repr=False, alias="priceArea")
     date: Optional[datetime.date] = None
-    total: Union[Bid, str, None] = Field(None, repr=False)
+    total: Union[BidTable, str, None] = Field(None, repr=False)
     start_calculation: Optional[datetime.datetime] = Field(None, alias="startCalculation")
     end_calculation: Optional[datetime.datetime] = Field(None, alias="endCalculation")
-    market: Union[MarketPriceArea, str, None] = Field(None, repr=False)
+    is_complete: Optional[bool] = Field(False, alias="isComplete")
     alerts: Union[list[Alert], list[str], None] = Field(default=None, repr=False)
     partials: Union[list[BidTable], list[str], None] = Field(default=None, repr=False)
 
-    def as_apply(self) -> BidApply:
-        """Convert this read version of bid to the writing version."""
-        return BidApply(
+    def as_apply(self) -> BidDocumentApply:
+        """Convert this read version of bid document to the writing version."""
+        return BidDocumentApply(
             space=self.space,
             external_id=self.external_id,
             name=self.name,
             method=self.method.as_apply() if isinstance(self.method, DomainModel) else self.method,
-            price_area=self.price_area,
+            price_area=self.price_area.as_apply() if isinstance(self.price_area, DomainModel) else self.price_area,
             date=self.date,
             total=self.total.as_apply() if isinstance(self.total, DomainModel) else self.total,
             start_calculation=self.start_calculation,
             end_calculation=self.end_calculation,
-            market=self.market.as_apply() if isinstance(self.market, DomainModel) else self.market,
+            is_complete=self.is_complete,
             alerts=[alert.as_apply() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
             partials=[
                 partial.as_apply() if isinstance(partial, DomainModel) else partial for partial in self.partials or []
@@ -94,14 +100,14 @@ class Bid(DomainModel):
         )
 
 
-class BidApply(DomainModelApply):
-    """This represents the writing version of bid.
+class BidDocumentApply(DomainModelApply):
+    """This represents the writing version of bid document.
 
     It is used to when data is sent to CDF.
 
     Args:
         space: The space where the node is located.
-        external_id: The external id of the bid.
+        external_id: The external id of the bid document.
         name: The name field.
         method: The method field.
         price_area: The price area field.
@@ -109,24 +115,24 @@ class BidApply(DomainModelApply):
         total: The total field.
         start_calculation: The start calculation field.
         end_calculation: The end calculation field.
-        market: The market field.
+        is_complete: The is complete field.
         alerts: The alert field.
         partials: The partial field.
-        existing_version: Fail the ingestion request if the bid version is greater than or equal to this value.
+        existing_version: Fail the ingestion request if the bid document version is greater than or equal to this value.
             If no existingVersion is specified, the ingestion will always overwrite any existing data for the edge (for the specified container or instance).
             If existingVersion is set to 0, the upsert will behave as an insert, so it will fail the bulk if the item already exists.
             If skipOnVersionConflict is set on the ingestion request, then the item will be skipped instead of failing the ingestion request.
     """
 
-    space: str = "poweropsDayAheadFrontendContractModel"
+    space: str = "power-ops-day-ahead-frontend-contract-model"
     name: Optional[str] = None
     method: Union[BidMethodApply, str, None] = Field(None, repr=False)
-    price_area: Optional[str] = Field(None, alias="priceArea")
+    price_area: Union[PriceAreaApply, str, None] = Field(None, repr=False, alias="priceArea")
     date: Optional[datetime.date] = None
-    total: Union[BidApply, str, None] = Field(None, repr=False)
+    total: Union[BidTableApply, str, None] = Field(None, repr=False)
     start_calculation: datetime.datetime = Field(alias="startCalculation")
     end_calculation: Optional[datetime.datetime] = Field(None, alias="endCalculation")
-    market: Union[MarketPriceAreaApply, str, None] = Field(None, repr=False)
+    is_complete: bool = Field(alias="isComplete")
     alerts: Union[list[AlertApply], list[str], None] = Field(default=None, repr=False)
     partials: Union[list[BidTableApply], list[str], None] = Field(default=None, repr=False)
 
@@ -140,7 +146,7 @@ class BidApply(DomainModelApply):
             return resources
 
         write_view = (view_by_write_class and view_by_write_class.get(type(self))) or dm.ViewId(
-            "poweropsDayAheadFrontendContractModel", "Bid", "1"
+            "power-ops-day-ahead-frontend-contract-model", "BidDocument", "1"
         )
 
         properties = {}
@@ -152,7 +158,10 @@ class BidApply(DomainModelApply):
                 "externalId": self.method if isinstance(self.method, str) else self.method.external_id,
             }
         if self.price_area is not None:
-            properties["priceArea"] = self.price_area
+            properties["priceArea"] = {
+                "space": self.space if isinstance(self.price_area, str) else self.price_area.space,
+                "externalId": self.price_area if isinstance(self.price_area, str) else self.price_area.external_id,
+            }
         if self.date is not None:
             properties["date"] = self.date.isoformat()
         if self.total is not None:
@@ -164,11 +173,8 @@ class BidApply(DomainModelApply):
             properties["startCalculation"] = self.start_calculation.isoformat(timespec="milliseconds")
         if self.end_calculation is not None:
             properties["endCalculation"] = self.end_calculation.isoformat(timespec="milliseconds")
-        if self.market is not None:
-            properties["market"] = {
-                "space": self.space if isinstance(self.market, str) else self.market.space,
-                "externalId": self.market if isinstance(self.market, str) else self.market.external_id,
-            }
+        if self.is_complete is not None:
+            properties["isComplete"] = self.is_complete
 
         if properties:
             this_node = dm.NodeApply(
@@ -185,14 +191,14 @@ class BidApply(DomainModelApply):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("poweropsDayAheadFrontendContractModel", "Bid.alerts")
+        edge_type = dm.DirectRelationReference("power-ops-day-ahead-frontend-contract-model", "Bid.alerts")
         for alert in self.alerts or []:
             other_resources = DomainRelationApply.from_edge_to_resources(
                 cache, self, alert, edge_type, view_by_write_class
             )
             resources.extend(other_resources)
 
-        edge_type = dm.DirectRelationReference("poweropsDayAheadFrontendContractModel", "Bid.partials")
+        edge_type = dm.DirectRelationReference("power-ops-day-ahead-frontend-contract-model", "Bid.partials")
         for partial in self.partials or []:
             other_resources = DomainRelationApply.from_edge_to_resources(
                 cache, self, partial, edge_type, view_by_write_class
@@ -203,40 +209,39 @@ class BidApply(DomainModelApply):
             other_resources = self.method._to_instances_apply(cache, view_by_write_class)
             resources.extend(other_resources)
 
-        if isinstance(self.total, DomainModelApply):
-            other_resources = self.total._to_instances_apply(cache, view_by_write_class)
+        if isinstance(self.price_area, DomainModelApply):
+            other_resources = self.price_area._to_instances_apply(cache, view_by_write_class)
             resources.extend(other_resources)
 
-        if isinstance(self.market, DomainModelApply):
-            other_resources = self.market._to_instances_apply(cache, view_by_write_class)
+        if isinstance(self.total, DomainModelApply):
+            other_resources = self.total._to_instances_apply(cache, view_by_write_class)
             resources.extend(other_resources)
 
         return resources
 
 
-class BidList(DomainModelList[Bid]):
-    """List of bids in the read version."""
+class BidDocumentList(DomainModelList[BidDocument]):
+    """List of bid documents in the read version."""
 
-    _INSTANCE = Bid
+    _INSTANCE = BidDocument
 
-    def as_apply(self) -> BidApplyList:
-        """Convert these read versions of bid to the writing versions."""
-        return BidApplyList([node.as_apply() for node in self.data])
-
-
-class BidApplyList(DomainModelApplyList[BidApply]):
-    """List of bids in the writing version."""
-
-    _INSTANCE = BidApply
+    def as_apply(self) -> BidDocumentApplyList:
+        """Convert these read versions of bid document to the writing versions."""
+        return BidDocumentApplyList([node.as_apply() for node in self.data])
 
 
-def _create_bid_filter(
+class BidDocumentApplyList(DomainModelApplyList[BidDocumentApply]):
+    """List of bid documents in the writing version."""
+
+    _INSTANCE = BidDocumentApply
+
+
+def _create_bid_document_filter(
     view_id: dm.ViewId,
     name: str | list[str] | None = None,
     name_prefix: str | None = None,
     method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-    price_area: str | list[str] | None = None,
-    price_area_prefix: str | None = None,
+    price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     min_date: datetime.date | None = None,
     max_date: datetime.date | None = None,
     total: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
@@ -244,7 +249,7 @@ def _create_bid_filter(
     max_start_calculation: datetime.datetime | None = None,
     min_end_calculation: datetime.datetime | None = None,
     max_end_calculation: datetime.datetime | None = None,
-    market: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+    is_complete: bool | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -260,7 +265,7 @@ def _create_bid_filter(
         filters.append(
             dm.filters.Equals(
                 view_id.as_property_ref("method"),
-                value={"space": "poweropsDayAheadFrontendContractModel", "externalId": method},
+                value={"space": "power-ops-day-ahead-frontend-contract-model", "externalId": method},
             )
         )
     if method and isinstance(method, tuple):
@@ -271,7 +276,9 @@ def _create_bid_filter(
         filters.append(
             dm.filters.In(
                 view_id.as_property_ref("method"),
-                values=[{"space": "poweropsDayAheadFrontendContractModel", "externalId": item} for item in method],
+                values=[
+                    {"space": "power-ops-day-ahead-frontend-contract-model", "externalId": item} for item in method
+                ],
             )
         )
     if method and isinstance(method, list) and isinstance(method[0], tuple):
@@ -281,11 +288,34 @@ def _create_bid_filter(
             )
         )
     if price_area and isinstance(price_area, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("priceArea"), value=price_area))
-    if price_area and isinstance(price_area, list):
-        filters.append(dm.filters.In(view_id.as_property_ref("priceArea"), values=price_area))
-    if price_area_prefix:
-        filters.append(dm.filters.Prefix(view_id.as_property_ref("priceArea"), value=price_area_prefix))
+        filters.append(
+            dm.filters.Equals(
+                view_id.as_property_ref("priceArea"),
+                value={"space": "power-ops-day-ahead-frontend-contract-model", "externalId": price_area},
+            )
+        )
+    if price_area and isinstance(price_area, tuple):
+        filters.append(
+            dm.filters.Equals(
+                view_id.as_property_ref("priceArea"), value={"space": price_area[0], "externalId": price_area[1]}
+            )
+        )
+    if price_area and isinstance(price_area, list) and isinstance(price_area[0], str):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("priceArea"),
+                values=[
+                    {"space": "power-ops-day-ahead-frontend-contract-model", "externalId": item} for item in price_area
+                ],
+            )
+        )
+    if price_area and isinstance(price_area, list) and isinstance(price_area[0], tuple):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("priceArea"),
+                values=[{"space": item[0], "externalId": item[1]} for item in price_area],
+            )
+        )
     if min_date or max_date:
         filters.append(
             dm.filters.Range(
@@ -298,7 +328,7 @@ def _create_bid_filter(
         filters.append(
             dm.filters.Equals(
                 view_id.as_property_ref("total"),
-                value={"space": "poweropsDayAheadFrontendContractModel", "externalId": total},
+                value={"space": "power-ops-day-ahead-frontend-contract-model", "externalId": total},
             )
         )
     if total and isinstance(total, tuple):
@@ -309,7 +339,7 @@ def _create_bid_filter(
         filters.append(
             dm.filters.In(
                 view_id.as_property_ref("total"),
-                values=[{"space": "poweropsDayAheadFrontendContractModel", "externalId": item} for item in total],
+                values=[{"space": "power-ops-day-ahead-frontend-contract-model", "externalId": item} for item in total],
             )
         )
     if total and isinstance(total, list) and isinstance(total[0], tuple):
@@ -334,30 +364,8 @@ def _create_bid_filter(
                 lte=max_end_calculation.isoformat(timespec="milliseconds") if max_end_calculation else None,
             )
         )
-    if market and isinstance(market, str):
-        filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("market"),
-                value={"space": "poweropsDayAheadFrontendContractModel", "externalId": market},
-            )
-        )
-    if market and isinstance(market, tuple):
-        filters.append(
-            dm.filters.Equals(view_id.as_property_ref("market"), value={"space": market[0], "externalId": market[1]})
-        )
-    if market and isinstance(market, list) and isinstance(market[0], str):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("market"),
-                values=[{"space": "poweropsDayAheadFrontendContractModel", "externalId": item} for item in market],
-            )
-        )
-    if market and isinstance(market, list) and isinstance(market[0], tuple):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("market"), values=[{"space": item[0], "externalId": item[1]} for item in market]
-            )
-        )
+    if is_complete and isinstance(is_complete, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("isComplete"), value=is_complete))
     if external_id_prefix:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if space and isinstance(space, str):

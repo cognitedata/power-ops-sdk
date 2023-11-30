@@ -11,16 +11,16 @@ from cognite.client.data_classes.data_modeling.instances import InstanceAggregat
 from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes import (
     DomainModelApply,
     ResourcesApplyResult,
-    Bid,
-    BidApply,
-    BidFields,
-    BidList,
-    BidApplyList,
-    BidTextFields,
+    BidDocument,
+    BidDocumentApply,
+    BidDocumentFields,
+    BidDocumentList,
+    BidDocumentApplyList,
+    BidDocumentTextFields,
 )
-from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes._bid import (
-    _BID_PROPERTIES_BY_FIELD,
-    _create_bid_filter,
+from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes._bid_document import (
+    _BIDDOCUMENT_PROPERTIES_BY_FIELD,
+    _create_bid_document_filter,
 )
 from ._core import (
     DEFAULT_LIMIT_READ,
@@ -31,34 +31,33 @@ from ._core import (
     QueryStep,
     QueryBuilder,
 )
-from .bid_alerts import BidAlertsAPI
-from .bid_partials import BidPartialsAPI
-from .bid_query import BidQueryAPI
+from .bid_document_alerts import BidDocumentAlertsAPI
+from .bid_document_partials import BidDocumentPartialsAPI
+from .bid_document_query import BidDocumentQueryAPI
 
 
-class BidAPI(NodeAPI[Bid, BidApply, BidList]):
+class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
     def __init__(self, client: CogniteClient, view_by_write_class: dict[type[DomainModelApply], dm.ViewId]):
-        view_id = view_by_write_class[BidApply]
+        view_id = view_by_write_class[BidDocumentApply]
         super().__init__(
             client=client,
             sources=view_id,
-            class_type=Bid,
-            class_apply_type=BidApply,
-            class_list=BidList,
-            class_apply_list=BidApplyList,
+            class_type=BidDocument,
+            class_apply_type=BidDocumentApply,
+            class_list=BidDocumentList,
+            class_apply_list=BidDocumentApplyList,
             view_by_write_class=view_by_write_class,
         )
         self._view_id = view_id
-        self.alerts_edge = BidAlertsAPI(client)
-        self.partials_edge = BidPartialsAPI(client)
+        self.alerts_edge = BidDocumentAlertsAPI(client)
+        self.partials_edge = BidDocumentPartialsAPI(client)
 
     def __call__(
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        price_area: str | list[str] | None = None,
-        price_area_prefix: str | None = None,
+        price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         min_date: datetime.date | None = None,
         max_date: datetime.date | None = None,
         total: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
@@ -66,20 +65,19 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
         max_start_calculation: datetime.datetime | None = None,
         min_end_calculation: datetime.datetime | None = None,
         max_end_calculation: datetime.datetime | None = None,
-        market: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        is_complete: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
         filter: dm.Filter | None = None,
-    ) -> BidQueryAPI[BidList]:
-        """Query starting at bids.
+    ) -> BidDocumentQueryAPI[BidDocumentList]:
+        """Query starting at bid documents.
 
         Args:
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
             method: The method to filter on.
             price_area: The price area to filter on.
-            price_area_prefix: The prefix of the price area to filter on.
             min_date: The minimum value of the date to filter on.
             max_date: The maximum value of the date to filter on.
             total: The total to filter on.
@@ -87,23 +85,22 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
             max_start_calculation: The maximum value of the start calculation to filter on.
             min_end_calculation: The minimum value of the end calculation to filter on.
             max_end_calculation: The maximum value of the end calculation to filter on.
-            market: The market to filter on.
+            is_complete: The is complete to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of bids to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of bid documents to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
-            A query API for bids.
+            A query API for bid documents.
 
         """
-        filter_ = _create_bid_filter(
+        filter_ = _create_bid_document_filter(
             self._view_id,
             name,
             name_prefix,
             method,
             price_area,
-            price_area_prefix,
             min_date,
             max_date,
             total,
@@ -111,39 +108,41 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
             max_start_calculation,
             min_end_calculation,
             max_end_calculation,
-            market,
+            is_complete,
             external_id_prefix,
             space,
             filter,
         )
         builder = QueryBuilder(
-            BidList,
+            BidDocumentList,
             [
                 QueryStep(
-                    name="bid",
+                    name="bid_document",
                     expression=dm.query.NodeResultSetExpression(
                         from_=None,
                         filter=filter_,
                     ),
                     select=dm.query.Select(
-                        [dm.query.SourceSelector(self._view_id, list(_BID_PROPERTIES_BY_FIELD.values()))]
+                        [dm.query.SourceSelector(self._view_id, list(_BIDDOCUMENT_PROPERTIES_BY_FIELD.values()))]
                     ),
-                    result_cls=Bid,
+                    result_cls=BidDocument,
                     max_retrieve_limit=limit,
                 )
             ],
         )
-        return BidQueryAPI(self._client, builder, self._view_by_write_class)
+        return BidDocumentQueryAPI(self._client, builder, self._view_by_write_class)
 
-    def apply(self, bid: BidApply | Sequence[BidApply], replace: bool = False) -> ResourcesApplyResult:
-        """Add or update (upsert) bids.
+    def apply(
+        self, bid_document: BidDocumentApply | Sequence[BidDocumentApply], replace: bool = False
+    ) -> ResourcesApplyResult:
+        """Add or update (upsert) bid documents.
 
-        Note: This method iterates through all nodes and timeseries linked to bid and creates them including the edges
+        Note: This method iterates through all nodes and timeseries linked to bid_document and creates them including the edges
         between the nodes. For example, if any of `alerts` or `partials` are set, then these
         nodes as well as any nodes linked to them, and all the edges linking these nodes will be created.
 
         Args:
-            bid: Bid or sequence of bids to upsert.
+            bid_document: Bid document or sequence of bid documents to upsert.
             replace (bool): How do we behave when a property value exists? Do we replace all matching and existing values with the supplied values (true)?
                 Or should we merge in new values for properties together with the existing values (false)? Note: This setting applies for all nodes or edges specified in the ingestion call.
         Returns:
@@ -151,66 +150,66 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
 
         Examples:
 
-            Create a new bid:
+            Create a new bid_document:
 
                 >>> from cognite.powerops.client._generated.day_ahead_frontend_contract import DayAheadFrontendContractAPI
-                >>> from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes import BidApply
+                >>> from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes import BidDocumentApply
                 >>> client = DayAheadFrontendContractAPI()
-                >>> bid = BidApply(external_id="my_bid", ...)
-                >>> result = client.bid.apply(bid)
+                >>> bid_document = BidDocumentApply(external_id="my_bid_document", ...)
+                >>> result = client.bid_document.apply(bid_document)
 
         """
-        return self._apply(bid, replace)
+        return self._apply(bid_document, replace)
 
     def delete(
-        self, external_id: str | SequenceNotStr[str], space: str = "poweropsDayAheadFrontendContractModel"
+        self, external_id: str | SequenceNotStr[str], space: str = "power-ops-day-ahead-frontend-contract-model"
     ) -> dm.InstancesDeleteResult:
-        """Delete one or more bid.
+        """Delete one or more bid document.
 
         Args:
-            external_id: External id of the bid to delete.
-            space: The space where all the bid are located.
+            external_id: External id of the bid document to delete.
+            space: The space where all the bid document are located.
 
         Returns:
             The instance(s), i.e., nodes and edges which has been deleted. Empty list if nothing was deleted.
 
         Examples:
 
-            Delete bid by id:
+            Delete bid_document by id:
 
                 >>> from cognite.powerops.client._generated.day_ahead_frontend_contract import DayAheadFrontendContractAPI
                 >>> client = DayAheadFrontendContractAPI()
-                >>> client.bid.delete("my_bid")
+                >>> client.bid_document.delete("my_bid_document")
         """
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str) -> Bid | None:
+    def retrieve(self, external_id: str) -> BidDocument | None:
         ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str]) -> BidList:
+    def retrieve(self, external_id: SequenceNotStr[str]) -> BidDocumentList:
         ...
 
     def retrieve(
-        self, external_id: str | SequenceNotStr[str], space: str = "poweropsDayAheadFrontendContractModel"
-    ) -> Bid | BidList | None:
-        """Retrieve one or more bids by id(s).
+        self, external_id: str | SequenceNotStr[str], space: str = "power-ops-day-ahead-frontend-contract-model"
+    ) -> BidDocument | BidDocumentList | None:
+        """Retrieve one or more bid documents by id(s).
 
         Args:
-            external_id: External id or list of external ids of the bids.
-            space: The space where all the bids are located.
+            external_id: External id or list of external ids of the bid documents.
+            space: The space where all the bid documents are located.
 
         Returns:
-            The requested bids.
+            The requested bid documents.
 
         Examples:
 
-            Retrieve bid by id:
+            Retrieve bid_document by id:
 
                 >>> from cognite.powerops.client._generated.day_ahead_frontend_contract import DayAheadFrontendContractAPI
                 >>> client = DayAheadFrontendContractAPI()
-                >>> bid = client.bid.retrieve("my_bid")
+                >>> bid_document = client.bid_document.retrieve("my_bid_document")
 
         """
         return self._retrieve(
@@ -221,12 +220,12 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("poweropsDayAheadFrontendContractModel", "Bid.alerts"),
+                    dm.DirectRelationReference("power-ops-day-ahead-frontend-contract-model", "Bid.alerts"),
                 ),
                 (
                     self.partials_edge,
                     "partials",
-                    dm.DirectRelationReference("poweropsDayAheadFrontendContractModel", "Bid.partials"),
+                    dm.DirectRelationReference("power-ops-day-ahead-frontend-contract-model", "Bid.partials"),
                 ),
             ],
         )
@@ -234,12 +233,11 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
     def search(
         self,
         query: str,
-        properties: BidTextFields | Sequence[BidTextFields] | None = None,
+        properties: BidDocumentTextFields | Sequence[BidDocumentTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        price_area: str | list[str] | None = None,
-        price_area_prefix: str | None = None,
+        price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         min_date: datetime.date | None = None,
         max_date: datetime.date | None = None,
         total: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
@@ -247,13 +245,13 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
         max_start_calculation: datetime.datetime | None = None,
         min_end_calculation: datetime.datetime | None = None,
         max_end_calculation: datetime.datetime | None = None,
-        market: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        is_complete: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> BidList:
-        """Search bids
+    ) -> BidDocumentList:
+        """Search bid documents
 
         Args:
             query: The search query,
@@ -262,7 +260,6 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
             name_prefix: The prefix of the name to filter on.
             method: The method to filter on.
             price_area: The price area to filter on.
-            price_area_prefix: The prefix of the price area to filter on.
             min_date: The minimum value of the date to filter on.
             max_date: The maximum value of the date to filter on.
             total: The total to filter on.
@@ -270,31 +267,30 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
             max_start_calculation: The maximum value of the start calculation to filter on.
             min_end_calculation: The minimum value of the end calculation to filter on.
             max_end_calculation: The maximum value of the end calculation to filter on.
-            market: The market to filter on.
+            is_complete: The is complete to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of bids to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of bid documents to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
-            Search results bids matching the query.
+            Search results bid documents matching the query.
 
         Examples:
 
-           Search for 'my_bid' in all text properties:
+           Search for 'my_bid_document' in all text properties:
 
                 >>> from cognite.powerops.client._generated.day_ahead_frontend_contract import DayAheadFrontendContractAPI
                 >>> client = DayAheadFrontendContractAPI()
-                >>> bids = client.bid.search('my_bid')
+                >>> bid_documents = client.bid_document.search('my_bid_document')
 
         """
-        filter_ = _create_bid_filter(
+        filter_ = _create_bid_document_filter(
             self._view_id,
             name,
             name_prefix,
             method,
             price_area,
-            price_area_prefix,
             min_date,
             max_date,
             total,
@@ -302,12 +298,12 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
             max_start_calculation,
             min_end_calculation,
             max_end_calculation,
-            market,
+            is_complete,
             external_id_prefix,
             space,
             filter,
         )
-        return self._search(self._view_id, query, _BID_PROPERTIES_BY_FIELD, properties, filter_, limit)
+        return self._search(self._view_id, query, _BIDDOCUMENT_PROPERTIES_BY_FIELD, properties, filter_, limit)
 
     @overload
     def aggregate(
@@ -316,15 +312,14 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
         | dm.aggregations.MetricAggregation
         | Sequence[Aggregations]
         | Sequence[dm.aggregations.MetricAggregation],
-        property: BidFields | Sequence[BidFields] | None = None,
+        property: BidDocumentFields | Sequence[BidDocumentFields] | None = None,
         group_by: None = None,
         query: str | None = None,
-        search_properties: BidTextFields | Sequence[BidTextFields] | None = None,
+        search_properties: BidDocumentTextFields | Sequence[BidDocumentTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        price_area: str | list[str] | None = None,
-        price_area_prefix: str | None = None,
+        price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         min_date: datetime.date | None = None,
         max_date: datetime.date | None = None,
         total: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
@@ -332,7 +327,7 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
         max_start_calculation: datetime.datetime | None = None,
         min_end_calculation: datetime.datetime | None = None,
         max_end_calculation: datetime.datetime | None = None,
-        market: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        is_complete: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -347,15 +342,14 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
         | dm.aggregations.MetricAggregation
         | Sequence[Aggregations]
         | Sequence[dm.aggregations.MetricAggregation],
-        property: BidFields | Sequence[BidFields] | None = None,
-        group_by: BidFields | Sequence[BidFields] = None,
+        property: BidDocumentFields | Sequence[BidDocumentFields] | None = None,
+        group_by: BidDocumentFields | Sequence[BidDocumentFields] = None,
         query: str | None = None,
-        search_properties: BidTextFields | Sequence[BidTextFields] | None = None,
+        search_properties: BidDocumentTextFields | Sequence[BidDocumentTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        price_area: str | list[str] | None = None,
-        price_area_prefix: str | None = None,
+        price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         min_date: datetime.date | None = None,
         max_date: datetime.date | None = None,
         total: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
@@ -363,7 +357,7 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
         max_start_calculation: datetime.datetime | None = None,
         min_end_calculation: datetime.datetime | None = None,
         max_end_calculation: datetime.datetime | None = None,
-        market: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        is_complete: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -377,15 +371,14 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
         | dm.aggregations.MetricAggregation
         | Sequence[Aggregations]
         | Sequence[dm.aggregations.MetricAggregation],
-        property: BidFields | Sequence[BidFields] | None = None,
-        group_by: BidFields | Sequence[BidFields] | None = None,
+        property: BidDocumentFields | Sequence[BidDocumentFields] | None = None,
+        group_by: BidDocumentFields | Sequence[BidDocumentFields] | None = None,
         query: str | None = None,
-        search_property: BidTextFields | Sequence[BidTextFields] | None = None,
+        search_property: BidDocumentTextFields | Sequence[BidDocumentTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        price_area: str | list[str] | None = None,
-        price_area_prefix: str | None = None,
+        price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         min_date: datetime.date | None = None,
         max_date: datetime.date | None = None,
         total: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
@@ -393,13 +386,13 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
         max_start_calculation: datetime.datetime | None = None,
         min_end_calculation: datetime.datetime | None = None,
         max_end_calculation: datetime.datetime | None = None,
-        market: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        is_complete: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
-        """Aggregate data across bids
+        """Aggregate data across bid documents
 
         Args:
             aggregate: The aggregation to perform.
@@ -411,7 +404,6 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
             name_prefix: The prefix of the name to filter on.
             method: The method to filter on.
             price_area: The price area to filter on.
-            price_area_prefix: The prefix of the price area to filter on.
             min_date: The minimum value of the date to filter on.
             max_date: The maximum value of the date to filter on.
             total: The total to filter on.
@@ -419,10 +411,10 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
             max_start_calculation: The maximum value of the start calculation to filter on.
             min_end_calculation: The minimum value of the end calculation to filter on.
             max_end_calculation: The maximum value of the end calculation to filter on.
-            market: The market to filter on.
+            is_complete: The is complete to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of bids to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of bid documents to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
@@ -430,21 +422,20 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
 
         Examples:
 
-            Count bids in space `my_space`:
+            Count bid documents in space `my_space`:
 
                 >>> from cognite.powerops.client._generated.day_ahead_frontend_contract import DayAheadFrontendContractAPI
                 >>> client = DayAheadFrontendContractAPI()
-                >>> result = client.bid.aggregate("count", space="my_space")
+                >>> result = client.bid_document.aggregate("count", space="my_space")
 
         """
 
-        filter_ = _create_bid_filter(
+        filter_ = _create_bid_document_filter(
             self._view_id,
             name,
             name_prefix,
             method,
             price_area,
-            price_area_prefix,
             min_date,
             max_date,
             total,
@@ -452,7 +443,7 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
             max_start_calculation,
             min_end_calculation,
             max_end_calculation,
-            market,
+            is_complete,
             external_id_prefix,
             space,
             filter,
@@ -460,7 +451,7 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
         return self._aggregate(
             self._view_id,
             aggregate,
-            _BID_PROPERTIES_BY_FIELD,
+            _BIDDOCUMENT_PROPERTIES_BY_FIELD,
             property,
             group_by,
             query,
@@ -471,15 +462,14 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
 
     def histogram(
         self,
-        property: BidFields,
+        property: BidDocumentFields,
         interval: float,
         query: str | None = None,
-        search_property: BidTextFields | Sequence[BidTextFields] | None = None,
+        search_property: BidDocumentTextFields | Sequence[BidDocumentTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        price_area: str | list[str] | None = None,
-        price_area_prefix: str | None = None,
+        price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         min_date: datetime.date | None = None,
         max_date: datetime.date | None = None,
         total: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
@@ -487,13 +477,13 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
         max_start_calculation: datetime.datetime | None = None,
         min_end_calculation: datetime.datetime | None = None,
         max_end_calculation: datetime.datetime | None = None,
-        market: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        is_complete: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
-        """Produces histograms for bids
+        """Produces histograms for bid documents
 
         Args:
             property: The property to use as the value in the histogram.
@@ -504,7 +494,6 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
             name_prefix: The prefix of the name to filter on.
             method: The method to filter on.
             price_area: The price area to filter on.
-            price_area_prefix: The prefix of the price area to filter on.
             min_date: The minimum value of the date to filter on.
             max_date: The maximum value of the date to filter on.
             total: The total to filter on.
@@ -512,23 +501,22 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
             max_start_calculation: The maximum value of the start calculation to filter on.
             min_end_calculation: The minimum value of the end calculation to filter on.
             max_end_calculation: The maximum value of the end calculation to filter on.
-            market: The market to filter on.
+            is_complete: The is complete to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of bids to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of bid documents to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
             Bucketed histogram results.
 
         """
-        filter_ = _create_bid_filter(
+        filter_ = _create_bid_document_filter(
             self._view_id,
             name,
             name_prefix,
             method,
             price_area,
-            price_area_prefix,
             min_date,
             max_date,
             total,
@@ -536,7 +524,7 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
             max_start_calculation,
             min_end_calculation,
             max_end_calculation,
-            market,
+            is_complete,
             external_id_prefix,
             space,
             filter,
@@ -545,7 +533,7 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
             self._view_id,
             property,
             interval,
-            _BID_PROPERTIES_BY_FIELD,
+            _BIDDOCUMENT_PROPERTIES_BY_FIELD,
             query,
             search_property,
             limit,
@@ -557,8 +545,7 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        price_area: str | list[str] | None = None,
-        price_area_prefix: str | None = None,
+        price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         min_date: datetime.date | None = None,
         max_date: datetime.date | None = None,
         total: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
@@ -566,21 +553,20 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
         max_start_calculation: datetime.datetime | None = None,
         min_end_calculation: datetime.datetime | None = None,
         max_end_calculation: datetime.datetime | None = None,
-        market: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        is_complete: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
         retrieve_edges: bool = True,
-    ) -> BidList:
-        """List/filter bids
+    ) -> BidDocumentList:
+        """List/filter bid documents
 
         Args:
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
             method: The method to filter on.
             price_area: The price area to filter on.
-            price_area_prefix: The prefix of the price area to filter on.
             min_date: The minimum value of the date to filter on.
             max_date: The maximum value of the date to filter on.
             total: The total to filter on.
@@ -588,32 +574,31 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
             max_start_calculation: The maximum value of the start calculation to filter on.
             min_end_calculation: The minimum value of the end calculation to filter on.
             max_end_calculation: The maximum value of the end calculation to filter on.
-            market: The market to filter on.
+            is_complete: The is complete to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of bids to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of bid documents to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
-            retrieve_edges: Whether to retrieve `alerts` or `partials` external ids for the bids. Defaults to True.
+            retrieve_edges: Whether to retrieve `alerts` or `partials` external ids for the bid documents. Defaults to True.
 
         Returns:
-            List of requested bids
+            List of requested bid documents
 
         Examples:
 
-            List bids and limit to 5:
+            List bid documents and limit to 5:
 
                 >>> from cognite.powerops.client._generated.day_ahead_frontend_contract import DayAheadFrontendContractAPI
                 >>> client = DayAheadFrontendContractAPI()
-                >>> bids = client.bid.list(limit=5)
+                >>> bid_documents = client.bid_document.list(limit=5)
 
         """
-        filter_ = _create_bid_filter(
+        filter_ = _create_bid_document_filter(
             self._view_id,
             name,
             name_prefix,
             method,
             price_area,
-            price_area_prefix,
             min_date,
             max_date,
             total,
@@ -621,7 +606,7 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
             max_start_calculation,
             min_end_calculation,
             max_end_calculation,
-            market,
+            is_complete,
             external_id_prefix,
             space,
             filter,
@@ -635,12 +620,12 @@ class BidAPI(NodeAPI[Bid, BidApply, BidList]):
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("poweropsDayAheadFrontendContractModel", "Bid.alerts"),
+                    dm.DirectRelationReference("power-ops-day-ahead-frontend-contract-model", "Bid.alerts"),
                 ),
                 (
                     self.partials_edge,
                     "partials",
-                    dm.DirectRelationReference("poweropsDayAheadFrontendContractModel", "Bid.partials"),
+                    dm.DirectRelationReference("power-ops-day-ahead-frontend-contract-model", "Bid.partials"),
                 ),
             ],
         )

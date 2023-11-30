@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-from typing import Literal, Optional, Union
+from typing import Literal, Optional
 
 from cognite.client import data_modeling as dm
-from cognite.client.data_classes import TimeSeries as CogniteTimeSeries
 from pydantic import Field
 
 from ._core import (
@@ -13,48 +12,54 @@ from ._core import (
     DomainModelList,
     DomainRelationApply,
     ResourcesApply,
-    TimeSeries,
 )
 
 
-__all__ = ["SHOP", "SHOPApply", "SHOPList", "SHOPApplyList", "SHOPFields", "SHOPTextFields"]
+__all__ = [
+    "SHOPMultiScenario",
+    "SHOPMultiScenarioApply",
+    "SHOPMultiScenarioList",
+    "SHOPMultiScenarioApplyList",
+    "SHOPMultiScenarioFields",
+    "SHOPMultiScenarioTextFields",
+]
 
 
-SHOPTextFields = Literal["name", "shop_cases"]
-SHOPFields = Literal["name", "shop_cases", "price_scenarios"]
+SHOPMultiScenarioTextFields = Literal["name", "shop_cases"]
+SHOPMultiScenarioFields = Literal["name", "shop_cases", "price_scenarios"]
 
-_SHOP_PROPERTIES_BY_FIELD = {
+_SHOPMULTISCENARIO_PROPERTIES_BY_FIELD = {
     "name": "name",
     "shop_cases": "shopCases",
     "price_scenarios": "priceScenarios",
 }
 
 
-class SHOP(DomainModel):
-    """This represents the reading version of shop.
+class SHOPMultiScenario(DomainModel):
+    """This represents the reading version of shop multi scenario.
 
     It is used to when data is retrieved from CDF.
 
     Args:
         space: The space where the node is located.
-        external_id: The external id of the shop.
+        external_id: The external id of the shop multi scenario.
         name: The name field.
         shop_cases: The shop case field.
         price_scenarios: The price scenario field.
-        created_time: The created time of the shop node.
-        last_updated_time: The last updated time of the shop node.
-        deleted_time: If present, the deleted time of the shop node.
-        version: The version of the shop node.
+        created_time: The created time of the shop multi scenario node.
+        last_updated_time: The last updated time of the shop multi scenario node.
+        deleted_time: If present, the deleted time of the shop multi scenario node.
+        version: The version of the shop multi scenario node.
     """
 
-    space: str = "poweropsDayAheadFrontendContractModel"
+    space: str = "power-ops-day-ahead-frontend-contract-model"
     name: Optional[str] = None
     shop_cases: Optional[list[str]] = Field(None, alias="shopCases")
-    price_scenarios: Union[TimeSeries, str, None] = Field(None, alias="priceScenarios")
+    price_scenarios: Optional[list[TimeSeries]] = Field(None, alias="priceScenarios")
 
-    def as_apply(self) -> SHOPApply:
-        """Convert this read version of shop to the writing version."""
-        return SHOPApply(
+    def as_apply(self) -> SHOPMultiScenarioApply:
+        """Convert this read version of shop multi scenario to the writing version."""
+        return SHOPMultiScenarioApply(
             space=self.space,
             external_id=self.external_id,
             name=self.name,
@@ -63,27 +68,27 @@ class SHOP(DomainModel):
         )
 
 
-class SHOPApply(DomainModelApply):
-    """This represents the writing version of shop.
+class SHOPMultiScenarioApply(DomainModelApply):
+    """This represents the writing version of shop multi scenario.
 
     It is used to when data is sent to CDF.
 
     Args:
         space: The space where the node is located.
-        external_id: The external id of the shop.
+        external_id: The external id of the shop multi scenario.
         name: The name field.
         shop_cases: The shop case field.
         price_scenarios: The price scenario field.
-        existing_version: Fail the ingestion request if the shop version is greater than or equal to this value.
+        existing_version: Fail the ingestion request if the shop multi scenario version is greater than or equal to this value.
             If no existingVersion is specified, the ingestion will always overwrite any existing data for the edge (for the specified container or instance).
             If existingVersion is set to 0, the upsert will behave as an insert, so it will fail the bulk if the item already exists.
             If skipOnVersionConflict is set on the ingestion request, then the item will be skipped instead of failing the ingestion request.
     """
 
-    space: str = "poweropsDayAheadFrontendContractModel"
+    space: str = "power-ops-day-ahead-frontend-contract-model"
     name: str
     shop_cases: Optional[list[str]] = Field(None, alias="shopCases")
-    price_scenarios: Union[TimeSeries, str, None] = Field(None, alias="priceScenarios")
+    price_scenarios: Optional[list[TimeSeries]] = Field(None, alias="priceScenarios")
 
     def _to_instances_apply(
         self,
@@ -95,7 +100,7 @@ class SHOPApply(DomainModelApply):
             return resources
 
         write_view = (view_by_write_class and view_by_write_class.get(type(self))) or dm.ViewId(
-            "poweropsDayAheadFrontendContractModel", "SHOP", "1"
+            "power-ops-day-ahead-frontend-contract-model", "SHOPMultiScenario", "1"
         )
 
         properties = {}
@@ -104,9 +109,7 @@ class SHOPApply(DomainModelApply):
         if self.shop_cases is not None:
             properties["shopCases"] = self.shop_cases
         if self.price_scenarios is not None:
-            properties["priceScenarios"] = (
-                self.price_scenarios if isinstance(self.price_scenarios, str) else self.price_scenarios.external_id
-            )
+            properties["priceScenarios"] = self.price_scenarios
 
         if properties:
             this_node = dm.NodeApply(
@@ -123,29 +126,26 @@ class SHOPApply(DomainModelApply):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        if isinstance(self.price_scenarios, CogniteTimeSeries):
-            resources.time_series.append(self.price_scenarios)
-
         return resources
 
 
-class SHOPList(DomainModelList[SHOP]):
-    """List of shops in the read version."""
+class SHOPMultiScenarioList(DomainModelList[SHOPMultiScenario]):
+    """List of shop multi scenarios in the read version."""
 
-    _INSTANCE = SHOP
+    _INSTANCE = SHOPMultiScenario
 
-    def as_apply(self) -> SHOPApplyList:
-        """Convert these read versions of shop to the writing versions."""
-        return SHOPApplyList([node.as_apply() for node in self.data])
-
-
-class SHOPApplyList(DomainModelApplyList[SHOPApply]):
-    """List of shops in the writing version."""
-
-    _INSTANCE = SHOPApply
+    def as_apply(self) -> SHOPMultiScenarioApplyList:
+        """Convert these read versions of shop multi scenario to the writing versions."""
+        return SHOPMultiScenarioApplyList([node.as_apply() for node in self.data])
 
 
-def _create_shop_filter(
+class SHOPMultiScenarioApplyList(DomainModelApplyList[SHOPMultiScenarioApply]):
+    """List of shop multi scenarios in the writing version."""
+
+    _INSTANCE = SHOPMultiScenarioApply
+
+
+def _create_shop_multi_scenario_filter(
     view_id: dm.ViewId,
     name: str | list[str] | None = None,
     name_prefix: str | None = None,

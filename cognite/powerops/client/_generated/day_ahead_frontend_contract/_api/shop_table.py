@@ -31,6 +31,7 @@ from ._core import (
     QueryBuilder,
 )
 from .shop_table_alerts import SHOPTableAlertsAPI
+from .shop_table_production_price_pairs import SHOPTableProductionPricePairsAPI
 from .shop_table_query import SHOPTableQueryAPI
 
 
@@ -48,6 +49,7 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
         )
         self._view_id = view_id
         self.alerts_edge = SHOPTableAlertsAPI(client)
+        self.production_price_pairs_edge = SHOPTableProductionPricePairsAPI(client)
 
     def __call__(
         self,
@@ -57,7 +59,6 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
         asset_type_prefix: str | None = None,
         asset_id: str | list[str] | None = None,
         asset_id_prefix: str | None = None,
-        production_price_pair: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
@@ -72,7 +73,6 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
             asset_type_prefix: The prefix of the asset type to filter on.
             asset_id: The asset id to filter on.
             asset_id_prefix: The prefix of the asset id to filter on.
-            production_price_pair: The production price pair to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop tables to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -90,7 +90,6 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
             asset_type_prefix,
             asset_id,
             asset_id_prefix,
-            production_price_pair,
             external_id_prefix,
             space,
             filter,
@@ -120,7 +119,7 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
         """Add or update (upsert) shop tables.
 
         Note: This method iterates through all nodes and timeseries linked to shop_table and creates them including the edges
-        between the nodes. For example, if any of `alerts` are set, then these
+        between the nodes. For example, if any of `alerts` or `production_price_pairs` are set, then these
         nodes as well as any nodes linked to them, and all the edges linking these nodes will be created.
 
         Args:
@@ -144,7 +143,7 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
         return self._apply(shop_table, replace)
 
     def delete(
-        self, external_id: str | SequenceNotStr[str], space: str = "poweropsDayAheadFrontendContractModel"
+        self, external_id: str | SequenceNotStr[str], space: str = "power-ops-day-ahead-frontend-contract-model"
     ) -> dm.InstancesDeleteResult:
         """Delete one or more shop table.
 
@@ -174,7 +173,7 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
         ...
 
     def retrieve(
-        self, external_id: str | SequenceNotStr[str], space: str = "poweropsDayAheadFrontendContractModel"
+        self, external_id: str | SequenceNotStr[str], space: str = "power-ops-day-ahead-frontend-contract-model"
     ) -> SHOPTable | SHOPTableList | None:
         """Retrieve one or more shop tables by id(s).
 
@@ -202,7 +201,14 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("poweropsDayAheadFrontendContractModel", "SHOPTable.alerts"),
+                    dm.DirectRelationReference("power-ops-day-ahead-frontend-contract-model", "SHOPTable.alerts"),
+                ),
+                (
+                    self.production_price_pairs_edge,
+                    "production_price_pairs",
+                    dm.DirectRelationReference(
+                        "power-ops-day-ahead-frontend-contract-model", "SHOPTable.productionPricePairs"
+                    ),
                 ),
             ],
         )
@@ -217,7 +223,6 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
         asset_type_prefix: str | None = None,
         asset_id: str | list[str] | None = None,
         asset_id_prefix: str | None = None,
-        production_price_pair: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -234,7 +239,6 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
             asset_type_prefix: The prefix of the asset type to filter on.
             asset_id: The asset id to filter on.
             asset_id_prefix: The prefix of the asset id to filter on.
-            production_price_pair: The production price pair to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop tables to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -260,7 +264,6 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
             asset_type_prefix,
             asset_id,
             asset_id_prefix,
-            production_price_pair,
             external_id_prefix,
             space,
             filter,
@@ -284,7 +287,6 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
         asset_type_prefix: str | None = None,
         asset_id: str | list[str] | None = None,
         asset_id_prefix: str | None = None,
-        production_price_pair: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -309,7 +311,6 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
         asset_type_prefix: str | None = None,
         asset_id: str | list[str] | None = None,
         asset_id_prefix: str | None = None,
-        production_price_pair: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -333,7 +334,6 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
         asset_type_prefix: str | None = None,
         asset_id: str | list[str] | None = None,
         asset_id_prefix: str | None = None,
-        production_price_pair: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -353,7 +353,6 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
             asset_type_prefix: The prefix of the asset type to filter on.
             asset_id: The asset id to filter on.
             asset_id_prefix: The prefix of the asset id to filter on.
-            production_price_pair: The production price pair to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop tables to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -380,7 +379,6 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
             asset_type_prefix,
             asset_id,
             asset_id_prefix,
-            production_price_pair,
             external_id_prefix,
             space,
             filter,
@@ -409,7 +407,6 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
         asset_type_prefix: str | None = None,
         asset_id: str | list[str] | None = None,
         asset_id_prefix: str | None = None,
-        production_price_pair: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -428,7 +425,6 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
             asset_type_prefix: The prefix of the asset type to filter on.
             asset_id: The asset id to filter on.
             asset_id_prefix: The prefix of the asset id to filter on.
-            production_price_pair: The production price pair to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop tables to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -446,7 +442,6 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
             asset_type_prefix,
             asset_id,
             asset_id_prefix,
-            production_price_pair,
             external_id_prefix,
             space,
             filter,
@@ -470,7 +465,6 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
         asset_type_prefix: str | None = None,
         asset_id: str | list[str] | None = None,
         asset_id_prefix: str | None = None,
-        production_price_pair: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -486,12 +480,11 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
             asset_type_prefix: The prefix of the asset type to filter on.
             asset_id: The asset id to filter on.
             asset_id_prefix: The prefix of the asset id to filter on.
-            production_price_pair: The production price pair to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop tables to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
-            retrieve_edges: Whether to retrieve `alerts` external ids for the shop tables. Defaults to True.
+            retrieve_edges: Whether to retrieve `alerts` or `production_price_pairs` external ids for the shop tables. Defaults to True.
 
         Returns:
             List of requested shop tables
@@ -513,7 +506,6 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
             asset_type_prefix,
             asset_id,
             asset_id_prefix,
-            production_price_pair,
             external_id_prefix,
             space,
             filter,
@@ -527,7 +519,14 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("poweropsDayAheadFrontendContractModel", "SHOPTable.alerts"),
+                    dm.DirectRelationReference("power-ops-day-ahead-frontend-contract-model", "SHOPTable.alerts"),
+                ),
+                (
+                    self.production_price_pairs_edge,
+                    "production_price_pairs",
+                    dm.DirectRelationReference(
+                        "power-ops-day-ahead-frontend-contract-model", "SHOPTable.productionPricePairs"
+                    ),
                 ),
             ],
         )

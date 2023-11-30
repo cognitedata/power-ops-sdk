@@ -28,7 +28,7 @@ _BIDTABLE_PROPERTIES_BY_FIELD = {
     "resource_cost": "resourceCost",
     "table": "table",
     "asset_type": "assetType",
-    "asset_id": "asset_id",
+    "asset_id": "assetId",
 }
 
 
@@ -51,11 +51,11 @@ class BidTable(DomainModel):
         version: The version of the bid table node.
     """
 
-    space: str = "poweropsDayAheadFrontendContractModel"
+    space: str = "power-ops-day-ahead-frontend-contract-model"
     resource_cost: Optional[str] = Field(None, alias="resourceCost")
     table: Union[str, None] = None
     asset_type: Optional[str] = Field(None, alias="assetType")
-    asset_id: Optional[str] = None
+    asset_id: Optional[str] = Field(None, alias="assetId")
     alerts: Union[list[Alert], list[str], None] = Field(default=None, repr=False)
 
     def as_apply(self) -> BidTableApply:
@@ -90,11 +90,11 @@ class BidTableApply(DomainModelApply):
             If skipOnVersionConflict is set on the ingestion request, then the item will be skipped instead of failing the ingestion request.
     """
 
-    space: str = "poweropsDayAheadFrontendContractModel"
+    space: str = "power-ops-day-ahead-frontend-contract-model"
     resource_cost: Optional[str] = Field(None, alias="resourceCost")
     table: Union[str, None] = None
     asset_type: Optional[str] = Field(None, alias="assetType")
-    asset_id: Optional[str] = None
+    asset_id: Optional[str] = Field(None, alias="assetId")
     alerts: Union[list[AlertApply], list[str], None] = Field(default=None, repr=False)
 
     def _to_instances_apply(
@@ -107,7 +107,7 @@ class BidTableApply(DomainModelApply):
             return resources
 
         write_view = (view_by_write_class and view_by_write_class.get(type(self))) or dm.ViewId(
-            "poweropsDayAheadFrontendContractModel", "BidTable", "1"
+            "power-ops-day-ahead-frontend-contract-model", "BidTable", "1"
         )
 
         properties = {}
@@ -118,7 +118,7 @@ class BidTableApply(DomainModelApply):
         if self.asset_type is not None:
             properties["assetType"] = self.asset_type
         if self.asset_id is not None:
-            properties["asset_id"] = self.asset_id
+            properties["assetId"] = self.asset_id
 
         if properties:
             this_node = dm.NodeApply(
@@ -135,7 +135,7 @@ class BidTableApply(DomainModelApply):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("poweropsDayAheadFrontendContractModel", "BidTable.alerts")
+        edge_type = dm.DirectRelationReference("power-ops-day-ahead-frontend-contract-model", "BidTable.alerts")
         for alert in self.alerts or []:
             other_resources = DomainRelationApply.from_edge_to_resources(
                 cache, self, alert, edge_type, view_by_write_class
@@ -187,11 +187,11 @@ def _create_bid_table_filter(
     if asset_type_prefix:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("assetType"), value=asset_type_prefix))
     if asset_id and isinstance(asset_id, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("asset_id"), value=asset_id))
+        filters.append(dm.filters.Equals(view_id.as_property_ref("assetId"), value=asset_id))
     if asset_id and isinstance(asset_id, list):
-        filters.append(dm.filters.In(view_id.as_property_ref("asset_id"), values=asset_id))
+        filters.append(dm.filters.In(view_id.as_property_ref("assetId"), values=asset_id))
     if asset_id_prefix:
-        filters.append(dm.filters.Prefix(view_id.as_property_ref("asset_id"), value=asset_id_prefix))
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("assetId"), value=asset_id_prefix))
     if external_id_prefix:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if space and isinstance(space, str):

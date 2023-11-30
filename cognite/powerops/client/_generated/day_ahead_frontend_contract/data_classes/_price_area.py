@@ -21,19 +21,19 @@ if TYPE_CHECKING:
 
 
 __all__ = [
-    "MarketPriceArea",
-    "MarketPriceAreaApply",
-    "MarketPriceAreaList",
-    "MarketPriceAreaApplyList",
-    "MarketPriceAreaFields",
-    "MarketPriceAreaTextFields",
+    "PriceArea",
+    "PriceAreaApply",
+    "PriceAreaList",
+    "PriceAreaApplyList",
+    "PriceAreaFields",
+    "PriceAreaTextFields",
 ]
 
 
-MarketPriceAreaTextFields = Literal["name", "price_area", "timezone"]
-MarketPriceAreaFields = Literal["name", "price_area", "timezone", "main_scenario", "price_scenarios"]
+PriceAreaTextFields = Literal["name", "price_area", "timezone"]
+PriceAreaFields = Literal["name", "price_area", "timezone", "main_scenario", "price_scenarios"]
 
-_MARKETPRICEAREA_PROPERTIES_BY_FIELD = {
+_PRICEAREA_PROPERTIES_BY_FIELD = {
     "name": "name",
     "price_area": "priceArea",
     "timezone": "timezone",
@@ -42,27 +42,27 @@ _MARKETPRICEAREA_PROPERTIES_BY_FIELD = {
 }
 
 
-class MarketPriceArea(DomainModel):
-    """This represents the reading version of market price area.
+class PriceArea(DomainModel):
+    """This represents the reading version of price area.
 
     It is used to when data is retrieved from CDF.
 
     Args:
         space: The space where the node is located.
-        external_id: The external id of the market price area.
+        external_id: The external id of the price area.
         name: The name field.
         price_area: The price area field.
         default_method: The default method field.
         timezone: The timezone field.
         main_scenario: The main scenario field.
         price_scenarios: The price scenario field.
-        created_time: The created time of the market price area node.
-        last_updated_time: The last updated time of the market price area node.
-        deleted_time: If present, the deleted time of the market price area node.
-        version: The version of the market price area node.
+        created_time: The created time of the price area node.
+        last_updated_time: The last updated time of the price area node.
+        deleted_time: If present, the deleted time of the price area node.
+        version: The version of the price area node.
     """
 
-    space: str = "poweropsDayAheadFrontendContractModel"
+    space: str = "power-ops-day-ahead-frontend-contract-model"
     name: Optional[str] = None
     price_area: Optional[str] = Field(None, alias="priceArea")
     default_method: Union[BidMethod, str, None] = Field(None, repr=False, alias="defaultMethod")
@@ -70,9 +70,9 @@ class MarketPriceArea(DomainModel):
     main_scenario: Union[TimeSeries, str, None] = Field(None, alias="mainScenario")
     price_scenarios: Optional[list[TimeSeries]] = Field(None, alias="priceScenarios")
 
-    def as_apply(self) -> MarketPriceAreaApply:
-        """Convert this read version of market price area to the writing version."""
-        return MarketPriceAreaApply(
+    def as_apply(self) -> PriceAreaApply:
+        """Convert this read version of price area to the writing version."""
+        return PriceAreaApply(
             space=self.space,
             external_id=self.external_id,
             name=self.name,
@@ -86,27 +86,27 @@ class MarketPriceArea(DomainModel):
         )
 
 
-class MarketPriceAreaApply(DomainModelApply):
-    """This represents the writing version of market price area.
+class PriceAreaApply(DomainModelApply):
+    """This represents the writing version of price area.
 
     It is used to when data is sent to CDF.
 
     Args:
         space: The space where the node is located.
-        external_id: The external id of the market price area.
+        external_id: The external id of the price area.
         name: The name field.
         price_area: The price area field.
         default_method: The default method field.
         timezone: The timezone field.
         main_scenario: The main scenario field.
         price_scenarios: The price scenario field.
-        existing_version: Fail the ingestion request if the market price area version is greater than or equal to this value.
+        existing_version: Fail the ingestion request if the price area version is greater than or equal to this value.
             If no existingVersion is specified, the ingestion will always overwrite any existing data for the edge (for the specified container or instance).
             If existingVersion is set to 0, the upsert will behave as an insert, so it will fail the bulk if the item already exists.
             If skipOnVersionConflict is set on the ingestion request, then the item will be skipped instead of failing the ingestion request.
     """
 
-    space: str = "poweropsDayAheadFrontendContractModel"
+    space: str = "power-ops-day-ahead-frontend-contract-model"
     name: Optional[str] = None
     price_area: Optional[str] = Field(None, alias="priceArea")
     default_method: Union[BidMethodApply, str, None] = Field(None, repr=False, alias="defaultMethod")
@@ -124,7 +124,7 @@ class MarketPriceAreaApply(DomainModelApply):
             return resources
 
         write_view = (view_by_write_class and view_by_write_class.get(type(self))) or dm.ViewId(
-            "poweropsDayAheadFrontendContractModel", "MarketPriceArea", "1"
+            "power-ops-day-ahead-frontend-contract-model", "PriceArea", "1"
         )
 
         properties = {}
@@ -173,23 +173,23 @@ class MarketPriceAreaApply(DomainModelApply):
         return resources
 
 
-class MarketPriceAreaList(DomainModelList[MarketPriceArea]):
-    """List of market price areas in the read version."""
+class PriceAreaList(DomainModelList[PriceArea]):
+    """List of price areas in the read version."""
 
-    _INSTANCE = MarketPriceArea
+    _INSTANCE = PriceArea
 
-    def as_apply(self) -> MarketPriceAreaApplyList:
-        """Convert these read versions of market price area to the writing versions."""
-        return MarketPriceAreaApplyList([node.as_apply() for node in self.data])
-
-
-class MarketPriceAreaApplyList(DomainModelApplyList[MarketPriceAreaApply]):
-    """List of market price areas in the writing version."""
-
-    _INSTANCE = MarketPriceAreaApply
+    def as_apply(self) -> PriceAreaApplyList:
+        """Convert these read versions of price area to the writing versions."""
+        return PriceAreaApplyList([node.as_apply() for node in self.data])
 
 
-def _create_market_price_area_filter(
+class PriceAreaApplyList(DomainModelApplyList[PriceAreaApply]):
+    """List of price areas in the writing version."""
+
+    _INSTANCE = PriceAreaApply
+
+
+def _create_price_area_filter(
     view_id: dm.ViewId,
     name: str | list[str] | None = None,
     name_prefix: str | None = None,
@@ -219,7 +219,7 @@ def _create_market_price_area_filter(
         filters.append(
             dm.filters.Equals(
                 view_id.as_property_ref("defaultMethod"),
-                value={"space": "poweropsDayAheadFrontendContractModel", "externalId": default_method},
+                value={"space": "power-ops-day-ahead-frontend-contract-model", "externalId": default_method},
             )
         )
     if default_method and isinstance(default_method, tuple):
@@ -234,7 +234,8 @@ def _create_market_price_area_filter(
             dm.filters.In(
                 view_id.as_property_ref("defaultMethod"),
                 values=[
-                    {"space": "poweropsDayAheadFrontendContractModel", "externalId": item} for item in default_method
+                    {"space": "power-ops-day-ahead-frontend-contract-model", "externalId": item}
+                    for item in default_method
                 ],
             )
         )

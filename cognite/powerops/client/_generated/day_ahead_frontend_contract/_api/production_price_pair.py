@@ -126,7 +126,7 @@ class ProductionPricePairAPI(NodeAPI[ProductionPricePair, ProductionPricePairApp
         return self._apply(production_price_pair, replace)
 
     def delete(
-        self, external_id: str | SequenceNotStr[str], space: str = "poweropsDayAheadFrontendContractModel"
+        self, external_id: str | SequenceNotStr[str], space: str = "power-ops-day-ahead-frontend-contract-model"
     ) -> dm.InstancesDeleteResult:
         """Delete one or more production price pair.
 
@@ -156,7 +156,7 @@ class ProductionPricePairAPI(NodeAPI[ProductionPricePair, ProductionPricePairApp
         ...
 
     def retrieve(
-        self, external_id: str | SequenceNotStr[str], space: str = "poweropsDayAheadFrontendContractModel"
+        self, external_id: str | SequenceNotStr[str], space: str = "power-ops-day-ahead-frontend-contract-model"
     ) -> ProductionPricePair | ProductionPricePairList | None:
         """Retrieve one or more production price pairs by id(s).
 

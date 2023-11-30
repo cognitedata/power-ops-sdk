@@ -6,12 +6,12 @@ from cognite.client import ClientConfig, CogniteClient, data_modeling as dm
 from cognite.client.credentials import OAuthClientCredentials
 
 from ._api.alert import AlertAPI
-from ._api.bid import BidAPI
+from ._api.bid_document import BidDocumentAPI
 from ._api.bid_method import BidMethodAPI
 from ._api.bid_table import BidTableAPI
-from ._api.market_price_area import MarketPriceAreaAPI
+from ._api.price_area import PriceAreaAPI
 from ._api.production_price_pair import ProductionPricePairAPI
-from ._api.shop import SHOPAPI
+from ._api.shop_multi_scenario import SHOPMultiScenarioAPI
 from ._api.shop_table import SHOPTableAPI
 from ._api.water_value_based import WaterValueBasedAPI
 from . import data_classes
@@ -27,7 +27,7 @@ class DayAheadFrontendContractAPI:
         pydantic = 2.5.2
 
     Data Model:
-        space: poweropsDayAheadFrontendContractModel
+        space: power-ops-day-ahead-frontend-contract-model
         externalId: DayAheadFrontendContract
         version: 1
     """
@@ -40,30 +40,30 @@ class DayAheadFrontendContractAPI:
         else:
             raise ValueError(f"Expected CogniteClient or ClientConfig, got {type(config_or_client)}")
         view_by_write_class = {
-            data_classes.AlertApply: dm.ViewId("poweropsDayAheadFrontendContractModel", "Alert", "1"),
-            data_classes.BidApply: dm.ViewId("poweropsDayAheadFrontendContractModel", "Bid", "1"),
-            data_classes.BidMethodApply: dm.ViewId("poweropsDayAheadFrontendContractModel", "BidMethod", "1"),
-            data_classes.BidTableApply: dm.ViewId("poweropsDayAheadFrontendContractModel", "BidTable", "1"),
-            data_classes.MarketPriceAreaApply: dm.ViewId(
-                "poweropsDayAheadFrontendContractModel", "MarketPriceArea", "1"
-            ),
+            data_classes.AlertApply: dm.ViewId("power-ops-day-ahead-frontend-contract-model", "Alert", "1"),
+            data_classes.BidDocumentApply: dm.ViewId("power-ops-day-ahead-frontend-contract-model", "BidDocument", "1"),
+            data_classes.BidMethodApply: dm.ViewId("power-ops-day-ahead-frontend-contract-model", "BidMethod", "1"),
+            data_classes.BidTableApply: dm.ViewId("power-ops-day-ahead-frontend-contract-model", "BidTable", "1"),
+            data_classes.PriceAreaApply: dm.ViewId("power-ops-day-ahead-frontend-contract-model", "PriceArea", "1"),
             data_classes.ProductionPricePairApply: dm.ViewId(
-                "poweropsDayAheadFrontendContractModel", "ProductionPricePair", "1"
+                "power-ops-day-ahead-frontend-contract-model", "ProductionPricePair", "1"
             ),
-            data_classes.SHOPApply: dm.ViewId("poweropsDayAheadFrontendContractModel", "SHOP", "1"),
-            data_classes.SHOPTableApply: dm.ViewId("poweropsDayAheadFrontendContractModel", "SHOPTable", "1"),
+            data_classes.SHOPMultiScenarioApply: dm.ViewId(
+                "power-ops-day-ahead-frontend-contract-model", "SHOPMultiScenario", "1"
+            ),
+            data_classes.SHOPTableApply: dm.ViewId("power-ops-day-ahead-frontend-contract-model", "SHOPTable", "1"),
             data_classes.WaterValueBasedApply: dm.ViewId(
-                "poweropsDayAheadFrontendContractModel", "WaterValueBased", "1"
+                "power-ops-day-ahead-frontend-contract-model", "WaterValueBased", "1"
             ),
         }
 
         self.alert = AlertAPI(client, view_by_write_class)
-        self.bid = BidAPI(client, view_by_write_class)
+        self.bid_document = BidDocumentAPI(client, view_by_write_class)
         self.bid_method = BidMethodAPI(client, view_by_write_class)
         self.bid_table = BidTableAPI(client, view_by_write_class)
-        self.market_price_area = MarketPriceAreaAPI(client, view_by_write_class)
+        self.price_area = PriceAreaAPI(client, view_by_write_class)
         self.production_price_pair = ProductionPricePairAPI(client, view_by_write_class)
-        self.shop = SHOPAPI(client, view_by_write_class)
+        self.shop_multi_scenario = SHOPMultiScenarioAPI(client, view_by_write_class)
         self.shop_table = SHOPTableAPI(client, view_by_write_class)
         self.water_value_based = WaterValueBasedAPI(client, view_by_write_class)
 

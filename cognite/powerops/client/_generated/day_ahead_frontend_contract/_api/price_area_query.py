@@ -4,33 +4,33 @@ from typing import TYPE_CHECKING
 from cognite.client import data_modeling as dm
 from ._core import DEFAULT_QUERY_LIMIT, QueryStep, QueryAPI, T_DomainModelList
 from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes import (
-    MarketPriceArea,
-    MarketPriceAreaApply,
+    PriceArea,
+    PriceAreaApply,
 )
-from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes._market_price_area import (
-    _MARKETPRICEAREA_PROPERTIES_BY_FIELD,
+from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes._price_area import (
+    _PRICEAREA_PROPERTIES_BY_FIELD,
 )
 
 
-class MarketPriceAreaQueryAPI(QueryAPI[T_DomainModelList]):
+class PriceAreaQueryAPI(QueryAPI[T_DomainModelList]):
     def query(
         self,
-        retrieve_market_price_area: bool = True,
+        retrieve_price_area: bool = True,
     ) -> T_DomainModelList:
         """Execute query and return the result.
 
         Args:
-            retrieve_market_price_area: Whether to retrieve the market price area or not.
+            retrieve_price_area: Whether to retrieve the price area or not.
 
         Returns:
             The list of the source nodes of the query.
 
         """
         from_ = self._builder[-1].name
-        if retrieve_market_price_area and not self._builder[-1].name.startswith("market_price_area"):
+        if retrieve_price_area and not self._builder[-1].name.startswith("price_area"):
             self._builder.append(
                 QueryStep(
-                    name=self._builder.next_name("market_price_area"),
+                    name=self._builder.next_name("price_area"),
                     expression=dm.query.NodeResultSetExpression(
                         filter=None,
                         from_=from_,
@@ -38,12 +38,12 @@ class MarketPriceAreaQueryAPI(QueryAPI[T_DomainModelList]):
                     select=dm.query.Select(
                         [
                             dm.query.SourceSelector(
-                                self._view_by_write_class[MarketPriceAreaApply],
-                                list(_MARKETPRICEAREA_PROPERTIES_BY_FIELD.values()),
+                                self._view_by_write_class[PriceAreaApply],
+                                list(_PRICEAREA_PROPERTIES_BY_FIELD.values()),
                             )
                         ]
                     ),
-                    result_cls=MarketPriceArea,
+                    result_cls=PriceArea,
                     max_retrieve_limit=-1,
                 ),
             )

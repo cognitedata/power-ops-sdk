@@ -36,7 +36,7 @@ _SHOPTABLE_PROPERTIES_BY_FIELD = {
     "resource_cost": "resourceCost",
     "table": "table",
     "asset_type": "assetType",
-    "asset_id": "asset_id",
+    "asset_id": "assetId",
 }
 
 
@@ -53,20 +53,22 @@ class SHOPTable(DomainModel):
         asset_type: The asset type field.
         asset_id: The asset id field.
         alerts: The alert field.
-        production_price_pair: The production price pair field.
+        production_price_pairs: The production price pair field.
         created_time: The created time of the shop table node.
         last_updated_time: The last updated time of the shop table node.
         deleted_time: If present, the deleted time of the shop table node.
         version: The version of the shop table node.
     """
 
-    space: str = "poweropsDayAheadFrontendContractModel"
+    space: str = "power-ops-day-ahead-frontend-contract-model"
     resource_cost: Optional[str] = Field(None, alias="resourceCost")
     table: Union[str, None] = None
     asset_type: Optional[str] = Field(None, alias="assetType")
-    asset_id: Optional[str] = None
+    asset_id: Optional[str] = Field(None, alias="assetId")
     alerts: Union[list[Alert], list[str], None] = Field(default=None, repr=False)
-    production_price_pair: Union[ProductionPricePair, str, None] = Field(None, repr=False, alias="productionPricePair")
+    production_price_pairs: Union[list[ProductionPricePair], list[str], None] = Field(
+        default=None, repr=False, alias="productionPricePairs"
+    )
 
     def as_apply(self) -> SHOPTableApply:
         """Convert this read version of shop table to the writing version."""
@@ -78,9 +80,12 @@ class SHOPTable(DomainModel):
             asset_type=self.asset_type,
             asset_id=self.asset_id,
             alerts=[alert.as_apply() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
-            production_price_pair=self.production_price_pair.as_apply()
-            if isinstance(self.production_price_pair, DomainModel)
-            else self.production_price_pair,
+            production_price_pairs=[
+                production_price_pair.as_apply()
+                if isinstance(production_price_pair, DomainModel)
+                else production_price_pair
+                for production_price_pair in self.production_price_pairs or []
+            ],
         )
 
 
@@ -97,21 +102,21 @@ class SHOPTableApply(DomainModelApply):
         asset_type: The asset type field.
         asset_id: The asset id field.
         alerts: The alert field.
-        production_price_pair: The production price pair field.
+        production_price_pairs: The production price pair field.
         existing_version: Fail the ingestion request if the shop table version is greater than or equal to this value.
             If no existingVersion is specified, the ingestion will always overwrite any existing data for the edge (for the specified container or instance).
             If existingVersion is set to 0, the upsert will behave as an insert, so it will fail the bulk if the item already exists.
             If skipOnVersionConflict is set on the ingestion request, then the item will be skipped instead of failing the ingestion request.
     """
 
-    space: str = "poweropsDayAheadFrontendContractModel"
+    space: str = "power-ops-day-ahead-frontend-contract-model"
     resource_cost: Optional[str] = Field(None, alias="resourceCost")
     table: Union[str, None] = None
     asset_type: Optional[str] = Field(None, alias="assetType")
-    asset_id: Optional[str] = None
+    asset_id: Optional[str] = Field(None, alias="assetId")
     alerts: Union[list[AlertApply], list[str], None] = Field(default=None, repr=False)
-    production_price_pair: Union[ProductionPricePairApply, str, None] = Field(
-        None, repr=False, alias="productionPricePair"
+    production_price_pairs: Union[list[ProductionPricePairApply], list[str], None] = Field(
+        default=None, repr=False, alias="productionPricePairs"
     )
 
     def _to_instances_apply(
@@ -124,7 +129,7 @@ class SHOPTableApply(DomainModelApply):
             return resources
 
         write_view = (view_by_write_class and view_by_write_class.get(type(self))) or dm.ViewId(
-            "poweropsDayAheadFrontendContractModel", "SHOPTable", "1"
+            "power-ops-day-ahead-frontend-contract-model", "SHOPTable", "1"
         )
 
         properties = {}
@@ -135,16 +140,7 @@ class SHOPTableApply(DomainModelApply):
         if self.asset_type is not None:
             properties["assetType"] = self.asset_type
         if self.asset_id is not None:
-            properties["asset_id"] = self.asset_id
-        if self.production_price_pair is not None:
-            properties["productionPricePair"] = {
-                "space": self.space
-                if isinstance(self.production_price_pair, str)
-                else self.production_price_pair.space,
-                "externalId": self.production_price_pair
-                if isinstance(self.production_price_pair, str)
-                else self.production_price_pair.external_id,
-            }
+            properties["assetId"] = self.asset_id
 
         if properties:
             this_node = dm.NodeApply(
@@ -161,15 +157,20 @@ class SHOPTableApply(DomainModelApply):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("poweropsDayAheadFrontendContractModel", "SHOPTable.alerts")
+        edge_type = dm.DirectRelationReference("power-ops-day-ahead-frontend-contract-model", "SHOPTable.alerts")
         for alert in self.alerts or []:
             other_resources = DomainRelationApply.from_edge_to_resources(
                 cache, self, alert, edge_type, view_by_write_class
             )
             resources.extend(other_resources)
 
-        if isinstance(self.production_price_pair, DomainModelApply):
-            other_resources = self.production_price_pair._to_instances_apply(cache, view_by_write_class)
+        edge_type = dm.DirectRelationReference(
+            "power-ops-day-ahead-frontend-contract-model", "SHOPTable.productionPricePairs"
+        )
+        for production_price_pair in self.production_price_pairs or []:
+            other_resources = DomainRelationApply.from_edge_to_resources(
+                cache, self, production_price_pair, edge_type, view_by_write_class
+            )
             resources.extend(other_resources)
 
         return resources
@@ -199,7 +200,6 @@ def _create_shop_table_filter(
     asset_type_prefix: str | None = None,
     asset_id: str | list[str] | None = None,
     asset_id_prefix: str | None = None,
-    production_price_pair: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -218,46 +218,11 @@ def _create_shop_table_filter(
     if asset_type_prefix:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("assetType"), value=asset_type_prefix))
     if asset_id and isinstance(asset_id, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("asset_id"), value=asset_id))
+        filters.append(dm.filters.Equals(view_id.as_property_ref("assetId"), value=asset_id))
     if asset_id and isinstance(asset_id, list):
-        filters.append(dm.filters.In(view_id.as_property_ref("asset_id"), values=asset_id))
+        filters.append(dm.filters.In(view_id.as_property_ref("assetId"), values=asset_id))
     if asset_id_prefix:
-        filters.append(dm.filters.Prefix(view_id.as_property_ref("asset_id"), value=asset_id_prefix))
-    if production_price_pair and isinstance(production_price_pair, str):
-        filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("productionPricePair"),
-                value={"space": "poweropsDayAheadFrontendContractModel", "externalId": production_price_pair},
-            )
-        )
-    if production_price_pair and isinstance(production_price_pair, tuple):
-        filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("productionPricePair"),
-                value={"space": production_price_pair[0], "externalId": production_price_pair[1]},
-            )
-        )
-    if production_price_pair and isinstance(production_price_pair, list) and isinstance(production_price_pair[0], str):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("productionPricePair"),
-                values=[
-                    {"space": "poweropsDayAheadFrontendContractModel", "externalId": item}
-                    for item in production_price_pair
-                ],
-            )
-        )
-    if (
-        production_price_pair
-        and isinstance(production_price_pair, list)
-        and isinstance(production_price_pair[0], tuple)
-    ):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("productionPricePair"),
-                values=[{"space": item[0], "externalId": item[1]} for item in production_price_pair],
-            )
-        )
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("assetId"), value=asset_id_prefix))
     if external_id_prefix:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if space and isinstance(space, str):

@@ -7,7 +7,14 @@ from ._core import (
     ResourcesApplyResult,
 )
 from ._alert import Alert, AlertApply, AlertApplyList, AlertFields, AlertList, AlertTextFields
-from ._bid import Bid, BidApply, BidApplyList, BidFields, BidList, BidTextFields
+from ._bid_document import (
+    BidDocument,
+    BidDocumentApply,
+    BidDocumentApplyList,
+    BidDocumentFields,
+    BidDocumentList,
+    BidDocumentTextFields,
+)
 from ._bid_method import (
     BidMethod,
     BidMethodApply,
@@ -17,13 +24,13 @@ from ._bid_method import (
     BidMethodTextFields,
 )
 from ._bid_table import BidTable, BidTableApply, BidTableApplyList, BidTableFields, BidTableList, BidTableTextFields
-from ._market_price_area import (
-    MarketPriceArea,
-    MarketPriceAreaApply,
-    MarketPriceAreaApplyList,
-    MarketPriceAreaFields,
-    MarketPriceAreaList,
-    MarketPriceAreaTextFields,
+from ._price_area import (
+    PriceArea,
+    PriceAreaApply,
+    PriceAreaApplyList,
+    PriceAreaFields,
+    PriceAreaList,
+    PriceAreaTextFields,
 )
 from ._production_price_pair import (
     ProductionPricePair,
@@ -32,7 +39,14 @@ from ._production_price_pair import (
     ProductionPricePairFields,
     ProductionPricePairList,
 )
-from ._shop import SHOP, SHOPApply, SHOPApplyList, SHOPFields, SHOPList, SHOPTextFields
+from ._shop_multi_scenario import (
+    SHOPMultiScenario,
+    SHOPMultiScenarioApply,
+    SHOPMultiScenarioApplyList,
+    SHOPMultiScenarioFields,
+    SHOPMultiScenarioList,
+    SHOPMultiScenarioTextFields,
+)
 from ._shop_table import (
     SHOPTable,
     SHOPTableApply,
@@ -50,12 +64,12 @@ from ._water_value_based import (
     WaterValueBasedTextFields,
 )
 
-Bid.model_rebuild()
-BidApply.model_rebuild()
+BidDocument.model_rebuild()
+BidDocumentApply.model_rebuild()
 BidTable.model_rebuild()
 BidTableApply.model_rebuild()
-MarketPriceArea.model_rebuild()
-MarketPriceAreaApply.model_rebuild()
+PriceArea.model_rebuild()
+PriceAreaApply.model_rebuild()
 SHOPTable.model_rebuild()
 SHOPTableApply.model_rebuild()
 
@@ -72,12 +86,12 @@ __all__ = [
     "AlertApplyList",
     "AlertFields",
     "AlertTextFields",
-    "Bid",
-    "BidApply",
-    "BidList",
-    "BidApplyList",
-    "BidFields",
-    "BidTextFields",
+    "BidDocument",
+    "BidDocumentApply",
+    "BidDocumentList",
+    "BidDocumentApplyList",
+    "BidDocumentFields",
+    "BidDocumentTextFields",
     "BidMethod",
     "BidMethodApply",
     "BidMethodList",
@@ -90,23 +104,23 @@ __all__ = [
     "BidTableApplyList",
     "BidTableFields",
     "BidTableTextFields",
-    "MarketPriceArea",
-    "MarketPriceAreaApply",
-    "MarketPriceAreaList",
-    "MarketPriceAreaApplyList",
-    "MarketPriceAreaFields",
-    "MarketPriceAreaTextFields",
+    "PriceArea",
+    "PriceAreaApply",
+    "PriceAreaList",
+    "PriceAreaApplyList",
+    "PriceAreaFields",
+    "PriceAreaTextFields",
     "ProductionPricePair",
     "ProductionPricePairApply",
     "ProductionPricePairList",
     "ProductionPricePairApplyList",
     "ProductionPricePairFields",
-    "SHOP",
-    "SHOPApply",
-    "SHOPList",
-    "SHOPApplyList",
-    "SHOPFields",
-    "SHOPTextFields",
+    "SHOPMultiScenario",
+    "SHOPMultiScenarioApply",
+    "SHOPMultiScenarioList",
+    "SHOPMultiScenarioApplyList",
+    "SHOPMultiScenarioFields",
+    "SHOPMultiScenarioTextFields",
     "SHOPTable",
     "SHOPTableApply",
     "SHOPTableList",

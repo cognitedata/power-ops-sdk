@@ -6,22 +6,22 @@ from cognite.client import data_modeling as dm
 from ._core import DEFAULT_LIMIT_READ, EdgeAPI, _create_edge_filter
 
 
-class BidAlertsAPI(EdgeAPI):
+class BidDocumentAlertsAPI(EdgeAPI):
     def list(
         self,
-        bid: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-        bid_space: str = "poweropsDayAheadFrontendContractModel",
+        bid_document: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
+        bid_document_space: str = "power-ops-day-ahead-frontend-contract-model",
         alert: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-        alert_space: str = "poweropsDayAheadFrontendContractModel",
+        alert_space: str = "power-ops-day-ahead-frontend-contract-model",
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit=DEFAULT_LIMIT_READ,
     ) -> dm.EdgeList:
-        """List alert edges of a bid.
+        """List alert edges of a bid document.
 
         Args:
-            bid: ID of the source bids.
-            bid_space: Location of the bids.
+            bid_document: ID of the source bid documents.
+            bid_document_space: Location of the bid documents.
             alert: ID of the target alerts.
             alert_space: Location of the alerts.
             external_id_prefix: The prefix of the external ID to filter on.
@@ -34,17 +34,17 @@ class BidAlertsAPI(EdgeAPI):
 
         Examples:
 
-            List 5 alert edges connected to "my_bid":
+            List 5 alert edges connected to "my_bid_document":
 
                 >>> from cognite.powerops.client._generated.day_ahead_frontend_contract import DayAheadFrontendContractAPI
                 >>> client = DayAheadFrontendContractAPI()
-                >>> bid = client.bid.alerts_edge.list("my_bid", limit=5)
+                >>> bid_document = client.bid_document.alerts_edge.list("my_bid_document", limit=5)
 
         """
         filter_ = _create_edge_filter(
-            dm.DirectRelationReference("poweropsDayAheadFrontendContractModel", "Bid.alerts"),
-            bid,
-            bid_space,
+            dm.DirectRelationReference("power-ops-day-ahead-frontend-contract-model", "Bid.alerts"),
+            bid_document,
+            bid_document_space,
             alert,
             alert_space,
             external_id_prefix,
