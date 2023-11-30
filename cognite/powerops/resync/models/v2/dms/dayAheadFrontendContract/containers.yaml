@@ -1,6 +1,6 @@
-- space: poweropsDayAheadFrontendContractModel
-  externalId: Bid
-  name: Bid
+- space: {{model_space}}
+  externalId: BidDocument
+  name: BidDocument
   usedFor: node
   properties:
     name:
@@ -16,7 +16,7 @@
     method:
       type:
         container:
-          space: poweropsDayAheadFrontendContractModel
+          space: {{model_space}}
           externalId: BidMethod
         type: direct
       nullable: true
@@ -45,7 +45,7 @@
     total:
       type:
         container:
-          space: poweropsDayAheadFrontendContractModel
+          space: {{model_space}}
           externalId: BidTable
         type: direct
       nullable: true
@@ -70,10 +70,19 @@
       name: endCalculation
       defaultValue: null
       description: null
+    isComplete:
+      type:
+        list: false
+        type: boolean
+      nullable: false
+      autoIncrement: false
+      name: isComplete
+      defaultValue: false
+      description: null
     market:
       type:
         container:
-          space: poweropsDayAheadFrontendContractModel
+          space: {{model_space}}
           externalId: MarketPriceArea
         type: direct
       nullable: true
@@ -85,7 +94,7 @@
       indexType: btree
       properties:
         - date
-- space: poweropsDayAheadFrontendContractModel
+- space: {{model_space}}
   externalId: BidMethod
   name: BidMethod
   usedFor: node
@@ -100,7 +109,7 @@
       name: name
       defaultValue: null
       description: null
-- space: poweropsDayAheadFrontendContractModel
+- space: {{model_space}}
   externalId: SHOP
   name: SHOP
   usedFor: node
@@ -117,7 +126,7 @@
       description: 'external id linked to production data'
     priceScenarios:
       type:
-        list: false
+        list: true
         type: timeseries
       nullable: true
       autoIncrement: false
@@ -129,9 +138,9 @@
       constraintType: requires
       require:
         type: container
-        space: poweropsDayAheadFrontendContractModel
+        space: {{model_space}}
         externalId: BidMethod
-- space: poweropsDayAheadFrontendContractModel
+- space: {{model_space}}
   externalId: MarketPriceArea
   name: MarketPriceArea
   usedFor: node
@@ -157,7 +166,7 @@
     defaultMethod:
       type:
         container:
-          space: poweropsDayAheadFrontendContractModel
+          space: {{model_space}}
           externalId: BidMethod
         type: direct
       nullable: true
@@ -190,7 +199,7 @@
       autoIncrement: false
       name: timezone
       defaultValue: null
-- space: poweropsDayAheadFrontendContractModel
+- space: {{model_space}}
   externalId: BidTable
   name: BidTable
   usedFor: node
@@ -221,16 +230,16 @@
       autoIncrement: false
       name: assetType
       defaultValue: null
-    asset_id:
+    assetId:
       type:
         list: false
         collation: ucs_basic
         type: text
       nullable: true
       autoIncrement: false
-      name: timezone
+      name: assetId
       defaultValue: null
-- space: poweropsDayAheadFrontendContractModel
+- space: {{model_space}}
   externalId: SHOPTable
   name: SHOPTable
   usedFor: node
@@ -238,14 +247,14 @@
     productionPricePair:
       type:
         container:
-          space: poweropsDayAheadFrontendContractModel
+          space: {{model_space}}
           externalId: ProductionPricePair
         type: direct
       nullable: true
       autoIncrement: false
       name: productionPricePair
       defaultValue: null
-- space: poweropsDayAheadFrontendContractModel
+- space: {{model_space}}
   externalId: ProductionPricePair
   name: ProductionPricePair
   usedFor: node

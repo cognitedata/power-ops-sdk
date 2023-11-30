@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any, ClassVar
+from typing import Any, ClassVar, Optional
 
 import yaml
 from cognite.client.data_classes.data_modeling import (
@@ -18,9 +18,26 @@ _DMS_DIR = Path(__file__).parent / "dms"
 
 
 class SimpleDataModel(DataModel):
-    containers_file: ClassVar[Path | None] = None
-    views_file: ClassVar[Path | None] = None
-    data_model_file: ClassVar[Path | None] = None
+    containers_file: ClassVar[Optional[Path]] = None
+    views_file: ClassVar[Optional[Path]] = None
+    data_model_file: ClassVar[Optional[Path]] = None
+    config_files: ClassVar[list[Path]] = []
+
+    @classmethod
+    def _populate_config(cls, file: Path) -> str:
+        file_contents = file.read_text()
+        if not cls.config_files:
+            return file_contents
+        config = {}
+        for config_file in cls.config_files:
+            config.update(yaml.safe_load(config_file.read_text()))
+        for variable, value in config.items():
+            file_contents = file_contents.replace(f"{{{{{variable}}}}}", value)
+            file_contents = file_contents.replace(f"{{{{{ variable }}}}}", value)
+        if "{{" in file_contents:
+            position = file_contents.index("{{")
+            raise ValueError(f"Unresolved variables in {file} near {file_contents[position:position+20]!r}")
+        return file_contents
 
     @classmethod
     def containers_data(cls) -> list[dict[str, Any]]:
@@ -28,7 +45,9 @@ class SimpleDataModel(DataModel):
             if cls.containers_file is None:
                 cls._loaded_containers_data = []
             else:
-                cls._loaded_containers_data = yaml.safe_load(cls.containers_file.read_text())
+                cls._loaded_containers_data = yaml.safe_load(
+                    cls._populate_config(cls.containers_file),
+                )
         return cls._loaded_containers_data
 
     @classmethod
@@ -43,7 +62,9 @@ class SimpleDataModel(DataModel):
             if cls.views_file is None:
                 cls._loaded_views_data = []
             else:
-                cls._loaded_views_data = yaml.safe_load(cls.views_file.read_text())
+                cls._loaded_views_data = yaml.safe_load(
+                    cls._populate_config(cls.views_file),
+                )
         return cls._loaded_views_data
 
     @classmethod
@@ -58,7 +79,9 @@ class SimpleDataModel(DataModel):
             if cls.data_model_file is None:
                 cls._loaded_data_model_data = {}
             else:
-                cls._loaded_data_model_data = yaml.safe_load(cls.data_model_file.read_text())
+                cls._loaded_data_model_data = yaml.safe_load(
+                    cls._populate_config(cls.data_model_file),
+                )
         return cls._loaded_data_model_data
 
     @classmethod
@@ -96,9 +119,11 @@ class SimpleDataModel(DataModel):
 
 class FrontendContractModel(SimpleDataModel):
     containers_file = _DMS_DIR / "frontendContract" / "containers.yaml"
+    config_files = [_DMS_DIR / "frontendContract" / "config.yaml"]
 
 
 class DayAheadFrontendContractModel(SimpleDataModel):
     containers_file = _DMS_DIR / "dayAheadFrontendContract" / "containers.yaml"
     views_file = _DMS_DIR / "dayAheadFrontendContract" / "views.yaml"
     data_model_file = _DMS_DIR / "dayAheadFrontendContract" / "data_model.yaml"
+    config_files = [_DMS_DIR / "dayAheadFrontendContract" / "config.yaml"]

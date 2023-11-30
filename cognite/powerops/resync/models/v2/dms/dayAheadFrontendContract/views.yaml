@@ -1,112 +1,120 @@
-- space: poweropsDayAheadFrontendContractModel
-  externalId: Bid
-  name: Bid
-  version: '1'
+- space: '{{model_space}}'
+  externalId: BidDocument
+  name: BidDocument
+  version: '{{view_BidDocument_version}}'
   properties:
     name:
       container:
-        space: poweropsDayAheadFrontendContractModel
-        externalId: Bid
+        space: '{{model_space}}'
+        externalId: BidDocument
         type: container
       containerPropertyIdentifier: name
       name: name
       description: null
     method:
       container:
-        space: poweropsDayAheadFrontendContractModel
-        externalId: Bid
+        space: '{{model_space}}'
+        externalId: BidDocument
         type: container
       source:
         type: view
-        space: poweropsDayAheadFrontendContractModel
+        space: '{{model_space}}'
         externalId: BidMethod
-        version: '1'
+        version: '{{view_BidMethod_version}}'
       containerPropertyIdentifier: method
       name: method
       description: null
     priceArea:
       container:
-        space: poweropsDayAheadFrontendContractModel
-        externalId: Bid
+        space: '{{model_space}}'
+        externalId: BidDocument
         type: container
       containerPropertyIdentifier: priceArea
       name: priceArea
       description: null
     date:
       container:
-        space: poweropsDayAheadFrontendContractModel
-        externalId: Bid
+        space: '{{model_space}}'
+        externalId: BidDocument
         type: container
       containerPropertyIdentifier: date
       name: date
       description: null
     total:
       container:
-        space: poweropsDayAheadFrontendContractModel
-        externalId: Bid
+        space: '{{model_space}}'
+        externalId: BidDocument
         type: container
       containerPropertyIdentifier: total
       name: total
       description: null
     startCalculation:
       container:
-        space: poweropsDayAheadFrontendContractModel
-        externalId: Bid
+        space: '{{model_space}}'
+        externalId: BidDocument
         type: container
       containerPropertyIdentifier: startCalculation
       name: startCalculation
       description: null
     endCalculation:
       container:
-        space: poweropsDayAheadFrontendContractModel
-        externalId: Bid
+        space: '{{model_space}}'
+        externalId: BidDocument
         type: container
       containerPropertyIdentifier: endCalculation
       name: endCalculation
       description: null
+    isComplete:
+      container:
+        space: '{{model_space}}'
+        externalId: BidDocument
+        type: container
+      containerPropertyIdentifier: isComplete
+      name: isComplete
+      description: null
     market:
       container:
-        space: poweropsDayAheadFrontendContractModel
-        externalId: Bid
+        space: '{{model_space}}'
+        externalId: BidDocument
         type: container
       source:
         type: view
-        space: poweropsDayAheadFrontendContractModel
+        space: '{{model_space}}'
         externalId: MarketPriceArea
-        version: '1'
+        version: '{{view_MarkerPriceArea_version}}'
       containerPropertyIdentifier: market
       name: market
       description: null
     partials:
       type:
-        space: poweropsDayAheadFrontendContractModel
+        space: '{{model_space}}'
         externalId: Bid.partials
       source:
-        space: poweropsDayAheadFrontendContractModel
+        space: '{{model_space}}'
         externalId: BidTable
-        version: 1
+        version: '{{view_BidTable_version}}'
         type: view
       direction: outwards
       name: partials
     alerts:
       type:
-        space: poweropsDayAheadFrontendContractModel
+        space: '{{model_space}}'
         externalId: Bid.alerts
       source:
-        space: poweropsDayAheadFrontendContractModel
+        space: '{{model_space}}'
         externalId: Alert
-        version: 1
+        version: '{{view_Alert_version}}'
         type: view
       direction: outwards
       name: alerts
-- space: poweropsDayAheadFrontendContractModel
+- space: '{{model_space}}'
   externalId: Alert
   name: Alert
-  version: '1'
+  version: '{{view_Alert_version}}'
   properties:
     time:
       container:
-        space: poweropsFrontendContractModel
+        space: '{{shared_model_space}}'
         externalId: Alert
         type: container
       containerPropertyIdentifier: time
@@ -114,7 +122,7 @@
       description: null
     title:
       container:
-        space: poweropsFrontendContractModel
+        space: '{{shared_model_space}}'
         externalId: Alert
         type: container
       containerPropertyIdentifier: title
@@ -122,7 +130,7 @@
       description: null
     description:
       container:
-        space: poweropsFrontendContractModel
+        space: '{{shared_model_space}}'
         externalId: Alert
         type: container
       containerPropertyIdentifier: description
@@ -130,7 +138,7 @@
       description: null
     severity:
       container:
-        space: poweropsFrontendContractModel
+        space: '{{shared_model_space}}'
         externalId: Alert
         type: container
       containerPropertyIdentifier: severity
@@ -138,7 +146,7 @@
       description: null
     alertType:
       container:
-        space: poweropsFrontendContractModel
+        space: '{{shared_model_space}}'
         externalId: Alert
         type: container
       containerPropertyIdentifier: alertType
@@ -146,7 +154,7 @@
       description: null
     statusCode:
       container:
-        space: poweropsFrontendContractModel
+        space: '{{shared_model_space}}'
         externalId: Alert
         type: container
       containerPropertyIdentifier: statusCode
@@ -154,7 +162,7 @@
       description: null
     eventIds:
       container:
-        space: poweropsFrontendContractModel
+        space: '{{shared_model_space}}'
         externalId: Alert
         type: container
       containerPropertyIdentifier: eventIds
@@ -162,39 +170,39 @@
       description: null
     calculationRun:
       container:
-        space: poweropsFrontendContractModel
+        space: '{{shared_model_space}}'
         externalId: Alert
         type: container
       containerPropertyIdentifier: calculationRun
       name: calculationRun
       description: null
-- space: poweropsDayAheadFrontendContractModel
+- space: '{{model_space}}'
   externalId: BidMethod
   name: BidMethod
-  version: '1'
+  version: '{{view_BidMethod_version}}'
   properties:
     name:
       container:
-        space: poweropsDayAheadFrontendContractModel
+        space: '{{model_space}}'
         externalId: BidMethod
         type: container
       containerPropertyIdentifier: name
       name: name
       description: null
-- space: poweropsDayAheadFrontendContractModel
+- space: '{{model_space}}'
   externalId: SHOP
   name: SHOP
-  version: '1'
+  version: '{{view_SHOP_version}}'
   implements:
     - type: view
-      space: poweropsDayAheadFrontendContractModel
+      space: '{{model_space}}'
       externalId: BidMethod
-      version: 1
+      version: '{{view_BidMethod_version}}'
   properties:
     #  name: (inherited)
     shopCases:
       container:
-        space: poweropsDayAheadFrontendContractModel
+        space: '{{model_space}}'
         externalId: SHOP
         type: container
       containerPropertyIdentifier: shopCases
@@ -202,7 +210,7 @@
       description: null
     priceScenarios:
       container:
-        space: poweropsDayAheadFrontendContractModel
+        space: '{{model_space}}'
         externalId: SHOP
         type: container
       containerPropertyIdentifier: priceScenarios
@@ -212,15 +220,15 @@
     prefix:
       property: [ 'node', 'externalId' ]
       value: "SHOP"
-- space: poweropsDayAheadFrontendContractModel
+- space: '{{model_space}}'
   externalId: WaterValueBased
   name: WaterValueBased
-  version: '1'
+  version: '{{view_WaterValueBased_version}}'
   implements:
     - type: view
-      space: poweropsDayAheadFrontendContractModel
+      space: '{{model_space}}'
       externalId: BidMethod
-      version: 1
+      version: '{{view_BidMethod_version}}'
   properties: {}
   filter:
     prefix:
@@ -228,14 +236,14 @@
         - node
         - externalId
       value: "WVB"
-- space: poweropsDayAheadFrontendContractModel
+- space: '{{model_space}}'
   externalId: MarketPriceArea
   name: MarketPriceArea
-  version: '1'
+  version: '{{view_MarkerPriceArea_version}}'
   properties:
     name:
       container:
-        space: poweropsDayAheadFrontendContractModel
+        space: '{{model_space}}'
         externalId: MarketPriceArea
         type: container
       containerPropertyIdentifier: name
@@ -243,7 +251,7 @@
       description: null
     priceArea:
       container:
-        space: poweropsDayAheadFrontendContractModel
+        space: '{{model_space}}'
         externalId: MarketPriceArea
         type: container
       containerPropertyIdentifier: priceArea
@@ -251,19 +259,19 @@
       description: null
     defaultMethod:
       container:
-        space: poweropsDayAheadFrontendContractModel
+        space: '{{model_space}}'
         externalId: MarketPriceArea
         type: container
       source:
         type: view
-        space: poweropsDayAheadFrontendContractModel
+        space: '{{model_space}}'
         externalId: BidMethod
-        version: '1'
+        version: '{{view_BidMethod_version}}'
       containerPropertyIdentifier: defaultMethod
       name: defaultMethod
     timezone:
       container:
-        space: poweropsDayAheadFrontendContractModel
+        space: '{{model_space}}'
         externalId: MarketPriceArea
         type: container
       containerPropertyIdentifier: timezone
@@ -271,7 +279,7 @@
       description: null
     mainScenario:
       container:
-        space: poweropsDayAheadFrontendContractModel
+        space: '{{model_space}}'
         externalId: MarketPriceArea
         type: container
       containerPropertyIdentifier: mainScenario
@@ -279,20 +287,20 @@
       description: null
     priceScenarios:
       container:
-        space: poweropsDayAheadFrontendContractModel
+        space: '{{model_space}}'
         externalId: MarketPriceArea
         type: container
       containerPropertyIdentifier: priceScenarios
       name: priceScenarios
       description: null
-- space: poweropsDayAheadFrontendContractModel
+- space: '{{model_space}}'
   externalId: BidTable
   name: BidTable
-  version: '1'
+  version: '{{view_BidTable_version}}'
   properties:
     resourceCost:
       container:
-        space: poweropsDayAheadFrontendContractModel
+        space: '{{model_space}}'
         externalId: BidTable
         type: container
       containerPropertyIdentifier: resourceCost
@@ -300,7 +308,7 @@
       description: null
     table:
       container:
-        space: poweropsDayAheadFrontendContractModel
+        space: '{{model_space}}'
         externalId: BidTable
         type: container
       containerPropertyIdentifier: table
@@ -308,7 +316,7 @@
       description: null
     assetType:
       container:
-        space: poweropsDayAheadFrontendContractModel
+        space: '{{model_space}}'
         externalId: BidTable
         type: container
       containerPropertyIdentifier: assetType
@@ -316,7 +324,7 @@
       description: null
     asset_id:
       container:
-        space: poweropsDayAheadFrontendContractModel
+        space: '{{model_space}}'
         externalId: BidTable
         type: container
       containerPropertyIdentifier: asset_id
@@ -324,24 +332,24 @@
       description: null
     alerts:
       type:
-        space: poweropsDayAheadFrontendContractModel
+        space: '{{model_space}}'
         externalId: BidTable.alerts
       source:
-        space: poweropsDayAheadFrontendContractModel
+        space: '{{model_space}}'
         externalId: Alert
-        version: 1
+        version: '{{view_Alert_version}}'
         type: view
       direction: outwards
       name: alerts
-- space: poweropsDayAheadFrontendContractModel
+- space: '{{model_space}}'
   externalId: SHOPTable
   name: SHOPTable
-  version: '1'
+  version: '{{view_SHOPTable_version}}'
   implements:
     - type: view
-      space: poweropsDayAheadFrontendContractModel
+      space: '{{model_space}}'
       externalId: BidTable
-      version: 1
+      version: '{{view_BidTable_version}}'
   properties:
     #  resourceCost: (inherited)
     #  table: (inherited)
@@ -350,39 +358,39 @@
     #  alerts: (inherited?)
     alerts:  # inheritance seems to not work correctly for inter-space relationships
       type:
-        space: poweropsDayAheadFrontendContractModel
+        space: '{{model_space}}'
         externalId: SHOPTable.alerts
       source:
-        space: poweropsDayAheadFrontendContractModel
+        space: '{{model_space}}'
         externalId: Alert
-        version: 1
+        version: '{{view_Alert_version}}'
         type: view
       direction: outwards
       name: alerts
     productionPricePair:
       container:
-        space: poweropsDayAheadFrontendContractModel
+        space: '{{model_space}}'
         externalId: SHOPTable
         type: container
       source:
         type: view
-        space: poweropsDayAheadFrontendContractModel
+        space: '{{model_space}}'
         externalId: ProductionPricePair
-        version: '1'
+        version: '{{view_ProductionPricePair_version}}'
       containerPropertyIdentifier: productionPricePair
       name: productionPricePair
   filter:
     prefix:
       property: [ 'node', 'externalId' ]
       value: "SHOP"
-- space: poweropsDayAheadFrontendContractModel
+- space: '{{model_space}}'
   externalId: ProductionPricePair
   name: ProductionPricePair
-  version: '1'
+  version: '{{view_ProductionPricePair_version}}'
   properties:
     production:
       container:
-        space: poweropsDayAheadFrontendContractModel
+        space: '{{model_space}}'
         externalId: ProductionPricePair
         type: container
       containerPropertyIdentifier: production
@@ -390,7 +398,7 @@
       description: null
     price:
       container:
-        space: poweropsDayAheadFrontendContractModel
+        space: '{{model_space}}'
         externalId: ProductionPricePair
         type: container
       containerPropertyIdentifier: price

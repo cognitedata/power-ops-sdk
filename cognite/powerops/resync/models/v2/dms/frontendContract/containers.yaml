@@ -1,4 +1,4 @@
-- space: poweropsFrontendContractModel
+- space: {{model_space}}
   externalId: Alert
   name: Alert
   usedFor: node
