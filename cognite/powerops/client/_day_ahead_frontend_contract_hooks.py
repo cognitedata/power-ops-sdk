@@ -5,7 +5,7 @@ __all__ = []
 
 
 from cognite.powerops.client._generated.day_ahead_frontend_contract.data_classes import (
-    SHOPApply,
+    SHOPMultiScenarioApply,
     SHOPTableApply,
     WaterValueBasedApply,
 )
@@ -26,5 +26,5 @@ def prefix_wvb(domain_cls: type, data: dict) -> str:
 
 
 SHOPTableApply.external_id_factory = prefix_shop
-SHOPApply.external_id_factory = prefix_shop
+SHOPMultiScenarioApply.external_id_factory = prefix_shop
 WaterValueBasedApply.external_id_factory = prefix_wvb
