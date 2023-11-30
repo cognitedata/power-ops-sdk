@@ -29,6 +29,11 @@
         space: '{{model_space}}'
         externalId: BidDocument
         type: container
+      source:
+        type: view
+        space: '{{model_space}}'
+        externalId: PriceArea
+        version: '{{view_PriceArea_version}}'
       containerPropertyIdentifier: priceArea
       name: priceArea
       description: null
@@ -45,6 +50,11 @@
         space: '{{model_space}}'
         externalId: BidDocument
         type: container
+      source:
+        type: view
+        space: '{{model_space}}'
+        externalId: BidTable
+        version: '{{view_BidTable_version}}'
       containerPropertyIdentifier: total
       name: total
       description: null
@@ -71,19 +81,6 @@
         type: container
       containerPropertyIdentifier: isComplete
       name: isComplete
-      description: null
-    market:
-      container:
-        space: '{{model_space}}'
-        externalId: BidDocument
-        type: container
-      source:
-        type: view
-        space: '{{model_space}}'
-        externalId: MarketPriceArea
-        version: '{{view_MarkerPriceArea_version}}'
-      containerPropertyIdentifier: market
-      name: market
       description: null
     partials:
       type:
@@ -190,9 +187,9 @@
       name: name
       description: null
 - space: '{{model_space}}'
-  externalId: SHOP
-  name: SHOP
-  version: '{{view_SHOP_version}}'
+  externalId: SHOPMultiScenario
+  name: SHOPMultiScenario
+  version: '{{view_SHOPMultiScenario_version}}'
   implements:
     - type: view
       space: '{{model_space}}'
@@ -203,7 +200,7 @@
     shopCases:
       container:
         space: '{{model_space}}'
-        externalId: SHOP
+        externalId: SHOPMultiScenario
         type: container
       containerPropertyIdentifier: shopCases
       name: shopCases
@@ -211,7 +208,7 @@
     priceScenarios:
       container:
         space: '{{model_space}}'
-        externalId: SHOP
+        externalId: SHOPMultiScenario
         type: container
       containerPropertyIdentifier: priceScenarios
       name: priceScenarios
@@ -237,14 +234,14 @@
         - externalId
       value: "WVB"
 - space: '{{model_space}}'
-  externalId: MarketPriceArea
-  name: MarketPriceArea
-  version: '{{view_MarkerPriceArea_version}}'
+  externalId: PriceArea
+  name: PriceArea
+  version: '{{view_PriceArea_version}}'
   properties:
     name:
       container:
         space: '{{model_space}}'
-        externalId: MarketPriceArea
+        externalId: PriceArea
         type: container
       containerPropertyIdentifier: name
       name: name
@@ -252,7 +249,7 @@
     priceArea:
       container:
         space: '{{model_space}}'
-        externalId: MarketPriceArea
+        externalId: PriceArea
         type: container
       containerPropertyIdentifier: priceArea
       name: priceArea
@@ -260,7 +257,7 @@
     defaultMethod:
       container:
         space: '{{model_space}}'
-        externalId: MarketPriceArea
+        externalId: PriceArea
         type: container
       source:
         type: view
@@ -272,7 +269,7 @@
     timezone:
       container:
         space: '{{model_space}}'
-        externalId: MarketPriceArea
+        externalId: PriceArea
         type: container
       containerPropertyIdentifier: timezone
       name: timezone
@@ -280,7 +277,7 @@
     mainScenario:
       container:
         space: '{{model_space}}'
-        externalId: MarketPriceArea
+        externalId: PriceArea
         type: container
       containerPropertyIdentifier: mainScenario
       name: mainScenario
@@ -288,7 +285,7 @@
     priceScenarios:
       container:
         space: '{{model_space}}'
-        externalId: MarketPriceArea
+        externalId: PriceArea
         type: container
       containerPropertyIdentifier: priceScenarios
       name: priceScenarios
@@ -322,13 +319,13 @@
       containerPropertyIdentifier: assetType
       name: assetType
       description: null
-    asset_id:
+    assetId:
       container:
         space: '{{model_space}}'
         externalId: BidTable
         type: container
-      containerPropertyIdentifier: asset_id
-      name: asset_id
+      containerPropertyIdentifier: assetId
+      name: assetId
       description: null
     alerts:
       type:

@@ -23,16 +23,6 @@
       autoIncrement: false
       name: method
       defaultValue: null
-    priceArea:
-      type:
-        list: false
-        collation: ucs_basic
-        type: text
-      nullable: true
-      autoIncrement: false
-      name: priceArea
-      defaultValue: null
-      description: null
     date:
       type:
         list: false
@@ -79,15 +69,15 @@
       name: isComplete
       defaultValue: false
       description: null
-    market:
+    priceArea:
       type:
         container:
           space: {{model_space}}
-          externalId: MarketPriceArea
+          externalId: PriceArea
         type: direct
       nullable: true
       autoIncrement: false
-      name: market
+      name: priceArea
       defaultValue: null
   indexes:
     date:
@@ -110,8 +100,8 @@
       defaultValue: null
       description: null
 - space: {{model_space}}
-  externalId: SHOP
-  name: SHOP
+  externalId: SHOPMultiScenario
+  name: SHOPMultiScenario
   usedFor: node
   properties:
     shopCases:
@@ -141,8 +131,8 @@
         space: {{model_space}}
         externalId: BidMethod
 - space: {{model_space}}
-  externalId: MarketPriceArea
-  name: MarketPriceArea
+  externalId: PriceArea
+  name: PriceArea
   usedFor: node
   properties:
     name:
