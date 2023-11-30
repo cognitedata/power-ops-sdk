@@ -51,9 +51,9 @@ class Model(BaseModel, ABC):
     def model_name(self) -> str:
         return type(self).__name__
 
-    @property
-    def name(self) -> str:
-        return self.model_name
+    @classmethod
+    def name(cls) -> str:
+        return cls.__name__
 
     def dump_as_cdf_resource(self) -> dict[str, Any]:
         output: dict[str, Any] = {}

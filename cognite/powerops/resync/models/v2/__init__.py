@@ -11,8 +11,7 @@ are based on Data Modeling in CDF.
 
 from .capacity_bids import CapacityBidModel
 from .cogshop import CogShopDataModel
-from .day_ahead_frontend_contract import DayAheadFrontendContractModel
-from .frontend_contract import FrontendContractModel
+from .frontend_contract_models import DayAheadFrontendContractModel, FrontendContractModel
 from .graphql_schemas import GRAPHQL_MODELS
 from .market_dm import AFRRMarket, BenchmarkMarketDataModel, DayAheadMarketDataModel, RKOMMarketDataModel
 from .production_dm import ProductionModelDM

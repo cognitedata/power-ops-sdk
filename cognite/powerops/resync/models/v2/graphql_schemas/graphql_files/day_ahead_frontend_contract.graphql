@@ -1,4 +1,4 @@
-type Bid @container(indexes: [{identifier : "startCalculation", fields : ["startCalculation"]}, {identifier : "endCalculation", fields : ["endCalculation"]}, {identifier : "date", fields : ["date"]}]) {
+type Bid @container(indexes: [{identifier : "date", fields : ["date"]}]) {
   name: String
   method: BidMethod
   priceArea: String
@@ -7,8 +7,19 @@ type Bid @container(indexes: [{identifier : "startCalculation", fields : ["start
   startCalculation: Timestamp!
   endCalculation: Timestamp
   market: MarketPriceArea
-  alerts: [Alert] @relation(type: {space : "poweropsFrontendContractModel", externalId : "Bid.alerts"})
+  alerts: [Alert]
   partials: [BidTable]
+}
+
+type Alert {
+  time: Timestamp! @mapping(space: "poweropsFrontendContractModel")
+  title: String! @mapping(space: "poweropsFrontendContractModel")
+  description: String @mapping(space: "poweropsFrontendContractModel")
+  severity: String @mapping(space: "poweropsFrontendContractModel")
+  alertType: String @mapping(space: "poweropsFrontendContractModel")
+  statusCode: Int @mapping(space: "poweropsFrontendContractModel")
+  eventIds: [Int64] @mapping(space: "poweropsFrontendContractModel")
+  calculationRun: String @mapping(space: "poweropsFrontendContractModel")
 }
 
 interface BidMethod {
@@ -39,7 +50,7 @@ interface BidTable {
   table: Sequence
   assetType: String
   asset_id: String
-  alerts: [Alert] @relation(type: {space : "poweropsFrontendContractModel", externalId : "BidTable.alerts"})
+  alerts: [Alert]
 }
 
 type SHOPTable implements BidTable @view(rawFilter: {prefix : {property : ["node", "externalId"], value : "SHOP"}}) {
@@ -47,7 +58,7 @@ type SHOPTable implements BidTable @view(rawFilter: {prefix : {property : ["node
   table: Sequence
   assetType: String
   asset_id: String
-  alerts: [Alert] @relation(type: {space : "poweropsFrontendContractModel", externalId : "SHOPTable.alerts"})
+  alerts: [Alert]
   productionPricePair: ProductionPricePair
 }
 
