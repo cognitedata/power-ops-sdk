@@ -17,15 +17,3 @@ CapacityModel = PowerOpsDMSModel(
     id_=DataModelId("power-ops", "capacityBid", "1"),
     view_file=_DMS_DIR / "capacityBid" / "views.yaml",
 )
-
-
-DayAheadFrontendContractSourceDMSModel = PowerOpsDMSSourceModel(
-    container_file=_DMS_DIR / "dayAheadFrontendContract" / "containers.yaml",
-)
-
-DayAheadFrontendContractDMSModel = PowerOpsDMSModel(
-    name="DayAheadFrontendContract",
-    description="Stores exported data for consumption by the PowerOps UI app.",
-    id_=DataModelId("dayAheadFrontendContractModel", "DayAheadFrontendContract", "1"),
-    view_file=_DMS_DIR / "dayAheadFrontendContract" / "views.yaml",
-)

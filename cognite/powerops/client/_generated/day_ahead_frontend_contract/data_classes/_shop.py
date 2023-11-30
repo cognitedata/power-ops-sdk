@@ -47,7 +47,7 @@ class SHOP(DomainModel):
         version: The version of the shop node.
     """
 
-    space: str = "dayAheadFrontendContractModel"
+    space: str = "poweropsDayAheadFrontendContractModel"
     name: Optional[str] = None
     shop_cases: Optional[list[str]] = Field(None, alias="shopCases")
     price_scenarios: Union[TimeSeries, str, None] = Field(None, alias="priceScenarios")
@@ -80,7 +80,7 @@ class SHOPApply(DomainModelApply):
             If skipOnVersionConflict is set on the ingestion request, then the item will be skipped instead of failing the ingestion request.
     """
 
-    space: str = "dayAheadFrontendContractModel"
+    space: str = "poweropsDayAheadFrontendContractModel"
     name: str
     shop_cases: Optional[list[str]] = Field(None, alias="shopCases")
     price_scenarios: Union[TimeSeries, str, None] = Field(None, alias="priceScenarios")
@@ -95,7 +95,7 @@ class SHOPApply(DomainModelApply):
             return resources
 
         write_view = (view_by_write_class and view_by_write_class.get(type(self))) or dm.ViewId(
-            "dayAheadFrontendContractModel", "SHOP", "1"
+            "poweropsDayAheadFrontendContractModel", "SHOP", "1"
         )
 
         properties = {}

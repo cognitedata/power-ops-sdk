@@ -1,0 +1,5 @@
+externalId: 'DayAheadFrontendContract'
+space: 'poweropsDayAheadFrontendContractModel'
+version: '1'
+name: 'DayAheadFrontendContract'
+description: 'Stores exported data for consumption by the PowerOps UI app.'

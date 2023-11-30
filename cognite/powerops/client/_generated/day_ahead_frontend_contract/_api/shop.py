@@ -123,7 +123,7 @@ class SHOPAPI(NodeAPI[SHOP, SHOPApply, SHOPList]):
         return self._apply(shop, replace)
 
     def delete(
-        self, external_id: str | SequenceNotStr[str], space: str = "dayAheadFrontendContractModel"
+        self, external_id: str | SequenceNotStr[str], space: str = "poweropsDayAheadFrontendContractModel"
     ) -> dm.InstancesDeleteResult:
         """Delete one or more shop.
 
@@ -153,7 +153,7 @@ class SHOPAPI(NodeAPI[SHOP, SHOPApply, SHOPList]):
         ...
 
     def retrieve(
-        self, external_id: str | SequenceNotStr[str], space: str = "dayAheadFrontendContractModel"
+        self, external_id: str | SequenceNotStr[str], space: str = "poweropsDayAheadFrontendContractModel"
     ) -> SHOP | SHOPList | None:
         """Retrieve one or more shops by id(s).
 

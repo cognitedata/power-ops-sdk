@@ -123,7 +123,7 @@ class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
         return self._apply(bid_method, replace)
 
     def delete(
-        self, external_id: str | SequenceNotStr[str], space: str = "dayAheadFrontendContractModel"
+        self, external_id: str | SequenceNotStr[str], space: str = "poweropsDayAheadFrontendContractModel"
     ) -> dm.InstancesDeleteResult:
         """Delete one or more bid method.
 
@@ -153,7 +153,7 @@ class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
         ...
 
     def retrieve(
-        self, external_id: str | SequenceNotStr[str], space: str = "dayAheadFrontendContractModel"
+        self, external_id: str | SequenceNotStr[str], space: str = "poweropsDayAheadFrontendContractModel"
     ) -> BidMethod | BidMethodList | None:
         """Retrieve one or more bid methods by id(s).
 

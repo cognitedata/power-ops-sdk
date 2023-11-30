@@ -10,9 +10,9 @@ class BidTableAlertsAPI(EdgeAPI):
     def list(
         self,
         bid_table: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-        bid_table_space: str = "dayAheadFrontendContractModel",
+        bid_table_space: str = "poweropsDayAheadFrontendContractModel",
         alert: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-        alert_space: str = "dayAheadFrontendContractModel",
+        alert_space: str = "poweropsDayAheadFrontendContractModel",
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit=DEFAULT_LIMIT_READ,
@@ -42,7 +42,7 @@ class BidTableAlertsAPI(EdgeAPI):
 
         """
         filter_ = _create_edge_filter(
-            dm.DirectRelationReference("dayAheadFrontendContractModel", "BidTable.alerts"),
+            dm.DirectRelationReference("poweropsDayAheadFrontendContractModel", "BidTable.alerts"),
             bid_table,
             bid_table_space,
             alert,

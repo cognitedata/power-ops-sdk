@@ -144,7 +144,7 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
         return self._apply(shop_table, replace)
 
     def delete(
-        self, external_id: str | SequenceNotStr[str], space: str = "dayAheadFrontendContractModel"
+        self, external_id: str | SequenceNotStr[str], space: str = "poweropsDayAheadFrontendContractModel"
     ) -> dm.InstancesDeleteResult:
         """Delete one or more shop table.
 
@@ -174,7 +174,7 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
         ...
 
     def retrieve(
-        self, external_id: str | SequenceNotStr[str], space: str = "dayAheadFrontendContractModel"
+        self, external_id: str | SequenceNotStr[str], space: str = "poweropsDayAheadFrontendContractModel"
     ) -> SHOPTable | SHOPTableList | None:
         """Retrieve one or more shop tables by id(s).
 
@@ -202,7 +202,7 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("dayAheadFrontendContractModel", "BidTable.alerts"),
+                    dm.DirectRelationReference("poweropsDayAheadFrontendContractModel", "SHOPTable.alerts"),
                 ),
             ],
         )
@@ -527,7 +527,7 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("dayAheadFrontendContractModel", "BidTable.alerts"),
+                    dm.DirectRelationReference("poweropsDayAheadFrontendContractModel", "SHOPTable.alerts"),
                 ),
             ],
         )

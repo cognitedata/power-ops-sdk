@@ -1,11 +1,11 @@
-- space: dayAheadFrontendContractModel
+- space: poweropsDayAheadFrontendContractModel
   externalId: Bid
   name: Bid
   version: '1'
   properties:
     name:
       container:
-        space: dayAheadFrontendContractModel
+        space: poweropsDayAheadFrontendContractModel
         externalId: Bid
         type: container
       containerPropertyIdentifier: name
@@ -13,12 +13,12 @@
       description: null
     method:
       container:
-        space: dayAheadFrontendContractModel
+        space: poweropsDayAheadFrontendContractModel
         externalId: Bid
         type: container
       source:
         type: view
-        space: dayAheadFrontendContractModel
+        space: poweropsDayAheadFrontendContractModel
         externalId: BidMethod
         version: '1'
       containerPropertyIdentifier: method
@@ -26,7 +26,7 @@
       description: null
     priceArea:
       container:
-        space: dayAheadFrontendContractModel
+        space: poweropsDayAheadFrontendContractModel
         externalId: Bid
         type: container
       containerPropertyIdentifier: priceArea
@@ -34,7 +34,7 @@
       description: null
     date:
       container:
-        space: dayAheadFrontendContractModel
+        space: poweropsDayAheadFrontendContractModel
         externalId: Bid
         type: container
       containerPropertyIdentifier: date
@@ -42,7 +42,7 @@
       description: null
     total:
       container:
-        space: dayAheadFrontendContractModel
+        space: poweropsDayAheadFrontendContractModel
         externalId: Bid
         type: container
       containerPropertyIdentifier: total
@@ -50,7 +50,7 @@
       description: null
     startCalculation:
       container:
-        space: dayAheadFrontendContractModel
+        space: poweropsDayAheadFrontendContractModel
         externalId: Bid
         type: container
       containerPropertyIdentifier: startCalculation
@@ -58,7 +58,7 @@
       description: null
     endCalculation:
       container:
-        space: dayAheadFrontendContractModel
+        space: poweropsDayAheadFrontendContractModel
         externalId: Bid
         type: container
       containerPropertyIdentifier: endCalculation
@@ -66,12 +66,12 @@
       description: null
     market:
       container:
-        space: dayAheadFrontendContractModel
+        space: poweropsDayAheadFrontendContractModel
         externalId: Bid
         type: container
       source:
         type: view
-        space: dayAheadFrontendContractModel
+        space: poweropsDayAheadFrontendContractModel
         externalId: MarketPriceArea
         version: '1'
       containerPropertyIdentifier: market
@@ -79,10 +79,10 @@
       description: null
     partials:
       type:
-        space: dayAheadFrontendContractModel
+        space: poweropsDayAheadFrontendContractModel
         externalId: Bid.partials
       source:
-        space: dayAheadFrontendContractModel
+        space: poweropsDayAheadFrontendContractModel
         externalId: BidTable
         version: 1
         type: view
@@ -90,23 +90,23 @@
       name: partials
     alerts:
       type:
-        space: dayAheadFrontendContractModel
+        space: poweropsDayAheadFrontendContractModel
         externalId: Bid.alerts
       source:
-        space: dayAheadFrontendContractModel
+        space: poweropsDayAheadFrontendContractModel
         externalId: Alert
         version: 1
         type: view
       direction: outwards
       name: alerts
-- space: dayAheadFrontendContractModel
+- space: poweropsDayAheadFrontendContractModel
   externalId: Alert
   name: Alert
   version: '1'
   properties:
     time:
       container:
-        space: dayAheadFrontendContractModel
+        space: poweropsFrontendContractModel
         externalId: Alert
         type: container
       containerPropertyIdentifier: time
@@ -114,7 +114,7 @@
       description: null
     title:
       container:
-        space: dayAheadFrontendContractModel
+        space: poweropsFrontendContractModel
         externalId: Alert
         type: container
       containerPropertyIdentifier: title
@@ -122,7 +122,7 @@
       description: null
     description:
       container:
-        space: dayAheadFrontendContractModel
+        space: poweropsFrontendContractModel
         externalId: Alert
         type: container
       containerPropertyIdentifier: description
@@ -130,7 +130,7 @@
       description: null
     severity:
       container:
-        space: dayAheadFrontendContractModel
+        space: poweropsFrontendContractModel
         externalId: Alert
         type: container
       containerPropertyIdentifier: severity
@@ -138,7 +138,7 @@
       description: null
     alertType:
       container:
-        space: dayAheadFrontendContractModel
+        space: poweropsFrontendContractModel
         externalId: Alert
         type: container
       containerPropertyIdentifier: alertType
@@ -146,7 +146,7 @@
       description: null
     statusCode:
       container:
-        space: dayAheadFrontendContractModel
+        space: poweropsFrontendContractModel
         externalId: Alert
         type: container
       containerPropertyIdentifier: statusCode
@@ -154,7 +154,7 @@
       description: null
     eventIds:
       container:
-        space: dayAheadFrontendContractModel
+        space: poweropsFrontendContractModel
         externalId: Alert
         type: container
       containerPropertyIdentifier: eventIds
@@ -162,39 +162,39 @@
       description: null
     calculationRun:
       container:
-        space: dayAheadFrontendContractModel
+        space: poweropsFrontendContractModel
         externalId: Alert
         type: container
       containerPropertyIdentifier: calculationRun
       name: calculationRun
       description: null
-- space: dayAheadFrontendContractModel
+- space: poweropsDayAheadFrontendContractModel
   externalId: BidMethod
   name: BidMethod
   version: '1'
   properties:
     name:
       container:
-        space: dayAheadFrontendContractModel
+        space: poweropsDayAheadFrontendContractModel
         externalId: BidMethod
         type: container
       containerPropertyIdentifier: name
       name: name
       description: null
-- space: dayAheadFrontendContractModel
+- space: poweropsDayAheadFrontendContractModel
   externalId: SHOP
   name: SHOP
   version: '1'
   implements:
     - type: view
-      space: dayAheadFrontendContractModel
+      space: poweropsDayAheadFrontendContractModel
       externalId: BidMethod
       version: 1
   properties:
     #  name: (inherited)
     shopCases:
       container:
-        space: dayAheadFrontendContractModel
+        space: poweropsDayAheadFrontendContractModel
         externalId: SHOP
         type: container
       containerPropertyIdentifier: shopCases
@@ -202,7 +202,7 @@
       description: null
     priceScenarios:
       container:
-        space: dayAheadFrontendContractModel
+        space: poweropsDayAheadFrontendContractModel
         externalId: SHOP
         type: container
       containerPropertyIdentifier: priceScenarios
@@ -212,13 +212,13 @@
     prefix:
       property: [ 'node', 'externalId' ]
       value: "SHOP"
-- space: dayAheadFrontendContractModel
+- space: poweropsDayAheadFrontendContractModel
   externalId: WaterValueBased
   name: WaterValueBased
   version: '1'
   implements:
     - type: view
-      space: dayAheadFrontendContractModel
+      space: poweropsDayAheadFrontendContractModel
       externalId: BidMethod
       version: 1
   properties: {}
@@ -228,14 +228,14 @@
         - node
         - externalId
       value: "WVB"
-- space: dayAheadFrontendContractModel
+- space: poweropsDayAheadFrontendContractModel
   externalId: MarketPriceArea
   name: MarketPriceArea
   version: '1'
   properties:
     name:
       container:
-        space: dayAheadFrontendContractModel
+        space: poweropsDayAheadFrontendContractModel
         externalId: MarketPriceArea
         type: container
       containerPropertyIdentifier: name
@@ -243,7 +243,7 @@
       description: null
     priceArea:
       container:
-        space: dayAheadFrontendContractModel
+        space: poweropsDayAheadFrontendContractModel
         externalId: MarketPriceArea
         type: container
       containerPropertyIdentifier: priceArea
@@ -251,19 +251,19 @@
       description: null
     defaultMethod:
       container:
-        space: dayAheadFrontendContractModel
+        space: poweropsDayAheadFrontendContractModel
         externalId: MarketPriceArea
         type: container
       source:
         type: view
-        space: dayAheadFrontendContractModel
+        space: poweropsDayAheadFrontendContractModel
         externalId: BidMethod
         version: '1'
       containerPropertyIdentifier: defaultMethod
       name: defaultMethod
     timezone:
       container:
-        space: dayAheadFrontendContractModel
+        space: poweropsDayAheadFrontendContractModel
         externalId: MarketPriceArea
         type: container
       containerPropertyIdentifier: timezone
@@ -271,7 +271,7 @@
       description: null
     mainScenario:
       container:
-        space: dayAheadFrontendContractModel
+        space: poweropsDayAheadFrontendContractModel
         externalId: MarketPriceArea
         type: container
       containerPropertyIdentifier: mainScenario
@@ -279,20 +279,20 @@
       description: null
     priceScenarios:
       container:
-        space: dayAheadFrontendContractModel
+        space: poweropsDayAheadFrontendContractModel
         externalId: MarketPriceArea
         type: container
       containerPropertyIdentifier: priceScenarios
       name: priceScenarios
       description: null
-- space: dayAheadFrontendContractModel
+- space: poweropsDayAheadFrontendContractModel
   externalId: BidTable
   name: BidTable
   version: '1'
   properties:
     resourceCost:
       container:
-        space: dayAheadFrontendContractModel
+        space: poweropsDayAheadFrontendContractModel
         externalId: BidTable
         type: container
       containerPropertyIdentifier: resourceCost
@@ -300,7 +300,7 @@
       description: null
     table:
       container:
-        space: dayAheadFrontendContractModel
+        space: poweropsDayAheadFrontendContractModel
         externalId: BidTable
         type: container
       containerPropertyIdentifier: table
@@ -308,7 +308,7 @@
       description: null
     assetType:
       container:
-        space: dayAheadFrontendContractModel
+        space: poweropsDayAheadFrontendContractModel
         externalId: BidTable
         type: container
       containerPropertyIdentifier: assetType
@@ -316,7 +316,7 @@
       description: null
     asset_id:
       container:
-        space: dayAheadFrontendContractModel
+        space: poweropsDayAheadFrontendContractModel
         externalId: BidTable
         type: container
       containerPropertyIdentifier: asset_id
@@ -324,22 +324,22 @@
       description: null
     alerts:
       type:
-        space: dayAheadFrontendContractModel
+        space: poweropsDayAheadFrontendContractModel
         externalId: BidTable.alerts
       source:
-        space: dayAheadFrontendContractModel
+        space: poweropsDayAheadFrontendContractModel
         externalId: Alert
         version: 1
         type: view
       direction: outwards
       name: alerts
-- space: dayAheadFrontendContractModel
+- space: poweropsDayAheadFrontendContractModel
   externalId: SHOPTable
   name: SHOPTable
   version: '1'
   implements:
     - type: view
-      space: dayAheadFrontendContractModel
+      space: poweropsDayAheadFrontendContractModel
       externalId: BidTable
       version: 1
   properties:
@@ -347,15 +347,26 @@
     #  table: (inherited)
     #  assetType: (inherited)
     #  asset_id: (inherited)
-    #  alerts: (inherited)
+    #  alerts: (inherited?)
+    alerts:  # inheritance seems to not work correctly for inter-space relationships
+      type:
+        space: poweropsDayAheadFrontendContractModel
+        externalId: SHOPTable.alerts
+      source:
+        space: poweropsDayAheadFrontendContractModel
+        externalId: Alert
+        version: 1
+        type: view
+      direction: outwards
+      name: alerts
     productionPricePair:
       container:
-        space: dayAheadFrontendContractModel
+        space: poweropsDayAheadFrontendContractModel
         externalId: SHOPTable
         type: container
       source:
         type: view
-        space: dayAheadFrontendContractModel
+        space: poweropsDayAheadFrontendContractModel
         externalId: ProductionPricePair
         version: '1'
       containerPropertyIdentifier: productionPricePair
@@ -364,14 +375,14 @@
     prefix:
       property: [ 'node', 'externalId' ]
       value: "SHOP"
-- space: dayAheadFrontendContractModel
+- space: poweropsDayAheadFrontendContractModel
   externalId: ProductionPricePair
   name: ProductionPricePair
   version: '1'
   properties:
     production:
       container:
-        space: dayAheadFrontendContractModel
+        space: poweropsDayAheadFrontendContractModel
         externalId: ProductionPricePair
         type: container
       containerPropertyIdentifier: production
@@ -379,7 +390,7 @@
       description: null
     price:
       container:
-        space: dayAheadFrontendContractModel
+        space: poweropsDayAheadFrontendContractModel
         externalId: ProductionPricePair
         type: container
       containerPropertyIdentifier: price
