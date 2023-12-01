@@ -6,12 +6,12 @@ from . import migration
 from .v1 import CogShop1Asset, MarketModel, ProductionModel
 from .v2 import (
     AFRRMarket,
+    BaseBidModel,
     BenchmarkMarketDataModel,
     CapacityBidModel,
     CogShopDataModel,
-    DayAheadFrontendContractModel,
+    DayAheadBidModel,
     DayAheadMarketDataModel,
-    FrontendContractModel,
     ProductionModelDM,
     RKOMMarketDataModel,
 )
@@ -25,8 +25,8 @@ V2_MODELS: list[type[Model]] = [
     RKOMMarketDataModel,
     AFRRMarket,
     CapacityBidModel,
-    FrontendContractModel,
-    DayAheadFrontendContractModel,
+    BaseBidModel,
+    DayAheadBidModel,
 ]
 
 __all__ = [

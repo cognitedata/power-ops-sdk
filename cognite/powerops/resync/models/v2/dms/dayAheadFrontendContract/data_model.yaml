@@ -1,5 +1,0 @@
-externalId: '{{model_external_id}}'
-space: '{{model_space}}'
-version: '{{model_version}}'
-name: '{{model_name}}'
-description: 'Stores exported data for consumption by the PowerOps UI app.'
