@@ -17,4 +17,7 @@
           weeks: 2
   market_config_external_id: market_configuration_nordpool_dayahead
   bid_process_configuration_assets:
+    - multi_scenario_20_NO2
     - multi_scenario_2_NO2
+    - price_independent_NO2
+    - water_value_based_with_dummy_SHOP_runNO2
