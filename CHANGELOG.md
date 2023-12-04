@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.74.2] - 2023-12-04
+### Added
+* Optional kwargs for `PoweropsClient.form_settings` to override the defaults.
+
 ## [0.74.1] - 2023-12-04
 ### Added
 * Optional input to DayaheadTrigger to rename plants in case they are modelled with different name in SHOP than
