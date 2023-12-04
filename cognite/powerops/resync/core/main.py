@@ -34,7 +34,7 @@ V2_MODELS_BY_NAME = {m.__name__: m for m in models.V2_MODELS}
 DATAMODEL_ID_TO_RESYNC_NAME: dict[DataModelId, str] = {
     m.data_model_ids()[0]: m.__name__
     for m in itertools.chain(models.V1_MODELS, models.V2_MODELS)
-    if issubclass(m, DataModel)
+    if issubclass(m, DataModel) and m.data_model_ids()
 }
 
 
@@ -73,45 +73,55 @@ def init(client: PowerOpsClient | None, model_names: str | list[str] | None = No
 
     results: list[dict[str, str]] = []
     for model in data_models:
+        # Deploy from graphQL (deprecated!)
         if model.graph_ql is not None:
             graphql = model.graph_ql
             if graphql.id_ in existing:
-                logger.warning(f"Skipping {model.name} data model with {model.graph_ql.id_}, is already exists")
+                logger.warning(f"Skipping {model.name()} data model with {model.graph_ql.id_}, is already exists")
                 results.append(
-                    {"model": model.name, "action": "skipped"}  # type: ignore[dict-item]
+                    {"model": model.name(), "action": "skipped"}  # type: ignore[dict-item]
                 )  # Ref https://github.com/python/mypy/issues/1465
                 continue
-            logger.info(f"Deploying {model.name} data model with {model.graph_ql.id_}")
+            logger.info(f"Deploying {model.name()} data model with {model.graph_ql.id_}")
             result = cdf.data_modeling.graphql.apply_dml(
                 model.graph_ql.id_, model.graph_ql.graphql, model.graph_ql.name, model.graph_ql.description
             )
-            results.append({"model": model.name, "action": "deployed"})  # type: ignore[dict-item]
-            logger.info(f"Deployed {model.name} model ({result.space}, {result.external_id}, {result.version})")
-        if model.source_model is not None:
-            existing_containers = set(
-                cdf.data_modeling.containers.retrieve(model.source_model.containers.as_ids()).as_ids()
-            )
-            new_containers = [
-                container for container in model.source_model.containers if container.as_id() not in existing_containers
-            ]
+            results.append({"model": model.name(), "action": "deployed"})  # type: ignore[dict-item]
+            logger.info(f"Deployed {model.name()} model ({result.space}, {result.external_id}, {result.version})")
+
+        # Deploy containers
+        containers = model.containers()
+        if containers is not None:
+            _exiting_containers = cdf.data_modeling.containers.retrieve(containers.as_ids())
+            existing_containers = set(_exiting_containers.as_ids()) if _exiting_containers else set()
+            new_containers = [container for container in containers if container.as_id() not in existing_containers]
             if new_containers:
-                logger.info(f"Creating {len(new_containers)} new containers for {model.name}: {new_containers}")
+                logger.info(f"Creating {len(new_containers)} new containers for {model.name()}: {new_containers}")
                 cdf.data_modeling.containers.apply(new_containers)
                 logger.info(f"Containers {new_containers} created")
-        if model.dms_model is not None:
-            existing_views = set(cdf.data_modeling.views.retrieve(model.dms_model.views.as_ids()).as_ids())
-            new_views = [view for view in model.dms_model.views if view.as_id() not in existing_views]
+
+        # Deploy views
+        views = model.views()
+        if views is not None:
+            existing_views = set(cdf.data_modeling.views.retrieve(views.as_ids()).as_ids())
+            new_views = [view for view in views if view.as_id() not in existing_views]
             if new_views:
-                logger.info(f"Creating {len(new_views)} new views for {model.name}: {new_views}")
+                logger.info(f"Creating {len(new_views)} new views for {model.name()}: {new_views}")
                 cdf.data_modeling.views.apply(new_views)
                 logger.info(f"Views {new_views} created")
-            if model.dms_model.id_ in existing:
-                logger.warning(f"Skipping {model.name} data model with {model.dms_model.id_}, is already exists")
-                results.append({"model": model.name, "action": "skipped"})  # type: ignore[dict-item]
+
+        # Deploy data model
+        data_model = model.data_model()
+        if data_model is not None:
+            data_model_id = data_model.as_id()
+            if data_model_id in existing:
+                logger.warning(f"Skipping {model.name()} data model with {data_model_id}, it already exists")
+                results.append({"model": model.name(), "action": "skipped"})  # type: ignore[dict-item]
                 continue
-            logger.info(f"Deploying {model.name} data model with {model.dms_model.id_}")
-            cdf.data_modeling.data_models.apply(model.dms_model.data_model)
-            results.append({"model": model.name, "action": "deployed"})  # type: ignore[dict-item]
+            logger.info(f"Deploying {model.name()} data model with {data_model_id}")
+            cdf.data_modeling.data_models.apply(data_model)
+            results.append({"model": model.name(), "action": "deployed"})  # type: ignore[dict-item]
+
     return results
 
 
