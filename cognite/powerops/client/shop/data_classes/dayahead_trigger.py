@@ -42,8 +42,12 @@ class DayaheadFunctionEvent:
 
 class PartialFunctionEvent(DayaheadFunctionEvent):
     plant: str = "bid:plant"
-    relationship_label_to_trigger_event: str = "relationship_to.bid_process_event"
     method: str = "bid:bid_matrix_generation_method"
+    relationship_label_to_trigger_event: str = "relationship_to.bid_process_event"
+    # This is a temporary hack that is introduced due
+    # to the potential inconsistency between plant names in
+    # SHOP files and the plant asset names in CDF
+    plant_name_override: str = "bid:plant_name_override"
 
 
 class TotalFunctionEvent(DayaheadFunctionEvent):
@@ -145,7 +149,7 @@ class Case(BaseModel):
 class BidTimeFrame(BaseModel):
     """
     Used to dynamically specify what times to run the Dayahead bid process for in local time
-    :shift_start_from_today: number of days from the current local time to shift the start time of the bid
+    :shift_start_in_days: number of days from the current local time to shift the start time of the bid
     :timezone: the local timezone to use when creating shop times
     :bid_period_in_days: the number of days the bid is valid for. This number is used to produce the bid end time by
     shifting the start time with this number
@@ -153,7 +157,7 @@ class BidTimeFrame(BaseModel):
 
     model_config = ConfigDict(frozen=True)
 
-    shift_start_from_today: int
+    shift_start_in_days: int
     timezone: Optional[str] = "Europe/Oslo"
     bid_period_in_days: Optional[int] = 14
     _datetime_string_format: str = "YYYY-MM-DD HH:mm:ss"
@@ -169,7 +173,7 @@ class BidTimeFrame(BaseModel):
     @property
     def start_time_arrow(self):
         return (
-            arrow.now(self.timezone).shift(days=self.shift_start_from_today).floor("day")
+            arrow.now(self.timezone).shift(days=self.shift_start_in_days).floor("day")
         )  # should floor be hour instead?
 
     @property
@@ -200,7 +204,8 @@ class DayaheadTrigger(BaseModel):
     method: Literal["multi_scenario", "price_independent"]
     bid_configuration_name: str
     cases: list[Case]
-    bid_time_frame: Optional[BidTimeFrame] = BidTimeFrame(shift_start_from_today=0)
+    bid_time_frame: Optional[BidTimeFrame] = BidTimeFrame(shift_start_in_days=0)
+    plant_names_override: Optional[dict] = None
     dayahead_configuration_external_id: Optional[str] = "market_configuration_nordpool_dayahead"
 
 
