@@ -1,0 +1,393 @@
+- space: afrr-frontend-contract-model
+  externalId: BidDocument
+  name: BidDocument
+  version: '1'
+  description: >
+    Whole Bid (also usually referenced in industry as a Bid Document) containing multiple Bid Rows
+    (which are usually referenced as Bids)
+  properties:
+    name:
+      container:
+        space: afrr-frontend-contract-model
+        externalId: BidDocument
+        type: container
+      containerPropertyIdentifier: name
+      name: name
+      description: >
+        Unique name for a given instance of a Bid Document.
+        A combination of name, priceArea, date and startCalculation.
+    priceArea:
+      container:
+        space: afrr-frontend-contract-model
+        externalId: BidDocument
+        type: container
+      containerPropertyIdentifier: priceArea
+      name: priceArea
+      description: >
+        The PriceArea associated with the BidDocument (this should be shared).
+    date:
+      container:
+        space: afrr-frontend-contract-model
+        externalId: BidDocument
+        type: container
+      containerPropertyIdentifier: date
+      name: date
+      description: >
+        The date of the Bid.
+    bids:
+      container:
+        space: afrr-frontend-contract-model
+        externalId: BidDocument
+        type: container
+      containerPropertyIdentifier: bids
+      name: bids
+      description: >
+       An array of rows containing the Bid data.
+    startCalculation:
+      container:
+        space: afrr-frontend-contract-model
+        externalId: BidDocument
+        type: container
+      containerPropertyIdentifier: startCalculation
+      name: startCalculation
+      description: >
+        Timestamp of when the Bid calculation workflow started.
+    endCalculation:
+      container:
+        space: afrr-frontend-contract-model
+        externalId: BidDocument
+        type: container
+      containerPropertyIdentifier: endCalculation
+      name: endCalculation
+      description: >
+        Timestamp of when the Bid calculation workflow completed.
+    isCompleted:
+      container:
+        space: afrr-frontend-contract-model
+        externalId: BidDocument
+        type: container
+      containerPropertyIdentifier: isCompleted
+      name: isCompleted
+      description: >
+       Indicates that the Bid calculation workflow has completed.
+    alerts:
+      container:
+        space: afrr-frontend-contract-model
+        externalId: BidDocument
+        type: container
+      containerPropertyIdentifier: alerts
+      name: alerts
+      description: >
+        An array of calculation level Alerts.
+- space: afrr-frontend-contract-model
+  externalId: BidRow
+  name: BidRow
+  version: '1'
+  description: >
+    One row in the BidDocument (usually referenced in industry as a Bid).
+  properties:
+    price:
+      container:
+        space: afrr-frontend-contract-model
+        externalId: BidDocument
+        type: container
+      containerPropertyIdentifier: price
+      name: price
+      description: >
+        Price in EUR/MW/h, rounded to nearest price step (0.1?)
+    quantityPerHour:
+      container:
+        space: afrr-frontend-contract-model
+        externalId: BidDocument
+        type: container
+      containerPropertyIdentifier: quantityPerHour
+      name: quantityPerHour
+      description: >
+        The capacity offered, in MW, rounded to nearest step size (5?)
+    product:
+      container:
+        space: afrr-frontend-contract-model
+        externalId: BidDocument
+        type: container
+      containerPropertyIdentifier: product
+      name: product
+      description: >
+        TBC
+    isDivisible:
+      container:
+        space: afrr-frontend-contract-model
+        externalId: BidDocument
+        type: container
+      containerPropertyIdentifier: isDivisible
+      name: isDivisible
+      description: >
+        Indication if the BidRow is divisible.
+    minQuantity:
+      container:
+        space: afrr-frontend-contract-model
+        externalId: BidDocument
+        type: container
+      containerPropertyIdentifier: minQuantity
+      name: minQuantity
+      description: >
+        Only relevant for divisible Bids. The minimum capacity that must be accepted;
+        this must be lower than capacityPerHour and is rounded to the nearest step (5 MW?)).
+    isBlock:
+      container:
+        space: afrr-frontend-contract-model
+        externalId: BidDocument
+        type: container
+      containerPropertyIdentifier: isBlock
+      name: isBlock
+      description: >
+        Indication if the row is part of a Block bid.
+        If true: quantityPerHour must have the same value for consecutive hours (and no "breaks").
+        Block bids must be accepted for all hours or none.
+    exclusiveGroupId:
+      container:
+        space: afrr-frontend-contract-model
+        externalId: BidDocument
+        type: container
+      containerPropertyIdentifier: exclusiveGroupId
+      name: exclusiveGroupId
+      description: >
+        Other bids with the same ID are part of an exclusive group - only one of them can be accepted,
+        and they must have the same direction (product). Not allowed for block bids.
+    linkedBid:
+      container:
+        space: afrr-frontend-contract-model
+        externalId: BidDocument
+        type: container
+      containerPropertyIdentifier: linkedBid
+      name: linkedBid
+      description: >
+        The linked bid must have the opposite direction (link means that both or none must be accepted).
+        Should be bi-directional.
+    assetType:
+      container:
+        space: afrr-frontend-contract-model
+        externalId: BidDocument
+        type: container
+      containerPropertyIdentifier: assetType
+      name: assetType
+      description: >
+        TBC
+    assetId:
+      container:
+        space: afrr-frontend-contract-model
+        externalId: BidDocument
+        type: container
+      containerPropertyIdentifier: assetId
+      name: assetId
+      description: >
+        TBC
+    method:
+      container:
+        space: afrr-frontend-contract-model
+        externalId: BidDocument
+        type: container
+      containerPropertyIdentifier: method
+      name: method
+      description: >
+        TBC
+    alerts:
+      container:
+        space: afrr-frontend-contract-model
+        externalId: BidDocument
+        type: container
+      containerPropertyIdentifier: alerts
+      name: alerts
+      description: >
+        An array of associated alerts.
+- space: afrr-frontend-contract-model
+  externalId: Alert
+  name: Alert
+  version: '1'
+  description: >
+    Alerts
+  properties:
+    time:
+      container:
+        space: afrr-frontend-contract-model
+        externalId: BidDocument
+        type: container
+      containerPropertyIdentifier: time
+      name: time
+      description: >
+        TBC
+    title:
+      container:
+        space: afrr-frontend-contract-model
+        externalId: BidDocument
+        type: container
+      containerPropertyIdentifier: title
+      name: title
+      description: >
+        TBC
+    description:
+      container:
+        space: afrr-frontend-contract-model
+        externalId: BidDocument
+        type: container
+      containerPropertyIdentifier: description
+      name: description
+      description: >
+        TBC
+    severity:
+      container:
+        space: afrr-frontend-contract-model
+        externalId: BidDocument
+        type: container
+      containerPropertyIdentifier: severity
+      name: severity
+      description: >
+        TBC
+    alertType:
+      container:
+        space: afrr-frontend-contract-model
+        externalId: BidDocument
+        type: container
+      containerPropertyIdentifier: alertType
+      name: alertType
+      description: >
+        TBC
+    statusCode:
+      container:
+        space: afrr-frontend-contract-model
+        externalId: BidDocument
+        type: container
+      containerPropertyIdentifier: statusCode
+      name: statusCode
+      description: >
+        TBC
+    eventIds:
+      container:
+        space: afrr-frontend-contract-model
+        externalId: BidDocument
+        type: container
+      containerPropertyIdentifier: eventIds
+      name: eventIds
+      description: >
+        TBC
+    calculationRun:
+      container:
+        space: afrr-frontend-contract-model
+        externalId: BidDocument
+        type: container
+      containerPropertyIdentifier: calculationRun
+      name: calculationRun
+      description: >
+        TBC
+- space: afrr-frontend-contract-model
+  name: PriceArea
+  externalId: PriceArea
+  version: '1'
+  description: >
+    Information about the Price Area that is only relevant for AFRR
+  properties:
+    name:
+      container:
+        space: afrr-frontend-contract-model
+        externalId: BidDocument
+        type: container
+      containerPropertyIdentifier: name
+      name: name
+      description: >
+        TBC
+    capacityPriceUp:
+      container:
+        space: afrr-frontend-contract-model
+        externalId: BidDocument
+        type: container
+      containerPropertyIdentifier: capacityPriceUp
+      name: capacityPriceUp
+      description: >
+        TBC
+    capacityPriceDown:
+      container:
+        space: afrr-frontend-contract-model
+        externalId: BidDocument
+        type: container
+      containerPropertyIdentifier: capacityPriceDown
+      name: capacityPriceDown
+      description: >
+        TBC
+    activationPriceUp:
+      container:
+        space: afrr-frontend-contract-model
+        externalId: BidDocument
+        type: container
+      containerPropertyIdentifier: activationPriceUp
+      name: activationPriceUp
+      description: >
+        The mFRR activation price (TBC)
+    activationPriceDown:
+      container:
+        space: afrr-frontend-contract-model
+        externalId: BidDocument
+        type: container
+      containerPropertyIdentifier: activationPriceDown
+      name: activationPriceDown
+      description: >
+       The mFRR activate price (TBC)
+    relativeActivation:
+      container:
+        space: afrr-frontend-contract-model
+        externalId: BidDocument
+        type: container
+      containerPropertyIdentifier: relativeActivation
+      name: relativeActivation
+      description: >
+        Value between -1 (100 % activation down) and 1 (100 % activation down)
+    totalCapacityAllocationUp:
+      container:
+        space: afrr-frontend-contract-model
+        externalId: BidDocument
+        type: container
+      containerPropertyIdentifier: totalCapacityAllocationUp
+      name: totalCapacityAllocationUp
+      description: >
+        TBC
+    totalCapacityAllocationDown:
+      container:
+        space: afrr-frontend-contract-model
+        externalId: BidDocument
+        type: container
+      containerPropertyIdentifier: totalCapacityAllocationDown
+      name: totalCapacityAllocationDown
+      description: >
+        TBC
+    ownCapacityAllocationUp:
+      container:
+        space: afrr-frontend-contract-model
+        externalId: BidDocument
+        type: container
+      containerPropertyIdentifier: ownCapacityAllocationUp
+      name: ownCapacityAllocationUp
+      description: >
+        TBC
+    ownCapacityAllocationDown:
+      container:
+        space: afrr-frontend-contract-model
+        externalId: BidDocument
+        type: container
+      containerPropertyIdentifier: ownCapacityAllocationDown
+      name: ownCapacityAllocationDown
+      description: >
+        TBC
+- space: afrr-frontend-contract-model
+  name: BidMethod
+  externalId: PriceArea
+  version: '1'
+  description: >
+    A description of the Bid method used in the calculation.
+  properties:
+    name:
+      container:
+        space: afrr-frontend-contract-model
+        externalId: BidDocument
+        type: container
+      containerPropertyIdentifier: name
+      name: name
+      description: >
+        TBC
