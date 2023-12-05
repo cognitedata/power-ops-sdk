@@ -46,7 +46,7 @@
       type:
         list: false
         type: timestamp
-      nullable: false
+      nullable: true
       autoIncrement: false
       name: startCalculation
       defaultValue: null

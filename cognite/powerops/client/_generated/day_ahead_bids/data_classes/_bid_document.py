@@ -130,7 +130,7 @@ class BidDocumentApply(DomainModelApply):
     price_area: Union[PriceAreaApply, str, None] = Field(None, repr=False, alias="priceArea")
     date: Optional[datetime.date] = None
     total: Union[BidTableApply, str, None] = Field(None, repr=False)
-    start_calculation: datetime.datetime = Field(alias="startCalculation")
+    start_calculation: Optional[datetime.datetime] = Field(None, alias="startCalculation")
     end_calculation: Optional[datetime.datetime] = Field(None, alias="endCalculation")
     is_complete: bool = Field(alias="isComplete")
     alerts: Union[list[AlertApply], list[str], None] = Field(default=None, repr=False)
