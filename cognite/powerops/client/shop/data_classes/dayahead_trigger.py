@@ -138,6 +138,7 @@ class ShopPreRunFile(BaseModel):
 class Case(BaseModel):
     """
     Case definition based on a set of prerun files to run for certain plants that are used in the set of prerun files
+
     """
 
     case_name: str  # e.g. Glomma
@@ -149,10 +150,12 @@ class Case(BaseModel):
 class BidTimeFrame(BaseModel):
     """
     Used to dynamically specify what times to run the Dayahead bid process for in local time
-    :shift_start_in_days: number of days from the current local time to shift the start time of the bid
-    :timezone: the local timezone to use when creating shop times
-    :bid_period_in_days: the number of days the bid is valid for. This number is used to produce the bid end time by
-    shifting the start time with this number
+
+    Args:
+        shift_start_in_days: number of days from the current local time to shift the start time of the bid
+        timezone: the local timezone to use when creating shop times
+        bid_period_in_days: the number of days the bid is valid for. This number is used to produce the bid end time by
+                            shifting the start time with this number
     """
 
     model_config = ConfigDict(frozen=True)
@@ -193,8 +196,24 @@ class BidTimeFrame(BaseModel):
 
 class DayaheadTrigger(BaseModel):
     """
-    Contains the blueprint of a Dayahead workflow definition.
-    This object is used together with the DayaheadTriggerAPI to trigger a workflow from an instance of this class.
+    Contains the blueprint of a Dayahead workflow definition. Used to trigger one or more cases within a price area
+    along with SHOP prerun files (e.g. no preprocessing to the SHOP file before being run in CogShop)
+    This object is used together with the powerops client (DayAheadTriggerAPI) to trigger a workflow from an instance
+    of this class.
+
+    Args:
+        price_scenarios: list of price scenarios used in Dayahead run (do not have to exist in CDF, only appended as
+                         metadata to the triggering events for reference)
+        main_scenario: Main price scenario
+        shop_version: Shop Version to use in the run. The Shop version must be installed to Cogshop or exist as a
+                      binary file in CDF. For Mesh files specify a SHOP version > 15.4
+        price_area: str
+        method: Literal["multi_scenario", "price_independent"]
+        bid_configuration_name: str
+        cases: list of Case objects to run
+        bid_time_frame: Optional[BidTimeFrame] = BidTimeFrame(shift_start_in_days=0)
+        plant_names_override: Optional[dict] = None
+        dayahead_configuration_external_id: Optional[str] = "market_configuration_nordpool_dayahead"
     """
 
     price_scenarios: list[str]
