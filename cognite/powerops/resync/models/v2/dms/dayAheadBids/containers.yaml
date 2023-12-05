@@ -144,15 +144,6 @@
       autoIncrement: false
       name: name
       defaultValue: null
-    priceArea:
-      type:
-        list: false
-        collation: ucs_basic
-        type: text
-      nullable: true
-      autoIncrement: false
-      name: priceArea
-      defaultValue: null
     defaultMethod:
       type:
         container:

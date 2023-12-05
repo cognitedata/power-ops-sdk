@@ -53,8 +53,6 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        price_area: str | list[str] | None = None,
-        price_area_prefix: str | None = None,
         default_method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         timezone: str | list[str] | None = None,
         timezone_prefix: str | None = None,
@@ -68,8 +66,6 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
         Args:
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            price_area: The price area to filter on.
-            price_area_prefix: The prefix of the price area to filter on.
             default_method: The default method to filter on.
             timezone: The timezone to filter on.
             timezone_prefix: The prefix of the timezone to filter on.
@@ -86,8 +82,6 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
             self._view_id,
             name,
             name_prefix,
-            price_area,
-            price_area_prefix,
             default_method,
             timezone,
             timezone_prefix,
@@ -198,8 +192,6 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
         properties: PriceAreaTextFields | Sequence[PriceAreaTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        price_area: str | list[str] | None = None,
-        price_area_prefix: str | None = None,
         default_method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         timezone: str | list[str] | None = None,
         timezone_prefix: str | None = None,
@@ -215,8 +207,6 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
             properties: The property to search, if nothing is passed all text fields will be searched.
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            price_area: The price area to filter on.
-            price_area_prefix: The prefix of the price area to filter on.
             default_method: The default method to filter on.
             timezone: The timezone to filter on.
             timezone_prefix: The prefix of the timezone to filter on.
@@ -241,8 +231,6 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
             self._view_id,
             name,
             name_prefix,
-            price_area,
-            price_area_prefix,
             default_method,
             timezone,
             timezone_prefix,
@@ -265,8 +253,6 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
         search_properties: PriceAreaTextFields | Sequence[PriceAreaTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        price_area: str | list[str] | None = None,
-        price_area_prefix: str | None = None,
         default_method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         timezone: str | list[str] | None = None,
         timezone_prefix: str | None = None,
@@ -290,8 +276,6 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
         search_properties: PriceAreaTextFields | Sequence[PriceAreaTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        price_area: str | list[str] | None = None,
-        price_area_prefix: str | None = None,
         default_method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         timezone: str | list[str] | None = None,
         timezone_prefix: str | None = None,
@@ -314,8 +298,6 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
         search_property: PriceAreaTextFields | Sequence[PriceAreaTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        price_area: str | list[str] | None = None,
-        price_area_prefix: str | None = None,
         default_method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         timezone: str | list[str] | None = None,
         timezone_prefix: str | None = None,
@@ -334,8 +316,6 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
             search_property: The text field to search in.
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            price_area: The price area to filter on.
-            price_area_prefix: The prefix of the price area to filter on.
             default_method: The default method to filter on.
             timezone: The timezone to filter on.
             timezone_prefix: The prefix of the timezone to filter on.
@@ -361,8 +341,6 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
             self._view_id,
             name,
             name_prefix,
-            price_area,
-            price_area_prefix,
             default_method,
             timezone,
             timezone_prefix,
@@ -390,8 +368,6 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
         search_property: PriceAreaTextFields | Sequence[PriceAreaTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        price_area: str | list[str] | None = None,
-        price_area_prefix: str | None = None,
         default_method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         timezone: str | list[str] | None = None,
         timezone_prefix: str | None = None,
@@ -409,8 +385,6 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
             search_property: The text field to search in.
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            price_area: The price area to filter on.
-            price_area_prefix: The prefix of the price area to filter on.
             default_method: The default method to filter on.
             timezone: The timezone to filter on.
             timezone_prefix: The prefix of the timezone to filter on.
@@ -427,8 +401,6 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
             self._view_id,
             name,
             name_prefix,
-            price_area,
-            price_area_prefix,
             default_method,
             timezone,
             timezone_prefix,
@@ -451,8 +423,6 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        price_area: str | list[str] | None = None,
-        price_area_prefix: str | None = None,
         default_method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         timezone: str | list[str] | None = None,
         timezone_prefix: str | None = None,
@@ -466,8 +436,6 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
         Args:
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            price_area: The price area to filter on.
-            price_area_prefix: The prefix of the price area to filter on.
             default_method: The default method to filter on.
             timezone: The timezone to filter on.
             timezone_prefix: The prefix of the timezone to filter on.
@@ -492,8 +460,6 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
             self._view_id,
             name,
             name_prefix,
-            price_area,
-            price_area_prefix,
             default_method,
             timezone,
             timezone_prefix,

@@ -246,14 +246,6 @@
       containerPropertyIdentifier: name
       name: name
       description: null
-    priceArea:
-      container:
-        space: '{{model_space}}'
-        externalId: PriceArea
-        type: container
-      containerPropertyIdentifier: priceArea
-      name: priceArea
-      description: null
     defaultMethod:
       container:
         space: '{{model_space}}'

@@ -30,12 +30,11 @@ __all__ = [
 ]
 
 
-PriceAreaTextFields = Literal["name", "price_area", "timezone"]
-PriceAreaFields = Literal["name", "price_area", "timezone", "main_scenario", "price_scenarios"]
+PriceAreaTextFields = Literal["name", "timezone"]
+PriceAreaFields = Literal["name", "timezone", "main_scenario", "price_scenarios"]
 
 _PRICEAREA_PROPERTIES_BY_FIELD = {
     "name": "name",
-    "price_area": "priceArea",
     "timezone": "timezone",
     "main_scenario": "mainScenario",
     "price_scenarios": "priceScenarios",
@@ -51,7 +50,6 @@ class PriceArea(DomainModel):
         space: The space where the node is located.
         external_id: The external id of the price area.
         name: The name field.
-        price_area: The price area field.
         default_method: The default method field.
         timezone: The timezone field.
         main_scenario: The main scenario field.
@@ -64,7 +62,6 @@ class PriceArea(DomainModel):
 
     space: str = "power-ops-day-ahead-bids"
     name: Optional[str] = None
-    price_area: Optional[str] = Field(None, alias="priceArea")
     default_method: Union[BidMethod, str, None] = Field(None, repr=False, alias="defaultMethod")
     timezone: Optional[str] = None
     main_scenario: Union[TimeSeries, str, None] = Field(None, alias="mainScenario")
@@ -76,7 +73,6 @@ class PriceArea(DomainModel):
             space=self.space,
             external_id=self.external_id,
             name=self.name,
-            price_area=self.price_area,
             default_method=self.default_method.as_apply()
             if isinstance(self.default_method, DomainModel)
             else self.default_method,
@@ -95,7 +91,6 @@ class PriceAreaApply(DomainModelApply):
         space: The space where the node is located.
         external_id: The external id of the price area.
         name: The name field.
-        price_area: The price area field.
         default_method: The default method field.
         timezone: The timezone field.
         main_scenario: The main scenario field.
@@ -108,7 +103,6 @@ class PriceAreaApply(DomainModelApply):
 
     space: str = "power-ops-day-ahead-bids"
     name: Optional[str] = None
-    price_area: Optional[str] = Field(None, alias="priceArea")
     default_method: Union[BidMethodApply, str, None] = Field(None, repr=False, alias="defaultMethod")
     timezone: Optional[str] = None
     main_scenario: Union[TimeSeries, str, None] = Field(None, alias="mainScenario")
@@ -130,8 +124,6 @@ class PriceAreaApply(DomainModelApply):
         properties = {}
         if self.name is not None:
             properties["name"] = self.name
-        if self.price_area is not None:
-            properties["priceArea"] = self.price_area
         if self.default_method is not None:
             properties["defaultMethod"] = {
                 "space": self.space if isinstance(self.default_method, str) else self.default_method.space,
@@ -193,8 +185,6 @@ def _create_price_area_filter(
     view_id: dm.ViewId,
     name: str | list[str] | None = None,
     name_prefix: str | None = None,
-    price_area: str | list[str] | None = None,
-    price_area_prefix: str | None = None,
     default_method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     timezone: str | list[str] | None = None,
     timezone_prefix: str | None = None,
@@ -209,12 +199,6 @@ def _create_price_area_filter(
         filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
     if name_prefix:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
-    if price_area and isinstance(price_area, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("priceArea"), value=price_area))
-    if price_area and isinstance(price_area, list):
-        filters.append(dm.filters.In(view_id.as_property_ref("priceArea"), values=price_area))
-    if price_area_prefix:
-        filters.append(dm.filters.Prefix(view_id.as_property_ref("priceArea"), value=price_area_prefix))
     if default_method and isinstance(default_method, str):
         filters.append(
             dm.filters.Equals(
