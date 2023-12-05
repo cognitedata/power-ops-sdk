@@ -1,5 +1,4 @@
 - space: '{{model_space}}'
-
   externalId: BidDocument
   name: BidDocument
   usedFor: node
@@ -9,32 +8,31 @@
         list: false
         collation: ucs_basic
         type: text
-      nullable: false
-      autoIncrement: false
       name: name
-      defaultValue: null
       description: null
+      nullable: true
+      autoIncrement: false
+      defaultValue: null
     priceArea:
       type:
         container:
-          space: '{{model_space}}'
+          space: {{model_space}}
           externalId: PriceArea
         type: direct
-        list: false
+      name: priceArea
+      description: null
       nullable: true
       autoIncrement: false
-      name: priceArea
       defaultValue: null
-      description: null
     date:
       type:
         list: false
         type: date
-      nullable: false
-      autoIncrement: false
       name: date
-      defaultValue: null
       description: null
+      nullable: true
+      autoIncrement: false
+      defaultValue: null
     bids:
       type:
         container:
@@ -42,38 +40,38 @@
           externalId: BidRow
         type: direct
         list: true
+      name: bids
+      description: null
       nullable: true
       autoIncrement: false
-      name: bids
       defaultValue: null
-      description: null
     startCalculation:
       type:
         list: false
         type: timestamp
+      name: startCalculation
+      description: null
       nullable: true
       autoIncrement: false
-      name: startCalculation
       defaultValue: null
-      description: null
     endCalculation:
       type:
         list: false
         type: timestamp
+      name: endCalculation
+      description: null
       nullable: true
       autoIncrement: false
-      name: endCalculation
       defaultValue: null
-      description: null
     isCompleted:
       type:
         list: false
         type: boolean
+      name: isCompleted
+      description: null
       nullable: true
       autoIncrement: false
-      name: isCompleted
       defaultValue: null
-      description: null
     alerts:
       type:
         container:
@@ -81,11 +79,11 @@
           externalId: Alert
         type: direct
         list: true
+      name: alerts
+      description: null
       nullable: true
       autoIncrement: false
-      name: alerts
       defaultValue: null
-      description: null
   indexes:
     date:
       indexType: btree
@@ -100,67 +98,67 @@
       type:
         list: false
         type: float32
+      name: price
+      description: null
       nullable: true
       autoIncrement: false
-      name: price
       defaultValue: null
-      description: null
     quantityPerHour:
       type:
         list: true
         type: float32
+      name: quantityPerHour
+      description: null
       nullable: true
       autoIncrement: false
-      name: quantityPerHour
       defaultValue: null
-      description: null
     product:
       type:
         list: false
         type: text
         collation: ucs_basic
+      name: product
+      description: null
       nullable: true
       autoIncrement: false
-      name: product
       defaultValue: null
-      description: null
     isDivisible:
       type:
         list: false
         type: boolean
+      name: isDivisible
+      description: null
       nullable: true
       autoIncrement: false
-      name: isDivisible
       defaultValue: null
-      description: null
     minQuantity:
       type:
         list: true
         type: float32
+      name: minQuantity
+      description: null
       nullable: true
       autoIncrement: false
-      name: minQuantity
       defaultValue: null
-      description: null
     isBlock:
       type:
         list: false
         type: boolean
+      name: isBlock
+      description: null
       nullable: true
       autoIncrement: false
-      name: isBlock
       defaultValue: null
-      description: null
     exclusiveGroupId:
       type:
         list: false
         type: text
         collation: ucs_basic
+      name: exclusiveGroupId
+      description: null
       nullable: true
       autoIncrement: false
-      name: exclusiveGroupId
       defaultValue: null
-      description: null
     linkedBid:
       type:
         container:
@@ -168,31 +166,31 @@
           externalId: BidRow
         type: direct
         list: false
+      name: linkedBid
+      description: null
       nullable: true
       autoIncrement: false
-      name: linkedBid
       defaultValue: null
-      description: null
     assetType:
       type:
         list: false
         type: text
         collation: ucs_basic
+      name: assetType
+      description: null
       nullable: true
       autoIncrement: false
-      name: assetType
       defaultValue: null
-      description: null
     assetId:
       type:
         list: false
         type: text
         collation: ucs_basic
+      name: assetId
+      description: null
       nullable: true
       autoIncrement: false
-      name: assetId
       defaultValue: null
-      description: null
     method:
       type:
         container:
@@ -200,11 +198,11 @@
           externalId: BidMethod
         type: direct
         list: false
+      name: method
+      description: null
       nullable: true
       autoIncrement: false
-      name: method
       defaultValue: null
-      description: null
 - space: '{{model_space}}'
   name: PriceArea
   externalId: PriceArea
@@ -215,92 +213,92 @@
         list: false
         type: text
         collation: ucs_basic
+      name: name
+      description: null
       nullable: true
       autoIncrement: false
-      name: name
       defaultValue: null
-      description: null
     capacityPriceUp:
       type:
         list: false
         type: timeseries
+      name: capacityPriceUp
+      description: null
       nullable: true
       autoIncrement: false
-      name: capacityPriceUp
       defaultValue: null
-      description: null
     capacityPriceDown:
       type:
         list: false
         type: timeseries
+      name: capacityPriceDown
+      description: null
       nullable: true
       autoIncrement: false
-      name: capacityPriceDown
       defaultValue: null
-      description: null
     activationPriceUp:
       type:
         list: false
         type: timeseries
+      name: activationPriceUp
+      description: null
       nullable: true
       autoIncrement: false
-      name: activationPriceUp
       defaultValue: null
-      description: null
     activationPriceDown:
       type:
         list: false
         type: timeseries
+      name: activationPriceDown
+      description: null
       nullable: true
       autoIncrement: false
-      name: activationPriceDown
       defaultValue: null
-      description: null
     relativeActivation:
       type:
         list: false
         type: timeseries
+      name: relativeActivation
+      description: null
       nullable: true
       autoIncrement: false
-      name: relativeActivation
       defaultValue: null
-      description: null
     totalCapacityAllocationUp:
       type:
         list: false
         type: timeseries
+      name: totalCapacityAllocationUp
+      description: null
       nullable: true
       autoIncrement: false
-      name: totalCapacityAllocationUp
       defaultValue: null
-      description: null
     totalCapacityAllocationDown:
       type:
         list: false
         type: timeseries
+      name: totalCapacityAllocationDown
+      description: null
       nullable: true
       autoIncrement: false
-      name: totalCapacityAllocationDown
       defaultValue: null
-      description: null
     ownCapacityAllocationUp:
       type:
         list: false
         type: timeseries
+      name: ownCapacityAllocationUp
+      description: null
       nullable: true
       autoIncrement: false
-      name: ownCapacityAllocationUp
       defaultValue: null
-      description: null
     ownCapacityAllocationDown:
       type:
         list: false
         type: timeseries
+      name: ownCapacityAllocationDown
+      description: null
       nullable: true
       autoIncrement: false
-      name: ownCapacityAllocationDown
       defaultValue: null
-      description: null
 - space: '{{model_space}}'
   name: BidMethod
   externalId: BidMethod
@@ -311,8 +309,8 @@
         list: false
         collation: ucs_basic
         type: text
-      nullable: false
-      autoIncrement: false
       name: name
-      defaultValue: null
       description: null
+      nullable: true
+      autoIncrement: false
+      defaultValue: null
