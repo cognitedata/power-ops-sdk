@@ -19,6 +19,8 @@ nav:
       - client:
           - SHOP API: packages/client/shop_api.md
           - SHOP API Classes: packages/client/shop_api_classes.md
+          - Dayahead API: packages/client/dayahead_trigger_api.md
+          - Dayahead API Classes: packages/client/dayahead_trigger_classes.md
       - resync:
           - resync: packages/resync/main.md
           - config:

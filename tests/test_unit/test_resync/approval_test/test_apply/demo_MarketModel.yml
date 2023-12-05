@@ -597,11 +597,29 @@ relationships:
   source_type: Asset
   target_external_id: SHOP_Fornebu_incremental_mapping_water_value_based_with_dummy_SHOP_runNO2_Main
   target_type: Sequence
+- external_id: POWEROPS_dayahead_bidding_benchmarking_config.POWEROPS_bid_process_configuration_multi_scenario_20_NO2
+  labels: '[{''external_id'': ''relationship_to.bid_process_configuration_asset''}]'
+  source_external_id: POWEROPS_dayahead_bidding_benchmarking_config
+  source_type: ASSET
+  target_external_id: POWEROPS_bid_process_configuration_multi_scenario_20_NO2
+  target_type: ASSET
 - external_id: POWEROPS_dayahead_bidding_benchmarking_config.POWEROPS_bid_process_configuration_multi_scenario_2_NO2
   labels: '[{''external_id'': ''relationship_to.bid_process_configuration_asset''}]'
   source_external_id: POWEROPS_dayahead_bidding_benchmarking_config
   source_type: ASSET
   target_external_id: POWEROPS_bid_process_configuration_multi_scenario_2_NO2
+  target_type: ASSET
+- external_id: POWEROPS_dayahead_bidding_benchmarking_config.POWEROPS_bid_process_configuration_price_independent_NO2
+  labels: '[{''external_id'': ''relationship_to.bid_process_configuration_asset''}]'
+  source_external_id: POWEROPS_dayahead_bidding_benchmarking_config
+  source_type: ASSET
+  target_external_id: POWEROPS_bid_process_configuration_price_independent_NO2
+  target_type: ASSET
+- external_id: POWEROPS_dayahead_bidding_benchmarking_config.POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2
+  labels: '[{''external_id'': ''relationship_to.bid_process_configuration_asset''}]'
+  source_external_id: POWEROPS_dayahead_bidding_benchmarking_config
+  source_type: ASSET
+  target_external_id: POWEROPS_bid_process_configuration_water_value_based_with_dummy_SHOP_runNO2
   target_type: ASSET
 - external_id: POWEROPS_Fornebu_week_down_day_3-prices_20MW-200MW.SHOP_Fornebu_incremental_mapping_Fornebu_week_down_day_3-prices_20MW-200MW_+20pct_0MW
   labels: '[{''external_id'': ''relationship_to.incremental_mapping_sequence''}]'

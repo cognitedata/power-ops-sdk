@@ -38,6 +38,9 @@ class DayaheadTriggerAPI:
         for plant in plants_per_workflow:
             partial_matrix_event_external_id = f"{PartialFunctionEvent.external_id_prefix}{suffix_run_id}_{plant}"
             metadata = {PartialFunctionEvent.plant: plant, PartialFunctionEvent.method: workflow.method}
+            if workflow.plant_names_override:
+                metadata[PartialFunctionEvent.plant_name_override] = workflow.plant_names_override[plant]
+
             events_and_relationships["events"].append(
                 PartialFunctionEvent.as_cdf_event(
                     data_set=self._data_set_api,
@@ -155,10 +158,12 @@ class DayaheadTriggerAPI:
         Creates shop runs for all prerun files referenced in each case.
         Creates a workflow trigger event that gets linked to all shop runs.
         Creates Events for Partial and Total bid matrix calculation that are also linked to the trigger event.
+
         Args:
             workflow: DayaheadTrigger object to trigger a dayahead workflow from
         Returns:
-            dict with reference to the created workflow event and the shop runs that was created from the workflow
+            DayaheadWorkflowRun that holds the SHOP run events and the bid calclation events (see DayaheadWorkflowRun
+            for more info)
         """
 
         shop_runs = []
