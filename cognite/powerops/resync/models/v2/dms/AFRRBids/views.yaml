@@ -21,6 +21,12 @@
         space: '{{model_space}}'
         externalId: BidDocument
         type: container
+      source:
+        type: view
+        space: '{{model_space}}'
+        externalId: PriceArea
+        version: '{{view_PriceArea_version}}'
+      direction: outwards
       containerPropertyIdentifier: priceArea
       name: priceArea
       description: >
@@ -39,6 +45,12 @@
         space: '{{model_space}}'
         externalId: BidDocument
         type: container
+      source:
+        type: view
+        space: '{{model_space}}'
+        externalId: BidRow
+        version: '{{view_BidRow_version}}'
+      direction: outwards
       containerPropertyIdentifier: bids
       name: bids
       description: >
@@ -75,7 +87,12 @@
         space: '{{model_space}}'
         externalId: BidDocument
         type: container
-      containerPropertyIdentifier: alerts
+      source:
+        space: '{{model_space}}'
+        externalId: Alert
+        version: '{{view_Alert_version}}'
+        type: view
+      direction: outwards
       name: alerts
       description: >
         An array of calculation level Alerts.
@@ -89,7 +106,7 @@
     price:
       container:
         space: '{{model_space}}'
-        externalId: BidDocument
+        externalId: BidRow
         type: container
       containerPropertyIdentifier: price
       name: price
@@ -98,7 +115,7 @@
     quantityPerHour:
       container:
         space: '{{model_space}}'
-        externalId: BidDocument
+        externalId: BidRow
         type: container
       containerPropertyIdentifier: quantityPerHour
       name: quantityPerHour
@@ -107,7 +124,7 @@
     product:
       container:
         space: '{{model_space}}'
-        externalId: BidDocument
+        externalId: BidRow
         type: container
       containerPropertyIdentifier: product
       name: product
@@ -116,7 +133,7 @@
     isDivisible:
       container:
         space: '{{model_space}}'
-        externalId: BidDocument
+        externalId: BidRow
         type: container
       containerPropertyIdentifier: isDivisible
       name: isDivisible
@@ -125,7 +142,7 @@
     minQuantity:
       container:
         space: '{{model_space}}'
-        externalId: BidDocument
+        externalId: BidRow
         type: container
       containerPropertyIdentifier: minQuantity
       name: minQuantity
@@ -135,7 +152,7 @@
     isBlock:
       container:
         space: '{{model_space}}'
-        externalId: BidDocument
+        externalId: BidRow
         type: container
       containerPropertyIdentifier: isBlock
       name: isBlock
@@ -146,7 +163,7 @@
     exclusiveGroupId:
       container:
         space: '{{model_space}}'
-        externalId: BidDocument
+        externalId: BidRow
         type: container
       containerPropertyIdentifier: exclusiveGroupId
       name: exclusiveGroupId
@@ -156,8 +173,14 @@
     linkedBid:
       container:
         space: '{{model_space}}'
-        externalId: BidDocument
+        externalId: BidRow
         type: container
+      source:
+        type: view
+        space: '{{model_space}}'
+        externalId: BidRow
+        version: '{{view_BidRow_version}}'
+      direction: outwards
       containerPropertyIdentifier: linkedBid
       name: linkedBid
       description: >
@@ -166,7 +189,7 @@
     assetType:
       container:
         space: '{{model_space}}'
-        externalId: BidDocument
+        externalId: BidRow
         type: container
       containerPropertyIdentifier: assetType
       name: assetType
@@ -175,7 +198,7 @@
     assetId:
       container:
         space: '{{model_space}}'
-        externalId: BidDocument
+        externalId: BidRow
         type: container
       containerPropertyIdentifier: assetId
       name: assetId
@@ -184,8 +207,14 @@
     method:
       container:
         space: '{{model_space}}'
-        externalId: BidDocument
+        externalId: BidRow
         type: container
+      source:
+        type: view
+        space: '{{model_space}}'
+        externalId: BidMethod
+        version: 'view_BidMethod_version'
+      direction: outwards
       containerPropertyIdentifier: method
       name: method
       description: >
@@ -193,9 +222,15 @@
     alerts:
       container:
         space: '{{model_space}}'
-        externalId: BidDocument
+        externalId: BidRow
         type: container
       containerPropertyIdentifier: alerts
+      source:
+        space: '{{model_space}}'
+        externalId: Alert
+        version: '{{view_Alert_version}}'
+        type: view
+      direction: outwards
       name: alerts
       description: >
         An array of associated alerts.
@@ -209,7 +244,7 @@
     time:
       container:
         space: '{{model_space}}'
-        externalId: BidDocument
+        externalId: Alert
         type: container
       containerPropertyIdentifier: time
       name: time
@@ -218,7 +253,7 @@
     title:
       container:
         space: '{{model_space}}'
-        externalId: BidDocument
+        externalId: Alert
         type: container
       containerPropertyIdentifier: title
       name: title
@@ -227,7 +262,7 @@
     description:
       container:
         space: '{{model_space}}'
-        externalId: BidDocument
+        externalId: Alert
         type: container
       containerPropertyIdentifier: description
       name: description
@@ -236,7 +271,7 @@
     severity:
       container:
         space: '{{model_space}}'
-        externalId: BidDocument
+        externalId: Alert
         type: container
       containerPropertyIdentifier: severity
       name: severity
@@ -247,7 +282,7 @@
     alertType:
       container:
         space: '{{model_space}}'
-        externalId: BidDocument
+        externalId: Alert
         type: container
       containerPropertyIdentifier: alertType
       name: alertType
@@ -256,7 +291,7 @@
     statusCode:
       container:
         space: '{{model_space}}'
-        externalId: BidDocument
+        externalId: Alert
         type: container
       containerPropertyIdentifier: statusCode
       name: statusCode
@@ -265,7 +300,7 @@
     eventIds:
       container:
         space: '{{model_space}}'
-        externalId: BidDocument
+        externalId: Alert
         type: container
       containerPropertyIdentifier: eventIds
       name: eventIds
@@ -274,7 +309,7 @@
     calculationRun:
       container:
         space: '{{model_space}}'
-        externalId: BidDocument
+        externalId: Alert
         type: container
       containerPropertyIdentifier: calculationRun
       name: calculationRun
@@ -290,7 +325,7 @@
     name:
       container:
         space: '{{model_space}}'
-        externalId: BidDocument
+        externalId: PriceArea
         type: container
       containerPropertyIdentifier: name
       name: name
@@ -299,7 +334,7 @@
     capacityPriceUp:
       container:
         space: '{{model_space}}'
-        externalId: BidDocument
+        externalId: PriceArea
         type: container
       containerPropertyIdentifier: capacityPriceUp
       name: capacityPriceUp
@@ -308,7 +343,7 @@
     capacityPriceDown:
       container:
         space: '{{model_space}}'
-        externalId: BidDocument
+        externalId: PriceArea
         type: container
       containerPropertyIdentifier: capacityPriceDown
       name: capacityPriceDown
@@ -317,7 +352,7 @@
     activationPriceUp:
       container:
         space: '{{model_space}}'
-        externalId: BidDocument
+        externalId: PriceArea
         type: container
       containerPropertyIdentifier: activationPriceUp
       name: activationPriceUp
@@ -326,7 +361,7 @@
     activationPriceDown:
       container:
         space: '{{model_space}}'
-        externalId: BidDocument
+        externalId: PriceArea
         type: container
       containerPropertyIdentifier: activationPriceDown
       name: activationPriceDown
@@ -335,7 +370,7 @@
     relativeActivation:
       container:
         space: '{{model_space}}'
-        externalId: BidDocument
+        externalId: PriceArea
         type: container
       containerPropertyIdentifier: relativeActivation
       name: relativeActivation
@@ -344,7 +379,7 @@
     totalCapacityAllocationUp:
       container:
         space: '{{model_space}}'
-        externalId: BidDocument
+        externalId: PriceArea
         type: container
       containerPropertyIdentifier: totalCapacityAllocationUp
       name: totalCapacityAllocationUp
@@ -353,7 +388,7 @@
     totalCapacityAllocationDown:
       container:
         space: '{{model_space}}'
-        externalId: BidDocument
+        externalId: PriceArea
         type: container
       containerPropertyIdentifier: totalCapacityAllocationDown
       name: totalCapacityAllocationDown
@@ -362,7 +397,7 @@
     ownCapacityAllocationUp:
       container:
         space: '{{model_space}}'
-        externalId: BidDocument
+        externalId: PriceArea
         type: container
       containerPropertyIdentifier: ownCapacityAllocationUp
       name: ownCapacityAllocationUp
@@ -371,7 +406,7 @@
     ownCapacityAllocationDown:
       container:
         space: '{{model_space}}'
-        externalId: BidDocument
+        externalId: PriceArea
         type: container
       containerPropertyIdentifier: ownCapacityAllocationDown
       name: ownCapacityAllocationDown
@@ -387,7 +422,7 @@
     name:
       container:
         space: '{{model_space}}'
-        externalId: BidDocument
+        externalId: BidMethod
         type: container
       containerPropertyIdentifier: name
       name: name
