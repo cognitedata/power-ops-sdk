@@ -26,6 +26,7 @@
         space: '{{model_space}}'
         externalId: PriceArea
         version: '{{view_PriceArea_version}}'
+      name: priceArea
       containerPropertyIdentifier: priceArea
       description: >-
         The PriceArea associated with the BidDocument (this should be shared).
@@ -41,14 +42,14 @@
     bids:
       type:
         space: '{{model_space}}'
-        externalId: BidDocument
+        externalId: BidDocument.bids
       source:
         type: view
         space: '{{model_space}}'
         externalId: BidRow
         version: '{{view_BidRow_version}}'
-      direction: outwards
       containerPropertyIdentifier: bids
+      direction: outwards
       name: bids
       description: >-
        An array of BidRows containing the Bid data.
@@ -70,24 +71,25 @@
       name: endCalculation
       description: >-
         Timestamp of when the Bid calculation workflow completed.
-    isCompleted:
+    isComplete:
       container:
         space: '{{model_space}}'
         externalId: BidDocument
         type: container
-      containerPropertyIdentifier: isCompleted
-      name: isCompleted
+      containerPropertyIdentifier: isComplete
+      name: isComplete
       description: >-
        Indicates that the Bid calculation workflow has completed (although has not necessarily succeeded).
     alerts:
       type:
         space: '{{model_space}}'
-        externalId: BidDocument
+        externalId: BidDocument.alerts
       source:
         space: '{{model_space}}'
         externalId: Alert
         version: '{{view_Alert_version}}'
         type: view
+      containerPropertyIdentifier: alerts
       direction: outwards
       name: alerts
       description: >-
@@ -153,8 +155,7 @@
       containerPropertyIdentifier: isBlock
       name: isBlock
       description: >-
-        Indication if the row is part of a Block bid.
-        If true: quantityPerHour must have the same value for consecutive hours (and no "breaks").
+        Indication if the row is part of a Block bid. If true: quantityPerHour must have the same value for consecutive hours (and no breaks).
         Block bids must be accepted for all hours or none.
     exclusiveGroupId:
       container:
@@ -167,15 +168,15 @@
         Other bids with the same ID are part of an exclusive group - only one of them can be accepted,
         and they must have the same direction (product). Not allowed for block bids.
     linkedBid:
-      type:
+      container:
         space: '{{model_space}}'
         externalId: BidRow
+        type: container
       source:
         type: view
         space: '{{model_space}}'
         externalId: BidRow
         version: '{{view_BidRow_version}}'
-      direction: outwards
       containerPropertyIdentifier: linkedBid
       name: linkedBid
       description: >-
@@ -200,15 +201,15 @@
       description: >-
         TBC
     method:
-      type:
+      container:
         space: '{{model_space}}'
         externalId: BidRow
+        type: container
       source:
         type: view
         space: '{{model_space}}'
         externalId: BidMethod
         version: 'view_BidMethod_version'
-      direction: outwards
       containerPropertyIdentifier: method
       name: method
       description: >-
@@ -216,13 +217,13 @@
     alerts:
       type:
         space: '{{model_space}}'
-        externalId: BidRow
-      containerPropertyIdentifier: alerts
+        externalId: BidRow.alerts
       source:
         space: '{{model_space}}'
         externalId: Alert
         version: '{{view_Alert_version}}'
         type: view
+      containerPropertyIdentifier: alerts
       direction: outwards
       name: alerts
       description: >-

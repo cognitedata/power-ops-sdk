@@ -63,7 +63,7 @@
       nullable: true
       autoIncrement: false
       defaultValue: null
-    isCompleted:
+    isComplete:
       type:
         list: false
         type: boolean
