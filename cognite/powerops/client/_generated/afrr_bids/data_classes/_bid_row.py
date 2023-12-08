@@ -59,15 +59,15 @@ class BidRow(DomainModel):
         external_id: The external id of the bid row.
         price: Price in EUR/MW/h, rounded to nearest price step (0.1?)
         quantity_per_hour: The capacity offered, per hour, in MW, rounded to nearest step size (5?)
-        product: TBC
-        is_divisible: Indication if the BidRow is divisible.
+        product: The product field.
+        is_divisible: The is divisible field.
         min_quantity: Min quantity, per hour. Only relevant for divisible Bids. The minimum capacity that must be accepted; this must be lower than capacityPerHour and is rounded to the nearest step (5 MW?)).
         is_block: Indication if the row is part of a Block bid. If true: quantityPerHour must have the same value for consecutive hours (and no breaks). Block bids must be accepted for all hours or none.
         exclusive_group_id: Other bids with the same ID are part of an exclusive group - only one of them can be accepted, and they must have the same direction (product). Not allowed for block bids.
         linked_bid: The linked bid must have the opposite direction (link means that both or none must be accepted). Should be bi-directional.
-        asset_type: TBC
-        asset_id: TBC
-        method: TBC
+        asset_type: The asset type field.
+        asset_id: The asset id field.
+        method: The method field.
         alerts: An array of associated alerts.
         created_time: The created time of the bid row node.
         last_updated_time: The last updated time of the bid row node.
@@ -119,15 +119,15 @@ class BidRowApply(DomainModelApply):
         external_id: The external id of the bid row.
         price: Price in EUR/MW/h, rounded to nearest price step (0.1?)
         quantity_per_hour: The capacity offered, per hour, in MW, rounded to nearest step size (5?)
-        product: TBC
-        is_divisible: Indication if the BidRow is divisible.
+        product: The product field.
+        is_divisible: The is divisible field.
         min_quantity: Min quantity, per hour. Only relevant for divisible Bids. The minimum capacity that must be accepted; this must be lower than capacityPerHour and is rounded to the nearest step (5 MW?)).
         is_block: Indication if the row is part of a Block bid. If true: quantityPerHour must have the same value for consecutive hours (and no breaks). Block bids must be accepted for all hours or none.
         exclusive_group_id: Other bids with the same ID are part of an exclusive group - only one of them can be accepted, and they must have the same direction (product). Not allowed for block bids.
         linked_bid: The linked bid must have the opposite direction (link means that both or none must be accepted). Should be bi-directional.
-        asset_type: TBC
-        asset_id: TBC
-        method: TBC
+        asset_type: The asset type field.
+        asset_id: The asset id field.
+        method: The method field.
         alerts: An array of associated alerts.
         existing_version: Fail the ingestion request if the bid row version is greater than or equal to this value.
             If no existingVersion is specified, the ingestion will always overwrite any existing data for the edge (for the specified container or instance).
