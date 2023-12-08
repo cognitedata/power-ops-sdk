@@ -117,8 +117,8 @@ def label_in_labels(label_external_id: str, labels: Sequence[Label]) -> bool:
 
 class PlantTimeSeriesMapping(BaseModel):
     plant_name: str
-    water_value: Optional[ExternalId] = None
-    inlet_reservoir_level: Optional[ExternalId] = None
+    water_value: ExternalId
+    inlet_reservoir_level: ExternalId
     outlet_reservoir_level: Optional[ExternalId] = None
     p_min: Optional[ExternalId] = None
     p_max: Optional[ExternalId] = None
