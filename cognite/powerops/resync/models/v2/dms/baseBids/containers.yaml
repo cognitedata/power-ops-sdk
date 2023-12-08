@@ -171,16 +171,6 @@
       nullable: false
       autoIncrement: false
       defaultValue: null
-    type:
-      type:
-        list: false
-        collation: ucs_basic
-        type: text
-      name: name
-      description: 'The type of method, i.e. AFRR, day-ahead, and so on'
-      nullable: false
-      autoIncrement: false
-      defaultValue: null
   indexes:
     name:
       indexType: btree

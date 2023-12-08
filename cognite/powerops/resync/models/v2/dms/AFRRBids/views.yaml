@@ -5,6 +5,10 @@
   description: >-
     Whole Bid (also usually referenced in industry as a Bid Document) containing multiple Bid Rows
     (which are usually referenced in industry as Bids)
+  implements:
+    - externalId: BidDocument
+      space: '{{ shared_model_space }}'
+      version: '{{ view_BidDocument_version }}'
   filter:
     equals:
       property: ["node", "type"]
@@ -230,5 +234,5 @@
     - version: '{{ view_BidMethod_version }}'
   filter:
     equals:
-      property: ["properties", "BidMethod/{{view_BidMethod_version}}", "type"]
-      value: 'aFRR'
+      property: ["node", "type"]
+      value: {"space": "types", "externalId": "AFRRBidMethod"}

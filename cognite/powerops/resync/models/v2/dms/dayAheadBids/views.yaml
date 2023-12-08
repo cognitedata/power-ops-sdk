@@ -72,10 +72,6 @@
       containerPropertyIdentifier: priceScenarios
       name: priceScenarios
       description: null
-  filter:
-    prefix:
-      property: [ 'node', 'externalId' ]
-      value: "SHOP"
 - space: '{{model_space}}'
   externalId: WaterValueBased
   name: WaterValueBased
@@ -87,11 +83,9 @@
       version: '{{view_BidMethod_version}}'
   properties: {}
   filter:
-    prefix:
-      property:
-        - node
-        - externalId
-      value: "WVB"
+    equals:
+      property: ["node", "type"]
+      value: {"space": "types", "externalId": "WaterValueBasedDayAheadMethod"}
 - space: '{{model_space}}'
   externalId: PriceArea
   name: PriceArea
@@ -199,11 +193,6 @@
       externalId: BidTable
       version: '{{view_BidTable_version}}'
   properties:
-    #  resourceCost: (inherited)
-    #  table: (inherited)
-    #  assetType: (inherited)
-    #  asset_id: (inherited)
-    #  alerts: (inherited?)
     productionPricePairs:
       type:
         space: '{{model_space}}'
@@ -215,10 +204,6 @@
         version: '{{view_ProductionPricePair_version}}'
       direction: outwards
       name: productionPricePairs
-  filter:
-    prefix:
-      property: [ 'node', 'externalId' ]
-      value: "SHOP"
 - space: '{{model_space}}'
   externalId: ProductionPricePair
   name: ProductionPricePair
