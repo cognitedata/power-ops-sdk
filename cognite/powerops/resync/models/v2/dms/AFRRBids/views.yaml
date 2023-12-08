@@ -5,95 +5,10 @@
   description: >-
     Whole Bid (also usually referenced in industry as a Bid Document) containing multiple Bid Rows
     (which are usually referenced in industry as Bids)
-  properties:
-    name:
-      container:
-        space: '{{shared_model_space}}'
-        externalId: BidDocument
-        type: container
-      name: name
-      containerPropertyIdentifier: name
-      description: >-
-        Unique name for a given instance of a Bid Document.
-        A combination of name, priceArea, date and startCalculation.
-    priceArea:
-      container:
-        space: '{{model_space}}'
-        externalId: BidDocument
-        type: container
-      source:
-        type: view
-        space: '{{model_space}}'
-        externalId: PriceArea
-        version: '{{view_PriceArea_version}}'
-      name: priceArea
-      containerPropertyIdentifier: priceArea
-      description: >-
-        The PriceArea associated with the BidDocument (this should be shared).
-    date:
-      container:
-        space: '{{shared_model_space}}'
-        externalId: BidDocument
-        type: container
-      containerPropertyIdentifier: date
-      name: date
-      description: >-
-        The date of the Bid.
-    bids:
-      type:
-        space: '{{model_space}}'
-        externalId: BidDocument.bids
-      source:
-        type: view
-        space: '{{model_space}}'
-        externalId: BidRow
-        version: '{{view_BidRow_version}}'
-      containerPropertyIdentifier: bids
-      direction: outwards
-      name: bids
-      description: >-
-       An array of BidRows containing the Bid data.
-    startCalculation:
-      container:
-        space: '{{shared_model_space}}'
-        externalId: BidDocument
-        type: container
-      containerPropertyIdentifier: startCalculation
-      name: startCalculation
-      description: >-
-        Timestamp of when the Bid calculation workflow started.
-    endCalculation:
-      container:
-        space: '{{shared_model_space}}'
-        externalId: BidDocument
-        type: container
-      containerPropertyIdentifier: endCalculation
-      name: endCalculation
-      description: >-
-        Timestamp of when the Bid calculation workflow completed.
-    isComplete:
-      container:
-        space: '{{shared_model_space}}'
-        externalId: BidDocument
-        type: container
-      containerPropertyIdentifier: isComplete
-      name: isComplete
-      description: >-
-       Indicates that the Bid calculation workflow has completed (although has not necessarily succeeded).
-    alerts:
-      type:
-        space: '{{shared_model_space}}'
-        externalId: BidDocument.alerts
-      source:
-        space: '{{model_space}}'
-        externalId: Alert
-        version: '{{view_Alert_version}}'
-        type: view
-      containerPropertyIdentifier: alerts
-      direction: outwards
-      name: alerts
-      description: >-
-        An array of calculation level Alerts.
+  filter:
+    equals:
+      property: ["node", "type"]
+      value: {"space": "types", "externalId": "AFRRBidDocument"}
 - space: '{{model_space}}'
   externalId: BidRow
   name: BidRow
@@ -219,87 +134,6 @@
       description: >-
         An array of associated alerts.
 - space: '{{model_space}}'
-  externalId: Alert
-  name: Alert
-  version: '{{view_Alert_version}}'
-  description: >-
-    Alerts
-  properties:
-    time:
-      container:
-        space: '{{shared_model_space}}'
-        externalId: Alert
-        type: container
-      containerPropertyIdentifier: time
-      name: time
-      description: >-
-       Timestamp that the alert occured (within the workflow)
-    title:
-      container:
-        space: '{{shared_model_space}}'
-        externalId: Alert
-        type: container
-      containerPropertyIdentifier: title
-      name: title
-      description: >-
-        Summary description of the alert
-    description:
-      container:
-        space: '{{shared_model_space}}'
-        externalId: Alert
-        type: container
-      containerPropertyIdentifier: description
-      name: description
-      description: >-
-        Detailed description of the alert
-    severity:
-      container:
-        space: '{{shared_model_space}}'
-        externalId: Alert
-        type: container
-      containerPropertyIdentifier: severity
-      name: severity
-      description: >-
-        CRITICAL (calculation could not completed)
-        WARNING  (calculation completed, with major issue)
-        INFO     (calculation completed, with minor issues)
-    alertType:
-      container:
-        space: '{{shared_model_space}}'
-        externalId: Alert
-        type: container
-      containerPropertyIdentifier: alertType
-      name: alertType
-      description: >-
-        Classification of the alert (not in current alerting implementation)
-    statusCode:
-      container:
-        space: '{{shared_model_space}}'
-        externalId: Alert
-        type: container
-      containerPropertyIdentifier: statusCode
-      name: statusCode
-      description: >-
-        Unique status code for the alert. May be used by the frontend to avoid use of hardcoded description (i.e. like a translation)
-    eventIds:
-      container:
-        space: '{{shared_model_space}}'
-        externalId: Alert
-        type: container
-      containerPropertyIdentifier: eventIds
-      name: eventIds
-      description: >-
-       An array of associated alert CDF Events (e.g. SHOP Run events)
-    calculationRun:
-      container:
-        space: '{{shared_model_space}}'
-        externalId: Alert
-        type: container
-      containerPropertyIdentifier: calculationRun
-      name: calculationRun
-      description: >-
-        The identifier of the parent Bid Calculation (required so tha alerts can be created befor the BidDocument)
-- space: '{{model_space}}'
   name: PriceArea
   externalId: PriceArea
   version: '{{view_PriceArea_version}}'
@@ -308,7 +142,7 @@
   properties:
     name:
       container:
-        space: '{{model_space}}'
+        space: '{{shared_model_space}}'
         externalId: PriceArea
         type: container
       containerPropertyIdentifier: name
@@ -317,21 +151,21 @@
        Name for the PriceArea.
     capacityPriceUp:
       container:
-        space: '{{model_space}}'
+        space: '{{shared_model_space}}'
         externalId: PriceArea
         type: container
       containerPropertyIdentifier: capacityPriceUp
       name: capacityPriceUp
     capacityPriceDown:
       container:
-        space: '{{model_space}}'
+        space: '{{shared_model_space}}'
         externalId: PriceArea
         type: container
       containerPropertyIdentifier: capacityPriceDown
       name: capacityPriceDown
     activationPriceUp:
       container:
-        space: '{{model_space}}'
+        space: '{{shared_model_space}}'
         externalId: PriceArea
         type: container
       containerPropertyIdentifier: activationPriceUp
@@ -340,7 +174,7 @@
         The mFRR activation price (TBC)
     activationPriceDown:
       container:
-        space: '{{model_space}}'
+        space: '{{shared_model_space}}'
         externalId: PriceArea
         type: container
       containerPropertyIdentifier: activationPriceDown
@@ -349,7 +183,7 @@
        The mFRR activate price (TBC)
     relativeActivation:
       container:
-        space: '{{model_space}}'
+        space: '{{shared_model_space}}'
         externalId: PriceArea
         type: container
       containerPropertyIdentifier: relativeActivation
@@ -358,28 +192,28 @@
         Value between -1 (100 % activation down) and 1 (100 % activation down)
     totalCapacityAllocationUp:
       container:
-        space: '{{model_space}}'
+        space: '{{shared_model_space}}'
         externalId: PriceArea
         type: container
       containerPropertyIdentifier: totalCapacityAllocationUp
       name: totalCapacityAllocationUp
     totalCapacityAllocationDown:
       container:
-        space: '{{model_space}}'
+        space: '{{shared_model_space}}'
         externalId: PriceArea
         type: container
       containerPropertyIdentifier: totalCapacityAllocationDown
       name: totalCapacityAllocationDown
     ownCapacityAllocationUp:
       container:
-        space: '{{model_space}}'
+        space: '{{shared_model_space}}'
         externalId: PriceArea
         type: container
       containerPropertyIdentifier: ownCapacityAllocationUp
       name: ownCapacityAllocationUp
     ownCapacityAllocationDown:
       container:
-        space: '{{model_space}}'
+        space: '{{shared_model_space}}'
         externalId: PriceArea
         type: container
       containerPropertyIdentifier: ownCapacityAllocationDown
@@ -390,13 +224,11 @@
   version: '{{view_BidMethod_version}}'
   description: >-
     A description of the Bid method used in the calculation.
-  properties:
-    name:
-      container:
-        space: '{{model_space}}'
-        externalId: BidMethod
-        type: container
-      containerPropertyIdentifier: name
-      name: name
-      description: >-
-       Name for the BidMethod
+  implements:
+    - externalId: BidMethod
+    - space: '{{ shared_model_space }}'
+    - version: '{{ view_BidMethod_version }}'
+  filter:
+    equals:
+      property: ["properties", "BidMethod/{{view_BidMethod_version}}", "type"]
+      value: 'aFRR'

@@ -187,8 +187,8 @@
       properties:
         - name
 - space: {{model_space}}
-  externalId: priceArea
-  name: priceArea
+  externalId: PriceArea
+  name: PriceArea
   usedFor: node
   properties:
     name:
