@@ -42,7 +42,7 @@ class PowerOpsClient:
         self.shop = SHOPRunAPI(self.cdf, self.datasets.write_dataset_id, cogshop_version)
         self.workflow = DayaheadTriggerAPI(self.cdf, self.datasets.write_dataset_id, cogshop_version)
         self.day_ahead_bids = DayAheadBidsAPI(self.cdf)
-        self.afrr = AFRRAPIs(self.cdf)
+        self.afrr_bids = AFRRAPIs(self.cdf)
 
     @classmethod
     def from_settings(
