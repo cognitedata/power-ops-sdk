@@ -1,6 +1,6 @@
 # variables used for substitution in other files in this directory
 
-model_space: 'power-ops-day-ahead-bids-v2'
+model_space: 'power-ops-day-ahead-bids'
 model_external_id: 'DayAheadBids'
 model_version: '1'
 model_name: 'DayAheadBids'

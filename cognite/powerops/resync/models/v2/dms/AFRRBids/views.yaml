@@ -126,8 +126,6 @@
         type: container
       containerPropertyIdentifier: product
       name: product
-      description: >-
-        TBC
     isDivisible:
       container:
         space: '{{model_space}}'
@@ -135,8 +133,6 @@
         type: container
       containerPropertyIdentifier: isDivisible
       name: isDivisible
-      description: >-
-        Indication if the BidRow is divisible.
     minQuantity:
       container:
         space: '{{model_space}}'
@@ -189,8 +185,6 @@
         type: container
       containerPropertyIdentifier: assetType
       name: assetType
-      description: >-
-        TBC
     assetId:
       container:
         space: '{{model_space}}'
@@ -198,8 +192,6 @@
         type: container
       containerPropertyIdentifier: assetId
       name: assetId
-      description: >-
-        TBC
     method:
       container:
         space: '{{model_space}}'
@@ -212,8 +204,6 @@
         version: 'view_BidMethod_version'
       containerPropertyIdentifier: method
       name: method
-      description: >-
-        TBC
     alerts:
       type:
         space: '{{model_space}}'
@@ -332,8 +322,6 @@
         type: container
       containerPropertyIdentifier: capacityPriceUp
       name: capacityPriceUp
-      description: >-
-        TBC
     capacityPriceDown:
       container:
         space: '{{model_space}}'
@@ -341,8 +329,6 @@
         type: container
       containerPropertyIdentifier: capacityPriceDown
       name: capacityPriceDown
-      description: >-
-        TBC
     activationPriceUp:
       container:
         space: '{{model_space}}'
@@ -377,8 +363,6 @@
         type: container
       containerPropertyIdentifier: totalCapacityAllocationUp
       name: totalCapacityAllocationUp
-      description: >-
-        TBC
     totalCapacityAllocationDown:
       container:
         space: '{{model_space}}'
@@ -386,8 +370,6 @@
         type: container
       containerPropertyIdentifier: totalCapacityAllocationDown
       name: totalCapacityAllocationDown
-      description: >-
-        TBC
     ownCapacityAllocationUp:
       container:
         space: '{{model_space}}'
@@ -395,8 +377,6 @@
         type: container
       containerPropertyIdentifier: ownCapacityAllocationUp
       name: ownCapacityAllocationUp
-      description: >-
-        TBC
     ownCapacityAllocationDown:
       container:
         space: '{{model_space}}'
@@ -404,8 +384,6 @@
         type: container
       containerPropertyIdentifier: ownCapacityAllocationDown
       name: ownCapacityAllocationDown
-      description: >-
-        TBC
 - space: '{{model_space}}'
   name: BidMethod
   externalId: BidMethod
