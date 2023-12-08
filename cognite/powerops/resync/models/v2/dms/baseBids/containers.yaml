@@ -310,6 +310,25 @@
       nullable: true
       autoIncrement: false
       defaultValue: null
+    defaultMethodDayAhead:
+      type:
+        container:
+          space: {{model_space}}
+          externalId: BidMethod
+        type: direct
+      nullable: true
+      autoIncrement: false
+      name: defaultMethod
+      defaultValue: null
+      description: null
+    mainScenarioDayAhead:
+      type:
+        list: false
+        type: timeseries
+      nullable: true
+      autoIncrement: false
+      name: timezone
+      defaultValue: null
   indexes:
     time:
       indexType: btree
