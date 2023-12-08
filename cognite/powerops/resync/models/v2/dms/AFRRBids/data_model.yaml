@@ -1,0 +1,5 @@
+externalId: '{{model_external_id}}'
+space: '{{model_space}}'
+version: '{{model_version}}'
+name: '{{model_name}}'
+description: 'Stores results of AFRR bid calculations.'

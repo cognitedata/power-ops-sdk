@@ -127,3 +127,10 @@ class DayAheadBidModel(SimpleDataModel):
     views_file = _DMS_DIR / "dayAheadBids" / "views.yaml"
     data_model_file = _DMS_DIR / "dayAheadBids" / "data_model.yaml"
     config_files = [_DMS_DIR / "dayAheadBids" / "config.yaml"]
+
+
+class AFRRBidModel(SimpleDataModel):
+    containers_file = _DMS_DIR / "AFRRBids" / "containers.yaml"
+    views_file = _DMS_DIR / "AFRRBids" / "views.yaml"
+    data_model_file = _DMS_DIR / "AFRRBids" / "data_model.yaml"
+    config_files = [_DMS_DIR / "AFRRBids" / "config.yaml"]

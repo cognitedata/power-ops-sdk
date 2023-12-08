@@ -5,6 +5,7 @@ from cognite.client import ClientConfig, CogniteClient
 from cognite.powerops.utils.cdf import Settings, get_client_config
 
 from ._generated._api_client import (
+    AFRRAPIs,
     BenchmarkAPIs,
     CapacityBidAPIs,
     CogShopAPIs,
@@ -41,6 +42,7 @@ class PowerOpsClient:
         self.shop = SHOPRunAPI(self.cdf, self.datasets.write_dataset_id, cogshop_version)
         self.workflow = DayaheadTriggerAPI(self.cdf, self.datasets.write_dataset_id, cogshop_version)
         self.day_ahead_bids = DayAheadBidsAPI(self.cdf)
+        self.afrr_bids = AFRRAPIs(self.cdf)
 
     @classmethod
     def from_settings(

@@ -9,7 +9,7 @@ are based on Data Modeling in CDF.
 * CogSHOP - This is the updated version of the CogShop1Asset in v1.
 """
 
-from .bid_models import BaseBidModel, DayAheadBidModel
+from .bid_models import AFRRBidModel, BaseBidModel, DayAheadBidModel
 from .capacity_bids import CapacityBidModel
 from .cogshop import CogShopDataModel
 from .graphql_schemas import GRAPHQL_MODELS
@@ -27,4 +27,5 @@ __all__ = [
     "CapacityBidModel",
     "BaseBidModel",
     "DayAheadBidModel",
+    "AFRRBidModel",
 ]

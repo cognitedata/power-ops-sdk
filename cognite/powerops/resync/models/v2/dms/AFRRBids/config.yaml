@@ -1,0 +1,14 @@
+# variables used for substitution in other files in this directory
+model_space: 'power-ops-afrr-bids'
+model_name: 'AFRRBids'
+model_external_id: 'AFRRBids'
+model_version: '1'
+
+shared_model_space: 'power-ops-base-bids'
+
+view_BidDocument_version: '1'
+view_BidRow_version: '1'
+view_PriceArea_version: '1'
+view_BidMethod_version: '1'
+
+view_Alert_version: '1'
