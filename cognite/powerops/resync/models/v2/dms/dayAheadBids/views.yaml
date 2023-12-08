@@ -1,0 +1,227 @@
+- space: '{{model_space}}'
+  externalId: BidDocument
+  name: BidDocument
+  version: '{{view_BidDocument_version}}'
+  implements:
+    - type: view
+      space: '{{shared_model_space}}'
+      externalId: BidRow
+      version: '{{view_BidRow_version}}'
+  properties:
+    method:
+      container:
+        space: '{{model_space}}'
+        externalId: BidDocument
+        type: container
+      source:
+        type: view
+        space: '{{model_space}}'
+        externalId: BidMethod
+        version: '{{view_BidMethod_version}}'
+      containerPropertyIdentifier: method
+      name: method
+      description: null
+    total:
+      container:
+        space: '{{model_space}}'
+        externalId: BidDocument
+        type: container
+      source:
+        type: view
+        space: '{{model_space}}'
+        externalId: BidTable
+        version: '{{view_BidTable_version}}'
+      containerPropertyIdentifier: total
+      name: total
+      description: null
+    partials:
+      type:
+        space: '{{model_space}}'
+        externalId: Bid.partials
+      source:
+        space: '{{model_space}}'
+        externalId: BidTable
+        version: '{{view_BidTable_version}}'
+        type: view
+      direction: outwards
+      name: partials
+- space: '{{model_space}}'
+  externalId: SHOPMultiScenario
+  name: SHOPMultiScenario
+  version: '{{view_SHOPMultiScenario_version}}'
+  implements:
+    - type: view
+      space: '{{shared_model_space}}'
+      externalId: BidMethod
+      version: '{{view_BidMethod_version}}'
+  properties:
+    #  name: (inherited)
+    shopCases:
+      container:
+        space: '{{model_space}}'
+        externalId: SHOPMultiScenario
+        type: container
+      containerPropertyIdentifier: shopCases
+      name: shopCases
+      description: null
+    priceScenarios:
+      container:
+        space: '{{model_space}}'
+        externalId: SHOPMultiScenario
+        type: container
+      containerPropertyIdentifier: priceScenarios
+      name: priceScenarios
+      description: null
+- space: '{{model_space}}'
+  externalId: WaterValueBased
+  name: WaterValueBased
+  version: '{{view_WaterValueBased_version}}'
+  implements:
+    - type: view
+      space: '{{model_space}}'
+      externalId: BidMethod
+      version: '{{view_BidMethod_version}}'
+  properties: {}
+  filter:
+    equals:
+      property: ["node", "type"]
+      value: {"space": "types", "externalId": "WaterValueBasedDayAheadMethod"}
+- space: '{{model_space}}'
+  externalId: PriceArea
+  name: PriceArea
+  version: '{{view_PriceArea_version}}'
+  properties:
+    name:
+      container:
+        space: '{{shared_model_space}}'
+        externalId: PriceArea
+        type: container
+      containerPropertyIdentifier: name
+      name: name
+      description: null
+    defaultMethod:
+      container:
+        space: '{{shared_model_space}}'
+        externalId: PriceArea
+        type: container
+      source:
+        type: view
+        space: '{{model_space}}'
+        externalId: BidMethod
+        version: '{{view_BidMethod_version}}'
+      containerPropertyIdentifier: defaultMethodDayAhead
+      name: defaultMethod
+    timezone:
+      container:
+        space: '{{shared_model_space}}'
+        externalId: PriceArea
+        type: container
+      containerPropertyIdentifier: timezone
+      name: timezone
+      description: null
+    mainScenario:
+      container:
+        space: '{{shared_model_space}}'
+        externalId: PriceArea
+        type: container
+      containerPropertyIdentifier: mainScenarioDayAhead
+      name: mainScenario
+      description: null
+    priceScenarios:
+      container:
+        space: '{{shared_model_space}}'
+        externalId: PriceArea
+        type: container
+      containerPropertyIdentifier: priceScenarios
+      name: priceScenarios
+      description: null
+- space: '{{model_space}}'
+  externalId: BidTable
+  name: BidTable
+  version: '{{view_BidTable_version}}'
+  properties:
+    resourceCost:
+      container:
+        space: '{{model_space}}'
+        externalId: BidTable
+        type: container
+      containerPropertyIdentifier: resourceCost
+      name: resourceCost
+      description: null
+    table:
+      container:
+        space: '{{model_space}}'
+        externalId: BidTable
+        type: container
+      containerPropertyIdentifier: table
+      name: table
+      description: null
+    assetType:
+      container:
+        space: '{{model_space}}'
+        externalId: BidTable
+        type: container
+      containerPropertyIdentifier: assetType
+      name: assetType
+      description: null
+    assetId:
+      container:
+        space: '{{model_space}}'
+        externalId: BidTable
+        type: container
+      containerPropertyIdentifier: assetId
+      name: assetId
+      description: null
+    alerts:
+      type:
+        space: '{{model_space}}'
+        externalId: BidTable.alerts
+      source:
+        space: '{{model_space}}'
+        externalId: Alert
+        version: '{{view_Alert_version}}'
+        type: view
+      direction: outwards
+      name: alerts
+- space: '{{model_space}}'
+  externalId: SHOPTable
+  name: SHOPTable
+  version: '{{view_SHOPTable_version}}'
+  implements:
+    - type: view
+      space: '{{model_space}}'
+      externalId: BidTable
+      version: '{{view_BidTable_version}}'
+  properties:
+    productionPricePairs:
+      type:
+        space: '{{model_space}}'
+        externalId: SHOPTable.productionPricePairs
+      source:
+        type: view
+        space: '{{model_space}}'
+        externalId: ProductionPricePair
+        version: '{{view_ProductionPricePair_version}}'
+      direction: outwards
+      name: productionPricePairs
+- space: '{{model_space}}'
+  externalId: ProductionPricePair
+  name: ProductionPricePair
+  version: '{{view_ProductionPricePair_version}}'
+  properties:
+    production:
+      container:
+        space: '{{model_space}}'
+        externalId: ProductionPricePair
+        type: container
+      containerPropertyIdentifier: production
+      name: production
+      description: null
+    price:
+      container:
+        space: '{{model_space}}'
+        externalId: ProductionPricePair
+        type: container
+      containerPropertyIdentifier: price
+      name: price
+      description: null

@@ -22,7 +22,7 @@ known-third-party = ["cognite.client"]
 # See https://beta.ruff.rs/docs/rules for an overview of ruff rules
 line-length = 120
 target-version = "py39"
-exclude = ["examples", "scripts"]
+exclude = ["examples", "scripts", "cognite/powerops/client/_generated"]
 select = ["E","W","F","I","RUF","TID","UP", "B", "FLY", "PTH", "ERA"]
 fixable = ["E","W","F","I","RUF","TID","UP", "B", "FLY", "PTH", "ERA"]
 fix = true
@@ -50,7 +50,7 @@ allow_redefinition = true
 
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = ">=3.9,<3.12"
 typer = {version="^0.9.0", extras=["rich"]}
 PyYAML = "^6.0"
 cognite-sdk = {version = ">=7.3,<8", extras = ["pandas"]}
@@ -80,6 +80,8 @@ mkdocs-gitbook = {version="*", optional=true}
 mkdocs-glightbox = {version="*", optional=true}
 pymdown-extensions = {version="*", optional=true}
 mkdocstrings = {version="*", optional=true, extras=["python"]}
+cognite-toolkit = "^0.1.0a2"
+cognite-pygen = {version = ">=0.31.2", extras = ["all"]}
 
 [tool.poetry.extras]
 docs = ["mkdocs", "mkdocs-jupyter", "mkdocs-material", "mkdocs-material-extensions", "mkdocs-git-revision-date-localized-plugin",
@@ -98,7 +100,6 @@ pytest-regressions = "^2.4.2"
 ipykernel="6.24.0"
 twine = "^4.0.2"
 jupyter = "^1.0.0"
-cognite-pygen = {version = "^0.27.1", extras = ["all"]}
 mypy = "^1.4"
 pandas-stubs = "^2"
 types-PyYAML = "^6"

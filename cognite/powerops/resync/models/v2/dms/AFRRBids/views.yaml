@@ -1,0 +1,238 @@
+- space: '{{model_space}}'
+  externalId: BidDocument
+  name: BidDocument
+  version: '{{view_BidDocument_version}}'
+  description: >-
+    Whole Bid (also usually referenced in industry as a Bid Document) containing multiple Bid Rows
+    (which are usually referenced in industry as Bids)
+  implements:
+    - externalId: BidDocument
+      space: '{{ shared_model_space }}'
+      version: '{{ view_BidDocument_version }}'
+  filter:
+    equals:
+      property: ["node", "type"]
+      value: {"space": "types", "externalId": "AFRRBidDocument"}
+- space: '{{model_space}}'
+  externalId: BidRow
+  name: BidRow
+  version: '{{view_BidRow_version}}'
+  description: >-
+    One row in the BidDocument (usually referenced in industry as a Bid).
+  properties:
+    price:
+      container:
+        space: '{{model_space}}'
+        externalId: BidRow
+        type: container
+      containerPropertyIdentifier: price
+      name: price
+      description: >-
+        Price in EUR/MW/h, rounded to nearest price step (0.1?)
+    quantityPerHour:
+      container:
+        space: '{{model_space}}'
+        externalId: BidRow
+        type: container
+      containerPropertyIdentifier: quantityPerHour
+      name: quantityPerHour
+      description: >-
+        The capacity offered, per hour, in MW, rounded to nearest step size (5?)
+    product:
+      container:
+        space: '{{model_space}}'
+        externalId: BidRow
+        type: container
+      containerPropertyIdentifier: product
+      name: product
+    isDivisible:
+      container:
+        space: '{{model_space}}'
+        externalId: BidRow
+        type: container
+      containerPropertyIdentifier: isDivisible
+      name: isDivisible
+    minQuantity:
+      container:
+        space: '{{model_space}}'
+        externalId: BidRow
+        type: container
+      containerPropertyIdentifier: minQuantity
+      name: minQuantity
+      description: >-
+        Min quantity, per hour. Only relevant for divisible Bids. The minimum capacity that must be accepted;
+        this must be lower than capacityPerHour and is rounded to the nearest step (5 MW?)).
+    isBlock:
+      container:
+        space: '{{model_space}}'
+        externalId: BidRow
+        type: container
+      containerPropertyIdentifier: isBlock
+      name: isBlock
+      description: >-
+        Indication if the row is part of a Block bid. If true: quantityPerHour must have the same value for consecutive hours (and no breaks).
+        Block bids must be accepted for all hours or none.
+    exclusiveGroupId:
+      container:
+        space: '{{model_space}}'
+        externalId: BidRow
+        type: container
+      containerPropertyIdentifier: exclusiveGroupId
+      name: exclusiveGroupId
+      description: >-
+        Other bids with the same ID are part of an exclusive group - only one of them can be accepted,
+        and they must have the same direction (product). Not allowed for block bids.
+    linkedBid:
+      container:
+        space: '{{model_space}}'
+        externalId: BidRow
+        type: container
+      source:
+        type: view
+        space: '{{model_space}}'
+        externalId: BidRow
+        version: '{{view_BidRow_version}}'
+      containerPropertyIdentifier: linkedBid
+      name: linkedBid
+      description: >-
+        The linked bid must have the opposite direction (link means that both or none must be accepted).
+        Should be bi-directional.
+    assetType:
+      container:
+        space: '{{model_space}}'
+        externalId: BidRow
+        type: container
+      containerPropertyIdentifier: assetType
+      name: assetType
+    assetId:
+      container:
+        space: '{{model_space}}'
+        externalId: BidRow
+        type: container
+      containerPropertyIdentifier: assetId
+      name: assetId
+    method:
+      container:
+        space: '{{model_space}}'
+        externalId: BidRow
+        type: container
+      source:
+        type: view
+        space: '{{model_space}}'
+        externalId: BidMethod
+        version: 'view_BidMethod_version'
+      containerPropertyIdentifier: method
+      name: method
+    alerts:
+      type:
+        space: '{{model_space}}'
+        externalId: BidRow.alerts
+      source:
+        space: '{{model_space}}'
+        externalId: Alert
+        version: '{{view_Alert_version}}'
+        type: view
+      containerPropertyIdentifier: alerts
+      direction: outwards
+      name: alerts
+      description: >-
+        An array of associated alerts.
+- space: '{{model_space}}'
+  name: PriceArea
+  externalId: PriceArea
+  version: '{{view_PriceArea_version}}'
+  description: >-
+    Information about the Price Area that is only relevant for AFRR
+  properties:
+    name:
+      container:
+        space: '{{shared_model_space}}'
+        externalId: PriceArea
+        type: container
+      containerPropertyIdentifier: name
+      name: name
+      description: >-
+       Name for the PriceArea.
+    capacityPriceUp:
+      container:
+        space: '{{shared_model_space}}'
+        externalId: PriceArea
+        type: container
+      containerPropertyIdentifier: capacityPriceUp
+      name: capacityPriceUp
+    capacityPriceDown:
+      container:
+        space: '{{shared_model_space}}'
+        externalId: PriceArea
+        type: container
+      containerPropertyIdentifier: capacityPriceDown
+      name: capacityPriceDown
+    activationPriceUp:
+      container:
+        space: '{{shared_model_space}}'
+        externalId: PriceArea
+        type: container
+      containerPropertyIdentifier: activationPriceUp
+      name: activationPriceUp
+      description: >-
+        The mFRR activation price (TBC)
+    activationPriceDown:
+      container:
+        space: '{{shared_model_space}}'
+        externalId: PriceArea
+        type: container
+      containerPropertyIdentifier: activationPriceDown
+      name: activationPriceDown
+      description: >-
+       The mFRR activate price (TBC)
+    relativeActivation:
+      container:
+        space: '{{shared_model_space}}'
+        externalId: PriceArea
+        type: container
+      containerPropertyIdentifier: relativeActivation
+      name: relativeActivation
+      description: >-
+        Value between -1 (100 % activation down) and 1 (100 % activation down)
+    totalCapacityAllocationUp:
+      container:
+        space: '{{shared_model_space}}'
+        externalId: PriceArea
+        type: container
+      containerPropertyIdentifier: totalCapacityAllocationUp
+      name: totalCapacityAllocationUp
+    totalCapacityAllocationDown:
+      container:
+        space: '{{shared_model_space}}'
+        externalId: PriceArea
+        type: container
+      containerPropertyIdentifier: totalCapacityAllocationDown
+      name: totalCapacityAllocationDown
+    ownCapacityAllocationUp:
+      container:
+        space: '{{shared_model_space}}'
+        externalId: PriceArea
+        type: container
+      containerPropertyIdentifier: ownCapacityAllocationUp
+      name: ownCapacityAllocationUp
+    ownCapacityAllocationDown:
+      container:
+        space: '{{shared_model_space}}'
+        externalId: PriceArea
+        type: container
+      containerPropertyIdentifier: ownCapacityAllocationDown
+      name: ownCapacityAllocationDown
+- space: '{{model_space}}'
+  name: BidMethod
+  externalId: BidMethod
+  version: '{{view_BidMethod_version}}'
+  description: >-
+    A description of the Bid method used in the calculation.
+  implements:
+    - externalId: BidMethod
+    - space: '{{ shared_model_space }}'
+    - version: '{{ view_BidMethod_version }}'
+  filter:
+    equals:
+      property: ["node", "type"]
+      value: {"space": "types", "externalId": "AFRRBidMethod"}

@@ -7,13 +7,16 @@ from collections.abc import Iterable
 from typing import Any, Callable, ClassVar, Literal, Optional, TypeVar, Union
 
 from cognite.client.data_classes.data_modeling import (
+    ContainerApplyList,
     ContainerId,
+    DataModelApply,
     DataModelId,
     EdgeApply,
     EdgeApplyList,
     InstancesApply,
     NodeApply,
     NodeApplyList,
+    ViewApplyList,
     ViewId,
 )
 from pydantic.alias_generators import to_pascal, to_snake
@@ -49,6 +52,24 @@ class DataModel(Model, ABC):
     @classmethod
     def data_model_ids(cls) -> list[DataModelId]:
         return list({model.id_ for model in [cls.graph_ql, cls.dms_model] if model is not None})
+
+    @classmethod
+    def containers(cls) -> ContainerApplyList | None:
+        if not cls.source_model:
+            return None
+        return cls.source_model.containers or None
+
+    @classmethod
+    def views(cls) -> ViewApplyList | None:
+        if not cls.dms_model:
+            return None
+        return cls.dms_model.views or None
+
+    @classmethod
+    def data_model(cls) -> DataModelApply | None:
+        if not cls.dms_model:
+            return None
+        return cls.dms_model.data_model
 
     def instances(self) -> InstancesApply:
         nodes: dict[str, NodeApply] = {}
