@@ -135,14 +135,6 @@
       autoIncrement: false
       name: timezone
       defaultValue: null
-    priceScenarios:
-      type:
-        list: true
-        type: timeseries
-      nullable: true
-      autoIncrement: false
-      name: timezone
-      defaultValue: null
 - space: {{model_space}}
   externalId: BidTable
   name: BidTable
