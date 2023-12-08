@@ -34,7 +34,7 @@
         list: true
       nullable: true
       autoIncrement: false
-      name: total
+      name: partials
       defaultValue: null
     priceArea:
       type:
