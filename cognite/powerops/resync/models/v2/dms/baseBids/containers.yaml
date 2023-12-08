@@ -1,3 +1,71 @@
+- space: '{{model_space}}'
+  externalId: BidDocument
+  name: BidDocument
+  usedFor: node
+  properties:
+    name:
+      type:
+        list: false
+        collation: ucs_basic
+        type: text
+      name: name
+      description: null
+      nullable: true
+      autoIncrement: false
+      defaultValue: null
+    date:
+      type:
+        list: false
+        type: date
+      name: date
+      description: null
+      nullable: true
+      autoIncrement: false
+      defaultValue: null
+    startCalculation:
+      type:
+        list: false
+        type: timestamp
+      name: startCalculation
+      description: null
+      nullable: true
+      autoIncrement: false
+      defaultValue: null
+    endCalculation:
+      type:
+        list: false
+        type: timestamp
+      name: endCalculation
+      description: null
+      nullable: true
+      autoIncrement: false
+      defaultValue: null
+    isComplete:
+      type:
+        list: false
+        type: boolean
+      name: isCompleted
+      description: null
+      nullable: true
+      autoIncrement: false
+      defaultValue: null
+    alerts:
+      type:
+        container:
+          space: '{{model_space}}'
+          externalId: Alert
+        type: direct
+        list: true
+      name: alerts
+      description: null
+      nullable: true
+      autoIncrement: false
+      defaultValue: null
+  indexes:
+    date:
+      indexType: btree
+      properties:
+        - date
 - space: {{model_space}}
   externalId: Alert
   name: Alert
