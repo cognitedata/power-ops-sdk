@@ -8,7 +8,7 @@
   properties:
     name:
       container:
-        space: '{{model_space}}'
+        space: '{{shared_model_space}}'
         externalId: BidDocument
         type: container
       name: name
@@ -32,7 +32,7 @@
         The PriceArea associated with the BidDocument (this should be shared).
     date:
       container:
-        space: '{{model_space}}'
+        space: '{{shared_model_space}}'
         externalId: BidDocument
         type: container
       containerPropertyIdentifier: date
@@ -55,7 +55,7 @@
        An array of BidRows containing the Bid data.
     startCalculation:
       container:
-        space: '{{model_space}}'
+        space: '{{shared_model_space}}'
         externalId: BidDocument
         type: container
       containerPropertyIdentifier: startCalculation
@@ -64,7 +64,7 @@
         Timestamp of when the Bid calculation workflow started.
     endCalculation:
       container:
-        space: '{{model_space}}'
+        space: '{{shared_model_space}}'
         externalId: BidDocument
         type: container
       containerPropertyIdentifier: endCalculation
@@ -73,7 +73,7 @@
         Timestamp of when the Bid calculation workflow completed.
     isComplete:
       container:
-        space: '{{model_space}}'
+        space: '{{shared_model_space}}'
         externalId: BidDocument
         type: container
       containerPropertyIdentifier: isComplete
@@ -82,7 +82,7 @@
        Indicates that the Bid calculation workflow has completed (although has not necessarily succeeded).
     alerts:
       type:
-        space: '{{model_space}}'
+        space: '{{shared_model_space}}'
         externalId: BidDocument.alerts
       source:
         space: '{{model_space}}'

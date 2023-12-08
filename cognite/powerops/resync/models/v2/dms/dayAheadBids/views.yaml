@@ -5,7 +5,7 @@
   properties:
     name:
       container:
-        space: '{{model_space}}'
+        space: '{{shared_model_space}}'
         externalId: BidDocument
         type: container
       containerPropertyIdentifier: name
@@ -39,7 +39,7 @@
       description: null
     date:
       container:
-        space: '{{model_space}}'
+        space: '{{shared_model_space}}'
         externalId: BidDocument
         type: container
       containerPropertyIdentifier: date
@@ -60,7 +60,7 @@
       description: null
     startCalculation:
       container:
-        space: '{{model_space}}'
+        space: '{{shared_model_space}}'
         externalId: BidDocument
         type: container
       containerPropertyIdentifier: startCalculation
@@ -68,7 +68,7 @@
       description: null
     endCalculation:
       container:
-        space: '{{model_space}}'
+        space: '{{shared_model_space}}'
         externalId: BidDocument
         type: container
       containerPropertyIdentifier: endCalculation
@@ -76,7 +76,7 @@
       description: null
     isComplete:
       container:
-        space: '{{model_space}}'
+        space: '{{shared_model_space}}'
         externalId: BidDocument
         type: container
       containerPropertyIdentifier: isComplete
@@ -95,7 +95,7 @@
       name: partials
     alerts:
       type:
-        space: '{{model_space}}'
+        space: '{{shared_model_space}}'
         externalId: Bid.alerts
       source:
         space: '{{model_space}}'

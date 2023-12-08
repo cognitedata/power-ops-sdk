@@ -1,38 +1,8 @@
 - space: '{{model_space}}'
-  externalId: BidDocument
   name: BidDocument
+  externalId: BidDocument
   usedFor: node
   properties:
-    name:
-      type:
-        list: false
-        collation: ucs_basic
-        type: text
-      name: name
-      description: null
-      nullable: true
-      autoIncrement: false
-      defaultValue: null
-    priceArea:
-      type:
-        container:
-          space: {{model_space}}
-          externalId: PriceArea
-        type: direct
-      name: priceArea
-      description: null
-      nullable: true
-      autoIncrement: false
-      defaultValue: null
-    date:
-      type:
-        list: false
-        type: date
-      name: date
-      description: null
-      nullable: true
-      autoIncrement: false
-      defaultValue: null
     bids:
       type:
         container:
@@ -45,50 +15,18 @@
       nullable: true
       autoIncrement: false
       defaultValue: null
-    startCalculation:
-      type:
-        list: false
-        type: timestamp
-      name: startCalculation
-      description: null
-      nullable: true
-      autoIncrement: false
-      defaultValue: null
-    endCalculation:
-      type:
-        list: false
-        type: timestamp
-      name: endCalculation
-      description: null
-      nullable: true
-      autoIncrement: false
-      defaultValue: null
-    isComplete:
-      type:
-        list: false
-        type: boolean
-      name: isCompleted
-      description: null
-      nullable: true
-      autoIncrement: false
-      defaultValue: null
-    alerts:
+    priceArea:
       type:
         container:
-          space: '{{shared_model_space}}'
-          externalId: Alert
+          space: '{{model_space}}'
+          externalId: PriceArea
         type: direct
-        list: true
-      name: alerts
+        list: false
+      name: priceArea
       description: null
       nullable: true
       autoIncrement: false
       defaultValue: null
-  indexes:
-    date:
-      indexType: btree
-      properties:
-        - date
 - space: '{{model_space}}'
   externalId: BidRow
   name: BidRow

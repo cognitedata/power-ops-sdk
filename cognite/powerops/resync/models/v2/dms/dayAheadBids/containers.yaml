@@ -3,87 +3,50 @@
   name: BidDocument
   usedFor: node
   properties:
-    name:
-      type:
-        list: false
-        collation: ucs_basic
-        type: text
-      nullable: true
-      autoIncrement: false
-      name: name
-      defaultValue: null
-      description: null
     method:
       type:
         container:
           space: {{model_space}}
           externalId: BidMethod
         type: direct
+        list: false
       nullable: true
       autoIncrement: false
       name: method
       defaultValue: null
-    date:
-      type:
-        list: false
-        type: date
-      nullable: true
-      autoIncrement: false
-      name: date
-      defaultValue: null
-      description: null
     total:
       type:
         container:
           space: {{model_space}}
           externalId: BidTable
         type: direct
+        list: false
       nullable: true
       autoIncrement: false
       name: total
       defaultValue: null
-    startCalculation:
+    partials:
       type:
-        list: false
-        type: timestamp
+        container:
+          space: {{model_space}}
+          externalId: BidTable
+        type: direct
+        list: true
       nullable: true
       autoIncrement: false
-      name: startCalculation
+      name: total
       defaultValue: null
-      description: null
-    endCalculation:
-      type:
-        list: false
-        type: timestamp
-      nullable: true
-      autoIncrement: false
-      name: endCalculation
-      defaultValue: null
-      description: null
-    isComplete:
-      type:
-        list: false
-        type: boolean
-      nullable: false
-      autoIncrement: false
-      name: isComplete
-      defaultValue: false
-      description: null
     priceArea:
       type:
         container:
           space: {{model_space}}
           externalId: PriceArea
         type: direct
+        list: false
       nullable: true
       autoIncrement: false
       name: priceArea
       defaultValue: null
-  indexes:
-    date:
-      indexType: btree
-      properties:
-        - date
 - space: {{model_space}}
   externalId: BidMethod
   name: BidMethod
