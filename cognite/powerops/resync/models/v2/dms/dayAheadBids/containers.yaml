@@ -5,9 +5,7 @@
   properties:
     method:
       type:
-        container:
-          space: {{model_space}}
-          externalId: BidMethod
+        container: null
         type: direct
         list: false
       nullable: true
@@ -16,52 +14,19 @@
       defaultValue: null
     total:
       type:
-        container:
-          space: {{model_space}}
-          externalId: BidTable
+        container: null
         type: direct
         list: false
       nullable: true
       autoIncrement: false
       name: total
       defaultValue: null
-    partials:
-      type:
-        container:
-          space: {{model_space}}
-          externalId: BidTable
-        type: direct
-        list: true
-      nullable: true
-      autoIncrement: false
-      name: partials
-      defaultValue: null
-    priceArea:
-      type:
-        container:
-          space: {{model_space}}
-          externalId: PriceArea
-        type: direct
-        list: false
-      nullable: true
-      autoIncrement: false
-      name: priceArea
-      defaultValue: null
-- space: {{model_space}}
-  externalId: BidMethod
-  name: BidMethod
-  usedFor: node
-  properties:
-    name:
-      type:
-        list: false
-        collation: ucs_basic
-        type: text
-      nullable: false
-      autoIncrement: false
-      name: name
-      defaultValue: null
-      description: null
+  constraints:
+    requiredBidMethod:
+      constraintType: requires
+      require:
+        space: {{shared_model_space}}
+        externalId: BidDocument
 - space: {{model_space}}
   externalId: SHOPMultiScenario
   name: SHOPMultiScenario
@@ -91,58 +56,8 @@
       constraintType: requires
       require:
         type: container
-        space: {{model_space}}
+        space: {{shared_model_space}}
         externalId: BidMethod
-- space: {{model_space}}
-  externalId: PriceArea
-  name: PriceArea
-  usedFor: node
-  properties:
-    name:
-      type:
-        list: false
-        collation: ucs_basic
-        type: text
-      nullable: true
-      autoIncrement: false
-      name: name
-      defaultValue: null
-    defaultMethod:
-      type:
-        container:
-          space: {{model_space}}
-          externalId: BidMethod
-        type: direct
-      nullable: true
-      autoIncrement: false
-      name: defaultMethod
-      defaultValue: null
-      description: null
-    timezone:
-      type:
-        list: false
-        collation: ucs_basic
-        type: text
-      nullable: true
-      autoIncrement: false
-      name: timezone
-      defaultValue: null
-    mainScenario:
-      type:
-        list: false
-        type: timeseries
-      nullable: true
-      autoIncrement: false
-      name: timezone
-      defaultValue: null
-    priceScenarios:
-      type:
-        list: true
-        type: timeseries
-      nullable: true
-      autoIncrement: false
-      name: timezone
-      defaultValue: null
 - space: {{model_space}}
   externalId: BidTable
   name: BidTable

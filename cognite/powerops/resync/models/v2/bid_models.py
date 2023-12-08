@@ -4,12 +4,7 @@ from pathlib import Path
 from typing import Any, ClassVar, Optional
 
 import yaml
-from cognite.client.data_classes.data_modeling import (
-    ContainerApplyList,
-    DataModelApply,
-    DataModelId,
-    ViewApplyList,
-)
+from cognite.client.data_classes.data_modeling import ContainerApplyList, DataModelApply, DataModelId, ViewApplyList
 
 from cognite.powerops import PowerOpsClient
 from cognite.powerops.resync.models.base import DataModel, T_Model
@@ -32,7 +27,6 @@ class SimpleDataModel(DataModel):
         for config_file in cls.config_files:
             config.update(yaml.safe_load(config_file.read_text()))
         for variable, value in config.items():
-            file_contents = file_contents.replace(f"{{{{{variable}}}}}", value)
             file_contents = file_contents.replace(f"{{{{{ variable }}}}}", value)
         if "{{" in file_contents:
             position = file_contents.index("{{")
@@ -45,9 +39,7 @@ class SimpleDataModel(DataModel):
             if cls.containers_file is None:
                 cls._loaded_containers_data = []
             else:
-                cls._loaded_containers_data = yaml.safe_load(
-                    cls._populate_config(cls.containers_file),
-                )
+                cls._loaded_containers_data = yaml.safe_load(cls._populate_config(cls.containers_file))
         return cls._loaded_containers_data
 
     @classmethod
@@ -62,9 +54,7 @@ class SimpleDataModel(DataModel):
             if cls.views_file is None:
                 cls._loaded_views_data = []
             else:
-                cls._loaded_views_data = yaml.safe_load(
-                    cls._populate_config(cls.views_file),
-                )
+                cls._loaded_views_data = yaml.safe_load(cls._populate_config(cls.views_file))
         return cls._loaded_views_data
 
     @classmethod
@@ -79,9 +69,7 @@ class SimpleDataModel(DataModel):
             if cls.data_model_file is None:
                 cls._loaded_data_model_data = {}
             else:
-                cls._loaded_data_model_data = yaml.safe_load(
-                    cls._populate_config(cls.data_model_file),
-                )
+                cls._loaded_data_model_data = yaml.safe_load(cls._populate_config(cls.data_model_file))
         return cls._loaded_data_model_data
 
     @classmethod
@@ -89,7 +77,6 @@ class SimpleDataModel(DataModel):
         if not cls.data_model_data():
             return None
         data_model = DataModelApply.load(cls.data_model_data())
-        data_model.views = cls.views().as_ids()
         return data_model
 
     @classmethod

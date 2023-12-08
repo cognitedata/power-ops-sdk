@@ -2,15 +2,12 @@
   externalId: BidDocument
   name: BidDocument
   version: '{{view_BidDocument_version}}'
+  implements:
+    - type: view
+      space: '{{shared_model_space}}'
+      externalId: BidRow
+      version: '{{view_BidRow_version}}'
   properties:
-    name:
-      container:
-        space: '{{shared_model_space}}'
-        externalId: BidDocument
-        type: container
-      containerPropertyIdentifier: name
-      name: name
-      description: null
     method:
       container:
         space: '{{model_space}}'
@@ -23,27 +20,6 @@
         version: '{{view_BidMethod_version}}'
       containerPropertyIdentifier: method
       name: method
-      description: null
-    priceArea:
-      container:
-        space: '{{model_space}}'
-        externalId: BidDocument
-        type: container
-      source:
-        type: view
-        space: '{{model_space}}'
-        externalId: PriceArea
-        version: '{{view_PriceArea_version}}'
-      containerPropertyIdentifier: priceArea
-      name: priceArea
-      description: null
-    date:
-      container:
-        space: '{{shared_model_space}}'
-        externalId: BidDocument
-        type: container
-      containerPropertyIdentifier: date
-      name: date
       description: null
     total:
       container:
@@ -58,30 +34,6 @@
       containerPropertyIdentifier: total
       name: total
       description: null
-    startCalculation:
-      container:
-        space: '{{shared_model_space}}'
-        externalId: BidDocument
-        type: container
-      containerPropertyIdentifier: startCalculation
-      name: startCalculation
-      description: null
-    endCalculation:
-      container:
-        space: '{{shared_model_space}}'
-        externalId: BidDocument
-        type: container
-      containerPropertyIdentifier: endCalculation
-      name: endCalculation
-      description: null
-    isComplete:
-      container:
-        space: '{{shared_model_space}}'
-        externalId: BidDocument
-        type: container
-      containerPropertyIdentifier: isComplete
-      name: isComplete
-      description: null
     partials:
       type:
         space: '{{model_space}}'
@@ -93,106 +45,13 @@
         type: view
       direction: outwards
       name: partials
-    alerts:
-      type:
-        space: '{{shared_model_space}}'
-        externalId: Bid.alerts
-      source:
-        space: '{{model_space}}'
-        externalId: Alert
-        version: '{{view_Alert_version}}'
-        type: view
-      direction: outwards
-      name: alerts
-- space: '{{model_space}}'
-  externalId: Alert
-  name: Alert
-  version: '{{view_Alert_version}}'
-  properties:
-    time:
-      container:
-        space: '{{shared_model_space}}'
-        externalId: Alert
-        type: container
-      containerPropertyIdentifier: time
-      name: time
-      description: null
-    title:
-      container:
-        space: '{{shared_model_space}}'
-        externalId: Alert
-        type: container
-      containerPropertyIdentifier: title
-      name: title
-      description: null
-    description:
-      container:
-        space: '{{shared_model_space}}'
-        externalId: Alert
-        type: container
-      containerPropertyIdentifier: description
-      name: description
-      description: null
-    severity:
-      container:
-        space: '{{shared_model_space}}'
-        externalId: Alert
-        type: container
-      containerPropertyIdentifier: severity
-      name: severity
-      description: null
-    alertType:
-      container:
-        space: '{{shared_model_space}}'
-        externalId: Alert
-        type: container
-      containerPropertyIdentifier: alertType
-      name: alertType
-      description: null
-    statusCode:
-      container:
-        space: '{{shared_model_space}}'
-        externalId: Alert
-        type: container
-      containerPropertyIdentifier: statusCode
-      name: statusCode
-      description: null
-    eventIds:
-      container:
-        space: '{{shared_model_space}}'
-        externalId: Alert
-        type: container
-      containerPropertyIdentifier: eventIds
-      name: eventIds
-      description: null
-    calculationRun:
-      container:
-        space: '{{shared_model_space}}'
-        externalId: Alert
-        type: container
-      containerPropertyIdentifier: calculationRun
-      name: calculationRun
-      description: null
-- space: '{{model_space}}'
-  externalId: BidMethod
-  name: BidMethod
-  version: '{{view_BidMethod_version}}'
-  properties:
-    name:
-      container:
-        space: '{{model_space}}'
-        externalId: BidMethod
-        type: container
-      containerPropertyIdentifier: name
-      name: name
-      description: null
 - space: '{{model_space}}'
   externalId: SHOPMultiScenario
   name: SHOPMultiScenario
   version: '{{view_SHOPMultiScenario_version}}'
   implements:
     - type: view
-      space: '{{model_space}}'
+      space: '{{shared_model_space}}'
       externalId: BidMethod
       version: '{{view_BidMethod_version}}'
   properties:
@@ -213,10 +72,6 @@
       containerPropertyIdentifier: priceScenarios
       name: priceScenarios
       description: null
-  filter:
-    prefix:
-      property: [ 'node', 'externalId' ]
-      value: "SHOP"
 - space: '{{model_space}}'
   externalId: WaterValueBased
   name: WaterValueBased
@@ -228,11 +83,9 @@
       version: '{{view_BidMethod_version}}'
   properties: {}
   filter:
-    prefix:
-      property:
-        - node
-        - externalId
-      value: "WVB"
+    equals:
+      property: ["node", "type"]
+      value: {"space": "types", "externalId": "WaterValueBasedDayAheadMethod"}
 - space: '{{model_space}}'
   externalId: PriceArea
   name: PriceArea
@@ -240,7 +93,7 @@
   properties:
     name:
       container:
-        space: '{{model_space}}'
+        space: '{{shared_model_space}}'
         externalId: PriceArea
         type: container
       containerPropertyIdentifier: name
@@ -248,7 +101,7 @@
       description: null
     defaultMethod:
       container:
-        space: '{{model_space}}'
+        space: '{{shared_model_space}}'
         externalId: PriceArea
         type: container
       source:
@@ -256,11 +109,11 @@
         space: '{{model_space}}'
         externalId: BidMethod
         version: '{{view_BidMethod_version}}'
-      containerPropertyIdentifier: defaultMethod
+      containerPropertyIdentifier: defaultMethodDayAhead
       name: defaultMethod
     timezone:
       container:
-        space: '{{model_space}}'
+        space: '{{shared_model_space}}'
         externalId: PriceArea
         type: container
       containerPropertyIdentifier: timezone
@@ -268,15 +121,15 @@
       description: null
     mainScenario:
       container:
-        space: '{{model_space}}'
+        space: '{{shared_model_space}}'
         externalId: PriceArea
         type: container
-      containerPropertyIdentifier: mainScenario
+      containerPropertyIdentifier: mainScenarioDayAhead
       name: mainScenario
       description: null
     priceScenarios:
       container:
-        space: '{{model_space}}'
+        space: '{{shared_model_space}}'
         externalId: PriceArea
         type: container
       containerPropertyIdentifier: priceScenarios
@@ -340,22 +193,6 @@
       externalId: BidTable
       version: '{{view_BidTable_version}}'
   properties:
-    #  resourceCost: (inherited)
-    #  table: (inherited)
-    #  assetType: (inherited)
-    #  asset_id: (inherited)
-    #  alerts: (inherited?)
-    alerts:  # inheritance seems to not work correctly for inter-space relationships
-      type:
-        space: '{{model_space}}'
-        externalId: SHOPTable.alerts
-      source:
-        space: '{{model_space}}'
-        externalId: Alert
-        version: '{{view_Alert_version}}'
-        type: view
-      direction: outwards
-      name: alerts
     productionPricePairs:
       type:
         space: '{{model_space}}'
@@ -367,10 +204,6 @@
         version: '{{view_ProductionPricePair_version}}'
       direction: outwards
       name: productionPricePairs
-  filter:
-    prefix:
-      property: [ 'node', 'externalId' ]
-      value: "SHOP"
 - space: '{{model_space}}'
   externalId: ProductionPricePair
   name: ProductionPricePair

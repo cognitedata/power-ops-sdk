@@ -1,3 +1,7 @@
 # variables used for substitution in other files in this directory
 
 model_space: 'power-ops-base-bids'
+
+view_BidDocument_version: '1'
+view_BidMethod_version: '1'
+view_Alert_version: '1'
