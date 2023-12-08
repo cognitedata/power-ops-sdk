@@ -175,7 +175,7 @@ class BidDocumentApply(DomainModelApply):
             )
             resources.extend(other_resources)
 
-        edge_type = dm.DirectRelationReference("power-ops-afrr-bids", "BidDocument.alerts")
+        edge_type = dm.DirectRelationReference("power-ops-base-bids", "BidDocument.alerts")
         for alert in self.alerts or []:
             other_resources = DomainRelationApply.from_edge_to_resources(
                 cache, self, alert, edge_type, view_by_write_class

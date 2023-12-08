@@ -103,7 +103,7 @@ class BidDocumentQueryAPI(QueryAPI[T_DomainModelList]):
         from .alert_query import AlertQueryAPI
 
         edge_filter = _create_edge_filter(
-            dm.DirectRelationReference("power-ops-afrr-bids", "BidDocument.alerts"),
+            dm.DirectRelationReference("power-ops-base-bids", "BidDocument.alerts"),
             external_id_prefix=external_id_prefix,
             space=space,
         )
