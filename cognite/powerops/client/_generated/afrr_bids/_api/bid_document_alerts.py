@@ -42,7 +42,7 @@ class BidDocumentAlertsAPI(EdgeAPI):
 
         """
         filter_ = _create_edge_filter(
-            dm.DirectRelationReference("power-ops-afrr-bids", "BidDocument.alerts"),
+            dm.DirectRelationReference("power-ops-base-bids", "BidDocument.alerts"),
             bid_document,
             bid_document_space,
             alert,

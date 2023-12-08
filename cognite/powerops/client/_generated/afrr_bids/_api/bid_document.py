@@ -212,7 +212,7 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
             retrieve_edges=True,
             edge_api_name_type_triple=[
                 (self.bids_edge, "bids", dm.DirectRelationReference("power-ops-afrr-bids", "BidDocument.bids")),
-                (self.alerts_edge, "alerts", dm.DirectRelationReference("power-ops-afrr-bids", "BidDocument.alerts")),
+                (self.alerts_edge, "alerts", dm.DirectRelationReference("power-ops-base-bids", "BidDocument.alerts")),
             ],
         )
 
@@ -576,6 +576,6 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
             retrieve_edges=retrieve_edges,
             edge_api_name_type_triple=[
                 (self.bids_edge, "bids", dm.DirectRelationReference("power-ops-afrr-bids", "BidDocument.bids")),
-                (self.alerts_edge, "alerts", dm.DirectRelationReference("power-ops-afrr-bids", "BidDocument.alerts")),
+                (self.alerts_edge, "alerts", dm.DirectRelationReference("power-ops-base-bids", "BidDocument.alerts")),
             ],
         )

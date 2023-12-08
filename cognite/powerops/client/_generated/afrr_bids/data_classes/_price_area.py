@@ -64,15 +64,15 @@ class PriceArea(DomainModel):
         space: The space where the node is located.
         external_id: The external id of the price area.
         name: Name for the PriceArea.
-        capacity_price_up: TBC
-        capacity_price_down: TBC
+        capacity_price_up: The capacity price up field.
+        capacity_price_down: The capacity price down field.
         activation_price_up: The mFRR activation price (TBC)
         activation_price_down: The mFRR activate price (TBC)
         relative_activation: Value between -1 (100 % activation down) and 1 (100 % activation down)
-        total_capacity_allocation_up: TBC
-        total_capacity_allocation_down: TBC
-        own_capacity_allocation_up: TBC
-        own_capacity_allocation_down: TBC
+        total_capacity_allocation_up: The total capacity allocation up field.
+        total_capacity_allocation_down: The total capacity allocation down field.
+        own_capacity_allocation_up: The own capacity allocation up field.
+        own_capacity_allocation_down: The own capacity allocation down field.
         created_time: The created time of the price area node.
         last_updated_time: The last updated time of the price area node.
         deleted_time: If present, the deleted time of the price area node.
@@ -118,15 +118,15 @@ class PriceAreaApply(DomainModelApply):
         space: The space where the node is located.
         external_id: The external id of the price area.
         name: Name for the PriceArea.
-        capacity_price_up: TBC
-        capacity_price_down: TBC
+        capacity_price_up: The capacity price up field.
+        capacity_price_down: The capacity price down field.
         activation_price_up: The mFRR activation price (TBC)
         activation_price_down: The mFRR activate price (TBC)
         relative_activation: Value between -1 (100 % activation down) and 1 (100 % activation down)
-        total_capacity_allocation_up: TBC
-        total_capacity_allocation_down: TBC
-        own_capacity_allocation_up: TBC
-        own_capacity_allocation_down: TBC
+        total_capacity_allocation_up: The total capacity allocation up field.
+        total_capacity_allocation_down: The total capacity allocation down field.
+        own_capacity_allocation_up: The own capacity allocation up field.
+        own_capacity_allocation_down: The own capacity allocation down field.
         existing_version: Fail the ingestion request if the price area version is greater than or equal to this value.
             If no existingVersion is specified, the ingestion will always overwrite any existing data for the edge (for the specified container or instance).
             If existingVersion is set to 0, the upsert will behave as an insert, so it will fail the bulk if the item already exists.
