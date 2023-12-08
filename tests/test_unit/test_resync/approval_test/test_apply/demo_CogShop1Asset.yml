@@ -6832,7 +6832,7 @@ data_modeling.instances:
       model:
         externalId: ModelTemplate_Fornebu__FileRef_model
         space: cogShop
-      shopVersion: 14.4.3.0
+      shopVersion: 15.4.1.1
       source: resync
       version: '1'
       watercourse: Fornebu
