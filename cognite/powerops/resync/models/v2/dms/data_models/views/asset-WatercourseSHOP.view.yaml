@@ -1,0 +1,14 @@
+space: '{{asset_space}}'
+externalId: WatercourseSHOP
+description: A special method configuration for the watercourse used in SHOP
+name: WatercourseSHOP
+version: '{{asset_WatercourseSHOP_version}}'
+properties:
+  penaltyLimit:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: Watercourse
+      type: container
+    containerPropertyIdentifier: penaltyLimit
+    name: penaltyLimit
+    description: The penalty limit for the watercourse
