@@ -1,3 +1,6 @@
+# Note node types cannot be created in the API, they are created implicitly in a system
+# when a node/edge is referencing one of these types. However, it is usefult to have these
+# types here as we use them in validation of the data models.
 - space: {{type_space}}
   externalId: AFRRBidMethod
 - space: {{type_space}}

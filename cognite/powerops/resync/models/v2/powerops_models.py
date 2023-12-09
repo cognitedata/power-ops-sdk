@@ -3,11 +3,13 @@ from __future__ import annotations
 import itertools
 import re
 from collections import defaultdict
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
+from graphlib import TopologicalSorter
 from pathlib import Path
-from typing import Any, ClassVar, Optional
+from typing import Any, ClassVar, Generic, Optional, TypeVar
 
 import yaml
+from cognite.client import CogniteClient
 from cognite.client.data_classes import filters
 from cognite.client.data_classes.data_modeling import (
     ContainerApplyList,
@@ -35,6 +37,23 @@ class Schema:
     data_models: DataModelApplyList
     spaces: SpaceApplyList
     node_types: NodeApplyList
+
+
+T_ResourceList = TypeVar("T_ResourceList")
+
+
+class DataModelAPI(Generic[T_ResourceList]):
+    def __init__(self, class_api: Any):
+        self._class_api = class_api
+        self.name = type(class_api).__module__.rsplit(".", maxsplit=1)[-1]
+        if self.name == "instances":
+            self.name = "node_types"
+
+    def apply(self, items: T_ResourceList) -> Any:
+        return self._class_api.apply(items)
+
+    def retrieve(self, ids: list[Any]) -> T_ResourceList:
+        return self._class_api.retrieve(ids)
 
 
 class DataModelLoader:
@@ -118,6 +137,10 @@ class DataModelLoader:
                         referred_views[prop.edge_source].append(ref_view_id.as_property_ref(prop_name))
         for node in schema.node_types:
             referred_spaces[node.space].append(node.as_id())
+        for data_model in schema.data_models:
+            referred_spaces[data_model.space].append(data_model.as_id())
+            for view in data_model.views:
+                referred_views[view].append(data_model.as_id())
 
         if undefined_spaces := set(referred_spaces).difference(defined_spaces):
             referred_to_by = list(itertools.chain(*(referred_spaces[space] for space in undefined_spaces)))
@@ -138,6 +161,24 @@ class DataModelLoader:
         if non_existent_container_properties:
             message = "\n".join(map(str, non_existent_container_properties))
             raise ValueError(f"These properties in views refers to container properties that does not exist: {message}")
+
+    @classmethod
+    def deploy(cls, client: CogniteClient, schema: Schema) -> list[dict]:
+        apis = cls._create_apis(client)
+        deploy_order = TopologicalSorter(apis).static_order()
+        resources = asdict(schema)
+        for api in deploy_order:
+            api.apply(resources[api.name])
+            print(f"Deployed {api.name}")
+        return []
+
+    @classmethod
+    def _create_apis(cls, client: CogniteClient) -> dict[DataModelAPI, set[DataModelAPI]]:
+        space = DataModelAPI[SpaceApplyList](client.data_modeling.spaces)
+        container = DataModelAPI[ContainerApplyList](client.data_modeling.containers)
+        view = DataModelAPI[ViewApplyList](client.data_modeling.views)
+        data_model = DataModelAPI[DataModelApplyList](client.data_modeling.data_models)
+        return {space: set(), container: {space}, view: {space, container}, data_model: {space, container, view}}
 
 
 class SimpleDataModel(DataModel):

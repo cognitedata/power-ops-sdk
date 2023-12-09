@@ -16,7 +16,7 @@ views:
   space: '{{afrr_model_space}}'
   type: view
   version: '{{afrrbid_PriceArea_version}}'
-- externalId: BidMethods
+- externalId: BidMethod
   space: '{{afrr_model_space}}'
   type: view
   version: '{{afrrbid_BidMethod_version}}'

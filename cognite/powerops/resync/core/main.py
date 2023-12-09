@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Literal, Optional, cast
 
 from cognite.client import CogniteClient
-from cognite.client.data_classes.data_modeling import DataModelId, MappedProperty, SpaceApply, SpaceList, ViewList
+from cognite.client.data_classes.data_modeling import DataModelId, MappedProperty, ViewList
 from cognite.client.exceptions import CogniteAPIError
 from yaml import safe_dump
 
@@ -19,6 +19,7 @@ from cognite.powerops.resync import diff, models
 from cognite.powerops.resync.config import ReSyncConfig
 from cognite.powerops.resync.diff import FieldDifference, ModelDifference, ModelDifferences
 from cognite.powerops.resync.models.base import AssetModel, CDFFile, CDFSequence, DataModel, Model, SpaceId
+from cognite.powerops.resync.models.v2.powerops_models import DataModelLoader
 from cognite.powerops.resync.validation import ValidationResults, perform_validation, prepare_validation
 
 from .cdf import get_cognite_api
@@ -50,77 +51,19 @@ def init(client: PowerOpsClient | None, model_names: str | list[str] | None = No
     """
     client = client or PowerOpsClient.from_settings()
     cdf = client.cdf
-    model_classes = _to_models(model_names)
-
-    data_models = [model for model in model_classes if issubclass(model, DataModel)]
-
-    spaces = {space for model in data_models for space in model.spaces()}
-    existing_spaces = set((cdf.data_modeling.spaces.retrieve(list(spaces)) or SpaceList([])).as_ids())
-
-    if new_spaces := spaces - existing_spaces:
-        logger.info(f"Creating {len(new_spaces)} new spaces: {new_spaces}")
-        cdf.data_modeling.spaces.apply(
-            [SpaceApply(space, description="PowerOps Configuration Space", name=space.title()) for space in new_spaces]
+    if model_names:
+        logger.info(
+            "Model names argument is deprecated. Init will now deploy all models. (The powerops data models "
+            "are dependent on each other and should thus be deployed together)"
         )
-        logger.info(f"Spaces {new_spaces} created")
 
-    new_data_model_ids = [model_id for m in data_models for model_id in m.data_model_ids()]
+    loader = DataModelLoader()
+    schema = loader.load()
+    logger.info("Loaded all powerops data models")
+    DataModelLoader.validate(schema)
+    logger.info("Validated all powerops data models")
 
-    if new_data_model_ids:
-        existing = set(cdf.data_modeling.data_models.retrieve(new_data_model_ids).as_ids())
-    else:
-        existing = set()
-
-    results: list[dict[str, str]] = []
-    for model in data_models:
-        # Deploy from graphQL (deprecated!)
-        if model.graph_ql is not None:
-            graphql = model.graph_ql
-            if graphql.id_ in existing:
-                logger.warning(f"Skipping {model.name()} data model with {model.graph_ql.id_}, is already exists")
-                results.append(
-                    {"model": model.name(), "action": "skipped"}  # type: ignore[dict-item]
-                )  # Ref https://github.com/python/mypy/issues/1465
-                continue
-            logger.info(f"Deploying {model.name()} data model with {model.graph_ql.id_}")
-            result = cdf.data_modeling.graphql.apply_dml(
-                model.graph_ql.id_, model.graph_ql.graphql, model.graph_ql.name, model.graph_ql.description
-            )
-            results.append({"model": model.name(), "action": "deployed"})  # type: ignore[dict-item]
-            logger.info(f"Deployed {model.name()} model ({result.space}, {result.external_id}, {result.version})")
-
-        # Deploy containers
-        containers = model.containers()
-        if containers is not None:
-            _exiting_containers = cdf.data_modeling.containers.retrieve(containers.as_ids())
-            existing_containers = set(_exiting_containers.as_ids()) if _exiting_containers else set()
-            new_containers = [container for container in containers if container.as_id() not in existing_containers]
-            if new_containers:
-                logger.info(f"Creating {len(new_containers)} new containers for {model.name()}: {new_containers}")
-                cdf.data_modeling.containers.apply(new_containers)
-                logger.info(f"Containers {new_containers} created")
-
-        # Deploy views
-        views = model.views()
-        if views is not None:
-            existing_views = set(cdf.data_modeling.views.retrieve(views.as_ids()).as_ids())
-            new_views = [view for view in views if view.as_id() not in existing_views]
-            if new_views:
-                logger.info(f"Creating {len(new_views)} new views for {model.name()}: {new_views}")
-                cdf.data_modeling.views.apply(new_views)
-                logger.info(f"Views {new_views} created")
-
-        # Deploy data model
-        data_model = model.data_model()
-        if data_model is not None:
-            data_model_id = data_model.as_id()
-            if data_model_id in existing:
-                logger.warning(f"Skipping {model.name()} data model with {data_model_id}, it already exists")
-                results.append({"model": model.name(), "action": "skipped"})  # type: ignore[dict-item]
-                continue
-            logger.info(f"Deploying {model.name()} data model with {data_model_id}")
-            cdf.data_modeling.data_models.apply(data_model)
-            results.append({"model": model.name(), "action": "deployed"})  # type: ignore[dict-item]
+    results = DataModelLoader.deploy(cdf, schema)
 
     return results
 

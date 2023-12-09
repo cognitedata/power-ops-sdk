@@ -46,14 +46,14 @@ properties:
   generatorEfficiencyCurve:
     type:
       type: direct
-    nullable: false
+    nullable: true
     autoIncrement: false
     name: generatorEfficiencyCurve
     description: The generator efficiency curve.
   turbineEfficiencyCurve:
     type:
       type: direct
-    nullable: false
+    nullable: true
     autoIncrement: false
     name: turbineEfficiencyCurve
     description: The turbine efficiency curve.
