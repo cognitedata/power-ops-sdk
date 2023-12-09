@@ -10,7 +10,6 @@ are based on Data Modeling in CDF.
 """
 
 from .bid_models import AFRRBidModel, BaseBidModel, DayAheadBidModel
-from .capacity_bids import CapacityBidModel
 from .cogshop import CogShopDataModel
 from .graphql_schemas import GRAPHQL_MODELS
 from .market_dm import AFRRMarket, BenchmarkMarketDataModel, DayAheadMarketDataModel, RKOMMarketDataModel
@@ -24,7 +23,6 @@ __all__ = [
     "RKOMMarketDataModel",
     "BenchmarkMarketDataModel",
     "AFRRMarket",
-    "CapacityBidModel",
     "BaseBidModel",
     "DayAheadBidModel",
     "AFRRBidModel",
