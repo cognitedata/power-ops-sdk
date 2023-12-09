@@ -30,12 +30,22 @@ def delete_model(cdf: CogniteClient, space: str) -> list[DataModelId]:
             delete_numbers = delete_no.split(",")
 
         data_models_to_delete = DataModelList([resources[int(no)] for no in delete_numbers])
+        if (
+            input(
+                f"Do you want to delete all versions of {', '.join((d.external_id for d in data_models_to_delete))}? (y/n)"
+            ).casefold()
+            == "y"
+        ):
+            data_models_to_delete = cdf.data_modeling.data_models.retrieve(
+                [(model.space, model.external_id) for model in data_models_to_delete], inline_views=True
+            )
         views = ViewList([view for model in data_models_to_delete for view in model.views])
         containers = list(
             set(
                 [
                     prop.container
                     for view in views
+                    if view.properties
                     for prop in view.properties.values()
                     if isinstance(prop, MappedProperty)
                 ]
@@ -72,7 +82,8 @@ def main():
         customer = ("my_customer", "data_dir", "market")
         power = PowerOpsClient.from_settings()
         print(f"Connected to {power.cdf.config.project}")
-        data_models = delete_model(power.cdf, space)
+        data_models = delete_model(power.cdf, "power-ops")
+
         resync_models = [resync.DATAMODEL_ID_TO_RESYNC_NAME[m] for m in data_models]
         if input("Run resync.init? (y/n)").casefold() == "y":
             print("Running resync.init")
