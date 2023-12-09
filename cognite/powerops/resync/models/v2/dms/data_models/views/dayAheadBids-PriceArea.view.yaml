@@ -6,7 +6,7 @@ properties:
   name:
     container:
       space: '{{shared_model_space}}'
-      externalId: PriceArea
+      externalId: Asset
       type: container
     containerPropertyIdentifier: name
     name: name

@@ -83,12 +83,13 @@ class DataModelLoader:
         defined_containers = {container.as_id() for container in schema.containers}
         defined_views = {view.as_id() for view in schema.views}
         defined_node_types = {node_type.as_id() for node_type in schema.node_types}
+        properties_by_container = {container.as_id(): set(container.properties) for container in schema.containers}
 
-        referred_spaces = defaultdict(list)
         referred_spaces = defaultdict(list)
         referred_views = defaultdict(list)
         referred_containers = defaultdict(list)
         referred_node_types = defaultdict(list)
+        non_existent_container_properties = []
         for container in schema.containers:
             referred_spaces[container.space].append(container.as_id())
         for view in schema.views:
@@ -106,6 +107,8 @@ class DataModelLoader:
                     referred_containers[prop.container].append(ref_view_id.as_property_ref(prop_name))
                     if prop.source:
                         referred_views[prop.source].append(ref_view_id.as_property_ref(prop_name))
+                    if prop.container_property_identifier not in properties_by_container.get(prop.container, set()):
+                        non_existent_container_properties.append(ref_view_id.as_property_ref(prop_name))
                 elif isinstance(prop, SingleHopConnectionDefinitionApply):
                     referred_node_types[NodeId(prop.type.space, prop.type.external_id)].append(
                         ref_view_id.as_property_ref(prop_name)
@@ -132,6 +135,9 @@ class DataModelLoader:
                 itertools.chain(*(referred_node_types[node_type] for node_type in undefined_node_types))
             )
             raise ValueError(f"Undefined node types: {undefined_node_types}: referred to by {referred_to_by}")
+        if non_existent_container_properties:
+            message = "\n".join(map(str, non_existent_container_properties))
+            raise ValueError(f"These properties in views refers to container properties that does not exist: {message}")
 
 
 class SimpleDataModel(DataModel):
