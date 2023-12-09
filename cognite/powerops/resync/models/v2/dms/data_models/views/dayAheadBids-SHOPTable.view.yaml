@@ -13,7 +13,7 @@ properties:
       space: '{{type_space}}'
       externalId: SHOPTable.productionPricePairs
     source:
-      space: '{{model_space}}'
+      space: '{{dayahead_model_space}}'
       externalId: ProductionPricePair
       version: '{{dayaheadbid_ProductionPricePair_version}}'
       type: view

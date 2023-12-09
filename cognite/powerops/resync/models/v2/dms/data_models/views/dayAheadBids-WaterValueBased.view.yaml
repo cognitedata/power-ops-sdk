@@ -14,5 +14,5 @@ implements:
   externalId: BidMethod
   version: '{{dayaheadbid_BidMethod_version}}'
   type: view
-version: '{{view_WaterValueBased_version}}'
+version: '{{dayaheadbid_WaterValueBased_version}}'
 properties: {}

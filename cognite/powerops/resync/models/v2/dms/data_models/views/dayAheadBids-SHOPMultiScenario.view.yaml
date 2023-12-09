@@ -4,7 +4,7 @@ name: SHOPMultiScenario
 implements:
 - space: '{{shared_model_space}}'
   externalId: BidMethod
-  version: '{{view_BidMethod_version}}'
+  version: '{{base_BidMethod_version}}'
   type: view
 version: '{{dayaheadbid_SHOPMultiScenario_version}}'
 properties:

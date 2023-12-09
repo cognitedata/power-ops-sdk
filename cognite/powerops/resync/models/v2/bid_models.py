@@ -1,15 +1,75 @@
 from __future__ import annotations
 
+import re
+from collections import defaultdict
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, ClassVar, Optional
 
 import yaml
-from cognite.client.data_classes.data_modeling import ContainerApplyList, DataModelApply, DataModelId, ViewApplyList
+from cognite.client.data_classes.data_modeling import (
+    ContainerApplyList,
+    DataModelApply,
+    DataModelApplyList,
+    DataModelId,
+    NodeApplyList,
+    SpaceApplyList,
+    ViewApplyList,
+)
 
 from cognite.powerops import PowerOpsClient
 from cognite.powerops.resync.models.base import DataModel, T_Model
 
 _DMS_DIR = Path(__file__).parent / "dms"
+
+
+@dataclass
+class Schema:
+    containers: ContainerApplyList
+    views: ViewApplyList
+    data_models: DataModelApplyList
+    spaces: SpaceApplyList
+    node_types: NodeApplyList
+
+
+class DataModelLoader:
+    def __init__(self):
+        self._source_dir = _DMS_DIR
+        self._config_file = _DMS_DIR / "config.yaml"
+        if not self._config_file.exists():
+            raise ValueError(f"Missing config file {self._config_file!s}. Expected to be in {_DMS_DIR!s}")
+        self._config = yaml.safe_load(self._config_file.read_text())
+
+    def load(self) -> Schema:
+        resources_by_type = defaultdict(list)
+        for filepath in self._source_dir.glob("**/*.yaml"):
+            if match := re.match(r".*(?P<type>(space|view|container|node|data_model))\.yaml$", filepath.name):
+                resources_by_type[match.group("type")].append(self._load_file(filepath))
+
+        return Schema(
+            containers=ContainerApplyList.load(resources_by_type["container"]),
+            views=ViewApplyList.load(resources_by_type["view"]),
+            data_models=DataModelApplyList.load(resources_by_type["data_model"]),
+            spaces=SpaceApplyList.load(resources_by_type["space"]),
+            node_types=NodeApplyList.load(resources_by_type["node"]),
+        )
+
+    def _load_file(self, filepath: Path) -> dict[str, Any]:
+        file_contents = filepath.read_text()
+        for variable, value in self._config.items():
+            file_contents = file_contents.replace(f"{{{{{ variable }}}}}", value)
+        if "{{" in file_contents:
+            errors = []
+            for line_no, line in enumerate(file_contents.split("\n"), start=1):
+                if "{{" in line:
+                    position = line.index("{{")
+                    errors.append(f"Line {line_no} - col {position}: {line[position:position+20]!r}")
+            errors = "\n".join(errors) if errors else ""
+            raise ValueError(f"Unresolved variables in {filepath.relative_to(Path.cwd())} near: {errors}")
+        resource = yaml.safe_load(file_contents)
+        if not isinstance(resource, dict):
+            raise ValueError(f"Expected single resource in {filepath.relative_to(Path.cwd())}, not a {type(resource)}")
+        return resource
 
 
 class SimpleDataModel(DataModel):
@@ -104,20 +164,7 @@ class SimpleDataModel(DataModel):
         return [DataModelId(data["space"], data["externalId"], data["version"])]
 
 
-class BaseBidModel(SimpleDataModel):
-    containers_file = _DMS_DIR / "baseBids" / "containers.yaml"
-    config_files = [_DMS_DIR / "baseBids" / "config.yaml"]
-
-
-class DayAheadBidModel(SimpleDataModel):
-    containers_file = _DMS_DIR / "dayAheadBids" / "containers.yaml"
-    views_file = _DMS_DIR / "dayAheadBids" / "views.yaml"
-    data_model_file = _DMS_DIR / "dayAheadBids" / "data_model.yaml"
-    config_files = [_DMS_DIR / "dayAheadBids" / "config.yaml"]
-
-
-class AFRRBidModel(SimpleDataModel):
-    containers_file = _DMS_DIR / "AFRRBids" / "containers.yaml"
-    views_file = _DMS_DIR / "AFRRBids" / "views.yaml"
-    data_model_file = _DMS_DIR / "AFRRBids" / "data_model.yaml"
-    config_files = [_DMS_DIR / "AFRRBids" / "config.yaml"]
+if __name__ == "__main__":
+    # This is here to make it easy to check that the models are valid (all variables are resolved)
+    loader = DataModelLoader()
+    schema = loader.load()

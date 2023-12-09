@@ -5,38 +5,38 @@ name: 'DayAheadBid'
 description: 'Stores results of Day Ahead bid calculations.'
 views:
 - externalId: BidDocument
-  space: '{{model_space}}'
+  space: '{{dayahead_model_space}}'
   type: view
-  version: '{{view_BidDocument_version}}'
+  version: '{{dayaheadbid_BidDocument_version}}'
 - externalId: BidTable
-  space: '{{model_space}}'
+  space: '{{dayahead_model_space}}'
   type: view
-  version: '{{view_BidTable_version}}'
+  version: '{{dayaheadbid_BidTable_version}}'
 - externalId: SHOPTable
-  space: '{{model_space}}'
+  space: '{{dayahead_model_space}}'
   type: view
-  version: '{{view_SHOPTable_version}}'
+  version: '{{dayaheadbid_SHOPTable_version}}'
 - externalId: ProductionPricePair
-  space: '{{model_space}}'
+  space: '{{dayahead_model_space}}'
   type: view
-  version: '{{view_ProductionPricePair_version}}'
+  version: '{{dayaheadbid_ProductionPricePair_version}}'
 - externalId: SHOPMultiScenario
-  space: '{{model_space}}'
+  space: '{{dayahead_model_space}}'
   type: view
-  version: '{{view_SHOPMultiScenario_version}}'
+  version: '{{dayaheadbid_SHOPMultiScenario_version}}'
 - externalId: WaterValueBased
-  space: '{{model_space}}'
+  space: '{{dayahead_model_space}}'
   type: view
-  version: '{{view_WaterValueBased_version}}'
+  version: '{{dayaheadbid_WaterValueBased_version}}'
 - externalId: PriceArea
-  space: '{{model_space}}'
+  space: '{{dayahead_model_space}}'
   type: view
-  version: '{{view_PriceArea_version}}'
+  version: '{{dayaheadbid_PriceArea_version}}'
 - externalId: BidMethod
-  space: '{{model_space}}'
+  space: '{{dayahead_model_space}}'
   type: view
-  version: '{{view_BidMethod_version}}'
+  version: '{{dayaheadbid_BidMethod_version}}'
 - externalId: Alert
   space: '{{shared_model_space}}'
   type: view
-  version: '{{view_Alert_version}}'
+  version: '{{base_Alert_version}}'

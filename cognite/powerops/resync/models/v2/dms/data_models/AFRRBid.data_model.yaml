@@ -5,22 +5,22 @@ name: AFRRBid
 description: 'Stores results of AFRR bid calculations.'
 views:
 - externalId: BidDocument
-  space: '{{model_space}}'
+  space: '{{afrr_model_space}}'
   type: view
-  version: '{{view_BidDocument_version}}'
+  version: '{{afrrbid_BidDocument_version}}'
 - externalId: BidRow
-  space: '{{model_space}}'
+  space: '{{afrr_model_space}}'
   type: view
-  version: '{{view_BidRow_version}}'
+  version: '{{afrrbid_BidRow_version}}'
 - externalId: PriceArea
-  space: '{{model_space}}'
+  space: '{{afrr_model_space}}'
   type: view
-  version: '{{view_PriceArea_version}}'
+  version: '{{afrrbid_PriceArea_version}}'
 - externalId: BidMethods
-  space: '{{model_space}}'
+  space: '{{afrr_model_space}}'
   type: view
-  version: '{{view_BidMethod_version}}'
+  version: '{{afrrbid_BidMethod_version}}'
 - externalId: Alert
   space: '{{shared_model_space}}'
   type: view
-  version: '{{view_Alert_version}}'
+  version: '{{base_Alert_version}}'

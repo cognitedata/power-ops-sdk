@@ -11,9 +11,9 @@ filter:
       space: types
       externalId: AFRRBidMethod
 implements:
-- space: '{{ shared_model_space }}'
+- space: '{{shared_model_space}}'
   externalId: BidMethod
-  version: '{{ base_BidMethod_version }}'
+  version: '{{base_BidMethod_version}}'
   type: view
 version: '{{afrrbid_BidMethod_version}}'
 properties: {}
