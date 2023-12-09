@@ -88,7 +88,7 @@ class DataModelAPI(Generic[T_ResourceList]):
             view_by_id = {view.as_id(): view for view in retrieved_apply}
             for view in retrieved_apply:
                 prop_to_pop: list[str] = []
-                views_to_check = view.implements or []
+                views_to_check = list(view.implements or [])
                 while views_to_check:
                     view_to_check = views_to_check.pop()
                     prop_to_pop.extend(view_by_id[view_to_check].properties)
