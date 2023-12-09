@@ -1,0 +1,55 @@
+# Useful reference: https://nordicbalancingmodel.net/wp-content/uploads/2021/03/Implementation-Guide-aFRR-capacity-market-BSP_v2.6.pdf - in particular chapter 3.2
+
+type BidDocument{ # The "official" name for "the whole bid" with all BidRows (BidRows are "officially" called Bids)
+    name: String # Useful for referring to the bid when we have more than one. Combination of name, price area, delivery date and startCalculation should probably be unique
+    priceArea: PriceArea # With this defined on the BidDocument, we need to have one BidDocument per price area (we could have defined it on the BidRows instead). Should be required, but seems like we can't enforce that?
+    deliveryDate: Date! # We should use the same name for day-ahead too
+    bids: [BidRow] # List of all rows (with all the data). We could consider having an intermediate type for grouping of bids, but I don't think we need it
+    startCalculation: Timestamp! # As for day-ahead
+    endCalculation: Timestamp # As for day-ahead
+    isCompleted: Boolean # As for day-ahead
+    alerts: [Alert]
+}
+
+type BidRow{ # One row in the bid document ("officially" called Bid)
+    price: Float! # in EUR/MW/h, rounded to nearest price step (0.1?)
+    quantityPerHour: [Float!]! # The capacity offered, in MW, rounded to nearest step size (5?) . We only need one value per hour of tomorrow - feels better to use [Float!] than TimeSeries
+    product: String! # Should be an enum, or maybe we only need direction and can use Boolean up=True/False
+    isDivisible: Boolean! # Could skip this, and just rely on minQuantity not being specified for indivisible bids.
+    minQuantity: [Float] # Only relevant for divisible bids (the min. capacity that must be accepted - must be lower than capacityPerHour and rounded to nearest step (5 MW?)). Double-check if this is specified as one value or per hour, and if it is in relative (percent or 0-1) or absolute [MW] terms. 0 is allowed. (I think it can vary from hour to hour and is in absolute terms, so we should choose the same type as for capacityPerHour)
+    isBlock: Boolean! # If true: quantityPerHour must have the same value for consecutive hours (and no "breaks"). Block bids must be accepted for all hours or none
+    exclusiveGroupId: String # Other bids with the same ID are part of an exclusive group - only one of them can be accepted, and they must have the same direction (product). Not allowed for block bids. Could be implemented through a separate ExclusiveGroup type - would that be any better?
+    linkedBid: BidRow # The linked bid must have the opposite direction (link means that both or none must be accepted). Should be bi-directional, I guess, or implemented through an ID or a separate LinkedBids type - would that be any better?
+    assetType: String
+    assetId: String
+    method: BidMethod # I think it makes sense to put this on the BidRow and not the BidForm because I imagine we will combine different BidMethods/sources, but it could also (or in addition?) be made through e. g. a BidMethodCombination type on the BidForm.
+    alerts: [Alert]
+}
+
+type Alert{ # Copied from day-ahead
+  time: Timestamp!
+  title: String!
+  description: String
+  severity: String
+  alertType: String
+  statusCode: Int
+  eventIds: [Int64]
+  calculationRun: String
+}
+
+type PriceArea{ # Information about the price area that is relevant for aFRR
+    name: String # Or refer to a PriceArea object defined in the production space?
+    capacityPriceUp: TimeSeries
+    capacityPriceDown: TimeSeries
+    activationPriceUp: TimeSeries # This is currently the mFRR activation price, I think, but I guess we can point to the same time series
+    activationPriceDown: TimeSeries # This is currently the mFRR activation price, I think, but I guess we can point to the same time series
+    relativeActivation: TimeSeries # Value between -1 (100 % activation down) and 1 (100 % activation down), or should we split this into up and down, or rather have it in absolute terms (total, own or both?)
+    totalCapacityAllocationUp: TimeSeries
+    totalCapacityAllocationDown: TimeSeries
+    ownCapacityAllicationUp: TimeSeries
+    ownCapacityAllicationDown: TimeSeries
+}
+
+type BidMethod{
+    name: String
+}

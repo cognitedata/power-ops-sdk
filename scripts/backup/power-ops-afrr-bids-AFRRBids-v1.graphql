@@ -1,0 +1,86 @@
+"Whole Bid (also usually referenced in industry as a Bid Document) containing multiple Bid Rows (which are usually referenced in industry as Bids)"
+type BidDocument {
+  "Unique name for a given instance of a Bid Document. A combination of name, priceArea, date and startCalculation."
+  name: String @mapping(space: "power-ops-base-bids")
+  "The PriceArea associated with the BidDocument (this should be shared)."
+  priceArea: PriceArea
+  "The date of the Bid."
+  date: Date @mapping(space: "power-ops-base-bids")
+  "Timestamp of when the Bid calculation workflow started."
+  startCalculation: Timestamp @mapping(space: "power-ops-base-bids")
+  "Timestamp of when the Bid calculation workflow completed."
+  endCalculation: Timestamp @mapping(space: "power-ops-base-bids")
+  "Indicates that the Bid calculation workflow has completed (although has not necessarily succeeded)."
+  isComplete: Boolean @mapping(space: "power-ops-base-bids")
+  "An array of BidRows containing the Bid data."
+  bids: [BidRow]
+  "An array of calculation level Alerts."
+  alerts: [Alert] @relation(type: {space : "power-ops-base-bids", externalId : "BidDocument.alerts"})
+}
+
+"One row in the BidDocument (usually referenced in industry as a Bid)."
+type BidRow {
+  "Price in EUR/MW/h, rounded to nearest price step (0.1?)"
+  price: Float32
+  "The capacity offered, per hour, in MW, rounded to nearest step size (5?)"
+  quantityPerHour: [Float32]
+  product: String
+  isDivisible: Boolean
+  "Min quantity, per hour. Only relevant for divisible Bids. The minimum capacity that must be accepted; this must be lower than capacityPerHour and is rounded to the nearest step (5 MW?))."
+  minQuantity: [Float32]
+  "Indication if the row is part of a Block bid. If true: quantityPerHour must have the same value for consecutive hours (and no breaks). Block bids must be accepted for all hours or none."
+  isBlock: Boolean
+  "Other bids with the same ID are part of an exclusive group - only one of them can be accepted, and they must have the same direction (product). Not allowed for block bids."
+  exclusiveGroupId: String
+  "The linked bid must have the opposite direction (link means that both or none must be accepted). Should be bi-directional."
+  linkedBid: BidRow
+  assetType: String
+  assetId: String
+  method: BidMethod
+  "An array of associated alerts."
+  alerts: [Alert]
+}
+
+"Alerts"
+type Alert {
+  "Timestamp that the alert occured (within the workflow)"
+  time: Timestamp! @mapping(space: "power-ops-base-bids")
+  "Summary description of the alert"
+  title: String! @mapping(space: "power-ops-base-bids")
+  "Detailed description of the alert"
+  description: String @mapping(space: "power-ops-base-bids")
+  "CRITICAL (calculation could not completed) WARNING  (calculation completed, with major issue) INFO     (calculation completed, with minor issues)"
+  severity: String @mapping(space: "power-ops-base-bids")
+  "Classification of the alert (not in current alerting implementation)"
+  alertType: String @mapping(space: "power-ops-base-bids")
+  "Unique status code for the alert. May be used by the frontend to avoid use of hardcoded description (i.e. like a translation)"
+  statusCode: Int @mapping(space: "power-ops-base-bids")
+  "An array of associated alert CDF Events (e.g. SHOP Run events)"
+  eventIds: [Int64] @mapping(space: "power-ops-base-bids")
+  "The identifier of the parent Bid Calculation (required so tha alerts can be created befor the BidDocument)"
+  calculationRun: String @mapping(space: "power-ops-base-bids")
+}
+
+"Information about the Price Area that is only relevant for AFRR"
+type PriceArea {
+  "Name for the PriceArea."
+  name: String
+  capacityPriceUp: TimeSeries
+  capacityPriceDown: TimeSeries
+  "The mFRR activation price (TBC)"
+  activationPriceUp: TimeSeries
+  "The mFRR activate price (TBC)"
+  activationPriceDown: TimeSeries
+  "Value between -1 (100 % activation down) and 1 (100 % activation down)"
+  relativeActivation: TimeSeries
+  totalCapacityAllocationUp: TimeSeries
+  totalCapacityAllocationDown: TimeSeries
+  ownCapacityAllocationUp: TimeSeries
+  ownCapacityAllocationDown: TimeSeries
+}
+
+"A description of the Bid method used in the calculation."
+type BidMethod {
+  "Name for the BidMethod"
+  name: String
+}
