@@ -1,0 +1,14 @@
+space: '{{shared_model_space}}'
+externalId: BidMethod
+description: A description of the Bid method used in the calculation.
+name: BidMethod
+version: '{{base_BidMethod_version}}'
+properties:
+  name:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: BidMethod
+      type: container
+    containerPropertyIdentifier: name
+    name: name
+    description: Name for the BidMethod

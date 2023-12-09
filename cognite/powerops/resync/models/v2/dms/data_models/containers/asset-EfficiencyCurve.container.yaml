@@ -1,0 +1,29 @@
+space: '{{asset_space}}'
+externalId: EfficiencyCurve
+name: EfficiencyCurve
+usedFor: node
+properties:
+  x:
+    type:
+      list: true
+      type: float32
+    nullable: false
+    autoIncrement: false
+    name: x
+    description: The first dimension of the efficiency curve
+  y:
+    type:
+      list: true
+      type: float32
+    nullable: false
+    autoIncrement: false
+    name: y
+    description: The second dimension of the efficiency curve
+  efficiency:
+    type:
+      list: true
+      type: float32
+    nullable: false
+    autoIncrement: false
+    name: efficiency
+    description: The efficiency

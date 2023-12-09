@@ -1,0 +1,62 @@
+space: '{{shared_model_space}}'
+externalId: BidDocument
+description: Whole Bid (also usually referenced in industry as a Bid Document) containing
+  multiple Bid Rows (which are usually referenced in industry as Bids)
+name: BidDocument
+version: '{{base_BidDocument_version}}'
+properties:
+  name:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: BidDocument
+      type: container
+    containerPropertyIdentifier: name
+    name: name
+    description: Unique name for a given instance of a Bid Document. A combination
+      of name, priceArea, date and startCalculation.
+  date:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: BidDocument
+      type: container
+    containerPropertyIdentifier: date
+    name: date
+    description: The date of the Bid.
+  startCalculation:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: BidDocument
+      type: container
+    containerPropertyIdentifier: startCalculation
+    name: startCalculation
+    description: Timestamp of when the Bid calculation workflow started.
+  endCalculation:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: BidDocument
+      type: container
+    containerPropertyIdentifier: endCalculation
+    name: endCalculation
+    description: Timestamp of when the Bid calculation workflow completed.
+  isComplete:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: BidDocument
+      type: container
+    containerPropertyIdentifier: isComplete
+    name: isComplete
+    description: Indicates that the Bid calculation workflow has completed (although
+      has not necessarily succeeded).
+  alerts:
+    type:
+      space: '{{type_space}}'
+      externalId: calculationIssue
+    source:
+      space: '{{shared_model_space}}'
+      externalId: Alert
+      version: '{{base_Alert_version}}'
+      type: view
+    direction: outwards
+    name: alerts
+    description: An array of calculation level Alerts.
+    connectionType: multiEdgeConnection

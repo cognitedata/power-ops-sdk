@@ -1,0 +1,36 @@
+space: '{{dayahead_model_space}}'
+externalId: BidTable
+name: BidTable
+usedFor: node
+properties:
+  resourceCost:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: resourceCost
+  table:
+    type:
+      list: false
+      type: sequence
+    nullable: true
+    autoIncrement: false
+    name: table
+  assetType:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: assetType
+  assetId:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: assetId

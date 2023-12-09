@@ -1,0 +1,18 @@
+- space: {{afrr_model_space}}
+  name: AFRRBid
+  description: Contracts used for the produced AFRR bids.
+- space: {{dayahead_model_space}}
+  name: DayAheadBid
+  description: Contracts used for the produced day-ahead bids.
+- space: {{shared_model_space}}
+  name: PowerOpsShared
+  description: Shared views, containers and models for PowerOps.
+- space: {{type_space}}
+  name: PowerOpsTypes
+  description: Types used in PowerOps.
+- space: {{powerops_instance_space}}
+  name: PowerOpsInstance
+  description: All the data used and produced by PowerOps.
+- space: {{asset_space}}
+  name: PowerOpsAsset
+  description: The asset model used by PowerOps.

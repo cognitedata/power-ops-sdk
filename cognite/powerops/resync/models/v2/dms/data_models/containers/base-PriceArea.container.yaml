@@ -1,0 +1,112 @@
+space: '{{shared_model_space}}'
+externalId: PriceArea
+name: PriceArea
+usedFor: node
+properties:
+  timezone:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: name
+    description: The timezone of the price area
+  priceScenarios:
+    type:
+      list: true
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: timezone
+  capacityPriceUp:
+    type:
+      list: false
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: capacityPriceUp
+  capacityPriceDown:
+    type:
+      list: false
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: capacityPriceDown
+  activationPriceUp:
+    type:
+      list: false
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: activationPriceUp
+  activationPriceDown:
+    type:
+      list: false
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: activationPriceDown
+  relativeActivation:
+    type:
+      list: false
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: relativeActivation
+  totalCapacityAllocationUp:
+    type:
+      list: false
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: totalCapacityAllocationUp
+  totalCapacityAllocationDown:
+    type:
+      list: false
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: totalCapacityAllocationDown
+  ownCapacityAllocationUp:
+    type:
+      list: false
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: ownCapacityAllocationUp
+  ownCapacityAllocationDown:
+    type:
+      list: false
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: ownCapacityAllocationDown
+  defaultMethodDayAhead:
+    type:
+      container: null
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: defaultMethodDayAhead
+  mainScenarioDayAhead:
+    type:
+      list: false
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: mainScenarioDayAhead
+  dayAheadPrice:
+    type:
+      list: false
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: dayAheadPrice
+constraints:
+  requiredAsset:
+    require:
+      space: '{{shared_model_space}}'
+      externalId: Asset
+      type: container
+    constraintType: requires

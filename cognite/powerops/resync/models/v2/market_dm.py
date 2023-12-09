@@ -72,16 +72,3 @@ class RKOMMarketDataModel(DataModel):
 
     def standardize(self) -> None:
         raise NotImplementedError()
-
-
-class AFRRMarket(DataModel):
-    graph_ql: ClassVar[PowerOpsGraphQLModel] = GRAPHQL_MODELS["aFRR"]
-
-    @classmethod
-    def from_cdf(
-        cls: type[T_Model], client: PowerOpsClient, fetch_metadata: bool = True, fetch_content: bool = False
-    ) -> T_Model:
-        raise NotImplementedError()
-
-    def standardize(self) -> None:
-        raise NotImplementedError()

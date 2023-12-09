@@ -1,0 +1,54 @@
+space: '{{shared_model_space}}'
+externalId: BidDocument
+name: BidDocument
+usedFor: node
+properties:
+  name:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: name
+  date:
+    type:
+      list: false
+      type: date
+    nullable: true
+    autoIncrement: false
+    name: date
+  startCalculation:
+    type:
+      list: false
+      type: timestamp
+    nullable: true
+    autoIncrement: false
+    name: startCalculation
+  endCalculation:
+    type:
+      list: false
+      type: timestamp
+    nullable: true
+    autoIncrement: false
+    name: endCalculation
+  isComplete:
+    type:
+      list: false
+      type: boolean
+    nullable: true
+    autoIncrement: false
+    name: isCompleted
+  priceArea:
+    type:
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: priceArea
+    description: The price area of the bid document.
+indexes:
+  date:
+    properties:
+    - date
+    indexType: btree
+    cursorable: false

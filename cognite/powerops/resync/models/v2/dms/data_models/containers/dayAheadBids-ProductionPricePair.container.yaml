@@ -1,0 +1,19 @@
+space: '{{dayahead_model_space}}'
+externalId: ProductionPricePair
+name: ProductionPricePair
+usedFor: node
+properties:
+  production:
+    type:
+      list: false
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: production
+  price:
+    type:
+      list: false
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: price

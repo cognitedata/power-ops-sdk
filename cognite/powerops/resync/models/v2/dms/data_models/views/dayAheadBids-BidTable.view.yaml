@@ -1,0 +1,45 @@
+space: '{{dayahead_model_space}}'
+externalId: BidTable
+name: BidTable
+version: '{{dayaheadbid_BidTable_version}}'
+properties:
+  resourceCost:
+    container:
+      space: '{{dayahead_model_space}}'
+      externalId: BidTable
+      type: container
+    containerPropertyIdentifier: resourceCost
+    name: resourceCost
+  table:
+    container:
+      space: '{{dayahead_model_space}}'
+      externalId: BidTable
+      type: container
+    containerPropertyIdentifier: table
+    name: table
+  assetType:
+    container:
+      space: '{{dayahead_model_space}}'
+      externalId: BidTable
+      type: container
+    containerPropertyIdentifier: assetType
+    name: assetType
+  assetId:
+    container:
+      space: '{{dayahead_model_space}}'
+      externalId: BidTable
+      type: container
+    containerPropertyIdentifier: assetId
+    name: assetId
+  alerts:
+    type:
+      space: '{{type_space}}'
+      externalId: calculationIssue
+    source:
+      space: '{{shared_model_space}}'
+      externalId: Alert
+      version: '{{base_Alert_version}}'
+      type: view
+    direction: outwards
+    name: alerts
+    connectionType: multiEdgeConnection

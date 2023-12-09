@@ -1,0 +1,19 @@
+space: '{{dayahead_model_space}}'
+externalId: BidMethod
+description: A description of the Bid method used in the calculation.
+name: BidMethod
+filter:
+  equals:
+    property:
+    - node
+    - type
+    value:
+      space: '{{type_space}}'
+      externalId: DayAheadBidMethod
+implements:
+- space: '{{shared_model_space}}'
+  externalId: BidMethod
+  version: '{{base_BidMethod_version}}'
+  type: view
+version: '{{dayaheadbid_BidMethod_version}}'
+properties: {}

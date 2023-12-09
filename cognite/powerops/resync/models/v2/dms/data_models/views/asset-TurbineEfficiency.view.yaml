@@ -1,0 +1,30 @@
+space: '{{asset_space}}'
+externalId: TurbineEfficiencyCurve
+description: Describes the efficiency curve for a turbine
+name: TurbineEfficiencyCurve
+version: '{{asset_TurbineEfficiency_version}}'
+properties:
+  head:
+    container:
+      space: '{{asset_space}}'
+      externalId: EfficiencyCurve
+      type: container
+    containerPropertyIdentifier: x
+    name: head
+    description: The head values
+  flow:
+    container:
+      space: '{{asset_space}}'
+      externalId: EfficiencyCurve
+      type: container
+    containerPropertyIdentifier: y
+    name: flow
+    description: The flow values
+  turbineEfficiency:
+    container:
+      space: '{{asset_space}}'
+      externalId: EfficiencyCurve
+      type: container
+    containerPropertyIdentifier: efficiency
+    name: turbineEfficiency
+    description: The turbine efficiency values

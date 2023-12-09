@@ -1,0 +1,45 @@
+space: '{{shared_model_space}}'
+externalId: Asset
+name: Asset
+usedFor: node
+properties:
+  name:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: name
+    description: The name of the Asset
+  displayName:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: displayName
+    description: The display name of the Asset
+  description:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: name
+  order:
+    type:
+      list: false
+      type: int32
+    nullable: true
+    autoIncrement: false
+    name: order
+    description: The order of the Asset
+indexes:
+  time:
+    properties:
+    - name
+    indexType: btree
+    cursorable: false

@@ -1,0 +1,19 @@
+space: '{{afrr_model_space}}'
+externalId: BidMethod
+description: A description of the Bid method used in the calculation.
+name: BidMethod
+filter:
+  equals:
+    property:
+    - node
+    - type
+    value:
+      space: '{{type_space}}'
+      externalId: AFRRBidMethod
+implements:
+- space: '{{shared_model_space}}'
+  externalId: BidMethod
+  version: '{{base_BidMethod_version}}'
+  type: view
+version: '{{afrrbid_BidMethod_version}}'
+properties: {}

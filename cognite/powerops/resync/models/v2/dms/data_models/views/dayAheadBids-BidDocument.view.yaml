@@ -1,0 +1,58 @@
+space: '{{dayahead_model_space}}'
+externalId: BidDocument
+name: BidDocument
+implements:
+- space: '{{shared_model_space}}'
+  externalId: BidDocument
+  version: '{{base_BidDocument_version}}'
+  type: view
+version: '{{dayaheadbid_BidDocument_version}}'
+properties:
+  priceArea:
+    source:
+      type: view
+      space: '{{dayahead_model_space}}'
+      externalId: PriceArea
+      version: '{{dayaheadbid_PriceArea_version}}'
+    container:
+      type: container
+      space: '{{shared_model_space}}'
+      externalId: BidDocument
+    containerPropertyIdentifier: priceArea
+    name: priceArea
+  method:
+    container:
+      space: '{{dayahead_model_space}}'
+      externalId: BidDocument
+      type: container
+    containerPropertyIdentifier: method
+    name: method
+    source:
+      space: '{{dayahead_model_space}}'
+      externalId: BidMethod
+      version: '{{dayaheadbid_BidMethod_version}}'
+      type: view
+  total:
+    container:
+      space: '{{dayahead_model_space}}'
+      externalId: BidDocument
+      type: container
+    containerPropertyIdentifier: total
+    name: total
+    source:
+      space: '{{dayahead_model_space}}'
+      externalId: BidTable
+      version: '{{dayaheadbid_BidTable_version}}'
+      type: view
+  partials:
+    type:
+      space: '{{type_space}}'
+      externalId: PartialBid
+    source:
+      space: '{{dayahead_model_space}}'
+      externalId: BidTable
+      version: '{{dayaheadbid_BidTable_version}}'
+      type: view
+    direction: outwards
+    name: partials
+    connectionType: multiEdgeConnection

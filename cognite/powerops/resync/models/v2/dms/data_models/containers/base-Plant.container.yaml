@@ -1,0 +1,115 @@
+space: '{{shared_model_space}}'
+externalId: Plant
+name: Plant
+usedFor: node
+properties:
+    headLossFactor:
+      type:
+        type: float64
+        list: false
+      nullable: true
+      autoIncrement: false
+      name: headLossFactor
+    outletLevel:
+      type:
+        type: float64
+        list: false
+      nullable: true
+      autoIncrement: false
+      name: outletLevel
+    pMax:
+      type:
+        type: float64
+        list: false
+      nullable: true
+      autoIncrement: false
+      name: pMax
+    pMin:
+      type:
+        type: float64
+        list: false
+      nullable: true
+      autoIncrement: false
+      name: pMin
+    penstockHeadLossFactors:
+      type:
+        type: json
+        list: false
+      nullable: true
+      autoIncrement: false
+      name: penstockHeadLossFactors
+    watercourse:
+      type:
+        type: direct
+      nullable: true
+      autoIncrement: false
+      name: watercourse
+    connectionLosses:
+      type:
+        type: float64
+        list: false
+      nullable: true
+      autoIncrement: false
+      name: connectionLosses
+    pMaxTimeSeries:
+      type:
+        type: timeseries
+        list: false
+      nullable: true
+      autoIncrement: false
+      name: pMaxTimeSeries
+    pMinTimeSeries:
+      type:
+        type: timeseries
+        list: false
+      nullable: true
+      autoIncrement: false
+      name: pMinTimeSeries
+    waterValueTimeSeries:
+      type:
+        type: timeseries
+        list: false
+      nullable: true
+      autoIncrement: false
+      name: waterValueTimeSeries
+    feedingFeeTimeSeries:
+      type:
+        type: timeseries
+        list: false
+      nullable: true
+      autoIncrement: false
+      name: feedingFeeTimeSeries
+    outletLevelTimeSeries:
+      type:
+        type: timeseries
+        list: false
+      nullable: true
+      autoIncrement: false
+      name: outletLevelTimeSeries
+    inletLevelTimeSeries:
+      type:
+        type: timeseries
+        list: false
+      nullable: true
+      autoIncrement: false
+      name: inletLevelTimeSeries
+    headDirectTimeSeries:
+      type:
+        type: timeseries
+        list: false
+      nullable: true
+      autoIncrement: false
+      name: headDirectTimeSeries
+    inletReservoir:
+      type:
+        type: direct
+      nullable: true
+      autoIncrement: false
+      name: inletReservoir
+constraints:
+  requiredAsset:
+    require:
+      space: '{{shared_model_space}}'
+      externalId: Asset
+      type: container
+    constraintType: requires

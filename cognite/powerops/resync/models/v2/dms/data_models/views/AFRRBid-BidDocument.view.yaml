@@ -1,0 +1,45 @@
+space: '{{afrr_model_space}}'
+externalId: BidDocument
+version: '{{afrrbid_BidDocument_version}}'
+description: Whole Bid (also usually referenced in industry as a Bid Document) containing
+  multiple Bid Rows (which are usually referenced in industry as Bids)
+name: BidDocument
+implements:
+- space: '{{shared_model_space}}'
+  externalId: BidDocument
+  version: '{{base_BidDocument_version}}'
+  type: view
+properties:
+  priceArea:
+    source:
+      type: view
+      space: '{{afrr_model_space}}'
+      externalId: PriceArea
+      version: '{{afrrbid_PriceArea_version}}'
+    container:
+      type: container
+      space: '{{shared_model_space}}'
+      externalId: BidDocument
+    containerPropertyIdentifier: priceArea
+    name: priceArea
+  bids:
+    type:
+      space: '{{type_space}}'
+      externalId: PartialBid
+    source:
+      space: '{{afrr_model_space}}'
+      externalId: BidRow
+      version: '{{afrrbid_BidRow_version}}'
+      type: view
+    direction: outwards
+    name: bids
+    description: An array of BidRows containing the Bid data.
+    connectionType: multiEdgeConnection
+filter:
+  equals:
+    property:
+    - node
+    - type
+    value:
+      space: '{{type_space}}'
+      externalId: AFRRBidDocument

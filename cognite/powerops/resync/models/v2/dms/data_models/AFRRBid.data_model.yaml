@@ -1,0 +1,26 @@
+externalId: AFRRBid
+space: '{{afrr_model_space}}'
+version: '1'
+name: AFRRBid
+description: 'Stores results of AFRR bid calculations.'
+views:
+- externalId: BidDocument
+  space: '{{afrr_model_space}}'
+  type: view
+  version: '{{afrrbid_BidDocument_version}}'
+- externalId: BidRow
+  space: '{{afrr_model_space}}'
+  type: view
+  version: '{{afrrbid_BidRow_version}}'
+- externalId: PriceArea
+  space: '{{afrr_model_space}}'
+  type: view
+  version: '{{afrrbid_PriceArea_version}}'
+- externalId: BidMethod
+  space: '{{afrr_model_space}}'
+  type: view
+  version: '{{afrrbid_BidMethod_version}}'
+- externalId: Alert
+  space: '{{shared_model_space}}'
+  type: view
+  version: '{{base_Alert_version}}'

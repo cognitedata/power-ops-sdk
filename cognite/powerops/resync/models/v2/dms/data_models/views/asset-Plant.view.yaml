@@ -1,0 +1,195 @@
+space: '{{asset_space}}'
+externalId: Plant
+description: Represent a plant
+name: Plant
+version: '{{asset_Plant_version}}'
+properties:
+  name:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: Asset
+      type: container
+    containerPropertyIdentifier: name
+    name: name
+    description: Name for the Plant.
+  displayName:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: Asset
+      type: container
+    containerPropertyIdentifier: displayName
+    name: displayName
+  ordering:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: Asset
+      type: container
+    containerPropertyIdentifier: order
+    name: ordering
+    description: The order of this plant
+  headLossFactor:
+    type:
+      type: float64
+      list: false
+    container:
+      type: container
+      space: '{{shared_model_space}}'
+      externalId: Plant
+    containerPropertyIdentifier: headLossFactor
+    name: headLossFactor
+  outletLevel:
+    type:
+      type: float64
+      list: false
+    container:
+      type: container
+      space: '{{shared_model_space}}'
+      externalId: Plant
+    containerPropertyIdentifier: outletLevel
+    name: outletLevel
+  pMax:
+    type:
+      type: float64
+      list: false
+    container:
+      type: container
+      space: '{{shared_model_space}}'
+      externalId: Plant
+    containerPropertyIdentifier: pMax
+    name: pMax
+  pMin:
+    type:
+      type: float64
+      list: false
+    container:
+      type: container
+      space: '{{shared_model_space}}'
+      externalId: Plant
+    containerPropertyIdentifier: pMin
+    name: pMin
+  penstockHeadLossFactors:
+    type:
+      type: json
+      list: false
+    container:
+      type: container
+      space: '{{shared_model_space}}'
+      externalId: Plant
+    containerPropertyIdentifier: penstockHeadLossFactors
+    name: penstockHeadLossFactors
+  watercourse:
+    source:
+      type: view
+      space: '{{asset_space}}'
+      externalId: Watercourse
+      version: '{{asset_Watercourse_version}}'
+    container:
+      type: container
+      space: '{{shared_model_space}}'
+      externalId: Plant
+    containerPropertyIdentifier: watercourse
+    name: watercourse
+  connectionLosses:
+    type:
+      type: float64
+      list: false
+    container:
+      type: container
+      space: '{{shared_model_space}}'
+      externalId: Plant
+    containerPropertyIdentifier: connectionLosses
+    name: connectionLosses
+  pMaxTimeSeries:
+    type:
+      type: timeseries
+      list: false
+    container:
+      type: container
+      space: '{{shared_model_space}}'
+      externalId: Plant
+    containerPropertyIdentifier: pMaxTimeSeries
+    name: pMaxTimeSeries
+  pMinTimeSeries:
+    type:
+      type: timeseries
+      list: false
+    container:
+      type: container
+      space: '{{shared_model_space}}'
+      externalId: Plant
+    containerPropertyIdentifier: pMinTimeSeries
+    name: pMinTimeSeries
+  waterValueTimeSeries:
+    type:
+      type: timeseries
+      list: false
+    container:
+      type: container
+      space: '{{shared_model_space}}'
+      externalId: Plant
+    containerPropertyIdentifier: waterValueTimeSeries
+    name: waterValueTimeSeries
+  feedingFeeTimeSeries:
+    type:
+      type: timeseries
+      list: false
+    container:
+      type: container
+      space: '{{shared_model_space}}'
+      externalId: Plant
+    containerPropertyIdentifier: feedingFeeTimeSeries
+    name: feedingFeeTimeSeries
+  outletLevelTimeSeries:
+    type:
+      type: timeseries
+      list: false
+    container:
+      type: container
+      space: '{{shared_model_space}}'
+      externalId: Plant
+    containerPropertyIdentifier: outletLevelTimeSeries
+    name: outletLevelTimeSeries
+  inletLevelTimeSeries:
+    type:
+      type: timeseries
+      list: false
+    container:
+      type: container
+      space: '{{shared_model_space}}'
+      externalId: Plant
+    containerPropertyIdentifier: inletLevelTimeSeries
+    name: inletLevelTimeSeries
+  headDirectTimeSeries:
+    type:
+      type: timeseries
+      list: false
+    container:
+      type: container
+      space: '{{shared_model_space}}'
+      externalId: Plant
+    containerPropertyIdentifier: headDirectTimeSeries
+    name: headDirectTimeSeries
+  inletReservoir:
+    source:
+      type: view
+      space: '{{asset_space}}'
+      externalId: Reservoir
+      version: '{{asset_Reservoir_version}}'
+    container:
+      type: container
+      space: '{{shared_model_space}}'
+      externalId: Plant
+    containerPropertyIdentifier: inletReservoir
+    name: inletReservoir
+  generators:
+    type:
+      space: '{{type_space}}'
+      externalId: isSubAssetOf
+    source:
+      type: view
+      space: '{{asset_space}}'
+      externalId: Generator
+      version: '{{asset_Generator_version}}'
+    connectionType: multiEdgeConnection
+    name: generators
+    direction: outwards

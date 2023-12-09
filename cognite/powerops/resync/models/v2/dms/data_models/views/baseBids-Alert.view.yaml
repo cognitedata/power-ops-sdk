@@ -1,0 +1,73 @@
+space: '{{shared_model_space}}'
+externalId: Alert
+description: Alerts
+name: Alert
+version: '{{base_Alert_version}}'
+properties:
+  time:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: Alert
+      type: container
+    containerPropertyIdentifier: time
+    name: time
+    description: Timestamp that the alert occured (within the workflow)
+  title:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: Alert
+      type: container
+    containerPropertyIdentifier: title
+    name: title
+    description: Summary description of the alert
+  description:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: Alert
+      type: container
+    containerPropertyIdentifier: description
+    name: description
+    description: Detailed description of the alert
+  severity:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: Alert
+      type: container
+    containerPropertyIdentifier: severity
+    name: severity
+    description: CRITICAL (calculation could not completed) WARNING  (calculation
+      completed, with major issue) INFO     (calculation completed, with minor issues)
+  alertType:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: Alert
+      type: container
+    containerPropertyIdentifier: alertType
+    name: alertType
+    description: Classification of the alert (not in current alerting implementation)
+  statusCode:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: Alert
+      type: container
+    containerPropertyIdentifier: statusCode
+    name: statusCode
+    description: Unique status code for the alert. May be used by the frontend to
+      avoid use of hardcoded description (i.e. like a translation)
+  eventIds:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: Alert
+      type: container
+    containerPropertyIdentifier: eventIds
+    name: eventIds
+    description: An array of associated alert CDF Events (e.g. SHOP Run events)
+  calculationRun:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: Alert
+      type: container
+    containerPropertyIdentifier: calculationRun
+    name: calculationRun
+    description: The identifier of the parent Bid Calculation (required so tha alerts
+      can be created befor the BidDocument)

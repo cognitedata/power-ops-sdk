@@ -1,0 +1,24 @@
+space: '{{dayahead_model_space}}'
+externalId: BidDocument
+name: BidDocument
+usedFor: node
+properties:
+  method:
+    type:
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: method
+  total:
+    type:
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: total
+constraints:
+  requiredBidMethod:
+    require:
+      space: '{{shared_model_space}}'
+      externalId: BidDocument
+      type: container
+    constraintType: requires
