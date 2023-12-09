@@ -281,6 +281,10 @@ def destroy(
             removed = _remove_resources(remove_data + remove_data_model, client.cdf, auto_yes)
             destroyed.append(removed)
 
+    loader = DataModelLoader()
+    schema = loader.load()
+    loader.destroy(client.cdf, schema, dry_run)
+
     # Spaces are deleted last, as they might contain other resources.
     spaces = set(space for d in model_types if issubclass(d, DataModel) for space in d.spaces())
     if spaces and not dry_run:

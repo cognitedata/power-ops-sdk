@@ -248,7 +248,7 @@ class DataModelLoader:
         return result
 
     @classmethod
-    def destroy(cls, client: CogniteClient, schema: Schema) -> list[dict]:
+    def destroy(cls, client: CogniteClient, schema: Schema, dry_run: bool = False) -> list[dict]:
         result = []
         apis = cls._create_apis(client)
         resources = asdict(schema)
@@ -256,9 +256,13 @@ class DataModelLoader:
             items = resources[api.name]
             existing = api.retrieve(schema.spaces)
             diffs = api.differences(existing, items)
-            if diffs.changed or diffs.unchanged or diffs.delete:
+            if not dry_run and (diffs.changed or diffs.unchanged or diffs.delete):
                 api.delete(diffs.changed.as_ids() + diffs.unchanged.as_ids() + diffs.delete.as_ids())
-            print(f"Deleted {api.name}: {len(diffs.changed + diffs.unchanged + diffs.delete)} deleted")
+            total = len(diffs.changed + diffs.unchanged + diffs.delete)
+            if dry_run:
+                print(f"Would delete {api.name}: {total} deleted")
+            else:
+                print(f"Deleted {api.name}: {total} deleted")
             result.extend(diffs.as_results(is_init=False))
 
         return result
