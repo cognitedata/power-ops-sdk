@@ -7,9 +7,7 @@ from pathlib import Path
 from cognite.pygen import generate_sdk
 
 from cognite.powerops.resync.models import DayAheadBidModel, AFRRBidModel
-from cognite.powerops.resync.models.v1.graphql_schemas import GRAPHQL_MODELS as v1
 from cognite.powerops.resync.models.v2.graphql_schemas import GRAPHQL_MODELS as v2
-from cognite.powerops.resync.models.v2.dms import CapacityModel
 from cognite.powerops.utils.cdf import get_cognite_client
 from cognite.powerops.utils.serialization import chdir
 
@@ -18,7 +16,7 @@ REPO_ROOT = Path(__file__).parent.parent
 
 def main():
     top_level = "cognite.powerops.client._generated"
-    model_ids = [model.id_ for model in v2.values()] + [CapacityModel.id_]
+    model_ids = [model.id_ for model in v2.values()]
 
     # Ensure we are in the root of the repo
     with chdir(REPO_ROOT):
