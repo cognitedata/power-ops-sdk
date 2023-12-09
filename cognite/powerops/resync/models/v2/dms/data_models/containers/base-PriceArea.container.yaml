@@ -3,23 +3,6 @@ externalId: PriceArea
 name: PriceArea
 usedFor: node
 properties:
-  name:
-    type:
-      list: false
-      collation: ucs_basic
-      type: text
-    nullable: false
-    autoIncrement: false
-    name: name
-    description: The name of the bid method
-  description:
-    type:
-      list: false
-      collation: ucs_basic
-      type: text
-    nullable: true
-    autoIncrement: false
-    name: name
   timezone:
     type:
       list: false
@@ -105,16 +88,25 @@ properties:
       type: direct
     nullable: true
     autoIncrement: false
-    name: defaultMethod
+    name: defaultMethodDayAhead
   mainScenarioDayAhead:
     type:
       list: false
       type: timeseries
     nullable: true
     autoIncrement: false
-    name: timezone
-indexes:
-  time:
-    properties:
-    - name
-    indexType: btree
+    name: mainScenarioDayAhead
+  dayAheadPrice:
+    type:
+      list: false
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: dayAheadPrice
+constraints:
+  requiredAsset:
+    require:
+      space: '{{shared_model_space}}'
+      externalId: Asset
+      type: container
+    constraintType: requires

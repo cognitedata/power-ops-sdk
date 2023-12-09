@@ -9,7 +9,20 @@ implements:
   externalId: BidDocument
   version: '{{base_BidDocument_version}}'
   type: view
-properties: {}
+properties:
+  bids:
+    type:
+      space: '{{type_space}}'
+      externalId: BidDocument.bids
+    source:
+      space: '{{afrr_model_space}}'
+      externalId: BidRow
+      version: '{{afrrbid_BidRow_version}}'
+      type: view
+    direction: outwards
+    name: bids
+    description: An array of BidRows containing the Bid data.
+    connectionType: multiEdgeConnection
 filter:
   equals:
     property:
