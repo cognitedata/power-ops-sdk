@@ -1,18 +1,18 @@
-space: '{{model_space}}'
+space: '{{dayahead_model_space}}'
 externalId: ProductionPricePair
 name: ProductionPricePair
-version: '{{view_ProductionPricePair_version}}'
+version: '{{dayaheadbid_ProductionPricePair_version}}'
 properties:
   production:
     container:
-      space: '{{model_space}}'
+      space: '{{dayahead_model_space}}'
       externalId: ProductionPricePair
       type: container
     containerPropertyIdentifier: production
     name: production
   price:
     container:
-      space: '{{model_space}}'
+      space: '{{dayahead_model_space}}'
       externalId: ProductionPricePair
       type: container
     containerPropertyIdentifier: price

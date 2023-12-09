@@ -1,4 +1,4 @@
-space: '{{model_space}}'
+space: '{{dayahead_model_space}}'
 externalId: BidDocument
 name: BidDocument
 usedFor: node

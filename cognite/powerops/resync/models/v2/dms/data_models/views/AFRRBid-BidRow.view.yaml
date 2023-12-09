@@ -1,12 +1,12 @@
-space: '{{model_space}}'
+space: '{{afrr_model_space}}'
 externalId: BidRow
 description: One row in the BidDocument (usually referenced in industry as a Bid).
 name: BidRow
-version: '{{view_BidRow_version}}'
+version: '{{afrrbid_BidRow_version}}'
 properties:
   price:
     container:
-      space: '{{model_space}}'
+      space: '{{afrr_model_space}}'
       externalId: BidRow
       type: container
     containerPropertyIdentifier: price
@@ -14,7 +14,7 @@ properties:
     description: Price in EUR/MW/h, rounded to nearest price step (0.1?)
   quantityPerHour:
     container:
-      space: '{{model_space}}'
+      space: '{{afrr_model_space}}'
       externalId: BidRow
       type: container
     containerPropertyIdentifier: quantityPerHour
@@ -23,21 +23,21 @@ properties:
       (5?)
   product:
     container:
-      space: '{{model_space}}'
+      space: '{{afrr_model_space}}'
       externalId: BidRow
       type: container
     containerPropertyIdentifier: product
     name: product
   isDivisible:
     container:
-      space: '{{model_space}}'
+      space: '{{afrr_model_space}}'
       externalId: BidRow
       type: container
     containerPropertyIdentifier: isDivisible
     name: isDivisible
   minQuantity:
     container:
-      space: '{{model_space}}'
+      space: '{{afrr_model_space}}'
       externalId: BidRow
       type: container
     containerPropertyIdentifier: minQuantity
@@ -47,7 +47,7 @@ properties:
       is rounded to the nearest step (5 MW?)).
   isBlock:
     container:
-      space: '{{model_space}}'
+      space: '{{afrr_model_space}}'
       externalId: BidRow
       type: container
     containerPropertyIdentifier: isBlock
@@ -57,7 +57,7 @@ properties:
       be accepted for all hours or none.'
   exclusiveGroupId:
     container:
-      space: '{{model_space}}'
+      space: '{{afrr_model_space}}'
       externalId: BidRow
       type: container
     containerPropertyIdentifier: exclusiveGroupId
@@ -67,7 +67,7 @@ properties:
       Not allowed for block bids.
   linkedBid:
     container:
-      space: '{{model_space}}'
+      space: '{{afrr_model_space}}'
       externalId: BidRow
       type: container
     containerPropertyIdentifier: linkedBid
@@ -75,44 +75,44 @@ properties:
     description: The linked bid must have the opposite direction (link means that
       both or none must be accepted). Should be bi-directional.
     source:
-      space: '{{model_space}}'
+      space: '{{afrr_model_space}}'
       externalId: BidRow
-      version: '{{view_BidRow_version}}'
+      version: '{{afrrbid_BidMethod_version}}'
       type: view
   assetType:
     container:
-      space: '{{model_space}}'
+      space: '{{afrr_model_space}}'
       externalId: BidRow
       type: container
     containerPropertyIdentifier: assetType
     name: assetType
   assetId:
     container:
-      space: '{{model_space}}'
+      space: '{{afrr_model_space}}'
       externalId: BidRow
       type: container
     containerPropertyIdentifier: assetId
     name: assetId
   method:
     container:
-      space: '{{model_space}}'
+      space: '{{afrr_model_space}}'
       externalId: BidRow
       type: container
     containerPropertyIdentifier: method
     name: method
     source:
-      space: '{{model_space}}'
+      space: '{{afrr_model_space}}'
       externalId: BidMethod
       version: view_BidMethod_version
       type: view
   alerts:
     type:
-      space: '{{model_space}}'
+      space: '{{afrr_model_space}}'
       externalId: BidRow.alerts
     source:
-      space: '{{model_space}}'
+      space: '{{shared_model_space}}'
       externalId: Alert
-      version: '{{view_Alert_version}}'
+      version: '{{base_Alert_version}}'
       type: view
     direction: outwards
     name: alerts

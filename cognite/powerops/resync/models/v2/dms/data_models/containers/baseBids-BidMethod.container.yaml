@@ -1,4 +1,4 @@
-space: '{{model_space}}'
+space: '{{shared_model_space}}'
 externalId: BidMethod
 name: BidMethod
 usedFor: node

@@ -1,4 +1,4 @@
-- space: '{{afrr_bid_space}}'
+- space: '{{afrr_model_space}}'
   externalId: BidRow
   name: BidRow
   usedFor: node
@@ -70,9 +70,7 @@
       defaultValue: null
     linkedBid:
       type:
-        container:
-          space: '{{model_space}}'
-          externalId: BidRow
+        container: null
         type: direct
         list: false
       name: linkedBid
@@ -102,9 +100,7 @@
       defaultValue: null
     method:
       type:
-        container:
-          space: '{{model_space}}'
-          externalId: BidMethod
+        container: null
         type: direct
         list: false
       name: method

@@ -1,7 +1,7 @@
-space: '{{model_space}}'
+space: '{{dayahead_model_space}}'
 externalId: PriceArea
 name: PriceArea
-version: '{{view_PriceArea_version}}'
+version: '{{dayaheadbid_PriceArea_version}}'
 properties:
   name:
     container:
@@ -18,9 +18,9 @@ properties:
     containerPropertyIdentifier: defaultMethodDayAhead
     name: defaultMethod
     source:
-      space: '{{model_space}}'
+      space: '{{dayahead_model_space}}'
       externalId: BidMethod
-      version: '{{view_BidMethod_version}}'
+      version: '{{dayaheadbid_BidMethod_version}}'
       type: view
   timezone:
     container:

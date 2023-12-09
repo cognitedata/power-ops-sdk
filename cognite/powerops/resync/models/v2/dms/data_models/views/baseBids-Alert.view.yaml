@@ -1,8 +1,8 @@
-space: '{{model_space}}'
+space: '{{shared_model_space}}'
 externalId: Alert
 description: Alerts
 name: Alert
-version: '{{view_Alert_version}}'
+version: '{{base_Alert_version}}'
 properties:
   time:
     container:

@@ -1,4 +1,4 @@
-space: '{{model_space}}'
+space: '{{dayahead_model_space}}'
 externalId: SHOPMultiScenario
 name: SHOPMultiScenario
 implements:
@@ -6,18 +6,18 @@ implements:
   externalId: BidMethod
   version: '{{view_BidMethod_version}}'
   type: view
-version: '{{view_SHOPMultiScenario_version}}'
+version: '{{dayaheadbid_SHOPMultiScenario_version}}'
 properties:
   shopCases:
     container:
-      space: '{{model_space}}'
+      space: '{{dayahead_model_space}}'
       externalId: SHOPMultiScenario
       type: container
     containerPropertyIdentifier: shopCases
     name: shopCases
   priceScenarios:
     container:
-      space: '{{model_space}}'
+      space: '{{dayahead_model_space}}'
       externalId: SHOPMultiScenario
       type: container
     containerPropertyIdentifier: priceScenarios

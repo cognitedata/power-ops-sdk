@@ -1,44 +1,44 @@
-space: '{{model_space}}'
+space: '{{dayahead_model_space}}'
 externalId: BidTable
 name: BidTable
-version: '{{view_BidTable_version}}'
+version: '{{dayaheadbid_BidTable_version}}'
 properties:
   resourceCost:
     container:
-      space: '{{model_space}}'
+      space: '{{dayahead_model_space}}'
       externalId: BidTable
       type: container
     containerPropertyIdentifier: resourceCost
     name: resourceCost
   table:
     container:
-      space: '{{model_space}}'
+      space: '{{dayahead_model_space}}'
       externalId: BidTable
       type: container
     containerPropertyIdentifier: table
     name: table
   assetType:
     container:
-      space: '{{model_space}}'
+      space: '{{dayahead_model_space}}'
       externalId: BidTable
       type: container
     containerPropertyIdentifier: assetType
     name: assetType
   assetId:
     container:
-      space: '{{model_space}}'
+      space: '{{dayahead_model_space}}'
       externalId: BidTable
       type: container
     containerPropertyIdentifier: assetId
     name: assetId
   alerts:
     type:
-      space: '{{model_space}}'
+      space: '{{type_space}}'
       externalId: BidTable.alerts
     source:
-      space: '{{model_space}}'
+      space: '{{shared_model_space}}'
       externalId: Alert
-      version: '{{view_Alert_version}}'
+      version: '{{base_Alert_version}}'
       type: view
     direction: outwards
     name: alerts

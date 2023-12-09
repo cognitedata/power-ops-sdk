@@ -1,4 +1,4 @@
-space: '{{model_space}}'
+space: '{{shared_model_space}}'
 externalId: PriceArea
 name: PriceArea
 usedFor: node
@@ -101,10 +101,7 @@ properties:
     name: ownCapacityAllocationDown
   defaultMethodDayAhead:
     type:
-      container:
-        space: '{{model_space}}'
-        externalId: BidMethod
-        type: container
+      container: null
       type: direct
     nullable: true
     autoIncrement: false

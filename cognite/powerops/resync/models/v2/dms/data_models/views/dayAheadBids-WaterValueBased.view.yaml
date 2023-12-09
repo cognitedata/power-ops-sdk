@@ -1,4 +1,4 @@
-space: '{{model_space}}'
+space: '{{dayahead_model_space}}'
 externalId: WaterValueBased
 name: WaterValueBased
 filter:
@@ -7,12 +7,12 @@ filter:
     - node
     - type
     value:
-      space: types
+      space: '{{type_space}}'
       externalId: WaterValueBasedDayAheadMethod
 implements:
-- space: '{{model_space}}'
+- space: '{{dayahead_model_space}}'
   externalId: BidMethod
-  version: '{{view_BidMethod_version}}'
+  version: '{{dayaheadbid_BidMethod_version}}'
   type: view
 version: '{{view_WaterValueBased_version}}'
 properties: {}

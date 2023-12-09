@@ -1,7 +1,7 @@
 externalId: DayAheadBid
-space: '{{model_space}}'
-version: '{{model_version}}'
-name: '{{model_name}}'
+space: '{{dayahead_model_space}}'
+version: '1'
+name: 'DayAheadBid'
 description: 'Stores results of Day Ahead bid calculations.'
 views:
 - externalId: BidDocument
