@@ -232,9 +232,8 @@ class DataModelLoader:
     def deploy(cls, client: CogniteClient, schema: Schema) -> list[dict]:
         result = []
         apis = cls._create_apis(client)
-        deploy_order = TopologicalSorter(apis).static_order()
         resources = asdict(schema)
-        for api in deploy_order:
+        for api in TopologicalSorter(apis).static_order():
             items = resources[api.name]
             existing = api.retrieve(schema.spaces)
             diffs = api.differences(existing, items)
@@ -250,13 +249,19 @@ class DataModelLoader:
 
     @classmethod
     def destroy(cls, client: CogniteClient, schema: Schema) -> list[dict]:
+        result = []
         apis = cls._create_apis(client)
-        destroy_order = reversed(list(TopologicalSorter(apis).static_order()))
         resources = asdict(schema)
-        for api in destroy_order:
-            api.delete(resources[api.name].as_ids())
-            print(f"Deleted {api.name}")
-        return []
+        for api in reversed(list(TopologicalSorter(apis).static_order())):
+            items = resources[api.name]
+            existing = api.retrieve(schema.spaces)
+            diffs = api.differences(existing, items)
+            if diffs.changed or diffs.unchanged or diffs.delete:
+                api.delete(diffs.changed.as_ids() + diffs.unchanged.as_ids() + diffs.delete.as_ids())
+            print(f"Deleted {api.name}: {len(diffs.changed + diffs.unchanged + diffs.delete)} deleted")
+            result.extend(diffs.as_results(is_init=False))
+
+        return result
 
     @classmethod
     def _create_apis(cls, client: CogniteClient) -> dict[DataModelAPI, set[DataModelAPI]]:
