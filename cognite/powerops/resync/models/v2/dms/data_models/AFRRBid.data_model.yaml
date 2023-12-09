@@ -1,7 +1,7 @@
-externalId: '{{model_external_id}}'
+externalId: AFRRBid
 space: '{{model_space}}'
-version: '{{model_version}}'
-name: '{{model_name}}'
+version: '1'
+name: AFRRBid
 description: 'Stores results of AFRR bid calculations.'
 views:
 - externalId: BidDocument

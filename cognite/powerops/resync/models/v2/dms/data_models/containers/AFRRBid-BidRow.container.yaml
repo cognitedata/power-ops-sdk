@@ -1,4 +1,4 @@
-- space: '{{model_space}}'
+- space: '{{afrr_bid_space}}'
   externalId: BidRow
   name: BidRow
   usedFor: node

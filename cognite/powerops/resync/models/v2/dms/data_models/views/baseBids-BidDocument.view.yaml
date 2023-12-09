@@ -1,0 +1,88 @@
+space: '{{model_space}}'
+externalId: BidDocument
+description: Whole Bid (also usually referenced in industry as a Bid Document) containing
+  multiple Bid Rows (which are usually referenced in industry as Bids)
+name: BidDocument
+version: '{{view_BidDocument_version}}'
+properties:
+  name:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: BidDocument
+      type: container
+    containerPropertyIdentifier: name
+    name: name
+    description: Unique name for a given instance of a Bid Document. A combination
+      of name, priceArea, date and startCalculation.
+  priceArea:
+    container:
+      space: '{{model_space}}'
+      externalId: BidDocument
+      type: container
+    containerPropertyIdentifier: priceArea
+    name: priceArea
+    description: The PriceArea associated with the BidDocument (this should be shared).
+    source:
+      space: '{{model_space}}'
+      externalId: PriceArea
+      version: '{{view_PriceArea_version}}'
+      type: view
+  date:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: BidDocument
+      type: container
+    containerPropertyIdentifier: date
+    name: date
+    description: The date of the Bid.
+  bids:
+    type:
+      space: '{{model_space}}'
+      externalId: BidDocument.bids
+    source:
+      space: '{{model_space}}'
+      externalId: BidRow
+      version: '{{view_BidRow_version}}'
+      type: view
+    direction: outwards
+    name: bids
+    description: An array of BidRows containing the Bid data.
+    connectionType: multiEdgeConnection
+  startCalculation:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: BidDocument
+      type: container
+    containerPropertyIdentifier: startCalculation
+    name: startCalculation
+    description: Timestamp of when the Bid calculation workflow started.
+  endCalculation:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: BidDocument
+      type: container
+    containerPropertyIdentifier: endCalculation
+    name: endCalculation
+    description: Timestamp of when the Bid calculation workflow completed.
+  isComplete:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: BidDocument
+      type: container
+    containerPropertyIdentifier: isComplete
+    name: isComplete
+    description: Indicates that the Bid calculation workflow has completed (although
+      has not necessarily succeeded).
+  alerts:
+    type:
+      space: '{{shared_model_space}}'
+      externalId: BidDocument.alerts
+    source:
+      space: '{{model_space}}'
+      externalId: Alert
+      version: '{{view_Alert_version}}'
+      type: view
+    direction: outwards
+    name: alerts
+    description: An array of calculation level Alerts.
+    connectionType: multiEdgeConnection

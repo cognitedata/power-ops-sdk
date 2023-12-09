@@ -1,0 +1,123 @@
+space: '{{model_space}}'
+externalId: PriceArea
+name: PriceArea
+usedFor: node
+properties:
+  name:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: name
+    description: The name of the bid method
+  description:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: name
+  timezone:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: name
+    description: The timezone of the price area
+  priceScenarios:
+    type:
+      list: true
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: timezone
+  capacityPriceUp:
+    type:
+      list: false
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: capacityPriceUp
+  capacityPriceDown:
+    type:
+      list: false
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: capacityPriceDown
+  activationPriceUp:
+    type:
+      list: false
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: activationPriceUp
+  activationPriceDown:
+    type:
+      list: false
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: activationPriceDown
+  relativeActivation:
+    type:
+      list: false
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: relativeActivation
+  totalCapacityAllocationUp:
+    type:
+      list: false
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: totalCapacityAllocationUp
+  totalCapacityAllocationDown:
+    type:
+      list: false
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: totalCapacityAllocationDown
+  ownCapacityAllocationUp:
+    type:
+      list: false
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: ownCapacityAllocationUp
+  ownCapacityAllocationDown:
+    type:
+      list: false
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: ownCapacityAllocationDown
+  defaultMethodDayAhead:
+    type:
+      container:
+        space: '{{model_space}}'
+        externalId: BidMethod
+        type: container
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: defaultMethod
+  mainScenarioDayAhead:
+    type:
+      list: false
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: timezone
+indexes:
+  time:
+    properties:
+    - name
+    indexType: btree

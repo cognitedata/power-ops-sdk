@@ -1,0 +1,24 @@
+space: '{{model_space}}'
+externalId: SHOPMultiScenario
+name: SHOPMultiScenario
+implements:
+- space: '{{shared_model_space}}'
+  externalId: BidMethod
+  version: '{{view_BidMethod_version}}'
+  type: view
+version: '{{view_SHOPMultiScenario_version}}'
+properties:
+  shopCases:
+    container:
+      space: '{{model_space}}'
+      externalId: SHOPMultiScenario
+      type: container
+    containerPropertyIdentifier: shopCases
+    name: shopCases
+  priceScenarios:
+    container:
+      space: '{{model_space}}'
+      externalId: SHOPMultiScenario
+      type: container
+    containerPropertyIdentifier: priceScenarios
+    name: priceScenarios

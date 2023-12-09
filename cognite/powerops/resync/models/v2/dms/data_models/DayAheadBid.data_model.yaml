@@ -1,4 +1,4 @@
-externalId: '{{model_external_id}}'
+externalId: DayAheadBid
 space: '{{model_space}}'
 version: '{{model_version}}'
 name: '{{model_name}}'
