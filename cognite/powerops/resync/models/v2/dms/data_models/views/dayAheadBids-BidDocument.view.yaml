@@ -8,6 +8,18 @@ implements:
   type: view
 version: '{{dayaheadbid_BidDocument_version}}'
 properties:
+  priceArea:
+    source:
+      type: view
+      space: '{{dayahead_model_space}}'
+      externalId: PriceArea
+      version: '{{dayaheadbid_PriceArea_version}}'
+    container:
+      type: container
+      space: '{{shared_model_space}}'
+      externalId: BidDocument
+    containerPropertyIdentifier: priceArea
+    name: priceArea
   method:
     container:
       space: '{{dayahead_model_space}}'

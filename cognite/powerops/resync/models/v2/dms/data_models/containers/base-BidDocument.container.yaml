@@ -45,7 +45,7 @@ properties:
     nullable: true
     autoIncrement: false
     name: priceArea
-    description: missing
+    description: The price area of the bid document.
 indexes:
   date:
     properties:

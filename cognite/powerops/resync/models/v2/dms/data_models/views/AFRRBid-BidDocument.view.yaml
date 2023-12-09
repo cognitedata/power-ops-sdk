@@ -10,6 +10,18 @@ implements:
   version: '{{base_BidDocument_version}}'
   type: view
 properties:
+  priceArea:
+    source:
+      type: view
+      space: '{{afrr_model_space}}'
+      externalId: PriceArea
+      version: '{{afrrbid_PriceArea_version}}'
+    container:
+      type: container
+      space: '{{shared_model_space}}'
+      externalId: BidDocument
+    containerPropertyIdentifier: priceArea
+    name: priceArea
   bids:
     type:
       space: '{{type_space}}'

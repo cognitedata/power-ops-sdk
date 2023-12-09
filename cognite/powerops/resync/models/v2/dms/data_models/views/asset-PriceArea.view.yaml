@@ -124,3 +124,29 @@ properties:
     containerPropertyIdentifier: dayAheadPrice
     name: dayAheadPrice
     description: Day ahead price for the price area
+  plants:
+    type:
+      space: '{{type_space}}'
+      externalId: isSubAssetOf
+    source:
+      space: '{{asset_space}}'
+      externalId: Plant
+      version: '{{asset_Plant_version}}'
+      type: view
+    direction: outwards
+    name: plants
+    description: The plants that are connected to the Watercourse.
+    connectionType: multiEdgeConnection
+  watercourses:
+    type:
+      space: '{{type_space}}'
+      externalId: isSubAssetOf
+    source:
+      space: '{{asset_space}}'
+      externalId: Watercourse
+      version: '{{asset_Watercourse_version}}'
+      type: view
+    direction: outwards
+    name: watercourses
+    description: The watercourses that are connected to the PriceArea.
+    connectionType: multiEdgeConnection

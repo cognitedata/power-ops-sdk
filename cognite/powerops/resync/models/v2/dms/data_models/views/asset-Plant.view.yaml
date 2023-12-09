@@ -78,13 +78,11 @@ properties:
     containerPropertyIdentifier: penstockHeadLossFactors
     name: penstockHeadLossFactors
   watercourse:
-    type:
-      type: direct
-      source:
-        type: view
-        space: '{{asset_space}}'
-        externalId: Watercourse
-        version: '{{asset_Watercourse_version}}'
+    source:
+      type: view
+      space: '{{asset_space}}'
+      externalId: Watercourse
+      version: '{{asset_Watercourse_version}}'
     container:
       type: container
       space: '{{shared_model_space}}'
@@ -172,13 +170,11 @@ properties:
     containerPropertyIdentifier: headDirectTimeSeries
     name: headDirectTimeSeries
   inletReservoir:
-    type:
-      type: direct
-      source:
-        type: view
-        space: '{{asset_space}}'
-        externalId: Reservoir
-        version: '{{asset_Reservoir_version}}'
+    source:
+      type: view
+      space: '{{asset_space}}'
+      externalId: Reservoir
+      version: '{{asset_Reservoir_version}}'
     container:
       type: container
       space: '{{shared_model_space}}'
