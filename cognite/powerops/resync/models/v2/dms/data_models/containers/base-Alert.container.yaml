@@ -69,7 +69,9 @@ indexes:
     properties:
     - time
     indexType: btree
+    cursorable: false
   alertType:
     properties:
     - alertType
     indexType: btree
+    cursorable: false

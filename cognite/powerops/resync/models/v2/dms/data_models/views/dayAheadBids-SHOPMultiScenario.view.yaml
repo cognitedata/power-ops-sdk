@@ -2,9 +2,9 @@ space: '{{dayahead_model_space}}'
 externalId: SHOPMultiScenario
 name: SHOPMultiScenario
 implements:
-- space: '{{shared_model_space}}'
+- space: '{{dayahead_model_space}}'
   externalId: BidMethod
-  version: '{{base_BidMethod_version}}'
+  version: '{{dayaheadbid_BidMethod_version}}'
   type: view
 version: '{{dayaheadbid_SHOPMultiScenario_version}}'
 properties:

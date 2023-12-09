@@ -42,3 +42,4 @@ indexes:
     properties:
     - name
     indexType: btree
+    cursorable: false

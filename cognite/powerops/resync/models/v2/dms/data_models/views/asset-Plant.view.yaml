@@ -190,6 +190,6 @@ properties:
       space: '{{asset_space}}'
       externalId: Generator
       version: '{{asset_Generator_version}}'
-    connectionType: multi_edge_connection
+    connectionType: multiEdgeConnection
     name: generators
     direction: outwards

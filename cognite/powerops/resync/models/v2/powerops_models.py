@@ -39,21 +39,87 @@ class Schema:
     node_types: NodeApplyList
 
 
+@dataclass
+class Difference:
+    create: list[Any]
+    changed: list[Any]
+    unchanged: list[Any]
+    delete: list[Any]
+
+    def as_results(self, is_init: bool) -> list[dict]:
+        if is_init:
+            return (
+                [{"action": "created", "model": item.as_id()} for item in self.create]
+                + [{"action": "changed", "model": item.as_id()} for item in self.changed]
+                + [{"action": "skipped-delete", "model": item.as_id()} for item in self.delete]
+            )
+        else:
+            return [
+                {"action": "deleted", "model": item.as_id()}
+                for item in itertools.chain(self.delete, self.changed, self.unchanged)
+            ]
+
+
 T_ResourceList = TypeVar("T_ResourceList")
 
 
 class DataModelAPI(Generic[T_ResourceList]):
-    def __init__(self, class_api: Any):
+    def __init__(self, class_api: Any, client: CogniteClient):
+        self._client = client
         self._class_api = class_api
-        self.name = type(class_api).__module__.rsplit(".", maxsplit=1)[-1]
-        if self.name == "instances":
-            self.name = "node_types"
+
+    @property
+    def name(self) -> str:
+        return type(self._class_api).__module__.rsplit(".", maxsplit=1)[-1]
 
     def apply(self, items: T_ResourceList) -> Any:
         return self._class_api.apply(items)
 
-    def retrieve(self, ids: list[Any]) -> T_ResourceList:
-        return self._class_api.retrieve(ids)
+    def retrieve(self, spaces: SpaceApplyList) -> T_ResourceList:
+        retrieved: T_ResourceList | None = None
+        for space in spaces:
+            if retrieved is None:
+                retrieved = self._class_api.list(space=space.space)
+            else:
+                retrieved.extend(self._class_api.list(space=space.space))
+        retrieved_apply = retrieved.as_apply() if retrieved else []
+        if isinstance(retrieved_apply, ViewApplyList):
+            # Need to remove properties that originate from other views
+            view_by_id = {view.as_id(): view for view in retrieved_apply}
+            for view in retrieved_apply:
+                prop_to_pop: list[str] = []
+                views_to_check = view.implements or []
+                while views_to_check:
+                    view_to_check = views_to_check.pop()
+                    prop_to_pop.extend(view_by_id[view_to_check].properties)
+                    views_to_check.extend(view_by_id[view_to_check].implements or [])
+                for prop in prop_to_pop:
+                    view.properties.pop(prop)
+        return retrieved_apply
+
+    def differences(self, cdf: T_ResourceList, local: T_ResourceList) -> Difference:
+        cdf_resources_by_id = {item.as_id(): item for item in cdf}
+        local_resources_by_id = {item.as_id(): item for item in local}
+        created = [item for item in local if item.as_id() not in cdf_resources_by_id]
+        deleted = [item for item in cdf if item.as_id() not in local_resources_by_id]
+        changed = []
+        unchanged = []
+        for item in local:
+            if item.as_id() in cdf_resources_by_id:
+                if cdf_resources_by_id[item.as_id()].dump() == item.dump():
+                    unchanged.append(item)
+                else:
+                    changed.append(item)
+        return Difference(create=created, changed=changed, unchanged=unchanged, delete=deleted)
+
+    def delete(self, ids: list[Any]) -> None:
+        return self._class_api.delete(ids)
+
+
+class SpaceAPI(DataModelAPI[SpaceApplyList]):
+    def retrieve(self, spaces: SpaceApplyList) -> SpaceApplyList:
+        all_spaces = self._client.data_modeling.spaces.list()
+        return SpaceApplyList([space.as_apply() for space in all_spaces if space.space.startswith("power-ops")])
 
 
 class DataModelLoader:
@@ -164,20 +230,40 @@ class DataModelLoader:
 
     @classmethod
     def deploy(cls, client: CogniteClient, schema: Schema) -> list[dict]:
+        result = []
         apis = cls._create_apis(client)
         deploy_order = TopologicalSorter(apis).static_order()
         resources = asdict(schema)
         for api in deploy_order:
-            api.apply(resources[api.name])
-            print(f"Deployed {api.name}")
+            items = resources[api.name]
+            existing = api.retrieve(schema.spaces)
+            diffs = api.differences(existing, items)
+            if diffs.create or diffs.changed:
+                api.apply(diffs.create + diffs.changed)
+
+            result.extend(diffs.as_results(is_init=True))
+            print(
+                f"Deployed {api.name}: {len(diffs.create)} created, {len(diffs.changed)} changed, "
+                f"{len(diffs.unchanged)} unchanged, ({len(diffs.delete)} deleted - skipped)"
+            )
+        return result
+
+    @classmethod
+    def destroy(cls, client: CogniteClient, schema: Schema) -> list[dict]:
+        apis = cls._create_apis(client)
+        destroy_order = reversed(list(TopologicalSorter(apis).static_order()))
+        resources = asdict(schema)
+        for api in destroy_order:
+            api.delete(resources[api.name].as_ids())
+            print(f"Deleted {api.name}")
         return []
 
     @classmethod
     def _create_apis(cls, client: CogniteClient) -> dict[DataModelAPI, set[DataModelAPI]]:
-        space = DataModelAPI[SpaceApplyList](client.data_modeling.spaces)
-        container = DataModelAPI[ContainerApplyList](client.data_modeling.containers)
-        view = DataModelAPI[ViewApplyList](client.data_modeling.views)
-        data_model = DataModelAPI[DataModelApplyList](client.data_modeling.data_models)
+        space = SpaceAPI(client.data_modeling.spaces, client)
+        container = DataModelAPI[ContainerApplyList](client.data_modeling.containers, client)
+        view = DataModelAPI[ViewApplyList](client.data_modeling.views, client)
+        data_model = DataModelAPI[DataModelApplyList](client.data_modeling.data_models, client)
         return {space: set(), container: {space}, view: {space, container}, data_model: {space, container, view}}
 
 

@@ -51,3 +51,4 @@ indexes:
     properties:
     - date
     indexType: btree
+    cursorable: false
