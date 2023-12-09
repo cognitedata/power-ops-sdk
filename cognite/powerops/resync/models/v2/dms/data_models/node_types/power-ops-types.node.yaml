@@ -12,3 +12,5 @@
   externalId: PartialBid
 - space: {{type_space}}
   externalId: SHOPTable.productionPricePairs
+- space: {{type_space}}
+  externalId: isSubAssetOf

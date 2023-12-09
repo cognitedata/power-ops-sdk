@@ -13,7 +13,7 @@ properties:
   bids:
     type:
       space: '{{type_space}}'
-      externalId: BidDocument.bids
+      externalId: PartialBid
     source:
       space: '{{afrr_model_space}}'
       externalId: BidRow

@@ -66,7 +66,7 @@ properties:
       type: view
       space: '{{asset_space}}'
       externalId: GeneratorEfficiencyCurve
-      version: '{{asset_GeneratorEfficiencyCurve_version}}'
+      version: '{{asset_GeneratorEfficiency_version}}'
   turbineEfficiencyCurve:
     container:
       type: container
@@ -78,4 +78,4 @@ properties:
       type: view
       space: '{{asset_space}}'
       externalId: TurbineEfficiencyCurve
-      version: '{{asset_TurbineEfficiencyCurve_version}}'
+      version: '{{asset_TurbineEfficiency_version}}'

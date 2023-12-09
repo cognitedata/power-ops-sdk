@@ -13,3 +13,6 @@
 - space: {{powerops_instance_space}}
   name: PowerOpsInstance
   description: All the data used and produced by PowerOps.
+- space: {{asset_space}}
+  name: PowerOpsAsset
+  description: The asset model used by PowerOps.
