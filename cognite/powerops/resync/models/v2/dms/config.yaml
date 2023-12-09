@@ -3,6 +3,7 @@ afrr_model_space: 'power-ops-afrr-bid'
 dayahead_model_space: 'power-ops-day-ahead-bid'
 shared_model_space: 'power-ops-shared'
 type_space: 'power-ops-types'
+powerops_instance_space: 'power-ops-instance'
 
 base_BidDocument_version: '1'
 base_Alert_version: '1'

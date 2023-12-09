@@ -103,12 +103,12 @@ properties:
     source:
       space: '{{afrr_model_space}}'
       externalId: BidMethod
-      version: view_BidMethod_version
+      version: '{{afrrbid_BidMethod_version}}'
       type: view
   alerts:
     type:
-      space: '{{afrr_model_space}}'
-      externalId: BidRow.alerts
+      space: '{{type_space}}'
+      externalId: calculationIssue
     source:
       space: '{{shared_model_space}}'
       externalId: Alert

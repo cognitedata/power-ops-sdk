@@ -8,7 +8,7 @@ filter:
     - node
     - type
     value:
-      space: types
+      space: '{{type_space}}'
       externalId: DayAheadBidMethod
 implements:
 - space: '{{shared_model_space}}'

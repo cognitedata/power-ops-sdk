@@ -16,5 +16,5 @@ filter:
     - node
     - type
     value:
-      space: types
+      space: '{{type_space}}'
       externalId: AFRRBidDocument

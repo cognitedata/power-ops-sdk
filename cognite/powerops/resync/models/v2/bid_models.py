@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import itertools
 import re
 from collections import defaultdict
 from dataclasses import dataclass
@@ -7,15 +8,19 @@ from pathlib import Path
 from typing import Any, ClassVar, Optional
 
 import yaml
+from cognite.client.data_classes import filters
 from cognite.client.data_classes.data_modeling import (
     ContainerApplyList,
     DataModelApply,
     DataModelApplyList,
     DataModelId,
+    MappedPropertyApply,
     NodeApplyList,
+    NodeId,
     SpaceApplyList,
     ViewApplyList,
 )
+from cognite.client.data_classes.data_modeling.views import SingleHopConnectionDefinitionApply
 
 from cognite.powerops import PowerOpsClient
 from cognite.powerops.resync.models.base import DataModel, T_Model
@@ -44,7 +49,11 @@ class DataModelLoader:
         resources_by_type = defaultdict(list)
         for filepath in self._source_dir.glob("**/*.yaml"):
             if match := re.match(r".*(?P<type>(space|view|container|node|data_model))\.yaml$", filepath.name):
-                resources_by_type[match.group("type")].append(self._load_file(filepath))
+                loaded = self._load_file(filepath)
+                if isinstance(loaded, list):
+                    resources_by_type[match.group("type")].extend(loaded)
+                else:
+                    resources_by_type[match.group("type")].append(loaded)
 
         return Schema(
             containers=ContainerApplyList.load(resources_by_type["container"]),
@@ -54,7 +63,7 @@ class DataModelLoader:
             node_types=NodeApplyList.load(resources_by_type["node"]),
         )
 
-    def _load_file(self, filepath: Path) -> dict[str, Any]:
+    def _load_file(self, filepath: Path) -> dict[str, Any] | list[dict[str, Any]]:
         file_contents = filepath.read_text()
         for variable, value in self._config.items():
             file_contents = file_contents.replace(f"{{{{{ variable }}}}}", value)
@@ -66,10 +75,63 @@ class DataModelLoader:
                     errors.append(f"Line {line_no} - col {position}: {line[position:position+20]!r}")
             errors = "\n".join(errors) if errors else ""
             raise ValueError(f"Unresolved variables in {filepath.relative_to(Path.cwd())} near: {errors}")
-        resource = yaml.safe_load(file_contents)
-        if not isinstance(resource, dict):
-            raise ValueError(f"Expected single resource in {filepath.relative_to(Path.cwd())}, not a {type(resource)}")
-        return resource
+        return yaml.safe_load(file_contents)
+
+    @classmethod
+    def validate(cls, schema: Schema):
+        defined_spaces = {space.space for space in schema.spaces}
+        defined_containers = {container.as_id() for container in schema.containers}
+        defined_views = {view.as_id() for view in schema.views}
+        defined_node_types = {node_type.as_id() for node_type in schema.node_types}
+
+        referred_spaces = defaultdict(list)
+        referred_spaces = defaultdict(list)
+        referred_views = defaultdict(list)
+        referred_containers = defaultdict(list)
+        referred_node_types = defaultdict(list)
+        for container in schema.containers:
+            referred_spaces[container.space].append(container.as_id())
+        for view in schema.views:
+            ref_view_id = view.as_id()
+            referred_spaces[view.space].append(ref_view_id)
+            if isinstance(view.filter, filters.Equals):
+                dumped = view.filter.dump()["equals"]["value"]
+                if "space" in dumped and "externalId" in dumped:
+                    node_id = NodeId(dumped["space"], dumped["externalId"])
+                    referred_node_types[node_id].append(ref_view_id)
+            for view_id in view.implements or []:
+                referred_views[view_id].append(ref_view_id)
+            for prop_name, prop in view.properties.items():
+                if isinstance(prop, MappedPropertyApply):
+                    referred_containers[prop.container].append(ref_view_id.as_property_ref(prop_name))
+                    if prop.source:
+                        referred_views[prop.source].append(ref_view_id.as_property_ref(prop_name))
+                elif isinstance(prop, SingleHopConnectionDefinitionApply):
+                    referred_node_types[NodeId(prop.type.space, prop.type.external_id)].append(
+                        ref_view_id.as_property_ref(prop_name)
+                    )
+                    referred_views[prop.source].append(ref_view_id.as_property_ref(prop_name))
+                    if prop.edge_source:
+                        referred_views[prop.edge_source].append(ref_view_id.as_property_ref(prop_name))
+        for node in schema.node_types:
+            referred_spaces[node.space].append(node.as_id())
+
+        if undefined_spaces := set(referred_spaces).difference(defined_spaces):
+            referred_to_by = list(itertools.chain(*(referred_spaces[space] for space in undefined_spaces)))
+            raise ValueError(f"Undefined spaces: {undefined_spaces}: referred to by {referred_to_by}")
+        if undefined_containers := set(referred_containers).difference(defined_containers):
+            referred_to_by = list(
+                itertools.chain(*(referred_containers[container] for container in undefined_containers))
+            )
+            raise ValueError(f"Undefined containers: {undefined_containers}: referred to by {referred_to_by}")
+        if undefined_views := set(referred_views).difference(defined_views):
+            referred_to_by = list(itertools.chain(*(referred_views[view] for view in undefined_views)))
+            raise ValueError(f"Undefined views: {undefined_views}: referred to by {referred_to_by}")
+        if undefined_node_types := set(referred_node_types).difference(defined_node_types):
+            referred_to_by = list(
+                itertools.chain(*(referred_node_types[node_type] for node_type in undefined_node_types))
+            )
+            raise ValueError(f"Undefined node types: {undefined_node_types}: referred to by {referred_to_by}")
 
 
 class SimpleDataModel(DataModel):
@@ -168,3 +230,6 @@ if __name__ == "__main__":
     # This is here to make it easy to check that the models are valid (all variables are resolved)
     loader = DataModelLoader()
     schema = loader.load()
+    print("Schema loaded")
+    DataModelLoader.validate(schema)
+    print("Schema validated")

@@ -34,7 +34,7 @@ properties:
   alerts:
     type:
       space: '{{type_space}}'
-      externalId: BidTable.alerts
+      externalId: calculationIssue
     source:
       space: '{{shared_model_space}}'
       externalId: Alert

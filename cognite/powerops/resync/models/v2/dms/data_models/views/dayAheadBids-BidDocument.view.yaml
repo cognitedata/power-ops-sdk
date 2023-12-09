@@ -3,7 +3,7 @@ externalId: BidDocument
 name: BidDocument
 implements:
 - space: '{{shared_model_space}}'
-  externalId: BidRow
+  externalId: BidDocument
   version: '{{base_BidDocument_version}}'
   type: view
 version: '{{dayaheadbid_BidDocument_version}}'
@@ -34,8 +34,8 @@ properties:
       type: view
   partials:
     type:
-      space: '{{dayahead_model_space}}'
-      externalId: Bid.partials
+      space: '{{type_space}}'
+      externalId: PartialBid
     source:
       space: '{{dayahead_model_space}}'
       externalId: BidTable

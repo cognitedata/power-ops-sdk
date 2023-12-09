@@ -1,0 +1,14 @@
+- space: {{type_space}}
+  externalId: AFRRBidMethod
+- space: {{type_space}}
+  externalId: DayAheadBidMethod
+- space: {{type_space}}
+  externalId: WaterValueBasedDayAheadMethod
+- space: {{type_space}}
+  externalId: AFRRBidDocument
+- space: {{type_space}}
+  externalId: calculationIssue
+- space: {{type_space}}
+  externalId: PartialBid
+- space: {{type_space}}
+  externalId: SHOPTable.productionPricePairs
