@@ -94,6 +94,7 @@ class PowerAssetModelDM(Model):
     plants: list[assets.PlantApply] = Field(default_factory=list)
     generators: list[assets.GeneratorApply] = Field(default_factory=list)
     reservoirs: list[assets.ReservoirApply] = Field(default_factory=list)
+    turbine_curves: list[assets.TurbineEfficiencyCurveApply] = Field(default_factory=list)
 
     _views_by_write_class: ClassVar[dict[assets.DomainModelApply, dm.ViewId]] = {
         assets.BidMethodApply: dm.ViewId("power-ops-shared", "BidMethod", "1"),
@@ -109,7 +110,9 @@ class PowerAssetModelDM(Model):
     def instances(self) -> dm.InstancesApply:
         resources = None
         cache = set()
-        for item in itertools.chain(self.price_areas, self.generators, self.plants, self.reservoirs, self.watercourses):
+        for item in itertools.chain(
+            self.price_areas, self.generators, self.plants, self.reservoirs, self.watercourses, self.turbine_curves
+        ):
             resource = item._to_instances_apply(cache=cache, view_by_write_class=None)
             if resources is None:
                 resources = resource

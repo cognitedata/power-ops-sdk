@@ -84,6 +84,7 @@ def to_asset_data_model(configuration: config.ProductionConfig) -> PowerAssetMod
                     for turbine_curve in turbine_curves
                 ],
             )
+            model.turbine_curves.extend(generator.turbine_curves)
             model.generators.append(generator)
 
         generators_by_name = {generator.name: generator for generator in model.generators}

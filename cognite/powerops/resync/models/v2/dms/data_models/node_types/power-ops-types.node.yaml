@@ -21,3 +21,5 @@
   externalId: TurbineCurve
 - space: {{type_space}}
   externalId: GeneratorCurve
+- space: {{type_space}}
+  externalId: Reservoir
