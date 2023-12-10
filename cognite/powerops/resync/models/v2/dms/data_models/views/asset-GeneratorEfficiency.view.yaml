@@ -4,6 +4,14 @@ description: Describes the efficiency curve for a generator
 name: GeneratorEfficiencyCurve
 version: '{{asset_GeneratorEfficiency_version}}'
 properties:
+  ref:
+    container:
+      space: '{{asset_space}}'
+      externalId: EfficiencyCurve
+      type: container
+    containerPropertyIdentifier: ref
+    name: ref
+    description: The reference value
   power:
     container:
       space: '{{asset_space}}'
