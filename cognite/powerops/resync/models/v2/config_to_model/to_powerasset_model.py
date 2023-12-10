@@ -72,17 +72,21 @@ def to_asset_data_model(configuration: config.ProductionConfig) -> PowerAssetMod
                 start_cost=float(_get_single_value(generator_attributes.get("startcost", 0.0))),
                 start_stop_cost=start_stop_cost,
                 is_available_time_series=is_generator_available.get(generator_name),
-                generator_efficiency=assets.GeneratorEfficiencyCurveApply(
+                efficiency_curve=assets.GeneratorEfficiencyCurveApply(
                     external_id=f"generator_efficiency_{generator_name}",
                     power=generator_curve["x"],
                     efficiency=generator_curve["y"],
+                    ref=generator_curve.get("ref"),
                 ),
-                turbine_efficiency=assets.TurbineEfficiencyCurveApply(
-                    external_id=f"turbine_efficiency_{generator_name}",
-                    head=[turbine_curve["ref"] for turbine_curve in turbine_curves for _ in turbine_curve["x"]],
-                    flow=[value for turbine_curve in turbine_curves for value in turbine_curve["x"]],
-                    efficiency=[value for turbine_curve in turbine_curves for value in turbine_curve["y"]],
-                ),
+                turbine_curves=[
+                    assets.TurbineEfficiencyCurveApply(
+                        external_id=f"turbine_efficiency_{generator_name}",
+                        head=turbine_curve["ref"],
+                        flow=turbine_curve["x"],
+                        efficiency=turbine_curve["y"],
+                    )
+                    for turbine_curve in turbine_curves
+                ],
             )
             model.generators.append(generator)
 
