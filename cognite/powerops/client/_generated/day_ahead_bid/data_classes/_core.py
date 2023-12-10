@@ -36,7 +36,7 @@ TimeSeries = Annotated[
 ]
 
 
-DEFAULT_INSTANCE_SPACE = "power-ops-day-ahead-bid"
+DEFAULT_INSTANCE_SPACE = "power-ops-instance"
 
 
 @dataclass
