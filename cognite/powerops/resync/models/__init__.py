@@ -8,18 +8,13 @@ from .v2 import (
     BenchmarkMarketDataModel,
     CogShopDataModel,
     DayAheadMarketDataModel,
+    PowerAssetModelDM,
     ProductionModelDM,
     RKOMMarketDataModel,
 )
 
 V1_MODELS: list[type[Model]] = [ProductionModel, MarketModel, CogShop1Asset]
-V2_MODELS: list[type[Model]] = [
-    ProductionModelDM,
-    CogShopDataModel,
-    BenchmarkMarketDataModel,
-    DayAheadMarketDataModel,
-    RKOMMarketDataModel,
-]
+V2_MODELS: list[type[Model]] = [ProductionModelDM, PowerAssetModelDM]
 
 __all__ = [
     "ProductionModel",
@@ -30,6 +25,7 @@ __all__ = [
     "BenchmarkMarketDataModel",
     "DayAheadMarketDataModel",
     "RKOMMarketDataModel",
+    "PowerAssetModelDM",
     "V1_MODELS",
     "V2_MODELS",
     "migration",

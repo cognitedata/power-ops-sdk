@@ -9,7 +9,7 @@ import string
 import warnings
 from collections.abc import Iterator
 from pathlib import Path
-from typing import Any, ForwardRef, Union, get_args, get_origin
+from typing import Annotated, Any, ForwardRef, Union, get_args, get_origin
 
 import tomli_w
 from cognite.client.data_classes import TimeSeries
@@ -200,6 +200,10 @@ def get_pydantic_annotation(field_annotation: Any, cls_obj: type[object]) -> tup
     elif origin is Union:
         annotation, *_ = get_args(field_annotation)
         return get_pydantic_annotation(annotation, cls_obj)
+    elif origin is Annotated:
+        return get_args(field_annotation)[0], None
     else:
         raise NotImplementedError(f"Cannot handle field_annotation  {field_annotation}")
+    if inner := get_args(annotation):
+        annotation = inner[0]
     return annotation, outer

@@ -3,6 +3,14 @@ externalId: EfficiencyCurve
 name: EfficiencyCurve
 usedFor: node
 properties:
+  ref:
+    type:
+      list: false
+      type: float32
+    nullable: true
+    autoIncrement: false
+    name: ref
+    description: The reference value
   x:
     type:
       list: true
@@ -15,7 +23,7 @@ properties:
     type:
       list: true
       type: float32
-    nullable: false
+    nullable: true
     autoIncrement: false
     name: y
     description: The second dimension of the efficiency curve

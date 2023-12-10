@@ -43,20 +43,13 @@ properties:
     autoIncrement: false
     name: isAvailable
     description: A binary timeseries indicating whether the Generator is available
-  generatorEfficiencyCurve:
+  efficiencyCurve:
     type:
       type: direct
     nullable: true
     autoIncrement: false
-    name: generatorEfficiencyCurve
+    name: efficiencyCurve
     description: The generator efficiency curve.
-  turbineEfficiencyCurve:
-    type:
-      type: direct
-    nullable: true
-    autoIncrement: false
-    name: turbineEfficiencyCurve
-    description: The turbine efficiency curve.
 constraints:
   requiredAsset:
     require:

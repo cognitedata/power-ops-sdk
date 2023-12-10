@@ -11,7 +11,6 @@ import json
 from hashlib import md5
 from typing import Any
 
-from cognite.powerops.client._generated.data_classes._core import DomainModelApply
 from cognite.powerops.client.data_classes import (
     DateTransformationApply,
     InputTimeSeriesMappingApply,
@@ -90,7 +89,7 @@ def _to_scenario_mapping(external_id: str, name: str, time_series_mapping: TimeS
     return ScenarioMappingApply(external_id=external_id, mapping_override=mappings, name=name)
 
 
-def make_ext_id(arg: Any, class_: type[DomainModelApply]) -> str:
+def make_ext_id(arg: Any, class_: type) -> str:
     hash_value = md5()
     if isinstance(arg, (str, int, float, bool)):
         hash_value.update(str(arg).encode())

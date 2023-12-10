@@ -55,27 +55,28 @@ properties:
       externalId: Generator
     containerPropertyIdentifier: isAvailable
     name: isAvailableTimeSeries
-  generatorEfficiencyCurve:
+  efficiencyCurve:
     container:
       type: container
       space: '{{shared_model_space}}'
       externalId: Generator
-    containerPropertyIdentifier: generatorEfficiencyCurve
-    name: generatorEfficiencyCurve
+    containerPropertyIdentifier: efficiencyCurve
+    name: generatorEfficiency
     source:
       type: view
       space: '{{asset_space}}'
       externalId: GeneratorEfficiencyCurve
       version: '{{asset_GeneratorEfficiency_version}}'
-  turbineEfficiencyCurve:
-    container:
-      type: container
-      space: '{{shared_model_space}}'
-      externalId: Generator
-    containerPropertyIdentifier: turbineEfficiencyCurve
-    name: turbineEfficiencyCurve
+  turbineCurves:
+    name: turbineCurves
     source:
       type: view
       space: '{{asset_space}}'
       externalId: TurbineEfficiencyCurve
       version: '{{asset_TurbineEfficiency_version}}'
+    type:
+      space: '{{type_space}}'
+      externalId: isSubAssetOf
+    direction: outwards
+    description: The watercourses that are connected to the PriceArea.
+    connectionType: multiEdgeConnection

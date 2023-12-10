@@ -6,6 +6,7 @@ from typing import Any, Literal
 from cognite.client.data_classes import AssetList, LabelDefinitionList
 from cognite.client.data_classes._base import CogniteResource, CogniteResourceList
 
+from cognite.powerops.client._generated.assets.data_classes import DomainModelApply as DomainModelApplyAssets
 from cognite.powerops.client._generated.cogshop1.data_classes._core import DomainModelApply as DomainModelApplyCogShop1
 from cognite.powerops.client._generated.data_classes._core import DomainModelApply
 from cognite.powerops.resync.models.base import AssetModel, CDFFile, CDFSequence, Model, ResourceType
@@ -147,6 +148,10 @@ def _to_value_by_id(value: Any) -> dict[str, Any]:
         return {item.external_id: item for item in value.values()}
     elif isinstance(value, (dict, list, CogniteResourceList)) and not value:
         return {}
-    elif isinstance(value, list) and value and isinstance(value[0], (DomainModelApply, DomainModelApplyCogShop1)):
+    elif (
+        isinstance(value, list)
+        and value
+        and isinstance(value[0], (DomainModelApply, DomainModelApplyCogShop1, DomainModelApplyAssets))
+    ):
         return {item.external_id: item for item in value}
     raise NotImplementedError(f"{type(value)} is not supported")

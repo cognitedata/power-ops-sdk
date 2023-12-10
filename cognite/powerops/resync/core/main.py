@@ -28,9 +28,7 @@ from .validation import _clean_relationships
 
 logger = logging.getLogger(__name__)
 
-MODELS_BY_NAME = {m.__name__: m for m in models.V1_MODELS}
-
-V2_MODELS_BY_NAME = {m.__name__: m for m in models.V2_MODELS}
+MODELS_BY_NAME = {m.__name__: m for m in itertools.chain(models.V1_MODELS, models.V2_MODELS)}
 
 DATAMODEL_ID_TO_RESYNC_NAME: dict[DataModelId, str] = {
     m.data_model_ids()[0]: m.__name__
@@ -504,13 +502,10 @@ def _to_models(model_names: str | list[str] | None) -> list[type[Model]]:
     else:
         raise ValueError(f"Invalid model_names type: {type(model_names)}")
 
-    if invalid := set(model_names) - (set(MODELS_BY_NAME) | set(V2_MODELS_BY_NAME)):
+    if invalid := set(model_names) - set(MODELS_BY_NAME):
         raise ValueError(f"Invalid model names: {invalid}. Available models: {list(MODELS_BY_NAME)}")
 
-    return [
-        MODELS_BY_NAME[model_name] if model_name in MODELS_BY_NAME else V2_MODELS_BY_NAME[model_name]
-        for model_name in model_names
-    ]
+    return [MODELS_BY_NAME[model_name] for model_name in model_names]
 
 
 def _get_data_model_view_containers(cdf: CogniteClient, data_model_id: DataModelId, model_name: str) -> ModelDifference:

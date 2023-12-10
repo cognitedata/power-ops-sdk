@@ -17,3 +17,9 @@
   externalId: SHOPTable.productionPricePairs
 - space: {{type_space}}
   externalId: isSubAssetOf
+- space: {{type_space}}
+  externalId: TurbineCurve
+- space: {{type_space}}
+  externalId: GeneratorCurve
+- space: {{type_space}}
+  externalId: Reservoir

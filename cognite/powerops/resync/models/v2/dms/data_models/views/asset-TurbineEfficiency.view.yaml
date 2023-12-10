@@ -9,22 +9,30 @@ properties:
       space: '{{asset_space}}'
       externalId: EfficiencyCurve
       type: container
-    containerPropertyIdentifier: x
+    containerPropertyIdentifier: ref
     name: head
-    description: The head values
+    description: The reference head values
   flow:
     container:
       space: '{{asset_space}}'
       externalId: EfficiencyCurve
       type: container
-    containerPropertyIdentifier: y
+    containerPropertyIdentifier: x
     name: flow
     description: The flow values
-  turbineEfficiency:
+  efficiency:
     container:
       space: '{{asset_space}}'
       externalId: EfficiencyCurve
       type: container
     containerPropertyIdentifier: efficiency
-    name: turbineEfficiency
+    name: efficiency
     description: The turbine efficiency values
+filter:
+  equals:
+    property:
+    - node
+    - type
+    value:
+      space: '{{type_space}}'
+      externalId: TurbineCurve

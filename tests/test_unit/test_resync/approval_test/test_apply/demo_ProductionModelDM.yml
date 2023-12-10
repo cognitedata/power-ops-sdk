@@ -1,0 +1,1023 @@
+assets: []
+data_modeling.instances:
+- external_id: generator_Dalby_G1
+  instance_type: node
+  sources:
+  - properties:
+      generatorEfficiencyCurve: generator_Dalby_G1_generator_efficiency_curve
+      name: Dalby_G1
+      pMin: 40.0
+      penstock: 1
+      startStopCost: '112233'
+      startcost: 500.0
+      turbineEfficiencyCurve: generator_Dalby_G1_turbine_efficiency_curve
+    source:
+      external_id: Generator
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: generator_Dalby_G2
+  instance_type: node
+  sources:
+  - properties:
+      generatorEfficiencyCurve: generator_Dalby_G2_generator_efficiency_curve
+      name: Dalby_G2
+      pMin: 40.0
+      penstock: 1
+      startcost: 250.0
+      turbineEfficiencyCurve: generator_Dalby_G2_turbine_efficiency_curve
+    source:
+      external_id: Generator
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: generator_Holen_G1
+  instance_type: node
+  sources:
+  - properties:
+      generatorEfficiencyCurve: generator_Holen_G1_generator_efficiency_curve
+      isAvailableTimeSeries: '332211'
+      name: Holen_G1
+      pMin: 27.0
+      penstock: 1
+      startStopCost: '112233'
+      startcost: 200.0
+      turbineEfficiencyCurve: generator_Holen_G1_turbine_efficiency_curve
+    source:
+      external_id: Generator
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: generator_Landet_G1
+  instance_type: node
+  sources:
+  - properties:
+      generatorEfficiencyCurve: generator_Landet_G1_generator_efficiency_curve
+      name: Landet_G1
+      pMin: 25.0
+      penstock: 1
+      startcost: 200.0
+      turbineEfficiencyCurve: generator_Landet_G1_turbine_efficiency_curve
+    source:
+      external_id: Generator
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: generator_Lien_krv_G1
+  instance_type: node
+  sources:
+  - properties:
+      generatorEfficiencyCurve: generator_Lien_krv_G1_generator_efficiency_curve
+      name: Lien_krv_G1
+      pMin: 1.2
+      penstock: 1
+      startcost: 150.0
+      turbineEfficiencyCurve: generator_Lien_krv_G1_turbine_efficiency_curve
+    source:
+      external_id: Generator
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: generator_Lund_G1
+  instance_type: node
+  sources:
+  - properties:
+      generatorEfficiencyCurve: generator_Lund_G1_generator_efficiency_curve
+      isAvailableTimeSeries: '332211'
+      name: Lund_G1
+      pMin: 0.6
+      penstock: 1
+      startStopCost: '112233'
+      startcost: 100.0
+      turbineEfficiencyCurve: generator_Lund_G1_turbine_efficiency_curve
+    source:
+      external_id: Generator
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: generator_Rull1_G1
+  instance_type: node
+  sources:
+  - properties:
+      generatorEfficiencyCurve: generator_Rull1_G1_generator_efficiency_curve
+      name: Rull1_G1
+      pMin: 40.0
+      penstock: 1
+      startcost: 250.0
+      turbineEfficiencyCurve: generator_Rull1_G1_turbine_efficiency_curve
+    source:
+      external_id: Generator
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: generator_Rull1_G2
+  instance_type: node
+  sources:
+  - properties:
+      generatorEfficiencyCurve: generator_Rull1_G2_generator_efficiency_curve
+      name: Rull1_G2
+      pMin: 40.0
+      penstock: 2
+      startcost: 250.0
+      turbineEfficiencyCurve: generator_Rull1_G2_turbine_efficiency_curve
+    source:
+      external_id: Generator
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: generator_Rull2_G1
+  instance_type: node
+  sources:
+  - properties:
+      generatorEfficiencyCurve: generator_Rull2_G1_generator_efficiency_curve
+      name: Rull2_G1
+      pMin: 32.0
+      penstock: 1
+      startcost: 250.0
+      turbineEfficiencyCurve: generator_Rull2_G1_turbine_efficiency_curve
+    source:
+      external_id: Generator
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: generator_Rull2_G2
+  instance_type: node
+  sources:
+  - properties:
+      generatorEfficiencyCurve: generator_Rull2_G2_generator_efficiency_curve
+      name: Rull2_G2
+      pMin: 32.0
+      penstock: 2
+      startcost: 250.0
+      turbineEfficiencyCurve: generator_Rull2_G2_turbine_efficiency_curve
+    source:
+      external_id: Generator
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: generator_Scott_G1
+  instance_type: node
+  sources:
+  - properties:
+      generatorEfficiencyCurve: generator_Scott_G1_generator_efficiency_curve
+      name: Scott_G1
+      pMin: 8.0
+      penstock: 1
+      startcost: 150.0
+      turbineEfficiencyCurve: generator_Scott_G1_turbine_efficiency_curve
+    source:
+      external_id: Generator
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: generator_Strand_krv_G1
+  instance_type: node
+  sources:
+  - properties:
+      generatorEfficiencyCurve: generator_Strand_krv_G1_generator_efficiency_curve
+      name: Strand_krv_G1
+      pMin: 4.2
+      penstock: 1
+      startcost: 150.0
+      turbineEfficiencyCurve: generator_Strand_krv_G1_turbine_efficiency_curve
+    source:
+      external_id: Generator
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: plant_Dalby
+  instance_type: node
+  sources:
+  - properties:
+      connectionLosses: 0.00892
+      displayName: Dalby
+      headLossFactor: 0.002105
+      inletReservoir:
+        externalId: reservoir_Lensvik
+        space: power-ops
+      name: Dalby
+      ordering: 999
+      outletLevel: 365.0
+      pMax: 1.0e+19
+      pMin: 0.0
+      penstockHeadLossFactors:
+        '1': 0.0006
+      watercourse:
+        externalId: watercourse_Fornebu
+        space: power-ops
+    source:
+      external_id: Plant
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: generator_Dalby_G1
+    space: power-ops
+  external_id: plant_Dalby:generator_Dalby_G1
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: plant_Dalby
+    space: power-ops
+  type:
+    external_id: Plant.generators
+    space: power-ops
+- end_node:
+    external_id: generator_Dalby_G2
+    space: power-ops
+  external_id: plant_Dalby:generator_Dalby_G2
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: plant_Dalby
+    space: power-ops
+  type:
+    external_id: Plant.generators
+    space: power-ops
+- external_id: plant_Holen
+  instance_type: node
+  sources:
+  - properties:
+      connectionLosses: 0.0
+      displayName: Holen
+      headLossFactor: 0.0339
+      inletReservoir:
+        externalId: reservoir_Nielsen
+        space: power-ops
+      name: Holen
+      ordering: 999
+      outletLevel: 628.0
+      pMax: 1.0e+19
+      pMin: 0.0
+      penstockHeadLossFactors:
+        '1': 0.0113
+      watercourse:
+        externalId: watercourse_Fornebu
+        space: power-ops
+    source:
+      external_id: Plant
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: generator_Holen_G1
+    space: power-ops
+  external_id: plant_Holen:generator_Holen_G1
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: plant_Holen
+    space: power-ops
+  type:
+    external_id: Plant.generators
+    space: power-ops
+- external_id: plant_Landet
+  instance_type: node
+  sources:
+  - properties:
+      connectionLosses: 0.0
+      displayName: Landet
+      headLossFactor: 0.02007
+      inletReservoir:
+        externalId: reservoir_Livincovs
+        space: power-ops
+      name: Landet
+      ordering: 999
+      outletLevel: 670.0
+      pMax: 1.0e+19
+      pMin: 0.0
+      penstockHeadLossFactors:
+        '1': 0.0
+      watercourse:
+        externalId: watercourse_Fornebu
+        space: power-ops
+    source:
+      external_id: Plant
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: generator_Landet_G1
+    space: power-ops
+  external_id: plant_Landet:generator_Landet_G1
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: plant_Landet
+    space: power-ops
+  type:
+    external_id: Plant.generators
+    space: power-ops
+- external_id: plant_Lien_krv
+  instance_type: node
+  sources:
+  - properties:
+      connectionLosses: 0.0
+      displayName: Lien_krv
+      headLossFactor: 0.8
+      inletReservoir:
+        externalId: reservoir_Ranemsletta_1183
+        space: power-ops
+      name: Lien_krv
+      ordering: 999
+      outletLevel: 1030.0
+      pMax: 1.0e+19
+      pMin: 0.0
+      penstockHeadLossFactors:
+        '1': 0.0
+      watercourse:
+        externalId: watercourse_Fornebu
+        space: power-ops
+    source:
+      external_id: Plant
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: generator_Lien_krv_G1
+    space: power-ops
+  external_id: plant_Lien_krv:generator_Lien_krv_G1
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: plant_Lien_krv
+    space: power-ops
+  type:
+    external_id: Plant.generators
+    space: power-ops
+- external_id: plant_Lund
+  instance_type: node
+  sources:
+  - properties:
+      connectionLosses: 0.0
+      displayName: Lund
+      feedingFeeTimeSeries: '9626'
+      headLossFactor: 0.002
+      inletLevelTimeSeries: '907230'
+      inletReservoir:
+        externalId: reservoir_Danielsen
+        space: power-ops
+      name: Lund
+      ordering: 999
+      outletLevel: 1240.0
+      outletLevelTimeSeries: '907223'
+      pMax: 1.0e+19
+      pMin: 0.0
+      penstockHeadLossFactors:
+        '1': 0.022
+      waterValueTimeSeries: '136120'
+      watercourse:
+        externalId: watercourse_Fornebu
+        space: power-ops
+    source:
+      external_id: Plant
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: generator_Lund_G1
+    space: power-ops
+  external_id: plant_Lund:generator_Lund_G1
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: plant_Lund
+    space: power-ops
+  type:
+    external_id: Plant.generators
+    space: power-ops
+- external_id: plant_Rull1
+  instance_type: node
+  sources:
+  - properties:
+      connectionLosses: 0.00231
+      displayName: Rull1
+      headLossFactor: 0.00107
+      inletReservoir:
+        externalId: reservoir_Dalbysvatn
+        space: power-ops
+      name: Rull1
+      ordering: 999
+      outletLevel: 68.0
+      pMax: 1.0e+19
+      pMin: 0.0
+      penstockHeadLossFactors:
+        '1': 0.0007
+        '2': 0.0005
+      watercourse:
+        externalId: watercourse_Fornebu
+        space: power-ops
+    source:
+      external_id: Plant
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: generator_Rull1_G1
+    space: power-ops
+  external_id: plant_Rull1:generator_Rull1_G1
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: plant_Rull1
+    space: power-ops
+  type:
+    external_id: Plant.generators
+    space: power-ops
+- end_node:
+    external_id: generator_Rull1_G2
+    space: power-ops
+  external_id: plant_Rull1:generator_Rull1_G2
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: plant_Rull1
+    space: power-ops
+  type:
+    external_id: Plant.generators
+    space: power-ops
+- external_id: plant_Rull2
+  instance_type: node
+  sources:
+  - properties:
+      connectionLosses: 0.0052
+      displayName: Rull2
+      headLossFactor: 0.0225
+      inletReservoir:
+        externalId: reservoir_Sirefelt
+        space: power-ops
+      name: Rull2
+      ordering: 999
+      outletLevel: 68.0
+      pMax: 1.0e+19
+      pMin: 0.0
+      penstockHeadLossFactors:
+        '1': 0.0018
+        '2': 0.0041
+      watercourse:
+        externalId: watercourse_Fornebu
+        space: power-ops
+    source:
+      external_id: Plant
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: generator_Rull2_G1
+    space: power-ops
+  external_id: plant_Rull2:generator_Rull2_G1
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: plant_Rull2
+    space: power-ops
+  type:
+    external_id: Plant.generators
+    space: power-ops
+- end_node:
+    external_id: generator_Rull2_G2
+    space: power-ops
+  external_id: plant_Rull2:generator_Rull2_G2
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: plant_Rull2
+    space: power-ops
+  type:
+    external_id: Plant.generators
+    space: power-ops
+- external_id: plant_Scott
+  instance_type: node
+  sources:
+  - properties:
+      connectionLosses: 0.0
+      displayName: Scott
+      headLossFactor: 0.003399
+      inletReservoir:
+        externalId: reservoir_Lundvann
+        space: power-ops
+      name: Scott
+      ordering: 999
+      outletLevel: 1013.0
+      pMax: 1.0e+19
+      pMin: 0.0
+      penstockHeadLossFactors:
+        '1': 0.022
+      watercourse:
+        externalId: watercourse_Fornebu
+        space: power-ops
+    source:
+      external_id: Plant
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: generator_Scott_G1
+    space: power-ops
+  external_id: plant_Scott:generator_Scott_G1
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: plant_Scott
+    space: power-ops
+  type:
+    external_id: Plant.generators
+    space: power-ops
+- external_id: plant_Strand_krv
+  instance_type: node
+  sources:
+  - properties:
+      connectionLosses: 0.0
+      displayName: Strand_krv
+      headLossFactor: 0.0
+      inletReservoir:
+        externalId: reservoir_Hagen
+        space: power-ops
+      name: Strand_krv
+      ordering: 999
+      outletLevel: 753.06
+      pMax: 1.0e+19
+      pMin: 0.0
+      penstockHeadLossFactors:
+        '1': 0.3125
+      watercourse:
+        externalId: watercourse_Fornebu
+        space: power-ops
+    source:
+      external_id: Plant
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: generator_Strand_krv_G1
+    space: power-ops
+  external_id: plant_Strand_krv:generator_Strand_krv_G1
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: plant_Strand_krv
+    space: power-ops
+  type:
+    external_id: Plant.generators
+    space: power-ops
+- external_id: price_area_NO2
+  instance_type: node
+  sources:
+  - properties:
+      dayaheadPriceTimeSeries: '6694'
+      name: NO2
+    source:
+      external_id: PriceArea
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: plant_Dalby
+    space: power-ops
+  external_id: price_area_NO2:plant_Dalby
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: price_area_NO2
+    space: power-ops
+  type:
+    external_id: PriceArea.plants
+    space: power-ops
+- end_node:
+    external_id: plant_Holen
+    space: power-ops
+  external_id: price_area_NO2:plant_Holen
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: price_area_NO2
+    space: power-ops
+  type:
+    external_id: PriceArea.plants
+    space: power-ops
+- end_node:
+    external_id: plant_Landet
+    space: power-ops
+  external_id: price_area_NO2:plant_Landet
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: price_area_NO2
+    space: power-ops
+  type:
+    external_id: PriceArea.plants
+    space: power-ops
+- end_node:
+    external_id: plant_Lien_krv
+    space: power-ops
+  external_id: price_area_NO2:plant_Lien_krv
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: price_area_NO2
+    space: power-ops
+  type:
+    external_id: PriceArea.plants
+    space: power-ops
+- end_node:
+    external_id: plant_Lund
+    space: power-ops
+  external_id: price_area_NO2:plant_Lund
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: price_area_NO2
+    space: power-ops
+  type:
+    external_id: PriceArea.plants
+    space: power-ops
+- end_node:
+    external_id: plant_Rull1
+    space: power-ops
+  external_id: price_area_NO2:plant_Rull1
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: price_area_NO2
+    space: power-ops
+  type:
+    external_id: PriceArea.plants
+    space: power-ops
+- end_node:
+    external_id: plant_Rull2
+    space: power-ops
+  external_id: price_area_NO2:plant_Rull2
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: price_area_NO2
+    space: power-ops
+  type:
+    external_id: PriceArea.plants
+    space: power-ops
+- end_node:
+    external_id: plant_Scott
+    space: power-ops
+  external_id: price_area_NO2:plant_Scott
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: price_area_NO2
+    space: power-ops
+  type:
+    external_id: PriceArea.plants
+    space: power-ops
+- end_node:
+    external_id: plant_Strand_krv
+    space: power-ops
+  external_id: price_area_NO2:plant_Strand_krv
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: price_area_NO2
+    space: power-ops
+  type:
+    external_id: PriceArea.plants
+    space: power-ops
+- end_node:
+    external_id: watercourse_Fornebu
+    space: power-ops
+  external_id: price_area_NO2:watercourse_Fornebu
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: price_area_NO2
+    space: power-ops
+  type:
+    external_id: PriceArea.watercourses
+    space: power-ops
+- external_id: reservoir_Dalbysvatn
+  instance_type: node
+  sources:
+  - properties:
+      displayName: Dalbysvatn
+      name: Dalbysvatn
+      ordering: 999
+    source:
+      external_id: Reservoir
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: reservoir_Danielsen
+  instance_type: node
+  sources:
+  - properties:
+      displayName: Danielsen
+      name: Danielsen
+      ordering: 999
+    source:
+      external_id: Reservoir
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: reservoir_Frosta
+  instance_type: node
+  sources:
+  - properties:
+      displayName: Frosta
+      name: Frosta
+      ordering: 999
+    source:
+      external_id: Reservoir
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: reservoir_Hagen
+  instance_type: node
+  sources:
+  - properties:
+      displayName: Hagen
+      name: Hagen
+      ordering: 999
+    source:
+      external_id: Reservoir
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: reservoir_Hovden
+  instance_type: node
+  sources:
+  - properties:
+      displayName: Hovden
+      name: Hovden
+      ordering: 999
+    source:
+      external_id: Reservoir
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: reservoir_Lensvik
+  instance_type: node
+  sources:
+  - properties:
+      displayName: Lensvik
+      name: Lensvik
+      ordering: 999
+    source:
+      external_id: Reservoir
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: reservoir_Livincovs
+  instance_type: node
+  sources:
+  - properties:
+      displayName: Livincovs
+      name: Livincovs
+      ordering: 999
+    source:
+      external_id: Reservoir
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: reservoir_Lundvann
+  instance_type: node
+  sources:
+  - properties:
+      displayName: Lundvann
+      name: Lundvann
+      ordering: 999
+    source:
+      external_id: Reservoir
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: reservoir_Nielsen
+  instance_type: node
+  sources:
+  - properties:
+      displayName: Nielsen
+      name: Nielsen
+      ordering: 999
+    source:
+      external_id: Reservoir
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: reservoir_Ranemsletta_1183
+  instance_type: node
+  sources:
+  - properties:
+      displayName: Ranemsletta_1183
+      name: Ranemsletta_1183
+      ordering: 999
+    source:
+      external_id: Reservoir
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: reservoir_Rullsvatn
+  instance_type: node
+  sources:
+  - properties:
+      displayName: Rullsvatn
+      name: Rullsvatn
+      ordering: 999
+    source:
+      external_id: Reservoir
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: reservoir_Sirefelt
+  instance_type: node
+  sources:
+  - properties:
+      displayName: Sirefelt
+      name: Sirefelt
+      ordering: 999
+    source:
+      external_id: Reservoir
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: reservoir_Strand
+  instance_type: node
+  sources:
+  - properties:
+      displayName: Strand
+      name: Strand
+      ordering: 999
+    source:
+      external_id: Reservoir
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: reservoir_Strand_tunnel
+  instance_type: node
+  sources:
+  - properties:
+      displayName: Strand_tunnel
+      name: Strand_tunnel
+      ordering: 999
+    source:
+      external_id: Reservoir
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: reservoir_Tangvall
+  instance_type: node
+  sources:
+  - properties:
+      displayName: Tangvall
+      name: Tangvall
+      ordering: 999
+    source:
+      external_id: Reservoir
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: reservoir_Varhaug
+  instance_type: node
+  sources:
+  - properties:
+      displayName: Varhaug
+      name: Varhaug
+      ordering: 999
+    source:
+      external_id: Reservoir
+      space: power-ops
+      type: container
+  space: power-ops
+- external_id: watercourse_Fornebu
+  instance_type: node
+  sources:
+  - properties:
+      name: Fornebu
+      productionObligationTimeSeries: []
+      shop:
+        externalId: WatercourseShop__d1d99ef14bb813e29718b9b4df53de52
+        space: power-ops
+    source:
+      external_id: Watercourse
+      space: power-ops
+      type: container
+  space: power-ops
+- end_node:
+    external_id: plant_Dalby
+    space: power-ops
+  external_id: watercourse_Fornebu:plant_Dalby
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: watercourse_Fornebu
+    space: power-ops
+  type:
+    external_id: Watercourse.plants
+    space: power-ops
+- end_node:
+    external_id: plant_Holen
+    space: power-ops
+  external_id: watercourse_Fornebu:plant_Holen
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: watercourse_Fornebu
+    space: power-ops
+  type:
+    external_id: Watercourse.plants
+    space: power-ops
+- end_node:
+    external_id: plant_Landet
+    space: power-ops
+  external_id: watercourse_Fornebu:plant_Landet
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: watercourse_Fornebu
+    space: power-ops
+  type:
+    external_id: Watercourse.plants
+    space: power-ops
+- end_node:
+    external_id: plant_Lien_krv
+    space: power-ops
+  external_id: watercourse_Fornebu:plant_Lien_krv
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: watercourse_Fornebu
+    space: power-ops
+  type:
+    external_id: Watercourse.plants
+    space: power-ops
+- end_node:
+    external_id: plant_Lund
+    space: power-ops
+  external_id: watercourse_Fornebu:plant_Lund
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: watercourse_Fornebu
+    space: power-ops
+  type:
+    external_id: Watercourse.plants
+    space: power-ops
+- end_node:
+    external_id: plant_Rull1
+    space: power-ops
+  external_id: watercourse_Fornebu:plant_Rull1
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: watercourse_Fornebu
+    space: power-ops
+  type:
+    external_id: Watercourse.plants
+    space: power-ops
+- end_node:
+    external_id: plant_Rull2
+    space: power-ops
+  external_id: watercourse_Fornebu:plant_Rull2
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: watercourse_Fornebu
+    space: power-ops
+  type:
+    external_id: Watercourse.plants
+    space: power-ops
+- end_node:
+    external_id: plant_Scott
+    space: power-ops
+  external_id: watercourse_Fornebu:plant_Scott
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: watercourse_Fornebu
+    space: power-ops
+  type:
+    external_id: Watercourse.plants
+    space: power-ops
+- end_node:
+    external_id: plant_Strand_krv
+    space: power-ops
+  external_id: watercourse_Fornebu:plant_Strand_krv
+  instance_type: edge
+  space: power-ops
+  start_node:
+    external_id: watercourse_Fornebu
+    space: power-ops
+  type:
+    external_id: Watercourse.plants
+    space: power-ops
+- external_id: WatercourseShop__d1d99ef14bb813e29718b9b4df53de52
+  instance_type: node
+  sources:
+  - properties:
+      penaltyLimit: 42000.0
+    source:
+      external_id: WatercourseShop
+      space: power-ops
+      type: container
+  space: power-ops
+events: []
+files: []
+labels: []
+relationships: []
+sequences: []
+time_series: []
