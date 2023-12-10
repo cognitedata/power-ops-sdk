@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from math import floor, log10
+from typing import Any
 
 import pandas as pd
 from cognite.client.data_classes import Sequence
@@ -18,7 +19,9 @@ def round_sig(x: float, sig: int = 2):
     return round(x, sig - int(floor(log10(abs(x)))) - 1)
 
 
-def _create_generator_efficiency_curve(generator_attributes, generator_name, generator_external_id) -> CDFSequence:
+def _create_generator_efficiency_curve(
+    generator_attributes: dict[str, Any], generator_name: str, generator_external_id: str
+) -> CDFSequence:
     x_col_name = "generator_power"
     y_col_name = "generator_efficiency"
     sequence = Sequence(
@@ -33,7 +36,9 @@ def _create_generator_efficiency_curve(generator_attributes, generator_name, gen
     return efficiency_curve
 
 
-def _create_turbine_efficiency_curve(generator_attributes, generator_name, generator_external_id) -> CDFSequence:
+def _create_turbine_efficiency_curve(
+    generator_attributes: dict[str, Any], generator_name: str, generator_external_id: str
+) -> CDFSequence:
     data = generator_attributes["turb_eff_curves"]
     ref_col_name = "head"
     x_col_name = "flow"

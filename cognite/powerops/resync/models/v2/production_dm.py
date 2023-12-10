@@ -3,8 +3,9 @@ from __future__ import annotations
 from typing import ClassVar
 
 from cognite.client.data_classes.data_modeling import ContainerId
-from pydantic import Field, field_validator
+from pydantic import BaseModel, Field, field_validator
 
+from cognite.powerops.client._generated.assets import data_classes as assets
 from cognite.powerops.client._generated.data_classes._core import DomainModelApply
 from cognite.powerops.client.data_classes import (
     GeneratorApply,
@@ -82,3 +83,11 @@ class ProductionModelDM(DataModel):
         self.plants = self.ordering_list(self.plants)
         self.generators = self.ordering_list(self.generators)
         self.reservoirs = self.ordering_list(self.reservoirs)
+
+
+class PowerAssetModelDM(BaseModel):
+    price_areas: list[assets.PriceAreaApply] = Field(default_factory=list)
+    watercourses: list[assets.WatercourseApply] = Field(default_factory=list)
+    plants: list[assets.PlantApply] = Field(default_factory=list)
+    generators: list[assets.GeneratorApply] = Field(default_factory=list)
+    reservoirs: list[assets.ReservoirApply] = Field(default_factory=list)

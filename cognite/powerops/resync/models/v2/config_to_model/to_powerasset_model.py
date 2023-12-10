@@ -2,30 +2,21 @@ from __future__ import annotations
 
 import re
 
-from cognite.powerops.client.data_classes import (
-    GeneratorApply,
-    PlantApply,
-    PriceAreaApply,
-    ReservoirApply,
-    WatercourseApply,
-    WatercourseShopApply,
-)
+from cognite.powerops.client._generated.assets import data_classes as assets
 from cognite.powerops.resync import config
 from cognite.powerops.resync.models._shared_v1_v2._to_instances import make_ext_id
 from cognite.powerops.resync.models._shared_v1_v2.production_model import (
-    _create_generator_efficiency_curve,
-    _create_turbine_efficiency_curve,
     _get_single_value,
     _plant_to_inlet_reservoir_with_losses,
     head_loss_factor_fallback,
     p_max_fallback,
     p_min_fallback,
 )
-from cognite.powerops.resync.models.v2.production_dm import ProductionModelDM
+from cognite.powerops.resync.models.v2.production_dm import PowerAssetModelDM
 
 
-def to_production_data_model(configuration: config.ProductionConfig) -> ProductionModelDM:
-    model = ProductionModelDM()
+def to_asset_data_model(configuration: config.ProductionConfig) -> PowerAssetModelDM:
+    model = PowerAssetModelDM()
     plant_time_series_mappings_by_name = {
         mapping.plant_name: mapping for mapping in (configuration.plant_time_series_mappings or [])
     }
@@ -38,15 +29,15 @@ def to_production_data_model(configuration: config.ProductionConfig) -> Producti
     }
 
     for watercourse_config in configuration.watercourses:
-        watercourse = WatercourseApply(
+        watercourse = assets.WatercourseApply(
             external_id=f"watercourse_{watercourse_config.name}",
             name=watercourse_config.name,
-            shop=WatercourseShopApply(
-                external_id=make_ext_id(watercourse_config.shop_penalty_limit, WatercourseShopApply),
+            shop=assets.WatercourseSHOPApply(
+                external_id=make_ext_id(watercourse_config.shop_penalty_limit, assets.WatercourseSHOP),
                 penalty_limit=watercourse_config.shop_penalty_limit,
             ),
             plants=[],
-            production_obligation_time_series=watercourse_config.production_obligation_ts_ext_ids,
+            production_obligation=watercourse_config.production_obligation_ts_ext_ids,
         )
         model.watercourses.append(watercourse)
 
@@ -54,7 +45,7 @@ def to_production_data_model(configuration: config.ProductionConfig) -> Producti
 
         reservoirs = []
         for reservoir_name in shop_case["model"]["reservoir"]:
-            reservoir = ReservoirApply(
+            reservoir = assets.ReservoirApply(
                 external_id=f"reservoir_{reservoir_name}",
                 name=reservoir_name,
                 **dict(
@@ -71,27 +62,19 @@ def to_production_data_model(configuration: config.ProductionConfig) -> Producti
 
         for generator_name, generator_attributes in shop_case["model"]["generator"].items():
             start_stop_cost = start_stop_cost_time_series_by_generator.get(generator_name)
-            generator = GeneratorApply(
+            #     generator_attributes, generator.name, generator.external_id
+            #     generator_attributes, generator.name, generator.external_id
+            #
+
+            assets.GeneratorApply(
                 external_id=f"generator_{generator_name}",
                 name=generator_name,
                 penstock=int(generator_attributes.get("penstock", 1)),
                 p_min=float(generator_attributes.get("p_min", 0.0)),
-                startcost=float(_get_single_value(generator_attributes.get("startcost", 0.0))),
+                start_cost=float(_get_single_value(generator_attributes.get("startcost", 0.0))),
                 start_stop_cost=start_stop_cost,
                 is_available_time_series=is_generator_available.get(generator_name),
             )
-            efficiency_curve = _create_generator_efficiency_curve(
-                generator_attributes, generator.name, generator.external_id
-            )
-            model.cdf_sequences.append(efficiency_curve)
-            generator.generator_efficiency_curve = efficiency_curve.external_id
-            turbine_efficiency_curve = _create_turbine_efficiency_curve(
-                generator_attributes, generator.name, generator.external_id
-            )
-
-            generator.turbine_efficiency_curve = turbine_efficiency_curve.external_id
-            model.generators.append(generator)
-            model.cdf_sequences.append(turbine_efficiency_curve)
 
         generators_by_name = {generator.name: generator for generator in model.generators}
         plants = []
@@ -122,7 +105,7 @@ def to_production_data_model(configuration: config.ProductionConfig) -> Producti
 
             # TODO: In next iteration of production data model,
             # we will have to add field connection losses and regenerate pygen sdk
-            plant = PlantApply(
+            plant = assets.PlantApply(
                 external_id=f"plant_{plant_name}",
                 name=plant_name,
                 display_name=display_name,
@@ -163,7 +146,7 @@ def to_production_data_model(configuration: config.ProductionConfig) -> Producti
 
             prod_area = str(next(iter(attributes["prod_area"].values())))
             price_area_name = watercourse_config.market_to_price_area[prod_area]
-            price_area = PriceAreaApply(name=price_area_name, external_id=f"price_area_{price_area_name}")
+            price_area = assets.PriceAreaApply(name=price_area_name, external_id=f"price_area_{price_area_name}")
             if price_area_name not in {a.name for a in model.price_areas}:
                 if price_area_name in configuration.dayahead_price_timeseries:
                     price_area.dayahead_price_time_series = configuration.dayahead_price_timeseries[price_area_name]
