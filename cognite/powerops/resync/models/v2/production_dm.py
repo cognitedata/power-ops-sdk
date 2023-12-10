@@ -141,8 +141,8 @@ class PowerAssetModelDM(Model):
         edges = dm.EdgeApplyList([e.as_apply(None, 0) for e in edges])
         nodes = dm.NodeApplyList([])
         for view in cls._views_by_write_class.values():
-            nodes = cdf.data_modeling.instances.list("node", limit=-1, sources=view)
-            nodes.extend([n.as_apply(view, None) for n in nodes])
+            view_nodes = cdf.data_modeling.instances.list("node", limit=-1, sources=view)
+            nodes.extend([n.as_apply(view, None) for n in view_nodes])
 
         return cls._load(nodes, edges, link="external_id")
 

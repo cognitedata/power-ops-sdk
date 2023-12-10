@@ -80,7 +80,7 @@ def to_asset_data_model(configuration: config.ProductionConfig) -> PowerAssetMod
                 ),
                 turbine_curves=[
                     assets.TurbineEfficiencyCurveApply(
-                        external_id=f"turbine_efficiency_{generator_name}",
+                        external_id=f"turbine_efficiency_{generator_name}_head_{int(turbine_curve['ref'])}",
                         head=turbine_curve["ref"],
                         flow=turbine_curve["x"],
                         efficiency=turbine_curve["y"],

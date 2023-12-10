@@ -7,6 +7,7 @@ from cognite.client import CogniteClient
 from cognite.client.data_classes import Asset, FileMetadata, FileMetadataList, LabelDefinition, Relationship
 from cognite.client.data_classes import Sequence as CogniteSequence
 from cognite.client.data_classes.data_modeling import ContainerId, DataModelId, EdgeApply, NodeApply, ViewId
+from cognite.client.exceptions import CogniteAPIError
 
 from cognite.powerops.resync.models.base import CDFFile, CDFSequence
 from cognite.powerops.utils.navigation import chunks
@@ -126,11 +127,24 @@ class InstanceAdapter(CogniteAPI[T_Instance]):
         else:
             item_sequence = items
 
-        for chunk in chunks(item_sequence, self.instance_limit):  # type: ignore[type-var]
+        failed = []
+        for chunk in chunks(item_sequence, 1):  # type: ignore[type-var]
             if self.instance_type == "node":
-                self.client.data_modeling.instances.apply(nodes=chunk)  # type: ignore[arg-type]
+                try:
+                    self.client.data_modeling.instances.apply(nodes=chunk, auto_create_direct_relations=True)  # type: ignore[arg-type]
+                except CogniteAPIError:
+                    print(f"Failed on {chunk[0].dump()}")
+                    failed.append(chunk[0].dump())
             else:
-                self.client.data_modeling.instances.apply(edges=chunk)  # type: ignore[arg-type]
+                try:
+                    self.client.data_modeling.instances.apply(
+                        edges=chunk, auto_create_start_nodes=True, auto_create_end_nodes=True  # type: ignore[arg-type]
+                    )
+                except CogniteAPIError:
+                    print(f"Failed on {chunk[0].dump()}")
+                    failed.append(chunk[0].dump())
+        if failed:
+            raise ValueError(f"Failed on {len(failed)}/{len(item_sequence)}")
 
     def delete(self, external_id: str | Sequence[str]) -> Any:
         if self.instance_type == "node":
