@@ -64,7 +64,7 @@ def to_asset_data_model(configuration: config.ProductionConfig) -> PowerAssetMod
             start_stop_cost = start_stop_cost_time_series_by_generator.get(generator_name)
             generator_curve = generator_attributes["gen_eff_curve"]
             turbine_curves = generator_attributes["turb_eff_curves"]
-            assets.GeneratorApply(
+            generator = assets.GeneratorApply(
                 external_id=f"generator_{generator_name}",
                 name=generator_name,
                 penstock=int(generator_attributes.get("penstock", 1)),
@@ -84,6 +84,7 @@ def to_asset_data_model(configuration: config.ProductionConfig) -> PowerAssetMod
                     efficiency=[value for turbine_curve in turbine_curves for value in turbine_curve["y"]],
                 ),
             )
+            model.generators.append(generator)
 
         generators_by_name = {generator.name: generator for generator in model.generators}
         plants = []
