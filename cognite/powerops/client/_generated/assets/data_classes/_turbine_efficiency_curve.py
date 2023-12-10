@@ -40,7 +40,7 @@ class TurbineEfficiencyCurve(DomainModel):
     Args:
         space: The space where the node is located.
         external_id: The external id of the turbine efficiency curve.
-        head: The head values
+        head: The reference head values
         flow: The flow values
         efficiency: The turbine efficiency values
         created_time: The created time of the turbine efficiency curve node.
@@ -50,7 +50,7 @@ class TurbineEfficiencyCurve(DomainModel):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    head: Optional[list[float]] = None
+    head: Optional[float] = None
     flow: Optional[list[float]] = None
     efficiency: Optional[list[float]] = None
 
@@ -73,7 +73,7 @@ class TurbineEfficiencyCurveApply(DomainModelApply):
     Args:
         space: The space where the node is located.
         external_id: The external id of the turbine efficiency curve.
-        head: The head values
+        head: The reference head values
         flow: The flow values
         efficiency: The turbine efficiency values
         existing_version: Fail the ingestion request if the turbine efficiency curve version is greater than or equal to this value.
@@ -83,7 +83,7 @@ class TurbineEfficiencyCurveApply(DomainModelApply):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    head: list[float]
+    head: Optional[float] = None
     flow: list[float]
     efficiency: list[float]
 
@@ -144,11 +144,15 @@ class TurbineEfficiencyCurveApplyList(DomainModelApplyList[TurbineEfficiencyCurv
 
 def _create_turbine_efficiency_curve_filter(
     view_id: dm.ViewId,
+    min_head: float | None = None,
+    max_head: float | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
+    if min_head or max_head:
+        filters.append(dm.filters.Range(view_id.as_property_ref("head"), gte=min_head, lte=max_head))
     if external_id_prefix:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if space and isinstance(space, str):

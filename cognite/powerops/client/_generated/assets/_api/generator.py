@@ -31,6 +31,7 @@ from ._core import (
     QueryStep,
     QueryBuilder,
 )
+from .generator_turbine_curves import GeneratorTurbineCurvesAPI
 from .generator_start_stop_cost import GeneratorStartStopCostAPI
 from .generator_is_available_time_series import GeneratorIsAvailableTimeSeriesAPI
 from .generator_query import GeneratorQueryAPI
@@ -49,6 +50,7 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorApply, GeneratorList]):
             view_by_write_class=view_by_write_class,
         )
         self._view_id = view_id
+        self.turbine_curves_edge = GeneratorTurbineCurvesAPI(client)
         self.start_stop_cost = GeneratorStartStopCostAPI(client, view_id)
         self.is_available_time_series = GeneratorIsAvailableTimeSeriesAPI(client, view_id)
 
@@ -64,8 +66,7 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorApply, GeneratorList]):
         max_penstock: int | None = None,
         min_start_cost: float | None = None,
         max_start_cost: float | None = None,
-        generator_efficiency: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        turbine_efficiency: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        efficiency_curve: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
@@ -84,8 +85,7 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorApply, GeneratorList]):
             max_penstock: The maximum value of the penstock to filter on.
             min_start_cost: The minimum value of the start cost to filter on.
             max_start_cost: The maximum value of the start cost to filter on.
-            generator_efficiency: The generator efficiency to filter on.
-            turbine_efficiency: The turbine efficiency to filter on.
+            efficiency_curve: The efficiency curve to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of generators to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -108,8 +108,7 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorApply, GeneratorList]):
             max_penstock,
             min_start_cost,
             max_start_cost,
-            generator_efficiency,
-            turbine_efficiency,
+            efficiency_curve,
             external_id_prefix,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
@@ -121,6 +120,10 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorApply, GeneratorList]):
         self, generator: GeneratorApply | Sequence[GeneratorApply], replace: bool = False
     ) -> ResourcesApplyResult:
         """Add or update (upsert) generators.
+
+        Note: This method iterates through all nodes and timeseries linked to generator and creates them including the edges
+        between the nodes. For example, if any of `turbine_curves` are set, then these
+        nodes as well as any nodes linked to them, and all the edges linking these nodes will be created.
 
         Args:
             generator: Generator or sequence of generators to upsert.
@@ -193,7 +196,18 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorApply, GeneratorList]):
                 >>> generator = client.generator.retrieve("my_generator")
 
         """
-        return self._retrieve(external_id, space)
+        return self._retrieve(
+            external_id,
+            space,
+            retrieve_edges=True,
+            edge_api_name_type_triple=[
+                (
+                    self.turbine_curves_edge,
+                    "turbine_curves",
+                    dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
+                ),
+            ],
+        )
 
     def search(
         self,
@@ -209,8 +223,7 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorApply, GeneratorList]):
         max_penstock: int | None = None,
         min_start_cost: float | None = None,
         max_start_cost: float | None = None,
-        generator_efficiency: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        turbine_efficiency: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        efficiency_curve: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -231,8 +244,7 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorApply, GeneratorList]):
             max_penstock: The maximum value of the penstock to filter on.
             min_start_cost: The minimum value of the start cost to filter on.
             max_start_cost: The maximum value of the start cost to filter on.
-            generator_efficiency: The generator efficiency to filter on.
-            turbine_efficiency: The turbine efficiency to filter on.
+            efficiency_curve: The efficiency curve to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of generators to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -262,8 +274,7 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorApply, GeneratorList]):
             max_penstock,
             min_start_cost,
             max_start_cost,
-            generator_efficiency,
-            turbine_efficiency,
+            efficiency_curve,
             external_id_prefix,
             space,
             filter,
@@ -291,8 +302,7 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorApply, GeneratorList]):
         max_penstock: int | None = None,
         min_start_cost: float | None = None,
         max_start_cost: float | None = None,
-        generator_efficiency: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        turbine_efficiency: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        efficiency_curve: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -321,8 +331,7 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorApply, GeneratorList]):
         max_penstock: int | None = None,
         min_start_cost: float | None = None,
         max_start_cost: float | None = None,
-        generator_efficiency: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        turbine_efficiency: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        efficiency_curve: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -350,8 +359,7 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorApply, GeneratorList]):
         max_penstock: int | None = None,
         min_start_cost: float | None = None,
         max_start_cost: float | None = None,
-        generator_efficiency: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        turbine_efficiency: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        efficiency_curve: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -375,8 +383,7 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorApply, GeneratorList]):
             max_penstock: The maximum value of the penstock to filter on.
             min_start_cost: The minimum value of the start cost to filter on.
             max_start_cost: The maximum value of the start cost to filter on.
-            generator_efficiency: The generator efficiency to filter on.
-            turbine_efficiency: The turbine efficiency to filter on.
+            efficiency_curve: The efficiency curve to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of generators to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -407,8 +414,7 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorApply, GeneratorList]):
             max_penstock,
             min_start_cost,
             max_start_cost,
-            generator_efficiency,
-            turbine_efficiency,
+            efficiency_curve,
             external_id_prefix,
             space,
             filter,
@@ -441,8 +447,7 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorApply, GeneratorList]):
         max_penstock: int | None = None,
         min_start_cost: float | None = None,
         max_start_cost: float | None = None,
-        generator_efficiency: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        turbine_efficiency: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        efficiency_curve: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -465,8 +470,7 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorApply, GeneratorList]):
             max_penstock: The maximum value of the penstock to filter on.
             min_start_cost: The minimum value of the start cost to filter on.
             max_start_cost: The maximum value of the start cost to filter on.
-            generator_efficiency: The generator efficiency to filter on.
-            turbine_efficiency: The turbine efficiency to filter on.
+            efficiency_curve: The efficiency curve to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of generators to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -488,8 +492,7 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorApply, GeneratorList]):
             max_penstock,
             min_start_cost,
             max_start_cost,
-            generator_efficiency,
-            turbine_efficiency,
+            efficiency_curve,
             external_id_prefix,
             space,
             filter,
@@ -517,12 +520,12 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorApply, GeneratorList]):
         max_penstock: int | None = None,
         min_start_cost: float | None = None,
         max_start_cost: float | None = None,
-        generator_efficiency: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        turbine_efficiency: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        efficiency_curve: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
+        retrieve_edges: bool = True,
     ) -> GeneratorList:
         """List/filter generators
 
@@ -537,12 +540,12 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorApply, GeneratorList]):
             max_penstock: The maximum value of the penstock to filter on.
             min_start_cost: The minimum value of the start cost to filter on.
             max_start_cost: The maximum value of the start cost to filter on.
-            generator_efficiency: The generator efficiency to filter on.
-            turbine_efficiency: The turbine efficiency to filter on.
+            efficiency_curve: The efficiency curve to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of generators to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+            retrieve_edges: Whether to retrieve `turbine_curves` external ids for the generators. Defaults to True.
 
         Returns:
             List of requested generators
@@ -568,10 +571,21 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorApply, GeneratorList]):
             max_penstock,
             min_start_cost,
             max_start_cost,
-            generator_efficiency,
-            turbine_efficiency,
+            efficiency_curve,
             external_id_prefix,
             space,
             filter,
         )
-        return self._list(limit=limit, filter=filter_)
+
+        return self._list(
+            limit=limit,
+            filter=filter_,
+            retrieve_edges=retrieve_edges,
+            edge_api_name_type_triple=[
+                (
+                    self.turbine_curves_edge,
+                    "turbine_curves",
+                    dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
+                ),
+            ],
+        )

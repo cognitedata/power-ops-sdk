@@ -23,9 +23,10 @@ __all__ = [
     "GeneratorEfficiencyCurveFields",
 ]
 
-GeneratorEfficiencyCurveFields = Literal["power", "efficiency"]
+GeneratorEfficiencyCurveFields = Literal["ref", "power", "efficiency"]
 
 _GENERATOREFFICIENCYCURVE_PROPERTIES_BY_FIELD = {
+    "ref": "ref",
     "power": "power",
     "efficiency": "efficiency",
 }
@@ -39,6 +40,7 @@ class GeneratorEfficiencyCurve(DomainModel):
     Args:
         space: The space where the node is located.
         external_id: The external id of the generator efficiency curve.
+        ref: The reference value
         power: The generator power values
         efficiency: The generator efficiency values
         created_time: The created time of the generator efficiency curve node.
@@ -48,6 +50,7 @@ class GeneratorEfficiencyCurve(DomainModel):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
+    ref: Optional[float] = None
     power: Optional[list[float]] = None
     efficiency: Optional[list[float]] = None
 
@@ -56,6 +59,7 @@ class GeneratorEfficiencyCurve(DomainModel):
         return GeneratorEfficiencyCurveApply(
             space=self.space,
             external_id=self.external_id,
+            ref=self.ref,
             power=self.power,
             efficiency=self.efficiency,
         )
@@ -69,6 +73,7 @@ class GeneratorEfficiencyCurveApply(DomainModelApply):
     Args:
         space: The space where the node is located.
         external_id: The external id of the generator efficiency curve.
+        ref: The reference value
         power: The generator power values
         efficiency: The generator efficiency values
         existing_version: Fail the ingestion request if the generator efficiency curve version is greater than or equal to this value.
@@ -78,6 +83,7 @@ class GeneratorEfficiencyCurveApply(DomainModelApply):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
+    ref: Optional[float] = None
     power: list[float]
     efficiency: list[float]
 
@@ -95,6 +101,8 @@ class GeneratorEfficiencyCurveApply(DomainModelApply):
         )
 
         properties = {}
+        if self.ref is not None:
+            properties["ref"] = self.ref
         if self.power is not None:
             properties["power"] = self.power
         if self.efficiency is not None:
@@ -136,11 +144,15 @@ class GeneratorEfficiencyCurveApplyList(DomainModelApplyList[GeneratorEfficiency
 
 def _create_generator_efficiency_curve_filter(
     view_id: dm.ViewId,
+    min_ref: float | None = None,
+    max_ref: float | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
+    if min_ref or max_ref:
+        filters.append(dm.filters.Range(view_id.as_property_ref("ref"), gte=min_ref, lte=max_ref))
     if external_id_prefix:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if space and isinstance(space, str):
