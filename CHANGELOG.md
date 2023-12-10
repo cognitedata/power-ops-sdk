@@ -13,6 +13,13 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.75.0] - 2023-12-10
+### Added
+Three new data models added.
+* `PowerOpsAsset` is an asset model that will replace the old `ProductionModel`.
+* `DayAheadBid` which describes the day ahead bids, which is used in the PowerOps frontend to display the bids.
+* `AFRRBid` which describes the aFRR bids, which is used in the PowerOps frontend to display the bids.
+
 ## [0.74.2] - 2023-12-04
 ### Added
 * Optional kwargs for `PoweropsClient.form_settings` to override the defaults.
