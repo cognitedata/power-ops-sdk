@@ -14,6 +14,7 @@ from cognite.powerops.resync.models.v2.config_to_model import (
     to_benchmark_data_model,
     to_cogshop_data_model,
     to_dayahead_data_model,
+    to_powerasset_model,
     to_production_data_model,
     to_rkom_data_model,
 )
@@ -61,8 +62,8 @@ def transform(config: ReSyncConfig, market_name: str, model_types: set[type[Mode
         if models.ProductionModelDM in model_types:
             all_models.append(production__data_model)
         if models.PowerAssetModelDM in model_types:
-            power_asset_model = to_production_data_model(config.production)
-            all_models.append(power_asset_model)
+            power_asset_model = to_powerasset_model.to_asset_data_model(config.production)
+            all_models.append(power_asset_model)  # type: ignore[arg-type]
         if models.CogShopDataModel in model_types:
             cogshop_data_model = to_cogshop_data_model(
                 config.cogshop, config.production.watercourses, config.settings.shop_version

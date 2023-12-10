@@ -63,7 +63,7 @@ def to_asset_data_model(configuration: config.ProductionConfig) -> PowerAssetMod
         for generator_name, generator_attributes in shop_case["model"]["generator"].items():
             start_stop_cost = start_stop_cost_time_series_by_generator.get(generator_name)
             generator_curve = generator_attributes["gen_eff_curve"]
-            turbine_curve = generator_attributes["turb_eff_curves"]
+            turbine_curves = generator_attributes["turb_eff_curves"]
             assets.GeneratorApply(
                 external_id=f"generator_{generator_name}",
                 name=generator_name,
@@ -79,9 +79,9 @@ def to_asset_data_model(configuration: config.ProductionConfig) -> PowerAssetMod
                 ),
                 turbine_efficiency=assets.TurbineEfficiencyCurveApply(
                     external_id=f"turbine_efficiency_{generator_name}",
-                    head=[turbine_curve["ref"]] * len(turbine_curve["x"]),
-                    flow=turbine_curve["x"],
-                    efficiency=turbine_curve["y"],
+                    head=[turbine_curve["ref"] for turbine_curve in turbine_curves for _ in turbine_curve["x"]],
+                    flow=[value for turbine_curve in turbine_curves for value in turbine_curve["x"]],
+                    efficiency=[value for turbine_curve in turbine_curves for value in turbine_curve["y"]],
                 ),
             )
 
@@ -158,7 +158,7 @@ def to_asset_data_model(configuration: config.ProductionConfig) -> PowerAssetMod
             price_area = assets.PriceAreaApply(name=price_area_name, external_id=f"price_area_{price_area_name}")
             if price_area_name not in {a.name for a in model.price_areas}:
                 if price_area_name in configuration.dayahead_price_timeseries:
-                    price_area.dayahead_price_time_series = configuration.dayahead_price_timeseries[price_area_name]
+                    price_area.day_ahead_price = configuration.dayahead_price_timeseries[price_area_name]
                 model.price_areas.append(price_area)
             price_area = next(a for a in model.price_areas if a.name == price_area_name)
 
