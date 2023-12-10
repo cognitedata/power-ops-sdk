@@ -4,7 +4,10 @@ from cognite.client import ClientConfig, CogniteClient
 
 from cognite.powerops.utils.cdf import Settings, get_client_config
 
+from ._generated.affr_bid import AFRRBidAPI
+from ._generated.assets import PowerAssetAPI
 from ._generated.cogshop1 import CogShop1Client
+from ._generated.day_ahead_bid import DayAheadBidAPI
 from .data_set_api import DataSetsAPI
 from .shop.api.dayahead_trigger_api import DayaheadTriggerAPI
 from .shop.shop_run_api import SHOPRunAPI
@@ -23,6 +26,9 @@ class PowerOpsClient:
         self.cogshop_version = cogshop_version
         self.datasets = DataSetsAPI(self.cdf, read_dataset, write_dataset, monitor_dataset)
         self.cog_shop1 = CogShop1Client(self.cdf)
+        self.assets = PowerAssetAPI(self.cdf)
+        self.afrr_bid = AFRRBidAPI(self.cdf)
+        self.day_ahead_bid = DayAheadBidAPI(self.cdf)
         self.shop = SHOPRunAPI(self.cdf, self.datasets.write_dataset_id, cogshop_version)
         self.workflow = DayaheadTriggerAPI(self.cdf, self.datasets.write_dataset_id, cogshop_version)
 
