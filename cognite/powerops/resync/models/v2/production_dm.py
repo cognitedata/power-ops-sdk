@@ -6,7 +6,6 @@ from typing import Any, Callable, ClassVar, Literal
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling import ContainerId
 from pydantic import Field, field_validator
-from typing_extensions import Self
 
 from cognite.powerops.client._generated.assets import data_classes as assets
 from cognite.powerops.client._generated.data_classes._core import DomainModelApply
@@ -96,6 +95,18 @@ class PowerAssetModelDM(Model):
     generators: list[assets.GeneratorApply] = Field(default_factory=list)
     reservoirs: list[assets.ReservoirApply] = Field(default_factory=list)
 
+    _views_by_write_class: ClassVar[dict[assets.DomainModelApply, dm.ViewId]] = {
+        assets.BidMethodApply: dm.ViewId("power-ops-shared", "BidMethod", "1"),
+        assets.GeneratorApply: dm.ViewId("power-ops-assets", "Generator", "1"),
+        assets.GeneratorEfficiencyCurveApply: dm.ViewId("power-ops-assets", "GeneratorEfficiencyCurve", "1"),
+        assets.PlantApply: dm.ViewId("power-ops-assets", "Plant", "1"),
+        assets.PriceAreaApply: dm.ViewId("power-ops-assets", "PriceArea", "1"),
+        assets.ReservoirApply: dm.ViewId("power-ops-assets", "Reservoir", "1"),
+        assets.TurbineEfficiencyCurveApply: dm.ViewId("power-ops-assets", "TurbineEfficiencyCurve", "1"),
+        assets.WatercourseApply: dm.ViewId("power-ops-assets", "Watercourse", "1"),
+        assets.WatercourseSHOPApply: dm.ViewId("power-ops-assets", "WatercourseSHOP", "1"),
+    }
+
     def instances(self) -> dm.InstancesApply:
         resources = None
         cache = set()
@@ -125,51 +136,32 @@ class PowerAssetModelDM(Model):
     @classmethod
     def from_cdf(cls, client: PowerOpsClient, data_set_external_id: str) -> PowerAssetModelDM:
         cdf = client.cdf
-        views_by_write_class = client.assets.generator._view_by_write_class
-        nodes_by_id: dict[tuple[str, str], assets.DomainModelApply] = {}
-        for view, write_class in views_by_write_class.items():
-            nodes = cdf.data_modeling.instances("nodes", sources=view, limit=-1)
-            for node in nodes:
-                domain_node = write_class.from_instance(node.as_apply(view, None))
-                nodes_by_id[domain_node.as_tuple_id()] = domain_node
-
         is_type = dm.filters.Equals(["edge", "type"], {"externalId": "isSubAssetOf", "space": "power-ops-types"})
         edges = cdf.data_modeling.instances("edges", limit=-1, filter=is_type)
-        for edge in edges:
-            nodes_by_id[(edge.source, edge.source_version)]
-            nodes_by_id[(edge.target, edge.target_version)]
-            raise NotImplementedError()
+        edges = dm.EdgeApplyList([e.as_apply(None, 0) for e in edges])
+        nodes = dm.NodeApplyList([])
+        for view in cls._views_by_write_class.values():
+            nodes = cdf.data_modeling.instances("nodes", limit=-1, sources=view)
+            nodes.extend([n.as_apply(view, None) for n in nodes])
 
-        # Solve direct relations
-
-        args = {}
-        for field_name, field in cls.model_fields.items():
-            annotation, _ = get_pydantic_annotation(field.annotation, cls)
-            args[field_name] = [node for node in nodes_by_id.values() if isinstance(node, annotation)]
-        return cls(**args)
+        return cls._load(nodes, edges, link="external_id")
 
     @classmethod
     def load_from_cdf_resources(
-        cls: type[Self], data: dict[str, Any], link: Literal["external_id", "object"] = "object"
-    ) -> Self:
+        cls, data: dict[str, Any], link: Literal["external_id", "object"] = "object"
+    ) -> PowerAssetModelDM:
         if not data:
             return cls()
-        # Todo avoid this hack
-        view_by_write_class = {
-            assets.BidMethodApply: dm.ViewId("power-ops-shared", "BidMethod", "1"),
-            assets.GeneratorApply: dm.ViewId("power-ops-assets", "Generator", "1"),
-            assets.GeneratorEfficiencyCurveApply: dm.ViewId("power-ops-assets", "GeneratorEfficiencyCurve", "1"),
-            assets.PlantApply: dm.ViewId("power-ops-assets", "Plant", "1"),
-            assets.PriceAreaApply: dm.ViewId("power-ops-assets", "PriceArea", "1"),
-            assets.ReservoirApply: dm.ViewId("power-ops-assets", "Reservoir", "1"),
-            assets.TurbineEfficiencyCurveApply: dm.ViewId("power-ops-assets", "TurbineEfficiencyCurve", "1"),
-            assets.WatercourseApply: dm.ViewId("power-ops-assets", "Watercourse", "1"),
-            assets.WatercourseSHOPApply: dm.ViewId("power-ops-assets", "WatercourseSHOP", "1"),
-        }
-
-        write_class_by_view = {view: write_class for write_class, view in view_by_write_class.items()}
         nodes = dm.NodeApplyList.load(data.get("nodes", []))
         edges = dm.EdgeApplyList.load(data.get("edges", []))
+        return cls._load(nodes, edges, link)
+
+    @classmethod
+    def _load(
+        cls, nodes: dm.NodeApplyList, edges: dm.EdgeApplyList, link: Literal["external_id", "object"] = "object"
+    ) -> PowerAssetModelDM:
+        write_class_by_view = {view: write_class for write_class, view in cls._views_by_write_class.items()}
+
         nodes_by_id: dict[tuple[str, str], assets.DomainModelApply] = {}
         for node in nodes:
             write_class = write_class_by_view[node.sources[0].source]
@@ -201,6 +193,24 @@ class PowerAssetModelDM(Model):
                     else:
                         current_value.append(new_value)
                     break
+
+        # Solve direct relations
+        for node in nodes_by_id.values():
+            for field_name, field in node.model_fields.items():
+                annotation, _ = get_pydantic_annotation(field.annotation, type(node))
+                if issubclass(annotation, assets.DomainModelApply):
+                    current_value = getattr(node, field_name)
+                    if current_value is None:
+                        continue
+                    elif isinstance(current_value, (str, dm.NodeId)):
+                        if isinstance(current_value, dm.NodeId):
+                            space = current_value.space
+                            external_id = current_value.external_id
+                        else:
+                            space = node.space
+                            external_id = current_value
+                        if (domain_node := nodes_by_id.get((space, external_id))) is not None:
+                            setattr(node, field_name, domain_node)
 
         args = {}
         for field_name, field in cls.model_fields.items():
