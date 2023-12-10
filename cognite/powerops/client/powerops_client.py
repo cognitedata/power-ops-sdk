@@ -4,14 +4,6 @@ from cognite.client import ClientConfig, CogniteClient
 
 from cognite.powerops.utils.cdf import Settings, get_client_config
 
-from ._generated._api_client import (
-    BenchmarkAPIs,
-    CapacityBidAPIs,
-    CogShopAPIs,
-    DayAheadAPIs,
-    ProductionAPIs,
-    RKOMMarketAPIs,
-)
 from ._generated.cogshop1 import CogShop1Client
 from .data_set_api import DataSetsAPI
 from .shop.api.dayahead_trigger_api import DayaheadTriggerAPI
@@ -30,13 +22,7 @@ class PowerOpsClient:
         self.cdf = CogniteClient(config)
         self.cogshop_version = cogshop_version
         self.datasets = DataSetsAPI(self.cdf, read_dataset, write_dataset, monitor_dataset)
-        self.production = ProductionAPIs(self.cdf)
-        self.dayahead = DayAheadAPIs(self.cdf)
-        self.rkom = RKOMMarketAPIs(self.cdf)
-        self.benchmark = BenchmarkAPIs(self.cdf)
-        self.cog_shop = CogShopAPIs(self.cdf)
         self.cog_shop1 = CogShop1Client(self.cdf)
-        self.capacity_bid = CapacityBidAPIs(self.cdf)
         self.shop = SHOPRunAPI(self.cdf, self.datasets.write_dataset_id, cogshop_version)
         self.workflow = DayaheadTriggerAPI(self.cdf, self.datasets.write_dataset_id, cogshop_version)
 

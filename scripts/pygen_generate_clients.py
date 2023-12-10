@@ -3,25 +3,34 @@ This script is used to generate the Power Ops client. It is not used in the norm
 """
 import os
 from pathlib import Path
-
+from dataclasses import dataclass
 from cognite.pygen import generate_sdk
 
 
-from cognite.powerops.resync.models.v2.graphql_schemas import GRAPHQL_MODELS as v2
 from cognite.powerops.utils.cdf import get_cognite_client
 from cognite.powerops.utils.serialization import chdir
+from cognite.client import data_modeling as dm
 
 REPO_ROOT = Path(__file__).parent.parent
 
 
+@dataclass
+class Model:
+    model_id: dm.DataModelId
+    directory: str
+    client_name: str
+
+
 def main():
     top_level = "cognite.powerops.client._generated"
-    model_ids = [model.id_ for model in v2.values()]
 
     # Ensure we are in the root of the repo
     with chdir(REPO_ROOT):
         os.environ["SETTINGS_FILES"] = "settings.toml;.secrets.toml"
         client = get_cognite_client()
+        # These are commented out as we plan to move away from these
+        # models, and thus we don't want to maintain them (keep them up to date with
+        # the newest pygen).
         # generate_sdk(
         #     model_ids,
         #     client,
@@ -47,30 +56,33 @@ def main():
         #     overwrite=True,
         #     format_code=True,
         # )
-
-        # generate_sdk(
-        #     DayAheadBidModel.data_model().as_id(),
-        #     client,
-        #     top_level_package=f"{top_level}.day_ahead_bids",
-        #     client_name="DayAheadBidsAPI",
-        #     output_dir=REPO_ROOT,
-        #     logger=print,
-        #     pydantic_version="v2",
-        #     overwrite=True,
-        #     format_code=True,
-        # )
-        #
-        # generate_sdk(
-        #     AFRRBidModel.data_model().as_id(),
-        #     client,
-        #     top_level_package=f"{top_level}.afrr_bids",
-        #     client_name="AFRRBidsAPI",
-        #     output_dir=REPO_ROOT,
-        #     logger=print,
-        #     pydantic_version="v2",
-        #     overwrite=True,
-        #     format_code=True,
-        # )
+        models = [
+            Model(
+                model_id=dm.ViewId("power-ops-afrr-bid", "AFRRBid", "1"), directory="affr_bid", client_name="AFRRBidAPI"
+            ),
+            Model(
+                model_id=dm.ViewId("power-ops-day-ahead-bid", "DayAheadBid", "1"),
+                directory="day_ahead_bid",
+                client_name="DayAheadBidAPI",
+            ),
+            Model(
+                model_id=dm.ViewId("power-ops-assets", "PowerAsset", "1"),
+                directory="assets",
+                client_name="PowerAssetAPI",
+            ),
+        ]
+        for model in models:
+            generate_sdk(
+                model.model_id,
+                client,
+                top_level_package=f"{top_level}.{model.directory}",
+                client_name=model.client_name,
+                output_dir=REPO_ROOT,
+                logger=print,
+                pydantic_version="v2",
+                overwrite=True,
+                format_code=True,
+            )
 
 
 if __name__ == "__main__":
