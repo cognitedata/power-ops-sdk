@@ -28,3 +28,11 @@ properties:
     containerPropertyIdentifier: efficiency
     name: efficiency
     description: The generator efficiency values
+filter:
+  equals:
+    property:
+    - node
+    - type
+    value:
+      space: '{{type_space}}'
+      externalId: GeneratorCurve

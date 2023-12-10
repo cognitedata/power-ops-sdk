@@ -13,7 +13,6 @@ from ._api.price_area import PriceAreaAPI
 from ._api.reservoir import ReservoirAPI
 from ._api.turbine_efficiency_curve import TurbineEfficiencyCurveAPI
 from ._api.watercourse import WatercourseAPI
-from ._api.watercourse_shop import WatercourseSHOPAPI
 from . import data_classes
 
 
@@ -48,7 +47,6 @@ class PowerAssetAPI:
             data_classes.ReservoirApply: dm.ViewId("power-ops-assets", "Reservoir", "1"),
             data_classes.TurbineEfficiencyCurveApply: dm.ViewId("power-ops-assets", "TurbineEfficiencyCurve", "1"),
             data_classes.WatercourseApply: dm.ViewId("power-ops-assets", "Watercourse", "1"),
-            data_classes.WatercourseSHOPApply: dm.ViewId("power-ops-assets", "WatercourseSHOP", "1"),
         }
 
         self.bid_method = BidMethodAPI(client, view_by_write_class)
@@ -59,7 +57,6 @@ class PowerAssetAPI:
         self.reservoir = ReservoirAPI(client, view_by_write_class)
         self.turbine_efficiency_curve = TurbineEfficiencyCurveAPI(client, view_by_write_class)
         self.watercourse = WatercourseAPI(client, view_by_write_class)
-        self.watercourse_shop = WatercourseSHOPAPI(client, view_by_write_class)
 
     @classmethod
     def azure_project(

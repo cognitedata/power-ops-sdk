@@ -61,13 +61,6 @@ from ._watercourse import (
     WatercourseList,
     WatercourseTextFields,
 )
-from ._watercourse_shop import (
-    WatercourseSHOP,
-    WatercourseSHOPApply,
-    WatercourseSHOPApplyList,
-    WatercourseSHOPFields,
-    WatercourseSHOPList,
-)
 
 Generator.model_rebuild()
 GeneratorApply.model_rebuild()
@@ -131,9 +124,4 @@ __all__ = [
     "WatercourseApplyList",
     "WatercourseFields",
     "WatercourseTextFields",
-    "WatercourseSHOP",
-    "WatercourseSHOPApply",
-    "WatercourseSHOPList",
-    "WatercourseSHOPApplyList",
-    "WatercourseSHOPFields",
 ]
