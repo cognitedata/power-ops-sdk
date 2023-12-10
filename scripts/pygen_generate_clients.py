@@ -58,15 +58,17 @@ def main():
         # )
         models = [
             Model(
-                model_id=dm.ViewId("power-ops-afrr-bid", "AFRRBid", "1"), directory="affr_bid", client_name="AFRRBidAPI"
+                model_id=dm.DataModelId("power-ops-afrr-bid", "AFRRBid", "1"),
+                directory="affr_bid",
+                client_name="AFRRBidAPI",
             ),
             Model(
-                model_id=dm.ViewId("power-ops-day-ahead-bid", "DayAheadBid", "1"),
+                model_id=dm.DataModelId("power-ops-day-ahead-bid", "DayAheadBid", "1"),
                 directory="day_ahead_bid",
                 client_name="DayAheadBidAPI",
             ),
             Model(
-                model_id=dm.ViewId("power-ops-assets", "PowerAsset", "1"),
+                model_id=dm.DataModelId("power-ops-assets", "PowerAsset", "1"),
                 directory="assets",
                 client_name="PowerAssetAPI",
             ),
