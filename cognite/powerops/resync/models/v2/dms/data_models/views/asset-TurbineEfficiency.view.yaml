@@ -20,11 +20,11 @@ properties:
     containerPropertyIdentifier: y
     name: flow
     description: The flow values
-  turbineEfficiency:
+  efficiency:
     container:
       space: '{{asset_space}}'
       externalId: EfficiencyCurve
       type: container
     containerPropertyIdentifier: efficiency
-    name: turbineEfficiency
+    name: efficiency
     description: The turbine efficiency values

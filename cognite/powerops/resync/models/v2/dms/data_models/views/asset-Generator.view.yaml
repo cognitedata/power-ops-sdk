@@ -55,25 +55,25 @@ properties:
       externalId: Generator
     containerPropertyIdentifier: isAvailable
     name: isAvailableTimeSeries
-  generatorEfficiencyCurve:
+  generatorEfficiency:
     container:
       type: container
       space: '{{shared_model_space}}'
       externalId: Generator
     containerPropertyIdentifier: generatorEfficiencyCurve
-    name: generatorEfficiencyCurve
+    name: generatorEfficiency
     source:
       type: view
       space: '{{asset_space}}'
       externalId: GeneratorEfficiencyCurve
       version: '{{asset_GeneratorEfficiency_version}}'
-  turbineEfficiencyCurve:
+  turbineEfficiency:
     container:
       type: container
       space: '{{shared_model_space}}'
       externalId: Generator
     containerPropertyIdentifier: turbineEfficiencyCurve
-    name: turbineEfficiencyCurve
+    name: turbineEfficiency
     source:
       type: view
       space: '{{asset_space}}'
