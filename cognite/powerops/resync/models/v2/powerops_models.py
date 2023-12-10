@@ -121,6 +121,30 @@ class SpaceAPI(DataModelAPI[SpaceApplyList]):
         all_spaces = self._client.data_modeling.spaces.list()
         return SpaceApplyList([space.as_apply() for space in all_spaces if space.space.startswith("power-ops")])
 
+    def delete(self, ids: list[Any]) -> None:
+        for space in ids:
+            if space == "power-ops-types":
+                return  # Never delete the types space
+            data_models = self._client.data_modeling.data_models.list(space=space)
+            self._client.data_modeling.data_models.delete(data_models.as_ids())
+            views = self._client.data_modeling.views.list(space=space)
+            self._client.data_modeling.views.delete(views.as_ids())
+            containers = self._client.data_modeling.containers.list(space=space)
+            self._client.data_modeling.containers.delete(containers.as_ids())
+            is_space = filters.Equals(["edge", "space"], space)
+            edges = self._client.data_modeling.instances.list("edge", filter=is_space)
+            self._client.data_modeling.instances.delete(edges.as_ids())
+            is_space = filters.Equals(["node", "space"], space)
+            nodes = self._client.data_modeling.instances.list(filter=is_space)
+            self._client.data_modeling.instances.delete(nodes.as_ids())
+            if nodes or edges or containers or views or data_models:
+                print(
+                    f"Deleted {space}: {len(nodes)} nodes, {len(edges)} edges, {len(containers)} containers, "
+                    f"{len(views)} views, {len(data_models)} data models"
+                )
+
+        self._client.data_modeling.spaces.delete(ids)
+
 
 class DataModelLoader:
     def __init__(self):

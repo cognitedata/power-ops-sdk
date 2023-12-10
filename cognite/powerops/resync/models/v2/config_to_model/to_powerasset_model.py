@@ -4,7 +4,6 @@ import re
 
 from cognite.powerops.client._generated.assets import data_classes as assets
 from cognite.powerops.resync import config
-from cognite.powerops.resync.models._shared_v1_v2._to_instances import make_ext_id
 from cognite.powerops.resync.models._shared_v1_v2.production_model import (
     _get_single_value,
     _plant_to_inlet_reservoir_with_losses,
@@ -32,10 +31,7 @@ def to_asset_data_model(configuration: config.ProductionConfig) -> PowerAssetMod
         watercourse = assets.WatercourseApply(
             external_id=f"watercourse_{watercourse_config.name}",
             name=watercourse_config.name,
-            shop=assets.WatercourseSHOPApply(
-                external_id=make_ext_id(watercourse_config.shop_penalty_limit, assets.WatercourseSHOP),
-                penalty_limit=watercourse_config.shop_penalty_limit,
-            ),
+            penalty_limit=watercourse_config.shop_penalty_limit,
             plants=[],
             production_obligation=watercourse_config.production_obligation_ts_ext_ids,
         )

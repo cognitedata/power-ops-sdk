@@ -32,10 +32,6 @@ views:
   space: '{{asset_space}}'
   type: view
   version: '{{asset_GeneratorEfficiency_version}}'
-- externalId: WatercourseSHOP
-  space: '{{asset_space}}'
-  type: view
-  version: '{{asset_WatercourseSHOP_version}}'
 - externalId: BidMethod
   space: '{{shared_model_space}}'
   type: view
