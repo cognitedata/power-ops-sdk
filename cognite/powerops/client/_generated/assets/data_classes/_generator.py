@@ -63,8 +63,8 @@ class Generator(DomainModel):
         start_cost: The start cost field.
         start_stop_cost: The start stop cost field.
         is_available_time_series: The is available time series field.
-        generator_efficiency_curve: The generator efficiency curve field.
-        turbine_efficiency_curve: The turbine efficiency curve field.
+        generator_efficiency: The generator efficiency field.
+        turbine_efficiency: The turbine efficiency field.
         created_time: The created time of the generator node.
         last_updated_time: The last updated time of the generator node.
         deleted_time: If present, the deleted time of the generator node.
@@ -79,11 +79,11 @@ class Generator(DomainModel):
     start_cost: Optional[float] = Field(None, alias="startCost")
     start_stop_cost: Union[TimeSeries, str, None] = Field(None, alias="startStopCost")
     is_available_time_series: Union[TimeSeries, str, None] = Field(None, alias="isAvailableTimeSeries")
-    generator_efficiency_curve: Union[GeneratorEfficiencyCurve, str, dm.NodeId, None] = Field(
-        None, repr=False, alias="generatorEfficiencyCurve"
+    generator_efficiency: Union[GeneratorEfficiencyCurve, str, dm.NodeId, None] = Field(
+        None, repr=False, alias="generatorEfficiency"
     )
-    turbine_efficiency_curve: Union[TurbineEfficiencyCurve, str, dm.NodeId, None] = Field(
-        None, repr=False, alias="turbineEfficiencyCurve"
+    turbine_efficiency: Union[TurbineEfficiencyCurve, str, dm.NodeId, None] = Field(
+        None, repr=False, alias="turbineEfficiency"
     )
 
     def as_apply(self) -> GeneratorApply:
@@ -98,12 +98,12 @@ class Generator(DomainModel):
             start_cost=self.start_cost,
             start_stop_cost=self.start_stop_cost,
             is_available_time_series=self.is_available_time_series,
-            generator_efficiency_curve=self.generator_efficiency_curve.as_apply()
-            if isinstance(self.generator_efficiency_curve, DomainModel)
-            else self.generator_efficiency_curve,
-            turbine_efficiency_curve=self.turbine_efficiency_curve.as_apply()
-            if isinstance(self.turbine_efficiency_curve, DomainModel)
-            else self.turbine_efficiency_curve,
+            generator_efficiency=self.generator_efficiency.as_apply()
+            if isinstance(self.generator_efficiency, DomainModel)
+            else self.generator_efficiency,
+            turbine_efficiency=self.turbine_efficiency.as_apply()
+            if isinstance(self.turbine_efficiency, DomainModel)
+            else self.turbine_efficiency,
         )
 
 
@@ -122,8 +122,8 @@ class GeneratorApply(DomainModelApply):
         start_cost: The start cost field.
         start_stop_cost: The start stop cost field.
         is_available_time_series: The is available time series field.
-        generator_efficiency_curve: The generator efficiency curve field.
-        turbine_efficiency_curve: The turbine efficiency curve field.
+        generator_efficiency: The generator efficiency field.
+        turbine_efficiency: The turbine efficiency field.
         existing_version: Fail the ingestion request if the generator version is greater than or equal to this value.
             If no existingVersion is specified, the ingestion will always overwrite any existing data for the edge (for the specified container or instance).
             If existingVersion is set to 0, the upsert will behave as an insert, so it will fail the bulk if the item already exists.
@@ -138,11 +138,11 @@ class GeneratorApply(DomainModelApply):
     start_cost: Optional[float] = Field(None, alias="startCost")
     start_stop_cost: Union[TimeSeries, str, None] = Field(None, alias="startStopCost")
     is_available_time_series: Union[TimeSeries, str, None] = Field(None, alias="isAvailableTimeSeries")
-    generator_efficiency_curve: Union[GeneratorEfficiencyCurveApply, str, dm.NodeId, None] = Field(
-        None, repr=False, alias="generatorEfficiencyCurve"
+    generator_efficiency: Union[GeneratorEfficiencyCurveApply, str, dm.NodeId, None] = Field(
+        None, repr=False, alias="generatorEfficiency"
     )
-    turbine_efficiency_curve: Union[TurbineEfficiencyCurveApply, str, dm.NodeId, None] = Field(
-        None, repr=False, alias="turbineEfficiencyCurve"
+    turbine_efficiency: Union[TurbineEfficiencyCurveApply, str, dm.NodeId, None] = Field(
+        None, repr=False, alias="turbineEfficiency"
     )
 
     def _to_instances_apply(
@@ -179,23 +179,19 @@ class GeneratorApply(DomainModelApply):
                 if isinstance(self.is_available_time_series, str)
                 else self.is_available_time_series.external_id
             )
-        if self.generator_efficiency_curve is not None:
-            properties["generatorEfficiencyCurve"] = {
-                "space": self.space
-                if isinstance(self.generator_efficiency_curve, str)
-                else self.generator_efficiency_curve.space,
-                "externalId": self.generator_efficiency_curve
-                if isinstance(self.generator_efficiency_curve, str)
-                else self.generator_efficiency_curve.external_id,
+        if self.generator_efficiency is not None:
+            properties["generatorEfficiency"] = {
+                "space": self.space if isinstance(self.generator_efficiency, str) else self.generator_efficiency.space,
+                "externalId": self.generator_efficiency
+                if isinstance(self.generator_efficiency, str)
+                else self.generator_efficiency.external_id,
             }
-        if self.turbine_efficiency_curve is not None:
-            properties["turbineEfficiencyCurve"] = {
-                "space": self.space
-                if isinstance(self.turbine_efficiency_curve, str)
-                else self.turbine_efficiency_curve.space,
-                "externalId": self.turbine_efficiency_curve
-                if isinstance(self.turbine_efficiency_curve, str)
-                else self.turbine_efficiency_curve.external_id,
+        if self.turbine_efficiency is not None:
+            properties["turbineEfficiency"] = {
+                "space": self.space if isinstance(self.turbine_efficiency, str) else self.turbine_efficiency.space,
+                "externalId": self.turbine_efficiency
+                if isinstance(self.turbine_efficiency, str)
+                else self.turbine_efficiency.external_id,
             }
 
         if properties:
@@ -213,12 +209,12 @@ class GeneratorApply(DomainModelApply):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        if isinstance(self.generator_efficiency_curve, DomainModelApply):
-            other_resources = self.generator_efficiency_curve._to_instances_apply(cache, view_by_write_class)
+        if isinstance(self.generator_efficiency, DomainModelApply):
+            other_resources = self.generator_efficiency._to_instances_apply(cache, view_by_write_class)
             resources.extend(other_resources)
 
-        if isinstance(self.turbine_efficiency_curve, DomainModelApply):
-            other_resources = self.turbine_efficiency_curve._to_instances_apply(cache, view_by_write_class)
+        if isinstance(self.turbine_efficiency, DomainModelApply):
+            other_resources = self.turbine_efficiency._to_instances_apply(cache, view_by_write_class)
             resources.extend(other_resources)
 
         if isinstance(self.start_stop_cost, CogniteTimeSeries):
@@ -258,8 +254,8 @@ def _create_generator_filter(
     max_penstock: int | None = None,
     min_start_cost: float | None = None,
     max_start_cost: float | None = None,
-    generator_efficiency_curve: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-    turbine_efficiency_curve: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+    generator_efficiency: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+    turbine_efficiency: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -283,76 +279,60 @@ def _create_generator_filter(
         filters.append(dm.filters.Range(view_id.as_property_ref("penstock"), gte=min_penstock, lte=max_penstock))
     if min_start_cost or max_start_cost:
         filters.append(dm.filters.Range(view_id.as_property_ref("startCost"), gte=min_start_cost, lte=max_start_cost))
-    if generator_efficiency_curve and isinstance(generator_efficiency_curve, str):
+    if generator_efficiency and isinstance(generator_efficiency, str):
         filters.append(
             dm.filters.Equals(
-                view_id.as_property_ref("generatorEfficiencyCurve"),
-                value={"space": "power-ops-assets", "externalId": generator_efficiency_curve},
+                view_id.as_property_ref("generatorEfficiency"),
+                value={"space": "power-ops-assets", "externalId": generator_efficiency},
             )
         )
-    if generator_efficiency_curve and isinstance(generator_efficiency_curve, tuple):
+    if generator_efficiency and isinstance(generator_efficiency, tuple):
         filters.append(
             dm.filters.Equals(
-                view_id.as_property_ref("generatorEfficiencyCurve"),
-                value={"space": generator_efficiency_curve[0], "externalId": generator_efficiency_curve[1]},
+                view_id.as_property_ref("generatorEfficiency"),
+                value={"space": generator_efficiency[0], "externalId": generator_efficiency[1]},
             )
         )
-    if (
-        generator_efficiency_curve
-        and isinstance(generator_efficiency_curve, list)
-        and isinstance(generator_efficiency_curve[0], str)
-    ):
+    if generator_efficiency and isinstance(generator_efficiency, list) and isinstance(generator_efficiency[0], str):
         filters.append(
             dm.filters.In(
-                view_id.as_property_ref("generatorEfficiencyCurve"),
-                values=[{"space": "power-ops-assets", "externalId": item} for item in generator_efficiency_curve],
+                view_id.as_property_ref("generatorEfficiency"),
+                values=[{"space": "power-ops-assets", "externalId": item} for item in generator_efficiency],
             )
         )
-    if (
-        generator_efficiency_curve
-        and isinstance(generator_efficiency_curve, list)
-        and isinstance(generator_efficiency_curve[0], tuple)
-    ):
+    if generator_efficiency and isinstance(generator_efficiency, list) and isinstance(generator_efficiency[0], tuple):
         filters.append(
             dm.filters.In(
-                view_id.as_property_ref("generatorEfficiencyCurve"),
-                values=[{"space": item[0], "externalId": item[1]} for item in generator_efficiency_curve],
+                view_id.as_property_ref("generatorEfficiency"),
+                values=[{"space": item[0], "externalId": item[1]} for item in generator_efficiency],
             )
         )
-    if turbine_efficiency_curve and isinstance(turbine_efficiency_curve, str):
+    if turbine_efficiency and isinstance(turbine_efficiency, str):
         filters.append(
             dm.filters.Equals(
-                view_id.as_property_ref("turbineEfficiencyCurve"),
-                value={"space": "power-ops-assets", "externalId": turbine_efficiency_curve},
+                view_id.as_property_ref("turbineEfficiency"),
+                value={"space": "power-ops-assets", "externalId": turbine_efficiency},
             )
         )
-    if turbine_efficiency_curve and isinstance(turbine_efficiency_curve, tuple):
+    if turbine_efficiency and isinstance(turbine_efficiency, tuple):
         filters.append(
             dm.filters.Equals(
-                view_id.as_property_ref("turbineEfficiencyCurve"),
-                value={"space": turbine_efficiency_curve[0], "externalId": turbine_efficiency_curve[1]},
+                view_id.as_property_ref("turbineEfficiency"),
+                value={"space": turbine_efficiency[0], "externalId": turbine_efficiency[1]},
             )
         )
-    if (
-        turbine_efficiency_curve
-        and isinstance(turbine_efficiency_curve, list)
-        and isinstance(turbine_efficiency_curve[0], str)
-    ):
+    if turbine_efficiency and isinstance(turbine_efficiency, list) and isinstance(turbine_efficiency[0], str):
         filters.append(
             dm.filters.In(
-                view_id.as_property_ref("turbineEfficiencyCurve"),
-                values=[{"space": "power-ops-assets", "externalId": item} for item in turbine_efficiency_curve],
+                view_id.as_property_ref("turbineEfficiency"),
+                values=[{"space": "power-ops-assets", "externalId": item} for item in turbine_efficiency],
             )
         )
-    if (
-        turbine_efficiency_curve
-        and isinstance(turbine_efficiency_curve, list)
-        and isinstance(turbine_efficiency_curve[0], tuple)
-    ):
+    if turbine_efficiency and isinstance(turbine_efficiency, list) and isinstance(turbine_efficiency[0], tuple):
         filters.append(
             dm.filters.In(
-                view_id.as_property_ref("turbineEfficiencyCurve"),
-                values=[{"space": item[0], "externalId": item[1]} for item in turbine_efficiency_curve],
+                view_id.as_property_ref("turbineEfficiency"),
+                values=[{"space": item[0], "externalId": item[1]} for item in turbine_efficiency],
             )
         )
     if external_id_prefix:

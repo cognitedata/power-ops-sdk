@@ -43,35 +43,35 @@ class GeneratorQueryAPI(QueryAPI[T_DomainModelList]):
 
     def query(
         self,
-        retrieve_generator_efficiency_curve: bool = False,
-        retrieve_turbine_efficiency_curve: bool = False,
+        retrieve_generator_efficiency: bool = False,
+        retrieve_turbine_efficiency: bool = False,
     ) -> T_DomainModelList:
         """Execute query and return the result.
 
         Args:
-            retrieve_generator_efficiency_curve: Whether to retrieve the generator efficiency curve for each generator or not.
-            retrieve_turbine_efficiency_curve: Whether to retrieve the turbine efficiency curve for each generator or not.
+            retrieve_generator_efficiency: Whether to retrieve the generator efficiency for each generator or not.
+            retrieve_turbine_efficiency: Whether to retrieve the turbine efficiency for each generator or not.
 
         Returns:
             The list of the source nodes of the query.
 
         """
         from_ = self._builder[-1].name
-        if retrieve_generator_efficiency_curve:
-            self._query_append_generator_efficiency_curve(from_)
-        if retrieve_turbine_efficiency_curve:
-            self._query_append_turbine_efficiency_curve(from_)
+        if retrieve_generator_efficiency:
+            self._query_append_generator_efficiency(from_)
+        if retrieve_turbine_efficiency:
+            self._query_append_turbine_efficiency(from_)
         return self._query()
 
-    def _query_append_generator_efficiency_curve(self, from_: str) -> None:
+    def _query_append_generator_efficiency(self, from_: str) -> None:
         view_id = self._view_by_write_class[GeneratorEfficiencyCurveApply]
         self._builder.append(
             QueryStep(
-                name=self._builder.next_name("generator_efficiency_curve"),
+                name=self._builder.next_name("generator_efficiency"),
                 expression=dm.query.NodeResultSetExpression(
                     filter=dm.filters.HasData(views=[view_id]),
                     from_=from_,
-                    through=self._view_by_write_class[GeneratorApply].as_property_ref("generator_efficiency_curve"),
+                    through=self._view_by_write_class[GeneratorApply].as_property_ref("generator_efficiency"),
                     direction="outwards",
                 ),
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
@@ -80,15 +80,15 @@ class GeneratorQueryAPI(QueryAPI[T_DomainModelList]):
             ),
         )
 
-    def _query_append_turbine_efficiency_curve(self, from_: str) -> None:
+    def _query_append_turbine_efficiency(self, from_: str) -> None:
         view_id = self._view_by_write_class[TurbineEfficiencyCurveApply]
         self._builder.append(
             QueryStep(
-                name=self._builder.next_name("turbine_efficiency_curve"),
+                name=self._builder.next_name("turbine_efficiency"),
                 expression=dm.query.NodeResultSetExpression(
                     filter=dm.filters.HasData(views=[view_id]),
                     from_=from_,
-                    through=self._view_by_write_class[GeneratorApply].as_property_ref("turbine_efficiency_curve"),
+                    through=self._view_by_write_class[GeneratorApply].as_property_ref("turbine_efficiency"),
                     direction="outwards",
                 ),
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),

@@ -3,7 +3,6 @@ from __future__ import annotations
 from typing import Literal, Optional
 
 from cognite.client import data_modeling as dm
-from pydantic import Field
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
@@ -24,12 +23,12 @@ __all__ = [
     "TurbineEfficiencyCurveFields",
 ]
 
-TurbineEfficiencyCurveFields = Literal["head", "flow", "turbine_efficiency"]
+TurbineEfficiencyCurveFields = Literal["head", "flow", "efficiency"]
 
 _TURBINEEFFICIENCYCURVE_PROPERTIES_BY_FIELD = {
     "head": "head",
     "flow": "flow",
-    "turbine_efficiency": "turbineEfficiency",
+    "efficiency": "efficiency",
 }
 
 
@@ -43,7 +42,7 @@ class TurbineEfficiencyCurve(DomainModel):
         external_id: The external id of the turbine efficiency curve.
         head: The head values
         flow: The flow values
-        turbine_efficiency: The turbine efficiency values
+        efficiency: The turbine efficiency values
         created_time: The created time of the turbine efficiency curve node.
         last_updated_time: The last updated time of the turbine efficiency curve node.
         deleted_time: If present, the deleted time of the turbine efficiency curve node.
@@ -53,7 +52,7 @@ class TurbineEfficiencyCurve(DomainModel):
     space: str = DEFAULT_INSTANCE_SPACE
     head: Optional[list[float]] = None
     flow: Optional[list[float]] = None
-    turbine_efficiency: Optional[list[float]] = Field(None, alias="turbineEfficiency")
+    efficiency: Optional[list[float]] = None
 
     def as_apply(self) -> TurbineEfficiencyCurveApply:
         """Convert this read version of turbine efficiency curve to the writing version."""
@@ -62,7 +61,7 @@ class TurbineEfficiencyCurve(DomainModel):
             external_id=self.external_id,
             head=self.head,
             flow=self.flow,
-            turbine_efficiency=self.turbine_efficiency,
+            efficiency=self.efficiency,
         )
 
 
@@ -76,7 +75,7 @@ class TurbineEfficiencyCurveApply(DomainModelApply):
         external_id: The external id of the turbine efficiency curve.
         head: The head values
         flow: The flow values
-        turbine_efficiency: The turbine efficiency values
+        efficiency: The turbine efficiency values
         existing_version: Fail the ingestion request if the turbine efficiency curve version is greater than or equal to this value.
             If no existingVersion is specified, the ingestion will always overwrite any existing data for the edge (for the specified container or instance).
             If existingVersion is set to 0, the upsert will behave as an insert, so it will fail the bulk if the item already exists.
@@ -86,7 +85,7 @@ class TurbineEfficiencyCurveApply(DomainModelApply):
     space: str = DEFAULT_INSTANCE_SPACE
     head: list[float]
     flow: list[float]
-    turbine_efficiency: list[float] = Field(alias="turbineEfficiency")
+    efficiency: list[float]
 
     def _to_instances_apply(
         self,
@@ -106,8 +105,8 @@ class TurbineEfficiencyCurveApply(DomainModelApply):
             properties["head"] = self.head
         if self.flow is not None:
             properties["flow"] = self.flow
-        if self.turbine_efficiency is not None:
-            properties["turbineEfficiency"] = self.turbine_efficiency
+        if self.efficiency is not None:
+            properties["efficiency"] = self.efficiency
 
         if properties:
             this_node = dm.NodeApply(

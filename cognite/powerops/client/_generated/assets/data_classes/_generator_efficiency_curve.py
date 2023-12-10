@@ -3,7 +3,6 @@ from __future__ import annotations
 from typing import Literal, Optional
 
 from cognite.client import data_modeling as dm
-from pydantic import Field
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
@@ -24,11 +23,11 @@ __all__ = [
     "GeneratorEfficiencyCurveFields",
 ]
 
-GeneratorEfficiencyCurveFields = Literal["generator_power", "generator_efficiency"]
+GeneratorEfficiencyCurveFields = Literal["power", "efficiency"]
 
 _GENERATOREFFICIENCYCURVE_PROPERTIES_BY_FIELD = {
-    "generator_power": "generatorPower",
-    "generator_efficiency": "generatorEfficiency",
+    "power": "power",
+    "efficiency": "efficiency",
 }
 
 
@@ -40,8 +39,8 @@ class GeneratorEfficiencyCurve(DomainModel):
     Args:
         space: The space where the node is located.
         external_id: The external id of the generator efficiency curve.
-        generator_power: The generator power values
-        generator_efficiency: The generator efficiency values
+        power: The generator power values
+        efficiency: The generator efficiency values
         created_time: The created time of the generator efficiency curve node.
         last_updated_time: The last updated time of the generator efficiency curve node.
         deleted_time: If present, the deleted time of the generator efficiency curve node.
@@ -49,16 +48,16 @@ class GeneratorEfficiencyCurve(DomainModel):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    generator_power: Optional[list[float]] = Field(None, alias="generatorPower")
-    generator_efficiency: Optional[list[float]] = Field(None, alias="generatorEfficiency")
+    power: Optional[list[float]] = None
+    efficiency: Optional[list[float]] = None
 
     def as_apply(self) -> GeneratorEfficiencyCurveApply:
         """Convert this read version of generator efficiency curve to the writing version."""
         return GeneratorEfficiencyCurveApply(
             space=self.space,
             external_id=self.external_id,
-            generator_power=self.generator_power,
-            generator_efficiency=self.generator_efficiency,
+            power=self.power,
+            efficiency=self.efficiency,
         )
 
 
@@ -70,8 +69,8 @@ class GeneratorEfficiencyCurveApply(DomainModelApply):
     Args:
         space: The space where the node is located.
         external_id: The external id of the generator efficiency curve.
-        generator_power: The generator power values
-        generator_efficiency: The generator efficiency values
+        power: The generator power values
+        efficiency: The generator efficiency values
         existing_version: Fail the ingestion request if the generator efficiency curve version is greater than or equal to this value.
             If no existingVersion is specified, the ingestion will always overwrite any existing data for the edge (for the specified container or instance).
             If existingVersion is set to 0, the upsert will behave as an insert, so it will fail the bulk if the item already exists.
@@ -79,8 +78,8 @@ class GeneratorEfficiencyCurveApply(DomainModelApply):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    generator_power: list[float] = Field(alias="generatorPower")
-    generator_efficiency: list[float] = Field(alias="generatorEfficiency")
+    power: list[float]
+    efficiency: list[float]
 
     def _to_instances_apply(
         self,
@@ -96,10 +95,10 @@ class GeneratorEfficiencyCurveApply(DomainModelApply):
         )
 
         properties = {}
-        if self.generator_power is not None:
-            properties["generatorPower"] = self.generator_power
-        if self.generator_efficiency is not None:
-            properties["generatorEfficiency"] = self.generator_efficiency
+        if self.power is not None:
+            properties["power"] = self.power
+        if self.efficiency is not None:
+            properties["efficiency"] = self.efficiency
 
         if properties:
             this_node = dm.NodeApply(
