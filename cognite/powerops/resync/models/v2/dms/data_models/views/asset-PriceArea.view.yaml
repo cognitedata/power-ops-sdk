@@ -28,6 +28,14 @@ properties:
     containerPropertyIdentifier: description
     name: description
     description: Description for the PriceArea.
+  timezone:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: PriceArea
+      type: container
+    containerPropertyIdentifier: timezone
+    name: timezone
+    description: The timezone of the price area
   capacityPriceUp:
     container:
       space: '{{shared_model_space}}'
