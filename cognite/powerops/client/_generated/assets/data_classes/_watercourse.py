@@ -19,7 +19,6 @@ from ._core import (
 
 if TYPE_CHECKING:
     from ._plant import Plant, PlantApply
-    from ._watercourse_shop import WatercourseSHOP, WatercourseSHOPApply
 
 
 __all__ = [
@@ -33,12 +32,13 @@ __all__ = [
 
 
 WatercourseTextFields = Literal["name", "display_name", "production_obligation"]
-WatercourseFields = Literal["name", "display_name", "production_obligation"]
+WatercourseFields = Literal["name", "display_name", "production_obligation", "penalty_limit"]
 
 _WATERCOURSE_PROPERTIES_BY_FIELD = {
     "name": "name",
     "display_name": "displayName",
     "production_obligation": "productionObligation",
+    "penalty_limit": "penaltyLimit",
 }
 
 
@@ -53,7 +53,7 @@ class Watercourse(DomainModel):
         name: Name for the Watercourse.
         display_name: Display name for the Watercourse.
         production_obligation: The production obligation for the Watercourse.
-        shop: The shop field.
+        penalty_limit: The penalty limit for the watercourse (used by SHOP).
         plants: The plants that are connected to the Watercourse.
         created_time: The created time of the watercourse node.
         last_updated_time: The last updated time of the watercourse node.
@@ -65,7 +65,7 @@ class Watercourse(DomainModel):
     name: Optional[str] = None
     display_name: Optional[str] = Field(None, alias="displayName")
     production_obligation: Optional[list[TimeSeries]] = Field(None, alias="productionObligation")
-    shop: Union[WatercourseSHOP, str, dm.NodeId, None] = Field(None, repr=False)
+    penalty_limit: Optional[float] = Field(None, alias="penaltyLimit")
     plants: Union[list[Plant], list[str], None] = Field(default=None, repr=False)
 
     def as_apply(self) -> WatercourseApply:
@@ -76,7 +76,7 @@ class Watercourse(DomainModel):
             name=self.name,
             display_name=self.display_name,
             production_obligation=self.production_obligation,
-            shop=self.shop.as_apply() if isinstance(self.shop, DomainModel) else self.shop,
+            penalty_limit=self.penalty_limit,
             plants=[plant.as_apply() if isinstance(plant, DomainModel) else plant for plant in self.plants or []],
         )
 
@@ -92,7 +92,7 @@ class WatercourseApply(DomainModelApply):
         name: Name for the Watercourse.
         display_name: Display name for the Watercourse.
         production_obligation: The production obligation for the Watercourse.
-        shop: The shop field.
+        penalty_limit: The penalty limit for the watercourse (used by SHOP).
         plants: The plants that are connected to the Watercourse.
         existing_version: Fail the ingestion request if the watercourse version is greater than or equal to this value.
             If no existingVersion is specified, the ingestion will always overwrite any existing data for the edge (for the specified container or instance).
@@ -104,7 +104,7 @@ class WatercourseApply(DomainModelApply):
     name: str
     display_name: Optional[str] = Field(None, alias="displayName")
     production_obligation: Optional[list[TimeSeries]] = Field(None, alias="productionObligation")
-    shop: Union[WatercourseSHOPApply, str, dm.NodeId, None] = Field(None, repr=False)
+    penalty_limit: Optional[float] = Field(None, alias="penaltyLimit")
     plants: Union[list[PlantApply], list[str], None] = Field(default=None, repr=False)
 
     def _to_instances_apply(
@@ -127,11 +127,8 @@ class WatercourseApply(DomainModelApply):
             properties["displayName"] = self.display_name
         if self.production_obligation is not None:
             properties["productionObligation"] = self.production_obligation
-        if self.shop is not None:
-            properties["shop"] = {
-                "space": self.space if isinstance(self.shop, str) else self.shop.space,
-                "externalId": self.shop if isinstance(self.shop, str) else self.shop.external_id,
-            }
+        if self.penalty_limit is not None:
+            properties["penaltyLimit"] = self.penalty_limit
 
         if properties:
             this_node = dm.NodeApply(
@@ -153,10 +150,6 @@ class WatercourseApply(DomainModelApply):
             other_resources = DomainRelationApply.from_edge_to_resources(
                 cache, self, plant, edge_type, view_by_write_class
             )
-            resources.extend(other_resources)
-
-        if isinstance(self.shop, DomainModelApply):
-            other_resources = self.shop._to_instances_apply(cache, view_by_write_class)
             resources.extend(other_resources)
 
         if isinstance(self.production_obligation, CogniteTimeSeries):
@@ -187,7 +180,8 @@ def _create_watercourse_filter(
     name_prefix: str | None = None,
     display_name: str | list[str] | None = None,
     display_name_prefix: str | None = None,
-    shop: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+    min_penalty_limit: float | None = None,
+    max_penalty_limit: float | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -205,26 +199,9 @@ def _create_watercourse_filter(
         filters.append(dm.filters.In(view_id.as_property_ref("displayName"), values=display_name))
     if display_name_prefix:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("displayName"), value=display_name_prefix))
-    if shop and isinstance(shop, str):
+    if min_penalty_limit or max_penalty_limit:
         filters.append(
-            dm.filters.Equals(view_id.as_property_ref("shop"), value={"space": "power-ops-assets", "externalId": shop})
-        )
-    if shop and isinstance(shop, tuple):
-        filters.append(
-            dm.filters.Equals(view_id.as_property_ref("shop"), value={"space": shop[0], "externalId": shop[1]})
-        )
-    if shop and isinstance(shop, list) and isinstance(shop[0], str):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("shop"),
-                values=[{"space": "power-ops-assets", "externalId": item} for item in shop],
-            )
-        )
-    if shop and isinstance(shop, list) and isinstance(shop[0], tuple):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("shop"), values=[{"space": item[0], "externalId": item[1]} for item in shop]
-            )
+            dm.filters.Range(view_id.as_property_ref("penaltyLimit"), gte=min_penalty_limit, lte=max_penalty_limit)
         )
     if external_id_prefix:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))

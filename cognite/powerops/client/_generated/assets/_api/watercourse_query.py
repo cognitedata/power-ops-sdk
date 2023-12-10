@@ -9,8 +9,6 @@ from cognite.powerops.client._generated.assets.data_classes import (
     DomainModelApply,
     Watercourse,
     WatercourseApply,
-    WatercourseSHOP,
-    WatercourseSHOPApply,
 )
 from ._core import DEFAULT_QUERY_LIMIT, QueryBuilder, QueryStep, QueryAPI, T_DomainModelList, _create_edge_filter
 
@@ -47,7 +45,6 @@ class WatercourseQueryAPI(QueryAPI[T_DomainModelList]):
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
-        retrieve_shop: bool = False,
     ) -> PlantQueryAPI[T_DomainModelList]:
         """Query along the plant edges of the watercourse.
 
@@ -56,7 +53,6 @@ class WatercourseQueryAPI(QueryAPI[T_DomainModelList]):
             space: The space to filter on.
             limit: Maximum number of plant edges to return. Defaults to 25. Set to -1, float("inf") or None
                 to return all items.
-            retrieve_shop: Whether to retrieve the shop for each watercourse or not.
 
         Returns:
             PlantQueryAPI: The query API for the plant.
@@ -81,41 +77,15 @@ class WatercourseQueryAPI(QueryAPI[T_DomainModelList]):
                 max_retrieve_limit=limit,
             )
         )
-        if retrieve_shop:
-            self._query_append_shop(from_)
         return PlantQueryAPI(self._client, self._builder, self._view_by_write_class, None, limit)
 
     def query(
         self,
-        retrieve_shop: bool = False,
     ) -> T_DomainModelList:
         """Execute query and return the result.
-
-        Args:
-            retrieve_shop: Whether to retrieve the shop for each watercourse or not.
 
         Returns:
             The list of the source nodes of the query.
 
         """
-        from_ = self._builder[-1].name
-        if retrieve_shop:
-            self._query_append_shop(from_)
         return self._query()
-
-    def _query_append_shop(self, from_: str) -> None:
-        view_id = self._view_by_write_class[WatercourseSHOPApply]
-        self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("shop"),
-                expression=dm.query.NodeResultSetExpression(
-                    filter=dm.filters.HasData(views=[view_id]),
-                    from_=from_,
-                    through=self._view_by_write_class[WatercourseApply].as_property_ref("shop"),
-                    direction="outwards",
-                ),
-                select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
-                max_retrieve_limit=-1,
-                result_cls=WatercourseSHOP,
-            ),
-        )

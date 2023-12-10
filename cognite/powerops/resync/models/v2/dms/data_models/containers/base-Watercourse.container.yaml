@@ -10,12 +10,6 @@ properties:
     nullable: true
     autoIncrement: false
     name: productionObligationTimeSeries
-  shop:
-    type:
-      type: direct
-    nullable: true
-    autoIncrement: false
-    name: shop
   penaltyLimit:
     type:
       type: float64

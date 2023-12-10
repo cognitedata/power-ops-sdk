@@ -58,7 +58,8 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseApply, WatercourseList]):
         name_prefix: str | None = None,
         display_name: str | list[str] | None = None,
         display_name_prefix: str | None = None,
-        shop: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_penalty_limit: float | None = None,
+        max_penalty_limit: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
@@ -71,7 +72,8 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseApply, WatercourseList]):
             name_prefix: The prefix of the name to filter on.
             display_name: The display name to filter on.
             display_name_prefix: The prefix of the display name to filter on.
-            shop: The shop to filter on.
+            min_penalty_limit: The minimum value of the penalty limit to filter on.
+            max_penalty_limit: The maximum value of the penalty limit to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of watercourses to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -88,7 +90,8 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseApply, WatercourseList]):
             name_prefix,
             display_name,
             display_name_prefix,
-            shop,
+            min_penalty_limit,
+            max_penalty_limit,
             external_id_prefix,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
@@ -193,7 +196,8 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseApply, WatercourseList]):
         name_prefix: str | None = None,
         display_name: str | list[str] | None = None,
         display_name_prefix: str | None = None,
-        shop: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_penalty_limit: float | None = None,
+        max_penalty_limit: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -208,7 +212,8 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseApply, WatercourseList]):
             name_prefix: The prefix of the name to filter on.
             display_name: The display name to filter on.
             display_name_prefix: The prefix of the display name to filter on.
-            shop: The shop to filter on.
+            min_penalty_limit: The minimum value of the penalty limit to filter on.
+            max_penalty_limit: The maximum value of the penalty limit to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of watercourses to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -232,7 +237,8 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseApply, WatercourseList]):
             name_prefix,
             display_name,
             display_name_prefix,
-            shop,
+            min_penalty_limit,
+            max_penalty_limit,
             external_id_prefix,
             space,
             filter,
@@ -254,7 +260,8 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseApply, WatercourseList]):
         name_prefix: str | None = None,
         display_name: str | list[str] | None = None,
         display_name_prefix: str | None = None,
-        shop: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_penalty_limit: float | None = None,
+        max_penalty_limit: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -277,7 +284,8 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseApply, WatercourseList]):
         name_prefix: str | None = None,
         display_name: str | list[str] | None = None,
         display_name_prefix: str | None = None,
-        shop: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_penalty_limit: float | None = None,
+        max_penalty_limit: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -299,7 +307,8 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseApply, WatercourseList]):
         name_prefix: str | None = None,
         display_name: str | list[str] | None = None,
         display_name_prefix: str | None = None,
-        shop: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_penalty_limit: float | None = None,
+        max_penalty_limit: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -317,7 +326,8 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseApply, WatercourseList]):
             name_prefix: The prefix of the name to filter on.
             display_name: The display name to filter on.
             display_name_prefix: The prefix of the display name to filter on.
-            shop: The shop to filter on.
+            min_penalty_limit: The minimum value of the penalty limit to filter on.
+            max_penalty_limit: The maximum value of the penalty limit to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of watercourses to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -342,7 +352,8 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseApply, WatercourseList]):
             name_prefix,
             display_name,
             display_name_prefix,
-            shop,
+            min_penalty_limit,
+            max_penalty_limit,
             external_id_prefix,
             space,
             filter,
@@ -369,7 +380,8 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseApply, WatercourseList]):
         name_prefix: str | None = None,
         display_name: str | list[str] | None = None,
         display_name_prefix: str | None = None,
-        shop: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_penalty_limit: float | None = None,
+        max_penalty_limit: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -386,7 +398,8 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseApply, WatercourseList]):
             name_prefix: The prefix of the name to filter on.
             display_name: The display name to filter on.
             display_name_prefix: The prefix of the display name to filter on.
-            shop: The shop to filter on.
+            min_penalty_limit: The minimum value of the penalty limit to filter on.
+            max_penalty_limit: The maximum value of the penalty limit to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of watercourses to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -402,7 +415,8 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseApply, WatercourseList]):
             name_prefix,
             display_name,
             display_name_prefix,
-            shop,
+            min_penalty_limit,
+            max_penalty_limit,
             external_id_prefix,
             space,
             filter,
@@ -424,7 +438,8 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseApply, WatercourseList]):
         name_prefix: str | None = None,
         display_name: str | list[str] | None = None,
         display_name_prefix: str | None = None,
-        shop: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_penalty_limit: float | None = None,
+        max_penalty_limit: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -438,7 +453,8 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseApply, WatercourseList]):
             name_prefix: The prefix of the name to filter on.
             display_name: The display name to filter on.
             display_name_prefix: The prefix of the display name to filter on.
-            shop: The shop to filter on.
+            min_penalty_limit: The minimum value of the penalty limit to filter on.
+            max_penalty_limit: The maximum value of the penalty limit to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of watercourses to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -463,7 +479,8 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseApply, WatercourseList]):
             name_prefix,
             display_name,
             display_name_prefix,
-            shop,
+            min_penalty_limit,
+            max_penalty_limit,
             external_id_prefix,
             space,
             filter,

@@ -41,15 +41,11 @@ properties:
     name: plants
     description: The plants that are connected to the Watercourse.
     connectionType: multiEdgeConnection
-  shop:
+  penaltyLimit:
     container:
       space: '{{shared_model_space}}'
       externalId: Watercourse
       type: container
-    containerPropertyIdentifier: shop
-    name: shop
-    source:
-      space: '{{asset_space}}'
-      externalId: WatercourseSHOP
-      version: '{{asset_WatercourseSHOP_version}}'
-      type: view
+    containerPropertyIdentifier: penaltyLimit
+    name: penaltyLimit
+    description: The penalty limit for the watercourse (used by SHOP).
