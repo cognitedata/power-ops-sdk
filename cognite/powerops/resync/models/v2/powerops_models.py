@@ -257,7 +257,7 @@ class DataModelLoader:
             existing = api.retrieve(schema.spaces)
             diffs = api.differences(existing, items)
             if not dry_run and (diffs.changed or diffs.unchanged or diffs.delete):
-                api.delete(diffs.changed.as_ids() + diffs.unchanged.as_ids() + diffs.delete.as_ids())
+                api.delete(items.as_ids())
             total = len(diffs.changed + diffs.unchanged + diffs.delete)
             if dry_run:
                 print(f"Would delete {api.name}: {total} deleted")
