@@ -137,11 +137,11 @@ class PowerAssetModelDM(Model):
     def from_cdf(cls, client: PowerOpsClient, data_set_external_id: str) -> PowerAssetModelDM:
         cdf = client.cdf
         is_type = dm.filters.Equals(["edge", "type"], {"externalId": "isSubAssetOf", "space": "power-ops-types"})
-        edges = cdf.data_modeling.instances("edges", limit=-1, filter=is_type)
+        edges = cdf.data_modeling.instances.list("edge", limit=-1, filter=is_type)
         edges = dm.EdgeApplyList([e.as_apply(None, 0) for e in edges])
         nodes = dm.NodeApplyList([])
         for view in cls._views_by_write_class.values():
-            nodes = cdf.data_modeling.instances("nodes", limit=-1, sources=view)
+            nodes = cdf.data_modeling.instances.list("node", limit=-1, sources=view)
             nodes.extend([n.as_apply(view, None) for n in nodes])
 
         return cls._load(nodes, edges, link="external_id")
