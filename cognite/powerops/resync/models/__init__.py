@@ -13,13 +13,7 @@ from .v2 import (
 )
 
 V1_MODELS: list[type[Model]] = [ProductionModel, MarketModel, CogShop1Asset]
-V2_MODELS: list[type[Model]] = [
-    ProductionModelDM,
-    CogShopDataModel,
-    BenchmarkMarketDataModel,
-    DayAheadMarketDataModel,
-    RKOMMarketDataModel,
-]
+V2_MODELS: list[type[Model]] = [ProductionModelDM]
 
 __all__ = [
     "ProductionModel",
