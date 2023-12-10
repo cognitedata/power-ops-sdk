@@ -51,12 +51,18 @@ def transform(config: ReSyncConfig, market_name: str, model_types: set[type[Mode
                 )
                 all_models.append(cogshop_model)
 
-    has_data_model = any(issubclass(m, DataModel) and not issubclass(m, models.CogShop1Asset) for m in model_types)
+    has_data_model = any(
+        issubclass(m, (DataModel, models.PowerAssetModelDM)) and not issubclass(m, models.CogShop1Asset)
+        for m in model_types
+    )
     if has_data_model:
         # The production model is a prerequisite for the CogShop and Market models
         production__data_model = to_production_data_model(config.production)
         if models.ProductionModelDM in model_types:
             all_models.append(production__data_model)
+        if models.PowerAssetModelDM in model_types:
+            power_asset_model = to_production_data_model(config.production)
+            all_models.append(power_asset_model)
         if models.CogShopDataModel in model_types:
             cogshop_data_model = to_cogshop_data_model(
                 config.cogshop, config.production.watercourses, config.settings.shop_version
