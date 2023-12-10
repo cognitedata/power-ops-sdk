@@ -160,7 +160,9 @@ def to_asset_data_model(configuration: config.ProductionConfig) -> PowerAssetMod
 
             prod_area = str(next(iter(attributes["prod_area"].values())))
             price_area_name = watercourse_config.market_to_price_area[prod_area]
-            price_area = assets.PriceAreaApply(name=price_area_name, external_id=f"price_area_{price_area_name}")
+            price_area = assets.PriceAreaApply(
+                name=price_area_name, external_id=f"price_area_{price_area_name}", timezone="Europe/Oslo"
+            )
             if price_area_name not in {a.name for a in model.price_areas}:
                 if price_area_name in configuration.dayahead_price_timeseries:
                     price_area.day_ahead_price = configuration.dayahead_price_timeseries[price_area_name]

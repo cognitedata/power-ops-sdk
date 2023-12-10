@@ -82,6 +82,8 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
         display_name_prefix: str | None = None,
         description: str | list[str] | None = None,
         description_prefix: str | None = None,
+        timezone: str | list[str] | None = None,
+        timezone_prefix: str | None = None,
         default_method_day_ahead: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -97,6 +99,8 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
             display_name_prefix: The prefix of the display name to filter on.
             description: The description to filter on.
             description_prefix: The prefix of the description to filter on.
+            timezone: The timezone to filter on.
+            timezone_prefix: The prefix of the timezone to filter on.
             default_method_day_ahead: The default method day ahead to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -116,6 +120,8 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
             display_name_prefix,
             description,
             description_prefix,
+            timezone,
+            timezone_prefix,
             default_method_day_ahead,
             external_id_prefix,
             space,
@@ -224,6 +230,8 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
         display_name_prefix: str | None = None,
         description: str | list[str] | None = None,
         description_prefix: str | None = None,
+        timezone: str | list[str] | None = None,
+        timezone_prefix: str | None = None,
         default_method_day_ahead: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -241,6 +249,8 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
             display_name_prefix: The prefix of the display name to filter on.
             description: The description to filter on.
             description_prefix: The prefix of the description to filter on.
+            timezone: The timezone to filter on.
+            timezone_prefix: The prefix of the timezone to filter on.
             default_method_day_ahead: The default method day ahead to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -267,6 +277,8 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
             display_name_prefix,
             description,
             description_prefix,
+            timezone,
+            timezone_prefix,
             default_method_day_ahead,
             external_id_prefix,
             space,
@@ -291,6 +303,8 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
         display_name_prefix: str | None = None,
         description: str | list[str] | None = None,
         description_prefix: str | None = None,
+        timezone: str | list[str] | None = None,
+        timezone_prefix: str | None = None,
         default_method_day_ahead: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -316,6 +330,8 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
         display_name_prefix: str | None = None,
         description: str | list[str] | None = None,
         description_prefix: str | None = None,
+        timezone: str | list[str] | None = None,
+        timezone_prefix: str | None = None,
         default_method_day_ahead: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -340,6 +356,8 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
         display_name_prefix: str | None = None,
         description: str | list[str] | None = None,
         description_prefix: str | None = None,
+        timezone: str | list[str] | None = None,
+        timezone_prefix: str | None = None,
         default_method_day_ahead: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -360,6 +378,8 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
             display_name_prefix: The prefix of the display name to filter on.
             description: The description to filter on.
             description_prefix: The prefix of the description to filter on.
+            timezone: The timezone to filter on.
+            timezone_prefix: The prefix of the timezone to filter on.
             default_method_day_ahead: The default method day ahead to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -387,6 +407,8 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
             display_name_prefix,
             description,
             description_prefix,
+            timezone,
+            timezone_prefix,
             default_method_day_ahead,
             external_id_prefix,
             space,
@@ -416,6 +438,8 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
         display_name_prefix: str | None = None,
         description: str | list[str] | None = None,
         description_prefix: str | None = None,
+        timezone: str | list[str] | None = None,
+        timezone_prefix: str | None = None,
         default_method_day_ahead: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -435,6 +459,8 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
             display_name_prefix: The prefix of the display name to filter on.
             description: The description to filter on.
             description_prefix: The prefix of the description to filter on.
+            timezone: The timezone to filter on.
+            timezone_prefix: The prefix of the timezone to filter on.
             default_method_day_ahead: The default method day ahead to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -453,6 +479,8 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
             display_name_prefix,
             description,
             description_prefix,
+            timezone,
+            timezone_prefix,
             default_method_day_ahead,
             external_id_prefix,
             space,
@@ -477,6 +505,8 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
         display_name_prefix: str | None = None,
         description: str | list[str] | None = None,
         description_prefix: str | None = None,
+        timezone: str | list[str] | None = None,
+        timezone_prefix: str | None = None,
         default_method_day_ahead: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -493,6 +523,8 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
             display_name_prefix: The prefix of the display name to filter on.
             description: The description to filter on.
             description_prefix: The prefix of the description to filter on.
+            timezone: The timezone to filter on.
+            timezone_prefix: The prefix of the timezone to filter on.
             default_method_day_ahead: The default method day ahead to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -520,6 +552,8 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
             display_name_prefix,
             description,
             description_prefix,
+            timezone,
+            timezone_prefix,
             default_method_day_ahead,
             external_id_prefix,
             space,

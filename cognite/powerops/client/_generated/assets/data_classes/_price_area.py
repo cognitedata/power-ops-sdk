@@ -37,6 +37,7 @@ PriceAreaTextFields = Literal[
     "name",
     "display_name",
     "description",
+    "timezone",
     "capacity_price_up",
     "capacity_price_down",
     "activation_price_up",
@@ -53,6 +54,7 @@ PriceAreaFields = Literal[
     "name",
     "display_name",
     "description",
+    "timezone",
     "capacity_price_up",
     "capacity_price_down",
     "activation_price_up",
@@ -70,6 +72,7 @@ _PRICEAREA_PROPERTIES_BY_FIELD = {
     "name": "name",
     "display_name": "displayName",
     "description": "description",
+    "timezone": "timezone",
     "capacity_price_up": "capacityPriceUp",
     "capacity_price_down": "capacityPriceDown",
     "activation_price_up": "activationPriceUp",
@@ -95,6 +98,7 @@ class PriceArea(DomainModel):
         name: Name for the PriceArea.
         display_name: Display name for the PriceArea.
         description: Description for the PriceArea.
+        timezone: The timezone of the price area
         capacity_price_up: The capacity price up field.
         capacity_price_down: The capacity price down field.
         activation_price_up: The mFRR activation price (TBC)
@@ -119,6 +123,7 @@ class PriceArea(DomainModel):
     name: Optional[str] = None
     display_name: Optional[str] = Field(None, alias="displayName")
     description: Optional[str] = None
+    timezone: Optional[str] = None
     capacity_price_up: Union[TimeSeries, str, None] = Field(None, alias="capacityPriceUp")
     capacity_price_down: Union[TimeSeries, str, None] = Field(None, alias="capacityPriceDown")
     activation_price_up: Union[TimeSeries, str, None] = Field(None, alias="activationPriceUp")
@@ -144,6 +149,7 @@ class PriceArea(DomainModel):
             name=self.name,
             display_name=self.display_name,
             description=self.description,
+            timezone=self.timezone,
             capacity_price_up=self.capacity_price_up,
             capacity_price_down=self.capacity_price_down,
             activation_price_up=self.activation_price_up,
@@ -177,6 +183,7 @@ class PriceAreaApply(DomainModelApply):
         name: Name for the PriceArea.
         display_name: Display name for the PriceArea.
         description: Description for the PriceArea.
+        timezone: The timezone of the price area
         capacity_price_up: The capacity price up field.
         capacity_price_down: The capacity price down field.
         activation_price_up: The mFRR activation price (TBC)
@@ -201,6 +208,7 @@ class PriceAreaApply(DomainModelApply):
     name: str
     display_name: Optional[str] = Field(None, alias="displayName")
     description: Optional[str] = None
+    timezone: str
     capacity_price_up: Union[TimeSeries, str, None] = Field(None, alias="capacityPriceUp")
     capacity_price_down: Union[TimeSeries, str, None] = Field(None, alias="capacityPriceDown")
     activation_price_up: Union[TimeSeries, str, None] = Field(None, alias="activationPriceUp")
@@ -238,6 +246,8 @@ class PriceAreaApply(DomainModelApply):
             properties["displayName"] = self.display_name
         if self.description is not None:
             properties["description"] = self.description
+        if self.timezone is not None:
+            properties["timezone"] = self.timezone
         if self.capacity_price_up is not None:
             properties["capacityPriceUp"] = (
                 self.capacity_price_up
@@ -405,6 +415,8 @@ def _create_price_area_filter(
     display_name_prefix: str | None = None,
     description: str | list[str] | None = None,
     description_prefix: str | None = None,
+    timezone: str | list[str] | None = None,
+    timezone_prefix: str | None = None,
     default_method_day_ahead: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
@@ -429,6 +441,12 @@ def _create_price_area_filter(
         filters.append(dm.filters.In(view_id.as_property_ref("description"), values=description))
     if description_prefix:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("description"), value=description_prefix))
+    if timezone and isinstance(timezone, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("timezone"), value=timezone))
+    if timezone and isinstance(timezone, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("timezone"), values=timezone))
+    if timezone_prefix:
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("timezone"), value=timezone_prefix))
     if default_method_day_ahead and isinstance(default_method_day_ahead, str):
         filters.append(
             dm.filters.Equals(
