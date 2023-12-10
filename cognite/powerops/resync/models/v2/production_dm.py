@@ -104,7 +104,6 @@ class PowerAssetModelDM(Model):
         assets.ReservoirApply: dm.ViewId("power-ops-assets", "Reservoir", "1"),
         assets.TurbineEfficiencyCurveApply: dm.ViewId("power-ops-assets", "TurbineEfficiencyCurve", "1"),
         assets.WatercourseApply: dm.ViewId("power-ops-assets", "Watercourse", "1"),
-        assets.WatercourseSHOPApply: dm.ViewId("power-ops-assets", "WatercourseSHOP", "1"),
     }
 
     def instances(self) -> dm.InstancesApply:
@@ -182,8 +181,10 @@ class PowerAssetModelDM(Model):
             nodes_by_id[domain_node.as_tuple_id()] = domain_node
 
         for edge in edges:
-            start_node = nodes_by_id[(edge.start_node.space, edge.start_node.external_id)]
-            end_node = nodes_by_id[(edge.end_node.space, edge.end_node.external_id)]
+            start_node = nodes_by_id.get((edge.start_node.space, edge.start_node.external_id))
+            end_node = nodes_by_id.get((edge.end_node.space, edge.end_node.external_id))
+            if start_node is None or end_node is None:
+                continue
             for field_name, field in start_node.model_fields.items():
                 annotation, _ = get_pydantic_annotation(field.annotation, type(start_node))
                 if isinstance(end_node, annotation):
