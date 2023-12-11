@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.75.1] - 2023-12-11
+### Changed
+* Some minor changes to the `DayAheadBid` model.
+
 ## [0.75.0] - 2023-12-10
 ### Added
 Three new data models added.
