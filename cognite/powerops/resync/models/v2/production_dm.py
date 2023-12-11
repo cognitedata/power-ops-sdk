@@ -180,7 +180,10 @@ class PowerAssetModelDM(Model):
             field_names = {
                 v for field_name, field in write_class.model_fields.items() for v in [field_name, field.alias] if v
             }
-            domain_node = write_class(**{k: v for k, v in unpack_node.items() if k in field_names})
+            try:
+                domain_node = write_class(**{k: v for k, v in unpack_node.items() if k in field_names})
+            except Exception:
+                raise
             nodes_by_id[domain_node.as_tuple_id()] = domain_node
 
         for edge in edges:

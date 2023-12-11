@@ -14,7 +14,6 @@ from ._core import DEFAULT_QUERY_LIMIT, QueryBuilder, QueryStep, QueryAPI, T_Dom
 
 if TYPE_CHECKING:
     from .alert_query import AlertQueryAPI
-    from .production_price_pair_query import ProductionPricePairQueryAPI
 
 
 class SHOPTableQueryAPI(QueryAPI[T_DomainModelList]):
@@ -79,45 +78,6 @@ class SHOPTableQueryAPI(QueryAPI[T_DomainModelList]):
             )
         )
         return AlertQueryAPI(self._client, self._builder, self._view_by_write_class, None, limit)
-
-    def production_price_pairs(
-        self,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
-    ) -> ProductionPricePairQueryAPI[T_DomainModelList]:
-        """Query along the production price pair edges of the shop table.
-
-        Args:
-            external_id_prefix: The prefix of the external ID to filter on.
-            space: The space to filter on.
-            limit: Maximum number of production price pair edges to return. Defaults to 25. Set to -1, float("inf") or None
-                to return all items.
-
-        Returns:
-            ProductionPricePairQueryAPI: The query API for the production price pair.
-        """
-        from .production_price_pair_query import ProductionPricePairQueryAPI
-
-        from_ = self._builder[-1].name
-
-        edge_filter = _create_edge_filter(
-            dm.DirectRelationReference("power-ops-types", "SHOPTable.productionPricePairs"),
-            external_id_prefix=external_id_prefix,
-            space=space,
-        )
-        self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("production_price_pairs"),
-                expression=dm.query.EdgeResultSetExpression(
-                    filter=edge_filter,
-                    from_=from_,
-                ),
-                select=dm.query.Select(),
-                max_retrieve_limit=limit,
-            )
-        )
-        return ProductionPricePairQueryAPI(self._client, self._builder, self._view_by_write_class, None, limit)
 
     def query(
         self,

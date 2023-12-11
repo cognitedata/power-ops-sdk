@@ -16,10 +16,6 @@ views:
   space: '{{dayahead_model_space}}'
   type: view
   version: '{{dayaheadbid_SHOPTable_version}}'
-- externalId: ProductionPricePair
-  space: '{{dayahead_model_space}}'
-  type: view
-  version: '{{dayaheadbid_ProductionPricePair_version}}'
 - externalId: SHOPMultiScenario
   space: '{{dayahead_model_space}}'
   type: view

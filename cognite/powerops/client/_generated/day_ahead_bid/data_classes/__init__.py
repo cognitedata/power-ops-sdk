@@ -32,13 +32,6 @@ from ._price_area import (
     PriceAreaList,
     PriceAreaTextFields,
 )
-from ._production_price_pair import (
-    ProductionPricePair,
-    ProductionPricePairApply,
-    ProductionPricePairApplyList,
-    ProductionPricePairFields,
-    ProductionPricePairList,
-)
 from ._shop_multi_scenario import (
     SHOPMultiScenario,
     SHOPMultiScenarioApply,
@@ -110,11 +103,6 @@ __all__ = [
     "PriceAreaApplyList",
     "PriceAreaFields",
     "PriceAreaTextFields",
-    "ProductionPricePair",
-    "ProductionPricePairApply",
-    "ProductionPricePairList",
-    "ProductionPricePairApplyList",
-    "ProductionPricePairFields",
     "SHOPMultiScenario",
     "SHOPMultiScenarioApply",
     "SHOPMultiScenarioList",

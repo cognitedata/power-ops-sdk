@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
+from cognite.client.data_classes import TimeSeries as CogniteTimeSeries
 from pydantic import Field
 
 from ._core import (
@@ -13,11 +14,11 @@ from ._core import (
     DomainModelList,
     DomainRelationApply,
     ResourcesApply,
+    TimeSeries,
 )
 
 if TYPE_CHECKING:
     from ._alert import Alert, AlertApply
-    from ._production_price_pair import ProductionPricePair, ProductionPricePairApply
 
 
 __all__ = [
@@ -30,14 +31,16 @@ __all__ = [
 ]
 
 
-SHOPTableTextFields = Literal["resource_cost", "table", "asset_type", "asset_id"]
-SHOPTableFields = Literal["resource_cost", "table", "asset_type", "asset_id"]
+SHOPTableTextFields = Literal["resource_cost", "table", "asset_type", "asset_id", "production", "price"]
+SHOPTableFields = Literal["resource_cost", "table", "asset_type", "asset_id", "production", "price"]
 
 _SHOPTABLE_PROPERTIES_BY_FIELD = {
     "resource_cost": "resourceCost",
     "table": "table",
     "asset_type": "assetType",
     "asset_id": "assetId",
+    "production": "production",
+    "price": "price",
 }
 
 
@@ -54,7 +57,8 @@ class SHOPTable(DomainModel):
         asset_type: The asset type field.
         asset_id: The asset id field.
         alerts: The alert field.
-        production_price_pairs: The production price pair field.
+        production: The production field.
+        price: The price field.
         created_time: The created time of the shop table node.
         last_updated_time: The last updated time of the shop table node.
         deleted_time: If present, the deleted time of the shop table node.
@@ -67,9 +71,8 @@ class SHOPTable(DomainModel):
     asset_type: Optional[str] = Field(None, alias="assetType")
     asset_id: Optional[str] = Field(None, alias="assetId")
     alerts: Union[list[Alert], list[str], None] = Field(default=None, repr=False)
-    production_price_pairs: Union[list[ProductionPricePair], list[str], None] = Field(
-        default=None, repr=False, alias="productionPricePairs"
-    )
+    production: Optional[list[TimeSeries]] = None
+    price: Optional[list[TimeSeries]] = None
 
     def as_apply(self) -> SHOPTableApply:
         """Convert this read version of shop table to the writing version."""
@@ -81,12 +84,8 @@ class SHOPTable(DomainModel):
             asset_type=self.asset_type,
             asset_id=self.asset_id,
             alerts=[alert.as_apply() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
-            production_price_pairs=[
-                production_price_pair.as_apply()
-                if isinstance(production_price_pair, DomainModel)
-                else production_price_pair
-                for production_price_pair in self.production_price_pairs or []
-            ],
+            production=self.production,
+            price=self.price,
         )
 
 
@@ -103,7 +102,8 @@ class SHOPTableApply(DomainModelApply):
         asset_type: The asset type field.
         asset_id: The asset id field.
         alerts: The alert field.
-        production_price_pairs: The production price pair field.
+        production: The production field.
+        price: The price field.
         existing_version: Fail the ingestion request if the shop table version is greater than or equal to this value.
             If no existingVersion is specified, the ingestion will always overwrite any existing data for the edge (for the specified container or instance).
             If existingVersion is set to 0, the upsert will behave as an insert, so it will fail the bulk if the item already exists.
@@ -116,9 +116,8 @@ class SHOPTableApply(DomainModelApply):
     asset_type: Optional[str] = Field(None, alias="assetType")
     asset_id: Optional[str] = Field(None, alias="assetId")
     alerts: Union[list[AlertApply], list[str], None] = Field(default=None, repr=False)
-    production_price_pairs: Union[list[ProductionPricePairApply], list[str], None] = Field(
-        default=None, repr=False, alias="productionPricePairs"
-    )
+    production: Optional[list[TimeSeries]] = None
+    price: Optional[list[TimeSeries]] = None
 
     def _to_instances_apply(
         self,
@@ -142,6 +141,10 @@ class SHOPTableApply(DomainModelApply):
             properties["assetType"] = self.asset_type
         if self.asset_id is not None:
             properties["assetId"] = self.asset_id
+        if self.production is not None:
+            properties["production"] = self.production
+        if self.price is not None:
+            properties["price"] = self.price
 
         if properties:
             this_node = dm.NodeApply(
@@ -165,12 +168,11 @@ class SHOPTableApply(DomainModelApply):
             )
             resources.extend(other_resources)
 
-        edge_type = dm.DirectRelationReference("power-ops-types", "SHOPTable.productionPricePairs")
-        for production_price_pair in self.production_price_pairs or []:
-            other_resources = DomainRelationApply.from_edge_to_resources(
-                cache, self, production_price_pair, edge_type, view_by_write_class
-            )
-            resources.extend(other_resources)
+        if isinstance(self.production, CogniteTimeSeries):
+            resources.time_series.append(self.production)
+
+        if isinstance(self.price, CogniteTimeSeries):
+            resources.time_series.append(self.price)
 
         return resources
 

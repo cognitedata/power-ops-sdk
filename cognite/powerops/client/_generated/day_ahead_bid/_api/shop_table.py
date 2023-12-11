@@ -32,7 +32,8 @@ from ._core import (
     QueryBuilder,
 )
 from .shop_table_alerts import SHOPTableAlertsAPI
-from .shop_table_production_price_pairs import SHOPTableProductionPricePairsAPI
+from .shop_table_production import SHOPTableProductionAPI
+from .shop_table_price import SHOPTablePriceAPI
 from .shop_table_query import SHOPTableQueryAPI
 
 
@@ -50,7 +51,8 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
         )
         self._view_id = view_id
         self.alerts_edge = SHOPTableAlertsAPI(client)
-        self.production_price_pairs_edge = SHOPTableProductionPricePairsAPI(client)
+        self.production = SHOPTableProductionAPI(client, view_id)
+        self.price = SHOPTablePriceAPI(client, view_id)
 
     def __call__(
         self,
@@ -105,7 +107,7 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
         """Add or update (upsert) shop tables.
 
         Note: This method iterates through all nodes and timeseries linked to shop_table and creates them including the edges
-        between the nodes. For example, if any of `alerts` or `production_price_pairs` are set, then these
+        between the nodes. For example, if any of `alerts` are set, then these
         nodes as well as any nodes linked to them, and all the edges linking these nodes will be created.
 
         Args:
@@ -185,11 +187,6 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
             retrieve_edges=True,
             edge_api_name_type_triple=[
                 (self.alerts_edge, "alerts", dm.DirectRelationReference("power-ops-types", "calculationIssue")),
-                (
-                    self.production_price_pairs_edge,
-                    "production_price_pairs",
-                    dm.DirectRelationReference("power-ops-types", "SHOPTable.productionPricePairs"),
-                ),
             ],
         )
 
@@ -464,7 +461,7 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
             space: The space to filter on.
             limit: Maximum number of shop tables to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
-            retrieve_edges: Whether to retrieve `alerts` or `production_price_pairs` external ids for the shop tables. Defaults to True.
+            retrieve_edges: Whether to retrieve `alerts` external ids for the shop tables. Defaults to True.
 
         Returns:
             List of requested shop tables
@@ -497,10 +494,5 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
             retrieve_edges=retrieve_edges,
             edge_api_name_type_triple=[
                 (self.alerts_edge, "alerts", dm.DirectRelationReference("power-ops-types", "calculationIssue")),
-                (
-                    self.production_price_pairs_edge,
-                    "production_price_pairs",
-                    dm.DirectRelationReference("power-ops-types", "SHOPTable.productionPricePairs"),
-                ),
             ],
         )

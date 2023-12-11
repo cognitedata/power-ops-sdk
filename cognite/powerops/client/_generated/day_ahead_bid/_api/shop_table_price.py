@@ -9,15 +9,13 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes import Datapoints, DatapointsArrayList, DatapointsList, TimeSeriesList
 from cognite.client.data_classes.datapoints import Aggregate
-from cognite.powerops.client._generated.day_ahead_bid.data_classes._production_price_pair import (
-    _create_production_price_pair_filter,
-)
+from cognite.powerops.client._generated.day_ahead_bid.data_classes._shop_table import _create_shop_table_filter
 from ._core import DEFAULT_LIMIT_READ, INSTANCE_QUERY_LIMIT
 
-ColumnNames = Literal["production", "price"]
+ColumnNames = Literal["resourceCost", "table", "assetType", "assetId"]
 
 
-class ProductionPricePairPriceQuery:
+class SHOPTablePriceQuery:
     def __init__(
         self,
         client: CogniteClient,
@@ -42,7 +40,7 @@ class ProductionPricePairPriceQuery:
         limit: int | None = None,
         include_outside_points: bool = False,
     ) -> DatapointsList:
-        """`Retrieve datapoints for the `production_price_pair.price` timeseries.
+        """`Retrieve datapoints for the `shop_table.price` timeseries.
 
         **Performance guide**:
             In order to retrieve millions of datapoints as efficiently as possible, here are a few guidelines:
@@ -71,7 +69,7 @@ class ProductionPricePairPriceQuery:
 
                 >>> from cognite.powerops.client._generated.day_ahead_bid import DayAheadBidAPI
                 >>> client = DayAheadBidAPI()
-                >>> production_price_pair_datapoints = client.production_price_pair.price(external_id="my_price").retrieve(start="2w-ago")
+                >>> shop_table_datapoints = client.shop_table.price(external_id="my_price").retrieve(start="2w-ago")
         """
         external_ids = self._retrieve_timeseries_external_ids_with_extra()
         if external_ids:
@@ -101,7 +99,7 @@ class ProductionPricePairPriceQuery:
         limit: int | None = None,
         include_outside_points: bool = False,
     ) -> DatapointsArrayList:
-        """`Retrieve numpy arrays for the `production_price_pair.price` timeseries.
+        """`Retrieve numpy arrays for the `shop_table.price` timeseries.
 
         **Performance guide**:
             In order to retrieve millions of datapoints as efficiently as possible, here are a few guidelines:
@@ -130,7 +128,7 @@ class ProductionPricePairPriceQuery:
 
                 >>> from cognite.powerops.client._generated.day_ahead_bid import DayAheadBidAPI
                 >>> client = DayAheadBidAPI()
-                >>> production_price_pair_datapoints = client.production_price_pair.price(external_id="my_price").retrieve_array(start="2w-ago")
+                >>> shop_table_datapoints = client.shop_table.price(external_id="my_price").retrieve_array(start="2w-ago")
         """
         external_ids = self._retrieve_timeseries_external_ids_with_extra()
         if external_ids:
@@ -164,7 +162,7 @@ class ProductionPricePairPriceQuery:
         include_granularity_name: bool = False,
         column_names: ColumnNames | list[ColumnNames] = "price",
     ) -> pd.DataFrame:
-        """`Retrieve DataFrames for the `production_price_pair.price` timeseries.
+        """`Retrieve DataFrames for the `shop_table.price` timeseries.
 
         **Performance guide**:
             In order to retrieve millions of datapoints as efficiently as possible, here are a few guidelines:
@@ -198,7 +196,7 @@ class ProductionPricePairPriceQuery:
 
                 >>> from cognite.powerops.client._generated.day_ahead_bid import DayAheadBidAPI
                 >>> client = DayAheadBidAPI()
-                >>> production_price_pair_datapoints = client.production_price_pair.price(external_id="my_price").retrieve_dataframe(start="2w-ago")
+                >>> shop_table_datapoints = client.shop_table.price(external_id="my_price").retrieve_dataframe(start="2w-ago")
         """
         external_ids = self._retrieve_timeseries_external_ids_with_extra(column_names)
         if external_ids:
@@ -241,7 +239,7 @@ class ProductionPricePairPriceQuery:
         include_granularity_name: bool = False,
         column_names: ColumnNames | list[ColumnNames] = "price",
     ) -> pd.DataFrame:
-        """Retrieve DataFrames for the `production_price_pair.price` timeseries in Timezone.
+        """Retrieve DataFrames for the `shop_table.price` timeseries in Timezone.
 
         **Performance guide**:
             In order to retrieve millions of datapoints as efficiently as possible, here are a few guidelines:
@@ -276,7 +274,7 @@ class ProductionPricePairPriceQuery:
                 >>> from cognite.powerops.client._generated.day_ahead_bid import DayAheadBidAPI
                 >>> from datetime import datetime, timezone
                 >>> client = DayAheadBidAPI()
-                >>> production_price_pair_datapoints = client.production_price_pair.price(
+                >>> shop_table_datapoints = client.shop_table.price(
                 ...     external_id="my_price").retrieve_dataframe_in_timezone(
                 ...         datetime(2023, 1, 1, tzinfo=ZoneInfo("Europe/Oslo")),
                 ...         datetime(2023, 1, 2, tzinfo=ZoneInfo("Europe/Oslo")),
@@ -354,47 +352,65 @@ class ProductionPricePairPriceQuery:
         return df
 
 
-class ProductionPricePairPriceAPI:
+class SHOPTablePriceAPI:
     def __init__(self, client: CogniteClient, view_id: dm.ViewId):
         self._client = client
         self._view_id = view_id
 
     def __call__(
         self,
+        resource_cost: str | list[str] | None = None,
+        resource_cost_prefix: str | None = None,
+        asset_type: str | list[str] | None = None,
+        asset_type_prefix: str | None = None,
+        asset_id: str | list[str] | None = None,
+        asset_id_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> ProductionPricePairPriceQuery:
-        """Query timeseries `production_price_pair.price`
+    ) -> SHOPTablePriceQuery:
+        """Query timeseries `shop_table.price`
 
         Args:
+            resource_cost: The resource cost to filter on.
+            resource_cost_prefix: The prefix of the resource cost to filter on.
+            asset_type: The asset type to filter on.
+            asset_type_prefix: The prefix of the asset type to filter on.
+            asset_id: The asset id to filter on.
+            asset_id_prefix: The prefix of the asset id to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of production price pairs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of shop tables to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
-            A query object that can be used to retrieve datapoins for the production_price_pair.price timeseries
+            A query object that can be used to retrieve datapoins for the shop_table.price timeseries
             selected in this method.
 
         Examples:
 
-            Retrieve all data for 5 production_price_pair.price timeseries:
+            Retrieve all data for 5 shop_table.price timeseries:
 
                 >>> from cognite.powerops.client._generated.day_ahead_bid import DayAheadBidAPI
                 >>> client = DayAheadBidAPI()
-                >>> production_price_pairs = client.production_price_pair.price(limit=5).retrieve()
+                >>> shop_tables = client.shop_table.price(limit=5).retrieve()
 
         """
-        filter_ = _create_production_price_pair_filter(
+        filter_ = _create_shop_table_filter(
             self._view_id,
+            resource_cost,
+            resource_cost_prefix,
+            asset_type,
+            asset_type_prefix,
+            asset_id,
+            asset_id_prefix,
             external_id_prefix,
             space,
             filter,
         )
 
-        return ProductionPricePairPriceQuery(
+        return SHOPTablePriceQuery(
             client=self._client,
             view_id=self._view_id,
             timeseries_limit=limit,
@@ -403,33 +419,51 @@ class ProductionPricePairPriceAPI:
 
     def list(
         self,
+        resource_cost: str | list[str] | None = None,
+        resource_cost_prefix: str | None = None,
+        asset_type: str | list[str] | None = None,
+        asset_type_prefix: str | None = None,
+        asset_id: str | list[str] | None = None,
+        asset_id_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> TimeSeriesList:
-        """List timeseries `production_price_pair.price`
+        """List timeseries `shop_table.price`
 
         Args:
+            resource_cost: The resource cost to filter on.
+            resource_cost_prefix: The prefix of the resource cost to filter on.
+            asset_type: The asset type to filter on.
+            asset_type_prefix: The prefix of the asset type to filter on.
+            asset_id: The asset id to filter on.
+            asset_id_prefix: The prefix of the asset id to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of production price pairs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of shop tables to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
-            List of Timeseries production_price_pair.price.
+            List of Timeseries shop_table.price.
 
         Examples:
 
-            List production_price_pair.price and limit to 5:
+            List shop_table.price and limit to 5:
 
                 >>> from cognite.powerops.client._generated.day_ahead_bid import DayAheadBidAPI
                 >>> client = DayAheadBidAPI()
-                >>> production_price_pairs = client.production_price_pair.price.list(limit=5)
+                >>> shop_tables = client.shop_table.price.list(limit=5)
 
         """
-        filter_ = _create_production_price_pair_filter(
+        filter_ = _create_shop_table_filter(
             self._view_id,
+            resource_cost,
+            resource_cost_prefix,
+            asset_type,
+            asset_type_prefix,
+            asset_id,
+            asset_id_prefix,
             external_id_prefix,
             space,
             filter,
