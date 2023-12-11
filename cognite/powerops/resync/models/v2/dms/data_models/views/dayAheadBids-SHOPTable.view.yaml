@@ -8,15 +8,17 @@ implements:
   type: view
 version: '{{dayaheadbid_SHOPTable_version}}'
 properties:
-  productionPricePairs:
-    type:
-      space: '{{type_space}}'
-      externalId: SHOPTable.productionPricePairs
-    source:
+  production:
+    container:
       space: '{{dayahead_model_space}}'
-      externalId: ProductionPricePair
-      version: '{{dayaheadbid_ProductionPricePair_version}}'
-      type: view
-    direction: outwards
-    name: productionPricePairs
-    connectionType: multiEdgeConnection
+      externalId: SHOPTable
+      type: container
+    containerPropertyIdentifier: production
+    name: production
+  price:
+    container:
+      space: '{{dayahead_model_space}}'
+      externalId: SHOPTable
+      type: container
+    containerPropertyIdentifier: price
+    name: price

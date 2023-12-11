@@ -7,8 +7,8 @@ from cognite.client import data_modeling as dm, CogniteClient
 
 from cognite.powerops.client._generated.day_ahead_bid.data_classes import (
     DomainModelApply,
-    SHOPTable,
-    SHOPTableApply,
+    WaterValueTable,
+    WaterValueTableApply,
 )
 from ._core import DEFAULT_QUERY_LIMIT, QueryBuilder, QueryStep, QueryAPI, T_DomainModelList, _create_edge_filter
 
@@ -16,7 +16,7 @@ if TYPE_CHECKING:
     from .alert_query import AlertQueryAPI
 
 
-class SHOPTableQueryAPI(QueryAPI[T_DomainModelList]):
+class WaterValueTableQueryAPI(QueryAPI[T_DomainModelList]):
     def __init__(
         self,
         client: CogniteClient,
@@ -29,13 +29,15 @@ class SHOPTableQueryAPI(QueryAPI[T_DomainModelList]):
 
         self._builder.append(
             QueryStep(
-                name=self._builder.next_name("shop_table"),
+                name=self._builder.next_name("water_value_table"),
                 expression=dm.query.NodeResultSetExpression(
                     from_=self._builder[-1].name if self._builder else None,
                     filter=filter_,
                 ),
-                select=dm.query.Select([dm.query.SourceSelector(self._view_by_write_class[SHOPTableApply], ["*"])]),
-                result_cls=SHOPTable,
+                select=dm.query.Select(
+                    [dm.query.SourceSelector(self._view_by_write_class[WaterValueTableApply], ["*"])]
+                ),
+                result_cls=WaterValueTable,
                 max_retrieve_limit=limit,
             )
         )
@@ -46,7 +48,7 @@ class SHOPTableQueryAPI(QueryAPI[T_DomainModelList]):
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
     ) -> AlertQueryAPI[T_DomainModelList]:
-        """Query along the alert edges of the shop table.
+        """Query along the alert edges of the water value table.
 
         Args:
             external_id_prefix: The prefix of the external ID to filter on.

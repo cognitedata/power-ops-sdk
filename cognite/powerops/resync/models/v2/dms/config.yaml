@@ -22,10 +22,10 @@ dayaheadbid_BidDocument_version: '1'
 dayaheadbid_BidMethod_version: '1'
 dayaheadbid_BidTable_version: '1'
 dayaheadbid_PriceArea_version: '1'
-dayaheadbid_ProductionPricePair_version: '1'
 dayaheadbid_SHOPMultiScenario_version: '1'
 dayaheadbid_SHOPTable_version: '1'
 dayaheadbid_WaterValueBased_version: '1'
+dayaheadbid_WaterValueTable_version: '1'
 
 # Asset Model Views
 asset_PriceArea_version: '1'

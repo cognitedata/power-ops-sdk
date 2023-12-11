@@ -32,13 +32,6 @@ from ._price_area import (
     PriceAreaList,
     PriceAreaTextFields,
 )
-from ._production_price_pair import (
-    ProductionPricePair,
-    ProductionPricePairApply,
-    ProductionPricePairApplyList,
-    ProductionPricePairFields,
-    ProductionPricePairList,
-)
 from ._shop_multi_scenario import (
     SHOPMultiScenario,
     SHOPMultiScenarioApply,
@@ -63,6 +56,14 @@ from ._water_value_based import (
     WaterValueBasedList,
     WaterValueBasedTextFields,
 )
+from ._water_value_table import (
+    WaterValueTable,
+    WaterValueTableApply,
+    WaterValueTableApplyList,
+    WaterValueTableFields,
+    WaterValueTableList,
+    WaterValueTableTextFields,
+)
 
 BidDocument.model_rebuild()
 BidDocumentApply.model_rebuild()
@@ -72,6 +73,8 @@ PriceArea.model_rebuild()
 PriceAreaApply.model_rebuild()
 SHOPTable.model_rebuild()
 SHOPTableApply.model_rebuild()
+WaterValueTable.model_rebuild()
+WaterValueTableApply.model_rebuild()
 
 __all__ = [
     "ResourcesApply",
@@ -110,11 +113,6 @@ __all__ = [
     "PriceAreaApplyList",
     "PriceAreaFields",
     "PriceAreaTextFields",
-    "ProductionPricePair",
-    "ProductionPricePairApply",
-    "ProductionPricePairList",
-    "ProductionPricePairApplyList",
-    "ProductionPricePairFields",
     "SHOPMultiScenario",
     "SHOPMultiScenarioApply",
     "SHOPMultiScenarioList",
@@ -133,4 +131,10 @@ __all__ = [
     "WaterValueBasedApplyList",
     "WaterValueBasedFields",
     "WaterValueBasedTextFields",
+    "WaterValueTable",
+    "WaterValueTableApply",
+    "WaterValueTableList",
+    "WaterValueTableApplyList",
+    "WaterValueTableFields",
+    "WaterValueTableTextFields",
 ]

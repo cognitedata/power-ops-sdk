@@ -3,7 +3,6 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
-from cognite.client.data_classes import TimeSeries as CogniteTimeSeries
 from pydantic import Field
 
 from ._core import (
@@ -14,7 +13,6 @@ from ._core import (
     DomainModelList,
     DomainRelationApply,
     ResourcesApply,
-    TimeSeries,
 )
 
 if TYPE_CHECKING:
@@ -22,47 +20,43 @@ if TYPE_CHECKING:
 
 
 __all__ = [
-    "SHOPTable",
-    "SHOPTableApply",
-    "SHOPTableList",
-    "SHOPTableApplyList",
-    "SHOPTableFields",
-    "SHOPTableTextFields",
+    "WaterValueTable",
+    "WaterValueTableApply",
+    "WaterValueTableList",
+    "WaterValueTableApplyList",
+    "WaterValueTableFields",
+    "WaterValueTableTextFields",
 ]
 
 
-SHOPTableTextFields = Literal["resource_cost", "table", "asset_type", "asset_id", "production", "price"]
-SHOPTableFields = Literal["resource_cost", "table", "asset_type", "asset_id", "production", "price"]
+WaterValueTableTextFields = Literal["resource_cost", "table", "asset_type", "asset_id"]
+WaterValueTableFields = Literal["resource_cost", "table", "asset_type", "asset_id"]
 
-_SHOPTABLE_PROPERTIES_BY_FIELD = {
+_WATERVALUETABLE_PROPERTIES_BY_FIELD = {
     "resource_cost": "resourceCost",
     "table": "table",
     "asset_type": "assetType",
     "asset_id": "assetId",
-    "production": "production",
-    "price": "price",
 }
 
 
-class SHOPTable(DomainModel):
-    """This represents the reading version of shop table.
+class WaterValueTable(DomainModel):
+    """This represents the reading version of water value table.
 
     It is used to when data is retrieved from CDF.
 
     Args:
         space: The space where the node is located.
-        external_id: The external id of the shop table.
+        external_id: The external id of the water value table.
         resource_cost: The resource cost field.
         table: The table field.
         asset_type: The asset type field.
         asset_id: The asset id field.
         alerts: The alert field.
-        production: The production field.
-        price: The price field.
-        created_time: The created time of the shop table node.
-        last_updated_time: The last updated time of the shop table node.
-        deleted_time: If present, the deleted time of the shop table node.
-        version: The version of the shop table node.
+        created_time: The created time of the water value table node.
+        last_updated_time: The last updated time of the water value table node.
+        deleted_time: If present, the deleted time of the water value table node.
+        version: The version of the water value table node.
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -71,12 +65,10 @@ class SHOPTable(DomainModel):
     asset_type: Optional[str] = Field(None, alias="assetType")
     asset_id: Optional[str] = Field(None, alias="assetId")
     alerts: Union[list[Alert], list[str], None] = Field(default=None, repr=False)
-    production: Optional[list[TimeSeries]] = None
-    price: Optional[list[TimeSeries]] = None
 
-    def as_apply(self) -> SHOPTableApply:
-        """Convert this read version of shop table to the writing version."""
-        return SHOPTableApply(
+    def as_apply(self) -> WaterValueTableApply:
+        """Convert this read version of water value table to the writing version."""
+        return WaterValueTableApply(
             space=self.space,
             external_id=self.external_id,
             resource_cost=self.resource_cost,
@@ -84,27 +76,23 @@ class SHOPTable(DomainModel):
             asset_type=self.asset_type,
             asset_id=self.asset_id,
             alerts=[alert.as_apply() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
-            production=self.production,
-            price=self.price,
         )
 
 
-class SHOPTableApply(DomainModelApply):
-    """This represents the writing version of shop table.
+class WaterValueTableApply(DomainModelApply):
+    """This represents the writing version of water value table.
 
     It is used to when data is sent to CDF.
 
     Args:
         space: The space where the node is located.
-        external_id: The external id of the shop table.
+        external_id: The external id of the water value table.
         resource_cost: The resource cost field.
         table: The table field.
         asset_type: The asset type field.
         asset_id: The asset id field.
         alerts: The alert field.
-        production: The production field.
-        price: The price field.
-        existing_version: Fail the ingestion request if the shop table version is greater than or equal to this value.
+        existing_version: Fail the ingestion request if the water value table version is greater than or equal to this value.
             If no existingVersion is specified, the ingestion will always overwrite any existing data for the edge (for the specified container or instance).
             If existingVersion is set to 0, the upsert will behave as an insert, so it will fail the bulk if the item already exists.
             If skipOnVersionConflict is set on the ingestion request, then the item will be skipped instead of failing the ingestion request.
@@ -116,8 +104,6 @@ class SHOPTableApply(DomainModelApply):
     asset_type: Optional[str] = Field(None, alias="assetType")
     asset_id: Optional[str] = Field(None, alias="assetId")
     alerts: Union[list[AlertApply], list[str], None] = Field(default=None, repr=False)
-    production: Optional[list[TimeSeries]] = None
-    price: Optional[list[TimeSeries]] = None
 
     def _to_instances_apply(
         self,
@@ -129,7 +115,7 @@ class SHOPTableApply(DomainModelApply):
             return resources
 
         write_view = (view_by_write_class and view_by_write_class.get(type(self))) or dm.ViewId(
-            "power-ops-day-ahead-bid", "SHOPTable", "1"
+            "power-ops-day-ahead-bid", "WaterValueTable", "1"
         )
 
         properties = {}
@@ -141,16 +127,13 @@ class SHOPTableApply(DomainModelApply):
             properties["assetType"] = self.asset_type
         if self.asset_id is not None:
             properties["assetId"] = self.asset_id
-        if self.production is not None:
-            properties["production"] = self.production
-        if self.price is not None:
-            properties["price"] = self.price
 
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
+                type=dm.DirectRelationReference("power-ops-types", "WaterValueBasedDayAheadMethod"),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,
@@ -168,32 +151,26 @@ class SHOPTableApply(DomainModelApply):
             )
             resources.extend(other_resources)
 
-        if isinstance(self.production, CogniteTimeSeries):
-            resources.time_series.append(self.production)
-
-        if isinstance(self.price, CogniteTimeSeries):
-            resources.time_series.append(self.price)
-
         return resources
 
 
-class SHOPTableList(DomainModelList[SHOPTable]):
-    """List of shop tables in the read version."""
+class WaterValueTableList(DomainModelList[WaterValueTable]):
+    """List of water value tables in the read version."""
 
-    _INSTANCE = SHOPTable
+    _INSTANCE = WaterValueTable
 
-    def as_apply(self) -> SHOPTableApplyList:
-        """Convert these read versions of shop table to the writing versions."""
-        return SHOPTableApplyList([node.as_apply() for node in self.data])
-
-
-class SHOPTableApplyList(DomainModelApplyList[SHOPTableApply]):
-    """List of shop tables in the writing version."""
-
-    _INSTANCE = SHOPTableApply
+    def as_apply(self) -> WaterValueTableApplyList:
+        """Convert these read versions of water value table to the writing versions."""
+        return WaterValueTableApplyList([node.as_apply() for node in self.data])
 
 
-def _create_shop_table_filter(
+class WaterValueTableApplyList(DomainModelApplyList[WaterValueTableApply]):
+    """List of water value tables in the writing version."""
+
+    _INSTANCE = WaterValueTableApply
+
+
+def _create_water_value_table_filter(
     view_id: dm.ViewId,
     resource_cost: str | list[str] | None = None,
     resource_cost_prefix: str | None = None,
