@@ -1,0 +1,18 @@
+space: '{{dayahead_model_space}}'
+externalId: WaterValueTable
+name: WaterValueTable
+implements:
+- space: '{{dayahead_model_space}}'
+  externalId: BidTable
+  version: '{{dayaheadbid_BidTable_version}}'
+  type: view
+version: '{{dayaheadbid_WaterValueTable_version}}'
+properties: {}
+filter:
+  equals:
+    property:
+    - node
+    - type
+    value:
+      space: '{{type_space}}'
+      externalId: WaterValueBasedDayAheadMethod

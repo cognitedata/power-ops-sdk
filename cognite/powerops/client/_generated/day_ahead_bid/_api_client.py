@@ -13,6 +13,7 @@ from ._api.price_area import PriceAreaAPI
 from ._api.shop_multi_scenario import SHOPMultiScenarioAPI
 from ._api.shop_table import SHOPTableAPI
 from ._api.water_value_based import WaterValueBasedAPI
+from ._api.water_value_table import WaterValueTableAPI
 from . import data_classes
 
 
@@ -47,6 +48,7 @@ class DayAheadBidAPI:
             data_classes.SHOPMultiScenarioApply: dm.ViewId("power-ops-day-ahead-bid", "SHOPMultiScenario", "1"),
             data_classes.SHOPTableApply: dm.ViewId("power-ops-day-ahead-bid", "SHOPTable", "1"),
             data_classes.WaterValueBasedApply: dm.ViewId("power-ops-day-ahead-bid", "WaterValueBased", "1"),
+            data_classes.WaterValueTableApply: dm.ViewId("power-ops-day-ahead-bid", "WaterValueTable", "1"),
         }
 
         self.alert = AlertAPI(client, view_by_write_class)
@@ -57,6 +59,7 @@ class DayAheadBidAPI:
         self.shop_multi_scenario = SHOPMultiScenarioAPI(client, view_by_write_class)
         self.shop_table = SHOPTableAPI(client, view_by_write_class)
         self.water_value_based = WaterValueBasedAPI(client, view_by_write_class)
+        self.water_value_table = WaterValueTableAPI(client, view_by_write_class)
 
     @classmethod
     def azure_project(

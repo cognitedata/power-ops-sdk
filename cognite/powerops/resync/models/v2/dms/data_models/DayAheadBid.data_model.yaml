@@ -16,6 +16,10 @@ views:
   space: '{{dayahead_model_space}}'
   type: view
   version: '{{dayaheadbid_SHOPTable_version}}'
+- externalId: WaterValueTable
+  space: '{{dayahead_model_space}}'
+  type: view
+  version: '{{dayaheadbid_WaterValueTable_version}}'
 - externalId: SHOPMultiScenario
   space: '{{dayahead_model_space}}'
   type: view
