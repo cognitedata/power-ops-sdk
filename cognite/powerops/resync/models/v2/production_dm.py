@@ -5,7 +5,7 @@ from typing import Any, Callable, ClassVar, Literal
 
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling import ContainerId
-from pydantic import Field, field_validator
+from pydantic import Field, ValidationError, field_validator
 
 from cognite.powerops.client._generated.assets import data_classes as assets
 from cognite.powerops.client._generated.data_classes._core import DomainModelApply
@@ -182,8 +182,9 @@ class PowerAssetModelDM(Model):
             }
             try:
                 domain_node = write_class(**{k: v for k, v in unpack_node.items() if k in field_names})
-            except Exception:
-                raise
+            except ValidationError:
+                # My guess is that you get nodes with missing properties because of soft delete. So we just skip them.
+                continue
             nodes_by_id[domain_node.as_tuple_id()] = domain_node
 
         for edge in edges:
