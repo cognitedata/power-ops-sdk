@@ -1,19 +1,26 @@
 space: '{{dayahead_model_space}}'
-externalId: ProductionPricePair
-name: ProductionPricePair
+externalId: SHOPTable
+name: SHOPTable
 usedFor: node
 properties:
   production:
     type:
-      list: false
+      list: true
       type: timeseries
     nullable: true
     autoIncrement: false
     name: production
   price:
     type:
-      list: false
+      list: true
       type: timeseries
     nullable: true
     autoIncrement: false
     name: price
+constraints:
+  requiredBidTable:
+    require:
+      space: '{{dayahead_model_space}}'
+      externalId: BidTable
+      type: container
+    constraintType: requires
