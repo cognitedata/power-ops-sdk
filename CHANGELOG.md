@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.76.0] - 2023-12-11
+### Fixed
+* `AFRRBid` data model is now in `afrr_bid` folder (was `affr_bid`)
+
 ## [0.75.2] - 2023-12-11
 ### Changed
 * A few renamings changes to the `DayAheadBid` model.

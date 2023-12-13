@@ -8,8 +8,8 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
 
-from cognite.powerops.client._generated.affr_bid.data_classes._core import DEFAULT_INSTANCE_SPACE
-from cognite.powerops.client._generated.affr_bid.data_classes import (
+from cognite.powerops.client._generated.afrr_bid.data_classes._core import DEFAULT_INSTANCE_SPACE
+from cognite.powerops.client._generated.afrr_bid.data_classes import (
     DomainModelApply,
     ResourcesApplyResult,
     Alert,
@@ -19,7 +19,7 @@ from cognite.powerops.client._generated.affr_bid.data_classes import (
     AlertApplyList,
     AlertTextFields,
 )
-from cognite.powerops.client._generated.affr_bid.data_classes._alert import (
+from cognite.powerops.client._generated.afrr_bid.data_classes._alert import (
     _ALERT_PROPERTIES_BY_FIELD,
     _create_alert_filter,
 )
@@ -134,8 +134,8 @@ class AlertAPI(NodeAPI[Alert, AlertApply, AlertList]):
 
             Create a new alert:
 
-                >>> from cognite.powerops.client._generated.affr_bid import AFRRBidAPI
-                >>> from cognite.powerops.client._generated.affr_bid.data_classes import AlertApply
+                >>> from cognite.powerops.client._generated.afrr_bid import AFRRBidAPI
+                >>> from cognite.powerops.client._generated.afrr_bid.data_classes import AlertApply
                 >>> client = AFRRBidAPI()
                 >>> alert = AlertApply(external_id="my_alert", ...)
                 >>> result = client.alert.apply(alert)
@@ -159,7 +159,7 @@ class AlertAPI(NodeAPI[Alert, AlertApply, AlertList]):
 
             Delete alert by id:
 
-                >>> from cognite.powerops.client._generated.affr_bid import AFRRBidAPI
+                >>> from cognite.powerops.client._generated.afrr_bid import AFRRBidAPI
                 >>> client = AFRRBidAPI()
                 >>> client.alert.delete("my_alert")
         """
@@ -189,7 +189,7 @@ class AlertAPI(NodeAPI[Alert, AlertApply, AlertList]):
 
             Retrieve alert by id:
 
-                >>> from cognite.powerops.client._generated.affr_bid import AFRRBidAPI
+                >>> from cognite.powerops.client._generated.afrr_bid import AFRRBidAPI
                 >>> client = AFRRBidAPI()
                 >>> alert = client.alert.retrieve("my_alert")
 
@@ -250,7 +250,7 @@ class AlertAPI(NodeAPI[Alert, AlertApply, AlertList]):
 
            Search for 'my_alert' in all text properties:
 
-                >>> from cognite.powerops.client._generated.affr_bid import AFRRBidAPI
+                >>> from cognite.powerops.client._generated.afrr_bid import AFRRBidAPI
                 >>> client = AFRRBidAPI()
                 >>> alerts = client.alert.search('my_alert')
 
@@ -404,7 +404,7 @@ class AlertAPI(NodeAPI[Alert, AlertApply, AlertList]):
 
             Count alerts in space `my_space`:
 
-                >>> from cognite.powerops.client._generated.affr_bid import AFRRBidAPI
+                >>> from cognite.powerops.client._generated.afrr_bid import AFRRBidAPI
                 >>> client = AFRRBidAPI()
                 >>> result = client.alert.aggregate("count", space="my_space")
 
@@ -578,7 +578,7 @@ class AlertAPI(NodeAPI[Alert, AlertApply, AlertList]):
 
             List alerts and limit to 5:
 
-                >>> from cognite.powerops.client._generated.affr_bid import AFRRBidAPI
+                >>> from cognite.powerops.client._generated.afrr_bid import AFRRBidAPI
                 >>> client = AFRRBidAPI()
                 >>> alerts = client.alert.list(limit=5)
 

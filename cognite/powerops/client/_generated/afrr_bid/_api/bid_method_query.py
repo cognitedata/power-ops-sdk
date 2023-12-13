@@ -5,15 +5,15 @@ from typing import TYPE_CHECKING
 
 from cognite.client import data_modeling as dm, CogniteClient
 
-from cognite.powerops.client._generated.affr_bid.data_classes import (
+from cognite.powerops.client._generated.afrr_bid.data_classes import (
     DomainModelApply,
-    Alert,
-    AlertApply,
+    BidMethod,
+    BidMethodApply,
 )
 from ._core import DEFAULT_QUERY_LIMIT, QueryBuilder, QueryStep, QueryAPI, T_DomainModelList, _create_edge_filter
 
 
-class AlertQueryAPI(QueryAPI[T_DomainModelList]):
+class BidMethodQueryAPI(QueryAPI[T_DomainModelList]):
     def __init__(
         self,
         client: CogniteClient,
@@ -26,13 +26,13 @@ class AlertQueryAPI(QueryAPI[T_DomainModelList]):
 
         self._builder.append(
             QueryStep(
-                name=self._builder.next_name("alert"),
+                name=self._builder.next_name("bid_method"),
                 expression=dm.query.NodeResultSetExpression(
                     from_=self._builder[-1].name if self._builder else None,
                     filter=filter_,
                 ),
-                select=dm.query.Select([dm.query.SourceSelector(self._view_by_write_class[AlertApply], ["*"])]),
-                result_cls=Alert,
+                select=dm.query.Select([dm.query.SourceSelector(self._view_by_write_class[BidMethodApply], ["*"])]),
+                result_cls=BidMethod,
                 max_retrieve_limit=limit,
             )
         )

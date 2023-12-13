@@ -7,8 +7,8 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
 
-from cognite.powerops.client._generated.affr_bid.data_classes._core import DEFAULT_INSTANCE_SPACE
-from cognite.powerops.client._generated.affr_bid.data_classes import (
+from cognite.powerops.client._generated.afrr_bid.data_classes._core import DEFAULT_INSTANCE_SPACE
+from cognite.powerops.client._generated.afrr_bid.data_classes import (
     DomainModelApply,
     ResourcesApplyResult,
     BidRow,
@@ -18,7 +18,7 @@ from cognite.powerops.client._generated.affr_bid.data_classes import (
     BidRowApplyList,
     BidRowTextFields,
 )
-from cognite.powerops.client._generated.affr_bid.data_classes._bid_row import (
+from cognite.powerops.client._generated.afrr_bid.data_classes._bid_row import (
     _BIDROW_PROPERTIES_BY_FIELD,
     _create_bid_row_filter,
 )
@@ -139,8 +139,8 @@ class BidRowAPI(NodeAPI[BidRow, BidRowApply, BidRowList]):
 
             Create a new bid_row:
 
-                >>> from cognite.powerops.client._generated.affr_bid import AFRRBidAPI
-                >>> from cognite.powerops.client._generated.affr_bid.data_classes import BidRowApply
+                >>> from cognite.powerops.client._generated.afrr_bid import AFRRBidAPI
+                >>> from cognite.powerops.client._generated.afrr_bid.data_classes import BidRowApply
                 >>> client = AFRRBidAPI()
                 >>> bid_row = BidRowApply(external_id="my_bid_row", ...)
                 >>> result = client.bid_row.apply(bid_row)
@@ -164,7 +164,7 @@ class BidRowAPI(NodeAPI[BidRow, BidRowApply, BidRowList]):
 
             Delete bid_row by id:
 
-                >>> from cognite.powerops.client._generated.affr_bid import AFRRBidAPI
+                >>> from cognite.powerops.client._generated.afrr_bid import AFRRBidAPI
                 >>> client = AFRRBidAPI()
                 >>> client.bid_row.delete("my_bid_row")
         """
@@ -194,7 +194,7 @@ class BidRowAPI(NodeAPI[BidRow, BidRowApply, BidRowList]):
 
             Retrieve bid_row by id:
 
-                >>> from cognite.powerops.client._generated.affr_bid import AFRRBidAPI
+                >>> from cognite.powerops.client._generated.afrr_bid import AFRRBidAPI
                 >>> client = AFRRBidAPI()
                 >>> bid_row = client.bid_row.retrieve("my_bid_row")
 
@@ -262,7 +262,7 @@ class BidRowAPI(NodeAPI[BidRow, BidRowApply, BidRowList]):
 
            Search for 'my_bid_row' in all text properties:
 
-                >>> from cognite.powerops.client._generated.affr_bid import AFRRBidAPI
+                >>> from cognite.powerops.client._generated.afrr_bid import AFRRBidAPI
                 >>> client = AFRRBidAPI()
                 >>> bid_rows = client.bid_row.search('my_bid_row')
 
@@ -416,7 +416,7 @@ class BidRowAPI(NodeAPI[BidRow, BidRowApply, BidRowList]):
 
             Count bid rows in space `my_space`:
 
-                >>> from cognite.powerops.client._generated.affr_bid import AFRRBidAPI
+                >>> from cognite.powerops.client._generated.afrr_bid import AFRRBidAPI
                 >>> client = AFRRBidAPI()
                 >>> result = client.bid_row.aggregate("count", space="my_space")
 
@@ -592,7 +592,7 @@ class BidRowAPI(NodeAPI[BidRow, BidRowApply, BidRowList]):
 
             List bid rows and limit to 5:
 
-                >>> from cognite.powerops.client._generated.affr_bid import AFRRBidAPI
+                >>> from cognite.powerops.client._generated.afrr_bid import AFRRBidAPI
                 >>> client = AFRRBidAPI()
                 >>> bid_rows = client.bid_row.list(limit=5)
 

@@ -9,7 +9,7 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes import Datapoints, DatapointsArrayList, DatapointsList, TimeSeriesList
 from cognite.client.data_classes.datapoints import Aggregate
-from cognite.powerops.client._generated.affr_bid.data_classes._price_area import _create_price_area_filter
+from cognite.powerops.client._generated.afrr_bid.data_classes._price_area import _create_price_area_filter
 from ._core import DEFAULT_LIMIT_READ, INSTANCE_QUERY_LIMIT
 
 ColumnNames = Literal[
@@ -78,7 +78,7 @@ class PriceAreaCapacityPriceDownQuery:
             In this example,
             we are using the time-ago format to get raw data for the 'my_capacity_price_down' from 2 weeks ago up until now::
 
-                >>> from cognite.powerops.client._generated.affr_bid import AFRRBidAPI
+                >>> from cognite.powerops.client._generated.afrr_bid import AFRRBidAPI
                 >>> client = AFRRBidAPI()
                 >>> price_area_datapoints = client.price_area.capacity_price_down(external_id="my_capacity_price_down").retrieve(start="2w-ago")
         """
@@ -137,7 +137,7 @@ class PriceAreaCapacityPriceDownQuery:
             In this example,
             we are using the time-ago format to get raw data for the 'my_capacity_price_down' from 2 weeks ago up until now::
 
-                >>> from cognite.powerops.client._generated.affr_bid import AFRRBidAPI
+                >>> from cognite.powerops.client._generated.afrr_bid import AFRRBidAPI
                 >>> client = AFRRBidAPI()
                 >>> price_area_datapoints = client.price_area.capacity_price_down(external_id="my_capacity_price_down").retrieve_array(start="2w-ago")
         """
@@ -205,7 +205,7 @@ class PriceAreaCapacityPriceDownQuery:
             In this example,
             we are using the time-ago format to get raw data for the 'my_capacity_price_down' from 2 weeks ago up until now::
 
-                >>> from cognite.powerops.client._generated.affr_bid import AFRRBidAPI
+                >>> from cognite.powerops.client._generated.afrr_bid import AFRRBidAPI
                 >>> client = AFRRBidAPI()
                 >>> price_area_datapoints = client.price_area.capacity_price_down(external_id="my_capacity_price_down").retrieve_dataframe(start="2w-ago")
         """
@@ -282,7 +282,7 @@ class PriceAreaCapacityPriceDownQuery:
             In this example,
             get weekly aggregates for the 'my_capacity_price_down' for the first month of 2023 in Oslo time:
 
-                >>> from cognite.powerops.client._generated.affr_bid import AFRRBidAPI
+                >>> from cognite.powerops.client._generated.afrr_bid import AFRRBidAPI
                 >>> from datetime import datetime, timezone
                 >>> client = AFRRBidAPI()
                 >>> price_area_datapoints = client.price_area.capacity_price_down(
@@ -395,7 +395,7 @@ class PriceAreaCapacityPriceDownAPI:
 
             Retrieve all data for 5 price_area.capacity_price_down timeseries:
 
-                >>> from cognite.powerops.client._generated.affr_bid import AFRRBidAPI
+                >>> from cognite.powerops.client._generated.afrr_bid import AFRRBidAPI
                 >>> client = AFRRBidAPI()
                 >>> price_areas = client.price_area.capacity_price_down(limit=5).retrieve()
 
@@ -442,7 +442,7 @@ class PriceAreaCapacityPriceDownAPI:
 
             List price_area.capacity_price_down and limit to 5:
 
-                >>> from cognite.powerops.client._generated.affr_bid import AFRRBidAPI
+                >>> from cognite.powerops.client._generated.afrr_bid import AFRRBidAPI
                 >>> client = AFRRBidAPI()
                 >>> price_areas = client.price_area.capacity_price_down.list(limit=5)
 
