@@ -47,8 +47,8 @@ properties:
     name: priceArea
     description: The price area of the bid document.
 indexes:
-  date:
+  deliveryDate:
     properties:
-    - date
+    - deliveryDate
     indexType: btree
     cursorable: false
