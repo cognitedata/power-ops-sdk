@@ -1,0 +1,18 @@
+space: '{{dayahead_model_space}}'
+externalId: BasicBidMatrix
+name: BasicBidMatrix
+implements:
+- space: '{{dayahead_model_space}}'
+  externalId: BidMatrix
+  version: '{{dayaheadbid_BidMatrix_version}}'
+  type: view
+version: '{{dayaheadbid_BasicBidMatrix_version}}'
+properties: {}
+filter:
+  equals:
+    property:
+    - node
+    - type
+    value:
+      space: '{{type_space}}'
+      externalId: BasicBidMatrix

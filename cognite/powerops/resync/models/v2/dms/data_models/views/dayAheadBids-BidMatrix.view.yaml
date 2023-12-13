@@ -1,36 +1,48 @@
 space: '{{dayahead_model_space}}'
-externalId: BidTable
-name: BidTable
-version: '{{dayaheadbid_BidTable_version}}'
+externalId: BidMatrix
+name: BidMatrix
+version: '{{dayaheadbid_BidMatrix_version}}'
 properties:
   resourceCost:
     container:
       space: '{{dayahead_model_space}}'
-      externalId: BidTable
+      externalId: BidMatrix
       type: container
     containerPropertyIdentifier: resourceCost
     name: resourceCost
-  table:
+  matrix:
     container:
       space: '{{dayahead_model_space}}'
-      externalId: BidTable
+      externalId: BidMatrix
       type: container
-    containerPropertyIdentifier: table
-    name: table
+    containerPropertyIdentifier: matrix
+    name: matrix
   assetType:
     container:
       space: '{{dayahead_model_space}}'
-      externalId: BidTable
+      externalId: BidMatrix
       type: container
     containerPropertyIdentifier: assetType
     name: assetType
   assetId:
     container:
       space: '{{dayahead_model_space}}'
-      externalId: BidTable
+      externalId: BidMatrix
       type: container
     containerPropertyIdentifier: assetId
     name: assetId
+  method:
+    container:
+      space: '{{dayahead_model_space}}'
+      externalId: BidMatrix
+      type: container
+    containerPropertyIdentifier: method
+    name: method
+    source:
+      space: '{{dayahead_model_space}}'
+      externalId: BidMethod
+      version: '{{dayaheadbid_BidMethod_version}}'
+      type: view
   alerts:
     type:
       space: '{{type_space}}'

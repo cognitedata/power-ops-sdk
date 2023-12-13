@@ -8,18 +8,18 @@ views:
   space: '{{dayahead_model_space}}'
   type: view
   version: '{{dayaheadbid_BidDocument_version}}'
-- externalId: BidTable
+- externalId: BidMatrix
   space: '{{dayahead_model_space}}'
   type: view
-  version: '{{dayaheadbid_BidTable_version}}'
-- externalId: SHOPTable
+  version: '{{dayaheadbid_BidMatrix_version}}'
+- externalId: MultiScenarioMatrix
   space: '{{dayahead_model_space}}'
   type: view
-  version: '{{dayaheadbid_SHOPTable_version}}'
-- externalId: WaterValueTable
+  version: '{{dayaheadbid_MultiScenarioMatrix_version}}'
+- externalId: BasicBidMatrix
   space: '{{dayahead_model_space}}'
   type: view
-  version: '{{dayaheadbid_WaterValueTable_version}}'
+  version: '{{dayaheadbid_BasicBidMatrix_version}}'
 - externalId: SHOPMultiScenario
   space: '{{dayahead_model_space}}'
   type: view

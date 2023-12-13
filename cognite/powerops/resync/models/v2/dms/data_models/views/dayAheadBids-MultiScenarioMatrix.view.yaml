@@ -1,24 +1,24 @@
 space: '{{dayahead_model_space}}'
-externalId: SHOPTable
-name: SHOPTable
+externalId: MultiScenarioMatrix
+name: MultiScenarioMatrix
 implements:
 - space: '{{dayahead_model_space}}'
-  externalId: BidTable
-  version: '{{dayaheadbid_BidTable_version}}'
+  externalId: BidMatrix
+  version: '{{dayaheadbid_BidMatrix_version}}'
   type: view
-version: '{{dayaheadbid_SHOPTable_version}}'
+version: '{{dayaheadbid_MultiScenarioMatrix_version}}'
 properties:
   production:
     container:
       space: '{{dayahead_model_space}}'
-      externalId: SHOPTable
+      externalId: MultiScenarioMatrix
       type: container
     containerPropertyIdentifier: production
     name: production
   price:
     container:
       space: '{{dayahead_model_space}}'
-      externalId: SHOPTable
+      externalId: MultiScenarioMatrix
       type: container
     containerPropertyIdentifier: price
     name: price
