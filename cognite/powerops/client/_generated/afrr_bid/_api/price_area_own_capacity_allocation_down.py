@@ -9,7 +9,7 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes import Datapoints, DatapointsArrayList, DatapointsList, TimeSeriesList
 from cognite.client.data_classes.datapoints import Aggregate
-from cognite.powerops.client._generated.affr_bid.data_classes._price_area import _create_price_area_filter
+from cognite.powerops.client._generated.afrr_bid.data_classes._price_area import _create_price_area_filter
 from ._core import DEFAULT_LIMIT_READ, INSTANCE_QUERY_LIMIT
 
 ColumnNames = Literal[
@@ -26,7 +26,7 @@ ColumnNames = Literal[
 ]
 
 
-class PriceAreaActivationPriceDownQuery:
+class PriceAreaOwnCapacityAllocationDownQuery:
     def __init__(
         self,
         client: CogniteClient,
@@ -51,7 +51,7 @@ class PriceAreaActivationPriceDownQuery:
         limit: int | None = None,
         include_outside_points: bool = False,
     ) -> DatapointsList:
-        """`Retrieve datapoints for the `price_area.activation_price_down` timeseries.
+        """`Retrieve datapoints for the `price_area.own_capacity_allocation_down` timeseries.
 
         **Performance guide**:
             In order to retrieve millions of datapoints as efficiently as possible, here are a few guidelines:
@@ -76,11 +76,11 @@ class PriceAreaActivationPriceDownQuery:
         Examples:
 
             In this example,
-            we are using the time-ago format to get raw data for the 'my_activation_price_down' from 2 weeks ago up until now::
+            we are using the time-ago format to get raw data for the 'my_own_capacity_allocation_down' from 2 weeks ago up until now::
 
-                >>> from cognite.powerops.client._generated.affr_bid import AFRRBidAPI
+                >>> from cognite.powerops.client._generated.afrr_bid import AFRRBidAPI
                 >>> client = AFRRBidAPI()
-                >>> price_area_datapoints = client.price_area.activation_price_down(external_id="my_activation_price_down").retrieve(start="2w-ago")
+                >>> price_area_datapoints = client.price_area.own_capacity_allocation_down(external_id="my_own_capacity_allocation_down").retrieve(start="2w-ago")
         """
         external_ids = self._retrieve_timeseries_external_ids_with_extra()
         if external_ids:
@@ -110,7 +110,7 @@ class PriceAreaActivationPriceDownQuery:
         limit: int | None = None,
         include_outside_points: bool = False,
     ) -> DatapointsArrayList:
-        """`Retrieve numpy arrays for the `price_area.activation_price_down` timeseries.
+        """`Retrieve numpy arrays for the `price_area.own_capacity_allocation_down` timeseries.
 
         **Performance guide**:
             In order to retrieve millions of datapoints as efficiently as possible, here are a few guidelines:
@@ -135,11 +135,11 @@ class PriceAreaActivationPriceDownQuery:
         Examples:
 
             In this example,
-            we are using the time-ago format to get raw data for the 'my_activation_price_down' from 2 weeks ago up until now::
+            we are using the time-ago format to get raw data for the 'my_own_capacity_allocation_down' from 2 weeks ago up until now::
 
-                >>> from cognite.powerops.client._generated.affr_bid import AFRRBidAPI
+                >>> from cognite.powerops.client._generated.afrr_bid import AFRRBidAPI
                 >>> client = AFRRBidAPI()
-                >>> price_area_datapoints = client.price_area.activation_price_down(external_id="my_activation_price_down").retrieve_array(start="2w-ago")
+                >>> price_area_datapoints = client.price_area.own_capacity_allocation_down(external_id="my_own_capacity_allocation_down").retrieve_array(start="2w-ago")
         """
         external_ids = self._retrieve_timeseries_external_ids_with_extra()
         if external_ids:
@@ -171,9 +171,9 @@ class PriceAreaActivationPriceDownQuery:
         uniform_index: bool = False,
         include_aggregate_name: bool = True,
         include_granularity_name: bool = False,
-        column_names: ColumnNames | list[ColumnNames] = "activationPriceDown",
+        column_names: ColumnNames | list[ColumnNames] = "ownCapacityAllocationDown",
     ) -> pd.DataFrame:
-        """`Retrieve DataFrames for the `price_area.activation_price_down` timeseries.
+        """`Retrieve DataFrames for the `price_area.own_capacity_allocation_down` timeseries.
 
         **Performance guide**:
             In order to retrieve millions of datapoints as efficiently as possible, here are a few guidelines:
@@ -194,7 +194,7 @@ class PriceAreaActivationPriceDownQuery:
             uniform_index: If only querying aggregates AND a single granularity is used, AND no limit is used, specifying `uniform_index=True` will return a dataframe with an equidistant datetime index from the earliest `start` to the latest `end` (missing values will be NaNs). If these requirements are not met, a ValueError is raised. Default: False
             include_aggregate_name: Include 'aggregate' in the column name, e.g. `my-ts|average`. Ignored for raw time series. Default: True
             include_granularity_name: Include 'granularity' in the column name, e.g. `my-ts|12h`. Added after 'aggregate' when present. Ignored for raw time series. Default: False
-            column_names: Which property to use for column names. Defauts to activationPriceDown
+            column_names: Which property to use for column names. Defauts to ownCapacityAllocationDown
 
 
         Returns:
@@ -203,11 +203,11 @@ class PriceAreaActivationPriceDownQuery:
         Examples:
 
             In this example,
-            we are using the time-ago format to get raw data for the 'my_activation_price_down' from 2 weeks ago up until now::
+            we are using the time-ago format to get raw data for the 'my_own_capacity_allocation_down' from 2 weeks ago up until now::
 
-                >>> from cognite.powerops.client._generated.affr_bid import AFRRBidAPI
+                >>> from cognite.powerops.client._generated.afrr_bid import AFRRBidAPI
                 >>> client = AFRRBidAPI()
-                >>> price_area_datapoints = client.price_area.activation_price_down(external_id="my_activation_price_down").retrieve_dataframe(start="2w-ago")
+                >>> price_area_datapoints = client.price_area.own_capacity_allocation_down(external_id="my_own_capacity_allocation_down").retrieve_dataframe(start="2w-ago")
         """
         external_ids = self._retrieve_timeseries_external_ids_with_extra(column_names)
         if external_ids:
@@ -248,9 +248,9 @@ class PriceAreaActivationPriceDownQuery:
         uniform_index: bool = False,
         include_aggregate_name: bool = True,
         include_granularity_name: bool = False,
-        column_names: ColumnNames | list[ColumnNames] = "activationPriceDown",
+        column_names: ColumnNames | list[ColumnNames] = "ownCapacityAllocationDown",
     ) -> pd.DataFrame:
-        """Retrieve DataFrames for the `price_area.activation_price_down` timeseries in Timezone.
+        """Retrieve DataFrames for the `price_area.own_capacity_allocation_down` timeseries in Timezone.
 
         **Performance guide**:
             In order to retrieve millions of datapoints as efficiently as possible, here are a few guidelines:
@@ -271,7 +271,7 @@ class PriceAreaActivationPriceDownQuery:
             uniform_index: If only querying aggregates AND a single granularity is used, AND no limit is used, specifying `uniform_index=True` will return a dataframe with an equidistant datetime index from the earliest `start` to the latest `end` (missing values will be NaNs). If these requirements are not met, a ValueError is raised. Default: False
             include_aggregate_name: Include 'aggregate' in the column name, e.g. `my-ts|average`. Ignored for raw time series. Default: True
             include_granularity_name: Include 'granularity' in the column name, e.g. `my-ts|12h`. Added after 'aggregate' when present. Ignored for raw time series. Default: False
-            column_names: Which property to use for column names. Defauts to activationPriceDown
+            column_names: Which property to use for column names. Defauts to ownCapacityAllocationDown
 
 
         Returns:
@@ -280,13 +280,13 @@ class PriceAreaActivationPriceDownQuery:
         Examples:
 
             In this example,
-            get weekly aggregates for the 'my_activation_price_down' for the first month of 2023 in Oslo time:
+            get weekly aggregates for the 'my_own_capacity_allocation_down' for the first month of 2023 in Oslo time:
 
-                >>> from cognite.powerops.client._generated.affr_bid import AFRRBidAPI
+                >>> from cognite.powerops.client._generated.afrr_bid import AFRRBidAPI
                 >>> from datetime import datetime, timezone
                 >>> client = AFRRBidAPI()
-                >>> price_area_datapoints = client.price_area.activation_price_down(
-                ...     external_id="my_activation_price_down").retrieve_dataframe_in_timezone(
+                >>> price_area_datapoints = client.price_area.own_capacity_allocation_down(
+                ...     external_id="my_own_capacity_allocation_down").retrieve_dataframe_in_timezone(
                 ...         datetime(2023, 1, 1, tzinfo=ZoneInfo("Europe/Oslo")),
                 ...         datetime(2023, 1, 2, tzinfo=ZoneInfo("Europe/Oslo")),
                 ...         aggregates="average",
@@ -332,9 +332,9 @@ class PriceAreaActivationPriceDownQuery:
             return None
 
     def _retrieve_timeseries_external_ids_with_extra(
-        self, extra_properties: ColumnNames | list[ColumnNames] = "activationPriceDown"
+        self, extra_properties: ColumnNames | list[ColumnNames] = "ownCapacityAllocationDown"
     ) -> dict[str, list[str]]:
-        return _retrieve_timeseries_external_ids_with_extra_activation_price_down(
+        return _retrieve_timeseries_external_ids_with_extra_own_capacity_allocation_down(
             self._client,
             self._view_id,
             self._filter,
@@ -350,7 +350,7 @@ class PriceAreaActivationPriceDownQuery:
         include_aggregate_name: bool,
         include_granularity_name: bool,
     ) -> pd.DataFrame:
-        if isinstance(column_names, str) and column_names == "activationPriceDown":
+        if isinstance(column_names, str) and column_names == "ownCapacityAllocationDown":
             return df
         splits = sum(included for included in [include_aggregate_name, include_granularity_name])
         if splits == 0:
@@ -363,7 +363,7 @@ class PriceAreaActivationPriceDownQuery:
         return df
 
 
-class PriceAreaActivationPriceDownAPI:
+class PriceAreaOwnCapacityAllocationDownAPI:
     def __init__(self, client: CogniteClient, view_id: dm.ViewId):
         self._client = client
         self._view_id = view_id
@@ -376,8 +376,8 @@ class PriceAreaActivationPriceDownAPI:
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> PriceAreaActivationPriceDownQuery:
-        """Query timeseries `price_area.activation_price_down`
+    ) -> PriceAreaOwnCapacityAllocationDownQuery:
+        """Query timeseries `price_area.own_capacity_allocation_down`
 
         Args:
             name: The name to filter on.
@@ -388,16 +388,16 @@ class PriceAreaActivationPriceDownAPI:
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
-            A query object that can be used to retrieve datapoins for the price_area.activation_price_down timeseries
+            A query object that can be used to retrieve datapoins for the price_area.own_capacity_allocation_down timeseries
             selected in this method.
 
         Examples:
 
-            Retrieve all data for 5 price_area.activation_price_down timeseries:
+            Retrieve all data for 5 price_area.own_capacity_allocation_down timeseries:
 
-                >>> from cognite.powerops.client._generated.affr_bid import AFRRBidAPI
+                >>> from cognite.powerops.client._generated.afrr_bid import AFRRBidAPI
                 >>> client = AFRRBidAPI()
-                >>> price_areas = client.price_area.activation_price_down(limit=5).retrieve()
+                >>> price_areas = client.price_area.own_capacity_allocation_down(limit=5).retrieve()
 
         """
         filter_ = _create_price_area_filter(
@@ -409,7 +409,7 @@ class PriceAreaActivationPriceDownAPI:
             filter,
         )
 
-        return PriceAreaActivationPriceDownQuery(
+        return PriceAreaOwnCapacityAllocationDownQuery(
             client=self._client,
             view_id=self._view_id,
             timeseries_limit=limit,
@@ -425,7 +425,7 @@ class PriceAreaActivationPriceDownAPI:
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> TimeSeriesList:
-        """List timeseries `price_area.activation_price_down`
+        """List timeseries `price_area.own_capacity_allocation_down`
 
         Args:
             name: The name to filter on.
@@ -436,15 +436,15 @@ class PriceAreaActivationPriceDownAPI:
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
-            List of Timeseries price_area.activation_price_down.
+            List of Timeseries price_area.own_capacity_allocation_down.
 
         Examples:
 
-            List price_area.activation_price_down and limit to 5:
+            List price_area.own_capacity_allocation_down and limit to 5:
 
-                >>> from cognite.powerops.client._generated.affr_bid import AFRRBidAPI
+                >>> from cognite.powerops.client._generated.afrr_bid import AFRRBidAPI
                 >>> client = AFRRBidAPI()
-                >>> price_areas = client.price_area.activation_price_down.list(limit=5)
+                >>> price_areas = client.price_area.own_capacity_allocation_down.list(limit=5)
 
         """
         filter_ = _create_price_area_filter(
@@ -455,7 +455,7 @@ class PriceAreaActivationPriceDownAPI:
             space,
             filter,
         )
-        external_ids = _retrieve_timeseries_external_ids_with_extra_activation_price_down(
+        external_ids = _retrieve_timeseries_external_ids_with_extra_own_capacity_allocation_down(
             self._client, self._view_id, filter_, limit
         )
         if external_ids:
@@ -464,21 +464,21 @@ class PriceAreaActivationPriceDownAPI:
             return TimeSeriesList([])
 
 
-def _retrieve_timeseries_external_ids_with_extra_activation_price_down(
+def _retrieve_timeseries_external_ids_with_extra_own_capacity_allocation_down(
     client: CogniteClient,
     view_id: dm.ViewId,
     filter_: dm.Filter | None,
     limit: int,
-    extra_properties: ColumnNames | list[ColumnNames] = "activationPriceDown",
+    extra_properties: ColumnNames | list[ColumnNames] = "ownCapacityAllocationDown",
 ) -> dict[str, list[str]]:
     limit = float("inf") if limit is None or limit == -1 else limit
-    properties = ["activationPriceDown"]
-    if extra_properties == "activationPriceDown":
+    properties = ["ownCapacityAllocationDown"]
+    if extra_properties == "ownCapacityAllocationDown":
         ...
-    elif isinstance(extra_properties, str) and extra_properties != "activationPriceDown":
+    elif isinstance(extra_properties, str) and extra_properties != "ownCapacityAllocationDown":
         properties.append(extra_properties)
     elif isinstance(extra_properties, list):
-        properties.extend([prop for prop in extra_properties if prop != "activationPriceDown"])
+        properties.extend([prop for prop in extra_properties if prop != "ownCapacityAllocationDown"])
     else:
         raise ValueError(f"Invalid value for extra_properties: {extra_properties}")
 
@@ -508,7 +508,7 @@ def _retrieve_timeseries_external_ids_with_extra_activation_price_down(
         )
         result = client.data_modeling.instances.query(query)
         batch_external_ids = {
-            node.properties[view_id]["activationPriceDown"]: [
+            node.properties[view_id]["ownCapacityAllocationDown"]: [
                 node.properties[view_id].get(prop, "") for prop in extra_list
             ]
             for node in result.data["nodes"].data

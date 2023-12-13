@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 
 from cognite.client import data_modeling as dm, CogniteClient
 
-from cognite.powerops.client._generated.affr_bid.data_classes import (
+from cognite.powerops.client._generated.afrr_bid.data_classes import (
     DomainModelApply,
     PriceArea,
     PriceAreaApply,

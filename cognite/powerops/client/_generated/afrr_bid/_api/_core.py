@@ -12,7 +12,7 @@ from cognite.client.data_classes import TimeSeriesList
 from cognite.client.data_classes.data_modeling.instances import Instance
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
 
-from cognite.powerops.client._generated.affr_bid.data_classes._core import (
+from cognite.powerops.client._generated.afrr_bid.data_classes._core import (
     DomainModel,
     DomainModelApply,
     DomainRelationApply,

@@ -8,8 +8,8 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
 
-from cognite.powerops.client._generated.affr_bid.data_classes._core import DEFAULT_INSTANCE_SPACE
-from cognite.powerops.client._generated.affr_bid.data_classes import (
+from cognite.powerops.client._generated.afrr_bid.data_classes._core import DEFAULT_INSTANCE_SPACE
+from cognite.powerops.client._generated.afrr_bid.data_classes import (
     DomainModelApply,
     ResourcesApplyResult,
     BidDocument,
@@ -19,7 +19,7 @@ from cognite.powerops.client._generated.affr_bid.data_classes import (
     BidDocumentApplyList,
     BidDocumentTextFields,
 )
-from cognite.powerops.client._generated.affr_bid.data_classes._bid_document import (
+from cognite.powerops.client._generated.afrr_bid.data_classes._bid_document import (
     _BIDDOCUMENT_PROPERTIES_BY_FIELD,
     _create_bid_document_filter,
 )
@@ -132,8 +132,8 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
 
             Create a new bid_document:
 
-                >>> from cognite.powerops.client._generated.affr_bid import AFRRBidAPI
-                >>> from cognite.powerops.client._generated.affr_bid.data_classes import BidDocumentApply
+                >>> from cognite.powerops.client._generated.afrr_bid import AFRRBidAPI
+                >>> from cognite.powerops.client._generated.afrr_bid.data_classes import BidDocumentApply
                 >>> client = AFRRBidAPI()
                 >>> bid_document = BidDocumentApply(external_id="my_bid_document", ...)
                 >>> result = client.bid_document.apply(bid_document)
@@ -157,7 +157,7 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
 
             Delete bid_document by id:
 
-                >>> from cognite.powerops.client._generated.affr_bid import AFRRBidAPI
+                >>> from cognite.powerops.client._generated.afrr_bid import AFRRBidAPI
                 >>> client = AFRRBidAPI()
                 >>> client.bid_document.delete("my_bid_document")
         """
@@ -187,7 +187,7 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
 
             Retrieve bid_document by id:
 
-                >>> from cognite.powerops.client._generated.affr_bid import AFRRBidAPI
+                >>> from cognite.powerops.client._generated.afrr_bid import AFRRBidAPI
                 >>> client = AFRRBidAPI()
                 >>> bid_document = client.bid_document.retrieve("my_bid_document")
 
@@ -248,7 +248,7 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
 
            Search for 'my_bid_document' in all text properties:
 
-                >>> from cognite.powerops.client._generated.affr_bid import AFRRBidAPI
+                >>> from cognite.powerops.client._generated.afrr_bid import AFRRBidAPI
                 >>> client = AFRRBidAPI()
                 >>> bid_documents = client.bid_document.search('my_bid_document')
 
@@ -382,7 +382,7 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
 
             Count bid documents in space `my_space`:
 
-                >>> from cognite.powerops.client._generated.affr_bid import AFRRBidAPI
+                >>> from cognite.powerops.client._generated.afrr_bid import AFRRBidAPI
                 >>> client = AFRRBidAPI()
                 >>> result = client.bid_document.aggregate("count", space="my_space")
 
@@ -534,7 +534,7 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
 
             List bid documents and limit to 5:
 
-                >>> from cognite.powerops.client._generated.affr_bid import AFRRBidAPI
+                >>> from cognite.powerops.client._generated.afrr_bid import AFRRBidAPI
                 >>> client = AFRRBidAPI()
                 >>> bid_documents = client.bid_document.list(limit=5)
 

@@ -7,20 +7,20 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
 
-from cognite.powerops.client._generated.affr_bid.data_classes._core import DEFAULT_INSTANCE_SPACE
-from cognite.powerops.client._generated.affr_bid.data_classes import (
+from cognite.powerops.client._generated.afrr_bid.data_classes._core import DEFAULT_INSTANCE_SPACE
+from cognite.powerops.client._generated.afrr_bid.data_classes import (
     DomainModelApply,
     ResourcesApplyResult,
-    BidMethod,
-    BidMethodApply,
-    BidMethodFields,
-    BidMethodList,
-    BidMethodApplyList,
-    BidMethodTextFields,
+    PriceArea,
+    PriceAreaApply,
+    PriceAreaFields,
+    PriceAreaList,
+    PriceAreaApplyList,
+    PriceAreaTextFields,
 )
-from cognite.powerops.client._generated.affr_bid.data_classes._bid_method import (
-    _BIDMETHOD_PROPERTIES_BY_FIELD,
-    _create_bid_method_filter,
+from cognite.powerops.client._generated.afrr_bid.data_classes._price_area import (
+    _PRICEAREA_PROPERTIES_BY_FIELD,
+    _create_price_area_filter,
 )
 from ._core import (
     DEFAULT_LIMIT_READ,
@@ -31,22 +31,40 @@ from ._core import (
     QueryStep,
     QueryBuilder,
 )
-from .bid_method_query import BidMethodQueryAPI
+from .price_area_capacity_price_up import PriceAreaCapacityPriceUpAPI
+from .price_area_capacity_price_down import PriceAreaCapacityPriceDownAPI
+from .price_area_activation_price_up import PriceAreaActivationPriceUpAPI
+from .price_area_activation_price_down import PriceAreaActivationPriceDownAPI
+from .price_area_relative_activation import PriceAreaRelativeActivationAPI
+from .price_area_total_capacity_allocation_up import PriceAreaTotalCapacityAllocationUpAPI
+from .price_area_total_capacity_allocation_down import PriceAreaTotalCapacityAllocationDownAPI
+from .price_area_own_capacity_allocation_up import PriceAreaOwnCapacityAllocationUpAPI
+from .price_area_own_capacity_allocation_down import PriceAreaOwnCapacityAllocationDownAPI
+from .price_area_query import PriceAreaQueryAPI
 
 
-class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
+class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
     def __init__(self, client: CogniteClient, view_by_write_class: dict[type[DomainModelApply], dm.ViewId]):
-        view_id = view_by_write_class[BidMethodApply]
+        view_id = view_by_write_class[PriceAreaApply]
         super().__init__(
             client=client,
             sources=view_id,
-            class_type=BidMethod,
-            class_apply_type=BidMethodApply,
-            class_list=BidMethodList,
-            class_apply_list=BidMethodApplyList,
+            class_type=PriceArea,
+            class_apply_type=PriceAreaApply,
+            class_list=PriceAreaList,
+            class_apply_list=PriceAreaApplyList,
             view_by_write_class=view_by_write_class,
         )
         self._view_id = view_id
+        self.capacity_price_up = PriceAreaCapacityPriceUpAPI(client, view_id)
+        self.capacity_price_down = PriceAreaCapacityPriceDownAPI(client, view_id)
+        self.activation_price_up = PriceAreaActivationPriceUpAPI(client, view_id)
+        self.activation_price_down = PriceAreaActivationPriceDownAPI(client, view_id)
+        self.relative_activation = PriceAreaRelativeActivationAPI(client, view_id)
+        self.total_capacity_allocation_up = PriceAreaTotalCapacityAllocationUpAPI(client, view_id)
+        self.total_capacity_allocation_down = PriceAreaTotalCapacityAllocationDownAPI(client, view_id)
+        self.own_capacity_allocation_up = PriceAreaOwnCapacityAllocationUpAPI(client, view_id)
+        self.own_capacity_allocation_down = PriceAreaOwnCapacityAllocationDownAPI(client, view_id)
 
     def __call__(
         self,
@@ -56,23 +74,23 @@ class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
         space: str | list[str] | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
         filter: dm.Filter | None = None,
-    ) -> BidMethodQueryAPI[BidMethodList]:
-        """Query starting at bid methods.
+    ) -> PriceAreaQueryAPI[PriceAreaList]:
+        """Query starting at price areas.
 
         Args:
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of bid methods to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of price areas to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
-            A query API for bid methods.
+            A query API for price areas.
 
         """
         has_data = dm.filters.HasData(views=[self._view_id])
-        filter_ = _create_bid_method_filter(
+        filter_ = _create_price_area_filter(
             self._view_id,
             name,
             name_prefix,
@@ -80,16 +98,16 @@ class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = QueryBuilder(BidMethodList)
-        return BidMethodQueryAPI(self._client, builder, self._view_by_write_class, filter_, limit)
+        builder = QueryBuilder(PriceAreaList)
+        return PriceAreaQueryAPI(self._client, builder, self._view_by_write_class, filter_, limit)
 
     def apply(
-        self, bid_method: BidMethodApply | Sequence[BidMethodApply], replace: bool = False
+        self, price_area: PriceAreaApply | Sequence[PriceAreaApply], replace: bool = False
     ) -> ResourcesApplyResult:
-        """Add or update (upsert) bid methods.
+        """Add or update (upsert) price areas.
 
         Args:
-            bid_method: Bid method or sequence of bid methods to upsert.
+            price_area: Price area or sequence of price areas to upsert.
             replace (bool): How do we behave when a property value exists? Do we replace all matching and existing values with the supplied values (true)?
                 Or should we merge in new values for properties together with the existing values (false)? Note: This setting applies for all nodes or edges specified in the ingestion call.
         Returns:
@@ -97,66 +115,66 @@ class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
 
         Examples:
 
-            Create a new bid_method:
+            Create a new price_area:
 
-                >>> from cognite.powerops.client._generated.affr_bid import AFRRBidAPI
-                >>> from cognite.powerops.client._generated.affr_bid.data_classes import BidMethodApply
+                >>> from cognite.powerops.client._generated.afrr_bid import AFRRBidAPI
+                >>> from cognite.powerops.client._generated.afrr_bid.data_classes import PriceAreaApply
                 >>> client = AFRRBidAPI()
-                >>> bid_method = BidMethodApply(external_id="my_bid_method", ...)
-                >>> result = client.bid_method.apply(bid_method)
+                >>> price_area = PriceAreaApply(external_id="my_price_area", ...)
+                >>> result = client.price_area.apply(price_area)
 
         """
-        return self._apply(bid_method, replace)
+        return self._apply(price_area, replace)
 
     def delete(
         self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
     ) -> dm.InstancesDeleteResult:
-        """Delete one or more bid method.
+        """Delete one or more price area.
 
         Args:
-            external_id: External id of the bid method to delete.
-            space: The space where all the bid method are located.
+            external_id: External id of the price area to delete.
+            space: The space where all the price area are located.
 
         Returns:
             The instance(s), i.e., nodes and edges which has been deleted. Empty list if nothing was deleted.
 
         Examples:
 
-            Delete bid_method by id:
+            Delete price_area by id:
 
-                >>> from cognite.powerops.client._generated.affr_bid import AFRRBidAPI
+                >>> from cognite.powerops.client._generated.afrr_bid import AFRRBidAPI
                 >>> client = AFRRBidAPI()
-                >>> client.bid_method.delete("my_bid_method")
+                >>> client.price_area.delete("my_price_area")
         """
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> BidMethod | None:
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> PriceArea | None:
         ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> BidMethodList:
+    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> PriceAreaList:
         ...
 
     def retrieve(
         self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> BidMethod | BidMethodList | None:
-        """Retrieve one or more bid methods by id(s).
+    ) -> PriceArea | PriceAreaList | None:
+        """Retrieve one or more price areas by id(s).
 
         Args:
-            external_id: External id or list of external ids of the bid methods.
-            space: The space where all the bid methods are located.
+            external_id: External id or list of external ids of the price areas.
+            space: The space where all the price areas are located.
 
         Returns:
-            The requested bid methods.
+            The requested price areas.
 
         Examples:
 
-            Retrieve bid_method by id:
+            Retrieve price_area by id:
 
-                >>> from cognite.powerops.client._generated.affr_bid import AFRRBidAPI
+                >>> from cognite.powerops.client._generated.afrr_bid import AFRRBidAPI
                 >>> client = AFRRBidAPI()
-                >>> bid_method = client.bid_method.retrieve("my_bid_method")
+                >>> price_area = client.price_area.retrieve("my_price_area")
 
         """
         return self._retrieve(external_id, space)
@@ -164,15 +182,15 @@ class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
     def search(
         self,
         query: str,
-        properties: BidMethodTextFields | Sequence[BidMethodTextFields] | None = None,
+        properties: PriceAreaTextFields | Sequence[PriceAreaTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> BidMethodList:
-        """Search bid methods
+    ) -> PriceAreaList:
+        """Search price areas
 
         Args:
             query: The search query,
@@ -181,22 +199,22 @@ class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
             name_prefix: The prefix of the name to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of bid methods to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of price areas to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
-            Search results bid methods matching the query.
+            Search results price areas matching the query.
 
         Examples:
 
-           Search for 'my_bid_method' in all text properties:
+           Search for 'my_price_area' in all text properties:
 
-                >>> from cognite.powerops.client._generated.affr_bid import AFRRBidAPI
+                >>> from cognite.powerops.client._generated.afrr_bid import AFRRBidAPI
                 >>> client = AFRRBidAPI()
-                >>> bid_methods = client.bid_method.search('my_bid_method')
+                >>> price_areas = client.price_area.search('my_price_area')
 
         """
-        filter_ = _create_bid_method_filter(
+        filter_ = _create_price_area_filter(
             self._view_id,
             name,
             name_prefix,
@@ -204,7 +222,7 @@ class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
             space,
             filter,
         )
-        return self._search(self._view_id, query, _BIDMETHOD_PROPERTIES_BY_FIELD, properties, filter_, limit)
+        return self._search(self._view_id, query, _PRICEAREA_PROPERTIES_BY_FIELD, properties, filter_, limit)
 
     @overload
     def aggregate(
@@ -213,10 +231,10 @@ class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
         | dm.aggregations.MetricAggregation
         | Sequence[Aggregations]
         | Sequence[dm.aggregations.MetricAggregation],
-        property: BidMethodFields | Sequence[BidMethodFields] | None = None,
+        property: PriceAreaFields | Sequence[PriceAreaFields] | None = None,
         group_by: None = None,
         query: str | None = None,
-        search_properties: BidMethodTextFields | Sequence[BidMethodTextFields] | None = None,
+        search_properties: PriceAreaTextFields | Sequence[PriceAreaTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
@@ -233,10 +251,10 @@ class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
         | dm.aggregations.MetricAggregation
         | Sequence[Aggregations]
         | Sequence[dm.aggregations.MetricAggregation],
-        property: BidMethodFields | Sequence[BidMethodFields] | None = None,
-        group_by: BidMethodFields | Sequence[BidMethodFields] = None,
+        property: PriceAreaFields | Sequence[PriceAreaFields] | None = None,
+        group_by: PriceAreaFields | Sequence[PriceAreaFields] = None,
         query: str | None = None,
-        search_properties: BidMethodTextFields | Sequence[BidMethodTextFields] | None = None,
+        search_properties: PriceAreaTextFields | Sequence[PriceAreaTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
@@ -252,10 +270,10 @@ class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
         | dm.aggregations.MetricAggregation
         | Sequence[Aggregations]
         | Sequence[dm.aggregations.MetricAggregation],
-        property: BidMethodFields | Sequence[BidMethodFields] | None = None,
-        group_by: BidMethodFields | Sequence[BidMethodFields] | None = None,
+        property: PriceAreaFields | Sequence[PriceAreaFields] | None = None,
+        group_by: PriceAreaFields | Sequence[PriceAreaFields] | None = None,
         query: str | None = None,
-        search_property: BidMethodTextFields | Sequence[BidMethodTextFields] | None = None,
+        search_property: PriceAreaTextFields | Sequence[PriceAreaTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
@@ -263,7 +281,7 @@ class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
-        """Aggregate data across bid methods
+        """Aggregate data across price areas
 
         Args:
             aggregate: The aggregation to perform.
@@ -275,7 +293,7 @@ class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
             name_prefix: The prefix of the name to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of bid methods to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of price areas to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
@@ -283,15 +301,15 @@ class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
 
         Examples:
 
-            Count bid methods in space `my_space`:
+            Count price areas in space `my_space`:
 
-                >>> from cognite.powerops.client._generated.affr_bid import AFRRBidAPI
+                >>> from cognite.powerops.client._generated.afrr_bid import AFRRBidAPI
                 >>> client = AFRRBidAPI()
-                >>> result = client.bid_method.aggregate("count", space="my_space")
+                >>> result = client.price_area.aggregate("count", space="my_space")
 
         """
 
-        filter_ = _create_bid_method_filter(
+        filter_ = _create_price_area_filter(
             self._view_id,
             name,
             name_prefix,
@@ -302,7 +320,7 @@ class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
         return self._aggregate(
             self._view_id,
             aggregate,
-            _BIDMETHOD_PROPERTIES_BY_FIELD,
+            _PRICEAREA_PROPERTIES_BY_FIELD,
             property,
             group_by,
             query,
@@ -313,10 +331,10 @@ class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
 
     def histogram(
         self,
-        property: BidMethodFields,
+        property: PriceAreaFields,
         interval: float,
         query: str | None = None,
-        search_property: BidMethodTextFields | Sequence[BidMethodTextFields] | None = None,
+        search_property: PriceAreaTextFields | Sequence[PriceAreaTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
@@ -324,7 +342,7 @@ class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
-        """Produces histograms for bid methods
+        """Produces histograms for price areas
 
         Args:
             property: The property to use as the value in the histogram.
@@ -335,14 +353,14 @@ class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
             name_prefix: The prefix of the name to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of bid methods to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of price areas to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
             Bucketed histogram results.
 
         """
-        filter_ = _create_bid_method_filter(
+        filter_ = _create_price_area_filter(
             self._view_id,
             name,
             name_prefix,
@@ -354,7 +372,7 @@ class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
             self._view_id,
             property,
             interval,
-            _BIDMETHOD_PROPERTIES_BY_FIELD,
+            _PRICEAREA_PROPERTIES_BY_FIELD,
             query,
             search_property,
             limit,
@@ -369,30 +387,30 @@ class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> BidMethodList:
-        """List/filter bid methods
+    ) -> PriceAreaList:
+        """List/filter price areas
 
         Args:
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of bid methods to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of price areas to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
-            List of requested bid methods
+            List of requested price areas
 
         Examples:
 
-            List bid methods and limit to 5:
+            List price areas and limit to 5:
 
-                >>> from cognite.powerops.client._generated.affr_bid import AFRRBidAPI
+                >>> from cognite.powerops.client._generated.afrr_bid import AFRRBidAPI
                 >>> client = AFRRBidAPI()
-                >>> bid_methods = client.bid_method.list(limit=5)
+                >>> price_areas = client.price_area.list(limit=5)
 
         """
-        filter_ = _create_bid_method_filter(
+        filter_ = _create_price_area_filter(
             self._view_id,
             name,
             name_prefix,

@@ -4,7 +4,7 @@ from __future__ import annotations
 from cognite.client import data_modeling as dm
 
 from ._core import DEFAULT_LIMIT_READ, EdgeAPI, _create_edge_filter
-from cognite.powerops.client._generated.affr_bid.data_classes._core import DEFAULT_INSTANCE_SPACE
+from cognite.powerops.client._generated.afrr_bid.data_classes._core import DEFAULT_INSTANCE_SPACE
 
 
 class BidRowAlertsAPI(EdgeAPI):
@@ -37,7 +37,7 @@ class BidRowAlertsAPI(EdgeAPI):
 
             List 5 alert edges connected to "my_bid_row":
 
-                >>> from cognite.powerops.client._generated.affr_bid import AFRRBidAPI
+                >>> from cognite.powerops.client._generated.afrr_bid import AFRRBidAPI
                 >>> client = AFRRBidAPI()
                 >>> bid_row = client.bid_row.alerts_edge.list("my_bid_row", limit=5)
 

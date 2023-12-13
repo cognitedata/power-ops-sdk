@@ -59,7 +59,7 @@ def main():
         models = [
             Model(
                 model_id=dm.DataModelId("power-ops-afrr-bid", "AFRRBid", "1"),
-                directory="affr_bid",
+                directory="afrr_bid",
                 client_name="AFRRBidAPI",
             ),
             Model(
