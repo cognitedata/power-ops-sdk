@@ -14,13 +14,13 @@ properties:
     name: name
     description: Unique name for a given instance of a Bid Document. A combination
       of name, priceArea, date and startCalculation.
-  date:
+  deliveryDate:
     container:
       space: '{{shared_model_space}}'
       externalId: BidDocument
       type: container
-    containerPropertyIdentifier: date
-    name: date
+    containerPropertyIdentifier: deliveryDate
+    name: deliveryDate
     description: The date of the Bid.
   startCalculation:
     container:

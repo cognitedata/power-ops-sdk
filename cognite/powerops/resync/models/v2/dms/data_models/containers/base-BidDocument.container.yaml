@@ -11,13 +11,13 @@ properties:
     nullable: true
     autoIncrement: false
     name: name
-  date:
+  deliveryDate:
     type:
       list: false
       type: date
     nullable: true
     autoIncrement: false
-    name: date
+    name: deliveryDate
   startCalculation:
     type:
       list: false
