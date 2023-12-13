@@ -1,6 +1,6 @@
 space: '{{dayahead_model_space}}'
-externalId: BidTable
-name: BidTable
+externalId: BidMatrix
+name: BidMatrix
 usedFor: node
 properties:
   resourceCost:
@@ -11,13 +11,13 @@ properties:
     nullable: true
     autoIncrement: false
     name: resourceCost
-  table:
+  matrix:
     type:
       list: false
       type: sequence
     nullable: true
     autoIncrement: false
-    name: table
+    name: matrix
   assetType:
     type:
       list: false
@@ -34,3 +34,9 @@ properties:
     nullable: true
     autoIncrement: false
     name: assetId
+  method:
+    type:
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: method

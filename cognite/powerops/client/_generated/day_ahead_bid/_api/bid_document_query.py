@@ -13,14 +13,14 @@ from cognite.powerops.client._generated.day_ahead_bid.data_classes import (
     PriceAreaApply,
     BidMethod,
     BidMethodApply,
-    BidTable,
-    BidTableApply,
+    BidMatrix,
+    BidMatrixApply,
 )
 from ._core import DEFAULT_QUERY_LIMIT, QueryBuilder, QueryStep, QueryAPI, T_DomainModelList, _create_edge_filter
 
 if TYPE_CHECKING:
     from .alert_query import AlertQueryAPI
-    from .bid_table_query import BidTableQueryAPI
+    from .bid_matrix_query import BidMatrixQueryAPI
 
 
 class BidDocumentQueryAPI(QueryAPI[T_DomainModelList]):
@@ -106,7 +106,7 @@ class BidDocumentQueryAPI(QueryAPI[T_DomainModelList]):
         retrieve_price_area: bool = False,
         retrieve_method: bool = False,
         retrieve_total: bool = False,
-    ) -> BidTableQueryAPI[T_DomainModelList]:
+    ) -> BidMatrixQueryAPI[T_DomainModelList]:
         """Query along the partial edges of the bid document.
 
         Args:
@@ -119,9 +119,9 @@ class BidDocumentQueryAPI(QueryAPI[T_DomainModelList]):
             retrieve_total: Whether to retrieve the total for each bid document or not.
 
         Returns:
-            BidTableQueryAPI: The query API for the bid table.
+            BidMatrixQueryAPI: The query API for the bid matrix.
         """
-        from .bid_table_query import BidTableQueryAPI
+        from .bid_matrix_query import BidMatrixQueryAPI
 
         from_ = self._builder[-1].name
 
@@ -147,7 +147,7 @@ class BidDocumentQueryAPI(QueryAPI[T_DomainModelList]):
             self._query_append_method(from_)
         if retrieve_total:
             self._query_append_total(from_)
-        return BidTableQueryAPI(self._client, self._builder, self._view_by_write_class, None, limit)
+        return BidMatrixQueryAPI(self._client, self._builder, self._view_by_write_class, None, limit)
 
     def query(
         self,
@@ -210,7 +210,7 @@ class BidDocumentQueryAPI(QueryAPI[T_DomainModelList]):
         )
 
     def _query_append_total(self, from_: str) -> None:
-        view_id = self._view_by_write_class[BidTableApply]
+        view_id = self._view_by_write_class[BidMatrixApply]
         self._builder.append(
             QueryStep(
                 name=self._builder.next_name("total"),
@@ -222,6 +222,6 @@ class BidDocumentQueryAPI(QueryAPI[T_DomainModelList]):
                 ),
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
                 max_retrieve_limit=-1,
-                result_cls=BidTable,
+                result_cls=BidMatrix,
             ),
         )

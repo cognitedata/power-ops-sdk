@@ -33,11 +33,11 @@ __all__ = [
 
 
 BidDocumentTextFields = Literal["name"]
-BidDocumentFields = Literal["name", "date", "start_calculation", "end_calculation", "is_complete"]
+BidDocumentFields = Literal["name", "delivery_date", "start_calculation", "end_calculation", "is_complete"]
 
 _BIDDOCUMENT_PROPERTIES_BY_FIELD = {
     "name": "name",
-    "date": "date",
+    "delivery_date": "deliveryDate",
     "start_calculation": "startCalculation",
     "end_calculation": "endCalculation",
     "is_complete": "isComplete",
@@ -53,7 +53,7 @@ class BidDocument(DomainModel):
         space: The space where the node is located.
         external_id: The external id of the bid document.
         name: Unique name for a given instance of a Bid Document. A combination of name, priceArea, date and startCalculation.
-        date: The date of the Bid.
+        delivery_date: The date of the Bid.
         start_calculation: Timestamp of when the Bid calculation workflow started.
         end_calculation: Timestamp of when the Bid calculation workflow completed.
         is_complete: Indicates that the Bid calculation workflow has completed (although has not necessarily succeeded).
@@ -68,7 +68,7 @@ class BidDocument(DomainModel):
 
     space: str = DEFAULT_INSTANCE_SPACE
     name: Optional[str] = None
-    date: Optional[datetime.date] = None
+    delivery_date: Optional[datetime.date] = Field(None, alias="deliveryDate")
     start_calculation: Optional[datetime.datetime] = Field(None, alias="startCalculation")
     end_calculation: Optional[datetime.datetime] = Field(None, alias="endCalculation")
     is_complete: Optional[bool] = Field(None, alias="isComplete")
@@ -82,7 +82,7 @@ class BidDocument(DomainModel):
             space=self.space,
             external_id=self.external_id,
             name=self.name,
-            date=self.date,
+            delivery_date=self.delivery_date,
             start_calculation=self.start_calculation,
             end_calculation=self.end_calculation,
             is_complete=self.is_complete,
@@ -101,7 +101,7 @@ class BidDocumentApply(DomainModelApply):
         space: The space where the node is located.
         external_id: The external id of the bid document.
         name: Unique name for a given instance of a Bid Document. A combination of name, priceArea, date and startCalculation.
-        date: The date of the Bid.
+        delivery_date: The date of the Bid.
         start_calculation: Timestamp of when the Bid calculation workflow started.
         end_calculation: Timestamp of when the Bid calculation workflow completed.
         is_complete: Indicates that the Bid calculation workflow has completed (although has not necessarily succeeded).
@@ -116,7 +116,7 @@ class BidDocumentApply(DomainModelApply):
 
     space: str = DEFAULT_INSTANCE_SPACE
     name: Optional[str] = None
-    date: Optional[datetime.date] = None
+    delivery_date: datetime.date = Field(alias="deliveryDate")
     start_calculation: Optional[datetime.datetime] = Field(None, alias="startCalculation")
     end_calculation: Optional[datetime.datetime] = Field(None, alias="endCalculation")
     is_complete: Optional[bool] = Field(None, alias="isComplete")
@@ -140,8 +140,8 @@ class BidDocumentApply(DomainModelApply):
         properties = {}
         if self.name is not None:
             properties["name"] = self.name
-        if self.date is not None:
-            properties["date"] = self.date.isoformat()
+        if self.delivery_date is not None:
+            properties["deliveryDate"] = self.delivery_date.isoformat()
         if self.start_calculation is not None:
             properties["startCalculation"] = self.start_calculation.isoformat(timespec="milliseconds")
         if self.end_calculation is not None:
@@ -211,8 +211,8 @@ def _create_bid_document_filter(
     view_id: dm.ViewId,
     name: str | list[str] | None = None,
     name_prefix: str | None = None,
-    min_date: datetime.date | None = None,
-    max_date: datetime.date | None = None,
+    min_delivery_date: datetime.date | None = None,
+    max_delivery_date: datetime.date | None = None,
     min_start_calculation: datetime.datetime | None = None,
     max_start_calculation: datetime.datetime | None = None,
     min_end_calculation: datetime.datetime | None = None,
@@ -230,12 +230,12 @@ def _create_bid_document_filter(
         filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
     if name_prefix:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
-    if min_date or max_date:
+    if min_delivery_date or max_delivery_date:
         filters.append(
             dm.filters.Range(
-                view_id.as_property_ref("date"),
-                gte=min_date.isoformat() if min_date else None,
-                lte=max_date.isoformat() if max_date else None,
+                view_id.as_property_ref("deliveryDate"),
+                gte=min_delivery_date.isoformat() if min_delivery_date else None,
+                lte=max_delivery_date.isoformat() if max_delivery_date else None,
             )
         )
     if min_start_calculation or max_start_calculation:

@@ -3,7 +3,6 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
-from cognite.client.data_classes import TimeSeries as CogniteTimeSeries
 from pydantic import Field
 
 from ._core import (
@@ -14,97 +13,91 @@ from ._core import (
     DomainModelList,
     DomainRelationApply,
     ResourcesApply,
-    TimeSeries,
 )
 
 if TYPE_CHECKING:
     from ._alert import Alert, AlertApply
+    from ._bid_method import BidMethod, BidMethodApply
 
 
 __all__ = [
-    "SHOPTable",
-    "SHOPTableApply",
-    "SHOPTableList",
-    "SHOPTableApplyList",
-    "SHOPTableFields",
-    "SHOPTableTextFields",
+    "BasicBidMatrix",
+    "BasicBidMatrixApply",
+    "BasicBidMatrixList",
+    "BasicBidMatrixApplyList",
+    "BasicBidMatrixFields",
+    "BasicBidMatrixTextFields",
 ]
 
 
-SHOPTableTextFields = Literal["resource_cost", "table", "asset_type", "asset_id", "production", "price"]
-SHOPTableFields = Literal["resource_cost", "table", "asset_type", "asset_id", "production", "price"]
+BasicBidMatrixTextFields = Literal["resource_cost", "matrix", "asset_type", "asset_id"]
+BasicBidMatrixFields = Literal["resource_cost", "matrix", "asset_type", "asset_id"]
 
-_SHOPTABLE_PROPERTIES_BY_FIELD = {
+_BASICBIDMATRIX_PROPERTIES_BY_FIELD = {
     "resource_cost": "resourceCost",
-    "table": "table",
+    "matrix": "matrix",
     "asset_type": "assetType",
     "asset_id": "assetId",
-    "production": "production",
-    "price": "price",
 }
 
 
-class SHOPTable(DomainModel):
-    """This represents the reading version of shop table.
+class BasicBidMatrix(DomainModel):
+    """This represents the reading version of basic bid matrix.
 
     It is used to when data is retrieved from CDF.
 
     Args:
         space: The space where the node is located.
-        external_id: The external id of the shop table.
+        external_id: The external id of the basic bid matrix.
         resource_cost: The resource cost field.
-        table: The table field.
+        matrix: The matrix field.
         asset_type: The asset type field.
         asset_id: The asset id field.
+        method: The method field.
         alerts: The alert field.
-        production: The production field.
-        price: The price field.
-        created_time: The created time of the shop table node.
-        last_updated_time: The last updated time of the shop table node.
-        deleted_time: If present, the deleted time of the shop table node.
-        version: The version of the shop table node.
+        created_time: The created time of the basic bid matrix node.
+        last_updated_time: The last updated time of the basic bid matrix node.
+        deleted_time: If present, the deleted time of the basic bid matrix node.
+        version: The version of the basic bid matrix node.
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
     resource_cost: Optional[str] = Field(None, alias="resourceCost")
-    table: Union[str, None] = None
+    matrix: Union[str, None] = None
     asset_type: Optional[str] = Field(None, alias="assetType")
     asset_id: Optional[str] = Field(None, alias="assetId")
+    method: Union[BidMethod, str, dm.NodeId, None] = Field(None, repr=False)
     alerts: Union[list[Alert], list[str], None] = Field(default=None, repr=False)
-    production: Optional[list[TimeSeries]] = None
-    price: Optional[list[TimeSeries]] = None
 
-    def as_apply(self) -> SHOPTableApply:
-        """Convert this read version of shop table to the writing version."""
-        return SHOPTableApply(
+    def as_apply(self) -> BasicBidMatrixApply:
+        """Convert this read version of basic bid matrix to the writing version."""
+        return BasicBidMatrixApply(
             space=self.space,
             external_id=self.external_id,
             resource_cost=self.resource_cost,
-            table=self.table,
+            matrix=self.matrix,
             asset_type=self.asset_type,
             asset_id=self.asset_id,
+            method=self.method.as_apply() if isinstance(self.method, DomainModel) else self.method,
             alerts=[alert.as_apply() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
-            production=self.production,
-            price=self.price,
         )
 
 
-class SHOPTableApply(DomainModelApply):
-    """This represents the writing version of shop table.
+class BasicBidMatrixApply(DomainModelApply):
+    """This represents the writing version of basic bid matrix.
 
     It is used to when data is sent to CDF.
 
     Args:
         space: The space where the node is located.
-        external_id: The external id of the shop table.
+        external_id: The external id of the basic bid matrix.
         resource_cost: The resource cost field.
-        table: The table field.
+        matrix: The matrix field.
         asset_type: The asset type field.
         asset_id: The asset id field.
+        method: The method field.
         alerts: The alert field.
-        production: The production field.
-        price: The price field.
-        existing_version: Fail the ingestion request if the shop table version is greater than or equal to this value.
+        existing_version: Fail the ingestion request if the basic bid matrix version is greater than or equal to this value.
             If no existingVersion is specified, the ingestion will always overwrite any existing data for the edge (for the specified container or instance).
             If existingVersion is set to 0, the upsert will behave as an insert, so it will fail the bulk if the item already exists.
             If skipOnVersionConflict is set on the ingestion request, then the item will be skipped instead of failing the ingestion request.
@@ -112,12 +105,11 @@ class SHOPTableApply(DomainModelApply):
 
     space: str = DEFAULT_INSTANCE_SPACE
     resource_cost: Optional[str] = Field(None, alias="resourceCost")
-    table: Union[str, None] = None
+    matrix: Union[str, None] = None
     asset_type: Optional[str] = Field(None, alias="assetType")
     asset_id: Optional[str] = Field(None, alias="assetId")
+    method: Union[BidMethodApply, str, dm.NodeId, None] = Field(None, repr=False)
     alerts: Union[list[AlertApply], list[str], None] = Field(default=None, repr=False)
-    production: Optional[list[TimeSeries]] = None
-    price: Optional[list[TimeSeries]] = None
 
     def _to_instances_apply(
         self,
@@ -129,28 +121,30 @@ class SHOPTableApply(DomainModelApply):
             return resources
 
         write_view = (view_by_write_class and view_by_write_class.get(type(self))) or dm.ViewId(
-            "power-ops-day-ahead-bid", "SHOPTable", "1"
+            "power-ops-day-ahead-bid", "BasicBidMatrix", "1"
         )
 
         properties = {}
         if self.resource_cost is not None:
             properties["resourceCost"] = self.resource_cost
-        if self.table is not None:
-            properties["table"] = self.table
+        if self.matrix is not None:
+            properties["matrix"] = self.matrix
         if self.asset_type is not None:
             properties["assetType"] = self.asset_type
         if self.asset_id is not None:
             properties["assetId"] = self.asset_id
-        if self.production is not None:
-            properties["production"] = self.production
-        if self.price is not None:
-            properties["price"] = self.price
+        if self.method is not None:
+            properties["method"] = {
+                "space": self.space if isinstance(self.method, str) else self.method.space,
+                "externalId": self.method if isinstance(self.method, str) else self.method.external_id,
+            }
 
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
+                type=dm.DirectRelationReference("power-ops-types", "BasicBidMatrix"),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,
@@ -168,32 +162,30 @@ class SHOPTableApply(DomainModelApply):
             )
             resources.extend(other_resources)
 
-        if isinstance(self.production, CogniteTimeSeries):
-            resources.time_series.append(self.production)
-
-        if isinstance(self.price, CogniteTimeSeries):
-            resources.time_series.append(self.price)
+        if isinstance(self.method, DomainModelApply):
+            other_resources = self.method._to_instances_apply(cache, view_by_write_class)
+            resources.extend(other_resources)
 
         return resources
 
 
-class SHOPTableList(DomainModelList[SHOPTable]):
-    """List of shop tables in the read version."""
+class BasicBidMatrixList(DomainModelList[BasicBidMatrix]):
+    """List of basic bid matrixes in the read version."""
 
-    _INSTANCE = SHOPTable
+    _INSTANCE = BasicBidMatrix
 
-    def as_apply(self) -> SHOPTableApplyList:
-        """Convert these read versions of shop table to the writing versions."""
-        return SHOPTableApplyList([node.as_apply() for node in self.data])
-
-
-class SHOPTableApplyList(DomainModelApplyList[SHOPTableApply]):
-    """List of shop tables in the writing version."""
-
-    _INSTANCE = SHOPTableApply
+    def as_apply(self) -> BasicBidMatrixApplyList:
+        """Convert these read versions of basic bid matrix to the writing versions."""
+        return BasicBidMatrixApplyList([node.as_apply() for node in self.data])
 
 
-def _create_shop_table_filter(
+class BasicBidMatrixApplyList(DomainModelApplyList[BasicBidMatrixApply]):
+    """List of basic bid matrixes in the writing version."""
+
+    _INSTANCE = BasicBidMatrixApply
+
+
+def _create_basic_bid_matrix_filter(
     view_id: dm.ViewId,
     resource_cost: str | list[str] | None = None,
     resource_cost_prefix: str | None = None,
@@ -201,6 +193,7 @@ def _create_shop_table_filter(
     asset_type_prefix: str | None = None,
     asset_id: str | list[str] | None = None,
     asset_id_prefix: str | None = None,
+    method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -224,6 +217,29 @@ def _create_shop_table_filter(
         filters.append(dm.filters.In(view_id.as_property_ref("assetId"), values=asset_id))
     if asset_id_prefix:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("assetId"), value=asset_id_prefix))
+    if method and isinstance(method, str):
+        filters.append(
+            dm.filters.Equals(
+                view_id.as_property_ref("method"), value={"space": "power-ops-day-ahead-bid", "externalId": method}
+            )
+        )
+    if method and isinstance(method, tuple):
+        filters.append(
+            dm.filters.Equals(view_id.as_property_ref("method"), value={"space": method[0], "externalId": method[1]})
+        )
+    if method and isinstance(method, list) and isinstance(method[0], str):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("method"),
+                values=[{"space": "power-ops-day-ahead-bid", "externalId": item} for item in method],
+            )
+        )
+    if method and isinstance(method, list) and isinstance(method[0], tuple):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("method"), values=[{"space": item[0], "externalId": item[1]} for item in method]
+            )
+        )
     if external_id_prefix:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if space and isinstance(space, str):

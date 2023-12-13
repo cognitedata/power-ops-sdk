@@ -1,6 +1,6 @@
 space: '{{dayahead_model_space}}'
-externalId: SHOPTable
-name: SHOPTable
+externalId: MultiScenarioMatrix
+name: MultiScenarioMatrix
 usedFor: node
 properties:
   production:
@@ -18,9 +18,9 @@ properties:
     autoIncrement: false
     name: price
 constraints:
-  requiredBidTable:
+  requiredBidMatrix:
     require:
       space: '{{dayahead_model_space}}'
-      externalId: BidTable
+      externalId: BidMatrix
       type: container
     constraintType: requires
