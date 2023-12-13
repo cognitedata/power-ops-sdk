@@ -7,22 +7,22 @@ from ._core import DEFAULT_LIMIT_READ, EdgeAPI, _create_edge_filter
 from cognite.powerops.client._generated.day_ahead_bid.data_classes._core import DEFAULT_INSTANCE_SPACE
 
 
-class WaterValueTableAlertsAPI(EdgeAPI):
+class MultiScenarioMatrixAlertsAPI(EdgeAPI):
     def list(
         self,
-        from_water_value_table: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-        from_water_value_table_space: str = DEFAULT_INSTANCE_SPACE,
+        from_multi_scenario_matrix: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
+        from_multi_scenario_matrix_space: str = DEFAULT_INSTANCE_SPACE,
         to_alert: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
         to_alert_space: str = DEFAULT_INSTANCE_SPACE,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit=DEFAULT_LIMIT_READ,
     ) -> dm.EdgeList:
-        """List alert edges of a water value table.
+        """List alert edges of a multi scenario matrix.
 
         Args:
-            from_water_value_table: ID of the source water value table.
-            from_water_value_table_space: Location of the water value tables.
+            from_multi_scenario_matrix: ID of the source multi scenario matrix.
+            from_multi_scenario_matrix_space: Location of the multi scenario matrixes.
             to_alert: ID of the target alert.
             to_alert_space: Location of the alerts.
             external_id_prefix: The prefix of the external ID to filter on.
@@ -35,17 +35,17 @@ class WaterValueTableAlertsAPI(EdgeAPI):
 
         Examples:
 
-            List 5 alert edges connected to "my_water_value_table":
+            List 5 alert edges connected to "my_multi_scenario_matrix":
 
                 >>> from cognite.powerops.client._generated.day_ahead_bid import DayAheadBidAPI
                 >>> client = DayAheadBidAPI()
-                >>> water_value_table = client.water_value_table.alerts_edge.list("my_water_value_table", limit=5)
+                >>> multi_scenario_matrix = client.multi_scenario_matrix.alerts_edge.list("my_multi_scenario_matrix", limit=5)
 
         """
         filter_ = _create_edge_filter(
             dm.DirectRelationReference("power-ops-types", "calculationIssue"),
-            from_water_value_table,
-            from_water_value_table_space,
+            from_multi_scenario_matrix,
+            from_multi_scenario_matrix_space,
             to_alert,
             to_alert_space,
             external_id_prefix,

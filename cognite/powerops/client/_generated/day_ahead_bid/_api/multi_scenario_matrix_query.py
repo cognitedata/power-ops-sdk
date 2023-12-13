@@ -7,8 +7,10 @@ from cognite.client import data_modeling as dm, CogniteClient
 
 from cognite.powerops.client._generated.day_ahead_bid.data_classes import (
     DomainModelApply,
-    BidTable,
-    BidTableApply,
+    MultiScenarioMatrix,
+    MultiScenarioMatrixApply,
+    BidMethod,
+    BidMethodApply,
 )
 from ._core import DEFAULT_QUERY_LIMIT, QueryBuilder, QueryStep, QueryAPI, T_DomainModelList, _create_edge_filter
 
@@ -16,7 +18,7 @@ if TYPE_CHECKING:
     from .alert_query import AlertQueryAPI
 
 
-class BidTableQueryAPI(QueryAPI[T_DomainModelList]):
+class MultiScenarioMatrixQueryAPI(QueryAPI[T_DomainModelList]):
     def __init__(
         self,
         client: CogniteClient,
@@ -29,13 +31,15 @@ class BidTableQueryAPI(QueryAPI[T_DomainModelList]):
 
         self._builder.append(
             QueryStep(
-                name=self._builder.next_name("bid_table"),
+                name=self._builder.next_name("multi_scenario_matrix"),
                 expression=dm.query.NodeResultSetExpression(
                     from_=self._builder[-1].name if self._builder else None,
                     filter=filter_,
                 ),
-                select=dm.query.Select([dm.query.SourceSelector(self._view_by_write_class[BidTableApply], ["*"])]),
-                result_cls=BidTable,
+                select=dm.query.Select(
+                    [dm.query.SourceSelector(self._view_by_write_class[MultiScenarioMatrixApply], ["*"])]
+                ),
+                result_cls=MultiScenarioMatrix,
                 max_retrieve_limit=limit,
             )
         )
@@ -45,14 +49,16 @@ class BidTableQueryAPI(QueryAPI[T_DomainModelList]):
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
+        retrieve_method: bool = False,
     ) -> AlertQueryAPI[T_DomainModelList]:
-        """Query along the alert edges of the bid table.
+        """Query along the alert edges of the multi scenario matrix.
 
         Args:
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of alert edges to return. Defaults to 25. Set to -1, float("inf") or None
                 to return all items.
+            retrieve_method: Whether to retrieve the method for each multi scenario matrix or not.
 
         Returns:
             AlertQueryAPI: The query API for the alert.
@@ -77,15 +83,41 @@ class BidTableQueryAPI(QueryAPI[T_DomainModelList]):
                 max_retrieve_limit=limit,
             )
         )
+        if retrieve_method:
+            self._query_append_method(from_)
         return AlertQueryAPI(self._client, self._builder, self._view_by_write_class, None, limit)
 
     def query(
         self,
+        retrieve_method: bool = False,
     ) -> T_DomainModelList:
         """Execute query and return the result.
+
+        Args:
+            retrieve_method: Whether to retrieve the method for each multi scenario matrix or not.
 
         Returns:
             The list of the source nodes of the query.
 
         """
+        from_ = self._builder[-1].name
+        if retrieve_method:
+            self._query_append_method(from_)
         return self._query()
+
+    def _query_append_method(self, from_: str) -> None:
+        view_id = self._view_by_write_class[BidMethodApply]
+        self._builder.append(
+            QueryStep(
+                name=self._builder.next_name("method"),
+                expression=dm.query.NodeResultSetExpression(
+                    filter=dm.filters.HasData(views=[view_id]),
+                    from_=from_,
+                    through=self._view_by_write_class[MultiScenarioMatrixApply].as_property_ref("method"),
+                    direction="outwards",
+                ),
+                select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
+                max_retrieve_limit=-1,
+                result_cls=BidMethod,
+            ),
+        )

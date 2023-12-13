@@ -12,8 +12,8 @@ class BidDocumentPartialsAPI(EdgeAPI):
         self,
         from_bid_document: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
         from_bid_document_space: str = DEFAULT_INSTANCE_SPACE,
-        to_bid_table: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-        to_bid_table_space: str = DEFAULT_INSTANCE_SPACE,
+        to_bid_matrix: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
+        to_bid_matrix_space: str = DEFAULT_INSTANCE_SPACE,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit=DEFAULT_LIMIT_READ,
@@ -23,8 +23,8 @@ class BidDocumentPartialsAPI(EdgeAPI):
         Args:
             from_bid_document: ID of the source bid document.
             from_bid_document_space: Location of the bid documents.
-            to_bid_table: ID of the target bid table.
-            to_bid_table_space: Location of the bid tables.
+            to_bid_matrix: ID of the target bid matrix.
+            to_bid_matrix_space: Location of the bid matrixes.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of partial edges to return. Defaults to 25. Set to -1, float("inf") or None
@@ -46,8 +46,8 @@ class BidDocumentPartialsAPI(EdgeAPI):
             dm.DirectRelationReference("power-ops-types", "PartialBid"),
             from_bid_document,
             from_bid_document_space,
-            to_bid_table,
-            to_bid_table_space,
+            to_bid_matrix,
+            to_bid_matrix_space,
             external_id_prefix,
             space,
         )

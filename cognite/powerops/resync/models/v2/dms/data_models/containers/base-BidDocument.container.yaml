@@ -15,7 +15,7 @@ properties:
     type:
       list: false
       type: date
-    nullable: true
+    nullable: false
     autoIncrement: false
     name: deliveryDate
   startCalculation:

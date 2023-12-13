@@ -9,13 +9,15 @@ from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes import Datapoints, DatapointsArrayList, DatapointsList, TimeSeriesList
 from cognite.client.data_classes.datapoints import Aggregate
-from cognite.powerops.client._generated.day_ahead_bid.data_classes._shop_table import _create_shop_table_filter
+from cognite.powerops.client._generated.day_ahead_bid.data_classes._multi_scenario_matrix import (
+    _create_multi_scenario_matrix_filter,
+)
 from ._core import DEFAULT_LIMIT_READ, INSTANCE_QUERY_LIMIT
 
-ColumnNames = Literal["resourceCost", "table", "assetType", "assetId"]
+ColumnNames = Literal["resourceCost", "matrix", "assetType", "assetId"]
 
 
-class SHOPTableProductionQuery:
+class MultiScenarioMatrixProductionQuery:
     def __init__(
         self,
         client: CogniteClient,
@@ -40,7 +42,7 @@ class SHOPTableProductionQuery:
         limit: int | None = None,
         include_outside_points: bool = False,
     ) -> DatapointsList:
-        """`Retrieve datapoints for the `shop_table.production` timeseries.
+        """`Retrieve datapoints for the `multi_scenario_matrix.production` timeseries.
 
         **Performance guide**:
             In order to retrieve millions of datapoints as efficiently as possible, here are a few guidelines:
@@ -69,7 +71,7 @@ class SHOPTableProductionQuery:
 
                 >>> from cognite.powerops.client._generated.day_ahead_bid import DayAheadBidAPI
                 >>> client = DayAheadBidAPI()
-                >>> shop_table_datapoints = client.shop_table.production(external_id="my_production").retrieve(start="2w-ago")
+                >>> multi_scenario_matrix_datapoints = client.multi_scenario_matrix.production(external_id="my_production").retrieve(start="2w-ago")
         """
         external_ids = self._retrieve_timeseries_external_ids_with_extra()
         if external_ids:
@@ -99,7 +101,7 @@ class SHOPTableProductionQuery:
         limit: int | None = None,
         include_outside_points: bool = False,
     ) -> DatapointsArrayList:
-        """`Retrieve numpy arrays for the `shop_table.production` timeseries.
+        """`Retrieve numpy arrays for the `multi_scenario_matrix.production` timeseries.
 
         **Performance guide**:
             In order to retrieve millions of datapoints as efficiently as possible, here are a few guidelines:
@@ -128,7 +130,7 @@ class SHOPTableProductionQuery:
 
                 >>> from cognite.powerops.client._generated.day_ahead_bid import DayAheadBidAPI
                 >>> client = DayAheadBidAPI()
-                >>> shop_table_datapoints = client.shop_table.production(external_id="my_production").retrieve_array(start="2w-ago")
+                >>> multi_scenario_matrix_datapoints = client.multi_scenario_matrix.production(external_id="my_production").retrieve_array(start="2w-ago")
         """
         external_ids = self._retrieve_timeseries_external_ids_with_extra()
         if external_ids:
@@ -162,7 +164,7 @@ class SHOPTableProductionQuery:
         include_granularity_name: bool = False,
         column_names: ColumnNames | list[ColumnNames] = "production",
     ) -> pd.DataFrame:
-        """`Retrieve DataFrames for the `shop_table.production` timeseries.
+        """`Retrieve DataFrames for the `multi_scenario_matrix.production` timeseries.
 
         **Performance guide**:
             In order to retrieve millions of datapoints as efficiently as possible, here are a few guidelines:
@@ -196,7 +198,7 @@ class SHOPTableProductionQuery:
 
                 >>> from cognite.powerops.client._generated.day_ahead_bid import DayAheadBidAPI
                 >>> client = DayAheadBidAPI()
-                >>> shop_table_datapoints = client.shop_table.production(external_id="my_production").retrieve_dataframe(start="2w-ago")
+                >>> multi_scenario_matrix_datapoints = client.multi_scenario_matrix.production(external_id="my_production").retrieve_dataframe(start="2w-ago")
         """
         external_ids = self._retrieve_timeseries_external_ids_with_extra(column_names)
         if external_ids:
@@ -239,7 +241,7 @@ class SHOPTableProductionQuery:
         include_granularity_name: bool = False,
         column_names: ColumnNames | list[ColumnNames] = "production",
     ) -> pd.DataFrame:
-        """Retrieve DataFrames for the `shop_table.production` timeseries in Timezone.
+        """Retrieve DataFrames for the `multi_scenario_matrix.production` timeseries in Timezone.
 
         **Performance guide**:
             In order to retrieve millions of datapoints as efficiently as possible, here are a few guidelines:
@@ -274,7 +276,7 @@ class SHOPTableProductionQuery:
                 >>> from cognite.powerops.client._generated.day_ahead_bid import DayAheadBidAPI
                 >>> from datetime import datetime, timezone
                 >>> client = DayAheadBidAPI()
-                >>> shop_table_datapoints = client.shop_table.production(
+                >>> multi_scenario_matrix_datapoints = client.multi_scenario_matrix.production(
                 ...     external_id="my_production").retrieve_dataframe_in_timezone(
                 ...         datetime(2023, 1, 1, tzinfo=ZoneInfo("Europe/Oslo")),
                 ...         datetime(2023, 1, 2, tzinfo=ZoneInfo("Europe/Oslo")),
@@ -352,7 +354,7 @@ class SHOPTableProductionQuery:
         return df
 
 
-class SHOPTableProductionAPI:
+class MultiScenarioMatrixProductionAPI:
     def __init__(self, client: CogniteClient, view_id: dm.ViewId):
         self._client = client
         self._view_id = view_id
@@ -365,12 +367,13 @@ class SHOPTableProductionAPI:
         asset_type_prefix: str | None = None,
         asset_id: str | list[str] | None = None,
         asset_id_prefix: str | None = None,
+        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> SHOPTableProductionQuery:
-        """Query timeseries `shop_table.production`
+    ) -> MultiScenarioMatrixProductionQuery:
+        """Query timeseries `multi_scenario_matrix.production`
 
         Args:
             resource_cost: The resource cost to filter on.
@@ -379,25 +382,26 @@ class SHOPTableProductionAPI:
             asset_type_prefix: The prefix of the asset type to filter on.
             asset_id: The asset id to filter on.
             asset_id_prefix: The prefix of the asset id to filter on.
+            method: The method to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of shop tables to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of multi scenario matrixes to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
-            A query object that can be used to retrieve datapoins for the shop_table.production timeseries
+            A query object that can be used to retrieve datapoins for the multi_scenario_matrix.production timeseries
             selected in this method.
 
         Examples:
 
-            Retrieve all data for 5 shop_table.production timeseries:
+            Retrieve all data for 5 multi_scenario_matrix.production timeseries:
 
                 >>> from cognite.powerops.client._generated.day_ahead_bid import DayAheadBidAPI
                 >>> client = DayAheadBidAPI()
-                >>> shop_tables = client.shop_table.production(limit=5).retrieve()
+                >>> multi_scenario_matrixes = client.multi_scenario_matrix.production(limit=5).retrieve()
 
         """
-        filter_ = _create_shop_table_filter(
+        filter_ = _create_multi_scenario_matrix_filter(
             self._view_id,
             resource_cost,
             resource_cost_prefix,
@@ -405,12 +409,13 @@ class SHOPTableProductionAPI:
             asset_type_prefix,
             asset_id,
             asset_id_prefix,
+            method,
             external_id_prefix,
             space,
             filter,
         )
 
-        return SHOPTableProductionQuery(
+        return MultiScenarioMatrixProductionQuery(
             client=self._client,
             view_id=self._view_id,
             timeseries_limit=limit,
@@ -425,12 +430,13 @@ class SHOPTableProductionAPI:
         asset_type_prefix: str | None = None,
         asset_id: str | list[str] | None = None,
         asset_id_prefix: str | None = None,
+        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> TimeSeriesList:
-        """List timeseries `shop_table.production`
+        """List timeseries `multi_scenario_matrix.production`
 
         Args:
             resource_cost: The resource cost to filter on.
@@ -439,24 +445,25 @@ class SHOPTableProductionAPI:
             asset_type_prefix: The prefix of the asset type to filter on.
             asset_id: The asset id to filter on.
             asset_id_prefix: The prefix of the asset id to filter on.
+            method: The method to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of shop tables to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of multi scenario matrixes to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
-            List of Timeseries shop_table.production.
+            List of Timeseries multi_scenario_matrix.production.
 
         Examples:
 
-            List shop_table.production and limit to 5:
+            List multi_scenario_matrix.production and limit to 5:
 
                 >>> from cognite.powerops.client._generated.day_ahead_bid import DayAheadBidAPI
                 >>> client = DayAheadBidAPI()
-                >>> shop_tables = client.shop_table.production.list(limit=5)
+                >>> multi_scenario_matrixes = client.multi_scenario_matrix.production.list(limit=5)
 
         """
-        filter_ = _create_shop_table_filter(
+        filter_ = _create_multi_scenario_matrix_filter(
             self._view_id,
             resource_cost,
             resource_cost_prefix,
@@ -464,6 +471,7 @@ class SHOPTableProductionAPI:
             asset_type_prefix,
             asset_id,
             asset_id_prefix,
+            method,
             external_id_prefix,
             space,
             filter,

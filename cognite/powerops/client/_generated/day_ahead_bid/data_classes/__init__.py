@@ -7,6 +7,14 @@ from ._core import (
     ResourcesApplyResult,
 )
 from ._alert import Alert, AlertApply, AlertApplyList, AlertFields, AlertList, AlertTextFields
+from ._basic_bid_matrix import (
+    BasicBidMatrix,
+    BasicBidMatrixApply,
+    BasicBidMatrixApplyList,
+    BasicBidMatrixFields,
+    BasicBidMatrixList,
+    BasicBidMatrixTextFields,
+)
 from ._bid_document import (
     BidDocument,
     BidDocumentApply,
@@ -14,6 +22,14 @@ from ._bid_document import (
     BidDocumentFields,
     BidDocumentList,
     BidDocumentTextFields,
+)
+from ._bid_matrix import (
+    BidMatrix,
+    BidMatrixApply,
+    BidMatrixApplyList,
+    BidMatrixFields,
+    BidMatrixList,
+    BidMatrixTextFields,
 )
 from ._bid_method import (
     BidMethod,
@@ -23,7 +39,14 @@ from ._bid_method import (
     BidMethodList,
     BidMethodTextFields,
 )
-from ._bid_table import BidTable, BidTableApply, BidTableApplyList, BidTableFields, BidTableList, BidTableTextFields
+from ._multi_scenario_matrix import (
+    MultiScenarioMatrix,
+    MultiScenarioMatrixApply,
+    MultiScenarioMatrixApplyList,
+    MultiScenarioMatrixFields,
+    MultiScenarioMatrixList,
+    MultiScenarioMatrixTextFields,
+)
 from ._price_area import (
     PriceArea,
     PriceAreaApply,
@@ -40,14 +63,6 @@ from ._shop_multi_scenario import (
     SHOPMultiScenarioList,
     SHOPMultiScenarioTextFields,
 )
-from ._shop_table import (
-    SHOPTable,
-    SHOPTableApply,
-    SHOPTableApplyList,
-    SHOPTableFields,
-    SHOPTableList,
-    SHOPTableTextFields,
-)
 from ._water_value_based import (
     WaterValueBased,
     WaterValueBasedApply,
@@ -56,25 +71,17 @@ from ._water_value_based import (
     WaterValueBasedList,
     WaterValueBasedTextFields,
 )
-from ._water_value_table import (
-    WaterValueTable,
-    WaterValueTableApply,
-    WaterValueTableApplyList,
-    WaterValueTableFields,
-    WaterValueTableList,
-    WaterValueTableTextFields,
-)
 
+BasicBidMatrix.model_rebuild()
+BasicBidMatrixApply.model_rebuild()
 BidDocument.model_rebuild()
 BidDocumentApply.model_rebuild()
-BidTable.model_rebuild()
-BidTableApply.model_rebuild()
+BidMatrix.model_rebuild()
+BidMatrixApply.model_rebuild()
+MultiScenarioMatrix.model_rebuild()
+MultiScenarioMatrixApply.model_rebuild()
 PriceArea.model_rebuild()
 PriceAreaApply.model_rebuild()
-SHOPTable.model_rebuild()
-SHOPTableApply.model_rebuild()
-WaterValueTable.model_rebuild()
-WaterValueTableApply.model_rebuild()
 
 __all__ = [
     "ResourcesApply",
@@ -89,24 +96,36 @@ __all__ = [
     "AlertApplyList",
     "AlertFields",
     "AlertTextFields",
+    "BasicBidMatrix",
+    "BasicBidMatrixApply",
+    "BasicBidMatrixList",
+    "BasicBidMatrixApplyList",
+    "BasicBidMatrixFields",
+    "BasicBidMatrixTextFields",
     "BidDocument",
     "BidDocumentApply",
     "BidDocumentList",
     "BidDocumentApplyList",
     "BidDocumentFields",
     "BidDocumentTextFields",
+    "BidMatrix",
+    "BidMatrixApply",
+    "BidMatrixList",
+    "BidMatrixApplyList",
+    "BidMatrixFields",
+    "BidMatrixTextFields",
     "BidMethod",
     "BidMethodApply",
     "BidMethodList",
     "BidMethodApplyList",
     "BidMethodFields",
     "BidMethodTextFields",
-    "BidTable",
-    "BidTableApply",
-    "BidTableList",
-    "BidTableApplyList",
-    "BidTableFields",
-    "BidTableTextFields",
+    "MultiScenarioMatrix",
+    "MultiScenarioMatrixApply",
+    "MultiScenarioMatrixList",
+    "MultiScenarioMatrixApplyList",
+    "MultiScenarioMatrixFields",
+    "MultiScenarioMatrixTextFields",
     "PriceArea",
     "PriceAreaApply",
     "PriceAreaList",
@@ -119,22 +138,10 @@ __all__ = [
     "SHOPMultiScenarioApplyList",
     "SHOPMultiScenarioFields",
     "SHOPMultiScenarioTextFields",
-    "SHOPTable",
-    "SHOPTableApply",
-    "SHOPTableList",
-    "SHOPTableApplyList",
-    "SHOPTableFields",
-    "SHOPTableTextFields",
     "WaterValueBased",
     "WaterValueBasedApply",
     "WaterValueBasedList",
     "WaterValueBasedApplyList",
     "WaterValueBasedFields",
     "WaterValueBasedTextFields",
-    "WaterValueTable",
-    "WaterValueTableApply",
-    "WaterValueTableList",
-    "WaterValueTableApplyList",
-    "WaterValueTableFields",
-    "WaterValueTableTextFields",
 ]

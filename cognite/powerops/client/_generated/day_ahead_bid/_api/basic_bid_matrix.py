@@ -11,16 +11,16 @@ from cognite.powerops.client._generated.day_ahead_bid.data_classes._core import 
 from cognite.powerops.client._generated.day_ahead_bid.data_classes import (
     DomainModelApply,
     ResourcesApplyResult,
-    SHOPTable,
-    SHOPTableApply,
-    SHOPTableFields,
-    SHOPTableList,
-    SHOPTableApplyList,
-    SHOPTableTextFields,
+    BasicBidMatrix,
+    BasicBidMatrixApply,
+    BasicBidMatrixFields,
+    BasicBidMatrixList,
+    BasicBidMatrixApplyList,
+    BasicBidMatrixTextFields,
 )
-from cognite.powerops.client._generated.day_ahead_bid.data_classes._shop_table import (
-    _SHOPTABLE_PROPERTIES_BY_FIELD,
-    _create_shop_table_filter,
+from cognite.powerops.client._generated.day_ahead_bid.data_classes._basic_bid_matrix import (
+    _BASICBIDMATRIX_PROPERTIES_BY_FIELD,
+    _create_basic_bid_matrix_filter,
 )
 from ._core import (
     DEFAULT_LIMIT_READ,
@@ -31,28 +31,24 @@ from ._core import (
     QueryStep,
     QueryBuilder,
 )
-from .shop_table_alerts import SHOPTableAlertsAPI
-from .shop_table_production import SHOPTableProductionAPI
-from .shop_table_price import SHOPTablePriceAPI
-from .shop_table_query import SHOPTableQueryAPI
+from .basic_bid_matrix_alerts import BasicBidMatrixAlertsAPI
+from .basic_bid_matrix_query import BasicBidMatrixQueryAPI
 
 
-class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
+class BasicBidMatrixAPI(NodeAPI[BasicBidMatrix, BasicBidMatrixApply, BasicBidMatrixList]):
     def __init__(self, client: CogniteClient, view_by_write_class: dict[type[DomainModelApply], dm.ViewId]):
-        view_id = view_by_write_class[SHOPTableApply]
+        view_id = view_by_write_class[BasicBidMatrixApply]
         super().__init__(
             client=client,
             sources=view_id,
-            class_type=SHOPTable,
-            class_apply_type=SHOPTableApply,
-            class_list=SHOPTableList,
-            class_apply_list=SHOPTableApplyList,
+            class_type=BasicBidMatrix,
+            class_apply_type=BasicBidMatrixApply,
+            class_list=BasicBidMatrixList,
+            class_apply_list=BasicBidMatrixApplyList,
             view_by_write_class=view_by_write_class,
         )
         self._view_id = view_id
-        self.alerts_edge = SHOPTableAlertsAPI(client)
-        self.production = SHOPTableProductionAPI(client, view_id)
-        self.price = SHOPTablePriceAPI(client, view_id)
+        self.alerts_edge = BasicBidMatrixAlertsAPI(client)
 
     def __call__(
         self,
@@ -62,12 +58,13 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
         asset_type_prefix: str | None = None,
         asset_id: str | list[str] | None = None,
         asset_id_prefix: str | None = None,
+        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
         filter: dm.Filter | None = None,
-    ) -> SHOPTableQueryAPI[SHOPTableList]:
-        """Query starting at shop tables.
+    ) -> BasicBidMatrixQueryAPI[BasicBidMatrixList]:
+        """Query starting at basic bid matrixes.
 
         Args:
             resource_cost: The resource cost to filter on.
@@ -76,17 +73,18 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
             asset_type_prefix: The prefix of the asset type to filter on.
             asset_id: The asset id to filter on.
             asset_id_prefix: The prefix of the asset id to filter on.
+            method: The method to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of shop tables to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of basic bid matrixes to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
-            A query API for shop tables.
+            A query API for basic bid matrixes.
 
         """
         has_data = dm.filters.HasData(views=[self._view_id])
-        filter_ = _create_shop_table_filter(
+        filter_ = _create_basic_bid_matrix_filter(
             self._view_id,
             resource_cost,
             resource_cost_prefix,
@@ -94,24 +92,25 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
             asset_type_prefix,
             asset_id,
             asset_id_prefix,
+            method,
             external_id_prefix,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = QueryBuilder(SHOPTableList)
-        return SHOPTableQueryAPI(self._client, builder, self._view_by_write_class, filter_, limit)
+        builder = QueryBuilder(BasicBidMatrixList)
+        return BasicBidMatrixQueryAPI(self._client, builder, self._view_by_write_class, filter_, limit)
 
     def apply(
-        self, shop_table: SHOPTableApply | Sequence[SHOPTableApply], replace: bool = False
+        self, basic_bid_matrix: BasicBidMatrixApply | Sequence[BasicBidMatrixApply], replace: bool = False
     ) -> ResourcesApplyResult:
-        """Add or update (upsert) shop tables.
+        """Add or update (upsert) basic bid matrixes.
 
-        Note: This method iterates through all nodes and timeseries linked to shop_table and creates them including the edges
+        Note: This method iterates through all nodes and timeseries linked to basic_bid_matrix and creates them including the edges
         between the nodes. For example, if any of `alerts` are set, then these
         nodes as well as any nodes linked to them, and all the edges linking these nodes will be created.
 
         Args:
-            shop_table: Shop table or sequence of shop tables to upsert.
+            basic_bid_matrix: Basic bid matrix or sequence of basic bid matrixes to upsert.
             replace (bool): How do we behave when a property value exists? Do we replace all matching and existing values with the supplied values (true)?
                 Or should we merge in new values for properties together with the existing values (false)? Note: This setting applies for all nodes or edges specified in the ingestion call.
         Returns:
@@ -119,66 +118,66 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
 
         Examples:
 
-            Create a new shop_table:
+            Create a new basic_bid_matrix:
 
                 >>> from cognite.powerops.client._generated.day_ahead_bid import DayAheadBidAPI
-                >>> from cognite.powerops.client._generated.day_ahead_bid.data_classes import SHOPTableApply
+                >>> from cognite.powerops.client._generated.day_ahead_bid.data_classes import BasicBidMatrixApply
                 >>> client = DayAheadBidAPI()
-                >>> shop_table = SHOPTableApply(external_id="my_shop_table", ...)
-                >>> result = client.shop_table.apply(shop_table)
+                >>> basic_bid_matrix = BasicBidMatrixApply(external_id="my_basic_bid_matrix", ...)
+                >>> result = client.basic_bid_matrix.apply(basic_bid_matrix)
 
         """
-        return self._apply(shop_table, replace)
+        return self._apply(basic_bid_matrix, replace)
 
     def delete(
         self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
     ) -> dm.InstancesDeleteResult:
-        """Delete one or more shop table.
+        """Delete one or more basic bid matrix.
 
         Args:
-            external_id: External id of the shop table to delete.
-            space: The space where all the shop table are located.
+            external_id: External id of the basic bid matrix to delete.
+            space: The space where all the basic bid matrix are located.
 
         Returns:
             The instance(s), i.e., nodes and edges which has been deleted. Empty list if nothing was deleted.
 
         Examples:
 
-            Delete shop_table by id:
+            Delete basic_bid_matrix by id:
 
                 >>> from cognite.powerops.client._generated.day_ahead_bid import DayAheadBidAPI
                 >>> client = DayAheadBidAPI()
-                >>> client.shop_table.delete("my_shop_table")
+                >>> client.basic_bid_matrix.delete("my_basic_bid_matrix")
         """
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> SHOPTable | None:
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> BasicBidMatrix | None:
         ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> SHOPTableList:
+    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> BasicBidMatrixList:
         ...
 
     def retrieve(
         self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> SHOPTable | SHOPTableList | None:
-        """Retrieve one or more shop tables by id(s).
+    ) -> BasicBidMatrix | BasicBidMatrixList | None:
+        """Retrieve one or more basic bid matrixes by id(s).
 
         Args:
-            external_id: External id or list of external ids of the shop tables.
-            space: The space where all the shop tables are located.
+            external_id: External id or list of external ids of the basic bid matrixes.
+            space: The space where all the basic bid matrixes are located.
 
         Returns:
-            The requested shop tables.
+            The requested basic bid matrixes.
 
         Examples:
 
-            Retrieve shop_table by id:
+            Retrieve basic_bid_matrix by id:
 
                 >>> from cognite.powerops.client._generated.day_ahead_bid import DayAheadBidAPI
                 >>> client = DayAheadBidAPI()
-                >>> shop_table = client.shop_table.retrieve("my_shop_table")
+                >>> basic_bid_matrix = client.basic_bid_matrix.retrieve("my_basic_bid_matrix")
 
         """
         return self._retrieve(
@@ -193,19 +192,20 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
     def search(
         self,
         query: str,
-        properties: SHOPTableTextFields | Sequence[SHOPTableTextFields] | None = None,
+        properties: BasicBidMatrixTextFields | Sequence[BasicBidMatrixTextFields] | None = None,
         resource_cost: str | list[str] | None = None,
         resource_cost_prefix: str | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
         asset_id: str | list[str] | None = None,
         asset_id_prefix: str | None = None,
+        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> SHOPTableList:
-        """Search shop tables
+    ) -> BasicBidMatrixList:
+        """Search basic bid matrixes
 
         Args:
             query: The search query,
@@ -216,24 +216,25 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
             asset_type_prefix: The prefix of the asset type to filter on.
             asset_id: The asset id to filter on.
             asset_id_prefix: The prefix of the asset id to filter on.
+            method: The method to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of shop tables to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of basic bid matrixes to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
-            Search results shop tables matching the query.
+            Search results basic bid matrixes matching the query.
 
         Examples:
 
-           Search for 'my_shop_table' in all text properties:
+           Search for 'my_basic_bid_matrix' in all text properties:
 
                 >>> from cognite.powerops.client._generated.day_ahead_bid import DayAheadBidAPI
                 >>> client = DayAheadBidAPI()
-                >>> shop_tables = client.shop_table.search('my_shop_table')
+                >>> basic_bid_matrixes = client.basic_bid_matrix.search('my_basic_bid_matrix')
 
         """
-        filter_ = _create_shop_table_filter(
+        filter_ = _create_basic_bid_matrix_filter(
             self._view_id,
             resource_cost,
             resource_cost_prefix,
@@ -241,11 +242,12 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
             asset_type_prefix,
             asset_id,
             asset_id_prefix,
+            method,
             external_id_prefix,
             space,
             filter,
         )
-        return self._search(self._view_id, query, _SHOPTABLE_PROPERTIES_BY_FIELD, properties, filter_, limit)
+        return self._search(self._view_id, query, _BASICBIDMATRIX_PROPERTIES_BY_FIELD, properties, filter_, limit)
 
     @overload
     def aggregate(
@@ -254,16 +256,17 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
         | dm.aggregations.MetricAggregation
         | Sequence[Aggregations]
         | Sequence[dm.aggregations.MetricAggregation],
-        property: SHOPTableFields | Sequence[SHOPTableFields] | None = None,
+        property: BasicBidMatrixFields | Sequence[BasicBidMatrixFields] | None = None,
         group_by: None = None,
         query: str | None = None,
-        search_properties: SHOPTableTextFields | Sequence[SHOPTableTextFields] | None = None,
+        search_properties: BasicBidMatrixTextFields | Sequence[BasicBidMatrixTextFields] | None = None,
         resource_cost: str | list[str] | None = None,
         resource_cost_prefix: str | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
         asset_id: str | list[str] | None = None,
         asset_id_prefix: str | None = None,
+        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -278,16 +281,17 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
         | dm.aggregations.MetricAggregation
         | Sequence[Aggregations]
         | Sequence[dm.aggregations.MetricAggregation],
-        property: SHOPTableFields | Sequence[SHOPTableFields] | None = None,
-        group_by: SHOPTableFields | Sequence[SHOPTableFields] = None,
+        property: BasicBidMatrixFields | Sequence[BasicBidMatrixFields] | None = None,
+        group_by: BasicBidMatrixFields | Sequence[BasicBidMatrixFields] = None,
         query: str | None = None,
-        search_properties: SHOPTableTextFields | Sequence[SHOPTableTextFields] | None = None,
+        search_properties: BasicBidMatrixTextFields | Sequence[BasicBidMatrixTextFields] | None = None,
         resource_cost: str | list[str] | None = None,
         resource_cost_prefix: str | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
         asset_id: str | list[str] | None = None,
         asset_id_prefix: str | None = None,
+        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -301,22 +305,23 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
         | dm.aggregations.MetricAggregation
         | Sequence[Aggregations]
         | Sequence[dm.aggregations.MetricAggregation],
-        property: SHOPTableFields | Sequence[SHOPTableFields] | None = None,
-        group_by: SHOPTableFields | Sequence[SHOPTableFields] | None = None,
+        property: BasicBidMatrixFields | Sequence[BasicBidMatrixFields] | None = None,
+        group_by: BasicBidMatrixFields | Sequence[BasicBidMatrixFields] | None = None,
         query: str | None = None,
-        search_property: SHOPTableTextFields | Sequence[SHOPTableTextFields] | None = None,
+        search_property: BasicBidMatrixTextFields | Sequence[BasicBidMatrixTextFields] | None = None,
         resource_cost: str | list[str] | None = None,
         resource_cost_prefix: str | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
         asset_id: str | list[str] | None = None,
         asset_id_prefix: str | None = None,
+        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
-        """Aggregate data across shop tables
+        """Aggregate data across basic bid matrixes
 
         Args:
             aggregate: The aggregation to perform.
@@ -330,9 +335,10 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
             asset_type_prefix: The prefix of the asset type to filter on.
             asset_id: The asset id to filter on.
             asset_id_prefix: The prefix of the asset id to filter on.
+            method: The method to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of shop tables to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of basic bid matrixes to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
@@ -340,15 +346,15 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
 
         Examples:
 
-            Count shop tables in space `my_space`:
+            Count basic bid matrixes in space `my_space`:
 
                 >>> from cognite.powerops.client._generated.day_ahead_bid import DayAheadBidAPI
                 >>> client = DayAheadBidAPI()
-                >>> result = client.shop_table.aggregate("count", space="my_space")
+                >>> result = client.basic_bid_matrix.aggregate("count", space="my_space")
 
         """
 
-        filter_ = _create_shop_table_filter(
+        filter_ = _create_basic_bid_matrix_filter(
             self._view_id,
             resource_cost,
             resource_cost_prefix,
@@ -356,6 +362,7 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
             asset_type_prefix,
             asset_id,
             asset_id_prefix,
+            method,
             external_id_prefix,
             space,
             filter,
@@ -363,7 +370,7 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
         return self._aggregate(
             self._view_id,
             aggregate,
-            _SHOPTABLE_PROPERTIES_BY_FIELD,
+            _BASICBIDMATRIX_PROPERTIES_BY_FIELD,
             property,
             group_by,
             query,
@@ -374,22 +381,23 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
 
     def histogram(
         self,
-        property: SHOPTableFields,
+        property: BasicBidMatrixFields,
         interval: float,
         query: str | None = None,
-        search_property: SHOPTableTextFields | Sequence[SHOPTableTextFields] | None = None,
+        search_property: BasicBidMatrixTextFields | Sequence[BasicBidMatrixTextFields] | None = None,
         resource_cost: str | list[str] | None = None,
         resource_cost_prefix: str | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
         asset_id: str | list[str] | None = None,
         asset_id_prefix: str | None = None,
+        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
-        """Produces histograms for shop tables
+        """Produces histograms for basic bid matrixes
 
         Args:
             property: The property to use as the value in the histogram.
@@ -402,16 +410,17 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
             asset_type_prefix: The prefix of the asset type to filter on.
             asset_id: The asset id to filter on.
             asset_id_prefix: The prefix of the asset id to filter on.
+            method: The method to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of shop tables to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of basic bid matrixes to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
             Bucketed histogram results.
 
         """
-        filter_ = _create_shop_table_filter(
+        filter_ = _create_basic_bid_matrix_filter(
             self._view_id,
             resource_cost,
             resource_cost_prefix,
@@ -419,6 +428,7 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
             asset_type_prefix,
             asset_id,
             asset_id_prefix,
+            method,
             external_id_prefix,
             space,
             filter,
@@ -427,7 +437,7 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
             self._view_id,
             property,
             interval,
-            _SHOPTABLE_PROPERTIES_BY_FIELD,
+            _BASICBIDMATRIX_PROPERTIES_BY_FIELD,
             query,
             search_property,
             limit,
@@ -442,13 +452,14 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
         asset_type_prefix: str | None = None,
         asset_id: str | list[str] | None = None,
         asset_id_prefix: str | None = None,
+        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
         retrieve_edges: bool = True,
-    ) -> SHOPTableList:
-        """List/filter shop tables
+    ) -> BasicBidMatrixList:
+        """List/filter basic bid matrixes
 
         Args:
             resource_cost: The resource cost to filter on.
@@ -457,25 +468,26 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
             asset_type_prefix: The prefix of the asset type to filter on.
             asset_id: The asset id to filter on.
             asset_id_prefix: The prefix of the asset id to filter on.
+            method: The method to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of shop tables to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of basic bid matrixes to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
-            retrieve_edges: Whether to retrieve `alerts` external ids for the shop tables. Defaults to True.
+            retrieve_edges: Whether to retrieve `alerts` external ids for the basic bid matrixes. Defaults to True.
 
         Returns:
-            List of requested shop tables
+            List of requested basic bid matrixes
 
         Examples:
 
-            List shop tables and limit to 5:
+            List basic bid matrixes and limit to 5:
 
                 >>> from cognite.powerops.client._generated.day_ahead_bid import DayAheadBidAPI
                 >>> client = DayAheadBidAPI()
-                >>> shop_tables = client.shop_table.list(limit=5)
+                >>> basic_bid_matrixes = client.basic_bid_matrix.list(limit=5)
 
         """
-        filter_ = _create_shop_table_filter(
+        filter_ = _create_basic_bid_matrix_filter(
             self._view_id,
             resource_cost,
             resource_cost_prefix,
@@ -483,6 +495,7 @@ class SHOPTableAPI(NodeAPI[SHOPTable, SHOPTableApply, SHOPTableList]):
             asset_type_prefix,
             asset_id,
             asset_id_prefix,
+            method,
             external_id_prefix,
             space,
             filter,

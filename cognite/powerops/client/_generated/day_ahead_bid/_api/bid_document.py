@@ -57,8 +57,8 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        min_date: datetime.date | None = None,
-        max_date: datetime.date | None = None,
+        min_delivery_date: datetime.date | None = None,
+        max_delivery_date: datetime.date | None = None,
         min_start_calculation: datetime.datetime | None = None,
         max_start_calculation: datetime.datetime | None = None,
         min_end_calculation: datetime.datetime | None = None,
@@ -77,8 +77,8 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
         Args:
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            min_date: The minimum value of the date to filter on.
-            max_date: The maximum value of the date to filter on.
+            min_delivery_date: The minimum value of the delivery date to filter on.
+            max_delivery_date: The maximum value of the delivery date to filter on.
             min_start_calculation: The minimum value of the start calculation to filter on.
             max_start_calculation: The maximum value of the start calculation to filter on.
             min_end_calculation: The minimum value of the end calculation to filter on.
@@ -101,8 +101,8 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
             self._view_id,
             name,
             name_prefix,
-            min_date,
-            max_date,
+            min_delivery_date,
+            max_delivery_date,
             min_start_calculation,
             max_start_calculation,
             min_end_calculation,
@@ -214,8 +214,8 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
         properties: BidDocumentTextFields | Sequence[BidDocumentTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        min_date: datetime.date | None = None,
-        max_date: datetime.date | None = None,
+        min_delivery_date: datetime.date | None = None,
+        max_delivery_date: datetime.date | None = None,
         min_start_calculation: datetime.datetime | None = None,
         max_start_calculation: datetime.datetime | None = None,
         min_end_calculation: datetime.datetime | None = None,
@@ -236,8 +236,8 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
             properties: The property to search, if nothing is passed all text fields will be searched.
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            min_date: The minimum value of the date to filter on.
-            max_date: The maximum value of the date to filter on.
+            min_delivery_date: The minimum value of the delivery date to filter on.
+            max_delivery_date: The maximum value of the delivery date to filter on.
             min_start_calculation: The minimum value of the start calculation to filter on.
             max_start_calculation: The maximum value of the start calculation to filter on.
             min_end_calculation: The minimum value of the end calculation to filter on.
@@ -267,8 +267,8 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
             self._view_id,
             name,
             name_prefix,
-            min_date,
-            max_date,
+            min_delivery_date,
+            max_delivery_date,
             min_start_calculation,
             max_start_calculation,
             min_end_calculation,
@@ -296,8 +296,8 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
         search_properties: BidDocumentTextFields | Sequence[BidDocumentTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        min_date: datetime.date | None = None,
-        max_date: datetime.date | None = None,
+        min_delivery_date: datetime.date | None = None,
+        max_delivery_date: datetime.date | None = None,
         min_start_calculation: datetime.datetime | None = None,
         max_start_calculation: datetime.datetime | None = None,
         min_end_calculation: datetime.datetime | None = None,
@@ -326,8 +326,8 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
         search_properties: BidDocumentTextFields | Sequence[BidDocumentTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        min_date: datetime.date | None = None,
-        max_date: datetime.date | None = None,
+        min_delivery_date: datetime.date | None = None,
+        max_delivery_date: datetime.date | None = None,
         min_start_calculation: datetime.datetime | None = None,
         max_start_calculation: datetime.datetime | None = None,
         min_end_calculation: datetime.datetime | None = None,
@@ -355,8 +355,8 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
         search_property: BidDocumentTextFields | Sequence[BidDocumentTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        min_date: datetime.date | None = None,
-        max_date: datetime.date | None = None,
+        min_delivery_date: datetime.date | None = None,
+        max_delivery_date: datetime.date | None = None,
         min_start_calculation: datetime.datetime | None = None,
         max_start_calculation: datetime.datetime | None = None,
         min_end_calculation: datetime.datetime | None = None,
@@ -380,8 +380,8 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
             search_property: The text field to search in.
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            min_date: The minimum value of the date to filter on.
-            max_date: The maximum value of the date to filter on.
+            min_delivery_date: The minimum value of the delivery date to filter on.
+            max_delivery_date: The maximum value of the delivery date to filter on.
             min_start_calculation: The minimum value of the start calculation to filter on.
             max_start_calculation: The maximum value of the start calculation to filter on.
             min_end_calculation: The minimum value of the end calculation to filter on.
@@ -412,8 +412,8 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
             self._view_id,
             name,
             name_prefix,
-            min_date,
-            max_date,
+            min_delivery_date,
+            max_delivery_date,
             min_start_calculation,
             max_start_calculation,
             min_end_calculation,
@@ -446,8 +446,8 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
         search_property: BidDocumentTextFields | Sequence[BidDocumentTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        min_date: datetime.date | None = None,
-        max_date: datetime.date | None = None,
+        min_delivery_date: datetime.date | None = None,
+        max_delivery_date: datetime.date | None = None,
         min_start_calculation: datetime.datetime | None = None,
         max_start_calculation: datetime.datetime | None = None,
         min_end_calculation: datetime.datetime | None = None,
@@ -470,8 +470,8 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
             search_property: The text field to search in.
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            min_date: The minimum value of the date to filter on.
-            max_date: The maximum value of the date to filter on.
+            min_delivery_date: The minimum value of the delivery date to filter on.
+            max_delivery_date: The maximum value of the delivery date to filter on.
             min_start_calculation: The minimum value of the start calculation to filter on.
             max_start_calculation: The maximum value of the start calculation to filter on.
             min_end_calculation: The minimum value of the end calculation to filter on.
@@ -493,8 +493,8 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
             self._view_id,
             name,
             name_prefix,
-            min_date,
-            max_date,
+            min_delivery_date,
+            max_delivery_date,
             min_start_calculation,
             max_start_calculation,
             min_end_calculation,
@@ -522,8 +522,8 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        min_date: datetime.date | None = None,
-        max_date: datetime.date | None = None,
+        min_delivery_date: datetime.date | None = None,
+        max_delivery_date: datetime.date | None = None,
         min_start_calculation: datetime.datetime | None = None,
         max_start_calculation: datetime.datetime | None = None,
         min_end_calculation: datetime.datetime | None = None,
@@ -543,8 +543,8 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
         Args:
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            min_date: The minimum value of the date to filter on.
-            max_date: The maximum value of the date to filter on.
+            min_delivery_date: The minimum value of the delivery date to filter on.
+            max_delivery_date: The maximum value of the delivery date to filter on.
             min_start_calculation: The minimum value of the start calculation to filter on.
             max_start_calculation: The maximum value of the start calculation to filter on.
             min_end_calculation: The minimum value of the end calculation to filter on.
@@ -575,8 +575,8 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
             self._view_id,
             name,
             name_prefix,
-            min_date,
-            max_date,
+            min_delivery_date,
+            max_delivery_date,
             min_start_calculation,
             max_start_calculation,
             min_end_calculation,

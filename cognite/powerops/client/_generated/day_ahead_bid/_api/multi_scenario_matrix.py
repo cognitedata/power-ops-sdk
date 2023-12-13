@@ -11,16 +11,16 @@ from cognite.powerops.client._generated.day_ahead_bid.data_classes._core import 
 from cognite.powerops.client._generated.day_ahead_bid.data_classes import (
     DomainModelApply,
     ResourcesApplyResult,
-    BidTable,
-    BidTableApply,
-    BidTableFields,
-    BidTableList,
-    BidTableApplyList,
-    BidTableTextFields,
+    MultiScenarioMatrix,
+    MultiScenarioMatrixApply,
+    MultiScenarioMatrixFields,
+    MultiScenarioMatrixList,
+    MultiScenarioMatrixApplyList,
+    MultiScenarioMatrixTextFields,
 )
-from cognite.powerops.client._generated.day_ahead_bid.data_classes._bid_table import (
-    _BIDTABLE_PROPERTIES_BY_FIELD,
-    _create_bid_table_filter,
+from cognite.powerops.client._generated.day_ahead_bid.data_classes._multi_scenario_matrix import (
+    _MULTISCENARIOMATRIX_PROPERTIES_BY_FIELD,
+    _create_multi_scenario_matrix_filter,
 )
 from ._core import (
     DEFAULT_LIMIT_READ,
@@ -31,24 +31,28 @@ from ._core import (
     QueryStep,
     QueryBuilder,
 )
-from .bid_table_alerts import BidTableAlertsAPI
-from .bid_table_query import BidTableQueryAPI
+from .multi_scenario_matrix_alerts import MultiScenarioMatrixAlertsAPI
+from .multi_scenario_matrix_production import MultiScenarioMatrixProductionAPI
+from .multi_scenario_matrix_price import MultiScenarioMatrixPriceAPI
+from .multi_scenario_matrix_query import MultiScenarioMatrixQueryAPI
 
 
-class BidTableAPI(NodeAPI[BidTable, BidTableApply, BidTableList]):
+class MultiScenarioMatrixAPI(NodeAPI[MultiScenarioMatrix, MultiScenarioMatrixApply, MultiScenarioMatrixList]):
     def __init__(self, client: CogniteClient, view_by_write_class: dict[type[DomainModelApply], dm.ViewId]):
-        view_id = view_by_write_class[BidTableApply]
+        view_id = view_by_write_class[MultiScenarioMatrixApply]
         super().__init__(
             client=client,
             sources=view_id,
-            class_type=BidTable,
-            class_apply_type=BidTableApply,
-            class_list=BidTableList,
-            class_apply_list=BidTableApplyList,
+            class_type=MultiScenarioMatrix,
+            class_apply_type=MultiScenarioMatrixApply,
+            class_list=MultiScenarioMatrixList,
+            class_apply_list=MultiScenarioMatrixApplyList,
             view_by_write_class=view_by_write_class,
         )
         self._view_id = view_id
-        self.alerts_edge = BidTableAlertsAPI(client)
+        self.alerts_edge = MultiScenarioMatrixAlertsAPI(client)
+        self.production = MultiScenarioMatrixProductionAPI(client, view_id)
+        self.price = MultiScenarioMatrixPriceAPI(client, view_id)
 
     def __call__(
         self,
@@ -58,12 +62,13 @@ class BidTableAPI(NodeAPI[BidTable, BidTableApply, BidTableList]):
         asset_type_prefix: str | None = None,
         asset_id: str | list[str] | None = None,
         asset_id_prefix: str | None = None,
+        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
         filter: dm.Filter | None = None,
-    ) -> BidTableQueryAPI[BidTableList]:
-        """Query starting at bid tables.
+    ) -> MultiScenarioMatrixQueryAPI[MultiScenarioMatrixList]:
+        """Query starting at multi scenario matrixes.
 
         Args:
             resource_cost: The resource cost to filter on.
@@ -72,17 +77,18 @@ class BidTableAPI(NodeAPI[BidTable, BidTableApply, BidTableList]):
             asset_type_prefix: The prefix of the asset type to filter on.
             asset_id: The asset id to filter on.
             asset_id_prefix: The prefix of the asset id to filter on.
+            method: The method to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of bid tables to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of multi scenario matrixes to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
-            A query API for bid tables.
+            A query API for multi scenario matrixes.
 
         """
         has_data = dm.filters.HasData(views=[self._view_id])
-        filter_ = _create_bid_table_filter(
+        filter_ = _create_multi_scenario_matrix_filter(
             self._view_id,
             resource_cost,
             resource_cost_prefix,
@@ -90,22 +96,27 @@ class BidTableAPI(NodeAPI[BidTable, BidTableApply, BidTableList]):
             asset_type_prefix,
             asset_id,
             asset_id_prefix,
+            method,
             external_id_prefix,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = QueryBuilder(BidTableList)
-        return BidTableQueryAPI(self._client, builder, self._view_by_write_class, filter_, limit)
+        builder = QueryBuilder(MultiScenarioMatrixList)
+        return MultiScenarioMatrixQueryAPI(self._client, builder, self._view_by_write_class, filter_, limit)
 
-    def apply(self, bid_table: BidTableApply | Sequence[BidTableApply], replace: bool = False) -> ResourcesApplyResult:
-        """Add or update (upsert) bid tables.
+    def apply(
+        self,
+        multi_scenario_matrix: MultiScenarioMatrixApply | Sequence[MultiScenarioMatrixApply],
+        replace: bool = False,
+    ) -> ResourcesApplyResult:
+        """Add or update (upsert) multi scenario matrixes.
 
-        Note: This method iterates through all nodes and timeseries linked to bid_table and creates them including the edges
+        Note: This method iterates through all nodes and timeseries linked to multi_scenario_matrix and creates them including the edges
         between the nodes. For example, if any of `alerts` are set, then these
         nodes as well as any nodes linked to them, and all the edges linking these nodes will be created.
 
         Args:
-            bid_table: Bid table or sequence of bid tables to upsert.
+            multi_scenario_matrix: Multi scenario matrix or sequence of multi scenario matrixes to upsert.
             replace (bool): How do we behave when a property value exists? Do we replace all matching and existing values with the supplied values (true)?
                 Or should we merge in new values for properties together with the existing values (false)? Note: This setting applies for all nodes or edges specified in the ingestion call.
         Returns:
@@ -113,66 +124,68 @@ class BidTableAPI(NodeAPI[BidTable, BidTableApply, BidTableList]):
 
         Examples:
 
-            Create a new bid_table:
+            Create a new multi_scenario_matrix:
 
                 >>> from cognite.powerops.client._generated.day_ahead_bid import DayAheadBidAPI
-                >>> from cognite.powerops.client._generated.day_ahead_bid.data_classes import BidTableApply
+                >>> from cognite.powerops.client._generated.day_ahead_bid.data_classes import MultiScenarioMatrixApply
                 >>> client = DayAheadBidAPI()
-                >>> bid_table = BidTableApply(external_id="my_bid_table", ...)
-                >>> result = client.bid_table.apply(bid_table)
+                >>> multi_scenario_matrix = MultiScenarioMatrixApply(external_id="my_multi_scenario_matrix", ...)
+                >>> result = client.multi_scenario_matrix.apply(multi_scenario_matrix)
 
         """
-        return self._apply(bid_table, replace)
+        return self._apply(multi_scenario_matrix, replace)
 
     def delete(
         self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
     ) -> dm.InstancesDeleteResult:
-        """Delete one or more bid table.
+        """Delete one or more multi scenario matrix.
 
         Args:
-            external_id: External id of the bid table to delete.
-            space: The space where all the bid table are located.
+            external_id: External id of the multi scenario matrix to delete.
+            space: The space where all the multi scenario matrix are located.
 
         Returns:
             The instance(s), i.e., nodes and edges which has been deleted. Empty list if nothing was deleted.
 
         Examples:
 
-            Delete bid_table by id:
+            Delete multi_scenario_matrix by id:
 
                 >>> from cognite.powerops.client._generated.day_ahead_bid import DayAheadBidAPI
                 >>> client = DayAheadBidAPI()
-                >>> client.bid_table.delete("my_bid_table")
+                >>> client.multi_scenario_matrix.delete("my_multi_scenario_matrix")
         """
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> BidTable | None:
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> MultiScenarioMatrix | None:
         ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> BidTableList:
+    def retrieve(
+        self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
+    ) -> MultiScenarioMatrixList:
         ...
 
     def retrieve(
         self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> BidTable | BidTableList | None:
-        """Retrieve one or more bid tables by id(s).
+    ) -> MultiScenarioMatrix | MultiScenarioMatrixList | None:
+        """Retrieve one or more multi scenario matrixes by id(s).
 
         Args:
-            external_id: External id or list of external ids of the bid tables.
-            space: The space where all the bid tables are located.
+            external_id: External id or list of external ids of the multi scenario matrixes.
+            space: The space where all the multi scenario matrixes are located.
 
         Returns:
-            The requested bid tables.
+            The requested multi scenario matrixes.
 
         Examples:
 
-            Retrieve bid_table by id:
+            Retrieve multi_scenario_matrix by id:
 
                 >>> from cognite.powerops.client._generated.day_ahead_bid import DayAheadBidAPI
                 >>> client = DayAheadBidAPI()
-                >>> bid_table = client.bid_table.retrieve("my_bid_table")
+                >>> multi_scenario_matrix = client.multi_scenario_matrix.retrieve("my_multi_scenario_matrix")
 
         """
         return self._retrieve(
@@ -187,19 +200,20 @@ class BidTableAPI(NodeAPI[BidTable, BidTableApply, BidTableList]):
     def search(
         self,
         query: str,
-        properties: BidTableTextFields | Sequence[BidTableTextFields] | None = None,
+        properties: MultiScenarioMatrixTextFields | Sequence[MultiScenarioMatrixTextFields] | None = None,
         resource_cost: str | list[str] | None = None,
         resource_cost_prefix: str | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
         asset_id: str | list[str] | None = None,
         asset_id_prefix: str | None = None,
+        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> BidTableList:
-        """Search bid tables
+    ) -> MultiScenarioMatrixList:
+        """Search multi scenario matrixes
 
         Args:
             query: The search query,
@@ -210,24 +224,25 @@ class BidTableAPI(NodeAPI[BidTable, BidTableApply, BidTableList]):
             asset_type_prefix: The prefix of the asset type to filter on.
             asset_id: The asset id to filter on.
             asset_id_prefix: The prefix of the asset id to filter on.
+            method: The method to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of bid tables to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of multi scenario matrixes to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
-            Search results bid tables matching the query.
+            Search results multi scenario matrixes matching the query.
 
         Examples:
 
-           Search for 'my_bid_table' in all text properties:
+           Search for 'my_multi_scenario_matrix' in all text properties:
 
                 >>> from cognite.powerops.client._generated.day_ahead_bid import DayAheadBidAPI
                 >>> client = DayAheadBidAPI()
-                >>> bid_tables = client.bid_table.search('my_bid_table')
+                >>> multi_scenario_matrixes = client.multi_scenario_matrix.search('my_multi_scenario_matrix')
 
         """
-        filter_ = _create_bid_table_filter(
+        filter_ = _create_multi_scenario_matrix_filter(
             self._view_id,
             resource_cost,
             resource_cost_prefix,
@@ -235,11 +250,12 @@ class BidTableAPI(NodeAPI[BidTable, BidTableApply, BidTableList]):
             asset_type_prefix,
             asset_id,
             asset_id_prefix,
+            method,
             external_id_prefix,
             space,
             filter,
         )
-        return self._search(self._view_id, query, _BIDTABLE_PROPERTIES_BY_FIELD, properties, filter_, limit)
+        return self._search(self._view_id, query, _MULTISCENARIOMATRIX_PROPERTIES_BY_FIELD, properties, filter_, limit)
 
     @overload
     def aggregate(
@@ -248,16 +264,17 @@ class BidTableAPI(NodeAPI[BidTable, BidTableApply, BidTableList]):
         | dm.aggregations.MetricAggregation
         | Sequence[Aggregations]
         | Sequence[dm.aggregations.MetricAggregation],
-        property: BidTableFields | Sequence[BidTableFields] | None = None,
+        property: MultiScenarioMatrixFields | Sequence[MultiScenarioMatrixFields] | None = None,
         group_by: None = None,
         query: str | None = None,
-        search_properties: BidTableTextFields | Sequence[BidTableTextFields] | None = None,
+        search_properties: MultiScenarioMatrixTextFields | Sequence[MultiScenarioMatrixTextFields] | None = None,
         resource_cost: str | list[str] | None = None,
         resource_cost_prefix: str | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
         asset_id: str | list[str] | None = None,
         asset_id_prefix: str | None = None,
+        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -272,16 +289,17 @@ class BidTableAPI(NodeAPI[BidTable, BidTableApply, BidTableList]):
         | dm.aggregations.MetricAggregation
         | Sequence[Aggregations]
         | Sequence[dm.aggregations.MetricAggregation],
-        property: BidTableFields | Sequence[BidTableFields] | None = None,
-        group_by: BidTableFields | Sequence[BidTableFields] = None,
+        property: MultiScenarioMatrixFields | Sequence[MultiScenarioMatrixFields] | None = None,
+        group_by: MultiScenarioMatrixFields | Sequence[MultiScenarioMatrixFields] = None,
         query: str | None = None,
-        search_properties: BidTableTextFields | Sequence[BidTableTextFields] | None = None,
+        search_properties: MultiScenarioMatrixTextFields | Sequence[MultiScenarioMatrixTextFields] | None = None,
         resource_cost: str | list[str] | None = None,
         resource_cost_prefix: str | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
         asset_id: str | list[str] | None = None,
         asset_id_prefix: str | None = None,
+        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -295,22 +313,23 @@ class BidTableAPI(NodeAPI[BidTable, BidTableApply, BidTableList]):
         | dm.aggregations.MetricAggregation
         | Sequence[Aggregations]
         | Sequence[dm.aggregations.MetricAggregation],
-        property: BidTableFields | Sequence[BidTableFields] | None = None,
-        group_by: BidTableFields | Sequence[BidTableFields] | None = None,
+        property: MultiScenarioMatrixFields | Sequence[MultiScenarioMatrixFields] | None = None,
+        group_by: MultiScenarioMatrixFields | Sequence[MultiScenarioMatrixFields] | None = None,
         query: str | None = None,
-        search_property: BidTableTextFields | Sequence[BidTableTextFields] | None = None,
+        search_property: MultiScenarioMatrixTextFields | Sequence[MultiScenarioMatrixTextFields] | None = None,
         resource_cost: str | list[str] | None = None,
         resource_cost_prefix: str | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
         asset_id: str | list[str] | None = None,
         asset_id_prefix: str | None = None,
+        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
-        """Aggregate data across bid tables
+        """Aggregate data across multi scenario matrixes
 
         Args:
             aggregate: The aggregation to perform.
@@ -324,9 +343,10 @@ class BidTableAPI(NodeAPI[BidTable, BidTableApply, BidTableList]):
             asset_type_prefix: The prefix of the asset type to filter on.
             asset_id: The asset id to filter on.
             asset_id_prefix: The prefix of the asset id to filter on.
+            method: The method to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of bid tables to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of multi scenario matrixes to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
@@ -334,15 +354,15 @@ class BidTableAPI(NodeAPI[BidTable, BidTableApply, BidTableList]):
 
         Examples:
 
-            Count bid tables in space `my_space`:
+            Count multi scenario matrixes in space `my_space`:
 
                 >>> from cognite.powerops.client._generated.day_ahead_bid import DayAheadBidAPI
                 >>> client = DayAheadBidAPI()
-                >>> result = client.bid_table.aggregate("count", space="my_space")
+                >>> result = client.multi_scenario_matrix.aggregate("count", space="my_space")
 
         """
 
-        filter_ = _create_bid_table_filter(
+        filter_ = _create_multi_scenario_matrix_filter(
             self._view_id,
             resource_cost,
             resource_cost_prefix,
@@ -350,6 +370,7 @@ class BidTableAPI(NodeAPI[BidTable, BidTableApply, BidTableList]):
             asset_type_prefix,
             asset_id,
             asset_id_prefix,
+            method,
             external_id_prefix,
             space,
             filter,
@@ -357,7 +378,7 @@ class BidTableAPI(NodeAPI[BidTable, BidTableApply, BidTableList]):
         return self._aggregate(
             self._view_id,
             aggregate,
-            _BIDTABLE_PROPERTIES_BY_FIELD,
+            _MULTISCENARIOMATRIX_PROPERTIES_BY_FIELD,
             property,
             group_by,
             query,
@@ -368,22 +389,23 @@ class BidTableAPI(NodeAPI[BidTable, BidTableApply, BidTableList]):
 
     def histogram(
         self,
-        property: BidTableFields,
+        property: MultiScenarioMatrixFields,
         interval: float,
         query: str | None = None,
-        search_property: BidTableTextFields | Sequence[BidTableTextFields] | None = None,
+        search_property: MultiScenarioMatrixTextFields | Sequence[MultiScenarioMatrixTextFields] | None = None,
         resource_cost: str | list[str] | None = None,
         resource_cost_prefix: str | None = None,
         asset_type: str | list[str] | None = None,
         asset_type_prefix: str | None = None,
         asset_id: str | list[str] | None = None,
         asset_id_prefix: str | None = None,
+        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
-        """Produces histograms for bid tables
+        """Produces histograms for multi scenario matrixes
 
         Args:
             property: The property to use as the value in the histogram.
@@ -396,16 +418,17 @@ class BidTableAPI(NodeAPI[BidTable, BidTableApply, BidTableList]):
             asset_type_prefix: The prefix of the asset type to filter on.
             asset_id: The asset id to filter on.
             asset_id_prefix: The prefix of the asset id to filter on.
+            method: The method to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of bid tables to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of multi scenario matrixes to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
             Bucketed histogram results.
 
         """
-        filter_ = _create_bid_table_filter(
+        filter_ = _create_multi_scenario_matrix_filter(
             self._view_id,
             resource_cost,
             resource_cost_prefix,
@@ -413,6 +436,7 @@ class BidTableAPI(NodeAPI[BidTable, BidTableApply, BidTableList]):
             asset_type_prefix,
             asset_id,
             asset_id_prefix,
+            method,
             external_id_prefix,
             space,
             filter,
@@ -421,7 +445,7 @@ class BidTableAPI(NodeAPI[BidTable, BidTableApply, BidTableList]):
             self._view_id,
             property,
             interval,
-            _BIDTABLE_PROPERTIES_BY_FIELD,
+            _MULTISCENARIOMATRIX_PROPERTIES_BY_FIELD,
             query,
             search_property,
             limit,
@@ -436,13 +460,14 @@ class BidTableAPI(NodeAPI[BidTable, BidTableApply, BidTableList]):
         asset_type_prefix: str | None = None,
         asset_id: str | list[str] | None = None,
         asset_id_prefix: str | None = None,
+        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
         retrieve_edges: bool = True,
-    ) -> BidTableList:
-        """List/filter bid tables
+    ) -> MultiScenarioMatrixList:
+        """List/filter multi scenario matrixes
 
         Args:
             resource_cost: The resource cost to filter on.
@@ -451,25 +476,26 @@ class BidTableAPI(NodeAPI[BidTable, BidTableApply, BidTableList]):
             asset_type_prefix: The prefix of the asset type to filter on.
             asset_id: The asset id to filter on.
             asset_id_prefix: The prefix of the asset id to filter on.
+            method: The method to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of bid tables to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of multi scenario matrixes to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
-            retrieve_edges: Whether to retrieve `alerts` external ids for the bid tables. Defaults to True.
+            retrieve_edges: Whether to retrieve `alerts` external ids for the multi scenario matrixes. Defaults to True.
 
         Returns:
-            List of requested bid tables
+            List of requested multi scenario matrixes
 
         Examples:
 
-            List bid tables and limit to 5:
+            List multi scenario matrixes and limit to 5:
 
                 >>> from cognite.powerops.client._generated.day_ahead_bid import DayAheadBidAPI
                 >>> client = DayAheadBidAPI()
-                >>> bid_tables = client.bid_table.list(limit=5)
+                >>> multi_scenario_matrixes = client.multi_scenario_matrix.list(limit=5)
 
         """
-        filter_ = _create_bid_table_filter(
+        filter_ = _create_multi_scenario_matrix_filter(
             self._view_id,
             resource_cost,
             resource_cost_prefix,
@@ -477,6 +503,7 @@ class BidTableAPI(NodeAPI[BidTable, BidTableApply, BidTableList]):
             asset_type_prefix,
             asset_id,
             asset_id_prefix,
+            method,
             external_id_prefix,
             space,
             filter,
