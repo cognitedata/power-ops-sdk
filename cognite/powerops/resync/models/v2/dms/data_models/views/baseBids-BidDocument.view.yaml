@@ -50,7 +50,7 @@ properties:
   alerts:
     type:
       space: '{{shared_model_space}}'
-      externalId: calculationIssue
+      externalId: BidDocument.alerts
     source:
       space: '{{shared_model_space}}'
       externalId: Alert

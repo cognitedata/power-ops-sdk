@@ -76,7 +76,7 @@ properties:
       version: '{{asset_TurbineEfficiency_version}}'
     type:
       space: '{{asset_space}}'
-      externalId: isSubAssetOf
+      externalId: Generator.turbineCurves
     direction: outwards
     description: The watercourses that are connected to the PriceArea.
     connectionType: multiEdgeConnection

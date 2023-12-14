@@ -2,28 +2,26 @@
 # when a node/edge is referencing one of these types. However, it is useful to have these
 # types here as we use them in validation of the data models.
 - space: {{afrr_model_space}}
-  externalId: BidMethod
+  externalId: BidDocument.bids
 - space: {{afrr_model_space}}
-  externalId: partialBid
+  externalId: BidRow.alerts
 - space: {{shared_model_space}}
   externalId: calculationIssue
 - space: {{dayahead_model_space}}
   externalId: partialBid
-
 - space: {{asset_space}}
-  externalId: isSubAssetOf
+  externalId: Generator.turbineCurves
 - space: {{asset_space}}
-  externalId: GeneratorEfficiencyCurve
-
-
-
-#- space: {{type_space}}
-#  externalId: WaterValueBasedDayAheadMethod
-#- space: {{type_space}}
-#  externalId: BasicBidMatrix
-#- space: {{afrr_model_space}}
-#  externalId: BidDocument
-#- space: {{type_space}}
-#  externalId: TurbineCurve
-#- space: {{type_space}}
-#  externalId: Reservoir
+  externalId: Plant.generators
+- space: {{asset_space}}
+  externalId: PriceArea.plants
+- space: {{asset_space}}
+  externalId: PriceArea.watercourses
+- space: {{asset_space}}
+  externalId: Watercourse.plants
+- space: {{shared_model_space}}
+  externalId: BidDocument.alerts
+- space: {{dayahead_model_space}}
+  externalId: BidDocument.partials
+- space: {{dayahead_model_space}}
+  externalId: BidMatrix.alerts

@@ -45,8 +45,8 @@ properties:
       type: view
   alerts:
     type:
-      space: '{{shared_model_space}}'
-      externalId: calculationIssue
+      space: '{{dayahead_model_space}}'
+      externalId: BidMatrix.alerts
     source:
       space: '{{shared_model_space}}'
       externalId: Alert

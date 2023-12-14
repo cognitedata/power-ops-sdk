@@ -184,7 +184,7 @@ properties:
   generators:
     type:
       space: '{{asset_space}}'
-      externalId: isSubAssetOf
+      externalId: Plant.generators
     source:
       type: view
       space: '{{asset_space}}'

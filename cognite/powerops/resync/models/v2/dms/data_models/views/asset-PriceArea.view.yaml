@@ -135,7 +135,7 @@ properties:
   plants:
     type:
       space: '{{asset_space}}'
-      externalId: isSubAssetOf
+      externalId: PriceArea.plants
     source:
       space: '{{asset_space}}'
       externalId: Plant
@@ -148,7 +148,7 @@ properties:
   watercourses:
     type:
       space: '{{asset_space}}'
-      externalId: isSubAssetOf
+      externalId: PriceArea.watercourses
     source:
       space: '{{asset_space}}'
       externalId: Watercourse
