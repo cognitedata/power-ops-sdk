@@ -24,8 +24,8 @@ properties:
     name: priceArea
   bids:
     type:
-      space: '{{type_space}}'
-      externalId: PartialBid
+      space: '{{afrr_model_space}}'
+      externalId: partialBid
     source:
       space: '{{afrr_model_space}}'
       externalId: BidRow
@@ -35,11 +35,11 @@ properties:
     name: bids
     description: An array of BidRows containing the Bid data.
     connectionType: multiEdgeConnection
-filter:
-  equals:
-    property:
-    - node
-    - type
-    value:
-      space: '{{type_space}}'
-      externalId: AFRRBidDocument
+#filter:
+#  equals:
+#    property:
+#    - node
+#    - type
+#    value:
+#      space: '{{afrr_model_space}}'
+#      externalId: BidDocument

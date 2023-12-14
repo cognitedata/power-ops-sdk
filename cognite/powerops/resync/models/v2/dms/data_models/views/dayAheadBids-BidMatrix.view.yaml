@@ -45,7 +45,7 @@ properties:
       type: view
   alerts:
     type:
-      space: '{{type_space}}'
+      space: '{{shared_model_space}}'
       externalId: calculationIssue
     source:
       space: '{{shared_model_space}}'

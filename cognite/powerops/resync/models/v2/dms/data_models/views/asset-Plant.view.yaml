@@ -183,7 +183,7 @@ properties:
     name: inletReservoir
   generators:
     type:
-      space: '{{type_space}}'
+      space: '{{asset_space}}'
       externalId: isSubAssetOf
     source:
       type: view

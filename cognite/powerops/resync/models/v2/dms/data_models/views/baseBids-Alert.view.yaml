@@ -11,7 +11,7 @@ properties:
       type: container
     containerPropertyIdentifier: time
     name: time
-    description: Timestamp that the alert occured (within the workflow)
+    description: Timestamp that the alert occurred (within the workflow)
   title:
     container:
       space: '{{shared_model_space}}'

@@ -34,5 +34,5 @@ filter:
     - node
     - type
     value:
-      space: '{{type_space}}'
-      externalId: GeneratorCurve
+      space: '{{asset_space}}'
+      externalId: GeneratorEfficiencyCurve

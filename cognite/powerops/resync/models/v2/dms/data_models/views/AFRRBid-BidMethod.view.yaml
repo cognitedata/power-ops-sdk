@@ -8,8 +8,8 @@ filter:
     - node
     - type
     value:
-      space: '{{type_space}}'
-      externalId: AFRRBidMethod
+      space: '{{afrr_model_space}}'
+      externalId: BidMethod
 implements:
 - space: '{{shared_model_space}}'
   externalId: BidMethod

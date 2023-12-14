@@ -46,8 +46,8 @@ properties:
       type: view
   partials:
     type:
-      space: '{{type_space}}'
-      externalId: PartialBid
+      space: '{{dayahead_model_space}}'
+      externalId: partialBid
     source:
       space: '{{dayahead_model_space}}'
       externalId: BidMatrix

@@ -7,8 +7,8 @@ filter:
     - node
     - type
     value:
-      space: '{{type_space}}'
-      externalId: WaterValueBasedDayAheadMethod
+      space: '{{dayahead_model_space}}'
+      externalId: WaterValueBased
 implements:
 - space: '{{dayahead_model_space}}'
   externalId: BidMethod

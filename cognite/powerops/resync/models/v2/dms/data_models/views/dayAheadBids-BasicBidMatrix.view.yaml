@@ -14,5 +14,5 @@ filter:
     - node
     - type
     value:
-      space: '{{type_space}}'
+      space: '{{dayahead_model_space}}'
       externalId: BasicBidMatrix

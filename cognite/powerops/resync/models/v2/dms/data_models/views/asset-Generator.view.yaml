@@ -75,7 +75,7 @@ properties:
       externalId: TurbineEfficiencyCurve
       version: '{{asset_TurbineEfficiency_version}}'
     type:
-      space: '{{type_space}}'
+      space: '{{asset_space}}'
       externalId: isSubAssetOf
     direction: outwards
     description: The watercourses that are connected to the PriceArea.

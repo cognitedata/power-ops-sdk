@@ -49,7 +49,7 @@ properties:
       has not necessarily succeeded).
   alerts:
     type:
-      space: '{{type_space}}'
+      space: '{{shared_model_space}}'
       externalId: calculationIssue
     source:
       space: '{{shared_model_space}}'
