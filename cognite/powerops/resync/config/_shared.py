@@ -104,6 +104,16 @@ class Transformation(BaseModel):  # type: ignore[no-redef]  # mypy says kwargs i
         return {"transformation": self.transformation.name, "kwargs": self.kwargs}
 
 
+class TimeSeriesMappingEntryV2(BaseModel):
+    object_type: str
+    object_name: str
+    attribute_name: str
+    time_series_external_id: Optional[str] = None
+    transformations: Optional[list[TransformationV2]] = None
+    retrieve: Optional[RetrievalType] = None
+    aggregation: Optional[AggregationMethod] = None
+
+
 class TimeSeriesMappingEntry(BaseModel):
     object_type: str
     object_name: str
@@ -112,95 +122,6 @@ class TimeSeriesMappingEntry(BaseModel):
     transformations: Optional[list[Transformation]] = None
     retrieve: Optional[RetrievalType] = None
     aggregation: Optional[AggregationMethod] = None
-
-    def transformations_v2_adapter(self) -> list[TransformationV2] | None:
-        """
-        Adapter that converts old transformations from time_series_mapping.yaml to instances of new transformationsV2.
-        From these instances, the transformationsV2 to FDM adapter "_create_transformationV2"
-        can be called to create DM nodes and edges
-        """
-        transformationsv2 = []
-        for t in self.transformations:
-            transformation_dict = {}
-            if t.transformation.name == "ADD":
-                transformation_dict = {"AddConstant": {"input": {"constant": t.kwargs.get("value")}}}
-            elif t.transformation.name in ["ADD_FROM_OFFSET", "DYNAMIC_ADD_FROM_OFFSET"]:
-                transformation_dict = {
-                    "AddFromOffset": {
-                        "input": {
-                            "relative_datapoints": [
-                                {"offset_minute": k, "offset_value": v} for k, v in t.kwargs.items()
-                            ]
-                        }
-                    }
-                }
-            elif t.transformation.name == "ADD_WATER_IN_TRANSIT":
-                gate_or_plant = "gate" if "gate_name" in t.kwargs.keys() else "plant"
-                transformation_dict = {
-                    "AddWaterInTransit": {
-                        "input": {
-                            "discharge_ts_external_id": t.kwargs.get("external_id"),
-                            "transit_object_type": gate_or_plant,
-                            "transit_object_name": t.kwargs.get(f"{gate_or_plant}_name"),
-                        }
-                    }
-                }
-            elif t.transformation.name == "ADD_WATER_IN_TRANSIT":
-                gate_or_plant = "gate" if "gate_name" in t.kwargs.keys() else "plant"
-                transformation_dict = {
-                    "AddWaterInTransit": {
-                        "input": {
-                            "discharge_ts_external_id": t.kwargs.get("external_id"),
-                            "transit_object_type": gate_or_plant,
-                            "transit_object_name": t.kwargs.get(f"{gate_or_plant}_name"),
-                        }
-                    }
-                }
-
-            elif t.transformation.name == "MULTIPLY":
-                transformation_dict = {"MultiplyConstant": {"input": {"constant": t.kwargs.get("value")}}}
-            elif t.transformation.name == "MULTIPLY_FROM_OFFSET":
-                transformation_dict = {
-                    "MultiplyFromOffset": {
-                        "input": {
-                            "relative_datapoints": [
-                                {"offset_minute": k, "offset_value": v} for k, v in t.kwargs.items()
-                            ]
-                        }
-                    }
-                }
-            elif t.transformation.name == "TO_BOOL":
-                transformation_dict = {"ToBool": None}
-            elif t.transformation.name == "TO_INT":
-                transformation_dict = {"ToInt": None}
-            elif t.transformation.name in [
-                "ZERO_IF_NOT_ONE",
-                "GATE_SCHEDULE_FLAG_VALUE_MAPPING",
-                "GENERATOR_PRODUCTION_SCHEDULE_FLAG_VALUE_MAPPING",
-                "PLANT_PRODUCTION_SCHEDULE_FLAG_VALUE_MAPPING",
-            ]:
-                transformation_dict = {"ZeroIfNotOne": None}
-            elif t.transformation.name == "ONE_IF_TWO":
-                transformation_dict = {"OneIfTwo": None}
-            elif t.transformation.name in ["STATIC", "DYNAMIC_STATIC"]:
-                transformation_dict = {
-                    "StaticValues": {
-                        "input": {
-                            "relative_datapoints": [
-                                {"offset_minute": k, "offset_value": v} for k, v in t.kwargs.items()
-                            ]
-                        }
-                    }
-                }
-            elif t.transformation.name == "RESERVOIR_LEVEL_TO_VOLUME":
-                transformation_dict = {
-                    "HeightToVolume": {"input": {"object_type": self.object_type, "object_name": self.object_name}}
-                }
-            elif t.transformation.name in ["DO_NOTHING", "GATE_OPENING_METER_TO_PERCENT"]:
-                transformation_dict = {"DoNothing": None}
-
-            transformationsv2.append(TransformationV2.load(transformation_dict))
-        return transformationsv2
 
     @validator("aggregation", pre=True)
     def to_enum(cls, value):
@@ -239,6 +160,10 @@ class TimeSeriesMappingEntry(BaseModel):
             self.retrieve.name if self.retrieve else float("nan"),
             self.aggregation.name if self.aggregation else float("nan"),
         ]
+
+
+class TimeSeriesMappingV2(BaseModel):
+    rows: list[TimeSeriesMappingEntryV2] = []
 
 
 class TimeSeriesMapping(BaseModel):

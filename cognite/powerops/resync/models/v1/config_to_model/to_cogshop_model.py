@@ -163,12 +163,12 @@ def to_cogshop_asset_model(
                         transformations=[
                             _create_transformation(j, transformation_data)
                             for j, transformation_data in enumerate(json.loads(mapping.get("transformations", "")))
-                        ],
-                        retrieve=mapping.get("retrieve"),
-                        aggregation=mapping.get("aggregation"),
+                        ],  # TODO: + [_create_transformationV2(j, transformation_data)
                     )
                     for i, mapping in enumerate(
-                        incremental_mapping.content.replace(float("nan"), None).to_dict(orient="records")
+                        incremental_mapping.content.replace(float("nan"), None).to_dict(
+                            orient="records"
+                        )  # TODO: zip with new config to get correct order
                     )
                 ],
                 commands=cogshop_v1.CommandsConfigApply(

@@ -13,6 +13,7 @@ from typing_extensions import TypeAlias
 from cognite.powerops.client._generated.cogshop1 import data_classes as cogshop_v1
 from cognite.powerops.prerun_transformations.transformations import Transformation as TransformationV2
 from cognite.powerops.resync import config
+from cognite.powerops.resync.config import Transformation
 from cognite.powerops.resync.models.base import CDFFile, Model
 from cognite.powerops.utils.serialization import load_yaml
 
@@ -132,9 +133,99 @@ def _create_transformationV2(order: int, transformation: dict | TransformationV2
     if isinstance(transformation, dict):
         transformation = TransformationV2.load(transformation)
     dumped_input_args = json.dumps(transformation.input_to_dict() or {}, separators=(",", ":"), ensure_ascii=False)
-    external_id = f"Tr_{transformation.name()}_{dumped_input_args}_{order}"
+    external_id = f"Tr2_{transformation.name}_{dumped_input_args}_{order}"
     if len(external_id) > 255:
-        external_id = f"Tr_{transformation.name()}_{dumped_input_args[:len(dumped_input_args) // 2]}_{order}"
+        external_id = f"Tr2_{transformation.name}_{dumped_input_args[:len(dumped_input_args) // 2]}_{order}"
     return cogshop_v1.TransformationApply(
-        external_id=external_id, method=transformation.name(), arguments=dumped_input_args, order=order
+        external_id=external_id, method=transformation.name, arguments=dumped_input_args, order=order
     )
+
+
+def transformations_v2_transformer(
+    transformation: Transformation | dict, object_type: Optional[str] = None, object_name: Optional[str] = None
+) -> TransformationV2:
+    """
+    Adapter that converts old transformation to an instance of new transformationsV2.
+    From these instances, the transformationsV2 to FDM adapter "_create_transformationV2"
+    can be called to create DM nodes and edges
+    """
+    if isinstance(transformation, dict):
+        transformation = config.Transformation(**transformation)
+
+    transformation_dict = {}
+    if transformation.transformation.name == "ADD":
+        transformation_dict = {"AddConstant": {"input": {"constant": transformation.kwargs.get("value")}}}
+    elif transformation.transformation.name in ["ADD_FROM_OFFSET", "DYNAMIC_ADD_FROM_OFFSET"]:
+        transformation_dict = {
+            "AddFromOffset": {
+                "input": {
+                    "relative_datapoints": [
+                        {"offset_minute": k, "offset_value": v} for k, v in transformation.kwargs.items()
+                    ]
+                }
+            }
+        }
+    elif transformation.transformation.name == "ADD_WATER_IN_TRANSIT":
+        gate_or_plant = "gate" if "gate_name" in transformation.kwargs.keys() else "plant"
+        transformation_dict = {
+            "AddWaterInTransit": {
+                "input": {
+                    "discharge_ts_external_id": transformation.kwargs.get("external_id"),
+                    "transit_object_type": gate_or_plant,
+                    "transit_object_name": transformation.kwargs.get(f"{gate_or_plant}_name"),
+                }
+            }
+        }
+    elif transformation.transformation.name == "ADD_WATER_IN_TRANSIT":
+        gate_or_plant = "gate" if "gate_name" in transformation.kwargs.keys() else "plant"
+        transformation_dict = {
+            "AddWaterInTransit": {
+                "input": {
+                    "discharge_ts_external_id": transformation.kwargs.get("external_id"),
+                    "transit_object_type": gate_or_plant,
+                    "transit_object_name": transformation.kwargs.get(f"{gate_or_plant}_name"),
+                }
+            }
+        }
+
+    elif transformation.transformation.name == "MULTIPLY":
+        transformation_dict = {"MultiplyConstant": {"input": {"constant": transformation.kwargs.get("value")}}}
+    elif transformation.transformation.name == "MULTIPLY_FROM_OFFSET":
+        transformation_dict = {
+            "MultiplyFromOffset": {
+                "input": {
+                    "relative_datapoints": [
+                        {"offset_minute": k, "offset_value": v} for k, v in transformation.kwargs.items()
+                    ]
+                }
+            }
+        }
+    elif transformation.transformation.name == "TO_BOOL":
+        transformation_dict = {"ToBool": None}
+    elif transformation.transformation.name == "TO_INT":
+        transformation_dict = {"ToInt": None}
+    elif transformation.transformation.name in [
+        "ZERO_IF_NOT_ONE",
+        "GATE_SCHEDULE_FLAG_VALUE_MAPPING",
+        "GENERATOR_PRODUCTION_SCHEDULE_FLAG_VALUE_MAPPING",
+        "PLANT_PRODUCTION_SCHEDULE_FLAG_VALUE_MAPPING",
+    ]:
+        transformation_dict = {"ZeroIfNotOne": None}
+    elif transformation.transformation.name == "ONE_IF_TWO":
+        transformation_dict = {"OneIfTwo": None}
+    elif transformation.transformation.name in ["STATIC", "DYNAMIC_STATIC"]:
+        transformation_dict = {
+            "StaticValues": {
+                "input": {
+                    "relative_datapoints": [
+                        {"offset_minute": k, "offset_value": v} for k, v in transformation.kwargs.items()
+                    ]
+                }
+            }
+        }
+    elif transformation.transformation.name == "RESERVOIR_LEVEL_TO_VOLUME":
+        transformation_dict = {"HeightToVolume": {"input": {"object_type": object_type, "object_name": object_name}}}
+    elif transformation.transformation.name in ["DO_NOTHING", "GATE_OPENING_METER_TO_PERCENT"]:
+        transformation_dict = {"DoNothing": None}
+
+    return TransformationV2.load(transformation_dict)

@@ -59,7 +59,7 @@ def _relative_datapoints_to_series(
 class Transformation(BaseModel, ABC):
     @property
     def name(self):
-        return self.__repr_name__
+        return self.__repr_name__()
 
     @classmethod
     def load(cls, transformation_: dict[str, Any]) -> Self:
@@ -213,7 +213,7 @@ class StaticValues(DynamicTransformation):
         relative_datapoints: The relative datapoints to apply to
     """
 
-    shift_minutes: int = 0  # This could be given at runtime - looks like default value of 0 is always used for now
+    _shift_minutes: int = 0  # This could be given at runtime - looks like default value of 0 is always used for now
     relative_datapoints: list[RelativeDatapoint]
     _pre_apply_has_run: bool = False
     _start: datetime
@@ -290,7 +290,7 @@ class StaticValues(DynamicTransformation):
         """
         if not self.pre_apply_has_run:
             raise ValueError("pre_apply function has not run - missing neccessary properties to run transformation")
-        return _relative_datapoints_to_series(self.relative_datapoints, self.start, self.shift_minutes)
+        return _relative_datapoints_to_series(self.relative_datapoints, self.start, self._shift_minutes)
 
 
 class ToBool(Transformation):
@@ -531,7 +531,7 @@ class AddFromOffset(Transformation):
         relative_datapoints: The values to add to existing time series based at offset minute times from time series
     """
 
-    shift_minutes: int = 0
+    _shift_minutes: int = 0
     relative_datapoints: list[RelativeDatapoint]
 
     def input_to_dict(self) -> dict:
@@ -584,7 +584,7 @@ class AddFromOffset(Transformation):
         single_ts = time_series_data[0]
         first_timestamp = min(single_ts.index)
         non_relative_datapoints = _relative_datapoints_to_series(
-            self.relative_datapoints, first_timestamp, self.shift_minutes
+            self.relative_datapoints, first_timestamp, self._shift_minutes
         )
         union_index = single_ts.index.union(non_relative_datapoints.index)
         # fillna(0) since we are adding
@@ -601,7 +601,7 @@ class MultiplyFromOffset(Transformation):
                              offset minutes from time series start time
     """
 
-    shift_minutes: int = 0
+    _shift_minutes: int = 0
     relative_datapoints: list[RelativeDatapoint]
 
     def input_to_dict(self) -> dict:
@@ -642,7 +642,7 @@ class MultiplyFromOffset(Transformation):
         single_ts = time_series_data[0]
         first_timestamp = min(single_ts.index)
         non_relative_datapoints = _relative_datapoints_to_series(
-            self.relative_datapoints, first_timestamp, self.shift_minutes
+            self.relative_datapoints, first_timestamp, self._shift_minutes
         )
         union_index = single_ts.index.union(non_relative_datapoints.index)
         # fillna(1) since we are multiplying

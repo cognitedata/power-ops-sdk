@@ -1,0 +1,249 @@
+scenario_1:
+  name: scenario_1
+  time_series_external_id: '907677'
+  transformations:
+  - MultiplyFromOffset:
+      input:
+        relative_datapoints:
+        - offset_minute: 0.0
+          offset_value: 0.0
+        - offset_minute: 1440.0
+          offset_value: 1.0
+  - AddFromOffset:
+      input:
+        relative_datapoints:
+        - offset_minute: 0.0
+          offset_value: -500.0
+        - offset_minute: 1440.0
+          offset_value: 0.0
+scenario_10:
+  name: scenario_10
+  time_series_external_id: '907677'
+  transformations: null
+scenario_11:
+  name: scenario_11
+  time_series_external_id: '907677'
+  transformations:
+  - AddFromOffset:
+      input:
+        relative_datapoints:
+        - offset_minute: 0.0
+          offset_value: 5.0
+        - offset_minute: 1440.0
+          offset_value: 0.0
+scenario_12:
+  name: scenario_12
+  time_series_external_id: '907677'
+  transformations:
+  - AddFromOffset:
+      input:
+        relative_datapoints:
+        - offset_minute: 0.0
+          offset_value: 10.0
+        - offset_minute: 1440.0
+          offset_value: 0.0
+scenario_13:
+  name: scenario_13
+  time_series_external_id: '907677'
+  transformations:
+  - AddFromOffset:
+      input:
+        relative_datapoints:
+        - offset_minute: 0.0
+          offset_value: 15.0
+        - offset_minute: 1440.0
+          offset_value: 0.0
+scenario_14:
+  name: scenario_14
+  time_series_external_id: '907677'
+  transformations:
+  - AddFromOffset:
+      input:
+        relative_datapoints:
+        - offset_minute: 0.0
+          offset_value: 20.0
+        - offset_minute: 1440.0
+          offset_value: 0.0
+scenario_15:
+  name: scenario_15
+  time_series_external_id: '907677'
+  transformations:
+  - AddFromOffset:
+      input:
+        relative_datapoints:
+        - offset_minute: 0.0
+          offset_value: 30.0
+        - offset_minute: 1440.0
+          offset_value: 0.0
+scenario_16:
+  name: scenario_16
+  time_series_external_id: '907677'
+  transformations:
+  - AddFromOffset:
+      input:
+        relative_datapoints:
+        - offset_minute: 0.0
+          offset_value: 40.0
+        - offset_minute: 1440.0
+          offset_value: 0.0
+scenario_17:
+  name: scenario_17
+  time_series_external_id: '907677'
+  transformations:
+  - AddFromOffset:
+      input:
+        relative_datapoints:
+        - offset_minute: 0.0
+          offset_value: 50.0
+        - offset_minute: 1440.0
+          offset_value: 0.0
+scenario_18:
+  name: scenario_18
+  time_series_external_id: '907677'
+  transformations:
+  - AddFromOffset:
+      input:
+        relative_datapoints:
+        - offset_minute: 0.0
+          offset_value: 70.0
+        - offset_minute: 1440.0
+          offset_value: 0.0
+scenario_19:
+  name: scenario_19
+  time_series_external_id: '907677'
+  transformations:
+  - AddFromOffset:
+      input:
+        relative_datapoints:
+        - offset_minute: 0.0
+          offset_value: 100.0
+        - offset_minute: 1440.0
+          offset_value: 0.0
+scenario_2:
+  name: scenario_2
+  time_series_external_id: '907677'
+  transformations:
+  - MultiplyFromOffset:
+      input:
+        relative_datapoints:
+        - offset_minute: 0.0
+          offset_value: 0.0
+        - offset_minute: 1440.0
+          offset_value: 1.0
+scenario_20:
+  name: scenario_20
+  time_series_external_id: '907677'
+  transformations:
+  - AddFromOffset:
+      input:
+        relative_datapoints:
+        - offset_minute: 0.0
+          offset_value: 2000.0
+        - offset_minute: 1440.0
+          offset_value: 0.0
+scenario_21:
+  name: scenario_21
+  time_series_external_id: '907678'
+  transformations: null
+scenario_22:
+  name: Cognite
+  time_series_external_id: '907748'
+  transformations: null
+scenario_23:
+  name: -20pct
+  time_series_external_id: '907748'
+  transformations:
+  - MultiplyConstant:
+      input:
+        constant: 0.8
+scenario_24:
+  name: +20pct
+  time_series_external_id: '907748'
+  transformations:
+  - MultiplyConstant:
+      input:
+        constant: 1.2
+scenario_26:
+  name: -20pct
+  time_series_external_id: '907748'
+  transformations:
+  - MultiplyConstant:
+      input:
+        constant: 1.0
+scenario_3:
+  name: scenario_3
+  time_series_external_id: '907677'
+  transformations:
+  - AddFromOffset:
+      input:
+        relative_datapoints:
+        - offset_minute: 0.0
+          offset_value: -50.0
+        - offset_minute: 1440.0
+          offset_value: 0.0
+scenario_4:
+  name: scenario_4
+  time_series_external_id: '907677'
+  transformations:
+  - AddFromOffset:
+      input:
+        relative_datapoints:
+        - offset_minute: 0.0
+          offset_value: -40.0
+        - offset_minute: 1440.0
+          offset_value: 0.0
+scenario_5:
+  name: scenario_5
+  time_series_external_id: '907677'
+  transformations:
+  - AddFromOffset:
+      input:
+        relative_datapoints:
+        - offset_minute: 0.0
+          offset_value: -30.0
+        - offset_minute: 1440.0
+          offset_value: 0.0
+scenario_6:
+  name: scenario_6
+  time_series_external_id: '907677'
+  transformations:
+  - AddFromOffset:
+      input:
+        relative_datapoints:
+        - offset_minute: 0.0
+          offset_value: -20.0
+        - offset_minute: 1440.0
+          offset_value: 0.0
+scenario_7:
+  name: scenario_7
+  time_series_external_id: '907677'
+  transformations:
+  - AddFromOffset:
+      input:
+        relative_datapoints:
+        - offset_minute: 0.0
+          offset_value: -15.0
+        - offset_minute: 1440.0
+          offset_value: 0.0
+scenario_8:
+  name: scenario_8
+  time_series_external_id: '907677'
+  transformations:
+  - AddFromOffset:
+      input:
+        relative_datapoints:
+        - offset_minute: 0.0
+          offset_value: -10.0
+        - offset_minute: 1440.0
+          offset_value: 0.0
+scenario_9:
+  name: scenario_9
+  time_series_external_id: '907677'
+  transformations:
+  - AddFromOffset:
+      input:
+        relative_datapoints:
+        - offset_minute: 0.0
+          offset_value: -5.0
+        - offset_minute: 1440.0
+          offset_value: 0.0

@@ -152,6 +152,7 @@ class ProductionConfig(Config):
 
 class CogShopConfig(Config):
     time_series_mappings: Optional[list[TimeSeriesMapping]] = None
+    # TODO: uncommment when loading of new transformations are done correctly
     watercourses_shop: list[ShopFileConfig]  # validation needs to happen here. If any of the files
     _dependent_shop_files: set = {
         "extra_data",
@@ -185,6 +186,11 @@ class CogShopConfig(Config):
                 "This is needed for CogSHOP to know which order and type to load extra SHOP files."
             )
         return value
+
+    # @classmethod
+    # def load_yamls(cls, config_dir_path: Path) -> CogShopConfig:
+    #     #TODO: overwrite to load new transformations correctly
+    #     pass
 
 
 class ReSyncConfig(BaseModel):
