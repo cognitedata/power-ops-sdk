@@ -286,7 +286,7 @@ def _create_bid_document_filter(
                 lte=max_end_calculation.isoformat(timespec="milliseconds") if max_end_calculation else None,
             )
         )
-    if is_complete and isinstance(is_complete, str):
+    if is_complete and isinstance(is_complete, bool):
         filters.append(dm.filters.Equals(view_id.as_property_ref("isComplete"), value=is_complete))
     if price_area and isinstance(price_area, str):
         filters.append(

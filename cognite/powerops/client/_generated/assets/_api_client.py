@@ -21,8 +21,8 @@ class PowerAssetAPI:
     PowerAssetAPI
 
     Generated with:
-        pygen = 0.32.0
-        cognite-sdk = 7.5.4
+        pygen = 0.32.1
+        cognite-sdk = 7.6.0
         pydantic = 2.5.2
 
     Data Model:
@@ -38,6 +38,9 @@ class PowerAssetAPI:
             client = CogniteClient(config_or_client)
         else:
             raise ValueError(f"Expected CogniteClient or ClientConfig, got {type(config_or_client)}")
+        # The client name is used for aggregated logging of Pygen Usage
+        client.config.client_name = "CognitePygen:0.32.1"
+
         view_by_write_class = {
             data_classes.BidMethodApply: dm.ViewId("power-ops-shared", "BidMethod", "1"),
             data_classes.GeneratorApply: dm.ViewId("power-ops-assets", "Generator", "1"),
@@ -57,25 +60,3 @@ class PowerAssetAPI:
         self.reservoir = ReservoirAPI(client, view_by_write_class)
         self.turbine_efficiency_curve = TurbineEfficiencyCurveAPI(client, view_by_write_class)
         self.watercourse = WatercourseAPI(client, view_by_write_class)
-
-    @classmethod
-    def azure_project(
-        cls, tenant_id: str, client_id: str, client_secret: str, cdf_cluster: str, project: str
-    ) -> PowerAssetAPI:
-        credentials = OAuthClientCredentials.default_for_azure_ad(tenant_id, client_id, client_secret, cdf_cluster)
-        config = ClientConfig.default(project, cdf_cluster, credentials)
-
-        return cls(config)
-
-    @classmethod
-    def from_toml(cls, file_path: Path | str, section: str | None = "cognite") -> PowerAssetAPI:
-        import toml
-
-        toml_content = toml.load(file_path)
-        if section is not None:
-            try:
-                toml_content = toml_content[section]
-            except KeyError as e:
-                raise ValueError(f"Could not find section '{section}' in {file_path}") from e
-
-        return cls.azure_project(**toml_content)
