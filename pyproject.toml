@@ -81,7 +81,7 @@ mkdocs-glightbox = {version="*", optional=true}
 pymdown-extensions = {version="*", optional=true}
 mkdocstrings = {version="*", optional=true, extras=["python"]}
 cognite-toolkit = "^0.1.0a2"
-cognite-pygen = {version = ">=0.32.0", extras = ["all"]}
+cognite-pygen = {version = ">=0.32.1", extras = ["all"]}
 
 [tool.poetry.extras]
 docs = ["mkdocs", "mkdocs-jupyter", "mkdocs-material", "mkdocs-material-extensions", "mkdocs-git-revision-date-localized-plugin",
