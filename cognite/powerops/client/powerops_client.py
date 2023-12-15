@@ -64,7 +64,7 @@ class PowerOpsClient:
         """
         Create a PowerOpsClient from a CogniteClient object.
 
-        This use default values for the read and write data sets, cogshop version and monitor data set.
+        This uses default values for the read and write data sets, cogshop version and monitor data set.
 
         Args:
             client: The CogniteClient object.
