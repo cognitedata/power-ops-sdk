@@ -113,6 +113,43 @@ class TimeSeriesMappingEntryV2(BaseModel):
     retrieve: Optional[RetrievalType] = None
     aggregation: Optional[AggregationMethod] = None
 
+    @validator("aggregation", pre=True)
+    def to_enum(cls, value):
+        return AggregationMethod[value] if isinstance(value, str) else value
+
+    @validator("aggregation", always=True)
+    def set_default(cls, value, values):
+        if value is not None:
+            return value
+        # TODO: do we want default `None` here or raise error?
+        return ATTRIBUTE_DEFAULT_AGGREGATION.get(f"{values.get('object_type')}.{values.get('attribute_name')}")
+
+    @validator("retrieve", pre=True)
+    def to_retrival_enum(cls, value):
+        return RetrievalType[value] if isinstance(value, str) else value
+
+    @property
+    def shop_model_path(self) -> str:
+        return f"{self.object_type}.{self.object_name}.{self.attribute_name}"
+
+    def _transformations_to_strings(self, max_cols: int) -> list[str]:
+        if self.transformations:
+            # ensure_ascii=False to allow æøåÆØÅ
+            transformation_string = json.dumps([t.to_dict() for t in self.transformations], ensure_ascii=False)
+        else:
+            transformation_string = json.dumps([])
+
+        max_chars = 255
+        return [transformation_string[i * max_chars : (i + 1) * max_chars] for i in range(max_cols)]
+
+    def to_sequence_row(self, max_transformation_cols: int) -> list[str | float]:
+        return [
+            self.shop_model_path,
+            self.time_series_external_id or float("nan"),
+            *self._transformations_to_strings(max_cols=max_transformation_cols),
+            self.retrieve.name if self.retrieve else float("nan"),
+            self.aggregation.name if self.aggregation else float("nan"),
+        ]
 
 class TimeSeriesMappingEntry(BaseModel):
     object_type: str
@@ -164,6 +201,76 @@ class TimeSeriesMappingEntry(BaseModel):
 
 class TimeSeriesMappingV2(BaseModel):
     rows: list[TimeSeriesMappingEntryV2] = []
+    columns: ClassVar[list[str]] = [
+        "shop_model_path",
+        "time_series_external_id",
+        "transformations",
+        "transformations1",
+        "transformations2",
+        "transformations3",
+        "retrieve",
+        "aggregation",
+    ]
+
+    @property
+    def transformations_cols(self) -> list[str]:
+        return [col for col in self.columns if col.startswith("transformations")]
+
+    def __iter__(self) -> Iterator[TimeSeriesMappingEntry]:
+        yield from self.rows
+
+    def __len__(self) -> int:
+        return len(self.rows)
+
+    def __add__(self, other: TimeSeriesMapping) -> TimeSeriesMapping:
+        return TimeSeriesMapping(rows=self.rows + other.rows)
+
+    def append(self, element: TimeSeriesMappingEntry) -> None:
+        self.rows.append(element)
+
+    def extend(self, other: TimeSeriesMapping) -> None:
+        self.rows.extend(other.rows)
+
+    @property
+    def column_definitions(self) -> list[dict]:
+        return [{"valueType": "STRING", "externalId": col} for col in self.columns]
+
+    def to_dataframe(self) -> pd.DataFrame:
+        rows = [row.to_sequence_row(max_transformation_cols=len(self.transformations_cols)) for row in self.rows]
+        return pd.DataFrame(data=rows, columns=self.columns)
+
+    def dumps(self) -> dict[str, Any]:
+        rows = []
+        for row in self.rows:
+            row_raw = row.dict(exclude={"aggregation", "retrieve", "transformations"})
+            if row.aggregation:
+                row_raw["aggregation"] = row.aggregation.name
+            if row.retrieve:
+                row_raw["retrieve"] = row.retrieve.name
+            if row.transformations:
+                row_raw["transformations"] = [
+                    {
+                        **transformation.dict(exclude={"transformation"}),
+                        "transformation": transformation.transformation.name,
+                    }
+                    for transformation in row.transformations
+                ]
+            rows.append(row_raw)
+        return {"rows": rows}
+
+    @classmethod
+    def load_from_dict(cls, config: dict) -> TimeSeriesMappingV2:
+        time_series_mappings_v2 = {"rows": []}
+        for mapping_entry in config[0]["rows"]:
+            if transformations := mapping_entry.get("transformations"):
+                loaded_transformations = [TransformationV2.load(t) for t in transformations]
+                del mapping_entry["transformations"]
+                time_series_mappings_v2["rows"].append(
+                    TimeSeriesMappingEntryV2(transformations=loaded_transformations, **mapping_entry))
+                continue
+            time_series_mappings_v2["rows"].append(TimeSeriesMappingEntryV2(**mapping_entry))
+
+        return cls(**time_series_mappings_v2)
 
 
 class TimeSeriesMapping(BaseModel):

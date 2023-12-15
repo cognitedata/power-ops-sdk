@@ -50,7 +50,7 @@ def generate_new_price_scenarios_mappings(old_price_scenarios_mappings: dict, wr
 
 
 def create_new_transformations_file(old_time_series_mappings: dict, old_price_scenarios_mappings: dict, write_path: Path):
-    transofrmations_v2 = {"transformations": [{"rows": []}]}
+    transofrmations_v2 = {"transformations": []}
 
     for mapping in old_time_series_mappings["rows"]:
         if transformations := mapping.get("transformations"):
@@ -62,7 +62,7 @@ def create_new_transformations_file(old_time_series_mappings: dict, old_price_sc
                 new_transformation = transformations_v2_transformer(old_transformation, object_name=object_name,
                                                                     object_type=object_type)
                 new_transformations.append({new_transformation.name: {"input": new_transformation.model_dump()}})
-            transofrmations_v2["transformations"][0]["rows"].extend(new_transformations)
+            transofrmations_v2["transformations"].extend(new_transformations)
 
     for price_id, price_scenario in old_price_scenarios_mappings.items():
         new_scenario = price_scenario.model_dump()
@@ -85,12 +85,13 @@ if __name__ == "__main__":
     cdf_project = "powerops-staging"
 
     config = ReSyncConfig.from_yamls(read_path, cdf_project)
+    print()
 
-    old_time_series_mappings = config.cogshop.time_series_mappings[0].dumps()
-    old_price_scenario_mappings = config.market.price_scenario_by_id
-
-    generate_new_price_scenarios_mappings(old_price_scenario_mappings, write_path / "price_scenarios_by_id_v2.yaml")
-    generate_new_time_series_mappings(old_time_series_mappings, write_path / "time_series_mappings_v2.yaml")
-    create_new_transformations_file(old_time_series_mappings,
-                                    old_price_scenario_mappings,
-                                    write_path / "transformations_v2.yaml")
+    #old_time_series_mappings = config.cogshop.time_series_mappings[0].dumps()
+    #old_price_scenario_mappings = config.market.price_scenario_by_id
+    #
+    # generate_new_price_scenarios_mappings(old_price_scenario_mappings, write_path / "price_scenarios_by_id_v2.yaml")
+    # generate_new_time_series_mappings(old_time_series_mappings, write_path / "time_series_mappings_v2.yaml")
+    # create_new_transformations_file(old_time_series_mappings,
+    #                                  old_price_scenario_mappings,
+    #                                  write_path / "transformations_v2.yaml")

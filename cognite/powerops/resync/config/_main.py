@@ -11,7 +11,7 @@ from typing_extensions import Self
 from cognite.powerops.utils.serialization import load_yaml
 
 from ._settings import Settings
-from ._shared import TimeSeriesMapping
+from ._shared import TimeSeriesMapping, TimeSeriesMappingV2
 from .cogshop.shop_file_config import ShopFileConfig
 from .market import (
     BenchmarkingConfig,
@@ -152,6 +152,7 @@ class ProductionConfig(Config):
 
 class CogShopConfig(Config):
     time_series_mappings: Optional[list[TimeSeriesMapping]] = None
+    time_series_mappings_v2: Optional[list[TimeSeriesMappingV2]] = None
     # TODO: uncommment when loading of new transformations are done correctly
     watercourses_shop: list[ShopFileConfig]  # validation needs to happen here. If any of the files
     _dependent_shop_files: set = {
@@ -187,10 +188,11 @@ class CogShopConfig(Config):
             )
         return value
 
-    # @classmethod
-    # def load_yamls(cls, config_dir_path: Path) -> CogShopConfig:
-    #     #TODO: overwrite to load new transformations correctly
-    #     pass
+    @classmethod
+    def instantiate_from_dict(cls, config: dict) -> CogShopConfig:
+        time_series_mappings_v2 = TimeSeriesMappingV2.load_from_dict(config["time_series_mappings_v2"])
+        config["time_series_mappings_v2"] = [time_series_mappings_v2]
+        return cls(**config)
 
 
 class ReSyncConfig(BaseModel):
@@ -235,6 +237,9 @@ class ReSyncConfig(BaseModel):
         elif "constants" in configs:
             # For backwards compatibility
             configs["constants"]["cdf_project"] = cdf_project
+
+        # hack to instantiate CogShopConfig from dict (better readability than overriding load_yamls)
+        configs["cogshop"] = CogShopConfig.instantiate_from_dict(configs["cogshop"])
 
         return cls(**configs)
 
