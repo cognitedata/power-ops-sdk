@@ -126,12 +126,17 @@ def _create_transformation(order: int, transformation: dict | config.Transformat
     )
 
 
-def _create_transformationV2(order: int, transformation: dict | TransformationV2) -> cogshop_v1.TransformationApply:
+def _create_transformationV2(order: int, transformation: dict | TransformationV2 | Transformation) -> cogshop_v1.TransformationApply:
     """
     Adapter betweeen transformationsV2 pydantic instances to CogShop model 1 FDM instances
     """
     if isinstance(transformation, dict):
         transformation = TransformationV2.load(transformation)
+    # TODO: temp hack to be able to read in old transformations from price scenarios in Dayahead and Rkom
+    # TODO: remove once market configs can load the new price scenarios config
+    elif isinstance(transformation, Transformation):
+        transformation = transformations_v2_transformer(transformation)
+
     dumped_input_args = json.dumps(transformation.input_to_dict() or {}, separators=(",", ":"), ensure_ascii=False)
     external_id = f"Tr2_{transformation.name}_{dumped_input_args}_{order}"
     if len(external_id) > 255:

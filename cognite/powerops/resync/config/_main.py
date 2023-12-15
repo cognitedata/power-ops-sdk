@@ -19,6 +19,7 @@ from .market import (
     BidProcessConfig,
     Market,
     PriceScenario,
+    PriceScenarioV2,
     RKOMBidCombinationConfig,
     RKOMBidProcessConfig,
     RkomMarketConfig,
@@ -57,6 +58,7 @@ class MarketConfig(Config):
     market: Market
     benchmarks: list[BenchmarkingConfig]
     price_scenario_by_id: dict[str, PriceScenario]
+    price_scenario_by_id_v2: dict[str, PriceScenarioV2]
 
     bidprocess: list[BidProcessConfig]
     bidmatrix_generators: list[BidMatrixGeneratorConfig]
@@ -91,6 +93,12 @@ class MarketConfig(Config):
                         f"Possible references are: {[config.external_id for config in values.data['rkom_bid_process']]}"
                     )
         return value
+
+    @classmethod
+    def instantiate_from_dict(cls, config: dict) -> MarketConfig:
+        price_scenario_by_id_v2 = {k: PriceScenarioV2.load_from_dict(v) for k, v in config["price_scenario_by_id_v2"].items()}
+        config["price_scenario_by_id_v2"] = price_scenario_by_id_v2
+        return cls(**config)
 
     @field_validator("bidprocess", mode="after")
     def one_default_per_price_area(cls, value: list[BidProcessConfig]):
@@ -238,8 +246,10 @@ class ReSyncConfig(BaseModel):
             # For backwards compatibility
             configs["constants"]["cdf_project"] = cdf_project
 
-        # hack to instantiate CogShopConfig from dict (better readability than overriding load_yamls)
-        configs["cogshop"] = CogShopConfig.instantiate_from_dict(configs["cogshop"])
+        # Hack to instantiate CogShopConfig from dict (could also consider overriding load_yamls, but want to avoid hacks in conditions above)
+        for field_name in ["cogshop", "market"]:
+            class_ = cls.model_fields[field_name].annotation
+            configs[field_name] = class_.instantiate_from_dict(configs[field_name])
 
         return cls(**configs)
 

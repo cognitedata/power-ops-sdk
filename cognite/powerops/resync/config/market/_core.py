@@ -11,6 +11,7 @@ from cognite.powerops.resync.config._shared import (
     TimeSeriesMapping,
     TimeSeriesMappingEntry,
     Transformation,
+    TransformationV2,
     TransformationType,
 )
 
@@ -23,6 +24,51 @@ class PriceScenarioID(BaseModel):
     id: str
     rename: str = ""
 
+class PriceScenarioV2(BaseModel):
+    model_config = ConfigDict(frozen=True)
+
+    name: str
+    time_series_external_id: Optional[str] = None
+    transformations: Optional[list[TransformationV2]] = None
+
+    @classmethod
+    def load_from_dict(cls, config: dict) -> PriceScenarioV2:
+        if transformations := config.get("transformations"):
+            loaded_transformations = [TransformationV2.load(t) for t in transformations]
+            config["transformations"] = loaded_transformations
+        return cls(**config)
+
+    def to_time_series_mapping(self) -> TimeSeriesMapping:
+        retrieve = RetrievalType.RANGE if self.time_series_external_id else None
+        transformations = self.transformations or []
+
+        # to make buy price slightly higher than sale price in SHOP
+        transformations_buy_price = [
+            *transformations,
+            Transformation(transformation=TransformationType.ADD, kwargs={"value": 0.01}),
+        ]
+
+        sale_price_row = TimeSeriesMappingEntry(
+                object_type="market",
+                object_name=self.name,
+                attribute_name="sale_price",
+                time_series_external_id=self.time_series_external_id,
+                transformations=transformations,
+                retrieve=retrieve,
+                aggregation=AggregationMethod.mean,
+        )
+
+        buy_price_row = TimeSeriesMappingEntry(
+                object_type="market",
+                object_name=self.name,
+                attribute_name="buy_price",
+                time_series_external_id=self.time_series_external_id,
+                transformations=transformations_buy_price,
+                retrieve=retrieve,
+                aggregation=AggregationMethod.mean,
+        )
+
+        return TimeSeriesMapping(rows=[sale_price_row, buy_price_row])
 
 class PriceScenario(BaseModel):
     name: str
