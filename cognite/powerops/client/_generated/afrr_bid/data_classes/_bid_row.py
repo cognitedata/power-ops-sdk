@@ -271,9 +271,9 @@ def _create_bid_row_filter(
         filters.append(dm.filters.In(view_id.as_property_ref("product"), values=product))
     if product_prefix:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("product"), value=product_prefix))
-    if is_divisible and isinstance(is_divisible, str):
+    if is_divisible and isinstance(is_divisible, bool):
         filters.append(dm.filters.Equals(view_id.as_property_ref("isDivisible"), value=is_divisible))
-    if is_block and isinstance(is_block, str):
+    if is_block and isinstance(is_block, bool):
         filters.append(dm.filters.Equals(view_id.as_property_ref("isBlock"), value=is_block))
     if exclusive_group_id and isinstance(exclusive_group_id, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("exclusiveGroupId"), value=exclusive_group_id))
