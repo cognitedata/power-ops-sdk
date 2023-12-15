@@ -48,25 +48,3 @@ class AFRRBidAPI:
         self.bid_method = BidMethodAPI(client, view_by_write_class)
         self.bid_row = BidRowAPI(client, view_by_write_class)
         self.price_area = PriceAreaAPI(client, view_by_write_class)
-
-    @classmethod
-    def azure_project(
-        cls, tenant_id: str, client_id: str, client_secret: str, cdf_cluster: str, project: str
-    ) -> AFRRBidAPI:
-        credentials = OAuthClientCredentials.default_for_azure_ad(tenant_id, client_id, client_secret, cdf_cluster)
-        config = ClientConfig.default(project, cdf_cluster, credentials)
-
-        return cls(config)
-
-    @classmethod
-    def from_toml(cls, file_path: Path | str, section: str | None = "cognite") -> AFRRBidAPI:
-        import toml
-
-        toml_content = toml.load(file_path)
-        if section is not None:
-            try:
-                toml_content = toml_content[section]
-            except KeyError as e:
-                raise ValueError(f"Could not find section '{section}' in {file_path}") from e
-
-        return cls.azure_project(**toml_content)
