@@ -13,6 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.77.0] - 2023-12-11
+### Fixed
+* Factory methods `from_client` and `from_toml` to PowerOps Client
+* Regenerate clients with `pygen` `v0.32.1`
+
 ## [0.76.0] - 2023-12-11
 ### Fixed
 * `AFRRBid` data model is now in `afrr_bid` folder (was `affr_bid`)
