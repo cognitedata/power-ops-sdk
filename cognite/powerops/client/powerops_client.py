@@ -5,7 +5,7 @@ from pathlib import Path
 from cognite.client import ClientConfig, CogniteClient
 
 from cognite.powerops.utils.cdf import Settings, get_client_config
-from powerops.utils.serialization import read_toml_file
+from cognite.powerops.utils.serialization import read_toml_file
 
 from ._generated._api_client import ProductionAPIs
 from ._generated.afrr_bid import AFRRBidAPI
@@ -36,6 +36,49 @@ class PowerOpsClient:
         self.day_ahead_bid = DayAheadBidAPI(self.cdf)
         self.shop = SHOPRunAPI(self.cdf, self.datasets.write_dataset_id, cogshop_version)
         self.workflow = DayaheadTriggerAPI(self.cdf, self.datasets.write_dataset_id, cogshop_version)
+
+    def _apis(self) -> dict[str, str]:
+        return {
+            "cdf": "The regular Cognite Client",
+            "cog_shop1": "The CogSHOP client, this is used by cogshop",
+            "assets": "The PowerOps Assets model. For example, plants, generators etc",
+            "afrr_bid": "The AFRR bid model, the model used to represent AFRR bids",
+            "production": "(will be deprecated) The production model",
+            "day_ahead_bid": "The day ahead bid model, the model used to represent day-ahead bids",
+            "shop": "The shop model, this is used to trigger individual SHOP runs",
+            "workflow": "The workflow model, this is used to trigger set of SHOP runs",
+        }
+
+    def _repr_html_(self) -> str:
+        return (
+            "<strong>PowerOpsClient:</strong><ul>"
+            + "".join([f"<li><strong><em>.{k}</em></strong>: {v}</li>" for k, v in self._apis().items()])
+            + "</ul>"
+        )
+
+    def __str__(self):
+        return f"PowerOpsClient with {', '.join(map(lambda a: '.' + a, self._apis().keys()))} APIs"
+
+    @classmethod
+    def from_client(cls, client: CogniteClient) -> PowerOpsClient:
+        """
+        Create a PowerOpsClient from a CogniteClient object.
+
+        This use default values for the read and write data sets, cogshop version and monitor data set.
+
+        Args:
+            client: The CogniteClient object.
+
+        Returns:
+            A PowerOpsClient object.
+        """
+        return PowerOpsClient(
+            config=client.config,
+            read_dataset="uc:000:powerops",
+            write_dataset="uc:000:powerops",
+            cogshop_version="CogShop2-20231030T120815Z",
+            monitor_dataset="uc:po:monitoring",
+        )
 
     @classmethod
     def from_settings(
