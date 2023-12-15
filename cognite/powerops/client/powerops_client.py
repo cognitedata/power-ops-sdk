@@ -1,8 +1,11 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 from cognite.client import ClientConfig, CogniteClient
 
 from cognite.powerops.utils.cdf import Settings, get_client_config
+from powerops.utils.serialization import read_toml_file
 
 from ._generated._api_client import ProductionAPIs
 from ._generated.afrr_bid import AFRRBidAPI
@@ -74,3 +77,17 @@ class PowerOpsClient:
             monitor_dataset=monitor_dataset if monitor_dataset is not None else settings.powerops.monitor_dataset,
             cogshop_version=cogshop_version if cogshop_version is not None else settings.powerops.cogshop_version,
         )
+
+    @classmethod
+    def from_toml(cls, toml_file: str | Path) -> PowerOpsClient:
+        """
+        Create a PowerOpsClient from a TOML file.
+
+        Args:
+            toml_file: Path to the TOML file.
+
+        Returns:
+            A PowerOpsClient object.
+        """
+        content = read_toml_file(toml_file)
+        return cls.from_settings(Settings.model_validate(content))
