@@ -96,7 +96,9 @@ class MarketConfig(Config):
 
     @classmethod
     def instantiate_from_dict(cls, config: dict) -> MarketConfig:
-        price_scenario_by_id_v2 = {k: PriceScenarioV2.load_from_dict(v) for k, v in config["price_scenario_by_id_v2"].items()}
+        price_scenario_by_id_v2 = {
+            k: PriceScenarioV2.load_from_dict(v) for k, v in config["price_scenario_by_id_v2"].items()
+        }
         config["price_scenario_by_id_v2"] = price_scenario_by_id_v2
         return cls(**config)
 
@@ -246,7 +248,8 @@ class ReSyncConfig(BaseModel):
             # For backwards compatibility
             configs["constants"]["cdf_project"] = cdf_project
 
-        # Hack to instantiate CogShopConfig from dict (could also consider overriding load_yamls, but want to avoid hacks in conditions above)
+        # Hack to instantiate CogShopConfig from dict
+        # (could also consider overriding load_yamls, but want to avoid hacks in conditions above)
         for field_name in ["cogshop", "market"]:
             class_ = cls.model_fields[field_name].annotation
             configs[field_name] = class_.instantiate_from_dict(configs[field_name])

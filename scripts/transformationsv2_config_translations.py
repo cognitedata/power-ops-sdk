@@ -7,6 +7,7 @@ from cognite.powerops.resync.models._shared_v1_v2.cogshop_model import transform
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
+
 def generate_new_time_series_mappings(old_time_series_mappings: dict, write_path: Path):
     new_time_series_mapping = [{"rows": []}]
 
@@ -17,7 +18,9 @@ def generate_new_time_series_mappings(old_time_series_mappings: dict, write_path
             object_type = mapping.get("object_type")
             for transformation in transformations:
                 old_transformation = Transformation(**transformation)
-                new_transformation = transformations_v2_transformer(old_transformation, object_name=object_name, object_type=object_type)
+                new_transformation = transformations_v2_transformer(
+                    old_transformation, object_name=object_name, object_type=object_type
+                )
                 new_transformations.append({new_transformation.name: {"input": new_transformation.model_dump()}})
             new_mapping = mapping.copy()
             new_mapping["transformations"] = new_transformations
@@ -26,8 +29,9 @@ def generate_new_time_series_mappings(old_time_series_mappings: dict, write_path
         new_time_series_mapping[0]["rows"].append(mapping)
 
     # write to yaml file
-    with open(write_path, 'w') as f:
+    with open(write_path, "w") as f:
         yaml.dump(new_time_series_mapping, f)
+
 
 def generate_new_price_scenarios_mappings(old_price_scenarios_mappings: dict, write_path: Path):
     new_price_scenarios = {}
@@ -45,11 +49,13 @@ def generate_new_price_scenarios_mappings(old_price_scenarios_mappings: dict, wr
         new_price_scenarios[price_id] = new_scenario
 
     # write to yaml file
-    with open(write_path, 'w') as f:
+    with open(write_path, "w") as f:
         yaml.dump(new_price_scenarios, f)
 
 
-def create_new_transformations_file(old_time_series_mappings: dict, old_price_scenarios_mappings: dict, write_path: Path):
+def create_new_transformations_file(
+    old_time_series_mappings: dict, old_price_scenarios_mappings: dict, write_path: Path
+):
     transofrmations_v2 = {"transformations": []}
 
     for mapping in old_time_series_mappings["rows"]:
@@ -59,8 +65,9 @@ def create_new_transformations_file(old_time_series_mappings: dict, old_price_sc
             object_type = mapping.get("object_type")
             for transformation in transformations:
                 old_transformation = Transformation(**transformation)
-                new_transformation = transformations_v2_transformer(old_transformation, object_name=object_name,
-                                                                    object_type=object_type)
+                new_transformation = transformations_v2_transformer(
+                    old_transformation, object_name=object_name, object_type=object_type
+                )
                 new_transformations.append({new_transformation.name: {"input": new_transformation.model_dump()}})
             transofrmations_v2["transformations"].extend(new_transformations)
 
@@ -73,9 +80,8 @@ def create_new_transformations_file(old_time_series_mappings: dict, old_price_sc
                 new_transformations.append({new_transformation.name: {"input": new_transformation.model_dump()}})
             transofrmations_v2["transformations"].extend(new_transformations)
 
-
     # write to yaml file
-    with open(write_path, 'w') as f:
+    with open(write_path, "w") as f:
         yaml.dump(transofrmations_v2, f)
 
 
@@ -85,13 +91,12 @@ if __name__ == "__main__":
     cdf_project = "powerops-staging"
 
     config = ReSyncConfig.from_yamls(read_path, cdf_project)
-    print()
 
-    #old_time_series_mappings = config.cogshop.time_series_mappings[0].dumps()
-    #old_price_scenario_mappings = config.market.price_scenario_by_id
-    #
-    # generate_new_price_scenarios_mappings(old_price_scenario_mappings, write_path / "price_scenarios_by_id_v2.yaml")
-    # generate_new_time_series_mappings(old_time_series_mappings, write_path / "time_series_mappings_v2.yaml")
-    # create_new_transformations_file(old_time_series_mappings,
-    #                                  old_price_scenario_mappings,
-    #                                  write_path / "transformations_v2.yaml")
+    old_time_series_mappings = config.cogshop.time_series_mappings[0].dumps()
+    old_price_scenario_mappings = config.market.price_scenario_by_id
+
+    generate_new_price_scenarios_mappings(old_price_scenario_mappings, write_path / "price_scenarios_by_id_v2.yaml")
+    generate_new_time_series_mappings(old_time_series_mappings, write_path / "time_series_mappings_v2.yaml")
+    create_new_transformations_file(old_time_series_mappings,
+                                     old_price_scenario_mappings,
+                                     write_path / "transformations_v2.yaml")

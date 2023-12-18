@@ -12,8 +12,9 @@ from cognite.powerops.client.data_classes import cogshop1 as cogshop_v1
 from cognite.powerops.resync import config
 from cognite.powerops.resync.models._shared_v1_v2.cogshop_model import (
     _create_transformation,
+    _create_transformationV2,
     _to_shop_files,
-    _to_shop_model_file, _create_transformationV2,
+    _to_shop_model_file,
 )
 from cognite.powerops.resync.models.base import CDFSequence
 from cognite.powerops.resync.models.v1.cogshop import CogShop1Asset
@@ -35,7 +36,9 @@ def to_cogshop_asset_model(
     model.shop_files.extend(_to_shop_files(configuration.watercourses_shop))
 
     # TODO Fix the assumption that timeseries mappings and watercourses are in the same order
-    for watercourse, mapping, mapping2 in zip(watercourses, configuration.time_series_mappings, configuration.time_series_mappings_v2):
+    for watercourse, mapping, mapping2 in zip(
+        watercourses, configuration.time_series_mappings, configuration.time_series_mappings_v2
+    ):
         model_file = _to_shop_model_file(
             watercourse.name,
             watercourse.model_file,
@@ -109,8 +112,11 @@ def to_cogshop_asset_model(
                     transformations=[
                         _create_transformation(order, transformation)
                         for order, transformation in enumerate(row.transformations or [])
-                    ] + [_create_transformationV2(order, transformation)
-                        for order, transformation in enumerate(row2.transformations or [])],
+                    ]
+                    + [
+                        _create_transformationV2(order, transformation)
+                        for order, transformation in enumerate(row2.transformations or [])
+                    ],
                     retrieve=row.retrieve.name if row.retrieve else None,
                     aggregation=row.aggregation.name if row.aggregation else None,
                 )
@@ -164,13 +170,14 @@ def to_cogshop_asset_model(
                         transformations=[
                             _create_transformation(j, transformation_data)
                             for j, transformation_data in enumerate(json.loads(mapping.get("transformations", "")))
-                        ] + [_create_transformationV2(j, config.Transformation(**transformation_data))
-                             for j, transformation_data in enumerate(json.loads(mapping.get("transformations", "")))]
+                        ]
+                        + [
+                            _create_transformationV2(j, config.Transformation(**transformation_data))
+                            for j, transformation_data in enumerate(json.loads(mapping.get("transformations", "")))
+                        ],
                     )
                     for i, mapping in enumerate(
-                        incremental_mapping.content.replace(float("nan"), None).to_dict(
-                            orient="records"
-                        )
+                        incremental_mapping.content.replace(float("nan"), None).to_dict(orient="records")
                     )
                 ],
                 commands=cogshop_v1.CommandsConfigApply(

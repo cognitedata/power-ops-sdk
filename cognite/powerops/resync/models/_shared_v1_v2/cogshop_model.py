@@ -126,7 +126,9 @@ def _create_transformation(order: int, transformation: dict | config.Transformat
     )
 
 
-def _create_transformationV2(order: int, transformation: dict | TransformationV2 | Transformation) -> cogshop_v1.TransformationApply:
+def _create_transformationV2(
+    order: int, transformation: dict | TransformationV2 | Transformation
+) -> cogshop_v1.TransformationApply:
     """
     Adapter betweeen transformationsV2 pydantic instances to CogShop model 1 FDM instances
     """

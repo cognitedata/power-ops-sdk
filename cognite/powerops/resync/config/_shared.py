@@ -151,6 +151,7 @@ class TimeSeriesMappingEntryV2(BaseModel):
             self.aggregation.name if self.aggregation else float("nan"),
         ]
 
+
 class TimeSeriesMappingEntry(BaseModel):
     object_type: str
     object_name: str
@@ -266,7 +267,8 @@ class TimeSeriesMappingV2(BaseModel):
                 loaded_transformations = [TransformationV2.load(t) for t in transformations]
                 del mapping_entry["transformations"]
                 time_series_mappings_v2["rows"].append(
-                    TimeSeriesMappingEntryV2(transformations=loaded_transformations, **mapping_entry))
+                    TimeSeriesMappingEntryV2(transformations=loaded_transformations, **mapping_entry)
+                )
                 continue
             time_series_mappings_v2["rows"].append(TimeSeriesMappingEntryV2(**mapping_entry))
 

@@ -13,6 +13,7 @@ def _map_price_scenarios_by_name(
         scenario_by_name[name] = PriceScenario(name=market_name, **ref_scenario.model_dump(exclude={"name"}))
     return scenario_by_name
 
+
 def _map_price_scenario_by_name_v2(
     scenario_ids: list[PriceScenarioID], price_scenarios_by_id: dict[str, PriceScenarioV2], market_name: str
 ) -> dict[str, PriceScenarioV2]:
