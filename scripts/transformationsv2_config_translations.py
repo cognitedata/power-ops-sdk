@@ -97,6 +97,6 @@ if __name__ == "__main__":
 
     generate_new_price_scenarios_mappings(old_price_scenario_mappings, write_path / "price_scenarios_by_id_v2.yaml")
     generate_new_time_series_mappings(old_time_series_mappings, write_path / "time_series_mappings_v2.yaml")
-    create_new_transformations_file(old_time_series_mappings,
-                                     old_price_scenario_mappings,
-                                     write_path / "transformations_v2.yaml")
+    create_new_transformations_file(
+        old_time_series_mappings, old_price_scenario_mappings, write_path / "transformations_v2.yaml"
+    )
