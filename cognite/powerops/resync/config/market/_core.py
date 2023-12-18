@@ -9,7 +9,9 @@ from cognite.powerops.resync.config._shared import (
     AggregationMethod,
     RetrievalType,
     TimeSeriesMapping,
+    TimeSeriesMappingV2,
     TimeSeriesMappingEntry,
+    TimeSeriesMappingEntryV2,
     Transformation,
     TransformationV2,
     TransformationType,
@@ -38,17 +40,18 @@ class PriceScenarioV2(BaseModel):
             config["transformations"] = loaded_transformations
         return cls(**config)
 
-    def to_time_series_mapping(self) -> TimeSeriesMapping:
+    #TODO: rewrite
+    def to_time_series_mapping(self) -> TimeSeriesMappingV2:
         retrieve = RetrievalType.RANGE if self.time_series_external_id else None
         transformations = self.transformations or []
 
         # to make buy price slightly higher than sale price in SHOP
         transformations_buy_price = [
             *transformations,
-            Transformation(transformation=TransformationType.ADD, kwargs={"value": 0.01}),
+            TransformationV2.load({"Add": {"input": {"value": 0.01}}})
         ]
 
-        sale_price_row = TimeSeriesMappingEntry(
+        sale_price_row = TimeSeriesMappingEntryV2(
                 object_type="market",
                 object_name=self.name,
                 attribute_name="sale_price",
@@ -58,7 +61,7 @@ class PriceScenarioV2(BaseModel):
                 aggregation=AggregationMethod.mean,
         )
 
-        buy_price_row = TimeSeriesMappingEntry(
+        buy_price_row = TimeSeriesMappingEntryV2(
                 object_type="market",
                 object_name=self.name,
                 attribute_name="buy_price",
@@ -68,7 +71,7 @@ class PriceScenarioV2(BaseModel):
                 aggregation=AggregationMethod.mean,
         )
 
-        return TimeSeriesMapping(rows=[sale_price_row, buy_price_row])
+        return TimeSeriesMappingV2(rows=[sale_price_row, buy_price_row])
 
 class PriceScenario(BaseModel):
     name: str

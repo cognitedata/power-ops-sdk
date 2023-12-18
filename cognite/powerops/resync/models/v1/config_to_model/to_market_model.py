@@ -188,6 +188,7 @@ def _to_dayahead_process(
                         f"Watercourse {watercourse.name} not defined in price_scenarios_per_watercourse "
                         f"for BidProcessConfig {process.name}"
                     ) from e
+            #TODO: FIX HERE
             for scenario_name, price_scenario in price_scenarios.items():
                 time_series_mapping = price_scenario.to_time_series_mapping()
                 metadata = {
