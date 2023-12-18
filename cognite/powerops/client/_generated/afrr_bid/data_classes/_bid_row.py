@@ -198,6 +198,7 @@ class BidRowApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
+                type=dm.DirectRelationReference("power-ops-afrr-bid", "BidRow"),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,
@@ -265,17 +266,17 @@ def _create_bid_row_filter(
     filters = []
     if min_price or max_price:
         filters.append(dm.filters.Range(view_id.as_property_ref("price"), gte=min_price, lte=max_price))
-    if product and isinstance(product, str):
+    if product is not None and isinstance(product, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("product"), value=product))
     if product and isinstance(product, list):
         filters.append(dm.filters.In(view_id.as_property_ref("product"), values=product))
     if product_prefix:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("product"), value=product_prefix))
-    if is_divisible and isinstance(is_divisible, str):
+    if is_divisible is not None and isinstance(is_divisible, bool):
         filters.append(dm.filters.Equals(view_id.as_property_ref("isDivisible"), value=is_divisible))
-    if is_block and isinstance(is_block, str):
+    if is_block is not None and isinstance(is_block, bool):
         filters.append(dm.filters.Equals(view_id.as_property_ref("isBlock"), value=is_block))
-    if exclusive_group_id and isinstance(exclusive_group_id, str):
+    if exclusive_group_id is not None and isinstance(exclusive_group_id, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("exclusiveGroupId"), value=exclusive_group_id))
     if exclusive_group_id and isinstance(exclusive_group_id, list):
         filters.append(dm.filters.In(view_id.as_property_ref("exclusiveGroupId"), values=exclusive_group_id))
@@ -307,13 +308,13 @@ def _create_bid_row_filter(
                 values=[{"space": item[0], "externalId": item[1]} for item in linked_bid],
             )
         )
-    if asset_type and isinstance(asset_type, str):
+    if asset_type is not None and isinstance(asset_type, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("assetType"), value=asset_type))
     if asset_type and isinstance(asset_type, list):
         filters.append(dm.filters.In(view_id.as_property_ref("assetType"), values=asset_type))
     if asset_type_prefix:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("assetType"), value=asset_type_prefix))
-    if asset_id and isinstance(asset_id, str):
+    if asset_id is not None and isinstance(asset_id, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("assetId"), value=asset_id))
     if asset_id and isinstance(asset_id, list):
         filters.append(dm.filters.In(view_id.as_property_ref("assetId"), values=asset_id))
@@ -344,7 +345,7 @@ def _create_bid_row_filter(
         )
     if external_id_prefix:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
-    if space and isinstance(space, str):
+    if space is not None and isinstance(space, str):
         filters.append(dm.filters.Equals(["node", "space"], value=space))
     if space and isinstance(space, list):
         filters.append(dm.filters.In(["node", "space"], values=space))

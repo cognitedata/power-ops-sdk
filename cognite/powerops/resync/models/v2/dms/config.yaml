@@ -1,10 +1,9 @@
 # variables used for substitution in other files in this directory
-afrr_model_space: 'power-ops-afrr-bid'
-dayahead_model_space: 'power-ops-day-ahead-bid'
-shared_model_space: 'power-ops-shared'
-type_space: 'power-ops-types'
-powerops_instance_space: 'power-ops-instance'
-asset_space: 'power-ops-assets'
+afrr_model_space: 'fran-power-ops-afrr-bid'
+dayahead_model_space: 'fran-power-ops-day-ahead-bid'
+shared_model_space: 'fran-power-ops-shared'
+powerops_instance_space: 'fran-power-ops-instance'
+asset_space: 'fran-power-ops-assets'
 
 # Shared Model Views
 base_BidDocument_version: '1'

@@ -35,11 +35,11 @@ properties:
     name: bids
     description: An array of BidRows containing the Bid data.
     connectionType: multiEdgeConnection
-#filter:
-#  equals:
-#    property:
-#    - node
-#    - type
-#    value:
-#      space: '{{afrr_model_space}}'
-#      externalId: BidDocument
+filter:
+  equals:
+    property:
+    - node
+    - type
+    value:
+      space: '{{afrr_model_space}}'
+      externalId: BidDocument

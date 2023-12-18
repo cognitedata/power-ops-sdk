@@ -1,14 +1,12 @@
 # Note node types cannot be created in the API, they are created implicitly in a system
 # when a node/edge is referencing one of these types. However, it is useful to have these
 # types here as we use them in validation of the data models.
+
+# Types of edges:
 - space: {{afrr_model_space}}
   externalId: BidDocument.bids
 - space: {{afrr_model_space}}
   externalId: BidRow.alerts
-- space: {{shared_model_space}}
-  externalId: calculationIssue
-- space: {{dayahead_model_space}}
-  externalId: partialBid
 - space: {{asset_space}}
   externalId: Generator.turbineCurves
 - space: {{asset_space}}
@@ -25,3 +23,27 @@
   externalId: BidDocument.partials
 - space: {{dayahead_model_space}}
   externalId: BidMatrix.alerts
+
+# Types of nodes:
+- space: {{asset_space}}
+  externalId: GeneratorEfficiencyCurve
+- space: {{dayahead_model_space}}
+  externalId: GeneratorEfficiencyCurve
+- space: {{asset_space}}
+  externalId: GeneratorEfficiencyCurve
+- space: {{afrr_model_space}}
+  externalId: GeneratorEfficiencyCurve
+- space: {{dayahead_model_space}}
+  externalId: GeneratorEfficiencyCurve
+- space: {{afrr_model_space}}
+  externalId: GeneratorEfficiencyCurve
+- space: {{dayahead_model_space}}
+  externalId: BasicBidMatrix
+- space: {{afrr_model_space}}
+  externalId: BidMethod
+- space: {{asset_space}}
+  externalId: Reservoir
+- space: {{dayahead_model_space}}
+  externalId: WaterValueBased
+- space: {{afrr_model_space}}
+  externalId: BidDocument

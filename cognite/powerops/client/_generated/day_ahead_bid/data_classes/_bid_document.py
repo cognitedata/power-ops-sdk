@@ -147,7 +147,7 @@ class BidDocumentApply(DomainModelApply):
             return resources
 
         write_view = (view_by_write_class and view_by_write_class.get(type(self))) or dm.ViewId(
-            "power-ops-day-ahead-bid", "BidDocument", "1"
+            "fran-power-ops-day-ahead-bid", "BidDocument", "1"
         )
 
         properties = {}
@@ -182,6 +182,7 @@ class BidDocumentApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
+                type=dm.DirectRelationReference("fran-power-ops-day-ahead-bid", "BidDocument"),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,
@@ -192,14 +193,14 @@ class BidDocumentApply(DomainModelApply):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("power-ops-types", "calculationIssue")
+        edge_type = dm.DirectRelationReference("fran-power-ops-shared", "BidDocument.alerts")
         for alert in self.alerts or []:
             other_resources = DomainRelationApply.from_edge_to_resources(
                 cache, self, alert, edge_type, view_by_write_class
             )
             resources.extend(other_resources)
 
-        edge_type = dm.DirectRelationReference("power-ops-types", "PartialBid")
+        edge_type = dm.DirectRelationReference("fran-power-ops-day-ahead-bid", "BidDocument.partials")
         for partial in self.partials or []:
             other_resources = DomainRelationApply.from_edge_to_resources(
                 cache, self, partial, edge_type, view_by_write_class
@@ -256,7 +257,7 @@ def _create_bid_document_filter(
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
-    if name and isinstance(name, str):
+    if name is not None and isinstance(name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
     if name and isinstance(name, list):
         filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
@@ -286,13 +287,13 @@ def _create_bid_document_filter(
                 lte=max_end_calculation.isoformat(timespec="milliseconds") if max_end_calculation else None,
             )
         )
-    if is_complete and isinstance(is_complete, str):
+    if is_complete is not None and isinstance(is_complete, bool):
         filters.append(dm.filters.Equals(view_id.as_property_ref("isComplete"), value=is_complete))
     if price_area and isinstance(price_area, str):
         filters.append(
             dm.filters.Equals(
                 view_id.as_property_ref("priceArea"),
-                value={"space": "power-ops-day-ahead-bid", "externalId": price_area},
+                value={"space": "fran-power-ops-day-ahead-bid", "externalId": price_area},
             )
         )
     if price_area and isinstance(price_area, tuple):
@@ -305,7 +306,7 @@ def _create_bid_document_filter(
         filters.append(
             dm.filters.In(
                 view_id.as_property_ref("priceArea"),
-                values=[{"space": "power-ops-day-ahead-bid", "externalId": item} for item in price_area],
+                values=[{"space": "fran-power-ops-day-ahead-bid", "externalId": item} for item in price_area],
             )
         )
     if price_area and isinstance(price_area, list) and isinstance(price_area[0], tuple):
@@ -318,7 +319,7 @@ def _create_bid_document_filter(
     if method and isinstance(method, str):
         filters.append(
             dm.filters.Equals(
-                view_id.as_property_ref("method"), value={"space": "power-ops-day-ahead-bid", "externalId": method}
+                view_id.as_property_ref("method"), value={"space": "fran-power-ops-day-ahead-bid", "externalId": method}
             )
         )
     if method and isinstance(method, tuple):
@@ -329,7 +330,7 @@ def _create_bid_document_filter(
         filters.append(
             dm.filters.In(
                 view_id.as_property_ref("method"),
-                values=[{"space": "power-ops-day-ahead-bid", "externalId": item} for item in method],
+                values=[{"space": "fran-power-ops-day-ahead-bid", "externalId": item} for item in method],
             )
         )
     if method and isinstance(method, list) and isinstance(method[0], tuple):
@@ -341,7 +342,7 @@ def _create_bid_document_filter(
     if total and isinstance(total, str):
         filters.append(
             dm.filters.Equals(
-                view_id.as_property_ref("total"), value={"space": "power-ops-day-ahead-bid", "externalId": total}
+                view_id.as_property_ref("total"), value={"space": "fran-power-ops-day-ahead-bid", "externalId": total}
             )
         )
     if total and isinstance(total, tuple):
@@ -352,7 +353,7 @@ def _create_bid_document_filter(
         filters.append(
             dm.filters.In(
                 view_id.as_property_ref("total"),
-                values=[{"space": "power-ops-day-ahead-bid", "externalId": item} for item in total],
+                values=[{"space": "fran-power-ops-day-ahead-bid", "externalId": item} for item in total],
             )
         )
     if total and isinstance(total, list) and isinstance(total[0], tuple):
@@ -363,7 +364,7 @@ def _create_bid_document_filter(
         )
     if external_id_prefix:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
-    if space and isinstance(space, str):
+    if space is not None and isinstance(space, str):
         filters.append(dm.filters.Equals(["node", "space"], value=space))
     if space and isinstance(space, list):
         filters.append(dm.filters.In(["node", "space"], values=space))

@@ -75,7 +75,7 @@ class BidDocumentQueryAPI(QueryAPI[T_DomainModelList]):
         from_ = self._builder[-1].name
 
         edge_filter = _create_edge_filter(
-            dm.DirectRelationReference("power-ops-types", "calculationIssue"),
+            dm.DirectRelationReference("fran-power-ops-shared", "BidDocument.alerts"),
             external_id_prefix=external_id_prefix,
             space=space,
         )
@@ -126,7 +126,7 @@ class BidDocumentQueryAPI(QueryAPI[T_DomainModelList]):
         from_ = self._builder[-1].name
 
         edge_filter = _create_edge_filter(
-            dm.DirectRelationReference("power-ops-types", "PartialBid"),
+            dm.DirectRelationReference("fran-power-ops-day-ahead-bid", "BidDocument.partials"),
             external_id_prefix=external_id_prefix,
             space=space,
         )

@@ -21,7 +21,7 @@ class PowerAssetAPI:
     PowerAssetAPI
 
     Generated with:
-        pygen = 0.32.0
+        pygen = 0.32.2
         cognite-sdk = 7.5.4
         pydantic = 2.5.2
 
@@ -38,6 +38,9 @@ class PowerAssetAPI:
             client = CogniteClient(config_or_client)
         else:
             raise ValueError(f"Expected CogniteClient or ClientConfig, got {type(config_or_client)}")
+        # The client name is used for aggregated logging of Pygen Usage
+        client.config.client_name = "CognitePygen:0.32.2"
+
         view_by_write_class = {
             data_classes.BidMethodApply: dm.ViewId("power-ops-shared", "BidMethod", "1"),
             data_classes.GeneratorApply: dm.ViewId("power-ops-assets", "Generator", "1"),

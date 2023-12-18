@@ -18,6 +18,9 @@ data_modeling.instances:
       type: view
       version: '1'
   space: power-ops-instance
+  type:
+    external_id: Generator
+    space: power-ops-assets
 - end_node:
     external_id: turbine_efficiency_Dalby_G1_head_340
     space: power-ops-instance
@@ -47,6 +50,9 @@ data_modeling.instances:
       type: view
       version: '1'
   space: power-ops-instance
+  type:
+    external_id: Generator
+    space: power-ops-assets
 - end_node:
     external_id: turbine_efficiency_Dalby_G2_head_300
     space: power-ops-instance
@@ -97,8 +103,8 @@ data_modeling.instances:
       version: '1'
   space: power-ops-instance
   type:
-    external_id: GeneratorCurve
-    space: power-ops-types
+    external_id: GeneratorEfficiencyCurve
+    space: power-ops-assets
 - external_id: generator_efficiency_Dalby_G2
   instance_type: node
   sources:
@@ -125,8 +131,8 @@ data_modeling.instances:
       version: '1'
   space: power-ops-instance
   type:
-    external_id: GeneratorCurve
-    space: power-ops-types
+    external_id: GeneratorEfficiencyCurve
+    space: power-ops-assets
 - external_id: generator_efficiency_Holen_G1
   instance_type: node
   sources:
@@ -161,8 +167,8 @@ data_modeling.instances:
       version: '1'
   space: power-ops-instance
   type:
-    external_id: GeneratorCurve
-    space: power-ops-types
+    external_id: GeneratorEfficiencyCurve
+    space: power-ops-assets
 - external_id: generator_efficiency_Landet_G1
   instance_type: node
   sources:
@@ -195,8 +201,8 @@ data_modeling.instances:
       version: '1'
   space: power-ops-instance
   type:
-    external_id: GeneratorCurve
-    space: power-ops-types
+    external_id: GeneratorEfficiencyCurve
+    space: power-ops-assets
 - external_id: generator_efficiency_Lien_krv_G1
   instance_type: node
   sources:
@@ -219,8 +225,8 @@ data_modeling.instances:
       version: '1'
   space: power-ops-instance
   type:
-    external_id: GeneratorCurve
-    space: power-ops-types
+    external_id: GeneratorEfficiencyCurve
+    space: power-ops-assets
 - external_id: generator_efficiency_Lund_G1
   instance_type: node
   sources:
@@ -239,8 +245,8 @@ data_modeling.instances:
       version: '1'
   space: power-ops-instance
   type:
-    external_id: GeneratorCurve
-    space: power-ops-types
+    external_id: GeneratorEfficiencyCurve
+    space: power-ops-assets
 - external_id: generator_efficiency_Rull1_G1
   instance_type: node
   sources:
@@ -269,8 +275,8 @@ data_modeling.instances:
       version: '1'
   space: power-ops-instance
   type:
-    external_id: GeneratorCurve
-    space: power-ops-types
+    external_id: GeneratorEfficiencyCurve
+    space: power-ops-assets
 - external_id: generator_efficiency_Rull1_G2
   instance_type: node
   sources:
@@ -297,8 +303,8 @@ data_modeling.instances:
       version: '1'
   space: power-ops-instance
   type:
-    external_id: GeneratorCurve
-    space: power-ops-types
+    external_id: GeneratorEfficiencyCurve
+    space: power-ops-assets
 - external_id: generator_efficiency_Rull2_G1
   instance_type: node
   sources:
@@ -323,8 +329,8 @@ data_modeling.instances:
       version: '1'
   space: power-ops-instance
   type:
-    external_id: GeneratorCurve
-    space: power-ops-types
+    external_id: GeneratorEfficiencyCurve
+    space: power-ops-assets
 - external_id: generator_efficiency_Rull2_G2
   instance_type: node
   sources:
@@ -349,8 +355,8 @@ data_modeling.instances:
       version: '1'
   space: power-ops-instance
   type:
-    external_id: GeneratorCurve
-    space: power-ops-types
+    external_id: GeneratorEfficiencyCurve
+    space: power-ops-assets
 - external_id: generator_efficiency_Scott_G1
   instance_type: node
   sources:
@@ -375,8 +381,8 @@ data_modeling.instances:
       version: '1'
   space: power-ops-instance
   type:
-    external_id: GeneratorCurve
-    space: power-ops-types
+    external_id: GeneratorEfficiencyCurve
+    space: power-ops-assets
 - external_id: generator_efficiency_Strand_krv_G1
   instance_type: node
   sources:
@@ -397,8 +403,8 @@ data_modeling.instances:
       version: '1'
   space: power-ops-instance
   type:
-    external_id: GeneratorCurve
-    space: power-ops-types
+    external_id: GeneratorEfficiencyCurve
+    space: power-ops-assets
 - external_id: generator_Holen_G1
   instance_type: node
   sources:
@@ -418,6 +424,9 @@ data_modeling.instances:
       type: view
       version: '1'
   space: power-ops-instance
+  type:
+    external_id: Generator
+    space: power-ops-assets
 - end_node:
     external_id: turbine_efficiency_Holen_G1_head_300
     space: power-ops-instance
@@ -447,6 +456,9 @@ data_modeling.instances:
       type: view
       version: '1'
   space: power-ops-instance
+  type:
+    external_id: Generator
+    space: power-ops-assets
 - end_node:
     external_id: turbine_efficiency_Landet_G1_head_260
     space: power-ops-instance
@@ -500,6 +512,9 @@ data_modeling.instances:
       type: view
       version: '1'
   space: power-ops-instance
+  type:
+    external_id: Generator
+    space: power-ops-assets
 - end_node:
     external_id: turbine_efficiency_Lien_krv_G1_head_154
     space: power-ops-instance
@@ -531,6 +546,9 @@ data_modeling.instances:
       type: view
       version: '1'
   space: power-ops-instance
+  type:
+    external_id: Generator
+    space: power-ops-assets
 - end_node:
     external_id: turbine_efficiency_Lund_G1_head_56
     space: power-ops-instance
@@ -572,6 +590,9 @@ data_modeling.instances:
       type: view
       version: '1'
   space: power-ops-instance
+  type:
+    external_id: Generator
+    space: power-ops-assets
 - end_node:
     external_id: turbine_efficiency_Rull1_G1_head_305
     space: power-ops-instance
@@ -601,6 +622,9 @@ data_modeling.instances:
       type: view
       version: '1'
   space: power-ops-instance
+  type:
+    external_id: Generator
+    space: power-ops-assets
 - end_node:
     external_id: turbine_efficiency_Rull1_G2_head_305
     space: power-ops-instance
@@ -630,6 +654,9 @@ data_modeling.instances:
       type: view
       version: '1'
   space: power-ops-instance
+  type:
+    external_id: Generator
+    space: power-ops-assets
 - end_node:
     external_id: turbine_efficiency_Rull2_G1_head_545
     space: power-ops-instance
@@ -659,6 +686,9 @@ data_modeling.instances:
       type: view
       version: '1'
   space: power-ops-instance
+  type:
+    external_id: Generator
+    space: power-ops-assets
 - end_node:
     external_id: turbine_efficiency_Rull2_G2_head_545
     space: power-ops-instance
@@ -688,6 +718,9 @@ data_modeling.instances:
       type: view
       version: '1'
   space: power-ops-instance
+  type:
+    external_id: Generator
+    space: power-ops-assets
 - end_node:
     external_id: turbine_efficiency_Scott_G1_head_200
     space: power-ops-instance
@@ -717,6 +750,9 @@ data_modeling.instances:
       type: view
       version: '1'
   space: power-ops-instance
+  type:
+    external_id: Generator
+    space: power-ops-assets
 - end_node:
     external_id: turbine_efficiency_Strand_krv_G1_head_150
     space: power-ops-instance
@@ -755,6 +791,9 @@ data_modeling.instances:
       type: view
       version: '1'
   space: power-ops-instance
+  type:
+    external_id: Plant
+    space: power-ops-assets
 - end_node:
     external_id: generator_Dalby_G1
     space: power-ops-instance
@@ -805,6 +844,9 @@ data_modeling.instances:
       type: view
       version: '1'
   space: power-ops-instance
+  type:
+    external_id: Plant
+    space: power-ops-assets
 - end_node:
     external_id: generator_Holen_G1
     space: power-ops-instance
@@ -843,6 +885,9 @@ data_modeling.instances:
       type: view
       version: '1'
   space: power-ops-instance
+  type:
+    external_id: Plant
+    space: power-ops-assets
 - end_node:
     external_id: generator_Landet_G1
     space: power-ops-instance
@@ -881,6 +926,9 @@ data_modeling.instances:
       type: view
       version: '1'
   space: power-ops-instance
+  type:
+    external_id: Plant
+    space: power-ops-assets
 - end_node:
     external_id: generator_Lien_krv_G1
     space: power-ops-instance
@@ -923,6 +971,9 @@ data_modeling.instances:
       type: view
       version: '1'
   space: power-ops-instance
+  type:
+    external_id: Plant
+    space: power-ops-assets
 - end_node:
     external_id: generator_Lund_G1
     space: power-ops-instance
@@ -962,6 +1013,9 @@ data_modeling.instances:
       type: view
       version: '1'
   space: power-ops-instance
+  type:
+    external_id: Plant
+    space: power-ops-assets
 - end_node:
     external_id: generator_Rull1_G1
     space: power-ops-instance
@@ -1013,6 +1067,9 @@ data_modeling.instances:
       type: view
       version: '1'
   space: power-ops-instance
+  type:
+    external_id: Plant
+    space: power-ops-assets
 - end_node:
     external_id: generator_Rull2_G1
     space: power-ops-instance
@@ -1063,6 +1120,9 @@ data_modeling.instances:
       type: view
       version: '1'
   space: power-ops-instance
+  type:
+    external_id: Plant
+    space: power-ops-assets
 - end_node:
     external_id: generator_Scott_G1
     space: power-ops-instance
@@ -1101,6 +1161,9 @@ data_modeling.instances:
       type: view
       version: '1'
   space: power-ops-instance
+  type:
+    external_id: Plant
+    space: power-ops-assets
 - end_node:
     external_id: generator_Strand_krv_G1
     space: power-ops-instance
@@ -1126,6 +1189,9 @@ data_modeling.instances:
       type: view
       version: '1'
   space: power-ops-instance
+  type:
+    external_id: PriceArea
+    space: power-ops-assets
 - end_node:
     external_id: plant_Dalby
     space: power-ops-instance
@@ -1261,7 +1327,7 @@ data_modeling.instances:
   space: power-ops-instance
   type:
     external_id: Reservoir
-    space: power-ops-types
+    space: power-ops-assets
 - external_id: reservoir_Danielsen
   instance_type: node
   sources:
@@ -1277,7 +1343,7 @@ data_modeling.instances:
   space: power-ops-instance
   type:
     external_id: Reservoir
-    space: power-ops-types
+    space: power-ops-assets
 - external_id: reservoir_Frosta
   instance_type: node
   sources:
@@ -1293,7 +1359,7 @@ data_modeling.instances:
   space: power-ops-instance
   type:
     external_id: Reservoir
-    space: power-ops-types
+    space: power-ops-assets
 - external_id: reservoir_Hagen
   instance_type: node
   sources:
@@ -1309,7 +1375,7 @@ data_modeling.instances:
   space: power-ops-instance
   type:
     external_id: Reservoir
-    space: power-ops-types
+    space: power-ops-assets
 - external_id: reservoir_Hovden
   instance_type: node
   sources:
@@ -1325,7 +1391,7 @@ data_modeling.instances:
   space: power-ops-instance
   type:
     external_id: Reservoir
-    space: power-ops-types
+    space: power-ops-assets
 - external_id: reservoir_Lensvik
   instance_type: node
   sources:
@@ -1341,7 +1407,7 @@ data_modeling.instances:
   space: power-ops-instance
   type:
     external_id: Reservoir
-    space: power-ops-types
+    space: power-ops-assets
 - external_id: reservoir_Livincovs
   instance_type: node
   sources:
@@ -1357,7 +1423,7 @@ data_modeling.instances:
   space: power-ops-instance
   type:
     external_id: Reservoir
-    space: power-ops-types
+    space: power-ops-assets
 - external_id: reservoir_Lundvann
   instance_type: node
   sources:
@@ -1373,7 +1439,7 @@ data_modeling.instances:
   space: power-ops-instance
   type:
     external_id: Reservoir
-    space: power-ops-types
+    space: power-ops-assets
 - external_id: reservoir_Nielsen
   instance_type: node
   sources:
@@ -1389,7 +1455,7 @@ data_modeling.instances:
   space: power-ops-instance
   type:
     external_id: Reservoir
-    space: power-ops-types
+    space: power-ops-assets
 - external_id: reservoir_Ranemsletta_1183
   instance_type: node
   sources:
@@ -1405,7 +1471,7 @@ data_modeling.instances:
   space: power-ops-instance
   type:
     external_id: Reservoir
-    space: power-ops-types
+    space: power-ops-assets
 - external_id: reservoir_Rullsvatn
   instance_type: node
   sources:
@@ -1421,7 +1487,7 @@ data_modeling.instances:
   space: power-ops-instance
   type:
     external_id: Reservoir
-    space: power-ops-types
+    space: power-ops-assets
 - external_id: reservoir_Sirefelt
   instance_type: node
   sources:
@@ -1437,7 +1503,7 @@ data_modeling.instances:
   space: power-ops-instance
   type:
     external_id: Reservoir
-    space: power-ops-types
+    space: power-ops-assets
 - external_id: reservoir_Strand
   instance_type: node
   sources:
@@ -1453,7 +1519,7 @@ data_modeling.instances:
   space: power-ops-instance
   type:
     external_id: Reservoir
-    space: power-ops-types
+    space: power-ops-assets
 - external_id: reservoir_Strand_tunnel
   instance_type: node
   sources:
@@ -1469,7 +1535,7 @@ data_modeling.instances:
   space: power-ops-instance
   type:
     external_id: Reservoir
-    space: power-ops-types
+    space: power-ops-assets
 - external_id: reservoir_Tangvall
   instance_type: node
   sources:
@@ -1485,7 +1551,7 @@ data_modeling.instances:
   space: power-ops-instance
   type:
     external_id: Reservoir
-    space: power-ops-types
+    space: power-ops-assets
 - external_id: reservoir_Varhaug
   instance_type: node
   sources:
@@ -1501,7 +1567,7 @@ data_modeling.instances:
   space: power-ops-instance
   type:
     external_id: Reservoir
-    space: power-ops-types
+    space: power-ops-assets
 - external_id: turbine_efficiency_Dalby_G1_head_340
   instance_type: node
   sources:
@@ -1578,8 +1644,8 @@ data_modeling.instances:
       version: '1'
   space: power-ops-instance
   type:
-    external_id: TurbineCurve
-    space: power-ops-types
+    external_id: TurbineEfficiencyCurve
+    space: power-ops-assets
 - external_id: turbine_efficiency_Dalby_G2_head_300
   instance_type: node
   sources:
@@ -1656,8 +1722,8 @@ data_modeling.instances:
       version: '1'
   space: power-ops-instance
   type:
-    external_id: TurbineCurve
-    space: power-ops-types
+    external_id: TurbineEfficiencyCurve
+    space: power-ops-assets
 - external_id: turbine_efficiency_Dalby_G2_head_350
   instance_type: node
   sources:
@@ -1722,8 +1788,8 @@ data_modeling.instances:
       version: '1'
   space: power-ops-instance
   type:
-    external_id: TurbineCurve
-    space: power-ops-types
+    external_id: TurbineEfficiencyCurve
+    space: power-ops-assets
 - external_id: turbine_efficiency_Holen_G1_head_300
   instance_type: node
   sources:
@@ -1800,8 +1866,8 @@ data_modeling.instances:
       version: '1'
   space: power-ops-instance
   type:
-    external_id: TurbineCurve
-    space: power-ops-types
+    external_id: TurbineEfficiencyCurve
+    space: power-ops-assets
 - external_id: turbine_efficiency_Landet_G1_head_260
   instance_type: node
   sources:
@@ -1838,8 +1904,8 @@ data_modeling.instances:
       version: '1'
   space: power-ops-instance
   type:
-    external_id: TurbineCurve
-    space: power-ops-types
+    external_id: TurbineEfficiencyCurve
+    space: power-ops-assets
 - external_id: turbine_efficiency_Landet_G1_head_280
   instance_type: node
   sources:
@@ -1876,8 +1942,8 @@ data_modeling.instances:
       version: '1'
   space: power-ops-instance
   type:
-    external_id: TurbineCurve
-    space: power-ops-types
+    external_id: TurbineEfficiencyCurve
+    space: power-ops-assets
 - external_id: turbine_efficiency_Landet_G1_head_300
   instance_type: node
   sources:
@@ -1914,8 +1980,8 @@ data_modeling.instances:
       version: '1'
   space: power-ops-instance
   type:
-    external_id: TurbineCurve
-    space: power-ops-types
+    external_id: TurbineEfficiencyCurve
+    space: power-ops-assets
 - external_id: turbine_efficiency_Lien_krv_G1_head_154
   instance_type: node
   sources:
@@ -1940,8 +2006,8 @@ data_modeling.instances:
       version: '1'
   space: power-ops-instance
   type:
-    external_id: TurbineCurve
-    space: power-ops-types
+    external_id: TurbineEfficiencyCurve
+    space: power-ops-assets
 - external_id: turbine_efficiency_Lund_G1_head_56
   instance_type: node
   sources:
@@ -2018,8 +2084,8 @@ data_modeling.instances:
       version: '1'
   space: power-ops-instance
   type:
-    external_id: TurbineCurve
-    space: power-ops-types
+    external_id: TurbineEfficiencyCurve
+    space: power-ops-assets
 - external_id: turbine_efficiency_Lund_G1_head_60
   instance_type: node
   sources:
@@ -2096,8 +2162,8 @@ data_modeling.instances:
       version: '1'
   space: power-ops-instance
   type:
-    external_id: TurbineCurve
-    space: power-ops-types
+    external_id: TurbineEfficiencyCurve
+    space: power-ops-assets
 - external_id: turbine_efficiency_Rull1_G1_head_305
   instance_type: node
   sources:
@@ -2216,8 +2282,8 @@ data_modeling.instances:
       version: '1'
   space: power-ops-instance
   type:
-    external_id: TurbineCurve
-    space: power-ops-types
+    external_id: TurbineEfficiencyCurve
+    space: power-ops-assets
 - external_id: turbine_efficiency_Rull1_G2_head_305
   instance_type: node
   sources:
@@ -2340,8 +2406,8 @@ data_modeling.instances:
       version: '1'
   space: power-ops-instance
   type:
-    external_id: TurbineCurve
-    space: power-ops-types
+    external_id: TurbineEfficiencyCurve
+    space: power-ops-assets
 - external_id: turbine_efficiency_Rull2_G1_head_545
   instance_type: node
   sources:
@@ -2418,8 +2484,8 @@ data_modeling.instances:
       version: '1'
   space: power-ops-instance
   type:
-    external_id: TurbineCurve
-    space: power-ops-types
+    external_id: TurbineEfficiencyCurve
+    space: power-ops-assets
 - external_id: turbine_efficiency_Rull2_G2_head_545
   instance_type: node
   sources:
@@ -2496,8 +2562,8 @@ data_modeling.instances:
       version: '1'
   space: power-ops-instance
   type:
-    external_id: TurbineCurve
-    space: power-ops-types
+    external_id: TurbineEfficiencyCurve
+    space: power-ops-assets
 - external_id: turbine_efficiency_Scott_G1_head_200
   instance_type: node
   sources:
@@ -2574,8 +2640,8 @@ data_modeling.instances:
       version: '1'
   space: power-ops-instance
   type:
-    external_id: TurbineCurve
-    space: power-ops-types
+    external_id: TurbineEfficiencyCurve
+    space: power-ops-assets
 - external_id: turbine_efficiency_Strand_krv_G1_head_150
   instance_type: node
   sources:
@@ -2650,8 +2716,8 @@ data_modeling.instances:
       version: '1'
   space: power-ops-instance
   type:
-    external_id: TurbineCurve
-    space: power-ops-types
+    external_id: TurbineEfficiencyCurve
+    space: power-ops-assets
 - external_id: watercourse_Fornebu
   instance_type: node
   sources:
@@ -2665,6 +2731,9 @@ data_modeling.instances:
       type: view
       version: '1'
   space: power-ops-instance
+  type:
+    external_id: Watercourse
+    space: power-ops-assets
 - end_node:
     external_id: plant_Dalby
     space: power-ops-instance

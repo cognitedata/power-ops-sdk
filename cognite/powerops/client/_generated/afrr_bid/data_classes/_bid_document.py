@@ -159,7 +159,7 @@ class BidDocumentApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
-                type=dm.DirectRelationReference("power-ops-types", "AFRRBidDocument"),
+                type=dm.DirectRelationReference("power-ops-afrr-bid", "BidDocument"),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,
@@ -224,7 +224,7 @@ def _create_bid_document_filter(
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
-    if name and isinstance(name, str):
+    if name is not None and isinstance(name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
     if name and isinstance(name, list):
         filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
@@ -254,7 +254,7 @@ def _create_bid_document_filter(
                 lte=max_end_calculation.isoformat(timespec="milliseconds") if max_end_calculation else None,
             )
         )
-    if is_complete and isinstance(is_complete, str):
+    if is_complete is not None and isinstance(is_complete, bool):
         filters.append(dm.filters.Equals(view_id.as_property_ref("isComplete"), value=is_complete))
     if price_area and isinstance(price_area, str):
         filters.append(
@@ -284,7 +284,7 @@ def _create_bid_document_filter(
         )
     if external_id_prefix:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
-    if space and isinstance(space, str):
+    if space is not None and isinstance(space, str):
         filters.append(dm.filters.Equals(["node", "space"], value=space))
     if space and isinstance(space, list):
         filters.append(dm.filters.In(["node", "space"], values=space))

@@ -63,7 +63,7 @@ def main():
                 client_name="AFRRBidAPI",
             ),
             Model(
-                model_id=dm.DataModelId("power-ops-day-ahead-bid", "DayAheadBid", "1"),
+                model_id=dm.DataModelId("fran-power-ops-day-ahead-bid", "DayAheadBid", "1"),
                 directory="day_ahead_bid",
                 client_name="DayAheadBidAPI",
             ),

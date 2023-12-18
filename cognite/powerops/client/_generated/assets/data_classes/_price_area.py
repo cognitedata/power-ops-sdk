@@ -327,6 +327,7 @@ class PriceAreaApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
+                type=dm.DirectRelationReference("power-ops-assets", "PriceArea"),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,
@@ -423,25 +424,25 @@ def _create_price_area_filter(
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
-    if name and isinstance(name, str):
+    if name is not None and isinstance(name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
     if name and isinstance(name, list):
         filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
     if name_prefix:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
-    if display_name and isinstance(display_name, str):
+    if display_name is not None and isinstance(display_name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("displayName"), value=display_name))
     if display_name and isinstance(display_name, list):
         filters.append(dm.filters.In(view_id.as_property_ref("displayName"), values=display_name))
     if display_name_prefix:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("displayName"), value=display_name_prefix))
-    if description and isinstance(description, str):
+    if description is not None and isinstance(description, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("description"), value=description))
     if description and isinstance(description, list):
         filters.append(dm.filters.In(view_id.as_property_ref("description"), values=description))
     if description_prefix:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("description"), value=description_prefix))
-    if timezone and isinstance(timezone, str):
+    if timezone is not None and isinstance(timezone, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("timezone"), value=timezone))
     if timezone and isinstance(timezone, list):
         filters.append(dm.filters.In(view_id.as_property_ref("timezone"), values=timezone))
@@ -485,7 +486,7 @@ def _create_price_area_filter(
         )
     if external_id_prefix:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
-    if space and isinstance(space, str):
+    if space is not None and isinstance(space, str):
         filters.append(dm.filters.Equals(["node", "space"], value=space))
     if space and isinstance(space, list):
         filters.append(dm.filters.In(["node", "space"], values=space))

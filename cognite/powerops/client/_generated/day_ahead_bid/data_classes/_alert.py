@@ -45,7 +45,7 @@ class Alert(DomainModel):
     Args:
         space: The space where the node is located.
         external_id: The external id of the alert.
-        time: Timestamp that the alert occured (within the workflow)
+        time: Timestamp that the alert occurred (within the workflow)
         title: Summary description of the alert
         description: Detailed description of the alert
         severity: CRITICAL (calculation could not completed) WARNING  (calculation completed, with major issue) INFO     (calculation completed, with minor issues)
@@ -93,7 +93,7 @@ class AlertApply(DomainModelApply):
     Args:
         space: The space where the node is located.
         external_id: The external id of the alert.
-        time: Timestamp that the alert occured (within the workflow)
+        time: Timestamp that the alert occurred (within the workflow)
         title: Summary description of the alert
         description: Detailed description of the alert
         severity: CRITICAL (calculation could not completed) WARNING  (calculation completed, with major issue) INFO     (calculation completed, with minor issues)
@@ -127,7 +127,7 @@ class AlertApply(DomainModelApply):
             return resources
 
         write_view = (view_by_write_class and view_by_write_class.get(type(self))) or dm.ViewId(
-            "power-ops-shared", "Alert", "1"
+            "fran-power-ops-shared", "Alert", "1"
         )
 
         properties = {}
@@ -153,6 +153,7 @@ class AlertApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
+                type=dm.DirectRelationReference("fran-power-ops-shared", "Alert"),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,
@@ -211,25 +212,25 @@ def _create_alert_filter(
                 lte=max_time.isoformat(timespec="milliseconds") if max_time else None,
             )
         )
-    if title and isinstance(title, str):
+    if title is not None and isinstance(title, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("title"), value=title))
     if title and isinstance(title, list):
         filters.append(dm.filters.In(view_id.as_property_ref("title"), values=title))
     if title_prefix:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("title"), value=title_prefix))
-    if description and isinstance(description, str):
+    if description is not None and isinstance(description, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("description"), value=description))
     if description and isinstance(description, list):
         filters.append(dm.filters.In(view_id.as_property_ref("description"), values=description))
     if description_prefix:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("description"), value=description_prefix))
-    if severity and isinstance(severity, str):
+    if severity is not None and isinstance(severity, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("severity"), value=severity))
     if severity and isinstance(severity, list):
         filters.append(dm.filters.In(view_id.as_property_ref("severity"), values=severity))
     if severity_prefix:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("severity"), value=severity_prefix))
-    if alert_type and isinstance(alert_type, str):
+    if alert_type is not None and isinstance(alert_type, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("alertType"), value=alert_type))
     if alert_type and isinstance(alert_type, list):
         filters.append(dm.filters.In(view_id.as_property_ref("alertType"), values=alert_type))
@@ -239,7 +240,7 @@ def _create_alert_filter(
         filters.append(
             dm.filters.Range(view_id.as_property_ref("statusCode"), gte=min_status_code, lte=max_status_code)
         )
-    if calculation_run and isinstance(calculation_run, str):
+    if calculation_run is not None and isinstance(calculation_run, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("calculationRun"), value=calculation_run))
     if calculation_run and isinstance(calculation_run, list):
         filters.append(dm.filters.In(view_id.as_property_ref("calculationRun"), values=calculation_run))
@@ -247,7 +248,7 @@ def _create_alert_filter(
         filters.append(dm.filters.Prefix(view_id.as_property_ref("calculationRun"), value=calculation_run_prefix))
     if external_id_prefix:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
-    if space and isinstance(space, str):
+    if space is not None and isinstance(space, str):
         filters.append(dm.filters.Equals(["node", "space"], value=space))
     if space and isinstance(space, list):
         filters.append(dm.filters.In(["node", "space"], values=space))

@@ -117,7 +117,7 @@ class ReservoirApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
-                type=dm.DirectRelationReference("power-ops-types", "Reservoir"),
+                type=dm.DirectRelationReference("power-ops-assets", "Reservoir"),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,
@@ -160,13 +160,13 @@ def _create_reservoir_filter(
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
-    if name and isinstance(name, str):
+    if name is not None and isinstance(name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
     if name and isinstance(name, list):
         filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
     if name_prefix:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
-    if display_name and isinstance(display_name, str):
+    if display_name is not None and isinstance(display_name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("displayName"), value=display_name))
     if display_name and isinstance(display_name, list):
         filters.append(dm.filters.In(view_id.as_property_ref("displayName"), values=display_name))
@@ -176,7 +176,7 @@ def _create_reservoir_filter(
         filters.append(dm.filters.Range(view_id.as_property_ref("ordering"), gte=min_ordering, lte=max_ordering))
     if external_id_prefix:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
-    if space and isinstance(space, str):
+    if space is not None and isinstance(space, str):
         filters.append(dm.filters.Equals(["node", "space"], value=space))
     if space and isinstance(space, list):
         filters.append(dm.filters.In(["node", "space"], values=space))

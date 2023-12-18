@@ -121,7 +121,7 @@ class BidMatrixApply(DomainModelApply):
             return resources
 
         write_view = (view_by_write_class and view_by_write_class.get(type(self))) or dm.ViewId(
-            "power-ops-day-ahead-bid", "BidMatrix", "1"
+            "fran-power-ops-day-ahead-bid", "BidMatrix", "1"
         )
 
         properties = {}
@@ -144,6 +144,7 @@ class BidMatrixApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
+                type=dm.DirectRelationReference("fran-power-ops-day-ahead-bid", "BidMatrix"),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,
@@ -154,7 +155,7 @@ class BidMatrixApply(DomainModelApply):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("power-ops-types", "calculationIssue")
+        edge_type = dm.DirectRelationReference("fran-power-ops-day-ahead-bid", "BidMatrix.alerts")
         for alert in self.alerts or []:
             other_resources = DomainRelationApply.from_edge_to_resources(
                 cache, self, alert, edge_type, view_by_write_class
@@ -198,19 +199,19 @@ def _create_bid_matrix_filter(
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
-    if resource_cost and isinstance(resource_cost, str):
+    if resource_cost is not None and isinstance(resource_cost, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("resourceCost"), value=resource_cost))
     if resource_cost and isinstance(resource_cost, list):
         filters.append(dm.filters.In(view_id.as_property_ref("resourceCost"), values=resource_cost))
     if resource_cost_prefix:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("resourceCost"), value=resource_cost_prefix))
-    if asset_type and isinstance(asset_type, str):
+    if asset_type is not None and isinstance(asset_type, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("assetType"), value=asset_type))
     if asset_type and isinstance(asset_type, list):
         filters.append(dm.filters.In(view_id.as_property_ref("assetType"), values=asset_type))
     if asset_type_prefix:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("assetType"), value=asset_type_prefix))
-    if asset_id and isinstance(asset_id, str):
+    if asset_id is not None and isinstance(asset_id, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("assetId"), value=asset_id))
     if asset_id and isinstance(asset_id, list):
         filters.append(dm.filters.In(view_id.as_property_ref("assetId"), values=asset_id))
@@ -219,7 +220,7 @@ def _create_bid_matrix_filter(
     if method and isinstance(method, str):
         filters.append(
             dm.filters.Equals(
-                view_id.as_property_ref("method"), value={"space": "power-ops-day-ahead-bid", "externalId": method}
+                view_id.as_property_ref("method"), value={"space": "fran-power-ops-day-ahead-bid", "externalId": method}
             )
         )
     if method and isinstance(method, tuple):
@@ -230,7 +231,7 @@ def _create_bid_matrix_filter(
         filters.append(
             dm.filters.In(
                 view_id.as_property_ref("method"),
-                values=[{"space": "power-ops-day-ahead-bid", "externalId": item} for item in method],
+                values=[{"space": "fran-power-ops-day-ahead-bid", "externalId": item} for item in method],
             )
         )
     if method and isinstance(method, list) and isinstance(method[0], tuple):
@@ -241,7 +242,7 @@ def _create_bid_matrix_filter(
         )
     if external_id_prefix:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
-    if space and isinstance(space, str):
+    if space is not None and isinstance(space, str):
         filters.append(dm.filters.Equals(["node", "space"], value=space))
     if space and isinstance(space, list):
         filters.append(dm.filters.In(["node", "space"], values=space))

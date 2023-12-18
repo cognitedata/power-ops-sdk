@@ -113,7 +113,7 @@ class GeneratorEfficiencyCurveApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
-                type=dm.DirectRelationReference("power-ops-types", "GeneratorCurve"),
+                type=dm.DirectRelationReference("power-ops-assets", "GeneratorEfficiencyCurve"),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,
@@ -156,7 +156,7 @@ def _create_generator_efficiency_curve_filter(
         filters.append(dm.filters.Range(view_id.as_property_ref("ref"), gte=min_ref, lte=max_ref))
     if external_id_prefix:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
-    if space and isinstance(space, str):
+    if space is not None and isinstance(space, str):
         filters.append(dm.filters.Equals(["node", "space"], value=space))
     if space and isinstance(space, list):
         filters.append(dm.filters.In(["node", "space"], values=space))
