@@ -126,7 +126,7 @@ def to_cogshop_asset_model(
             for mapping in template.base_mappings
         }
     )
-    # TODO: extend here to use adapter to translate to new transformations and extend the model with those
+
     model.transformations.update(
         {
             t.external_id: t
@@ -164,12 +164,13 @@ def to_cogshop_asset_model(
                         transformations=[
                             _create_transformation(j, transformation_data)
                             for j, transformation_data in enumerate(json.loads(mapping.get("transformations", "")))
-                        ],  # TODO: + [_create_transformationV2(j, transformation_data)
+                        ] + [_create_transformationV2(j, config.Transformation(**transformation_data))
+                             for j, transformation_data in enumerate(json.loads(mapping.get("transformations", "")))]
                     )
                     for i, mapping in enumerate(
                         incremental_mapping.content.replace(float("nan"), None).to_dict(
                             orient="records"
-                        )  # TODO: zip with new config to get correct order
+                        )
                     )
                 ],
                 commands=cogshop_v1.CommandsConfigApply(

@@ -7,7 +7,8 @@ import pandas as pd
 from cognite.client.data_classes import Sequence
 
 from cognite.powerops.resync import config
-from cognite.powerops.resync.models._shared_v1_v2.market_model import _map_price_scenarios_by_name
+from cognite.powerops.resync.models._shared_v1_v2.market_model import _map_price_scenarios_by_name, \
+    _map_price_scenario_by_name_v2
 from cognite.powerops.resync.models.base import CDFSequence
 from cognite.powerops.resync.models.v1.market import (
     BenchmarkBid,
@@ -132,6 +133,7 @@ def _to_dayahead_process(
     bid_process_configs: list[config.BidProcessConfig],
     bidmatrix_generators: list[config.BidMatrixGeneratorConfig],
     price_scenarios_by_id: dict[str, config.PriceScenario],
+    #price_scenarios_by_id_v2: dict[str, config.PriceScenarioV2],
     benchmarking: BenchmarkProcess,
     price_areas: list[PriceArea],
 ) -> list[DayAheadProcess]:
@@ -141,6 +143,9 @@ def _to_dayahead_process(
         price_scenarios_by_name = _map_price_scenarios_by_name(
             process.price_scenarios, price_scenarios_by_id, config.MARKET_BY_PRICE_AREA[process.price_area_name]
         )
+        # price_scenarios_by_name_v2 = _map_price_scenario_by_name_v2(
+        #         process.price_scenarios, price_scenarios_by_id_v2, config.MARKET_BY_PRICE_AREA[process.price_area_name]
+        # )
 
         price_area = next((pa for pa in price_areas if pa.name == process.price_area_name), None)
         if not price_area:
@@ -175,22 +180,31 @@ def _to_dayahead_process(
 
         # Create incremental mapping sequences
         incremental_mapping_sequences = []
+        #incremental_mapping_sequences_v2 = []
         for watercourse in price_area.watercourses:
             price_scenarios: dict[str, config.PriceScenario] = price_scenarios_by_name
+            #price_scenarios_v2: dict[str, config.PriceScenarioV2] = price_scenarios_by_name_v2
+
             if process.price_scenarios_per_watercourse:
                 try:
                     price_scenarios = {
                         scenario_name: price_scenarios[scenario_name]
                         for scenario_name in process.price_scenarios_per_watercourse[watercourse.name]
                     }
+                    # price_scenarios_v2 = {
+                    #     scenario_name: price_scenarios_v2[scenario_name]
+                    #     for scenario_name in process.price_scenarios_per_watercourse[watercourse.name]
+                    # }
                 except KeyError as e:
                     raise KeyError(
                         f"Watercourse {watercourse.name} not defined in price_scenarios_per_watercourse "
                         f"for BidProcessConfig {process.name}"
                     ) from e
-            #TODO: FIX HERE
-            for scenario_name, price_scenario in price_scenarios.items():
+            #TODO: replace sequence creation with new time series mappings/price scenarios
+            for scenario_name, price_scenario, in price_scenarios.items():
                 time_series_mapping = price_scenario.to_time_series_mapping()
+                #time_series_mapping_v2 = price_scenario_v2.to_time_series_mapping()
+
                 metadata = {
                     "shop:watercourse": watercourse.name,
                     "shop:type": "incremental_mapping",

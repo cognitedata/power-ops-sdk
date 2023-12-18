@@ -40,7 +40,6 @@ class PriceScenarioV2(BaseModel):
             config["transformations"] = loaded_transformations
         return cls(**config)
 
-    #TODO: rewrite
     def to_time_series_mapping(self) -> TimeSeriesMappingV2:
         retrieve = RetrievalType.RANGE if self.time_series_external_id else None
         transformations = self.transformations or []
