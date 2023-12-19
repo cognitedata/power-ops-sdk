@@ -167,6 +167,8 @@ def to_cogshop_asset_model(
                         external_id=f"Mapping_{external_id}_{i}",
                         path=mapping["shop_model_path"],
                         timeseries_external_id=mapping.get("time_series_external_id"),
+                        retrieve=mapping.get("retrieve"),
+                        aggregation=mapping.get("aggregation"),
                         transformations=[
                             _create_transformation(j, transformation_data)
                             for j, transformation_data in enumerate(json.loads(mapping.get("transformations", "")))

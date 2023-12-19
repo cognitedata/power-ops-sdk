@@ -46,7 +46,7 @@ class PriceScenarioV2(BaseModel):
         transformations = self.transformations or []
 
         # to make buy price slightly higher than sale price in SHOP
-        transformations_buy_price = [*transformations, TransformationV2.load({"Add": {"input": {"value": 0.01}}})]
+        transformations_buy_price = [*transformations, TransformationV2.load({"Add": {"parameters": {"value": 0.01}}})]
 
         sale_price_row = TimeSeriesMappingEntryV2(
             object_type="market",

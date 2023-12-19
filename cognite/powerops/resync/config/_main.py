@@ -249,7 +249,6 @@ class ReSyncConfig(BaseModel):
             configs["constants"]["cdf_project"] = cdf_project
 
         # Hack to instantiate CogShopConfig from dict
-        # (could also consider overriding load_yamls, but want to avoid hacks in conditions above)
         for field_name in ["cogshop", "market"]:
             class_ = cls.model_fields[field_name].annotation
             configs[field_name] = class_.instantiate_from_dict(configs[field_name])

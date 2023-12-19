@@ -21,7 +21,7 @@ def generate_new_time_series_mappings(old_time_series_mappings: dict, write_path
                 new_transformation = transformations_v2_transformer(
                     old_transformation, object_name=object_name, object_type=object_type
                 )
-                new_transformations.append({new_transformation.name: {"input": new_transformation.model_dump()}})
+                new_transformations.append({new_transformation.name: {"parameters": new_transformation.model_dump()}})
             new_mapping = mapping.copy()
             new_mapping["transformations"] = new_transformations
             new_time_series_mapping[0]["rows"].append(new_mapping)
@@ -29,8 +29,7 @@ def generate_new_time_series_mappings(old_time_series_mappings: dict, write_path
         new_time_series_mapping[0]["rows"].append(mapping)
 
     # write to yaml file
-    with open(write_path, "w") as f:
-        yaml.dump(new_time_series_mapping, f)
+    write_path.write_text(yaml.safe_dump(new_time_series_mapping))
 
 
 def generate_new_price_scenarios_mappings(old_price_scenarios_mappings: dict, write_path: Path):
@@ -42,15 +41,14 @@ def generate_new_price_scenarios_mappings(old_price_scenarios_mappings: dict, wr
             new_transformations = []
             for t in price_scenario.transformations:
                 new_transformation = transformations_v2_transformer(t)
-                new_transformations.append({new_transformation.name: {"input": new_transformation.model_dump()}})
+                new_transformations.append({new_transformation.name: {"parameters": new_transformation.model_dump()}})
             new_scenario["transformations"] = new_transformations
             new_price_scenarios[price_id] = new_scenario
             continue
         new_price_scenarios[price_id] = new_scenario
 
     # write to yaml file
-    with open(write_path, "w") as f:
-        yaml.dump(new_price_scenarios, f)
+    write_path.write_text(yaml.safe_dump(new_price_scenarios))
 
 
 def create_new_transformations_file(
@@ -68,21 +66,19 @@ def create_new_transformations_file(
                 new_transformation = transformations_v2_transformer(
                     old_transformation, object_name=object_name, object_type=object_type
                 )
-                new_transformations.append({new_transformation.name: {"input": new_transformation.model_dump()}})
+                new_transformations.append({new_transformation.name: {"parameters": new_transformation.model_dump()}})
             transofrmations_v2["transformations"].extend(new_transformations)
 
-    for price_id, price_scenario in old_price_scenarios_mappings.items():
-        new_scenario = price_scenario.model_dump()
+    for price_scenario in old_price_scenarios_mappings.values():
         if price_scenario.transformations:
             new_transformations = []
             for t in price_scenario.transformations:
                 new_transformation = transformations_v2_transformer(t)
-                new_transformations.append({new_transformation.name: {"input": new_transformation.model_dump()}})
+                new_transformations.append({new_transformation.name: {"parameters": new_transformation.model_dump()}})
             transofrmations_v2["transformations"].extend(new_transformations)
 
     # write to yaml file
-    with open(write_path, "w") as f:
-        yaml.dump(transofrmations_v2, f)
+    write_path.write_text(yaml.safe_dump(transofrmations_v2))
 
 
 if __name__ == "__main__":
@@ -95,7 +91,7 @@ if __name__ == "__main__":
     old_time_series_mappings = config.cogshop.time_series_mappings[0].dumps()
     old_price_scenario_mappings = config.market.price_scenario_by_id
 
-    generate_new_price_scenarios_mappings(old_price_scenario_mappings, write_path / "price_scenarios_by_id_v2.yaml")
+    generate_new_price_scenarios_mappings(old_price_scenario_mappings, write_path / "price_scenario_by_id_v2.yaml")
     generate_new_time_series_mappings(old_time_series_mappings, write_path / "time_series_mappings_v2.yaml")
     create_new_transformations_file(
         old_time_series_mappings, old_price_scenario_mappings, write_path / "transformations_v2.yaml"

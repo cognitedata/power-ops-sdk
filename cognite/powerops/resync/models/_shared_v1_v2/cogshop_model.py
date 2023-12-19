@@ -109,7 +109,7 @@ def _to_model_without_timeseries(
 
     model_dict = {"model": model}
 
-    # TODO: remove this when standardizing input SHOP file structure (model vs model + connections)
+    # TODO: remove this when standardizing parameters SHOP file structure (model vs model + connections)
     if "connections" in model_incl_time_and_connections:
         model_dict["connections"] = model_incl_time_and_connections["connections"]
 
@@ -139,12 +139,12 @@ def _create_transformationV2(
     elif isinstance(transformation, Transformation):
         transformation = transformations_v2_transformer(transformation)
 
-    dumped_input_args = json.dumps(transformation.input_to_dict() or {}, separators=(",", ":"), ensure_ascii=False)
-    external_id = f"Tr2_{transformation.name}_{dumped_input_args}_{order}"
+    dumped_parameters_args = json.dumps(transformation.parameters_to_dict() or {}, separators=(",", ":"), ensure_ascii=False)
+    external_id = f"Tr2_{transformation.name}_{dumped_parameters_args}_{order}"
     if len(external_id) > 255:
-        external_id = f"Tr2_{transformation.name}_{dumped_input_args[:len(dumped_input_args) // 2]}_{order}"
+        external_id = f"Tr2_{transformation.name}_{dumped_parameters_args[:len(dumped_parameters_args) // 2]}_{order}"
     return cogshop_v1.TransformationApply(
-        external_id=external_id, method=transformation.name, arguments=dumped_input_args, order=order
+        external_id=external_id, method=transformation.name, arguments=dumped_parameters_args, order=order
     )
 
 
@@ -161,11 +161,11 @@ def transformations_v2_transformer(
 
     transformation_dict = {}
     if transformation.transformation.name == "ADD":
-        transformation_dict = {"AddConstant": {"input": {"constant": transformation.kwargs.get("value")}}}
+        transformation_dict = {"AddConstant": {"parameters": {"constant": transformation.kwargs.get("value")}}}
     elif transformation.transformation.name in ["ADD_FROM_OFFSET", "DYNAMIC_ADD_FROM_OFFSET"]:
         transformation_dict = {
             "AddFromOffset": {
-                "input": {
+                "parameters": {
                     "relative_datapoints": [
                         {"offset_minute": k, "offset_value": v} for k, v in transformation.kwargs.items()
                     ]
@@ -176,7 +176,7 @@ def transformations_v2_transformer(
         gate_or_plant = "gate" if "gate_name" in transformation.kwargs.keys() else "plant"
         transformation_dict = {
             "AddWaterInTransit": {
-                "input": {
+                "parameters": {
                     "discharge_ts_external_id": transformation.kwargs.get("external_id"),
                     "transit_object_type": gate_or_plant,
                     "transit_object_name": transformation.kwargs.get(f"{gate_or_plant}_name"),
@@ -187,7 +187,7 @@ def transformations_v2_transformer(
         gate_or_plant = "gate" if "gate_name" in transformation.kwargs.keys() else "plant"
         transformation_dict = {
             "AddWaterInTransit": {
-                "input": {
+                "parameters": {
                     "discharge_ts_external_id": transformation.kwargs.get("external_id"),
                     "transit_object_type": gate_or_plant,
                     "transit_object_name": transformation.kwargs.get(f"{gate_or_plant}_name"),
@@ -196,11 +196,11 @@ def transformations_v2_transformer(
         }
 
     elif transformation.transformation.name == "MULTIPLY":
-        transformation_dict = {"MultiplyConstant": {"input": {"constant": transformation.kwargs.get("value")}}}
+        transformation_dict = {"MultiplyConstant": {"parameters": {"constant": transformation.kwargs.get("value")}}}
     elif transformation.transformation.name == "MULTIPLY_FROM_OFFSET":
         transformation_dict = {
             "MultiplyFromOffset": {
-                "input": {
+                "parameters": {
                     "relative_datapoints": [
                         {"offset_minute": k, "offset_value": v} for k, v in transformation.kwargs.items()
                     ]
@@ -223,7 +223,7 @@ def transformations_v2_transformer(
     elif transformation.transformation.name in ["STATIC", "DYNAMIC_STATIC"]:
         transformation_dict = {
             "StaticValues": {
-                "input": {
+                "parameters": {
                     "relative_datapoints": [
                         {"offset_minute": k, "offset_value": v} for k, v in transformation.kwargs.items()
                     ]
@@ -231,7 +231,7 @@ def transformations_v2_transformer(
             }
         }
     elif transformation.transformation.name == "RESERVOIR_LEVEL_TO_VOLUME":
-        transformation_dict = {"HeightToVolume": {"input": {"object_type": object_type, "object_name": object_name}}}
+        transformation_dict = {"HeightToVolume": {"parameters": {"object_type": object_type, "object_name": object_name}}}
     elif transformation.transformation.name in ["DO_NOTHING", "GATE_OPENING_METER_TO_PERCENT"]:
         transformation_dict = {"DoNothing": None}
 
