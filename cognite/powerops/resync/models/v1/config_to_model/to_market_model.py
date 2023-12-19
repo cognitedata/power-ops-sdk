@@ -134,7 +134,6 @@ def _to_dayahead_process(
     bid_process_configs: list[config.BidProcessConfig],
     bidmatrix_generators: list[config.BidMatrixGeneratorConfig],
     price_scenarios_by_id: dict[str, config.PriceScenario],
-    # price_scenarios_by_id_v2: dict[str, config.PriceScenarioV2],
     benchmarking: BenchmarkProcess,
     price_areas: list[PriceArea],
 ) -> list[DayAheadProcess]:

@@ -66,8 +66,10 @@ class Transformation(BaseModel, ABC):
         (transformation_name,) = transformation_
         if transformation_body := transformation_.get(transformation_name):
             return _TRANSFORMATIONS_BY_CLASS_NAME[transformation_name].__call__(**transformation_body["parameters"])
-        else:
+        elif transformation_name in _TRANSFORMATIONS_BY_CLASS_NAME:
             return _TRANSFORMATIONS_BY_CLASS_NAME[transformation_name].__call__()
+        else:
+            raise NotImplementedError(f"Unknown transformation {transformation_name}")
 
     # TODO: have  validator that checks that this dict (later json)
     # does not exceed the DM limit of 255 characters for a string?

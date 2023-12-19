@@ -139,7 +139,9 @@ def _create_transformationV2(
     elif isinstance(transformation, Transformation):
         transformation = transformations_v2_transformer(transformation)
 
-    dumped_parameters_args = json.dumps(transformation.parameters_to_dict() or {}, separators=(",", ":"), ensure_ascii=False)
+    dumped_parameters_args = json.dumps(
+        transformation.parameters_to_dict() or {}, separators=(",", ":"), ensure_ascii=False
+    )
     external_id = f"Tr2_{transformation.name}_{dumped_parameters_args}_{order}"
     if len(external_id) > 255:
         external_id = f"Tr2_{transformation.name}_{dumped_parameters_args[:len(dumped_parameters_args) // 2]}_{order}"
@@ -231,8 +233,12 @@ def transformations_v2_transformer(
             }
         }
     elif transformation.transformation.name == "RESERVOIR_LEVEL_TO_VOLUME":
-        transformation_dict = {"HeightToVolume": {"parameters": {"object_type": object_type, "object_name": object_name}}}
+        transformation_dict = {
+            "HeightToVolume": {"parameters": {"object_type": object_type, "object_name": object_name}}
+        }
     elif transformation.transformation.name in ["DO_NOTHING", "GATE_OPENING_METER_TO_PERCENT"]:
         transformation_dict = {"DoNothing": None}
+    else:
+        raise NotImplementedError(f"Unknown transformation {transformation.transformation.name}")
 
     return TransformationV2.load(transformation_dict)
