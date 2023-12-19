@@ -200,11 +200,12 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorApply, GeneratorList]):
             external_id,
             space,
             retrieve_edges=True,
-            edge_api_name_type_triple=[
+            edge_api_name_type_direction_quad=[
                 (
                     self.turbine_curves_edge,
                     "turbine_curves",
                     dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
+                    "outwards",
                 ),
             ],
         )
@@ -581,11 +582,12 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorApply, GeneratorList]):
             limit=limit,
             filter=filter_,
             retrieve_edges=retrieve_edges,
-            edge_api_name_type_triple=[
+            edge_api_name_type_direction_quad=[
                 (
                     self.turbine_curves_edge,
                     "turbine_curves",
                     dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
+                    "outwards",
                 ),
             ],
         )

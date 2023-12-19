@@ -196,14 +196,14 @@ class BidDocumentApply(DomainModelApply):
         edge_type = dm.DirectRelationReference("fran-power-ops-shared", "BidDocument.alerts")
         for alert in self.alerts or []:
             other_resources = DomainRelationApply.from_edge_to_resources(
-                cache, self, alert, edge_type, view_by_write_class
+                cache, start_node=self, end_node=alert, edge_type=edge_type, view_by_write_class=view_by_write_class
             )
             resources.extend(other_resources)
 
         edge_type = dm.DirectRelationReference("fran-power-ops-day-ahead-bid", "BidDocument.partials")
         for partial in self.partials or []:
             other_resources = DomainRelationApply.from_edge_to_resources(
-                cache, self, partial, edge_type, view_by_write_class
+                cache, start_node=self, end_node=partial, edge_type=edge_type, view_by_write_class=view_by_write_class
             )
             resources.extend(other_resources)
 

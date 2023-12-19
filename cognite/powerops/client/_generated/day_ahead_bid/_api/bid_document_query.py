@@ -85,6 +85,7 @@ class BidDocumentQueryAPI(QueryAPI[T_DomainModelList]):
                 expression=dm.query.EdgeResultSetExpression(
                     filter=edge_filter,
                     from_=from_,
+                    direction="outwards",
                 ),
                 select=dm.query.Select(),
                 max_retrieve_limit=limit,
@@ -136,6 +137,7 @@ class BidDocumentQueryAPI(QueryAPI[T_DomainModelList]):
                 expression=dm.query.EdgeResultSetExpression(
                     filter=edge_filter,
                     from_=from_,
+                    direction="outwards",
                 ),
                 select=dm.query.Select(),
                 max_retrieve_limit=limit,

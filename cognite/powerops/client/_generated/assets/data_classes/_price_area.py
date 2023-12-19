@@ -341,14 +341,18 @@ class PriceAreaApply(DomainModelApply):
         edge_type = dm.DirectRelationReference("power-ops-types", "isSubAssetOf")
         for plant in self.plants or []:
             other_resources = DomainRelationApply.from_edge_to_resources(
-                cache, self, plant, edge_type, view_by_write_class
+                cache, start_node=self, end_node=plant, edge_type=edge_type, view_by_write_class=view_by_write_class
             )
             resources.extend(other_resources)
 
         edge_type = dm.DirectRelationReference("power-ops-types", "isSubAssetOf")
         for watercourse in self.watercourses or []:
             other_resources = DomainRelationApply.from_edge_to_resources(
-                cache, self, watercourse, edge_type, view_by_write_class
+                cache,
+                start_node=self,
+                end_node=watercourse,
+                edge_type=edge_type,
+                view_by_write_class=view_by_write_class,
             )
             resources.extend(other_resources)
 

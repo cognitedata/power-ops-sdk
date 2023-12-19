@@ -78,7 +78,7 @@ def main():
                 model.model_id,
                 client,
                 top_level_package=f"{top_level}.{model.directory}",
-                default_instance_space="power-ops-instance",
+                default_instance_space="fran-power-ops-instance",
                 client_name=model.client_name,
                 output_dir=REPO_ROOT,
                 logger=print,

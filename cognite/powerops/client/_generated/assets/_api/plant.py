@@ -229,8 +229,13 @@ class PlantAPI(NodeAPI[Plant, PlantApply, PlantList]):
             external_id,
             space,
             retrieve_edges=True,
-            edge_api_name_type_triple=[
-                (self.generators_edge, "generators", dm.DirectRelationReference("power-ops-types", "isSubAssetOf")),
+            edge_api_name_type_direction_quad=[
+                (
+                    self.generators_edge,
+                    "generators",
+                    dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
+                    "outwards",
+                ),
             ],
         )
 
@@ -704,7 +709,12 @@ class PlantAPI(NodeAPI[Plant, PlantApply, PlantList]):
             limit=limit,
             filter=filter_,
             retrieve_edges=retrieve_edges,
-            edge_api_name_type_triple=[
-                (self.generators_edge, "generators", dm.DirectRelationReference("power-ops-types", "isSubAssetOf")),
+            edge_api_name_type_direction_quad=[
+                (
+                    self.generators_edge,
+                    "generators",
+                    dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
+                    "outwards",
+                ),
             ],
         )

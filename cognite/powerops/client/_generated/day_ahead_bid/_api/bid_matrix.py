@@ -184,11 +184,12 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixApply, BidMatrixList]):
             external_id,
             space,
             retrieve_edges=True,
-            edge_api_name_type_triple=[
+            edge_api_name_type_direction_quad=[
                 (
                     self.alerts_edge,
                     "alerts",
                     dm.DirectRelationReference("fran-power-ops-day-ahead-bid", "BidMatrix.alerts"),
+                    "outwards",
                 ),
             ],
         )
@@ -509,11 +510,12 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixApply, BidMatrixList]):
             limit=limit,
             filter=filter_,
             retrieve_edges=retrieve_edges,
-            edge_api_name_type_triple=[
+            edge_api_name_type_direction_quad=[
                 (
                     self.alerts_edge,
                     "alerts",
                     dm.DirectRelationReference("fran-power-ops-day-ahead-bid", "BidMatrix.alerts"),
+                    "outwards",
                 ),
             ],
         )
