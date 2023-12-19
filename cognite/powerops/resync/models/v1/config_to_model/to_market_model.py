@@ -7,9 +7,7 @@ import pandas as pd
 from cognite.client.data_classes import Sequence
 
 from cognite.powerops.resync import config
-from cognite.powerops.resync.models._shared_v1_v2.market_model import (
-    _map_price_scenarios_by_name,
-)
+from cognite.powerops.resync.models._shared_v1_v2.market_model import _map_price_scenarios_by_name
 from cognite.powerops.resync.models.base import CDFSequence
 from cognite.powerops.resync.models.v1.market import (
     BenchmarkBid,
@@ -179,26 +177,19 @@ def _to_dayahead_process(
         incremental_mapping_sequences = []
         for watercourse in price_area.watercourses:
             price_scenarios: dict[str, config.PriceScenario] = price_scenarios_by_name
-
             if process.price_scenarios_per_watercourse:
                 try:
                     price_scenarios = {
                         scenario_name: price_scenarios[scenario_name]
                         for scenario_name in process.price_scenarios_per_watercourse[watercourse.name]
                     }
-                    #     for scenario_name in process.price_scenarios_per_watercourse[watercourse.name]
                 except KeyError as e:
                     raise KeyError(
                         f"Watercourse {watercourse.name} not defined in price_scenarios_per_watercourse "
                         f"for BidProcessConfig {process.name}"
                     ) from e
-            # TODO: replace sequence creation with new time series mappings/price scenarios
-            for (
-                scenario_name,
-                price_scenario,
-            ) in price_scenarios.items():
+            for scenario_name, price_scenario in price_scenarios.items():
                 time_series_mapping = price_scenario.to_time_series_mapping()
-
                 metadata = {
                     "shop:watercourse": watercourse.name,
                     "shop:type": "incremental_mapping",
