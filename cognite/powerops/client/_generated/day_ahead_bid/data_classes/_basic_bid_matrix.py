@@ -125,14 +125,19 @@ class BasicBidMatrixApply(DomainModelApply):
         )
 
         properties = {}
+
         if self.resource_cost is not None:
             properties["resourceCost"] = self.resource_cost
+
         if self.matrix is not None:
             properties["matrix"] = self.matrix
+
         if self.asset_type is not None:
             properties["assetType"] = self.asset_type
+
         if self.asset_id is not None:
             properties["assetId"] = self.asset_id
+
         if self.method is not None:
             properties["method"] = {
                 "space": self.space if isinstance(self.method, str) else self.method.space,

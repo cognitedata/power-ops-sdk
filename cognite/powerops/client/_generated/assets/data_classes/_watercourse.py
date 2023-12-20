@@ -121,12 +121,18 @@ class WatercourseApply(DomainModelApply):
         )
 
         properties = {}
+
         if self.name is not None:
             properties["name"] = self.name
+
         if self.display_name is not None:
             properties["displayName"] = self.display_name
+
         if self.production_obligation is not None:
-            properties["productionObligation"] = self.production_obligation
+            properties["productionObligation"] = [
+                value if isinstance(value, str) else value.external_id for value in self.production_obligation
+            ]
+
         if self.penalty_limit is not None:
             properties["penaltyLimit"] = self.penalty_limit
 
@@ -135,7 +141,6 @@ class WatercourseApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
-                type=dm.DirectRelationReference("power-ops-assets", "Watercourse"),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,

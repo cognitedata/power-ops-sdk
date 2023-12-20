@@ -131,20 +131,28 @@ class AlertApply(DomainModelApply):
         )
 
         properties = {}
+
         if self.time is not None:
             properties["time"] = self.time.isoformat(timespec="milliseconds")
+
         if self.title is not None:
             properties["title"] = self.title
+
         if self.description is not None:
             properties["description"] = self.description
+
         if self.severity is not None:
             properties["severity"] = self.severity
+
         if self.alert_type is not None:
             properties["alertType"] = self.alert_type
+
         if self.status_code is not None:
             properties["statusCode"] = self.status_code
+
         if self.event_ids is not None:
             properties["eventIds"] = self.event_ids
+
         if self.calculation_run is not None:
             properties["calculationRun"] = self.calculation_run
 
@@ -153,7 +161,6 @@ class AlertApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
-                type=dm.DirectRelationReference("fran-power-ops-shared", "Alert"),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,

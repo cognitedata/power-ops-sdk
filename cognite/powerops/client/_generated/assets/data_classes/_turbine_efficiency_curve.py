@@ -101,10 +101,13 @@ class TurbineEfficiencyCurveApply(DomainModelApply):
         )
 
         properties = {}
+
         if self.head is not None:
             properties["head"] = self.head
+
         if self.flow is not None:
             properties["flow"] = self.flow
+
         if self.efficiency is not None:
             properties["efficiency"] = self.efficiency
 
@@ -113,7 +116,7 @@ class TurbineEfficiencyCurveApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
-                type=dm.DirectRelationReference("power-ops-assets", "TurbineEfficiencyCurve"),
+                type=dm.DirectRelationReference("power-ops-types", "TurbineCurve"),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,

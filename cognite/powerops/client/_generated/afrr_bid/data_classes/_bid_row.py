@@ -164,29 +164,40 @@ class BidRowApply(DomainModelApply):
         )
 
         properties = {}
+
         if self.price is not None:
             properties["price"] = self.price
+
         if self.quantity_per_hour is not None:
             properties["quantityPerHour"] = self.quantity_per_hour
+
         if self.product is not None:
             properties["product"] = self.product
+
         if self.is_divisible is not None:
             properties["isDivisible"] = self.is_divisible
+
         if self.min_quantity is not None:
             properties["minQuantity"] = self.min_quantity
+
         if self.is_block is not None:
             properties["isBlock"] = self.is_block
+
         if self.exclusive_group_id is not None:
             properties["exclusiveGroupId"] = self.exclusive_group_id
+
         if self.linked_bid is not None:
             properties["linkedBid"] = {
                 "space": self.space if isinstance(self.linked_bid, str) else self.linked_bid.space,
                 "externalId": self.linked_bid if isinstance(self.linked_bid, str) else self.linked_bid.external_id,
             }
+
         if self.asset_type is not None:
             properties["assetType"] = self.asset_type
+
         if self.asset_id is not None:
             properties["assetId"] = self.asset_id
+
         if self.method is not None:
             properties["method"] = {
                 "space": self.space if isinstance(self.method, str) else self.method.space,
@@ -198,7 +209,6 @@ class BidRowApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
-                type=dm.DirectRelationReference("power-ops-afrr-bid", "BidRow"),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,

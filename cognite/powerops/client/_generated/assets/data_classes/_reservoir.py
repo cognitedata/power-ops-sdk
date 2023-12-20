@@ -105,10 +105,13 @@ class ReservoirApply(DomainModelApply):
         )
 
         properties = {}
+
         if self.name is not None:
             properties["name"] = self.name
+
         if self.display_name is not None:
             properties["displayName"] = self.display_name
+
         if self.ordering is not None:
             properties["ordering"] = self.ordering
 
@@ -117,7 +120,7 @@ class ReservoirApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
-                type=dm.DirectRelationReference("power-ops-assets", "Reservoir"),
+                type=dm.DirectRelationReference("power-ops-types", "Reservoir"),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,

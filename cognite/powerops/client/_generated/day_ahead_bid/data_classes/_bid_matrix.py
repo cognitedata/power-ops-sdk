@@ -125,14 +125,19 @@ class BidMatrixApply(DomainModelApply):
         )
 
         properties = {}
+
         if self.resource_cost is not None:
             properties["resourceCost"] = self.resource_cost
+
         if self.matrix is not None:
             properties["matrix"] = self.matrix
+
         if self.asset_type is not None:
             properties["assetType"] = self.asset_type
+
         if self.asset_id is not None:
             properties["assetId"] = self.asset_id
+
         if self.method is not None:
             properties["method"] = {
                 "space": self.space if isinstance(self.method, str) else self.method.space,
@@ -144,7 +149,6 @@ class BidMatrixApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
-                type=dm.DirectRelationReference("fran-power-ops-day-ahead-bid", "BidMatrix"),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,

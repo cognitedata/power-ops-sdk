@@ -123,8 +123,10 @@ class PriceAreaApply(DomainModelApply):
         )
 
         properties = {}
+
         if self.name is not None:
             properties["name"] = self.name
+
         if self.default_method is not None:
             properties["defaultMethod"] = {
                 "space": self.space if isinstance(self.default_method, str) else self.default_method.space,
@@ -132,21 +134,25 @@ class PriceAreaApply(DomainModelApply):
                 if isinstance(self.default_method, str)
                 else self.default_method.external_id,
             }
+
         if self.timezone is not None:
             properties["timezone"] = self.timezone
+
         if self.main_scenario is not None:
             properties["mainScenario"] = (
                 self.main_scenario if isinstance(self.main_scenario, str) else self.main_scenario.external_id
             )
+
         if self.price_scenarios is not None:
-            properties["priceScenarios"] = self.price_scenarios
+            properties["priceScenarios"] = [
+                value if isinstance(value, str) else value.external_id for value in self.price_scenarios
+            ]
 
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
-                type=dm.DirectRelationReference("fran-power-ops-day-ahead-bid", "PriceArea"),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,

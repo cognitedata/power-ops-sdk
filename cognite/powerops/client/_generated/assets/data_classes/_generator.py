@@ -160,26 +160,34 @@ class GeneratorApply(DomainModelApply):
         )
 
         properties = {}
+
         if self.name is not None:
             properties["name"] = self.name
+
         if self.display_name is not None:
             properties["displayName"] = self.display_name
+
         if self.p_min is not None:
             properties["pMin"] = self.p_min
+
         if self.penstock is not None:
             properties["penstock"] = self.penstock
+
         if self.start_cost is not None:
             properties["startCost"] = self.start_cost
+
         if self.start_stop_cost is not None:
             properties["startStopCost"] = (
                 self.start_stop_cost if isinstance(self.start_stop_cost, str) else self.start_stop_cost.external_id
             )
+
         if self.is_available_time_series is not None:
             properties["isAvailableTimeSeries"] = (
                 self.is_available_time_series
                 if isinstance(self.is_available_time_series, str)
                 else self.is_available_time_series.external_id
             )
+
         if self.efficiency_curve is not None:
             properties["efficiencyCurve"] = {
                 "space": self.space if isinstance(self.efficiency_curve, str) else self.efficiency_curve.space,
@@ -193,7 +201,6 @@ class GeneratorApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
-                type=dm.DirectRelationReference("power-ops-assets", "Generator"),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,

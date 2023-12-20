@@ -107,19 +107,23 @@ class SHOPMultiScenarioApply(DomainModelApply):
         )
 
         properties = {}
+
         if self.name is not None:
             properties["name"] = self.name
+
         if self.shop_cases is not None:
             properties["shopCases"] = self.shop_cases
+
         if self.price_scenarios is not None:
-            properties["priceScenarios"] = self.price_scenarios
+            properties["priceScenarios"] = [
+                value if isinstance(value, str) else value.external_id for value in self.price_scenarios
+            ]
 
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
-                type=dm.DirectRelationReference("fran-power-ops-day-ahead-bid", "SHOPMultiScenario"),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,

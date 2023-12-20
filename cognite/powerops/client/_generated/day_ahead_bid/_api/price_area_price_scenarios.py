@@ -12,7 +12,7 @@ from cognite.client.data_classes.datapoints import Aggregate
 from cognite.powerops.client._generated.day_ahead_bid.data_classes._price_area import _create_price_area_filter
 from ._core import DEFAULT_LIMIT_READ, INSTANCE_QUERY_LIMIT
 
-ColumnNames = Literal["name", "timezone", "mainScenario"]
+ColumnNames = Literal["name", "timezone", "mainScenario", "priceScenarios"]
 
 
 class PriceAreaPriceScenariosQuery:

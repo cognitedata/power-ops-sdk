@@ -101,10 +101,13 @@ class GeneratorEfficiencyCurveApply(DomainModelApply):
         )
 
         properties = {}
+
         if self.ref is not None:
             properties["ref"] = self.ref
+
         if self.power is not None:
             properties["power"] = self.power
+
         if self.efficiency is not None:
             properties["efficiency"] = self.efficiency
 
@@ -113,7 +116,7 @@ class GeneratorEfficiencyCurveApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
-                type=dm.DirectRelationReference("power-ops-assets", "GeneratorEfficiencyCurve"),
+                type=dm.DirectRelationReference("power-ops-types", "GeneratorCurve"),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,

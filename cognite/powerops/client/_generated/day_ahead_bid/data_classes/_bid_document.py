@@ -151,26 +151,34 @@ class BidDocumentApply(DomainModelApply):
         )
 
         properties = {}
+
         if self.name is not None:
             properties["name"] = self.name
+
         if self.delivery_date is not None:
             properties["deliveryDate"] = self.delivery_date.isoformat()
+
         if self.start_calculation is not None:
             properties["startCalculation"] = self.start_calculation.isoformat(timespec="milliseconds")
+
         if self.end_calculation is not None:
             properties["endCalculation"] = self.end_calculation.isoformat(timespec="milliseconds")
+
         if self.is_complete is not None:
             properties["isComplete"] = self.is_complete
+
         if self.price_area is not None:
             properties["priceArea"] = {
                 "space": self.space if isinstance(self.price_area, str) else self.price_area.space,
                 "externalId": self.price_area if isinstance(self.price_area, str) else self.price_area.external_id,
             }
+
         if self.method is not None:
             properties["method"] = {
                 "space": self.space if isinstance(self.method, str) else self.method.space,
                 "externalId": self.method if isinstance(self.method, str) else self.method.external_id,
             }
+
         if self.total is not None:
             properties["total"] = {
                 "space": self.space if isinstance(self.total, str) else self.total.space,
@@ -182,7 +190,6 @@ class BidDocumentApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
-                type=dm.DirectRelationReference("fran-power-ops-day-ahead-bid", "BidDocument"),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,
