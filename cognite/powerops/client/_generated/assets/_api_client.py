@@ -60,25 +60,3 @@ class PowerAssetAPI:
         self.reservoir = ReservoirAPI(client, view_by_write_class)
         self.turbine_efficiency_curve = TurbineEfficiencyCurveAPI(client, view_by_write_class)
         self.watercourse = WatercourseAPI(client, view_by_write_class)
-
-    @classmethod
-    def azure_project(
-        cls, tenant_id: str, client_id: str, client_secret: str, cdf_cluster: str, project: str
-    ) -> PowerAssetAPI:
-        credentials = OAuthClientCredentials.default_for_azure_ad(tenant_id, client_id, client_secret, cdf_cluster)
-        config = ClientConfig.default(project, cdf_cluster, credentials)
-
-        return cls(config)
-
-    @classmethod
-    def from_toml(cls, file_path: Path | str, section: str | None = "cognite") -> PowerAssetAPI:
-        import toml
-
-        toml_content = toml.load(file_path)
-        if section is not None:
-            try:
-                toml_content = toml_content[section]
-            except KeyError as e:
-                raise ValueError(f"Could not find section '{section}' in {file_path}") from e
-
-        return cls.azure_project(**toml_content)
