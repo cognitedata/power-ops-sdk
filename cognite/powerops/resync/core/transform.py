@@ -10,14 +10,7 @@ from cognite.powerops.resync.models.v1.config_to_model import (
     to_market_asset_model,
     to_production_model,
 )
-from cognite.powerops.resync.models.v2.config_to_model import (
-    to_benchmark_data_model,
-    to_cogshop_data_model,
-    to_dayahead_data_model,
-    to_powerasset_model,
-    to_production_data_model,
-    to_rkom_data_model,
-)
+from cognite.powerops.resync.models.v2.config_to_model import to_powerasset_model, to_production_data_model
 
 
 def transform(config: ReSyncConfig, market_name: str, model_types: set[type[Model]]) -> list[Model]:

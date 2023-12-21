@@ -18,10 +18,6 @@ import pandas as pd
 from pydantic import BaseModel, ConfigDict, field_serializer, model_validator
 
 from cognite.powerops import PowerOpsClient
-from cognite.powerops.client._generated.data_classes import (
-    InputTimeSeriesMapping,
-    InputTimeSeriesMappingApply,
-)
 from cognite.powerops.resync.models.base import Model
 from cognite.powerops.utils.cdf.calls import retrieve_time_series_datapoints
 from cognite.powerops.utils.lookup import attr_lookup, dict_values, each
@@ -158,7 +154,7 @@ def find_mappings(obj, lookup: Literal["base", "process"]) -> list[InputTimeSeri
 
     lookup_paths = {
         "process": [
-            ["incremental_mapping", each, "content", df_to_dict_records, each, to_input_time_series_mapping_apply],
+            ["incremental_mapping", each, "content", df_to_dict_records, each, to_input_time_series_mapping_apply]
         ],
         "base": [
             ["mappings", dict_values, each, from_mapping_to_input_time_series_mapping_apply],
@@ -198,10 +194,7 @@ def prepare_validation(models: list[Model]) -> tuple[PreparedValidationsT, Valid
             for mapping in process_mappings:
                 ts_validation = ts_validations[f"{validation_range}"].get(mapping.external_id)
                 if ts_validation is None:
-                    ts_validation = TimeSeriesValidation(
-                        mapping=mapping,
-                        validation_range=validation_range,
-                    )
+                    ts_validation = TimeSeriesValidation(mapping=mapping, validation_range=validation_range)
                 if model.model_name not in ts_validation.data_models:
                     ts_validation.data_models.append(model.model_name)
                 ts_validations[f"{validation_range}"][mapping.external_id] = ts_validation
@@ -213,10 +206,7 @@ def prepare_validation(models: list[Model]) -> tuple[PreparedValidationsT, Valid
         base_mappings = find_mappings(model, "base")
         for mapping in base_mappings:
             for validation_range_str, validation_range in validation_ranges.items():
-                ts_validation = TimeSeriesValidation(
-                    mapping=mapping,
-                    validation_range=validation_range,
-                )
+                ts_validation = TimeSeriesValidation(mapping=mapping, validation_range=validation_range)
                 if model.model_name not in ts_validation.data_models:
                     ts_validation.data_models.append(model.model_name)
                 ts_validations[validation_range_str][mapping.external_id] = ts_validation
@@ -250,10 +240,7 @@ def perform_validation(
 
         logger.info(f"Retrieving datapoints for {len(ts_mappings)} mappings from range {range_str}")
         datapoints = retrieve_time_series_datapoints(
-            po_client.cdf,
-            ts_mappings,
-            start=arrow_to_ms(validation_range.start),
-            end=arrow_to_ms(validation_range.end),
+            po_client.cdf, ts_mappings, start=arrow_to_ms(validation_range.start), end=arrow_to_ms(validation_range.end)
         )
         warnings_n = 0
         for ts_mapping in ts_mappings:
@@ -262,7 +249,7 @@ def perform_validation(
             if not len(data):
                 logger.info(
                     f"VALIDATION FAIL: No datapoints found for range {range_str} in timeseries "
-                    f"'{ts_mapping.cdf_time_series}', used in models: {', '.join(ts_validation.data_models)}.",
+                    f"'{ts_mapping.cdf_time_series}', used in models: {', '.join(ts_validation.data_models)}."
                 )
                 results.append(
                     TimeSeriesValidationResult(
@@ -273,7 +260,7 @@ def perform_validation(
             elif ts_mapping.retrieve == "RANGE" and len(data) < 2:
                 logger.info(
                     f"VALIDATION FAIL: Only one datapoint found for range {range_str} in timeseries "
-                    f"'{ts_mapping.cdf_time_series}', used in models: {', '.join(ts_validation.data_models)}.",
+                    f"'{ts_mapping.cdf_time_series}', used in models: {', '.join(ts_validation.data_models)}."
                 )
                 results.append(
                     TimeSeriesValidationResult(

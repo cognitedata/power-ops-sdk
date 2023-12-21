@@ -8,7 +8,7 @@ from cognite.client.data_classes.data_modeling import ContainerId
 from pydantic import Field, ValidationError, field_validator
 
 from cognite.powerops.client._generated.assets import data_classes as assets
-from cognite.powerops.client._generated.data_classes._core import DomainModelApply
+from cognite.powerops.client._generated.production.data_classes import DomainModelApply
 from cognite.powerops.client.data_classes import (
     GeneratorApply,
     PlantApply,

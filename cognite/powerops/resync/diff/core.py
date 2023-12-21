@@ -8,7 +8,6 @@ from cognite.client.data_classes._base import CogniteResource, CogniteResourceLi
 
 from cognite.powerops.client._generated.assets.data_classes import DomainModelApply as DomainModelApplyAssets
 from cognite.powerops.client._generated.cogshop1.data_classes._core import DomainModelApply as DomainModelApplyCogShop1
-from cognite.powerops.client._generated.data_classes._core import DomainModelApply
 from cognite.powerops.resync.models.base import AssetModel, CDFFile, CDFSequence, Model, ResourceType
 from cognite.powerops.utils.serialization import remove_read_only_fields
 
@@ -140,18 +139,10 @@ def _to_value_by_id(value: Any) -> dict[str, Any]:
         return {item.external_id: item for item in value}
     elif isinstance(value, list) and value and isinstance(value[0], (CDFSequence, CDFFile)):
         return {item.external_id: item.cdf_resource for item in value}
-    elif (
-        isinstance(value, dict)
-        and value
-        and isinstance(next(iter(value.values())), (DomainModelApply, DomainModelApplyCogShop1))
-    ):
+    elif isinstance(value, dict) and value and isinstance(next(iter(value.values())), (DomainModelApplyCogShop1)):
         return {item.external_id: item for item in value.values()}
     elif isinstance(value, (dict, list, CogniteResourceList)) and not value:
         return {}
-    elif (
-        isinstance(value, list)
-        and value
-        and isinstance(value[0], (DomainModelApply, DomainModelApplyCogShop1, DomainModelApplyAssets))
-    ):
+    elif isinstance(value, list) and value and isinstance(value[0], (DomainModelApplyCogShop1, DomainModelApplyAssets)):
         return {item.external_id: item for item in value}
     raise NotImplementedError(f"{type(value)} is not supported")

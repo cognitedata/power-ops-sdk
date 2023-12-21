@@ -4,14 +4,7 @@ from cognite.powerops.resync.models.base import Model
 
 from . import migration
 from .v1 import CogShop1Asset, MarketModel, ProductionModel
-from .v2 import (
-    BenchmarkMarketDataModel,
-    CogShopDataModel,
-    DayAheadMarketDataModel,
-    PowerAssetModelDM,
-    ProductionModelDM,
-    RKOMMarketDataModel,
-)
+from .v2 import PowerAssetModelDM, ProductionModelDM
 
 V1_MODELS: list[type[Model]] = [ProductionModel, MarketModel, CogShop1Asset]
 V2_MODELS: list[type[Model]] = [ProductionModelDM, PowerAssetModelDM]
