@@ -6,7 +6,7 @@ from __future__ import annotations
 import itertools
 import logging
 from pathlib import Path
-from typing import Literal, Optional, cast
+from typing import Any, Literal, Optional, cast
 
 from cognite.client import CogniteClient
 from cognite.client.data_classes.data_modeling import DataModelId, MappedProperty, ViewList
@@ -20,7 +20,6 @@ from cognite.powerops.resync.config import ReSyncConfig
 from cognite.powerops.resync.diff import FieldDifference, ModelDifference, ModelDifferences
 from cognite.powerops.resync.models.base import AssetModel, CDFFile, CDFSequence, DataModel, Model, SpaceId
 from cognite.powerops.resync.models.v2.powerops_models import DataModelLoader
-from cognite.powerops.resync.validation import ValidationResults, perform_validation, prepare_validation
 
 from .cdf import get_cognite_api
 from .transform import transform
@@ -66,33 +65,28 @@ def init(client: PowerOpsClient | None, model_names: str | list[str] | None = No
     return results
 
 
-def validate(config_dir: str | Path, market: str) -> ValidationResults:
-    """
-    Validates the local configuration files.
+def validate(config_dir: str | Path, market: str) -> Any:
+    raise NotImplementedError("validate is not implemented")
 
-    Args:
-        config_dir: Local path to the configuration files. Needs to follow a specific structure. See below.
-        market: The market to load the configuration for.
 
-    Configuration file structure:
-    ```
-    📦config_dir
-     ┣ 📂cogshop - The CogSHOP configuration
-     ┣ 📂market - The Market configuration for DayAhead, RKOM, and benchmarking.
-     ┣ 📂production - The physical assets configuration, Watercourse, PriceArea, Genertor, Plant  (SHOP centered)
-     ┗ 📜settings.yaml - Settings for resync.
-    ```
-    """
-    market = market.lower()
-    po_client = PowerOpsClient.from_settings()
-    logger.info(f"Validating configuration in {config_dir}..")
-    loaded_models = _load_transform(market, Path(config_dir), po_client.cdf.config.project, list(MODELS_BY_NAME))
-
-    logger.info("Validating time series...")
-    ts_validations, validation_ranges = prepare_validation(loaded_models)
-    validation_results = perform_validation(po_client, ts_validations, validation_ranges)
-    logger.info("Validations complete")
-    return validation_results
+# def validate(config_dir: str | Path, market: str) -> ValidationResults:
+#     """
+#     Validates the local configuration files.
+#
+#     Args:
+#         config_dir: Local path to the configuration files. Needs to follow a specific structure. See below.
+#         market: The market to load the configuration for.
+#
+#     Configuration file structure:
+#     ```
+#     📦config_dir
+#      ┣ 📂cogshop - The CogSHOP configuration
+#      ┣ 📂market - The Market configuration for DayAhead, RKOM, and benchmarking.
+#      ┣ 📂production - The physical assets configuration, Watercourse, PriceArea, Genertor, Plant  (SHOP centered)
+#      ┗ 📜settings.yaml - Settings for resync.
+#     ```
+#     """
+#
 
 
 def plan(

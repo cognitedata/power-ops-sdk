@@ -34,6 +34,14 @@ class ProductionModelDM(DataModel):
         ContainerId("power-ops", "Reservoir"): ReservoirApply,
         ContainerId("power-ops", "WatercourseShop"): WatercourseShopApply,
     }
+    cls_by_view: ClassVar[dict[dm.ViewId, type[DomainModelApply]]] = {
+        dm.ViewId("power-ops", "Generator", "9178931bbaac71"): GeneratorApply,
+        dm.ViewId("power-ops", "Plant", "836dcb3f5da1df"): PlantApply,
+        dm.ViewId("power-ops", "PriceArea", "6849ae787cd368"): PriceAreaApply,
+        dm.ViewId("power-ops", "Reservoir", "3c822b0c3d68f7"): ReservoirApply,
+        dm.ViewId("power-ops", "Watercourse", "96f5170f35ef70"): WatercourseApply,
+        dm.ViewId("power-ops", "WatercourseShop", "4b5321b1fccd06"): WatercourseShopApply,
+    }
     cdf_sequences: list[CDFSequence] = Field(default_factory=list)
     price_areas: list[PriceAreaApply] = Field(default_factory=list)
     watercourses: list[WatercourseApply] = Field(default_factory=list)

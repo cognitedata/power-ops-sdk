@@ -19,10 +19,14 @@ from cognite.client.data_classes.data_modeling import (
     ViewApplyList,
     ViewId,
 )
+from pydantic import ValidationError
 from pydantic.alias_generators import to_pascal, to_snake
 from typing_extensions import Self
 
 from cognite.powerops.client._generated.cogshop1.data_classes._core import DomainModelApply as DomainModelApplyCogShop1
+from cognite.powerops.client._generated.production.data_classes._core import (
+    DomainModelApply as DomainModelApplyProduction,
+)
 from cognite.powerops.utils.serialization import get_pydantic_annotation
 
 from .cdf_resources import CDFFile, CDFSequence
@@ -32,7 +36,8 @@ from .model import Model
 
 
 class DataModel(Model, ABC):
-    cls_by_container: ClassVar[dict[ContainerId, type[DomainModelApplyCogShop1]]]
+    cls_by_container: ClassVar[dict[ContainerId, type[Union[DomainModelApplyCogShop1, DomainModelApplyProduction]]]]
+    cls_by_view: ClassVar[dict[ViewId, type[Union[DomainModelApplyCogShop1, DomainModelApplyProduction]]]]
     graph_ql: ClassVar[Optional[PowerOpsGraphQLModel]] = None
     source_model: ClassVar[Optional[PowerOpsDMSSourceModel]] = None
     dms_model: ClassVar[Optional[PowerOpsDMSModel]] = None
@@ -100,11 +105,19 @@ class DataModel(Model, ABC):
     def _domain_models(self) -> Iterable[DomainModelApplyCogShop1]:
         for field_name in self.model_fields:
             items = getattr(self, field_name)
-            if isinstance(items, list) and items and isinstance(items[0], (DomainModelApplyCogShop1)):
+            if (
+                isinstance(items, list)
+                and items
+                and isinstance(items[0], (DomainModelApplyProduction, DomainModelApplyCogShop1))
+            ):
                 yield from items
-            if isinstance(items, (DomainModelApplyCogShop1)):
+            if isinstance(items, (DomainModelApplyProduction, DomainModelApplyCogShop1)):
                 yield items
-            if isinstance(items, dict) and items and isinstance(next(iter(items.values())), (DomainModelApplyCogShop1)):
+            if (
+                isinstance(items, dict)
+                and items
+                and isinstance(next(iter(items.values())), (DomainModelApplyProduction, DomainModelApplyCogShop1))
+            ):
                 yield from items.values()
 
     @classmethod
@@ -129,10 +142,19 @@ class DataModel(Model, ABC):
                     source = ViewId.load(source)
                 else:
                     raise NotImplementedError("Cannot handle this source type.")
-            if source not in cls.cls_by_container:
-                raise AttributeError(f"Please specify the domain model for this container {source} in {cls.__name__}")
+            if isinstance(source, ContainerId):
+                if source not in cls.cls_by_container:
+                    raise AttributeError(
+                        f"Please specify the domain model for this container {source} in {cls.__name__}"
+                    )
 
-            domain_node = _load_domain_node(cls.cls_by_container[source], node)
+                domain_node = _load_domain_node(cls.cls_by_container[source], node)
+            elif isinstance(source, ViewId):
+                if source not in cls.cls_by_view:
+                    raise AttributeError(f"Please specify the domain model for this view {source} in {cls.__name__}")
+                domain_node = _load_domain_node(cls.cls_by_view[source], node)
+            else:
+                raise NotImplementedError(f"Cannot handle {type(source)} source type.")
             nodes_by_source_by_id[source.external_id][domain_node.external_id] = domain_node
             node_by_id[domain_node.external_id] = domain_node
 
@@ -148,7 +170,7 @@ class DataModel(Model, ABC):
                 parsed[field_name] = [
                     item for item in load_by_type_external_id["sequences"].values() if item.external_id.endswith(suffix)
                 ]
-            elif issubclass(annotation, (DomainModelApplyCogShop1)):
+            elif issubclass(annotation, (DomainModelApplyProduction, DomainModelApplyCogShop1)):
                 name = field_name
                 alternatives = [name, name.removesuffix("s"), to_pascal(name), to_pascal(name).removesuffix("s")]
                 for alternative in alternatives:
@@ -174,8 +196,10 @@ class DataModel(Model, ABC):
             get_pydantic_annotation(instance.model_fields[field_name].annotation, type(instance))[0]
             for field_name in instance.model_fields
         )
-        model_types: set[Union[DomainModelApplyCogShop1]] = {
-            annotation for annotation in instance_annotations if issubclass(annotation, (DomainModelApplyCogShop1))
+        model_types: set[Union[type[DomainModelApplyCogShop1], type[DomainModelApplyProduction]]] = {
+            annotation
+            for annotation in instance_annotations
+            if issubclass(annotation, (DomainModelApplyProduction, DomainModelApplyCogShop1))
         }
 
         # One to many edges
@@ -216,7 +240,7 @@ class DataModel(Model, ABC):
                 annotation, outer = get_pydantic_annotation(field.annotation, domain_node)
                 if (
                     inspect.isclass(annotation)
-                    and issubclass(annotation, (DomainModelApplyCogShop1))
+                    and issubclass(annotation, (DomainModelApplyProduction, DomainModelApplyCogShop1))
                     and (value := getattr(domain_node, field_name)) is not None
                 ):
                     if isinstance(value, str) and value in node_by_id:
@@ -247,4 +271,7 @@ def _load_domain_node(node_cls: type[T_Domain_model], node: NodeApply) -> T_Doma
         else:
             raise NotImplementedError(f"Cannot handle {prop=}")
 
-    return node_cls(**loaded, external_id=node.external_id)
+    try:
+        return node_cls(**loaded, external_id=node.external_id)
+    except ValidationError:
+        raise

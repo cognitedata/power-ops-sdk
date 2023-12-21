@@ -11,6 +11,7 @@ from ._generated.afrr_bid import AFRRBidAPI
 from ._generated.assets import PowerAssetAPI
 from ._generated.cogshop1 import CogShop1Client
 from ._generated.day_ahead_bid import DayAheadBidAPI
+from ._generated.production import ProductionModelAPI
 from .data_set_api import DataSetsAPI
 from .shop.api.dayahead_trigger_api import DayaheadTriggerAPI
 from .shop.shop_run_api import SHOPRunAPI
@@ -32,6 +33,7 @@ class PowerOpsClient:
         self.assets = PowerAssetAPI(self.cdf)
         self.afrr_bid = AFRRBidAPI(self.cdf)
         self.day_ahead_bid = DayAheadBidAPI(self.cdf)
+        self.production = ProductionModelAPI(self.cdf)
         self.shop = SHOPRunAPI(self.cdf, self.datasets.write_dataset_id, cogshop_version)
         self.workflow = DayaheadTriggerAPI(self.cdf, self.datasets.write_dataset_id, cogshop_version)
 
