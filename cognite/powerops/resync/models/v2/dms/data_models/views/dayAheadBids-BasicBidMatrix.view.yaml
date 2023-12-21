@@ -7,7 +7,6 @@ implements:
   version: '{{dayaheadbid_BidMatrix_version}}'
   type: view
 version: '{{dayaheadbid_BasicBidMatrix_version}}'
-properties: {}
 filter:
   equals:
     property:
@@ -16,3 +15,4 @@ filter:
     value:
       space: '{{dayahead_model_space}}'
       externalId: BasicBidMatrix
+properties: {}

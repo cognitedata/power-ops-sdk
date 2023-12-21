@@ -135,7 +135,7 @@ class MultiScenarioMatrixApply(DomainModelApply):
             return resources
 
         write_view = (view_by_write_class and view_by_write_class.get(type(self))) or dm.ViewId(
-            "fran-power-ops-day-ahead-bid", "MultiScenarioMatrix", "1"
+            "power-ops-day-ahead-bid", "MultiScenarioMatrix", "1"
         )
 
         properties = {}
@@ -171,6 +171,7 @@ class MultiScenarioMatrixApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
+                type=dm.DirectRelationReference("power-ops-day-ahead-bid", "MultiScenarioMatrix"),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,
@@ -181,7 +182,7 @@ class MultiScenarioMatrixApply(DomainModelApply):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("fran-power-ops-day-ahead-bid", "BidMatrix.alerts")
+        edge_type = dm.DirectRelationReference("power-ops-types", "calculationIssue")
         for alert in self.alerts or []:
             other_resources = DomainRelationApply.from_edge_to_resources(
                 cache, start_node=self, end_node=alert, edge_type=edge_type, view_by_write_class=view_by_write_class
@@ -252,7 +253,7 @@ def _create_multi_scenario_matrix_filter(
     if method and isinstance(method, str):
         filters.append(
             dm.filters.Equals(
-                view_id.as_property_ref("method"), value={"space": "fran-power-ops-day-ahead-bid", "externalId": method}
+                view_id.as_property_ref("method"), value={"space": "power-ops-day-ahead-bid", "externalId": method}
             )
         )
     if method and isinstance(method, tuple):
@@ -263,7 +264,7 @@ def _create_multi_scenario_matrix_filter(
         filters.append(
             dm.filters.In(
                 view_id.as_property_ref("method"),
-                values=[{"space": "fran-power-ops-day-ahead-bid", "externalId": item} for item in method],
+                values=[{"space": "power-ops-day-ahead-bid", "externalId": item} for item in method],
             )
         )
     if method and isinstance(method, list) and isinstance(method[0], tuple):

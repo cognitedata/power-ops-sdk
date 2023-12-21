@@ -233,7 +233,7 @@ class PlantAPI(NodeAPI[Plant, PlantApply, PlantList]):
                 (
                     self.generators_edge,
                     "generators",
-                    dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
+                    dm.DirectRelationReference("power-ops-assets", "Plant.generators"),
                     "outwards",
                 ),
             ],
@@ -713,7 +713,7 @@ class PlantAPI(NodeAPI[Plant, PlantApply, PlantList]):
                 (
                     self.generators_edge,
                     "generators",
-                    dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
+                    dm.DirectRelationReference("power-ops-assets", "Plant.generators"),
                     "outwards",
                 ),
             ],

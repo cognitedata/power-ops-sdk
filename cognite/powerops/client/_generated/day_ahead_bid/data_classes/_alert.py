@@ -127,7 +127,7 @@ class AlertApply(DomainModelApply):
             return resources
 
         write_view = (view_by_write_class and view_by_write_class.get(type(self))) or dm.ViewId(
-            "fran-power-ops-shared", "Alert", "1"
+            "power-ops-shared", "Alert", "1"
         )
 
         properties = {}
@@ -161,6 +161,7 @@ class AlertApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
+                type=dm.DirectRelationReference("power-ops-shared", "Alert"),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,

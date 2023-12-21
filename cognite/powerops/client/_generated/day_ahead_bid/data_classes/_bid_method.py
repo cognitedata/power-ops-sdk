@@ -88,7 +88,7 @@ class BidMethodApply(DomainModelApply):
             return resources
 
         write_view = (view_by_write_class and view_by_write_class.get(type(self))) or dm.ViewId(
-            "fran-power-ops-day-ahead-bid", "BidMethod", "1"
+            "power-ops-day-ahead-bid", "BidMethod", "1"
         )
 
         properties = {}

@@ -88,7 +88,7 @@ class WaterValueBasedApply(DomainModelApply):
             return resources
 
         write_view = (view_by_write_class and view_by_write_class.get(type(self))) or dm.ViewId(
-            "fran-power-ops-day-ahead-bid", "WaterValueBased", "1"
+            "power-ops-day-ahead-bid", "WaterValueBased", "1"
         )
 
         properties = {}
@@ -101,7 +101,7 @@ class WaterValueBasedApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
-                type=dm.DirectRelationReference("fran-power-ops-day-ahead-bid", "WaterValueBased"),
+                type=dm.DirectRelationReference("power-ops-day-ahead-bid", "WaterValueBased"),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,

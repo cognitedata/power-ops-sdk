@@ -45,7 +45,7 @@ class Alert(DomainModel):
     Args:
         space: The space where the node is located.
         external_id: The external id of the alert.
-        time: Timestamp that the alert occured (within the workflow)
+        time: Timestamp that the alert occurred (within the workflow)
         title: Summary description of the alert
         description: Detailed description of the alert
         severity: CRITICAL (calculation could not completed) WARNING  (calculation completed, with major issue) INFO     (calculation completed, with minor issues)
@@ -93,7 +93,7 @@ class AlertApply(DomainModelApply):
     Args:
         space: The space where the node is located.
         external_id: The external id of the alert.
-        time: Timestamp that the alert occured (within the workflow)
+        time: Timestamp that the alert occurred (within the workflow)
         title: Summary description of the alert
         description: Detailed description of the alert
         severity: CRITICAL (calculation could not completed) WARNING  (calculation completed, with major issue) INFO     (calculation completed, with minor issues)
@@ -161,6 +161,7 @@ class AlertApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
+                type=dm.DirectRelationReference("power-ops-shared", "Alert"),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,

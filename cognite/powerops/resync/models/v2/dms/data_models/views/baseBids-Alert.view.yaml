@@ -3,6 +3,14 @@ externalId: Alert
 description: Alerts
 name: Alert
 version: '{{base_Alert_version}}'
+filter:
+  equals:
+    property:
+    - node
+    - type
+    value:
+      space: '{{shared_model_space}}'
+      externalId: Alert
 properties:
   time:
     container:

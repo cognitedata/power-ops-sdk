@@ -209,6 +209,7 @@ class BidRowApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
+                type=dm.DirectRelationReference("power-ops-afrr-bid", "BidRow"),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,
@@ -219,7 +220,7 @@ class BidRowApply(DomainModelApply):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("power-ops-types", "calculationIssue")
+        edge_type = dm.DirectRelationReference("power-ops-afrr-bid", "BidRow.alerts")
         for alert in self.alerts or []:
             other_resources = DomainRelationApply.from_edge_to_resources(
                 cache, start_node=self, end_node=alert, edge_type=edge_type, view_by_write_class=view_by_write_class

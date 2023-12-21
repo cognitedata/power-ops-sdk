@@ -207,7 +207,7 @@ class BidRowAPI(NodeAPI[BidRow, BidRowApply, BidRowList]):
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("power-ops-types", "calculationIssue"),
+                    dm.DirectRelationReference("power-ops-afrr-bid", "BidRow.alerts"),
                     "outwards",
                 ),
             ],
@@ -631,7 +631,7 @@ class BidRowAPI(NodeAPI[BidRow, BidRowApply, BidRowList]):
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("power-ops-types", "calculationIssue"),
+                    dm.DirectRelationReference("power-ops-afrr-bid", "BidRow.alerts"),
                     "outwards",
                 ),
             ],

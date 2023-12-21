@@ -218,13 +218,13 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
                 (
                     self.plants_edge,
                     "plants",
-                    dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
+                    dm.DirectRelationReference("power-ops-assets", "PriceArea.plants"),
                     "outwards",
                 ),
                 (
                     self.watercourses_edge,
                     "watercourses",
-                    dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
+                    dm.DirectRelationReference("power-ops-assets", "PriceArea.watercourses"),
                     "outwards",
                 ),
             ],
@@ -578,13 +578,13 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
                 (
                     self.plants_edge,
                     "plants",
-                    dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
+                    dm.DirectRelationReference("power-ops-assets", "PriceArea.plants"),
                     "outwards",
                 ),
                 (
                     self.watercourses_edge,
                     "watercourses",
-                    dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
+                    dm.DirectRelationReference("power-ops-assets", "PriceArea.watercourses"),
                     "outwards",
                 ),
             ],

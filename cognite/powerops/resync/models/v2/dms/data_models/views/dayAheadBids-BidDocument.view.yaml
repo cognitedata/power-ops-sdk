@@ -1,6 +1,14 @@
 space: '{{dayahead_model_space}}'
 externalId: BidDocument
 name: BidDocument
+filter:
+  equals:
+    property:
+    - node
+    - type
+    value:
+      space: '{{dayahead_model_space}}'
+      externalId: BidDocument
 implements:
 - space: '{{shared_model_space}}'
   externalId: BidDocument

@@ -47,3 +47,29 @@
   externalId: WaterValueBased
 - space: {{afrr_model_space}}
   externalId: BidDocument
+
+
+- space: {{dayahead_model_space}}
+  externalId: MultiScenarioMatrix
+- space: {{asset_space}}
+  externalId: Plant
+- space: {{dayahead_model_space}}
+  externalId: BidDocument
+- space: {{dayahead_model_space}}
+  externalId: PriceArea
+- space: {{asset_space}}
+  externalId: Generator
+- space: {{shared_model_space}}
+  externalId: Alert
+- space: {{afrr_model_space}}
+  externalId: PriceArea
+- space: {{asset_space}}
+  externalId: Watercourse
+- space: {{afrr_model_space}}
+  externalId: BidRow
+- space: {{asset_space}}
+  externalId: TurbineEfficiencyCurve
+- space: {{dayahead_model_space}}
+  externalId: SHOPMultiScenario
+- space: {{asset_space}}
+  externalId: PriceArea

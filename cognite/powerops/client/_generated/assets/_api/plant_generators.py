@@ -43,7 +43,7 @@ class PlantGeneratorsAPI(EdgeAPI):
 
         """
         filter_ = _create_edge_filter(
-            dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
+            dm.DirectRelationReference("power-ops-assets", "Plant.generators"),
             from_plant,
             from_plant_space,
             to_generator,

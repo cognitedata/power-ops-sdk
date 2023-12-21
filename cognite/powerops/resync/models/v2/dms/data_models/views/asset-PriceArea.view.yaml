@@ -3,6 +3,14 @@ externalId: PriceArea
 description: Information about the Price Area that is only relevant for AFRR
 name: PriceArea
 version: '{{asset_PriceArea_version}}'
+filter:
+  equals:
+    property:
+    - node
+    - type
+    value:
+      space: '{{asset_space}}'
+      externalId: PriceArea
 properties:
   name:
     container:

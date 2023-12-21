@@ -116,7 +116,7 @@ class GeneratorEfficiencyCurveApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
-                type=dm.DirectRelationReference("power-ops-types", "GeneratorCurve"),
+                type=dm.DirectRelationReference("power-ops-assets", "GeneratorEfficiencyCurve"),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,

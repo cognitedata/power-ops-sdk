@@ -3,6 +3,14 @@ externalId: Generator
 description: A generator
 name: Generator
 version: '{{asset_Generator_version}}'
+filter:
+  equals:
+    property:
+     - node
+     - type
+    value:
+      space: '{{asset_space}}'
+      externalId: Generator
 properties:
   name:
     container:

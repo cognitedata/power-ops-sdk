@@ -3,6 +3,14 @@ externalId: BidRow
 description: One row in the BidDocument (usually referenced in industry as a Bid).
 name: BidRow
 version: '{{afrrbid_BidRow_version}}'
+filter:
+  equals:
+    property:
+     - node
+     - type
+    value:
+      space: '{{afrr_model_space}}'
+      externalId: BidRow
 properties:
   price:
     container:

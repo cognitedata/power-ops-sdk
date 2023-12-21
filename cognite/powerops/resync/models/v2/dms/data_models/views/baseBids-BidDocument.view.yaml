@@ -4,6 +4,18 @@ description: Whole Bid (also usually referenced in industry as a Bid Document) c
   multiple Bid Rows (which are usually referenced in industry as Bids)
 name: BidDocument
 version: '{{base_BidDocument_version}}'
+filter:
+  in:
+    property:
+    - node
+    - type
+    values:
+      - space: '{{shared_model_space}}'
+        externalId: BidDocument
+      - space: '{{dayahead_model_space}}'
+        externalId: BidDocument
+      - space: '{{afrr_model_space}}'
+        externalId: BidDocument
 properties:
   name:
     container:

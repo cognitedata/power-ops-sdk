@@ -187,7 +187,7 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseApply, WatercourseList]):
                 (
                     self.plants_edge,
                     "plants",
-                    dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
+                    dm.DirectRelationReference("power-ops-assets", "Watercourse.plants"),
                     "outwards",
                 ),
             ],
@@ -499,7 +499,7 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseApply, WatercourseList]):
                 (
                     self.plants_edge,
                     "plants",
-                    dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
+                    dm.DirectRelationReference("power-ops-assets", "Watercourse.plants"),
                     "outwards",
                 ),
             ],

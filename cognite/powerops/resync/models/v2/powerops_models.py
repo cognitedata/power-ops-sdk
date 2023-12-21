@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import itertools
+import logging
 import re
 from collections import defaultdict
 from dataclasses import asdict, dataclass
@@ -26,6 +27,8 @@ from cognite.client.data_classes.data_modeling.views import SingleHopConnectionD
 
 from cognite.powerops import PowerOpsClient
 from cognite.powerops.resync.models.base import DataModel, T_Model
+
+logger = logging.getLogger(__name__)
 
 _DMS_DIR = Path(__file__).parent / "dms"
 
@@ -206,9 +209,14 @@ class DataModelLoader:
             referred_spaces[view.space].append(ref_view_id)
             if isinstance(view.filter, filters.Equals):
                 dumped = view.filter.dump()["equals"]["value"]
-                if "space" in dumped and "externalId" in dumped:
-                    node_id = NodeId(dumped["space"], dumped["externalId"])
-                    referred_node_types[node_id].append(ref_view_id)
+                try:
+                    if "space" in dumped and "externalId" in dumped:
+                        node_id = NodeId(dumped["space"], dumped["externalId"])
+                        referred_node_types[node_id].append(ref_view_id)
+                except Exception as exc:
+                    raise ValueError(
+                        f"Failed to parse filter for view {view.space}.{view.external_id}.{view.version}"
+                    ) from exc
             for view_id in view.implements or []:
                 referred_views[view_id].append(ref_view_id)
             for prop_name, prop in view.properties.items():

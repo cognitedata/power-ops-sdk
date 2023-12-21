@@ -43,7 +43,7 @@ class BidMatrixAlertsAPI(EdgeAPI):
 
         """
         filter_ = _create_edge_filter(
-            dm.DirectRelationReference("fran-power-ops-day-ahead-bid", "BidMatrix.alerts"),
+            dm.DirectRelationReference("power-ops-day-ahead-bid", "BidMatrix.alerts"),
             from_bid_matrix,
             from_bid_matrix_space,
             to_alert,

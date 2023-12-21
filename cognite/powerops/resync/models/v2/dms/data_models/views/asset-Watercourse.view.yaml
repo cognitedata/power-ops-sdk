@@ -3,6 +3,14 @@ externalId: Watercourse
 description: A description of the Watercourse Asset
 name: Watercourse
 version: '{{asset_Watercourse_version}}'
+filter:
+  equals:
+    property:
+    - node
+    - type
+    value:
+      space: '{{asset_space}}'
+      externalId: Watercourse
 properties:
   name:
     container:

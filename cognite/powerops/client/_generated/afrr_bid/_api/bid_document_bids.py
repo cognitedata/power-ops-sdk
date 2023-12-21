@@ -43,7 +43,7 @@ class BidDocumentBidsAPI(EdgeAPI):
 
         """
         filter_ = _create_edge_filter(
-            dm.DirectRelationReference("power-ops-types", "PartialBid"),
+            dm.DirectRelationReference("power-ops-afrr-bid", "BidDocument.bids"),
             from_bid_document,
             from_bid_document_space,
             to_bid_row,

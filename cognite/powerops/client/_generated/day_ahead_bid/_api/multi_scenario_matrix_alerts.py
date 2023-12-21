@@ -43,7 +43,7 @@ class MultiScenarioMatrixAlertsAPI(EdgeAPI):
 
         """
         filter_ = _create_edge_filter(
-            dm.DirectRelationReference("fran-power-ops-day-ahead-bid", "BidMatrix.alerts"),
+            dm.DirectRelationReference("power-ops-types", "calculationIssue"),
             from_multi_scenario_matrix,
             from_multi_scenario_matrix_space,
             to_alert,

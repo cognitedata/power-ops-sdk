@@ -2,6 +2,16 @@ space: '{{dayahead_model_space}}'
 externalId: BidMatrix
 name: BidMatrix
 version: '{{dayaheadbid_BidMatrix_version}}'
+filter:
+  in:
+    property:
+    - node
+    - type
+    values:
+      - space: '{{dayahead_model_space}}'
+        externalId: BidMatrix
+      - space: '{{dayahead_model_space}}'
+        externalId: MultiScenarioMatrix
 properties:
   resourceCost:
     container:

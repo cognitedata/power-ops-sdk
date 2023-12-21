@@ -196,7 +196,7 @@ class MultiScenarioMatrixAPI(NodeAPI[MultiScenarioMatrix, MultiScenarioMatrixApp
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("fran-power-ops-day-ahead-bid", "BidMatrix.alerts"),
+                    dm.DirectRelationReference("power-ops-types", "calculationIssue"),
                     "outwards",
                 ),
             ],
@@ -522,7 +522,7 @@ class MultiScenarioMatrixAPI(NodeAPI[MultiScenarioMatrix, MultiScenarioMatrixApp
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("fran-power-ops-day-ahead-bid", "BidMatrix.alerts"),
+                    dm.DirectRelationReference("power-ops-types", "calculationIssue"),
                     "outwards",
                 ),
             ],

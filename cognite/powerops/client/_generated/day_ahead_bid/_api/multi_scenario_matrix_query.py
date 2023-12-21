@@ -68,7 +68,7 @@ class MultiScenarioMatrixQueryAPI(QueryAPI[T_DomainModelList]):
         from_ = self._builder[-1].name
 
         edge_filter = _create_edge_filter(
-            dm.DirectRelationReference("fran-power-ops-day-ahead-bid", "BidMatrix.alerts"),
+            dm.DirectRelationReference("power-ops-types", "calculationIssue"),
             external_id_prefix=external_id_prefix,
             space=space,
         )

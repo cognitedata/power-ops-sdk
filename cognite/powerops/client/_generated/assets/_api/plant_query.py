@@ -70,7 +70,7 @@ class PlantQueryAPI(QueryAPI[T_DomainModelList]):
         from_ = self._builder[-1].name
 
         edge_filter = _create_edge_filter(
-            dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
+            dm.DirectRelationReference("power-ops-assets", "Plant.generators"),
             external_id_prefix=external_id_prefix,
             space=space,
         )

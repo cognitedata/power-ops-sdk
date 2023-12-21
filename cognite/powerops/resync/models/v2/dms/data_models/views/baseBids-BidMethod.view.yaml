@@ -3,6 +3,22 @@ externalId: BidMethod
 description: A description of the Bid method used in the calculation.
 name: BidMethod
 version: '{{base_BidMethod_version}}'
+filter:
+  in:
+    property:
+    - node
+    - type
+    values:
+      - space: '{{shared_model_space}}'
+        externalId: BidMethod
+      - space: '{{dayahead_model_space}}'
+        externalId: BidMethod
+      - space: '{{dayahead_model_space}}'
+        externalId: SHOPMultiScenario
+      - space: '{{dayahead_model_space}}'
+        externalId: WaterValueBased
+      - space: '{{afrr_model_space}}'
+        externalId: BidMethod
 properties:
   name:
     container:

@@ -188,7 +188,7 @@ class BasicBidMatrixAPI(NodeAPI[BasicBidMatrix, BasicBidMatrixApply, BasicBidMat
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("fran-power-ops-day-ahead-bid", "BidMatrix.alerts"),
+                    dm.DirectRelationReference("power-ops-types", "calculationIssue"),
                     "outwards",
                 ),
             ],
@@ -514,7 +514,7 @@ class BasicBidMatrixAPI(NodeAPI[BasicBidMatrix, BasicBidMatrixApply, BasicBidMat
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("fran-power-ops-day-ahead-bid", "BidMatrix.alerts"),
+                    dm.DirectRelationReference("power-ops-types", "calculationIssue"),
                     "outwards",
                 ),
             ],

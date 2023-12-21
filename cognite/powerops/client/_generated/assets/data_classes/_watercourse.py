@@ -141,6 +141,7 @@ class WatercourseApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
+                type=dm.DirectRelationReference("power-ops-assets", "Watercourse"),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,
@@ -151,7 +152,7 @@ class WatercourseApply(DomainModelApply):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("power-ops-types", "isSubAssetOf")
+        edge_type = dm.DirectRelationReference("power-ops-assets", "Watercourse.plants")
         for plant in self.plants or []:
             other_resources = DomainRelationApply.from_edge_to_resources(
                 cache, start_node=self, end_node=plant, edge_type=edge_type, view_by_write_class=view_by_write_class

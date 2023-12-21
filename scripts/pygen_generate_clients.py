@@ -63,7 +63,7 @@ def main():
                 client_name="AFRRBidAPI",
             ),
             Model(
-                model_id=dm.DataModelId("fran-power-ops-day-ahead-bid", "DayAheadBid", "1"),
+                model_id=dm.DataModelId("power-ops-day-ahead-bid", "DayAheadBid", "1"),
                 directory="day_ahead_bid",
                 client_name="DayAheadBidAPI",
             ),
@@ -78,7 +78,7 @@ def main():
                 model.model_id,
                 client,
                 top_level_package=f"{top_level}.{model.directory}",
-                default_instance_space="fran-power-ops-instance",
+                default_instance_space="power-ops-instance",
                 client_name=model.client_name,
                 output_dir=REPO_ROOT,
                 logger=print,

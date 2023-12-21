@@ -206,13 +206,13 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("fran-power-ops-shared", "BidDocument.alerts"),
+                    dm.DirectRelationReference("power-ops-types", "calculationIssue"),
                     "outwards",
                 ),
                 (
                     self.partials_edge,
                     "partials",
-                    dm.DirectRelationReference("fran-power-ops-day-ahead-bid", "BidDocument.partials"),
+                    dm.DirectRelationReference("power-ops-day-ahead-bid", "BidDocument.partials"),
                     "outwards",
                 ),
             ],
@@ -608,13 +608,13 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("fran-power-ops-shared", "BidDocument.alerts"),
+                    dm.DirectRelationReference("power-ops-types", "calculationIssue"),
                     "outwards",
                 ),
                 (
                     self.partials_edge,
                     "partials",
-                    dm.DirectRelationReference("fran-power-ops-day-ahead-bid", "BidDocument.partials"),
+                    dm.DirectRelationReference("power-ops-day-ahead-bid", "BidDocument.partials"),
                     "outwards",
                 ),
             ],
