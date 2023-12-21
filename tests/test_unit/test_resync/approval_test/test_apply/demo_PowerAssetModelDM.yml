@@ -31,8 +31,8 @@ data_modeling.instances:
     external_id: generator_Dalby_G1
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: Generator.turbineCurves
+    space: power-ops-assets
 - external_id: generator_Dalby_G2
   instance_type: node
   sources:
@@ -63,8 +63,8 @@ data_modeling.instances:
     external_id: generator_Dalby_G2
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: Generator.turbineCurves
+    space: power-ops-assets
 - end_node:
     external_id: turbine_efficiency_Dalby_G2_head_350
     space: power-ops-instance
@@ -75,8 +75,8 @@ data_modeling.instances:
     external_id: generator_Dalby_G2
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: Generator.turbineCurves
+    space: power-ops-assets
 - external_id: generator_efficiency_Dalby_G1
   instance_type: node
   sources:
@@ -437,8 +437,8 @@ data_modeling.instances:
     external_id: generator_Holen_G1
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: Generator.turbineCurves
+    space: power-ops-assets
 - external_id: generator_Landet_G1
   instance_type: node
   sources:
@@ -469,8 +469,8 @@ data_modeling.instances:
     external_id: generator_Landet_G1
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: Generator.turbineCurves
+    space: power-ops-assets
 - end_node:
     external_id: turbine_efficiency_Landet_G1_head_280
     space: power-ops-instance
@@ -481,8 +481,8 @@ data_modeling.instances:
     external_id: generator_Landet_G1
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: Generator.turbineCurves
+    space: power-ops-assets
 - end_node:
     external_id: turbine_efficiency_Landet_G1_head_300
     space: power-ops-instance
@@ -493,8 +493,8 @@ data_modeling.instances:
     external_id: generator_Landet_G1
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: Generator.turbineCurves
+    space: power-ops-assets
 - external_id: generator_Lien_krv_G1
   instance_type: node
   sources:
@@ -525,8 +525,8 @@ data_modeling.instances:
     external_id: generator_Lien_krv_G1
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: Generator.turbineCurves
+    space: power-ops-assets
 - external_id: generator_Lund_G1
   instance_type: node
   sources:
@@ -559,8 +559,8 @@ data_modeling.instances:
     external_id: generator_Lund_G1
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: Generator.turbineCurves
+    space: power-ops-assets
 - end_node:
     external_id: turbine_efficiency_Lund_G1_head_60
     space: power-ops-instance
@@ -571,8 +571,8 @@ data_modeling.instances:
     external_id: generator_Lund_G1
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: Generator.turbineCurves
+    space: power-ops-assets
 - external_id: generator_Rull1_G1
   instance_type: node
   sources:
@@ -603,8 +603,8 @@ data_modeling.instances:
     external_id: generator_Rull1_G1
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: Generator.turbineCurves
+    space: power-ops-assets
 - external_id: generator_Rull1_G2
   instance_type: node
   sources:
@@ -635,8 +635,8 @@ data_modeling.instances:
     external_id: generator_Rull1_G2
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: Generator.turbineCurves
+    space: power-ops-assets
 - external_id: generator_Rull2_G1
   instance_type: node
   sources:
@@ -667,8 +667,8 @@ data_modeling.instances:
     external_id: generator_Rull2_G1
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: Generator.turbineCurves
+    space: power-ops-assets
 - external_id: generator_Rull2_G2
   instance_type: node
   sources:
@@ -699,8 +699,8 @@ data_modeling.instances:
     external_id: generator_Rull2_G2
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: Generator.turbineCurves
+    space: power-ops-assets
 - external_id: generator_Scott_G1
   instance_type: node
   sources:
@@ -731,8 +731,8 @@ data_modeling.instances:
     external_id: generator_Scott_G1
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: Generator.turbineCurves
+    space: power-ops-assets
 - external_id: generator_Strand_krv_G1
   instance_type: node
   sources:
@@ -763,8 +763,8 @@ data_modeling.instances:
     external_id: generator_Strand_krv_G1
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: Generator.turbineCurves
+    space: power-ops-assets
 - external_id: plant_Dalby
   instance_type: node
   sources:
@@ -804,8 +804,8 @@ data_modeling.instances:
     external_id: plant_Dalby
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: Plant.generators
+    space: power-ops-assets
 - end_node:
     external_id: generator_Dalby_G2
     space: power-ops-instance
@@ -816,8 +816,8 @@ data_modeling.instances:
     external_id: plant_Dalby
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: Plant.generators
+    space: power-ops-assets
 - external_id: plant_Holen
   instance_type: node
   sources:
@@ -857,8 +857,8 @@ data_modeling.instances:
     external_id: plant_Holen
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: Plant.generators
+    space: power-ops-assets
 - external_id: plant_Landet
   instance_type: node
   sources:
@@ -898,8 +898,8 @@ data_modeling.instances:
     external_id: plant_Landet
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: Plant.generators
+    space: power-ops-assets
 - external_id: plant_Lien_krv
   instance_type: node
   sources:
@@ -939,8 +939,8 @@ data_modeling.instances:
     external_id: plant_Lien_krv
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: Plant.generators
+    space: power-ops-assets
 - external_id: plant_Lund
   instance_type: node
   sources:
@@ -984,8 +984,8 @@ data_modeling.instances:
     external_id: plant_Lund
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: Plant.generators
+    space: power-ops-assets
 - external_id: plant_Rull1
   instance_type: node
   sources:
@@ -1026,8 +1026,8 @@ data_modeling.instances:
     external_id: plant_Rull1
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: Plant.generators
+    space: power-ops-assets
 - end_node:
     external_id: generator_Rull1_G2
     space: power-ops-instance
@@ -1038,8 +1038,8 @@ data_modeling.instances:
     external_id: plant_Rull1
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: Plant.generators
+    space: power-ops-assets
 - external_id: plant_Rull2
   instance_type: node
   sources:
@@ -1080,8 +1080,8 @@ data_modeling.instances:
     external_id: plant_Rull2
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: Plant.generators
+    space: power-ops-assets
 - end_node:
     external_id: generator_Rull2_G2
     space: power-ops-instance
@@ -1092,8 +1092,8 @@ data_modeling.instances:
     external_id: plant_Rull2
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: Plant.generators
+    space: power-ops-assets
 - external_id: plant_Scott
   instance_type: node
   sources:
@@ -1133,8 +1133,8 @@ data_modeling.instances:
     external_id: plant_Scott
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: Plant.generators
+    space: power-ops-assets
 - external_id: plant_Strand_krv
   instance_type: node
   sources:
@@ -1174,8 +1174,8 @@ data_modeling.instances:
     external_id: plant_Strand_krv
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: Plant.generators
+    space: power-ops-assets
 - external_id: price_area_NO2
   instance_type: node
   sources:
@@ -1202,8 +1202,8 @@ data_modeling.instances:
     external_id: price_area_NO2
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: PriceArea.plants
+    space: power-ops-assets
 - end_node:
     external_id: plant_Holen
     space: power-ops-instance
@@ -1214,8 +1214,8 @@ data_modeling.instances:
     external_id: price_area_NO2
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: PriceArea.plants
+    space: power-ops-assets
 - end_node:
     external_id: plant_Landet
     space: power-ops-instance
@@ -1226,8 +1226,8 @@ data_modeling.instances:
     external_id: price_area_NO2
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: PriceArea.plants
+    space: power-ops-assets
 - end_node:
     external_id: plant_Lien_krv
     space: power-ops-instance
@@ -1238,8 +1238,8 @@ data_modeling.instances:
     external_id: price_area_NO2
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: PriceArea.plants
+    space: power-ops-assets
 - end_node:
     external_id: plant_Lund
     space: power-ops-instance
@@ -1250,8 +1250,8 @@ data_modeling.instances:
     external_id: price_area_NO2
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: PriceArea.plants
+    space: power-ops-assets
 - end_node:
     external_id: plant_Rull1
     space: power-ops-instance
@@ -1262,8 +1262,8 @@ data_modeling.instances:
     external_id: price_area_NO2
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: PriceArea.plants
+    space: power-ops-assets
 - end_node:
     external_id: plant_Rull2
     space: power-ops-instance
@@ -1274,8 +1274,8 @@ data_modeling.instances:
     external_id: price_area_NO2
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: PriceArea.plants
+    space: power-ops-assets
 - end_node:
     external_id: plant_Scott
     space: power-ops-instance
@@ -1286,8 +1286,8 @@ data_modeling.instances:
     external_id: price_area_NO2
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: PriceArea.plants
+    space: power-ops-assets
 - end_node:
     external_id: plant_Strand_krv
     space: power-ops-instance
@@ -1298,8 +1298,8 @@ data_modeling.instances:
     external_id: price_area_NO2
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: PriceArea.plants
+    space: power-ops-assets
 - end_node:
     external_id: watercourse_Fornebu
     space: power-ops-instance
@@ -1310,8 +1310,8 @@ data_modeling.instances:
     external_id: price_area_NO2
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: PriceArea.watercourses
+    space: power-ops-assets
 - external_id: reservoir_Dalbysvatn
   instance_type: node
   sources:
@@ -2744,8 +2744,8 @@ data_modeling.instances:
     external_id: watercourse_Fornebu
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: Watercourse.plants
+    space: power-ops-assets
 - end_node:
     external_id: plant_Holen
     space: power-ops-instance
@@ -2756,8 +2756,8 @@ data_modeling.instances:
     external_id: watercourse_Fornebu
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: Watercourse.plants
+    space: power-ops-assets
 - end_node:
     external_id: plant_Landet
     space: power-ops-instance
@@ -2768,8 +2768,8 @@ data_modeling.instances:
     external_id: watercourse_Fornebu
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: Watercourse.plants
+    space: power-ops-assets
 - end_node:
     external_id: plant_Lien_krv
     space: power-ops-instance
@@ -2780,8 +2780,8 @@ data_modeling.instances:
     external_id: watercourse_Fornebu
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: Watercourse.plants
+    space: power-ops-assets
 - end_node:
     external_id: plant_Lund
     space: power-ops-instance
@@ -2792,8 +2792,8 @@ data_modeling.instances:
     external_id: watercourse_Fornebu
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: Watercourse.plants
+    space: power-ops-assets
 - end_node:
     external_id: plant_Rull1
     space: power-ops-instance
@@ -2804,8 +2804,8 @@ data_modeling.instances:
     external_id: watercourse_Fornebu
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: Watercourse.plants
+    space: power-ops-assets
 - end_node:
     external_id: plant_Rull2
     space: power-ops-instance
@@ -2816,8 +2816,8 @@ data_modeling.instances:
     external_id: watercourse_Fornebu
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: Watercourse.plants
+    space: power-ops-assets
 - end_node:
     external_id: plant_Scott
     space: power-ops-instance
@@ -2828,8 +2828,8 @@ data_modeling.instances:
     external_id: watercourse_Fornebu
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: Watercourse.plants
+    space: power-ops-assets
 - end_node:
     external_id: plant_Strand_krv
     space: power-ops-instance
@@ -2840,8 +2840,8 @@ data_modeling.instances:
     external_id: watercourse_Fornebu
     space: power-ops-instance
   type:
-    external_id: isSubAssetOf
-    space: power-ops-types
+    external_id: Watercourse.plants
+    space: power-ops-assets
 events: []
 files: []
 labels: []
