@@ -76,7 +76,7 @@ def delete_model(cdf: CogniteClient, space: str) -> list[DataModelId]:
 
 
 def main():
-    space = "power-ops-afrr-bids"
+    space = "power-ops"
     with chdir(REPO_ROOT):
         os.environ["SETTINGS_FILES"] = "settings.toml"
         customer = ("my_customer", "data_dir", "market")
