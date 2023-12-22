@@ -76,16 +76,23 @@ def delete_model(cdf: CogniteClient, space: str) -> list[DataModelId]:
 
 
 def main():
-    space = "power-ops"
+    space = "power-ops-afrr-bids"
     with chdir(REPO_ROOT):
         os.environ["SETTINGS_FILES"] = "settings.toml"
         customer = ("my_customer", "data_dir", "market")
         power = PowerOpsClient.from_settings()
-        print(f"Connected to {power.cdf.config.project}")
-        data_models = delete_model(power.cdf, "power-ops")
+        all_spaces = power.cdf.data_modeling.spaces.list(limit=-1)
+        print(f"Available spaces: {', '.join((s.space for s in all_spaces))}")
 
-        resync_models = [resync.DATAMODEL_ID_TO_RESYNC_NAME[m] for m in data_models]
-        if input("Run resync.init? (y/n)").casefold() == "y":
+        print(f"Connected to {power.cdf.config.project}")
+        data_models = delete_model(power.cdf, space)
+
+        try:
+            resync_models = [resync.DATAMODEL_ID_TO_RESYNC_NAME[m] for m in data_models]
+        except KeyError:
+            print(f"Could not find resync models for {data_models}")
+            return
+        if input("Run resync.init? (y/N)").casefold() == "y":
             print("Running resync.init")
 
             results = resync.init(power, model_names=resync_models)
@@ -93,7 +100,7 @@ def main():
                 model, action = result["model"], result["action"]
                 print(f"{model=} {action=}")
 
-            if input("Run resync.apply? (y/n)").casefold() == "y":
+            if input("Run resync.apply? (y/N)").casefold() == "y":
                 print("Running resync.apply")
                 resync.apply(
                     config_dir=REPO_ROOT / "customers" / f"resync-{customer[0]}" / customer[1],
