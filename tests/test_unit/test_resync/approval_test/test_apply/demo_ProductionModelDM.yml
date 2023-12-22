@@ -14,7 +14,8 @@ data_modeling.instances:
     source:
       external_id: Generator
       space: power-ops
-      type: container
+      type: view
+      version: 9178931bbaac71
   space: power-ops
 - external_id: generator_Dalby_G2
   instance_type: node
@@ -29,7 +30,8 @@ data_modeling.instances:
     source:
       external_id: Generator
       space: power-ops
-      type: container
+      type: view
+      version: 9178931bbaac71
   space: power-ops
 - external_id: generator_Holen_G1
   instance_type: node
@@ -46,7 +48,8 @@ data_modeling.instances:
     source:
       external_id: Generator
       space: power-ops
-      type: container
+      type: view
+      version: 9178931bbaac71
   space: power-ops
 - external_id: generator_Landet_G1
   instance_type: node
@@ -61,7 +64,8 @@ data_modeling.instances:
     source:
       external_id: Generator
       space: power-ops
-      type: container
+      type: view
+      version: 9178931bbaac71
   space: power-ops
 - external_id: generator_Lien_krv_G1
   instance_type: node
@@ -76,7 +80,8 @@ data_modeling.instances:
     source:
       external_id: Generator
       space: power-ops
-      type: container
+      type: view
+      version: 9178931bbaac71
   space: power-ops
 - external_id: generator_Lund_G1
   instance_type: node
@@ -93,7 +98,8 @@ data_modeling.instances:
     source:
       external_id: Generator
       space: power-ops
-      type: container
+      type: view
+      version: 9178931bbaac71
   space: power-ops
 - external_id: generator_Rull1_G1
   instance_type: node
@@ -108,7 +114,8 @@ data_modeling.instances:
     source:
       external_id: Generator
       space: power-ops
-      type: container
+      type: view
+      version: 9178931bbaac71
   space: power-ops
 - external_id: generator_Rull1_G2
   instance_type: node
@@ -123,7 +130,8 @@ data_modeling.instances:
     source:
       external_id: Generator
       space: power-ops
-      type: container
+      type: view
+      version: 9178931bbaac71
   space: power-ops
 - external_id: generator_Rull2_G1
   instance_type: node
@@ -138,7 +146,8 @@ data_modeling.instances:
     source:
       external_id: Generator
       space: power-ops
-      type: container
+      type: view
+      version: 9178931bbaac71
   space: power-ops
 - external_id: generator_Rull2_G2
   instance_type: node
@@ -153,7 +162,8 @@ data_modeling.instances:
     source:
       external_id: Generator
       space: power-ops
-      type: container
+      type: view
+      version: 9178931bbaac71
   space: power-ops
 - external_id: generator_Scott_G1
   instance_type: node
@@ -168,7 +178,8 @@ data_modeling.instances:
     source:
       external_id: Generator
       space: power-ops
-      type: container
+      type: view
+      version: 9178931bbaac71
   space: power-ops
 - external_id: generator_Strand_krv_G1
   instance_type: node
@@ -183,7 +194,8 @@ data_modeling.instances:
     source:
       external_id: Generator
       space: power-ops
-      type: container
+      type: view
+      version: 9178931bbaac71
   space: power-ops
 - external_id: plant_Dalby
   instance_type: node
@@ -208,7 +220,8 @@ data_modeling.instances:
     source:
       external_id: Plant
       space: power-ops
-      type: container
+      type: view
+      version: 836dcb3f5da1df
   space: power-ops
 - end_node:
     external_id: generator_Dalby_G1
@@ -257,7 +270,8 @@ data_modeling.instances:
     source:
       external_id: Plant
       space: power-ops
-      type: container
+      type: view
+      version: 836dcb3f5da1df
   space: power-ops
 - end_node:
     external_id: generator_Holen_G1
@@ -294,7 +308,8 @@ data_modeling.instances:
     source:
       external_id: Plant
       space: power-ops
-      type: container
+      type: view
+      version: 836dcb3f5da1df
   space: power-ops
 - end_node:
     external_id: generator_Landet_G1
@@ -331,7 +346,8 @@ data_modeling.instances:
     source:
       external_id: Plant
       space: power-ops
-      type: container
+      type: view
+      version: 836dcb3f5da1df
   space: power-ops
 - end_node:
     external_id: generator_Lien_krv_G1
@@ -372,7 +388,8 @@ data_modeling.instances:
     source:
       external_id: Plant
       space: power-ops
-      type: container
+      type: view
+      version: 836dcb3f5da1df
   space: power-ops
 - end_node:
     external_id: generator_Lund_G1
@@ -410,7 +427,8 @@ data_modeling.instances:
     source:
       external_id: Plant
       space: power-ops
-      type: container
+      type: view
+      version: 836dcb3f5da1df
   space: power-ops
 - end_node:
     external_id: generator_Rull1_G1
@@ -460,7 +478,8 @@ data_modeling.instances:
     source:
       external_id: Plant
       space: power-ops
-      type: container
+      type: view
+      version: 836dcb3f5da1df
   space: power-ops
 - end_node:
     external_id: generator_Rull2_G1
@@ -509,7 +528,8 @@ data_modeling.instances:
     source:
       external_id: Plant
       space: power-ops
-      type: container
+      type: view
+      version: 836dcb3f5da1df
   space: power-ops
 - end_node:
     external_id: generator_Scott_G1
@@ -546,7 +566,8 @@ data_modeling.instances:
     source:
       external_id: Plant
       space: power-ops
-      type: container
+      type: view
+      version: 836dcb3f5da1df
   space: power-ops
 - end_node:
     external_id: generator_Strand_krv_G1
@@ -569,7 +590,8 @@ data_modeling.instances:
     source:
       external_id: PriceArea
       space: power-ops
-      type: container
+      type: view
+      version: 6849ae787cd368
   space: power-ops
 - end_node:
     external_id: plant_Dalby
@@ -701,7 +723,8 @@ data_modeling.instances:
     source:
       external_id: Reservoir
       space: power-ops
-      type: container
+      type: view
+      version: 3c822b0c3d68f7
   space: power-ops
 - external_id: reservoir_Danielsen
   instance_type: node
@@ -713,7 +736,8 @@ data_modeling.instances:
     source:
       external_id: Reservoir
       space: power-ops
-      type: container
+      type: view
+      version: 3c822b0c3d68f7
   space: power-ops
 - external_id: reservoir_Frosta
   instance_type: node
@@ -725,7 +749,8 @@ data_modeling.instances:
     source:
       external_id: Reservoir
       space: power-ops
-      type: container
+      type: view
+      version: 3c822b0c3d68f7
   space: power-ops
 - external_id: reservoir_Hagen
   instance_type: node
@@ -737,7 +762,8 @@ data_modeling.instances:
     source:
       external_id: Reservoir
       space: power-ops
-      type: container
+      type: view
+      version: 3c822b0c3d68f7
   space: power-ops
 - external_id: reservoir_Hovden
   instance_type: node
@@ -749,7 +775,8 @@ data_modeling.instances:
     source:
       external_id: Reservoir
       space: power-ops
-      type: container
+      type: view
+      version: 3c822b0c3d68f7
   space: power-ops
 - external_id: reservoir_Lensvik
   instance_type: node
@@ -761,7 +788,8 @@ data_modeling.instances:
     source:
       external_id: Reservoir
       space: power-ops
-      type: container
+      type: view
+      version: 3c822b0c3d68f7
   space: power-ops
 - external_id: reservoir_Livincovs
   instance_type: node
@@ -773,7 +801,8 @@ data_modeling.instances:
     source:
       external_id: Reservoir
       space: power-ops
-      type: container
+      type: view
+      version: 3c822b0c3d68f7
   space: power-ops
 - external_id: reservoir_Lundvann
   instance_type: node
@@ -785,7 +814,8 @@ data_modeling.instances:
     source:
       external_id: Reservoir
       space: power-ops
-      type: container
+      type: view
+      version: 3c822b0c3d68f7
   space: power-ops
 - external_id: reservoir_Nielsen
   instance_type: node
@@ -797,7 +827,8 @@ data_modeling.instances:
     source:
       external_id: Reservoir
       space: power-ops
-      type: container
+      type: view
+      version: 3c822b0c3d68f7
   space: power-ops
 - external_id: reservoir_Ranemsletta_1183
   instance_type: node
@@ -809,7 +840,8 @@ data_modeling.instances:
     source:
       external_id: Reservoir
       space: power-ops
-      type: container
+      type: view
+      version: 3c822b0c3d68f7
   space: power-ops
 - external_id: reservoir_Rullsvatn
   instance_type: node
@@ -821,7 +853,8 @@ data_modeling.instances:
     source:
       external_id: Reservoir
       space: power-ops
-      type: container
+      type: view
+      version: 3c822b0c3d68f7
   space: power-ops
 - external_id: reservoir_Sirefelt
   instance_type: node
@@ -833,7 +866,8 @@ data_modeling.instances:
     source:
       external_id: Reservoir
       space: power-ops
-      type: container
+      type: view
+      version: 3c822b0c3d68f7
   space: power-ops
 - external_id: reservoir_Strand
   instance_type: node
@@ -845,7 +879,8 @@ data_modeling.instances:
     source:
       external_id: Reservoir
       space: power-ops
-      type: container
+      type: view
+      version: 3c822b0c3d68f7
   space: power-ops
 - external_id: reservoir_Strand_tunnel
   instance_type: node
@@ -857,7 +892,8 @@ data_modeling.instances:
     source:
       external_id: Reservoir
       space: power-ops
-      type: container
+      type: view
+      version: 3c822b0c3d68f7
   space: power-ops
 - external_id: reservoir_Tangvall
   instance_type: node
@@ -869,7 +905,8 @@ data_modeling.instances:
     source:
       external_id: Reservoir
       space: power-ops
-      type: container
+      type: view
+      version: 3c822b0c3d68f7
   space: power-ops
 - external_id: reservoir_Varhaug
   instance_type: node
@@ -881,7 +918,8 @@ data_modeling.instances:
     source:
       external_id: Reservoir
       space: power-ops
-      type: container
+      type: view
+      version: 3c822b0c3d68f7
   space: power-ops
 - external_id: watercourse_Fornebu
   instance_type: node
@@ -895,7 +933,8 @@ data_modeling.instances:
     source:
       external_id: Watercourse
       space: power-ops
-      type: container
+      type: view
+      version: 96f5170f35ef70
   space: power-ops
 - end_node:
     external_id: plant_Dalby
@@ -1013,7 +1052,8 @@ data_modeling.instances:
     source:
       external_id: WatercourseShop
       space: power-ops
-      type: container
+      type: view
+      version: 4b5321b1fccd06
   space: power-ops
 events: []
 files: []
