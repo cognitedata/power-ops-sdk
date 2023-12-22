@@ -10,8 +10,8 @@ filter:
     - node
     - type
     value:
-      space: '{{afrr_model_space}}'
-      externalId: BidDocument
+      space: '{{type_space}}'
+      externalId: AFRRBidDocument
 implements:
 - space: '{{shared_model_space}}'
   externalId: BidDocument
@@ -32,8 +32,8 @@ properties:
     name: priceArea
   bids:
     type:
-      space: '{{afrr_model_space}}'
-      externalId: BidDocument.bids
+      space: '{{type_space}}'
+      externalId: partialBid
     source:
       space: '{{afrr_model_space}}'
       externalId: BidRow

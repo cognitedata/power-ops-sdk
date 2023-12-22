@@ -9,8 +9,8 @@ filter:
      - node
      - type
     value:
-      space: '{{afrr_model_space}}'
-      externalId: PriceArea
+      space: '{{type_space}}'
+      externalId: AFRRPriceArea
 properties:
   name:
     container:

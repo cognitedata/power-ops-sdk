@@ -43,7 +43,7 @@ class BidRowAlertsAPI(EdgeAPI):
 
         """
         filter_ = _create_edge_filter(
-            dm.DirectRelationReference("power-ops-afrr-bid", "BidRow.alerts"),
+            dm.DirectRelationReference("power-ops-types", "calculationIssue"),
             from_bid_row,
             from_bid_row_space,
             to_alert,

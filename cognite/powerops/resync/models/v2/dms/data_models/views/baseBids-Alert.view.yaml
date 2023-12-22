@@ -9,7 +9,7 @@ filter:
     - node
     - type
     value:
-      space: '{{shared_model_space}}'
+      space: '{{type_space}}'
       externalId: Alert
 properties:
   time:

@@ -201,7 +201,7 @@ class GeneratorApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
-                type=dm.DirectRelationReference("power-ops-assets", "Generator"),
+                type=dm.DirectRelationReference("power-ops-types", "Generator"),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,
@@ -212,7 +212,7 @@ class GeneratorApply(DomainModelApply):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("power-ops-assets", "Generator.turbineCurves")
+        edge_type = dm.DirectRelationReference("power-ops-types", "isSubAssetOf")
         for turbine_curve in self.turbine_curves or []:
             other_resources = DomainRelationApply.from_edge_to_resources(
                 cache,

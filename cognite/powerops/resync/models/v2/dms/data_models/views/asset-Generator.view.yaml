@@ -9,7 +9,7 @@ filter:
      - node
      - type
     value:
-      space: '{{asset_space}}'
+      space: '{{type_space}}'
       externalId: Generator
 properties:
   name:
@@ -83,8 +83,8 @@ properties:
       externalId: TurbineEfficiencyCurve
       version: '{{asset_TurbineEfficiency_version}}'
     type:
-      space: '{{asset_space}}'
-      externalId: Generator.turbineCurves
+      space: '{{type_space}}'
+      externalId: isSubAssetOf
     direction: outwards
     description: The watercourses that are connected to the PriceArea.
     connectionType: multiEdgeConnection

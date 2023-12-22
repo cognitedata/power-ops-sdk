@@ -43,7 +43,7 @@ class WatercoursePlantsAPI(EdgeAPI):
 
         """
         filter_ = _create_edge_filter(
-            dm.DirectRelationReference("power-ops-assets", "Watercourse.plants"),
+            dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
             from_watercourse,
             from_watercourse_space,
             to_plant,

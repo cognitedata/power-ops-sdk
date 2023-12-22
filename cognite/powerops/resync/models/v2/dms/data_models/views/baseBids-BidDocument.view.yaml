@@ -10,12 +10,10 @@ filter:
     - node
     - type
     values:
-      - space: '{{shared_model_space}}'
-        externalId: BidDocument
-      - space: '{{dayahead_model_space}}'
-        externalId: BidDocument
-      - space: '{{afrr_model_space}}'
-        externalId: BidDocument
+      - space: '{{type_space}}'
+        externalId: DayAheadBidDocument
+      - space: '{{type_space}}'
+        externalId: AFRRBidDocument
 properties:
   name:
     container:
@@ -61,8 +59,8 @@ properties:
       has not necessarily succeeded).
   alerts:
     type:
-      space: '{{shared_model_space}}'
-      externalId: BidDocument.alerts
+      space: '{{type_space}}'
+      externalId: calculationIssue
     source:
       space: '{{shared_model_space}}'
       externalId: Alert

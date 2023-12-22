@@ -8,12 +8,10 @@ filter:
     - node
     - type
     values:
-      - space: '{{dayahead_model_space}}'
-        externalId: BidMethod
-      - space: '{{dayahead_model_space}}'
-        externalId: SHOPMultiScenario
-      - space: '{{dayahead_model_space}}'
-        externalId: WaterValueBased
+      - space: '{{type_space}}'
+        externalId: DayAheadSHOPMultiScenario
+      - space: '{{type_space}}'
+        externalId: DayAheadWaterValueBased
 implements:
 - space: '{{shared_model_space}}'
   externalId: BidMethod

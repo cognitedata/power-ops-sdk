@@ -8,10 +8,10 @@ filter:
     - node
     - type
     values:
-      - space: '{{dayahead_model_space}}'
-        externalId: BidMatrix
-      - space: '{{dayahead_model_space}}'
-        externalId: MultiScenarioMatrix
+      - space: '{{type_space}}'
+        externalId: DayAheadBasicBidMatrix
+      - space: '{{type_space}}'
+        externalId: DayAheadMultiScenarioMatrix
 properties:
   resourceCost:
     container:
@@ -55,8 +55,8 @@ properties:
       type: view
   alerts:
     type:
-      space: '{{dayahead_model_space}}'
-      externalId: BidMatrix.alerts
+      space: '{{type_space}}'
+      externalId: calculationIssue
     source:
       space: '{{shared_model_space}}'
       externalId: Alert

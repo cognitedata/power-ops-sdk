@@ -489,18 +489,18 @@ colorama = {version = "*", markers = "platform_system == \"Windows\""}
 
 [[package]]
 name = "cognite-pygen"
-version = "0.32.4"
+version = "0.32.5"
 description = "Cognite Python SDK Generator"
 optional = false
 python-versions = ">=3.9,<4.0"
 files = [
-    {file = "cognite_pygen-0.32.4-py3-none-any.whl", hash = "sha256:fe71c7d7ac949f5011a2844ad2d3443a60742fa37d4f11d7a95630cc88fb8996"},
-    {file = "cognite_pygen-0.32.4.tar.gz", hash = "sha256:e30bd6123cc5a84b2ecdcd4c92d953a192c26e9400f1194e1f4fb21f7a9e603b"},
+    {file = "cognite_pygen-0.32.5-py3-none-any.whl", hash = "sha256:deab7d6b9ac55c4313e5cae135af9ccfcf76d119fcc2af93ff07b303875559fb"},
+    {file = "cognite_pygen-0.32.5.tar.gz", hash = "sha256:5b317b0b2ae39de8718ac68776936a48f2d3afb1574bcf2a817020ff0d60f0df"},
 ]
 
 [package.dependencies]
 black = {version = ">=23.7.0", optional = true, markers = "extra == \"format\" or extra == \"all\""}
-cognite-sdk = ">=7.5.0,<8.0.0"
+cognite-sdk = ">=7.8.3,<8.0.0"
 inflect = ">=6.0"
 Jinja2 = ">=3.1"
 packaging = {version = ">=21.3", optional = true, markers = "extra == \"cli\" or extra == \"all\""}
@@ -517,13 +517,13 @@ format = ["black (>=23.7.0)"]
 
 [[package]]
 name = "cognite-sdk"
-version = "7.8.1"
+version = "7.8.4"
 description = "Cognite Python SDK"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "cognite_sdk-7.8.1-py3-none-any.whl", hash = "sha256:ec9302649efab4e673b9ad8d5c36fe98abbae613a2e20a754770854bece38f21"},
-    {file = "cognite_sdk-7.8.1.tar.gz", hash = "sha256:d828936975ad5dde82d9076f2a5bb244ba876e1a2d45570da2f0fcf8a37a798e"},
+    {file = "cognite_sdk-7.8.4-py3-none-any.whl", hash = "sha256:f9dc2c16327b55c3f011d9931aae1cbd06cc11085e82e33e7ed00c760b52459a"},
+    {file = "cognite_sdk-7.8.4.tar.gz", hash = "sha256:f82b127f3ca125e5da8bd1b9187d225aba6f2ff38e1275c3b34617f469f267be"},
 ]
 
 [package.dependencies]
@@ -4597,4 +4597,4 @@ docs = ["mkdocs", "mkdocs-git-authors-plugin", "mkdocs-git-revision-date-localiz
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.12"
-content-hash = "3f47e78622c12700340ea98c5584eda37bcf68361fb2eef525ea02601cc0941e"
+content-hash = "8c53f7921985127a3b92715bb6a4b9455f3a7f3985b57e2aef697d88210277df"

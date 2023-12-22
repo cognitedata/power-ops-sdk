@@ -13,6 +13,6 @@ filter:
     - node
     - type
     value:
-      space: '{{dayahead_model_space}}'
-      externalId: BasicBidMatrix
+      space: '{{type_space}}'
+      externalId: DayAheadBasicBidMatrix
 properties: {}

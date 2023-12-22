@@ -9,7 +9,7 @@ filter:
     - node
     - type
     value:
-      space: '{{asset_space}}'
+      space: '{{type_space}}'
       externalId: Plant
 properties:
   name:
@@ -191,8 +191,8 @@ properties:
     name: inletReservoir
   generators:
     type:
-      space: '{{asset_space}}'
-      externalId: Plant.generators
+      space: '{{type_space}}'
+      externalId: isSubAssetOf
     source:
       type: view
       space: '{{asset_space}}'

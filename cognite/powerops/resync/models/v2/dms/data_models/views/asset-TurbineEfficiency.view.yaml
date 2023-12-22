@@ -9,7 +9,7 @@ filter:
     - node
     - type
     value:
-      space: '{{asset_space}}'
+      space: '{{type_space}}'
       externalId: TurbineEfficiencyCurve
 properties:
   head:

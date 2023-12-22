@@ -206,7 +206,7 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
                 (
                     self.bids_edge,
                     "bids",
-                    dm.DirectRelationReference("power-ops-afrr-bid", "BidDocument.bids"),
+                    dm.DirectRelationReference("power-ops-types", "partialBid"),
                     "outwards",
                 ),
             ],
@@ -580,7 +580,7 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
                 (
                     self.bids_edge,
                     "bids",
-                    dm.DirectRelationReference("power-ops-afrr-bid", "BidDocument.bids"),
+                    dm.DirectRelationReference("power-ops-types", "partialBid"),
                     "outwards",
                 ),
             ],

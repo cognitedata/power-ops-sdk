@@ -7,8 +7,8 @@ filter:
     - node
     - type
     value:
-      space: '{{dayahead_model_space}}'
-      externalId: BidDocument
+      space: '{{type_space}}'
+      externalId: DayAheadBidDocument
 implements:
 - space: '{{shared_model_space}}'
   externalId: BidDocument
@@ -54,8 +54,8 @@ properties:
       type: view
   partials:
     type:
-      space: '{{dayahead_model_space}}'
-      externalId: BidDocument.partials
+      space: '{{type_space}}'
+      externalId: partialBid
     source:
       space: '{{dayahead_model_space}}'
       externalId: BidMatrix

@@ -43,7 +43,7 @@ class PriceAreaPlantsAPI(EdgeAPI):
 
         """
         filter_ = _create_edge_filter(
-            dm.DirectRelationReference("power-ops-assets", "PriceArea.plants"),
+            dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
             from_price_area,
             from_price_area_space,
             to_plant,

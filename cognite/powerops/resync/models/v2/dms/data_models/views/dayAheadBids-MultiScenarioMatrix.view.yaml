@@ -7,8 +7,8 @@ filter:
     - node
     - type
     value:
-      space: '{{dayahead_model_space}}'
-      externalId: MultiScenarioMatrix
+      space: '{{type_space}}'
+      externalId: DayAheadMultiScenarioMatrix
 implements:
 - space: '{{dayahead_model_space}}'
   externalId: BidMatrix

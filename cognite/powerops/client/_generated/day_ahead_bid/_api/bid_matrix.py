@@ -188,7 +188,7 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixApply, BidMatrixList]):
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("power-ops-day-ahead-bid", "BidMatrix.alerts"),
+                    dm.DirectRelationReference("power-ops-types", "calculationIssue"),
                     "outwards",
                 ),
             ],
@@ -514,7 +514,7 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixApply, BidMatrixList]):
                 (
                     self.alerts_edge,
                     "alerts",
-                    dm.DirectRelationReference("power-ops-day-ahead-bid", "BidMatrix.alerts"),
+                    dm.DirectRelationReference("power-ops-types", "calculationIssue"),
                     "outwards",
                 ),
             ],

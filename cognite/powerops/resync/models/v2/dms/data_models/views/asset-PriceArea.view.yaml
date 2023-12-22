@@ -9,7 +9,7 @@ filter:
     - node
     - type
     value:
-      space: '{{asset_space}}'
+      space: '{{type_space}}'
       externalId: PriceArea
 properties:
   name:
@@ -142,8 +142,8 @@ properties:
     description: Day ahead price for the price area
   plants:
     type:
-      space: '{{asset_space}}'
-      externalId: PriceArea.plants
+      space: '{{type_space}}'
+      externalId: isSubAssetOf
     source:
       space: '{{asset_space}}'
       externalId: Plant
@@ -155,8 +155,8 @@ properties:
     connectionType: multiEdgeConnection
   watercourses:
     type:
-      space: '{{asset_space}}'
-      externalId: PriceArea.watercourses
+      space: '{{type_space}}'
+      externalId: isSubAssetOf
     source:
       space: '{{asset_space}}'
       externalId: Watercourse

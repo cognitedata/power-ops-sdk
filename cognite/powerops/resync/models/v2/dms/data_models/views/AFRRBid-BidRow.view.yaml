@@ -9,8 +9,8 @@ filter:
      - node
      - type
     value:
-      space: '{{afrr_model_space}}'
-      externalId: BidRow
+      space: '{{type_space}}'
+      externalId: AFRRBidRow
 properties:
   price:
     container:
@@ -115,8 +115,8 @@ properties:
       type: view
   alerts:
     type:
-      space: '{{afrr_model_space}}'
-      externalId: BidRow.alerts
+      space: '{{type_space}}'
+      externalId: calculationIssue
     source:
       space: '{{shared_model_space}}'
       externalId: Alert

@@ -9,16 +9,12 @@ filter:
     - node
     - type
     values:
-      - space: '{{shared_model_space}}'
-        externalId: BidMethod
-      - space: '{{dayahead_model_space}}'
-        externalId: BidMethod
-      - space: '{{dayahead_model_space}}'
-        externalId: SHOPMultiScenario
-      - space: '{{dayahead_model_space}}'
-        externalId: WaterValueBased
-      - space: '{{afrr_model_space}}'
-        externalId: BidMethod
+      - space: '{{type_space}}'
+        externalId: DayAheadSHOPMultiScenario
+      - space: '{{type_space}}'
+        externalId: DayAheadWaterValueBased
+      - space: '{{type_space}}'
+        externalId: AFRRBidMethod
 properties:
   name:
     container:

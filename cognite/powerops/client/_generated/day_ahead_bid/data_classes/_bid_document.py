@@ -190,7 +190,7 @@ class BidDocumentApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
-                type=dm.DirectRelationReference("power-ops-day-ahead-bid", "BidDocument"),
+                type=dm.DirectRelationReference("power-ops-types", "DayAheadBidDocument"),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,
@@ -208,7 +208,7 @@ class BidDocumentApply(DomainModelApply):
             )
             resources.extend(other_resources)
 
-        edge_type = dm.DirectRelationReference("power-ops-day-ahead-bid", "BidDocument.partials")
+        edge_type = dm.DirectRelationReference("power-ops-types", "partialBid")
         for partial in self.partials or []:
             other_resources = DomainRelationApply.from_edge_to_resources(
                 cache, start_node=self, end_node=partial, edge_type=edge_type, view_by_write_class=view_by_write_class

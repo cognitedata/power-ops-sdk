@@ -204,7 +204,7 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorApply, GeneratorList]):
                 (
                     self.turbine_curves_edge,
                     "turbine_curves",
-                    dm.DirectRelationReference("power-ops-assets", "Generator.turbineCurves"),
+                    dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
                     "outwards",
                 ),
             ],
@@ -586,7 +586,7 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorApply, GeneratorList]):
                 (
                     self.turbine_curves_edge,
                     "turbine_curves",
-                    dm.DirectRelationReference("power-ops-assets", "Generator.turbineCurves"),
+                    dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
                     "outwards",
                 ),
             ],

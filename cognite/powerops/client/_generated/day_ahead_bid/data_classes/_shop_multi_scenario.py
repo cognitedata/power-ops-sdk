@@ -124,7 +124,7 @@ class SHOPMultiScenarioApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
-                type=dm.DirectRelationReference("power-ops-day-ahead-bid", "SHOPMultiScenario"),
+                type=dm.DirectRelationReference("power-ops-types", "DayAheadSHOPMultiScenario"),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,

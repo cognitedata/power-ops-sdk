@@ -3,73 +3,47 @@
 # types here as we use them in validation of the data models.
 
 # Types of edges:
-- space: {{afrr_model_space}}
-  externalId: BidDocument.bids
-- space: {{afrr_model_space}}
-  externalId: BidRow.alerts
-- space: {{asset_space}}
-  externalId: Generator.turbineCurves
-- space: {{asset_space}}
-  externalId: Plant.generators
-- space: {{asset_space}}
-  externalId: PriceArea.plants
-- space: {{asset_space}}
-  externalId: PriceArea.watercourses
-- space: {{asset_space}}
-  externalId: Watercourse.plants
-- space: {{shared_model_space}}
-  externalId: BidDocument.alerts
-- space: {{dayahead_model_space}}
-  externalId: BidDocument.partials
-- space: {{dayahead_model_space}}
-  externalId: BidMatrix.alerts
+- space: {{type_space}}
+  externalId: partialBid
+- space: {{type_space}}
+  externalId: calculationIssue
+- space: {{type_space}}
+  externalId: isSubAssetOf
 
 # Types of nodes:
-- space: {{asset_space}}
-  externalId: GeneratorEfficiencyCurve
-- space: {{dayahead_model_space}}
-  externalId: GeneratorEfficiencyCurve
-- space: {{asset_space}}
-  externalId: GeneratorEfficiencyCurve
-- space: {{afrr_model_space}}
-  externalId: GeneratorEfficiencyCurve
-- space: {{dayahead_model_space}}
-  externalId: GeneratorEfficiencyCurve
-- space: {{afrr_model_space}}
-  externalId: GeneratorEfficiencyCurve
-- space: {{dayahead_model_space}}
-  externalId: BasicBidMatrix
-- space: {{afrr_model_space}}
-  externalId: BidMethod
-- space: {{asset_space}}
-  externalId: Reservoir
-- space: {{dayahead_model_space}}
-  externalId: WaterValueBased
-- space: {{afrr_model_space}}
-  externalId: BidDocument
-
-
-- space: {{dayahead_model_space}}
-  externalId: MultiScenarioMatrix
-- space: {{asset_space}}
-  externalId: Plant
-- space: {{dayahead_model_space}}
-  externalId: BidDocument
-- space: {{dayahead_model_space}}
-  externalId: PriceArea
-- space: {{asset_space}}
+- space: {{type_space}}
+  externalId: AFRRBidDocument
+- space: {{type_space}}
+  externalId: AFRRBidMethod
+- space: {{type_space}}
+  externalId: AFRRBidRow
+- space: {{type_space}}
+  externalId: AFRRPriceArea
+- space: {{type_space}}
   externalId: Generator
-- space: {{shared_model_space}}
-  externalId: Alert
-- space: {{afrr_model_space}}
+- space: {{type_space}}
+  externalId: GeneratorEfficiencyCurve
+- space: {{type_space}}
+  externalId: Plant
+- space: {{type_space}}
   externalId: PriceArea
-- space: {{asset_space}}
-  externalId: Watercourse
-- space: {{afrr_model_space}}
-  externalId: BidRow
-- space: {{asset_space}}
+- space: {{type_space}}
+  externalId: Reservoir
+- space: {{type_space}}
   externalId: TurbineEfficiencyCurve
-- space: {{dayahead_model_space}}
-  externalId: SHOPMultiScenario
-- space: {{asset_space}}
-  externalId: PriceArea
+- space: {{type_space}}
+  externalId: Watercourse
+- space: {{type_space}}
+  externalId: Alert
+- space: {{type_space}}
+  externalId: DayAheadBasicBidMatrix
+- space: {{type_space}}
+  externalId: DayAheadBidDocument
+- space: {{type_space}}
+  externalId: DayAheadMultiScenarioMatrix
+- space: {{type_space}}
+  externalId: DayAheadPriceArea
+- space: {{type_space}}
+  externalId: DayAheadSHOPMultiScenario
+- space: {{type_space}}
+  externalId: DayAheadWaterValueBased

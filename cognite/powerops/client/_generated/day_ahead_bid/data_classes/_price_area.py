@@ -153,7 +153,7 @@ class PriceAreaApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
-                type=dm.DirectRelationReference("power-ops-day-ahead-bid", "PriceArea"),
+                type=dm.DirectRelationReference("power-ops-types", "DayAheadPriceArea"),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,
