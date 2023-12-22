@@ -240,68 +240,82 @@ class PriceAreaApply(DomainModelApply):
         )
 
         properties = {}
+
         if self.name is not None:
             properties["name"] = self.name
+
         if self.display_name is not None:
             properties["displayName"] = self.display_name
+
         if self.description is not None:
             properties["description"] = self.description
+
         if self.timezone is not None:
             properties["timezone"] = self.timezone
+
         if self.capacity_price_up is not None:
             properties["capacityPriceUp"] = (
                 self.capacity_price_up
                 if isinstance(self.capacity_price_up, str)
                 else self.capacity_price_up.external_id
             )
+
         if self.capacity_price_down is not None:
             properties["capacityPriceDown"] = (
                 self.capacity_price_down
                 if isinstance(self.capacity_price_down, str)
                 else self.capacity_price_down.external_id
             )
+
         if self.activation_price_up is not None:
             properties["activationPriceUp"] = (
                 self.activation_price_up
                 if isinstance(self.activation_price_up, str)
                 else self.activation_price_up.external_id
             )
+
         if self.activation_price_down is not None:
             properties["activationPriceDown"] = (
                 self.activation_price_down
                 if isinstance(self.activation_price_down, str)
                 else self.activation_price_down.external_id
             )
+
         if self.relative_activation is not None:
             properties["relativeActivation"] = (
                 self.relative_activation
                 if isinstance(self.relative_activation, str)
                 else self.relative_activation.external_id
             )
+
         if self.total_capacity_allocation_up is not None:
             properties["totalCapacityAllocationUp"] = (
                 self.total_capacity_allocation_up
                 if isinstance(self.total_capacity_allocation_up, str)
                 else self.total_capacity_allocation_up.external_id
             )
+
         if self.total_capacity_allocation_down is not None:
             properties["totalCapacityAllocationDown"] = (
                 self.total_capacity_allocation_down
                 if isinstance(self.total_capacity_allocation_down, str)
                 else self.total_capacity_allocation_down.external_id
             )
+
         if self.own_capacity_allocation_up is not None:
             properties["ownCapacityAllocationUp"] = (
                 self.own_capacity_allocation_up
                 if isinstance(self.own_capacity_allocation_up, str)
                 else self.own_capacity_allocation_up.external_id
             )
+
         if self.own_capacity_allocation_down is not None:
             properties["ownCapacityAllocationDown"] = (
                 self.own_capacity_allocation_down
                 if isinstance(self.own_capacity_allocation_down, str)
                 else self.own_capacity_allocation_down.external_id
             )
+
         if self.default_method_day_ahead is not None:
             properties["defaultMethodDayAhead"] = {
                 "space": self.space
@@ -311,12 +325,14 @@ class PriceAreaApply(DomainModelApply):
                 if isinstance(self.default_method_day_ahead, str)
                 else self.default_method_day_ahead.external_id,
             }
+
         if self.main_scenario_day_ahead is not None:
             properties["mainScenarioDayAhead"] = (
                 self.main_scenario_day_ahead
                 if isinstance(self.main_scenario_day_ahead, str)
                 else self.main_scenario_day_ahead.external_id
             )
+
         if self.day_ahead_price is not None:
             properties["dayAheadPrice"] = (
                 self.day_ahead_price if isinstance(self.day_ahead_price, str) else self.day_ahead_price.external_id
@@ -327,6 +343,7 @@ class PriceAreaApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
+                type=dm.DirectRelationReference("power-ops-types", "PriceArea"),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,
@@ -340,14 +357,18 @@ class PriceAreaApply(DomainModelApply):
         edge_type = dm.DirectRelationReference("power-ops-types", "isSubAssetOf")
         for plant in self.plants or []:
             other_resources = DomainRelationApply.from_edge_to_resources(
-                cache, self, plant, edge_type, view_by_write_class
+                cache, start_node=self, end_node=plant, edge_type=edge_type, view_by_write_class=view_by_write_class
             )
             resources.extend(other_resources)
 
         edge_type = dm.DirectRelationReference("power-ops-types", "isSubAssetOf")
         for watercourse in self.watercourses or []:
             other_resources = DomainRelationApply.from_edge_to_resources(
-                cache, self, watercourse, edge_type, view_by_write_class
+                cache,
+                start_node=self,
+                end_node=watercourse,
+                edge_type=edge_type,
+                view_by_write_class=view_by_write_class,
             )
             resources.extend(other_resources)
 
@@ -423,25 +444,25 @@ def _create_price_area_filter(
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
-    if name and isinstance(name, str):
+    if name is not None and isinstance(name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
     if name and isinstance(name, list):
         filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
     if name_prefix:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
-    if display_name and isinstance(display_name, str):
+    if display_name is not None and isinstance(display_name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("displayName"), value=display_name))
     if display_name and isinstance(display_name, list):
         filters.append(dm.filters.In(view_id.as_property_ref("displayName"), values=display_name))
     if display_name_prefix:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("displayName"), value=display_name_prefix))
-    if description and isinstance(description, str):
+    if description is not None and isinstance(description, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("description"), value=description))
     if description and isinstance(description, list):
         filters.append(dm.filters.In(view_id.as_property_ref("description"), values=description))
     if description_prefix:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("description"), value=description_prefix))
-    if timezone and isinstance(timezone, str):
+    if timezone is not None and isinstance(timezone, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("timezone"), value=timezone))
     if timezone and isinstance(timezone, list):
         filters.append(dm.filters.In(view_id.as_property_ref("timezone"), values=timezone))
@@ -485,7 +506,7 @@ def _create_price_area_filter(
         )
     if external_id_prefix:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
-    if space and isinstance(space, str):
+    if space is not None and isinstance(space, str):
         filters.append(dm.filters.Equals(["node", "space"], value=space))
     if space and isinstance(space, list):
         filters.append(dm.filters.In(["node", "space"], values=space))

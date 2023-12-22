@@ -77,6 +77,7 @@ class BidDocumentQueryAPI(QueryAPI[T_DomainModelList]):
                 expression=dm.query.EdgeResultSetExpression(
                     filter=edge_filter,
                     from_=from_,
+                    direction="outwards",
                 ),
                 select=dm.query.Select(),
                 max_retrieve_limit=limit,
@@ -110,7 +111,7 @@ class BidDocumentQueryAPI(QueryAPI[T_DomainModelList]):
         from_ = self._builder[-1].name
 
         edge_filter = _create_edge_filter(
-            dm.DirectRelationReference("power-ops-types", "PartialBid"),
+            dm.DirectRelationReference("power-ops-types", "partialBid"),
             external_id_prefix=external_id_prefix,
             space=space,
         )
@@ -120,6 +121,7 @@ class BidDocumentQueryAPI(QueryAPI[T_DomainModelList]):
                 expression=dm.query.EdgeResultSetExpression(
                     filter=edge_filter,
                     from_=from_,
+                    direction="outwards",
                 ),
                 select=dm.query.Select(),
                 max_retrieve_limit=limit,

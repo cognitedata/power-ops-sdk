@@ -1,6 +1,14 @@
 space: '{{dayahead_model_space}}'
 externalId: BidDocument
 name: BidDocument
+filter:
+  equals:
+    property:
+    - node
+    - type
+    value:
+      space: '{{type_space}}'
+      externalId: DayAheadBidDocument
 implements:
 - space: '{{shared_model_space}}'
   externalId: BidDocument
@@ -47,7 +55,7 @@ properties:
   partials:
     type:
       space: '{{type_space}}'
-      externalId: PartialBid
+      externalId: partialBid
     source:
       space: '{{dayahead_model_space}}'
       externalId: BidMatrix

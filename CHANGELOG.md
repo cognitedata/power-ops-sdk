@@ -13,6 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.78.0] - 2023-12-22
+### Changed
+* Changes to views in `DayAheadBid` and `AFRRBid` models.
+* Regenerate clients with `pygen` `v0.32.5`
+
 ## [0.77.0] - 2023-12-11
 ### Fixed
 * Factory methods `from_client` and `from_toml` to PowerOps Client

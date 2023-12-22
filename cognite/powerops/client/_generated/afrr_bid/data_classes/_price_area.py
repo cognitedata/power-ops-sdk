@@ -171,56 +171,66 @@ class PriceAreaApply(DomainModelApply):
         )
 
         properties = {}
+
         if self.name is not None:
             properties["name"] = self.name
+
         if self.capacity_price_up is not None:
             properties["capacityPriceUp"] = (
                 self.capacity_price_up
                 if isinstance(self.capacity_price_up, str)
                 else self.capacity_price_up.external_id
             )
+
         if self.capacity_price_down is not None:
             properties["capacityPriceDown"] = (
                 self.capacity_price_down
                 if isinstance(self.capacity_price_down, str)
                 else self.capacity_price_down.external_id
             )
+
         if self.activation_price_up is not None:
             properties["activationPriceUp"] = (
                 self.activation_price_up
                 if isinstance(self.activation_price_up, str)
                 else self.activation_price_up.external_id
             )
+
         if self.activation_price_down is not None:
             properties["activationPriceDown"] = (
                 self.activation_price_down
                 if isinstance(self.activation_price_down, str)
                 else self.activation_price_down.external_id
             )
+
         if self.relative_activation is not None:
             properties["relativeActivation"] = (
                 self.relative_activation
                 if isinstance(self.relative_activation, str)
                 else self.relative_activation.external_id
             )
+
         if self.total_capacity_allocation_up is not None:
             properties["totalCapacityAllocationUp"] = (
                 self.total_capacity_allocation_up
                 if isinstance(self.total_capacity_allocation_up, str)
                 else self.total_capacity_allocation_up.external_id
             )
+
         if self.total_capacity_allocation_down is not None:
             properties["totalCapacityAllocationDown"] = (
                 self.total_capacity_allocation_down
                 if isinstance(self.total_capacity_allocation_down, str)
                 else self.total_capacity_allocation_down.external_id
             )
+
         if self.own_capacity_allocation_up is not None:
             properties["ownCapacityAllocationUp"] = (
                 self.own_capacity_allocation_up
                 if isinstance(self.own_capacity_allocation_up, str)
                 else self.own_capacity_allocation_up.external_id
             )
+
         if self.own_capacity_allocation_down is not None:
             properties["ownCapacityAllocationDown"] = (
                 self.own_capacity_allocation_down
@@ -233,6 +243,7 @@ class PriceAreaApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
+                type=dm.DirectRelationReference("power-ops-types", "AFRRPriceArea"),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,
@@ -298,7 +309,7 @@ def _create_price_area_filter(
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
-    if name and isinstance(name, str):
+    if name is not None and isinstance(name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
     if name and isinstance(name, list):
         filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
@@ -306,7 +317,7 @@ def _create_price_area_filter(
         filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
     if external_id_prefix:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
-    if space and isinstance(space, str):
+    if space is not None and isinstance(space, str):
         filters.append(dm.filters.Equals(["node", "space"], value=space))
     if space and isinstance(space, list):
         filters.append(dm.filters.In(["node", "space"], values=space))

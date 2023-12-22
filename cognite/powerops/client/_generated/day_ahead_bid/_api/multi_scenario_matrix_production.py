@@ -14,7 +14,7 @@ from cognite.powerops.client._generated.day_ahead_bid.data_classes._multi_scenar
 )
 from ._core import DEFAULT_LIMIT_READ, INSTANCE_QUERY_LIMIT
 
-ColumnNames = Literal["resourceCost", "matrix", "assetType", "assetId"]
+ColumnNames = Literal["resourceCost", "matrix", "assetType", "assetId", "production", "price"]
 
 
 class MultiScenarioMatrixProductionQuery:

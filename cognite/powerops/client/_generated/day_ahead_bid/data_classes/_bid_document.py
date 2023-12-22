@@ -151,26 +151,34 @@ class BidDocumentApply(DomainModelApply):
         )
 
         properties = {}
+
         if self.name is not None:
             properties["name"] = self.name
+
         if self.delivery_date is not None:
             properties["deliveryDate"] = self.delivery_date.isoformat()
+
         if self.start_calculation is not None:
             properties["startCalculation"] = self.start_calculation.isoformat(timespec="milliseconds")
+
         if self.end_calculation is not None:
             properties["endCalculation"] = self.end_calculation.isoformat(timespec="milliseconds")
+
         if self.is_complete is not None:
             properties["isComplete"] = self.is_complete
+
         if self.price_area is not None:
             properties["priceArea"] = {
                 "space": self.space if isinstance(self.price_area, str) else self.price_area.space,
                 "externalId": self.price_area if isinstance(self.price_area, str) else self.price_area.external_id,
             }
+
         if self.method is not None:
             properties["method"] = {
                 "space": self.space if isinstance(self.method, str) else self.method.space,
                 "externalId": self.method if isinstance(self.method, str) else self.method.external_id,
             }
+
         if self.total is not None:
             properties["total"] = {
                 "space": self.space if isinstance(self.total, str) else self.total.space,
@@ -182,6 +190,7 @@ class BidDocumentApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
+                type=dm.DirectRelationReference("power-ops-types", "DayAheadBidDocument"),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,
@@ -195,14 +204,14 @@ class BidDocumentApply(DomainModelApply):
         edge_type = dm.DirectRelationReference("power-ops-types", "calculationIssue")
         for alert in self.alerts or []:
             other_resources = DomainRelationApply.from_edge_to_resources(
-                cache, self, alert, edge_type, view_by_write_class
+                cache, start_node=self, end_node=alert, edge_type=edge_type, view_by_write_class=view_by_write_class
             )
             resources.extend(other_resources)
 
-        edge_type = dm.DirectRelationReference("power-ops-types", "PartialBid")
+        edge_type = dm.DirectRelationReference("power-ops-types", "partialBid")
         for partial in self.partials or []:
             other_resources = DomainRelationApply.from_edge_to_resources(
-                cache, self, partial, edge_type, view_by_write_class
+                cache, start_node=self, end_node=partial, edge_type=edge_type, view_by_write_class=view_by_write_class
             )
             resources.extend(other_resources)
 
@@ -256,7 +265,7 @@ def _create_bid_document_filter(
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
-    if name and isinstance(name, str):
+    if name is not None and isinstance(name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
     if name and isinstance(name, list):
         filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
@@ -286,7 +295,7 @@ def _create_bid_document_filter(
                 lte=max_end_calculation.isoformat(timespec="milliseconds") if max_end_calculation else None,
             )
         )
-    if is_complete and isinstance(is_complete, bool):
+    if is_complete is not None and isinstance(is_complete, bool):
         filters.append(dm.filters.Equals(view_id.as_property_ref("isComplete"), value=is_complete))
     if price_area and isinstance(price_area, str):
         filters.append(
@@ -363,7 +372,7 @@ def _create_bid_document_filter(
         )
     if external_id_prefix:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
-    if space and isinstance(space, str):
+    if space is not None and isinstance(space, str):
         filters.append(dm.filters.Equals(["node", "space"], value=space))
     if space and isinstance(space, list):
         filters.append(dm.filters.In(["node", "space"], values=space))

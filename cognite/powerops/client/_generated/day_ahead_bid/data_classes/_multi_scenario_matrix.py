@@ -139,29 +139,39 @@ class MultiScenarioMatrixApply(DomainModelApply):
         )
 
         properties = {}
+
         if self.resource_cost is not None:
             properties["resourceCost"] = self.resource_cost
+
         if self.matrix is not None:
             properties["matrix"] = self.matrix
+
         if self.asset_type is not None:
             properties["assetType"] = self.asset_type
+
         if self.asset_id is not None:
             properties["assetId"] = self.asset_id
+
         if self.method is not None:
             properties["method"] = {
                 "space": self.space if isinstance(self.method, str) else self.method.space,
                 "externalId": self.method if isinstance(self.method, str) else self.method.external_id,
             }
+
         if self.production is not None:
-            properties["production"] = self.production
+            properties["production"] = [
+                value if isinstance(value, str) else value.external_id for value in self.production
+            ]
+
         if self.price is not None:
-            properties["price"] = self.price
+            properties["price"] = [value if isinstance(value, str) else value.external_id for value in self.price]
 
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
+                type=dm.DirectRelationReference("power-ops-types", "DayAheadMultiScenarioMatrix"),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,
@@ -175,7 +185,7 @@ class MultiScenarioMatrixApply(DomainModelApply):
         edge_type = dm.DirectRelationReference("power-ops-types", "calculationIssue")
         for alert in self.alerts or []:
             other_resources = DomainRelationApply.from_edge_to_resources(
-                cache, self, alert, edge_type, view_by_write_class
+                cache, start_node=self, end_node=alert, edge_type=edge_type, view_by_write_class=view_by_write_class
             )
             resources.extend(other_resources)
 
@@ -222,19 +232,19 @@ def _create_multi_scenario_matrix_filter(
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
-    if resource_cost and isinstance(resource_cost, str):
+    if resource_cost is not None and isinstance(resource_cost, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("resourceCost"), value=resource_cost))
     if resource_cost and isinstance(resource_cost, list):
         filters.append(dm.filters.In(view_id.as_property_ref("resourceCost"), values=resource_cost))
     if resource_cost_prefix:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("resourceCost"), value=resource_cost_prefix))
-    if asset_type and isinstance(asset_type, str):
+    if asset_type is not None and isinstance(asset_type, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("assetType"), value=asset_type))
     if asset_type and isinstance(asset_type, list):
         filters.append(dm.filters.In(view_id.as_property_ref("assetType"), values=asset_type))
     if asset_type_prefix:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("assetType"), value=asset_type_prefix))
-    if asset_id and isinstance(asset_id, str):
+    if asset_id is not None and isinstance(asset_id, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("assetId"), value=asset_id))
     if asset_id and isinstance(asset_id, list):
         filters.append(dm.filters.In(view_id.as_property_ref("assetId"), values=asset_id))
@@ -265,7 +275,7 @@ def _create_multi_scenario_matrix_filter(
         )
     if external_id_prefix:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
-    if space and isinstance(space, str):
+    if space is not None and isinstance(space, str):
         filters.append(dm.filters.Equals(["node", "space"], value=space))
     if space and isinstance(space, list):
         filters.append(dm.filters.In(["node", "space"], values=space))

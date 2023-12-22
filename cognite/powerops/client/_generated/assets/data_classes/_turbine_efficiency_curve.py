@@ -101,10 +101,13 @@ class TurbineEfficiencyCurveApply(DomainModelApply):
         )
 
         properties = {}
+
         if self.head is not None:
             properties["head"] = self.head
+
         if self.flow is not None:
             properties["flow"] = self.flow
+
         if self.efficiency is not None:
             properties["efficiency"] = self.efficiency
 
@@ -113,7 +116,7 @@ class TurbineEfficiencyCurveApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
-                type=dm.DirectRelationReference("power-ops-types", "TurbineCurve"),
+                type=dm.DirectRelationReference("power-ops-types", "TurbineEfficiencyCurve"),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,
@@ -156,7 +159,7 @@ def _create_turbine_efficiency_curve_filter(
         filters.append(dm.filters.Range(view_id.as_property_ref("head"), gte=min_head, lte=max_head))
     if external_id_prefix:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
-    if space and isinstance(space, str):
+    if space is not None and isinstance(space, str):
         filters.append(dm.filters.Equals(["node", "space"], value=space))
     if space and isinstance(space, list):
         filters.append(dm.filters.In(["node", "space"], values=space))

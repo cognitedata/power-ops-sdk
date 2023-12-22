@@ -1,6 +1,14 @@
 space: '{{dayahead_model_space}}'
 externalId: SHOPMultiScenario
 name: SHOPMultiScenario
+filter:
+  equals:
+    property:
+    - node
+    - type
+    value:
+      space: '{{type_space}}'
+      externalId: DayAheadSHOPMultiScenario
 implements:
 - space: '{{dayahead_model_space}}'
   externalId: BidMethod

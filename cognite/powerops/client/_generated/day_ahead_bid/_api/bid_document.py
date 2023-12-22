@@ -202,9 +202,19 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
             external_id,
             space,
             retrieve_edges=True,
-            edge_api_name_type_triple=[
-                (self.alerts_edge, "alerts", dm.DirectRelationReference("power-ops-types", "calculationIssue")),
-                (self.partials_edge, "partials", dm.DirectRelationReference("power-ops-types", "PartialBid")),
+            edge_api_name_type_direction_quad=[
+                (
+                    self.alerts_edge,
+                    "alerts",
+                    dm.DirectRelationReference("power-ops-types", "calculationIssue"),
+                    "outwards",
+                ),
+                (
+                    self.partials_edge,
+                    "partials",
+                    dm.DirectRelationReference("power-ops-types", "partialBid"),
+                    "outwards",
+                ),
             ],
         )
 
@@ -594,8 +604,18 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
             limit=limit,
             filter=filter_,
             retrieve_edges=retrieve_edges,
-            edge_api_name_type_triple=[
-                (self.alerts_edge, "alerts", dm.DirectRelationReference("power-ops-types", "calculationIssue")),
-                (self.partials_edge, "partials", dm.DirectRelationReference("power-ops-types", "PartialBid")),
+            edge_api_name_type_direction_quad=[
+                (
+                    self.alerts_edge,
+                    "alerts",
+                    dm.DirectRelationReference("power-ops-types", "calculationIssue"),
+                    "outwards",
+                ),
+                (
+                    self.partials_edge,
+                    "partials",
+                    dm.DirectRelationReference("power-ops-types", "partialBid"),
+                    "outwards",
+                ),
             ],
         )

@@ -22,8 +22,8 @@ class DayAheadBidAPI:
     DayAheadBidAPI
 
     Generated with:
-        pygen = 0.32.1
-        cognite-sdk = 7.6.0
+        pygen = 0.32.5
+        cognite-sdk = 7.8.4
         pydantic = 2.5.2
 
     Data Model:
@@ -40,7 +40,7 @@ class DayAheadBidAPI:
         else:
             raise ValueError(f"Expected CogniteClient or ClientConfig, got {type(config_or_client)}")
         # The client name is used for aggregated logging of Pygen Usage
-        client.config.client_name = "CognitePygen:0.32.1"
+        client.config.client_name = "CognitePygen:0.32.5"
 
         view_by_write_class = {
             data_classes.AlertApply: dm.ViewId("power-ops-shared", "Alert", "1"),
@@ -63,3 +63,25 @@ class DayAheadBidAPI:
         self.price_area = PriceAreaAPI(client, view_by_write_class)
         self.shop_multi_scenario = SHOPMultiScenarioAPI(client, view_by_write_class)
         self.water_value_based = WaterValueBasedAPI(client, view_by_write_class)
+
+    @classmethod
+    def azure_project(
+        cls, tenant_id: str, client_id: str, client_secret: str, cdf_cluster: str, project: str
+    ) -> DayAheadBidAPI:
+        credentials = OAuthClientCredentials.default_for_azure_ad(tenant_id, client_id, client_secret, cdf_cluster)
+        config = ClientConfig.default(project, cdf_cluster, credentials)
+
+        return cls(config)
+
+    @classmethod
+    def from_toml(cls, file_path: Path | str, section: str | None = "cognite") -> DayAheadBidAPI:
+        import toml
+
+        toml_content = toml.load(file_path)
+        if section is not None:
+            try:
+                toml_content = toml_content[section]
+            except KeyError as e:
+                raise ValueError(f"Could not find section '{section}' in {file_path}") from e
+
+        return cls.azure_project(**toml_content)

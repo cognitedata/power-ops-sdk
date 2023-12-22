@@ -183,8 +183,13 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseApply, WatercourseList]):
             external_id,
             space,
             retrieve_edges=True,
-            edge_api_name_type_triple=[
-                (self.plants_edge, "plants", dm.DirectRelationReference("power-ops-types", "isSubAssetOf")),
+            edge_api_name_type_direction_quad=[
+                (
+                    self.plants_edge,
+                    "plants",
+                    dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
+                    "outwards",
+                ),
             ],
         )
 
@@ -490,7 +495,12 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseApply, WatercourseList]):
             limit=limit,
             filter=filter_,
             retrieve_edges=retrieve_edges,
-            edge_api_name_type_triple=[
-                (self.plants_edge, "plants", dm.DirectRelationReference("power-ops-types", "isSubAssetOf")),
+            edge_api_name_type_direction_quad=[
+                (
+                    self.plants_edge,
+                    "plants",
+                    dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
+                    "outwards",
+                ),
             ],
         )

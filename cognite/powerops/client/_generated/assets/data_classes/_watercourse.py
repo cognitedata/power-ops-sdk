@@ -121,12 +121,18 @@ class WatercourseApply(DomainModelApply):
         )
 
         properties = {}
+
         if self.name is not None:
             properties["name"] = self.name
+
         if self.display_name is not None:
             properties["displayName"] = self.display_name
+
         if self.production_obligation is not None:
-            properties["productionObligation"] = self.production_obligation
+            properties["productionObligation"] = [
+                value if isinstance(value, str) else value.external_id for value in self.production_obligation
+            ]
+
         if self.penalty_limit is not None:
             properties["penaltyLimit"] = self.penalty_limit
 
@@ -135,6 +141,7 @@ class WatercourseApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
+                type=dm.DirectRelationReference("power-ops-types", "Watercourse"),
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,
@@ -148,7 +155,7 @@ class WatercourseApply(DomainModelApply):
         edge_type = dm.DirectRelationReference("power-ops-types", "isSubAssetOf")
         for plant in self.plants or []:
             other_resources = DomainRelationApply.from_edge_to_resources(
-                cache, self, plant, edge_type, view_by_write_class
+                cache, start_node=self, end_node=plant, edge_type=edge_type, view_by_write_class=view_by_write_class
             )
             resources.extend(other_resources)
 
@@ -187,13 +194,13 @@ def _create_watercourse_filter(
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
-    if name and isinstance(name, str):
+    if name is not None and isinstance(name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
     if name and isinstance(name, list):
         filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
     if name_prefix:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
-    if display_name and isinstance(display_name, str):
+    if display_name is not None and isinstance(display_name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("displayName"), value=display_name))
     if display_name and isinstance(display_name, list):
         filters.append(dm.filters.In(view_id.as_property_ref("displayName"), values=display_name))
@@ -205,7 +212,7 @@ def _create_watercourse_filter(
         )
     if external_id_prefix:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
-    if space and isinstance(space, str):
+    if space is not None and isinstance(space, str):
         filters.append(dm.filters.Equals(["node", "space"], value=space))
     if space and isinstance(space, list):
         filters.append(dm.filters.In(["node", "space"], values=space))

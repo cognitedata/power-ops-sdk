@@ -214,9 +214,19 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
             external_id,
             space,
             retrieve_edges=True,
-            edge_api_name_type_triple=[
-                (self.plants_edge, "plants", dm.DirectRelationReference("power-ops-types", "isSubAssetOf")),
-                (self.watercourses_edge, "watercourses", dm.DirectRelationReference("power-ops-types", "isSubAssetOf")),
+            edge_api_name_type_direction_quad=[
+                (
+                    self.plants_edge,
+                    "plants",
+                    dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
+                    "outwards",
+                ),
+                (
+                    self.watercourses_edge,
+                    "watercourses",
+                    dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
+                    "outwards",
+                ),
             ],
         )
 
@@ -564,8 +574,18 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
             limit=limit,
             filter=filter_,
             retrieve_edges=retrieve_edges,
-            edge_api_name_type_triple=[
-                (self.plants_edge, "plants", dm.DirectRelationReference("power-ops-types", "isSubAssetOf")),
-                (self.watercourses_edge, "watercourses", dm.DirectRelationReference("power-ops-types", "isSubAssetOf")),
+            edge_api_name_type_direction_quad=[
+                (
+                    self.plants_edge,
+                    "plants",
+                    dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
+                    "outwards",
+                ),
+                (
+                    self.watercourses_edge,
+                    "watercourses",
+                    dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
+                    "outwards",
+                ),
             ],
         )

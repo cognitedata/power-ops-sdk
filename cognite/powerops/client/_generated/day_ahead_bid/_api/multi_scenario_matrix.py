@@ -192,8 +192,13 @@ class MultiScenarioMatrixAPI(NodeAPI[MultiScenarioMatrix, MultiScenarioMatrixApp
             external_id,
             space,
             retrieve_edges=True,
-            edge_api_name_type_triple=[
-                (self.alerts_edge, "alerts", dm.DirectRelationReference("power-ops-types", "calculationIssue")),
+            edge_api_name_type_direction_quad=[
+                (
+                    self.alerts_edge,
+                    "alerts",
+                    dm.DirectRelationReference("power-ops-types", "calculationIssue"),
+                    "outwards",
+                ),
             ],
         )
 
@@ -513,7 +518,12 @@ class MultiScenarioMatrixAPI(NodeAPI[MultiScenarioMatrix, MultiScenarioMatrixApp
             limit=limit,
             filter=filter_,
             retrieve_edges=retrieve_edges,
-            edge_api_name_type_triple=[
-                (self.alerts_edge, "alerts", dm.DirectRelationReference("power-ops-types", "calculationIssue")),
+            edge_api_name_type_direction_quad=[
+                (
+                    self.alerts_edge,
+                    "alerts",
+                    dm.DirectRelationReference("power-ops-types", "calculationIssue"),
+                    "outwards",
+                ),
             ],
         )
