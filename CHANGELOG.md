@@ -13,7 +13,7 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## [0.78.0] - 2023-12-22
+## [0.79.0] - 2023-12-22
 ### Changed
 * Single `PriceArea` type
 * Support `dev` argument in `resync init` to destroy recreate views and
