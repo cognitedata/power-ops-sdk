@@ -10,7 +10,7 @@ filter:
      - type
     value:
       space: '{{type_space}}'
-      externalId: AFRRPriceArea
+      externalId: PriceArea
 properties:
   name:
     container:

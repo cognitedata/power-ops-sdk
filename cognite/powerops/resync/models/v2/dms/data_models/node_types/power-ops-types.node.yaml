@@ -11,14 +11,15 @@
   externalId: isSubAssetOf
 
 # Types of nodes:
+## AFRR Types
 - space: {{type_space}}
   externalId: AFRRBidDocument
 - space: {{type_space}}
   externalId: AFRRBidMethod
 - space: {{type_space}}
   externalId: AFRRBidRow
-- space: {{type_space}}
-  externalId: AFRRPriceArea
+
+## Assets Types
 - space: {{type_space}}
   externalId: Generator
 - space: {{type_space}}
@@ -33,16 +34,17 @@
   externalId: TurbineEfficiencyCurve
 - space: {{type_space}}
   externalId: Watercourse
+
 - space: {{type_space}}
   externalId: Alert
+
+## DayAhead Types
 - space: {{type_space}}
   externalId: DayAheadBasicBidMatrix
 - space: {{type_space}}
   externalId: DayAheadBidDocument
 - space: {{type_space}}
   externalId: DayAheadMultiScenarioMatrix
-- space: {{type_space}}
-  externalId: DayAheadPriceArea
 - space: {{type_space}}
   externalId: DayAheadSHOPMultiScenario
 - space: {{type_space}}
