@@ -146,6 +146,7 @@ class PowerAssetModelDM(Model):
     @classmethod
     def from_cdf(cls, client: PowerOpsClient, data_set_external_id: str) -> PowerAssetModelDM:
         cdf = client.cdf
+        # This takes advantage of the fact that every single edge in the model is of type "isSubAssetOf"
         is_type = dm.filters.Equals(["edge", "type"], {"externalId": "isSubAssetOf", "space": "power-ops-types"})
         edges = cdf.data_modeling.instances.list("edge", limit=-1, filter=is_type)
         edges = dm.EdgeApplyList([e.as_apply(None, 0) for e in edges])
