@@ -14,6 +14,7 @@ from cognite.client import CogniteClient
 from cognite.client.data_classes import filters
 from cognite.client.data_classes.data_modeling import (
     ContainerApplyList,
+    DataModelApply,
     DataModelApplyList,
     MappedPropertyApply,
     NodeApplyList,
@@ -21,7 +22,7 @@ from cognite.client.data_classes.data_modeling import (
     SpaceApplyList,
     ViewApplyList,
 )
-from cognite.client.data_classes.data_modeling.views import SingleHopConnectionDefinitionApply
+from cognite.client.data_classes.data_modeling.views import SingleHopConnectionDefinitionApply, ViewApply
 
 logger = logging.getLogger(__name__)
 
@@ -30,11 +31,52 @@ _DMS_DIR = Path(__file__).parent / "dms"
 
 @dataclass
 class Schema:
+    _shared_space = "power-ops-shared"
     containers: ContainerApplyList
-    views: ViewApplyList
-    data_models: DataModelApplyList
+    _views: ViewApplyList
+    _data_models: DataModelApplyList
     spaces: SpaceApplyList
     node_types: NodeApplyList
+
+    @property
+    def container_views(self) -> ViewApplyList:
+        # The data views are views that are a 1-1 mapping to a container
+        # They are used to see what data is available in a container
+        return ViewApplyList(
+            [
+                ViewApply(
+                    space=self._shared_space,
+                    external_id=f"{container.external_id}ContainerData_{container.space.replace('-','_')}",
+                    version="1",
+                    name=f"{container.name}ContainerData",
+                    description=f"Data view for {container.name} in {container.space}",
+                    properties={
+                        prop: MappedPropertyApply(container=container.as_id(), container_property_identifier=prop)
+                        for prop in container.properties
+                    },
+                )
+                for container in self.containers
+            ]
+        )
+
+    @property
+    def container_model(self) -> DataModelApply:
+        return DataModelApply(
+            space=self._shared_space,
+            external_id="PowerOpsContainerModel",
+            version="1",
+            name="PowerOpsContainers",
+            description="All the data available in PowerOps",
+            views=self.container_views.as_ids(),
+        )
+
+    @property
+    def views(self) -> ViewApplyList:
+        return self._views + self.container_views
+
+    @property
+    def data_models(self) -> DataModelApplyList:
+        return self._data_models + DataModelApplyList([self.container_model])
 
 
 @dataclass
@@ -164,8 +206,8 @@ class DataModelLoader:
 
         return Schema(
             containers=ContainerApplyList.load(resources_by_type["container"]),
-            views=ViewApplyList.load(resources_by_type["view"]),
-            data_models=DataModelApplyList.load(resources_by_type["data_model"]),
+            _views=ViewApplyList.load(resources_by_type["view"]),
+            _data_models=DataModelApplyList.load(resources_by_type["data_model"]),
             spaces=SpaceApplyList.load(resources_by_type["space"]),
             node_types=NodeApplyList.load(resources_by_type["node"]),
         )
@@ -188,9 +230,9 @@ class DataModelLoader:
     def validate(cls, schema: Schema):
         defined_spaces = {space.space for space in schema.spaces}
         defined_containers = {container.as_id() for container in schema.containers}
-        defined_views = {view.as_id() for view in schema.views}
+        defined_views = {view.as_id() for view in schema._views}
         defined_node_types = {node_type.as_id() for node_type in schema.node_types}
-        defined_interfaces = {parent for view in schema.views for parent in view.implements or []}
+        defined_interfaces = {parent for view in schema._views for parent in view.implements or []}
         properties_by_container = {container.as_id(): set(container.properties) for container in schema.containers}
 
         referred_spaces = defaultdict(list)
@@ -201,7 +243,7 @@ class DataModelLoader:
         non_existent_container_properties = []
         for container in schema.containers:
             referred_spaces[container.space].append(container.as_id())
-        for view in schema.views:
+        for view in schema._views:
             ref_view_id = view.as_id()
             referred_spaces[view.space].append(ref_view_id)
             if isinstance(view.filter, filters.Equals):
@@ -249,7 +291,7 @@ class DataModelLoader:
                         referred_views[prop.edge_source].append(ref_view_id.as_property_ref(prop_name))
         for node in schema.node_types:
             referred_spaces[node.space].append(node.as_id())
-        for data_model in schema.data_models:
+        for data_model in schema._data_models:
             referred_spaces[data_model.space].append(data_model.as_id())
             for view in data_model.views:
                 referred_views[view].append(data_model.as_id())
@@ -278,7 +320,12 @@ class DataModelLoader:
     def deploy(cls, client: CogniteClient, schema: Schema, is_dev: bool = False) -> list[dict]:
         result = []
         apis = cls._create_apis(client)
-        resources = asdict(schema)
+        resources = {
+            "spaces": schema.spaces,
+            "containers": schema.containers,
+            "views": schema.views,
+            "data_models": schema.data_models,
+        }
         for api in TopologicalSorter(apis).static_order():
             items = resources[api.name]
             existing = api.retrieve(schema.spaces)
