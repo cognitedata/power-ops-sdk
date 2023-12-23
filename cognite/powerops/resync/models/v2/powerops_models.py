@@ -190,12 +190,14 @@ class DataModelLoader:
         defined_containers = {container.as_id() for container in schema.containers}
         defined_views = {view.as_id() for view in schema.views}
         defined_node_types = {node_type.as_id() for node_type in schema.node_types}
+        defined_interfaces = {parent for view in schema.views for parent in view.implements or []}
         properties_by_container = {container.as_id(): set(container.properties) for container in schema.containers}
 
         referred_spaces = defaultdict(list)
         referred_views = defaultdict(list)
         referred_containers = defaultdict(list)
         referred_node_types = defaultdict(list)
+        view_missing_filters = []
         non_existent_container_properties = []
         for container in schema.containers:
             referred_spaces[container.space].append(container.as_id())
@@ -212,6 +214,23 @@ class DataModelLoader:
                     raise ValueError(
                         f"Failed to parse filter for view {view.space}.{view.external_id}.{view.version}"
                     ) from exc
+            elif isinstance(view.filter, filters.In):
+                dumped = view.filter.dump()["in"]["values"]
+                try:
+                    for value in dumped:
+                        if "space" in value and "externalId" in value:
+                            node_id = NodeId(value["space"], value["externalId"])
+                            referred_node_types[node_id].append(ref_view_id)
+                except Exception as exc:
+                    raise ValueError(
+                        f"Failed to parse filter for view {view.space}.{view.external_id}.{view.version}"
+                    ) from exc
+
+            if ref_view_id in defined_interfaces and not isinstance(view.filter, filters.In):
+                view_missing_filters.append(ref_view_id)
+            elif ref_view_id not in defined_interfaces and isinstance(view.filter, filters.Equals):
+                view_missing_filters.append(ref_view_id)
+
             for view_id in view.implements or []:
                 referred_views[view_id].append(ref_view_id)
             for prop_name, prop in view.properties.items():
