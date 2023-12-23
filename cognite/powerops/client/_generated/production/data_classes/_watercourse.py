@@ -115,15 +115,21 @@ class WatercourseApply(DomainModelApply):
         )
 
         properties = {}
+
         if self.name is not None:
             properties["name"] = self.name
+
         if self.shop is not None:
             properties["shop"] = {
                 "space": self.space if isinstance(self.shop, str) else self.shop.space,
                 "externalId": self.shop if isinstance(self.shop, str) else self.shop.external_id,
             }
+
         if self.production_obligation_time_series is not None:
-            properties["productionObligationTimeSeries"] = self.production_obligation_time_series
+            properties["productionObligationTimeSeries"] = [
+                value if isinstance(value, str) else value.external_id
+                for value in self.production_obligation_time_series
+            ]
 
         if properties:
             this_node = dm.NodeApply(
@@ -143,7 +149,7 @@ class WatercourseApply(DomainModelApply):
         edge_type = dm.DirectRelationReference("power-ops", "Watercourse.plants")
         for plant in self.plants or []:
             other_resources = DomainRelationApply.from_edge_to_resources(
-                cache, self, plant, edge_type, view_by_write_class
+                cache, start_node=self, end_node=plant, edge_type=edge_type, view_by_write_class=view_by_write_class
             )
             resources.extend(other_resources)
 
@@ -183,7 +189,7 @@ def _create_watercourse_filter(
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
-    if name and isinstance(name, str):
+    if name is not None and isinstance(name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
     if name and isinstance(name, list):
         filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
@@ -211,7 +217,7 @@ def _create_watercourse_filter(
         )
     if external_id_prefix:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
-    if space and isinstance(space, str):
+    if space is not None and isinstance(space, str):
         filters.append(dm.filters.Equals(["node", "space"], value=space))
     if space and isinstance(space, list):
         filters.append(dm.filters.In(["node", "space"], values=space))

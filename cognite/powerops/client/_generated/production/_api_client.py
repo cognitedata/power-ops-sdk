@@ -19,8 +19,8 @@ class ProductionModelAPI:
     ProductionModelAPI
 
     Generated with:
-        pygen = 0.32.1
-        cognite-sdk = 7.6.0
+        pygen = 0.32.5
+        cognite-sdk = 7.8.4
         pydantic = 2.5.2
 
     Data Model:
@@ -37,7 +37,7 @@ class ProductionModelAPI:
         else:
             raise ValueError(f"Expected CogniteClient or ClientConfig, got {type(config_or_client)}")
         # The client name is used for aggregated logging of Pygen Usage
-        client.config.client_name = "CognitePygen:0.32.1"
+        client.config.client_name = "CognitePygen:0.32.5"
 
         view_by_write_class = {
             data_classes.GeneratorApply: dm.ViewId("power-ops", "Generator", "9178931bbaac71"),

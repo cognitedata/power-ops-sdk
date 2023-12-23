@@ -148,26 +148,34 @@ class GeneratorApply(DomainModelApply):
         )
 
         properties = {}
+
         if self.name is not None:
             properties["name"] = self.name
+
         if self.p_min is not None:
             properties["pMin"] = self.p_min
+
         if self.penstock is not None:
             properties["penstock"] = self.penstock
+
         if self.startcost is not None:
             properties["startcost"] = self.startcost
+
         if self.start_stop_cost is not None:
             properties["startStopCost"] = (
                 self.start_stop_cost if isinstance(self.start_stop_cost, str) else self.start_stop_cost.external_id
             )
+
         if self.is_available_time_series is not None:
             properties["isAvailableTimeSeries"] = (
                 self.is_available_time_series
                 if isinstance(self.is_available_time_series, str)
                 else self.is_available_time_series.external_id
             )
+
         if self.generator_efficiency_curve is not None:
             properties["generatorEfficiencyCurve"] = self.generator_efficiency_curve
+
         if self.turbine_efficiency_curve is not None:
             properties["turbineEfficiencyCurve"] = self.turbine_efficiency_curve
 
@@ -226,7 +234,7 @@ def _create_generator_filter(
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
-    if name and isinstance(name, str):
+    if name is not None and isinstance(name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
     if name and isinstance(name, list):
         filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
@@ -240,7 +248,7 @@ def _create_generator_filter(
         filters.append(dm.filters.Range(view_id.as_property_ref("startcost"), gte=min_startcost, lte=max_startcost))
     if external_id_prefix:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
-    if space and isinstance(space, str):
+    if space is not None and isinstance(space, str):
         filters.append(dm.filters.Equals(["node", "space"], value=space))
     if space and isinstance(space, list):
         filters.append(dm.filters.In(["node", "space"], values=space))
