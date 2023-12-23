@@ -15,6 +15,13 @@ Changes are grouped as follows
 
 ## [0.78.0] - 2023-12-22
 ### Changed
+* Single `PriceArea` type
+* Support `dev` argument in `resync init` to destroy recreate views and
+  data models in the development process.
+* Regenerate clients with `pygen` `v0.32.5`
+
+## [0.78.0] - 2023-12-22
+### Changed
 * Changes to views in `DayAheadBid` and `AFRRBid` models.
 * Regenerate clients with `pygen` `v0.32.5`
 
