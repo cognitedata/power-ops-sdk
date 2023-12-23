@@ -275,7 +275,7 @@ class DataModelLoader:
             raise ValueError(f"These properties in views refers to container properties that does not exist: {message}")
 
     @classmethod
-    def deploy(cls, client: CogniteClient, schema: Schema) -> list[dict]:
+    def deploy(cls, client: CogniteClient, schema: Schema, is_dev: bool = False) -> list[dict]:
         result = []
         apis = cls._create_apis(client)
         resources = asdict(schema)
@@ -284,6 +284,9 @@ class DataModelLoader:
             existing = api.retrieve(schema.spaces)
             diffs = api.differences(existing, items)
             if diffs.create or diffs.changed:
+                if is_dev and api.name in {"views", "data_models"} and (diffs.changed or diffs.delete):
+                    print(f"Deleting {api.name}: {len(diffs.changed + diffs.delete)} changed to avoid conflicts")
+                    api.delete([item.as_id() for item in diffs.changed + diffs.delete])
                 api.apply(diffs.create + diffs.changed)
 
             result.extend(diffs.as_results(is_init=True))
