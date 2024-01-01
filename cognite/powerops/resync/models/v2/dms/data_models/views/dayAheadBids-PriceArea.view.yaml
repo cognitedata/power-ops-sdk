@@ -9,7 +9,7 @@ filter:
     - type
     value:
       space: '{{type_space}}'
-      externalId: DayAheadPriceArea
+      externalId: PriceArea
 properties:
   name:
     container:

@@ -9,6 +9,7 @@ from cognite.client.data_classes.data_modeling.instances import InstanceAggregat
 
 from cognite.powerops.client._generated.day_ahead_bid.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.day_ahead_bid.data_classes import (
+    DomainModelCore,
     DomainModelApply,
     ResourcesApplyResult,
     BidMatrix,
@@ -36,16 +37,15 @@ from .bid_matrix_query import BidMatrixQueryAPI
 
 
 class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixApply, BidMatrixList]):
-    def __init__(self, client: CogniteClient, view_by_write_class: dict[type[DomainModelApply], dm.ViewId]):
-        view_id = view_by_write_class[BidMatrixApply]
+    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
+        view_id = view_by_read_class[BidMatrix]
         super().__init__(
             client=client,
             sources=view_id,
             class_type=BidMatrix,
-            class_apply_type=BidMatrixApply,
             class_list=BidMatrixList,
             class_apply_list=BidMatrixApplyList,
-            view_by_write_class=view_by_write_class,
+            view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
         self.alerts_edge = BidMatrixAlertsAPI(client)
@@ -98,7 +98,7 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixApply, BidMatrixList]):
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(BidMatrixList)
-        return BidMatrixQueryAPI(self._client, builder, self._view_by_write_class, filter_, limit)
+        return BidMatrixQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
 
     def apply(
         self, bid_matrix: BidMatrixApply | Sequence[BidMatrixApply], replace: bool = False

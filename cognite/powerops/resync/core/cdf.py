@@ -128,7 +128,7 @@ class InstanceAdapter(CogniteAPI[T_Instance]):
             item_sequence = items
 
         failed = []
-        for chunk in chunks(item_sequence, 1):  # type: ignore[type-var]
+        for chunk in chunks(item_sequence, 500):  # type: ignore[type-var]
             if self.instance_type == "node":
                 try:
                     self.client.data_modeling.instances.apply(nodes=chunk, auto_create_direct_relations=True)  # type: ignore[arg-type]

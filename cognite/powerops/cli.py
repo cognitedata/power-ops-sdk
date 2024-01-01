@@ -41,20 +41,19 @@ def common(ctx: typer.Context, version: bool = typer.Option(None, "--version", c
 
 @app.command("init", help="Setup necessary data models in CDF for ReSync to run")
 def init(
-    models: list[str] = typer.Option(
-        default=sorted(resync.MODELS_BY_NAME),
-        help=f"The models to initialize. Available models: {', '.join(resync.MODELS_BY_NAME)}, v2",
+    dev: bool = typer.Option(
+        False,
+        "--dev",
+        "-d",
+        help="Whether the deployment is for development environment. If true,"
+        "the models views and data models will be deleted and recreated.",
     ),
     verbose: bool = typer.Option(False, "--verbose", "-v", help="Whether to print verbose output"),
 ):
     echo = _setup_echo(verbose, typer.echo)
     client = PowerOpsClient.from_settings()
 
-    if "v2" in models:
-        models.remove("v2")
-        models.extend(resync.V2_MODELS_BY_NAME)
-
-    results = resync.init(client, model_names=models)
+    results = resync.init(client, is_dev=dev)
     if verbose:
         for result in results:
             model, action = result["model"], result["action"]

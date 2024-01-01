@@ -6,9 +6,8 @@ from typing import TYPE_CHECKING
 from cognite.client import data_modeling as dm, CogniteClient
 
 from cognite.powerops.client._generated.production.data_classes import (
-    DomainModelApply,
+    DomainModelCore,
     PriceArea,
-    PriceAreaApply,
 )
 from ._core import DEFAULT_QUERY_LIMIT, QueryBuilder, QueryStep, QueryAPI, T_DomainModelList, _create_edge_filter
 
@@ -22,11 +21,11 @@ class PriceAreaQueryAPI(QueryAPI[T_DomainModelList]):
         self,
         client: CogniteClient,
         builder: QueryBuilder[T_DomainModelList],
-        view_by_write_class: dict[type[DomainModelApply], dm.ViewId],
+        view_by_read_class: dict[type[DomainModelCore], dm.ViewId],
         filter_: dm.filters.Filter | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
     ):
-        super().__init__(client, builder, view_by_write_class)
+        super().__init__(client, builder, view_by_read_class)
 
         self._builder.append(
             QueryStep(
@@ -35,7 +34,7 @@ class PriceAreaQueryAPI(QueryAPI[T_DomainModelList]):
                     from_=self._builder[-1].name if self._builder else None,
                     filter=filter_,
                 ),
-                select=dm.query.Select([dm.query.SourceSelector(self._view_by_write_class[PriceAreaApply], ["*"])]),
+                select=dm.query.Select([dm.query.SourceSelector(self._view_by_read_class[PriceArea], ["*"])]),
                 result_cls=PriceArea,
                 max_retrieve_limit=limit,
             )
@@ -73,12 +72,13 @@ class PriceAreaQueryAPI(QueryAPI[T_DomainModelList]):
                 expression=dm.query.EdgeResultSetExpression(
                     filter=edge_filter,
                     from_=from_,
+                    direction="outwards",
                 ),
                 select=dm.query.Select(),
                 max_retrieve_limit=limit,
             )
         )
-        return PlantQueryAPI(self._client, self._builder, self._view_by_write_class, None, limit)
+        return PlantQueryAPI(self._client, self._builder, self._view_by_read_class, None, limit)
 
     def watercourses(
         self,
@@ -112,12 +112,13 @@ class PriceAreaQueryAPI(QueryAPI[T_DomainModelList]):
                 expression=dm.query.EdgeResultSetExpression(
                     filter=edge_filter,
                     from_=from_,
+                    direction="outwards",
                 ),
                 select=dm.query.Select(),
                 max_retrieve_limit=limit,
             )
         )
-        return WatercourseQueryAPI(self._client, self._builder, self._view_by_write_class, None, limit)
+        return WatercourseQueryAPI(self._client, self._builder, self._view_by_read_class, None, limit)
 
     def query(
         self,

@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import re
 
+from cognite.client.data_classes import TimeSeries
+
 from cognite.powerops.client._generated.assets import data_classes as assets
 from cognite.powerops.resync import config
 from cognite.powerops.resync.models._shared_v1_v2.production_model import (
@@ -33,7 +35,9 @@ def to_asset_data_model(configuration: config.ProductionConfig) -> PowerAssetMod
             name=watercourse_config.name,
             penalty_limit=watercourse_config.shop_penalty_limit,
             plants=[],
-            production_obligation=watercourse_config.production_obligation_ts_ext_ids,
+            production_obligation=[
+                TimeSeries(external_id=ext_id) for ext_id in watercourse_config.production_obligation_ts_ext_ids or []
+            ],
         )
         model.watercourses.append(watercourse)
 

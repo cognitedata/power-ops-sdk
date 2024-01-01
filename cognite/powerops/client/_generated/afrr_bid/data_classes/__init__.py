@@ -1,5 +1,6 @@
 from ._core import (
     DomainModel,
+    DomainModelCore,
     DomainModelApply,
     DomainModelList,
     DomainRelationApply,
@@ -24,14 +25,7 @@ from ._bid_method import (
     BidMethodTextFields,
 )
 from ._bid_row import BidRow, BidRowApply, BidRowApplyList, BidRowFields, BidRowList, BidRowTextFields
-from ._price_area import (
-    PriceArea,
-    PriceAreaApply,
-    PriceAreaApplyList,
-    PriceAreaFields,
-    PriceAreaList,
-    PriceAreaTextFields,
-)
+from ._price_area import PriceArea, PriceAreaFields, PriceAreaList, PriceAreaTextFields
 
 BidDocument.model_rebuild()
 BidDocumentApply.model_rebuild()
@@ -41,6 +35,7 @@ BidRowApply.model_rebuild()
 __all__ = [
     "ResourcesApply",
     "DomainModel",
+    "DomainModelCore",
     "DomainModelApply",
     "DomainModelList",
     "DomainRelationApply",
@@ -70,9 +65,7 @@ __all__ = [
     "BidRowFields",
     "BidRowTextFields",
     "PriceArea",
-    "PriceAreaApply",
     "PriceAreaList",
-    "PriceAreaApplyList",
     "PriceAreaFields",
     "PriceAreaTextFields",
 ]

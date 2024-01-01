@@ -9,6 +9,7 @@ from cognite.client.data_classes.data_modeling.instances import InstanceAggregat
 
 from cognite.powerops.client._generated.production.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.production.data_classes import (
+    DomainModelCore,
     DomainModelApply,
     ResourcesApplyResult,
     Watercourse,
@@ -37,16 +38,15 @@ from .watercourse_query import WatercourseQueryAPI
 
 
 class WatercourseAPI(NodeAPI[Watercourse, WatercourseApply, WatercourseList]):
-    def __init__(self, client: CogniteClient, view_by_write_class: dict[type[DomainModelApply], dm.ViewId]):
-        view_id = view_by_write_class[WatercourseApply]
+    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
+        view_id = view_by_read_class[Watercourse]
         super().__init__(
             client=client,
             sources=view_id,
             class_type=Watercourse,
-            class_apply_type=WatercourseApply,
             class_list=WatercourseList,
             class_apply_list=WatercourseApplyList,
-            view_by_write_class=view_by_write_class,
+            view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
         self.plants_edge = WatercoursePlantsAPI(client)
@@ -88,7 +88,7 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseApply, WatercourseList]):
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(WatercourseList)
-        return WatercourseQueryAPI(self._client, builder, self._view_by_write_class, filter_, limit)
+        return WatercourseQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
 
     def apply(
         self, watercourse: WatercourseApply | Sequence[WatercourseApply], replace: bool = False
@@ -174,8 +174,13 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseApply, WatercourseList]):
             external_id,
             space,
             retrieve_edges=True,
-            edge_api_name_type_triple=[
-                (self.plants_edge, "plants", dm.DirectRelationReference("power-ops", "Watercourse.plants")),
+            edge_api_name_type_direction_quad=[
+                (
+                    self.plants_edge,
+                    "plants",
+                    dm.DirectRelationReference("power-ops", "Watercourse.plants"),
+                    "outwards",
+                ),
             ],
         )
 
@@ -439,7 +444,12 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseApply, WatercourseList]):
             limit=limit,
             filter=filter_,
             retrieve_edges=retrieve_edges,
-            edge_api_name_type_triple=[
-                (self.plants_edge, "plants", dm.DirectRelationReference("power-ops", "Watercourse.plants")),
+            edge_api_name_type_direction_quad=[
+                (
+                    self.plants_edge,
+                    "plants",
+                    dm.DirectRelationReference("power-ops", "Watercourse.plants"),
+                    "outwards",
+                ),
             ],
         )

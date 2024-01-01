@@ -36,23 +36,19 @@ DATAMODEL_ID_TO_RESYNC_NAME: dict[DataModelId, str] = {
 }
 
 
-def init(client: PowerOpsClient | None, model_names: str | list[str] | None = None) -> list[dict[str, str]]:
+def init(client: PowerOpsClient | None, is_dev: bool = False) -> list[dict[str, str]]:
     """
     This function will create the data models in CDF that are required for resync to work. It will not overwrite
     existing models.
 
     Args:
         client: The PowerOpsClient to use. If not provided, a new client will be created.
-        model_names: The models to deploy. If not provided, all models will be deployed.
+        is_dev: Whether the deployment is for development environment. If true, the models views and data models
+                will be deleted and recreated.
 
     """
     client = client or PowerOpsClient.from_settings()
     cdf = client.cdf
-    if model_names:
-        logger.info(
-            "Model names argument is deprecated. Init will now deploy all models. (The powerops data models "
-            "are dependent on each other and should thus be deployed together)"
-        )
 
     loader = DataModelLoader()
     schema = loader.load()
@@ -60,7 +56,7 @@ def init(client: PowerOpsClient | None, model_names: str | list[str] | None = No
     DataModelLoader.validate(schema)
     logger.info("Validated all powerops data models")
 
-    results = DataModelLoader.deploy(cdf, schema)
+    results = DataModelLoader.deploy(cdf, schema, is_dev)
 
     return results
 

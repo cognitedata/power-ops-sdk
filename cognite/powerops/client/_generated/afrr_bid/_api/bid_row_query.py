@@ -6,13 +6,10 @@ from typing import TYPE_CHECKING
 from cognite.client import data_modeling as dm, CogniteClient
 
 from cognite.powerops.client._generated.afrr_bid.data_classes import (
-    DomainModelApply,
+    DomainModelCore,
     BidRow,
-    BidRowApply,
     BidRow,
-    BidRowApply,
     BidMethod,
-    BidMethodApply,
 )
 from ._core import DEFAULT_QUERY_LIMIT, QueryBuilder, QueryStep, QueryAPI, T_DomainModelList, _create_edge_filter
 
@@ -25,11 +22,11 @@ class BidRowQueryAPI(QueryAPI[T_DomainModelList]):
         self,
         client: CogniteClient,
         builder: QueryBuilder[T_DomainModelList],
-        view_by_write_class: dict[type[DomainModelApply], dm.ViewId],
+        view_by_read_class: dict[type[DomainModelCore], dm.ViewId],
         filter_: dm.filters.Filter | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
     ):
-        super().__init__(client, builder, view_by_write_class)
+        super().__init__(client, builder, view_by_read_class)
 
         self._builder.append(
             QueryStep(
@@ -38,7 +35,7 @@ class BidRowQueryAPI(QueryAPI[T_DomainModelList]):
                     from_=self._builder[-1].name if self._builder else None,
                     filter=filter_,
                 ),
-                select=dm.query.Select([dm.query.SourceSelector(self._view_by_write_class[BidRowApply], ["*"])]),
+                select=dm.query.Select([dm.query.SourceSelector(self._view_by_read_class[BidRow], ["*"])]),
                 result_cls=BidRow,
                 max_retrieve_limit=limit,
             )
@@ -90,7 +87,7 @@ class BidRowQueryAPI(QueryAPI[T_DomainModelList]):
             self._query_append_linked_bid(from_)
         if retrieve_method:
             self._query_append_method(from_)
-        return AlertQueryAPI(self._client, self._builder, self._view_by_write_class, None, limit)
+        return AlertQueryAPI(self._client, self._builder, self._view_by_read_class, None, limit)
 
     def query(
         self,
@@ -115,14 +112,14 @@ class BidRowQueryAPI(QueryAPI[T_DomainModelList]):
         return self._query()
 
     def _query_append_linked_bid(self, from_: str) -> None:
-        view_id = self._view_by_write_class[BidRowApply]
+        view_id = self._view_by_read_class[BidRow]
         self._builder.append(
             QueryStep(
                 name=self._builder.next_name("linked_bid"),
                 expression=dm.query.NodeResultSetExpression(
                     filter=dm.filters.HasData(views=[view_id]),
                     from_=from_,
-                    through=self._view_by_write_class[BidRowApply].as_property_ref("linked_bid"),
+                    through=self._view_by_read_class[BidRow].as_property_ref("linkedBid"),
                     direction="outwards",
                 ),
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
@@ -132,14 +129,14 @@ class BidRowQueryAPI(QueryAPI[T_DomainModelList]):
         )
 
     def _query_append_method(self, from_: str) -> None:
-        view_id = self._view_by_write_class[BidMethodApply]
+        view_id = self._view_by_read_class[BidMethod]
         self._builder.append(
             QueryStep(
                 name=self._builder.next_name("method"),
                 expression=dm.query.NodeResultSetExpression(
                     filter=dm.filters.HasData(views=[view_id]),
                     from_=from_,
-                    through=self._view_by_write_class[BidRowApply].as_property_ref("method"),
+                    through=self._view_by_read_class[BidRow].as_property_ref("method"),
                     direction="outwards",
                 ),
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),

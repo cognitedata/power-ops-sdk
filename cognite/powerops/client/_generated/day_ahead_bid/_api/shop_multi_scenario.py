@@ -9,6 +9,7 @@ from cognite.client.data_classes.data_modeling.instances import InstanceAggregat
 
 from cognite.powerops.client._generated.day_ahead_bid.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.day_ahead_bid.data_classes import (
+    DomainModelCore,
     DomainModelApply,
     ResourcesApplyResult,
     SHOPMultiScenario,
@@ -36,16 +37,15 @@ from .shop_multi_scenario_query import SHOPMultiScenarioQueryAPI
 
 
 class SHOPMultiScenarioAPI(NodeAPI[SHOPMultiScenario, SHOPMultiScenarioApply, SHOPMultiScenarioList]):
-    def __init__(self, client: CogniteClient, view_by_write_class: dict[type[DomainModelApply], dm.ViewId]):
-        view_id = view_by_write_class[SHOPMultiScenarioApply]
+    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
+        view_id = view_by_read_class[SHOPMultiScenario]
         super().__init__(
             client=client,
             sources=view_id,
             class_type=SHOPMultiScenario,
-            class_apply_type=SHOPMultiScenarioApply,
             class_list=SHOPMultiScenarioList,
             class_apply_list=SHOPMultiScenarioApplyList,
-            view_by_write_class=view_by_write_class,
+            view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
         self.price_scenarios = SHOPMultiScenarioPriceScenariosAPI(client, view_id)
@@ -83,7 +83,7 @@ class SHOPMultiScenarioAPI(NodeAPI[SHOPMultiScenario, SHOPMultiScenarioApply, SH
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(SHOPMultiScenarioList)
-        return SHOPMultiScenarioQueryAPI(self._client, builder, self._view_by_write_class, filter_, limit)
+        return SHOPMultiScenarioQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
 
     def apply(
         self, shop_multi_scenario: SHOPMultiScenarioApply | Sequence[SHOPMultiScenarioApply], replace: bool = False

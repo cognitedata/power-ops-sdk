@@ -121,7 +121,7 @@ class PowerAssetModelDM(Model):
         for item in itertools.chain(
             self.price_areas, self.generators, self.plants, self.reservoirs, self.watercourses, self.turbine_curves
         ):
-            resource = item._to_instances_apply(cache=cache, view_by_write_class=None)
+            resource = item._to_instances_apply(cache=cache, view_by_read_class=None)
             if resources is None:
                 resources = resource
             else:
@@ -146,6 +146,7 @@ class PowerAssetModelDM(Model):
     @classmethod
     def from_cdf(cls, client: PowerOpsClient, data_set_external_id: str) -> PowerAssetModelDM:
         cdf = client.cdf
+        # This takes advantage of the fact that every single edge in the model is of type "isSubAssetOf"
         is_type = dm.filters.Equals(["edge", "type"], {"externalId": "isSubAssetOf", "space": "power-ops-types"})
         edges = cdf.data_modeling.instances.list("edge", limit=-1, filter=is_type)
         edges = dm.EdgeApplyList([e.as_apply(None, 0) for e in edges])

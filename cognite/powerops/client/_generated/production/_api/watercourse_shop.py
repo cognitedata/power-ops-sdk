@@ -9,6 +9,7 @@ from cognite.client.data_classes.data_modeling.instances import InstanceAggregat
 
 from cognite.powerops.client._generated.production.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.production.data_classes import (
+    DomainModelCore,
     DomainModelApply,
     ResourcesApplyResult,
     WatercourseShop,
@@ -34,16 +35,15 @@ from .watercourse_shop_query import WatercourseShopQueryAPI
 
 
 class WatercourseShopAPI(NodeAPI[WatercourseShop, WatercourseShopApply, WatercourseShopList]):
-    def __init__(self, client: CogniteClient, view_by_write_class: dict[type[DomainModelApply], dm.ViewId]):
-        view_id = view_by_write_class[WatercourseShopApply]
+    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
+        view_id = view_by_read_class[WatercourseShop]
         super().__init__(
             client=client,
             sources=view_id,
             class_type=WatercourseShop,
-            class_apply_type=WatercourseShopApply,
             class_list=WatercourseShopList,
             class_apply_list=WatercourseShopApplyList,
-            view_by_write_class=view_by_write_class,
+            view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
 
@@ -80,7 +80,7 @@ class WatercourseShopAPI(NodeAPI[WatercourseShop, WatercourseShopApply, Watercou
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(WatercourseShopList)
-        return WatercourseShopQueryAPI(self._client, builder, self._view_by_write_class, filter_, limit)
+        return WatercourseShopQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
 
     def apply(
         self, watercourse_shop: WatercourseShopApply | Sequence[WatercourseShopApply], replace: bool = False

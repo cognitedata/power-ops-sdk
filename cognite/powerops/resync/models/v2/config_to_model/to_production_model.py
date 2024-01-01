@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import re
 
+from cognite.client.data_classes import TimeSeries
+
 from cognite.powerops.client.data_classes import (
     GeneratorApply,
     PlantApply,
@@ -46,7 +48,9 @@ def to_production_data_model(configuration: config.ProductionConfig) -> Producti
                 penalty_limit=watercourse_config.shop_penalty_limit,
             ),
             plants=[],
-            production_obligation_time_series=watercourse_config.production_obligation_ts_ext_ids,
+            production_obligation_time_series=[
+                TimeSeries(external_id=ext_id) for ext_id in watercourse_config.production_obligation_ts_ext_ids or []
+            ],
         )
         model.watercourses.append(watercourse)
 

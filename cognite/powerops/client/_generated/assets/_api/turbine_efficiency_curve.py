@@ -9,6 +9,7 @@ from cognite.client.data_classes.data_modeling.instances import InstanceAggregat
 
 from cognite.powerops.client._generated.assets.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.assets.data_classes import (
+    DomainModelCore,
     DomainModelApply,
     ResourcesApplyResult,
     TurbineEfficiencyCurve,
@@ -36,16 +37,15 @@ from .turbine_efficiency_curve_query import TurbineEfficiencyCurveQueryAPI
 class TurbineEfficiencyCurveAPI(
     NodeAPI[TurbineEfficiencyCurve, TurbineEfficiencyCurveApply, TurbineEfficiencyCurveList]
 ):
-    def __init__(self, client: CogniteClient, view_by_write_class: dict[type[DomainModelApply], dm.ViewId]):
-        view_id = view_by_write_class[TurbineEfficiencyCurveApply]
+    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
+        view_id = view_by_read_class[TurbineEfficiencyCurve]
         super().__init__(
             client=client,
             sources=view_id,
             class_type=TurbineEfficiencyCurve,
-            class_apply_type=TurbineEfficiencyCurveApply,
             class_list=TurbineEfficiencyCurveList,
             class_apply_list=TurbineEfficiencyCurveApplyList,
-            view_by_write_class=view_by_write_class,
+            view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
 
@@ -82,7 +82,7 @@ class TurbineEfficiencyCurveAPI(
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(TurbineEfficiencyCurveList)
-        return TurbineEfficiencyCurveQueryAPI(self._client, builder, self._view_by_write_class, filter_, limit)
+        return TurbineEfficiencyCurveQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
 
     def apply(
         self,

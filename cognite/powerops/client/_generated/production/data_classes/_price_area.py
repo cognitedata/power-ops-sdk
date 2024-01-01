@@ -9,6 +9,7 @@ from pydantic import Field
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
     DomainModel,
+    DomainModelCore,
     DomainModelApply,
     DomainModelApplyList,
     DomainModelList,
@@ -62,6 +63,7 @@ class PriceArea(DomainModel):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
+    node_type: Union[dm.DirectRelationReference, None] = None
     name: Optional[str] = None
     description: Optional[str] = None
     dayahead_price_time_series: Union[TimeSeries, str, None] = Field(None, alias="dayaheadPriceTimeSeries")
@@ -104,6 +106,7 @@ class PriceAreaApply(DomainModelApply):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
+    node_type: Union[dm.DirectRelationReference, None] = None
     name: Optional[str] = None
     description: Optional[str] = None
     dayahead_price_time_series: Union[TimeSeries, str, None] = Field(None, alias="dayaheadPriceTimeSeries")
@@ -113,21 +116,22 @@ class PriceAreaApply(DomainModelApply):
     def _to_instances_apply(
         self,
         cache: set[tuple[str, str]],
-        view_by_write_class: dict[type[DomainModelApply | DomainRelationApply], dm.ViewId] | None,
+        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
     ) -> ResourcesApply:
         resources = ResourcesApply()
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_write_class and view_by_write_class.get(type(self))) or dm.ViewId(
-            "power-ops", "PriceArea", "6849ae787cd368"
-        )
+        write_view = (view_by_read_class or {}).get(PriceArea, dm.ViewId("power-ops", "PriceArea", "6849ae787cd368"))
 
         properties = {}
+
         if self.name is not None:
             properties["name"] = self.name
+
         if self.description is not None:
             properties["description"] = self.description
+
         if self.dayahead_price_time_series is not None:
             properties["dayaheadPriceTimeSeries"] = (
                 self.dayahead_price_time_series
@@ -140,6 +144,7 @@ class PriceAreaApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
+                type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,
@@ -153,14 +158,14 @@ class PriceAreaApply(DomainModelApply):
         edge_type = dm.DirectRelationReference("power-ops", "PriceArea.plants")
         for plant in self.plants or []:
             other_resources = DomainRelationApply.from_edge_to_resources(
-                cache, self, plant, edge_type, view_by_write_class
+                cache, start_node=self, end_node=plant, edge_type=edge_type, view_by_read_class=view_by_read_class
             )
             resources.extend(other_resources)
 
         edge_type = dm.DirectRelationReference("power-ops", "PriceArea.watercourses")
         for watercourse in self.watercourses or []:
             other_resources = DomainRelationApply.from_edge_to_resources(
-                cache, self, watercourse, edge_type, view_by_write_class
+                cache, start_node=self, end_node=watercourse, edge_type=edge_type, view_by_read_class=view_by_read_class
             )
             resources.extend(other_resources)
 
@@ -197,13 +202,13 @@ def _create_price_area_filter(
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
-    if name and isinstance(name, str):
+    if name is not None and isinstance(name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
     if name and isinstance(name, list):
         filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
     if name_prefix:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
-    if description and isinstance(description, str):
+    if description is not None and isinstance(description, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("description"), value=description))
     if description and isinstance(description, list):
         filters.append(dm.filters.In(view_id.as_property_ref("description"), values=description))
@@ -211,7 +216,7 @@ def _create_price_area_filter(
         filters.append(dm.filters.Prefix(view_id.as_property_ref("description"), value=description_prefix))
     if external_id_prefix:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
-    if space and isinstance(space, str):
+    if space is not None and isinstance(space, str):
         filters.append(dm.filters.Equals(["node", "space"], value=space))
     if space and isinstance(space, list):
         filters.append(dm.filters.In(["node", "space"], values=space))

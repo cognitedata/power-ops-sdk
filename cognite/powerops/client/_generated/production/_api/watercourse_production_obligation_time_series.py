@@ -12,7 +12,7 @@ from cognite.client.data_classes.datapoints import Aggregate
 from cognite.powerops.client._generated.production.data_classes._watercourse import _create_watercourse_filter
 from ._core import DEFAULT_LIMIT_READ, INSTANCE_QUERY_LIMIT
 
-ColumnNames = Literal["name"]
+ColumnNames = Literal["name", "productionObligationTimeSeries"]
 
 
 class WatercourseProductionObligationTimeSeriesQuery:

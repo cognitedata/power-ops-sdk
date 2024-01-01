@@ -9,6 +9,7 @@ from pydantic import Field
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
     DomainModel,
+    DomainModelCore,
     DomainModelApply,
     DomainModelApplyList,
     DomainModelList,
@@ -77,6 +78,7 @@ class Generator(DomainModel):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
+    node_type: Union[dm.DirectRelationReference, None] = None
     name: Optional[str] = None
     p_min: Optional[float] = Field(None, alias="pMin")
     penstock: Optional[int] = None
@@ -125,6 +127,7 @@ class GeneratorApply(DomainModelApply):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
+    node_type: Union[dm.DirectRelationReference, None] = None
     name: Optional[str] = None
     p_min: Optional[float] = Field(None, alias="pMin")
     penstock: Optional[int] = None
@@ -137,37 +140,43 @@ class GeneratorApply(DomainModelApply):
     def _to_instances_apply(
         self,
         cache: set[tuple[str, str]],
-        view_by_write_class: dict[type[DomainModelApply | DomainRelationApply], dm.ViewId] | None,
+        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
     ) -> ResourcesApply:
         resources = ResourcesApply()
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_write_class and view_by_write_class.get(type(self))) or dm.ViewId(
-            "power-ops", "Generator", "9178931bbaac71"
-        )
+        write_view = (view_by_read_class or {}).get(Generator, dm.ViewId("power-ops", "Generator", "9178931bbaac71"))
 
         properties = {}
+
         if self.name is not None:
             properties["name"] = self.name
+
         if self.p_min is not None:
             properties["pMin"] = self.p_min
+
         if self.penstock is not None:
             properties["penstock"] = self.penstock
+
         if self.startcost is not None:
             properties["startcost"] = self.startcost
+
         if self.start_stop_cost is not None:
             properties["startStopCost"] = (
                 self.start_stop_cost if isinstance(self.start_stop_cost, str) else self.start_stop_cost.external_id
             )
+
         if self.is_available_time_series is not None:
             properties["isAvailableTimeSeries"] = (
                 self.is_available_time_series
                 if isinstance(self.is_available_time_series, str)
                 else self.is_available_time_series.external_id
             )
+
         if self.generator_efficiency_curve is not None:
             properties["generatorEfficiencyCurve"] = self.generator_efficiency_curve
+
         if self.turbine_efficiency_curve is not None:
             properties["turbineEfficiencyCurve"] = self.turbine_efficiency_curve
 
@@ -176,6 +185,7 @@ class GeneratorApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
+                type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,
@@ -226,7 +236,7 @@ def _create_generator_filter(
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
-    if name and isinstance(name, str):
+    if name is not None and isinstance(name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
     if name and isinstance(name, list):
         filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
@@ -240,7 +250,7 @@ def _create_generator_filter(
         filters.append(dm.filters.Range(view_id.as_property_ref("startcost"), gte=min_startcost, lte=max_startcost))
     if external_id_prefix:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
-    if space and isinstance(space, str):
+    if space is not None and isinstance(space, str):
         filters.append(dm.filters.Equals(["node", "space"], value=space))
     if space and isinstance(space, list):
         filters.append(dm.filters.In(["node", "space"], values=space))

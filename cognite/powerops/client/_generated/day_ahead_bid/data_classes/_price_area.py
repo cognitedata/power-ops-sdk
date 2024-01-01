@@ -9,6 +9,7 @@ from pydantic import Field
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
     DomainModel,
+    DomainModelCore,
     DomainModelApply,
     DomainModelApplyList,
     DomainModelList,
@@ -62,11 +63,12 @@ class PriceArea(DomainModel):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power-ops-types", "PriceArea")
     name: Optional[str] = None
     default_method: Union[BidMethod, str, dm.NodeId, None] = Field(None, repr=False, alias="defaultMethod")
     timezone: Optional[str] = None
     main_scenario: Union[TimeSeries, str, None] = Field(None, alias="mainScenario")
-    price_scenarios: Optional[list[TimeSeries]] = Field(None, alias="priceScenarios")
+    price_scenarios: Union[list[TimeSeries], list[str], None] = Field(None, alias="priceScenarios")
 
     def as_apply(self) -> PriceAreaApply:
         """Convert this read version of price area to the writing version."""
@@ -103,24 +105,23 @@ class PriceAreaApply(DomainModelApply):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power-ops-types", "PriceArea")
     name: str
     default_method: Union[BidMethodApply, str, dm.NodeId, None] = Field(None, repr=False, alias="defaultMethod")
     timezone: str
     main_scenario: Union[TimeSeries, str, None] = Field(None, alias="mainScenario")
-    price_scenarios: Optional[list[TimeSeries]] = Field(None, alias="priceScenarios")
+    price_scenarios: Union[list[TimeSeries], list[str], None] = Field(None, alias="priceScenarios")
 
     def _to_instances_apply(
         self,
         cache: set[tuple[str, str]],
-        view_by_write_class: dict[type[DomainModelApply | DomainRelationApply], dm.ViewId] | None,
+        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
     ) -> ResourcesApply:
         resources = ResourcesApply()
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_write_class and view_by_write_class.get(type(self))) or dm.ViewId(
-            "power-ops-day-ahead-bid", "PriceArea", "1"
-        )
+        write_view = (view_by_read_class or {}).get(PriceArea, dm.ViewId("power-ops-day-ahead-bid", "PriceArea", "1"))
 
         properties = {}
 
@@ -153,7 +154,7 @@ class PriceAreaApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
-                type=dm.DirectRelationReference("power-ops-types", "DayAheadPriceArea"),
+                type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,
@@ -165,7 +166,7 @@ class PriceAreaApply(DomainModelApply):
             cache.add(self.as_tuple_id())
 
         if isinstance(self.default_method, DomainModelApply):
-            other_resources = self.default_method._to_instances_apply(cache, view_by_write_class)
+            other_resources = self.default_method._to_instances_apply(cache, view_by_read_class)
             resources.extend(other_resources)
 
         if isinstance(self.main_scenario, CogniteTimeSeries):
@@ -215,7 +216,7 @@ def _create_price_area_filter(
         filters.append(
             dm.filters.Equals(
                 view_id.as_property_ref("defaultMethod"),
-                value={"space": "power-ops-day-ahead-bid", "externalId": default_method},
+                value={"space": DEFAULT_INSTANCE_SPACE, "externalId": default_method},
             )
         )
     if default_method and isinstance(default_method, tuple):
@@ -229,7 +230,7 @@ def _create_price_area_filter(
         filters.append(
             dm.filters.In(
                 view_id.as_property_ref("defaultMethod"),
-                values=[{"space": "power-ops-day-ahead-bid", "externalId": item} for item in default_method],
+                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in default_method],
             )
         )
     if default_method and isinstance(default_method, list) and isinstance(default_method[0], tuple):

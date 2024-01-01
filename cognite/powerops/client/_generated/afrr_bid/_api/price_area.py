@@ -9,13 +9,12 @@ from cognite.client.data_classes.data_modeling.instances import InstanceAggregat
 
 from cognite.powerops.client._generated.afrr_bid.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.afrr_bid.data_classes import (
+    DomainModelCore,
     DomainModelApply,
     ResourcesApplyResult,
     PriceArea,
-    PriceAreaApply,
     PriceAreaFields,
     PriceAreaList,
-    PriceAreaApplyList,
     PriceAreaTextFields,
 )
 from cognite.powerops.client._generated.afrr_bid.data_classes._price_area import (
@@ -26,7 +25,7 @@ from ._core import (
     DEFAULT_LIMIT_READ,
     DEFAULT_QUERY_LIMIT,
     Aggregations,
-    NodeAPI,
+    NodeReadAPI,
     SequenceNotStr,
     QueryStep,
     QueryBuilder,
@@ -43,17 +42,15 @@ from .price_area_own_capacity_allocation_down import PriceAreaOwnCapacityAllocat
 from .price_area_query import PriceAreaQueryAPI
 
 
-class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
-    def __init__(self, client: CogniteClient, view_by_write_class: dict[type[DomainModelApply], dm.ViewId]):
-        view_id = view_by_write_class[PriceAreaApply]
+class PriceAreaAPI(NodeReadAPI[PriceArea, PriceAreaList]):
+    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
+        view_id = view_by_read_class[PriceArea]
         super().__init__(
             client=client,
             sources=view_id,
             class_type=PriceArea,
-            class_apply_type=PriceAreaApply,
             class_list=PriceAreaList,
-            class_apply_list=PriceAreaApplyList,
-            view_by_write_class=view_by_write_class,
+            view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
         self.capacity_price_up = PriceAreaCapacityPriceUpAPI(client, view_id)
@@ -99,32 +96,7 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(PriceAreaList)
-        return PriceAreaQueryAPI(self._client, builder, self._view_by_write_class, filter_, limit)
-
-    def apply(
-        self, price_area: PriceAreaApply | Sequence[PriceAreaApply], replace: bool = False
-    ) -> ResourcesApplyResult:
-        """Add or update (upsert) price areas.
-
-        Args:
-            price_area: Price area or sequence of price areas to upsert.
-            replace (bool): How do we behave when a property value exists? Do we replace all matching and existing values with the supplied values (true)?
-                Or should we merge in new values for properties together with the existing values (false)? Note: This setting applies for all nodes or edges specified in the ingestion call.
-        Returns:
-            Created instance(s), i.e., nodes, edges, and time series.
-
-        Examples:
-
-            Create a new price_area:
-
-                >>> from cognite.powerops.client._generated.afrr_bid import AFRRBidAPI
-                >>> from cognite.powerops.client._generated.afrr_bid.data_classes import PriceAreaApply
-                >>> client = AFRRBidAPI()
-                >>> price_area = PriceAreaApply(external_id="my_price_area", ...)
-                >>> result = client.price_area.apply(price_area)
-
-        """
-        return self._apply(price_area, replace)
+        return PriceAreaQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
 
     def delete(
         self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
