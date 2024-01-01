@@ -518,13 +518,13 @@ format = ["black (>=23.7.0)"]
 
 [[package]]
 name = "cognite-sdk"
-version = "7.8.6"
+version = "7.8.5"
 description = "Cognite Python SDK"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "cognite_sdk-7.8.6-py3-none-any.whl", hash = "sha256:8a5aac6b34538b8bed1ad39fbd1f74ee128652405167110d002e2359900d7322"},
-    {file = "cognite_sdk-7.8.6.tar.gz", hash = "sha256:73e948acfc20f00e253dea11c9d7bfd78820bb653c943045259d70d783b89f66"},
+    {file = "cognite_sdk-7.8.5-py3-none-any.whl", hash = "sha256:7d35b276f44a90ea9d8397b42dbff5dc2670efb3a8f810857d450efbfed51a62"},
+    {file = "cognite_sdk-7.8.5.tar.gz", hash = "sha256:4a5ac1becf6f5af2f18bafa471b4e306622929484fd28dc7ccf088de57dfd3e6"},
 ]
 
 [package.dependencies]
@@ -533,6 +533,7 @@ pandas = {version = ">=1.4", optional = true, markers = "extra == \"pandas\" or 
 protobuf = ">=3.16.0"
 requests = ">=2,<3"
 requests_oauthlib = ">=1,<2"
+sortedcontainers = ">=2.2,<3.0"
 typing_extensions = ">=4"
 tzdata = {version = ">=2023.3", markers = "sys_platform == \"win32\""}
 
@@ -4116,6 +4117,17 @@ files = [
 ]
 
 [[package]]
+name = "sortedcontainers"
+version = "2.4.0"
+description = "Sorted Containers -- Sorted List, Sorted Dict, Sorted Set"
+optional = false
+python-versions = "*"
+files = [
+    {file = "sortedcontainers-2.4.0-py2.py3-none-any.whl", hash = "sha256:a163dcaede0f1c021485e957a39245190e74249897e2ae4b2aa38595db237ee0"},
+    {file = "sortedcontainers-2.4.0.tar.gz", hash = "sha256:25caa5a06cc30b6b83d11423433f65d1f9d76c4c6a0c90e3379eaa43b9bfdb88"},
+]
+
+[[package]]
 name = "soupsieve"
 version = "2.5"
 description = "A modern CSS selector implementation for Beautiful Soup."
@@ -4571,4 +4583,4 @@ docs = ["mkdocs", "mkdocs-git-authors-plugin", "mkdocs-git-revision-date-localiz
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.12"
-content-hash = "7e599ca8c50dd7d6019babd29e4413a51fda9d3e5168ca49c5c6403a77154090"
+content-hash = "043616eeea19b404631bbcd529b151a82fa0e658afbc88fb9a7b5bea48382340"
