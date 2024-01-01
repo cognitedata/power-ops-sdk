@@ -9,6 +9,7 @@ from pydantic import Field
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
     DomainModel,
+    DomainModelCore,
     DomainModelApply,
     DomainModelApplyList,
     DomainModelList,
@@ -60,9 +61,12 @@ class Watercourse(DomainModel):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
+    node_type: Union[dm.DirectRelationReference, None] = None
     name: Optional[str] = None
     shop: Union[WatercourseShop, str, dm.NodeId, None] = Field(None, repr=False)
-    production_obligation_time_series: Optional[list[TimeSeries]] = Field(None, alias="productionObligationTimeSeries")
+    production_obligation_time_series: Union[list[TimeSeries], list[str], None] = Field(
+        None, alias="productionObligationTimeSeries"
+    )
     plants: Union[list[Plant], list[str], None] = Field(default=None, repr=False)
 
     def as_apply(self) -> WatercourseApply:
@@ -96,22 +100,25 @@ class WatercourseApply(DomainModelApply):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
+    node_type: Union[dm.DirectRelationReference, None] = None
     name: Optional[str] = None
     shop: Union[WatercourseShopApply, str, dm.NodeId, None] = Field(None, repr=False)
-    production_obligation_time_series: Optional[list[TimeSeries]] = Field(None, alias="productionObligationTimeSeries")
+    production_obligation_time_series: Union[list[TimeSeries], list[str], None] = Field(
+        None, alias="productionObligationTimeSeries"
+    )
     plants: Union[list[PlantApply], list[str], None] = Field(default=None, repr=False)
 
     def _to_instances_apply(
         self,
         cache: set[tuple[str, str]],
-        view_by_write_class: dict[type[DomainModelApply | DomainRelationApply], dm.ViewId] | None,
+        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
     ) -> ResourcesApply:
         resources = ResourcesApply()
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_write_class and view_by_write_class.get(type(self))) or dm.ViewId(
-            "power-ops", "Watercourse", "96f5170f35ef70"
+        write_view = (view_by_read_class or {}).get(
+            Watercourse, dm.ViewId("power-ops", "Watercourse", "96f5170f35ef70")
         )
 
         properties = {}
@@ -136,6 +143,7 @@ class WatercourseApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
+                type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,
@@ -149,12 +157,12 @@ class WatercourseApply(DomainModelApply):
         edge_type = dm.DirectRelationReference("power-ops", "Watercourse.plants")
         for plant in self.plants or []:
             other_resources = DomainRelationApply.from_edge_to_resources(
-                cache, start_node=self, end_node=plant, edge_type=edge_type, view_by_write_class=view_by_write_class
+                cache, start_node=self, end_node=plant, edge_type=edge_type, view_by_read_class=view_by_read_class
             )
             resources.extend(other_resources)
 
         if isinstance(self.shop, DomainModelApply):
-            other_resources = self.shop._to_instances_apply(cache, view_by_write_class)
+            other_resources = self.shop._to_instances_apply(cache, view_by_read_class)
             resources.extend(other_resources)
 
         if isinstance(self.production_obligation_time_series, CogniteTimeSeries):
@@ -197,7 +205,9 @@ def _create_watercourse_filter(
         filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
     if shop and isinstance(shop, str):
         filters.append(
-            dm.filters.Equals(view_id.as_property_ref("shop"), value={"space": "power-ops", "externalId": shop})
+            dm.filters.Equals(
+                view_id.as_property_ref("shop"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": shop}
+            )
         )
     if shop and isinstance(shop, tuple):
         filters.append(
@@ -206,7 +216,8 @@ def _create_watercourse_filter(
     if shop and isinstance(shop, list) and isinstance(shop[0], str):
         filters.append(
             dm.filters.In(
-                view_id.as_property_ref("shop"), values=[{"space": "power-ops", "externalId": item} for item in shop]
+                view_id.as_property_ref("shop"),
+                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in shop],
             )
         )
     if shop and isinstance(shop, list) and isinstance(shop[0], tuple):

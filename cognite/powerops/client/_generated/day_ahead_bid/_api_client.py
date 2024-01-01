@@ -22,9 +22,9 @@ class DayAheadBidAPI:
     DayAheadBidAPI
 
     Generated with:
-        pygen = 0.32.5
-        cognite-sdk = 7.8.4
-        pydantic = 2.5.2
+        pygen = 0.33.0
+        cognite-sdk = 7.8.6
+        pydantic = 2.5.3
 
     Data Model:
         space: power-ops-day-ahead-bid
@@ -40,29 +40,29 @@ class DayAheadBidAPI:
         else:
             raise ValueError(f"Expected CogniteClient or ClientConfig, got {type(config_or_client)}")
         # The client name is used for aggregated logging of Pygen Usage
-        client.config.client_name = "CognitePygen:0.32.5"
+        client.config.client_name = "CognitePygen:0.33.0"
 
-        view_by_write_class = {
-            data_classes.AlertApply: dm.ViewId("power-ops-shared", "Alert", "1"),
-            data_classes.BasicBidMatrixApply: dm.ViewId("power-ops-day-ahead-bid", "BasicBidMatrix", "1"),
-            data_classes.BidDocumentApply: dm.ViewId("power-ops-day-ahead-bid", "BidDocument", "1"),
-            data_classes.BidMatrixApply: dm.ViewId("power-ops-day-ahead-bid", "BidMatrix", "1"),
-            data_classes.BidMethodApply: dm.ViewId("power-ops-day-ahead-bid", "BidMethod", "1"),
-            data_classes.MultiScenarioMatrixApply: dm.ViewId("power-ops-day-ahead-bid", "MultiScenarioMatrix", "1"),
-            data_classes.PriceAreaApply: dm.ViewId("power-ops-day-ahead-bid", "PriceArea", "1"),
-            data_classes.SHOPMultiScenarioApply: dm.ViewId("power-ops-day-ahead-bid", "SHOPMultiScenario", "1"),
-            data_classes.WaterValueBasedApply: dm.ViewId("power-ops-day-ahead-bid", "WaterValueBased", "1"),
+        view_by_read_class = {
+            data_classes.Alert: dm.ViewId("power-ops-shared", "Alert", "1"),
+            data_classes.BasicBidMatrix: dm.ViewId("power-ops-day-ahead-bid", "BasicBidMatrix", "1"),
+            data_classes.BidDocument: dm.ViewId("power-ops-day-ahead-bid", "BidDocument", "1"),
+            data_classes.BidMatrix: dm.ViewId("power-ops-day-ahead-bid", "BidMatrix", "1"),
+            data_classes.BidMethod: dm.ViewId("power-ops-day-ahead-bid", "BidMethod", "1"),
+            data_classes.MultiScenarioMatrix: dm.ViewId("power-ops-day-ahead-bid", "MultiScenarioMatrix", "1"),
+            data_classes.PriceArea: dm.ViewId("power-ops-day-ahead-bid", "PriceArea", "1"),
+            data_classes.SHOPMultiScenario: dm.ViewId("power-ops-day-ahead-bid", "SHOPMultiScenario", "1"),
+            data_classes.WaterValueBased: dm.ViewId("power-ops-day-ahead-bid", "WaterValueBased", "1"),
         }
 
-        self.alert = AlertAPI(client, view_by_write_class)
-        self.basic_bid_matrix = BasicBidMatrixAPI(client, view_by_write_class)
-        self.bid_document = BidDocumentAPI(client, view_by_write_class)
-        self.bid_matrix = BidMatrixAPI(client, view_by_write_class)
-        self.bid_method = BidMethodAPI(client, view_by_write_class)
-        self.multi_scenario_matrix = MultiScenarioMatrixAPI(client, view_by_write_class)
-        self.price_area = PriceAreaAPI(client, view_by_write_class)
-        self.shop_multi_scenario = SHOPMultiScenarioAPI(client, view_by_write_class)
-        self.water_value_based = WaterValueBasedAPI(client, view_by_write_class)
+        self.alert = AlertAPI(client, view_by_read_class)
+        self.basic_bid_matrix = BasicBidMatrixAPI(client, view_by_read_class)
+        self.bid_document = BidDocumentAPI(client, view_by_read_class)
+        self.bid_matrix = BidMatrixAPI(client, view_by_read_class)
+        self.bid_method = BidMethodAPI(client, view_by_read_class)
+        self.multi_scenario_matrix = MultiScenarioMatrixAPI(client, view_by_read_class)
+        self.price_area = PriceAreaAPI(client, view_by_read_class)
+        self.shop_multi_scenario = SHOPMultiScenarioAPI(client, view_by_read_class)
+        self.water_value_based = WaterValueBasedAPI(client, view_by_read_class)
 
     @classmethod
     def azure_project(

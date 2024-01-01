@@ -18,9 +18,9 @@ class AFRRBidAPI:
     AFRRBidAPI
 
     Generated with:
-        pygen = 0.32.5
-        cognite-sdk = 7.8.4
-        pydantic = 2.5.2
+        pygen = 0.33.0
+        cognite-sdk = 7.8.6
+        pydantic = 2.5.3
 
     Data Model:
         space: power-ops-afrr-bid
@@ -36,21 +36,21 @@ class AFRRBidAPI:
         else:
             raise ValueError(f"Expected CogniteClient or ClientConfig, got {type(config_or_client)}")
         # The client name is used for aggregated logging of Pygen Usage
-        client.config.client_name = "CognitePygen:0.32.5"
+        client.config.client_name = "CognitePygen:0.33.0"
 
-        view_by_write_class = {
-            data_classes.AlertApply: dm.ViewId("power-ops-shared", "Alert", "1"),
-            data_classes.BidDocumentApply: dm.ViewId("power-ops-afrr-bid", "BidDocument", "1"),
-            data_classes.BidMethodApply: dm.ViewId("power-ops-afrr-bid", "BidMethod", "1"),
-            data_classes.BidRowApply: dm.ViewId("power-ops-afrr-bid", "BidRow", "1"),
-            data_classes.PriceAreaApply: dm.ViewId("power-ops-afrr-bid", "PriceArea", "1"),
+        view_by_read_class = {
+            data_classes.Alert: dm.ViewId("power-ops-shared", "Alert", "1"),
+            data_classes.BidDocument: dm.ViewId("power-ops-afrr-bid", "BidDocument", "1"),
+            data_classes.BidMethod: dm.ViewId("power-ops-afrr-bid", "BidMethod", "1"),
+            data_classes.BidRow: dm.ViewId("power-ops-afrr-bid", "BidRow", "1"),
+            data_classes.PriceArea: dm.ViewId("power-ops-afrr-bid", "PriceArea", "1"),
         }
 
-        self.alert = AlertAPI(client, view_by_write_class)
-        self.bid_document = BidDocumentAPI(client, view_by_write_class)
-        self.bid_method = BidMethodAPI(client, view_by_write_class)
-        self.bid_row = BidRowAPI(client, view_by_write_class)
-        self.price_area = PriceAreaAPI(client, view_by_write_class)
+        self.alert = AlertAPI(client, view_by_read_class)
+        self.bid_document = BidDocumentAPI(client, view_by_read_class)
+        self.bid_method = BidMethodAPI(client, view_by_read_class)
+        self.bid_row = BidRowAPI(client, view_by_read_class)
+        self.price_area = PriceAreaAPI(client, view_by_read_class)
 
     @classmethod
     def azure_project(

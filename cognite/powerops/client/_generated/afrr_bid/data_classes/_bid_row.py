@@ -8,6 +8,7 @@ from pydantic import Field
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
     DomainModel,
+    DomainModelCore,
     DomainModelApply,
     DomainModelApplyList,
     DomainModelList,
@@ -77,6 +78,7 @@ class BidRow(DomainModel):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power-ops-types", "AFRRBidRow")
     price: Optional[float] = None
     quantity_per_hour: Optional[list[float]] = Field(None, alias="quantityPerHour")
     product: Optional[str] = None
@@ -137,6 +139,7 @@ class BidRowApply(DomainModelApply):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power-ops-types", "AFRRBidRow")
     price: Optional[float] = None
     quantity_per_hour: Optional[list[float]] = Field(None, alias="quantityPerHour")
     product: Optional[str] = None
@@ -153,15 +156,13 @@ class BidRowApply(DomainModelApply):
     def _to_instances_apply(
         self,
         cache: set[tuple[str, str]],
-        view_by_write_class: dict[type[DomainModelApply | DomainRelationApply], dm.ViewId] | None,
+        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
     ) -> ResourcesApply:
         resources = ResourcesApply()
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_write_class and view_by_write_class.get(type(self))) or dm.ViewId(
-            "power-ops-afrr-bid", "BidRow", "1"
-        )
+        write_view = (view_by_read_class or {}).get(BidRow, dm.ViewId("power-ops-afrr-bid", "BidRow", "1"))
 
         properties = {}
 
@@ -209,7 +210,7 @@ class BidRowApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
-                type=dm.DirectRelationReference("power-ops-types", "AFRRBidRow"),
+                type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,
@@ -223,16 +224,16 @@ class BidRowApply(DomainModelApply):
         edge_type = dm.DirectRelationReference("power-ops-types", "calculationIssue")
         for alert in self.alerts or []:
             other_resources = DomainRelationApply.from_edge_to_resources(
-                cache, start_node=self, end_node=alert, edge_type=edge_type, view_by_write_class=view_by_write_class
+                cache, start_node=self, end_node=alert, edge_type=edge_type, view_by_read_class=view_by_read_class
             )
             resources.extend(other_resources)
 
         if isinstance(self.linked_bid, DomainModelApply):
-            other_resources = self.linked_bid._to_instances_apply(cache, view_by_write_class)
+            other_resources = self.linked_bid._to_instances_apply(cache, view_by_read_class)
             resources.extend(other_resources)
 
         if isinstance(self.method, DomainModelApply):
-            other_resources = self.method._to_instances_apply(cache, view_by_write_class)
+            other_resources = self.method._to_instances_apply(cache, view_by_read_class)
             resources.extend(other_resources)
 
         return resources
@@ -296,7 +297,7 @@ def _create_bid_row_filter(
     if linked_bid and isinstance(linked_bid, str):
         filters.append(
             dm.filters.Equals(
-                view_id.as_property_ref("linkedBid"), value={"space": "power-ops-afrr-bid", "externalId": linked_bid}
+                view_id.as_property_ref("linkedBid"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": linked_bid}
             )
         )
     if linked_bid and isinstance(linked_bid, tuple):
@@ -309,7 +310,7 @@ def _create_bid_row_filter(
         filters.append(
             dm.filters.In(
                 view_id.as_property_ref("linkedBid"),
-                values=[{"space": "power-ops-afrr-bid", "externalId": item} for item in linked_bid],
+                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in linked_bid],
             )
         )
     if linked_bid and isinstance(linked_bid, list) and isinstance(linked_bid[0], tuple):
@@ -334,7 +335,7 @@ def _create_bid_row_filter(
     if method and isinstance(method, str):
         filters.append(
             dm.filters.Equals(
-                view_id.as_property_ref("method"), value={"space": "power-ops-afrr-bid", "externalId": method}
+                view_id.as_property_ref("method"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": method}
             )
         )
     if method and isinstance(method, tuple):
@@ -345,7 +346,7 @@ def _create_bid_row_filter(
         filters.append(
             dm.filters.In(
                 view_id.as_property_ref("method"),
-                values=[{"space": "power-ops-afrr-bid", "externalId": item} for item in method],
+                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in method],
             )
         )
     if method and isinstance(method, list) and isinstance(method[0], tuple):

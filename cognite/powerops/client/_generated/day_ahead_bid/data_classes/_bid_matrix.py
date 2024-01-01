@@ -8,6 +8,7 @@ from pydantic import Field
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
     DomainModel,
+    DomainModelCore,
     DomainModelApply,
     DomainModelApplyList,
     DomainModelList,
@@ -62,6 +63,7 @@ class BidMatrix(DomainModel):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
+    node_type: Union[dm.DirectRelationReference, None] = None
     resource_cost: Optional[str] = Field(None, alias="resourceCost")
     matrix: Union[str, None] = None
     asset_type: Optional[str] = Field(None, alias="assetType")
@@ -104,6 +106,7 @@ class BidMatrixApply(DomainModelApply):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
+    node_type: Union[dm.DirectRelationReference, None] = None
     resource_cost: Optional[str] = Field(None, alias="resourceCost")
     matrix: Union[str, None] = None
     asset_type: Optional[str] = Field(None, alias="assetType")
@@ -114,15 +117,13 @@ class BidMatrixApply(DomainModelApply):
     def _to_instances_apply(
         self,
         cache: set[tuple[str, str]],
-        view_by_write_class: dict[type[DomainModelApply | DomainRelationApply], dm.ViewId] | None,
+        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
     ) -> ResourcesApply:
         resources = ResourcesApply()
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_write_class and view_by_write_class.get(type(self))) or dm.ViewId(
-            "power-ops-day-ahead-bid", "BidMatrix", "1"
-        )
+        write_view = (view_by_read_class or {}).get(BidMatrix, dm.ViewId("power-ops-day-ahead-bid", "BidMatrix", "1"))
 
         properties = {}
 
@@ -149,6 +150,7 @@ class BidMatrixApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
+                type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,
@@ -162,12 +164,12 @@ class BidMatrixApply(DomainModelApply):
         edge_type = dm.DirectRelationReference("power-ops-types", "calculationIssue")
         for alert in self.alerts or []:
             other_resources = DomainRelationApply.from_edge_to_resources(
-                cache, start_node=self, end_node=alert, edge_type=edge_type, view_by_write_class=view_by_write_class
+                cache, start_node=self, end_node=alert, edge_type=edge_type, view_by_read_class=view_by_read_class
             )
             resources.extend(other_resources)
 
         if isinstance(self.method, DomainModelApply):
-            other_resources = self.method._to_instances_apply(cache, view_by_write_class)
+            other_resources = self.method._to_instances_apply(cache, view_by_read_class)
             resources.extend(other_resources)
 
         return resources
@@ -224,7 +226,7 @@ def _create_bid_matrix_filter(
     if method and isinstance(method, str):
         filters.append(
             dm.filters.Equals(
-                view_id.as_property_ref("method"), value={"space": "power-ops-day-ahead-bid", "externalId": method}
+                view_id.as_property_ref("method"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": method}
             )
         )
     if method and isinstance(method, tuple):
@@ -235,7 +237,7 @@ def _create_bid_matrix_filter(
         filters.append(
             dm.filters.In(
                 view_id.as_property_ref("method"),
-                values=[{"space": "power-ops-day-ahead-bid", "externalId": item} for item in method],
+                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in method],
             )
         )
     if method and isinstance(method, list) and isinstance(method[0], tuple):

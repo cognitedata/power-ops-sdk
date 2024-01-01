@@ -9,6 +9,7 @@ from cognite.client.data_classes.data_modeling.instances import InstanceAggregat
 
 from cognite.powerops.client._generated.production.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.production.data_classes import (
+    DomainModelCore,
     DomainModelApply,
     ResourcesApplyResult,
     Generator,
@@ -37,16 +38,15 @@ from .generator_query import GeneratorQueryAPI
 
 
 class GeneratorAPI(NodeAPI[Generator, GeneratorApply, GeneratorList]):
-    def __init__(self, client: CogniteClient, view_by_write_class: dict[type[DomainModelApply], dm.ViewId]):
-        view_id = view_by_write_class[GeneratorApply]
+    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
+        view_id = view_by_read_class[Generator]
         super().__init__(
             client=client,
             sources=view_id,
             class_type=Generator,
-            class_apply_type=GeneratorApply,
             class_list=GeneratorList,
             class_apply_list=GeneratorApplyList,
-            view_by_write_class=view_by_write_class,
+            view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
         self.start_stop_cost = GeneratorStartStopCostAPI(client, view_id)
@@ -103,7 +103,7 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorApply, GeneratorList]):
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(GeneratorList)
-        return GeneratorQueryAPI(self._client, builder, self._view_by_write_class, filter_, limit)
+        return GeneratorQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
 
     def apply(
         self, generator: GeneratorApply | Sequence[GeneratorApply], replace: bool = False

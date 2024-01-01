@@ -19,9 +19,9 @@ class ProductionModelAPI:
     ProductionModelAPI
 
     Generated with:
-        pygen = 0.32.5
-        cognite-sdk = 7.8.4
-        pydantic = 2.5.2
+        pygen = 0.33.0
+        cognite-sdk = 7.8.6
+        pydantic = 2.5.3
 
     Data Model:
         space: power-ops
@@ -37,23 +37,23 @@ class ProductionModelAPI:
         else:
             raise ValueError(f"Expected CogniteClient or ClientConfig, got {type(config_or_client)}")
         # The client name is used for aggregated logging of Pygen Usage
-        client.config.client_name = "CognitePygen:0.32.5"
+        client.config.client_name = "CognitePygen:0.33.0"
 
-        view_by_write_class = {
-            data_classes.GeneratorApply: dm.ViewId("power-ops", "Generator", "9178931bbaac71"),
-            data_classes.PlantApply: dm.ViewId("power-ops", "Plant", "836dcb3f5da1df"),
-            data_classes.PriceAreaApply: dm.ViewId("power-ops", "PriceArea", "6849ae787cd368"),
-            data_classes.ReservoirApply: dm.ViewId("power-ops", "Reservoir", "3c822b0c3d68f7"),
-            data_classes.WatercourseApply: dm.ViewId("power-ops", "Watercourse", "96f5170f35ef70"),
-            data_classes.WatercourseShopApply: dm.ViewId("power-ops", "WatercourseShop", "4b5321b1fccd06"),
+        view_by_read_class = {
+            data_classes.Generator: dm.ViewId("power-ops", "Generator", "9178931bbaac71"),
+            data_classes.Plant: dm.ViewId("power-ops", "Plant", "836dcb3f5da1df"),
+            data_classes.PriceArea: dm.ViewId("power-ops", "PriceArea", "6849ae787cd368"),
+            data_classes.Reservoir: dm.ViewId("power-ops", "Reservoir", "3c822b0c3d68f7"),
+            data_classes.Watercourse: dm.ViewId("power-ops", "Watercourse", "96f5170f35ef70"),
+            data_classes.WatercourseShop: dm.ViewId("power-ops", "WatercourseShop", "4b5321b1fccd06"),
         }
 
-        self.generator = GeneratorAPI(client, view_by_write_class)
-        self.plant = PlantAPI(client, view_by_write_class)
-        self.price_area = PriceAreaAPI(client, view_by_write_class)
-        self.reservoir = ReservoirAPI(client, view_by_write_class)
-        self.watercourse = WatercourseAPI(client, view_by_write_class)
-        self.watercourse_shop = WatercourseShopAPI(client, view_by_write_class)
+        self.generator = GeneratorAPI(client, view_by_read_class)
+        self.plant = PlantAPI(client, view_by_read_class)
+        self.price_area = PriceAreaAPI(client, view_by_read_class)
+        self.reservoir = ReservoirAPI(client, view_by_read_class)
+        self.watercourse = WatercourseAPI(client, view_by_read_class)
+        self.watercourse_shop = WatercourseShopAPI(client, view_by_read_class)
 
     @classmethod
     def azure_project(

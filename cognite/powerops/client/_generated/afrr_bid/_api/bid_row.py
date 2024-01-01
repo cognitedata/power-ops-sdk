@@ -9,6 +9,7 @@ from cognite.client.data_classes.data_modeling.instances import InstanceAggregat
 
 from cognite.powerops.client._generated.afrr_bid.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.afrr_bid.data_classes import (
+    DomainModelCore,
     DomainModelApply,
     ResourcesApplyResult,
     BidRow,
@@ -36,16 +37,15 @@ from .bid_row_query import BidRowQueryAPI
 
 
 class BidRowAPI(NodeAPI[BidRow, BidRowApply, BidRowList]):
-    def __init__(self, client: CogniteClient, view_by_write_class: dict[type[DomainModelApply], dm.ViewId]):
-        view_id = view_by_write_class[BidRowApply]
+    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
+        view_id = view_by_read_class[BidRow]
         super().__init__(
             client=client,
             sources=view_id,
             class_type=BidRow,
-            class_apply_type=BidRowApply,
             class_list=BidRowList,
             class_apply_list=BidRowApplyList,
-            view_by_write_class=view_by_write_class,
+            view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
         self.alerts_edge = BidRowAlertsAPI(client)
@@ -119,7 +119,7 @@ class BidRowAPI(NodeAPI[BidRow, BidRowApply, BidRowList]):
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(BidRowList)
-        return BidRowQueryAPI(self._client, builder, self._view_by_write_class, filter_, limit)
+        return BidRowQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
 
     def apply(self, bid_row: BidRowApply | Sequence[BidRowApply], replace: bool = False) -> ResourcesApplyResult:
         """Add or update (upsert) bid rows.

@@ -10,6 +10,7 @@ from cognite.client.data_classes.data_modeling.instances import InstanceAggregat
 
 from cognite.powerops.client._generated.afrr_bid.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.afrr_bid.data_classes import (
+    DomainModelCore,
     DomainModelApply,
     ResourcesApplyResult,
     BidDocument,
@@ -38,16 +39,15 @@ from .bid_document_query import BidDocumentQueryAPI
 
 
 class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
-    def __init__(self, client: CogniteClient, view_by_write_class: dict[type[DomainModelApply], dm.ViewId]):
-        view_id = view_by_write_class[BidDocumentApply]
+    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
+        view_id = view_by_read_class[BidDocument]
         super().__init__(
             client=client,
             sources=view_id,
             class_type=BidDocument,
-            class_apply_type=BidDocumentApply,
             class_list=BidDocumentList,
             class_apply_list=BidDocumentApplyList,
-            view_by_write_class=view_by_write_class,
+            view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
         self.alerts_edge = BidDocumentAlertsAPI(client)
@@ -110,7 +110,7 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(BidDocumentList)
-        return BidDocumentQueryAPI(self._client, builder, self._view_by_write_class, filter_, limit)
+        return BidDocumentQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
 
     def apply(
         self, bid_document: BidDocumentApply | Sequence[BidDocumentApply], replace: bool = False

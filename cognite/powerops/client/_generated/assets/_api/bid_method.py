@@ -9,6 +9,7 @@ from cognite.client.data_classes.data_modeling.instances import InstanceAggregat
 
 from cognite.powerops.client._generated.assets.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.assets.data_classes import (
+    DomainModelCore,
     DomainModelApply,
     ResourcesApplyResult,
     BidMethod,
@@ -35,16 +36,15 @@ from .bid_method_query import BidMethodQueryAPI
 
 
 class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
-    def __init__(self, client: CogniteClient, view_by_write_class: dict[type[DomainModelApply], dm.ViewId]):
-        view_id = view_by_write_class[BidMethodApply]
+    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
+        view_id = view_by_read_class[BidMethod]
         super().__init__(
             client=client,
             sources=view_id,
             class_type=BidMethod,
-            class_apply_type=BidMethodApply,
             class_list=BidMethodList,
             class_apply_list=BidMethodApplyList,
-            view_by_write_class=view_by_write_class,
+            view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
 
@@ -81,7 +81,7 @@ class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(BidMethodList)
-        return BidMethodQueryAPI(self._client, builder, self._view_by_write_class, filter_, limit)
+        return BidMethodQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
 
     def apply(
         self, bid_method: BidMethodApply | Sequence[BidMethodApply], replace: bool = False

@@ -9,6 +9,7 @@ from cognite.client.data_classes.data_modeling.instances import InstanceAggregat
 
 from cognite.powerops.client._generated.day_ahead_bid.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.day_ahead_bid.data_classes import (
+    DomainModelCore,
     DomainModelApply,
     ResourcesApplyResult,
     MultiScenarioMatrix,
@@ -38,16 +39,15 @@ from .multi_scenario_matrix_query import MultiScenarioMatrixQueryAPI
 
 
 class MultiScenarioMatrixAPI(NodeAPI[MultiScenarioMatrix, MultiScenarioMatrixApply, MultiScenarioMatrixList]):
-    def __init__(self, client: CogniteClient, view_by_write_class: dict[type[DomainModelApply], dm.ViewId]):
-        view_id = view_by_write_class[MultiScenarioMatrixApply]
+    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
+        view_id = view_by_read_class[MultiScenarioMatrix]
         super().__init__(
             client=client,
             sources=view_id,
             class_type=MultiScenarioMatrix,
-            class_apply_type=MultiScenarioMatrixApply,
             class_list=MultiScenarioMatrixList,
             class_apply_list=MultiScenarioMatrixApplyList,
-            view_by_write_class=view_by_write_class,
+            view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
         self.alerts_edge = MultiScenarioMatrixAlertsAPI(client)
@@ -102,7 +102,7 @@ class MultiScenarioMatrixAPI(NodeAPI[MultiScenarioMatrix, MultiScenarioMatrixApp
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(MultiScenarioMatrixList)
-        return MultiScenarioMatrixQueryAPI(self._client, builder, self._view_by_write_class, filter_, limit)
+        return MultiScenarioMatrixQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
 
     def apply(
         self,

@@ -9,6 +9,7 @@ from pydantic import Field
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
     DomainModel,
+    DomainModelCore,
     DomainModelApply,
     DomainModelApplyList,
     DomainModelList,
@@ -120,6 +121,7 @@ class PriceArea(DomainModel):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power-ops-types", "PriceArea")
     name: Optional[str] = None
     display_name: Optional[str] = Field(None, alias="displayName")
     description: Optional[str] = None
@@ -205,6 +207,7 @@ class PriceAreaApply(DomainModelApply):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power-ops-types", "PriceArea")
     name: str
     display_name: Optional[str] = Field(None, alias="displayName")
     description: Optional[str] = None
@@ -229,15 +232,13 @@ class PriceAreaApply(DomainModelApply):
     def _to_instances_apply(
         self,
         cache: set[tuple[str, str]],
-        view_by_write_class: dict[type[DomainModelApply | DomainRelationApply], dm.ViewId] | None,
+        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
     ) -> ResourcesApply:
         resources = ResourcesApply()
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_write_class and view_by_write_class.get(type(self))) or dm.ViewId(
-            "power-ops-assets", "PriceArea", "1"
-        )
+        write_view = (view_by_read_class or {}).get(PriceArea, dm.ViewId("power-ops-assets", "PriceArea", "1"))
 
         properties = {}
 
@@ -343,7 +344,7 @@ class PriceAreaApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
-                type=dm.DirectRelationReference("power-ops-types", "PriceArea"),
+                type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,
@@ -357,23 +358,19 @@ class PriceAreaApply(DomainModelApply):
         edge_type = dm.DirectRelationReference("power-ops-types", "isSubAssetOf")
         for plant in self.plants or []:
             other_resources = DomainRelationApply.from_edge_to_resources(
-                cache, start_node=self, end_node=plant, edge_type=edge_type, view_by_write_class=view_by_write_class
+                cache, start_node=self, end_node=plant, edge_type=edge_type, view_by_read_class=view_by_read_class
             )
             resources.extend(other_resources)
 
         edge_type = dm.DirectRelationReference("power-ops-types", "isSubAssetOf")
         for watercourse in self.watercourses or []:
             other_resources = DomainRelationApply.from_edge_to_resources(
-                cache,
-                start_node=self,
-                end_node=watercourse,
-                edge_type=edge_type,
-                view_by_write_class=view_by_write_class,
+                cache, start_node=self, end_node=watercourse, edge_type=edge_type, view_by_read_class=view_by_read_class
             )
             resources.extend(other_resources)
 
         if isinstance(self.default_method_day_ahead, DomainModelApply):
-            other_resources = self.default_method_day_ahead._to_instances_apply(cache, view_by_write_class)
+            other_resources = self.default_method_day_ahead._to_instances_apply(cache, view_by_read_class)
             resources.extend(other_resources)
 
         if isinstance(self.capacity_price_up, CogniteTimeSeries):
@@ -472,7 +469,7 @@ def _create_price_area_filter(
         filters.append(
             dm.filters.Equals(
                 view_id.as_property_ref("defaultMethodDayAhead"),
-                value={"space": "power-ops-shared", "externalId": default_method_day_ahead},
+                value={"space": DEFAULT_INSTANCE_SPACE, "externalId": default_method_day_ahead},
             )
         )
     if default_method_day_ahead and isinstance(default_method_day_ahead, tuple):
@@ -490,7 +487,7 @@ def _create_price_area_filter(
         filters.append(
             dm.filters.In(
                 view_id.as_property_ref("defaultMethodDayAhead"),
-                values=[{"space": "power-ops-shared", "externalId": item} for item in default_method_day_ahead],
+                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in default_method_day_ahead],
             )
         )
     if (

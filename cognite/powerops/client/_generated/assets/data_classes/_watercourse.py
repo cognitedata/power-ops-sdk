@@ -9,6 +9,7 @@ from pydantic import Field
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
     DomainModel,
+    DomainModelCore,
     DomainModelApply,
     DomainModelApplyList,
     DomainModelList,
@@ -62,9 +63,10 @@ class Watercourse(DomainModel):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power-ops-types", "Watercourse")
     name: Optional[str] = None
     display_name: Optional[str] = Field(None, alias="displayName")
-    production_obligation: Optional[list[TimeSeries]] = Field(None, alias="productionObligation")
+    production_obligation: Union[list[TimeSeries], list[str], None] = Field(None, alias="productionObligation")
     penalty_limit: Optional[float] = Field(None, alias="penaltyLimit")
     plants: Union[list[Plant], list[str], None] = Field(default=None, repr=False)
 
@@ -101,24 +103,23 @@ class WatercourseApply(DomainModelApply):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power-ops-types", "Watercourse")
     name: str
     display_name: Optional[str] = Field(None, alias="displayName")
-    production_obligation: Optional[list[TimeSeries]] = Field(None, alias="productionObligation")
+    production_obligation: Union[list[TimeSeries], list[str], None] = Field(None, alias="productionObligation")
     penalty_limit: Optional[float] = Field(None, alias="penaltyLimit")
     plants: Union[list[PlantApply], list[str], None] = Field(default=None, repr=False)
 
     def _to_instances_apply(
         self,
         cache: set[tuple[str, str]],
-        view_by_write_class: dict[type[DomainModelApply | DomainRelationApply], dm.ViewId] | None,
+        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
     ) -> ResourcesApply:
         resources = ResourcesApply()
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_write_class and view_by_write_class.get(type(self))) or dm.ViewId(
-            "power-ops-assets", "Watercourse", "1"
-        )
+        write_view = (view_by_read_class or {}).get(Watercourse, dm.ViewId("power-ops-assets", "Watercourse", "1"))
 
         properties = {}
 
@@ -141,7 +142,7 @@ class WatercourseApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
-                type=dm.DirectRelationReference("power-ops-types", "Watercourse"),
+                type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,
@@ -155,7 +156,7 @@ class WatercourseApply(DomainModelApply):
         edge_type = dm.DirectRelationReference("power-ops-types", "isSubAssetOf")
         for plant in self.plants or []:
             other_resources = DomainRelationApply.from_edge_to_resources(
-                cache, start_node=self, end_node=plant, edge_type=edge_type, view_by_write_class=view_by_write_class
+                cache, start_node=self, end_node=plant, edge_type=edge_type, view_by_read_class=view_by_read_class
             )
             resources.extend(other_resources)
 
