@@ -121,7 +121,7 @@ class PowerAssetModelDM(Model):
         for item in itertools.chain(
             self.price_areas, self.generators, self.plants, self.reservoirs, self.watercourses, self.turbine_curves
         ):
-            resource = item._to_instances_apply(cache=cache, view_by_write_class=None)
+            resource = item._to_instances_apply(cache=cache, view_by_read_class=None)
             if resources is None:
                 resources = resource
             else:
