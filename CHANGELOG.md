@@ -15,10 +15,10 @@ Changes are grouped as follows
 
 ## [0.79.0] - 2023-12-22
 ### Changed
-* Single `PriceArea` type
+* Single `PriceArea` type in data models.
 * Support `dev` argument in `resync init` to destroy recreate views and
   data models in the development process.
-* Regenerate clients with `pygen` `v0.32.5`
+* Regenerate clients with `pygen` `v0.33.0`
 * Introduce `PowerOpsContainerModel` for an easy way to see all available
   containers in `PowerOps`
 
