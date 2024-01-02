@@ -76,6 +76,16 @@ class Transformation(BaseModel, ABC):
     def parameters_to_dict(self) -> dict:
         return {}
 
+    @classmethod
+    def load_from_fdm(cls, transformation_type: str, transformation_parameters: dict) -> Self:
+        if transformation_type in _TRANSFORMATIONS_RELATIVE_DATAPOINTS:
+            transformation_parameters = {
+                "relative_datapoints": [
+                    {"offset_minute": m, "offset_value": v} for m, v in transformation_parameters.items()
+                ]
+            }
+        return cls.load({transformation_type: {"parameters": transformation_parameters}})
+
     @abstractmethod
     def apply(
         self,
@@ -86,7 +96,7 @@ class Transformation(BaseModel, ABC):
 
 class DynamicTransformation(Transformation):
     @abstractmethod
-    def pre_apply(self, client: CogniteClient, shop_model: dict, start: datetime, end: datetime):
+    def pre_apply(self, client: CogniteClient, shop_model: dict, start: int, end: int):
         ...
 
 
@@ -266,7 +276,7 @@ class StaticValues(DynamicTransformation):
     def pre_apply_has_run(self, value: bool):
         self._pre_apply_has_run = value
 
-    def pre_apply(self, client: CogniteClient, shop_model: dict, start: datetime, end: datetime):
+    def pre_apply(self, client: CogniteClient, shop_model: dict, start: int, end: int):
         """Preprocessing step that needs to run before `apply()` to set the shop start time.
 
         Args:
@@ -277,8 +287,8 @@ class StaticValues(DynamicTransformation):
         Example:
         ```python
         from cognite.client import CogniteClient
-        start_time = datetime(2000, 1, 1, 12)
-        end_time = datetime(2000, 1, 5, 12)
+        start_time = datetime.timestamp(datetime(2000, 1, 1, 12))
+        end_time = datetime.timestamp(datetime(2000, 1, 5, 12))
         client = CogniteClient()
         model = {}
         relative_datapoints = [
@@ -289,7 +299,7 @@ class StaticValues(DynamicTransformation):
         s.pre_apply(client=client, shop_model=model, start=start_time, end=end_time)
         ```
         """
-        self.start = start
+        self.start = ms_to_datetime(start)
         self.pre_apply_has_run = True
 
     def apply(self, _: tuple[pd.Series]) -> pd.Series:
@@ -478,7 +488,7 @@ class HeightToVolume(DynamicTransformation):
 
         return time_series_data.map(interpolate)
 
-    def pre_apply(self, client: CogniteClient, shop_model: dict, start: datetime, end: datetime):
+    def pre_apply(self, client: CogniteClient, shop_model: dict, start: int, end: int):
         """Preprocessing step that needs to run before `apply()` to set the volumes and heights from shop case file.
 
         Args:
@@ -490,8 +500,8 @@ class HeightToVolume(DynamicTransformation):
         Example:
         ```python
         from cognite.client import CogniteClient
-        start_time = datetime(2000, 1, 1, 12)
-        end_time = datetime(2000, 1, 10, 12)
+        start_time = datetime.timestamp(datetime(2000, 1, 1, 12))
+        end_time = datetime.timestamp(datetime(2000, 1, 10, 12))
         model = {"reservoir": {"Lundevatn": {"vol_head": {"x": [10, 20, 40, 80, 160], "y": [2, 4, 6, 8, 10]}}}}
         client = CogniteClient()
         h = HeightToVolume(object_type="reservoir", object_name="Lundevatn")
@@ -761,7 +771,7 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
 
         return shape
 
-    def pre_apply(self, client: CogniteClient, shop_model: dict, start: datetime, end: datetime):
+    def pre_apply(self, client: CogniteClient, shop_model: dict, start: int, end: int):
         """Preprocessing step that needs to run before `apply()` to set the shape,
            retrieve and set discharge time series data, and set SHOP start and end times
 
@@ -774,8 +784,8 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
         Example:
         ```python
         from cognite.client import CogniteClient
-        start_time = datetime(2000, 1, 1, 12)
-        end_time = datetime(2000, 1, 5, 12)
+        start_time = datetime.timestamp(datetime(2000, 1, 1, 12))
+        end_time = datetime.timestamp(datetime(2000, 1, 5, 12))
         client = CogniteClient()
         model = {"gate": {"gate1": {"shape_discharge": {"ref": 0, "x": [0, 60, 120], "y": [0.1, 0.5, 0.4]}}}}
         t = AddWaterInTransit(discharge_ts_external_id="discharge_ts",
@@ -849,8 +859,10 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
         Example:
         ```python
         from cognite.client import CogniteClient
-        start_time = datetime(year=2022, month=5, day=20, hour=22)
-        end_time = start + timedelta(days=5)
+        start = datetime(year=2022, month=5, day=20, hour=22)
+        end = start + timedelta(days=5)
+        start_time = datetime.timestamp(start)
+        end_time = datetime.timestamp(end)
         client = CogniteClient()
         model = {"gate": {"gate1": {"shape_discharge": {"ref": 0, "x": [0, 60, 120], "y": [0.1, 0.5, 0.4]}}}}
         t = AddWaterInTransit(discharge_ts_external_id="discharge_ts",
@@ -896,3 +908,5 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
 _TRANSFORMATIONS_BY_CLASS_NAME = dict(
     inspect.getmembers(sys.modules[__name__], lambda member: inspect.isclass(member) and member.__module__ == __name__)
 )
+
+_TRANSFORMATIONS_RELATIVE_DATAPOINTS = ["StaticValues", "AddFromOffset", "MultiplyFromOffset"]
