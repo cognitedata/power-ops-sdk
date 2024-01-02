@@ -98,7 +98,6 @@ def test_serialize_cogshop1_model_as_cdf(cogshop1_model: models.CogShop1Asset) -
     assert loaded.model_dump() == local_cogshop.model_dump()
 
 
-@pytest.mark.skip("This does not work for non-windows machines")
 def test_sha256_hash_sequences_market_model(market_model: models.MarketModel, data_regression) -> None:
     # Arrange
     sequences = market_model.sequences()
