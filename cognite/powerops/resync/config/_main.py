@@ -163,7 +163,6 @@ class ProductionConfig(Config):
 class CogShopConfig(Config):
     time_series_mappings: Optional[list[TimeSeriesMapping]] = None
     time_series_mappings_v2: Optional[list[TimeSeriesMappingV2]] = None
-    # TODO: uncommment when loading of new transformations are done correctly
     watercourses_shop: list[ShopFileConfig]  # validation needs to happen here. If any of the files
     _dependent_shop_files: set = {
         "extra_data",
