@@ -13,6 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.80.1] - 2024-01-02
+### Added
+* FDM transformationsV2 instances to transformationsV2 pydantic translator
+* Changed type of inputs for shop start and end times from `datetime` to `int`
+
 ## [0.80.0] - 2024-01-02
 ### Added
 * Script for translating old transformation files to new ones
