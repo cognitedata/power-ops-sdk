@@ -9,6 +9,7 @@ from cognite.client.data_classes.data_modeling.instances import InstanceAggregat
 
 from cognite.powerops.client._generated.assets.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.assets.data_classes import (
+    DomainModelCore,
     DomainModelApply,
     ResourcesApplyResult,
     Plant,
@@ -43,16 +44,15 @@ from .plant_query import PlantQueryAPI
 
 
 class PlantAPI(NodeAPI[Plant, PlantApply, PlantList]):
-    def __init__(self, client: CogniteClient, view_by_write_class: dict[type[DomainModelApply], dm.ViewId]):
-        view_id = view_by_write_class[PlantApply]
+    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
+        view_id = view_by_read_class[Plant]
         super().__init__(
             client=client,
             sources=view_id,
             class_type=Plant,
-            class_apply_type=PlantApply,
             class_list=PlantList,
             class_apply_list=PlantApplyList,
-            view_by_write_class=view_by_write_class,
+            view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
         self.generators_edge = PlantGeneratorsAPI(client)
@@ -145,7 +145,7 @@ class PlantAPI(NodeAPI[Plant, PlantApply, PlantList]):
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(PlantList)
-        return PlantQueryAPI(self._client, builder, self._view_by_write_class, filter_, limit)
+        return PlantQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
 
     def apply(self, plant: PlantApply | Sequence[PlantApply], replace: bool = False) -> ResourcesApplyResult:
         """Add or update (upsert) plants.
@@ -229,8 +229,13 @@ class PlantAPI(NodeAPI[Plant, PlantApply, PlantList]):
             external_id,
             space,
             retrieve_edges=True,
-            edge_api_name_type_triple=[
-                (self.generators_edge, "generators", dm.DirectRelationReference("power-ops-types", "isSubAssetOf")),
+            edge_api_name_type_direction_quad=[
+                (
+                    self.generators_edge,
+                    "generators",
+                    dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
+                    "outwards",
+                ),
             ],
         )
 
@@ -704,7 +709,12 @@ class PlantAPI(NodeAPI[Plant, PlantApply, PlantList]):
             limit=limit,
             filter=filter_,
             retrieve_edges=retrieve_edges,
-            edge_api_name_type_triple=[
-                (self.generators_edge, "generators", dm.DirectRelationReference("power-ops-types", "isSubAssetOf")),
+            edge_api_name_type_direction_quad=[
+                (
+                    self.generators_edge,
+                    "generators",
+                    dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
+                    "outwards",
+                ),
             ],
         )

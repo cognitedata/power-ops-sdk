@@ -9,6 +9,7 @@ from cognite.client.data_classes.data_modeling.instances import InstanceAggregat
 
 from cognite.powerops.client._generated.assets.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.assets.data_classes import (
+    DomainModelCore,
     DomainModelApply,
     ResourcesApplyResult,
     PriceArea,
@@ -48,16 +49,15 @@ from .price_area_query import PriceAreaQueryAPI
 
 
 class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
-    def __init__(self, client: CogniteClient, view_by_write_class: dict[type[DomainModelApply], dm.ViewId]):
-        view_id = view_by_write_class[PriceAreaApply]
+    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
+        view_id = view_by_read_class[PriceArea]
         super().__init__(
             client=client,
             sources=view_id,
             class_type=PriceArea,
-            class_apply_type=PriceAreaApply,
             class_list=PriceAreaList,
             class_apply_list=PriceAreaApplyList,
-            view_by_write_class=view_by_write_class,
+            view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
         self.plants_edge = PriceAreaPlantsAPI(client)
@@ -128,7 +128,7 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(PriceAreaList)
-        return PriceAreaQueryAPI(self._client, builder, self._view_by_write_class, filter_, limit)
+        return PriceAreaQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
 
     def apply(
         self, price_area: PriceAreaApply | Sequence[PriceAreaApply], replace: bool = False
@@ -214,9 +214,19 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
             external_id,
             space,
             retrieve_edges=True,
-            edge_api_name_type_triple=[
-                (self.plants_edge, "plants", dm.DirectRelationReference("power-ops-types", "isSubAssetOf")),
-                (self.watercourses_edge, "watercourses", dm.DirectRelationReference("power-ops-types", "isSubAssetOf")),
+            edge_api_name_type_direction_quad=[
+                (
+                    self.plants_edge,
+                    "plants",
+                    dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
+                    "outwards",
+                ),
+                (
+                    self.watercourses_edge,
+                    "watercourses",
+                    dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
+                    "outwards",
+                ),
             ],
         )
 
@@ -564,8 +574,18 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
             limit=limit,
             filter=filter_,
             retrieve_edges=retrieve_edges,
-            edge_api_name_type_triple=[
-                (self.plants_edge, "plants", dm.DirectRelationReference("power-ops-types", "isSubAssetOf")),
-                (self.watercourses_edge, "watercourses", dm.DirectRelationReference("power-ops-types", "isSubAssetOf")),
+            edge_api_name_type_direction_quad=[
+                (
+                    self.plants_edge,
+                    "plants",
+                    dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
+                    "outwards",
+                ),
+                (
+                    self.watercourses_edge,
+                    "watercourses",
+                    dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
+                    "outwards",
+                ),
             ],
         )

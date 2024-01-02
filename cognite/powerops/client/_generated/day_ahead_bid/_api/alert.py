@@ -10,6 +10,7 @@ from cognite.client.data_classes.data_modeling.instances import InstanceAggregat
 
 from cognite.powerops.client._generated.day_ahead_bid.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.day_ahead_bid.data_classes import (
+    DomainModelCore,
     DomainModelApply,
     ResourcesApplyResult,
     Alert,
@@ -36,16 +37,15 @@ from .alert_query import AlertQueryAPI
 
 
 class AlertAPI(NodeAPI[Alert, AlertApply, AlertList]):
-    def __init__(self, client: CogniteClient, view_by_write_class: dict[type[DomainModelApply], dm.ViewId]):
-        view_id = view_by_write_class[AlertApply]
+    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
+        view_id = view_by_read_class[Alert]
         super().__init__(
             client=client,
             sources=view_id,
             class_type=Alert,
-            class_apply_type=AlertApply,
             class_list=AlertList,
             class_apply_list=AlertApplyList,
-            view_by_write_class=view_by_write_class,
+            view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
 
@@ -118,7 +118,7 @@ class AlertAPI(NodeAPI[Alert, AlertApply, AlertList]):
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(AlertList)
-        return AlertQueryAPI(self._client, builder, self._view_by_write_class, filter_, limit)
+        return AlertQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
 
     def apply(self, alert: AlertApply | Sequence[AlertApply], replace: bool = False) -> ResourcesApplyResult:
         """Add or update (upsert) alerts.

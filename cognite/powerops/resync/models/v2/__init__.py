@@ -9,17 +9,8 @@ are based on Data Modeling in CDF.
 * CogSHOP - This is the updated version of the CogShop1Asset in v1.
 """
 
-from .cogshop import CogShopDataModel
+
 from .graphql_schemas import GRAPHQL_MODELS
-from .market_dm import BenchmarkMarketDataModel, DayAheadMarketDataModel, RKOMMarketDataModel
 from .production_dm import PowerAssetModelDM, ProductionModelDM
 
-__all__ = [
-    "GRAPHQL_MODELS",
-    "CogShopDataModel",
-    "ProductionModelDM",
-    "PowerAssetModelDM",
-    "DayAheadMarketDataModel",
-    "RKOMMarketDataModel",
-    "BenchmarkMarketDataModel",
-]
+__all__ = ["GRAPHQL_MODELS", "ProductionModelDM", "PowerAssetModelDM"]

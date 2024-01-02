@@ -11,13 +11,13 @@ properties:
     nullable: true
     autoIncrement: false
     name: name
-  date:
+  deliveryDate:
     type:
       list: false
       type: date
-    nullable: true
+    nullable: false
     autoIncrement: false
-    name: date
+    name: deliveryDate
   startCalculation:
     type:
       list: false
@@ -47,8 +47,8 @@ properties:
     name: priceArea
     description: The price area of the bid document.
 indexes:
-  date:
+  deliveryDate:
     properties:
-    - date
+    - deliveryDate
     indexType: btree
     cursorable: false

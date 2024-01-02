@@ -14,7 +14,7 @@ from cognite.powerops.client._generated.day_ahead_bid.data_classes._shop_multi_s
 )
 from ._core import DEFAULT_LIMIT_READ, INSTANCE_QUERY_LIMIT
 
-ColumnNames = Literal["name"]
+ColumnNames = Literal["name", "priceScenarios"]
 
 
 class SHOPMultiScenarioPriceScenariosQuery:

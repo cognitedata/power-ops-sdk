@@ -58,8 +58,11 @@ def main():
         # )
         models = [
             Model(
+                dm.DataModelId("power-ops", "production", "1"), directory="production", client_name="ProductionModelAPI"
+            ),
+            Model(
                 model_id=dm.DataModelId("power-ops-afrr-bid", "AFRRBid", "1"),
-                directory="affr_bid",
+                directory="afrr_bid",
                 client_name="AFRRBidAPI",
             ),
             Model(
@@ -78,7 +81,7 @@ def main():
                 model.model_id,
                 client,
                 top_level_package=f"{top_level}.{model.directory}",
-                default_instance_space="power-ops-instance",
+                default_instance_space="power-ops" if model.model_id.space == "power-ops" else "power-ops-instance",
                 client_name=model.client_name,
                 output_dir=REPO_ROOT,
                 logger=print,

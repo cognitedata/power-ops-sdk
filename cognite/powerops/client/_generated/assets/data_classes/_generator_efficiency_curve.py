@@ -1,12 +1,13 @@
 from __future__ import annotations
 
-from typing import Literal, Optional
+from typing import Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
     DomainModel,
+    DomainModelCore,
     DomainModelApply,
     DomainModelApplyList,
     DomainModelList,
@@ -50,6 +51,9 @@ class GeneratorEfficiencyCurve(DomainModel):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
+        "power-ops-types", "GeneratorEfficiencyCurve"
+    )
     ref: Optional[float] = None
     power: Optional[list[float]] = None
     efficiency: Optional[list[float]] = None
@@ -83,6 +87,9 @@ class GeneratorEfficiencyCurveApply(DomainModelApply):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
+        "power-ops-types", "GeneratorEfficiencyCurve"
+    )
     ref: Optional[float] = None
     power: list[float]
     efficiency: list[float]
@@ -90,21 +97,24 @@ class GeneratorEfficiencyCurveApply(DomainModelApply):
     def _to_instances_apply(
         self,
         cache: set[tuple[str, str]],
-        view_by_write_class: dict[type[DomainModelApply | DomainRelationApply], dm.ViewId] | None,
+        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
     ) -> ResourcesApply:
         resources = ResourcesApply()
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_write_class and view_by_write_class.get(type(self))) or dm.ViewId(
-            "power-ops-assets", "GeneratorEfficiencyCurve", "1"
+        write_view = (view_by_read_class or {}).get(
+            GeneratorEfficiencyCurve, dm.ViewId("power-ops-assets", "GeneratorEfficiencyCurve", "1")
         )
 
         properties = {}
+
         if self.ref is not None:
             properties["ref"] = self.ref
+
         if self.power is not None:
             properties["power"] = self.power
+
         if self.efficiency is not None:
             properties["efficiency"] = self.efficiency
 
@@ -113,7 +123,7 @@ class GeneratorEfficiencyCurveApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
-                type=dm.DirectRelationReference("power-ops-types", "GeneratorCurve"),
+                type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,
@@ -156,7 +166,7 @@ def _create_generator_efficiency_curve_filter(
         filters.append(dm.filters.Range(view_id.as_property_ref("ref"), gte=min_ref, lte=max_ref))
     if external_id_prefix:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
-    if space and isinstance(space, str):
+    if space is not None and isinstance(space, str):
         filters.append(dm.filters.Equals(["node", "space"], value=space))
     if space and isinstance(space, list):
         filters.append(dm.filters.In(["node", "space"], values=space))

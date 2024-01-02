@@ -13,6 +13,33 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.79.0] - 2023-12-22
+### Changed
+* Single `PriceArea` type in data models.
+* Support `dev` argument in `resync init` to destroy recreate views and
+  data models in the development process.
+* Regenerate clients with `pygen` `v0.33.0`
+* Introduce `PowerOpsContainerModel` for an easy way to see all available
+  containers in `PowerOps`
+
+## [0.78.0] - 2023-12-22
+### Changed
+* Changes to views in `DayAheadBid` and `AFRRBid` models.
+* Regenerate clients with `pygen` `v0.32.5`
+
+## [0.77.0] - 2023-12-11
+### Fixed
+* Factory methods `from_client` and `from_toml` to PowerOps Client
+* Regenerate clients with `pygen` `v0.32.1`
+
+## [0.76.0] - 2023-12-11
+### Fixed
+* `AFRRBid` data model is now in `afrr_bid` folder (was `affr_bid`)
+
+## [0.75.2] - 2023-12-11
+### Changed
+* A few renamings changes to the `DayAheadBid` model.
+
 ## [0.75.1] - 2023-12-11
 ### Changed
 * Some minor changes to the `DayAheadBid` model.

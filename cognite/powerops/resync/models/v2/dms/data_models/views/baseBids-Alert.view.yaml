@@ -3,6 +3,14 @@ externalId: Alert
 description: Alerts
 name: Alert
 version: '{{base_Alert_version}}'
+filter:
+  equals:
+    property:
+    - node
+    - type
+    value:
+      space: '{{type_space}}'
+      externalId: Alert
 properties:
   time:
     container:
@@ -11,7 +19,7 @@ properties:
       type: container
     containerPropertyIdentifier: time
     name: time
-    description: Timestamp that the alert occured (within the workflow)
+    description: Timestamp that the alert occurred (within the workflow)
   title:
     container:
       space: '{{shared_model_space}}'

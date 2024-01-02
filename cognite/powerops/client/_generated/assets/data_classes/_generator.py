@@ -9,6 +9,7 @@ from pydantic import Field
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
     DomainModel,
+    DomainModelCore,
     DomainModelApply,
     DomainModelApplyList,
     DomainModelList,
@@ -72,6 +73,7 @@ class Generator(DomainModel):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power-ops-types", "Generator")
     name: Optional[str] = None
     display_name: Optional[str] = Field(None, alias="displayName")
     p_min: Optional[float] = Field(None, alias="pMin")
@@ -132,6 +134,7 @@ class GeneratorApply(DomainModelApply):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power-ops-types", "Generator")
     name: str
     display_name: Optional[str] = Field(None, alias="displayName")
     p_min: Optional[float] = Field(None, alias="pMin")
@@ -149,37 +152,43 @@ class GeneratorApply(DomainModelApply):
     def _to_instances_apply(
         self,
         cache: set[tuple[str, str]],
-        view_by_write_class: dict[type[DomainModelApply | DomainRelationApply], dm.ViewId] | None,
+        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
     ) -> ResourcesApply:
         resources = ResourcesApply()
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_write_class and view_by_write_class.get(type(self))) or dm.ViewId(
-            "power-ops-assets", "Generator", "1"
-        )
+        write_view = (view_by_read_class or {}).get(Generator, dm.ViewId("power-ops-assets", "Generator", "1"))
 
         properties = {}
+
         if self.name is not None:
             properties["name"] = self.name
+
         if self.display_name is not None:
             properties["displayName"] = self.display_name
+
         if self.p_min is not None:
             properties["pMin"] = self.p_min
+
         if self.penstock is not None:
             properties["penstock"] = self.penstock
+
         if self.start_cost is not None:
             properties["startCost"] = self.start_cost
+
         if self.start_stop_cost is not None:
             properties["startStopCost"] = (
                 self.start_stop_cost if isinstance(self.start_stop_cost, str) else self.start_stop_cost.external_id
             )
+
         if self.is_available_time_series is not None:
             properties["isAvailableTimeSeries"] = (
                 self.is_available_time_series
                 if isinstance(self.is_available_time_series, str)
                 else self.is_available_time_series.external_id
             )
+
         if self.efficiency_curve is not None:
             properties["efficiencyCurve"] = {
                 "space": self.space if isinstance(self.efficiency_curve, str) else self.efficiency_curve.space,
@@ -193,6 +202,7 @@ class GeneratorApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
+                type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,
@@ -206,12 +216,16 @@ class GeneratorApply(DomainModelApply):
         edge_type = dm.DirectRelationReference("power-ops-types", "isSubAssetOf")
         for turbine_curve in self.turbine_curves or []:
             other_resources = DomainRelationApply.from_edge_to_resources(
-                cache, self, turbine_curve, edge_type, view_by_write_class
+                cache,
+                start_node=self,
+                end_node=turbine_curve,
+                edge_type=edge_type,
+                view_by_read_class=view_by_read_class,
             )
             resources.extend(other_resources)
 
         if isinstance(self.efficiency_curve, DomainModelApply):
-            other_resources = self.efficiency_curve._to_instances_apply(cache, view_by_write_class)
+            other_resources = self.efficiency_curve._to_instances_apply(cache, view_by_read_class)
             resources.extend(other_resources)
 
         if isinstance(self.start_stop_cost, CogniteTimeSeries):
@@ -257,13 +271,13 @@ def _create_generator_filter(
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
-    if name and isinstance(name, str):
+    if name is not None and isinstance(name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
     if name and isinstance(name, list):
         filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
     if name_prefix:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
-    if display_name and isinstance(display_name, str):
+    if display_name is not None and isinstance(display_name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("displayName"), value=display_name))
     if display_name and isinstance(display_name, list):
         filters.append(dm.filters.In(view_id.as_property_ref("displayName"), values=display_name))
@@ -279,7 +293,7 @@ def _create_generator_filter(
         filters.append(
             dm.filters.Equals(
                 view_id.as_property_ref("efficiencyCurve"),
-                value={"space": "power-ops-assets", "externalId": efficiency_curve},
+                value={"space": DEFAULT_INSTANCE_SPACE, "externalId": efficiency_curve},
             )
         )
     if efficiency_curve and isinstance(efficiency_curve, tuple):
@@ -293,7 +307,7 @@ def _create_generator_filter(
         filters.append(
             dm.filters.In(
                 view_id.as_property_ref("efficiencyCurve"),
-                values=[{"space": "power-ops-assets", "externalId": item} for item in efficiency_curve],
+                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in efficiency_curve],
             )
         )
     if efficiency_curve and isinstance(efficiency_curve, list) and isinstance(efficiency_curve[0], tuple):
@@ -305,7 +319,7 @@ def _create_generator_filter(
         )
     if external_id_prefix:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
-    if space and isinstance(space, str):
+    if space is not None and isinstance(space, str):
         filters.append(dm.filters.Equals(["node", "space"], value=space))
     if space and isinstance(space, list):
         filters.append(dm.filters.In(["node", "space"], values=space))

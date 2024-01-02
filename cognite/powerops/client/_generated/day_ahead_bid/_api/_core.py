@@ -4,7 +4,7 @@ import re
 from collections import Counter, defaultdict, UserList
 from collections.abc import Sequence, Collection
 from dataclasses import dataclass, field
-from typing import Generic, Literal, Any, Iterator, Protocol, SupportsIndex, TypeVar, overload, cast
+from typing import Generic, Literal, Any, Iterator, Protocol, SupportsIndex, TypeVar, overload, cast, Union
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
@@ -14,6 +14,7 @@ from cognite.client.data_classes.data_modeling.instances import InstanceAggregat
 
 from cognite.powerops.client._generated.day_ahead_bid.data_classes._core import (
     DomainModel,
+    DomainModelCore,
     DomainModelApply,
     DomainRelationApply,
     ResourcesApplyResult,
@@ -76,44 +77,20 @@ class SequenceNotStr(Protocol[_T_co]):
         ...
 
 
-class NodeAPI(Generic[T_DomainModel, T_DomainModelApply, T_DomainModelList]):
+class NodeReadAPI(Generic[T_DomainModel, T_DomainModelList]):
     def __init__(
         self,
         client: CogniteClient,
-        sources: dm.ViewIdentifier | Sequence[dm.ViewIdentifier] | dm.View | Sequence[dm.View],
+        sources: dm.ViewIdentifier | Sequence[dm.ViewIdentifier] | dm.View | Sequence[dm.View] | None,
         class_type: type[T_DomainModel],
-        class_apply_type: type[T_DomainModelApply],
         class_list: type[T_DomainModelList],
-        class_apply_list: type[T_DomainModelApplyList],
-        view_by_write_class: dict[type[DomainModelApply], dm.ViewId],
+        view_by_read_class: dict[type[DomainModelCore], dm.ViewId],
     ):
         self._client = client
         self._sources = sources
         self._class_type = class_type
-        self._class_apply_type = class_apply_type
         self._class_list = class_list
-        self._class_apply_list = class_apply_list
-        self._view_by_write_class = view_by_write_class
-
-    def _apply(
-        self, item: T_DomainModelApply | Sequence[T_DomainModelApply], replace: bool = False
-    ) -> ResourcesApplyResult:
-        if isinstance(item, DomainModelApply):
-            instances = item.to_instances_apply(self._view_by_write_class)
-        else:
-            instances = self._class_apply_list(item).to_instances_apply(self._view_by_write_class)
-        result = self._client.data_modeling.instances.apply(
-            nodes=instances.nodes,
-            edges=instances.edges,
-            auto_create_start_nodes=True,
-            auto_create_end_nodes=True,
-            replace=replace,
-        )
-        time_series = []
-        if instances.time_series:
-            time_series = self._client.time_series.upsert(instances.time_series, mode="patch")
-
-        return ResourcesApplyResult(result.nodes, result.edges, TimeSeriesList(time_series))
+        self._view_by_read_class = view_by_read_class
 
     def _delete(self, external_id: str | Sequence[str], space: str) -> dm.InstancesDeleteResult:
         if isinstance(external_id, str):
@@ -129,7 +106,10 @@ class NodeAPI(Generic[T_DomainModel, T_DomainModelApply, T_DomainModelList]):
         external_id: str,
         space: str,
         retrieve_edges: bool = False,
-        edge_api_name_type_triple: list[tuple[EdgeAPI, str, dm.DirectRelationReference]] | None = None,
+        edge_api_name_type_direction_quad: list[
+            tuple[EdgeAPI, str, dm.DirectRelationReference, Literal["outwards", "inwards"]]
+        ]
+        | None = None,
     ) -> T_DomainModel | None:
         ...
 
@@ -139,7 +119,10 @@ class NodeAPI(Generic[T_DomainModel, T_DomainModelApply, T_DomainModelList]):
         external_id: SequenceNotStr[str],
         space: str,
         retrieve_edges: bool = False,
-        edge_api_name_type_triple: list[tuple[EdgeAPI, str, dm.DirectRelationReference]] | None = None,
+        edge_api_name_type_direction_quad: list[
+            tuple[EdgeAPI, str, dm.DirectRelationReference, Literal["outwards", "inwards"]]
+        ]
+        | None = None,
     ) -> T_DomainModelList:
         ...
 
@@ -148,7 +131,10 @@ class NodeAPI(Generic[T_DomainModel, T_DomainModelApply, T_DomainModelList]):
         external_id: str | SequenceNotStr[str],
         space: str,
         retrieve_edges: bool = False,
-        edge_api_name_type_triple: list[tuple[EdgeAPI, str, dm.DirectRelationReference]] | None = None,
+        edge_api_name_type_direction_quad: list[
+            tuple[EdgeAPI, str, dm.DirectRelationReference, Literal["outwards", "inwards"]]
+        ]
+        | None = None,
     ) -> T_DomainModel | T_DomainModelList | None:
         is_multiple = True
         if isinstance(external_id, str):
@@ -161,12 +147,12 @@ class NodeAPI(Generic[T_DomainModel, T_DomainModelApply, T_DomainModelList]):
         nodes = self._class_list([self._class_type.from_instance(node) for node in instances.nodes])
 
         if retrieve_edges and nodes:
-            self._retrieve_and_set_edge_types(nodes, edge_api_name_type_triple)
+            self._retrieve_and_set_edge_types(nodes, edge_api_name_type_direction_quad)
 
-        if not nodes:
-            return None
-        elif is_multiple:
+        if is_multiple:
             return nodes
+        elif not nodes:
+            return None
         else:
             return nodes[0]
 
@@ -324,12 +310,15 @@ class NodeAPI(Generic[T_DomainModel, T_DomainModelApply, T_DomainModelList]):
         limit: int,
         filter: dm.Filter,
         retrieve_edges: bool = False,
-        edge_api_name_type_triple: list[tuple[EdgeAPI, str, dm.DirectRelationReference]] | None = None,
+        edge_api_name_type_direction_quad: list[
+            tuple[EdgeAPI, str, dm.DirectRelationReference, Literal["outwards", "inwards"]]
+        ]
+        | None = None,
     ) -> T_DomainModelList:
         nodes = self._client.data_modeling.instances.list("node", sources=self._sources, limit=limit, filter=filter)
         node_list = self._class_list([self._class_type.from_instance(node) for node in nodes])
         if retrieve_edges and node_list:
-            self._retrieve_and_set_edge_types(node_list, edge_api_name_type_triple)
+            self._retrieve_and_set_edge_types(node_list, edge_api_name_type_direction_quad)
 
         return node_list
 
@@ -337,9 +326,12 @@ class NodeAPI(Generic[T_DomainModel, T_DomainModelApply, T_DomainModelList]):
     def _retrieve_and_set_edge_types(
         cls,
         nodes: T_DomainModelList,
-        edge_api_name_type_triple: list[tuple[EdgeAPI, str, dm.DirectRelationReference]] | None = None,
+        edge_api_name_type_direction_quad: list[
+            tuple[EdgeAPI, str, dm.DirectRelationReference, Literal["outwards", "inwards"]]
+        ]
+        | None = None,
     ):
-        for edge_api, edge_name, edge_type in edge_api_name_type_triple or []:
+        for edge_api, edge_name, edge_type, direction in edge_api_name_type_direction_quad or []:
             is_type = dm.filters.Equals(
                 ["edge", "type"],
                 {"space": edge_type.space, "externalId": edge_type.external_id},
@@ -348,22 +340,71 @@ class NodeAPI(Generic[T_DomainModel, T_DomainModelApply, T_DomainModelList]):
                 edges = edge_api._list(limit=-1, filter_=is_type)
             else:
                 is_nodes = dm.filters.In(
-                    ["edge", "startNode"],
+                    ["edge", "startNode"] if direction == "outwards" else ["edge", "endNode"],
                     values=[id_.dump(camel_case=True, include_instance_type=False) for id_ in ids],
                 )
                 edges = edge_api._list(limit=-1, filter_=dm.filters.And(is_type, is_nodes))
-            cls._set_edges(nodes, edges, edge_name)
+            cls._set_edges(nodes, edges, edge_name, direction)
 
     @staticmethod
-    def _set_edges(nodes: Sequence[DomainModel], edges: Sequence[dm.Edge], edge_name: str):
-        edges_by_start_node: dict[tuple, list] = defaultdict(list)
+    def _set_edges(
+        nodes: Sequence[DomainModel],
+        edges: Sequence[dm.Edge],
+        edge_name: str,
+        direction: Literal["outwards", "inwards"],
+    ):
+        edges_by_node: dict[tuple, list] = defaultdict(list)
         for edge in edges:
-            edges_by_start_node[edge.start_node.as_tuple()].append(edge)
+            node_id = edge.start_node.as_tuple() if direction == "outwards" else edge.end_node.as_tuple()
+            edges_by_node[node_id].append(edge)
 
         for node in nodes:
             node_id = node.as_tuple_id()
-            if node_id in edges_by_start_node:
-                setattr(node, edge_name, [edge.end_node.external_id for edge in edges_by_start_node[node_id]])
+            if node_id in edges_by_node:
+                setattr(
+                    node,
+                    edge_name,
+                    [
+                        edge.end_node.external_id if direction == "outwards" else edge.start_node.external_id
+                        for edge in edges_by_node[node_id]
+                    ],
+                )
+
+
+class NodeAPI(
+    Generic[T_DomainModel, T_DomainModelApply, T_DomainModelList], NodeReadAPI[T_DomainModel, T_DomainModelList]
+):
+    def __init__(
+        self,
+        client: CogniteClient,
+        sources: dm.ViewIdentifier | Sequence[dm.ViewIdentifier] | dm.View | Sequence[dm.View] | None,
+        class_type: type[T_DomainModel],
+        class_list: type[T_DomainModelList],
+        class_apply_list: type[T_DomainModelApplyList],
+        view_by_read_class: dict[type[DomainModelCore], dm.ViewId],
+    ):
+        super().__init__(client, sources, class_type, class_list, view_by_read_class)
+        self._class_apply_list = class_apply_list
+
+    def _apply(
+        self, item: T_DomainModelApply | Sequence[T_DomainModelApply], replace: bool = False
+    ) -> ResourcesApplyResult:
+        if isinstance(item, DomainModelApply):
+            instances = item.to_instances_apply(self._view_by_read_class)
+        else:
+            instances = self._class_apply_list(item).to_instances_apply(self._view_by_read_class)
+        result = self._client.data_modeling.instances.apply(
+            nodes=instances.nodes,
+            edges=instances.edges,
+            auto_create_start_nodes=True,
+            auto_create_end_nodes=True,
+            replace=replace,
+        )
+        time_series = []
+        if instances.time_series:
+            time_series = self._client.time_series.upsert(instances.time_series, mode="patch")
+
+        return ResourcesApplyResult(result.nodes, result.edges, TimeSeriesList(time_series))
 
 
 class EdgeAPI:
@@ -382,14 +423,14 @@ class EdgePropertyAPI(EdgeAPI, Generic[T_DomainRelation, T_DomainRelationApply, 
     def __init__(
         self,
         client: CogniteClient,
-        view_by_write_class: dict[type[DomainModelApply | DomainRelationApply], dm.ViewId],
+        view_by_read_class: dict[type[DomainModelCore], dm.ViewId],
         class_type: type[T_DomainRelation],
         class_apply_type: type[T_DomainRelationApply],
         class_list: type[T_DomainRelationList],
     ):
         super().__init__(client)
-        self._view_by_write_class = view_by_write_class
-        self._view_id = view_by_write_class[class_apply_type]
+        self._view_by_read_class = view_by_read_class
+        self._view_id = view_by_read_class[class_type]
         self._class_type = class_type
         self._class_apply_type = class_apply_type
         self._class_list = class_list
@@ -505,7 +546,7 @@ class QueryBuilder(UserList, Generic[T_DomainModelList]):
 
     def unpack(self) -> T_DomainModelList:
         nodes_by_type: dict[str | None, dict[tuple[str, str], DomainModel]] = defaultdict(dict)
-        edges_by_type_by_start_node: dict[tuple[str, str], dict[tuple[str, str], list[dm.Edge]]] = defaultdict(
+        edges_by_type_by_source_node: dict[tuple[str, str, str], dict[tuple[str, str], list[dm.Edge]]] = defaultdict(
             lambda: defaultdict(list)
         )
         relation_by_type_by_start_node: dict[
@@ -523,8 +564,9 @@ class QueryBuilder(UserList, Generic[T_DomainModelList]):
             if step.result_cls is None:  # This is a data model edge.
                 for edge in step.results:
                     edge = cast(dm.Edge, edge)
-                    edges_by_type_by_start_node[(from_, name)][
-                        (edge.start_node.space, edge.start_node.external_id)
+                    edge_source = edge.start_node if step.expression.direction == "outwards" else edge.end_node
+                    edges_by_type_by_source_node[(from_, name, step.expression.direction)][
+                        (edge_source.space, edge_source.external_id)
                     ].append(edge)
             elif issubclass(step.result_cls, DomainModel):
                 for node in step.results:
@@ -559,18 +601,27 @@ class QueryBuilder(UserList, Generic[T_DomainModelList]):
                 setattr(node, node_attribute, relations_by_start_node.get(node.as_tuple_id(), []))
             for relations in relations_by_start_node.values():
                 for relation in relations:
-                    edge_name = relation.type.external_id.split(".")[-1]
+                    edge_name = relation.edge_type.external_id.split(".")[-1]
                     if (nodes := nodes_by_type.get(edge_name)) and (
                         node := nodes.get((relation.end_node.space, relation.end_node.external_id))
                     ):
                         # Relations always have an end node.
                         relation.end_node = node
 
-        for (node_name, node_attribute), edges_by_start_node in edges_by_type_by_start_node.items():
+        for (node_name, node_attribute, direction), edges_by_source_node in edges_by_type_by_source_node.items():
             for node in nodes_by_type[node_name].values():
-                edges = edges_by_start_node.get(node.as_tuple_id(), [])
+                edges = edges_by_source_node.get(node.as_tuple_id(), [])
                 nodes = nodes_by_type.get(node_attribute_to_node_type.get(node_attribute), {})
-                setattr(node, node_attribute, [node for edge in edges if (node := nodes.get(edge.end_node.as_tuple()))])
+                if direction == "outwards":
+                    setattr(
+                        node, node_attribute, [node for edge in edges if (node := nodes.get(edge.end_node.as_tuple()))]
+                    )
+                else:  # inwards
+                    setattr(
+                        node,
+                        node_attribute,
+                        [node for edge in edges if (node := nodes.get(edge.start_node.as_tuple()))],
+                    )
 
         return self._result_cls(nodes_by_type[self[0].name].values())
 
@@ -580,11 +631,11 @@ class QueryAPI(Generic[T_DomainModelList]):
         self,
         client: CogniteClient,
         builder: QueryBuilder[T_DomainModelList],
-        view_by_write_class: dict[type[DomainModelApply], dm.ViewId],
+        view_by_read_class: dict[type[DomainModelCore], dm.ViewId],
     ):
         self._client = client
         self._builder = builder
-        self._view_by_write_class = view_by_write_class
+        self._view_by_read_class = view_by_read_class
 
     def _query(self) -> T_DomainModelList:
         self._builder.reset()

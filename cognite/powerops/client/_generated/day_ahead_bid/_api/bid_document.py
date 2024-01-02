@@ -10,6 +10,7 @@ from cognite.client.data_classes.data_modeling.instances import InstanceAggregat
 
 from cognite.powerops.client._generated.day_ahead_bid.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.day_ahead_bid.data_classes import (
+    DomainModelCore,
     DomainModelApply,
     ResourcesApplyResult,
     BidDocument,
@@ -38,16 +39,15 @@ from .bid_document_query import BidDocumentQueryAPI
 
 
 class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
-    def __init__(self, client: CogniteClient, view_by_write_class: dict[type[DomainModelApply], dm.ViewId]):
-        view_id = view_by_write_class[BidDocumentApply]
+    def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
+        view_id = view_by_read_class[BidDocument]
         super().__init__(
             client=client,
             sources=view_id,
             class_type=BidDocument,
-            class_apply_type=BidDocumentApply,
             class_list=BidDocumentList,
             class_apply_list=BidDocumentApplyList,
-            view_by_write_class=view_by_write_class,
+            view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
         self.alerts_edge = BidDocumentAlertsAPI(client)
@@ -57,8 +57,8 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        min_date: datetime.date | None = None,
-        max_date: datetime.date | None = None,
+        min_delivery_date: datetime.date | None = None,
+        max_delivery_date: datetime.date | None = None,
         min_start_calculation: datetime.datetime | None = None,
         max_start_calculation: datetime.datetime | None = None,
         min_end_calculation: datetime.datetime | None = None,
@@ -77,8 +77,8 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
         Args:
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            min_date: The minimum value of the date to filter on.
-            max_date: The maximum value of the date to filter on.
+            min_delivery_date: The minimum value of the delivery date to filter on.
+            max_delivery_date: The maximum value of the delivery date to filter on.
             min_start_calculation: The minimum value of the start calculation to filter on.
             max_start_calculation: The maximum value of the start calculation to filter on.
             min_end_calculation: The minimum value of the end calculation to filter on.
@@ -101,8 +101,8 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
             self._view_id,
             name,
             name_prefix,
-            min_date,
-            max_date,
+            min_delivery_date,
+            max_delivery_date,
             min_start_calculation,
             max_start_calculation,
             min_end_calculation,
@@ -116,7 +116,7 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
         builder = QueryBuilder(BidDocumentList)
-        return BidDocumentQueryAPI(self._client, builder, self._view_by_write_class, filter_, limit)
+        return BidDocumentQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
 
     def apply(
         self, bid_document: BidDocumentApply | Sequence[BidDocumentApply], replace: bool = False
@@ -202,9 +202,19 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
             external_id,
             space,
             retrieve_edges=True,
-            edge_api_name_type_triple=[
-                (self.alerts_edge, "alerts", dm.DirectRelationReference("power-ops-types", "calculationIssue")),
-                (self.partials_edge, "partials", dm.DirectRelationReference("power-ops-types", "PartialBid")),
+            edge_api_name_type_direction_quad=[
+                (
+                    self.alerts_edge,
+                    "alerts",
+                    dm.DirectRelationReference("power-ops-types", "calculationIssue"),
+                    "outwards",
+                ),
+                (
+                    self.partials_edge,
+                    "partials",
+                    dm.DirectRelationReference("power-ops-types", "partialBid"),
+                    "outwards",
+                ),
             ],
         )
 
@@ -214,8 +224,8 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
         properties: BidDocumentTextFields | Sequence[BidDocumentTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        min_date: datetime.date | None = None,
-        max_date: datetime.date | None = None,
+        min_delivery_date: datetime.date | None = None,
+        max_delivery_date: datetime.date | None = None,
         min_start_calculation: datetime.datetime | None = None,
         max_start_calculation: datetime.datetime | None = None,
         min_end_calculation: datetime.datetime | None = None,
@@ -236,8 +246,8 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
             properties: The property to search, if nothing is passed all text fields will be searched.
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            min_date: The minimum value of the date to filter on.
-            max_date: The maximum value of the date to filter on.
+            min_delivery_date: The minimum value of the delivery date to filter on.
+            max_delivery_date: The maximum value of the delivery date to filter on.
             min_start_calculation: The minimum value of the start calculation to filter on.
             max_start_calculation: The maximum value of the start calculation to filter on.
             min_end_calculation: The minimum value of the end calculation to filter on.
@@ -267,8 +277,8 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
             self._view_id,
             name,
             name_prefix,
-            min_date,
-            max_date,
+            min_delivery_date,
+            max_delivery_date,
             min_start_calculation,
             max_start_calculation,
             min_end_calculation,
@@ -296,8 +306,8 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
         search_properties: BidDocumentTextFields | Sequence[BidDocumentTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        min_date: datetime.date | None = None,
-        max_date: datetime.date | None = None,
+        min_delivery_date: datetime.date | None = None,
+        max_delivery_date: datetime.date | None = None,
         min_start_calculation: datetime.datetime | None = None,
         max_start_calculation: datetime.datetime | None = None,
         min_end_calculation: datetime.datetime | None = None,
@@ -326,8 +336,8 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
         search_properties: BidDocumentTextFields | Sequence[BidDocumentTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        min_date: datetime.date | None = None,
-        max_date: datetime.date | None = None,
+        min_delivery_date: datetime.date | None = None,
+        max_delivery_date: datetime.date | None = None,
         min_start_calculation: datetime.datetime | None = None,
         max_start_calculation: datetime.datetime | None = None,
         min_end_calculation: datetime.datetime | None = None,
@@ -355,8 +365,8 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
         search_property: BidDocumentTextFields | Sequence[BidDocumentTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        min_date: datetime.date | None = None,
-        max_date: datetime.date | None = None,
+        min_delivery_date: datetime.date | None = None,
+        max_delivery_date: datetime.date | None = None,
         min_start_calculation: datetime.datetime | None = None,
         max_start_calculation: datetime.datetime | None = None,
         min_end_calculation: datetime.datetime | None = None,
@@ -380,8 +390,8 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
             search_property: The text field to search in.
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            min_date: The minimum value of the date to filter on.
-            max_date: The maximum value of the date to filter on.
+            min_delivery_date: The minimum value of the delivery date to filter on.
+            max_delivery_date: The maximum value of the delivery date to filter on.
             min_start_calculation: The minimum value of the start calculation to filter on.
             max_start_calculation: The maximum value of the start calculation to filter on.
             min_end_calculation: The minimum value of the end calculation to filter on.
@@ -412,8 +422,8 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
             self._view_id,
             name,
             name_prefix,
-            min_date,
-            max_date,
+            min_delivery_date,
+            max_delivery_date,
             min_start_calculation,
             max_start_calculation,
             min_end_calculation,
@@ -446,8 +456,8 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
         search_property: BidDocumentTextFields | Sequence[BidDocumentTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        min_date: datetime.date | None = None,
-        max_date: datetime.date | None = None,
+        min_delivery_date: datetime.date | None = None,
+        max_delivery_date: datetime.date | None = None,
         min_start_calculation: datetime.datetime | None = None,
         max_start_calculation: datetime.datetime | None = None,
         min_end_calculation: datetime.datetime | None = None,
@@ -470,8 +480,8 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
             search_property: The text field to search in.
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            min_date: The minimum value of the date to filter on.
-            max_date: The maximum value of the date to filter on.
+            min_delivery_date: The minimum value of the delivery date to filter on.
+            max_delivery_date: The maximum value of the delivery date to filter on.
             min_start_calculation: The minimum value of the start calculation to filter on.
             max_start_calculation: The maximum value of the start calculation to filter on.
             min_end_calculation: The minimum value of the end calculation to filter on.
@@ -493,8 +503,8 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
             self._view_id,
             name,
             name_prefix,
-            min_date,
-            max_date,
+            min_delivery_date,
+            max_delivery_date,
             min_start_calculation,
             max_start_calculation,
             min_end_calculation,
@@ -522,8 +532,8 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        min_date: datetime.date | None = None,
-        max_date: datetime.date | None = None,
+        min_delivery_date: datetime.date | None = None,
+        max_delivery_date: datetime.date | None = None,
         min_start_calculation: datetime.datetime | None = None,
         max_start_calculation: datetime.datetime | None = None,
         min_end_calculation: datetime.datetime | None = None,
@@ -543,8 +553,8 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
         Args:
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            min_date: The minimum value of the date to filter on.
-            max_date: The maximum value of the date to filter on.
+            min_delivery_date: The minimum value of the delivery date to filter on.
+            max_delivery_date: The maximum value of the delivery date to filter on.
             min_start_calculation: The minimum value of the start calculation to filter on.
             max_start_calculation: The maximum value of the start calculation to filter on.
             min_end_calculation: The minimum value of the end calculation to filter on.
@@ -575,8 +585,8 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
             self._view_id,
             name,
             name_prefix,
-            min_date,
-            max_date,
+            min_delivery_date,
+            max_delivery_date,
             min_start_calculation,
             max_start_calculation,
             min_end_calculation,
@@ -594,8 +604,18 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
             limit=limit,
             filter=filter_,
             retrieve_edges=retrieve_edges,
-            edge_api_name_type_triple=[
-                (self.alerts_edge, "alerts", dm.DirectRelationReference("power-ops-types", "calculationIssue")),
-                (self.partials_edge, "partials", dm.DirectRelationReference("power-ops-types", "PartialBid")),
+            edge_api_name_type_direction_quad=[
+                (
+                    self.alerts_edge,
+                    "alerts",
+                    dm.DirectRelationReference("power-ops-types", "calculationIssue"),
+                    "outwards",
+                ),
+                (
+                    self.partials_edge,
+                    "partials",
+                    dm.DirectRelationReference("power-ops-types", "partialBid"),
+                    "outwards",
+                ),
             ],
         )

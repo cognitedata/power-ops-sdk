@@ -3,6 +3,14 @@ externalId: Reservoir
 description: A reservoir
 name: Reservoir
 version: '{{asset_Reservoir_version}}'
+filter:
+  equals:
+    property:
+    - node
+    - type
+    value:
+      space: '{{type_space}}'
+      externalId: Reservoir
 properties:
   name:
     container:
@@ -28,11 +36,3 @@ properties:
     containerPropertyIdentifier: order
     name: ordering
     description: The ordering of the reservoirs
-filter:
-  equals:
-    property:
-    - node
-    - type
-    value:
-      space: '{{type_space}}'
-      externalId: Reservoir

@@ -6,7 +6,7 @@ from __future__ import annotations
 import itertools
 import logging
 from pathlib import Path
-from typing import Literal, Optional, cast
+from typing import Any, Literal, Optional, cast
 
 from cognite.client import CogniteClient
 from cognite.client.data_classes.data_modeling import DataModelId, MappedProperty, ViewList
@@ -20,7 +20,6 @@ from cognite.powerops.resync.config import ReSyncConfig
 from cognite.powerops.resync.diff import FieldDifference, ModelDifference, ModelDifferences
 from cognite.powerops.resync.models.base import AssetModel, CDFFile, CDFSequence, DataModel, Model, SpaceId
 from cognite.powerops.resync.models.v2.powerops_models import DataModelLoader
-from cognite.powerops.resync.validation import ValidationResults, perform_validation, prepare_validation
 
 from .cdf import get_cognite_api
 from .transform import transform
@@ -37,23 +36,19 @@ DATAMODEL_ID_TO_RESYNC_NAME: dict[DataModelId, str] = {
 }
 
 
-def init(client: PowerOpsClient | None, model_names: str | list[str] | None = None) -> list[dict[str, str]]:
+def init(client: PowerOpsClient | None, is_dev: bool = False) -> list[dict[str, str]]:
     """
     This function will create the data models in CDF that are required for resync to work. It will not overwrite
     existing models.
 
     Args:
         client: The PowerOpsClient to use. If not provided, a new client will be created.
-        model_names: The models to deploy. If not provided, all models will be deployed.
+        is_dev: Whether the deployment is for development environment. If true, the models views and data models
+                will be deleted and recreated.
 
     """
     client = client or PowerOpsClient.from_settings()
     cdf = client.cdf
-    if model_names:
-        logger.info(
-            "Model names argument is deprecated. Init will now deploy all models. (The powerops data models "
-            "are dependent on each other and should thus be deployed together)"
-        )
 
     loader = DataModelLoader()
     schema = loader.load()
@@ -61,38 +56,33 @@ def init(client: PowerOpsClient | None, model_names: str | list[str] | None = No
     DataModelLoader.validate(schema)
     logger.info("Validated all powerops data models")
 
-    results = DataModelLoader.deploy(cdf, schema)
+    results = DataModelLoader.deploy(cdf, schema, is_dev)
 
     return results
 
 
-def validate(config_dir: str | Path, market: str) -> ValidationResults:
-    """
-    Validates the local configuration files.
+def validate(config_dir: str | Path, market: str) -> Any:
+    raise NotImplementedError("validate is not implemented")
 
-    Args:
-        config_dir: Local path to the configuration files. Needs to follow a specific structure. See below.
-        market: The market to load the configuration for.
 
-    Configuration file structure:
-    ```
-    📦config_dir
-     ┣ 📂cogshop - The CogSHOP configuration
-     ┣ 📂market - The Market configuration for DayAhead, RKOM, and benchmarking.
-     ┣ 📂production - The physical assets configuration, Watercourse, PriceArea, Genertor, Plant  (SHOP centered)
-     ┗ 📜settings.yaml - Settings for resync.
-    ```
-    """
-    market = market.lower()
-    po_client = PowerOpsClient.from_settings()
-    logger.info(f"Validating configuration in {config_dir}..")
-    loaded_models = _load_transform(market, Path(config_dir), po_client.cdf.config.project, list(MODELS_BY_NAME))
-
-    logger.info("Validating time series...")
-    ts_validations, validation_ranges = prepare_validation(loaded_models)
-    validation_results = perform_validation(po_client, ts_validations, validation_ranges)
-    logger.info("Validations complete")
-    return validation_results
+# def validate(config_dir: str | Path, market: str) -> ValidationResults:
+#     """
+#     Validates the local configuration files.
+#
+#     Args:
+#         config_dir: Local path to the configuration files. Needs to follow a specific structure. See below.
+#         market: The market to load the configuration for.
+#
+#     Configuration file structure:
+#     ```
+#     📦config_dir
+#      ┣ 📂cogshop - The CogSHOP configuration
+#      ┣ 📂market - The Market configuration for DayAhead, RKOM, and benchmarking.
+#      ┣ 📂production - The physical assets configuration, Watercourse, PriceArea, Genertor, Plant  (SHOP centered)
+#      ┗ 📜settings.yaml - Settings for resync.
+#     ```
+#     """
+#
 
 
 def plan(

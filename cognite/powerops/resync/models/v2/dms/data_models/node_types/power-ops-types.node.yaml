@@ -1,25 +1,51 @@
 # Note node types cannot be created in the API, they are created implicitly in a system
-# when a node/edge is referencing one of these types. However, it is usefult to have these
+# when a node/edge is referencing one of these types. However, it is useful to have these
 # types here as we use them in validation of the data models.
+
+# Types of edges:
 - space: {{type_space}}
-  externalId: AFRRBidMethod
-- space: {{type_space}}
-  externalId: DayAheadBidMethod
-- space: {{type_space}}
-  externalId: WaterValueBasedDayAheadMethod
-- space: {{type_space}}
-  externalId: AFRRBidDocument
+  externalId: partialBid
 - space: {{type_space}}
   externalId: calculationIssue
 - space: {{type_space}}
-  externalId: PartialBid
-- space: {{type_space}}
-  externalId: SHOPTable.productionPricePairs
-- space: {{type_space}}
   externalId: isSubAssetOf
+
+# Types of nodes:
+## AFRR Types
 - space: {{type_space}}
-  externalId: TurbineCurve
+  externalId: AFRRBidDocument
 - space: {{type_space}}
-  externalId: GeneratorCurve
+  externalId: AFRRBidMethod
+- space: {{type_space}}
+  externalId: AFRRBidRow
+
+## Assets Types
+- space: {{type_space}}
+  externalId: Generator
+- space: {{type_space}}
+  externalId: GeneratorEfficiencyCurve
+- space: {{type_space}}
+  externalId: Plant
+- space: {{type_space}}
+  externalId: PriceArea
 - space: {{type_space}}
   externalId: Reservoir
+- space: {{type_space}}
+  externalId: TurbineEfficiencyCurve
+- space: {{type_space}}
+  externalId: Watercourse
+
+- space: {{type_space}}
+  externalId: Alert
+
+## DayAhead Types
+- space: {{type_space}}
+  externalId: DayAheadBasicBidMatrix
+- space: {{type_space}}
+  externalId: DayAheadBidDocument
+- space: {{type_space}}
+  externalId: DayAheadMultiScenarioMatrix
+- space: {{type_space}}
+  externalId: DayAheadSHOPMultiScenario
+- space: {{type_space}}
+  externalId: DayAheadWaterValueBased

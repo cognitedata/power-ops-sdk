@@ -3,6 +3,14 @@ externalId: TurbineEfficiencyCurve
 description: Describes the efficiency curve for a turbine
 name: TurbineEfficiencyCurve
 version: '{{asset_TurbineEfficiency_version}}'
+filter:
+  equals:
+    property:
+    - node
+    - type
+    value:
+      space: '{{type_space}}'
+      externalId: TurbineEfficiencyCurve
 properties:
   head:
     container:
@@ -28,11 +36,3 @@ properties:
     containerPropertyIdentifier: efficiency
     name: efficiency
     description: The turbine efficiency values
-filter:
-  equals:
-    property:
-    - node
-    - type
-    value:
-      space: '{{type_space}}'
-      externalId: TurbineCurve

@@ -1,18 +1,20 @@
 from __future__ import annotations
 
-from typing import Literal, Optional
+from typing import Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
     DomainModel,
+    DomainModelCore,
     DomainModelApply,
     DomainModelApplyList,
     DomainModelList,
     DomainRelationApply,
     ResourcesApply,
 )
+from ._bid_method import BidMethod, BidMethodApply
 
 
 __all__ = [
@@ -33,7 +35,7 @@ _WATERVALUEBASED_PROPERTIES_BY_FIELD = {
 }
 
 
-class WaterValueBased(DomainModel):
+class WaterValueBased(BidMethod):
     """This represents the reading version of water value based.
 
     It is used to when data is retrieved from CDF.
@@ -48,8 +50,9 @@ class WaterValueBased(DomainModel):
         version: The version of the water value based node.
     """
 
-    space: str = DEFAULT_INSTANCE_SPACE
-    name: Optional[str] = None
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
+        "power-ops-types", "DayAheadWaterValueBased"
+    )
 
     def as_apply(self) -> WaterValueBasedApply:
         """Convert this read version of water value based to the writing version."""
@@ -60,7 +63,7 @@ class WaterValueBased(DomainModel):
         )
 
 
-class WaterValueBasedApply(DomainModelApply):
+class WaterValueBasedApply(BidMethodApply):
     """This represents the writing version of water value based.
 
     It is used to when data is sent to CDF.
@@ -75,23 +78,25 @@ class WaterValueBasedApply(DomainModelApply):
             If skipOnVersionConflict is set on the ingestion request, then the item will be skipped instead of failing the ingestion request.
     """
 
-    space: str = DEFAULT_INSTANCE_SPACE
-    name: str
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
+        "power-ops-types", "DayAheadWaterValueBased"
+    )
 
     def _to_instances_apply(
         self,
         cache: set[tuple[str, str]],
-        view_by_write_class: dict[type[DomainModelApply | DomainRelationApply], dm.ViewId] | None,
+        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
     ) -> ResourcesApply:
         resources = ResourcesApply()
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_write_class and view_by_write_class.get(type(self))) or dm.ViewId(
-            "power-ops-day-ahead-bid", "WaterValueBased", "1"
+        write_view = (view_by_read_class or {}).get(
+            WaterValueBased, dm.ViewId("power-ops-day-ahead-bid", "WaterValueBased", "1")
         )
 
         properties = {}
+
         if self.name is not None:
             properties["name"] = self.name
 
@@ -100,7 +105,7 @@ class WaterValueBasedApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
-                type=dm.DirectRelationReference("power-ops-types", "WaterValueBasedDayAheadMethod"),
+                type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,
@@ -139,7 +144,7 @@ def _create_water_value_based_filter(
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
-    if name and isinstance(name, str):
+    if name is not None and isinstance(name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
     if name and isinstance(name, list):
         filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
@@ -147,7 +152,7 @@ def _create_water_value_based_filter(
         filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
     if external_id_prefix:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
-    if space and isinstance(space, str):
+    if space is not None and isinstance(space, str):
         filters.append(dm.filters.Equals(["node", "space"], value=space))
     if space and isinstance(space, list):
         filters.append(dm.filters.In(["node", "space"], values=space))

@@ -6,21 +6,17 @@ from typing import TYPE_CHECKING
 from cognite.client import data_modeling as dm, CogniteClient
 
 from cognite.powerops.client._generated.day_ahead_bid.data_classes import (
-    DomainModelApply,
+    DomainModelCore,
     BidDocument,
-    BidDocumentApply,
     PriceArea,
-    PriceAreaApply,
     BidMethod,
-    BidMethodApply,
-    BidTable,
-    BidTableApply,
+    BidMatrix,
 )
 from ._core import DEFAULT_QUERY_LIMIT, QueryBuilder, QueryStep, QueryAPI, T_DomainModelList, _create_edge_filter
 
 if TYPE_CHECKING:
     from .alert_query import AlertQueryAPI
-    from .bid_table_query import BidTableQueryAPI
+    from .bid_matrix_query import BidMatrixQueryAPI
 
 
 class BidDocumentQueryAPI(QueryAPI[T_DomainModelList]):
@@ -28,11 +24,11 @@ class BidDocumentQueryAPI(QueryAPI[T_DomainModelList]):
         self,
         client: CogniteClient,
         builder: QueryBuilder[T_DomainModelList],
-        view_by_write_class: dict[type[DomainModelApply], dm.ViewId],
+        view_by_read_class: dict[type[DomainModelCore], dm.ViewId],
         filter_: dm.filters.Filter | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
     ):
-        super().__init__(client, builder, view_by_write_class)
+        super().__init__(client, builder, view_by_read_class)
 
         self._builder.append(
             QueryStep(
@@ -41,7 +37,7 @@ class BidDocumentQueryAPI(QueryAPI[T_DomainModelList]):
                     from_=self._builder[-1].name if self._builder else None,
                     filter=filter_,
                 ),
-                select=dm.query.Select([dm.query.SourceSelector(self._view_by_write_class[BidDocumentApply], ["*"])]),
+                select=dm.query.Select([dm.query.SourceSelector(self._view_by_read_class[BidDocument], ["*"])]),
                 result_cls=BidDocument,
                 max_retrieve_limit=limit,
             )
@@ -85,6 +81,7 @@ class BidDocumentQueryAPI(QueryAPI[T_DomainModelList]):
                 expression=dm.query.EdgeResultSetExpression(
                     filter=edge_filter,
                     from_=from_,
+                    direction="outwards",
                 ),
                 select=dm.query.Select(),
                 max_retrieve_limit=limit,
@@ -96,7 +93,7 @@ class BidDocumentQueryAPI(QueryAPI[T_DomainModelList]):
             self._query_append_method(from_)
         if retrieve_total:
             self._query_append_total(from_)
-        return AlertQueryAPI(self._client, self._builder, self._view_by_write_class, None, limit)
+        return AlertQueryAPI(self._client, self._builder, self._view_by_read_class, None, limit)
 
     def partials(
         self,
@@ -106,7 +103,7 @@ class BidDocumentQueryAPI(QueryAPI[T_DomainModelList]):
         retrieve_price_area: bool = False,
         retrieve_method: bool = False,
         retrieve_total: bool = False,
-    ) -> BidTableQueryAPI[T_DomainModelList]:
+    ) -> BidMatrixQueryAPI[T_DomainModelList]:
         """Query along the partial edges of the bid document.
 
         Args:
@@ -119,14 +116,14 @@ class BidDocumentQueryAPI(QueryAPI[T_DomainModelList]):
             retrieve_total: Whether to retrieve the total for each bid document or not.
 
         Returns:
-            BidTableQueryAPI: The query API for the bid table.
+            BidMatrixQueryAPI: The query API for the bid matrix.
         """
-        from .bid_table_query import BidTableQueryAPI
+        from .bid_matrix_query import BidMatrixQueryAPI
 
         from_ = self._builder[-1].name
 
         edge_filter = _create_edge_filter(
-            dm.DirectRelationReference("power-ops-types", "PartialBid"),
+            dm.DirectRelationReference("power-ops-types", "partialBid"),
             external_id_prefix=external_id_prefix,
             space=space,
         )
@@ -136,6 +133,7 @@ class BidDocumentQueryAPI(QueryAPI[T_DomainModelList]):
                 expression=dm.query.EdgeResultSetExpression(
                     filter=edge_filter,
                     from_=from_,
+                    direction="outwards",
                 ),
                 select=dm.query.Select(),
                 max_retrieve_limit=limit,
@@ -147,7 +145,7 @@ class BidDocumentQueryAPI(QueryAPI[T_DomainModelList]):
             self._query_append_method(from_)
         if retrieve_total:
             self._query_append_total(from_)
-        return BidTableQueryAPI(self._client, self._builder, self._view_by_write_class, None, limit)
+        return BidMatrixQueryAPI(self._client, self._builder, self._view_by_read_class, None, limit)
 
     def query(
         self,
@@ -176,14 +174,14 @@ class BidDocumentQueryAPI(QueryAPI[T_DomainModelList]):
         return self._query()
 
     def _query_append_price_area(self, from_: str) -> None:
-        view_id = self._view_by_write_class[PriceAreaApply]
+        view_id = self._view_by_read_class[PriceArea]
         self._builder.append(
             QueryStep(
                 name=self._builder.next_name("price_area"),
                 expression=dm.query.NodeResultSetExpression(
                     filter=dm.filters.HasData(views=[view_id]),
                     from_=from_,
-                    through=self._view_by_write_class[BidDocumentApply].as_property_ref("price_area"),
+                    through=self._view_by_read_class[BidDocument].as_property_ref("priceArea"),
                     direction="outwards",
                 ),
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
@@ -193,14 +191,14 @@ class BidDocumentQueryAPI(QueryAPI[T_DomainModelList]):
         )
 
     def _query_append_method(self, from_: str) -> None:
-        view_id = self._view_by_write_class[BidMethodApply]
+        view_id = self._view_by_read_class[BidMethod]
         self._builder.append(
             QueryStep(
                 name=self._builder.next_name("method"),
                 expression=dm.query.NodeResultSetExpression(
                     filter=dm.filters.HasData(views=[view_id]),
                     from_=from_,
-                    through=self._view_by_write_class[BidDocumentApply].as_property_ref("method"),
+                    through=self._view_by_read_class[BidDocument].as_property_ref("method"),
                     direction="outwards",
                 ),
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
@@ -210,18 +208,18 @@ class BidDocumentQueryAPI(QueryAPI[T_DomainModelList]):
         )
 
     def _query_append_total(self, from_: str) -> None:
-        view_id = self._view_by_write_class[BidTableApply]
+        view_id = self._view_by_read_class[BidMatrix]
         self._builder.append(
             QueryStep(
                 name=self._builder.next_name("total"),
                 expression=dm.query.NodeResultSetExpression(
                     filter=dm.filters.HasData(views=[view_id]),
                     from_=from_,
-                    through=self._view_by_write_class[BidDocumentApply].as_property_ref("total"),
+                    through=self._view_by_read_class[BidDocument].as_property_ref("total"),
                     direction="outwards",
                 ),
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
                 max_retrieve_limit=-1,
-                result_cls=BidTable,
+                result_cls=BidMatrix,
             ),
         )

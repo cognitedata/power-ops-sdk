@@ -9,6 +9,7 @@ from pydantic import Field
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
     DomainModel,
+    DomainModelCore,
     DomainModelApply,
     DomainModelApplyList,
     DomainModelList,
@@ -110,6 +111,7 @@ class Plant(DomainModel):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power-ops-types", "Plant")
     name: Optional[str] = None
     display_name: Optional[str] = Field(None, alias="displayName")
     ordering: Optional[int] = None
@@ -196,6 +198,7 @@ class PlantApply(DomainModelApply):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power-ops-types", "Plant")
     name: str
     display_name: Optional[str] = Field(None, alias="displayName")
     ordering: Optional[int] = None
@@ -219,82 +222,98 @@ class PlantApply(DomainModelApply):
     def _to_instances_apply(
         self,
         cache: set[tuple[str, str]],
-        view_by_write_class: dict[type[DomainModelApply | DomainRelationApply], dm.ViewId] | None,
+        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
     ) -> ResourcesApply:
         resources = ResourcesApply()
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_write_class and view_by_write_class.get(type(self))) or dm.ViewId(
-            "power-ops-assets", "Plant", "1"
-        )
+        write_view = (view_by_read_class or {}).get(Plant, dm.ViewId("power-ops-assets", "Plant", "1"))
 
         properties = {}
+
         if self.name is not None:
             properties["name"] = self.name
+
         if self.display_name is not None:
             properties["displayName"] = self.display_name
+
         if self.ordering is not None:
             properties["ordering"] = self.ordering
+
         if self.head_loss_factor is not None:
             properties["headLossFactor"] = self.head_loss_factor
+
         if self.outlet_level is not None:
             properties["outletLevel"] = self.outlet_level
+
         if self.p_max is not None:
             properties["pMax"] = self.p_max
+
         if self.p_min is not None:
             properties["pMin"] = self.p_min
+
         if self.penstock_head_loss_factors is not None:
             properties["penstockHeadLossFactors"] = self.penstock_head_loss_factors
+
         if self.watercourse is not None:
             properties["watercourse"] = {
                 "space": self.space if isinstance(self.watercourse, str) else self.watercourse.space,
                 "externalId": self.watercourse if isinstance(self.watercourse, str) else self.watercourse.external_id,
             }
+
         if self.connection_losses is not None:
             properties["connectionLosses"] = self.connection_losses
+
         if self.p_max_time_series is not None:
             properties["pMaxTimeSeries"] = (
                 self.p_max_time_series
                 if isinstance(self.p_max_time_series, str)
                 else self.p_max_time_series.external_id
             )
+
         if self.p_min_time_series is not None:
             properties["pMinTimeSeries"] = (
                 self.p_min_time_series
                 if isinstance(self.p_min_time_series, str)
                 else self.p_min_time_series.external_id
             )
+
         if self.water_value_time_series is not None:
             properties["waterValueTimeSeries"] = (
                 self.water_value_time_series
                 if isinstance(self.water_value_time_series, str)
                 else self.water_value_time_series.external_id
             )
+
         if self.feeding_fee_time_series is not None:
             properties["feedingFeeTimeSeries"] = (
                 self.feeding_fee_time_series
                 if isinstance(self.feeding_fee_time_series, str)
                 else self.feeding_fee_time_series.external_id
             )
+
         if self.outlet_level_time_series is not None:
             properties["outletLevelTimeSeries"] = (
                 self.outlet_level_time_series
                 if isinstance(self.outlet_level_time_series, str)
                 else self.outlet_level_time_series.external_id
             )
+
         if self.inlet_level_time_series is not None:
             properties["inletLevelTimeSeries"] = (
                 self.inlet_level_time_series
                 if isinstance(self.inlet_level_time_series, str)
                 else self.inlet_level_time_series.external_id
             )
+
         if self.head_direct_time_series is not None:
             properties["headDirectTimeSeries"] = (
                 self.head_direct_time_series
                 if isinstance(self.head_direct_time_series, str)
                 else self.head_direct_time_series.external_id
             )
+
         if self.inlet_reservoir is not None:
             properties["inletReservoir"] = {
                 "space": self.space if isinstance(self.inlet_reservoir, str) else self.inlet_reservoir.space,
@@ -308,6 +327,7 @@ class PlantApply(DomainModelApply):
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
+                type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,
@@ -321,16 +341,16 @@ class PlantApply(DomainModelApply):
         edge_type = dm.DirectRelationReference("power-ops-types", "isSubAssetOf")
         for generator in self.generators or []:
             other_resources = DomainRelationApply.from_edge_to_resources(
-                cache, self, generator, edge_type, view_by_write_class
+                cache, start_node=self, end_node=generator, edge_type=edge_type, view_by_read_class=view_by_read_class
             )
             resources.extend(other_resources)
 
         if isinstance(self.watercourse, DomainModelApply):
-            other_resources = self.watercourse._to_instances_apply(cache, view_by_write_class)
+            other_resources = self.watercourse._to_instances_apply(cache, view_by_read_class)
             resources.extend(other_resources)
 
         if isinstance(self.inlet_reservoir, DomainModelApply):
-            other_resources = self.inlet_reservoir._to_instances_apply(cache, view_by_write_class)
+            other_resources = self.inlet_reservoir._to_instances_apply(cache, view_by_read_class)
             resources.extend(other_resources)
 
         if isinstance(self.p_max_time_series, CogniteTimeSeries):
@@ -398,13 +418,13 @@ def _create_plant_filter(
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
-    if name and isinstance(name, str):
+    if name is not None and isinstance(name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
     if name and isinstance(name, list):
         filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
     if name_prefix:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
-    if display_name and isinstance(display_name, str):
+    if display_name is not None and isinstance(display_name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("displayName"), value=display_name))
     if display_name and isinstance(display_name, list):
         filters.append(dm.filters.In(view_id.as_property_ref("displayName"), values=display_name))
@@ -429,7 +449,8 @@ def _create_plant_filter(
     if watercourse and isinstance(watercourse, str):
         filters.append(
             dm.filters.Equals(
-                view_id.as_property_ref("watercourse"), value={"space": "power-ops-assets", "externalId": watercourse}
+                view_id.as_property_ref("watercourse"),
+                value={"space": DEFAULT_INSTANCE_SPACE, "externalId": watercourse},
             )
         )
     if watercourse and isinstance(watercourse, tuple):
@@ -442,7 +463,7 @@ def _create_plant_filter(
         filters.append(
             dm.filters.In(
                 view_id.as_property_ref("watercourse"),
-                values=[{"space": "power-ops-assets", "externalId": item} for item in watercourse],
+                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in watercourse],
             )
         )
     if watercourse and isinstance(watercourse, list) and isinstance(watercourse[0], tuple):
@@ -462,7 +483,7 @@ def _create_plant_filter(
         filters.append(
             dm.filters.Equals(
                 view_id.as_property_ref("inletReservoir"),
-                value={"space": "power-ops-assets", "externalId": inlet_reservoir},
+                value={"space": DEFAULT_INSTANCE_SPACE, "externalId": inlet_reservoir},
             )
         )
     if inlet_reservoir and isinstance(inlet_reservoir, tuple):
@@ -476,7 +497,7 @@ def _create_plant_filter(
         filters.append(
             dm.filters.In(
                 view_id.as_property_ref("inletReservoir"),
-                values=[{"space": "power-ops-assets", "externalId": item} for item in inlet_reservoir],
+                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in inlet_reservoir],
             )
         )
     if inlet_reservoir and isinstance(inlet_reservoir, list) and isinstance(inlet_reservoir[0], tuple):
@@ -488,7 +509,7 @@ def _create_plant_filter(
         )
     if external_id_prefix:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
-    if space and isinstance(space, str):
+    if space is not None and isinstance(space, str):
         filters.append(dm.filters.Equals(["node", "space"], value=space))
     if space and isinstance(space, list):
         filters.append(dm.filters.In(["node", "space"], values=space))

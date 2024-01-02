@@ -9,6 +9,7 @@ from pydantic import Field
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
     DomainModel,
+    DomainModelCore,
     DomainModelApply,
     DomainModelApplyList,
     DomainModelList,
@@ -62,11 +63,12 @@ class PriceArea(DomainModel):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power-ops-types", "PriceArea")
     name: Optional[str] = None
     default_method: Union[BidMethod, str, dm.NodeId, None] = Field(None, repr=False, alias="defaultMethod")
     timezone: Optional[str] = None
     main_scenario: Union[TimeSeries, str, None] = Field(None, alias="mainScenario")
-    price_scenarios: Optional[list[TimeSeries]] = Field(None, alias="priceScenarios")
+    price_scenarios: Union[list[TimeSeries], list[str], None] = Field(None, alias="priceScenarios")
 
     def as_apply(self) -> PriceAreaApply:
         """Convert this read version of price area to the writing version."""
@@ -103,28 +105,29 @@ class PriceAreaApply(DomainModelApply):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power-ops-types", "PriceArea")
     name: str
     default_method: Union[BidMethodApply, str, dm.NodeId, None] = Field(None, repr=False, alias="defaultMethod")
     timezone: str
     main_scenario: Union[TimeSeries, str, None] = Field(None, alias="mainScenario")
-    price_scenarios: Optional[list[TimeSeries]] = Field(None, alias="priceScenarios")
+    price_scenarios: Union[list[TimeSeries], list[str], None] = Field(None, alias="priceScenarios")
 
     def _to_instances_apply(
         self,
         cache: set[tuple[str, str]],
-        view_by_write_class: dict[type[DomainModelApply | DomainRelationApply], dm.ViewId] | None,
+        view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
     ) -> ResourcesApply:
         resources = ResourcesApply()
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_write_class and view_by_write_class.get(type(self))) or dm.ViewId(
-            "power-ops-day-ahead-bid", "PriceArea", "1"
-        )
+        write_view = (view_by_read_class or {}).get(PriceArea, dm.ViewId("power-ops-day-ahead-bid", "PriceArea", "1"))
 
         properties = {}
+
         if self.name is not None:
             properties["name"] = self.name
+
         if self.default_method is not None:
             properties["defaultMethod"] = {
                 "space": self.space if isinstance(self.default_method, str) else self.default_method.space,
@@ -132,20 +135,26 @@ class PriceAreaApply(DomainModelApply):
                 if isinstance(self.default_method, str)
                 else self.default_method.external_id,
             }
+
         if self.timezone is not None:
             properties["timezone"] = self.timezone
+
         if self.main_scenario is not None:
             properties["mainScenario"] = (
                 self.main_scenario if isinstance(self.main_scenario, str) else self.main_scenario.external_id
             )
+
         if self.price_scenarios is not None:
-            properties["priceScenarios"] = self.price_scenarios
+            properties["priceScenarios"] = [
+                value if isinstance(value, str) else value.external_id for value in self.price_scenarios
+            ]
 
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
                 existing_version=self.existing_version,
+                type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
                         source=write_view,
@@ -157,7 +166,7 @@ class PriceAreaApply(DomainModelApply):
             cache.add(self.as_tuple_id())
 
         if isinstance(self.default_method, DomainModelApply):
-            other_resources = self.default_method._to_instances_apply(cache, view_by_write_class)
+            other_resources = self.default_method._to_instances_apply(cache, view_by_read_class)
             resources.extend(other_resources)
 
         if isinstance(self.main_scenario, CogniteTimeSeries):
@@ -197,7 +206,7 @@ def _create_price_area_filter(
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
-    if name and isinstance(name, str):
+    if name is not None and isinstance(name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
     if name and isinstance(name, list):
         filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
@@ -207,7 +216,7 @@ def _create_price_area_filter(
         filters.append(
             dm.filters.Equals(
                 view_id.as_property_ref("defaultMethod"),
-                value={"space": "power-ops-day-ahead-bid", "externalId": default_method},
+                value={"space": DEFAULT_INSTANCE_SPACE, "externalId": default_method},
             )
         )
     if default_method and isinstance(default_method, tuple):
@@ -221,7 +230,7 @@ def _create_price_area_filter(
         filters.append(
             dm.filters.In(
                 view_id.as_property_ref("defaultMethod"),
-                values=[{"space": "power-ops-day-ahead-bid", "externalId": item} for item in default_method],
+                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in default_method],
             )
         )
     if default_method and isinstance(default_method, list) and isinstance(default_method[0], tuple):
@@ -231,7 +240,7 @@ def _create_price_area_filter(
                 values=[{"space": item[0], "externalId": item[1]} for item in default_method],
             )
         )
-    if timezone and isinstance(timezone, str):
+    if timezone is not None and isinstance(timezone, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("timezone"), value=timezone))
     if timezone and isinstance(timezone, list):
         filters.append(dm.filters.In(view_id.as_property_ref("timezone"), values=timezone))
@@ -239,7 +248,7 @@ def _create_price_area_filter(
         filters.append(dm.filters.Prefix(view_id.as_property_ref("timezone"), value=timezone_prefix))
     if external_id_prefix:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
-    if space and isinstance(space, str):
+    if space is not None and isinstance(space, str):
         filters.append(dm.filters.Equals(["node", "space"], value=space))
     if space and isinstance(space, list):
         filters.append(dm.filters.In(["node", "space"], values=space))
