@@ -1,0 +1,1096 @@
+transformations:
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 100000.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 0.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 100000.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 100000.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 100000.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 0.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 0.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1000.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 0.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 10.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1000.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 0.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1000.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 100.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 10.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1000.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1000.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1000.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1000.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1000.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1000.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1000.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1000.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1000.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1000.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1000.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 10.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1000.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1000.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1000.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 0.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1000.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 6.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 10.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1000.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 30.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1000.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 0.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 200.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 28.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 38.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 27.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 45.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 0.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 6.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 6.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 100.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 0.6
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 0.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 4.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 12.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 150.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 2.5
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 3.1
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 0.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 0.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 0.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 4.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 8.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 200.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 48.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 25.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 50.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 0.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 6.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 6.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 500.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 38.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 85.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 0.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 50000.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 2.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 12.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 250.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 38.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 85.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 0.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 50000.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 2.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 12.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 250.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 90.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 38.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 95.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 0.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 50000.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 2.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 12.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 250.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 43.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 95.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 38.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 85.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 0.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 50000.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 2.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 12.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 250.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 32.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 74.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 0.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 50000.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 4.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 12.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 250.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 74.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 32.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 76.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 0.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 50000.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 4.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 12.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 150.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 7.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 19.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 0.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 6.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 6.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 150.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 4.2
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 4.9
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 0.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 4.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 12.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 672.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 0.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 10000.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 10000.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 42.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1000.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 0.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1000.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 2.7
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 48.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1000.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1000.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 184.999
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1000.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1000.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1000.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 0.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1000.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 1.42
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 9.2
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 109.0
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 48.6
+- StaticValues:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 0.0
+- MultiplyConstant:
+    parameters:
+      constant: 0.53
+- AddConstant:
+    parameters:
+      constant: 0.0
+- MultiplyConstant:
+    parameters:
+      constant: 0.151
+- AddConstant:
+    parameters:
+      constant: 0.0
+- MultiplyConstant:
+    parameters:
+      constant: 0.08
+- AddConstant:
+    parameters:
+      constant: 0.0
+- MultiplyConstant:
+    parameters:
+      constant: 0.042
+- AddConstant:
+    parameters:
+      constant: 0.0
+- MultiplyConstant:
+    parameters:
+      constant: 0.069
+- AddConstant:
+    parameters:
+      constant: 0.0
+- MultiplyConstant:
+    parameters:
+      constant: 0.078
+- AddConstant:
+    parameters:
+      constant: 0.0
+- MultiplyConstant:
+    parameters:
+      constant: 0.14
+- AddConstant:
+    parameters:
+      constant: 0.0
+- MultiplyConstant:
+    parameters:
+      constant: -1.0
+- AddConstant:
+    parameters:
+      constant: 1.0
+- MultiplyConstant:
+    parameters:
+      constant: -1.0
+- AddConstant:
+    parameters:
+      constant: 1.0
+- MultiplyConstant:
+    parameters:
+      constant: -1.0
+- AddConstant:
+    parameters:
+      constant: 1.0
+- MultiplyConstant:
+    parameters:
+      constant: -1.0
+- AddConstant:
+    parameters:
+      constant: 1.0
+- MultiplyConstant:
+    parameters:
+      constant: -1.0
+- AddConstant:
+    parameters:
+      constant: 1.0
+- MultiplyConstant:
+    parameters:
+      constant: -1.0
+- AddConstant:
+    parameters:
+      constant: 1.0
+- MultiplyConstant:
+    parameters:
+      constant: -1.0
+- AddConstant:
+    parameters:
+      constant: 1.0
+- MultiplyConstant:
+    parameters:
+      constant: -1.0
+- AddConstant:
+    parameters:
+      constant: 1.0
+- MultiplyConstant:
+    parameters:
+      constant: -1.0
+- AddConstant:
+    parameters:
+      constant: 1.0
+- MultiplyConstant:
+    parameters:
+      constant: -1.0
+- AddConstant:
+    parameters:
+      constant: 1.0
+- MultiplyConstant:
+    parameters:
+      constant: -1.0
+- AddConstant:
+    parameters:
+      constant: 1.0
+- MultiplyConstant:
+    parameters:
+      constant: -1.0
+- AddConstant:
+    parameters:
+      constant: 1.0
+- MultiplyConstant:
+    parameters:
+      constant: 0.16
+- AddConstant:
+    parameters:
+      constant: 0.0
+- MultiplyConstant:
+    parameters:
+      constant: 1.0
+- AddConstant:
+    parameters:
+      constant: 0.0
+- MultiplyFromOffset:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 0.0
+      - offset_minute: 1440.0
+        offset_value: 1.0
+- AddFromOffset:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: -500.0
+      - offset_minute: 1440.0
+        offset_value: 0.0
+- MultiplyFromOffset:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 0.0
+      - offset_minute: 1440.0
+        offset_value: 1.0
+- AddFromOffset:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: -50.0
+      - offset_minute: 1440.0
+        offset_value: 0.0
+- AddFromOffset:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: -40.0
+      - offset_minute: 1440.0
+        offset_value: 0.0
+- AddFromOffset:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: -30.0
+      - offset_minute: 1440.0
+        offset_value: 0.0
+- AddFromOffset:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: -20.0
+      - offset_minute: 1440.0
+        offset_value: 0.0
+- AddFromOffset:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: -15.0
+      - offset_minute: 1440.0
+        offset_value: 0.0
+- AddFromOffset:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: -10.0
+      - offset_minute: 1440.0
+        offset_value: 0.0
+- AddFromOffset:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: -5.0
+      - offset_minute: 1440.0
+        offset_value: 0.0
+- AddFromOffset:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 5.0
+      - offset_minute: 1440.0
+        offset_value: 0.0
+- AddFromOffset:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 10.0
+      - offset_minute: 1440.0
+        offset_value: 0.0
+- AddFromOffset:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 15.0
+      - offset_minute: 1440.0
+        offset_value: 0.0
+- AddFromOffset:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 20.0
+      - offset_minute: 1440.0
+        offset_value: 0.0
+- AddFromOffset:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 30.0
+      - offset_minute: 1440.0
+        offset_value: 0.0
+- AddFromOffset:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 40.0
+      - offset_minute: 1440.0
+        offset_value: 0.0
+- AddFromOffset:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 50.0
+      - offset_minute: 1440.0
+        offset_value: 0.0
+- AddFromOffset:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 70.0
+      - offset_minute: 1440.0
+        offset_value: 0.0
+- AddFromOffset:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 100.0
+      - offset_minute: 1440.0
+        offset_value: 0.0
+- AddFromOffset:
+    parameters:
+      relative_datapoints:
+      - offset_minute: 0.0
+        offset_value: 2000.0
+      - offset_minute: 1440.0
+        offset_value: 0.0
+- MultiplyConstant:
+    parameters:
+      constant: 0.8
+- MultiplyConstant:
+    parameters:
+      constant: 1.2
+- MultiplyConstant:
+    parameters:
+      constant: 1.0

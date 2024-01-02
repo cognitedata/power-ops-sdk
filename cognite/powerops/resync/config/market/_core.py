@@ -10,8 +10,11 @@ from cognite.powerops.resync.config._shared import (
     RetrievalType,
     TimeSeriesMapping,
     TimeSeriesMappingEntry,
+    TimeSeriesMappingEntryV2,
+    TimeSeriesMappingV2,
     Transformation,
     TransformationType,
+    TransformationV2,
 )
 
 
@@ -22,6 +25,50 @@ class Configuration(BaseModel):
 class PriceScenarioID(BaseModel):
     id: str
     rename: str = ""
+
+
+class PriceScenarioV2(BaseModel):
+    model_config = ConfigDict(frozen=True)
+
+    name: str
+    time_series_external_id: Optional[str] = None
+    transformations: Optional[list[TransformationV2]] = None
+
+    @classmethod
+    def load_from_dict(cls, config: dict) -> PriceScenarioV2:
+        if transformations := config.get("transformations"):
+            loaded_transformations = [TransformationV2.load(t) for t in transformations]
+            config["transformations"] = loaded_transformations
+        return cls(**config)
+
+    def to_time_series_mapping(self) -> TimeSeriesMappingV2:
+        retrieve = RetrievalType.RANGE if self.time_series_external_id else None
+        transformations = self.transformations or []
+
+        # to make buy price slightly higher than sale price in SHOP
+        transformations_buy_price = [*transformations, TransformationV2.load({"Add": {"parameters": {"value": 0.01}}})]
+
+        sale_price_row = TimeSeriesMappingEntryV2(
+            object_type="market",
+            object_name=self.name,
+            attribute_name="sale_price",
+            time_series_external_id=self.time_series_external_id,
+            transformations=transformations,
+            retrieve=retrieve,
+            aggregation=AggregationMethod.mean,
+        )
+
+        buy_price_row = TimeSeriesMappingEntryV2(
+            object_type="market",
+            object_name=self.name,
+            attribute_name="buy_price",
+            time_series_external_id=self.time_series_external_id,
+            transformations=transformations_buy_price,
+            retrieve=retrieve,
+            aggregation=AggregationMethod.mean,
+        )
+
+        return TimeSeriesMappingV2(rows=[sale_price_row, buy_price_row])
 
 
 class PriceScenario(BaseModel):

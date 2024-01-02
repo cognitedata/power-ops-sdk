@@ -13,6 +13,12 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.80.0] - 2024-01-02
+### Added
+* Script for translating old transformation files to new ones
+* Writing new transformation instances to CogShop model in addition to old ones, resulting in a duplication
+of transformations nodes, but new transformation instances uses _Tr2_ prefix
+
 ## [0.79.0] - 2023-12-22
 ### Changed
 * Single `PriceArea` type in data models.

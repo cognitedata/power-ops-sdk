@@ -12,6 +12,7 @@ from cognite.powerops.client.data_classes import cogshop1 as cogshop_v1
 from cognite.powerops.resync import config
 from cognite.powerops.resync.models._shared_v1_v2.cogshop_model import (
     _create_transformation,
+    _create_transformationV2,
     _to_shop_files,
     _to_shop_model_file,
 )
@@ -35,7 +36,9 @@ def to_cogshop_asset_model(
     model.shop_files.extend(_to_shop_files(configuration.watercourses_shop))
 
     # TODO Fix the assumption that timeseries mappings and watercourses are in the same order
-    for watercourse, mapping in zip(watercourses, configuration.time_series_mappings):
+    for watercourse, mapping, mapping2 in zip(
+        watercourses, configuration.time_series_mappings, configuration.time_series_mappings_v2
+    ):
         model_file = _to_shop_model_file(
             watercourse.name,
             watercourse.model_file,
@@ -109,11 +112,15 @@ def to_cogshop_asset_model(
                     transformations=[
                         _create_transformation(order, transformation)
                         for order, transformation in enumerate(row.transformations or [])
+                    ]
+                    + [
+                        _create_transformationV2(order, transformation)
+                        for order, transformation in enumerate(row2.transformations or [])
                     ],
                     retrieve=row.retrieve.name if row.retrieve else None,
                     aggregation=row.aggregation.name if row.aggregation else None,
                 )
-                for row in mapping
+                for row, row2 in zip(mapping, mapping2)
             ],
         )
         model.model_templates[model_template.external_id] = model_template
@@ -125,7 +132,7 @@ def to_cogshop_asset_model(
             for mapping in template.base_mappings
         }
     )
-    # TODO: extend here to use adapter to translate to new transformations and extend the model with those
+
     model.transformations.update(
         {
             t.external_id: t
@@ -160,12 +167,16 @@ def to_cogshop_asset_model(
                         external_id=f"Mapping_{external_id}_{i}",
                         path=mapping["shop_model_path"],
                         timeseries_external_id=mapping.get("time_series_external_id"),
+                        retrieve=mapping.get("retrieve"),
+                        aggregation=mapping.get("aggregation"),
                         transformations=[
                             _create_transformation(j, transformation_data)
                             for j, transformation_data in enumerate(json.loads(mapping.get("transformations", "")))
+                        ]
+                        + [
+                            _create_transformationV2(j, config.Transformation(**transformation_data))
+                            for j, transformation_data in enumerate(json.loads(mapping.get("transformations", "")))
                         ],
-                        retrieve=mapping.get("retrieve"),
-                        aggregation=mapping.get("aggregation"),
                     )
                     for i, mapping in enumerate(
                         incremental_mapping.content.replace(float("nan"), None).to_dict(orient="records")

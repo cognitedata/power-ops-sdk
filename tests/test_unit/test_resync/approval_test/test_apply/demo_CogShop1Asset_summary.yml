@@ -1,5 +1,5 @@
 changes:
-- added: 583
+- added: 872
   changed: 0
   field_name: edges
   group: CDF
@@ -11,7 +11,7 @@ changes:
   group: CDF
   removed: 0
   unchanged: 0
-- added: 402
+- added: 483
   changed: 0
   field_name: nodes
   group: CDF

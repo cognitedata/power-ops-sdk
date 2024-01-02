@@ -18,6 +18,8 @@
 
 ::: cognite.powerops.prerun_transformations.transformations.DoNothing
 
+::: cognite.powerops.prerun_transformations.transformations.Round
+
 ::: cognite.powerops.prerun_transformations.transformations.AddFromOffset
 
 ::: cognite.powerops.prerun_transformations.transformations.MultiplyFromOffset

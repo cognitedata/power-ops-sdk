@@ -59,19 +59,21 @@ def _relative_datapoints_to_series(
 class Transformation(BaseModel, ABC):
     @property
     def name(self):
-        return self.__repr_name__
+        return self.__repr_name__()
 
     @classmethod
     def load(cls, transformation_: dict[str, Any]) -> Self:
         (transformation_name,) = transformation_
         if transformation_body := transformation_.get(transformation_name):
-            return _TRANSFORMATIONS_BY_CLASS_NAME[transformation_name].__call__(**transformation_body["input"])
-        else:
+            return _TRANSFORMATIONS_BY_CLASS_NAME[transformation_name].__call__(**transformation_body["parameters"])
+        elif transformation_name in _TRANSFORMATIONS_BY_CLASS_NAME:
             return _TRANSFORMATIONS_BY_CLASS_NAME[transformation_name].__call__()
+        else:
+            raise NotImplementedError(f"Unknown transformation {transformation_name}")
 
     # TODO: have  validator that checks that this dict (later json)
     # does not exceed the DM limit of 255 characters for a string?
-    def input_to_dict(self) -> dict:
+    def parameters_to_dict(self) -> dict:
         return {}
 
     @abstractmethod
@@ -96,7 +98,7 @@ class AddConstant(Transformation):
 
     constant: float
 
-    def input_to_dict(self) -> dict:
+    def parameters_to_dict(self) -> dict:
         return {"constant": self.constant}
 
     def apply(
@@ -115,12 +117,39 @@ class AddConstant(Transformation):
         return single_ts + self.constant
 
 
+class Round(Transformation):
+    """
+    Args:
+        digits: The number of decimal places to round to
+    """
+
+    digits: int
+
+    def parameters_to_dict(self) -> dict:
+        return {"digits": self.digits}
+
+    def apply(
+        self,
+        time_series_data: tuple[pd.Series],
+    ):
+        """Round the time series values to the specified number of decimals
+
+        Args:
+            time_series_data: The time series data to add the value to
+
+        Returns:
+            The transformed time series
+        """
+        single_ts = time_series_data[0]
+        return single_ts.round(decimals=self.digits)
+
+
 class SumTimeseries(Transformation):
     def apply(
         self,
         time_series_data: tuple[pd.Series],
     ):
-        """Add value to input time series
+        """Sum two or more time series together
 
         Args:
             time_series_data: The time series data to add together/concatenate
@@ -187,7 +216,7 @@ class MultiplyConstant(Transformation):
 
     constant: float
 
-    def input_to_dict(self) -> dict:
+    def parameters_to_dict(self) -> dict:
         return {"constant": self.constant}
 
     def apply(
@@ -213,12 +242,12 @@ class StaticValues(DynamicTransformation):
         relative_datapoints: The relative datapoints to apply to
     """
 
-    shift_minutes: int = 0  # This could be given at runtime - looks like default value of 0 is always used for now
     relative_datapoints: list[RelativeDatapoint]
+    _shift_minutes: int = 0  # This could be given at runtime - looks like default value of 0 is always used for now
     _pre_apply_has_run: bool = False
     _start: datetime
 
-    def input_to_dict(self) -> dict:
+    def parameters_to_dict(self) -> dict:
         return {f"{int(r_point.offset_minute)}": f"{r_point.offset_value}" for r_point in self.relative_datapoints}
 
     @property
@@ -290,7 +319,7 @@ class StaticValues(DynamicTransformation):
         """
         if not self.pre_apply_has_run:
             raise ValueError("pre_apply function has not run - missing neccessary properties to run transformation")
-        return _relative_datapoints_to_series(self.relative_datapoints, self.start, self.shift_minutes)
+        return _relative_datapoints_to_series(self.relative_datapoints, self.start, self._shift_minutes)
 
 
 class ToBool(Transformation):
@@ -436,7 +465,7 @@ class HeightToVolume(DynamicTransformation):
     def pre_apply_has_run(self, value: bool):
         self._pre_apply_has_run = value
 
-    def input_to_dict(self) -> dict:
+    def parameters_to_dict(self) -> dict:
         return {"object_type": self.object_type, "object_name": self.object_name}
 
     @staticmethod
@@ -531,10 +560,10 @@ class AddFromOffset(Transformation):
         relative_datapoints: The values to add to existing time series based at offset minute times from time series
     """
 
-    shift_minutes: int = 0
     relative_datapoints: list[RelativeDatapoint]
+    _shift_minutes: int = 0
 
-    def input_to_dict(self) -> dict:
+    def parameters_to_dict(self) -> dict:
         return {f"{int(r_point.offset_minute)}": f"{r_point.offset_value}" for r_point in self.relative_datapoints}
 
     def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
@@ -584,7 +613,7 @@ class AddFromOffset(Transformation):
         single_ts = time_series_data[0]
         first_timestamp = min(single_ts.index)
         non_relative_datapoints = _relative_datapoints_to_series(
-            self.relative_datapoints, first_timestamp, self.shift_minutes
+            self.relative_datapoints, first_timestamp, self._shift_minutes
         )
         union_index = single_ts.index.union(non_relative_datapoints.index)
         # fillna(0) since we are adding
@@ -601,10 +630,10 @@ class MultiplyFromOffset(Transformation):
                              offset minutes from time series start time
     """
 
-    shift_minutes: int = 0
     relative_datapoints: list[RelativeDatapoint]
+    _shift_minutes: int = 0
 
-    def input_to_dict(self) -> dict:
+    def parameters_to_dict(self) -> dict:
         return {f"{int(r_point.offset_minute)}": f"{r_point.offset_value}" for r_point in self.relative_datapoints}
 
     def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
@@ -642,7 +671,7 @@ class MultiplyFromOffset(Transformation):
         single_ts = time_series_data[0]
         first_timestamp = min(single_ts.index)
         non_relative_datapoints = _relative_datapoints_to_series(
-            self.relative_datapoints, first_timestamp, self.shift_minutes
+            self.relative_datapoints, first_timestamp, self._shift_minutes
         )
         union_index = single_ts.index.union(non_relative_datapoints.index)
         # fillna(1) since we are multiplying
@@ -709,7 +738,7 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
     def pre_apply_has_run(self, value: bool):
         self._pre_apply_has_run = value
 
-    def input_to_dict(self) -> dict:
+    def parameters_to_dict(self) -> dict:
         return {
             "discharge": self.discharge_ts_external_id,
             "transit_object": self.transit_object_type,

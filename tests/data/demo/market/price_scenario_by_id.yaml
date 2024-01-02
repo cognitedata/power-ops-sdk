@@ -185,4 +185,5 @@ scenario_26:
   time_series_external_id: '907748'
   transformations:
   - kwargs:
+      value: 1
     transformation: MULTIPLY

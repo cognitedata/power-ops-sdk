@@ -11,7 +11,7 @@ from typing_extensions import Self
 from cognite.powerops.utils.serialization import load_yaml
 
 from ._settings import Settings
-from ._shared import TimeSeriesMapping
+from ._shared import TimeSeriesMapping, TimeSeriesMappingV2
 from .cogshop.shop_file_config import ShopFileConfig
 from .market import (
     BenchmarkingConfig,
@@ -19,6 +19,7 @@ from .market import (
     BidProcessConfig,
     Market,
     PriceScenario,
+    PriceScenarioV2,
     RKOMBidCombinationConfig,
     RKOMBidProcessConfig,
     RkomMarketConfig,
@@ -57,6 +58,7 @@ class MarketConfig(Config):
     market: Market
     benchmarks: list[BenchmarkingConfig]
     price_scenario_by_id: dict[str, PriceScenario]
+    price_scenario_by_id_v2: dict[str, PriceScenarioV2]
 
     bidprocess: list[BidProcessConfig]
     bidmatrix_generators: list[BidMatrixGeneratorConfig]
@@ -91,6 +93,14 @@ class MarketConfig(Config):
                         f"Possible references are: {[config.external_id for config in values.data['rkom_bid_process']]}"
                     )
         return value
+
+    @classmethod
+    def instantiate_from_dict(cls, config: dict) -> MarketConfig:
+        price_scenario_by_id_v2 = {
+            k: PriceScenarioV2.load_from_dict(v) for k, v in config["price_scenario_by_id_v2"].items()
+        }
+        config["price_scenario_by_id_v2"] = price_scenario_by_id_v2
+        return cls(**config)
 
     @field_validator("bidprocess", mode="after")
     def one_default_per_price_area(cls, value: list[BidProcessConfig]):
@@ -152,6 +162,7 @@ class ProductionConfig(Config):
 
 class CogShopConfig(Config):
     time_series_mappings: Optional[list[TimeSeriesMapping]] = None
+    time_series_mappings_v2: Optional[list[TimeSeriesMappingV2]] = None
     watercourses_shop: list[ShopFileConfig]  # validation needs to happen here. If any of the files
     _dependent_shop_files: set = {
         "extra_data",
@@ -185,6 +196,12 @@ class CogShopConfig(Config):
                 "This is needed for CogSHOP to know which order and type to load extra SHOP files."
             )
         return value
+
+    @classmethod
+    def instantiate_from_dict(cls, config: dict) -> CogShopConfig:
+        time_series_mappings_v2 = TimeSeriesMappingV2.load_from_dict(config["time_series_mappings_v2"])
+        config["time_series_mappings_v2"] = [time_series_mappings_v2]
+        return cls(**config)
 
 
 class ReSyncConfig(BaseModel):
@@ -229,6 +246,11 @@ class ReSyncConfig(BaseModel):
         elif "constants" in configs:
             # For backwards compatibility
             configs["constants"]["cdf_project"] = cdf_project
+
+        # Hack to instantiate CogShopConfig from dict
+        for field_name in ["cogshop", "market"]:
+            class_ = cls.model_fields[field_name].annotation
+            configs[field_name] = class_.instantiate_from_dict(configs[field_name])
 
         return cls(**configs)
 
