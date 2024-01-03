@@ -20,7 +20,7 @@ logger = getLogger(__name__)
 def ms_to_datetime_tz_naive(timestamp: int):
     """
     Milliseconds since Epoch to datetime.
-    #TODO: Consider switching to cognite-sdk official one, but using this one for now as it is time zone independent
+    #TODO: Consider switching to cognite-sdk official one, but using this one for now as it is time zone naive
     """
     return arrow.get(timestamp).datetime.replace(tzinfo=None)
 
@@ -307,7 +307,7 @@ class StaticValues(DynamicTransformation):
         s.pre_apply(client=client, shop_model=model, start=start_time, end=end_time)
         ```
         """
-        self.start = _ms_to_datetime(start)
+        self.start = ms_to_datetime_tz_naive(start)
         self.pre_apply_has_run = True
 
     def apply(self, _: tuple[pd.Series]) -> pd.Series:
@@ -906,8 +906,8 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
                 inflow=single_ts,
                 discharge=self.discharge,
                 shape=self.shape,
-                start=_ms_to_datetime(self.start),
-                end=_ms_to_datetime(self.end),
+                start=ms_to_datetime_tz_naive(self.start),
+                end=ms_to_datetime_tz_naive(self.end),
             )
         else:
             raise ValueError("pre_apply function has not run - missing neccessary properties to run transformation")
