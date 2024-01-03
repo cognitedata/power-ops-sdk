@@ -17,7 +17,7 @@ from cognite.powerops.utils.cdf.calls import retrieve_range
 logger = getLogger(__name__)
 
 
-def _ms_to_datetime(timestamp: int):
+def ms_to_datetime_tz_naive(timestamp: int):
     """
     Milliseconds since Epoch to datetime.
     #TODO: Consider switching to cognite-sdk official one, but using this one for now as it is time zone independent
