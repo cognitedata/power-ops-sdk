@@ -5,16 +5,24 @@ from datetime import datetime, timedelta
 from logging import getLogger
 from typing import Any, Literal
 
+import arrow
 import numpy as np
 import pandas as pd
 from cognite.client import CogniteClient
-from cognite.client.utils import ms_to_datetime
 from pydantic import BaseModel
 from typing_extensions import Self
 
 from cognite.powerops.utils.cdf.calls import retrieve_range
 
 logger = getLogger(__name__)
+
+
+def ms_to_datetime_tz_naive(timestamp: int):
+    """
+    Milliseconds since Epoch to datetime.
+    #TODO: Consider switching to cognite-sdk official one, but using this one for now as it is time zone naive
+    """
+    return arrow.get(timestamp).datetime.replace(tzinfo=None)
 
 
 class RelativeDatapoint(BaseModel):
@@ -299,7 +307,7 @@ class StaticValues(DynamicTransformation):
         s.pre_apply(client=client, shop_model=model, start=start_time, end=end_time)
         ```
         """
-        self.start = ms_to_datetime(start)
+        self.start = ms_to_datetime_tz_naive(start)
         self.pre_apply_has_run = True
 
     def apply(self, _: tuple[pd.Series]) -> pd.Series:
@@ -310,8 +318,8 @@ class StaticValues(DynamicTransformation):
         Example:
         ```python
         from cognite.client import CogniteClient
-        start_time = datetime(2000, 1, 1, 12)
-        end_time = datetime(2000, 1, 5, 12)
+        start_time = datetime.timestamp(datetime(2000, 1, 1, 12))
+        end_time = datetime.timestamp(datetime(2000, 1, 5, 12))
         client = CogniteClient()
         model = {}
         relative_datapoints = [
@@ -525,8 +533,8 @@ class HeightToVolume(DynamicTransformation):
         Example:
         ```python
         from cognite.client import CogniteClient
-        start_time = datetime(2000, 1, 1, 12)
-        end_time = datetime(2000, 1, 10, 12)
+        start_time = datetime.timestamp(datetime(2000, 1, 1, 12))
+        end_time = datetime.timestamp(datetime(2000, 1, 10, 12))
         model = {"reservoir": {"Lundevatn": {"vol_head": {"x": [10, 20, 40, 80, 160], "y": [2, 4, 6, 8, 10]}}}}
         client = CogniteClient()
         time_series_data = (pd.Series(
@@ -898,8 +906,8 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
                 inflow=single_ts,
                 discharge=self.discharge,
                 shape=self.shape,
-                start=ms_to_datetime(self.start),
-                end=ms_to_datetime(self.end),
+                start=ms_to_datetime_tz_naive(self.start),
+                end=ms_to_datetime_tz_naive(self.end),
             )
         else:
             raise ValueError("pre_apply function has not run - missing neccessary properties to run transformation")

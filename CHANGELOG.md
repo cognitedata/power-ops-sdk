@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.80.2] - 2024-01-02
+### Changed
+* Parse timestamp to datetime object in a time zone naive fashion to stay consistent with preprocessor
+
 ## [0.80.1] - 2024-01-02
 ### Added
 * FDM transformationsV2 instances to transformationsV2 pydantic translator
