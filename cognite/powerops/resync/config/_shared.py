@@ -262,7 +262,7 @@ class TimeSeriesMappingV2(BaseModel):
     @classmethod
     def load_from_dict(cls, config: dict) -> TimeSeriesMappingV2:
         time_series_mappings_v2 = {"rows": []}
-        for mapping_entry in config[0]["rows"]:
+        for mapping_entry in config["rows"]:
             if transformations := mapping_entry.get("transformations"):
                 loaded_transformations = [TransformationV2.load(t) for t in transformations]
                 del mapping_entry["transformations"]

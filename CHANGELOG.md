@@ -13,6 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.80.3] - 2024-01-11
+### Fixed
+* Script that generates new time series mapping config with the new transformations
+* Changes to the script so that the translation functions can be called from the customer repos
+
 ## [0.80.2] - 2024-01-02
 ### Changed
 * Parse timestamp to datetime object in a time zone naive fashion to stay consistent with preprocessor
