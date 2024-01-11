@@ -1,9 +1,6 @@
 import hashlib
 import json
 
-import numpy as np
-import pandas as pd
-
 from pathlib import Path
 
 import yaml
@@ -12,27 +9,8 @@ from cognite.powerops.resync.config import ReSyncConfig, Transformation
 from cognite.powerops.resync.models._shared_v1_v2.cogshop_model import transformations_v2_transformer
 
 
-def immutify_dictionary(d):
-    d_new = {}
-    for k, v in d.items():
-        if isinstance(v, (np.ndarray, pd.Series)):
-            d_new[k] = tuple(v.tolist())
-        elif isinstance(v, list):
-            d_new[k] = tuple(v)
-        elif isinstance(v, dict):
-            d_new[k] = immutify_dictionary(v)
-        else:
-            if hasattr(v, "dtype"):
-                d_new[k] = v.item()
-            else:
-                d_new[k] = v
-
-    return dict(sorted(d_new.items(), key=lambda item: item[0]))
-
-
-def hash_dictionary(d):
-    d_hashable = immutify_dictionary(d)
-    s_hashable = json.dumps(d_hashable).encode("utf-8")
+def hash_dictionary(d: dict) -> str:
+    s_hashable = json.dumps(d).encode("utf-8")
     m = hashlib.sha256(s_hashable).hexdigest()
     return m
 
