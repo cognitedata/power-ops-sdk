@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.80.4] - 2024-01-17
+### Fixed
+* Bugfix with using camelcase that caused files creation to fail
+
 ## [0.80.3] - 2024-01-11
 ### Fixed
 * Script that generates new time series mapping config with the new transformations

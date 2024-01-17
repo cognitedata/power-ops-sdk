@@ -57,7 +57,7 @@ class FileAdapter(CogniteAPI[FileMetadata]):
             content = self.files_by_id[item.external_id].content
             if content is None:
                 raise ValueError(f"Cannot create new file {item.external_id} missing file content")
-            self.client.files.upload_bytes(content, **item.dump(), overwrite=True)
+            self.client.files.upload_bytes(content, **item.dump(camel_case=False), overwrite=True)
 
     def delete(self, external_id: str | Sequence[str]) -> Any:
         self.client.files.delete(external_id=external_id)
