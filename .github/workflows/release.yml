@@ -3,7 +3,7 @@ name: release
 
 on:
   push:
-    branches: [main]
+    branches: [release-0.79.0]
 
 env:
   PYTHON_VERSION: '3.9'
