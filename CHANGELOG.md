@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.79.1] - 2023-01-17
+### Fixed
+* Change from camelcase to snakecase when dumping file contents as dict before uploading
+
 ## [0.79.0] - 2023-12-22
 ### Changed
 * Single `PriceArea` type in data models.
