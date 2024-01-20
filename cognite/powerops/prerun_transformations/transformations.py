@@ -95,10 +95,7 @@ class Transformation(BaseModel, ABC):
         return cls.load({transformation_type: {"parameters": transformation_parameters}})
 
     @abstractmethod
-    def apply(
-        self,
-        time_series_data: tuple[pd.Series],
-    ) -> pd.Series:
+    def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
         ...
 
 
@@ -119,10 +116,7 @@ class AddConstant(Transformation):
     def parameters_to_dict(self) -> dict:
         return {"constant": self.constant}
 
-    def apply(
-        self,
-        time_series_data: tuple[pd.Series],
-    ):
+    def apply(self, time_series_data: tuple[pd.Series]):
         """Add value to input time series
 
         Args:
@@ -146,10 +140,7 @@ class Round(Transformation):
     def parameters_to_dict(self) -> dict:
         return {"digits": self.digits}
 
-    def apply(
-        self,
-        time_series_data: tuple[pd.Series],
-    ):
+    def apply(self, time_series_data: tuple[pd.Series]):
         """Round the time series values to the specified number of decimals
 
         Args:
@@ -163,10 +154,7 @@ class Round(Transformation):
 
 
 class SumTimeseries(Transformation):
-    def apply(
-        self,
-        time_series_data: tuple[pd.Series],
-    ):
+    def apply(self, time_series_data: tuple[pd.Series]):
         """Sum two or more time series together
 
         Args:
@@ -237,10 +225,7 @@ class MultiplyConstant(Transformation):
     def parameters_to_dict(self) -> dict:
         return {"constant": self.constant}
 
-    def apply(
-        self,
-        time_series_data: tuple[pd.Series],
-    ):
+    def apply(self, time_series_data: tuple[pd.Series]):
         """Multiply value to input time series
 
         Args:
@@ -371,7 +356,7 @@ class ToBool(Transformation):
         ```
         """
         single_ts = time_series_data[0]
-        return (single_ts > 0).astype(int)
+        return (single_ts > 0).astype("int64")
 
 
 class ToInt(Transformation):
@@ -411,7 +396,7 @@ class ZeroIfNotOne(Transformation):
         ```
         """
         single_ts = time_series_data[0]
-        return (single_ts == 1).astype(int)
+        return (single_ts == 1).astype("int64")
 
 
 class OneIfTwo(Transformation):
@@ -445,7 +430,7 @@ class OneIfTwo(Transformation):
         ```
         """
         single_ts = time_series_data[0]
-        return (single_ts == 2).astype(int)
+        return (single_ts == 2).astype("int64")
 
 
 class HeightToVolume(DynamicTransformation):
@@ -682,7 +667,7 @@ class MultiplyFromOffset(Transformation):
         2022-01-01 00:03:00     0.0
         2022-01-01 00:04:00    15.0
         2022-01-01 00:05:00    15.0
-        Freq: T, dtype: float64
+        Freq: min, dtype: float64
 
         ```
         """
@@ -829,11 +814,7 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
 
     @staticmethod
     def add_water_in_transit(
-        inflow: pd.Series,
-        discharge: pd.Series,
-        shape: dict[int, float],
-        start: datetime,
-        end: datetime,
+        inflow: pd.Series, discharge: pd.Series, shape: dict[int, float], start: datetime, end: datetime
     ) -> pd.Series:
         # Forward fill discharge for all (hour) timestamps until start
         one_hour = pd.Timedelta("1h")
@@ -854,10 +835,7 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
         between_start_and_end = (start <= inflow.index) & (inflow.index < end)
         return inflow.loc[between_start_and_end]
 
-    def apply(
-        self,
-        time_series_data: tuple[pd.Series],
-    ) -> pd.Series:
+    def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
         """Run `apply()` after preprocessing step to add water in transit to add water in transit (doscharge water) to
            inflow time series
 
