@@ -4,7 +4,7 @@ import inspect
 from abc import ABC
 from collections import defaultdict
 from collections.abc import Iterable
-from typing import Any, Callable, ClassVar, Literal, Optional, TypeVar, Union
+from typing import Any, Callable, ClassVar, Literal, Optional, TypeVar
 
 from cognite.client.data_classes.data_modeling import (
     ContainerApplyList,
@@ -24,9 +24,6 @@ from pydantic.alias_generators import to_pascal, to_snake
 from typing_extensions import Self
 
 from cognite.powerops.client._generated.cogshop1.data_classes._core import DomainModelApply as DomainModelApplyCogShop1
-from cognite.powerops.client._generated.production.data_classes._core import (
-    DomainModelApply as DomainModelApplyProduction,
-)
 from cognite.powerops.utils.serialization import get_pydantic_annotation
 
 from .cdf_resources import CDFFile, CDFSequence
@@ -36,8 +33,8 @@ from .model import Model
 
 
 class DataModel(Model, ABC):
-    cls_by_container: ClassVar[dict[ContainerId, type[Union[DomainModelApplyCogShop1, DomainModelApplyProduction]]]]
-    cls_by_view: ClassVar[dict[ViewId, type[Union[DomainModelApplyCogShop1, DomainModelApplyProduction]]]]
+    cls_by_container: ClassVar[dict[ContainerId, type[DomainModelApplyCogShop1]]]
+    cls_by_view: ClassVar[dict[ViewId, type[DomainModelApplyCogShop1]]]
     graph_ql: ClassVar[Optional[PowerOpsGraphQLModel]] = None
     source_model: ClassVar[Optional[PowerOpsDMSSourceModel]] = None
     dms_model: ClassVar[Optional[PowerOpsDMSModel]] = None
@@ -105,19 +102,11 @@ class DataModel(Model, ABC):
     def _domain_models(self) -> Iterable[DomainModelApplyCogShop1]:
         for field_name in self.model_fields:
             items = getattr(self, field_name)
-            if (
-                isinstance(items, list)
-                and items
-                and isinstance(items[0], (DomainModelApplyProduction, DomainModelApplyCogShop1))
-            ):
+            if isinstance(items, list) and items and isinstance(items[0], DomainModelApplyCogShop1):
                 yield from items
-            if isinstance(items, (DomainModelApplyProduction, DomainModelApplyCogShop1)):
+            if isinstance(items, DomainModelApplyCogShop1):
                 yield items
-            if (
-                isinstance(items, dict)
-                and items
-                and isinstance(next(iter(items.values())), (DomainModelApplyProduction, DomainModelApplyCogShop1))
-            ):
+            if isinstance(items, dict) and items and isinstance(next(iter(items.values())), DomainModelApplyCogShop1):
                 yield from items.values()
 
     @classmethod
@@ -170,7 +159,7 @@ class DataModel(Model, ABC):
                 parsed[field_name] = [
                     item for item in load_by_type_external_id["sequences"].values() if item.external_id.endswith(suffix)
                 ]
-            elif issubclass(annotation, (DomainModelApplyProduction, DomainModelApplyCogShop1)):
+            elif issubclass(annotation, DomainModelApplyCogShop1):
                 name = field_name
                 alternatives = [name, name.removesuffix("s"), to_pascal(name), to_pascal(name).removesuffix("s")]
                 for alternative in alternatives:
@@ -196,10 +185,8 @@ class DataModel(Model, ABC):
             get_pydantic_annotation(instance.model_fields[field_name].annotation, type(instance))[0]
             for field_name in instance.model_fields
         )
-        model_types: set[Union[type[DomainModelApplyCogShop1], type[DomainModelApplyProduction]]] = {
-            annotation
-            for annotation in instance_annotations
-            if issubclass(annotation, (DomainModelApplyProduction, DomainModelApplyCogShop1))
+        model_types: set[type[DomainModelApplyCogShop1]] = {
+            annotation for annotation in instance_annotations if issubclass(annotation, DomainModelApplyCogShop1)
         }
 
         # One to many edges
@@ -240,7 +227,7 @@ class DataModel(Model, ABC):
                 annotation, outer = get_pydantic_annotation(field.annotation, domain_node)
                 if (
                     inspect.isclass(annotation)
-                    and issubclass(annotation, (DomainModelApplyProduction, DomainModelApplyCogShop1))
+                    and issubclass(annotation, DomainModelApplyCogShop1)
                     and (value := getattr(domain_node, field_name)) is not None
                 ):
                     if isinstance(value, str) and value in node_by_id:

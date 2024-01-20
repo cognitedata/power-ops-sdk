@@ -8,7 +8,7 @@ from cognite.powerops.resync.models.v1.config_to_model import (
     to_market_asset_model,
     to_production_model,
 )
-from cognite.powerops.resync.models.v2.config_to_model import to_powerasset_model, to_production_data_model
+from cognite.powerops.resync.models.v2.config_to_model import to_powerasset_model
 
 
 def transform(config: ReSyncConfig, market_name: str, model_types: set[type[Model]]) -> list[Model]:
@@ -48,10 +48,6 @@ def transform(config: ReSyncConfig, market_name: str, model_types: set[type[Mode
         for m in model_types
     )
     if has_data_model:
-        # The production model is a prerequisite for the CogShop and Market models
-        production__data_model = to_production_data_model(config.production)
-        if models.ProductionModelDM in model_types:
-            all_models.append(production__data_model)
         if models.PowerAssetModelDM in model_types:
             power_asset_model = to_powerasset_model.to_asset_data_model(config.production)
             all_models.append(power_asset_model)  # type: ignore[arg-type]
