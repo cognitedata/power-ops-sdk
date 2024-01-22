@@ -24,8 +24,10 @@ dayaheadbid_BidMatrix_version: '1'
 dayaheadbid_PriceArea_version: '1'
 dayaheadbid_SHOPMultiScenario_version: '1'
 dayaheadbid_MultiScenarioMatrix_version: '1'
+dayaheadbid_CustomBidMethod_version: '1'
 dayaheadbid_WaterValueBased_version: '1'
 dayaheadbid_BasicBidMatrix_version: '1'
+dayaheadbid_CustomBidMatrix_version: '1'
 
 # Asset Model Views
 asset_PriceArea_version: '1'

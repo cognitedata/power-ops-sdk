@@ -6,7 +6,7 @@ implements:
   externalId: BidMatrix
   version: '{{dayaheadbid_BidMatrix_version}}'
   type: view
-version: '{{dayaheadbid_BasicBidMatrix_version}}'
+version: '{{dayaheadbid_CustomBidMatrix_version}}'
 filter:
   not:
     in:
