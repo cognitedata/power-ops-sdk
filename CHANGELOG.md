@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.82.0] - 2024-01-22
+### Changed
+* Frontend Models. Introduced `CustomBidMethond` and `CustomBidMatrix` in the `DayAheadBid` frontend model.
+
 ## [0.81.0] - 2024-01-20
 ### Changed
 * Removed Production Model from the SDK.
