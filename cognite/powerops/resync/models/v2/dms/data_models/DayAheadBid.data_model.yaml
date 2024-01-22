@@ -32,7 +32,7 @@ views:
   space: '{{dayahead_model_space}}'
   type: view
   version: '{{dayaheadbid_WaterValueBased_version}}'
-- externalId: WaterValueBased
+- externalId: CustomBidMethod
   space: '{{dayahead_model_space}}'
   type: view
   version: '{{dayaheadbid_CustomBidMethod_version}}'
