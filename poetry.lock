@@ -493,18 +493,18 @@ colorama = {version = "*", markers = "platform_system == \"Windows\""}
 
 [[package]]
 name = "cognite-pygen"
-version = "0.35.2"
+version = "0.35.3"
 description = "Cognite Python SDK Generator"
 optional = false
 python-versions = ">=3.9,<4.0"
 files = [
-    {file = "cognite_pygen-0.35.2-py3-none-any.whl", hash = "sha256:8bc583cbaad7c6887df629e4ec2a957c2cbb93e474df1d99a548c2d8e836d45a"},
-    {file = "cognite_pygen-0.35.2.tar.gz", hash = "sha256:535bf49891b40338c7661201b9bbab206cee054fa62e3ba714e3744aa7318f52"},
+    {file = "cognite_pygen-0.35.3-py3-none-any.whl", hash = "sha256:219fb9768da5b78e8e066bbfc170104312db5b4051b52685992e6f058a30a049"},
+    {file = "cognite_pygen-0.35.3.tar.gz", hash = "sha256:d413829f55a128b5433c934714543ce29bd4e4e1e2a72970aa74b9b2c5ff370b"},
 ]
 
 [package.dependencies]
 black = {version = ">=23.7.0", optional = true, markers = "extra == \"format\" or extra == \"all\""}
-cognite-sdk = ">=7.8.5,<8.0.0"
+cognite-sdk = ">=7.13.6,<8.0.0"
 inflect = ">=6.0"
 Jinja2 = ">=3.1"
 packaging = {version = ">=21.3", optional = true, markers = "extra == \"cli\" or extra == \"all\""}
@@ -521,13 +521,13 @@ format = ["black (>=23.7.0)"]
 
 [[package]]
 name = "cognite-sdk"
-version = "7.8.5"
+version = "7.15.0"
 description = "Cognite Python SDK"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "cognite_sdk-7.8.5-py3-none-any.whl", hash = "sha256:7d35b276f44a90ea9d8397b42dbff5dc2670efb3a8f810857d450efbfed51a62"},
-    {file = "cognite_sdk-7.8.5.tar.gz", hash = "sha256:4a5ac1becf6f5af2f18bafa471b4e306622929484fd28dc7ccf088de57dfd3e6"},
+    {file = "cognite_sdk-7.15.0-py3-none-any.whl", hash = "sha256:4d2370257e931d5936afd420f54cb999a44cfe8bb2bea711d9ae3e6d2a544353"},
+    {file = "cognite_sdk-7.15.0.tar.gz", hash = "sha256:8ff011918d254fa1e26b83ddf6d7e808cf690989499c9119dddc6144013bae45"},
 ]
 
 [package.dependencies]
@@ -536,7 +536,6 @@ pandas = {version = ">=1.4", optional = true, markers = "extra == \"pandas\" or 
 protobuf = ">=3.16.0"
 requests = ">=2,<3"
 requests_oauthlib = ">=1,<2"
-sortedcontainers = ">=2.2,<3.0"
 typing_extensions = ">=4"
 tzdata = {version = ">=2023.3", markers = "sys_platform == \"win32\""}
 
@@ -2457,13 +2456,13 @@ test = ["pep440", "pre-commit", "pytest", "testpath"]
 
 [[package]]
 name = "nest-asyncio"
-version = "1.5.9"
+version = "1.6.0"
 description = "Patch asyncio to allow nested event loops"
 optional = false
 python-versions = ">=3.5"
 files = [
-    {file = "nest_asyncio-1.5.9-py3-none-any.whl", hash = "sha256:61ec07ef052e72e3de22045b81b2cc7d71fceb04c568ba0b2e4b2f9f5231bec2"},
-    {file = "nest_asyncio-1.5.9.tar.gz", hash = "sha256:d1e1144e9c6e3e6392e0fcf5211cb1c8374b5648a98f1ebe48e5336006b41907"},
+    {file = "nest_asyncio-1.6.0-py3-none-any.whl", hash = "sha256:87af6efd6b5e897c81050477ef65c62e2b2f35d51703cae01aff2905b1852e1c"},
+    {file = "nest_asyncio-1.6.0.tar.gz", hash = "sha256:6f172d5449aca15afd6c646851f4e31e02c598d553a667e38cafa997cfec55fe"},
 ]
 
 [[package]]
@@ -2622,13 +2621,13 @@ dev = ["black", "mypy", "pytest"]
 
 [[package]]
 name = "overrides"
-version = "7.5.0"
+version = "7.6.0"
 description = "A decorator to automatically detect mismatch when overriding a method."
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "overrides-7.5.0-py3-none-any.whl", hash = "sha256:188e7b06039850c2a66a42973afd76ce15cb02be2ddc7f35a88a7d2dfda22738"},
-    {file = "overrides-7.5.0.tar.gz", hash = "sha256:429d45886dd824402e6a6ad085f85b59e28f1cd9df54c722fd94ec790f6608ca"},
+    {file = "overrides-7.6.0-py3-none-any.whl", hash = "sha256:c36e6635519ea9c5b043b65c36d4b886aee8bd45b7d4681d2a6df0898df4b654"},
+    {file = "overrides-7.6.0.tar.gz", hash = "sha256:01e15bbbf15b766f0675c275baa1878bd1c7dc9bc7b9ee13e677cdba93dc1bd9"},
 ]
 
 [[package]]
@@ -4152,17 +4151,6 @@ files = [
 ]
 
 [[package]]
-name = "sortedcontainers"
-version = "2.4.0"
-description = "Sorted Containers -- Sorted List, Sorted Dict, Sorted Set"
-optional = false
-python-versions = "*"
-files = [
-    {file = "sortedcontainers-2.4.0-py2.py3-none-any.whl", hash = "sha256:a163dcaede0f1c021485e957a39245190e74249897e2ae4b2aa38595db237ee0"},
-    {file = "sortedcontainers-2.4.0.tar.gz", hash = "sha256:25caa5a06cc30b6b83d11423433f65d1f9d76c4c6a0c90e3379eaa43b9bfdb88"},
-]
-
-[[package]]
 name = "soupsieve"
 version = "2.5"
 description = "A modern CSS selector implementation for Beautiful Soup."
@@ -4618,4 +4606,4 @@ docs = ["mkdocs", "mkdocs-git-authors-plugin", "mkdocs-git-revision-date-localiz
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.12"
-content-hash = "043616eeea19b404631bbcd529b151a82fa0e658afbc88fb9a7b5bea48382340"
+content-hash = "4b32efb496fc0e2e717e7ad44231a4ebd1eaa6138aa91709cdb08be827e3187a"
