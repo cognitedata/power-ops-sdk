@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Literal, Optional, Union
+from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes import TimeSeries as CogniteTimeSeries
@@ -64,9 +64,9 @@ class PriceArea(DomainModel):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power-ops-types", "PriceArea")
-    name: Optional[str] = None
+    name: str
     default_method: Union[BidMethod, str, dm.NodeId, None] = Field(None, repr=False, alias="defaultMethod")
-    timezone: Optional[str] = None
+    timezone: str
     main_scenario: Union[TimeSeries, str, None] = Field(None, alias="mainScenario")
     price_scenarios: Union[list[TimeSeries], list[str], None] = Field(None, alias="priceScenarios")
 
@@ -75,6 +75,7 @@ class PriceArea(DomainModel):
         return PriceAreaApply(
             space=self.space,
             external_id=self.external_id,
+            existing_version=self.version,
             name=self.name,
             default_method=self.default_method.as_apply()
             if isinstance(self.default_method, DomainModel)
@@ -116,6 +117,7 @@ class PriceAreaApply(DomainModelApply):
         self,
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
+        write_none: bool = False,
     ) -> ResourcesApply:
         resources = ResourcesApply()
         if self.as_tuple_id() in cache:
@@ -123,7 +125,7 @@ class PriceAreaApply(DomainModelApply):
 
         write_view = (view_by_read_class or {}).get(PriceArea, dm.ViewId("power-ops-day-ahead-bid", "PriceArea", "1"))
 
-        properties = {}
+        properties: dict[str, Any] = {}
 
         if self.name is not None:
             properties["name"] = self.name
@@ -139,15 +141,16 @@ class PriceAreaApply(DomainModelApply):
         if self.timezone is not None:
             properties["timezone"] = self.timezone
 
-        if self.main_scenario is not None:
-            properties["mainScenario"] = (
-                self.main_scenario if isinstance(self.main_scenario, str) else self.main_scenario.external_id
-            )
+        if self.main_scenario is not None or write_none:
+            if isinstance(self.main_scenario, str) or self.main_scenario is None:
+                properties["mainScenario"] = self.main_scenario
+            else:
+                properties["mainScenario"] = self.main_scenario.external_id
 
-        if self.price_scenarios is not None:
+        if self.price_scenarios is not None or write_none:
             properties["priceScenarios"] = [
-                value if isinstance(value, str) else value.external_id for value in self.price_scenarios
-            ]
+                value if isinstance(value, str) else value.external_id for value in self.price_scenarios or []
+            ] or None
 
         if properties:
             this_node = dm.NodeApply(

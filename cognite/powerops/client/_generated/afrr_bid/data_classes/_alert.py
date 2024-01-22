@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import datetime
-from typing import Literal, Optional, Union
+from typing import Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -62,8 +62,8 @@ class Alert(DomainModel):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power-ops-types", "Alert")
-    time: Optional[datetime.datetime] = None
-    title: Optional[str] = None
+    time: datetime.datetime
+    title: str
     description: Optional[str] = None
     severity: Optional[str] = None
     alert_type: Optional[str] = Field(None, alias="alertType")
@@ -76,6 +76,7 @@ class Alert(DomainModel):
         return AlertApply(
             space=self.space,
             external_id=self.external_id,
+            existing_version=self.version,
             time=self.time,
             title=self.title,
             description=self.description,
@@ -124,6 +125,7 @@ class AlertApply(DomainModelApply):
         self,
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
+        write_none: bool = False,
     ) -> ResourcesApply:
         resources = ResourcesApply()
         if self.as_tuple_id() in cache:
@@ -131,30 +133,30 @@ class AlertApply(DomainModelApply):
 
         write_view = (view_by_read_class or {}).get(Alert, dm.ViewId("power-ops-shared", "Alert", "1"))
 
-        properties = {}
+        properties: dict[str, Any] = {}
 
         if self.time is not None:
-            properties["time"] = self.time.isoformat(timespec="milliseconds")
+            properties["time"] = self.time.isoformat(timespec="milliseconds") if self.time else None
 
         if self.title is not None:
             properties["title"] = self.title
 
-        if self.description is not None:
+        if self.description is not None or write_none:
             properties["description"] = self.description
 
-        if self.severity is not None:
+        if self.severity is not None or write_none:
             properties["severity"] = self.severity
 
-        if self.alert_type is not None:
+        if self.alert_type is not None or write_none:
             properties["alertType"] = self.alert_type
 
-        if self.status_code is not None:
+        if self.status_code is not None or write_none:
             properties["statusCode"] = self.status_code
 
-        if self.event_ids is not None:
+        if self.event_ids is not None or write_none:
             properties["eventIds"] = self.event_ids
 
-        if self.calculation_run is not None:
+        if self.calculation_run is not None or write_none:
             properties["calculationRun"] = self.calculation_run
 
         if properties:

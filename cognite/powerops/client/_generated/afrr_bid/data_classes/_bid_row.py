@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Literal, Optional, Union
+from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -97,6 +97,7 @@ class BidRow(DomainModel):
         return BidRowApply(
             space=self.space,
             external_id=self.external_id,
+            existing_version=self.version,
             price=self.price,
             quantity_per_hour=self.quantity_per_hour,
             product=self.product,
@@ -157,6 +158,7 @@ class BidRowApply(DomainModelApply):
         self,
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
+        write_none: bool = False,
     ) -> ResourcesApply:
         resources = ResourcesApply()
         if self.as_tuple_id() in cache:
@@ -164,27 +166,27 @@ class BidRowApply(DomainModelApply):
 
         write_view = (view_by_read_class or {}).get(BidRow, dm.ViewId("power-ops-afrr-bid", "BidRow", "1"))
 
-        properties = {}
+        properties: dict[str, Any] = {}
 
-        if self.price is not None:
+        if self.price is not None or write_none:
             properties["price"] = self.price
 
-        if self.quantity_per_hour is not None:
+        if self.quantity_per_hour is not None or write_none:
             properties["quantityPerHour"] = self.quantity_per_hour
 
-        if self.product is not None:
+        if self.product is not None or write_none:
             properties["product"] = self.product
 
-        if self.is_divisible is not None:
+        if self.is_divisible is not None or write_none:
             properties["isDivisible"] = self.is_divisible
 
-        if self.min_quantity is not None:
+        if self.min_quantity is not None or write_none:
             properties["minQuantity"] = self.min_quantity
 
-        if self.is_block is not None:
+        if self.is_block is not None or write_none:
             properties["isBlock"] = self.is_block
 
-        if self.exclusive_group_id is not None:
+        if self.exclusive_group_id is not None or write_none:
             properties["exclusiveGroupId"] = self.exclusive_group_id
 
         if self.linked_bid is not None:
@@ -193,10 +195,10 @@ class BidRowApply(DomainModelApply):
                 "externalId": self.linked_bid if isinstance(self.linked_bid, str) else self.linked_bid.external_id,
             }
 
-        if self.asset_type is not None:
+        if self.asset_type is not None or write_none:
             properties["assetType"] = self.asset_type
 
-        if self.asset_id is not None:
+        if self.asset_id is not None or write_none:
             properties["assetId"] = self.asset_id
 
         if self.method is not None:

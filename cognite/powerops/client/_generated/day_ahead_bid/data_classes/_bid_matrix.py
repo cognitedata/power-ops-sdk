@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Literal, Optional, Union
+from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -76,6 +76,7 @@ class BidMatrix(DomainModel):
         return BidMatrixApply(
             space=self.space,
             external_id=self.external_id,
+            existing_version=self.version,
             resource_cost=self.resource_cost,
             matrix=self.matrix,
             asset_type=self.asset_type,
@@ -118,6 +119,7 @@ class BidMatrixApply(DomainModelApply):
         self,
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
+        write_none: bool = False,
     ) -> ResourcesApply:
         resources = ResourcesApply()
         if self.as_tuple_id() in cache:
@@ -125,18 +127,18 @@ class BidMatrixApply(DomainModelApply):
 
         write_view = (view_by_read_class or {}).get(BidMatrix, dm.ViewId("power-ops-day-ahead-bid", "BidMatrix", "1"))
 
-        properties = {}
+        properties: dict[str, Any] = {}
 
-        if self.resource_cost is not None:
+        if self.resource_cost is not None or write_none:
             properties["resourceCost"] = self.resource_cost
 
-        if self.matrix is not None:
+        if self.matrix is not None or write_none:
             properties["matrix"] = self.matrix
 
-        if self.asset_type is not None:
+        if self.asset_type is not None or write_none:
             properties["assetType"] = self.asset_type
 
-        if self.asset_id is not None:
+        if self.asset_id is not None or write_none:
             properties["assetId"] = self.asset_id
 
         if self.method is not None:

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Literal, Optional, Union
+from typing import Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes import TimeSeries as CogniteTimeSeries
@@ -68,6 +68,7 @@ class SHOPMultiScenario(BidMethod):
         return SHOPMultiScenarioApply(
             space=self.space,
             external_id=self.external_id,
+            existing_version=self.version,
             name=self.name,
             shop_cases=self.shop_cases,
             price_scenarios=self.price_scenarios,
@@ -101,6 +102,7 @@ class SHOPMultiScenarioApply(BidMethodApply):
         self,
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
+        write_none: bool = False,
     ) -> ResourcesApply:
         resources = ResourcesApply()
         if self.as_tuple_id() in cache:
@@ -110,18 +112,18 @@ class SHOPMultiScenarioApply(BidMethodApply):
             SHOPMultiScenario, dm.ViewId("power-ops-day-ahead-bid", "SHOPMultiScenario", "1")
         )
 
-        properties = {}
+        properties: dict[str, Any] = {}
 
         if self.name is not None:
             properties["name"] = self.name
 
-        if self.shop_cases is not None:
+        if self.shop_cases is not None or write_none:
             properties["shopCases"] = self.shop_cases
 
-        if self.price_scenarios is not None:
+        if self.price_scenarios is not None or write_none:
             properties["priceScenarios"] = [
-                value if isinstance(value, str) else value.external_id for value in self.price_scenarios
-            ]
+                value if isinstance(value, str) else value.external_id for value in self.price_scenarios or []
+            ] or None
 
         if properties:
             this_node = dm.NodeApply(

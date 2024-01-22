@@ -101,7 +101,10 @@ class BasicBidMatrixAPI(NodeAPI[BasicBidMatrix, BasicBidMatrixApply, BasicBidMat
         return BasicBidMatrixQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
 
     def apply(
-        self, basic_bid_matrix: BasicBidMatrixApply | Sequence[BasicBidMatrixApply], replace: bool = False
+        self,
+        basic_bid_matrix: BasicBidMatrixApply | Sequence[BasicBidMatrixApply],
+        replace: bool = False,
+        write_none: bool = False,
     ) -> ResourcesApplyResult:
         """Add or update (upsert) basic bid matrixes.
 
@@ -113,6 +116,8 @@ class BasicBidMatrixAPI(NodeAPI[BasicBidMatrix, BasicBidMatrixApply, BasicBidMat
             basic_bid_matrix: Basic bid matrix or sequence of basic bid matrixes to upsert.
             replace (bool): How do we behave when a property value exists? Do we replace all matching and existing values with the supplied values (true)?
                 Or should we merge in new values for properties together with the existing values (false)? Note: This setting applies for all nodes or edges specified in the ingestion call.
+            write_none (bool): This method, will by default, skip properties that are set to None. However, if you want to set properties to None,
+                you can set this parameter to True. Note this only applies to properties that are nullable.
         Returns:
             Created instance(s), i.e., nodes, edges, and time series.
 
@@ -127,7 +132,7 @@ class BasicBidMatrixAPI(NodeAPI[BasicBidMatrix, BasicBidMatrixApply, BasicBidMat
                 >>> result = client.basic_bid_matrix.apply(basic_bid_matrix)
 
         """
-        return self._apply(basic_bid_matrix, replace)
+        return self._apply(basic_bid_matrix, replace, write_none)
 
     def delete(
         self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE

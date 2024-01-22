@@ -21,8 +21,8 @@ class PowerAssetAPI:
     PowerAssetAPI
 
     Generated with:
-        pygen = 0.33.0
-        cognite-sdk = 7.8.6
+        pygen = 0.35.4
+        cognite-sdk = 7.15.0
         pydantic = 2.5.3
 
     Data Model:
@@ -39,7 +39,7 @@ class PowerAssetAPI:
         else:
             raise ValueError(f"Expected CogniteClient or ClientConfig, got {type(config_or_client)}")
         # The client name is used for aggregated logging of Pygen Usage
-        client.config.client_name = "CognitePygen:0.33.0"
+        client.config.client_name = "CognitePygen:0.35.4"
 
         view_by_read_class = {
             data_classes.BidMethod: dm.ViewId("power-ops-shared", "BidMethod", "1"),
@@ -82,3 +82,16 @@ class PowerAssetAPI:
                 raise ValueError(f"Could not find section '{section}' in {file_path}") from e
 
         return cls.azure_project(**toml_content)
+
+    def _repr_html_(self) -> str:
+        return """<strong>PowerAssetAPI</strong> generated from data model ("power-ops-assets", "PowerAsset", "1")<br />
+with the following APIs available<br />
+&nbsp;&nbsp;&nbsp;&nbsp;.bid_method<br />
+&nbsp;&nbsp;&nbsp;&nbsp;.generator<br />
+&nbsp;&nbsp;&nbsp;&nbsp;.generator_efficiency_curve<br />
+&nbsp;&nbsp;&nbsp;&nbsp;.plant<br />
+&nbsp;&nbsp;&nbsp;&nbsp;.price_area<br />
+&nbsp;&nbsp;&nbsp;&nbsp;.reservoir<br />
+&nbsp;&nbsp;&nbsp;&nbsp;.turbine_efficiency_curve<br />
+&nbsp;&nbsp;&nbsp;&nbsp;.watercourse<br />
+"""

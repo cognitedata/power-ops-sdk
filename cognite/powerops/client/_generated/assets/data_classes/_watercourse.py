@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Literal, Optional, Union
+from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes import TimeSeries as CogniteTimeSeries
@@ -64,7 +64,7 @@ class Watercourse(DomainModel):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power-ops-types", "Watercourse")
-    name: Optional[str] = None
+    name: str
     display_name: Optional[str] = Field(None, alias="displayName")
     production_obligation: Union[list[TimeSeries], list[str], None] = Field(None, alias="productionObligation")
     penalty_limit: Optional[float] = Field(None, alias="penaltyLimit")
@@ -75,6 +75,7 @@ class Watercourse(DomainModel):
         return WatercourseApply(
             space=self.space,
             external_id=self.external_id,
+            existing_version=self.version,
             name=self.name,
             display_name=self.display_name,
             production_obligation=self.production_obligation,
@@ -114,6 +115,7 @@ class WatercourseApply(DomainModelApply):
         self,
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
+        write_none: bool = False,
     ) -> ResourcesApply:
         resources = ResourcesApply()
         if self.as_tuple_id() in cache:
@@ -121,20 +123,20 @@ class WatercourseApply(DomainModelApply):
 
         write_view = (view_by_read_class or {}).get(Watercourse, dm.ViewId("power-ops-assets", "Watercourse", "1"))
 
-        properties = {}
+        properties: dict[str, Any] = {}
 
         if self.name is not None:
             properties["name"] = self.name
 
-        if self.display_name is not None:
+        if self.display_name is not None or write_none:
             properties["displayName"] = self.display_name
 
-        if self.production_obligation is not None:
+        if self.production_obligation is not None or write_none:
             properties["productionObligation"] = [
-                value if isinstance(value, str) else value.external_id for value in self.production_obligation
-            ]
+                value if isinstance(value, str) else value.external_id for value in self.production_obligation or []
+            ] or None
 
-        if self.penalty_limit is not None:
+        if self.penalty_limit is not None or write_none:
             properties["penaltyLimit"] = self.penalty_limit
 
         if properties:

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Literal, Optional, Union
+from typing import Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes import TimeSeries as CogniteTimeSeries
@@ -87,7 +87,7 @@ class PriceArea(DomainModel):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power-ops-types", "PriceArea")
-    name: Optional[str] = None
+    name: str
     capacity_price_up: Union[TimeSeries, str, None] = Field(None, alias="capacityPriceUp")
     capacity_price_down: Union[TimeSeries, str, None] = Field(None, alias="capacityPriceDown")
     activation_price_up: Union[TimeSeries, str, None] = Field(None, alias="activationPriceUp")

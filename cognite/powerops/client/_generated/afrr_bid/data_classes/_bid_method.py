@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Literal, Optional, Union
+from typing import Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 
@@ -42,7 +42,7 @@ class BidMethod(DomainModel):
     Args:
         space: The space where the node is located.
         external_id: The external id of the bid method.
-        name: Name for the BidMethod
+        name: Name for the AFRR Bid Method
         created_time: The created time of the bid method node.
         last_updated_time: The last updated time of the bid method node.
         deleted_time: If present, the deleted time of the bid method node.
@@ -50,14 +50,15 @@ class BidMethod(DomainModel):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power-ops-types", "AFRRBidMethod")
-    name: Optional[str] = None
+    node_type: Union[dm.DirectRelationReference, None] = None
+    name: str
 
     def as_apply(self) -> BidMethodApply:
         """Convert this read version of bid method to the writing version."""
         return BidMethodApply(
             space=self.space,
             external_id=self.external_id,
+            existing_version=self.version,
             name=self.name,
         )
 
@@ -70,7 +71,7 @@ class BidMethodApply(DomainModelApply):
     Args:
         space: The space where the node is located.
         external_id: The external id of the bid method.
-        name: Name for the BidMethod
+        name: Name for the AFRR Bid Method
         existing_version: Fail the ingestion request if the bid method version is greater than or equal to this value.
             If no existingVersion is specified, the ingestion will always overwrite any existing data for the edge (for the specified container or instance).
             If existingVersion is set to 0, the upsert will behave as an insert, so it will fail the bulk if the item already exists.
@@ -78,13 +79,14 @@ class BidMethodApply(DomainModelApply):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power-ops-types", "AFRRBidMethod")
+    node_type: Union[dm.DirectRelationReference, None] = None
     name: str
 
     def _to_instances_apply(
         self,
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
+        write_none: bool = False,
     ) -> ResourcesApply:
         resources = ResourcesApply()
         if self.as_tuple_id() in cache:
@@ -92,7 +94,7 @@ class BidMethodApply(DomainModelApply):
 
         write_view = (view_by_read_class or {}).get(BidMethod, dm.ViewId("power-ops-afrr-bid", "BidMethod", "1"))
 
-        properties = {}
+        properties: dict[str, Any] = {}
 
         if self.name is not None:
             properties["name"] = self.name

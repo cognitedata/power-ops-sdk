@@ -14,48 +14,47 @@ from ._core import (
     DomainRelationApply,
     ResourcesApply,
 )
+from ._bid_method import BidMethod, BidMethodApply
 
 
 __all__ = [
-    "BidMethod",
-    "BidMethodApply",
-    "BidMethodList",
-    "BidMethodApplyList",
-    "BidMethodFields",
-    "BidMethodTextFields",
+    "CustomBidMethod",
+    "CustomBidMethodApply",
+    "CustomBidMethodList",
+    "CustomBidMethodApplyList",
+    "CustomBidMethodFields",
+    "CustomBidMethodTextFields",
 ]
 
 
-BidMethodTextFields = Literal["name"]
-BidMethodFields = Literal["name"]
+CustomBidMethodTextFields = Literal["name"]
+CustomBidMethodFields = Literal["name"]
 
-_BIDMETHOD_PROPERTIES_BY_FIELD = {
+_CUSTOMBIDMETHOD_PROPERTIES_BY_FIELD = {
     "name": "name",
 }
 
 
-class BidMethod(DomainModel):
-    """This represents the reading version of bid method.
+class CustomBidMethod(BidMethod):
+    """This represents the reading version of custom bid method.
 
     It is used to when data is retrieved from CDF.
 
     Args:
         space: The space where the node is located.
-        external_id: The external id of the bid method.
+        external_id: The external id of the custom bid method.
         name: Name for the BidMethod
-        created_time: The created time of the bid method node.
-        last_updated_time: The last updated time of the bid method node.
-        deleted_time: If present, the deleted time of the bid method node.
-        version: The version of the bid method node.
+        created_time: The created time of the custom bid method node.
+        last_updated_time: The last updated time of the custom bid method node.
+        deleted_time: If present, the deleted time of the custom bid method node.
+        version: The version of the custom bid method node.
     """
 
-    space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = None
-    name: str
 
-    def as_apply(self) -> BidMethodApply:
-        """Convert this read version of bid method to the writing version."""
-        return BidMethodApply(
+    def as_apply(self) -> CustomBidMethodApply:
+        """Convert this read version of custom bid method to the writing version."""
+        return CustomBidMethodApply(
             space=self.space,
             external_id=self.external_id,
             existing_version=self.version,
@@ -63,24 +62,22 @@ class BidMethod(DomainModel):
         )
 
 
-class BidMethodApply(DomainModelApply):
-    """This represents the writing version of bid method.
+class CustomBidMethodApply(BidMethodApply):
+    """This represents the writing version of custom bid method.
 
     It is used to when data is sent to CDF.
 
     Args:
         space: The space where the node is located.
-        external_id: The external id of the bid method.
+        external_id: The external id of the custom bid method.
         name: Name for the BidMethod
-        existing_version: Fail the ingestion request if the bid method version is greater than or equal to this value.
+        existing_version: Fail the ingestion request if the custom bid method version is greater than or equal to this value.
             If no existingVersion is specified, the ingestion will always overwrite any existing data for the edge (for the specified container or instance).
             If existingVersion is set to 0, the upsert will behave as an insert, so it will fail the bulk if the item already exists.
             If skipOnVersionConflict is set on the ingestion request, then the item will be skipped instead of failing the ingestion request.
     """
 
-    space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = None
-    name: str
 
     def _to_instances_apply(
         self,
@@ -92,7 +89,9 @@ class BidMethodApply(DomainModelApply):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(BidMethod, dm.ViewId("power-ops-day-ahead-bid", "BidMethod", "1"))
+        write_view = (view_by_read_class or {}).get(
+            CustomBidMethod, dm.ViewId("power-ops-day-ahead-bid", "CustomBidMethod", "1")
+        )
 
         properties: dict[str, Any] = {}
 
@@ -118,23 +117,23 @@ class BidMethodApply(DomainModelApply):
         return resources
 
 
-class BidMethodList(DomainModelList[BidMethod]):
-    """List of bid methods in the read version."""
+class CustomBidMethodList(DomainModelList[CustomBidMethod]):
+    """List of custom bid methods in the read version."""
 
-    _INSTANCE = BidMethod
+    _INSTANCE = CustomBidMethod
 
-    def as_apply(self) -> BidMethodApplyList:
-        """Convert these read versions of bid method to the writing versions."""
-        return BidMethodApplyList([node.as_apply() for node in self.data])
-
-
-class BidMethodApplyList(DomainModelApplyList[BidMethodApply]):
-    """List of bid methods in the writing version."""
-
-    _INSTANCE = BidMethodApply
+    def as_apply(self) -> CustomBidMethodApplyList:
+        """Convert these read versions of custom bid method to the writing versions."""
+        return CustomBidMethodApplyList([node.as_apply() for node in self.data])
 
 
-def _create_bid_method_filter(
+class CustomBidMethodApplyList(DomainModelApplyList[CustomBidMethodApply]):
+    """List of custom bid methods in the writing version."""
+
+    _INSTANCE = CustomBidMethodApply
+
+
+def _create_custom_bid_method_filter(
     view_id: dm.ViewId,
     name: str | list[str] | None = None,
     name_prefix: str | None = None,

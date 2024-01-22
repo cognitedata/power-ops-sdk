@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Literal, Optional, Union
+from typing import Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 
@@ -59,6 +59,7 @@ class WaterValueBased(BidMethod):
         return WaterValueBasedApply(
             space=self.space,
             external_id=self.external_id,
+            existing_version=self.version,
             name=self.name,
         )
 
@@ -86,6 +87,7 @@ class WaterValueBasedApply(BidMethodApply):
         self,
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
+        write_none: bool = False,
     ) -> ResourcesApply:
         resources = ResourcesApply()
         if self.as_tuple_id() in cache:
@@ -95,7 +97,7 @@ class WaterValueBasedApply(BidMethodApply):
             WaterValueBased, dm.ViewId("power-ops-day-ahead-bid", "WaterValueBased", "1")
         )
 
-        properties = {}
+        properties: dict[str, Any] = {}
 
         if self.name is not None:
             properties["name"] = self.name

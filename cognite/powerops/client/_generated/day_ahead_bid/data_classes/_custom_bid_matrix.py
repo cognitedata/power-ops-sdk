@@ -3,7 +3,6 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
-from cognite.client.data_classes import TimeSeries as CogniteTimeSeries
 from pydantic import Field
 
 from ._core import (
@@ -15,7 +14,6 @@ from ._core import (
     DomainModelList,
     DomainRelationApply,
     ResourcesApply,
-    TimeSeries,
 )
 from ._bid_matrix import BidMatrix, BidMatrixApply
 
@@ -25,59 +23,51 @@ if TYPE_CHECKING:
 
 
 __all__ = [
-    "MultiScenarioMatrix",
-    "MultiScenarioMatrixApply",
-    "MultiScenarioMatrixList",
-    "MultiScenarioMatrixApplyList",
-    "MultiScenarioMatrixFields",
-    "MultiScenarioMatrixTextFields",
+    "CustomBidMatrix",
+    "CustomBidMatrixApply",
+    "CustomBidMatrixList",
+    "CustomBidMatrixApplyList",
+    "CustomBidMatrixFields",
+    "CustomBidMatrixTextFields",
 ]
 
 
-MultiScenarioMatrixTextFields = Literal["resource_cost", "matrix", "asset_type", "asset_id", "production", "price"]
-MultiScenarioMatrixFields = Literal["resource_cost", "matrix", "asset_type", "asset_id", "production", "price"]
+CustomBidMatrixTextFields = Literal["resource_cost", "matrix", "asset_type", "asset_id"]
+CustomBidMatrixFields = Literal["resource_cost", "matrix", "asset_type", "asset_id"]
 
-_MULTISCENARIOMATRIX_PROPERTIES_BY_FIELD = {
+_CUSTOMBIDMATRIX_PROPERTIES_BY_FIELD = {
     "resource_cost": "resourceCost",
     "matrix": "matrix",
     "asset_type": "assetType",
     "asset_id": "assetId",
-    "production": "production",
-    "price": "price",
 }
 
 
-class MultiScenarioMatrix(BidMatrix):
-    """This represents the reading version of multi scenario matrix.
+class CustomBidMatrix(BidMatrix):
+    """This represents the reading version of custom bid matrix.
 
     It is used to when data is retrieved from CDF.
 
     Args:
         space: The space where the node is located.
-        external_id: The external id of the multi scenario matrix.
+        external_id: The external id of the custom bid matrix.
         resource_cost: The resource cost field.
         matrix: The matrix field.
         asset_type: The asset type field.
         asset_id: The asset id field.
         method: The method field.
         alerts: The alert field.
-        production: The production field.
-        price: The price field.
-        created_time: The created time of the multi scenario matrix node.
-        last_updated_time: The last updated time of the multi scenario matrix node.
-        deleted_time: If present, the deleted time of the multi scenario matrix node.
-        version: The version of the multi scenario matrix node.
+        created_time: The created time of the custom bid matrix node.
+        last_updated_time: The last updated time of the custom bid matrix node.
+        deleted_time: If present, the deleted time of the custom bid matrix node.
+        version: The version of the custom bid matrix node.
     """
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "power-ops-types", "DayAheadMultiScenarioMatrix"
-    )
-    production: Union[list[TimeSeries], list[str], None] = None
-    price: Union[list[TimeSeries], list[str], None] = None
+    node_type: Union[dm.DirectRelationReference, None] = None
 
-    def as_apply(self) -> MultiScenarioMatrixApply:
-        """Convert this read version of multi scenario matrix to the writing version."""
-        return MultiScenarioMatrixApply(
+    def as_apply(self) -> CustomBidMatrixApply:
+        """Convert this read version of custom bid matrix to the writing version."""
+        return CustomBidMatrixApply(
             space=self.space,
             external_id=self.external_id,
             existing_version=self.version,
@@ -87,38 +77,30 @@ class MultiScenarioMatrix(BidMatrix):
             asset_id=self.asset_id,
             method=self.method.as_apply() if isinstance(self.method, DomainModel) else self.method,
             alerts=[alert.as_apply() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
-            production=self.production,
-            price=self.price,
         )
 
 
-class MultiScenarioMatrixApply(BidMatrixApply):
-    """This represents the writing version of multi scenario matrix.
+class CustomBidMatrixApply(BidMatrixApply):
+    """This represents the writing version of custom bid matrix.
 
     It is used to when data is sent to CDF.
 
     Args:
         space: The space where the node is located.
-        external_id: The external id of the multi scenario matrix.
+        external_id: The external id of the custom bid matrix.
         resource_cost: The resource cost field.
         matrix: The matrix field.
         asset_type: The asset type field.
         asset_id: The asset id field.
         method: The method field.
         alerts: The alert field.
-        production: The production field.
-        price: The price field.
-        existing_version: Fail the ingestion request if the multi scenario matrix version is greater than or equal to this value.
+        existing_version: Fail the ingestion request if the custom bid matrix version is greater than or equal to this value.
             If no existingVersion is specified, the ingestion will always overwrite any existing data for the edge (for the specified container or instance).
             If existingVersion is set to 0, the upsert will behave as an insert, so it will fail the bulk if the item already exists.
             If skipOnVersionConflict is set on the ingestion request, then the item will be skipped instead of failing the ingestion request.
     """
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "power-ops-types", "DayAheadMultiScenarioMatrix"
-    )
-    production: Union[list[TimeSeries], list[str], None] = None
-    price: Union[list[TimeSeries], list[str], None] = None
+    node_type: Union[dm.DirectRelationReference, None] = None
 
     def _to_instances_apply(
         self,
@@ -131,7 +113,7 @@ class MultiScenarioMatrixApply(BidMatrixApply):
             return resources
 
         write_view = (view_by_read_class or {}).get(
-            MultiScenarioMatrix, dm.ViewId("power-ops-day-ahead-bid", "MultiScenarioMatrix", "1")
+            CustomBidMatrix, dm.ViewId("power-ops-day-ahead-bid", "CustomBidMatrix", "1")
         )
 
         properties: dict[str, Any] = {}
@@ -153,16 +135,6 @@ class MultiScenarioMatrixApply(BidMatrixApply):
                 "space": self.space if isinstance(self.method, str) else self.method.space,
                 "externalId": self.method if isinstance(self.method, str) else self.method.external_id,
             }
-
-        if self.production is not None or write_none:
-            properties["production"] = [
-                value if isinstance(value, str) else value.external_id for value in self.production or []
-            ] or None
-
-        if self.price is not None or write_none:
-            properties["price"] = [
-                value if isinstance(value, str) else value.external_id for value in self.price or []
-            ] or None
 
         if properties:
             this_node = dm.NodeApply(
@@ -191,32 +163,26 @@ class MultiScenarioMatrixApply(BidMatrixApply):
             other_resources = self.method._to_instances_apply(cache, view_by_read_class)
             resources.extend(other_resources)
 
-        if isinstance(self.production, CogniteTimeSeries):
-            resources.time_series.append(self.production)
-
-        if isinstance(self.price, CogniteTimeSeries):
-            resources.time_series.append(self.price)
-
         return resources
 
 
-class MultiScenarioMatrixList(DomainModelList[MultiScenarioMatrix]):
-    """List of multi scenario matrixes in the read version."""
+class CustomBidMatrixList(DomainModelList[CustomBidMatrix]):
+    """List of custom bid matrixes in the read version."""
 
-    _INSTANCE = MultiScenarioMatrix
+    _INSTANCE = CustomBidMatrix
 
-    def as_apply(self) -> MultiScenarioMatrixApplyList:
-        """Convert these read versions of multi scenario matrix to the writing versions."""
-        return MultiScenarioMatrixApplyList([node.as_apply() for node in self.data])
-
-
-class MultiScenarioMatrixApplyList(DomainModelApplyList[MultiScenarioMatrixApply]):
-    """List of multi scenario matrixes in the writing version."""
-
-    _INSTANCE = MultiScenarioMatrixApply
+    def as_apply(self) -> CustomBidMatrixApplyList:
+        """Convert these read versions of custom bid matrix to the writing versions."""
+        return CustomBidMatrixApplyList([node.as_apply() for node in self.data])
 
 
-def _create_multi_scenario_matrix_filter(
+class CustomBidMatrixApplyList(DomainModelApplyList[CustomBidMatrixApply]):
+    """List of custom bid matrixes in the writing version."""
+
+    _INSTANCE = CustomBidMatrixApply
+
+
+def _create_custom_bid_matrix_filter(
     view_id: dm.ViewId,
     resource_cost: str | list[str] | None = None,
     resource_cost_prefix: str | None = None,

@@ -5,18 +5,18 @@ from typing import TYPE_CHECKING
 
 from cognite.client import data_modeling as dm, CogniteClient
 
-from cognite.powerops.client._generated.assets.data_classes import (
+from cognite.powerops.client._generated.day_ahead_bid.data_classes import (
     DomainModelCore,
-    Generator,
-    GeneratorEfficiencyCurve,
+    CustomBidMatrix,
+    BidMethod,
 )
 from ._core import DEFAULT_QUERY_LIMIT, QueryBuilder, QueryStep, QueryAPI, T_DomainModelList, _create_edge_filter
 
 if TYPE_CHECKING:
-    from .turbine_efficiency_curve_query import TurbineEfficiencyCurveQueryAPI
+    from .alert_query import AlertQueryAPI
 
 
-class GeneratorQueryAPI(QueryAPI[T_DomainModelList]):
+class CustomBidMatrixQueryAPI(QueryAPI[T_DomainModelList]):
     def __init__(
         self,
         client: CogniteClient,
@@ -29,48 +29,48 @@ class GeneratorQueryAPI(QueryAPI[T_DomainModelList]):
 
         self._builder.append(
             QueryStep(
-                name=self._builder.next_name("generator"),
+                name=self._builder.next_name("custom_bid_matrix"),
                 expression=dm.query.NodeResultSetExpression(
                     from_=self._builder[-1].name if self._builder else None,
                     filter=filter_,
                 ),
-                select=dm.query.Select([dm.query.SourceSelector(self._view_by_read_class[Generator], ["*"])]),
-                result_cls=Generator,
+                select=dm.query.Select([dm.query.SourceSelector(self._view_by_read_class[CustomBidMatrix], ["*"])]),
+                result_cls=CustomBidMatrix,
                 max_retrieve_limit=limit,
             )
         )
 
-    def turbine_curves(
+    def alerts(
         self,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
-        retrieve_efficiency_curve: bool = False,
-    ) -> TurbineEfficiencyCurveQueryAPI[T_DomainModelList]:
-        """Query along the turbine curve edges of the generator.
+        retrieve_method: bool = False,
+    ) -> AlertQueryAPI[T_DomainModelList]:
+        """Query along the alert edges of the custom bid matrix.
 
         Args:
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of turbine curve edges to return. Defaults to 25. Set to -1, float("inf") or None
+            limit: Maximum number of alert edges to return. Defaults to 25. Set to -1, float("inf") or None
                 to return all items.
-            retrieve_efficiency_curve: Whether to retrieve the efficiency curve for each generator or not.
+            retrieve_method: Whether to retrieve the method for each custom bid matrix or not.
 
         Returns:
-            TurbineEfficiencyCurveQueryAPI: The query API for the turbine efficiency curve.
+            AlertQueryAPI: The query API for the alert.
         """
-        from .turbine_efficiency_curve_query import TurbineEfficiencyCurveQueryAPI
+        from .alert_query import AlertQueryAPI
 
         from_ = self._builder[-1].name
 
         edge_filter = _create_edge_filter(
-            dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
+            dm.DirectRelationReference("power-ops-types", "calculationIssue"),
             external_id_prefix=external_id_prefix,
             space=space,
         )
         self._builder.append(
             QueryStep(
-                name=self._builder.next_name("turbine_curves"),
+                name=self._builder.next_name("alerts"),
                 expression=dm.query.EdgeResultSetExpression(
                     filter=edge_filter,
                     from_=from_,
@@ -80,41 +80,41 @@ class GeneratorQueryAPI(QueryAPI[T_DomainModelList]):
                 max_retrieve_limit=limit,
             )
         )
-        if retrieve_efficiency_curve:
-            self._query_append_efficiency_curve(from_)
-        return TurbineEfficiencyCurveQueryAPI(self._client, self._builder, self._view_by_read_class, None, limit)
+        if retrieve_method:
+            self._query_append_method(from_)
+        return AlertQueryAPI(self._client, self._builder, self._view_by_read_class, None, limit)
 
     def query(
         self,
-        retrieve_efficiency_curve: bool = False,
+        retrieve_method: bool = False,
     ) -> T_DomainModelList:
         """Execute query and return the result.
 
         Args:
-            retrieve_efficiency_curve: Whether to retrieve the efficiency curve for each generator or not.
+            retrieve_method: Whether to retrieve the method for each custom bid matrix or not.
 
         Returns:
             The list of the source nodes of the query.
 
         """
         from_ = self._builder[-1].name
-        if retrieve_efficiency_curve:
-            self._query_append_efficiency_curve(from_)
+        if retrieve_method:
+            self._query_append_method(from_)
         return self._query()
 
-    def _query_append_efficiency_curve(self, from_: str) -> None:
-        view_id = self._view_by_read_class[GeneratorEfficiencyCurve]
+    def _query_append_method(self, from_: str) -> None:
+        view_id = self._view_by_read_class[BidMethod]
         self._builder.append(
             QueryStep(
-                name=self._builder.next_name("efficiency_curve"),
+                name=self._builder.next_name("method"),
                 expression=dm.query.NodeResultSetExpression(
                     filter=dm.filters.HasData(views=[view_id]),
                     from_=from_,
-                    through=self._view_by_read_class[Generator].as_property_ref("efficiencyCurve"),
+                    through=self._view_by_read_class[CustomBidMatrix].as_property_ref("method"),
                     direction="outwards",
                 ),
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
                 max_retrieve_limit=-1,
-                result_cls=GeneratorEfficiencyCurve,
+                result_cls=BidMethod,
             ),
         )

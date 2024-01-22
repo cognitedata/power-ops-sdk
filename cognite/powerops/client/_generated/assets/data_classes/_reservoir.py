@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Literal, Optional, Union
+from typing import Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
@@ -56,7 +56,7 @@ class Reservoir(DomainModel):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power-ops-types", "Reservoir")
-    name: Optional[str] = None
+    name: str
     display_name: Optional[str] = Field(None, alias="displayName")
     ordering: Optional[int] = None
 
@@ -65,6 +65,7 @@ class Reservoir(DomainModel):
         return ReservoirApply(
             space=self.space,
             external_id=self.external_id,
+            existing_version=self.version,
             name=self.name,
             display_name=self.display_name,
             ordering=self.ordering,
@@ -98,6 +99,7 @@ class ReservoirApply(DomainModelApply):
         self,
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
+        write_none: bool = False,
     ) -> ResourcesApply:
         resources = ResourcesApply()
         if self.as_tuple_id() in cache:
@@ -105,15 +107,15 @@ class ReservoirApply(DomainModelApply):
 
         write_view = (view_by_read_class or {}).get(Reservoir, dm.ViewId("power-ops-assets", "Reservoir", "1"))
 
-        properties = {}
+        properties: dict[str, Any] = {}
 
         if self.name is not None:
             properties["name"] = self.name
 
-        if self.display_name is not None:
+        if self.display_name is not None or write_none:
             properties["displayName"] = self.display_name
 
-        if self.ordering is not None:
+        if self.ordering is not None or write_none:
             properties["ordering"] = self.ordering
 
         if properties:

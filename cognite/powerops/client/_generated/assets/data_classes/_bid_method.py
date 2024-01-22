@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Literal, Optional, Union
+from typing import Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 
@@ -51,13 +51,14 @@ class BidMethod(DomainModel):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = None
-    name: Optional[str] = None
+    name: str
 
     def as_apply(self) -> BidMethodApply:
         """Convert this read version of bid method to the writing version."""
         return BidMethodApply(
             space=self.space,
             external_id=self.external_id,
+            existing_version=self.version,
             name=self.name,
         )
 
@@ -85,6 +86,7 @@ class BidMethodApply(DomainModelApply):
         self,
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
+        write_none: bool = False,
     ) -> ResourcesApply:
         resources = ResourcesApply()
         if self.as_tuple_id() in cache:
@@ -92,7 +94,7 @@ class BidMethodApply(DomainModelApply):
 
         write_view = (view_by_read_class or {}).get(BidMethod, dm.ViewId("power-ops-shared", "BidMethod", "1"))
 
-        properties = {}
+        properties: dict[str, Any] = {}
 
         if self.name is not None:
             properties["name"] = self.name

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Literal, Optional, Union
+from typing import Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 
@@ -63,6 +63,7 @@ class GeneratorEfficiencyCurve(DomainModel):
         return GeneratorEfficiencyCurveApply(
             space=self.space,
             external_id=self.external_id,
+            existing_version=self.version,
             ref=self.ref,
             power=self.power,
             efficiency=self.efficiency,
@@ -98,6 +99,7 @@ class GeneratorEfficiencyCurveApply(DomainModelApply):
         self,
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
+        write_none: bool = False,
     ) -> ResourcesApply:
         resources = ResourcesApply()
         if self.as_tuple_id() in cache:
@@ -107,9 +109,9 @@ class GeneratorEfficiencyCurveApply(DomainModelApply):
             GeneratorEfficiencyCurve, dm.ViewId("power-ops-assets", "GeneratorEfficiencyCurve", "1")
         )
 
-        properties = {}
+        properties: dict[str, Any] = {}
 
-        if self.ref is not None:
+        if self.ref is not None or write_none:
             properties["ref"] = self.ref
 
         if self.power is not None:

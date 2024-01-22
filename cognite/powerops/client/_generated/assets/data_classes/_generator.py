@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Literal, Optional, Union
+from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes import TimeSeries as CogniteTimeSeries
@@ -74,7 +74,7 @@ class Generator(DomainModel):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power-ops-types", "Generator")
-    name: Optional[str] = None
+    name: str
     display_name: Optional[str] = Field(None, alias="displayName")
     p_min: Optional[float] = Field(None, alias="pMin")
     penstock: Optional[int] = None
@@ -93,6 +93,7 @@ class Generator(DomainModel):
         return GeneratorApply(
             space=self.space,
             external_id=self.external_id,
+            existing_version=self.version,
             name=self.name,
             display_name=self.display_name,
             p_min=self.p_min,
@@ -153,6 +154,7 @@ class GeneratorApply(DomainModelApply):
         self,
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
+        write_none: bool = False,
     ) -> ResourcesApply:
         resources = ResourcesApply()
         if self.as_tuple_id() in cache:
@@ -160,34 +162,34 @@ class GeneratorApply(DomainModelApply):
 
         write_view = (view_by_read_class or {}).get(Generator, dm.ViewId("power-ops-assets", "Generator", "1"))
 
-        properties = {}
+        properties: dict[str, Any] = {}
 
         if self.name is not None:
             properties["name"] = self.name
 
-        if self.display_name is not None:
+        if self.display_name is not None or write_none:
             properties["displayName"] = self.display_name
 
-        if self.p_min is not None:
+        if self.p_min is not None or write_none:
             properties["pMin"] = self.p_min
 
-        if self.penstock is not None:
+        if self.penstock is not None or write_none:
             properties["penstock"] = self.penstock
 
-        if self.start_cost is not None:
+        if self.start_cost is not None or write_none:
             properties["startCost"] = self.start_cost
 
-        if self.start_stop_cost is not None:
-            properties["startStopCost"] = (
-                self.start_stop_cost if isinstance(self.start_stop_cost, str) else self.start_stop_cost.external_id
-            )
+        if self.start_stop_cost is not None or write_none:
+            if isinstance(self.start_stop_cost, str) or self.start_stop_cost is None:
+                properties["startStopCost"] = self.start_stop_cost
+            else:
+                properties["startStopCost"] = self.start_stop_cost.external_id
 
-        if self.is_available_time_series is not None:
-            properties["isAvailableTimeSeries"] = (
-                self.is_available_time_series
-                if isinstance(self.is_available_time_series, str)
-                else self.is_available_time_series.external_id
-            )
+        if self.is_available_time_series is not None or write_none:
+            if isinstance(self.is_available_time_series, str) or self.is_available_time_series is None:
+                properties["isAvailableTimeSeries"] = self.is_available_time_series
+            else:
+                properties["isAvailableTimeSeries"] = self.is_available_time_series.external_id
 
         if self.efficiency_curve is not None:
             properties["efficiencyCurve"] = {

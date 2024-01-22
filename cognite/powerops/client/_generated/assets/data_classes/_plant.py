@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Literal, Optional, Union
+from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes import TimeSeries as CogniteTimeSeries
@@ -112,7 +112,7 @@ class Plant(DomainModel):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power-ops-types", "Plant")
-    name: Optional[str] = None
+    name: str
     display_name: Optional[str] = Field(None, alias="displayName")
     ordering: Optional[int] = None
     head_loss_factor: Optional[float] = Field(None, alias="headLossFactor")
@@ -137,6 +137,7 @@ class Plant(DomainModel):
         return PlantApply(
             space=self.space,
             external_id=self.external_id,
+            existing_version=self.version,
             name=self.name,
             display_name=self.display_name,
             ordering=self.ordering,
@@ -223,6 +224,7 @@ class PlantApply(DomainModelApply):
         self,
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
+        write_none: bool = False,
     ) -> ResourcesApply:
         resources = ResourcesApply()
         if self.as_tuple_id() in cache:
@@ -230,30 +232,30 @@ class PlantApply(DomainModelApply):
 
         write_view = (view_by_read_class or {}).get(Plant, dm.ViewId("power-ops-assets", "Plant", "1"))
 
-        properties = {}
+        properties: dict[str, Any] = {}
 
         if self.name is not None:
             properties["name"] = self.name
 
-        if self.display_name is not None:
+        if self.display_name is not None or write_none:
             properties["displayName"] = self.display_name
 
-        if self.ordering is not None:
+        if self.ordering is not None or write_none:
             properties["ordering"] = self.ordering
 
-        if self.head_loss_factor is not None:
+        if self.head_loss_factor is not None or write_none:
             properties["headLossFactor"] = self.head_loss_factor
 
-        if self.outlet_level is not None:
+        if self.outlet_level is not None or write_none:
             properties["outletLevel"] = self.outlet_level
 
-        if self.p_max is not None:
+        if self.p_max is not None or write_none:
             properties["pMax"] = self.p_max
 
-        if self.p_min is not None:
+        if self.p_min is not None or write_none:
             properties["pMin"] = self.p_min
 
-        if self.penstock_head_loss_factors is not None:
+        if self.penstock_head_loss_factors is not None or write_none:
             properties["penstockHeadLossFactors"] = self.penstock_head_loss_factors
 
         if self.watercourse is not None:
@@ -262,57 +264,50 @@ class PlantApply(DomainModelApply):
                 "externalId": self.watercourse if isinstance(self.watercourse, str) else self.watercourse.external_id,
             }
 
-        if self.connection_losses is not None:
+        if self.connection_losses is not None or write_none:
             properties["connectionLosses"] = self.connection_losses
 
-        if self.p_max_time_series is not None:
-            properties["pMaxTimeSeries"] = (
-                self.p_max_time_series
-                if isinstance(self.p_max_time_series, str)
-                else self.p_max_time_series.external_id
-            )
+        if self.p_max_time_series is not None or write_none:
+            if isinstance(self.p_max_time_series, str) or self.p_max_time_series is None:
+                properties["pMaxTimeSeries"] = self.p_max_time_series
+            else:
+                properties["pMaxTimeSeries"] = self.p_max_time_series.external_id
 
-        if self.p_min_time_series is not None:
-            properties["pMinTimeSeries"] = (
-                self.p_min_time_series
-                if isinstance(self.p_min_time_series, str)
-                else self.p_min_time_series.external_id
-            )
+        if self.p_min_time_series is not None or write_none:
+            if isinstance(self.p_min_time_series, str) or self.p_min_time_series is None:
+                properties["pMinTimeSeries"] = self.p_min_time_series
+            else:
+                properties["pMinTimeSeries"] = self.p_min_time_series.external_id
 
-        if self.water_value_time_series is not None:
-            properties["waterValueTimeSeries"] = (
-                self.water_value_time_series
-                if isinstance(self.water_value_time_series, str)
-                else self.water_value_time_series.external_id
-            )
+        if self.water_value_time_series is not None or write_none:
+            if isinstance(self.water_value_time_series, str) or self.water_value_time_series is None:
+                properties["waterValueTimeSeries"] = self.water_value_time_series
+            else:
+                properties["waterValueTimeSeries"] = self.water_value_time_series.external_id
 
-        if self.feeding_fee_time_series is not None:
-            properties["feedingFeeTimeSeries"] = (
-                self.feeding_fee_time_series
-                if isinstance(self.feeding_fee_time_series, str)
-                else self.feeding_fee_time_series.external_id
-            )
+        if self.feeding_fee_time_series is not None or write_none:
+            if isinstance(self.feeding_fee_time_series, str) or self.feeding_fee_time_series is None:
+                properties["feedingFeeTimeSeries"] = self.feeding_fee_time_series
+            else:
+                properties["feedingFeeTimeSeries"] = self.feeding_fee_time_series.external_id
 
-        if self.outlet_level_time_series is not None:
-            properties["outletLevelTimeSeries"] = (
-                self.outlet_level_time_series
-                if isinstance(self.outlet_level_time_series, str)
-                else self.outlet_level_time_series.external_id
-            )
+        if self.outlet_level_time_series is not None or write_none:
+            if isinstance(self.outlet_level_time_series, str) or self.outlet_level_time_series is None:
+                properties["outletLevelTimeSeries"] = self.outlet_level_time_series
+            else:
+                properties["outletLevelTimeSeries"] = self.outlet_level_time_series.external_id
 
-        if self.inlet_level_time_series is not None:
-            properties["inletLevelTimeSeries"] = (
-                self.inlet_level_time_series
-                if isinstance(self.inlet_level_time_series, str)
-                else self.inlet_level_time_series.external_id
-            )
+        if self.inlet_level_time_series is not None or write_none:
+            if isinstance(self.inlet_level_time_series, str) or self.inlet_level_time_series is None:
+                properties["inletLevelTimeSeries"] = self.inlet_level_time_series
+            else:
+                properties["inletLevelTimeSeries"] = self.inlet_level_time_series.external_id
 
-        if self.head_direct_time_series is not None:
-            properties["headDirectTimeSeries"] = (
-                self.head_direct_time_series
-                if isinstance(self.head_direct_time_series, str)
-                else self.head_direct_time_series.external_id
-            )
+        if self.head_direct_time_series is not None or write_none:
+            if isinstance(self.head_direct_time_series, str) or self.head_direct_time_series is None:
+                properties["headDirectTimeSeries"] = self.head_direct_time_series
+            else:
+                properties["headDirectTimeSeries"] = self.head_direct_time_series.external_id
 
         if self.inlet_reservoir is not None:
             properties["inletReservoir"] = {

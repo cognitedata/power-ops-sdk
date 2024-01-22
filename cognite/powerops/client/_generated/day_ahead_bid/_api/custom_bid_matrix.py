@@ -12,16 +12,16 @@ from cognite.powerops.client._generated.day_ahead_bid.data_classes import (
     DomainModelCore,
     DomainModelApply,
     ResourcesApplyResult,
-    BidMatrix,
-    BidMatrixApply,
-    BidMatrixFields,
-    BidMatrixList,
-    BidMatrixApplyList,
-    BidMatrixTextFields,
+    CustomBidMatrix,
+    CustomBidMatrixApply,
+    CustomBidMatrixFields,
+    CustomBidMatrixList,
+    CustomBidMatrixApplyList,
+    CustomBidMatrixTextFields,
 )
-from cognite.powerops.client._generated.day_ahead_bid.data_classes._bid_matrix import (
-    _BIDMATRIX_PROPERTIES_BY_FIELD,
-    _create_bid_matrix_filter,
+from cognite.powerops.client._generated.day_ahead_bid.data_classes._custom_bid_matrix import (
+    _CUSTOMBIDMATRIX_PROPERTIES_BY_FIELD,
+    _create_custom_bid_matrix_filter,
 )
 from ._core import (
     DEFAULT_LIMIT_READ,
@@ -32,23 +32,23 @@ from ._core import (
     QueryStep,
     QueryBuilder,
 )
-from .bid_matrix_alerts import BidMatrixAlertsAPI
-from .bid_matrix_query import BidMatrixQueryAPI
+from .custom_bid_matrix_alerts import CustomBidMatrixAlertsAPI
+from .custom_bid_matrix_query import CustomBidMatrixQueryAPI
 
 
-class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixApply, BidMatrixList]):
+class CustomBidMatrixAPI(NodeAPI[CustomBidMatrix, CustomBidMatrixApply, CustomBidMatrixList]):
     def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
-        view_id = view_by_read_class[BidMatrix]
+        view_id = view_by_read_class[CustomBidMatrix]
         super().__init__(
             client=client,
             sources=view_id,
-            class_type=BidMatrix,
-            class_list=BidMatrixList,
-            class_apply_list=BidMatrixApplyList,
+            class_type=CustomBidMatrix,
+            class_list=CustomBidMatrixList,
+            class_apply_list=CustomBidMatrixApplyList,
             view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
-        self.alerts_edge = BidMatrixAlertsAPI(client)
+        self.alerts_edge = CustomBidMatrixAlertsAPI(client)
 
     def __call__(
         self,
@@ -63,8 +63,8 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixApply, BidMatrixList]):
         space: str | list[str] | None = None,
         limit: int = DEFAULT_QUERY_LIMIT,
         filter: dm.Filter | None = None,
-    ) -> BidMatrixQueryAPI[BidMatrixList]:
-        """Query starting at bid matrixes.
+    ) -> CustomBidMatrixQueryAPI[CustomBidMatrixList]:
+        """Query starting at custom bid matrixes.
 
         Args:
             resource_cost: The resource cost to filter on.
@@ -76,15 +76,15 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixApply, BidMatrixList]):
             method: The method to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of bid matrixes to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of custom bid matrixes to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
-            A query API for bid matrixes.
+            A query API for custom bid matrixes.
 
         """
         has_data = dm.filters.HasData(views=[self._view_id])
-        filter_ = _create_bid_matrix_filter(
+        filter_ = _create_custom_bid_matrix_filter(
             self._view_id,
             resource_cost,
             resource_cost_prefix,
@@ -97,23 +97,23 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixApply, BidMatrixList]):
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
         )
-        builder = QueryBuilder(BidMatrixList)
-        return BidMatrixQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
+        builder = QueryBuilder(CustomBidMatrixList)
+        return CustomBidMatrixQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
 
     def apply(
         self,
-        bid_matrix: BidMatrixApply | Sequence[BidMatrixApply],
+        custom_bid_matrix: CustomBidMatrixApply | Sequence[CustomBidMatrixApply],
         replace: bool = False,
         write_none: bool = False,
     ) -> ResourcesApplyResult:
-        """Add or update (upsert) bid matrixes.
+        """Add or update (upsert) custom bid matrixes.
 
-        Note: This method iterates through all nodes and timeseries linked to bid_matrix and creates them including the edges
+        Note: This method iterates through all nodes and timeseries linked to custom_bid_matrix and creates them including the edges
         between the nodes. For example, if any of `alerts` are set, then these
         nodes as well as any nodes linked to them, and all the edges linking these nodes will be created.
 
         Args:
-            bid_matrix: Bid matrix or sequence of bid matrixes to upsert.
+            custom_bid_matrix: Custom bid matrix or sequence of custom bid matrixes to upsert.
             replace (bool): How do we behave when a property value exists? Do we replace all matching and existing values with the supplied values (true)?
                 Or should we merge in new values for properties together with the existing values (false)? Note: This setting applies for all nodes or edges specified in the ingestion call.
             write_none (bool): This method, will by default, skip properties that are set to None. However, if you want to set properties to None,
@@ -123,66 +123,66 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixApply, BidMatrixList]):
 
         Examples:
 
-            Create a new bid_matrix:
+            Create a new custom_bid_matrix:
 
                 >>> from cognite.powerops.client._generated.day_ahead_bid import DayAheadBidAPI
-                >>> from cognite.powerops.client._generated.day_ahead_bid.data_classes import BidMatrixApply
+                >>> from cognite.powerops.client._generated.day_ahead_bid.data_classes import CustomBidMatrixApply
                 >>> client = DayAheadBidAPI()
-                >>> bid_matrix = BidMatrixApply(external_id="my_bid_matrix", ...)
-                >>> result = client.bid_matrix.apply(bid_matrix)
+                >>> custom_bid_matrix = CustomBidMatrixApply(external_id="my_custom_bid_matrix", ...)
+                >>> result = client.custom_bid_matrix.apply(custom_bid_matrix)
 
         """
-        return self._apply(bid_matrix, replace, write_none)
+        return self._apply(custom_bid_matrix, replace, write_none)
 
     def delete(
         self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
     ) -> dm.InstancesDeleteResult:
-        """Delete one or more bid matrix.
+        """Delete one or more custom bid matrix.
 
         Args:
-            external_id: External id of the bid matrix to delete.
-            space: The space where all the bid matrix are located.
+            external_id: External id of the custom bid matrix to delete.
+            space: The space where all the custom bid matrix are located.
 
         Returns:
             The instance(s), i.e., nodes and edges which has been deleted. Empty list if nothing was deleted.
 
         Examples:
 
-            Delete bid_matrix by id:
+            Delete custom_bid_matrix by id:
 
                 >>> from cognite.powerops.client._generated.day_ahead_bid import DayAheadBidAPI
                 >>> client = DayAheadBidAPI()
-                >>> client.bid_matrix.delete("my_bid_matrix")
+                >>> client.custom_bid_matrix.delete("my_custom_bid_matrix")
         """
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> BidMatrix | None:
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> CustomBidMatrix | None:
         ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> BidMatrixList:
+    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> CustomBidMatrixList:
         ...
 
     def retrieve(
         self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> BidMatrix | BidMatrixList | None:
-        """Retrieve one or more bid matrixes by id(s).
+    ) -> CustomBidMatrix | CustomBidMatrixList | None:
+        """Retrieve one or more custom bid matrixes by id(s).
 
         Args:
-            external_id: External id or list of external ids of the bid matrixes.
-            space: The space where all the bid matrixes are located.
+            external_id: External id or list of external ids of the custom bid matrixes.
+            space: The space where all the custom bid matrixes are located.
 
         Returns:
-            The requested bid matrixes.
+            The requested custom bid matrixes.
 
         Examples:
 
-            Retrieve bid_matrix by id:
+            Retrieve custom_bid_matrix by id:
 
                 >>> from cognite.powerops.client._generated.day_ahead_bid import DayAheadBidAPI
                 >>> client = DayAheadBidAPI()
-                >>> bid_matrix = client.bid_matrix.retrieve("my_bid_matrix")
+                >>> custom_bid_matrix = client.custom_bid_matrix.retrieve("my_custom_bid_matrix")
 
         """
         return self._retrieve(
@@ -202,7 +202,7 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixApply, BidMatrixList]):
     def search(
         self,
         query: str,
-        properties: BidMatrixTextFields | Sequence[BidMatrixTextFields] | None = None,
+        properties: CustomBidMatrixTextFields | Sequence[CustomBidMatrixTextFields] | None = None,
         resource_cost: str | list[str] | None = None,
         resource_cost_prefix: str | None = None,
         asset_type: str | list[str] | None = None,
@@ -214,8 +214,8 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixApply, BidMatrixList]):
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> BidMatrixList:
-        """Search bid matrixes
+    ) -> CustomBidMatrixList:
+        """Search custom bid matrixes
 
         Args:
             query: The search query,
@@ -229,22 +229,22 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixApply, BidMatrixList]):
             method: The method to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of bid matrixes to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of custom bid matrixes to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
-            Search results bid matrixes matching the query.
+            Search results custom bid matrixes matching the query.
 
         Examples:
 
-           Search for 'my_bid_matrix' in all text properties:
+           Search for 'my_custom_bid_matrix' in all text properties:
 
                 >>> from cognite.powerops.client._generated.day_ahead_bid import DayAheadBidAPI
                 >>> client = DayAheadBidAPI()
-                >>> bid_matrixes = client.bid_matrix.search('my_bid_matrix')
+                >>> custom_bid_matrixes = client.custom_bid_matrix.search('my_custom_bid_matrix')
 
         """
-        filter_ = _create_bid_matrix_filter(
+        filter_ = _create_custom_bid_matrix_filter(
             self._view_id,
             resource_cost,
             resource_cost_prefix,
@@ -257,7 +257,7 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixApply, BidMatrixList]):
             space,
             filter,
         )
-        return self._search(self._view_id, query, _BIDMATRIX_PROPERTIES_BY_FIELD, properties, filter_, limit)
+        return self._search(self._view_id, query, _CUSTOMBIDMATRIX_PROPERTIES_BY_FIELD, properties, filter_, limit)
 
     @overload
     def aggregate(
@@ -266,10 +266,10 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixApply, BidMatrixList]):
         | dm.aggregations.MetricAggregation
         | Sequence[Aggregations]
         | Sequence[dm.aggregations.MetricAggregation],
-        property: BidMatrixFields | Sequence[BidMatrixFields] | None = None,
+        property: CustomBidMatrixFields | Sequence[CustomBidMatrixFields] | None = None,
         group_by: None = None,
         query: str | None = None,
-        search_properties: BidMatrixTextFields | Sequence[BidMatrixTextFields] | None = None,
+        search_properties: CustomBidMatrixTextFields | Sequence[CustomBidMatrixTextFields] | None = None,
         resource_cost: str | list[str] | None = None,
         resource_cost_prefix: str | None = None,
         asset_type: str | list[str] | None = None,
@@ -291,10 +291,10 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixApply, BidMatrixList]):
         | dm.aggregations.MetricAggregation
         | Sequence[Aggregations]
         | Sequence[dm.aggregations.MetricAggregation],
-        property: BidMatrixFields | Sequence[BidMatrixFields] | None = None,
-        group_by: BidMatrixFields | Sequence[BidMatrixFields] = None,
+        property: CustomBidMatrixFields | Sequence[CustomBidMatrixFields] | None = None,
+        group_by: CustomBidMatrixFields | Sequence[CustomBidMatrixFields] = None,
         query: str | None = None,
-        search_properties: BidMatrixTextFields | Sequence[BidMatrixTextFields] | None = None,
+        search_properties: CustomBidMatrixTextFields | Sequence[CustomBidMatrixTextFields] | None = None,
         resource_cost: str | list[str] | None = None,
         resource_cost_prefix: str | None = None,
         asset_type: str | list[str] | None = None,
@@ -315,10 +315,10 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixApply, BidMatrixList]):
         | dm.aggregations.MetricAggregation
         | Sequence[Aggregations]
         | Sequence[dm.aggregations.MetricAggregation],
-        property: BidMatrixFields | Sequence[BidMatrixFields] | None = None,
-        group_by: BidMatrixFields | Sequence[BidMatrixFields] | None = None,
+        property: CustomBidMatrixFields | Sequence[CustomBidMatrixFields] | None = None,
+        group_by: CustomBidMatrixFields | Sequence[CustomBidMatrixFields] | None = None,
         query: str | None = None,
-        search_property: BidMatrixTextFields | Sequence[BidMatrixTextFields] | None = None,
+        search_property: CustomBidMatrixTextFields | Sequence[CustomBidMatrixTextFields] | None = None,
         resource_cost: str | list[str] | None = None,
         resource_cost_prefix: str | None = None,
         asset_type: str | list[str] | None = None,
@@ -331,7 +331,7 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixApply, BidMatrixList]):
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
-        """Aggregate data across bid matrixes
+        """Aggregate data across custom bid matrixes
 
         Args:
             aggregate: The aggregation to perform.
@@ -348,7 +348,7 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixApply, BidMatrixList]):
             method: The method to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of bid matrixes to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of custom bid matrixes to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
@@ -356,15 +356,15 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixApply, BidMatrixList]):
 
         Examples:
 
-            Count bid matrixes in space `my_space`:
+            Count custom bid matrixes in space `my_space`:
 
                 >>> from cognite.powerops.client._generated.day_ahead_bid import DayAheadBidAPI
                 >>> client = DayAheadBidAPI()
-                >>> result = client.bid_matrix.aggregate("count", space="my_space")
+                >>> result = client.custom_bid_matrix.aggregate("count", space="my_space")
 
         """
 
-        filter_ = _create_bid_matrix_filter(
+        filter_ = _create_custom_bid_matrix_filter(
             self._view_id,
             resource_cost,
             resource_cost_prefix,
@@ -380,7 +380,7 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixApply, BidMatrixList]):
         return self._aggregate(
             self._view_id,
             aggregate,
-            _BIDMATRIX_PROPERTIES_BY_FIELD,
+            _CUSTOMBIDMATRIX_PROPERTIES_BY_FIELD,
             property,
             group_by,
             query,
@@ -391,10 +391,10 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixApply, BidMatrixList]):
 
     def histogram(
         self,
-        property: BidMatrixFields,
+        property: CustomBidMatrixFields,
         interval: float,
         query: str | None = None,
-        search_property: BidMatrixTextFields | Sequence[BidMatrixTextFields] | None = None,
+        search_property: CustomBidMatrixTextFields | Sequence[CustomBidMatrixTextFields] | None = None,
         resource_cost: str | list[str] | None = None,
         resource_cost_prefix: str | None = None,
         asset_type: str | list[str] | None = None,
@@ -407,7 +407,7 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixApply, BidMatrixList]):
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
-        """Produces histograms for bid matrixes
+        """Produces histograms for custom bid matrixes
 
         Args:
             property: The property to use as the value in the histogram.
@@ -423,14 +423,14 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixApply, BidMatrixList]):
             method: The method to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of bid matrixes to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of custom bid matrixes to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
 
         Returns:
             Bucketed histogram results.
 
         """
-        filter_ = _create_bid_matrix_filter(
+        filter_ = _create_custom_bid_matrix_filter(
             self._view_id,
             resource_cost,
             resource_cost_prefix,
@@ -447,7 +447,7 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixApply, BidMatrixList]):
             self._view_id,
             property,
             interval,
-            _BIDMATRIX_PROPERTIES_BY_FIELD,
+            _CUSTOMBIDMATRIX_PROPERTIES_BY_FIELD,
             query,
             search_property,
             limit,
@@ -468,8 +468,8 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixApply, BidMatrixList]):
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
         retrieve_edges: bool = True,
-    ) -> BidMatrixList:
-        """List/filter bid matrixes
+    ) -> CustomBidMatrixList:
+        """List/filter custom bid matrixes
 
         Args:
             resource_cost: The resource cost to filter on.
@@ -481,23 +481,23 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixApply, BidMatrixList]):
             method: The method to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of bid matrixes to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            limit: Maximum number of custom bid matrixes to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
-            retrieve_edges: Whether to retrieve `alerts` external ids for the bid matrixes. Defaults to True.
+            retrieve_edges: Whether to retrieve `alerts` external ids for the custom bid matrixes. Defaults to True.
 
         Returns:
-            List of requested bid matrixes
+            List of requested custom bid matrixes
 
         Examples:
 
-            List bid matrixes and limit to 5:
+            List custom bid matrixes and limit to 5:
 
                 >>> from cognite.powerops.client._generated.day_ahead_bid import DayAheadBidAPI
                 >>> client = DayAheadBidAPI()
-                >>> bid_matrixes = client.bid_matrix.list(limit=5)
+                >>> custom_bid_matrixes = client.custom_bid_matrix.list(limit=5)
 
         """
-        filter_ = _create_bid_matrix_filter(
+        filter_ = _create_custom_bid_matrix_filter(
             self._view_id,
             resource_cost,
             resource_cost_prefix,
