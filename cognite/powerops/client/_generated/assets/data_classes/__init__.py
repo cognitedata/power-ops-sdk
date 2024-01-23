@@ -1,4 +1,6 @@
 from ._core import (
+    DataRecord,
+    DataRecordWrite,
     DomainModel,
     DomainModelCore,
     DomainModelApply,
@@ -73,6 +75,8 @@ Watercourse.model_rebuild()
 WatercourseApply.model_rebuild()
 
 __all__ = [
+    "DataRecord",
+    "DataRecordWrite",
     "ResourcesApply",
     "DomainModel",
     "DomainModelCore",

@@ -8,6 +8,7 @@ from pydantic import Field
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
+    DataRecordWrite,
     DomainModel,
     DomainModelCore,
     DomainModelApply,
@@ -46,6 +47,7 @@ class Alert(DomainModel):
     Args:
         space: The space where the node is located.
         external_id: The external id of the alert.
+        data_record: The data record of the alert node.
         time: Timestamp that the alert occurred (within the workflow)
         title: Summary description of the alert
         description: Detailed description of the alert
@@ -54,10 +56,6 @@ class Alert(DomainModel):
         status_code: Unique status code for the alert. May be used by the frontend to avoid use of hardcoded description (i.e. like a translation)
         event_ids: An array of associated alert CDF Events (e.g. SHOP Run events)
         calculation_run: The identifier of the parent Bid Calculation (required so tha alerts can be created befor the BidDocument)
-        created_time: The created time of the alert node.
-        last_updated_time: The last updated time of the alert node.
-        deleted_time: If present, the deleted time of the alert node.
-        version: The version of the alert node.
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -76,7 +74,7 @@ class Alert(DomainModel):
         return AlertApply(
             space=self.space,
             external_id=self.external_id,
-            existing_version=self.version,
+            data_record=DataRecordWrite(existing_version=self.data_record.version),
             time=self.time,
             title=self.title,
             description=self.description,
@@ -96,6 +94,7 @@ class AlertApply(DomainModelApply):
     Args:
         space: The space where the node is located.
         external_id: The external id of the alert.
+        data_record: The data record of the alert node.
         time: Timestamp that the alert occurred (within the workflow)
         title: Summary description of the alert
         description: Detailed description of the alert
@@ -104,10 +103,6 @@ class AlertApply(DomainModelApply):
         status_code: Unique status code for the alert. May be used by the frontend to avoid use of hardcoded description (i.e. like a translation)
         event_ids: An array of associated alert CDF Events (e.g. SHOP Run events)
         calculation_run: The identifier of the parent Bid Calculation (required so tha alerts can be created befor the BidDocument)
-        existing_version: Fail the ingestion request if the alert version is greater than or equal to this value.
-            If no existingVersion is specified, the ingestion will always overwrite any existing data for the edge (for the specified container or instance).
-            If existingVersion is set to 0, the upsert will behave as an insert, so it will fail the bulk if the item already exists.
-            If skipOnVersionConflict is set on the ingestion request, then the item will be skipped instead of failing the ingestion request.
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -163,7 +158,7 @@ class AlertApply(DomainModelApply):
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
-                existing_version=self.existing_version,
+                existing_version=self.data_record.existing_version,
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(

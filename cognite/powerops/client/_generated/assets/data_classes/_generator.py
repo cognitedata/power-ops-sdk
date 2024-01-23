@@ -8,6 +8,7 @@ from pydantic import Field
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
+    DataRecordWrite,
     DomainModel,
     DomainModelCore,
     DomainModelApply,
@@ -57,6 +58,7 @@ class Generator(DomainModel):
     Args:
         space: The space where the node is located.
         external_id: The external id of the generator.
+        data_record: The data record of the generator node.
         name: Name for the Generator.
         display_name: Display name for the Generator.
         p_min: The p min field.
@@ -66,10 +68,6 @@ class Generator(DomainModel):
         is_available_time_series: The is available time series field.
         efficiency_curve: The efficiency curve field.
         turbine_curves: The watercourses that are connected to the PriceArea.
-        created_time: The created time of the generator node.
-        last_updated_time: The last updated time of the generator node.
-        deleted_time: If present, the deleted time of the generator node.
-        version: The version of the generator node.
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -93,7 +91,7 @@ class Generator(DomainModel):
         return GeneratorApply(
             space=self.space,
             external_id=self.external_id,
-            existing_version=self.version,
+            data_record=DataRecordWrite(existing_version=self.data_record.version),
             name=self.name,
             display_name=self.display_name,
             p_min=self.p_min,
@@ -119,6 +117,7 @@ class GeneratorApply(DomainModelApply):
     Args:
         space: The space where the node is located.
         external_id: The external id of the generator.
+        data_record: The data record of the generator node.
         name: Name for the Generator.
         display_name: Display name for the Generator.
         p_min: The p min field.
@@ -128,10 +127,6 @@ class GeneratorApply(DomainModelApply):
         is_available_time_series: The is available time series field.
         efficiency_curve: The efficiency curve field.
         turbine_curves: The watercourses that are connected to the PriceArea.
-        existing_version: Fail the ingestion request if the generator version is greater than or equal to this value.
-            If no existingVersion is specified, the ingestion will always overwrite any existing data for the edge (for the specified container or instance).
-            If existingVersion is set to 0, the upsert will behave as an insert, so it will fail the bulk if the item already exists.
-            If skipOnVersionConflict is set on the ingestion request, then the item will be skipped instead of failing the ingestion request.
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -203,7 +198,7 @@ class GeneratorApply(DomainModelApply):
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
-                existing_version=self.existing_version,
+                existing_version=self.data_record.existing_version,
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(

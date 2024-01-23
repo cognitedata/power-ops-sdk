@@ -1,4 +1,6 @@
 from ._core import (
+    DataRecord,
+    DataRecordWrite,
     DomainModel,
     DomainModelCore,
     DomainModelApply,
@@ -33,6 +35,8 @@ BidRow.model_rebuild()
 BidRowApply.model_rebuild()
 
 __all__ = [
+    "DataRecord",
+    "DataRecordWrite",
     "ResourcesApply",
     "DomainModel",
     "DomainModelCore",

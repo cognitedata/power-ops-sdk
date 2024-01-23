@@ -24,7 +24,7 @@ class DayAheadBidAPI:
     DayAheadBidAPI
 
     Generated with:
-        pygen = 0.35.4
+        pygen = 0.36.0
         cognite-sdk = 7.15.0
         pydantic = 2.5.3
 
@@ -42,7 +42,7 @@ class DayAheadBidAPI:
         else:
             raise ValueError(f"Expected CogniteClient or ClientConfig, got {type(config_or_client)}")
         # The client name is used for aggregated logging of Pygen Usage
-        client.config.client_name = "CognitePygen:0.35.4"
+        client.config.client_name = "CognitePygen:0.36.0"
 
         view_by_read_class = {
             data_classes.Alert: dm.ViewId("power-ops-shared", "Alert", "1"),

@@ -7,6 +7,7 @@ from pydantic import Field
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
+    DataRecordWrite,
     DomainModel,
     DomainModelCore,
     DomainModelApply,
@@ -59,6 +60,7 @@ class BidRow(DomainModel):
     Args:
         space: The space where the node is located.
         external_id: The external id of the bid row.
+        data_record: The data record of the bid row node.
         price: Price in EUR/MW/h, rounded to nearest price step (0.1?)
         quantity_per_hour: The capacity offered, per hour, in MW, rounded to nearest step size (5?)
         product: The product field.
@@ -71,10 +73,6 @@ class BidRow(DomainModel):
         asset_id: The asset id field.
         method: The method field.
         alerts: An array of associated alerts.
-        created_time: The created time of the bid row node.
-        last_updated_time: The last updated time of the bid row node.
-        deleted_time: If present, the deleted time of the bid row node.
-        version: The version of the bid row node.
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -97,7 +95,7 @@ class BidRow(DomainModel):
         return BidRowApply(
             space=self.space,
             external_id=self.external_id,
-            existing_version=self.version,
+            data_record=DataRecordWrite(existing_version=self.data_record.version),
             price=self.price,
             quantity_per_hour=self.quantity_per_hour,
             product=self.product,
@@ -121,6 +119,7 @@ class BidRowApply(DomainModelApply):
     Args:
         space: The space where the node is located.
         external_id: The external id of the bid row.
+        data_record: The data record of the bid row node.
         price: Price in EUR/MW/h, rounded to nearest price step (0.1?)
         quantity_per_hour: The capacity offered, per hour, in MW, rounded to nearest step size (5?)
         product: The product field.
@@ -133,10 +132,6 @@ class BidRowApply(DomainModelApply):
         asset_id: The asset id field.
         method: The method field.
         alerts: An array of associated alerts.
-        existing_version: Fail the ingestion request if the bid row version is greater than or equal to this value.
-            If no existingVersion is specified, the ingestion will always overwrite any existing data for the edge (for the specified container or instance).
-            If existingVersion is set to 0, the upsert will behave as an insert, so it will fail the bulk if the item already exists.
-            If skipOnVersionConflict is set on the ingestion request, then the item will be skipped instead of failing the ingestion request.
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -211,7 +206,7 @@ class BidRowApply(DomainModelApply):
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
-                existing_version=self.existing_version,
+                existing_version=self.data_record.existing_version,
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
