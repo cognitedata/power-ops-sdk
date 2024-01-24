@@ -17,6 +17,10 @@ Changes are grouped as follows
 ### Changed
 * Frontend Models. Introduced `CustomBidMethond` and `CustomBidMatrix` in the `DayAheadBid` frontend model.
 
+## [0.81.1] - 2024-01-23
+### Fixed
+* Fixed AddWaterInTransit function definition
+
 ## [0.81.0] - 2024-01-20
 ### Changed
 * Removed Production Model from the SDK.

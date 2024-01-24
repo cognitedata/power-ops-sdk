@@ -743,9 +743,9 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
 
     def parameters_to_dict(self) -> dict:
         return {
-            "discharge": self.discharge_ts_external_id,
-            "transit_object": self.transit_object_type,
-            "transit_name": self.transit_object_name,
+            "discharge_ts_external_id": self.discharge_ts_external_id,
+            "transit_object_type": self.transit_object_type,
+            "transit_object_name": self.transit_object_name,
         }
 
     @staticmethod
@@ -801,7 +801,7 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
 
         discharge = retrieve_range(  # Get discharge datapoints from time-series
             client=client,
-            external_ids=[self.extra_ts_external_id],
+            external_ids=[self.discharge_ts_external_id],
             start=self.start - longest_delay_ms,  # Shift start time based on longest delay
             end=self.start,
         )[self.discharge_ts_external_id]
