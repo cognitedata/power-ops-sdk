@@ -1,0 +1,9 @@
+functionName: String
+functionCallId: String
+processId: String
+processStep: Int
+linkedStep: direct
+data: direct
+# Typically not used, but available if needed
+data2: direct
+data3: direct

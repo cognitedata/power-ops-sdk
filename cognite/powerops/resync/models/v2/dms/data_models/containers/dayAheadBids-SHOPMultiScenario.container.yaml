@@ -19,6 +19,13 @@ properties:
     nullable: true
     autoIncrement: false
     name: priceScenarios
+  mainScenario:
+    type:
+      type: direct
+    # Expected to be of type PriceScenario
+    nullable: true
+    autoIncrement: false
+    name: mainScenario
 constraints:
   requiredBidMethod:
     require:

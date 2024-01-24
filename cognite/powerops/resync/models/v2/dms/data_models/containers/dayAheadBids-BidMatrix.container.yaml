@@ -40,3 +40,9 @@ properties:
     nullable: true
     autoIncrement: false
     name: method
+  isProcessed:
+    type:
+      type: boolean
+    nullable: true
+    autoIncrement: false
+    name: isProcessed

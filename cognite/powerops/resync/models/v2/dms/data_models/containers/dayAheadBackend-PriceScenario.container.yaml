@@ -1,0 +1,4 @@
+time_series: Timestamp
+retrieve: String
+aggregation: String
+transformations: [JSONObject]
