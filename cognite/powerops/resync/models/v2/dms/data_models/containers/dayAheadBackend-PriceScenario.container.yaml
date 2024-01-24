@@ -1,4 +1,47 @@
-time_series: Timestamp
-retrieve: String
-aggregation: String
-transformations: [JSONObject]
+space: '{{day_ahead_backend_space}}'
+externalId: PriceScenario
+name: PriceScenario
+usedFor: node
+properties:
+# The following is repeated in Mapping - should this be remodeled?
+  timeSeries:
+    type:
+      list: false
+      type: timeseries
+    nullable: false
+    autoIncrement: false
+    name: timeSeries
+    description: The time series to apply mapping to
+  retrieve:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: retrieve
+    description: How to retrieve time series data
+  aggregation:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: aggregation
+    description: How to aggregate time series data
+  transformations:
+    type:
+      list: true
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: transformations
+    description: The transformations to apply to the time series
+indexes:
+  timeSeriesIndex:
+    properties:
+    - timeSeries
+    indexType: btree
+    cursorable: false

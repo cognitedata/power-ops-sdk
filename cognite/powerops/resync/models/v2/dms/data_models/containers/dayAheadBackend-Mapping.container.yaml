@@ -1,5 +1,55 @@
-shopPath: String
-timeSeries: TimeSeries
-transformation: [JSONObject]
-retrieve: String
-aggregation: String
+space: '{{day_ahead_backend_space}}'
+externalId: Mapping
+name: Mapping
+usedFor: node
+properties:
+  shopPath:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: shopPath
+    description: The key to apply mapping to in a shop file
+  timeSeries:
+    type:
+      list: false
+      type: direct
+    nullable: false
+    autoIncrement: false
+    name: timeSeries
+    description: The time series to apply mapping to
+  transformations:
+    type:
+      list: true
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: transformations
+    description: The transformations to apply to the time series
+  retrieve:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: retrieve
+    description: How to retrieve time series data
+  aggregation:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: aggregation
+    description: How to aggregate time series data
+indexes:
+  shopPathIndex:
+    properties:
+    - shopPath
+    indexType: btree
+    cursorable: false

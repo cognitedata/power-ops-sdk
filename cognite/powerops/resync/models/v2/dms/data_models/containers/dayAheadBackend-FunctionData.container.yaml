@@ -1,16 +1,91 @@
-direct1: direct
-direct2: direct
-direct3: direct
-date1: Date
-date2: Date
-date3: Date
-text: String
-text1: String
-text2: String
-value: Float
-value1: Float
-value2: Float
-number: Int
-number1: Int
-number2: Int
-timeseries: [TimeSeries]
+space: '{{day_ahead_backend_space}}'
+externalId: FunctionData
+name: FunctionData
+usedFor: node
+properties:
+  direct1:
+    type:
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: method
+  direct2:
+    type:
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: direct2
+  direct3:
+    type:
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: direct3
+  date1:
+    type:
+      type: date
+    nullable: true
+    autoIncrement: false
+    name: date1
+  date2:
+    type:
+      type: date
+    nullable: true
+    autoIncrement: false
+    name: date2
+  date3:
+    type:
+      type: date
+    nullable: true
+    autoIncrement: false
+    name: date3
+  text1:
+    type:
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: text1
+  text2:
+    type:
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: text2
+  value1:
+    type:
+      type: float64
+    nullable: true
+    autoIncrement: false
+    name: value1
+  value2:
+    type:
+      type: float64
+    nullable: true
+    autoIncrement: false
+    name: value2
+  number:
+    type:
+      type: int32
+    nullable: true
+    autoIncrement: false
+    name: number
+  number1:
+    type:
+      type: int32
+    nullable: true
+    autoIncrement: false
+    name: number1
+  number2:
+    type:
+      type: int32
+    nullable: true
+    autoIncrement: false
+    name: number2
+  timeseries:
+    type:
+      type: timeseries
+      list: true
+    nullable: true
+    autoIncrement: false
+    name: timeseries
+# what to index on
