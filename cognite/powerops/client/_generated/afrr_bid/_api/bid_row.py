@@ -121,7 +121,12 @@ class BidRowAPI(NodeAPI[BidRow, BidRowApply, BidRowList]):
         builder = QueryBuilder(BidRowList)
         return BidRowQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
 
-    def apply(self, bid_row: BidRowApply | Sequence[BidRowApply], replace: bool = False) -> ResourcesApplyResult:
+    def apply(
+        self,
+        bid_row: BidRowApply | Sequence[BidRowApply],
+        replace: bool = False,
+        write_none: bool = False,
+    ) -> ResourcesApplyResult:
         """Add or update (upsert) bid rows.
 
         Note: This method iterates through all nodes and timeseries linked to bid_row and creates them including the edges
@@ -132,6 +137,8 @@ class BidRowAPI(NodeAPI[BidRow, BidRowApply, BidRowList]):
             bid_row: Bid row or sequence of bid rows to upsert.
             replace (bool): How do we behave when a property value exists? Do we replace all matching and existing values with the supplied values (true)?
                 Or should we merge in new values for properties together with the existing values (false)? Note: This setting applies for all nodes or edges specified in the ingestion call.
+            write_none (bool): This method, will by default, skip properties that are set to None. However, if you want to set properties to None,
+                you can set this parameter to True. Note this only applies to properties that are nullable.
         Returns:
             Created instance(s), i.e., nodes, edges, and time series.
 
@@ -146,7 +153,7 @@ class BidRowAPI(NodeAPI[BidRow, BidRowApply, BidRowList]):
                 >>> result = client.bid_row.apply(bid_row)
 
         """
-        return self._apply(bid_row, replace)
+        return self._apply(bid_row, replace, write_none)
 
     def delete(
         self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE

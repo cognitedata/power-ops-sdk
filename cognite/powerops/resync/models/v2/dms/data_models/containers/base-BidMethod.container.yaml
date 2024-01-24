@@ -1,3 +1,5 @@
+# This container is deprecated and will be removed in the future.
+# Please use the BidMethod container for DayAhead and AFRR instead
 space: '{{shared_model_space}}'
 externalId: BidMethod
 name: BidMethod

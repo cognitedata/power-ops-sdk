@@ -1,11 +1,12 @@
 from __future__ import annotations
 
-from typing import Literal, Optional, Union
+from typing import Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
+    DataRecordWrite,
     DomainModel,
     DomainModelCore,
     DomainModelApply,
@@ -41,13 +42,10 @@ class TurbineEfficiencyCurve(DomainModel):
     Args:
         space: The space where the node is located.
         external_id: The external id of the turbine efficiency curve.
+        data_record: The data record of the turbine efficiency curve node.
         head: The reference head values
         flow: The flow values
         efficiency: The turbine efficiency values
-        created_time: The created time of the turbine efficiency curve node.
-        last_updated_time: The last updated time of the turbine efficiency curve node.
-        deleted_time: If present, the deleted time of the turbine efficiency curve node.
-        version: The version of the turbine efficiency curve node.
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -63,6 +61,7 @@ class TurbineEfficiencyCurve(DomainModel):
         return TurbineEfficiencyCurveApply(
             space=self.space,
             external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=self.data_record.version),
             head=self.head,
             flow=self.flow,
             efficiency=self.efficiency,
@@ -77,13 +76,10 @@ class TurbineEfficiencyCurveApply(DomainModelApply):
     Args:
         space: The space where the node is located.
         external_id: The external id of the turbine efficiency curve.
+        data_record: The data record of the turbine efficiency curve node.
         head: The reference head values
         flow: The flow values
         efficiency: The turbine efficiency values
-        existing_version: Fail the ingestion request if the turbine efficiency curve version is greater than or equal to this value.
-            If no existingVersion is specified, the ingestion will always overwrite any existing data for the edge (for the specified container or instance).
-            If existingVersion is set to 0, the upsert will behave as an insert, so it will fail the bulk if the item already exists.
-            If skipOnVersionConflict is set on the ingestion request, then the item will be skipped instead of failing the ingestion request.
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -98,6 +94,7 @@ class TurbineEfficiencyCurveApply(DomainModelApply):
         self,
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
+        write_none: bool = False,
     ) -> ResourcesApply:
         resources = ResourcesApply()
         if self.as_tuple_id() in cache:
@@ -107,9 +104,9 @@ class TurbineEfficiencyCurveApply(DomainModelApply):
             TurbineEfficiencyCurve, dm.ViewId("power-ops-assets", "TurbineEfficiencyCurve", "1")
         )
 
-        properties = {}
+        properties: dict[str, Any] = {}
 
-        if self.head is not None:
+        if self.head is not None or write_none:
             properties["head"] = self.head
 
         if self.flow is not None:
@@ -122,7 +119,7 @@ class TurbineEfficiencyCurveApply(DomainModelApply):
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
-                existing_version=self.existing_version,
+                existing_version=self.data_record.existing_version,
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(

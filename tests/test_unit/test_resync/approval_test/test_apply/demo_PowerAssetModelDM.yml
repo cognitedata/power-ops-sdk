@@ -2724,7 +2724,6 @@ data_modeling.instances:
   - properties:
       name: Fornebu
       penaltyLimit: 42000.0
-      productionObligation: []
     source:
       external_id: Watercourse
       space: power-ops-assets

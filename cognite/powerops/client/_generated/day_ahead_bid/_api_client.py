@@ -10,6 +10,8 @@ from ._api.basic_bid_matrix import BasicBidMatrixAPI
 from ._api.bid_document import BidDocumentAPI
 from ._api.bid_matrix import BidMatrixAPI
 from ._api.bid_method import BidMethodAPI
+from ._api.custom_bid_matrix import CustomBidMatrixAPI
+from ._api.custom_bid_method import CustomBidMethodAPI
 from ._api.multi_scenario_matrix import MultiScenarioMatrixAPI
 from ._api.price_area import PriceAreaAPI
 from ._api.shop_multi_scenario import SHOPMultiScenarioAPI
@@ -22,8 +24,8 @@ class DayAheadBidAPI:
     DayAheadBidAPI
 
     Generated with:
-        pygen = 0.33.0
-        cognite-sdk = 7.8.6
+        pygen = 0.36.0
+        cognite-sdk = 7.15.0
         pydantic = 2.5.3
 
     Data Model:
@@ -40,7 +42,7 @@ class DayAheadBidAPI:
         else:
             raise ValueError(f"Expected CogniteClient or ClientConfig, got {type(config_or_client)}")
         # The client name is used for aggregated logging of Pygen Usage
-        client.config.client_name = "CognitePygen:0.33.0"
+        client.config.client_name = "CognitePygen:0.36.0"
 
         view_by_read_class = {
             data_classes.Alert: dm.ViewId("power-ops-shared", "Alert", "1"),
@@ -48,6 +50,8 @@ class DayAheadBidAPI:
             data_classes.BidDocument: dm.ViewId("power-ops-day-ahead-bid", "BidDocument", "1"),
             data_classes.BidMatrix: dm.ViewId("power-ops-day-ahead-bid", "BidMatrix", "1"),
             data_classes.BidMethod: dm.ViewId("power-ops-day-ahead-bid", "BidMethod", "1"),
+            data_classes.CustomBidMatrix: dm.ViewId("power-ops-day-ahead-bid", "CustomBidMatrix", "1"),
+            data_classes.CustomBidMethod: dm.ViewId("power-ops-day-ahead-bid", "CustomBidMethod", "1"),
             data_classes.MultiScenarioMatrix: dm.ViewId("power-ops-day-ahead-bid", "MultiScenarioMatrix", "1"),
             data_classes.PriceArea: dm.ViewId("power-ops-day-ahead-bid", "PriceArea", "1"),
             data_classes.SHOPMultiScenario: dm.ViewId("power-ops-day-ahead-bid", "SHOPMultiScenario", "1"),
@@ -59,6 +63,8 @@ class DayAheadBidAPI:
         self.bid_document = BidDocumentAPI(client, view_by_read_class)
         self.bid_matrix = BidMatrixAPI(client, view_by_read_class)
         self.bid_method = BidMethodAPI(client, view_by_read_class)
+        self.custom_bid_matrix = CustomBidMatrixAPI(client, view_by_read_class)
+        self.custom_bid_method = CustomBidMethodAPI(client, view_by_read_class)
         self.multi_scenario_matrix = MultiScenarioMatrixAPI(client, view_by_read_class)
         self.price_area = PriceAreaAPI(client, view_by_read_class)
         self.shop_multi_scenario = SHOPMultiScenarioAPI(client, view_by_read_class)
@@ -85,3 +91,19 @@ class DayAheadBidAPI:
                 raise ValueError(f"Could not find section '{section}' in {file_path}") from e
 
         return cls.azure_project(**toml_content)
+
+    def _repr_html_(self) -> str:
+        return """<strong>DayAheadBidAPI</strong> generated from data model ("power-ops-day-ahead-bid", "DayAheadBid", "1")<br />
+with the following APIs available<br />
+&nbsp;&nbsp;&nbsp;&nbsp;.alert<br />
+&nbsp;&nbsp;&nbsp;&nbsp;.basic_bid_matrix<br />
+&nbsp;&nbsp;&nbsp;&nbsp;.bid_document<br />
+&nbsp;&nbsp;&nbsp;&nbsp;.bid_matrix<br />
+&nbsp;&nbsp;&nbsp;&nbsp;.bid_method<br />
+&nbsp;&nbsp;&nbsp;&nbsp;.custom_bid_matrix<br />
+&nbsp;&nbsp;&nbsp;&nbsp;.custom_bid_method<br />
+&nbsp;&nbsp;&nbsp;&nbsp;.multi_scenario_matrix<br />
+&nbsp;&nbsp;&nbsp;&nbsp;.price_area<br />
+&nbsp;&nbsp;&nbsp;&nbsp;.shop_multi_scenario<br />
+&nbsp;&nbsp;&nbsp;&nbsp;.water_value_based<br />
+"""

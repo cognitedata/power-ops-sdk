@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Literal, Optional, Union
+from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes import TimeSeries as CogniteTimeSeries
@@ -8,6 +8,7 @@ from pydantic import Field
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
+    DataRecordWrite,
     DomainModel,
     DomainModelCore,
     DomainModelApply,
@@ -51,22 +52,19 @@ class PriceArea(DomainModel):
     Args:
         space: The space where the node is located.
         external_id: The external id of the price area.
+        data_record: The data record of the price area node.
         name: The name field.
         default_method: The default method field.
         timezone: The timezone field.
         main_scenario: The main scenario field.
         price_scenarios: The price scenario field.
-        created_time: The created time of the price area node.
-        last_updated_time: The last updated time of the price area node.
-        deleted_time: If present, the deleted time of the price area node.
-        version: The version of the price area node.
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power-ops-types", "PriceArea")
-    name: Optional[str] = None
+    name: str
     default_method: Union[BidMethod, str, dm.NodeId, None] = Field(None, repr=False, alias="defaultMethod")
-    timezone: Optional[str] = None
+    timezone: str
     main_scenario: Union[TimeSeries, str, None] = Field(None, alias="mainScenario")
     price_scenarios: Union[list[TimeSeries], list[str], None] = Field(None, alias="priceScenarios")
 
@@ -75,6 +73,7 @@ class PriceArea(DomainModel):
         return PriceAreaApply(
             space=self.space,
             external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=self.data_record.version),
             name=self.name,
             default_method=self.default_method.as_apply()
             if isinstance(self.default_method, DomainModel)
@@ -93,15 +92,12 @@ class PriceAreaApply(DomainModelApply):
     Args:
         space: The space where the node is located.
         external_id: The external id of the price area.
+        data_record: The data record of the price area node.
         name: The name field.
         default_method: The default method field.
         timezone: The timezone field.
         main_scenario: The main scenario field.
         price_scenarios: The price scenario field.
-        existing_version: Fail the ingestion request if the price area version is greater than or equal to this value.
-            If no existingVersion is specified, the ingestion will always overwrite any existing data for the edge (for the specified container or instance).
-            If existingVersion is set to 0, the upsert will behave as an insert, so it will fail the bulk if the item already exists.
-            If skipOnVersionConflict is set on the ingestion request, then the item will be skipped instead of failing the ingestion request.
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -116,6 +112,7 @@ class PriceAreaApply(DomainModelApply):
         self,
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
+        write_none: bool = False,
     ) -> ResourcesApply:
         resources = ResourcesApply()
         if self.as_tuple_id() in cache:
@@ -123,7 +120,7 @@ class PriceAreaApply(DomainModelApply):
 
         write_view = (view_by_read_class or {}).get(PriceArea, dm.ViewId("power-ops-day-ahead-bid", "PriceArea", "1"))
 
-        properties = {}
+        properties: dict[str, Any] = {}
 
         if self.name is not None:
             properties["name"] = self.name
@@ -139,21 +136,22 @@ class PriceAreaApply(DomainModelApply):
         if self.timezone is not None:
             properties["timezone"] = self.timezone
 
-        if self.main_scenario is not None:
-            properties["mainScenario"] = (
-                self.main_scenario if isinstance(self.main_scenario, str) else self.main_scenario.external_id
-            )
+        if self.main_scenario is not None or write_none:
+            if isinstance(self.main_scenario, str) or self.main_scenario is None:
+                properties["mainScenario"] = self.main_scenario
+            else:
+                properties["mainScenario"] = self.main_scenario.external_id
 
-        if self.price_scenarios is not None:
+        if self.price_scenarios is not None or write_none:
             properties["priceScenarios"] = [
-                value if isinstance(value, str) else value.external_id for value in self.price_scenarios
-            ]
+                value if isinstance(value, str) else value.external_id for value in self.price_scenarios or []
+            ] or None
 
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
-                existing_version=self.existing_version,
+                existing_version=self.data_record.existing_version,
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(

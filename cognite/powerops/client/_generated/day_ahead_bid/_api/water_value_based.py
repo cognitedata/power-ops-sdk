@@ -84,7 +84,10 @@ class WaterValueBasedAPI(NodeAPI[WaterValueBased, WaterValueBasedApply, WaterVal
         return WaterValueBasedQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
 
     def apply(
-        self, water_value_based: WaterValueBasedApply | Sequence[WaterValueBasedApply], replace: bool = False
+        self,
+        water_value_based: WaterValueBasedApply | Sequence[WaterValueBasedApply],
+        replace: bool = False,
+        write_none: bool = False,
     ) -> ResourcesApplyResult:
         """Add or update (upsert) water value baseds.
 
@@ -92,6 +95,8 @@ class WaterValueBasedAPI(NodeAPI[WaterValueBased, WaterValueBasedApply, WaterVal
             water_value_based: Water value based or sequence of water value baseds to upsert.
             replace (bool): How do we behave when a property value exists? Do we replace all matching and existing values with the supplied values (true)?
                 Or should we merge in new values for properties together with the existing values (false)? Note: This setting applies for all nodes or edges specified in the ingestion call.
+            write_none (bool): This method, will by default, skip properties that are set to None. However, if you want to set properties to None,
+                you can set this parameter to True. Note this only applies to properties that are nullable.
         Returns:
             Created instance(s), i.e., nodes, edges, and time series.
 
@@ -106,7 +111,7 @@ class WaterValueBasedAPI(NodeAPI[WaterValueBased, WaterValueBasedApply, WaterVal
                 >>> result = client.water_value_based.apply(water_value_based)
 
         """
-        return self._apply(water_value_based, replace)
+        return self._apply(water_value_based, replace, write_none)
 
     def delete(
         self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE

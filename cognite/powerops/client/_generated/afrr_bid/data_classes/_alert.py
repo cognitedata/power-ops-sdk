@@ -1,13 +1,14 @@
 from __future__ import annotations
 
 import datetime
-from typing import Literal, Optional, Union
+from typing import Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
+    DataRecordWrite,
     DomainModel,
     DomainModelCore,
     DomainModelApply,
@@ -46,6 +47,7 @@ class Alert(DomainModel):
     Args:
         space: The space where the node is located.
         external_id: The external id of the alert.
+        data_record: The data record of the alert node.
         time: Timestamp that the alert occurred (within the workflow)
         title: Summary description of the alert
         description: Detailed description of the alert
@@ -54,16 +56,12 @@ class Alert(DomainModel):
         status_code: Unique status code for the alert. May be used by the frontend to avoid use of hardcoded description (i.e. like a translation)
         event_ids: An array of associated alert CDF Events (e.g. SHOP Run events)
         calculation_run: The identifier of the parent Bid Calculation (required so tha alerts can be created befor the BidDocument)
-        created_time: The created time of the alert node.
-        last_updated_time: The last updated time of the alert node.
-        deleted_time: If present, the deleted time of the alert node.
-        version: The version of the alert node.
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power-ops-types", "Alert")
-    time: Optional[datetime.datetime] = None
-    title: Optional[str] = None
+    time: datetime.datetime
+    title: str
     description: Optional[str] = None
     severity: Optional[str] = None
     alert_type: Optional[str] = Field(None, alias="alertType")
@@ -76,6 +74,7 @@ class Alert(DomainModel):
         return AlertApply(
             space=self.space,
             external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=self.data_record.version),
             time=self.time,
             title=self.title,
             description=self.description,
@@ -95,6 +94,7 @@ class AlertApply(DomainModelApply):
     Args:
         space: The space where the node is located.
         external_id: The external id of the alert.
+        data_record: The data record of the alert node.
         time: Timestamp that the alert occurred (within the workflow)
         title: Summary description of the alert
         description: Detailed description of the alert
@@ -103,10 +103,6 @@ class AlertApply(DomainModelApply):
         status_code: Unique status code for the alert. May be used by the frontend to avoid use of hardcoded description (i.e. like a translation)
         event_ids: An array of associated alert CDF Events (e.g. SHOP Run events)
         calculation_run: The identifier of the parent Bid Calculation (required so tha alerts can be created befor the BidDocument)
-        existing_version: Fail the ingestion request if the alert version is greater than or equal to this value.
-            If no existingVersion is specified, the ingestion will always overwrite any existing data for the edge (for the specified container or instance).
-            If existingVersion is set to 0, the upsert will behave as an insert, so it will fail the bulk if the item already exists.
-            If skipOnVersionConflict is set on the ingestion request, then the item will be skipped instead of failing the ingestion request.
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -124,6 +120,7 @@ class AlertApply(DomainModelApply):
         self,
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
+        write_none: bool = False,
     ) -> ResourcesApply:
         resources = ResourcesApply()
         if self.as_tuple_id() in cache:
@@ -131,37 +128,37 @@ class AlertApply(DomainModelApply):
 
         write_view = (view_by_read_class or {}).get(Alert, dm.ViewId("power-ops-shared", "Alert", "1"))
 
-        properties = {}
+        properties: dict[str, Any] = {}
 
         if self.time is not None:
-            properties["time"] = self.time.isoformat(timespec="milliseconds")
+            properties["time"] = self.time.isoformat(timespec="milliseconds") if self.time else None
 
         if self.title is not None:
             properties["title"] = self.title
 
-        if self.description is not None:
+        if self.description is not None or write_none:
             properties["description"] = self.description
 
-        if self.severity is not None:
+        if self.severity is not None or write_none:
             properties["severity"] = self.severity
 
-        if self.alert_type is not None:
+        if self.alert_type is not None or write_none:
             properties["alertType"] = self.alert_type
 
-        if self.status_code is not None:
+        if self.status_code is not None or write_none:
             properties["statusCode"] = self.status_code
 
-        if self.event_ids is not None:
+        if self.event_ids is not None or write_none:
             properties["eventIds"] = self.event_ids
 
-        if self.calculation_run is not None:
+        if self.calculation_run is not None or write_none:
             properties["calculationRun"] = self.calculation_run
 
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
-                existing_version=self.existing_version,
+                existing_version=self.data_record.existing_version,
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(

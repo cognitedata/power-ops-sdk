@@ -255,9 +255,7 @@ class NodeReadAPI(Generic[T_DomainModel, T_DomainModelList]):
                 aggregates.append(agg)
             elif isinstance(agg, str):
                 if agg == "count" and properties is None:
-                    # Special case for count, we just pick the first property
-                    first_prop = next(iter(properties_by_field.values()))
-                    aggregates.append(dm.aggregations.Count(first_prop))
+                    aggregates.append(dm.aggregations.Count("externalId"))
                 elif properties is None:
                     raise ValueError(f"Cannot aggregate on {agg} without specifying properties")
                 else:
@@ -387,12 +385,12 @@ class NodeAPI(
         self._class_apply_list = class_apply_list
 
     def _apply(
-        self, item: T_DomainModelApply | Sequence[T_DomainModelApply], replace: bool = False
+        self, item: T_DomainModelApply | Sequence[T_DomainModelApply], replace: bool = False, write_none: bool = False
     ) -> ResourcesApplyResult:
         if isinstance(item, DomainModelApply):
-            instances = item.to_instances_apply(self._view_by_read_class)
+            instances = item.to_instances_apply(self._view_by_read_class, write_none)
         else:
-            instances = self._class_apply_list(item).to_instances_apply(self._view_by_read_class)
+            instances = self._class_apply_list(item).to_instances_apply(self._view_by_read_class, write_none)
         result = self._client.data_modeling.instances.apply(
             nodes=instances.nodes,
             edges=instances.edges,

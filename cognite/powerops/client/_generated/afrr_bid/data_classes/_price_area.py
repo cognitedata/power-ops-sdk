@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Literal, Optional, Union
+from typing import Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes import TimeSeries as CogniteTimeSeries
@@ -8,6 +8,7 @@ from pydantic import Field
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
+    DataRecordWrite,
     DomainModel,
     DomainModelCore,
     DomainModelApply,
@@ -69,6 +70,7 @@ class PriceArea(DomainModel):
     Args:
         space: The space where the node is located.
         external_id: The external id of the price area.
+        data_record: The data record of the price area node.
         name: Name for the PriceArea.
         capacity_price_up: The capacity price up field.
         capacity_price_down: The capacity price down field.
@@ -79,15 +81,11 @@ class PriceArea(DomainModel):
         total_capacity_allocation_down: The total capacity allocation down field.
         own_capacity_allocation_up: The own capacity allocation up field.
         own_capacity_allocation_down: The own capacity allocation down field.
-        created_time: The created time of the price area node.
-        last_updated_time: The last updated time of the price area node.
-        deleted_time: If present, the deleted time of the price area node.
-        version: The version of the price area node.
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power-ops-types", "PriceArea")
-    name: Optional[str] = None
+    name: str
     capacity_price_up: Union[TimeSeries, str, None] = Field(None, alias="capacityPriceUp")
     capacity_price_down: Union[TimeSeries, str, None] = Field(None, alias="capacityPriceDown")
     activation_price_up: Union[TimeSeries, str, None] = Field(None, alias="activationPriceUp")

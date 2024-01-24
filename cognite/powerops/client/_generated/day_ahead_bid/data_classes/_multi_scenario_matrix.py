@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Literal, Optional, Union
+from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes import TimeSeries as CogniteTimeSeries
@@ -8,6 +8,7 @@ from pydantic import Field
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
+    DataRecordWrite,
     DomainModel,
     DomainModelCore,
     DomainModelApply,
@@ -55,6 +56,7 @@ class MultiScenarioMatrix(BidMatrix):
     Args:
         space: The space where the node is located.
         external_id: The external id of the multi scenario matrix.
+        data_record: The data record of the multi scenario matrix node.
         resource_cost: The resource cost field.
         matrix: The matrix field.
         asset_type: The asset type field.
@@ -63,10 +65,6 @@ class MultiScenarioMatrix(BidMatrix):
         alerts: The alert field.
         production: The production field.
         price: The price field.
-        created_time: The created time of the multi scenario matrix node.
-        last_updated_time: The last updated time of the multi scenario matrix node.
-        deleted_time: If present, the deleted time of the multi scenario matrix node.
-        version: The version of the multi scenario matrix node.
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
@@ -80,6 +78,7 @@ class MultiScenarioMatrix(BidMatrix):
         return MultiScenarioMatrixApply(
             space=self.space,
             external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=self.data_record.version),
             resource_cost=self.resource_cost,
             matrix=self.matrix,
             asset_type=self.asset_type,
@@ -99,6 +98,7 @@ class MultiScenarioMatrixApply(BidMatrixApply):
     Args:
         space: The space where the node is located.
         external_id: The external id of the multi scenario matrix.
+        data_record: The data record of the multi scenario matrix node.
         resource_cost: The resource cost field.
         matrix: The matrix field.
         asset_type: The asset type field.
@@ -107,10 +107,6 @@ class MultiScenarioMatrixApply(BidMatrixApply):
         alerts: The alert field.
         production: The production field.
         price: The price field.
-        existing_version: Fail the ingestion request if the multi scenario matrix version is greater than or equal to this value.
-            If no existingVersion is specified, the ingestion will always overwrite any existing data for the edge (for the specified container or instance).
-            If existingVersion is set to 0, the upsert will behave as an insert, so it will fail the bulk if the item already exists.
-            If skipOnVersionConflict is set on the ingestion request, then the item will be skipped instead of failing the ingestion request.
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
@@ -123,6 +119,7 @@ class MultiScenarioMatrixApply(BidMatrixApply):
         self,
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
+        write_none: bool = False,
     ) -> ResourcesApply:
         resources = ResourcesApply()
         if self.as_tuple_id() in cache:
@@ -132,18 +129,18 @@ class MultiScenarioMatrixApply(BidMatrixApply):
             MultiScenarioMatrix, dm.ViewId("power-ops-day-ahead-bid", "MultiScenarioMatrix", "1")
         )
 
-        properties = {}
+        properties: dict[str, Any] = {}
 
-        if self.resource_cost is not None:
+        if self.resource_cost is not None or write_none:
             properties["resourceCost"] = self.resource_cost
 
-        if self.matrix is not None:
+        if self.matrix is not None or write_none:
             properties["matrix"] = self.matrix
 
-        if self.asset_type is not None:
+        if self.asset_type is not None or write_none:
             properties["assetType"] = self.asset_type
 
-        if self.asset_id is not None:
+        if self.asset_id is not None or write_none:
             properties["assetId"] = self.asset_id
 
         if self.method is not None:
@@ -152,19 +149,21 @@ class MultiScenarioMatrixApply(BidMatrixApply):
                 "externalId": self.method if isinstance(self.method, str) else self.method.external_id,
             }
 
-        if self.production is not None:
+        if self.production is not None or write_none:
             properties["production"] = [
-                value if isinstance(value, str) else value.external_id for value in self.production
-            ]
+                value if isinstance(value, str) else value.external_id for value in self.production or []
+            ] or None
 
-        if self.price is not None:
-            properties["price"] = [value if isinstance(value, str) else value.external_id for value in self.price]
+        if self.price is not None or write_none:
+            properties["price"] = [
+                value if isinstance(value, str) else value.external_id for value in self.price or []
+            ] or None
 
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
-                existing_version=self.existing_version,
+                existing_version=self.data_record.existing_version,
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(

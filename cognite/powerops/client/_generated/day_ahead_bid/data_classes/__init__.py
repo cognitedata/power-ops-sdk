@@ -1,4 +1,6 @@
 from ._core import (
+    DataRecord,
+    DataRecordWrite,
     DomainModel,
     DomainModelCore,
     DomainModelApply,
@@ -40,6 +42,22 @@ from ._bid_method import (
     BidMethodList,
     BidMethodTextFields,
 )
+from ._custom_bid_matrix import (
+    CustomBidMatrix,
+    CustomBidMatrixApply,
+    CustomBidMatrixApplyList,
+    CustomBidMatrixFields,
+    CustomBidMatrixList,
+    CustomBidMatrixTextFields,
+)
+from ._custom_bid_method import (
+    CustomBidMethod,
+    CustomBidMethodApply,
+    CustomBidMethodApplyList,
+    CustomBidMethodFields,
+    CustomBidMethodList,
+    CustomBidMethodTextFields,
+)
 from ._multi_scenario_matrix import (
     MultiScenarioMatrix,
     MultiScenarioMatrixApply,
@@ -79,12 +97,16 @@ BidDocument.model_rebuild()
 BidDocumentApply.model_rebuild()
 BidMatrix.model_rebuild()
 BidMatrixApply.model_rebuild()
+CustomBidMatrix.model_rebuild()
+CustomBidMatrixApply.model_rebuild()
 MultiScenarioMatrix.model_rebuild()
 MultiScenarioMatrixApply.model_rebuild()
 PriceArea.model_rebuild()
 PriceAreaApply.model_rebuild()
 
 __all__ = [
+    "DataRecord",
+    "DataRecordWrite",
     "ResourcesApply",
     "DomainModel",
     "DomainModelCore",
@@ -122,6 +144,18 @@ __all__ = [
     "BidMethodApplyList",
     "BidMethodFields",
     "BidMethodTextFields",
+    "CustomBidMatrix",
+    "CustomBidMatrixApply",
+    "CustomBidMatrixList",
+    "CustomBidMatrixApplyList",
+    "CustomBidMatrixFields",
+    "CustomBidMatrixTextFields",
+    "CustomBidMethod",
+    "CustomBidMethodApply",
+    "CustomBidMethodList",
+    "CustomBidMethodApplyList",
+    "CustomBidMethodFields",
+    "CustomBidMethodTextFields",
     "MultiScenarioMatrix",
     "MultiScenarioMatrixApply",
     "MultiScenarioMatrixList",

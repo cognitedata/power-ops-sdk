@@ -1,12 +1,13 @@
 from __future__ import annotations
 
-from typing import Literal, Optional, Union
+from typing import Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
+    DataRecordWrite,
     DomainModel,
     DomainModelCore,
     DomainModelApply,
@@ -45,18 +46,15 @@ class Reservoir(DomainModel):
     Args:
         space: The space where the node is located.
         external_id: The external id of the reservoir.
+        data_record: The data record of the reservoir node.
         name: Name for the PriceArea.
         display_name: Display name for the PriceArea.
         ordering: The ordering of the reservoirs
-        created_time: The created time of the reservoir node.
-        last_updated_time: The last updated time of the reservoir node.
-        deleted_time: If present, the deleted time of the reservoir node.
-        version: The version of the reservoir node.
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power-ops-types", "Reservoir")
-    name: Optional[str] = None
+    name: str
     display_name: Optional[str] = Field(None, alias="displayName")
     ordering: Optional[int] = None
 
@@ -65,6 +63,7 @@ class Reservoir(DomainModel):
         return ReservoirApply(
             space=self.space,
             external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=self.data_record.version),
             name=self.name,
             display_name=self.display_name,
             ordering=self.ordering,
@@ -79,13 +78,10 @@ class ReservoirApply(DomainModelApply):
     Args:
         space: The space where the node is located.
         external_id: The external id of the reservoir.
+        data_record: The data record of the reservoir node.
         name: Name for the PriceArea.
         display_name: Display name for the PriceArea.
         ordering: The ordering of the reservoirs
-        existing_version: Fail the ingestion request if the reservoir version is greater than or equal to this value.
-            If no existingVersion is specified, the ingestion will always overwrite any existing data for the edge (for the specified container or instance).
-            If existingVersion is set to 0, the upsert will behave as an insert, so it will fail the bulk if the item already exists.
-            If skipOnVersionConflict is set on the ingestion request, then the item will be skipped instead of failing the ingestion request.
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -98,6 +94,7 @@ class ReservoirApply(DomainModelApply):
         self,
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
+        write_none: bool = False,
     ) -> ResourcesApply:
         resources = ResourcesApply()
         if self.as_tuple_id() in cache:
@@ -105,22 +102,22 @@ class ReservoirApply(DomainModelApply):
 
         write_view = (view_by_read_class or {}).get(Reservoir, dm.ViewId("power-ops-assets", "Reservoir", "1"))
 
-        properties = {}
+        properties: dict[str, Any] = {}
 
         if self.name is not None:
             properties["name"] = self.name
 
-        if self.display_name is not None:
+        if self.display_name is not None or write_none:
             properties["displayName"] = self.display_name
 
-        if self.ordering is not None:
+        if self.ordering is not None or write_none:
             properties["ordering"] = self.ordering
 
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
-                existing_version=self.existing_version,
+                existing_version=self.data_record.existing_version,
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(

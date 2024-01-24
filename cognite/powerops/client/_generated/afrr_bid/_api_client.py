@@ -18,8 +18,8 @@ class AFRRBidAPI:
     AFRRBidAPI
 
     Generated with:
-        pygen = 0.33.0
-        cognite-sdk = 7.8.6
+        pygen = 0.36.0
+        cognite-sdk = 7.15.0
         pydantic = 2.5.3
 
     Data Model:
@@ -36,7 +36,7 @@ class AFRRBidAPI:
         else:
             raise ValueError(f"Expected CogniteClient or ClientConfig, got {type(config_or_client)}")
         # The client name is used for aggregated logging of Pygen Usage
-        client.config.client_name = "CognitePygen:0.33.0"
+        client.config.client_name = "CognitePygen:0.36.0"
 
         view_by_read_class = {
             data_classes.Alert: dm.ViewId("power-ops-shared", "Alert", "1"),
@@ -73,3 +73,13 @@ class AFRRBidAPI:
                 raise ValueError(f"Could not find section '{section}' in {file_path}") from e
 
         return cls.azure_project(**toml_content)
+
+    def _repr_html_(self) -> str:
+        return """<strong>AFRRBidAPI</strong> generated from data model ("power-ops-afrr-bid", "AFRRBid", "1")<br />
+with the following APIs available<br />
+&nbsp;&nbsp;&nbsp;&nbsp;.alert<br />
+&nbsp;&nbsp;&nbsp;&nbsp;.bid_document<br />
+&nbsp;&nbsp;&nbsp;&nbsp;.bid_method<br />
+&nbsp;&nbsp;&nbsp;&nbsp;.bid_row<br />
+&nbsp;&nbsp;&nbsp;&nbsp;.price_area<br />
+"""

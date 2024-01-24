@@ -1,3 +1,4 @@
+# This is deprecated. Use the specific for AFRR and DayAhead instead.
 space: '{{shared_model_space}}'
 externalId: BidMethod
 description: A description of the Bid method used in the calculation.

@@ -1,12 +1,13 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Literal, Optional, Union
+from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
+    DataRecordWrite,
     DomainModel,
     DomainModelCore,
     DomainModelApply,
@@ -59,6 +60,7 @@ class BidRow(DomainModel):
     Args:
         space: The space where the node is located.
         external_id: The external id of the bid row.
+        data_record: The data record of the bid row node.
         price: Price in EUR/MW/h, rounded to nearest price step (0.1?)
         quantity_per_hour: The capacity offered, per hour, in MW, rounded to nearest step size (5?)
         product: The product field.
@@ -71,10 +73,6 @@ class BidRow(DomainModel):
         asset_id: The asset id field.
         method: The method field.
         alerts: An array of associated alerts.
-        created_time: The created time of the bid row node.
-        last_updated_time: The last updated time of the bid row node.
-        deleted_time: If present, the deleted time of the bid row node.
-        version: The version of the bid row node.
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -97,6 +95,7 @@ class BidRow(DomainModel):
         return BidRowApply(
             space=self.space,
             external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=self.data_record.version),
             price=self.price,
             quantity_per_hour=self.quantity_per_hour,
             product=self.product,
@@ -120,6 +119,7 @@ class BidRowApply(DomainModelApply):
     Args:
         space: The space where the node is located.
         external_id: The external id of the bid row.
+        data_record: The data record of the bid row node.
         price: Price in EUR/MW/h, rounded to nearest price step (0.1?)
         quantity_per_hour: The capacity offered, per hour, in MW, rounded to nearest step size (5?)
         product: The product field.
@@ -132,10 +132,6 @@ class BidRowApply(DomainModelApply):
         asset_id: The asset id field.
         method: The method field.
         alerts: An array of associated alerts.
-        existing_version: Fail the ingestion request if the bid row version is greater than or equal to this value.
-            If no existingVersion is specified, the ingestion will always overwrite any existing data for the edge (for the specified container or instance).
-            If existingVersion is set to 0, the upsert will behave as an insert, so it will fail the bulk if the item already exists.
-            If skipOnVersionConflict is set on the ingestion request, then the item will be skipped instead of failing the ingestion request.
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -157,6 +153,7 @@ class BidRowApply(DomainModelApply):
         self,
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
+        write_none: bool = False,
     ) -> ResourcesApply:
         resources = ResourcesApply()
         if self.as_tuple_id() in cache:
@@ -164,27 +161,27 @@ class BidRowApply(DomainModelApply):
 
         write_view = (view_by_read_class or {}).get(BidRow, dm.ViewId("power-ops-afrr-bid", "BidRow", "1"))
 
-        properties = {}
+        properties: dict[str, Any] = {}
 
-        if self.price is not None:
+        if self.price is not None or write_none:
             properties["price"] = self.price
 
-        if self.quantity_per_hour is not None:
+        if self.quantity_per_hour is not None or write_none:
             properties["quantityPerHour"] = self.quantity_per_hour
 
-        if self.product is not None:
+        if self.product is not None or write_none:
             properties["product"] = self.product
 
-        if self.is_divisible is not None:
+        if self.is_divisible is not None or write_none:
             properties["isDivisible"] = self.is_divisible
 
-        if self.min_quantity is not None:
+        if self.min_quantity is not None or write_none:
             properties["minQuantity"] = self.min_quantity
 
-        if self.is_block is not None:
+        if self.is_block is not None or write_none:
             properties["isBlock"] = self.is_block
 
-        if self.exclusive_group_id is not None:
+        if self.exclusive_group_id is not None or write_none:
             properties["exclusiveGroupId"] = self.exclusive_group_id
 
         if self.linked_bid is not None:
@@ -193,10 +190,10 @@ class BidRowApply(DomainModelApply):
                 "externalId": self.linked_bid if isinstance(self.linked_bid, str) else self.linked_bid.external_id,
             }
 
-        if self.asset_type is not None:
+        if self.asset_type is not None or write_none:
             properties["assetType"] = self.asset_type
 
-        if self.asset_id is not None:
+        if self.asset_id is not None or write_none:
             properties["assetId"] = self.asset_id
 
         if self.method is not None:
@@ -209,7 +206,7 @@ class BidRowApply(DomainModelApply):
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
-                existing_version=self.existing_version,
+                existing_version=self.data_record.existing_version,
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
