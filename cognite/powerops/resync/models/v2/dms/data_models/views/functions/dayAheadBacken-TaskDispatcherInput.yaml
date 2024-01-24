@@ -1,0 +1,58 @@
+space: '{{day_ahead_backend_space}}'
+externalId: TaskDispatcherInput
+description: Input to the task dispatcher
+name: TaskDispatcherInput
+version: '{{day_ahead_backend_task_dispatcher_input_version}}'
+implements:
+  - space: '{{day_ahead_backend_space}}'
+    externalId: FunctionInput
+    version: '{{day_ahead_backend_function_input_version}}'
+    type: view
+filter:
+  equals:
+    property:
+    - node
+    - property
+    - functionName
+    value: TaskDispatcher
+properties:
+  functionName:
+    container:
+      space: '{{day_ahead_backend_space}}'
+      externalId: FunctionMetadata
+      type: container
+    containerPropertyIdentifier: functionName
+    name: functionName
+    description: The function name
+  bidConfiguration:
+    container:
+      space: '{{day_ahead_backend_space}}'
+      externalId: FunctionMetadata
+      type: container
+    containerPropertyIdentifier: data
+    name: bidConfiguration
+    description: The bid configuration
+  bidDate:
+    container:
+      space: '{{day_ahead_backend_space}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: date1
+    name: bidDate
+    description: The bid date
+  shopStart:
+    container:
+      space: '{{day_ahead_backend_space}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: date2
+    name: shopStart
+    description: The shop start date
+  shopEnd:
+    container:
+      space: '{{day_ahead_backend_space}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: date3
+    name: shopEnd
+    description: The shop end date

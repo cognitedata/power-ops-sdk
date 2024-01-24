@@ -5,6 +5,7 @@ shared_model_space: 'power-ops-shared'
 type_space: 'power-ops-types'
 powerops_instance_space: 'power-ops-instance'
 asset_space: 'power-ops-assets'
+day_ahead_backend_space: 'power-ops-day-ahead-backend'
 
 # Shared Model Views
 base_BidDocument_version: '1'
@@ -37,3 +38,8 @@ asset_Generator_version: '1'
 asset_Reservoir_version: '1'
 asset_TurbineEfficiency_version: '1'
 asset_GeneratorEfficiency_version: '1'
+
+# Day-Ahead Backend Model Views
+day_ahead_backend_task_dispatcher_input_version: '1'
+day_ahead_backend_function_input_version: '1'
+day_ahead_backend_function_output_version: '1'
