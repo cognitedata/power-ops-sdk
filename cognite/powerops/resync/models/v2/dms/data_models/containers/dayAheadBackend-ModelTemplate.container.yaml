@@ -1,0 +1,5 @@
+cogShopVersion: String!
+shopVersion: String!
+watercourse: direct
+model: File
+source: String

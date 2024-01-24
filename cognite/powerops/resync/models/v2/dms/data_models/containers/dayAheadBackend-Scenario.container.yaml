@@ -1,0 +1,13 @@
+name: String
+modelTemplate: direct
+commands: [String]
+extraFiles: [Files]
+modelFile: File
+source: String
+shopStartSpecification: String
+shopEndSpecification: String
+shopStart: Date
+shopEnd: Date
+bidDate: Date
+shopVersion: String
+isReady: Boolean

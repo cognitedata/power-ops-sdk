@@ -1,0 +1,5 @@
+shopPath: String
+timeSeries: TimeSeries
+transformation: [JSONObject]
+retrieve: String
+aggregation: String

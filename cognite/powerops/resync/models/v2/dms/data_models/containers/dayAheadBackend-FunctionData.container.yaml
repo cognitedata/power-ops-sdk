@@ -13,3 +13,4 @@ value2: Float
 number: Int
 number1: Int
 number2: Int
+timeseries: [TimeSeries]
