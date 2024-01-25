@@ -1,0 +1,123 @@
+space: '{{day_ahead_backend_space}}'
+externalId: Scenario
+description: SHOP scenario that holds all data needed for a shop run. May be unprocessed or processed
+name: Scenario
+version: '{{day_ahead_backend_scenario_version}}'
+properties:
+  name:
+    container:
+      space: '{{day_ahead_backend_space}}'
+      externalId: Scenario
+      type: container
+    containerPropertyIdentifier: name
+    name: name
+    description: The name of the scenario to run
+  shopVersion:
+    container:
+      space: '{{day_ahead_backend_space}}'
+      externalId: Scenario
+      type: container
+    containerPropertyIdentifier: shopVersion
+    name: shopVersion
+    description: The shop version to use when running the scenario
+  modelTemplate:
+    container:
+      space: '{{day_ahead_backend_space}}'
+      externalId: Scenario
+      type: container
+    containerPropertyIdentifier: modelTemplate
+    name: modelTemplate
+    description: The model template to use when running the scenario
+  modelFile:
+    container:
+      space: '{{day_ahead_backend_space}}'
+      externalId: Scenario
+      type: container
+    containerPropertyIdentifier: modelFile
+    name: modelFile
+    description: The model file to use when running the scenario
+  commands:
+    container:
+      space: '{{day_ahead_backend_space}}'
+      externalId: Scenario
+      type: container
+    containerPropertyIdentifier: commands
+    name: commands
+    description: The commands to run when running the scenario
+  extraFiles:
+    container:
+      space: '{{day_ahead_backend_space}}'
+      externalId: Scenario
+      type: container
+    containerPropertyIdentifier: extraFiles
+    name: extraFiles
+    description: Extra files to include when running the scenario
+  source:
+    container:
+      space: '{{day_ahead_backend_space}}'
+      externalId: Scenario
+      type: container
+    containerPropertyIdentifier: source
+    name: source
+    description: The source of the scenario
+  shopStartSpecification:
+    container:
+      space: '{{day_ahead_backend_space}}'
+      externalId: Scenario
+      type: container
+    containerPropertyIdentifier: shopStartSpecification
+    name: shopStartSpecification
+    description: The shop start specification
+  shopEndSpecification:
+    container:
+      space: '{{day_ahead_backend_space}}'
+      externalId: Scenario
+      type: container
+    containerPropertyIdentifier: shopEndSpecification
+    name: shopEndSpecification
+    description: The shop end specification
+  shopStart:
+    container:
+      space: '{{day_ahead_backend_space}}'
+      externalId: Scenario
+      type: container
+    containerPropertyIdentifier: shopStartSpecification
+    name: shopStart
+    description: The shop start time
+  shopEnd:
+    container:
+      space: '{{day_ahead_backend_space}}'
+      externalId: Scenario
+      type: container
+    containerPropertyIdentifier: shopEndSpecification
+    name: shopEnd
+    description: The shop end time
+  bidDate:
+    container:
+      space: '{{day_ahead_backend_space}}'
+      externalId: Scenario
+      type: container
+    containerPropertyIdentifier: bidDate
+    name: bidDate
+    description: The bid date of the scenario
+  isReady:
+    container:
+      space: '{{day_ahead_backend_space}}'
+      externalId: Scenario
+      type: container
+    containerPropertyIdentifier: isReady
+    name: isReady
+    description: Whether the scenario is ready to be run
+  mappingsOverride:
+    type:
+      space: '{{type_space}}'
+      externalId: Mapping
+    source:
+      space: '{{day_ahead_backend_space}}'
+      externalId: Mapping
+      version: '{{day_ahead_backend_mapping_version}}'
+      type: view
+    direction: outwards
+    name: mappingsOverride
+    description: An array of base mappings to override in shop model file
+    connectionType: multiEdgeConnection

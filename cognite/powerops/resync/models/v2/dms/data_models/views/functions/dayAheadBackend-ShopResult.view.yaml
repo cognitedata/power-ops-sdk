@@ -1,0 +1,38 @@
+# This is deprecated. Use the specific for AFRR and DayAhead instead.
+space: '{{day_ahead_backend_space}}'
+externalId: ShopResult
+description: Base class for all function inputs
+name: ShopResult
+version: '{{day_ahead_backend_shop_result_version}}'
+properties:
+  scenario:
+
+  productionTimeSeries:
+    container:
+      space: '{{day_ahead_backend_space}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: timeseries
+    name: productionTimeSeries
+    description: The result production timeseries from a SHOP run
+  objectiveSequence:
+    container:
+      space: '{{day_ahead_backend_space}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: sequence
+    name: objectiveSequence
+    description: The sequence of the objective function
+  alerts:
+    type:
+      space: '{{type_space}}'
+      externalId: calculationIssue
+    source:
+      space: '{{shared_model_space}}'
+      externalId: Alert
+      version: '{{base_Alert_version}}'
+      type: view
+    direction: outwards
+    name: alerts
+    description: An array of calculation level Alerts.
+    connectionType: multiEdgeConnection

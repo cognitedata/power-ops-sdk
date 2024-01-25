@@ -53,3 +53,25 @@
 ## Dayahead Backend types
 - space: {{type_space}}
   externalId: PreprocessorInput
+- space: {{type_space}}
+  externalId: PartialBidCalculationInput
+- space: {{type_space}}
+  externalId: ShopResult
+- space: {{type_space}}
+  externalId: ModelTemplate
+- space: {{type_space}}
+  externalId: Mapping
+
+
+
+
+
+
+
+
+
+
+
+
+
+

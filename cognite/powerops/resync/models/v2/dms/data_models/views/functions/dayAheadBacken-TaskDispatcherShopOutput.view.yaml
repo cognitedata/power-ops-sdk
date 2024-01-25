@@ -62,22 +62,28 @@ properties:
     description: An array of calculation level Alerts.
     connectionType: multiEdgeConnection
   preprocessorCalculations:
-    container:
+    type:
+      space: '{{type_space}}'
+      externalId: PreprocessorInput
+    source:
       space: '{{day_ahead_backend_space}}'
-      externalId: FunctionMetadata
-      type: container
-    containerPropertyIdentifier: data
-    name: preprocessorCalculations
-    description: The preprocessed and ready scenario to send to cogshop
+      externalId: PreprocessorInput
+      version: '{{day_ahead_backend_preprocessor_input_version}}'
+      type: view
     direction: outwards
+    name: preprocessorCalculations
+    description: An array of preprocessor calculations/inputs to preprocessor function.
     connectionType: multiEdgeConnection
   partialBidCalculations:
-    container:
+    type:
+      space: '{{type_space}}'
+      externalId: PartialBidCalculationInput
+    source:
       space: '{{day_ahead_backend_space}}'
-      externalId: FunctionMetadata
-      type: container
-    containerPropertyIdentifier: data2
-    name: partialBidCalculations
-    description: The partial bid calculations to be performed
+      externalId: PartialBidCalculationInput
+      version: '{{day_ahead_backend_partial_bid_calculation_input_version}}'
+      type: view
     direction: outwards
+    name: preprocessorCalculations
+    description: An array of preprocessor calculations/inputs to preprocessor function.
     connectionType: multiEdgeConnection

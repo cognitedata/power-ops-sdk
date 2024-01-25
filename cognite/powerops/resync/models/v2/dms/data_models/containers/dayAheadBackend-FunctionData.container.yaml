@@ -88,3 +88,9 @@ properties:
     nullable: true
     autoIncrement: false
     name: timeseries
+  sequence:
+    type:
+      type: sequence
+    nullable: true
+    autoIncrement: false
+    name: sequence
