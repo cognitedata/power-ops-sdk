@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.82.1] - 2024-01-25
+### Fixed
+* Bug in the filter for the views `CustomBidMethond` and `CustomBidMatrix` in the `DayAheadBid` frontend model.
+
 ## [0.82.0] - 2024-01-22
 ### Changed
 * Frontend Models. Introduced `CustomBidMethond` and `CustomBidMatrix` in the `DayAheadBid` frontend model.
