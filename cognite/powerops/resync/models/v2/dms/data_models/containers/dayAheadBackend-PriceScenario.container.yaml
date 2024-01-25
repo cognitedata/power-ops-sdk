@@ -33,8 +33,7 @@ properties:
   transformations:
     type:
       list: true
-      collation: ucs_basic
-      type: text
+      type: json
     nullable: true
     autoIncrement: false
     name: transformations
