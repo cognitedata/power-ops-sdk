@@ -8,7 +8,7 @@ properties:
       type: direct
     nullable: true
     autoIncrement: false
-    name: method
+    name: direct1
   direct2:
     type:
       type: direct
@@ -88,4 +88,3 @@ properties:
     nullable: true
     autoIncrement: false
     name: timeseries
-# what to index on

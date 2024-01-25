@@ -1,8 +1,8 @@
 space: '{{day_ahead_backend_space}}'
-externalId: TaskDispatcherInput
-description: Input to the task dispatcher
-name: TaskDispatcherInput
-version: '{{day_ahead_backend_task_dispatcher_input_version}}'
+externalId: TaskDispatcherShopInput
+description: Input to the task dispatcher in the shop bid process
+name: TaskDispatcherShopInput
+version: '{{day_ahead_backend_task_dispatcher_shop_input_version}}'
 implements:
   - space: '{{day_ahead_backend_space}}'
     externalId: FunctionInput
@@ -32,6 +32,30 @@ properties:
     containerPropertyIdentifier: data
     name: bidConfiguration
     description: The bid configuration
+  processId:
+    container:
+      space: '{{day_ahead_backend_space}}'
+      externalId: FunctionMetadata
+      type: container
+    containerPropertyIdentifier: processId
+    name: processId
+    description: The id of the dayahead bid shop process
+  processStep:
+    container:
+      space: '{{day_ahead_backend_space}}'
+      externalId: FunctionMetadata
+      type: container
+    containerPropertyIdentifier: processStep
+    name: processStep
+    description: The step in the bid process as an integer ex. 0,1,2
+  linkedStep:
+    container:
+      space: '{{day_ahead_backend_space}}'
+      externalId: FunctionMetadata
+      type: container
+    containerPropertyIdentifier: linkedStep
+    name: previousStep # here is where you map the name - the name that is shown in the view
+    description: The id of the dayahead bid shop process
   bidDate:
     container:
       space: '{{day_ahead_backend_space}}'

@@ -40,6 +40,9 @@ asset_TurbineEfficiency_version: '1'
 asset_GeneratorEfficiency_version: '1'
 
 # Day-Ahead Backend Model Views
-day_ahead_backend_task_dispatcher_input_version: '1'
+day_ahead_backend_task_dispatcher_shop_input_version: '1'
+day_ahead_backend_task_dispatcher_shop_output_version: '1'
+day_ahead_backend_preprocessor_input_version: '1'
+day_ahead_backend_preprocessor_output_version: '1'
 day_ahead_backend_function_input_version: '1'
 day_ahead_backend_function_output_version: '1'

@@ -49,3 +49,7 @@
   externalId: DayAheadSHOPMultiScenario
 - space: {{type_space}}
   externalId: DayAheadWaterValueBased
+
+## Dayahead Backend types
+- space: {{type_space}}
+  externalId: PreprocessorInput

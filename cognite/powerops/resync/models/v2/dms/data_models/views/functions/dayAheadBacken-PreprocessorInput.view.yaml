@@ -1,0 +1,58 @@
+space: '{{day_ahead_backend_space}}'
+externalId: PreprocessorInput
+description: Input to the task dispatcher in the shop bid process
+name: TaskDispatcherShopInput
+version: '{{day_ahead_backend_preprocessor_input_version}}'
+implements:
+  - space: '{{day_ahead_backend_space}}'
+    externalId: FunctionInput
+    version: '{{day_ahead_backend_function_input_version}}'
+    type: view
+filter:
+  equals:
+    property:
+    - node
+    - property
+    - functionName
+    value: Preprocessor
+properties:
+  functionName:
+    container:
+      space: '{{day_ahead_backend_space}}'
+      externalId: FunctionMetadata
+      type: container
+    containerPropertyIdentifier: functionName
+    name: functionName
+    description: The function name
+  scenarioRaw:
+    container:
+      space: '{{day_ahead_backend_space}}'
+      externalId: FunctionMetadata
+      type: container
+    containerPropertyIdentifier: data
+    name: scenarioRaw
+    description: The scenario to preprocess before sending to cogshop
+  processId:
+    container:
+      space: '{{day_ahead_backend_space}}'
+      externalId: FunctionMetadata
+      type: container
+    containerPropertyIdentifier: processId
+    name: processId
+    description: The id of the dayahead bid shop process
+  processStep:
+    container:
+      space: '{{day_ahead_backend_space}}'
+      externalId: FunctionMetadata
+      type: container
+    containerPropertyIdentifier: processStep
+    name: processStep
+    description: The step in the bid process as an integer ex. 0,1,2
+  linkedStep:
+    container:
+      space: '{{day_ahead_backend_space}}'
+      externalId: FunctionMetadata
+      type: container
+    containerPropertyIdentifier: linkedStep
+    name: previousStep # here is where you map the name - the name that is shown in the view
+    description: The id of the dayahead bid shop process
