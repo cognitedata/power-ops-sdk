@@ -1,0 +1,22 @@
+space: '{{day_ahead_backend_space}}'
+externalId: BidMethod
+description: Bid methods for all day ahead methods
+name: BidMethod
+version: '{{day_ahead_backend_bid_method_version}}'
+properties:
+  name:
+    container:
+      space: '{{dayahead_model_space}}'
+      externalId: BidMethod
+      type: container
+    containerPropertyIdentifier: name
+    name: name
+    description: Name for the BidMethod
+  mainScenario:
+    container:
+      space: '{{day_ahead_backend_space}}'
+      externalId: mainScenario
+      type: container
+    containerPropertyIdentifier: mainScenario
+    name: mainScenario
+    description: The main scenario to use when running the bid method

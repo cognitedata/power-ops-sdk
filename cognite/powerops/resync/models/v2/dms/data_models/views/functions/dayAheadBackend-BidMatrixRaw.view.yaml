@@ -1,0 +1,66 @@
+space: '{{day_ahead_backend_space}}'
+externalId: BidMatrixRaw
+description: The raw output of a bid matrix calculation
+name: BidMethodRaw
+version: '{{day_ahead_backend_bid_method_raw_version}}'
+properties:
+  matrix:
+    container:
+      space: '{{dayahead_model_space}}'
+      externalId: BidMatrix
+      type: container
+    containerPropertyIdentifier: matrix
+    name: matrix
+  assetType:
+    container:
+      space: '{{dayahead_model_space}}'
+      externalId: BidMatrix
+      type: container
+    containerPropertyIdentifier: assetType
+    name: assetType
+  assetId:
+    container:
+      space: '{{dayahead_model_space}}'
+      externalId: BidMatrix
+      type: container
+    containerPropertyIdentifier: assetId
+    name: assetId
+  method:
+    container:
+      space: '{{dayahead_model_space}}'
+      externalId: BidMatrix
+      type: container
+    containerPropertyIdentifier: method
+    name: method
+    source:
+      space: '{{dayahead_model_space}}'
+      externalId: BidMethod
+      version: '{{dayaheadbid_BidMethod_version}}'
+      type: view
+  alerts:
+    type:
+      space: '{{type_space}}'
+      externalId: calculationIssue
+    source:
+      space: '{{shared_model_space}}'
+      externalId: Alert
+      version: '{{base_Alert_version}}'
+      type: view
+    direction: outwards
+    name: alerts
+    connectionType: multiEdgeConnection
+  isProcessed:
+    container:
+      space: '{{dayahead_model_space}}'
+      externalId: BidMatrix
+      type: container
+    containerPropertyIdentifier: isProcessed
+    name: isProcessed
+    description: Whether the bid matrix has been processed or not
+filter:
+  equals:
+    property:
+    - node
+    - property
+    - isProcessed
+    value: True

@@ -1,0 +1,19 @@
+space: '{{day_ahead_backend_space}}'
+externalId: BidMethodWaterValueBased
+description: Bid methods used in the water value based shop
+name: BidMethodWaterValueBased
+version: '{{day_ahead_backend_bid_method_water_value_based_version}}'
+implements:
+  - space: '{{day_ahead_backend_space}}'
+    externalId: BidMethod
+    version: '{{day_ahead_backend_bid_method_version}}'
+    type: view
+properties: {}
+filter:
+  equals:
+    property:
+    - node
+    - type
+    value:
+      space: '{{type_space}}'
+      externalId: DayAheadWaterValueBased
