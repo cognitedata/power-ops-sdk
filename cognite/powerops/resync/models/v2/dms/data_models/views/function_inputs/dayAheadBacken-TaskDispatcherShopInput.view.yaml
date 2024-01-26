@@ -1,12 +1,12 @@
-space: '{{day_ahead_backend_space}}'
+space: '{{powerops_mod}}'
 externalId: TaskDispatcherShopInput
 description: Input to the task dispatcher in the shop bid process
 name: TaskDispatcherShopInput
-version: '{{day_ahead_backend_task_dispatcher_shop_input_version}}'
+version: '{{version}}'
 implements:
-  - space: '{{day_ahead_backend_space}}'
+  - space: '{{powerops_mode}}'
     externalId: FunctionInput
-    version: '{{day_ahead_backend_function_input_version}}'
+    version: '{{version}}'
     type: view
 filter:
   equals:
@@ -14,19 +14,20 @@ filter:
     - node
     - property
     - functionName
-    value: TaskDispatcher
+    value: TaskDispatcherShop
 properties:
   functionName:
     container:
-      space: '{{day_ahead_backend_space}}'
+      space: '{{powerops_models}}'
       externalId: FunctionMetadata
       type: container
     containerPropertyIdentifier: functionName
     name: functionName
     description: The function name
   bidConfiguration:
+    # should be a view - need to implement first
     container:
-      space: '{{day_ahead_backend_space}}'
+      space: '{{powerops_models}}'
       externalId: FunctionMetadata
       type: container
     containerPropertyIdentifier: data
@@ -34,7 +35,7 @@ properties:
     description: The bid configuration
   processId:
     container:
-      space: '{{day_ahead_backend_space}}'
+      space: '{{powerops_models}}'
       externalId: FunctionMetadata
       type: container
     containerPropertyIdentifier: processId
@@ -42,15 +43,15 @@ properties:
     description: The id of the dayahead bid shop process
   processStep:
     container:
-      space: '{{day_ahead_backend_space}}'
+      space: '{{powerops_models}}'
       externalId: FunctionMetadata
       type: container
     containerPropertyIdentifier: processStep
     name: processStep
     description: The step in the bid process as an integer ex. 0,1,2
-  linkedStep:
+  previousStep:
     container:
-      space: '{{day_ahead_backend_space}}'
+      space: '{{powerops_models}}'
       externalId: FunctionMetadata
       type: container
     containerPropertyIdentifier: linkedStep
@@ -58,7 +59,7 @@ properties:
     description: The id of the dayahead bid shop process
   bidDate:
     container:
-      space: '{{day_ahead_backend_space}}'
+      space: '{{powerops_models}}'
       externalId: FunctionData
       type: container
     containerPropertyIdentifier: date1
@@ -66,7 +67,7 @@ properties:
     description: The bid date
   shopStart:
     container:
-      space: '{{day_ahead_backend_space}}'
+      space: '{{powerops_models}}'
       externalId: FunctionData
       type: container
     containerPropertyIdentifier: date2
@@ -74,7 +75,7 @@ properties:
     description: The shop start date
   shopEnd:
     container:
-      space: '{{day_ahead_backend_space}}'
+      space: '{{powerops_models}}'
       externalId: FunctionData
       type: container
     containerPropertyIdentifier: date3

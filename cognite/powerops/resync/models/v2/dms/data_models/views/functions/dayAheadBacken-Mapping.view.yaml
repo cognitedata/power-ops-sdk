@@ -1,0 +1,46 @@
+space: '{{powerops_models}}'
+externalId: Mapping
+description: SHOP scenario that holds all data needed for a shop run. May be unprocessed or processed
+name: Mapping
+version: '{{version}}'
+properties:
+  shopPath:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Mapping
+      type: container
+    containerPropertyIdentifier: shopPath
+    name: shopPath
+    description: The key in shop file to map to
+  timeSeries:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Mapping
+      type: container
+    containerPropertyIdentifier: timeSeries
+    name: timeSeries
+    description: The time series to map to
+  transformations:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Mapping
+      type: container
+    containerPropertyIdentifier: transformations
+    name: transformations
+    description: The transformations to apply to the time series
+  retrieve:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Mapping
+      type: container
+    containerPropertyIdentifier: retrieve
+    name: retrieve
+    description: How to retrieve time series data
+  aggregation:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Mapping
+      type: container
+    containerPropertyIdentifier: aggregation
+    name: aggregation
+    description: How to aggregate time series data

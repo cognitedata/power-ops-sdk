@@ -1,12 +1,12 @@
-space: '{{day_ahead_backend_space}}'
+space: '{{powerops_models}}'
 externalId: Scenario
 description: SHOP scenario that holds all data needed for a shop run. May be unprocessed or processed
 name: Scenario
-version: '{{day_ahead_backend_scenario_version}}'
+version: '{{version}}'
 properties:
   name:
     container:
-      space: '{{day_ahead_backend_space}}'
+      space: '{{powerops_models}}'
       externalId: Scenario
       type: container
     containerPropertyIdentifier: name
@@ -14,7 +14,7 @@ properties:
     description: The name of the scenario to run
   shopVersion:
     container:
-      space: '{{day_ahead_backend_space}}'
+      space: '{{powerops_models}}'
       externalId: Scenario
       type: container
     containerPropertyIdentifier: shopVersion
@@ -22,7 +22,7 @@ properties:
     description: The shop version to use when running the scenario
   modelTemplate:
     container:
-      space: '{{day_ahead_backend_space}}'
+      space: '{{powerops_models}}'
       externalId: Scenario
       type: container
     containerPropertyIdentifier: modelTemplate
@@ -30,7 +30,7 @@ properties:
     description: The model template to use when running the scenario
   modelFile:
     container:
-      space: '{{day_ahead_backend_space}}'
+      space: '{{powerops_models}}'
       externalId: Scenario
       type: container
     containerPropertyIdentifier: modelFile
@@ -38,7 +38,7 @@ properties:
     description: The model file to use when running the scenario
   commands:
     container:
-      space: '{{day_ahead_backend_space}}'
+      space: '{{powerops_models}}'
       externalId: Scenario
       type: container
     containerPropertyIdentifier: commands
@@ -46,7 +46,7 @@ properties:
     description: The commands to run when running the scenario
   extraFiles:
     container:
-      space: '{{day_ahead_backend_space}}'
+      space: '{{powerops_models}}'
       externalId: Scenario
       type: container
     containerPropertyIdentifier: extraFiles
@@ -54,7 +54,7 @@ properties:
     description: Extra files to include when running the scenario
   source:
     container:
-      space: '{{day_ahead_backend_space}}'
+      space: '{{powerops_models}}'
       externalId: Scenario
       type: container
     containerPropertyIdentifier: source
@@ -62,7 +62,7 @@ properties:
     description: The source of the scenario
   shopStartSpecification:
     container:
-      space: '{{day_ahead_backend_space}}'
+      space: '{{powerops_models}}'
       externalId: Scenario
       type: container
     containerPropertyIdentifier: shopStartSpecification
@@ -70,7 +70,7 @@ properties:
     description: The shop start specification
   shopEndSpecification:
     container:
-      space: '{{day_ahead_backend_space}}'
+      space: '{{powerops_models}}'
       externalId: Scenario
       type: container
     containerPropertyIdentifier: shopEndSpecification
@@ -78,7 +78,7 @@ properties:
     description: The shop end specification
   shopStart:
     container:
-      space: '{{day_ahead_backend_space}}'
+      space: '{{powerops_models}}'
       externalId: Scenario
       type: container
     containerPropertyIdentifier: shopStartSpecification
@@ -86,7 +86,7 @@ properties:
     description: The shop start time
   shopEnd:
     container:
-      space: '{{day_ahead_backend_space}}'
+      space: '{{powerops_models}}'
       externalId: Scenario
       type: container
     containerPropertyIdentifier: shopEndSpecification
@@ -94,7 +94,7 @@ properties:
     description: The shop end time
   bidDate:
     container:
-      space: '{{day_ahead_backend_space}}'
+      space: '{{powerops_models}}'
       externalId: Scenario
       type: container
     containerPropertyIdentifier: bidDate
@@ -102,7 +102,7 @@ properties:
     description: The bid date of the scenario
   isReady:
     container:
-      space: '{{day_ahead_backend_space}}'
+      space: '{{powerops_models}}'
       externalId: Scenario
       type: container
     containerPropertyIdentifier: isReady
@@ -110,12 +110,12 @@ properties:
     description: Whether the scenario is ready to be run
   mappingsOverride:
     type:
-      space: '{{type_space}}'
+      space: '{{powerops_models}}'
       externalId: Mapping
     source:
-      space: '{{day_ahead_backend_space}}'
+      space: '{{powerops_models}}'
       externalId: Mapping
-      version: '{{day_ahead_backend_mapping_version}}'
+      version: '{{version
       type: view
     direction: outwards
     name: mappingsOverride
