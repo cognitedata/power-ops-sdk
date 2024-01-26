@@ -7,6 +7,7 @@ powerops_instance_space: 'power-ops-instance'
 asset_space: 'power-ops-assets'
 day_ahead_backend_space: 'power-ops-day-ahead-backend'
 powerops_models: 'sp_powerops_models'
+version: '1'
 
 # Shared Model Views
 base_BidDocument_version: '1'
