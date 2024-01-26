@@ -4,8 +4,31 @@ version: '1'
 name: WaterValueBasedDayAheadBidProcess
 description: 'The process of going from BidConfig to a PartialBidMatrix'
 views:
--
-
+- space: '{{day_ahead_backend_space}}'
+  externalId: FunctionInput
+  type: view
+  version: '{{}}'
+- externalId: FunctionOutput
+  space: '{{dayahead_model_space}}'
+  type: view
+  version: '{{}}'
+- externalId: TaskDispatcherInput
+  space: '{{dayahead_model_space}}'
+  type: view
+  version: '{{}}'
+- space: '{{dayahead_model_space}}'
+  externalId: BidCalculationTask
+  type: view
+  version: '{{}}'
+- externalId: BidCalculationInput
+  space: '{{dayahead_model_space}}'
+  type: view
+  version: '{{}}'
+- externalId: BidCalculationOutput
+  space: '{{dayahead_model_space}}'
+  type: view
+  version: '{{}}'
+# Done
 - space: '{{dayahead_model_space}}'
   externalId: BidMatrixRaw
   type: view
