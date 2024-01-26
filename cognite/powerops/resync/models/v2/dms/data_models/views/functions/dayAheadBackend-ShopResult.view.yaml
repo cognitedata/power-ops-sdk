@@ -6,7 +6,17 @@ name: ShopResult
 version: '{{day_ahead_backend_shop_result_version}}'
 properties:
   scenario:
-
+    type:
+      space: '{{type_space}}'
+      externalId: Scenario
+    source:
+      space: '{{power-ops-day-ahead-backend_space}}'
+      externalId: Scenario
+      version: '{{day_ahead_backend_scenario_version}}'
+      type: view
+    name: scenario
+    description: The shop scenario that was used to produce this result
+    direction: outwards
   productionTimeSeries:
     container:
       space: '{{day_ahead_backend_space}}'
@@ -18,7 +28,7 @@ properties:
   objectiveSequence:
     container:
       space: '{{day_ahead_backend_space}}'
-      externalId: FunctionData
+      externalId: FunctionData # does it make sense to fetch this from this container?
       type: container
     containerPropertyIdentifier: sequence
     name: objectiveSequence
