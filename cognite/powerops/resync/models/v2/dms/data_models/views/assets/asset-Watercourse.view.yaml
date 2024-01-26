@@ -1,0 +1,59 @@
+space: '{{asset_space}}'
+externalId: Watercourse
+description: A description of the Watercourse Asset
+name: Watercourse
+version: '{{asset_Watercourse_version}}'
+filter:
+  equals:
+    property:
+    - node
+    - type
+    value:
+      space: '{{type_space}}'
+      externalId: Watercourse
+properties:
+  name:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: Asset
+      type: container
+    containerPropertyIdentifier: name
+    name: name
+    description: Name for the Watercourse.
+  displayName:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: Asset
+      type: container
+    containerPropertyIdentifier: displayName
+    name: displayName
+    description: Display name for the Watercourse.
+  productionObligation:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: Watercourse
+      type: container
+    containerPropertyIdentifier: productionObligationTimeSeries
+    name: productionObligation
+    description: The production obligation for the Watercourse.
+  plants:
+    type:
+      space: '{{type_space}}'
+      externalId: isSubAssetOf
+    source:
+      space: '{{asset_space}}'
+      externalId: Plant
+      version: '{{asset_Plant_version}}'
+      type: view
+    direction: outwards
+    name: plants
+    description: The plants that are connected to the Watercourse.
+    connectionType: multiEdgeConnection
+  penaltyLimit:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: Watercourse
+      type: container
+    containerPropertyIdentifier: penaltyLimit
+    name: penaltyLimit
+    description: The penalty limit for the watercourse (used by SHOP).

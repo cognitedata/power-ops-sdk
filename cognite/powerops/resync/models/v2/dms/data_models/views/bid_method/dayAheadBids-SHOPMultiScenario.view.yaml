@@ -1,0 +1,32 @@
+space: '{{dayahead_model_space}}'
+externalId: SHOPMultiScenario
+name: SHOPMultiScenario
+filter:
+  equals:
+    property:
+    - node
+    - type
+    value:
+      space: '{{type_space}}'
+      externalId: DayAheadSHOPMultiScenario
+implements:
+- space: '{{dayahead_model_space}}'
+  externalId: BidMethod
+  version: '{{dayaheadbid_BidMethod_version}}'
+  type: view
+version: '{{dayaheadbid_SHOPMultiScenario_version}}'
+properties:
+  shopCases:
+    container:
+      space: '{{dayahead_model_space}}'
+      externalId: SHOPMultiScenario
+      type: container
+    containerPropertyIdentifier: shopCases
+    name: shopCases
+  priceScenarios:
+    container:
+      space: '{{dayahead_model_space}}'
+      externalId: SHOPMultiScenario
+      type: container
+    containerPropertyIdentifier: priceScenarios
+    name: priceScenarios
