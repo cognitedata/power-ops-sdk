@@ -27,14 +27,14 @@ properties:
   scenarioRaw:
     type:
       space: '{{powerops_models}}'
-      externalId: Scenario
+      externalId: ScenarioRaw
     source:
       space: '{{powerops_models}}'
-      externalId: Scenario
+      externalId: ScenarioRaw
       version: '{{version}}'
       type: view
     direction: outwards
-    name: scenario
+    name: scenarioRaw
     description: The scenario that needs preprocessing before being sent to shop (has isReady flag set to false)
   processId:
     container:

@@ -1,13 +1,12 @@
-# This is deprecated. Use the specific for AFRR and DayAhead instead.
-space: '{{day_ahead_backend_space}}'
-externalId: FunctionInput
+space: '{{powerops_models}}'
+externalId: FunctionOutput
 description: Base class for all function inputs
-name: FunctionInput
-version: '{{day_ahead_backend_function_output_version}}'
+name: FunctionOutput
+version: '{{version}}'
 properties:
   processId:
     container:
-      space: '{{day_ahead_backend_space}}'
+      space: '{{powerops_models}}'
       externalId: FunctionMetadata
       type: container
     containerPropertyIdentifier: processId
@@ -15,7 +14,7 @@ properties:
     description: The process associated with the function execution
   processStep:
     container:
-      space: '{{day_ahead_backend_space}}'
+      space: '{{powerops_models}}'
       externalId: FunctionMetadata
       type: container
     containerPropertyIdentifier: processStep
@@ -23,7 +22,7 @@ properties:
     description: This is the step in the process.
   previousStep:
     container:
-      space: '{{day_ahead_backend_space}}'
+      space: '{{powerops_models}}'
       externalId: FunctionMetadata
       type: container
     containerPropertyIdentifier: linkedStep
@@ -31,13 +30,14 @@ properties:
     description: This is the linked step in the process.
   alerts:
     type:
-      space: '{{type_space}}'
+      space: '{{powerops_models}}'
       externalId: calculationIssue
     source:
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Alert
-      version: '{{base_Alert_version}}'
+      version: '{{version}}'
       type: view
     direction: outwards
     name: alerts
+    description: An array of calculation level Alerts.
     connectionType: multiEdgeConnection

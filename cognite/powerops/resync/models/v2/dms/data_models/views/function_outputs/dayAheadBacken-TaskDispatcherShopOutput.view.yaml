@@ -1,12 +1,12 @@
-space: '{{day_ahead_backend_space}}'
+space: '{{powerops_models}}'
 externalId: TaskDispatcherShopOutput
 description: Input to the task dispatcher in the shop bid process
 name: TaskDispatcherShopOutput
-version: '{{day_ahead_backend_task_dispatcher_shop_output_version}}'
+version: '{{version}}'
 implements:
-  - space: '{{day_ahead_backend_space}}'
+  - space: '{{powerops_models}}'
     externalId: FunctionInput
-    version: '{{day_ahead_backend_function_output_version}}'
+    version: '{{version}}'
     type: view
 filter:
   equals:
@@ -18,7 +18,7 @@ filter:
 properties:
   functionName:
     container:
-      space: '{{day_ahead_backend_space}}'
+      space: '{{powerops_models}}'
       externalId: FunctionMetadata
       type: container
     containerPropertyIdentifier: functionName
@@ -26,7 +26,7 @@ properties:
     description: The function name
   processId:
     container:
-      space: '{{day_ahead_backend_space}}'
+      space: '{{powerops_models}}'
       externalId: FunctionMetadata
       type: container
     containerPropertyIdentifier: processId
@@ -34,28 +34,32 @@ properties:
     description: The id of the dayahead bid shop process
   processStep:
     container:
-      space: '{{day_ahead_backend_space}}'
+      space: '{{powerops_models}}'
       externalId: FunctionMetadata
       type: container
     containerPropertyIdentifier: processStep
     name: processStep
     description: The step in the bid process as an integer ex. 0,1,2
-  linkedStep:
-    container:
-      space: '{{day_ahead_backend_space}}'
-      externalId: FunctionMetadata
-      type: container
-    containerPropertyIdentifier: linkedStep
-    name: previousStep # here is where you map the name - the name that is shown in the view
-    description: The id of the dayahead bid shop process
+  previousStep:
+    type:
+      space: '{{powerops_models}}'
+      externalId: TaskDispatcherShopInput
+    source:
+      space: '{{powerops_models}}'
+      externalId: TaskDispatcherShopInput
+      version: '{{version}}'
+      type: view
+    direction: outwards
+    name: previousStep
+    description: The previous step in the process.
   alerts:
     type:
-      space: '{{type_space}}'
+      space: '{{powerops_models}}'
       externalId: calculationIssue
     source:
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Alert
-      version: '{{base_Alert_version}}'
+      version: '{{version}}'
       type: view
     direction: outwards
     name: alerts
@@ -66,9 +70,9 @@ properties:
       space: '{{type_space}}'
       externalId: PreprocessorInput
     source:
-      space: '{{day_ahead_backend_space}}'
+      space: '{{powerops_models}}'
       externalId: PreprocessorInput
-      version: '{{day_ahead_backend_preprocessor_input_version}}'
+      version: '{{version}}'
       type: view
     direction: outwards
     name: preprocessorCalculations
@@ -79,9 +83,9 @@ properties:
       space: '{{type_space}}'
       externalId: PartialBidCalculationInput
     source:
-      space: '{{day_ahead_backend_space}}'
+      space: '{{powerops_models}}'
       externalId: PartialBidCalculationInput
-      version: '{{day_ahead_backend_partial_bid_calculation_input_version}}'
+      version: '{{version}}'
       type: view
     direction: outwards
     name: preprocessorCalculations

@@ -1,12 +1,12 @@
-space: '{{day_ahead_backend_space}}'
+space: '{{powerops_models}}'
 externalId: BidMethod
 description: Bid methods for all day ahead methods
 name: BidMethod
-version: '{{day_ahead_backend_bid_method_version}}'
+version: '{{version}}'
 properties:
   name:
     container:
-      space: '{{dayahead_model_space}}'
+      space: '{{powerops_models}}'
       externalId: BidMethod
       type: container
     containerPropertyIdentifier: name
@@ -14,7 +14,7 @@ properties:
     description: Name for the BidMethod
   mainScenario:
     container:
-      space: '{{day_ahead_backend_space}}'
+      space: '{{powerops_models}}'
       externalId: mainScenario
       type: container
     containerPropertyIdentifier: mainScenario

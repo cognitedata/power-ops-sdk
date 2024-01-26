@@ -62,4 +62,4 @@ filter:
     - node
     - property
     - isProcessed
-    value: False
+    value: True

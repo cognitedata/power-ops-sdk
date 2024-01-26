@@ -1,12 +1,12 @@
-space: '{{day_ahead_backend_space}}'
+space: '{{powerops_models}}'
 externalId: PreprocessorOutput
 description: Input to the task dispatcher in the shop bid process
-name: TaskDispatcherShopInput
-version: '{{day_ahead_backend_preprocessor_output_version}}'
+name: PreprocessorOutput
+version: '{{version}}'
 implements:
-  - space: '{{day_ahead_backend_space}}'
-    externalId: FunctionInput
-    version: '{{day_ahead_backend_function_input_version}}'
+  - space: '{{powerops_models}}'
+    externalId: FunctionOutput
+    version: '{{version}}'
     type: view
 filter:
   equals:
@@ -14,27 +14,31 @@ filter:
     - node
     - property
     - functionName
-    value: Preprocessor
+    value: PreprocessorOutput
 properties:
   functionName:
     container:
-      space: '{{day_ahead_backend_space}}'
+      space: '{{powerops_models}}'
       externalId: FunctionMetadata
       type: container
     containerPropertyIdentifier: functionName
     name: functionName
     description: The function name
   scenario:
-    container:
-      space: '{{day_ahead_backend_space}}'
-      externalId: FunctionMetadata
-      type: container
-    containerPropertyIdentifier: data
+    type:
+      space: '{{powerops_models}}'
+      externalId: Scenario
+    source:
+      space: '{{powerops_models}}'
+      externalId: Scenario
+      version: '{{version}}'
+      type: view
+    direction: outwards
     name: scenario
-    description: The preprocessed and ready scenario to send to cogshop
+    description: The prepped and processed scenario to send to shop trigger
   processId:
     container:
-      space: '{{day_ahead_backend_space}}'
+      space: '{{powerops_models}}'
       externalId: FunctionMetadata
       type: container
     containerPropertyIdentifier: processId
@@ -42,28 +46,32 @@ properties:
     description: The id of the dayahead bid shop process
   processStep:
     container:
-      space: '{{day_ahead_backend_space}}'
+      space: '{{powerops_models}}'
       externalId: FunctionMetadata
       type: container
     containerPropertyIdentifier: processStep
     name: processStep
     description: The step in the bid process as an integer ex. 0,1,2
-  linkedStep:
-    container:
-      space: '{{day_ahead_backend_space}}'
-      externalId: FunctionMetadata
-      type: container
-    containerPropertyIdentifier: linkedStep
-    name: previousStep # here is where you map the name - the name that is shown in the view
-    description: The id of the dayahead bid shop process
+  previousStep:
+    type:
+      space: '{{powerops_models}}'
+      externalId: PreprocessorInput
+    source:
+      space: '{{powerops_models}}'
+      externalId: PreprocessorInput
+      version: '{{version}}'
+      type: view
+    direction: outwards
+    name: previousStep
+    description: The prepped and processed scenario to send to shop trigger
   alerts:
     type:
-      space: '{{type_space}}'
+      space: '{{powerops_models}}'
       externalId: calculationIssue
     source:
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Alert
-      version: '{{base_Alert_version}}'
+      version: '{{version}}'
       type: view
     direction: outwards
     name: alerts
