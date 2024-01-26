@@ -1,6 +1,6 @@
-space: '{{dayahead_model_space}}'
-externalId: BidMethod
-name: BidMethod
+space: '{{powerops_models}}'
+externalId: BidMethodAFRR
+name: BidMethodAFRR
 usedFor: node
 properties:
   name:

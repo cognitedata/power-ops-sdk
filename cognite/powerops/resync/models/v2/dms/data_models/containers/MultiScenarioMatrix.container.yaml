@@ -1,0 +1,26 @@
+space: '{{powerops_models}}'
+externalId: MultiScenarioMatrix
+name: MultiScenarioMatrix
+usedFor: node
+properties:
+  production:
+    type:
+      list: true
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: production
+  price:
+    type:
+      list: true
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: price
+constraints:
+  requiredBidMatrix:
+    require:
+      space: '{{powerops_models}}'
+      externalId: BidMatrix
+      type: container
+    constraintType: requires

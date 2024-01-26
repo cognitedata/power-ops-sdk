@@ -1,4 +1,4 @@
-space: '{{day_ahead_backend_space}}'
+space: '{{powerops_models}}'
 externalId: MarketConfiguration
 name: MarketConfiguration
 usedFor: node

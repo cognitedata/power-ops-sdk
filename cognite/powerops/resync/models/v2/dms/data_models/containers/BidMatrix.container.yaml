@@ -1,4 +1,4 @@
-space: '{{dayahead_model_space}}'
+space: '{{powerops_models}}'
 externalId: BidMatrix
 name: BidMatrix
 usedFor: node

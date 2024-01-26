@@ -1,9 +1,17 @@
-space: '{{day_ahead_backend_space}}'
-externalId: PriceScenario
-name: PriceScenario
+space: '{{powerops_models}}'
+externalId: Mapping
+name: Mapping
 usedFor: node
 properties:
-# The following is repeated in Mapping - should this be remodeled?
+  shopPath:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: shopPath
+    description: The key to apply mapping to in a shop file
   timeSeries:
     type:
       list: false
@@ -12,6 +20,14 @@ properties:
     autoIncrement: false
     name: timeSeries
     description: The time series to apply mapping to
+  transformations:
+    type:
+      list: true
+      type: json
+    nullable: true
+    autoIncrement: false
+    name: transformations
+    description: The transformations to apply to the time series
   retrieve:
     type:
       list: false
@@ -30,17 +46,9 @@ properties:
     autoIncrement: false
     name: aggregation
     description: How to aggregate time series data
-  transformations:
-    type:
-      list: true
-      type: json
-    nullable: true
-    autoIncrement: false
-    name: transformations
-    description: The transformations to apply to the time series
 indexes:
-  timeSeriesIndex:
+  shopPathIndex:
     properties:
-    - timeSeries
+    - shopPath
     indexType: btree
     cursorable: false

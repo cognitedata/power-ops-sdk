@@ -1,4 +1,4 @@
-space: '{{dayahead_model_space}}'
+space: '{{powerops_models}}'
 externalId: SHOPMultiScenario
 name: SHOPMultiScenario
 usedFor: node
@@ -22,7 +22,7 @@ properties:
 constraints:
   requiredBidMethod:
     require:
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: BidMethod
       type: container
     constraintType: requires
