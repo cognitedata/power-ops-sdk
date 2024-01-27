@@ -1,8 +1,13 @@
-space: '{{asset_space}}'
+space: '{{powerops_models}}'
 externalId: Generator
 description: A generator
 name: Generator
 version: '{{asset_Generator_version}}'
+implements:
+- space: '{{powerops_models}}'
+  externalId: PowerAsset
+  version: '{{version}}'
+  type: view
 filter:
   equals:
     property:
@@ -12,22 +17,6 @@ filter:
       space: '{{type_space}}'
       externalId: Generator
 properties:
-  name:
-    container:
-      space: '{{powerops_models}}'
-      externalId: Asset
-      type: container
-    containerPropertyIdentifier: name
-    name: name
-    description: Name for the Generator.
-  displayName:
-    container:
-      space: '{{powerops_models}}'
-      externalId: Asset
-      type: container
-    containerPropertyIdentifier: displayName
-    name: displayName
-    description: Display name for the Generator.
   pMin:
     container:
       type: container
@@ -72,14 +61,14 @@ properties:
     name: generatorEfficiency
     source:
       type: view
-      space: '{{asset_space}}'
+      space: '{{powerops_models}}'
       externalId: GeneratorEfficiencyCurve
       version: '{{asset_GeneratorEfficiency_version}}'
   turbineCurves:
     name: turbineCurves
     source:
       type: view
-      space: '{{asset_space}}'
+      space: '{{powerops_models}}'
       externalId: TurbineEfficiencyCurve
       version: '{{asset_TurbineEfficiency_version}}'
     type:

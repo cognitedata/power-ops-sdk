@@ -1,4 +1,4 @@
-space: '{{asset_space}}'
+space: '{{powerops_models}}'
 externalId: TurbineEfficiencyCurve
 description: Describes the efficiency curve for a turbine
 name: TurbineEfficiencyCurve
@@ -14,7 +14,7 @@ filter:
 properties:
   head:
     container:
-      space: '{{asset_space}}'
+      space: '{{powerops_models}}'
       externalId: EfficiencyCurve
       type: container
     containerPropertyIdentifier: ref
@@ -22,7 +22,7 @@ properties:
     description: The reference head values
   flow:
     container:
-      space: '{{asset_space}}'
+      space: '{{powerops_models}}'
       externalId: EfficiencyCurve
       type: container
     containerPropertyIdentifier: x
@@ -30,7 +30,7 @@ properties:
     description: The flow values
   efficiency:
     container:
-      space: '{{asset_space}}'
+      space: '{{powerops_models}}'
       externalId: EfficiencyCurve
       type: container
     containerPropertyIdentifier: efficiency

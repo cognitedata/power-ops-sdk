@@ -1,0 +1,19 @@
+space: '{{powerops_models}}'
+externalId: Reservoir
+description: A reservoir
+name: Reservoir
+version: '{{asset_Reservoir_version}}'
+implements:
+- space: '{{powerops_models}}'
+  externalId: PowerAsset
+  version: '{{version}}'
+  type: view
+filter:
+  equals:
+    property:
+    - node
+    - type
+    value:
+      space: '{{type_space}}'
+      externalId: Reservoir
+properties: {}

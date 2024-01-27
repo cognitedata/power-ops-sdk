@@ -2,24 +2,29 @@ space: '{{powerops_models}}'
 externalId: PriceArea
 description: Information about the Price Area that is only relevant for AFRR
 name: PriceArea
-version: '{{afrrbid_PriceArea_version}}'
+version: '{{version}}'
+implements:
+- space: '{{powerops_models}}'
+  externalId: PowerAsset
+  version: '{{version}}'
+  type: view
 filter:
   equals:
     property:
-     - node
-     - type
+    - node
+    - type
     value:
       space: '{{type_space}}'
       externalId: PriceArea
 properties:
-  name:
+  timezone:
     container:
       space: '{{powerops_models}}'
-      externalId: Asset
+      externalId: PriceArea
       type: container
-    containerPropertyIdentifier: name
-    name: name
-    description: Name for the PriceArea.
+    containerPropertyIdentifier: timezone
+    name: timezone
+    description: The timezone of the price area
   capacityPriceUp:
     container:
       space: '{{powerops_models}}'
@@ -87,3 +92,58 @@ properties:
       type: container
     containerPropertyIdentifier: ownCapacityAllocationDown
     name: ownCapacityAllocationDown
+  defaultMethodDayAhead:
+    container:
+      space: '{{powerops_models}}'
+      externalId: PriceArea
+      type: container
+    containerPropertyIdentifier: defaultMethodDayAhead
+    name: defaultMethodDayAhead
+    description: Default method for day ahead bids
+    source:
+      space: '{{powerops_models}}'
+      externalId: BidMethod
+      version: '{{base_BidMethod_version}}'
+      type: view
+  mainScenarioDayAhead:
+    container:
+      space: '{{powerops_models}}'
+      externalId: PriceArea
+      type: container
+    containerPropertyIdentifier: mainScenarioDayAhead
+    name: mainScenarioDayAhead
+    description: Main scenario for day ahead bids
+  dayAheadPrice:
+    container:
+      space: '{{powerops_models}}'
+      externalId: PriceArea
+      type: container
+    containerPropertyIdentifier: dayAheadPrice
+    name: dayAheadPrice
+    description: Day ahead price for the price area
+  plants:
+    type:
+      space: '{{type_space}}'
+      externalId: isSubAssetOf
+    source:
+      space: '{{powerops_models}}'
+      externalId: Plant
+      version: '{{asset_Plant_version}}'
+      type: view
+    direction: outwards
+    name: plants
+    description: The plants that are connected to the Watercourse.
+    connectionType: multiEdgeConnection
+  watercourses:
+    type:
+      space: '{{type_space}}'
+      externalId: isSubAssetOf
+    source:
+      space: '{{powerops_models}}'
+      externalId: Watercourse
+      version: '{{asset_Watercourse_version}}'
+      type: view
+    direction: outwards
+    name: watercourses
+    description: The watercourses that are connected to the PriceArea.
+    connectionType: multiEdgeConnection

@@ -1,5 +1,5 @@
 space: '{{powerops_models}}'
-externalId: PriceArea
+externalId: PriceAreaDayAhead
 name: PriceArea
 version: '{{dayaheadbid_PriceArea_version}}'
 filter:

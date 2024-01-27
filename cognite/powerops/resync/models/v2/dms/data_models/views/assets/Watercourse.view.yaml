@@ -1,8 +1,13 @@
-space: '{{asset_space}}'
+space: '{{powerops_models}}'
 externalId: Watercourse
 description: A description of the Watercourse Asset
 name: Watercourse
 version: '{{asset_Watercourse_version}}'
+implements:
+- space: '{{powerops_models}}'
+  externalId: PowerAsset
+  version: '{{version}}'
+  type: view
 filter:
   equals:
     property:
@@ -12,22 +17,6 @@ filter:
       space: '{{type_space}}'
       externalId: Watercourse
 properties:
-  name:
-    container:
-      space: '{{powerops_models}}'
-      externalId: Asset
-      type: container
-    containerPropertyIdentifier: name
-    name: name
-    description: Name for the Watercourse.
-  displayName:
-    container:
-      space: '{{powerops_models}}'
-      externalId: Asset
-      type: container
-    containerPropertyIdentifier: displayName
-    name: displayName
-    description: Display name for the Watercourse.
   productionObligation:
     container:
       space: '{{powerops_models}}'
@@ -41,7 +30,7 @@ properties:
       space: '{{type_space}}'
       externalId: isSubAssetOf
     source:
-      space: '{{asset_space}}'
+      space: '{{powerops_models}}'
       externalId: Plant
       version: '{{asset_Plant_version}}'
       type: view
