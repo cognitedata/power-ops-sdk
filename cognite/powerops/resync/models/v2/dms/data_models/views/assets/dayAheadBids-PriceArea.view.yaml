@@ -1,4 +1,4 @@
-space: '{{dayahead_model_space}}'
+space: '{{powerops_models}}'
 externalId: PriceArea
 name: PriceArea
 version: '{{dayaheadbid_PriceArea_version}}'
@@ -13,40 +13,40 @@ filter:
 properties:
   name:
     container:
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Asset
       type: container
     containerPropertyIdentifier: name
     name: name
   defaultMethod:
     container:
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: PriceArea
       type: container
     containerPropertyIdentifier: defaultMethodDayAhead
     name: defaultMethod
     source:
-      space: '{{dayahead_model_space}}'
+      space: '{{powerops_models}}'
       externalId: BidMethod
       version: '{{dayaheadbid_BidMethod_version}}'
       type: view
   timezone:
     container:
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: PriceArea
       type: container
     containerPropertyIdentifier: timezone
     name: timezone
   mainScenario:
     container:
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: PriceArea
       type: container
     containerPropertyIdentifier: mainScenarioDayAhead
     name: mainScenario
   priceScenarios:
     container:
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: PriceArea
       type: container
     containerPropertyIdentifier: priceScenarios

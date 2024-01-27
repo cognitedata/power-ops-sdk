@@ -1,4 +1,4 @@
-space: '{{dayahead_model_space}}'
+space: '{{powerops_models}}'
 externalId: WaterValueBased
 name: WaterValueBased
 filter:
@@ -10,7 +10,7 @@ filter:
       space: '{{type_space}}'
       externalId: DayAheadWaterValueBased
 implements:
-- space: '{{dayahead_model_space}}'
+- space: '{{powerops_models}}'
   externalId: BidMethod
   version: '{{dayaheadbid_BidMethod_version}}'
   type: view

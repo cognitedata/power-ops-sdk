@@ -33,6 +33,6 @@ views:
   type: view
   version: '{{asset_GeneratorEfficiency_version}}'
 - externalId: BidMethod
-  space: '{{shared_model_space}}'
+  space: '{{powerops_models}}'
   type: view
   version: '{{base_BidMethod_version}}'

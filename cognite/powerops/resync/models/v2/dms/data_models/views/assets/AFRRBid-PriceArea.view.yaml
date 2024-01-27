@@ -1,4 +1,4 @@
-space: '{{afrr_model_space}}'
+space: '{{powerops_models}}'
 externalId: PriceArea
 description: Information about the Price Area that is only relevant for AFRR
 name: PriceArea
@@ -14,7 +14,7 @@ filter:
 properties:
   name:
     container:
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Asset
       type: container
     containerPropertyIdentifier: name
@@ -22,21 +22,21 @@ properties:
     description: Name for the PriceArea.
   capacityPriceUp:
     container:
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: PriceArea
       type: container
     containerPropertyIdentifier: capacityPriceUp
     name: capacityPriceUp
   capacityPriceDown:
     container:
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: PriceArea
       type: container
     containerPropertyIdentifier: capacityPriceDown
     name: capacityPriceDown
   activationPriceUp:
     container:
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: PriceArea
       type: container
     containerPropertyIdentifier: activationPriceUp
@@ -44,7 +44,7 @@ properties:
     description: The mFRR activation price (TBC)
   activationPriceDown:
     container:
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: PriceArea
       type: container
     containerPropertyIdentifier: activationPriceDown
@@ -52,7 +52,7 @@ properties:
     description: The mFRR activate price (TBC)
   relativeActivation:
     container:
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: PriceArea
       type: container
     containerPropertyIdentifier: relativeActivation
@@ -61,28 +61,28 @@ properties:
       down)
   totalCapacityAllocationUp:
     container:
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: PriceArea
       type: container
     containerPropertyIdentifier: totalCapacityAllocationUp
     name: totalCapacityAllocationUp
   totalCapacityAllocationDown:
     container:
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: PriceArea
       type: container
     containerPropertyIdentifier: totalCapacityAllocationDown
     name: totalCapacityAllocationDown
   ownCapacityAllocationUp:
     container:
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: PriceArea
       type: container
     containerPropertyIdentifier: ownCapacityAllocationUp
     name: ownCapacityAllocationUp
   ownCapacityAllocationDown:
     container:
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: PriceArea
       type: container
     containerPropertyIdentifier: ownCapacityAllocationDown

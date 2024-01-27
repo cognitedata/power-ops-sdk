@@ -14,7 +14,7 @@ filter:
 properties:
   name:
     container:
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Asset
       type: container
     containerPropertyIdentifier: name
@@ -22,14 +22,14 @@ properties:
     description: Name for the Plant.
   displayName:
     container:
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Asset
       type: container
     containerPropertyIdentifier: displayName
     name: displayName
   ordering:
     container:
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Asset
       type: container
     containerPropertyIdentifier: order
@@ -41,7 +41,7 @@ properties:
       list: false
     container:
       type: container
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Plant
     containerPropertyIdentifier: headLossFactor
     name: headLossFactor
@@ -51,7 +51,7 @@ properties:
       list: false
     container:
       type: container
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Plant
     containerPropertyIdentifier: outletLevel
     name: outletLevel
@@ -61,7 +61,7 @@ properties:
       list: false
     container:
       type: container
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Plant
     containerPropertyIdentifier: pMax
     name: pMax
@@ -71,7 +71,7 @@ properties:
       list: false
     container:
       type: container
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Plant
     containerPropertyIdentifier: pMin
     name: pMin
@@ -81,7 +81,7 @@ properties:
       list: false
     container:
       type: container
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Plant
     containerPropertyIdentifier: penstockHeadLossFactors
     name: penstockHeadLossFactors
@@ -93,7 +93,7 @@ properties:
       version: '{{asset_Watercourse_version}}'
     container:
       type: container
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Plant
     containerPropertyIdentifier: watercourse
     name: watercourse
@@ -103,7 +103,7 @@ properties:
       list: false
     container:
       type: container
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Plant
     containerPropertyIdentifier: connectionLosses
     name: connectionLosses
@@ -113,7 +113,7 @@ properties:
       list: false
     container:
       type: container
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Plant
     containerPropertyIdentifier: pMaxTimeSeries
     name: pMaxTimeSeries
@@ -123,7 +123,7 @@ properties:
       list: false
     container:
       type: container
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Plant
     containerPropertyIdentifier: pMinTimeSeries
     name: pMinTimeSeries
@@ -133,7 +133,7 @@ properties:
       list: false
     container:
       type: container
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Plant
     containerPropertyIdentifier: waterValueTimeSeries
     name: waterValueTimeSeries
@@ -143,7 +143,7 @@ properties:
       list: false
     container:
       type: container
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Plant
     containerPropertyIdentifier: feedingFeeTimeSeries
     name: feedingFeeTimeSeries
@@ -153,7 +153,7 @@ properties:
       list: false
     container:
       type: container
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Plant
     containerPropertyIdentifier: outletLevelTimeSeries
     name: outletLevelTimeSeries
@@ -163,7 +163,7 @@ properties:
       list: false
     container:
       type: container
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Plant
     containerPropertyIdentifier: inletLevelTimeSeries
     name: inletLevelTimeSeries
@@ -173,7 +173,7 @@ properties:
       list: false
     container:
       type: container
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Plant
     containerPropertyIdentifier: headDirectTimeSeries
     name: headDirectTimeSeries
@@ -185,7 +185,7 @@ properties:
       version: '{{asset_Reservoir_version}}'
     container:
       type: container
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Plant
     containerPropertyIdentifier: inletReservoir
     name: inletReservoir

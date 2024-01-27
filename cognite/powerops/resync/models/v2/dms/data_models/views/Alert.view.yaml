@@ -1,4 +1,4 @@
-space: '{{shared_model_space}}'
+space: '{{powerops_models}}'
 externalId: Alert
 description: Alerts
 name: Alert
@@ -14,7 +14,7 @@ filter:
 properties:
   time:
     container:
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Alert
       type: container
     containerPropertyIdentifier: time
@@ -22,7 +22,7 @@ properties:
     description: Timestamp that the alert occurred (within the workflow)
   title:
     container:
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Alert
       type: container
     containerPropertyIdentifier: title
@@ -30,7 +30,7 @@ properties:
     description: Summary description of the alert
   description:
     container:
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Alert
       type: container
     containerPropertyIdentifier: description
@@ -38,7 +38,7 @@ properties:
     description: Detailed description of the alert
   severity:
     container:
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Alert
       type: container
     containerPropertyIdentifier: severity
@@ -47,7 +47,7 @@ properties:
       completed, with major issue) INFO     (calculation completed, with minor issues)
   alertType:
     container:
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Alert
       type: container
     containerPropertyIdentifier: alertType
@@ -55,7 +55,7 @@ properties:
     description: Classification of the alert (not in current alerting implementation)
   statusCode:
     container:
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Alert
       type: container
     containerPropertyIdentifier: statusCode
@@ -64,7 +64,7 @@ properties:
       avoid use of hardcoded description (i.e. like a translation)
   eventIds:
     container:
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Alert
       type: container
     containerPropertyIdentifier: eventIds
@@ -72,7 +72,7 @@ properties:
     description: An array of associated alert CDF Events (e.g. SHOP Run events)
   calculationRun:
     container:
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Alert
       type: container
     containerPropertyIdentifier: calculationRun

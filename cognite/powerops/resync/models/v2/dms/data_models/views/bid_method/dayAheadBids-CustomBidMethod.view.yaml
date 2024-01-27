@@ -1,11 +1,11 @@
-space: '{{dayahead_model_space}}'
+space: '{{powerops_models}}'
 externalId: CustomBidMethod
 name: CustomBidMethod
 filter:
   and:
     - hasData:
         - type: container
-          space: '{{dayahead_model_space}}'
+          space: '{{powerops_models}}'
           externalId: BidMethod
     - not:
         in:
@@ -18,7 +18,7 @@ filter:
             - space: '{{type_space}}'
               externalId: DayAheadWaterValueBased
 implements:
-- space: '{{dayahead_model_space}}'
+- space: '{{powerops_models}}'
   externalId: BidMethod
   version: '{{dayaheadbid_BidMethod_version}}'
   type: view

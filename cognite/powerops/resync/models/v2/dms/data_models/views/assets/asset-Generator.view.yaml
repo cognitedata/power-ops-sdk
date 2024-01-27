@@ -14,7 +14,7 @@ filter:
 properties:
   name:
     container:
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Asset
       type: container
     containerPropertyIdentifier: name
@@ -22,7 +22,7 @@ properties:
     description: Name for the Generator.
   displayName:
     container:
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Asset
       type: container
     containerPropertyIdentifier: displayName
@@ -31,42 +31,42 @@ properties:
   pMin:
     container:
       type: container
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Generator
     containerPropertyIdentifier: pMin
     name: pMin
   penstock:
     container:
       type: container
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Generator
     containerPropertyIdentifier: penstock
     name: penstock
   startCost:
     container:
       type: container
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Generator
     containerPropertyIdentifier: startCost
     name: startCost
   startStopCost:
     container:
       type: container
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Generator
     containerPropertyIdentifier: startStopCost
     name: startStopCost
   isAvailableTimeSeries:
     container:
       type: container
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Generator
     containerPropertyIdentifier: isAvailable
     name: isAvailableTimeSeries
   efficiencyCurve:
     container:
       type: container
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Generator
     containerPropertyIdentifier: efficiencyCurve
     name: generatorEfficiency

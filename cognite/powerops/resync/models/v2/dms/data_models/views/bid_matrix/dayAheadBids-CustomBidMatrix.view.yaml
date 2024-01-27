@@ -1,8 +1,8 @@
-space: '{{dayahead_model_space}}'
+space: '{{powerops_models}}'
 externalId: CustomBidMatrix
 name: CustomBidMatrix
 implements:
-- space: '{{dayahead_model_space}}'
+- space: '{{powerops_models}}'
   externalId: BidMatrix
   version: '{{dayaheadbid_BidMatrix_version}}'
   type: view
@@ -11,7 +11,7 @@ filter:
   and:
     - hasData:
        - type: container
-         space: '{{dayahead_model_space}}'
+         space: '{{powerops_models}}'
          externalId: BidMatrix
     - not:
        in:

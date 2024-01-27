@@ -9,35 +9,35 @@ views:
   type: view
   version: '{{}}'
 - externalId: FunctionOutput
-  space: '{{dayahead_model_space}}'
+  space: '{{powerops_models}}'
   type: view
   version: '{{}}'
 - externalId: TaskDispatcherInput
-  space: '{{dayahead_model_space}}'
+  space: '{{powerops_models}}'
   type: view
   version: '{{}}'
-- space: '{{dayahead_model_space}}'
+- space: '{{powerops_models}}'
   externalId: BidCalculationTask
   type: view
   version: '{{}}'
 - externalId: BidCalculationInput
-  space: '{{dayahead_model_space}}'
+  space: '{{powerops_models}}'
   type: view
   version: '{{}}'
 - externalId: BidCalculationOutput
-  space: '{{dayahead_model_space}}'
+  space: '{{powerops_models}}'
   type: view
   version: '{{}}'
 # Done
-- space: '{{dayahead_model_space}}'
+- space: '{{powerops_models}}'
   externalId: BidMatrixRaw
   type: view
   version: '{{dayaheadbid_BidMethod_version}}'
 - externalId: BidMethodWaterValueBased
-  space: '{{dayahead_model_space}}'
+  space: '{{powerops_models}}'
   type: view
   version: '{{dayaheadbid_BidMethod_version}}'
 - externalId: Alert
-  space: '{{shared_model_space}}'
+  space: '{{powerops_models}}'
   type: view
   version: '{{base_Alert_version}}'

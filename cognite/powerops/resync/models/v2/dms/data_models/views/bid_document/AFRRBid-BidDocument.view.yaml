@@ -1,4 +1,4 @@
-space: '{{afrr_model_space}}'
+space: '{{powerops_models}}'
 externalId: BidDocument
 version: '{{afrrbid_BidDocument_version}}'
 description: Whole Bid (also usually referenced in industry as a Bid Document) containing
@@ -13,7 +13,7 @@ filter:
       space: '{{type_space}}'
       externalId: AFRRBidDocument
 implements:
-- space: '{{shared_model_space}}'
+- space: '{{powerops_models}}'
   externalId: BidDocument
   version: '{{base_BidDocument_version}}'
   type: view
@@ -21,12 +21,12 @@ properties:
   priceArea:
     source:
       type: view
-      space: '{{afrr_model_space}}'
+      space: '{{powerops_models}}'
       externalId: PriceArea
       version: '{{afrrbid_PriceArea_version}}'
     container:
       type: container
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: BidDocument
     containerPropertyIdentifier: priceArea
     name: priceArea
@@ -35,7 +35,7 @@ properties:
       space: '{{type_space}}'
       externalId: partialBid
     source:
-      space: '{{afrr_model_space}}'
+      space: '{{powerops_models}}'
       externalId: BidRow
       version: '{{afrrbid_BidRow_version}}'
       type: view

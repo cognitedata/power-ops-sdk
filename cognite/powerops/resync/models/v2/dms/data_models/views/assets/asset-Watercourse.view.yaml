@@ -14,7 +14,7 @@ filter:
 properties:
   name:
     container:
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Asset
       type: container
     containerPropertyIdentifier: name
@@ -22,7 +22,7 @@ properties:
     description: Name for the Watercourse.
   displayName:
     container:
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Asset
       type: container
     containerPropertyIdentifier: displayName
@@ -30,7 +30,7 @@ properties:
     description: Display name for the Watercourse.
   productionObligation:
     container:
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Watercourse
       type: container
     containerPropertyIdentifier: productionObligationTimeSeries
@@ -51,7 +51,7 @@ properties:
     connectionType: multiEdgeConnection
   penaltyLimit:
     container:
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Watercourse
       type: container
     containerPropertyIdentifier: penaltyLimit

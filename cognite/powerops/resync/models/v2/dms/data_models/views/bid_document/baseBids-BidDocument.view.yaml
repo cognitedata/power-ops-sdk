@@ -1,4 +1,4 @@
-space: '{{shared_model_space}}'
+space: '{{powerops_models}}'
 externalId: BidDocument
 description: Whole Bid (also usually referenced in industry as a Bid Document) containing
   multiple Bid Rows (which are usually referenced in industry as Bids)
@@ -17,7 +17,7 @@ filter:
 properties:
   name:
     container:
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: BidDocument
       type: container
     containerPropertyIdentifier: name
@@ -26,7 +26,7 @@ properties:
       of name, priceArea, date and startCalculation.
   deliveryDate:
     container:
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: BidDocument
       type: container
     containerPropertyIdentifier: deliveryDate
@@ -34,7 +34,7 @@ properties:
     description: The date of the Bid.
   startCalculation:
     container:
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: BidDocument
       type: container
     containerPropertyIdentifier: startCalculation
@@ -42,7 +42,7 @@ properties:
     description: Timestamp of when the Bid calculation workflow started.
   endCalculation:
     container:
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: BidDocument
       type: container
     containerPropertyIdentifier: endCalculation
@@ -50,7 +50,7 @@ properties:
     description: Timestamp of when the Bid calculation workflow completed.
   isComplete:
     container:
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: BidDocument
       type: container
     containerPropertyIdentifier: isComplete
@@ -62,7 +62,7 @@ properties:
       space: '{{type_space}}'
       externalId: calculationIssue
     source:
-      space: '{{shared_model_space}}'
+      space: '{{powerops_models}}'
       externalId: Alert
       version: '{{base_Alert_version}}'
       type: view

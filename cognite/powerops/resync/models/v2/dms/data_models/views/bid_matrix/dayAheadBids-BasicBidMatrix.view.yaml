@@ -1,8 +1,8 @@
-space: '{{dayahead_model_space}}'
+space: '{{powerops_models}}'
 externalId: BasicBidMatrix
 name: BasicBidMatrix
 implements:
-- space: '{{dayahead_model_space}}'
+- space: '{{powerops_models}}'
   externalId: BidMatrix
   version: '{{dayaheadbid_BidMatrix_version}}'
   type: view
