@@ -1,6 +1,6 @@
 space: '{{powerops_models}}'
 externalId: BidDocument
-version: '{{afrrbid_BidDocument_version}}'
+version: '{{version}}'
 description: Whole Bid (also usually referenced in industry as a Bid Document) containing
   multiple Bid Rows (which are usually referenced in industry as Bids)
 name: BidDocument
@@ -15,7 +15,7 @@ filter:
 implements:
 - space: '{{powerops_models}}'
   externalId: BidDocument
-  version: '{{base_BidDocument_version}}'
+  version: '{{version}}'
   type: view
 properties:
   priceArea:
@@ -23,7 +23,7 @@ properties:
       type: view
       space: '{{powerops_models}}'
       externalId: PriceArea
-      version: '{{afrrbid_PriceArea_version}}'
+      version: '{{version}}'
     container:
       type: container
       space: '{{powerops_models}}'
@@ -37,7 +37,7 @@ properties:
     source:
       space: '{{powerops_models}}'
       externalId: BidRow
-      version: '{{afrrbid_BidRow_version}}'
+      version: '{{version}}'
       type: view
     direction: outwards
     name: bids

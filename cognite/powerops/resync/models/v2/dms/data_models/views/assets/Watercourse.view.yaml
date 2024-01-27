@@ -2,7 +2,7 @@ space: '{{powerops_models}}'
 externalId: Watercourse
 description: A description of the Watercourse Asset
 name: Watercourse
-version: '{{asset_Watercourse_version}}'
+version: '{{version}}'
 implements:
 - space: '{{powerops_models}}'
   externalId: PowerAsset
@@ -32,7 +32,7 @@ properties:
     source:
       space: '{{powerops_models}}'
       externalId: Plant
-      version: '{{asset_Plant_version}}'
+      version: '{{version}}'
       type: view
     direction: outwards
     name: plants

@@ -2,7 +2,7 @@ space: '{{powerops_models}}'
 externalId: BidRow
 description: One row in the BidDocument (usually referenced in industry as a Bid).
 name: BidRow
-version: '{{afrrbid_BidRow_version}}'
+version: '{{version}}'
 filter:
   equals:
     property:
@@ -85,7 +85,7 @@ properties:
     source:
       space: '{{powerops_models}}'
       externalId: BidRow
-      version: '{{afrrbid_BidMethod_version}}'
+      version: '{{version}}'
       type: view
   assetType:
     container:
@@ -111,7 +111,7 @@ properties:
     source:
       space: '{{powerops_models}}'
       externalId: BidMethod
-      version: '{{afrrbid_BidMethod_version}}'
+      version: '{{version}}'
       type: view
   alerts:
     type:
@@ -120,7 +120,7 @@ properties:
     source:
       space: '{{powerops_models}}'
       externalId: Alert
-      version: '{{base_Alert_version}}'
+      version: '{{version}}'
       type: view
     direction: outwards
     name: alerts

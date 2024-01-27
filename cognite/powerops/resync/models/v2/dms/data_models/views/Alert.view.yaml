@@ -2,7 +2,7 @@ space: '{{powerops_models}}'
 externalId: Alert
 description: Alerts
 name: Alert
-version: '{{base_Alert_version}}'
+version: '{{version}}'
 filter:
   equals:
     property:

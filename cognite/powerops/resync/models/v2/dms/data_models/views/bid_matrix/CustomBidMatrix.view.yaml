@@ -4,9 +4,9 @@ name: CustomBidMatrix
 implements:
 - space: '{{powerops_models}}'
   externalId: BidMatrix
-  version: '{{dayaheadbid_BidMatrix_version}}'
+  version: '{{version}}'
   type: view
-version: '{{dayaheadbid_CustomBidMatrix_version}}'
+version: '{{version}}'
 filter:
   and:
     - hasData:

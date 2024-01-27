@@ -7,44 +7,44 @@ views:
 - externalId: BidDocument
   space: '{{powerops_models}}'
   type: view
-  version: '{{dayaheadbid_BidDocument_version}}'
+  version: '{{version}}'
 - externalId: BidMatrix
   space: '{{powerops_models}}'
   type: view
-  version: '{{dayaheadbid_BidMatrix_version}}'
+  version: '{{version}}'
 - externalId: MultiScenarioMatrix
   space: '{{powerops_models}}'
   type: view
-  version: '{{dayaheadbid_MultiScenarioMatrix_version}}'
+  version: '{{version}}'
 - externalId: BasicBidMatrix
   space: '{{powerops_models}}'
   type: view
-  version: '{{dayaheadbid_BasicBidMatrix_version}}'
+  version: '{{version}}'
 - externalId: CustomBidMatrix
   space: '{{powerops_models}}'
   type: view
-  version: '{{dayaheadbid_CustomBidMatrix_version}}'
+  version: '{{version}}'
 - externalId: SHOPMultiScenario
   space: '{{powerops_models}}'
   type: view
-  version: '{{dayaheadbid_SHOPMultiScenario_version}}'
+  version: '{{version}}'
 - externalId: WaterValueBased
   space: '{{powerops_models}}'
   type: view
-  version: '{{dayaheadbid_WaterValueBased_version}}'
+  version: '{{version}}'
 - externalId: CustomBidMethod
   space: '{{powerops_models}}'
   type: view
-  version: '{{dayaheadbid_CustomBidMethod_version}}'
+  version: '{{version}}'
 - externalId: PriceArea
   space: '{{powerops_models}}'
   type: view
-  version: '{{dayaheadbid_PriceArea_version}}'
+  version: '{{version}}'
 - externalId: BidMethod
   space: '{{powerops_models}}'
   type: view
-  version: '{{dayaheadbid_BidMethod_version}}'
+  version: '{{version}}'
 - externalId: Alert
   space: '{{powerops_models}}'
   type: view
-  version: '{{base_Alert_version}}'
+  version: '{{version}}'

@@ -22,5 +22,5 @@ implements:
   externalId: BidMethodDayAhead
   version: '{{version}}'
   type: view
-version: '{{dayaheadbid_CustomBidMethod_version}}'
+version: '{{version}}'
 properties: {}

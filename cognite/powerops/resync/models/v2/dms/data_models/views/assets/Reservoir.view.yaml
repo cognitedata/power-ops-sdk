@@ -2,7 +2,7 @@ space: '{{powerops_models}}'
 externalId: Reservoir
 description: A reservoir
 name: Reservoir
-version: '{{asset_Reservoir_version}}'
+version: '{{version}}'
 implements:
 - space: '{{powerops_models}}'
   externalId: PowerAsset

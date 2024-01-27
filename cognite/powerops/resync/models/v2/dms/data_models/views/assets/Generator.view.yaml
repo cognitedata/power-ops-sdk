@@ -2,7 +2,7 @@ space: '{{powerops_models}}'
 externalId: Generator
 description: A generator
 name: Generator
-version: '{{asset_Generator_version}}'
+version: '{{version}}'
 implements:
 - space: '{{powerops_models}}'
   externalId: PowerAsset
@@ -63,14 +63,14 @@ properties:
       type: view
       space: '{{powerops_models}}'
       externalId: GeneratorEfficiencyCurve
-      version: '{{asset_GeneratorEfficiency_version}}'
+      version: '{{version}}'
   turbineCurves:
     name: turbineCurves
     source:
       type: view
       space: '{{powerops_models}}'
       externalId: TurbineEfficiencyCurve
-      version: '{{asset_TurbineEfficiency_version}}'
+      version: '{{version}}'
     type:
       space: '{{type_space}}'
       externalId: isSubAssetOf

@@ -4,9 +4,9 @@ name: BasicBidMatrix
 implements:
 - space: '{{powerops_models}}'
   externalId: BidMatrix
-  version: '{{dayaheadbid_BidMatrix_version}}'
+  version: '{{version}}'
   type: view
-version: '{{dayaheadbid_BasicBidMatrix_version}}'
+version: '{{version}}'
 filter:
   equals:
     property:

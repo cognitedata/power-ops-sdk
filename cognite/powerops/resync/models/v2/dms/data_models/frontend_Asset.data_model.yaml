@@ -7,32 +7,32 @@ views:
 - externalId: PriceArea
   space: '{{powerops_models}}'
   type: view
-  version: '{{asset_PriceArea_version}}'
+  version: '{{version}}'
 - externalId: Watercourse
   space: '{{powerops_models}}'
   type: view
-  version: '{{asset_Watercourse_version}}'
+  version: '{{version}}'
 - externalId: Plant
   space: '{{powerops_models}}'
   type: view
-  version: '{{asset_Plant_version}}'
+  version: '{{version}}'
 - externalId: Generator
   space: '{{powerops_models}}'
   type: view
-  version: '{{asset_Generator_version}}'
+  version: '{{version}}'
 - externalId: Reservoir
   space: '{{powerops_models}}'
   type: view
-  version: '{{asset_Reservoir_version}}'
+  version: '{{version}}'
 - externalId: TurbineEfficiencyCurve
   space: '{{powerops_models}}'
   type: view
-  version: '{{asset_TurbineEfficiency_version}}'
+  version: '{{version}}'
 - externalId: GeneratorEfficiencyCurve
   space: '{{powerops_models}}'
   type: view
-  version: '{{asset_GeneratorEfficiency_version}}'
+  version: '{{version}}'
 - externalId: BidMethod
   space: '{{powerops_models}}'
   type: view
-  version: '{{base_BidMethod_version}}'
+  version: '{{version}}'

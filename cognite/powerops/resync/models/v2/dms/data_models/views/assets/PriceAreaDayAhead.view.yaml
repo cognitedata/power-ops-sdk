@@ -1,7 +1,7 @@
 space: '{{powerops_models}}'
 externalId: PriceAreaDayAhead
 name: PriceArea
-version: '{{dayaheadbid_PriceArea_version}}'
+version: '{{version}}'
 filter:
   equals:
     property:
@@ -28,7 +28,7 @@ properties:
     source:
       space: '{{powerops_models}}'
       externalId: BidMethod
-      version: '{{dayaheadbid_BidMethod_version}}'
+      version: '{{version}}'
       type: view
   timezone:
     container:

@@ -2,7 +2,7 @@ space: '{{powerops_models}}'
 externalId: GeneratorEfficiencyCurve
 description: Describes the efficiency curve for a generator
 name: GeneratorEfficiencyCurve
-version: '{{asset_GeneratorEfficiency_version}}'
+version: '{{version}}'
 filter:
   equals:
     property:

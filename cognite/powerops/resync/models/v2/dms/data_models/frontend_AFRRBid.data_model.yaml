@@ -7,20 +7,20 @@ views:
 - externalId: BidDocumentAFRR
   space: '{{powerops_models}}'
   type: view
-  version: '{{afrrbid_BidDocument_version}}'
+  version: '{{version}}'
 - externalId: BidRow
   space: '{{powerops_models}}'
   type: view
-  version: '{{afrrbid_BidRow_version}}'
+  version: '{{version}}'
 - externalId: PriceAreaAFRR
   space: '{{powerops_models}}'
   type: view
-  version: '{{afrrbid_PriceArea_version}}'
+  version: '{{version}}'
 - externalId: BidMethodAFRR
   space: '{{powerops_models}}'
   type: view
-  version: '{{afrrbid_BidMethod_version}}'
+  version: '{{version}}'
 - externalId: Alert
   space: '{{powerops_models}}'
   type: view
-  version: '{{base_Alert_version}}'
+  version: '{{version}}'

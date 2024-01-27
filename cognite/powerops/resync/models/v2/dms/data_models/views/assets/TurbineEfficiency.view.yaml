@@ -2,7 +2,7 @@ space: '{{powerops_models}}'
 externalId: TurbineEfficiencyCurve
 description: Describes the efficiency curve for a turbine
 name: TurbineEfficiencyCurve
-version: '{{asset_TurbineEfficiency_version}}'
+version: '{{version}}'
 filter:
   equals:
     property:

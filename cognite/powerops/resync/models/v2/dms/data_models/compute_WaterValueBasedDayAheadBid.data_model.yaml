@@ -32,12 +32,12 @@ views:
 - space: '{{powerops_models}}'
   externalId: BidMatrixRaw
   type: view
-  version: '{{dayaheadbid_BidMethod_version}}'
+  version: '{{version}}'
 - externalId: BidMethodWaterValueBased
   space: '{{powerops_models}}'
   type: view
-  version: '{{dayaheadbid_BidMethod_version}}'
+  version: '{{version}}'
 - externalId: Alert
   space: '{{powerops_models}}'
   type: view
-  version: '{{base_Alert_version}}'
+  version: '{{version}}'

@@ -12,9 +12,9 @@ filter:
 implements:
 - space: '{{powerops_models}}'
   externalId: BidMethodDayAhead
-  version: '{{dayaheadbid_BidMethod_version}}'
+  version: '{{version}}'
   type: view
-version: '{{dayaheadbid_SHOPMultiScenario_version}}'
+version: '{{version}}'
 properties:
   shopCases:
     container:

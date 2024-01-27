@@ -2,7 +2,7 @@ space: '{{powerops_models}}'
 externalId: BidMethodDayAhead
 description: A description of the Bid method used in the calculation.
 name: BidMethod
-version: '{{dayaheadbid_BidMethod_version}}'
+version: '{{version}}'
 properties:
   name:
     container:
