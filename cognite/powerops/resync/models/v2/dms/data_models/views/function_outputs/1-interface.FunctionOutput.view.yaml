@@ -41,3 +41,11 @@ properties:
     name: alerts
     description: An array of calculation level Alerts.
     connectionType: multiEdgeConnection
+  functionName:
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionMetadata
+      type: container
+    containerPropertyIdentifier: functionName
+    name: functionName
+    description: The name of the function

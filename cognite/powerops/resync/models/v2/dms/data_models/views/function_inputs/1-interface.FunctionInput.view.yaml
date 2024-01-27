@@ -28,3 +28,11 @@ properties:
     containerPropertyIdentifier: linkedStep
     name: previousStep
     description: This is the linked step in the process.
+  functionName:
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionMetadata
+      type: container
+    containerPropertyIdentifier: functionName
+    name: functionName
+    description: The name of the function

@@ -11,8 +11,8 @@ implements:
 filter:
   equals:
     property:
-    - node
-    - property
+    - {{powerops_models}}
+    - FunctionOutput/{{version}}
     - functionName
     value: PartialBidCalculation
 properties:

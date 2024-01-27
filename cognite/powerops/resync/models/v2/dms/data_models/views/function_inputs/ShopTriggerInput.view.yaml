@@ -12,8 +12,8 @@ implements:
 filter:
   equals:
     property:
-    - node
-    - property
+    - {{powerops_models}}
+    - FunctionInput/{{version}}
     - functionName
     value: ShopTrigger
 properties:
