@@ -1,0 +1,70 @@
+externalId: compute_SHOPBasedDayAhead
+space: '{{powerops_models}}'
+version: '1'
+name: SHOPBasedDayAheadBidProcess
+description: 'The process of going from BidConfig to a PartialBidMatrix'
+views:
+- externalId: TaskDispatcherInput
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: TaskDispatcherOutput
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: PreprocessorInput
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: PreprocessorOutput
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: SHOPTriggerInput
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: SHOPTriggerOutput
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: PartialBidCalculationInput
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: PartialBidCalculationOutput
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: BidMatrixRaw
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: BidMethodSHOPBased
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: ScenarioRaw
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: Scenario
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: Mapping
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: ModelTemplate
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: SHOPResult
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: Alert
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'

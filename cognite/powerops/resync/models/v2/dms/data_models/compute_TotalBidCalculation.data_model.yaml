@@ -1,0 +1,50 @@
+externalId: compute_TotalBidCalculation
+space: '{{powerops_models}}'
+version: '1'
+name: TotalBidCalculation
+description: 'The process of going from PartialBidMatrix to TotalBidMatrix'
+views:
+- externalId: BidMatrixRaw
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: PartialPostProcessingInput
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: PartialBidProcessingOutput
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: TotalBidMatrixCalculationInput
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: TotalBidMatrixCalculationOutput
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: BidDocument
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: BidMatrix
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: PriceAreaDayAhead
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: BidMethodDayAhead
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: PriceScenario
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: Alert
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
