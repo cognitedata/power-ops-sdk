@@ -1,12 +1,12 @@
-space: '{{day_ahead_backend_space}}'
+space: '{{powerops_models}}'
 externalId: BidMethodWaterValueBased
 description: Bid methods used in the water value based shop
 name: BidMethodWaterValueBased
-version: '{{day_ahead_backend_bid_method_water_value_based_version}}'
+version: '{{version}}'
 implements:
-  - space: '{{day_ahead_backend_space}}'
-    externalId: BidMethod
-    version: '{{day_ahead_backend_bid_method_version}}'
+  - space: '{{powerops_models}}'
+    externalId: BidMethodDayAhead
+    version: '{{version}}'
     type: view
 properties: {}
 filter:

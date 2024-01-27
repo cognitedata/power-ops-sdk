@@ -1,4 +1,4 @@
-externalId: DayAheadBid
+externalId: frontend_DayAheadBid
 space: '{{powerops_models}}'
 version: '1'
 name: 'DayAheadBid'

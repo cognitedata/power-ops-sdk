@@ -1,4 +1,4 @@
-externalId: PowerAsset
+externalId: frontend_Asset
 space: '{{powerops_models}}'
 version: '1'
 name: PowerAsset

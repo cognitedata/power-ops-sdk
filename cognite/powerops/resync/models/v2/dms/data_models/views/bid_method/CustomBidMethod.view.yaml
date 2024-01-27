@@ -19,8 +19,8 @@ filter:
               externalId: DayAheadWaterValueBased
 implements:
 - space: '{{powerops_models}}'
-  externalId: BidMethod
-  version: '{{dayaheadbid_BidMethod_version}}'
+  externalId: BidMethodDayAhead
+  version: '{{version}}'
   type: view
 version: '{{dayaheadbid_CustomBidMethod_version}}'
 properties: {}

@@ -1,5 +1,5 @@
 space: '{{powerops_models}}'
-externalId: BidMethod
+externalId: BidMethodDayAhead
 name: BidMethod
 usedFor: node
 properties:

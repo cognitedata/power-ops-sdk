@@ -1,10 +1,10 @@
 space: '{{powerops_models}}'
-externalId: PreprocessorInput
+externalId: PartialBidCalculationShopInput
 description: Input to the task dispatcher in the shop bid process
-name: TaskDispatcherShopInput
+name: PartialBidCalculationShopInput
 version: '{{version}}'
 implements:
-  - space: '{{version}}'
+  - space: '{{powerops_models}}'
     externalId: FunctionInput
     version: '{{version}}'
     type: view
@@ -14,28 +14,29 @@ filter:
     - node
     - property
     - functionName
-    value: Preprocessor
+    value: PartialBidCalculationShop
 properties:
-  functionName:
+  plant_name:
     container:
       space: '{{powerops_models}}'
-      externalId: FunctionMetadata
+      externalId: FunctionData
       type: container
-    containerPropertyIdentifier: functionName
-    name: functionName
-    description: The function name
-  scenarioRaw:
+    containerPropertyIdentifier: text1
+    name: plant_name
+    description: The name of the plant to calculate the partial bid for
+  shopResults:
     type:
       space: '{{powerops_models}}'
-      externalId: ScenarioRaw
+      externalId: ShopResult
     source:
       space: '{{powerops_models}}'
-      externalId: ScenarioRaw
+      externalId: ShopResult
       version: '{{version}}'
       type: view
     direction: outwards
-    name: scenarioRaw
-    description: The scenario that needs preprocessing before being sent to shop (has isReady flag set to false)
+    name: shopResults
+    description: An array of shop results.
+    connectionType: multiEdgeConnection
   processId:
     container:
       space: '{{powerops_models}}'
@@ -43,7 +44,7 @@ properties:
       type: container
     containerPropertyIdentifier: processId
     name: processId
-    description: The id of the dayahead bid shop process
+    description: The process associated with the function execution
   processStep:
     container:
       space: '{{powerops_models}}'
@@ -51,12 +52,25 @@ properties:
       type: container
     containerPropertyIdentifier: processStep
     name: processStep
-    description: The step in the bid process as an integer ex. 0,1,2
-  linkedStep:
+    description: This is the step in the process.
+  previousStep:
     container:
       space: '{{powerops_models}}'
       externalId: FunctionMetadata
       type: container
     containerPropertyIdentifier: linkedStep
     name: previousStep
-    description: The id of the dayahead bid shop process
+    description: This is the linked step in the process.
+  alerts:
+    type:
+      space: '{{powerops_models}}'
+      externalId: calculationIssue
+    source:
+      space: '{{powerops_models}}'
+      externalId: Alert
+      version: '{{version}}'
+      type: view
+    direction: outwards
+    name: alerts
+    description: An array of calculation level Alerts.
+    connectionType: multiEdgeConnection

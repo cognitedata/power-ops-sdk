@@ -1,5 +1,5 @@
 space: '{{powerops_models}}'
-externalId: BidMethod
+externalId: BidMethodDayAhead
 description: A description of the Bid method used in the calculation.
 name: BidMethod
 version: '{{dayaheadbid_BidMethod_version}}'
@@ -7,8 +7,16 @@ properties:
   name:
     container:
       space: '{{powerops_models}}'
-      externalId: BidMethod
+      externalId: BidMethodDayAhead
       type: container
     containerPropertyIdentifier: name
     name: name
     description: Name for the BidMethod
+  mainScenario:
+    container:
+      space: '{{powerops_models}}'
+      externalId: mainScenario
+      type: container
+    containerPropertyIdentifier: mainScenario
+    name: mainScenario
+    description: The main scenario to use when running the bid method

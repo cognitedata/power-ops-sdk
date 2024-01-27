@@ -5,7 +5,7 @@ powerops_models: 'power-ops-shared'
 type_space: 'power-ops-types'
 powerops_instance_space: 'power-ops-instance'
 powerops_models: 'power-ops-assets'
-day_ahead_backend_space: 'power-ops-day-ahead-backend'
+powerops_models: 'power-ops-day-ahead-backend'
 powerops_models: 'sp_powerops_models'
 version: '1'
 

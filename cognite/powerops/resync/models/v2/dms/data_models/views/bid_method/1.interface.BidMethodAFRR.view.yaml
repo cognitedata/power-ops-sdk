@@ -7,7 +7,7 @@ properties:
   name:
     container:
       space: '{{powerops_models}}'
-      externalId: BidMethod
+      externalId: BidMethodAFRR
       type: container
     containerPropertyIdentifier: name
     name: name
