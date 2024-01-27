@@ -15,7 +15,7 @@ properties:
   mainScenario:
     container:
       space: '{{powerops_models}}'
-      externalId: mainScenario
+      externalId: BidMethodDayAhead
       type: container
     containerPropertyIdentifier: mainScenario
     name: mainScenario

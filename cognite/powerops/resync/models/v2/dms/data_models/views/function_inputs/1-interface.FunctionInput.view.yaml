@@ -20,14 +20,6 @@ properties:
     containerPropertyIdentifier: processStep
     name: processStep
     description: This is the step in the process.
-  previousStep:
-    container:
-      space: '{{powerops_models}}'
-      externalId: FunctionMetadata
-      type: container
-    containerPropertyIdentifier: linkedStep
-    name: previousStep
-    description: This is the linked step in the process.
   functionName:
     container:
       space: '{{powerops_models}}'
