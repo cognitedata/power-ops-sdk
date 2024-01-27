@@ -1,59 +1,5 @@
 # variables used for substitution in other files in this directory
-powerops_models: 'power-ops-afrr-bid'
-powerops_models: 'power-ops-day-ahead-bid'
-powerops_models: 'power-ops-shared'
 type_space: 'power-ops-types'
 powerops_instance_space: 'power-ops-instance'
-powerops_models: 'power-ops-assets'
-powerops_models: 'power-ops-day-ahead-backend'
 powerops_models: 'sp_powerops_models'
 version: '1'
-
-# Shared Model Views
-base_BidDocument_version: '1'
-base_Alert_version: '1'
-base_BidMethod_version: '1'
-
-# AFRR Bid Model Views
-afrrbid_BidDocument_version: '1'
-afrrbid_BidMethod_version: '1'
-afrrbid_BidRow_version: '1'
-afrrbid_PriceArea_version: '1'
-
-# Day-Ahead Bid Model Views
-dayaheadbid_BidDocument_version: '1'
-dayaheadbid_BidMethod_version: '1'
-dayaheadbid_BidMatrix_version: '1'
-dayaheadbid_PriceArea_version: '1'
-dayaheadbid_SHOPMultiScenario_version: '1'
-dayaheadbid_MultiScenarioMatrix_version: '1'
-dayaheadbid_CustomBidMethod_version: '1'
-dayaheadbid_WaterValueBased_version: '1'
-dayaheadbid_BasicBidMatrix_version: '1'
-dayaheadbid_CustomBidMatrix_version: '1'
-
-# Asset Model Views
-asset_PriceArea_version: '1'
-asset_Watercourse_version: '1'
-asset_Plant_version: '1'
-asset_Generator_version: '1'
-asset_Reservoir_version: '1'
-asset_TurbineEfficiency_version: '1'
-asset_GeneratorEfficiency_version: '1'
-
-# Day-Ahead Backend Model Views
-day_ahead_backend_task_dispatcher_shop_input_version: '1'
-day_ahead_backend_task_dispatcher_shop_output_version: '1'
-day_ahead_backend_preprocessor_input_version: '1'
-day_ahead_backend_preprocessor_output_version: '1'
-day_ahead_backend_partial_bid_calculation_input_version: '1'
-day_ahead_backend_partial_bid_calculation_output_version: '1'
-day_ahead_backend_function_input_version: '1'
-day_ahead_backend_function_output_version: '1'
-day_ahead_backend_shop_result_version: '1'
-day_ahead_backend_scenario_version: '1'
-day_ahead_backend_model_template_version: '1'
-day_ahead_backend_mapping_version: '1'
-day_ahead_backend_bid_method_water_value_based_version: '1'
-day_ahead_backend_bid_method_version: '1'
-day_ahead_backend_bid_method_raw_version: '1'
