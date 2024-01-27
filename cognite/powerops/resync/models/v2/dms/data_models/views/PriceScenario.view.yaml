@@ -1,0 +1,38 @@
+space: '{{powerops_models}}'
+externalId: PriceScenario
+description: Price scenarios
+name: PriceScenario
+version: '{{version}}'
+properties:
+  timeseries:
+    container:
+      space: '{{powerops_models}}'
+      externalId: PriceScenario
+      type: container
+    containerPropertyIdentifier: timeseries
+    name: timeseries
+    description: Which timeseries with the scenario.
+  retrieve:
+    container:
+      space: '{{powerops_models}}'
+      externalId: PriceScenario
+      type: container
+    containerPropertyIdentifier: retrieve
+    name: retrieve
+    description: How to retrieve the timeseries, for example, 'latest'
+  aggregation:
+    container:
+      space: '{{powerops_models}}'
+      externalId: PriceScenario
+      type: container
+    containerPropertyIdentifier: aggregation
+    name: aggregation
+    description: How to aggregate the timeseries, for example, 'avg'
+  transformations:
+    container:
+      space: '{{powerops_models}}'
+      externalId: PriceScenario
+      type: container
+    containerPropertyIdentifier: transformations
+    name: transformations
+    description: The transformations to apply to the timeseries

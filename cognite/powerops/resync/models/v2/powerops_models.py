@@ -21,6 +21,7 @@ from cognite.client.data_classes.data_modeling import (
     NodeId,
     SpaceApplyList,
     ViewApplyList,
+    ViewId,
 )
 from cognite.client.data_classes.data_modeling.views import SingleHopConnectionDefinitionApply, ViewApply
 
@@ -248,6 +249,7 @@ class DataModelLoader:
         defined_node_types = {node_type.as_id() for node_type in schema.node_types}
         defined_interfaces = {parent for view in schema._views for parent in view.implements or []}
         properties_by_container = {container.as_id(): set(container.properties) for container in schema.containers}
+        properties_by_view = {view.as_id(): set(view.properties) for view in schema._views}
 
         referred_spaces = defaultdict(list)
         referred_views = defaultdict(list)
@@ -255,17 +257,26 @@ class DataModelLoader:
         referred_node_types = defaultdict(list)
         view_missing_filters = []
         non_existent_container_properties = []
+        non_existent_view_properties = []
         for container in schema.containers:
             referred_spaces[container.space].append(container.as_id())
         for view in schema._views:
             ref_view_id = view.as_id()
             referred_spaces[view.space].append(ref_view_id)
             if isinstance(view.filter, filters.Equals):
-                dumped = view.filter.dump()["equals"]["value"]
+                dumped = view.filter.dump()["equals"]
+                value = dumped["value"]
                 try:
-                    if "space" in dumped and "externalId" in dumped:
-                        node_id = NodeId(dumped["space"], dumped["externalId"])
+                    if isinstance(value, dict) and ("space" in value and "externalId" in value):
+                        node_id = NodeId(value["space"], value["externalId"])
                         referred_node_types[node_id].append(ref_view_id)
+                    elif len(dumped["property"]) == 3:
+                        space, external_id_version, prop_ = dumped["property"]
+                        external_id, version = external_id_version.rsplit("/", maxsplit=1)
+                        view_id = ViewId(space, external_id, version)
+                        referred_views[view_id].append(ref_view_id)
+                        if prop_ not in properties_by_view.get(view_id, set()):
+                            non_existent_view_properties.append(ref_view_id)
                 except Exception as exc:
                     raise ValueError(
                         f"Failed to parse filter for view {view.space}.{view.external_id}.{view.version}"
@@ -329,6 +340,9 @@ class DataModelLoader:
         if non_existent_container_properties:
             message = "\n".join(map(str, non_existent_container_properties))
             raise ValueError(f"These properties in views refers to container properties that does not exist: {message}")
+        if non_existent_view_properties:
+            message = "\n".join(map(str, non_existent_view_properties))
+            raise ValueError(f"These properties in views refers to view properties that does not exist: {message}")
 
     @classmethod
     def deploy(cls, client: CogniteClient, schema: Schema, is_dev: bool = False) -> list[dict]:

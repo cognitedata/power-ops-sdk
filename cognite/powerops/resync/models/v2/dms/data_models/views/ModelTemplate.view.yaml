@@ -1,0 +1,64 @@
+space: '{{powerops_models}}'
+externalId: ModelTemplate
+description: The template for SHOP models
+name: ModelTemplate
+version: '{{version}}'
+properties:
+  cogShopVersion:
+    container:
+      space: '{{powerops_models}}'
+      externalId: ModelTemplate
+      type: container
+    containerPropertyIdentifier: cogShopVersion
+    name: cogShopVersion
+    description: The tag of the cogshop image to run
+  shopVersion:
+    container:
+      space: '{{powerops_models}}'
+      externalId: ModelTemplate
+      type: container
+    containerPropertyIdentifier: shopVersion
+    name: shopVersion
+    description: The version of SHOP to run
+  watercourse:
+    container:
+      space: '{{powerops_models}}'
+      externalId: ModelTemplate
+      type: container
+    source:
+      space: '{{powerops_models}}'
+      externalId: Watercourse
+      version: '{{version}}'
+      type: view
+    containerPropertyIdentifier: watercourse
+    name: watercourse
+    description: The watercourse to run the model for
+  model:
+    container:
+      space: '{{powerops_models}}'
+      externalId: ModelTemplate
+      type: container
+    containerPropertyIdentifier: model
+    name: model
+    description: The shop model file to use as template before mapping
+  source:
+    container:
+      space: '{{powerops_models}}'
+      externalId: ModelTemplate
+      type: container
+    containerPropertyIdentifier: source
+    name: source
+    description: The source of the model, for example, 'resync'
+  baseMappings:
+    source:
+      space: '{{powerops_models}}'
+      externalId: Mapping
+      version: '{{version}}'
+      type: view
+    type:
+      space: '{{type_space}}'
+      externalId: mapping
+    direction: outwards
+    name: baseMappings
+    description: The base mappings for the model
+    connectionType: multiEdgeConnection

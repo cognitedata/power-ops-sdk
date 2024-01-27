@@ -1,65 +1,18 @@
 space: '{{powerops_models}}'
-externalId: BidMatrix
+externalId: BidMatrixRaw
 description: The output of a bid matrix calculation. isProcessed property defines if the bidmatrix is raw or has been post-processed
 name: BidMethodRaw
 version: '{{version}}'
-properties:
-  matrix:
-    container:
-      space: '{{powerops_models}}'
-      externalId: BidMatrix
-      type: container
-    containerPropertyIdentifier: matrix
-    name: matrix
-  assetType:
-    container:
-      space: '{{powerops_models}}'
-      externalId: BidMatrix
-      type: container
-    containerPropertyIdentifier: assetType
-    name: assetType
-  assetId:
-    container:
-      space: '{{powerops_models}}'
-      externalId: BidMatrix
-      type: container
-    containerPropertyIdentifier: assetId
-    name: assetId
-  bidMethod:
-    type:
-      space: '{{powerops_models}}'
-      externalId: BidMethod
-    source:
-        space: '{{powerops_models}}'
-        externalId: BidMethod
-        version: '{{version}}'
-        type: view
-    direction: outwards
-    name: bidMethod
-  alerts:
-    type:
-      space: '{{powerops_models}}'
-      externalId: calculationIssue
-    source:
-      space: '{{powerops_models}}'
-      externalId: Alert
-      version: '{{version}}'
-      type: view
-    direction: outwards
-    name: alerts
-    connectionType: multiEdgeConnection
-  isProcessed:
-    container:
-      space: '{{powerops_models}}'
-      externalId: BidMatrix
-      type: container
-    containerPropertyIdentifier: isProcessed
-    name: isProcessed
-    description: Whether the bid matrix has been post-processed or not
+implements:
+- space: '{{powerops_models}}'
+  externalId: BidMatrix
+  version: '{{version}}'
+  type: view
+properties: {}
 filter:
   equals:
     property:
-    - node
-    - property
+    - {{powerops_models}}
+    - BidMatrix/{{version}}
     - isProcessed
     value: False
