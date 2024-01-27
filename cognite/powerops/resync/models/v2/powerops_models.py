@@ -195,14 +195,28 @@ class DataModelLoader:
         self._config = yaml.safe_load(self._config_file.read_text())
 
     def load(self) -> Schema:
+        resource_cls = {
+            "space": SpaceApplyList,
+            "container": ContainerApplyList,
+            "view": ViewApplyList,
+            "data_model": DataModelApplyList,
+            "node": NodeApplyList,
+        }
+
         resources_by_type = defaultdict(list)
         for filepath in self._source_dir.glob("**/*.yaml"):
             if match := re.match(r".*(?P<type>(space|view|container|node|data_model))\.yaml$", filepath.name):
                 loaded = self._load_file(filepath)
                 if isinstance(loaded, list):
                     resources_by_type[match.group("type")].extend(loaded)
+                    to_load = loaded
                 else:
                     resources_by_type[match.group("type")].append(loaded)
+                    to_load = [loaded]
+                try:
+                    resource_cls[match.group("type")].load(to_load)
+                except Exception as e:
+                    raise ValueError(f"Failed to load {filepath.relative_to(Path.cwd())}") from e
 
         return Schema(
             containers=ContainerApplyList.load(resources_by_type["container"]),

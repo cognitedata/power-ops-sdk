@@ -115,7 +115,7 @@ properties:
     source:
       space: '{{powerops_models}}'
       externalId: Mapping
-      version: '{{version
+      version: '{{version}}'
       type: view
     direction: outwards
     name: mappingsOverride

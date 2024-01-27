@@ -1,10 +1,10 @@
-space: '{{powerops_mod}}'
+space: '{{powerops_models}}'
 externalId: TaskDispatcherShopInput
 description: Input to the task dispatcher in the shop bid process
 name: TaskDispatcherShopInput
 version: '{{version}}'
 implements:
-  - space: '{{powerops_mode}}'
+  - space: '{{powerops_models}}'
     externalId: FunctionInput
     version: '{{version}}'
     type: view
