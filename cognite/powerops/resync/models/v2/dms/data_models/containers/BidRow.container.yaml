@@ -100,7 +100,6 @@ properties:
     defaultValue: null
   method:
     type:
-      container: null
       type: direct
       list: false
     name: method

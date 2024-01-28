@@ -16,7 +16,7 @@ properties:
     type:
       list: false
       type: direct
-    nullable: false
+    nullable: true
     autoIncrement: false
     name: modelTemplate
     description: The model template

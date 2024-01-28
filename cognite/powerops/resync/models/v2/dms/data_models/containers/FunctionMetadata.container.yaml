@@ -42,7 +42,7 @@ properties:
     type:
       list: false
       type: direct
-    nullable: false
+    nullable: true
     autoIncrement: false
     name: linkedStep
     description: Typically the previous step
@@ -50,7 +50,7 @@ properties:
     type:
       list: false
       type: direct
-    nullable: false
+    nullable: true
     autoIncrement: false
     name: data
     description: The data

@@ -6,21 +6,21 @@ properties:
   method:
     type:
       type: direct # points to BidMethod container
-    nullable: false
+    nullable: true
     autoIncrement: false
     name: method
   marketConfiguration:
     type:
       type: direct
       list: false
-    nullable: false
+    nullable: true
     autoIncrement: false
     name: marketConfiguration
   priceArea:
     type:
       type: direct
       list: false
-    nullable: false
+    nullable: true
     autoIncrement: false
     name: priceArea
 indexes:
