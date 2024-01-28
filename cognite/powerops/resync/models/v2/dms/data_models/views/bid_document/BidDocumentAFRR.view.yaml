@@ -22,7 +22,7 @@ properties:
     source:
       type: view
       space: '{{powerops_models}}'
-      externalId: PriceArea
+      externalId: PriceAreaAFRR
       version: '{{version}}'
     container:
       type: container
