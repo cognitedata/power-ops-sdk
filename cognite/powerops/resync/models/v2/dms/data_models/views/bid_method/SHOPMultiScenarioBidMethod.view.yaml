@@ -24,9 +24,15 @@ properties:
     containerPropertyIdentifier: shopCases
     name: shopCases
   priceScenarios:
-    container:
-      space: '{{powerops_models}}'
-      externalId: SHOPMultiScenario
-      type: container
-    containerPropertyIdentifier: priceScenarios
+    type:
+      space: '{{type_space}}'
+      externalId: PriceScenario
+    source:
+        space: '{{powerops_models}}'
+        externalId: PriceScenario
+        version: '{{version}}'
+        type: view
     name: priceScenarios
+    description: The price scenarios to use in the shop run
+    direction: outwards
+    connectionType: multiEdgeConnection

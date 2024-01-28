@@ -19,7 +19,7 @@ properties:
   previousStep:
     container:
       space: '{{powerops_models}}'
-      externalId: Scenario
+      externalId: FunctionMetadata
       type: container
     containerPropertyIdentifier: linkedStep
     name: previousStep

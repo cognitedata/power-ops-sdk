@@ -339,10 +339,12 @@ class DataModelLoader:
             raise ValueError(f"Undefined node types: {undefined_node_types}: referred to by {referred_to_by}")
         if non_existent_container_properties:
             message = "\n".join(map(str, non_existent_container_properties))
-            raise ValueError(f"These properties in views refers to container properties that does not exist: {message}")
+            raise ValueError(
+                f"These properties in views refers to container properties that does not exist:\n{message}"
+            )
         if non_existent_view_properties:
             message = "\n".join(map(str, non_existent_view_properties))
-            raise ValueError(f"These properties in views refers to view properties that does not exist: {message}")
+            raise ValueError(f"These properties in views refers to view properties that does not exist:\n{message}")
 
     @classmethod
     def deploy(cls, client: CogniteClient, schema: Schema, is_dev: bool = False) -> list[dict]:

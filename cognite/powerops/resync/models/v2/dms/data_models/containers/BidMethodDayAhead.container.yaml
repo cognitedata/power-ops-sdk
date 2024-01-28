@@ -12,6 +12,13 @@ properties:
     autoIncrement: false
     name: name
     description: The name of the bid method
+  mainScenario:
+    type:
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: mainScenario
+    description: The main scenario to use when running the bid method
 indexes:
   name:
     properties:

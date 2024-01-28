@@ -4,13 +4,13 @@ name: PriceScenario
 usedFor: node
 properties:
 # The following is repeated in Mapping - should this be remodeled?
-  timeSeries:
+  timeseries:
     type:
       list: false
       type: timeseries
     nullable: false
     autoIncrement: false
-    name: timeSeries
+    name: timeseries
     description: The time series to apply mapping to
   retrieve:
     type:

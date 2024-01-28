@@ -31,7 +31,7 @@ properties:
   method:
     container:
       space: '{{powerops_models}}'
-      externalId: BidDocument
+      externalId: BidDocumentDayAhead
       type: container
     containerPropertyIdentifier: method
     name: method
@@ -43,7 +43,7 @@ properties:
   total:
     container:
       space: '{{powerops_models}}'
-      externalId: BidDocument
+      externalId: BidDocumentDayAhead
       type: container
     containerPropertyIdentifier: total
     name: total

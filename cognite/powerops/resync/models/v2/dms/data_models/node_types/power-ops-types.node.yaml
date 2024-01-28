@@ -85,3 +85,5 @@
   externalId: Scenario
 - space: {{type_space}}
   externalId: ScenarioRaw
+- space: {{type_space}}
+  externalId: PriceScenario
