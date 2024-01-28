@@ -12,13 +12,13 @@ properties:
     containerPropertyIdentifier: shopPath
     name: shopPath
     description: The key in shop file to map to
-  timeSeries:
+  timeseries:
     container:
       space: '{{powerops_models}}'
       externalId: Mapping
       type: container
-    containerPropertyIdentifier: timeSeries
-    name: timeSeries
+    containerPropertyIdentifier: timeseries
+    name: timeseries
     description: The time series to map to
   transformations:
     container:

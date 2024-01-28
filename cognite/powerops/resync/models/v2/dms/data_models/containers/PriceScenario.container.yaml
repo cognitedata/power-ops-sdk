@@ -41,6 +41,6 @@ properties:
 indexes:
   timeSeriesIndex:
     properties:
-    - timeSeries
+    - timeseries
     indexType: btree
     cursorable: false

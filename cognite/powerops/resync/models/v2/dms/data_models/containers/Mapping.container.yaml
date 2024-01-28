@@ -12,14 +12,14 @@ properties:
     autoIncrement: false
     name: shopPath
     description: The key to apply mapping to in a shop file
-  timeSeries:
+  timeseries:
     type:
       list: false
       type: timeseries
     nullable: false
     autoIncrement: false
-    name: timeSeries
-    description: The time series to apply mapping to
+    name: timeseries
+    description: The timeseries to apply mapping to
   transformations:
     type:
       list: true
