@@ -1,7 +1,7 @@
 space: '{{powerops_models}}'
-externalId: PartialBidCalculationShopOutput
+externalId: PartialBidCalculationOutput
 description: Input to the task dispatcher in the shop bid process
-name: PartialBidCalculationShopOutput
+name: PartialBidCalculationOutput
 version: '{{version}}'
 implements:
   - space: '{{powerops_models}}'
@@ -28,29 +28,13 @@ properties:
     direction: outwards
     name: bidMatrixRaw
     description: The bid matrix that is calculated by the partial bid calculation function
-  processId:
-    container:
-      space: '{{powerops_models}}'
-      externalId: FunctionMetadata
-      type: container
-    containerPropertyIdentifier: processId
-    name: processId
-    description: The process associated with the function execution
-  processStep:
-    container:
-      space: '{{powerops_models}}'
-      externalId: FunctionMetadata
-      type: container
-    containerPropertyIdentifier: processStep
-    name: processStep
-    description: This is the step in the process.
   previousStep:
     type:
       space: '{{powerops_models}}'
-      externalId: PartialBidCalculationShopInput
+      externalId: PartialBidCalculationInput
     source:
       space: '{{powerops_models}}'
-      externalId: PartialBidCalculationShopInput
+      externalId: PartialBidCalculationInput
       version: '{{version}}'
       type: view
     direction: outwards

@@ -23,6 +23,6 @@ constraints:
   requiredBidMethod:
     require:
       space: '{{powerops_models}}'
-      externalId: BidMethod
+      externalId: BidMethodDayAhead
       type: container
     constraintType: requires

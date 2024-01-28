@@ -1,11 +1,11 @@
 space: '{{powerops_models}}'
-externalId: ShopTriggerOutput
+externalId: SHOPTriggerOutput
 description: Base class for all function inputs
-name: ShopTriggerOutput
+name: SHOPTriggerOutput
 version: '{{version}}'
 implements:
   - space: '{{powerops_models}}'
-    externalId: FunctionInput
+    externalId: FunctionOutput
     version: '{{version}}'
     type: view
 filter:
@@ -19,10 +19,10 @@ properties:
   shopResult:
     type:
       space: '{{powerops_models}}'
-      externalId: ShopResult
+      externalId: SHOPResult
     source:
       space: '{{powerops_models}}'
-      externalId: ShopResult
+      externalId: SHOPResult
       version: '{{version}}'
       type: view
     direction: outwards
@@ -46,10 +46,10 @@ properties:
   previousStep:
     type:
       space: '{{powerops_models}}'
-      externalId: ShopTriggerInput
+      externalId: SHOPTriggerInput
     source:
       space: '{{powerops_models}}'
-      externalId: ShopTriggerInput
+      externalId: SHOPTriggerInput
       version: '{{version}}'
       type: view
     direction: outwards

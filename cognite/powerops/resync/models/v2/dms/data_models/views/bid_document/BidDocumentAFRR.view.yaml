@@ -1,5 +1,5 @@
 space: '{{powerops_models}}'
-externalId: BidDocument
+externalId: BidDocumentAFRR
 version: '{{version}}'
 description: Whole Bid (also usually referenced in industry as a Bid Document) containing
   multiple Bid Rows (which are usually referenced in industry as Bids)

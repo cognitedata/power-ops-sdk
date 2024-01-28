@@ -1,11 +1,11 @@
 space: '{{powerops_models}}'
-externalId: TaskDispatcherShopOutput
+externalId: TaskDispatcherOutput
 description: Input to the task dispatcher in the shop bid process
-name: TaskDispatcherShopOutput
+name: TaskDispatcherOutput
 version: '{{version}}'
 implements:
   - space: '{{powerops_models}}'
-    externalId: FunctionInput
+    externalId: FunctionOutput
     version: '{{version}}'
     type: view
 filter:
@@ -16,30 +16,6 @@ filter:
     - functionName
     value: TaskDispatcherShop
 properties:
-  functionName:
-    container:
-      space: '{{powerops_models}}'
-      externalId: FunctionMetadata
-      type: container
-    containerPropertyIdentifier: functionName
-    name: functionName
-    description: The function name
-  processId:
-    container:
-      space: '{{powerops_models}}'
-      externalId: FunctionMetadata
-      type: container
-    containerPropertyIdentifier: processId
-    name: processId
-    description: The id of the dayahead bid shop process
-  processStep:
-    container:
-      space: '{{powerops_models}}'
-      externalId: FunctionMetadata
-      type: container
-    containerPropertyIdentifier: processStep
-    name: processStep
-    description: The step in the bid process as an integer ex. 0,1,2
   previousStep:
     type:
       space: '{{powerops_models}}'
@@ -52,19 +28,6 @@ properties:
     direction: outwards
     name: previousStep
     description: The previous step in the process.
-  alerts:
-    type:
-      space: '{{powerops_models}}'
-      externalId: calculationIssue
-    source:
-      space: '{{powerops_models}}'
-      externalId: Alert
-      version: '{{version}}'
-      type: view
-    direction: outwards
-    name: alerts
-    description: An array of calculation level Alerts.
-    connectionType: multiEdgeConnection
   preprocessorCalculations:
     type:
       space: '{{type_space}}'

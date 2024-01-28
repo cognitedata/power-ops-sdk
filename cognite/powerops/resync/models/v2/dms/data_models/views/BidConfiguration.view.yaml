@@ -1,0 +1,68 @@
+space: '{{powerops_models}}'
+externalId: BidConfiguration
+description: ''
+name: BidConfiguration
+version: '{{version}}'
+properties:
+  method:
+    container:
+      externalId: BidConfiguration
+      space: '{{powerops_models}}'
+    source:
+      space: '{{powerops_models}}'
+      externalId: BidMethodDayAhead
+      version: '{{version}}'
+      type: view
+    containerPropertyIdentifier: method
+    name: method
+    description: The minimum price
+  marketConfiguration:
+    container:
+      externalId: BidConfiguration
+      space: '{{powerops_models}}'
+    source:
+      space: '{{powerops_models}}'
+      externalId: MarketConfiguration
+      version: '{{version}}'
+      type: view
+    containerPropertyIdentifier: marketConfiguration
+    name: marketConfiguration
+    description: The market configuration
+  priceArea:
+    container:
+      externalId: BidConfiguration
+      space: '{{powerops_models}}'
+    source:
+      space: '{{powerops_models}}'
+      externalId: PriceAreaDayAhead
+      version: '{{version}}'
+      type: view
+    containerPropertyIdentifier: priceArea
+    name: priceArea
+    description: The price area
+  plants:
+    type:
+      space: '{{powerops_models}}'
+      externalId: BidConfiguration.plants
+    source:
+      space: '{{powerops_models}}'
+      externalId: Plant
+      version: '{{version}}'
+      type: view
+    direction: outwards
+    name: plants
+    description: The plants
+    connectionType: multiEdgeConnection
+  watercourses:
+    type:
+      space: '{{powerops_models}}'
+      externalId: BidConfiguration.watercourses
+    source:
+      space: '{{powerops_models}}'
+      externalId: Watercourse
+      version: '{{version}}'
+      type: view
+    direction: outwards
+    name: watercourses
+    description: The watercourses
+    connectionType: multiEdgeConnection

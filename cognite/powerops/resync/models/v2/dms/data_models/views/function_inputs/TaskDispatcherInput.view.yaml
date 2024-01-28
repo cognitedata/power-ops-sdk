@@ -1,0 +1,34 @@
+space: '{{powerops_models}}'
+externalId: TaskDispatcherInput
+description: Input to the task dispatcher in the shop bid process
+name: TaskDispatcherInput
+version: '{{version}}'
+implements:
+  - space: '{{powerops_models}}'
+    externalId: FunctionInput
+    version: '{{version}}'
+    type: view
+filter:
+  equals:
+    property:
+    - {{powerops_models}}
+    - FunctionInput/{{version}}
+    - functionName
+    value: TaskDispatcher
+properties:
+  bidConfiguration:
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionMetadata
+      type: container
+    containerPropertyIdentifier: data
+    name: bidConfiguration
+    description: The bid configuration
+  bidDate:
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: date1
+    name: bidDate
+    description: The bid date

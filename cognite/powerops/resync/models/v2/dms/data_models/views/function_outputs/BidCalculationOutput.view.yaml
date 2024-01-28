@@ -1,0 +1,44 @@
+space: '{{powerops_models}}'
+externalId: BidCalculationOutput
+description: The output of a bid calculation
+name: BidCalculationOutput
+version: '{{version}}'
+implements:
+  - space: '{{powerops_models}}'
+    externalId: FunctionOutput
+    version: '{{version}}'
+    type: view
+filter:
+  equals:
+    property:
+    - {{powerops_models}}
+    - FunctionOutput/{{version}}
+    - functionName
+    value: BidCalculation
+properties:
+  rawPartialMatrix:
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionMetadata
+      type: container
+    containerPropertyIdentifier: data
+    source:
+      space: '{{powerops_models}}'
+      externalId: BidMatrixRaw
+      version: '{{version}}'
+      type: view
+    name: rawPartialMatrix
+    description: The raw partial bid matrix
+  previousStep:
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionMetadata
+      type: container
+    containerPropertyIdentifier: linkedStep
+    source:
+      space: '{{powerops_models}}'
+      externalId: BidCalculationInput
+      version: '{{version}}'
+      type: view
+    name: previousStep
+    description: The previous step in the process.

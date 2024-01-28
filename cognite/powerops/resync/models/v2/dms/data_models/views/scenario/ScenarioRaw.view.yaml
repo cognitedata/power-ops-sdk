@@ -1,7 +1,7 @@
 space: '{{powerops_models}}'
-externalId: Scenario
+externalId: ScenarioRaw
 description: SHOP scenario that holds all data needed for a shop run. May be unprocessed or processed
-name: Scenario
+name: ScenarioRaw
 version: '{{version}}'
 implements:
   - space: '{{powerops_models}}'

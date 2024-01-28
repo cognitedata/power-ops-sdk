@@ -102,7 +102,7 @@ properties:
     description: Default method for day ahead bids
     source:
       space: '{{powerops_models}}'
-      externalId: BidMethod
+      externalId: BidMethodDayAhead
       version: '{{version}}'
       type: view
   mainScenarioDayAhead:

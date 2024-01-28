@@ -40,7 +40,7 @@ views:
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
-- externalId: BidMethod
+- externalId: BidMethodDayAhead
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'

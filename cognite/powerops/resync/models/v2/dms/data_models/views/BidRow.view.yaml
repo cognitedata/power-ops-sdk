@@ -110,7 +110,7 @@ properties:
     name: method
     source:
       space: '{{powerops_models}}'
-      externalId: BidMethod
+      externalId: BidMethodAFRR
       version: '{{version}}'
       type: view
   alerts:

@@ -16,14 +16,6 @@ filter:
     - functionName
     value: TaskDispatcherShop
 properties:
-  functionName:
-    container:
-      space: '{{powerops_models}}'
-      externalId: FunctionMetadata
-      type: container
-    containerPropertyIdentifier: functionName
-    name: functionName
-    description: The function name
   bidConfiguration:
     # should be a view - need to implement first
     container:
@@ -33,22 +25,6 @@ properties:
     containerPropertyIdentifier: data
     name: bidConfiguration
     description: The bid configuration
-  processId:
-    container:
-      space: '{{powerops_models}}'
-      externalId: FunctionMetadata
-      type: container
-    containerPropertyIdentifier: processId
-    name: processId
-    description: The id of the dayahead bid shop process
-  processStep:
-    container:
-      space: '{{powerops_models}}'
-      externalId: FunctionMetadata
-      type: container
-    containerPropertyIdentifier: processStep
-    name: processStep
-    description: The step in the bid process as an integer ex. 0,1,2
   previousStep:
     container:
       space: '{{powerops_models}}'

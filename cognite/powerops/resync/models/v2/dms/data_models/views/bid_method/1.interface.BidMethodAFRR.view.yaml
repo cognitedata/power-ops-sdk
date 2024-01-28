@@ -1,5 +1,5 @@
 space: '{{powerops_models}}'
-externalId: BidMethod
+externalId: BidMethodAFRR
 description: A description of the Bid method used in the calculation.
 name: BidMethod
 version: '{{version}}'

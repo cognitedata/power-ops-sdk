@@ -1,6 +1,6 @@
 space: '{{powerops_models}}'
 externalId: BidMethodAFRR
-name: BidMethod
+name: BidMethodAFRR
 usedFor: node
 properties:
   name:

@@ -1,0 +1,44 @@
+space: '{{powerops_models}}'
+externalId: TotalBidMatrixCalculationOutput
+description: The output of the total bid matrix calculation
+name: TotalBidMatrixCalculationOutput
+version: '{{version}}'
+implements:
+  - space: '{{powerops_models}}'
+    externalId: FunctionOutput
+    version: '{{version}}'
+    type: view
+filter:
+  equals:
+    property:
+    - {{powerops_models}}
+    - FunctionOutput/{{version}}
+    - functionName
+    value: TotalBidMatrixCalculation
+properties:
+  bidDocument:
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionMetadata
+      type: container
+    source:
+        space: '{{powerops_models}}'
+        externalId: BidDocument
+        version: '{{version}}'
+        type: view
+    containerPropertyIdentifier: data
+    name: bidDocument
+    description: The bid document to be updated
+  previousStep:
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionMetadata
+      type: container
+    source:
+        space: '{{powerops_models}}'
+        externalId: TotalBidMatrixCalculationInput
+        version: '{{version}}'
+        type: view
+    containerPropertyIdentifier: linkedStep
+    name: previousStep
+    description: This is the linked step in the process.

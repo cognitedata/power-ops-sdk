@@ -1,0 +1,40 @@
+space: '{{powerops_models}}'
+externalId: BidCalculationTask
+description: The data for a bid calculation task
+name: BidCalculationTask
+version: '{{version}}'
+properties:
+  plant:
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    source:
+      space: '{{powerops_models}}'
+      externalId: Plant
+      version: '{{version}}'
+      type: view
+    containerPropertyIdentifier: direct1
+    name: plant
+    description: The plant that the task is for
+  bidDate:
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: date1
+    name: bidDate
+    description: The bid date that the task is for
+  priceArea:
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    source:
+        space: '{{powerops_models}}'
+        externalId: PriceArea
+        version: '{{version}}'
+        type: view
+    containerPropertyIdentifier: direct2
+    name: priceArea
+    description: The price area that the task is for

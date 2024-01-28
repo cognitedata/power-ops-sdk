@@ -27,7 +27,7 @@ properties:
     name: defaultMethod
     source:
       space: '{{powerops_models}}'
-      externalId: BidMethod
+      externalId: BidMethodDayAhead
       version: '{{version}}'
       type: view
   timezone:

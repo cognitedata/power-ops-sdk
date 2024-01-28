@@ -1,7 +1,7 @@
 space: '{{powerops_models}}'
-externalId: PartialBidCalculationShopInput
+externalId: PartialBidCalculationInput
 description: Input to the task dispatcher in the shop bid process
-name: PartialBidCalculationShopInput
+name: PartialBidCalculationInput
 version: '{{version}}'
 implements:
   - space: '{{powerops_models}}'
@@ -27,32 +27,16 @@ properties:
   shopResults:
     type:
       space: '{{powerops_models}}'
-      externalId: ShopResult
+      externalId: SHOPResult
     source:
       space: '{{powerops_models}}'
-      externalId: ShopResult
+      externalId: SHOPResult
       version: '{{version}}'
       type: view
     direction: outwards
     name: shopResults
     description: An array of shop results.
     connectionType: multiEdgeConnection
-  processId:
-    container:
-      space: '{{powerops_models}}'
-      externalId: FunctionMetadata
-      type: container
-    containerPropertyIdentifier: processId
-    name: processId
-    description: The process associated with the function execution
-  processStep:
-    container:
-      space: '{{powerops_models}}'
-      externalId: FunctionMetadata
-      type: container
-    containerPropertyIdentifier: processStep
-    name: processStep
-    description: This is the step in the process.
   previousStep:
     container:
       space: '{{powerops_models}}'

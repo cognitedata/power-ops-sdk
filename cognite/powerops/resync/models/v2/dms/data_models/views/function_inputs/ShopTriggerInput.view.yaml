@@ -1,8 +1,7 @@
-# This is deprecated. Use the specific for AFRR and DayAhead instead.
 space: '{{powerops_models}}'
-externalId: ShopTrigger
+externalId: SHOPTriggerInput
 description: Base class for all function inputs
-name: ShopTrigger
+name: SHOPTriggerInput
 version: '{{version}}'
 implements:
   - space: '{{powerops_models}}'
@@ -17,22 +16,6 @@ filter:
     - functionName
     value: ShopTrigger
 properties:
-  processId:
-    container:
-      space: '{{powerops_models}}'
-      externalId: FunctionMetadata
-      type: container
-    containerPropertyIdentifier: processId
-    name: processId
-    description: The process associated with the function execution
-  processStep:
-    container:
-      space: '{{powerops_models}}'
-      externalId: FunctionMetadata
-      type: container
-    containerPropertyIdentifier: processStep
-    name: processStep
-    description: This is the step in the process.
   previousStep:
     container:
       space: '{{powerops_models}}'

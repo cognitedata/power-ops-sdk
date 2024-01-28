@@ -4,7 +4,7 @@ description: Input to the task dispatcher in the shop bid process
 name: TaskDispatcherShopInput
 version: '{{version}}'
 implements:
-  - space: '{{version}}'
+  - space: '{{powerops_models}}'
     externalId: FunctionInput
     version: '{{version}}'
     type: view

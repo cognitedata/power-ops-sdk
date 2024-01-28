@@ -1,6 +1,6 @@
 space: '{{powerops_models}}'
-externalId: SHOPMultiScenario
-name: SHOPMultiScenario
+externalId: SHOPMultiScenarioMethod
+name: SHOPMultiScenarioMethod
 filter:
   equals:
     property:

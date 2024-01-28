@@ -1,5 +1,5 @@
 space: '{{powerops_models}}'
-externalId: BidDocument
+externalId: BidDocumentDayAhead
 name: BidDocument
 filter:
   equals:
@@ -37,7 +37,7 @@ properties:
     name: method
     source:
       space: '{{powerops_models}}'
-      externalId: BidMethod
+      externalId: BidMethodDayAhead
       version: '{{version}}'
       type: view
   total:
