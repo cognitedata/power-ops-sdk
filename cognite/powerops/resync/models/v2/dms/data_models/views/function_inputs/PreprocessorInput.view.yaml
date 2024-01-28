@@ -16,14 +16,6 @@ filter:
     - functionName
     value: Preprocessor
 properties:
-  functionName:
-    container:
-      space: '{{powerops_models}}'
-      externalId: FunctionMetadata
-      type: container
-    containerPropertyIdentifier: functionName
-    name: functionName
-    description: The function name
   scenarioRaw:
     type:
       space: '{{type_space}}'
@@ -36,23 +28,7 @@ properties:
     direction: outwards
     name: scenarioRaw
     description: The scenario that needs preprocessing before being sent to shop (has isReady flag set to false)
-  processId:
-    container:
-      space: '{{powerops_models}}'
-      externalId: FunctionMetadata
-      type: container
-    containerPropertyIdentifier: processId
-    name: processId
-    description: The id of the dayahead bid shop process
-  processStep:
-    container:
-      space: '{{powerops_models}}'
-      externalId: FunctionMetadata
-      type: container
-    containerPropertyIdentifier: processStep
-    name: processStep
-    description: The step in the bid process as an integer ex. 0,1,2
-  linkedStep:
+  previousStep:
     container:
       space: '{{powerops_models}}'
       externalId: FunctionMetadata

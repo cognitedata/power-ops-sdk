@@ -4,7 +4,7 @@ version: '1'
 name: 'DayAheadBid'
 description: 'Stores results of Day Ahead bid calculations.'
 views:
-- externalId: BidDocument
+- externalId: BidDocumentDayAhead
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
@@ -36,7 +36,7 @@ views:
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
-- externalId: PriceArea
+- externalId: PriceAreaDayAhead
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
