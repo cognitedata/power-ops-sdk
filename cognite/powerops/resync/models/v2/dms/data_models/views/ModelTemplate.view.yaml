@@ -57,7 +57,7 @@ properties:
       type: view
     type:
       space: '{{type_space}}'
-      externalId: mapping
+      externalId: Mapping
     direction: outwards
     name: baseMappings
     description: The base mappings for the model

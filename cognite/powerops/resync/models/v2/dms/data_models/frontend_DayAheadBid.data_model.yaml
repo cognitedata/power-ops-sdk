@@ -24,11 +24,11 @@ views:
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
-- externalId: SHOPMultiScenario
+- externalId: SHOPMultiScenarioMethod
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
-- externalId: WaterValueBased
+- externalId: WaterValueBasedMethod
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'

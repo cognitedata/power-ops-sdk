@@ -26,7 +26,7 @@ properties:
     description: This is the linked step in the process.
   scenario:
     type:
-      space: '{{powerops_models}}'
+      space: '{{type_space}}'
       externalId: Scenario
     source:
       space: '{{powerops_models}}'

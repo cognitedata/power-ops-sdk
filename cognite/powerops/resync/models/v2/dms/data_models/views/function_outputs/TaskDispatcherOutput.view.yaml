@@ -18,7 +18,7 @@ filter:
 properties:
   previousStep:
     type:
-      space: '{{powerops_models}}'
+      space: '{{type_space}}'
       externalId: TaskDispatcherShopInput
     source:
       space: '{{powerops_models}}'

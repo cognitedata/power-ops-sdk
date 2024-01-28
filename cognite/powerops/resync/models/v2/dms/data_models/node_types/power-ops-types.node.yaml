@@ -61,3 +61,27 @@
   externalId: ModelTemplate
 - space: {{type_space}}
   externalId: Mapping
+- space: {{type_space}}
+  externalId: PartialBidCalculationInput
+- space: {{type_space}}
+  externalId: TotalBidMatrixCalculationInput.partialBidMatrices
+- space: {{type_space}}
+  externalId: SHOPResult
+- space: {{type_space}}
+  externalId: BidConfiguration.plants
+- space: {{type_space}}
+  externalId: BidConfiguration.watercourses
+- space: {{type_space}}
+  externalId: partialBidMatricesRaw
+- space: {{type_space}}
+  externalId: TaskDispatcherShopInput
+- space: {{type_space}}
+  externalId: PreprocessorInput
+- space: {{type_space}}
+  externalId: BidMatrixRaw
+- space: {{type_space}}
+  externalId: SHOPTriggerInput
+- space: {{type_space}}
+  externalId: Scenario
+- space: {{type_space}}
+  externalId: ScenarioRaw

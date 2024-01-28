@@ -42,7 +42,7 @@ properties:
     description: The price area
   plants:
     type:
-      space: '{{powerops_models}}'
+      space: '{{type_space}}'
       externalId: BidConfiguration.plants
     source:
       space: '{{powerops_models}}'
@@ -55,7 +55,7 @@ properties:
     connectionType: multiEdgeConnection
   watercourses:
     type:
-      space: '{{powerops_models}}'
+      space: '{{type_space}}'
       externalId: BidConfiguration.watercourses
     source:
       space: '{{powerops_models}}'

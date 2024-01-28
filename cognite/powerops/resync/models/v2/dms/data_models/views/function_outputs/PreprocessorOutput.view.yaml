@@ -26,7 +26,7 @@ properties:
     description: The function name
   scenario:
     type:
-      space: '{{powerops_models}}'
+      space: '{{type_space}}'
       externalId: Scenario
     source:
       space: '{{powerops_models}}'
@@ -54,7 +54,7 @@ properties:
     description: The step in the bid process as an integer ex. 0,1,2
   previousStep:
     type:
-      space: '{{powerops_models}}'
+      space: '{{type_space}}'
       externalId: PreprocessorInput
     source:
       space: '{{powerops_models}}'
@@ -66,7 +66,7 @@ properties:
     description: The prepped and processed scenario to send to shop trigger
   alerts:
     type:
-      space: '{{powerops_models}}'
+      space: '{{type_space}}'
       externalId: calculationIssue
     source:
       space: '{{powerops_models}}'

@@ -18,7 +18,7 @@ filter:
 properties:
   shopResult:
     type:
-      space: '{{powerops_models}}'
+      space: '{{type_space}}'
       externalId: SHOPResult
     source:
       space: '{{powerops_models}}'
@@ -45,7 +45,7 @@ properties:
     description: This is the step in the process.
   previousStep:
     type:
-      space: '{{powerops_models}}'
+      space: '{{type_space}}'
       externalId: SHOPTriggerInput
     source:
       space: '{{powerops_models}}'
@@ -57,7 +57,7 @@ properties:
     description: The prepped and processed scenario to send to shop trigger
   alerts:
     type:
-      space: '{{powerops_models}}'
+      space: '{{type_space}}'
       externalId: calculationIssue
     source:
       space: '{{powerops_models}}'

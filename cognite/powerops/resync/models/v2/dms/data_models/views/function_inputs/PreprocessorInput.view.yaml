@@ -26,7 +26,7 @@ properties:
     description: The function name
   scenarioRaw:
     type:
-      space: '{{powerops_models}}'
+      space: '{{type_space}}'
       externalId: ScenarioRaw
     source:
       space: '{{powerops_models}}'

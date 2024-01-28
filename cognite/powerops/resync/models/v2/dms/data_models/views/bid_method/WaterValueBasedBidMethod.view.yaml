@@ -1,6 +1,6 @@
 space: '{{powerops_models}}'
-externalId: WaterValueBased
-name: WaterValueBased
+externalId: WaterValueBasedMethod
+name: WaterValueBasedMethod
 filter:
   equals:
     property:

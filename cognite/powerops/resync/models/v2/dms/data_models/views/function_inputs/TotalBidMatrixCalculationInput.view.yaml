@@ -23,7 +23,7 @@ properties:
       type: container
     source:
       space: '{{powerops_models}}'
-      externalId: PartialBidCalculationShopOutput
+      externalId: PartialBidCalculationOutput
       version: '{{version}}'
       type: view
     containerPropertyIdentifier: linkedStep

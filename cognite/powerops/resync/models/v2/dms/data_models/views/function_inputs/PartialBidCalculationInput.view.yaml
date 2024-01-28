@@ -26,7 +26,7 @@ properties:
     description: The name of the plant to calculate the partial bid for
   shopResults:
     type:
-      space: '{{powerops_models}}'
+      space: '{{type_space}}'
       externalId: SHOPResult
     source:
       space: '{{powerops_models}}'
@@ -47,7 +47,7 @@ properties:
     description: This is the linked step in the process.
   alerts:
     type:
-      space: '{{powerops_models}}'
+      space: '{{type_space}}'
       externalId: calculationIssue
     source:
       space: '{{powerops_models}}'
