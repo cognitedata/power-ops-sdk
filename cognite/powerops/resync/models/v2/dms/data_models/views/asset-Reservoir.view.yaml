@@ -8,9 +8,6 @@ filter:
     - hasData:
         - type: container
           space: '{{shared_model_space}}'
-          externalId: Reservoir
-        - type: container
-          space: '{{shared_model_space}}'
           externalId: Asset
     - equals:
         property:

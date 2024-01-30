@@ -7,7 +7,7 @@ filter:
   and:
     - hasData:
       - type: container
-        space: '{{shared_model_space}}'
+        space: '{{asset_space}}'
         externalId: EfficiencyCurve
     - equals:
         property:

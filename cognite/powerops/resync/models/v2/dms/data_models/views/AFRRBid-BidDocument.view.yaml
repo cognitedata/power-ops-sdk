@@ -10,9 +10,6 @@ filter:
         - type: container
           space: '{{shared_model_space}}'
           externalId: BidDocument
-        - type: container
-          space: '{{afrr_model_space}}'
-          externalId: BidDocument
     - equals:
         property:
         - node
