@@ -9,14 +9,14 @@ filter:
         space: '{{dayahead_model_space}}'
         externalId: BidMatrix
     - in:
-      property:
-      - node
-      - type
-      values:
-        - space: '{{type_space}}'
-          externalId: DayAheadBasicBidMatrix
-        - space: '{{type_space}}'
-          externalId: DayAheadMultiScenarioMatrix
+        property:
+        - node
+        - type
+        values:
+          - space: '{{type_space}}'
+            externalId: DayAheadBasicBidMatrix
+          - space: '{{type_space}}'
+            externalId: DayAheadMultiScenarioMatrix
 properties:
   resourceCost:
     container:

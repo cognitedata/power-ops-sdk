@@ -7,18 +7,18 @@ version: '{{base_BidDocument_version}}'
 filter:
   and:
     - hasData:
-    - type: container
-      space: '{{shared_model_space}}'
-      externalId: BidDocument
+      - type: container
+        space: '{{shared_model_space}}'
+        externalId: BidDocument
     - in:
-      property:
-      - node
-      - type
-      values:
-        - space: '{{type_space}}'
-          externalId: DayAheadBidDocument
-        - space: '{{type_space}}'
-          externalId: AFRRBidDocument
+        property:
+        - node
+        - type
+        values:
+          - space: '{{type_space}}'
+            externalId: DayAheadBidDocument
+          - space: '{{type_space}}'
+            externalId: AFRRBidDocument
 properties:
   name:
     container:

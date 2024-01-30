@@ -10,12 +10,12 @@ filter:
         space: '{{shared_model_space}}'
         externalId: EfficiencyCurve
     - equals:
-      property:
-       - node
-       - type
-      value:
-        space: '{{type_space}}'
-        externalId: TurbineEfficiencyCurve
+        property:
+         - node
+         - type
+        value:
+          space: '{{type_space}}'
+          externalId: TurbineEfficiencyCurve
 properties:
   head:
     container:

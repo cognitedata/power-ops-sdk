@@ -8,6 +8,7 @@ from cognite.client.data_classes import Asset, FileMetadata, FileMetadataList, L
 from cognite.client.data_classes import Sequence as CogniteSequence
 from cognite.client.data_classes.data_modeling import ContainerId, DataModelId, EdgeApply, NodeApply, ViewId
 from cognite.client.exceptions import CogniteAPIError
+from cognite.client.utils.useful_types import SequenceNotStr
 
 from cognite.powerops.resync.models.base import CDFFile, CDFSequence
 from cognite.powerops.utils.navigation import chunks
@@ -33,7 +34,7 @@ class CogniteAPI(Protocol[T_CogniteResource]):  # type: ignore[misc]
     def create(self, items: T_CogniteResource | Sequence[T_CogniteResource]) -> Any:
         ...
 
-    def delete(self, external_id: str | Sequence[str]) -> Any:
+    def delete(self, external_id: str | SequenceNotStr[str]) -> Any:
         ...
 
     def upsert(
@@ -59,7 +60,7 @@ class FileAdapter(CogniteAPI[FileMetadata]):
                 raise ValueError(f"Cannot create new file {item.external_id} missing file content")
             self.client.files.upload_bytes(content, **item.dump(camel_case=False), overwrite=True)
 
-    def delete(self, external_id: str | Sequence[str]) -> Any:
+    def delete(self, external_id: str | SequenceNotStr[str]) -> Any:
         self.client.files.delete(external_id=external_id)
 
     def upsert(self, item: FileMetadata | Sequence[FileMetadata], mode: Literal["patch", "replace"] = "patch") -> Any:
@@ -101,7 +102,7 @@ class SequenceAdapter(CogniteAPI[CogniteSequence]):
                 raise ValueError(f"Missing sequence content for {item.external_id}")
             self.client.sequences.data.insert_dataframe(df, external_id=item.external_id)
 
-    def delete(self, external_id: str | Sequence[str]) -> Any:
+    def delete(self, external_id: str | SequenceNotStr[str]) -> Any:
         self.client.sequences.delete(external_id=external_id)
 
     def upsert(
@@ -146,7 +147,7 @@ class InstanceAdapter(CogniteAPI[T_Instance]):
         if failed:
             raise ValueError(f"Failed on {len(failed)}/{len(item_sequence)}")
 
-    def delete(self, external_id: str | Sequence[str]) -> Any:
+    def delete(self, external_id: str | SequenceNotStr[str]) -> Any:
         if self.instance_type == "node":
             self.client.data_modeling.instances.delete(nodes=external_id)  # type: ignore[arg-type]
         else:
@@ -163,7 +164,7 @@ class DataModelingAdapter(CogniteAPI[T_CogniteResource]):
     def create(self, items: T_CogniteResource | Sequence[T_CogniteResource]) -> Any:
         self.api.apply(items)
 
-    def delete(self, external_id: str | Sequence[str]) -> Any:
+    def delete(self, external_id: str | SequenceNotStr[str]) -> Any:
         self.api.delete(external_id)
 
     def upsert(
@@ -179,7 +180,7 @@ class LabelsAdapter(CogniteAPI[LabelDefinition]):
     def create(self, items: LabelDefinition | Sequence[LabelDefinition]) -> Any:
         self.client.labels.create(items)
 
-    def delete(self, external_id: str | Sequence[str]) -> Any:
+    def delete(self, external_id: str | SequenceNotStr[str]) -> Any:
         # Labels are not deleted.
         ...
 

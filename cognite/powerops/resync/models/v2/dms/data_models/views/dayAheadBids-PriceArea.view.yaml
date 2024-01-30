@@ -9,12 +9,12 @@ filter:
         space: '{{shared_model_space}}'
         externalId: PriceArea
     - equals:
-      property:
-      - node
-      - type
-      value:
-        space: '{{type_space}}'
-        externalId: PriceArea
+        property:
+        - node
+        - type
+        value:
+          space: '{{type_space}}'
+          externalId: PriceArea
 properties:
   name:
     container:

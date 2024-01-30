@@ -13,12 +13,12 @@ filter:
         space: '{{shared_model_space}}'
         externalId: Asset
     - equals:
-      property:
-      - node
-      - type
-      value:
-        space: '{{type_space}}'
-        externalId: Plant
+        property:
+        - node
+        - type
+        value:
+          space: '{{type_space}}'
+          externalId: Plant
 properties:
   name:
     container:

@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import logging
-from collections.abc import Sequence
 from typing import Optional, Union, cast
 
 import numpy as np
@@ -9,6 +8,7 @@ import pandas as pd
 from cognite.client import CogniteClient
 from cognite.client.data_classes import DatapointsList, Event, LabelFilter, RelationshipList
 from cognite.client.utils import ms_to_datetime
+from cognite.client.utils.useful_types import SequenceNotStr
 
 from cognite.powerops.utils.require import require
 
@@ -45,7 +45,7 @@ def retrieve_relationships_from_source_ext_id(
     client: CogniteClient,
     source_ext_id: str,
     label_ext_id: Optional[Union[str, list[str]]],
-    target_types: Sequence[str] | None = None,
+    target_types: SequenceNotStr[str] | None = None,
 ) -> RelationshipList:
     """
     Retrieve relationships between source and target using the source ext id.

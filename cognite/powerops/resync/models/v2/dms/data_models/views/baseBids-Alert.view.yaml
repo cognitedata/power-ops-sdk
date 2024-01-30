@@ -10,12 +10,12 @@ filter:
         space: '{{shared_model_space}}'
         externalId: Alert
     - equals:
-      property:
-      - node
-      - type
-      value:
-        space: '{{type_space}}'
-        externalId: Alert
+        property:
+        - node
+        - type
+        value:
+          space: '{{type_space}}'
+          externalId: Alert
 properties:
   time:
     container:

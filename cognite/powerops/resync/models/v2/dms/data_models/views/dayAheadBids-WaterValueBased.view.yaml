@@ -8,12 +8,12 @@ filter:
         space: '{{shared_model_space}}'
         externalId: BidMethod
     - equals:
-      property:
-      - node
-      - type
-      value:
-        space: '{{type_space}}'
-        externalId: DayAheadWaterValueBased
+        property:
+        - node
+        - type
+        value:
+          space: '{{type_space}}'
+          externalId: DayAheadWaterValueBased
 implements:
 - space: '{{dayahead_model_space}}'
   externalId: BidMethod

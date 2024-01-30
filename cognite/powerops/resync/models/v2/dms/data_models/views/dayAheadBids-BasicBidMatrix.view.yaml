@@ -14,10 +14,10 @@ filter:
         space: '{{dayahead_model_space}}'
         externalId: BidMatrix
     - equals:
-      property:
-      - node
-      - type
-      value:
-        space: '{{type_space}}'
-        externalId: DayAheadBasicBidMatrix
+        property:
+        - node
+        - type
+        value:
+          space: '{{type_space}}'
+          externalId: DayAheadBasicBidMatrix
 properties: {}

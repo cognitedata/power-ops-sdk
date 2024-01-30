@@ -13,12 +13,15 @@ import yaml
 from cognite.client import CogniteClient
 from cognite.client.data_classes import filters
 from cognite.client.data_classes.data_modeling import (
+    ContainerApply,
     ContainerApplyList,
     DataModelApply,
     DataModelApplyList,
     MappedPropertyApply,
+    NodeApply,
     NodeApplyList,
     NodeId,
+    SpaceApply,
     SpaceApplyList,
     ViewApplyList,
 )
@@ -196,20 +199,40 @@ class DataModelLoader:
 
     def load(self) -> Schema:
         resources_by_type = defaultdict(list)
+        resource_cls_by_type = {
+            "space": SpaceApply,
+            "view": ViewApply,
+            "container": ContainerApply,
+            "node": NodeApply,
+            "data_model": DataModelApply,
+        }
+
+        failed: list[tuple[Path, str]] = []
         for filepath in self._source_dir.glob("**/*.yaml"):
             if match := re.match(r".*(?P<type>(space|view|container|node|data_model))\.yaml$", filepath.name):
+                type_ = match.group("type")
+                resource_cls = resource_cls_by_type[type_]
                 loaded = self._load_file(filepath)
-                if isinstance(loaded, list):
-                    resources_by_type[match.group("type")].extend(loaded)
-                else:
-                    resources_by_type[match.group("type")].append(loaded)
-
+                try:
+                    if isinstance(loaded, list):
+                        parsed = [resource_cls.load(item) for item in loaded]
+                        resources_by_type[match.group("type")].extend(parsed)
+                    else:
+                        parsed = resource_cls.load(loaded)
+                        resources_by_type[match.group("type")].append(parsed)
+                except Exception as exc:
+                    failed.append((filepath, str(exc)))
+        if failed:
+            raise ValueError(
+                f"Failed to load {len(failed)} files:\n"
+                + "\n".join(f"{filepath.relative_to(Path.cwd())}: {exc}" for filepath, exc in failed)
+            )
         return Schema(
-            containers=ContainerApplyList.load(resources_by_type["container"]),
-            _views=ViewApplyList.load(resources_by_type["view"]),
-            _data_models=DataModelApplyList.load(resources_by_type["data_model"]),
-            spaces=SpaceApplyList.load(resources_by_type["space"]),
-            node_types=NodeApplyList.load(resources_by_type["node"]),
+            containers=ContainerApplyList(resources_by_type["container"]),
+            _views=ViewApplyList(resources_by_type["view"]),
+            _data_models=DataModelApplyList(resources_by_type["data_model"]),
+            spaces=SpaceApplyList(resources_by_type["space"]),
+            node_types=NodeApplyList(resources_by_type["node"]),
         )
 
     def _load_file(self, filepath: Path) -> dict[str, Any] | list[dict[str, Any]]:
