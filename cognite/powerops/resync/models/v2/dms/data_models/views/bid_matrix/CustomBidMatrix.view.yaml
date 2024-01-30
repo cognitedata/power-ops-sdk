@@ -19,8 +19,8 @@ filter:
           - node
           - type
           values:
-            - space: '{{type_space}}'
+            - space: '{{powerops_type_space}}'
               externalId: DayAheadBasicBidMatrix
-            - space: '{{type_space}}'
+            - space: '{{powerops_type_space}}'
               externalId: DayAheadMultiScenarioMatrix
 properties: {}

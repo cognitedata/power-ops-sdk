@@ -7,7 +7,7 @@ filter:
     - node
     - type
     value:
-      space: '{{type_space}}'
+      space: '{{powerops_type_space}}'
       externalId: DayAheadWaterValueBased
 implements:
 - space: '{{powerops_models}}'
@@ -15,4 +15,25 @@ implements:
   version: '{{version}}'
   type: view
 version: '{{version}}'
-properties: {}
+properties:
+  name:
+    container:
+      space: '{{powerops_models}}'
+      externalId: BidMethodDayAhead
+      type: container
+    containerPropertyIdentifier: name
+    name: name
+    description: Name of the Bid Method
+  main_scenario:
+    type:
+      space: '{{powerops_type_space}}'
+      externalId: PriceScenario
+    source:
+      space: '{{powerops_models}}'
+      externalId: PriceScenario
+      version: '{{version}}'
+      type: view
+    name: main_scenario
+    description: The main scenario used in the shop run and in the frontend
+    direction: outwards
+    connectionType: edgeConnection

@@ -17,13 +17,14 @@ filter:
     value: TaskDispatcher
 properties:
   bidConfiguration:
-    container:
+    type:
+      space: '{{powerops_type_space}}'
+      externalId: BidConfiguration
+    source:
       space: '{{powerops_models}}'
-      externalId: FunctionMetadata
-      type: container
-    containerPropertyIdentifier: data
-    name: bidConfiguration
-    description: The bid configuration
+      externalId: BidConfiguration
+      version: '{{version}}'
+      type: view
   bidDate:
     container:
       space: '{{powerops_models}}'

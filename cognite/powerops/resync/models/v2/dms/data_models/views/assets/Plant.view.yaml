@@ -14,7 +14,7 @@ filter:
     - node
     - type
     value:
-      space: '{{type_space}}'
+      space: '{{powerops_type_space}}'
       externalId: Plant
 properties:
   headLossFactor:
@@ -173,7 +173,7 @@ properties:
     name: inletReservoir
   generators:
     type:
-      space: '{{type_space}}'
+      space: '{{powerops_type_space}}'
       externalId: isSubAssetOf
     source:
       type: view

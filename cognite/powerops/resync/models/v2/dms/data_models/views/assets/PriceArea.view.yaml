@@ -14,7 +14,7 @@ filter:
     - node
     - type
     value:
-      space: '{{type_space}}'
+      space: '{{powerops_type_space}}'
       externalId: PriceArea
 properties:
   timezone:
@@ -123,7 +123,7 @@ properties:
     description: Day ahead price for the price area
   plants:
     type:
-      space: '{{type_space}}'
+      space: '{{powerops_type_space}}'
       externalId: isSubAssetOf
     source:
       space: '{{powerops_models}}'
@@ -136,7 +136,7 @@ properties:
     connectionType: multiEdgeConnection
   watercourses:
     type:
-      space: '{{type_space}}'
+      space: '{{powerops_type_space}}'
       externalId: isSubAssetOf
     source:
       space: '{{powerops_models}}'

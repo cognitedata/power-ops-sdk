@@ -13,9 +13,9 @@ filter:
           - node
           - type
           values:
-            - space: '{{type_space}}'
+            - space: '{{powerops_type_space}}'
               externalId: DayAheadSHOPMultiScenario
-            - space: '{{type_space}}'
+            - space: '{{powerops_type_space}}'
               externalId: DayAheadWaterValueBased
 implements:
 - space: '{{powerops_models}}'

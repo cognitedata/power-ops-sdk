@@ -10,7 +10,7 @@ filter:
     - node
     - type
     value:
-      space: '{{type_space}}'
+      space: '{{powerops_type_space}}'
       externalId: AFRRBidDocument
 implements:
 - space: '{{powerops_models}}'
@@ -32,7 +32,7 @@ properties:
     name: priceArea
   bids:
     type:
-      space: '{{type_space}}'
+      space: '{{powerops_type_space}}'
       externalId: partialBid
     source:
       space: '{{powerops_models}}'

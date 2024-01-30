@@ -1,5 +1,5 @@
 # variables used for substitution in other files in this directory
-type_space: 'power-ops-types'
-powerops_instance_space: 'power-ops-instance'
+powerops_type_space: 'sp_powerops_types'
+powerops_instance_space: 'sp_powerops_instance'
 powerops_models: 'sp_powerops_models'
 version: '1'

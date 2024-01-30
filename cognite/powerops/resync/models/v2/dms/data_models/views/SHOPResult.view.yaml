@@ -6,7 +6,7 @@ version: '{{version}}'
 properties:
   scenario:
     type:
-      space: '{{type_space}}'
+      space: '{{powerops_type_space}}'
       externalId: Scenario
     source:
       space: '{{powerops_models}}'
@@ -34,7 +34,7 @@ properties:
     description: The sequence of the objective function
   alerts:
     type:
-      space: '{{type_space}}'
+      space: '{{powerops_type_space}}'
       externalId: calculationIssue
     source:
       space: '{{powerops_models}}'

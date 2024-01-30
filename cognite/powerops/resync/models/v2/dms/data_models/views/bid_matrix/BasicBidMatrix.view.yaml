@@ -13,6 +13,6 @@ filter:
     - node
     - type
     value:
-      space: '{{type_space}}'
+      space: '{{powerops_type_space}}'
       externalId: DayAheadBasicBidMatrix
 properties: {}

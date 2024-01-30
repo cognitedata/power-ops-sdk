@@ -45,7 +45,7 @@ properties:
       type: view
   alerts:
     type:
-      space: '{{type_space}}'
+      space: '{{powerops_type_space}}'
       externalId: calculationIssue
     source:
       space: '{{powerops_models}}'

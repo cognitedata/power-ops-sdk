@@ -31,7 +31,7 @@ properties:
     description: The market configuration
   partialBidMatricesRaw:
     type:
-      space: '{{type_space}}'
+      space: '{{powerops_type_space}}'
       externalId: partialBidMatricesRaw
     source:
       space: '{{powerops_models}}'

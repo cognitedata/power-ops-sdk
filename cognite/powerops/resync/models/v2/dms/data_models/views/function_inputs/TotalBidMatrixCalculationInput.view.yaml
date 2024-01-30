@@ -31,7 +31,7 @@ properties:
     description: The previous step in the process.
   partialBidMatrices:
     type:
-      space: '{{type_space}}'
+      space: '{{powerops_type_space}}'
       externalId: TotalBidMatrixCalculationInput.partialBidMatrices
     source:
       space: '{{powerops_models}}'

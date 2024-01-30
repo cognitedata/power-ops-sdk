@@ -18,7 +18,7 @@ filter:
 properties:
   previousStep:
     type:
-      space: '{{type_space}}'
+      space: '{{powerops_type_space}}'
       externalId: TaskDispatcherShopInput
     source:
       space: '{{powerops_models}}'
@@ -30,7 +30,7 @@ properties:
     description: The previous step in the process.
   preprocessorCalculations:
     type:
-      space: '{{type_space}}'
+      space: '{{powerops_type_space}}'
       externalId: PreprocessorInput
     source:
       space: '{{powerops_models}}'
@@ -43,7 +43,7 @@ properties:
     connectionType: multiEdgeConnection
   partialBidCalculations:
     type:
-      space: '{{type_space}}'
+      space: '{{powerops_type_space}}'
       externalId: PartialBidCalculationInput
     source:
       space: '{{powerops_models}}'

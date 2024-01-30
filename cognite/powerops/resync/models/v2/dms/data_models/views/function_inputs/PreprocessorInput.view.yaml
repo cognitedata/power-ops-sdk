@@ -18,7 +18,7 @@ filter:
 properties:
   scenarioRaw:
     type:
-      space: '{{type_space}}'
+      space: '{{powerops_type_space}}'
       externalId: ScenarioRaw
     source:
       space: '{{powerops_models}}'

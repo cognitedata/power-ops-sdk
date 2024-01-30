@@ -1,4 +1,4 @@
-- space: {{type_space}}
+- space: {{powerops_type_space}}
   name: PowerOpsTypes
   description: Types used in PowerOps.
 - space: {{powerops_instance_space}}

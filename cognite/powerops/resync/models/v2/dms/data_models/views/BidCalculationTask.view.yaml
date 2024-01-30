@@ -1,3 +1,5 @@
+# Can be deleted?
+
 space: '{{powerops_models}}'
 externalId: BidCalculationTask
 description: The data for a bid calculation task

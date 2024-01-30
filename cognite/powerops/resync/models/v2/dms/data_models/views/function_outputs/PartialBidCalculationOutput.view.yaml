@@ -18,7 +18,7 @@ filter:
 properties:
   bidMatrixRaw:
     type:
-      space: '{{type_space}}'
+      space: '{{powerops_type_space}}'
       externalId: BidMatrixRaw
     source:
       space: '{{powerops_models}}'
@@ -30,7 +30,7 @@ properties:
     description: The bid matrix that is calculated by the partial bid calculation function
   previousStep:
     type:
-      space: '{{type_space}}'
+      space: '{{powerops_type_space}}'
       externalId: PartialBidCalculationInput
     source:
       space: '{{powerops_models}}'

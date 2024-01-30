@@ -18,7 +18,7 @@ filter:
 properties:
   shopResult:
     type:
-      space: '{{type_space}}'
+      space: '{{powerops_type_space}}'
       externalId: SHOPResult
     source:
       space: '{{powerops_models}}'
@@ -29,7 +29,7 @@ properties:
     name: shopResult
   previousStep:
     type:
-      space: '{{type_space}}'
+      space: '{{powerops_type_space}}'
       externalId: SHOPTriggerInput
     source:
       space: '{{powerops_models}}'

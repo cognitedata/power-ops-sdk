@@ -7,7 +7,7 @@ filter:
     - node
     - type
     value:
-      space: '{{type_space}}'
+      space: '{{powerops_type_space}}'
       externalId: DayAheadBidDocument
 implements:
 - space: '{{powerops_models}}'
@@ -54,7 +54,7 @@ properties:
       type: view
   partials:
     type:
-      space: '{{type_space}}'
+      space: '{{powerops_type_space}}'
       externalId: partialBid
     source:
       space: '{{powerops_models}}'

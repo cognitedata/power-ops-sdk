@@ -56,7 +56,7 @@ properties:
       version: '{{version}}'
       type: view
     type:
-      space: '{{type_space}}'
+      space: '{{powerops_type_space}}'
       externalId: Mapping
     direction: outwards
     name: baseMappings

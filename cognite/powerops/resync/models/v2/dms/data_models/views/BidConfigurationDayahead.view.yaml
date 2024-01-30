@@ -1,48 +1,40 @@
 space: '{{powerops_models}}'
-externalId: BidConfiguration
+externalId: BidConfigurationDayahead
 description: ''
-name: BidConfiguration
+name: BidConfigurationDayahead
 version: '{{version}}'
 properties:
   method:
-    container:
-      externalId: BidConfiguration
-      space: '{{powerops_models}}'
+    method: # this was pointing to container before but why?
+    type: 
+      space: '{{powerops_type_space}}'
+      externalId: BidMethodDayahead # only the specific bid methods exist now - why?
     source:
       space: '{{powerops_models}}'
-      externalId: BidMethodDayAhead
+      externalId: BidMethodDayahead
       version: '{{version}}'
       type: view
-    containerPropertyIdentifier: method
-    name: method
-    description: The minimum price
   marketConfiguration:
-    container:
-      externalId: BidConfiguration
-      space: '{{powerops_models}}'
+    type:
+      space: '{{powerops_type_space}}'
+      externalId: MarketConfiguration
     source:
       space: '{{powerops_models}}'
       externalId: MarketConfiguration
       version: '{{version}}'
       type: view
-    containerPropertyIdentifier: marketConfiguration
-    name: marketConfiguration
-    description: The market configuration
   priceArea:
-    container:
-      externalId: BidConfiguration
-      space: '{{powerops_models}}'
+    type:
+      space: '{{powerops_type_space}}'
+      externalId: PriceArea
     source:
       space: '{{powerops_models}}'
-      externalId: PriceAreaDayAhead
+      externalId: PriceArea
       version: '{{version}}'
       type: view
-    containerPropertyIdentifier: priceArea
-    name: priceArea
-    description: The price area
   plants:
     type:
-      space: '{{type_space}}'
+      space: '{{powerops_type_space}}'
       externalId: BidConfiguration.plants
     source:
       space: '{{powerops_models}}'
@@ -55,7 +47,7 @@ properties:
     connectionType: multiEdgeConnection
   watercourses:
     type:
-      space: '{{type_space}}'
+      space: '{{powerops_type_space}}'
       externalId: BidConfiguration.watercourses
     source:
       space: '{{powerops_models}}'

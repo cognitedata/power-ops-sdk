@@ -14,7 +14,7 @@ filter:
      - node
      - type
     value:
-      space: '{{type_space}}'
+      space: '{{powerops_type_space}}'
       externalId: Generator
 properties:
   pMin:
@@ -72,7 +72,7 @@ properties:
       externalId: TurbineEfficiencyCurve
       version: '{{version}}'
     type:
-      space: '{{type_space}}'
+      space: '{{powerops_type_space}}'
       externalId: isSubAssetOf
     direction: outwards
     description: The watercourses that are connected to the PriceArea.

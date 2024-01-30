@@ -17,14 +17,14 @@ filter:
     value: TaskDispatcherShop
 properties:
   bidConfiguration:
-    # should be a view - need to implement first
-    container:
+    type:
+      space: '{{powerops_type_space}}'
+      externalId: BidConfiguration
+    source:
       space: '{{powerops_models}}'
-      externalId: FunctionMetadata
-      type: container
-    containerPropertyIdentifier: data
-    name: bidConfiguration
-    description: The bid configuration
+      externalId: BidConfiguration
+      version: '{{version}}'
+      type: view
   previousStep:
     container:
       space: '{{powerops_models}}'

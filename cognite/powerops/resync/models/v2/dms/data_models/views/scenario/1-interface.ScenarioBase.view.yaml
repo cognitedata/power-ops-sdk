@@ -110,7 +110,7 @@ properties:
     description: Whether the scenario is ready to be run
   mappingsOverride:
     type:
-      space: '{{type_space}}'
+      space: '{{powerops_type_space}}'
       externalId: Mapping
     source:
       space: '{{powerops_models}}'
