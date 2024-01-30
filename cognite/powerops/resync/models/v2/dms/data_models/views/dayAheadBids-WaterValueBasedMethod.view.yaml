@@ -1,6 +1,6 @@
 space: '{{dayahead_model_space}}'
-externalId: WaterValueBased
-name: WaterValueBased
+externalId: WaterValueBasedMethod
+name: WaterValueBasedMethod
 filter:
   equals:
     property:
@@ -8,11 +8,11 @@ filter:
     - type
     value:
       space: '{{type_space}}'
-      externalId: DayAheadWaterValueBased
+      externalId: DayAheadWaterValueBasedMethod
 implements:
 - space: '{{dayahead_model_space}}'
   externalId: BidMethod
   version: '{{dayaheadbid_BidMethod_version}}'
   type: view
-version: '{{dayaheadbid_WaterValueBased_version}}'
+version: '{{dayaheadbid_WaterValueBasedMethod_version}}'
 properties: {}

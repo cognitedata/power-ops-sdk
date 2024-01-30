@@ -16,6 +16,14 @@ views:
   space: '{{dayahead_model_space}}'
   type: view
   version: '{{dayaheadbid_MultiScenarioMatrix_version}}'
+- externalId: SHOPPriceScenario
+  space: '{{dayahead_model_space}}'
+  type: view
+  version: '{{dayaheadbid_SHOPPriceScenario_version}}'
+- externalId: SHOPPriceScenarioResult
+  space: '{{dayahead_model_space}}'
+  type: view
+  version: '{{dayaheadbid_SHOPPriceScenarioResult_version}}'
 - externalId: BasicBidMatrix
   space: '{{dayahead_model_space}}'
   type: view
@@ -24,14 +32,14 @@ views:
   space: '{{dayahead_model_space}}'
   type: view
   version: '{{dayaheadbid_CustomBidMatrix_version}}'
-- externalId: SHOPMultiScenario
+- externalId: SHOPMultiScenarioMethod
   space: '{{dayahead_model_space}}'
   type: view
-  version: '{{dayaheadbid_SHOPMultiScenario_version}}'
-- externalId: WaterValueBased
+  version: '{{dayaheadbid_SHOPMultiScenarioMethod_version}}'
+- externalId: WaterValueBasedMethod
   space: '{{dayahead_model_space}}'
   type: view
-  version: '{{dayaheadbid_WaterValueBased_version}}'
+  version: '{{dayaheadbid_WaterValueBasedMethod_version}}'
 - externalId: CustomBidMethod
   space: '{{dayahead_model_space}}'
   type: view
