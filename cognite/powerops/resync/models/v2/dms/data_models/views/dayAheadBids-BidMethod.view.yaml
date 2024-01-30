@@ -3,15 +3,20 @@ externalId: BidMethod
 description: A description of the Bid method used in the calculation.
 name: BidMethod
 filter:
-  in:
-    property:
-    - node
-    - type
-    values:
-      - space: '{{type_space}}'
-        externalId: DayAheadSHOPMultiScenario
-      - space: '{{type_space}}'
-        externalId: DayAheadWaterValueBased
+  and:
+    - hasData:
+        - type: container
+          space: '{{shared_model_space}}'
+          externalId: BidMethod
+    - in:
+      property:
+      - node
+      - type
+      values:
+        - space: '{{type_space}}'
+          externalId: DayAheadSHOPMultiScenario
+        - space: '{{type_space}}'
+          externalId: DayAheadWaterValueBased
 implements:
 - space: '{{shared_model_space}}'
   externalId: BidMethod

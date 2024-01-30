@@ -2,13 +2,21 @@ space: '{{dayahead_model_space}}'
 externalId: SHOPMultiScenario
 name: SHOPMultiScenario
 filter:
-  equals:
-    property:
-    - node
-    - type
-    value:
-      space: '{{type_space}}'
-      externalId: DayAheadSHOPMultiScenario
+  and:
+    - hasData:
+      - type: container
+        space: '{{shared_model_space}}'
+        externalId: BidMethod
+      - type: container
+        space: '{{dayahead_model_space}}'
+        externalId: SHOPMultiScenario
+    - equals:
+      property:
+      - node
+      - type
+      value:
+        space: '{{type_space}}'
+        externalId: DayAheadSHOPMultiScenario
 implements:
 - space: '{{dayahead_model_space}}'
   externalId: BidMethod

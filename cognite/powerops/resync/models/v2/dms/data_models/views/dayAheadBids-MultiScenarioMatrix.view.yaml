@@ -2,13 +2,21 @@ space: '{{dayahead_model_space}}'
 externalId: MultiScenarioMatrix
 name: MultiScenarioMatrix
 filter:
-  equals:
-    property:
-    - node
-    - type
-    value:
-      space: '{{type_space}}'
-      externalId: DayAheadMultiScenarioMatrix
+  and:
+    - hasData:
+      - type: container
+        space: '{{dayahead_model_space}}'
+        externalId: BidMatrix
+      - type: container
+        space: '{{dayahead_model_space}}'
+        externalId: MultiScenarioMatrix
+    - equals:
+      property:
+      - node
+      - type
+      value:
+        space: '{{type_space}}'
+        externalId: DayAheadMultiScenarioMatrix
 implements:
 - space: '{{dayahead_model_space}}'
   externalId: BidMatrix

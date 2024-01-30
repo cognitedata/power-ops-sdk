@@ -5,15 +5,20 @@ description: Whole Bid (also usually referenced in industry as a Bid Document) c
 name: BidDocument
 version: '{{base_BidDocument_version}}'
 filter:
-  in:
-    property:
-    - node
-    - type
-    values:
-      - space: '{{type_space}}'
-        externalId: DayAheadBidDocument
-      - space: '{{type_space}}'
-        externalId: AFRRBidDocument
+  and:
+    - hasData:
+    - type: container
+      space: '{{shared_model_space}}'
+      externalId: BidDocument
+    - in:
+      property:
+      - node
+      - type
+      values:
+        - space: '{{type_space}}'
+          externalId: DayAheadBidDocument
+        - space: '{{type_space}}'
+          externalId: AFRRBidDocument
 properties:
   name:
     container:

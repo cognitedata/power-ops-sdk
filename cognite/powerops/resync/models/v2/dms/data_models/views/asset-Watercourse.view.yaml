@@ -4,13 +4,21 @@ description: A description of the Watercourse Asset
 name: Watercourse
 version: '{{asset_Watercourse_version}}'
 filter:
-  equals:
-    property:
-    - node
-    - type
-    value:
-      space: '{{type_space}}'
-      externalId: Watercourse
+  and:
+    - hasData:
+        - type: container
+          space: '{{shared_model_space}}'
+          externalId: Watercourse
+        - type: container
+          space: '{{shared_model_space}}'
+          externalId: Asset
+    - equals:
+      property:
+        - node
+        - type
+      value:
+        space: '{{type_space}}'
+        externalId: Watercourse
 properties:
   name:
     container:

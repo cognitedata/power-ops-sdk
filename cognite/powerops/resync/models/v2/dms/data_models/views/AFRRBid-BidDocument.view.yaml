@@ -5,13 +5,21 @@ description: Whole Bid (also usually referenced in industry as a Bid Document) c
   multiple Bid Rows (which are usually referenced in industry as Bids)
 name: BidDocument
 filter:
-  equals:
-    property:
-    - node
-    - type
-    value:
-      space: '{{type_space}}'
-      externalId: AFRRBidDocument
+  and:
+    - hasData:
+        - type: container
+          space: '{{shared_model_space}}'
+          externalId: BidDocument
+        - type: container
+          space: '{{afrr_model_space}}'
+          externalId: BidDocument
+    - equals:
+        property:
+        - node
+        - type
+        value:
+          space: '{{type_space}}'
+          externalId: AFRRBidDocument
 implements:
 - space: '{{shared_model_space}}'
   externalId: BidDocument

@@ -2,13 +2,21 @@ space: '{{dayahead_model_space}}'
 externalId: BidDocument
 name: BidDocument
 filter:
-  equals:
-    property:
-    - node
-    - type
-    value:
-      space: '{{type_space}}'
-      externalId: DayAheadBidDocument
+  and:
+    - hasData:
+      - type: container
+        space: '{{dayahead_model_space}}'
+        externalId: BidDocument
+      - type: container
+        space: '{{shared_model_space}}'
+        externalId: BidDocument
+    - equals:
+      property:
+      - node
+      - type
+      value:
+        space: '{{type_space}}'
+        externalId: DayAheadBidDocument
 implements:
 - space: '{{shared_model_space}}'
   externalId: BidDocument

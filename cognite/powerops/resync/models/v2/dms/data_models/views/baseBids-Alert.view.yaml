@@ -4,13 +4,18 @@ description: Alerts
 name: Alert
 version: '{{base_Alert_version}}'
 filter:
-  equals:
-    property:
-    - node
-    - type
-    value:
-      space: '{{type_space}}'
-      externalId: Alert
+  and:
+    - hasData:
+      - type: container
+        space: '{{shared_model_space}}'
+        externalId: Alert
+    - equals:
+      property:
+      - node
+      - type
+      value:
+        space: '{{type_space}}'
+        externalId: Alert
 properties:
   time:
     container:
