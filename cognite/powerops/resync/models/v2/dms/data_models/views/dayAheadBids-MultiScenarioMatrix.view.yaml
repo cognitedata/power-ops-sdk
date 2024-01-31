@@ -7,9 +7,6 @@ filter:
       - type: container
         space: '{{dayahead_model_space}}'
         externalId: BidMatrix
-      - type: container
-        space: '{{dayahead_model_space}}'
-        externalId: MultiScenarioMatrix
     - equals:
         property:
         - node
