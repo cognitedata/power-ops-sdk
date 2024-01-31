@@ -2,13 +2,21 @@ space: '{{dayahead_model_space}}'
 externalId: SHOPMultiScenarioMethod
 name: SHOPMultiScenarioMethod
 filter:
-  equals:
-    property:
-    - node
-    - type
-    value:
-      space: '{{type_space}}'
-      externalId: DayAheadSHOPMultiScenarioMethod
+  and:
+    - hasData:
+      - type: container
+        space: '{{shared_model_space}}'
+        externalId: BidMethod
+      - type: container
+        space: '{{dayahead_model_space}}'
+        externalId: SHOPMultiScenario
+    - equals:
+        property:
+        - node
+        - type
+        value:
+          space: '{{type_space}}'
+          externalId: DayAheadSHOPMultiScenarioMethod
 implements:
 - space: '{{dayahead_model_space}}'
   externalId: BidMethod
@@ -19,7 +27,7 @@ properties:
   shopCases:
     container:
       space: '{{dayahead_model_space}}'
-      externalId: SHOPMultiScenarioMethod
+      externalId: SHOPMultiScenario
       type: container
     containerPropertyIdentifier: shopCases
     name: shopCases

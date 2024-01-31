@@ -3,12 +3,9 @@ externalId: SHOPPriceScenario
 name: SHOPPriceScenario
 version: '{{dayaheadbid_SHOPPriceScenario_version}}'
 filter:
-  equals:
-    property:
-    - node
-    - type
-    value:
-      space: '{{type_space}}'
+    hasData:
+    - type: container
+      space: '{{dayahead_model_space}}'
       externalId: SHOPPriceScenario
 properties:
   name:
@@ -19,10 +16,10 @@ properties:
     containerPropertyIdentifier: name
     name: name
     description: Name for the BidMethod
-  timeSeries:
+  price:
     container:
       space: '{{dayahead_model_space}}'
       externalId: SHOPPriceScenario
       type: container
-    containerPropertyIdentifier: timeSeries
+    containerPropertyIdentifier: price
     name: timeSeries
