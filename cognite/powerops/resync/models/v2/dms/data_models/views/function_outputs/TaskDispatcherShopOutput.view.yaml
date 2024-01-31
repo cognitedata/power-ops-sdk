@@ -1,7 +1,7 @@
 space: '{{powerops_models}}'
-externalId: TaskDispatcherOutput
+externalId: TaskDispatcherShopOutput
 description: Input to the task dispatcher in the shop bid process
-name: TaskDispatcherOutput
+name: TaskDispatcherShopOutput
 version: '{{version}}'
 implements:
   - space: '{{powerops_models}}'

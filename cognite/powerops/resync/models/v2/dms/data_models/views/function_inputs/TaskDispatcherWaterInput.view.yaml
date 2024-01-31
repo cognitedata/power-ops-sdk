@@ -1,7 +1,7 @@
 space: '{{powerops_models}}'
-externalId: TaskDispatcherInput
+externalId: TaskDispatcherWaterInput
 description: Input to the task dispatcher in the shop bid process
-name: TaskDispatcherInput
+name: TaskDispatcherWaterInput
 version: '{{version}}'
 implements:
   - space: '{{powerops_models}}'
@@ -14,15 +14,15 @@ filter:
     - {{powerops_models}}
     - FunctionInput/{{version}}
     - functionName
-    value: TaskDispatcher
+    value: TaskDispatcherWater
 properties:
   bidConfiguration:
     type:
       space: '{{powerops_type_space}}'
-      externalId: BidConfiguration
+      externalId: BidConfigurationDayAhead
     source:
       space: '{{powerops_models}}'
-      externalId: BidConfiguration
+      externalId: BidConfigurationDayAhead
       version: '{{version}}'
       type: view
   bidDate:

@@ -1,0 +1,42 @@
+space: '{{powerops_models}}'
+externalId: ShopPartialBidCalculationOutput
+description: Input to the task dispatcher in the shop bid process
+name: ShopPartialBidCalculationOutput
+version: '{{version}}'
+implements:
+  - space: '{{powerops_models}}'
+    externalId: FunctionOutput
+    version: '{{version}}'
+    type: view
+filter:
+  equals:
+    property:
+    - {{powerops_models}}
+    - FunctionOutput/{{version}}
+    - functionName
+    value: ShopPartialBidCalculation
+properties:
+  bidMatrixRaw:
+    type:
+      space: '{{powerops_type_space}}'
+      externalId: BidMatrixRaw
+    source:
+      space: '{{powerops_models}}'
+      externalId: BidMatrixRaw
+      version: '{{version}}'
+      type: view
+    direction: outwards
+    name: bidMatrixRaw
+    description: The bid matrix that is calculated by the partial bid calculation function
+  previousStep:
+    type:
+      space: '{{powerops_type_space}}'
+      externalId: ShopPartialBidCalculationInput
+    source:
+      space: '{{powerops_models}}'
+      externalId: ShopPartialBidCalculationInput
+      version: '{{version}}'
+      type: view
+    direction: outwards
+    name: previousStep
+    description: The previous step in the process.

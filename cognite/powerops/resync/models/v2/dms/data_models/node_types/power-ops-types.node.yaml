@@ -59,17 +59,19 @@
 - space: {{powerops_type_space}}
   externalId: PreprocessorInput
 - space: {{powerops_type_space}}
-  externalId: PartialBidCalculationInput
-- space: {{powerops_type_space}}
   externalId: SHOPResult
 - space: {{powerops_type_space}}
   externalId: ModelTemplate
 - space: {{powerops_type_space}}
   externalId: Mapping
 - space: {{powerops_type_space}}
-  externalId: PartialBidCalculationInput
+  externalId: ShopPartialBidCalculationInput
+- space: '{{powerops_type_space}}'
+  externalId: WaterPartialBidCalculationInput
 - space: {{powerops_type_space}}
   externalId: TotalBidMatrixCalculationInput.partialBidMatrices
+- space: '{{powerops_type_space}}'
+  externalId: PartialPostProcessingOutput
 - space: {{powerops_type_space}}
   externalId: SHOPResult
 - space: {{powerops_type_space}}
@@ -94,3 +96,9 @@
   externalId: ScenarioRaw
 - space: {{powerops_type_space}}
   externalId: PriceScenario
+- space: '{{powerops_type_space}}'
+  externalId: BidCalculationTask
+- space: '{{powerops_type_space}}'
+  externalId: TaskDispatcherWaterOutput
+- space: '{{powerops_type_space}}'
+  externalId: BidCalculationInput

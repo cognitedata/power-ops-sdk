@@ -1,7 +1,7 @@
 space: '{{powerops_models}}'
-externalId: BidCalculationOutput
-description: The output of a bid calculation
-name: BidCalculationOutput
+externalId: WaterPartialBidCalculationOutput
+description: The output of a bid calculation for watervalue based method
+name: WaterPartialBidCalculationOutput
 version: '{{version}}'
 implements:
   - space: '{{powerops_models}}'
@@ -17,28 +17,20 @@ filter:
     value: BidCalculation
 properties:
   rawPartialMatrix:
-    container:
-      space: '{{powerops_models}}'
-      externalId: FunctionMetadata
-      type: container
-    containerPropertyIdentifier: data
+    type:
+      space: '{{powerops_type_space}}'
+      externalId: BidMatrixRaw
     source:
       space: '{{powerops_models}}'
       externalId: BidMatrixRaw
       version: '{{version}}'
       type: view
-    name: rawPartialMatrix
-    description: The raw partial bid matrix
   previousStep:
-    container:
-      space: '{{powerops_models}}'
-      externalId: FunctionMetadata
-      type: container
-    containerPropertyIdentifier: linkedStep
+    type:
+      space: '{{powerops_type_space}}'
+      externalId: WaterPartialBidCalculationInput
     source:
       space: '{{powerops_models}}'
       externalId: BidCalculationInput
       version: '{{version}}'
       type: view
-    name: previousStep
-    description: The previous step in the process.

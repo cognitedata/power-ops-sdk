@@ -19,10 +19,10 @@ properties:
   previousStep:
     type:
       space: '{{powerops_type_space}}'
-      externalId: PartialBidProcessingOutput
+      externalId: PartialPostProcessingOutput
     source:
       space: '{{powerops_models}}'
-      externalId: PartialBidProcessingOutput
+      externalId: PartialPostProcessingOutput
       version: '{{version}}'
       type: view
     direction: outwards

@@ -1,7 +1,7 @@
 space: '{{powerops_models}}'
-externalId: PartialBidCalculationInput
+externalId: ShopPartialBidCalculationInput
 description: Input to the task dispatcher in the shop bid process
-name: PartialBidCalculationInput
+name: ShopPartialBidCalculationInput
 version: '{{version}}'
 implements:
   - space: '{{powerops_models}}'
@@ -14,7 +14,7 @@ filter:
     - {{powerops_models}}
     - FunctionInput/{{version}}
     - functionName
-    value: PartialBidCalculationShop
+    value: ShopPartialBidCalculation
 properties:
   plant_name:
     container:

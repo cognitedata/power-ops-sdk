@@ -1,7 +1,7 @@
 space: '{{powerops_models}}'
-externalId: PartialBidCalculationOutput
-description: Input to the task dispatcher in the shop bid process
-name: PartialBidCalculationOutput
+externalId: PartialPostProcessingOutput
+description: The output of the function that post-processes all raw partial bid matrices
+name: PartialPostProcessingOutput
 version: '{{version}}'
 implements:
   - space: '{{powerops_models}}'
@@ -16,27 +16,25 @@ filter:
     - functionName
     value: PartialBidCalculation
 properties:
-  bidMatrixRaw:
+  partialMatrices:
     type:
       space: '{{powerops_type_space}}'
-      externalId: BidMatrixRaw
+      externalId: BidMatrix
     source:
       space: '{{powerops_models}}'
-      externalId: BidMatrixRaw
+      externalId: BidMatrix
       version: '{{version}}'
       type: view
     direction: outwards
-    name: bidMatrixRaw
-    description: The bid matrix that is calculated by the partial bid calculation function
+    name: partialMatrices
+    description: The processed partial bid matrices that are used to calculate the total bid matrix.
+    connectionType: multiEdgeConnection
   previousStep:
     type:
       space: '{{powerops_type_space}}'
-      externalId: PartialBidCalculationInput
+      externalId: PartialPostProcessingInput
     source:
       space: '{{powerops_models}}'
-      externalId: PartialBidCalculationInput
+      externalId: PartialPostProcessingInput
       version: '{{version}}'
       type: view
-    direction: outwards
-    name: previousStep
-    description: The previous step in the process.
