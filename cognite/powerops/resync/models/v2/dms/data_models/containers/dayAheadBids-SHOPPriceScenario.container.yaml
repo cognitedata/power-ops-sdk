@@ -3,16 +3,15 @@ externalId: SHOPPriceScenario
 name: SHOPPriceScenario
 usedFor: node
 properties:
-  production:
-    name:
-      type:
-        list: false
-        collation: ucs_basic
-        type: text
-      nullable: false
-      autoIncrement: false
-      name: name
-      description: The name of the scenario
+  name:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: name
+    description: The name of the scenario
   price:
     type:
       list: false

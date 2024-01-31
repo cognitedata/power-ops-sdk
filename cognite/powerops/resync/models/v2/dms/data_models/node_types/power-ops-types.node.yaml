@@ -51,3 +51,5 @@
   externalId: DayAheadSHOPMultiScenarioMethod
 - space: {{type_space}}
   externalId: DayAheadWaterValueBasedMethod
+- space: {{type_space}}
+  externalId: PriceScenario

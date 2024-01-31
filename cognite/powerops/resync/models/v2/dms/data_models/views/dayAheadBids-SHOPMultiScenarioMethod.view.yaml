@@ -34,7 +34,7 @@ properties:
   priceScenarios:
     type:
       space: '{{type_space}}'
-      externalId: priceScenario
+      externalId: PriceScenario
     source:
       space: '{{dayahead_model_space}}'
       externalId: SHOPPriceScenario
