@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Literal, Optional, Union
+from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes import TimeSeries as CogniteTimeSeries
@@ -8,6 +8,7 @@ from pydantic import Field
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
+    DataRecordWrite,
     DomainModel,
     DomainModelCore,
     DomainModelApply,
@@ -96,6 +97,7 @@ class PriceArea(DomainModel):
     Args:
         space: The space where the node is located.
         external_id: The external id of the price area.
+        data_record: The data record of the price area node.
         name: Name for the PriceArea.
         display_name: Display name for the PriceArea.
         description: Description for the PriceArea.
@@ -114,18 +116,14 @@ class PriceArea(DomainModel):
         day_ahead_price: Day ahead price for the price area
         plants: The plants that are connected to the Watercourse.
         watercourses: The watercourses that are connected to the PriceArea.
-        created_time: The created time of the price area node.
-        last_updated_time: The last updated time of the price area node.
-        deleted_time: If present, the deleted time of the price area node.
-        version: The version of the price area node.
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power-ops-types", "PriceArea")
-    name: Optional[str] = None
+    name: str
     display_name: Optional[str] = Field(None, alias="displayName")
     description: Optional[str] = None
-    timezone: Optional[str] = None
+    timezone: str
     capacity_price_up: Union[TimeSeries, str, None] = Field(None, alias="capacityPriceUp")
     capacity_price_down: Union[TimeSeries, str, None] = Field(None, alias="capacityPriceDown")
     activation_price_up: Union[TimeSeries, str, None] = Field(None, alias="activationPriceUp")
@@ -148,6 +146,7 @@ class PriceArea(DomainModel):
         return PriceAreaApply(
             space=self.space,
             external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=self.data_record.version),
             name=self.name,
             display_name=self.display_name,
             description=self.description,
@@ -182,6 +181,7 @@ class PriceAreaApply(DomainModelApply):
     Args:
         space: The space where the node is located.
         external_id: The external id of the price area.
+        data_record: The data record of the price area node.
         name: Name for the PriceArea.
         display_name: Display name for the PriceArea.
         description: Description for the PriceArea.
@@ -200,10 +200,6 @@ class PriceAreaApply(DomainModelApply):
         day_ahead_price: Day ahead price for the price area
         plants: The plants that are connected to the Watercourse.
         watercourses: The watercourses that are connected to the PriceArea.
-        existing_version: Fail the ingestion request if the price area version is greater than or equal to this value.
-            If no existingVersion is specified, the ingestion will always overwrite any existing data for the edge (for the specified container or instance).
-            If existingVersion is set to 0, the upsert will behave as an insert, so it will fail the bulk if the item already exists.
-            If skipOnVersionConflict is set on the ingestion request, then the item will be skipped instead of failing the ingestion request.
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -233,6 +229,7 @@ class PriceAreaApply(DomainModelApply):
         self,
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
+        write_none: bool = False,
     ) -> ResourcesApply:
         resources = ResourcesApply()
         if self.as_tuple_id() in cache:
@@ -240,82 +237,73 @@ class PriceAreaApply(DomainModelApply):
 
         write_view = (view_by_read_class or {}).get(PriceArea, dm.ViewId("power-ops-assets", "PriceArea", "1"))
 
-        properties = {}
+        properties: dict[str, Any] = {}
 
         if self.name is not None:
             properties["name"] = self.name
 
-        if self.display_name is not None:
+        if self.display_name is not None or write_none:
             properties["displayName"] = self.display_name
 
-        if self.description is not None:
+        if self.description is not None or write_none:
             properties["description"] = self.description
 
         if self.timezone is not None:
             properties["timezone"] = self.timezone
 
-        if self.capacity_price_up is not None:
-            properties["capacityPriceUp"] = (
-                self.capacity_price_up
-                if isinstance(self.capacity_price_up, str)
-                else self.capacity_price_up.external_id
-            )
+        if self.capacity_price_up is not None or write_none:
+            if isinstance(self.capacity_price_up, str) or self.capacity_price_up is None:
+                properties["capacityPriceUp"] = self.capacity_price_up
+            else:
+                properties["capacityPriceUp"] = self.capacity_price_up.external_id
 
-        if self.capacity_price_down is not None:
-            properties["capacityPriceDown"] = (
-                self.capacity_price_down
-                if isinstance(self.capacity_price_down, str)
-                else self.capacity_price_down.external_id
-            )
+        if self.capacity_price_down is not None or write_none:
+            if isinstance(self.capacity_price_down, str) or self.capacity_price_down is None:
+                properties["capacityPriceDown"] = self.capacity_price_down
+            else:
+                properties["capacityPriceDown"] = self.capacity_price_down.external_id
 
-        if self.activation_price_up is not None:
-            properties["activationPriceUp"] = (
-                self.activation_price_up
-                if isinstance(self.activation_price_up, str)
-                else self.activation_price_up.external_id
-            )
+        if self.activation_price_up is not None or write_none:
+            if isinstance(self.activation_price_up, str) or self.activation_price_up is None:
+                properties["activationPriceUp"] = self.activation_price_up
+            else:
+                properties["activationPriceUp"] = self.activation_price_up.external_id
 
-        if self.activation_price_down is not None:
-            properties["activationPriceDown"] = (
-                self.activation_price_down
-                if isinstance(self.activation_price_down, str)
-                else self.activation_price_down.external_id
-            )
+        if self.activation_price_down is not None or write_none:
+            if isinstance(self.activation_price_down, str) or self.activation_price_down is None:
+                properties["activationPriceDown"] = self.activation_price_down
+            else:
+                properties["activationPriceDown"] = self.activation_price_down.external_id
 
-        if self.relative_activation is not None:
-            properties["relativeActivation"] = (
-                self.relative_activation
-                if isinstance(self.relative_activation, str)
-                else self.relative_activation.external_id
-            )
+        if self.relative_activation is not None or write_none:
+            if isinstance(self.relative_activation, str) or self.relative_activation is None:
+                properties["relativeActivation"] = self.relative_activation
+            else:
+                properties["relativeActivation"] = self.relative_activation.external_id
 
-        if self.total_capacity_allocation_up is not None:
-            properties["totalCapacityAllocationUp"] = (
-                self.total_capacity_allocation_up
-                if isinstance(self.total_capacity_allocation_up, str)
-                else self.total_capacity_allocation_up.external_id
-            )
+        if self.total_capacity_allocation_up is not None or write_none:
+            if isinstance(self.total_capacity_allocation_up, str) or self.total_capacity_allocation_up is None:
+                properties["totalCapacityAllocationUp"] = self.total_capacity_allocation_up
+            else:
+                properties["totalCapacityAllocationUp"] = self.total_capacity_allocation_up.external_id
 
-        if self.total_capacity_allocation_down is not None:
-            properties["totalCapacityAllocationDown"] = (
-                self.total_capacity_allocation_down
-                if isinstance(self.total_capacity_allocation_down, str)
-                else self.total_capacity_allocation_down.external_id
-            )
+        if self.total_capacity_allocation_down is not None or write_none:
+            if isinstance(self.total_capacity_allocation_down, str) or self.total_capacity_allocation_down is None:
+                properties["totalCapacityAllocationDown"] = self.total_capacity_allocation_down
+            else:
+                properties["totalCapacityAllocationDown"] = self.total_capacity_allocation_down.external_id
 
-        if self.own_capacity_allocation_up is not None:
-            properties["ownCapacityAllocationUp"] = (
-                self.own_capacity_allocation_up
-                if isinstance(self.own_capacity_allocation_up, str)
-                else self.own_capacity_allocation_up.external_id
-            )
+        if self.own_capacity_allocation_up is not None or write_none:
+            if isinstance(self.own_capacity_allocation_up, str) or self.own_capacity_allocation_up is None:
+                properties["ownCapacityAllocationUp"] = self.own_capacity_allocation_up
+            else:
+                properties["ownCapacityAllocationUp"] = self.own_capacity_allocation_up.external_id
 
-        if self.own_capacity_allocation_down is not None:
-            properties["ownCapacityAllocationDown"] = (
-                self.own_capacity_allocation_down
-                if isinstance(self.own_capacity_allocation_down, str)
-                else self.own_capacity_allocation_down.external_id
-            )
+        if self.own_capacity_allocation_down is not None or write_none:
+            if isinstance(self.own_capacity_allocation_down, str) or self.own_capacity_allocation_down is None:
+                properties["ownCapacityAllocationDown"] = self.own_capacity_allocation_down
+            else:
+                properties["ownCapacityAllocationDown"] = self.own_capacity_allocation_down.external_id
 
         if self.default_method_day_ahead is not None:
             properties["defaultMethodDayAhead"] = {
@@ -327,23 +315,23 @@ class PriceAreaApply(DomainModelApply):
                 else self.default_method_day_ahead.external_id,
             }
 
-        if self.main_scenario_day_ahead is not None:
-            properties["mainScenarioDayAhead"] = (
-                self.main_scenario_day_ahead
-                if isinstance(self.main_scenario_day_ahead, str)
-                else self.main_scenario_day_ahead.external_id
-            )
+        if self.main_scenario_day_ahead is not None or write_none:
+            if isinstance(self.main_scenario_day_ahead, str) or self.main_scenario_day_ahead is None:
+                properties["mainScenarioDayAhead"] = self.main_scenario_day_ahead
+            else:
+                properties["mainScenarioDayAhead"] = self.main_scenario_day_ahead.external_id
 
-        if self.day_ahead_price is not None:
-            properties["dayAheadPrice"] = (
-                self.day_ahead_price if isinstance(self.day_ahead_price, str) else self.day_ahead_price.external_id
-            )
+        if self.day_ahead_price is not None or write_none:
+            if isinstance(self.day_ahead_price, str) or self.day_ahead_price is None:
+                properties["dayAheadPrice"] = self.day_ahead_price
+            else:
+                properties["dayAheadPrice"] = self.day_ahead_price.external_id
 
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
-                existing_version=self.existing_version,
+                existing_version=self.data_record.existing_version,
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(

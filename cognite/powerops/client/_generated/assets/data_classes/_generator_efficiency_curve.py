@@ -1,11 +1,12 @@
 from __future__ import annotations
 
-from typing import Literal, Optional, Union
+from typing import Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
+    DataRecordWrite,
     DomainModel,
     DomainModelCore,
     DomainModelApply,
@@ -41,13 +42,10 @@ class GeneratorEfficiencyCurve(DomainModel):
     Args:
         space: The space where the node is located.
         external_id: The external id of the generator efficiency curve.
+        data_record: The data record of the generator efficiency curve node.
         ref: The reference value
         power: The generator power values
         efficiency: The generator efficiency values
-        created_time: The created time of the generator efficiency curve node.
-        last_updated_time: The last updated time of the generator efficiency curve node.
-        deleted_time: If present, the deleted time of the generator efficiency curve node.
-        version: The version of the generator efficiency curve node.
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -63,6 +61,7 @@ class GeneratorEfficiencyCurve(DomainModel):
         return GeneratorEfficiencyCurveApply(
             space=self.space,
             external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=self.data_record.version),
             ref=self.ref,
             power=self.power,
             efficiency=self.efficiency,
@@ -77,13 +76,10 @@ class GeneratorEfficiencyCurveApply(DomainModelApply):
     Args:
         space: The space where the node is located.
         external_id: The external id of the generator efficiency curve.
+        data_record: The data record of the generator efficiency curve node.
         ref: The reference value
         power: The generator power values
         efficiency: The generator efficiency values
-        existing_version: Fail the ingestion request if the generator efficiency curve version is greater than or equal to this value.
-            If no existingVersion is specified, the ingestion will always overwrite any existing data for the edge (for the specified container or instance).
-            If existingVersion is set to 0, the upsert will behave as an insert, so it will fail the bulk if the item already exists.
-            If skipOnVersionConflict is set on the ingestion request, then the item will be skipped instead of failing the ingestion request.
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -98,6 +94,7 @@ class GeneratorEfficiencyCurveApply(DomainModelApply):
         self,
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
+        write_none: bool = False,
     ) -> ResourcesApply:
         resources = ResourcesApply()
         if self.as_tuple_id() in cache:
@@ -107,9 +104,9 @@ class GeneratorEfficiencyCurveApply(DomainModelApply):
             GeneratorEfficiencyCurve, dm.ViewId("power-ops-assets", "GeneratorEfficiencyCurve", "1")
         )
 
-        properties = {}
+        properties: dict[str, Any] = {}
 
-        if self.ref is not None:
+        if self.ref is not None or write_none:
             properties["ref"] = self.ref
 
         if self.power is not None:
@@ -122,7 +119,7 @@ class GeneratorEfficiencyCurveApply(DomainModelApply):
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
-                existing_version=self.existing_version,
+                existing_version=self.data_record.existing_version,
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(

@@ -131,7 +131,10 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
         return PriceAreaQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
 
     def apply(
-        self, price_area: PriceAreaApply | Sequence[PriceAreaApply], replace: bool = False
+        self,
+        price_area: PriceAreaApply | Sequence[PriceAreaApply],
+        replace: bool = False,
+        write_none: bool = False,
     ) -> ResourcesApplyResult:
         """Add or update (upsert) price areas.
 
@@ -143,6 +146,8 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
             price_area: Price area or sequence of price areas to upsert.
             replace (bool): How do we behave when a property value exists? Do we replace all matching and existing values with the supplied values (true)?
                 Or should we merge in new values for properties together with the existing values (false)? Note: This setting applies for all nodes or edges specified in the ingestion call.
+            write_none (bool): This method, will by default, skip properties that are set to None. However, if you want to set properties to None,
+                you can set this parameter to True. Note this only applies to properties that are nullable.
         Returns:
             Created instance(s), i.e., nodes, edges, and time series.
 
@@ -157,7 +162,7 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
                 >>> result = client.price_area.apply(price_area)
 
         """
-        return self._apply(price_area, replace)
+        return self._apply(price_area, replace, write_none)
 
     def delete(
         self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
