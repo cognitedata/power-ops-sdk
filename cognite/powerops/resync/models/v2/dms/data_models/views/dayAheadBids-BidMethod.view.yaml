@@ -14,9 +14,9 @@ filter:
         - type
         values:
           - space: '{{type_space}}'
-            externalId: DayAheadSHOPMultiScenario
+            externalId: DayAheadSHOPMultiScenarioMethod
           - space: '{{type_space}}'
-            externalId: DayAheadWaterValueBased
+            externalId: DayAheadWaterValueBasedMethod
 implements:
 - space: '{{shared_model_space}}'
   externalId: BidMethod

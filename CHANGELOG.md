@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.82.4] - 2024-01-31
+### Fixed
+* Filter for `BidMethod` view
+
 ## [0.82.3] - 2024-01-31
 ### Added
 * `SHOPPriceScenarioResult` and `SHOPPriceScenario` to the `DayAheadBid` frontend model.
