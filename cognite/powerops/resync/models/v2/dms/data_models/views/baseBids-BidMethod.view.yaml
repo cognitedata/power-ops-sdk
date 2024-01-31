@@ -15,9 +15,9 @@ filter:
         - type
         values:
           - space: '{{type_space}}'
-            externalId: DayAheadSHOPMultiScenario
+            externalId: DayAheadSHOPMultiScenarioMethod
           - space: '{{type_space}}'
-            externalId: DayAheadWaterValueBased
+            externalId: DayAheadWaterValueBasedMethod
           - space: '{{type_space}}'
             externalId: AFRRBidMethod
 properties:
