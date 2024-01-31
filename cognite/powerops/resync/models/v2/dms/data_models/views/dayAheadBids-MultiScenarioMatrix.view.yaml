@@ -2,13 +2,21 @@ space: '{{dayahead_model_space}}'
 externalId: MultiScenarioMatrix
 name: MultiScenarioMatrix
 filter:
-  equals:
-    property:
-    - node
-    - type
-    value:
-      space: '{{type_space}}'
-      externalId: DayAheadMultiScenarioMatrix
+  and:
+    - hasData:
+      - type: container
+        space: '{{dayahead_model_space}}'
+        externalId: BidMatrix
+      - type: container
+        space: '{{dayahead_model_space}}'
+        externalId: MultiScenarioMatrix
+    - equals:
+        property:
+        - node
+        - type
+        value:
+          space: '{{type_space}}'
+          externalId: DayAheadMultiScenarioMatrix
 implements:
 - space: '{{dayahead_model_space}}'
   externalId: BidMatrix
@@ -16,17 +24,16 @@ implements:
   type: view
 version: '{{dayaheadbid_MultiScenarioMatrix_version}}'
 properties:
-  production:
-    container:
+  scenarioResults:
+    type:
+      space: '{{type_space}}'
+      externalId: scenarioResult
+    source:
       space: '{{dayahead_model_space}}'
-      externalId: MultiScenarioMatrix
-      type: container
-    containerPropertyIdentifier: production
-    name: production
-  price:
-    container:
-      space: '{{dayahead_model_space}}'
-      externalId: MultiScenarioMatrix
-      type: container
-    containerPropertyIdentifier: price
-    name: price
+      externalId: SHOPPriceScenarioResult
+      version: '{{dayaheadbid_SHOPPriceScenarioResult_version}}'
+      type: view
+    direction: outwards
+    name: scenarioResults
+    description: An array of results, one for each scenario.
+    connectionType: multiEdgeConnection

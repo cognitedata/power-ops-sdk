@@ -15,45 +15,46 @@ from ._core import (
     DomainRelationApply,
     ResourcesApply,
 )
+from ._bid_method import BidMethod, BidMethodApply
 
 
 __all__ = [
-    "BidMethod",
-    "BidMethodApply",
-    "BidMethodList",
-    "BidMethodApplyList",
-    "BidMethodFields",
-    "BidMethodTextFields",
+    "WaterValueBasedMethod",
+    "WaterValueBasedMethodApply",
+    "WaterValueBasedMethodList",
+    "WaterValueBasedMethodApplyList",
+    "WaterValueBasedMethodFields",
+    "WaterValueBasedMethodTextFields",
 ]
 
 
-BidMethodTextFields = Literal["name"]
-BidMethodFields = Literal["name"]
+WaterValueBasedMethodTextFields = Literal["name"]
+WaterValueBasedMethodFields = Literal["name"]
 
-_BIDMETHOD_PROPERTIES_BY_FIELD = {
+_WATERVALUEBASEDMETHOD_PROPERTIES_BY_FIELD = {
     "name": "name",
 }
 
 
-class BidMethod(DomainModel):
-    """This represents the reading version of bid method.
+class WaterValueBasedMethod(BidMethod):
+    """This represents the reading version of water value based method.
 
     It is used to when data is retrieved from CDF.
 
     Args:
         space: The space where the node is located.
-        external_id: The external id of the bid method.
-        data_record: The data record of the bid method node.
+        external_id: The external id of the water value based method.
+        data_record: The data record of the water value based method node.
         name: Name for the BidMethod
     """
 
-    space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power-ops-types", "AFRRBidMethod")
-    name: str
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
+        "power-ops-types", "DayAheadWaterValueBasedMethod"
+    )
 
-    def as_apply(self) -> BidMethodApply:
-        """Convert this read version of bid method to the writing version."""
-        return BidMethodApply(
+    def as_apply(self) -> WaterValueBasedMethodApply:
+        """Convert this read version of water value based method to the writing version."""
+        return WaterValueBasedMethodApply(
             space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
@@ -61,21 +62,21 @@ class BidMethod(DomainModel):
         )
 
 
-class BidMethodApply(DomainModelApply):
-    """This represents the writing version of bid method.
+class WaterValueBasedMethodApply(BidMethodApply):
+    """This represents the writing version of water value based method.
 
     It is used to when data is sent to CDF.
 
     Args:
         space: The space where the node is located.
-        external_id: The external id of the bid method.
-        data_record: The data record of the bid method node.
+        external_id: The external id of the water value based method.
+        data_record: The data record of the water value based method node.
         name: Name for the BidMethod
     """
 
-    space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power-ops-types", "AFRRBidMethod")
-    name: str
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
+        "power-ops-types", "DayAheadWaterValueBasedMethod"
+    )
 
     def _to_instances_apply(
         self,
@@ -87,7 +88,9 @@ class BidMethodApply(DomainModelApply):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(BidMethod, dm.ViewId("power-ops-afrr-bid", "BidMethod", "1"))
+        write_view = (view_by_read_class or {}).get(
+            WaterValueBasedMethod, dm.ViewId("power-ops-day-ahead-bid", "WaterValueBasedMethod", "1")
+        )
 
         properties: dict[str, Any] = {}
 
@@ -113,23 +116,23 @@ class BidMethodApply(DomainModelApply):
         return resources
 
 
-class BidMethodList(DomainModelList[BidMethod]):
-    """List of bid methods in the read version."""
+class WaterValueBasedMethodList(DomainModelList[WaterValueBasedMethod]):
+    """List of water value based methods in the read version."""
 
-    _INSTANCE = BidMethod
+    _INSTANCE = WaterValueBasedMethod
 
-    def as_apply(self) -> BidMethodApplyList:
-        """Convert these read versions of bid method to the writing versions."""
-        return BidMethodApplyList([node.as_apply() for node in self.data])
-
-
-class BidMethodApplyList(DomainModelApplyList[BidMethodApply]):
-    """List of bid methods in the writing version."""
-
-    _INSTANCE = BidMethodApply
+    def as_apply(self) -> WaterValueBasedMethodApplyList:
+        """Convert these read versions of water value based method to the writing versions."""
+        return WaterValueBasedMethodApplyList([node.as_apply() for node in self.data])
 
 
-def _create_bid_method_filter(
+class WaterValueBasedMethodApplyList(DomainModelApplyList[WaterValueBasedMethodApply]):
+    """List of water value based methods in the writing version."""
+
+    _INSTANCE = WaterValueBasedMethodApply
+
+
+def _create_water_value_based_method_filter(
     view_id: dm.ViewId,
     name: str | list[str] | None = None,
     name_prefix: str | None = None,

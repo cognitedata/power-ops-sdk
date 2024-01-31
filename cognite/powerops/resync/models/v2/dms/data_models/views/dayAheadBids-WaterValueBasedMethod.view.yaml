@@ -1,7 +1,6 @@
-space: '{{afrr_model_space}}'
-externalId: BidMethod
-description: A description of the Bid method used in the calculation.
-name: BidMethod
+space: '{{dayahead_model_space}}'
+externalId: WaterValueBasedMethod
+name: WaterValueBasedMethod
 filter:
   and:
     - hasData:
@@ -14,11 +13,11 @@ filter:
         - type
         value:
           space: '{{type_space}}'
-          externalId: AFRRBidMethod
+          externalId: DayAheadWaterValueBasedMethod
 implements:
-- space: '{{shared_model_space}}'
+- space: '{{dayahead_model_space}}'
   externalId: BidMethod
-  version: '{{base_BidMethod_version}}'
+  version: '{{dayaheadbid_BidMethod_version}}'
   type: view
-version: '{{afrrbid_BidMethod_version}}'
+version: '{{dayaheadbid_WaterValueBasedMethod_version}}'
 properties: {}

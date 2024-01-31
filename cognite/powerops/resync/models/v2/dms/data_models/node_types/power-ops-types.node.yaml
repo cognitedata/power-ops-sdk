@@ -8,6 +8,8 @@
 - space: {{type_space}}
   externalId: calculationIssue
 - space: {{type_space}}
+  externalId: scenarioResult
+- space: {{type_space}}
   externalId: isSubAssetOf
 
 # Types of nodes:
@@ -46,6 +48,8 @@
 - space: {{type_space}}
   externalId: DayAheadMultiScenarioMatrix
 - space: {{type_space}}
-  externalId: DayAheadSHOPMultiScenario
+  externalId: DayAheadSHOPMultiScenarioMethod
 - space: {{type_space}}
-  externalId: DayAheadWaterValueBased
+  externalId: DayAheadWaterValueBasedMethod
+- space: {{type_space}}
+  externalId: PriceScenario

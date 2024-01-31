@@ -4,13 +4,18 @@ description: A reservoir
 name: Reservoir
 version: '{{asset_Reservoir_version}}'
 filter:
-  equals:
-    property:
-    - node
-    - type
-    value:
-      space: '{{type_space}}'
-      externalId: Reservoir
+  and:
+    - hasData:
+        - type: container
+          space: '{{shared_model_space}}'
+          externalId: Asset
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          space: '{{type_space}}'
+          externalId: Reservoir
 properties:
   name:
     container:

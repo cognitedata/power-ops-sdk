@@ -1,0 +1,44 @@
+space: '{{dayahead_model_space}}'
+externalId: SHOPPriceScenarioResult
+name: SHOPPriceScenarioResult
+version: '{{dayaheadbid_SHOPPriceScenarioResult_version}}'
+filter:
+  and:
+    - hasData:
+      - type: container
+        space: '{{dayahead_model_space}}'
+        externalId: SHOPPriceScenarioResult
+    - equals:
+        property:
+        - node
+        - type
+        value:
+          space: '{{type_space}}'
+          externalId: SHOPPriceScenarioResult
+properties:
+  price:
+    container:
+      space: '{{dayahead_model_space}}'
+      externalId: SHOPPriceScenarioResult
+      type: container
+    containerPropertyIdentifier: price
+    name: price
+  production:
+    container:
+      space: '{{dayahead_model_space}}'
+      externalId: SHOPPriceScenarioResult
+      type: container
+    containerPropertyIdentifier: production
+    name: production
+  priceScenario:
+    container:
+      space: '{{dayahead_model_space}}'
+      externalId: SHOPPriceScenarioResult
+      type: container
+    source:
+        space: '{{dayahead_model_space}}'
+        externalId: SHOPPriceScenario
+        version: '{{dayaheadbid_SHOPPriceScenario_version}}'
+        type: view
+    containerPropertyIdentifier: priceScenario
+    name: priceScenario

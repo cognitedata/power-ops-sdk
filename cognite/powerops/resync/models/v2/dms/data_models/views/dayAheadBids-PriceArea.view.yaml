@@ -3,13 +3,18 @@ externalId: PriceArea
 name: PriceArea
 version: '{{dayaheadbid_PriceArea_version}}'
 filter:
-  equals:
-    property:
-    - node
-    - type
-    value:
-      space: '{{type_space}}'
-      externalId: PriceArea
+  and:
+    - hasData:
+      - type: container
+        space: '{{shared_model_space}}'
+        externalId: PriceArea
+    - equals:
+        property:
+        - node
+        - type
+        value:
+          space: '{{type_space}}'
+          externalId: PriceArea
 properties:
   name:
     container:

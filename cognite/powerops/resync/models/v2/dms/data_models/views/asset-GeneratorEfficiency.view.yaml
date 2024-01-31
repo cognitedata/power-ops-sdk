@@ -4,13 +4,18 @@ description: Describes the efficiency curve for a generator
 name: GeneratorEfficiencyCurve
 version: '{{asset_GeneratorEfficiency_version}}'
 filter:
-  equals:
-    property:
-     - node
-     - type
-    value:
-      space: '{{type_space}}'
-      externalId: GeneratorEfficiencyCurve
+  and:
+    - hasData:
+      - type: container
+        space: '{{asset_space}}'
+        externalId: EfficiencyCurve
+    - equals:
+        property:
+         - node
+         - type
+        value:
+          space: '{{type_space}}'
+          externalId: GeneratorEfficiencyCurve
 properties:
   ref:
     container:
