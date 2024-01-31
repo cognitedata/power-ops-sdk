@@ -4,13 +4,18 @@ description: One row in the BidDocument (usually referenced in industry as a Bid
 name: BidRow
 version: '{{afrrbid_BidRow_version}}'
 filter:
-  equals:
-    property:
-     - node
-     - type
-    value:
-      space: '{{type_space}}'
-      externalId: AFRRBidRow
+  and:
+    - hasData:
+        - type: container
+          space: '{{afrr_model_space}}'
+          externalId: BidRow
+    - equals:
+        property:
+         - node
+         - type
+        value:
+          space: '{{type_space}}'
+          externalId: AFRRBidRow
 properties:
   price:
     container:
