@@ -12,3 +12,18 @@ properties:
     containerPropertyIdentifier: name
     name: name
     description: Name for the BidMethod
+filter:
+  and:
+    - hasData:
+       - type: container
+         space: '{{shared_model_space}}'
+         externalId: BidMethod
+    - in:
+        property:
+        - node
+        - type
+        values:
+          - space: '{{type_space}}'
+            externalId: DayAheadSHOPMultiScenarioMethod
+          - space: '{{type_space}}'
+            externalId: DayAheadWaterValueBasedMethod
