@@ -13,10 +13,10 @@ properties:
       autoIncrement: false
       name: name
       description: The name of the scenario
-  timeSeries:
+  price:
     type:
       list: false
       type: timeseries
     nullable: true
     autoIncrement: false
-    name: timeSeries
+    name: price
