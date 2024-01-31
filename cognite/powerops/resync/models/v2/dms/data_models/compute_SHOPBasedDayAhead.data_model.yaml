@@ -4,11 +4,11 @@ version: '1'
 name: SHOPBasedDayAheadBidProcess
 description: 'The process of going from BidConfig to a PartialBidMatrix'
 views:
-- externalId: TaskDispatcherInput
+- externalId: TaskDispatcherShopInput
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
-- externalId: TaskDispatcherOutput
+- externalId: TaskDispatcherShopOutput
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
@@ -28,11 +28,11 @@ views:
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
-- externalId: PartialBidCalculationInput
+- externalId: ShopPartialBidCalculationInput
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
-- externalId: PartialBidCalculationOutput
+- externalId: ShopPartialBidCalculationOutput
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
