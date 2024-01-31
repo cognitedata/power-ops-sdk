@@ -13,6 +13,13 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.82.3] - 2024-01-31
+### Added
+* `SHOPPriceScenarioResult` and `SHOPPriceScenario` to the `DayAheadBid` frontend model.
+
+### Fixed
+* Bug in Data Models with incorrect filters on all views. This is now fixed.
+
 ## [0.82.2] - 2024-01-29
 ### Fixed
 * Bug in the HeightToVolume function not using the correct heights in the calculation
