@@ -42,22 +42,6 @@ from ._bid_method import (
     BidMethodList,
     BidMethodTextFields,
 )
-from ._custom_bid_matrix import (
-    CustomBidMatrix,
-    CustomBidMatrixApply,
-    CustomBidMatrixApplyList,
-    CustomBidMatrixFields,
-    CustomBidMatrixList,
-    CustomBidMatrixTextFields,
-)
-from ._custom_bid_method import (
-    CustomBidMethod,
-    CustomBidMethodApply,
-    CustomBidMethodApplyList,
-    CustomBidMethodFields,
-    CustomBidMethodList,
-    CustomBidMethodTextFields,
-)
 from ._multi_scenario_matrix import (
     MultiScenarioMatrix,
     MultiScenarioMatrixApply,
@@ -74,21 +58,36 @@ from ._price_area import (
     PriceAreaList,
     PriceAreaTextFields,
 )
-from ._shop_multi_scenario import (
-    SHOPMultiScenario,
-    SHOPMultiScenarioApply,
-    SHOPMultiScenarioApplyList,
-    SHOPMultiScenarioFields,
-    SHOPMultiScenarioList,
-    SHOPMultiScenarioTextFields,
+from ._shop_multi_scenario_method import (
+    SHOPMultiScenarioMethod,
+    SHOPMultiScenarioMethodApply,
+    SHOPMultiScenarioMethodApplyList,
+    SHOPMultiScenarioMethodFields,
+    SHOPMultiScenarioMethodList,
+    SHOPMultiScenarioMethodTextFields,
 )
-from ._water_value_based import (
-    WaterValueBased,
-    WaterValueBasedApply,
-    WaterValueBasedApplyList,
-    WaterValueBasedFields,
-    WaterValueBasedList,
-    WaterValueBasedTextFields,
+from ._shop_price_scenario import (
+    SHOPPriceScenario,
+    SHOPPriceScenarioApply,
+    SHOPPriceScenarioApplyList,
+    SHOPPriceScenarioFields,
+    SHOPPriceScenarioList,
+    SHOPPriceScenarioTextFields,
+)
+from ._shop_price_scenario_result import (
+    SHOPPriceScenarioResult,
+    SHOPPriceScenarioResultApply,
+    SHOPPriceScenarioResultApplyList,
+    SHOPPriceScenarioResultFields,
+    SHOPPriceScenarioResultList,
+)
+from ._water_value_based_method import (
+    WaterValueBasedMethod,
+    WaterValueBasedMethodApply,
+    WaterValueBasedMethodApplyList,
+    WaterValueBasedMethodFields,
+    WaterValueBasedMethodList,
+    WaterValueBasedMethodTextFields,
 )
 
 BasicBidMatrix.model_rebuild()
@@ -97,12 +96,14 @@ BidDocument.model_rebuild()
 BidDocumentApply.model_rebuild()
 BidMatrix.model_rebuild()
 BidMatrixApply.model_rebuild()
-CustomBidMatrix.model_rebuild()
-CustomBidMatrixApply.model_rebuild()
 MultiScenarioMatrix.model_rebuild()
 MultiScenarioMatrixApply.model_rebuild()
 PriceArea.model_rebuild()
 PriceAreaApply.model_rebuild()
+SHOPMultiScenarioMethod.model_rebuild()
+SHOPMultiScenarioMethodApply.model_rebuild()
+SHOPPriceScenarioResult.model_rebuild()
+SHOPPriceScenarioResultApply.model_rebuild()
 
 __all__ = [
     "DataRecord",
@@ -144,18 +145,6 @@ __all__ = [
     "BidMethodApplyList",
     "BidMethodFields",
     "BidMethodTextFields",
-    "CustomBidMatrix",
-    "CustomBidMatrixApply",
-    "CustomBidMatrixList",
-    "CustomBidMatrixApplyList",
-    "CustomBidMatrixFields",
-    "CustomBidMatrixTextFields",
-    "CustomBidMethod",
-    "CustomBidMethodApply",
-    "CustomBidMethodList",
-    "CustomBidMethodApplyList",
-    "CustomBidMethodFields",
-    "CustomBidMethodTextFields",
     "MultiScenarioMatrix",
     "MultiScenarioMatrixApply",
     "MultiScenarioMatrixList",
@@ -168,16 +157,27 @@ __all__ = [
     "PriceAreaApplyList",
     "PriceAreaFields",
     "PriceAreaTextFields",
-    "SHOPMultiScenario",
-    "SHOPMultiScenarioApply",
-    "SHOPMultiScenarioList",
-    "SHOPMultiScenarioApplyList",
-    "SHOPMultiScenarioFields",
-    "SHOPMultiScenarioTextFields",
-    "WaterValueBased",
-    "WaterValueBasedApply",
-    "WaterValueBasedList",
-    "WaterValueBasedApplyList",
-    "WaterValueBasedFields",
-    "WaterValueBasedTextFields",
+    "SHOPMultiScenarioMethod",
+    "SHOPMultiScenarioMethodApply",
+    "SHOPMultiScenarioMethodList",
+    "SHOPMultiScenarioMethodApplyList",
+    "SHOPMultiScenarioMethodFields",
+    "SHOPMultiScenarioMethodTextFields",
+    "SHOPPriceScenario",
+    "SHOPPriceScenarioApply",
+    "SHOPPriceScenarioList",
+    "SHOPPriceScenarioApplyList",
+    "SHOPPriceScenarioFields",
+    "SHOPPriceScenarioTextFields",
+    "SHOPPriceScenarioResult",
+    "SHOPPriceScenarioResultApply",
+    "SHOPPriceScenarioResultList",
+    "SHOPPriceScenarioResultApplyList",
+    "SHOPPriceScenarioResultFields",
+    "WaterValueBasedMethod",
+    "WaterValueBasedMethodApply",
+    "WaterValueBasedMethodList",
+    "WaterValueBasedMethodApplyList",
+    "WaterValueBasedMethodFields",
+    "WaterValueBasedMethodTextFields",
 ]
