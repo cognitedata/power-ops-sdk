@@ -19,20 +19,12 @@ properties:
   bidConfiguration:
     type:
       space: '{{powerops_type_space}}'
-      externalId: BidConfiguration
+      externalId: BidConfigurationDayahead
     source:
       space: '{{powerops_models}}'
-      externalId: BidConfiguration
+      externalId: BidConfigurationDayahead
       version: '{{version}}'
       type: view
-  previousStep:
-    container:
-      space: '{{powerops_models}}'
-      externalId: FunctionMetadata
-      type: container
-    containerPropertyIdentifier: linkedStep
-    name: previousStep # here is where you map the name - the name that is shown in the view
-    description: The id of the dayahead bid shop process
   bidDate:
     container:
       space: '{{powerops_models}}'

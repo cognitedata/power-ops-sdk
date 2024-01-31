@@ -1,16 +1,17 @@
 space: '{{powerops_models}}'
-externalId: BidConfigurationDayahead
+externalId: BidConfigurationAFRR
 description: ''
-name: BidConfigurationDayahead
+name: BidConfigurationAFRR
 version: '{{version}}'
 properties:
   method:
-    type:
+    method: # this was pointing to container before but why?
+    type: 
       space: '{{powerops_type_space}}'
-      externalId: BidMethodDayahead
+      externalId: BidMethodAFRR # only the specific bid methods exist now - why?
     source:
       space: '{{powerops_models}}'
-      externalId: BidMethodDayahead
+      externalId: BidMethodAFRR
       version: '{{version}}'
       type: view
   marketConfiguration:
@@ -25,10 +26,10 @@ properties:
   priceArea:
     type:
       space: '{{powerops_type_space}}'
-      externalId: PriceAreaDayahead
+      externalId: PriceAreaAFRR
     source:
       space: '{{powerops_models}}'
-      externalId: PriceAreaDayahead
+      externalId: PriceAreaAFRR
       version: '{{version}}'
       type: view
   plants:

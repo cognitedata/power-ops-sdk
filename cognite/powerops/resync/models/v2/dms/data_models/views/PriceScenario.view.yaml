@@ -4,6 +4,14 @@ description: Price scenarios
 name: PriceScenario
 version: '{{version}}'
 properties:
+  name:
+    container:
+      space: '{{powerops_models}}'
+      externalId: PriceScenario
+      type: container
+    containerPropertyIdentifier: name
+    name: name
+    description: The name of the scenario
   timeseries:
     container:
       space: '{{powerops_models}}'

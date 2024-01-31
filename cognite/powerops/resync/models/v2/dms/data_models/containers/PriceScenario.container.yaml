@@ -3,7 +3,15 @@ externalId: PriceScenario
 name: PriceScenario
 usedFor: node
 properties:
-# The following is repeated in Mapping - should this be remodeled?
+  name:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: name
+    description: The name of the scenario
   timeseries:
     type:
       list: false

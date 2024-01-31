@@ -29,10 +29,11 @@ properties:
     name: scenarioRaw
     description: The scenario that needs preprocessing before being sent to shop (has isReady flag set to false)
   previousStep:
-    container:
-      space: '{{powerops_models}}'
-      externalId: FunctionMetadata
-      type: container
-    containerPropertyIdentifier: linkedStep
-    name: previousStep
-    description: The id of the dayahead bid shop process
+    type:
+      space: '{{powerops_type_space}}'
+      externalId: TaskDispatcherShopInput
+    source:
+        space: '{{powerops_models}}'
+        externalId: TaskDispatcherShopInput
+        version: '{{version}}'
+        type: view

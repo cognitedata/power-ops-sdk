@@ -17,28 +17,23 @@ filter:
     value: TotalBidMatrixCalculation
 properties:
   bidDocument:
-    container:
-      space: '{{powerops_models}}'
-      externalId: FunctionMetadata
-      type: container
+    type:
+      space: '{{powerops_type_space}}'
+      externalId: BidDocumentDayAhead
     source:
-        space: '{{powerops_models}}'
-        externalId: BidDocument
-        version: '{{version}}'
-        type: view
-    containerPropertyIdentifier: data
-    name: bidDocument
-    description: The bid document to be updated
+      space: '{{powerops_models}}'
+      externalId: BidDocumentDayAhead
+      version: '{{version}}'
+      type: view
   previousStep:
-    container:
-      space: '{{powerops_models}}'
-      externalId: FunctionMetadata
-      type: container
+    type:
+      space: '{{powerops_type_space}}'
+      externalId: TotalBidMatrixCalculationInput
     source:
-        space: '{{powerops_models}}'
-        externalId: TotalBidMatrixCalculationInput
-        version: '{{version}}'
-        type: view
-    containerPropertyIdentifier: linkedStep
+      space: '{{powerops_models}}'
+      externalId: TotalBidMatrixCalculationInput
+      version: '{{version}}'
+      type: view
+    direction: outwards
     name: previousStep
-    description: This is the linked step in the process.
+    description: The previous step in the process.

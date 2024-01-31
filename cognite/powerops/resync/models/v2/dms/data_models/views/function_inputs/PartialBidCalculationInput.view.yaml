@@ -38,13 +38,17 @@ properties:
     description: An array of shop results.
     connectionType: multiEdgeConnection
   previousStep:
-    container:
+    type:
+      space: '{{powerops_type_space}}'
+      externalId: TaskDispatcherShopInput
+    source:
       space: '{{powerops_models}}'
-      externalId: FunctionMetadata
-      type: container
-    containerPropertyIdentifier: linkedStep
+      externalId: TaskDispatcherShopInput
+      version: '{{version}}'
+      type: view
+    direction: outwards
     name: previousStep
-    description: This is the linked step in the process.
+    description: The previous step in the process.
   alerts:
     type:
       space: '{{powerops_type_space}}'

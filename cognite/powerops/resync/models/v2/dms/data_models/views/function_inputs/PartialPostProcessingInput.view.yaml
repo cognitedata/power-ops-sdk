@@ -17,18 +17,14 @@ filter:
     value: PartialPostProcessing
 properties:
   marketConfig:
-    container:
-      space: '{{powerops_models}}'
-      externalId: FunctionMetadata
-      type: container
+    type:
+      space: '{{powerops_type_space}}'
+      externalId: MarketConfig
     source:
       space: '{{powerops_models}}'
-      externalId: MarketConfiguration
+      externalId: MarketConfig
       version: '{{version}}'
       type: view
-    containerPropertyIdentifier: data
-    name: marketConfig
-    description: The market configuration
   partialBidMatricesRaw:
     type:
       space: '{{powerops_type_space}}'
@@ -39,5 +35,6 @@ properties:
       version: '{{version}}'
       type: view
     direction: outwards
+    connectionType: multiEdgeConnection
     name: partialBidMatricesRaw
     description: The partial bid matrices that needs post processing.

@@ -17,25 +17,24 @@ filter:
     value: TotalBidMatrixCalculation
 properties:
   previousStep:
-    container:
-      space: '{{powerops_models}}'
-      externalId: FunctionMetadata
-      type: container
+    type:
+      space: '{{powerops_type_space}}'
+      externalId: PartialBidProcessingOutput
     source:
       space: '{{powerops_models}}'
-      externalId: PartialBidCalculationOutput
+      externalId: PartialBidProcessingOutput
       version: '{{version}}'
       type: view
-    containerPropertyIdentifier: linkedStep
+    direction: outwards
     name: previousStep
     description: The previous step in the process.
   partialBidMatrices:
     type:
       space: '{{powerops_type_space}}'
-      externalId: TotalBidMatrixCalculationInput.partialBidMatrices
+      externalId: BidMatrix
     source:
       space: '{{powerops_models}}'
-      externalId: PartialBidCalculationInput
+      externalId: BidMatrix
       version: '{{version}}'
       type: view
     direction: outwards
