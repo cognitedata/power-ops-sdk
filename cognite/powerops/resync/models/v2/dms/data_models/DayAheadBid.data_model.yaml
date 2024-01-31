@@ -28,10 +28,6 @@ views:
   space: '{{dayahead_model_space}}'
   type: view
   version: '{{dayaheadbid_BasicBidMatrix_version}}'
-- externalId: CustomBidMatrix
-  space: '{{dayahead_model_space}}'
-  type: view
-  version: '{{dayaheadbid_CustomBidMatrix_version}}'
 - externalId: SHOPMultiScenarioMethod
   space: '{{dayahead_model_space}}'
   type: view
@@ -40,10 +36,6 @@ views:
   space: '{{dayahead_model_space}}'
   type: view
   version: '{{dayaheadbid_WaterValueBasedMethod_version}}'
-- externalId: CustomBidMethod
-  space: '{{dayahead_model_space}}'
-  type: view
-  version: '{{dayaheadbid_CustomBidMethod_version}}'
 - externalId: PriceArea
   space: '{{dayahead_model_space}}'
   type: view
