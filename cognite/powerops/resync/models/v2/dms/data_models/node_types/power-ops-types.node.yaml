@@ -65,13 +65,7 @@
 - space: {{powerops_type_space}}
   externalId: Mapping
 - space: {{powerops_type_space}}
-  externalId: ShopPartialBidCalculationInput
-- space: '{{powerops_type_space}}'
-  externalId: WaterPartialBidCalculationInput
-- space: {{powerops_type_space}}
   externalId: TotalBidMatrixCalculationInput.partialBidMatrices
-- space: '{{powerops_type_space}}'
-  externalId: PartialPostProcessingOutput
 - space: {{powerops_type_space}}
   externalId: SHOPResult
 - space: {{powerops_type_space}}
@@ -79,7 +73,9 @@
 - space: {{powerops_type_space}}
   externalId: BidConfiguration.watercourses
 - space: {{powerops_type_space}}
-  externalId: BidConfiguration
+  externalId: BidConfigurationDayAhead
+- space: {{powerops_type_space}}
+  externalId: BidConfigurationAFRR
 - space: {{powerops_type_space}}
   externalId: partialBidMatricesRaw
 - space: {{powerops_type_space}}
@@ -88,6 +84,8 @@
   externalId: PreprocessorInput
 - space: {{powerops_type_space}}
   externalId: BidMatrixRaw
+- space: {{powerops_type_space}}
+  externalId: BidMatrix
 - space: {{powerops_type_space}}
   externalId: SHOPTriggerInput
 - space: {{powerops_type_space}}
@@ -101,4 +99,10 @@
 - space: '{{powerops_type_space}}'
   externalId: TaskDispatcherWaterOutput
 - space: '{{powerops_type_space}}'
-  externalId: BidCalculationInput
+  externalId: PartialPostProcessingInput
+- space: '{{powerops_type_space}}'
+  externalId: PartialPostProcessingOutput
+- space: '{{powerops_type_space}}'
+  externalId: ShopPartialBidCalculationInput
+- space: '{{powerops_type_space}}'
+  externalId: WaterPartialBidCalculationInput

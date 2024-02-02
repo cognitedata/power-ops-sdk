@@ -29,24 +29,24 @@ properties:
       space: '{{powerops_type_space}}'
       externalId: PriceScenario
     source:
-        space: '{{powerops_models}}'
-        externalId: PriceScenario
-        version: '{{version}}'
-        type: view
+      space: '{{powerops_models}}'
+      externalId: PriceScenario
+      version: '{{version}}'
+      type: view
     name: priceScenarios
     description: The price scenarios to use in the shop run
     direction: outwards
     connectionType: multiEdgeConnection
-  main_scenario:
-    type:
-      space: '{{powerops_type_space}}'
-      externalId: PriceScenario
+  mainScenario:
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct1
     source:
-        space: '{{powerops_models}}'
-        externalId: PriceScenario
-        version: '{{version}}'
-        type: view
-    name: main_scenario
+      space: '{{powerops_models}}'
+      externalId: PriceScenario
+      version: '{{version}}'
+      type: view
+    name: mainScenario
     description: The main scenario used in the shop run and in the frontend
-    direction: outwards
-    connectionType: edgeConnection

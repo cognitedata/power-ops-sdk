@@ -5,28 +5,37 @@ name: BidConfigurationAFRR
 version: '{{version}}'
 properties:
   method:
-    method: # this was pointing to container before but why?
-    type: 
-      space: '{{powerops_type_space}}'
-      externalId: BidMethodAFRR # only the specific bid methods exist now - why?
+    container:
+      space: '{{powerops_models}}'
+      externalId: BidConfiguration
+      type: container
+    containerPropertyIdentifier: method
+    name: method
+    description: The bid method related to the bid configuration
     source:
       space: '{{powerops_models}}'
       externalId: BidMethodAFRR
       version: '{{version}}'
       type: view
   marketConfiguration:
-    type:
-      space: '{{powerops_type_space}}'
-      externalId: MarketConfiguration
+    container:
+      space: '{{powerops_models}}'
+      externalId: BidConfiguration
+      type: container
+    containerPropertyIdentifier: marketConfiguration
+    name: marketConfiguration
     source:
       space: '{{powerops_models}}'
       externalId: MarketConfiguration
       version: '{{version}}'
       type: view
   priceArea:
-    type:
-      space: '{{powerops_type_space}}'
-      externalId: PriceAreaAFRR
+    container:
+      space: '{{powerops_models}}'
+      externalId: BidConfiguration
+      type: container
+    containerPropertyIdentifier: priceArea
+    name: priceArea
     source:
       space: '{{powerops_models}}'
       externalId: PriceAreaAFRR

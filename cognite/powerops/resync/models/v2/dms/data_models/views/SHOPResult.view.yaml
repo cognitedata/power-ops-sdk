@@ -5,17 +5,18 @@ name: SHOPResult
 version: '{{version}}'
 properties:
   scenario:
-    type:
-      space: '{{powerops_type_space}}'
-      externalId: Scenario
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct1
+    name: scenario
+    description: The Shop scenario that was used to produce this result
     source:
       space: '{{powerops_models}}'
       externalId: Scenario
       version: '{{version}}'
       type: view
-    name: scenario
-    description: The shop scenario that was used to produce this result
-    direction: outwards
   productionTimeSeries:
     container:
       space: '{{powerops_models}}'
@@ -27,7 +28,7 @@ properties:
   objectiveSequence:
     container:
       space: '{{powerops_models}}'
-      externalId: FunctionData # does it make sense to fetch this from this container?
+      externalId: FunctionData
       type: container
     containerPropertyIdentifier: sequence
     name: objectiveSequence

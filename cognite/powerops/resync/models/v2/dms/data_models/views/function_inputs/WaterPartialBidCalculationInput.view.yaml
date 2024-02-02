@@ -17,18 +17,24 @@ filter:
     value: BidCalculation
 properties:
   calculationTask:
-    type:
-      space: '{{powerops_type_space}}'
-      externalId: BidCalculationTask
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct1
+    name: calculationTask
     source:
       space: '{{powerops_models}}'
       externalId: BidCalculationTask
       version: '{{version}}'
       type: view
   previousStep:
-    type:
-      space: '{{powerops_type_space}}'
-      externalId: TaskDispatcherWaterOutput
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct2
+    name: previousStep
     source:
       space: '{{powerops_models}}'
       externalId: TaskDispatcherWaterOutput

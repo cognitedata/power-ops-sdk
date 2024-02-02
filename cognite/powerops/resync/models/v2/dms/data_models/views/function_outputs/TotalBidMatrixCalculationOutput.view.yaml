@@ -17,23 +17,27 @@ filter:
     value: TotalBidMatrixCalculation
 properties:
   bidDocument:
-    type:
-      space: '{{powerops_type_space}}'
-      externalId: BidDocumentDayAhead
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct1
+    name: bidDocument
     source:
       space: '{{powerops_models}}'
       externalId: BidDocumentDayAhead
       version: '{{version}}'
       type: view
   previousStep:
-    type:
-      space: '{{powerops_type_space}}'
-      externalId: TotalBidMatrixCalculationInput
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct2
     source:
       space: '{{powerops_models}}'
       externalId: TotalBidMatrixCalculationInput
       version: '{{version}}'
       type: view
-    direction: outwards
     name: previousStep
     description: The previous step in the process.

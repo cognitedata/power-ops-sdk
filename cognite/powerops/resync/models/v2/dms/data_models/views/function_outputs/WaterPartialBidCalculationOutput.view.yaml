@@ -17,20 +17,26 @@ filter:
     value: BidCalculation
 properties:
   rawPartialMatrix:
-    type:
-      space: '{{powerops_type_space}}'
-      externalId: BidMatrixRaw
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct1
+    name: rawPartialMatrix
     source:
       space: '{{powerops_models}}'
       externalId: BidMatrixRaw
       version: '{{version}}'
       type: view
   previousStep:
-    type:
-      space: '{{powerops_type_space}}'
-      externalId: WaterPartialBidCalculationInput
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct2
+    name: previousStep
     source:
       space: '{{powerops_models}}'
-      externalId: BidCalculationInput
+      externalId: WaterPartialBidCalculationInput
       version: '{{version}}'
       type: view

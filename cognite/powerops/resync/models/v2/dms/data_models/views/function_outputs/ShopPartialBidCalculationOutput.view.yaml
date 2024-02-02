@@ -17,26 +17,28 @@ filter:
     value: ShopPartialBidCalculation
 properties:
   bidMatrixRaw:
-    type:
-      space: '{{powerops_type_space}}'
-      externalId: BidMatrixRaw
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct1
     source:
       space: '{{powerops_models}}'
       externalId: BidMatrixRaw
       version: '{{version}}'
       type: view
-    direction: outwards
     name: bidMatrixRaw
     description: The bid matrix that is calculated by the partial bid calculation function
   previousStep:
-    type:
-      space: '{{powerops_type_space}}'
-      externalId: ShopPartialBidCalculationInput
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct2
     source:
       space: '{{powerops_models}}'
       externalId: ShopPartialBidCalculationInput
       version: '{{version}}'
       type: view
-    direction: outwards
     name: previousStep
     description: The previous step in the process.

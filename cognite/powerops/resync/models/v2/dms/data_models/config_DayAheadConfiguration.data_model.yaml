@@ -4,7 +4,7 @@ version: '1'
 name: DayAheadConfiguration
 description: 'Settings for the day ahead bid process'
 views:
-- externalId: BidConfiguration
+- externalId: BidConfigurationDayAhead
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'

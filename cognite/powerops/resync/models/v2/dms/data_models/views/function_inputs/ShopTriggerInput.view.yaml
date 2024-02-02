@@ -16,11 +16,13 @@ filter:
     - functionName
     value: ShopTrigger
 properties:
-  # not a good idea to have in case we want to trigger outside of a workflow and surpass preprocessor?
   previousStep:
-    type:
-      space: '{{powerops_type_space}}'
-      externalId: PreprocessorOutput
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct1
+    name: previousStep
     source:
       space: '{{powerops_models}}'
       externalId: PreprocessorOutput
@@ -35,14 +37,15 @@ properties:
     name: cogShopTag
     description: Optionally specify cogshop tag to trigger
   scenario:
-    type:
-      space: '{{powerops_type_space}}'
-      externalId: Scenario
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct2
     source:
       space: '{{powerops_models}}'
       externalId: Scenario
       version: '{{version}}'
       type: view
-    direction: outwards
     name: scenario
     description: The scenario that is used in the shop run

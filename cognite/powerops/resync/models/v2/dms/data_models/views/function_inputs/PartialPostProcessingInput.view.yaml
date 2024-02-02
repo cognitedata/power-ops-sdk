@@ -17,12 +17,15 @@ filter:
     value: PartialPostProcessing
 properties:
   marketConfig:
-    type:
-      space: '{{powerops_type_space}}'
-      externalId: MarketConfig
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct1
+    name: marketConfig
     source:
       space: '{{powerops_models}}'
-      externalId: MarketConfig
+      externalId: MarketConfiguration
       version: '{{version}}'
       type: view
   partialBidMatricesRaw:

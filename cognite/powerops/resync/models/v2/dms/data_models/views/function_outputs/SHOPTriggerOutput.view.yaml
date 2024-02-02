@@ -17,25 +17,27 @@ filter:
     value: ShopTrigger
 properties:
   shopResult:
-    type:
-      space: '{{powerops_type_space}}'
-      externalId: SHOPResult
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct1
     source:
       space: '{{powerops_models}}'
       externalId: SHOPResult
       version: '{{version}}'
       type: view
-    direction: outwards
     name: shopResult
   previousStep:
-    type:
-      space: '{{powerops_type_space}}'
-      externalId: SHOPTriggerInput
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct2
     source:
       space: '{{powerops_models}}'
       externalId: SHOPTriggerInput
       version: '{{version}}'
       type: view
-    direction: outwards
     name: previousStep
     description: The prepped and processed scenario to send to shop trigger

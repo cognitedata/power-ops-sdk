@@ -17,15 +17,16 @@ filter:
     value: TaskDispatcherWater
 properties:
   previousStep:
-    type:
-      space: '{{powerops_type_space}}'
-      externalId: TaskDispatcherWaterInput
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct1
     source:
       space: '{{powerops_models}}'
       externalId: TaskDispatcherShopInput
       version: '{{version}}'
       type: view
-    direction: outwards
     name: previousStep
     description: The previous step in the process.
   bidCalculationTasks:

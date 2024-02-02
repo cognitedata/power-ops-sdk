@@ -17,21 +17,25 @@ filter:
     value: Preprocessor
 properties:
   scenarioRaw:
-    type:
-      space: '{{powerops_type_space}}'
-      externalId: ScenarioRaw
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct1
     source:
       space: '{{powerops_models}}'
       externalId: ScenarioRaw
       version: '{{version}}'
       type: view
-    direction: outwards
     name: scenarioRaw
     description: The scenario that needs preprocessing before being sent to shop (has isReady flag set to false)
   previousStep:
-    type:
-      space: '{{powerops_type_space}}'
-      externalId: TaskDispatcherShopInput
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct2
+    name: previousStep
     source:
         space: '{{powerops_models}}'
         externalId: TaskDispatcherShopInput

@@ -5,9 +5,12 @@ name: BidCalculationTask
 version: '{{version}}'
 properties:
   plant:
-    type:
-      space: '{{powerops_type_space}}'
-      externalId: Plant
+    container:
+        space: '{{powerops_models}}'
+        externalId: FunctionData
+        type: container
+    containerPropertyIdentifier: direct1
+    name: plant
     source:
       space: '{{powerops_models}}'
       externalId: Plant
@@ -22,11 +25,15 @@ properties:
     name: bidDate
     description: The bid date that the task is for
   priceArea:
-    type:
-      space: '{{powerops_type_space}}'
-      externalId: PriceAreaDayahead
+    container:
+      space: '{{powerops_models}}'
+      externalId: BidConfiguration
+      type: container
+    containerPropertyIdentifier: priceArea
+    name: priceArea
+    description: The price area related to the bid calculation task
     source:
       space: '{{powerops_models}}'
-      externalId: PriceAreaDayahead
+      externalId: PriceAreaDayAhead
       version: '{{version}}'
       type: view

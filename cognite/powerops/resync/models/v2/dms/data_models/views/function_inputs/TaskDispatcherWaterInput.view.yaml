@@ -17,9 +17,12 @@ filter:
     value: TaskDispatcherWater
 properties:
   bidConfiguration:
-    type:
-      space: '{{powerops_type_space}}'
-      externalId: BidConfigurationDayAhead
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct1
+    name: bidConfiguration
     source:
       space: '{{powerops_models}}'
       externalId: BidConfigurationDayAhead

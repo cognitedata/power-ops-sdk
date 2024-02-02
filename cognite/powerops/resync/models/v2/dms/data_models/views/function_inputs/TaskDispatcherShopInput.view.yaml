@@ -17,12 +17,15 @@ filter:
     value: TaskDispatcherShop
 properties:
   bidConfiguration:
-    type:
-      space: '{{powerops_type_space}}'
-      externalId: BidConfigurationDayahead
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct1
+    name: bidConfiguration
     source:
       space: '{{powerops_models}}'
-      externalId: BidConfigurationDayahead
+      externalId: BidConfigurationDayAhead
       version: '{{version}}'
       type: view
   bidDate:

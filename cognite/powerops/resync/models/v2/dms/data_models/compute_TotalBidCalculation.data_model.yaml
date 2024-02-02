@@ -12,7 +12,7 @@ views:
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
-- externalId: PartialBidProcessingOutput
+- externalId: PartialPostProcessingOutput
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'

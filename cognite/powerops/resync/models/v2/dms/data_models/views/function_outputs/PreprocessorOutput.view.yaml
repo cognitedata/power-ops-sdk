@@ -17,26 +17,28 @@ filter:
     value: PreprocessorOutput
 properties:
   scenario:
-    type:
-      space: '{{powerops_type_space}}'
-      externalId: Scenario
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct1
     source:
       space: '{{powerops_models}}'
       externalId: Scenario
       version: '{{version}}'
       type: view
-    direction: outwards
     name: scenario
     description: The prepped and processed scenario to send to shop trigger
   previousStep:
-    type:
-      space: '{{powerops_type_space}}'
-      externalId: PreprocessorInput
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct2
     source:
       space: '{{powerops_models}}'
       externalId: PreprocessorInput
       version: '{{version}}'
       type: view
-    direction: outwards
     name: previousStep
     description: The prepped and processed scenario to send to shop trigger

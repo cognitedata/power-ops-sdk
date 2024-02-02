@@ -17,15 +17,16 @@ filter:
     value: TaskDispatcherShop
 properties:
   previousStep:
-    type:
-      space: '{{powerops_type_space}}'
-      externalId: TaskDispatcherShopInput
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct1
     source:
       space: '{{powerops_models}}'
       externalId: TaskDispatcherShopInput
       version: '{{version}}'
       type: view
-    direction: outwards
     name: previousStep
     description: The previous step in the process.
   preprocessorCalculations:
@@ -44,10 +45,10 @@ properties:
   partialBidCalculations:
     type:
       space: '{{powerops_type_space}}'
-      externalId: PartialBidCalculationInput
+      externalId: ShopPartialBidCalculationInput
     source:
       space: '{{powerops_models}}'
-      externalId: PartialBidCalculationInput
+      externalId: ShopPartialBidCalculationInput
       version: '{{version}}'
       type: view
     direction: outwards
