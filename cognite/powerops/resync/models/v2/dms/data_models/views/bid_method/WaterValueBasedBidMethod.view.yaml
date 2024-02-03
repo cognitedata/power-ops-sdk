@@ -2,13 +2,27 @@ space: '{{powerops_models}}'
 externalId: WaterValueBasedMethod
 name: WaterValueBasedMethod
 filter:
-  equals:
-    property:
-    - node
-    - type
-    value:
-      space: '{{powerops_type_space}}'
-      externalId: DayAheadWaterValueBased
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: BidMethodDayAhead
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+  - equals:
+      property:
+      - node
+      - space
+      value:
+        space: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: WaterValueBasedMethod
+        space: '{{powerops_type_space}}'
 implements:
 - space: '{{powerops_models}}'
   externalId: BidMethodDayAhead
@@ -30,10 +44,10 @@ properties:
       externalId: FunctionData
       type: container
     containerPropertyIdentifier: direct1
+    name: mainScenario
+    description: The main scenario used in the shop run and in the frontend
     source:
       space: '{{powerops_models}}'
       externalId: PriceScenario
       version: '{{version}}'
       type: view
-    name: mainScenario
-    description: The main scenario used in the shop run and in the frontend

@@ -2,19 +2,31 @@ space: '{{powerops_models}}'
 externalId: TaskDispatcherShopInput
 description: Input to the task dispatcher in the shop bid process
 name: TaskDispatcherShopInput
-version: '{{version}}'
-implements:
-  - space: '{{powerops_models}}'
-    externalId: FunctionInput
-    version: '{{version}}'
-    type: view
 filter:
-  equals:
-    property:
-    - {{powerops_models}}
-    - FunctionInput/{{version}}
-    - functionName
-    value: TaskDispatcherShop
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+  - equals:
+      property:
+      - node
+      - space
+      value:
+        space: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: TaskDispatcherShopInput
+        space: '{{powerops_type_space}}'
+implements:
+- space: '{{powerops_models}}'
+  externalId: FunctionInput
+  version: '{{version}}'
+  type: view
+version: '{{version}}'
 properties:
   bidConfiguration:
     container:

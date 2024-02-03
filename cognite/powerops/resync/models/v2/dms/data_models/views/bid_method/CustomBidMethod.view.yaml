@@ -3,20 +3,20 @@ externalId: CustomBidMethod
 name: CustomBidMethod
 filter:
   and:
-    - hasData:
-        - type: container
-          space: '{{powerops_models}}'
-          externalId: BidMethodDayAhead
-    - not:
-        in:
-          property:
-          - node
-          - type
-          values:
-            - space: '{{powerops_type_space}}'
-              externalId: DayAheadSHOPMultiScenario
-            - space: '{{powerops_type_space}}'
-              externalId: DayAheadWaterValueBased
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: BidMethodDayAhead
+  - not:
+      in:
+        property:
+        - node
+        - type
+        values:
+        - space: '{{powerops_type_space}}'
+          externalId: DayAheadSHOPMultiScenario
+        - space: '{{powerops_type_space}}'
+          externalId: DayAheadWaterValueBased
 implements:
 - space: '{{powerops_models}}'
   externalId: BidMethodDayAhead

@@ -2,6 +2,25 @@ space: '{{powerops_models}}'
 externalId: MarketConfiguration
 description: Market configuration
 name: MarketConfiguration
+filter:
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: MarketConfiguration
+  - equals:
+      property:
+      - node
+      - space
+      value:
+        space: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: MarketConfiguration
+        space: '{{powerops_type_space}}'
 version: '{{version}}'
 properties:
   marketType:

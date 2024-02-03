@@ -2,19 +2,31 @@ space: '{{powerops_models}}'
 externalId: TaskDispatcherWaterOutput
 description: Input to the task dispatcher in the shop bid process
 name: TaskDispatcherWaterOutput
-version: '{{version}}'
-implements:
-  - space: '{{powerops_models}}'
-    externalId: FunctionOutput
-    version: '{{version}}'
-    type: view
 filter:
-  equals:
-    property:
-    - {{powerops_models}}
-    - FunctionOutput/{{version}}
-    - functionName
-    value: TaskDispatcherWater
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+  - equals:
+      property:
+      - node
+      - space
+      value:
+        space: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: TaskDispatcherWaterOutput
+        space: '{{powerops_type_space}}'
+implements:
+- space: '{{powerops_models}}'
+  externalId: FunctionOutput
+  version: '{{version}}'
+  type: view
+version: '{{version}}'
 properties:
   previousStep:
     container:
@@ -22,13 +34,13 @@ properties:
       externalId: FunctionData
       type: container
     containerPropertyIdentifier: direct1
+    name: previousStep
+    description: The previous step in the process.
     source:
       space: '{{powerops_models}}'
       externalId: TaskDispatcherShopInput
       version: '{{version}}'
       type: view
-    name: previousStep
-    description: The previous step in the process.
   bidCalculationTasks:
     type:
       space: '{{powerops_type_space}}'
@@ -41,4 +53,4 @@ properties:
     direction: outwards
     name: bidCalculationTakss
     description: An array of bid calculation tasks.
-    connectionType: multiEdgeConnection
+    connectionType: multi_edge_connection

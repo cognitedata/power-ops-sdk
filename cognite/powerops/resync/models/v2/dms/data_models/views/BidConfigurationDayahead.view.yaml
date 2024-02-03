@@ -2,6 +2,28 @@ space: '{{powerops_models}}'
 externalId: BidConfigurationDayAhead
 description: ''
 name: BidConfigurationDayAhead
+filter:
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: BidDocument
+  - equals:
+      property:
+      - node
+      - space
+      value:
+        space: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: BidConfigurationDayAhead
+        space: '{{powerops_type_space}}'
 version: '{{version}}'
 properties:
   method:
@@ -55,7 +77,7 @@ properties:
     direction: outwards
     name: plants
     description: The plants
-    connectionType: multiEdgeConnection
+    connectionType: multi_edge_connection
   watercourses:
     type:
       space: '{{powerops_type_space}}'
@@ -68,4 +90,4 @@ properties:
     direction: outwards
     name: watercourses
     description: The watercourses
-    connectionType: multiEdgeConnection
+    connectionType: multi_edge_connection

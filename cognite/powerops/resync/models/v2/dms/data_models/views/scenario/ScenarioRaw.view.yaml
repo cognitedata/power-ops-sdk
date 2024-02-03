@@ -1,18 +1,19 @@
 space: '{{powerops_models}}'
 externalId: ScenarioRaw
-description: SHOP scenario that holds all data needed for a shop run. May be unprocessed or processed
+description: SHOP scenario that holds all data needed for a shop run. May be unprocessed
+  or processed
 name: ScenarioRaw
-version: '{{version}}'
-implements:
-  - space: '{{powerops_models}}'
-    externalId: ScenarioBase
-    version: '{{version}}'
-    type: view
-properties: {}
 filter:
   equals:
     property:
-    - {{powerops_models}}
+    - '{{powerops_models}}'
     - ScenarioBase/{{version}}
     - isReady
-    value: False
+    value: false
+implements:
+- space: '{{powerops_models}}'
+  externalId: ScenarioBase
+  version: '{{version}}'
+  type: view
+version: '{{version}}'
+properties: {}

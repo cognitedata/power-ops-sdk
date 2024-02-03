@@ -1,35 +1,46 @@
 space: '{{powerops_models}}'
 externalId: BidDocumentAFRR
-version: '{{version}}'
 description: Whole Bid (also usually referenced in industry as a Bid Document) containing
   multiple Bid Rows (which are usually referenced in industry as Bids)
 name: BidDocument
 filter:
-  equals:
-    property:
-    - node
-    - type
-    value:
-      space: '{{powerops_type_space}}'
-      externalId: AFRRBidDocument
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: BidDocument
+  - equals:
+      property:
+      - node
+      - space
+      value:
+        space: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: BidDocumentAFRR
+        space: '{{powerops_type_space}}'
 implements:
 - space: '{{powerops_models}}'
   externalId: BidDocument
   version: '{{version}}'
   type: view
+version: '{{version}}'
 properties:
   priceArea:
+    container:
+      space: '{{powerops_models}}'
+      externalId: BidDocument
+      type: container
+    containerPropertyIdentifier: priceArea
+    name: priceArea
     source:
-      type: view
       space: '{{powerops_models}}'
       externalId: PriceAreaAFRR
       version: '{{version}}'
-    container:
-      type: container
-      space: '{{powerops_models}}'
-      externalId: BidDocument
-    containerPropertyIdentifier: priceArea
-    name: priceArea
+      type: view
   bids:
     type:
       space: '{{powerops_type_space}}'
@@ -42,4 +53,4 @@ properties:
     direction: outwards
     name: bids
     description: An array of BidRows containing the Bid data.
-    connectionType: multiEdgeConnection
+    connectionType: multi_edge_connection

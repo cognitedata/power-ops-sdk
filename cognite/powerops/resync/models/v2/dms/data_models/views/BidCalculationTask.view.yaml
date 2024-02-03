@@ -2,13 +2,35 @@ space: '{{powerops_models}}'
 externalId: BidCalculationTask
 description: The data for a bid calculation task
 name: BidCalculationTask
+filter:
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: BidConfiguration
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+  - equals:
+      property:
+      - node
+      - space
+      value:
+        space: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: BidCalculationTask
+        space: '{{powerops_type_space}}'
 version: '{{version}}'
 properties:
   plant:
     container:
-        space: '{{powerops_models}}'
-        externalId: FunctionData
-        type: container
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
     containerPropertyIdentifier: direct1
     name: plant
     source:

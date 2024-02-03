@@ -2,13 +2,6 @@ space: '{{powerops_models}}'
 externalId: BidMethodWaterValueBased
 description: Bid methods used in the water value based shop
 name: BidMethodWaterValueBased
-version: '{{version}}'
-implements:
-  - space: '{{powerops_models}}'
-    externalId: BidMethodDayAhead
-    version: '{{version}}'
-    type: view
-properties: {}
 filter:
   equals:
     property:
@@ -17,3 +10,10 @@ filter:
     value:
       space: '{{powerops_type_space}}'
       externalId: DayAheadWaterValueBased
+implements:
+- space: '{{powerops_models}}'
+  externalId: BidMethodDayAhead
+  version: '{{version}}'
+  type: view
+version: '{{version}}'
+properties: {}

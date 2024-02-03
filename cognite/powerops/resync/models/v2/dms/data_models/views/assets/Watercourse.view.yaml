@@ -2,20 +2,31 @@ space: '{{powerops_models}}'
 externalId: Watercourse
 description: A description of the Watercourse Asset
 name: Watercourse
-version: '{{version}}'
+filter:
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: Watercourse
+  - equals:
+      property:
+      - node
+      - space
+      value:
+        space: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: Watercourse
+        space: '{{powerops_type_space}}'
 implements:
 - space: '{{powerops_models}}'
   externalId: PowerAsset
   version: '{{version}}'
   type: view
-filter:
-  equals:
-    property:
-    - node
-    - type
-    value:
-      space: '{{powerops_type_space}}'
-      externalId: Watercourse
+version: '{{version}}'
 properties:
   productionObligation:
     container:
@@ -37,7 +48,7 @@ properties:
     direction: outwards
     name: plants
     description: The plants that are connected to the Watercourse.
-    connectionType: multiEdgeConnection
+    connectionType: multi_edge_connection
   penaltyLimit:
     container:
       space: '{{powerops_models}}'

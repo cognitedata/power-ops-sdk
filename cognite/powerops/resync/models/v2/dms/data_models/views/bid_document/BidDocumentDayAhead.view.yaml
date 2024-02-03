@@ -2,13 +2,27 @@ space: '{{powerops_models}}'
 externalId: BidDocumentDayAhead
 name: BidDocument
 filter:
-  equals:
-    property:
-    - node
-    - type
-    value:
-      space: '{{powerops_type_space}}'
-      externalId: DayAheadBidDocument
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: BidDocumentDayAhead
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: BidDocument
+  - equals:
+      property:
+      - node
+      - space
+      value:
+        space: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: BidDocumentDayAhead
+        space: '{{powerops_type_space}}'
 implements:
 - space: '{{powerops_models}}'
   externalId: BidDocument
@@ -17,17 +31,17 @@ implements:
 version: '{{version}}'
 properties:
   priceArea:
+    container:
+      space: '{{powerops_models}}'
+      externalId: BidDocument
+      type: container
+    containerPropertyIdentifier: priceArea
+    name: priceArea
     source:
-      type: view
       space: '{{powerops_models}}'
       externalId: PriceArea
       version: '{{version}}'
-    container:
-      type: container
-      space: '{{powerops_models}}'
-      externalId: BidDocument
-    containerPropertyIdentifier: priceArea
-    name: priceArea
+      type: view
   method:
     container:
       space: '{{powerops_models}}'
@@ -63,4 +77,4 @@ properties:
       type: view
     direction: outwards
     name: partials
-    connectionType: multiEdgeConnection
+    connectionType: multi_edge_connection

@@ -1,12 +1,6 @@
 space: '{{powerops_models}}'
 externalId: BasicBidMatrix
 name: BasicBidMatrix
-implements:
-- space: '{{powerops_models}}'
-  externalId: BidMatrix
-  version: '{{version}}'
-  type: view
-version: '{{version}}'
 filter:
   equals:
     property:
@@ -15,4 +9,10 @@ filter:
     value:
       space: '{{powerops_type_space}}'
       externalId: DayAheadBasicBidMatrix
+implements:
+- space: '{{powerops_models}}'
+  externalId: BidMatrix
+  version: '{{version}}'
+  type: view
+version: '{{version}}'
 properties: {}

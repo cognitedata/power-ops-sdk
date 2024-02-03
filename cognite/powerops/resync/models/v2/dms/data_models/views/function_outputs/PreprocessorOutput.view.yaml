@@ -2,19 +2,31 @@ space: '{{powerops_models}}'
 externalId: PreprocessorOutput
 description: Input to the task dispatcher in the shop bid process
 name: PreprocessorOutput
-version: '{{version}}'
-implements:
-  - space: '{{powerops_models}}'
-    externalId: FunctionOutput
-    version: '{{version}}'
-    type: view
 filter:
-  equals:
-    property:
-    - {{powerops_models}}
-    - FunctionOutput/{{version}}
-    - functionName
-    value: PreprocessorOutput
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+  - equals:
+      property:
+      - node
+      - space
+      value:
+        space: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: PreprocessorOutput
+        space: '{{powerops_type_space}}'
+implements:
+- space: '{{powerops_models}}'
+  externalId: FunctionOutput
+  version: '{{version}}'
+  type: view
+version: '{{version}}'
 properties:
   scenario:
     container:
@@ -22,23 +34,23 @@ properties:
       externalId: FunctionData
       type: container
     containerPropertyIdentifier: direct1
+    name: scenario
+    description: The prepped and processed scenario to send to shop trigger
     source:
       space: '{{powerops_models}}'
       externalId: Scenario
       version: '{{version}}'
       type: view
-    name: scenario
-    description: The prepped and processed scenario to send to shop trigger
   previousStep:
     container:
       space: '{{powerops_models}}'
       externalId: FunctionData
       type: container
     containerPropertyIdentifier: direct2
+    name: previousStep
+    description: The prepped and processed scenario to send to shop trigger
     source:
       space: '{{powerops_models}}'
       externalId: PreprocessorInput
       version: '{{version}}'
       type: view
-    name: previousStep
-    description: The prepped and processed scenario to send to shop trigger

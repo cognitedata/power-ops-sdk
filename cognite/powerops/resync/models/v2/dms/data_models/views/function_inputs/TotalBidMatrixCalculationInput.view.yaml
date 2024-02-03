@@ -2,19 +2,31 @@ space: '{{powerops_models}}'
 externalId: TotalBidMatrixCalculationInput
 description: Input for the total bid matrix calculation
 name: TotalBidMatrixCalculationInput
-version: '{{version}}'
-implements:
-  - space: '{{powerops_models}}'
-    externalId: FunctionInput
-    version: '{{version}}'
-    type: view
 filter:
-  equals:
-    property:
-    - {{powerops_models}}
-    - FunctionInput/{{version}}
-    - functionName
-    value: TotalBidMatrixCalculation
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+  - equals:
+      property:
+      - node
+      - space
+      value:
+        space: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: TotalBidMatrixCalculationInput
+        space: '{{powerops_type_space}}'
+implements:
+- space: '{{powerops_models}}'
+  externalId: FunctionInput
+  version: '{{version}}'
+  type: view
+version: '{{version}}'
 properties:
   previousStep:
     container:
@@ -22,13 +34,13 @@ properties:
       externalId: FunctionData
       type: container
     containerPropertyIdentifier: direct1
+    name: previousStep
+    description: The previous step in the process.
     source:
       space: '{{powerops_models}}'
       externalId: PartialPostProcessingOutput
       version: '{{version}}'
       type: view
-    name: previousStep
-    description: The previous step in the process.
   partialBidMatrices:
     type:
       space: '{{powerops_type_space}}'
@@ -40,5 +52,6 @@ properties:
       type: view
     direction: outwards
     name: partialBidMatrices
-    description: The partial bid matrices that are used to calculate the total bid matrix.
-    connectionType: multiEdgeConnection
+    description: The partial bid matrices that are used to calculate the total bid
+      matrix.
+    connectionType: multi_edge_connection

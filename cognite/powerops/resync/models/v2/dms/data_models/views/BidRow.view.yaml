@@ -2,15 +2,26 @@ space: '{{powerops_models}}'
 externalId: BidRow
 description: One row in the BidDocument (usually referenced in industry as a Bid).
 name: BidRow
-version: '{{version}}'
 filter:
-  equals:
-    property:
-     - node
-     - type
-    value:
-      space: '{{powerops_type_space}}'
-      externalId: AFRRBidRow
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: BidRow
+  - equals:
+      property:
+      - node
+      - space
+      value:
+        space: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: BidRow
+        space: '{{powerops_type_space}}'
+version: '{{version}}'
 properties:
   price:
     container:
@@ -125,4 +136,4 @@ properties:
     direction: outwards
     name: alerts
     description: An array of associated alerts.
-    connectionType: multiEdgeConnection
+    connectionType: multi_edge_connection

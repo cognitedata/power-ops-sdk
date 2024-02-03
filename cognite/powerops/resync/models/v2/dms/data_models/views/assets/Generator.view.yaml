@@ -2,78 +2,89 @@ space: '{{powerops_models}}'
 externalId: Generator
 description: A generator
 name: Generator
-version: '{{version}}'
+filter:
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: Generator
+  - equals:
+      property:
+      - node
+      - space
+      value:
+        space: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: Generator
+        space: '{{powerops_type_space}}'
 implements:
 - space: '{{powerops_models}}'
   externalId: PowerAsset
   version: '{{version}}'
   type: view
-filter:
-  equals:
-    property:
-     - node
-     - type
-    value:
-      space: '{{powerops_type_space}}'
-      externalId: Generator
+version: '{{version}}'
 properties:
   pMin:
     container:
-      type: container
       space: '{{powerops_models}}'
       externalId: Generator
+      type: container
     containerPropertyIdentifier: pMin
     name: pMin
   penstock:
     container:
-      type: container
       space: '{{powerops_models}}'
       externalId: Generator
+      type: container
     containerPropertyIdentifier: penstock
     name: penstock
   startCost:
     container:
-      type: container
       space: '{{powerops_models}}'
       externalId: Generator
+      type: container
     containerPropertyIdentifier: startCost
     name: startCost
   startStopCost:
     container:
-      type: container
       space: '{{powerops_models}}'
       externalId: Generator
+      type: container
     containerPropertyIdentifier: startStopCost
     name: startStopCost
   isAvailableTimeSeries:
     container:
-      type: container
       space: '{{powerops_models}}'
       externalId: Generator
+      type: container
     containerPropertyIdentifier: isAvailable
     name: isAvailableTimeSeries
   efficiencyCurve:
     container:
-      type: container
       space: '{{powerops_models}}'
       externalId: Generator
+      type: container
     containerPropertyIdentifier: efficiencyCurve
     name: generatorEfficiency
     source:
-      type: view
       space: '{{powerops_models}}'
       externalId: GeneratorEfficiencyCurve
       version: '{{version}}'
-  turbineCurves:
-    name: turbineCurves
-    source:
       type: view
-      space: '{{powerops_models}}'
-      externalId: TurbineEfficiencyCurve
-      version: '{{version}}'
+  turbineCurves:
     type:
       space: '{{powerops_type_space}}'
       externalId: isSubAssetOf
+    source:
+      space: '{{powerops_models}}'
+      externalId: TurbineEfficiencyCurve
+      version: '{{version}}'
+      type: view
     direction: outwards
+    name: turbineCurves
     description: The watercourses that are connected to the PriceArea.
-    connectionType: multiEdgeConnection
+    connectionType: multi_edge_connection

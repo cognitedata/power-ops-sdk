@@ -1,22 +1,32 @@
-# Any point in having this when we have both Dayahead and AFRR?
 space: '{{powerops_models}}'
 externalId: PriceArea
 description: Information about the Price Area that is only relevant for AFRR
 name: PriceArea
-version: '{{version}}'
+filter:
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: PriceArea
+  - equals:
+      property:
+      - node
+      - space
+      value:
+        space: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: PriceArea
+        space: '{{powerops_type_space}}'
 implements:
 - space: '{{powerops_models}}'
   externalId: PowerAsset
   version: '{{version}}'
   type: view
-filter:
-  equals:
-    property:
-    - node
-    - type
-    value:
-      space: '{{powerops_type_space}}'
-      externalId: PriceArea
+version: '{{version}}'
 properties:
   timezone:
     container:
@@ -134,7 +144,7 @@ properties:
     direction: outwards
     name: plants
     description: The plants that are connected to the Watercourse.
-    connectionType: multiEdgeConnection
+    connectionType: multi_edge_connection
   watercourses:
     type:
       space: '{{powerops_type_space}}'
@@ -147,4 +157,4 @@ properties:
     direction: outwards
     name: watercourses
     description: The watercourses that are connected to the PriceArea.
-    connectionType: multiEdgeConnection
+    connectionType: multi_edge_connection

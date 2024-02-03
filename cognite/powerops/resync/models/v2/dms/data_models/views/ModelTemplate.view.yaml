@@ -2,6 +2,25 @@ space: '{{powerops_models}}'
 externalId: ModelTemplate
 description: The template for SHOP models
 name: ModelTemplate
+filter:
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: ModelTemplate
+  - equals:
+      property:
+      - node
+      - space
+      value:
+        space: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: ModelTemplate
+        space: '{{powerops_type_space}}'
 version: '{{version}}'
 properties:
   cogShopVersion:
@@ -25,14 +44,14 @@ properties:
       space: '{{powerops_models}}'
       externalId: ModelTemplate
       type: container
+    containerPropertyIdentifier: watercourse
+    name: watercourse
+    description: The watercourse to run the model for
     source:
       space: '{{powerops_models}}'
       externalId: Watercourse
       version: '{{version}}'
       type: view
-    containerPropertyIdentifier: watercourse
-    name: watercourse
-    description: The watercourse to run the model for
   model:
     container:
       space: '{{powerops_models}}'
@@ -50,15 +69,15 @@ properties:
     name: source
     description: The source of the model, for example, 'resync'
   baseMappings:
+    type:
+      space: '{{powerops_type_space}}'
+      externalId: Mapping
     source:
       space: '{{powerops_models}}'
       externalId: Mapping
       version: '{{version}}'
       type: view
-    type:
-      space: '{{powerops_type_space}}'
-      externalId: Mapping
     direction: outwards
     name: baseMappings
     description: The base mappings for the model
-    connectionType: multiEdgeConnection
+    connectionType: multi_edge_connection

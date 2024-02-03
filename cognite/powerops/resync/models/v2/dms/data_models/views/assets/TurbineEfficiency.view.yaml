@@ -2,15 +2,26 @@ space: '{{powerops_models}}'
 externalId: TurbineEfficiencyCurve
 description: Describes the efficiency curve for a turbine
 name: TurbineEfficiencyCurve
-version: '{{version}}'
 filter:
-  equals:
-    property:
-    - node
-    - type
-    value:
-      space: '{{powerops_type_space}}'
-      externalId: TurbineEfficiencyCurve
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: EfficiencyCurve
+  - equals:
+      property:
+      - node
+      - space
+      value:
+        space: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: TurbineEfficiencyCurve
+        space: '{{powerops_type_space}}'
+version: '{{version}}'
 properties:
   head:
     container:

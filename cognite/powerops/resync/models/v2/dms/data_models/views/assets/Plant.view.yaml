@@ -2,184 +2,156 @@ space: '{{powerops_models}}'
 externalId: Plant
 description: Represent a plant
 name: Plant
-version: '{{version}}'
+filter:
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: Plant
+  - equals:
+      property:
+      - node
+      - space
+      value:
+        space: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: Plant
+        space: '{{powerops_type_space}}'
 implements:
 - space: '{{powerops_models}}'
   externalId: PowerAsset
   version: '{{version}}'
   type: view
-filter:
-  equals:
-    property:
-    - node
-    - type
-    value:
-      space: '{{powerops_type_space}}'
-      externalId: Plant
+version: '{{version}}'
 properties:
   headLossFactor:
-    type:
-      type: float64
-      list: false
     container:
-      type: container
       space: '{{powerops_models}}'
       externalId: Plant
+      type: container
     containerPropertyIdentifier: headLossFactor
     name: headLossFactor
   outletLevel:
-    type:
-      type: float64
-      list: false
     container:
-      type: container
       space: '{{powerops_models}}'
       externalId: Plant
+      type: container
     containerPropertyIdentifier: outletLevel
     name: outletLevel
   pMax:
-    type:
-      type: float64
-      list: false
     container:
-      type: container
       space: '{{powerops_models}}'
       externalId: Plant
+      type: container
     containerPropertyIdentifier: pMax
     name: pMax
   pMin:
-    type:
-      type: float64
-      list: false
     container:
-      type: container
       space: '{{powerops_models}}'
       externalId: Plant
+      type: container
     containerPropertyIdentifier: pMin
     name: pMin
   penstockHeadLossFactors:
-    type:
-      type: json
-      list: false
     container:
-      type: container
       space: '{{powerops_models}}'
       externalId: Plant
+      type: container
     containerPropertyIdentifier: penstockHeadLossFactors
     name: penstockHeadLossFactors
   watercourse:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Plant
+      type: container
+    containerPropertyIdentifier: watercourse
+    name: watercourse
     source:
-      type: view
       space: '{{powerops_models}}'
       externalId: Watercourse
       version: '{{version}}'
-    container:
-      type: container
-      space: '{{powerops_models}}'
-      externalId: Plant
-    containerPropertyIdentifier: watercourse
-    name: watercourse
+      type: view
   connectionLosses:
-    type:
-      type: float64
-      list: false
     container:
-      type: container
       space: '{{powerops_models}}'
       externalId: Plant
+      type: container
     containerPropertyIdentifier: connectionLosses
     name: connectionLosses
   pMaxTimeSeries:
-    type:
-      type: timeseries
-      list: false
     container:
-      type: container
       space: '{{powerops_models}}'
       externalId: Plant
+      type: container
     containerPropertyIdentifier: pMaxTimeSeries
     name: pMaxTimeSeries
   pMinTimeSeries:
-    type:
-      type: timeseries
-      list: false
     container:
-      type: container
       space: '{{powerops_models}}'
       externalId: Plant
+      type: container
     containerPropertyIdentifier: pMinTimeSeries
     name: pMinTimeSeries
   waterValueTimeSeries:
-    type:
-      type: timeseries
-      list: false
     container:
-      type: container
       space: '{{powerops_models}}'
       externalId: Plant
+      type: container
     containerPropertyIdentifier: waterValueTimeSeries
     name: waterValueTimeSeries
   feedingFeeTimeSeries:
-    type:
-      type: timeseries
-      list: false
     container:
-      type: container
       space: '{{powerops_models}}'
       externalId: Plant
+      type: container
     containerPropertyIdentifier: feedingFeeTimeSeries
     name: feedingFeeTimeSeries
   outletLevelTimeSeries:
-    type:
-      type: timeseries
-      list: false
     container:
-      type: container
       space: '{{powerops_models}}'
       externalId: Plant
+      type: container
     containerPropertyIdentifier: outletLevelTimeSeries
     name: outletLevelTimeSeries
   inletLevelTimeSeries:
-    type:
-      type: timeseries
-      list: false
     container:
-      type: container
       space: '{{powerops_models}}'
       externalId: Plant
+      type: container
     containerPropertyIdentifier: inletLevelTimeSeries
     name: inletLevelTimeSeries
   headDirectTimeSeries:
-    type:
-      type: timeseries
-      list: false
     container:
-      type: container
       space: '{{powerops_models}}'
       externalId: Plant
+      type: container
     containerPropertyIdentifier: headDirectTimeSeries
     name: headDirectTimeSeries
   inletReservoir:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Plant
+      type: container
+    containerPropertyIdentifier: inletReservoir
+    name: inletReservoir
     source:
-      type: view
       space: '{{powerops_models}}'
       externalId: Reservoir
       version: '{{version}}'
-    container:
-      type: container
-      space: '{{powerops_models}}'
-      externalId: Plant
-    containerPropertyIdentifier: inletReservoir
-    name: inletReservoir
+      type: view
   generators:
     type:
       space: '{{powerops_type_space}}'
       externalId: isSubAssetOf
     source:
-      type: view
       space: '{{powerops_models}}'
       externalId: Generator
       version: '{{version}}'
-    connectionType: multiEdgeConnection
-    name: generators
+      type: view
     direction: outwards
+    name: generators
+    connectionType: multi_edge_connection

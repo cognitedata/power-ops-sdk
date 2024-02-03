@@ -2,15 +2,26 @@ space: '{{powerops_models}}'
 externalId: Alert
 description: Alerts
 name: Alert
-version: '{{version}}'
 filter:
-  equals:
-    property:
-    - node
-    - type
-    value:
-      space: '{{powerops_type_space}}'
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
       externalId: Alert
+  - equals:
+      property:
+      - node
+      - space
+      value:
+        space: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: Alert
+        space: '{{powerops_type_space}}'
+version: '{{version}}'
 properties:
   time:
     container:

@@ -2,12 +2,6 @@ space: '{{powerops_models}}'
 externalId: Reservoir
 description: A reservoir
 name: Reservoir
-version: '{{version}}'
-implements:
-- space: '{{powerops_models}}'
-  externalId: PowerAsset
-  version: '{{version}}'
-  type: view
 filter:
   equals:
     property:
@@ -16,4 +10,10 @@ filter:
     value:
       space: '{{powerops_type_space}}'
       externalId: Reservoir
+implements:
+- space: '{{powerops_models}}'
+  externalId: PowerAsset
+  version: '{{version}}'
+  type: view
+version: '{{version}}'
 properties: {}

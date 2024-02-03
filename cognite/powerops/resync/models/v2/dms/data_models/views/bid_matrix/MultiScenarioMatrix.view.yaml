@@ -2,13 +2,24 @@ space: '{{powerops_models}}'
 externalId: MultiScenarioMatrix
 name: MultiScenarioMatrix
 filter:
-  equals:
-    property:
-    - node
-    - type
-    value:
-      space: '{{powerops_type_space}}'
-      externalId: DayAheadMultiScenarioMatrix
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: MultiScenarioMatrix
+  - equals:
+      property:
+      - node
+      - space
+      value:
+        space: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: MultiScenarioMatrix
+        space: '{{powerops_type_space}}'
 implements:
 - space: '{{powerops_models}}'
   externalId: BidMatrix

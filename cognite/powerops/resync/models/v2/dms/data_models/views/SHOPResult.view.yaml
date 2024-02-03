@@ -2,6 +2,25 @@ space: '{{powerops_models}}'
 externalId: SHOPResult
 description: Base class for all function inputs
 name: SHOPResult
+filter:
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+  - equals:
+      property:
+      - node
+      - space
+      value:
+        space: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: SHOPResult
+        space: '{{powerops_type_space}}'
 version: '{{version}}'
 properties:
   scenario:
@@ -45,4 +64,4 @@ properties:
     direction: outwards
     name: alerts
     description: An array of calculation level Alerts.
-    connectionType: multiEdgeConnection
+    connectionType: multi_edge_connection

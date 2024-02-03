@@ -2,19 +2,31 @@ space: '{{powerops_models}}'
 externalId: PreprocessorInput
 description: Input to the task dispatcher in the shop bid process
 name: TaskDispatcherShopInput
-version: '{{version}}'
-implements:
-  - space: '{{powerops_models}}'
-    externalId: FunctionInput
-    version: '{{version}}'
-    type: view
 filter:
-  equals:
-    property:
-    - {{powerops_models}}
-    - FunctionInput/{{version}}
-    - functionName
-    value: Preprocessor
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+  - equals:
+      property:
+      - node
+      - space
+      value:
+        space: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: PreprocessorInput
+        space: '{{powerops_type_space}}'
+implements:
+- space: '{{powerops_models}}'
+  externalId: FunctionInput
+  version: '{{version}}'
+  type: view
+version: '{{version}}'
 properties:
   scenarioRaw:
     container:
@@ -22,13 +34,14 @@ properties:
       externalId: FunctionData
       type: container
     containerPropertyIdentifier: direct1
+    name: scenarioRaw
+    description: The scenario that needs preprocessing before being sent to shop (has
+      isReady flag set to false)
     source:
       space: '{{powerops_models}}'
       externalId: ScenarioRaw
       version: '{{version}}'
       type: view
-    name: scenarioRaw
-    description: The scenario that needs preprocessing before being sent to shop (has isReady flag set to false)
   previousStep:
     container:
       space: '{{powerops_models}}'
@@ -37,7 +50,7 @@ properties:
     containerPropertyIdentifier: direct2
     name: previousStep
     source:
-        space: '{{powerops_models}}'
-        externalId: TaskDispatcherShopInput
-        version: '{{version}}'
-        type: view
+      space: '{{powerops_models}}'
+      externalId: TaskDispatcherShopInput
+      version: '{{version}}'
+      type: view

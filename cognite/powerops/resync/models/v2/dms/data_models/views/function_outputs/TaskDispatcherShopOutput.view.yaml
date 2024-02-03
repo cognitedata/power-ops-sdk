@@ -2,19 +2,31 @@ space: '{{powerops_models}}'
 externalId: TaskDispatcherShopOutput
 description: Input to the task dispatcher in the shop bid process
 name: TaskDispatcherShopOutput
-version: '{{version}}'
-implements:
-  - space: '{{powerops_models}}'
-    externalId: FunctionOutput
-    version: '{{version}}'
-    type: view
 filter:
-  equals:
-    property:
-    - {{powerops_models}}
-    - FunctionOutput/{{version}}
-    - functionName
-    value: TaskDispatcherShop
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+  - equals:
+      property:
+      - node
+      - space
+      value:
+        space: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: TaskDispatcherShopOutput
+        space: '{{powerops_type_space}}'
+implements:
+- space: '{{powerops_models}}'
+  externalId: FunctionOutput
+  version: '{{version}}'
+  type: view
+version: '{{version}}'
 properties:
   previousStep:
     container:
@@ -22,13 +34,13 @@ properties:
       externalId: FunctionData
       type: container
     containerPropertyIdentifier: direct1
+    name: previousStep
+    description: The previous step in the process.
     source:
       space: '{{powerops_models}}'
       externalId: TaskDispatcherShopInput
       version: '{{version}}'
       type: view
-    name: previousStep
-    description: The previous step in the process.
   preprocessorCalculations:
     type:
       space: '{{powerops_type_space}}'
@@ -41,7 +53,7 @@ properties:
     direction: outwards
     name: preprocessorCalculations
     description: An array of preprocessor calculations/inputs to preprocessor function.
-    connectionType: multiEdgeConnection
+    connectionType: multi_edge_connection
   partialBidCalculations:
     type:
       space: '{{powerops_type_space}}'
@@ -54,4 +66,4 @@ properties:
     direction: outwards
     name: preprocessorCalculations
     description: An array of preprocessor calculations/inputs to preprocessor function.
-    connectionType: multiEdgeConnection
+    connectionType: multi_edge_connection
