@@ -365,8 +365,7 @@ class DataModelLoader:
                 if is_dev and api.name in {"views", "data_models"} and (diffs.changed or diffs.delete):
                     print(f"Deleting {api.name}: {len(diffs.changed + diffs.delete)} changed to avoid conflicts")
                     api.delete([item.as_id() for item in diffs.changed + diffs.delete])
-                for item in diffs.create + diffs.changed:
-                    api.apply(item)
+                api.apply(diffs.create + diffs.changed)
 
             result.extend(diffs.as_results(is_init=True))
             print(
