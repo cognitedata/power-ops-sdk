@@ -15,8 +15,7 @@ filter:
       property:
       - node
       - space
-      value:
-        space: '{{powerops_instance_space}}'
+      value: '{{powerops_instance_space}}'
   - equals:
       property:
       - node

@@ -132,10 +132,11 @@ class DataModelAPI(Generic[T_ResourceList]):
                 views_to_check = list(view.implements or [])
                 while views_to_check:
                     view_to_check = views_to_check.pop()
-                    prop_to_pop.extend(view_by_id[view_to_check].properties)
-                    views_to_check.extend(view_by_id[view_to_check].implements or [])
+                    if view_to_check in view_by_id:
+                        prop_to_pop.extend(view_by_id[view_to_check].properties)
+                        views_to_check.extend(view_by_id[view_to_check].implements or [])
                 for prop in prop_to_pop:
-                    view.properties.pop(prop)
+                    view.properties.pop(prop, None)
         return retrieved_apply
 
     def differences(self, cdf: T_ResourceList, local: T_ResourceList) -> Difference:
@@ -364,7 +365,8 @@ class DataModelLoader:
                 if is_dev and api.name in {"views", "data_models"} and (diffs.changed or diffs.delete):
                     print(f"Deleting {api.name}: {len(diffs.changed + diffs.delete)} changed to avoid conflicts")
                     api.delete([item.as_id() for item in diffs.changed + diffs.delete])
-                api.apply(diffs.create + diffs.changed)
+                for item in diffs.create + diffs.changed:
+                    api.apply(item)
 
             result.extend(diffs.as_results(is_init=True))
             print(
@@ -379,7 +381,10 @@ class DataModelLoader:
         apis = cls._create_apis(client)
         resources = asdict(schema)
         for api in reversed(list(TopologicalSorter(apis).static_order())):
-            items = resources[api.name]
+            try:
+                items = resources[api.name]
+            except KeyError:
+                items = resources[f"_{api.name}"]
             existing = api.retrieve(schema.spaces)
             diffs = api.differences(existing, items)
             if not dry_run and (diffs.changed or diffs.unchanged or diffs.delete):

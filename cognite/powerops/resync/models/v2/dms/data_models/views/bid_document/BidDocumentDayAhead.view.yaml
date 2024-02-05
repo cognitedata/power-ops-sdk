@@ -6,16 +6,15 @@ filter:
   - hasData:
     - type: container
       space: '{{powerops_models}}'
-      externalId: BidDocumentDayAhead
+      externalId: BidDocument
     - type: container
       space: '{{powerops_models}}'
-      externalId: BidDocument
+      externalId: BidDocumentDayAhead
   - equals:
       property:
       - node
       - space
-      value:
-        space: '{{powerops_instance_space}}'
+      value: '{{powerops_instance_space}}'
   - equals:
       property:
       - node
