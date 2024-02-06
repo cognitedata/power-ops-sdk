@@ -1,6 +1,7 @@
+### This use FunctionData to store time series data - should we consider a separate container for this instead ? ###
 space: '{{powerops_models}}'
 externalId: SHOPResult
-description: Base class for all function inputs
+description: ''
 name: SHOPResult
 filter:
   and:
@@ -35,14 +36,22 @@ properties:
       externalId: Scenario
       version: '{{version}}'
       type: view
-  productionTimeSeries:
+  production:
     container:
       space: '{{powerops_models}}'
       externalId: FunctionData
       type: container
-    containerPropertyIdentifier: timeseries
-    name: productionTimeSeries
+    containerPropertyIdentifier: timeseries1
+    name: production
     description: The result production timeseries from a SHOP run
+  price:
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: timeseries2
+    name: price
+    description: The result price timeseries from a SHOP run
   objectiveSequence:
     container:
       space: '{{powerops_models}}'

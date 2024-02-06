@@ -35,7 +35,7 @@ properties:
     description: The bid method related to the bid configuration
     source:
       space: '{{powerops_models}}'
-      externalId: BidMethodDayAhead
+      externalId: BidMethodSHOPMultiScenario
       version: '{{version}}'
       type: view
   marketConfiguration:

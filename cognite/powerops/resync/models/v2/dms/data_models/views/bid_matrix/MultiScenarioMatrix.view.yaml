@@ -26,17 +26,16 @@ implements:
   type: view
 version: '{{version}}'
 properties:
-  production:
-    container:
+  shopResults:
+    type:
+      space: '{{powerops_type_space}}'
+      externalId: MultiScenarioMatrix.shopResults
+    source:
       space: '{{powerops_models}}'
-      externalId: MultiScenarioMatrix
-      type: container
-    containerPropertyIdentifier: production
-    name: production
-  price:
-    container:
-      space: '{{powerops_models}}'
-      externalId: MultiScenarioMatrix
-      type: container
-    containerPropertyIdentifier: price
-    name: price
+      externalId: SHOPResult
+      version: '{{version}}'
+      type: view
+    direction: outwards
+    name: shopResults
+    description: An array of results, one for each scenario.
+    connectionType: multiEdgeConnection

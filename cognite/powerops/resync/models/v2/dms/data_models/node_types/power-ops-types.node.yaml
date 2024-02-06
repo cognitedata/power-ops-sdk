@@ -124,3 +124,5 @@
   externalId: BidMethodWaterValue
 - space: '{{powerops_type_space}}'
   externalId: BidMethodDayahead.priceScenarios
+- space: '{{powerops_type_space}}'
+  externalId: MultiScenarioMatrix.shopResults

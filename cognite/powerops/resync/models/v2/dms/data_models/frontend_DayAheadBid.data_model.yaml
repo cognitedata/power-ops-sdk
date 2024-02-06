@@ -32,7 +32,11 @@ views:
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
-- externalId: BidMethodDayAhead
+- externalId: BidMethodSHOPMultiScenario
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: BidMethodWaterValue
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'

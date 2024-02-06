@@ -94,13 +94,20 @@ properties:
     nullable: true
     autoIncrement: false
     name: number2
-  timeseries:
+  timeseries1:
     type:
       type: timeseries
       list: true
     nullable: true
     autoIncrement: false
-    name: timeseries
+    name: timeseries1
+  timeseries2:
+    type:
+      type: timeseries
+      list: true
+    nullable: true
+    autoIncrement: false
+    name: timeseries2
   sequence:
     type:
       list: false
