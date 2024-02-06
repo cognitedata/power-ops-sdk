@@ -4,14 +4,6 @@ version: '1'
 name: TotalBidCalculation
 description: 'The process of going from PartialBidMatrix to TotalBidMatrix'
 views:
-- externalId: FunctionInput
-  space: '{{powerops_models}}'
-  type: view
-  version: '{{version}}'
-- externalId: FunctionOutput
-  space: '{{powerops_models}}'
-  type: view
-  version: '{{version}}'
 - externalId: BidMatrixRaw
   space: '{{powerops_models}}'
   type: view

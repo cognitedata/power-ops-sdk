@@ -4,14 +4,6 @@ version: '1'
 name: WaterValueBasedDayAheadBidProcess
 description: 'The process of going from BidConfig to a PartialBidMatrix'
 views:
-- externalId: FunctionInput
-  space: '{{powerops_models}}'
-  type: view
-  version: '{{version}}'
-- externalId: FunctionOutput
-  space: '{{powerops_models}}'
-  type: view
-  version: '{{version}}'
 - externalId: TaskDispatcherWaterInput
   space: '{{powerops_models}}'
   type: view
