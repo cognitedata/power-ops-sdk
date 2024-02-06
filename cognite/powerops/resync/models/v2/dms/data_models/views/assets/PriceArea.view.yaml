@@ -27,6 +27,14 @@ implements:
   type: view
 version: '{{version}}'
 properties:
+  name:
+    container:
+      space: '{{powerops_models}}'
+      externalId: PriceArea
+      type: container
+    containerPropertyIdentifier: name
+    name: name
+    description: The name of the price area
   timezone:
     container:
       space: '{{powerops_models}}'
