@@ -27,19 +27,6 @@ implements:
   type: view
 version: '{{version}}'
 properties:
-  previousStep:
-    container:
-      space: '{{powerops_models}}'
-      externalId: FunctionData
-      type: container
-    containerPropertyIdentifier: direct1
-    name: previousStep
-    description: The previous step in the process.
-    source:
-      space: '{{powerops_models}}'
-      externalId: PartialPostProcessingOutput
-      version: '{{version}}'
-      type: view
   partialBidMatrices:
     type:
       space: '{{powerops_type_space}}'

@@ -41,13 +41,13 @@ properties:
     description: The processed partial bid matrices that are used to calculate the
       total bid matrix.
     connectionType: multi_edge_connection
-  previousStep:
+  input:
     container:
       space: '{{powerops_models}}'
       externalId: FunctionData
       type: container
     containerPropertyIdentifier: direct1
-    name: previousStep
+    name: input
     source:
       space: '{{powerops_models}}'
       externalId: PartialPostProcessingInput

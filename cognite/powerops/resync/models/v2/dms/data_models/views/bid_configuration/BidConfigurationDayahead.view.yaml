@@ -54,16 +54,24 @@ properties:
   priceArea:
     container:
       space: '{{powerops_models}}'
-      externalId: BidConfiguration
+      externalId: PriceArea
       type: container
-    containerPropertyIdentifier: priceArea
+    containerPropertyIdentifier: name
     name: priceArea
-    description: The price area related to the bid configuration
-    source:
-      space: '{{powerops_models}}'
-      externalId: PriceAreaDayAhead
-      version: '{{version}}'
-      type: view
+    description: The name of the price area related to the bid configuration
+#  priceArea:
+#    container:
+#      space: '{{powerops_models}}'
+#      externalId: BidConfiguration
+#      type: container
+#    containerPropertyIdentifier: priceArea
+#    name: priceArea
+#    description: The price area related to the bid configuration
+#    source:
+#      space: '{{powerops_models}}'
+#      externalId: PriceAreaDayAhead
+#      version: '{{version}}'
+#      type: view
   plants:
     type:
       space: '{{powerops_type_space}}'

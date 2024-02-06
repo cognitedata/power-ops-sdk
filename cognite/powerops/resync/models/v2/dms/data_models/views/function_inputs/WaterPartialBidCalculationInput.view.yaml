@@ -39,15 +39,3 @@ properties:
       externalId: BidCalculationTask
       version: '{{version}}'
       type: view
-  previousStep:
-    container:
-      space: '{{powerops_models}}'
-      externalId: FunctionData
-      type: container
-    containerPropertyIdentifier: direct2
-    name: previousStep
-    source:
-      space: '{{powerops_models}}'
-      externalId: TaskDispatcherWaterOutput
-      version: '{{version}}'
-      type: view

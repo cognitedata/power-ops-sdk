@@ -32,3 +32,36 @@ properties:
     containerPropertyIdentifier: name
     name: name
     description: Name for the PriceArea.
+  defaultMethod:
+    container:
+      space: '{{powerops_models}}'
+      externalId: PriceArea
+      type: container
+    containerPropertyIdentifier: defaultMethodDayAhead
+    name: defaultMethod
+    source:
+      space: '{{powerops_models}}'
+      externalId: BidMethodDayAhead
+      version: '{{version}}'
+      type: view
+    timezone:
+      container:
+        space: '{{powerops_models}}'
+        externalId: PriceArea
+        type: container
+      containerPropertyIdentifier: timezone
+      name: timezone
+    mainScenario:
+      container:
+        space: '{{powerops_models}}'
+        externalId: PriceArea
+        type: container
+      containerPropertyIdentifier: mainScenarioDayAhead
+      name: mainScenario
+    priceScenarios:
+      container:
+        space: '{{powerops_models}}'
+        externalId: PriceArea
+        type: container
+      containerPropertyIdentifier: priceScenarios
+      name: priceScenarios

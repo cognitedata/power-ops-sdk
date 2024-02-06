@@ -27,14 +27,19 @@ implements:
   type: view
 version: '{{version}}'
 properties:
-  plant_name:
+  plant:
     container:
       space: '{{powerops_models}}'
       externalId: FunctionData
       type: container
-    containerPropertyIdentifier: text1
-    name: plant_name
-    description: The name of the plant to calculate the partial bid for
+    containerPropertyIdentifier: direct1
+    name: plant
+    description: The plant to calculate the partial bid for
+    source:
+      space: '{{powerops_models}}'
+      externalId: Plant
+      version: '{{version}}'
+      type: view
   shopResults:
     type:
       space: '{{powerops_type_space}}'
@@ -48,19 +53,6 @@ properties:
     name: shopResults
     description: An array of shop results.
     connectionType: multi_edge_connection
-  previousStep:
-    container:
-      space: '{{powerops_models}}'
-      externalId: FunctionData
-      type: container
-    containerPropertyIdentifier: direct2
-    name: previousStep
-    description: The previous step in the process.
-    source:
-      space: '{{powerops_models}}'
-      externalId: TaskDispatcherShopInput
-      version: '{{version}}'
-      type: view
   alerts:
     type:
       space: '{{powerops_type_space}}'

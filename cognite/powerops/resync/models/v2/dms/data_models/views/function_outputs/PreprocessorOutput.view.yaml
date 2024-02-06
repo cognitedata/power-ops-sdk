@@ -40,13 +40,13 @@ properties:
       externalId: Scenario
       version: '{{version}}'
       type: view
-  previousStep:
+  input:
     container:
       space: '{{powerops_models}}'
       externalId: FunctionData
       type: container
     containerPropertyIdentifier: direct2
-    name: previousStep
+    name: input
     description: The prepped and processed scenario to send to shop trigger
     source:
       space: '{{powerops_models}}'

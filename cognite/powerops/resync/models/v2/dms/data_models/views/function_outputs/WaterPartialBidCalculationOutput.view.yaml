@@ -39,13 +39,13 @@ properties:
       externalId: BidMatrixRaw
       version: '{{version}}'
       type: view
-  previousStep:
+  input:
     container:
       space: '{{powerops_models}}'
       externalId: FunctionData
       type: container
     containerPropertyIdentifier: direct2
-    name: previousStep
+    name: input
     source:
       space: '{{powerops_models}}'
       externalId: WaterPartialBidCalculationInput

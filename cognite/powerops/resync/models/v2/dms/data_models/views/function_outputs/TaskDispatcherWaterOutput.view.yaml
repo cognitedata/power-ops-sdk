@@ -27,13 +27,13 @@ implements:
   type: view
 version: '{{version}}'
 properties:
-  previousStep:
+  input:
     container:
       space: '{{powerops_models}}'
       externalId: FunctionData
       type: container
     containerPropertyIdentifier: direct1
-    name: previousStep
+    name: input
     description: The previous step in the process.
     source:
       space: '{{powerops_models}}'

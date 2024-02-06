@@ -27,18 +27,6 @@ implements:
   type: view
 version: '{{version}}'
 properties:
-  previousStep:
-    container:
-      space: '{{powerops_models}}'
-      externalId: FunctionData
-      type: container
-    containerPropertyIdentifier: direct1
-    name: previousStep
-    source:
-      space: '{{powerops_models}}'
-      externalId: PreprocessorOutput
-      version: '{{version}}'
-      type: view
   cogShopTag:
     container:
       space: '{{powerops_models}}'

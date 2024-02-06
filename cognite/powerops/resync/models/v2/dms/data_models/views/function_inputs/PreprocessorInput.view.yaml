@@ -1,7 +1,7 @@
 space: '{{powerops_models}}'
 externalId: PreprocessorInput
 description: Input to the task dispatcher in the shop bid process
-name: TaskDispatcherShopInput
+name: PreprocessorInput
 filter:
   and:
   - hasData:
@@ -39,17 +39,5 @@ properties:
     source:
       space: '{{powerops_models}}'
       externalId: ScenarioRaw
-      version: '{{version}}'
-      type: view
-  previousStep:
-    container:
-      space: '{{powerops_models}}'
-      externalId: FunctionData
-      type: container
-    containerPropertyIdentifier: direct2
-    name: previousStep
-    source:
-      space: '{{powerops_models}}'
-      externalId: TaskDispatcherShopInput
       version: '{{version}}'
       type: view
