@@ -48,6 +48,8 @@
   externalId: DayAheadBidDocument
 - space: {{powerops_type_space}}
   externalId: BidMethodDayAhead
+- space: '{{powerops_type_space}}'
+  externalId: WaterValueBasedMethod
 - space: {{powerops_type_space}}
   externalId: DayAheadMultiScenarioMatrix
 - space: {{powerops_type_space}}

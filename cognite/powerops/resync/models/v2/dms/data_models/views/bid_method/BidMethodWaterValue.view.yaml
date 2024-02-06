@@ -1,0 +1,53 @@
+# NOT USED
+space: '{{powerops_models}}'
+externalId: BidMethodWaterValue
+name: BidMethodWaterValue
+filter:
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: BidMethodDayAhead
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+  - equals:
+      property:
+      - node
+      - space
+      value: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: BidMethodWaterValue
+        space: '{{powerops_type_space}}'
+implements:
+- space: '{{powerops_models}}'
+  externalId: BidMethodDayAhead
+  version: '{{version}}'
+  type: view
+version: '{{version}}'
+properties: {}
+#  name:
+#    container:
+#      space: '{{powerops_models}}'
+#      externalId: BidMethodDayAhead
+#      type: container
+#    containerPropertyIdentifier: name
+#    name: name
+#    description: Name of the Bid Method
+#  mainScenario:
+#    container:
+#      space: '{{powerops_models}}'
+#      externalId: FunctionData
+#      type: container
+#    containerPropertyIdentifier: direct1
+#    name: mainScenario
+#    description: The main scenario used in the shop run and in the frontend
+#    source:
+#      space: '{{powerops_models}}'
+#      externalId: PriceScenario
+#      version: '{{version}}'
+#      type: view

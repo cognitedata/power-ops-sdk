@@ -1,6 +1,7 @@
+# NOT USED
 space: '{{powerops_models}}'
-externalId: CustomBidMethod
-name: CustomBidMethod
+externalId: BidMethodCustom
+name: BidMethodCustom
 filter:
   and:
   - hasData:

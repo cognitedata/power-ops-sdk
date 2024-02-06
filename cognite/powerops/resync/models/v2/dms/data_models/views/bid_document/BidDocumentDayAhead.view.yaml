@@ -38,7 +38,7 @@ properties:
     name: priceArea
     source:
       space: '{{powerops_models}}'
-      externalId: PriceArea
+      externalId: PriceAreaDayAhead
       version: '{{version}}'
       type: view
   method:

@@ -1,7 +1,7 @@
 space: '{{powerops_models}}'
 externalId: BidMethodDayAhead
 description: A description of the Bid method used in the calculation.
-name: BidMethod
+name: BidMethodDayAhead
 filter:
   and:
   - hasData:
@@ -38,3 +38,29 @@ properties:
     containerPropertyIdentifier: mainScenario
     name: mainScenario
     description: The main scenario to use when running the bid method
+    source:
+      space: '{{powerops_models}}'
+      externalId: PriceScenario
+      version: '{{version}}'
+      type: view
+  priceScenarios:
+    type:
+      space: '{{powerops_type_space}}'
+      externalId: PriceScenario
+    source:
+      space: '{{powerops_models}}'
+      externalId: PriceScenario
+      version: '{{version}}'
+      type: view
+    direction: outwards
+    name: priceScenarios
+    description: Optional reference to other price scenarios used in the bid generation
+    connectionType: multi_edge_connection
+  timezone:
+    container:
+      space: '{{powerops_models}}'
+      externalId: PriceArea
+      type: container
+    containerPropertyIdentifier: timezone
+    name: timezone
+    description: The timezone to use when running the bid method

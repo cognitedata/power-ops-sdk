@@ -54,7 +54,7 @@ properties:
   priceArea:
     container:
       space: '{{powerops_models}}'
-      externalId: BidDocument
+      externalId: BidConfiguration
       type: container
     containerPropertyIdentifier: priceArea
     name: priceArea

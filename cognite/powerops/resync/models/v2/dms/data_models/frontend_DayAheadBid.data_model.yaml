@@ -24,15 +24,7 @@ views:
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
-- externalId: SHOPMultiScenarioMethod
-  space: '{{powerops_models}}'
-  type: view
-  version: '{{version}}'
-- externalId: WaterValueBasedMethod
-  space: '{{powerops_models}}'
-  type: view
-  version: '{{version}}'
-- externalId: CustomBidMethod
+- externalId: BidMethodDayAhead
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'

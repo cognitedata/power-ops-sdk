@@ -1,6 +1,7 @@
+# NOT USED
 space: '{{powerops_models}}'
-externalId: WaterValueBasedMethod
-name: WaterValueBasedMethod
+externalId: BidMethodSHOPMultiScenario
+name: BidMethodSHOPMultiScenario
 filter:
   and:
   - hasData:
@@ -20,7 +21,7 @@ filter:
       - node
       - type
       value:
-        externalId: WaterValueBasedMethod
+        externalId: BidMethodSHOPMultiScenario
         space: '{{powerops_type_space}}'
 implements:
 - space: '{{powerops_models}}'
@@ -29,24 +30,16 @@ implements:
   type: view
 version: '{{version}}'
 properties:
-  name:
-    container:
-      space: '{{powerops_models}}'
-      externalId: BidMethodDayAhead
-      type: container
-    containerPropertyIdentifier: name
-    name: name
-    description: Name of the Bid Method
-  mainScenario:
-    container:
-      space: '{{powerops_models}}'
-      externalId: FunctionData
-      type: container
-    containerPropertyIdentifier: direct1
-    name: mainScenario
-    description: The main scenario used in the shop run and in the frontend
+  priceScenarios: # only additional property
+    type:
+      space: '{{powerops_type_space}}'
+      externalId: PriceScenario
     source:
       space: '{{powerops_models}}'
       externalId: PriceScenario
       version: '{{version}}'
       type: view
+    direction: outwards
+    name: priceScenarios
+    description: The price scenarios to use in the shop run
+    connectionType: multi_edge_connection
