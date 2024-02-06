@@ -46,7 +46,7 @@ properties:
   priceScenarios:
     type:
       space: '{{powerops_type_space}}'
-      externalId: PriceScenario
+      externalId: BidMethodDayahead.priceScenarios
     source:
       space: '{{powerops_models}}'
       externalId: PriceScenario
@@ -54,7 +54,7 @@ properties:
       type: view
     direction: outwards
     name: priceScenarios
-    description: Optional reference to other price scenarios used in the bid generation
+    description: The price scenarios to use in the shop run
     connectionType: multi_edge_connection
   timezone:
     container:

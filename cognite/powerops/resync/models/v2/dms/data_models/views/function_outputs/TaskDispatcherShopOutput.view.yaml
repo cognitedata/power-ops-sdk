@@ -63,6 +63,6 @@ properties:
       version: '{{version}}'
       type: view
     direction: outwards
-    name: preprocessorCalculations
+    name: partialBidCalculations
     description: An array of preprocessor calculations/inputs to preprocessor function.
     connectionType: multi_edge_connection

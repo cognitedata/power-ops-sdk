@@ -76,3 +76,11 @@ views:
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
+- externalId: PlantShop
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: WatercourseShop
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'

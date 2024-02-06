@@ -1,6 +1,7 @@
 space: '{{powerops_models}}'
-externalId: BidDocumentDayAhead
-name: BidDocumentDayAhead
+externalId: BidConfigurationWater
+description: ''
+name: BidConfigurationWater
 filter:
   and:
   - hasData:
@@ -9,7 +10,7 @@ filter:
       externalId: BidDocument
     - type: container
       space: '{{powerops_models}}'
-      externalId: BidDocumentDayAhead
+      externalId: FunctionData
   - equals:
       property:
       - node
@@ -20,60 +21,67 @@ filter:
       - node
       - type
       value:
-        externalId: BidDocumentDayAhead
+        externalId: BidConfigurationWater
         space: '{{powerops_type_space}}'
-implements:
-- space: '{{powerops_models}}'
-  externalId: BidDocument
-  version: '{{version}}'
-  type: view
 version: '{{version}}'
 properties:
-  priceArea:
-    container:
-      space: '{{powerops_models}}'
-      externalId: BidDocument
-      type: container
-    containerPropertyIdentifier: priceArea
-    name: priceArea
-    source:
-      space: '{{powerops_models}}'
-      externalId: PriceAreaDayAhead
-      version: '{{version}}'
-      type: view
   method:
     container:
       space: '{{powerops_models}}'
-      externalId: BidDocumentDayAhead
+      externalId: FunctionData
       type: container
-    containerPropertyIdentifier: method
+    containerPropertyIdentifier: direct1
     name: method
+    description: The bid method related to the bid configuration
     source:
       space: '{{powerops_models}}'
       externalId: BidMethodDayAhead
       version: '{{version}}'
       type: view
-  total:
+  marketConfiguration:
     container:
       space: '{{powerops_models}}'
-      externalId: BidDocumentDayAhead
+      externalId: FunctionData
       type: container
-    containerPropertyIdentifier: total
-    name: total
+    containerPropertyIdentifier: direct2
+    name: marketConfiguration
+    description: The bid method related to the bid configuration
     source:
       space: '{{powerops_models}}'
-      externalId: BidMatrix
+      externalId: MarketConfiguration
       version: '{{version}}'
       type: view
-  partials:
+  priceArea:
+    container:
+      space: '{{powerops_models}}'
+      externalId: PriceArea
+      type: container
+    containerPropertyIdentifier: name
+    name: priceArea
+    description: The name of the price area related to the bid configuration
+  plants:
     type:
       space: '{{powerops_type_space}}'
-      externalId: partialBid
+      externalId: BidConfiguration.plants
     source:
       space: '{{powerops_models}}'
-      externalId: BidMatrix
+      externalId: Plant
       version: '{{version}}'
       type: view
     direction: outwards
-    name: partials
+    name: plants
+    description: The plants
+    connectionType: multi_edge_connection
+  watercourses:
+    type:
+      space: '{{powerops_type_space}}'
+      externalId: BidConfiguration.watercourses
+    source:
+      space: '{{powerops_models}}'
+      externalId: Watercourse
+      version: '{{version}}'
+      type: view
+    direction: outwards
+    name: watercourses
+    description: The watercourses
     connectionType: multi_edge_connection

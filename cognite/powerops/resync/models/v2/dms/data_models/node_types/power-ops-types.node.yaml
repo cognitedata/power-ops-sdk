@@ -40,6 +40,10 @@
   externalId: Watercourse
 - space: {{powerops_type_space}}
   externalId: Alert
+- space: '{{powerops_type_space}}'
+  externalId: PlantShop
+- space: '{{powerops_type_space}}'
+  externalId: WatercourseShop
 
 ## DayAhead Types
 - space: {{powerops_type_space}}
@@ -75,6 +79,10 @@
 - space: {{powerops_type_space}}
   externalId: BidConfiguration.watercourses
 - space: {{powerops_type_space}}
+  externalId: BidConfiguration.plantsShop
+- space: {{powerops_type_space}}
+  externalId: BidConfiguration.watercoursesShop
+- space: {{powerops_type_space}}
   externalId: BidConfigurationDayAhead
 - space: {{powerops_type_space}}
   externalId: BidConfigurationAFRR
@@ -108,3 +116,11 @@
   externalId: ShopPartialBidCalculationInput
 - space: '{{powerops_type_space}}'
   externalId: WaterPartialBidCalculationInput
+- space: '{{powerops_models}}'
+  externalId: BidMethodDayAhead
+- space: '{{powerops_models}}'
+  externalId: BidMethodSHOPMultiScenario
+- space: '{{powerops_type_space}}'
+  externalId: BidMethodWaterValue
+- space: '{{powerops_type_space}}'
+  externalId: BidMethodDayahead.priceScenarios

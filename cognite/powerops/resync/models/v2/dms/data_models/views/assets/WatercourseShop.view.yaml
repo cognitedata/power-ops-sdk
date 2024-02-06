@@ -1,16 +1,13 @@
-# NOT USED
 space: '{{powerops_models}}'
-externalId: BidMethodSHOPMultiScenario
-name: BidMethodSHOPMultiScenario
+externalId: WatercourseShop
+description: A minimal representation of a Watercourse which is needed for Shop # or call this Watercourses minimal?
+name: WatercourseShop
 filter:
   and:
   - hasData:
     - type: container
       space: '{{powerops_models}}'
-      externalId: BidMethodDayAhead
-    - type: container
-      space: '{{powerops_models}}'
-      externalId: FunctionData
+      externalId: Watercourse
   - equals:
       property:
       - node
@@ -21,11 +18,11 @@ filter:
       - node
       - type
       value:
-        externalId: BidMethodSHOPMultiScenario
+        externalId: Watercourse
         space: '{{powerops_type_space}}'
 implements:
 - space: '{{powerops_models}}'
-  externalId: BidMethodDayAhead
+  externalId: PowerAsset
   version: '{{version}}'
   type: view
 version: '{{version}}'

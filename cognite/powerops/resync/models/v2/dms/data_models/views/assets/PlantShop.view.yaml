@@ -1,16 +1,13 @@
-# NOT USED
 space: '{{powerops_models}}'
-externalId: BidMethodSHOPMultiScenario
-name: BidMethodSHOPMultiScenario
+externalId: PlantShop
+description: A minimal representation of a Plant - only data that is needed for Shop
+name: PlantShop
 filter:
   and:
   - hasData:
     - type: container
       space: '{{powerops_models}}'
-      externalId: BidMethodDayAhead
-    - type: container
-      space: '{{powerops_models}}'
-      externalId: FunctionData
+      externalId: Plant
   - equals:
       property:
       - node
@@ -21,11 +18,11 @@ filter:
       - node
       - type
       value:
-        externalId: BidMethodSHOPMultiScenario
+        externalId: PlantShop
         space: '{{powerops_type_space}}'
 implements:
 - space: '{{powerops_models}}'
-  externalId: BidMethodDayAhead
+  externalId: PowerAsset
   version: '{{version}}'
   type: view
 version: '{{version}}'
