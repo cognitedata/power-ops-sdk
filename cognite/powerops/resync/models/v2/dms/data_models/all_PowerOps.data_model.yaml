@@ -39,11 +39,11 @@ views:
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
-- externalId: BidConfigurationAFRR
+- externalId: BidConfiguration
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
-- externalId: BidConfigurationDayAhead
+- externalId: BidConfigurationAFRR
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
@@ -183,15 +183,15 @@ views:
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
+- externalId: PriceArea
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
 - externalId: GeneratorEfficiencyCurve
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
 - externalId: PriceAreaAFRR
-  space: '{{powerops_models}}'
-  type: view
-  version: '{{version}}'
-- externalId: PriceArea
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'

@@ -21,7 +21,7 @@ properties:
     autoIncrement: false
     name: name
     description: The timezone of the price area
-  priceScenarios:
+  priceScenarios: #not used
     type:
       list: true
       type: timeseries
@@ -98,7 +98,7 @@ properties:
     nullable: true
     autoIncrement: false
     name: defaultMethodDayAhead
-  mainScenarioDayAhead:
+  mainScenarioDayAhead: #not used
     type:
       list: false
       type: timeseries

@@ -1,16 +1,16 @@
 space: '{{powerops_models}}'
-externalId: BidConfigurationDayAhead
+externalId: BidConfiguration
 description: ''
-name: BidConfigurationDayAhead
+name: BidConfiguration
 filter:
   and:
   - hasData:
     - type: container
       space: '{{powerops_models}}'
-      externalId: FunctionData
+      externalId: BidConfiguration
     - type: container
       space: '{{powerops_models}}'
-      externalId: PriceArea
+      externalId: FunctionData
   - equals:
       property:
       - node
@@ -21,7 +21,7 @@ filter:
       - node
       - type
       value:
-        externalId: BidConfigurationDayAhead
+        externalId: BidConfiguration
         space: '{{powerops_type_space}}'
 version: '{{version}}'
 properties:
@@ -33,11 +33,6 @@ properties:
     containerPropertyIdentifier: direct1
     name: method
     description: The bid method related to the bid configuration
-    source:
-      space: '{{powerops_models}}'
-      externalId: BidMethodDayAhead
-      version: '{{version}}'
-      type: view
   marketConfiguration:
     container:
       space: '{{powerops_models}}'
@@ -54,34 +49,8 @@ properties:
   priceArea:
     container:
       space: '{{powerops_models}}'
-      externalId: PriceArea
+      externalId: BidConfiguration
       type: container
-    containerPropertyIdentifier: name
+    containerPropertyIdentifier: priceArea
     name: priceArea
-    description: The name of the price area related to the bid configuration
-  plants:
-    type:
-      space: '{{powerops_type_space}}'
-      externalId: BidConfiguration.plants
-    source:
-      space: '{{powerops_models}}'
-      externalId: Plant
-      version: '{{version}}'
-      type: view
-    direction: outwards
-    name: plants
-    description: The plants
-    connectionType: multi_edge_connection
-  watercourses:
-    type:
-      space: '{{powerops_type_space}}'
-      externalId: BidConfiguration.watercourses
-    source:
-      space: '{{powerops_models}}'
-      externalId: Watercourse
-      version: '{{version}}'
-      type: view
-    direction: outwards
-    name: watercourses
-    description: The watercourses
-    connectionType: multi_edge_connection
+    description: The price area related to the bid configuration

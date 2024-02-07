@@ -7,9 +7,6 @@ filter:
   - hasData:
     - type: container
       space: '{{powerops_models}}'
-      externalId: Asset
-    - type: container
-      space: '{{powerops_models}}'
       externalId: PriceArea
   - equals:
       property:
@@ -23,16 +20,13 @@ filter:
       value:
         externalId: PriceAreaAFRR
         space: '{{powerops_type_space}}'
+implements:
+- space: '{{powerops_models}}'
+  externalId: PriceArea
+  version: '{{version}}'
+  type: view
 version: '{{version}}'
 properties:
-  name:
-    container:
-      space: '{{powerops_models}}'
-      externalId: Asset
-      type: container
-    containerPropertyIdentifier: name
-    name: name
-    description: Name for the PriceArea.
   capacityPriceUp:
     container:
       space: '{{powerops_models}}'

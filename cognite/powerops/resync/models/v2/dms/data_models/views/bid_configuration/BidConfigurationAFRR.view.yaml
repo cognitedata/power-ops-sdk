@@ -20,6 +20,11 @@ filter:
       value:
         externalId: BidConfigurationAFRR
         space: '{{powerops_type_space}}'
+implements:
+- space: '{{powerops_models}}'
+  externalId: BidConfiguration
+  version: '{{version}}'
+  type: view
 version: '{{version}}'
 properties:
   method:
@@ -33,18 +38,6 @@ properties:
     source:
       space: '{{powerops_models}}'
       externalId: BidMethodAFRR
-      version: '{{version}}'
-      type: view
-  marketConfiguration:
-    container:
-      space: '{{powerops_models}}'
-      externalId: BidConfiguration
-      type: container
-    containerPropertyIdentifier: marketConfiguration
-    name: marketConfiguration
-    source:
-      space: '{{powerops_models}}'
-      externalId: MarketConfiguration
       version: '{{version}}'
       type: view
   priceArea:

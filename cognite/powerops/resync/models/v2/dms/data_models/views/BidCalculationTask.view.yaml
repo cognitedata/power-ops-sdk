@@ -7,10 +7,10 @@ filter:
   - hasData:
     - type: container
       space: '{{powerops_models}}'
-      externalId: FunctionData
+      externalId: BidConfiguration
     - type: container
       space: '{{powerops_models}}'
-      externalId: BidConfiguration
+      externalId: FunctionData
   - equals:
       property:
       - node
