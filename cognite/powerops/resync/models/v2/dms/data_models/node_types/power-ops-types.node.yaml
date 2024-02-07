@@ -126,3 +126,5 @@
   externalId: BidMethodDayahead.priceScenarios
 - space: '{{powerops_type_space}}'
   externalId: MultiScenarioMatrix.shopResults
+- space: '{{powerops_type_space}}'
+  externalId: Water.partialBidCalculations

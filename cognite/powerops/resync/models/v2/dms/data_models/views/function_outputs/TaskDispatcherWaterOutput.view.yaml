@@ -37,19 +37,19 @@ properties:
     description: The previous step in the process.
     source:
       space: '{{powerops_models}}'
-      externalId: TaskDispatcherShopInput
+      externalId: TaskDispatcherWaterInput
       version: '{{version}}'
       type: view
   bidCalculationTasks:
     type:
       space: '{{powerops_type_space}}'
-      externalId: BidCalculationTask
+      externalId: Water.partialBidCalculations
     source:
       space: '{{powerops_models}}'
-      externalId: BidCalculationTask
+      externalId: WaterPartialBidCalculationInput
       version: '{{version}}'
       type: view
     direction: outwards
-    name: bidCalculationTakss
+    name: bidCalculationTaks
     description: An array of bid calculation tasks.
     connectionType: multi_edge_connection

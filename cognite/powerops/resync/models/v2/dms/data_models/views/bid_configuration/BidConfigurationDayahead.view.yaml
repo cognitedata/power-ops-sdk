@@ -7,10 +7,10 @@ filter:
   - hasData:
     - type: container
       space: '{{powerops_models}}'
-      externalId: BidDocument
+      externalId: FunctionData
     - type: container
       space: '{{powerops_models}}'
-      externalId: FunctionData
+      externalId: PriceArea
   - equals:
       property:
       - node
@@ -59,19 +59,6 @@ properties:
     containerPropertyIdentifier: name
     name: priceArea
     description: The name of the price area related to the bid configuration
-#  priceArea:
-#    container:
-#      space: '{{powerops_models}}'
-#      externalId: BidConfiguration
-#      type: container
-#    containerPropertyIdentifier: priceArea
-#    name: priceArea
-#    description: The price area related to the bid configuration
-#    source:
-#      space: '{{powerops_models}}'
-#      externalId: PriceAreaDayAhead
-#      version: '{{version}}'
-#      type: view
   plants:
     type:
       space: '{{powerops_type_space}}'

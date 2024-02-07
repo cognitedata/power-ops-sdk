@@ -1,4 +1,3 @@
-### This use FunctionData to store time series data - should we consider a separate container for this instead ? ###
 space: '{{powerops_models}}'
 externalId: SHOPResult
 description: ''

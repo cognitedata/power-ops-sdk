@@ -8,6 +8,14 @@ views:
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
+- externalId: BidConfigurationShop
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: BidConfigurationWater
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
 - externalId: MarketConfiguration
   space: '{{powerops_models}}'
   type: view
@@ -20,11 +28,23 @@ views:
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
+- externalId: PriceAreaDayAhead
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
 - externalId: Watercourse
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
+- externalId: WatercourseShop
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
 - externalId: Plant
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: PlantShop
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
@@ -45,6 +65,14 @@ views:
   type: view
   version: '{{version}}'
 - externalId: BidMethodDayAhead
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: BidMethodWaterValue
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: BidMethodSHOPMultiScenario
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'

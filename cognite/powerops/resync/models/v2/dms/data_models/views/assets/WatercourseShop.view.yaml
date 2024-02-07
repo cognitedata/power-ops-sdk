@@ -1,6 +1,6 @@
 space: '{{powerops_models}}'
 externalId: WatercourseShop
-description: A minimal representation of a Watercourse which is needed for Shop # or call this Watercourses minimal?
+description: A minimal representation of a Watercourse which is needed for Shop
 name: WatercourseShop
 filter:
   and:

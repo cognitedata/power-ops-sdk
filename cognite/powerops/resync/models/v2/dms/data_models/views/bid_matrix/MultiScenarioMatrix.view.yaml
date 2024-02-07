@@ -38,4 +38,4 @@ properties:
     direction: outwards
     name: shopResults
     description: An array of results, one for each scenario.
-    connectionType: multiEdgeConnection
+    connectionType: multi_edge_connection

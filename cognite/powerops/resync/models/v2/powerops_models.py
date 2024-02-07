@@ -32,7 +32,7 @@ _DMS_DIR = Path(__file__).parent / "dms"
 
 @dataclass
 class Schema:
-    _shared_space = "power-ops-shared"
+    _shared_space = "sp_powerops_models"
     containers: ContainerApplyList
     _views: ViewApplyList
     _data_models: DataModelApplyList

@@ -8,6 +8,9 @@ filter:
     - type: container
       space: '{{powerops_models}}'
       externalId: BidMethodDayAhead
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: PriceArea
   - equals:
       property:
       - node
