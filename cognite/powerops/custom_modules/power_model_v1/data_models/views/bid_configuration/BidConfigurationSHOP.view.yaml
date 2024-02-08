@@ -66,3 +66,16 @@ properties:
     name: watercourses
     description: The watercourses modelled in the shop runs
     connectionType: multi_edge_connection
+  priceArea:
+    container:
+      space: '{{powerops_models}}'
+      externalId: BidConfiguration
+      type: container
+    containerPropertyIdentifier: priceArea
+    name: priceArea
+    description: The price area related to the bid configuration
+    source:
+      space: '{{powerops_models}}'
+      externalId: PriceAreaDayAhead
+      version: '{{version}}'
+      type: view

@@ -68,3 +68,16 @@ properties:
     description: The watercourses and related information needed to run the water
       value based method
     connectionType: multi_edge_connection
+  priceArea:
+    container:
+      space: '{{powerops_models}}'
+      externalId: BidConfiguration
+      type: container
+    containerPropertyIdentifier: priceArea
+    name: priceArea
+    description: The price area related to the bid configuration
+    source:
+      space: '{{powerops_models}}'
+      externalId: PriceAreaDayAhead
+      version: '{{version}}'
+      type: view
