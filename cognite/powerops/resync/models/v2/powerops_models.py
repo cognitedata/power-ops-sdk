@@ -12,6 +12,7 @@ from typing import Any, Generic, TypeVar
 import yaml
 from cognite.client import CogniteClient
 from cognite.client.data_classes import filters
+from cognite.client.data_classes.data_modeling.data_types import DirectRelation
 from cognite.client.data_classes.data_modeling import (
     ContainerApplyList,
     DataModelApply,
@@ -251,12 +252,14 @@ class DataModelLoader:
         defined_interfaces = {parent for view in schema._views for parent in view.implements or []}
         properties_by_container = {container.as_id(): set(container.properties) for container in schema.containers}
         properties_by_view = {view.as_id(): set(view.properties) for view in schema._views}
+        containers_by_id = {container.as_id(): container for container in schema.containers}
 
         referred_spaces = defaultdict(list)
         referred_views = defaultdict(list)
         referred_containers = defaultdict(list)
         referred_node_types = defaultdict(list)
         view_missing_filters = []
+        direct_relation_missing_source = []
         non_existent_container_properties = []
         non_existent_view_properties = []
         for container in schema.containers:
@@ -308,6 +311,10 @@ class DataModelLoader:
                         referred_views[prop.source].append(ref_view_id.as_property_ref(prop_name))
                     if prop.container_property_identifier not in properties_by_container.get(prop.container, set()):
                         non_existent_container_properties.append(ref_view_id.as_property_ref(prop_name))
+                    if prop.container_property_identifier in properties_by_container.get(prop.container, set()):
+                        container_property_relation_type = containers_by_id[prop.container].properties[prop.container_property_identifier].type
+                        if type(container_property_relation_type) == DirectRelation and not prop.source:
+                            direct_relation_missing_source.append(ref_view_id.as_property_ref(prop_name))
                 elif isinstance(prop, SingleHopConnectionDefinitionApply):
                     referred_node_types[NodeId(prop.type.space, prop.type.external_id)].append(
                         ref_view_id.as_property_ref(prop_name)
@@ -346,6 +353,9 @@ class DataModelLoader:
         if non_existent_view_properties:
             message = "\n".join(map(str, non_existent_view_properties))
             raise ValueError(f"These properties in views refers to view properties that does not exist:\n{message}")
+        if direct_relation_missing_source:
+            message = "\n".join(map(str, direct_relation_missing_source))
+            raise ValueError(f"These properties in views refers to direct relations without a source:\n{message}")
 
     @classmethod
     def deploy(cls, client: CogniteClient, schema: Schema, is_dev: bool = False) -> list[dict]:

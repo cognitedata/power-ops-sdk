@@ -34,6 +34,11 @@ properties:
     containerPropertyIdentifier: direct1
     name: method
     description: The bid method related to the bid configuration
+    source:
+      space: '{{powerops_models}}'
+      externalId: BidMethod
+      version: '{{version}}'
+      type: view
   marketConfiguration:
     container:
       space: '{{powerops_models}}'
@@ -55,3 +60,8 @@ properties:
     containerPropertyIdentifier: priceArea
     name: priceArea
     description: The price area related to the bid configuration
+    source:
+      space: '{{powerops_models}}'
+      externalId: PriceAreaDayAhead
+      version: '{{version}}'
+      type: view

@@ -20,14 +20,10 @@ filter:
       value:
         externalId: BidMethodAFRR
         space: '{{powerops_type_space}}'
-implements: []
+implements:
+  - space: '{{powerops_models}}'
+    externalId: BidMethod
+    version: '{{version}}'
+    type: view
 version: '{{version}}'
-properties:
-  name:
-    container:
-      space: '{{powerops_models}}'
-      externalId: BidMethodAFRR
-      type: container
-    containerPropertyIdentifier: name
-    name: name
-    description: Name for the AFRR Bid Method
+properties: {}

@@ -130,3 +130,7 @@
   externalId: MultiScenarioMatrix.shopResults
 - space: '{{powerops_type_space}}'
   externalId: Water.partialBidCalculations
+- space: '{{powerops_type_space}}'
+  externalId: ModelTemplate.baseMappings
+- space: '{{powerops_type_space}}'
+  externalId: BidMethod

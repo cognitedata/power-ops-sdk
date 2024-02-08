@@ -23,21 +23,17 @@ filter:
       value:
         externalId: BidMethodDayAhead
         space: '{{powerops_type_space}}'
-implements: []
+implements:
+  - space: '{{powerops_models}}'
+    externalId: BidMethod
+    version: '{{version}}'
+    type: view
 version: '{{version}}'
 properties:
-  name:
-    container:
-      space: '{{powerops_models}}'
-      externalId: BidMethodDayAhead
-      type: container
-    containerPropertyIdentifier: name
-    name: name
-    description: Name for the BidMethod
   mainScenario:
     container:
       space: '{{powerops_models}}'
-      externalId: BidMethodDayAhead
+      externalId: BidMethod
       type: container
     containerPropertyIdentifier: mainScenario
     name: mainScenario

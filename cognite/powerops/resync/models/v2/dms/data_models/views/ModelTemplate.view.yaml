@@ -49,7 +49,7 @@ properties:
     description: The watercourse to run the model for
     source:
       space: '{{powerops_models}}'
-      externalId: Watercourse
+      externalId: WatercourseShop
       version: '{{version}}'
       type: view
   model:
@@ -59,7 +59,7 @@ properties:
       type: container
     containerPropertyIdentifier: model
     name: model
-    description: The shop model file to use as template before mapping
+    description: The shop model file to use as template before applying base mapping
   source:
     container:
       space: '{{powerops_models}}'
@@ -71,7 +71,7 @@ properties:
   baseMappings:
     type:
       space: '{{powerops_type_space}}'
-      externalId: Mapping
+      externalId: ModelTemplate.baseMappings
     source:
       space: '{{powerops_models}}'
       externalId: Mapping
