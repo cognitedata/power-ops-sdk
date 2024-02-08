@@ -1,0 +1,38 @@
+externalId: PowerAsset
+space: '{{asset_space}}'
+version: '1'
+name: PowerAsset
+description: 'Describes the power operations asset model'
+views:
+- externalId: PriceArea
+  space: '{{asset_space}}'
+  type: view
+  version: '{{asset_PriceArea_version}}'
+- externalId: Watercourse
+  space: '{{asset_space}}'
+  type: view
+  version: '{{asset_Watercourse_version}}'
+- externalId: Plant
+  space: '{{asset_space}}'
+  type: view
+  version: '{{asset_Plant_version}}'
+- externalId: Generator
+  space: '{{asset_space}}'
+  type: view
+  version: '{{asset_Generator_version}}'
+- externalId: Reservoir
+  space: '{{asset_space}}'
+  type: view
+  version: '{{asset_Reservoir_version}}'
+- externalId: TurbineEfficiencyCurve
+  space: '{{asset_space}}'
+  type: view
+  version: '{{asset_TurbineEfficiency_version}}'
+- externalId: GeneratorEfficiencyCurve
+  space: '{{asset_space}}'
+  type: view
+  version: '{{asset_GeneratorEfficiency_version}}'
+- externalId: BidMethod
+  space: '{{shared_model_space}}'
+  type: view
+  version: '{{base_BidMethod_version}}'

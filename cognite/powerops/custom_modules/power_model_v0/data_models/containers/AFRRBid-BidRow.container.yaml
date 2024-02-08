@@ -1,0 +1,110 @@
+space: '{{afrr_model_space}}'
+externalId: BidRow
+name: BidRow
+usedFor: node
+properties:
+  price:
+    type:
+      list: false
+      type: float32
+    name: price
+    description: null
+    nullable: true
+    autoIncrement: false
+    defaultValue: null
+  quantityPerHour:
+    type:
+      list: true
+      type: float32
+    name: quantityPerHour
+    description: null
+    nullable: true
+    autoIncrement: false
+    defaultValue: null
+  product:
+    type:
+      list: false
+      type: text
+      collation: ucs_basic
+    name: product
+    description: null
+    nullable: true
+    autoIncrement: false
+    defaultValue: null
+  isDivisible:
+    type:
+      list: false
+      type: boolean
+    name: isDivisible
+    description: null
+    nullable: true
+    autoIncrement: false
+    defaultValue: null
+  minQuantity:
+    type:
+      list: true
+      type: float32
+    name: minQuantity
+    description: null
+    nullable: true
+    autoIncrement: false
+    defaultValue: null
+  isBlock:
+    type:
+      list: false
+      type: boolean
+    name: isBlock
+    description: null
+    nullable: true
+    autoIncrement: false
+    defaultValue: null
+  exclusiveGroupId:
+    type:
+      list: false
+      type: text
+      collation: ucs_basic
+    name: exclusiveGroupId
+    description: null
+    nullable: true
+    autoIncrement: false
+    defaultValue: null
+  linkedBid:
+    type:
+      container: null
+      type: direct
+      list: false
+    name: linkedBid
+    description: null
+    nullable: true
+    autoIncrement: false
+    defaultValue: null
+  assetType:
+    type:
+      list: false
+      type: text
+      collation: ucs_basic
+    name: assetType
+    description: null
+    nullable: true
+    autoIncrement: false
+    defaultValue: null
+  assetId:
+    type:
+      list: false
+      type: text
+      collation: ucs_basic
+    name: assetId
+    description: null
+    nullable: true
+    autoIncrement: false
+    defaultValue: null
+  method:
+    type:
+      container: null
+      type: direct
+      list: false
+    name: method
+    description: null
+    nullable: true
+    autoIncrement: false
+    defaultValue: null

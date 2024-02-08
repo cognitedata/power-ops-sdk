@@ -1,0 +1,77 @@
+space: '{{shared_model_space}}'
+externalId: Alert
+name: Alert
+usedFor: node
+properties:
+  time:
+    type:
+      list: false
+      type: timestamp
+    nullable: false
+    autoIncrement: false
+    name: time
+  title:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: title
+  description:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: description
+  severity:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: severity
+  alertType:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: alertType
+  statusCode:
+    type:
+      list: false
+      type: int32
+    nullable: true
+    autoIncrement: false
+    name: statusCode
+  eventIds:
+    type:
+      list: true
+      type: int64
+    nullable: true
+    autoIncrement: false
+    name: eventIds
+  calculationRun:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: calculationRun
+indexes:
+  time:
+    properties:
+    - time
+    indexType: btree
+    cursorable: false
+  alertType:
+    properties:
+    - alertType
+    indexType: btree
+    cursorable: false

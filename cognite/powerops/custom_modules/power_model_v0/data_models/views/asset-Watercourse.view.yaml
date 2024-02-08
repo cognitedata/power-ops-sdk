@@ -1,33 +1,10 @@
-space: '{{powerops_models}}'
+space: '{{asset_space}}'
 externalId: Watercourse
-name: Watercourse
 description: A description of the Watercourse Asset
+name: Watercourse
+version: '{{asset_Watercourse_version}}'
 filter:
   and:
-<<<<<<<< HEAD:cognite/powerops/custom_modules/power_model_v0/data_models/views/assets/Watercourse.view.yaml
-  - hasData:
-    - type: container
-      space: '{{powerops_models}}'
-      externalId: Watercourse
-  - equals:
-      property:
-      - node
-      - space
-      value: '{{powerops_instance_space}}'
-  - equals:
-      property:
-      - node
-      - type
-      value:
-        externalId: Watercourse
-        space: '{{powerops_type_space}}'
-implements:
-- space: '{{powerops_models}}'
-  externalId: PowerAsset
-  version: '{{version}}'
-  type: view
-version: '{{version}}'
-========
     - hasData:
         - type: container
           space: '{{shared_model_space}}'
@@ -42,11 +19,26 @@ version: '{{version}}'
         value:
           space: '{{type_space}}'
           externalId: Watercourse
->>>>>>>> main:cognite/powerops/custom_modules/power_model_v0/data_models/views/asset-Watercourse.view.yaml
 properties:
+  name:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: Asset
+      type: container
+    containerPropertyIdentifier: name
+    name: name
+    description: Name for the Watercourse.
+  displayName:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: Asset
+      type: container
+    containerPropertyIdentifier: displayName
+    name: displayName
+    description: Display name for the Watercourse.
   productionObligation:
     container:
-      space: '{{powerops_models}}'
+      space: '{{shared_model_space}}'
       externalId: Watercourse
       type: container
     containerPropertyIdentifier: productionObligationTimeSeries
@@ -54,20 +46,20 @@ properties:
     description: The production obligation for the Watercourse.
   plants:
     type:
-      space: '{{powerops_type_space}}'
+      space: '{{type_space}}'
       externalId: isSubAssetOf
     source:
-      space: '{{powerops_models}}'
+      space: '{{asset_space}}'
       externalId: Plant
-      version: '{{version}}'
+      version: '{{asset_Plant_version}}'
       type: view
     direction: outwards
     name: plants
     description: The plants that are connected to the Watercourse.
-    connectionType: multi_edge_connection
+    connectionType: multiEdgeConnection
   penaltyLimit:
     container:
-      space: '{{powerops_models}}'
+      space: '{{shared_model_space}}'
       externalId: Watercourse
       type: container
     containerPropertyIdentifier: penaltyLimit

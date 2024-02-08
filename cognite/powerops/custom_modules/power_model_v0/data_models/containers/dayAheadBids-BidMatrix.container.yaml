@@ -1,0 +1,42 @@
+space: '{{dayahead_model_space}}'
+externalId: BidMatrix
+name: BidMatrix
+usedFor: node
+properties:
+  resourceCost:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: resourceCost
+  matrix:
+    type:
+      list: false
+      type: sequence
+    nullable: true
+    autoIncrement: false
+    name: matrix
+  assetType:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: assetType
+  assetId:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: assetId
+  method:
+    type:
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: method

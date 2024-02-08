@@ -4,7 +4,6 @@ name: TurbineEfficiencyCurve
 description: Describes the efficiency curve for a turbine
 filter:
   and:
-<<<<<<<< HEAD:cognite/powerops/custom_modules/power_model_v0/data_models/views/assets/TurbineEfficiency.view.yaml
   - hasData:
     - type: container
       space: '{{powerops_models}}'
@@ -23,19 +22,6 @@ filter:
         space: '{{powerops_type_space}}'
 implements: []
 version: '{{version}}'
-========
-    - hasData:
-      - type: container
-        space: '{{asset_space}}'
-        externalId: EfficiencyCurve
-    - equals:
-        property:
-         - node
-         - type
-        value:
-          space: '{{type_space}}'
-          externalId: TurbineEfficiencyCurve
->>>>>>>> main:cognite/powerops/custom_modules/power_model_v0/data_models/views/asset-TurbineEfficiency.view.yaml
 properties:
   head:
     container:

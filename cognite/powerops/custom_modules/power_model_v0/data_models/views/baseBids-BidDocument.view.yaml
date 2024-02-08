@@ -1,30 +1,11 @@
-space: '{{powerops_models}}'
+space: '{{shared_model_space}}'
 externalId: BidDocument
-name: BidDocument
 description: Whole Bid (also usually referenced in industry as a Bid Document) containing
   multiple Bid Rows (which are usually referenced in industry as Bids)
+name: BidDocument
+version: '{{base_BidDocument_version}}'
 filter:
   and:
-<<<<<<<< HEAD:cognite/powerops/custom_modules/power_model_v0/data_models/views/bid_document/1-interface.BidDocument.view.yaml
-  - hasData:
-    - type: container
-      space: '{{powerops_models}}'
-      externalId: BidDocument
-  - equals:
-      property:
-      - node
-      - space
-      value: '{{powerops_instance_space}}'
-  - equals:
-      property:
-      - node
-      - type
-      value:
-        externalId: BidDocument
-        space: '{{powerops_type_space}}'
-implements: []
-version: '{{version}}'
-========
     - hasData:
       - type: container
         space: '{{shared_model_space}}'
@@ -38,11 +19,10 @@ version: '{{version}}'
             externalId: DayAheadBidDocument
           - space: '{{type_space}}'
             externalId: AFRRBidDocument
->>>>>>>> main:cognite/powerops/custom_modules/power_model_v0/data_models/views/baseBids-BidDocument.view.yaml
 properties:
   name:
     container:
-      space: '{{powerops_models}}'
+      space: '{{shared_model_space}}'
       externalId: BidDocument
       type: container
     containerPropertyIdentifier: name
@@ -51,7 +31,7 @@ properties:
       of name, priceArea, date and startCalculation.
   deliveryDate:
     container:
-      space: '{{powerops_models}}'
+      space: '{{shared_model_space}}'
       externalId: BidDocument
       type: container
     containerPropertyIdentifier: deliveryDate
@@ -59,7 +39,7 @@ properties:
     description: The date of the Bid.
   startCalculation:
     container:
-      space: '{{powerops_models}}'
+      space: '{{shared_model_space}}'
       externalId: BidDocument
       type: container
     containerPropertyIdentifier: startCalculation
@@ -67,7 +47,7 @@ properties:
     description: Timestamp of when the Bid calculation workflow started.
   endCalculation:
     container:
-      space: '{{powerops_models}}'
+      space: '{{shared_model_space}}'
       externalId: BidDocument
       type: container
     containerPropertyIdentifier: endCalculation
@@ -75,7 +55,7 @@ properties:
     description: Timestamp of when the Bid calculation workflow completed.
   isComplete:
     container:
-      space: '{{powerops_models}}'
+      space: '{{shared_model_space}}'
       externalId: BidDocument
       type: container
     containerPropertyIdentifier: isComplete
@@ -84,14 +64,14 @@ properties:
       has not necessarily succeeded).
   alerts:
     type:
-      space: '{{powerops_type_space}}'
+      space: '{{type_space}}'
       externalId: calculationIssue
     source:
-      space: '{{powerops_models}}'
+      space: '{{shared_model_space}}'
       externalId: Alert
-      version: '{{version}}'
+      version: '{{base_Alert_version}}'
       type: view
     direction: outwards
     name: alerts
     description: An array of calculation level Alerts.
-    connectionType: multi_edge_connection
+    connectionType: multiEdgeConnection

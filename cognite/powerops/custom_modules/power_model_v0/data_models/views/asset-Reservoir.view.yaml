@@ -1,0 +1,43 @@
+space: '{{asset_space}}'
+externalId: Reservoir
+description: A reservoir
+name: Reservoir
+version: '{{asset_Reservoir_version}}'
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: '{{shared_model_space}}'
+          externalId: Asset
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          space: '{{type_space}}'
+          externalId: Reservoir
+properties:
+  name:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: Asset
+      type: container
+    containerPropertyIdentifier: name
+    name: name
+    description: Name for the PriceArea.
+  displayName:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: Asset
+      type: container
+    containerPropertyIdentifier: displayName
+    name: displayName
+    description: Display name for the PriceArea.
+  ordering:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: Asset
+      type: container
+    containerPropertyIdentifier: order
+    name: ordering
+    description: The ordering of the reservoirs

@@ -4,7 +4,6 @@ name: Generator
 description: A generator
 filter:
   and:
-<<<<<<<< HEAD:cognite/powerops/custom_modules/power_model_v0/data_models/views/assets/Generator.view.yaml
   - hasData:
     - type: container
       space: '{{powerops_models}}'
@@ -27,22 +26,6 @@ implements:
   version: '{{version}}'
   type: view
 version: '{{version}}'
-========
-    - hasData:
-      - type: container
-        space: '{{shared_model_space}}'
-        externalId: Generator
-      - type: container
-        space: '{{shared_model_space}}'
-        externalId: Asset
-    - equals:
-        property:
-         - node
-         - type
-        value:
-          space: '{{type_space}}'
-          externalId: Generator
->>>>>>>> main:cognite/powerops/custom_modules/power_model_v0/data_models/views/asset-Generator.view.yaml
 properties:
   pMin:
     container:

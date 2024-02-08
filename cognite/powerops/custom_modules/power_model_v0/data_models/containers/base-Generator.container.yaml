@@ -1,0 +1,59 @@
+space: '{{shared_model_space}}'
+externalId: Generator
+name: Generator
+usedFor: node
+properties:
+  pMin:
+    type:
+      list: false
+      type: float64
+    nullable: true
+    autoIncrement: false
+    name: pMin
+    description: The minimum power output of the Generator
+  penstock:
+    type:
+      list: false
+      type: int32
+    nullable: true
+    autoIncrement: false
+    name: penstock
+    description: The number of gates for water intakes to the Generator
+  startCost:
+    type:
+      list: false
+      type: float64
+    nullable: true
+    autoIncrement: false
+    name: startCost
+    description: The start up cost, i.e., the cost to start the Generator
+  startStopCost:
+    type:
+      list: false
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: startStopCost
+    description: A timeseries with the start/stop cost of the Generator
+  isAvailable:
+    type:
+      list: false
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: isAvailable
+    description: A binary timeseries indicating whether the Generator is available
+  efficiencyCurve:
+    type:
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: efficiencyCurve
+    description: The generator efficiency curve.
+constraints:
+  requiredAsset:
+    require:
+      space: '{{shared_model_space}}'
+      externalId: Asset
+      type: container
+    constraintType: requires

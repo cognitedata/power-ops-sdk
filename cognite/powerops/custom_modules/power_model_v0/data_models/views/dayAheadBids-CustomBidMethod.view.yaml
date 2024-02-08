@@ -1,0 +1,26 @@
+space: '{{dayahead_model_space}}'
+externalId: CustomBidMethod
+name: CustomBidMethod
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: '{{dayahead_model_space}}'
+          externalId: BidMethod
+    - not:
+        in:
+          property:
+          - node
+          - type
+          values:
+            - space: '{{type_space}}'
+              externalId: DayAheadSHOPMultiScenarioMethod
+            - space: '{{type_space}}'
+              externalId: DayAheadWaterValueBasedMethod
+implements:
+- space: '{{dayahead_model_space}}'
+  externalId: BidMethod
+  version: '{{dayaheadbid_BidMethod_version}}'
+  type: view
+version: '{{dayaheadbid_CustomBidMethod_version}}'
+properties: {}

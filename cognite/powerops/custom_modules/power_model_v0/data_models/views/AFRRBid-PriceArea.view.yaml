@@ -1,33 +1,10 @@
-space: '{{powerops_models}}'
-externalId: PriceAreaAFRR
-name: PriceAreaAFRR
+space: '{{afrr_model_space}}'
+externalId: PriceArea
 description: Information about the Price Area that is only relevant for AFRR
+name: PriceArea
+version: '{{afrrbid_PriceArea_version}}'
 filter:
   and:
-<<<<<<<< HEAD:cognite/powerops/custom_modules/power_model_v0/data_models/views/assets/PriceAreaAFRR.view.yaml
-  - hasData:
-    - type: container
-      space: '{{powerops_models}}'
-      externalId: PriceArea
-  - equals:
-      property:
-      - node
-      - space
-      value: '{{powerops_instance_space}}'
-  - equals:
-      property:
-      - node
-      - type
-      value:
-        externalId: PriceAreaAFRR
-        space: '{{powerops_type_space}}'
-implements:
-- space: '{{powerops_models}}'
-  externalId: PriceArea
-  version: '{{version}}'
-  type: view
-version: '{{version}}'
-========
     - hasData:
       - type: container
         space: '{{shared_model_space}}'
@@ -39,25 +16,32 @@ version: '{{version}}'
         value:
           space: '{{type_space}}'
           externalId: PriceArea
->>>>>>>> main:cognite/powerops/custom_modules/power_model_v0/data_models/views/AFRRBid-PriceArea.view.yaml
 properties:
+  name:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: Asset
+      type: container
+    containerPropertyIdentifier: name
+    name: name
+    description: Name for the PriceArea.
   capacityPriceUp:
     container:
-      space: '{{powerops_models}}'
+      space: '{{shared_model_space}}'
       externalId: PriceArea
       type: container
     containerPropertyIdentifier: capacityPriceUp
     name: capacityPriceUp
   capacityPriceDown:
     container:
-      space: '{{powerops_models}}'
+      space: '{{shared_model_space}}'
       externalId: PriceArea
       type: container
     containerPropertyIdentifier: capacityPriceDown
     name: capacityPriceDown
   activationPriceUp:
     container:
-      space: '{{powerops_models}}'
+      space: '{{shared_model_space}}'
       externalId: PriceArea
       type: container
     containerPropertyIdentifier: activationPriceUp
@@ -65,7 +49,7 @@ properties:
     description: The mFRR activation price (TBC)
   activationPriceDown:
     container:
-      space: '{{powerops_models}}'
+      space: '{{shared_model_space}}'
       externalId: PriceArea
       type: container
     containerPropertyIdentifier: activationPriceDown
@@ -73,7 +57,7 @@ properties:
     description: The mFRR activate price (TBC)
   relativeActivation:
     container:
-      space: '{{powerops_models}}'
+      space: '{{shared_model_space}}'
       externalId: PriceArea
       type: container
     containerPropertyIdentifier: relativeActivation
@@ -82,28 +66,28 @@ properties:
       down)
   totalCapacityAllocationUp:
     container:
-      space: '{{powerops_models}}'
+      space: '{{shared_model_space}}'
       externalId: PriceArea
       type: container
     containerPropertyIdentifier: totalCapacityAllocationUp
     name: totalCapacityAllocationUp
   totalCapacityAllocationDown:
     container:
-      space: '{{powerops_models}}'
+      space: '{{shared_model_space}}'
       externalId: PriceArea
       type: container
     containerPropertyIdentifier: totalCapacityAllocationDown
     name: totalCapacityAllocationDown
   ownCapacityAllocationUp:
     container:
-      space: '{{powerops_models}}'
+      space: '{{shared_model_space}}'
       externalId: PriceArea
       type: container
     containerPropertyIdentifier: ownCapacityAllocationUp
     name: ownCapacityAllocationUp
   ownCapacityAllocationDown:
     container:
-      space: '{{powerops_models}}'
+      space: '{{shared_model_space}}'
       externalId: PriceArea
       type: container
     containerPropertyIdentifier: ownCapacityAllocationDown

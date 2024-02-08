@@ -1,0 +1,26 @@
+space: '{{dayahead_model_space}}'
+externalId: MultiScenarioMatrix
+name: MultiScenarioMatrix
+usedFor: node
+properties:
+  production:
+    type:
+      list: true
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: production
+  price:
+    type:
+      list: true
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: price
+constraints:
+  requiredBidMatrix:
+    require:
+      space: '{{dayahead_model_space}}'
+      externalId: BidMatrix
+      type: container
+    constraintType: requires

@@ -4,7 +4,6 @@ name: BidRow
 description: One row in the BidDocument (usually referenced in industry as a Bid).
 filter:
   and:
-<<<<<<<< HEAD:cognite/powerops/custom_modules/power_model_v0/data_models/views/BidRow.view.yaml
   - hasData:
     - type: container
       space: '{{powerops_models}}'
@@ -23,19 +22,6 @@ filter:
         space: '{{powerops_type_space}}'
 implements: []
 version: '{{version}}'
-========
-    - hasData:
-        - type: container
-          space: '{{afrr_model_space}}'
-          externalId: BidRow
-    - equals:
-        property:
-         - node
-         - type
-        value:
-          space: '{{type_space}}'
-          externalId: AFRRBidRow
->>>>>>>> main:cognite/powerops/custom_modules/power_model_v0/data_models/views/AFRRBid-BidRow.view.yaml
 properties:
   price:
     container:

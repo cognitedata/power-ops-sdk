@@ -1,0 +1,26 @@
+space: '{{dayahead_model_space}}'
+externalId: CustomBidMatrix
+name: CustomBidMatrix
+implements:
+- space: '{{dayahead_model_space}}'
+  externalId: BidMatrix
+  version: '{{dayaheadbid_BidMatrix_version}}'
+  type: view
+version: '{{dayaheadbid_CustomBidMatrix_version}}'
+filter:
+  and:
+    - hasData:
+       - type: container
+         space: '{{dayahead_model_space}}'
+         externalId: BidMatrix
+    - not:
+       in:
+          property:
+          - node
+          - type
+          values:
+            - space: '{{type_space}}'
+              externalId: DayAheadBasicBidMatrix
+            - space: '{{type_space}}'
+              externalId: DayAheadMultiScenarioMatrix
+properties: {}

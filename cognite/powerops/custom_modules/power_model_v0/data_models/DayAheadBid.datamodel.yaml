@@ -1,0 +1,50 @@
+externalId: DayAheadBid
+space: '{{dayahead_model_space}}'
+version: '1'
+name: 'DayAheadBid'
+description: 'Stores results of Day Ahead bid calculations.'
+views:
+- externalId: BidDocument
+  space: '{{dayahead_model_space}}'
+  type: view
+  version: '{{dayaheadbid_BidDocument_version}}'
+- externalId: BidMatrix
+  space: '{{dayahead_model_space}}'
+  type: view
+  version: '{{dayaheadbid_BidMatrix_version}}'
+- externalId: MultiScenarioMatrix
+  space: '{{dayahead_model_space}}'
+  type: view
+  version: '{{dayaheadbid_MultiScenarioMatrix_version}}'
+- externalId: SHOPPriceScenario
+  space: '{{dayahead_model_space}}'
+  type: view
+  version: '{{dayaheadbid_SHOPPriceScenario_version}}'
+- externalId: SHOPPriceScenarioResult
+  space: '{{dayahead_model_space}}'
+  type: view
+  version: '{{dayaheadbid_SHOPPriceScenarioResult_version}}'
+- externalId: BasicBidMatrix
+  space: '{{dayahead_model_space}}'
+  type: view
+  version: '{{dayaheadbid_BasicBidMatrix_version}}'
+- externalId: SHOPMultiScenarioMethod
+  space: '{{dayahead_model_space}}'
+  type: view
+  version: '{{dayaheadbid_SHOPMultiScenarioMethod_version}}'
+- externalId: WaterValueBasedMethod
+  space: '{{dayahead_model_space}}'
+  type: view
+  version: '{{dayaheadbid_WaterValueBasedMethod_version}}'
+- externalId: PriceArea
+  space: '{{dayahead_model_space}}'
+  type: view
+  version: '{{dayaheadbid_PriceArea_version}}'
+- externalId: BidMethod
+  space: '{{dayahead_model_space}}'
+  type: view
+  version: '{{dayaheadbid_BidMethod_version}}'
+- externalId: Alert
+  space: '{{shared_model_space}}'
+  type: view
+  version: '{{base_Alert_version}}'

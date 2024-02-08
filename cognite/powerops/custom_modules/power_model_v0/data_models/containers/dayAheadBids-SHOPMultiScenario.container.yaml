@@ -1,0 +1,28 @@
+space: '{{dayahead_model_space}}'
+externalId: SHOPMultiScenario
+name: SHOPMultiScenario
+usedFor: node
+properties:
+  shopCases:
+    type:
+      list: true
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: shopCases
+    description: external id linked to production data
+  priceScenarios:
+    type:
+      list: true
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: priceScenarios
+constraints:
+  requiredBidMethod:
+    require:
+      space: '{{shared_model_space}}'
+      externalId: BidMethod
+      type: container
+    constraintType: requires

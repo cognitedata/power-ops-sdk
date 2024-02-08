@@ -1,0 +1,176 @@
+space: '{{asset_space}}'
+externalId: PriceArea
+description: Information about the Price Area that is only relevant for AFRR
+name: PriceArea
+version: '{{asset_PriceArea_version}}'
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: '{{shared_model_space}}'
+          externalId: PriceArea
+        - type: container
+          space: '{{shared_model_space}}'
+          externalId: Asset
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          space: '{{type_space}}'
+          externalId: PriceArea
+properties:
+  name:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: Asset
+      type: container
+    containerPropertyIdentifier: name
+    name: name
+    description: Name for the PriceArea.
+  displayName:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: Asset
+      type: container
+    containerPropertyIdentifier: displayName
+    name: displayName
+    description: Display name for the PriceArea.
+  description:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: Asset
+      type: container
+    containerPropertyIdentifier: description
+    name: description
+    description: Description for the PriceArea.
+  timezone:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: PriceArea
+      type: container
+    containerPropertyIdentifier: timezone
+    name: timezone
+    description: The timezone of the price area
+  capacityPriceUp:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: PriceArea
+      type: container
+    containerPropertyIdentifier: capacityPriceUp
+    name: capacityPriceUp
+  capacityPriceDown:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: PriceArea
+      type: container
+    containerPropertyIdentifier: capacityPriceDown
+    name: capacityPriceDown
+  activationPriceUp:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: PriceArea
+      type: container
+    containerPropertyIdentifier: activationPriceUp
+    name: activationPriceUp
+    description: The mFRR activation price (TBC)
+  activationPriceDown:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: PriceArea
+      type: container
+    containerPropertyIdentifier: activationPriceDown
+    name: activationPriceDown
+    description: The mFRR activate price (TBC)
+  relativeActivation:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: PriceArea
+      type: container
+    containerPropertyIdentifier: relativeActivation
+    name: relativeActivation
+    description: Value between -1 (100 % activation down) and 1 (100 % activation
+      down)
+  totalCapacityAllocationUp:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: PriceArea
+      type: container
+    containerPropertyIdentifier: totalCapacityAllocationUp
+    name: totalCapacityAllocationUp
+  totalCapacityAllocationDown:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: PriceArea
+      type: container
+    containerPropertyIdentifier: totalCapacityAllocationDown
+    name: totalCapacityAllocationDown
+  ownCapacityAllocationUp:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: PriceArea
+      type: container
+    containerPropertyIdentifier: ownCapacityAllocationUp
+    name: ownCapacityAllocationUp
+  ownCapacityAllocationDown:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: PriceArea
+      type: container
+    containerPropertyIdentifier: ownCapacityAllocationDown
+    name: ownCapacityAllocationDown
+  defaultMethodDayAhead:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: PriceArea
+      type: container
+    containerPropertyIdentifier: defaultMethodDayAhead
+    name: defaultMethodDayAhead
+    description: Default method for day ahead bids
+    source:
+      space: '{{shared_model_space}}'
+      externalId: BidMethod
+      version: '{{base_BidMethod_version}}'
+      type: view
+  mainScenarioDayAhead:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: PriceArea
+      type: container
+    containerPropertyIdentifier: mainScenarioDayAhead
+    name: mainScenarioDayAhead
+    description: Main scenario for day ahead bids
+  dayAheadPrice:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: PriceArea
+      type: container
+    containerPropertyIdentifier: dayAheadPrice
+    name: dayAheadPrice
+    description: Day ahead price for the price area
+  plants:
+    type:
+      space: '{{type_space}}'
+      externalId: isSubAssetOf
+    source:
+      space: '{{asset_space}}'
+      externalId: Plant
+      version: '{{asset_Plant_version}}'
+      type: view
+    direction: outwards
+    name: plants
+    description: The plants that are connected to the Watercourse.
+    connectionType: multiEdgeConnection
+  watercourses:
+    type:
+      space: '{{type_space}}'
+      externalId: isSubAssetOf
+    source:
+      space: '{{asset_space}}'
+      externalId: Watercourse
+      version: '{{asset_Watercourse_version}}'
+      type: view
+    direction: outwards
+    name: watercourses
+    description: The watercourses that are connected to the PriceArea.
+    connectionType: multiEdgeConnection

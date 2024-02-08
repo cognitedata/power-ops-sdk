@@ -1,0 +1,26 @@
+space: '{{shared_model_space}}'
+externalId: Watercourse
+name: Watercourse
+usedFor: node
+properties:
+  productionObligationTimeSeries:
+    type:
+      type: timeseries
+      list: true
+    nullable: true
+    autoIncrement: false
+    name: productionObligationTimeSeries
+  penaltyLimit:
+    type:
+      type: float64
+      list: false
+    nullable: true
+    autoIncrement: false
+    name: penaltyLimit
+constraints:
+  requiredAsset:
+    require:
+      space: '{{shared_model_space}}'
+      externalId: Asset
+      type: container
+    constraintType: requires

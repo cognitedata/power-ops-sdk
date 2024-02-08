@@ -1,0 +1,58 @@
+space: '{{powerops_models}}'
+externalId: Watercourse
+name: Watercourse
+description: A description of the Watercourse Asset
+filter:
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: Watercourse
+  - equals:
+      property:
+      - node
+      - space
+      value: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: Watercourse
+        space: '{{powerops_type_space}}'
+implements:
+- space: '{{powerops_models}}'
+  externalId: PowerAsset
+  version: '{{version}}'
+  type: view
+version: '{{version}}'
+properties:
+  productionObligation:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Watercourse
+      type: container
+    containerPropertyIdentifier: productionObligationTimeSeries
+    name: productionObligation
+    description: The production obligation for the Watercourse.
+  plants:
+    type:
+      space: '{{powerops_type_space}}'
+      externalId: isSubAssetOf
+    source:
+      space: '{{powerops_models}}'
+      externalId: Plant
+      version: '{{version}}'
+      type: view
+    direction: outwards
+    name: plants
+    description: The plants that are connected to the Watercourse.
+    connectionType: multi_edge_connection
+  penaltyLimit:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Watercourse
+      type: container
+    containerPropertyIdentifier: penaltyLimit
+    name: penaltyLimit
+    description: The penalty limit for the watercourse (used by SHOP).

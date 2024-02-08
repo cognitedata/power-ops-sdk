@@ -1,0 +1,98 @@
+space: '{{asset_space}}'
+externalId: Generator
+description: A generator
+name: Generator
+version: '{{asset_Generator_version}}'
+filter:
+  and:
+    - hasData:
+      - type: container
+        space: '{{shared_model_space}}'
+        externalId: Generator
+      - type: container
+        space: '{{shared_model_space}}'
+        externalId: Asset
+    - equals:
+        property:
+         - node
+         - type
+        value:
+          space: '{{type_space}}'
+          externalId: Generator
+properties:
+  name:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: Asset
+      type: container
+    containerPropertyIdentifier: name
+    name: name
+    description: Name for the Generator.
+  displayName:
+    container:
+      space: '{{shared_model_space}}'
+      externalId: Asset
+      type: container
+    containerPropertyIdentifier: displayName
+    name: displayName
+    description: Display name for the Generator.
+  pMin:
+    container:
+      type: container
+      space: '{{shared_model_space}}'
+      externalId: Generator
+    containerPropertyIdentifier: pMin
+    name: pMin
+  penstock:
+    container:
+      type: container
+      space: '{{shared_model_space}}'
+      externalId: Generator
+    containerPropertyIdentifier: penstock
+    name: penstock
+  startCost:
+    container:
+      type: container
+      space: '{{shared_model_space}}'
+      externalId: Generator
+    containerPropertyIdentifier: startCost
+    name: startCost
+  startStopCost:
+    container:
+      type: container
+      space: '{{shared_model_space}}'
+      externalId: Generator
+    containerPropertyIdentifier: startStopCost
+    name: startStopCost
+  isAvailableTimeSeries:
+    container:
+      type: container
+      space: '{{shared_model_space}}'
+      externalId: Generator
+    containerPropertyIdentifier: isAvailable
+    name: isAvailableTimeSeries
+  efficiencyCurve:
+    container:
+      type: container
+      space: '{{shared_model_space}}'
+      externalId: Generator
+    containerPropertyIdentifier: efficiencyCurve
+    name: generatorEfficiency
+    source:
+      type: view
+      space: '{{asset_space}}'
+      externalId: GeneratorEfficiencyCurve
+      version: '{{asset_GeneratorEfficiency_version}}'
+  turbineCurves:
+    name: turbineCurves
+    source:
+      type: view
+      space: '{{asset_space}}'
+      externalId: TurbineEfficiencyCurve
+      version: '{{asset_TurbineEfficiency_version}}'
+    type:
+      space: '{{type_space}}'
+      externalId: isSubAssetOf
+    direction: outwards
+    description: The watercourses that are connected to the PriceArea.
+    connectionType: multiEdgeConnection

@@ -1,0 +1,9 @@
+- space: {{powerops_type_space}}
+  name: PowerOpsTypes
+  description: Types used in PowerOps.
+- space: {{powerops_instance_space}}
+  name: PowerOpsInstance
+  description: All the data used and produced by PowerOps.
+- space: {{powerops_models}}
+  name: PowerOpsModels
+  description: The space used for all PowerOps models.
