@@ -138,7 +138,7 @@ def init(client: PowerOpsClient | None, is_dev: bool = False, dry_run: bool = Fa
         exit(1)
 
     if is_dev:
-        changed = loader.changed_views(cdf, schema)
+        changed = loader.changed_views(cdf, schema, verbose)
         if changed:
             print(Panel(f"Detected {len(changed)} changed views"))
             if verbose:
@@ -146,13 +146,10 @@ def init(client: PowerOpsClient | None, is_dev: bool = False, dry_run: bool = Fa
                     logger.info(f"Changed view: {view}")
             dependencies = {view_id for dependencies in changed.values() for view_id in dependencies}
             print(f"Detected {len(dependencies)} dependent views")
-            if verbose:
-                for view in dependencies:
-                    logger.info(f"Dependent view: {view}")
             prefix = "Would delete" if dry_run else "Deleting"
             print(f"{prefix} changed and dependent views")
             if not dry_run:
-                deleted = cdf.data_modeling.views.delete(list(dependencies) + list(changed))
+                deleted = cdf.data_modeling.views.delete(list(dependencies | set(changed)))
                 print(f"Deleted {len(deleted)} views")
         else:
             print(Panel("No changes detected in any views"))

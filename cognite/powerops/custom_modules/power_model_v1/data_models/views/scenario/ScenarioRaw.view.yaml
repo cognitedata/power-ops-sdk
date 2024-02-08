@@ -9,7 +9,7 @@ filter:
     - '{{powerops_models}}'
     - ScenarioBase/{{version}}
     - isReady
-    value: false
+    value: 'False'
 implements:
 - space: '{{powerops_models}}'
   externalId: ScenarioBase

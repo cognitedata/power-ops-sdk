@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import difflib
 import itertools
 import logging
 import re
@@ -361,7 +362,7 @@ class DataModelLoader:
             raise ValueError(f"These properties in views refers to direct relations without a source:\n{message}")
 
     @classmethod
-    def changed_views(cls, client: CogniteClient, schema: Schema) -> dict[ViewId, set[ViewId]]:
+    def changed_views(cls, client: CogniteClient, schema: Schema, verbose: bool = False) -> dict[ViewId, set[ViewId]]:
         existing_read_views = client.data_modeling.views.retrieve(schema.views.as_ids())
         dependencies_by_view_id = cls._dependencies_by_view(existing_read_views)
         existing_views = cls._views_as_write(existing_read_views)
@@ -371,6 +372,24 @@ class DataModelLoader:
         for view in schema.views:
             view_id = view.as_id()
             if (existing := existing_view_by_id.get(view_id)) and existing.dump() != view.dump():
+                if verbose:
+                    from rich import print
+                    from rich.panel import Panel
+
+                    # To get keys in the same order
+                    new_view = existing.dump()
+                    new_view.update(view.dump())
+                    print(
+                        Panel(
+                            "\n".join(
+                                difflib.unified_diff(
+                                    existing.dump_yaml().splitlines(),
+                                    yaml.safe_dump(new_view, sort_keys=False).splitlines(),
+                                )
+                            ),
+                            title=f"Diff {view_id}",
+                        )
+                    )
                 dependencies = dependencies_by_view_id[view_id]
                 checked = set()
                 while dependencies:

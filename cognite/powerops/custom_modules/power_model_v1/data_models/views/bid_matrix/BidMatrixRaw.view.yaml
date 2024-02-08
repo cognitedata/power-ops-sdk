@@ -9,7 +9,7 @@ filter:
     - '{{powerops_models}}'
     - BidMatrix/{{version}}
     - isProcessed
-    value: false
+    value: 'False'
 implements:
 - space: '{{powerops_models}}'
   externalId: BidMatrix

@@ -18,8 +18,8 @@ filter:
       - node
       - type
       value:
-        externalId: BidConfigurationAFRR
         space: '{{powerops_type_space}}'
+        externalId: BidConfigurationAFRR
 implements:
 - space: '{{powerops_models}}'
   externalId: BidConfiguration

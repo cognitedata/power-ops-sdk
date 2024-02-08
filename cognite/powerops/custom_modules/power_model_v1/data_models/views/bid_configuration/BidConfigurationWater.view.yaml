@@ -18,8 +18,8 @@ filter:
       - node
       - type
       value:
-        externalId: BidConfigurationWater
         space: '{{powerops_type_space}}'
+        externalId: BidConfigurationWater
 implements:
 - space: '{{powerops_models}}'
   externalId: BidConfiguration
