@@ -17,6 +17,8 @@ from cognite.client.data_classes.data_modeling import DataModelId, MappedPropert
 from cognite.client.exceptions import CogniteAPIError
 from cognite_toolkit.cdf import Common, build, deploy  # type: ignore[import-untyped]
 from cognite_toolkit.cdf_tk.utils import CDFToolConfig  # type: ignore[import-untyped]
+from rich import print
+from rich.panel import Panel
 from typer import Context
 from yaml import safe_dump
 
@@ -103,7 +105,27 @@ def init(client: PowerOpsClient | None, is_dev: bool = False, dry_run: bool = Fa
     logger.info("Validated all powerops data models")
 
     # Toolkit does not deploy the nodes:
-    shutil.rmtree(build_folder / "nodes")
+    shutil.rmtree(build_folder / "node_types")
+
+    if is_dev:
+        changed = loader.changed_views(cdf, schema)
+        if changed:
+            print(Panel(f"Detected {len(changed)} changed views"))
+            if verbose:
+                for view in changed:
+                    logger.info(f"Changed view: {view}")
+            dependencies = {view_id for dependencies in changed.values() for view_id in dependencies}
+            print(f"Detected {len(dependencies)} dependent views")
+            if verbose:
+                for view in dependencies:
+                    logger.info(f"Dependent view: {view}")
+            prefix = "Would be deleting" if dry_run else "Deleting"
+            print(f"{prefix} changed and dependent views")
+            if not dry_run:
+                deleted = cdf.data_modeling.views.delete(list(dependencies) + list(changed))
+                print(f"Deleted {len(deleted)} views")
+        else:
+            print(Panel("No changes detected in any views"))
 
     with environment_variables({"SENTRY_ENABLED": "false"}):
         ctx = Context(Command("deploy"))

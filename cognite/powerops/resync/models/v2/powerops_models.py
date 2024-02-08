@@ -3,6 +3,7 @@ from __future__ import annotations
 import itertools
 import logging
 import re
+import warnings
 from collections import defaultdict
 from dataclasses import asdict, dataclass
 from graphlib import TopologicalSorter
@@ -17,6 +18,7 @@ from cognite.client.data_classes.data_modeling import (
     ContainerApplyList,
     DataModelApply,
     DataModelApplyList,
+    DirectRelation,
     MappedPropertyApply,
     NodeApply,
     NodeApplyList,
@@ -24,8 +26,15 @@ from cognite.client.data_classes.data_modeling import (
     SpaceApply,
     SpaceApplyList,
     ViewApplyList,
+    ViewId,
 )
-from cognite.client.data_classes.data_modeling.views import SingleHopConnectionDefinitionApply, ViewApply
+from cognite.client.data_classes.data_modeling.views import (
+    MappedProperty,
+    MultiEdgeConnection,
+    SingleHopConnectionDefinitionApply,
+    ViewApply,
+    ViewList,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -324,6 +333,72 @@ class DataModelLoader:
         if non_existent_container_properties:
             message = "\n".join(map(str, non_existent_container_properties))
             raise ValueError(f"These properties in views refers to container properties that does not exist: {message}")
+
+    @classmethod
+    def changed_views(cls, client: CogniteClient, schema: Schema) -> dict[ViewId, set[ViewId]]:
+        existing_read_views = client.data_modeling.views.retrieve(schema.views.as_ids())
+        dependencies_by_changed = cls._dependencies_by_view(existing_read_views)
+        existing_views = cls._views_as_write(existing_read_views)
+
+        existing_view_by_id = {view.as_id(): view for view in existing_views}
+        dependencies_by_changed: dict[ViewId, set[ViewId]] = {}
+        for view in schema.views:
+            view_id = view.as_id()
+            if (existing := existing_view_by_id.get(view_id)) and existing.dump() != view.dump():
+                dependencies = dependencies_by_changed[view_id]
+                checked = set()
+                while dependencies:
+                    checked |= dependencies
+                    dependencies = {
+                        dep
+                        for dep in itertools.chain(*(dependencies_by_changed.get(dep, []) for dep in dependencies))
+                        if dep not in checked
+                    }
+                dependencies_by_changed[view_id] = checked
+        return dependencies_by_changed
+
+    @staticmethod
+    def _views_as_write(views: ViewList) -> ViewApplyList:
+        write_views = ViewApplyList([])
+        view_by_id = {view.as_id(): view for view in views}
+        for view in views:
+            write_view = view.as_apply()
+            for parent in view.implements or []:
+                parent_properties = (parent_view := view_by_id.get(parent)) and parent_view.properties or {}
+                for prop in parent_properties:
+                    write_view.properties.pop(prop, None)
+            write_views.append(write_view)
+        return write_views
+
+    @staticmethod
+    def _dependencies_by_view(views: ViewApplyList):
+        view_by_id = {view.as_id(): view for view in views}
+
+        graph: dict[ViewId, set[ViewId]] = defaultdict(set)
+        for view in views:
+            dependencies = set()
+            for prop in view.properties.values():
+                source: ViewId | None = None
+                if isinstance(prop, MappedProperty) and isinstance(prop.type, DirectRelation) and prop.source:
+                    source = prop.source
+                elif isinstance(prop, MultiEdgeConnection):
+                    source = prop.source
+
+                if source and source in view_by_id:
+                    dependencies.add(source)
+                elif source:
+                    warnings.warn(
+                        f"The view {source} referenced by {view.as_id()} is not in the data model. Skipping it.",
+                        stacklevel=2,
+                    )
+
+            for parent in view.implements or []:
+                dependencies.add(parent)
+
+            graph[view.as_id()] |= dependencies
+            for dep in dependencies:
+                graph[dep] |= {view.as_id()}
+        return graph
 
     @classmethod
     def deploy(cls, client: CogniteClient, schema: Schema, is_dev: bool = False) -> list[dict]:
