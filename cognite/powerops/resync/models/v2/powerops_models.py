@@ -337,25 +337,25 @@ class DataModelLoader:
     @classmethod
     def changed_views(cls, client: CogniteClient, schema: Schema) -> dict[ViewId, set[ViewId]]:
         existing_read_views = client.data_modeling.views.retrieve(schema.views.as_ids())
-        dependencies_by_changed = cls._dependencies_by_view(existing_read_views)
+        dependencies_by_view_id = cls._dependencies_by_view(existing_read_views)
         existing_views = cls._views_as_write(existing_read_views)
 
         existing_view_by_id = {view.as_id(): view for view in existing_views}
-        dependencies_by_changed: dict[ViewId, set[ViewId]] = {}
+        changed_with_dependencies: dict[ViewId, set[ViewId]] = {}
         for view in schema.views:
             view_id = view.as_id()
             if (existing := existing_view_by_id.get(view_id)) and existing.dump() != view.dump():
-                dependencies = dependencies_by_changed[view_id]
+                dependencies = dependencies_by_view_id[view_id]
                 checked = set()
                 while dependencies:
                     checked |= dependencies
                     dependencies = {
                         dep
-                        for dep in itertools.chain(*(dependencies_by_changed.get(dep, []) for dep in dependencies))
+                        for dep in itertools.chain(*(dependencies_by_view_id.get(dep, []) for dep in dependencies))
                         if dep not in checked
                     }
-                dependencies_by_changed[view_id] = checked
-        return dependencies_by_changed
+                changed_with_dependencies[view_id] = checked
+        return changed_with_dependencies
 
     @staticmethod
     def _views_as_write(views: ViewList) -> ViewApplyList:

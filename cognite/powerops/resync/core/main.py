@@ -119,7 +119,7 @@ def init(client: PowerOpsClient | None, is_dev: bool = False, dry_run: bool = Fa
             if verbose:
                 for view in dependencies:
                     logger.info(f"Dependent view: {view}")
-            prefix = "Would be deleting" if dry_run else "Deleting"
+            prefix = "Would delete" if dry_run else "Deleting"
             print(f"{prefix} changed and dependent views")
             if not dry_run:
                 deleted = cdf.data_modeling.views.delete(list(dependencies) + list(changed))
