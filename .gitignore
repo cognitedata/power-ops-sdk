@@ -60,3 +60,8 @@ sensitive_tests.toml
 .dmypy.json
 demo/*
 !demo/cogshop/time_series_mappings_new.yaml
+
+# Custom rules (everything added below won't be overriden by 'Generate .gitignore File' if you use 'Update' option)
+*/.venv.*
+.venv.*
+build.*

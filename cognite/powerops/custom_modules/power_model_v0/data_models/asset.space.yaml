@@ -1,0 +1,3 @@
+space: {{asset_space}}
+name: PowerOpsAsset
+description: The asset model used by PowerOps.
