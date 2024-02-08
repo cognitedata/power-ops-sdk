@@ -67,6 +67,23 @@ def chdir(new_dir: Path) -> Iterator[None]:
         os.chdir(current_working_dir)
 
 
+@contextlib.contextmanager
+def environment_variables(environ: dict[str, str]) -> Iterator[None]:
+    """
+    Temporarily set environment variables.
+
+    Returns:
+        None
+    """
+    original_environ = dict(os.environ)
+    os.environ.update(environ)
+    try:
+        yield
+    finally:
+        os.environ.clear()
+        os.environ.update(original_environ)  # type: ignore
+
+
 # � character is used to represent unrecognizable characters in utf-8.
 
 

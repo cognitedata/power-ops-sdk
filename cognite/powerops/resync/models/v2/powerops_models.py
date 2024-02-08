@@ -18,7 +18,6 @@ from cognite.client.data_classes.data_modeling import (
     DataModelApply,
     DataModelApplyList,
     MappedPropertyApply,
-    NodeApply,
     NodeApplyList,
     NodeId,
     SpaceApply,
@@ -190,12 +189,8 @@ class SpaceAPI(DataModelAPI[SpaceApplyList]):
 
 
 class DataModelLoader:
-    def __init__(self):
-        self._source_dir = _DMS_DIR
-        self._config_file = _DMS_DIR / "config.yaml"
-        if not self._config_file.exists():
-            raise ValueError(f"Missing config file {self._config_file!s}. Expected to be in {_DMS_DIR!s}")
-        self._config = yaml.safe_load(self._config_file.read_text())
+    def __init__(self, source_dir: Path):
+        self._source_dir = source_dir
 
     def load(self) -> Schema:
         resources_by_type = defaultdict(list)
@@ -203,7 +198,6 @@ class DataModelLoader:
             "space": SpaceApply,
             "view": ViewApply,
             "container": ContainerApply,
-            "node": NodeApply,
             "data_model": DataModelApply,
         }
 
@@ -237,16 +231,6 @@ class DataModelLoader:
 
     def _load_file(self, filepath: Path) -> dict[str, Any] | list[dict[str, Any]]:
         file_contents = filepath.read_text()
-        for variable, value in self._config.items():
-            file_contents = file_contents.replace(f"{{{{{ variable }}}}}", value)
-        if "{{" in file_contents:
-            errors = []
-            for line_no, line in enumerate(file_contents.split("\n"), start=1):
-                if "{{" in line:
-                    position = line.index("{{")
-                    errors.append(f"Line {line_no} - col {position}: {line[position:position+20]!r}")
-            errors = "\n".join(errors) if errors else ""
-            raise ValueError(f"Unresolved variables in {filepath.relative_to(Path.cwd())} near: {errors}")
         return yaml.safe_load(file_contents)
 
     @classmethod
@@ -254,7 +238,6 @@ class DataModelLoader:
         defined_spaces = {space.space for space in schema.spaces}
         defined_containers = {container.as_id() for container in schema.containers}
         defined_views = {view.as_id() for view in schema._views}
-        defined_node_types = {node_type.as_id() for node_type in schema.node_types}
         defined_interfaces = {parent for view in schema._views for parent in view.implements or []}
         properties_by_container = {container.as_id(): set(container.properties) for container in schema.containers}
 
@@ -330,11 +313,6 @@ class DataModelLoader:
         if undefined_views := set(referred_views).difference(defined_views):
             referred_to_by = list(itertools.chain(*(referred_views[view] for view in undefined_views)))
             raise ValueError(f"Undefined views: {undefined_views}: referred to by {referred_to_by}")
-        if undefined_node_types := set(referred_node_types).difference(defined_node_types):
-            referred_to_by = list(
-                itertools.chain(*(referred_node_types[node_type] for node_type in undefined_node_types))
-            )
-            raise ValueError(f"Undefined node types: {undefined_node_types}: referred to by {referred_to_by}")
         if non_existent_container_properties:
             message = "\n".join(map(str, non_existent_container_properties))
             raise ValueError(f"These properties in views refers to container properties that does not exist: {message}")
@@ -393,12 +371,3 @@ class DataModelLoader:
         view = DataModelAPI[ViewApplyList](client.data_modeling.views, client)
         data_model = DataModelAPI[DataModelApplyList](client.data_modeling.data_models, client)
         return {space: set(), container: {space}, view: {space, container}, data_model: {space, container, view}}
-
-
-if __name__ == "__main__":
-    # This is here to make it easy to check that the models are valid (all variables are resolved)
-    loader = DataModelLoader()
-    schema = loader.load()
-    print("Schema loaded")
-    DataModelLoader.validate(schema)
-    print("Schema validated")
