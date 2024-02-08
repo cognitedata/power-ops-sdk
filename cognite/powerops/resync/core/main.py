@@ -8,6 +8,7 @@ import itertools
 import logging
 import re
 import shutil
+import tempfile
 from pathlib import Path
 from typing import Any, Optional, cast
 
@@ -16,7 +17,10 @@ from cognite.client import CogniteClient
 from cognite.client.data_classes.data_modeling import DataModelId, MappedProperty, ViewList
 from cognite.client.exceptions import CogniteAPIError
 from cognite_toolkit.cdf import Common, build, deploy  # type: ignore[import-untyped]
-from cognite_toolkit.cdf_tk.utils import CDFToolConfig  # type: ignore[import-untyped]
+from cognite_toolkit.cdf_tk.utils import (  # type: ignore[import-untyped]
+    CDFToolConfig,
+    calculate_directory_hash,
+)
 from rich import print
 from rich.panel import Panel
 from typer import Context
@@ -106,6 +110,22 @@ def init(client: PowerOpsClient | None, is_dev: bool = False, dry_run: bool = Fa
 
     # Toolkit does not deploy the nodes:
     shutil.rmtree(build_folder / "node_types")
+
+    build_hash = calculate_directory_hash(build_folder)
+    filepath = Path(tempfile.gettempdir()) / "powerops_init_command.txt"
+    if dry_run:
+        filepath.write_text(build_hash)
+    elif filepath.exists() and filepath.read_text() == build_hash:
+        ...
+    else:
+        print(
+            Panel(
+                "[bold red]Error: [/] `powerops init` has not been run with --dry-run before running without it."
+                "Please run `powerops init` with --dry-run first to verify the changes.",
+                title="No dry-run",
+            )
+        )
+        exit(1)
 
     if is_dev:
         changed = loader.changed_views(cdf, schema)
