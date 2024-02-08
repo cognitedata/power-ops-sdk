@@ -21,8 +21,8 @@ filter:
       - node
       - type
       value:
-        externalId: BidConfiguration
         space: '{{powerops_type_space}}'
+        externalId: BidConfiguration
 implements: []
 version: '{{version}}'
 properties:
