@@ -1,0 +1,54 @@
+space: '{{powerops_models}}'
+externalId: Mapping
+name: Mapping
+usedFor: node
+properties:
+  shopPath:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: shopPath
+    description: The key to apply mapping to in a shop file
+  timeseries:
+    type:
+      list: false
+      type: timeseries
+    nullable: false
+    autoIncrement: false
+    name: timeseries
+    description: The timeseries to apply mapping to
+  transformations:
+    type:
+      list: true
+      type: json
+    nullable: true
+    autoIncrement: false
+    name: transformations
+    description: The transformations to apply to the time series
+  retrieve:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: retrieve
+    description: How to retrieve time series data
+  aggregation:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: aggregation
+    description: How to aggregate time series data
+indexes:
+  shopPathIndex:
+    properties:
+    - shopPath
+    indexType: btree
+    cursorable: false

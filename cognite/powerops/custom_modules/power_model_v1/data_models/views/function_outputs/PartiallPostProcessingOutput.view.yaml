@@ -1,0 +1,55 @@
+space: '{{powerops_models}}'
+externalId: PartialPostProcessingOutput
+name: PartialPostProcessingOutput
+description: The output of the function that post-processes all raw partial bid matrices
+filter:
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+  - equals:
+      property:
+      - node
+      - space
+      value: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: PartialPostProcessingOutput
+        space: '{{powerops_type_space}}'
+implements:
+- space: '{{powerops_models}}'
+  externalId: FunctionOutput
+  version: '{{version}}'
+  type: view
+version: '{{version}}'
+properties:
+  partialMatrices:
+    type:
+      space: '{{powerops_type_space}}'
+      externalId: BidMatrix
+    source:
+      space: '{{powerops_models}}'
+      externalId: BidMatrix
+      version: '{{version}}'
+      type: view
+    direction: outwards
+    name: partialMatrices
+    description: The processed partial bid matrices that are used to calculate the
+      total bid matrix.
+    connectionType: multi_edge_connection
+  input:
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct1
+    name: input
+    source:
+      space: '{{powerops_models}}'
+      externalId: PartialPostProcessingInput
+      version: '{{version}}'
+      type: view

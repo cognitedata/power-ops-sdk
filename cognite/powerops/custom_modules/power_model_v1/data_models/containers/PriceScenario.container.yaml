@@ -1,0 +1,54 @@
+space: '{{powerops_models}}'
+externalId: PriceScenario
+name: PriceScenario
+usedFor: node
+properties:
+  name:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: name
+    description: The name of the scenario
+  timeseries:
+    type:
+      list: false
+      type: timeseries
+    nullable: false
+    autoIncrement: false
+    name: timeseries
+    description: The time series to apply mapping to
+  retrieve:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: retrieve
+    description: How to retrieve time series data
+  aggregation:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: aggregation
+    description: How to aggregate time series data
+  transformations:
+    type:
+      list: true
+      type: json
+    nullable: true
+    autoIncrement: false
+    name: transformations
+    description: The transformations to apply to the time series
+indexes:
+  timeSeriesIndex:
+    properties:
+    - timeseries
+    indexType: btree
+    cursorable: false

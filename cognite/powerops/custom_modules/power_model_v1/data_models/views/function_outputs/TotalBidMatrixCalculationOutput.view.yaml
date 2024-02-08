@@ -1,0 +1,54 @@
+space: '{{powerops_models}}'
+externalId: TotalBidMatrixCalculationOutput
+name: TotalBidMatrixCalculationOutput
+description: The output of the total bid matrix calculation
+filter:
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+  - equals:
+      property:
+      - node
+      - space
+      value: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: TotalBidMatrixCalculationOutput
+        space: '{{powerops_type_space}}'
+implements:
+- space: '{{powerops_models}}'
+  externalId: FunctionOutput
+  version: '{{version}}'
+  type: view
+version: '{{version}}'
+properties:
+  bidDocument:
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct1
+    name: bidDocument
+    source:
+      space: '{{powerops_models}}'
+      externalId: BidDocument
+      version: '{{version}}'
+      type: view
+  input:
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct2
+    name: input
+    description: The previous step in the process.
+    source:
+      space: '{{powerops_models}}'
+      externalId: TotalBidMatrixCalculationInput
+      version: '{{version}}'
+      type: view

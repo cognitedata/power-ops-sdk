@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import difflib
 import itertools
 import logging
 import re
@@ -43,7 +44,7 @@ _DMS_DIR = Path(__file__).parent / "dms"
 
 @dataclass
 class Schema:
-    _shared_space = "power-ops-shared"
+    _shared_space = "sp_powerops_models"
     containers: ContainerApplyList
     _views: ViewApplyList
     _data_models: DataModelApplyList
@@ -146,7 +147,7 @@ class DataModelAPI(Generic[T_ResourceList]):
                     prop_to_pop.extend(view_by_id[view_to_check].properties or [])
                     views_to_check.extend(view_by_id[view_to_check].implements or [])
                 for prop in prop_to_pop:
-                    view.properties.pop(prop)
+                    view.properties.pop(prop, None)
         return retrieved_apply
 
     def differences(self, cdf: T_ResourceList, local: T_ResourceList) -> Difference:
@@ -252,24 +253,36 @@ class DataModelLoader:
         defined_views = {view.as_id() for view in schema._views}
         defined_interfaces = {parent for view in schema._views for parent in view.implements or []}
         properties_by_container = {container.as_id(): set(container.properties) for container in schema.containers}
+        properties_by_view = {view.as_id(): set(view.properties) for view in schema._views}
+        containers_by_id = {container.as_id(): container for container in schema.containers}
 
         referred_spaces = defaultdict(list)
         referred_views = defaultdict(list)
         referred_containers = defaultdict(list)
         referred_node_types = defaultdict(list)
         view_missing_filters = []
+        direct_relation_missing_source = []
         non_existent_container_properties = []
+        non_existent_view_properties = []
         for container in schema.containers:
             referred_spaces[container.space].append(container.as_id())
         for view in schema._views:
             ref_view_id = view.as_id()
             referred_spaces[view.space].append(ref_view_id)
             if isinstance(view.filter, filters.Equals):
-                dumped = view.filter.dump()["equals"]["value"]
+                dumped = view.filter.dump()["equals"]
+                value = dumped["value"]
                 try:
-                    if "space" in dumped and "externalId" in dumped:
-                        node_id = NodeId(dumped["space"], dumped["externalId"])
+                    if isinstance(value, dict) and ("space" in value and "externalId" in value):
+                        node_id = NodeId(value["space"], value["externalId"])
                         referred_node_types[node_id].append(ref_view_id)
+                    elif len(dumped["property"]) == 3:
+                        space, external_id_version, prop_ = dumped["property"]
+                        external_id, version = external_id_version.rsplit("/", maxsplit=1)
+                        view_id = ViewId(space, external_id, version)
+                        referred_views[view_id].append(ref_view_id)
+                        if prop_ not in properties_by_view.get(view_id, set()):
+                            non_existent_view_properties.append(ref_view_id)
                 except Exception as exc:
                     raise ValueError(
                         f"Failed to parse filter for view {view.space}.{view.external_id}.{view.version}"
@@ -300,6 +313,12 @@ class DataModelLoader:
                         referred_views[prop.source].append(ref_view_id.as_property_ref(prop_name))
                     if prop.container_property_identifier not in properties_by_container.get(prop.container, set()):
                         non_existent_container_properties.append(ref_view_id.as_property_ref(prop_name))
+                    if prop.container_property_identifier in properties_by_container.get(prop.container, set()):
+                        container_property_relation_type = (
+                            containers_by_id[prop.container].properties[prop.container_property_identifier].type
+                        )
+                        if type(container_property_relation_type) == DirectRelation and not prop.source:
+                            direct_relation_missing_source.append(ref_view_id.as_property_ref(prop_name))
                 elif isinstance(prop, SingleHopConnectionDefinitionApply):
                     referred_node_types[NodeId(prop.type.space, prop.type.external_id)].append(
                         ref_view_id.as_property_ref(prop_name)
@@ -332,10 +351,18 @@ class DataModelLoader:
             raise ValueError(f"Undefined node types: {undefined_node_types}: referred to by {referred_to_by}")
         if non_existent_container_properties:
             message = "\n".join(map(str, non_existent_container_properties))
-            raise ValueError(f"These properties in views refers to container properties that does not exist: {message}")
+            raise ValueError(
+                f"These properties in views refers to container properties that does not exist:\n{message}"
+            )
+        if non_existent_view_properties:
+            message = "\n".join(map(str, non_existent_view_properties))
+            raise ValueError(f"These properties in views refers to view properties that does not exist:\n{message}")
+        if direct_relation_missing_source:
+            message = "\n".join(map(str, direct_relation_missing_source))
+            raise ValueError(f"These properties in views refers to direct relations without a source:\n{message}")
 
     @classmethod
-    def changed_views(cls, client: CogniteClient, schema: Schema) -> dict[ViewId, set[ViewId]]:
+    def changed_views(cls, client: CogniteClient, schema: Schema, verbose: bool = False) -> dict[ViewId, set[ViewId]]:
         existing_read_views = client.data_modeling.views.retrieve(schema.views.as_ids())
         dependencies_by_view_id = cls._dependencies_by_view(existing_read_views)
         existing_views = cls._views_as_write(existing_read_views)
@@ -345,6 +372,24 @@ class DataModelLoader:
         for view in schema.views:
             view_id = view.as_id()
             if (existing := existing_view_by_id.get(view_id)) and existing.dump() != view.dump():
+                if verbose:
+                    from rich import print
+                    from rich.panel import Panel
+
+                    # To get keys in the same order
+                    new_view = existing.dump()
+                    new_view.update(view.dump())
+                    print(
+                        Panel(
+                            "\n".join(
+                                difflib.unified_diff(
+                                    existing.dump_yaml().splitlines(),
+                                    yaml.safe_dump(new_view, sort_keys=False).splitlines(),
+                                )
+                            ),
+                            title=f"Diff {view_id}",
+                        )
+                    )
                 dependencies = dependencies_by_view_id[view_id]
                 checked = set()
                 while dependencies:
@@ -433,7 +478,10 @@ class DataModelLoader:
         apis = cls._create_apis(client)
         resources = asdict(schema)
         for api in reversed(list(TopologicalSorter(apis).static_order())):
-            items = resources[api.name]
+            try:
+                items = resources[api.name]
+            except KeyError:
+                items = resources[f"_{api.name}"]
             existing = api.retrieve(schema.spaces)
             diffs = api.differences(existing, items)
             if not dry_run and (diffs.changed or diffs.unchanged or diffs.delete):

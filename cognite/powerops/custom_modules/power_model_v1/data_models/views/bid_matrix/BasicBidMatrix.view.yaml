@@ -1,0 +1,18 @@
+space: '{{powerops_models}}'
+externalId: BasicBidMatrix
+name: BasicBidMatrix
+filter:
+  equals:
+    property:
+    - node
+    - type
+    value:
+      space: '{{powerops_type_space}}'
+      externalId: DayAheadBasicBidMatrix
+implements:
+- space: '{{powerops_models}}'
+  externalId: BidMatrix
+  version: '{{version}}'
+  type: view
+version: '{{version}}'
+properties: {}

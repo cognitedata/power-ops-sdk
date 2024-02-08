@@ -1,0 +1,126 @@
+space: '{{powerops_models}}'
+externalId: Scenario
+name: Scenario
+usedFor: node
+properties:
+  name:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: name
+    description: The name of the Scenario
+  modelTemplate:
+    type:
+      list: false
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: modelTemplate
+    description: The model template
+  commands:
+    type:
+      list: true
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: commands
+    description: The commands to run
+  extraFiles:
+    type:
+      list: true
+      type: file
+    nullable: true
+    autoIncrement: false
+    name: extraFiles
+    description: Extra files to include in the model
+  modelFile:
+    type:
+      list: false
+      type: file
+    nullable: false
+    autoIncrement: false
+    name: modelFile
+    description: The model file
+  source:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: source
+    description: The source of the model
+  shopStartSpecification:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: shopStartSpecification
+    description: The specification for when to start the shop
+  shopEndSpecification:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: shopEndSpecification
+    description: The specification for when to end the shop
+  shopStart:
+    type:
+      list: false
+      type: date
+    nullable: true
+    autoIncrement: false
+    name: shopStart
+    description: The time to start the shop
+  shopEnd:
+    type:
+      list: false
+      type: date
+    nullable: true
+    autoIncrement: false
+    name: shopEnd
+    description: The time to end the shop
+  bidDate:
+    type:
+      list: false
+      type: date
+    nullable: true
+    autoIncrement: false
+    name: bidDate
+    description: The date of the bid
+  shopVersion:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: shopVersion
+    description: The version of SHOP to run
+  isReady:
+    type:
+      list: false
+      type: boolean
+    nullable: true
+    autoIncrement: false
+    name: isReady
+    description: Is the scenario ready to run
+indexes:
+  nameIndex:
+    properties:
+    - name
+    indexType: btree
+    cursorable: false
+  sourceIndex:
+    properties:
+    - source
+    indexType: btree
+    cursorable: false

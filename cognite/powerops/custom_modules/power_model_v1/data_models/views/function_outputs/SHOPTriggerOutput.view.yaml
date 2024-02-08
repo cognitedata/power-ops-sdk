@@ -1,0 +1,54 @@
+space: '{{powerops_models}}'
+externalId: SHOPTriggerOutput
+name: SHOPTriggerOutput
+description: Base class for all function inputs
+filter:
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+  - equals:
+      property:
+      - node
+      - space
+      value: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: SHOPTriggerOutput
+        space: '{{powerops_type_space}}'
+implements:
+- space: '{{powerops_models}}'
+  externalId: FunctionOutput
+  version: '{{version}}'
+  type: view
+version: '{{version}}'
+properties:
+  shopResult:
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct1
+    name: shopResult
+    source:
+      space: '{{powerops_models}}'
+      externalId: SHOPResult
+      version: '{{version}}'
+      type: view
+  input:
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct2
+    name: input
+    description: The prepped and processed scenario to send to shop trigger
+    source:
+      space: '{{powerops_models}}'
+      externalId: SHOPTriggerInput
+      version: '{{version}}'
+      type: view

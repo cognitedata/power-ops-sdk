@@ -1,0 +1,53 @@
+space: '{{powerops_models}}'
+externalId: BidMethodDayAhead
+name: BidMethodDayAhead
+description: A description of the Bid method used in the calculation.
+filter:
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: BidMethodDayAhead
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: PriceArea
+  - equals:
+      property:
+      - node
+      - space
+      value: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: BidMethodDayAhead
+        space: '{{powerops_type_space}}'
+implements:
+  - space: '{{powerops_models}}'
+    externalId: BidMethod
+    version: '{{version}}'
+    type: view
+version: '{{version}}'
+properties:
+  mainScenario:
+    container:
+      space: '{{powerops_models}}'
+      externalId: BidMethod
+      type: container
+    containerPropertyIdentifier: mainScenario
+    name: mainScenario
+    description: The main scenario to use when running the bid method
+    source:
+      space: '{{powerops_models}}'
+      externalId: PriceScenario
+      version: '{{version}}'
+      type: view
+  timezone:
+    container:
+      space: '{{powerops_models}}'
+      externalId: PriceArea
+      type: container
+    containerPropertyIdentifier: timezone
+    name: timezone
+    description: The timezone to use when running the bid method

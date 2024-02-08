@@ -1,0 +1,29 @@
+space: '{{powerops_models}}'
+externalId: PlantShop
+name: PlantShop
+description: A minimal representation of a Plant - only data that is needed for Shop
+filter:
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: Plant
+  - equals:
+      property:
+      - node
+      - space
+      value: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: PlantShop
+        space: '{{powerops_type_space}}'
+implements:
+- space: '{{powerops_models}}'
+  externalId: PowerAsset
+  version: '{{version}}'
+  type: view
+version: '{{version}}'
+properties: {}

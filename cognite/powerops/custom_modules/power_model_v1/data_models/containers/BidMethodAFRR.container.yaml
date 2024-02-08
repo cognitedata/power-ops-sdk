@@ -1,0 +1,20 @@
+space: '{{powerops_models}}'
+externalId: BidMethodAFRR
+name: BidMethodAFRR
+usedFor: node
+properties:
+  name:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: name
+    description: The name of the bid method
+indexes:
+  name:
+    properties:
+    - name
+    indexType: btree
+    cursorable: false

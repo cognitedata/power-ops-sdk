@@ -1,0 +1,156 @@
+space: '{{powerops_models}}'
+externalId: Plant
+name: Plant
+description: Represent a plant
+filter:
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: Plant
+  - equals:
+      property:
+      - node
+      - space
+      value: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: Plant
+        space: '{{powerops_type_space}}'
+implements:
+- space: '{{powerops_models}}'
+  externalId: PowerAsset
+  version: '{{version}}'
+  type: view
+version: '{{version}}'
+properties:
+  headLossFactor:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Plant
+      type: container
+    containerPropertyIdentifier: headLossFactor
+    name: headLossFactor
+  outletLevel:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Plant
+      type: container
+    containerPropertyIdentifier: outletLevel
+    name: outletLevel
+  pMax:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Plant
+      type: container
+    containerPropertyIdentifier: pMax
+    name: pMax
+  pMin:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Plant
+      type: container
+    containerPropertyIdentifier: pMin
+    name: pMin
+  penstockHeadLossFactors:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Plant
+      type: container
+    containerPropertyIdentifier: penstockHeadLossFactors
+    name: penstockHeadLossFactors
+  watercourse:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Plant
+      type: container
+    containerPropertyIdentifier: watercourse
+    name: watercourse
+    source:
+      space: '{{powerops_models}}'
+      externalId: Watercourse
+      version: '{{version}}'
+      type: view
+  connectionLosses:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Plant
+      type: container
+    containerPropertyIdentifier: connectionLosses
+    name: connectionLosses
+  pMaxTimeSeries:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Plant
+      type: container
+    containerPropertyIdentifier: pMaxTimeSeries
+    name: pMaxTimeSeries
+  pMinTimeSeries:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Plant
+      type: container
+    containerPropertyIdentifier: pMinTimeSeries
+    name: pMinTimeSeries
+  waterValueTimeSeries:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Plant
+      type: container
+    containerPropertyIdentifier: waterValueTimeSeries
+    name: waterValueTimeSeries
+  feedingFeeTimeSeries:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Plant
+      type: container
+    containerPropertyIdentifier: feedingFeeTimeSeries
+    name: feedingFeeTimeSeries
+  outletLevelTimeSeries:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Plant
+      type: container
+    containerPropertyIdentifier: outletLevelTimeSeries
+    name: outletLevelTimeSeries
+  inletLevelTimeSeries:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Plant
+      type: container
+    containerPropertyIdentifier: inletLevelTimeSeries
+    name: inletLevelTimeSeries
+  headDirectTimeSeries:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Plant
+      type: container
+    containerPropertyIdentifier: headDirectTimeSeries
+    name: headDirectTimeSeries
+  inletReservoir:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Plant
+      type: container
+    containerPropertyIdentifier: inletReservoir
+    name: inletReservoir
+    source:
+      space: '{{powerops_models}}'
+      externalId: Reservoir
+      version: '{{version}}'
+      type: view
+  generators:
+    type:
+      space: '{{powerops_type_space}}'
+      externalId: isSubAssetOf
+    source:
+      space: '{{powerops_models}}'
+      externalId: Generator
+      version: '{{version}}'
+      type: view
+    direction: outwards
+    name: generators
+    connectionType: multi_edge_connection

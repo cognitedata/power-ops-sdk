@@ -1,0 +1,26 @@
+externalId: frontend_AFRRBid
+space: '{{powerops_models}}'
+version: '1'
+name: AFRRBid
+description: 'Stores results of AFRR bid calculations.'
+views:
+- externalId: BidDocumentAFRR
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: BidRow
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: PriceAreaAFRR
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: BidMethodAFRR
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: Alert
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'

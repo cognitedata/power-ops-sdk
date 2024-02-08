@@ -1,0 +1,88 @@
+space: '{{powerops_models}}'
+externalId: FunctionMetadata
+name: FunctionMetadata
+usedFor: node
+properties:
+  functionName:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: functionName
+    description: The name of the function
+  functionCallId:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: functionCallId
+    description: The function call id
+  processId:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: processId
+    description: The process id
+  processStep:
+    type:
+      list: false
+      type: int32
+    nullable: false
+    autoIncrement: false
+    name: processStep
+    description: The process step
+  linkedStep:
+    type:
+      list: false
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: linkedStep
+    description: Typically the previous step
+  data:
+    type:
+      list: false
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: data
+    description: The data
+  data2:
+    type:
+      list: false
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: data2
+    description: The data
+  data3:
+    type:
+      list: false
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: data3
+    description: The data
+indexes:
+  functionNameIndex:
+    properties:
+    - functionName
+    indexType: btree
+    cursorable: false
+  functionCallIdIndex:
+    properties:
+    - functionCallId
+    indexType: btree
+    cursorable: false
+  processIdIndex:
+    properties:
+    - processId
+    indexType: btree
+    cursorable: false

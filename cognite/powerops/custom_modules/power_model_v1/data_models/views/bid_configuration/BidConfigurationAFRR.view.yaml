@@ -1,0 +1,80 @@
+space: '{{powerops_models}}'
+externalId: BidConfigurationAFRR
+name: BidConfigurationAFRR
+description: ''
+filter:
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: BidConfiguration
+  - equals:
+      property:
+      - node
+      - space
+      value: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        space: '{{powerops_type_space}}'
+        externalId: BidConfigurationAFRR
+implements:
+- space: '{{powerops_models}}'
+  externalId: BidConfiguration
+  version: '{{version}}'
+  type: view
+version: '{{version}}'
+properties:
+  method:
+    container:
+      space: '{{powerops_models}}'
+      externalId: BidConfiguration
+      type: container
+    containerPropertyIdentifier: method
+    name: method
+    description: The bid method related to the bid configuration
+    source:
+      space: '{{powerops_models}}'
+      externalId: BidMethodAFRR
+      version: '{{version}}'
+      type: view
+  priceArea:
+    container:
+      space: '{{powerops_models}}'
+      externalId: BidConfiguration
+      type: container
+    containerPropertyIdentifier: priceArea
+    name: priceArea
+    source:
+      space: '{{powerops_models}}'
+      externalId: PriceAreaAFRR
+      version: '{{version}}'
+      type: view
+  plants:
+    type:
+      space: '{{powerops_type_space}}'
+      externalId: BidConfiguration.plants
+    source:
+      space: '{{powerops_models}}'
+      externalId: Plant
+      version: '{{version}}'
+      type: view
+    direction: outwards
+    name: plants
+    description: The plants
+    connectionType: multi_edge_connection
+  watercourses:
+    type:
+      space: '{{powerops_type_space}}'
+      externalId: BidConfiguration.watercourses
+    source:
+      space: '{{powerops_models}}'
+      externalId: Watercourse
+      version: '{{version}}'
+      type: view
+    direction: outwards
+    name: watercourses
+    description: The watercourses
+    connectionType: multi_edge_connection

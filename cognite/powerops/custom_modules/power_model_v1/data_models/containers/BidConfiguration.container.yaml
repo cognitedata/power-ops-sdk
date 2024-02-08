@@ -1,0 +1,36 @@
+space: '{{powerops_models}}'
+externalId: BidConfiguration
+name: BidConfiguration
+usedFor: node
+properties:
+  method:
+    type:
+      type: direct # points to BidMethod container
+    nullable: true
+    autoIncrement: false
+    name: method
+  marketConfiguration:
+    type:
+      type: direct
+      list: false
+    nullable: true
+    autoIncrement: false
+    name: marketConfiguration
+  priceArea:
+    type:
+      type: direct
+      list: false
+    nullable: true
+    autoIncrement: false
+    name: priceArea
+indexes:
+  methodIndex:
+    properties:
+    - method
+    indexType: btree
+    cursorable: false
+  priceAreaIndex:
+    properties:
+    - priceArea
+    indexType: btree
+    cursorable: false

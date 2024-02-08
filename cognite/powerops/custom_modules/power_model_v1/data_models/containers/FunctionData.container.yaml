@@ -1,0 +1,117 @@
+space: '{{powerops_models}}'
+externalId: FunctionData
+name: FunctionData
+usedFor: node
+properties:
+  direct1:
+    type:
+      list: false
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: direct1
+  direct2:
+    type:
+      list: false
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: direct2
+  direct3:
+    type:
+      list: false
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: direct3
+  date1:
+    type:
+      list: false
+      type: date
+    nullable: true
+    autoIncrement: false
+    name: date1
+  date2:
+    type:
+      list: false
+      type: date
+    nullable: true
+    autoIncrement: false
+    name: date2
+  date3:
+    type:
+      list: false
+      type: date
+    nullable: true
+    autoIncrement: false
+    name: date3
+  text1:
+    type:
+      list: false
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: text1
+  text2:
+    type:
+      list: false
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: text2
+  value1:
+    type:
+      list: false
+      type: float64
+    nullable: true
+    autoIncrement: false
+    name: value1
+  value2:
+    type:
+      list: false
+      type: float64
+    nullable: true
+    autoIncrement: false
+    name: value2
+  number:
+    type:
+      list: false
+      type: int32
+    nullable: true
+    autoIncrement: false
+    name: number
+  number1:
+    type:
+      list: false
+      type: int32
+    nullable: true
+    autoIncrement: false
+    name: number1
+  number2:
+    type:
+      list: false
+      type: int32
+    nullable: true
+    autoIncrement: false
+    name: number2
+  timeseries1:
+    type:
+      type: timeseries
+      list: true
+    nullable: true
+    autoIncrement: false
+    name: timeseries1
+  timeseries2:
+    type:
+      type: timeseries
+      list: true
+    nullable: true
+    autoIncrement: false
+    name: timeseries2
+  sequence:
+    type:
+      list: false
+      type: sequence
+    nullable: true
+    autoIncrement: false
+    name: sequence

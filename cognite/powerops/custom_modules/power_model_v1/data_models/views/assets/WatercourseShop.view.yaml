@@ -1,0 +1,29 @@
+space: '{{powerops_models}}'
+externalId: WatercourseShop
+name: WatercourseShop
+description: A minimal representation of a Watercourse which is needed for Shop
+filter:
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: Watercourse
+  - equals:
+      property:
+      - node
+      - space
+      value: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: Watercourse
+        space: '{{powerops_type_space}}'
+implements:
+- space: '{{powerops_models}}'
+  externalId: PowerAsset
+  version: '{{version}}'
+  type: view
+version: '{{version}}'
+properties: {}

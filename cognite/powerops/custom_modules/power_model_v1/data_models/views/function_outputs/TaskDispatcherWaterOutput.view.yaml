@@ -1,0 +1,55 @@
+space: '{{powerops_models}}'
+externalId: TaskDispatcherWaterOutput
+name: TaskDispatcherWaterOutput
+description: Input to the task dispatcher in the shop bid process
+filter:
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+  - equals:
+      property:
+      - node
+      - space
+      value: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: TaskDispatcherWaterOutput
+        space: '{{powerops_type_space}}'
+implements:
+- space: '{{powerops_models}}'
+  externalId: FunctionOutput
+  version: '{{version}}'
+  type: view
+version: '{{version}}'
+properties:
+  input:
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct1
+    name: input
+    description: The previous step in the process.
+    source:
+      space: '{{powerops_models}}'
+      externalId: TaskDispatcherWaterInput
+      version: '{{version}}'
+      type: view
+  bidCalculationTasks:
+    type:
+      space: '{{powerops_type_space}}'
+      externalId: Water.partialBidCalculations
+    source:
+      space: '{{powerops_models}}'
+      externalId: WaterPartialBidCalculationInput
+      version: '{{version}}'
+      type: view
+    direction: outwards
+    name: bidCalculationTaks
+    description: An array of bid calculation tasks.
+    connectionType: multi_edge_connection

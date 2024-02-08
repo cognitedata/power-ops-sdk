@@ -1,0 +1,50 @@
+externalId: frontend_DayAheadBid
+space: '{{powerops_models}}'
+version: '1'
+name: 'DayAheadBid'
+description: 'Stores results of Day Ahead bid calculations.'
+views:
+- externalId: BidDocumentDayAhead
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: BidMatrix
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: MultiScenarioMatrix
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: BasicBidMatrix
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: CustomBidMatrix
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: BidMethodDayAhead
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: PriceAreaDayAhead
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: BidMethodSHOPMultiScenario
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: BidMethodWaterValue
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: PriceScenario
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: Alert
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'

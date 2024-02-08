@@ -1,0 +1,41 @@
+space: '{{powerops_models}}'
+externalId: WaterPartialBidCalculationInput
+name: WaterPartialBidCalculation
+description: The data for a bid calculation for water value based method
+filter:
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+  - equals:
+      property:
+      - node
+      - space
+      value: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: WaterPartialBidCalculationInput
+        space: '{{powerops_type_space}}'
+implements:
+- space: '{{powerops_models}}'
+  externalId: FunctionInput
+  version: '{{version}}'
+  type: view
+version: '{{version}}'
+properties:
+  calculationTask:
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct1
+    name: calculationTask
+    source:
+      space: '{{powerops_models}}'
+      externalId: BidCalculationTask
+      version: '{{version}}'
+      type: view

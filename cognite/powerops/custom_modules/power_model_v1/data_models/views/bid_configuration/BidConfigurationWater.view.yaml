@@ -1,0 +1,83 @@
+space: '{{powerops_models}}'
+externalId: BidConfigurationWater
+name: BidConfigurationWater
+description: ''
+filter:
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+  - equals:
+      property:
+      - node
+      - space
+      value: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        space: '{{powerops_type_space}}'
+        externalId: BidConfigurationWater
+implements:
+- space: '{{powerops_models}}'
+  externalId: BidConfiguration
+  version: '{{version}}'
+  type: view
+version: '{{version}}'
+properties:
+  method:
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct1
+    name: method
+    description: The bid method related to the bid configuration
+    source:
+      space: '{{powerops_models}}'
+      externalId: BidMethodWaterValue
+      version: '{{version}}'
+      type: view
+  plants:
+    type:
+      space: '{{powerops_type_space}}'
+      externalId: BidConfiguration.plants
+    source:
+      space: '{{powerops_models}}'
+      externalId: Plant
+      version: '{{version}}'
+      type: view
+    direction: outwards
+    name: plants
+    description: The plants and related information needed to run the water value
+      based method
+    connectionType: multi_edge_connection
+  watercourses:
+    type:
+      space: '{{powerops_type_space}}'
+      externalId: BidConfiguration.watercourses
+    source:
+      space: '{{powerops_models}}'
+      externalId: Watercourse
+      version: '{{version}}'
+      type: view
+    direction: outwards
+    name: watercourses
+    description: The watercourses and related information needed to run the water
+      value based method
+    connectionType: multi_edge_connection
+  priceArea:
+    container:
+      space: '{{powerops_models}}'
+      externalId: BidConfiguration
+      type: container
+    containerPropertyIdentifier: priceArea
+    name: priceArea
+    description: The price area related to the bid configuration
+    source:
+      space: '{{powerops_models}}'
+      externalId: PriceAreaDayAhead
+      version: '{{version}}'
+      type: view

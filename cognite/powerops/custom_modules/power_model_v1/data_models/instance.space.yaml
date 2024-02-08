@@ -1,0 +1,3 @@
+space: {{powerops_instance_space}}
+name: PowerOpsInstance
+description: All the data used and produced by PowerOps.

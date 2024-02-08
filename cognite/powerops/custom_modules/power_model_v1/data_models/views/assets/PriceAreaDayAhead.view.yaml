@@ -1,0 +1,40 @@
+space: '{{powerops_models}}'
+externalId: PriceAreaDayAhead
+name: PriceAreaDayAhead
+filter:
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: PriceArea
+  - equals:
+      property:
+      - node
+      - space
+      value: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: PriceAreaDayAhead
+        space: '{{powerops_type_space}}'
+implements:
+- space: '{{powerops_models}}'
+  externalId: PriceArea
+  version: '{{version}}'
+  type: view
+version: '{{version}}'
+properties:
+  defaultMethod:
+    container:
+      space: '{{powerops_models}}'
+      externalId: PriceArea
+      type: container
+    containerPropertyIdentifier: defaultMethodDayAhead
+    name: defaultMethod
+    source:
+      space: '{{powerops_models}}'
+      externalId: BidMethodDayAhead
+      version: '{{version}}'
+      type: view

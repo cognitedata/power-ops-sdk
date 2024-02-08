@@ -1,0 +1,26 @@
+space: '{{powerops_models}}'
+externalId: CustomBidMatrix
+name: CustomBidMatrix
+filter:
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: BidMatrix
+  - not:
+      in:
+        property:
+        - node
+        - type
+        values:
+        - space: '{{powerops_type_space}}'
+          externalId: DayAheadBasicBidMatrix
+        - space: '{{powerops_type_space}}'
+          externalId: DayAheadMultiScenarioMatrix
+implements:
+- space: '{{powerops_models}}'
+  externalId: BidMatrix
+  version: '{{version}}'
+  type: view
+version: '{{version}}'
+properties: {}

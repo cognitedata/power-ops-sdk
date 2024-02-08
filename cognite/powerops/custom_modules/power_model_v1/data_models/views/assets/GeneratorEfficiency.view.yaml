@@ -1,0 +1,49 @@
+space: '{{powerops_models}}'
+externalId: GeneratorEfficiencyCurve
+name: GeneratorEfficiencyCurve
+description: Describes the efficiency curve for a generator
+filter:
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: EfficiencyCurve
+  - equals:
+      property:
+      - node
+      - space
+      value: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: GeneratorEfficiencyCurve
+        space: '{{powerops_type_space}}'
+implements: []
+version: '{{version}}'
+properties:
+  ref:
+    container:
+      space: '{{powerops_models}}'
+      externalId: EfficiencyCurve
+      type: container
+    containerPropertyIdentifier: ref
+    name: ref
+    description: The reference value
+  power:
+    container:
+      space: '{{powerops_models}}'
+      externalId: EfficiencyCurve
+      type: container
+    containerPropertyIdentifier: x
+    name: power
+    description: The generator power values
+  efficiency:
+    container:
+      space: '{{powerops_models}}'
+      externalId: EfficiencyCurve
+      type: container
+    containerPropertyIdentifier: efficiency
+    name: efficiency
+    description: The generator efficiency values

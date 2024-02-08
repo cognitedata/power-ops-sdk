@@ -1,0 +1,90 @@
+space: '{{powerops_models}}'
+externalId: MarketConfiguration
+name: MarketConfiguration
+usedFor: node
+properties:
+  marketType:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: marketType
+    description: The market type
+  maxPrice:
+    type:
+      list: false
+      type: float64
+    nullable: false
+    autoIncrement: false
+    name: maxPrice
+    description: The maximum price
+  minPrice:
+    type:
+      list: false
+      type: float64
+    nullable: false
+    autoIncrement: false
+    name: minPrice
+    description: The minimum price
+  timeZone:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: timeZone
+    description: The time zone
+  priceUnit:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: priceUnit
+    description: The price unit
+  priceSteps:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: priceSteps
+    description: The price steps
+  tickSize:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: tickSize
+    description: The tick size
+  timeUnit:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: timeUnit
+    description: The time unit
+  tradeLot:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: tradeLot
+    description: The trade lot
+indexes:
+  priceStepsIndex:
+    properties:
+    - priceSteps
+    indexType: btree
+    cursorable: false

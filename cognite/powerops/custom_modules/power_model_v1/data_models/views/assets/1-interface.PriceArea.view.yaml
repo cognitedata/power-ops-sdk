@@ -1,0 +1,44 @@
+space: '{{powerops_models}}'
+externalId: PriceArea
+name: PriceArea
+description: Information about the Price Area that is only relevant for AFRR
+filter:
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: Asset
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: PriceArea
+  - equals:
+      property:
+      - node
+      - space
+      value: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: PriceArea
+        space: '{{powerops_type_space}}'
+implements: []
+version: '{{version}}'
+properties:
+  name:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Asset
+      type: container
+    containerPropertyIdentifier: name
+    name: name
+    description: The name of the price area
+  timezone:
+    container:
+      space: '{{powerops_models}}'
+      externalId: PriceArea
+      type: container
+    containerPropertyIdentifier: timezone
+    name: timezone
+    description: The timezone of the price area

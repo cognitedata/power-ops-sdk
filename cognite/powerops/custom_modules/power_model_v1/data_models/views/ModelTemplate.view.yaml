@@ -1,0 +1,83 @@
+space: '{{powerops_models}}'
+externalId: ModelTemplate
+name: ModelTemplate
+description: The template for SHOP models
+filter:
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: ModelTemplate
+  - equals:
+      property:
+      - node
+      - space
+      value: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: ModelTemplate
+        space: '{{powerops_type_space}}'
+implements: []
+version: '{{version}}'
+properties:
+  cogShopVersion:
+    container:
+      space: '{{powerops_models}}'
+      externalId: ModelTemplate
+      type: container
+    containerPropertyIdentifier: cogShopVersion
+    name: cogShopVersion
+    description: The tag of the cogshop image to run
+  shopVersion:
+    container:
+      space: '{{powerops_models}}'
+      externalId: ModelTemplate
+      type: container
+    containerPropertyIdentifier: shopVersion
+    name: shopVersion
+    description: The version of SHOP to run
+  watercourse:
+    container:
+      space: '{{powerops_models}}'
+      externalId: ModelTemplate
+      type: container
+    containerPropertyIdentifier: watercourse
+    name: watercourse
+    description: The watercourse to run the model for
+    source:
+      space: '{{powerops_models}}'
+      externalId: WatercourseShop
+      version: '{{version}}'
+      type: view
+  model:
+    container:
+      space: '{{powerops_models}}'
+      externalId: ModelTemplate
+      type: container
+    containerPropertyIdentifier: model
+    name: model
+    description: The shop model file to use as template before applying base mapping
+  source:
+    container:
+      space: '{{powerops_models}}'
+      externalId: ModelTemplate
+      type: container
+    containerPropertyIdentifier: source
+    name: source
+    description: The source of the model, for example, 'resync'
+  baseMappings:
+    type:
+      space: '{{powerops_type_space}}'
+      externalId: ModelTemplate.baseMappings
+    source:
+      space: '{{powerops_models}}'
+      externalId: Mapping
+      version: '{{version}}'
+      type: view
+    direction: outwards
+    name: baseMappings
+    description: The base mappings for the model
+    connectionType: multi_edge_connection

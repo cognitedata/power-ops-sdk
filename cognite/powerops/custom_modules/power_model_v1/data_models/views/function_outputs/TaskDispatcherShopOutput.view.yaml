@@ -1,0 +1,68 @@
+space: '{{powerops_models}}'
+externalId: TaskDispatcherShopOutput
+name: TaskDispatcherShopOutput
+description: Input to the task dispatcher in the shop bid process
+filter:
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+  - equals:
+      property:
+      - node
+      - space
+      value: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: TaskDispatcherShopOutput
+        space: '{{powerops_type_space}}'
+implements:
+- space: '{{powerops_models}}'
+  externalId: FunctionOutput
+  version: '{{version}}'
+  type: view
+version: '{{version}}'
+properties:
+  input:
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct1
+    name: input
+    description: The previous step in the process.
+    source:
+      space: '{{powerops_models}}'
+      externalId: TaskDispatcherShopInput
+      version: '{{version}}'
+      type: view
+  preprocessorCalculations:
+    type:
+      space: '{{powerops_type_space}}'
+      externalId: PreprocessorInput
+    source:
+      space: '{{powerops_models}}'
+      externalId: PreprocessorInput
+      version: '{{version}}'
+      type: view
+    direction: outwards
+    name: preprocessorCalculations
+    description: An array of preprocessor calculations/inputs to preprocessor function.
+    connectionType: multi_edge_connection
+  partialBidCalculations:
+    type:
+      space: '{{powerops_type_space}}'
+      externalId: ShopPartialBidCalculationInput
+    source:
+      space: '{{powerops_models}}'
+      externalId: ShopPartialBidCalculationInput
+      version: '{{version}}'
+      type: view
+    direction: outwards
+    name: partialBidCalculations
+    description: An array of preprocessor calculations/inputs to preprocessor function.
+    connectionType: multi_edge_connection

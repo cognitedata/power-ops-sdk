@@ -17,10 +17,7 @@ from cognite.client import CogniteClient
 from cognite.client.data_classes.data_modeling import DataModelId, MappedProperty, ViewList
 from cognite.client.exceptions import CogniteAPIError
 from cognite_toolkit.cdf import Common, build, deploy  # type: ignore[import-untyped]
-from cognite_toolkit.cdf_tk.utils import (  # type: ignore[import-untyped]
-    CDFToolConfig,
-    calculate_directory_hash,
-)
+from cognite_toolkit.cdf_tk.utils import CDFToolConfig, calculate_directory_hash  # type: ignore[import-untyped]
 from rich import print
 from rich.panel import Panel
 from typer import Context
@@ -96,11 +93,24 @@ def init(client: PowerOpsClient | None, is_dev: bool = False, dry_run: bool = Fa
 
     build_folder = Path.cwd() / "build"
     # Bug in toolkit that places the containers and views in the wrong folder
-    for file in itertools.chain((build_folder / "containers").glob("*.yaml"), (build_folder / "views").glob("*.yaml")):
+    folders = [
+        "containers",
+        "views",
+        "assets",
+        "bid_configuration",
+        "bid_document",
+        "bid_matrix",
+        "bid_method",
+        "function_inputs",
+        "function_outputs",
+        "scenario",
+    ]
+    for file in itertools.chain(*((build_folder / folder).glob("*.yaml") for folder in folders)):
         shutil.move(file, build_folder / "data_models" / file.name)
 
-    for folder in ["containers", "views"]:
-        shutil.rmtree(build_folder / folder)
+    for folder in folders:
+        if (build_folder / folder).exists():
+            shutil.rmtree(build_folder / folder)
 
     loader = DataModelLoader(build_folder)
     schema = loader.load()
@@ -128,7 +138,7 @@ def init(client: PowerOpsClient | None, is_dev: bool = False, dry_run: bool = Fa
         exit(1)
 
     if is_dev:
-        changed = loader.changed_views(cdf, schema)
+        changed = loader.changed_views(cdf, schema, verbose)
         if changed:
             print(Panel(f"Detected {len(changed)} changed views"))
             if verbose:
@@ -136,13 +146,10 @@ def init(client: PowerOpsClient | None, is_dev: bool = False, dry_run: bool = Fa
                     logger.info(f"Changed view: {view}")
             dependencies = {view_id for dependencies in changed.values() for view_id in dependencies}
             print(f"Detected {len(dependencies)} dependent views")
-            if verbose:
-                for view in dependencies:
-                    logger.info(f"Dependent view: {view}")
             prefix = "Would delete" if dry_run else "Deleting"
             print(f"{prefix} changed and dependent views")
             if not dry_run:
-                deleted = cdf.data_modeling.views.delete(list(dependencies) + list(changed))
+                deleted = cdf.data_modeling.views.delete(list(dependencies | set(changed)))
                 print(f"Deleted {len(deleted)} views")
         else:
             print(Panel("No changes detected in any views"))

@@ -1,0 +1,54 @@
+space: '{{powerops_models}}'
+externalId: ModelTemplate
+name: ModelTemplate
+usedFor: node
+properties:
+  cogShopVersion:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: cogShopVersion
+    description: The tag of the cogshop image to run
+  shopVersion:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: shopVersion
+    description: The version of SHOP to run
+  watercourse:
+    type:
+      list: false
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: watercourse
+    description: The watercourse to run the model for
+  model:
+    type:
+      list: false
+      type: file
+    nullable: false
+    autoIncrement: false
+    name: model
+    description: The shop model file to use as template before mapping
+  source:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: source
+    description: The source of the model
+indexes:
+  watercourseIndex:
+    properties:
+    - watercourse
+    indexType: btree
+    cursorable: false

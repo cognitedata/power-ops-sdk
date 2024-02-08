@@ -1,0 +1,50 @@
+space: '{{powerops_models}}'
+externalId: SHOPTriggerInput
+name: SHOPTriggerInput
+description: Base class for all function inputs
+filter:
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+  - equals:
+      property:
+      - node
+      - space
+      value: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: SHOPTriggerInput
+        space: '{{powerops_type_space}}'
+implements:
+- space: '{{powerops_models}}'
+  externalId: FunctionInput
+  version: '{{version}}'
+  type: view
+version: '{{version}}'
+properties:
+  cogShopTag:
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: text1
+    name: cogShopTag
+    description: Optionally specify cogshop tag to trigger
+  scenario:
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct2
+    name: scenario
+    description: The scenario that is used in the shop run
+    source:
+      space: '{{powerops_models}}'
+      externalId: Scenario
+      version: '{{version}}'
+      type: view

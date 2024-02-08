@@ -1,0 +1,44 @@
+space: '{{powerops_models}}'
+externalId: BidMethodSHOPMultiScenario
+name: BidMethodSHOPMultiScenario
+filter:
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: BidMethodDayAhead
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+  - equals:
+      property:
+      - node
+      - space
+      value: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: BidMethodSHOPMultiScenario
+        space: '{{powerops_type_space}}'
+implements:
+- space: '{{powerops_models}}'
+  externalId: BidMethodDayAhead
+  version: '{{version}}'
+  type: view
+version: '{{version}}'
+properties:
+  priceScenarios:
+    type:
+      space: '{{powerops_type_space}}'
+      externalId: BidMethodDayahead.priceScenarios
+    source:
+      space: '{{powerops_models}}'
+      externalId: PriceScenario
+      version: '{{version}}'
+      type: view
+    direction: outwards
+    name: priceScenarios
+    description: The price scenarios to use in the shop run
+    connectionType: multi_edge_connection

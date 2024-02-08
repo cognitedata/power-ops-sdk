@@ -1,0 +1,49 @@
+space: '{{powerops_models}}'
+externalId: PowerAsset
+name: PowerAsset
+description: A super class for all power assets
+filter:
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: Asset
+  - equals:
+      property:
+      - node
+      - space
+      value: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: PowerAsset
+        space: '{{powerops_type_space}}'
+implements: []
+version: '{{version}}'
+properties:
+  name:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Asset
+      type: container
+    containerPropertyIdentifier: name
+    name: name
+    description: Name for the Asset
+  displayName:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Asset
+      type: container
+    containerPropertyIdentifier: displayName
+    name: displayName
+    description: Display name for the Asset.
+  ordering:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Asset
+      type: container
+    containerPropertyIdentifier: order
+    name: ordering
+    description: The ordering of the asset

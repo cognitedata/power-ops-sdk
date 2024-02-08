@@ -1,0 +1,97 @@
+space: '{{powerops_models}}'
+externalId: MarketConfiguration
+name: MarketConfiguration
+description: Market configuration
+filter:
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: MarketConfiguration
+  - equals:
+      property:
+      - node
+      - space
+      value: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: MarketConfiguration
+        space: '{{powerops_type_space}}'
+implements: []
+version: '{{version}}'
+properties:
+  marketType:
+    container:
+      space: '{{powerops_models}}'
+      externalId: MarketConfiguration
+      type: container
+    containerPropertyIdentifier: marketType
+    name: marketType
+    description: The market type
+  maxPrice:
+    container:
+      space: '{{powerops_models}}'
+      externalId: MarketConfiguration
+      type: container
+    containerPropertyIdentifier: maxPrice
+    name: maxPrice
+    description: The maximum price
+  minPrice:
+    container:
+      space: '{{powerops_models}}'
+      externalId: MarketConfiguration
+      type: container
+    containerPropertyIdentifier: minPrice
+    name: minPrice
+    description: The minimum price
+  timeZone:
+    container:
+      space: '{{powerops_models}}'
+      externalId: MarketConfiguration
+      type: container
+    containerPropertyIdentifier: timeZone
+    name: timeZone
+    description: The time zone
+  priceUnit:
+    container:
+      space: '{{powerops_models}}'
+      externalId: MarketConfiguration
+      type: container
+    containerPropertyIdentifier: priceUnit
+    name: priceUnit
+    description: The price unit
+  priceSteps:
+    container:
+      space: '{{powerops_models}}'
+      externalId: MarketConfiguration
+      type: container
+    containerPropertyIdentifier: priceSteps
+    name: priceSteps
+    description: The price steps
+  tickSize:
+    container:
+      space: '{{powerops_models}}'
+      externalId: MarketConfiguration
+      type: container
+    containerPropertyIdentifier: tickSize
+    name: tickSize
+    description: The tick size
+  timeUnit:
+    container:
+      space: '{{powerops_models}}'
+      externalId: MarketConfiguration
+      type: container
+    containerPropertyIdentifier: timeUnit
+    name: timeUnit
+    description: The time unit
+  tradeLot:
+    container:
+      space: '{{powerops_models}}'
+      externalId: MarketConfiguration
+      type: container
+    containerPropertyIdentifier: tradeLot
+    name: tradeLot
+    description: The trade lot
