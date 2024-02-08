@@ -1,16 +1,29 @@
 """
 This module contains the main functions for the resync tool.
 """
+
 from __future__ import annotations
 
 import itertools
 import logging
+import re
+import shutil
+import tempfile
 from pathlib import Path
 from typing import Any, Optional, cast
 
+from click.core import Command
 from cognite.client import CogniteClient
 from cognite.client.data_classes.data_modeling import DataModelId, MappedProperty, ViewList
 from cognite.client.exceptions import CogniteAPIError
+from cognite_toolkit.cdf import Common, build, deploy  # type: ignore[import-untyped]
+from cognite_toolkit.cdf_tk.utils import (  # type: ignore[import-untyped]
+    CDFToolConfig,
+    calculate_directory_hash,
+)
+from rich import print
+from rich.panel import Panel
+from typer import Context
 from yaml import safe_dump
 
 from cognite.powerops.cdf_labels import AssetLabel, RelationshipLabel
@@ -20,6 +33,7 @@ from cognite.powerops.resync.config import ReSyncConfig
 from cognite.powerops.resync.diff import FieldDifference, ModelDifference, ModelDifferences
 from cognite.powerops.resync.models.base import AssetModel, CDFFile, CDFSequence, DataModel, Model, SpaceId
 from cognite.powerops.resync.models.v2.powerops_models import DataModelLoader
+from cognite.powerops.utils.serialization import environment_variables
 
 from .cdf import get_cognite_api
 from .transform import transform
@@ -36,7 +50,7 @@ DATAMODEL_ID_TO_RESYNC_NAME: dict[DataModelId, str] = {
 }
 
 
-def init(client: PowerOpsClient | None, is_dev: bool = False) -> list[dict[str, str]]:
+def init(client: PowerOpsClient | None, is_dev: bool = False, dry_run: bool = False, verbose: bool = False) -> None:
     """
     This function will create the data models in CDF that are required for resync to work. It will not overwrite
     existing models.
@@ -45,20 +59,113 @@ def init(client: PowerOpsClient | None, is_dev: bool = False) -> list[dict[str, 
         client: The PowerOpsClient to use. If not provided, a new client will be created.
         is_dev: Whether the deployment is for development environment. If true, the models views and data models
                 will be deleted and recreated.
-
+        dry_run: Whether to run the command as a dry run, meaning no resources will be created.
     """
     client = client or PowerOpsClient.from_settings()
     cdf = client.cdf
+    result = re.findall(r"^https://(\w+).cognitedata.com", cdf.config.base_url)
+    if result:
+        cluster = result[0]
+    else:
+        raise ValueError(f"Invalid base_url {cdf.config.base_url}")
 
-    loader = DataModelLoader()
+    with environment_variables(
+        {
+            "CDF_CLUSTER": cluster,
+            "CDF_URL": cdf.config.base_url,
+            "IDP_CLIENT_ID": cdf.config.credentials.client_id,  # type: ignore[attr-defined]
+            "IDP_CLIENT_SECRET": "dummy",
+            "IDP_TOKEN_URL": cdf.config.credentials.authority_url,  # type: ignore[attr-defined]
+            "CDF_PROJECT": cdf.config.project,
+        }
+    ):
+        tool_config = CDFToolConfig()
+        tool_config._client = cdf
+
+    powerops_folder = Path(__file__).parent.parent.parent
+    with environment_variables({"SENTRY_ENABLED": "false"}):
+        ctx = Context(Command("build"))
+        ctx.obj = Common(
+            override_env=False,
+            verbose=verbose,
+            cluster=cluster,
+            project=cdf.config.project,
+            mockToolGlobals=tool_config,
+        )
+        build(ctx=ctx, source_dir=str(powerops_folder), build_dir="build", build_env="dev", clean=True)
+
+    build_folder = Path.cwd() / "build"
+    # Bug in toolkit that places the containers and views in the wrong folder
+    for file in itertools.chain((build_folder / "containers").glob("*.yaml"), (build_folder / "views").glob("*.yaml")):
+        shutil.move(file, build_folder / "data_models" / file.name)
+
+    for folder in ["containers", "views"]:
+        shutil.rmtree(build_folder / folder)
+
+    loader = DataModelLoader(build_folder)
     schema = loader.load()
     logger.info("Loaded all powerops data models")
     DataModelLoader.validate(schema)
     logger.info("Validated all powerops data models")
 
-    results = DataModelLoader.deploy(cdf, schema, is_dev)
+    # Toolkit does not deploy the nodes:
+    shutil.rmtree(build_folder / "node_types")
 
-    return results
+    build_hash = calculate_directory_hash(build_folder)
+    filepath = Path(tempfile.gettempdir()) / "powerops_init_command.txt"
+    if dry_run:
+        filepath.write_text(build_hash)
+    elif filepath.exists() and filepath.read_text() == build_hash:
+        ...
+    else:
+        print(
+            Panel(
+                "[bold red]Error: [/] `powerops init` has not been run with --dry-run before running without it."
+                "Please run `powerops init` with --dry-run first to verify the changes.",
+                title="No dry-run",
+            )
+        )
+        exit(1)
+
+    if is_dev:
+        changed = loader.changed_views(cdf, schema)
+        if changed:
+            print(Panel(f"Detected {len(changed)} changed views"))
+            if verbose:
+                for view in changed:
+                    logger.info(f"Changed view: {view}")
+            dependencies = {view_id for dependencies in changed.values() for view_id in dependencies}
+            print(f"Detected {len(dependencies)} dependent views")
+            if verbose:
+                for view in dependencies:
+                    logger.info(f"Dependent view: {view}")
+            prefix = "Would delete" if dry_run else "Deleting"
+            print(f"{prefix} changed and dependent views")
+            if not dry_run:
+                deleted = cdf.data_modeling.views.delete(list(dependencies) + list(changed))
+                print(f"Deleted {len(deleted)} views")
+        else:
+            print(Panel("No changes detected in any views"))
+
+    with environment_variables({"SENTRY_ENABLED": "false"}):
+        ctx = Context(Command("deploy"))
+        ctx.obj = Common(
+            override_env=False,
+            verbose=verbose,
+            cluster=cluster,
+            project=cdf.config.project,
+            mockToolGlobals=tool_config,
+        )
+        deploy(
+            ctx,
+            build_dir="build",
+            build_env="dev",
+            interactive=False,
+            drop=False,
+            drop_data=False,
+            dry_run=dry_run,
+            include=None,
+        )
 
 
 def validate(config_dir: str | Path, market: str) -> Any:
@@ -269,7 +376,7 @@ def destroy(
             removed = _remove_resources(remove_data + remove_data_model, client.cdf, auto_yes)
             destroyed.append(removed)
 
-    loader = DataModelLoader()
+    loader = DataModelLoader(Path.cwd() / "build")
     schema = loader.load()
     loader.destroy(client.cdf, schema, dry_run)
 

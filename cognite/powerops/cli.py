@@ -48,16 +48,14 @@ def init(
         help="Whether the deployment is for development environment. If true,"
         "the models views and data models will be deleted and recreated.",
     ),
+    dry_run: bool = typer.Option(
+        False, "--dry-run", help="Whether to run the command as a dry run, meaning no resources will be created."
+    ),
     verbose: bool = typer.Option(False, "--verbose", "-v", help="Whether to print verbose output"),
 ):
-    echo = _setup_echo(verbose, typer.echo)
     client = PowerOpsClient.from_settings()
 
-    results = resync.init(client, is_dev=dev)
-    if verbose:
-        for result in results:
-            model, action = result["model"], result["action"]
-            echo(f"{model=} {action=}")
+    resync.init(client, is_dev=dev, dry_run=dry_run, verbose=verbose)
 
 
 @app.command("validate", help="Validate the configuration files and timeseries")

@@ -1,0 +1,3 @@
+space: {{dayahead_model_space}}
+name: DayAheadBid
+description: Contracts used for the produced day-ahead bids.

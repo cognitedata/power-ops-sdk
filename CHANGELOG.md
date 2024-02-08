@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.83.0] - 2024-02-08
+### Changed
+* Introduced `cognite-toolkit` in `powerops init` command.
+
 ## [0.82.5] - 2024-01-31
 ### Fixed
 * Filter for `MultiScenarioMatrix` view
