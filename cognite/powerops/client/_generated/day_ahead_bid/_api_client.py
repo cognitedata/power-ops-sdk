@@ -10,12 +10,12 @@ from ._api.basic_bid_matrix import BasicBidMatrixAPI
 from ._api.bid_document import BidDocumentAPI
 from ._api.bid_matrix import BidMatrixAPI
 from ._api.bid_method import BidMethodAPI
-from ._api.custom_bid_matrix import CustomBidMatrixAPI
-from ._api.custom_bid_method import CustomBidMethodAPI
 from ._api.multi_scenario_matrix import MultiScenarioMatrixAPI
 from ._api.price_area import PriceAreaAPI
-from ._api.shop_multi_scenario import SHOPMultiScenarioAPI
-from ._api.water_value_based import WaterValueBasedAPI
+from ._api.shop_multi_scenario_method import SHOPMultiScenarioMethodAPI
+from ._api.shop_price_scenario import SHOPPriceScenarioAPI
+from ._api.shop_price_scenario_result import SHOPPriceScenarioResultAPI
+from ._api.water_value_based_method import WaterValueBasedMethodAPI
 from . import data_classes
 
 
@@ -50,12 +50,12 @@ class DayAheadBidAPI:
             data_classes.BidDocument: dm.ViewId("power-ops-day-ahead-bid", "BidDocument", "1"),
             data_classes.BidMatrix: dm.ViewId("power-ops-day-ahead-bid", "BidMatrix", "1"),
             data_classes.BidMethod: dm.ViewId("power-ops-day-ahead-bid", "BidMethod", "1"),
-            data_classes.CustomBidMatrix: dm.ViewId("power-ops-day-ahead-bid", "CustomBidMatrix", "1"),
-            data_classes.CustomBidMethod: dm.ViewId("power-ops-day-ahead-bid", "CustomBidMethod", "1"),
             data_classes.MultiScenarioMatrix: dm.ViewId("power-ops-day-ahead-bid", "MultiScenarioMatrix", "1"),
             data_classes.PriceArea: dm.ViewId("power-ops-day-ahead-bid", "PriceArea", "1"),
-            data_classes.SHOPMultiScenario: dm.ViewId("power-ops-day-ahead-bid", "SHOPMultiScenario", "1"),
-            data_classes.WaterValueBased: dm.ViewId("power-ops-day-ahead-bid", "WaterValueBased", "1"),
+            data_classes.SHOPMultiScenarioMethod: dm.ViewId("power-ops-day-ahead-bid", "SHOPMultiScenarioMethod", "1"),
+            data_classes.SHOPPriceScenario: dm.ViewId("power-ops-day-ahead-bid", "SHOPPriceScenario", "1"),
+            data_classes.SHOPPriceScenarioResult: dm.ViewId("power-ops-day-ahead-bid", "SHOPPriceScenarioResult", "1"),
+            data_classes.WaterValueBasedMethod: dm.ViewId("power-ops-day-ahead-bid", "WaterValueBasedMethod", "1"),
         }
 
         self.alert = AlertAPI(client, view_by_read_class)
@@ -63,12 +63,12 @@ class DayAheadBidAPI:
         self.bid_document = BidDocumentAPI(client, view_by_read_class)
         self.bid_matrix = BidMatrixAPI(client, view_by_read_class)
         self.bid_method = BidMethodAPI(client, view_by_read_class)
-        self.custom_bid_matrix = CustomBidMatrixAPI(client, view_by_read_class)
-        self.custom_bid_method = CustomBidMethodAPI(client, view_by_read_class)
         self.multi_scenario_matrix = MultiScenarioMatrixAPI(client, view_by_read_class)
         self.price_area = PriceAreaAPI(client, view_by_read_class)
-        self.shop_multi_scenario = SHOPMultiScenarioAPI(client, view_by_read_class)
-        self.water_value_based = WaterValueBasedAPI(client, view_by_read_class)
+        self.shop_multi_scenario_method = SHOPMultiScenarioMethodAPI(client, view_by_read_class)
+        self.shop_price_scenario = SHOPPriceScenarioAPI(client, view_by_read_class)
+        self.shop_price_scenario_result = SHOPPriceScenarioResultAPI(client, view_by_read_class)
+        self.water_value_based_method = WaterValueBasedMethodAPI(client, view_by_read_class)
 
     @classmethod
     def azure_project(
@@ -100,10 +100,10 @@ with the following APIs available<br />
 &nbsp;&nbsp;&nbsp;&nbsp;.bid_document<br />
 &nbsp;&nbsp;&nbsp;&nbsp;.bid_matrix<br />
 &nbsp;&nbsp;&nbsp;&nbsp;.bid_method<br />
-&nbsp;&nbsp;&nbsp;&nbsp;.custom_bid_matrix<br />
-&nbsp;&nbsp;&nbsp;&nbsp;.custom_bid_method<br />
 &nbsp;&nbsp;&nbsp;&nbsp;.multi_scenario_matrix<br />
 &nbsp;&nbsp;&nbsp;&nbsp;.price_area<br />
-&nbsp;&nbsp;&nbsp;&nbsp;.shop_multi_scenario<br />
-&nbsp;&nbsp;&nbsp;&nbsp;.water_value_based<br />
+&nbsp;&nbsp;&nbsp;&nbsp;.shop_multi_scenario_method<br />
+&nbsp;&nbsp;&nbsp;&nbsp;.shop_price_scenario<br />
+&nbsp;&nbsp;&nbsp;&nbsp;.shop_price_scenario_result<br />
+&nbsp;&nbsp;&nbsp;&nbsp;.water_value_based_method<br />
 """

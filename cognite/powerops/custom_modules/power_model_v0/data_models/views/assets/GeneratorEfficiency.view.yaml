@@ -1,0 +1,63 @@
+space: '{{powerops_models}}'
+externalId: GeneratorEfficiencyCurve
+name: GeneratorEfficiencyCurve
+description: Describes the efficiency curve for a generator
+filter:
+  and:
+<<<<<<<< HEAD:cognite/powerops/custom_modules/power_model_v0/data_models/views/assets/GeneratorEfficiency.view.yaml
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: EfficiencyCurve
+  - equals:
+      property:
+      - node
+      - space
+      value: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: GeneratorEfficiencyCurve
+        space: '{{powerops_type_space}}'
+implements: []
+version: '{{version}}'
+========
+    - hasData:
+      - type: container
+        space: '{{asset_space}}'
+        externalId: EfficiencyCurve
+    - equals:
+        property:
+         - node
+         - type
+        value:
+          space: '{{type_space}}'
+          externalId: GeneratorEfficiencyCurve
+>>>>>>>> main:cognite/powerops/custom_modules/power_model_v0/data_models/views/asset-GeneratorEfficiency.view.yaml
+properties:
+  ref:
+    container:
+      space: '{{powerops_models}}'
+      externalId: EfficiencyCurve
+      type: container
+    containerPropertyIdentifier: ref
+    name: ref
+    description: The reference value
+  power:
+    container:
+      space: '{{powerops_models}}'
+      externalId: EfficiencyCurve
+      type: container
+    containerPropertyIdentifier: x
+    name: power
+    description: The generator power values
+  efficiency:
+    container:
+      space: '{{powerops_models}}'
+      externalId: EfficiencyCurve
+      type: container
+    containerPropertyIdentifier: efficiency
+    name: efficiency
+    description: The generator efficiency values

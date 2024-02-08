@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cognite-power-ops"
-version = "0.82.1"
+version = "0.83.0"
 description = "SDK for power markets operations on Cognite Data Fusion"
 readme = "README.md"
 authors = ["Cognite <support@cognite.com>"]
@@ -68,7 +68,8 @@ tomli = {version = "^2.0.1", python = "<3.11"}
 StrEnum = {version = "^0.4.15", python = "<3.11"}
 tomli-w = "^1.0.0"
 tabulate = "^0.9"
-
+cognite-toolkit = "==0.1.0b7"
+cognite-pygen = {version = ">=0.99.6", extras = ["all"]}
 
 mkdocs =  {version="*", optional=true}
 mkdocs-jupyter = {version="*", optional=true}
@@ -80,8 +81,6 @@ mkdocs-gitbook = {version="*", optional=true}
 mkdocs-glightbox = {version="*", optional=true}
 pymdown-extensions = {version="*", optional=true}
 mkdocstrings = {version="*", optional=true, extras=["python"]}
-cognite-toolkit = "^0.1.0a2"
-cognite-pygen = "^0.99.6"
 
 [tool.poetry.extras]
 docs = ["mkdocs", "mkdocs-jupyter", "mkdocs-material", "mkdocs-material-extensions", "mkdocs-git-revision-date-localized-plugin",

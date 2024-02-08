@@ -1,0 +1,25 @@
+space: '{{dayahead_model_space}}'
+externalId: SHOPPriceScenario
+name: SHOPPriceScenario
+version: '{{dayaheadbid_SHOPPriceScenario_version}}'
+filter:
+    hasData:
+    - type: container
+      space: '{{dayahead_model_space}}'
+      externalId: SHOPPriceScenario
+properties:
+  name:
+    container:
+      space: '{{dayahead_model_space}}'
+      externalId: SHOPPriceScenario
+      type: container
+    containerPropertyIdentifier: name
+    name: name
+    description: Name for the BidMethod
+  price:
+    container:
+      space: '{{dayahead_model_space}}'
+      externalId: SHOPPriceScenario
+      type: container
+    containerPropertyIdentifier: price
+    name: timeSeries

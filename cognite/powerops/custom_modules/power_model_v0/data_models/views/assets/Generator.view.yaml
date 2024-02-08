@@ -1,0 +1,106 @@
+space: '{{powerops_models}}'
+externalId: Generator
+name: Generator
+description: A generator
+filter:
+  and:
+<<<<<<<< HEAD:cognite/powerops/custom_modules/power_model_v0/data_models/views/assets/Generator.view.yaml
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: Generator
+  - equals:
+      property:
+      - node
+      - space
+      value: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: Generator
+        space: '{{powerops_type_space}}'
+implements:
+- space: '{{powerops_models}}'
+  externalId: PowerAsset
+  version: '{{version}}'
+  type: view
+version: '{{version}}'
+========
+    - hasData:
+      - type: container
+        space: '{{shared_model_space}}'
+        externalId: Generator
+      - type: container
+        space: '{{shared_model_space}}'
+        externalId: Asset
+    - equals:
+        property:
+         - node
+         - type
+        value:
+          space: '{{type_space}}'
+          externalId: Generator
+>>>>>>>> main:cognite/powerops/custom_modules/power_model_v0/data_models/views/asset-Generator.view.yaml
+properties:
+  pMin:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Generator
+      type: container
+    containerPropertyIdentifier: pMin
+    name: pMin
+  penstock:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Generator
+      type: container
+    containerPropertyIdentifier: penstock
+    name: penstock
+  startCost:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Generator
+      type: container
+    containerPropertyIdentifier: startCost
+    name: startCost
+  startStopCost:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Generator
+      type: container
+    containerPropertyIdentifier: startStopCost
+    name: startStopCost
+  isAvailableTimeSeries:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Generator
+      type: container
+    containerPropertyIdentifier: isAvailable
+    name: isAvailableTimeSeries
+  efficiencyCurve:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Generator
+      type: container
+    containerPropertyIdentifier: efficiencyCurve
+    name: generatorEfficiency
+    source:
+      space: '{{powerops_models}}'
+      externalId: GeneratorEfficiencyCurve
+      version: '{{version}}'
+      type: view
+  turbineCurves:
+    type:
+      space: '{{powerops_type_space}}'
+      externalId: isSubAssetOf
+    source:
+      space: '{{powerops_models}}'
+      externalId: TurbineEfficiencyCurve
+      version: '{{version}}'
+      type: view
+    direction: outwards
+    name: turbineCurves
+    description: The watercourses that are connected to the PriceArea.
+    connectionType: multi_edge_connection

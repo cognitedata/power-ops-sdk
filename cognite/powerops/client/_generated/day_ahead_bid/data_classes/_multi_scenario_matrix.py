@@ -3,7 +3,6 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
-from cognite.client.data_classes import TimeSeries as CogniteTimeSeries
 from pydantic import Field
 
 from ._core import (
@@ -16,13 +15,13 @@ from ._core import (
     DomainModelList,
     DomainRelationApply,
     ResourcesApply,
-    TimeSeries,
 )
 from ._bid_matrix import BidMatrix, BidMatrixApply
 
 if TYPE_CHECKING:
     from ._alert import Alert, AlertApply
     from ._bid_method import BidMethod, BidMethodApply
+    from ._shop_price_scenario_result import SHOPPriceScenarioResult, SHOPPriceScenarioResultApply
 
 
 __all__ = [
@@ -35,16 +34,14 @@ __all__ = [
 ]
 
 
-MultiScenarioMatrixTextFields = Literal["resource_cost", "matrix", "asset_type", "asset_id", "production", "price"]
-MultiScenarioMatrixFields = Literal["resource_cost", "matrix", "asset_type", "asset_id", "production", "price"]
+MultiScenarioMatrixTextFields = Literal["resource_cost", "matrix", "asset_type", "asset_id"]
+MultiScenarioMatrixFields = Literal["resource_cost", "matrix", "asset_type", "asset_id"]
 
 _MULTISCENARIOMATRIX_PROPERTIES_BY_FIELD = {
     "resource_cost": "resourceCost",
     "matrix": "matrix",
     "asset_type": "assetType",
     "asset_id": "assetId",
-    "production": "production",
-    "price": "price",
 }
 
 
@@ -63,15 +60,15 @@ class MultiScenarioMatrix(BidMatrix):
         asset_id: The asset id field.
         method: The method field.
         alerts: The alert field.
-        production: The production field.
-        price: The price field.
+        scenario_results: An array of results, one for each scenario.
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
         "power-ops-types", "DayAheadMultiScenarioMatrix"
     )
-    production: Union[list[TimeSeries], list[str], None] = None
-    price: Union[list[TimeSeries], list[str], None] = None
+    scenario_results: Union[list[SHOPPriceScenarioResult], list[str], None] = Field(
+        default=None, repr=False, alias="scenarioResults"
+    )
 
     def as_apply(self) -> MultiScenarioMatrixApply:
         """Convert this read version of multi scenario matrix to the writing version."""
@@ -85,8 +82,10 @@ class MultiScenarioMatrix(BidMatrix):
             asset_id=self.asset_id,
             method=self.method.as_apply() if isinstance(self.method, DomainModel) else self.method,
             alerts=[alert.as_apply() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
-            production=self.production,
-            price=self.price,
+            scenario_results=[
+                scenario_result.as_apply() if isinstance(scenario_result, DomainModel) else scenario_result
+                for scenario_result in self.scenario_results or []
+            ],
         )
 
 
@@ -105,15 +104,15 @@ class MultiScenarioMatrixApply(BidMatrixApply):
         asset_id: The asset id field.
         method: The method field.
         alerts: The alert field.
-        production: The production field.
-        price: The price field.
+        scenario_results: An array of results, one for each scenario.
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
         "power-ops-types", "DayAheadMultiScenarioMatrix"
     )
-    production: Union[list[TimeSeries], list[str], None] = None
-    price: Union[list[TimeSeries], list[str], None] = None
+    scenario_results: Union[list[SHOPPriceScenarioResultApply], list[str], None] = Field(
+        default=None, repr=False, alias="scenarioResults"
+    )
 
     def _to_instances_apply(
         self,
@@ -149,16 +148,6 @@ class MultiScenarioMatrixApply(BidMatrixApply):
                 "externalId": self.method if isinstance(self.method, str) else self.method.external_id,
             }
 
-        if self.production is not None or write_none:
-            properties["production"] = [
-                value if isinstance(value, str) else value.external_id for value in self.production or []
-            ] or None
-
-        if self.price is not None or write_none:
-            properties["price"] = [
-                value if isinstance(value, str) else value.external_id for value in self.price or []
-            ] or None
-
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -182,15 +171,20 @@ class MultiScenarioMatrixApply(BidMatrixApply):
             )
             resources.extend(other_resources)
 
+        edge_type = dm.DirectRelationReference("power-ops-types", "scenarioResult")
+        for scenario_result in self.scenario_results or []:
+            other_resources = DomainRelationApply.from_edge_to_resources(
+                cache,
+                start_node=self,
+                end_node=scenario_result,
+                edge_type=edge_type,
+                view_by_read_class=view_by_read_class,
+            )
+            resources.extend(other_resources)
+
         if isinstance(self.method, DomainModelApply):
             other_resources = self.method._to_instances_apply(cache, view_by_read_class)
             resources.extend(other_resources)
-
-        if isinstance(self.production, CogniteTimeSeries):
-            resources.time_series.append(self.production)
-
-        if isinstance(self.price, CogniteTimeSeries):
-            resources.time_series.append(self.price)
 
         return resources
 

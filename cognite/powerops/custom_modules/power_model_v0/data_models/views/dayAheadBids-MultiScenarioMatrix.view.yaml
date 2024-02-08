@@ -1,0 +1,36 @@
+space: '{{dayahead_model_space}}'
+externalId: MultiScenarioMatrix
+name: MultiScenarioMatrix
+filter:
+  and:
+    - hasData:
+      - type: container
+        space: '{{dayahead_model_space}}'
+        externalId: BidMatrix
+    - equals:
+        property:
+        - node
+        - type
+        value:
+          space: '{{type_space}}'
+          externalId: DayAheadMultiScenarioMatrix
+implements:
+- space: '{{dayahead_model_space}}'
+  externalId: BidMatrix
+  version: '{{dayaheadbid_BidMatrix_version}}'
+  type: view
+version: '{{dayaheadbid_MultiScenarioMatrix_version}}'
+properties:
+  scenarioResults:
+    type:
+      space: '{{type_space}}'
+      externalId: scenarioResult
+    source:
+      space: '{{dayahead_model_space}}'
+      externalId: SHOPPriceScenarioResult
+      version: '{{dayaheadbid_SHOPPriceScenarioResult_version}}'
+      type: view
+    direction: outwards
+    name: scenarioResults
+    description: An array of results, one for each scenario.
+    connectionType: multiEdgeConnection

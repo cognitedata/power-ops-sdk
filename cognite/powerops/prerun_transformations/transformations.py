@@ -454,7 +454,7 @@ class HeightToVolume(DynamicTransformation):
 
     @property
     def heights(self):
-        return self._volumes
+        return self._heights
 
     @heights.setter
     def heights(self, value: list[float]):

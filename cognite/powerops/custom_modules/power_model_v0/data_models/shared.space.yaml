@@ -1,0 +1,3 @@
+space: {{shared_model_space}}
+name: PowerOpsShared
+description: Shared views, containers and models for PowerOps.

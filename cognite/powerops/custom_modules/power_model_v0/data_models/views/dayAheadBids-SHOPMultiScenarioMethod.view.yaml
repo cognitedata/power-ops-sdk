@@ -1,0 +1,46 @@
+space: '{{dayahead_model_space}}'
+externalId: SHOPMultiScenarioMethod
+name: SHOPMultiScenarioMethod
+filter:
+  and:
+    - hasData:
+      - type: container
+        space: '{{shared_model_space}}'
+        externalId: BidMethod
+      - type: container
+        space: '{{dayahead_model_space}}'
+        externalId: SHOPMultiScenario
+    - equals:
+        property:
+        - node
+        - type
+        value:
+          space: '{{type_space}}'
+          externalId: DayAheadSHOPMultiScenarioMethod
+implements:
+- space: '{{dayahead_model_space}}'
+  externalId: BidMethod
+  version: '{{dayaheadbid_BidMethod_version}}'
+  type: view
+version: '{{dayaheadbid_SHOPMultiScenarioMethod_version}}'
+properties:
+  shopCases:
+    container:
+      space: '{{dayahead_model_space}}'
+      externalId: SHOPMultiScenario
+      type: container
+    containerPropertyIdentifier: shopCases
+    name: shopCases
+  priceScenarios:
+    type:
+      space: '{{type_space}}'
+      externalId: PriceScenario
+    source:
+      space: '{{dayahead_model_space}}'
+      externalId: SHOPPriceScenario
+      version: '{{dayaheadbid_SHOPPriceScenario_version}}'
+      type: view
+    direction: outwards
+    name: priceScenarios
+    description: An array of scenarios for this bid method.
+    connectionType: multiEdgeConnection

@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
+from cognite.client.data_classes import TimeSeries as CogniteTimeSeries
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
@@ -14,68 +15,75 @@ from ._core import (
     DomainModelList,
     DomainRelationApply,
     ResourcesApply,
+    TimeSeries,
 )
 
 
 __all__ = [
-    "BidMethod",
-    "BidMethodApply",
-    "BidMethodList",
-    "BidMethodApplyList",
-    "BidMethodFields",
-    "BidMethodTextFields",
+    "SHOPPriceScenario",
+    "SHOPPriceScenarioApply",
+    "SHOPPriceScenarioList",
+    "SHOPPriceScenarioApplyList",
+    "SHOPPriceScenarioFields",
+    "SHOPPriceScenarioTextFields",
 ]
 
 
-BidMethodTextFields = Literal["name"]
-BidMethodFields = Literal["name"]
+SHOPPriceScenarioTextFields = Literal["name", "price"]
+SHOPPriceScenarioFields = Literal["name", "price"]
 
-_BIDMETHOD_PROPERTIES_BY_FIELD = {
+_SHOPPRICESCENARIO_PROPERTIES_BY_FIELD = {
     "name": "name",
+    "price": "price",
 }
 
 
-class BidMethod(DomainModel):
-    """This represents the reading version of bid method.
+class SHOPPriceScenario(DomainModel):
+    """This represents the reading version of shop price scenario.
 
     It is used to when data is retrieved from CDF.
 
     Args:
         space: The space where the node is located.
-        external_id: The external id of the bid method.
-        data_record: The data record of the bid method node.
+        external_id: The external id of the shop price scenario.
+        data_record: The data record of the shop price scenario node.
         name: Name for the BidMethod
+        price: The price field.
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power-ops-types", "AFRRBidMethod")
+    node_type: Union[dm.DirectRelationReference, None] = None
     name: str
+    price: Union[TimeSeries, str, None] = None
 
-    def as_apply(self) -> BidMethodApply:
-        """Convert this read version of bid method to the writing version."""
-        return BidMethodApply(
+    def as_apply(self) -> SHOPPriceScenarioApply:
+        """Convert this read version of shop price scenario to the writing version."""
+        return SHOPPriceScenarioApply(
             space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
             name=self.name,
+            price=self.price,
         )
 
 
-class BidMethodApply(DomainModelApply):
-    """This represents the writing version of bid method.
+class SHOPPriceScenarioApply(DomainModelApply):
+    """This represents the writing version of shop price scenario.
 
     It is used to when data is sent to CDF.
 
     Args:
         space: The space where the node is located.
-        external_id: The external id of the bid method.
-        data_record: The data record of the bid method node.
+        external_id: The external id of the shop price scenario.
+        data_record: The data record of the shop price scenario node.
         name: Name for the BidMethod
+        price: The price field.
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("power-ops-types", "AFRRBidMethod")
+    node_type: Union[dm.DirectRelationReference, None] = None
     name: str
+    price: Union[TimeSeries, str, None] = None
 
     def _to_instances_apply(
         self,
@@ -87,12 +95,20 @@ class BidMethodApply(DomainModelApply):
         if self.as_tuple_id() in cache:
             return resources
 
-        write_view = (view_by_read_class or {}).get(BidMethod, dm.ViewId("power-ops-afrr-bid", "BidMethod", "1"))
+        write_view = (view_by_read_class or {}).get(
+            SHOPPriceScenario, dm.ViewId("power-ops-day-ahead-bid", "SHOPPriceScenario", "1")
+        )
 
         properties: dict[str, Any] = {}
 
         if self.name is not None:
             properties["name"] = self.name
+
+        if self.price is not None or write_none:
+            if isinstance(self.price, str) or self.price is None:
+                properties["price"] = self.price
+            else:
+                properties["price"] = self.price.external_id
 
         if properties:
             this_node = dm.NodeApply(
@@ -110,26 +126,29 @@ class BidMethodApply(DomainModelApply):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
+        if isinstance(self.price, CogniteTimeSeries):
+            resources.time_series.append(self.price)
+
         return resources
 
 
-class BidMethodList(DomainModelList[BidMethod]):
-    """List of bid methods in the read version."""
+class SHOPPriceScenarioList(DomainModelList[SHOPPriceScenario]):
+    """List of shop price scenarios in the read version."""
 
-    _INSTANCE = BidMethod
+    _INSTANCE = SHOPPriceScenario
 
-    def as_apply(self) -> BidMethodApplyList:
-        """Convert these read versions of bid method to the writing versions."""
-        return BidMethodApplyList([node.as_apply() for node in self.data])
-
-
-class BidMethodApplyList(DomainModelApplyList[BidMethodApply]):
-    """List of bid methods in the writing version."""
-
-    _INSTANCE = BidMethodApply
+    def as_apply(self) -> SHOPPriceScenarioApplyList:
+        """Convert these read versions of shop price scenario to the writing versions."""
+        return SHOPPriceScenarioApplyList([node.as_apply() for node in self.data])
 
 
-def _create_bid_method_filter(
+class SHOPPriceScenarioApplyList(DomainModelApplyList[SHOPPriceScenarioApply]):
+    """List of shop price scenarios in the writing version."""
+
+    _INSTANCE = SHOPPriceScenarioApply
+
+
+def _create_shop_price_scenario_filter(
     view_id: dm.ViewId,
     name: str | list[str] | None = None,
     name_prefix: str | None = None,

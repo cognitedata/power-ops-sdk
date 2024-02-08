@@ -3,6 +3,7 @@ from __future__ import annotations
 import itertools
 import logging
 import re
+import warnings
 from collections import defaultdict
 from dataclasses import asdict, dataclass
 from graphlib import TopologicalSorter
@@ -12,19 +13,28 @@ from typing import Any, Generic, TypeVar
 import yaml
 from cognite.client import CogniteClient
 from cognite.client.data_classes import filters
-from cognite.client.data_classes.data_modeling.data_types import DirectRelation
 from cognite.client.data_classes.data_modeling import (
+    ContainerApply,
     ContainerApplyList,
     DataModelApply,
     DataModelApplyList,
+    DirectRelation,
     MappedPropertyApply,
+    NodeApply,
     NodeApplyList,
     NodeId,
+    SpaceApply,
     SpaceApplyList,
     ViewApplyList,
     ViewId,
 )
-from cognite.client.data_classes.data_modeling.views import SingleHopConnectionDefinitionApply, ViewApply
+from cognite.client.data_classes.data_modeling.views import (
+    MappedProperty,
+    MultiEdgeConnection,
+    SingleHopConnectionDefinitionApply,
+    ViewApply,
+    ViewList,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -133,9 +143,8 @@ class DataModelAPI(Generic[T_ResourceList]):
                 views_to_check = list(view.implements or [])
                 while views_to_check:
                     view_to_check = views_to_check.pop()
-                    if view_to_check in view_by_id:
-                        prop_to_pop.extend(view_by_id[view_to_check].properties)
-                        views_to_check.extend(view_by_id[view_to_check].implements or [])
+                    prop_to_pop.extend(view_by_id[view_to_check].properties or [])
+                    views_to_check.extend(view_by_id[view_to_check].implements or [])
                 for prop in prop_to_pop:
                     view.properties.pop(prop, None)
         return retrieved_apply
@@ -190,65 +199,57 @@ class SpaceAPI(DataModelAPI[SpaceApplyList]):
 
 
 class DataModelLoader:
-    def __init__(self):
-        self._source_dir = _DMS_DIR
-        self._config_file = _DMS_DIR / "config.yaml"
-        if not self._config_file.exists():
-            raise ValueError(f"Missing config file {self._config_file!s}. Expected to be in {_DMS_DIR!s}")
-        self._config = yaml.safe_load(self._config_file.read_text())
+    def __init__(self, source_dir: Path):
+        self._source_dir = source_dir
 
     def load(self) -> Schema:
-        resource_cls = {
-            "space": SpaceApplyList,
-            "container": ContainerApplyList,
-            "view": ViewApplyList,
-            "data_model": DataModelApplyList,
-            "node": NodeApplyList,
+        resources_by_type = defaultdict(list)
+        resource_cls_by_type = {
+            "space": SpaceApply,
+            "view": ViewApply,
+            "container": ContainerApply,
+            "node": NodeApply,
+            "data_model": DataModelApply,
         }
 
-        resources_by_type = defaultdict(list)
+        failed: list[tuple[Path, str]] = []
         for filepath in self._source_dir.glob("**/*.yaml"):
             if match := re.match(r".*(?P<type>(space|view|container|node|data_model))\.yaml$", filepath.name):
+                type_ = match.group("type")
+                resource_cls = resource_cls_by_type[type_]
                 loaded = self._load_file(filepath)
-                if isinstance(loaded, list):
-                    resources_by_type[match.group("type")].extend(loaded)
-                    to_load = loaded
-                else:
-                    resources_by_type[match.group("type")].append(loaded)
-                    to_load = [loaded]
                 try:
-                    resource_cls[match.group("type")].load(to_load)
-                except Exception as e:
-                    raise ValueError(f"Failed to load {filepath.relative_to(Path.cwd())}") from e
-
+                    if isinstance(loaded, list):
+                        parsed = [resource_cls.load(item) for item in loaded]
+                        resources_by_type[match.group("type")].extend(parsed)
+                    else:
+                        parsed = resource_cls.load(loaded)
+                        resources_by_type[match.group("type")].append(parsed)
+                except Exception as exc:
+                    failed.append((filepath, str(exc)))
+        if failed:
+            raise ValueError(
+                f"Failed to load {len(failed)} files:\n"
+                + "\n".join(f"{filepath.relative_to(Path.cwd())}: {exc}" for filepath, exc in failed)
+            )
         return Schema(
-            containers=ContainerApplyList.load(resources_by_type["container"]),
-            _views=ViewApplyList.load(resources_by_type["view"]),
-            _data_models=DataModelApplyList.load(resources_by_type["data_model"]),
-            spaces=SpaceApplyList.load(resources_by_type["space"]),
-            node_types=NodeApplyList.load(resources_by_type["node"]),
+            containers=ContainerApplyList(resources_by_type["container"]),
+            _views=ViewApplyList(resources_by_type["view"]),
+            _data_models=DataModelApplyList(resources_by_type["data_model"]),
+            spaces=SpaceApplyList(resources_by_type["space"]),
+            node_types=NodeApplyList(resources_by_type["node"]),
         )
 
     def _load_file(self, filepath: Path) -> dict[str, Any] | list[dict[str, Any]]:
         file_contents = filepath.read_text()
-        for variable, value in self._config.items():
-            file_contents = file_contents.replace(f"{{{{{ variable }}}}}", value)
-        if "{{" in file_contents:
-            errors = []
-            for line_no, line in enumerate(file_contents.split("\n"), start=1):
-                if "{{" in line:
-                    position = line.index("{{")
-                    errors.append(f"Line {line_no} - col {position}: {line[position:position+20]!r}")
-            errors = "\n".join(errors) if errors else ""
-            raise ValueError(f"Unresolved variables in {filepath.relative_to(Path.cwd())} near: {errors}")
         return yaml.safe_load(file_contents)
 
     @classmethod
     def validate(cls, schema: Schema):
         defined_spaces = {space.space for space in schema.spaces}
         defined_containers = {container.as_id() for container in schema.containers}
-        defined_views = {view.as_id() for view in schema._views}
         defined_node_types = {node_type.as_id() for node_type in schema.node_types}
+        defined_views = {view.as_id() for view in schema._views}
         defined_interfaces = {parent for view in schema._views for parent in view.implements or []}
         properties_by_container = {container.as_id(): set(container.properties) for container in schema.containers}
         properties_by_view = {view.as_id(): set(view.properties) for view in schema._views}
@@ -312,7 +313,9 @@ class DataModelLoader:
                     if prop.container_property_identifier not in properties_by_container.get(prop.container, set()):
                         non_existent_container_properties.append(ref_view_id.as_property_ref(prop_name))
                     if prop.container_property_identifier in properties_by_container.get(prop.container, set()):
-                        container_property_relation_type = containers_by_id[prop.container].properties[prop.container_property_identifier].type
+                        container_property_relation_type = (
+                            containers_by_id[prop.container].properties[prop.container_property_identifier].type
+                        )
                         if type(container_property_relation_type) == DirectRelation and not prop.source:
                             direct_relation_missing_source.append(ref_view_id.as_property_ref(prop_name))
                 elif isinstance(prop, SingleHopConnectionDefinitionApply):
@@ -356,6 +359,72 @@ class DataModelLoader:
         if direct_relation_missing_source:
             message = "\n".join(map(str, direct_relation_missing_source))
             raise ValueError(f"These properties in views refers to direct relations without a source:\n{message}")
+
+    @classmethod
+    def changed_views(cls, client: CogniteClient, schema: Schema) -> dict[ViewId, set[ViewId]]:
+        existing_read_views = client.data_modeling.views.retrieve(schema.views.as_ids())
+        dependencies_by_view_id = cls._dependencies_by_view(existing_read_views)
+        existing_views = cls._views_as_write(existing_read_views)
+
+        existing_view_by_id = {view.as_id(): view for view in existing_views}
+        changed_with_dependencies: dict[ViewId, set[ViewId]] = {}
+        for view in schema.views:
+            view_id = view.as_id()
+            if (existing := existing_view_by_id.get(view_id)) and existing.dump() != view.dump():
+                dependencies = dependencies_by_view_id[view_id]
+                checked = set()
+                while dependencies:
+                    checked |= dependencies
+                    dependencies = {
+                        dep
+                        for dep in itertools.chain(*(dependencies_by_view_id.get(dep, []) for dep in dependencies))
+                        if dep not in checked
+                    }
+                changed_with_dependencies[view_id] = checked
+        return changed_with_dependencies
+
+    @staticmethod
+    def _views_as_write(views: ViewList) -> ViewApplyList:
+        write_views = ViewApplyList([])
+        view_by_id = {view.as_id(): view for view in views}
+        for view in views:
+            write_view = view.as_apply()
+            for parent in view.implements or []:
+                parent_properties = (parent_view := view_by_id.get(parent)) and parent_view.properties or {}
+                for prop in parent_properties:
+                    write_view.properties.pop(prop, None)
+            write_views.append(write_view)
+        return write_views
+
+    @staticmethod
+    def _dependencies_by_view(views: ViewApplyList):
+        view_by_id = {view.as_id(): view for view in views}
+
+        graph: dict[ViewId, set[ViewId]] = defaultdict(set)
+        for view in views:
+            dependencies = set()
+            for prop in view.properties.values():
+                source: ViewId | None = None
+                if isinstance(prop, MappedProperty) and isinstance(prop.type, DirectRelation) and prop.source:
+                    source = prop.source
+                elif isinstance(prop, MultiEdgeConnection):
+                    source = prop.source
+
+                if source and source in view_by_id:
+                    dependencies.add(source)
+                elif source:
+                    warnings.warn(
+                        f"The view {source} referenced by {view.as_id()} is not in the data model. Skipping it.",
+                        stacklevel=2,
+                    )
+
+            for parent in view.implements or []:
+                dependencies.add(parent)
+
+            graph[view.as_id()] |= dependencies
+            for dep in dependencies:
+                graph[dep] |= {view.as_id()}
+        return graph
 
     @classmethod
     def deploy(cls, client: CogniteClient, schema: Schema, is_dev: bool = False) -> list[dict]:
@@ -414,12 +483,3 @@ class DataModelLoader:
         view = DataModelAPI[ViewApplyList](client.data_modeling.views, client)
         data_model = DataModelAPI[DataModelApplyList](client.data_modeling.data_models, client)
         return {space: set(), container: {space}, view: {space, container}, data_model: {space, container, view}}
-
-
-if __name__ == "__main__":
-    # This is here to make it easy to check that the models are valid (all variables are resolved)
-    loader = DataModelLoader()
-    schema = loader.load()
-    print("Schema loaded")
-    DataModelLoader.validate(schema)
-    print("Schema validated")

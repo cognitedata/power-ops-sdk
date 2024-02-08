@@ -1,0 +1,51 @@
+environment:
+  name: dev
+  project: power-ops-staging
+  type: dev
+  selected_modules_and_packages:
+  - power_model_v0
+
+modules:
+  custom_modules:
+    power_model_v0:
+      # variables used for substitution in other files in this directory
+      afrr_model_space: 'power-ops-afrr-bid'
+      dayahead_model_space: 'power-ops-day-ahead-bid'
+      shared_model_space: 'power-ops-shared'
+      type_space: 'power-ops-types'
+      powerops_instance_space: 'power-ops-instance'
+      asset_space: 'power-ops-assets'
+
+      # Shared Model Views
+      base_BidDocument_version: '1'
+      base_Alert_version: '1'
+      base_BidMethod_version: '1'
+
+      # AFRR Bid Model Views
+      afrrbid_BidDocument_version: '1'
+      afrrbid_BidMethod_version: '1'
+      afrrbid_BidRow_version: '1'
+      afrrbid_PriceArea_version: '1'
+
+      # Day-Ahead Bid Model Views
+      dayaheadbid_BidDocument_version: '1'
+      dayaheadbid_BidMethod_version: '1'
+      dayaheadbid_BidMatrix_version: '1'
+      dayaheadbid_PriceArea_version: '1'
+      dayaheadbid_SHOPMultiScenarioMethod_version: '1'
+      dayaheadbid_MultiScenarioMatrix_version: '1'
+      dayaheadbid_CustomBidMethod_version: '1'
+      dayaheadbid_WaterValueBasedMethod_version: '1'
+      dayaheadbid_BasicBidMatrix_version: '1'
+      dayaheadbid_CustomBidMatrix_version: '1'
+      dayaheadbid_SHOPPriceScenario_version: '1'
+      dayaheadbid_SHOPPriceScenarioResult_version: '1'
+
+      # Asset Model Views
+      asset_PriceArea_version: '1'
+      asset_Watercourse_version: '1'
+      asset_Plant_version: '1'
+      asset_Generator_version: '1'
+      asset_Reservoir_version: '1'
+      asset_TurbineEfficiency_version: '1'
+      asset_GeneratorEfficiency_version: '1'

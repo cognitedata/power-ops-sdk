@@ -1,0 +1,23 @@
+space: '{{dayahead_model_space}}'
+externalId: WaterValueBasedMethod
+name: WaterValueBasedMethod
+filter:
+  and:
+    - hasData:
+      - type: container
+        space: '{{shared_model_space}}'
+        externalId: BidMethod
+    - equals:
+        property:
+        - node
+        - type
+        value:
+          space: '{{type_space}}'
+          externalId: DayAheadWaterValueBasedMethod
+implements:
+- space: '{{dayahead_model_space}}'
+  externalId: BidMethod
+  version: '{{dayaheadbid_BidMethod_version}}'
+  type: view
+version: '{{dayaheadbid_WaterValueBasedMethod_version}}'
+properties: {}
