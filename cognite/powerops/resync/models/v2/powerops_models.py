@@ -18,6 +18,7 @@ from cognite.client.data_classes.data_modeling import (
     DataModelApply,
     DataModelApplyList,
     MappedPropertyApply,
+    NodeApply,
     NodeApplyList,
     NodeId,
     SpaceApply,
@@ -198,6 +199,7 @@ class DataModelLoader:
             "space": SpaceApply,
             "view": ViewApply,
             "container": ContainerApply,
+            "node": NodeApply,
             "data_model": DataModelApply,
         }
 
@@ -237,6 +239,7 @@ class DataModelLoader:
     def validate(cls, schema: Schema):
         defined_spaces = {space.space for space in schema.spaces}
         defined_containers = {container.as_id() for container in schema.containers}
+        defined_node_types = {node_type.as_id() for node_type in schema.node_types}
         defined_views = {view.as_id() for view in schema._views}
         defined_interfaces = {parent for view in schema._views for parent in view.implements or []}
         properties_by_container = {container.as_id(): set(container.properties) for container in schema.containers}
@@ -313,6 +316,11 @@ class DataModelLoader:
         if undefined_views := set(referred_views).difference(defined_views):
             referred_to_by = list(itertools.chain(*(referred_views[view] for view in undefined_views)))
             raise ValueError(f"Undefined views: {undefined_views}: referred to by {referred_to_by}")
+        if undefined_node_types := set(referred_node_types).difference(defined_node_types):
+            referred_to_by = list(
+                itertools.chain(*(referred_node_types[node_type] for node_type in undefined_node_types))
+            )
+            raise ValueError(f"Undefined node types: {undefined_node_types}: referred to by {referred_to_by}")
         if non_existent_container_properties:
             message = "\n".join(map(str, non_existent_container_properties))
             raise ValueError(f"These properties in views refers to container properties that does not exist: {message}")

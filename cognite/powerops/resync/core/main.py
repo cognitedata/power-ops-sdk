@@ -89,17 +89,21 @@ def init(client: PowerOpsClient | None, is_dev: bool = False, dry_run: bool = Fa
         build(ctx=ctx, source_dir=str(powerops_folder), build_dir="build", build_env="dev", clean=True)
 
     build_folder = Path.cwd() / "build"
+    # Bug in toolkit that places the containers and views in the wrong folder
     for file in itertools.chain((build_folder / "containers").glob("*.yaml"), (build_folder / "views").glob("*.yaml")):
         shutil.move(file, build_folder / "data_models" / file.name)
 
-    for folder in ["containers", "views", "node_types"]:
+    for folder in ["containers", "views"]:
         shutil.rmtree(build_folder / folder)
 
-    loader = DataModelLoader(build_folder / "data_models")
+    loader = DataModelLoader(build_folder)
     schema = loader.load()
     logger.info("Loaded all powerops data models")
     DataModelLoader.validate(schema)
     logger.info("Validated all powerops data models")
+
+    # Toolkit does not deploy the nodes:
+    shutil.rmtree(build_folder / "nodes")
 
     with environment_variables({"SENTRY_ENABLED": "false"}):
         ctx = Context(Command("deploy"))
