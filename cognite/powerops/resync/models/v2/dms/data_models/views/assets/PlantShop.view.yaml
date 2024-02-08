@@ -1,7 +1,7 @@
 space: '{{powerops_models}}'
 externalId: PlantShop
-description: A minimal representation of a Plant - only data that is needed for Shop
 name: PlantShop
+description: A minimal representation of a Plant - only data that is needed for Shop
 filter:
   and:
   - hasData:

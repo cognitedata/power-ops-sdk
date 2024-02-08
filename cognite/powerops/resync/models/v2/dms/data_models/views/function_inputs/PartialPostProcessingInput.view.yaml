@@ -1,7 +1,7 @@
 space: '{{powerops_models}}'
 externalId: PartialPostProcessingInput
-description: Partial post processing input
 name: PartialPostProcessingInput
+description: Partial post processing input
 filter:
   and:
   - hasData:

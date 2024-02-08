@@ -1,7 +1,7 @@
 space: '{{powerops_models}}'
 externalId: TotalBidMatrixCalculationInput
-description: Input for the total bid matrix calculation
 name: TotalBidMatrixCalculationInput
+description: Input for the total bid matrix calculation
 filter:
   and:
   - hasData:

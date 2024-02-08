@@ -1,7 +1,7 @@
 space: '{{powerops_models}}'
 externalId: Plant
-description: Represent a plant
 name: Plant
+description: Represent a plant
 filter:
   and:
   - hasData:

@@ -1,7 +1,7 @@
 space: '{{powerops_models}}'
 externalId: Watercourse
-description: A description of the Watercourse Asset
 name: Watercourse
+description: A description of the Watercourse Asset
 filter:
   and:
   - hasData:

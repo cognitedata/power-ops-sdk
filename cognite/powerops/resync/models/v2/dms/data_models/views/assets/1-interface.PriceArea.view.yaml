@@ -1,10 +1,13 @@
 space: '{{powerops_models}}'
 externalId: PriceArea
-description: Information about the Price Area that is only relevant for AFRR
 name: PriceArea
+description: Information about the Price Area that is only relevant for AFRR
 filter:
   and:
   - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: Asset
     - type: container
       space: '{{powerops_models}}'
       externalId: PriceArea
@@ -20,12 +23,13 @@ filter:
       value:
         externalId: PriceArea
         space: '{{powerops_type_space}}'
+implements: []
 version: '{{version}}'
 properties:
   name:
     container:
       space: '{{powerops_models}}'
-      externalId: PriceArea
+      externalId: Asset
       type: container
     containerPropertyIdentifier: name
     name: name

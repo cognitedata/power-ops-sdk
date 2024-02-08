@@ -1,7 +1,7 @@
 space: '{{powerops_models}}'
 externalId: Generator
-description: A generator
 name: Generator
+description: A generator
 filter:
   and:
   - hasData:

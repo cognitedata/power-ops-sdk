@@ -1,7 +1,7 @@
 space: '{{powerops_models}}'
 externalId: GeneratorEfficiencyCurve
-description: Describes the efficiency curve for a generator
 name: GeneratorEfficiencyCurve
+description: Describes the efficiency curve for a generator
 filter:
   and:
   - hasData:
@@ -20,6 +20,7 @@ filter:
       value:
         externalId: GeneratorEfficiencyCurve
         space: '{{powerops_type_space}}'
+implements: []
 version: '{{version}}'
 properties:
   ref:

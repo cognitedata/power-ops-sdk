@@ -17,7 +17,7 @@ def main():
 
     print(f"Connected to {client.config.project}")
 
-    data_model_ids = [dm.DataModelId("sp_powerops_models", "frontend_Asset", "1")]
+    data_model_ids = [dm.DataModelId("sp_powerops_models", "all_PowerOps", "1")]
     instance_space = "sp_powerops_instance"
     node_count = 5
     for data_model_id in data_model_ids:

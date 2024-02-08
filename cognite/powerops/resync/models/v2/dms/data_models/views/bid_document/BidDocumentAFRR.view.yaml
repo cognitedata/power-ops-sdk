@@ -1,8 +1,8 @@
 space: '{{powerops_models}}'
 externalId: BidDocumentAFRR
+name: BidDocumentAFRR
 description: Whole Bid (also usually referenced in industry as a Bid Document) containing
   multiple Bid Rows (which are usually referenced in industry as Bids)
-name: BidDocumentAFRR
 filter:
   and:
   - hasData:

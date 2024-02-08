@@ -1,7 +1,7 @@
 space: '{{powerops_models}}'
 externalId: PartialPostProcessingOutput
-description: The output of the function that post-processes all raw partial bid matrices
 name: PartialPostProcessingOutput
+description: The output of the function that post-processes all raw partial bid matrices
 filter:
   and:
   - hasData:

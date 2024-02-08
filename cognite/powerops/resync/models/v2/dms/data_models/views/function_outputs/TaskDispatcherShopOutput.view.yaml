@@ -1,7 +1,7 @@
 space: '{{powerops_models}}'
 externalId: TaskDispatcherShopOutput
-description: Input to the task dispatcher in the shop bid process
 name: TaskDispatcherShopOutput
+description: Input to the task dispatcher in the shop bid process
 filter:
   and:
   - hasData:

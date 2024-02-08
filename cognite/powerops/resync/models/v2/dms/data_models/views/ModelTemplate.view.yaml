@@ -1,7 +1,7 @@
 space: '{{powerops_models}}'
 externalId: ModelTemplate
-description: The template for SHOP models
 name: ModelTemplate
+description: The template for SHOP models
 filter:
   and:
   - hasData:
@@ -20,6 +20,7 @@ filter:
       value:
         externalId: ModelTemplate
         space: '{{powerops_type_space}}'
+implements: []
 version: '{{version}}'
 properties:
   cogShopVersion:

@@ -3,15 +3,6 @@ externalId: PriceArea
 name: PriceArea
 usedFor: node
 properties:
-  name:
-    type:
-      list: false
-      collation: ucs_basic
-      type: text
-    nullable: false
-    autoIncrement: false
-    name: name
-    description: Name of the price area
   timezone:
     type:
       list: false

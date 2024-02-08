@@ -1,7 +1,7 @@
 space: '{{powerops_models}}'
 externalId: WatercourseShop
-description: A minimal representation of a Watercourse which is needed for Shop
 name: WatercourseShop
+description: A minimal representation of a Watercourse which is needed for Shop
 filter:
   and:
   - hasData:

@@ -1,7 +1,7 @@
 space: '{{powerops_models}}'
 externalId: SHOPTriggerInput
-description: Base class for all function inputs
 name: SHOPTriggerInput
+description: Base class for all function inputs
 filter:
   and:
   - hasData:

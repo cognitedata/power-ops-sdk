@@ -1,7 +1,7 @@
 space: '{{powerops_models}}'
 externalId: SHOPResult
-description: ''
 name: SHOPResult
+description: ''
 filter:
   and:
   - hasData:
@@ -20,6 +20,7 @@ filter:
       value:
         externalId: SHOPResult
         space: '{{powerops_type_space}}'
+implements: []
 version: '{{version}}'
 properties:
   scenario:

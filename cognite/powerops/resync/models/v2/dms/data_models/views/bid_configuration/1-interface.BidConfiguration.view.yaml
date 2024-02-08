@@ -1,7 +1,7 @@
 space: '{{powerops_models}}'
 externalId: BidConfiguration
-description: ''
 name: BidConfiguration
+description: ''
 filter:
   and:
   - hasData:
@@ -23,6 +23,7 @@ filter:
       value:
         externalId: BidConfiguration
         space: '{{powerops_type_space}}'
+implements: []
 version: '{{version}}'
 properties:
   method:

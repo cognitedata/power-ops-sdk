@@ -1,7 +1,7 @@
 space: '{{powerops_models}}'
 externalId: BidRow
-description: One row in the BidDocument (usually referenced in industry as a Bid).
 name: BidRow
+description: One row in the BidDocument (usually referenced in industry as a Bid).
 filter:
   and:
   - hasData:
@@ -20,6 +20,7 @@ filter:
       value:
         externalId: BidRow
         space: '{{powerops_type_space}}'
+implements: []
 version: '{{version}}'
 properties:
   price:

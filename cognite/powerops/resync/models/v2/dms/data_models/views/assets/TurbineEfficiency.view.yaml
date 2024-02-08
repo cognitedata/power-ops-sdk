@@ -1,7 +1,7 @@
 space: '{{powerops_models}}'
 externalId: TurbineEfficiencyCurve
-description: Describes the efficiency curve for a turbine
 name: TurbineEfficiencyCurve
+description: Describes the efficiency curve for a turbine
 filter:
   and:
   - hasData:
@@ -20,6 +20,7 @@ filter:
       value:
         externalId: TurbineEfficiencyCurve
         space: '{{powerops_type_space}}'
+implements: []
 version: '{{version}}'
 properties:
   head:

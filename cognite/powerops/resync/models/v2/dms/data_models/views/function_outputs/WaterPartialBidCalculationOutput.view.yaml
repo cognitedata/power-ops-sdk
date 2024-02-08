@@ -1,7 +1,7 @@
 space: '{{powerops_models}}'
 externalId: WaterPartialBidCalculationOutput
-description: The output of a bid calculation for watervalue based method
 name: WaterPartialBidCalculationOutput
+description: The output of a bid calculation for watervalue based method
 filter:
   and:
   - hasData:

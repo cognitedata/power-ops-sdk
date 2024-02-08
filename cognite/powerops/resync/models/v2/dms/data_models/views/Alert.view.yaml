@@ -1,7 +1,7 @@
 space: '{{powerops_models}}'
 externalId: Alert
-description: Alerts
 name: Alert
+description: Alerts
 filter:
   and:
   - hasData:
@@ -20,6 +20,7 @@ filter:
       value:
         externalId: Alert
         space: '{{powerops_type_space}}'
+implements: []
 version: '{{version}}'
 properties:
   time:

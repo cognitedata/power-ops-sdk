@@ -1,7 +1,7 @@
 space: '{{powerops_models}}'
 externalId: BidConfigurationWater
-description: ''
 name: BidConfigurationWater
+description: ''
 filter:
   and:
   - hasData:

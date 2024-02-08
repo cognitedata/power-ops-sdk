@@ -1,8 +1,8 @@
 space: '{{powerops_models}}'
 externalId: Mapping
+name: Mapping
 description: SHOP scenario that holds all data needed for a shop run. May be unprocessed
   or processed
-name: Mapping
 filter:
   and:
   - hasData:
@@ -21,6 +21,7 @@ filter:
       value:
         externalId: Mapping
         space: '{{powerops_type_space}}'
+implements: []
 version: '{{version}}'
 properties:
   shopPath:

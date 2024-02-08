@@ -1,7 +1,7 @@
 space: '{{powerops_models}}'
 externalId: PriceAreaAFRR
-description: Information about the Price Area that is only relevant for AFRR
 name: PriceAreaAFRR
+description: Information about the Price Area that is only relevant for AFRR
 filter:
   and:
   - hasData:

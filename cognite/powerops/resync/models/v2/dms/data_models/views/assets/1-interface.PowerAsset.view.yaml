@@ -1,7 +1,7 @@
 space: '{{powerops_models}}'
 externalId: PowerAsset
-description: A super class for all power assets
 name: PowerAsset
+description: A super class for all power assets
 filter:
   and:
   - hasData:
@@ -20,6 +20,7 @@ filter:
       value:
         externalId: PowerAsset
         space: '{{powerops_type_space}}'
+implements: []
 version: '{{version}}'
 properties:
   name:

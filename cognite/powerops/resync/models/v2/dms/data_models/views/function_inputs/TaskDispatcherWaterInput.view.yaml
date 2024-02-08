@@ -1,7 +1,7 @@
 space: '{{powerops_models}}'
 externalId: TaskDispatcherWaterInput
-description: Input to the task dispatcher in the shop bid process
 name: TaskDispatcherWaterInput
+description: Input to the task dispatcher in the shop bid process
 filter:
   and:
   - hasData:

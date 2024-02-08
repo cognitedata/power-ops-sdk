@@ -1,7 +1,7 @@
 space: '{{powerops_models}}'
 externalId: Reservoir
-description: A reservoir
 name: Reservoir
+description: A reservoir
 filter:
   equals:
     property:

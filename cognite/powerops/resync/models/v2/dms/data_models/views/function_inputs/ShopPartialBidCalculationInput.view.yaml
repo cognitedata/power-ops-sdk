@@ -1,7 +1,7 @@
 space: '{{powerops_models}}'
 externalId: ShopPartialBidCalculationInput
-description: Input to the task dispatcher in the shop bid process
 name: ShopPartialBidCalculationInput
+description: Input to the task dispatcher in the shop bid process
 filter:
   and:
   - hasData:

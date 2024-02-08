@@ -1,8 +1,8 @@
 space: '{{powerops_models}}'
 externalId: BidDocument
+name: BidDocument
 description: Whole Bid (also usually referenced in industry as a Bid Document) containing
   multiple Bid Rows (which are usually referenced in industry as Bids)
-name: BidDocument
 filter:
   and:
   - hasData:
@@ -21,6 +21,7 @@ filter:
       value:
         externalId: BidDocument
         space: '{{powerops_type_space}}'
+implements: []
 version: '{{version}}'
 properties:
   name:

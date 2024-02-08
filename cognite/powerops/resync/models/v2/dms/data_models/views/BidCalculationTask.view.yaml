@@ -1,7 +1,7 @@
 space: '{{powerops_models}}'
 externalId: BidCalculationTask
-description: The data for a bid calculation task
 name: BidCalculationTask
+description: The data for a bid calculation task
 filter:
   and:
   - hasData:
@@ -23,6 +23,7 @@ filter:
       value:
         externalId: BidCalculationTask
         space: '{{powerops_type_space}}'
+implements: []
 version: '{{version}}'
 properties:
   plant:

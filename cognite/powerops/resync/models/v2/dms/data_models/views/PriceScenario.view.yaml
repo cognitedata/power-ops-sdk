@@ -1,7 +1,7 @@
 space: '{{powerops_models}}'
 externalId: PriceScenario
-description: Price scenarios
 name: PriceScenario
+description: Price scenarios
 filter:
   and:
   - hasData:
@@ -20,6 +20,7 @@ filter:
       value:
         externalId: PriceScenario
         space: '{{powerops_type_space}}'
+implements: []
 version: '{{version}}'
 properties:
   name:
