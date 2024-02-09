@@ -1,0 +1,54 @@
+space: '{{powerops_models}}'
+externalId: PriceAreaAsset
+name: PriceAreaAsset
+filter:
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: PriceArea
+  - equals:
+      property:
+      - node
+      - space
+      value: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: PriceAreaAsset
+        space: '{{powerops_type_space}}'
+implements:
+- space: '{{powerops_models}}'
+  externalId: PriceArea
+  version: '{{version}}'
+  type: view
+version: '{{version}}'
+properties:
+  watercourses:
+    type:
+      space: '{{powerops_type_space}}'
+      externalId:  isWatercourseOf
+    source:
+      space: '{{powerops_models}}'
+      externalId: Watercourse
+      version: '{{version}}'
+      type: view
+    direction: outwards
+    name: watercourses
+    description: An array of associated watercourses.
+    connectionType: multi_edge_connection
+  plants:
+    type:
+      space: '{{powerops_type_space}}'
+      externalId: isPlantOf
+    source:
+      space: '{{powerops_models}}'
+      externalId: Plant
+      version: '{{version}}'
+      type: view
+    direction: outwards
+    name: plants
+    description: An array of associated plants.
+    connectionType: multi_edge_connection

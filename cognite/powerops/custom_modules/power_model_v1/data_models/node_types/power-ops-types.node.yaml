@@ -9,6 +9,10 @@
   externalId: calculationIssue
 - space: {{powerops_type_space}}
   externalId: isSubAssetOf
+- space: {{powerops_type_space}}
+  externalId: isPlantOf
+- space: {{powerops_type_space}}
+  externalId: isWatercourseOf
 
 # Types of nodes:
 ## AFRR Types
@@ -44,6 +48,8 @@
   externalId: PlantShop
 - space: '{{powerops_type_space}}'
   externalId: WatercourseShop
+- space: '{{powerops_type_space}}'
+  externalId: PriceAreaAsset
 
 ## DayAhead Types
 - space: {{powerops_type_space}}
