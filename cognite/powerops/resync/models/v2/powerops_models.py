@@ -419,9 +419,9 @@ class DataModelLoader:
     def _dependencies_by_view(views: ViewApplyList):
         view_by_id = {view.as_id(): view for view in views}
 
-        graph: dict[ViewId, set[ViewId]] = defaultdict(set)
+        dependencies: dict[ViewId, set[ViewId]] = defaultdict(set)
         for view in views:
-            dependencies = set()
+            view_id = view.as_id()
             for prop in view.properties.values():
                 source: ViewId | None = None
                 if isinstance(prop, MappedProperty) and isinstance(prop.type, DirectRelation) and prop.source:
@@ -430,7 +430,7 @@ class DataModelLoader:
                     source = prop.source
 
                 if source and source in view_by_id:
-                    dependencies.add(source)
+                    dependencies[source].add(view_id)
                 elif source:
                     warnings.warn(
                         f"The view {source} referenced by {view.as_id()} is not in the data model. Skipping it.",
@@ -438,12 +438,10 @@ class DataModelLoader:
                     )
 
             for parent in view.implements or []:
-                dependencies.add(parent)
-
-            graph[view.as_id()] |= dependencies
-            for dep in dependencies:
-                graph[dep] |= {view.as_id()}
-        return graph
+                dependencies[parent].add(view_id)
+            if view_id not in dependencies:
+                dependencies[view_id] = set()
+        return dependencies
 
     @classmethod
     def deploy(cls, client: CogniteClient, schema: Schema, is_dev: bool = False) -> list[dict]:
