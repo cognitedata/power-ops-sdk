@@ -152,10 +152,21 @@ def init(client: PowerOpsClient | None, is_dev: bool = False, dry_run: bool = Fa
             dependencies = {view_id for dependencies in changed.values() for view_id in dependencies}
             print(f"Detected {len(dependencies)} dependent views")
             prefix = "Would delete" if dry_run else "Deleting"
-            print(f"{prefix} changed and dependent views")
+            to_delete = list(dependencies | set(changed))
+            print(f"{prefix} changed and dependent {len(to_delete)} views")
+
             if not dry_run:
-                deleted = cdf.data_modeling.views.delete(list(dependencies | set(changed)))
+                deleted = cdf.data_modeling.views.delete(to_delete)
                 print(f"Deleted {len(deleted)} views")
+
+            data_model_ids = loader.dependent_data_models(schema, set(to_delete))
+
+            print(f"Detected {len(data_model_ids)} dependent data models")
+            prefix = "Would delete" if dry_run else "Deleting"
+            print(f"{prefix} dependent {len(data_model_ids)} data models")
+            if not dry_run:
+                deleted_models = cdf.data_modeling.data_models.delete(data_model_ids)
+                print(f"Deleted {len(deleted_models)} data models")
         else:
             print(Panel("No changes detected in any views"))
 

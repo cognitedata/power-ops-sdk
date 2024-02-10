@@ -19,6 +19,7 @@ from cognite.client.data_classes.data_modeling import (
     ContainerApplyList,
     DataModelApply,
     DataModelApplyList,
+    DataModelId,
     DirectRelation,
     MappedPropertyApply,
     NodeApply,
@@ -210,12 +211,14 @@ class DataModelLoader:
             "view": ViewApply,
             "container": ContainerApply,
             "node": NodeApply,
-            "data_model": DataModelApply,
+            "datamodel": DataModelApply,
         }
 
         failed: list[tuple[Path, str]] = []
         for filepath in self._source_dir.glob("**/*.yaml"):
-            if match := re.match(r".*(?P<type>(space|view|container|node|data_model))\.yaml$", filepath.name):
+            if filepath.name == "_build_environment.yaml":
+                continue
+            if match := re.match(r".*(?P<type>(space|view|container|node|datamodel))\.yaml$", filepath.name):
                 type_ = match.group("type")
                 resource_cls = resource_cls_by_type[type_]
                 loaded = self._load_file(filepath)
@@ -228,6 +231,8 @@ class DataModelLoader:
                         resources_by_type[match.group("type")].append(parsed)
                 except Exception as exc:
                     failed.append((filepath, str(exc)))
+            else:
+                raise ValueError(f"Unknown file type: {filepath}")
         if failed:
             raise ValueError(
                 f"Failed to load {len(failed)} files:\n"
@@ -236,7 +241,7 @@ class DataModelLoader:
         return Schema(
             containers=ContainerApplyList(resources_by_type["container"]),
             _views=ViewApplyList(resources_by_type["view"]),
-            _data_models=DataModelApplyList(resources_by_type["data_model"]),
+            _data_models=DataModelApplyList(resources_by_type["datamodel"]),
             spaces=SpaceApplyList(resources_by_type["space"]),
             node_types=NodeApplyList(resources_by_type["node"]),
         )
@@ -401,6 +406,17 @@ class DataModelLoader:
                     }
                 changed_with_dependencies[view_id] = checked
         return changed_with_dependencies
+
+    @classmethod
+    def dependent_data_models(cls, schema: Schema, views: set[ViewId]) -> list[DataModelId]:
+        dependent_data_models = []
+        for data_model in schema.data_models:
+            for view in data_model.views:
+                view_id = view.as_id() if isinstance(view, ViewApply) else view
+                if view_id in views:
+                    dependent_data_models.append(data_model.as_id())
+                    break
+        return dependent_data_models
 
     @staticmethod
     def _views_as_write(views: ViewList) -> ViewApplyList:
