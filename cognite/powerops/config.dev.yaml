@@ -3,7 +3,7 @@ environment:
   project: power-ops-staging
   type: dev
   selected_modules_and_packages:
-  - power_model_v1
+  - power_model_v0
 
 modules:
   custom_modules:

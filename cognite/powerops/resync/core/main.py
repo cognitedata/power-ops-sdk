@@ -17,6 +17,7 @@ from cognite.client import CogniteClient
 from cognite.client.data_classes.data_modeling import DataModelId, MappedProperty, ViewList
 from cognite.client.exceptions import CogniteAPIError
 from cognite_toolkit.cdf import Common, build, deploy  # type: ignore[import-untyped]
+from cognite_toolkit.cdf_tk.load import ViewLoader  # type: ignore[import-untyped]
 from cognite_toolkit.cdf_tk.utils import CDFToolConfig, calculate_directory_hash  # type: ignore[import-untyped]
 from rich import print
 from rich.panel import Panel
@@ -60,7 +61,7 @@ def init(client: PowerOpsClient | None, is_dev: bool = False, dry_run: bool = Fa
     """
     client = client or PowerOpsClient.from_settings()
     cdf = client.cdf
-    result = re.findall(r"^https://(\w+).cognitedata.com", cdf.config.base_url)
+    result = re.findall(r"^https://([\w-]+).cognitedata.com", cdf.config.base_url)
     if result:
         cluster = result[0]
     else:
@@ -72,7 +73,11 @@ def init(client: PowerOpsClient | None, is_dev: bool = False, dry_run: bool = Fa
             "CDF_URL": cdf.config.base_url,
             "IDP_CLIENT_ID": cdf.config.credentials.client_id,  # type: ignore[attr-defined]
             "IDP_CLIENT_SECRET": "dummy",
-            "IDP_TOKEN_URL": cdf.config.credentials.authority_url,  # type: ignore[attr-defined]
+            "IDP_TOKEN_URL": (
+                cdf.config.credentials.authority_url  # type: ignore[attr-defined]
+                if hasattr(cdf.config.credentials, "authority_url")
+                else cdf.config.credentials.token_url  # type: ignore[attr-defined]
+            ),
             "CDF_PROJECT": cdf.config.project,
         }
     ):
@@ -163,16 +168,37 @@ def init(client: PowerOpsClient | None, is_dev: bool = False, dry_run: bool = Fa
             project=cdf.config.project,
             mockToolGlobals=tool_config,
         )
-        deploy(
-            ctx,
-            build_dir="build",
-            build_env="dev",
-            interactive=False,
-            drop=False,
-            drop_data=False,
-            dry_run=dry_run,
-            include=None,
-        )
+        try:
+            deploy(
+                ctx,
+                build_dir="build",
+                build_env="dev",
+                interactive=False,
+                drop=False,
+                drop_data=False,
+                dry_run=dry_run,
+                include=None,
+            )
+        except SystemExit as e:
+            if e.code != 0:
+                print(Panel("Trying deploying views first", title="Deploy failed"))
+                view_loader = ViewLoader.create_loader(tool_config)
+                view_files = view_loader.find_files(build_folder / "data_models")
+                views = [
+                    view_loader.load_resource(view_file, tool_config, skip_validation=False) for view_file in view_files
+                ]
+                created = cdf.data_modeling.views.apply(views)
+                print(f"Created {len(created)} views. Retrying deploy...")
+                deploy(
+                    ctx,
+                    build_dir="build",
+                    build_env="dev",
+                    interactive=False,
+                    drop=False,
+                    drop_data=False,
+                    dry_run=dry_run,
+                    include=None,
+                )
 
 
 def validate(config_dir: str | Path, market: str) -> Any:
