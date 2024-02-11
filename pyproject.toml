@@ -68,7 +68,7 @@ tomli = {version = "^2.0.1", python = "<3.11"}
 StrEnum = {version = "^0.4.15", python = "<3.11"}
 tomli-w = "^1.0.0"
 tabulate = "^0.9"
-cognite-toolkit = "==0.1.0b7"
+cognite-toolkit = {git="https://github.com/cognitedata/cdf-project-templates.git", branch="power"}
 cognite-pygen = {version = ">=0.99.9", extras = ["all"]}
 
 mkdocs =  {version="*", optional=true}

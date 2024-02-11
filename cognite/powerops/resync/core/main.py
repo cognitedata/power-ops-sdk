@@ -7,7 +7,6 @@ from __future__ import annotations
 import itertools
 import logging
 import re
-import shutil
 import tempfile
 from pathlib import Path
 from typing import Any, Optional, cast
@@ -17,7 +16,8 @@ from cognite.client import CogniteClient
 from cognite.client.data_classes.data_modeling import DataModelId, MappedProperty, ViewList
 from cognite.client.exceptions import CogniteAPIError
 from cognite_toolkit.cdf import Common, build, deploy  # type: ignore[import-untyped]
-from cognite_toolkit.cdf_tk.load import ViewLoader  # type: ignore[import-untyped]
+from cognite_toolkit.cdf_tk.load import DataModelLoader as ToolkitDataModelLoader  # type: ignore[import-untyped]
+from cognite_toolkit.cdf_tk.load import ViewLoader  # type: ignore[import-untyped]  # type: ignore[import-untyped]
 from cognite_toolkit.cdf_tk.utils import CDFToolConfig, calculate_directory_hash  # type: ignore[import-untyped]
 from rich import print
 from rich.panel import Panel
@@ -97,25 +97,6 @@ def init(client: PowerOpsClient | None, is_dev: bool = False, dry_run: bool = Fa
         build(ctx=ctx, source_dir=str(powerops_folder), build_dir="build", build_env="dev", clean=True)
 
     build_folder = Path.cwd() / "build"
-    # Bug in toolkit that places the containers and views in the wrong folder
-    folders = [
-        "containers",
-        "views",
-        "assets",
-        "bid_configuration",
-        "bid_document",
-        "bid_matrix",
-        "bid_method",
-        "function_inputs",
-        "function_outputs",
-        "scenario",
-    ]
-    for file in itertools.chain(*((build_folder / folder).glob("*.yaml") for folder in folders)):
-        shutil.move(file, build_folder / "data_models" / file.name)
-
-    for folder in folders:
-        if (build_folder / folder).exists():
-            shutil.rmtree(build_folder / folder)
 
     loader = DataModelLoader(build_folder)
     schema = loader.load()
@@ -123,8 +104,9 @@ def init(client: PowerOpsClient | None, is_dev: bool = False, dry_run: bool = Fa
     DataModelLoader.validate(schema)
     logger.info("Validated all powerops data models")
 
-    # Toolkit does not deploy the nodes:
-    shutil.rmtree(build_folder / "node_types")
+    # Nodes should not be deployed, so we remove them from the build folder
+    for node_file in build_folder.glob("data_models/*.node.yaml"):
+        node_file.unlink()
 
     build_hash = calculate_directory_hash(build_folder)
     filepath = Path(tempfile.gettempdir()) / "powerops_init_command.txt"
@@ -159,16 +141,28 @@ def init(client: PowerOpsClient | None, is_dev: bool = False, dry_run: bool = Fa
                 deleted = cdf.data_modeling.views.delete(to_delete)
                 print(f"Deleted {len(deleted)} views")
 
-            data_model_ids = loader.dependent_data_models(schema, set(to_delete))
-
-            print(f"Detected {len(data_model_ids)} dependent data models")
-            prefix = "Would delete" if dry_run else "Deleting"
-            print(f"{prefix} dependent {len(data_model_ids)} data models")
-            if not dry_run:
-                deleted_models = cdf.data_modeling.data_models.delete(data_model_ids)
-                print(f"Deleted {len(deleted_models)} data models")
+            data_model_ids_to_delete = set(loader.dependent_data_models(schema, set(to_delete)))
         else:
+            data_model_ids_to_delete = set()
             print(Panel("No changes detected in any views"))
+
+        existing = cdf.data_modeling.data_models.retrieve(schema.data_models.as_ids())
+        existing_by_id = {model.as_id(): model for model in existing}
+        loader = ToolkitDataModelLoader.create_loader(tool_config)
+        for local_data_model in schema.data_models:
+            if local_data_model.as_id() not in existing_by_id:
+                continue
+            existing_data_model = existing_by_id[local_data_model.as_id()]
+
+            if not loader._is_equal_custom(local_data_model, existing_data_model):  # type: ignore[attr-defined]
+                data_model_ids_to_delete.add(local_data_model.as_id())
+
+        print(Panel(f"Detected {len(data_model_ids_to_delete)} dependent and changed data models"))
+        prefix = "Would delete" if dry_run else "Deleting"
+        print(f"{prefix} dependent {len(data_model_ids_to_delete)} data models")
+        if not dry_run:
+            deleted_models = cdf.data_modeling.data_models.delete(list(data_model_ids_to_delete))
+            print(f"Deleted {len(deleted_models)} data models")
 
     with environment_variables({"SENTRY_ENABLED": "false"}):
         ctx = Context(Command("deploy"))
@@ -191,7 +185,9 @@ def init(client: PowerOpsClient | None, is_dev: bool = False, dry_run: bool = Fa
                 include=None,
             )
         except SystemExit as e:
-            if e.code != 0:
+            if e.code != 0 and not dry_run:
+                # Toolkit currently calls apply once for each view, which typically fails due to dependencies.
+                # We try to deploy the views first, and then retry the deploy.
                 print(Panel("Trying deploying views first", title="Deploy failed"))
                 view_loader = ViewLoader.create_loader(tool_config)
                 view_files = view_loader.find_files(build_folder / "data_models")
@@ -210,6 +206,8 @@ def init(client: PowerOpsClient | None, is_dev: bool = False, dry_run: bool = Fa
                     dry_run=dry_run,
                     include=None,
                 )
+            else:
+                raise
 
 
 def validate(config_dir: str | Path, market: str) -> Any:

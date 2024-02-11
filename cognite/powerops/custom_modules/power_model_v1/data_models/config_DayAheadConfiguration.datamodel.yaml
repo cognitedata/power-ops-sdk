@@ -76,10 +76,6 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: PriceAreaDayAhead
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
   - externalId: BidMethod
     space: "{{powerops_models}}"
     type: view
