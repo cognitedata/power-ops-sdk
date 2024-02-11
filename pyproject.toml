@@ -69,7 +69,8 @@ StrEnum = {version = "^0.4.15", python = "<3.11"}
 tomli-w = "^1.0.0"
 tabulate = "^0.9"
 cognite-toolkit = "==0.1.0b7"
-cognite-pygen = {version = ">=0.99.8", extras = ["all"]}
+#cognite-pygen = {version = ">=0.99.8", extras = ["all"]}
+cognite-pygen = {git="https://github.com/cognitedata/pygen.git", extras = ["all"], branch="init-non-writeable"}
 
 mkdocs =  {version="*", optional=true}
 mkdocs-jupyter = {version="*", optional=true}

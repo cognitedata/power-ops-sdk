@@ -496,21 +496,19 @@ name = "cognite-pygen"
 version = "0.99.8"
 description = "Cognite Python SDK Generator"
 optional = false
-python-versions = ">=3.9,<4.0"
-files = [
-    {file = "cognite_pygen-0.99.8-py3-none-any.whl", hash = "sha256:e0e38de26955f8b68a2423b6bad2905e3efea4418422f9e475fa6b6d60bbd505"},
-    {file = "cognite_pygen-0.99.8.tar.gz", hash = "sha256:b3a316cb667f239a5c1c7fd7fb41a68c6f5feea51bcfa9b65b310b44cd59678d"},
-]
+python-versions = "^3.9"
+files = []
+develop = false
 
 [package.dependencies]
-black = {version = ">=24.1.0", optional = true, markers = "extra == \"format\" or extra == \"all\""}
-cognite-sdk = ">=7.13.6,<8.0.0"
+black = {version = ">=24.1.0", optional = true}
+cognite-sdk = "^7.13.6"
 inflect = ">=6.0"
 Jinja2 = ">=3.1"
-packaging = {version = ">=21.3", optional = true, markers = "extra == \"cli\" or extra == \"all\""}
+packaging = {version = ">=21.3", optional = true}
 pydantic = ">=1.10.7"
-toml = {version = ">=0.10", optional = true, markers = "extra == \"cli\" or extra == \"all\""}
-typer = {version = ">=0.9", extras = ["rich"], optional = true, markers = "extra == \"cli\" or extra == \"all\""}
+toml = {version = ">=0.10", optional = true}
+typer = {version = ">=0.9", extras = ["rich"], optional = true}
 typing_extensions = ">=4"
 
 [package.extras]
@@ -518,6 +516,12 @@ all = ["black (>=24.1.0)", "packaging (>=21.3)", "toml (>=0.10)", "typer[rich] (
 cli = ["packaging (>=21.3)", "toml (>=0.10)", "typer[rich] (>=0.9)"]
 docs = ["mkdocs", "mkdocs-git-authors-plugin", "mkdocs-git-revision-date-localized-plugin", "mkdocs-gitbook", "mkdocs-glightbox", "mkdocs-jupyter", "mkdocs-material", "mkdocs-material-extensions", "mkdocstrings[python]", "pymdown-extensions"]
 format = ["black (>=24.1.0)"]
+
+[package.source]
+type = "git"
+url = "https://github.com/cognitedata/pygen.git"
+reference = "init-non-writeable"
+resolved_reference = "2c13f22646b570d9aaa1eb74a25e4e21e74f4388"
 
 [[package]]
 name = "cognite-sdk"
@@ -4651,4 +4655,4 @@ docs = ["mkdocs", "mkdocs-git-authors-plugin", "mkdocs-git-revision-date-localiz
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.12"
-content-hash = "3974b4cab3084d1d9931e244ed463d969a958e93314e4f6e957fc6d493c17644"
+content-hash = "79bea4cafd6006b4606f1f59623cd2f7f56c7d6ba10e0869bf4318d451b2a9e4"
