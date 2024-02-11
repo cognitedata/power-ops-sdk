@@ -48,3 +48,7 @@ views:
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
+- externalId: SHOPResult
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'

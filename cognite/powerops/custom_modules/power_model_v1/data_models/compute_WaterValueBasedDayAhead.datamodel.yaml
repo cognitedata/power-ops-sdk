@@ -52,3 +52,11 @@ views:
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
+- externalId: PriceScenario
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: PriceAreaDayAhead
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
