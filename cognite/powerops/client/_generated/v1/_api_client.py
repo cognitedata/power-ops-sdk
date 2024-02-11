@@ -518,14 +518,16 @@ class PowerOpsModelsV1Client:
 
             Delete item by id:
 
-                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
-                >>> client = PowerOpsModelsV1Client()
+                >>> from omni import OmniClient
+                >>> client = OmniClient()
                 >>> client.delete("my_node_external_id")
         """
         if isinstance(external_id, str):
             return self._client.data_modeling.instances.delete(nodes=(space, external_id))
         else:
-            return self._client.data_modeling.instances.delete(nodes=[(space, id) for id in external_id])
+            return self._client.data_modeling.instances.delete(
+                nodes=[(space, id) for id in external_id],
+            )
 
     @classmethod
     def azure_project(
