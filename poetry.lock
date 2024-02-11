@@ -493,13 +493,13 @@ colorama = {version = "*", markers = "platform_system == \"Windows\""}
 
 [[package]]
 name = "cognite-pygen"
-version = "0.99.6"
+version = "0.99.9"
 description = "Cognite Python SDK Generator"
 optional = false
 python-versions = ">=3.9,<4.0"
 files = [
-    {file = "cognite_pygen-0.99.6-py3-none-any.whl", hash = "sha256:1342ee534a624bab7e822a67c04429665560538d777f74bfbef8c49f3440f98c"},
-    {file = "cognite_pygen-0.99.6.tar.gz", hash = "sha256:c30c3371d27258bf21a3c7098ab9ec55d2963d65afeb39a5355995858b990e92"},
+    {file = "cognite_pygen-0.99.9-py3-none-any.whl", hash = "sha256:8f400c45cdd5835e60581abeb8648120a2a4a7c22016877f6efca119a6764d51"},
+    {file = "cognite_pygen-0.99.9.tar.gz", hash = "sha256:78104487e1034269de654f60c58cbe0d141434d65c1e71e2f3b1d71e6b6ccb82"},
 ]
 
 [package.dependencies]
@@ -813,29 +813,33 @@ dev = ["black", "coveralls", "mypy", "pre-commit", "pylint", "pytest (>=5)", "py
 
 [[package]]
 name = "debugpy"
-version = "1.8.0"
+version = "1.8.1"
 description = "An implementation of the Debug Adapter Protocol for Python"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "debugpy-1.8.0-cp310-cp310-macosx_11_0_x86_64.whl", hash = "sha256:7fb95ca78f7ac43393cd0e0f2b6deda438ec7c5e47fa5d38553340897d2fbdfb"},
-    {file = "debugpy-1.8.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:ef9ab7df0b9a42ed9c878afd3eaaff471fce3fa73df96022e1f5c9f8f8c87ada"},
-    {file = "debugpy-1.8.0-cp310-cp310-win32.whl", hash = "sha256:a8b7a2fd27cd9f3553ac112f356ad4ca93338feadd8910277aff71ab24d8775f"},
-    {file = "debugpy-1.8.0-cp310-cp310-win_amd64.whl", hash = "sha256:5d9de202f5d42e62f932507ee8b21e30d49aae7e46d5b1dd5c908db1d7068637"},
-    {file = "debugpy-1.8.0-cp311-cp311-macosx_11_0_universal2.whl", hash = "sha256:ef54404365fae8d45cf450d0544ee40cefbcb9cb85ea7afe89a963c27028261e"},
-    {file = "debugpy-1.8.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:60009b132c91951354f54363f8ebdf7457aeb150e84abba5ae251b8e9f29a8a6"},
-    {file = "debugpy-1.8.0-cp311-cp311-win32.whl", hash = "sha256:8cd0197141eb9e8a4566794550cfdcdb8b3db0818bdf8c49a8e8f8053e56e38b"},
-    {file = "debugpy-1.8.0-cp311-cp311-win_amd64.whl", hash = "sha256:a64093656c4c64dc6a438e11d59369875d200bd5abb8f9b26c1f5f723622e153"},
-    {file = "debugpy-1.8.0-cp38-cp38-macosx_11_0_x86_64.whl", hash = "sha256:b05a6b503ed520ad58c8dc682749113d2fd9f41ffd45daec16e558ca884008cd"},
-    {file = "debugpy-1.8.0-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:3c6fb41c98ec51dd010d7ed650accfd07a87fe5e93eca9d5f584d0578f28f35f"},
-    {file = "debugpy-1.8.0-cp38-cp38-win32.whl", hash = "sha256:46ab6780159eeabb43c1495d9c84cf85d62975e48b6ec21ee10c95767c0590aa"},
-    {file = "debugpy-1.8.0-cp38-cp38-win_amd64.whl", hash = "sha256:bdc5ef99d14b9c0fcb35351b4fbfc06ac0ee576aeab6b2511702e5a648a2e595"},
-    {file = "debugpy-1.8.0-cp39-cp39-macosx_11_0_x86_64.whl", hash = "sha256:61eab4a4c8b6125d41a34bad4e5fe3d2cc145caecd63c3fe953be4cc53e65bf8"},
-    {file = "debugpy-1.8.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:125b9a637e013f9faac0a3d6a82bd17c8b5d2c875fb6b7e2772c5aba6d082332"},
-    {file = "debugpy-1.8.0-cp39-cp39-win32.whl", hash = "sha256:57161629133113c97b387382045649a2b985a348f0c9366e22217c87b68b73c6"},
-    {file = "debugpy-1.8.0-cp39-cp39-win_amd64.whl", hash = "sha256:e3412f9faa9ade82aa64a50b602544efcba848c91384e9f93497a458767e6926"},
-    {file = "debugpy-1.8.0-py2.py3-none-any.whl", hash = "sha256:9c9b0ac1ce2a42888199df1a1906e45e6f3c9555497643a85e0bf2406e3ffbc4"},
-    {file = "debugpy-1.8.0.zip", hash = "sha256:12af2c55b419521e33d5fb21bd022df0b5eb267c3e178f1d374a63a2a6bdccd0"},
+    {file = "debugpy-1.8.1-cp310-cp310-macosx_11_0_x86_64.whl", hash = "sha256:3bda0f1e943d386cc7a0e71bfa59f4137909e2ed947fb3946c506e113000f741"},
+    {file = "debugpy-1.8.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:dda73bf69ea479c8577a0448f8c707691152e6c4de7f0c4dec5a4bc11dee516e"},
+    {file = "debugpy-1.8.1-cp310-cp310-win32.whl", hash = "sha256:3a79c6f62adef994b2dbe9fc2cc9cc3864a23575b6e387339ab739873bea53d0"},
+    {file = "debugpy-1.8.1-cp310-cp310-win_amd64.whl", hash = "sha256:7eb7bd2b56ea3bedb009616d9e2f64aab8fc7000d481faec3cd26c98a964bcdd"},
+    {file = "debugpy-1.8.1-cp311-cp311-macosx_11_0_universal2.whl", hash = "sha256:016a9fcfc2c6b57f939673c874310d8581d51a0fe0858e7fac4e240c5eb743cb"},
+    {file = "debugpy-1.8.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:fd97ed11a4c7f6d042d320ce03d83b20c3fb40da892f994bc041bbc415d7a099"},
+    {file = "debugpy-1.8.1-cp311-cp311-win32.whl", hash = "sha256:0de56aba8249c28a300bdb0672a9b94785074eb82eb672db66c8144fff673146"},
+    {file = "debugpy-1.8.1-cp311-cp311-win_amd64.whl", hash = "sha256:1a9fe0829c2b854757b4fd0a338d93bc17249a3bf69ecf765c61d4c522bb92a8"},
+    {file = "debugpy-1.8.1-cp312-cp312-macosx_11_0_universal2.whl", hash = "sha256:3ebb70ba1a6524d19fa7bb122f44b74170c447d5746a503e36adc244a20ac539"},
+    {file = "debugpy-1.8.1-cp312-cp312-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:a2e658a9630f27534e63922ebf655a6ab60c370f4d2fc5c02a5b19baf4410ace"},
+    {file = "debugpy-1.8.1-cp312-cp312-win32.whl", hash = "sha256:caad2846e21188797a1f17fc09c31b84c7c3c23baf2516fed5b40b378515bbf0"},
+    {file = "debugpy-1.8.1-cp312-cp312-win_amd64.whl", hash = "sha256:edcc9f58ec0fd121a25bc950d4578df47428d72e1a0d66c07403b04eb93bcf98"},
+    {file = "debugpy-1.8.1-cp38-cp38-macosx_11_0_x86_64.whl", hash = "sha256:7a3afa222f6fd3d9dfecd52729bc2e12c93e22a7491405a0ecbf9e1d32d45b39"},
+    {file = "debugpy-1.8.1-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:d915a18f0597ef685e88bb35e5d7ab968964b7befefe1aaea1eb5b2640b586c7"},
+    {file = "debugpy-1.8.1-cp38-cp38-win32.whl", hash = "sha256:92116039b5500633cc8d44ecc187abe2dfa9b90f7a82bbf81d079fcdd506bae9"},
+    {file = "debugpy-1.8.1-cp38-cp38-win_amd64.whl", hash = "sha256:e38beb7992b5afd9d5244e96ad5fa9135e94993b0c551ceebf3fe1a5d9beb234"},
+    {file = "debugpy-1.8.1-cp39-cp39-macosx_11_0_x86_64.whl", hash = "sha256:bfb20cb57486c8e4793d41996652e5a6a885b4d9175dd369045dad59eaacea42"},
+    {file = "debugpy-1.8.1-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:efd3fdd3f67a7e576dd869c184c5dd71d9aaa36ded271939da352880c012e703"},
+    {file = "debugpy-1.8.1-cp39-cp39-win32.whl", hash = "sha256:58911e8521ca0c785ac7a0539f1e77e0ce2df753f786188f382229278b4cdf23"},
+    {file = "debugpy-1.8.1-cp39-cp39-win_amd64.whl", hash = "sha256:6df9aa9599eb05ca179fb0b810282255202a66835c6efb1d112d21ecb830ddd3"},
+    {file = "debugpy-1.8.1-py2.py3-none-any.whl", hash = "sha256:28acbe2241222b87e255260c76741e1fbf04fdc3b6d094fcf57b6c6f75ce1242"},
+    {file = "debugpy-1.8.1.zip", hash = "sha256:f696d6be15be87aef621917585f9bb94b1dc9e8aced570db1b8a6fc14e8f9b42"},
 ]
 
 [[package]]
@@ -1097,70 +1101,14 @@ files = [
 colorama = ">=0.4"
 
 [[package]]
-name = "h11"
-version = "0.14.0"
-description = "A pure-Python, bring-your-own-I/O implementation of HTTP/1.1"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "h11-0.14.0-py3-none-any.whl", hash = "sha256:e3fe4ac4b851c468cc8363d500db52c2ead036020723024a109d37346efaa761"},
-    {file = "h11-0.14.0.tar.gz", hash = "sha256:8f19fbbe99e72420ff35c00b27a34cb9937e902a8b810e2c88300c6f0a3b699d"},
-]
-
-[[package]]
-name = "httpcore"
-version = "1.0.2"
-description = "A minimal low-level HTTP client."
-optional = false
-python-versions = ">=3.8"
-files = [
-    {file = "httpcore-1.0.2-py3-none-any.whl", hash = "sha256:096cc05bca73b8e459a1fc3dcf585148f63e534eae4339559c9b8a8d6399acc7"},
-    {file = "httpcore-1.0.2.tar.gz", hash = "sha256:9fc092e4799b26174648e54b74ed5f683132a464e95643b226e00c2ed2fa6535"},
-]
-
-[package.dependencies]
-certifi = "*"
-h11 = ">=0.13,<0.15"
-
-[package.extras]
-asyncio = ["anyio (>=4.0,<5.0)"]
-http2 = ["h2 (>=3,<5)"]
-socks = ["socksio (==1.*)"]
-trio = ["trio (>=0.22.0,<0.23.0)"]
-
-[[package]]
-name = "httpx"
-version = "0.26.0"
-description = "The next generation HTTP client."
-optional = false
-python-versions = ">=3.8"
-files = [
-    {file = "httpx-0.26.0-py3-none-any.whl", hash = "sha256:8915f5a3627c4d47b73e8202457cb28f1266982d1159bd5779d86a80c0eab1cd"},
-    {file = "httpx-0.26.0.tar.gz", hash = "sha256:451b55c30d5185ea6b23c2c793abf9bb237d2a7dfb901ced6ff69ad37ec1dfaf"},
-]
-
-[package.dependencies]
-anyio = "*"
-certifi = "*"
-httpcore = "==1.*"
-idna = "*"
-sniffio = "*"
-
-[package.extras]
-brotli = ["brotli", "brotlicffi"]
-cli = ["click (==8.*)", "pygments (==2.*)", "rich (>=10,<14)"]
-http2 = ["h2 (>=3,<5)"]
-socks = ["socksio (==1.*)"]
-
-[[package]]
 name = "identify"
-version = "2.5.33"
+version = "2.5.34"
 description = "File identification library for Python"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "identify-2.5.33-py2.py3-none-any.whl", hash = "sha256:d40ce5fcd762817627670da8a7d8d8e65f24342d14539c59488dc603bf662e34"},
-    {file = "identify-2.5.33.tar.gz", hash = "sha256:161558f9fe4559e1557e1bff323e8631f6a0e4837f7497767c1782832f16b62d"},
+    {file = "identify-2.5.34-py2.py3-none-any.whl", hash = "sha256:a4316013779e433d08b96e5eabb7f641e6c7942e4ab5d4c509ebd2e7a8994aed"},
+    {file = "identify-2.5.34.tar.gz", hash = "sha256:ee17bc9d499899bc9eaec1ac7bf2dc9eedd480db9d88b96d123d3b64a9d34f5d"},
 ]
 
 [package.extras]
@@ -1670,18 +1618,17 @@ test = ["jupyter-server (>=2.0.0)", "pytest (>=7.0)", "pytest-jupyter[server] (>
 
 [[package]]
 name = "jupyterlab"
-version = "4.1.0"
+version = "4.0.12"
 description = "JupyterLab computational environment"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "jupyterlab-4.1.0-py3-none-any.whl", hash = "sha256:5380e85fb4f11a227ed2db13103e513cfea274d1011f6210e62d611e92e0369d"},
-    {file = "jupyterlab-4.1.0.tar.gz", hash = "sha256:92cdfd86c53e163fb9e91e14497901153536c5a889c9225dade270f6107a077f"},
+    {file = "jupyterlab-4.0.12-py3-none-any.whl", hash = "sha256:53f132480e5f6564f4e20d1b5ed4e8b7945952a2decd5bdfa43760b1b536c99d"},
+    {file = "jupyterlab-4.0.12.tar.gz", hash = "sha256:965d92efa82a538ed70ccb3968d9aabba788840da882e13d7b061780cdedc3b7"},
 ]
 
 [package.dependencies]
 async-lru = ">=1.0.0"
-httpx = ">=0.25.0"
 importlib-metadata = {version = ">=4.8.3", markers = "python_version < \"3.10\""}
 ipykernel = "*"
 jinja2 = ">=3.0.3"
@@ -1696,9 +1643,9 @@ tornado = ">=6.2.0"
 traitlets = "*"
 
 [package.extras]
-dev = ["build", "bump2version", "coverage", "hatch", "pre-commit", "pytest-cov", "ruff (==0.1.15)"]
-docs = ["jsx-lexer", "myst-parser", "pydata-sphinx-theme (>=0.13.0)", "pytest", "pytest-check-links", "pytest-jupyter", "sphinx (>=1.8,<7.3.0)", "sphinx-copybutton"]
-docs-screenshots = ["altair (==5.2.0)", "ipython (==8.16.1)", "ipywidgets (==8.1.1)", "jupyterlab-geojson (==3.4.0)", "jupyterlab-language-pack-zh-cn (==4.0.post6)", "matplotlib (==3.8.2)", "nbconvert (>=7.0.0)", "pandas (==2.2.0)", "scipy (==1.12.0)", "vega-datasets (==0.9.0)"]
+dev = ["build", "bump2version", "coverage", "hatch", "pre-commit", "pytest-cov", "ruff (==0.1.6)"]
+docs = ["jsx-lexer", "myst-parser", "pydata-sphinx-theme (>=0.13.0)", "pytest", "pytest-check-links", "pytest-tornasync", "sphinx (>=1.8,<7.2.0)", "sphinx-copybutton"]
+docs-screenshots = ["altair (==5.0.1)", "ipython (==8.14.0)", "ipywidgets (==8.0.6)", "jupyterlab-geojson (==3.4.0)", "jupyterlab-language-pack-zh-cn (==4.0.post0)", "matplotlib (==3.7.1)", "nbconvert (>=7.0.0)", "pandas (==2.0.2)", "scipy (==1.10.1)", "vega-datasets (==0.9.0)"]
 test = ["coverage", "pytest (>=7.0)", "pytest-check-links (>=0.7)", "pytest-console-scripts", "pytest-cov", "pytest-jupyter (>=0.5.3)", "pytest-timeout", "pytest-tornasync", "requests", "requests-cache", "virtualenv"]
 
 [[package]]
@@ -2278,13 +2225,13 @@ pygments = ">2.12.0"
 
 [[package]]
 name = "mkdocs-material"
-version = "9.5.8"
+version = "9.5.9"
 description = "Documentation that simply works"
 optional = true
 python-versions = ">=3.8"
 files = [
-    {file = "mkdocs_material-9.5.8-py3-none-any.whl", hash = "sha256:14563314bbf97da4bfafc69053772341babfaeb3329cde01d3e63cec03997af8"},
-    {file = "mkdocs_material-9.5.8.tar.gz", hash = "sha256:2a429213e83f84eda7a588e2b186316d806aac602b7f93990042f7a1f3d3cf65"},
+    {file = "mkdocs_material-9.5.9-py3-none-any.whl", hash = "sha256:a5d62b73b3b74349e45472bfadc129c871dd2d4add68d84819580597b2f50d5d"},
+    {file = "mkdocs_material-9.5.9.tar.gz", hash = "sha256:635df543c01c25c412d6c22991872267723737d5a2f062490f33b2da1c013c6d"},
 ]
 
 [package.dependencies]
@@ -2561,18 +2508,18 @@ setuptools = "*"
 
 [[package]]
 name = "notebook"
-version = "7.0.7"
+version = "7.0.8"
 description = "Jupyter Notebook - A web-based notebook environment for interactive computing"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "notebook-7.0.7-py3-none-any.whl", hash = "sha256:289b606d7e173f75a18beb1406ef411b43f97f7a9c55ba03efa3622905a62346"},
-    {file = "notebook-7.0.7.tar.gz", hash = "sha256:3bcff00c17b3ac142ef5f436d50637d936b274cfa0b41f6ac0175363de9b4e09"},
+    {file = "notebook-7.0.8-py3-none-any.whl", hash = "sha256:7f421b3fd46a17d91830e724b94e8e9ae922af152ebfd48b1e13ae4a07d8193c"},
+    {file = "notebook-7.0.8.tar.gz", hash = "sha256:3957ecd956056b0014677afc76d3bb44c2d2f29649f87b24d13606ff1d18938f"},
 ]
 
 [package.dependencies]
 jupyter-server = ">=2.4.0,<3"
-jupyterlab = ">=4.0.2,<5"
+jupyterlab = ">=4.0.2,<4.1"
 jupyterlab-server = ">=2.22.1,<3"
 notebook-shim = ">=0.2,<0.3"
 tornado = ">=6.2.0"
@@ -2974,13 +2921,13 @@ testing = ["pytest", "pytest-benchmark"]
 
 [[package]]
 name = "pre-commit"
-version = "3.6.0"
+version = "3.6.1"
 description = "A framework for managing and maintaining multi-language pre-commit hooks."
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "pre_commit-3.6.0-py2.py3-none-any.whl", hash = "sha256:c255039ef399049a5544b6ce13d135caba8f2c28c3b4033277a788f434308376"},
-    {file = "pre_commit-3.6.0.tar.gz", hash = "sha256:d30bad9abf165f7785c15a21a1f46da7d0677cb00ee7ff4c579fd38922efe15d"},
+    {file = "pre_commit-3.6.1-py2.py3-none-any.whl", hash = "sha256:9fe989afcf095d2c4796ce7c553cf28d4d4a9b9346de3cda079bcf40748454a4"},
+    {file = "pre_commit-3.6.1.tar.gz", hash = "sha256:c90961d8aa706f75d60935aba09469a6b0bcb8345f127c3fbee4bdc5f114cf4b"},
 ]
 
 [package.dependencies]
@@ -4142,13 +4089,13 @@ win32 = ["pywin32"]
 
 [[package]]
 name = "sentry-sdk"
-version = "1.40.2"
+version = "1.40.3"
 description = "Python client for Sentry (https://sentry.io)"
 optional = false
 python-versions = "*"
 files = [
-    {file = "sentry-sdk-1.40.2.tar.gz", hash = "sha256:c98c8e9bb4dc8ff1e67473caf6467acfccf915dadcc26d0efb0d6791a8652610"},
-    {file = "sentry_sdk-1.40.2-py2.py3-none-any.whl", hash = "sha256:696ef61a323a207e6a20b018ddc6591adb81c671434c88d1a4f2e95ffa75556c"},
+    {file = "sentry-sdk-1.40.3.tar.gz", hash = "sha256:3c2b027979bb400cd65a47970e64f8cef8acda86b288a27f42a98692505086cd"},
+    {file = "sentry_sdk-1.40.3-py2.py3-none-any.whl", hash = "sha256:73383f28311ae55602bb6cc3b013830811135ba5521e41333a6e68f269413502"},
 ]
 
 [package.dependencies]
@@ -4174,7 +4121,7 @@ huey = ["huey (>=2)"]
 loguru = ["loguru (>=0.5)"]
 opentelemetry = ["opentelemetry-distro (>=0.35b0)"]
 opentelemetry-experimental = ["opentelemetry-distro (>=0.40b0,<1.0)", "opentelemetry-instrumentation-aiohttp-client (>=0.40b0,<1.0)", "opentelemetry-instrumentation-django (>=0.40b0,<1.0)", "opentelemetry-instrumentation-fastapi (>=0.40b0,<1.0)", "opentelemetry-instrumentation-flask (>=0.40b0,<1.0)", "opentelemetry-instrumentation-requests (>=0.40b0,<1.0)", "opentelemetry-instrumentation-sqlite3 (>=0.40b0,<1.0)", "opentelemetry-instrumentation-urllib (>=0.40b0,<1.0)"]
-pure-eval = ["asttokens", "executing", "pure_eval"]
+pure-eval = ["asttokens", "executing", "pure-eval"]
 pymongo = ["pymongo (>=3.1)"]
 pyspark = ["pyspark (>=2.4.4)"]
 quart = ["blinker (>=1.1)", "quart (>=0.16.1)"]
@@ -4704,4 +4651,4 @@ docs = ["mkdocs", "mkdocs-git-authors-plugin", "mkdocs-git-revision-date-localiz
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.12"
-content-hash = "65be5aac30388e40ff2dc8296cb209c8d1d9c312b21b74d3c5243111d78d2f96"
+content-hash = "7713a4c5bfd2d5119e731a36a59608b00ee890fbe05f5d2377f611b96a19e253"

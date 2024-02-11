@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import warnings
 from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
@@ -11,24 +12,26 @@ from ._core import (
     DataRecordWrite,
     DomainModel,
     DomainModelCore,
-    DomainModelApply,
-    DomainModelApplyList,
+    DomainModelWrite,
+    DomainModelWriteList,
     DomainModelList,
-    DomainRelationApply,
-    ResourcesApply,
+    DomainRelationWrite,
+    ResourcesWrite,
     TimeSeries,
 )
 
 if TYPE_CHECKING:
-    from ._bid_method import BidMethod, BidMethodApply
-    from ._plant import Plant, PlantApply
-    from ._watercourse import Watercourse, WatercourseApply
+    from ._bid_method import BidMethod, BidMethodWrite
+    from ._plant import Plant, PlantWrite
+    from ._watercourse import Watercourse, WatercourseWrite
 
 
 __all__ = [
     "PriceArea",
+    "PriceAreaWrite",
     "PriceAreaApply",
     "PriceAreaList",
+    "PriceAreaWriteList",
     "PriceAreaApplyList",
     "PriceAreaFields",
     "PriceAreaTextFields",
@@ -141,9 +144,9 @@ class PriceArea(DomainModel):
     plants: Union[list[Plant], list[str], None] = Field(default=None, repr=False)
     watercourses: Union[list[Watercourse], list[str], None] = Field(default=None, repr=False)
 
-    def as_apply(self) -> PriceAreaApply:
+    def as_write(self) -> PriceAreaWrite:
         """Convert this read version of price area to the writing version."""
-        return PriceAreaApply(
+        return PriceAreaWrite(
             space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
@@ -160,20 +163,31 @@ class PriceArea(DomainModel):
             total_capacity_allocation_down=self.total_capacity_allocation_down,
             own_capacity_allocation_up=self.own_capacity_allocation_up,
             own_capacity_allocation_down=self.own_capacity_allocation_down,
-            default_method_day_ahead=self.default_method_day_ahead.as_apply()
-            if isinstance(self.default_method_day_ahead, DomainModel)
-            else self.default_method_day_ahead,
+            default_method_day_ahead=(
+                self.default_method_day_ahead.as_write()
+                if isinstance(self.default_method_day_ahead, DomainModel)
+                else self.default_method_day_ahead
+            ),
             main_scenario_day_ahead=self.main_scenario_day_ahead,
             day_ahead_price=self.day_ahead_price,
-            plants=[plant.as_apply() if isinstance(plant, DomainModel) else plant for plant in self.plants or []],
+            plants=[plant.as_write() if isinstance(plant, DomainModel) else plant for plant in self.plants or []],
             watercourses=[
-                watercourse.as_apply() if isinstance(watercourse, DomainModel) else watercourse
+                watercourse.as_write() if isinstance(watercourse, DomainModel) else watercourse
                 for watercourse in self.watercourses or []
             ],
         )
 
+    def as_apply(self) -> PriceAreaWrite:
+        """Convert this read version of price area to the writing version."""
+        warnings.warn(
+            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
+            UserWarning,
+            stacklevel=2,
+        )
+        return self.as_write()
 
-class PriceAreaApply(DomainModelApply):
+
+class PriceAreaWrite(DomainModelWrite):
     """This represents the writing version of price area.
 
     It is used to when data is sent to CDF.
@@ -217,21 +231,21 @@ class PriceAreaApply(DomainModelApply):
     total_capacity_allocation_down: Union[TimeSeries, str, None] = Field(None, alias="totalCapacityAllocationDown")
     own_capacity_allocation_up: Union[TimeSeries, str, None] = Field(None, alias="ownCapacityAllocationUp")
     own_capacity_allocation_down: Union[TimeSeries, str, None] = Field(None, alias="ownCapacityAllocationDown")
-    default_method_day_ahead: Union[BidMethodApply, str, dm.NodeId, None] = Field(
+    default_method_day_ahead: Union[BidMethodWrite, str, dm.NodeId, None] = Field(
         None, repr=False, alias="defaultMethodDayAhead"
     )
     main_scenario_day_ahead: Union[TimeSeries, str, None] = Field(None, alias="mainScenarioDayAhead")
     day_ahead_price: Union[TimeSeries, str, None] = Field(None, alias="dayAheadPrice")
-    plants: Union[list[PlantApply], list[str], None] = Field(default=None, repr=False)
-    watercourses: Union[list[WatercourseApply], list[str], None] = Field(default=None, repr=False)
+    plants: Union[list[PlantWrite], list[str], None] = Field(default=None, repr=False)
+    watercourses: Union[list[WatercourseWrite], list[str], None] = Field(default=None, repr=False)
 
-    def _to_instances_apply(
+    def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
-    ) -> ResourcesApply:
-        resources = ResourcesApply()
+    ) -> ResourcesWrite:
+        resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
             return resources
 
@@ -307,12 +321,16 @@ class PriceAreaApply(DomainModelApply):
 
         if self.default_method_day_ahead is not None:
             properties["defaultMethodDayAhead"] = {
-                "space": self.space
-                if isinstance(self.default_method_day_ahead, str)
-                else self.default_method_day_ahead.space,
-                "externalId": self.default_method_day_ahead
-                if isinstance(self.default_method_day_ahead, str)
-                else self.default_method_day_ahead.external_id,
+                "space": (
+                    self.space
+                    if isinstance(self.default_method_day_ahead, str)
+                    else self.default_method_day_ahead.space
+                ),
+                "externalId": (
+                    self.default_method_day_ahead
+                    if isinstance(self.default_method_day_ahead, str)
+                    else self.default_method_day_ahead.external_id
+                ),
             }
 
         if self.main_scenario_day_ahead is not None or write_none:
@@ -345,20 +363,20 @@ class PriceAreaApply(DomainModelApply):
 
         edge_type = dm.DirectRelationReference("power-ops-types", "isSubAssetOf")
         for plant in self.plants or []:
-            other_resources = DomainRelationApply.from_edge_to_resources(
+            other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache, start_node=self, end_node=plant, edge_type=edge_type, view_by_read_class=view_by_read_class
             )
             resources.extend(other_resources)
 
         edge_type = dm.DirectRelationReference("power-ops-types", "isSubAssetOf")
         for watercourse in self.watercourses or []:
-            other_resources = DomainRelationApply.from_edge_to_resources(
+            other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache, start_node=self, end_node=watercourse, edge_type=edge_type, view_by_read_class=view_by_read_class
             )
             resources.extend(other_resources)
 
-        if isinstance(self.default_method_day_ahead, DomainModelApply):
-            other_resources = self.default_method_day_ahead._to_instances_apply(cache, view_by_read_class)
+        if isinstance(self.default_method_day_ahead, DomainModelWrite):
+            other_resources = self.default_method_day_ahead._to_instances_write(cache, view_by_read_class)
             resources.extend(other_resources)
 
         if isinstance(self.capacity_price_up, CogniteTimeSeries):
@@ -397,20 +415,44 @@ class PriceAreaApply(DomainModelApply):
         return resources
 
 
+class PriceAreaApply(PriceAreaWrite):
+    def __new__(cls, *args, **kwargs) -> PriceAreaApply:
+        warnings.warn(
+            "PriceAreaApply is deprecated and will be removed in v1.0. Use PriceAreaWrite instead."
+            "The motivation for this change is that Write is a more descriptive name for the writing version of the"
+            "PriceArea.",
+            UserWarning,
+            stacklevel=2,
+        )
+        return super().__new__(cls)
+
+
 class PriceAreaList(DomainModelList[PriceArea]):
     """List of price areas in the read version."""
 
     _INSTANCE = PriceArea
 
-    def as_apply(self) -> PriceAreaApplyList:
+    def as_write(self) -> PriceAreaWriteList:
         """Convert these read versions of price area to the writing versions."""
-        return PriceAreaApplyList([node.as_apply() for node in self.data])
+        return PriceAreaWriteList([node.as_write() for node in self.data])
+
+    def as_apply(self) -> PriceAreaWriteList:
+        """Convert these read versions of primitive nullable to the writing versions."""
+        warnings.warn(
+            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
+            UserWarning,
+            stacklevel=2,
+        )
+        return self.as_write()
 
 
-class PriceAreaApplyList(DomainModelApplyList[PriceAreaApply]):
+class PriceAreaWriteList(DomainModelWriteList[PriceAreaWrite]):
     """List of price areas in the writing version."""
 
-    _INSTANCE = PriceAreaApply
+    _INSTANCE = PriceAreaWrite
+
+
+class PriceAreaApplyList(PriceAreaWriteList): ...
 
 
 def _create_price_area_filter(
@@ -429,29 +471,29 @@ def _create_price_area_filter(
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
-    if name is not None and isinstance(name, str):
+    if isinstance(name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
     if name and isinstance(name, list):
         filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
-    if name_prefix:
+    if name_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
-    if display_name is not None and isinstance(display_name, str):
+    if isinstance(display_name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("displayName"), value=display_name))
     if display_name and isinstance(display_name, list):
         filters.append(dm.filters.In(view_id.as_property_ref("displayName"), values=display_name))
-    if display_name_prefix:
+    if display_name_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("displayName"), value=display_name_prefix))
-    if description is not None and isinstance(description, str):
+    if isinstance(description, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("description"), value=description))
     if description and isinstance(description, list):
         filters.append(dm.filters.In(view_id.as_property_ref("description"), values=description))
-    if description_prefix:
+    if description_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("description"), value=description_prefix))
-    if timezone is not None and isinstance(timezone, str):
+    if isinstance(timezone, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("timezone"), value=timezone))
     if timezone and isinstance(timezone, list):
         filters.append(dm.filters.In(view_id.as_property_ref("timezone"), values=timezone))
-    if timezone_prefix:
+    if timezone_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("timezone"), value=timezone_prefix))
     if default_method_day_ahead and isinstance(default_method_day_ahead, str):
         filters.append(
@@ -489,9 +531,9 @@ def _create_price_area_filter(
                 values=[{"space": item[0], "externalId": item[1]} for item in default_method_day_ahead],
             )
         )
-    if external_id_prefix:
+    if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
-    if space is not None and isinstance(space, str):
+    if isinstance(space, str):
         filters.append(dm.filters.Equals(["node", "space"], value=space))
     if space and isinstance(space, list):
         filters.append(dm.filters.In(["node", "space"], values=space))

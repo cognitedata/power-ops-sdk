@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 from typing import overload
+import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
@@ -10,13 +11,13 @@ from cognite.client.data_classes.data_modeling.instances import InstanceAggregat
 from cognite.powerops.client._generated.assets.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.assets.data_classes import (
     DomainModelCore,
-    DomainModelApply,
-    ResourcesApplyResult,
+    DomainModelWrite,
+    ResourcesWriteResult,
     PriceArea,
-    PriceAreaApply,
+    PriceAreaWrite,
     PriceAreaFields,
     PriceAreaList,
-    PriceAreaApplyList,
+    PriceAreaWriteList,
     PriceAreaTextFields,
 )
 from cognite.powerops.client._generated.assets.data_classes._price_area import (
@@ -48,7 +49,7 @@ from .price_area_day_ahead_price import PriceAreaDayAheadPriceAPI
 from .price_area_query import PriceAreaQueryAPI
 
 
-class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
+class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaWrite, PriceAreaList]):
     def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
         view_id = view_by_read_class[PriceArea]
         super().__init__(
@@ -56,7 +57,7 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
             sources=view_id,
             class_type=PriceArea,
             class_list=PriceAreaList,
-            class_apply_list=PriceAreaApplyList,
+            class_write_list=PriceAreaWriteList,
             view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
@@ -87,7 +88,7 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
         default_method_day_ahead: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_QUERY_LIMIT,
+        limit: int | None = DEFAULT_QUERY_LIMIT,
         filter: dm.Filter | None = None,
     ) -> PriceAreaQueryAPI[PriceAreaList]:
         """Query starting at price areas.
@@ -132,10 +133,10 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
 
     def apply(
         self,
-        price_area: PriceAreaApply | Sequence[PriceAreaApply],
+        price_area: PriceAreaWrite | Sequence[PriceAreaWrite],
         replace: bool = False,
         write_none: bool = False,
-    ) -> ResourcesApplyResult:
+    ) -> ResourcesWriteResult:
         """Add or update (upsert) price areas.
 
         Note: This method iterates through all nodes and timeseries linked to price_area and creates them including the edges
@@ -156,12 +157,22 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
             Create a new price_area:
 
                 >>> from cognite.powerops.client._generated.assets import PowerAssetAPI
-                >>> from cognite.powerops.client._generated.assets.data_classes import PriceAreaApply
+                >>> from cognite.powerops.client._generated.assets.data_classes import PriceAreaWrite
                 >>> client = PowerAssetAPI()
-                >>> price_area = PriceAreaApply(external_id="my_price_area", ...)
+                >>> price_area = PriceAreaWrite(external_id="my_price_area", ...)
                 >>> result = client.price_area.apply(price_area)
 
         """
+        warnings.warn(
+            "The .apply method is deprecated and will be removed in v1.0. "
+            "Please use the .upsert method on the client instead. This means instead of "
+            "`my_client.price_area.apply(my_items)` please use `my_client.upsert(my_items)`."
+            "The motivation is that all apply methods are the same, and having one apply method per API "
+            " class encourages users to create items in small batches, which is inefficient."
+            "In addition, .upsert method is more descriptive of what the method does.",
+            UserWarning,
+            stacklevel=2,
+        )
         return self._apply(price_area, replace, write_none)
 
     def delete(
@@ -184,15 +195,22 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
                 >>> client = PowerAssetAPI()
                 >>> client.price_area.delete("my_price_area")
         """
+        warnings.warn(
+            "The .delete method is deprecated and will be removed in v1.0. "
+            "Please use the .delete method on the client instead. This means instead of "
+            "`my_client.price_area.delete(my_ids)` please use `my_client.delete(my_ids)`."
+            "The motivation is that all delete methods are the same, and having one delete method per API "
+            " class encourages users to delete items in small batches, which is inefficient.",
+            UserWarning,
+            stacklevel=2,
+        )
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> PriceArea | None:
-        ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> PriceArea | None: ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> PriceAreaList:
-        ...
+    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> PriceAreaList: ...
 
     def retrieve(
         self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
@@ -219,18 +237,20 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
             external_id,
             space,
             retrieve_edges=True,
-            edge_api_name_type_direction_quad=[
+            edge_api_name_type_direction_view_id_penta=[
                 (
                     self.plants_edge,
                     "plants",
                     dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
                     "outwards",
+                    dm.ViewId("power-ops-assets", "Plant", "1"),
                 ),
                 (
                     self.watercourses_edge,
                     "watercourses",
                     dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
                     "outwards",
+                    dm.ViewId("power-ops-assets", "Watercourse", "1"),
                 ),
             ],
         )
@@ -250,7 +270,7 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
         default_method_day_ahead: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> PriceAreaList:
         """Search price areas
@@ -304,10 +324,12 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
     @overload
     def aggregate(
         self,
-        aggregations: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: PriceAreaFields | Sequence[PriceAreaFields] | None = None,
         group_by: None = None,
         query: str | None = None,
@@ -323,18 +345,19 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
         default_method_day_ahead: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
         self,
-        aggregations: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: PriceAreaFields | Sequence[PriceAreaFields] | None = None,
         group_by: PriceAreaFields | Sequence[PriceAreaFields] = None,
         query: str | None = None,
@@ -350,17 +373,18 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
         default_method_day_ahead: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: PriceAreaFields | Sequence[PriceAreaFields] | None = None,
         group_by: PriceAreaFields | Sequence[PriceAreaFields] | None = None,
         query: str | None = None,
@@ -376,7 +400,7 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
         default_method_day_ahead: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
         """Aggregate data across price areas
@@ -458,7 +482,7 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
         default_method_day_ahead: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         """Produces histograms for price areas
@@ -525,7 +549,7 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
         default_method_day_ahead: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
         retrieve_edges: bool = True,
     ) -> PriceAreaList:
@@ -579,18 +603,20 @@ class PriceAreaAPI(NodeAPI[PriceArea, PriceAreaApply, PriceAreaList]):
             limit=limit,
             filter=filter_,
             retrieve_edges=retrieve_edges,
-            edge_api_name_type_direction_quad=[
+            edge_api_name_type_direction_view_id_penta=[
                 (
                     self.plants_edge,
                     "plants",
                     dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
                     "outwards",
+                    dm.ViewId("power-ops-assets", "Plant", "1"),
                 ),
                 (
                     self.watercourses_edge,
                     "watercourses",
                     dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
                     "outwards",
+                    dm.ViewId("power-ops-assets", "Watercourse", "1"),
                 ),
             ],
         )

@@ -31,16 +31,13 @@ T_CogniteResource = TypeVar(
 
 
 class CogniteAPI(Protocol[T_CogniteResource]):  # type: ignore[misc]
-    def create(self, items: T_CogniteResource | Sequence[T_CogniteResource]) -> Any:
-        ...
+    def create(self, items: T_CogniteResource | Sequence[T_CogniteResource]) -> Any: ...
 
-    def delete(self, external_id: str | SequenceNotStr[str]) -> Any:
-        ...
+    def delete(self, external_id: str | SequenceNotStr[str]) -> Any: ...
 
     def upsert(
         self, item: T_CogniteResource | Sequence[T_CogniteResource], mode: Literal["patch", "replace"] = "patch"
-    ) -> Any:
-        ...
+    ) -> Any: ...
 
 
 class FileAdapter(CogniteAPI[FileMetadata]):

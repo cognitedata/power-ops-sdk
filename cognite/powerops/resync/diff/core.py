@@ -6,7 +6,7 @@ from typing import Any, Literal
 from cognite.client.data_classes import AssetList, LabelDefinitionList
 from cognite.client.data_classes._base import CogniteResource, CogniteResourceList
 
-from cognite.powerops.client._generated.assets.data_classes import DomainModelApply as DomainModelApplyAssets
+from cognite.powerops.client._generated.assets.data_classes import DomainModelWrite as DomainModelApplyAssets
 from cognite.powerops.client._generated.cogshop1.data_classes._core import DomainModelApply as DomainModelApplyCogShop1
 from cognite.powerops.resync.models.base import AssetModel, CDFFile, CDFSequence, Model, ResourceType
 from cognite.powerops.utils.serialization import remove_read_only_fields

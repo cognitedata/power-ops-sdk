@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import datetime
+import warnings
 from typing import Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
@@ -11,15 +12,24 @@ from ._core import (
     DataRecordWrite,
     DomainModel,
     DomainModelCore,
-    DomainModelApply,
-    DomainModelApplyList,
+    DomainModelWrite,
+    DomainModelWriteList,
     DomainModelList,
-    DomainRelationApply,
-    ResourcesApply,
+    DomainRelationWrite,
+    ResourcesWrite,
 )
 
 
-__all__ = ["Alert", "AlertApply", "AlertList", "AlertApplyList", "AlertFields", "AlertTextFields"]
+__all__ = [
+    "Alert",
+    "AlertWrite",
+    "AlertApply",
+    "AlertList",
+    "AlertWriteList",
+    "AlertApplyList",
+    "AlertFields",
+    "AlertTextFields",
+]
 
 
 AlertTextFields = Literal["title", "description", "severity", "alert_type", "calculation_run"]
@@ -69,9 +79,9 @@ class Alert(DomainModel):
     event_ids: Optional[list[int]] = Field(None, alias="eventIds")
     calculation_run: Optional[str] = Field(None, alias="calculationRun")
 
-    def as_apply(self) -> AlertApply:
+    def as_write(self) -> AlertWrite:
         """Convert this read version of alert to the writing version."""
-        return AlertApply(
+        return AlertWrite(
             space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
@@ -85,8 +95,17 @@ class Alert(DomainModel):
             calculation_run=self.calculation_run,
         )
 
+    def as_apply(self) -> AlertWrite:
+        """Convert this read version of alert to the writing version."""
+        warnings.warn(
+            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
+            UserWarning,
+            stacklevel=2,
+        )
+        return self.as_write()
 
-class AlertApply(DomainModelApply):
+
+class AlertWrite(DomainModelWrite):
     """This represents the writing version of alert.
 
     It is used to when data is sent to CDF.
@@ -116,13 +135,13 @@ class AlertApply(DomainModelApply):
     event_ids: Optional[list[int]] = Field(None, alias="eventIds")
     calculation_run: Optional[str] = Field(None, alias="calculationRun")
 
-    def _to_instances_apply(
+    def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
-    ) -> ResourcesApply:
-        resources = ResourcesApply()
+    ) -> ResourcesWrite:
+        resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
             return resources
 
@@ -173,20 +192,44 @@ class AlertApply(DomainModelApply):
         return resources
 
 
+class AlertApply(AlertWrite):
+    def __new__(cls, *args, **kwargs) -> AlertApply:
+        warnings.warn(
+            "AlertApply is deprecated and will be removed in v1.0. Use AlertWrite instead."
+            "The motivation for this change is that Write is a more descriptive name for the writing version of the"
+            "Alert.",
+            UserWarning,
+            stacklevel=2,
+        )
+        return super().__new__(cls)
+
+
 class AlertList(DomainModelList[Alert]):
     """List of alerts in the read version."""
 
     _INSTANCE = Alert
 
-    def as_apply(self) -> AlertApplyList:
+    def as_write(self) -> AlertWriteList:
         """Convert these read versions of alert to the writing versions."""
-        return AlertApplyList([node.as_apply() for node in self.data])
+        return AlertWriteList([node.as_write() for node in self.data])
+
+    def as_apply(self) -> AlertWriteList:
+        """Convert these read versions of primitive nullable to the writing versions."""
+        warnings.warn(
+            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
+            UserWarning,
+            stacklevel=2,
+        )
+        return self.as_write()
 
 
-class AlertApplyList(DomainModelApplyList[AlertApply]):
+class AlertWriteList(DomainModelWriteList[AlertWrite]):
     """List of alerts in the writing version."""
 
-    _INSTANCE = AlertApply
+    _INSTANCE = AlertWrite
+
+
+class AlertApplyList(AlertWriteList): ...
 
 
 def _create_alert_filter(
@@ -210,7 +253,7 @@ def _create_alert_filter(
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
-    if min_time or max_time:
+    if min_time is not None or max_time is not None:
         filters.append(
             dm.filters.Range(
                 view_id.as_property_ref("time"),
@@ -218,43 +261,43 @@ def _create_alert_filter(
                 lte=max_time.isoformat(timespec="milliseconds") if max_time else None,
             )
         )
-    if title is not None and isinstance(title, str):
+    if isinstance(title, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("title"), value=title))
     if title and isinstance(title, list):
         filters.append(dm.filters.In(view_id.as_property_ref("title"), values=title))
-    if title_prefix:
+    if title_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("title"), value=title_prefix))
-    if description is not None and isinstance(description, str):
+    if isinstance(description, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("description"), value=description))
     if description and isinstance(description, list):
         filters.append(dm.filters.In(view_id.as_property_ref("description"), values=description))
-    if description_prefix:
+    if description_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("description"), value=description_prefix))
-    if severity is not None and isinstance(severity, str):
+    if isinstance(severity, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("severity"), value=severity))
     if severity and isinstance(severity, list):
         filters.append(dm.filters.In(view_id.as_property_ref("severity"), values=severity))
-    if severity_prefix:
+    if severity_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("severity"), value=severity_prefix))
-    if alert_type is not None and isinstance(alert_type, str):
+    if isinstance(alert_type, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("alertType"), value=alert_type))
     if alert_type and isinstance(alert_type, list):
         filters.append(dm.filters.In(view_id.as_property_ref("alertType"), values=alert_type))
-    if alert_type_prefix:
+    if alert_type_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("alertType"), value=alert_type_prefix))
-    if min_status_code or max_status_code:
+    if min_status_code is not None or max_status_code is not None:
         filters.append(
             dm.filters.Range(view_id.as_property_ref("statusCode"), gte=min_status_code, lte=max_status_code)
         )
-    if calculation_run is not None and isinstance(calculation_run, str):
+    if isinstance(calculation_run, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("calculationRun"), value=calculation_run))
     if calculation_run and isinstance(calculation_run, list):
         filters.append(dm.filters.In(view_id.as_property_ref("calculationRun"), values=calculation_run))
-    if calculation_run_prefix:
+    if calculation_run_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("calculationRun"), value=calculation_run_prefix))
-    if external_id_prefix:
+    if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
-    if space is not None and isinstance(space, str):
+    if isinstance(space, str):
         filters.append(dm.filters.Equals(["node", "space"], value=space))
     if space and isinstance(space, list):
         filters.append(dm.filters.In(["node", "space"], values=space))

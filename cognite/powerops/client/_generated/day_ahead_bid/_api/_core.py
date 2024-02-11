@@ -1,6 +1,10 @@
 from __future__ import annotations
 
+import math
 import re
+import warnings
+from itertools import groupby
+
 from collections import Counter, defaultdict, UserList
 from collections.abc import Sequence, Collection
 from dataclasses import dataclass, field
@@ -15,15 +19,15 @@ from cognite.client.data_classes.data_modeling.instances import InstanceAggregat
 from cognite.powerops.client._generated.day_ahead_bid.data_classes._core import (
     DomainModel,
     DomainModelCore,
-    DomainModelApply,
-    DomainRelationApply,
-    ResourcesApplyResult,
+    DomainModelWrite,
+    DomainRelationWrite,
+    ResourcesWriteResult,
     T_DomainModel,
-    T_DomainModelApply,
-    T_DomainModelApplyList,
+    T_DomainModelWrite,
+    T_DomainModelWriteList,
     T_DomainModelList,
     T_DomainRelation,
-    T_DomainRelationApply,
+    T_DomainRelationWrite,
     T_DomainRelationList,
     DomainModelCore,
     DomainRelation,
@@ -32,6 +36,8 @@ from cognite.powerops.client._generated.day_ahead_bid.data_classes._core import 
 DEFAULT_LIMIT_READ = 25
 DEFAULT_QUERY_LIMIT = 3
 INSTANCE_QUERY_LIMIT = 1_000
+# This is the actual limit of the API, we typically set it to a lower value to avoid hitting the limit.
+ACTUAL_INSTANCE_QUERY_LIMIT = 10_000
 IN_FILTER_LIMIT = 5_000
 
 Aggregations = Literal["avg", "count", "max", "min", "sum"]
@@ -51,30 +57,22 @@ _T_co = TypeVar("_T_co", covariant=True)
 # This works because str.__contains__ does not accept an object (either in typeshed or at runtime)
 class SequenceNotStr(Protocol[_T_co]):
     @overload
-    def __getitem__(self, index: SupportsIndex, /) -> _T_co:
-        ...
+    def __getitem__(self, index: SupportsIndex, /) -> _T_co: ...
 
     @overload
-    def __getitem__(self, index: slice, /) -> Sequence[_T_co]:
-        ...
+    def __getitem__(self, index: slice, /) -> Sequence[_T_co]: ...
 
-    def __contains__(self, value: object, /) -> bool:
-        ...
+    def __contains__(self, value: object, /) -> bool: ...
 
-    def __len__(self) -> int:
-        ...
+    def __len__(self) -> int: ...
 
-    def __iter__(self) -> Iterator[_T_co]:
-        ...
+    def __iter__(self) -> Iterator[_T_co]: ...
 
-    def index(self, value: Any, /, start: int = 0, stop: int = ...) -> int:
-        ...
+    def index(self, value: Any, /, start: int = 0, stop: int = ...) -> int: ...
 
-    def count(self, value: Any, /) -> int:
-        ...
+    def count(self, value: Any, /) -> int: ...
 
-    def __reversed__(self) -> Iterator[_T_co]:
-        ...
+    def __reversed__(self) -> Iterator[_T_co]: ...
 
 
 class NodeReadAPI(Generic[T_DomainModel, T_DomainModelList]):
@@ -106,12 +104,10 @@ class NodeReadAPI(Generic[T_DomainModel, T_DomainModelList]):
         external_id: str,
         space: str,
         retrieve_edges: bool = False,
-        edge_api_name_type_direction_quad: list[
-            tuple[EdgeAPI, str, dm.DirectRelationReference, Literal["outwards", "inwards"]]
-        ]
-        | None = None,
-    ) -> T_DomainModel | None:
-        ...
+        edge_api_name_type_direction_view_id_penta: (
+            list[tuple[EdgeAPI, str, dm.DirectRelationReference, Literal["outwards", "inwards"], dm.ViewId]] | None
+        ) = None,
+    ) -> T_DomainModel | None: ...
 
     @overload
     def _retrieve(
@@ -119,22 +115,19 @@ class NodeReadAPI(Generic[T_DomainModel, T_DomainModelList]):
         external_id: SequenceNotStr[str],
         space: str,
         retrieve_edges: bool = False,
-        edge_api_name_type_direction_quad: list[
-            tuple[EdgeAPI, str, dm.DirectRelationReference, Literal["outwards", "inwards"]]
-        ]
-        | None = None,
-    ) -> T_DomainModelList:
-        ...
+        edge_api_name_type_direction_view_id_penta: (
+            list[tuple[EdgeAPI, str, dm.DirectRelationReference, Literal["outwards", "inwards"], dm.ViewId]] | None
+        ) = None,
+    ) -> T_DomainModelList: ...
 
     def _retrieve(
         self,
         external_id: str | SequenceNotStr[str],
         space: str,
         retrieve_edges: bool = False,
-        edge_api_name_type_direction_quad: list[
-            tuple[EdgeAPI, str, dm.DirectRelationReference, Literal["outwards", "inwards"]]
-        ]
-        | None = None,
+        edge_api_name_type_direction_view_id_penta: (
+            list[tuple[EdgeAPI, str, dm.DirectRelationReference, Literal["outwards", "inwards"], dm.ViewId]] | None
+        ) = None,
     ) -> T_DomainModel | T_DomainModelList | None:
         is_multiple = True
         if isinstance(external_id, str):
@@ -147,7 +140,7 @@ class NodeReadAPI(Generic[T_DomainModel, T_DomainModelList]):
         nodes = self._class_list([self._class_type.from_instance(node) for node in instances.nodes])
 
         if retrieve_edges and nodes:
-            self._retrieve_and_set_edge_types(nodes, edge_api_name_type_direction_quad)
+            self._retrieve_and_set_edge_types(nodes, edge_api_name_type_direction_view_id_penta)
 
         if is_multiple:
             return nodes
@@ -171,17 +164,21 @@ class NodeReadAPI(Generic[T_DomainModel, T_DomainModelList]):
         if properties:
             properties = [properties_by_field.get(prop, prop) for prop in properties]
 
-        nodes = self._client.data_modeling.instances.search(view_id, query, "node", properties, filter_, limit)
+        nodes = self._client.data_modeling.instances.search(
+            view=view_id, query=query, instance_type="node", properties=properties, filter=filter_, limit=limit
+        )
         return self._class_list([self._class_type.from_instance(node) for node in nodes])
 
     @overload
     def _aggregate(
         self,
         view_id: dm.ViewId,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         properties_by_field: dict[str, str],
         properties: str | Sequence[str] | None = None,
         group_by: None = None,
@@ -189,17 +186,18 @@ class NodeReadAPI(Generic[T_DomainModel, T_DomainModelList]):
         search_properties: str | Sequence[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def _aggregate(
         self,
         view_id: dm.ViewId,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         properties_by_field: dict[str, str],
         properties: str | Sequence[str] = None,
         group_by: str | Sequence[str] | None = None,
@@ -207,16 +205,17 @@ class NodeReadAPI(Generic[T_DomainModel, T_DomainModelList]):
         search_properties: str | Sequence[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def _aggregate(
         self,
         view_id: dm.ViewId,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         properties_by_field: dict[str, str],
         properties: str | Sequence[str] | None = None,
         group_by: str | Sequence[str] | None = None,
@@ -308,41 +307,71 @@ class NodeReadAPI(Generic[T_DomainModel, T_DomainModelList]):
         limit: int,
         filter: dm.Filter,
         retrieve_edges: bool = False,
-        edge_api_name_type_direction_quad: list[
-            tuple[EdgeAPI, str, dm.DirectRelationReference, Literal["outwards", "inwards"]]
-        ]
-        | None = None,
+        edge_api_name_type_direction_view_id_penta: (
+            list[tuple[EdgeAPI, str, dm.DirectRelationReference, Literal["outwards", "inwards"]]] | None
+        ) = None,
     ) -> T_DomainModelList:
-        nodes = self._client.data_modeling.instances.list("node", sources=self._sources, limit=limit, filter=filter)
+        nodes = self._client.data_modeling.instances.list(
+            instance_type="node", sources=self._sources, limit=limit, filter=filter
+        )
         node_list = self._class_list([self._class_type.from_instance(node) for node in nodes])
         if retrieve_edges and node_list:
-            self._retrieve_and_set_edge_types(node_list, edge_api_name_type_direction_quad)
+            self._retrieve_and_set_edge_types(node_list, edge_api_name_type_direction_view_id_penta)
 
         return node_list
 
-    @classmethod
     def _retrieve_and_set_edge_types(
-        cls,
+        self,
         nodes: T_DomainModelList,
-        edge_api_name_type_direction_quad: list[
-            tuple[EdgeAPI, str, dm.DirectRelationReference, Literal["outwards", "inwards"]]
-        ]
-        | None = None,
+        edge_api_name_type_direction_view_id_penta: (
+            list[tuple[EdgeAPI, str, dm.DirectRelationReference, Literal["outwards", "inwards"], dm.ViewId]] | None
+        ) = None,
     ):
-        for edge_api, edge_name, edge_type, direction in edge_api_name_type_direction_quad or []:
-            is_type = dm.filters.Equals(
-                ["edge", "type"],
-                {"space": edge_type.space, "externalId": edge_type.external_id},
-            )
-            if len(ids := nodes.as_node_ids()) > IN_FILTER_LIMIT:
-                edges = edge_api._list(limit=-1, filter_=is_type)
-            else:
-                is_nodes = dm.filters.In(
-                    ["edge", "startNode"] if direction == "outwards" else ["edge", "endNode"],
-                    values=[id_.dump(camel_case=True, include_instance_type=False) for id_ in ids],
+        for edge_type, values in groupby(edge_api_name_type_direction_view_id_penta or [], lambda x: x[2].as_tuple()):
+            edges: dict[dm.EdgeId, dm.Edge] = {}
+            value_list = list(values)
+            for edge_api, edge_name, edge_type, direction, view_id in value_list:
+                is_type = dm.filters.Equals(
+                    ["edge", "type"],
+                    {"space": edge_type.space, "externalId": edge_type.external_id},
                 )
-                edges = edge_api._list(limit=-1, filter_=dm.filters.And(is_type, is_nodes))
-            cls._set_edges(nodes, edges, edge_name, direction)
+                if len(ids := nodes.as_node_ids()) > IN_FILTER_LIMIT:
+                    filter_ = is_type
+                else:
+                    is_nodes = dm.filters.In(
+                        ["edge", "startNode"] if direction == "outwards" else ["edge", "endNode"],
+                        values=[id_.dump(camel_case=True, include_instance_type=False) for id_ in ids],
+                    )
+                    filter_ = dm.filters.And(is_type, is_nodes)
+                result = edge_api._list(limit=-1, filter_=filter_)
+                edges.update({edge.as_id(): edge for edge in result})
+            edge_list = list(edges.values())
+            if len(value_list) == 1:
+                _, edge_name, _, direction, _ = value_list[0]
+                self._set_edges(nodes, edge_list, edge_name, direction)
+            else:
+                # This is an 'edge' case where we have view with multiple edges of the same type.
+                edge_by_end_node: dict[tuple[str, str], list[dm.Edge]] = defaultdict(list)
+                for edge in edge_list:
+                    node_id = edge.end_node.as_tuple() if direction == "outwards" else edge.start_node.as_tuple()
+                    edge_by_end_node[node_id].append(edge)
+
+                for no, (edge_api, edge_name, _, direction, view_id) in enumerate(value_list):
+                    if not edge_by_end_node:
+                        break
+                    if no == len(value_list) - 1:
+                        # Last edge, use all remaining nodes
+                        attribute_edges = [e for e_list in edge_by_end_node.values() for e in e_list]
+                    else:
+                        existing = self._client.data_modeling.instances.retrieve(
+                            nodes=list(edge_by_end_node), sources=view_id
+                        )
+                        attribute_edges = []
+                        for node in existing.nodes:
+                            attribute_edge = edge_by_end_node.pop(node.as_id().as_tuple(), [])
+                            attribute_edges.extend(attribute_edge)
+
+                    self._set_edges(nodes, attribute_edges, edge_name, direction)
 
     @staticmethod
     def _set_edges(
@@ -370,7 +399,7 @@ class NodeReadAPI(Generic[T_DomainModel, T_DomainModelList]):
 
 
 class NodeAPI(
-    Generic[T_DomainModel, T_DomainModelApply, T_DomainModelList], NodeReadAPI[T_DomainModel, T_DomainModelList]
+    Generic[T_DomainModel, T_DomainModelWrite, T_DomainModelList], NodeReadAPI[T_DomainModel, T_DomainModelList]
 ):
     def __init__(
         self,
@@ -378,19 +407,19 @@ class NodeAPI(
         sources: dm.ViewIdentifier | Sequence[dm.ViewIdentifier] | dm.View | Sequence[dm.View] | None,
         class_type: type[T_DomainModel],
         class_list: type[T_DomainModelList],
-        class_apply_list: type[T_DomainModelApplyList],
+        class_write_list: type[T_DomainModelWriteList],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId],
     ):
         super().__init__(client, sources, class_type, class_list, view_by_read_class)
-        self._class_apply_list = class_apply_list
+        self._class_write_list = class_write_list
 
     def _apply(
-        self, item: T_DomainModelApply | Sequence[T_DomainModelApply], replace: bool = False, write_none: bool = False
-    ) -> ResourcesApplyResult:
-        if isinstance(item, DomainModelApply):
-            instances = item.to_instances_apply(self._view_by_read_class, write_none)
+        self, item: T_DomainModelWrite | Sequence[T_DomainModelWrite], replace: bool = False, write_none: bool = False
+    ) -> ResourcesWriteResult:
+        if isinstance(item, DomainModelWrite):
+            instances = item.to_instances_write(self._view_by_read_class, write_none)
         else:
-            instances = self._class_apply_list(item).to_instances_apply(self._view_by_read_class, write_none)
+            instances = self._class_write_list(item).to_instances_write(self._view_by_read_class, write_none)
         result = self._client.data_modeling.instances.apply(
             nodes=instances.nodes,
             edges=instances.edges,
@@ -402,7 +431,7 @@ class NodeAPI(
         if instances.time_series:
             time_series = self._client.time_series.upsert(instances.time_series, mode="patch")
 
-        return ResourcesApplyResult(result.nodes, result.edges, TimeSeriesList(time_series))
+        return ResourcesWriteResult(result.nodes, result.edges, TimeSeriesList(time_series))
 
 
 class EdgeAPI:
@@ -417,20 +446,20 @@ class EdgeAPI:
         return self._client.data_modeling.instances.list("edge", limit=limit, filter=filter_)
 
 
-class EdgePropertyAPI(EdgeAPI, Generic[T_DomainRelation, T_DomainRelationApply, T_DomainRelationList]):
+class EdgePropertyAPI(EdgeAPI, Generic[T_DomainRelation, T_DomainRelationWrite, T_DomainRelationList]):
     def __init__(
         self,
         client: CogniteClient,
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId],
         class_type: type[T_DomainRelation],
-        class_apply_type: type[T_DomainRelationApply],
+        class_write_type: type[T_DomainRelationWrite],
         class_list: type[T_DomainRelationList],
     ):
         super().__init__(client)
         self._view_by_read_class = view_by_read_class
         self._view_id = view_by_read_class[class_type]
         self._class_type = class_type
-        self._class_apply_type = class_apply_type
+        self._class_write_type = class_write_type
         self._class_list = class_list
 
     def _list(
@@ -458,10 +487,14 @@ class QueryStep:
     last_batch_count: int = 0
 
     def update_expression_limit(self) -> None:
-        if self.max_retrieve_limit == -1:
-            self.expression.limit = None
+        if self.is_unlimited:
+            self.expression.limit = ACTUAL_INSTANCE_QUERY_LIMIT
         else:
-            self.expression.limit = min(INSTANCE_QUERY_LIMIT, self.max_retrieve_limit - self.total_retrieved)
+            self.expression.limit = max(min(INSTANCE_QUERY_LIMIT, self.max_retrieve_limit - self.total_retrieved), 0)
+
+    @property
+    def is_unlimited(self) -> bool:
+        return self.max_retrieve_limit in {None, -1, math.inf}
 
 
 class QueryBuilder(UserList, Generic[T_DomainModelList]):
@@ -479,12 +512,10 @@ class QueryBuilder(UserList, Generic[T_DomainModelList]):
         return super().__iter__()
 
     @overload
-    def __getitem__(self, item: int) -> QueryStep:
-        ...
+    def __getitem__(self, item: int) -> QueryStep: ...
 
     @overload
-    def __getitem__(self: type[QueryBuilder[T_DomainModelList]], item: slice) -> QueryBuilder[T_DomainModelList]:
-        ...
+    def __getitem__(self: type[QueryBuilder[T_DomainModelList]], item: slice) -> QueryBuilder[T_DomainModelList]: ...
 
     def __getitem__(self, item: int | slice) -> QueryStep | QueryBuilder[T_DomainModelList]:
         if isinstance(item, slice):
@@ -536,7 +567,7 @@ class QueryBuilder(UserList, Generic[T_DomainModelList]):
     @property
     def is_finished(self):
         return all(
-            expression.total_retrieved >= expression.max_retrieve_limit
+            (not expression.is_unlimited and expression.total_retrieved >= expression.max_retrieve_limit)
             or expression.cursor is None
             or expression.last_batch_count == 0
             for expression in self
@@ -547,9 +578,9 @@ class QueryBuilder(UserList, Generic[T_DomainModelList]):
         edges_by_type_by_source_node: dict[tuple[str, str, str], dict[tuple[str, str], list[dm.Edge]]] = defaultdict(
             lambda: defaultdict(list)
         )
-        relation_by_type_by_start_node: dict[
-            tuple[str, str], dict[tuple[str, str], list[DomainRelation]]
-        ] = defaultdict(lambda: defaultdict(list))
+        relation_by_type_by_start_node: dict[tuple[str, str], dict[tuple[str, str], list[DomainRelation]]] = (
+            defaultdict(lambda: defaultdict(list))
+        )
         node_attribute_to_node_type: dict[str, str] = {}
 
         for step in self:
@@ -593,6 +624,8 @@ class QueryBuilder(UserList, Generic[T_DomainModelList]):
                         continue
                     if end_id in end_nodes:
                         setattr(parent_node, attribute_name, end_nodes[end_id])
+                    else:
+                        warnings.warn(f"Unpacking of query result: Could not find node with id {end_id}", stacklevel=2)
 
         for (node_name, node_attribute), relations_by_start_node in relation_by_type_by_start_node.items():
             for node in nodes_by_type[node_name].values():
@@ -680,9 +713,11 @@ def _create_edge_filter(
             dm.filters.In(
                 ["edge", "startNode"],
                 values=[
-                    {"space": start_node_space, "externalId": ext_id}
-                    if isinstance(ext_id, str)
-                    else ext_id.dump(camel_case=True, include_instance_type=False)
+                    (
+                        {"space": start_node_space, "externalId": ext_id}
+                        if isinstance(ext_id, str)
+                        else ext_id.dump(camel_case=True, include_instance_type=False)
+                    )
                     for ext_id in start_node
                 ],
             )
@@ -698,9 +733,11 @@ def _create_edge_filter(
             dm.filters.In(
                 ["edge", "endNode"],
                 values=[
-                    {"space": space_end_node, "externalId": ext_id}
-                    if isinstance(ext_id, str)
-                    else ext_id.dump(camel_case=True, include_instance_type=False)
+                    (
+                        {"space": space_end_node, "externalId": ext_id}
+                        if isinstance(ext_id, str)
+                        else ext_id.dump(camel_case=True, include_instance_type=False)
+                    )
                     for ext_id in end_node
                 ],
             )

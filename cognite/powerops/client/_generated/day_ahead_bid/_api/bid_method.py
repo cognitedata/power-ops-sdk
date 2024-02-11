@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 from typing import overload
+import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
@@ -10,13 +11,13 @@ from cognite.client.data_classes.data_modeling.instances import InstanceAggregat
 from cognite.powerops.client._generated.day_ahead_bid.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.day_ahead_bid.data_classes import (
     DomainModelCore,
-    DomainModelApply,
-    ResourcesApplyResult,
+    DomainModelWrite,
+    ResourcesWriteResult,
     BidMethod,
-    BidMethodApply,
+    BidMethodWrite,
     BidMethodFields,
     BidMethodList,
-    BidMethodApplyList,
+    BidMethodWriteList,
     BidMethodTextFields,
 )
 from cognite.powerops.client._generated.day_ahead_bid.data_classes._bid_method import (
@@ -35,7 +36,7 @@ from ._core import (
 from .bid_method_query import BidMethodQueryAPI
 
 
-class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
+class BidMethodAPI(NodeAPI[BidMethod, BidMethodWrite, BidMethodList]):
     def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
         view_id = view_by_read_class[BidMethod]
         super().__init__(
@@ -43,7 +44,7 @@ class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
             sources=view_id,
             class_type=BidMethod,
             class_list=BidMethodList,
-            class_apply_list=BidMethodApplyList,
+            class_write_list=BidMethodWriteList,
             view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
@@ -54,7 +55,7 @@ class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_QUERY_LIMIT,
+        limit: int | None = DEFAULT_QUERY_LIMIT,
         filter: dm.Filter | None = None,
     ) -> BidMethodQueryAPI[BidMethodList]:
         """Query starting at bid methods.
@@ -85,10 +86,10 @@ class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
 
     def apply(
         self,
-        bid_method: BidMethodApply | Sequence[BidMethodApply],
+        bid_method: BidMethodWrite | Sequence[BidMethodWrite],
         replace: bool = False,
         write_none: bool = False,
-    ) -> ResourcesApplyResult:
+    ) -> ResourcesWriteResult:
         """Add or update (upsert) bid methods.
 
         Args:
@@ -105,12 +106,22 @@ class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
             Create a new bid_method:
 
                 >>> from cognite.powerops.client._generated.day_ahead_bid import DayAheadBidAPI
-                >>> from cognite.powerops.client._generated.day_ahead_bid.data_classes import BidMethodApply
+                >>> from cognite.powerops.client._generated.day_ahead_bid.data_classes import BidMethodWrite
                 >>> client = DayAheadBidAPI()
-                >>> bid_method = BidMethodApply(external_id="my_bid_method", ...)
+                >>> bid_method = BidMethodWrite(external_id="my_bid_method", ...)
                 >>> result = client.bid_method.apply(bid_method)
 
         """
+        warnings.warn(
+            "The .apply method is deprecated and will be removed in v1.0. "
+            "Please use the .upsert method on the client instead. This means instead of "
+            "`my_client.bid_method.apply(my_items)` please use `my_client.upsert(my_items)`."
+            "The motivation is that all apply methods are the same, and having one apply method per API "
+            " class encourages users to create items in small batches, which is inefficient."
+            "In addition, .upsert method is more descriptive of what the method does.",
+            UserWarning,
+            stacklevel=2,
+        )
         return self._apply(bid_method, replace, write_none)
 
     def delete(
@@ -133,15 +144,22 @@ class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
                 >>> client = DayAheadBidAPI()
                 >>> client.bid_method.delete("my_bid_method")
         """
+        warnings.warn(
+            "The .delete method is deprecated and will be removed in v1.0. "
+            "Please use the .delete method on the client instead. This means instead of "
+            "`my_client.bid_method.delete(my_ids)` please use `my_client.delete(my_ids)`."
+            "The motivation is that all delete methods are the same, and having one delete method per API "
+            " class encourages users to delete items in small batches, which is inefficient.",
+            UserWarning,
+            stacklevel=2,
+        )
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> BidMethod | None:
-        ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> BidMethod | None: ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> BidMethodList:
-        ...
+    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> BidMethodList: ...
 
     def retrieve(
         self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
@@ -174,7 +192,7 @@ class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> BidMethodList:
         """Search bid methods
@@ -214,10 +232,12 @@ class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
     @overload
     def aggregate(
         self,
-        aggregations: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: BidMethodFields | Sequence[BidMethodFields] | None = None,
         group_by: None = None,
         query: str | None = None,
@@ -226,18 +246,19 @@ class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
         self,
-        aggregations: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: BidMethodFields | Sequence[BidMethodFields] | None = None,
         group_by: BidMethodFields | Sequence[BidMethodFields] = None,
         query: str | None = None,
@@ -246,17 +267,18 @@ class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: BidMethodFields | Sequence[BidMethodFields] | None = None,
         group_by: BidMethodFields | Sequence[BidMethodFields] | None = None,
         query: str | None = None,
@@ -265,7 +287,7 @@ class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
         """Aggregate data across bid methods
@@ -326,7 +348,7 @@ class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         """Produces histograms for bid methods
@@ -372,7 +394,7 @@ class BidMethodAPI(NodeAPI[BidMethod, BidMethodApply, BidMethodList]):
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> BidMethodList:
         """List/filter bid methods

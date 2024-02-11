@@ -20,7 +20,7 @@ class PowerAssetModelDM(Model):
     reservoirs: list[assets.ReservoirApply] = Field(default_factory=list)
     turbine_curves: list[assets.TurbineEfficiencyCurveApply] = Field(default_factory=list)
 
-    _views_by_write_class: ClassVar[dict[assets.DomainModelApply, dm.ViewId]] = {
+    _views_by_write_class: ClassVar[dict[assets.DomainModelWrite, dm.ViewId]] = {
         assets.BidMethodApply: dm.ViewId("power-ops-shared", "BidMethod", "1"),
         assets.GeneratorApply: dm.ViewId("power-ops-assets", "Generator", "1"),
         assets.GeneratorEfficiencyCurveApply: dm.ViewId("power-ops-assets", "GeneratorEfficiencyCurve", "1"),
@@ -37,7 +37,7 @@ class PowerAssetModelDM(Model):
         for item in itertools.chain(
             self.price_areas, self.generators, self.plants, self.reservoirs, self.watercourses, self.turbine_curves
         ):
-            resource = item._to_instances_apply(cache=cache, view_by_read_class=None)
+            resource = item._to_instances_write(cache=cache, view_by_read_class=None)
             if resources is None:
                 resources = resource
             else:
@@ -131,7 +131,7 @@ class PowerAssetModelDM(Model):
         for node in nodes_by_id.values():
             for field_name, field in node.model_fields.items():
                 annotation, _ = get_pydantic_annotation(field.annotation, type(node))
-                if issubclass(annotation, assets.DomainModelApply):
+                if issubclass(annotation, assets.DomainModelWrite):
                     current_value = getattr(node, field_name)
                     if current_value is None:
                         continue

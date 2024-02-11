@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 from typing import overload
+import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
@@ -10,13 +11,13 @@ from cognite.client.data_classes.data_modeling.instances import InstanceAggregat
 from cognite.powerops.client._generated.assets.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.assets.data_classes import (
     DomainModelCore,
-    DomainModelApply,
-    ResourcesApplyResult,
+    DomainModelWrite,
+    ResourcesWriteResult,
     Reservoir,
-    ReservoirApply,
+    ReservoirWrite,
     ReservoirFields,
     ReservoirList,
-    ReservoirApplyList,
+    ReservoirWriteList,
     ReservoirTextFields,
 )
 from cognite.powerops.client._generated.assets.data_classes._reservoir import (
@@ -35,7 +36,7 @@ from ._core import (
 from .reservoir_query import ReservoirQueryAPI
 
 
-class ReservoirAPI(NodeAPI[Reservoir, ReservoirApply, ReservoirList]):
+class ReservoirAPI(NodeAPI[Reservoir, ReservoirWrite, ReservoirList]):
     def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
         view_id = view_by_read_class[Reservoir]
         super().__init__(
@@ -43,7 +44,7 @@ class ReservoirAPI(NodeAPI[Reservoir, ReservoirApply, ReservoirList]):
             sources=view_id,
             class_type=Reservoir,
             class_list=ReservoirList,
-            class_apply_list=ReservoirApplyList,
+            class_write_list=ReservoirWriteList,
             view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
@@ -58,7 +59,7 @@ class ReservoirAPI(NodeAPI[Reservoir, ReservoirApply, ReservoirList]):
         max_ordering: int | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_QUERY_LIMIT,
+        limit: int | None = DEFAULT_QUERY_LIMIT,
         filter: dm.Filter | None = None,
     ) -> ReservoirQueryAPI[ReservoirList]:
         """Query starting at reservoirs.
@@ -97,10 +98,10 @@ class ReservoirAPI(NodeAPI[Reservoir, ReservoirApply, ReservoirList]):
 
     def apply(
         self,
-        reservoir: ReservoirApply | Sequence[ReservoirApply],
+        reservoir: ReservoirWrite | Sequence[ReservoirWrite],
         replace: bool = False,
         write_none: bool = False,
-    ) -> ResourcesApplyResult:
+    ) -> ResourcesWriteResult:
         """Add or update (upsert) reservoirs.
 
         Args:
@@ -117,12 +118,22 @@ class ReservoirAPI(NodeAPI[Reservoir, ReservoirApply, ReservoirList]):
             Create a new reservoir:
 
                 >>> from cognite.powerops.client._generated.assets import PowerAssetAPI
-                >>> from cognite.powerops.client._generated.assets.data_classes import ReservoirApply
+                >>> from cognite.powerops.client._generated.assets.data_classes import ReservoirWrite
                 >>> client = PowerAssetAPI()
-                >>> reservoir = ReservoirApply(external_id="my_reservoir", ...)
+                >>> reservoir = ReservoirWrite(external_id="my_reservoir", ...)
                 >>> result = client.reservoir.apply(reservoir)
 
         """
+        warnings.warn(
+            "The .apply method is deprecated and will be removed in v1.0. "
+            "Please use the .upsert method on the client instead. This means instead of "
+            "`my_client.reservoir.apply(my_items)` please use `my_client.upsert(my_items)`."
+            "The motivation is that all apply methods are the same, and having one apply method per API "
+            " class encourages users to create items in small batches, which is inefficient."
+            "In addition, .upsert method is more descriptive of what the method does.",
+            UserWarning,
+            stacklevel=2,
+        )
         return self._apply(reservoir, replace, write_none)
 
     def delete(
@@ -145,15 +156,22 @@ class ReservoirAPI(NodeAPI[Reservoir, ReservoirApply, ReservoirList]):
                 >>> client = PowerAssetAPI()
                 >>> client.reservoir.delete("my_reservoir")
         """
+        warnings.warn(
+            "The .delete method is deprecated and will be removed in v1.0. "
+            "Please use the .delete method on the client instead. This means instead of "
+            "`my_client.reservoir.delete(my_ids)` please use `my_client.delete(my_ids)`."
+            "The motivation is that all delete methods are the same, and having one delete method per API "
+            " class encourages users to delete items in small batches, which is inefficient.",
+            UserWarning,
+            stacklevel=2,
+        )
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> Reservoir | None:
-        ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> Reservoir | None: ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ReservoirList:
-        ...
+    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> ReservoirList: ...
 
     def retrieve(
         self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
@@ -190,7 +208,7 @@ class ReservoirAPI(NodeAPI[Reservoir, ReservoirApply, ReservoirList]):
         max_ordering: int | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> ReservoirList:
         """Search reservoirs
@@ -238,10 +256,12 @@ class ReservoirAPI(NodeAPI[Reservoir, ReservoirApply, ReservoirList]):
     @overload
     def aggregate(
         self,
-        aggregations: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: ReservoirFields | Sequence[ReservoirFields] | None = None,
         group_by: None = None,
         query: str | None = None,
@@ -254,18 +274,19 @@ class ReservoirAPI(NodeAPI[Reservoir, ReservoirApply, ReservoirList]):
         max_ordering: int | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
         self,
-        aggregations: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: ReservoirFields | Sequence[ReservoirFields] | None = None,
         group_by: ReservoirFields | Sequence[ReservoirFields] = None,
         query: str | None = None,
@@ -278,17 +299,18 @@ class ReservoirAPI(NodeAPI[Reservoir, ReservoirApply, ReservoirList]):
         max_ordering: int | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: ReservoirFields | Sequence[ReservoirFields] | None = None,
         group_by: ReservoirFields | Sequence[ReservoirFields] | None = None,
         query: str | None = None,
@@ -301,7 +323,7 @@ class ReservoirAPI(NodeAPI[Reservoir, ReservoirApply, ReservoirList]):
         max_ordering: int | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
         """Aggregate data across reservoirs
@@ -374,7 +396,7 @@ class ReservoirAPI(NodeAPI[Reservoir, ReservoirApply, ReservoirList]):
         max_ordering: int | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         """Produces histograms for reservoirs
@@ -432,7 +454,7 @@ class ReservoirAPI(NodeAPI[Reservoir, ReservoirApply, ReservoirList]):
         max_ordering: int | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> ReservoirList:
         """List/filter reservoirs

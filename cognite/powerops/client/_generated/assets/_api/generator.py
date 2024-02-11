@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 from typing import overload
+import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
@@ -10,13 +11,13 @@ from cognite.client.data_classes.data_modeling.instances import InstanceAggregat
 from cognite.powerops.client._generated.assets.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.assets.data_classes import (
     DomainModelCore,
-    DomainModelApply,
-    ResourcesApplyResult,
+    DomainModelWrite,
+    ResourcesWriteResult,
     Generator,
-    GeneratorApply,
+    GeneratorWrite,
     GeneratorFields,
     GeneratorList,
-    GeneratorApplyList,
+    GeneratorWriteList,
     GeneratorTextFields,
 )
 from cognite.powerops.client._generated.assets.data_classes._generator import (
@@ -38,7 +39,7 @@ from .generator_is_available_time_series import GeneratorIsAvailableTimeSeriesAP
 from .generator_query import GeneratorQueryAPI
 
 
-class GeneratorAPI(NodeAPI[Generator, GeneratorApply, GeneratorList]):
+class GeneratorAPI(NodeAPI[Generator, GeneratorWrite, GeneratorList]):
     def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
         view_id = view_by_read_class[Generator]
         super().__init__(
@@ -46,7 +47,7 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorApply, GeneratorList]):
             sources=view_id,
             class_type=Generator,
             class_list=GeneratorList,
-            class_apply_list=GeneratorApplyList,
+            class_write_list=GeneratorWriteList,
             view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
@@ -69,7 +70,7 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorApply, GeneratorList]):
         efficiency_curve: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_QUERY_LIMIT,
+        limit: int | None = DEFAULT_QUERY_LIMIT,
         filter: dm.Filter | None = None,
     ) -> GeneratorQueryAPI[GeneratorList]:
         """Query starting at generators.
@@ -118,10 +119,10 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorApply, GeneratorList]):
 
     def apply(
         self,
-        generator: GeneratorApply | Sequence[GeneratorApply],
+        generator: GeneratorWrite | Sequence[GeneratorWrite],
         replace: bool = False,
         write_none: bool = False,
-    ) -> ResourcesApplyResult:
+    ) -> ResourcesWriteResult:
         """Add or update (upsert) generators.
 
         Note: This method iterates through all nodes and timeseries linked to generator and creates them including the edges
@@ -142,12 +143,22 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorApply, GeneratorList]):
             Create a new generator:
 
                 >>> from cognite.powerops.client._generated.assets import PowerAssetAPI
-                >>> from cognite.powerops.client._generated.assets.data_classes import GeneratorApply
+                >>> from cognite.powerops.client._generated.assets.data_classes import GeneratorWrite
                 >>> client = PowerAssetAPI()
-                >>> generator = GeneratorApply(external_id="my_generator", ...)
+                >>> generator = GeneratorWrite(external_id="my_generator", ...)
                 >>> result = client.generator.apply(generator)
 
         """
+        warnings.warn(
+            "The .apply method is deprecated and will be removed in v1.0. "
+            "Please use the .upsert method on the client instead. This means instead of "
+            "`my_client.generator.apply(my_items)` please use `my_client.upsert(my_items)`."
+            "The motivation is that all apply methods are the same, and having one apply method per API "
+            " class encourages users to create items in small batches, which is inefficient."
+            "In addition, .upsert method is more descriptive of what the method does.",
+            UserWarning,
+            stacklevel=2,
+        )
         return self._apply(generator, replace, write_none)
 
     def delete(
@@ -170,15 +181,22 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorApply, GeneratorList]):
                 >>> client = PowerAssetAPI()
                 >>> client.generator.delete("my_generator")
         """
+        warnings.warn(
+            "The .delete method is deprecated and will be removed in v1.0. "
+            "Please use the .delete method on the client instead. This means instead of "
+            "`my_client.generator.delete(my_ids)` please use `my_client.delete(my_ids)`."
+            "The motivation is that all delete methods are the same, and having one delete method per API "
+            " class encourages users to delete items in small batches, which is inefficient.",
+            UserWarning,
+            stacklevel=2,
+        )
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> Generator | None:
-        ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> Generator | None: ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> GeneratorList:
-        ...
+    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> GeneratorList: ...
 
     def retrieve(
         self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
@@ -205,12 +223,13 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorApply, GeneratorList]):
             external_id,
             space,
             retrieve_edges=True,
-            edge_api_name_type_direction_quad=[
+            edge_api_name_type_direction_view_id_penta=[
                 (
                     self.turbine_curves_edge,
                     "turbine_curves",
                     dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
                     "outwards",
+                    dm.ViewId("power-ops-assets", "TurbineEfficiencyCurve", "1"),
                 ),
             ],
         )
@@ -232,7 +251,7 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorApply, GeneratorList]):
         efficiency_curve: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> GeneratorList:
         """Search generators
@@ -290,10 +309,12 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorApply, GeneratorList]):
     @overload
     def aggregate(
         self,
-        aggregations: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: GeneratorFields | Sequence[GeneratorFields] | None = None,
         group_by: None = None,
         query: str | None = None,
@@ -311,18 +332,19 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorApply, GeneratorList]):
         efficiency_curve: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
         self,
-        aggregations: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: GeneratorFields | Sequence[GeneratorFields] | None = None,
         group_by: GeneratorFields | Sequence[GeneratorFields] = None,
         query: str | None = None,
@@ -340,17 +362,18 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorApply, GeneratorList]):
         efficiency_curve: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: GeneratorFields | Sequence[GeneratorFields] | None = None,
         group_by: GeneratorFields | Sequence[GeneratorFields] | None = None,
         query: str | None = None,
@@ -368,7 +391,7 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorApply, GeneratorList]):
         efficiency_curve: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
         """Aggregate data across generators
@@ -456,7 +479,7 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorApply, GeneratorList]):
         efficiency_curve: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         """Produces histograms for generators
@@ -529,7 +552,7 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorApply, GeneratorList]):
         efficiency_curve: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
         retrieve_edges: bool = True,
     ) -> GeneratorList:
@@ -587,12 +610,13 @@ class GeneratorAPI(NodeAPI[Generator, GeneratorApply, GeneratorList]):
             limit=limit,
             filter=filter_,
             retrieve_edges=retrieve_edges,
-            edge_api_name_type_direction_quad=[
+            edge_api_name_type_direction_view_id_penta=[
                 (
                     self.turbine_curves_edge,
                     "turbine_curves",
                     dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
                     "outwards",
+                    dm.ViewId("power-ops-assets", "TurbineEfficiencyCurve", "1"),
                 ),
             ],
         )

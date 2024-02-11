@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 from typing import overload
+import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
@@ -10,8 +11,8 @@ from cognite.client.data_classes.data_modeling.instances import InstanceAggregat
 from cognite.powerops.client._generated.afrr_bid.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.afrr_bid.data_classes import (
     DomainModelCore,
-    DomainModelApply,
-    ResourcesApplyResult,
+    DomainModelWrite,
+    ResourcesWriteResult,
     PriceArea,
     PriceAreaFields,
     PriceAreaList,
@@ -69,7 +70,7 @@ class PriceAreaAPI(NodeReadAPI[PriceArea, PriceAreaList]):
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_QUERY_LIMIT,
+        limit: int | None = DEFAULT_QUERY_LIMIT,
         filter: dm.Filter | None = None,
     ) -> PriceAreaQueryAPI[PriceAreaList]:
         """Query starting at price areas.
@@ -118,15 +119,22 @@ class PriceAreaAPI(NodeReadAPI[PriceArea, PriceAreaList]):
                 >>> client = AFRRBidAPI()
                 >>> client.price_area.delete("my_price_area")
         """
+        warnings.warn(
+            "The .delete method is deprecated and will be removed in v1.0. "
+            "Please use the .delete method on the client instead. This means instead of "
+            "`my_client.price_area.delete(my_ids)` please use `my_client.delete(my_ids)`."
+            "The motivation is that all delete methods are the same, and having one delete method per API "
+            " class encourages users to delete items in small batches, which is inefficient.",
+            UserWarning,
+            stacklevel=2,
+        )
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> PriceArea | None:
-        ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> PriceArea | None: ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> PriceAreaList:
-        ...
+    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> PriceAreaList: ...
 
     def retrieve(
         self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
@@ -159,7 +167,7 @@ class PriceAreaAPI(NodeReadAPI[PriceArea, PriceAreaList]):
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> PriceAreaList:
         """Search price areas
@@ -199,10 +207,12 @@ class PriceAreaAPI(NodeReadAPI[PriceArea, PriceAreaList]):
     @overload
     def aggregate(
         self,
-        aggregations: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: PriceAreaFields | Sequence[PriceAreaFields] | None = None,
         group_by: None = None,
         query: str | None = None,
@@ -211,18 +221,19 @@ class PriceAreaAPI(NodeReadAPI[PriceArea, PriceAreaList]):
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
         self,
-        aggregations: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: PriceAreaFields | Sequence[PriceAreaFields] | None = None,
         group_by: PriceAreaFields | Sequence[PriceAreaFields] = None,
         query: str | None = None,
@@ -231,17 +242,18 @@ class PriceAreaAPI(NodeReadAPI[PriceArea, PriceAreaList]):
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: PriceAreaFields | Sequence[PriceAreaFields] | None = None,
         group_by: PriceAreaFields | Sequence[PriceAreaFields] | None = None,
         query: str | None = None,
@@ -250,7 +262,7 @@ class PriceAreaAPI(NodeReadAPI[PriceArea, PriceAreaList]):
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
         """Aggregate data across price areas
@@ -311,7 +323,7 @@ class PriceAreaAPI(NodeReadAPI[PriceArea, PriceAreaList]):
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         """Produces histograms for price areas
@@ -357,7 +369,7 @@ class PriceAreaAPI(NodeReadAPI[PriceArea, PriceAreaList]):
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> PriceAreaList:
         """List/filter price areas

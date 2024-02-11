@@ -28,8 +28,7 @@ class DayAheadBid(Bid):
             return {}
         return value
 
-    def standardize(self):
-        ...
+    def standardize(self): ...
 
 
 class DayAheadProcess(Process):

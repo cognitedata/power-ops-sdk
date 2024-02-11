@@ -134,8 +134,7 @@ class CDFFile(CDFResource):
 # subclasses to be instantiated. This is a private implementation detail in the Python-SDK, but it is useful
 # for us here in the adapter methods of the CDF API.
 @dataclass(frozen=True)
-class _Dummy(AbstractDataclass):
-    ...
+class _Dummy(AbstractDataclass): ...
 
 
 @dataclass(frozen=True)

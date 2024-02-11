@@ -1,11 +1,13 @@
 """
 This script is used to generate the Power Ops client. It is not used in the normal workflow.
 """
+
 import os
 from pathlib import Path
 from dataclasses import dataclass
 from cognite.pygen import generate_sdk
-
+from rich import print
+from rich.panel import Panel
 
 from cognite.powerops.utils.cdf import get_cognite_client
 from cognite.powerops.utils.serialization import chdir
@@ -73,6 +75,13 @@ def main():
                 client_name="PowerAssetAPI",
             ),
         ]
+        print(
+            Panel(
+                f"Generating DM v0 Clients for all {len(models)} models",
+                title="Generating DM v0 clients",
+                style="bold blue",
+            )
+        )
         for model in models:
             generate_sdk(
                 model.model_id,
@@ -86,6 +95,38 @@ def main():
                 overwrite=True,
                 format_code=True,
             )
+        print(Panel("Done generating v0 clients", title="Done", style="bold green"))
+
+        space = "sp_powerops_models"
+        v1_models = [
+            "compute_SHOPBasedDayAhead",
+            "compute_TotalBidCalculation",
+            "compute_WaterValueBasedDayAheadBid",
+            "config_DayAheadConfiguration",
+            "frontend_AFRRBid",
+            "frontend_Asset",
+            "frontend_DayAheadBid",
+        ]
+        print(
+            Panel(
+                f"Generating DM v1 Client for all {len(v1_models)} models",
+                title="Generating DM v1 client",
+                style="bold blue",
+            )
+        )
+        generate_sdk(
+            [dm.DataModelId(space, external_id, "1") for external_id in v1_models],
+            client,
+            top_level_package=f"{top_level}.v1",
+            default_instance_space="sp_powerops_instance",
+            client_name="PowerOpsModelsV1Client",
+            output_dir=REPO_ROOT,
+            logger=print,
+            pydantic_version="v2",
+            overwrite=True,
+            format_code=True,
+        )
+        print(Panel("Done generating v1 client", title="Done", style="bold green"))
 
 
 if __name__ == "__main__":

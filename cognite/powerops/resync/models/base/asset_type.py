@@ -16,8 +16,7 @@ from .cdf_resources import CDFFile, CDFSequence
 from .resource_type import ResourceType
 
 
-class NonAssetType(BaseModel, ABC, arbitrary_types_allowed=True):
-    ...
+class NonAssetType(BaseModel, ABC, arbitrary_types_allowed=True): ...
 
 
 class AssetType(ResourceType, ABC, arbitrary_types_allowed=True, validate_assignment=True):

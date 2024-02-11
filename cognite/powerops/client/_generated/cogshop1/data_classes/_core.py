@@ -86,12 +86,10 @@ class TypeList(UserList, Generic[T_TypeNodeCore]):
         return super().__iter__()
 
     @overload
-    def __getitem__(self, item: int) -> T_TypeNodeCore:
-        ...
+    def __getitem__(self, item: int) -> T_TypeNodeCore: ...
 
     @overload
-    def __getitem__(self: type[T_TypeNodeList], item: slice) -> T_TypeNodeList:
-        ...
+    def __getitem__(self: type[T_TypeNodeList], item: slice) -> T_TypeNodeList: ...
 
     def __getitem__(self, item: int | slice) -> T_TypeNodeCore | T_TypeNodeList:
         if isinstance(item, slice):

@@ -125,13 +125,11 @@ class ProductionConfig(Config):
 
     @classmethod
     @overload
-    def load_yamls(cls, config_dir_path: Path, instantiate: Literal[False] = False) -> dict[str, Any]:
-        ...
+    def load_yamls(cls, config_dir_path: Path, instantiate: Literal[False] = False) -> dict[str, Any]: ...
 
     @classmethod
     @overload
-    def load_yamls(cls, config_dir_path: Path, instantiate: Literal[True]) -> ProductionConfig:
-        ...
+    def load_yamls(cls, config_dir_path: Path, instantiate: Literal[True]) -> ProductionConfig: ...
 
     @classmethod
     def load_yamls(cls, config_dir_path: Path, instantiate: bool = False) -> dict[str, Any] | ProductionConfig:

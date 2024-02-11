@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 from typing import overload
+import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
@@ -10,13 +11,13 @@ from cognite.client.data_classes.data_modeling.instances import InstanceAggregat
 from cognite.powerops.client._generated.day_ahead_bid.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.day_ahead_bid.data_classes import (
     DomainModelCore,
-    DomainModelApply,
-    ResourcesApplyResult,
+    DomainModelWrite,
+    ResourcesWriteResult,
     SHOPMultiScenarioMethod,
-    SHOPMultiScenarioMethodApply,
+    SHOPMultiScenarioMethodWrite,
     SHOPMultiScenarioMethodFields,
     SHOPMultiScenarioMethodList,
-    SHOPMultiScenarioMethodApplyList,
+    SHOPMultiScenarioMethodWriteList,
     SHOPMultiScenarioMethodTextFields,
 )
 from cognite.powerops.client._generated.day_ahead_bid.data_classes._shop_multi_scenario_method import (
@@ -37,7 +38,7 @@ from .shop_multi_scenario_method_query import SHOPMultiScenarioMethodQueryAPI
 
 
 class SHOPMultiScenarioMethodAPI(
-    NodeAPI[SHOPMultiScenarioMethod, SHOPMultiScenarioMethodApply, SHOPMultiScenarioMethodList]
+    NodeAPI[SHOPMultiScenarioMethod, SHOPMultiScenarioMethodWrite, SHOPMultiScenarioMethodList]
 ):
     def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
         view_id = view_by_read_class[SHOPMultiScenarioMethod]
@@ -46,7 +47,7 @@ class SHOPMultiScenarioMethodAPI(
             sources=view_id,
             class_type=SHOPMultiScenarioMethod,
             class_list=SHOPMultiScenarioMethodList,
-            class_apply_list=SHOPMultiScenarioMethodApplyList,
+            class_write_list=SHOPMultiScenarioMethodWriteList,
             view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
@@ -58,7 +59,7 @@ class SHOPMultiScenarioMethodAPI(
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_QUERY_LIMIT,
+        limit: int | None = DEFAULT_QUERY_LIMIT,
         filter: dm.Filter | None = None,
     ) -> SHOPMultiScenarioMethodQueryAPI[SHOPMultiScenarioMethodList]:
         """Query starting at shop multi scenario methods.
@@ -89,10 +90,10 @@ class SHOPMultiScenarioMethodAPI(
 
     def apply(
         self,
-        shop_multi_scenario_method: SHOPMultiScenarioMethodApply | Sequence[SHOPMultiScenarioMethodApply],
+        shop_multi_scenario_method: SHOPMultiScenarioMethodWrite | Sequence[SHOPMultiScenarioMethodWrite],
         replace: bool = False,
         write_none: bool = False,
-    ) -> ResourcesApplyResult:
+    ) -> ResourcesWriteResult:
         """Add or update (upsert) shop multi scenario methods.
 
         Note: This method iterates through all nodes and timeseries linked to shop_multi_scenario_method and creates them including the edges
@@ -113,12 +114,22 @@ class SHOPMultiScenarioMethodAPI(
             Create a new shop_multi_scenario_method:
 
                 >>> from cognite.powerops.client._generated.day_ahead_bid import DayAheadBidAPI
-                >>> from cognite.powerops.client._generated.day_ahead_bid.data_classes import SHOPMultiScenarioMethodApply
+                >>> from cognite.powerops.client._generated.day_ahead_bid.data_classes import SHOPMultiScenarioMethodWrite
                 >>> client = DayAheadBidAPI()
-                >>> shop_multi_scenario_method = SHOPMultiScenarioMethodApply(external_id="my_shop_multi_scenario_method", ...)
+                >>> shop_multi_scenario_method = SHOPMultiScenarioMethodWrite(external_id="my_shop_multi_scenario_method", ...)
                 >>> result = client.shop_multi_scenario_method.apply(shop_multi_scenario_method)
 
         """
+        warnings.warn(
+            "The .apply method is deprecated and will be removed in v1.0. "
+            "Please use the .upsert method on the client instead. This means instead of "
+            "`my_client.shop_multi_scenario_method.apply(my_items)` please use `my_client.upsert(my_items)`."
+            "The motivation is that all apply methods are the same, and having one apply method per API "
+            " class encourages users to create items in small batches, which is inefficient."
+            "In addition, .upsert method is more descriptive of what the method does.",
+            UserWarning,
+            stacklevel=2,
+        )
         return self._apply(shop_multi_scenario_method, replace, write_none)
 
     def delete(
@@ -141,17 +152,24 @@ class SHOPMultiScenarioMethodAPI(
                 >>> client = DayAheadBidAPI()
                 >>> client.shop_multi_scenario_method.delete("my_shop_multi_scenario_method")
         """
+        warnings.warn(
+            "The .delete method is deprecated and will be removed in v1.0. "
+            "Please use the .delete method on the client instead. This means instead of "
+            "`my_client.shop_multi_scenario_method.delete(my_ids)` please use `my_client.delete(my_ids)`."
+            "The motivation is that all delete methods are the same, and having one delete method per API "
+            " class encourages users to delete items in small batches, which is inefficient.",
+            UserWarning,
+            stacklevel=2,
+        )
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> SHOPMultiScenarioMethod | None:
-        ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> SHOPMultiScenarioMethod | None: ...
 
     @overload
     def retrieve(
         self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> SHOPMultiScenarioMethodList:
-        ...
+    ) -> SHOPMultiScenarioMethodList: ...
 
     def retrieve(
         self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
@@ -178,12 +196,13 @@ class SHOPMultiScenarioMethodAPI(
             external_id,
             space,
             retrieve_edges=True,
-            edge_api_name_type_direction_quad=[
+            edge_api_name_type_direction_view_id_penta=[
                 (
                     self.price_scenarios_edge,
                     "price_scenarios",
                     dm.DirectRelationReference("power-ops-types", "PriceScenario"),
                     "outwards",
+                    dm.ViewId("power-ops-day-ahead-bid", "SHOPPriceScenario", "1"),
                 ),
             ],
         )
@@ -196,7 +215,7 @@ class SHOPMultiScenarioMethodAPI(
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> SHOPMultiScenarioMethodList:
         """Search shop multi scenario methods
@@ -238,53 +257,57 @@ class SHOPMultiScenarioMethodAPI(
     @overload
     def aggregate(
         self,
-        aggregations: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: SHOPMultiScenarioMethodFields | Sequence[SHOPMultiScenarioMethodFields] | None = None,
         group_by: None = None,
         query: str | None = None,
-        search_properties: SHOPMultiScenarioMethodTextFields
-        | Sequence[SHOPMultiScenarioMethodTextFields]
-        | None = None,
+        search_properties: (
+            SHOPMultiScenarioMethodTextFields | Sequence[SHOPMultiScenarioMethodTextFields] | None
+        ) = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
         self,
-        aggregations: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: SHOPMultiScenarioMethodFields | Sequence[SHOPMultiScenarioMethodFields] | None = None,
         group_by: SHOPMultiScenarioMethodFields | Sequence[SHOPMultiScenarioMethodFields] = None,
         query: str | None = None,
-        search_properties: SHOPMultiScenarioMethodTextFields
-        | Sequence[SHOPMultiScenarioMethodTextFields]
-        | None = None,
+        search_properties: (
+            SHOPMultiScenarioMethodTextFields | Sequence[SHOPMultiScenarioMethodTextFields] | None
+        ) = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: SHOPMultiScenarioMethodFields | Sequence[SHOPMultiScenarioMethodFields] | None = None,
         group_by: SHOPMultiScenarioMethodFields | Sequence[SHOPMultiScenarioMethodFields] | None = None,
         query: str | None = None,
@@ -293,7 +316,7 @@ class SHOPMultiScenarioMethodAPI(
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
         """Aggregate data across shop multi scenario methods
@@ -354,7 +377,7 @@ class SHOPMultiScenarioMethodAPI(
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         """Produces histograms for shop multi scenario methods
@@ -400,7 +423,7 @@ class SHOPMultiScenarioMethodAPI(
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
         retrieve_edges: bool = True,
     ) -> SHOPMultiScenarioMethodList:
@@ -440,12 +463,13 @@ class SHOPMultiScenarioMethodAPI(
             limit=limit,
             filter=filter_,
             retrieve_edges=retrieve_edges,
-            edge_api_name_type_direction_quad=[
+            edge_api_name_type_direction_view_id_penta=[
                 (
                     self.price_scenarios_edge,
                     "price_scenarios",
                     dm.DirectRelationReference("power-ops-types", "PriceScenario"),
                     "outwards",
+                    dm.ViewId("power-ops-day-ahead-bid", "SHOPPriceScenario", "1"),
                 ),
             ],
         )

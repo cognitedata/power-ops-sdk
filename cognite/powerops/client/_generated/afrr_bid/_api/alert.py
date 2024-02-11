@@ -3,6 +3,7 @@ from __future__ import annotations
 import datetime
 from collections.abc import Sequence
 from typing import overload
+import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
@@ -11,13 +12,13 @@ from cognite.client.data_classes.data_modeling.instances import InstanceAggregat
 from cognite.powerops.client._generated.afrr_bid.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.afrr_bid.data_classes import (
     DomainModelCore,
-    DomainModelApply,
-    ResourcesApplyResult,
+    DomainModelWrite,
+    ResourcesWriteResult,
     Alert,
-    AlertApply,
+    AlertWrite,
     AlertFields,
     AlertList,
-    AlertApplyList,
+    AlertWriteList,
     AlertTextFields,
 )
 from cognite.powerops.client._generated.afrr_bid.data_classes._alert import (
@@ -36,7 +37,7 @@ from ._core import (
 from .alert_query import AlertQueryAPI
 
 
-class AlertAPI(NodeAPI[Alert, AlertApply, AlertList]):
+class AlertAPI(NodeAPI[Alert, AlertWrite, AlertList]):
     def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
         view_id = view_by_read_class[Alert]
         super().__init__(
@@ -44,7 +45,7 @@ class AlertAPI(NodeAPI[Alert, AlertApply, AlertList]):
             sources=view_id,
             class_type=Alert,
             class_list=AlertList,
-            class_apply_list=AlertApplyList,
+            class_write_list=AlertWriteList,
             view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
@@ -67,7 +68,7 @@ class AlertAPI(NodeAPI[Alert, AlertApply, AlertList]):
         calculation_run_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_QUERY_LIMIT,
+        limit: int | None = DEFAULT_QUERY_LIMIT,
         filter: dm.Filter | None = None,
     ) -> AlertQueryAPI[AlertList]:
         """Query starting at alerts.
@@ -122,10 +123,10 @@ class AlertAPI(NodeAPI[Alert, AlertApply, AlertList]):
 
     def apply(
         self,
-        alert: AlertApply | Sequence[AlertApply],
+        alert: AlertWrite | Sequence[AlertWrite],
         replace: bool = False,
         write_none: bool = False,
-    ) -> ResourcesApplyResult:
+    ) -> ResourcesWriteResult:
         """Add or update (upsert) alerts.
 
         Args:
@@ -142,12 +143,22 @@ class AlertAPI(NodeAPI[Alert, AlertApply, AlertList]):
             Create a new alert:
 
                 >>> from cognite.powerops.client._generated.afrr_bid import AFRRBidAPI
-                >>> from cognite.powerops.client._generated.afrr_bid.data_classes import AlertApply
+                >>> from cognite.powerops.client._generated.afrr_bid.data_classes import AlertWrite
                 >>> client = AFRRBidAPI()
-                >>> alert = AlertApply(external_id="my_alert", ...)
+                >>> alert = AlertWrite(external_id="my_alert", ...)
                 >>> result = client.alert.apply(alert)
 
         """
+        warnings.warn(
+            "The .apply method is deprecated and will be removed in v1.0. "
+            "Please use the .upsert method on the client instead. This means instead of "
+            "`my_client.alert.apply(my_items)` please use `my_client.upsert(my_items)`."
+            "The motivation is that all apply methods are the same, and having one apply method per API "
+            " class encourages users to create items in small batches, which is inefficient."
+            "In addition, .upsert method is more descriptive of what the method does.",
+            UserWarning,
+            stacklevel=2,
+        )
         return self._apply(alert, replace, write_none)
 
     def delete(
@@ -170,15 +181,22 @@ class AlertAPI(NodeAPI[Alert, AlertApply, AlertList]):
                 >>> client = AFRRBidAPI()
                 >>> client.alert.delete("my_alert")
         """
+        warnings.warn(
+            "The .delete method is deprecated and will be removed in v1.0. "
+            "Please use the .delete method on the client instead. This means instead of "
+            "`my_client.alert.delete(my_ids)` please use `my_client.delete(my_ids)`."
+            "The motivation is that all delete methods are the same, and having one delete method per API "
+            " class encourages users to delete items in small batches, which is inefficient.",
+            UserWarning,
+            stacklevel=2,
+        )
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> Alert | None:
-        ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> Alert | None: ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> AlertList:
-        ...
+    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> AlertList: ...
 
     def retrieve(
         self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
@@ -223,7 +241,7 @@ class AlertAPI(NodeAPI[Alert, AlertApply, AlertList]):
         calculation_run_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> AlertList:
         """Search alerts
@@ -287,10 +305,12 @@ class AlertAPI(NodeAPI[Alert, AlertApply, AlertList]):
     @overload
     def aggregate(
         self,
-        aggregations: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: AlertFields | Sequence[AlertFields] | None = None,
         group_by: None = None,
         query: str | None = None,
@@ -311,18 +331,19 @@ class AlertAPI(NodeAPI[Alert, AlertApply, AlertList]):
         calculation_run_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
         self,
-        aggregations: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: AlertFields | Sequence[AlertFields] | None = None,
         group_by: AlertFields | Sequence[AlertFields] = None,
         query: str | None = None,
@@ -343,17 +364,18 @@ class AlertAPI(NodeAPI[Alert, AlertApply, AlertList]):
         calculation_run_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: AlertFields | Sequence[AlertFields] | None = None,
         group_by: AlertFields | Sequence[AlertFields] | None = None,
         query: str | None = None,
@@ -374,7 +396,7 @@ class AlertAPI(NodeAPI[Alert, AlertApply, AlertList]):
         calculation_run_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
         """Aggregate data across alerts
@@ -471,7 +493,7 @@ class AlertAPI(NodeAPI[Alert, AlertApply, AlertList]):
         calculation_run_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         """Produces histograms for alerts
@@ -553,7 +575,7 @@ class AlertAPI(NodeAPI[Alert, AlertApply, AlertList]):
         calculation_run_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> AlertList:
         """List/filter alerts

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import warnings
 from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
@@ -11,23 +12,25 @@ from ._core import (
     DataRecordWrite,
     DomainModel,
     DomainModelCore,
-    DomainModelApply,
-    DomainModelApplyList,
+    DomainModelWrite,
+    DomainModelWriteList,
     DomainModelList,
-    DomainRelationApply,
-    ResourcesApply,
+    DomainRelationWrite,
+    ResourcesWrite,
     TimeSeries,
 )
 
 if TYPE_CHECKING:
-    from ._generator_efficiency_curve import GeneratorEfficiencyCurve, GeneratorEfficiencyCurveApply
-    from ._turbine_efficiency_curve import TurbineEfficiencyCurve, TurbineEfficiencyCurveApply
+    from ._generator_efficiency_curve import GeneratorEfficiencyCurve, GeneratorEfficiencyCurveWrite
+    from ._turbine_efficiency_curve import TurbineEfficiencyCurve, TurbineEfficiencyCurveWrite
 
 
 __all__ = [
     "Generator",
+    "GeneratorWrite",
     "GeneratorApply",
     "GeneratorList",
+    "GeneratorWriteList",
     "GeneratorApplyList",
     "GeneratorFields",
     "GeneratorTextFields",
@@ -86,9 +89,9 @@ class Generator(DomainModel):
         default=None, repr=False, alias="turbineCurves"
     )
 
-    def as_apply(self) -> GeneratorApply:
+    def as_write(self) -> GeneratorWrite:
         """Convert this read version of generator to the writing version."""
-        return GeneratorApply(
+        return GeneratorWrite(
             space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
@@ -99,17 +102,28 @@ class Generator(DomainModel):
             start_cost=self.start_cost,
             start_stop_cost=self.start_stop_cost,
             is_available_time_series=self.is_available_time_series,
-            efficiency_curve=self.efficiency_curve.as_apply()
-            if isinstance(self.efficiency_curve, DomainModel)
-            else self.efficiency_curve,
+            efficiency_curve=(
+                self.efficiency_curve.as_write()
+                if isinstance(self.efficiency_curve, DomainModel)
+                else self.efficiency_curve
+            ),
             turbine_curves=[
-                turbine_curve.as_apply() if isinstance(turbine_curve, DomainModel) else turbine_curve
+                turbine_curve.as_write() if isinstance(turbine_curve, DomainModel) else turbine_curve
                 for turbine_curve in self.turbine_curves or []
             ],
         )
 
+    def as_apply(self) -> GeneratorWrite:
+        """Convert this read version of generator to the writing version."""
+        warnings.warn(
+            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
+            UserWarning,
+            stacklevel=2,
+        )
+        return self.as_write()
 
-class GeneratorApply(DomainModelApply):
+
+class GeneratorWrite(DomainModelWrite):
     """This represents the writing version of generator.
 
     It is used to when data is sent to CDF.
@@ -138,20 +152,20 @@ class GeneratorApply(DomainModelApply):
     start_cost: Optional[float] = Field(None, alias="startCost")
     start_stop_cost: Union[TimeSeries, str, None] = Field(None, alias="startStopCost")
     is_available_time_series: Union[TimeSeries, str, None] = Field(None, alias="isAvailableTimeSeries")
-    efficiency_curve: Union[GeneratorEfficiencyCurveApply, str, dm.NodeId, None] = Field(
+    efficiency_curve: Union[GeneratorEfficiencyCurveWrite, str, dm.NodeId, None] = Field(
         None, repr=False, alias="efficiencyCurve"
     )
-    turbine_curves: Union[list[TurbineEfficiencyCurveApply], list[str], None] = Field(
+    turbine_curves: Union[list[TurbineEfficiencyCurveWrite], list[str], None] = Field(
         default=None, repr=False, alias="turbineCurves"
     )
 
-    def _to_instances_apply(
+    def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
-    ) -> ResourcesApply:
-        resources = ResourcesApply()
+    ) -> ResourcesWrite:
+        resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
             return resources
 
@@ -189,9 +203,11 @@ class GeneratorApply(DomainModelApply):
         if self.efficiency_curve is not None:
             properties["efficiencyCurve"] = {
                 "space": self.space if isinstance(self.efficiency_curve, str) else self.efficiency_curve.space,
-                "externalId": self.efficiency_curve
-                if isinstance(self.efficiency_curve, str)
-                else self.efficiency_curve.external_id,
+                "externalId": (
+                    self.efficiency_curve
+                    if isinstance(self.efficiency_curve, str)
+                    else self.efficiency_curve.external_id
+                ),
             }
 
         if properties:
@@ -212,7 +228,7 @@ class GeneratorApply(DomainModelApply):
 
         edge_type = dm.DirectRelationReference("power-ops-types", "isSubAssetOf")
         for turbine_curve in self.turbine_curves or []:
-            other_resources = DomainRelationApply.from_edge_to_resources(
+            other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,
                 start_node=self,
                 end_node=turbine_curve,
@@ -221,8 +237,8 @@ class GeneratorApply(DomainModelApply):
             )
             resources.extend(other_resources)
 
-        if isinstance(self.efficiency_curve, DomainModelApply):
-            other_resources = self.efficiency_curve._to_instances_apply(cache, view_by_read_class)
+        if isinstance(self.efficiency_curve, DomainModelWrite):
+            other_resources = self.efficiency_curve._to_instances_write(cache, view_by_read_class)
             resources.extend(other_resources)
 
         if isinstance(self.start_stop_cost, CogniteTimeSeries):
@@ -234,20 +250,44 @@ class GeneratorApply(DomainModelApply):
         return resources
 
 
+class GeneratorApply(GeneratorWrite):
+    def __new__(cls, *args, **kwargs) -> GeneratorApply:
+        warnings.warn(
+            "GeneratorApply is deprecated and will be removed in v1.0. Use GeneratorWrite instead."
+            "The motivation for this change is that Write is a more descriptive name for the writing version of the"
+            "Generator.",
+            UserWarning,
+            stacklevel=2,
+        )
+        return super().__new__(cls)
+
+
 class GeneratorList(DomainModelList[Generator]):
     """List of generators in the read version."""
 
     _INSTANCE = Generator
 
-    def as_apply(self) -> GeneratorApplyList:
+    def as_write(self) -> GeneratorWriteList:
         """Convert these read versions of generator to the writing versions."""
-        return GeneratorApplyList([node.as_apply() for node in self.data])
+        return GeneratorWriteList([node.as_write() for node in self.data])
+
+    def as_apply(self) -> GeneratorWriteList:
+        """Convert these read versions of primitive nullable to the writing versions."""
+        warnings.warn(
+            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
+            UserWarning,
+            stacklevel=2,
+        )
+        return self.as_write()
 
 
-class GeneratorApplyList(DomainModelApplyList[GeneratorApply]):
+class GeneratorWriteList(DomainModelWriteList[GeneratorWrite]):
     """List of generators in the writing version."""
 
-    _INSTANCE = GeneratorApply
+    _INSTANCE = GeneratorWrite
+
+
+class GeneratorApplyList(GeneratorWriteList): ...
 
 
 def _create_generator_filter(
@@ -268,23 +308,23 @@ def _create_generator_filter(
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
-    if name is not None and isinstance(name, str):
+    if isinstance(name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
     if name and isinstance(name, list):
         filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
-    if name_prefix:
+    if name_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
-    if display_name is not None and isinstance(display_name, str):
+    if isinstance(display_name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("displayName"), value=display_name))
     if display_name and isinstance(display_name, list):
         filters.append(dm.filters.In(view_id.as_property_ref("displayName"), values=display_name))
-    if display_name_prefix:
+    if display_name_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("displayName"), value=display_name_prefix))
-    if min_p_min or max_p_min:
+    if min_p_min is not None or max_p_min is not None:
         filters.append(dm.filters.Range(view_id.as_property_ref("pMin"), gte=min_p_min, lte=max_p_min))
-    if min_penstock or max_penstock:
+    if min_penstock is not None or max_penstock is not None:
         filters.append(dm.filters.Range(view_id.as_property_ref("penstock"), gte=min_penstock, lte=max_penstock))
-    if min_start_cost or max_start_cost:
+    if min_start_cost is not None or max_start_cost is not None:
         filters.append(dm.filters.Range(view_id.as_property_ref("startCost"), gte=min_start_cost, lte=max_start_cost))
     if efficiency_curve and isinstance(efficiency_curve, str):
         filters.append(
@@ -314,9 +354,9 @@ def _create_generator_filter(
                 values=[{"space": item[0], "externalId": item[1]} for item in efficiency_curve],
             )
         )
-    if external_id_prefix:
+    if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
-    if space is not None and isinstance(space, str):
+    if isinstance(space, str):
         filters.append(dm.filters.Equals(["node", "space"], value=space))
     if space and isinstance(space, list):
         filters.append(dm.filters.In(["node", "space"], values=space))

@@ -59,9 +59,11 @@ class SHOPRunAPI:
                     end=None,
                     data_set_id=self._dataset_id,
                     _case_file_external_id=shop_run.pre_run_external_id,
-                    _shop_files=[SHOPFileReference(external_id=case.commands_file, file_type=SHOPFileType.ASCII.value)]
-                    if case.commands_file
-                    else [],
+                    _shop_files=(
+                        [SHOPFileReference(external_id=case.commands_file, file_type=SHOPFileType.ASCII.value)]
+                        if case.commands_file
+                        else []
+                    ),
                     shop_version=shop_version,
                     plants=PrerunFileMetadata._plants_delimiter.join(shop_run.plants),
                     price_scenario=shop_run.price_scenario,
@@ -193,12 +195,10 @@ class SHOPRunAPI:
         return SHOPRunList.load(events)
 
     @overload
-    def retrieve(self, external_id: str) -> SHOPRun | None:
-        ...
+    def retrieve(self, external_id: str) -> SHOPRun | None: ...
 
     @overload
-    def retrieve(self, external_id: Sequence[str]) -> SHOPRunList:
-        ...
+    def retrieve(self, external_id: Sequence[str]) -> SHOPRunList: ...
 
     def retrieve(
         self, external_id: str | Sequence[str], ignore_unknown_ids: bool = True
@@ -305,36 +305,30 @@ class SHOPRunAPI:
         return self._load_cdf_event_shop_runs(extra_filters=extra_filters, limit=limit)
 
     @overload
-    def _create(self, shop_run: SHOPRun | Sequence[SHOPRun]) -> SHOPRun | Sequence[SHOPRun]:
-        ...
+    def _create(self, shop_run: SHOPRun | Sequence[SHOPRun]) -> SHOPRun | Sequence[SHOPRun]: ...
 
     @overload
-    def _create(self, shop_run: Sequence[SHOPRun]) -> Sequence[SHOPRun]:
-        ...
+    def _create(self, shop_run: Sequence[SHOPRun]) -> Sequence[SHOPRun]: ...
 
     def _create(self, shop_run: SHOPRun | Sequence[SHOPRun]) -> SHOPRun | Sequence[SHOPRun]:
         api_method = self._wrap_event_api(self._cdf.events.create)
         return api_method(shop_run)
 
     @overload
-    def _update(self, shop_run: SHOPRun | Sequence[SHOPRun]) -> SHOPRun | Sequence[SHOPRun]:
-        ...
+    def _update(self, shop_run: SHOPRun | Sequence[SHOPRun]) -> SHOPRun | Sequence[SHOPRun]: ...
 
     @overload
-    def _update(self, shop_run: Sequence[SHOPRun]) -> Sequence[SHOPRun]:
-        ...
+    def _update(self, shop_run: Sequence[SHOPRun]) -> Sequence[SHOPRun]: ...
 
     def _update(self, shop_run: SHOPRun | Sequence[SHOPRun]) -> SHOPRun | Sequence[SHOPRun]:
         api_method = self._wrap_event_api(self._cdf.events.update)
         return api_method(shop_run)
 
     @overload
-    def _upsert(self, shop_run: SHOPRun | Sequence[SHOPRun]) -> SHOPRun | Sequence[SHOPRun]:
-        ...
+    def _upsert(self, shop_run: SHOPRun | Sequence[SHOPRun]) -> SHOPRun | Sequence[SHOPRun]: ...
 
     @overload
-    def _upsert(self, shop_run: Sequence[SHOPRun]) -> Sequence[SHOPRun]:
-        ...
+    def _upsert(self, shop_run: Sequence[SHOPRun]) -> Sequence[SHOPRun]: ...
 
     def _upsert(self, shop_run: SHOPRun | Sequence[SHOPRun]) -> SHOPRun | Sequence[SHOPRun]:
         api_method = self._wrap_event_api(self._cdf.events.update)

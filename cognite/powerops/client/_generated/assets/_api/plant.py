@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 from typing import overload
+import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
@@ -10,13 +11,13 @@ from cognite.client.data_classes.data_modeling.instances import InstanceAggregat
 from cognite.powerops.client._generated.assets.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.assets.data_classes import (
     DomainModelCore,
-    DomainModelApply,
-    ResourcesApplyResult,
+    DomainModelWrite,
+    ResourcesWriteResult,
     Plant,
-    PlantApply,
+    PlantWrite,
     PlantFields,
     PlantList,
-    PlantApplyList,
+    PlantWriteList,
     PlantTextFields,
 )
 from cognite.powerops.client._generated.assets.data_classes._plant import (
@@ -43,7 +44,7 @@ from .plant_head_direct_time_series import PlantHeadDirectTimeSeriesAPI
 from .plant_query import PlantQueryAPI
 
 
-class PlantAPI(NodeAPI[Plant, PlantApply, PlantList]):
+class PlantAPI(NodeAPI[Plant, PlantWrite, PlantList]):
     def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
         view_id = view_by_read_class[Plant]
         super().__init__(
@@ -51,7 +52,7 @@ class PlantAPI(NodeAPI[Plant, PlantApply, PlantList]):
             sources=view_id,
             class_type=Plant,
             class_list=PlantList,
-            class_apply_list=PlantApplyList,
+            class_write_list=PlantWriteList,
             view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
@@ -86,7 +87,7 @@ class PlantAPI(NodeAPI[Plant, PlantApply, PlantList]):
         inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_QUERY_LIMIT,
+        limit: int | None = DEFAULT_QUERY_LIMIT,
         filter: dm.Filter | None = None,
     ) -> PlantQueryAPI[PlantList]:
         """Query starting at plants.
@@ -149,10 +150,10 @@ class PlantAPI(NodeAPI[Plant, PlantApply, PlantList]):
 
     def apply(
         self,
-        plant: PlantApply | Sequence[PlantApply],
+        plant: PlantWrite | Sequence[PlantWrite],
         replace: bool = False,
         write_none: bool = False,
-    ) -> ResourcesApplyResult:
+    ) -> ResourcesWriteResult:
         """Add or update (upsert) plants.
 
         Note: This method iterates through all nodes and timeseries linked to plant and creates them including the edges
@@ -173,12 +174,22 @@ class PlantAPI(NodeAPI[Plant, PlantApply, PlantList]):
             Create a new plant:
 
                 >>> from cognite.powerops.client._generated.assets import PowerAssetAPI
-                >>> from cognite.powerops.client._generated.assets.data_classes import PlantApply
+                >>> from cognite.powerops.client._generated.assets.data_classes import PlantWrite
                 >>> client = PowerAssetAPI()
-                >>> plant = PlantApply(external_id="my_plant", ...)
+                >>> plant = PlantWrite(external_id="my_plant", ...)
                 >>> result = client.plant.apply(plant)
 
         """
+        warnings.warn(
+            "The .apply method is deprecated and will be removed in v1.0. "
+            "Please use the .upsert method on the client instead. This means instead of "
+            "`my_client.plant.apply(my_items)` please use `my_client.upsert(my_items)`."
+            "The motivation is that all apply methods are the same, and having one apply method per API "
+            " class encourages users to create items in small batches, which is inefficient."
+            "In addition, .upsert method is more descriptive of what the method does.",
+            UserWarning,
+            stacklevel=2,
+        )
         return self._apply(plant, replace, write_none)
 
     def delete(
@@ -201,15 +212,22 @@ class PlantAPI(NodeAPI[Plant, PlantApply, PlantList]):
                 >>> client = PowerAssetAPI()
                 >>> client.plant.delete("my_plant")
         """
+        warnings.warn(
+            "The .delete method is deprecated and will be removed in v1.0. "
+            "Please use the .delete method on the client instead. This means instead of "
+            "`my_client.plant.delete(my_ids)` please use `my_client.delete(my_ids)`."
+            "The motivation is that all delete methods are the same, and having one delete method per API "
+            " class encourages users to delete items in small batches, which is inefficient.",
+            UserWarning,
+            stacklevel=2,
+        )
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> Plant | None:
-        ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> Plant | None: ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> PlantList:
-        ...
+    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> PlantList: ...
 
     def retrieve(
         self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
@@ -236,12 +254,13 @@ class PlantAPI(NodeAPI[Plant, PlantApply, PlantList]):
             external_id,
             space,
             retrieve_edges=True,
-            edge_api_name_type_direction_quad=[
+            edge_api_name_type_direction_view_id_penta=[
                 (
                     self.generators_edge,
                     "generators",
                     dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
                     "outwards",
+                    dm.ViewId("power-ops-assets", "Generator", "1"),
                 ),
             ],
         )
@@ -270,7 +289,7 @@ class PlantAPI(NodeAPI[Plant, PlantApply, PlantList]):
         inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> PlantList:
         """Search plants
@@ -342,10 +361,12 @@ class PlantAPI(NodeAPI[Plant, PlantApply, PlantList]):
     @overload
     def aggregate(
         self,
-        aggregations: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: PlantFields | Sequence[PlantFields] | None = None,
         group_by: None = None,
         query: str | None = None,
@@ -370,18 +391,19 @@ class PlantAPI(NodeAPI[Plant, PlantApply, PlantList]):
         inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
         self,
-        aggregations: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: PlantFields | Sequence[PlantFields] | None = None,
         group_by: PlantFields | Sequence[PlantFields] = None,
         query: str | None = None,
@@ -406,17 +428,18 @@ class PlantAPI(NodeAPI[Plant, PlantApply, PlantList]):
         inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: PlantFields | Sequence[PlantFields] | None = None,
         group_by: PlantFields | Sequence[PlantFields] | None = None,
         query: str | None = None,
@@ -441,7 +464,7 @@ class PlantAPI(NodeAPI[Plant, PlantApply, PlantList]):
         inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
         """Aggregate data across plants
@@ -550,7 +573,7 @@ class PlantAPI(NodeAPI[Plant, PlantApply, PlantList]):
         inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         """Produces histograms for plants
@@ -644,7 +667,7 @@ class PlantAPI(NodeAPI[Plant, PlantApply, PlantList]):
         inlet_reservoir: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
         retrieve_edges: bool = True,
     ) -> PlantList:
@@ -716,12 +739,13 @@ class PlantAPI(NodeAPI[Plant, PlantApply, PlantList]):
             limit=limit,
             filter=filter_,
             retrieve_edges=retrieve_edges,
-            edge_api_name_type_direction_quad=[
+            edge_api_name_type_direction_view_id_penta=[
                 (
                     self.generators_edge,
                     "generators",
                     dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
                     "outwards",
+                    dm.ViewId("power-ops-assets", "Generator", "1"),
                 ),
             ],
         )

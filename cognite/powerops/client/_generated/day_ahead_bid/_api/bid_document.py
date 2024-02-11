@@ -3,6 +3,7 @@ from __future__ import annotations
 import datetime
 from collections.abc import Sequence
 from typing import overload
+import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
@@ -11,13 +12,13 @@ from cognite.client.data_classes.data_modeling.instances import InstanceAggregat
 from cognite.powerops.client._generated.day_ahead_bid.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.day_ahead_bid.data_classes import (
     DomainModelCore,
-    DomainModelApply,
-    ResourcesApplyResult,
+    DomainModelWrite,
+    ResourcesWriteResult,
     BidDocument,
-    BidDocumentApply,
+    BidDocumentWrite,
     BidDocumentFields,
     BidDocumentList,
-    BidDocumentApplyList,
+    BidDocumentWriteList,
     BidDocumentTextFields,
 )
 from cognite.powerops.client._generated.day_ahead_bid.data_classes._bid_document import (
@@ -38,7 +39,7 @@ from .bid_document_partials import BidDocumentPartialsAPI
 from .bid_document_query import BidDocumentQueryAPI
 
 
-class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
+class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentWrite, BidDocumentList]):
     def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
         view_id = view_by_read_class[BidDocument]
         super().__init__(
@@ -46,7 +47,7 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
             sources=view_id,
             class_type=BidDocument,
             class_list=BidDocumentList,
-            class_apply_list=BidDocumentApplyList,
+            class_write_list=BidDocumentWriteList,
             view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
@@ -69,7 +70,7 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
         total: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_QUERY_LIMIT,
+        limit: int | None = DEFAULT_QUERY_LIMIT,
         filter: dm.Filter | None = None,
     ) -> BidDocumentQueryAPI[BidDocumentList]:
         """Query starting at bid documents.
@@ -120,10 +121,10 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
 
     def apply(
         self,
-        bid_document: BidDocumentApply | Sequence[BidDocumentApply],
+        bid_document: BidDocumentWrite | Sequence[BidDocumentWrite],
         replace: bool = False,
         write_none: bool = False,
-    ) -> ResourcesApplyResult:
+    ) -> ResourcesWriteResult:
         """Add or update (upsert) bid documents.
 
         Note: This method iterates through all nodes and timeseries linked to bid_document and creates them including the edges
@@ -144,12 +145,22 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
             Create a new bid_document:
 
                 >>> from cognite.powerops.client._generated.day_ahead_bid import DayAheadBidAPI
-                >>> from cognite.powerops.client._generated.day_ahead_bid.data_classes import BidDocumentApply
+                >>> from cognite.powerops.client._generated.day_ahead_bid.data_classes import BidDocumentWrite
                 >>> client = DayAheadBidAPI()
-                >>> bid_document = BidDocumentApply(external_id="my_bid_document", ...)
+                >>> bid_document = BidDocumentWrite(external_id="my_bid_document", ...)
                 >>> result = client.bid_document.apply(bid_document)
 
         """
+        warnings.warn(
+            "The .apply method is deprecated and will be removed in v1.0. "
+            "Please use the .upsert method on the client instead. This means instead of "
+            "`my_client.bid_document.apply(my_items)` please use `my_client.upsert(my_items)`."
+            "The motivation is that all apply methods are the same, and having one apply method per API "
+            " class encourages users to create items in small batches, which is inefficient."
+            "In addition, .upsert method is more descriptive of what the method does.",
+            UserWarning,
+            stacklevel=2,
+        )
         return self._apply(bid_document, replace, write_none)
 
     def delete(
@@ -172,15 +183,22 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
                 >>> client = DayAheadBidAPI()
                 >>> client.bid_document.delete("my_bid_document")
         """
+        warnings.warn(
+            "The .delete method is deprecated and will be removed in v1.0. "
+            "Please use the .delete method on the client instead. This means instead of "
+            "`my_client.bid_document.delete(my_ids)` please use `my_client.delete(my_ids)`."
+            "The motivation is that all delete methods are the same, and having one delete method per API "
+            " class encourages users to delete items in small batches, which is inefficient.",
+            UserWarning,
+            stacklevel=2,
+        )
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> BidDocument | None:
-        ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> BidDocument | None: ...
 
     @overload
-    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> BidDocumentList:
-        ...
+    def retrieve(self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE) -> BidDocumentList: ...
 
     def retrieve(
         self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
@@ -207,18 +225,20 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
             external_id,
             space,
             retrieve_edges=True,
-            edge_api_name_type_direction_quad=[
+            edge_api_name_type_direction_view_id_penta=[
                 (
                     self.alerts_edge,
                     "alerts",
                     dm.DirectRelationReference("power-ops-types", "calculationIssue"),
                     "outwards",
+                    dm.ViewId("power-ops-shared", "Alert", "1"),
                 ),
                 (
                     self.partials_edge,
                     "partials",
                     dm.DirectRelationReference("power-ops-types", "partialBid"),
                     "outwards",
+                    dm.ViewId("power-ops-day-ahead-bid", "BidMatrix", "1"),
                 ),
             ],
         )
@@ -241,7 +261,7 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
         total: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> BidDocumentList:
         """Search bid documents
@@ -301,10 +321,12 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
     @overload
     def aggregate(
         self,
-        aggregations: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: BidDocumentFields | Sequence[BidDocumentFields] | None = None,
         group_by: None = None,
         query: str | None = None,
@@ -323,18 +345,19 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
         total: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
         self,
-        aggregations: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: BidDocumentFields | Sequence[BidDocumentFields] | None = None,
         group_by: BidDocumentFields | Sequence[BidDocumentFields] = None,
         query: str | None = None,
@@ -353,17 +376,18 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
         total: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: BidDocumentFields | Sequence[BidDocumentFields] | None = None,
         group_by: BidDocumentFields | Sequence[BidDocumentFields] | None = None,
         query: str | None = None,
@@ -382,7 +406,7 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
         total: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
         """Aggregate data across bid documents
@@ -473,7 +497,7 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
         total: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         """Produces histograms for bid documents
@@ -549,7 +573,7 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
         total: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
         retrieve_edges: bool = True,
     ) -> BidDocumentList:
@@ -609,18 +633,20 @@ class BidDocumentAPI(NodeAPI[BidDocument, BidDocumentApply, BidDocumentList]):
             limit=limit,
             filter=filter_,
             retrieve_edges=retrieve_edges,
-            edge_api_name_type_direction_quad=[
+            edge_api_name_type_direction_view_id_penta=[
                 (
                     self.alerts_edge,
                     "alerts",
                     dm.DirectRelationReference("power-ops-types", "calculationIssue"),
                     "outwards",
+                    dm.ViewId("power-ops-shared", "Alert", "1"),
                 ),
                 (
                     self.partials_edge,
                     "partials",
                     dm.DirectRelationReference("power-ops-types", "partialBid"),
                     "outwards",
+                    dm.ViewId("power-ops-day-ahead-bid", "BidMatrix", "1"),
                 ),
             ],
         )

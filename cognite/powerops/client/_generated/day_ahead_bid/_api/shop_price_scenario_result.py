@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 from typing import overload
+import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
@@ -10,13 +11,13 @@ from cognite.client.data_classes.data_modeling.instances import InstanceAggregat
 from cognite.powerops.client._generated.day_ahead_bid.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.day_ahead_bid.data_classes import (
     DomainModelCore,
-    DomainModelApply,
-    ResourcesApplyResult,
+    DomainModelWrite,
+    ResourcesWriteResult,
     SHOPPriceScenarioResult,
-    SHOPPriceScenarioResultApply,
+    SHOPPriceScenarioResultWrite,
     SHOPPriceScenarioResultFields,
     SHOPPriceScenarioResultList,
-    SHOPPriceScenarioResultApplyList,
+    SHOPPriceScenarioResultWriteList,
 )
 from cognite.powerops.client._generated.day_ahead_bid.data_classes._shop_price_scenario_result import (
     _SHOPPRICESCENARIORESULT_PROPERTIES_BY_FIELD,
@@ -37,7 +38,7 @@ from .shop_price_scenario_result_query import SHOPPriceScenarioResultQueryAPI
 
 
 class SHOPPriceScenarioResultAPI(
-    NodeAPI[SHOPPriceScenarioResult, SHOPPriceScenarioResultApply, SHOPPriceScenarioResultList]
+    NodeAPI[SHOPPriceScenarioResult, SHOPPriceScenarioResultWrite, SHOPPriceScenarioResultList]
 ):
     def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
         view_id = view_by_read_class[SHOPPriceScenarioResult]
@@ -46,7 +47,7 @@ class SHOPPriceScenarioResultAPI(
             sources=view_id,
             class_type=SHOPPriceScenarioResult,
             class_list=SHOPPriceScenarioResultList,
-            class_apply_list=SHOPPriceScenarioResultApplyList,
+            class_write_list=SHOPPriceScenarioResultWriteList,
             view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
@@ -58,7 +59,7 @@ class SHOPPriceScenarioResultAPI(
         price_scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_QUERY_LIMIT,
+        limit: int | None = DEFAULT_QUERY_LIMIT,
         filter: dm.Filter | None = None,
     ) -> SHOPPriceScenarioResultQueryAPI[SHOPPriceScenarioResultList]:
         """Query starting at shop price scenario results.
@@ -87,10 +88,10 @@ class SHOPPriceScenarioResultAPI(
 
     def apply(
         self,
-        shop_price_scenario_result: SHOPPriceScenarioResultApply | Sequence[SHOPPriceScenarioResultApply],
+        shop_price_scenario_result: SHOPPriceScenarioResultWrite | Sequence[SHOPPriceScenarioResultWrite],
         replace: bool = False,
         write_none: bool = False,
-    ) -> ResourcesApplyResult:
+    ) -> ResourcesWriteResult:
         """Add or update (upsert) shop price scenario results.
 
         Args:
@@ -107,12 +108,22 @@ class SHOPPriceScenarioResultAPI(
             Create a new shop_price_scenario_result:
 
                 >>> from cognite.powerops.client._generated.day_ahead_bid import DayAheadBidAPI
-                >>> from cognite.powerops.client._generated.day_ahead_bid.data_classes import SHOPPriceScenarioResultApply
+                >>> from cognite.powerops.client._generated.day_ahead_bid.data_classes import SHOPPriceScenarioResultWrite
                 >>> client = DayAheadBidAPI()
-                >>> shop_price_scenario_result = SHOPPriceScenarioResultApply(external_id="my_shop_price_scenario_result", ...)
+                >>> shop_price_scenario_result = SHOPPriceScenarioResultWrite(external_id="my_shop_price_scenario_result", ...)
                 >>> result = client.shop_price_scenario_result.apply(shop_price_scenario_result)
 
         """
+        warnings.warn(
+            "The .apply method is deprecated and will be removed in v1.0. "
+            "Please use the .upsert method on the client instead. This means instead of "
+            "`my_client.shop_price_scenario_result.apply(my_items)` please use `my_client.upsert(my_items)`."
+            "The motivation is that all apply methods are the same, and having one apply method per API "
+            " class encourages users to create items in small batches, which is inefficient."
+            "In addition, .upsert method is more descriptive of what the method does.",
+            UserWarning,
+            stacklevel=2,
+        )
         return self._apply(shop_price_scenario_result, replace, write_none)
 
     def delete(
@@ -135,17 +146,24 @@ class SHOPPriceScenarioResultAPI(
                 >>> client = DayAheadBidAPI()
                 >>> client.shop_price_scenario_result.delete("my_shop_price_scenario_result")
         """
+        warnings.warn(
+            "The .delete method is deprecated and will be removed in v1.0. "
+            "Please use the .delete method on the client instead. This means instead of "
+            "`my_client.shop_price_scenario_result.delete(my_ids)` please use `my_client.delete(my_ids)`."
+            "The motivation is that all delete methods are the same, and having one delete method per API "
+            " class encourages users to delete items in small batches, which is inefficient.",
+            UserWarning,
+            stacklevel=2,
+        )
         return self._delete(external_id, space)
 
     @overload
-    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> SHOPPriceScenarioResult | None:
-        ...
+    def retrieve(self, external_id: str, space: str = DEFAULT_INSTANCE_SPACE) -> SHOPPriceScenarioResult | None: ...
 
     @overload
     def retrieve(
         self, external_id: SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
-    ) -> SHOPPriceScenarioResultList:
-        ...
+    ) -> SHOPPriceScenarioResultList: ...
 
     def retrieve(
         self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
@@ -173,49 +191,53 @@ class SHOPPriceScenarioResultAPI(
     @overload
     def aggregate(
         self,
-        aggregations: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: SHOPPriceScenarioResultFields | Sequence[SHOPPriceScenarioResultFields] | None = None,
         group_by: None = None,
         price_scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
         self,
-        aggregations: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: SHOPPriceScenarioResultFields | Sequence[SHOPPriceScenarioResultFields] | None = None,
         group_by: SHOPPriceScenarioResultFields | Sequence[SHOPPriceScenarioResultFields] = None,
         price_scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: SHOPPriceScenarioResultFields | Sequence[SHOPPriceScenarioResultFields] | None = None,
         group_by: SHOPPriceScenarioResultFields | Sequence[SHOPPriceScenarioResultFields] | None = None,
         price_scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
         """Aggregate data across shop price scenario results
@@ -269,7 +291,7 @@ class SHOPPriceScenarioResultAPI(
         price_scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         """Produces histograms for shop price scenario results
@@ -310,7 +332,7 @@ class SHOPPriceScenarioResultAPI(
         price_scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> SHOPPriceScenarioResultList:
         """List/filter shop price scenario results

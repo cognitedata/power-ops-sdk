@@ -12,6 +12,7 @@
 ## Production
 1. Just use vanilla Python logging.
 """
+
 import logging
 import sys
 from typing import Union

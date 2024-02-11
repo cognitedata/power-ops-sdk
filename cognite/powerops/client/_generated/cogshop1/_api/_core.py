@@ -40,12 +40,10 @@ class TypeAPI(Generic[T_TypeNode, T_TypeApplyNode, T_TypeNodeList]):
         self._class_list = class_list
 
     @overload
-    def _retrieve(self, external_id: str) -> T_TypeNode:
-        ...
+    def _retrieve(self, external_id: str) -> T_TypeNode: ...
 
     @overload
-    def _retrieve(self, external_id: Sequence[str]) -> T_TypeNodeList:
-        ...
+    def _retrieve(self, external_id: Sequence[str]) -> T_TypeNodeList: ...
 
     def _retrieve(
         self, nodes: dm.NodeId | Sequence[dm.NodeId] | tuple[str, str] | Sequence[tuple[str, str]]
@@ -82,10 +80,12 @@ class TypeAPI(Generic[T_TypeNode, T_TypeApplyNode, T_TypeNodeList]):
     def _aggregate(
         self,
         view_id: dm.ViewId,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         properties_by_field: dict[str, str],
         properties: str | Sequence[str] | None = None,
         group_by: None = None,
@@ -93,17 +93,18 @@ class TypeAPI(Generic[T_TypeNode, T_TypeApplyNode, T_TypeNodeList]):
         search_properties: str | Sequence[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def _aggregate(
         self,
         view_id: dm.ViewId,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         properties_by_field: dict[str, str],
         properties: Optional[str | Sequence[str]] = None,
         group_by: str | Sequence[str] | None = None,
@@ -111,16 +112,17 @@ class TypeAPI(Generic[T_TypeNode, T_TypeApplyNode, T_TypeNodeList]):
         search_properties: str | Sequence[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def _aggregate(
         self,
         view_id: dm.ViewId,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         properties_by_field: dict[str, str],
         properties: str | Sequence[str] | None = None,
         group_by: str | Sequence[str] | None = None,
