@@ -186,6 +186,8 @@ def init(client: PowerOpsClient | None, is_dev: bool = False, dry_run: bool = Fa
             )
         except SystemExit as e:
             if e.code != 0 and not dry_run:
+                # Toolkit currently calls apply once for each view, which typically fails due to dependencies.
+                # We try to deploy the views first, and then retry the deploy.
                 print(Panel("Trying deploying views first", title="Deploy failed"))
                 view_loader = ViewLoader.create_loader(tool_config)
                 view_files = view_loader.find_files(build_folder / "data_models")
@@ -204,6 +206,8 @@ def init(client: PowerOpsClient | None, is_dev: bool = False, dry_run: bool = Fa
                     dry_run=dry_run,
                     include=None,
                 )
+            else:
+                raise
 
 
 def validate(config_dir: str | Path, market: str) -> Any:
