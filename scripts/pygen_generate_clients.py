@@ -93,8 +93,17 @@ def main():
             )
         print(Panel("Done generating clients", title="Done", style="bold green"))
 
-        # space = "sp_powerops_models"
-        #
+        space = "sp_powerops_models"
+        v1_models = [
+            "compute_SHOPBasedDayAhead",
+            "compute_TotalBidCalculation",
+            "compute_WaterValueBasedDayAheadBid",
+            "config_DayAheadConfiguration",
+            "frontend_AFRRBid",
+            "frontend_Asset",
+            "frontend_DayAheadBid",
+        ]
+        print(space, v1_models)
         # generate_sdk([
         #
         #
