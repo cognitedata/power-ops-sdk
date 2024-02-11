@@ -5,6 +5,17 @@ module following the structure of the [CDF-Toolkit](https://developer.cognite.co
 module, you will find the data model files in the `data_models` resource folder. Each container, view, data model,
 and space are kept in separate files, one file for one resource.
 
+You can control which module is deployed by setting the `selected_module_and_packages` in
+`cognite/powerops/config.dev.yaml`:
+
+```yaml
+...
+  selected_modules_and_packages:
+  - power_model_v1
+...
+```
+This will deploy the `power_model_v1` module.
+
 To change a data model, follow these steps:
 
 1. Do the change to the `.yaml` files in the `data_models` folder.
