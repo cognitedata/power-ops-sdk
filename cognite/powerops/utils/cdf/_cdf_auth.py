@@ -3,7 +3,7 @@ from typing import Union
 from cognite.client import ClientConfig, CogniteClient
 from cognite.client.credentials import OAuthClientCredentials, OAuthDeviceCode
 
-from ._settings import CogniteSettings, Settings
+from cognite.powerops.utils.cdf._settings import CogniteSettings, Settings
 
 
 def get_client_config(settings: CogniteSettings) -> ClientConfig:

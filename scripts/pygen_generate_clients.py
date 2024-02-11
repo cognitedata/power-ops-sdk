@@ -1,11 +1,13 @@
 """
 This script is used to generate the Power Ops client. It is not used in the normal workflow.
 """
+
 import os
 from pathlib import Path
 from dataclasses import dataclass
 from cognite.pygen import generate_sdk
-
+from rich import print
+from rich.panel import Panel
 
 from cognite.powerops.utils.cdf import get_cognite_client
 from cognite.powerops.utils.serialization import chdir
@@ -73,6 +75,9 @@ def main():
                 client_name="PowerAssetAPI",
             ),
         ]
+        print(
+            Panel(f"Generating clients for {len(models)} models", title="Generating DM v0 clients", style="bold blue")
+        )
         for model in models:
             generate_sdk(
                 model.model_id,
@@ -86,6 +91,24 @@ def main():
                 overwrite=True,
                 format_code=True,
             )
+        print(Panel("Done generating clients", title="Done", style="bold green"))
+
+        # space = "sp_powerops_models"
+        #
+        # generate_sdk([
+        #
+        #
+        # ],
+        # client,
+        # top_level_package=f"{top_level}.models",
+        # default_instance_space=space,
+        # client_name="PowerOpsModelsAPI",
+        # output_dir=REPO_ROOT,
+        # logger=print,
+        # pydantic_version="v2",
+        # overwrite=True,
+        # format_code=True,
+        # )
 
 
 if __name__ == "__main__":
