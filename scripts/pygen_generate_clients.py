@@ -109,7 +109,7 @@ def main():
         #
         # ],
         # client,
-        # top_level_package=f"{top_level}.models",
+        # top_level_package=f"{top_level}.v1",
         # default_instance_space=space,
         # client_name="PowerOpsModelsAPI",
         # output_dir=REPO_ROOT,

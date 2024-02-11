@@ -20,7 +20,7 @@ class PowerAssetModelDM(Model):
     reservoirs: list[assets.ReservoirApply] = Field(default_factory=list)
     turbine_curves: list[assets.TurbineEfficiencyCurveApply] = Field(default_factory=list)
 
-    _views_by_write_class: ClassVar[dict[assets.DomainModelApply, dm.ViewId]] = {
+    _views_by_write_class: ClassVar[dict[assets.DomainModelWrite, dm.ViewId]] = {
         assets.BidMethodApply: dm.ViewId("power-ops-shared", "BidMethod", "1"),
         assets.GeneratorApply: dm.ViewId("power-ops-assets", "Generator", "1"),
         assets.GeneratorEfficiencyCurveApply: dm.ViewId("power-ops-assets", "GeneratorEfficiencyCurve", "1"),
