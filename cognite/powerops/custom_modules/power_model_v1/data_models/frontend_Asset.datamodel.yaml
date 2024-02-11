@@ -4,7 +4,7 @@ version: '1'
 name: PowerAsset
 description: 'Describes the power operations asset model'
 views:
-- externalId: PriceArea
+- externalId: PriceAreaAsset
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
@@ -33,6 +33,10 @@ views:
   type: view
   version: '{{version}}'
 - externalId: BidMethodDayAhead
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: PriceScenario
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
