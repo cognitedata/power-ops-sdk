@@ -76,7 +76,11 @@ def main():
             ),
         ]
         print(
-            Panel(f"Generating clients for {len(models)} models", title="Generating DM v0 clients", style="bold blue")
+            Panel(
+                f"Generating DM v0 Clients for all {len(models)} models",
+                title="Generating DM v0 clients",
+                style="bold blue",
+            )
         )
         for model in models:
             generate_sdk(
@@ -91,7 +95,7 @@ def main():
                 overwrite=True,
                 format_code=True,
             )
-        print(Panel("Done generating clients", title="Done", style="bold green"))
+        print(Panel("Done generating v0 clients", title="Done", style="bold green"))
 
         space = "sp_powerops_models"
         v1_models = [
@@ -103,21 +107,26 @@ def main():
             "frontend_Asset",
             "frontend_DayAheadBid",
         ]
-        print(space, v1_models)
-        # generate_sdk([
-        #
-        #
-        # ],
-        # client,
-        # top_level_package=f"{top_level}.v1",
-        # default_instance_space=space,
-        # client_name="PowerOpsModelsAPI",
-        # output_dir=REPO_ROOT,
-        # logger=print,
-        # pydantic_version="v2",
-        # overwrite=True,
-        # format_code=True,
-        # )
+        print(
+            Panel(
+                f"Generating DM v1 Client for all {len(v1_models)} models",
+                title="Generating DM v1 client",
+                style="bold blue",
+            )
+        )
+        generate_sdk(
+            [dm.DataModelId(space, external_id, "1") for external_id in v1_models],
+            client,
+            top_level_package=f"{top_level}.v1",
+            default_instance_space="sp_powerops_instance",
+            client_name="PowerOpsModelsV1Client",
+            output_dir=REPO_ROOT,
+            logger=print,
+            pydantic_version="v2",
+            overwrite=True,
+            format_code=True,
+        )
+        print(Panel("Done generating v1 client", title="Done", style="bold green"))
 
 
 if __name__ == "__main__":
