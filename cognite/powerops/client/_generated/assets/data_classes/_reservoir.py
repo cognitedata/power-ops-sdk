@@ -181,8 +181,7 @@ class ReservoirWriteList(DomainModelWriteList[ReservoirWrite]):
     _INSTANCE = ReservoirWrite
 
 
-class ReservoirApplyList(ReservoirWriteList):
-    ...
+class ReservoirApplyList(ReservoirWriteList): ...
 
 
 def _create_reservoir_filter(

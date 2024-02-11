@@ -108,8 +108,7 @@ class Model(BaseModel, ABC):
 
     @classmethod
     @abc.abstractmethod
-    def from_cdf(cls: type[T_Model], client: PowerOpsClient, data_set_external_id: str) -> T_Model:
-        ...
+    def from_cdf(cls: type[T_Model], client: PowerOpsClient, data_set_external_id: str) -> T_Model: ...
 
     @abc.abstractmethod
     def standardize(self) -> None:

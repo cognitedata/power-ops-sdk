@@ -183,8 +183,7 @@ class TurbineEfficiencyCurveWriteList(DomainModelWriteList[TurbineEfficiencyCurv
     _INSTANCE = TurbineEfficiencyCurveWrite
 
 
-class TurbineEfficiencyCurveApplyList(TurbineEfficiencyCurveWriteList):
-    ...
+class TurbineEfficiencyCurveApplyList(TurbineEfficiencyCurveWriteList): ...
 
 
 def _create_turbine_efficiency_curve_filter(

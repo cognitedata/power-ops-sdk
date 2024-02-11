@@ -10,11 +10,9 @@ from cognite.powerops.utils.serialization import chdir
 
 
 class API(Protocol):
-    def list(self, space: str, limit: int) -> list:
-        ...
+    def list(self, space: str, limit: int) -> list: ...
 
-    def delete(self, id: Any) -> list:
-        ...
+    def delete(self, id: Any) -> list: ...
 
 
 class InstanceAdapter(API):

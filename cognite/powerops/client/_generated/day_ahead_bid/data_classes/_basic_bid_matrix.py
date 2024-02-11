@@ -214,8 +214,7 @@ class BasicBidMatrixWriteList(DomainModelWriteList[BasicBidMatrixWrite]):
     _INSTANCE = BasicBidMatrixWrite
 
 
-class BasicBidMatrixApplyList(BasicBidMatrixWriteList):
-    ...
+class BasicBidMatrixApplyList(BasicBidMatrixWriteList): ...
 
 
 def _create_basic_bid_matrix_filter(

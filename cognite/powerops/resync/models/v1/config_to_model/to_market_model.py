@@ -93,9 +93,11 @@ def _to_benchmarking_process(
                 starttime=json.dumps(benchmarking_config.shop_start.operations),
                 endtime=json.dumps(benchmarking_config.shop_end.operations),
             ),
-            production_plan_time_series=json.dumps(benchmarking_config.production_plan_time_series, ensure_ascii=False)
-            if benchmarking_config.production_plan_time_series
-            else [],  # ensure_ascii=False to treat Nordic letters properly,
+            production_plan_time_series=(
+                json.dumps(benchmarking_config.production_plan_time_series, ensure_ascii=False)
+                if benchmarking_config.production_plan_time_series
+                else []
+            ),  # ensure_ascii=False to treat Nordic letters properly,
             benchmarking_metrics=benchmarking_config.relevant_shop_objective_metrics,
             bid_process_configuration_assets=[],
         )

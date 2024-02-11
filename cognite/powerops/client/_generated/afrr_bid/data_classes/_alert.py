@@ -229,8 +229,7 @@ class AlertWriteList(DomainModelWriteList[AlertWrite]):
     _INSTANCE = AlertWrite
 
 
-class AlertApplyList(AlertWriteList):
-    ...
+class AlertApplyList(AlertWriteList): ...
 
 
 def _create_alert_filter(

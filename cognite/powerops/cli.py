@@ -35,8 +35,7 @@ def _version_callback(value: bool):
 
 
 @app.callback()
-def common(ctx: typer.Context, version: bool = typer.Option(None, "--version", callback=_version_callback)):
-    ...
+def common(ctx: typer.Context, version: bool = typer.Option(None, "--version", callback=_version_callback)): ...
 
 
 @app.command("init", help="Setup necessary data models in CDF for ReSync to run")

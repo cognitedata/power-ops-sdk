@@ -106,12 +106,10 @@ class ModelTemplateAPI(TypeAPI[ModelTemplate, ModelTemplateApply, ModelTemplateL
             )
 
     @overload
-    def retrieve(self, external_id: str) -> ModelTemplate:
-        ...
+    def retrieve(self, external_id: str) -> ModelTemplate: ...
 
     @overload
-    def retrieve(self, external_id: Sequence[str]) -> ModelTemplateList:
-        ...
+    def retrieve(self, external_id: Sequence[str]) -> ModelTemplateList: ...
 
     def retrieve(self, external_id: str | Sequence[str]) -> ModelTemplate | ModelTemplateList:
         if isinstance(external_id, str):
@@ -165,10 +163,12 @@ class ModelTemplateAPI(TypeAPI[ModelTemplate, ModelTemplateApply, ModelTemplateL
     @overload
     def aggregate(
         self,
-        aggregations: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: ModelTemplateFields | Sequence[ModelTemplateFields] | None = None,
         group_by: None = None,
         query: str | None = None,
@@ -185,16 +185,17 @@ class ModelTemplateAPI(TypeAPI[ModelTemplate, ModelTemplateApply, ModelTemplateL
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
         self,
-        aggregations: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: ModelTemplateFields | Sequence[ModelTemplateFields] | None = None,
         group_by: ModelTemplateFields | Sequence[ModelTemplateFields] = None,
         query: str | None = None,
@@ -211,15 +212,16 @@ class ModelTemplateAPI(TypeAPI[ModelTemplate, ModelTemplateApply, ModelTemplateL
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: ModelTemplateFields | Sequence[ModelTemplateFields] | None = None,
         group_by: ModelTemplateFields | Sequence[ModelTemplateFields] | None = None,
         query: str | None = None,

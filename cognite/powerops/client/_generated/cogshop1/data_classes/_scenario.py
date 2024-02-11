@@ -65,9 +65,9 @@ class ScenarioApply(DomainModelApply, protected_namespaces=()):
         if self.model_template is not None:
             properties["modelTemplate"] = {
                 "space": "cogShop",
-                "externalId": self.model_template
-                if isinstance(self.model_template, str)
-                else self.model_template.external_id,
+                "externalId": (
+                    self.model_template if isinstance(self.model_template, str) else self.model_template.external_id
+                ),
             }
         if self.commands is not None:
             properties["commands"] = {

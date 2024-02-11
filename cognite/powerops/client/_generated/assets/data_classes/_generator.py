@@ -287,8 +287,7 @@ class GeneratorWriteList(DomainModelWriteList[GeneratorWrite]):
     _INSTANCE = GeneratorWrite
 
 
-class GeneratorApplyList(GeneratorWriteList):
-    ...
+class GeneratorApplyList(GeneratorWriteList): ...
 
 
 def _create_generator_filter(

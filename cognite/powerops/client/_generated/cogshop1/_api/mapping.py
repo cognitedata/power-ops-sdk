@@ -98,12 +98,10 @@ class MappingAPI(TypeAPI[Mapping, MappingApply, MappingList]):
             )
 
     @overload
-    def retrieve(self, external_id: str) -> Mapping:
-        ...
+    def retrieve(self, external_id: str) -> Mapping: ...
 
     @overload
-    def retrieve(self, external_id: Sequence[str]) -> MappingList:
-        ...
+    def retrieve(self, external_id: Sequence[str]) -> MappingList: ...
 
     def retrieve(self, external_id: str | Sequence[str]) -> Mapping | MappingList:
         if isinstance(external_id, str):
@@ -155,10 +153,12 @@ class MappingAPI(TypeAPI[Mapping, MappingApply, MappingList]):
     @overload
     def aggregate(
         self,
-        aggregations: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: MappingFields | Sequence[MappingFields] | None = None,
         group_by: None = None,
         query: str | None = None,
@@ -174,16 +174,17 @@ class MappingAPI(TypeAPI[Mapping, MappingApply, MappingList]):
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
         self,
-        aggregations: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: MappingFields | Sequence[MappingFields] | None = None,
         group_by: MappingFields | Sequence[MappingFields] = None,
         query: str | None = None,
@@ -199,15 +200,16 @@ class MappingAPI(TypeAPI[Mapping, MappingApply, MappingList]):
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: MappingFields | Sequence[MappingFields] | None = None,
         group_by: MappingFields | Sequence[MappingFields] | None = None,
         query: str | None = None,

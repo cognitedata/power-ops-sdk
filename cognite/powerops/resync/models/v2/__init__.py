@@ -6,7 +6,6 @@ are based on Data Modeling in CDF.
 * CogSHOP - This is the updated version of the CogShop1Asset in v1.
 """
 
-
 from .production_dm import PowerAssetModelDM
 
 __all__ = ["PowerAssetModelDM"]

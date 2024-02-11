@@ -452,8 +452,7 @@ class PriceAreaWriteList(DomainModelWriteList[PriceAreaWrite]):
     _INSTANCE = PriceAreaWrite
 
 
-class PriceAreaApplyList(PriceAreaWriteList):
-    ...
+class PriceAreaApplyList(PriceAreaWriteList): ...
 
 
 def _create_price_area_filter(

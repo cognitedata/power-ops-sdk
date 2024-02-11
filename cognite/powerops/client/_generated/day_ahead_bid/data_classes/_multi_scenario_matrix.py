@@ -238,8 +238,7 @@ class MultiScenarioMatrixWriteList(DomainModelWriteList[MultiScenarioMatrixWrite
     _INSTANCE = MultiScenarioMatrixWrite
 
 
-class MultiScenarioMatrixApplyList(MultiScenarioMatrixWriteList):
-    ...
+class MultiScenarioMatrixApplyList(MultiScenarioMatrixWriteList): ...
 
 
 def _create_multi_scenario_matrix_filter(

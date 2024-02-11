@@ -55,12 +55,10 @@ class ProcessingLogAPI(TypeAPI[ProcessingLog, ProcessingLogApply, ProcessingLogL
             )
 
     @overload
-    def retrieve(self, external_id: str) -> ProcessingLog:
-        ...
+    def retrieve(self, external_id: str) -> ProcessingLog: ...
 
     @overload
-    def retrieve(self, external_id: Sequence[str]) -> ProcessingLogList:
-        ...
+    def retrieve(self, external_id: Sequence[str]) -> ProcessingLogList: ...
 
     def retrieve(self, external_id: str | Sequence[str]) -> ProcessingLog | ProcessingLogList:
         if isinstance(external_id, str):
@@ -98,10 +96,12 @@ class ProcessingLogAPI(TypeAPI[ProcessingLog, ProcessingLogApply, ProcessingLogL
     @overload
     def aggregate(
         self,
-        aggregations: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: ProcessingLogFields | Sequence[ProcessingLogFields] | None = None,
         group_by: None = None,
         query: str | None = None,
@@ -115,16 +115,17 @@ class ProcessingLogAPI(TypeAPI[ProcessingLog, ProcessingLogApply, ProcessingLogL
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
         self,
-        aggregations: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: ProcessingLogFields | Sequence[ProcessingLogFields] | None = None,
         group_by: ProcessingLogFields | Sequence[ProcessingLogFields] = None,
         query: str | None = None,
@@ -138,15 +139,16 @@ class ProcessingLogAPI(TypeAPI[ProcessingLog, ProcessingLogApply, ProcessingLogL
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: ProcessingLogFields | Sequence[ProcessingLogFields] | None = None,
         group_by: ProcessingLogFields | Sequence[ProcessingLogFields] | None = None,
         query: str | None = None,

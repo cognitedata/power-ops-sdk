@@ -165,8 +165,7 @@ class WaterValueBasedMethodWriteList(DomainModelWriteList[WaterValueBasedMethodW
     _INSTANCE = WaterValueBasedMethodWrite
 
 
-class WaterValueBasedMethodApplyList(WaterValueBasedMethodWriteList):
-    ...
+class WaterValueBasedMethodApplyList(WaterValueBasedMethodWriteList): ...
 
 
 def _create_water_value_based_method_filter(

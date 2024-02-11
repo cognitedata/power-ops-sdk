@@ -292,8 +292,7 @@ class BidRowWriteList(DomainModelWriteList[BidRowWrite]):
     _INSTANCE = BidRowWrite
 
 
-class BidRowApplyList(BidRowWriteList):
-    ...
+class BidRowApplyList(BidRowWriteList): ...
 
 
 def _create_bid_row_filter(

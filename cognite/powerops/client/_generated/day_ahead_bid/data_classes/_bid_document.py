@@ -287,8 +287,7 @@ class BidDocumentWriteList(DomainModelWriteList[BidDocumentWrite]):
     _INSTANCE = BidDocumentWrite
 
 
-class BidDocumentApplyList(BidDocumentWriteList):
-    ...
+class BidDocumentApplyList(BidDocumentWriteList): ...
 
 
 def _create_bid_document_filter(

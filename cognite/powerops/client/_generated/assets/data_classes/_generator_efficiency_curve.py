@@ -183,8 +183,7 @@ class GeneratorEfficiencyCurveWriteList(DomainModelWriteList[GeneratorEfficiency
     _INSTANCE = GeneratorEfficiencyCurveWrite
 
 
-class GeneratorEfficiencyCurveApplyList(GeneratorEfficiencyCurveWriteList):
-    ...
+class GeneratorEfficiencyCurveApplyList(GeneratorEfficiencyCurveWriteList): ...
 
 
 def _create_generator_efficiency_curve_filter(

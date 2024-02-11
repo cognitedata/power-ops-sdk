@@ -138,23 +138,25 @@ def to_production_model(configuration: config.ProductionConfig) -> ProductionMod
             mapping = plant_time_series_mappings_by_name.get(plant_name)
             if mapping:
                 mappings = dict(
-                    water_value_time_series=TimeSeries(external_id=mapping.water_value)
-                    if mapping.water_value
-                    else None,
-                    inlet_level_time_series=TimeSeries(external_id=mapping.inlet_reservoir_level)
-                    if mapping.inlet_reservoir_level
-                    else None,
-                    outlet_level_time_series=TimeSeries(external_id=mapping.outlet_reservoir_level)
-                    if mapping.outlet_reservoir_level
-                    else None,
-                    feeding_fee_time_series=TimeSeries(external_id=mapping.feeding_fee)
-                    if mapping.feeding_fee
-                    else None,
+                    water_value_time_series=(
+                        TimeSeries(external_id=mapping.water_value) if mapping.water_value else None
+                    ),
+                    inlet_level_time_series=(
+                        TimeSeries(external_id=mapping.inlet_reservoir_level) if mapping.inlet_reservoir_level else None
+                    ),
+                    outlet_level_time_series=(
+                        TimeSeries(external_id=mapping.outlet_reservoir_level)
+                        if mapping.outlet_reservoir_level
+                        else None
+                    ),
+                    feeding_fee_time_series=(
+                        TimeSeries(external_id=mapping.feeding_fee) if mapping.feeding_fee else None
+                    ),
                     p_min_time_series=TimeSeries(external_id=mapping.p_min) if mapping.p_min else None,
                     p_max_time_series=TimeSeries(external_id=mapping.p_max) if mapping.p_max else None,
-                    head_direct_time_series=TimeSeries(external_id=mapping.head_direct)
-                    if mapping.head_direct
-                    else None,
+                    head_direct_time_series=(
+                        TimeSeries(external_id=mapping.head_direct) if mapping.head_direct else None
+                    ),
                 )
             else:
                 mappings = {}

@@ -57,12 +57,10 @@ class CommandsConfigAPI(TypeAPI[CommandsConfig, CommandsConfigApply, CommandsCon
             )
 
     @overload
-    def retrieve(self, external_id: str) -> CommandsConfig:
-        ...
+    def retrieve(self, external_id: str) -> CommandsConfig: ...
 
     @overload
-    def retrieve(self, external_id: Sequence[str]) -> CommandsConfigList:
-        ...
+    def retrieve(self, external_id: Sequence[str]) -> CommandsConfigList: ...
 
     def retrieve(self, external_id: str | Sequence[str]) -> CommandsConfig | CommandsConfigList:
         if isinstance(external_id, str):
@@ -88,10 +86,12 @@ class CommandsConfigAPI(TypeAPI[CommandsConfig, CommandsConfigApply, CommandsCon
     @overload
     def aggregate(
         self,
-        aggregations: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: CommandsConfigFields | Sequence[CommandsConfigFields] | None = None,
         group_by: None = None,
         query: str | None = None,
@@ -99,16 +99,17 @@ class CommandsConfigAPI(TypeAPI[CommandsConfig, CommandsConfigApply, CommandsCon
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
         self,
-        aggregations: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: CommandsConfigFields | Sequence[CommandsConfigFields] | None = None,
         group_by: CommandsConfigFields | Sequence[CommandsConfigFields] = None,
         query: str | None = None,
@@ -116,15 +117,16 @@ class CommandsConfigAPI(TypeAPI[CommandsConfig, CommandsConfigApply, CommandsCon
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: CommandsConfigFields | Sequence[CommandsConfigFields] | None = None,
         group_by: CommandsConfigFields | Sequence[CommandsConfigFields] | None = None,
         query: str | None = None,

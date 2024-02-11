@@ -181,8 +181,7 @@ class SHOPPriceScenarioWriteList(DomainModelWriteList[SHOPPriceScenarioWrite]):
     _INSTANCE = SHOPPriceScenarioWrite
 
 
-class SHOPPriceScenarioApplyList(SHOPPriceScenarioWriteList):
-    ...
+class SHOPPriceScenarioApplyList(SHOPPriceScenarioWriteList): ...
 
 
 def _create_shop_price_scenario_filter(

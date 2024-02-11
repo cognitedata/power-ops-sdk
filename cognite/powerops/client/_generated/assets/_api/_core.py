@@ -57,30 +57,22 @@ _T_co = TypeVar("_T_co", covariant=True)
 # This works because str.__contains__ does not accept an object (either in typeshed or at runtime)
 class SequenceNotStr(Protocol[_T_co]):
     @overload
-    def __getitem__(self, index: SupportsIndex, /) -> _T_co:
-        ...
+    def __getitem__(self, index: SupportsIndex, /) -> _T_co: ...
 
     @overload
-    def __getitem__(self, index: slice, /) -> Sequence[_T_co]:
-        ...
+    def __getitem__(self, index: slice, /) -> Sequence[_T_co]: ...
 
-    def __contains__(self, value: object, /) -> bool:
-        ...
+    def __contains__(self, value: object, /) -> bool: ...
 
-    def __len__(self) -> int:
-        ...
+    def __len__(self) -> int: ...
 
-    def __iter__(self) -> Iterator[_T_co]:
-        ...
+    def __iter__(self) -> Iterator[_T_co]: ...
 
-    def index(self, value: Any, /, start: int = 0, stop: int = ...) -> int:
-        ...
+    def index(self, value: Any, /, start: int = 0, stop: int = ...) -> int: ...
 
-    def count(self, value: Any, /) -> int:
-        ...
+    def count(self, value: Any, /) -> int: ...
 
-    def __reversed__(self) -> Iterator[_T_co]:
-        ...
+    def __reversed__(self) -> Iterator[_T_co]: ...
 
 
 class NodeReadAPI(Generic[T_DomainModel, T_DomainModelList]):
@@ -115,8 +107,7 @@ class NodeReadAPI(Generic[T_DomainModel, T_DomainModelList]):
         edge_api_name_type_direction_view_id_penta: (
             list[tuple[EdgeAPI, str, dm.DirectRelationReference, Literal["outwards", "inwards"], dm.ViewId]] | None
         ) = None,
-    ) -> T_DomainModel | None:
-        ...
+    ) -> T_DomainModel | None: ...
 
     @overload
     def _retrieve(
@@ -127,8 +118,7 @@ class NodeReadAPI(Generic[T_DomainModel, T_DomainModelList]):
         edge_api_name_type_direction_view_id_penta: (
             list[tuple[EdgeAPI, str, dm.DirectRelationReference, Literal["outwards", "inwards"], dm.ViewId]] | None
         ) = None,
-    ) -> T_DomainModelList:
-        ...
+    ) -> T_DomainModelList: ...
 
     def _retrieve(
         self,
@@ -196,8 +186,7 @@ class NodeReadAPI(Generic[T_DomainModel, T_DomainModelList]):
         search_properties: str | Sequence[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def _aggregate(
@@ -216,8 +205,7 @@ class NodeReadAPI(Generic[T_DomainModel, T_DomainModelList]):
         search_properties: str | Sequence[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def _aggregate(
         self,
@@ -524,12 +512,10 @@ class QueryBuilder(UserList, Generic[T_DomainModelList]):
         return super().__iter__()
 
     @overload
-    def __getitem__(self, item: int) -> QueryStep:
-        ...
+    def __getitem__(self, item: int) -> QueryStep: ...
 
     @overload
-    def __getitem__(self: type[QueryBuilder[T_DomainModelList]], item: slice) -> QueryBuilder[T_DomainModelList]:
-        ...
+    def __getitem__(self: type[QueryBuilder[T_DomainModelList]], item: slice) -> QueryBuilder[T_DomainModelList]: ...
 
     def __getitem__(self, item: int | slice) -> QueryStep | QueryBuilder[T_DomainModelList]:
         if isinstance(item, slice):
@@ -592,9 +578,9 @@ class QueryBuilder(UserList, Generic[T_DomainModelList]):
         edges_by_type_by_source_node: dict[tuple[str, str, str], dict[tuple[str, str], list[dm.Edge]]] = defaultdict(
             lambda: defaultdict(list)
         )
-        relation_by_type_by_start_node: dict[
-            tuple[str, str], dict[tuple[str, str], list[DomainRelation]]
-        ] = defaultdict(lambda: defaultdict(list))
+        relation_by_type_by_start_node: dict[tuple[str, str], dict[tuple[str, str], list[DomainRelation]]] = (
+            defaultdict(lambda: defaultdict(list))
+        )
         node_attribute_to_node_type: dict[str, str] = {}
 
         for step in self:

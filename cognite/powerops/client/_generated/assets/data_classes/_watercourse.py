@@ -212,8 +212,7 @@ class WatercourseWriteList(DomainModelWriteList[WatercourseWrite]):
     _INSTANCE = WatercourseWrite
 
 
-class WatercourseApplyList(WatercourseWriteList):
-    ...
+class WatercourseApplyList(WatercourseWriteList): ...
 
 
 def _create_watercourse_filter(

@@ -53,12 +53,10 @@ class FileRefAPI(TypeAPI[FileRef, FileRefApply, FileRefList]):
             )
 
     @overload
-    def retrieve(self, external_id: str) -> FileRef:
-        ...
+    def retrieve(self, external_id: str) -> FileRef: ...
 
     @overload
-    def retrieve(self, external_id: Sequence[str]) -> FileRefList:
-        ...
+    def retrieve(self, external_id: Sequence[str]) -> FileRefList: ...
 
     def retrieve(self, external_id: str | Sequence[str]) -> FileRef | FileRefList:
         if isinstance(external_id, str):
@@ -92,10 +90,12 @@ class FileRefAPI(TypeAPI[FileRef, FileRefApply, FileRefList]):
     @overload
     def aggregate(
         self,
-        aggregations: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: FileRefFields | Sequence[FileRefFields] | None = None,
         group_by: None = None,
         query: str | None = None,
@@ -107,16 +107,17 @@ class FileRefAPI(TypeAPI[FileRef, FileRefApply, FileRefList]):
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
         self,
-        aggregations: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: FileRefFields | Sequence[FileRefFields] | None = None,
         group_by: FileRefFields | Sequence[FileRefFields] = None,
         query: str | None = None,
@@ -128,15 +129,16 @@ class FileRefAPI(TypeAPI[FileRef, FileRefApply, FileRefList]):
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: FileRefFields | Sequence[FileRefFields] | None = None,
         group_by: FileRefFields | Sequence[FileRefFields] | None = None,
         query: str | None = None,

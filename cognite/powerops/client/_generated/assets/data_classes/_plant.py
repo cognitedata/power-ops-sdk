@@ -425,8 +425,7 @@ class PlantWriteList(DomainModelWriteList[PlantWrite]):
     _INSTANCE = PlantWrite
 
 
-class PlantApplyList(PlantWriteList):
-    ...
+class PlantApplyList(PlantWriteList): ...
 
 
 def _create_plant_filter(

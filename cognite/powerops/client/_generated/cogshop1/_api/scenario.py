@@ -148,12 +148,10 @@ class ScenarioAPI(TypeAPI[Scenario, ScenarioApply, ScenarioList]):
             )
 
     @overload
-    def retrieve(self, external_id: str) -> Scenario:
-        ...
+    def retrieve(self, external_id: str) -> Scenario: ...
 
     @overload
-    def retrieve(self, external_id: Sequence[str]) -> ScenarioList:
-        ...
+    def retrieve(self, external_id: Sequence[str]) -> ScenarioList: ...
 
     def retrieve(self, external_id: str | Sequence[str]) -> Scenario | ScenarioList:
         if isinstance(external_id, str):
@@ -205,10 +203,12 @@ class ScenarioAPI(TypeAPI[Scenario, ScenarioApply, ScenarioList]):
     @overload
     def aggregate(
         self,
-        aggregations: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: ScenarioFields | Sequence[ScenarioFields] | None = None,
         group_by: None = None,
         query: str | None = None,
@@ -222,16 +222,17 @@ class ScenarioAPI(TypeAPI[Scenario, ScenarioApply, ScenarioList]):
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
         self,
-        aggregations: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: ScenarioFields | Sequence[ScenarioFields] | None = None,
         group_by: ScenarioFields | Sequence[ScenarioFields] = None,
         query: str | None = None,
@@ -245,15 +246,16 @@ class ScenarioAPI(TypeAPI[Scenario, ScenarioApply, ScenarioList]):
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: ScenarioFields | Sequence[ScenarioFields] | None = None,
         group_by: ScenarioFields | Sequence[ScenarioFields] | None = None,
         query: str | None = None,

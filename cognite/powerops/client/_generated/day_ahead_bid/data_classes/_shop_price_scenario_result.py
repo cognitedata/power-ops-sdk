@@ -214,8 +214,7 @@ class SHOPPriceScenarioResultWriteList(DomainModelWriteList[SHOPPriceScenarioRes
     _INSTANCE = SHOPPriceScenarioResultWrite
 
 
-class SHOPPriceScenarioResultApplyList(SHOPPriceScenarioResultWriteList):
-    ...
+class SHOPPriceScenarioResultApplyList(SHOPPriceScenarioResultWriteList): ...
 
 
 def _create_shop_price_scenario_result_filter(

@@ -98,12 +98,10 @@ class CaseAPI(TypeAPI[Case, CaseApply, CaseList]):
             )
 
     @overload
-    def retrieve(self, external_id: str) -> Case:
-        ...
+    def retrieve(self, external_id: str) -> Case: ...
 
     @overload
-    def retrieve(self, external_id: Sequence[str]) -> CaseList:
-        ...
+    def retrieve(self, external_id: Sequence[str]) -> CaseList: ...
 
     def retrieve(self, external_id: str | Sequence[str]) -> Case | CaseList:
         if isinstance(external_id, str):
@@ -149,10 +147,12 @@ class CaseAPI(TypeAPI[Case, CaseApply, CaseList]):
     @overload
     def aggregate(
         self,
-        aggregations: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: CaseFields | Sequence[CaseFields] | None = None,
         group_by: None = None,
         query: str | None = None,
@@ -165,16 +165,17 @@ class CaseAPI(TypeAPI[Case, CaseApply, CaseList]):
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> list[dm.aggregations.AggregatedNumberedValue]:
-        ...
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
 
     @overload
     def aggregate(
         self,
-        aggregations: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: CaseFields | Sequence[CaseFields] | None = None,
         group_by: CaseFields | Sequence[CaseFields] = None,
         query: str | None = None,
@@ -187,15 +188,16 @@ class CaseAPI(TypeAPI[Case, CaseApply, CaseList]):
         external_id_prefix: str | None = None,
         limit: int = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
-    ) -> InstanceAggregationResultList:
-        ...
+    ) -> InstanceAggregationResultList: ...
 
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: CaseFields | Sequence[CaseFields] | None = None,
         group_by: CaseFields | Sequence[CaseFields] | None = None,
         query: str | None = None,

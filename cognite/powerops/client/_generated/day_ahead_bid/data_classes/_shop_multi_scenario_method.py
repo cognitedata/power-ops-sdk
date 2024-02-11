@@ -201,8 +201,7 @@ class SHOPMultiScenarioMethodWriteList(DomainModelWriteList[SHOPMultiScenarioMet
     _INSTANCE = SHOPMultiScenarioMethodWrite
 
 
-class SHOPMultiScenarioMethodApplyList(SHOPMultiScenarioMethodWriteList):
-    ...
+class SHOPMultiScenarioMethodApplyList(SHOPMultiScenarioMethodWriteList): ...
 
 
 def _create_shop_multi_scenario_method_filter(

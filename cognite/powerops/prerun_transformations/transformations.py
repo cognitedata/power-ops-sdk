@@ -95,14 +95,12 @@ class Transformation(BaseModel, ABC):
         return cls.load({transformation_type: {"parameters": transformation_parameters}})
 
     @abstractmethod
-    def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
-        ...
+    def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series: ...
 
 
 class DynamicTransformation(Transformation):
     @abstractmethod
-    def pre_apply(self, client: CogniteClient, shop_model: dict, start: int, end: int):
-        ...
+    def pre_apply(self, client: CogniteClient, shop_model: dict, start: int, end: int): ...
 
 
 class AddConstant(Transformation):

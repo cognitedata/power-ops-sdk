@@ -162,8 +162,7 @@ class BidMethodWriteList(DomainModelWriteList[BidMethodWrite]):
     _INSTANCE = BidMethodWrite
 
 
-class BidMethodApplyList(BidMethodWriteList):
-    ...
+class BidMethodApplyList(BidMethodWriteList): ...
 
 
 def _create_bid_method_filter(
