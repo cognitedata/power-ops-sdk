@@ -90,12 +90,16 @@ from ._watercourse import (
 
 Generator.model_rebuild()
 GeneratorWrite.model_rebuild()
+GeneratorApply.model_rebuild()
 Plant.model_rebuild()
 PlantWrite.model_rebuild()
+PlantApply.model_rebuild()
 PriceArea.model_rebuild()
 PriceAreaWrite.model_rebuild()
+PriceAreaApply.model_rebuild()
 Watercourse.model_rebuild()
 WatercourseWrite.model_rebuild()
+WatercourseApply.model_rebuild()
 
 __all__ = [
     "DataRecord",

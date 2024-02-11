@@ -121,18 +121,25 @@ from ._water_value_based_method import (
 
 BasicBidMatrix.model_rebuild()
 BasicBidMatrixWrite.model_rebuild()
+BasicBidMatrixApply.model_rebuild()
 BidDocument.model_rebuild()
 BidDocumentWrite.model_rebuild()
+BidDocumentApply.model_rebuild()
 BidMatrix.model_rebuild()
 BidMatrixWrite.model_rebuild()
+BidMatrixApply.model_rebuild()
 MultiScenarioMatrix.model_rebuild()
 MultiScenarioMatrixWrite.model_rebuild()
+MultiScenarioMatrixApply.model_rebuild()
 PriceArea.model_rebuild()
 PriceAreaWrite.model_rebuild()
+PriceAreaApply.model_rebuild()
 SHOPMultiScenarioMethod.model_rebuild()
 SHOPMultiScenarioMethodWrite.model_rebuild()
+SHOPMultiScenarioMethodApply.model_rebuild()
 SHOPPriceScenarioResult.model_rebuild()
 SHOPPriceScenarioResultWrite.model_rebuild()
+SHOPPriceScenarioResultApply.model_rebuild()
 
 __all__ = [
     "DataRecord",

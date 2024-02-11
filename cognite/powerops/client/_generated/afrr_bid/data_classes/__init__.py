@@ -53,8 +53,10 @@ from ._price_area import PriceArea, PriceAreaFields, PriceAreaList, PriceAreaTex
 
 BidDocument.model_rebuild()
 BidDocumentWrite.model_rebuild()
+BidDocumentApply.model_rebuild()
 BidRow.model_rebuild()
 BidRowWrite.model_rebuild()
+BidRowApply.model_rebuild()
 
 __all__ = [
     "DataRecord",
