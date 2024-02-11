@@ -7,7 +7,6 @@ from __future__ import annotations
 import itertools
 import logging
 import re
-import shutil
 import tempfile
 from pathlib import Path
 from typing import Any, Optional, cast
@@ -97,25 +96,6 @@ def init(client: PowerOpsClient | None, is_dev: bool = False, dry_run: bool = Fa
         build(ctx=ctx, source_dir=str(powerops_folder), build_dir="build", build_env="dev", clean=True)
 
     build_folder = Path.cwd() / "build"
-    # Bug in toolkit that places the containers and views in the wrong folder
-    folders = [
-        "containers",
-        "views",
-        "assets",
-        "bid_configuration",
-        "bid_document",
-        "bid_matrix",
-        "bid_method",
-        "function_inputs",
-        "function_outputs",
-        "scenario",
-    ]
-    for file in itertools.chain(*((build_folder / folder).glob("*.yaml") for folder in folders)):
-        shutil.move(file, build_folder / "data_models" / file.name)
-
-    for folder in folders:
-        if (build_folder / folder).exists():
-            shutil.rmtree(build_folder / folder)
 
     loader = DataModelLoader(build_folder)
     schema = loader.load()
@@ -123,8 +103,9 @@ def init(client: PowerOpsClient | None, is_dev: bool = False, dry_run: bool = Fa
     DataModelLoader.validate(schema)
     logger.info("Validated all powerops data models")
 
-    # Toolkit does not deploy the nodes:
-    shutil.rmtree(build_folder / "node_types")
+    # Nodes should not be deployed, so we remove them from the build folder
+    for node_file in build_folder.glob("data_models/*.node.yaml"):
+        node_file.unlink()
 
     build_hash = calculate_directory_hash(build_folder)
     filepath = Path(tempfile.gettempdir()) / "powerops_init_command.txt"
@@ -191,7 +172,7 @@ def init(client: PowerOpsClient | None, is_dev: bool = False, dry_run: bool = Fa
                 include=None,
             )
         except SystemExit as e:
-            if e.code != 0:
+            if e.code != 0 and not dry_run:
                 print(Panel("Trying deploying views first", title="Deploy failed"))
                 view_loader = ViewLoader.create_loader(tool_config)
                 view_files = view_loader.find_files(build_folder / "data_models")

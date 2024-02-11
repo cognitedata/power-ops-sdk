@@ -573,7 +573,7 @@ typer = {version = "^0.9.0", extras = ["all"]}
 type = "git"
 url = "https://github.com/cognitedata/cdf-project-templates.git"
 reference = "power"
-resolved_reference = "9ebeeb7479334cf2ff4dd520b9fe5cd9647a03cd"
+resolved_reference = "118a50fa03bd4a1cd7c2600742c0a34d84bbcb2f"
 
 [[package]]
 name = "colorama"
