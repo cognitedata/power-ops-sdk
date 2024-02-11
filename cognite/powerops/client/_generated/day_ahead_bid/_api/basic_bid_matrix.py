@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 from typing import overload
+import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
@@ -10,13 +11,13 @@ from cognite.client.data_classes.data_modeling.instances import InstanceAggregat
 from cognite.powerops.client._generated.day_ahead_bid.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.day_ahead_bid.data_classes import (
     DomainModelCore,
-    DomainModelApply,
-    ResourcesApplyResult,
+    DomainModelWrite,
+    ResourcesWriteResult,
     BasicBidMatrix,
-    BasicBidMatrixApply,
+    BasicBidMatrixWrite,
     BasicBidMatrixFields,
     BasicBidMatrixList,
-    BasicBidMatrixApplyList,
+    BasicBidMatrixWriteList,
     BasicBidMatrixTextFields,
 )
 from cognite.powerops.client._generated.day_ahead_bid.data_classes._basic_bid_matrix import (
@@ -36,7 +37,7 @@ from .basic_bid_matrix_alerts import BasicBidMatrixAlertsAPI
 from .basic_bid_matrix_query import BasicBidMatrixQueryAPI
 
 
-class BasicBidMatrixAPI(NodeAPI[BasicBidMatrix, BasicBidMatrixApply, BasicBidMatrixList]):
+class BasicBidMatrixAPI(NodeAPI[BasicBidMatrix, BasicBidMatrixWrite, BasicBidMatrixList]):
     def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
         view_id = view_by_read_class[BasicBidMatrix]
         super().__init__(
@@ -44,7 +45,7 @@ class BasicBidMatrixAPI(NodeAPI[BasicBidMatrix, BasicBidMatrixApply, BasicBidMat
             sources=view_id,
             class_type=BasicBidMatrix,
             class_list=BasicBidMatrixList,
-            class_apply_list=BasicBidMatrixApplyList,
+            class_write_list=BasicBidMatrixWriteList,
             view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
@@ -61,7 +62,7 @@ class BasicBidMatrixAPI(NodeAPI[BasicBidMatrix, BasicBidMatrixApply, BasicBidMat
         method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_QUERY_LIMIT,
+        limit: int | None = DEFAULT_QUERY_LIMIT,
         filter: dm.Filter | None = None,
     ) -> BasicBidMatrixQueryAPI[BasicBidMatrixList]:
         """Query starting at basic bid matrixes.
@@ -102,10 +103,10 @@ class BasicBidMatrixAPI(NodeAPI[BasicBidMatrix, BasicBidMatrixApply, BasicBidMat
 
     def apply(
         self,
-        basic_bid_matrix: BasicBidMatrixApply | Sequence[BasicBidMatrixApply],
+        basic_bid_matrix: BasicBidMatrixWrite | Sequence[BasicBidMatrixWrite],
         replace: bool = False,
         write_none: bool = False,
-    ) -> ResourcesApplyResult:
+    ) -> ResourcesWriteResult:
         """Add or update (upsert) basic bid matrixes.
 
         Note: This method iterates through all nodes and timeseries linked to basic_bid_matrix and creates them including the edges
@@ -126,12 +127,22 @@ class BasicBidMatrixAPI(NodeAPI[BasicBidMatrix, BasicBidMatrixApply, BasicBidMat
             Create a new basic_bid_matrix:
 
                 >>> from cognite.powerops.client._generated.day_ahead_bid import DayAheadBidAPI
-                >>> from cognite.powerops.client._generated.day_ahead_bid.data_classes import BasicBidMatrixApply
+                >>> from cognite.powerops.client._generated.day_ahead_bid.data_classes import BasicBidMatrixWrite
                 >>> client = DayAheadBidAPI()
-                >>> basic_bid_matrix = BasicBidMatrixApply(external_id="my_basic_bid_matrix", ...)
+                >>> basic_bid_matrix = BasicBidMatrixWrite(external_id="my_basic_bid_matrix", ...)
                 >>> result = client.basic_bid_matrix.apply(basic_bid_matrix)
 
         """
+        warnings.warn(
+            "The .apply method is deprecated and will be removed in v1.0. "
+            "Please use the .upsert method on the client instead. This means instead of "
+            "`my_client.basic_bid_matrix.apply(my_items)` please use `my_client.upsert(my_items)`."
+            "The motivation is that all apply methods are the same, and having one apply method per API "
+            " class encourages users to create items in small batches, which is inefficient."
+            "In addition, .upsert method is more descriptive of what the method does.",
+            UserWarning,
+            stacklevel=2,
+        )
         return self._apply(basic_bid_matrix, replace, write_none)
 
     def delete(
@@ -154,6 +165,15 @@ class BasicBidMatrixAPI(NodeAPI[BasicBidMatrix, BasicBidMatrixApply, BasicBidMat
                 >>> client = DayAheadBidAPI()
                 >>> client.basic_bid_matrix.delete("my_basic_bid_matrix")
         """
+        warnings.warn(
+            "The .delete method is deprecated and will be removed in v1.0. "
+            "Please use the .delete method on the client instead. This means instead of "
+            "`my_client.basic_bid_matrix.delete(my_ids)` please use `my_client.delete(my_ids)`."
+            "The motivation is that all delete methods are the same, and having one delete method per API "
+            " class encourages users to delete items in small batches, which is inefficient.",
+            UserWarning,
+            stacklevel=2,
+        )
         return self._delete(external_id, space)
 
     @overload
@@ -189,12 +209,13 @@ class BasicBidMatrixAPI(NodeAPI[BasicBidMatrix, BasicBidMatrixApply, BasicBidMat
             external_id,
             space,
             retrieve_edges=True,
-            edge_api_name_type_direction_quad=[
+            edge_api_name_type_direction_view_id_penta=[
                 (
                     self.alerts_edge,
                     "alerts",
                     dm.DirectRelationReference("power-ops-types", "calculationIssue"),
                     "outwards",
+                    dm.ViewId("power-ops-shared", "Alert", "1"),
                 ),
             ],
         )
@@ -212,7 +233,7 @@ class BasicBidMatrixAPI(NodeAPI[BasicBidMatrix, BasicBidMatrixApply, BasicBidMat
         method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> BasicBidMatrixList:
         """Search basic bid matrixes
@@ -262,10 +283,12 @@ class BasicBidMatrixAPI(NodeAPI[BasicBidMatrix, BasicBidMatrixApply, BasicBidMat
     @overload
     def aggregate(
         self,
-        aggregations: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: BasicBidMatrixFields | Sequence[BasicBidMatrixFields] | None = None,
         group_by: None = None,
         query: str | None = None,
@@ -279,7 +302,7 @@ class BasicBidMatrixAPI(NodeAPI[BasicBidMatrix, BasicBidMatrixApply, BasicBidMat
         method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> list[dm.aggregations.AggregatedNumberedValue]:
         ...
@@ -287,10 +310,12 @@ class BasicBidMatrixAPI(NodeAPI[BasicBidMatrix, BasicBidMatrixApply, BasicBidMat
     @overload
     def aggregate(
         self,
-        aggregations: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: BasicBidMatrixFields | Sequence[BasicBidMatrixFields] | None = None,
         group_by: BasicBidMatrixFields | Sequence[BasicBidMatrixFields] = None,
         query: str | None = None,
@@ -304,17 +329,19 @@ class BasicBidMatrixAPI(NodeAPI[BasicBidMatrix, BasicBidMatrixApply, BasicBidMat
         method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> InstanceAggregationResultList:
         ...
 
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: BasicBidMatrixFields | Sequence[BasicBidMatrixFields] | None = None,
         group_by: BasicBidMatrixFields | Sequence[BasicBidMatrixFields] | None = None,
         query: str | None = None,
@@ -328,7 +355,7 @@ class BasicBidMatrixAPI(NodeAPI[BasicBidMatrix, BasicBidMatrixApply, BasicBidMat
         method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
         """Aggregate data across basic bid matrixes
@@ -404,7 +431,7 @@ class BasicBidMatrixAPI(NodeAPI[BasicBidMatrix, BasicBidMatrixApply, BasicBidMat
         method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         """Produces histograms for basic bid matrixes
@@ -465,7 +492,7 @@ class BasicBidMatrixAPI(NodeAPI[BasicBidMatrix, BasicBidMatrixApply, BasicBidMat
         method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
         retrieve_edges: bool = True,
     ) -> BasicBidMatrixList:
@@ -515,12 +542,13 @@ class BasicBidMatrixAPI(NodeAPI[BasicBidMatrix, BasicBidMatrixApply, BasicBidMat
             limit=limit,
             filter=filter_,
             retrieve_edges=retrieve_edges,
-            edge_api_name_type_direction_quad=[
+            edge_api_name_type_direction_view_id_penta=[
                 (
                     self.alerts_edge,
                     "alerts",
                     dm.DirectRelationReference("power-ops-types", "calculationIssue"),
                     "outwards",
+                    dm.ViewId("power-ops-shared", "Alert", "1"),
                 ),
             ],
         )

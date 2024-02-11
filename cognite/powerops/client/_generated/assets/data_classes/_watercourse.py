@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import warnings
 from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
@@ -11,22 +12,24 @@ from ._core import (
     DataRecordWrite,
     DomainModel,
     DomainModelCore,
-    DomainModelApply,
-    DomainModelApplyList,
+    DomainModelWrite,
+    DomainModelWriteList,
     DomainModelList,
-    DomainRelationApply,
-    ResourcesApply,
+    DomainRelationWrite,
+    ResourcesWrite,
     TimeSeries,
 )
 
 if TYPE_CHECKING:
-    from ._plant import Plant, PlantApply
+    from ._plant import Plant, PlantWrite
 
 
 __all__ = [
     "Watercourse",
+    "WatercourseWrite",
     "WatercourseApply",
     "WatercourseList",
+    "WatercourseWriteList",
     "WatercourseApplyList",
     "WatercourseFields",
     "WatercourseTextFields",
@@ -68,9 +71,9 @@ class Watercourse(DomainModel):
     penalty_limit: Optional[float] = Field(None, alias="penaltyLimit")
     plants: Union[list[Plant], list[str], None] = Field(default=None, repr=False)
 
-    def as_apply(self) -> WatercourseApply:
+    def as_write(self) -> WatercourseWrite:
         """Convert this read version of watercourse to the writing version."""
-        return WatercourseApply(
+        return WatercourseWrite(
             space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
@@ -78,11 +81,20 @@ class Watercourse(DomainModel):
             display_name=self.display_name,
             production_obligation=self.production_obligation,
             penalty_limit=self.penalty_limit,
-            plants=[plant.as_apply() if isinstance(plant, DomainModel) else plant for plant in self.plants or []],
+            plants=[plant.as_write() if isinstance(plant, DomainModel) else plant for plant in self.plants or []],
         )
 
+    def as_apply(self) -> WatercourseWrite:
+        """Convert this read version of watercourse to the writing version."""
+        warnings.warn(
+            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
+            UserWarning,
+            stacklevel=2,
+        )
+        return self.as_write()
 
-class WatercourseApply(DomainModelApply):
+
+class WatercourseWrite(DomainModelWrite):
     """This represents the writing version of watercourse.
 
     It is used to when data is sent to CDF.
@@ -104,15 +116,15 @@ class WatercourseApply(DomainModelApply):
     display_name: Optional[str] = Field(None, alias="displayName")
     production_obligation: Union[list[TimeSeries], list[str], None] = Field(None, alias="productionObligation")
     penalty_limit: Optional[float] = Field(None, alias="penaltyLimit")
-    plants: Union[list[PlantApply], list[str], None] = Field(default=None, repr=False)
+    plants: Union[list[PlantWrite], list[str], None] = Field(default=None, repr=False)
 
-    def _to_instances_apply(
+    def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
-    ) -> ResourcesApply:
-        resources = ResourcesApply()
+    ) -> ResourcesWrite:
+        resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
             return resources
 
@@ -152,7 +164,7 @@ class WatercourseApply(DomainModelApply):
 
         edge_type = dm.DirectRelationReference("power-ops-types", "isSubAssetOf")
         for plant in self.plants or []:
-            other_resources = DomainRelationApply.from_edge_to_resources(
+            other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache, start_node=self, end_node=plant, edge_type=edge_type, view_by_read_class=view_by_read_class
             )
             resources.extend(other_resources)
@@ -163,20 +175,45 @@ class WatercourseApply(DomainModelApply):
         return resources
 
 
+class WatercourseApply(WatercourseWrite):
+    def __new__(cls, *args, **kwargs) -> WatercourseApply:
+        warnings.warn(
+            "WatercourseApply is deprecated and will be removed in v1.0. Use WatercourseWrite instead."
+            "The motivation for this change is that Write is a more descriptive name for the writing version of the"
+            "Watercourse.",
+            UserWarning,
+            stacklevel=2,
+        )
+        return super().__new__(cls)
+
+
 class WatercourseList(DomainModelList[Watercourse]):
     """List of watercourses in the read version."""
 
     _INSTANCE = Watercourse
 
-    def as_apply(self) -> WatercourseApplyList:
+    def as_write(self) -> WatercourseWriteList:
         """Convert these read versions of watercourse to the writing versions."""
-        return WatercourseApplyList([node.as_apply() for node in self.data])
+        return WatercourseWriteList([node.as_write() for node in self.data])
+
+    def as_apply(self) -> WatercourseWriteList:
+        """Convert these read versions of primitive nullable to the writing versions."""
+        warnings.warn(
+            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
+            UserWarning,
+            stacklevel=2,
+        )
+        return self.as_write()
 
 
-class WatercourseApplyList(DomainModelApplyList[WatercourseApply]):
+class WatercourseWriteList(DomainModelWriteList[WatercourseWrite]):
     """List of watercourses in the writing version."""
 
-    _INSTANCE = WatercourseApply
+    _INSTANCE = WatercourseWrite
+
+
+class WatercourseApplyList(WatercourseWriteList):
+    ...
 
 
 def _create_watercourse_filter(
@@ -192,25 +229,25 @@ def _create_watercourse_filter(
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
-    if name is not None and isinstance(name, str):
+    if isinstance(name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
     if name and isinstance(name, list):
         filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
-    if name_prefix:
+    if name_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
-    if display_name is not None and isinstance(display_name, str):
+    if isinstance(display_name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("displayName"), value=display_name))
     if display_name and isinstance(display_name, list):
         filters.append(dm.filters.In(view_id.as_property_ref("displayName"), values=display_name))
-    if display_name_prefix:
+    if display_name_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("displayName"), value=display_name_prefix))
-    if min_penalty_limit or max_penalty_limit:
+    if min_penalty_limit is not None or max_penalty_limit is not None:
         filters.append(
             dm.filters.Range(view_id.as_property_ref("penaltyLimit"), gte=min_penalty_limit, lte=max_penalty_limit)
         )
-    if external_id_prefix:
+    if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
-    if space is not None and isinstance(space, str):
+    if isinstance(space, str):
         filters.append(dm.filters.Equals(["node", "space"], value=space))
     if space and isinstance(space, list):
         filters.append(dm.filters.In(["node", "space"], values=space))

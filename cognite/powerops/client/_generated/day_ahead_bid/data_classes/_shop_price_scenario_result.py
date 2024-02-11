@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import warnings
 from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
@@ -11,22 +12,24 @@ from ._core import (
     DataRecordWrite,
     DomainModel,
     DomainModelCore,
-    DomainModelApply,
-    DomainModelApplyList,
+    DomainModelWrite,
+    DomainModelWriteList,
     DomainModelList,
-    DomainRelationApply,
-    ResourcesApply,
+    DomainRelationWrite,
+    ResourcesWrite,
     TimeSeries,
 )
 
 if TYPE_CHECKING:
-    from ._shop_price_scenario import SHOPPriceScenario, SHOPPriceScenarioApply
+    from ._shop_price_scenario import SHOPPriceScenario, SHOPPriceScenarioWrite
 
 
 __all__ = [
     "SHOPPriceScenarioResult",
+    "SHOPPriceScenarioResultWrite",
     "SHOPPriceScenarioResultApply",
     "SHOPPriceScenarioResultList",
+    "SHOPPriceScenarioResultWriteList",
     "SHOPPriceScenarioResultApplyList",
     "SHOPPriceScenarioResultFields",
     "SHOPPriceScenarioResultTextFields",
@@ -64,21 +67,30 @@ class SHOPPriceScenarioResult(DomainModel):
     production: Union[TimeSeries, str, None] = None
     price_scenario: Union[SHOPPriceScenario, str, dm.NodeId, None] = Field(None, repr=False, alias="priceScenario")
 
-    def as_apply(self) -> SHOPPriceScenarioResultApply:
+    def as_write(self) -> SHOPPriceScenarioResultWrite:
         """Convert this read version of shop price scenario result to the writing version."""
-        return SHOPPriceScenarioResultApply(
+        return SHOPPriceScenarioResultWrite(
             space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
             price=self.price,
             production=self.production,
-            price_scenario=self.price_scenario.as_apply()
-            if isinstance(self.price_scenario, DomainModel)
-            else self.price_scenario,
+            price_scenario=(
+                self.price_scenario.as_write() if isinstance(self.price_scenario, DomainModel) else self.price_scenario
+            ),
         )
 
+    def as_apply(self) -> SHOPPriceScenarioResultWrite:
+        """Convert this read version of shop price scenario result to the writing version."""
+        warnings.warn(
+            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
+            UserWarning,
+            stacklevel=2,
+        )
+        return self.as_write()
 
-class SHOPPriceScenarioResultApply(DomainModelApply):
+
+class SHOPPriceScenarioResultWrite(DomainModelWrite):
     """This represents the writing version of shop price scenario result.
 
     It is used to when data is sent to CDF.
@@ -98,15 +110,15 @@ class SHOPPriceScenarioResultApply(DomainModelApply):
     )
     price: Union[TimeSeries, str, None] = None
     production: Union[TimeSeries, str, None] = None
-    price_scenario: Union[SHOPPriceScenarioApply, str, dm.NodeId, None] = Field(None, repr=False, alias="priceScenario")
+    price_scenario: Union[SHOPPriceScenarioWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="priceScenario")
 
-    def _to_instances_apply(
+    def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
-    ) -> ResourcesApply:
-        resources = ResourcesApply()
+    ) -> ResourcesWrite:
+        resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
             return resources
 
@@ -131,9 +143,9 @@ class SHOPPriceScenarioResultApply(DomainModelApply):
         if self.price_scenario is not None:
             properties["priceScenario"] = {
                 "space": self.space if isinstance(self.price_scenario, str) else self.price_scenario.space,
-                "externalId": self.price_scenario
-                if isinstance(self.price_scenario, str)
-                else self.price_scenario.external_id,
+                "externalId": (
+                    self.price_scenario if isinstance(self.price_scenario, str) else self.price_scenario.external_id
+                ),
             }
 
         if properties:
@@ -152,8 +164,8 @@ class SHOPPriceScenarioResultApply(DomainModelApply):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        if isinstance(self.price_scenario, DomainModelApply):
-            other_resources = self.price_scenario._to_instances_apply(cache, view_by_read_class)
+        if isinstance(self.price_scenario, DomainModelWrite):
+            other_resources = self.price_scenario._to_instances_write(cache, view_by_read_class)
             resources.extend(other_resources)
 
         if isinstance(self.price, CogniteTimeSeries):
@@ -165,20 +177,45 @@ class SHOPPriceScenarioResultApply(DomainModelApply):
         return resources
 
 
+class SHOPPriceScenarioResultApply(SHOPPriceScenarioResultWrite):
+    def __new__(cls, *args, **kwargs) -> SHOPPriceScenarioResultApply:
+        warnings.warn(
+            "SHOPPriceScenarioResultApply is deprecated and will be removed in v1.0. Use SHOPPriceScenarioResultWrite instead."
+            "The motivation for this change is that Write is a more descriptive name for the writing version of the"
+            "SHOPPriceScenarioResult.",
+            UserWarning,
+            stacklevel=2,
+        )
+        return super().__new__(cls)
+
+
 class SHOPPriceScenarioResultList(DomainModelList[SHOPPriceScenarioResult]):
     """List of shop price scenario results in the read version."""
 
     _INSTANCE = SHOPPriceScenarioResult
 
-    def as_apply(self) -> SHOPPriceScenarioResultApplyList:
+    def as_write(self) -> SHOPPriceScenarioResultWriteList:
         """Convert these read versions of shop price scenario result to the writing versions."""
-        return SHOPPriceScenarioResultApplyList([node.as_apply() for node in self.data])
+        return SHOPPriceScenarioResultWriteList([node.as_write() for node in self.data])
+
+    def as_apply(self) -> SHOPPriceScenarioResultWriteList:
+        """Convert these read versions of primitive nullable to the writing versions."""
+        warnings.warn(
+            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
+            UserWarning,
+            stacklevel=2,
+        )
+        return self.as_write()
 
 
-class SHOPPriceScenarioResultApplyList(DomainModelApplyList[SHOPPriceScenarioResultApply]):
+class SHOPPriceScenarioResultWriteList(DomainModelWriteList[SHOPPriceScenarioResultWrite]):
     """List of shop price scenario results in the writing version."""
 
-    _INSTANCE = SHOPPriceScenarioResultApply
+    _INSTANCE = SHOPPriceScenarioResultWrite
+
+
+class SHOPPriceScenarioResultApplyList(SHOPPriceScenarioResultWriteList):
+    ...
 
 
 def _create_shop_price_scenario_result_filter(
@@ -217,9 +254,9 @@ def _create_shop_price_scenario_result_filter(
                 values=[{"space": item[0], "externalId": item[1]} for item in price_scenario],
             )
         )
-    if external_id_prefix:
+    if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
-    if space is not None and isinstance(space, str):
+    if isinstance(space, str):
         filters.append(dm.filters.Equals(["node", "space"], value=space))
     if space and isinstance(space, list):
         filters.append(dm.filters.In(["node", "space"], values=space))

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 from typing import overload
+import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
@@ -10,13 +11,13 @@ from cognite.client.data_classes.data_modeling.instances import InstanceAggregat
 from cognite.powerops.client._generated.assets.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.assets.data_classes import (
     DomainModelCore,
-    DomainModelApply,
-    ResourcesApplyResult,
+    DomainModelWrite,
+    ResourcesWriteResult,
     Watercourse,
-    WatercourseApply,
+    WatercourseWrite,
     WatercourseFields,
     WatercourseList,
-    WatercourseApplyList,
+    WatercourseWriteList,
     WatercourseTextFields,
 )
 from cognite.powerops.client._generated.assets.data_classes._watercourse import (
@@ -37,7 +38,7 @@ from .watercourse_production_obligation import WatercourseProductionObligationAP
 from .watercourse_query import WatercourseQueryAPI
 
 
-class WatercourseAPI(NodeAPI[Watercourse, WatercourseApply, WatercourseList]):
+class WatercourseAPI(NodeAPI[Watercourse, WatercourseWrite, WatercourseList]):
     def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
         view_id = view_by_read_class[Watercourse]
         super().__init__(
@@ -45,7 +46,7 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseApply, WatercourseList]):
             sources=view_id,
             class_type=Watercourse,
             class_list=WatercourseList,
-            class_apply_list=WatercourseApplyList,
+            class_write_list=WatercourseWriteList,
             view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
@@ -62,7 +63,7 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseApply, WatercourseList]):
         max_penalty_limit: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_QUERY_LIMIT,
+        limit: int | None = DEFAULT_QUERY_LIMIT,
         filter: dm.Filter | None = None,
     ) -> WatercourseQueryAPI[WatercourseList]:
         """Query starting at watercourses.
@@ -101,10 +102,10 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseApply, WatercourseList]):
 
     def apply(
         self,
-        watercourse: WatercourseApply | Sequence[WatercourseApply],
+        watercourse: WatercourseWrite | Sequence[WatercourseWrite],
         replace: bool = False,
         write_none: bool = False,
-    ) -> ResourcesApplyResult:
+    ) -> ResourcesWriteResult:
         """Add or update (upsert) watercourses.
 
         Note: This method iterates through all nodes and timeseries linked to watercourse and creates them including the edges
@@ -125,12 +126,22 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseApply, WatercourseList]):
             Create a new watercourse:
 
                 >>> from cognite.powerops.client._generated.assets import PowerAssetAPI
-                >>> from cognite.powerops.client._generated.assets.data_classes import WatercourseApply
+                >>> from cognite.powerops.client._generated.assets.data_classes import WatercourseWrite
                 >>> client = PowerAssetAPI()
-                >>> watercourse = WatercourseApply(external_id="my_watercourse", ...)
+                >>> watercourse = WatercourseWrite(external_id="my_watercourse", ...)
                 >>> result = client.watercourse.apply(watercourse)
 
         """
+        warnings.warn(
+            "The .apply method is deprecated and will be removed in v1.0. "
+            "Please use the .upsert method on the client instead. This means instead of "
+            "`my_client.watercourse.apply(my_items)` please use `my_client.upsert(my_items)`."
+            "The motivation is that all apply methods are the same, and having one apply method per API "
+            " class encourages users to create items in small batches, which is inefficient."
+            "In addition, .upsert method is more descriptive of what the method does.",
+            UserWarning,
+            stacklevel=2,
+        )
         return self._apply(watercourse, replace, write_none)
 
     def delete(
@@ -153,6 +164,15 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseApply, WatercourseList]):
                 >>> client = PowerAssetAPI()
                 >>> client.watercourse.delete("my_watercourse")
         """
+        warnings.warn(
+            "The .delete method is deprecated and will be removed in v1.0. "
+            "Please use the .delete method on the client instead. This means instead of "
+            "`my_client.watercourse.delete(my_ids)` please use `my_client.delete(my_ids)`."
+            "The motivation is that all delete methods are the same, and having one delete method per API "
+            " class encourages users to delete items in small batches, which is inefficient.",
+            UserWarning,
+            stacklevel=2,
+        )
         return self._delete(external_id, space)
 
     @overload
@@ -188,12 +208,13 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseApply, WatercourseList]):
             external_id,
             space,
             retrieve_edges=True,
-            edge_api_name_type_direction_quad=[
+            edge_api_name_type_direction_view_id_penta=[
                 (
                     self.plants_edge,
                     "plants",
                     dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
                     "outwards",
+                    dm.ViewId("power-ops-assets", "Plant", "1"),
                 ),
             ],
         )
@@ -210,7 +231,7 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseApply, WatercourseList]):
         max_penalty_limit: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> WatercourseList:
         """Search watercourses
@@ -258,10 +279,12 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseApply, WatercourseList]):
     @overload
     def aggregate(
         self,
-        aggregations: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: WatercourseFields | Sequence[WatercourseFields] | None = None,
         group_by: None = None,
         query: str | None = None,
@@ -274,7 +297,7 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseApply, WatercourseList]):
         max_penalty_limit: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> list[dm.aggregations.AggregatedNumberedValue]:
         ...
@@ -282,10 +305,12 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseApply, WatercourseList]):
     @overload
     def aggregate(
         self,
-        aggregations: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: WatercourseFields | Sequence[WatercourseFields] | None = None,
         group_by: WatercourseFields | Sequence[WatercourseFields] = None,
         query: str | None = None,
@@ -298,17 +323,19 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseApply, WatercourseList]):
         max_penalty_limit: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> InstanceAggregationResultList:
         ...
 
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: WatercourseFields | Sequence[WatercourseFields] | None = None,
         group_by: WatercourseFields | Sequence[WatercourseFields] | None = None,
         query: str | None = None,
@@ -321,7 +348,7 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseApply, WatercourseList]):
         max_penalty_limit: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
         """Aggregate data across watercourses
@@ -394,7 +421,7 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseApply, WatercourseList]):
         max_penalty_limit: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         """Produces histograms for watercourses
@@ -452,7 +479,7 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseApply, WatercourseList]):
         max_penalty_limit: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
         retrieve_edges: bool = True,
     ) -> WatercourseList:
@@ -500,12 +527,13 @@ class WatercourseAPI(NodeAPI[Watercourse, WatercourseApply, WatercourseList]):
             limit=limit,
             filter=filter_,
             retrieve_edges=retrieve_edges,
-            edge_api_name_type_direction_quad=[
+            edge_api_name_type_direction_view_id_penta=[
                 (
                     self.plants_edge,
                     "plants",
                     dm.DirectRelationReference("power-ops-types", "isSubAssetOf"),
                     "outwards",
+                    dm.ViewId("power-ops-assets", "Plant", "1"),
                 ),
             ],
         )

@@ -3,11 +3,11 @@ from ._core import (
     DataRecordWrite,
     DomainModel,
     DomainModelCore,
-    DomainModelApply,
+    DomainModelWrite,
     DomainModelList,
-    DomainRelationApply,
-    ResourcesApply,
-    ResourcesApplyResult,
+    DomainRelationWrite,
+    ResourcesWrite,
+    ResourcesWriteResult,
 )
 from ._bid_method import (
     BidMethod,
@@ -16,6 +16,8 @@ from ._bid_method import (
     BidMethodFields,
     BidMethodList,
     BidMethodTextFields,
+    BidMethodWrite,
+    BidMethodWriteList,
 )
 from ._generator import (
     Generator,
@@ -24,6 +26,8 @@ from ._generator import (
     GeneratorFields,
     GeneratorList,
     GeneratorTextFields,
+    GeneratorWrite,
+    GeneratorWriteList,
 )
 from ._generator_efficiency_curve import (
     GeneratorEfficiencyCurve,
@@ -31,8 +35,19 @@ from ._generator_efficiency_curve import (
     GeneratorEfficiencyCurveApplyList,
     GeneratorEfficiencyCurveFields,
     GeneratorEfficiencyCurveList,
+    GeneratorEfficiencyCurveWrite,
+    GeneratorEfficiencyCurveWriteList,
 )
-from ._plant import Plant, PlantApply, PlantApplyList, PlantFields, PlantList, PlantTextFields
+from ._plant import (
+    Plant,
+    PlantApply,
+    PlantApplyList,
+    PlantFields,
+    PlantList,
+    PlantTextFields,
+    PlantWrite,
+    PlantWriteList,
+)
 from ._price_area import (
     PriceArea,
     PriceAreaApply,
@@ -40,6 +55,8 @@ from ._price_area import (
     PriceAreaFields,
     PriceAreaList,
     PriceAreaTextFields,
+    PriceAreaWrite,
+    PriceAreaWriteList,
 )
 from ._reservoir import (
     Reservoir,
@@ -48,6 +65,8 @@ from ._reservoir import (
     ReservoirFields,
     ReservoirList,
     ReservoirTextFields,
+    ReservoirWrite,
+    ReservoirWriteList,
 )
 from ._turbine_efficiency_curve import (
     TurbineEfficiencyCurve,
@@ -55,6 +74,8 @@ from ._turbine_efficiency_curve import (
     TurbineEfficiencyCurveApplyList,
     TurbineEfficiencyCurveFields,
     TurbineEfficiencyCurveList,
+    TurbineEfficiencyCurveWrite,
+    TurbineEfficiencyCurveWriteList,
 )
 from ._watercourse import (
     Watercourse,
@@ -63,70 +84,88 @@ from ._watercourse import (
     WatercourseFields,
     WatercourseList,
     WatercourseTextFields,
+    WatercourseWrite,
+    WatercourseWriteList,
 )
 
 Generator.model_rebuild()
-GeneratorApply.model_rebuild()
+GeneratorWrite.model_rebuild()
 Plant.model_rebuild()
-PlantApply.model_rebuild()
+PlantWrite.model_rebuild()
 PriceArea.model_rebuild()
-PriceAreaApply.model_rebuild()
+PriceAreaWrite.model_rebuild()
 Watercourse.model_rebuild()
-WatercourseApply.model_rebuild()
+WatercourseWrite.model_rebuild()
 
 __all__ = [
     "DataRecord",
     "DataRecordWrite",
-    "ResourcesApply",
+    "ResourcesWrite",
     "DomainModel",
     "DomainModelCore",
-    "DomainModelApply",
+    "DomainModelWrite",
     "DomainModelList",
-    "DomainRelationApply",
-    "ResourcesApplyResult",
+    "DomainRelationWrite",
+    "ResourcesWriteResult",
     "BidMethod",
+    "BidMethodWrite",
     "BidMethodApply",
     "BidMethodList",
+    "BidMethodWriteList",
     "BidMethodApplyList",
     "BidMethodFields",
     "BidMethodTextFields",
     "Generator",
+    "GeneratorWrite",
     "GeneratorApply",
     "GeneratorList",
+    "GeneratorWriteList",
     "GeneratorApplyList",
     "GeneratorFields",
     "GeneratorTextFields",
     "GeneratorEfficiencyCurve",
+    "GeneratorEfficiencyCurveWrite",
     "GeneratorEfficiencyCurveApply",
     "GeneratorEfficiencyCurveList",
+    "GeneratorEfficiencyCurveWriteList",
     "GeneratorEfficiencyCurveApplyList",
     "GeneratorEfficiencyCurveFields",
     "Plant",
+    "PlantWrite",
     "PlantApply",
     "PlantList",
+    "PlantWriteList",
     "PlantApplyList",
     "PlantFields",
     "PlantTextFields",
     "PriceArea",
+    "PriceAreaWrite",
     "PriceAreaApply",
     "PriceAreaList",
+    "PriceAreaWriteList",
     "PriceAreaApplyList",
     "PriceAreaFields",
     "PriceAreaTextFields",
     "Reservoir",
+    "ReservoirWrite",
     "ReservoirApply",
     "ReservoirList",
+    "ReservoirWriteList",
     "ReservoirApplyList",
     "ReservoirFields",
     "ReservoirTextFields",
     "TurbineEfficiencyCurve",
+    "TurbineEfficiencyCurveWrite",
     "TurbineEfficiencyCurveApply",
     "TurbineEfficiencyCurveList",
+    "TurbineEfficiencyCurveWriteList",
     "TurbineEfficiencyCurveApplyList",
     "TurbineEfficiencyCurveFields",
     "Watercourse",
+    "WatercourseWrite",
     "WatercourseApply",
     "WatercourseList",
+    "WatercourseWriteList",
     "WatercourseApplyList",
     "WatercourseFields",
     "WatercourseTextFields",

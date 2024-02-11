@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import warnings
 from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
@@ -10,22 +11,24 @@ from ._core import (
     DataRecordWrite,
     DomainModel,
     DomainModelCore,
-    DomainModelApply,
-    DomainModelApplyList,
+    DomainModelWrite,
+    DomainModelWriteList,
     DomainModelList,
-    DomainRelationApply,
-    ResourcesApply,
+    DomainRelationWrite,
+    ResourcesWrite,
 )
-from ._bid_method import BidMethod, BidMethodApply
+from ._bid_method import BidMethod, BidMethodWrite
 
 if TYPE_CHECKING:
-    from ._shop_price_scenario import SHOPPriceScenario, SHOPPriceScenarioApply
+    from ._shop_price_scenario import SHOPPriceScenario, SHOPPriceScenarioWrite
 
 
 __all__ = [
     "SHOPMultiScenarioMethod",
+    "SHOPMultiScenarioMethodWrite",
     "SHOPMultiScenarioMethodApply",
     "SHOPMultiScenarioMethodList",
+    "SHOPMultiScenarioMethodWriteList",
     "SHOPMultiScenarioMethodApplyList",
     "SHOPMultiScenarioMethodFields",
     "SHOPMultiScenarioMethodTextFields",
@@ -63,22 +66,31 @@ class SHOPMultiScenarioMethod(BidMethod):
         default=None, repr=False, alias="priceScenarios"
     )
 
-    def as_apply(self) -> SHOPMultiScenarioMethodApply:
+    def as_write(self) -> SHOPMultiScenarioMethodWrite:
         """Convert this read version of shop multi scenario method to the writing version."""
-        return SHOPMultiScenarioMethodApply(
+        return SHOPMultiScenarioMethodWrite(
             space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
             name=self.name,
             shop_cases=self.shop_cases,
             price_scenarios=[
-                price_scenario.as_apply() if isinstance(price_scenario, DomainModel) else price_scenario
+                price_scenario.as_write() if isinstance(price_scenario, DomainModel) else price_scenario
                 for price_scenario in self.price_scenarios or []
             ],
         )
 
+    def as_apply(self) -> SHOPMultiScenarioMethodWrite:
+        """Convert this read version of shop multi scenario method to the writing version."""
+        warnings.warn(
+            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
+            UserWarning,
+            stacklevel=2,
+        )
+        return self.as_write()
 
-class SHOPMultiScenarioMethodApply(BidMethodApply):
+
+class SHOPMultiScenarioMethodWrite(BidMethodWrite):
     """This represents the writing version of shop multi scenario method.
 
     It is used to when data is sent to CDF.
@@ -96,17 +108,17 @@ class SHOPMultiScenarioMethodApply(BidMethodApply):
         "power-ops-types", "DayAheadSHOPMultiScenarioMethod"
     )
     shop_cases: Optional[list[str]] = Field(None, alias="shopCases")
-    price_scenarios: Union[list[SHOPPriceScenarioApply], list[str], None] = Field(
+    price_scenarios: Union[list[SHOPPriceScenarioWrite], list[str], None] = Field(
         default=None, repr=False, alias="priceScenarios"
     )
 
-    def _to_instances_apply(
+    def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
-    ) -> ResourcesApply:
-        resources = ResourcesApply()
+    ) -> ResourcesWrite:
+        resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
             return resources
 
@@ -140,7 +152,7 @@ class SHOPMultiScenarioMethodApply(BidMethodApply):
 
         edge_type = dm.DirectRelationReference("power-ops-types", "PriceScenario")
         for price_scenario in self.price_scenarios or []:
-            other_resources = DomainRelationApply.from_edge_to_resources(
+            other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache,
                 start_node=self,
                 end_node=price_scenario,
@@ -152,20 +164,45 @@ class SHOPMultiScenarioMethodApply(BidMethodApply):
         return resources
 
 
+class SHOPMultiScenarioMethodApply(SHOPMultiScenarioMethodWrite):
+    def __new__(cls, *args, **kwargs) -> SHOPMultiScenarioMethodApply:
+        warnings.warn(
+            "SHOPMultiScenarioMethodApply is deprecated and will be removed in v1.0. Use SHOPMultiScenarioMethodWrite instead."
+            "The motivation for this change is that Write is a more descriptive name for the writing version of the"
+            "SHOPMultiScenarioMethod.",
+            UserWarning,
+            stacklevel=2,
+        )
+        return super().__new__(cls)
+
+
 class SHOPMultiScenarioMethodList(DomainModelList[SHOPMultiScenarioMethod]):
     """List of shop multi scenario methods in the read version."""
 
     _INSTANCE = SHOPMultiScenarioMethod
 
-    def as_apply(self) -> SHOPMultiScenarioMethodApplyList:
+    def as_write(self) -> SHOPMultiScenarioMethodWriteList:
         """Convert these read versions of shop multi scenario method to the writing versions."""
-        return SHOPMultiScenarioMethodApplyList([node.as_apply() for node in self.data])
+        return SHOPMultiScenarioMethodWriteList([node.as_write() for node in self.data])
+
+    def as_apply(self) -> SHOPMultiScenarioMethodWriteList:
+        """Convert these read versions of primitive nullable to the writing versions."""
+        warnings.warn(
+            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
+            UserWarning,
+            stacklevel=2,
+        )
+        return self.as_write()
 
 
-class SHOPMultiScenarioMethodApplyList(DomainModelApplyList[SHOPMultiScenarioMethodApply]):
+class SHOPMultiScenarioMethodWriteList(DomainModelWriteList[SHOPMultiScenarioMethodWrite]):
     """List of shop multi scenario methods in the writing version."""
 
-    _INSTANCE = SHOPMultiScenarioMethodApply
+    _INSTANCE = SHOPMultiScenarioMethodWrite
+
+
+class SHOPMultiScenarioMethodApplyList(SHOPMultiScenarioMethodWriteList):
+    ...
 
 
 def _create_shop_multi_scenario_method_filter(
@@ -177,15 +214,15 @@ def _create_shop_multi_scenario_method_filter(
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
-    if name is not None and isinstance(name, str):
+    if isinstance(name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
     if name and isinstance(name, list):
         filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
-    if name_prefix:
+    if name_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
-    if external_id_prefix:
+    if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
-    if space is not None and isinstance(space, str):
+    if isinstance(space, str):
         filters.append(dm.filters.Equals(["node", "space"], value=space))
     if space and isinstance(space, list):
         filters.append(dm.filters.In(["node", "space"], values=space))

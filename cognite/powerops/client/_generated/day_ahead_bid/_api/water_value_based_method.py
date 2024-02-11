@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 from typing import overload
+import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
@@ -10,13 +11,13 @@ from cognite.client.data_classes.data_modeling.instances import InstanceAggregat
 from cognite.powerops.client._generated.day_ahead_bid.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.day_ahead_bid.data_classes import (
     DomainModelCore,
-    DomainModelApply,
-    ResourcesApplyResult,
+    DomainModelWrite,
+    ResourcesWriteResult,
     WaterValueBasedMethod,
-    WaterValueBasedMethodApply,
+    WaterValueBasedMethodWrite,
     WaterValueBasedMethodFields,
     WaterValueBasedMethodList,
-    WaterValueBasedMethodApplyList,
+    WaterValueBasedMethodWriteList,
     WaterValueBasedMethodTextFields,
 )
 from cognite.powerops.client._generated.day_ahead_bid.data_classes._water_value_based_method import (
@@ -35,7 +36,7 @@ from ._core import (
 from .water_value_based_method_query import WaterValueBasedMethodQueryAPI
 
 
-class WaterValueBasedMethodAPI(NodeAPI[WaterValueBasedMethod, WaterValueBasedMethodApply, WaterValueBasedMethodList]):
+class WaterValueBasedMethodAPI(NodeAPI[WaterValueBasedMethod, WaterValueBasedMethodWrite, WaterValueBasedMethodList]):
     def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
         view_id = view_by_read_class[WaterValueBasedMethod]
         super().__init__(
@@ -43,7 +44,7 @@ class WaterValueBasedMethodAPI(NodeAPI[WaterValueBasedMethod, WaterValueBasedMet
             sources=view_id,
             class_type=WaterValueBasedMethod,
             class_list=WaterValueBasedMethodList,
-            class_apply_list=WaterValueBasedMethodApplyList,
+            class_write_list=WaterValueBasedMethodWriteList,
             view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
@@ -54,7 +55,7 @@ class WaterValueBasedMethodAPI(NodeAPI[WaterValueBasedMethod, WaterValueBasedMet
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_QUERY_LIMIT,
+        limit: int | None = DEFAULT_QUERY_LIMIT,
         filter: dm.Filter | None = None,
     ) -> WaterValueBasedMethodQueryAPI[WaterValueBasedMethodList]:
         """Query starting at water value based methods.
@@ -85,10 +86,10 @@ class WaterValueBasedMethodAPI(NodeAPI[WaterValueBasedMethod, WaterValueBasedMet
 
     def apply(
         self,
-        water_value_based_method: WaterValueBasedMethodApply | Sequence[WaterValueBasedMethodApply],
+        water_value_based_method: WaterValueBasedMethodWrite | Sequence[WaterValueBasedMethodWrite],
         replace: bool = False,
         write_none: bool = False,
-    ) -> ResourcesApplyResult:
+    ) -> ResourcesWriteResult:
         """Add or update (upsert) water value based methods.
 
         Args:
@@ -105,12 +106,22 @@ class WaterValueBasedMethodAPI(NodeAPI[WaterValueBasedMethod, WaterValueBasedMet
             Create a new water_value_based_method:
 
                 >>> from cognite.powerops.client._generated.day_ahead_bid import DayAheadBidAPI
-                >>> from cognite.powerops.client._generated.day_ahead_bid.data_classes import WaterValueBasedMethodApply
+                >>> from cognite.powerops.client._generated.day_ahead_bid.data_classes import WaterValueBasedMethodWrite
                 >>> client = DayAheadBidAPI()
-                >>> water_value_based_method = WaterValueBasedMethodApply(external_id="my_water_value_based_method", ...)
+                >>> water_value_based_method = WaterValueBasedMethodWrite(external_id="my_water_value_based_method", ...)
                 >>> result = client.water_value_based_method.apply(water_value_based_method)
 
         """
+        warnings.warn(
+            "The .apply method is deprecated and will be removed in v1.0. "
+            "Please use the .upsert method on the client instead. This means instead of "
+            "`my_client.water_value_based_method.apply(my_items)` please use `my_client.upsert(my_items)`."
+            "The motivation is that all apply methods are the same, and having one apply method per API "
+            " class encourages users to create items in small batches, which is inefficient."
+            "In addition, .upsert method is more descriptive of what the method does.",
+            UserWarning,
+            stacklevel=2,
+        )
         return self._apply(water_value_based_method, replace, write_none)
 
     def delete(
@@ -133,6 +144,15 @@ class WaterValueBasedMethodAPI(NodeAPI[WaterValueBasedMethod, WaterValueBasedMet
                 >>> client = DayAheadBidAPI()
                 >>> client.water_value_based_method.delete("my_water_value_based_method")
         """
+        warnings.warn(
+            "The .delete method is deprecated and will be removed in v1.0. "
+            "Please use the .delete method on the client instead. This means instead of "
+            "`my_client.water_value_based_method.delete(my_ids)` please use `my_client.delete(my_ids)`."
+            "The motivation is that all delete methods are the same, and having one delete method per API "
+            " class encourages users to delete items in small batches, which is inefficient.",
+            UserWarning,
+            stacklevel=2,
+        )
         return self._delete(external_id, space)
 
     @overload
@@ -176,7 +196,7 @@ class WaterValueBasedMethodAPI(NodeAPI[WaterValueBasedMethod, WaterValueBasedMet
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> WaterValueBasedMethodList:
         """Search water value based methods
@@ -218,10 +238,12 @@ class WaterValueBasedMethodAPI(NodeAPI[WaterValueBasedMethod, WaterValueBasedMet
     @overload
     def aggregate(
         self,
-        aggregations: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: WaterValueBasedMethodFields | Sequence[WaterValueBasedMethodFields] | None = None,
         group_by: None = None,
         query: str | None = None,
@@ -230,7 +252,7 @@ class WaterValueBasedMethodAPI(NodeAPI[WaterValueBasedMethod, WaterValueBasedMet
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> list[dm.aggregations.AggregatedNumberedValue]:
         ...
@@ -238,10 +260,12 @@ class WaterValueBasedMethodAPI(NodeAPI[WaterValueBasedMethod, WaterValueBasedMet
     @overload
     def aggregate(
         self,
-        aggregations: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: WaterValueBasedMethodFields | Sequence[WaterValueBasedMethodFields] | None = None,
         group_by: WaterValueBasedMethodFields | Sequence[WaterValueBasedMethodFields] = None,
         query: str | None = None,
@@ -250,17 +274,19 @@ class WaterValueBasedMethodAPI(NodeAPI[WaterValueBasedMethod, WaterValueBasedMet
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> InstanceAggregationResultList:
         ...
 
     def aggregate(
         self,
-        aggregate: Aggregations
-        | dm.aggregations.MetricAggregation
-        | Sequence[Aggregations]
-        | Sequence[dm.aggregations.MetricAggregation],
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
         property: WaterValueBasedMethodFields | Sequence[WaterValueBasedMethodFields] | None = None,
         group_by: WaterValueBasedMethodFields | Sequence[WaterValueBasedMethodFields] | None = None,
         query: str | None = None,
@@ -269,7 +295,7 @@ class WaterValueBasedMethodAPI(NodeAPI[WaterValueBasedMethod, WaterValueBasedMet
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
         """Aggregate data across water value based methods
@@ -330,7 +356,7 @@ class WaterValueBasedMethodAPI(NodeAPI[WaterValueBasedMethod, WaterValueBasedMet
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> dm.aggregations.HistogramValue:
         """Produces histograms for water value based methods
@@ -376,7 +402,7 @@ class WaterValueBasedMethodAPI(NodeAPI[WaterValueBasedMethod, WaterValueBasedMet
         name_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
-        limit: int = DEFAULT_LIMIT_READ,
+        limit: int | None = DEFAULT_LIMIT_READ,
         filter: dm.Filter | None = None,
     ) -> WaterValueBasedMethodList:
         """List/filter water value based methods

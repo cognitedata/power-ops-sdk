@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import warnings
 from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
@@ -11,21 +12,30 @@ from ._core import (
     DataRecordWrite,
     DomainModel,
     DomainModelCore,
-    DomainModelApply,
-    DomainModelApplyList,
+    DomainModelWrite,
+    DomainModelWriteList,
     DomainModelList,
-    DomainRelationApply,
-    ResourcesApply,
+    DomainRelationWrite,
+    ResourcesWrite,
     TimeSeries,
 )
 
 if TYPE_CHECKING:
-    from ._generator import Generator, GeneratorApply
-    from ._reservoir import Reservoir, ReservoirApply
-    from ._watercourse import Watercourse, WatercourseApply
+    from ._generator import Generator, GeneratorWrite
+    from ._reservoir import Reservoir, ReservoirWrite
+    from ._watercourse import Watercourse, WatercourseWrite
 
 
-__all__ = ["Plant", "PlantApply", "PlantList", "PlantApplyList", "PlantFields", "PlantTextFields"]
+__all__ = [
+    "Plant",
+    "PlantWrite",
+    "PlantApply",
+    "PlantList",
+    "PlantWriteList",
+    "PlantApplyList",
+    "PlantFields",
+    "PlantTextFields",
+]
 
 
 PlantTextFields = Literal[
@@ -130,9 +140,9 @@ class Plant(DomainModel):
     inlet_reservoir: Union[Reservoir, str, dm.NodeId, None] = Field(None, repr=False, alias="inletReservoir")
     generators: Union[list[Generator], list[str], None] = Field(default=None, repr=False)
 
-    def as_apply(self) -> PlantApply:
+    def as_write(self) -> PlantWrite:
         """Convert this read version of plant to the writing version."""
-        return PlantApply(
+        return PlantWrite(
             space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
@@ -144,7 +154,7 @@ class Plant(DomainModel):
             p_max=self.p_max,
             p_min=self.p_min,
             penstock_head_loss_factors=self.penstock_head_loss_factors,
-            watercourse=self.watercourse.as_apply() if isinstance(self.watercourse, DomainModel) else self.watercourse,
+            watercourse=self.watercourse.as_write() if isinstance(self.watercourse, DomainModel) else self.watercourse,
             connection_losses=self.connection_losses,
             p_max_time_series=self.p_max_time_series,
             p_min_time_series=self.p_min_time_series,
@@ -153,17 +163,28 @@ class Plant(DomainModel):
             outlet_level_time_series=self.outlet_level_time_series,
             inlet_level_time_series=self.inlet_level_time_series,
             head_direct_time_series=self.head_direct_time_series,
-            inlet_reservoir=self.inlet_reservoir.as_apply()
-            if isinstance(self.inlet_reservoir, DomainModel)
-            else self.inlet_reservoir,
+            inlet_reservoir=(
+                self.inlet_reservoir.as_write()
+                if isinstance(self.inlet_reservoir, DomainModel)
+                else self.inlet_reservoir
+            ),
             generators=[
-                generator.as_apply() if isinstance(generator, DomainModel) else generator
+                generator.as_write() if isinstance(generator, DomainModel) else generator
                 for generator in self.generators or []
             ],
         )
 
+    def as_apply(self) -> PlantWrite:
+        """Convert this read version of plant to the writing version."""
+        warnings.warn(
+            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
+            UserWarning,
+            stacklevel=2,
+        )
+        return self.as_write()
 
-class PlantApply(DomainModelApply):
+
+class PlantWrite(DomainModelWrite):
     """This represents the writing version of plant.
 
     It is used to when data is sent to CDF.
@@ -203,7 +224,7 @@ class PlantApply(DomainModelApply):
     p_max: Optional[float] = Field(None, alias="pMax")
     p_min: Optional[float] = Field(None, alias="pMin")
     penstock_head_loss_factors: Optional[dict] = Field(None, alias="penstockHeadLossFactors")
-    watercourse: Union[WatercourseApply, str, dm.NodeId, None] = Field(None, repr=False)
+    watercourse: Union[WatercourseWrite, str, dm.NodeId, None] = Field(None, repr=False)
     connection_losses: Optional[float] = Field(None, alias="connectionLosses")
     p_max_time_series: Union[TimeSeries, str, None] = Field(None, alias="pMaxTimeSeries")
     p_min_time_series: Union[TimeSeries, str, None] = Field(None, alias="pMinTimeSeries")
@@ -212,16 +233,16 @@ class PlantApply(DomainModelApply):
     outlet_level_time_series: Union[TimeSeries, str, None] = Field(None, alias="outletLevelTimeSeries")
     inlet_level_time_series: Union[TimeSeries, str, None] = Field(None, alias="inletLevelTimeSeries")
     head_direct_time_series: Union[TimeSeries, str, None] = Field(None, alias="headDirectTimeSeries")
-    inlet_reservoir: Union[ReservoirApply, str, dm.NodeId, None] = Field(None, repr=False, alias="inletReservoir")
-    generators: Union[list[GeneratorApply], list[str], None] = Field(default=None, repr=False)
+    inlet_reservoir: Union[ReservoirWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="inletReservoir")
+    generators: Union[list[GeneratorWrite], list[str], None] = Field(default=None, repr=False)
 
-    def _to_instances_apply(
+    def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
-    ) -> ResourcesApply:
-        resources = ResourcesApply()
+    ) -> ResourcesWrite:
+        resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
             return resources
 
@@ -307,9 +328,9 @@ class PlantApply(DomainModelApply):
         if self.inlet_reservoir is not None:
             properties["inletReservoir"] = {
                 "space": self.space if isinstance(self.inlet_reservoir, str) else self.inlet_reservoir.space,
-                "externalId": self.inlet_reservoir
-                if isinstance(self.inlet_reservoir, str)
-                else self.inlet_reservoir.external_id,
+                "externalId": (
+                    self.inlet_reservoir if isinstance(self.inlet_reservoir, str) else self.inlet_reservoir.external_id
+                ),
             }
 
         if properties:
@@ -330,17 +351,17 @@ class PlantApply(DomainModelApply):
 
         edge_type = dm.DirectRelationReference("power-ops-types", "isSubAssetOf")
         for generator in self.generators or []:
-            other_resources = DomainRelationApply.from_edge_to_resources(
+            other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache, start_node=self, end_node=generator, edge_type=edge_type, view_by_read_class=view_by_read_class
             )
             resources.extend(other_resources)
 
-        if isinstance(self.watercourse, DomainModelApply):
-            other_resources = self.watercourse._to_instances_apply(cache, view_by_read_class)
+        if isinstance(self.watercourse, DomainModelWrite):
+            other_resources = self.watercourse._to_instances_write(cache, view_by_read_class)
             resources.extend(other_resources)
 
-        if isinstance(self.inlet_reservoir, DomainModelApply):
-            other_resources = self.inlet_reservoir._to_instances_apply(cache, view_by_read_class)
+        if isinstance(self.inlet_reservoir, DomainModelWrite):
+            other_resources = self.inlet_reservoir._to_instances_write(cache, view_by_read_class)
             resources.extend(other_resources)
 
         if isinstance(self.p_max_time_series, CogniteTimeSeries):
@@ -367,20 +388,45 @@ class PlantApply(DomainModelApply):
         return resources
 
 
+class PlantApply(PlantWrite):
+    def __new__(cls, *args, **kwargs) -> PlantApply:
+        warnings.warn(
+            "PlantApply is deprecated and will be removed in v1.0. Use PlantWrite instead."
+            "The motivation for this change is that Write is a more descriptive name for the writing version of the"
+            "Plant.",
+            UserWarning,
+            stacklevel=2,
+        )
+        return super().__new__(cls)
+
+
 class PlantList(DomainModelList[Plant]):
     """List of plants in the read version."""
 
     _INSTANCE = Plant
 
-    def as_apply(self) -> PlantApplyList:
+    def as_write(self) -> PlantWriteList:
         """Convert these read versions of plant to the writing versions."""
-        return PlantApplyList([node.as_apply() for node in self.data])
+        return PlantWriteList([node.as_write() for node in self.data])
+
+    def as_apply(self) -> PlantWriteList:
+        """Convert these read versions of primitive nullable to the writing versions."""
+        warnings.warn(
+            "as_apply is deprecated and will be removed in v1.0. Use as_write instead.",
+            UserWarning,
+            stacklevel=2,
+        )
+        return self.as_write()
 
 
-class PlantApplyList(DomainModelApplyList[PlantApply]):
+class PlantWriteList(DomainModelWriteList[PlantWrite]):
     """List of plants in the writing version."""
 
-    _INSTANCE = PlantApply
+    _INSTANCE = PlantWrite
+
+
+class PlantApplyList(PlantWriteList):
+    ...
 
 
 def _create_plant_filter(
@@ -408,33 +454,33 @@ def _create_plant_filter(
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
-    if name is not None and isinstance(name, str):
+    if isinstance(name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
     if name and isinstance(name, list):
         filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
-    if name_prefix:
+    if name_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
-    if display_name is not None and isinstance(display_name, str):
+    if isinstance(display_name, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("displayName"), value=display_name))
     if display_name and isinstance(display_name, list):
         filters.append(dm.filters.In(view_id.as_property_ref("displayName"), values=display_name))
-    if display_name_prefix:
+    if display_name_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("displayName"), value=display_name_prefix))
-    if min_ordering or max_ordering:
+    if min_ordering is not None or max_ordering is not None:
         filters.append(dm.filters.Range(view_id.as_property_ref("ordering"), gte=min_ordering, lte=max_ordering))
-    if min_head_loss_factor or max_head_loss_factor:
+    if min_head_loss_factor is not None or max_head_loss_factor is not None:
         filters.append(
             dm.filters.Range(
                 view_id.as_property_ref("headLossFactor"), gte=min_head_loss_factor, lte=max_head_loss_factor
             )
         )
-    if min_outlet_level or max_outlet_level:
+    if min_outlet_level is not None or max_outlet_level is not None:
         filters.append(
             dm.filters.Range(view_id.as_property_ref("outletLevel"), gte=min_outlet_level, lte=max_outlet_level)
         )
-    if min_p_max or max_p_max:
+    if min_p_max is not None or max_p_max is not None:
         filters.append(dm.filters.Range(view_id.as_property_ref("pMax"), gte=min_p_max, lte=max_p_max))
-    if min_p_min or max_p_min:
+    if min_p_min is not None or max_p_min is not None:
         filters.append(dm.filters.Range(view_id.as_property_ref("pMin"), gte=min_p_min, lte=max_p_min))
     if watercourse and isinstance(watercourse, str):
         filters.append(
@@ -463,7 +509,7 @@ def _create_plant_filter(
                 values=[{"space": item[0], "externalId": item[1]} for item in watercourse],
             )
         )
-    if min_connection_losses or max_connection_losses:
+    if min_connection_losses is not None or max_connection_losses is not None:
         filters.append(
             dm.filters.Range(
                 view_id.as_property_ref("connectionLosses"), gte=min_connection_losses, lte=max_connection_losses
@@ -497,9 +543,9 @@ def _create_plant_filter(
                 values=[{"space": item[0], "externalId": item[1]} for item in inlet_reservoir],
             )
         )
-    if external_id_prefix:
+    if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
-    if space is not None and isinstance(space, str):
+    if isinstance(space, str):
         filters.append(dm.filters.Equals(["node", "space"], value=space))
     if space and isinstance(space, list):
         filters.append(dm.filters.In(["node", "space"], values=space))
