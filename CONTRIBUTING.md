@@ -24,6 +24,7 @@ To change a data model, follow these steps:
       That means that when there are breaking changes to `views` and `data_models` resources, these will
       be deleted and recreated. In a production mode, you will have to bump the version of these resources
       instead.
+   - You can add the flag `--verbose` to get more information about the changes that will be made.
 3. Create a PR and request feedback on your suggested changes.
 4. Post in the development channel `#powerops-backend` that you are about to apply the changes.
 3. Check that nobody else are currently about to do change, then, run `powerops init --dev` to apply the changes.
