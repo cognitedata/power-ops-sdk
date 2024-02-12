@@ -63,6 +63,8 @@
 - space: {{powerops_type_space}}
   externalId: DayAheadMultiScenarioMatrix
 - space: {{powerops_type_space}}
+  externalId: DayAheadMultiScenarioMatrixRaw
+- space: {{powerops_type_space}}
   externalId: DayAheadSHOPMultiScenario
 - space: {{powerops_type_space}}
   externalId: DayAheadWaterValueBased

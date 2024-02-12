@@ -37,7 +37,7 @@ properties:
     description: The plant to calculate the partial bid for
     source:
       space: '{{powerops_models}}'
-      externalId: Plant
+      externalId: PlantShop
       version: '{{version}}'
       type: view
   shopResults:

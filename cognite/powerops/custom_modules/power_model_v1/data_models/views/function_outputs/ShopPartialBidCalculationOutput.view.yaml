@@ -38,7 +38,7 @@ properties:
       function
     source:
       space: '{{powerops_models}}'
-      externalId: BidMatrixRaw
+      externalId: MultiScenarioMatrixRaw
       version: '{{version}}'
       type: view
   input:
