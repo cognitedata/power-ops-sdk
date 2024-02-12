@@ -13,6 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.84.1] - 2024-02-12
+### Fixed
+* Added view for MultiScenarioMatrixRaw
+* Added missing views to SHOPBasedDayAhead data model
+
 ## [0.84.0] - 2024-02-11
 ### Added
 * Setup v1 Data Models generated with `pygen`
