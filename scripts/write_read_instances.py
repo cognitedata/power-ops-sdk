@@ -33,6 +33,7 @@ def main():
         print(f"Generated {len(mock_data.nodes)} nodes for {len(data_model.views)} views.")
 
         # Write to all views
+        # mock_data.deploy(client)
         for view_data in mock_data:
             try:
                 view_data.deploy(client, verbose=True)

@@ -43,11 +43,3 @@ properties:
       externalId: PriceScenario
       version: '{{version}}'
       type: view
-  timezone:
-    container:
-      space: '{{powerops_models}}'
-      externalId: PriceArea
-      type: container
-    containerPropertyIdentifier: timezone
-    name: timezone
-    description: The timezone to use when running the bid method
