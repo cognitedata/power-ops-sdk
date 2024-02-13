@@ -1,0 +1,18 @@
+externalId: compute_DayAheadBenchmarking
+space: '{{powerops_models}}'
+version: '1'
+name: DayAheadBenchmarking
+description: 'The process of benchmarking day-ahead bids'
+views:
+- externalId: TaskDispatcherBenchmarkingInput
+  space: '{{powerops_models}}'
+  version: '{{version}}'
+- externalId: TaskDispatcherBenchmarkingOutput
+  space: '{{powerops_models}}'
+  version: '{{version}}'
+- externalId: BenchmarkingCollectorInput
+  space: '{{powerops_models}}'
+  version: '{{version}}'
+- externalId: BenchmarkingCollectorOutput
+  space: '{{powerops_models}}'
+  version: '{{version}}'
