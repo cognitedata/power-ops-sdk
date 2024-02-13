@@ -47,3 +47,11 @@ properties:
     containerPropertyIdentifier: functionName
     name: functionName
     description: The name of the function
+  functionCallId:
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionMetadata
+      type: container
+    containerPropertyIdentifier: functionCallId
+    name: functionCallId
+    description: The function call id
