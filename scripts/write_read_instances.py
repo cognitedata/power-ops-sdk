@@ -33,7 +33,12 @@ def main():
         print(f"Generated {len(mock_data.nodes)} nodes for {len(data_model.views)} views.")
 
         # Write to all views
-        mock_data.deploy(client)
+        for view_data in mock_data:
+            try:
+                view_data.deploy(client, verbose=True)
+            except Exception as e:
+                print(f"Failed to deploy {len(view_data.node)} nodes to {view_data.view_id}: {e}")
+                continue
         print(f"Deployed {len(mock_data.nodes)} nodes to {len(data_model.views)} views.")
 
         # Check Read.
