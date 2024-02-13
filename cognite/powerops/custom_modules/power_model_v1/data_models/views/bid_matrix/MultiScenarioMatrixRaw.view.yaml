@@ -22,9 +22,9 @@ filter:
   - equals:
       property:
         - '{{powerops_models}}'
-        - MultiScenarioMatrixRaw/{{version}}
+        - BidMatrix
         - isProcessed
-      value: 'False'
+      value: 'false'
 implements:
 - space: '{{powerops_models}}'
   externalId: BidMatrix

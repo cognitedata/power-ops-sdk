@@ -7,9 +7,9 @@ filter:
   equals:
     property:
     - '{{powerops_models}}'
-    - BidMatrixRaw/{{version}}
+    - BidMatrix
     - isProcessed
-    value: 'False'
+    value: 'false'
 implements:
 - space: '{{powerops_models}}'
   externalId: BidMatrix
