@@ -26,4 +26,16 @@ implements:
   version: '{{version}}'
   type: view
 version: '{{version}}'
-properties: {}
+properties:
+  bidDocument:
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionMetadata
+      type: container
+    containerPropertyIdentifier: data
+    name: bidDocument
+    source:
+      space: '{{powerops_models}}'
+      externalId: BidDocumentDayAheadSimple
+      version: '{{version}}'
+      type: view

@@ -26,4 +26,16 @@ implements:
   version: '{{version}}'
   type: view
 version: '{{version}}'
-properties: {}
+properties:
+  input:
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct1
+    name: input
+    source:
+      space: '{{powerops_models}}'
+      externalId: TaskDispatcherBenchmarkingInput
+      version: '{{version}}'
+      type: view
