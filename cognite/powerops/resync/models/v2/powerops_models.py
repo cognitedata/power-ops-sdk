@@ -274,40 +274,50 @@ class DataModelLoader:
         for view in schema._views:
             ref_view_id = view.as_id()
             referred_spaces[view.space].append(ref_view_id)
-            if isinstance(view.filter, filters.Equals):
-                dumped = view.filter.dump()["equals"]
-                value = dumped["value"]
-                try:
-                    if isinstance(value, dict) and ("space" in value and "externalId" in value):
-                        node_id = NodeId(value["space"], value["externalId"])
-                        referred_node_types[node_id].append(ref_view_id)
-                    elif len(dumped["property"]) == 3:
-                        space, external_id_version, prop_ = dumped["property"]
-                        external_id, version = external_id_version.rsplit("/", maxsplit=1)
-                        view_id = ViewId(space, external_id, version)
-                        referred_views[view_id].append(ref_view_id)
-                        if prop_ not in properties_by_view.get(view_id, set()):
-                            non_existent_view_properties.append(ref_view_id)
-                except Exception as exc:
-                    raise ValueError(
-                        f"Failed to parse filter for view {view.space}.{view.external_id}.{view.version}"
-                    ) from exc
-            elif isinstance(view.filter, filters.In):
-                dumped = view.filter.dump()["in"]["values"]
-                try:
-                    for value in dumped:
-                        if "space" in value and "externalId" in value:
+            if isinstance(view.filter, filters.And):
+                filters_to_check = view.filter._filters
+            else:
+                filters_to_check = (view.filter,)
+            for filter in filters_to_check:
+                if isinstance(filter, filters.Equals):
+                    dumped = filter.dump()["equals"]
+                    value = dumped["value"]
+                    try:
+                        if isinstance(value, dict) and ("space" in value and "externalId" in value):
                             node_id = NodeId(value["space"], value["externalId"])
                             referred_node_types[node_id].append(ref_view_id)
-                except Exception as exc:
-                    raise ValueError(
-                        f"Failed to parse filter for view {view.space}.{view.external_id}.{view.version}"
-                    ) from exc
+                        elif len(dumped["property"]) == 3:
+                            space, external_id_version, prop_ = dumped["property"]
+                            external_id, version = external_id_version.rsplit("/", maxsplit=1)
+                            view_id = ViewId(space, external_id, version)
+                            referred_views[view_id].append(ref_view_id)
+                            if prop_ not in properties_by_view.get(view_id, set()):
+                                if view.implements:
+                                    for parent_view_id in view.implements:
+                                        if prop_ not in properties_by_view.get(parent_view_id, set()):
+                                            non_existent_view_properties.append(ref_view_id)
+                                else:
+                                    non_existent_view_properties.append(ref_view_id)
+                    except Exception as exc:
+                        raise ValueError(
+                            f"Failed to parse filter for view {view.space}.{view.external_id}.{view.version}"
+                        ) from exc
+                elif isinstance(filter, filters.In):
+                    dumped = filter.dump()["in"]["values"]
+                    try:
+                        for value in dumped:
+                            if "space" in value and "externalId" in value:
+                                node_id = NodeId(value["space"], value["externalId"])
+                                referred_node_types[node_id].append(ref_view_id)
+                    except Exception as exc:
+                        raise ValueError(
+                            f"Failed to parse filter for view {view.space}.{view.external_id}.{view.version}"
+                        ) from exc
 
-            if ref_view_id in defined_interfaces and not isinstance(view.filter, filters.In):
-                view_missing_filters.append(ref_view_id)
-            elif ref_view_id not in defined_interfaces and isinstance(view.filter, filters.Equals):
-                view_missing_filters.append(ref_view_id)
+                if ref_view_id in defined_interfaces and not isinstance(filter, filters.In):
+                    view_missing_filters.append(ref_view_id)
+                elif ref_view_id not in defined_interfaces and isinstance(filter, filters.Equals):
+                    view_missing_filters.append(ref_view_id)
 
             for view_id in view.implements or []:
                 referred_views[view_id].append(ref_view_id)

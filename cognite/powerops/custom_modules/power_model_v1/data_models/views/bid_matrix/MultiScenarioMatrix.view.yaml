@@ -17,8 +17,14 @@ filter:
       - node
       - type
       value:
-        externalId: MultiScenarioMatrix
+        externalId: DayAheadMultiScenarioMatrix
         space: '{{powerops_type_space}}'
+  - equals:
+      property:
+        - '{{powerops_models}}'
+        - MultiScenarioMatrix/{{version}}
+        - isProcessed
+      value: 'True'
 implements:
 - space: '{{powerops_models}}'
   externalId: BidMatrix

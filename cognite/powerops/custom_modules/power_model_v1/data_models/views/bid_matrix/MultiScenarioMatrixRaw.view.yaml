@@ -19,9 +19,15 @@ filter:
       value:
         externalId: DayAheadMultiScenarioMatrixRaw
         space: '{{powerops_type_space}}'
+  - equals:
+      property:
+        - '{{powerops_models}}'
+        - MultiScenarioMatrixRaw/{{version}}
+        - isProcessed
+      value: 'False'
 implements:
 - space: '{{powerops_models}}'
-  externalId: BidMatrixRaw
+  externalId: BidMatrix
   version: '{{version}}'
   type: view
 version: '{{version}}'

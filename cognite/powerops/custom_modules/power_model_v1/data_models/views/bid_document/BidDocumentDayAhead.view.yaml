@@ -20,7 +20,7 @@ filter:
       - node
       - type
       value:
-        externalId: BidDocumentDayAhead
+        externalId: DayAheadBidDocument
         space: '{{powerops_type_space}}'
 implements:
 - space: '{{powerops_models}}'

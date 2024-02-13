@@ -1,6 +1,6 @@
 space: '{{powerops_models}}'
 externalId: ScenarioBase
-name: Scenario
+name: ScenarioBase
 description: SHOP scenario that holds all data needed for a shop run. May be unprocessed
   or processed
 filter:

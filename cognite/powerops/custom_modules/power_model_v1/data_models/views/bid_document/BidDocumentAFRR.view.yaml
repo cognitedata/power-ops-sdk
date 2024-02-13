@@ -19,7 +19,7 @@ filter:
       - node
       - type
       value:
-        externalId: BidDocumentAFRR
+        externalId: AFRRBidDocument
         space: '{{powerops_type_space}}'
 implements:
 - space: '{{powerops_models}}'
