@@ -1,7 +1,11 @@
+from cognite.client.exceptions import CogniteAPIError
 from cognite.pygen.utils import MockGenerator
 from cognite.client import data_modeling as dm
 import os
 from pathlib import Path
+import time
+
+
 from cognite.powerops.utils.cdf import get_cognite_client
 
 
@@ -33,19 +37,17 @@ def main():
         print(f"Generated {len(mock_data.nodes)} nodes for {len(data_model.views)} views.")
 
         # Write to all views
-        # mock_data.deploy(client)
-        for view_data in mock_data:
-            try:
-                view_data.deploy(client, verbose=True)
-            except Exception as e:
-                print(f"Failed to deploy {len(view_data.node)} nodes to {view_data.view_id}: {e}")
-                continue
+        mock_data.deploy(client, exclude={"timeseries", "files", "sequences"})
         print(f"Deployed {len(mock_data.nodes)} nodes to {len(data_model.views)} views.")
 
         # Check Read.
         for view in data_model.views:
             view_id = view.as_id()
-            nodes = client.data_modeling.instances.list("node", sources=[view_id], limit=-1)
+            try:
+                nodes = client.data_modeling.instances.list("node", sources=[view_id], limit=-1)
+            except CogniteAPIError as e:
+                print(f"Failed to read nodes for {view_id}: {e}")
+                continue
             if view_id in leaf_views_by_parent:
                 expected_nodes = len(leaf_views_by_parent[view_id]) * node_count
             else:
@@ -56,6 +58,28 @@ def main():
                 print(f"Read {len(nodes)} nodes for {view_id} as expected.")
 
         mock_data.clean(client)
+
+
+def clean_instances():
+    with chdir(REPO_ROOT):
+        os.environ["SETTINGS_FILES"] = "settings.toml;.secrets.toml"
+        client = get_cognite_client()
+    t0 = time.perf_counter()
+    for edges in client.data_modeling.instances(
+        instance_type="edge", space="sp_powerops_instance", limit=-1, chunk_size=100
+    ):
+        deleted = client.data_modeling.instances.delete(edges.as_ids())
+        print(f"Deleted {len(deleted.edges)} edges. Elapsed time {time.perf_counter() - t0:.2f} seconds")
+    else:
+        print("Done deleting edges")
+
+    for nodes in client.data_modeling.instances(
+        instance_type="node", space="sp_powerops_instance", limit=-1, chunk_size=500
+    ):
+        deleted = client.data_modeling.instances.delete(nodes.as_ids())
+        print(f"Deleted {len(deleted.nodes)} nodes. Elapsed time {time.perf_counter() - t0:.2f} seconds")
+    else:
+        print("Done deleting nodes")
 
 
 if __name__ == "__main__":
