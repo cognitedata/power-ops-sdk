@@ -5,7 +5,7 @@ import itertools
 import logging
 import re
 import warnings
-from collections import defaultdict
+from collections import Counter, defaultdict
 from dataclasses import asdict, dataclass
 from graphlib import TopologicalSorter
 from pathlib import Path
@@ -265,6 +265,7 @@ class DataModelLoader:
         referred_views = defaultdict(list)
         referred_containers = defaultdict(list)
         referred_node_types = defaultdict(list)
+        double_referenced_container_properties: dict[ViewId, list] = defaultdict(list)
         view_missing_filters = []
         direct_relation_missing_source = []
         non_existent_container_properties = []
@@ -341,6 +342,16 @@ class DataModelLoader:
                     referred_views[prop.source].append(ref_view_id.as_property_ref(prop_name))
                     if prop.edge_source:
                         referred_views[prop.edge_source].append(ref_view_id.as_property_ref(prop_name))
+
+            counted = Counter(
+                (prop.container, prop.container_property_identifier)
+                for prop_name, prop in view.properties.items()
+                if isinstance(prop, MappedPropertyApply)
+            )
+            for prop_identifier, count in counted.items():
+                if count > 1:
+                    double_referenced_container_properties[ref_view_id].append(prop_identifier)
+
         for node in schema.node_types:
             referred_spaces[node.space].append(node.as_id())
         for data_model in schema._data_models:
@@ -375,6 +386,13 @@ class DataModelLoader:
         if direct_relation_missing_source:
             message = "\n".join(map(str, direct_relation_missing_source))
             raise ValueError(f"These properties in views refers to direct relations without a source:\n{message}")
+
+        if double_referenced_container_properties:
+            message = "\n".join(
+                f"{view_id}: {prop_identifier}"
+                for view_id, prop_identifier in double_referenced_container_properties.items()
+            )
+            raise ValueError(f"These properties in views refers to container properties more than once:\n{message}")
 
     @classmethod
     def changed_views(cls, client: CogniteClient, schema: Schema, verbose: bool = False) -> dict[ViewId, set[ViewId]]:
