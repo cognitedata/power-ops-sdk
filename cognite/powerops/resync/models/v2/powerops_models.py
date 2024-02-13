@@ -17,6 +17,7 @@ from cognite.client.data_classes import filters
 from cognite.client.data_classes.data_modeling import (
     ContainerApply,
     ContainerApplyList,
+    ContainerId,
     DataModelApply,
     DataModelApplyList,
     DataModelId,
@@ -289,16 +290,25 @@ class DataModelLoader:
                             referred_node_types[node_id].append(ref_view_id)
                         elif len(dumped["property"]) == 3:
                             space, external_id_version, prop_ = dumped["property"]
-                            external_id, version = external_id_version.rsplit("/", maxsplit=1)
-                            view_id = ViewId(space, external_id, version)
-                            referred_views[view_id].append(ref_view_id)
-                            if prop_ not in properties_by_view.get(view_id, set()):
-                                if view.implements:
-                                    for parent_view_id in view.implements:
-                                        if prop_ not in properties_by_view.get(parent_view_id, set()):
-                                            non_existent_view_properties.append(ref_view_id)
-                                else:
-                                    non_existent_view_properties.append(ref_view_id)
+                            if "/" in external_id_version:
+                                # View Ref
+                                external_id, version = external_id_version.rsplit("/", maxsplit=1)
+                                view_id = ViewId(space, external_id, version)
+                                referred_views[view_id].append(ref_view_id)
+                                if prop_ not in properties_by_view.get(view_id, set()):
+                                    if view.implements:
+                                        for parent_view_id in view.implements:
+                                            if prop_ not in properties_by_view.get(parent_view_id, set()):
+                                                non_existent_view_properties.append(ref_view_id)
+                                    else:
+                                        non_existent_view_properties.append(ref_view_id)
+                            else:
+                                external_id = external_id_version
+                                container_id = ContainerId(space, external_id)
+                                referred_containers[container_id].append(ref_view_id)
+                                if prop_ not in properties_by_container.get(container_id, set()):
+                                    non_existent_container_properties.append(ref_view_id)
+
                     except Exception as exc:
                         raise ValueError(
                             f"Failed to parse filter for view {view.space}.{view.external_id}.{view.version}"
