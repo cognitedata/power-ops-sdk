@@ -52,10 +52,6 @@ views:
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
-- externalId: BidMethodDayAhead
-  space: '{{powerops_models}}'
-  type: view
-  version: '{{version}}'
 - externalId: BidMethodSHOPMultiScenario
   space: '{{powerops_models}}'
   type: view

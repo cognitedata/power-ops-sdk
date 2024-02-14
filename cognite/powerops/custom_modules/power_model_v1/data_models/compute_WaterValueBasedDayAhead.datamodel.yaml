@@ -32,10 +32,6 @@ views:
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
-- externalId: BidMethodDayAhead
-  space: '{{powerops_models}}'
-  type: view
-  version: '{{version}}'
 - externalId: Plant
   space: '{{powerops_models}}'
   type: view
@@ -56,7 +52,7 @@ views:
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
-- externalId: PriceAreaDayAhead
+- externalId: PriceArea
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
