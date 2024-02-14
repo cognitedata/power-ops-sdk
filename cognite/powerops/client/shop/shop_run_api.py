@@ -304,6 +304,19 @@ class SHOPRunAPI:
         ).get_filters()
         return self._load_cdf_event_shop_runs(extra_filters=extra_filters, limit=limit)
 
+    def versions(self, py_version: str = "3.9") -> list[str]:
+        """List the available version of SHOP remotely  in CDF. Does not include versions in CogShop Image.
+        SHOP releases should have the following format:
+        'SHOP-${{VERSION}}-pyshop-python{py_version}.linux.zip'
+        """
+        files = self._cdf.files.list(metadata={"shop:type": "shop-release"}, limit=-1)
+        remote_versions = []
+        for file in files:
+            name_parts = file.name.split("-")
+            if f"python{py_version}" in name_parts:
+                remote_versions.append("-".join(name_parts[:2]))
+        return remote_versions
+
     @overload
     def _create(self, shop_run: SHOPRun | Sequence[SHOPRun]) -> SHOPRun | Sequence[SHOPRun]: ...
 
