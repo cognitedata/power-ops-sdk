@@ -6,7 +6,7 @@ filter:
   - hasData:
     - type: container
       space: '{{powerops_models}}'
-      externalId: BidMethodDay
+      externalId: BidMethod
   - not:
       in:
         property:

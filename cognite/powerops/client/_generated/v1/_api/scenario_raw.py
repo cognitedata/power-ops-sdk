@@ -65,10 +65,10 @@ class ScenarioRawAPI(NodeAPI[ScenarioRaw, ScenarioRawWrite, ScenarioRawList]):
         shop_start_specification_prefix: str | None = None,
         shop_end_specification: str | list[str] | None = None,
         shop_end_specification_prefix: str | None = None,
-        shop_start: str | list[str] | None = None,
-        shop_start_prefix: str | None = None,
-        shop_end: str | list[str] | None = None,
-        shop_end_prefix: str | None = None,
+        min_shop_start: datetime.date | None = None,
+        max_shop_start: datetime.date | None = None,
+        min_shop_end: datetime.date | None = None,
+        max_shop_end: datetime.date | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
         is_ready: bool | None = None,
@@ -91,10 +91,10 @@ class ScenarioRawAPI(NodeAPI[ScenarioRaw, ScenarioRawWrite, ScenarioRawList]):
             shop_start_specification_prefix: The prefix of the shop start specification to filter on.
             shop_end_specification: The shop end specification to filter on.
             shop_end_specification_prefix: The prefix of the shop end specification to filter on.
-            shop_start: The shop start to filter on.
-            shop_start_prefix: The prefix of the shop start to filter on.
-            shop_end: The shop end to filter on.
-            shop_end_prefix: The prefix of the shop end to filter on.
+            min_shop_start: The minimum value of the shop start to filter on.
+            max_shop_start: The maximum value of the shop start to filter on.
+            min_shop_end: The minimum value of the shop end to filter on.
+            max_shop_end: The maximum value of the shop end to filter on.
             min_bid_date: The minimum value of the bid date to filter on.
             max_bid_date: The maximum value of the bid date to filter on.
             is_ready: The is ready to filter on.
@@ -121,10 +121,10 @@ class ScenarioRawAPI(NodeAPI[ScenarioRaw, ScenarioRawWrite, ScenarioRawList]):
             shop_start_specification_prefix,
             shop_end_specification,
             shop_end_specification_prefix,
-            shop_start,
-            shop_start_prefix,
-            shop_end,
-            shop_end_prefix,
+            min_shop_start,
+            max_shop_start,
+            min_shop_end,
+            max_shop_end,
             min_bid_date,
             max_bid_date,
             is_ready,
@@ -267,10 +267,10 @@ class ScenarioRawAPI(NodeAPI[ScenarioRaw, ScenarioRawWrite, ScenarioRawList]):
         shop_start_specification_prefix: str | None = None,
         shop_end_specification: str | list[str] | None = None,
         shop_end_specification_prefix: str | None = None,
-        shop_start: str | list[str] | None = None,
-        shop_start_prefix: str | None = None,
-        shop_end: str | list[str] | None = None,
-        shop_end_prefix: str | None = None,
+        min_shop_start: datetime.date | None = None,
+        max_shop_start: datetime.date | None = None,
+        min_shop_end: datetime.date | None = None,
+        max_shop_end: datetime.date | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
         is_ready: bool | None = None,
@@ -295,10 +295,10 @@ class ScenarioRawAPI(NodeAPI[ScenarioRaw, ScenarioRawWrite, ScenarioRawList]):
             shop_start_specification_prefix: The prefix of the shop start specification to filter on.
             shop_end_specification: The shop end specification to filter on.
             shop_end_specification_prefix: The prefix of the shop end specification to filter on.
-            shop_start: The shop start to filter on.
-            shop_start_prefix: The prefix of the shop start to filter on.
-            shop_end: The shop end to filter on.
-            shop_end_prefix: The prefix of the shop end to filter on.
+            min_shop_start: The minimum value of the shop start to filter on.
+            max_shop_start: The maximum value of the shop start to filter on.
+            min_shop_end: The minimum value of the shop end to filter on.
+            max_shop_end: The maximum value of the shop end to filter on.
             min_bid_date: The minimum value of the bid date to filter on.
             max_bid_date: The maximum value of the bid date to filter on.
             is_ready: The is ready to filter on.
@@ -332,10 +332,10 @@ class ScenarioRawAPI(NodeAPI[ScenarioRaw, ScenarioRawWrite, ScenarioRawList]):
             shop_start_specification_prefix,
             shop_end_specification,
             shop_end_specification_prefix,
-            shop_start,
-            shop_start_prefix,
-            shop_end,
-            shop_end_prefix,
+            min_shop_start,
+            max_shop_start,
+            min_shop_end,
+            max_shop_end,
             min_bid_date,
             max_bid_date,
             is_ready,
@@ -369,10 +369,10 @@ class ScenarioRawAPI(NodeAPI[ScenarioRaw, ScenarioRawWrite, ScenarioRawList]):
         shop_start_specification_prefix: str | None = None,
         shop_end_specification: str | list[str] | None = None,
         shop_end_specification_prefix: str | None = None,
-        shop_start: str | list[str] | None = None,
-        shop_start_prefix: str | None = None,
-        shop_end: str | list[str] | None = None,
-        shop_end_prefix: str | None = None,
+        min_shop_start: datetime.date | None = None,
+        max_shop_start: datetime.date | None = None,
+        min_shop_end: datetime.date | None = None,
+        max_shop_end: datetime.date | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
         is_ready: bool | None = None,
@@ -406,10 +406,10 @@ class ScenarioRawAPI(NodeAPI[ScenarioRaw, ScenarioRawWrite, ScenarioRawList]):
         shop_start_specification_prefix: str | None = None,
         shop_end_specification: str | list[str] | None = None,
         shop_end_specification_prefix: str | None = None,
-        shop_start: str | list[str] | None = None,
-        shop_start_prefix: str | None = None,
-        shop_end: str | list[str] | None = None,
-        shop_end_prefix: str | None = None,
+        min_shop_start: datetime.date | None = None,
+        max_shop_start: datetime.date | None = None,
+        min_shop_end: datetime.date | None = None,
+        max_shop_end: datetime.date | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
         is_ready: bool | None = None,
@@ -442,10 +442,10 @@ class ScenarioRawAPI(NodeAPI[ScenarioRaw, ScenarioRawWrite, ScenarioRawList]):
         shop_start_specification_prefix: str | None = None,
         shop_end_specification: str | list[str] | None = None,
         shop_end_specification_prefix: str | None = None,
-        shop_start: str | list[str] | None = None,
-        shop_start_prefix: str | None = None,
-        shop_end: str | list[str] | None = None,
-        shop_end_prefix: str | None = None,
+        min_shop_start: datetime.date | None = None,
+        max_shop_start: datetime.date | None = None,
+        min_shop_end: datetime.date | None = None,
+        max_shop_end: datetime.date | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
         is_ready: bool | None = None,
@@ -473,10 +473,10 @@ class ScenarioRawAPI(NodeAPI[ScenarioRaw, ScenarioRawWrite, ScenarioRawList]):
             shop_start_specification_prefix: The prefix of the shop start specification to filter on.
             shop_end_specification: The shop end specification to filter on.
             shop_end_specification_prefix: The prefix of the shop end specification to filter on.
-            shop_start: The shop start to filter on.
-            shop_start_prefix: The prefix of the shop start to filter on.
-            shop_end: The shop end to filter on.
-            shop_end_prefix: The prefix of the shop end to filter on.
+            min_shop_start: The minimum value of the shop start to filter on.
+            max_shop_start: The maximum value of the shop start to filter on.
+            min_shop_end: The minimum value of the shop end to filter on.
+            max_shop_end: The maximum value of the shop end to filter on.
             min_bid_date: The minimum value of the bid date to filter on.
             max_bid_date: The maximum value of the bid date to filter on.
             is_ready: The is ready to filter on.
@@ -511,10 +511,10 @@ class ScenarioRawAPI(NodeAPI[ScenarioRaw, ScenarioRawWrite, ScenarioRawList]):
             shop_start_specification_prefix,
             shop_end_specification,
             shop_end_specification_prefix,
-            shop_start,
-            shop_start_prefix,
-            shop_end,
-            shop_end_prefix,
+            min_shop_start,
+            max_shop_start,
+            min_shop_end,
+            max_shop_end,
             min_bid_date,
             max_bid_date,
             is_ready,
@@ -551,10 +551,10 @@ class ScenarioRawAPI(NodeAPI[ScenarioRaw, ScenarioRawWrite, ScenarioRawList]):
         shop_start_specification_prefix: str | None = None,
         shop_end_specification: str | list[str] | None = None,
         shop_end_specification_prefix: str | None = None,
-        shop_start: str | list[str] | None = None,
-        shop_start_prefix: str | None = None,
-        shop_end: str | list[str] | None = None,
-        shop_end_prefix: str | None = None,
+        min_shop_start: datetime.date | None = None,
+        max_shop_start: datetime.date | None = None,
+        min_shop_end: datetime.date | None = None,
+        max_shop_end: datetime.date | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
         is_ready: bool | None = None,
@@ -581,10 +581,10 @@ class ScenarioRawAPI(NodeAPI[ScenarioRaw, ScenarioRawWrite, ScenarioRawList]):
             shop_start_specification_prefix: The prefix of the shop start specification to filter on.
             shop_end_specification: The shop end specification to filter on.
             shop_end_specification_prefix: The prefix of the shop end specification to filter on.
-            shop_start: The shop start to filter on.
-            shop_start_prefix: The prefix of the shop start to filter on.
-            shop_end: The shop end to filter on.
-            shop_end_prefix: The prefix of the shop end to filter on.
+            min_shop_start: The minimum value of the shop start to filter on.
+            max_shop_start: The maximum value of the shop start to filter on.
+            min_shop_end: The minimum value of the shop end to filter on.
+            max_shop_end: The maximum value of the shop end to filter on.
             min_bid_date: The minimum value of the bid date to filter on.
             max_bid_date: The maximum value of the bid date to filter on.
             is_ready: The is ready to filter on.
@@ -610,10 +610,10 @@ class ScenarioRawAPI(NodeAPI[ScenarioRaw, ScenarioRawWrite, ScenarioRawList]):
             shop_start_specification_prefix,
             shop_end_specification,
             shop_end_specification_prefix,
-            shop_start,
-            shop_start_prefix,
-            shop_end,
-            shop_end_prefix,
+            min_shop_start,
+            max_shop_start,
+            min_shop_end,
+            max_shop_end,
             min_bid_date,
             max_bid_date,
             is_ready,
@@ -645,10 +645,10 @@ class ScenarioRawAPI(NodeAPI[ScenarioRaw, ScenarioRawWrite, ScenarioRawList]):
         shop_start_specification_prefix: str | None = None,
         shop_end_specification: str | list[str] | None = None,
         shop_end_specification_prefix: str | None = None,
-        shop_start: str | list[str] | None = None,
-        shop_start_prefix: str | None = None,
-        shop_end: str | list[str] | None = None,
-        shop_end_prefix: str | None = None,
+        min_shop_start: datetime.date | None = None,
+        max_shop_start: datetime.date | None = None,
+        min_shop_end: datetime.date | None = None,
+        max_shop_end: datetime.date | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
         is_ready: bool | None = None,
@@ -672,10 +672,10 @@ class ScenarioRawAPI(NodeAPI[ScenarioRaw, ScenarioRawWrite, ScenarioRawList]):
             shop_start_specification_prefix: The prefix of the shop start specification to filter on.
             shop_end_specification: The shop end specification to filter on.
             shop_end_specification_prefix: The prefix of the shop end specification to filter on.
-            shop_start: The shop start to filter on.
-            shop_start_prefix: The prefix of the shop start to filter on.
-            shop_end: The shop end to filter on.
-            shop_end_prefix: The prefix of the shop end to filter on.
+            min_shop_start: The minimum value of the shop start to filter on.
+            max_shop_start: The maximum value of the shop start to filter on.
+            min_shop_end: The minimum value of the shop end to filter on.
+            max_shop_end: The maximum value of the shop end to filter on.
             min_bid_date: The minimum value of the bid date to filter on.
             max_bid_date: The maximum value of the bid date to filter on.
             is_ready: The is ready to filter on.
@@ -710,10 +710,10 @@ class ScenarioRawAPI(NodeAPI[ScenarioRaw, ScenarioRawWrite, ScenarioRawList]):
             shop_start_specification_prefix,
             shop_end_specification,
             shop_end_specification_prefix,
-            shop_start,
-            shop_start_prefix,
-            shop_end,
-            shop_end_prefix,
+            min_shop_start,
+            max_shop_start,
+            min_shop_end,
+            max_shop_end,
             min_bid_date,
             max_bid_date,
             is_ready,

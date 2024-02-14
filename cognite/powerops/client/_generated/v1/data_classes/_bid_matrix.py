@@ -20,7 +20,6 @@ from ._core import (
 
 if TYPE_CHECKING:
     from ._alert import Alert, AlertWrite
-    from ._bid_method_day_ahead import BidMethodDayAhead, BidMethodDayAheadWrite
 
 
 __all__ = [
@@ -60,7 +59,6 @@ class BidMatrix(DomainModel):
         matrix: The matrix field.
         asset_type: The asset type field.
         asset_id: The asset id field.
-        method: The method field.
         is_processed: Whether the bid matrix has been processed by the bid matrix processor or not
         alerts: The alert field.
     """
@@ -71,7 +69,6 @@ class BidMatrix(DomainModel):
     matrix: Union[str, None] = None
     asset_type: Optional[str] = Field(None, alias="assetType")
     asset_id: Optional[str] = Field(None, alias="assetId")
-    method: Union[BidMethodDayAhead, str, dm.NodeId, None] = Field(None, repr=False)
     is_processed: Optional[bool] = Field(None, alias="isProcessed")
     alerts: Union[list[Alert], list[str], None] = Field(default=None, repr=False)
 
@@ -85,7 +82,6 @@ class BidMatrix(DomainModel):
             matrix=self.matrix,
             asset_type=self.asset_type,
             asset_id=self.asset_id,
-            method=self.method.as_write() if isinstance(self.method, DomainModel) else self.method,
             is_processed=self.is_processed,
             alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
         )
@@ -113,7 +109,6 @@ class BidMatrixWrite(DomainModelWrite):
         matrix: The matrix field.
         asset_type: The asset type field.
         asset_id: The asset id field.
-        method: The method field.
         is_processed: Whether the bid matrix has been processed by the bid matrix processor or not
         alerts: The alert field.
     """
@@ -124,7 +119,6 @@ class BidMatrixWrite(DomainModelWrite):
     matrix: Union[str, None] = None
     asset_type: Optional[str] = Field(None, alias="assetType")
     asset_id: Optional[str] = Field(None, alias="assetId")
-    method: Union[BidMethodDayAheadWrite, str, dm.NodeId, None] = Field(None, repr=False)
     is_processed: Optional[bool] = Field(None, alias="isProcessed")
     alerts: Union[list[AlertWrite], list[str], None] = Field(default=None, repr=False)
 
@@ -154,12 +148,6 @@ class BidMatrixWrite(DomainModelWrite):
         if self.asset_id is not None or write_none:
             properties["assetId"] = self.asset_id
 
-        if self.method is not None:
-            properties["method"] = {
-                "space": self.space if isinstance(self.method, str) else self.method.space,
-                "externalId": self.method if isinstance(self.method, str) else self.method.external_id,
-            }
-
         if self.is_processed is not None or write_none:
             properties["isProcessed"] = self.is_processed
 
@@ -184,10 +172,6 @@ class BidMatrixWrite(DomainModelWrite):
             other_resources = DomainRelationWrite.from_edge_to_resources(
                 cache, start_node=self, end_node=alert, edge_type=edge_type, view_by_read_class=view_by_read_class
             )
-            resources.extend(other_resources)
-
-        if isinstance(self.method, DomainModelWrite):
-            other_resources = self.method._to_instances_write(cache, view_by_read_class)
             resources.extend(other_resources)
 
         return resources
@@ -241,7 +225,6 @@ def _create_bid_matrix_filter(
     asset_type_prefix: str | None = None,
     asset_id: str | list[str] | None = None,
     asset_id_prefix: str | None = None,
-    method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     is_processed: bool | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
@@ -266,29 +249,6 @@ def _create_bid_matrix_filter(
         filters.append(dm.filters.In(view_id.as_property_ref("assetId"), values=asset_id))
     if asset_id_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("assetId"), value=asset_id_prefix))
-    if method and isinstance(method, str):
-        filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("method"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": method}
-            )
-        )
-    if method and isinstance(method, tuple):
-        filters.append(
-            dm.filters.Equals(view_id.as_property_ref("method"), value={"space": method[0], "externalId": method[1]})
-        )
-    if method and isinstance(method, list) and isinstance(method[0], str):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("method"),
-                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in method],
-            )
-        )
-    if method and isinstance(method, list) and isinstance(method[0], tuple):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("method"), values=[{"space": item[0], "externalId": item[1]} for item in method]
-            )
-        )
     if isinstance(is_processed, bool):
         filters.append(dm.filters.Equals(view_id.as_property_ref("isProcessed"), value=is_processed))
     if external_id_prefix is not None:

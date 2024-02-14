@@ -56,3 +56,23 @@ views:
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
+- externalId: MarketConfiguration
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: Reservoir
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: Generator
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: GeneratorEfficiencyCurve
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: TurbineEfficiencyCurve
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'

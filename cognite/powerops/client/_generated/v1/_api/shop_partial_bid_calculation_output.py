@@ -14,8 +14,10 @@ from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelWrite,
     ResourcesWriteResult,
     ShopPartialBidCalculationOutput,
+    ShopPartialBidCalculationOutputWrite,
     ShopPartialBidCalculationOutputFields,
     ShopPartialBidCalculationOutputList,
+    ShopPartialBidCalculationOutputWriteList,
     ShopPartialBidCalculationOutputTextFields,
 )
 from cognite.powerops.client._generated.v1.data_classes._shop_partial_bid_calculation_output import (
@@ -26,7 +28,7 @@ from ._core import (
     DEFAULT_LIMIT_READ,
     DEFAULT_QUERY_LIMIT,
     Aggregations,
-    NodeReadAPI,
+    NodeAPI,
     SequenceNotStr,
     QueryStep,
     QueryBuilder,
@@ -36,7 +38,7 @@ from .shop_partial_bid_calculation_output_query import ShopPartialBidCalculation
 
 
 class ShopPartialBidCalculationOutputAPI(
-    NodeReadAPI[ShopPartialBidCalculationOutput, ShopPartialBidCalculationOutputList]
+    NodeAPI[ShopPartialBidCalculationOutput, ShopPartialBidCalculationOutputWrite, ShopPartialBidCalculationOutputList]
 ):
     def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
         view_id = view_by_read_class[ShopPartialBidCalculationOutput]
@@ -45,6 +47,7 @@ class ShopPartialBidCalculationOutputAPI(
             sources=view_id,
             class_type=ShopPartialBidCalculationOutput,
             class_list=ShopPartialBidCalculationOutputList,
+            class_write_list=ShopPartialBidCalculationOutputWriteList,
             view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
@@ -58,6 +61,8 @@ class ShopPartialBidCalculationOutputAPI(
         max_process_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
         bid_matrix_raw: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
@@ -74,6 +79,8 @@ class ShopPartialBidCalculationOutputAPI(
             max_process_step: The maximum value of the process step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
+            function_call_id: The function call id to filter on.
+            function_call_id_prefix: The prefix of the function call id to filter on.
             bid_matrix_raw: The bid matrix raw to filter on.
             input_: The input to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
@@ -94,6 +101,8 @@ class ShopPartialBidCalculationOutputAPI(
             max_process_step,
             function_name,
             function_name_prefix,
+            function_call_id,
+            function_call_id_prefix,
             bid_matrix_raw,
             input_,
             external_id_prefix,
@@ -102,6 +111,52 @@ class ShopPartialBidCalculationOutputAPI(
         )
         builder = QueryBuilder(ShopPartialBidCalculationOutputList)
         return ShopPartialBidCalculationOutputQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
+
+    def apply(
+        self,
+        shop_partial_bid_calculation_output: (
+            ShopPartialBidCalculationOutputWrite | Sequence[ShopPartialBidCalculationOutputWrite]
+        ),
+        replace: bool = False,
+        write_none: bool = False,
+    ) -> ResourcesWriteResult:
+        """Add or update (upsert) shop partial bid calculation outputs.
+
+        Note: This method iterates through all nodes and timeseries linked to shop_partial_bid_calculation_output and creates them including the edges
+        between the nodes. For example, if any of `alerts` are set, then these
+        nodes as well as any nodes linked to them, and all the edges linking these nodes will be created.
+
+        Args:
+            shop_partial_bid_calculation_output: Shop partial bid calculation output or sequence of shop partial bid calculation outputs to upsert.
+            replace (bool): How do we behave when a property value exists? Do we replace all matching and existing values with the supplied values (true)?
+                Or should we merge in new values for properties together with the existing values (false)? Note: This setting applies for all nodes or edges specified in the ingestion call.
+            write_none (bool): This method, will by default, skip properties that are set to None. However, if you want to set properties to None,
+                you can set this parameter to True. Note this only applies to properties that are nullable.
+        Returns:
+            Created instance(s), i.e., nodes, edges, and time series.
+
+        Examples:
+
+            Create a new shop_partial_bid_calculation_output:
+
+                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
+                >>> from cognite.powerops.client._generated.v1.data_classes import ShopPartialBidCalculationOutputWrite
+                >>> client = PowerOpsModelsV1Client()
+                >>> shop_partial_bid_calculation_output = ShopPartialBidCalculationOutputWrite(external_id="my_shop_partial_bid_calculation_output", ...)
+                >>> result = client.shop_partial_bid_calculation_output.apply(shop_partial_bid_calculation_output)
+
+        """
+        warnings.warn(
+            "The .apply method is deprecated and will be removed in v1.0. "
+            "Please use the .upsert method on the client instead. This means instead of "
+            "`my_client.shop_partial_bid_calculation_output.apply(my_items)` please use `my_client.upsert(my_items)`."
+            "The motivation is that all apply methods are the same, and having one apply method per API "
+            " class encourages users to create items in small batches, which is inefficient."
+            "In addition, .upsert method is more descriptive of what the method does.",
+            UserWarning,
+            stacklevel=2,
+        )
+        return self._apply(shop_partial_bid_calculation_output, replace, write_none)
 
     def delete(
         self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
@@ -192,6 +247,8 @@ class ShopPartialBidCalculationOutputAPI(
         max_process_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
         bid_matrix_raw: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
@@ -210,6 +267,8 @@ class ShopPartialBidCalculationOutputAPI(
             max_process_step: The maximum value of the process step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
+            function_call_id: The function call id to filter on.
+            function_call_id_prefix: The prefix of the function call id to filter on.
             bid_matrix_raw: The bid matrix raw to filter on.
             input_: The input to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
@@ -237,6 +296,8 @@ class ShopPartialBidCalculationOutputAPI(
             max_process_step,
             function_name,
             function_name_prefix,
+            function_call_id,
+            function_call_id_prefix,
             bid_matrix_raw,
             input_,
             external_id_prefix,
@@ -268,6 +329,8 @@ class ShopPartialBidCalculationOutputAPI(
         max_process_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
         bid_matrix_raw: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
@@ -297,6 +360,8 @@ class ShopPartialBidCalculationOutputAPI(
         max_process_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
         bid_matrix_raw: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
@@ -325,6 +390,8 @@ class ShopPartialBidCalculationOutputAPI(
         max_process_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
         bid_matrix_raw: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
@@ -346,6 +413,8 @@ class ShopPartialBidCalculationOutputAPI(
             max_process_step: The maximum value of the process step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
+            function_call_id: The function call id to filter on.
+            function_call_id_prefix: The prefix of the function call id to filter on.
             bid_matrix_raw: The bid matrix raw to filter on.
             input_: The input to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
@@ -374,6 +443,8 @@ class ShopPartialBidCalculationOutputAPI(
             max_process_step,
             function_name,
             function_name_prefix,
+            function_call_id,
+            function_call_id_prefix,
             bid_matrix_raw,
             input_,
             external_id_prefix,
@@ -406,6 +477,8 @@ class ShopPartialBidCalculationOutputAPI(
         max_process_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
         bid_matrix_raw: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
@@ -426,6 +499,8 @@ class ShopPartialBidCalculationOutputAPI(
             max_process_step: The maximum value of the process step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
+            function_call_id: The function call id to filter on.
+            function_call_id_prefix: The prefix of the function call id to filter on.
             bid_matrix_raw: The bid matrix raw to filter on.
             input_: The input to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
@@ -445,6 +520,8 @@ class ShopPartialBidCalculationOutputAPI(
             max_process_step,
             function_name,
             function_name_prefix,
+            function_call_id,
+            function_call_id_prefix,
             bid_matrix_raw,
             input_,
             external_id_prefix,
@@ -470,6 +547,8 @@ class ShopPartialBidCalculationOutputAPI(
         max_process_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
         bid_matrix_raw: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
@@ -487,6 +566,8 @@ class ShopPartialBidCalculationOutputAPI(
             max_process_step: The maximum value of the process step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
+            function_call_id: The function call id to filter on.
+            function_call_id_prefix: The prefix of the function call id to filter on.
             bid_matrix_raw: The bid matrix raw to filter on.
             input_: The input to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
@@ -515,6 +596,8 @@ class ShopPartialBidCalculationOutputAPI(
             max_process_step,
             function_name,
             function_name_prefix,
+            function_call_id,
+            function_call_id_prefix,
             bid_matrix_raw,
             input_,
             external_id_prefix,

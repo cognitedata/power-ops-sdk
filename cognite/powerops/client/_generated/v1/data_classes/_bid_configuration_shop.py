@@ -23,7 +23,7 @@ if TYPE_CHECKING:
     from ._bid_method_shop_multi_scenario import BidMethodSHOPMultiScenario, BidMethodSHOPMultiScenarioWrite
     from ._market_configuration import MarketConfiguration, MarketConfigurationWrite
     from ._plant_shop import PlantShop, PlantShopWrite
-    from ._price_area_day_ahead import PriceAreaDayAhead, PriceAreaDayAheadWrite
+    from ._price_area import PriceArea, PriceAreaWrite
     from ._watercourse_shop import WatercourseShop, WatercourseShopWrite
 
 
@@ -57,7 +57,7 @@ class BidConfigurationShop(BidConfiguration):
         "sp_powerops_types", "BidConfigurationShop"
     )
     method: Union[BidMethodSHOPMultiScenario, str, dm.NodeId, None] = Field(None, repr=False)
-    price_area: Union[PriceAreaDayAhead, str, dm.NodeId, None] = Field(None, repr=False, alias="priceArea")
+    price_area: Union[PriceArea, str, dm.NodeId, None] = Field(None, repr=False, alias="priceArea")
     plants_shop: Union[list[PlantShop], list[str], None] = Field(default=None, repr=False, alias="plantsShop")
     watercourses_shop: Union[list[WatercourseShop], list[str], None] = Field(
         default=None, repr=False, alias="watercoursesShop"
@@ -116,7 +116,7 @@ class BidConfigurationShopWrite(BidConfigurationWrite):
         "sp_powerops_types", "BidConfigurationShop"
     )
     method: Union[BidMethodSHOPMultiScenarioWrite, str, dm.NodeId, None] = Field(None, repr=False)
-    price_area: Union[PriceAreaDayAheadWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="priceArea")
+    price_area: Union[PriceAreaWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="priceArea")
     plants_shop: Union[list[PlantShopWrite], list[str], None] = Field(default=None, repr=False, alias="plantsShop")
     watercourses_shop: Union[list[WatercourseShopWrite], list[str], None] = Field(
         default=None, repr=False, alias="watercoursesShop"

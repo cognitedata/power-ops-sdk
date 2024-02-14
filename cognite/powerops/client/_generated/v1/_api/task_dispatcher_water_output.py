@@ -14,8 +14,10 @@ from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelWrite,
     ResourcesWriteResult,
     TaskDispatcherWaterOutput,
+    TaskDispatcherWaterOutputWrite,
     TaskDispatcherWaterOutputFields,
     TaskDispatcherWaterOutputList,
+    TaskDispatcherWaterOutputWriteList,
     TaskDispatcherWaterOutputTextFields,
 )
 from cognite.powerops.client._generated.v1.data_classes._task_dispatcher_water_output import (
@@ -26,7 +28,7 @@ from ._core import (
     DEFAULT_LIMIT_READ,
     DEFAULT_QUERY_LIMIT,
     Aggregations,
-    NodeReadAPI,
+    NodeAPI,
     SequenceNotStr,
     QueryStep,
     QueryBuilder,
@@ -36,7 +38,9 @@ from .task_dispatcher_water_output_bid_calculation_tasks import TaskDispatcherWa
 from .task_dispatcher_water_output_query import TaskDispatcherWaterOutputQueryAPI
 
 
-class TaskDispatcherWaterOutputAPI(NodeReadAPI[TaskDispatcherWaterOutput, TaskDispatcherWaterOutputList]):
+class TaskDispatcherWaterOutputAPI(
+    NodeAPI[TaskDispatcherWaterOutput, TaskDispatcherWaterOutputWrite, TaskDispatcherWaterOutputList]
+):
     def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
         view_id = view_by_read_class[TaskDispatcherWaterOutput]
         super().__init__(
@@ -44,6 +48,7 @@ class TaskDispatcherWaterOutputAPI(NodeReadAPI[TaskDispatcherWaterOutput, TaskDi
             sources=view_id,
             class_type=TaskDispatcherWaterOutput,
             class_list=TaskDispatcherWaterOutputList,
+            class_write_list=TaskDispatcherWaterOutputWriteList,
             view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
@@ -58,6 +63,8 @@ class TaskDispatcherWaterOutputAPI(NodeReadAPI[TaskDispatcherWaterOutput, TaskDi
         max_process_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
         input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -73,6 +80,8 @@ class TaskDispatcherWaterOutputAPI(NodeReadAPI[TaskDispatcherWaterOutput, TaskDi
             max_process_step: The maximum value of the process step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
+            function_call_id: The function call id to filter on.
+            function_call_id_prefix: The prefix of the function call id to filter on.
             input_: The input to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -92,6 +101,8 @@ class TaskDispatcherWaterOutputAPI(NodeReadAPI[TaskDispatcherWaterOutput, TaskDi
             max_process_step,
             function_name,
             function_name_prefix,
+            function_call_id,
+            function_call_id_prefix,
             input_,
             external_id_prefix,
             space,
@@ -99,6 +110,50 @@ class TaskDispatcherWaterOutputAPI(NodeReadAPI[TaskDispatcherWaterOutput, TaskDi
         )
         builder = QueryBuilder(TaskDispatcherWaterOutputList)
         return TaskDispatcherWaterOutputQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
+
+    def apply(
+        self,
+        task_dispatcher_water_output: TaskDispatcherWaterOutputWrite | Sequence[TaskDispatcherWaterOutputWrite],
+        replace: bool = False,
+        write_none: bool = False,
+    ) -> ResourcesWriteResult:
+        """Add or update (upsert) task dispatcher water outputs.
+
+        Note: This method iterates through all nodes and timeseries linked to task_dispatcher_water_output and creates them including the edges
+        between the nodes. For example, if any of `alerts` or `bid_calculation_tasks` are set, then these
+        nodes as well as any nodes linked to them, and all the edges linking these nodes will be created.
+
+        Args:
+            task_dispatcher_water_output: Task dispatcher water output or sequence of task dispatcher water outputs to upsert.
+            replace (bool): How do we behave when a property value exists? Do we replace all matching and existing values with the supplied values (true)?
+                Or should we merge in new values for properties together with the existing values (false)? Note: This setting applies for all nodes or edges specified in the ingestion call.
+            write_none (bool): This method, will by default, skip properties that are set to None. However, if you want to set properties to None,
+                you can set this parameter to True. Note this only applies to properties that are nullable.
+        Returns:
+            Created instance(s), i.e., nodes, edges, and time series.
+
+        Examples:
+
+            Create a new task_dispatcher_water_output:
+
+                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
+                >>> from cognite.powerops.client._generated.v1.data_classes import TaskDispatcherWaterOutputWrite
+                >>> client = PowerOpsModelsV1Client()
+                >>> task_dispatcher_water_output = TaskDispatcherWaterOutputWrite(external_id="my_task_dispatcher_water_output", ...)
+                >>> result = client.task_dispatcher_water_output.apply(task_dispatcher_water_output)
+
+        """
+        warnings.warn(
+            "The .apply method is deprecated and will be removed in v1.0. "
+            "Please use the .upsert method on the client instead. This means instead of "
+            "`my_client.task_dispatcher_water_output.apply(my_items)` please use `my_client.upsert(my_items)`."
+            "The motivation is that all apply methods are the same, and having one apply method per API "
+            " class encourages users to create items in small batches, which is inefficient."
+            "In addition, .upsert method is more descriptive of what the method does.",
+            UserWarning,
+            stacklevel=2,
+        )
+        return self._apply(task_dispatcher_water_output, replace, write_none)
 
     def delete(
         self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
@@ -192,6 +247,8 @@ class TaskDispatcherWaterOutputAPI(NodeReadAPI[TaskDispatcherWaterOutput, TaskDi
         max_process_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
         input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -209,6 +266,8 @@ class TaskDispatcherWaterOutputAPI(NodeReadAPI[TaskDispatcherWaterOutput, TaskDi
             max_process_step: The maximum value of the process step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
+            function_call_id: The function call id to filter on.
+            function_call_id_prefix: The prefix of the function call id to filter on.
             input_: The input to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -235,6 +294,8 @@ class TaskDispatcherWaterOutputAPI(NodeReadAPI[TaskDispatcherWaterOutput, TaskDi
             max_process_step,
             function_name,
             function_name_prefix,
+            function_call_id,
+            function_call_id_prefix,
             input_,
             external_id_prefix,
             space,
@@ -265,6 +326,8 @@ class TaskDispatcherWaterOutputAPI(NodeReadAPI[TaskDispatcherWaterOutput, TaskDi
         max_process_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
         input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -293,6 +356,8 @@ class TaskDispatcherWaterOutputAPI(NodeReadAPI[TaskDispatcherWaterOutput, TaskDi
         max_process_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
         input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -320,6 +385,8 @@ class TaskDispatcherWaterOutputAPI(NodeReadAPI[TaskDispatcherWaterOutput, TaskDi
         max_process_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
         input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -340,6 +407,8 @@ class TaskDispatcherWaterOutputAPI(NodeReadAPI[TaskDispatcherWaterOutput, TaskDi
             max_process_step: The maximum value of the process step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
+            function_call_id: The function call id to filter on.
+            function_call_id_prefix: The prefix of the function call id to filter on.
             input_: The input to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -367,6 +436,8 @@ class TaskDispatcherWaterOutputAPI(NodeReadAPI[TaskDispatcherWaterOutput, TaskDi
             max_process_step,
             function_name,
             function_name_prefix,
+            function_call_id,
+            function_call_id_prefix,
             input_,
             external_id_prefix,
             space,
@@ -398,6 +469,8 @@ class TaskDispatcherWaterOutputAPI(NodeReadAPI[TaskDispatcherWaterOutput, TaskDi
         max_process_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
         input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -417,6 +490,8 @@ class TaskDispatcherWaterOutputAPI(NodeReadAPI[TaskDispatcherWaterOutput, TaskDi
             max_process_step: The maximum value of the process step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
+            function_call_id: The function call id to filter on.
+            function_call_id_prefix: The prefix of the function call id to filter on.
             input_: The input to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -435,6 +510,8 @@ class TaskDispatcherWaterOutputAPI(NodeReadAPI[TaskDispatcherWaterOutput, TaskDi
             max_process_step,
             function_name,
             function_name_prefix,
+            function_call_id,
+            function_call_id_prefix,
             input_,
             external_id_prefix,
             space,
@@ -459,6 +536,8 @@ class TaskDispatcherWaterOutputAPI(NodeReadAPI[TaskDispatcherWaterOutput, TaskDi
         max_process_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
         input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -475,6 +554,8 @@ class TaskDispatcherWaterOutputAPI(NodeReadAPI[TaskDispatcherWaterOutput, TaskDi
             max_process_step: The maximum value of the process step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
+            function_call_id: The function call id to filter on.
+            function_call_id_prefix: The prefix of the function call id to filter on.
             input_: The input to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -502,6 +583,8 @@ class TaskDispatcherWaterOutputAPI(NodeReadAPI[TaskDispatcherWaterOutput, TaskDi
             max_process_step,
             function_name,
             function_name_prefix,
+            function_call_id,
+            function_call_id_prefix,
             input_,
             external_id_prefix,
             space,
