@@ -76,6 +76,6 @@ properties:
     description: The price area related to the bid configuration
     source:
       space: '{{powerops_models}}'
-      externalId: PriceAreaDayAhead
+      externalId: PriceArea  # consider removing PriceAreaDayahead view... not needed for this config
       version: '{{version}}'
       type: view

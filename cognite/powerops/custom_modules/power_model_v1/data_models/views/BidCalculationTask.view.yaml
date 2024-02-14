@@ -56,6 +56,6 @@ properties:
     description: The price area related to the bid calculation task
     source:
       space: '{{powerops_models}}'
-      externalId: PriceAreaDayAhead
+      externalId: PriceArea
       version: '{{version}}'
       type: view

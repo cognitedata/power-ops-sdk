@@ -100,7 +100,7 @@ views:
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
-- externalId: PriceAreaDayAhead
+- externalId: PriceArea
   space: "{{powerops_models}}"
   type: view
   version: "{{version}}"

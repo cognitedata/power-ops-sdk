@@ -15,4 +15,16 @@ implements:
   version: '{{version}}'
   type: view
 version: '{{version}}'
-properties: {}
+properties:
+  method:
+    container:
+      space: '{{powerops_models}}'
+      externalId: BidMatrix
+      type: container
+    containerPropertyIdentifier: method
+    name: method
+    source:
+      space: '{{powerops_models}}'
+      externalId: BidMethodDayAhead
+      version: '{{version}}'
+      type: view
