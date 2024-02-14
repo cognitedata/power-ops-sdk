@@ -21,7 +21,7 @@ from ._bid_matrix import BidMatrix, BidMatrixWrite
 
 if TYPE_CHECKING:
     from ._alert import Alert, AlertWrite
-    from ._bid_method_day_ahead import BidMethodDayAhead, BidMethodDayAheadWrite
+    from ._bid_method_shop_multi_scenario import BidMethodSHOPMultiScenario, BidMethodSHOPMultiScenarioWrite
     from ._shop_result import SHOPResult, SHOPResultWrite
 
 
@@ -62,15 +62,16 @@ class MultiScenarioMatrix(BidMatrix):
         matrix: The matrix field.
         asset_type: The asset type field.
         asset_id: The asset id field.
-        method: The method field.
         is_processed: Whether the bid matrix has been processed by the bid matrix processor or not
         alerts: The alert field.
+        method: The method field.
         shop_results: An array of results, one for each scenario.
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types", "MultiScenarioMatrix"
+        "sp_powerops_types", "DayAheadMultiScenarioMatrix"
     )
+    method: Union[BidMethodSHOPMultiScenario, str, dm.NodeId, None] = Field(None, repr=False)
     shop_results: Union[list[SHOPResult], list[str], None] = Field(default=None, repr=False, alias="shopResults")
 
     def as_write(self) -> MultiScenarioMatrixWrite:
@@ -83,9 +84,9 @@ class MultiScenarioMatrix(BidMatrix):
             matrix=self.matrix,
             asset_type=self.asset_type,
             asset_id=self.asset_id,
-            method=self.method.as_write() if isinstance(self.method, DomainModel) else self.method,
             is_processed=self.is_processed,
             alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
+            method=self.method.as_write() if isinstance(self.method, DomainModel) else self.method,
             shop_results=[
                 shop_result.as_write() if isinstance(shop_result, DomainModel) else shop_result
                 for shop_result in self.shop_results or []
@@ -115,15 +116,16 @@ class MultiScenarioMatrixWrite(BidMatrixWrite):
         matrix: The matrix field.
         asset_type: The asset type field.
         asset_id: The asset id field.
-        method: The method field.
         is_processed: Whether the bid matrix has been processed by the bid matrix processor or not
         alerts: The alert field.
+        method: The method field.
         shop_results: An array of results, one for each scenario.
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types", "MultiScenarioMatrix"
+        "sp_powerops_types", "DayAheadMultiScenarioMatrix"
     )
+    method: Union[BidMethodSHOPMultiScenarioWrite, str, dm.NodeId, None] = Field(None, repr=False)
     shop_results: Union[list[SHOPResultWrite], list[str], None] = Field(default=None, repr=False, alias="shopResults")
 
     def _to_instances_write(
@@ -154,14 +156,14 @@ class MultiScenarioMatrixWrite(BidMatrixWrite):
         if self.asset_id is not None or write_none:
             properties["assetId"] = self.asset_id
 
+        if self.is_processed is not None or write_none:
+            properties["isProcessed"] = self.is_processed
+
         if self.method is not None:
             properties["method"] = {
                 "space": self.space if isinstance(self.method, str) else self.method.space,
                 "externalId": self.method if isinstance(self.method, str) else self.method.external_id,
             }
-
-        if self.is_processed is not None or write_none:
-            properties["isProcessed"] = self.is_processed
 
         if properties:
             this_node = dm.NodeApply(
@@ -248,8 +250,8 @@ def _create_multi_scenario_matrix_filter(
     asset_type_prefix: str | None = None,
     asset_id: str | list[str] | None = None,
     asset_id_prefix: str | None = None,
-    method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     is_processed: bool | None = None,
+    method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -273,6 +275,8 @@ def _create_multi_scenario_matrix_filter(
         filters.append(dm.filters.In(view_id.as_property_ref("assetId"), values=asset_id))
     if asset_id_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("assetId"), value=asset_id_prefix))
+    if isinstance(is_processed, bool):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("isProcessed"), value=is_processed))
     if method and isinstance(method, str):
         filters.append(
             dm.filters.Equals(
@@ -296,8 +300,6 @@ def _create_multi_scenario_matrix_filter(
                 view_id.as_property_ref("method"), values=[{"space": item[0], "externalId": item[1]} for item in method]
             )
         )
-    if isinstance(is_processed, bool):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("isProcessed"), value=is_processed))
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):

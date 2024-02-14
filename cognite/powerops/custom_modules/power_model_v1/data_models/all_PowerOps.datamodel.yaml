@@ -163,6 +163,10 @@ views:
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
+- externalId: PriceAreaAsset
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
 - externalId: TurbineEfficiencyCurve
   space: '{{powerops_models}}'
   type: view
@@ -232,6 +236,10 @@ views:
   type: view
   version: '{{version}}'
 - externalId: MultiScenarioMatrix
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: MultiScenarioMatrixRaw
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'

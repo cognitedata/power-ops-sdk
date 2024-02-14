@@ -40,7 +40,23 @@ views:
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
-- externalId: BidMethodDayAhead
+- externalId: MultiScenarioMatrixRaw
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: MarketConfiguration
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: MarketConfiguration
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: BidMethodSHOPMultiScenario
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: PriceScenario
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
@@ -80,3 +96,7 @@ views:
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
+- externalId: PriceArea
+  space: "{{powerops_models}}"
+  type: view
+  version: "{{version}}"

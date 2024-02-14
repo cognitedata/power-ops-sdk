@@ -59,7 +59,6 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
         asset_type_prefix: str | None = None,
         asset_id: str | list[str] | None = None,
         asset_id_prefix: str | None = None,
-        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         is_processed: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -75,7 +74,6 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
             asset_type_prefix: The prefix of the asset type to filter on.
             asset_id: The asset id to filter on.
             asset_id_prefix: The prefix of the asset id to filter on.
-            method: The method to filter on.
             is_processed: The is processed to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -95,7 +93,6 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
             asset_type_prefix,
             asset_id,
             asset_id_prefix,
-            method,
             is_processed,
             external_id_prefix,
             space,
@@ -231,7 +228,6 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
         asset_type_prefix: str | None = None,
         asset_id: str | list[str] | None = None,
         asset_id_prefix: str | None = None,
-        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         is_processed: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -249,7 +245,6 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
             asset_type_prefix: The prefix of the asset type to filter on.
             asset_id: The asset id to filter on.
             asset_id_prefix: The prefix of the asset id to filter on.
-            method: The method to filter on.
             is_processed: The is processed to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -276,7 +271,6 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
             asset_type_prefix,
             asset_id,
             asset_id_prefix,
-            method,
             is_processed,
             external_id_prefix,
             space,
@@ -303,7 +297,6 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
         asset_type_prefix: str | None = None,
         asset_id: str | list[str] | None = None,
         asset_id_prefix: str | None = None,
-        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         is_processed: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -330,7 +323,6 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
         asset_type_prefix: str | None = None,
         asset_id: str | list[str] | None = None,
         asset_id_prefix: str | None = None,
-        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         is_processed: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -356,7 +348,6 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
         asset_type_prefix: str | None = None,
         asset_id: str | list[str] | None = None,
         asset_id_prefix: str | None = None,
-        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         is_processed: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -377,7 +368,6 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
             asset_type_prefix: The prefix of the asset type to filter on.
             asset_id: The asset id to filter on.
             asset_id_prefix: The prefix of the asset id to filter on.
-            method: The method to filter on.
             is_processed: The is processed to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -405,7 +395,6 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
             asset_type_prefix,
             asset_id,
             asset_id_prefix,
-            method,
             is_processed,
             external_id_prefix,
             space,
@@ -435,7 +424,6 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
         asset_type_prefix: str | None = None,
         asset_id: str | list[str] | None = None,
         asset_id_prefix: str | None = None,
-        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         is_processed: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -455,7 +443,6 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
             asset_type_prefix: The prefix of the asset type to filter on.
             asset_id: The asset id to filter on.
             asset_id_prefix: The prefix of the asset id to filter on.
-            method: The method to filter on.
             is_processed: The is processed to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -474,7 +461,6 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
             asset_type_prefix,
             asset_id,
             asset_id_prefix,
-            method,
             is_processed,
             external_id_prefix,
             space,
@@ -499,7 +485,6 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
         asset_type_prefix: str | None = None,
         asset_id: str | list[str] | None = None,
         asset_id_prefix: str | None = None,
-        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         is_processed: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -516,7 +501,6 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
             asset_type_prefix: The prefix of the asset type to filter on.
             asset_id: The asset id to filter on.
             asset_id_prefix: The prefix of the asset id to filter on.
-            method: The method to filter on.
             is_processed: The is processed to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -544,7 +528,6 @@ class BidMatrixAPI(NodeAPI[BidMatrix, BidMatrixWrite, BidMatrixList]):
             asset_type_prefix,
             asset_id,
             asset_id_prefix,
-            method,
             is_processed,
             external_id_prefix,
             space,

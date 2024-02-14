@@ -23,7 +23,7 @@ if TYPE_CHECKING:
     from ._alert import Alert, AlertWrite
     from ._bid_matrix import BidMatrix, BidMatrixWrite
     from ._bid_method_day_ahead import BidMethodDayAhead, BidMethodDayAheadWrite
-    from ._price_area_day_ahead import PriceAreaDayAhead, PriceAreaDayAheadWrite
+    from ._price_area import PriceArea, PriceAreaWrite
 
 
 __all__ = [
@@ -73,7 +73,7 @@ class BidDocumentDayAhead(DomainModel):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types", "BidDocumentDayAhead"
+        "sp_powerops_types", "DayAheadBidDocument"
     )
     name: Optional[str] = None
     delivery_date: datetime.date = Field(alias="deliveryDate")
@@ -81,7 +81,7 @@ class BidDocumentDayAhead(DomainModel):
     end_calculation: Optional[datetime.datetime] = Field(None, alias="endCalculation")
     is_complete: Optional[bool] = Field(None, alias="isComplete")
     alerts: Union[list[Alert], list[str], None] = Field(default=None, repr=False)
-    price_area: Union[PriceAreaDayAhead, str, dm.NodeId, None] = Field(None, repr=False, alias="priceArea")
+    price_area: Union[PriceArea, str, dm.NodeId, None] = Field(None, repr=False, alias="priceArea")
     method: Union[BidMethodDayAhead, str, dm.NodeId, None] = Field(None, repr=False)
     total: Union[BidMatrix, str, dm.NodeId, None] = Field(None, repr=False)
     partials: Union[list[BidMatrix], list[str], None] = Field(default=None, repr=False)
@@ -139,7 +139,7 @@ class BidDocumentDayAheadWrite(DomainModelWrite):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types", "BidDocumentDayAhead"
+        "sp_powerops_types", "DayAheadBidDocument"
     )
     name: Optional[str] = None
     delivery_date: datetime.date = Field(alias="deliveryDate")
@@ -147,7 +147,7 @@ class BidDocumentDayAheadWrite(DomainModelWrite):
     end_calculation: Optional[datetime.datetime] = Field(None, alias="endCalculation")
     is_complete: Optional[bool] = Field(None, alias="isComplete")
     alerts: Union[list[AlertWrite], list[str], None] = Field(default=None, repr=False)
-    price_area: Union[PriceAreaDayAheadWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="priceArea")
+    price_area: Union[PriceAreaWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="priceArea")
     method: Union[BidMethodDayAheadWrite, str, dm.NodeId, None] = Field(None, repr=False)
     total: Union[BidMatrixWrite, str, dm.NodeId, None] = Field(None, repr=False)
     partials: Union[list[BidMatrixWrite], list[str], None] = Field(default=None, repr=False)

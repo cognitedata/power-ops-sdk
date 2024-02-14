@@ -61,8 +61,8 @@ class MultiScenarioMatrixAPI(NodeAPI[MultiScenarioMatrix, MultiScenarioMatrixWri
         asset_type_prefix: str | None = None,
         asset_id: str | list[str] | None = None,
         asset_id_prefix: str | None = None,
-        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         is_processed: bool | None = None,
+        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
@@ -77,8 +77,8 @@ class MultiScenarioMatrixAPI(NodeAPI[MultiScenarioMatrix, MultiScenarioMatrixWri
             asset_type_prefix: The prefix of the asset type to filter on.
             asset_id: The asset id to filter on.
             asset_id_prefix: The prefix of the asset id to filter on.
-            method: The method to filter on.
             is_processed: The is processed to filter on.
+            method: The method to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of multi scenario matrixes to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -97,8 +97,8 @@ class MultiScenarioMatrixAPI(NodeAPI[MultiScenarioMatrix, MultiScenarioMatrixWri
             asset_type_prefix,
             asset_id,
             asset_id_prefix,
-            method,
             is_processed,
+            method,
             external_id_prefix,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
@@ -242,8 +242,8 @@ class MultiScenarioMatrixAPI(NodeAPI[MultiScenarioMatrix, MultiScenarioMatrixWri
         asset_type_prefix: str | None = None,
         asset_id: str | list[str] | None = None,
         asset_id_prefix: str | None = None,
-        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         is_processed: bool | None = None,
+        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -260,8 +260,8 @@ class MultiScenarioMatrixAPI(NodeAPI[MultiScenarioMatrix, MultiScenarioMatrixWri
             asset_type_prefix: The prefix of the asset type to filter on.
             asset_id: The asset id to filter on.
             asset_id_prefix: The prefix of the asset id to filter on.
-            method: The method to filter on.
             is_processed: The is processed to filter on.
+            method: The method to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of multi scenario matrixes to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -287,8 +287,8 @@ class MultiScenarioMatrixAPI(NodeAPI[MultiScenarioMatrix, MultiScenarioMatrixWri
             asset_type_prefix,
             asset_id,
             asset_id_prefix,
-            method,
             is_processed,
+            method,
             external_id_prefix,
             space,
             filter,
@@ -314,8 +314,8 @@ class MultiScenarioMatrixAPI(NodeAPI[MultiScenarioMatrix, MultiScenarioMatrixWri
         asset_type_prefix: str | None = None,
         asset_id: str | list[str] | None = None,
         asset_id_prefix: str | None = None,
-        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         is_processed: bool | None = None,
+        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -341,8 +341,8 @@ class MultiScenarioMatrixAPI(NodeAPI[MultiScenarioMatrix, MultiScenarioMatrixWri
         asset_type_prefix: str | None = None,
         asset_id: str | list[str] | None = None,
         asset_id_prefix: str | None = None,
-        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         is_processed: bool | None = None,
+        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -367,8 +367,8 @@ class MultiScenarioMatrixAPI(NodeAPI[MultiScenarioMatrix, MultiScenarioMatrixWri
         asset_type_prefix: str | None = None,
         asset_id: str | list[str] | None = None,
         asset_id_prefix: str | None = None,
-        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         is_processed: bool | None = None,
+        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -388,8 +388,8 @@ class MultiScenarioMatrixAPI(NodeAPI[MultiScenarioMatrix, MultiScenarioMatrixWri
             asset_type_prefix: The prefix of the asset type to filter on.
             asset_id: The asset id to filter on.
             asset_id_prefix: The prefix of the asset id to filter on.
-            method: The method to filter on.
             is_processed: The is processed to filter on.
+            method: The method to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of multi scenario matrixes to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -416,8 +416,8 @@ class MultiScenarioMatrixAPI(NodeAPI[MultiScenarioMatrix, MultiScenarioMatrixWri
             asset_type_prefix,
             asset_id,
             asset_id_prefix,
-            method,
             is_processed,
+            method,
             external_id_prefix,
             space,
             filter,
@@ -446,8 +446,8 @@ class MultiScenarioMatrixAPI(NodeAPI[MultiScenarioMatrix, MultiScenarioMatrixWri
         asset_type_prefix: str | None = None,
         asset_id: str | list[str] | None = None,
         asset_id_prefix: str | None = None,
-        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         is_processed: bool | None = None,
+        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -466,8 +466,8 @@ class MultiScenarioMatrixAPI(NodeAPI[MultiScenarioMatrix, MultiScenarioMatrixWri
             asset_type_prefix: The prefix of the asset type to filter on.
             asset_id: The asset id to filter on.
             asset_id_prefix: The prefix of the asset id to filter on.
-            method: The method to filter on.
             is_processed: The is processed to filter on.
+            method: The method to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of multi scenario matrixes to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -485,8 +485,8 @@ class MultiScenarioMatrixAPI(NodeAPI[MultiScenarioMatrix, MultiScenarioMatrixWri
             asset_type_prefix,
             asset_id,
             asset_id_prefix,
-            method,
             is_processed,
+            method,
             external_id_prefix,
             space,
             filter,
@@ -510,8 +510,8 @@ class MultiScenarioMatrixAPI(NodeAPI[MultiScenarioMatrix, MultiScenarioMatrixWri
         asset_type_prefix: str | None = None,
         asset_id: str | list[str] | None = None,
         asset_id_prefix: str | None = None,
-        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         is_processed: bool | None = None,
+        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -527,8 +527,8 @@ class MultiScenarioMatrixAPI(NodeAPI[MultiScenarioMatrix, MultiScenarioMatrixWri
             asset_type_prefix: The prefix of the asset type to filter on.
             asset_id: The asset id to filter on.
             asset_id_prefix: The prefix of the asset id to filter on.
-            method: The method to filter on.
             is_processed: The is processed to filter on.
+            method: The method to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of multi scenario matrixes to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -555,8 +555,8 @@ class MultiScenarioMatrixAPI(NodeAPI[MultiScenarioMatrix, MultiScenarioMatrixWri
             asset_type_prefix,
             asset_id,
             asset_id_prefix,
-            method,
             is_processed,
+            method,
             external_id_prefix,
             space,
             filter,

@@ -35,12 +35,11 @@ __all__ = [
 ]
 
 
-BidMethodWaterValueTextFields = Literal["name", "timezone"]
-BidMethodWaterValueFields = Literal["name", "timezone"]
+BidMethodWaterValueTextFields = Literal["name"]
+BidMethodWaterValueFields = Literal["name"]
 
 _BIDMETHODWATERVALUE_PROPERTIES_BY_FIELD = {
     "name": "name",
-    "timezone": "timezone",
 }
 
 
@@ -55,7 +54,6 @@ class BidMethodWaterValue(BidMethodDayAhead):
         data_record: The data record of the bid method water value node.
         name: Name for the BidMethod
         main_scenario: The main scenario to use when running the bid method
-        timezone: The timezone to use when running the bid method
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
@@ -72,7 +70,6 @@ class BidMethodWaterValue(BidMethodDayAhead):
             main_scenario=(
                 self.main_scenario.as_write() if isinstance(self.main_scenario, DomainModel) else self.main_scenario
             ),
-            timezone=self.timezone,
         )
 
     def as_apply(self) -> BidMethodWaterValueWrite:
@@ -96,7 +93,6 @@ class BidMethodWaterValueWrite(BidMethodDayAheadWrite):
         data_record: The data record of the bid method water value node.
         name: Name for the BidMethod
         main_scenario: The main scenario to use when running the bid method
-        timezone: The timezone to use when running the bid method
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
@@ -129,9 +125,6 @@ class BidMethodWaterValueWrite(BidMethodDayAheadWrite):
                     self.main_scenario if isinstance(self.main_scenario, str) else self.main_scenario.external_id
                 ),
             }
-
-        if self.timezone is not None:
-            properties["timezone"] = self.timezone
 
         if properties:
             this_node = dm.NodeApply(
@@ -201,8 +194,6 @@ def _create_bid_method_water_value_filter(
     name: str | list[str] | None = None,
     name_prefix: str | None = None,
     main_scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-    timezone: str | list[str] | None = None,
-    timezone_prefix: str | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -242,12 +233,6 @@ def _create_bid_method_water_value_filter(
                 values=[{"space": item[0], "externalId": item[1]} for item in main_scenario],
             )
         )
-    if isinstance(timezone, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("timezone"), value=timezone))
-    if timezone and isinstance(timezone, list):
-        filters.append(dm.filters.In(view_id.as_property_ref("timezone"), values=timezone))
-    if timezone_prefix is not None:
-        filters.append(dm.filters.Prefix(view_id.as_property_ref("timezone"), value=timezone_prefix))
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):

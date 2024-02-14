@@ -54,8 +54,6 @@ class BidMethodDayAheadAPI(NodeAPI[BidMethodDayAhead, BidMethodDayAheadWrite, Bi
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         main_scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        timezone: str | list[str] | None = None,
-        timezone_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
@@ -67,8 +65,6 @@ class BidMethodDayAheadAPI(NodeAPI[BidMethodDayAhead, BidMethodDayAheadWrite, Bi
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
             main_scenario: The main scenario to filter on.
-            timezone: The timezone to filter on.
-            timezone_prefix: The prefix of the timezone to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of bid method day aheads to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -84,8 +80,6 @@ class BidMethodDayAheadAPI(NodeAPI[BidMethodDayAhead, BidMethodDayAheadWrite, Bi
             name,
             name_prefix,
             main_scenario,
-            timezone,
-            timezone_prefix,
             external_id_prefix,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
@@ -202,8 +196,6 @@ class BidMethodDayAheadAPI(NodeAPI[BidMethodDayAhead, BidMethodDayAheadWrite, Bi
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         main_scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        timezone: str | list[str] | None = None,
-        timezone_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -217,8 +209,6 @@ class BidMethodDayAheadAPI(NodeAPI[BidMethodDayAhead, BidMethodDayAheadWrite, Bi
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
             main_scenario: The main scenario to filter on.
-            timezone: The timezone to filter on.
-            timezone_prefix: The prefix of the timezone to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of bid method day aheads to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -241,8 +231,6 @@ class BidMethodDayAheadAPI(NodeAPI[BidMethodDayAhead, BidMethodDayAheadWrite, Bi
             name,
             name_prefix,
             main_scenario,
-            timezone,
-            timezone_prefix,
             external_id_prefix,
             space,
             filter,
@@ -265,8 +253,6 @@ class BidMethodDayAheadAPI(NodeAPI[BidMethodDayAhead, BidMethodDayAheadWrite, Bi
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         main_scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        timezone: str | list[str] | None = None,
-        timezone_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -289,8 +275,6 @@ class BidMethodDayAheadAPI(NodeAPI[BidMethodDayAhead, BidMethodDayAheadWrite, Bi
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         main_scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        timezone: str | list[str] | None = None,
-        timezone_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -312,8 +296,6 @@ class BidMethodDayAheadAPI(NodeAPI[BidMethodDayAhead, BidMethodDayAheadWrite, Bi
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         main_scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        timezone: str | list[str] | None = None,
-        timezone_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -330,8 +312,6 @@ class BidMethodDayAheadAPI(NodeAPI[BidMethodDayAhead, BidMethodDayAheadWrite, Bi
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
             main_scenario: The main scenario to filter on.
-            timezone: The timezone to filter on.
-            timezone_prefix: The prefix of the timezone to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of bid method day aheads to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -355,8 +335,6 @@ class BidMethodDayAheadAPI(NodeAPI[BidMethodDayAhead, BidMethodDayAheadWrite, Bi
             name,
             name_prefix,
             main_scenario,
-            timezone,
-            timezone_prefix,
             external_id_prefix,
             space,
             filter,
@@ -382,8 +360,6 @@ class BidMethodDayAheadAPI(NodeAPI[BidMethodDayAhead, BidMethodDayAheadWrite, Bi
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         main_scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        timezone: str | list[str] | None = None,
-        timezone_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -399,8 +375,6 @@ class BidMethodDayAheadAPI(NodeAPI[BidMethodDayAhead, BidMethodDayAheadWrite, Bi
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
             main_scenario: The main scenario to filter on.
-            timezone: The timezone to filter on.
-            timezone_prefix: The prefix of the timezone to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of bid method day aheads to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -415,8 +389,6 @@ class BidMethodDayAheadAPI(NodeAPI[BidMethodDayAhead, BidMethodDayAheadWrite, Bi
             name,
             name_prefix,
             main_scenario,
-            timezone,
-            timezone_prefix,
             external_id_prefix,
             space,
             filter,
@@ -437,8 +409,6 @@ class BidMethodDayAheadAPI(NodeAPI[BidMethodDayAhead, BidMethodDayAheadWrite, Bi
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
         main_scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        timezone: str | list[str] | None = None,
-        timezone_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -450,8 +420,6 @@ class BidMethodDayAheadAPI(NodeAPI[BidMethodDayAhead, BidMethodDayAheadWrite, Bi
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
             main_scenario: The main scenario to filter on.
-            timezone: The timezone to filter on.
-            timezone_prefix: The prefix of the timezone to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of bid method day aheads to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -474,8 +442,6 @@ class BidMethodDayAheadAPI(NodeAPI[BidMethodDayAhead, BidMethodDayAheadWrite, Bi
             name,
             name_prefix,
             main_scenario,
-            timezone,
-            timezone_prefix,
             external_id_prefix,
             space,
             filter,

@@ -5,7 +5,7 @@ import itertools
 import logging
 import re
 import warnings
-from collections import defaultdict
+from collections import Counter, defaultdict
 from dataclasses import asdict, dataclass
 from graphlib import TopologicalSorter
 from pathlib import Path
@@ -17,6 +17,7 @@ from cognite.client.data_classes import filters
 from cognite.client.data_classes.data_modeling import (
     ContainerApply,
     ContainerApplyList,
+    ContainerId,
     DataModelApply,
     DataModelApplyList,
     DataModelId,
@@ -265,6 +266,7 @@ class DataModelLoader:
         referred_views = defaultdict(list)
         referred_containers = defaultdict(list)
         referred_node_types = defaultdict(list)
+        double_referenced_container_properties: dict[ViewId, list] = defaultdict(list)
         view_missing_filters = []
         direct_relation_missing_source = []
         non_existent_container_properties = []
@@ -274,40 +276,59 @@ class DataModelLoader:
         for view in schema._views:
             ref_view_id = view.as_id()
             referred_spaces[view.space].append(ref_view_id)
-            if isinstance(view.filter, filters.Equals):
-                dumped = view.filter.dump()["equals"]
-                value = dumped["value"]
-                try:
-                    if isinstance(value, dict) and ("space" in value and "externalId" in value):
-                        node_id = NodeId(value["space"], value["externalId"])
-                        referred_node_types[node_id].append(ref_view_id)
-                    elif len(dumped["property"]) == 3:
-                        space, external_id_version, prop_ = dumped["property"]
-                        external_id, version = external_id_version.rsplit("/", maxsplit=1)
-                        view_id = ViewId(space, external_id, version)
-                        referred_views[view_id].append(ref_view_id)
-                        if prop_ not in properties_by_view.get(view_id, set()):
-                            non_existent_view_properties.append(ref_view_id)
-                except Exception as exc:
-                    raise ValueError(
-                        f"Failed to parse filter for view {view.space}.{view.external_id}.{view.version}"
-                    ) from exc
-            elif isinstance(view.filter, filters.In):
-                dumped = view.filter.dump()["in"]["values"]
-                try:
-                    for value in dumped:
-                        if "space" in value and "externalId" in value:
+            if isinstance(view.filter, filters.And):
+                filters_to_check = view.filter._filters
+            else:
+                filters_to_check = (view.filter,)
+            for filter in filters_to_check:
+                if isinstance(filter, filters.Equals):
+                    dumped = filter.dump()["equals"]
+                    value = dumped["value"]
+                    try:
+                        if isinstance(value, dict) and ("space" in value and "externalId" in value):
                             node_id = NodeId(value["space"], value["externalId"])
                             referred_node_types[node_id].append(ref_view_id)
-                except Exception as exc:
-                    raise ValueError(
-                        f"Failed to parse filter for view {view.space}.{view.external_id}.{view.version}"
-                    ) from exc
+                        elif len(dumped["property"]) == 3:
+                            space, external_id_version, prop_ = dumped["property"]
+                            if "/" in external_id_version:
+                                # View Ref
+                                external_id, version = external_id_version.rsplit("/", maxsplit=1)
+                                view_id = ViewId(space, external_id, version)
+                                referred_views[view_id].append(ref_view_id)
+                                if prop_ not in properties_by_view.get(view_id, set()):
+                                    if view.implements:
+                                        for parent_view_id in view.implements:
+                                            if prop_ not in properties_by_view.get(parent_view_id, set()):
+                                                non_existent_view_properties.append(ref_view_id)
+                                    else:
+                                        non_existent_view_properties.append(ref_view_id)
+                            else:
+                                external_id = external_id_version
+                                container_id = ContainerId(space, external_id)
+                                referred_containers[container_id].append(ref_view_id)
+                                if prop_ not in properties_by_container.get(container_id, set()):
+                                    non_existent_container_properties.append(ref_view_id)
 
-            if ref_view_id in defined_interfaces and not isinstance(view.filter, filters.In):
-                view_missing_filters.append(ref_view_id)
-            elif ref_view_id not in defined_interfaces and isinstance(view.filter, filters.Equals):
-                view_missing_filters.append(ref_view_id)
+                    except Exception as exc:
+                        raise ValueError(
+                            f"Failed to parse filter for view {view.space}.{view.external_id}.{view.version}"
+                        ) from exc
+                elif isinstance(filter, filters.In):
+                    dumped = filter.dump()["in"]["values"]
+                    try:
+                        for value in dumped:
+                            if "space" in value and "externalId" in value:
+                                node_id = NodeId(value["space"], value["externalId"])
+                                referred_node_types[node_id].append(ref_view_id)
+                    except Exception as exc:
+                        raise ValueError(
+                            f"Failed to parse filter for view {view.space}.{view.external_id}.{view.version}"
+                        ) from exc
+
+                if ref_view_id in defined_interfaces and not isinstance(filter, filters.In):
+                    view_missing_filters.append(ref_view_id)
+                elif ref_view_id not in defined_interfaces and isinstance(filter, filters.Equals):
+                    view_missing_filters.append(ref_view_id)
 
             for view_id in view.implements or []:
                 referred_views[view_id].append(ref_view_id)
@@ -331,6 +352,16 @@ class DataModelLoader:
                     referred_views[prop.source].append(ref_view_id.as_property_ref(prop_name))
                     if prop.edge_source:
                         referred_views[prop.edge_source].append(ref_view_id.as_property_ref(prop_name))
+
+            counted = Counter(
+                (prop.container, prop.container_property_identifier)
+                for prop_name, prop in view.properties.items()
+                if isinstance(prop, MappedPropertyApply)
+            )
+            for prop_identifier, count in counted.items():
+                if count > 1:
+                    double_referenced_container_properties[ref_view_id].append(prop_identifier)
+
         for node in schema.node_types:
             referred_spaces[node.space].append(node.as_id())
         for data_model in schema._data_models:
@@ -365,6 +396,13 @@ class DataModelLoader:
         if direct_relation_missing_source:
             message = "\n".join(map(str, direct_relation_missing_source))
             raise ValueError(f"These properties in views refers to direct relations without a source:\n{message}")
+
+        if double_referenced_container_properties:
+            message = "\n".join(
+                f"{view_id}: {prop_identifier}"
+                for view_id, prop_identifier in double_referenced_container_properties.items()
+            )
+            raise ValueError(f"These properties in views refers to container properties more than once:\n{message}")
 
     @classmethod
     def changed_views(cls, client: CogniteClient, schema: Schema, verbose: bool = False) -> dict[ViewId, set[ViewId]]:

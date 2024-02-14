@@ -1,6 +1,6 @@
 space: '{{powerops_models}}'
 externalId: ScenarioBase
-name: Scenario
+name: ScenarioBase
 description: SHOP scenario that holds all data needed for a shop run. May be unprocessed
   or processed
 filter:
@@ -106,7 +106,7 @@ properties:
       space: '{{powerops_models}}'
       externalId: Scenario
       type: container
-    containerPropertyIdentifier: shopStartSpecification
+    containerPropertyIdentifier: shopStart
     name: shopStart
     description: The shop start time
   shopEnd:
@@ -114,7 +114,7 @@ properties:
       space: '{{powerops_models}}'
       externalId: Scenario
       type: container
-    containerPropertyIdentifier: shopEndSpecification
+    containerPropertyIdentifier: shopEnd
     name: shopEnd
     description: The shop end time
   bidDate:

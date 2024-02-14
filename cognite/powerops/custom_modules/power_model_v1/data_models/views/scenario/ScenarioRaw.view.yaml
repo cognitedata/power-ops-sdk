@@ -7,9 +7,9 @@ filter:
   equals:
     property:
     - '{{powerops_models}}'
-    - ScenarioBase/{{version}}
+    - Scenario
     - isReady
-    value: 'False'
+    value: 'false'
 implements:
 - space: '{{powerops_models}}'
   externalId: ScenarioBase

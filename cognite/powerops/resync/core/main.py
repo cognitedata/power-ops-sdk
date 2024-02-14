@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import itertools
 import logging
+import os
 import re
 import tempfile
 from pathlib import Path
@@ -15,7 +16,6 @@ from click.core import Command
 from cognite.client import CogniteClient
 from cognite.client.data_classes.data_modeling import DataModelId, MappedProperty, ViewList
 from cognite.client.exceptions import CogniteAPIError
-from cognite_toolkit.cdf import Common, build, deploy  # type: ignore[import-untyped]
 from cognite_toolkit.cdf_tk.load import DataModelLoader as ToolkitDataModelLoader  # type: ignore[import-untyped]
 from cognite_toolkit.cdf_tk.load import ViewLoader  # type: ignore[import-untyped]  # type: ignore[import-untyped]
 from cognite_toolkit.cdf_tk.utils import CDFToolConfig, calculate_directory_hash  # type: ignore[import-untyped]
@@ -36,6 +36,10 @@ from cognite.powerops.utils.serialization import environment_variables
 from .cdf import get_cognite_api
 from .transform import transform
 from .validation import _clean_relationships
+
+os.environ["SENTRY_ENABLED"] = "false"
+# ruff: noqa: E402
+from cognite_toolkit.cdf import Common, build, deploy  # type: ignore[import-untyped]
 
 logger = logging.getLogger(__name__)
 
@@ -101,6 +105,7 @@ def init(client: PowerOpsClient | None, is_dev: bool = False, dry_run: bool = Fa
     loader = DataModelLoader(build_folder)
     schema = loader.load()
     logger.info("Loaded all powerops data models")
+    # TODO: fix validation
     DataModelLoader.validate(schema)
     logger.info("Validated all powerops data models")
 
