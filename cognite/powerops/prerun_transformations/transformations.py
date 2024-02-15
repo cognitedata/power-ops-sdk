@@ -114,7 +114,7 @@ class AddConstant(Transformation):
     def parameters_to_dict(self) -> dict:
         return {"constant": self.constant}
 
-    def apply(self, time_series_data: pd.Series) -> pd.Series:
+    def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
         """Add value to input time series
 
         Args:
@@ -123,7 +123,8 @@ class AddConstant(Transformation):
         Returns:
             The transformed time series
         """
-        return time_series_data + self.constant
+        single_ts = time_series_data[0]
+        return single_ts + self.constant
 
 
 class Round(Transformation):
@@ -137,7 +138,7 @@ class Round(Transformation):
     def parameters_to_dict(self) -> dict:
         return {"digits": self.digits}
 
-    def apply(self, time_series_data: pd.Series) -> pd.Series:
+    def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
         """Round the time series values to the specified number of decimals
 
         Args:
@@ -146,7 +147,9 @@ class Round(Transformation):
         Returns:
             The transformed time series
         """
-        return time_series_data.round(decimals=self.digits)
+
+        single_ts = time_series_data[0]
+        return single_ts.round(decimals=self.digits)
 
 
 class SumTimeseries(Transformation):

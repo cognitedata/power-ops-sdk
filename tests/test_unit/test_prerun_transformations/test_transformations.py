@@ -48,7 +48,7 @@ def test_add_constant():
 
     expected_data = pd.Series(expected_values, index=incremental_dates)
 
-    output_data = transformation.apply(time_series_data=input_data)
+    output_data = transformation.apply(time_series_data=(input_data,))
 
     assert (output_data == expected_data).all()
 
@@ -66,8 +66,8 @@ def test_round():
 
     expected_data = pd.Series(expected_values, index=incremental_dates)
 
-    output_data = transformation.apply(time_series_data=input_data)
-    
+    output_data = transformation.apply(time_series_data=(input_data,))
+
     assert (output_data == expected_data).all()
 
 
