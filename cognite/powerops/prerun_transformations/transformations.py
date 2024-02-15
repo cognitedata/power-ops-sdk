@@ -17,7 +17,7 @@ from cognite.powerops.utils.cdf.calls import retrieve_range
 logger = getLogger(__name__)
 
 
-def ms_to_datetime_tz_naive(timestamp: int):
+def ms_to_datetime_tz_naive(timestamp: int) -> datetime:
     """
     Milliseconds since Epoch to datetime.
     #TODO: Consider switching to cognite-sdk official one, but using this one for now as it is time zone naive
@@ -114,7 +114,7 @@ class AddConstant(Transformation):
     def parameters_to_dict(self) -> dict:
         return {"constant": self.constant}
 
-    def apply(self, time_series_data: tuple[pd.Series]):
+    def apply(self, time_series_data: pd.Series) -> pd.Series:
         """Add value to input time series
 
         Args:
