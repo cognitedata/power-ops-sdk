@@ -137,17 +137,16 @@ class Round(Transformation):
     def parameters_to_dict(self) -> dict:
         return {"digits": self.digits}
 
-    def apply(self, time_series_data: tuple[pd.Series]):
+    def apply(self, time_series_data: pd.Series) -> pd.Series:
         """Round the time series values to the specified number of decimals
 
         Args:
-            time_series_data: The time series data to add the value to
+            time_series_data: The time series data to round each datapoint for
 
         Returns:
             The transformed time series
         """
-        single_ts = time_series_data[0]
-        return single_ts.round(decimals=self.digits)
+        return time_series_data.round(decimals=self.digits)
 
 
 class SumTimeseries(Transformation):

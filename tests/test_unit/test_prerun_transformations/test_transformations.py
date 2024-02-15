@@ -7,7 +7,8 @@ from cognite.powerops.prerun_transformations.transformations import (
     ms_to_datetime_tz_naive,
     StaticValues,
     RelativeDatapoint,
-    AddConstant
+    AddConstant,
+    Round
 )
 
 
@@ -40,7 +41,7 @@ def test_add_constant():
     transformation = AddConstant(constant=constant)
 
     input_values = [10, 20, 30, 40, 50]
-    expected_values = [x + constant for x in input_values]
+    expected_values = [value + constant for value in input_values]
     incremental_dates = pd.date_range(start='2022-01-01', periods=len(input_values), freq='D')
 
     input_data = pd.Series(input_values, index=incremental_dates)
@@ -49,6 +50,24 @@ def test_add_constant():
 
     output_data = transformation.apply(time_series_data=input_data)
 
+    assert (output_data == expected_data).all()
+
+
+def test_round():
+
+    digits = 2
+    transformation = Round(digits=digits)
+
+    input_values = [10.1111, 20.2222, 30.3333, 40.4444, 50.5555]
+    expected_values = [round(value, digits) for value in input_values]
+    incremental_dates = pd.date_range(start='2022-01-01', periods=len(input_values), freq='D')
+
+    input_data = pd.Series(input_values, index=incremental_dates)
+
+    expected_data = pd.Series(expected_values, index=incremental_dates)
+
+    output_data = transformation.apply(time_series_data=input_data)
+    
     assert (output_data == expected_data).all()
 
 
