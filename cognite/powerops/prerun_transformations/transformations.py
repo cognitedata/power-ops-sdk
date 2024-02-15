@@ -123,8 +123,7 @@ class AddConstant(Transformation):
         Returns:
             The transformed time series
         """
-        single_ts = time_series_data[0]
-        return single_ts + self.constant
+        return time_series_data + self.constant
 
 
 class Round(Transformation):
