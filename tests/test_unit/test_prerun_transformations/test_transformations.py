@@ -50,3 +50,24 @@ def test_add_constant():
     output_data = transformation.apply(time_series_data=input_data)
 
     assert (output_data == expected_data).all()
+
+
+def test_static_values(cognite_client_mock):
+    start_time = datetime(2022, 1, 1, 12, tzinfo=None)
+
+    relative_datapoints = [
+        RelativeDatapoint(offset_minute=0, offset_value=42),
+        RelativeDatapoint(offset_minute=60, offset_value=420),
+        RelativeDatapoint(offset_minute=1440, offset_value=4200),
+    ]
+    transformation = StaticValues(relative_datapoints=relative_datapoints)
+    transformation.pre_apply(client=cognite_client_mock, shop_model={}, start=start_time, end=start_time)
+    result = transformation.apply(_=pd.Series(range(10)))
+    
+    expected = pd.Series([42, 420, 4200], index=[
+        datetime(2022, 1, 1, 12, tzinfo=None),
+        datetime(2022, 1, 1, 13, tzinfo=None),
+        datetime(2022, 1, 2, 12, tzinfo=None)
+    ])
+
+    assert (result == expected).all()
