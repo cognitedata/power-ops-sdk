@@ -8,7 +8,8 @@ from cognite.powerops.prerun_transformations.transformations import (
     StaticValues,
     RelativeDatapoint,
     AddConstant,
-    Round
+    Round,
+    SumTimeseries
 )
 
 
@@ -71,6 +72,44 @@ def test_round():
     assert (output_data == expected_data).all()
 
 
+def test_sum_timeseries_two_timeseries():
+
+    input_values_1 = [42.0] * 5
+    input_values_2 = [20.0] * 5
+
+    start_time = "2022-01-01"
+    incremental_dates_1 = pd.date_range(start=start_time, periods=len(input_values_1), freq='H')
+    incremental_dates_2 = pd.date_range(start=start_time, periods=len(input_values_2), freq='2H')
+
+    input_data_1 = pd.Series(input_values_1, index=incremental_dates_1)
+    input_data_2 = pd.Series(input_values_2, index=incremental_dates_2)
+
+    expected_dates = pd.concat([pd.Series(incremental_dates_1), pd.Series(incremental_dates_2)]).sort_values().drop_duplicates()
+    expected_data = pd.Series([62, 42, 62, 42, 62, 20, 20], index=expected_dates)
+
+    transformation = SumTimeseries()
+    output_data = transformation.apply(time_series_data=(input_data_1, input_data_2))
+
+    assert (output_data == expected_data).all()
+
+
+def test_sum_timeseries_one_timeseries():
+
+    input_values_1 = [42.0] * 5
+
+    start_time = "2022-01-01"
+    incremental_dates_1 = pd.date_range(start=start_time, periods=len(input_values_1), freq='H')
+
+    input_data_1 = pd.Series(input_values_1, index=incremental_dates_1)
+
+    expected_data = input_data_1
+
+    transformation = SumTimeseries()
+    output_data = transformation.apply(time_series_data=(input_data_1, ))
+
+    assert (output_data == expected_data).all()
+
+    
 def test_static_values(cognite_client_mock):
     start_time = datetime(2022, 1, 1, 12, tzinfo=None)
 

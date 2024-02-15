@@ -118,10 +118,10 @@ class AddConstant(Transformation):
         """Add value to input time series
 
         Args:
-            time_series_data: The time series data to add the value to
+            time_series_data: A tuple of time series data to add the constant value to the first time series
 
         Returns:
-            The transformed time series
+            The first pd.Series from the input tuple with the constant applied to all values
         """
         single_ts = time_series_data[0]
         return single_ts + self.constant
@@ -142,10 +142,10 @@ class Round(Transformation):
         """Round the time series values to the specified number of decimals
 
         Args:
-            time_series_data: The time series data to round each datapoint for
+            time_series_data: A tuple of time series data to round all values from the first time series
 
         Returns:
-            The transformed time series
+            The first pd.Series from the input tuple with the rounding applied to all values
         """
 
         single_ts = time_series_data[0]
