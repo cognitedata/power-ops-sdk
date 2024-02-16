@@ -17,6 +17,7 @@ from cognite.powerops.prerun_transformations.transformations import (
     OneIfTwo,
     HeightToVolume,
     DoNothing,
+    AddFromOffset,
 )
 
 
@@ -272,5 +273,41 @@ def test_do_nothing():
     expected_data = input_data
 
     output_data = transformation.apply(time_series_data=(input_data,))
+
+    assert (output_data == expected_data).all()
+
+
+def test_add_from_offset():
+
+    relative_datapoints = [
+        RelativeDatapoint(offset_minute=0, offset_value=1),
+        RelativeDatapoint(offset_minute=20, offset_value=-2),
+        RelativeDatapoint(offset_minute=230, offset_value=3),
+    ]
+        
+    transformation = AddFromOffset(relative_datapoints=relative_datapoints)
+
+    input_values = [42.0] * 6
+
+    incremental_dates = pd.date_range(start='2022-01-01', periods=len(input_values), freq='H')
+
+    input_data = pd.Series(input_values, index=incremental_dates)
+
+    expected_data = pd.Series([43, 40, 40, 40, 40, 45, 45, 45], index=[
+        datetime(2022, 1, 1, 0, tzinfo=None),
+        datetime(2022, 1, 1, 0, 20, tzinfo=None),
+        datetime(2022, 1, 1, 1, tzinfo=None),
+        datetime(2022, 1, 1, 2, tzinfo=None),
+        datetime(2022, 1, 1, 3, tzinfo=None),
+        datetime(2022, 1, 1, 3, 50, tzinfo=None),
+        datetime(2022, 1, 1, 4, tzinfo=None),
+        datetime(2022, 1, 1, 5, tzinfo=None),
+    ])
+
+    output_data = transformation.apply(time_series_data=(input_data,))
+
+    print("----------------------")
+    print(output_data)
+    print(expected_data)
 
     assert (output_data == expected_data).all()
