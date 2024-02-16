@@ -11,6 +11,7 @@ from cognite.powerops.prerun_transformations.transformations import (
     Round,
     SumTimeseries,
     MultiplyConstant,
+    ToBool,
 )
 
 
@@ -118,7 +119,7 @@ def test_multiply_constant():
 
     input_values = [10, 20, 30, 40, 50]
     expected_values = [value * constant for value in input_values]
-    
+
     incremental_dates = pd.date_range(start='2022-01-01', periods=len(input_values), freq='D')
 
     input_data = pd.Series(input_values, index=incremental_dates)
@@ -149,3 +150,21 @@ def test_static_values(cognite_client_mock):
     ])
 
     assert (result == expected).all()
+
+
+def test_to_bool():
+
+    transformation = ToBool()
+
+    input_values = [-1, -0.5, 0, 0.5, 1, 2]
+    expected_values = [0, 0, 0, 1, 1, 1]
+
+    incremental_dates = pd.date_range(start='2022-01-01', periods=len(input_values), freq='D')
+
+    input_data = pd.Series(input_values, index=incremental_dates)
+
+    expected_data = pd.Series(expected_values, index=incremental_dates)
+
+    output_data = transformation.apply(time_series_data=(input_data,))
+
+    assert (output_data == expected_data).all()
