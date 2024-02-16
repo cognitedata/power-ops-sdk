@@ -15,6 +15,7 @@ from cognite.powerops.prerun_transformations.transformations import (
     ToInt,
     ZeroIfNotOne,
     OneIfTwo,
+    HeightToVolume
 )
 
 
@@ -223,5 +224,35 @@ def test_one_if_two():
     expected_data = pd.Series(expected_values, index=incremental_dates)
 
     output_data = transformation.apply(time_series_data=(input_data,))
+
+    assert (output_data == expected_data).all()
+
+
+def test_height_to_volume(cognite_client_mock):
+    heights = [2, 4, 6, 8, 10]
+    volumes = [10, 20, 40, 80, 160]
+
+    datapoints = pd.Series(
+        {
+            1: 1,  # below interpolation bounds
+            2: 4,
+            3: 6,
+            4: 7,  # interpolated
+            5: 11,  # above interpolation bounds
+        }
+    )
+
+    transformation = HeightToVolume(object_type="reservoir", object_name="Nyhellervann")
+    transformation.pre_apply(
+        client=cognite_client_mock,
+        shop_model={"reservoir": {"Nyhellervann": {"vol_head": {"x": volumes, "y": heights}}}},
+        start=0,
+        end=0,
+    )
+
+    output_data = transformation.apply(time_series_data=(datapoints,))
+
+    expected_values = [10, 20, 40, 60, 160]
+    expected_data = pd.Series(expected_values, index=range(1, len(expected_values) + 1))
 
     assert (output_data == expected_data).all()

@@ -555,7 +555,7 @@ class HeightToVolume(DynamicTransformation):
             single_ts = time_series_data[0]
             return self.height_to_volume(single_ts, self.heights, self.volumes)
         else:
-            raise ValueError("pre_apply function has not run - missing neccessary properties to run transformation")
+            raise ValueError("pre_apply function has not run - missing necessary properties to run transformation")
 
 
 class DoNothing(Transformation):
