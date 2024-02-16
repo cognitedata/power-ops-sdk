@@ -18,6 +18,7 @@ from cognite.powerops.prerun_transformations.transformations import (
     HeightToVolume,
     DoNothing,
     AddFromOffset,
+    MultiplyFromOffset,
 )
 
 
@@ -306,8 +307,26 @@ def test_add_from_offset():
 
     output_data = transformation.apply(time_series_data=(input_data,))
 
-    print("----------------------")
-    print(output_data)
-    print(expected_data)
+    assert (output_data == expected_data).all()
+
+
+def test_multiply_from_offset():
+    relative_datapoints = [
+        RelativeDatapoint(offset_minute=1, offset_value=2),
+        RelativeDatapoint(offset_minute=2, offset_value=0),
+        RelativeDatapoint(offset_minute=4, offset_value=1.5),
+    ]
+        
+    transformation = MultiplyFromOffset(relative_datapoints=relative_datapoints)
+
+    input_values = [10.0] * 6
+
+    incremental_dates = pd.date_range(start='2022-01-01', periods=len(input_values), freq='min')
+
+    input_data = pd.Series(input_values, index=incremental_dates)
+
+    expected_data = pd.Series([10, 20, 0, 0, 15, 15], index=incremental_dates)
+
+    output_data = transformation.apply(time_series_data=(input_data,))
 
     assert (output_data == expected_data).all()
