@@ -13,6 +13,7 @@ from cognite.powerops.prerun_transformations.transformations import (
     MultiplyConstant,
     ToBool,
     ToInt,
+    ZeroIfNotOne,
 )
 
 
@@ -177,6 +178,25 @@ def test_to_int():
 
     input_values = [-1.2, -0.5, 0.23, 0.5, 1, 2.75]
     expected_values = [-1, 0, 0, 0, 1, 3]
+
+    incremental_dates = pd.date_range(start='2022-01-01', periods=len(input_values), freq='D')
+
+    input_data = pd.Series(input_values, index=incremental_dates)
+
+    expected_data = pd.Series(expected_values, index=incremental_dates)
+
+    output_data = transformation.apply(time_series_data=(input_data,))
+
+    assert (output_data == expected_data).all()
+
+
+
+def test_zero_if_not_one():
+
+    transformation = ZeroIfNotOne()
+
+    input_values = [0, 1, 2, -1]
+    expected_values = [0, 1, 0, 0]
 
     incremental_dates = pd.date_range(start='2022-01-01', periods=len(input_values), freq='D')
 
