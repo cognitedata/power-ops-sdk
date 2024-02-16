@@ -153,7 +153,7 @@ class Round(Transformation):
 
 
 class SumTimeseries(Transformation):
-    def apply(self, time_series_data: tuple[pd.Series]):
+    def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
         """Sum two or more time series together
 
         Args:
@@ -224,14 +224,14 @@ class MultiplyConstant(Transformation):
     def parameters_to_dict(self) -> dict:
         return {"constant": self.constant}
 
-    def apply(self, time_series_data: tuple[pd.Series]):
+    def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
         """Multiply value to input time series
 
         Args:
             time_series_data: The time series data to add the value to
 
         Returns:
-            The transformed time series
+            The resulting series when taking the first series in time_series_data and multiplying all values by a constant
         """
         single_ts = time_series_data[0]
         return single_ts * self.constant
