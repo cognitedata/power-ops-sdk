@@ -15,7 +15,8 @@ from cognite.powerops.prerun_transformations.transformations import (
     ToInt,
     ZeroIfNotOne,
     OneIfTwo,
-    HeightToVolume
+    HeightToVolume,
+    DoNothing,
 )
 
 
@@ -254,5 +255,22 @@ def test_height_to_volume(cognite_client_mock):
 
     expected_values = [10, 20, 40, 60, 160]
     expected_data = pd.Series(expected_values, index=range(1, len(expected_values) + 1))
+
+    assert (output_data == expected_data).all()
+
+
+def test_do_nothing():
+        
+    transformation = DoNothing()
+
+    input_values = [-1.2, -0.5, 0.23, 0.5, 1, 2.75]
+
+    incremental_dates = pd.date_range(start='2022-01-01', periods=len(input_values), freq='D')
+
+    input_data = pd.Series(input_values, index=incremental_dates)
+
+    expected_data = input_data
+
+    output_data = transformation.apply(time_series_data=(input_data,))
 
     assert (output_data == expected_data).all()

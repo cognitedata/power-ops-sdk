@@ -559,6 +559,9 @@ class HeightToVolume(DynamicTransformation):
 
 
 class DoNothing(Transformation):
+    """
+    Don't apply any transformations, just return the unchanged Series
+    """
     def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
         return time_series_data[0]
 
