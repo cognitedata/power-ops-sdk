@@ -416,7 +416,7 @@ class OneIfTwo(Transformation):
     def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
         """
         Args:
-            time_series_data: The time series data to transform
+            time_series_data: Tuple of time series where the first time series in the tuple the transformation is applied to
 
         Returns:
             The transformed time series
