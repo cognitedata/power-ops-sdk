@@ -1,14 +1,14 @@
 space: '{{powerops_models}}'
-externalId: ScenarioRaw
-name: ScenarioRaw
-description: SHOP scenario that holds all data needed for a shop run. May be unprocessed
-  or processed
+externalId: BidMatrixRaw
+name: BidMatrixRaw
+description: The output of a bid matrix calculation. isProcessed property defines
+  if the bidmatrix is raw or has been post-processed
 filter:
   and:
     - hasData:
         - type: container
           space: '{{powerops_models}}'
-          externalId: Scenario
+          externalId: BidMatrix
     - equals:
         property:
           - node
@@ -16,13 +16,13 @@ filter:
         value: '{{powerops_instance_space}}'
     - equals:
         property:
-          - '{{powerops_models}}'
-          - Scenario
-          - isReady
+        - '{{powerops_models}}'
+        - BidMatrix
+        - isProcessed
         value: 'false'
 implements:
 - space: '{{powerops_models}}'
-  externalId: ScenarioBase
+  externalId: BidMatrix
   version: '{{version}}'
   type: view
 version: '{{version}}'

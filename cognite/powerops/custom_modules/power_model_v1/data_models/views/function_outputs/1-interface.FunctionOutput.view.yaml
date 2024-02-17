@@ -13,13 +13,6 @@ filter:
       - node
       - space
       value: '{{powerops_instance_space}}'
-  - equals:
-      property:
-      - node
-      - type
-      value:
-        externalId: FunctionOutput
-        space: '{{powerops_type_space}}'
 implements: []
 version: '{{version}}'
 properties:

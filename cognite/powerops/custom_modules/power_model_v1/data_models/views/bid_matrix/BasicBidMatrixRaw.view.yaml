@@ -1,6 +1,6 @@
 space: '{{powerops_models}}'
-externalId: BasicBidMatrix
-name: BasicBidMatrix
+externalId: BasicBidMatrixRaw
+name: BasicBidMatrixRaw
 filter:
   and:
     - hasData:
@@ -24,10 +24,10 @@ filter:
           - '{{powerops_models}}'
           - BidMatrix
           - isProcessed
-        value: 'true'
+        value: 'false'
 implements:
 - space: '{{powerops_models}}'
-  externalId: BidMatrix
+  externalId: BidMatrixRaw
   version: '{{version}}'
   type: view
 version: '{{version}}'
