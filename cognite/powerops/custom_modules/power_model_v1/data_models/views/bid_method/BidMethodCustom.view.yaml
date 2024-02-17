@@ -19,7 +19,7 @@ filter:
           externalId: BidMethodWaterValue
 implements:
 - space: '{{powerops_models}}'
-  externalId: BidMethod
+  externalId: BidMethodDayAhead
   version: '{{version}}'
   type: view
 version: '{{version}}'

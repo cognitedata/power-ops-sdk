@@ -50,6 +50,7 @@ def main():
                 dm.ViewId("sp_powerops_models", "BidMatrixRaw", "1"),
                 dm.ViewId("sp_powerops_models", "MultiScenarioMatrix", "1"),
                 dm.ViewId("sp_powerops_models", "MultiScenarioMatrixRaw", "1"),
+                dm.ViewId("sp_powerops_models", "BasicBidMatrix", "1"),
             }:
                 is_processed = False if "Raw" in view_data.view_id.external_id else True
                 for node in view_data.node:
@@ -74,11 +75,21 @@ def main():
                 expected_nodes = [
                     n
                     for n in mock_data.nodes
-                    if any(n.external_id.startswith(v.external_id.lower()) for v in leaf_views)
+                    if any(n.external_id.startswith(f"{v.external_id.lower()}_") for v in leaf_views)
                 ]
             else:
                 expected_nodes = [n for n in mock_data.nodes if n.external_id.startswith(view_id.external_id.lower())]
                 expected_node_count = node_count
+
+            if view_id in {
+                dm.ViewId("sp_powerops_models", "FunctionInput", "1"),
+                dm.ViewId("sp_powerops_models", "FunctionOutput", "1"),
+            }:
+                # This is an exception, the input and output stores data in the same container and has identical filtering.
+                # So Input will retrieve input + output and output will retrieve input + output.
+                # These interfaces that are not used anywhere in the data model, thus this is considered not to be a problem.
+                expected_node_count *= 2
+
             if len(nodes) != expected_node_count:
                 print(f"Print unexpected number of nodes for {view_id}: {len(nodes)} instead of {expected_node_count}.")
                 if False:

@@ -8,6 +8,11 @@ filter:
     - type: container
       space: '{{powerops_models}}'
       externalId: Asset
+  - not:
+      hasData:
+      - type: container
+        space: '{{powerops_models}}'
+        externalId: PriceArea
   - equals:
       property:
       - node
