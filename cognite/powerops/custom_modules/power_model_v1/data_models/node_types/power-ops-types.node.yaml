@@ -187,3 +187,5 @@
   externalId: TaskDispatcherBenchmarkingInput
 - space: {{powerops_type_space}}
   externalId: TaskDispatcherBenchmarkingOutput
+- space: {{powerops_type_space}}
+  externalId: ShopObjectiveValue
