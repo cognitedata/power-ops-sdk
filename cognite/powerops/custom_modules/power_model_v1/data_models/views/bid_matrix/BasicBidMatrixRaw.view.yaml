@@ -1,6 +1,6 @@
 space: '{{powerops_models}}'
-externalId: BasicBidMatrix
-name: BasicBidMatrix
+externalId: BasicBidMatrixRaw
+name: BasicBidMatrixRaw
 filter:
   and:
     - hasData:
@@ -24,23 +24,11 @@ filter:
           - '{{powerops_models}}'
           - BidMatrix
           - isProcessed
-        value: 'true'
+        value: 'false'
 implements:
 - space: '{{powerops_models}}'
-  externalId: BidMatrix
+  externalId: BasicBidMatrix
   version: '{{version}}'
   type: view
 version: '{{version}}'
-properties:
-  method:
-    container:
-      space: '{{powerops_models}}'
-      externalId: BidMatrix
-      type: container
-    containerPropertyIdentifier: method
-    name: method
-    source:
-      space: '{{powerops_models}}'
-      externalId: BidMethodDayAhead
-      version: '{{version}}'
-      type: view
+properties: {}

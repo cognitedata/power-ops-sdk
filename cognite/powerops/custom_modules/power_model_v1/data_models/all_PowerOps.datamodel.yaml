@@ -247,3 +247,7 @@ views:
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
+- externalId: BasicBidMatrixRaw
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
