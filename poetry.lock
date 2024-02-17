@@ -470,8 +470,8 @@ format = ["black (>=24.1.0)"]
 [package.source]
 type = "git"
 url = "https://github.com/cognitedata/pygen.git"
-reference = "bughunting"
-resolved_reference = "2c3aef80a480b1b23a1c686dc6586fd5d46c1697"
+reference = "model-prefix"
+resolved_reference = "0bf76b9297076806f8b398f756b910e1cadc5137"
 
 [[package]]
 name = "cognite-sdk"
@@ -4663,4 +4663,4 @@ docs = ["mkdocs", "mkdocs-git-authors-plugin", "mkdocs-git-revision-date-localiz
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.11"
-content-hash = "c53e780205df2a6595258528ed76e0690e422ebb605b87e9d41fdd43f215f022"
+content-hash = "75ceb79159403d229f24b0f2168ee440e6aac8be0a6ccc82797351e01a54a131"
