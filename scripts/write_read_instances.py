@@ -58,7 +58,7 @@ def main():
                 print(f"Print unexpected number of nodes for {view_id}: {len(nodes)} instead of {expected_nodes}.")
             else:
                 correct_count += 1
-                print(f"Read {len(nodes)} nodes for {view_id} as expected.")
+                # print(f"Read {len(nodes)} nodes for {view_id} as expected.")
 
         print(f"Read {correct_count} views out of {len(data_model.views)} views as expected.")
         mock_data.clean(client)
@@ -100,4 +100,4 @@ def clean_instances():
 
 
 if __name__ == "__main__":
-    clean_instances()
+    main()
