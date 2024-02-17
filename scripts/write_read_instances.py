@@ -69,11 +69,20 @@ def main():
                 print(f"Failed to read nodes for {view_id}: {e}")
                 continue
             if view_id in leaf_views_by_parent:
-                expected_nodes = len(leaf_views_by_parent[view_id]) * node_count
+                leaf_views = leaf_views_by_parent[view_id]
+                expected_node_count = len(leaf_views) * node_count
+                expected_nodes = [
+                    n
+                    for n in mock_data.nodes
+                    if any(n.external_id.startswith(v.external_id.lower()) for v in leaf_views)
+                ]
             else:
-                expected_nodes = node_count
-            if len(nodes) != expected_nodes:
-                print(f"Print unexpected number of nodes for {view_id}: {len(nodes)} instead of {expected_nodes}.")
+                expected_nodes = [n for n in mock_data.nodes if n.external_id.startswith(view_id.external_id.lower())]
+                expected_node_count = node_count
+            if len(nodes) != expected_node_count:
+                print(f"Print unexpected number of nodes for {view_id}: {len(nodes)} instead of {expected_node_count}.")
+                if False:
+                    print(f"Expected {expected_node_count} nodes: {expected_nodes}")
             else:
                 correct_count += 1
                 # print(f"Read {len(nodes)} nodes for {view_id} as expected.")

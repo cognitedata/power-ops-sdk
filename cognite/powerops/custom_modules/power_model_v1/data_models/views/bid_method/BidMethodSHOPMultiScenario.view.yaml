@@ -7,9 +7,6 @@ filter:
     - type: container
       space: '{{powerops_models}}'
       externalId: BidMethod
-    - type: container
-      space: '{{powerops_models}}'
-      externalId: FunctionData
   - equals:
       property:
       - node
