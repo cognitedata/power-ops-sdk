@@ -69,7 +69,9 @@ def main():
             except CogniteAPIError as e:
                 print(f"Failed to read nodes for {view_id}: {e}")
                 continue
-            if view_id in leaf_views_by_parent:
+
+            # PriceArea have three different versions, that all picks up the same nodes.
+            if view_id in leaf_views_by_parent or view_id.external_id.startswith("PriceArea"):
                 leaf_views = leaf_views_by_parent[view_id]
                 expected_node_count = len(leaf_views) * node_count
                 expected_nodes = [
