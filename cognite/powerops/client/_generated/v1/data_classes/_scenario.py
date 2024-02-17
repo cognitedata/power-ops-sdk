@@ -77,7 +77,7 @@ _SCENARIO_PROPERTIES_BY_FIELD = {
 }
 
 
-class Scenario(DomainModel):
+class Scenario(DomainModel, protected_namespaces=()):
     """This represents the reading version of scenario.
 
     It is used to when data is retrieved from CDF.
@@ -156,7 +156,7 @@ class Scenario(DomainModel):
         return self.as_write()
 
 
-class ScenarioWrite(DomainModelWrite):
+class ScenarioWrite(DomainModelWrite, protected_namespaces=()):
     """This represents the writing version of scenario.
 
     It is used to when data is sent to CDF.

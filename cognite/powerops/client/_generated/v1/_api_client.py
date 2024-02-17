@@ -155,6 +155,9 @@ class TotalBidCalculationAPIs:
             data_classes.BidMethodDayAhead: dm.ViewId("sp_powerops_models", "BidMethodDayAhead", "1"),
             data_classes.BidMethodSHOPMultiScenario: dm.ViewId("sp_powerops_models", "BidMethodSHOPMultiScenario", "1"),
             data_classes.BidMethodWaterValue: dm.ViewId("sp_powerops_models", "BidMethodWaterValue", "1"),
+            data_classes.Mapping: dm.ViewId("sp_powerops_models", "Mapping", "1"),
+            data_classes.MarketConfiguration: dm.ViewId("sp_powerops_models", "MarketConfiguration", "1"),
+            data_classes.ModelTemplate: dm.ViewId("sp_powerops_models", "ModelTemplate", "1"),
             data_classes.MultiScenarioMatrix: dm.ViewId("sp_powerops_models", "MultiScenarioMatrix", "1"),
             data_classes.PartialPostProcessingInput: dm.ViewId("sp_powerops_models", "PartialPostProcessingInput", "1"),
             data_classes.PartialPostProcessingOutput: dm.ViewId(
@@ -163,12 +166,14 @@ class TotalBidCalculationAPIs:
             data_classes.PriceArea: dm.ViewId("sp_powerops_models", "PriceArea", "1"),
             data_classes.PriceScenario: dm.ViewId("sp_powerops_models", "PriceScenario", "1"),
             data_classes.SHOPResult: dm.ViewId("sp_powerops_models", "SHOPResult", "1"),
+            data_classes.Scenario: dm.ViewId("sp_powerops_models", "Scenario", "1"),
             data_classes.TotalBidMatrixCalculationInput: dm.ViewId(
                 "sp_powerops_models", "TotalBidMatrixCalculationInput", "1"
             ),
             data_classes.TotalBidMatrixCalculationOutput: dm.ViewId(
                 "sp_powerops_models", "TotalBidMatrixCalculationOutput", "1"
             ),
+            data_classes.WatercourseShop: dm.ViewId("sp_powerops_models", "WatercourseShop", "1"),
         }
         self._view_by_read_class = view_by_read_class
 
@@ -179,14 +184,19 @@ class TotalBidCalculationAPIs:
         self.bid_method_day_ahead = BidMethodDayAheadAPI(client, view_by_read_class)
         self.bid_method_shop_multi_scenario = BidMethodSHOPMultiScenarioAPI(client, view_by_read_class)
         self.bid_method_water_value = BidMethodWaterValueAPI(client, view_by_read_class)
+        self.mapping = MappingAPI(client, view_by_read_class)
+        self.market_configuration = MarketConfigurationAPI(client, view_by_read_class)
+        self.model_template = ModelTemplateAPI(client, view_by_read_class)
         self.multi_scenario_matrix = MultiScenarioMatrixAPI(client, view_by_read_class)
         self.partial_post_processing_input = PartialPostProcessingInputAPI(client, view_by_read_class)
         self.partial_post_processing_output = PartialPostProcessingOutputAPI(client, view_by_read_class)
         self.price_area = PriceAreaAPI(client, view_by_read_class)
         self.price_scenario = PriceScenarioAPI(client, view_by_read_class)
         self.shop_result = SHOPResultAPI(client, view_by_read_class)
+        self.scenario = ScenarioAPI(client, view_by_read_class)
         self.total_bid_matrix_calculation_input = TotalBidMatrixCalculationInputAPI(client, view_by_read_class)
         self.total_bid_matrix_calculation_output = TotalBidMatrixCalculationOutputAPI(client, view_by_read_class)
+        self.watercourse_shop = WatercourseShopAPI(client, view_by_read_class)
 
 
 class WaterValueBasedDayAheadBidProcesAPIs:
@@ -422,7 +432,7 @@ class PowerOpsModelsV1Client:
     PowerOpsModelsV1Client
 
     Generated with:
-        pygen = 0.99.9
+        pygen = 0.99.10
         cognite-sdk = 7.17.3
         pydantic = 2.6.1
 
@@ -436,7 +446,7 @@ class PowerOpsModelsV1Client:
         else:
             raise ValueError(f"Expected CogniteClient or ClientConfig, got {type(config_or_client)}")
         # The client name is used for aggregated logging of Pygen Usage
-        client.config.client_name = "CognitePygen:0.99.9"
+        client.config.client_name = "CognitePygen:0.99.10"
 
         self.shop_based_day_ahead_bid_process = SHOPBasedDayAheadBidProcesAPIs(client)
         self.total_bid_calculation = TotalBidCalculationAPIs(client)
@@ -483,8 +493,9 @@ class PowerOpsModelsV1Client:
             instances = items.to_instances_write(self._view_by_read_class, write_none)
         else:
             instances = data_classes.ResourcesWrite()
+            cache: set[tuple[str, str]] = set()
             for item in items:
-                instances.extend(item.to_instances_write(self._view_by_read_class, write_none))
+                instances.extend(item._to_instances_write(cache, self._view_by_read_class, write_none))
         result = self._client.data_modeling.instances.apply(
             nodes=instances.nodes,
             edges=instances.edges,
