@@ -80,8 +80,8 @@ def main():
                     if any(n.external_id.startswith(f"{v.external_id.lower()}_") for v in leaf_views)
                 ]
             elif view_id.external_id.startswith("PriceArea"):
-                expected_nodes = [n for n in mock_data.nodes if n.external_id.startswith("pricearea_")]
-                expected_node_count = node_count
+                expected_nodes = [n for n in mock_data.nodes if n.external_id.startswith("pricearea")]
+                expected_node_count = len(expected_nodes)
             else:
                 expected_nodes = [n for n in mock_data.nodes if n.external_id.startswith(view_id.external_id.lower())]
                 expected_node_count = node_count

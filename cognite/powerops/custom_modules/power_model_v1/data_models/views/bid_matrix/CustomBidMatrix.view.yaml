@@ -7,6 +7,11 @@ filter:
     - type: container
       space: '{{powerops_models}}'
       externalId: BidMatrix
+  - equals:
+      property:
+        - node
+        - space
+      value: '{{powerops_instance_space}}'
   - not:
       in:
         property:
