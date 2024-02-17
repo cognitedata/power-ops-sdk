@@ -176,3 +176,14 @@
   externalId: BidDocument
 - space: {{powerops_type_space}}
   externalId: ScenarioBase
+
+
+# Benchmarking Types
+- space: {{powerops_type_space}}
+  externalId: BenchmarkingCollectorInput
+- space: {{powerops_type_space}}
+  externalId: BenchmarkingCollectorOutput
+- space: {{powerops_type_space}}
+  externalId: TaskDispatcherBenchmarkingInput
+- space: {{powerops_type_space}}
+  externalId: TaskDispatcherBenchmarkingOutput

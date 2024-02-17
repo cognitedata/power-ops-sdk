@@ -26,4 +26,16 @@ implements:
   version: '{{version}}'
   type: view
 version: '{{version}}'
-properties: {}
+properties:
+  shopObjectiveValue:
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionMetadata
+      type: container
+    containerPropertyIdentifier: data
+    name: shopObjectiveValue
+    source:
+      space: '{{powerops_models}}'
+      externalId: ShopObjectiveValue
+      version: '{{version}}'
+      type: view
