@@ -14,9 +14,9 @@ filter:
         - type
         values:
         - space: '{{powerops_type_space}}'
-          externalId: DayAheadSHOPMultiScenario
+          externalId: BidMethodSHOPMultiScenario
         - space: '{{powerops_type_space}}'
-          externalId: DayAheadWaterValueBased
+          externalId: BidMethodWaterValue
 implements:
 - space: '{{powerops_models}}'
   externalId: BidMethod
