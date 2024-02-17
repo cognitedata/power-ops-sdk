@@ -37,7 +37,7 @@ def main():
         print(f"Generated {len(mock_data.nodes)} nodes for {len(data_model.views)} views.")
 
         # Write to all views
-        mock_data.deploy(client, exclude={"timeseries", "files", "sequences"})
+        mock_data.deploy(client)
         print(f"Deployed {len(mock_data.nodes)} nodes to {len(data_model.views)} views.")
 
         # Check Read.
