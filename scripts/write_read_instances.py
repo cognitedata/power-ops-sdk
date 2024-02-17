@@ -71,7 +71,7 @@ def main():
                 continue
 
             # PriceArea have three different versions, that all picks up the same nodes.
-            if view_id in leaf_views_by_parent or view_id.external_id.startswith("PriceArea"):
+            if view_id in leaf_views_by_parent:
                 leaf_views = leaf_views_by_parent[view_id]
                 expected_node_count = len(leaf_views) * node_count
                 expected_nodes = [
@@ -79,6 +79,9 @@ def main():
                     for n in mock_data.nodes
                     if any(n.external_id.startswith(f"{v.external_id.lower()}_") for v in leaf_views)
                 ]
+            elif view_id.external_id.startswith("PriceArea"):
+                expected_nodes = [n for n in mock_data.nodes if n.external_id.startswith("pricearea_")]
+                expected_node_count = node_count
             else:
                 expected_nodes = [n for n in mock_data.nodes if n.external_id.startswith(view_id.external_id.lower())]
                 expected_node_count = node_count

@@ -7,9 +7,6 @@ filter:
   - hasData:
     - type: container
       space: '{{powerops_models}}'
-      externalId: BidConfiguration
-    - type: container
-      space: '{{powerops_models}}'
       externalId: FunctionData
   - equals:
       property:
@@ -49,9 +46,9 @@ properties:
   priceArea:
     container:
       space: '{{powerops_models}}'
-      externalId: BidConfiguration
+      externalId: FunctionData
       type: container
-    containerPropertyIdentifier: priceArea
+    containerPropertyIdentifier: direct2
     name: priceArea
     description: The price area related to the bid calculation task
     source:
