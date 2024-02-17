@@ -70,8 +70,7 @@ tomli-w = "^1.0.0"
 tabulate = "^0.9"
 #cognite-toolkit = {git="https://github.com/cognitedata/cdf-project-templates.git", branch="power"}
 cognite-toolkit = {version="0.1.0b8"}
-#cognite-pygen = {version = ">=0.99.10", extras = ["all"]}
-cognite-pygen = {git="https://github.com/cognitedata/pygen.git", branch="model-prefix"}
+cognite-pygen = {version = ">=0.99.10", extras = ["all"]}
 
 mkdocs =  {version="*", optional=true}
 mkdocs-jupyter = {version="*", optional=true}
