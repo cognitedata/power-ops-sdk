@@ -16,13 +16,6 @@ filter:
       - node
       - space
       value: '{{powerops_instance_space}}'
-  - equals:
-      property:
-      - node
-      - type
-      value:
-        externalId: BidMethodDayAhead
-        space: '{{powerops_type_space}}'
 implements:
   - space: '{{powerops_models}}'
     externalId: BidMethod
