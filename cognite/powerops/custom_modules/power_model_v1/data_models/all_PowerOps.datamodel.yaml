@@ -251,3 +251,27 @@ views:
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
+- space: '{{powerops_models}}'
+  externalId: ShopObjectiveValue
+  version: '{{version}}'
+  type: view
+- externalId: TaskDispatcherBenchmarkingInput
+  space: '{{powerops_models}}'
+  version: '{{version}}'
+  type: view
+- externalId: TaskDispatcherBenchmarkingOutput
+  space: '{{powerops_models}}'
+  version: '{{version}}'
+  type: view
+- externalId: BenchmarkingCollectorInput
+  space: '{{powerops_models}}'
+  version: '{{version}}'
+  type: view
+- externalId: BenchmarkingCollectorOutput
+  space: '{{powerops_models}}'
+  version: '{{version}}'
+  type: view
+- externalId: BidDocumentDayAheadSimple
+  space: '{{powerops_models}}'
+  version: '{{version}}'
+  type: view
