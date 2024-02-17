@@ -471,7 +471,7 @@ format = ["black (>=24.1.0)"]
 type = "git"
 url = "https://github.com/cognitedata/pygen.git"
 reference = "bughunting"
-resolved_reference = "b595e4f51f1810925614132c1da2732eb81dd27c"
+resolved_reference = "cd8333e9f32ce3aa2dc07826fd791cc674deb343"
 
 [[package]]
 name = "cognite-sdk"
