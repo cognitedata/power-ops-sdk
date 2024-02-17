@@ -14,8 +14,10 @@ from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelWrite,
     ResourcesWriteResult,
     WaterPartialBidCalculationInput,
+    WaterPartialBidCalculationInputWrite,
     WaterPartialBidCalculationInputFields,
     WaterPartialBidCalculationInputList,
+    WaterPartialBidCalculationInputWriteList,
     WaterPartialBidCalculationInputTextFields,
 )
 from cognite.powerops.client._generated.v1.data_classes._water_partial_bid_calculation_input import (
@@ -26,7 +28,7 @@ from ._core import (
     DEFAULT_LIMIT_READ,
     DEFAULT_QUERY_LIMIT,
     Aggregations,
-    NodeReadAPI,
+    NodeAPI,
     SequenceNotStr,
     QueryStep,
     QueryBuilder,
@@ -35,7 +37,7 @@ from .water_partial_bid_calculation_input_query import WaterPartialBidCalculatio
 
 
 class WaterPartialBidCalculationInputAPI(
-    NodeReadAPI[WaterPartialBidCalculationInput, WaterPartialBidCalculationInputList]
+    NodeAPI[WaterPartialBidCalculationInput, WaterPartialBidCalculationInputWrite, WaterPartialBidCalculationInputList]
 ):
     def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
         view_id = view_by_read_class[WaterPartialBidCalculationInput]
@@ -44,6 +46,7 @@ class WaterPartialBidCalculationInputAPI(
             sources=view_id,
             class_type=WaterPartialBidCalculationInput,
             class_list=WaterPartialBidCalculationInputList,
+            class_write_list=WaterPartialBidCalculationInputWriteList,
             view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
@@ -56,6 +59,8 @@ class WaterPartialBidCalculationInputAPI(
         max_process_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
         calculation_task: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -71,6 +76,8 @@ class WaterPartialBidCalculationInputAPI(
             max_process_step: The maximum value of the process step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
+            function_call_id: The function call id to filter on.
+            function_call_id_prefix: The prefix of the function call id to filter on.
             calculation_task: The calculation task to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -90,6 +97,8 @@ class WaterPartialBidCalculationInputAPI(
             max_process_step,
             function_name,
             function_name_prefix,
+            function_call_id,
+            function_call_id_prefix,
             calculation_task,
             external_id_prefix,
             space,
@@ -97,6 +106,48 @@ class WaterPartialBidCalculationInputAPI(
         )
         builder = QueryBuilder(WaterPartialBidCalculationInputList)
         return WaterPartialBidCalculationInputQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
+
+    def apply(
+        self,
+        water_partial_bid_calculation_input: (
+            WaterPartialBidCalculationInputWrite | Sequence[WaterPartialBidCalculationInputWrite]
+        ),
+        replace: bool = False,
+        write_none: bool = False,
+    ) -> ResourcesWriteResult:
+        """Add or update (upsert) water partial bid calculation inputs.
+
+        Args:
+            water_partial_bid_calculation_input: Water partial bid calculation input or sequence of water partial bid calculation inputs to upsert.
+            replace (bool): How do we behave when a property value exists? Do we replace all matching and existing values with the supplied values (true)?
+                Or should we merge in new values for properties together with the existing values (false)? Note: This setting applies for all nodes or edges specified in the ingestion call.
+            write_none (bool): This method, will by default, skip properties that are set to None. However, if you want to set properties to None,
+                you can set this parameter to True. Note this only applies to properties that are nullable.
+        Returns:
+            Created instance(s), i.e., nodes, edges, and time series.
+
+        Examples:
+
+            Create a new water_partial_bid_calculation_input:
+
+                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
+                >>> from cognite.powerops.client._generated.v1.data_classes import WaterPartialBidCalculationInputWrite
+                >>> client = PowerOpsModelsV1Client()
+                >>> water_partial_bid_calculation_input = WaterPartialBidCalculationInputWrite(external_id="my_water_partial_bid_calculation_input", ...)
+                >>> result = client.water_partial_bid_calculation_input.apply(water_partial_bid_calculation_input)
+
+        """
+        warnings.warn(
+            "The .apply method is deprecated and will be removed in v1.0. "
+            "Please use the .upsert method on the client instead. This means instead of "
+            "`my_client.water_partial_bid_calculation_input.apply(my_items)` please use `my_client.upsert(my_items)`."
+            "The motivation is that all apply methods are the same, and having one apply method per API "
+            " class encourages users to create items in small batches, which is inefficient."
+            "In addition, .upsert method is more descriptive of what the method does.",
+            UserWarning,
+            stacklevel=2,
+        )
+        return self._apply(water_partial_bid_calculation_input, replace, write_none)
 
     def delete(
         self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
@@ -174,6 +225,8 @@ class WaterPartialBidCalculationInputAPI(
         max_process_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
         calculation_task: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -191,6 +244,8 @@ class WaterPartialBidCalculationInputAPI(
             max_process_step: The maximum value of the process step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
+            function_call_id: The function call id to filter on.
+            function_call_id_prefix: The prefix of the function call id to filter on.
             calculation_task: The calculation task to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -217,6 +272,8 @@ class WaterPartialBidCalculationInputAPI(
             max_process_step,
             function_name,
             function_name_prefix,
+            function_call_id,
+            function_call_id_prefix,
             calculation_task,
             external_id_prefix,
             space,
@@ -247,6 +304,8 @@ class WaterPartialBidCalculationInputAPI(
         max_process_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
         calculation_task: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -275,6 +334,8 @@ class WaterPartialBidCalculationInputAPI(
         max_process_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
         calculation_task: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -302,6 +363,8 @@ class WaterPartialBidCalculationInputAPI(
         max_process_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
         calculation_task: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -322,6 +385,8 @@ class WaterPartialBidCalculationInputAPI(
             max_process_step: The maximum value of the process step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
+            function_call_id: The function call id to filter on.
+            function_call_id_prefix: The prefix of the function call id to filter on.
             calculation_task: The calculation task to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -349,6 +414,8 @@ class WaterPartialBidCalculationInputAPI(
             max_process_step,
             function_name,
             function_name_prefix,
+            function_call_id,
+            function_call_id_prefix,
             calculation_task,
             external_id_prefix,
             space,
@@ -380,6 +447,8 @@ class WaterPartialBidCalculationInputAPI(
         max_process_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
         calculation_task: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -399,6 +468,8 @@ class WaterPartialBidCalculationInputAPI(
             max_process_step: The maximum value of the process step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
+            function_call_id: The function call id to filter on.
+            function_call_id_prefix: The prefix of the function call id to filter on.
             calculation_task: The calculation task to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -417,6 +488,8 @@ class WaterPartialBidCalculationInputAPI(
             max_process_step,
             function_name,
             function_name_prefix,
+            function_call_id,
+            function_call_id_prefix,
             calculation_task,
             external_id_prefix,
             space,
@@ -441,6 +514,8 @@ class WaterPartialBidCalculationInputAPI(
         max_process_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
         calculation_task: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
@@ -456,6 +531,8 @@ class WaterPartialBidCalculationInputAPI(
             max_process_step: The maximum value of the process step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
+            function_call_id: The function call id to filter on.
+            function_call_id_prefix: The prefix of the function call id to filter on.
             calculation_task: The calculation task to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
@@ -482,6 +559,8 @@ class WaterPartialBidCalculationInputAPI(
             max_process_step,
             function_name,
             function_name_prefix,
+            function_call_id,
+            function_call_id_prefix,
             calculation_task,
             external_id_prefix,
             space,

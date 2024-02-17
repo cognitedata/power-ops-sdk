@@ -4,12 +4,22 @@ name: Scenario
 description: SHOP scenario that holds all data needed for a shop run. May be unprocessed
   or processed
 filter:
-  equals:
-    property:
-    - '{{powerops_models}}'
-    - ScenarioBase/{{version}}
-    - isReady
-    value: 'True'
+  and:
+    - hasData:
+        - type: container
+          space: '{{powerops_models}}'
+          externalId: Scenario
+    - equals:
+        property:
+          - node
+          - space
+        value: '{{powerops_instance_space}}'
+    - equals:
+        property:
+        - '{{powerops_models}}'
+        - Scenario
+        - isReady
+        value: 'true'
 implements:
 - space: '{{powerops_models}}'
   externalId: ScenarioBase

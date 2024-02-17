@@ -36,7 +36,7 @@ views:
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
-- externalId: PriceAreaDayAhead
+- externalId: PriceArea
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
@@ -61,6 +61,26 @@ views:
   type: view
   version: '{{version}}'
 - externalId: SHOPResult
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: MarketConfiguration
+  space: "{{powerops_models}}"
+  type: view
+  version: "{{version}}"
+- externalId: Scenario
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: ModelTemplate
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: Mapping
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: WatercourseShop
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'

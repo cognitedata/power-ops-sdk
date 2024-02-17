@@ -13,13 +13,6 @@ filter:
       - node
       - space
       value: '{{powerops_instance_space}}'
-  - equals:
-      property:
-      - node
-      - type
-      value:
-        externalId: FunctionInput
-        space: '{{powerops_type_space}}'
 implements: []
 version: '{{version}}'
 properties:
@@ -47,3 +40,11 @@ properties:
     containerPropertyIdentifier: functionName
     name: functionName
     description: The name of the function
+  functionCallId:
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionMetadata
+      type: container
+    containerPropertyIdentifier: functionCallId
+    name: functionCallId
+    description: The function call id

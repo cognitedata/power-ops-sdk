@@ -8,30 +8,20 @@ filter:
     - type: container
       space: '{{powerops_models}}'
       externalId: BidConfiguration
-    - type: container
-      space: '{{powerops_models}}'
-      externalId: FunctionData
   - equals:
       property:
       - node
       - space
       value: '{{powerops_instance_space}}'
-  - equals:
-      property:
-      - node
-      - type
-      value:
-        space: '{{powerops_type_space}}'
-        externalId: BidConfiguration
 implements: []
 version: '{{version}}'
 properties:
   marketConfiguration:
     container:
       space: '{{powerops_models}}'
-      externalId: FunctionData
+      externalId: BidConfiguration
       type: container
-    containerPropertyIdentifier: direct2
+    containerPropertyIdentifier: marketConfiguration
     name: marketConfiguration
     description: The bid method related to the bid configuration
     source:

@@ -1,0 +1,46 @@
+space: '{{powerops_models}}'
+externalId: BasicBidMatrixRaw
+name: BasicBidMatrixRaw
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: '{{powerops_models}}'
+          externalId: BidMatrix
+    - equals:
+        property:
+          - node
+          - space
+        value: '{{powerops_instance_space}}'
+    - equals:
+        property:
+        - node
+        - type
+        value:
+          space: '{{powerops_type_space}}'
+          externalId: DayAheadBasicBidMatrix
+    - equals:
+        property:
+          - '{{powerops_models}}'
+          - BidMatrix
+          - isProcessed
+        value: 'false'
+implements:
+- space: '{{powerops_models}}'
+  externalId: BidMatrixRaw
+  version: '{{version}}'
+  type: view
+version: '{{version}}'
+properties:
+  method:
+    container:
+      space: '{{powerops_models}}'
+      externalId: BidMatrix
+      type: container
+    containerPropertyIdentifier: method
+    name: method
+    source:
+      space: '{{powerops_models}}'
+      externalId: BidMethodDayAhead
+      version: '{{version}}'
+      type: view

@@ -20,6 +20,7 @@ from ._api.bid_matrix import BidMatrixAPI
 from ._api.bid_matrix_raw import BidMatrixRawAPI
 from ._api.bid_method import BidMethodAPI
 from ._api.bid_method_afrr import BidMethodAFRRAPI
+from ._api.bid_method_custom import BidMethodCustomAPI
 from ._api.bid_method_day_ahead import BidMethodDayAheadAPI
 from ._api.bid_method_shop_multi_scenario import BidMethodSHOPMultiScenarioAPI
 from ._api.bid_method_water_value import BidMethodWaterValueAPI
@@ -31,6 +32,7 @@ from ._api.mapping import MappingAPI
 from ._api.market_configuration import MarketConfigurationAPI
 from ._api.model_template import ModelTemplateAPI
 from ._api.multi_scenario_matrix import MultiScenarioMatrixAPI
+from ._api.multi_scenario_matrix_raw import MultiScenarioMatrixRawAPI
 from ._api.partial_post_processing_input import PartialPostProcessingInputAPI
 from ._api.partial_post_processing_output import PartialPostProcessingOutputAPI
 from ._api.plant import PlantAPI
@@ -40,7 +42,6 @@ from ._api.preprocessor_output import PreprocessorOutputAPI
 from ._api.price_area import PriceAreaAPI
 from ._api.price_area_afrr import PriceAreaAFRRAPI
 from ._api.price_area_asset import PriceAreaAssetAPI
-from ._api.price_area_day_ahead import PriceAreaDayAheadAPI
 from ._api.price_scenario import PriceScenarioAPI
 from ._api.reservoir import ReservoirAPI
 from ._api.shop_result import SHOPResultAPI
@@ -82,12 +83,16 @@ class SHOPBasedDayAheadBidProcesAPIs:
             data_classes.Alert: dm.ViewId("sp_powerops_models", "Alert", "1"),
             data_classes.BidConfigurationShop: dm.ViewId("sp_powerops_models", "BidConfigurationShop", "1"),
             data_classes.BidMatrixRaw: dm.ViewId("sp_powerops_models", "BidMatrixRaw", "1"),
-            data_classes.BidMethodDayAhead: dm.ViewId("sp_powerops_models", "BidMethodDayAhead", "1"),
+            data_classes.BidMethodSHOPMultiScenario: dm.ViewId("sp_powerops_models", "BidMethodSHOPMultiScenario", "1"),
             data_classes.Mapping: dm.ViewId("sp_powerops_models", "Mapping", "1"),
+            data_classes.MarketConfiguration: dm.ViewId("sp_powerops_models", "MarketConfiguration", "1"),
             data_classes.ModelTemplate: dm.ViewId("sp_powerops_models", "ModelTemplate", "1"),
+            data_classes.MultiScenarioMatrixRaw: dm.ViewId("sp_powerops_models", "MultiScenarioMatrixRaw", "1"),
             data_classes.PlantShop: dm.ViewId("sp_powerops_models", "PlantShop", "1"),
             data_classes.PreprocessorInput: dm.ViewId("sp_powerops_models", "PreprocessorInput", "1"),
             data_classes.PreprocessorOutput: dm.ViewId("sp_powerops_models", "PreprocessorOutput", "1"),
+            data_classes.PriceArea: dm.ViewId("sp_powerops_models", "PriceArea", "1"),
+            data_classes.PriceScenario: dm.ViewId("sp_powerops_models", "PriceScenario", "1"),
             data_classes.SHOPResult: dm.ViewId("sp_powerops_models", "SHOPResult", "1"),
             data_classes.SHOPTriggerInput: dm.ViewId("sp_powerops_models", "SHOPTriggerInput", "1"),
             data_classes.SHOPTriggerOutput: dm.ViewId("sp_powerops_models", "SHOPTriggerOutput", "1"),
@@ -108,12 +113,16 @@ class SHOPBasedDayAheadBidProcesAPIs:
         self.alert = AlertAPI(client, view_by_read_class)
         self.bid_configuration_shop = BidConfigurationShopAPI(client, view_by_read_class)
         self.bid_matrix_raw = BidMatrixRawAPI(client, view_by_read_class)
-        self.bid_method_day_ahead = BidMethodDayAheadAPI(client, view_by_read_class)
+        self.bid_method_shop_multi_scenario = BidMethodSHOPMultiScenarioAPI(client, view_by_read_class)
         self.mapping = MappingAPI(client, view_by_read_class)
+        self.market_configuration = MarketConfigurationAPI(client, view_by_read_class)
         self.model_template = ModelTemplateAPI(client, view_by_read_class)
+        self.multi_scenario_matrix_raw = MultiScenarioMatrixRawAPI(client, view_by_read_class)
         self.plant_shop = PlantShopAPI(client, view_by_read_class)
         self.preprocessor_input = PreprocessorInputAPI(client, view_by_read_class)
         self.preprocessor_output = PreprocessorOutputAPI(client, view_by_read_class)
+        self.price_area = PriceAreaAPI(client, view_by_read_class)
+        self.price_scenario = PriceScenarioAPI(client, view_by_read_class)
         self.shop_result = SHOPResultAPI(client, view_by_read_class)
         self.shop_trigger_input = SHOPTriggerInputAPI(client, view_by_read_class)
         self.shop_trigger_output = SHOPTriggerOutputAPI(client, view_by_read_class)
@@ -151,7 +160,7 @@ class TotalBidCalculationAPIs:
             data_classes.PartialPostProcessingOutput: dm.ViewId(
                 "sp_powerops_models", "PartialPostProcessingOutput", "1"
             ),
-            data_classes.PriceAreaDayAhead: dm.ViewId("sp_powerops_models", "PriceAreaDayAhead", "1"),
+            data_classes.PriceArea: dm.ViewId("sp_powerops_models", "PriceArea", "1"),
             data_classes.PriceScenario: dm.ViewId("sp_powerops_models", "PriceScenario", "1"),
             data_classes.SHOPResult: dm.ViewId("sp_powerops_models", "SHOPResult", "1"),
             data_classes.TotalBidMatrixCalculationInput: dm.ViewId(
@@ -173,7 +182,7 @@ class TotalBidCalculationAPIs:
         self.multi_scenario_matrix = MultiScenarioMatrixAPI(client, view_by_read_class)
         self.partial_post_processing_input = PartialPostProcessingInputAPI(client, view_by_read_class)
         self.partial_post_processing_output = PartialPostProcessingOutputAPI(client, view_by_read_class)
-        self.price_area_day_ahead = PriceAreaDayAheadAPI(client, view_by_read_class)
+        self.price_area = PriceAreaAPI(client, view_by_read_class)
         self.price_scenario = PriceScenarioAPI(client, view_by_read_class)
         self.shop_result = SHOPResultAPI(client, view_by_read_class)
         self.total_bid_matrix_calculation_input = TotalBidMatrixCalculationInputAPI(client, view_by_read_class)
@@ -197,13 +206,17 @@ class WaterValueBasedDayAheadBidProcesAPIs:
             data_classes.BidCalculationTask: dm.ViewId("sp_powerops_models", "BidCalculationTask", "1"),
             data_classes.BidConfigurationWater: dm.ViewId("sp_powerops_models", "BidConfigurationWater", "1"),
             data_classes.BidMatrixRaw: dm.ViewId("sp_powerops_models", "BidMatrixRaw", "1"),
-            data_classes.BidMethodDayAhead: dm.ViewId("sp_powerops_models", "BidMethodDayAhead", "1"),
             data_classes.BidMethodWaterValue: dm.ViewId("sp_powerops_models", "BidMethodWaterValue", "1"),
+            data_classes.Generator: dm.ViewId("sp_powerops_models", "Generator", "1"),
+            data_classes.GeneratorEfficiencyCurve: dm.ViewId("sp_powerops_models", "GeneratorEfficiencyCurve", "1"),
+            data_classes.MarketConfiguration: dm.ViewId("sp_powerops_models", "MarketConfiguration", "1"),
             data_classes.Plant: dm.ViewId("sp_powerops_models", "Plant", "1"),
-            data_classes.PriceAreaDayAhead: dm.ViewId("sp_powerops_models", "PriceAreaDayAhead", "1"),
+            data_classes.PriceArea: dm.ViewId("sp_powerops_models", "PriceArea", "1"),
             data_classes.PriceScenario: dm.ViewId("sp_powerops_models", "PriceScenario", "1"),
+            data_classes.Reservoir: dm.ViewId("sp_powerops_models", "Reservoir", "1"),
             data_classes.TaskDispatcherWaterInput: dm.ViewId("sp_powerops_models", "TaskDispatcherWaterInput", "1"),
             data_classes.TaskDispatcherWaterOutput: dm.ViewId("sp_powerops_models", "TaskDispatcherWaterOutput", "1"),
+            data_classes.TurbineEfficiencyCurve: dm.ViewId("sp_powerops_models", "TurbineEfficiencyCurve", "1"),
             data_classes.WaterPartialBidCalculationInput: dm.ViewId(
                 "sp_powerops_models", "WaterPartialBidCalculationInput", "1"
             ),
@@ -218,13 +231,17 @@ class WaterValueBasedDayAheadBidProcesAPIs:
         self.bid_calculation_task = BidCalculationTaskAPI(client, view_by_read_class)
         self.bid_configuration_water = BidConfigurationWaterAPI(client, view_by_read_class)
         self.bid_matrix_raw = BidMatrixRawAPI(client, view_by_read_class)
-        self.bid_method_day_ahead = BidMethodDayAheadAPI(client, view_by_read_class)
         self.bid_method_water_value = BidMethodWaterValueAPI(client, view_by_read_class)
+        self.generator = GeneratorAPI(client, view_by_read_class)
+        self.generator_efficiency_curve = GeneratorEfficiencyCurveAPI(client, view_by_read_class)
+        self.market_configuration = MarketConfigurationAPI(client, view_by_read_class)
         self.plant = PlantAPI(client, view_by_read_class)
-        self.price_area_day_ahead = PriceAreaDayAheadAPI(client, view_by_read_class)
+        self.price_area = PriceAreaAPI(client, view_by_read_class)
         self.price_scenario = PriceScenarioAPI(client, view_by_read_class)
+        self.reservoir = ReservoirAPI(client, view_by_read_class)
         self.task_dispatcher_water_input = TaskDispatcherWaterInputAPI(client, view_by_read_class)
         self.task_dispatcher_water_output = TaskDispatcherWaterOutputAPI(client, view_by_read_class)
+        self.turbine_efficiency_curve = TurbineEfficiencyCurveAPI(client, view_by_read_class)
         self.water_partial_bid_calculation_input = WaterPartialBidCalculationInputAPI(client, view_by_read_class)
         self.water_partial_bid_calculation_output = WaterPartialBidCalculationOutputAPI(client, view_by_read_class)
         self.watercourse = WatercourseAPI(client, view_by_read_class)
@@ -256,7 +273,6 @@ class DayAheadConfigurationAPIs:
             data_classes.Plant: dm.ViewId("sp_powerops_models", "Plant", "1"),
             data_classes.PlantShop: dm.ViewId("sp_powerops_models", "PlantShop", "1"),
             data_classes.PriceArea: dm.ViewId("sp_powerops_models", "PriceArea", "1"),
-            data_classes.PriceAreaDayAhead: dm.ViewId("sp_powerops_models", "PriceAreaDayAhead", "1"),
             data_classes.PriceScenario: dm.ViewId("sp_powerops_models", "PriceScenario", "1"),
             data_classes.Reservoir: dm.ViewId("sp_powerops_models", "Reservoir", "1"),
             data_classes.TurbineEfficiencyCurve: dm.ViewId("sp_powerops_models", "TurbineEfficiencyCurve", "1"),
@@ -278,7 +294,6 @@ class DayAheadConfigurationAPIs:
         self.plant = PlantAPI(client, view_by_read_class)
         self.plant_shop = PlantShopAPI(client, view_by_read_class)
         self.price_area = PriceAreaAPI(client, view_by_read_class)
-        self.price_area_day_ahead = PriceAreaDayAheadAPI(client, view_by_read_class)
         self.price_scenario = PriceScenarioAPI(client, view_by_read_class)
         self.reservoir = ReservoirAPI(client, view_by_read_class)
         self.turbine_efficiency_curve = TurbineEfficiencyCurveAPI(client, view_by_read_class)
@@ -331,7 +346,6 @@ class PowerAssetAPIs:
             data_classes.Generator: dm.ViewId("sp_powerops_models", "Generator", "1"),
             data_classes.GeneratorEfficiencyCurve: dm.ViewId("sp_powerops_models", "GeneratorEfficiencyCurve", "1"),
             data_classes.Plant: dm.ViewId("sp_powerops_models", "Plant", "1"),
-            data_classes.PriceArea: dm.ViewId("sp_powerops_models", "PriceArea", "1"),
             data_classes.PriceAreaAsset: dm.ViewId("sp_powerops_models", "PriceAreaAsset", "1"),
             data_classes.PriceScenario: dm.ViewId("sp_powerops_models", "PriceScenario", "1"),
             data_classes.Reservoir: dm.ViewId("sp_powerops_models", "Reservoir", "1"),
@@ -344,7 +358,6 @@ class PowerAssetAPIs:
         self.generator = GeneratorAPI(client, view_by_read_class)
         self.generator_efficiency_curve = GeneratorEfficiencyCurveAPI(client, view_by_read_class)
         self.plant = PlantAPI(client, view_by_read_class)
-        self.price_area = PriceAreaAPI(client, view_by_read_class)
         self.price_area_asset = PriceAreaAssetAPI(client, view_by_read_class)
         self.price_scenario = PriceScenarioAPI(client, view_by_read_class)
         self.reservoir = ReservoirAPI(client, view_by_read_class)
@@ -369,14 +382,19 @@ class DayAheadBidAPIs:
             data_classes.BasicBidMatrix: dm.ViewId("sp_powerops_models", "BasicBidMatrix", "1"),
             data_classes.BidDocumentDayAhead: dm.ViewId("sp_powerops_models", "BidDocumentDayAhead", "1"),
             data_classes.BidMatrix: dm.ViewId("sp_powerops_models", "BidMatrix", "1"),
+            data_classes.BidMethodCustom: dm.ViewId("sp_powerops_models", "BidMethodCustom", "1"),
             data_classes.BidMethodDayAhead: dm.ViewId("sp_powerops_models", "BidMethodDayAhead", "1"),
             data_classes.BidMethodSHOPMultiScenario: dm.ViewId("sp_powerops_models", "BidMethodSHOPMultiScenario", "1"),
             data_classes.BidMethodWaterValue: dm.ViewId("sp_powerops_models", "BidMethodWaterValue", "1"),
             data_classes.CustomBidMatrix: dm.ViewId("sp_powerops_models", "CustomBidMatrix", "1"),
+            data_classes.Mapping: dm.ViewId("sp_powerops_models", "Mapping", "1"),
+            data_classes.ModelTemplate: dm.ViewId("sp_powerops_models", "ModelTemplate", "1"),
             data_classes.MultiScenarioMatrix: dm.ViewId("sp_powerops_models", "MultiScenarioMatrix", "1"),
-            data_classes.PriceAreaDayAhead: dm.ViewId("sp_powerops_models", "PriceAreaDayAhead", "1"),
+            data_classes.PriceArea: dm.ViewId("sp_powerops_models", "PriceArea", "1"),
             data_classes.PriceScenario: dm.ViewId("sp_powerops_models", "PriceScenario", "1"),
             data_classes.SHOPResult: dm.ViewId("sp_powerops_models", "SHOPResult", "1"),
+            data_classes.Scenario: dm.ViewId("sp_powerops_models", "Scenario", "1"),
+            data_classes.WatercourseShop: dm.ViewId("sp_powerops_models", "WatercourseShop", "1"),
         }
         self._view_by_read_class = view_by_read_class
 
@@ -384,14 +402,19 @@ class DayAheadBidAPIs:
         self.basic_bid_matrix = BasicBidMatrixAPI(client, view_by_read_class)
         self.bid_document_day_ahead = BidDocumentDayAheadAPI(client, view_by_read_class)
         self.bid_matrix = BidMatrixAPI(client, view_by_read_class)
+        self.bid_method_custom = BidMethodCustomAPI(client, view_by_read_class)
         self.bid_method_day_ahead = BidMethodDayAheadAPI(client, view_by_read_class)
         self.bid_method_shop_multi_scenario = BidMethodSHOPMultiScenarioAPI(client, view_by_read_class)
         self.bid_method_water_value = BidMethodWaterValueAPI(client, view_by_read_class)
         self.custom_bid_matrix = CustomBidMatrixAPI(client, view_by_read_class)
+        self.mapping = MappingAPI(client, view_by_read_class)
+        self.model_template = ModelTemplateAPI(client, view_by_read_class)
         self.multi_scenario_matrix = MultiScenarioMatrixAPI(client, view_by_read_class)
-        self.price_area_day_ahead = PriceAreaDayAheadAPI(client, view_by_read_class)
+        self.price_area = PriceAreaAPI(client, view_by_read_class)
         self.price_scenario = PriceScenarioAPI(client, view_by_read_class)
         self.shop_result = SHOPResultAPI(client, view_by_read_class)
+        self.scenario = ScenarioAPI(client, view_by_read_class)
+        self.watercourse_shop = WatercourseShopAPI(client, view_by_read_class)
 
 
 class PowerOpsModelsV1Client:

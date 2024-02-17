@@ -12,13 +12,6 @@ filter:
       - node
       - space
       value: '{{powerops_instance_space}}'
-  - equals:
-      property:
-      - node
-      - type
-      value:
-        externalId: BidMatrix
-        space: '{{powerops_type_space}}'
 implements: []
 version: '{{version}}'
 properties:
@@ -50,18 +43,6 @@ properties:
       type: container
     containerPropertyIdentifier: assetId
     name: assetId
-  method:
-    container:
-      space: '{{powerops_models}}'
-      externalId: BidMatrix
-      type: container
-    containerPropertyIdentifier: method
-    name: method
-    source:
-      space: '{{powerops_models}}'
-      externalId: BidMethodDayAhead
-      version: '{{version}}'
-      type: view
   alerts:
     type:
       space: '{{powerops_type_space}}'

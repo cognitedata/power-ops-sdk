@@ -6,10 +6,7 @@ filter:
   - hasData:
     - type: container
       space: '{{powerops_models}}'
-      externalId: BidMethodDayAhead
-    - type: container
-      space: '{{powerops_models}}'
-      externalId: FunctionData
+      externalId: BidMethod
   - equals:
       property:
       - node

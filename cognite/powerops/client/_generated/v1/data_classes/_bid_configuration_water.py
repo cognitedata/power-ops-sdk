@@ -23,7 +23,7 @@ if TYPE_CHECKING:
     from ._bid_method_water_value import BidMethodWaterValue, BidMethodWaterValueWrite
     from ._market_configuration import MarketConfiguration, MarketConfigurationWrite
     from ._plant import Plant, PlantWrite
-    from ._price_area_day_ahead import PriceAreaDayAhead, PriceAreaDayAheadWrite
+    from ._price_area import PriceArea, PriceAreaWrite
     from ._watercourse import Watercourse, WatercourseWrite
 
 
@@ -57,7 +57,7 @@ class BidConfigurationWater(BidConfiguration):
         "sp_powerops_types", "BidConfigurationWater"
     )
     method: Union[BidMethodWaterValue, str, dm.NodeId, None] = Field(None, repr=False)
-    price_area: Union[PriceAreaDayAhead, str, dm.NodeId, None] = Field(None, repr=False, alias="priceArea")
+    price_area: Union[PriceArea, str, dm.NodeId, None] = Field(None, repr=False, alias="priceArea")
     plants: Union[list[Plant], list[str], None] = Field(default=None, repr=False)
     watercourses: Union[list[Watercourse], list[str], None] = Field(default=None, repr=False)
 
@@ -111,7 +111,7 @@ class BidConfigurationWaterWrite(BidConfigurationWrite):
         "sp_powerops_types", "BidConfigurationWater"
     )
     method: Union[BidMethodWaterValueWrite, str, dm.NodeId, None] = Field(None, repr=False)
-    price_area: Union[PriceAreaDayAheadWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="priceArea")
+    price_area: Union[PriceAreaWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="priceArea")
     plants: Union[list[PlantWrite], list[str], None] = Field(default=None, repr=False)
     watercourses: Union[list[WatercourseWrite], list[str], None] = Field(default=None, repr=False)
 

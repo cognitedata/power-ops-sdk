@@ -17,7 +17,7 @@ filter:
       - node
       - type
       value:
-        externalId: PriceAreaAsset
+        externalId: PriceArea
         space: '{{powerops_type_space}}'
 implements:
 - space: '{{powerops_models}}'

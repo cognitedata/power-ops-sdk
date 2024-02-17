@@ -7,7 +7,7 @@ filter:
   - hasData:
     - type: container
       space: '{{powerops_models}}'
-      externalId: FunctionData
+      externalId: FunctionMetadata
   - equals:
       property:
       - node
@@ -30,9 +30,9 @@ properties:
   marketConfig:
     container:
       space: '{{powerops_models}}'
-      externalId: FunctionData
+      externalId: FunctionMetadata
       type: container
-    containerPropertyIdentifier: direct1
+    containerPropertyIdentifier: data
     name: marketConfig
     source:
       space: '{{powerops_models}}'

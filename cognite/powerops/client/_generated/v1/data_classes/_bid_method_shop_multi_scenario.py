@@ -35,12 +35,11 @@ __all__ = [
 ]
 
 
-BidMethodSHOPMultiScenarioTextFields = Literal["name", "timezone"]
-BidMethodSHOPMultiScenarioFields = Literal["name", "timezone"]
+BidMethodSHOPMultiScenarioTextFields = Literal["name"]
+BidMethodSHOPMultiScenarioFields = Literal["name"]
 
 _BIDMETHODSHOPMULTISCENARIO_PROPERTIES_BY_FIELD = {
     "name": "name",
-    "timezone": "timezone",
 }
 
 
@@ -55,7 +54,6 @@ class BidMethodSHOPMultiScenario(BidMethodDayAhead):
         data_record: The data record of the bid method shop multi scenario node.
         name: Name for the BidMethod
         main_scenario: The main scenario to use when running the bid method
-        timezone: The timezone to use when running the bid method
         price_scenarios: The price scenarios to use in the shop run
     """
 
@@ -76,7 +74,6 @@ class BidMethodSHOPMultiScenario(BidMethodDayAhead):
             main_scenario=(
                 self.main_scenario.as_write() if isinstance(self.main_scenario, DomainModel) else self.main_scenario
             ),
-            timezone=self.timezone,
             price_scenarios=[
                 price_scenario.as_write() if isinstance(price_scenario, DomainModel) else price_scenario
                 for price_scenario in self.price_scenarios or []
@@ -104,7 +101,6 @@ class BidMethodSHOPMultiScenarioWrite(BidMethodDayAheadWrite):
         data_record: The data record of the bid method shop multi scenario node.
         name: Name for the BidMethod
         main_scenario: The main scenario to use when running the bid method
-        timezone: The timezone to use when running the bid method
         price_scenarios: The price scenarios to use in the shop run
     """
 
@@ -141,9 +137,6 @@ class BidMethodSHOPMultiScenarioWrite(BidMethodDayAheadWrite):
                     self.main_scenario if isinstance(self.main_scenario, str) else self.main_scenario.external_id
                 ),
             }
-
-        if self.timezone is not None:
-            properties["timezone"] = self.timezone
 
         if properties:
             this_node = dm.NodeApply(
@@ -224,8 +217,6 @@ def _create_bid_method_shop_multi_scenario_filter(
     name: str | list[str] | None = None,
     name_prefix: str | None = None,
     main_scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-    timezone: str | list[str] | None = None,
-    timezone_prefix: str | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -265,12 +256,6 @@ def _create_bid_method_shop_multi_scenario_filter(
                 values=[{"space": item[0], "externalId": item[1]} for item in main_scenario],
             )
         )
-    if isinstance(timezone, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("timezone"), value=timezone))
-    if timezone and isinstance(timezone, list):
-        filters.append(dm.filters.In(view_id.as_property_ref("timezone"), values=timezone))
-    if timezone_prefix is not None:
-        filters.append(dm.filters.Prefix(view_id.as_property_ref("timezone"), value=timezone_prefix))
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):

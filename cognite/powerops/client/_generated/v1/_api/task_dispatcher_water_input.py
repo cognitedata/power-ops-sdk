@@ -15,8 +15,10 @@ from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelWrite,
     ResourcesWriteResult,
     TaskDispatcherWaterInput,
+    TaskDispatcherWaterInputWrite,
     TaskDispatcherWaterInputFields,
     TaskDispatcherWaterInputList,
+    TaskDispatcherWaterInputWriteList,
     TaskDispatcherWaterInputTextFields,
 )
 from cognite.powerops.client._generated.v1.data_classes._task_dispatcher_water_input import (
@@ -27,7 +29,7 @@ from ._core import (
     DEFAULT_LIMIT_READ,
     DEFAULT_QUERY_LIMIT,
     Aggregations,
-    NodeReadAPI,
+    NodeAPI,
     SequenceNotStr,
     QueryStep,
     QueryBuilder,
@@ -35,7 +37,9 @@ from ._core import (
 from .task_dispatcher_water_input_query import TaskDispatcherWaterInputQueryAPI
 
 
-class TaskDispatcherWaterInputAPI(NodeReadAPI[TaskDispatcherWaterInput, TaskDispatcherWaterInputList]):
+class TaskDispatcherWaterInputAPI(
+    NodeAPI[TaskDispatcherWaterInput, TaskDispatcherWaterInputWrite, TaskDispatcherWaterInputList]
+):
     def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
         view_id = view_by_read_class[TaskDispatcherWaterInput]
         super().__init__(
@@ -43,6 +47,7 @@ class TaskDispatcherWaterInputAPI(NodeReadAPI[TaskDispatcherWaterInput, TaskDisp
             sources=view_id,
             class_type=TaskDispatcherWaterInput,
             class_list=TaskDispatcherWaterInputList,
+            class_write_list=TaskDispatcherWaterInputWriteList,
             view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
@@ -55,6 +60,8 @@ class TaskDispatcherWaterInputAPI(NodeReadAPI[TaskDispatcherWaterInput, TaskDisp
         max_process_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
         bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
@@ -72,6 +79,8 @@ class TaskDispatcherWaterInputAPI(NodeReadAPI[TaskDispatcherWaterInput, TaskDisp
             max_process_step: The maximum value of the process step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
+            function_call_id: The function call id to filter on.
+            function_call_id_prefix: The prefix of the function call id to filter on.
             bid_configuration: The bid configuration to filter on.
             min_bid_date: The minimum value of the bid date to filter on.
             max_bid_date: The maximum value of the bid date to filter on.
@@ -93,6 +102,8 @@ class TaskDispatcherWaterInputAPI(NodeReadAPI[TaskDispatcherWaterInput, TaskDisp
             max_process_step,
             function_name,
             function_name_prefix,
+            function_call_id,
+            function_call_id_prefix,
             bid_configuration,
             min_bid_date,
             max_bid_date,
@@ -102,6 +113,46 @@ class TaskDispatcherWaterInputAPI(NodeReadAPI[TaskDispatcherWaterInput, TaskDisp
         )
         builder = QueryBuilder(TaskDispatcherWaterInputList)
         return TaskDispatcherWaterInputQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
+
+    def apply(
+        self,
+        task_dispatcher_water_input: TaskDispatcherWaterInputWrite | Sequence[TaskDispatcherWaterInputWrite],
+        replace: bool = False,
+        write_none: bool = False,
+    ) -> ResourcesWriteResult:
+        """Add or update (upsert) task dispatcher water inputs.
+
+        Args:
+            task_dispatcher_water_input: Task dispatcher water input or sequence of task dispatcher water inputs to upsert.
+            replace (bool): How do we behave when a property value exists? Do we replace all matching and existing values with the supplied values (true)?
+                Or should we merge in new values for properties together with the existing values (false)? Note: This setting applies for all nodes or edges specified in the ingestion call.
+            write_none (bool): This method, will by default, skip properties that are set to None. However, if you want to set properties to None,
+                you can set this parameter to True. Note this only applies to properties that are nullable.
+        Returns:
+            Created instance(s), i.e., nodes, edges, and time series.
+
+        Examples:
+
+            Create a new task_dispatcher_water_input:
+
+                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
+                >>> from cognite.powerops.client._generated.v1.data_classes import TaskDispatcherWaterInputWrite
+                >>> client = PowerOpsModelsV1Client()
+                >>> task_dispatcher_water_input = TaskDispatcherWaterInputWrite(external_id="my_task_dispatcher_water_input", ...)
+                >>> result = client.task_dispatcher_water_input.apply(task_dispatcher_water_input)
+
+        """
+        warnings.warn(
+            "The .apply method is deprecated and will be removed in v1.0. "
+            "Please use the .upsert method on the client instead. This means instead of "
+            "`my_client.task_dispatcher_water_input.apply(my_items)` please use `my_client.upsert(my_items)`."
+            "The motivation is that all apply methods are the same, and having one apply method per API "
+            " class encourages users to create items in small batches, which is inefficient."
+            "In addition, .upsert method is more descriptive of what the method does.",
+            UserWarning,
+            stacklevel=2,
+        )
+        return self._apply(task_dispatcher_water_input, replace, write_none)
 
     def delete(
         self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
@@ -175,6 +226,8 @@ class TaskDispatcherWaterInputAPI(NodeReadAPI[TaskDispatcherWaterInput, TaskDisp
         max_process_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
         bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
@@ -194,6 +247,8 @@ class TaskDispatcherWaterInputAPI(NodeReadAPI[TaskDispatcherWaterInput, TaskDisp
             max_process_step: The maximum value of the process step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
+            function_call_id: The function call id to filter on.
+            function_call_id_prefix: The prefix of the function call id to filter on.
             bid_configuration: The bid configuration to filter on.
             min_bid_date: The minimum value of the bid date to filter on.
             max_bid_date: The maximum value of the bid date to filter on.
@@ -222,6 +277,8 @@ class TaskDispatcherWaterInputAPI(NodeReadAPI[TaskDispatcherWaterInput, TaskDisp
             max_process_step,
             function_name,
             function_name_prefix,
+            function_call_id,
+            function_call_id_prefix,
             bid_configuration,
             min_bid_date,
             max_bid_date,
@@ -254,6 +311,8 @@ class TaskDispatcherWaterInputAPI(NodeReadAPI[TaskDispatcherWaterInput, TaskDisp
         max_process_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
         bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
@@ -284,6 +343,8 @@ class TaskDispatcherWaterInputAPI(NodeReadAPI[TaskDispatcherWaterInput, TaskDisp
         max_process_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
         bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
@@ -313,6 +374,8 @@ class TaskDispatcherWaterInputAPI(NodeReadAPI[TaskDispatcherWaterInput, TaskDisp
         max_process_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
         bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
@@ -335,6 +398,8 @@ class TaskDispatcherWaterInputAPI(NodeReadAPI[TaskDispatcherWaterInput, TaskDisp
             max_process_step: The maximum value of the process step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
+            function_call_id: The function call id to filter on.
+            function_call_id_prefix: The prefix of the function call id to filter on.
             bid_configuration: The bid configuration to filter on.
             min_bid_date: The minimum value of the bid date to filter on.
             max_bid_date: The maximum value of the bid date to filter on.
@@ -364,6 +429,8 @@ class TaskDispatcherWaterInputAPI(NodeReadAPI[TaskDispatcherWaterInput, TaskDisp
             max_process_step,
             function_name,
             function_name_prefix,
+            function_call_id,
+            function_call_id_prefix,
             bid_configuration,
             min_bid_date,
             max_bid_date,
@@ -397,6 +464,8 @@ class TaskDispatcherWaterInputAPI(NodeReadAPI[TaskDispatcherWaterInput, TaskDisp
         max_process_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
         bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
@@ -418,6 +487,8 @@ class TaskDispatcherWaterInputAPI(NodeReadAPI[TaskDispatcherWaterInput, TaskDisp
             max_process_step: The maximum value of the process step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
+            function_call_id: The function call id to filter on.
+            function_call_id_prefix: The prefix of the function call id to filter on.
             bid_configuration: The bid configuration to filter on.
             min_bid_date: The minimum value of the bid date to filter on.
             max_bid_date: The maximum value of the bid date to filter on.
@@ -438,6 +509,8 @@ class TaskDispatcherWaterInputAPI(NodeReadAPI[TaskDispatcherWaterInput, TaskDisp
             max_process_step,
             function_name,
             function_name_prefix,
+            function_call_id,
+            function_call_id_prefix,
             bid_configuration,
             min_bid_date,
             max_bid_date,
@@ -464,6 +537,8 @@ class TaskDispatcherWaterInputAPI(NodeReadAPI[TaskDispatcherWaterInput, TaskDisp
         max_process_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
         bid_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         min_bid_date: datetime.date | None = None,
         max_bid_date: datetime.date | None = None,
@@ -481,6 +556,8 @@ class TaskDispatcherWaterInputAPI(NodeReadAPI[TaskDispatcherWaterInput, TaskDisp
             max_process_step: The maximum value of the process step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
+            function_call_id: The function call id to filter on.
+            function_call_id_prefix: The prefix of the function call id to filter on.
             bid_configuration: The bid configuration to filter on.
             min_bid_date: The minimum value of the bid date to filter on.
             max_bid_date: The maximum value of the bid date to filter on.
@@ -509,6 +586,8 @@ class TaskDispatcherWaterInputAPI(NodeReadAPI[TaskDispatcherWaterInput, TaskDisp
             max_process_step,
             function_name,
             function_name_prefix,
+            function_call_id,
+            function_call_id_prefix,
             bid_configuration,
             min_bid_date,
             max_bid_date,

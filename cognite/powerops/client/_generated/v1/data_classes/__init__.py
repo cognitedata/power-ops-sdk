@@ -122,6 +122,16 @@ from ._bid_method_afrr import (
     BidMethodAFRRWrite,
     BidMethodAFRRWriteList,
 )
+from ._bid_method_custom import (
+    BidMethodCustom,
+    BidMethodCustomApply,
+    BidMethodCustomApplyList,
+    BidMethodCustomFields,
+    BidMethodCustomList,
+    BidMethodCustomTextFields,
+    BidMethodCustomWrite,
+    BidMethodCustomWriteList,
+)
 from ._bid_method_day_ahead import (
     BidMethodDayAhead,
     BidMethodDayAheadApply,
@@ -231,17 +241,35 @@ from ._multi_scenario_matrix import (
     MultiScenarioMatrixWrite,
     MultiScenarioMatrixWriteList,
 )
+from ._multi_scenario_matrix_raw import (
+    MultiScenarioMatrixRaw,
+    MultiScenarioMatrixRawApply,
+    MultiScenarioMatrixRawApplyList,
+    MultiScenarioMatrixRawFields,
+    MultiScenarioMatrixRawList,
+    MultiScenarioMatrixRawTextFields,
+    MultiScenarioMatrixRawWrite,
+    MultiScenarioMatrixRawWriteList,
+)
 from ._partial_post_processing_input import (
     PartialPostProcessingInput,
+    PartialPostProcessingInputApply,
+    PartialPostProcessingInputApplyList,
     PartialPostProcessingInputFields,
     PartialPostProcessingInputList,
     PartialPostProcessingInputTextFields,
+    PartialPostProcessingInputWrite,
+    PartialPostProcessingInputWriteList,
 )
 from ._partial_post_processing_output import (
     PartialPostProcessingOutput,
+    PartialPostProcessingOutputApply,
+    PartialPostProcessingOutputApplyList,
     PartialPostProcessingOutputFields,
     PartialPostProcessingOutputList,
     PartialPostProcessingOutputTextFields,
+    PartialPostProcessingOutputWrite,
+    PartialPostProcessingOutputWriteList,
 )
 from ._plant import (
     Plant,
@@ -265,15 +293,23 @@ from ._plant_shop import (
 )
 from ._preprocessor_input import (
     PreprocessorInput,
+    PreprocessorInputApply,
+    PreprocessorInputApplyList,
     PreprocessorInputFields,
     PreprocessorInputList,
     PreprocessorInputTextFields,
+    PreprocessorInputWrite,
+    PreprocessorInputWriteList,
 )
 from ._preprocessor_output import (
     PreprocessorOutput,
+    PreprocessorOutputApply,
+    PreprocessorOutputApplyList,
     PreprocessorOutputFields,
     PreprocessorOutputList,
     PreprocessorOutputTextFields,
+    PreprocessorOutputWrite,
+    PreprocessorOutputWriteList,
 )
 from ._price_area import (
     PriceArea,
@@ -304,16 +340,6 @@ from ._price_area_asset import (
     PriceAreaAssetTextFields,
     PriceAreaAssetWrite,
     PriceAreaAssetWriteList,
-)
-from ._price_area_day_ahead import (
-    PriceAreaDayAhead,
-    PriceAreaDayAheadApply,
-    PriceAreaDayAheadApplyList,
-    PriceAreaDayAheadFields,
-    PriceAreaDayAheadList,
-    PriceAreaDayAheadTextFields,
-    PriceAreaDayAheadWrite,
-    PriceAreaDayAheadWriteList,
 )
 from ._price_scenario import (
     PriceScenario,
@@ -346,15 +372,23 @@ from ._shop_result import (
 )
 from ._shop_trigger_input import (
     SHOPTriggerInput,
+    SHOPTriggerInputApply,
+    SHOPTriggerInputApplyList,
     SHOPTriggerInputFields,
     SHOPTriggerInputList,
     SHOPTriggerInputTextFields,
+    SHOPTriggerInputWrite,
+    SHOPTriggerInputWriteList,
 )
 from ._shop_trigger_output import (
     SHOPTriggerOutput,
+    SHOPTriggerOutputApply,
+    SHOPTriggerOutputApplyList,
     SHOPTriggerOutputFields,
     SHOPTriggerOutputList,
     SHOPTriggerOutputTextFields,
+    SHOPTriggerOutputWrite,
+    SHOPTriggerOutputWriteList,
 )
 from ._scenario import (
     Scenario,
@@ -378,51 +412,83 @@ from ._scenario_raw import (
 )
 from ._shop_partial_bid_calculation_input import (
     ShopPartialBidCalculationInput,
+    ShopPartialBidCalculationInputApply,
+    ShopPartialBidCalculationInputApplyList,
     ShopPartialBidCalculationInputFields,
     ShopPartialBidCalculationInputList,
     ShopPartialBidCalculationInputTextFields,
+    ShopPartialBidCalculationInputWrite,
+    ShopPartialBidCalculationInputWriteList,
 )
 from ._shop_partial_bid_calculation_output import (
     ShopPartialBidCalculationOutput,
+    ShopPartialBidCalculationOutputApply,
+    ShopPartialBidCalculationOutputApplyList,
     ShopPartialBidCalculationOutputFields,
     ShopPartialBidCalculationOutputList,
     ShopPartialBidCalculationOutputTextFields,
+    ShopPartialBidCalculationOutputWrite,
+    ShopPartialBidCalculationOutputWriteList,
 )
 from ._task_dispatcher_shop_input import (
     TaskDispatcherShopInput,
+    TaskDispatcherShopInputApply,
+    TaskDispatcherShopInputApplyList,
     TaskDispatcherShopInputFields,
     TaskDispatcherShopInputList,
     TaskDispatcherShopInputTextFields,
+    TaskDispatcherShopInputWrite,
+    TaskDispatcherShopInputWriteList,
 )
 from ._task_dispatcher_shop_output import (
     TaskDispatcherShopOutput,
+    TaskDispatcherShopOutputApply,
+    TaskDispatcherShopOutputApplyList,
     TaskDispatcherShopOutputFields,
     TaskDispatcherShopOutputList,
     TaskDispatcherShopOutputTextFields,
+    TaskDispatcherShopOutputWrite,
+    TaskDispatcherShopOutputWriteList,
 )
 from ._task_dispatcher_water_input import (
     TaskDispatcherWaterInput,
+    TaskDispatcherWaterInputApply,
+    TaskDispatcherWaterInputApplyList,
     TaskDispatcherWaterInputFields,
     TaskDispatcherWaterInputList,
     TaskDispatcherWaterInputTextFields,
+    TaskDispatcherWaterInputWrite,
+    TaskDispatcherWaterInputWriteList,
 )
 from ._task_dispatcher_water_output import (
     TaskDispatcherWaterOutput,
+    TaskDispatcherWaterOutputApply,
+    TaskDispatcherWaterOutputApplyList,
     TaskDispatcherWaterOutputFields,
     TaskDispatcherWaterOutputList,
     TaskDispatcherWaterOutputTextFields,
+    TaskDispatcherWaterOutputWrite,
+    TaskDispatcherWaterOutputWriteList,
 )
 from ._total_bid_matrix_calculation_input import (
     TotalBidMatrixCalculationInput,
+    TotalBidMatrixCalculationInputApply,
+    TotalBidMatrixCalculationInputApplyList,
     TotalBidMatrixCalculationInputFields,
     TotalBidMatrixCalculationInputList,
     TotalBidMatrixCalculationInputTextFields,
+    TotalBidMatrixCalculationInputWrite,
+    TotalBidMatrixCalculationInputWriteList,
 )
 from ._total_bid_matrix_calculation_output import (
     TotalBidMatrixCalculationOutput,
+    TotalBidMatrixCalculationOutputApply,
+    TotalBidMatrixCalculationOutputApplyList,
     TotalBidMatrixCalculationOutputFields,
     TotalBidMatrixCalculationOutputList,
     TotalBidMatrixCalculationOutputTextFields,
+    TotalBidMatrixCalculationOutputWrite,
+    TotalBidMatrixCalculationOutputWriteList,
 )
 from ._turbine_efficiency_curve import (
     TurbineEfficiencyCurve,
@@ -435,15 +501,23 @@ from ._turbine_efficiency_curve import (
 )
 from ._water_partial_bid_calculation_input import (
     WaterPartialBidCalculationInput,
+    WaterPartialBidCalculationInputApply,
+    WaterPartialBidCalculationInputApplyList,
     WaterPartialBidCalculationInputFields,
     WaterPartialBidCalculationInputList,
     WaterPartialBidCalculationInputTextFields,
+    WaterPartialBidCalculationInputWrite,
+    WaterPartialBidCalculationInputWriteList,
 )
 from ._water_partial_bid_calculation_output import (
     WaterPartialBidCalculationOutput,
+    WaterPartialBidCalculationOutputApply,
+    WaterPartialBidCalculationOutputApplyList,
     WaterPartialBidCalculationOutputFields,
     WaterPartialBidCalculationOutputList,
     WaterPartialBidCalculationOutputTextFields,
+    WaterPartialBidCalculationOutputWrite,
+    WaterPartialBidCalculationOutputWriteList,
 )
 from ._watercourse import (
     Watercourse,
@@ -517,24 +591,36 @@ ModelTemplateApply.model_rebuild()
 MultiScenarioMatrix.model_rebuild()
 MultiScenarioMatrixWrite.model_rebuild()
 MultiScenarioMatrixApply.model_rebuild()
+MultiScenarioMatrixRaw.model_rebuild()
+MultiScenarioMatrixRawWrite.model_rebuild()
+MultiScenarioMatrixRawApply.model_rebuild()
 PartialPostProcessingInput.model_rebuild()
+PartialPostProcessingInputWrite.model_rebuild()
+PartialPostProcessingInputApply.model_rebuild()
 PartialPostProcessingOutput.model_rebuild()
+PartialPostProcessingOutputWrite.model_rebuild()
+PartialPostProcessingOutputApply.model_rebuild()
 Plant.model_rebuild()
 PlantWrite.model_rebuild()
 PlantApply.model_rebuild()
 PreprocessorInput.model_rebuild()
+PreprocessorInputWrite.model_rebuild()
+PreprocessorInputApply.model_rebuild()
 PreprocessorOutput.model_rebuild()
+PreprocessorOutputWrite.model_rebuild()
+PreprocessorOutputApply.model_rebuild()
 PriceAreaAsset.model_rebuild()
 PriceAreaAssetWrite.model_rebuild()
 PriceAreaAssetApply.model_rebuild()
-PriceAreaDayAhead.model_rebuild()
-PriceAreaDayAheadWrite.model_rebuild()
-PriceAreaDayAheadApply.model_rebuild()
 SHOPResult.model_rebuild()
 SHOPResultWrite.model_rebuild()
 SHOPResultApply.model_rebuild()
 SHOPTriggerInput.model_rebuild()
+SHOPTriggerInputWrite.model_rebuild()
+SHOPTriggerInputApply.model_rebuild()
 SHOPTriggerOutput.model_rebuild()
+SHOPTriggerOutputWrite.model_rebuild()
+SHOPTriggerOutputApply.model_rebuild()
 Scenario.model_rebuild()
 ScenarioWrite.model_rebuild()
 ScenarioApply.model_rebuild()
@@ -542,15 +628,35 @@ ScenarioRaw.model_rebuild()
 ScenarioRawWrite.model_rebuild()
 ScenarioRawApply.model_rebuild()
 ShopPartialBidCalculationInput.model_rebuild()
+ShopPartialBidCalculationInputWrite.model_rebuild()
+ShopPartialBidCalculationInputApply.model_rebuild()
 ShopPartialBidCalculationOutput.model_rebuild()
+ShopPartialBidCalculationOutputWrite.model_rebuild()
+ShopPartialBidCalculationOutputApply.model_rebuild()
 TaskDispatcherShopInput.model_rebuild()
+TaskDispatcherShopInputWrite.model_rebuild()
+TaskDispatcherShopInputApply.model_rebuild()
 TaskDispatcherShopOutput.model_rebuild()
+TaskDispatcherShopOutputWrite.model_rebuild()
+TaskDispatcherShopOutputApply.model_rebuild()
 TaskDispatcherWaterInput.model_rebuild()
+TaskDispatcherWaterInputWrite.model_rebuild()
+TaskDispatcherWaterInputApply.model_rebuild()
 TaskDispatcherWaterOutput.model_rebuild()
+TaskDispatcherWaterOutputWrite.model_rebuild()
+TaskDispatcherWaterOutputApply.model_rebuild()
 TotalBidMatrixCalculationInput.model_rebuild()
+TotalBidMatrixCalculationInputWrite.model_rebuild()
+TotalBidMatrixCalculationInputApply.model_rebuild()
 TotalBidMatrixCalculationOutput.model_rebuild()
+TotalBidMatrixCalculationOutputWrite.model_rebuild()
+TotalBidMatrixCalculationOutputApply.model_rebuild()
 WaterPartialBidCalculationInput.model_rebuild()
+WaterPartialBidCalculationInputWrite.model_rebuild()
+WaterPartialBidCalculationInputApply.model_rebuild()
 WaterPartialBidCalculationOutput.model_rebuild()
+WaterPartialBidCalculationOutputWrite.model_rebuild()
+WaterPartialBidCalculationOutputApply.model_rebuild()
 Watercourse.model_rebuild()
 WatercourseWrite.model_rebuild()
 WatercourseApply.model_rebuild()
@@ -654,6 +760,14 @@ __all__ = [
     "BidMethodAFRRApplyList",
     "BidMethodAFRRFields",
     "BidMethodAFRRTextFields",
+    "BidMethodCustom",
+    "BidMethodCustomWrite",
+    "BidMethodCustomApply",
+    "BidMethodCustomList",
+    "BidMethodCustomWriteList",
+    "BidMethodCustomApplyList",
+    "BidMethodCustomFields",
+    "BidMethodCustomTextFields",
     "BidMethodDayAhead",
     "BidMethodDayAheadWrite",
     "BidMethodDayAheadApply",
@@ -741,12 +855,28 @@ __all__ = [
     "MultiScenarioMatrixApplyList",
     "MultiScenarioMatrixFields",
     "MultiScenarioMatrixTextFields",
+    "MultiScenarioMatrixRaw",
+    "MultiScenarioMatrixRawWrite",
+    "MultiScenarioMatrixRawApply",
+    "MultiScenarioMatrixRawList",
+    "MultiScenarioMatrixRawWriteList",
+    "MultiScenarioMatrixRawApplyList",
+    "MultiScenarioMatrixRawFields",
+    "MultiScenarioMatrixRawTextFields",
     "PartialPostProcessingInput",
+    "PartialPostProcessingInputWrite",
+    "PartialPostProcessingInputApply",
     "PartialPostProcessingInputList",
+    "PartialPostProcessingInputWriteList",
+    "PartialPostProcessingInputApplyList",
     "PartialPostProcessingInputFields",
     "PartialPostProcessingInputTextFields",
     "PartialPostProcessingOutput",
+    "PartialPostProcessingOutputWrite",
+    "PartialPostProcessingOutputApply",
     "PartialPostProcessingOutputList",
+    "PartialPostProcessingOutputWriteList",
+    "PartialPostProcessingOutputApplyList",
     "PartialPostProcessingOutputFields",
     "PartialPostProcessingOutputTextFields",
     "Plant",
@@ -766,11 +896,19 @@ __all__ = [
     "PlantShopFields",
     "PlantShopTextFields",
     "PreprocessorInput",
+    "PreprocessorInputWrite",
+    "PreprocessorInputApply",
     "PreprocessorInputList",
+    "PreprocessorInputWriteList",
+    "PreprocessorInputApplyList",
     "PreprocessorInputFields",
     "PreprocessorInputTextFields",
     "PreprocessorOutput",
+    "PreprocessorOutputWrite",
+    "PreprocessorOutputApply",
     "PreprocessorOutputList",
+    "PreprocessorOutputWriteList",
+    "PreprocessorOutputApplyList",
     "PreprocessorOutputFields",
     "PreprocessorOutputTextFields",
     "PriceArea",
@@ -797,14 +935,6 @@ __all__ = [
     "PriceAreaAssetApplyList",
     "PriceAreaAssetFields",
     "PriceAreaAssetTextFields",
-    "PriceAreaDayAhead",
-    "PriceAreaDayAheadWrite",
-    "PriceAreaDayAheadApply",
-    "PriceAreaDayAheadList",
-    "PriceAreaDayAheadWriteList",
-    "PriceAreaDayAheadApplyList",
-    "PriceAreaDayAheadFields",
-    "PriceAreaDayAheadTextFields",
     "PriceScenario",
     "PriceScenarioWrite",
     "PriceScenarioApply",
@@ -829,11 +959,19 @@ __all__ = [
     "SHOPResultApplyList",
     "SHOPResultFields",
     "SHOPTriggerInput",
+    "SHOPTriggerInputWrite",
+    "SHOPTriggerInputApply",
     "SHOPTriggerInputList",
+    "SHOPTriggerInputWriteList",
+    "SHOPTriggerInputApplyList",
     "SHOPTriggerInputFields",
     "SHOPTriggerInputTextFields",
     "SHOPTriggerOutput",
+    "SHOPTriggerOutputWrite",
+    "SHOPTriggerOutputApply",
     "SHOPTriggerOutputList",
+    "SHOPTriggerOutputWriteList",
+    "SHOPTriggerOutputApplyList",
     "SHOPTriggerOutputFields",
     "SHOPTriggerOutputTextFields",
     "Scenario",
@@ -853,35 +991,67 @@ __all__ = [
     "ScenarioRawFields",
     "ScenarioRawTextFields",
     "ShopPartialBidCalculationInput",
+    "ShopPartialBidCalculationInputWrite",
+    "ShopPartialBidCalculationInputApply",
     "ShopPartialBidCalculationInputList",
+    "ShopPartialBidCalculationInputWriteList",
+    "ShopPartialBidCalculationInputApplyList",
     "ShopPartialBidCalculationInputFields",
     "ShopPartialBidCalculationInputTextFields",
     "ShopPartialBidCalculationOutput",
+    "ShopPartialBidCalculationOutputWrite",
+    "ShopPartialBidCalculationOutputApply",
     "ShopPartialBidCalculationOutputList",
+    "ShopPartialBidCalculationOutputWriteList",
+    "ShopPartialBidCalculationOutputApplyList",
     "ShopPartialBidCalculationOutputFields",
     "ShopPartialBidCalculationOutputTextFields",
     "TaskDispatcherShopInput",
+    "TaskDispatcherShopInputWrite",
+    "TaskDispatcherShopInputApply",
     "TaskDispatcherShopInputList",
+    "TaskDispatcherShopInputWriteList",
+    "TaskDispatcherShopInputApplyList",
     "TaskDispatcherShopInputFields",
     "TaskDispatcherShopInputTextFields",
     "TaskDispatcherShopOutput",
+    "TaskDispatcherShopOutputWrite",
+    "TaskDispatcherShopOutputApply",
     "TaskDispatcherShopOutputList",
+    "TaskDispatcherShopOutputWriteList",
+    "TaskDispatcherShopOutputApplyList",
     "TaskDispatcherShopOutputFields",
     "TaskDispatcherShopOutputTextFields",
     "TaskDispatcherWaterInput",
+    "TaskDispatcherWaterInputWrite",
+    "TaskDispatcherWaterInputApply",
     "TaskDispatcherWaterInputList",
+    "TaskDispatcherWaterInputWriteList",
+    "TaskDispatcherWaterInputApplyList",
     "TaskDispatcherWaterInputFields",
     "TaskDispatcherWaterInputTextFields",
     "TaskDispatcherWaterOutput",
+    "TaskDispatcherWaterOutputWrite",
+    "TaskDispatcherWaterOutputApply",
     "TaskDispatcherWaterOutputList",
+    "TaskDispatcherWaterOutputWriteList",
+    "TaskDispatcherWaterOutputApplyList",
     "TaskDispatcherWaterOutputFields",
     "TaskDispatcherWaterOutputTextFields",
     "TotalBidMatrixCalculationInput",
+    "TotalBidMatrixCalculationInputWrite",
+    "TotalBidMatrixCalculationInputApply",
     "TotalBidMatrixCalculationInputList",
+    "TotalBidMatrixCalculationInputWriteList",
+    "TotalBidMatrixCalculationInputApplyList",
     "TotalBidMatrixCalculationInputFields",
     "TotalBidMatrixCalculationInputTextFields",
     "TotalBidMatrixCalculationOutput",
+    "TotalBidMatrixCalculationOutputWrite",
+    "TotalBidMatrixCalculationOutputApply",
     "TotalBidMatrixCalculationOutputList",
+    "TotalBidMatrixCalculationOutputWriteList",
+    "TotalBidMatrixCalculationOutputApplyList",
     "TotalBidMatrixCalculationOutputFields",
     "TotalBidMatrixCalculationOutputTextFields",
     "TurbineEfficiencyCurve",
@@ -892,11 +1062,19 @@ __all__ = [
     "TurbineEfficiencyCurveApplyList",
     "TurbineEfficiencyCurveFields",
     "WaterPartialBidCalculationInput",
+    "WaterPartialBidCalculationInputWrite",
+    "WaterPartialBidCalculationInputApply",
     "WaterPartialBidCalculationInputList",
+    "WaterPartialBidCalculationInputWriteList",
+    "WaterPartialBidCalculationInputApplyList",
     "WaterPartialBidCalculationInputFields",
     "WaterPartialBidCalculationInputTextFields",
     "WaterPartialBidCalculationOutput",
+    "WaterPartialBidCalculationOutputWrite",
+    "WaterPartialBidCalculationOutputApply",
     "WaterPartialBidCalculationOutputList",
+    "WaterPartialBidCalculationOutputWriteList",
+    "WaterPartialBidCalculationOutputApplyList",
     "WaterPartialBidCalculationOutputFields",
     "WaterPartialBidCalculationOutputTextFields",
     "Watercourse",

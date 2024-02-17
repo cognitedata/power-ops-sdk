@@ -7,6 +7,17 @@ filter:
     - type: container
       space: '{{powerops_models}}'
       externalId: BidMatrix
+  - equals:
+      property:
+        - node
+        - space
+      value: '{{powerops_instance_space}}'
+  - equals:
+      property:
+        - '{{powerops_models}}'
+        - BidMatrix
+        - isProcessed
+      value: 'true'
   - not:
       in:
         property:
@@ -23,4 +34,16 @@ implements:
   version: '{{version}}'
   type: view
 version: '{{version}}'
-properties: {}
+properties:
+  method:
+    container:
+      space: '{{powerops_models}}'
+      externalId: BidMatrix
+      type: container
+    containerPropertyIdentifier: method
+    name: method
+    source:
+      space: '{{powerops_models}}'
+      externalId: BidMethodCustom
+      version: '{{version}}'
+      type: view

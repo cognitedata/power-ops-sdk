@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cognite-power-ops"
-version = "0.84.1"
+version = "0.86.0"
 description = "SDK for power markets operations on Cognite Data Fusion"
 readme = "README.md"
 authors = ["Cognite <support@cognite.com>"]
@@ -50,7 +50,7 @@ allow_redefinition = true
 
 
 [tool.poetry.dependencies]
-python = ">=3.9,<3.12"
+python = ">=3.9,<3.11"
 typer = {version="^0.9.0", extras=["rich"]}
 PyYAML = "^6.0"
 cognite-sdk = {version = ">=7.13.8", extras = ["pandas"]}
@@ -68,8 +68,9 @@ tomli = {version = "^2.0.1", python = "<3.11"}
 StrEnum = {version = "^0.4.15", python = "<3.11"}
 tomli-w = "^1.0.0"
 tabulate = "^0.9"
-cognite-toolkit = {git="https://github.com/cognitedata/cdf-project-templates.git", branch="power"}
-cognite-pygen = {version = ">=0.99.9", extras = ["all"]}
+#cognite-toolkit = {git="https://github.com/cognitedata/cdf-project-templates.git", branch="power"}
+cognite-toolkit = {version="0.1.0b8"}
+cognite-pygen = {version = ">=0.99.10", extras = ["all"]}
 
 mkdocs =  {version="*", optional=true}
 mkdocs-jupyter = {version="*", optional=true}

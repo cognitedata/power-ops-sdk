@@ -7,22 +7,12 @@ filter:
   - hasData:
     - type: container
       space: '{{powerops_models}}'
-      externalId: BidMethodDayAhead
-    - type: container
-      space: '{{powerops_models}}'
-      externalId: PriceArea
+      externalId: BidMethod
   - equals:
       property:
       - node
       - space
       value: '{{powerops_instance_space}}'
-  - equals:
-      property:
-      - node
-      - type
-      value:
-        externalId: BidMethodDayAhead
-        space: '{{powerops_type_space}}'
 implements:
   - space: '{{powerops_models}}'
     externalId: BidMethod
@@ -43,11 +33,3 @@ properties:
       externalId: PriceScenario
       version: '{{version}}'
       type: view
-  timezone:
-    container:
-      space: '{{powerops_models}}'
-      externalId: PriceArea
-      type: container
-    containerPropertyIdentifier: timezone
-    name: timezone
-    description: The timezone to use when running the bid method

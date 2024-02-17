@@ -10,7 +10,7 @@ from cognite.powerops.client._generated.v1.data_classes import (
     BidConfigurationWater,
     MarketConfiguration,
     BidMethodWaterValue,
-    PriceAreaDayAhead,
+    PriceArea,
 )
 from ._core import DEFAULT_QUERY_LIMIT, QueryBuilder, QueryStep, QueryAPI, T_DomainModelList, _create_edge_filter
 
@@ -210,7 +210,7 @@ class BidConfigurationWaterQueryAPI(QueryAPI[T_DomainModelList]):
         )
 
     def _query_append_price_area(self, from_: str) -> None:
-        view_id = self._view_by_read_class[PriceAreaDayAhead]
+        view_id = self._view_by_read_class[PriceArea]
         self._builder.append(
             QueryStep(
                 name=self._builder.next_name("price_area"),
@@ -222,6 +222,6 @@ class BidConfigurationWaterQueryAPI(QueryAPI[T_DomainModelList]):
                 ),
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
                 max_retrieve_limit=-1,
-                result_cls=PriceAreaDayAhead,
+                result_cls=PriceArea,
             ),
         )

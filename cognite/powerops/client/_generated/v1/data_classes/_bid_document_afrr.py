@@ -70,7 +70,7 @@ class BidDocumentAFRR(DomainModel):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types", "BidDocumentAFRR"
+        "sp_powerops_types", "AFRRBidDocument"
     )
     name: Optional[str] = None
     delivery_date: datetime.date = Field(alias="deliveryDate")
@@ -128,7 +128,7 @@ class BidDocumentAFRRWrite(DomainModelWrite):
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types", "BidDocumentAFRR"
+        "sp_powerops_types", "AFRRBidDocument"
     )
     name: Optional[str] = None
     delivery_date: datetime.date = Field(alias="deliveryDate")

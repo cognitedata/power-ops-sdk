@@ -21,7 +21,7 @@ from ._core import (
 
 if TYPE_CHECKING:
     from ._plant import Plant, PlantWrite
-    from ._price_area_day_ahead import PriceAreaDayAhead, PriceAreaDayAheadWrite
+    from ._price_area import PriceArea, PriceAreaWrite
 
 
 __all__ = [
@@ -61,7 +61,7 @@ class BidCalculationTask(DomainModel):
     )
     plant: Union[Plant, str, dm.NodeId, None] = Field(None, repr=False)
     bid_date: Optional[datetime.date] = Field(None, alias="bidDate")
-    price_area: Union[PriceAreaDayAhead, str, dm.NodeId, None] = Field(None, repr=False, alias="priceArea")
+    price_area: Union[PriceArea, str, dm.NodeId, None] = Field(None, repr=False, alias="priceArea")
 
     def as_write(self) -> BidCalculationTaskWrite:
         """Convert this read version of bid calculation task to the writing version."""
@@ -104,7 +104,7 @@ class BidCalculationTaskWrite(DomainModelWrite):
     )
     plant: Union[PlantWrite, str, dm.NodeId, None] = Field(None, repr=False)
     bid_date: Optional[datetime.date] = Field(None, alias="bidDate")
-    price_area: Union[PriceAreaDayAheadWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="priceArea")
+    price_area: Union[PriceAreaWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="priceArea")
 
     def _to_instances_write(
         self,

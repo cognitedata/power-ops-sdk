@@ -6,7 +6,7 @@ filter:
   - hasData:
     - type: container
       space: '{{powerops_models}}'
-      externalId: MultiScenarioMatrix
+      externalId: BidMatrix
   - equals:
       property:
       - node
@@ -17,8 +17,14 @@ filter:
       - node
       - type
       value:
-        externalId: DayAheadMultiScenarioMatrixRaw
+        externalId: DayAheadMultiScenarioMatrix
         space: '{{powerops_type_space}}'
+  - equals:
+      property:
+        - '{{powerops_models}}'
+        - BidMatrix
+        - isProcessed
+      value: 'false'
 implements:
 - space: '{{powerops_models}}'
   externalId: BidMatrixRaw
@@ -26,6 +32,18 @@ implements:
   type: view
 version: '{{version}}'
 properties:
+  method:
+    container:
+      space: '{{powerops_models}}'
+      externalId: BidMatrix
+      type: container
+    containerPropertyIdentifier: method
+    name: method
+    source:
+      space: '{{powerops_models}}'
+      externalId: BidMethodSHOPMultiScenario
+      version: '{{version}}'
+      type: view
   shopResults:
     type:
       space: '{{powerops_type_space}}'

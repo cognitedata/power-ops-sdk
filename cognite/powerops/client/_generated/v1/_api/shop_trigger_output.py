@@ -14,8 +14,10 @@ from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelWrite,
     ResourcesWriteResult,
     SHOPTriggerOutput,
+    SHOPTriggerOutputWrite,
     SHOPTriggerOutputFields,
     SHOPTriggerOutputList,
+    SHOPTriggerOutputWriteList,
     SHOPTriggerOutputTextFields,
 )
 from cognite.powerops.client._generated.v1.data_classes._shop_trigger_output import (
@@ -26,7 +28,7 @@ from ._core import (
     DEFAULT_LIMIT_READ,
     DEFAULT_QUERY_LIMIT,
     Aggregations,
-    NodeReadAPI,
+    NodeAPI,
     SequenceNotStr,
     QueryStep,
     QueryBuilder,
@@ -35,7 +37,7 @@ from .shop_trigger_output_alerts import SHOPTriggerOutputAlertsAPI
 from .shop_trigger_output_query import SHOPTriggerOutputQueryAPI
 
 
-class SHOPTriggerOutputAPI(NodeReadAPI[SHOPTriggerOutput, SHOPTriggerOutputList]):
+class SHOPTriggerOutputAPI(NodeAPI[SHOPTriggerOutput, SHOPTriggerOutputWrite, SHOPTriggerOutputList]):
     def __init__(self, client: CogniteClient, view_by_read_class: dict[type[DomainModelCore], dm.ViewId]):
         view_id = view_by_read_class[SHOPTriggerOutput]
         super().__init__(
@@ -43,6 +45,7 @@ class SHOPTriggerOutputAPI(NodeReadAPI[SHOPTriggerOutput, SHOPTriggerOutputList]
             sources=view_id,
             class_type=SHOPTriggerOutput,
             class_list=SHOPTriggerOutputList,
+            class_write_list=SHOPTriggerOutputWriteList,
             view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
@@ -56,6 +59,8 @@ class SHOPTriggerOutputAPI(NodeReadAPI[SHOPTriggerOutput, SHOPTriggerOutputList]
         max_process_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
         shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
@@ -72,6 +77,8 @@ class SHOPTriggerOutputAPI(NodeReadAPI[SHOPTriggerOutput, SHOPTriggerOutputList]
             max_process_step: The maximum value of the process step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
+            function_call_id: The function call id to filter on.
+            function_call_id_prefix: The prefix of the function call id to filter on.
             shop_result: The shop result to filter on.
             input_: The input to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
@@ -92,6 +99,8 @@ class SHOPTriggerOutputAPI(NodeReadAPI[SHOPTriggerOutput, SHOPTriggerOutputList]
             max_process_step,
             function_name,
             function_name_prefix,
+            function_call_id,
+            function_call_id_prefix,
             shop_result,
             input_,
             external_id_prefix,
@@ -100,6 +109,50 @@ class SHOPTriggerOutputAPI(NodeReadAPI[SHOPTriggerOutput, SHOPTriggerOutputList]
         )
         builder = QueryBuilder(SHOPTriggerOutputList)
         return SHOPTriggerOutputQueryAPI(self._client, builder, self._view_by_read_class, filter_, limit)
+
+    def apply(
+        self,
+        shop_trigger_output: SHOPTriggerOutputWrite | Sequence[SHOPTriggerOutputWrite],
+        replace: bool = False,
+        write_none: bool = False,
+    ) -> ResourcesWriteResult:
+        """Add or update (upsert) shop trigger outputs.
+
+        Note: This method iterates through all nodes and timeseries linked to shop_trigger_output and creates them including the edges
+        between the nodes. For example, if any of `alerts` are set, then these
+        nodes as well as any nodes linked to them, and all the edges linking these nodes will be created.
+
+        Args:
+            shop_trigger_output: Shop trigger output or sequence of shop trigger outputs to upsert.
+            replace (bool): How do we behave when a property value exists? Do we replace all matching and existing values with the supplied values (true)?
+                Or should we merge in new values for properties together with the existing values (false)? Note: This setting applies for all nodes or edges specified in the ingestion call.
+            write_none (bool): This method, will by default, skip properties that are set to None. However, if you want to set properties to None,
+                you can set this parameter to True. Note this only applies to properties that are nullable.
+        Returns:
+            Created instance(s), i.e., nodes, edges, and time series.
+
+        Examples:
+
+            Create a new shop_trigger_output:
+
+                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
+                >>> from cognite.powerops.client._generated.v1.data_classes import SHOPTriggerOutputWrite
+                >>> client = PowerOpsModelsV1Client()
+                >>> shop_trigger_output = SHOPTriggerOutputWrite(external_id="my_shop_trigger_output", ...)
+                >>> result = client.shop_trigger_output.apply(shop_trigger_output)
+
+        """
+        warnings.warn(
+            "The .apply method is deprecated and will be removed in v1.0. "
+            "Please use the .upsert method on the client instead. This means instead of "
+            "`my_client.shop_trigger_output.apply(my_items)` please use `my_client.upsert(my_items)`."
+            "The motivation is that all apply methods are the same, and having one apply method per API "
+            " class encourages users to create items in small batches, which is inefficient."
+            "In addition, .upsert method is more descriptive of what the method does.",
+            UserWarning,
+            stacklevel=2,
+        )
+        return self._apply(shop_trigger_output, replace, write_none)
 
     def delete(
         self, external_id: str | SequenceNotStr[str], space: str = DEFAULT_INSTANCE_SPACE
@@ -186,6 +239,8 @@ class SHOPTriggerOutputAPI(NodeReadAPI[SHOPTriggerOutput, SHOPTriggerOutputList]
         max_process_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
         shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
@@ -204,6 +259,8 @@ class SHOPTriggerOutputAPI(NodeReadAPI[SHOPTriggerOutput, SHOPTriggerOutputList]
             max_process_step: The maximum value of the process step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
+            function_call_id: The function call id to filter on.
+            function_call_id_prefix: The prefix of the function call id to filter on.
             shop_result: The shop result to filter on.
             input_: The input to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
@@ -231,6 +288,8 @@ class SHOPTriggerOutputAPI(NodeReadAPI[SHOPTriggerOutput, SHOPTriggerOutputList]
             max_process_step,
             function_name,
             function_name_prefix,
+            function_call_id,
+            function_call_id_prefix,
             shop_result,
             input_,
             external_id_prefix,
@@ -258,6 +317,8 @@ class SHOPTriggerOutputAPI(NodeReadAPI[SHOPTriggerOutput, SHOPTriggerOutputList]
         max_process_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
         shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
@@ -285,6 +346,8 @@ class SHOPTriggerOutputAPI(NodeReadAPI[SHOPTriggerOutput, SHOPTriggerOutputList]
         max_process_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
         shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
@@ -311,6 +374,8 @@ class SHOPTriggerOutputAPI(NodeReadAPI[SHOPTriggerOutput, SHOPTriggerOutputList]
         max_process_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
         shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
@@ -332,6 +397,8 @@ class SHOPTriggerOutputAPI(NodeReadAPI[SHOPTriggerOutput, SHOPTriggerOutputList]
             max_process_step: The maximum value of the process step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
+            function_call_id: The function call id to filter on.
+            function_call_id_prefix: The prefix of the function call id to filter on.
             shop_result: The shop result to filter on.
             input_: The input to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
@@ -360,6 +427,8 @@ class SHOPTriggerOutputAPI(NodeReadAPI[SHOPTriggerOutput, SHOPTriggerOutputList]
             max_process_step,
             function_name,
             function_name_prefix,
+            function_call_id,
+            function_call_id_prefix,
             shop_result,
             input_,
             external_id_prefix,
@@ -390,6 +459,8 @@ class SHOPTriggerOutputAPI(NodeReadAPI[SHOPTriggerOutput, SHOPTriggerOutputList]
         max_process_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
         shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
@@ -410,6 +481,8 @@ class SHOPTriggerOutputAPI(NodeReadAPI[SHOPTriggerOutput, SHOPTriggerOutputList]
             max_process_step: The maximum value of the process step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
+            function_call_id: The function call id to filter on.
+            function_call_id_prefix: The prefix of the function call id to filter on.
             shop_result: The shop result to filter on.
             input_: The input to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
@@ -429,6 +502,8 @@ class SHOPTriggerOutputAPI(NodeReadAPI[SHOPTriggerOutput, SHOPTriggerOutputList]
             max_process_step,
             function_name,
             function_name_prefix,
+            function_call_id,
+            function_call_id_prefix,
             shop_result,
             input_,
             external_id_prefix,
@@ -454,6 +529,8 @@ class SHOPTriggerOutputAPI(NodeReadAPI[SHOPTriggerOutput, SHOPTriggerOutputList]
         max_process_step: int | None = None,
         function_name: str | list[str] | None = None,
         function_name_prefix: str | None = None,
+        function_call_id: str | list[str] | None = None,
+        function_call_id_prefix: str | None = None,
         shop_result: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
@@ -471,6 +548,8 @@ class SHOPTriggerOutputAPI(NodeReadAPI[SHOPTriggerOutput, SHOPTriggerOutputList]
             max_process_step: The maximum value of the process step to filter on.
             function_name: The function name to filter on.
             function_name_prefix: The prefix of the function name to filter on.
+            function_call_id: The function call id to filter on.
+            function_call_id_prefix: The prefix of the function call id to filter on.
             shop_result: The shop result to filter on.
             input_: The input to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
@@ -499,6 +578,8 @@ class SHOPTriggerOutputAPI(NodeReadAPI[SHOPTriggerOutput, SHOPTriggerOutputList]
             max_process_step,
             function_name,
             function_name_prefix,
+            function_call_id,
+            function_call_id_prefix,
             shop_result,
             input_,
             external_id_prefix,
