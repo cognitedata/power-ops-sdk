@@ -53,6 +53,7 @@ class BidMethodCustomAPI(NodeAPI[BidMethodCustom, BidMethodCustomWrite, BidMetho
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
+        main_scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
@@ -63,6 +64,7 @@ class BidMethodCustomAPI(NodeAPI[BidMethodCustom, BidMethodCustomWrite, BidMetho
         Args:
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
+            main_scenario: The main scenario to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of bid method customs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -77,6 +79,7 @@ class BidMethodCustomAPI(NodeAPI[BidMethodCustom, BidMethodCustomWrite, BidMetho
             self._view_id,
             name,
             name_prefix,
+            main_scenario,
             external_id_prefix,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
@@ -192,6 +195,7 @@ class BidMethodCustomAPI(NodeAPI[BidMethodCustom, BidMethodCustomWrite, BidMetho
         properties: BidMethodCustomTextFields | Sequence[BidMethodCustomTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
+        main_scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -204,6 +208,7 @@ class BidMethodCustomAPI(NodeAPI[BidMethodCustom, BidMethodCustomWrite, BidMetho
             properties: The property to search, if nothing is passed all text fields will be searched.
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
+            main_scenario: The main scenario to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of bid method customs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -225,6 +230,7 @@ class BidMethodCustomAPI(NodeAPI[BidMethodCustom, BidMethodCustomWrite, BidMetho
             self._view_id,
             name,
             name_prefix,
+            main_scenario,
             external_id_prefix,
             space,
             filter,
@@ -246,6 +252,7 @@ class BidMethodCustomAPI(NodeAPI[BidMethodCustom, BidMethodCustomWrite, BidMetho
         search_properties: BidMethodCustomTextFields | Sequence[BidMethodCustomTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
+        main_scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -267,6 +274,7 @@ class BidMethodCustomAPI(NodeAPI[BidMethodCustom, BidMethodCustomWrite, BidMetho
         search_properties: BidMethodCustomTextFields | Sequence[BidMethodCustomTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
+        main_scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -287,6 +295,7 @@ class BidMethodCustomAPI(NodeAPI[BidMethodCustom, BidMethodCustomWrite, BidMetho
         search_property: BidMethodCustomTextFields | Sequence[BidMethodCustomTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
+        main_scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -302,6 +311,7 @@ class BidMethodCustomAPI(NodeAPI[BidMethodCustom, BidMethodCustomWrite, BidMetho
             search_property: The text field to search in.
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
+            main_scenario: The main scenario to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of bid method customs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -324,6 +334,7 @@ class BidMethodCustomAPI(NodeAPI[BidMethodCustom, BidMethodCustomWrite, BidMetho
             self._view_id,
             name,
             name_prefix,
+            main_scenario,
             external_id_prefix,
             space,
             filter,
@@ -348,6 +359,7 @@ class BidMethodCustomAPI(NodeAPI[BidMethodCustom, BidMethodCustomWrite, BidMetho
         search_property: BidMethodCustomTextFields | Sequence[BidMethodCustomTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
+        main_scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -362,6 +374,7 @@ class BidMethodCustomAPI(NodeAPI[BidMethodCustom, BidMethodCustomWrite, BidMetho
             search_property: The text field to search in.
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
+            main_scenario: The main scenario to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of bid method customs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -375,6 +388,7 @@ class BidMethodCustomAPI(NodeAPI[BidMethodCustom, BidMethodCustomWrite, BidMetho
             self._view_id,
             name,
             name_prefix,
+            main_scenario,
             external_id_prefix,
             space,
             filter,
@@ -394,6 +408,7 @@ class BidMethodCustomAPI(NodeAPI[BidMethodCustom, BidMethodCustomWrite, BidMetho
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
+        main_scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -404,6 +419,7 @@ class BidMethodCustomAPI(NodeAPI[BidMethodCustom, BidMethodCustomWrite, BidMetho
         Args:
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
+            main_scenario: The main scenario to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of bid method customs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -425,6 +441,7 @@ class BidMethodCustomAPI(NodeAPI[BidMethodCustom, BidMethodCustomWrite, BidMetho
             self._view_id,
             name,
             name_prefix,
+            main_scenario,
             external_id_prefix,
             space,
             filter,

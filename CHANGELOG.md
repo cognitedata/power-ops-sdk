@@ -13,6 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.86.1] - 2024-02-18
+### Added
+* Several fixes to the new datamodels v1
+* First draft of benchmarking model
+
 ## [0.86.0] - 2024-02-14
 ### Added
 * Several fixes to the new datamodels v1

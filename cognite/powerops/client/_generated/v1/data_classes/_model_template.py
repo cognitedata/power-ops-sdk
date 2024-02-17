@@ -46,7 +46,7 @@ _MODELTEMPLATE_PROPERTIES_BY_FIELD = {
 }
 
 
-class ModelTemplate(DomainModel):
+class ModelTemplate(DomainModel, protected_namespaces=()):
     """This represents the reading version of model template.
 
     It is used to when data is retrieved from CDF.
@@ -101,7 +101,7 @@ class ModelTemplate(DomainModel):
         return self.as_write()
 
 
-class ModelTemplateWrite(DomainModelWrite):
+class ModelTemplateWrite(DomainModelWrite, protected_namespaces=()):
     """This represents the writing version of model template.
 
     It is used to when data is sent to CDF.

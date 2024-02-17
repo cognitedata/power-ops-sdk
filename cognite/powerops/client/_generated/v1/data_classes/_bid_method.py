@@ -51,7 +51,7 @@ class BidMethod(DomainModel):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types", "BidMethod")
+    node_type: Union[dm.DirectRelationReference, None] = None
     name: str
 
     def as_write(self) -> BidMethodWrite:
@@ -86,7 +86,7 @@ class BidMethodWrite(DomainModelWrite):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types", "BidMethod")
+    node_type: Union[dm.DirectRelationReference, None] = None
     name: str
 
     def _to_instances_write(
