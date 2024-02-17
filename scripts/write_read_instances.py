@@ -37,6 +37,14 @@ def main():
         mock_data = mock_generator.generate_mock_data(node_count=node_count)
         print(f"Generated {len(mock_data.nodes)} nodes for {len(data_model.views)} views.")
 
+        # Custom fix of the Scenario data as it filters on a property.
+        for view_data in mock_data:
+            if view_data.view_id in {
+                dm.ViewId("sp_powerops_models", "Scenario", "1"),
+                dm.ViewId("sp_powerops_models", "ScenarioRaw", "1"),
+            }:
+                raise NotImplementedError()
+
         # Write to all views
         mock_data.deploy(client)
         print(f"Deployed {len(mock_data.nodes)} nodes to {len(data_model.views)} views.")
