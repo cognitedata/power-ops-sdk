@@ -12,6 +12,12 @@ filter:
         - node
         - space
       value: '{{powerops_instance_space}}'
+  - equals:
+      property:
+        - '{{powerops_models}}'
+        - BidMatrix
+        - isProcessed
+      value: 'true'
   - not:
       in:
         property:
