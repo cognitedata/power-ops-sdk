@@ -37,13 +37,23 @@ def main():
         mock_data = mock_generator.generate_mock_data(node_count=node_count)
         print(f"Generated {len(mock_data.nodes)} nodes for {len(data_model.views)} views.")
 
-        # Custom fix of the Scenario data as it filters on a property.
+        # Custom fix of the Scenario/BidMatrix data as it filters on a property which the PygenMockGenerator does not set.
         for view_data in mock_data:
             if view_data.view_id in {
                 dm.ViewId("sp_powerops_models", "Scenario", "1"),
                 dm.ViewId("sp_powerops_models", "ScenarioRaw", "1"),
             }:
-                raise NotImplementedError()
+                is_ready = True if view_data.view_id.external_id == "Scenario" else False
+                for node in view_data.node:
+                    node.sources[0].properties["isReady"] = is_ready
+            if view_data.view_id in {
+                dm.ViewId("sp_powerops_models", "BidMatrixRaw", "1"),
+                dm.ViewId("sp_powerops_models", "MultiScenarioMatrix", "1"),
+                dm.ViewId("sp_powerops_models", "MultiScenarioMatrixRaw", "1"),
+            }:
+                is_processed = False if "Raw" in view_data.view_id.external_id else True
+                for node in view_data.node:
+                    node.sources[0].properties["isProcessed"] = is_processed
 
         # Write to all views
         mock_data.deploy(client)

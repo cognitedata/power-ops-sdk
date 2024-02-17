@@ -17,7 +17,7 @@ filter:
       - node
       - type
       value:
-        externalId: DayAheadMultiScenarioMatrixRaw
+        externalId: DayAheadMultiScenarioMatrix
         space: '{{powerops_type_space}}'
   - equals:
       property:
