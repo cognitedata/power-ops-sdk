@@ -16,3 +16,6 @@ views:
 - externalId: BenchmarkingCollectorOutput
   space: '{{powerops_models}}'
   version: '{{version}}'
+- externalId: BidDocumentDayAheadSimple
+  space: '{{powerops_models}}'
+  version: '{{version}}'

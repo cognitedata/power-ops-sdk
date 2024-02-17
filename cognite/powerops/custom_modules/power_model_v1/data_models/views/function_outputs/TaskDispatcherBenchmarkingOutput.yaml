@@ -7,7 +7,7 @@ filter:
   - hasData:
     - type: container
       space: '{{powerops_models}}'
-      externalId: FunctionData
+      externalId: FunctionMetadata
   - equals:
       property:
       - node
@@ -30,9 +30,9 @@ properties:
   input:
     container:
       space: '{{powerops_models}}'
-      externalId: FunctionData
+      externalId: FunctionMetadata
       type: container
-    containerPropertyIdentifier: direct1
+    containerPropertyIdentifier: linkedStep
     name: input
     source:
       space: '{{powerops_models}}'
