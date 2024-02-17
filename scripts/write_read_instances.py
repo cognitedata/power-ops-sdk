@@ -50,8 +50,9 @@ def main():
                 dm.ViewId("sp_powerops_models", "BidMatrixRaw", "1"),
                 dm.ViewId("sp_powerops_models", "MultiScenarioMatrix", "1"),
                 dm.ViewId("sp_powerops_models", "MultiScenarioMatrixRaw", "1"),
-                dm.ViewId("sp_powerops_models", "BasicBidMatrix", "1"),
                 dm.ViewId("sp_powerops_models", "CustomBidMatrix", "1"),
+                dm.ViewId("sp_powerops_models", "BasicBidMatrixRaw", "1"),
+                dm.ViewId("sp_powerops_models", "BasicBidMatrix", "1"),
             }:
                 is_processed = False if "Raw" in view_data.view_id.external_id else True
                 for node in view_data.node:
