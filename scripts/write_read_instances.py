@@ -100,4 +100,4 @@ def clean_instances():
 
 
 if __name__ == "__main__":
-    main()
+    clean_instances()
