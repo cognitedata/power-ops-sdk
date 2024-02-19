@@ -54,6 +54,13 @@ def test_get_shop_files(shop_run: SHOPRun) -> None:
 
 
 @pytest.mark.cdf
+def test_get_pre_run_file(shop_run: SHOPRun) -> None:
+    pre_run_file = shop_run.get_pre_run_file()
+
+    assert isinstance(pre_run_file, str)
+
+
+@pytest.mark.cdf
 def test_check_status(shop_run: SHOPRun) -> None:
     status = shop_run.check_status()
 
