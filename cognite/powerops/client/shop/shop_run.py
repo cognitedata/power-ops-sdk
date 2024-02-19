@@ -226,9 +226,9 @@ class SHOPRun:
             labels=LabelFilter(contains_all=["relationship_to.pre_run_file"]),
         )
         if not pre_run_files:
-            raise ValueError("No pre-run file found for SHOP run.")
+            raise ValueError(f"No pre-run file found for SHOP run with external ID: {self.external_id}")
         if len(pre_run_files) > 1:
-            raise ValueError("Multiple pre-run files found for SHOP run")
+            raise ValueError(f"Multiple pre-run files found for SHOP run with external ID: {self.external_id}")
 
         return self._download_file(pre_run_files[0].target_external_id)
 
