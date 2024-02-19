@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.87.0] - 2024-02-19
+### Added
+* SDK call to fetch the pre-run file for a SHOP run
+
 ## [0.86.1] - 2024-02-18
 ### Added
 * Several fixes to the new datamodels v1
