@@ -485,7 +485,7 @@ class HeightToVolume(DynamicTransformation):
         def interpolate(height: float) -> float:
             """Height to volume"""
             if height < min(heights) or max(heights) < height:
-                logger.warning(f"Outside interpoaltion bounds [{min(heights)}, {max(heights)}]. Got {height}.")
+                logger.warning(f"Outside interpolation bounds [{min(heights)}, {max(heights)}]. Got {height}.")
             return float(np.interp(height, heights, volumes))
 
         return time_series_data.map(interpolate)
@@ -795,7 +795,7 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
         model = {"gate": {"gate1": {"shape_discharge": {"ref": 0, "x": [0, 60, 120], "y": [0.1, 0.5, 0.4]}}}}
         t = AddWaterInTransit(discharge_ts_external_id="discharge_ts",
         ...                       transit_object_type="gate",
-        ...                       transit_object_name="Holen(01)")
+        ...                       transit_object_name="gate1")
         t.pre_apply(client=client, shop_model=model, start=start_time, end=end_time)
         t.shape
         {0: 0.1, 60: 0.5, 120: 0.4}
@@ -808,8 +808,16 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
             model=shop_model, transit_object_type=self.transit_object_type, transit_object_name=self.transit_object_name
         )
 
+        print(f"START Base {self.start}")
+        print(f"END Base {self.end}")
+
         longest_delay = max(self.shape)  # longest delay in minutes
+        
+        print(f"LONGEST_DELAY {longest_delay}")
+
         longest_delay_ms = 60 * 1000 * longest_delay  # longest delay in milliseconds
+
+        print(f"LONGEST_DELAY {longest_delay_ms}")
 
         discharge = retrieve_range(  # Get discharge datapoints from time-series
             client=client,
@@ -817,6 +825,8 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
             start=self.start - longest_delay_ms,  # Shift start time based on longest delay
             end=self.start,
         )[self.discharge_ts_external_id]
+
+        print(f"DISCHARGE {discharge}")
 
         if discharge.empty:
             logger.warning("Cannot add 'water in transit' - did not get any 'discharge' datapoints!")
@@ -848,7 +858,7 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
         return inflow.loc[between_start_and_end]
 
     def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
-        """Run `apply()` after preprocessing step to add water in transit to add water in transit (doscharge water) to
+        """Run `apply()` after preprocessing step to add water in transit to add water in transit (discharge water) to
            inflow time series
 
         Args:
@@ -859,13 +869,13 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
         from cognite.client import CogniteClient
         start = datetime(year=2022, month=5, day=20, hour=22)
         end = start + timedelta(days=5)
-        start_time = datetime.timestamp(start)
-        end_time = datetime.timestamp(end)
+        start_time = datetime.timestamp(start) * 1000
+        end_time = datetime.timestamp(end) * 1000
         client = CogniteClient()
         model = {"gate": {"gate1": {"shape_discharge": {"ref": 0, "x": [0, 60, 120], "y": [0.1, 0.5, 0.4]}}}}
         t = AddWaterInTransit(discharge_ts_external_id="discharge_ts",
         ...                       transit_object_type="gate",
-        ...                       transit_object_name="Holen(01)")
+        ...                       transit_object_name="gate1")
         t.pre_apply(client=client, shop_model=model, start=start_time, end=end_time)
         inflow = [1, 2, 3, 2, 4, 5, 3, 1, 2, 0, 7, 5, 9, 0, 0, 9, 8, 7, 6, 5, 4, 7, 8, 9]
         timestamps = [start + timedelta(hours=2 * i) for i in range(len(inflow))]
@@ -888,7 +898,7 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
         ```
         """
         single_ts = time_series_data[0]
-        if single_ts.empty:
+        if single_ts.empty or self.discharge.empty:
             return single_ts
 
         if self.pre_apply_has_run:
@@ -900,7 +910,7 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
                 end=ms_to_datetime_tz_naive(self.end),
             )
         else:
-            raise ValueError("pre_apply function has not run - missing neccessary properties to run transformation")
+            raise ValueError("pre_apply function has not run - missing necessary properties to run transformation")
 
 
 _TRANSFORMATIONS_BY_CLASS_NAME = dict(

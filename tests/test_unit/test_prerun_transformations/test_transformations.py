@@ -1,7 +1,15 @@
 from datetime import datetime, timedelta
 import pytz
+import pytest
+from pydantic import ValidationError
+
 
 import pandas as pd
+
+from cognite.client.data_classes import (
+    Datapoints,
+    TimeSeries,
+)
 
 from cognite.powerops.prerun_transformations.transformations import (
     ms_to_datetime_tz_naive,
@@ -19,6 +27,7 @@ from cognite.powerops.prerun_transformations.transformations import (
     DoNothing,
     AddFromOffset,
     MultiplyFromOffset,
+    AddWaterInTransit,
 )
 
 
@@ -329,4 +338,138 @@ def test_multiply_from_offset():
 
     output_data = transformation.apply(time_series_data=(input_data,))
 
+    assert (output_data == expected_data).all()
+
+
+@pytest.mark.parametrize(
+        "shape_type,input_value,expected_shape", [
+            ("shape_discharge", {"x": [0, 60, 120], "y": [0.1, 0.5, 0.4]}, {0: 0.1, 60: 0.5, 120: 0.4}),
+            ("time_delay", 10, {10: 1}),
+            ])
+def test_add_water_in_transit_get_shape_valid(shape_type, input_value, expected_shape):
+
+    external_id = "discharge_ts"
+    transit_object_type = "gate"
+    transit_object_name = "gate1"
+    model = {transit_object_type: {transit_object_name: {shape_type: input_value}}}
+    transformation = AddWaterInTransit(
+        discharge_ts_external_id=external_id,
+        transit_object_type=transit_object_type,
+        transit_object_name=transit_object_name,
+    )
+
+    output_shape = transformation.get_shape(model=model, transit_object_type=transit_object_type, transit_object_name=transit_object_name)
+
+    assert (output_shape == expected_shape)
+
+
+@pytest.mark.parametrize(
+        "transit_object_type,transit_object_name,model,error_type", [
+            ("foo", "gate1", {"foo": 0}, ValidationError),
+            ("gate", "gate1", {"gate": 0}, TypeError),
+            ("gate", "gate1", {"gate": {"foo": 0}}, KeyError),
+            ("gate", "gate1", {"gate": {"gate1": 0}}, TypeError),
+            ("gate", "gate1", {"gate": {"gate1": {"foo": 0}}}, ValueError),
+            ("gate", "gate1", {"foo": {"gate1": {"foo": 0}}}, KeyError),
+            # ("gate", "gate1", {"gate": {"gate1": {"time_delay": "foo"}}}, TypeError),
+            ])
+def test_add_water_in_transit_get_shape_invalid(transit_object_type, transit_object_name, model, error_type):
+    with pytest.raises(error_type):
+
+        external_id = "discharge_ts"
+        transformation = AddWaterInTransit(
+            discharge_ts_external_id=external_id,
+            transit_object_type=transit_object_type,
+            transit_object_name=transit_object_name,
+        )
+
+        transformation.get_shape(model=model, transit_object_type=transit_object_type, transit_object_name=transit_object_name)
+
+
+def test_add_water_in_transit(cognite_client_mock):
+
+    start = datetime(year=2022, month=5, day=20, hour=22)
+    end = start + timedelta(days=5)
+
+    start_time = datetime.timestamp(start) * 1000
+    end_time = datetime.timestamp(end) * 1000
+
+    print(f"INITIAL START_TIME {start_time}")
+
+    external_id = "discharge_ts"
+    model = {"gate": {"gate1": {"shape_discharge": {"ref": 0, "x": [0, 120, 1320], "y": [0, 0.5, 0.5]}}}}
+    transformation = AddWaterInTransit(
+        discharge_ts_external_id=external_id,
+        transit_object_type="gate",
+        transit_object_name="gate1",
+    )
+    
+    inflow = [1, 2, 3, 2, 4, 5, 3, 1, 2, 0, 7, 5, 9, 0, 0, 9, 8, 7, 6, 5, 4, 7, 8, 9]
+    incremental_dates = pd.date_range(start='2022-05-20 22:00:00', periods=len(inflow), freq='2H')
+    input_data = (pd.Series(inflow, index=incremental_dates),)
+
+    discharge_values = inflow[:5]  # Note: reusing inflow values
+    discharge_start = start - timedelta(hours=22)
+    discharge_timestamps = [(discharge_start + timedelta(hours=2 * i)).timestamp() * 1000 for i in range(len(discharge_values))]
+
+    cognite_client_mock.time_series.data.retrieve.return_value = Datapoints(external_id=external_id, value=discharge_values, timestamp=discharge_timestamps)
+    cognite_client_mock.time_series.data.retrieve_latest.return_value = Datapoints(external_id=external_id, value=[discharge_values[-1]], timestamp=[discharge_timestamps[-1]])
+    cognite_client_mock.time_series.retrieve_multiple.return_value = [TimeSeries(external_id=external_id, is_step=True)]
+
+    transformation.pre_apply(client=cognite_client_mock, shop_model=model, start=start_time, end=end_time)
+
+    output_data = transformation.apply(input_data)
+
+
+    # expected_shape = {0: 0, 120: 0.5, 1320: 0.5}
+    expected_data = pd.Series()
+
+    print("--------------------------------")
+    print(output_data)
+    print(expected_data)
+
+    # assert (transformation.shape == expected_shape)
+    assert (output_data == expected_data)
+
+
+def test_add_water_in_transit_cannot_add(cognite_client_mock):
+
+    start = datetime(year=2022, month=5, day=20, hour=22)
+    end = start + timedelta(days=5)
+
+    start_time = datetime.timestamp(start) * 1000
+    end_time = datetime.timestamp(end) * 1000
+
+    external_id = "discharge_ts"
+    transit_object_type = "gate"
+    transit_object_name = "gate1"
+    model = {transit_object_type: {transit_object_name: {"shape_discharge": {"ref": 0, "x": [0, 60, 120], "y": [0.1, 0.5, 0.4]}}}}
+    transformation = AddWaterInTransit(
+        discharge_ts_external_id=external_id,
+        transit_object_type=transit_object_type,
+        transit_object_name=transit_object_name,
+    )
+    
+    inflow = [1, 2, 3, 2, 4, 5, 3, 1, 2, 0, 7, 5, 9, 0, 0, 9, 8, 7, 6, 5, 4, 7, 8, 9]
+    incremental_dates = pd.date_range(start='2022-05-20 22:00:00', periods=len(inflow), freq='2H')
+    input_data = (pd.Series(inflow, index=incremental_dates),)
+
+
+    discharge_values = inflow[:5]  # Note: reusing inflow values
+    discharge_start = datetime(year=2020, month=5, day=20, hour=0)
+    discharge_timestamps = [(discharge_start + timedelta(hours=2 * i)).timestamp() * 1000 for i in range(len(discharge_values))]
+
+    cognite_client_mock.time_series.data.retrieve.return_value = Datapoints(external_id=external_id, value=discharge_values, timestamp=discharge_timestamps)
+    cognite_client_mock.time_series.data.retrieve_latest.return_value = Datapoints(external_id=external_id, value=[discharge_values[-1]], timestamp=[discharge_timestamps[-1]])
+    cognite_client_mock.time_series.retrieve_multiple.return_value = [TimeSeries(external_id=external_id, is_step=True)]
+
+    transformation.pre_apply(client=cognite_client_mock, shop_model=model, start=start_time, end=end_time)
+
+    output_data = transformation.apply(input_data)
+
+
+    expected_shape = {0: 0.1, 60: 0.5, 120: 0.4}
+    expected_data = input_data[0]
+
+    assert (transformation.shape == expected_shape)
     assert (output_data == expected_data).all()

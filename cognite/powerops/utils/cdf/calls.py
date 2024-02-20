@@ -68,7 +68,7 @@ def _retrieve_range(client: CogniteClient, external_ids: list[str], start: int, 
     # but maybe we need to be careful with cases where there is more than 1 hour between values
     # (I do not remember if this is an issue only for some aggregates like average, or for all).
     # And maybe we need to parametrise the "minimum resolution"
-    # (seems to assume 1 hour, but we should support sub-hourly resolutuon)
+    # (seems to assume 1 hour, but we should support sub-hourly resolution)
     # Retrieve raw datapoints
     external_ids = remove_duplicates(external_ids)
     if not external_ids:
@@ -89,12 +89,14 @@ def _retrieve_range(client: CogniteClient, external_ids: list[str], start: int, 
     if df_range.empty:
         df_range = pd.DataFrame(
             columns=df_latest.columns,
-            index=pd.DatetimeIndex(data=np.array([start], dtype="datetime64[ms]")),
+            index=pd.DatetimeIndex(data=np.array([int(start)], dtype="datetime64[ms]")),
             dtype=float,
         )
 
     # Add the latest datapoints to the DataFrame
     df_raw = df_range.combine_first(df_latest)
+
+    print(f"DF_RAW {df_raw}")
 
     # Must retrieve time series metadata to correctly resample and aggregate datapoints
     time_series = client.time_series.retrieve_multiple(external_ids=external_ids, ignore_unknown_ids=True)
@@ -107,16 +109,27 @@ def _retrieve_range(client: CogniteClient, external_ids: list[str], start: int, 
     # TODO: note 2x ffill()
     df_step = df_raw[step_columns].ffill().resample("1h").ffill()  # type: ignore[type-var]
 
+    print(f"DF_STEP {df_step}")
+
     # Linear interpolation of time series with .is_step=False
     # TODO: must upsample before downsampling?
     # TODO: confirm operations
     intermediate_df = df_raw[linear_columns].resample("1min").interpolate()  # type: ignore[type-var]
     df_linear = intermediate_df.resample("1h").interpolate()
+
+    print(f"DF_LINEAR {df_linear}")
+
     # Merge the step interpolated and linearly interpolated DataFrames
     df_combined = df_step.combine_first(df_linear)
 
+    print(f"DF_COMBINED {df_combined}")
+    print(f"START {start_dt}")
+    print(f"END {end_dt}")
+
     # Only return datapoints within the range
     df_filtered = df_combined[start_dt:end_dt]  # type: ignore[misc]
+
+    print(f"DF_FILTERED {df_filtered}")
 
     return df_filtered
 
