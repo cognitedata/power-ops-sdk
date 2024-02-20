@@ -110,7 +110,7 @@ def init(client: PowerOpsClient | None, is_dev: bool = False, dry_run: bool = Fa
     logger.info("Validated all powerops data models")
 
     # Nodes should not be deployed, so we remove them from the build folder
-    for node_file in build_folder.glob("data_models/*.node.yaml"):
+    for node_file in build_folder.glob("data_models/*.powerops_nodes.yaml"):
         node_file.unlink()
 
     build_hash = calculate_directory_hash(build_folder)
