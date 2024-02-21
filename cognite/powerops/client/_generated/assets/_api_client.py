@@ -27,7 +27,7 @@ class PowerAssetAPI:
 
     Generated with:
         pygen = 0.99.10
-        cognite-sdk = 7.17.3
+        cognite-sdk = 7.20.1
         pydantic = 2.6.1
 
     Data Model:

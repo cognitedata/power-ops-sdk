@@ -55,10 +55,6 @@ class PriceScenarioAPI(NodeAPI[PriceScenario, PriceScenarioWrite, PriceScenarioL
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        retrieve: str | list[str] | None = None,
-        retrieve_prefix: str | None = None,
-        aggregation: str | list[str] | None = None,
-        aggregation_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
@@ -69,10 +65,6 @@ class PriceScenarioAPI(NodeAPI[PriceScenario, PriceScenarioWrite, PriceScenarioL
         Args:
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            retrieve: The retrieve to filter on.
-            retrieve_prefix: The prefix of the retrieve to filter on.
-            aggregation: The aggregation to filter on.
-            aggregation_prefix: The prefix of the aggregation to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of price scenarios to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -87,10 +79,6 @@ class PriceScenarioAPI(NodeAPI[PriceScenario, PriceScenarioWrite, PriceScenarioL
             self._view_id,
             name,
             name_prefix,
-            retrieve,
-            retrieve_prefix,
-            aggregation,
-            aggregation_prefix,
             external_id_prefix,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
@@ -204,10 +192,6 @@ class PriceScenarioAPI(NodeAPI[PriceScenario, PriceScenarioWrite, PriceScenarioL
         properties: PriceScenarioTextFields | Sequence[PriceScenarioTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        retrieve: str | list[str] | None = None,
-        retrieve_prefix: str | None = None,
-        aggregation: str | list[str] | None = None,
-        aggregation_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -220,10 +204,6 @@ class PriceScenarioAPI(NodeAPI[PriceScenario, PriceScenarioWrite, PriceScenarioL
             properties: The property to search, if nothing is passed all text fields will be searched.
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            retrieve: The retrieve to filter on.
-            retrieve_prefix: The prefix of the retrieve to filter on.
-            aggregation: The aggregation to filter on.
-            aggregation_prefix: The prefix of the aggregation to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of price scenarios to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -245,10 +225,6 @@ class PriceScenarioAPI(NodeAPI[PriceScenario, PriceScenarioWrite, PriceScenarioL
             self._view_id,
             name,
             name_prefix,
-            retrieve,
-            retrieve_prefix,
-            aggregation,
-            aggregation_prefix,
             external_id_prefix,
             space,
             filter,
@@ -270,10 +246,6 @@ class PriceScenarioAPI(NodeAPI[PriceScenario, PriceScenarioWrite, PriceScenarioL
         search_properties: PriceScenarioTextFields | Sequence[PriceScenarioTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        retrieve: str | list[str] | None = None,
-        retrieve_prefix: str | None = None,
-        aggregation: str | list[str] | None = None,
-        aggregation_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -295,10 +267,6 @@ class PriceScenarioAPI(NodeAPI[PriceScenario, PriceScenarioWrite, PriceScenarioL
         search_properties: PriceScenarioTextFields | Sequence[PriceScenarioTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        retrieve: str | list[str] | None = None,
-        retrieve_prefix: str | None = None,
-        aggregation: str | list[str] | None = None,
-        aggregation_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -319,10 +287,6 @@ class PriceScenarioAPI(NodeAPI[PriceScenario, PriceScenarioWrite, PriceScenarioL
         search_property: PriceScenarioTextFields | Sequence[PriceScenarioTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        retrieve: str | list[str] | None = None,
-        retrieve_prefix: str | None = None,
-        aggregation: str | list[str] | None = None,
-        aggregation_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -338,10 +302,6 @@ class PriceScenarioAPI(NodeAPI[PriceScenario, PriceScenarioWrite, PriceScenarioL
             search_property: The text field to search in.
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            retrieve: The retrieve to filter on.
-            retrieve_prefix: The prefix of the retrieve to filter on.
-            aggregation: The aggregation to filter on.
-            aggregation_prefix: The prefix of the aggregation to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of price scenarios to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -364,10 +324,6 @@ class PriceScenarioAPI(NodeAPI[PriceScenario, PriceScenarioWrite, PriceScenarioL
             self._view_id,
             name,
             name_prefix,
-            retrieve,
-            retrieve_prefix,
-            aggregation,
-            aggregation_prefix,
             external_id_prefix,
             space,
             filter,
@@ -392,10 +348,6 @@ class PriceScenarioAPI(NodeAPI[PriceScenario, PriceScenarioWrite, PriceScenarioL
         search_property: PriceScenarioTextFields | Sequence[PriceScenarioTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        retrieve: str | list[str] | None = None,
-        retrieve_prefix: str | None = None,
-        aggregation: str | list[str] | None = None,
-        aggregation_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -410,10 +362,6 @@ class PriceScenarioAPI(NodeAPI[PriceScenario, PriceScenarioWrite, PriceScenarioL
             search_property: The text field to search in.
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            retrieve: The retrieve to filter on.
-            retrieve_prefix: The prefix of the retrieve to filter on.
-            aggregation: The aggregation to filter on.
-            aggregation_prefix: The prefix of the aggregation to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of price scenarios to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -427,10 +375,6 @@ class PriceScenarioAPI(NodeAPI[PriceScenario, PriceScenarioWrite, PriceScenarioL
             self._view_id,
             name,
             name_prefix,
-            retrieve,
-            retrieve_prefix,
-            aggregation,
-            aggregation_prefix,
             external_id_prefix,
             space,
             filter,
@@ -450,10 +394,6 @@ class PriceScenarioAPI(NodeAPI[PriceScenario, PriceScenarioWrite, PriceScenarioL
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        retrieve: str | list[str] | None = None,
-        retrieve_prefix: str | None = None,
-        aggregation: str | list[str] | None = None,
-        aggregation_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -464,10 +404,6 @@ class PriceScenarioAPI(NodeAPI[PriceScenario, PriceScenarioWrite, PriceScenarioL
         Args:
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            retrieve: The retrieve to filter on.
-            retrieve_prefix: The prefix of the retrieve to filter on.
-            aggregation: The aggregation to filter on.
-            aggregation_prefix: The prefix of the aggregation to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of price scenarios to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -489,10 +425,6 @@ class PriceScenarioAPI(NodeAPI[PriceScenario, PriceScenarioWrite, PriceScenarioL
             self._view_id,
             name,
             name_prefix,
-            retrieve,
-            retrieve_prefix,
-            aggregation,
-            aggregation_prefix,
             external_id_prefix,
             space,
             filter,

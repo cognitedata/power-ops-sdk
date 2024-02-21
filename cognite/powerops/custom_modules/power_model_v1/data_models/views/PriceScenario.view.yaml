@@ -1,7 +1,7 @@
 space: '{{powerops_models}}'
 externalId: PriceScenario
 name: PriceScenario
-description: Price scenarios
+description: Price scenarios used in the frontend data contract
 filter:
   and:
   - hasData:
@@ -38,28 +38,4 @@ properties:
       type: container
     containerPropertyIdentifier: timeseries
     name: timeseries
-    description: Which timeseries with the scenario.
-  retrieve:
-    container:
-      space: '{{powerops_models}}'
-      externalId: PriceScenario
-      type: container
-    containerPropertyIdentifier: retrieve
-    name: retrieve
-    description: How to retrieve the timeseries, for example, 'latest'
-  aggregation:
-    container:
-      space: '{{powerops_models}}'
-      externalId: PriceScenario
-      type: container
-    containerPropertyIdentifier: aggregation
-    name: aggregation
-    description: How to aggregate the timeseries, for example, 'avg'
-  transformations:
-    container:
-      space: '{{powerops_models}}'
-      externalId: PriceScenario
-      type: container
-    containerPropertyIdentifier: transformations
-    name: transformations
-    description: The transformations to apply to the timeseries
+    description: The price timeseries in this price scenario

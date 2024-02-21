@@ -30,6 +30,6 @@ properties:
     description: The main scenario to use when running the bid method
     source:
       space: '{{powerops_models}}'
-      externalId: PriceScenario
+      externalId: Mapping
       version: '{{version}}'
       type: view

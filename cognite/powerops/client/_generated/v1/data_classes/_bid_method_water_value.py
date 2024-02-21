@@ -20,7 +20,7 @@ from ._core import (
 from ._bid_method_day_ahead import BidMethodDayAhead, BidMethodDayAheadWrite
 
 if TYPE_CHECKING:
-    from ._price_scenario import PriceScenario, PriceScenarioWrite
+    from ._mapping import Mapping, MappingWrite
 
 
 __all__ = [
