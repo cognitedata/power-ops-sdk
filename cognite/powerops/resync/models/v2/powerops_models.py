@@ -219,17 +219,19 @@ class DataModelLoader:
         for filepath in self._source_dir.glob("**/*.yaml"):
             if filepath.name == "_build_environment.yaml":
                 continue
-            if match := re.match(r".*(?P<type>(space|view|container|node|datamodel))\.yaml$", filepath.name):
+            if match := re.match(r".*(?P<type>(space|view|container|powerops_nodes|datamodel))\.yaml$", filepath.name):
                 type_ = match.group("type")
+                if type_ == "powerops_nodes":
+                    type_ = "node"
                 resource_cls = resource_cls_by_type[type_]
                 loaded = self._load_file(filepath)
                 try:
                     if isinstance(loaded, list):
                         parsed = [resource_cls.load(item) for item in loaded]
-                        resources_by_type[match.group("type")].extend(parsed)
+                        resources_by_type[type_].extend(parsed)
                     else:
                         parsed = resource_cls.load(loaded)
-                        resources_by_type[match.group("type")].append(parsed)
+                        resources_by_type[type_].append(parsed)
                 except Exception as exc:
                     failed.append((filepath, str(exc)))
             else:

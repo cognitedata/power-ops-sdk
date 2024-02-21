@@ -8,12 +8,12 @@ from cognite.client import data_modeling as dm, CogniteClient
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     BidMethodSHOPMultiScenario,
-    PriceScenario,
+    Mapping,
 )
 from ._core import DEFAULT_QUERY_LIMIT, QueryBuilder, QueryStep, QueryAPI, T_DomainModelList, _create_edge_filter
 
 if TYPE_CHECKING:
-    from .price_scenario_query import PriceScenarioQueryAPI
+    from .mapping_query import MappingQueryAPI
 
 
 class BidMethodSHOPMultiScenarioQueryAPI(QueryAPI[T_DomainModelList]):
@@ -48,7 +48,7 @@ class BidMethodSHOPMultiScenarioQueryAPI(QueryAPI[T_DomainModelList]):
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
         retrieve_main_scenario: bool = False,
-    ) -> PriceScenarioQueryAPI[T_DomainModelList]:
+    ) -> MappingQueryAPI[T_DomainModelList]:
         """Query along the price scenario edges of the bid method shop multi scenario.
 
         Args:
@@ -59,9 +59,9 @@ class BidMethodSHOPMultiScenarioQueryAPI(QueryAPI[T_DomainModelList]):
             retrieve_main_scenario: Whether to retrieve the main scenario for each bid method shop multi scenario or not.
 
         Returns:
-            PriceScenarioQueryAPI: The query API for the price scenario.
+            MappingQueryAPI: The query API for the mapping.
         """
-        from .price_scenario_query import PriceScenarioQueryAPI
+        from .mapping_query import MappingQueryAPI
 
         from_ = self._builder[-1].name
 
@@ -84,7 +84,7 @@ class BidMethodSHOPMultiScenarioQueryAPI(QueryAPI[T_DomainModelList]):
         )
         if retrieve_main_scenario:
             self._query_append_main_scenario(from_)
-        return PriceScenarioQueryAPI(self._client, self._builder, self._view_by_read_class, None, limit)
+        return MappingQueryAPI(self._client, self._builder, self._view_by_read_class, None, limit)
 
     def query(
         self,
@@ -105,7 +105,7 @@ class BidMethodSHOPMultiScenarioQueryAPI(QueryAPI[T_DomainModelList]):
         return self._query()
 
     def _query_append_main_scenario(self, from_: str) -> None:
-        view_id = self._view_by_read_class[PriceScenario]
+        view_id = self._view_by_read_class[Mapping]
         self._builder.append(
             QueryStep(
                 name=self._builder.next_name("main_scenario"),
@@ -117,6 +117,6 @@ class BidMethodSHOPMultiScenarioQueryAPI(QueryAPI[T_DomainModelList]):
                 ),
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
                 max_retrieve_limit=-1,
-                result_cls=PriceScenario,
+                result_cls=Mapping,
             ),
         )

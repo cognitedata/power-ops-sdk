@@ -13,6 +13,14 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.88.0] - 2024-02-21
+### Changed
+* Changed PriceScenarios container to enable view to be more flexible / fit better with frontend
+* Renamed *.nodes.yaml files to *.powerops-nodes.yaml and accomodate for this in resync init
+* Regenerated pygen sdk with new datamodels v1
+* Changed vies for Scenario and SHOPResult to use Mappings view instead of PriceScenario view
+* Upgraded to cdf-tk v.b9
+
 ## [0.87.0] - 2024-02-19
 ### Added
 * SDK call to fetch the pre-run file for a SHOP run

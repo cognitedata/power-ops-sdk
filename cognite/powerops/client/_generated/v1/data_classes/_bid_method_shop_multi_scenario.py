@@ -20,7 +20,7 @@ from ._core import (
 from ._bid_method_day_ahead import BidMethodDayAhead, BidMethodDayAheadWrite
 
 if TYPE_CHECKING:
-    from ._price_scenario import PriceScenario, PriceScenarioWrite
+    from ._mapping import Mapping, MappingWrite
 
 
 __all__ = [
@@ -60,9 +60,7 @@ class BidMethodSHOPMultiScenario(BidMethodDayAhead):
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
         "sp_powerops_types", "BidMethodSHOPMultiScenario"
     )
-    price_scenarios: Union[list[PriceScenario], list[str], None] = Field(
-        default=None, repr=False, alias="priceScenarios"
-    )
+    price_scenarios: Union[list[Mapping], list[str], None] = Field(default=None, repr=False, alias="priceScenarios")
 
     def as_write(self) -> BidMethodSHOPMultiScenarioWrite:
         """Convert this read version of bid method shop multi scenario to the writing version."""
@@ -107,7 +105,7 @@ class BidMethodSHOPMultiScenarioWrite(BidMethodDayAheadWrite):
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
         "sp_powerops_types", "BidMethodSHOPMultiScenario"
     )
-    price_scenarios: Union[list[PriceScenarioWrite], list[str], None] = Field(
+    price_scenarios: Union[list[MappingWrite], list[str], None] = Field(
         default=None, repr=False, alias="priceScenarios"
     )
 

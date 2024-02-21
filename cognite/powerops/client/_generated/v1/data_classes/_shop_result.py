@@ -22,6 +22,7 @@ from ._core import (
 
 if TYPE_CHECKING:
     from ._alert import Alert, AlertWrite
+    from ._price_scenario import PriceScenario, PriceScenarioWrite
     from ._scenario import Scenario, ScenarioWrite
 
 
@@ -57,6 +58,7 @@ class SHOPResult(DomainModel):
         external_id: The external id of the shop result.
         data_record: The data record of the shop result node.
         scenario: The Shop scenario that was used to produce this result
+        price_scenario: The price scenario that was used to produce this result
         production: The result production timeseries from a SHOP run
         price: The result price timeseries from a SHOP run
         objective_sequence: The sequence of the objective function
@@ -66,6 +68,7 @@ class SHOPResult(DomainModel):
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types", "SHOPResult")
     scenario: Union[Scenario, str, dm.NodeId, None] = Field(None, repr=False)
+    price_scenario: Union[PriceScenario, str, dm.NodeId, None] = Field(None, repr=False)
     production: Union[list[TimeSeries], list[str], None] = None
     price: Union[list[TimeSeries], list[str], None] = None
     objective_sequence: Union[str, None] = Field(None, alias="objectiveSequence")
@@ -78,6 +81,9 @@ class SHOPResult(DomainModel):
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
             scenario=self.scenario.as_write() if isinstance(self.scenario, DomainModel) else self.scenario,
+            price_scenario=(
+                self.price_scenario.as_write() if isinstance(self.price_scenario, DomainModel) else self.price_scenario
+            ),
             production=self.production,
             price=self.price,
             objective_sequence=self.objective_sequence,
@@ -104,6 +110,7 @@ class SHOPResultWrite(DomainModelWrite):
         external_id: The external id of the shop result.
         data_record: The data record of the shop result node.
         scenario: The Shop scenario that was used to produce this result
+        price_scenario: The price scenario that was used to produce this result
         production: The result production timeseries from a SHOP run
         price: The result price timeseries from a SHOP run
         objective_sequence: The sequence of the objective function
@@ -113,6 +120,7 @@ class SHOPResultWrite(DomainModelWrite):
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types", "SHOPResult")
     scenario: Union[ScenarioWrite, str, dm.NodeId, None] = Field(None, repr=False)
+    price_scenario: Union[PriceScenarioWrite, str, dm.NodeId, None] = Field(None, repr=False)
     production: Union[list[TimeSeries], list[str], None] = None
     price: Union[list[TimeSeries], list[str], None] = None
     objective_sequence: Union[str, None] = Field(None, alias="objectiveSequence")
@@ -136,6 +144,14 @@ class SHOPResultWrite(DomainModelWrite):
             properties["scenario"] = {
                 "space": self.space if isinstance(self.scenario, str) else self.scenario.space,
                 "externalId": self.scenario if isinstance(self.scenario, str) else self.scenario.external_id,
+            }
+
+        if self.price_scenario is not None:
+            properties["price_scenario"] = {
+                "space": self.space if isinstance(self.price_scenario, str) else self.price_scenario.space,
+                "externalId": (
+                    self.price_scenario if isinstance(self.price_scenario, str) else self.price_scenario.external_id
+                ),
             }
 
         if self.production is not None or write_none:
@@ -176,6 +192,10 @@ class SHOPResultWrite(DomainModelWrite):
 
         if isinstance(self.scenario, DomainModelWrite):
             other_resources = self.scenario._to_instances_write(cache, view_by_read_class)
+            resources.extend(other_resources)
+
+        if isinstance(self.price_scenario, DomainModelWrite):
+            other_resources = self.price_scenario._to_instances_write(cache, view_by_read_class)
             resources.extend(other_resources)
 
         if isinstance(self.production, CogniteTimeSeries):
@@ -230,6 +250,7 @@ class SHOPResultApplyList(SHOPResultWriteList): ...
 def _create_shop_result_filter(
     view_id: dm.ViewId,
     scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+    price_scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -259,6 +280,34 @@ def _create_shop_result_filter(
             dm.filters.In(
                 view_id.as_property_ref("scenario"),
                 values=[{"space": item[0], "externalId": item[1]} for item in scenario],
+            )
+        )
+    if price_scenario and isinstance(price_scenario, str):
+        filters.append(
+            dm.filters.Equals(
+                view_id.as_property_ref("price_scenario"),
+                value={"space": DEFAULT_INSTANCE_SPACE, "externalId": price_scenario},
+            )
+        )
+    if price_scenario and isinstance(price_scenario, tuple):
+        filters.append(
+            dm.filters.Equals(
+                view_id.as_property_ref("price_scenario"),
+                value={"space": price_scenario[0], "externalId": price_scenario[1]},
+            )
+        )
+    if price_scenario and isinstance(price_scenario, list) and isinstance(price_scenario[0], str):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("price_scenario"),
+                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in price_scenario],
+            )
+        )
+    if price_scenario and isinstance(price_scenario, list) and isinstance(price_scenario[0], tuple):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("price_scenario"),
+                values=[{"space": item[0], "externalId": item[1]} for item in price_scenario],
             )
         )
     if external_id_prefix is not None:
