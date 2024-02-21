@@ -66,8 +66,8 @@ class Mapping(DomainModel):
     shop_path: str = Field(alias="shopPath")
     timeseries: Union[TimeSeries, str, None] = None
     transformations: Optional[list[dict]] = None
-    retrieve: str
-    aggregation: str
+    retrieve: Optional[str] = None
+    aggregation: Optional[str] = None
 
     def as_write(self) -> MappingWrite:
         """Convert this read version of mapping to the writing version."""
@@ -113,8 +113,8 @@ class MappingWrite(DomainModelWrite):
     shop_path: str = Field(alias="shopPath")
     timeseries: Union[TimeSeries, str, None] = None
     transformations: Optional[list[dict]] = None
-    retrieve: str
-    aggregation: str
+    retrieve: Optional[str] = None
+    aggregation: Optional[str] = None
 
     def _to_instances_write(
         self,
@@ -133,7 +133,7 @@ class MappingWrite(DomainModelWrite):
         if self.shop_path is not None:
             properties["shopPath"] = self.shop_path
 
-        if self.timeseries is not None:
+        if self.timeseries is not None or write_none:
             if isinstance(self.timeseries, str) or self.timeseries is None:
                 properties["timeseries"] = self.timeseries
             else:
@@ -142,10 +142,10 @@ class MappingWrite(DomainModelWrite):
         if self.transformations is not None or write_none:
             properties["transformations"] = self.transformations
 
-        if self.retrieve is not None:
+        if self.retrieve is not None or write_none:
             properties["retrieve"] = self.retrieve
 
-        if self.aggregation is not None:
+        if self.aggregation is not None or write_none:
             properties["aggregation"] = self.aggregation
 
         if properties:
