@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.88.01] - 2024-02-22
+### Fixed
+* Added 3.11 to the list of supported versions of Python, it was dropped by mistake
+
 ## [0.88.0] - 2024-02-21
 ### Changed
 * Changed PriceScenarios container to enable view to be more flexible / fit better with frontend
