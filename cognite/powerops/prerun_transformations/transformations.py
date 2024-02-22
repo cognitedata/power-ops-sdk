@@ -804,12 +804,17 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
         self.start = start
         self.end = end
 
+        print(f"------------------------------PRE-APPLY------------------------------")
+        print(f"INPUTS")
+        print(f"SHOP_MODEL {shop_model}")
+        print(f"START {self.start}")
+        print(f"END {self.end}")
+
         self.shape = self.get_shape(
             model=shop_model, transit_object_type=self.transit_object_type, transit_object_name=self.transit_object_name
         )
 
-        print(f"START Base {self.start}")
-        print(f"END Base {self.end}")
+        print(f"SHAPE {self.shape}")
 
         longest_delay = max(self.shape)  # longest delay in minutes
         
@@ -817,7 +822,7 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
 
         longest_delay_ms = 60 * 1000 * longest_delay  # longest delay in milliseconds
 
-        print(f"LONGEST_DELAY {longest_delay_ms}")
+        print(f"LONGEST_DELAY_MS {longest_delay_ms}")
 
         discharge = retrieve_range(  # Get discharge datapoints from time-series
             client=client,
@@ -838,16 +843,30 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
     def add_water_in_transit(
         inflow: pd.Series, discharge: pd.Series, shape: dict[int, float], start: datetime, end: datetime
     ) -> pd.Series:
+        
+        print(f"---------------------------ADD_WATER_IN_TRANSIT---------------------------------")
+        print(f"INPUTS")
+        print(f"INFLOW {inflow}")
+        print(f"DISCHARGE {discharge}")
+        print(f"SHAPE {shape}")
+        print(f"START {start}")
+        print(f"END {end}")
+
         # Forward fill discharge for all (hour) timestamps until start
         one_hour = pd.Timedelta("1h")
         if start - one_hour not in discharge.index:
             discharge[start - one_hour] = np.NaN
         discharge = discharge.resample(one_hour).ffill().ffill()
 
+        print(f"ONE_HOUR {one_hour}")
+        print(f"DISCHARGE RESAMPLED {discharge}")
+
         # Make sure inflow has values for all (hour) timestamps up until end (exclusive)
         if end not in inflow.index:
             inflow[end] = np.NaN
         inflow = inflow.resample(one_hour).ffill().ffill()
+
+        print(f"INFLOW RESAMPLED {inflow}")
 
         for delay, water_percentage in shape.items():
             delayed_discharge = discharge.shift(delay, freq="min") * water_percentage
@@ -855,6 +874,10 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
 
         # Only include delayed discharge that will affect the selected time range
         between_start_and_end = (start <= inflow.index) & (inflow.index < end)
+        
+        print(f"BETWEEN_START_END {between_start_and_end}")
+        print(f"INFLOW LOC {inflow.loc[between_start_and_end]}")
+        
         return inflow.loc[between_start_and_end]
 
     def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:

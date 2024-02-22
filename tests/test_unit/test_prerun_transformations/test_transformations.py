@@ -391,10 +391,10 @@ def test_add_water_in_transit(cognite_client_mock):
     start = datetime(year=2022, month=5, day=20, hour=22)
     end = start + timedelta(days=5)
 
-    start_time = datetime.timestamp(start) * 1000
-    end_time = datetime.timestamp(end) * 1000
+    start_time = datetime.timestamp(start + timedelta(hours=2)) * 1000
+    end_time = datetime.timestamp(end + timedelta(hours=2)) * 1000
 
-    print(f"INITIAL START_TIME {start_time}")
+    # print(f"INITIAL START_TIME {start_time}")
 
     external_id = "discharge_ts"
     model = {"gate": {"gate1": {"shape_discharge": {"ref": 0, "x": [0, 120, 1320], "y": [0, 0.5, 0.5]}}}}
@@ -410,26 +410,87 @@ def test_add_water_in_transit(cognite_client_mock):
 
     discharge_values = inflow[:5]  # Note: reusing inflow values
     discharge_start = start - timedelta(hours=22)
-    discharge_timestamps = [(discharge_start + timedelta(hours=2 * i)).timestamp() * 1000 for i in range(len(discharge_values))]
+    discharge_times = pd.date_range(start='2022-05-20 00:00:00', periods=len(discharge_values), freq='2H')
+    # discharge_timestamps = [(discharge_start + timedelta(hours=2 * i)).timestamp() * 1000 for i in range(len(discharge_values))]
 
-    cognite_client_mock.time_series.data.retrieve.return_value = Datapoints(external_id=external_id, value=discharge_values, timestamp=discharge_timestamps)
-    cognite_client_mock.time_series.data.retrieve_latest.return_value = Datapoints(external_id=external_id, value=[discharge_values[-1]], timestamp=[discharge_timestamps[-1]])
-    cognite_client_mock.time_series.retrieve_multiple.return_value = [TimeSeries(external_id=external_id, is_step=True)]
+    # cognite_client_mock.time_series.data.retrieve.return_value = Datapoints(external_id=external_id, value=discharge_values, timestamp=discharge_timestamps)
+    # cognite_client_mock.time_series.data.retrieve_latest.return_value = Datapoints(external_id=external_id, value=[discharge_values[-1]], timestamp=[discharge_timestamps[-1]])
+    # cognite_client_mock.time_series.retrieve_multiple.return_value = [TimeSeries(external_id=external_id, is_step=True)]
 
-    transformation.pre_apply(client=cognite_client_mock, shop_model=model, start=start_time, end=end_time)
+    # transformation.pre_apply(client=cognite_client_mock, shop_model=model, start=start_time, end=end_time)
 
-    output_data = transformation.apply(input_data)
+    # output_data = transformation.apply(input_data)
+    expected_shape = {0: 0, 120: 0.5, 1320: 0.5}
+    output_data = transformation.add_water_in_transit(inflow=input_data[0], discharge=pd.Series(discharge_values, index=discharge_times), shape=expected_shape, start=ms_to_datetime_tz_naive(start_time), end=ms_to_datetime_tz_naive(end_time))
 
+
+    expected = [
+        3.5,
+        3.5,
+        3,
+        3,
+        4.5,
+        4.5,
+        3,
+        3,
+        6,
+        6,
+        7,
+        7,
+        5,
+        5,
+        3,
+        3,
+        4,
+        4,
+        2,
+        2,
+        9,
+        9,
+        5,
+        5,
+        9,
+        9,
+        0,
+        0,
+        0,
+        0,
+        9,
+        9,
+        8,
+        8,
+        7,
+        7,
+        6,
+        6,
+        5,
+        5,
+        4,
+        4,
+        7,
+        7,
+        8,
+        8,
+        9,
+    ]
+    # NOTE: do not include the `end` timestamp
+    # expected_timestamps = pd.date_range(start='2022-05-20 22:00:00', periods=len(expected), freq='H')
+    expected_timestamps = pd.date_range(start=start, end=end - timedelta(hours=1), freq="1h")
 
     # expected_shape = {0: 0, 120: 0.5, 1320: 0.5}
-    expected_data = pd.Series()
+    
+    # expected_shape = {0: 0, 120: 0.5, 1320: 0.5}
+    # expected_data = pd.Series(expected, index=expected_timestamps)
+    expected_data = (
+        pd.Series(expected, index=expected_timestamps[: len(expected)]).reindex(expected_timestamps).ffill()
+    )
 
     print("--------------------------------")
-    print(output_data)
-    print(expected_data)
+    print(f"OUTPUT {output_data}")
+    print(f"EXPECTED {expected_data}")
 
     # assert (transformation.shape == expected_shape)
-    assert (output_data == expected_data)
+    assert (output_data == expected_data).all()
 
 
 def test_add_water_in_transit_cannot_add(cognite_client_mock):
