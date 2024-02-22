@@ -50,7 +50,7 @@ allow_redefinition = true
 
 
 [tool.poetry.dependencies]
-python = ">=3.9,<3.11"
+python = ">=3.9,<3.12"
 typer = {version="^0.9.0", extras=["rich"]}
 PyYAML = "^6.0"
 cognite-sdk = {version = ">=7.13.8", extras = ["pandas"]}
