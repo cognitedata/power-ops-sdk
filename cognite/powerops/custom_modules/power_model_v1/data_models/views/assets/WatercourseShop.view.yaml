@@ -7,7 +7,7 @@ filter:
   - hasData:
     - type: container
       space: '{{powerops_models}}'
-      externalId: Watercourse
+      externalId: Asset
   - equals:
       property:
       - node
