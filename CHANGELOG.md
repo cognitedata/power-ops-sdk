@@ -15,7 +15,7 @@ Changes are grouped as follows
 
 ## [0.88.1] - 2024-02-22
 ### Fixed
-* Added 3.11 to the list of supported versions of Python, it was dropped by mistake
+* Restored support for Python up to 3.12.*
 
 ## [0.88.0] - 2024-02-21
 ### Changed
