@@ -1,3 +1,4 @@
+import arrow
 import pandas as pd
 import pytest
 
@@ -7,7 +8,7 @@ from cognite.powerops.client.data_classes import SHOPRun, SHOPRunList, SHOPRunSt
 
 @pytest.fixture(scope="session")
 def shop_run_list(powerops_client) -> SHOPRunList:
-    return powerops_client.shop.list(limit=5)
+    return powerops_client.shop.list(start_after=arrow.get("2024-02-01T00:00:00Z"), limit=5)
 
 
 @pytest.fixture(scope="session")
