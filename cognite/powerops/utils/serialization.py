@@ -19,8 +19,8 @@ from yaml import CSafeLoader, safe_dump
 
 try:
     import tomllib  # type: ignore[import]
-except ModuleNotFoundError:
-    import tomli as tomllib  # py < 3.11
+except ModuleNotFoundError:  # py < 3.11
+    import tomli as tomllib  # type: ignore
 
 
 def read_toml_file(toml_file: Path | str) -> dict[str, Any]:
