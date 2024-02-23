@@ -14,7 +14,7 @@ from cognite.powerops.utils.serialization import chdir
 
 REPO_ROOT = Path(__file__).parent.parent
 INSTANCE_SPACE = "sp_powerops_instance"
-#TODO: consider adding a separate space for mock data
+# TODO: consider adding a separate space for mock data
 
 
 def main():
@@ -107,7 +107,7 @@ def main():
                 # print(f"Read {len(nodes)} nodes for {view_id} as expected.")
 
         print(f"Read {correct_count} views out of {len(data_model.views)} views as expected.")
-        #mock_data.clean(client)
+        # mock_data.clean(client)
 
 
 def clean_instances():
