@@ -96,6 +96,8 @@
   externalId: BidConfiguration.watercourses
 - space: {{powerops_type_space}}
   externalId: BidConfiguration.plantsShop
+- space: '{{powerops_type_space}}'
+  externalId: ScenarioPriceBidMethod.priceMappings
 - space: {{powerops_type_space}}
   externalId: BidConfiguration.watercoursesShop
 - space: {{powerops_type_space}}

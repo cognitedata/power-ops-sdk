@@ -32,7 +32,7 @@ properties:
       externalId: BidMethodDayahead.priceScenarios
     source:
       space: '{{powerops_models}}'
-      externalId: Mapping
+      externalId: Mapping # Change to ScenarioPriceBidMethod here
       version: '{{version}}'
       type: view
     direction: outwards

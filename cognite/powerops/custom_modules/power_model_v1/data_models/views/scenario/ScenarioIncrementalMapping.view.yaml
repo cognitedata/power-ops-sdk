@@ -1,0 +1,42 @@
+#TODO: Use this view as source for the BidMethodSHOPMultiScenario view because we need a way to group mapppings
+#to a price scenario to produce incremental mappings
+space: '{{powerops_models}}'
+externalId: ScenarioPriceBidMethod
+name: ScenarioPriceBidMethod
+description: The Price Scenario that groups several mappings to apply to price timeseries to construct a price scenario 
+  to be used in a SHOP multiscenario bid method
+filter:
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: Scenario
+  - equals:
+      property:
+      - node
+      - space
+      value: '{{powerops_instance_space}}'
+implements: []
+version: '{{version}}'
+properties:
+  name:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Scenario
+      type: container
+    containerPropertyIdentifier: name
+    name: name
+    description: The name of the price scenario
+  priceMappings:
+    type:
+      space: '{{powerops_type_space}}'
+      externalId: ScenarioPriceBidMethod.priceMappings
+    source:
+      space: '{{powerops_models}}'
+      externalId: Mapping
+      version: '{{version}}'
+      type: view
+    direction: outwards
+    name: priceMappings
+    description: An array of mappings that are used to construct the price scenario
+    connectionType: multi_edge_connection
