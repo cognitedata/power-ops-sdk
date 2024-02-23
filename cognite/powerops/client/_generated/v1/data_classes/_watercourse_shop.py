@@ -56,7 +56,9 @@ class WatercourseShop(DomainModel):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types", "Watercourse")
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
+        "sp_powerops_types", "WatercourseShop"
+    )
     name: str
     display_name: Optional[str] = Field(None, alias="displayName")
     ordering: Optional[int] = None
@@ -97,7 +99,9 @@ class WatercourseShopWrite(DomainModelWrite):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types", "Watercourse")
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
+        "sp_powerops_types", "WatercourseShop"
+    )
     name: str
     display_name: Optional[str] = Field(None, alias="displayName")
     ordering: Optional[int] = None
