@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.88.3] - 2024-02-23
+### Fixed
+* Pygen regen sdk for `PlantShop`
+
 ## [0.88.2] - 2024-02-23
 ### Fixed
 * Fixed DMS specification for `PlantShop` and `WatercoureShop` types.

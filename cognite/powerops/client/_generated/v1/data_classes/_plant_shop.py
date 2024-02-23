@@ -56,7 +56,7 @@ class PlantShop(DomainModel):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types", "Plant")
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types", "PlantShop")
     name: str
     display_name: Optional[str] = Field(None, alias="displayName")
     ordering: Optional[int] = None
@@ -97,7 +97,7 @@ class PlantShopWrite(DomainModelWrite):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types", "Plant")
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types", "PlantShop")
     name: str
     display_name: Optional[str] = Field(None, alias="displayName")
     ordering: Optional[int] = None
