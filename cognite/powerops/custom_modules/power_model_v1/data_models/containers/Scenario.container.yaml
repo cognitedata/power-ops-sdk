@@ -75,7 +75,7 @@ properties:
   shopStart:
     type:
       list: false
-      type: date
+      type: timestamp
     nullable: true
     autoIncrement: false
     name: shopStart
@@ -83,7 +83,7 @@ properties:
   shopEnd:
     type:
       list: false
-      type: date
+      type: timestamp
     nullable: true
     autoIncrement: false
     name: shopEnd
