@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.88.4] - 2024-02-26
+### Changed
+* Instantiating PowerOpsClient.from_client now reads toml settings file and supports overrides with kwargs.
+
 ## [0.88.3] - 2024-02-23
 ### Fixed
 * Pygen regen sdk for `PlantShop`
