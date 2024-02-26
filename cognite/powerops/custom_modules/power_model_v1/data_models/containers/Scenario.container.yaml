@@ -75,12 +75,28 @@ properties:
   shopStart:
     type:
       list: false
-      type: timestamp
+      type: date
     nullable: true
     autoIncrement: false
     name: shopStart
     description: The time to start the shop
   shopEnd:
+    type:
+      list: false
+      type: date
+    nullable: true
+    autoIncrement: false
+    name: shopEnd
+    description: The time to end the shop
+  shopStartTimestamp:
+    type:
+      list: false
+      type: timestamp
+    nullable: true
+    autoIncrement: false
+    name: shopStart
+    description: The time to start the shop
+  shopEndTimestamp:
     type:
       list: false
       type: timestamp
