@@ -362,6 +362,7 @@ class ToInt(Transformation):
     """
     Transformation to round all values in a time series to get an Int using the "round half to even" method
     """
+
     def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
         """
         Args:
@@ -562,6 +563,7 @@ class DoNothing(Transformation):
     """
     Don't apply any transformations, just return the unchanged Series
     """
+
     def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
         return time_series_data[0]
 
@@ -783,8 +785,8 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
         Args:
             client: CogniteClient authenticated to project to retrieve discharge timeseries from
             shop_model: SHOP model dict
-            start: SHOP start time
-            end: SHOP end time
+            start: SHOP start time in milliseconds
+            end: SHOP end time in milliseconds
 
         Example:
         ```python
@@ -804,8 +806,8 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
         self.start = start
         self.end = end
 
-        print(f"------------------------------PRE-APPLY------------------------------")
-        print(f"INPUTS")
+        print("------------------------------PRE-APPLY------------------------------")
+        print("INPUTS")
         print(f"SHOP_MODEL {shop_model}")
         print(f"START {self.start}")
         print(f"END {self.end}")
@@ -817,12 +819,14 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
         print(f"SHAPE {self.shape}")
 
         longest_delay = max(self.shape)  # longest delay in minutes
-        
+
         print(f"LONGEST_DELAY {longest_delay}")
 
         longest_delay_ms = 60 * 1000 * longest_delay  # longest delay in milliseconds
 
         print(f"LONGEST_DELAY_MS {longest_delay_ms}")
+
+        print(f"start-dely {self.start - longest_delay_ms}")
 
         discharge = retrieve_range(  # Get discharge datapoints from time-series
             client=client,
@@ -843,9 +847,9 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
     def add_water_in_transit(
         inflow: pd.Series, discharge: pd.Series, shape: dict[int, float], start: datetime, end: datetime
     ) -> pd.Series:
-        
-        print(f"---------------------------ADD_WATER_IN_TRANSIT---------------------------------")
-        print(f"INPUTS")
+
+        print("---------------------------ADD_WATER_IN_TRANSIT---------------------------------")
+        print("INPUTS")
         print(f"INFLOW {inflow}")
         print(f"DISCHARGE {discharge}")
         print(f"SHAPE {shape}")
@@ -874,10 +878,11 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
 
         # Only include delayed discharge that will affect the selected time range
         between_start_and_end = (start <= inflow.index) & (inflow.index < end)
-        
+
         print(f"BETWEEN_START_END {between_start_and_end}")
+        print(f"INFLOW {inflow}")
         print(f"INFLOW LOC {inflow.loc[between_start_and_end]}")
-        
+
         return inflow.loc[between_start_and_end]
 
     def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
@@ -922,6 +927,9 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
         """
         single_ts = time_series_data[0]
         if single_ts.empty or self.discharge.empty:
+
+            print(f"returning ts {single_ts}")
+
             return single_ts
 
         if self.pre_apply_has_run:

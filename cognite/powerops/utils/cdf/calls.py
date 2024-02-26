@@ -73,6 +73,11 @@ def _retrieve_range(client: CogniteClient, external_ids: list[str], start: int, 
     external_ids = remove_duplicates(external_ids)
     if not external_ids:
         return pd.DataFrame()
+    
+    print(f"---------------------------Retrieve Range------------------------")
+    print(f"start {start}")
+    print(f"end {end}")
+
     start_dt = ms_to_datetime(start).replace(tzinfo=None)  # UTC implied
     end_dt = ms_to_datetime(end).replace(tzinfo=None)  # UTC implied
     logger.debug(f"Retrieving {external_ids} between '{start_dt}' and '{end_dt}'")
