@@ -60,7 +60,15 @@ class PowerOpsClient:
         return f"PowerOpsClient with {', '.join(map(lambda a: '.' + a, self._apis().keys()))} APIs"
 
     @classmethod
-    def from_client(cls, client: CogniteClient) -> PowerOpsClient:
+    def from_client(
+        cls,
+        client: CogniteClient,
+        *,
+        read_dataset: str | None = None,
+        write_dataset: str | None = None,
+        cogshop_version: str | None = None,
+        monitor_dataset: str | None = None,
+    ) -> PowerOpsClient:
         """
         Create a PowerOpsClient from a CogniteClient object.
 
@@ -68,16 +76,21 @@ class PowerOpsClient:
 
         Args:
             client: The CogniteClient object.
+            read_dataset: externalId of read data set. Optional, by default loaded from the settings object.
+            write_dataset: externalId of write data set. Optional, by default loaded from the settings object.
+            monitor_dataset: externalId of monitor data set. Optional, by default loaded from the settings object.
+            cogshop_version: tag for the "cog-shop" Docker image. Optional, by default loaded from the settings object.
 
         Returns:
             A PowerOpsClient object.
         """
+        settings = Settings()
         return PowerOpsClient(
             config=client.config,
-            read_dataset="uc:000:powerops",
-            write_dataset="uc:000:powerops",
-            cogshop_version="CogShop2-20231030T120815Z",
-            monitor_dataset="uc:po:monitoring",
+            read_dataset=read_dataset if read_dataset is not None else settings.powerops.read_dataset,
+            write_dataset=write_dataset if write_dataset is not None else settings.powerops.write_dataset,
+            monitor_dataset=monitor_dataset if monitor_dataset is not None else settings.powerops.monitor_dataset,
+            cogshop_version=cogshop_version if cogshop_version is not None else settings.powerops.cogshop_version,
         )
 
     @classmethod
