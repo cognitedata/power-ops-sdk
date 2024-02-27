@@ -88,6 +88,22 @@ properties:
     autoIncrement: false
     name: shopEnd
     description: The time to end the shop
+  shopStartTimestamp:
+    type:
+      list: false
+      type: timestamp
+    nullable: true
+    autoIncrement: false
+    name: shopStart
+    description: The time to start the shop
+  shopEndTimestamp:
+    type:
+      list: false
+      type: timestamp
+    nullable: true
+    autoIncrement: false
+    name: shopEnd
+    description: The time to end the shop
   bidDate:
     type:
       list: false
