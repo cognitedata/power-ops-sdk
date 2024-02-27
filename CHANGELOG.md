@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.88.6] - 2024-02-27
+### Added
+* Added the property `MarketConfiguration` to the `ShopPartialBidCalculationInput` view.
+
 ## [0.88.5] - 2024-02-27
 ### Changed
 * Instantiating PowerOpsClient.from_client now reads toml settings file and supports overrides with kwargs.
