@@ -16,9 +16,9 @@ filter:
         value: '{{powerops_instance_space}}'
     - equals:
         property:
-        - '{{powerops_models}}'
-        - Scenario
-        - isReady
+          - '{{powerops_models}}'
+          - Scenario
+          - isReady
         value: 'true'
 implements:
 - space: '{{powerops_models}}'
