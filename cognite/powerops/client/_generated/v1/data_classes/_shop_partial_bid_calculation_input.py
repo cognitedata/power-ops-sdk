@@ -20,6 +20,7 @@ from ._core import (
 
 if TYPE_CHECKING:
     from ._alert import Alert, AlertWrite
+    from ._market_configuration import MarketConfiguration, MarketConfigurationWrite
     from ._plant_shop import PlantShop, PlantShopWrite
     from ._shop_result import SHOPResult, SHOPResultWrite
 
@@ -61,6 +62,7 @@ class ShopPartialBidCalculationInput(DomainModel):
         function_name: The name of the function
         function_call_id: The function call id
         plant: The plant to calculate the partial bid for
+        market_configuration: The market configuration to be used to generate the partial bid matrix
         alerts: An array of calculation level Alerts.
         shop_results: An array of shop results.
     """
@@ -74,6 +76,9 @@ class ShopPartialBidCalculationInput(DomainModel):
     function_name: str = Field(alias="functionName")
     function_call_id: str = Field(alias="functionCallId")
     plant: Union[PlantShop, str, dm.NodeId, None] = Field(None, repr=False)
+    market_configuration: Union[MarketConfiguration, str, dm.NodeId, None] = Field(
+        None, repr=False, alias="marketConfiguration"
+    )
     alerts: Union[list[Alert], list[str], None] = Field(default=None, repr=False)
     shop_results: Union[list[SHOPResult], list[str], None] = Field(default=None, repr=False, alias="shopResults")
 
@@ -88,6 +93,11 @@ class ShopPartialBidCalculationInput(DomainModel):
             function_name=self.function_name,
             function_call_id=self.function_call_id,
             plant=self.plant.as_write() if isinstance(self.plant, DomainModel) else self.plant,
+            market_configuration=(
+                self.market_configuration.as_write()
+                if isinstance(self.market_configuration, DomainModel)
+                else self.market_configuration
+            ),
             alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
             shop_results=[
                 shop_result.as_write() if isinstance(shop_result, DomainModel) else shop_result
@@ -119,6 +129,7 @@ class ShopPartialBidCalculationInputWrite(DomainModelWrite):
         function_name: The name of the function
         function_call_id: The function call id
         plant: The plant to calculate the partial bid for
+        market_configuration: The market configuration to be used to generate the partial bid matrix
         alerts: An array of calculation level Alerts.
         shop_results: An array of shop results.
     """
@@ -132,6 +143,9 @@ class ShopPartialBidCalculationInputWrite(DomainModelWrite):
     function_name: str = Field(alias="functionName")
     function_call_id: str = Field(alias="functionCallId")
     plant: Union[PlantShopWrite, str, dm.NodeId, None] = Field(None, repr=False)
+    market_configuration: Union[MarketConfigurationWrite, str, dm.NodeId, None] = Field(
+        None, repr=False, alias="marketConfiguration"
+    )
     alerts: Union[list[AlertWrite], list[str], None] = Field(default=None, repr=False)
     shop_results: Union[list[SHOPResultWrite], list[str], None] = Field(default=None, repr=False, alias="shopResults")
 
@@ -169,6 +183,16 @@ class ShopPartialBidCalculationInputWrite(DomainModelWrite):
                 "externalId": self.plant if isinstance(self.plant, str) else self.plant.external_id,
             }
 
+        if self.market_configuration is not None:
+            properties["marketConfiguration"] = {
+                "space": self.space if isinstance(self.market_configuration, str) else self.market_configuration.space,
+                "externalId": (
+                    self.market_configuration
+                    if isinstance(self.market_configuration, str)
+                    else self.market_configuration.external_id
+                ),
+            }
+
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -201,6 +225,10 @@ class ShopPartialBidCalculationInputWrite(DomainModelWrite):
 
         if isinstance(self.plant, DomainModelWrite):
             other_resources = self.plant._to_instances_write(cache, view_by_read_class)
+            resources.extend(other_resources)
+
+        if isinstance(self.market_configuration, DomainModelWrite):
+            other_resources = self.market_configuration._to_instances_write(cache, view_by_read_class)
             resources.extend(other_resources)
 
         return resources
@@ -257,6 +285,7 @@ def _create_shop_partial_bid_calculation_input_filter(
     function_call_id: str | list[str] | None = None,
     function_call_id_prefix: str | None = None,
     plant: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+    market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -305,6 +334,34 @@ def _create_shop_partial_bid_calculation_input_filter(
         filters.append(
             dm.filters.In(
                 view_id.as_property_ref("plant"), values=[{"space": item[0], "externalId": item[1]} for item in plant]
+            )
+        )
+    if market_configuration and isinstance(market_configuration, str):
+        filters.append(
+            dm.filters.Equals(
+                view_id.as_property_ref("marketConfiguration"),
+                value={"space": DEFAULT_INSTANCE_SPACE, "externalId": market_configuration},
+            )
+        )
+    if market_configuration and isinstance(market_configuration, tuple):
+        filters.append(
+            dm.filters.Equals(
+                view_id.as_property_ref("marketConfiguration"),
+                value={"space": market_configuration[0], "externalId": market_configuration[1]},
+            )
+        )
+    if market_configuration and isinstance(market_configuration, list) and isinstance(market_configuration[0], str):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("marketConfiguration"),
+                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in market_configuration],
+            )
+        )
+    if market_configuration and isinstance(market_configuration, list) and isinstance(market_configuration[0], tuple):
+        filters.append(
+            dm.filters.In(
+                view_id.as_property_ref("marketConfiguration"),
+                values=[{"space": item[0], "externalId": item[1]} for item in market_configuration],
             )
         )
     if external_id_prefix is not None:
