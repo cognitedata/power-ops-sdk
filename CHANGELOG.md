@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.88.4] - 2024-02-26
+### Fixed
+* Fixed data type for `shop_start` and `shop_end` fields on `Scenario` type.
+
 ## [0.88.3] - 2024-02-23
 ### Fixed
 * Pygen regen sdk for `PlantShop`
