@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # Mypy does not understand the pydantic classes that allows both alias and name to be used in population
 # type: ignore # noqa: [call-arg]
 from __future__ import annotations
@@ -18,6 +17,8 @@ from cognite.powerops.client._generated.v1.data_classes import (
     WatercourseWrite,
 )
 from cognite.powerops.utils.serialization import load_yaml
+
+__all__ = ["PowerAssetImporter"]
 
 
 class PowerAssetImporter:

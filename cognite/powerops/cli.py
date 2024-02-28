@@ -161,6 +161,12 @@ def apply(
         echo(changed.as_github_markdown())
 
 
+@app.command("apply2", help="Apply the changes from the configuration files to the data model in CDF")
+def apply2(path: Annotated[Path, typer.Argument(help="Path to configuration files")]):
+    logging.info(f"Running apply on configuration files located in {path}")
+    resync.apply2(path)
+
+
 @app.command("destroy", help="Destroy all the data models created by resync and remove all the data.")
 def destroy(
     models: list[str] = typer.Option(
