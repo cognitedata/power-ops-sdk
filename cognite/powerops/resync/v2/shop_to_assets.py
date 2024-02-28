@@ -3,6 +3,7 @@
 # type: ignore # noqa: [call-arg]
 from __future__ import annotations
 
+from math import floor, log10
 from pathlib import Path
 from typing import Any, Optional
 
@@ -72,32 +73,47 @@ class PowerAssetImporter:
     ) -> dict[str, DomainModelWrite]:
         assets_by_xid: dict[str, DomainModelWrite] = {}
         watercourse_config = self.watercourse_by_directory.get(watercourse_dir, {})
+        watercourse_external_id = f"watercourse_{watercourse_config['name']}"
         plant_display_name_and_order = watercourse_config.get("plant_display_names_and_order", {})
         reservoir_display_name_and_order = watercourse_config.get("reservoir_display_names_and_order", {})
 
+        generators = []
         for name, data in shop_model["model"]["generator"].items():
             generator = self._to_generator(name, data)
             if generator.external_id in existing:
                 raise ValueError(f"Generator with external id {generator.external_id} already exists")
+            generators.append(generator)
             assets_by_xid[generator.external_id] = generator
 
+        reservoirs = []
+        for name, data in shop_model["model"]["reservoir"].items():
+            reservoir = self._to_reservoir(name, data, reservoir_display_name_and_order)
+            if reservoir.external_id in existing:
+                raise ValueError(f"Reservoir with external id {reservoir.external_id} already exists")
+            reservoirs.append(reservoir)
+            assets_by_xid[reservoir.external_id] = reservoir
+
+        reservoir_by_name = {reservoir.name: reservoir for reservoir in reservoirs}
+        generator_by_name = {generator.name: generator for generator in generators}
         plants = []
         for name, data in shop_model["model"]["plant"].items():
-            plant = self._to_plant(name, data, plant_display_name_and_order)
+            plant = self._to_plant(
+                name,
+                data,
+                plant_display_name_and_order,
+                watercourse_external_id,
+                reservoir_by_name,
+                generator_by_name,
+                shop_model,
+            )
             if plant.external_id in existing:
                 raise ValueError(f"Plant with external id {plant.external_id} already exists")
             plants.append(plant)
             assets_by_xid[plant.external_id] = plant
 
-        for name, data in shop_model["model"]["reservoir"].items():
-            reservoir = self._to_reservoir(name, data, reservoir_display_name_and_order)
-            if reservoir.external_id in existing:
-                raise ValueError(f"Reservoir with external id {reservoir.external_id} already exists")
-            assets_by_xid[reservoir.external_id] = reservoir
-
         data = watercourse_config
         watercourse = WatercourseWrite(
-            external_id=f"watercourse_{data['name']}",
+            external_id=watercourse_external_id,
             name=data["name"],
             production_obligation=data.get("production_obligation_ts_ext_ids", []),
             penalty_limit=data.get("shop_penalty_limit", self.default_shop_penalty_limit),
@@ -134,7 +150,6 @@ class PowerAssetImporter:
         return GeneratorWrite(
             external_id=f"generator_{name}",
             name=name,
-            ordering=None,
             p_min=data["p_min"],
             penstock=data["penstock"],
             start_cost=startcost,
@@ -144,10 +159,40 @@ class PowerAssetImporter:
             turbine_curves=turbine_curves,
         )
 
-    def _to_plant(self, name: str, data: dict, plant_display_name_and_order) -> PlantWrite:
-
+    def _to_plant(
+        self,
+        name: str,
+        data: dict,
+        plant_display_name_and_order: dict,
+        watercourse_xid: str,
+        reservoir_by_name: dict[str, ReservoirWrite],
+        generator_by_name: dict[str, GeneratorWrite],
+        shop_model: dict,
+    ) -> PlantWrite:
         plant_timeseries = self.times_series_by_plant_name.get(name, {})
         display_name, order = plant_display_name_and_order.get(name, (name, 999))
+
+        all_connections = shop_model["connections"]
+        all_junctions = shop_model["model"].get("junction", {})
+        all_tunnels = shop_model["model"].get("tunnel", {})
+        inlet_reservoir_name, connection_losses = self._plant_to_inlet_reservoir_with_losses(
+            name, all_connections, all_junctions, all_tunnels, set(reservoir_by_name.keys())
+        )
+
+        plant_generators: list[GeneratorWrite] = []
+        for connection in all_connections:
+            if (
+                connection.get("from_type") == "plant"
+                and connection["from"] == name
+                and (gen := generator_by_name.get(connection["to"]))
+            ):
+                plant_generators.append(gen)
+            elif (
+                connection.get("to_type") == "plant"
+                and connection["to"] == name
+                and (gen := generator_by_name.get(connection["from"]))
+            ):
+                plant_generators.append(gen)
 
         return PlantWrite(
             external_id=f"plant_{name}",
@@ -164,8 +209,7 @@ class PowerAssetImporter:
                 )
             },
             head_loss_factor=float(data.get("main_loss", [self.head_loss_factor_fallback])[0]),
-            # Todo Move over calculation of connection_losses
-            connection_losses=None,
+            connection_losses=connection_losses,
             water_value_time_series=plant_timeseries.get("water_value"),
             inlet_level_time_series=plant_timeseries.get("inlet_reservoir_level"),
             outlet_level_time_series=plant_timeseries.get("outlet_reservoir_level"),
@@ -173,9 +217,132 @@ class PowerAssetImporter:
             p_max_time_series=plant_timeseries.get("p_max"),
             feeding_fee_time_series=plant_timeseries.get("feeding_fee"),
             head_direct_time_series=plant_timeseries.get("head_direct"),
+            watercourse=watercourse_xid,
+            inlet_reservoir=reservoir_by_name.get(inlet_reservoir_name),
+            generators=plant_generators,
         )
 
     def _to_reservoir(self, name: str, _: dict, reservoir_display_name_and_order: dict) -> ReservoirWrite:
         display_name, order = reservoir_display_name_and_order.get(name, (name, 999))
 
         return ReservoirWrite(external_id=f"reservoir_{name}", name=name, display_name=display_name, ordering=order)
+
+    def _plant_to_inlet_reservoir_with_losses(
+        self, plant_name: str, all_connections: list[dict], all_junctions: dict, all_tunnels: dict, reservoirs: set[str]
+    ) -> tuple[str, float]:
+        """Search for a reservoir connected to a plant, starting from the plant and searching breadth first.
+
+        Parameters
+        ----------
+        plant_name : str
+            The plant we want to find a connection from
+        all_connections : list[dict]
+            All connections in the model.
+        reservoirs : dict
+            All reservoirs in the model. Keys are reservoir names.
+
+        Returns
+        -------
+        Optional[str]
+            The name of the reservoir connected to the plant, or None if no reservoir was found.
+        """
+
+        def get_connection_path_from_last_visited(visited_paths: list, last_visited_id: int) -> list:
+            """Return the correct sequence of visited connections based on the last visited connection among
+            the list of connection paths visited
+
+                Parameters
+                ----------
+                visited_paths : list
+                     A list that holds the lists of each visited connection path. A connection path will be a list of
+                     connection IDs, e.g. [1,2,3] means connection with ID 1 was first visited, then 2, then 3
+                last_visited_id: int
+                    The ID of the connection that was last visited. This will be the last item in one of the lists of
+                    visited paths
+
+                Returns
+                -------
+                list
+                    The path or sequence of connections that has the last_visited_id as its
+                last visited connection among the visited_paths
+            """
+            for connection in visited_paths:
+                if connection[-1] == last_visited_id:
+                    connection_path_index = visited_paths.index(connection)
+                    return visited_paths[connection_path_index]
+
+        def calculate_losses_from_connection_path(
+            all_junctions: dict, all_tunnels: dict, connection_by_id: int, connection_path: list[int]
+        ):
+            """Loop through connections in connection path, retrieve the losses for that connection among the
+            all_juntions or all_tunnels based on the type of connection, and sum up the total losses from
+            the connection path
+            """
+            sum_losses = 0
+            order_to_loss_factor_key = {0: "loss_factor_1", 1: "loss_factor_2"}
+            for connection_id in connection_path:
+                connection = connection_by_id[connection_id]
+                connection_name = connection["to"]
+                if connection_name in all_junctions:
+                    if connection.get("order") in order_to_loss_factor_key:
+                        junction_losses = all_junctions[connection_name]
+                        loss_order = connection["order"]
+                        sum_losses += junction_losses[order_to_loss_factor_key[loss_order]]
+                elif connection_name in all_tunnels:
+                    tunnel_loss = all_tunnels[connection_name].get("loss_factor", 0)
+                    sum_losses += tunnel_loss
+            return sum_losses
+
+        queue = []
+        connection_by_id = dict(enumerate(all_connections))
+        track_connection_paths = []
+        last_connection_id = None
+
+        for connection_id, connection in connection_by_id.items():
+            if (
+                connection["to"] == plant_name and connection.get("to_type", "plant") == "plant"
+            ):  # if to_type is specified, it must be "plant"
+                queue.append((connection_id, connection))
+                track_connection_paths.append([connection_id])  # add the first connection to the path
+                break
+        visited = []
+        while queue:
+            connection_id, connection = queue.pop(0)
+            if connection not in visited:
+                # Check if the given connection is from a reservoir
+                # If we have "from_type" we can check directly if the object is a reservoir
+                try:
+                    if connection["from_type"] == "reservoir":
+                        inlet_reservoir = connection["from"]
+                        last_connection_id = connection_id
+                        break
+                # If we don't have "from_type" we have to check if the name of the object is in the
+                # list of reservoirs
+                except KeyError:
+                    if connection["from"] in reservoirs:
+                        inlet_reservoir = connection["from"]
+                        last_connection_id = connection_id
+                        break
+
+                visited.append(connection)
+                for candidate_connection_id, candidate_connection in connection_by_id.items():
+                    # if the candidate connection is extension from the current connection, traverse it
+                    if candidate_connection["to"] == connection["from"]:
+                        queue.append((candidate_connection_id, candidate_connection))
+                        new_path_list = get_connection_path_from_last_visited(track_connection_paths, connection_id)
+                        track_connection_paths.append([*new_path_list, candidate_connection_id])
+
+        if last_connection_id is None:
+            return self.inlet_reservoir_fallback, self.connection_losses_fallback  # TODO: raise an error here instead?
+
+        connection_path = get_connection_path_from_last_visited(track_connection_paths, last_connection_id)
+
+        connection_losses = calculate_losses_from_connection_path(
+            all_junctions, all_tunnels, connection_by_id, connection_path
+        )
+
+        return (inlet_reservoir, self._round_sig(connection_losses, 4) if connection_losses else connection_losses)
+
+    @staticmethod
+    def _round_sig(x: float, sig: int = 2):
+        return round(x, sig - int(floor(log10(abs(x)))) - 1)
