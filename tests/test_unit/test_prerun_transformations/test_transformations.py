@@ -498,7 +498,7 @@ ADD_WATER_TEST_CASES = [
     AddWaterInTransitTestCase(case_id="shape_type_error_2", model={"gate": {"gate1": 0}}, error=TypeError),
     AddWaterInTransitTestCase(case_id="shape_key_error", model={"gate": {"foo": 0}}, error=KeyError),
     AddWaterInTransitTestCase(case_id="shape_key_error_2", model={"foo": {"gate1": {"foo": 0}}}, error=KeyError),
-    AddWaterInTransitTestCase(case_id="shape_value_error", model={"gate": {"gate1": {"foo": 0}}}, error=ValueError),  
+    AddWaterInTransitTestCase(case_id="shape_value_error", model={"gate": {"gate1": {"foo": 0}}}, error=ValueError),
 ]
 
 
@@ -530,7 +530,7 @@ def test_add_water_in_transit(cognite_client_mock, test_case):
 
         start_time_ms = inflow_times[0].replace(tzinfo=timezone.utc).timestamp() * 1000
         if not test_case.end_time:
-            test_case.end_time = inflow_times[-1]        
+            test_case.end_time = inflow_times[-1]
         end_time_ms = test_case.end_time.replace(tzinfo=timezone.utc).timestamp() * 1000
 
         if test_case.model:
