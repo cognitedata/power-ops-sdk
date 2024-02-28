@@ -11,7 +11,10 @@ from cognite.powerops.client._generated.v1.data_classes import (
     GeneratorEfficiencyCurveWrite,
     GeneratorWrite,
     PlantWrite,
+    PriceAreaWrite,
+    ReservoirWrite,
     TurbineEfficiencyCurveWrite,
+    WatercourseWrite,
 )
 from cognite.powerops.utils.serialization import load_yaml
 
@@ -22,14 +25,16 @@ class PowerAssetImporter:
     head_loss_factor_fallback = 0.0
     connection_losses_fallback = 0.0
     inlet_reservoir_fallback = ""
+    default_shop_penalty_limit = 42000
 
     def __init__(
         self,
-        shop_models: list[dict],
+        shop_model_by_directory: dict[str, dict[str, Any]],
         generator_times_series_mappings: Optional[list[dict]] = None,
         plant_time_series_mappings: Optional[list[dict]] = None,
+        watercourses: Optional[list[dict]] = None,
     ):
-        self.shop_models = shop_models
+        self.shop_model_by_directory = shop_model_by_directory
         self.times_series_by_generator_name = {
             entry["generator_name"]: {k: str(v) for k, v in entry.items()}
             for entry in generator_times_series_mappings or []
@@ -37,11 +42,12 @@ class PowerAssetImporter:
         self.times_series_by_plant_name = {
             entry["plant_name"]: {k: str(v) for k, v in entry.items()} for entry in plant_time_series_mappings or []
         }
+        self.watercourse_by_directory = {entry["directory"]: entry for entry in watercourses or []}
 
     @classmethod
     def from_directory(cls, directory: Path, file_name: str = "model_raw") -> PowerAssetImporter:
         shop_model_files = list(directory.glob(f"**/{file_name}.yaml"))
-        shop_models = [load_yaml(file) for file in shop_model_files]
+        shop_model_by_watercourse = {file.parent.name: load_yaml(file) for file in shop_model_files}
 
         generator_mapping_file = directory / "generator_time_series_mappings.yaml"
         generator_mappings = load_yaml(generator_mapping_file) if generator_mapping_file.exists() else None
@@ -49,30 +55,59 @@ class PowerAssetImporter:
         plant_mapping_file = directory / "plant_time_series_mappings.yaml"
         plant_mappings = load_yaml(plant_mapping_file) if plant_mapping_file.exists() else None
 
-        return cls(shop_models, generator_mappings, plant_mappings)
+        watercourses_file = directory / "watercourses.yaml"
+        watercourses = load_yaml(watercourses_file) if watercourses_file.exists() else None
+
+        return cls(shop_model_by_watercourse, generator_mappings, plant_mappings, watercourses)
 
     def to_power_assets(self) -> list[DomainModelWrite]:
         assets_by_xid: dict[str, DomainModelWrite] = {}
-        for shop_model in self.shop_models:
-            assets_by_xid.update(self._model_to_assets(shop_model, assets_by_xid))
+        for watercourse_dir, shop_model in self.shop_model_by_directory.items():
+            assets_by_xid.update(self._model_to_assets(shop_model, watercourse_dir, assets_by_xid))
 
         return list(assets_by_xid.values())
 
     def _model_to_assets(
-        self, shop_model: dict[str, Any], existing: dict[str, DomainModelWrite]
+        self, shop_model: dict[str, Any], watercourse_dir: str, existing: dict[str, DomainModelWrite]
     ) -> dict[str, DomainModelWrite]:
         assets_by_xid: dict[str, DomainModelWrite] = {}
+        watercourse_config = self.watercourse_by_directory.get(watercourse_dir, {})
+        plant_display_name_and_order = watercourse_config.get("plant_display_names_and_order", {})
+        reservoir_display_name_and_order = watercourse_config.get("reservoir_display_names_and_order", {})
+
         for name, data in shop_model["model"]["generator"].items():
             generator = self._to_generator(name, data)
             if generator.external_id in existing:
                 raise ValueError(f"Generator with external id {generator.external_id} already exists")
             assets_by_xid[generator.external_id] = generator
 
+        plants = []
         for name, data in shop_model["model"]["plant"].items():
-            plant = self._to_plant(name, data)
+            plant = self._to_plant(name, data, plant_display_name_and_order)
             if plant.external_id in existing:
                 raise ValueError(f"Plant with external id {plant.external_id} already exists")
+            plants.append(plant)
             assets_by_xid[plant.external_id] = plant
+
+        for name, data in shop_model["model"]["reservoir"].items():
+            reservoir = self._to_reservoir(name, data, reservoir_display_name_and_order)
+            if reservoir.external_id in existing:
+                raise ValueError(f"Reservoir with external id {reservoir.external_id} already exists")
+            assets_by_xid[reservoir.external_id] = reservoir
+
+        data = watercourse_config
+        watercourse = WatercourseWrite(
+            external_id=f"watercourse_{data['name']}",
+            name=data["name"],
+            production_obligation=data.get("production_obligation_ts_ext_ids", []),
+            penalty_limit=data.get("shop_penalty_limit", self.default_shop_penalty_limit),
+            plants=plants,
+        )
+        assets_by_xid[watercourse.external_id] = watercourse
+
+        for price_area in watercourse_config.get("market_to_price_area", {}).values():
+            price_area = PriceAreaWrite(external_id=f"price_aera_{price_area}", name=price_area, timezone="Europe/Oslo")
+            assets_by_xid[price_area.external_id] = price_area
 
         return assets_by_xid
 
@@ -109,18 +144,19 @@ class PowerAssetImporter:
             turbine_curves=turbine_curves,
         )
 
-    def _to_plant(self, name: str, data: dict) -> PlantWrite:
+    def _to_plant(self, name: str, data: dict, plant_display_name_and_order) -> PlantWrite:
 
         plant_timeseries = self.times_series_by_plant_name.get(name, {})
+        display_name, order = plant_display_name_and_order.get(name, (name, 999))
 
         return PlantWrite(
             external_id=f"plant_{name}",
             name=name,
-            display_name=None,
+            display_name=display_name,
             outlet_level=float(data.get("outlet_line", 0)),
             p_min=float(data.get("p_min", self.p_min_fallback)),
             p_max=float(data.get("p_max", self.p_max_fallback)),
-            ordering=None,
+            ordering=order,
             penstock_head_loss_factors={
                 str(penstock_number): float(loss_factor)
                 for penstock_number, loss_factor in enumerate(
@@ -138,3 +174,8 @@ class PowerAssetImporter:
             feeding_fee_time_series=plant_timeseries.get("feeding_fee"),
             head_direct_time_series=plant_timeseries.get("head_direct"),
         )
+
+    def _to_reservoir(self, name: str, _: dict, reservoir_display_name_and_order: dict) -> ReservoirWrite:
+        display_name, order = reservoir_display_name_and_order.get(name, (name, 999))
+
+        return ReservoirWrite(external_id=f"reservoir_{name}", name=name, display_name=display_name, ordering=order)

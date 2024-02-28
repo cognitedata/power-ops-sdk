@@ -14,6 +14,6 @@ class TestShopToAssets:
 
         assert counts["GeneratorWrite"] == 12
         assert counts["PlantWrite"] == 9
-        assert counts["ResourcesWrite"] == 3
+        assert counts["ReservoirWrite"] == 16
         assert counts["WatercourseWrite"] == 1
         assert counts["PriceAreaWrite"] == 1
