@@ -68,7 +68,11 @@ tomli = {version = "^2.0.1", python = "<3.11"}
 StrEnum = {version = "^0.4.15", python = "<3.11"}
 tomli-w = "^1.0.0"
 tabulate = "^0.9"
+# As of 29/02-24 there is a bug in the toolkit that prevents us from deleting containers.
+# This is fixed in the installation-branch. However, we cannot release power-ops-sdk with a dependency on the installation-branch.
 cognite-toolkit = {git="https://github.com/cognitedata/cdf-project-templates.git", branch="installation-branch"}
+# Therefore, you must install this version of the toolkit after deleting the container, such that
+# the power-ops-sdk can be released with a stable version of the toolkit.
 #cognite-toolkit = {version="0.1.0"}
 cognite-pygen = {version = ">=0.99.10", extras = ["all"]}
 
