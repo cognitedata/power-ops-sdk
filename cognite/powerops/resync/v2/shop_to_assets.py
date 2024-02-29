@@ -1,4 +1,5 @@
 # Mypy does not understand the pydantic classes that allows both alias and name to be used in population
+# https://github.com/pydantic/pydantic/issues/3923
 # mypy: disable-error-code="call-arg"
 from __future__ import annotations
 
@@ -31,10 +32,10 @@ class PowerAssetImporter:
 
     def __init__(
         self,
-        shop_model_by_directory: dict,
-        generator_times_series_mappings: Optional[list] = None,
-        plant_time_series_mappings: Optional[list] = None,
-        watercourses: Optional[list] = None,
+        shop_model_by_directory: dict[str, Any],
+        generator_times_series_mappings: Optional[list[dict[str, Any]]] = None,
+        plant_time_series_mappings: Optional[list[dict[str, Any]]] = None,
+        watercourses: Optional[list[dict[str, Any]]] = None,
     ):
         self.shop_model_by_directory = shop_model_by_directory
         self.times_series_by_generator_name = {
@@ -71,12 +72,12 @@ class PowerAssetImporter:
     def to_power_assets(self) -> list[GeneratorWrite | ReservoirWrite | PlantWrite | WatercourseWrite | PriceAreaWrite]:
         assets_by_xid: dict[str, GeneratorWrite | ReservoirWrite | PlantWrite | WatercourseWrite | PriceAreaWrite] = {}
         for watercourse_dir, shop_model in self.shop_model_by_directory.items():
-            watercourse_assets = self._model_to_assets(shop_model, watercourse_dir, assets_by_xid)
+            watercourse_assets = self._shop_model_to_watercourse_assets(shop_model, watercourse_dir, assets_by_xid)
             assets_by_xid.update(watercourse_assets)
 
         return list(assets_by_xid.values())
 
-    def _model_to_assets(
+    def _shop_model_to_watercourse_assets(
         self,
         shop_model: dict[str, Any],
         watercourse_dir: str,
@@ -86,7 +87,9 @@ class PowerAssetImporter:
         try:
             watercourse_config = self.watercourse_by_directory[watercourse_dir]
         except KeyError as e:
-            raise ValueError(f"Watercourse directory {watercourse_dir} not watercourses.yaml file") from e
+            raise ValueError(
+                f"Watercourse directory {watercourse_dir} does not exist in the watercourses.yaml configuration"
+            ) from e
         watercourse_external_id = f"watercourse_{watercourse_config['name']}"
         plant_display_name_and_order = watercourse_config.get("plant_display_names_and_order", {})
         reservoir_display_name_and_order = watercourse_config.get("reservoir_display_names_and_order", {})
@@ -160,7 +163,7 @@ class PowerAssetImporter:
             )
             turbine_curves.append(turbine_curve)
 
-        # Start cose is assumed to be a dictionary with (timestamp, value) key-value pairs
+        # Start cost is assumed to be a dictionary with (timestamp, value) key-value pairs
         # We assume it is constant and thus use only the first value.
         startcost = next(iter(data["startcost"].values()))
 
@@ -247,6 +250,8 @@ class PowerAssetImporter:
 
         return ReservoirWrite(external_id=f"reservoir_{name}", name=name, display_name=display_name, ordering=order)
 
+    # Todo - Refactor/Test covearge of this function:
+    #  https://cognitedata.atlassian.net/browse/POWEROPS-2224?atlOrigin=eyJpIjoiNGFhYWQxMGU0NTE3NGEzNDlhZTBkN2Y5NDhkYTczYmYiLCJwIjoiaiJ9
     def _plant_to_inlet_reservoir_with_losses(
         self, plant_name: str, all_connections: list[dict], all_junctions: dict, all_tunnels: dict, reservoirs: set[str]
     ) -> tuple[str, float]:
@@ -295,8 +300,8 @@ class PowerAssetImporter:
         def calculate_losses_from_connection_path(
             all_junctions: dict, all_tunnels: dict, connection_by_id: dict, connection_path: list[int]
         ):
-            """Loop through connections in connection path, retrieve the losses for that connection among the
-            all_juntions or all_tunnels based on the type of connection, and sum up the total losses from
+            """Loop through connections in the connection path, retrieve the losses for that connection among the
+            all_junctions or all_tunnels based on the type of connection, and sum up the total losses from
             the connection path
             """
             sum_losses = 0
