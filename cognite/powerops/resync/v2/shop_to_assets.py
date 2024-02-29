@@ -71,7 +71,8 @@ class PowerAssetImporter:
     def to_power_assets(self) -> list[GeneratorWrite | ReservoirWrite | PlantWrite | WatercourseWrite | PriceAreaWrite]:
         assets_by_xid: dict[str, GeneratorWrite | ReservoirWrite | PlantWrite | WatercourseWrite | PriceAreaWrite] = {}
         for watercourse_dir, shop_model in self.shop_model_by_directory.items():
-            assets_by_xid.update(self._model_to_assets(shop_model, watercourse_dir, assets_by_xid))
+            watercourse_assets = self._model_to_assets(shop_model, watercourse_dir, assets_by_xid)
+            assets_by_xid.update(watercourse_assets)
 
         return list(assets_by_xid.values())
 
@@ -90,24 +91,22 @@ class PowerAssetImporter:
         plant_display_name_and_order = watercourse_config.get("plant_display_names_and_order", {})
         reservoir_display_name_and_order = watercourse_config.get("reservoir_display_names_and_order", {})
 
-        generators = []
+        generator_by_name = {}
         for name, data in shop_model["model"]["generator"].items():
             generator = self._to_generator(name, data)
             if generator.external_id in existing:
                 raise ValueError(f"Generator with external id {generator.external_id} already exists")
-            generators.append(generator)
+            generator_by_name[generator.name] = generator
             assets_by_xid[generator.external_id] = generator
 
-        reservoirs = []
-        for name, data in shop_model["model"]["reservoir"].items():
-            reservoir = self._to_reservoir(name, data, reservoir_display_name_and_order)
+        reservoir_by_name = {}
+        for name in shop_model["model"]["reservoir"].keys():
+            reservoir = self._to_reservoir(name, reservoir_display_name_and_order)
             if reservoir.external_id in existing:
                 raise ValueError(f"Reservoir with external id {reservoir.external_id} already exists")
-            reservoirs.append(reservoir)
+            reservoir_by_name[reservoir.name] = reservoir
             assets_by_xid[reservoir.external_id] = reservoir
 
-        reservoir_by_name = {reservoir.name: reservoir for reservoir in reservoirs}
-        generator_by_name = {generator.name: generator for generator in generators}
         plants = []
         for name, data in shop_model["model"]["plant"].items():
             plant = self._to_plant(
@@ -132,10 +131,16 @@ class PowerAssetImporter:
             penalty_limit=data.get("shop_penalty_limit", self.default_shop_penalty_limit),
             plants=plants,
         )
+        if watercourse.external_id in existing:
+            raise ValueError(f"Watercourse with external id {watercourse.external_id} already exists")
         assets_by_xid[watercourse.external_id] = watercourse
 
         for price_area in watercourse_config.get("market_to_price_area", {}).values():
-            price_area = PriceAreaWrite(external_id=f"price_aera_{price_area}", name=price_area, timezone="Europe/Oslo")
+            if price_area in existing:
+                raise ValueError(f"Price area with external id {price_area} already exists")
+            price_area = PriceAreaWrite(
+                external_id=f"price_area_{price_area}", name=price_area, timezone=self.default_timezone
+            )
             assets_by_xid[price_area.external_id] = price_area
 
         return assets_by_xid
@@ -155,8 +160,9 @@ class PowerAssetImporter:
             )
             turbine_curves.append(turbine_curve)
 
-        startcost_ts: dict[str, float] = data["startcost"]
-        startcost = next(iter(startcost_ts.values()))
+        # Start cose is assumed to be a dictionary with (timestamp, value) key-value pairs
+        # We assume it is constant and thus use only the first value.
+        startcost = next(iter(data["startcost"].values()))
 
         generator_timeseries = self.times_series_by_generator_name.get(name, {})
 
@@ -167,7 +173,7 @@ class PowerAssetImporter:
             penstock=data["penstock"],
             start_cost=startcost,
             start_stop_cost=generator_timeseries.get("start_stop_cost"),
-            is_available_time_series=generator_timeseries.get("start_stop_cost"),
+            is_available_time_series=generator_timeseries.get("is_available"),
             efficiency_curve=efficiency_curve,
             turbine_curves=turbine_curves,
         )
@@ -235,7 +241,8 @@ class PowerAssetImporter:
             generators=plant_generators,
         )
 
-    def _to_reservoir(self, name: str, _: dict, reservoir_display_name_and_order: dict) -> ReservoirWrite:
+    @classmethod
+    def _to_reservoir(cls, name: str, reservoir_display_name_and_order: dict) -> ReservoirWrite:
         display_name, order = reservoir_display_name_and_order.get(name, (name, 999))
 
         return ReservoirWrite(external_id=f"reservoir_{name}", name=name, display_name=display_name, ordering=order)
