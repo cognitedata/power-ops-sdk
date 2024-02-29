@@ -27,6 +27,19 @@ implements:
   type: view
 version: '{{version}}'
 properties:
+  method:
+    container:
+      space: '{{powerops_models}}'
+      externalId: BidConfiguration
+      type: container
+    containerPropertyIdentifier: method
+    name: method
+    description: The bid method related to the bid configuration
+    source:
+      space: '{{powerops_models}}'
+      externalId: BidMethodSHOPMultiScenario
+      version: '{{version}}'
+      type: view
   plant:
     container:
       space: '{{powerops_models}}'
