@@ -168,8 +168,17 @@ def load_yaml(
 ) -> list: ...
 
 
+@overload
 def load_yaml(
-    yaml_path: Path, expected_return_type: Literal["dict", "list"] = "dict", encoding="utf-8", clean_data: bool = False
+    yaml_path: Path, expected_return_type: Literal["any"], encoding="utf-8", clean_data: bool = False
+) -> list | dict: ...
+
+
+def load_yaml(
+    yaml_path: Path,
+    expected_return_type: Literal["dict", "list", "any"] = "any",
+    encoding="utf-8",
+    clean_data: bool = False,
 ) -> dict | list:
     """
     Fast loading of a yaml file.
@@ -177,7 +186,7 @@ def load_yaml(
     Args:
         yaml_path: The path to the yaml file.
         expected_return_type: The expected return type. The function will raise an error
-                              if the file does not return the expected type. Defaults to dict.
+                              if the file does not return the expected type. Defaults to any.
         encoding: The encoding of the yaml file. Defaults to utf-8.
         clean_data: Whether to clean the data from invalid characters. Defaults to False.
 
