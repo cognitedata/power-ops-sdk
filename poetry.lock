@@ -557,24 +557,20 @@ name = "cognite-toolkit"
 version = "0.1.0"
 description = "Official Cognite Data Fusion tool for project templates and configuration deployment"
 optional = false
-python-versions = "^3.9"
-files = []
-develop = false
+python-versions = ">=3.9,<4.0"
+files = [
+    {file = "cognite_toolkit-0.1.0-py3-none-any.whl", hash = "sha256:9847c786a93c3dab0e3fd2682f7a238396dcc25acedd7c7e310af3ba4db6299a"},
+    {file = "cognite_toolkit-0.1.0.tar.gz", hash = "sha256:3d5aa20b709ddb96cdd18db7c5855d59f235a9d41800265af894c07997ab07ce"},
+]
 
 [package.dependencies]
-cognite-logger = "^0.6"
-cognite-sdk = {version = ">=7.24, <7.25", extras = ["pandas"]}
-pandas = ">=1.5.3, <3.0"
-python-dotenv = "^1.0.0"
-pyyaml = "^6.0.1"
-sentry-sdk = "^1.39"
-typer = {version = "^0.9.0", extras = ["all"]}
-
-[package.source]
-type = "git"
-url = "https://github.com/cognitedata/cdf-project-templates.git"
-reference = "installation-branch"
-resolved_reference = "011d2a41b3c96a140347f15b9e5d18e2a04ac794"
+cognite-logger = ">=0.6,<0.7"
+cognite-sdk = {version = ">=7.24,<7.25", extras = ["pandas"]}
+pandas = ">=1.5.3,<3.0"
+python-dotenv = ">=1.0.0,<2.0.0"
+pyyaml = ">=6.0.1,<7.0.0"
+sentry-sdk = ">=1.39,<2.0"
+typer = {version = ">=0.9.0,<0.10.0", extras = ["all"]}
 
 [[package]]
 name = "colorama"
@@ -2200,13 +2196,13 @@ min-versions = ["babel (==2.9.0)", "click (==7.0)", "colorama (==0.4)", "ghp-imp
 
 [[package]]
 name = "mkdocs-autorefs"
-version = "1.0.0"
+version = "1.0.1"
 description = "Automatically link across pages in MkDocs."
 optional = true
 python-versions = ">=3.8"
 files = [
-    {file = "mkdocs_autorefs-1.0.0-py3-none-any.whl", hash = "sha256:2b6d288f0582589d1be7c99ce4470c8e7c5077892014051ff0d4ff574a73dbe8"},
-    {file = "mkdocs_autorefs-1.0.0.tar.gz", hash = "sha256:1b20db41cade632b07b7a73dee818977b52e869c9deb438f6f20e2896ff01859"},
+    {file = "mkdocs_autorefs-1.0.1-py3-none-any.whl", hash = "sha256:aacdfae1ab197780fb7a2dac92ad8a3d8f7ca8049a9cbe56a4218cd52e8da570"},
+    {file = "mkdocs_autorefs-1.0.1.tar.gz", hash = "sha256:f684edf847eced40b570b57846b15f0bf57fb93ac2c510450775dcf16accb971"},
 ]
 
 [package.dependencies]
@@ -4672,4 +4668,4 @@ docs = ["mkdocs", "mkdocs-git-authors-plugin", "mkdocs-git-revision-date-localiz
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.13"
-content-hash = "93c8251e0272f8e9617e2bfb232fbaeb1e4dcdb3213321b8aa159dd1d2290441"
+content-hash = "d4a96efa3037704f2f9eb6117ab87c7682298f9dd4975441724d9760d70f99be"
