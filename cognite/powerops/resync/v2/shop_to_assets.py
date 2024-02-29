@@ -201,20 +201,20 @@ class PowerAssetImporter:
             name, all_connections, all_junctions, all_tunnels, set(reservoir_by_name.keys())
         )
 
-        plant_generators: list[GeneratorWrite] = []
+        plant_generators: dict[str, GeneratorWrite] = {}
         for connection in all_connections:
             if (
                 connection.get("from_type") == "plant"
                 and connection["from"] == name
                 and (gen := generator_by_name.get(connection["to"]))
             ):
-                plant_generators.append(gen)
+                plant_generators[gen.name] = gen
             elif (
                 connection.get("to_type") == "plant"
                 and connection["to"] == name
                 and (gen := generator_by_name.get(connection["from"]))
             ):
-                plant_generators.append(gen)
+                plant_generators[gen.name] = gen
 
         return PlantWrite(
             external_id=f"plant_{name}",
@@ -241,7 +241,7 @@ class PowerAssetImporter:
             head_direct_time_series=plant_timeseries.get("head_direct"),
             watercourse=watercourse_xid,
             inlet_reservoir=reservoir_by_name.get(inlet_reservoir_name),
-            generators=plant_generators,
+            generators=list(plant_generators.values()),
         )
 
     @classmethod

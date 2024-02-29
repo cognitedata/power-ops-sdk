@@ -31,7 +31,7 @@ from cognite.powerops.resync.config import ReSyncConfig
 from cognite.powerops.resync.diff import FieldDifference, ModelDifference, ModelDifferences
 from cognite.powerops.resync.models.base import AssetModel, CDFFile, CDFSequence, DataModel, Model, SpaceId
 from cognite.powerops.resync.models.v2.powerops_models import DataModelLoader
-from cognite.powerops.resync.v2.shop_to_assets import PowerAssetImporter  # type: ignore[attr-defined]
+from cognite.powerops.resync.v2.shop_to_assets import PowerAssetImporter
 from cognite.powerops.utils.serialization import environment_variables
 
 from .cdf import get_cognite_api
