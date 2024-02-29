@@ -1,5 +1,5 @@
 # Mypy does not understand the pydantic classes that allows both alias and name to be used in population
-# type: ignore # noqa: [call-arg]
+# mypy: disable-error-code="call-arg"
 from __future__ import annotations
 
 from math import floor, log10
@@ -7,7 +7,6 @@ from pathlib import Path
 from typing import Any, Optional
 
 from cognite.powerops.client._generated.v1.data_classes import (
-    DomainModelWrite,
     GeneratorEfficiencyCurveWrite,
     GeneratorWrite,
     PlantWrite,
@@ -23,18 +22,19 @@ __all__ = ["PowerAssetImporter"]
 
 class PowerAssetImporter:
     p_min_fallback = 0.0
-    p_max_fallback = 100_000_000_000_000_000_00.0
+    p_max_fallback = 10_000_000_000_000_000_000.0
     head_loss_factor_fallback = 0.0
     connection_losses_fallback = 0.0
     inlet_reservoir_fallback = ""
     default_shop_penalty_limit = 42000
+    default_timezone = "Europe/Oslo"
 
     def __init__(
         self,
-        shop_model_by_directory: dict[str, dict[str, Any]],
-        generator_times_series_mappings: Optional[list[dict]] = None,
-        plant_time_series_mappings: Optional[list[dict]] = None,
-        watercourses: Optional[list[dict]] = None,
+        shop_model_by_directory: dict,
+        generator_times_series_mappings: Optional[list] = None,
+        plant_time_series_mappings: Optional[list] = None,
+        watercourses: Optional[list] = None,
     ):
         self.shop_model_by_directory = shop_model_by_directory
         self.times_series_by_generator_name = {
@@ -49,31 +49,43 @@ class PowerAssetImporter:
     @classmethod
     def from_directory(cls, directory: Path, file_name: str = "model_raw") -> PowerAssetImporter:
         shop_model_files = list(directory.glob(f"**/{file_name}.yaml"))
-        shop_model_by_watercourse = {file.parent.name: load_yaml(file) for file in shop_model_files}
+        shop_model_by_watercourse = {
+            file.parent.name: load_yaml(file, expected_return_type="dict") for file in shop_model_files
+        }
 
         generator_mapping_file = directory / "generator_time_series_mappings.yaml"
-        generator_mappings = load_yaml(generator_mapping_file) if generator_mapping_file.exists() else None
+        generator_mappings = (
+            load_yaml(generator_mapping_file, expected_return_type="list") if generator_mapping_file.exists() else None
+        )
 
         plant_mapping_file = directory / "plant_time_series_mappings.yaml"
-        plant_mappings = load_yaml(plant_mapping_file) if plant_mapping_file.exists() else None
+        plant_mappings = (
+            load_yaml(plant_mapping_file, expected_return_type="list") if plant_mapping_file.exists() else None
+        )
 
         watercourses_file = directory / "watercourses.yaml"
-        watercourses = load_yaml(watercourses_file) if watercourses_file.exists() else None
+        watercourses = load_yaml(watercourses_file, expected_return_type="list") if watercourses_file.exists() else None
 
         return cls(shop_model_by_watercourse, generator_mappings, plant_mappings, watercourses)
 
-    def to_power_assets(self) -> list[DomainModelWrite]:
-        assets_by_xid: dict[str, DomainModelWrite] = {}
+    def to_power_assets(self) -> list[GeneratorWrite | ReservoirWrite | PlantWrite | WatercourseWrite | PriceAreaWrite]:
+        assets_by_xid: dict[str, GeneratorWrite | ReservoirWrite | PlantWrite | WatercourseWrite | PriceAreaWrite] = {}
         for watercourse_dir, shop_model in self.shop_model_by_directory.items():
             assets_by_xid.update(self._model_to_assets(shop_model, watercourse_dir, assets_by_xid))
 
         return list(assets_by_xid.values())
 
     def _model_to_assets(
-        self, shop_model: dict[str, Any], watercourse_dir: str, existing: dict[str, DomainModelWrite]
-    ) -> dict[str, DomainModelWrite]:
-        assets_by_xid: dict[str, DomainModelWrite] = {}
-        watercourse_config = self.watercourse_by_directory.get(watercourse_dir, {})
+        self,
+        shop_model: dict[str, Any],
+        watercourse_dir: str,
+        existing: dict[str, GeneratorWrite | ReservoirWrite | PlantWrite | WatercourseWrite | PriceAreaWrite],
+    ) -> dict[str, GeneratorWrite | ReservoirWrite | PlantWrite | WatercourseWrite | PriceAreaWrite]:
+        assets_by_xid: dict[str, GeneratorWrite | ReservoirWrite | PlantWrite | WatercourseWrite | PriceAreaWrite] = {}
+        try:
+            watercourse_config = self.watercourse_by_directory[watercourse_dir]
+        except KeyError as e:
+            raise ValueError(f"Watercourse directory {watercourse_dir} not watercourses.yaml file") from e
         watercourse_external_id = f"watercourse_{watercourse_config['name']}"
         plant_display_name_and_order = watercourse_config.get("plant_display_names_and_order", {})
         reservoir_display_name_and_order = watercourse_config.get("reservoir_display_names_and_order", {})
@@ -244,11 +256,11 @@ class PowerAssetImporter:
 
         Returns
         -------
-        Optional[str]
+        tuple[str, float]
             The name of the reservoir connected to the plant, or None if no reservoir was found.
         """
 
-        def get_connection_path_from_last_visited(visited_paths: list, last_visited_id: int) -> list:
+        def get_connection_path_from_last_visited(visited_paths: list, last_visited_id: int) -> list | None:
             """Return the correct sequence of visited connections based on the last visited connection among
             the list of connection paths visited
 
@@ -265,15 +277,16 @@ class PowerAssetImporter:
                 -------
                 list
                     The path or sequence of connections that has the last_visited_id as its
-                last visited connection among the visited_paths
+                    last visited connection among the visited_paths
             """
             for connection in visited_paths:
                 if connection[-1] == last_visited_id:
                     connection_path_index = visited_paths.index(connection)
                     return visited_paths[connection_path_index]
+            return None
 
         def calculate_losses_from_connection_path(
-            all_junctions: dict, all_tunnels: dict, connection_by_id: int, connection_path: list[int]
+            all_junctions: dict, all_tunnels: dict, connection_by_id: dict, connection_path: list[int]
         ):
             """Loop through connections in connection path, retrieve the losses for that connection among the
             all_juntions or all_tunnels based on the type of connection, and sum up the total losses from
@@ -331,12 +344,13 @@ class PowerAssetImporter:
                     if candidate_connection["to"] == connection["from"]:
                         queue.append((candidate_connection_id, candidate_connection))
                         new_path_list = get_connection_path_from_last_visited(track_connection_paths, connection_id)
-                        track_connection_paths.append([*new_path_list, candidate_connection_id])
+                        if new_path_list:
+                            track_connection_paths.append([*new_path_list, candidate_connection_id])
 
         if last_connection_id is None:
             return self.inlet_reservoir_fallback, self.connection_losses_fallback  # TODO: raise an error here instead?
 
-        connection_path = get_connection_path_from_last_visited(track_connection_paths, last_connection_id)
+        connection_path = get_connection_path_from_last_visited(track_connection_paths, last_connection_id) or []
 
         connection_losses = calculate_losses_from_connection_path(
             all_junctions, all_tunnels, connection_by_id, connection_path
