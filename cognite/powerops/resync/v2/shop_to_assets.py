@@ -250,7 +250,7 @@ class PowerAssetImporter:
 
         return ReservoirWrite(external_id=f"reservoir_{name}", name=name, display_name=display_name, ordering=order)
 
-    # Todo - Refactor/Test covearge of this function:
+    # Todo - Refactor/Test coverage of this function:
     #  https://cognitedata.atlassian.net/browse/POWEROPS-2224?atlOrigin=eyJpIjoiNGFhYWQxMGU0NTE3NGEzNDlhZTBkN2Y5NDhkYTczYmYiLCJwIjoiaiJ9
     def _plant_to_inlet_reservoir_with_losses(
         self, plant_name: str, all_connections: list[dict], all_junctions: dict, all_tunnels: dict, reservoirs: set[str]
