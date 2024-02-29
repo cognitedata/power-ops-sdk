@@ -57,7 +57,7 @@ IDP_TOKEN_URL="https://login.microsoftonline.com/431fcc8b-74b8-4171-b7c9-e6fab25
 SENTRY_ENABLED=false
 ```
 
-When using the `cognit-toolkit` you have to build the configurations first and then deploy/clean them.
+When using the `cognite-toolkit` you have to build the configurations first and then deploy/clean them.
 
 1. Build the configurations:
    ```bash
