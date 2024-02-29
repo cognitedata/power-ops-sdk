@@ -39,7 +39,7 @@ from .validation import _clean_relationships
 
 os.environ["SENTRY_ENABLED"] = "false"
 # ruff: noqa: E402
-from cognite_toolkit.cdf import Common, build, deploy  # type: ignore[import-untyped]
+from cognite_toolkit._cdf import Common, build, deploy  # type: ignore[import-untyped]
 
 logger = logging.getLogger(__name__)
 
