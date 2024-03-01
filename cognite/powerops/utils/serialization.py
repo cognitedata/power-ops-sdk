@@ -9,7 +9,7 @@ import string
 import warnings
 from collections.abc import Iterator
 from pathlib import Path
-from typing import Annotated, Any, ForwardRef, Union, get_args, get_origin
+from typing import Annotated, Any, ForwardRef, Literal, Union, get_args, get_origin, overload
 
 import tomli_w
 from cognite.client.data_classes import TimeSeries
@@ -156,12 +156,37 @@ def _validate(yaml_path: Path):
         raise ValueError(f"File {yaml_path.name} not a valid yaml {yaml_path.suffix}")
 
 
-def load_yaml(yaml_path: Path, encoding="utf-8", clean_data: bool = False) -> dict:
+@overload
+def load_yaml(
+    yaml_path: Path, expected_return_type: Literal["dict"] = "dict", encoding="utf-8", clean_data: bool = False
+) -> dict: ...
+
+
+@overload
+def load_yaml(
+    yaml_path: Path, expected_return_type: Literal["list"], encoding="utf-8", clean_data: bool = False
+) -> list: ...
+
+
+@overload
+def load_yaml(
+    yaml_path: Path, expected_return_type: Literal["any"], encoding="utf-8", clean_data: bool = False
+) -> list | dict: ...
+
+
+def load_yaml(
+    yaml_path: Path,
+    expected_return_type: Literal["dict", "list", "any"] = "any",
+    encoding="utf-8",
+    clean_data: bool = False,
+) -> dict | list:
     """
     Fast loading of a yaml file.
 
     Args:
         yaml_path: The path to the yaml file.
+        expected_return_type: The expected return type. The function will raise an error
+                              if the file does not return the expected type. Defaults to any.
         encoding: The encoding of the yaml file. Defaults to utf-8.
         clean_data: Whether to clean the data from invalid characters. Defaults to False.
 
@@ -180,7 +205,12 @@ def load_yaml(yaml_path: Path, encoding="utf-8", clean_data: bool = False) -> di
             f"File {yaml_path.parent}/{yaml_path.name} contains invalid characters: {', '.join(invalid_characters)}",
             stacklevel=2,
         )
-    return CSafeLoader(data).get_data()
+    output = CSafeLoader(data).get_data()
+    if expected_return_type == "dict" and not isinstance(output, dict):
+        raise ValueError(f"Expected a dictionary, got {type(output)}")
+    if expected_return_type == "list" and not isinstance(output, list):
+        raise ValueError(f"Expected a list, got {type(output)}")
+    return output
 
 
 def dump_yaml(yaml_path: Path, data: dict, encoding="utf-8") -> None:
