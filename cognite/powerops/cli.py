@@ -8,6 +8,7 @@ import typer
 from rich.logging import Console, RichHandler
 
 import cognite.powerops.resync.core.echo
+import cognite.powerops.resync.v2.main
 from cognite import powerops
 from cognite.powerops import resync
 from cognite.powerops.client import PowerOpsClient
@@ -164,7 +165,7 @@ def apply(
 @app.command("apply2", help="Apply the changes from the configuration files to the data model in CDF")
 def apply2(path: Annotated[Path, typer.Argument(help="Path to configuration files")]):
     logging.info(f"Running apply on configuration files located in {path}")
-    resync.apply2(path)
+    cognite.powerops.resync.v2.main.apply2(path)
 
 
 @app.command("destroy", help="Destroy all the data models created by resync and remove all the data.")
