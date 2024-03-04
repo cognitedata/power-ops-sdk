@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.88.7] - 2024-03-04
+### Added
+* Added the property `Mapping` to the `DayAheadConfiguration` data model.
+
 ## [0.88.6] - 2024-02-27
 ### Added
 * Added the property `MarketConfiguration` to the `ShopPartialBidCalculationInput` view.
