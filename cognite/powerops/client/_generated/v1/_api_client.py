@@ -279,6 +279,7 @@ class DayAheadConfigurationAPIs:
             data_classes.BidMethodWaterValue: dm.ViewId("sp_powerops_models", "BidMethodWaterValue", "1"),
             data_classes.Generator: dm.ViewId("sp_powerops_models", "Generator", "1"),
             data_classes.GeneratorEfficiencyCurve: dm.ViewId("sp_powerops_models", "GeneratorEfficiencyCurve", "1"),
+            data_classes.Mapping: dm.ViewId("sp_powerops_models", "Mapping", "1"),
             data_classes.MarketConfiguration: dm.ViewId("sp_powerops_models", "MarketConfiguration", "1"),
             data_classes.Plant: dm.ViewId("sp_powerops_models", "Plant", "1"),
             data_classes.PlantShop: dm.ViewId("sp_powerops_models", "PlantShop", "1"),
@@ -300,6 +301,7 @@ class DayAheadConfigurationAPIs:
         self.bid_method_water_value = BidMethodWaterValueAPI(client, view_by_read_class)
         self.generator = GeneratorAPI(client, view_by_read_class)
         self.generator_efficiency_curve = GeneratorEfficiencyCurveAPI(client, view_by_read_class)
+        self.mapping = MappingAPI(client, view_by_read_class)
         self.market_configuration = MarketConfigurationAPI(client, view_by_read_class)
         self.plant = PlantAPI(client, view_by_read_class)
         self.plant_shop = PlantShopAPI(client, view_by_read_class)
@@ -433,8 +435,8 @@ class PowerOpsModelsV1Client:
 
     Generated with:
         pygen = 0.99.11
-        cognite-sdk = 7.20.0
-        pydantic = 2.6.1
+        cognite-sdk = 7.26.0
+        pydantic = 2.6.3
 
     """
 
