@@ -4,77 +4,80 @@
 from __future__ import annotations
 
 import re
-from math import floor, log10
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
+
 from pydantic import ValidationError
 
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelWrite,
-    PriceAreaWrite,
-    PriceScenarioWrite,
 )
 from cognite.powerops.utils.serialization import load_yaml
 
 __all__ = ["ConfigImporter"]
 
 
+def get_type_prefix(domain_model_type: type) -> str:
+    type_name = domain_model_type.__name__.replace("Write", "")
+    external_id_prefix = re.sub(r"(?<!^)(?=[A-Z])", "_", type_name).lower()
+
+    return external_id_prefix
+
+
 def ext_id_factory(domain_model_type: type, data: dict) -> str:
 
-    type_name = domain_model_type.__name__.replace("Write", "")
+    type_prefix = get_type_prefix(domain_model_type)
 
-    # TODO: check if it's one of the expected data types
     try:
         name = data["name"]
     except KeyError as exc:
-        raise ValueError(
-            f"Missing required `name` field for data type {type_name}, {data}"
-        ) from exc
+        raise ValueError(f"Missing required `name` field for data type {type_prefix}, {data}") from exc
 
-    external_id_prefix = re.sub(r'(?<!^)(?=[A-Z])', '_', type_name).lower()
+    cleaned_name = name.lower().replace(" ", "_").replace("-", "_")
 
-    return f"{external_id_prefix}_{name}"
+    return f"{type_prefix}_{cleaned_name}"
 
 
 class ConfigImporter:
 
-    def __init__(self,
-        # price_areas: list
+    def __init__(
+        self,
+        all_type_mappings: dict[type, list[dict[str, Any]]],
     ) -> None:
-        self.price_scenarios = [{"name": "foo", "timeseries": "bar"}, {"name": "bar", "timeseries": "bar"}]
-        self.price_area = [{"name": "bar", "timezone": "europe"}]
+        self.all_type_mappings = all_type_mappings
 
         DomainModelWrite.external_id_factory = ext_id_factory
 
-        pass
+    @classmethod
+    def from_directory(cls, directory: Path, expected_types: list[Any]) -> ConfigImporter:
 
+        all_types: dict[type, list[dict[str, Any]]] = {}
+        for data_model_type in expected_types:
+            type_prefix = get_type_prefix(data_model_type)
+            data_model_type_file = directory / f"{type_prefix}.yaml"
+            data_model_type_list: list[dict[str, Any]] = (
+                load_yaml(data_model_type_file, expected_return_type="list") if data_model_type_file else []
+            )
 
-    # TODO: use file name to
-    # @classmethod
-    # def from_directory(cls, directory: Path) -> ConfigImporter:
-    #     config_files = list(directory.glob(f"**/**.yaml"))
+            all_types[data_model_type] = data_model_type_list
 
-    #     return cls(config_files)
-
+        return cls(all_types)
 
     def config_to_fdm(self) -> list:
         fdm_objects: dict[str, Any] = {}
 
-        for price_scenario in self.price_scenarios:
-            self._dict_to_type_object(fdm_objects, PriceScenarioWrite, price_scenario)
-
-        for price_area in self.price_area:
-            self._dict_to_type_object(fdm_objects, PriceAreaWrite, price_area)
+        for data_model_type, unprocessed_objects in self.all_type_mappings.items():
+            for obj in unprocessed_objects:
+                self._dict_to_type_object(fdm_objects, data_model_type, obj)
 
         return list(fdm_objects.values())
-
 
     def _dict_to_type_object(self, fdm_objects: dict, domain_model_type: type, data: dict):
 
         try:
             fdm_object = domain_model_type(**data)
         except ValidationError as exc:
-            raise ValueError(f"Missing required field for {domain_model_type.__name__} in data {data}")
+            raise ValueError(f"Missing/invalid field for {domain_model_type.__name__} in data {data}") from exc
 
         if fdm_object.external_id in fdm_objects:
             raise ValueError(f"{domain_model_type.__name__} with external id {fdm_object.external_id} already exists")
