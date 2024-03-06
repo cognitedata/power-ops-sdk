@@ -24,8 +24,8 @@ class AFRRBidAPI:
 
     Generated with:
         pygen = 0.99.11
-        cognite-sdk = 7.26.0
-        pydantic = 2.6.3
+        cognite-sdk = 7.20.0
+        pydantic = 2.6.1
 
     Data Model:
         space: power-ops-afrr-bid
