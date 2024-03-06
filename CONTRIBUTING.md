@@ -39,7 +39,7 @@ To change a view in a data model, follow these steps:
 12. Get the PR approved and merge it.
 
 
-### Changing Containers
+### Changing only Containers
 Changing the containers requires dropping existing containers and recereating the changed ones. This is currently
 not supported by the `powerops` CLI, so you will have to do it using `cdf-tk`, i.e., `cognite-toolkit`, directly.
 
@@ -61,10 +61,10 @@ SENTRY_ENABLED=false
 
 When using the `cognite-toolkit` you have to build the configurations first and then deploy/clean them.
 
-1. Do the changes to the .yaml files in the `data_models/container` folder.
+1. Do the changes to the .yaml files in the `data_models/container` folder, and make sure that there are no undeployed changes in any of the view files.
 2. Build the configurations and remove existing files in the build directory:
    ```bash
-   cdf-tk build cognite/powerops --env dev
+   cdf-tk build cognite/powerops --env dev --clean
    ```
 3. Dry-run the redeploy to see what changes would be made:
    ```bash
