@@ -17,7 +17,7 @@ from ._core import (
     DomainRelationWrite,
     ResourcesWrite,
 )
-from ._bid_matrix import BidMatrix, BidMatrixWrite
+from ._bid_matrix_raw import BidMatrixRaw, BidMatrixRawWrite
 
 if TYPE_CHECKING:
     from ._alert import Alert, AlertWrite
@@ -49,7 +49,7 @@ _MULTISCENARIOMATRIXRAW_PROPERTIES_BY_FIELD = {
 }
 
 
-class MultiScenarioMatrixRaw(BidMatrix):
+class MultiScenarioMatrixRaw(BidMatrixRaw):
     """This represents the reading version of multi scenario matrix raw.
 
     It is used to when data is retrieved from CDF.
@@ -69,7 +69,7 @@ class MultiScenarioMatrixRaw(BidMatrix):
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types", "DayAheadMultiScenarioMatrixRaw"
+        "sp_powerops_types", "DayAheadMultiScenarioMatrix"
     )
     method: Union[BidMethodSHOPMultiScenario, str, dm.NodeId, None] = Field(None, repr=False)
     shop_results: Union[list[SHOPResult], list[str], None] = Field(default=None, repr=False, alias="shopResults")
@@ -103,7 +103,7 @@ class MultiScenarioMatrixRaw(BidMatrix):
         return self.as_write()
 
 
-class MultiScenarioMatrixRawWrite(BidMatrixWrite):
+class MultiScenarioMatrixRawWrite(BidMatrixRawWrite):
     """This represents the writing version of multi scenario matrix raw.
 
     It is used to when data is sent to CDF.
@@ -123,7 +123,7 @@ class MultiScenarioMatrixRawWrite(BidMatrixWrite):
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types", "DayAheadMultiScenarioMatrixRaw"
+        "sp_powerops_types", "DayAheadMultiScenarioMatrix"
     )
     method: Union[BidMethodSHOPMultiScenarioWrite, str, dm.NodeId, None] = Field(None, repr=False)
     shop_results: Union[list[SHOPResultWrite], list[str], None] = Field(default=None, repr=False, alias="shopResults")

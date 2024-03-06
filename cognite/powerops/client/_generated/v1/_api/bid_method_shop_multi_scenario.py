@@ -205,7 +205,7 @@ class BidMethodSHOPMultiScenarioAPI(
                     "price_scenarios",
                     dm.DirectRelationReference("sp_powerops_types", "BidMethodDayahead.priceScenarios"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models", "PriceScenario", "1"),
+                    dm.ViewId("sp_powerops_models", "Mapping", "1"),
                 ),
             ],
         )
@@ -490,7 +490,7 @@ class BidMethodSHOPMultiScenarioAPI(
                     "price_scenarios",
                     dm.DirectRelationReference("sp_powerops_types", "BidMethodDayahead.priceScenarios"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models", "PriceScenario", "1"),
+                    dm.ViewId("sp_powerops_models", "Mapping", "1"),
                 ),
             ],
         )

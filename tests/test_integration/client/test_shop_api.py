@@ -1,3 +1,4 @@
+import arrow
 import pandas as pd
 import pytest
 
@@ -7,7 +8,7 @@ from cognite.powerops.client.data_classes import SHOPRun, SHOPRunList, SHOPRunSt
 
 @pytest.fixture(scope="session")
 def shop_run_list(powerops_client) -> SHOPRunList:
-    return powerops_client.shop.list(limit=5)
+    return powerops_client.shop.list(start_after=arrow.get("2024-02-01T00:00:00Z"), limit=5)
 
 
 @pytest.fixture(scope="session")
@@ -51,6 +52,13 @@ def test_get_shop_files(shop_run: SHOPRun) -> None:
     assert shop_files, "No shop files found"
     for shop_file in shop_files:
         assert isinstance(shop_file, str)
+
+
+@pytest.mark.cdf
+def test_get_pre_run_file(shop_run: SHOPRun) -> None:
+    pre_run_file = shop_run.get_pre_run_file()
+
+    assert isinstance(pre_run_file, str)
 
 
 @pytest.mark.cdf

@@ -12,8 +12,8 @@ class BidMethodSHOPMultiScenarioPriceScenariosAPI(EdgeAPI):
         self,
         from_bid_method_shop_multi_scenario: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
         from_bid_method_shop_multi_scenario_space: str = DEFAULT_INSTANCE_SPACE,
-        to_price_scenario: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-        to_price_scenario_space: str = DEFAULT_INSTANCE_SPACE,
+        to_mapping: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
+        to_mapping_space: str = DEFAULT_INSTANCE_SPACE,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit=DEFAULT_LIMIT_READ,
@@ -23,8 +23,8 @@ class BidMethodSHOPMultiScenarioPriceScenariosAPI(EdgeAPI):
         Args:
             from_bid_method_shop_multi_scenario: ID of the source bid method shop multi scenario.
             from_bid_method_shop_multi_scenario_space: Location of the bid method shop multi scenarios.
-            to_price_scenario: ID of the target price scenario.
-            to_price_scenario_space: Location of the price scenarios.
+            to_mapping: ID of the target mapping.
+            to_mapping_space: Location of the mappings.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of price scenario edges to return. Defaults to 25. Set to -1, float("inf") or None
@@ -46,8 +46,8 @@ class BidMethodSHOPMultiScenarioPriceScenariosAPI(EdgeAPI):
             dm.DirectRelationReference("sp_powerops_types", "BidMethodDayahead.priceScenarios"),
             from_bid_method_shop_multi_scenario,
             from_bid_method_shop_multi_scenario_space,
-            to_price_scenario,
-            to_price_scenario_space,
+            to_mapping,
+            to_mapping_space,
             external_id_prefix,
             space,
         )

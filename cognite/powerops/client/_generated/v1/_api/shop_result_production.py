@@ -360,6 +360,7 @@ class SHOPResultProductionAPI:
     def __call__(
         self,
         scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        price_scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -369,6 +370,7 @@ class SHOPResultProductionAPI:
 
         Args:
             scenario: The scenario to filter on.
+            price_scenario: The price scenario to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop results to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -390,6 +392,7 @@ class SHOPResultProductionAPI:
         filter_ = _create_shop_result_filter(
             self._view_id,
             scenario,
+            price_scenario,
             external_id_prefix,
             space,
             filter,
@@ -405,6 +408,7 @@ class SHOPResultProductionAPI:
     def list(
         self,
         scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        price_scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -414,6 +418,7 @@ class SHOPResultProductionAPI:
 
         Args:
             scenario: The scenario to filter on.
+            price_scenario: The price scenario to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop results to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -434,6 +439,7 @@ class SHOPResultProductionAPI:
         filter_ = _create_shop_result_filter(
             self._view_id,
             scenario,
+            price_scenario,
             external_id_prefix,
             space,
             filter,

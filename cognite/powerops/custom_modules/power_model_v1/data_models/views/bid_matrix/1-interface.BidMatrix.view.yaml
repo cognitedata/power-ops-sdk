@@ -12,13 +12,6 @@ filter:
       - node
       - space
       value: '{{powerops_instance_space}}'
-  - equals:
-      property:
-      - node
-      - type
-      value:
-        externalId: BidMatrix
-        space: '{{powerops_type_space}}'
 implements: []
 version: '{{version}}'
 properties:

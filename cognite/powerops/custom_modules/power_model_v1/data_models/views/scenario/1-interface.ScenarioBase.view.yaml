@@ -14,13 +14,6 @@ filter:
       - node
       - space
       value: '{{powerops_instance_space}}'
-  - equals:
-      property:
-      - node
-      - type
-      value:
-        externalId: ScenarioBase
-        space: '{{powerops_type_space}}'
 implements: []
 version: '{{version}}'
 properties:
@@ -106,7 +99,7 @@ properties:
       space: '{{powerops_models}}'
       externalId: Scenario
       type: container
-    containerPropertyIdentifier: shopStart
+    containerPropertyIdentifier: shopStartTimestamp
     name: shopStart
     description: The shop start time
   shopEnd:
@@ -114,7 +107,7 @@ properties:
       space: '{{powerops_models}}'
       externalId: Scenario
       type: container
-    containerPropertyIdentifier: shopEnd
+    containerPropertyIdentifier: shopEndTimestamp
     name: shopEnd
     description: The shop end time
   bidDate:

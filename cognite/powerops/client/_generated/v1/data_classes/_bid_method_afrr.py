@@ -16,7 +16,6 @@ from ._core import (
     DomainRelationWrite,
     ResourcesWrite,
 )
-from ._bid_method import BidMethod, BidMethodWrite
 
 
 __all__ = [
@@ -39,7 +38,7 @@ _BIDMETHODAFRR_PROPERTIES_BY_FIELD = {
 }
 
 
-class BidMethodAFRR(BidMethod):
+class BidMethodAFRR(DomainModel):
     """This represents the reading version of bid method afrr.
 
     It is used to when data is retrieved from CDF.
@@ -51,9 +50,11 @@ class BidMethodAFRR(BidMethod):
         name: Name for the BidMethod
     """
 
+    space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
         "sp_powerops_types", "BidMethodAFRR"
     )
+    name: str
 
     def as_write(self) -> BidMethodAFRRWrite:
         """Convert this read version of bid method afrr to the writing version."""
@@ -74,7 +75,7 @@ class BidMethodAFRR(BidMethod):
         return self.as_write()
 
 
-class BidMethodAFRRWrite(BidMethodWrite):
+class BidMethodAFRRWrite(DomainModelWrite):
     """This represents the writing version of bid method afrr.
 
     It is used to when data is sent to CDF.
@@ -86,9 +87,11 @@ class BidMethodAFRRWrite(BidMethodWrite):
         name: Name for the BidMethod
     """
 
+    space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
         "sp_powerops_types", "BidMethodAFRR"
     )
+    name: str
 
     def _to_instances_write(
         self,

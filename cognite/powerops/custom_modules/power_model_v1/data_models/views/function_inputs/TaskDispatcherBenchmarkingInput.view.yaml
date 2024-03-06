@@ -1,0 +1,41 @@
+space: '{{powerops_models}}'
+externalId: TaskDispatcherBenchmarkingInput
+name: TaskDispatcherBenchmarkingInput
+description: The task dispatcher input data for benchmarking
+filter:
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: FunctionMetadata
+  - equals:
+      property:
+      - node
+      - space
+      value: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: TaskDispatcherBenchmarkingInput
+        space: '{{powerops_type_space}}'
+implements:
+- space: '{{powerops_models}}'
+  externalId: FunctionInput
+  version: '{{version}}'
+  type: view
+version: '{{version}}'
+properties:
+  bidDocument:
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionMetadata
+      type: container
+    containerPropertyIdentifier: data
+    name: bidDocument
+    source:
+      space: '{{powerops_models}}'
+      externalId: BidDocumentDayAheadSimple
+      version: '{{version}}'
+      type: view
