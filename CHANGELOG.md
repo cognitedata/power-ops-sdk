@@ -13,6 +13,11 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.88.8] - 2024-03-06
+### Changed
+* Changed the types of the property `price_steps` to float, `tick_size` to float, and `trade_lot` to int 
+* in the `MarketConfiguration` view of the `SHOPBasedDayAheadBidProcess` data model.
+
 ## [0.88.7] - 2024-03-04
 ### Added
 * Added the property `Mapping` to the `DayAheadConfiguration` data model.
