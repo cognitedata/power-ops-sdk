@@ -70,10 +70,11 @@ When using the `cognite-toolkit` you have to build the configurations first and 
    ```bash
     cdf-tk deploy --drop-data --drop --env=dev --dry-run
     ```
-4. Post in the development channel `#powerops-backend` that you are about to apply the changes.
-5. Check that nobody else are currently about to do change, then deploy the changes:
+4. Create a PR and request feedback on your suggested changes.
+5. Post in the development channel `#powerops-backend` that you are about to apply the changes.
+6. Check that nobody else are currently about to do change, then deploy the changes:
    ```bash
     cdf-tk deploy --drop-data --drop --env=dev
     ```
-5. Verify in the UI (https://cog-power-ops.fusion.cognite.com/power-ops-staging/?cluster=bluefield.cognitedata.com&env=bluefield -> Data Models) that the changes are as expected.
-6. Follow the steps from point 7 on from above, where you post in #powerops-backend channel about the applied changes, execute `pygen_generate_clients.py`, etc.
+7. Verify in the UI (https://cog-power-ops.fusion.cognite.com/power-ops-staging/?cluster=bluefield.cognitedata.com&env=bluefield -> Data Models) that the changes are as expected.
+8. Follow the steps from point 7 on from above, where you post in #powerops-backend channel about the applied changes, execute `pygen_generate_clients.py`, etc.
