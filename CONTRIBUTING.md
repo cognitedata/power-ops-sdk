@@ -39,7 +39,7 @@ To change a view in a data model, follow these steps:
 12. Get the PR approved and merge it.
 
 
-### Changing only Containers
+### Changing Containers
 Changing the containers requires dropping existing containers and recereating the changed ones. This is currently
 not supported by the `powerops` CLI, so you will have to do it using `cdf-tk`, i.e., `cognite-toolkit`, directly.
 
