@@ -1,7 +1,7 @@
 space: '{{powerops_models}}'
 externalId: SHOPResult
 name: SHOPResult
-description: ''
+description: The result of a shop run with reference to the Scenario instance that was used to produce it
 filter:
   and:
   - hasData:
@@ -34,6 +34,19 @@ properties:
     source:
       space: '{{powerops_models}}'
       externalId: Scenario
+      version: '{{version}}'
+      type: view
+  price_scenario:
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct2
+    name: price_scenario
+    description: The price scenario that was used to produce this result
+    source:
+      space: '{{powerops_models}}'
+      externalId: PriceScenario
       version: '{{version}}'
       type: view
   production:

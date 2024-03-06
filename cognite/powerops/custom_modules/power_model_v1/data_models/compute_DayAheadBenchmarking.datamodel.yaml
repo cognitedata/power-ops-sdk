@@ -1,0 +1,50 @@
+externalId: compute_DayAheadBenchmarking
+space: '{{powerops_models}}'
+version: '1'
+name: DayAheadBenchmarking
+description: 'The process of benchmarking day-ahead bids'
+views:
+- externalId: TaskDispatcherBenchmarkingInput
+  space: '{{powerops_models}}'
+  version: '{{version}}'
+  type: view
+- externalId: TaskDispatcherBenchmarkingOutput
+  space: '{{powerops_models}}'
+  version: '{{version}}'
+  type: view
+- externalId: BenchmarkingCollectorInput
+  space: '{{powerops_models}}'
+  version: '{{version}}'
+  type: view
+- externalId: BenchmarkingCollectorOutput
+  space: '{{powerops_models}}'
+  version: '{{version}}'
+  type: view
+- externalId: BidDocumentDayAheadSimple
+  space: '{{powerops_models}}'
+  version: '{{version}}'
+  type: view
+- space: '{{powerops_models}}'
+  externalId: BidMethodDayAhead
+  version: '{{version}}'
+  type: view
+- space: '{{powerops_models}}'
+  externalId: PriceAreaDayAhead
+  version: '{{version}}'
+  type: view
+- space: '{{powerops_models}}'
+  externalId: BidMatrix
+  version: '{{version}}'
+  type: view
+- space: '{{powerops_models}}'
+  externalId: Alert
+  version: '{{version}}'
+  type: view
+- space: '{{powerops_models}}'
+  externalId: PriceScenario
+  version: '{{version}}'
+  type: view
+- space: '{{powerops_models}}'
+  externalId: ShopObjectiveValue
+  version: '{{version}}'
+  type: view

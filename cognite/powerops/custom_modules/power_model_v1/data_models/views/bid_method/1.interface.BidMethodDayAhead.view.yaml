@@ -8,21 +8,11 @@ filter:
     - type: container
       space: '{{powerops_models}}'
       externalId: BidMethod
-    - type: container
-      space: '{{powerops_models}}'
-      externalId: PriceArea
   - equals:
       property:
       - node
       - space
       value: '{{powerops_instance_space}}'
-  - equals:
-      property:
-      - node
-      - type
-      value:
-        externalId: BidMethodDayAhead
-        space: '{{powerops_type_space}}'
 implements:
   - space: '{{powerops_models}}'
     externalId: BidMethod
@@ -40,6 +30,6 @@ properties:
     description: The main scenario to use when running the bid method
     source:
       space: '{{powerops_models}}'
-      externalId: PriceScenario
+      externalId: Mapping
       version: '{{version}}'
       type: view

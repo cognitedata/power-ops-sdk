@@ -6,7 +6,7 @@ filter:
   - hasData:
     - type: container
       space: '{{powerops_models}}'
-      externalId: MultiScenarioMatrix
+      externalId: BidMatrix
   - equals:
       property:
       - node
@@ -17,7 +17,7 @@ filter:
       - node
       - type
       value:
-        externalId: DayAheadMultiScenarioMatrixRaw
+        externalId: DayAheadMultiScenarioMatrix
         space: '{{powerops_type_space}}'
   - equals:
       property:
@@ -27,7 +27,7 @@ filter:
       value: 'false'
 implements:
 - space: '{{powerops_models}}'
-  externalId: BidMatrix
+  externalId: BidMatrixRaw
   version: '{{version}}'
   type: view
 version: '{{version}}'

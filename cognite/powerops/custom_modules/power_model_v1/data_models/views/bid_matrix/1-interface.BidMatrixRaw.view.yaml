@@ -1,0 +1,29 @@
+space: '{{powerops_models}}'
+externalId: BidMatrixRaw
+name: BidMatrixRaw
+description: The output of a bid matrix calculation. isProcessed property defines
+  if the bidmatrix is raw or has been post-processed
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: '{{powerops_models}}'
+          externalId: BidMatrix
+    - equals:
+        property:
+          - node
+          - space
+        value: '{{powerops_instance_space}}'
+    - equals:
+        property:
+        - '{{powerops_models}}'
+        - BidMatrix
+        - isProcessed
+        value: 'false'
+implements:
+- space: '{{powerops_models}}'
+  externalId: BidMatrix
+  version: '{{version}}'
+  type: view
+version: '{{version}}'
+properties: {}

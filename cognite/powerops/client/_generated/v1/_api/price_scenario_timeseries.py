@@ -12,7 +12,7 @@ from cognite.client.data_classes.datapoints import Aggregate
 from cognite.powerops.client._generated.v1.data_classes._price_scenario import _create_price_scenario_filter
 from ._core import DEFAULT_LIMIT_READ, INSTANCE_QUERY_LIMIT
 
-ColumnNames = Literal["name", "timeseries", "retrieve", "aggregation"]
+ColumnNames = Literal["name", "timeseries"]
 
 
 class PriceScenarioTimeseriesQuery:
@@ -361,10 +361,6 @@ class PriceScenarioTimeseriesAPI:
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        retrieve: str | list[str] | None = None,
-        retrieve_prefix: str | None = None,
-        aggregation: str | list[str] | None = None,
-        aggregation_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -375,10 +371,6 @@ class PriceScenarioTimeseriesAPI:
         Args:
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            retrieve: The retrieve to filter on.
-            retrieve_prefix: The prefix of the retrieve to filter on.
-            aggregation: The aggregation to filter on.
-            aggregation_prefix: The prefix of the aggregation to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of price scenarios to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -401,10 +393,6 @@ class PriceScenarioTimeseriesAPI:
             self._view_id,
             name,
             name_prefix,
-            retrieve,
-            retrieve_prefix,
-            aggregation,
-            aggregation_prefix,
             external_id_prefix,
             space,
             filter,
@@ -421,10 +409,6 @@ class PriceScenarioTimeseriesAPI:
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        retrieve: str | list[str] | None = None,
-        retrieve_prefix: str | None = None,
-        aggregation: str | list[str] | None = None,
-        aggregation_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int = DEFAULT_LIMIT_READ,
@@ -435,10 +419,6 @@ class PriceScenarioTimeseriesAPI:
         Args:
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            retrieve: The retrieve to filter on.
-            retrieve_prefix: The prefix of the retrieve to filter on.
-            aggregation: The aggregation to filter on.
-            aggregation_prefix: The prefix of the aggregation to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of price scenarios to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -460,10 +440,6 @@ class PriceScenarioTimeseriesAPI:
             self._view_id,
             name,
             name_prefix,
-            retrieve,
-            retrieve_prefix,
-            aggregation,
-            aggregation_prefix,
             external_id_prefix,
             space,
             filter,

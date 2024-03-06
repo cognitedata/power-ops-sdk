@@ -7,7 +7,7 @@ filter:
   - hasData:
     - type: container
       space: '{{powerops_models}}'
-      externalId: Watercourse
+      externalId: Asset
   - equals:
       property:
       - node
@@ -18,7 +18,7 @@ filter:
       - node
       - type
       value:
-        externalId: Watercourse
+        externalId: WatercourseShop
         space: '{{powerops_type_space}}'
 implements:
 - space: '{{powerops_models}}'

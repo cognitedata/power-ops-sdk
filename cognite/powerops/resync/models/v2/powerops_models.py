@@ -219,17 +219,19 @@ class DataModelLoader:
         for filepath in self._source_dir.glob("**/*.yaml"):
             if filepath.name == "_build_environment.yaml":
                 continue
-            if match := re.match(r".*(?P<type>(space|view|container|node|datamodel))\.yaml$", filepath.name):
+            if match := re.match(r".*(?P<type>(space|view|container|powerops_nodes|datamodel))\.yaml$", filepath.name):
                 type_ = match.group("type")
+                if type_ == "powerops_nodes":
+                    type_ = "node"
                 resource_cls = resource_cls_by_type[type_]
                 loaded = self._load_file(filepath)
                 try:
                     if isinstance(loaded, list):
                         parsed = [resource_cls.load(item) for item in loaded]
-                        resources_by_type[match.group("type")].extend(parsed)
+                        resources_by_type[type_].extend(parsed)
                     else:
                         parsed = resource_cls.load(loaded)
-                        resources_by_type[match.group("type")].append(parsed)
+                        resources_by_type[type_].append(parsed)
                 except Exception as exc:
                     failed.append((filepath, str(exc)))
             else:
@@ -266,6 +268,7 @@ class DataModelLoader:
         referred_views = defaultdict(list)
         referred_containers = defaultdict(list)
         referred_node_types = defaultdict(list)
+        duplicated_views_by_model: dict[DataModelId, list[ViewId]] = {}
         double_referenced_container_properties: dict[ViewId, list] = defaultdict(list)
         view_missing_filters = []
         direct_relation_missing_source = []
@@ -368,6 +371,15 @@ class DataModelLoader:
             referred_spaces[data_model.space].append(data_model.as_id())
             for view in data_model.views:
                 referred_views[view].append(data_model.as_id())
+
+            counted = Counter(view if isinstance(view, ViewId) else view.as_id() for view in data_model.views)
+            duplicate_views = [view for view, count in counted.items() if count > 1]
+            if duplicate_views:
+                duplicated_views_by_model[data_model.as_id()] = duplicate_views
+
+        if duplicated_views_by_model:
+            message = "\n".join(f"{model_id}: {views}" for model_id, views in duplicated_views_by_model.items())
+            raise ValueError(f"Duplicate views in data models:\n{message}")
 
         if undefined_spaces := set(referred_spaces).difference(defined_spaces):
             referred_to_by = list(itertools.chain(*(referred_spaces[space] for space in undefined_spaces)))

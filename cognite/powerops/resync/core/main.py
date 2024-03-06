@@ -16,9 +16,9 @@ from click.core import Command
 from cognite.client import CogniteClient
 from cognite.client.data_classes.data_modeling import DataModelId, MappedProperty, ViewList
 from cognite.client.exceptions import CogniteAPIError
-from cognite_toolkit.cdf_tk.load import DataModelLoader as ToolkitDataModelLoader  # type: ignore[import-untyped]
-from cognite_toolkit.cdf_tk.load import ViewLoader  # type: ignore[import-untyped]  # type: ignore[import-untyped]
-from cognite_toolkit.cdf_tk.utils import CDFToolConfig, calculate_directory_hash  # type: ignore[import-untyped]
+from cognite_toolkit._cdf_tk.load import DataModelLoader as ToolkitDataModelLoader  # type: ignore[import-untyped]
+from cognite_toolkit._cdf_tk.load import ViewLoader  # type: ignore[import-untyped]  # type: ignore[import-untyped]
+from cognite_toolkit._cdf_tk.utils import CDFToolConfig, calculate_directory_hash  # type: ignore[import-untyped]
 from rich import print
 from rich.panel import Panel
 from typer import Context
@@ -39,7 +39,7 @@ from .validation import _clean_relationships
 
 os.environ["SENTRY_ENABLED"] = "false"
 # ruff: noqa: E402
-from cognite_toolkit.cdf import Common, build, deploy  # type: ignore[import-untyped]
+from cognite_toolkit._cdf import Common, build, deploy  # type: ignore[import-untyped]
 
 logger = logging.getLogger(__name__)
 
@@ -110,7 +110,7 @@ def init(client: PowerOpsClient | None, is_dev: bool = False, dry_run: bool = Fa
     logger.info("Validated all powerops data models")
 
     # Nodes should not be deployed, so we remove them from the build folder
-    for node_file in build_folder.glob("data_models/*.node.yaml"):
+    for node_file in build_folder.glob("data_models/*.powerops_nodes.yaml"):
         node_file.unlink()
 
     build_hash = calculate_directory_hash(build_folder)

@@ -13,6 +13,51 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.88.7] - 2024-03-04
+### Added
+* Added the property `Mapping` to the `DayAheadConfiguration` data model.
+
+## [0.88.6] - 2024-02-27
+### Added
+* Added the property `MarketConfiguration` to the `ShopPartialBidCalculationInput` view.
+
+## [0.88.5] - 2024-02-27
+### Changed
+* Instantiating PowerOpsClient.from_client now reads toml settings file and supports overrides with kwargs.
+
+## [0.88.4] - 2024-02-26
+### Fixed
+* Fixed data type for `shop_start` and `shop_end` fields on `Scenario` type.
+
+## [0.88.3] - 2024-02-23
+### Fixed
+* Pygen regen sdk for `PlantShop`
+
+## [0.88.2] - 2024-02-23
+### Fixed
+* Fixed DMS specification for `PlantShop` and `WatercoureShop` types.
+
+## [0.88.1] - 2024-02-22
+### Fixed
+* Restored support for Python up to 3.12.*
+
+## [0.88.0] - 2024-02-21
+### Changed
+* Changed PriceScenarios container to enable view to be more flexible / fit better with frontend
+* Renamed *.nodes.yaml files to *.powerops-nodes.yaml and accomodate for this in resync init
+* Regenerated pygen sdk with new datamodels v1
+* Changed vies for Scenario and SHOPResult to use Mappings view instead of PriceScenario view
+* Upgraded to cdf-tk v.b9
+
+## [0.87.0] - 2024-02-19
+### Added
+* SDK call to fetch the pre-run file for a SHOP run
+
+## [0.86.1] - 2024-02-18
+### Added
+* Several fixes to the new datamodels v1
+* First draft of benchmarking model
+
 ## [0.86.0] - 2024-02-14
 ### Added
 * Several fixes to the new datamodels v1

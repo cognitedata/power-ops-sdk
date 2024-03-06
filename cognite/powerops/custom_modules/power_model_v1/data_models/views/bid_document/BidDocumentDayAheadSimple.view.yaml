@@ -1,0 +1,75 @@
+space: '{{powerops_models}}'
+externalId: BidDocumentDayAheadSimple
+name: BidDocumentDayAheadSimple
+filter:
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: BidDocument
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: BidDocumentDayAhead
+  - equals:
+      property:
+      - node
+      - space
+      value: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: DayAheadBidDocument
+        space: '{{powerops_type_space}}'
+implements: []
+version: '{{version}}'
+properties:
+  priceArea:
+    container:
+      space: '{{powerops_models}}'
+      externalId: BidDocument
+      type: container
+    containerPropertyIdentifier: priceArea
+    name: priceArea
+    source:
+      space: '{{powerops_models}}'
+      externalId: PriceAreaDayAhead
+      version: '{{version}}'
+      type: view
+  method:
+    container:
+      space: '{{powerops_models}}'
+      externalId: BidDocumentDayAhead
+      type: container
+    containerPropertyIdentifier: method
+    name: method
+    source:
+      space: '{{powerops_models}}'
+      externalId: BidMethodDayAhead
+      version: '{{version}}'
+      type: view
+  total:
+    container:
+      space: '{{powerops_models}}'
+      externalId: BidDocumentDayAhead
+      type: container
+    containerPropertyIdentifier: total
+    name: total
+    source:
+      space: '{{powerops_models}}'
+      externalId: BidMatrix
+      version: '{{version}}'
+      type: view
+  partials:
+    type:
+      space: '{{powerops_type_space}}'
+      externalId: partialBid
+    source:
+      space: '{{powerops_models}}'
+      externalId: BidMatrix
+      version: '{{version}}'
+      type: view
+    direction: outwards
+    name: partials
+    connectionType: multi_edge_connection

@@ -60,9 +60,7 @@ class PriceAreaAsset(PriceArea):
         watercourses: An array of associated watercourses.
     """
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types", "PriceAreaAsset"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types", "PriceArea")
     plants: Union[list[Plant], list[str], None] = Field(default=None, repr=False)
     watercourses: Union[list[Watercourse], list[str], None] = Field(default=None, repr=False)
 
@@ -106,9 +104,7 @@ class PriceAreaAssetWrite(PriceAreaWrite):
         watercourses: An array of associated watercourses.
     """
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types", "PriceAreaAsset"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types", "PriceArea")
     plants: Union[list[PlantWrite], list[str], None] = Field(default=None, repr=False)
     watercourses: Union[list[WatercourseWrite], list[str], None] = Field(default=None, repr=False)
 

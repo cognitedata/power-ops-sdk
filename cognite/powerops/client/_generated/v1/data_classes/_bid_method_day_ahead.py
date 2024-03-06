@@ -20,7 +20,7 @@ from ._core import (
 from ._bid_method import BidMethod, BidMethodWrite
 
 if TYPE_CHECKING:
-    from ._price_scenario import PriceScenario, PriceScenarioWrite
+    from ._mapping import Mapping, MappingWrite
 
 
 __all__ = [
@@ -56,10 +56,8 @@ class BidMethodDayAhead(BidMethod):
         main_scenario: The main scenario to use when running the bid method
     """
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types", "BidMethodDayAhead"
-    )
-    main_scenario: Union[PriceScenario, str, dm.NodeId, None] = Field(None, repr=False, alias="mainScenario")
+    node_type: Union[dm.DirectRelationReference, None] = None
+    main_scenario: Union[Mapping, str, dm.NodeId, None] = Field(None, repr=False, alias="mainScenario")
 
     def as_write(self) -> BidMethodDayAheadWrite:
         """Convert this read version of bid method day ahead to the writing version."""
@@ -96,10 +94,8 @@ class BidMethodDayAheadWrite(BidMethodWrite):
         main_scenario: The main scenario to use when running the bid method
     """
 
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types", "BidMethodDayAhead"
-    )
-    main_scenario: Union[PriceScenarioWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="mainScenario")
+    node_type: Union[dm.DirectRelationReference, None] = None
+    main_scenario: Union[MappingWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="mainScenario")
 
     def _to_instances_write(
         self,

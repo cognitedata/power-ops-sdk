@@ -77,7 +77,7 @@ _SCENARIO_PROPERTIES_BY_FIELD = {
 }
 
 
-class Scenario(DomainModel):
+class Scenario(DomainModel, protected_namespaces=()):
     """This represents the reading version of scenario.
 
     It is used to when data is retrieved from CDF.
@@ -113,8 +113,8 @@ class Scenario(DomainModel):
     source: Optional[str] = None
     shop_start_specification: Optional[str] = Field(None, alias="shopStartSpecification")
     shop_end_specification: Optional[str] = Field(None, alias="shopEndSpecification")
-    shop_start: Optional[datetime.date] = Field(None, alias="shopStart")
-    shop_end: Optional[datetime.date] = Field(None, alias="shopEnd")
+    shop_start: Optional[datetime.datetime] = Field(None, alias="shopStart")
+    shop_end: Optional[datetime.datetime] = Field(None, alias="shopEnd")
     bid_date: Optional[datetime.date] = Field(None, alias="bidDate")
     is_ready: Optional[bool] = Field(None, alias="isReady")
     mappings_override: Union[list[Mapping], list[str], None] = Field(default=None, repr=False, alias="mappingsOverride")
@@ -156,7 +156,7 @@ class Scenario(DomainModel):
         return self.as_write()
 
 
-class ScenarioWrite(DomainModelWrite):
+class ScenarioWrite(DomainModelWrite, protected_namespaces=()):
     """This represents the writing version of scenario.
 
     It is used to when data is sent to CDF.
@@ -192,8 +192,8 @@ class ScenarioWrite(DomainModelWrite):
     source: Optional[str] = None
     shop_start_specification: Optional[str] = Field(None, alias="shopStartSpecification")
     shop_end_specification: Optional[str] = Field(None, alias="shopEndSpecification")
-    shop_start: Optional[datetime.date] = Field(None, alias="shopStart")
-    shop_end: Optional[datetime.date] = Field(None, alias="shopEnd")
+    shop_start: Optional[datetime.datetime] = Field(None, alias="shopStart")
+    shop_end: Optional[datetime.datetime] = Field(None, alias="shopEnd")
     bid_date: Optional[datetime.date] = Field(None, alias="bidDate")
     is_ready: Optional[bool] = Field(None, alias="isReady")
     mappings_override: Union[list[MappingWrite], list[str], None] = Field(
@@ -247,10 +247,10 @@ class ScenarioWrite(DomainModelWrite):
             properties["shopEndSpecification"] = self.shop_end_specification
 
         if self.shop_start is not None or write_none:
-            properties["shopStart"] = self.shop_start.isoformat() if self.shop_start else None
+            properties["shopStart"] = self.shop_start.isoformat(timespec="milliseconds") if self.shop_start else None
 
         if self.shop_end is not None or write_none:
-            properties["shopEnd"] = self.shop_end.isoformat() if self.shop_end else None
+            properties["shopEnd"] = self.shop_end.isoformat(timespec="milliseconds") if self.shop_end else None
 
         if self.bid_date is not None or write_none:
             properties["bidDate"] = self.bid_date.isoformat() if self.bid_date else None
@@ -345,10 +345,10 @@ def _create_scenario_filter(
     shop_start_specification_prefix: str | None = None,
     shop_end_specification: str | list[str] | None = None,
     shop_end_specification_prefix: str | None = None,
-    min_shop_start: datetime.date | None = None,
-    max_shop_start: datetime.date | None = None,
-    min_shop_end: datetime.date | None = None,
-    max_shop_end: datetime.date | None = None,
+    min_shop_start: datetime.datetime | None = None,
+    max_shop_start: datetime.datetime | None = None,
+    min_shop_end: datetime.datetime | None = None,
+    max_shop_end: datetime.datetime | None = None,
     min_bid_date: datetime.date | None = None,
     max_bid_date: datetime.date | None = None,
     is_ready: bool | None = None,
@@ -427,16 +427,16 @@ def _create_scenario_filter(
         filters.append(
             dm.filters.Range(
                 view_id.as_property_ref("shopStart"),
-                gte=min_shop_start.isoformat() if min_shop_start else None,
-                lte=max_shop_start.isoformat() if max_shop_start else None,
+                gte=min_shop_start.isoformat(timespec="milliseconds") if min_shop_start else None,
+                lte=max_shop_start.isoformat(timespec="milliseconds") if max_shop_start else None,
             )
         )
     if min_shop_end is not None or max_shop_end is not None:
         filters.append(
             dm.filters.Range(
                 view_id.as_property_ref("shopEnd"),
-                gte=min_shop_end.isoformat() if min_shop_end else None,
-                lte=max_shop_end.isoformat() if max_shop_end else None,
+                gte=min_shop_end.isoformat(timespec="milliseconds") if min_shop_end else None,
+                lte=max_shop_end.isoformat(timespec="milliseconds") if max_shop_end else None,
             )
         )
     if min_bid_date is not None or max_bid_date is not None:

@@ -45,9 +45,7 @@ class BidConfiguration(DomainModel):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types", "BidConfiguration"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = None
     market_configuration: Union[MarketConfiguration, str, dm.NodeId, None] = Field(
         None, repr=False, alias="marketConfiguration"
     )
@@ -88,9 +86,7 @@ class BidConfigurationWrite(DomainModelWrite):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
-        "sp_powerops_types", "BidConfiguration"
-    )
+    node_type: Union[dm.DirectRelationReference, None] = None
     market_configuration: Union[MarketConfigurationWrite, str, dm.NodeId, None] = Field(
         None, repr=False, alias="marketConfiguration"
     )

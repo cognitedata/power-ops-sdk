@@ -64,7 +64,7 @@ class BidMatrix(DomainModel):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types", "BidMatrix")
+    node_type: Union[dm.DirectRelationReference, None] = None
     resource_cost: Optional[str] = Field(None, alias="resourceCost")
     matrix: Union[str, None] = None
     asset_type: Optional[str] = Field(None, alias="assetType")
@@ -114,7 +114,7 @@ class BidMatrixWrite(DomainModelWrite):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types", "BidMatrix")
+    node_type: Union[dm.DirectRelationReference, None] = None
     resource_cost: Optional[str] = Field(None, alias="resourceCost")
     matrix: Union[str, None] = None
     asset_type: Optional[str] = Field(None, alias="assetType")
