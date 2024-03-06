@@ -75,3 +75,4 @@ When using the `cognite-toolkit` you have to build the configurations first and 
     cdf-tk deploy --drop-data --drop --env=dev
     ```
 5. Verify in the UI (https://cog-power-ops.fusion.cognite.com/power-ops-staging/?cluster=bluefield.cognitedata.com&env=bluefield -> Data Models) that the changes are as expected.
+6. Follow the steps from point 7 on from above, where you post in #powerops-backend channel, execute `pygen_generate_clients.py`, etc.
