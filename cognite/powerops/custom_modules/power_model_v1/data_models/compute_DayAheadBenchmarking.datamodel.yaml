@@ -41,7 +41,7 @@ views:
   version: '{{version}}'
   type: view
 - space: '{{powerops_models}}'
-  externalId: PriceScenario
+  externalId: Scenario
   version: '{{version}}'
   type: view
 - space: '{{powerops_models}}'

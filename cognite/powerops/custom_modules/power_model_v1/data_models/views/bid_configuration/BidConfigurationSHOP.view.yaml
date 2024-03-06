@@ -27,6 +27,14 @@ implements:
   type: view
 version: '{{version}}'
 properties:
+  name:
+    container:
+      space: '{{powerops_models}}'
+      externalId: BidConfiguration
+      type: container
+    containerPropertyIdentifier: name
+    name: name
+    description: The name of the bid configuration
   method:
     container:
       space: '{{powerops_models}}'

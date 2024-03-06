@@ -1,8 +1,7 @@
 space: '{{powerops_models}}'
-externalId: ScenarioBase
-name: ScenarioBase
-description: SHOP scenario that holds all data needed for a shop run. May be unprocessed
-  or processed
+externalId: Scenario
+name: Scenario
+description: The Scenario to run shop with
 filter:
   and:
   - hasData:
@@ -25,14 +24,6 @@ properties:
     containerPropertyIdentifier: name
     name: name
     description: The name of the scenario to run
-  shopVersion:
-    container:
-      space: '{{powerops_models}}'
-      externalId: Scenario
-      type: container
-    containerPropertyIdentifier: shopVersion
-    name: shopVersion
-    description: The shop version to use when running the scenario
   modelTemplate:
     container:
       space: '{{powerops_models}}'
@@ -78,54 +69,6 @@ properties:
     containerPropertyIdentifier: source
     name: source
     description: The source of the scenario
-  shopStartSpecification:
-    container:
-      space: '{{powerops_models}}'
-      externalId: Scenario
-      type: container
-    containerPropertyIdentifier: shopStartSpecification
-    name: shopStartSpecification
-    description: The shop start specification
-  shopEndSpecification:
-    container:
-      space: '{{powerops_models}}'
-      externalId: Scenario
-      type: container
-    containerPropertyIdentifier: shopEndSpecification
-    name: shopEndSpecification
-    description: The shop end specification
-  shopStart:
-    container:
-      space: '{{powerops_models}}'
-      externalId: Scenario
-      type: container
-    containerPropertyIdentifier: shopStartTimestamp
-    name: shopStart
-    description: The shop start time
-  shopEnd:
-    container:
-      space: '{{powerops_models}}'
-      externalId: Scenario
-      type: container
-    containerPropertyIdentifier: shopEndTimestamp
-    name: shopEnd
-    description: The shop end time
-  bidDate:
-    container:
-      space: '{{powerops_models}}'
-      externalId: Scenario
-      type: container
-    containerPropertyIdentifier: bidDate
-    name: bidDate
-    description: The bid date of the scenario
-  isReady:
-    container:
-      space: '{{powerops_models}}'
-      externalId: Scenario
-      type: container
-    containerPropertyIdentifier: isReady
-    name: isReady
-    description: Whether the scenario is ready to be run
   mappingsOverride:
     type:
       space: '{{powerops_type_space}}'

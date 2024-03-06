@@ -26,16 +26,40 @@ implements:
   type: view
 version: '{{version}}'
 properties:
-  priceScenarios:
+  scenarios:
     type:
       space: '{{powerops_type_space}}'
-      externalId: BidMethodDayahead.priceScenarios
+      externalId: BidMethodDayahead.scenarios
     source:
       space: '{{powerops_models}}'
-      externalId: Mapping
+      externalId: Scenario
       version: '{{version}}'
       type: view
     direction: outwards
-    name: priceScenarios
-    description: The price scenarios to use in the shop run
+    name: scenarios
+    description: The scenarios to run this bid method with (includes incremental mappings and base mappings)
     connectionType: multi_edge_connection
+  shopStartSpecification:
+    container:
+      space: '{{powerops_models}}'
+      externalId: BidMethod
+      type: container
+    containerPropertyIdentifier: shopStartSpecification
+    name: shopStartSpecification
+    description: The shop start specification
+  shopEndSpecification:
+    container:
+      space: '{{powerops_models}}'
+      externalId: BidMethod
+      type: container
+    containerPropertyIdentifier: shopEndSpecification
+    name: shopEndSpecification
+    description: The shop end specification
+  shopBidDateSpecification:
+    container:
+      space: '{{powerops_models}}'
+      externalId: BidMethod
+      type: container
+    containerPropertyIdentifier: shopBidDateSpecification
+    name: shopBidDateSpecification
+    description: The shop bid date specification

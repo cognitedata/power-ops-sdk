@@ -44,15 +44,7 @@ views:
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
-- externalId: PriceScenario
-  space: '{{powerops_models}}'
-  type: view
-  version: '{{version}}'
 - externalId: Alert
-  space: '{{powerops_models}}'
-  type: view
-  version: '{{version}}'
-- externalId: SHOPResult
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
@@ -69,6 +61,10 @@ views:
   type: view
   version: '{{version}}'
 - externalId: WatercourseShop
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: PriceProdScenario
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'

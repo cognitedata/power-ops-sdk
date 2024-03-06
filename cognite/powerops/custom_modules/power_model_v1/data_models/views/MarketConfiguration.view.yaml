@@ -23,6 +23,14 @@ filter:
 implements: []
 version: '{{version}}'
 properties:
+  name:
+    container:
+      space: '{{powerops_models}}'
+      externalId: MarketConfiguration
+      type: container
+    containerPropertyIdentifier: name
+    name: name
+    description: The name of the market
   marketType:
     container:
       space: '{{powerops_models}}'

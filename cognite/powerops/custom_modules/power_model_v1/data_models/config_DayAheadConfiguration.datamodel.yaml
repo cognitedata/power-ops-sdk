@@ -20,7 +20,19 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: PriceScenario
+  - externalId: Scenario
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: Mapping
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: Case
+    space: '{{powerops_models}}'
+    type: view
+    version: '{{version}}'
+  - externalId: ModelTemplate
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
@@ -73,10 +85,6 @@ views:
     type: view
     version: "{{version}}"
   - externalId: BidMethod
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: Mapping
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"

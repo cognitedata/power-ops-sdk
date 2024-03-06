@@ -44,16 +44,16 @@ properties:
       externalId: BidMethodSHOPMultiScenario
       version: '{{version}}'
       type: view
-  shopResults:
+  scenarioResults:
     type:
       space: '{{powerops_type_space}}'
-      externalId: MultiScenarioMatrix.shopResults
+      externalId: PriceProdScenario
     source:
       space: '{{powerops_models}}'
-      externalId: SHOPResult
+      externalId: PriceProdScenario
       version: '{{version}}'
       type: view
     direction: outwards
-    name: shopResults
-    description: An array of results, one for each scenario.
-    connectionType: multi_edge_connection
+    name: scenarioResults
+    description: An array of price/prod pairs, one for each scenario - this is needed for the frontend # TODO: might revise this and use SHOPResultsProdPrice type instead?
+    connectionType: multiEdgeConnection

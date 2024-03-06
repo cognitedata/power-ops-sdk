@@ -34,7 +34,7 @@ properties:
       type: container
     containerPropertyIdentifier: direct1
     name: plant
-    description: The plant to calculate the partial bid for
+    description: The plant to calculate the partial bid for. Extract price/prod timeseries from Shop Results
     source:
       space: '{{powerops_models}}'
       externalId: PlantShop
@@ -43,28 +43,15 @@ properties:
   shopResults:
     type:
       space: '{{powerops_type_space}}'
-      externalId: SHOPResult
+      externalId: SHOPResultPriceProd
     source:
       space: '{{powerops_models}}'
-      externalId: SHOPResult
+      externalId: SHOPResultPriceProd
       version: '{{version}}'
       type: view
     direction: outwards
     name: shopResults
-    description: An array of shop results.
-    connectionType: multi_edge_connection
-  alerts:
-    type:
-      space: '{{powerops_type_space}}'
-      externalId: calculationIssue
-    source:
-      space: '{{powerops_models}}'
-      externalId: Alert
-      version: '{{version}}'
-      type: view
-    direction: outwards
-    name: alerts
-    description: An array of calculation level Alerts.
+    description: An array of shop results with price/prod timeserires pairs for all plants included in the respective shop scenario
     connectionType: multi_edge_connection
   marketConfiguration:
     container:

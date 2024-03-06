@@ -19,6 +19,34 @@ properties:
     autoIncrement: false
     name: mainScenario
     description: The main scenario to use when running the bid method
+  # Shop related as optional properties
+  shopStartSpecification:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: name
+    description: The dynamic shop start specification
+  shopEndSpecification:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: name
+    description: The dynamic shop end specification
+  shopBidDateSpecification:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: name
+    description: The dynamic bid date specification
 indexes:
   name:
     properties:

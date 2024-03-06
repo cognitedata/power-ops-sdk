@@ -1,0 +1,45 @@
+space: '{{powerops_models}}'
+externalId: SHOPResultPriceProd
+name: SHOPResultPriceProd
+description: A shop result type that extends the generic shop result with a direct link to the price and production time series
+filter:
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: SHOPResult
+  - equals:
+      property:
+      - node
+      - space
+      value: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: SHOPResultPriceProd
+        space: '{{powerops_type_space}}'
+implements:
+- space: '{{powerops_models}}'
+  externalId: SHOPResult
+  version: '{{version}}'
+  type: view
+version: '{{version}}'
+properties:
+  priceTimeseries:
+    container:
+      space: '{{powerops_models}}'
+      externalId: SHOPResult
+      type: container
+    containerPropertyIdentifier: tsDirect1
+    name: tsDirect1
+    description: The market price timeseries from the Shop run
+  productionTimeseries:
+    container:
+      space: '{{powerops_models}}'
+      externalId: SHOPResult
+      type: container
+    containerPropertyIdentifier: tsDirectList1
+    name: tsDirectList1
+    description: The production timeseries for each plant included in the Scenario from the Shop run

@@ -23,14 +23,14 @@ filter:
 implements: []
 version: '{{version}}'
 properties:
-  cogShopVersion:
+  version:
     container:
       space: '{{powerops_models}}'
       externalId: ModelTemplate
       type: container
-    containerPropertyIdentifier: cogShopVersion
-    name: cogShopVersion
-    description: The tag of the cogshop image to run
+    containerPropertyIdentifier: version
+    name: version
+    description: The version of the model
   shopVersion:
     container:
       space: '{{powerops_models}}'

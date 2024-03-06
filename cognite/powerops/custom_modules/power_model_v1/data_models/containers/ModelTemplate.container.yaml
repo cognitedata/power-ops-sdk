@@ -3,15 +3,15 @@ externalId: ModelTemplate
 name: ModelTemplate
 usedFor: node
 properties:
-  cogShopVersion:
+  version:
     type:
       list: false
       collation: ucs_basic
       type: text
-    nullable: false
+    nullable: true
     autoIncrement: false
-    name: cogShopVersion
-    description: The tag of the cogshop image to run
+    name: version
+    description: The version of the model file (in case  of multiple versions of the same model file)
   shopVersion:
     type:
       list: false

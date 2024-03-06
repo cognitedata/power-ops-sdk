@@ -27,17 +27,17 @@ implements:
   type: view
 version: '{{version}}'
 properties:
-  scenario:
+  case:
     container:
       space: '{{powerops_models}}'
       externalId: FunctionData
       type: container
     containerPropertyIdentifier: direct1
-    name: scenario
-    description: The prepped and processed scenario to send to shop trigger
+    name: case
+    description: The Case to trigger shop with
     source:
       space: '{{powerops_models}}'
-      externalId: Scenario
+      externalId: Case
       version: '{{version}}'
       type: view
   input:

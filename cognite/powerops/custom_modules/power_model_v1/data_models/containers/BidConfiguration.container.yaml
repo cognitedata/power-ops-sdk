@@ -3,6 +3,14 @@ externalId: BidConfiguration
 name: BidConfiguration
 usedFor: node
 properties:
+  name:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: name
   method:
     type:
       type: direct # points to BidMethod container

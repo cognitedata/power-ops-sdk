@@ -1,13 +1,13 @@
 space: '{{powerops_models}}'
-externalId: PreprocessorInput
-name: PreprocessorInput
-description: Input to the task dispatcher in the shop bid process
+externalId: Case
+name: Case
+description: A case that links a Scenario and shop dates to run shop with
 filter:
   and:
   - hasData:
     - type: container
       space: '{{powerops_models}}'
-      externalId: FunctionData
+      externalId: Case
   - equals:
       property:
       - node
@@ -18,41 +18,37 @@ filter:
       - node
       - type
       value:
-        externalId: PreprocessorInput
+        externalId: Case
         space: '{{powerops_type_space}}'
-implements:
-- space: '{{powerops_models}}'
-  externalId: FunctionInput
-  version: '{{version}}'
-  type: view
+implements: []
 version: '{{version}}'
 properties:
   scenario:
     container:
       space: '{{powerops_models}}'
-      externalId: FunctionData
+      externalId: Case
       type: container
-    containerPropertyIdentifier: direct1
+    containerPropertyIdentifier: scenario
     name: scenario
-    description: The scenario to run shop with
+    description: The Shop scenario that was used to produce this result
     source:
       space: '{{powerops_models}}'
       externalId: Scenario
       version: '{{version}}'
       type: view
-  shopStart:
+  startTime:
     container:
       space: '{{powerops_models}}'
-      externalId: FunctionData
+      externalId: Case
       type: container
-    containerPropertyIdentifier: date1
-    name: shopStart
-    description: Start date of bid period
-  shopEnd:
+    containerPropertyIdentifier: startTime
+    name: startTime
+    description: The start time of the case
+  endTime:
     container:
       space: '{{powerops_models}}'
-      externalId: FunctionData
+      externalId: Case
       type: container
-    containerPropertyIdentifier: date2
-    name: shopEnd
-    description: End date of bid period
+    containerPropertyIdentifier: endTime
+    name: endTime
+    description: The end time of the case
