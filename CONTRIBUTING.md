@@ -61,7 +61,7 @@ SENTRY_ENABLED=false
 
 When using the `cognite-toolkit` you have to build the configurations first and then deploy/clean them.
 
-1. Do the changes to the .yaml files in the `data_models/container` folder, and make sure that there are no undeployed changes in any of the view files.
+1. Do the changes to the .yaml files in the `data_models/container` folder.
 2. Build the configurations and remove existing files in the build directory:
    ```bash
    cdf-tk build cognite/powerops --env dev --clean
@@ -70,9 +70,10 @@ When using the `cognite-toolkit` you have to build the configurations first and 
    ```bash
     cdf-tk deploy --drop-data --drop --env=dev --dry-run
     ```
-4. Deploy the changes:
+4. Post in the development channel `#powerops-backend` that you are about to apply the changes.
+5. Check that nobody else are currently about to do change, then deploy the changes:
    ```bash
     cdf-tk deploy --drop-data --drop --env=dev
     ```
 5. Verify in the UI (https://cog-power-ops.fusion.cognite.com/power-ops-staging/?cluster=bluefield.cognitedata.com&env=bluefield -> Data Models) that the changes are as expected.
-6. Follow the steps from point 7 on from above, where you post in #powerops-backend channel, execute `pygen_generate_clients.py`, etc.
+6. Follow the steps from point 7 on from above, where you post in #powerops-backend channel about the applied changes, execute `pygen_generate_clients.py`, etc.
