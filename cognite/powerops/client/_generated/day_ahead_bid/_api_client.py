@@ -30,8 +30,8 @@ class DayAheadBidAPI:
 
     Generated with:
         pygen = 0.99.11
-        cognite-sdk = 7.20.0
-        pydantic = 2.6.1
+        cognite-sdk = 7.26.0
+        pydantic = 2.6.3
 
     Data Model:
         space: power-ops-day-ahead-bid

@@ -76,3 +76,7 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
+  - externalId: Mapping
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
