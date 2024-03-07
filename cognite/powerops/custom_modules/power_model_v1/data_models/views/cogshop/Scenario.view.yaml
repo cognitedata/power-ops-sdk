@@ -37,14 +37,6 @@ properties:
       externalId: ModelTemplate
       version: '{{version}}'
       type: view
-  modelFile:
-    container:
-      space: '{{powerops_models}}'
-      externalId: Scenario
-      type: container
-    containerPropertyIdentifier: modelFile
-    name: modelFile
-    description: The final model file to use when running the scenario (after modelTemplate is processed)
   commands:
     container:
       space: '{{powerops_models}}'

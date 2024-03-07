@@ -23,27 +23,32 @@ filter:
 implements: []
 version: '{{version}}'
 properties:
-  scenario:
+  case:
     container:
       space: '{{powerops_models}}'
       externalId: SHOPResult
       type: container
-    containerPropertyIdentifier: scenario
-    name: scenario
-    description: The scenario that was used to produce this result
+    containerPropertyIdentifier: case
+    name: case
+    description: The case that was used to produce this result
     source:
       space: '{{powerops_models}}'
-      externalId: Scenario
+      externalId: Case
       version: '{{version}}'
       type: view
   outputTimeseries:
-    container:
+    type:
+      space: '{{powerops_type_space}}'
+      externalId: SHOPResult.outputTimeseries
+    source:
       space: '{{powerops_models}}'
-      externalId: SHOPResult
-      type: container
-    containerPropertyIdentifier: timeseries
+      externalId: SHOPTimeSeries
+      version: '{{version}}'
+      type: view
+    direction: outwards
     name: outputTimeseries
-    description: All the time series outputs from the SHOP run
+    description: An array of the output timeseries from SHOP
+    connectionType: multi_edge_connection
   objectiveSequence:
     container:
       space: '{{powerops_models}}'

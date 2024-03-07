@@ -5,12 +5,12 @@ usedFor: node
 properties:
   timeseries:
     type:
-      list: true
-      type: timeseries
+      list: false
+      type: direct
     nullable: true
     autoIncrement: false
     name: timeseries
-    description: Timeseries from output from shop
+    description: Use this direct relation type to reference several of the SHOPTimeSeries objects
   tsDirect1:
     type:
       list: false
@@ -35,7 +35,7 @@ properties:
     autoIncrement: false
     name: tsDirect3
     description: A timeseries from the shop result (used in more specific extensions of a shop result)
-  tsDirectList1:
+  tsList1:
     type:
       list: true
       type: timeseries
@@ -43,7 +43,7 @@ properties:
     autoIncrement: false
     name: tsDirectList1
     description: A timeseries from the shop result (used in more specific extensions of a shop result)
-  tsDirectList2:
+  tsList2:
     type:
       list: true
       type: timeseries
@@ -83,13 +83,13 @@ properties:
     autoIncrement: false
     name: postRun
     description: The post run file from the shop run
-  scenario:
+  case:
     type:
       list: false
       type: direct
     nullable: true
     autoIncrement: false
-    name: scenario
+    name: case
     description: The scenario that was used to create the shop result
   objectiveSequence:
     type:

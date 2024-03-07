@@ -32,15 +32,15 @@ properties:
       type: container
     containerPropertyIdentifier: tsDirect2
     name: tsDirect2
-  scenario:
+  case:
     container:
       space: '{{powerops_models}}'
       externalId: SHOPResult
       type: container
     source:
         space: '{{powerops_models}}'
-        externalId: Scenario
+        externalId: Case
         version: '{{version}}'
         type: view
-    containerPropertyIdentifier: scenario
-    name: scenario
+    containerPropertyIdentifier: case
+    name: case

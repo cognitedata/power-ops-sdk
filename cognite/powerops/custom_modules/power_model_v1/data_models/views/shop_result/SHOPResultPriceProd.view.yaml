@@ -40,6 +40,6 @@ properties:
       space: '{{powerops_models}}'
       externalId: SHOPResult
       type: container
-    containerPropertyIdentifier: tsDirectList1
-    name: tsDirectList1
+    containerPropertyIdentifier: tsList1
+    name: tsList1
     description: The production timeseries for each plant included in the Scenario from the Shop run

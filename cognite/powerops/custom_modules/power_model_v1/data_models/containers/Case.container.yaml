@@ -17,7 +17,7 @@ properties:
     nullable: true
     autoIncrement: false
     name: startTime
-    description: The time to start the shop
+    description: The start of the optimisation period (for SHOP)
   endTime:
     type:
       list: false
@@ -25,4 +25,4 @@ properties:
     nullable: true
     autoIncrement: false
     name: endTime
-    description: The time to end the shop
+    description: The end of the optimisation period (for SHOP)

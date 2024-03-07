@@ -1,0 +1,57 @@
+space: '{{powerops_models}}'
+externalId: SHOPTimeSeries
+name: SHOPTimeSeries
+description: A wrapper around a timeseries object from the output of a successful SHOP run
+filter:
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: SHOPTimeSeries
+  - equals:
+      property:
+      - node
+      - space
+      value: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: SHOPTimeSeries
+        space: '{{powerops_type_space}}'
+implements: []
+version: '{{version}}'
+properties:
+  objectType:
+    container:
+      space: '{{powerops_models}}'
+      externalId: SHOPTimeSeries
+      type: container
+    containerPropertyIdentifier: objectType
+    name: objectType
+    description: The type of the object
+  objectName:
+    container:
+      space: '{{powerops_models}}'
+      externalId: SHOPTimeSeries
+      type: container
+    containerPropertyIdentifier: objectName
+    name: objectName
+    description: The name of the object
+  attributeName:
+    container:
+      space: '{{powerops_models}}'
+      externalId: SHOPTimeSeries
+      type: container
+    containerPropertyIdentifier: attributeName
+    name: attributeName
+    description: The name of the attribute
+  timeseries:
+    container:
+      space: '{{powerops_models}}'
+      externalId: SHOPTimeSeries
+      type: container
+    containerPropertyIdentifier: timeseries
+    name: timeseries
+    description: Timeseries object from output of SHOP stored as a timeseries in cdf

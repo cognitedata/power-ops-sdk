@@ -100,3 +100,7 @@ views:
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
+- externalId: SHOPTimeSeries
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'

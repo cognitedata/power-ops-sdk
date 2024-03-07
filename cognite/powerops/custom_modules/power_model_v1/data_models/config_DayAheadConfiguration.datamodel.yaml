@@ -28,10 +28,6 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: Case
-    space: '{{powerops_models}}'
-    type: view
-    version: '{{version}}'
   - externalId: ModelTemplate
     space: "{{powerops_models}}"
     type: view
