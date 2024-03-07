@@ -6,6 +6,7 @@ from typing import Any, Literal
 import pandas as pd
 import pytest
 import pytz
+from cognite.client import CogniteClient
 from cognite.client.data_classes import (
     Datapoints,
     TimeSeries,
@@ -366,7 +367,7 @@ STATIC_VALUES_TEST_CASES = [
     "test_case",
     [pytest.param(test_case, id=test_case.case_id) for test_case in STATIC_VALUES_TEST_CASES],
 )
-def test_static_values(cognite_client_mock, test_case: TransformationTestCase):
+def test_static_values(cognite_client_mock: CogniteClient, test_case: TransformationTestCase):
 
     test_case.transformation.pre_apply(
         client=cognite_client_mock, shop_model={}, start=test_case.start_date, end=test_case.start_date
@@ -378,7 +379,7 @@ def test_static_values(cognite_client_mock, test_case: TransformationTestCase):
     pd.testing.assert_series_equal(expected_data, output_data, check_dtype=False, check_freq=False)
 
 
-def test_height_to_volume(cognite_client_mock):
+def test_height_to_volume(cognite_client_mock: CogniteClient):
     heights = [2, 4, 6, 8, 10]
     volumes = [10, 20, 40, 80, 160]
 
@@ -560,7 +561,7 @@ ADD_WATER_TEST_CASES = [
     "test_case",
     [pytest.param(test_case, id=test_case.case_id) for test_case in ADD_WATER_TEST_CASES],
 )
-def test_add_water_in_transit(cognite_client_mock, test_case):
+def test_add_water_in_transit(cognite_client_mock: CogniteClient, test_case: AddWaterInTransitTestCase):
 
     with pytest.raises(test_case.error) if test_case.error else nullcontext():
         transformation = AddWaterInTransit(
@@ -583,10 +584,9 @@ def test_add_water_in_transit(cognite_client_mock, test_case):
         )
         inflow_input_data = (pd.Series(test_case.inflow_values, index=inflow_times),)
 
-        start_time_ms = test_case.shop_start_time.replace(tzinfo=timezone.utc).timestamp() * 1000
-        if not test_case.end_time:
-            test_case.end_time = inflow_times[-1]
-        end_time_ms = test_case.end_time.replace(tzinfo=timezone.utc).timestamp() * 1000
+        start_time_ms = int(test_case.shop_start_time.replace(tzinfo=timezone.utc).timestamp() * 1000)
+        end_time = test_case.end_time if test_case.end_time else inflow_times[-1]
+        end_time_ms = int(end_time.replace(tzinfo=timezone.utc).timestamp() * 1000)
 
         if test_case.model:
             model = test_case.model
@@ -617,7 +617,7 @@ def test_add_water_in_transit(cognite_client_mock, test_case):
 
         if test_case.expected_values:
             expected_timestamps = pd.date_range(
-                start=test_case.shop_start_time, end=test_case.end_time, inclusive=test_case.end_inclusive, freq="1h"
+                start=test_case.shop_start_time, end=end_time, inclusive=test_case.end_inclusive, freq="1h"
             )
             expected_data = (
                 pd.Series(test_case.expected_values, index=expected_timestamps[: len(test_case.expected_values)])
