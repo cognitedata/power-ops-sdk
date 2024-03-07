@@ -31,9 +31,7 @@ __all__ = [
 ]
 
 
-MarketConfigurationTextFields = Literal[
-    "market_type", "time_zone", "price_unit", "price_steps", "tick_size", "time_unit", "trade_lot"
-]
+MarketConfigurationTextFields = Literal["market_type", "time_zone", "price_unit", "time_unit"]
 MarketConfigurationFields = Literal[
     "market_type",
     "max_price",
@@ -88,10 +86,10 @@ class MarketConfiguration(DomainModel):
     min_price: float = Field(alias="minPrice")
     time_zone: str = Field(alias="timeZone")
     price_unit: str = Field(alias="priceUnit")
-    price_steps: str = Field(alias="priceSteps")
-    tick_size: str = Field(alias="tickSize")
+    price_steps: float = Field(alias="priceSteps")
+    tick_size: float = Field(alias="tickSize")
     time_unit: str = Field(alias="timeUnit")
-    trade_lot: str = Field(alias="tradeLot")
+    trade_lot: int = Field(alias="tradeLot")
 
     def as_write(self) -> MarketConfigurationWrite:
         """Convert this read version of market configuration to the writing version."""
@@ -149,10 +147,10 @@ class MarketConfigurationWrite(DomainModelWrite):
     min_price: float = Field(alias="minPrice")
     time_zone: str = Field(alias="timeZone")
     price_unit: str = Field(alias="priceUnit")
-    price_steps: str = Field(alias="priceSteps")
-    tick_size: str = Field(alias="tickSize")
+    price_steps: float = Field(alias="priceSteps")
+    tick_size: float = Field(alias="tickSize")
     time_unit: str = Field(alias="timeUnit")
-    trade_lot: str = Field(alias="tradeLot")
+    trade_lot: int = Field(alias="tradeLot")
 
     def _to_instances_write(
         self,
@@ -268,14 +266,14 @@ def _create_market_configuration_filter(
     time_zone_prefix: str | None = None,
     price_unit: str | list[str] | None = None,
     price_unit_prefix: str | None = None,
-    price_steps: str | list[str] | None = None,
-    price_steps_prefix: str | None = None,
-    tick_size: str | list[str] | None = None,
-    tick_size_prefix: str | None = None,
+    min_price_steps: float | None = None,
+    max_price_steps: float | None = None,
+    min_tick_size: float | None = None,
+    max_tick_size: float | None = None,
     time_unit: str | list[str] | None = None,
     time_unit_prefix: str | None = None,
-    trade_lot: str | list[str] | None = None,
-    trade_lot_prefix: str | None = None,
+    min_trade_lot: int | None = None,
+    max_trade_lot: int | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -303,30 +301,20 @@ def _create_market_configuration_filter(
         filters.append(dm.filters.In(view_id.as_property_ref("priceUnit"), values=price_unit))
     if price_unit_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("priceUnit"), value=price_unit_prefix))
-    if isinstance(price_steps, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("priceSteps"), value=price_steps))
-    if price_steps and isinstance(price_steps, list):
-        filters.append(dm.filters.In(view_id.as_property_ref("priceSteps"), values=price_steps))
-    if price_steps_prefix is not None:
-        filters.append(dm.filters.Prefix(view_id.as_property_ref("priceSteps"), value=price_steps_prefix))
-    if isinstance(tick_size, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("tickSize"), value=tick_size))
-    if tick_size and isinstance(tick_size, list):
-        filters.append(dm.filters.In(view_id.as_property_ref("tickSize"), values=tick_size))
-    if tick_size_prefix is not None:
-        filters.append(dm.filters.Prefix(view_id.as_property_ref("tickSize"), value=tick_size_prefix))
+    if min_price_steps is not None or max_price_steps is not None:
+        filters.append(
+            dm.filters.Range(view_id.as_property_ref("priceSteps"), gte=min_price_steps, lte=max_price_steps)
+        )
+    if min_tick_size is not None or max_tick_size is not None:
+        filters.append(dm.filters.Range(view_id.as_property_ref("tickSize"), gte=min_tick_size, lte=max_tick_size))
     if isinstance(time_unit, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("timeUnit"), value=time_unit))
     if time_unit and isinstance(time_unit, list):
         filters.append(dm.filters.In(view_id.as_property_ref("timeUnit"), values=time_unit))
     if time_unit_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("timeUnit"), value=time_unit_prefix))
-    if isinstance(trade_lot, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("tradeLot"), value=trade_lot))
-    if trade_lot and isinstance(trade_lot, list):
-        filters.append(dm.filters.In(view_id.as_property_ref("tradeLot"), values=trade_lot))
-    if trade_lot_prefix is not None:
-        filters.append(dm.filters.Prefix(view_id.as_property_ref("tradeLot"), value=trade_lot_prefix))
+    if min_trade_lot is not None or max_trade_lot is not None:
+        filters.append(dm.filters.Range(view_id.as_property_ref("tradeLot"), gte=min_trade_lot, lte=max_trade_lot))
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):
