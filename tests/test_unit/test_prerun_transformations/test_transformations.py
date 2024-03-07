@@ -285,7 +285,7 @@ def test_basic_transformations(test_case: TransformationTestCase):
 
     output_data = test_case.transformation.apply(time_series_data=(input_data,))
 
-    assert (output_data == expected_data).all()
+    pd.testing.assert_series_equal(expected_data, output_data, check_dtype=False, check_freq=False)
 
 
 def test_sum_timeseries():
@@ -322,7 +322,7 @@ def test_sum_timeseries():
         transformation = SumTimeseries()
         output_data = transformation.apply(time_series_data=input_data[: length + 1])
 
-        assert (output_data == expected_data).all()
+        pd.testing.assert_series_equal(expected_data, output_data, check_dtype=False, check_freq=False)
 
 
 STATIC_VALUES_TEST_CASES = [
@@ -375,7 +375,7 @@ def test_static_values(cognite_client_mock, test_case: TransformationTestCase):
 
     expected_data = pd.Series(test_case.expected_values, index=test_case.expected_times)
 
-    assert (output_data == expected_data).all()
+    pd.testing.assert_series_equal(expected_data, output_data, check_dtype=False, check_freq=False)
 
 
 def test_height_to_volume(cognite_client_mock):
@@ -405,7 +405,7 @@ def test_height_to_volume(cognite_client_mock):
     expected_values = [10, 20, 40, 60, 160]
     expected_data = pd.Series(expected_values, index=range(1, len(expected_values) + 1))
 
-    assert (output_data == expected_data).all()
+    pd.testing.assert_series_equal(expected_data, output_data, check_dtype=False, check_freq=False)
 
 
 @dataclass
@@ -433,9 +433,11 @@ class AddWaterInTransitTestCase:
 
 
 ADD_WATER_TEST_CASES = [
-    AddWaterInTransitTestCase(case_id="default"),  # uses all the default values from the dataclass
     AddWaterInTransitTestCase(
-        case_id="default_output_as_inflow",
+        case_id="AddWaterInTransitTestCase: default"
+    ),  # uses all the default values from the dataclass
+    AddWaterInTransitTestCase(
+        case_id="AddWaterInTransitTestCase: default output as inflow",
         discharge_shape={"x": [0, 780, 840, 900, 960, 1020, 1080], "y": [0, 0.1, 0.25, 0.3, 0.2, 0.1, 0.05]},
         discharge_values=[3] * 19,
         inflow_values=[7, 13, 13, 7] + [5] * 22,
@@ -443,12 +445,18 @@ ADD_WATER_TEST_CASES = [
         expected_values=[10, 16, 16, 10] + [8] * 9 + [7.7, 6.95, 6.05, 5.45, 5.15] + [5] * 7,
     ),
     AddWaterInTransitTestCase(
-        case_id="no_discharge_applied",
+        case_id="AddWaterInTransitTestCase: no discharge applied",
         discharge_start_time=datetime(year=2022, month=5, day=18, hour=0, tzinfo=None),
         expected_values=[5] * 11,  # same as the default inflow values
     ),
     AddWaterInTransitTestCase(
-        case_id="frequency_2_hours",
+        case_id="AddWaterInTransitTestCase: empty Series",
+        end_time=datetime(year=2022, month=5, day=21, hour=0, tzinfo=None),
+        inflow_values=[],
+        expected_values=[],
+    ),
+    AddWaterInTransitTestCase(
+        case_id="AddWaterInTransitTestCase: frequency 2 hours",
         time_frequency="2h",
         end_time=datetime(year=2022, month=5, day=25, hour=0, tzinfo=None),
         discharge_start_time=datetime(year=2022, month=5, day=19, hour=2, tzinfo=None),
@@ -507,7 +515,7 @@ ADD_WATER_TEST_CASES = [
         ],
     ),
     AddWaterInTransitTestCase(
-        case_id="basic",
+        case_id="AddWaterInTransitTestCase: basic",
         shape_type="shape_discharge",
         discharge_shape={"x": [0, 60, 120, 180], "y": [0, 0.5, 0.3, 0.2]},
         discharge_values=list(range(1, 7)),
@@ -515,7 +523,7 @@ ADD_WATER_TEST_CASES = [
         expected_values=[10.3, 7.8, 6.2] + [5] * 7,
     ),
     AddWaterInTransitTestCase(
-        case_id="time_delay",
+        case_id="AddWaterInTransitTestCase: time delay",
         shape_type="time_delay",
         discharge_shape=180,
         discharge_values=list(range(1, 7)),
@@ -523,13 +531,26 @@ ADD_WATER_TEST_CASES = [
         expected_values=[9, 10, 11] + [5.0] * 7,
     ),
     AddWaterInTransitTestCase(
-        case_id="shape_validation_error", transit_object_type="foo", model={"foo": 0}, error=ValidationError
+        case_id="AddWaterInTransitTestCase: shape validation error",
+        transit_object_type="foo",
+        model={"foo": 0},
+        error=ValidationError,
     ),
-    AddWaterInTransitTestCase(case_id="shape_type_error", model={"gate": 0}, error=TypeError),
-    AddWaterInTransitTestCase(case_id="shape_type_error_2", model={"gate": {"gate1": 0}}, error=TypeError),
-    AddWaterInTransitTestCase(case_id="shape_key_error", model={"gate": {"foo": 0}}, error=KeyError),
-    AddWaterInTransitTestCase(case_id="shape_key_error_2", model={"foo": {"gate1": {"foo": 0}}}, error=KeyError),
-    AddWaterInTransitTestCase(case_id="shape_value_error", model={"gate": {"gate1": {"foo": 0}}}, error=ValueError),
+    AddWaterInTransitTestCase(
+        case_id="AddWaterInTransitTestCase: shape type error", model={"gate": 0}, error=TypeError
+    ),
+    AddWaterInTransitTestCase(
+        case_id="AddWaterInTransitTestCase: shape type error 2", model={"gate": {"gate1": 0}}, error=TypeError
+    ),
+    AddWaterInTransitTestCase(
+        case_id="AddWaterInTransitTestCase: shape key error", model={"gate": {"foo": 0}}, error=KeyError
+    ),
+    AddWaterInTransitTestCase(
+        case_id="AddWaterInTransitTestCase: shape key error 2", model={"foo": {"gate1": {"foo": 0}}}, error=KeyError
+    ),
+    AddWaterInTransitTestCase(
+        case_id="AddWaterInTransitTestCase: shape value error", model={"gate": {"gate1": {"foo": 0}}}, error=ValueError
+    ),
 ]
 
 
@@ -560,7 +581,7 @@ def test_add_water_in_transit(cognite_client_mock, test_case):
         )
         inflow_input_data = (pd.Series(test_case.inflow_values, index=inflow_times),)
 
-        start_time_ms = inflow_times[0].replace(tzinfo=timezone.utc).timestamp() * 1000
+        start_time_ms = test_case.shop_start_time.replace(tzinfo=timezone.utc).timestamp() * 1000
         if not test_case.end_time:
             test_case.end_time = inflow_times[-1]
         end_time_ms = test_case.end_time.replace(tzinfo=timezone.utc).timestamp() * 1000
@@ -592,14 +613,17 @@ def test_add_water_in_transit(cognite_client_mock, test_case):
         output_shape = transformation.shape
         output_data = transformation.apply(inflow_input_data)
 
-        expected_timestamps = pd.date_range(
-            start=test_case.shop_start_time, end=test_case.end_time - timedelta(hours=1), freq="1h"
-        )
-        expected_data = (
-            pd.Series(test_case.expected_values, index=expected_timestamps[: len(test_case.expected_values)])
-            .reindex(expected_timestamps)
-            .ffill()
-        )
+        if test_case.expected_values:
+            expected_timestamps = pd.date_range(
+                start=test_case.shop_start_time, end=test_case.end_time, inclusive="left", freq="1h"
+            )
+            expected_data = (
+                pd.Series(test_case.expected_values, index=expected_timestamps[: len(test_case.expected_values)])
+                .reindex(expected_timestamps)
+                .ffill()
+            )
+        else:
+            expected_data = inflow_input_data[0]
 
-        pd.testing.assert_series_equal(expected_data, output_data, check_dtype=False)
+        pd.testing.assert_series_equal(expected_data, output_data, check_dtype=False, check_freq=False)
         assert output_shape == test_case.expected_shape
