@@ -61,14 +61,14 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         time_zone_prefix: str | None = None,
         price_unit: str | list[str] | None = None,
         price_unit_prefix: str | None = None,
-        price_steps: str | list[str] | None = None,
-        price_steps_prefix: str | None = None,
-        tick_size: str | list[str] | None = None,
-        tick_size_prefix: str | None = None,
+        min_price_steps: float | None = None,
+        max_price_steps: float | None = None,
+        min_tick_size: float | None = None,
+        max_tick_size: float | None = None,
         time_unit: str | list[str] | None = None,
         time_unit_prefix: str | None = None,
-        trade_lot: str | list[str] | None = None,
-        trade_lot_prefix: str | None = None,
+        min_trade_lot: int | None = None,
+        max_trade_lot: int | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
@@ -87,14 +87,14 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
             time_zone_prefix: The prefix of the time zone to filter on.
             price_unit: The price unit to filter on.
             price_unit_prefix: The prefix of the price unit to filter on.
-            price_steps: The price step to filter on.
-            price_steps_prefix: The prefix of the price step to filter on.
-            tick_size: The tick size to filter on.
-            tick_size_prefix: The prefix of the tick size to filter on.
+            min_price_steps: The minimum value of the price step to filter on.
+            max_price_steps: The maximum value of the price step to filter on.
+            min_tick_size: The minimum value of the tick size to filter on.
+            max_tick_size: The maximum value of the tick size to filter on.
             time_unit: The time unit to filter on.
             time_unit_prefix: The prefix of the time unit to filter on.
-            trade_lot: The trade lot to filter on.
-            trade_lot_prefix: The prefix of the trade lot to filter on.
+            min_trade_lot: The minimum value of the trade lot to filter on.
+            max_trade_lot: The maximum value of the trade lot to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of market configurations to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -117,14 +117,14 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
             time_zone_prefix,
             price_unit,
             price_unit_prefix,
-            price_steps,
-            price_steps_prefix,
-            tick_size,
-            tick_size_prefix,
+            min_price_steps,
+            max_price_steps,
+            min_tick_size,
+            max_tick_size,
             time_unit,
             time_unit_prefix,
-            trade_lot,
-            trade_lot_prefix,
+            min_trade_lot,
+            max_trade_lot,
             external_id_prefix,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
@@ -248,14 +248,14 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         time_zone_prefix: str | None = None,
         price_unit: str | list[str] | None = None,
         price_unit_prefix: str | None = None,
-        price_steps: str | list[str] | None = None,
-        price_steps_prefix: str | None = None,
-        tick_size: str | list[str] | None = None,
-        tick_size_prefix: str | None = None,
+        min_price_steps: float | None = None,
+        max_price_steps: float | None = None,
+        min_tick_size: float | None = None,
+        max_tick_size: float | None = None,
         time_unit: str | list[str] | None = None,
         time_unit_prefix: str | None = None,
-        trade_lot: str | list[str] | None = None,
-        trade_lot_prefix: str | None = None,
+        min_trade_lot: int | None = None,
+        max_trade_lot: int | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -276,14 +276,14 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
             time_zone_prefix: The prefix of the time zone to filter on.
             price_unit: The price unit to filter on.
             price_unit_prefix: The prefix of the price unit to filter on.
-            price_steps: The price step to filter on.
-            price_steps_prefix: The prefix of the price step to filter on.
-            tick_size: The tick size to filter on.
-            tick_size_prefix: The prefix of the tick size to filter on.
+            min_price_steps: The minimum value of the price step to filter on.
+            max_price_steps: The maximum value of the price step to filter on.
+            min_tick_size: The minimum value of the tick size to filter on.
+            max_tick_size: The maximum value of the tick size to filter on.
             time_unit: The time unit to filter on.
             time_unit_prefix: The prefix of the time unit to filter on.
-            trade_lot: The trade lot to filter on.
-            trade_lot_prefix: The prefix of the trade lot to filter on.
+            min_trade_lot: The minimum value of the trade lot to filter on.
+            max_trade_lot: The maximum value of the trade lot to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of market configurations to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -313,14 +313,14 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
             time_zone_prefix,
             price_unit,
             price_unit_prefix,
-            price_steps,
-            price_steps_prefix,
-            tick_size,
-            tick_size_prefix,
+            min_price_steps,
+            max_price_steps,
+            min_tick_size,
+            max_tick_size,
             time_unit,
             time_unit_prefix,
-            trade_lot,
-            trade_lot_prefix,
+            min_trade_lot,
+            max_trade_lot,
             external_id_prefix,
             space,
             filter,
@@ -350,14 +350,14 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         time_zone_prefix: str | None = None,
         price_unit: str | list[str] | None = None,
         price_unit_prefix: str | None = None,
-        price_steps: str | list[str] | None = None,
-        price_steps_prefix: str | None = None,
-        tick_size: str | list[str] | None = None,
-        tick_size_prefix: str | None = None,
+        min_price_steps: float | None = None,
+        max_price_steps: float | None = None,
+        min_tick_size: float | None = None,
+        max_tick_size: float | None = None,
         time_unit: str | list[str] | None = None,
         time_unit_prefix: str | None = None,
-        trade_lot: str | list[str] | None = None,
-        trade_lot_prefix: str | None = None,
+        min_trade_lot: int | None = None,
+        max_trade_lot: int | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -387,14 +387,14 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         time_zone_prefix: str | None = None,
         price_unit: str | list[str] | None = None,
         price_unit_prefix: str | None = None,
-        price_steps: str | list[str] | None = None,
-        price_steps_prefix: str | None = None,
-        tick_size: str | list[str] | None = None,
-        tick_size_prefix: str | None = None,
+        min_price_steps: float | None = None,
+        max_price_steps: float | None = None,
+        min_tick_size: float | None = None,
+        max_tick_size: float | None = None,
         time_unit: str | list[str] | None = None,
         time_unit_prefix: str | None = None,
-        trade_lot: str | list[str] | None = None,
-        trade_lot_prefix: str | None = None,
+        min_trade_lot: int | None = None,
+        max_trade_lot: int | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -423,14 +423,14 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         time_zone_prefix: str | None = None,
         price_unit: str | list[str] | None = None,
         price_unit_prefix: str | None = None,
-        price_steps: str | list[str] | None = None,
-        price_steps_prefix: str | None = None,
-        tick_size: str | list[str] | None = None,
-        tick_size_prefix: str | None = None,
+        min_price_steps: float | None = None,
+        max_price_steps: float | None = None,
+        min_tick_size: float | None = None,
+        max_tick_size: float | None = None,
         time_unit: str | list[str] | None = None,
         time_unit_prefix: str | None = None,
-        trade_lot: str | list[str] | None = None,
-        trade_lot_prefix: str | None = None,
+        min_trade_lot: int | None = None,
+        max_trade_lot: int | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -454,14 +454,14 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
             time_zone_prefix: The prefix of the time zone to filter on.
             price_unit: The price unit to filter on.
             price_unit_prefix: The prefix of the price unit to filter on.
-            price_steps: The price step to filter on.
-            price_steps_prefix: The prefix of the price step to filter on.
-            tick_size: The tick size to filter on.
-            tick_size_prefix: The prefix of the tick size to filter on.
+            min_price_steps: The minimum value of the price step to filter on.
+            max_price_steps: The maximum value of the price step to filter on.
+            min_tick_size: The minimum value of the tick size to filter on.
+            max_tick_size: The maximum value of the tick size to filter on.
             time_unit: The time unit to filter on.
             time_unit_prefix: The prefix of the time unit to filter on.
-            trade_lot: The trade lot to filter on.
-            trade_lot_prefix: The prefix of the trade lot to filter on.
+            min_trade_lot: The minimum value of the trade lot to filter on.
+            max_trade_lot: The maximum value of the trade lot to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of market configurations to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -492,14 +492,14 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
             time_zone_prefix,
             price_unit,
             price_unit_prefix,
-            price_steps,
-            price_steps_prefix,
-            tick_size,
-            tick_size_prefix,
+            min_price_steps,
+            max_price_steps,
+            min_tick_size,
+            max_tick_size,
             time_unit,
             time_unit_prefix,
-            trade_lot,
-            trade_lot_prefix,
+            min_trade_lot,
+            max_trade_lot,
             external_id_prefix,
             space,
             filter,
@@ -532,14 +532,14 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         time_zone_prefix: str | None = None,
         price_unit: str | list[str] | None = None,
         price_unit_prefix: str | None = None,
-        price_steps: str | list[str] | None = None,
-        price_steps_prefix: str | None = None,
-        tick_size: str | list[str] | None = None,
-        tick_size_prefix: str | None = None,
+        min_price_steps: float | None = None,
+        max_price_steps: float | None = None,
+        min_tick_size: float | None = None,
+        max_tick_size: float | None = None,
         time_unit: str | list[str] | None = None,
         time_unit_prefix: str | None = None,
-        trade_lot: str | list[str] | None = None,
-        trade_lot_prefix: str | None = None,
+        min_trade_lot: int | None = None,
+        max_trade_lot: int | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -562,14 +562,14 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
             time_zone_prefix: The prefix of the time zone to filter on.
             price_unit: The price unit to filter on.
             price_unit_prefix: The prefix of the price unit to filter on.
-            price_steps: The price step to filter on.
-            price_steps_prefix: The prefix of the price step to filter on.
-            tick_size: The tick size to filter on.
-            tick_size_prefix: The prefix of the tick size to filter on.
+            min_price_steps: The minimum value of the price step to filter on.
+            max_price_steps: The maximum value of the price step to filter on.
+            min_tick_size: The minimum value of the tick size to filter on.
+            max_tick_size: The maximum value of the tick size to filter on.
             time_unit: The time unit to filter on.
             time_unit_prefix: The prefix of the time unit to filter on.
-            trade_lot: The trade lot to filter on.
-            trade_lot_prefix: The prefix of the trade lot to filter on.
+            min_trade_lot: The minimum value of the trade lot to filter on.
+            max_trade_lot: The maximum value of the trade lot to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of market configurations to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -591,14 +591,14 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
             time_zone_prefix,
             price_unit,
             price_unit_prefix,
-            price_steps,
-            price_steps_prefix,
-            tick_size,
-            tick_size_prefix,
+            min_price_steps,
+            max_price_steps,
+            min_tick_size,
+            max_tick_size,
             time_unit,
             time_unit_prefix,
-            trade_lot,
-            trade_lot_prefix,
+            min_trade_lot,
+            max_trade_lot,
             external_id_prefix,
             space,
             filter,
@@ -626,14 +626,14 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         time_zone_prefix: str | None = None,
         price_unit: str | list[str] | None = None,
         price_unit_prefix: str | None = None,
-        price_steps: str | list[str] | None = None,
-        price_steps_prefix: str | None = None,
-        tick_size: str | list[str] | None = None,
-        tick_size_prefix: str | None = None,
+        min_price_steps: float | None = None,
+        max_price_steps: float | None = None,
+        min_tick_size: float | None = None,
+        max_tick_size: float | None = None,
         time_unit: str | list[str] | None = None,
         time_unit_prefix: str | None = None,
-        trade_lot: str | list[str] | None = None,
-        trade_lot_prefix: str | None = None,
+        min_trade_lot: int | None = None,
+        max_trade_lot: int | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -652,14 +652,14 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
             time_zone_prefix: The prefix of the time zone to filter on.
             price_unit: The price unit to filter on.
             price_unit_prefix: The prefix of the price unit to filter on.
-            price_steps: The price step to filter on.
-            price_steps_prefix: The prefix of the price step to filter on.
-            tick_size: The tick size to filter on.
-            tick_size_prefix: The prefix of the tick size to filter on.
+            min_price_steps: The minimum value of the price step to filter on.
+            max_price_steps: The maximum value of the price step to filter on.
+            min_tick_size: The minimum value of the tick size to filter on.
+            max_tick_size: The maximum value of the tick size to filter on.
             time_unit: The time unit to filter on.
             time_unit_prefix: The prefix of the time unit to filter on.
-            trade_lot: The trade lot to filter on.
-            trade_lot_prefix: The prefix of the trade lot to filter on.
+            min_trade_lot: The minimum value of the trade lot to filter on.
+            max_trade_lot: The maximum value of the trade lot to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of market configurations to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -689,14 +689,14 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
             time_zone_prefix,
             price_unit,
             price_unit_prefix,
-            price_steps,
-            price_steps_prefix,
-            tick_size,
-            tick_size_prefix,
+            min_price_steps,
+            max_price_steps,
+            min_tick_size,
+            max_tick_size,
             time_unit,
             time_unit_prefix,
-            trade_lot,
-            trade_lot_prefix,
+            min_trade_lot,
+            max_trade_lot,
             external_id_prefix,
             space,
             filter,

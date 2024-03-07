@@ -50,7 +50,7 @@ properties:
     type:
       list: false
       collation: ucs_basic
-      type: text
+      type: float64
     nullable: false
     autoIncrement: false
     name: priceSteps
@@ -59,7 +59,7 @@ properties:
     type:
       list: false
       collation: ucs_basic
-      type: text
+      type: float64
     nullable: false
     autoIncrement: false
     name: tickSize
@@ -77,7 +77,7 @@ properties:
     type:
       list: false
       collation: ucs_basic
-      type: text
+      type: int64
     nullable: false
     autoIncrement: false
     name: tradeLot
