@@ -231,7 +231,8 @@ class MultiplyConstant(Transformation):
             time_series_data: The time series data to add the value to
 
         Returns:
-            The resulting series when taking the first series in time_series_data and multiplying all values by a constant
+            The resulting series when taking the first series in time_series_data and multiplying
+            all values by a constant
         """
         single_ts = time_series_data[0]
         return single_ts * self.constant
@@ -320,7 +321,7 @@ class StaticValues(DynamicTransformation):
         ```
         """
         if not self.pre_apply_has_run:
-            raise ValueError("pre_apply function has not run - missing neccessary properties to run transformation")
+            raise ValueError("pre_apply function has not run - missing necessary properties to run transformation")
         return _relative_datapoints_to_series(self.relative_datapoints, self.start, self._shift_minutes)
 
 
@@ -366,10 +367,12 @@ class ToInt(Transformation):
     def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
         """
         Args:
-            time_series_data: Tuple of time series where the first time series in the tuple the transformation is applied to
+            time_series_data: Tuple of time series where the first time series in the tuple the
+                                transformation is applied to
 
         Returns:
-            The transformed time series with all values rounded into integers given the default "round half to even" method
+            The transformed time series with all values rounded into integers given the
+            default "round half to even" method
         """
         single_ts = time_series_data[0]
         return single_ts.apply(round)
@@ -383,7 +386,8 @@ class ZeroIfNotOne(Transformation):
     def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
         """
         Args:
-            time_series_data: Tuple of time series where the first time series in the tuple the transformation is applied to
+            time_series_data: Tuple of time series where the first time series in the tuple the
+                                transformation is applied to
 
         Returns:
             The transformed time series
@@ -417,7 +421,8 @@ class OneIfTwo(Transformation):
     def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
         """
         Args:
-            time_series_data: Tuple of time series where the first time series in the tuple the transformation is applied to
+            time_series_data: Tuple of time series where the first time series in the tuple the
+                                transformation is applied to
 
         Returns:
             The transformed time series
