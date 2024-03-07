@@ -15,7 +15,7 @@ Changes are grouped as follows
 
 ## [0.88.8] - 2024-03-06
 ### Changed
-* Changed the types of the property `price_steps` to float, `tick_size` to float, and `trade_lot` to int 
+* Changed the types of the property `price_steps` to float, `tick_size` to float, and `trade_lot` to int
 * in the `MarketConfiguration` view of the `SHOPBasedDayAheadBidProcess` data model.
 
 ## [0.88.7] - 2024-03-04
