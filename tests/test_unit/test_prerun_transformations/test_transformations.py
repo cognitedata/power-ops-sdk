@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from contextlib import nullcontext
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
