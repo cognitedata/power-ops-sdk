@@ -1,7 +1,7 @@
 from contextlib import nullcontext
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
-from typing import Any
+from typing import Any, Literal
 
 import pandas as pd
 import pytest
@@ -428,6 +428,7 @@ class AddWaterInTransitTestCase:
     inflow_values: list[int] = field(default_factory=lambda: [5] * 11)
     expected_shape: dict[int, float] = field(default_factory=lambda: {0: 0, 180: 0.2, 240: 0.6, 300: 0.2})
     expected_values: list[float] = field(default_factory=lambda: [7, 13, 13, 7] + [5.0] * 6)
+    end_inclusive: Literal["left", "both"] = "left"
     model: dict[Any, Any] | None = None
     error: type[Exception] | None = None
 
@@ -444,10 +445,11 @@ ADD_WATER_TEST_CASES = [
         expected_shape={0: 0, 780: 0.1, 840: 0.25, 900: 0.3, 960: 0.2, 1020: 0.1, 1080: 0.05},
         expected_values=[10, 16, 16, 10] + [8] * 9 + [7.7, 6.95, 6.05, 5.45, 5.15] + [5] * 7,
     ),
-    AddWaterInTransitTestCase(
+    AddWaterInTransitTestCase(  # end time inclusive when no discharge applied
         case_id="AddWaterInTransitTestCase: no discharge applied",
         discharge_start_time=datetime(year=2022, month=5, day=18, hour=0, tzinfo=None),
         expected_values=[5] * 11,  # same as the default inflow values
+        end_inclusive="both",
     ),
     AddWaterInTransitTestCase(
         case_id="AddWaterInTransitTestCase: empty Series",
@@ -615,7 +617,7 @@ def test_add_water_in_transit(cognite_client_mock, test_case):
 
         if test_case.expected_values:
             expected_timestamps = pd.date_range(
-                start=test_case.shop_start_time, end=test_case.end_time, inclusive="left", freq="1h"
+                start=test_case.shop_start_time, end=test_case.end_time, inclusive=test_case.end_inclusive, freq="1h"
             )
             expected_data = (
                 pd.Series(test_case.expected_values, index=expected_timestamps[: len(test_case.expected_values)])
