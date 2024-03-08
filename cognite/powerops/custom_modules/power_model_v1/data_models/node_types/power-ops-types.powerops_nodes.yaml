@@ -71,8 +71,6 @@
 - space: '{{powerops_type_space}}'
   externalId: PriceProdCase
 - space: '{{powerops_type_space}}'
-  externalId:
-- space: '{{powerops_type_space}}'
   externalId: Commands
 - space: '{{powerops_type_space}}'
   externalId: SHOPTimeSeries
