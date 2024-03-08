@@ -10,6 +10,38 @@ properties:
     autoIncrement: false
     name: scenario
     description: The scenario to use when running this case
+  case:
+    type:
+      list: false
+      type: file
+    nullable: true
+    autoIncrement: false
+    name: case
+    description: The resulting case file to send to shop after preprosessor has performed mappings on model template
+  reservoirMapping:
+    type:
+      list: false # Only one per case?
+      type: file
+    nullable: true
+    autoIncrement: false
+    name: reservoirMapping
+    description: Cut file reservoir mapping
+  moduleSeries:
+    type:
+      list: true # may be multiple per case
+      type: file
+    nullable: true
+    autoIncrement: false
+    name: moduleSeries
+    description: Module series file(s)
+  cutFiles:
+    type:
+      list: true # may be multiple per case
+      type: file
+    nullable: true
+    autoIncrement: false
+    name: cutFiles
+    description: Cut file(s)
   startTime:
     type:
       list: false

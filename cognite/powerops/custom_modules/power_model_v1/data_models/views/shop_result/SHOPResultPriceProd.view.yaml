@@ -32,14 +32,26 @@ properties:
       space: '{{powerops_models}}'
       externalId: SHOPResult
       type: container
-    containerPropertyIdentifier: tsDirect1
-    name: tsDirect1
+    containerPropertyIdentifier: shopTimeseries1
+    name: priceTimeseries
     description: The market price timeseries from the Shop run
-  productionTimeseries:
-    container:
+    source:
       space: '{{powerops_models}}'
-      externalId: SHOPResult
-      type: container
-    containerPropertyIdentifier: tsList1
-    name: tsList1
-    description: The production timeseries for each plant included in the Scenario from the Shop run
+      externalId: SHOPTimeSeries
+      version: '{{version}}'
+      type: view
+  productionTimeseries:
+    type:
+      space: '{{powerops_type_space}}'
+      externalId: SHOPResultPriceProd.productionTimeseries
+    source:
+      space: '{{powerops_models}}'
+      externalId: SHOPTimeSeries
+      version: '{{version}}'
+      type: view
+    direction: outwards
+    name: productionTimeseries
+    description: The production timeseries wrapped as a ShopTimeSeries object containing properties related to their names and types in the resulting output shop file
+    connectionType: multi_edge_connection
+
+#Plant name will be in the object name of the timeseries

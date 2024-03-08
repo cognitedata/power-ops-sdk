@@ -36,6 +36,38 @@ properties:
       externalId: Scenario
       version: '{{version}}'
       type: view
+  case:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Case
+      type: container
+    containerPropertyIdentifier: case
+    name: case
+    description: The case that was run
+  reservoirMapping:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Case
+      type: container
+    containerPropertyIdentifier: reservoirMapping
+    name: reservoirMapping
+    description: The cut file reservoir mapping
+  moduleSeries:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Case
+      type: container
+    containerPropertyIdentifier: moduleSeries
+    name: moduleSeries
+    description: The module series file(s)
+  cutFiles:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Case
+      type: container
+    containerPropertyIdentifier: cutFiles
+    name: cutFiles
+    description: The cut file(s) used in a shop run
   startTime:
     container:
       space: '{{powerops_models}}'

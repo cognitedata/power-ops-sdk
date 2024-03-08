@@ -3,37 +3,45 @@ externalId: SHOPResult
 name: SHOPResult
 usedFor: node
 properties:
-  timeseries:
+  shopTimeseries1:
     type:
       list: false
       type: direct
     nullable: true
     autoIncrement: false
-    name: timeseries
-    description: Use this direct relation type to reference several of the SHOPTimeSeries objects
-  tsDirect1:
+    name: shopTimeseries1
+    description: Use this direct relation type to reference a SHOPTimeSeries object
+  shopTimeseries2:
+    type:
+      list: false
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: shopTimeseries2
+    description: Use this direct relation type to reference a SHOPTimeSeries object
+  ts1:
     type:
       list: false
       type: timeseries
     nullable: true
     autoIncrement: false
-    name: tsDirect1
+    name: ts1
     description: A timeseries from the shop result (used in more specific extensions of a shop result)
-  tsDirect2:
+  ts2:
     type:
       list: false
       type: timeseries
     nullable: true
     autoIncrement: false
-    name: tsDirect2
+    name: ts2
     description: A timeseries from the shop result (used in more specific extensions of a shop result)
-  tsDirect3:
+  ts3:
     type:
       list: false
       type: timeseries
     nullable: true
     autoIncrement: false
-    name: tsDirect3
+    name: ts3
     description: A timeseries from the shop result (used in more specific extensions of a shop result)
   tsList1:
     type:
@@ -41,7 +49,7 @@ properties:
       type: timeseries
     nullable: true
     autoIncrement: false
-    name: tsDirectList1
+    name: tsList1
     description: A timeseries from the shop result (used in more specific extensions of a shop result)
   tsList2:
     type:
@@ -49,7 +57,7 @@ properties:
       type: timeseries
     nullable: true
     autoIncrement: false
-    name: tsDirectList2
+    name: tsList2
     description: A timeseries from the shop result (used in more specific extensions of a shop result)
   preRun:
     type:

@@ -22,21 +22,12 @@ properties:
     description: The model template
   commands:
     type:
-      list: true
-      collation: ucs_basic
-      type: text
+      list: false
+      type: direct
     nullable: true
     autoIncrement: false
     name: commands
-    description: The commands to run
-  extraFiles:
-    type:
-      list: true
-      type: file
-    nullable: true
-    autoIncrement: false
-    name: extraFiles
-    description: Extra files to include in the model
+    description: The commands to run shop with
   source:
     type:
       list: false
@@ -45,7 +36,7 @@ properties:
     nullable: true
     autoIncrement: false
     name: source
-    description: The source of the model
+    description: The source of the scenario
 indexes:
   nameIndex:
     properties:

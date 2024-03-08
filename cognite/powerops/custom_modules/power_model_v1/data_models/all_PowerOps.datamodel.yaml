@@ -271,7 +271,7 @@ views:
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
-- externalId: PriceProdScenario
+- externalId: PriceProdCase
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'

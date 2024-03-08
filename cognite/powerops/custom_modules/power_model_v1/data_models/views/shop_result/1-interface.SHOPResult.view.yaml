@@ -37,18 +37,13 @@ properties:
       version: '{{version}}'
       type: view
   outputTimeseries:
-    type:
-      space: '{{powerops_type_space}}'
-      externalId: SHOPResult.outputTimeseries
-    source:
+    container:
       space: '{{powerops_models}}'
-      externalId: SHOPTimeSeries
-      version: '{{version}}'
-      type: view
-    direction: outwards
-    name: outputTimeseries
-    description: An array of the output timeseries from SHOP
-    connectionType: multi_edge_connection
+      externalId: SHOPResult
+      type: container
+    containerPropertyIdentifier: tsList1
+    name: tsList1
+    description: A general placeholder for all timeseries that ste, from a shop run
   objectiveSequence:
     container:
       space: '{{powerops_models}}'

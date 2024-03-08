@@ -40,7 +40,7 @@ properties:
       externalId: PlantShop
       version: '{{version}}'
       type: view
-  shopResults:
+  shopResultPriceProd:
     type:
       space: '{{powerops_type_space}}'
       externalId: SHOPResultPriceProd
@@ -66,3 +66,11 @@ properties:
       externalId: MarketConfiguration
       version: '{{version}}'
       type: view
+  stepEnabled:
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: flag
+    name: stepEnabled
+    description: Whether the step is enabled or not

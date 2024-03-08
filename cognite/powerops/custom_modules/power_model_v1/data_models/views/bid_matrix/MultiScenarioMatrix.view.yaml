@@ -47,13 +47,13 @@ properties:
   scenarioResults:
     type:
       space: '{{powerops_type_space}}'
-      externalId: PriceProdScenario
+      externalId: MultiScenarioMatrix.scenarioResults
     source:
       space: '{{powerops_models}}'
-      externalId: PriceProdScenario
+      externalId: PriceProdCase
       version: '{{version}}'
       type: view
     direction: outwards
     name: scenarioResults
-    description: An array of price/prod pairs, one for each scenario - this is needed for the frontend # TODO: might revise this and use SHOPResultsProdPrice type instead?
+    description: An array of price/prod pairs, one for each scenario/case - this is needed for the frontend
     connectionType: multiEdgeConnection

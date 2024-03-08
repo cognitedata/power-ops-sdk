@@ -60,14 +60,14 @@ properties:
     containerPropertyIdentifier: model
     name: model
     description: The shop model file to use as template before applying base mapping
-  source:
+  extraFiles:
     container:
       space: '{{powerops_models}}'
       externalId: ModelTemplate
       type: container
-    containerPropertyIdentifier: source
-    name: source
-    description: The source of the model, for example, 'resync'
+    containerPropertyIdentifier: extraFiles
+    name: extraFiles
+    description: Extra files related to a model template
   baseMappings:
     type:
       space: '{{powerops_type_space}}'

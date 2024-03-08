@@ -37,15 +37,14 @@ properties:
     autoIncrement: false
     name: model
     description: The shop model file to use as template before mapping
-  source:
+  extraFiles:
     type:
-      list: false
-      collation: ucs_basic
-      type: text
+      list: true
+      type: file
     nullable: true
     autoIncrement: false
-    name: source
-    description: The source of the model
+    name: extraFiles
+    description: Extra files to include in the model
 indexes:
   watercourseIndex:
     properties:

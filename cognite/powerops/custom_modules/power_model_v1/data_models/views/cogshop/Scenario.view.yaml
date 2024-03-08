@@ -44,15 +44,12 @@ properties:
       type: container
     containerPropertyIdentifier: commands
     name: commands
-    description: The commands to run when running the scenario
-  extraFiles:
-    container:
+    description: The commands to run
+    source:
       space: '{{powerops_models}}'
-      externalId: Scenario
-      type: container
-    containerPropertyIdentifier: extraFiles
-    name: extraFiles
-    description: Extra files to include when running the scenario
+      externalId: Commands
+      version: '{{version}}'
+      type: view
   source:
     container:
       space: '{{powerops_models}}'
