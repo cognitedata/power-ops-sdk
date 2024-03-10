@@ -10,7 +10,7 @@ properties:
     autoIncrement: false
     name: scenario
     description: The scenario to use when running this case
-  case:
+  caseFile:
     type:
       list: false
       type: file
