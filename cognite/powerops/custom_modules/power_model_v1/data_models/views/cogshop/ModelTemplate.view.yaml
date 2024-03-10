@@ -60,6 +60,14 @@ properties:
     containerPropertyIdentifier: model
     name: model
     description: The shop model file to use as template before applying base mapping
+  cogShopFilesConfig:
+    container:
+      space: '{{powerops_models}}'
+      externalId: ModelTemplate
+      type: container
+    containerPropertyIdentifier: cogShopFilesConfig
+    name: cogShopFilesConfig
+    description: Configuration for in what order to load the various files into pyshop
   extraFiles:
     container:
       space: '{{powerops_models}}'

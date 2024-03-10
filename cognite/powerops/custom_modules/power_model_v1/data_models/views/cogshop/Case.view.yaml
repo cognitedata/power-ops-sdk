@@ -36,14 +36,14 @@ properties:
       externalId: Scenario
       version: '{{version}}'
       type: view
-  case:
+  caseFile:
     container:
       space: '{{powerops_models}}'
       externalId: Case
       type: container
-    containerPropertyIdentifier: case
-    name: case
-    description: The case that was run
+    containerPropertyIdentifier: caseFile
+    name: caseFile
+    description: The case file used
   reservoirMapping:
     container:
       space: '{{powerops_models}}'
@@ -52,22 +52,29 @@ properties:
     containerPropertyIdentifier: reservoirMapping
     name: reservoirMapping
     description: The cut file reservoir mapping
-  moduleSeries:
+  cutOrderFiles:
     container:
       space: '{{powerops_models}}'
       externalId: Case
       type: container
-    containerPropertyIdentifier: moduleSeries
-    name: moduleSeries
-    description: The module series file(s)
-  cutFiles:
+    containerPropertyIdentifier: cutOrderFiles
+    name: cutOrderFiles
+    description: Cut order files (Module series in PRODRISK)
+  extraFiles:
     container:
       space: '{{powerops_models}}'
       externalId: Case
       type: container
-    containerPropertyIdentifier: cutFiles
-    name: cutFiles
-    description: The cut file(s) used in a shop run
+    containerPropertyIdentifier: extraFiles
+    name: extraFiles
+  cogShopFilesConfig:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Case
+      type: container
+    containerPropertyIdentifier: cogShopFilesConfig
+    name: cogShopFilesConfig
+    description: Configuration for in what order to load the various files into pyshop
   startTime:
     container:
       space: '{{powerops_models}}'
