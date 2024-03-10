@@ -26,7 +26,7 @@ properties:
     autoIncrement: false
     name: reservoirMapping
     description: Cut file reservoir mapping
-  moduleSeries:
+  cutOrderFile:
     type:
       list: true # may be multiple per case
       type: file
