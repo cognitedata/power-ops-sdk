@@ -68,11 +68,12 @@ def _retrieve_range(client: CogniteClient, external_ids: list[str], start: int, 
     # but maybe we need to be careful with cases where there is more than 1 hour between values
     # (I do not remember if this is an issue only for some aggregates like average, or for all).
     # And maybe we need to parametrise the "minimum resolution"
-    # (seems to assume 1 hour, but we should support sub-hourly resolutuon)
+    # (seems to assume 1 hour, but we should support sub-hourly resolution)
     # Retrieve raw datapoints
     external_ids = remove_duplicates(external_ids)
     if not external_ids:
         return pd.DataFrame()
+
     start_dt = ms_to_datetime(start).replace(tzinfo=None)  # UTC implied
     end_dt = ms_to_datetime(end).replace(tzinfo=None)  # UTC implied
     logger.debug(f"Retrieving {external_ids} between '{start_dt}' and '{end_dt}'")
@@ -89,7 +90,7 @@ def _retrieve_range(client: CogniteClient, external_ids: list[str], start: int, 
     if df_range.empty:
         df_range = pd.DataFrame(
             columns=df_latest.columns,
-            index=pd.DatetimeIndex(data=np.array([start], dtype="datetime64[ms]")),
+            index=pd.DatetimeIndex(data=np.array([int(start)], dtype="datetime64[ms]")),
             dtype=float,
         )
 
@@ -112,6 +113,7 @@ def _retrieve_range(client: CogniteClient, external_ids: list[str], start: int, 
     # TODO: confirm operations
     intermediate_df = df_raw[linear_columns].resample("1min").interpolate()  # type: ignore[type-var]
     df_linear = intermediate_df.resample("1h").interpolate()
+
     # Merge the step interpolated and linearly interpolated DataFrames
     df_combined = df_step.combine_first(df_linear)
 

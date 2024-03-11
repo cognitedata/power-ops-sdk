@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.88.9] - 2024-03-07
+### Fixed
+* Transformation `AddWaterInTransit` apply returns input time series if discharge is empty
+
 ## [0.88.8] - 2024-03-06
 ### Changed
 * Changed the types of the property `price_steps` to float, `tick_size` to float, and `trade_lot` to int
