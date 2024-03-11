@@ -84,3 +84,19 @@ views:
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
+- externalId: PriceProdCase
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: Case
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: SHOPTimeSeries
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: Commands
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'

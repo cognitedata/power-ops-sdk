@@ -43,7 +43,7 @@ properties:
       type: container
     containerPropertyIdentifier: tsList1
     name: tsList1
-    description: A general placeholder for all timeseries that ste, from a shop run
+    description: A general placeholder for all timeseries that stem from a shop run
   objectiveSequence:
     container:
       space: '{{powerops_models}}'
