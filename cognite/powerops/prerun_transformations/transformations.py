@@ -118,10 +118,11 @@ class AddConstant(Transformation):
         """Add value to input time series
 
         Args:
-            time_series_data: A tuple of time series data to add the constant value to the first time series
+            time_series_data: A tuple of time series data. Only the first one, time_series_data[0],
+                                is used - the constant value will be added to every value of this time series
 
         Returns:
-            The first pd.Series from the input tuple with the constant applied to all values
+            The first pd.Series from the input tuple with the constant added to all values
         """
         single_ts = time_series_data[0]
         return single_ts + self.constant
@@ -139,10 +140,11 @@ class Round(Transformation):
         return {"digits": self.digits}
 
     def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
-        """Round the time series values to the specified number of decimals
+        """Round the time series values to the specified number of decimals, using the "round half to even" method
 
         Args:
-            time_series_data: A tuple of time series data to round all values from the first time series
+            time_series_data: A tuple of time series data. Only the first one, time_series_data[0],
+                                is used - the round will be applied to every value of this time series
 
         Returns:
             The first pd.Series from the input tuple with the rounding applied to all values
@@ -154,10 +156,11 @@ class Round(Transformation):
 
 class SumTimeseries(Transformation):
     def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
-        """Sum two or more time series together
+        """Sum two or more time series together in place without any interpolation between points
 
         Args:
-            time_series_data: The time series data to add together/concatenate
+            time_series_data: A tuple of time series data. Where all the time series in the tuple are
+                                summed together
 
         Returns:
             Concatenated timeseries with values added together
@@ -228,7 +231,8 @@ class MultiplyConstant(Transformation):
         """Multiply value to input time series
 
         Args:
-            time_series_data: The time series data to add the value to
+            time_series_data: A tuple of time series data. Only the first one, time_series_data[0],
+                                is used - the constant value will be multiplied to every value of this time series
 
         Returns:
             The resulting series when taking the first series in time_series_data and multiplying
@@ -327,13 +331,14 @@ class StaticValues(DynamicTransformation):
 
 class ToBool(Transformation):
     """
-    Transforms time series data to a series of 0s and 1s. 1s if the value is > 0.
+    "Greater than 0" transformation of time series data to a series of 0s and 1s. 1s if the value is > 0.
     """
 
     def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
         """
         Args:
-            time_series_data: The time series data to transform
+            time_series_data: A tuple of time series data. Only the first one, time_series_data[0],
+                                is used - every value of this time series will be converted to 0 or 1
 
         Returns:
             The transformed time series
@@ -367,8 +372,8 @@ class ToInt(Transformation):
     def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
         """
         Args:
-            time_series_data: Tuple of time series where the first time series in the tuple the
-                                transformation is applied to
+            time_series_data: A tuple of time series data. Only the first one, time_series_data[0],
+                                is used - every value of this time series will be rounded to zero decimal places
 
         Returns:
             The transformed time series with all values rounded into integers given the
@@ -386,8 +391,8 @@ class ZeroIfNotOne(Transformation):
     def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
         """
         Args:
-            time_series_data: Tuple of time series where the first time series in the tuple the
-                                transformation is applied to
+            time_series_data: A tuple of time series data. Only the first one, time_series_data[0],
+                                is used - every value of this time series will be converted to 0 or 1
 
         Returns:
             The transformed time series
@@ -421,8 +426,8 @@ class OneIfTwo(Transformation):
     def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
         """
         Args:
-            time_series_data: Tuple of time series where the first time series in the tuple the
-                                transformation is applied to
+            time_series_data: A tuple of time series data. Only the first one, time_series_data[0],
+                                is used - every value of this time series will be converted to 0 or 1
 
         Returns:
             The transformed time series
@@ -525,7 +530,8 @@ class HeightToVolume(DynamicTransformation):
     def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
         """
         Args:
-            time_series_data: The time series data to transform
+            time_series_data: A tuple of time series data. Only the first one, time_series_data[0],
+                                is used - the height to volume will be applied to each value of this time series
 
         Returns:
             The transformed time series
@@ -591,7 +597,8 @@ class AddFromOffset(Transformation):
     def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
         """
         Args:
-            time_series_data: The timseries to perform transformation on
+            time_series_data: A tuple of time series data. Only the first one, time_series_data[0],
+                                is used - the add from offset will be applied to each value in this time series
 
         Example:
         ```python
@@ -648,8 +655,8 @@ class MultiplyFromOffset(Transformation):
     """Multiplies values to input timeseries based on a list of relative datapoints
 
     Args:
-        relative_datapoints: The values to multiply to existing time series at specified
-                             offset minutes from time series start time
+        relative_datapoints: A tuple of time series data. Only the first one, time_series_data[0],
+                                is used - the multiply from offset will be applied to each value in this time series
     """
 
     relative_datapoints: list[RelativeDatapoint]
@@ -790,8 +797,8 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
         Args:
             client: CogniteClient authenticated to project to retrieve discharge timeseries from
             shop_model: SHOP model dict
-            start: SHOP start time in milliseconds
-            end: SHOP end time in milliseconds
+            start: SHOP start time in milliseconds since epoch
+            end: SHOP end time in milliseconds since epoch
 
         Example:
         ```python
@@ -861,7 +868,8 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
            inflow time series
 
         Args:
-            time_series_data: inflow time series data
+            time_series_data: A tuple of time series data representing inflow. Only the first one, time_series_data[0],
+                                is used
 
         Example:
         ```python

@@ -242,7 +242,7 @@ TRANSFORMATION_TEST_CASES = [
     ),
     # AddFromOffset test cases
     TransformationTestCase(
-        case_id="AddFromOffset: case_1",
+        case_id="AddFromOffset: case with offset_minute not aligned with frequency",
         transformation=AddFromOffset(
             relative_datapoints=[
                 RelativeDatapoint(offset_minute=0, offset_value=1),
