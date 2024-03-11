@@ -291,7 +291,47 @@ def test_basic_transformations(test_case: TransformationTestCase):
     pd.testing.assert_series_equal(expected_data, output_data, check_dtype=False, check_freq=False)
 
 
+# TODO: add more scenarios for step logic
+@pytest.mark.skip(reason="sum time series implementation needs to be updated for step logic")
 def test_sum_timeseries():
+
+    input_values_1 = [42.0] * 5
+    input_values_2 = [20.0] * 5
+    input_values_3 = [15] * 10
+
+    start_time = "2022-01-01"
+    incremental_dates_1 = pd.date_range(start=start_time, periods=len(input_values_1), freq="h")
+    incremental_dates_2 = pd.date_range(start=start_time, periods=len(input_values_2), freq="2h")
+    incremental_dates_3 = pd.date_range(start=start_time, periods=len(input_values_3), freq="30min")
+
+    input_data_1 = pd.Series(input_values_1, index=incremental_dates_1)
+    input_data_2 = pd.Series(input_values_2, index=incremental_dates_2)
+    input_data_3 = pd.Series(input_values_3, index=incremental_dates_3)
+
+    input_dates = [pd.Series(incremental_dates_1), pd.Series(incremental_dates_2), pd.Series(incremental_dates_3)]
+    input_data = (input_data_1, input_data_2, input_data_3)
+
+    expected_data_1 = input_values_1
+    expected_data_2 = [62] * 7
+    expected_data_3 = [77] * 12
+    all_expected_data = [expected_data_1, expected_data_2, expected_data_3]
+
+    # checks the following scenarios:
+    # SumTimseries with only input_1
+    # SumTimseries with input_1 and input_2
+    # SumTimseries with input_1, input_2, and input_3
+    for length in range(len(input_data)):
+        expected_dates = pd.concat(input_dates[: length + 1]).sort_values().drop_duplicates()
+        expected_data = pd.Series(all_expected_data[length], index=expected_dates)
+
+        transformation = SumTimeseries()
+        output_data = transformation.apply(time_series_data=input_data[: length + 1])
+
+        pd.testing.assert_series_equal(expected_data, output_data, check_dtype=False, check_freq=False)
+
+
+# TODO: remove this test once sum timeseries logic has been updated to step
+def test_sum_timeseries_current_logic():
 
     input_values_1 = [42.0] * 5
     input_values_2 = [20.0] * 5
