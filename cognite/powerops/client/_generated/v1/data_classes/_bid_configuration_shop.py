@@ -34,7 +34,17 @@ __all__ = [
     "BidConfigurationShopList",
     "BidConfigurationShopWriteList",
     "BidConfigurationShopApplyList",
+    "BidConfigurationShopFields",
+    "BidConfigurationShopTextFields",
 ]
+
+
+BidConfigurationShopTextFields = Literal["name"]
+BidConfigurationShopFields = Literal["name"]
+
+_BIDCONFIGURATIONSHOP_PROPERTIES_BY_FIELD = {
+    "name": "name",
+}
 
 
 class BidConfigurationShop(BidConfiguration):
@@ -47,6 +57,7 @@ class BidConfigurationShop(BidConfiguration):
         external_id: The external id of the bid configuration shop.
         data_record: The data record of the bid configuration shop node.
         market_configuration: The bid method related to the bid configuration
+        name: The name of the bid configuration
         method: The bid method related to the bid configuration
         price_area: The price area related to the bid configuration
         plants_shop: The plants modelled in the shop runs
@@ -56,6 +67,7 @@ class BidConfigurationShop(BidConfiguration):
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
         "sp_powerops_types", "BidConfigurationShop"
     )
+    name: Optional[str] = None
     method: Union[BidMethodSHOPMultiScenario, str, dm.NodeId, None] = Field(None, repr=False)
     price_area: Union[PriceArea, str, dm.NodeId, None] = Field(None, repr=False, alias="priceArea")
     plants_shop: Union[list[PlantShop], list[str], None] = Field(default=None, repr=False, alias="plantsShop")
@@ -74,6 +86,7 @@ class BidConfigurationShop(BidConfiguration):
                 if isinstance(self.market_configuration, DomainModel)
                 else self.market_configuration
             ),
+            name=self.name,
             method=self.method.as_write() if isinstance(self.method, DomainModel) else self.method,
             price_area=self.price_area.as_write() if isinstance(self.price_area, DomainModel) else self.price_area,
             plants_shop=[
@@ -106,6 +119,7 @@ class BidConfigurationShopWrite(BidConfigurationWrite):
         external_id: The external id of the bid configuration shop.
         data_record: The data record of the bid configuration shop node.
         market_configuration: The bid method related to the bid configuration
+        name: The name of the bid configuration
         method: The bid method related to the bid configuration
         price_area: The price area related to the bid configuration
         plants_shop: The plants modelled in the shop runs
@@ -115,6 +129,7 @@ class BidConfigurationShopWrite(BidConfigurationWrite):
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
         "sp_powerops_types", "BidConfigurationShop"
     )
+    name: Optional[str] = None
     method: Union[BidMethodSHOPMultiScenarioWrite, str, dm.NodeId, None] = Field(None, repr=False)
     price_area: Union[PriceAreaWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="priceArea")
     plants_shop: Union[list[PlantShopWrite], list[str], None] = Field(default=None, repr=False, alias="plantsShop")
@@ -147,6 +162,9 @@ class BidConfigurationShopWrite(BidConfigurationWrite):
                     else self.market_configuration.external_id
                 ),
             }
+
+        if self.name is not None or write_none:
+            properties["name"] = self.name
 
         if self.method is not None:
             properties["method"] = {
@@ -252,6 +270,8 @@ class BidConfigurationShopApplyList(BidConfigurationShopWriteList): ...
 def _create_bid_configuration_shop_filter(
     view_id: dm.ViewId,
     market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+    name: str | list[str] | None = None,
+    name_prefix: str | None = None,
     method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     external_id_prefix: str | None = None,
@@ -287,6 +307,12 @@ def _create_bid_configuration_shop_filter(
                 values=[{"space": item[0], "externalId": item[1]} for item in market_configuration],
             )
         )
+    if isinstance(name, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
+    if name and isinstance(name, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
+    if name_prefix is not None:
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
     if method and isinstance(method, str):
         filters.append(
             dm.filters.Equals(

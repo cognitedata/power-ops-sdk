@@ -8,12 +8,11 @@ from cognite.client import data_modeling as dm, CogniteClient
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     BidMethodSHOPMultiScenario,
-    Mapping,
 )
 from ._core import DEFAULT_QUERY_LIMIT, QueryBuilder, QueryStep, QueryAPI, T_DomainModelList, _create_edge_filter
 
 if TYPE_CHECKING:
-    from .mapping_query import MappingQueryAPI
+    from .scenario_query import ScenarioQueryAPI
 
 
 class BidMethodSHOPMultiScenarioQueryAPI(QueryAPI[T_DomainModelList]):
@@ -42,37 +41,35 @@ class BidMethodSHOPMultiScenarioQueryAPI(QueryAPI[T_DomainModelList]):
             )
         )
 
-    def price_scenarios(
+    def scenarios(
         self,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
-        retrieve_main_scenario: bool = False,
-    ) -> MappingQueryAPI[T_DomainModelList]:
-        """Query along the price scenario edges of the bid method shop multi scenario.
+    ) -> ScenarioQueryAPI[T_DomainModelList]:
+        """Query along the scenario edges of the bid method shop multi scenario.
 
         Args:
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of price scenario edges to return. Defaults to 25. Set to -1, float("inf") or None
+            limit: Maximum number of scenario edges to return. Defaults to 25. Set to -1, float("inf") or None
                 to return all items.
-            retrieve_main_scenario: Whether to retrieve the main scenario for each bid method shop multi scenario or not.
 
         Returns:
-            MappingQueryAPI: The query API for the mapping.
+            ScenarioQueryAPI: The query API for the scenario.
         """
-        from .mapping_query import MappingQueryAPI
+        from .scenario_query import ScenarioQueryAPI
 
         from_ = self._builder[-1].name
 
         edge_filter = _create_edge_filter(
-            dm.DirectRelationReference("sp_powerops_types", "BidMethodDayahead.priceScenarios"),
+            dm.DirectRelationReference("sp_powerops_types", "BidMethodDayahead.scenarios"),
             external_id_prefix=external_id_prefix,
             space=space,
         )
         self._builder.append(
             QueryStep(
-                name=self._builder.next_name("price_scenarios"),
+                name=self._builder.next_name("scenarios"),
                 expression=dm.query.EdgeResultSetExpression(
                     filter=edge_filter,
                     from_=from_,
@@ -82,41 +79,15 @@ class BidMethodSHOPMultiScenarioQueryAPI(QueryAPI[T_DomainModelList]):
                 max_retrieve_limit=limit,
             )
         )
-        if retrieve_main_scenario:
-            self._query_append_main_scenario(from_)
-        return MappingQueryAPI(self._client, self._builder, self._view_by_read_class, None, limit)
+        return ScenarioQueryAPI(self._client, self._builder, self._view_by_read_class, None, limit)
 
     def query(
         self,
-        retrieve_main_scenario: bool = False,
     ) -> T_DomainModelList:
         """Execute query and return the result.
-
-        Args:
-            retrieve_main_scenario: Whether to retrieve the main scenario for each bid method shop multi scenario or not.
 
         Returns:
             The list of the source nodes of the query.
 
         """
-        from_ = self._builder[-1].name
-        if retrieve_main_scenario:
-            self._query_append_main_scenario(from_)
         return self._query()
-
-    def _query_append_main_scenario(self, from_: str) -> None:
-        view_id = self._view_by_read_class[Mapping]
-        self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("main_scenario"),
-                expression=dm.query.NodeResultSetExpression(
-                    filter=dm.filters.HasData(views=[view_id]),
-                    from_=from_,
-                    through=self._view_by_read_class[BidMethodSHOPMultiScenario].as_property_ref("mainScenario"),
-                    direction="outwards",
-                ),
-                select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
-                max_retrieve_limit=-1,
-                result_cls=Mapping,
-            ),
-        )

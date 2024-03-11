@@ -33,8 +33,9 @@ from ._core import (
     QueryStep,
     QueryBuilder,
 )
-from .shop_partial_bid_calculation_input_alerts import ShopPartialBidCalculationInputAlertsAPI
-from .shop_partial_bid_calculation_input_shop_results import ShopPartialBidCalculationInputShopResultsAPI
+from .shop_partial_bid_calculation_input_shop_result_price_prod import (
+    ShopPartialBidCalculationInputShopResultPriceProdAPI,
+)
 from .shop_partial_bid_calculation_input_query import ShopPartialBidCalculationInputQueryAPI
 
 
@@ -52,8 +53,7 @@ class ShopPartialBidCalculationInputAPI(
             view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
-        self.alerts_edge = ShopPartialBidCalculationInputAlertsAPI(client)
-        self.shop_results_edge = ShopPartialBidCalculationInputShopResultsAPI(client)
+        self.shop_result_price_prod_edge = ShopPartialBidCalculationInputShopResultPriceProdAPI(client)
 
     def __call__(
         self,
@@ -67,6 +67,7 @@ class ShopPartialBidCalculationInputAPI(
         function_call_id_prefix: str | None = None,
         plant: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        step_enabled: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
@@ -85,6 +86,7 @@ class ShopPartialBidCalculationInputAPI(
             function_call_id_prefix: The prefix of the function call id to filter on.
             plant: The plant to filter on.
             market_configuration: The market configuration to filter on.
+            step_enabled: The step enabled to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop partial bid calculation inputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -107,6 +109,7 @@ class ShopPartialBidCalculationInputAPI(
             function_call_id_prefix,
             plant,
             market_configuration,
+            step_enabled,
             external_id_prefix,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
@@ -125,7 +128,7 @@ class ShopPartialBidCalculationInputAPI(
         """Add or update (upsert) shop partial bid calculation inputs.
 
         Note: This method iterates through all nodes and timeseries linked to shop_partial_bid_calculation_input and creates them including the edges
-        between the nodes. For example, if any of `alerts` or `shop_results` are set, then these
+        between the nodes. For example, if any of `shop_result_price_prod` are set, then these
         nodes as well as any nodes linked to them, and all the edges linking these nodes will be created.
 
         Args:
@@ -228,18 +231,11 @@ class ShopPartialBidCalculationInputAPI(
             retrieve_edges=True,
             edge_api_name_type_direction_view_id_penta=[
                 (
-                    self.alerts_edge,
-                    "alerts",
-                    dm.DirectRelationReference("sp_powerops_types", "calculationIssue"),
+                    self.shop_result_price_prod_edge,
+                    "shop_result_price_prod",
+                    dm.DirectRelationReference("sp_powerops_types", "SHOPResultPriceProd"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models", "Alert", "1"),
-                ),
-                (
-                    self.shop_results_edge,
-                    "shop_results",
-                    dm.DirectRelationReference("sp_powerops_types", "SHOPResult"),
-                    "outwards",
-                    dm.ViewId("sp_powerops_models", "SHOPResult", "1"),
+                    dm.ViewId("sp_powerops_models", "SHOPResultPriceProd", "1"),
                 ),
             ],
         )
@@ -260,6 +256,7 @@ class ShopPartialBidCalculationInputAPI(
         function_call_id_prefix: str | None = None,
         plant: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        step_enabled: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -280,6 +277,7 @@ class ShopPartialBidCalculationInputAPI(
             function_call_id_prefix: The prefix of the function call id to filter on.
             plant: The plant to filter on.
             market_configuration: The market configuration to filter on.
+            step_enabled: The step enabled to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop partial bid calculation inputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -309,6 +307,7 @@ class ShopPartialBidCalculationInputAPI(
             function_call_id_prefix,
             plant,
             market_configuration,
+            step_enabled,
             external_id_prefix,
             space,
             filter,
@@ -342,6 +341,7 @@ class ShopPartialBidCalculationInputAPI(
         function_call_id_prefix: str | None = None,
         plant: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        step_enabled: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -373,6 +373,7 @@ class ShopPartialBidCalculationInputAPI(
         function_call_id_prefix: str | None = None,
         plant: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        step_enabled: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -403,6 +404,7 @@ class ShopPartialBidCalculationInputAPI(
         function_call_id_prefix: str | None = None,
         plant: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        step_enabled: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -426,6 +428,7 @@ class ShopPartialBidCalculationInputAPI(
             function_call_id_prefix: The prefix of the function call id to filter on.
             plant: The plant to filter on.
             market_configuration: The market configuration to filter on.
+            step_enabled: The step enabled to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop partial bid calculation inputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -456,6 +459,7 @@ class ShopPartialBidCalculationInputAPI(
             function_call_id_prefix,
             plant,
             market_configuration,
+            step_enabled,
             external_id_prefix,
             space,
             filter,
@@ -490,6 +494,7 @@ class ShopPartialBidCalculationInputAPI(
         function_call_id_prefix: str | None = None,
         plant: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        step_enabled: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -512,6 +517,7 @@ class ShopPartialBidCalculationInputAPI(
             function_call_id_prefix: The prefix of the function call id to filter on.
             plant: The plant to filter on.
             market_configuration: The market configuration to filter on.
+            step_enabled: The step enabled to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop partial bid calculation inputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -533,6 +539,7 @@ class ShopPartialBidCalculationInputAPI(
             function_call_id_prefix,
             plant,
             market_configuration,
+            step_enabled,
             external_id_prefix,
             space,
             filter,
@@ -560,6 +567,7 @@ class ShopPartialBidCalculationInputAPI(
         function_call_id_prefix: str | None = None,
         plant: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        step_enabled: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -579,11 +587,12 @@ class ShopPartialBidCalculationInputAPI(
             function_call_id_prefix: The prefix of the function call id to filter on.
             plant: The plant to filter on.
             market_configuration: The market configuration to filter on.
+            step_enabled: The step enabled to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop partial bid calculation inputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
-            retrieve_edges: Whether to retrieve `alerts` or `shop_results` external ids for the shop partial bid calculation inputs. Defaults to True.
+            retrieve_edges: Whether to retrieve `shop_result_price_prod` external ids for the shop partial bid calculation inputs. Defaults to True.
 
         Returns:
             List of requested shop partial bid calculation inputs
@@ -609,6 +618,7 @@ class ShopPartialBidCalculationInputAPI(
             function_call_id_prefix,
             plant,
             market_configuration,
+            step_enabled,
             external_id_prefix,
             space,
             filter,
@@ -620,18 +630,11 @@ class ShopPartialBidCalculationInputAPI(
             retrieve_edges=retrieve_edges,
             edge_api_name_type_direction_view_id_penta=[
                 (
-                    self.alerts_edge,
-                    "alerts",
-                    dm.DirectRelationReference("sp_powerops_types", "calculationIssue"),
+                    self.shop_result_price_prod_edge,
+                    "shop_result_price_prod",
+                    dm.DirectRelationReference("sp_powerops_types", "SHOPResultPriceProd"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models", "Alert", "1"),
-                ),
-                (
-                    self.shop_results_edge,
-                    "shop_results",
-                    dm.DirectRelationReference("sp_powerops_types", "SHOPResult"),
-                    "outwards",
-                    dm.ViewId("sp_powerops_models", "SHOPResult", "1"),
+                    dm.ViewId("sp_powerops_models", "SHOPResultPriceProd", "1"),
                 ),
             ],
         )

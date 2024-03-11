@@ -6,6 +6,7 @@ import warnings
 
 from cognite.client import CogniteClient
 from cognite.client import data_modeling as dm
+from cognite.client.data_classes.data_modeling.instances import InstanceAggregationResultList
 
 from cognite.powerops.client._generated.v1.data_classes._core import DEFAULT_INSTANCE_SPACE
 from cognite.powerops.client._generated.v1.data_classes import (
@@ -14,10 +15,13 @@ from cognite.powerops.client._generated.v1.data_classes import (
     ResourcesWriteResult,
     BidConfigurationShop,
     BidConfigurationShopWrite,
+    BidConfigurationShopFields,
     BidConfigurationShopList,
     BidConfigurationShopWriteList,
+    BidConfigurationShopTextFields,
 )
 from cognite.powerops.client._generated.v1.data_classes._bid_configuration_shop import (
+    _BIDCONFIGURATIONSHOP_PROPERTIES_BY_FIELD,
     _create_bid_configuration_shop_filter,
 )
 from ._core import (
@@ -52,6 +56,8 @@ class BidConfigurationShopAPI(NodeAPI[BidConfigurationShop, BidConfigurationShop
     def __call__(
         self,
         market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
@@ -63,6 +69,8 @@ class BidConfigurationShopAPI(NodeAPI[BidConfigurationShop, BidConfigurationShop
 
         Args:
             market_configuration: The market configuration to filter on.
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
             method: The method to filter on.
             price_area: The price area to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
@@ -78,6 +86,8 @@ class BidConfigurationShopAPI(NodeAPI[BidConfigurationShop, BidConfigurationShop
         filter_ = _create_bid_configuration_shop_filter(
             self._view_id,
             market_configuration,
+            name,
+            name_prefix,
             method,
             price_area,
             external_id_prefix,
@@ -213,9 +223,248 @@ class BidConfigurationShopAPI(NodeAPI[BidConfigurationShop, BidConfigurationShop
             ],
         )
 
+    def search(
+        self,
+        query: str,
+        properties: BidConfigurationShopTextFields | Sequence[BidConfigurationShopTextFields] | None = None,
+        market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int | None = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> BidConfigurationShopList:
+        """Search bid configuration shops
+
+        Args:
+            query: The search query,
+            properties: The property to search, if nothing is passed all text fields will be searched.
+            market_configuration: The market configuration to filter on.
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
+            method: The method to filter on.
+            price_area: The price area to filter on.
+            external_id_prefix: The prefix of the external ID to filter on.
+            space: The space to filter on.
+            limit: Maximum number of bid configuration shops to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+
+        Returns:
+            Search results bid configuration shops matching the query.
+
+        Examples:
+
+           Search for 'my_bid_configuration_shop' in all text properties:
+
+                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
+                >>> client = PowerOpsModelsV1Client()
+                >>> bid_configuration_shops = client.bid_configuration_shop.search('my_bid_configuration_shop')
+
+        """
+        filter_ = _create_bid_configuration_shop_filter(
+            self._view_id,
+            market_configuration,
+            name,
+            name_prefix,
+            method,
+            price_area,
+            external_id_prefix,
+            space,
+            filter,
+        )
+        return self._search(self._view_id, query, _BIDCONFIGURATIONSHOP_PROPERTIES_BY_FIELD, properties, filter_, limit)
+
+    @overload
+    def aggregate(
+        self,
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
+        property: BidConfigurationShopFields | Sequence[BidConfigurationShopFields] | None = None,
+        group_by: None = None,
+        query: str | None = None,
+        search_properties: BidConfigurationShopTextFields | Sequence[BidConfigurationShopTextFields] | None = None,
+        market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int | None = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> list[dm.aggregations.AggregatedNumberedValue]: ...
+
+    @overload
+    def aggregate(
+        self,
+        aggregations: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
+        property: BidConfigurationShopFields | Sequence[BidConfigurationShopFields] | None = None,
+        group_by: BidConfigurationShopFields | Sequence[BidConfigurationShopFields] = None,
+        query: str | None = None,
+        search_properties: BidConfigurationShopTextFields | Sequence[BidConfigurationShopTextFields] | None = None,
+        market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int | None = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> InstanceAggregationResultList: ...
+
+    def aggregate(
+        self,
+        aggregate: (
+            Aggregations
+            | dm.aggregations.MetricAggregation
+            | Sequence[Aggregations]
+            | Sequence[dm.aggregations.MetricAggregation]
+        ),
+        property: BidConfigurationShopFields | Sequence[BidConfigurationShopFields] | None = None,
+        group_by: BidConfigurationShopFields | Sequence[BidConfigurationShopFields] | None = None,
+        query: str | None = None,
+        search_property: BidConfigurationShopTextFields | Sequence[BidConfigurationShopTextFields] | None = None,
+        market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int | None = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> list[dm.aggregations.AggregatedNumberedValue] | InstanceAggregationResultList:
+        """Aggregate data across bid configuration shops
+
+        Args:
+            aggregate: The aggregation to perform.
+            property: The property to perform aggregation on.
+            group_by: The property to group by when doing the aggregation.
+            query: The query to search for in the text field.
+            search_property: The text field to search in.
+            market_configuration: The market configuration to filter on.
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
+            method: The method to filter on.
+            price_area: The price area to filter on.
+            external_id_prefix: The prefix of the external ID to filter on.
+            space: The space to filter on.
+            limit: Maximum number of bid configuration shops to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+
+        Returns:
+            Aggregation results.
+
+        Examples:
+
+            Count bid configuration shops in space `my_space`:
+
+                >>> from cognite.powerops.client._generated.v1 import PowerOpsModelsV1Client
+                >>> client = PowerOpsModelsV1Client()
+                >>> result = client.bid_configuration_shop.aggregate("count", space="my_space")
+
+        """
+
+        filter_ = _create_bid_configuration_shop_filter(
+            self._view_id,
+            market_configuration,
+            name,
+            name_prefix,
+            method,
+            price_area,
+            external_id_prefix,
+            space,
+            filter,
+        )
+        return self._aggregate(
+            self._view_id,
+            aggregate,
+            _BIDCONFIGURATIONSHOP_PROPERTIES_BY_FIELD,
+            property,
+            group_by,
+            query,
+            search_property,
+            limit,
+            filter_,
+        )
+
+    def histogram(
+        self,
+        property: BidConfigurationShopFields,
+        interval: float,
+        query: str | None = None,
+        search_property: BidConfigurationShopTextFields | Sequence[BidConfigurationShopTextFields] | None = None,
+        market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
+        method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        external_id_prefix: str | None = None,
+        space: str | list[str] | None = None,
+        limit: int | None = DEFAULT_LIMIT_READ,
+        filter: dm.Filter | None = None,
+    ) -> dm.aggregations.HistogramValue:
+        """Produces histograms for bid configuration shops
+
+        Args:
+            property: The property to use as the value in the histogram.
+            interval: The interval to use for the histogram bins.
+            query: The query to search for in the text field.
+            search_property: The text field to search in.
+            market_configuration: The market configuration to filter on.
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
+            method: The method to filter on.
+            price_area: The price area to filter on.
+            external_id_prefix: The prefix of the external ID to filter on.
+            space: The space to filter on.
+            limit: Maximum number of bid configuration shops to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
+            filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
+
+        Returns:
+            Bucketed histogram results.
+
+        """
+        filter_ = _create_bid_configuration_shop_filter(
+            self._view_id,
+            market_configuration,
+            name,
+            name_prefix,
+            method,
+            price_area,
+            external_id_prefix,
+            space,
+            filter,
+        )
+        return self._histogram(
+            self._view_id,
+            property,
+            interval,
+            _BIDCONFIGURATIONSHOP_PROPERTIES_BY_FIELD,
+            query,
+            search_property,
+            limit,
+            filter_,
+        )
+
     def list(
         self,
         market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         method: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         price_area: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
@@ -228,6 +477,8 @@ class BidConfigurationShopAPI(NodeAPI[BidConfigurationShop, BidConfigurationShop
 
         Args:
             market_configuration: The market configuration to filter on.
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
             method: The method to filter on.
             price_area: The price area to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
@@ -251,6 +502,8 @@ class BidConfigurationShopAPI(NodeAPI[BidConfigurationShop, BidConfigurationShop
         filter_ = _create_bid_configuration_shop_filter(
             self._view_id,
             market_configuration,
+            name,
+            name_prefix,
             method,
             price_area,
             external_id_prefix,

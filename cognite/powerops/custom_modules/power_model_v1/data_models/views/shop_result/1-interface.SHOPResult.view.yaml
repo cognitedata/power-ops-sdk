@@ -11,11 +11,6 @@ filter:
   - equals:
       property:
       - node
-      - space
-      value: '{{powerops_instance_space}}'
-  - equals:
-      property:
-      - node
       - type
       value:
         externalId: SHOPResult

@@ -50,7 +50,9 @@ from ._bid_configuration_shop import (
     BidConfigurationShop,
     BidConfigurationShopApply,
     BidConfigurationShopApplyList,
+    BidConfigurationShopFields,
     BidConfigurationShopList,
+    BidConfigurationShopTextFields,
     BidConfigurationShopWrite,
     BidConfigurationShopWriteList,
 )
@@ -171,6 +173,17 @@ from ._bid_row import (
     BidRowTextFields,
     BidRowWrite,
     BidRowWriteList,
+)
+from ._case import Case, CaseApply, CaseApplyList, CaseFields, CaseList, CaseWrite, CaseWriteList
+from ._commands import (
+    Commands,
+    CommandsApply,
+    CommandsApplyList,
+    CommandsFields,
+    CommandsList,
+    CommandsTextFields,
+    CommandsWrite,
+    CommandsWriteList,
 )
 from ._custom_bid_matrix import (
     CustomBidMatrix,
@@ -341,15 +354,14 @@ from ._price_area_asset import (
     PriceAreaAssetWrite,
     PriceAreaAssetWriteList,
 )
-from ._price_scenario import (
-    PriceScenario,
-    PriceScenarioApply,
-    PriceScenarioApplyList,
-    PriceScenarioFields,
-    PriceScenarioList,
-    PriceScenarioTextFields,
-    PriceScenarioWrite,
-    PriceScenarioWriteList,
+from ._price_prod_case import (
+    PriceProdCase,
+    PriceProdCaseApply,
+    PriceProdCaseApplyList,
+    PriceProdCaseFields,
+    PriceProdCaseList,
+    PriceProdCaseWrite,
+    PriceProdCaseWriteList,
 )
 from ._reservoir import (
     Reservoir,
@@ -369,6 +381,25 @@ from ._shop_result import (
     SHOPResultList,
     SHOPResultWrite,
     SHOPResultWriteList,
+)
+from ._shop_result_price_prod import (
+    SHOPResultPriceProd,
+    SHOPResultPriceProdApply,
+    SHOPResultPriceProdApplyList,
+    SHOPResultPriceProdFields,
+    SHOPResultPriceProdList,
+    SHOPResultPriceProdWrite,
+    SHOPResultPriceProdWriteList,
+)
+from ._shop_time_series import (
+    SHOPTimeSeries,
+    SHOPTimeSeriesApply,
+    SHOPTimeSeriesApplyList,
+    SHOPTimeSeriesFields,
+    SHOPTimeSeriesList,
+    SHOPTimeSeriesTextFields,
+    SHOPTimeSeriesWrite,
+    SHOPTimeSeriesWriteList,
 )
 from ._shop_trigger_input import (
     SHOPTriggerInput,
@@ -399,16 +430,6 @@ from ._scenario import (
     ScenarioTextFields,
     ScenarioWrite,
     ScenarioWriteList,
-)
-from ._scenario_raw import (
-    ScenarioRaw,
-    ScenarioRawApply,
-    ScenarioRawApplyList,
-    ScenarioRawFields,
-    ScenarioRawList,
-    ScenarioRawTextFields,
-    ScenarioRawWrite,
-    ScenarioRawWriteList,
 )
 from ._shop_partial_bid_calculation_input import (
     ShopPartialBidCalculationInput,
@@ -567,21 +588,15 @@ BidMatrixApply.model_rebuild()
 BidMatrixRaw.model_rebuild()
 BidMatrixRawWrite.model_rebuild()
 BidMatrixRawApply.model_rebuild()
-BidMethodCustom.model_rebuild()
-BidMethodCustomWrite.model_rebuild()
-BidMethodCustomApply.model_rebuild()
-BidMethodDayAhead.model_rebuild()
-BidMethodDayAheadWrite.model_rebuild()
-BidMethodDayAheadApply.model_rebuild()
 BidMethodSHOPMultiScenario.model_rebuild()
 BidMethodSHOPMultiScenarioWrite.model_rebuild()
 BidMethodSHOPMultiScenarioApply.model_rebuild()
-BidMethodWaterValue.model_rebuild()
-BidMethodWaterValueWrite.model_rebuild()
-BidMethodWaterValueApply.model_rebuild()
 BidRow.model_rebuild()
 BidRowWrite.model_rebuild()
 BidRowApply.model_rebuild()
+Case.model_rebuild()
+CaseWrite.model_rebuild()
+CaseApply.model_rebuild()
 CustomBidMatrix.model_rebuild()
 CustomBidMatrixWrite.model_rebuild()
 CustomBidMatrixApply.model_rebuild()
@@ -615,9 +630,15 @@ PreprocessorOutputApply.model_rebuild()
 PriceAreaAsset.model_rebuild()
 PriceAreaAssetWrite.model_rebuild()
 PriceAreaAssetApply.model_rebuild()
+PriceProdCase.model_rebuild()
+PriceProdCaseWrite.model_rebuild()
+PriceProdCaseApply.model_rebuild()
 SHOPResult.model_rebuild()
 SHOPResultWrite.model_rebuild()
 SHOPResultApply.model_rebuild()
+SHOPResultPriceProd.model_rebuild()
+SHOPResultPriceProdWrite.model_rebuild()
+SHOPResultPriceProdApply.model_rebuild()
 SHOPTriggerInput.model_rebuild()
 SHOPTriggerInputWrite.model_rebuild()
 SHOPTriggerInputApply.model_rebuild()
@@ -627,9 +648,6 @@ SHOPTriggerOutputApply.model_rebuild()
 Scenario.model_rebuild()
 ScenarioWrite.model_rebuild()
 ScenarioApply.model_rebuild()
-ScenarioRaw.model_rebuild()
-ScenarioRawWrite.model_rebuild()
-ScenarioRawApply.model_rebuild()
 ShopPartialBidCalculationInput.model_rebuild()
 ShopPartialBidCalculationInputWrite.model_rebuild()
 ShopPartialBidCalculationInputApply.model_rebuild()
@@ -709,6 +727,8 @@ __all__ = [
     "BidConfigurationShopList",
     "BidConfigurationShopWriteList",
     "BidConfigurationShopApplyList",
+    "BidConfigurationShopFields",
+    "BidConfigurationShopTextFields",
     "BidConfigurationWater",
     "BidConfigurationWaterWrite",
     "BidConfigurationWaterApply",
@@ -803,6 +823,21 @@ __all__ = [
     "BidRowApplyList",
     "BidRowFields",
     "BidRowTextFields",
+    "Case",
+    "CaseWrite",
+    "CaseApply",
+    "CaseList",
+    "CaseWriteList",
+    "CaseApplyList",
+    "CaseFields",
+    "Commands",
+    "CommandsWrite",
+    "CommandsApply",
+    "CommandsList",
+    "CommandsWriteList",
+    "CommandsApplyList",
+    "CommandsFields",
+    "CommandsTextFields",
     "CustomBidMatrix",
     "CustomBidMatrixWrite",
     "CustomBidMatrixApply",
@@ -938,14 +973,13 @@ __all__ = [
     "PriceAreaAssetApplyList",
     "PriceAreaAssetFields",
     "PriceAreaAssetTextFields",
-    "PriceScenario",
-    "PriceScenarioWrite",
-    "PriceScenarioApply",
-    "PriceScenarioList",
-    "PriceScenarioWriteList",
-    "PriceScenarioApplyList",
-    "PriceScenarioFields",
-    "PriceScenarioTextFields",
+    "PriceProdCase",
+    "PriceProdCaseWrite",
+    "PriceProdCaseApply",
+    "PriceProdCaseList",
+    "PriceProdCaseWriteList",
+    "PriceProdCaseApplyList",
+    "PriceProdCaseFields",
     "Reservoir",
     "ReservoirWrite",
     "ReservoirApply",
@@ -961,6 +995,21 @@ __all__ = [
     "SHOPResultWriteList",
     "SHOPResultApplyList",
     "SHOPResultFields",
+    "SHOPResultPriceProd",
+    "SHOPResultPriceProdWrite",
+    "SHOPResultPriceProdApply",
+    "SHOPResultPriceProdList",
+    "SHOPResultPriceProdWriteList",
+    "SHOPResultPriceProdApplyList",
+    "SHOPResultPriceProdFields",
+    "SHOPTimeSeries",
+    "SHOPTimeSeriesWrite",
+    "SHOPTimeSeriesApply",
+    "SHOPTimeSeriesList",
+    "SHOPTimeSeriesWriteList",
+    "SHOPTimeSeriesApplyList",
+    "SHOPTimeSeriesFields",
+    "SHOPTimeSeriesTextFields",
     "SHOPTriggerInput",
     "SHOPTriggerInputWrite",
     "SHOPTriggerInputApply",
@@ -985,14 +1034,6 @@ __all__ = [
     "ScenarioApplyList",
     "ScenarioFields",
     "ScenarioTextFields",
-    "ScenarioRaw",
-    "ScenarioRawWrite",
-    "ScenarioRawApply",
-    "ScenarioRawList",
-    "ScenarioRawWriteList",
-    "ScenarioRawApplyList",
-    "ScenarioRawFields",
-    "ScenarioRawTextFields",
     "ShopPartialBidCalculationInput",
     "ShopPartialBidCalculationInputWrite",
     "ShopPartialBidCalculationInputApply",

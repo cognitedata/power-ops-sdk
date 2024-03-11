@@ -22,8 +22,7 @@ from ._core import (
 
 if TYPE_CHECKING:
     from ._alert import Alert, AlertWrite
-    from ._price_scenario import PriceScenario, PriceScenarioWrite
-    from ._scenario import Scenario, ScenarioWrite
+    from ._case import Case, CaseWrite
 
 
 __all__ = [
@@ -38,13 +37,20 @@ __all__ = [
 ]
 
 
-SHOPResultTextFields = Literal["production", "price", "objective_sequence"]
-SHOPResultFields = Literal["production", "price", "objective_sequence"]
+SHOPResultTextFields = Literal[
+    "output_timeseries", "objective_sequence", "pre_run", "post_run", "shop_messages", "cplex_logs"
+]
+SHOPResultFields = Literal[
+    "output_timeseries", "objective_sequence", "pre_run", "post_run", "shop_messages", "cplex_logs"
+]
 
 _SHOPRESULT_PROPERTIES_BY_FIELD = {
-    "production": "production",
-    "price": "price",
+    "output_timeseries": "outputTimeseries",
     "objective_sequence": "objectiveSequence",
+    "pre_run": "preRun",
+    "post_run": "postRun",
+    "shop_messages": "shopMessages",
+    "cplex_logs": "cplexLogs",
 }
 
 
@@ -57,21 +63,25 @@ class SHOPResult(DomainModel):
         space: The space where the node is located.
         external_id: The external id of the shop result.
         data_record: The data record of the shop result node.
-        scenario: The Shop scenario that was used to produce this result
-        price_scenario: The price scenario that was used to produce this result
-        production: The result production timeseries from a SHOP run
-        price: The result price timeseries from a SHOP run
+        case: The case that was used to produce this result
+        output_timeseries: A general placeholder for all timeseries that stem from a shop run
         objective_sequence: The sequence of the objective function
+        pre_run: The pre-run data for the SHOP run
+        post_run: The post-run data for the SHOP run
+        shop_messages: The messages from the SHOP run
+        cplex_logs: The logs from CPLEX
         alerts: An array of calculation level Alerts.
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types", "SHOPResult")
-    scenario: Union[Scenario, str, dm.NodeId, None] = Field(None, repr=False)
-    price_scenario: Union[PriceScenario, str, dm.NodeId, None] = Field(None, repr=False)
-    production: Union[list[TimeSeries], list[str], None] = None
-    price: Union[list[TimeSeries], list[str], None] = None
+    case: Union[Case, str, dm.NodeId, None] = Field(None, repr=False)
+    output_timeseries: Union[list[TimeSeries], list[str], None] = Field(None, alias="outputTimeseries")
     objective_sequence: Union[str, None] = Field(None, alias="objectiveSequence")
+    pre_run: Union[str, None] = Field(None, alias="preRun")
+    post_run: Union[str, None] = Field(None, alias="postRun")
+    shop_messages: Union[str, None] = Field(None, alias="shopMessages")
+    cplex_logs: Union[str, None] = Field(None, alias="cplexLogs")
     alerts: Union[list[Alert], list[str], None] = Field(default=None, repr=False)
 
     def as_write(self) -> SHOPResultWrite:
@@ -80,13 +90,13 @@ class SHOPResult(DomainModel):
             space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
-            scenario=self.scenario.as_write() if isinstance(self.scenario, DomainModel) else self.scenario,
-            price_scenario=(
-                self.price_scenario.as_write() if isinstance(self.price_scenario, DomainModel) else self.price_scenario
-            ),
-            production=self.production,
-            price=self.price,
+            case=self.case.as_write() if isinstance(self.case, DomainModel) else self.case,
+            output_timeseries=self.output_timeseries,
             objective_sequence=self.objective_sequence,
+            pre_run=self.pre_run,
+            post_run=self.post_run,
+            shop_messages=self.shop_messages,
+            cplex_logs=self.cplex_logs,
             alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
         )
 
@@ -109,21 +119,25 @@ class SHOPResultWrite(DomainModelWrite):
         space: The space where the node is located.
         external_id: The external id of the shop result.
         data_record: The data record of the shop result node.
-        scenario: The Shop scenario that was used to produce this result
-        price_scenario: The price scenario that was used to produce this result
-        production: The result production timeseries from a SHOP run
-        price: The result price timeseries from a SHOP run
+        case: The case that was used to produce this result
+        output_timeseries: A general placeholder for all timeseries that stem from a shop run
         objective_sequence: The sequence of the objective function
+        pre_run: The pre-run data for the SHOP run
+        post_run: The post-run data for the SHOP run
+        shop_messages: The messages from the SHOP run
+        cplex_logs: The logs from CPLEX
         alerts: An array of calculation level Alerts.
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types", "SHOPResult")
-    scenario: Union[ScenarioWrite, str, dm.NodeId, None] = Field(None, repr=False)
-    price_scenario: Union[PriceScenarioWrite, str, dm.NodeId, None] = Field(None, repr=False)
-    production: Union[list[TimeSeries], list[str], None] = None
-    price: Union[list[TimeSeries], list[str], None] = None
+    case: Union[CaseWrite, str, dm.NodeId, None] = Field(None, repr=False)
+    output_timeseries: Union[list[TimeSeries], list[str], None] = Field(None, alias="outputTimeseries")
     objective_sequence: Union[str, None] = Field(None, alias="objectiveSequence")
+    pre_run: Union[str, None] = Field(None, alias="preRun")
+    post_run: Union[str, None] = Field(None, alias="postRun")
+    shop_messages: Union[str, None] = Field(None, alias="shopMessages")
+    cplex_logs: Union[str, None] = Field(None, alias="cplexLogs")
     alerts: Union[list[AlertWrite], list[str], None] = Field(default=None, repr=False)
 
     def _to_instances_write(
@@ -140,32 +154,31 @@ class SHOPResultWrite(DomainModelWrite):
 
         properties: dict[str, Any] = {}
 
-        if self.scenario is not None:
-            properties["scenario"] = {
-                "space": self.space if isinstance(self.scenario, str) else self.scenario.space,
-                "externalId": self.scenario if isinstance(self.scenario, str) else self.scenario.external_id,
+        if self.case is not None:
+            properties["case"] = {
+                "space": self.space if isinstance(self.case, str) else self.case.space,
+                "externalId": self.case if isinstance(self.case, str) else self.case.external_id,
             }
 
-        if self.price_scenario is not None:
-            properties["price_scenario"] = {
-                "space": self.space if isinstance(self.price_scenario, str) else self.price_scenario.space,
-                "externalId": (
-                    self.price_scenario if isinstance(self.price_scenario, str) else self.price_scenario.external_id
-                ),
-            }
-
-        if self.production is not None or write_none:
-            properties["production"] = [
-                value if isinstance(value, str) else value.external_id for value in self.production or []
-            ] or None
-
-        if self.price is not None or write_none:
-            properties["price"] = [
-                value if isinstance(value, str) else value.external_id for value in self.price or []
+        if self.output_timeseries is not None or write_none:
+            properties["outputTimeseries"] = [
+                value if isinstance(value, str) else value.external_id for value in self.output_timeseries or []
             ] or None
 
         if self.objective_sequence is not None or write_none:
             properties["objectiveSequence"] = self.objective_sequence
+
+        if self.pre_run is not None or write_none:
+            properties["preRun"] = self.pre_run
+
+        if self.post_run is not None or write_none:
+            properties["postRun"] = self.post_run
+
+        if self.shop_messages is not None or write_none:
+            properties["shopMessages"] = self.shop_messages
+
+        if self.cplex_logs is not None or write_none:
+            properties["cplexLogs"] = self.cplex_logs
 
         if properties:
             this_node = dm.NodeApply(
@@ -190,19 +203,12 @@ class SHOPResultWrite(DomainModelWrite):
             )
             resources.extend(other_resources)
 
-        if isinstance(self.scenario, DomainModelWrite):
-            other_resources = self.scenario._to_instances_write(cache, view_by_read_class)
+        if isinstance(self.case, DomainModelWrite):
+            other_resources = self.case._to_instances_write(cache, view_by_read_class)
             resources.extend(other_resources)
 
-        if isinstance(self.price_scenario, DomainModelWrite):
-            other_resources = self.price_scenario._to_instances_write(cache, view_by_read_class)
-            resources.extend(other_resources)
-
-        if isinstance(self.production, CogniteTimeSeries):
-            resources.time_series.append(self.production)
-
-        if isinstance(self.price, CogniteTimeSeries):
-            resources.time_series.append(self.price)
+        if isinstance(self.output_timeseries, CogniteTimeSeries):
+            resources.time_series.append(self.output_timeseries)
 
         return resources
 
@@ -249,65 +255,33 @@ class SHOPResultApplyList(SHOPResultWriteList): ...
 
 def _create_shop_result_filter(
     view_id: dm.ViewId,
-    scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-    price_scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+    case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
-    if scenario and isinstance(scenario, str):
+    if case and isinstance(case, str):
         filters.append(
             dm.filters.Equals(
-                view_id.as_property_ref("scenario"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": scenario}
+                view_id.as_property_ref("case"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": case}
             )
         )
-    if scenario and isinstance(scenario, tuple):
+    if case and isinstance(case, tuple):
         filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("scenario"), value={"space": scenario[0], "externalId": scenario[1]}
-            )
+            dm.filters.Equals(view_id.as_property_ref("case"), value={"space": case[0], "externalId": case[1]})
         )
-    if scenario and isinstance(scenario, list) and isinstance(scenario[0], str):
+    if case and isinstance(case, list) and isinstance(case[0], str):
         filters.append(
             dm.filters.In(
-                view_id.as_property_ref("scenario"),
-                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in scenario],
+                view_id.as_property_ref("case"),
+                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in case],
             )
         )
-    if scenario and isinstance(scenario, list) and isinstance(scenario[0], tuple):
+    if case and isinstance(case, list) and isinstance(case[0], tuple):
         filters.append(
             dm.filters.In(
-                view_id.as_property_ref("scenario"),
-                values=[{"space": item[0], "externalId": item[1]} for item in scenario],
-            )
-        )
-    if price_scenario and isinstance(price_scenario, str):
-        filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("price_scenario"),
-                value={"space": DEFAULT_INSTANCE_SPACE, "externalId": price_scenario},
-            )
-        )
-    if price_scenario and isinstance(price_scenario, tuple):
-        filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("price_scenario"),
-                value={"space": price_scenario[0], "externalId": price_scenario[1]},
-            )
-        )
-    if price_scenario and isinstance(price_scenario, list) and isinstance(price_scenario[0], str):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("price_scenario"),
-                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in price_scenario],
-            )
-        )
-    if price_scenario and isinstance(price_scenario, list) and isinstance(price_scenario[0], tuple):
-        filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("price_scenario"),
-                values=[{"space": item[0], "externalId": item[1]} for item in price_scenario],
+                view_id.as_property_ref("case"), values=[{"space": item[0], "externalId": item[1]} for item in case]
             )
         )
     if external_id_prefix is not None:

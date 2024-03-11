@@ -31,8 +31,9 @@ __all__ = [
 ]
 
 
-MarketConfigurationTextFields = Literal["market_type", "time_zone", "price_unit", "time_unit"]
+MarketConfigurationTextFields = Literal["name", "market_type", "time_zone", "price_unit", "time_unit"]
 MarketConfigurationFields = Literal[
+    "name",
     "market_type",
     "max_price",
     "min_price",
@@ -45,6 +46,7 @@ MarketConfigurationFields = Literal[
 ]
 
 _MARKETCONFIGURATION_PROPERTIES_BY_FIELD = {
+    "name": "name",
     "market_type": "marketType",
     "max_price": "maxPrice",
     "min_price": "minPrice",
@@ -66,6 +68,7 @@ class MarketConfiguration(DomainModel):
         space: The space where the node is located.
         external_id: The external id of the market configuration.
         data_record: The data record of the market configuration node.
+        name: The name of the market
         market_type: The market type
         max_price: The maximum price
         min_price: The minimum price
@@ -81,6 +84,7 @@ class MarketConfiguration(DomainModel):
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
         "sp_powerops_types", "MarketConfiguration"
     )
+    name: Optional[str] = None
     market_type: str = Field(alias="marketType")
     max_price: float = Field(alias="maxPrice")
     min_price: float = Field(alias="minPrice")
@@ -97,6 +101,7 @@ class MarketConfiguration(DomainModel):
             space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
+            name=self.name,
             market_type=self.market_type,
             max_price=self.max_price,
             min_price=self.min_price,
@@ -127,6 +132,7 @@ class MarketConfigurationWrite(DomainModelWrite):
         space: The space where the node is located.
         external_id: The external id of the market configuration.
         data_record: The data record of the market configuration node.
+        name: The name of the market
         market_type: The market type
         max_price: The maximum price
         min_price: The minimum price
@@ -142,6 +148,7 @@ class MarketConfigurationWrite(DomainModelWrite):
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
         "sp_powerops_types", "MarketConfiguration"
     )
+    name: Optional[str] = None
     market_type: str = Field(alias="marketType")
     max_price: float = Field(alias="maxPrice")
     min_price: float = Field(alias="minPrice")
@@ -167,6 +174,9 @@ class MarketConfigurationWrite(DomainModelWrite):
         )
 
         properties: dict[str, Any] = {}
+
+        if self.name is not None or write_none:
+            properties["name"] = self.name
 
         if self.market_type is not None:
             properties["marketType"] = self.market_type
@@ -256,6 +266,8 @@ class MarketConfigurationApplyList(MarketConfigurationWriteList): ...
 
 def _create_market_configuration_filter(
     view_id: dm.ViewId,
+    name: str | list[str] | None = None,
+    name_prefix: str | None = None,
     market_type: str | list[str] | None = None,
     market_type_prefix: str | None = None,
     min_max_price: float | None = None,
@@ -279,6 +291,12 @@ def _create_market_configuration_filter(
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
+    if isinstance(name, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("name"), value=name))
+    if name and isinstance(name, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
+    if name_prefix is not None:
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
     if isinstance(market_type, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("marketType"), value=market_type))
     if market_type and isinstance(market_type, list):

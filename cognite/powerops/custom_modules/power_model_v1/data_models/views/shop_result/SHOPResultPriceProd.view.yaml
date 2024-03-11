@@ -53,5 +53,3 @@ properties:
     name: productionTimeseries
     description: The production timeseries wrapped as a ShopTimeSeries object containing properties related to their names and types in the resulting output shop file
     connectionType: multi_edge_connection
-
-#Plant name will be in the object name of the timeseries

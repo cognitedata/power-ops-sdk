@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import datetime
 import warnings
 from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
@@ -19,7 +20,7 @@ from ._core import (
 )
 
 if TYPE_CHECKING:
-    from ._scenario_raw import ScenarioRaw, ScenarioRawWrite
+    from ._scenario import Scenario, ScenarioWrite
 
 
 __all__ = [
@@ -35,13 +36,17 @@ __all__ = [
 
 
 PreprocessorInputTextFields = Literal["process_id", "function_name", "function_call_id"]
-PreprocessorInputFields = Literal["process_id", "process_step", "function_name", "function_call_id"]
+PreprocessorInputFields = Literal[
+    "process_id", "process_step", "function_name", "function_call_id", "shop_start", "shop_end"
+]
 
 _PREPROCESSORINPUT_PROPERTIES_BY_FIELD = {
     "process_id": "processId",
     "process_step": "processStep",
     "function_name": "functionName",
     "function_call_id": "functionCallId",
+    "shop_start": "shopStart",
+    "shop_end": "shopEnd",
 }
 
 
@@ -58,7 +63,9 @@ class PreprocessorInput(DomainModel):
         process_step: This is the step in the process.
         function_name: The name of the function
         function_call_id: The function call id
-        scenario_raw: The scenario that needs preprocessing before being sent to shop (has isReady flag set to false)
+        scenario: The scenario to run shop with
+        shop_start: Start date of bid period
+        shop_end: End date of bid period
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -69,7 +76,9 @@ class PreprocessorInput(DomainModel):
     process_step: int = Field(alias="processStep")
     function_name: str = Field(alias="functionName")
     function_call_id: str = Field(alias="functionCallId")
-    scenario_raw: Union[ScenarioRaw, str, dm.NodeId, None] = Field(None, repr=False, alias="scenarioRaw")
+    scenario: Union[Scenario, str, dm.NodeId, None] = Field(None, repr=False)
+    shop_start: Optional[datetime.date] = Field(None, alias="shopStart")
+    shop_end: Optional[datetime.date] = Field(None, alias="shopEnd")
 
     def as_write(self) -> PreprocessorInputWrite:
         """Convert this read version of preprocessor input to the writing version."""
@@ -81,9 +90,9 @@ class PreprocessorInput(DomainModel):
             process_step=self.process_step,
             function_name=self.function_name,
             function_call_id=self.function_call_id,
-            scenario_raw=(
-                self.scenario_raw.as_write() if isinstance(self.scenario_raw, DomainModel) else self.scenario_raw
-            ),
+            scenario=self.scenario.as_write() if isinstance(self.scenario, DomainModel) else self.scenario,
+            shop_start=self.shop_start,
+            shop_end=self.shop_end,
         )
 
     def as_apply(self) -> PreprocessorInputWrite:
@@ -109,7 +118,9 @@ class PreprocessorInputWrite(DomainModelWrite):
         process_step: This is the step in the process.
         function_name: The name of the function
         function_call_id: The function call id
-        scenario_raw: The scenario that needs preprocessing before being sent to shop (has isReady flag set to false)
+        scenario: The scenario to run shop with
+        shop_start: Start date of bid period
+        shop_end: End date of bid period
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -120,7 +131,9 @@ class PreprocessorInputWrite(DomainModelWrite):
     process_step: int = Field(alias="processStep")
     function_name: str = Field(alias="functionName")
     function_call_id: str = Field(alias="functionCallId")
-    scenario_raw: Union[ScenarioRawWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="scenarioRaw")
+    scenario: Union[ScenarioWrite, str, dm.NodeId, None] = Field(None, repr=False)
+    shop_start: Optional[datetime.date] = Field(None, alias="shopStart")
+    shop_end: Optional[datetime.date] = Field(None, alias="shopEnd")
 
     def _to_instances_write(
         self,
@@ -150,13 +163,17 @@ class PreprocessorInputWrite(DomainModelWrite):
         if self.function_call_id is not None:
             properties["functionCallId"] = self.function_call_id
 
-        if self.scenario_raw is not None:
-            properties["scenarioRaw"] = {
-                "space": self.space if isinstance(self.scenario_raw, str) else self.scenario_raw.space,
-                "externalId": (
-                    self.scenario_raw if isinstance(self.scenario_raw, str) else self.scenario_raw.external_id
-                ),
+        if self.scenario is not None:
+            properties["scenario"] = {
+                "space": self.space if isinstance(self.scenario, str) else self.scenario.space,
+                "externalId": self.scenario if isinstance(self.scenario, str) else self.scenario.external_id,
             }
+
+        if self.shop_start is not None or write_none:
+            properties["shopStart"] = self.shop_start.isoformat() if self.shop_start else None
+
+        if self.shop_end is not None or write_none:
+            properties["shopEnd"] = self.shop_end.isoformat() if self.shop_end else None
 
         if properties:
             this_node = dm.NodeApply(
@@ -174,8 +191,8 @@ class PreprocessorInputWrite(DomainModelWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        if isinstance(self.scenario_raw, DomainModelWrite):
-            other_resources = self.scenario_raw._to_instances_write(cache, view_by_read_class)
+        if isinstance(self.scenario, DomainModelWrite):
+            other_resources = self.scenario._to_instances_write(cache, view_by_read_class)
             resources.extend(other_resources)
 
         return resources
@@ -231,7 +248,11 @@ def _create_preprocessor_input_filter(
     function_name_prefix: str | None = None,
     function_call_id: str | list[str] | None = None,
     function_call_id_prefix: str | None = None,
-    scenario_raw: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+    scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+    min_shop_start: datetime.date | None = None,
+    max_shop_start: datetime.date | None = None,
+    min_shop_end: datetime.date | None = None,
+    max_shop_end: datetime.date | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -259,31 +280,46 @@ def _create_preprocessor_input_filter(
         filters.append(dm.filters.In(view_id.as_property_ref("functionCallId"), values=function_call_id))
     if function_call_id_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("functionCallId"), value=function_call_id_prefix))
-    if scenario_raw and isinstance(scenario_raw, str):
+    if scenario and isinstance(scenario, str):
         filters.append(
             dm.filters.Equals(
-                view_id.as_property_ref("scenarioRaw"),
-                value={"space": DEFAULT_INSTANCE_SPACE, "externalId": scenario_raw},
+                view_id.as_property_ref("scenario"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": scenario}
             )
         )
-    if scenario_raw and isinstance(scenario_raw, tuple):
+    if scenario and isinstance(scenario, tuple):
         filters.append(
             dm.filters.Equals(
-                view_id.as_property_ref("scenarioRaw"), value={"space": scenario_raw[0], "externalId": scenario_raw[1]}
+                view_id.as_property_ref("scenario"), value={"space": scenario[0], "externalId": scenario[1]}
             )
         )
-    if scenario_raw and isinstance(scenario_raw, list) and isinstance(scenario_raw[0], str):
+    if scenario and isinstance(scenario, list) and isinstance(scenario[0], str):
         filters.append(
             dm.filters.In(
-                view_id.as_property_ref("scenarioRaw"),
-                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in scenario_raw],
+                view_id.as_property_ref("scenario"),
+                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in scenario],
             )
         )
-    if scenario_raw and isinstance(scenario_raw, list) and isinstance(scenario_raw[0], tuple):
+    if scenario and isinstance(scenario, list) and isinstance(scenario[0], tuple):
         filters.append(
             dm.filters.In(
-                view_id.as_property_ref("scenarioRaw"),
-                values=[{"space": item[0], "externalId": item[1]} for item in scenario_raw],
+                view_id.as_property_ref("scenario"),
+                values=[{"space": item[0], "externalId": item[1]} for item in scenario],
+            )
+        )
+    if min_shop_start is not None or max_shop_start is not None:
+        filters.append(
+            dm.filters.Range(
+                view_id.as_property_ref("shopStart"),
+                gte=min_shop_start.isoformat() if min_shop_start else None,
+                lte=max_shop_start.isoformat() if max_shop_start else None,
+            )
+        )
+    if min_shop_end is not None or max_shop_end is not None:
+        filters.append(
+            dm.filters.Range(
+                view_id.as_property_ref("shopEnd"),
+                gte=min_shop_end.isoformat() if min_shop_end else None,
+                lte=max_shop_end.isoformat() if max_shop_end else None,
             )
         )
     if external_id_prefix is not None:

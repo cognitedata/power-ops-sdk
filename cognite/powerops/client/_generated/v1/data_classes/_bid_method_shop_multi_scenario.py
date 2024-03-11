@@ -20,7 +20,7 @@ from ._core import (
 from ._bid_method_day_ahead import BidMethodDayAhead, BidMethodDayAheadWrite
 
 if TYPE_CHECKING:
-    from ._mapping import Mapping, MappingWrite
+    from ._scenario import Scenario, ScenarioWrite
 
 
 __all__ = [
@@ -35,11 +35,18 @@ __all__ = [
 ]
 
 
-BidMethodSHOPMultiScenarioTextFields = Literal["name"]
-BidMethodSHOPMultiScenarioFields = Literal["name"]
+BidMethodSHOPMultiScenarioTextFields = Literal[
+    "name", "shop_start_specification", "shop_end_specification", "shop_bid_date_specification"
+]
+BidMethodSHOPMultiScenarioFields = Literal[
+    "name", "shop_start_specification", "shop_end_specification", "shop_bid_date_specification"
+]
 
 _BIDMETHODSHOPMULTISCENARIO_PROPERTIES_BY_FIELD = {
     "name": "name",
+    "shop_start_specification": "shopStartSpecification",
+    "shop_end_specification": "shopEndSpecification",
+    "shop_bid_date_specification": "shopBidDateSpecification",
 }
 
 
@@ -53,14 +60,19 @@ class BidMethodSHOPMultiScenario(BidMethodDayAhead):
         external_id: The external id of the bid method shop multi scenario.
         data_record: The data record of the bid method shop multi scenario node.
         name: Name for the BidMethod
-        main_scenario: The main scenario to use when running the bid method
-        price_scenarios: The price scenarios to use in the shop run
+        shop_start_specification: The shop start specification
+        shop_end_specification: The shop end specification
+        shop_bid_date_specification: The shop bid date specification
+        scenarios: The scenarios to run this bid method with (includes incremental mappings and base mappings)
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
         "sp_powerops_types", "BidMethodSHOPMultiScenario"
     )
-    price_scenarios: Union[list[Mapping], list[str], None] = Field(default=None, repr=False, alias="priceScenarios")
+    shop_start_specification: Optional[str] = Field(None, alias="shopStartSpecification")
+    shop_end_specification: Optional[str] = Field(None, alias="shopEndSpecification")
+    shop_bid_date_specification: Optional[str] = Field(None, alias="shopBidDateSpecification")
+    scenarios: Union[list[Scenario], list[str], None] = Field(default=None, repr=False)
 
     def as_write(self) -> BidMethodSHOPMultiScenarioWrite:
         """Convert this read version of bid method shop multi scenario to the writing version."""
@@ -69,12 +81,12 @@ class BidMethodSHOPMultiScenario(BidMethodDayAhead):
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
             name=self.name,
-            main_scenario=(
-                self.main_scenario.as_write() if isinstance(self.main_scenario, DomainModel) else self.main_scenario
-            ),
-            price_scenarios=[
-                price_scenario.as_write() if isinstance(price_scenario, DomainModel) else price_scenario
-                for price_scenario in self.price_scenarios or []
+            shop_start_specification=self.shop_start_specification,
+            shop_end_specification=self.shop_end_specification,
+            shop_bid_date_specification=self.shop_bid_date_specification,
+            scenarios=[
+                scenario.as_write() if isinstance(scenario, DomainModel) else scenario
+                for scenario in self.scenarios or []
             ],
         )
 
@@ -98,16 +110,19 @@ class BidMethodSHOPMultiScenarioWrite(BidMethodDayAheadWrite):
         external_id: The external id of the bid method shop multi scenario.
         data_record: The data record of the bid method shop multi scenario node.
         name: Name for the BidMethod
-        main_scenario: The main scenario to use when running the bid method
-        price_scenarios: The price scenarios to use in the shop run
+        shop_start_specification: The shop start specification
+        shop_end_specification: The shop end specification
+        shop_bid_date_specification: The shop bid date specification
+        scenarios: The scenarios to run this bid method with (includes incremental mappings and base mappings)
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
         "sp_powerops_types", "BidMethodSHOPMultiScenario"
     )
-    price_scenarios: Union[list[MappingWrite], list[str], None] = Field(
-        default=None, repr=False, alias="priceScenarios"
-    )
+    shop_start_specification: Optional[str] = Field(None, alias="shopStartSpecification")
+    shop_end_specification: Optional[str] = Field(None, alias="shopEndSpecification")
+    shop_bid_date_specification: Optional[str] = Field(None, alias="shopBidDateSpecification")
+    scenarios: Union[list[ScenarioWrite], list[str], None] = Field(default=None, repr=False)
 
     def _to_instances_write(
         self,
@@ -128,13 +143,14 @@ class BidMethodSHOPMultiScenarioWrite(BidMethodDayAheadWrite):
         if self.name is not None:
             properties["name"] = self.name
 
-        if self.main_scenario is not None:
-            properties["mainScenario"] = {
-                "space": self.space if isinstance(self.main_scenario, str) else self.main_scenario.space,
-                "externalId": (
-                    self.main_scenario if isinstance(self.main_scenario, str) else self.main_scenario.external_id
-                ),
-            }
+        if self.shop_start_specification is not None or write_none:
+            properties["shopStartSpecification"] = self.shop_start_specification
+
+        if self.shop_end_specification is not None or write_none:
+            properties["shopEndSpecification"] = self.shop_end_specification
+
+        if self.shop_bid_date_specification is not None or write_none:
+            properties["shopBidDateSpecification"] = self.shop_bid_date_specification
 
         if properties:
             this_node = dm.NodeApply(
@@ -152,19 +168,11 @@ class BidMethodSHOPMultiScenarioWrite(BidMethodDayAheadWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_powerops_types", "BidMethodDayahead.priceScenarios")
-        for price_scenario in self.price_scenarios or []:
+        edge_type = dm.DirectRelationReference("sp_powerops_types", "BidMethodDayahead.scenarios")
+        for scenario in self.scenarios or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
-                cache,
-                start_node=self,
-                end_node=price_scenario,
-                edge_type=edge_type,
-                view_by_read_class=view_by_read_class,
+                cache, start_node=self, end_node=scenario, edge_type=edge_type, view_by_read_class=view_by_read_class
             )
-            resources.extend(other_resources)
-
-        if isinstance(self.main_scenario, DomainModelWrite):
-            other_resources = self.main_scenario._to_instances_write(cache, view_by_read_class)
             resources.extend(other_resources)
 
         return resources
@@ -214,7 +222,12 @@ def _create_bid_method_shop_multi_scenario_filter(
     view_id: dm.ViewId,
     name: str | list[str] | None = None,
     name_prefix: str | None = None,
-    main_scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+    shop_start_specification: str | list[str] | None = None,
+    shop_start_specification_prefix: str | None = None,
+    shop_end_specification: str | list[str] | None = None,
+    shop_end_specification_prefix: str | None = None,
+    shop_bid_date_specification: str | list[str] | None = None,
+    shop_bid_date_specification_prefix: str | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -226,32 +239,38 @@ def _create_bid_method_shop_multi_scenario_filter(
         filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
     if name_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
-    if main_scenario and isinstance(main_scenario, str):
+    if isinstance(shop_start_specification, str):
         filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("mainScenario"),
-                value={"space": DEFAULT_INSTANCE_SPACE, "externalId": main_scenario},
-            )
+            dm.filters.Equals(view_id.as_property_ref("shopStartSpecification"), value=shop_start_specification)
         )
-    if main_scenario and isinstance(main_scenario, tuple):
+    if shop_start_specification and isinstance(shop_start_specification, list):
         filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("mainScenario"),
-                value={"space": main_scenario[0], "externalId": main_scenario[1]},
-            )
+            dm.filters.In(view_id.as_property_ref("shopStartSpecification"), values=shop_start_specification)
         )
-    if main_scenario and isinstance(main_scenario, list) and isinstance(main_scenario[0], str):
+    if shop_start_specification_prefix is not None:
         filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("mainScenario"),
-                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in main_scenario],
-            )
+            dm.filters.Prefix(view_id.as_property_ref("shopStartSpecification"), value=shop_start_specification_prefix)
         )
-    if main_scenario and isinstance(main_scenario, list) and isinstance(main_scenario[0], tuple):
+    if isinstance(shop_end_specification, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("shopEndSpecification"), value=shop_end_specification))
+    if shop_end_specification and isinstance(shop_end_specification, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("shopEndSpecification"), values=shop_end_specification))
+    if shop_end_specification_prefix is not None:
         filters.append(
-            dm.filters.In(
-                view_id.as_property_ref("mainScenario"),
-                values=[{"space": item[0], "externalId": item[1]} for item in main_scenario],
+            dm.filters.Prefix(view_id.as_property_ref("shopEndSpecification"), value=shop_end_specification_prefix)
+        )
+    if isinstance(shop_bid_date_specification, str):
+        filters.append(
+            dm.filters.Equals(view_id.as_property_ref("shopBidDateSpecification"), value=shop_bid_date_specification)
+        )
+    if shop_bid_date_specification and isinstance(shop_bid_date_specification, list):
+        filters.append(
+            dm.filters.In(view_id.as_property_ref("shopBidDateSpecification"), values=shop_bid_date_specification)
+        )
+    if shop_bid_date_specification_prefix is not None:
+        filters.append(
+            dm.filters.Prefix(
+                view_id.as_property_ref("shopBidDateSpecification"), value=shop_bid_date_specification_prefix
             )
         )
     if external_id_prefix is not None:

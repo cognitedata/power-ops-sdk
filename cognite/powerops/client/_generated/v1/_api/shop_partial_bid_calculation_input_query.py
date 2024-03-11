@@ -14,8 +14,7 @@ from cognite.powerops.client._generated.v1.data_classes import (
 from ._core import DEFAULT_QUERY_LIMIT, QueryBuilder, QueryStep, QueryAPI, T_DomainModelList, _create_edge_filter
 
 if TYPE_CHECKING:
-    from .alert_query import AlertQueryAPI
-    from .shop_result_query import SHOPResultQueryAPI
+    from .shop_result_price_prod_query import SHOPResultPriceProdQueryAPI
 
 
 class ShopPartialBidCalculationInputQueryAPI(QueryAPI[T_DomainModelList]):
@@ -44,39 +43,39 @@ class ShopPartialBidCalculationInputQueryAPI(QueryAPI[T_DomainModelList]):
             )
         )
 
-    def alerts(
+    def shop_result_price_prod(
         self,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
         retrieve_plant: bool = False,
         retrieve_market_configuration: bool = False,
-    ) -> AlertQueryAPI[T_DomainModelList]:
-        """Query along the alert edges of the shop partial bid calculation input.
+    ) -> SHOPResultPriceProdQueryAPI[T_DomainModelList]:
+        """Query along the shop result price prod edges of the shop partial bid calculation input.
 
         Args:
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of alert edges to return. Defaults to 25. Set to -1, float("inf") or None
+            limit: Maximum number of shop result price prod edges to return. Defaults to 25. Set to -1, float("inf") or None
                 to return all items.
             retrieve_plant: Whether to retrieve the plant for each shop partial bid calculation input or not.
             retrieve_market_configuration: Whether to retrieve the market configuration for each shop partial bid calculation input or not.
 
         Returns:
-            AlertQueryAPI: The query API for the alert.
+            SHOPResultPriceProdQueryAPI: The query API for the shop result price prod.
         """
-        from .alert_query import AlertQueryAPI
+        from .shop_result_price_prod_query import SHOPResultPriceProdQueryAPI
 
         from_ = self._builder[-1].name
 
         edge_filter = _create_edge_filter(
-            dm.DirectRelationReference("sp_powerops_types", "calculationIssue"),
+            dm.DirectRelationReference("sp_powerops_types", "SHOPResultPriceProd"),
             external_id_prefix=external_id_prefix,
             space=space,
         )
         self._builder.append(
             QueryStep(
-                name=self._builder.next_name("alerts"),
+                name=self._builder.next_name("shop_result_price_prod"),
                 expression=dm.query.EdgeResultSetExpression(
                     filter=edge_filter,
                     from_=from_,
@@ -90,55 +89,7 @@ class ShopPartialBidCalculationInputQueryAPI(QueryAPI[T_DomainModelList]):
             self._query_append_plant(from_)
         if retrieve_market_configuration:
             self._query_append_market_configuration(from_)
-        return AlertQueryAPI(self._client, self._builder, self._view_by_read_class, None, limit)
-
-    def shop_results(
-        self,
-        external_id_prefix: str | None = None,
-        space: str | list[str] | None = None,
-        limit: int | None = DEFAULT_QUERY_LIMIT,
-        retrieve_plant: bool = False,
-        retrieve_market_configuration: bool = False,
-    ) -> SHOPResultQueryAPI[T_DomainModelList]:
-        """Query along the shop result edges of the shop partial bid calculation input.
-
-        Args:
-            external_id_prefix: The prefix of the external ID to filter on.
-            space: The space to filter on.
-            limit: Maximum number of shop result edges to return. Defaults to 25. Set to -1, float("inf") or None
-                to return all items.
-            retrieve_plant: Whether to retrieve the plant for each shop partial bid calculation input or not.
-            retrieve_market_configuration: Whether to retrieve the market configuration for each shop partial bid calculation input or not.
-
-        Returns:
-            SHOPResultQueryAPI: The query API for the shop result.
-        """
-        from .shop_result_query import SHOPResultQueryAPI
-
-        from_ = self._builder[-1].name
-
-        edge_filter = _create_edge_filter(
-            dm.DirectRelationReference("sp_powerops_types", "SHOPResult"),
-            external_id_prefix=external_id_prefix,
-            space=space,
-        )
-        self._builder.append(
-            QueryStep(
-                name=self._builder.next_name("shop_results"),
-                expression=dm.query.EdgeResultSetExpression(
-                    filter=edge_filter,
-                    from_=from_,
-                    direction="outwards",
-                ),
-                select=dm.query.Select(),
-                max_retrieve_limit=limit,
-            )
-        )
-        if retrieve_plant:
-            self._query_append_plant(from_)
-        if retrieve_market_configuration:
-            self._query_append_market_configuration(from_)
-        return SHOPResultQueryAPI(self._client, self._builder, self._view_by_read_class, None, limit)
+        return SHOPResultPriceProdQueryAPI(self._client, self._builder, self._view_by_read_class, None, limit)
 
     def query(
         self,

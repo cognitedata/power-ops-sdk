@@ -33,8 +33,7 @@ from ._core import (
     QueryBuilder,
 )
 from .shop_result_alerts import SHOPResultAlertsAPI
-from .shop_result_production import SHOPResultProductionAPI
-from .shop_result_price import SHOPResultPriceAPI
+from .shop_result_output_timeseries import SHOPResultOutputTimeseriesAPI
 from .shop_result_query import SHOPResultQueryAPI
 
 
@@ -51,13 +50,11 @@ class SHOPResultAPI(NodeAPI[SHOPResult, SHOPResultWrite, SHOPResultList]):
         )
         self._view_id = view_id
         self.alerts_edge = SHOPResultAlertsAPI(client)
-        self.production = SHOPResultProductionAPI(client, view_id)
-        self.price = SHOPResultPriceAPI(client, view_id)
+        self.output_timeseries = SHOPResultOutputTimeseriesAPI(client, view_id)
 
     def __call__(
         self,
-        scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        price_scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
@@ -66,8 +63,7 @@ class SHOPResultAPI(NodeAPI[SHOPResult, SHOPResultWrite, SHOPResultList]):
         """Query starting at shop results.
 
         Args:
-            scenario: The scenario to filter on.
-            price_scenario: The price scenario to filter on.
+            case: The case to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop results to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -80,8 +76,7 @@ class SHOPResultAPI(NodeAPI[SHOPResult, SHOPResultWrite, SHOPResultList]):
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_shop_result_filter(
             self._view_id,
-            scenario,
-            price_scenario,
+            case,
             external_id_prefix,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
@@ -217,8 +212,7 @@ class SHOPResultAPI(NodeAPI[SHOPResult, SHOPResultWrite, SHOPResultList]):
         ),
         property: SHOPResultFields | Sequence[SHOPResultFields] | None = None,
         group_by: None = None,
-        scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        price_scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -236,8 +230,7 @@ class SHOPResultAPI(NodeAPI[SHOPResult, SHOPResultWrite, SHOPResultList]):
         ),
         property: SHOPResultFields | Sequence[SHOPResultFields] | None = None,
         group_by: SHOPResultFields | Sequence[SHOPResultFields] = None,
-        scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        price_scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -254,8 +247,7 @@ class SHOPResultAPI(NodeAPI[SHOPResult, SHOPResultWrite, SHOPResultList]):
         ),
         property: SHOPResultFields | Sequence[SHOPResultFields] | None = None,
         group_by: SHOPResultFields | Sequence[SHOPResultFields] | None = None,
-        scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        price_scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -267,8 +259,7 @@ class SHOPResultAPI(NodeAPI[SHOPResult, SHOPResultWrite, SHOPResultList]):
             aggregate: The aggregation to perform.
             property: The property to perform aggregation on.
             group_by: The property to group by when doing the aggregation.
-            scenario: The scenario to filter on.
-            price_scenario: The price scenario to filter on.
+            case: The case to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop results to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -289,8 +280,7 @@ class SHOPResultAPI(NodeAPI[SHOPResult, SHOPResultWrite, SHOPResultList]):
 
         filter_ = _create_shop_result_filter(
             self._view_id,
-            scenario,
-            price_scenario,
+            case,
             external_id_prefix,
             space,
             filter,
@@ -311,8 +301,7 @@ class SHOPResultAPI(NodeAPI[SHOPResult, SHOPResultWrite, SHOPResultList]):
         self,
         property: SHOPResultFields,
         interval: float,
-        scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        price_scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -323,8 +312,7 @@ class SHOPResultAPI(NodeAPI[SHOPResult, SHOPResultWrite, SHOPResultList]):
         Args:
             property: The property to use as the value in the histogram.
             interval: The interval to use for the histogram bins.
-            scenario: The scenario to filter on.
-            price_scenario: The price scenario to filter on.
+            case: The case to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop results to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -336,8 +324,7 @@ class SHOPResultAPI(NodeAPI[SHOPResult, SHOPResultWrite, SHOPResultList]):
         """
         filter_ = _create_shop_result_filter(
             self._view_id,
-            scenario,
-            price_scenario,
+            case,
             external_id_prefix,
             space,
             filter,
@@ -355,8 +342,7 @@ class SHOPResultAPI(NodeAPI[SHOPResult, SHOPResultWrite, SHOPResultList]):
 
     def list(
         self,
-        scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-        price_scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -366,8 +352,7 @@ class SHOPResultAPI(NodeAPI[SHOPResult, SHOPResultWrite, SHOPResultList]):
         """List/filter shop results
 
         Args:
-            scenario: The scenario to filter on.
-            price_scenario: The price scenario to filter on.
+            case: The case to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop results to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -388,8 +373,7 @@ class SHOPResultAPI(NodeAPI[SHOPResult, SHOPResultWrite, SHOPResultList]):
         """
         filter_ = _create_shop_result_filter(
             self._view_id,
-            scenario,
-            price_scenario,
+            case,
             external_id_prefix,
             space,
             filter,

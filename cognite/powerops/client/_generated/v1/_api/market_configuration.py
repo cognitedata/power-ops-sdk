@@ -51,6 +51,8 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
 
     def __call__(
         self,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         market_type: str | list[str] | None = None,
         market_type_prefix: str | None = None,
         min_max_price: float | None = None,
@@ -77,6 +79,8 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         """Query starting at market configurations.
 
         Args:
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
             market_type: The market type to filter on.
             market_type_prefix: The prefix of the market type to filter on.
             min_max_price: The minimum value of the max price to filter on.
@@ -107,6 +111,8 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         has_data = dm.filters.HasData(views=[self._view_id])
         filter_ = _create_market_configuration_filter(
             self._view_id,
+            name,
+            name_prefix,
             market_type,
             market_type_prefix,
             min_max_price,
@@ -238,6 +244,8 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         self,
         query: str,
         properties: MarketConfigurationTextFields | Sequence[MarketConfigurationTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         market_type: str | list[str] | None = None,
         market_type_prefix: str | None = None,
         min_max_price: float | None = None,
@@ -266,6 +274,8 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         Args:
             query: The search query,
             properties: The property to search, if nothing is passed all text fields will be searched.
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
             market_type: The market type to filter on.
             market_type_prefix: The prefix of the market type to filter on.
             min_max_price: The minimum value of the max price to filter on.
@@ -303,6 +313,8 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         """
         filter_ = _create_market_configuration_filter(
             self._view_id,
+            name,
+            name_prefix,
             market_type,
             market_type_prefix,
             min_max_price,
@@ -340,6 +352,8 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         group_by: None = None,
         query: str | None = None,
         search_properties: MarketConfigurationTextFields | Sequence[MarketConfigurationTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         market_type: str | list[str] | None = None,
         market_type_prefix: str | None = None,
         min_max_price: float | None = None,
@@ -377,6 +391,8 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         group_by: MarketConfigurationFields | Sequence[MarketConfigurationFields] = None,
         query: str | None = None,
         search_properties: MarketConfigurationTextFields | Sequence[MarketConfigurationTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         market_type: str | list[str] | None = None,
         market_type_prefix: str | None = None,
         min_max_price: float | None = None,
@@ -413,6 +429,8 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         group_by: MarketConfigurationFields | Sequence[MarketConfigurationFields] | None = None,
         query: str | None = None,
         search_property: MarketConfigurationTextFields | Sequence[MarketConfigurationTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         market_type: str | list[str] | None = None,
         market_type_prefix: str | None = None,
         min_max_price: float | None = None,
@@ -444,6 +462,8 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
             group_by: The property to group by when doing the aggregation.
             query: The query to search for in the text field.
             search_property: The text field to search in.
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
             market_type: The market type to filter on.
             market_type_prefix: The prefix of the market type to filter on.
             min_max_price: The minimum value of the max price to filter on.
@@ -482,6 +502,8 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
 
         filter_ = _create_market_configuration_filter(
             self._view_id,
+            name,
+            name_prefix,
             market_type,
             market_type_prefix,
             min_max_price,
@@ -522,6 +544,8 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         interval: float,
         query: str | None = None,
         search_property: MarketConfigurationTextFields | Sequence[MarketConfigurationTextFields] | None = None,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         market_type: str | list[str] | None = None,
         market_type_prefix: str | None = None,
         min_max_price: float | None = None,
@@ -552,6 +576,8 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
             interval: The interval to use for the histogram bins.
             query: The query to search for in the text field.
             search_property: The text field to search in.
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
             market_type: The market type to filter on.
             market_type_prefix: The prefix of the market type to filter on.
             min_max_price: The minimum value of the max price to filter on.
@@ -581,6 +607,8 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         """
         filter_ = _create_market_configuration_filter(
             self._view_id,
+            name,
+            name_prefix,
             market_type,
             market_type_prefix,
             min_max_price,
@@ -616,6 +644,8 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
 
     def list(
         self,
+        name: str | list[str] | None = None,
+        name_prefix: str | None = None,
         market_type: str | list[str] | None = None,
         market_type_prefix: str | None = None,
         min_max_price: float | None = None,
@@ -642,6 +672,8 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         """List/filter market configurations
 
         Args:
+            name: The name to filter on.
+            name_prefix: The prefix of the name to filter on.
             market_type: The market type to filter on.
             market_type_prefix: The prefix of the market type to filter on.
             min_max_price: The minimum value of the max price to filter on.
@@ -679,6 +711,8 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         """
         filter_ = _create_market_configuration_filter(
             self._view_id,
+            name,
+            name_prefix,
             market_type,
             market_type_prefix,
             min_max_price,
