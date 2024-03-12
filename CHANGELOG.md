@@ -13,6 +13,15 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.90.0] - 2024-03-12
+### Changed
+* `v1` data model with domain informed changes
+  - Added a separate cogshop data model
+  - Changes to `Scenario` type to accommodate for `Incremental mappings`. Preprocessor will now take in a `Scenario` and
+    output a `Case`
+  - Added wrapper for SHOP output timeseries - SHOPTimeSeries
+  - Added interface for a generic SHOP result - SHOPResult
+
 ## [0.88.9] - 2024-03-07
 ### Fixed
 * Transformation `AddWaterInTransit` apply returns input time series if discharge is empty
