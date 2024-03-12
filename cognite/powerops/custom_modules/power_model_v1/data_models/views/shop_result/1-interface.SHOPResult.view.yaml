@@ -2,6 +2,7 @@ space: '{{powerops_models}}'
 externalId: SHOPResult
 name: SHOPResult
 description: A generic shop result type that collects all time series outputs from SHOP. This type replaces the POWEROPS_SHOP_RUN event in cdf today
+#TODO: Consider adding a filter for SHOPResult and SHOPResultPriceProd to exclude PriceProdCase instances from this view that also uses the SHOPResult container
 filter:
   and:
   - hasData:
@@ -10,11 +11,9 @@ filter:
       externalId: SHOPResult
   - equals:
       property:
-      - node
-      - type
-      value:
-        externalId: SHOPResult
-        space: '{{powerops_type_space}}'
+        - node
+        - space
+      value: '{{powerops_instance_space}}'
 implements: []
 version: '{{version}}'
 properties:
