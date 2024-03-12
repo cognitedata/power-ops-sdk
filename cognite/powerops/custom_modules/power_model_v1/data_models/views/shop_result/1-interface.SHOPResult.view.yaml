@@ -37,7 +37,7 @@ properties:
       externalId: SHOPResult
       type: container
     containerPropertyIdentifier: tsList1
-    name: tsList1
+    name: outputTimeseries
     description: A general placeholder for all timeseries that stem from a shop run
   objectiveSequence:
     container:
