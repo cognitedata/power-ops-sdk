@@ -17,7 +17,7 @@ from cognite.powerops.utils.cdf.calls import retrieve_range
 logger = getLogger(__name__)
 
 
-def ms_to_datetime_tz_naive(timestamp: int):
+def ms_to_datetime_tz_naive(timestamp: int) -> datetime:
     """
     Milliseconds since Epoch to datetime.
     #TODO: Consider switching to cognite-sdk official one, but using this one for now as it is time zone naive
@@ -114,14 +114,15 @@ class AddConstant(Transformation):
     def parameters_to_dict(self) -> dict:
         return {"constant": self.constant}
 
-    def apply(self, time_series_data: tuple[pd.Series]):
+    def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
         """Add value to input time series
 
         Args:
-            time_series_data: The time series data to add the value to
+            time_series_data: A tuple of time series data. Only the first one, time_series_data[0],
+                                is used - the constant value will be added to every value of this time series
 
         Returns:
-            The transformed time series
+            The first pd.Series from the input tuple with the constant added to all values
         """
         single_ts = time_series_data[0]
         return single_ts + self.constant
@@ -138,25 +139,28 @@ class Round(Transformation):
     def parameters_to_dict(self) -> dict:
         return {"digits": self.digits}
 
-    def apply(self, time_series_data: tuple[pd.Series]):
-        """Round the time series values to the specified number of decimals
+    def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
+        """Round the time series values to the specified number of decimals, using the "round half to even" method
 
         Args:
-            time_series_data: The time series data to add the value to
+            time_series_data: A tuple of time series data. Only the first one, time_series_data[0],
+                                is used - the round will be applied to every value of this time series
 
         Returns:
-            The transformed time series
+            The first pd.Series from the input tuple with the rounding applied to all values
         """
+
         single_ts = time_series_data[0]
         return single_ts.round(decimals=self.digits)
 
 
 class SumTimeseries(Transformation):
-    def apply(self, time_series_data: tuple[pd.Series]):
-        """Sum two or more time series together
+    def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
+        """Sum two or more time series together in place without any interpolation between points
 
         Args:
-            time_series_data: The time series data to add together/concatenate
+            time_series_data: A tuple of time series data. Where all the time series in the tuple are
+                                summed together
 
         Returns:
             Concatenated timeseries with values added together
@@ -223,14 +227,16 @@ class MultiplyConstant(Transformation):
     def parameters_to_dict(self) -> dict:
         return {"constant": self.constant}
 
-    def apply(self, time_series_data: tuple[pd.Series]):
+    def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
         """Multiply value to input time series
 
         Args:
-            time_series_data: The time series data to add the value to
+            time_series_data: A tuple of time series data. Only the first one, time_series_data[0],
+                                is used - the constant value will be multiplied to every value of this time series
 
         Returns:
-            The transformed time series
+            The resulting series when taking the first series in time_series_data and multiplying
+            all values by a constant
         """
         single_ts = time_series_data[0]
         return single_ts * self.constant
@@ -319,19 +325,20 @@ class StaticValues(DynamicTransformation):
         ```
         """
         if not self.pre_apply_has_run:
-            raise ValueError("pre_apply function has not run - missing neccessary properties to run transformation")
+            raise ValueError("pre_apply function has not run - missing necessary properties to run transformation")
         return _relative_datapoints_to_series(self.relative_datapoints, self.start, self._shift_minutes)
 
 
 class ToBool(Transformation):
     """
-    Transforms time series data to a series of 0s and 1s. 1s if the value is > 0.
+    "Greater than 0" transformation of time series data to a series of 0s and 1s. 1s if the value is > 0.
     """
 
     def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
         """
         Args:
-            time_series_data: The time series data to transform
+            time_series_data: A tuple of time series data. Only the first one, time_series_data[0],
+                                is used - every value of this time series will be converted to 0 or 1
 
         Returns:
             The transformed time series
@@ -358,7 +365,20 @@ class ToBool(Transformation):
 
 
 class ToInt(Transformation):
+    """
+    Transformation to round all values in a time series to get an Int using the "round half to even" method
+    """
+
     def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
+        """
+        Args:
+            time_series_data: A tuple of time series data. Only the first one, time_series_data[0],
+                                is used - every value of this time series will be rounded to zero decimal places
+
+        Returns:
+            The transformed time series with all values rounded into integers given the
+            default "round half to even" method
+        """
         single_ts = time_series_data[0]
         return single_ts.apply(round)
 
@@ -371,7 +391,8 @@ class ZeroIfNotOne(Transformation):
     def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
         """
         Args:
-            time_series_data: The time series data to transform
+            time_series_data: A tuple of time series data. Only the first one, time_series_data[0],
+                                is used - every value of this time series will be converted to 0 or 1
 
         Returns:
             The transformed time series
@@ -405,7 +426,8 @@ class OneIfTwo(Transformation):
     def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
         """
         Args:
-            time_series_data: The time series data to transform
+            time_series_data: A tuple of time series data. Only the first one, time_series_data[0],
+                                is used - every value of this time series will be converted to 0 or 1
 
         Returns:
             The transformed time series
@@ -474,7 +496,7 @@ class HeightToVolume(DynamicTransformation):
         def interpolate(height: float) -> float:
             """Height to volume"""
             if height < min(heights) or max(heights) < height:
-                logger.warning(f"Outside interpoaltion bounds [{min(heights)}, {max(heights)}]. Got {height}.")
+                logger.warning(f"Outside interpolation bounds [{min(heights)}, {max(heights)}]. Got {height}.")
             return float(np.interp(height, heights, volumes))
 
         return time_series_data.map(interpolate)
@@ -508,7 +530,8 @@ class HeightToVolume(DynamicTransformation):
     def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
         """
         Args:
-            time_series_data: The time series data to transform
+            time_series_data: A tuple of time series data. Only the first one, time_series_data[0],
+                                is used - the height to volume will be applied to each value of this time series
 
         Returns:
             The transformed time series
@@ -544,10 +567,14 @@ class HeightToVolume(DynamicTransformation):
             single_ts = time_series_data[0]
             return self.height_to_volume(single_ts, self.heights, self.volumes)
         else:
-            raise ValueError("pre_apply function has not run - missing neccessary properties to run transformation")
+            raise ValueError("pre_apply function has not run - missing necessary properties to run transformation")
 
 
 class DoNothing(Transformation):
+    """
+    Don't apply any transformations, just return the unchanged Series
+    """
+
     def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
         return time_series_data[0]
 
@@ -570,7 +597,8 @@ class AddFromOffset(Transformation):
     def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
         """
         Args:
-            time_series_data: The timseries to perform transformation on
+            time_series_data: A tuple of time series data. Only the first one, time_series_data[0],
+                                is used - the add from offset will be applied to each value in this time series
 
         Example:
         ```python
@@ -627,8 +655,8 @@ class MultiplyFromOffset(Transformation):
     """Multiplies values to input timeseries based on a list of relative datapoints
 
     Args:
-        relative_datapoints: The values to multiply to existing time series at specified
-                             offset minutes from time series start time
+        relative_datapoints: A tuple of time series data. Only the first one, time_series_data[0],
+                                is used - the multiply from offset will be applied to each value in this time series
     """
 
     relative_datapoints: list[RelativeDatapoint]
@@ -769,8 +797,8 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
         Args:
             client: CogniteClient authenticated to project to retrieve discharge timeseries from
             shop_model: SHOP model dict
-            start: SHOP start time
-            end: SHOP end time
+            start: SHOP start time in milliseconds since epoch
+            end: SHOP end time in milliseconds since epoch
 
         Example:
         ```python
@@ -781,7 +809,7 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
         model = {"gate": {"gate1": {"shape_discharge": {"ref": 0, "x": [0, 60, 120], "y": [0.1, 0.5, 0.4]}}}}
         t = AddWaterInTransit(discharge_ts_external_id="discharge_ts",
         ...                       transit_object_type="gate",
-        ...                       transit_object_name="Holen(01)")
+        ...                       transit_object_name="gate1")
         t.pre_apply(client=client, shop_model=model, start=start_time, end=end_time)
         t.shape
         {0: 0.1, 60: 0.5, 120: 0.4}
@@ -814,6 +842,7 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
     def add_water_in_transit(
         inflow: pd.Series, discharge: pd.Series, shape: dict[int, float], start: datetime, end: datetime
     ) -> pd.Series:
+
         # Forward fill discharge for all (hour) timestamps until start
         one_hour = pd.Timedelta("1h")
         if start - one_hour not in discharge.index:
@@ -831,27 +860,29 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
 
         # Only include delayed discharge that will affect the selected time range
         between_start_and_end = (start <= inflow.index) & (inflow.index < end)
+
         return inflow.loc[between_start_and_end]
 
     def apply(self, time_series_data: tuple[pd.Series]) -> pd.Series:
-        """Run `apply()` after preprocessing step to add water in transit to add water in transit (doscharge water) to
+        """Run `apply()` after preprocessing step to add water in transit to add water in transit (discharge water) to
            inflow time series
 
         Args:
-            time_series_data: inflow time series data
+            time_series_data: A tuple of time series data representing inflow. Only the first one, time_series_data[0],
+                                is used
 
         Example:
         ```python
         from cognite.client import CogniteClient
         start = datetime(year=2022, month=5, day=20, hour=22)
         end = start + timedelta(days=5)
-        start_time = datetime.timestamp(start)
-        end_time = datetime.timestamp(end)
+        start_time = datetime.timestamp(start) * 1000
+        end_time = datetime.timestamp(end) * 1000
         client = CogniteClient()
         model = {"gate": {"gate1": {"shape_discharge": {"ref": 0, "x": [0, 60, 120], "y": [0.1, 0.5, 0.4]}}}}
         t = AddWaterInTransit(discharge_ts_external_id="discharge_ts",
         ...                       transit_object_type="gate",
-        ...                       transit_object_name="Holen(01)")
+        ...                       transit_object_name="gate1")
         t.pre_apply(client=client, shop_model=model, start=start_time, end=end_time)
         inflow = [1, 2, 3, 2, 4, 5, 3, 1, 2, 0, 7, 5, 9, 0, 0, 9, 8, 7, 6, 5, 4, 7, 8, 9]
         timestamps = [start + timedelta(hours=2 * i) for i in range(len(inflow))]
@@ -874,7 +905,8 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
         ```
         """
         single_ts = time_series_data[0]
-        if single_ts.empty:
+        if single_ts.empty or self.discharge.empty:
+
             return single_ts
 
         if self.pre_apply_has_run:
@@ -886,7 +918,7 @@ class AddWaterInTransit(DynamicTransformation, arbitrary_types_allowed=True):
                 end=ms_to_datetime_tz_naive(self.end),
             )
         else:
-            raise ValueError("pre_apply function has not run - missing neccessary properties to run transformation")
+            raise ValueError("pre_apply function has not run - missing necessary properties to run transformation")
 
 
 _TRANSFORMATIONS_BY_CLASS_NAME = dict(
