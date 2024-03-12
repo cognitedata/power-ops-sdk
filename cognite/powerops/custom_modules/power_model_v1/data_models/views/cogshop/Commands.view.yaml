@@ -1,0 +1,33 @@
+space: '{{powerops_models}}'
+externalId: Commands
+name: Commands
+description: The commands to use in the shop model file
+filter:
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: CommandsConfig
+  - equals:
+      property:
+      - node
+      - space
+      value: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: Commands
+        space: '{{powerops_type_space}}'
+implements: []
+version: '{{version}}'
+properties:
+  commands:
+    container:
+      space: '{{powerops_models}}'
+      externalId: CommandsConfig
+      type: container
+    containerPropertyIdentifier: commands
+    name: commands
+    description: The commands used in the shop model file

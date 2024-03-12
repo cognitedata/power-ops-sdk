@@ -1,0 +1,93 @@
+space: '{{powerops_models}}'
+externalId: Case
+name: Case
+description: A case that links a Scenario and shop dates to run shop with
+filter:
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: Case
+  - equals:
+      property:
+      - node
+      - space
+      value: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: Case
+        space: '{{powerops_type_space}}'
+implements: []
+version: '{{version}}'
+properties:
+  scenario:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Case
+      type: container
+    containerPropertyIdentifier: scenario
+    name: scenario
+    description: The Shop scenario that was used to produce this result
+    source:
+      space: '{{powerops_models}}'
+      externalId: Scenario
+      version: '{{version}}'
+      type: view
+  caseFile:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Case
+      type: container
+    containerPropertyIdentifier: caseFile
+    name: caseFile
+    description: The case file used
+  reservoirMapping:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Case
+      type: container
+    containerPropertyIdentifier: reservoirMapping
+    name: reservoirMapping
+    description: The cut file reservoir mapping
+  cutOrderFiles:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Case
+      type: container
+    containerPropertyIdentifier: cutOrderFiles
+    name: cutOrderFiles
+    description: Cut order files (Module series in PRODRISK)
+  extraFiles:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Case
+      type: container
+    containerPropertyIdentifier: extraFiles
+    name: extraFiles
+  cogShopFilesConfig:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Case
+      type: container
+    containerPropertyIdentifier: cogShopFilesConfig
+    name: cogShopFilesConfig
+    description: Configuration for in what order to load the various files into pyshop
+  startTime:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Case
+      type: container
+    containerPropertyIdentifier: startTime
+    name: startTime
+    description: The start time of the case
+  endTime:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Case
+      type: container
+    containerPropertyIdentifier: endTime
+    name: endTime
+    description: The end time of the case

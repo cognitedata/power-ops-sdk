@@ -53,6 +53,32 @@
 - space: '{{powerops_type_space}}'
   externalId: PowerAsset
 
+## CogShop types
+- space: '{{powerops_type_space}}'
+  externalId: Case
+- space: {{powerops_type_space}}
+  externalId: ModelTemplate
+- space: {{powerops_type_space}}
+  externalId: Mapping
+- space: {{powerops_type_space}}
+  externalId: Scenario
+- space: {{powerops_type_space}}
+  externalId: PriceScenario
+- space: '{{powerops_type_space}}'
+  externalId: SHOPResult
+- space: '{{powerops_type_space}}'
+  externalId: SHOPResultPriceProd
+- space: '{{powerops_type_space}}'
+  externalId: PriceProdCase
+- space: '{{powerops_type_space}}'
+  externalId: Commands
+- space: '{{powerops_type_space}}'
+  externalId: SHOPTimeSeries
+- space: '{{powerops_type_space}}'
+  externalId: SHOPResultPriceProd.productionTimeseries
+- space: '{{powerops_type_space}}'
+  externalId: MultiScenarioMatrix.scenarioResults
+
 ## DayAhead Types
 - space: {{powerops_type_space}}
   externalId: DayAheadBasicBidMatrix
@@ -77,19 +103,11 @@
 - space: {{powerops_type_space}}
   externalId: PreprocessorOutput
 - space: {{powerops_type_space}}
-  externalId: SHOPResult
-- space: {{powerops_type_space}}
-  externalId: ModelTemplate
-- space: {{powerops_type_space}}
-  externalId: Mapping
-- space: {{powerops_type_space}}
   externalId: TotalBidMatrixCalculationInput.partialBidMatrices
 - space: {{powerops_type_space}}
   externalId: TotalBidMatrixCalculationInput
 - space: {{powerops_type_space}}
   externalId: TotalBidMatrixCalculationOutput
-- space: {{powerops_type_space}}
-  externalId: SHOPResult
 - space: {{powerops_type_space}}
   externalId: BidConfiguration.plants
 - space: {{powerops_type_space}}
@@ -122,12 +140,6 @@
   externalId: SHOPTriggerOutput
 - space: {{powerops_type_space}}
   externalId: WaterPartialBidCalculationOutput
-- space: {{powerops_type_space}}
-  externalId: Scenario
-- space: {{powerops_type_space}}
-  externalId: ScenarioRaw
-- space: {{powerops_type_space}}
-  externalId: PriceScenario
 - space: '{{powerops_type_space}}'
   externalId: BidCalculationTask
 - space: '{{powerops_type_space}}'
@@ -151,7 +163,7 @@
 - space: '{{powerops_type_space}}'
   externalId: BidMethodWaterValue
 - space: '{{powerops_type_space}}'
-  externalId: BidMethodDayahead.priceScenarios
+  externalId: BidMethodDayahead.scenarios
 - space: '{{powerops_type_space}}'
   externalId: MultiScenarioMatrix.shopResults
 - space: '{{powerops_type_space}}'
@@ -174,8 +186,6 @@
   externalId: BidConfigurationWater
 - space: {{powerops_type_space}}
   externalId: BidDocument
-- space: {{powerops_type_space}}
-  externalId: ScenarioBase
 
 
 # Benchmarking Types

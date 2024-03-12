@@ -19,10 +19,9 @@ from ._core import (
 )
 
 if TYPE_CHECKING:
-    from ._alert import Alert, AlertWrite
     from ._market_configuration import MarketConfiguration, MarketConfigurationWrite
     from ._plant_shop import PlantShop, PlantShopWrite
-    from ._shop_result import SHOPResult, SHOPResultWrite
+    from ._shop_result_price_prod import SHOPResultPriceProd, SHOPResultPriceProdWrite
 
 
 __all__ = [
@@ -38,13 +37,16 @@ __all__ = [
 
 
 ShopPartialBidCalculationInputTextFields = Literal["process_id", "function_name", "function_call_id"]
-ShopPartialBidCalculationInputFields = Literal["process_id", "process_step", "function_name", "function_call_id"]
+ShopPartialBidCalculationInputFields = Literal[
+    "process_id", "process_step", "function_name", "function_call_id", "step_enabled"
+]
 
 _SHOPPARTIALBIDCALCULATIONINPUT_PROPERTIES_BY_FIELD = {
     "process_id": "processId",
     "process_step": "processStep",
     "function_name": "functionName",
     "function_call_id": "functionCallId",
+    "step_enabled": "stepEnabled",
 }
 
 
@@ -61,10 +63,10 @@ class ShopPartialBidCalculationInput(DomainModel):
         process_step: This is the step in the process.
         function_name: The name of the function
         function_call_id: The function call id
-        plant: The plant to calculate the partial bid for
+        plant: The plant to calculate the partial bid for. Extract price/prod timeseries from Shop Results
         market_configuration: The market configuration to be used to generate the partial bid matrix
-        alerts: An array of calculation level Alerts.
-        shop_results: An array of shop results.
+        step_enabled: Whether the step is enabled or not
+        shop_result_price_prod: An array of shop results with price/prod timeserires pairs for all plants included in the respective shop scenario
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -79,8 +81,10 @@ class ShopPartialBidCalculationInput(DomainModel):
     market_configuration: Union[MarketConfiguration, str, dm.NodeId, None] = Field(
         None, repr=False, alias="marketConfiguration"
     )
-    alerts: Union[list[Alert], list[str], None] = Field(default=None, repr=False)
-    shop_results: Union[list[SHOPResult], list[str], None] = Field(default=None, repr=False, alias="shopResults")
+    step_enabled: Optional[bool] = Field(None, alias="stepEnabled")
+    shop_result_price_prod: Union[list[SHOPResultPriceProd], list[str], None] = Field(
+        default=None, repr=False, alias="shopResultPriceProd"
+    )
 
     def as_write(self) -> ShopPartialBidCalculationInputWrite:
         """Convert this read version of shop partial bid calculation input to the writing version."""
@@ -98,10 +102,14 @@ class ShopPartialBidCalculationInput(DomainModel):
                 if isinstance(self.market_configuration, DomainModel)
                 else self.market_configuration
             ),
-            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
-            shop_results=[
-                shop_result.as_write() if isinstance(shop_result, DomainModel) else shop_result
-                for shop_result in self.shop_results or []
+            step_enabled=self.step_enabled,
+            shop_result_price_prod=[
+                (
+                    shop_result_price_prod.as_write()
+                    if isinstance(shop_result_price_prod, DomainModel)
+                    else shop_result_price_prod
+                )
+                for shop_result_price_prod in self.shop_result_price_prod or []
             ],
         )
 
@@ -128,10 +136,10 @@ class ShopPartialBidCalculationInputWrite(DomainModelWrite):
         process_step: This is the step in the process.
         function_name: The name of the function
         function_call_id: The function call id
-        plant: The plant to calculate the partial bid for
+        plant: The plant to calculate the partial bid for. Extract price/prod timeseries from Shop Results
         market_configuration: The market configuration to be used to generate the partial bid matrix
-        alerts: An array of calculation level Alerts.
-        shop_results: An array of shop results.
+        step_enabled: Whether the step is enabled or not
+        shop_result_price_prod: An array of shop results with price/prod timeserires pairs for all plants included in the respective shop scenario
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -146,8 +154,10 @@ class ShopPartialBidCalculationInputWrite(DomainModelWrite):
     market_configuration: Union[MarketConfigurationWrite, str, dm.NodeId, None] = Field(
         None, repr=False, alias="marketConfiguration"
     )
-    alerts: Union[list[AlertWrite], list[str], None] = Field(default=None, repr=False)
-    shop_results: Union[list[SHOPResultWrite], list[str], None] = Field(default=None, repr=False, alias="shopResults")
+    step_enabled: Optional[bool] = Field(None, alias="stepEnabled")
+    shop_result_price_prod: Union[list[SHOPResultPriceProdWrite], list[str], None] = Field(
+        default=None, repr=False, alias="shopResultPriceProd"
+    )
 
     def _to_instances_write(
         self,
@@ -193,6 +203,9 @@ class ShopPartialBidCalculationInputWrite(DomainModelWrite):
                 ),
             }
 
+        if self.step_enabled is not None or write_none:
+            properties["stepEnabled"] = self.step_enabled
+
         if properties:
             this_node = dm.NodeApply(
                 space=self.space,
@@ -209,17 +222,14 @@ class ShopPartialBidCalculationInputWrite(DomainModelWrite):
             resources.nodes.append(this_node)
             cache.add(self.as_tuple_id())
 
-        edge_type = dm.DirectRelationReference("sp_powerops_types", "calculationIssue")
-        for alert in self.alerts or []:
+        edge_type = dm.DirectRelationReference("sp_powerops_types", "SHOPResultPriceProd")
+        for shop_result_price_prod in self.shop_result_price_prod or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
-                cache, start_node=self, end_node=alert, edge_type=edge_type, view_by_read_class=view_by_read_class
-            )
-            resources.extend(other_resources)
-
-        edge_type = dm.DirectRelationReference("sp_powerops_types", "SHOPResult")
-        for shop_result in self.shop_results or []:
-            other_resources = DomainRelationWrite.from_edge_to_resources(
-                cache, start_node=self, end_node=shop_result, edge_type=edge_type, view_by_read_class=view_by_read_class
+                cache,
+                start_node=self,
+                end_node=shop_result_price_prod,
+                edge_type=edge_type,
+                view_by_read_class=view_by_read_class,
             )
             resources.extend(other_resources)
 
@@ -286,6 +296,7 @@ def _create_shop_partial_bid_calculation_input_filter(
     function_call_id_prefix: str | None = None,
     plant: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+    step_enabled: bool | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -364,6 +375,8 @@ def _create_shop_partial_bid_calculation_input_filter(
                 values=[{"space": item[0], "externalId": item[1]} for item in market_configuration],
             )
         )
+    if isinstance(step_enabled, bool):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("stepEnabled"), value=step_enabled))
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):

@@ -1,0 +1,73 @@
+space: '{{powerops_models}}'
+externalId: Scenario
+name: Scenario
+description: The Scenario to run shop with
+filter:
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: Scenario
+  - equals:
+      property:
+      - node
+      - space
+      value: '{{powerops_instance_space}}'
+implements: []
+version: '{{version}}'
+properties:
+  name:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Scenario
+      type: container
+    containerPropertyIdentifier: name
+    name: name
+    description: The name of the scenario to run
+  modelTemplate:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Scenario
+      type: container
+    containerPropertyIdentifier: modelTemplate
+    name: modelTemplate
+    description: The model template to use when running the scenario
+    source:
+      space: '{{powerops_models}}'
+      externalId: ModelTemplate
+      version: '{{version}}'
+      type: view
+  commands:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Scenario
+      type: container
+    containerPropertyIdentifier: commands
+    name: commands
+    description: The commands to run
+    source:
+      space: '{{powerops_models}}'
+      externalId: Commands
+      version: '{{version}}'
+      type: view
+  source:
+    container:
+      space: '{{powerops_models}}'
+      externalId: Scenario
+      type: container
+    containerPropertyIdentifier: source
+    name: source
+    description: The source of the scenario
+  mappingsOverride:
+    type:
+      space: '{{powerops_type_space}}'
+      externalId: Mapping
+    source:
+      space: '{{powerops_models}}'
+      externalId: Mapping
+      version: '{{version}}'
+      type: view
+    direction: outwards
+    name: mappingsOverride
+    description: An array of base mappings to override in shop model file
+    connectionType: multi_edge_connection

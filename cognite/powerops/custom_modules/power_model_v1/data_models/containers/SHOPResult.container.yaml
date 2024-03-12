@@ -1,0 +1,108 @@
+space: '{{powerops_models}}'
+externalId: SHOPResult
+name: SHOPResult
+usedFor: node
+properties:
+  shopTimeseries1:
+    type:
+      list: false
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: shopTimeseries1
+    description: Use this direct relation type to reference a SHOPTimeSeries object
+  shopTimeseries2:
+    type:
+      list: false
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: shopTimeseries2
+    description: Use this direct relation type to reference a SHOPTimeSeries object
+  ts1:
+    type:
+      list: false
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: ts1
+    description: A timeseries from the shop result (used in more specific extensions of a shop result)
+  ts2:
+    type:
+      list: false
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: ts2
+    description: A timeseries from the shop result (used in more specific extensions of a shop result)
+  ts3:
+    type:
+      list: false
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: ts3
+    description: A timeseries from the shop result (used in more specific extensions of a shop result)
+  tsList1:
+    type:
+      list: true
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: tsList1
+    description: A timeseries from the shop result (used in more specific extensions of a shop result)
+  tsList2:
+    type:
+      list: true
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: tsList2
+    description: A timeseries from the shop result (used in more specific extensions of a shop result)
+  preRun:
+    type:
+      list: false
+      type: file
+    nullable: true
+    autoIncrement: false
+    name: preRun
+    description: The prerun file from the shop run
+  shopMessages:
+    type:
+      list: false
+      type: file
+    nullable: true
+    autoIncrement: false
+    name: shopMessages
+    description: The prerun file from the shop run
+  cplexLogs:
+    type:
+      list: false
+      type: file
+    nullable: true
+    autoIncrement: false
+    name: cplexLogs
+    description: The cplex logs from the shop run
+  postRun:
+    type:
+      list: false
+      type: file
+    nullable: true
+    autoIncrement: false
+    name: postRun
+    description: The post run file from the shop run
+  case:
+    type:
+      list: false
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: case
+    description: The scenario that was used to create the shop result
+  objectiveSequence:
+    type:
+      list: false
+      type: sequence
+    nullable: true
+    autoIncrement: false
+    name: objectiveSequence

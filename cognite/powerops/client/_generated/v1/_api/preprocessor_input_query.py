@@ -8,7 +8,7 @@ from cognite.client import data_modeling as dm, CogniteClient
 from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     PreprocessorInput,
-    ScenarioRaw,
+    Scenario,
 )
 from ._core import DEFAULT_QUERY_LIMIT, QueryBuilder, QueryStep, QueryAPI, T_DomainModelList, _create_edge_filter
 
@@ -39,35 +39,35 @@ class PreprocessorInputQueryAPI(QueryAPI[T_DomainModelList]):
 
     def query(
         self,
-        retrieve_scenario_raw: bool = False,
+        retrieve_scenario: bool = False,
     ) -> T_DomainModelList:
         """Execute query and return the result.
 
         Args:
-            retrieve_scenario_raw: Whether to retrieve the scenario raw for each preprocessor input or not.
+            retrieve_scenario: Whether to retrieve the scenario for each preprocessor input or not.
 
         Returns:
             The list of the source nodes of the query.
 
         """
         from_ = self._builder[-1].name
-        if retrieve_scenario_raw:
-            self._query_append_scenario_raw(from_)
+        if retrieve_scenario:
+            self._query_append_scenario(from_)
         return self._query()
 
-    def _query_append_scenario_raw(self, from_: str) -> None:
-        view_id = self._view_by_read_class[ScenarioRaw]
+    def _query_append_scenario(self, from_: str) -> None:
+        view_id = self._view_by_read_class[Scenario]
         self._builder.append(
             QueryStep(
-                name=self._builder.next_name("scenario_raw"),
+                name=self._builder.next_name("scenario"),
                 expression=dm.query.NodeResultSetExpression(
                     filter=dm.filters.HasData(views=[view_id]),
                     from_=from_,
-                    through=self._view_by_read_class[PreprocessorInput].as_property_ref("scenarioRaw"),
+                    through=self._view_by_read_class[PreprocessorInput].as_property_ref("scenario"),
                     direction="outwards",
                 ),
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
                 max_retrieve_limit=-1,
-                result_cls=ScenarioRaw,
+                result_cls=Scenario,
             ),
         )

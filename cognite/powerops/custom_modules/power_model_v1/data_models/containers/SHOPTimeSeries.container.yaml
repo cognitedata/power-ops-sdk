@@ -1,0 +1,51 @@
+space: '{{powerops_models}}'
+externalId: SHOPTimeSeries
+name: SHOPTimeSeries
+usedFor: node
+properties:
+  objectType:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: objectType
+    description: The type of the object
+  objectName:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: objectName
+    description: The name of the object
+  attributeName:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: true
+    autoIncrement: false
+    name: attributeName
+    description: The name of the attribute
+  timeseries:
+    type:
+      list: false
+      type: timeseries
+    nullable: true
+    autoIncrement: false
+    name: timeseries
+    description: Timeseries object from output of SHOP stored as a timeseries in cdf
+indexes:
+  objectNameIndex:
+    properties:
+    - objectName
+    indexType: btree
+    cursorable: false
+  objectTypeIndex:
+    properties:
+    - objectType
+    indexType: btree
+    cursorable: false

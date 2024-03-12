@@ -19,17 +19,4 @@ implements:
     version: '{{version}}'
     type: view
 version: '{{version}}'
-properties:
-  mainScenario:
-    container:
-      space: '{{powerops_models}}'
-      externalId: BidMethod
-      type: container
-    containerPropertyIdentifier: mainScenario
-    name: mainScenario
-    description: The main scenario to use when running the bid method
-    source:
-      space: '{{powerops_models}}'
-      externalId: Mapping
-      version: '{{version}}'
-      type: view
+properties: {} #TODO: consider removing? leaving this one like this because it does not make sense to point to a type of Scenario for WVBBG

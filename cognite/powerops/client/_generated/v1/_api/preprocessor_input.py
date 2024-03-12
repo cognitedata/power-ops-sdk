@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Sequence
 from typing import overload
 import warnings
@@ -59,7 +60,11 @@ class PreprocessorInputAPI(NodeAPI[PreprocessorInput, PreprocessorInputWrite, Pr
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        scenario_raw: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_shop_start: datetime.date | None = None,
+        max_shop_start: datetime.date | None = None,
+        min_shop_end: datetime.date | None = None,
+        max_shop_end: datetime.date | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
@@ -76,7 +81,11 @@ class PreprocessorInputAPI(NodeAPI[PreprocessorInput, PreprocessorInputWrite, Pr
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
             function_call_id_prefix: The prefix of the function call id to filter on.
-            scenario_raw: The scenario raw to filter on.
+            scenario: The scenario to filter on.
+            min_shop_start: The minimum value of the shop start to filter on.
+            max_shop_start: The maximum value of the shop start to filter on.
+            min_shop_end: The minimum value of the shop end to filter on.
+            max_shop_end: The maximum value of the shop end to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of preprocessor inputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -97,7 +106,11 @@ class PreprocessorInputAPI(NodeAPI[PreprocessorInput, PreprocessorInputWrite, Pr
             function_name_prefix,
             function_call_id,
             function_call_id_prefix,
-            scenario_raw,
+            scenario,
+            min_shop_start,
+            max_shop_start,
+            min_shop_end,
+            max_shop_end,
             external_id_prefix,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
@@ -219,7 +232,11 @@ class PreprocessorInputAPI(NodeAPI[PreprocessorInput, PreprocessorInputWrite, Pr
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        scenario_raw: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_shop_start: datetime.date | None = None,
+        max_shop_start: datetime.date | None = None,
+        min_shop_end: datetime.date | None = None,
+        max_shop_end: datetime.date | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -238,7 +255,11 @@ class PreprocessorInputAPI(NodeAPI[PreprocessorInput, PreprocessorInputWrite, Pr
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
             function_call_id_prefix: The prefix of the function call id to filter on.
-            scenario_raw: The scenario raw to filter on.
+            scenario: The scenario to filter on.
+            min_shop_start: The minimum value of the shop start to filter on.
+            max_shop_start: The maximum value of the shop start to filter on.
+            min_shop_end: The minimum value of the shop end to filter on.
+            max_shop_end: The maximum value of the shop end to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of preprocessor inputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -266,7 +287,11 @@ class PreprocessorInputAPI(NodeAPI[PreprocessorInput, PreprocessorInputWrite, Pr
             function_name_prefix,
             function_call_id,
             function_call_id_prefix,
-            scenario_raw,
+            scenario,
+            min_shop_start,
+            max_shop_start,
+            min_shop_end,
+            max_shop_end,
             external_id_prefix,
             space,
             filter,
@@ -294,7 +319,11 @@ class PreprocessorInputAPI(NodeAPI[PreprocessorInput, PreprocessorInputWrite, Pr
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        scenario_raw: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_shop_start: datetime.date | None = None,
+        max_shop_start: datetime.date | None = None,
+        min_shop_end: datetime.date | None = None,
+        max_shop_end: datetime.date | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -322,7 +351,11 @@ class PreprocessorInputAPI(NodeAPI[PreprocessorInput, PreprocessorInputWrite, Pr
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        scenario_raw: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_shop_start: datetime.date | None = None,
+        max_shop_start: datetime.date | None = None,
+        min_shop_end: datetime.date | None = None,
+        max_shop_end: datetime.date | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -349,7 +382,11 @@ class PreprocessorInputAPI(NodeAPI[PreprocessorInput, PreprocessorInputWrite, Pr
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        scenario_raw: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_shop_start: datetime.date | None = None,
+        max_shop_start: datetime.date | None = None,
+        min_shop_end: datetime.date | None = None,
+        max_shop_end: datetime.date | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -371,7 +408,11 @@ class PreprocessorInputAPI(NodeAPI[PreprocessorInput, PreprocessorInputWrite, Pr
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
             function_call_id_prefix: The prefix of the function call id to filter on.
-            scenario_raw: The scenario raw to filter on.
+            scenario: The scenario to filter on.
+            min_shop_start: The minimum value of the shop start to filter on.
+            max_shop_start: The maximum value of the shop start to filter on.
+            min_shop_end: The minimum value of the shop end to filter on.
+            max_shop_end: The maximum value of the shop end to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of preprocessor inputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -400,7 +441,11 @@ class PreprocessorInputAPI(NodeAPI[PreprocessorInput, PreprocessorInputWrite, Pr
             function_name_prefix,
             function_call_id,
             function_call_id_prefix,
-            scenario_raw,
+            scenario,
+            min_shop_start,
+            max_shop_start,
+            min_shop_end,
+            max_shop_end,
             external_id_prefix,
             space,
             filter,
@@ -431,7 +476,11 @@ class PreprocessorInputAPI(NodeAPI[PreprocessorInput, PreprocessorInputWrite, Pr
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        scenario_raw: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_shop_start: datetime.date | None = None,
+        max_shop_start: datetime.date | None = None,
+        min_shop_end: datetime.date | None = None,
+        max_shop_end: datetime.date | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -452,7 +501,11 @@ class PreprocessorInputAPI(NodeAPI[PreprocessorInput, PreprocessorInputWrite, Pr
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
             function_call_id_prefix: The prefix of the function call id to filter on.
-            scenario_raw: The scenario raw to filter on.
+            scenario: The scenario to filter on.
+            min_shop_start: The minimum value of the shop start to filter on.
+            max_shop_start: The maximum value of the shop start to filter on.
+            min_shop_end: The minimum value of the shop end to filter on.
+            max_shop_end: The maximum value of the shop end to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of preprocessor inputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -472,7 +525,11 @@ class PreprocessorInputAPI(NodeAPI[PreprocessorInput, PreprocessorInputWrite, Pr
             function_name_prefix,
             function_call_id,
             function_call_id_prefix,
-            scenario_raw,
+            scenario,
+            min_shop_start,
+            max_shop_start,
+            min_shop_end,
+            max_shop_end,
             external_id_prefix,
             space,
             filter,
@@ -498,7 +555,11 @@ class PreprocessorInputAPI(NodeAPI[PreprocessorInput, PreprocessorInputWrite, Pr
         function_name_prefix: str | None = None,
         function_call_id: str | list[str] | None = None,
         function_call_id_prefix: str | None = None,
-        scenario_raw: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        min_shop_start: datetime.date | None = None,
+        max_shop_start: datetime.date | None = None,
+        min_shop_end: datetime.date | None = None,
+        max_shop_end: datetime.date | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -515,7 +576,11 @@ class PreprocessorInputAPI(NodeAPI[PreprocessorInput, PreprocessorInputWrite, Pr
             function_name_prefix: The prefix of the function name to filter on.
             function_call_id: The function call id to filter on.
             function_call_id_prefix: The prefix of the function call id to filter on.
-            scenario_raw: The scenario raw to filter on.
+            scenario: The scenario to filter on.
+            min_shop_start: The minimum value of the shop start to filter on.
+            max_shop_start: The maximum value of the shop start to filter on.
+            min_shop_end: The minimum value of the shop end to filter on.
+            max_shop_end: The maximum value of the shop end to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of preprocessor inputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -543,7 +608,11 @@ class PreprocessorInputAPI(NodeAPI[PreprocessorInput, PreprocessorInputWrite, Pr
             function_name_prefix,
             function_call_id,
             function_call_id_prefix,
-            scenario_raw,
+            scenario,
+            min_shop_start,
+            max_shop_start,
+            min_shop_end,
+            max_shop_end,
             external_id_prefix,
             space,
             filter,

@@ -20,7 +20,15 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: PriceScenario
+  - externalId: Scenario
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: Mapping
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: ModelTemplate
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
@@ -76,7 +84,7 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: Mapping
-    space: "{{powerops_models}}"
+  - externalId: Commands
+    space: '{{powerops_models}}'
     type: view
-    version: "{{version}}"
+    version: '{{version}}'

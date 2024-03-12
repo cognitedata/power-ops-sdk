@@ -27,17 +27,32 @@ implements:
   type: view
 version: '{{version}}'
 properties:
-  scenarioRaw:
+  scenario:
     container:
       space: '{{powerops_models}}'
       externalId: FunctionData
       type: container
     containerPropertyIdentifier: direct1
-    name: scenarioRaw
-    description: The scenario that needs preprocessing before being sent to shop (has
-      isReady flag set to false)
+    name: scenario
+    description: The scenario to run shop with
     source:
       space: '{{powerops_models}}'
-      externalId: ScenarioRaw
+      externalId: Scenario
       version: '{{version}}'
       type: view
+  shopStart:
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: date1
+    name: shopStart
+    description: Start date of bid period
+  shopEnd:
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: date2
+    name: shopEnd
+    description: End date of bid period

@@ -3,15 +3,15 @@ externalId: ModelTemplate
 name: ModelTemplate
 usedFor: node
 properties:
-  cogShopVersion:
+  version:
     type:
       list: false
       collation: ucs_basic
       type: text
-    nullable: false
+    nullable: true
     autoIncrement: false
-    name: cogShopVersion
-    description: The tag of the cogshop image to run
+    name: version
+    description: The version of the model file (in case  of multiple versions of the same model file)
   shopVersion:
     type:
       list: false
@@ -37,15 +37,22 @@ properties:
     autoIncrement: false
     name: model
     description: The shop model file to use as template before mapping
-  source:
+  cogShopFilesConfig:
     type:
-      list: false
-      collation: ucs_basic
-      type: text
+      list: true
+      type: json
     nullable: true
     autoIncrement: false
-    name: source
-    description: The source of the model
+    name: cogShopFilesConfig
+    description: Configuration for in what order to load the various files into pyshop
+  extraFiles:
+    type:
+      list: true
+      type: file
+    nullable: true
+    autoIncrement: false
+    name: extraFiles
+    description: Extra files to include in the model
 indexes:
   watercourseIndex:
     properties:

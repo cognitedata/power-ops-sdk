@@ -20,8 +20,8 @@ from ._core import (
 
 if TYPE_CHECKING:
     from ._alert import Alert, AlertWrite
+    from ._case import Case, CaseWrite
     from ._preprocessor_input import PreprocessorInput, PreprocessorInputWrite
-    from ._scenario import Scenario, ScenarioWrite
 
 
 __all__ = [
@@ -61,7 +61,7 @@ class PreprocessorOutput(DomainModel):
         function_name: The name of the function
         function_call_id: The function call id
         alerts: An array of calculation level Alerts.
-        scenario: The prepped and processed scenario to send to shop trigger
+        case: The Case to trigger shop with
         input_: The prepped and processed scenario to send to shop trigger
     """
 
@@ -74,7 +74,7 @@ class PreprocessorOutput(DomainModel):
     function_name: str = Field(alias="functionName")
     function_call_id: str = Field(alias="functionCallId")
     alerts: Union[list[Alert], list[str], None] = Field(default=None, repr=False)
-    scenario: Union[Scenario, str, dm.NodeId, None] = Field(None, repr=False)
+    case: Union[Case, str, dm.NodeId, None] = Field(None, repr=False)
     input_: Union[PreprocessorInput, str, dm.NodeId, None] = Field(None, repr=False, alias="input")
 
     def as_write(self) -> PreprocessorOutputWrite:
@@ -88,7 +88,7 @@ class PreprocessorOutput(DomainModel):
             function_name=self.function_name,
             function_call_id=self.function_call_id,
             alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
-            scenario=self.scenario.as_write() if isinstance(self.scenario, DomainModel) else self.scenario,
+            case=self.case.as_write() if isinstance(self.case, DomainModel) else self.case,
             input_=self.input_.as_write() if isinstance(self.input_, DomainModel) else self.input_,
         )
 
@@ -116,7 +116,7 @@ class PreprocessorOutputWrite(DomainModelWrite):
         function_name: The name of the function
         function_call_id: The function call id
         alerts: An array of calculation level Alerts.
-        scenario: The prepped and processed scenario to send to shop trigger
+        case: The Case to trigger shop with
         input_: The prepped and processed scenario to send to shop trigger
     """
 
@@ -129,7 +129,7 @@ class PreprocessorOutputWrite(DomainModelWrite):
     function_name: str = Field(alias="functionName")
     function_call_id: str = Field(alias="functionCallId")
     alerts: Union[list[AlertWrite], list[str], None] = Field(default=None, repr=False)
-    scenario: Union[ScenarioWrite, str, dm.NodeId, None] = Field(None, repr=False)
+    case: Union[CaseWrite, str, dm.NodeId, None] = Field(None, repr=False)
     input_: Union[PreprocessorInputWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="input")
 
     def _to_instances_write(
@@ -160,10 +160,10 @@ class PreprocessorOutputWrite(DomainModelWrite):
         if self.function_call_id is not None:
             properties["functionCallId"] = self.function_call_id
 
-        if self.scenario is not None:
-            properties["scenario"] = {
-                "space": self.space if isinstance(self.scenario, str) else self.scenario.space,
-                "externalId": self.scenario if isinstance(self.scenario, str) else self.scenario.external_id,
+        if self.case is not None:
+            properties["case"] = {
+                "space": self.space if isinstance(self.case, str) else self.case.space,
+                "externalId": self.case if isinstance(self.case, str) else self.case.external_id,
             }
 
         if self.input_ is not None:
@@ -195,8 +195,8 @@ class PreprocessorOutputWrite(DomainModelWrite):
             )
             resources.extend(other_resources)
 
-        if isinstance(self.scenario, DomainModelWrite):
-            other_resources = self.scenario._to_instances_write(cache, view_by_read_class)
+        if isinstance(self.case, DomainModelWrite):
+            other_resources = self.case._to_instances_write(cache, view_by_read_class)
             resources.extend(other_resources)
 
         if isinstance(self.input_, DomainModelWrite):
@@ -256,7 +256,7 @@ def _create_preprocessor_output_filter(
     function_name_prefix: str | None = None,
     function_call_id: str | list[str] | None = None,
     function_call_id_prefix: str | None = None,
-    scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+    case: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     input_: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
@@ -285,30 +285,27 @@ def _create_preprocessor_output_filter(
         filters.append(dm.filters.In(view_id.as_property_ref("functionCallId"), values=function_call_id))
     if function_call_id_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("functionCallId"), value=function_call_id_prefix))
-    if scenario and isinstance(scenario, str):
+    if case and isinstance(case, str):
         filters.append(
             dm.filters.Equals(
-                view_id.as_property_ref("scenario"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": scenario}
+                view_id.as_property_ref("case"), value={"space": DEFAULT_INSTANCE_SPACE, "externalId": case}
             )
         )
-    if scenario and isinstance(scenario, tuple):
+    if case and isinstance(case, tuple):
         filters.append(
-            dm.filters.Equals(
-                view_id.as_property_ref("scenario"), value={"space": scenario[0], "externalId": scenario[1]}
-            )
+            dm.filters.Equals(view_id.as_property_ref("case"), value={"space": case[0], "externalId": case[1]})
         )
-    if scenario and isinstance(scenario, list) and isinstance(scenario[0], str):
+    if case and isinstance(case, list) and isinstance(case[0], str):
         filters.append(
             dm.filters.In(
-                view_id.as_property_ref("scenario"),
-                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in scenario],
+                view_id.as_property_ref("case"),
+                values=[{"space": DEFAULT_INSTANCE_SPACE, "externalId": item} for item in case],
             )
         )
-    if scenario and isinstance(scenario, list) and isinstance(scenario[0], tuple):
+    if case and isinstance(case, list) and isinstance(case[0], tuple):
         filters.append(
             dm.filters.In(
-                view_id.as_property_ref("scenario"),
-                values=[{"space": item[0], "externalId": item[1]} for item in scenario],
+                view_id.as_property_ref("case"), values=[{"space": item[0], "externalId": item[1]} for item in case]
             )
         )
     if input_ and isinstance(input_, str):

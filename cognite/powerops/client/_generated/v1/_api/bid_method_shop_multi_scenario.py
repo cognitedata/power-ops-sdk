@@ -33,7 +33,7 @@ from ._core import (
     QueryStep,
     QueryBuilder,
 )
-from .bid_method_shop_multi_scenario_price_scenarios import BidMethodSHOPMultiScenarioPriceScenariosAPI
+from .bid_method_shop_multi_scenario_scenarios import BidMethodSHOPMultiScenarioScenariosAPI
 from .bid_method_shop_multi_scenario_query import BidMethodSHOPMultiScenarioQueryAPI
 
 
@@ -51,13 +51,18 @@ class BidMethodSHOPMultiScenarioAPI(
             view_by_read_class=view_by_read_class,
         )
         self._view_id = view_id
-        self.price_scenarios_edge = BidMethodSHOPMultiScenarioPriceScenariosAPI(client)
+        self.scenarios_edge = BidMethodSHOPMultiScenarioScenariosAPI(client)
 
     def __call__(
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        main_scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        shop_start_specification: str | list[str] | None = None,
+        shop_start_specification_prefix: str | None = None,
+        shop_end_specification: str | list[str] | None = None,
+        shop_end_specification_prefix: str | None = None,
+        shop_bid_date_specification: str | list[str] | None = None,
+        shop_bid_date_specification_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
@@ -68,7 +73,12 @@ class BidMethodSHOPMultiScenarioAPI(
         Args:
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            main_scenario: The main scenario to filter on.
+            shop_start_specification: The shop start specification to filter on.
+            shop_start_specification_prefix: The prefix of the shop start specification to filter on.
+            shop_end_specification: The shop end specification to filter on.
+            shop_end_specification_prefix: The prefix of the shop end specification to filter on.
+            shop_bid_date_specification: The shop bid date specification to filter on.
+            shop_bid_date_specification_prefix: The prefix of the shop bid date specification to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of bid method shop multi scenarios to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -83,7 +93,12 @@ class BidMethodSHOPMultiScenarioAPI(
             self._view_id,
             name,
             name_prefix,
-            main_scenario,
+            shop_start_specification,
+            shop_start_specification_prefix,
+            shop_end_specification,
+            shop_end_specification_prefix,
+            shop_bid_date_specification,
+            shop_bid_date_specification_prefix,
             external_id_prefix,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
@@ -100,7 +115,7 @@ class BidMethodSHOPMultiScenarioAPI(
         """Add or update (upsert) bid method shop multi scenarios.
 
         Note: This method iterates through all nodes and timeseries linked to bid_method_shop_multi_scenario and creates them including the edges
-        between the nodes. For example, if any of `price_scenarios` are set, then these
+        between the nodes. For example, if any of `scenarios` are set, then these
         nodes as well as any nodes linked to them, and all the edges linking these nodes will be created.
 
         Args:
@@ -201,11 +216,11 @@ class BidMethodSHOPMultiScenarioAPI(
             retrieve_edges=True,
             edge_api_name_type_direction_view_id_penta=[
                 (
-                    self.price_scenarios_edge,
-                    "price_scenarios",
-                    dm.DirectRelationReference("sp_powerops_types", "BidMethodDayahead.priceScenarios"),
+                    self.scenarios_edge,
+                    "scenarios",
+                    dm.DirectRelationReference("sp_powerops_types", "BidMethodDayahead.scenarios"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models", "Mapping", "1"),
+                    dm.ViewId("sp_powerops_models", "Scenario", "1"),
                 ),
             ],
         )
@@ -216,7 +231,12 @@ class BidMethodSHOPMultiScenarioAPI(
         properties: BidMethodSHOPMultiScenarioTextFields | Sequence[BidMethodSHOPMultiScenarioTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        main_scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        shop_start_specification: str | list[str] | None = None,
+        shop_start_specification_prefix: str | None = None,
+        shop_end_specification: str | list[str] | None = None,
+        shop_end_specification_prefix: str | None = None,
+        shop_bid_date_specification: str | list[str] | None = None,
+        shop_bid_date_specification_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -229,7 +249,12 @@ class BidMethodSHOPMultiScenarioAPI(
             properties: The property to search, if nothing is passed all text fields will be searched.
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            main_scenario: The main scenario to filter on.
+            shop_start_specification: The shop start specification to filter on.
+            shop_start_specification_prefix: The prefix of the shop start specification to filter on.
+            shop_end_specification: The shop end specification to filter on.
+            shop_end_specification_prefix: The prefix of the shop end specification to filter on.
+            shop_bid_date_specification: The shop bid date specification to filter on.
+            shop_bid_date_specification_prefix: The prefix of the shop bid date specification to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of bid method shop multi scenarios to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -251,7 +276,12 @@ class BidMethodSHOPMultiScenarioAPI(
             self._view_id,
             name,
             name_prefix,
-            main_scenario,
+            shop_start_specification,
+            shop_start_specification_prefix,
+            shop_end_specification,
+            shop_end_specification_prefix,
+            shop_bid_date_specification,
+            shop_bid_date_specification_prefix,
             external_id_prefix,
             space,
             filter,
@@ -277,7 +307,12 @@ class BidMethodSHOPMultiScenarioAPI(
         ) = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        main_scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        shop_start_specification: str | list[str] | None = None,
+        shop_start_specification_prefix: str | None = None,
+        shop_end_specification: str | list[str] | None = None,
+        shop_end_specification_prefix: str | None = None,
+        shop_bid_date_specification: str | list[str] | None = None,
+        shop_bid_date_specification_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -301,7 +336,12 @@ class BidMethodSHOPMultiScenarioAPI(
         ) = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        main_scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        shop_start_specification: str | list[str] | None = None,
+        shop_start_specification_prefix: str | None = None,
+        shop_end_specification: str | list[str] | None = None,
+        shop_end_specification_prefix: str | None = None,
+        shop_bid_date_specification: str | list[str] | None = None,
+        shop_bid_date_specification_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -324,7 +364,12 @@ class BidMethodSHOPMultiScenarioAPI(
         ) = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        main_scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        shop_start_specification: str | list[str] | None = None,
+        shop_start_specification_prefix: str | None = None,
+        shop_end_specification: str | list[str] | None = None,
+        shop_end_specification_prefix: str | None = None,
+        shop_bid_date_specification: str | list[str] | None = None,
+        shop_bid_date_specification_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -340,7 +385,12 @@ class BidMethodSHOPMultiScenarioAPI(
             search_property: The text field to search in.
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            main_scenario: The main scenario to filter on.
+            shop_start_specification: The shop start specification to filter on.
+            shop_start_specification_prefix: The prefix of the shop start specification to filter on.
+            shop_end_specification: The shop end specification to filter on.
+            shop_end_specification_prefix: The prefix of the shop end specification to filter on.
+            shop_bid_date_specification: The shop bid date specification to filter on.
+            shop_bid_date_specification_prefix: The prefix of the shop bid date specification to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of bid method shop multi scenarios to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -363,7 +413,12 @@ class BidMethodSHOPMultiScenarioAPI(
             self._view_id,
             name,
             name_prefix,
-            main_scenario,
+            shop_start_specification,
+            shop_start_specification_prefix,
+            shop_end_specification,
+            shop_end_specification_prefix,
+            shop_bid_date_specification,
+            shop_bid_date_specification_prefix,
             external_id_prefix,
             space,
             filter,
@@ -390,7 +445,12 @@ class BidMethodSHOPMultiScenarioAPI(
         ) = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        main_scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        shop_start_specification: str | list[str] | None = None,
+        shop_start_specification_prefix: str | None = None,
+        shop_end_specification: str | list[str] | None = None,
+        shop_end_specification_prefix: str | None = None,
+        shop_bid_date_specification: str | list[str] | None = None,
+        shop_bid_date_specification_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -405,7 +465,12 @@ class BidMethodSHOPMultiScenarioAPI(
             search_property: The text field to search in.
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            main_scenario: The main scenario to filter on.
+            shop_start_specification: The shop start specification to filter on.
+            shop_start_specification_prefix: The prefix of the shop start specification to filter on.
+            shop_end_specification: The shop end specification to filter on.
+            shop_end_specification_prefix: The prefix of the shop end specification to filter on.
+            shop_bid_date_specification: The shop bid date specification to filter on.
+            shop_bid_date_specification_prefix: The prefix of the shop bid date specification to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of bid method shop multi scenarios to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -419,7 +484,12 @@ class BidMethodSHOPMultiScenarioAPI(
             self._view_id,
             name,
             name_prefix,
-            main_scenario,
+            shop_start_specification,
+            shop_start_specification_prefix,
+            shop_end_specification,
+            shop_end_specification_prefix,
+            shop_bid_date_specification,
+            shop_bid_date_specification_prefix,
             external_id_prefix,
             space,
             filter,
@@ -439,7 +509,12 @@ class BidMethodSHOPMultiScenarioAPI(
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        main_scenario: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        shop_start_specification: str | list[str] | None = None,
+        shop_start_specification_prefix: str | None = None,
+        shop_end_specification: str | list[str] | None = None,
+        shop_end_specification_prefix: str | None = None,
+        shop_bid_date_specification: str | list[str] | None = None,
+        shop_bid_date_specification_prefix: str | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -451,12 +526,17 @@ class BidMethodSHOPMultiScenarioAPI(
         Args:
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            main_scenario: The main scenario to filter on.
+            shop_start_specification: The shop start specification to filter on.
+            shop_start_specification_prefix: The prefix of the shop start specification to filter on.
+            shop_end_specification: The shop end specification to filter on.
+            shop_end_specification_prefix: The prefix of the shop end specification to filter on.
+            shop_bid_date_specification: The shop bid date specification to filter on.
+            shop_bid_date_specification_prefix: The prefix of the shop bid date specification to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of bid method shop multi scenarios to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
-            retrieve_edges: Whether to retrieve `price_scenarios` external ids for the bid method shop multi scenarios. Defaults to True.
+            retrieve_edges: Whether to retrieve `scenarios` external ids for the bid method shop multi scenarios. Defaults to True.
 
         Returns:
             List of requested bid method shop multi scenarios
@@ -474,7 +554,12 @@ class BidMethodSHOPMultiScenarioAPI(
             self._view_id,
             name,
             name_prefix,
-            main_scenario,
+            shop_start_specification,
+            shop_start_specification_prefix,
+            shop_end_specification,
+            shop_end_specification_prefix,
+            shop_bid_date_specification,
+            shop_bid_date_specification_prefix,
             external_id_prefix,
             space,
             filter,
@@ -486,11 +571,11 @@ class BidMethodSHOPMultiScenarioAPI(
             retrieve_edges=retrieve_edges,
             edge_api_name_type_direction_view_id_penta=[
                 (
-                    self.price_scenarios_edge,
-                    "price_scenarios",
-                    dm.DirectRelationReference("sp_powerops_types", "BidMethodDayahead.priceScenarios"),
+                    self.scenarios_edge,
+                    "scenarios",
+                    dm.DirectRelationReference("sp_powerops_types", "BidMethodDayahead.scenarios"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models", "Mapping", "1"),
+                    dm.ViewId("sp_powerops_models", "Scenario", "1"),
                 ),
             ],
         )

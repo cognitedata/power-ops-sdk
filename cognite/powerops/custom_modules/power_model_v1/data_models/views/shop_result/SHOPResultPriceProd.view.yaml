@@ -1,0 +1,55 @@
+space: '{{powerops_models}}'
+externalId: SHOPResultPriceProd
+name: SHOPResultPriceProd
+description: A shop result type that extends the generic shop result with a direct link to the price and production time series
+filter:
+  and:
+  - hasData:
+    - type: container
+      space: '{{powerops_models}}'
+      externalId: SHOPResult
+  - equals:
+      property:
+      - node
+      - space
+      value: '{{powerops_instance_space}}'
+  - equals:
+      property:
+      - node
+      - type
+      value:
+        externalId: SHOPResultPriceProd
+        space: '{{powerops_type_space}}'
+implements:
+- space: '{{powerops_models}}'
+  externalId: SHOPResult
+  version: '{{version}}'
+  type: view
+version: '{{version}}'
+properties:
+  priceTimeseries:
+    container:
+      space: '{{powerops_models}}'
+      externalId: SHOPResult
+      type: container
+    containerPropertyIdentifier: shopTimeseries1
+    name: priceTimeseries
+    description: The market price timeseries from the Shop run
+    source:
+      space: '{{powerops_models}}'
+      externalId: SHOPTimeSeries
+      version: '{{version}}'
+      type: view
+  productionTimeseries:
+    type:
+      space: '{{powerops_type_space}}'
+      externalId: SHOPResultPriceProd.productionTimeseries
+    source:
+      space: '{{powerops_models}}'
+      externalId: SHOPTimeSeries
+      version: '{{version}}'
+      type: view
+    direction: outwards
+    name: productionTimeseries
+    description: The production timeseries wrapped as a ShopTimeSeries object containing properties related to their names and types in the resulting output shop file
+    connectionType: multi_edge_connection

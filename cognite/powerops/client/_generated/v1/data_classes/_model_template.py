@@ -35,14 +35,15 @@ __all__ = [
 ]
 
 
-ModelTemplateTextFields = Literal["cog_shop_version", "shop_version", "model", "source"]
-ModelTemplateFields = Literal["cog_shop_version", "shop_version", "model", "source"]
+ModelTemplateTextFields = Literal["version_", "shop_version", "model", "extra_files"]
+ModelTemplateFields = Literal["version_", "shop_version", "model", "cog_shop_files_config", "extra_files"]
 
 _MODELTEMPLATE_PROPERTIES_BY_FIELD = {
-    "cog_shop_version": "cogShopVersion",
+    "version_": "version",
     "shop_version": "shopVersion",
     "model": "model",
-    "source": "source",
+    "cog_shop_files_config": "cogShopFilesConfig",
+    "extra_files": "extraFiles",
 }
 
 
@@ -55,11 +56,12 @@ class ModelTemplate(DomainModel, protected_namespaces=()):
         space: The space where the node is located.
         external_id: The external id of the model template.
         data_record: The data record of the model template node.
-        cog_shop_version: The tag of the cogshop image to run
+        version_: The version of the model
         shop_version: The version of SHOP to run
         watercourse: The watercourse to run the model for
         model: The shop model file to use as template before applying base mapping
-        source: The source of the model, for example, 'resync'
+        cog_shop_files_config: Configuration for in what order to load the various files into pyshop
+        extra_files: Extra files related to a model template
         base_mappings: The base mappings for the model
     """
 
@@ -67,11 +69,12 @@ class ModelTemplate(DomainModel, protected_namespaces=()):
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
         "sp_powerops_types", "ModelTemplate"
     )
-    cog_shop_version: str = Field(alias="cogShopVersion")
+    version_: Optional[str] = Field(None, alias="version")
     shop_version: str = Field(alias="shopVersion")
     watercourse: Union[WatercourseShop, str, dm.NodeId, None] = Field(None, repr=False)
     model: Union[str, None] = None
-    source: Optional[str] = None
+    cog_shop_files_config: Optional[list[dict]] = Field(None, alias="cogShopFilesConfig")
+    extra_files: Optional[list[str]] = Field(None, alias="extraFiles")
     base_mappings: Union[list[Mapping], list[str], None] = Field(default=None, repr=False, alias="baseMappings")
 
     def as_write(self) -> ModelTemplateWrite:
@@ -80,11 +83,12 @@ class ModelTemplate(DomainModel, protected_namespaces=()):
             space=self.space,
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
-            cog_shop_version=self.cog_shop_version,
+            version_=self.version_,
             shop_version=self.shop_version,
             watercourse=self.watercourse.as_write() if isinstance(self.watercourse, DomainModel) else self.watercourse,
             model=self.model,
-            source=self.source,
+            cog_shop_files_config=self.cog_shop_files_config,
+            extra_files=self.extra_files,
             base_mappings=[
                 base_mapping.as_write() if isinstance(base_mapping, DomainModel) else base_mapping
                 for base_mapping in self.base_mappings or []
@@ -110,11 +114,12 @@ class ModelTemplateWrite(DomainModelWrite, protected_namespaces=()):
         space: The space where the node is located.
         external_id: The external id of the model template.
         data_record: The data record of the model template node.
-        cog_shop_version: The tag of the cogshop image to run
+        version_: The version of the model
         shop_version: The version of SHOP to run
         watercourse: The watercourse to run the model for
         model: The shop model file to use as template before applying base mapping
-        source: The source of the model, for example, 'resync'
+        cog_shop_files_config: Configuration for in what order to load the various files into pyshop
+        extra_files: Extra files related to a model template
         base_mappings: The base mappings for the model
     """
 
@@ -122,11 +127,12 @@ class ModelTemplateWrite(DomainModelWrite, protected_namespaces=()):
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
         "sp_powerops_types", "ModelTemplate"
     )
-    cog_shop_version: str = Field(alias="cogShopVersion")
+    version_: Optional[str] = Field(None, alias="version")
     shop_version: str = Field(alias="shopVersion")
     watercourse: Union[WatercourseShopWrite, str, dm.NodeId, None] = Field(None, repr=False)
     model: Union[str, None] = None
-    source: Optional[str] = None
+    cog_shop_files_config: Optional[list[dict]] = Field(None, alias="cogShopFilesConfig")
+    extra_files: Optional[list[str]] = Field(None, alias="extraFiles")
     base_mappings: Union[list[MappingWrite], list[str], None] = Field(default=None, repr=False, alias="baseMappings")
 
     def _to_instances_write(
@@ -145,8 +151,8 @@ class ModelTemplateWrite(DomainModelWrite, protected_namespaces=()):
 
         properties: dict[str, Any] = {}
 
-        if self.cog_shop_version is not None:
-            properties["cogShopVersion"] = self.cog_shop_version
+        if self.version_ is not None or write_none:
+            properties["version"] = self.version_
 
         if self.shop_version is not None:
             properties["shopVersion"] = self.shop_version
@@ -160,8 +166,11 @@ class ModelTemplateWrite(DomainModelWrite, protected_namespaces=()):
         if self.model is not None:
             properties["model"] = self.model
 
-        if self.source is not None or write_none:
-            properties["source"] = self.source
+        if self.cog_shop_files_config is not None or write_none:
+            properties["cogShopFilesConfig"] = self.cog_shop_files_config
+
+        if self.extra_files is not None or write_none:
+            properties["extraFiles"] = self.extra_files
 
         if properties:
             this_node = dm.NodeApply(
@@ -239,24 +248,22 @@ class ModelTemplateApplyList(ModelTemplateWriteList): ...
 
 def _create_model_template_filter(
     view_id: dm.ViewId,
-    cog_shop_version: str | list[str] | None = None,
-    cog_shop_version_prefix: str | None = None,
+    version_: str | list[str] | None = None,
+    version_prefix: str | None = None,
     shop_version: str | list[str] | None = None,
     shop_version_prefix: str | None = None,
     watercourse: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
-    source: str | list[str] | None = None,
-    source_prefix: str | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
 ) -> dm.Filter | None:
     filters = []
-    if isinstance(cog_shop_version, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("cogShopVersion"), value=cog_shop_version))
-    if cog_shop_version and isinstance(cog_shop_version, list):
-        filters.append(dm.filters.In(view_id.as_property_ref("cogShopVersion"), values=cog_shop_version))
-    if cog_shop_version_prefix is not None:
-        filters.append(dm.filters.Prefix(view_id.as_property_ref("cogShopVersion"), value=cog_shop_version_prefix))
+    if isinstance(version_, str):
+        filters.append(dm.filters.Equals(view_id.as_property_ref("version"), value=version_))
+    if version_ and isinstance(version_, list):
+        filters.append(dm.filters.In(view_id.as_property_ref("version"), values=version_))
+    if version_prefix is not None:
+        filters.append(dm.filters.Prefix(view_id.as_property_ref("version"), value=version_prefix))
     if isinstance(shop_version, str):
         filters.append(dm.filters.Equals(view_id.as_property_ref("shopVersion"), value=shop_version))
     if shop_version and isinstance(shop_version, list):
@@ -290,12 +297,6 @@ def _create_model_template_filter(
                 values=[{"space": item[0], "externalId": item[1]} for item in watercourse],
             )
         )
-    if isinstance(source, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("source"), value=source))
-    if source and isinstance(source, list):
-        filters.append(dm.filters.In(view_id.as_property_ref("source"), values=source))
-    if source_prefix is not None:
-        filters.append(dm.filters.Prefix(view_id.as_property_ref("source"), value=source_prefix))
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):

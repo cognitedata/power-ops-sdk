@@ -1,0 +1,46 @@
+#NB! This view is used in the frontend to pair a price/prod pair with a scenario and link it to the multiscenariobidmatrix
+space: '{{powerops_models}}'
+externalId: PriceProdCase
+name: PriceProdCase
+version: '{{version}}'
+description: The output price/prod pair of a shop run linked to the scenario that was used to produce it. This is used in the frontend to pair a price/prod pair with a scenario and link it to the multiscenariobidmatrix
+filter:
+  and:
+    - hasData:
+      - type: container
+        space: '{{powerops_models}}'
+        externalId: SHOPResult
+    - equals:
+        property:
+        - node
+        - type
+        value:
+          space: '{{powerops_type_space}}'
+          externalId: PriceProdCase
+properties:
+  price:
+    container:
+      space: '{{powerops_models}}'
+      externalId: SHOPResult
+      type: container
+    containerPropertyIdentifier: ts1
+    name: price
+  production:
+    container:
+      space: '{{powerops_models}}'
+      externalId: SHOPResult
+      type: container
+    containerPropertyIdentifier: ts2
+    name: production
+  case:
+    container:
+      space: '{{powerops_models}}'
+      externalId: SHOPResult
+      type: container
+    source:
+        space: '{{powerops_models}}'
+        externalId: Case
+        version: '{{version}}'
+        type: view
+    containerPropertyIdentifier: case
+    name: case

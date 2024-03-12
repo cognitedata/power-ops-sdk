@@ -11,10 +11,6 @@ views:
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
-- externalId: PriceScenario
-  space: '{{powerops_models}}'
-  type: view
-  version: '{{version}}'
 - externalId: MarketConfiguration
   space: '{{powerops_models}}'
   type: view
@@ -84,14 +80,6 @@ views:
   type: view
   version: '{{version}}'
 - externalId: ShopPartialBidCalculationInput
-  space: '{{powerops_models}}'
-  type: view
-  version: '{{version}}'
-- externalId: ScenarioRaw
-  space: '{{powerops_models}}'
-  type: view
-  version: '{{version}}'
-- externalId: ScenarioBase
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
@@ -275,3 +263,23 @@ views:
   space: '{{powerops_models}}'
   version: '{{version}}'
   type: view
+- externalId: Case
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: Commands
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: PriceProdCase
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: SHOPResultPriceProd
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: SHOPTimeSeries
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'

@@ -34,7 +34,7 @@ from ._core import (
     QueryBuilder,
 )
 from .multi_scenario_matrix_alerts import MultiScenarioMatrixAlertsAPI
-from .multi_scenario_matrix_shop_results import MultiScenarioMatrixShopResultsAPI
+from .multi_scenario_matrix_scenario_results import MultiScenarioMatrixScenarioResultsAPI
 from .multi_scenario_matrix_query import MultiScenarioMatrixQueryAPI
 
 
@@ -51,7 +51,7 @@ class MultiScenarioMatrixAPI(NodeAPI[MultiScenarioMatrix, MultiScenarioMatrixWri
         )
         self._view_id = view_id
         self.alerts_edge = MultiScenarioMatrixAlertsAPI(client)
-        self.shop_results_edge = MultiScenarioMatrixShopResultsAPI(client)
+        self.scenario_results_edge = MultiScenarioMatrixScenarioResultsAPI(client)
 
     def __call__(
         self,
@@ -115,7 +115,7 @@ class MultiScenarioMatrixAPI(NodeAPI[MultiScenarioMatrix, MultiScenarioMatrixWri
         """Add or update (upsert) multi scenario matrixes.
 
         Note: This method iterates through all nodes and timeseries linked to multi_scenario_matrix and creates them including the edges
-        between the nodes. For example, if any of `alerts` or `shop_results` are set, then these
+        between the nodes. For example, if any of `alerts` or `scenario_results` are set, then these
         nodes as well as any nodes linked to them, and all the edges linking these nodes will be created.
 
         Args:
@@ -223,11 +223,11 @@ class MultiScenarioMatrixAPI(NodeAPI[MultiScenarioMatrix, MultiScenarioMatrixWri
                     dm.ViewId("sp_powerops_models", "Alert", "1"),
                 ),
                 (
-                    self.shop_results_edge,
-                    "shop_results",
-                    dm.DirectRelationReference("sp_powerops_types", "MultiScenarioMatrix.shopResults"),
+                    self.scenario_results_edge,
+                    "scenario_results",
+                    dm.DirectRelationReference("sp_powerops_types", "MultiScenarioMatrix.scenarioResults"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models", "SHOPResult", "1"),
+                    dm.ViewId("sp_powerops_models", "PriceProdCase", "1"),
                 ),
             ],
         )
@@ -533,7 +533,7 @@ class MultiScenarioMatrixAPI(NodeAPI[MultiScenarioMatrix, MultiScenarioMatrixWri
             space: The space to filter on.
             limit: Maximum number of multi scenario matrixes to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
             filter: (Advanced) If the filtering available in the above is not sufficient, you can write your own filtering which will be ANDed with the filter above.
-            retrieve_edges: Whether to retrieve `alerts` or `shop_results` external ids for the multi scenario matrixes. Defaults to True.
+            retrieve_edges: Whether to retrieve `alerts` or `scenario_results` external ids for the multi scenario matrixes. Defaults to True.
 
         Returns:
             List of requested multi scenario matrixes
@@ -575,11 +575,11 @@ class MultiScenarioMatrixAPI(NodeAPI[MultiScenarioMatrix, MultiScenarioMatrixWri
                     dm.ViewId("sp_powerops_models", "Alert", "1"),
                 ),
                 (
-                    self.shop_results_edge,
-                    "shop_results",
-                    dm.DirectRelationReference("sp_powerops_types", "MultiScenarioMatrix.shopResults"),
+                    self.scenario_results_edge,
+                    "scenario_results",
+                    dm.DirectRelationReference("sp_powerops_types", "MultiScenarioMatrix.scenarioResults"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models", "SHOPResult", "1"),
+                    dm.ViewId("sp_powerops_models", "PriceProdCase", "1"),
                 ),
             ],
         )

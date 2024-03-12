@@ -22,7 +22,7 @@ from ._bid_matrix import BidMatrix, BidMatrixWrite
 if TYPE_CHECKING:
     from ._alert import Alert, AlertWrite
     from ._bid_method_shop_multi_scenario import BidMethodSHOPMultiScenario, BidMethodSHOPMultiScenarioWrite
-    from ._shop_result import SHOPResult, SHOPResultWrite
+    from ._price_prod_case import PriceProdCase, PriceProdCaseWrite
 
 
 __all__ = [
@@ -65,14 +65,16 @@ class MultiScenarioMatrix(BidMatrix):
         is_processed: Whether the bid matrix has been processed by the bid matrix processor or not
         alerts: The alert field.
         method: The method field.
-        shop_results: An array of results, one for each scenario.
+        scenario_results: An array of price/prod pairs, one for each scenario/case - this is needed for the frontend
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
         "sp_powerops_types", "DayAheadMultiScenarioMatrix"
     )
     method: Union[BidMethodSHOPMultiScenario, str, dm.NodeId, None] = Field(None, repr=False)
-    shop_results: Union[list[SHOPResult], list[str], None] = Field(default=None, repr=False, alias="shopResults")
+    scenario_results: Union[list[PriceProdCase], list[str], None] = Field(
+        default=None, repr=False, alias="scenarioResults"
+    )
 
     def as_write(self) -> MultiScenarioMatrixWrite:
         """Convert this read version of multi scenario matrix to the writing version."""
@@ -87,9 +89,9 @@ class MultiScenarioMatrix(BidMatrix):
             is_processed=self.is_processed,
             alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
             method=self.method.as_write() if isinstance(self.method, DomainModel) else self.method,
-            shop_results=[
-                shop_result.as_write() if isinstance(shop_result, DomainModel) else shop_result
-                for shop_result in self.shop_results or []
+            scenario_results=[
+                scenario_result.as_write() if isinstance(scenario_result, DomainModel) else scenario_result
+                for scenario_result in self.scenario_results or []
             ],
         )
 
@@ -119,14 +121,16 @@ class MultiScenarioMatrixWrite(BidMatrixWrite):
         is_processed: Whether the bid matrix has been processed by the bid matrix processor or not
         alerts: The alert field.
         method: The method field.
-        shop_results: An array of results, one for each scenario.
+        scenario_results: An array of price/prod pairs, one for each scenario/case - this is needed for the frontend
     """
 
     node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference(
         "sp_powerops_types", "DayAheadMultiScenarioMatrix"
     )
     method: Union[BidMethodSHOPMultiScenarioWrite, str, dm.NodeId, None] = Field(None, repr=False)
-    shop_results: Union[list[SHOPResultWrite], list[str], None] = Field(default=None, repr=False, alias="shopResults")
+    scenario_results: Union[list[PriceProdCaseWrite], list[str], None] = Field(
+        default=None, repr=False, alias="scenarioResults"
+    )
 
     def _to_instances_write(
         self,
@@ -188,10 +192,14 @@ class MultiScenarioMatrixWrite(BidMatrixWrite):
             )
             resources.extend(other_resources)
 
-        edge_type = dm.DirectRelationReference("sp_powerops_types", "MultiScenarioMatrix.shopResults")
-        for shop_result in self.shop_results or []:
+        edge_type = dm.DirectRelationReference("sp_powerops_types", "MultiScenarioMatrix.scenarioResults")
+        for scenario_result in self.scenario_results or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
-                cache, start_node=self, end_node=shop_result, edge_type=edge_type, view_by_read_class=view_by_read_class
+                cache,
+                start_node=self,
+                end_node=scenario_result,
+                edge_type=edge_type,
+                view_by_read_class=view_by_read_class,
             )
             resources.extend(other_resources)
 

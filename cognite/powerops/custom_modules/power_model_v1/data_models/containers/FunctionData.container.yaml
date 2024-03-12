@@ -115,3 +115,9 @@ properties:
     nullable: true
     autoIncrement: false
     name: sequence
+  flag:
+    type:
+      type: boolean
+    nullable: true
+    autoIncrement: false
+    name: flag

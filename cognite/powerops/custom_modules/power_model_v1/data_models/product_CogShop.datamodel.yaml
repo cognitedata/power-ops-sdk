@@ -1,0 +1,30 @@
+externalId: product_CogShop
+space: '{{powerops_models}}'
+version: '1'
+name: CogShop
+description: CogShop data model
+views:
+- externalId: Case
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: Scenario
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: Commands
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: Mapping
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: ModelTemplate
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
+- externalId: WatercourseShop
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'

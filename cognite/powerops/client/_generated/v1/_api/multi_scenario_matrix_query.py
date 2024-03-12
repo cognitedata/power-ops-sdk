@@ -14,7 +14,7 @@ from ._core import DEFAULT_QUERY_LIMIT, QueryBuilder, QueryStep, QueryAPI, T_Dom
 
 if TYPE_CHECKING:
     from .alert_query import AlertQueryAPI
-    from .shop_result_query import SHOPResultQueryAPI
+    from .price_prod_case_query import PriceProdCaseQueryAPI
 
 
 class MultiScenarioMatrixQueryAPI(QueryAPI[T_DomainModelList]):
@@ -85,37 +85,37 @@ class MultiScenarioMatrixQueryAPI(QueryAPI[T_DomainModelList]):
             self._query_append_method(from_)
         return AlertQueryAPI(self._client, self._builder, self._view_by_read_class, None, limit)
 
-    def shop_results(
+    def scenario_results(
         self,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
         retrieve_method: bool = False,
-    ) -> SHOPResultQueryAPI[T_DomainModelList]:
-        """Query along the shop result edges of the multi scenario matrix.
+    ) -> PriceProdCaseQueryAPI[T_DomainModelList]:
+        """Query along the scenario result edges of the multi scenario matrix.
 
         Args:
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
-            limit: Maximum number of shop result edges to return. Defaults to 25. Set to -1, float("inf") or None
+            limit: Maximum number of scenario result edges to return. Defaults to 25. Set to -1, float("inf") or None
                 to return all items.
             retrieve_method: Whether to retrieve the method for each multi scenario matrix or not.
 
         Returns:
-            SHOPResultQueryAPI: The query API for the shop result.
+            PriceProdCaseQueryAPI: The query API for the price prod case.
         """
-        from .shop_result_query import SHOPResultQueryAPI
+        from .price_prod_case_query import PriceProdCaseQueryAPI
 
         from_ = self._builder[-1].name
 
         edge_filter = _create_edge_filter(
-            dm.DirectRelationReference("sp_powerops_types", "MultiScenarioMatrix.shopResults"),
+            dm.DirectRelationReference("sp_powerops_types", "MultiScenarioMatrix.scenarioResults"),
             external_id_prefix=external_id_prefix,
             space=space,
         )
         self._builder.append(
             QueryStep(
-                name=self._builder.next_name("shop_results"),
+                name=self._builder.next_name("scenario_results"),
                 expression=dm.query.EdgeResultSetExpression(
                     filter=edge_filter,
                     from_=from_,
@@ -127,7 +127,7 @@ class MultiScenarioMatrixQueryAPI(QueryAPI[T_DomainModelList]):
         )
         if retrieve_method:
             self._query_append_method(from_)
-        return SHOPResultQueryAPI(self._client, self._builder, self._view_by_read_class, None, limit)
+        return PriceProdCaseQueryAPI(self._client, self._builder, self._view_by_read_class, None, limit)
 
     def query(
         self,

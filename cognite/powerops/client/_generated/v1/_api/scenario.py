@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import datetime
 from collections.abc import Sequence
 from typing import overload
 import warnings
@@ -56,22 +55,10 @@ class ScenarioAPI(NodeAPI[Scenario, ScenarioWrite, ScenarioList]):
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        shop_version: str | list[str] | None = None,
-        shop_version_prefix: str | None = None,
         model_template: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        commands: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         source: str | list[str] | None = None,
         source_prefix: str | None = None,
-        shop_start_specification: str | list[str] | None = None,
-        shop_start_specification_prefix: str | None = None,
-        shop_end_specification: str | list[str] | None = None,
-        shop_end_specification_prefix: str | None = None,
-        min_shop_start: datetime.datetime | None = None,
-        max_shop_start: datetime.datetime | None = None,
-        min_shop_end: datetime.datetime | None = None,
-        max_shop_end: datetime.datetime | None = None,
-        min_bid_date: datetime.date | None = None,
-        max_bid_date: datetime.date | None = None,
-        is_ready: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
@@ -82,22 +69,10 @@ class ScenarioAPI(NodeAPI[Scenario, ScenarioWrite, ScenarioList]):
         Args:
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            shop_version: The shop version to filter on.
-            shop_version_prefix: The prefix of the shop version to filter on.
             model_template: The model template to filter on.
+            commands: The command to filter on.
             source: The source to filter on.
             source_prefix: The prefix of the source to filter on.
-            shop_start_specification: The shop start specification to filter on.
-            shop_start_specification_prefix: The prefix of the shop start specification to filter on.
-            shop_end_specification: The shop end specification to filter on.
-            shop_end_specification_prefix: The prefix of the shop end specification to filter on.
-            min_shop_start: The minimum value of the shop start to filter on.
-            max_shop_start: The maximum value of the shop start to filter on.
-            min_shop_end: The minimum value of the shop end to filter on.
-            max_shop_end: The maximum value of the shop end to filter on.
-            min_bid_date: The minimum value of the bid date to filter on.
-            max_bid_date: The maximum value of the bid date to filter on.
-            is_ready: The is ready to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of scenarios to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -112,22 +87,10 @@ class ScenarioAPI(NodeAPI[Scenario, ScenarioWrite, ScenarioList]):
             self._view_id,
             name,
             name_prefix,
-            shop_version,
-            shop_version_prefix,
             model_template,
+            commands,
             source,
             source_prefix,
-            shop_start_specification,
-            shop_start_specification_prefix,
-            shop_end_specification,
-            shop_end_specification_prefix,
-            min_shop_start,
-            max_shop_start,
-            min_shop_end,
-            max_shop_end,
-            min_bid_date,
-            max_bid_date,
-            is_ready,
             external_id_prefix,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
@@ -258,22 +221,10 @@ class ScenarioAPI(NodeAPI[Scenario, ScenarioWrite, ScenarioList]):
         properties: ScenarioTextFields | Sequence[ScenarioTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        shop_version: str | list[str] | None = None,
-        shop_version_prefix: str | None = None,
         model_template: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        commands: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         source: str | list[str] | None = None,
         source_prefix: str | None = None,
-        shop_start_specification: str | list[str] | None = None,
-        shop_start_specification_prefix: str | None = None,
-        shop_end_specification: str | list[str] | None = None,
-        shop_end_specification_prefix: str | None = None,
-        min_shop_start: datetime.datetime | None = None,
-        max_shop_start: datetime.datetime | None = None,
-        min_shop_end: datetime.datetime | None = None,
-        max_shop_end: datetime.datetime | None = None,
-        min_bid_date: datetime.date | None = None,
-        max_bid_date: datetime.date | None = None,
-        is_ready: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -286,22 +237,10 @@ class ScenarioAPI(NodeAPI[Scenario, ScenarioWrite, ScenarioList]):
             properties: The property to search, if nothing is passed all text fields will be searched.
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            shop_version: The shop version to filter on.
-            shop_version_prefix: The prefix of the shop version to filter on.
             model_template: The model template to filter on.
+            commands: The command to filter on.
             source: The source to filter on.
             source_prefix: The prefix of the source to filter on.
-            shop_start_specification: The shop start specification to filter on.
-            shop_start_specification_prefix: The prefix of the shop start specification to filter on.
-            shop_end_specification: The shop end specification to filter on.
-            shop_end_specification_prefix: The prefix of the shop end specification to filter on.
-            min_shop_start: The minimum value of the shop start to filter on.
-            max_shop_start: The maximum value of the shop start to filter on.
-            min_shop_end: The minimum value of the shop end to filter on.
-            max_shop_end: The maximum value of the shop end to filter on.
-            min_bid_date: The minimum value of the bid date to filter on.
-            max_bid_date: The maximum value of the bid date to filter on.
-            is_ready: The is ready to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of scenarios to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -323,22 +262,10 @@ class ScenarioAPI(NodeAPI[Scenario, ScenarioWrite, ScenarioList]):
             self._view_id,
             name,
             name_prefix,
-            shop_version,
-            shop_version_prefix,
             model_template,
+            commands,
             source,
             source_prefix,
-            shop_start_specification,
-            shop_start_specification_prefix,
-            shop_end_specification,
-            shop_end_specification_prefix,
-            min_shop_start,
-            max_shop_start,
-            min_shop_end,
-            max_shop_end,
-            min_bid_date,
-            max_bid_date,
-            is_ready,
             external_id_prefix,
             space,
             filter,
@@ -360,22 +287,10 @@ class ScenarioAPI(NodeAPI[Scenario, ScenarioWrite, ScenarioList]):
         search_properties: ScenarioTextFields | Sequence[ScenarioTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        shop_version: str | list[str] | None = None,
-        shop_version_prefix: str | None = None,
         model_template: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        commands: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         source: str | list[str] | None = None,
         source_prefix: str | None = None,
-        shop_start_specification: str | list[str] | None = None,
-        shop_start_specification_prefix: str | None = None,
-        shop_end_specification: str | list[str] | None = None,
-        shop_end_specification_prefix: str | None = None,
-        min_shop_start: datetime.datetime | None = None,
-        max_shop_start: datetime.datetime | None = None,
-        min_shop_end: datetime.datetime | None = None,
-        max_shop_end: datetime.datetime | None = None,
-        min_bid_date: datetime.date | None = None,
-        max_bid_date: datetime.date | None = None,
-        is_ready: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -397,22 +312,10 @@ class ScenarioAPI(NodeAPI[Scenario, ScenarioWrite, ScenarioList]):
         search_properties: ScenarioTextFields | Sequence[ScenarioTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        shop_version: str | list[str] | None = None,
-        shop_version_prefix: str | None = None,
         model_template: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        commands: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         source: str | list[str] | None = None,
         source_prefix: str | None = None,
-        shop_start_specification: str | list[str] | None = None,
-        shop_start_specification_prefix: str | None = None,
-        shop_end_specification: str | list[str] | None = None,
-        shop_end_specification_prefix: str | None = None,
-        min_shop_start: datetime.datetime | None = None,
-        max_shop_start: datetime.datetime | None = None,
-        min_shop_end: datetime.datetime | None = None,
-        max_shop_end: datetime.datetime | None = None,
-        min_bid_date: datetime.date | None = None,
-        max_bid_date: datetime.date | None = None,
-        is_ready: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -433,22 +336,10 @@ class ScenarioAPI(NodeAPI[Scenario, ScenarioWrite, ScenarioList]):
         search_property: ScenarioTextFields | Sequence[ScenarioTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        shop_version: str | list[str] | None = None,
-        shop_version_prefix: str | None = None,
         model_template: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        commands: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         source: str | list[str] | None = None,
         source_prefix: str | None = None,
-        shop_start_specification: str | list[str] | None = None,
-        shop_start_specification_prefix: str | None = None,
-        shop_end_specification: str | list[str] | None = None,
-        shop_end_specification_prefix: str | None = None,
-        min_shop_start: datetime.datetime | None = None,
-        max_shop_start: datetime.datetime | None = None,
-        min_shop_end: datetime.datetime | None = None,
-        max_shop_end: datetime.datetime | None = None,
-        min_bid_date: datetime.date | None = None,
-        max_bid_date: datetime.date | None = None,
-        is_ready: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -464,22 +355,10 @@ class ScenarioAPI(NodeAPI[Scenario, ScenarioWrite, ScenarioList]):
             search_property: The text field to search in.
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            shop_version: The shop version to filter on.
-            shop_version_prefix: The prefix of the shop version to filter on.
             model_template: The model template to filter on.
+            commands: The command to filter on.
             source: The source to filter on.
             source_prefix: The prefix of the source to filter on.
-            shop_start_specification: The shop start specification to filter on.
-            shop_start_specification_prefix: The prefix of the shop start specification to filter on.
-            shop_end_specification: The shop end specification to filter on.
-            shop_end_specification_prefix: The prefix of the shop end specification to filter on.
-            min_shop_start: The minimum value of the shop start to filter on.
-            max_shop_start: The maximum value of the shop start to filter on.
-            min_shop_end: The minimum value of the shop end to filter on.
-            max_shop_end: The maximum value of the shop end to filter on.
-            min_bid_date: The minimum value of the bid date to filter on.
-            max_bid_date: The maximum value of the bid date to filter on.
-            is_ready: The is ready to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of scenarios to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -502,22 +381,10 @@ class ScenarioAPI(NodeAPI[Scenario, ScenarioWrite, ScenarioList]):
             self._view_id,
             name,
             name_prefix,
-            shop_version,
-            shop_version_prefix,
             model_template,
+            commands,
             source,
             source_prefix,
-            shop_start_specification,
-            shop_start_specification_prefix,
-            shop_end_specification,
-            shop_end_specification_prefix,
-            min_shop_start,
-            max_shop_start,
-            min_shop_end,
-            max_shop_end,
-            min_bid_date,
-            max_bid_date,
-            is_ready,
             external_id_prefix,
             space,
             filter,
@@ -542,22 +409,10 @@ class ScenarioAPI(NodeAPI[Scenario, ScenarioWrite, ScenarioList]):
         search_property: ScenarioTextFields | Sequence[ScenarioTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        shop_version: str | list[str] | None = None,
-        shop_version_prefix: str | None = None,
         model_template: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        commands: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         source: str | list[str] | None = None,
         source_prefix: str | None = None,
-        shop_start_specification: str | list[str] | None = None,
-        shop_start_specification_prefix: str | None = None,
-        shop_end_specification: str | list[str] | None = None,
-        shop_end_specification_prefix: str | None = None,
-        min_shop_start: datetime.datetime | None = None,
-        max_shop_start: datetime.datetime | None = None,
-        min_shop_end: datetime.datetime | None = None,
-        max_shop_end: datetime.datetime | None = None,
-        min_bid_date: datetime.date | None = None,
-        max_bid_date: datetime.date | None = None,
-        is_ready: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -572,22 +427,10 @@ class ScenarioAPI(NodeAPI[Scenario, ScenarioWrite, ScenarioList]):
             search_property: The text field to search in.
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            shop_version: The shop version to filter on.
-            shop_version_prefix: The prefix of the shop version to filter on.
             model_template: The model template to filter on.
+            commands: The command to filter on.
             source: The source to filter on.
             source_prefix: The prefix of the source to filter on.
-            shop_start_specification: The shop start specification to filter on.
-            shop_start_specification_prefix: The prefix of the shop start specification to filter on.
-            shop_end_specification: The shop end specification to filter on.
-            shop_end_specification_prefix: The prefix of the shop end specification to filter on.
-            min_shop_start: The minimum value of the shop start to filter on.
-            max_shop_start: The maximum value of the shop start to filter on.
-            min_shop_end: The minimum value of the shop end to filter on.
-            max_shop_end: The maximum value of the shop end to filter on.
-            min_bid_date: The minimum value of the bid date to filter on.
-            max_bid_date: The maximum value of the bid date to filter on.
-            is_ready: The is ready to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of scenarios to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -601,22 +444,10 @@ class ScenarioAPI(NodeAPI[Scenario, ScenarioWrite, ScenarioList]):
             self._view_id,
             name,
             name_prefix,
-            shop_version,
-            shop_version_prefix,
             model_template,
+            commands,
             source,
             source_prefix,
-            shop_start_specification,
-            shop_start_specification_prefix,
-            shop_end_specification,
-            shop_end_specification_prefix,
-            min_shop_start,
-            max_shop_start,
-            min_shop_end,
-            max_shop_end,
-            min_bid_date,
-            max_bid_date,
-            is_ready,
             external_id_prefix,
             space,
             filter,
@@ -636,22 +467,10 @@ class ScenarioAPI(NodeAPI[Scenario, ScenarioWrite, ScenarioList]):
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        shop_version: str | list[str] | None = None,
-        shop_version_prefix: str | None = None,
         model_template: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
+        commands: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         source: str | list[str] | None = None,
         source_prefix: str | None = None,
-        shop_start_specification: str | list[str] | None = None,
-        shop_start_specification_prefix: str | None = None,
-        shop_end_specification: str | list[str] | None = None,
-        shop_end_specification_prefix: str | None = None,
-        min_shop_start: datetime.datetime | None = None,
-        max_shop_start: datetime.datetime | None = None,
-        min_shop_end: datetime.datetime | None = None,
-        max_shop_end: datetime.datetime | None = None,
-        min_bid_date: datetime.date | None = None,
-        max_bid_date: datetime.date | None = None,
-        is_ready: bool | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -663,22 +482,10 @@ class ScenarioAPI(NodeAPI[Scenario, ScenarioWrite, ScenarioList]):
         Args:
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            shop_version: The shop version to filter on.
-            shop_version_prefix: The prefix of the shop version to filter on.
             model_template: The model template to filter on.
+            commands: The command to filter on.
             source: The source to filter on.
             source_prefix: The prefix of the source to filter on.
-            shop_start_specification: The shop start specification to filter on.
-            shop_start_specification_prefix: The prefix of the shop start specification to filter on.
-            shop_end_specification: The shop end specification to filter on.
-            shop_end_specification_prefix: The prefix of the shop end specification to filter on.
-            min_shop_start: The minimum value of the shop start to filter on.
-            max_shop_start: The maximum value of the shop start to filter on.
-            min_shop_end: The minimum value of the shop end to filter on.
-            max_shop_end: The maximum value of the shop end to filter on.
-            min_bid_date: The minimum value of the bid date to filter on.
-            max_bid_date: The maximum value of the bid date to filter on.
-            is_ready: The is ready to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of scenarios to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -701,22 +508,10 @@ class ScenarioAPI(NodeAPI[Scenario, ScenarioWrite, ScenarioList]):
             self._view_id,
             name,
             name_prefix,
-            shop_version,
-            shop_version_prefix,
             model_template,
+            commands,
             source,
             source_prefix,
-            shop_start_specification,
-            shop_start_specification_prefix,
-            shop_end_specification,
-            shop_end_specification_prefix,
-            min_shop_start,
-            max_shop_start,
-            min_shop_end,
-            max_shop_end,
-            min_bid_date,
-            max_bid_date,
-            is_ready,
             external_id_prefix,
             space,
             filter,

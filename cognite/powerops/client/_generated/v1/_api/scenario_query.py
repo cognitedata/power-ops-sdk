@@ -9,6 +9,7 @@ from cognite.powerops.client._generated.v1.data_classes import (
     DomainModelCore,
     Scenario,
     ModelTemplate,
+    Commands,
 )
 from ._core import DEFAULT_QUERY_LIMIT, QueryBuilder, QueryStep, QueryAPI, T_DomainModelList, _create_edge_filter
 
@@ -46,6 +47,7 @@ class ScenarioQueryAPI(QueryAPI[T_DomainModelList]):
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
         retrieve_model_template: bool = False,
+        retrieve_commands: bool = False,
     ) -> MappingQueryAPI[T_DomainModelList]:
         """Query along the mappings override edges of the scenario.
 
@@ -55,6 +57,7 @@ class ScenarioQueryAPI(QueryAPI[T_DomainModelList]):
             limit: Maximum number of mappings override edges to return. Defaults to 25. Set to -1, float("inf") or None
                 to return all items.
             retrieve_model_template: Whether to retrieve the model template for each scenario or not.
+            retrieve_commands: Whether to retrieve the command for each scenario or not.
 
         Returns:
             MappingQueryAPI: The query API for the mapping.
@@ -82,16 +85,20 @@ class ScenarioQueryAPI(QueryAPI[T_DomainModelList]):
         )
         if retrieve_model_template:
             self._query_append_model_template(from_)
+        if retrieve_commands:
+            self._query_append_commands(from_)
         return MappingQueryAPI(self._client, self._builder, self._view_by_read_class, None, limit)
 
     def query(
         self,
         retrieve_model_template: bool = False,
+        retrieve_commands: bool = False,
     ) -> T_DomainModelList:
         """Execute query and return the result.
 
         Args:
             retrieve_model_template: Whether to retrieve the model template for each scenario or not.
+            retrieve_commands: Whether to retrieve the command for each scenario or not.
 
         Returns:
             The list of the source nodes of the query.
@@ -100,6 +107,8 @@ class ScenarioQueryAPI(QueryAPI[T_DomainModelList]):
         from_ = self._builder[-1].name
         if retrieve_model_template:
             self._query_append_model_template(from_)
+        if retrieve_commands:
+            self._query_append_commands(from_)
         return self._query()
 
     def _query_append_model_template(self, from_: str) -> None:
@@ -116,5 +125,22 @@ class ScenarioQueryAPI(QueryAPI[T_DomainModelList]):
                 select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
                 max_retrieve_limit=-1,
                 result_cls=ModelTemplate,
+            ),
+        )
+
+    def _query_append_commands(self, from_: str) -> None:
+        view_id = self._view_by_read_class[Commands]
+        self._builder.append(
+            QueryStep(
+                name=self._builder.next_name("commands"),
+                expression=dm.query.NodeResultSetExpression(
+                    filter=dm.filters.HasData(views=[view_id]),
+                    from_=from_,
+                    through=self._view_by_read_class[Scenario].as_property_ref("commands"),
+                    direction="outwards",
+                ),
+                select=dm.query.Select([dm.query.SourceSelector(view_id, ["*"])]),
+                max_retrieve_limit=-1,
+                result_cls=Commands,
             ),
         )

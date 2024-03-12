@@ -1,0 +1,13 @@
+space: '{{powerops_models}}'
+externalId: CommandsConfig
+name: CommandsConfig
+usedFor: node
+properties:
+  commands:
+    type:
+      list: true
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: commands
+    description: The commands to use with the shop run
