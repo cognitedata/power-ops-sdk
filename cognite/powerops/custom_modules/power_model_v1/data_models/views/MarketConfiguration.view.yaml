@@ -38,6 +38,7 @@ properties:
       type: container
     containerPropertyIdentifier: maxPrice
     name: maxPrice
+    description: The highest price allowed
   minPrice:
     container:
       space: "{{powerops_models}}"
@@ -45,6 +46,7 @@ properties:
       type: container
     containerPropertyIdentifier: minPrice
     name: minPrice
+    description: The lowest price allowed
   timeZone:
     container:
       space: "{{powerops_models}}"
@@ -59,6 +61,7 @@ properties:
       type: container
     containerPropertyIdentifier: priceUnit
     name: priceUnit
+    description: Unit of measurement for the price ("EUR/MWh")
   priceSteps:
     container:
       space: "{{powerops_models}}"
@@ -66,6 +69,7 @@ properties:
       type: container
     containerPropertyIdentifier: priceSteps
     name: priceSteps
+    description: The maximum number of price steps
   tickSize:
     container:
       space: "{{powerops_models}}"
@@ -73,6 +77,7 @@ properties:
       type: container
     containerPropertyIdentifier: tickSize
     name: tickSize
+    description: '"Granularity" of the price; tick size = 0.1 means that prices must be "rounded to nearest 0.1" (i. e. 66.43 is not allowed, but 66.4 is)'
   timeUnit:
     container:
       space: "{{powerops_models}}"
@@ -80,6 +85,7 @@ properties:
       type: container
     containerPropertyIdentifier: timeUnit
     name: timeUnit
+    description: The time unit ("1h")
   tradeLot:
     container:
       space: "{{powerops_models}}"
@@ -87,3 +93,4 @@ properties:
       type: container
     containerPropertyIdentifier: tradeLot
     name: tradeLot
+    description: '"Granularity" of the volumes; trade lot = 0.2 means that volumes must be "rounded to nearest 0.2" (i. e. 66.5 is not allowed, but 66.4 is)'
