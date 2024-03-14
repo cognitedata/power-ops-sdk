@@ -1,4 +1,4 @@
-space: '{{powerops_models}}'
+space: "{{powerops_models}}"
 externalId: MarketConfiguration
 name: MarketConfiguration
 usedFor: node
@@ -11,15 +11,6 @@ properties:
     nullable: true
     autoIncrement: false
     name: name
-  marketType:
-    type:
-      list: false
-      collation: ucs_basic
-      type: text
-    nullable: false
-    autoIncrement: false
-    name: marketType
-    description: The market type
   maxPrice:
     type:
       list: false
@@ -27,7 +18,7 @@ properties:
     nullable: false
     autoIncrement: false
     name: maxPrice
-    description: The maximum price
+    description: The highest price allowed
   minPrice:
     type:
       list: false
@@ -35,7 +26,7 @@ properties:
     nullable: false
     autoIncrement: false
     name: minPrice
-    description: The minimum price
+    description: The lowest price allowed
   timeZone:
     type:
       list: false
@@ -44,7 +35,7 @@ properties:
     nullable: false
     autoIncrement: false
     name: timeZone
-    description: The time zone
+    description:
   priceUnit:
     type:
       list: false
@@ -53,16 +44,16 @@ properties:
     nullable: false
     autoIncrement: false
     name: priceUnit
-    description: The price unit
+    description: Unit of measurement for the price ("EUR/MWh")
   priceSteps:
     type:
       list: false
       collation: ucs_basic
-      type: float64
+      type: int64
     nullable: false
     autoIncrement: false
     name: priceSteps
-    description: The price steps
+    description: The maximum number of price steps
   tickSize:
     type:
       list: false
@@ -71,7 +62,7 @@ properties:
     nullable: false
     autoIncrement: false
     name: tickSize
-    description: The tick size
+    description: '"Granularity" of the price; tick size = 0.1 means that prices must be "rounded to nearest 0.1" (i. e. 66.43 is not allowed, but 66.4 is)'
   timeUnit:
     type:
       list: false
@@ -80,19 +71,19 @@ properties:
     nullable: false
     autoIncrement: false
     name: timeUnit
-    description: The time unit
+    description: The time unit ("1h")
   tradeLot:
     type:
       list: false
       collation: ucs_basic
-      type: int64
+      type: float64
     nullable: false
     autoIncrement: false
     name: tradeLot
-    description: The trade lot
+    description: '"Granularity" of the volumes; trade lot = 0.2 means that volumes must be "rounded to nearest 0.2" (i. e. 66.5 is not allowed, but 66.4 is)'
 indexes:
   priceStepsIndex:
     properties:
-    - priceSteps
+      - priceSteps
     indexType: btree
     cursorable: false
