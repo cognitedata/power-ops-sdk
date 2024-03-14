@@ -53,8 +53,6 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        market_type: str | list[str] | None = None,
-        market_type_prefix: str | None = None,
         min_max_price: float | None = None,
         max_max_price: float | None = None,
         min_min_price: float | None = None,
@@ -63,14 +61,14 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         time_zone_prefix: str | None = None,
         price_unit: str | list[str] | None = None,
         price_unit_prefix: str | None = None,
-        min_price_steps: float | None = None,
-        max_price_steps: float | None = None,
+        min_price_steps: int | None = None,
+        max_price_steps: int | None = None,
         min_tick_size: float | None = None,
         max_tick_size: float | None = None,
         time_unit: str | list[str] | None = None,
         time_unit_prefix: str | None = None,
-        min_trade_lot: int | None = None,
-        max_trade_lot: int | None = None,
+        min_trade_lot: float | None = None,
+        max_trade_lot: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
@@ -81,8 +79,6 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         Args:
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            market_type: The market type to filter on.
-            market_type_prefix: The prefix of the market type to filter on.
             min_max_price: The minimum value of the max price to filter on.
             max_max_price: The maximum value of the max price to filter on.
             min_min_price: The minimum value of the min price to filter on.
@@ -113,8 +109,6 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
             self._view_id,
             name,
             name_prefix,
-            market_type,
-            market_type_prefix,
             min_max_price,
             max_max_price,
             min_min_price,
@@ -246,8 +240,6 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         properties: MarketConfigurationTextFields | Sequence[MarketConfigurationTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        market_type: str | list[str] | None = None,
-        market_type_prefix: str | None = None,
         min_max_price: float | None = None,
         max_max_price: float | None = None,
         min_min_price: float | None = None,
@@ -256,14 +248,14 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         time_zone_prefix: str | None = None,
         price_unit: str | list[str] | None = None,
         price_unit_prefix: str | None = None,
-        min_price_steps: float | None = None,
-        max_price_steps: float | None = None,
+        min_price_steps: int | None = None,
+        max_price_steps: int | None = None,
         min_tick_size: float | None = None,
         max_tick_size: float | None = None,
         time_unit: str | list[str] | None = None,
         time_unit_prefix: str | None = None,
-        min_trade_lot: int | None = None,
-        max_trade_lot: int | None = None,
+        min_trade_lot: float | None = None,
+        max_trade_lot: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -276,8 +268,6 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
             properties: The property to search, if nothing is passed all text fields will be searched.
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            market_type: The market type to filter on.
-            market_type_prefix: The prefix of the market type to filter on.
             min_max_price: The minimum value of the max price to filter on.
             max_max_price: The maximum value of the max price to filter on.
             min_min_price: The minimum value of the min price to filter on.
@@ -315,8 +305,6 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
             self._view_id,
             name,
             name_prefix,
-            market_type,
-            market_type_prefix,
             min_max_price,
             max_max_price,
             min_min_price,
@@ -354,8 +342,6 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         search_properties: MarketConfigurationTextFields | Sequence[MarketConfigurationTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        market_type: str | list[str] | None = None,
-        market_type_prefix: str | None = None,
         min_max_price: float | None = None,
         max_max_price: float | None = None,
         min_min_price: float | None = None,
@@ -364,14 +350,14 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         time_zone_prefix: str | None = None,
         price_unit: str | list[str] | None = None,
         price_unit_prefix: str | None = None,
-        min_price_steps: float | None = None,
-        max_price_steps: float | None = None,
+        min_price_steps: int | None = None,
+        max_price_steps: int | None = None,
         min_tick_size: float | None = None,
         max_tick_size: float | None = None,
         time_unit: str | list[str] | None = None,
         time_unit_prefix: str | None = None,
-        min_trade_lot: int | None = None,
-        max_trade_lot: int | None = None,
+        min_trade_lot: float | None = None,
+        max_trade_lot: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -393,8 +379,6 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         search_properties: MarketConfigurationTextFields | Sequence[MarketConfigurationTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        market_type: str | list[str] | None = None,
-        market_type_prefix: str | None = None,
         min_max_price: float | None = None,
         max_max_price: float | None = None,
         min_min_price: float | None = None,
@@ -403,14 +387,14 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         time_zone_prefix: str | None = None,
         price_unit: str | list[str] | None = None,
         price_unit_prefix: str | None = None,
-        min_price_steps: float | None = None,
-        max_price_steps: float | None = None,
+        min_price_steps: int | None = None,
+        max_price_steps: int | None = None,
         min_tick_size: float | None = None,
         max_tick_size: float | None = None,
         time_unit: str | list[str] | None = None,
         time_unit_prefix: str | None = None,
-        min_trade_lot: int | None = None,
-        max_trade_lot: int | None = None,
+        min_trade_lot: float | None = None,
+        max_trade_lot: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -431,8 +415,6 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         search_property: MarketConfigurationTextFields | Sequence[MarketConfigurationTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        market_type: str | list[str] | None = None,
-        market_type_prefix: str | None = None,
         min_max_price: float | None = None,
         max_max_price: float | None = None,
         min_min_price: float | None = None,
@@ -441,14 +423,14 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         time_zone_prefix: str | None = None,
         price_unit: str | list[str] | None = None,
         price_unit_prefix: str | None = None,
-        min_price_steps: float | None = None,
-        max_price_steps: float | None = None,
+        min_price_steps: int | None = None,
+        max_price_steps: int | None = None,
         min_tick_size: float | None = None,
         max_tick_size: float | None = None,
         time_unit: str | list[str] | None = None,
         time_unit_prefix: str | None = None,
-        min_trade_lot: int | None = None,
-        max_trade_lot: int | None = None,
+        min_trade_lot: float | None = None,
+        max_trade_lot: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -464,8 +446,6 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
             search_property: The text field to search in.
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            market_type: The market type to filter on.
-            market_type_prefix: The prefix of the market type to filter on.
             min_max_price: The minimum value of the max price to filter on.
             max_max_price: The maximum value of the max price to filter on.
             min_min_price: The minimum value of the min price to filter on.
@@ -504,8 +484,6 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
             self._view_id,
             name,
             name_prefix,
-            market_type,
-            market_type_prefix,
             min_max_price,
             max_max_price,
             min_min_price,
@@ -546,8 +524,6 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         search_property: MarketConfigurationTextFields | Sequence[MarketConfigurationTextFields] | None = None,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        market_type: str | list[str] | None = None,
-        market_type_prefix: str | None = None,
         min_max_price: float | None = None,
         max_max_price: float | None = None,
         min_min_price: float | None = None,
@@ -556,14 +532,14 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         time_zone_prefix: str | None = None,
         price_unit: str | list[str] | None = None,
         price_unit_prefix: str | None = None,
-        min_price_steps: float | None = None,
-        max_price_steps: float | None = None,
+        min_price_steps: int | None = None,
+        max_price_steps: int | None = None,
         min_tick_size: float | None = None,
         max_tick_size: float | None = None,
         time_unit: str | list[str] | None = None,
         time_unit_prefix: str | None = None,
-        min_trade_lot: int | None = None,
-        max_trade_lot: int | None = None,
+        min_trade_lot: float | None = None,
+        max_trade_lot: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -578,8 +554,6 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
             search_property: The text field to search in.
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            market_type: The market type to filter on.
-            market_type_prefix: The prefix of the market type to filter on.
             min_max_price: The minimum value of the max price to filter on.
             max_max_price: The maximum value of the max price to filter on.
             min_min_price: The minimum value of the min price to filter on.
@@ -609,8 +583,6 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
             self._view_id,
             name,
             name_prefix,
-            market_type,
-            market_type_prefix,
             min_max_price,
             max_max_price,
             min_min_price,
@@ -646,8 +618,6 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         self,
         name: str | list[str] | None = None,
         name_prefix: str | None = None,
-        market_type: str | list[str] | None = None,
-        market_type_prefix: str | None = None,
         min_max_price: float | None = None,
         max_max_price: float | None = None,
         min_min_price: float | None = None,
@@ -656,14 +626,14 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         time_zone_prefix: str | None = None,
         price_unit: str | list[str] | None = None,
         price_unit_prefix: str | None = None,
-        min_price_steps: float | None = None,
-        max_price_steps: float | None = None,
+        min_price_steps: int | None = None,
+        max_price_steps: int | None = None,
         min_tick_size: float | None = None,
         max_tick_size: float | None = None,
         time_unit: str | list[str] | None = None,
         time_unit_prefix: str | None = None,
-        min_trade_lot: int | None = None,
-        max_trade_lot: int | None = None,
+        min_trade_lot: float | None = None,
+        max_trade_lot: float | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -674,8 +644,6 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
         Args:
             name: The name to filter on.
             name_prefix: The prefix of the name to filter on.
-            market_type: The market type to filter on.
-            market_type_prefix: The prefix of the market type to filter on.
             min_max_price: The minimum value of the max price to filter on.
             max_max_price: The maximum value of the max price to filter on.
             min_min_price: The minimum value of the min price to filter on.
@@ -713,8 +681,6 @@ class MarketConfigurationAPI(NodeAPI[MarketConfiguration, MarketConfigurationWri
             self._view_id,
             name,
             name_prefix,
-            market_type,
-            market_type_prefix,
             min_max_price,
             max_max_price,
             min_min_price,

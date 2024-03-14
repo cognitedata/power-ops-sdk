@@ -17,6 +17,14 @@ Changes are grouped as follows
 ### Added
 * Added `bidDate` as a property to the `ShopPartialBidCalculationInput` view of the `SHOPBasedDayAheadBidProcess` data model.
 
+# [0.91.0] - 2024-03-07
+### Changed
+* `MarketConfiguration` container updated
+  - Changed the types of the property `priceSteps` to int, and `tickSize` to float
+  - Removed property `marketType`
+  - Added more descriptive descriptions to most properties
+  - Removed property `marketType` and property descriptions from view based on this container
+
 ## [0.90.0] - 2024-03-12
 ### Changed
 * `v1` data model with domain informed changes

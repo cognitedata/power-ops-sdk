@@ -31,23 +31,13 @@ __all__ = [
 ]
 
 
-MarketConfigurationTextFields = Literal["name", "market_type", "time_zone", "price_unit", "time_unit"]
+MarketConfigurationTextFields = Literal["name", "time_zone", "price_unit", "time_unit"]
 MarketConfigurationFields = Literal[
-    "name",
-    "market_type",
-    "max_price",
-    "min_price",
-    "time_zone",
-    "price_unit",
-    "price_steps",
-    "tick_size",
-    "time_unit",
-    "trade_lot",
+    "name", "max_price", "min_price", "time_zone", "price_unit", "price_steps", "tick_size", "time_unit", "trade_lot"
 ]
 
 _MARKETCONFIGURATION_PROPERTIES_BY_FIELD = {
     "name": "name",
-    "market_type": "marketType",
     "max_price": "maxPrice",
     "min_price": "minPrice",
     "time_zone": "timeZone",
@@ -69,15 +59,14 @@ class MarketConfiguration(DomainModel):
         external_id: The external id of the market configuration.
         data_record: The data record of the market configuration node.
         name: The name of the market
-        market_type: The market type
-        max_price: The maximum price
-        min_price: The minimum price
-        time_zone: The time zone
-        price_unit: The price unit
-        price_steps: The price steps
-        tick_size: The tick size
-        time_unit: The time unit
-        trade_lot: The trade lot
+        max_price: The highest price allowed
+        min_price: The lowest price allowed
+        time_zone: The time zone field.
+        price_unit: Unit of measurement for the price ('EUR/MWh')
+        price_steps: The maximum number of price steps
+        tick_size: 'Granularity' of the price; tick size = 0.1 means that prices must be 'rounded to nearest 0.1' (i. e. 66.43 is not allowed, but 66.4 is)
+        time_unit: The time unit ('1h')
+        trade_lot: 'Granularity' of the volumes; trade lot = 0.2 means that volumes must be 'rounded to nearest 0.2' (i. e. 66.5 is not allowed, but 66.4 is)
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -85,15 +74,14 @@ class MarketConfiguration(DomainModel):
         "sp_powerops_types", "MarketConfiguration"
     )
     name: Optional[str] = None
-    market_type: str = Field(alias="marketType")
     max_price: float = Field(alias="maxPrice")
     min_price: float = Field(alias="minPrice")
     time_zone: str = Field(alias="timeZone")
     price_unit: str = Field(alias="priceUnit")
-    price_steps: float = Field(alias="priceSteps")
+    price_steps: int = Field(alias="priceSteps")
     tick_size: float = Field(alias="tickSize")
     time_unit: str = Field(alias="timeUnit")
-    trade_lot: int = Field(alias="tradeLot")
+    trade_lot: float = Field(alias="tradeLot")
 
     def as_write(self) -> MarketConfigurationWrite:
         """Convert this read version of market configuration to the writing version."""
@@ -102,7 +90,6 @@ class MarketConfiguration(DomainModel):
             external_id=self.external_id,
             data_record=DataRecordWrite(existing_version=self.data_record.version),
             name=self.name,
-            market_type=self.market_type,
             max_price=self.max_price,
             min_price=self.min_price,
             time_zone=self.time_zone,
@@ -133,15 +120,14 @@ class MarketConfigurationWrite(DomainModelWrite):
         external_id: The external id of the market configuration.
         data_record: The data record of the market configuration node.
         name: The name of the market
-        market_type: The market type
-        max_price: The maximum price
-        min_price: The minimum price
-        time_zone: The time zone
-        price_unit: The price unit
-        price_steps: The price steps
-        tick_size: The tick size
-        time_unit: The time unit
-        trade_lot: The trade lot
+        max_price: The highest price allowed
+        min_price: The lowest price allowed
+        time_zone: The time zone field.
+        price_unit: Unit of measurement for the price ('EUR/MWh')
+        price_steps: The maximum number of price steps
+        tick_size: 'Granularity' of the price; tick size = 0.1 means that prices must be 'rounded to nearest 0.1' (i. e. 66.43 is not allowed, but 66.4 is)
+        time_unit: The time unit ('1h')
+        trade_lot: 'Granularity' of the volumes; trade lot = 0.2 means that volumes must be 'rounded to nearest 0.2' (i. e. 66.5 is not allowed, but 66.4 is)
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
@@ -149,15 +135,14 @@ class MarketConfigurationWrite(DomainModelWrite):
         "sp_powerops_types", "MarketConfiguration"
     )
     name: Optional[str] = None
-    market_type: str = Field(alias="marketType")
     max_price: float = Field(alias="maxPrice")
     min_price: float = Field(alias="minPrice")
     time_zone: str = Field(alias="timeZone")
     price_unit: str = Field(alias="priceUnit")
-    price_steps: float = Field(alias="priceSteps")
+    price_steps: int = Field(alias="priceSteps")
     tick_size: float = Field(alias="tickSize")
     time_unit: str = Field(alias="timeUnit")
-    trade_lot: int = Field(alias="tradeLot")
+    trade_lot: float = Field(alias="tradeLot")
 
     def _to_instances_write(
         self,
@@ -177,9 +162,6 @@ class MarketConfigurationWrite(DomainModelWrite):
 
         if self.name is not None or write_none:
             properties["name"] = self.name
-
-        if self.market_type is not None:
-            properties["marketType"] = self.market_type
 
         if self.max_price is not None:
             properties["maxPrice"] = self.max_price
@@ -268,8 +250,6 @@ def _create_market_configuration_filter(
     view_id: dm.ViewId,
     name: str | list[str] | None = None,
     name_prefix: str | None = None,
-    market_type: str | list[str] | None = None,
-    market_type_prefix: str | None = None,
     min_max_price: float | None = None,
     max_max_price: float | None = None,
     min_min_price: float | None = None,
@@ -278,14 +258,14 @@ def _create_market_configuration_filter(
     time_zone_prefix: str | None = None,
     price_unit: str | list[str] | None = None,
     price_unit_prefix: str | None = None,
-    min_price_steps: float | None = None,
-    max_price_steps: float | None = None,
+    min_price_steps: int | None = None,
+    max_price_steps: int | None = None,
     min_tick_size: float | None = None,
     max_tick_size: float | None = None,
     time_unit: str | list[str] | None = None,
     time_unit_prefix: str | None = None,
-    min_trade_lot: int | None = None,
-    max_trade_lot: int | None = None,
+    min_trade_lot: float | None = None,
+    max_trade_lot: float | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -297,12 +277,6 @@ def _create_market_configuration_filter(
         filters.append(dm.filters.In(view_id.as_property_ref("name"), values=name))
     if name_prefix is not None:
         filters.append(dm.filters.Prefix(view_id.as_property_ref("name"), value=name_prefix))
-    if isinstance(market_type, str):
-        filters.append(dm.filters.Equals(view_id.as_property_ref("marketType"), value=market_type))
-    if market_type and isinstance(market_type, list):
-        filters.append(dm.filters.In(view_id.as_property_ref("marketType"), values=market_type))
-    if market_type_prefix is not None:
-        filters.append(dm.filters.Prefix(view_id.as_property_ref("marketType"), value=market_type_prefix))
     if min_max_price is not None or max_max_price is not None:
         filters.append(dm.filters.Range(view_id.as_property_ref("maxPrice"), gte=min_max_price, lte=max_max_price))
     if min_min_price is not None or max_min_price is not None:

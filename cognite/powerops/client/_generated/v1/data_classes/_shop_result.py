@@ -74,7 +74,7 @@ class SHOPResult(DomainModel):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types", "SHOPResult")
+    node_type: Union[dm.DirectRelationReference, None] = None
     case: Union[Case, str, dm.NodeId, None] = Field(None, repr=False)
     output_timeseries: Union[list[TimeSeries], list[str], None] = Field(None, alias="outputTimeseries")
     objective_sequence: Union[str, None] = Field(None, alias="objectiveSequence")
@@ -130,7 +130,7 @@ class SHOPResultWrite(DomainModelWrite):
     """
 
     space: str = DEFAULT_INSTANCE_SPACE
-    node_type: Union[dm.DirectRelationReference, None] = dm.DirectRelationReference("sp_powerops_types", "SHOPResult")
+    node_type: Union[dm.DirectRelationReference, None] = None
     case: Union[CaseWrite, str, dm.NodeId, None] = Field(None, repr=False)
     output_timeseries: Union[list[TimeSeries], list[str], None] = Field(None, alias="outputTimeseries")
     objective_sequence: Union[str, None] = Field(None, alias="objectiveSequence")
