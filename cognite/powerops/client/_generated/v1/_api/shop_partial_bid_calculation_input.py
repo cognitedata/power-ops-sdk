@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Sequence
 from typing import overload
 import warnings
@@ -68,6 +69,8 @@ class ShopPartialBidCalculationInputAPI(
         plant: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         step_enabled: bool | None = None,
+        min_bid_date: datetime.date | None = None,
+        max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
@@ -87,6 +90,8 @@ class ShopPartialBidCalculationInputAPI(
             plant: The plant to filter on.
             market_configuration: The market configuration to filter on.
             step_enabled: The step enabled to filter on.
+            min_bid_date: The minimum value of the bid date to filter on.
+            max_bid_date: The maximum value of the bid date to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop partial bid calculation inputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -110,6 +115,8 @@ class ShopPartialBidCalculationInputAPI(
             plant,
             market_configuration,
             step_enabled,
+            min_bid_date,
+            max_bid_date,
             external_id_prefix,
             space,
             (filter and dm.filters.And(filter, has_data)) or has_data,
@@ -257,6 +264,8 @@ class ShopPartialBidCalculationInputAPI(
         plant: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         step_enabled: bool | None = None,
+        min_bid_date: datetime.date | None = None,
+        max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -278,6 +287,8 @@ class ShopPartialBidCalculationInputAPI(
             plant: The plant to filter on.
             market_configuration: The market configuration to filter on.
             step_enabled: The step enabled to filter on.
+            min_bid_date: The minimum value of the bid date to filter on.
+            max_bid_date: The maximum value of the bid date to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop partial bid calculation inputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -308,6 +319,8 @@ class ShopPartialBidCalculationInputAPI(
             plant,
             market_configuration,
             step_enabled,
+            min_bid_date,
+            max_bid_date,
             external_id_prefix,
             space,
             filter,
@@ -342,6 +355,8 @@ class ShopPartialBidCalculationInputAPI(
         plant: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         step_enabled: bool | None = None,
+        min_bid_date: datetime.date | None = None,
+        max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -374,6 +389,8 @@ class ShopPartialBidCalculationInputAPI(
         plant: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         step_enabled: bool | None = None,
+        min_bid_date: datetime.date | None = None,
+        max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -405,6 +422,8 @@ class ShopPartialBidCalculationInputAPI(
         plant: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         step_enabled: bool | None = None,
+        min_bid_date: datetime.date | None = None,
+        max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -429,6 +448,8 @@ class ShopPartialBidCalculationInputAPI(
             plant: The plant to filter on.
             market_configuration: The market configuration to filter on.
             step_enabled: The step enabled to filter on.
+            min_bid_date: The minimum value of the bid date to filter on.
+            max_bid_date: The maximum value of the bid date to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop partial bid calculation inputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -460,6 +481,8 @@ class ShopPartialBidCalculationInputAPI(
             plant,
             market_configuration,
             step_enabled,
+            min_bid_date,
+            max_bid_date,
             external_id_prefix,
             space,
             filter,
@@ -495,6 +518,8 @@ class ShopPartialBidCalculationInputAPI(
         plant: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         step_enabled: bool | None = None,
+        min_bid_date: datetime.date | None = None,
+        max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -518,6 +543,8 @@ class ShopPartialBidCalculationInputAPI(
             plant: The plant to filter on.
             market_configuration: The market configuration to filter on.
             step_enabled: The step enabled to filter on.
+            min_bid_date: The minimum value of the bid date to filter on.
+            max_bid_date: The maximum value of the bid date to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop partial bid calculation inputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -540,6 +567,8 @@ class ShopPartialBidCalculationInputAPI(
             plant,
             market_configuration,
             step_enabled,
+            min_bid_date,
+            max_bid_date,
             external_id_prefix,
             space,
             filter,
@@ -568,6 +597,8 @@ class ShopPartialBidCalculationInputAPI(
         plant: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
         step_enabled: bool | None = None,
+        min_bid_date: datetime.date | None = None,
+        max_bid_date: datetime.date | None = None,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_LIMIT_READ,
@@ -588,6 +619,8 @@ class ShopPartialBidCalculationInputAPI(
             plant: The plant to filter on.
             market_configuration: The market configuration to filter on.
             step_enabled: The step enabled to filter on.
+            min_bid_date: The minimum value of the bid date to filter on.
+            max_bid_date: The maximum value of the bid date to filter on.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop partial bid calculation inputs to return. Defaults to 25. Set to -1, float("inf") or None to return all items.
@@ -619,6 +652,8 @@ class ShopPartialBidCalculationInputAPI(
             plant,
             market_configuration,
             step_enabled,
+            min_bid_date,
+            max_bid_date,
             external_id_prefix,
             space,
             filter,
