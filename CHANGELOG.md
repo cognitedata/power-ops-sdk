@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.91.1] - 2024-03-13
+### Added
+* Added `bidDate` as a property to the `ShopPartialBidCalculationInput` view of the `SHOPBasedDayAheadBidProcess` data model.
+
 # [0.91.0] - 2024-03-07
 ### Changed
 * `MarketConfiguration` container updated
@@ -20,7 +24,6 @@ Changes are grouped as follows
   - Removed property `marketType`
   - Added more descriptive descriptions to most properties
   - Removed property `marketType` and property descriptions from view based on this container
-
 
 ## [0.90.0] - 2024-03-12
 ### Changed

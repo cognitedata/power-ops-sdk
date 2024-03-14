@@ -74,3 +74,11 @@ properties:
     containerPropertyIdentifier: flag
     name: stepEnabled
     description: Whether the step is enabled or not
+  bidDate:
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: date1
+    name: bidDate
+    description: The bid date

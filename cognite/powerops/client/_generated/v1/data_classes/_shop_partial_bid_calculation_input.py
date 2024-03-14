@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import datetime
 import warnings
 from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
@@ -38,7 +39,7 @@ __all__ = [
 
 ShopPartialBidCalculationInputTextFields = Literal["process_id", "function_name", "function_call_id"]
 ShopPartialBidCalculationInputFields = Literal[
-    "process_id", "process_step", "function_name", "function_call_id", "step_enabled"
+    "process_id", "process_step", "function_name", "function_call_id", "step_enabled", "bid_date"
 ]
 
 _SHOPPARTIALBIDCALCULATIONINPUT_PROPERTIES_BY_FIELD = {
@@ -47,6 +48,7 @@ _SHOPPARTIALBIDCALCULATIONINPUT_PROPERTIES_BY_FIELD = {
     "function_name": "functionName",
     "function_call_id": "functionCallId",
     "step_enabled": "stepEnabled",
+    "bid_date": "bidDate",
 }
 
 
@@ -66,6 +68,7 @@ class ShopPartialBidCalculationInput(DomainModel):
         plant: The plant to calculate the partial bid for. Extract price/prod timeseries from Shop Results
         market_configuration: The market configuration to be used to generate the partial bid matrix
         step_enabled: Whether the step is enabled or not
+        bid_date: The bid date
         shop_result_price_prod: An array of shop results with price/prod timeserires pairs for all plants included in the respective shop scenario
     """
 
@@ -82,6 +85,7 @@ class ShopPartialBidCalculationInput(DomainModel):
         None, repr=False, alias="marketConfiguration"
     )
     step_enabled: Optional[bool] = Field(None, alias="stepEnabled")
+    bid_date: Optional[datetime.date] = Field(None, alias="bidDate")
     shop_result_price_prod: Union[list[SHOPResultPriceProd], list[str], None] = Field(
         default=None, repr=False, alias="shopResultPriceProd"
     )
@@ -103,6 +107,7 @@ class ShopPartialBidCalculationInput(DomainModel):
                 else self.market_configuration
             ),
             step_enabled=self.step_enabled,
+            bid_date=self.bid_date,
             shop_result_price_prod=[
                 (
                     shop_result_price_prod.as_write()
@@ -139,6 +144,7 @@ class ShopPartialBidCalculationInputWrite(DomainModelWrite):
         plant: The plant to calculate the partial bid for. Extract price/prod timeseries from Shop Results
         market_configuration: The market configuration to be used to generate the partial bid matrix
         step_enabled: Whether the step is enabled or not
+        bid_date: The bid date
         shop_result_price_prod: An array of shop results with price/prod timeserires pairs for all plants included in the respective shop scenario
     """
 
@@ -155,6 +161,7 @@ class ShopPartialBidCalculationInputWrite(DomainModelWrite):
         None, repr=False, alias="marketConfiguration"
     )
     step_enabled: Optional[bool] = Field(None, alias="stepEnabled")
+    bid_date: Optional[datetime.date] = Field(None, alias="bidDate")
     shop_result_price_prod: Union[list[SHOPResultPriceProdWrite], list[str], None] = Field(
         default=None, repr=False, alias="shopResultPriceProd"
     )
@@ -205,6 +212,9 @@ class ShopPartialBidCalculationInputWrite(DomainModelWrite):
 
         if self.step_enabled is not None or write_none:
             properties["stepEnabled"] = self.step_enabled
+
+        if self.bid_date is not None or write_none:
+            properties["bidDate"] = self.bid_date.isoformat() if self.bid_date else None
 
         if properties:
             this_node = dm.NodeApply(
@@ -297,6 +307,8 @@ def _create_shop_partial_bid_calculation_input_filter(
     plant: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     market_configuration: str | tuple[str, str] | list[str] | list[tuple[str, str]] | None = None,
     step_enabled: bool | None = None,
+    min_bid_date: datetime.date | None = None,
+    max_bid_date: datetime.date | None = None,
     external_id_prefix: str | None = None,
     space: str | list[str] | None = None,
     filter: dm.Filter | None = None,
@@ -377,6 +389,14 @@ def _create_shop_partial_bid_calculation_input_filter(
         )
     if isinstance(step_enabled, bool):
         filters.append(dm.filters.Equals(view_id.as_property_ref("stepEnabled"), value=step_enabled))
+    if min_bid_date is not None or max_bid_date is not None:
+        filters.append(
+            dm.filters.Range(
+                view_id.as_property_ref("bidDate"),
+                gte=min_bid_date.isoformat() if min_bid_date else None,
+                lte=max_bid_date.isoformat() if max_bid_date else None,
+            )
+        )
     if external_id_prefix is not None:
         filters.append(dm.filters.Prefix(["node", "externalId"], value=external_id_prefix))
     if isinstance(space, str):
