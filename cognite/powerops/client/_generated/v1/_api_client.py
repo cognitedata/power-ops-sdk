@@ -170,6 +170,7 @@ class TotalBidCalculationAPIs:
             data_classes.MarketConfiguration: dm.ViewId("sp_powerops_models", "MarketConfiguration", "1"),
             data_classes.ModelTemplate: dm.ViewId("sp_powerops_models", "ModelTemplate", "1"),
             data_classes.MultiScenarioMatrix: dm.ViewId("sp_powerops_models", "MultiScenarioMatrix", "1"),
+            data_classes.MultiScenarioMatrixRaw: dm.ViewId("sp_powerops_models", "MultiScenarioMatrixRaw", "1"),
             data_classes.PartialPostProcessingInput: dm.ViewId("sp_powerops_models", "PartialPostProcessingInput", "1"),
             data_classes.PartialPostProcessingOutput: dm.ViewId(
                 "sp_powerops_models", "PartialPostProcessingOutput", "1"
@@ -203,6 +204,7 @@ class TotalBidCalculationAPIs:
         self.market_configuration = MarketConfigurationAPI(client, view_by_read_class)
         self.model_template = ModelTemplateAPI(client, view_by_read_class)
         self.multi_scenario_matrix = MultiScenarioMatrixAPI(client, view_by_read_class)
+        self.multi_scenario_matrix_raw = MultiScenarioMatrixRawAPI(client, view_by_read_class)
         self.partial_post_processing_input = PartialPostProcessingInputAPI(client, view_by_read_class)
         self.partial_post_processing_output = PartialPostProcessingOutputAPI(client, view_by_read_class)
         self.price_area = PriceAreaAPI(client, view_by_read_class)

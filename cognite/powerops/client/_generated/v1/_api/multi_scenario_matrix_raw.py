@@ -229,7 +229,7 @@ class MultiScenarioMatrixRawAPI(
                     "shop_results",
                     dm.DirectRelationReference("sp_powerops_types", "MultiScenarioMatrix.shopResults"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models", "SHOPResult", "1"),
+                    dm.ViewId("sp_powerops_models", "SHOPResultPriceProd", "1"),
                 ),
             ],
         )
@@ -583,7 +583,7 @@ class MultiScenarioMatrixRawAPI(
                     "shop_results",
                     dm.DirectRelationReference("sp_powerops_types", "MultiScenarioMatrix.shopResults"),
                     "outwards",
-                    dm.ViewId("sp_powerops_models", "SHOPResult", "1"),
+                    dm.ViewId("sp_powerops_models", "SHOPResultPriceProd", "1"),
                 ),
             ],
         )

@@ -22,7 +22,7 @@ from ._bid_matrix_raw import BidMatrixRaw, BidMatrixRawWrite
 if TYPE_CHECKING:
     from ._alert import Alert, AlertWrite
     from ._bid_method_shop_multi_scenario import BidMethodSHOPMultiScenario, BidMethodSHOPMultiScenarioWrite
-    from ._shop_result import SHOPResult, SHOPResultWrite
+    from ._shop_result_price_prod import SHOPResultPriceProd, SHOPResultPriceProdWrite
 
 
 __all__ = [
@@ -72,7 +72,9 @@ class MultiScenarioMatrixRaw(BidMatrixRaw):
         "sp_powerops_types", "DayAheadMultiScenarioMatrix"
     )
     method: Union[BidMethodSHOPMultiScenario, str, dm.NodeId, None] = Field(None, repr=False)
-    shop_results: Union[list[SHOPResult], list[str], None] = Field(default=None, repr=False, alias="shopResults")
+    shop_results: Union[list[SHOPResultPriceProd], list[str], None] = Field(
+        default=None, repr=False, alias="shopResults"
+    )
 
     def as_write(self) -> MultiScenarioMatrixRawWrite:
         """Convert this read version of multi scenario matrix raw to the writing version."""
@@ -126,7 +128,9 @@ class MultiScenarioMatrixRawWrite(BidMatrixRawWrite):
         "sp_powerops_types", "DayAheadMultiScenarioMatrix"
     )
     method: Union[BidMethodSHOPMultiScenarioWrite, str, dm.NodeId, None] = Field(None, repr=False)
-    shop_results: Union[list[SHOPResultWrite], list[str], None] = Field(default=None, repr=False, alias="shopResults")
+    shop_results: Union[list[SHOPResultPriceProdWrite], list[str], None] = Field(
+        default=None, repr=False, alias="shopResults"
+    )
 
     def _to_instances_write(
         self,

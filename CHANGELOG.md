@@ -13,6 +13,10 @@ Changes are grouped as follows
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.91.2] - 2024-03-15
+### Changed
+* Changed property in `MultiScenarioMatrixRaw` for `shopResults` to `SHOPResultPriceProd` and added the `MultiScenarioMatrixRaw` to the `TotalBidCalculation` data model.
+
 ## [0.91.1] - 2024-03-13
 ### Added
 * Added `bidDate` as a property to the `ShopPartialBidCalculationInput` view of the `SHOPBasedDayAheadBidProcess` data model.
