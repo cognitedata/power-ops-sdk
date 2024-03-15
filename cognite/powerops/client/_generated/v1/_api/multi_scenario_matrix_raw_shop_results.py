@@ -12,8 +12,8 @@ class MultiScenarioMatrixRawShopResultsAPI(EdgeAPI):
         self,
         from_multi_scenario_matrix_raw: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
         from_multi_scenario_matrix_raw_space: str = DEFAULT_INSTANCE_SPACE,
-        to_shop_result: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
-        to_shop_result_space: str = DEFAULT_INSTANCE_SPACE,
+        to_shop_result_price_prod: str | list[str] | dm.NodeId | list[dm.NodeId] | None = None,
+        to_shop_result_price_prod_space: str = DEFAULT_INSTANCE_SPACE,
         external_id_prefix: str | None = None,
         space: str | list[str] | None = None,
         limit=DEFAULT_LIMIT_READ,
@@ -23,8 +23,8 @@ class MultiScenarioMatrixRawShopResultsAPI(EdgeAPI):
         Args:
             from_multi_scenario_matrix_raw: ID of the source multi scenario matrix raw.
             from_multi_scenario_matrix_raw_space: Location of the multi scenario matrix raws.
-            to_shop_result: ID of the target shop result.
-            to_shop_result_space: Location of the shop results.
+            to_shop_result_price_prod: ID of the target shop result price prod.
+            to_shop_result_price_prod_space: Location of the shop result price prods.
             external_id_prefix: The prefix of the external ID to filter on.
             space: The space to filter on.
             limit: Maximum number of shop result edges to return. Defaults to 25. Set to -1, float("inf") or None
@@ -46,8 +46,8 @@ class MultiScenarioMatrixRawShopResultsAPI(EdgeAPI):
             dm.DirectRelationReference("sp_powerops_types", "MultiScenarioMatrix.shopResults"),
             from_multi_scenario_matrix_raw,
             from_multi_scenario_matrix_raw_space,
-            to_shop_result,
-            to_shop_result_space,
+            to_shop_result_price_prod,
+            to_shop_result_price_prod_space,
             external_id_prefix,
             space,
         )

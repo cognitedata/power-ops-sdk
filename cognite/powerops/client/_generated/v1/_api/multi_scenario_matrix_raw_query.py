@@ -14,7 +14,7 @@ from ._core import DEFAULT_QUERY_LIMIT, QueryBuilder, QueryStep, QueryAPI, T_Dom
 
 if TYPE_CHECKING:
     from .alert_query import AlertQueryAPI
-    from .shop_result_query import SHOPResultQueryAPI
+    from .shop_result_price_prod_query import SHOPResultPriceProdQueryAPI
 
 
 class MultiScenarioMatrixRawQueryAPI(QueryAPI[T_DomainModelList]):
@@ -93,7 +93,7 @@ class MultiScenarioMatrixRawQueryAPI(QueryAPI[T_DomainModelList]):
         space: str | list[str] | None = None,
         limit: int | None = DEFAULT_QUERY_LIMIT,
         retrieve_method: bool = False,
-    ) -> SHOPResultQueryAPI[T_DomainModelList]:
+    ) -> SHOPResultPriceProdQueryAPI[T_DomainModelList]:
         """Query along the shop result edges of the multi scenario matrix raw.
 
         Args:
@@ -104,9 +104,9 @@ class MultiScenarioMatrixRawQueryAPI(QueryAPI[T_DomainModelList]):
             retrieve_method: Whether to retrieve the method for each multi scenario matrix raw or not.
 
         Returns:
-            SHOPResultQueryAPI: The query API for the shop result.
+            SHOPResultPriceProdQueryAPI: The query API for the shop result price prod.
         """
-        from .shop_result_query import SHOPResultQueryAPI
+        from .shop_result_price_prod_query import SHOPResultPriceProdQueryAPI
 
         from_ = self._builder[-1].name
 
@@ -129,7 +129,7 @@ class MultiScenarioMatrixRawQueryAPI(QueryAPI[T_DomainModelList]):
         )
         if retrieve_method:
             self._query_append_method(from_)
-        return SHOPResultQueryAPI(self._client, self._builder, self._view_by_read_class, None, limit)
+        return SHOPResultPriceProdQueryAPI(self._client, self._builder, self._view_by_read_class, None, limit)
 
     def query(
         self,
