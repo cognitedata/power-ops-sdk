@@ -8,6 +8,10 @@ views:
   space: '{{powerops_models}}'
   type: view
   version: '{{version}}'
+- externalId: MultiScenarioMatrixRaw
+  space: '{{powerops_models}}'
+  type: view
+  version: '{{version}}'
 - externalId: BidMatrix
   space: '{{powerops_models}}'
   type: view

@@ -50,7 +50,7 @@ properties:
       externalId: MultiScenarioMatrix.shopResults
     source:
       space: '{{powerops_models}}'
-      externalId: SHOPResult
+      externalId: SHOPResultPriceProd
       version: '{{version}}'
       type: view
     direction: outwards
