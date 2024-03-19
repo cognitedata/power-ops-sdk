@@ -4,24 +4,24 @@ name: SHOPMultiScenarioMethod
 filter:
   and:
     - hasData:
-      - type: container
-        space: '{{shared_model_space}}'
-        externalId: BidMethod
-      - type: container
-        space: '{{dayahead_model_space}}'
-        externalId: SHOPMultiScenario
+        - type: container
+          space: '{{shared_model_space}}'
+          externalId: BidMethod
+        - type: container
+          space: '{{dayahead_model_space}}'
+          externalId: SHOPMultiScenario
     - equals:
         property:
-        - node
-        - type
+          - node
+          - type
         value:
           space: '{{type_space}}'
           externalId: DayAheadSHOPMultiScenarioMethod
 implements:
-- space: '{{dayahead_model_space}}'
-  externalId: BidMethod
-  version: '{{dayaheadbid_BidMethod_version}}'
-  type: view
+  - space: '{{dayahead_model_space}}'
+    externalId: BidMethod
+    version: '{{dayaheadbid_BidMethod_version}}'
+    type: view
 version: '{{dayaheadbid_SHOPMultiScenarioMethod_version}}'
 properties:
   shopCases:

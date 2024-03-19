@@ -2,78 +2,78 @@ scenario_1:
   name: scenario_1
   time_series_external_id: '907677'
   transformations:
-  - kwargs:
-      '0': 0
-      '1440': 1
-    transformation: MULTIPLY_FROM_OFFSET
-  - kwargs:
-      '0': -500
-      '1440': 0
-    transformation: ADD_FROM_OFFSET
+    - kwargs:
+        '0': 0
+        '1440': 1
+      transformation: MULTIPLY_FROM_OFFSET
+    - kwargs:
+        '0': -500
+        '1440': 0
+      transformation: ADD_FROM_OFFSET
 scenario_2:
   name: scenario_2
   time_series_external_id: '907677'
   transformations:
-  - kwargs:
-      '0': 0
-      '1440': 1
-    transformation: MULTIPLY_FROM_OFFSET
+    - kwargs:
+        '0': 0
+        '1440': 1
+      transformation: MULTIPLY_FROM_OFFSET
 scenario_3:
   name: scenario_3
   time_series_external_id: '907677'
   transformations:
-  - kwargs:
-      '0': -50
-      '1440': 0
-    transformation: ADD_FROM_OFFSET
+    - kwargs:
+        '0': -50
+        '1440': 0
+      transformation: ADD_FROM_OFFSET
 scenario_4:
   name: scenario_4
   time_series_external_id: '907677'
   transformations:
-  - kwargs:
-      '0': -40
-      '1440': 0
-    transformation: ADD_FROM_OFFSET
+    - kwargs:
+        '0': -40
+        '1440': 0
+      transformation: ADD_FROM_OFFSET
 scenario_5:
   name: scenario_5
   time_series_external_id: '907677'
   transformations:
-  - kwargs:
-      '0': -30
-      '1440': 0
-    transformation: ADD_FROM_OFFSET
+    - kwargs:
+        '0': -30
+        '1440': 0
+      transformation: ADD_FROM_OFFSET
 scenario_6:
   name: scenario_6
   time_series_external_id: '907677'
   transformations:
-  - kwargs:
-      '0': -20
-      '1440': 0
-    transformation: ADD_FROM_OFFSET
+    - kwargs:
+        '0': -20
+        '1440': 0
+      transformation: ADD_FROM_OFFSET
 scenario_7:
   name: scenario_7
   time_series_external_id: '907677'
   transformations:
-  - kwargs:
-      '0': -15
-      '1440': 0
-    transformation: ADD_FROM_OFFSET
+    - kwargs:
+        '0': -15
+        '1440': 0
+      transformation: ADD_FROM_OFFSET
 scenario_8:
   name: scenario_8
   time_series_external_id: '907677'
   transformations:
-  - kwargs:
-      '0': -10
-      '1440': 0
-    transformation: ADD_FROM_OFFSET
+    - kwargs:
+        '0': -10
+        '1440': 0
+      transformation: ADD_FROM_OFFSET
 scenario_9:
   name: scenario_9
   time_series_external_id: '907677'
   transformations:
-  - kwargs:
-      '0': -5
-      '1440': 0
-    transformation: ADD_FROM_OFFSET
+    - kwargs:
+        '0': -5
+        '1440': 0
+      transformation: ADD_FROM_OFFSET
 scenario_10:
   name: scenario_10
   time_series_external_id: '907677'
@@ -82,82 +82,82 @@ scenario_11:
   name: scenario_11
   time_series_external_id: '907677'
   transformations:
-  - kwargs:
-      '0': 5
-      '1440': 0
-    transformation: ADD_FROM_OFFSET
+    - kwargs:
+        '0': 5
+        '1440': 0
+      transformation: ADD_FROM_OFFSET
 scenario_12:
   name: scenario_12
   time_series_external_id: '907677'
   transformations:
-  - kwargs:
-      '0': 10
-      '1440': 0
-    transformation: ADD_FROM_OFFSET
+    - kwargs:
+        '0': 10
+        '1440': 0
+      transformation: ADD_FROM_OFFSET
 scenario_13:
   name: scenario_13
   time_series_external_id: '907677'
   transformations:
-  - kwargs:
-      '0': 15
-      '1440': 0
-    transformation: ADD_FROM_OFFSET
+    - kwargs:
+        '0': 15
+        '1440': 0
+      transformation: ADD_FROM_OFFSET
 scenario_14:
   name: scenario_14
   time_series_external_id: '907677'
   transformations:
-  - kwargs:
-      '0': 20
-      '1440': 0
-    transformation: ADD_FROM_OFFSET
+    - kwargs:
+        '0': 20
+        '1440': 0
+      transformation: ADD_FROM_OFFSET
 scenario_15:
   name: scenario_15
   time_series_external_id: '907677'
   transformations:
-  - kwargs:
-      '0': 30
-      '1440': 0
-    transformation: ADD_FROM_OFFSET
+    - kwargs:
+        '0': 30
+        '1440': 0
+      transformation: ADD_FROM_OFFSET
 scenario_16:
   name: scenario_16
   time_series_external_id: '907677'
   transformations:
-  - kwargs:
-      '0': 40
-      '1440': 0
-    transformation: ADD_FROM_OFFSET
+    - kwargs:
+        '0': 40
+        '1440': 0
+      transformation: ADD_FROM_OFFSET
 scenario_17:
   name: scenario_17
   time_series_external_id: '907677'
   transformations:
-  - kwargs:
-      '0': 50
-      '1440': 0
-    transformation: ADD_FROM_OFFSET
+    - kwargs:
+        '0': 50
+        '1440': 0
+      transformation: ADD_FROM_OFFSET
 scenario_18:
   name: scenario_18
   time_series_external_id: '907677'
   transformations:
-  - kwargs:
-      '0': 70
-      '1440': 0
-    transformation: ADD_FROM_OFFSET
+    - kwargs:
+        '0': 70
+        '1440': 0
+      transformation: ADD_FROM_OFFSET
 scenario_19:
   name: scenario_19
   time_series_external_id: '907677'
   transformations:
-  - kwargs:
-      '0': 100
-      '1440': 0
-    transformation: ADD_FROM_OFFSET
+    - kwargs:
+        '0': 100
+        '1440': 0
+      transformation: ADD_FROM_OFFSET
 scenario_20:
   name: scenario_20
   time_series_external_id: '907677'
   transformations:
-  - kwargs:
-      '0': 2000
-      '1440': 0
-    transformation: ADD_FROM_OFFSET
+    - kwargs:
+        '0': 2000
+        '1440': 0
+      transformation: ADD_FROM_OFFSET
 scenario_21:
   name: scenario_21
   time_series_external_id: '907678'
@@ -170,20 +170,20 @@ scenario_23:
   name: -20pct
   time_series_external_id: '907748'
   transformations:
-  - kwargs:
-      value: 0.8
-    transformation: MULTIPLY
+    - kwargs:
+        value: 0.8
+      transformation: MULTIPLY
 scenario_24:
   name: +20pct
   time_series_external_id: '907748'
   transformations:
-  - kwargs:
-      value: 1.2
-    transformation: MULTIPLY
+    - kwargs:
+        value: 1.2
+      transformation: MULTIPLY
 scenario_26:
   name: -20pct
   time_series_external_id: '907748'
   transformations:
-  - kwargs:
-      value: 1
-    transformation: MULTIPLY
+    - kwargs:
+        value: 1
+      transformation: MULTIPLY

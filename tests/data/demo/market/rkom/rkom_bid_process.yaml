@@ -2,40 +2,40 @@
   minimum_price: 0
   price_premium: 0
   price_scenarios:
-  - id: scenario_22
-  - id: scenario_23
-  - id: scenario_24
+    - id: scenario_22
+    - id: scenario_23
+    - id: scenario_24
   reserve_scenarios:
     auction: week
     block: day
     mip_plant_time_series:
-    - - Rull2
-      - null
-    - - Rull1
-      - null
-    - - Scott
-      - null
-    - - Holen
-      - null
-    - - Dalby
-      - null
-    - - Landet
-      - null
+      - - Rull2
+        - null
+      - - Rull1
+        - null
+      - - Scott
+        - null
+      - - Holen
+        - null
+      - - Dalby
+        - null
+      - - Landet
+        - null
     obligation_external_id: null
     product: up
     reserve_group: rkom_up
     volumes:
-    - 0
-    - 160
-    - 100
-    - 40
-    - 200
-    - 140
-    - 80
-    - 20
-    - 180
-    - 120
-    - 60
+      - 0
+      - 160
+      - 100
+      - 40
+      - 200
+      - 140
+      - 80
+      - 20
+      - 180
+      - 120
+      - 60
   shop_end:
     relative_time_string: end_of_next_week
   shop_start:
@@ -46,41 +46,41 @@
   minimum_price: 0
   price_premium: 0
   price_scenarios:
-  - id: scenario_22
-  - id: scenario_26
-  - id: scenario_26
-    rename: +20pct
+    - id: scenario_22
+    - id: scenario_26
+    - id: scenario_26
+      rename: +20pct
   reserve_scenarios:
     auction: week
     block: day
     mip_plant_time_series:
-    - - Rull2
-      - null
-    - - Rull1
-      - null
-    - - Scott
-      - null
-    - - Holen
-      - null
-    - - Dalby
-      - null
-    - - Landet
-      - null
+      - - Rull2
+        - null
+      - - Rull1
+        - null
+      - - Scott
+        - null
+      - - Holen
+        - null
+      - - Dalby
+        - null
+      - - Landet
+        - null
     obligation_external_id: null
     product: down
     reserve_group: rkom_up
     volumes:
-    - 0
-    - 160
-    - 100
-    - 40
-    - 200
-    - 140
-    - 80
-    - 20
-    - 180
-    - 120
-    - 60
+      - 0
+      - 160
+      - 100
+      - 40
+      - 200
+      - 140
+      - 80
+      - 20
+      - 180
+      - 120
+      - 60
   shop_end:
     relative_time_string: end_of_next_week
   shop_start:
@@ -91,40 +91,40 @@
   minimum_price: 0
   price_premium: 0
   price_scenarios:
-  - id: scenario_22
-  - id: scenario_23
-  - id: scenario_24
+    - id: scenario_22
+    - id: scenario_23
+    - id: scenario_24
   reserve_scenarios:
     auction: weekend
     block: day
     mip_plant_time_series:
-    - - Rull2
-      - null
-    - - Rull1
-      - null
-    - - Scott
-      - null
-    - - Holen
-      - null
-    - - Dalby
-      - null
-    - - Landet
-      - null
+      - - Rull2
+        - null
+      - - Rull1
+        - null
+      - - Scott
+        - null
+      - - Holen
+        - null
+      - - Dalby
+        - null
+      - - Landet
+        - null
     obligation_external_id: null
     product: up
     reserve_group: rkom_up
     volumes:
-    - 0
-    - 160
-    - 100
-    - 40
-    - 200
-    - 140
-    - 80
-    - 20
-    - 180
-    - 120
-    - 60
+      - 0
+      - 160
+      - 100
+      - 40
+      - 200
+      - 140
+      - 80
+      - 20
+      - 180
+      - 120
+      - 60
   shop_end:
     relative_time_string: end_of_next_week
   shop_start:
@@ -135,40 +135,40 @@
   minimum_price: 0
   price_premium: 0
   price_scenarios:
-  - id: scenario_22
-  - id: scenario_23
-  - id: scenario_24
+    - id: scenario_22
+    - id: scenario_23
+    - id: scenario_24
   reserve_scenarios:
     auction: weekend
     block: day
     mip_plant_time_series:
-    - - Rull2
-      - null
-    - - Rull1
-      - null
-    - - Scott
-      - null
-    - - Holen
-      - null
-    - - Dalby
-      - null
-    - - Landet
-      - null
+      - - Rull2
+        - null
+      - - Rull1
+        - null
+      - - Scott
+        - null
+      - - Holen
+        - null
+      - - Dalby
+        - null
+      - - Landet
+        - null
     obligation_external_id: null
     product: down
     reserve_group: rkom_up
     volumes:
-    - 0
-    - 160
-    - 100
-    - 40
-    - 200
-    - 140
-    - 80
-    - 20
-    - 180
-    - 120
-    - 60
+      - 0
+      - 160
+      - 100
+      - 40
+      - 200
+      - 140
+      - 80
+      - 20
+      - 180
+      - 120
+      - 60
   shop_end:
     relative_time_string: end_of_next_week
   shop_start:

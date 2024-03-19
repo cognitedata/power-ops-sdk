@@ -50,9 +50,9 @@
       id: scenario_10
   shop_end:
     operations:
-    - shift:
-        days: 2
-    - floor: day
+      - shift:
+          days: 2
+      - floor: day
   shop_start:
     relative_time_string: tomorrow
 # This is used for testing resync apply.

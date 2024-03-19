@@ -3,33 +3,33 @@ externalId: MultiScenarioMatrix
 name: MultiScenarioMatrix
 filter:
   and:
-  - hasData:
-    - type: container
-      space: '{{powerops_models}}'
-      externalId: BidMatrix
-  - equals:
-      property:
-      - node
-      - space
-      value: '{{powerops_instance_space}}'
-  - equals:
-      property:
-      - node
-      - type
-      value:
-        externalId: DayAheadMultiScenarioMatrix
-        space: '{{powerops_type_space}}'
-  - equals:
-      property:
-        - '{{powerops_models}}'
-        - BidMatrix
-        - isProcessed
-      value: 'true'
+    - hasData:
+        - type: container
+          space: '{{powerops_models}}'
+          externalId: BidMatrix
+    - equals:
+        property:
+          - node
+          - space
+        value: '{{powerops_instance_space}}'
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          externalId: DayAheadMultiScenarioMatrix
+          space: '{{powerops_type_space}}'
+    - equals:
+        property:
+          - '{{powerops_models}}'
+          - BidMatrix
+          - isProcessed
+        value: 'true'
 implements:
-- space: '{{powerops_models}}'
-  externalId: BidMatrix
-  version: '{{version}}'
-  type: view
+  - space: '{{powerops_models}}'
+    externalId: BidMatrix
+    version: '{{version}}'
+    type: view
 version: '{{version}}'
 properties:
   method:

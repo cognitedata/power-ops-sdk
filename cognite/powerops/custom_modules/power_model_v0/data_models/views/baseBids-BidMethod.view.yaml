@@ -6,13 +6,13 @@ version: '{{base_BidMethod_version}}'
 filter:
   and:
     - hasData:
-      - type: container
-        space: '{{shared_model_space}}'
-        externalId: BidMethod
+        - type: container
+          space: '{{shared_model_space}}'
+          externalId: BidMethod
     - in:
         property:
-        - node
-        - type
+          - node
+          - type
         values:
           - space: '{{type_space}}'
             externalId: DayAheadSHOPMultiScenarioMethod

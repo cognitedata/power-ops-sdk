@@ -4,22 +4,22 @@ name: BidCalculationTask
 description: The data for a bid calculation task
 filter:
   and:
-  - hasData:
-    - type: container
-      space: '{{powerops_models}}'
-      externalId: FunctionData
-  - equals:
-      property:
-      - node
-      - space
-      value: '{{powerops_instance_space}}'
-  - equals:
-      property:
-      - node
-      - type
-      value:
-        externalId: BidCalculationTask
-        space: '{{powerops_type_space}}'
+    - hasData:
+        - type: container
+          space: '{{powerops_models}}'
+          externalId: FunctionData
+    - equals:
+        property:
+          - node
+          - space
+        value: '{{powerops_instance_space}}'
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          externalId: BidCalculationTask
+          space: '{{powerops_type_space}}'
 implements: []
 version: '{{version}}'
 properties:

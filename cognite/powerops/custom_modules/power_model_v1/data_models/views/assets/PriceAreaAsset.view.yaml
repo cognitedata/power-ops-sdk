@@ -1,39 +1,39 @@
-space: '{{powerops_models}}'
+space: "{{powerops_models}}"
 externalId: PriceAreaAsset
 name: PriceAreaAsset
 filter:
   and:
-  - hasData:
-    - type: container
-      space: '{{powerops_models}}'
-      externalId: PriceArea
-  - equals:
-      property:
-      - node
-      - space
-      value: '{{powerops_instance_space}}'
-  - equals:
-      property:
-      - node
-      - type
-      value:
-        externalId: PriceArea
-        space: '{{powerops_type_space}}'
+    - hasData:
+        - type: container
+          space: "{{powerops_models}}"
+          externalId: PriceArea
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{powerops_instance_space}}"
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          externalId: PriceArea
+          space: "{{powerops_type_space}}"
 implements:
-- space: '{{powerops_models}}'
-  externalId: PriceArea
-  version: '{{version}}'
-  type: view
-version: '{{version}}'
+  - space: "{{powerops_models}}"
+    externalId: PriceArea
+    version: "{{version}}"
+    type: view
+version: "{{version}}"
 properties:
   watercourses:
     type:
-      space: '{{powerops_type_space}}'
-      externalId:  isWatercourseOf
+      space: "{{powerops_type_space}}"
+      externalId: isWatercourseOf
     source:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: Watercourse
-      version: '{{version}}'
+      version: "{{version}}"
       type: view
     direction: outwards
     name: watercourses
@@ -41,12 +41,12 @@ properties:
     connectionType: multi_edge_connection
   plants:
     type:
-      space: '{{powerops_type_space}}'
+      space: "{{powerops_type_space}}"
       externalId: isPlantOf
     source:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: Plant
-      version: '{{version}}'
+      version: "{{version}}"
       type: view
     direction: outwards
     name: plants

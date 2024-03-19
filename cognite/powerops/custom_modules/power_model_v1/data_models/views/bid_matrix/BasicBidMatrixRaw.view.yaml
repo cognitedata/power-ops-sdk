@@ -14,8 +14,8 @@ filter:
         value: '{{powerops_instance_space}}'
     - equals:
         property:
-        - node
-        - type
+          - node
+          - type
         value:
           space: '{{powerops_type_space}}'
           externalId: DayAheadBasicBidMatrix
@@ -26,10 +26,10 @@ filter:
           - isProcessed
         value: 'false'
 implements:
-- space: '{{powerops_models}}'
-  externalId: BidMatrixRaw
-  version: '{{version}}'
-  type: view
+  - space: '{{powerops_models}}'
+    externalId: BidMatrixRaw
+    version: '{{version}}'
+    type: view
 version: '{{version}}'
 properties:
   method:

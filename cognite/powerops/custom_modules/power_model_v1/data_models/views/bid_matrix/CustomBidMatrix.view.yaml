@@ -3,36 +3,36 @@ externalId: CustomBidMatrix
 name: CustomBidMatrix
 filter:
   and:
-  - hasData:
-    - type: container
-      space: '{{powerops_models}}'
-      externalId: BidMatrix
-  - equals:
-      property:
-        - node
-        - space
-      value: '{{powerops_instance_space}}'
-  - equals:
-      property:
-        - '{{powerops_models}}'
-        - BidMatrix
-        - isProcessed
-      value: 'true'
-  - not:
-      in:
+    - hasData:
+        - type: container
+          space: '{{powerops_models}}'
+          externalId: BidMatrix
+    - equals:
         property:
-        - node
-        - type
-        values:
-        - space: '{{powerops_type_space}}'
-          externalId: DayAheadBasicBidMatrix
-        - space: '{{powerops_type_space}}'
-          externalId: DayAheadMultiScenarioMatrix
+          - node
+          - space
+        value: '{{powerops_instance_space}}'
+    - equals:
+        property:
+          - '{{powerops_models}}'
+          - BidMatrix
+          - isProcessed
+        value: 'true'
+    - not:
+        in:
+          property:
+            - node
+            - type
+          values:
+            - space: '{{powerops_type_space}}'
+              externalId: DayAheadBasicBidMatrix
+            - space: '{{powerops_type_space}}'
+              externalId: DayAheadMultiScenarioMatrix
 implements:
-- space: '{{powerops_models}}'
-  externalId: BidMatrix
-  version: '{{version}}'
-  type: view
+  - space: '{{powerops_models}}'
+    externalId: BidMatrix
+    version: '{{version}}'
+    type: view
 version: '{{version}}'
 properties:
   method:

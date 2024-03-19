@@ -5225,7 +5225,7 @@ model:
     rkom_up:
       rr_up_obligation:
         2022-03-27 22:00:00: 0
-  # RKOM end
+        # RKOM end
 connections:
   - connection_type: connection_bypass
     from: Hagen
@@ -5871,4 +5871,4 @@ connections:
     from_type: reserve_group
     to: Scott_G1
     to_type: generator
-  # RKOM end
+# RKOM end

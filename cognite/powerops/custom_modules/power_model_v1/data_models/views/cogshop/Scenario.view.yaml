@@ -4,15 +4,15 @@ name: Scenario
 description: The Scenario to run shop with
 filter:
   and:
-  - hasData:
-    - type: container
-      space: '{{powerops_models}}'
-      externalId: Scenario
-  - equals:
-      property:
-      - node
-      - space
-      value: '{{powerops_instance_space}}'
+    - hasData:
+        - type: container
+          space: '{{powerops_models}}'
+          externalId: Scenario
+    - equals:
+        property:
+          - node
+          - space
+        value: '{{powerops_instance_space}}'
 implements: []
 version: '{{version}}'
 properties:

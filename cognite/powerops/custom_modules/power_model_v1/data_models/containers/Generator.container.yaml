@@ -1,4 +1,4 @@
-space: '{{powerops_models}}'
+space: "{{powerops_models}}"
 externalId: Generator
 name: Generator
 usedFor: node
@@ -53,7 +53,7 @@ properties:
 constraints:
   requiredAsset:
     require:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: Asset
       type: container
     constraintType: requires

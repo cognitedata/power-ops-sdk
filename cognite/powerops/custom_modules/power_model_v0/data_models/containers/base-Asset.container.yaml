@@ -40,6 +40,6 @@ properties:
 indexes:
   time:
     properties:
-    - name
+      - name
     indexType: btree
     cursorable: false

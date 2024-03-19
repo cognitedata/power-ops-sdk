@@ -4,21 +4,21 @@ name: MultiScenarioMatrix
 filter:
   and:
     - hasData:
-      - type: container
-        space: '{{dayahead_model_space}}'
-        externalId: BidMatrix
+        - type: container
+          space: '{{dayahead_model_space}}'
+          externalId: BidMatrix
     - equals:
         property:
-        - node
-        - type
+          - node
+          - type
         value:
           space: '{{type_space}}'
           externalId: DayAheadMultiScenarioMatrix
 implements:
-- space: '{{dayahead_model_space}}'
-  externalId: BidMatrix
-  version: '{{dayaheadbid_BidMatrix_version}}'
-  type: view
+  - space: '{{dayahead_model_space}}'
+    externalId: BidMatrix
+    version: '{{dayaheadbid_BidMatrix_version}}'
+    type: view
 version: '{{dayaheadbid_MultiScenarioMatrix_version}}'
 properties:
   scenarioResults:

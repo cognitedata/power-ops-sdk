@@ -11,8 +11,8 @@ filter:
           externalId: BidRow
     - equals:
         property:
-         - node
-         - type
+          - node
+          - type
         value:
           space: '{{type_space}}'
           externalId: AFRRBidRow
@@ -32,8 +32,7 @@ properties:
       type: container
     containerPropertyIdentifier: quantityPerHour
     name: quantityPerHour
-    description: The capacity offered, per hour, in MW, rounded to nearest step size
-      (5?)
+    description: The capacity offered, per hour, in MW, rounded to nearest step size (5?)
   product:
     container:
       space: '{{afrr_model_space}}'
@@ -55,9 +54,7 @@ properties:
       type: container
     containerPropertyIdentifier: minQuantity
     name: minQuantity
-    description: Min quantity, per hour. Only relevant for divisible Bids. The minimum
-      capacity that must be accepted; this must be lower than capacityPerHour and
-      is rounded to the nearest step (5 MW?)).
+    description: Min quantity, per hour. Only relevant for divisible Bids. The minimum capacity that must be accepted; this must be lower than capacityPerHour and is rounded to the nearest step (5 MW?)).
   isBlock:
     container:
       space: '{{afrr_model_space}}'
@@ -65,9 +62,7 @@ properties:
       type: container
     containerPropertyIdentifier: isBlock
     name: isBlock
-    description: 'Indication if the row is part of a Block bid. If true: quantityPerHour
-      must have the same value for consecutive hours (and no breaks). Block bids must
-      be accepted for all hours or none.'
+    description: 'Indication if the row is part of a Block bid. If true: quantityPerHour must have the same value for consecutive hours (and no breaks). Block bids must be accepted for all hours or none.'
   exclusiveGroupId:
     container:
       space: '{{afrr_model_space}}'
@@ -75,9 +70,7 @@ properties:
       type: container
     containerPropertyIdentifier: exclusiveGroupId
     name: exclusiveGroupId
-    description: Other bids with the same ID are part of an exclusive group - only
-      one of them can be accepted, and they must have the same direction (product).
-      Not allowed for block bids.
+    description: Other bids with the same ID are part of an exclusive group - only one of them can be accepted, and they must have the same direction (product). Not allowed for block bids.
   linkedBid:
     container:
       space: '{{afrr_model_space}}'
@@ -85,8 +78,7 @@ properties:
       type: container
     containerPropertyIdentifier: linkedBid
     name: linkedBid
-    description: The linked bid must have the opposite direction (link means that
-      both or none must be accepted). Should be bi-directional.
+    description: The linked bid must have the opposite direction (link means that both or none must be accepted). Should be bi-directional.
     source:
       space: '{{afrr_model_space}}'
       externalId: BidRow

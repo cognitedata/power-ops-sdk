@@ -3,7 +3,7 @@ externalId: SHOPPriceScenario
 name: SHOPPriceScenario
 version: '{{dayaheadbid_SHOPPriceScenario_version}}'
 filter:
-    hasData:
+  hasData:
     - type: container
       space: '{{dayahead_model_space}}'
       externalId: SHOPPriceScenario

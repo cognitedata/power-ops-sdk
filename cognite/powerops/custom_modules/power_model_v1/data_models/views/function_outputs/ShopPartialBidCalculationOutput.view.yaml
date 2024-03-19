@@ -4,27 +4,27 @@ name: ShopPartialBidCalculationOutput
 description: Input to the task dispatcher in the shop bid process
 filter:
   and:
-  - hasData:
-    - type: container
-      space: '{{powerops_models}}'
-      externalId: FunctionData
-  - equals:
-      property:
-      - node
-      - space
-      value: '{{powerops_instance_space}}'
-  - equals:
-      property:
-      - node
-      - type
-      value:
-        externalId: ShopPartialBidCalculationOutput
-        space: '{{powerops_type_space}}'
+    - hasData:
+        - type: container
+          space: '{{powerops_models}}'
+          externalId: FunctionData
+    - equals:
+        property:
+          - node
+          - space
+        value: '{{powerops_instance_space}}'
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          externalId: ShopPartialBidCalculationOutput
+          space: '{{powerops_type_space}}'
 implements:
-- space: '{{powerops_models}}'
-  externalId: FunctionOutput
-  version: '{{version}}'
-  type: view
+  - space: '{{powerops_models}}'
+    externalId: FunctionOutput
+    version: '{{version}}'
+    type: view
 version: '{{version}}'
 properties:
   bidMatrixRaw:
@@ -34,8 +34,7 @@ properties:
       type: container
     containerPropertyIdentifier: direct1
     name: bidMatrixRaw
-    description: The bid matrix that is calculated by the partial bid calculation
-      function
+    description: The bid matrix that is calculated by the partial bid calculation function
     source:
       space: '{{powerops_models}}'
       externalId: MultiScenarioMatrixRaw

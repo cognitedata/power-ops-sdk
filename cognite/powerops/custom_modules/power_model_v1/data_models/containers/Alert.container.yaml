@@ -1,4 +1,4 @@
-space: '{{powerops_models}}'
+space: "{{powerops_models}}"
 externalId: Alert
 name: Alert
 usedFor: node
@@ -67,11 +67,11 @@ properties:
 indexes:
   time:
     properties:
-    - time
+      - time
     indexType: btree
     cursorable: false
   alertType:
     properties:
-    - alertType
+      - alertType
     indexType: btree
     cursorable: false

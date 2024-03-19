@@ -4,22 +4,22 @@ name: SHOPTimeSeries
 description: A wrapper around a timeseries object from the output of a successful SHOP run
 filter:
   and:
-  - hasData:
-    - type: container
-      space: '{{powerops_models}}'
-      externalId: SHOPTimeSeries
-  - equals:
-      property:
-      - node
-      - space
-      value: '{{powerops_instance_space}}'
-  - equals:
-      property:
-      - node
-      - type
-      value:
-        externalId: SHOPTimeSeries
-        space: '{{powerops_type_space}}'
+    - hasData:
+        - type: container
+          space: '{{powerops_models}}'
+          externalId: SHOPTimeSeries
+    - equals:
+        property:
+          - node
+          - space
+        value: '{{powerops_instance_space}}'
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          externalId: SHOPTimeSeries
+          space: '{{powerops_type_space}}'
 implements: []
 version: '{{version}}'
 properties:

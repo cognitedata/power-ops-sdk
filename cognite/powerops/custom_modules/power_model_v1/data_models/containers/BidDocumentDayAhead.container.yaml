@@ -1,4 +1,4 @@
-space: '{{powerops_models}}'
+space: "{{powerops_models}}"
 externalId: BidDocumentDayAhead
 name: BidDocumentDayAhead
 usedFor: node
@@ -18,7 +18,7 @@ properties:
 constraints:
   requiredBidMethod:
     require:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: BidDocument
       type: container
     constraintType: requires

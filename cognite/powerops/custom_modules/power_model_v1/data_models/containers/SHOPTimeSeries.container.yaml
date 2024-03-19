@@ -1,4 +1,4 @@
-space: '{{powerops_models}}'
+space: "{{powerops_models}}"
 externalId: SHOPTimeSeries
 name: SHOPTimeSeries
 usedFor: node
@@ -41,11 +41,11 @@ properties:
 indexes:
   objectNameIndex:
     properties:
-    - objectName
+      - objectName
     indexType: btree
     cursorable: false
   objectTypeIndex:
     properties:
-    - objectType
+      - objectType
     indexType: btree
     cursorable: false

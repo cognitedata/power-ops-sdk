@@ -1,0 +1,8 @@
+doublestar: true
+exclude:
+  - "**/test_apply/demo_*.yml"
+formatter:
+  type: basic
+  disallow_anchors: true
+  retain_line_breaks: true
+  retain_line_breaks_single: true

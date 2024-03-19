@@ -4,22 +4,22 @@ name: Case
 description: A case that links a Scenario and shop dates to run shop with
 filter:
   and:
-  - hasData:
-    - type: container
-      space: '{{powerops_models}}'
-      externalId: Case
-  - equals:
-      property:
-      - node
-      - space
-      value: '{{powerops_instance_space}}'
-  - equals:
-      property:
-      - node
-      - type
-      value:
-        externalId: Case
-        space: '{{powerops_type_space}}'
+    - hasData:
+        - type: container
+          space: '{{powerops_models}}'
+          externalId: Case
+    - equals:
+        property:
+          - node
+          - space
+        value: '{{powerops_instance_space}}'
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          externalId: Case
+          space: '{{powerops_type_space}}'
 implements: []
 version: '{{version}}'
 properties:

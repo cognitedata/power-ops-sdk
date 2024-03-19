@@ -6,13 +6,13 @@ version: '{{asset_GeneratorEfficiency_version}}'
 filter:
   and:
     - hasData:
-      - type: container
-        space: '{{asset_space}}'
-        externalId: EfficiencyCurve
+        - type: container
+          space: '{{asset_space}}'
+          externalId: EfficiencyCurve
     - equals:
         property:
-         - node
-         - type
+          - node
+          - type
         value:
           space: '{{type_space}}'
           externalId: GeneratorEfficiencyCurve

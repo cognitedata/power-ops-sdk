@@ -4,22 +4,22 @@ name: BidMethod
 description: A description of the Bid method used in the calculation.
 filter:
   and:
-  - hasData:
-    - type: container
-      space: '{{powerops_models}}'
-      externalId: BidMethodAFRR
-  - equals:
-      property:
-      - node
-      - space
-      value: '{{powerops_instance_space}}'
-  - equals:
-      property:
-      - node
-      - type
-      value:
-        externalId: BidMethodAFRR
-        space: '{{powerops_type_space}}'
+    - hasData:
+        - type: container
+          space: '{{powerops_models}}'
+          externalId: BidMethodAFRR
+    - equals:
+        property:
+          - node
+          - space
+        value: '{{powerops_instance_space}}'
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          externalId: BidMethodAFRR
+          space: '{{powerops_type_space}}'
 version: '{{version}}'
 properties:
   name:

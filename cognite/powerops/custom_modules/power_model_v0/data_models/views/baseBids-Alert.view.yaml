@@ -6,13 +6,13 @@ version: '{{base_Alert_version}}'
 filter:
   and:
     - hasData:
-      - type: container
-        space: '{{shared_model_space}}'
-        externalId: Alert
+        - type: container
+          space: '{{shared_model_space}}'
+          externalId: Alert
     - equals:
         property:
-        - node
-        - type
+          - node
+          - type
         value:
           space: '{{type_space}}'
           externalId: Alert
@@ -48,8 +48,7 @@ properties:
       type: container
     containerPropertyIdentifier: severity
     name: severity
-    description: CRITICAL (calculation could not completed) WARNING  (calculation
-      completed, with major issue) INFO     (calculation completed, with minor issues)
+    description: CRITICAL (calculation could not completed) WARNING  (calculation completed, with major issue) INFO     (calculation completed, with minor issues)
   alertType:
     container:
       space: '{{shared_model_space}}'
@@ -65,8 +64,7 @@ properties:
       type: container
     containerPropertyIdentifier: statusCode
     name: statusCode
-    description: Unique status code for the alert. May be used by the frontend to
-      avoid use of hardcoded description (i.e. like a translation)
+    description: Unique status code for the alert. May be used by the frontend to avoid use of hardcoded description (i.e. like a translation)
   eventIds:
     container:
       space: '{{shared_model_space}}'
@@ -82,5 +80,4 @@ properties:
       type: container
     containerPropertyIdentifier: calculationRun
     name: calculationRun
-    description: The identifier of the parent Bid Calculation (required so tha alerts
-      can be created befor the BidDocument)
+    description: The identifier of the parent Bid Calculation (required so tha alerts can be created befor the BidDocument)

@@ -7,13 +7,13 @@ description: The output price/prod pair of a shop run linked to the scenario tha
 filter:
   and:
     - hasData:
-      - type: container
-        space: '{{powerops_models}}'
-        externalId: SHOPResult
+        - type: container
+          space: '{{powerops_models}}'
+          externalId: SHOPResult
     - equals:
         property:
-        - node
-        - type
+          - node
+          - type
         value:
           space: '{{powerops_type_space}}'
           externalId: PriceProdCase
@@ -38,9 +38,9 @@ properties:
       externalId: SHOPResult
       type: container
     source:
-        space: '{{powerops_models}}'
-        externalId: Case
-        version: '{{version}}'
-        type: view
+      space: '{{powerops_models}}'
+      externalId: Case
+      version: '{{version}}'
+      type: view
     containerPropertyIdentifier: case
     name: case

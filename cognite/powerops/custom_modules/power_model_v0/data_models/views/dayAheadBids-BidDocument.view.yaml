@@ -4,24 +4,24 @@ name: BidDocument
 filter:
   and:
     - hasData:
-      - type: container
-        space: '{{dayahead_model_space}}'
-        externalId: BidDocument
-      - type: container
-        space: '{{shared_model_space}}'
-        externalId: BidDocument
+        - type: container
+          space: '{{dayahead_model_space}}'
+          externalId: BidDocument
+        - type: container
+          space: '{{shared_model_space}}'
+          externalId: BidDocument
     - equals:
         property:
-        - node
-        - type
+          - node
+          - type
         value:
           space: '{{type_space}}'
           externalId: DayAheadBidDocument
 implements:
-- space: '{{shared_model_space}}'
-  externalId: BidDocument
-  version: '{{base_BidDocument_version}}'
-  type: view
+  - space: '{{shared_model_space}}'
+    externalId: BidDocument
+    version: '{{base_BidDocument_version}}'
+    type: view
 version: '{{dayaheadbid_BidDocument_version}}'
 properties:
   priceArea:

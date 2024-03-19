@@ -1,26 +1,25 @@
 space: '{{powerops_models}}'
 externalId: Mapping
 name: Mapping
-description: SHOP scenario that holds all data needed for a shop run. May be unprocessed
-  or processed
+description: SHOP scenario that holds all data needed for a shop run. May be unprocessed or processed
 filter:
   and:
-  - hasData:
-    - type: container
-      space: '{{powerops_models}}'
-      externalId: Mapping
-  - equals:
-      property:
-      - node
-      - space
-      value: '{{powerops_instance_space}}'
-  - equals:
-      property:
-      - node
-      - type
-      value:
-        externalId: Mapping
-        space: '{{powerops_type_space}}'
+    - hasData:
+        - type: container
+          space: '{{powerops_models}}'
+          externalId: Mapping
+    - equals:
+        property:
+          - node
+          - space
+        value: '{{powerops_instance_space}}'
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          externalId: Mapping
+          space: '{{powerops_type_space}}'
 implements: []
 version: '{{version}}'
 properties:

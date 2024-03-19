@@ -4,15 +4,15 @@ name: BidMethodDayAhead
 description: A description of the Bid method used in the calculation.
 filter:
   and:
-  - hasData:
-    - type: container
-      space: '{{powerops_models}}'
-      externalId: BidMethod
-  - equals:
-      property:
-      - node
-      - space
-      value: '{{powerops_instance_space}}'
+    - hasData:
+        - type: container
+          space: '{{powerops_models}}'
+          externalId: BidMethod
+    - equals:
+        property:
+          - node
+          - space
+        value: '{{powerops_instance_space}}'
 implements:
   - space: '{{powerops_models}}'
     externalId: BidMethod
