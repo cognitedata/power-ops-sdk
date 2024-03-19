@@ -109,19 +109,7 @@
 - space: "{{powerops_type_space}}"
   externalId: TotalBidMatrixCalculationOutput
 - space: "{{powerops_type_space}}"
-  externalId: BidConfiguration.plants
-- space: "{{powerops_type_space}}"
-  externalId: BidConfiguration.watercourses
-- space: "{{powerops_type_space}}"
-  externalId: BidConfiguration.plantsShop
-- space: "{{powerops_type_space}}"
-  externalId: BidConfiguration.watercoursesShop
-- space: "{{powerops_type_space}}"
   externalId: BidConfiguration
-- space: "{{powerops_type_space}}"
-  externalId: BidConfigurationAFRR
-- space: "{{powerops_type_space}}"
-  externalId: BidConfigurationShop
 - space: "{{powerops_type_space}}"
   externalId: partialBidMatricesRaw
 - space: "{{powerops_type_space}}"

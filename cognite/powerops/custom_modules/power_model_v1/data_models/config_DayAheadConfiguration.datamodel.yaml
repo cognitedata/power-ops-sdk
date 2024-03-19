@@ -8,15 +8,11 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: BidConfigurationShop
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: BidConfigurationWater
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
   - externalId: MarketConfiguration
+    space: "{{powerops_models}}"
+    type: view
+    version: "{{version}}"
+  - externalId: PriceArea
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
@@ -73,10 +69,6 @@ views:
     type: view
     version: "{{version}}"
   - externalId: BidMethodSHOPMultiScenario
-    space: "{{powerops_models}}"
-    type: view
-    version: "{{version}}"
-  - externalId: PriceArea
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"

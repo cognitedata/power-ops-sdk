@@ -1,6 +1,6 @@
 space: "{{powerops_models}}"
-externalId: BidConfigurationAFRR
-name: BidConfigurationAFRR
+externalId: BidConfiguration
+name: BidConfiguration
 description: ""
 filter:
   and:
@@ -19,25 +19,29 @@ filter:
           - type
         value:
           space: "{{powerops_type_space}}"
-          externalId: BidConfigurationAFRR
-implements:
-  - space: "{{powerops_models}}"
-    externalId: BidConfiguration
-    version: "{{version}}"
-    type: view
+          externalId: BidConfiguration
+implements: []
 version: "{{version}}"
 properties:
-  method:
+  name:
     container:
       space: "{{powerops_models}}"
       externalId: BidConfiguration
       type: container
-    containerPropertyIdentifier: method
-    name: method
+    containerPropertyIdentifier: name
+    name: name
+    description: The name of the bid configuration
+  marketConfiguration:
+    container:
+      space: "{{powerops_models}}"
+      externalId: BidConfiguration
+      type: container
+    containerPropertyIdentifier: marketConfiguration
+    name: marketConfiguration
     description: The bid method related to the bid configuration
     source:
       space: "{{powerops_models}}"
-      externalId: BidMethodAFRR
+      externalId: MarketConfiguration
       version: "{{version}}"
       type: view
   priceArea:
@@ -47,34 +51,22 @@ properties:
       type: container
     containerPropertyIdentifier: priceArea
     name: priceArea
+    description: The price area related to the bid calculation task
     source:
       space: "{{powerops_models}}"
-      externalId: PriceAreaAFRR
+      externalId: PriceArea
       version: "{{version}}"
       type: view
-  plants:
+  partials:
     type:
       space: "{{powerops_type_space}}"
-      externalId: BidConfiguration.plants
+      externalId: PartialBidConfiguration.partials
     source:
       space: "{{powerops_models}}"
-      externalId: Plant
+      externalId: Mapping
       version: "{{version}}"
       type: view
     direction: outwards
-    name: plants
-    description: The plants
-    connectionType: multi_edge_connection
-  watercourses:
-    type:
-      space: "{{powerops_type_space}}"
-      externalId: BidConfiguration.watercourses
-    source:
-      space: "{{powerops_models}}"
-      externalId: Watercourse
-      version: "{{version}}"
-      type: view
-    direction: outwards
-    name: watercourses
-    description: The watercourses
+    name: partials
+    description: Configuration of the partial bids that make up the total bid
     connectionType: multi_edge_connection

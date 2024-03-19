@@ -44,7 +44,7 @@ views:
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
-  - externalId: BidConfigurationWater
+  - externalId: BidConfiguration
     space: "{{powerops_models}}"
     type: view
     version: "{{version}}"
