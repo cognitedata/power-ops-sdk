@@ -21,7 +21,7 @@ repos:
       - id: check-builtin-literals
       - id: check-docstring-first
       - id: check-yaml
-        exclude: "mkdocs.yml|test_apply/demo_.*.yml"
+        exclude: "mkdocs.yml|^test_apply/demo_.*.yml"
       - id: debug-statements
       - id: end-of-file-fixer
       - id: name-tests-test
@@ -35,7 +35,6 @@ repos:
     rev: v0.10.0
     hooks:
       - id: yamlfmt
-        exclude: "^test_apply/demo_.*.yml"
 
   - repo: https://github.com/frnhr/pre-commit-nocommit
     rev: 0.0.1

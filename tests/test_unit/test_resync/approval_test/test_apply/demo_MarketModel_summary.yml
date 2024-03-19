@@ -1,32 +1,32 @@
 changes:
-  - added: 13
-    changed: 0
-    field_name: assets
-    group: CDF
-    removed: 0
-    unchanged: 0
-  - added: 77
-    changed: 0
-    field_name: labels
-    group: CDF
-    removed: 0
-    unchanged: 0
-  - added: 6
-    changed: 0
-    field_name: parent_assets
-    group: CDF
-    removed: 0
-    unchanged: 0
-  - added: 164
-    changed: 0
-    field_name: relationships
-    group: CDF
-    removed: 0
-    unchanged: 0
-  - added: 160
-    changed: 0
-    field_name: sequences
-    group: CDF
-    removed: 0
-    unchanged: 0
+- added: 13
+  changed: 0
+  field_name: assets
+  group: CDF
+  removed: 0
+  unchanged: 0
+- added: 77
+  changed: 0
+  field_name: labels
+  group: CDF
+  removed: 0
+  unchanged: 0
+- added: 6
+  changed: 0
+  field_name: parent_assets
+  group: CDF
+  removed: 0
+  unchanged: 0
+- added: 164
+  changed: 0
+  field_name: relationships
+  group: CDF
+  removed: 0
+  unchanged: 0
+- added: 160
+  changed: 0
+  field_name: sequences
+  group: CDF
+  removed: 0
+  unchanged: 0
 model_name: MarketModel

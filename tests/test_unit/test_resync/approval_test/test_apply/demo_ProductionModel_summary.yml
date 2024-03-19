@@ -1,32 +1,32 @@
 changes:
-  - added: 39
-    changed: 0
-    field_name: assets
-    group: CDF
-    removed: 0
-    unchanged: 0
-  - added: 77
-    changed: 0
-    field_name: labels
-    group: CDF
-    removed: 0
-    unchanged: 0
-  - added: 6
-    changed: 0
-    field_name: parent_assets
-    group: CDF
-    removed: 0
-    unchanged: 0
-  - added: 68
-    changed: 0
-    field_name: relationships
-    group: CDF
-    removed: 0
-    unchanged: 0
-  - added: 24
-    changed: 0
-    field_name: sequences
-    group: CDF
-    removed: 0
-    unchanged: 0
+- added: 39
+  changed: 0
+  field_name: assets
+  group: CDF
+  removed: 0
+  unchanged: 0
+- added: 77
+  changed: 0
+  field_name: labels
+  group: CDF
+  removed: 0
+  unchanged: 0
+- added: 6
+  changed: 0
+  field_name: parent_assets
+  group: CDF
+  removed: 0
+  unchanged: 0
+- added: 68
+  changed: 0
+  field_name: relationships
+  group: CDF
+  removed: 0
+  unchanged: 0
+- added: 24
+  changed: 0
+  field_name: sequences
+  group: CDF
+  removed: 0
+  unchanged: 0
 model_name: ProductionModel
