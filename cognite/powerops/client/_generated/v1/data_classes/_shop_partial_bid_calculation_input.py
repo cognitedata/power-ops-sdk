@@ -6,9 +6,12 @@ from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
+from pydantic import field_validator, model_validator
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
+    DataRecord,
+    DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
     DomainModelCore,
@@ -16,13 +19,14 @@ from ._core import (
     DomainModelWriteList,
     DomainModelList,
     DomainRelationWrite,
+    GraphQLCore,
     ResourcesWrite,
 )
 
 if TYPE_CHECKING:
-    from ._market_configuration import MarketConfiguration, MarketConfigurationWrite
-    from ._plant_shop import PlantShop, PlantShopWrite
-    from ._shop_result_price_prod import SHOPResultPriceProd, SHOPResultPriceProdWrite
+    from ._market_configuration import MarketConfiguration, MarketConfigurationGraphQL, MarketConfigurationWrite
+    from ._plant_shop import PlantShop, PlantShopGraphQL, PlantShopWrite
+    from ._shop_result_price_prod import SHOPResultPriceProd, SHOPResultPriceProdGraphQL, SHOPResultPriceProdWrite
 
 
 __all__ = [
@@ -50,6 +54,122 @@ _SHOPPARTIALBIDCALCULATIONINPUT_PROPERTIES_BY_FIELD = {
     "step_enabled": "stepEnabled",
     "bid_date": "bidDate",
 }
+
+
+class ShopPartialBidCalculationInputGraphQL(GraphQLCore):
+    """This represents the reading version of shop partial bid calculation input, used
+    when data is retrieved from CDF using GraphQL.
+
+    It is used when retrieving data from CDF using GraphQL.
+
+    Args:
+        space: The space where the node is located.
+        external_id: The external id of the shop partial bid calculation input.
+        data_record: The data record of the shop partial bid calculation input node.
+        process_id: The process associated with the function execution
+        process_step: This is the step in the process.
+        function_name: The name of the function
+        function_call_id: The function call id
+        plant: The plant to calculate the partial bid for. Extract price/prod timeseries from Shop Results
+        market_configuration: The market configuration to be used to generate the partial bid matrix
+        step_enabled: Whether the step is enabled or not
+        bid_date: The bid date
+        shop_result_price_prod: An array of shop results with price/prod timeserires pairs for all plants included in the respective shop scenario
+    """
+
+    view_id = dm.ViewId("sp_powerops_models", "ShopPartialBidCalculationInput", "1")
+    process_id: Optional[str] = Field(None, alias="processId")
+    process_step: Optional[int] = Field(None, alias="processStep")
+    function_name: Optional[str] = Field(None, alias="functionName")
+    function_call_id: Optional[str] = Field(None, alias="functionCallId")
+    plant: Optional[PlantShopGraphQL] = Field(None, repr=False)
+    market_configuration: Optional[MarketConfigurationGraphQL] = Field(None, repr=False, alias="marketConfiguration")
+    step_enabled: Optional[bool] = Field(None, alias="stepEnabled")
+    bid_date: Optional[datetime.date] = Field(None, alias="bidDate")
+    shop_result_price_prod: Optional[list[SHOPResultPriceProdGraphQL]] = Field(
+        default=None, repr=False, alias="shopResultPriceProd"
+    )
+
+    @model_validator(mode="before")
+    def parse_data_record(cls, values: Any) -> Any:
+        if not isinstance(values, dict):
+            return values
+        if "lastUpdatedTime" in values or "createdTime" in values:
+            values["dataRecord"] = DataRecordGraphQL(
+                created_time=values.pop("createdTime", None),
+                last_updated_time=values.pop("lastUpdatedTime", None),
+            )
+        return values
+
+    @field_validator("plant", "market_configuration", "shop_result_price_prod", mode="before")
+    def parse_graphql(cls, value: Any) -> Any:
+        if not isinstance(value, dict):
+            return value
+        if "items" in value:
+            return value["items"]
+        return value
+
+    def as_read(self) -> ShopPartialBidCalculationInput:
+        """Convert this GraphQL format of shop partial bid calculation input to the reading format."""
+        if self.data_record is None:
+            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
+        return ShopPartialBidCalculationInput(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecord(
+                version=0,
+                last_updated_time=self.data_record.last_updated_time,
+                created_time=self.data_record.created_time,
+            ),
+            process_id=self.process_id,
+            process_step=self.process_step,
+            function_name=self.function_name,
+            function_call_id=self.function_call_id,
+            plant=self.plant.as_read() if isinstance(self.plant, GraphQLCore) else self.plant,
+            market_configuration=(
+                self.market_configuration.as_read()
+                if isinstance(self.market_configuration, GraphQLCore)
+                else self.market_configuration
+            ),
+            step_enabled=self.step_enabled,
+            bid_date=self.bid_date,
+            shop_result_price_prod=[
+                (
+                    shop_result_price_prod.as_read()
+                    if isinstance(shop_result_price_prod, GraphQLCore)
+                    else shop_result_price_prod
+                )
+                for shop_result_price_prod in self.shop_result_price_prod or []
+            ],
+        )
+
+    def as_write(self) -> ShopPartialBidCalculationInputWrite:
+        """Convert this GraphQL format of shop partial bid calculation input to the writing format."""
+        return ShopPartialBidCalculationInputWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=0),
+            process_id=self.process_id,
+            process_step=self.process_step,
+            function_name=self.function_name,
+            function_call_id=self.function_call_id,
+            plant=self.plant.as_write() if isinstance(self.plant, DomainModel) else self.plant,
+            market_configuration=(
+                self.market_configuration.as_write()
+                if isinstance(self.market_configuration, DomainModel)
+                else self.market_configuration
+            ),
+            step_enabled=self.step_enabled,
+            bid_date=self.bid_date,
+            shop_result_price_prod=[
+                (
+                    shop_result_price_prod.as_write()
+                    if isinstance(shop_result_price_prod, DomainModel)
+                    else shop_result_price_prod
+                )
+                for shop_result_price_prod in self.shop_result_price_prod or []
+            ],
+        )
 
 
 class ShopPartialBidCalculationInput(DomainModel):
@@ -86,7 +206,7 @@ class ShopPartialBidCalculationInput(DomainModel):
     )
     step_enabled: Optional[bool] = Field(None, alias="stepEnabled")
     bid_date: Optional[datetime.date] = Field(None, alias="bidDate")
-    shop_result_price_prod: Union[list[SHOPResultPriceProd], list[str], None] = Field(
+    shop_result_price_prod: Union[list[SHOPResultPriceProd], list[str], list[dm.NodeId], None] = Field(
         default=None, repr=False, alias="shopResultPriceProd"
     )
 
@@ -162,7 +282,7 @@ class ShopPartialBidCalculationInputWrite(DomainModelWrite):
     )
     step_enabled: Optional[bool] = Field(None, alias="stepEnabled")
     bid_date: Optional[datetime.date] = Field(None, alias="bidDate")
-    shop_result_price_prod: Union[list[SHOPResultPriceProdWrite], list[str], None] = Field(
+    shop_result_price_prod: Union[list[SHOPResultPriceProdWrite], list[str], list[dm.NodeId], None] = Field(
         default=None, repr=False, alias="shopResultPriceProd"
     )
 
@@ -171,6 +291,7 @@ class ShopPartialBidCalculationInputWrite(DomainModelWrite):
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
+        allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
@@ -220,7 +341,7 @@ class ShopPartialBidCalculationInputWrite(DomainModelWrite):
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
-                existing_version=self.data_record.existing_version,
+                existing_version=None if allow_version_increase else self.data_record.existing_version,
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
@@ -240,6 +361,8 @@ class ShopPartialBidCalculationInputWrite(DomainModelWrite):
                 end_node=shop_result_price_prod,
                 edge_type=edge_type,
                 view_by_read_class=view_by_read_class,
+                write_none=write_none,
+                allow_version_increase=allow_version_increase,
             )
             resources.extend(other_resources)
 

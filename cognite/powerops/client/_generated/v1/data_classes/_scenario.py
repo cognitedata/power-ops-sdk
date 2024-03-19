@@ -5,9 +5,12 @@ from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
+from pydantic import field_validator, model_validator
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
+    DataRecord,
+    DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
     DomainModelCore,
@@ -15,13 +18,14 @@ from ._core import (
     DomainModelWriteList,
     DomainModelList,
     DomainRelationWrite,
+    GraphQLCore,
     ResourcesWrite,
 )
 
 if TYPE_CHECKING:
-    from ._commands import Commands, CommandsWrite
-    from ._mapping import Mapping, MappingWrite
-    from ._model_template import ModelTemplate, ModelTemplateWrite
+    from ._commands import Commands, CommandsGraphQL, CommandsWrite
+    from ._mapping import Mapping, MappingGraphQL, MappingWrite
+    from ._model_template import ModelTemplate, ModelTemplateGraphQL, ModelTemplateWrite
 
 
 __all__ = [
@@ -43,6 +47,92 @@ _SCENARIO_PROPERTIES_BY_FIELD = {
     "name": "name",
     "source": "source",
 }
+
+
+class ScenarioGraphQL(GraphQLCore, protected_namespaces=()):
+    """This represents the reading version of scenario, used
+    when data is retrieved from CDF using GraphQL.
+
+    It is used when retrieving data from CDF using GraphQL.
+
+    Args:
+        space: The space where the node is located.
+        external_id: The external id of the scenario.
+        data_record: The data record of the scenario node.
+        name: The name of the scenario to run
+        model_template: The model template to use when running the scenario
+        commands: The commands to run
+        source: The source of the scenario
+        mappings_override: An array of base mappings to override in shop model file
+    """
+
+    view_id = dm.ViewId("sp_powerops_models", "Scenario", "1")
+    name: Optional[str] = None
+    model_template: Optional[ModelTemplateGraphQL] = Field(None, repr=False, alias="modelTemplate")
+    commands: Optional[CommandsGraphQL] = Field(None, repr=False)
+    source: Optional[str] = None
+    mappings_override: Optional[list[MappingGraphQL]] = Field(default=None, repr=False, alias="mappingsOverride")
+
+    @model_validator(mode="before")
+    def parse_data_record(cls, values: Any) -> Any:
+        if not isinstance(values, dict):
+            return values
+        if "lastUpdatedTime" in values or "createdTime" in values:
+            values["dataRecord"] = DataRecordGraphQL(
+                created_time=values.pop("createdTime", None),
+                last_updated_time=values.pop("lastUpdatedTime", None),
+            )
+        return values
+
+    @field_validator("model_template", "commands", "mappings_override", mode="before")
+    def parse_graphql(cls, value: Any) -> Any:
+        if not isinstance(value, dict):
+            return value
+        if "items" in value:
+            return value["items"]
+        return value
+
+    def as_read(self) -> Scenario:
+        """Convert this GraphQL format of scenario to the reading format."""
+        if self.data_record is None:
+            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
+        return Scenario(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecord(
+                version=0,
+                last_updated_time=self.data_record.last_updated_time,
+                created_time=self.data_record.created_time,
+            ),
+            name=self.name,
+            model_template=(
+                self.model_template.as_read() if isinstance(self.model_template, GraphQLCore) else self.model_template
+            ),
+            commands=self.commands.as_read() if isinstance(self.commands, GraphQLCore) else self.commands,
+            source=self.source,
+            mappings_override=[
+                mappings_override.as_read() if isinstance(mappings_override, GraphQLCore) else mappings_override
+                for mappings_override in self.mappings_override or []
+            ],
+        )
+
+    def as_write(self) -> ScenarioWrite:
+        """Convert this GraphQL format of scenario to the writing format."""
+        return ScenarioWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=0),
+            name=self.name,
+            model_template=(
+                self.model_template.as_write() if isinstance(self.model_template, DomainModel) else self.model_template
+            ),
+            commands=self.commands.as_write() if isinstance(self.commands, DomainModel) else self.commands,
+            source=self.source,
+            mappings_override=[
+                mappings_override.as_write() if isinstance(mappings_override, DomainModel) else mappings_override
+                for mappings_override in self.mappings_override or []
+            ],
+        )
 
 
 class Scenario(DomainModel, protected_namespaces=()):
@@ -67,7 +157,9 @@ class Scenario(DomainModel, protected_namespaces=()):
     model_template: Union[ModelTemplate, str, dm.NodeId, None] = Field(None, repr=False, alias="modelTemplate")
     commands: Union[Commands, str, dm.NodeId, None] = Field(None, repr=False)
     source: Optional[str] = None
-    mappings_override: Union[list[Mapping], list[str], None] = Field(default=None, repr=False, alias="mappingsOverride")
+    mappings_override: Union[list[Mapping], list[str], list[dm.NodeId], None] = Field(
+        default=None, repr=False, alias="mappingsOverride"
+    )
 
     def as_write(self) -> ScenarioWrite:
         """Convert this read version of scenario to the writing version."""
@@ -119,7 +211,7 @@ class ScenarioWrite(DomainModelWrite, protected_namespaces=()):
     model_template: Union[ModelTemplateWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="modelTemplate")
     commands: Union[CommandsWrite, str, dm.NodeId, None] = Field(None, repr=False)
     source: Optional[str] = None
-    mappings_override: Union[list[MappingWrite], list[str], None] = Field(
+    mappings_override: Union[list[MappingWrite], list[str], list[dm.NodeId], None] = Field(
         default=None, repr=False, alias="mappingsOverride"
     )
 
@@ -128,6 +220,7 @@ class ScenarioWrite(DomainModelWrite, protected_namespaces=()):
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
+        allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
@@ -161,7 +254,7 @@ class ScenarioWrite(DomainModelWrite, protected_namespaces=()):
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
-                existing_version=self.data_record.existing_version,
+                existing_version=None if allow_version_increase else self.data_record.existing_version,
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
@@ -181,6 +274,8 @@ class ScenarioWrite(DomainModelWrite, protected_namespaces=()):
                 end_node=mappings_override,
                 edge_type=edge_type,
                 view_by_read_class=view_by_read_class,
+                write_none=write_none,
+                allow_version_increase=allow_version_increase,
             )
             resources.extend(other_resources)
 

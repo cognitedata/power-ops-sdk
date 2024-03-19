@@ -5,9 +5,12 @@ from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
+from pydantic import field_validator, model_validator
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
+    DataRecord,
+    DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
     DomainModelCore,
@@ -15,14 +18,16 @@ from ._core import (
     DomainModelWriteList,
     DomainModelList,
     DomainRelationWrite,
+    GraphQLCore,
     ResourcesWrite,
 )
 
 if TYPE_CHECKING:
-    from ._alert import Alert, AlertWrite
-    from ._bid_matrix_raw import BidMatrixRaw, BidMatrixRawWrite
+    from ._alert import Alert, AlertGraphQL, AlertWrite
+    from ._bid_matrix_raw import BidMatrixRaw, BidMatrixRawGraphQL, BidMatrixRawWrite
     from ._water_partial_bid_calculation_input import (
         WaterPartialBidCalculationInput,
+        WaterPartialBidCalculationInputGraphQL,
         WaterPartialBidCalculationInputWrite,
     )
 
@@ -48,6 +53,98 @@ _WATERPARTIALBIDCALCULATIONOUTPUT_PROPERTIES_BY_FIELD = {
     "function_name": "functionName",
     "function_call_id": "functionCallId",
 }
+
+
+class WaterPartialBidCalculationOutputGraphQL(GraphQLCore):
+    """This represents the reading version of water partial bid calculation output, used
+    when data is retrieved from CDF using GraphQL.
+
+    It is used when retrieving data from CDF using GraphQL.
+
+    Args:
+        space: The space where the node is located.
+        external_id: The external id of the water partial bid calculation output.
+        data_record: The data record of the water partial bid calculation output node.
+        process_id: The process associated with the function execution
+        process_step: This is the step in the process.
+        function_name: The name of the function
+        function_call_id: The function call id
+        alerts: An array of calculation level Alerts.
+        raw_partial_matrix: The raw partial matrix field.
+        input_: The input field.
+    """
+
+    view_id = dm.ViewId("sp_powerops_models", "WaterPartialBidCalculationOutput", "1")
+    process_id: Optional[str] = Field(None, alias="processId")
+    process_step: Optional[int] = Field(None, alias="processStep")
+    function_name: Optional[str] = Field(None, alias="functionName")
+    function_call_id: Optional[str] = Field(None, alias="functionCallId")
+    alerts: Optional[list[AlertGraphQL]] = Field(default=None, repr=False)
+    raw_partial_matrix: Optional[BidMatrixRawGraphQL] = Field(None, repr=False, alias="rawPartialMatrix")
+    input_: Optional[WaterPartialBidCalculationInputGraphQL] = Field(None, repr=False, alias="input")
+
+    @model_validator(mode="before")
+    def parse_data_record(cls, values: Any) -> Any:
+        if not isinstance(values, dict):
+            return values
+        if "lastUpdatedTime" in values or "createdTime" in values:
+            values["dataRecord"] = DataRecordGraphQL(
+                created_time=values.pop("createdTime", None),
+                last_updated_time=values.pop("lastUpdatedTime", None),
+            )
+        return values
+
+    @field_validator("alerts", "raw_partial_matrix", "input_", mode="before")
+    def parse_graphql(cls, value: Any) -> Any:
+        if not isinstance(value, dict):
+            return value
+        if "items" in value:
+            return value["items"]
+        return value
+
+    def as_read(self) -> WaterPartialBidCalculationOutput:
+        """Convert this GraphQL format of water partial bid calculation output to the reading format."""
+        if self.data_record is None:
+            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
+        return WaterPartialBidCalculationOutput(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecord(
+                version=0,
+                last_updated_time=self.data_record.last_updated_time,
+                created_time=self.data_record.created_time,
+            ),
+            process_id=self.process_id,
+            process_step=self.process_step,
+            function_name=self.function_name,
+            function_call_id=self.function_call_id,
+            alerts=[alert.as_read() if isinstance(alert, GraphQLCore) else alert for alert in self.alerts or []],
+            raw_partial_matrix=(
+                self.raw_partial_matrix.as_read()
+                if isinstance(self.raw_partial_matrix, GraphQLCore)
+                else self.raw_partial_matrix
+            ),
+            input_=self.input_.as_read() if isinstance(self.input_, GraphQLCore) else self.input_,
+        )
+
+    def as_write(self) -> WaterPartialBidCalculationOutputWrite:
+        """Convert this GraphQL format of water partial bid calculation output to the writing format."""
+        return WaterPartialBidCalculationOutputWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=0),
+            process_id=self.process_id,
+            process_step=self.process_step,
+            function_name=self.function_name,
+            function_call_id=self.function_call_id,
+            alerts=[alert.as_write() if isinstance(alert, DomainModel) else alert for alert in self.alerts or []],
+            raw_partial_matrix=(
+                self.raw_partial_matrix.as_write()
+                if isinstance(self.raw_partial_matrix, DomainModel)
+                else self.raw_partial_matrix
+            ),
+            input_=self.input_.as_write() if isinstance(self.input_, DomainModel) else self.input_,
+        )
 
 
 class WaterPartialBidCalculationOutput(DomainModel):
@@ -76,7 +173,7 @@ class WaterPartialBidCalculationOutput(DomainModel):
     process_step: int = Field(alias="processStep")
     function_name: str = Field(alias="functionName")
     function_call_id: str = Field(alias="functionCallId")
-    alerts: Union[list[Alert], list[str], None] = Field(default=None, repr=False)
+    alerts: Union[list[Alert], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
     raw_partial_matrix: Union[BidMatrixRaw, str, dm.NodeId, None] = Field(None, repr=False, alias="rawPartialMatrix")
     input_: Union[WaterPartialBidCalculationInput, str, dm.NodeId, None] = Field(None, repr=False, alias="input")
 
@@ -135,7 +232,7 @@ class WaterPartialBidCalculationOutputWrite(DomainModelWrite):
     process_step: int = Field(alias="processStep")
     function_name: str = Field(alias="functionName")
     function_call_id: str = Field(alias="functionCallId")
-    alerts: Union[list[AlertWrite], list[str], None] = Field(default=None, repr=False)
+    alerts: Union[list[AlertWrite], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
     raw_partial_matrix: Union[BidMatrixRawWrite, str, dm.NodeId, None] = Field(
         None, repr=False, alias="rawPartialMatrix"
     )
@@ -146,6 +243,7 @@ class WaterPartialBidCalculationOutputWrite(DomainModelWrite):
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
+        allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
@@ -189,7 +287,7 @@ class WaterPartialBidCalculationOutputWrite(DomainModelWrite):
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
-                existing_version=self.data_record.existing_version,
+                existing_version=None if allow_version_increase else self.data_record.existing_version,
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
@@ -204,7 +302,13 @@ class WaterPartialBidCalculationOutputWrite(DomainModelWrite):
         edge_type = dm.DirectRelationReference("sp_powerops_types", "calculationIssue")
         for alert in self.alerts or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
-                cache, start_node=self, end_node=alert, edge_type=edge_type, view_by_read_class=view_by_read_class
+                cache,
+                start_node=self,
+                end_node=alert,
+                edge_type=edge_type,
+                view_by_read_class=view_by_read_class,
+                write_none=write_none,
+                allow_version_increase=allow_version_increase,
             )
             resources.extend(other_resources)
 

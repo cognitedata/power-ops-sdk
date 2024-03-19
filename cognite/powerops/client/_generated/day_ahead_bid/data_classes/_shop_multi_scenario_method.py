@@ -5,9 +5,12 @@ from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
+from pydantic import field_validator, model_validator
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
+    DataRecord,
+    DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
     DomainModelCore,
@@ -15,12 +18,13 @@ from ._core import (
     DomainModelWriteList,
     DomainModelList,
     DomainRelationWrite,
+    GraphQLCore,
     ResourcesWrite,
 )
 from ._bid_method import BidMethod, BidMethodWrite
 
 if TYPE_CHECKING:
-    from ._shop_price_scenario import SHOPPriceScenario, SHOPPriceScenarioWrite
+    from ._shop_price_scenario import SHOPPriceScenario, SHOPPriceScenarioGraphQL, SHOPPriceScenarioWrite
 
 
 __all__ = [
@@ -44,6 +48,79 @@ _SHOPMULTISCENARIOMETHOD_PROPERTIES_BY_FIELD = {
 }
 
 
+class SHOPMultiScenarioMethodGraphQL(GraphQLCore):
+    """This represents the reading version of shop multi scenario method, used
+    when data is retrieved from CDF using GraphQL.
+
+    It is used when retrieving data from CDF using GraphQL.
+
+    Args:
+        space: The space where the node is located.
+        external_id: The external id of the shop multi scenario method.
+        data_record: The data record of the shop multi scenario method node.
+        name: Name for the BidMethod
+        shop_cases: The shop case field.
+        price_scenarios: An array of scenarios for this bid method.
+    """
+
+    view_id = dm.ViewId("power-ops-day-ahead-bid", "SHOPMultiScenarioMethod", "1")
+    shop_cases: Optional[list[str]] = Field(None, alias="shopCases")
+    price_scenarios: Optional[list[SHOPPriceScenarioGraphQL]] = Field(default=None, repr=False, alias="priceScenarios")
+
+    @model_validator(mode="before")
+    def parse_data_record(cls, values: Any) -> Any:
+        if not isinstance(values, dict):
+            return values
+        if "lastUpdatedTime" in values or "createdTime" in values:
+            values["dataRecord"] = DataRecordGraphQL(
+                created_time=values.pop("createdTime", None),
+                last_updated_time=values.pop("lastUpdatedTime", None),
+            )
+        return values
+
+    @field_validator("price_scenarios", mode="before")
+    def parse_graphql(cls, value: Any) -> Any:
+        if not isinstance(value, dict):
+            return value
+        if "items" in value:
+            return value["items"]
+        return value
+
+    def as_read(self) -> SHOPMultiScenarioMethod:
+        """Convert this GraphQL format of shop multi scenario method to the reading format."""
+        if self.data_record is None:
+            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
+        return SHOPMultiScenarioMethod(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecord(
+                version=0,
+                last_updated_time=self.data_record.last_updated_time,
+                created_time=self.data_record.created_time,
+            ),
+            name=self.name,
+            shop_cases=self.shop_cases,
+            price_scenarios=[
+                price_scenario.as_read() if isinstance(price_scenario, GraphQLCore) else price_scenario
+                for price_scenario in self.price_scenarios or []
+            ],
+        )
+
+    def as_write(self) -> SHOPMultiScenarioMethodWrite:
+        """Convert this GraphQL format of shop multi scenario method to the writing format."""
+        return SHOPMultiScenarioMethodWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=0),
+            name=self.name,
+            shop_cases=self.shop_cases,
+            price_scenarios=[
+                price_scenario.as_write() if isinstance(price_scenario, DomainModel) else price_scenario
+                for price_scenario in self.price_scenarios or []
+            ],
+        )
+
+
 class SHOPMultiScenarioMethod(BidMethod):
     """This represents the reading version of shop multi scenario method.
 
@@ -62,7 +139,7 @@ class SHOPMultiScenarioMethod(BidMethod):
         "power-ops-types", "DayAheadSHOPMultiScenarioMethod"
     )
     shop_cases: Optional[list[str]] = Field(None, alias="shopCases")
-    price_scenarios: Union[list[SHOPPriceScenario], list[str], None] = Field(
+    price_scenarios: Union[list[SHOPPriceScenario], list[str], list[dm.NodeId], None] = Field(
         default=None, repr=False, alias="priceScenarios"
     )
 
@@ -108,7 +185,7 @@ class SHOPMultiScenarioMethodWrite(BidMethodWrite):
         "power-ops-types", "DayAheadSHOPMultiScenarioMethod"
     )
     shop_cases: Optional[list[str]] = Field(None, alias="shopCases")
-    price_scenarios: Union[list[SHOPPriceScenarioWrite], list[str], None] = Field(
+    price_scenarios: Union[list[SHOPPriceScenarioWrite], list[str], list[dm.NodeId], None] = Field(
         default=None, repr=False, alias="priceScenarios"
     )
 
@@ -117,6 +194,7 @@ class SHOPMultiScenarioMethodWrite(BidMethodWrite):
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
+        allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
@@ -138,7 +216,7 @@ class SHOPMultiScenarioMethodWrite(BidMethodWrite):
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
-                existing_version=self.data_record.existing_version,
+                existing_version=None if allow_version_increase else self.data_record.existing_version,
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
@@ -158,6 +236,8 @@ class SHOPMultiScenarioMethodWrite(BidMethodWrite):
                 end_node=price_scenario,
                 edge_type=edge_type,
                 view_by_read_class=view_by_read_class,
+                write_none=write_none,
+                allow_version_increase=allow_version_increase,
             )
             resources.extend(other_resources)
 
