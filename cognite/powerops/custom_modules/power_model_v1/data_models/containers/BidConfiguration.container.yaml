@@ -1,4 +1,4 @@
-space: '{{powerops_models}}'
+space: "{{powerops_models}}"
 externalId: BidConfiguration
 name: BidConfiguration
 usedFor: node
@@ -34,11 +34,11 @@ properties:
 indexes:
   methodIndex:
     properties:
-    - method
+      - method
     indexType: btree
     cursorable: false
   priceAreaIndex:
     properties:
-    - priceArea
+      - priceArea
     indexType: btree
     cursorable: false

@@ -15,6 +15,6 @@ properties:
 indexes:
   name:
     properties:
-    - name
+      - name
     indexType: btree
     cursorable: false

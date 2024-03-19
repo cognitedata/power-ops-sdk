@@ -1,4 +1,4 @@
-space: '{{powerops_models}}'
+space: "{{powerops_models}}"
 externalId: EfficiencyCurve
 name: EfficiencyCurve
 usedFor: node

@@ -1,26 +1,26 @@
 changes:
-- added: 872
-  changed: 0
-  field_name: edges
-  group: CDF
-  removed: 0
-  unchanged: 0
-- added: 7
-  changed: 0
-  field_name: files
-  group: CDF
-  removed: 0
-  unchanged: 0
-- added: 483
-  changed: 0
-  field_name: nodes
-  group: CDF
-  removed: 0
-  unchanged: 0
-- added: 2
-  changed: 0
-  field_name: sequences
-  group: CDF
-  removed: 0
-  unchanged: 0
+  - added: 872
+    changed: 0
+    field_name: edges
+    group: CDF
+    removed: 0
+    unchanged: 0
+  - added: 7
+    changed: 0
+    field_name: files
+    group: CDF
+    removed: 0
+    unchanged: 0
+  - added: 483
+    changed: 0
+    field_name: nodes
+    group: CDF
+    removed: 0
+    unchanged: 0
+  - added: 2
+    changed: 0
+    field_name: sequences
+    group: CDF
+    removed: 0
+    unchanged: 0
 model_name: CogShop1Asset

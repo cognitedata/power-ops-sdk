@@ -2,20 +2,20 @@ site_name: PowerOpsSDK
 docs_dir: docs
 use_directory_urls: false
 theme:
-    name: material
-    features:
-      - content.code.copy
-      - content.tooltips
+  name: material
+  features:
+    - content.code.copy
+    - content.tooltips
 
 nav:
-    - Home: index.md
-    - Installation: installation.md
-    - QuickStart:
-        - Data Engineer: quickstart/data_engineer.md
-        - Data Scientist: quickstart/data_scientist.ipynb
-    - Tutorials:
+  - Home: index.md
+  - Installation: installation.md
+  - QuickStart:
+      - Data Engineer: quickstart/data_engineer.md
+      - Data Scientist: quickstart/data_scientist.ipynb
+  - Tutorials:
       - Shop API: tutorials/shop_results.ipynb
-    - Reference:
+  - Reference:
       - client:
           - SHOP API: packages/client/shop_api.md
           - SHOP API Classes: packages/client/shop_api_classes.md
@@ -24,20 +24,20 @@ nav:
       - resync:
           - resync: packages/resync/main.md
           - config:
-            - main: packages/resync/config/config.md
-            - settings: packages/resync/config/settings.md
-            - production: packages/resync/config/production.md
-            - market: packages/resync/config/market.md
-            - cogshop: packages/resync/config/cogshop.md
-            - shared: packages/resync/config/shared.md
+              - main: packages/resync/config/config.md
+              - settings: packages/resync/config/settings.md
+              - production: packages/resync/config/production.md
+              - market: packages/resync/config/market.md
+              - cogshop: packages/resync/config/cogshop.md
+              - shared: packages/resync/config/shared.md
           - models:
-            - Version 1: packages/resync/models/v1.md
-            - Version 2: packages/resync/models/v2.md
+              - Version 1: packages/resync/models/v1.md
+              - Version 2: packages/resync/models/v2.md
           - time series mapping: packages/resync/time_series_mapping.md
       - utils:
           - serialization: packages/utils/serialization.md
           - CDF:
-            - extraction pipeline: packages/utils/cdf_extraction_pipeline.md
+              - extraction pipeline: packages/utils/cdf_extraction_pipeline.md
       - Prerun Time Series Transformations:
           - transformations: packages/prerun_transformations/transformations.md
 
@@ -69,8 +69,8 @@ plugins:
       ignore_h1_titles: True
       include_source: True
   - glightbox:
-       width: 100%
-       height: auto
+      width: 100%
+      height: auto
   - mkdocstrings:
       default_handler: python
       handlers:

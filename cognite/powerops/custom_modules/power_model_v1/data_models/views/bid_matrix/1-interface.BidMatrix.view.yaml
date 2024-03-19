@@ -1,66 +1,65 @@
-space: '{{powerops_models}}'
+space: "{{powerops_models}}"
 externalId: BidMatrix
 name: BidMatrix
 filter:
   and:
-  - hasData:
-    - type: container
-      space: '{{powerops_models}}'
-      externalId: BidMatrix
-  - equals:
-      property:
-      - node
-      - space
-      value: '{{powerops_instance_space}}'
+    - hasData:
+        - type: container
+          space: "{{powerops_models}}"
+          externalId: BidMatrix
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{powerops_instance_space}}"
 implements: []
-version: '{{version}}'
+version: "{{version}}"
 properties:
   resourceCost:
     container:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: BidMatrix
       type: container
     containerPropertyIdentifier: resourceCost
     name: resourceCost
   matrix:
     container:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: BidMatrix
       type: container
     containerPropertyIdentifier: matrix
     name: matrix
   assetType:
     container:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: BidMatrix
       type: container
     containerPropertyIdentifier: assetType
     name: assetType
   assetId:
     container:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: BidMatrix
       type: container
     containerPropertyIdentifier: assetId
     name: assetId
   alerts:
     type:
-      space: '{{powerops_type_space}}'
+      space: "{{powerops_type_space}}"
       externalId: calculationIssue
     source:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: Alert
-      version: '{{version}}'
+      version: "{{version}}"
       type: view
     direction: outwards
     name: alerts
     connectionType: multi_edge_connection
   isProcessed:
     container:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: BidMatrix
       type: container
     containerPropertyIdentifier: isProcessed
     name: isProcessed
-    description: Whether the bid matrix has been processed by the bid matrix processor
-      or not
+    description: Whether the bid matrix has been processed by the bid matrix processor or not

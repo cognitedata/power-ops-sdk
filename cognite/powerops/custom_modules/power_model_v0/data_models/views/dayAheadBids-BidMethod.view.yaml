@@ -10,17 +10,17 @@ filter:
           externalId: BidMethod
     - in:
         property:
-        - node
-        - type
+          - node
+          - type
         values:
           - space: '{{type_space}}'
             externalId: DayAheadSHOPMultiScenarioMethod
           - space: '{{type_space}}'
             externalId: DayAheadWaterValueBasedMethod
 implements:
-- space: '{{shared_model_space}}'
-  externalId: BidMethod
-  version: '{{base_BidMethod_version}}'
-  type: view
+  - space: '{{shared_model_space}}'
+    externalId: BidMethod
+    version: '{{base_BidMethod_version}}'
+    type: view
 version: '{{dayaheadbid_BidMethod_version}}'
 properties: {}

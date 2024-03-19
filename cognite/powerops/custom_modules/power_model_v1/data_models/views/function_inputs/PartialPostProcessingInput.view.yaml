@@ -4,27 +4,27 @@ name: PartialPostProcessingInput
 description: Partial post processing input
 filter:
   and:
-  - hasData:
-    - type: container
-      space: '{{powerops_models}}'
-      externalId: FunctionMetadata
-  - equals:
-      property:
-      - node
-      - space
-      value: '{{powerops_instance_space}}'
-  - equals:
-      property:
-      - node
-      - type
-      value:
-        externalId: PartialPostProcessingInput
-        space: '{{powerops_type_space}}'
+    - hasData:
+        - type: container
+          space: '{{powerops_models}}'
+          externalId: FunctionMetadata
+    - equals:
+        property:
+          - node
+          - space
+        value: '{{powerops_instance_space}}'
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          externalId: PartialPostProcessingInput
+          space: '{{powerops_type_space}}'
 implements:
-- space: '{{powerops_models}}'
-  externalId: FunctionInput
-  version: '{{version}}'
-  type: view
+  - space: '{{powerops_models}}'
+    externalId: FunctionInput
+    version: '{{version}}'
+    type: view
 version: '{{version}}'
 properties:
   marketConfig:

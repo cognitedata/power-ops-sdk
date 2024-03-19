@@ -6,16 +6,16 @@ version: '{{asset_Generator_version}}'
 filter:
   and:
     - hasData:
-      - type: container
-        space: '{{shared_model_space}}'
-        externalId: Generator
-      - type: container
-        space: '{{shared_model_space}}'
-        externalId: Asset
+        - type: container
+          space: '{{shared_model_space}}'
+          externalId: Generator
+        - type: container
+          space: '{{shared_model_space}}'
+          externalId: Asset
     - equals:
         property:
-         - node
-         - type
+          - node
+          - type
         value:
           space: '{{type_space}}'
           externalId: Generator

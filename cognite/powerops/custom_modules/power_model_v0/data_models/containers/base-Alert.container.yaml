@@ -67,11 +67,11 @@ properties:
 indexes:
   time:
     properties:
-    - time
+      - time
     indexType: btree
     cursorable: false
   alertType:
     properties:
-    - alertType
+      - alertType
     indexType: btree
     cursorable: false

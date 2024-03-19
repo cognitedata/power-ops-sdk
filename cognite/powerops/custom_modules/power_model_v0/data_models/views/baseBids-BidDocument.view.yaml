@@ -1,19 +1,18 @@
 space: '{{shared_model_space}}'
 externalId: BidDocument
-description: Whole Bid (also usually referenced in industry as a Bid Document) containing
-  multiple Bid Rows (which are usually referenced in industry as Bids)
+description: Whole Bid (also usually referenced in industry as a Bid Document) containing multiple Bid Rows (which are usually referenced in industry as Bids)
 name: BidDocument
 version: '{{base_BidDocument_version}}'
 filter:
   and:
     - hasData:
-      - type: container
-        space: '{{shared_model_space}}'
-        externalId: BidDocument
+        - type: container
+          space: '{{shared_model_space}}'
+          externalId: BidDocument
     - in:
         property:
-        - node
-        - type
+          - node
+          - type
         values:
           - space: '{{type_space}}'
             externalId: DayAheadBidDocument
@@ -27,8 +26,7 @@ properties:
       type: container
     containerPropertyIdentifier: name
     name: name
-    description: Unique name for a given instance of a Bid Document. A combination
-      of name, priceArea, date and startCalculation.
+    description: Unique name for a given instance of a Bid Document. A combination of name, priceArea, date and startCalculation.
   deliveryDate:
     container:
       space: '{{shared_model_space}}'
@@ -60,8 +58,7 @@ properties:
       type: container
     containerPropertyIdentifier: isComplete
     name: isComplete
-    description: Indicates that the Bid calculation workflow has completed (although
-      has not necessarily succeeded).
+    description: Indicates that the Bid calculation workflow has completed (although has not necessarily succeeded).
   alerts:
     type:
       space: '{{type_space}}'

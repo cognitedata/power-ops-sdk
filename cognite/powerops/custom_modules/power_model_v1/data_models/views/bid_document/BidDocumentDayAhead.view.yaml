@@ -1,78 +1,78 @@
-space: '{{powerops_models}}'
+space: "{{powerops_models}}"
 externalId: BidDocumentDayAhead
 name: BidDocumentDayAhead
 filter:
   and:
-  - hasData:
-    - type: container
-      space: '{{powerops_models}}'
-      externalId: BidDocument
-    - type: container
-      space: '{{powerops_models}}'
-      externalId: BidDocumentDayAhead
-  - equals:
-      property:
-      - node
-      - space
-      value: '{{powerops_instance_space}}'
-  - equals:
-      property:
-      - node
-      - type
-      value:
-        externalId: DayAheadBidDocument
-        space: '{{powerops_type_space}}'
+    - hasData:
+        - type: container
+          space: "{{powerops_models}}"
+          externalId: BidDocument
+        - type: container
+          space: "{{powerops_models}}"
+          externalId: BidDocumentDayAhead
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{powerops_instance_space}}"
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          externalId: DayAheadBidDocument
+          space: "{{powerops_type_space}}"
 implements:
-- space: '{{powerops_models}}'
-  externalId: BidDocument
-  version: '{{version}}'
-  type: view
-version: '{{version}}'
+  - space: "{{powerops_models}}"
+    externalId: BidDocument
+    version: "{{version}}"
+    type: view
+version: "{{version}}"
 properties:
   priceArea:
     container:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: BidDocument
       type: container
     containerPropertyIdentifier: priceArea
     name: priceArea
     source:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: PriceArea
-      version: '{{version}}'
+      version: "{{version}}"
       type: view
   method:
     container:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: BidDocumentDayAhead
       type: container
     containerPropertyIdentifier: method
     name: method
     source:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: BidMethodDayAhead
-      version: '{{version}}'
+      version: "{{version}}"
       type: view
   total:
     container:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: BidDocumentDayAhead
       type: container
     containerPropertyIdentifier: total
     name: total
     source:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: BidMatrix
-      version: '{{version}}'
+      version: "{{version}}"
       type: view
   partials:
     type:
-      space: '{{powerops_type_space}}'
+      space: "{{powerops_type_space}}"
       externalId: partialBid
     source:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: BidMatrix
-      version: '{{version}}'
+      version: "{{version}}"
       type: view
     direction: outwards
     name: partials

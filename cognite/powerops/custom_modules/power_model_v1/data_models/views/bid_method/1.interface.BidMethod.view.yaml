@@ -4,15 +4,15 @@ name: BidMethod
 description: A generic Bid Method
 filter:
   and:
-  - hasData:
-    - type: container
-      space: '{{powerops_models}}'
-      externalId: BidMethod
-  - equals:
-      property:
-      - node
-      - space
-      value: '{{powerops_instance_space}}'
+    - hasData:
+        - type: container
+          space: '{{powerops_models}}'
+          externalId: BidMethod
+    - equals:
+        property:
+          - node
+          - space
+        value: '{{powerops_instance_space}}'
 version: '{{version}}'
 properties:
   name:

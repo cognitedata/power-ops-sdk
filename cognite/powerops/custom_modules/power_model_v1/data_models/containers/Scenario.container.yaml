@@ -1,4 +1,4 @@
-space: '{{powerops_models}}'
+space: "{{powerops_models}}"
 externalId: Scenario
 name: Scenario
 usedFor: node
@@ -40,11 +40,11 @@ properties:
 indexes:
   nameIndex:
     properties:
-    - name
+      - name
     indexType: btree
     cursorable: false
   sourceIndex:
     properties:
-    - source
+      - source
     indexType: btree
     cursorable: false

@@ -1,4 +1,4 @@
-space: '{{powerops_models}}'
+space: "{{powerops_models}}"
 externalId: BidMethod
 name: BidMethod
 usedFor: node
@@ -50,6 +50,6 @@ properties:
 indexes:
   name:
     properties:
-    - name
+      - name
     indexType: btree
     cursorable: false

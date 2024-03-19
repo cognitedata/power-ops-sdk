@@ -4,22 +4,22 @@ name: Alert
 description: Alerts
 filter:
   and:
-  - hasData:
-    - type: container
-      space: '{{powerops_models}}'
-      externalId: Alert
-  - equals:
-      property:
-      - node
-      - space
-      value: '{{powerops_instance_space}}'
-  - equals:
-      property:
-      - node
-      - type
-      value:
-        externalId: Alert
-        space: '{{powerops_type_space}}'
+    - hasData:
+        - type: container
+          space: '{{powerops_models}}'
+          externalId: Alert
+    - equals:
+        property:
+          - node
+          - space
+        value: '{{powerops_instance_space}}'
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          externalId: Alert
+          space: '{{powerops_type_space}}'
 implements: []
 version: '{{version}}'
 properties:
@@ -54,8 +54,7 @@ properties:
       type: container
     containerPropertyIdentifier: severity
     name: severity
-    description: CRITICAL (calculation could not completed) WARNING  (calculation
-      completed, with major issue) INFO     (calculation completed, with minor issues)
+    description: CRITICAL (calculation could not completed) WARNING  (calculation completed, with major issue) INFO     (calculation completed, with minor issues)
   alertType:
     container:
       space: '{{powerops_models}}'
@@ -71,8 +70,7 @@ properties:
       type: container
     containerPropertyIdentifier: statusCode
     name: statusCode
-    description: Unique status code for the alert. May be used by the frontend to
-      avoid use of hardcoded description (i.e. like a translation)
+    description: Unique status code for the alert. May be used by the frontend to avoid use of hardcoded description (i.e. like a translation)
   eventIds:
     container:
       space: '{{powerops_models}}'
@@ -88,5 +86,4 @@ properties:
       type: container
     containerPropertyIdentifier: calculationRun
     name: calculationRun
-    description: The identifier of the parent Bid Calculation (required so tha alerts
-      can be created befor the BidDocument)
+    description: The identifier of the parent Bid Calculation (required so tha alerts can be created befor the BidDocument)

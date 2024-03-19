@@ -5,13 +5,13 @@ version: '{{dayaheadbid_BidMatrix_version}}'
 filter:
   and:
     - hasData:
-      - type: container
-        space: '{{dayahead_model_space}}'
-        externalId: BidMatrix
+        - type: container
+          space: '{{dayahead_model_space}}'
+          externalId: BidMatrix
     - in:
         property:
-        - node
-        - type
+          - node
+          - type
         values:
           - space: '{{type_space}}'
             externalId: DayAheadBasicBidMatrix

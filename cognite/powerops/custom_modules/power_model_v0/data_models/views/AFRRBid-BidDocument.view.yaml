@@ -1,8 +1,7 @@
 space: '{{afrr_model_space}}'
 externalId: BidDocument
 version: '{{afrrbid_BidDocument_version}}'
-description: Whole Bid (also usually referenced in industry as a Bid Document) containing
-  multiple Bid Rows (which are usually referenced in industry as Bids)
+description: Whole Bid (also usually referenced in industry as a Bid Document) containing multiple Bid Rows (which are usually referenced in industry as Bids)
 name: BidDocument
 filter:
   and:
@@ -12,16 +11,16 @@ filter:
           externalId: BidDocument
     - equals:
         property:
-        - node
-        - type
+          - node
+          - type
         value:
           space: '{{type_space}}'
           externalId: AFRRBidDocument
 implements:
-- space: '{{shared_model_space}}'
-  externalId: BidDocument
-  version: '{{base_BidDocument_version}}'
-  type: view
+  - space: '{{shared_model_space}}'
+    externalId: BidDocument
+    version: '{{base_BidDocument_version}}'
+    type: view
 properties:
   priceArea:
     source:

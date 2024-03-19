@@ -3,24 +3,24 @@ externalId: BidMethodCustom
 name: BidMethodCustom
 filter:
   and:
-  - hasData:
-    - type: container
-      space: '{{powerops_models}}'
-      externalId: BidMethod
-  - not:
-      in:
-        property:
-        - node
-        - type
-        values:
-        - space: '{{powerops_type_space}}'
-          externalId: BidMethodSHOPMultiScenario
-        - space: '{{powerops_type_space}}'
-          externalId: BidMethodWaterValue
+    - hasData:
+        - type: container
+          space: '{{powerops_models}}'
+          externalId: BidMethod
+    - not:
+        in:
+          property:
+            - node
+            - type
+          values:
+            - space: '{{powerops_type_space}}'
+              externalId: BidMethodSHOPMultiScenario
+            - space: '{{powerops_type_space}}'
+              externalId: BidMethodWaterValue
 implements:
-- space: '{{powerops_models}}'
-  externalId: BidMethodDayAhead
-  version: '{{version}}'
-  type: view
+  - space: '{{powerops_models}}'
+    externalId: BidMethodDayAhead
+    version: '{{version}}'
+    type: view
 version: '{{version}}'
 properties: {}

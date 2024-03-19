@@ -89,8 +89,7 @@ properties:
       type: container
     containerPropertyIdentifier: relativeActivation
     name: relativeActivation
-    description: Value between -1 (100 % activation down) and 1 (100 % activation
-      down)
+    description: Value between -1 (100 % activation down) and 1 (100 % activation down)
   totalCapacityAllocationUp:
     container:
       space: '{{shared_model_space}}'

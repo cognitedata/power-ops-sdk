@@ -1,4 +1,4 @@
-space: '{{powerops_models}}'
+space: "{{powerops_models}}"
 externalId: Watercourse
 name: Watercourse
 usedFor: node
@@ -20,7 +20,7 @@ properties:
 constraints:
   requiredAsset:
     require:
-      space: '{{powerops_models}}'
+      space: "{{powerops_models}}"
       externalId: Asset
       type: container
     constraintType: requires

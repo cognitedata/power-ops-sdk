@@ -5,20 +5,20 @@ name: BidMethod
 filter:
   and:
     - hasData:
-      - type: container
-        space: '{{shared_model_space}}'
-        externalId: BidMethod
+        - type: container
+          space: '{{shared_model_space}}'
+          externalId: BidMethod
     - equals:
         property:
-        - node
-        - type
+          - node
+          - type
         value:
           space: '{{type_space}}'
           externalId: AFRRBidMethod
 implements:
-- space: '{{shared_model_space}}'
-  externalId: BidMethod
-  version: '{{base_BidMethod_version}}'
-  type: view
+  - space: '{{shared_model_space}}'
+    externalId: BidMethod
+    version: '{{base_BidMethod_version}}'
+    type: view
 version: '{{afrrbid_BidMethod_version}}'
 properties: {}

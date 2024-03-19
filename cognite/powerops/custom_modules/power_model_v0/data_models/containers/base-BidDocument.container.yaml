@@ -49,6 +49,6 @@ properties:
 indexes:
   deliveryDate:
     properties:
-    - deliveryDate
+      - deliveryDate
     indexType: btree
     cursorable: false

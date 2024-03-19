@@ -5,13 +5,13 @@ version: '{{dayaheadbid_PriceArea_version}}'
 filter:
   and:
     - hasData:
-      - type: container
-        space: '{{shared_model_space}}'
-        externalId: PriceArea
+        - type: container
+          space: '{{shared_model_space}}'
+          externalId: PriceArea
     - equals:
         property:
-        - node
-        - type
+          - node
+          - type
         value:
           space: '{{type_space}}'
           externalId: PriceArea

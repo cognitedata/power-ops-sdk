@@ -6,13 +6,13 @@ version: '{{afrrbid_PriceArea_version}}'
 filter:
   and:
     - hasData:
-      - type: container
-        space: '{{shared_model_space}}'
-        externalId: PriceArea
+        - type: container
+          space: '{{shared_model_space}}'
+          externalId: PriceArea
     - equals:
         property:
-         - node
-         - type
+          - node
+          - type
         value:
           space: '{{type_space}}'
           externalId: PriceArea
@@ -62,8 +62,7 @@ properties:
       type: container
     containerPropertyIdentifier: relativeActivation
     name: relativeActivation
-    description: Value between -1 (100 % activation down) and 1 (100 % activation
-      down)
+    description: Value between -1 (100 % activation down) and 1 (100 % activation down)
   totalCapacityAllocationUp:
     container:
       space: '{{shared_model_space}}'

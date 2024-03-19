@@ -1,4 +1,4 @@
-space: '{{powerops_models}}'
+space: "{{powerops_models}}"
 externalId: Asset
 name: Asset
 usedFor: node
@@ -40,6 +40,6 @@ properties:
 indexes:
   time:
     properties:
-    - name
+      - name
     indexType: btree
     cursorable: false

@@ -5,13 +5,13 @@ version: '{{dayaheadbid_SHOPPriceScenarioResult_version}}'
 filter:
   and:
     - hasData:
-      - type: container
-        space: '{{dayahead_model_space}}'
-        externalId: SHOPPriceScenarioResult
+        - type: container
+          space: '{{dayahead_model_space}}'
+          externalId: SHOPPriceScenarioResult
     - equals:
         property:
-        - node
-        - type
+          - node
+          - type
         value:
           space: '{{type_space}}'
           externalId: SHOPPriceScenarioResult
@@ -36,9 +36,9 @@ properties:
       externalId: SHOPPriceScenarioResult
       type: container
     source:
-        space: '{{dayahead_model_space}}'
-        externalId: SHOPPriceScenario
-        version: '{{dayaheadbid_SHOPPriceScenario_version}}'
-        type: view
+      space: '{{dayahead_model_space}}'
+      externalId: SHOPPriceScenario
+      version: '{{dayaheadbid_SHOPPriceScenario_version}}'
+      type: view
     containerPropertyIdentifier: priceScenario
     name: priceScenario

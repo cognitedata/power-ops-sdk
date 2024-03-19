@@ -1,4 +1,3 @@
----
 repos:
   - repo: https://github.com/psf/black
     rev: 24.1.1
@@ -7,7 +6,7 @@ repos:
 
   - repo: https://github.com/charliermarsh/ruff-pre-commit
     # Ruff version.
-    rev: 'v0.0.292'
+    rev: "v0.0.292"
     hooks:
       - id: ruff
         args:
@@ -18,26 +17,38 @@ repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
     hooks:
-      - id: debug-statements
-      - id: trailing-whitespace
-      - id: check-builtin-literals
-      - id: end-of-file-fixer
       - id: check-ast
+      - id: check-builtin-literals
       - id: check-docstring-first
+      - id: check-yaml
+        exclude: "mkdocs.yml"
+      - id: debug-statements
+      - id: end-of-file-fixer
+      - id: name-tests-test
+        args:
+          - --pytest-test-first
+        exclude: "constants.py|mock_.*.py"
+      - id: no-commit-to-branch
+      - id: trailing-whitespace
+
+  - repo: https://github.com/google/yamlfmt
+    rev: v0.10.0
+    hooks:
+      - id: yamlfmt
 
   - repo: https://github.com/frnhr/pre-commit-nocommit
     rev: 0.0.1
     hooks:
       - id: check-nocommit
 
-# Mypy must be run in the local system environment, not in the pre-commit environment.
-  - hooks:
-    - id: mypy
-      name: mypy
-      # Gradually, the entire codebase should be checked by mypy, plan is to gradually add mypy for each
-      # module as we refactor it.
-      entry: dmypy run -- cognite/powerops/resync cognite/powerops/utils
-      files: ^.*.(py|pyi)$
-      language: system
-      pass_filenames: false
-    repo: local
+  # Mypy must be run in the local system environment, not in the pre-commit environment.
+  - repo: local
+    hooks:
+      - id: mypy
+        name: mypy
+        # Gradually, the entire codebase should be checked by mypy, plan is to gradually add mypy for each
+        # module as we refactor it.
+        entry: dmypy run -- cognite/powerops/resync cognite/powerops/utils
+        files: ^.*.(py|pyi)$
+        language: system
+        pass_filenames: false

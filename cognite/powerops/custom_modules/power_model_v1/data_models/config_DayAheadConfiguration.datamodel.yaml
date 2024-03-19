@@ -85,6 +85,6 @@ views:
     type: view
     version: "{{version}}"
   - externalId: Commands
-    space: '{{powerops_models}}'
+    space: "{{powerops_models}}"
     type: view
-    version: '{{version}}'
+    version: "{{version}}"

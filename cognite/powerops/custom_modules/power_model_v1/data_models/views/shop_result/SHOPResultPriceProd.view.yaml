@@ -4,27 +4,27 @@ name: SHOPResultPriceProd
 description: A shop result type that extends the generic shop result with a direct link to the price and production time series
 filter:
   and:
-  - hasData:
-    - type: container
-      space: '{{powerops_models}}'
-      externalId: SHOPResult
-  - equals:
-      property:
-      - node
-      - space
-      value: '{{powerops_instance_space}}'
-  - equals:
-      property:
-      - node
-      - type
-      value:
-        externalId: SHOPResultPriceProd
-        space: '{{powerops_type_space}}'
+    - hasData:
+        - type: container
+          space: '{{powerops_models}}'
+          externalId: SHOPResult
+    - equals:
+        property:
+          - node
+          - space
+        value: '{{powerops_instance_space}}'
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          externalId: SHOPResultPriceProd
+          space: '{{powerops_type_space}}'
 implements:
-- space: '{{powerops_models}}'
-  externalId: SHOPResult
-  version: '{{version}}'
-  type: view
+  - space: '{{powerops_models}}'
+    externalId: SHOPResult
+    version: '{{version}}'
+    type: view
 version: '{{version}}'
 properties:
   priceTimeseries:

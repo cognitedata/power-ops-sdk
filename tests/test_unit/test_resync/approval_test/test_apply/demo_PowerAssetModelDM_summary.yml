@@ -1,14 +1,14 @@
 changes:
-- added: 47
-  changed: 0
-  field_name: edges
-  group: CDF
-  removed: 0
-  unchanged: 0
-- added: 67
-  changed: 0
-  field_name: nodes
-  group: CDF
-  removed: 0
-  unchanged: 0
+  - added: 47
+    changed: 0
+    field_name: edges
+    group: CDF
+    removed: 0
+    unchanged: 0
+  - added: 67
+    changed: 0
+    field_name: nodes
+    group: CDF
+    removed: 0
+    unchanged: 0
 model_name: PowerAssetModelDM

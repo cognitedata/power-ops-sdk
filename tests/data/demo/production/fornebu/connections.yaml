@@ -606,28 +606,28 @@ connections:
     from_type: plant
     to: sum_restriction_LandetT2
     to_type: production_group
-  #- connection_type: connection_standard
-  #  from: Rull1
-  #  from_type: plant
-  #  to: sum_flow_restriction_Rullsvann
-  #  to_type: discharge_group
-  #- connection_type: connection_standard
-  #  from: Rull2
-  #  from_type: plant
-  #  to: sum_flow_restriction_Rullsvann
-  #  to_type: discharge_group
-  #- connection_type: connection_standard
-  #  from: b_Sirefelt_Knute_Rullsvatn
-  #  from_type: gate
-  #  to: sum_flow_restriction_Rullsvann
-  #  to_type: discharge_group
-  #- connection_type: connection_standard
-  #  from: f_Sirefelt_Knute_Rullsvatn
-  #  from_type: gate
-  #  to: sum_flow_restriction_Rullsvann
-  #  to_type: discharge_group
-  #- connection_type: connection_standard
-  #  from: b_Dalbysvatn_Knute_Rullsvatn
-  #  from_type: gate
-  #  to: sum_flow_restriction_Rullsvann
-  #  to_type: discharge_group
+#- connection_type: connection_standard
+#  from: Rull1
+#  from_type: plant
+#  to: sum_flow_restriction_Rullsvann
+#  to_type: discharge_group
+#- connection_type: connection_standard
+#  from: Rull2
+#  from_type: plant
+#  to: sum_flow_restriction_Rullsvann
+#  to_type: discharge_group
+#- connection_type: connection_standard
+#  from: b_Sirefelt_Knute_Rullsvatn
+#  from_type: gate
+#  to: sum_flow_restriction_Rullsvann
+#  to_type: discharge_group
+#- connection_type: connection_standard
+#  from: f_Sirefelt_Knute_Rullsvatn
+#  from_type: gate
+#  to: sum_flow_restriction_Rullsvann
+#  to_type: discharge_group
+#- connection_type: connection_standard
+#  from: b_Dalbysvatn_Knute_Rullsvatn
+#  from_type: gate
+#  to: sum_flow_restriction_Rullsvann
+#  to_type: discharge_group

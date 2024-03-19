@@ -5,15 +5,15 @@ description: A generic shop result type that collects all time series outputs fr
 #TODO: Consider adding a filter for SHOPResult and SHOPResultPriceProd to exclude PriceProdCase instances from this view that also uses the SHOPResult container
 filter:
   and:
-  - hasData:
-    - type: container
-      space: '{{powerops_models}}'
-      externalId: SHOPResult
-  - equals:
-      property:
-        - node
-        - space
-      value: '{{powerops_instance_space}}'
+    - hasData:
+        - type: container
+          space: '{{powerops_models}}'
+          externalId: SHOPResult
+    - equals:
+        property:
+          - node
+          - space
+        value: '{{powerops_instance_space}}'
 implements: []
 version: '{{version}}'
 properties:
