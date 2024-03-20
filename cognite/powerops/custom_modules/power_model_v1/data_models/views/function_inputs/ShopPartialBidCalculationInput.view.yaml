@@ -66,14 +66,14 @@ properties:
       externalId: MarketConfiguration
       version: '{{version}}'
       type: view
-  stepEnabled:
+  addSteps:
     container:
       space: '{{powerops_models}}'
       externalId: FunctionData
       type: container
     containerPropertyIdentifier: flag
-    name: stepEnabled
-    description: Whether the step is enabled or not
+    name: addSteps
+    description: Whether or not the steep volume steps within one price step size are enabled
   bidDate:
     container:
       space: '{{powerops_models}}'

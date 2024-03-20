@@ -40,3 +40,44 @@ properties:
     name: partialBidMatrices
     description: The partial bid matrices that are used to calculate the total bid matrix.
     connectionType: multi_edge_connection
+  marketConfiguration:
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: direct2
+    name: marketConfiguration
+    description: The market configuration to be used to generate the total bid matrix
+    source:
+      space: '{{powerops_models}}'
+      externalId: MarketConfiguration
+      version: '{{version}}'
+      type: view
+  priceArea:
+    container:
+      space: "{{powerops_models}}"
+      externalId: BidDocument
+      type: container
+    containerPropertyIdentifier: priceArea
+    name: priceArea
+    source:
+      space: "{{powerops_models}}"
+      externalId: PriceArea
+      version: "{{version}}"
+      type: view
+  bidDate:
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: date1
+    name: bidDate
+    description: The bid date
+  addSteps:
+    container:
+      space: '{{powerops_models}}'
+      externalId: FunctionData
+      type: container
+    containerPropertyIdentifier: flag
+    name: addSteps
+    description: Whether or not the steep volume steps within one price step size are enabled
