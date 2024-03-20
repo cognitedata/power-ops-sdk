@@ -496,22 +496,24 @@ python-json-logger = ">=2.0.7,<3.0.0"
 
 [[package]]
 name = "cognite-pygen"
-version = "0.99.13"
+version = "0.99.14"
 description = "Cognite Python SDK Generator"
 optional = false
-python-versions = "^3.9"
-files = []
-develop = false
+python-versions = "<4.0,>=3.9"
+files = [
+    {file = "cognite_pygen-0.99.14-py3-none-any.whl", hash = "sha256:c4f55efa76d6255cc50bf298486ba5fc9d7903436cae0d70205d1c39b8713ae5"},
+    {file = "cognite_pygen-0.99.14.tar.gz", hash = "sha256:0dcf0daead07f71be72e2a6eb768b23e98cc58ecb8d7824e511f0845de826aff"},
+]
 
 [package.dependencies]
-black = {version = ">=24.1.0", optional = true}
-cognite-sdk = "^7.13.6"
+black = {version = ">=24.1.0", optional = true, markers = "extra == \"format\" or extra == \"all\""}
+cognite-sdk = ">=7.13.6,<8.0.0"
 inflect = ">=6.0"
 Jinja2 = ">=3.1"
-packaging = {version = ">=21.3", optional = true}
+packaging = {version = ">=21.3", optional = true, markers = "extra == \"cli\" or extra == \"all\""}
 pydantic = ">=1.10.7"
-toml = {version = ">=0.10", optional = true}
-typer = {version = ">=0.9", extras = ["rich"], optional = true}
+toml = {version = ">=0.10", optional = true, markers = "extra == \"cli\" or extra == \"all\""}
+typer = {version = ">=0.9", extras = ["rich"], optional = true, markers = "extra == \"cli\" or extra == \"all\""}
 typing_extensions = ">=4"
 
 [package.extras]
@@ -519,12 +521,6 @@ all = ["black (>=24.1.0)", "packaging (>=21.3)", "toml (>=0.10)", "typer[rich] (
 cli = ["packaging (>=21.3)", "toml (>=0.10)", "typer[rich] (>=0.9)"]
 docs = ["mkdocs", "mkdocs-git-authors-plugin", "mkdocs-git-revision-date-localized-plugin", "mkdocs-gitbook", "mkdocs-glightbox", "mkdocs-jupyter", "mkdocs-material", "mkdocs-material-extensions", "mkdocstrings[python]", "pymdown-extensions"]
 format = ["black (>=24.1.0)"]
-
-[package.source]
-type = "git"
-url = "https://github.com/cognitedata/pygen.git"
-reference = "fix-missing-properties"
-resolved_reference = "83e5017b4b46756be6abd3b415e664def492cf37"
 
 [[package]]
 name = "cognite-sdk"
@@ -4691,4 +4687,4 @@ docs = ["mkdocs", "mkdocs-git-authors-plugin", "mkdocs-git-revision-date-localiz
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.13"
-content-hash = "d0b05bfae4abea724dbc763a10a48830cc57f9e9efa5c9cfd197edb6a679f63b"
+content-hash = "537de997283120c16932c41b60f771ffad25d677f8f8b24bab964e3577f61ce0"
