@@ -1,11 +1,14 @@
 from ._core import (
     DataRecord,
+    DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
     DomainModelCore,
     DomainModelWrite,
     DomainModelList,
     DomainRelationWrite,
+    GraphQLCore,
+    GraphQLList,
     ResourcesWrite,
     ResourcesWriteResult,
 )
@@ -14,6 +17,7 @@ from ._alert import (
     AlertApply,
     AlertApplyList,
     AlertFields,
+    AlertGraphQL,
     AlertList,
     AlertTextFields,
     AlertWrite,
@@ -24,6 +28,7 @@ from ._bid_document import (
     BidDocumentApply,
     BidDocumentApplyList,
     BidDocumentFields,
+    BidDocumentGraphQL,
     BidDocumentList,
     BidDocumentTextFields,
     BidDocumentWrite,
@@ -34,6 +39,7 @@ from ._bid_method import (
     BidMethodApply,
     BidMethodApplyList,
     BidMethodFields,
+    BidMethodGraphQL,
     BidMethodList,
     BidMethodTextFields,
     BidMethodWrite,
@@ -44,22 +50,27 @@ from ._bid_row import (
     BidRowApply,
     BidRowApplyList,
     BidRowFields,
+    BidRowGraphQL,
     BidRowList,
     BidRowTextFields,
     BidRowWrite,
     BidRowWriteList,
 )
-from ._price_area import PriceArea, PriceAreaFields, PriceAreaList, PriceAreaTextFields
+from ._price_area import PriceArea, PriceAreaFields, PriceAreaGraphQL, PriceAreaList, PriceAreaTextFields
 
 BidDocument.model_rebuild()
+BidDocumentGraphQL.model_rebuild()
 BidDocumentWrite.model_rebuild()
 BidDocumentApply.model_rebuild()
 BidRow.model_rebuild()
+BidRowGraphQL.model_rebuild()
 BidRowWrite.model_rebuild()
 BidRowApply.model_rebuild()
 
+
 __all__ = [
     "DataRecord",
+    "DataRecordGraphQL",
     "DataRecordWrite",
     "ResourcesWrite",
     "DomainModel",
@@ -67,8 +78,11 @@ __all__ = [
     "DomainModelWrite",
     "DomainModelList",
     "DomainRelationWrite",
+    "GraphQLCore",
+    "GraphQLList",
     "ResourcesWriteResult",
     "Alert",
+    "AlertGraphQL",
     "AlertWrite",
     "AlertApply",
     "AlertList",
@@ -77,6 +91,7 @@ __all__ = [
     "AlertFields",
     "AlertTextFields",
     "BidDocument",
+    "BidDocumentGraphQL",
     "BidDocumentWrite",
     "BidDocumentApply",
     "BidDocumentList",
@@ -85,6 +100,7 @@ __all__ = [
     "BidDocumentFields",
     "BidDocumentTextFields",
     "BidMethod",
+    "BidMethodGraphQL",
     "BidMethodWrite",
     "BidMethodApply",
     "BidMethodList",
@@ -93,6 +109,7 @@ __all__ = [
     "BidMethodFields",
     "BidMethodTextFields",
     "BidRow",
+    "BidRowGraphQL",
     "BidRowWrite",
     "BidRowApply",
     "BidRowList",
@@ -101,6 +118,7 @@ __all__ = [
     "BidRowFields",
     "BidRowTextFields",
     "PriceArea",
+    "PriceAreaGraphQL",
     "PriceAreaList",
     "PriceAreaFields",
     "PriceAreaTextFields",

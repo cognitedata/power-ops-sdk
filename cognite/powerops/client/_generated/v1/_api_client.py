@@ -65,8 +65,8 @@ from ._api.water_partial_bid_calculation_input import WaterPartialBidCalculation
 from ._api.water_partial_bid_calculation_output import WaterPartialBidCalculationOutputAPI
 from ._api.watercourse import WatercourseAPI
 from ._api.watercourse_shop import WatercourseShopAPI
-from ._api._core import SequenceNotStr
-from .data_classes._core import DEFAULT_INSTANCE_SPACE
+from ._api._core import SequenceNotStr, GraphQLQueryResponse
+from .data_classes._core import DEFAULT_INSTANCE_SPACE, GraphQLList
 from . import data_classes
 
 
@@ -115,6 +115,7 @@ class SHOPBasedDayAheadBidProcesAPIs:
             data_classes.WatercourseShop: dm.ViewId("sp_powerops_models", "WatercourseShop", "1"),
         }
         self._view_by_read_class = view_by_read_class
+        self._client = client
 
         self.alert = AlertAPI(client, view_by_read_class)
         self.bid_configuration_shop = BidConfigurationShopAPI(client, view_by_read_class)
@@ -142,6 +143,17 @@ class SHOPBasedDayAheadBidProcesAPIs:
         self.task_dispatcher_shop_input = TaskDispatcherShopInputAPI(client, view_by_read_class)
         self.task_dispatcher_shop_output = TaskDispatcherShopOutputAPI(client, view_by_read_class)
         self.watercourse_shop = WatercourseShopAPI(client, view_by_read_class)
+
+    def graphql_query(self, query: str, variables: dict[str, Any] | None = None) -> GraphQLList:
+        """Execute a GraphQl query against the compute_SHOPBasedDayAhead data model.
+
+        Args:
+            query (str): The GraphQL query to issue.
+            variables (dict[str, Any] | None): An optional dict of variables to pass to the query.
+        """
+        data_model_id = dm.DataModelId("sp_powerops_models", "compute_SHOPBasedDayAhead", "1")
+        result = self._client.data_modeling.graphql.query(data_model_id, query, variables)
+        return GraphQLQueryResponse(data_model_id).parse(result)
 
 
 class TotalBidCalculationAPIs:
@@ -190,6 +202,7 @@ class TotalBidCalculationAPIs:
             data_classes.WatercourseShop: dm.ViewId("sp_powerops_models", "WatercourseShop", "1"),
         }
         self._view_by_read_class = view_by_read_class
+        self._client = client
 
         self.alert = AlertAPI(client, view_by_read_class)
         self.bid_document_day_ahead = BidDocumentDayAheadAPI(client, view_by_read_class)
@@ -216,6 +229,17 @@ class TotalBidCalculationAPIs:
         self.total_bid_matrix_calculation_input = TotalBidMatrixCalculationInputAPI(client, view_by_read_class)
         self.total_bid_matrix_calculation_output = TotalBidMatrixCalculationOutputAPI(client, view_by_read_class)
         self.watercourse_shop = WatercourseShopAPI(client, view_by_read_class)
+
+    def graphql_query(self, query: str, variables: dict[str, Any] | None = None) -> GraphQLList:
+        """Execute a GraphQl query against the compute_TotalBidCalculation data model.
+
+        Args:
+            query (str): The GraphQL query to issue.
+            variables (dict[str, Any] | None): An optional dict of variables to pass to the query.
+        """
+        data_model_id = dm.DataModelId("sp_powerops_models", "compute_TotalBidCalculation", "1")
+        result = self._client.data_modeling.graphql.query(data_model_id, query, variables)
+        return GraphQLQueryResponse(data_model_id).parse(result)
 
 
 class WaterValueBasedDayAheadBidProcesAPIs:
@@ -254,6 +278,7 @@ class WaterValueBasedDayAheadBidProcesAPIs:
             data_classes.Watercourse: dm.ViewId("sp_powerops_models", "Watercourse", "1"),
         }
         self._view_by_read_class = view_by_read_class
+        self._client = client
 
         self.alert = AlertAPI(client, view_by_read_class)
         self.bid_calculation_task = BidCalculationTaskAPI(client, view_by_read_class)
@@ -272,6 +297,17 @@ class WaterValueBasedDayAheadBidProcesAPIs:
         self.water_partial_bid_calculation_input = WaterPartialBidCalculationInputAPI(client, view_by_read_class)
         self.water_partial_bid_calculation_output = WaterPartialBidCalculationOutputAPI(client, view_by_read_class)
         self.watercourse = WatercourseAPI(client, view_by_read_class)
+
+    def graphql_query(self, query: str, variables: dict[str, Any] | None = None) -> GraphQLList:
+        """Execute a GraphQl query against the compute_WaterValueBasedDayAheadBid data model.
+
+        Args:
+            query (str): The GraphQL query to issue.
+            variables (dict[str, Any] | None): An optional dict of variables to pass to the query.
+        """
+        data_model_id = dm.DataModelId("sp_powerops_models", "compute_WaterValueBasedDayAheadBid", "1")
+        result = self._client.data_modeling.graphql.query(data_model_id, query, variables)
+        return GraphQLQueryResponse(data_model_id).parse(result)
 
 
 class DayAheadConfigurationAPIs:
@@ -310,6 +346,7 @@ class DayAheadConfigurationAPIs:
             data_classes.WatercourseShop: dm.ViewId("sp_powerops_models", "WatercourseShop", "1"),
         }
         self._view_by_read_class = view_by_read_class
+        self._client = client
 
         self.bid_configuration = BidConfigurationAPI(client, view_by_read_class)
         self.bid_configuration_shop = BidConfigurationShopAPI(client, view_by_read_class)
@@ -333,6 +370,17 @@ class DayAheadConfigurationAPIs:
         self.watercourse = WatercourseAPI(client, view_by_read_class)
         self.watercourse_shop = WatercourseShopAPI(client, view_by_read_class)
 
+    def graphql_query(self, query: str, variables: dict[str, Any] | None = None) -> GraphQLList:
+        """Execute a GraphQl query against the config_DayAheadConfiguration data model.
+
+        Args:
+            query (str): The GraphQL query to issue.
+            variables (dict[str, Any] | None): An optional dict of variables to pass to the query.
+        """
+        data_model_id = dm.DataModelId("sp_powerops_models", "config_DayAheadConfiguration", "1")
+        result = self._client.data_modeling.graphql.query(data_model_id, query, variables)
+        return GraphQLQueryResponse(data_model_id).parse(result)
+
 
 class AFRRBidAPIs:
     """
@@ -354,12 +402,24 @@ class AFRRBidAPIs:
             data_classes.PriceAreaAFRR: dm.ViewId("sp_powerops_models", "PriceAreaAFRR", "1"),
         }
         self._view_by_read_class = view_by_read_class
+        self._client = client
 
         self.alert = AlertAPI(client, view_by_read_class)
         self.bid_document_afrr = BidDocumentAFRRAPI(client, view_by_read_class)
         self.bid_method_afrr = BidMethodAFRRAPI(client, view_by_read_class)
         self.bid_row = BidRowAPI(client, view_by_read_class)
         self.price_area_afrr = PriceAreaAFRRAPI(client, view_by_read_class)
+
+    def graphql_query(self, query: str, variables: dict[str, Any] | None = None) -> GraphQLList:
+        """Execute a GraphQl query against the frontend_AFRRBid data model.
+
+        Args:
+            query (str): The GraphQL query to issue.
+            variables (dict[str, Any] | None): An optional dict of variables to pass to the query.
+        """
+        data_model_id = dm.DataModelId("sp_powerops_models", "frontend_AFRRBid", "1")
+        result = self._client.data_modeling.graphql.query(data_model_id, query, variables)
+        return GraphQLQueryResponse(data_model_id).parse(result)
 
 
 class PowerAssetAPIs:
@@ -385,6 +445,7 @@ class PowerAssetAPIs:
             data_classes.Watercourse: dm.ViewId("sp_powerops_models", "Watercourse", "1"),
         }
         self._view_by_read_class = view_by_read_class
+        self._client = client
 
         self.bid_method_day_ahead = BidMethodDayAheadAPI(client, view_by_read_class)
         self.generator = GeneratorAPI(client, view_by_read_class)
@@ -394,6 +455,17 @@ class PowerAssetAPIs:
         self.reservoir = ReservoirAPI(client, view_by_read_class)
         self.turbine_efficiency_curve = TurbineEfficiencyCurveAPI(client, view_by_read_class)
         self.watercourse = WatercourseAPI(client, view_by_read_class)
+
+    def graphql_query(self, query: str, variables: dict[str, Any] | None = None) -> GraphQLList:
+        """Execute a GraphQl query against the frontend_Asset data model.
+
+        Args:
+            query (str): The GraphQL query to issue.
+            variables (dict[str, Any] | None): An optional dict of variables to pass to the query.
+        """
+        data_model_id = dm.DataModelId("sp_powerops_models", "frontend_Asset", "1")
+        result = self._client.data_modeling.graphql.query(data_model_id, query, variables)
+        return GraphQLQueryResponse(data_model_id).parse(result)
 
 
 class DayAheadBidAPIs:
@@ -429,6 +501,7 @@ class DayAheadBidAPIs:
             data_classes.WatercourseShop: dm.ViewId("sp_powerops_models", "WatercourseShop", "1"),
         }
         self._view_by_read_class = view_by_read_class
+        self._client = client
 
         self.alert = AlertAPI(client, view_by_read_class)
         self.basic_bid_matrix = BasicBidMatrixAPI(client, view_by_read_class)
@@ -449,15 +522,26 @@ class DayAheadBidAPIs:
         self.scenario = ScenarioAPI(client, view_by_read_class)
         self.watercourse_shop = WatercourseShopAPI(client, view_by_read_class)
 
+    def graphql_query(self, query: str, variables: dict[str, Any] | None = None) -> GraphQLList:
+        """Execute a GraphQl query against the frontend_DayAheadBid data model.
+
+        Args:
+            query (str): The GraphQL query to issue.
+            variables (dict[str, Any] | None): An optional dict of variables to pass to the query.
+        """
+        data_model_id = dm.DataModelId("sp_powerops_models", "frontend_DayAheadBid", "1")
+        result = self._client.data_modeling.graphql.query(data_model_id, query, variables)
+        return GraphQLQueryResponse(data_model_id).parse(result)
+
 
 class PowerOpsModelsV1Client:
     """
     PowerOpsModelsV1Client
 
     Generated with:
-        pygen = 0.99.11
-        cognite-sdk = 7.26.0
-        pydantic = 2.6.3
+        pygen = 0.99.14
+        cognite-sdk = 7.26.2
+        pydantic = 2.6.4
 
     """
 
@@ -469,7 +553,7 @@ class PowerOpsModelsV1Client:
         else:
             raise ValueError(f"Expected CogniteClient or ClientConfig, got {type(config_or_client)}")
         # The client name is used for aggregated logging of Pygen Usage
-        client.config.client_name = "CognitePygen:0.99.11"
+        client.config.client_name = "CognitePygen:0.99.14"
 
         self.shop_based_day_ahead_bid_process = SHOPBasedDayAheadBidProcesAPIs(client)
         self.total_bid_calculation = TotalBidCalculationAPIs(client)
@@ -499,6 +583,7 @@ class PowerOpsModelsV1Client:
         items: data_classes.DomainModelWrite | Sequence[data_classes.DomainModelWrite],
         replace: bool = False,
         write_none: bool = False,
+        allow_version_increase: bool = False,
     ) -> data_classes.ResourcesWriteResult:
         """Add or update (upsert) items.
 
@@ -508,17 +593,27 @@ class PowerOpsModelsV1Client:
                 Or should we merge in new values for properties together with the existing values (false)? Note: This setting applies for all nodes or edges specified in the ingestion call.
             write_none (bool): This method will, by default, skip properties that are set to None. However, if you want to set properties to None,
                 you can set this parameter to True. Note this only applies to properties that are nullable.
+            allow_version_increase (bool): If set to true, the version of the instance will be increased if the instance already exists.
+                If you get an error: 'A version conflict caused the ingest to fail', you can set this to true to allow
+                the version to increase.
         Returns:
             Created instance(s), i.e., nodes, edges, and time series.
 
         """
         if isinstance(items, data_classes.DomainModelWrite):
-            instances = items.to_instances_write(self._view_by_read_class, write_none)
+            instances = items.to_instances_write(self._view_by_read_class, write_none, allow_version_increase)
         else:
             instances = data_classes.ResourcesWrite()
             cache: set[tuple[str, str]] = set()
             for item in items:
-                instances.extend(item._to_instances_write(cache, self._view_by_read_class, write_none))
+                instances.extend(
+                    item._to_instances_write(
+                        cache,
+                        self._view_by_read_class,
+                        write_none,
+                        allow_version_increase,
+                    )
+                )
         result = self._client.data_modeling.instances.apply(
             nodes=instances.nodes,
             edges=instances.edges,

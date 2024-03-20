@@ -6,9 +6,12 @@ from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes import TimeSeries as CogniteTimeSeries
 from pydantic import Field
+from pydantic import field_validator, model_validator
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
+    DataRecord,
+    DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
     DomainModelCore,
@@ -16,12 +19,13 @@ from ._core import (
     DomainModelWriteList,
     DomainModelList,
     DomainRelationWrite,
+    GraphQLCore,
     ResourcesWrite,
     TimeSeries,
 )
 
 if TYPE_CHECKING:
-    from ._plant import Plant, PlantWrite
+    from ._plant import Plant, PlantGraphQL, PlantWrite
 
 
 __all__ = [
@@ -47,6 +51,82 @@ _WATERCOURSE_PROPERTIES_BY_FIELD = {
 }
 
 
+class WatercourseGraphQL(GraphQLCore):
+    """This represents the reading version of watercourse, used
+    when data is retrieved from CDF using GraphQL.
+
+    It is used when retrieving data from CDF using GraphQL.
+
+    Args:
+        space: The space where the node is located.
+        external_id: The external id of the watercourse.
+        data_record: The data record of the watercourse node.
+        name: Name for the Watercourse.
+        display_name: Display name for the Watercourse.
+        production_obligation: The production obligation for the Watercourse.
+        penalty_limit: The penalty limit for the watercourse (used by SHOP).
+        plants: The plants that are connected to the Watercourse.
+    """
+
+    view_id = dm.ViewId("power-ops-assets", "Watercourse", "1")
+    name: Optional[str] = None
+    display_name: Optional[str] = Field(None, alias="displayName")
+    production_obligation: Union[list[TimeSeries], list[str], None] = Field(None, alias="productionObligation")
+    penalty_limit: Optional[float] = Field(None, alias="penaltyLimit")
+    plants: Optional[list[PlantGraphQL]] = Field(default=None, repr=False)
+
+    @model_validator(mode="before")
+    def parse_data_record(cls, values: Any) -> Any:
+        if not isinstance(values, dict):
+            return values
+        if "lastUpdatedTime" in values or "createdTime" in values:
+            values["dataRecord"] = DataRecordGraphQL(
+                created_time=values.pop("createdTime", None),
+                last_updated_time=values.pop("lastUpdatedTime", None),
+            )
+        return values
+
+    @field_validator("plants", mode="before")
+    def parse_graphql(cls, value: Any) -> Any:
+        if not isinstance(value, dict):
+            return value
+        if "items" in value:
+            return value["items"]
+        return value
+
+    def as_read(self) -> Watercourse:
+        """Convert this GraphQL format of watercourse to the reading format."""
+        if self.data_record is None:
+            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
+        return Watercourse(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecord(
+                version=0,
+                last_updated_time=self.data_record.last_updated_time,
+                created_time=self.data_record.created_time,
+            ),
+            name=self.name,
+            display_name=self.display_name,
+            production_obligation=self.production_obligation,
+            penalty_limit=self.penalty_limit,
+            plants=[plant.as_read() if isinstance(plant, GraphQLCore) else plant for plant in self.plants or []],
+        )
+
+    def as_write(self) -> WatercourseWrite:
+        """Convert this GraphQL format of watercourse to the writing format."""
+        return WatercourseWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=0),
+            name=self.name,
+            display_name=self.display_name,
+            production_obligation=self.production_obligation,
+            penalty_limit=self.penalty_limit,
+            plants=[plant.as_write() if isinstance(plant, DomainModel) else plant for plant in self.plants or []],
+        )
+
+
 class Watercourse(DomainModel):
     """This represents the reading version of watercourse.
 
@@ -69,7 +149,7 @@ class Watercourse(DomainModel):
     display_name: Optional[str] = Field(None, alias="displayName")
     production_obligation: Union[list[TimeSeries], list[str], None] = Field(None, alias="productionObligation")
     penalty_limit: Optional[float] = Field(None, alias="penaltyLimit")
-    plants: Union[list[Plant], list[str], None] = Field(default=None, repr=False)
+    plants: Union[list[Plant], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
 
     def as_write(self) -> WatercourseWrite:
         """Convert this read version of watercourse to the writing version."""
@@ -116,13 +196,14 @@ class WatercourseWrite(DomainModelWrite):
     display_name: Optional[str] = Field(None, alias="displayName")
     production_obligation: Union[list[TimeSeries], list[str], None] = Field(None, alias="productionObligation")
     penalty_limit: Optional[float] = Field(None, alias="penaltyLimit")
-    plants: Union[list[PlantWrite], list[str], None] = Field(default=None, repr=False)
+    plants: Union[list[PlantWrite], list[str], list[dm.NodeId], None] = Field(default=None, repr=False)
 
     def _to_instances_write(
         self,
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
+        allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
@@ -150,7 +231,7 @@ class WatercourseWrite(DomainModelWrite):
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
-                existing_version=self.data_record.existing_version,
+                existing_version=None if allow_version_increase else self.data_record.existing_version,
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
@@ -165,7 +246,13 @@ class WatercourseWrite(DomainModelWrite):
         edge_type = dm.DirectRelationReference("power-ops-types", "isSubAssetOf")
         for plant in self.plants or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
-                cache, start_node=self, end_node=plant, edge_type=edge_type, view_by_read_class=view_by_read_class
+                cache,
+                start_node=self,
+                end_node=plant,
+                edge_type=edge_type,
+                view_by_read_class=view_by_read_class,
+                write_none=write_none,
+                allow_version_increase=allow_version_increase,
             )
             resources.extend(other_resources)
 

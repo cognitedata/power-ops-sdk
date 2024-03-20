@@ -6,9 +6,12 @@ from typing import Any, Literal, Optional, Union
 from cognite.client import data_modeling as dm
 from cognite.client.data_classes import TimeSeries as CogniteTimeSeries
 from pydantic import Field
+from pydantic import field_validator, model_validator
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
+    DataRecord,
+    DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
     DomainModelCore,
@@ -16,6 +19,7 @@ from ._core import (
     DomainModelWriteList,
     DomainModelList,
     DomainRelationWrite,
+    GraphQLCore,
     ResourcesWrite,
     TimeSeries,
 )
@@ -74,6 +78,98 @@ _PRICEAREAAFRR_PROPERTIES_BY_FIELD = {
     "own_capacity_allocation_up": "ownCapacityAllocationUp",
     "own_capacity_allocation_down": "ownCapacityAllocationDown",
 }
+
+
+class PriceAreaAFRRGraphQL(GraphQLCore):
+    """This represents the reading version of price area afrr, used
+    when data is retrieved from CDF using GraphQL.
+
+    It is used when retrieving data from CDF using GraphQL.
+
+    Args:
+        space: The space where the node is located.
+        external_id: The external id of the price area afrr.
+        data_record: The data record of the price area afrr node.
+        name: The name of the price area
+        timezone: The timezone of the price area
+        capacity_price_up: The capacity price up field.
+        capacity_price_down: The capacity price down field.
+        activation_price_up: The mFRR activation price (TBC)
+        activation_price_down: The mFRR activate price (TBC)
+        relative_activation: Value between -1 (100 % activation down) and 1 (100 % activation down)
+        total_capacity_allocation_up: The total capacity allocation up field.
+        total_capacity_allocation_down: The total capacity allocation down field.
+        own_capacity_allocation_up: The own capacity allocation up field.
+        own_capacity_allocation_down: The own capacity allocation down field.
+    """
+
+    view_id = dm.ViewId("sp_powerops_models", "PriceAreaAFRR", "1")
+    name: Optional[str] = None
+    timezone: Optional[str] = None
+    capacity_price_up: Union[TimeSeries, str, None] = Field(None, alias="capacityPriceUp")
+    capacity_price_down: Union[TimeSeries, str, None] = Field(None, alias="capacityPriceDown")
+    activation_price_up: Union[TimeSeries, str, None] = Field(None, alias="activationPriceUp")
+    activation_price_down: Union[TimeSeries, str, None] = Field(None, alias="activationPriceDown")
+    relative_activation: Union[TimeSeries, str, None] = Field(None, alias="relativeActivation")
+    total_capacity_allocation_up: Union[TimeSeries, str, None] = Field(None, alias="totalCapacityAllocationUp")
+    total_capacity_allocation_down: Union[TimeSeries, str, None] = Field(None, alias="totalCapacityAllocationDown")
+    own_capacity_allocation_up: Union[TimeSeries, str, None] = Field(None, alias="ownCapacityAllocationUp")
+    own_capacity_allocation_down: Union[TimeSeries, str, None] = Field(None, alias="ownCapacityAllocationDown")
+
+    @model_validator(mode="before")
+    def parse_data_record(cls, values: Any) -> Any:
+        if not isinstance(values, dict):
+            return values
+        if "lastUpdatedTime" in values or "createdTime" in values:
+            values["dataRecord"] = DataRecordGraphQL(
+                created_time=values.pop("createdTime", None),
+                last_updated_time=values.pop("lastUpdatedTime", None),
+            )
+        return values
+
+    def as_read(self) -> PriceAreaAFRR:
+        """Convert this GraphQL format of price area afrr to the reading format."""
+        if self.data_record is None:
+            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
+        return PriceAreaAFRR(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecord(
+                version=0,
+                last_updated_time=self.data_record.last_updated_time,
+                created_time=self.data_record.created_time,
+            ),
+            name=self.name,
+            timezone=self.timezone,
+            capacity_price_up=self.capacity_price_up,
+            capacity_price_down=self.capacity_price_down,
+            activation_price_up=self.activation_price_up,
+            activation_price_down=self.activation_price_down,
+            relative_activation=self.relative_activation,
+            total_capacity_allocation_up=self.total_capacity_allocation_up,
+            total_capacity_allocation_down=self.total_capacity_allocation_down,
+            own_capacity_allocation_up=self.own_capacity_allocation_up,
+            own_capacity_allocation_down=self.own_capacity_allocation_down,
+        )
+
+    def as_write(self) -> PriceAreaAFRRWrite:
+        """Convert this GraphQL format of price area afrr to the writing format."""
+        return PriceAreaAFRRWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=0),
+            name=self.name,
+            timezone=self.timezone,
+            capacity_price_up=self.capacity_price_up,
+            capacity_price_down=self.capacity_price_down,
+            activation_price_up=self.activation_price_up,
+            activation_price_down=self.activation_price_down,
+            relative_activation=self.relative_activation,
+            total_capacity_allocation_up=self.total_capacity_allocation_up,
+            total_capacity_allocation_down=self.total_capacity_allocation_down,
+            own_capacity_allocation_up=self.own_capacity_allocation_up,
+            own_capacity_allocation_down=self.own_capacity_allocation_down,
+        )
 
 
 class PriceAreaAFRR(PriceArea):
@@ -176,6 +272,7 @@ class PriceAreaAFRRWrite(PriceAreaWrite):
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
+        allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
@@ -251,7 +348,7 @@ class PriceAreaAFRRWrite(PriceAreaWrite):
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
-                existing_version=self.data_record.existing_version,
+                existing_version=None if allow_version_increase else self.data_record.existing_version,
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(

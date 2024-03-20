@@ -1,11 +1,14 @@
 from ._core import (
     DataRecord,
+    DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
     DomainModelCore,
     DomainModelWrite,
     DomainModelList,
     DomainRelationWrite,
+    GraphQLCore,
+    GraphQLList,
     ResourcesWrite,
     ResourcesWriteResult,
 )
@@ -14,6 +17,7 @@ from ._alert import (
     AlertApply,
     AlertApplyList,
     AlertFields,
+    AlertGraphQL,
     AlertList,
     AlertTextFields,
     AlertWrite,
@@ -24,6 +28,7 @@ from ._basic_bid_matrix import (
     BasicBidMatrixApply,
     BasicBidMatrixApplyList,
     BasicBidMatrixFields,
+    BasicBidMatrixGraphQL,
     BasicBidMatrixList,
     BasicBidMatrixTextFields,
     BasicBidMatrixWrite,
@@ -34,6 +39,7 @@ from ._bid_document import (
     BidDocumentApply,
     BidDocumentApplyList,
     BidDocumentFields,
+    BidDocumentGraphQL,
     BidDocumentList,
     BidDocumentTextFields,
     BidDocumentWrite,
@@ -44,6 +50,7 @@ from ._bid_matrix import (
     BidMatrixApply,
     BidMatrixApplyList,
     BidMatrixFields,
+    BidMatrixGraphQL,
     BidMatrixList,
     BidMatrixTextFields,
     BidMatrixWrite,
@@ -54,6 +61,7 @@ from ._bid_method import (
     BidMethodApply,
     BidMethodApplyList,
     BidMethodFields,
+    BidMethodGraphQL,
     BidMethodList,
     BidMethodTextFields,
     BidMethodWrite,
@@ -64,6 +72,7 @@ from ._multi_scenario_matrix import (
     MultiScenarioMatrixApply,
     MultiScenarioMatrixApplyList,
     MultiScenarioMatrixFields,
+    MultiScenarioMatrixGraphQL,
     MultiScenarioMatrixList,
     MultiScenarioMatrixTextFields,
     MultiScenarioMatrixWrite,
@@ -74,6 +83,7 @@ from ._price_area import (
     PriceAreaApply,
     PriceAreaApplyList,
     PriceAreaFields,
+    PriceAreaGraphQL,
     PriceAreaList,
     PriceAreaTextFields,
     PriceAreaWrite,
@@ -84,6 +94,7 @@ from ._shop_multi_scenario_method import (
     SHOPMultiScenarioMethodApply,
     SHOPMultiScenarioMethodApplyList,
     SHOPMultiScenarioMethodFields,
+    SHOPMultiScenarioMethodGraphQL,
     SHOPMultiScenarioMethodList,
     SHOPMultiScenarioMethodTextFields,
     SHOPMultiScenarioMethodWrite,
@@ -94,6 +105,7 @@ from ._shop_price_scenario import (
     SHOPPriceScenarioApply,
     SHOPPriceScenarioApplyList,
     SHOPPriceScenarioFields,
+    SHOPPriceScenarioGraphQL,
     SHOPPriceScenarioList,
     SHOPPriceScenarioTextFields,
     SHOPPriceScenarioWrite,
@@ -104,6 +116,7 @@ from ._shop_price_scenario_result import (
     SHOPPriceScenarioResultApply,
     SHOPPriceScenarioResultApplyList,
     SHOPPriceScenarioResultFields,
+    SHOPPriceScenarioResultGraphQL,
     SHOPPriceScenarioResultList,
     SHOPPriceScenarioResultWrite,
     SHOPPriceScenarioResultWriteList,
@@ -113,6 +126,7 @@ from ._water_value_based_method import (
     WaterValueBasedMethodApply,
     WaterValueBasedMethodApplyList,
     WaterValueBasedMethodFields,
+    WaterValueBasedMethodGraphQL,
     WaterValueBasedMethodList,
     WaterValueBasedMethodTextFields,
     WaterValueBasedMethodWrite,
@@ -120,29 +134,38 @@ from ._water_value_based_method import (
 )
 
 BasicBidMatrix.model_rebuild()
+BasicBidMatrixGraphQL.model_rebuild()
 BasicBidMatrixWrite.model_rebuild()
 BasicBidMatrixApply.model_rebuild()
 BidDocument.model_rebuild()
+BidDocumentGraphQL.model_rebuild()
 BidDocumentWrite.model_rebuild()
 BidDocumentApply.model_rebuild()
 BidMatrix.model_rebuild()
+BidMatrixGraphQL.model_rebuild()
 BidMatrixWrite.model_rebuild()
 BidMatrixApply.model_rebuild()
 MultiScenarioMatrix.model_rebuild()
+MultiScenarioMatrixGraphQL.model_rebuild()
 MultiScenarioMatrixWrite.model_rebuild()
 MultiScenarioMatrixApply.model_rebuild()
 PriceArea.model_rebuild()
+PriceAreaGraphQL.model_rebuild()
 PriceAreaWrite.model_rebuild()
 PriceAreaApply.model_rebuild()
 SHOPMultiScenarioMethod.model_rebuild()
+SHOPMultiScenarioMethodGraphQL.model_rebuild()
 SHOPMultiScenarioMethodWrite.model_rebuild()
 SHOPMultiScenarioMethodApply.model_rebuild()
 SHOPPriceScenarioResult.model_rebuild()
+SHOPPriceScenarioResultGraphQL.model_rebuild()
 SHOPPriceScenarioResultWrite.model_rebuild()
 SHOPPriceScenarioResultApply.model_rebuild()
 
+
 __all__ = [
     "DataRecord",
+    "DataRecordGraphQL",
     "DataRecordWrite",
     "ResourcesWrite",
     "DomainModel",
@@ -150,8 +173,11 @@ __all__ = [
     "DomainModelWrite",
     "DomainModelList",
     "DomainRelationWrite",
+    "GraphQLCore",
+    "GraphQLList",
     "ResourcesWriteResult",
     "Alert",
+    "AlertGraphQL",
     "AlertWrite",
     "AlertApply",
     "AlertList",
@@ -160,6 +186,7 @@ __all__ = [
     "AlertFields",
     "AlertTextFields",
     "BasicBidMatrix",
+    "BasicBidMatrixGraphQL",
     "BasicBidMatrixWrite",
     "BasicBidMatrixApply",
     "BasicBidMatrixList",
@@ -168,6 +195,7 @@ __all__ = [
     "BasicBidMatrixFields",
     "BasicBidMatrixTextFields",
     "BidDocument",
+    "BidDocumentGraphQL",
     "BidDocumentWrite",
     "BidDocumentApply",
     "BidDocumentList",
@@ -176,6 +204,7 @@ __all__ = [
     "BidDocumentFields",
     "BidDocumentTextFields",
     "BidMatrix",
+    "BidMatrixGraphQL",
     "BidMatrixWrite",
     "BidMatrixApply",
     "BidMatrixList",
@@ -184,6 +213,7 @@ __all__ = [
     "BidMatrixFields",
     "BidMatrixTextFields",
     "BidMethod",
+    "BidMethodGraphQL",
     "BidMethodWrite",
     "BidMethodApply",
     "BidMethodList",
@@ -192,6 +222,7 @@ __all__ = [
     "BidMethodFields",
     "BidMethodTextFields",
     "MultiScenarioMatrix",
+    "MultiScenarioMatrixGraphQL",
     "MultiScenarioMatrixWrite",
     "MultiScenarioMatrixApply",
     "MultiScenarioMatrixList",
@@ -200,6 +231,7 @@ __all__ = [
     "MultiScenarioMatrixFields",
     "MultiScenarioMatrixTextFields",
     "PriceArea",
+    "PriceAreaGraphQL",
     "PriceAreaWrite",
     "PriceAreaApply",
     "PriceAreaList",
@@ -208,6 +240,7 @@ __all__ = [
     "PriceAreaFields",
     "PriceAreaTextFields",
     "SHOPMultiScenarioMethod",
+    "SHOPMultiScenarioMethodGraphQL",
     "SHOPMultiScenarioMethodWrite",
     "SHOPMultiScenarioMethodApply",
     "SHOPMultiScenarioMethodList",
@@ -216,6 +249,7 @@ __all__ = [
     "SHOPMultiScenarioMethodFields",
     "SHOPMultiScenarioMethodTextFields",
     "SHOPPriceScenario",
+    "SHOPPriceScenarioGraphQL",
     "SHOPPriceScenarioWrite",
     "SHOPPriceScenarioApply",
     "SHOPPriceScenarioList",
@@ -224,6 +258,7 @@ __all__ = [
     "SHOPPriceScenarioFields",
     "SHOPPriceScenarioTextFields",
     "SHOPPriceScenarioResult",
+    "SHOPPriceScenarioResultGraphQL",
     "SHOPPriceScenarioResultWrite",
     "SHOPPriceScenarioResultApply",
     "SHOPPriceScenarioResultList",
@@ -231,6 +266,7 @@ __all__ = [
     "SHOPPriceScenarioResultApplyList",
     "SHOPPriceScenarioResultFields",
     "WaterValueBasedMethod",
+    "WaterValueBasedMethodGraphQL",
     "WaterValueBasedMethodWrite",
     "WaterValueBasedMethodApply",
     "WaterValueBasedMethodList",

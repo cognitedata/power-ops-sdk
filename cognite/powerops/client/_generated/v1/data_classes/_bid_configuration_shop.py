@@ -5,9 +5,12 @@ from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 from cognite.client import data_modeling as dm
 from pydantic import Field
+from pydantic import field_validator, model_validator
 
 from ._core import (
     DEFAULT_INSTANCE_SPACE,
+    DataRecord,
+    DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
     DomainModelCore,
@@ -15,16 +18,21 @@ from ._core import (
     DomainModelWriteList,
     DomainModelList,
     DomainRelationWrite,
+    GraphQLCore,
     ResourcesWrite,
 )
 from ._bid_configuration import BidConfiguration, BidConfigurationWrite
 
 if TYPE_CHECKING:
-    from ._bid_method_shop_multi_scenario import BidMethodSHOPMultiScenario, BidMethodSHOPMultiScenarioWrite
-    from ._market_configuration import MarketConfiguration, MarketConfigurationWrite
-    from ._plant_shop import PlantShop, PlantShopWrite
-    from ._price_area import PriceArea, PriceAreaWrite
-    from ._watercourse_shop import WatercourseShop, WatercourseShopWrite
+    from ._bid_method_shop_multi_scenario import (
+        BidMethodSHOPMultiScenario,
+        BidMethodSHOPMultiScenarioGraphQL,
+        BidMethodSHOPMultiScenarioWrite,
+    )
+    from ._market_configuration import MarketConfiguration, MarketConfigurationGraphQL, MarketConfigurationWrite
+    from ._plant_shop import PlantShop, PlantShopGraphQL, PlantShopWrite
+    from ._price_area import PriceArea, PriceAreaGraphQL, PriceAreaWrite
+    from ._watercourse_shop import WatercourseShop, WatercourseShopGraphQL, WatercourseShopWrite
 
 
 __all__ = [
@@ -45,6 +53,108 @@ BidConfigurationShopFields = Literal["name"]
 _BIDCONFIGURATIONSHOP_PROPERTIES_BY_FIELD = {
     "name": "name",
 }
+
+
+class BidConfigurationShopGraphQL(GraphQLCore):
+    """This represents the reading version of bid configuration shop, used
+    when data is retrieved from CDF using GraphQL.
+
+    It is used when retrieving data from CDF using GraphQL.
+
+    Args:
+        space: The space where the node is located.
+        external_id: The external id of the bid configuration shop.
+        data_record: The data record of the bid configuration shop node.
+        market_configuration: The bid method related to the bid configuration
+        name: The name of the bid configuration
+        method: The bid method related to the bid configuration
+        price_area: The price area related to the bid configuration
+        plants_shop: The plants modelled in the shop runs
+        watercourses_shop: The watercourses modelled in the shop runs
+    """
+
+    view_id = dm.ViewId("sp_powerops_models", "BidConfigurationShop", "1")
+    market_configuration: Optional[MarketConfigurationGraphQL] = Field(None, repr=False, alias="marketConfiguration")
+    name: Optional[str] = None
+    method: Optional[BidMethodSHOPMultiScenarioGraphQL] = Field(None, repr=False)
+    price_area: Optional[PriceAreaGraphQL] = Field(None, repr=False, alias="priceArea")
+    plants_shop: Optional[list[PlantShopGraphQL]] = Field(default=None, repr=False, alias="plantsShop")
+    watercourses_shop: Optional[list[WatercourseShopGraphQL]] = Field(
+        default=None, repr=False, alias="watercoursesShop"
+    )
+
+    @model_validator(mode="before")
+    def parse_data_record(cls, values: Any) -> Any:
+        if not isinstance(values, dict):
+            return values
+        if "lastUpdatedTime" in values or "createdTime" in values:
+            values["dataRecord"] = DataRecordGraphQL(
+                created_time=values.pop("createdTime", None),
+                last_updated_time=values.pop("lastUpdatedTime", None),
+            )
+        return values
+
+    @field_validator("market_configuration", "method", "price_area", "plants_shop", "watercourses_shop", mode="before")
+    def parse_graphql(cls, value: Any) -> Any:
+        if not isinstance(value, dict):
+            return value
+        if "items" in value:
+            return value["items"]
+        return value
+
+    def as_read(self) -> BidConfigurationShop:
+        """Convert this GraphQL format of bid configuration shop to the reading format."""
+        if self.data_record is None:
+            raise ValueError("This object cannot be converted to a read format because it lacks a data record.")
+        return BidConfigurationShop(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecord(
+                version=0,
+                last_updated_time=self.data_record.last_updated_time,
+                created_time=self.data_record.created_time,
+            ),
+            market_configuration=(
+                self.market_configuration.as_read()
+                if isinstance(self.market_configuration, GraphQLCore)
+                else self.market_configuration
+            ),
+            name=self.name,
+            method=self.method.as_read() if isinstance(self.method, GraphQLCore) else self.method,
+            price_area=self.price_area.as_read() if isinstance(self.price_area, GraphQLCore) else self.price_area,
+            plants_shop=[
+                plants_shop.as_read() if isinstance(plants_shop, GraphQLCore) else plants_shop
+                for plants_shop in self.plants_shop or []
+            ],
+            watercourses_shop=[
+                watercourses_shop.as_read() if isinstance(watercourses_shop, GraphQLCore) else watercourses_shop
+                for watercourses_shop in self.watercourses_shop or []
+            ],
+        )
+
+    def as_write(self) -> BidConfigurationShopWrite:
+        """Convert this GraphQL format of bid configuration shop to the writing format."""
+        return BidConfigurationShopWrite(
+            space=self.space,
+            external_id=self.external_id,
+            data_record=DataRecordWrite(existing_version=0),
+            market_configuration=(
+                self.market_configuration.as_write()
+                if isinstance(self.market_configuration, DomainModel)
+                else self.market_configuration
+            ),
+            name=self.name,
+            method=self.method.as_write() if isinstance(self.method, DomainModel) else self.method,
+            price_area=self.price_area.as_write() if isinstance(self.price_area, DomainModel) else self.price_area,
+            plants_shop=[
+                plants_shop.as_write() if isinstance(plants_shop, DomainModel) else plants_shop
+                for plants_shop in self.plants_shop or []
+            ],
+            watercourses_shop=[
+                watercourses_shop.as_write() if isinstance(watercourses_shop, DomainModel) else watercourses_shop
+                for watercourses_shop in self.watercourses_shop or []
+            ],
+        )
 
 
 class BidConfigurationShop(BidConfiguration):
@@ -70,8 +180,10 @@ class BidConfigurationShop(BidConfiguration):
     name: Optional[str] = None
     method: Union[BidMethodSHOPMultiScenario, str, dm.NodeId, None] = Field(None, repr=False)
     price_area: Union[PriceArea, str, dm.NodeId, None] = Field(None, repr=False, alias="priceArea")
-    plants_shop: Union[list[PlantShop], list[str], None] = Field(default=None, repr=False, alias="plantsShop")
-    watercourses_shop: Union[list[WatercourseShop], list[str], None] = Field(
+    plants_shop: Union[list[PlantShop], list[str], list[dm.NodeId], None] = Field(
+        default=None, repr=False, alias="plantsShop"
+    )
+    watercourses_shop: Union[list[WatercourseShop], list[str], list[dm.NodeId], None] = Field(
         default=None, repr=False, alias="watercoursesShop"
     )
 
@@ -132,8 +244,10 @@ class BidConfigurationShopWrite(BidConfigurationWrite):
     name: Optional[str] = None
     method: Union[BidMethodSHOPMultiScenarioWrite, str, dm.NodeId, None] = Field(None, repr=False)
     price_area: Union[PriceAreaWrite, str, dm.NodeId, None] = Field(None, repr=False, alias="priceArea")
-    plants_shop: Union[list[PlantShopWrite], list[str], None] = Field(default=None, repr=False, alias="plantsShop")
-    watercourses_shop: Union[list[WatercourseShopWrite], list[str], None] = Field(
+    plants_shop: Union[list[PlantShopWrite], list[str], list[dm.NodeId], None] = Field(
+        default=None, repr=False, alias="plantsShop"
+    )
+    watercourses_shop: Union[list[WatercourseShopWrite], list[str], list[dm.NodeId], None] = Field(
         default=None, repr=False, alias="watercoursesShop"
     )
 
@@ -142,6 +256,7 @@ class BidConfigurationShopWrite(BidConfigurationWrite):
         cache: set[tuple[str, str]],
         view_by_read_class: dict[type[DomainModelCore], dm.ViewId] | None,
         write_none: bool = False,
+        allow_version_increase: bool = False,
     ) -> ResourcesWrite:
         resources = ResourcesWrite()
         if self.as_tuple_id() in cache:
@@ -182,7 +297,7 @@ class BidConfigurationShopWrite(BidConfigurationWrite):
             this_node = dm.NodeApply(
                 space=self.space,
                 external_id=self.external_id,
-                existing_version=self.data_record.existing_version,
+                existing_version=None if allow_version_increase else self.data_record.existing_version,
                 type=self.node_type,
                 sources=[
                     dm.NodeOrEdgeData(
@@ -197,7 +312,13 @@ class BidConfigurationShopWrite(BidConfigurationWrite):
         edge_type = dm.DirectRelationReference("sp_powerops_types", "BidConfiguration.plantsShop")
         for plants_shop in self.plants_shop or []:
             other_resources = DomainRelationWrite.from_edge_to_resources(
-                cache, start_node=self, end_node=plants_shop, edge_type=edge_type, view_by_read_class=view_by_read_class
+                cache,
+                start_node=self,
+                end_node=plants_shop,
+                edge_type=edge_type,
+                view_by_read_class=view_by_read_class,
+                write_none=write_none,
+                allow_version_increase=allow_version_increase,
             )
             resources.extend(other_resources)
 
@@ -209,6 +330,8 @@ class BidConfigurationShopWrite(BidConfigurationWrite):
                 end_node=watercourses_shop,
                 edge_type=edge_type,
                 view_by_read_class=view_by_read_class,
+                write_none=write_none,
+                allow_version_increase=allow_version_increase,
             )
             resources.extend(other_resources)
 

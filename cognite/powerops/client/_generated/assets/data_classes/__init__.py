@@ -1,11 +1,14 @@
 from ._core import (
     DataRecord,
+    DataRecordGraphQL,
     DataRecordWrite,
     DomainModel,
     DomainModelCore,
     DomainModelWrite,
     DomainModelList,
     DomainRelationWrite,
+    GraphQLCore,
+    GraphQLList,
     ResourcesWrite,
     ResourcesWriteResult,
 )
@@ -14,6 +17,7 @@ from ._bid_method import (
     BidMethodApply,
     BidMethodApplyList,
     BidMethodFields,
+    BidMethodGraphQL,
     BidMethodList,
     BidMethodTextFields,
     BidMethodWrite,
@@ -24,6 +28,7 @@ from ._generator import (
     GeneratorApply,
     GeneratorApplyList,
     GeneratorFields,
+    GeneratorGraphQL,
     GeneratorList,
     GeneratorTextFields,
     GeneratorWrite,
@@ -34,6 +39,7 @@ from ._generator_efficiency_curve import (
     GeneratorEfficiencyCurveApply,
     GeneratorEfficiencyCurveApplyList,
     GeneratorEfficiencyCurveFields,
+    GeneratorEfficiencyCurveGraphQL,
     GeneratorEfficiencyCurveList,
     GeneratorEfficiencyCurveWrite,
     GeneratorEfficiencyCurveWriteList,
@@ -43,6 +49,7 @@ from ._plant import (
     PlantApply,
     PlantApplyList,
     PlantFields,
+    PlantGraphQL,
     PlantList,
     PlantTextFields,
     PlantWrite,
@@ -53,6 +60,7 @@ from ._price_area import (
     PriceAreaApply,
     PriceAreaApplyList,
     PriceAreaFields,
+    PriceAreaGraphQL,
     PriceAreaList,
     PriceAreaTextFields,
     PriceAreaWrite,
@@ -63,6 +71,7 @@ from ._reservoir import (
     ReservoirApply,
     ReservoirApplyList,
     ReservoirFields,
+    ReservoirGraphQL,
     ReservoirList,
     ReservoirTextFields,
     ReservoirWrite,
@@ -73,6 +82,7 @@ from ._turbine_efficiency_curve import (
     TurbineEfficiencyCurveApply,
     TurbineEfficiencyCurveApplyList,
     TurbineEfficiencyCurveFields,
+    TurbineEfficiencyCurveGraphQL,
     TurbineEfficiencyCurveList,
     TurbineEfficiencyCurveWrite,
     TurbineEfficiencyCurveWriteList,
@@ -82,6 +92,7 @@ from ._watercourse import (
     WatercourseApply,
     WatercourseApplyList,
     WatercourseFields,
+    WatercourseGraphQL,
     WatercourseList,
     WatercourseTextFields,
     WatercourseWrite,
@@ -89,20 +100,26 @@ from ._watercourse import (
 )
 
 Generator.model_rebuild()
+GeneratorGraphQL.model_rebuild()
 GeneratorWrite.model_rebuild()
 GeneratorApply.model_rebuild()
 Plant.model_rebuild()
+PlantGraphQL.model_rebuild()
 PlantWrite.model_rebuild()
 PlantApply.model_rebuild()
 PriceArea.model_rebuild()
+PriceAreaGraphQL.model_rebuild()
 PriceAreaWrite.model_rebuild()
 PriceAreaApply.model_rebuild()
 Watercourse.model_rebuild()
+WatercourseGraphQL.model_rebuild()
 WatercourseWrite.model_rebuild()
 WatercourseApply.model_rebuild()
 
+
 __all__ = [
     "DataRecord",
+    "DataRecordGraphQL",
     "DataRecordWrite",
     "ResourcesWrite",
     "DomainModel",
@@ -110,8 +127,11 @@ __all__ = [
     "DomainModelWrite",
     "DomainModelList",
     "DomainRelationWrite",
+    "GraphQLCore",
+    "GraphQLList",
     "ResourcesWriteResult",
     "BidMethod",
+    "BidMethodGraphQL",
     "BidMethodWrite",
     "BidMethodApply",
     "BidMethodList",
@@ -120,6 +140,7 @@ __all__ = [
     "BidMethodFields",
     "BidMethodTextFields",
     "Generator",
+    "GeneratorGraphQL",
     "GeneratorWrite",
     "GeneratorApply",
     "GeneratorList",
@@ -128,6 +149,7 @@ __all__ = [
     "GeneratorFields",
     "GeneratorTextFields",
     "GeneratorEfficiencyCurve",
+    "GeneratorEfficiencyCurveGraphQL",
     "GeneratorEfficiencyCurveWrite",
     "GeneratorEfficiencyCurveApply",
     "GeneratorEfficiencyCurveList",
@@ -135,6 +157,7 @@ __all__ = [
     "GeneratorEfficiencyCurveApplyList",
     "GeneratorEfficiencyCurveFields",
     "Plant",
+    "PlantGraphQL",
     "PlantWrite",
     "PlantApply",
     "PlantList",
@@ -143,6 +166,7 @@ __all__ = [
     "PlantFields",
     "PlantTextFields",
     "PriceArea",
+    "PriceAreaGraphQL",
     "PriceAreaWrite",
     "PriceAreaApply",
     "PriceAreaList",
@@ -151,6 +175,7 @@ __all__ = [
     "PriceAreaFields",
     "PriceAreaTextFields",
     "Reservoir",
+    "ReservoirGraphQL",
     "ReservoirWrite",
     "ReservoirApply",
     "ReservoirList",
@@ -159,6 +184,7 @@ __all__ = [
     "ReservoirFields",
     "ReservoirTextFields",
     "TurbineEfficiencyCurve",
+    "TurbineEfficiencyCurveGraphQL",
     "TurbineEfficiencyCurveWrite",
     "TurbineEfficiencyCurveApply",
     "TurbineEfficiencyCurveList",
@@ -166,6 +192,7 @@ __all__ = [
     "TurbineEfficiencyCurveApplyList",
     "TurbineEfficiencyCurveFields",
     "Watercourse",
+    "WatercourseGraphQL",
     "WatercourseWrite",
     "WatercourseApply",
     "WatercourseList",
