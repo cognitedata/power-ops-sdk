@@ -1,0 +1,62 @@
+space: "{{powerops_models}}"
+externalId: GeneratorWaterValueBased
+name: GeneratorWaterValueBased
+usedFor: node
+properties:
+  name:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: name
+    description: The name of the GeneratorWaterValueBased
+  pMin:
+    type:
+      type: float64
+      list: false
+    nullable: false
+    autoIncrement: false
+    name: pMin
+  penstockNumber:
+    type:
+      type: int64
+      list: false
+    nullable: false
+    autoIncrement: false
+    name: penstockNumber
+  startCost:
+    type:
+      type: float64
+      list: false
+    nullable: false
+    autoIncrement: false
+    name: startCost
+  startStopCost:
+    type:
+      type: TimeSeries
+      list: false
+    nullable: false
+    autoIncrement: false
+    name: startStopCost
+  availability:
+    type:
+      type: TimeSeries
+      list: false
+    nullable: false
+    autoIncrement: false
+    name: availability
+  generatorEfficiencyCurve:
+    type:
+      type: direct
+      list: false
+    nullable: false
+    autoIncrement: false
+    name: generatorEfficiencyCurve
+indexes:
+  nameIndex:
+    properties:
+      - name
+    indexType: btree
+    cursorable: false

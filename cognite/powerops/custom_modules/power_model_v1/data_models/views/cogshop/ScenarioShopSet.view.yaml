@@ -1,0 +1,63 @@
+space: "{{powerops_models}}"
+externalId: ScenarioShopSet
+name: ScenarioShopSet
+description: The Scenario to run shop with
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{powerops_models}}"
+          externalId: ScenarioShopSet
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{powerops_instance_space}}"
+implements: []
+version: "{{version}}"
+properties:
+  name:
+    container:
+      space: "{{powerops_models}}"
+      externalId: ScenarioShopSet
+      type: container
+    containerPropertyIdentifier: name
+    name: name
+    description: The name of the scenario set
+  shopStartSpecification:
+    container:
+      space: "{{powerops_models}}"
+      externalId: ScenarioShopSet
+      type: container
+    containerPropertyIdentifier: shopStartSpecification
+    name: shopStartSpecification
+    description: TODO description
+  shopEndSpecification:
+    container:
+      space: "{{powerops_models}}"
+      externalId: ScenarioShopSet
+      type: container
+    containerPropertyIdentifier: shopEndSpecification
+    name: shopEndSpecification
+    description: TODO description
+  shopBidDateSpecification:
+    container:
+      space: "{{powerops_models}}"
+      externalId: ScenarioShopSet
+      type: container
+    containerPropertyIdentifier: shopBidDateSpecification
+    name: shopBidDateSpecification
+    description: TODO description
+  shopScenarios:
+    type:
+      space: "{{powerops_type_space}}"
+      externalId: Scenario
+    source:
+      space: "{{powerops_models}}"
+      externalId: Scenario
+      version: "{{version}}"
+      type: view
+    direction: outwards
+    name: shopScenarios
+    description: TODO description
+    connectionType: multi_edge_connection

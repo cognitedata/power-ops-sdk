@@ -8,26 +8,33 @@ properties:
       list: false
       collation: ucs_basic
       type: text
-    nullable: true
+    nullable: false
     autoIncrement: false
     name: name
   asset:
     type:
       type: direct
       list: false
-    nullable: true
+    nullable: false
     autoIncrement: false
-    name: marketConfiguration
+    name: asset
   method:
     type:
       type: direct
       list: false
-    nullable: true
+    nullable: false
     autoIncrement: false
     name: method
+  addSteps:
+    type:
+      type: boolean
+      list: false
+    nullable: false
+    autoIncrement: false
+    name: addSteps
 indexes:
-  methodIndex:
+  assetIndex:
     properties:
-      - method
+      - asset
     indexType: btree
     cursorable: false

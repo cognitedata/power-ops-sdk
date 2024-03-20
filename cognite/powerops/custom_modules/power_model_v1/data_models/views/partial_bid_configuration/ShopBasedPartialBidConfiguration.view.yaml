@@ -1,0 +1,50 @@
+space: "{{powerops_models}}"
+externalId: ShopBasedPartialBidConfiguration
+name: ShopBasedPartialBidConfiguration
+description: A description of the ShopBasedPartialBidConfiguration
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{powerops_models}}"
+          externalId: PartialShopBased
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{powerops_instance_space}}"
+    - equals:
+        property:
+          - node
+          - type
+        value:
+          externalId: PartialShopBased
+          space: "{{powerops_type_space}}"
+implements:
+  - space: "{{powerops_models}}"
+    externalId: PartialBidConfiguration
+    version: "{{version}}"
+    type: view
+version: "{{version}}"
+properties:
+  cutOffPrice:
+    container:
+      space: "{{powerops_models}}"
+      externalId: PartialShopBased
+      type: container
+    containerPropertyIdentifier: cutOffPrice
+    name: cutOffPrice
+    description: TODO definition
+  shopRuns:
+    container:
+      space: "{{powerops_models}}"
+      externalId: PartialShopBased
+      type: container
+    containerPropertyIdentifier: shopRuns
+    name: shopRuns
+    description: TODO definition
+    source:
+      space: "{{powerops_models}}"
+      externalId: ShopScenarioSet
+      version: "{{version}}"
+      type: view

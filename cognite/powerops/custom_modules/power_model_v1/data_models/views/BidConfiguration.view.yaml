@@ -38,7 +38,7 @@ properties:
       type: container
     containerPropertyIdentifier: marketConfiguration
     name: marketConfiguration
-    description: The bid method related to the bid configuration
+    description: The market configuration related to the bid configuration
     source:
       space: "{{powerops_models}}"
       externalId: MarketConfiguration
@@ -63,7 +63,7 @@ properties:
       externalId: PartialBidConfiguration.partials
     source:
       space: "{{powerops_models}}"
-      externalId: Mapping
+      externalId: PartialBidConfiguration
       version: "{{version}}"
       type: view
     direction: outwards

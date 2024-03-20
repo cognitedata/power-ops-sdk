@@ -1,0 +1,19 @@
+space: "{{powerops_models}}"
+externalId: PartialShopBased
+name: PartialShopBased
+usedFor: node
+properties:
+  cutOffPrice:
+    type:
+      type: float64
+      list: false
+    nullable: false
+    autoIncrement: false
+    name: cutOffPrice
+  shopRuns:
+    type:
+      type: direct
+      list: false
+    nullable: false
+    autoIncrement: false
+    name: shopRuns

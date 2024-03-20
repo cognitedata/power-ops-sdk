@@ -8,21 +8,21 @@ properties:
       list: false
       collation: ucs_basic
       type: text
-    nullable: true
+    nullable: false
     autoIncrement: false
     name: name
   marketConfiguration:
     type:
       type: direct
       list: false
-    nullable: true
+    nullable: false
     autoIncrement: false
     name: marketConfiguration
   priceArea:
     type:
       type: direct
       list: false
-    nullable: true
+    nullable: false
     autoIncrement: false
     name: priceArea
 indexes:

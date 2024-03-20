@@ -1,0 +1,59 @@
+space: "{{powerops_models}}"
+externalId: PartialBidConfiguration
+name: PartialBidConfiguration
+description: A generic Bid Method
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{powerops_models}}"
+          externalId: PartialBidConfiguration
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{powerops_instance_space}}"
+version: "{{version}}"
+properties:
+  name:
+    container:
+      space: "{{powerops_models}}"
+      externalId: PartialBidConfiguration
+      type: container
+    containerPropertyIdentifier: name
+    name: name
+    description: Name for the PartialBidConfiguration
+  asset:
+    container:
+      space: "{{powerops_models}}"
+      externalId: PartialBidConfiguration
+      type: container
+    containerPropertyIdentifier: asset
+    name: asset
+    description: Name for the PartialBidConfiguration
+    source:
+      space: "{{powerops_models}}"
+      externalId: PowerAsset
+      version: "{{version}}"
+      type: view
+  method:
+    container:
+      space: "{{powerops_models}}"
+      externalId: PartialBidConfiguration
+      type: container
+    containerPropertyIdentifier: method
+    name: method
+    description: The method for the PartialBidConfiguration
+    source:
+      space: "{{powerops_models}}"
+      externalId: BidMethod
+      version: "{{version}}"
+      type: view
+  addSteps:
+    container:
+      space: "{{powerops_models}}"
+      externalId: PartialBidConfiguration
+      type: container
+    containerPropertyIdentifier: addSteps
+    name: addSteps
+    description: TODO definition
