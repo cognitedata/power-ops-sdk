@@ -10,10 +10,30 @@ properties:
     nullable: false
     autoIncrement: false
     name: cutOffPrice
-  shopRuns:
+  shopStartSpecification:
     type:
-      type: direct
       list: false
+      collation: ucs_basic
+      type: text
     nullable: false
     autoIncrement: false
-    name: shopRuns
+    name: shopStartSpecification
+    description: The shop start specification
+  shopEndSpecification:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: shopEndSpecification
+    description: The shop end specification
+  shopBidDateSpecification:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: shopBidDateSpecification
+    description: The shop bid date specification

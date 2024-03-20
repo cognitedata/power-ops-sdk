@@ -35,16 +35,40 @@ properties:
     containerPropertyIdentifier: cutOffPrice
     name: cutOffPrice
     description: TODO definition
-  shopRuns:
+  shopStartSpecification:
     container:
       space: "{{powerops_models}}"
       externalId: PartialShopBased
       type: container
-    containerPropertyIdentifier: shopRuns
-    name: shopRuns
+    containerPropertyIdentifier: shopStartSpecification
+    name: shopStartSpecification
     description: TODO definition
+  shopEndSpecification:
+    container:
+      space: "{{powerops_models}}"
+      externalId: PartialShopBased
+      type: container
+    containerPropertyIdentifier: shopEndSpecification
+    name: shopEndSpecification
+    description: TODO definition
+  shopBidDateSpecification:
+    container:
+      space: "{{powerops_models}}"
+      externalId: PartialShopBased
+      type: container
+    containerPropertyIdentifier: shopBidDateSpecification
+    name: shopBidDateSpecification
+    description: TODO definition
+  shopScenarios:
+    type:
+      space: "{{powerops_type_space}}"
+      externalId: PartialShopBased.scenario
     source:
       space: "{{powerops_models}}"
-      externalId: ShopScenarioSet
+      externalId: Scenario
       version: "{{version}}"
       type: view
+    direction: outwards
+    name: shopRuns
+    description: Configuration of the partial bids that make up the total bid
+    connectionType: multi_edge_connection
